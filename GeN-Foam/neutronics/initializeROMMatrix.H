@@ -1,0 +1,22 @@
+
+PtrList<SquareMatrix<scalar> > matrixROM(energyGroups);
+int maxPODBaseSize(1);
+forAll(flux,energyI)
+{
+	maxPODBaseSize = max(maxPODBaseSize,base_fluxStar[energyI].size());
+}
+forAll(flux,energyI)//costretto a definire matrici della stessa dimensione
+{
+	matrixROM.set(energyI,new SquareMatrix<scalar>(maxPODBaseSize,maxPODBaseSize,Foam::zero()));
+}
+
+scalar neutroResidual = 0.0;
+
+neutroResidual0 = 0.0;
+neutroResidual1 = 0.0;
+neutroResidual2 = 0.0;
+
+bool solveROM = true;
+label fullSolutionCounter = 0;
+label ROMAdjustCounter = 0;
+bool adjustROM = false;

@@ -1,0 +1,78 @@
+//#include "calcPower.H"
+
+if(aitkenIterCounter==0) // only happening at timeStepIteration==1 (after extra-step prediciton)
+{
+	//initialStepPower = pTot;
+	//stepPower.clear();
+	//stepPower.append(pTot);
+	forAll(flux, energyI)
+	{
+  	      integralFlux0[energyI]=(fvc::domainIntegrate(flux[energyI])).value();
+	}   
+}  
+if(aitkenIterCounter==1)
+{
+	//stepPower.append(pTot);
+	forAll(flux, energyI)
+	{
+  	      integralFlux1[energyI]=(fvc::domainIntegrate(flux[energyI])).value();
+	}   
+}
+if(aitkenIterCounter==2)
+{
+	bool aitkenYesNo = true;
+	//stepPower.append(pTot);
+	forAll(flux, energyI)
+	{
+	    integralFlux2[energyI]=(fvc::domainIntegrate(flux[energyI])).value();
+
+		if((integralFlux2[energyI]-integralFlux1[energyI])
+		/(integralFlux1[energyI]-integralFlux0[energyI])>0.9) aitkenYesNo=false;
+	}
+
+	if(aitkenYesNo==true)
+	{
+		Info << "Intra-step Aitken acceleration no: " << aitkenIterNo << endl;
+		forAll(flux, energyI)
+		{
+		    integralFlux2[energyI]=(fvc::domainIntegrate(flux[energyI])).value();
+			scalar aitkenScaling = 
+			(
+				( 
+					integralFlux0[energyI]
+					- (integralFlux1[energyI]-integralFlux0[energyI])
+					* (integralFlux1[energyI]-integralFlux0[energyI])
+					/ (integralFlux2[energyI]-2*integralFlux1[energyI]+integralFlux0[energyI])
+				)/integralFlux2[energyI]
+			);
+
+			  flux[energyI] = flux[energyI] * aitkenScaling ;
+	    	
+			integralFlux0[energyI]=(fvc::domainIntegrate(flux[energyI])).value();
+		}
+		#include "initializeNeutroSources.H"
+		aitkenIterNo++ ;
+		aitkenIterCounter = 0;
+		Info<< "Done: "  << endl;
+	}
+	else
+	{
+		Info << "Aitken not performed because of diverging series" << endl;
+	Info << "integralFlux0[0]" << integralFlux0[0] << endl ;
+	Info << "integralFlux1[0]" << integralFlux1[0] << endl ;
+	Info << "integralFlux2[0]" << integralFlux2[0] << endl ;
+	Info << "integralFlux0[1]" << integralFlux0[1] << endl ;
+	Info << "integralFlux1[1]" << integralFlux1[1] << endl ;
+	Info << "integralFlux2[1]" << integralFlux2[1] << endl ;
+		forAll(flux, energyI)
+		{
+			integralFlux0[energyI] = integralFlux1[energyI];
+			integralFlux1[energyI] = integralFlux2[energyI];
+			
+		}
+		aitkenIterCounter-- ;
+	}
+
+}
+aitkenIterCounter++ ;
+

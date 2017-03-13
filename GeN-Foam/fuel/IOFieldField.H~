@@ -1,0 +1,110 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Class
+    Foam::IOFieldField
+
+Description
+    A primitive FieldField of type \<T\> with automated input and output.
+
+SourceFiles
+    IOFieldField.C
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef IOFieldField_H
+#define IOFieldField_H
+
+#include "regIOobject.H"
+#include "Field.H"
+#include "FieldField.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+/*---------------------------------------------------------------------------*\
+                           Class IOFieldField Declaration
+\*---------------------------------------------------------------------------*/
+
+//template<class Type>
+template<template<class> class Field, class Type>
+class IOFieldField
+:
+    public regIOobject,
+    public FieldField<Field,Type>
+{
+
+public:
+
+    TypeName("FieldField");
+
+
+    // Constructors
+
+        //- Construct from IOobject
+        IOFieldField(const IOobject&);
+
+        //- Construct from IOobject and size (does not set values)
+        IOFieldField(const IOobject&, const label size);
+
+        //- Construct from components
+        IOFieldField(const IOobject&, const FieldField<Field,Type>&);
+
+        //- Construct by transferring the FieldField contents
+        IOFieldField(const IOobject&, const Xfer<FieldField<Field,Type> >&);
+
+
+    //- Destructor
+    virtual ~IOFieldField();
+
+
+    // Member functions
+
+        bool writeData(Ostream&) const;
+
+
+    // Member operators
+
+        void operator=(const IOFieldField<Field,Type>&);
+
+        void operator=(const FieldField<Field,Type>&);
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#ifdef NoRepositor
+    #include "IOFieldField.C"
+#endif
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //

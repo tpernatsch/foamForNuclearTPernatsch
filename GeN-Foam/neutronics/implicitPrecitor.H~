@@ -1,0 +1,6 @@
+forAll(flux[0].internalField(),i)
+{
+
+Info << << endl;
+
+}

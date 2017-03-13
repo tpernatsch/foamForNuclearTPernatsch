@@ -1,0 +1,9 @@
+Info<< "Calculating neutro residuals" << endl;
+
+scalar phiL = fvc::domainIntegrate(fluxStar[energyI]).value();
+
+neutroResidual = max(neutroResidual,neutroSolverPerformance.initialResidual());
+//neutroResidual = max(neutroResidual,(mag(phiL-phiLMinusOne[energyI])/(max(mag(phiL-phiOld[energyI]), SMALL))));
+//Foam::reduce(neutroResidual,maxOp<scalar>());
+
+Info<< "Done" << endl;

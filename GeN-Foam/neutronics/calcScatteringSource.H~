@@ -1,0 +1,15 @@
+
+
+
+
+forAll(flux,energyI)
+{
+scatteringSourceExtra[energyI] *= 0.0;
+forAll(flux,energyJ)
+{
+	if(energyJ != energyI)
+	{
+		scatteringSourceExtra[energyI] += sigmaFromTo[energyJ][energyI] * flux[energyJ];
+	}
+}
+}

@@ -1,0 +1,166 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Application
+    GeN-Foam
+
+Description
+    Multi-physics solver for nuclear reactor analysis. It couples together
+    a multi-scale fine/coarse mesh (porous medium) sub-solver for thermal-hydraulics,
+    a multi-group diffusion sub-solver for neutronics, a displacement-based
+    sub-solver for thermal-mechanics and a finite-difference model for the
+    temperature field in the fuel. It is targeted towards the analysis of
+    pin-based reactors (e.g., liquid metal fast reactors or light water reactors)
+    or homogeneous reactors (e.g., fast-spectrum molten salt reactors).
+    Derived from chtMultiRegionFoam
+
+Reference publications
+	Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, 2015
+	"GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+	analysis of nuclear reactors", Nuclear Engineering and Design 294, pp. 24-37
+
+	Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
+	solver to the European Sodium Fast Reactor and verification against available codes",
+	Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+
+
+Author
+    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it; 
+                   carlo.fiorina@epfl.ch;>
+
+
+
+\*---------------------------------------------------------------------------*/
+
+#include "fvCFD.H"
+#include "rhoThermo.H"
+#include "turbulentFluidThermoModel.H"
+#include "fixedGradientFvPatchFields.H"
+#include "regionProperties.H"
+#include "compressibleCourantNo.H"
+#include "coordinateSystem.H"
+#include "porousMedium.H"
+#include "subscaleFuel.H"
+#include "FieldFields.H"
+#include "FieldField.H"
+#include "volPointInterpolation.H"
+#include "meshToMesh.H"
+#include "SquareMatrix.H"
+#include "PODOrthoNormalBase.H"
+#include "POD.H"
+#include "fvMatrixExt.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+int main(int argc, char *argv[])
+{
+    int PODAdjustFrequencyCounter = 0;
+    int PODAdjustTimeCounter = 0;
+
+    #include "setRootCase.H"
+    #include "createTime.H"
+    #include "readPhysicsToSolve.H"
+
+
+    regionProperties rp(runTime);
+
+    #include "createFluidMesh.H"
+    #include "createNeutroMesh.H"
+    #include "createThermoMechanicalMesh.H"
+
+    #include "readNuclearDataExt.H"
+    #include "readThermoMechanicalProperties.H"
+
+    #include "createFluidFields.H"
+  
+    #include "initContinuityErrs.H"
+    #include "readTimeControls.H"
+    #include "readSolidDisplacementFoamControls.H"
+
+    #include "createNeutroFields.H"
+    #include "createThermoMechanicalFields.H"
+
+    #include "compressibleCoNo.H"
+    #include "setInitialMultiRegionDeltaT.H"
+
+    #include "createMeshInterpolators.H"
+
+    #include "openOutputFiles.H"
+
+    while (runTime.run())
+    {
+
+	#include "readTimeControls.H"
+        #include "readPIMPLEControls.H"
+        #include "readSolidDisplacementFoamControls.H"
+        #include "compressibleCoNo.H"
+
+        if((runTime.timeIndex()-runTime.startTimeIndex())>0)
+        {
+        	#include "setMultiRegionDeltaT.H"
+	}
+        runTime++;
+
+        Info << "Time = " << runTime.timeName() << nl << endl;
+
+
+        if (nOuterCorr != 1)
+        {
+               #include "setRegionFluidFields.H"
+               #include "storeOldFluidFields.H"
+        }
+
+
+        // --- PIMPLE loop
+        for (int oCorr=0; oCorr<nOuterCorr; oCorr++)
+        {
+		Info << "PIMPLE iteration no:  " << oCorr << nl << endl;
+
+		bool finalIter = oCorr == nOuterCorr-1;
+
+		Info<< "\nSolving for fluid region " << endl;
+	
+		#include "setRegionFluidFields.H"
+
+		#include "readFluidPIMPLEControls.H"
+
+		#include "solveFluid.H"
+
+        }
+
+	#include "writeOutputs.H"
+
+	runTime.write();
+
+        Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+            << nl << endl;
+    }
+
+    Info<< "End\n" << endl;
+
+    return 0;
+}
+
+
+// ************************************************************************* //

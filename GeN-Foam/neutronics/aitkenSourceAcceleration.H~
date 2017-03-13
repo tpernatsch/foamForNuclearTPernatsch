@@ -1,0 +1,56 @@
+//#include "calcPower.H"
+
+if(aitkenIterCounter==0) // only happening at timeStepIteration==1 (after extra-step prediciton)
+{
+	neutroSource0=fvc::domainIntegrate(neutroSource).value();
+}  
+if(aitkenIterCounter==1)
+{
+	neutroSource1=fvc::domainIntegrate(neutroSource).value();  
+}
+if(aitkenIterCounter==2)
+{	
+	neutroSource2=fvc::domainIntegrate(neutroSource).value();  
+	bool aitkenYesNo = true;
+
+		if((neutroSource2-neutroSource1)
+		/(neutroSource1-neutroSource0)>=1) aitkenYesNo=false;
+
+	if(aitkenYesNo==true)
+	{
+		Info << "Intra-step Aitken acceleration no: " << aitkenIterNo << endl;
+			scalar aitkenScaling = 
+			(
+				( 
+					neutroSource0
+					- (neutroSource1-neutroSource0)
+					* (neutroSource1-neutroSource0)
+					/ (neutroSource2-2*neutroSource1+neutroSource0)
+				)/neutroSource2
+			);
+
+		forAll(flux, energyI)
+		{
+		    //integralFlux2[energyI]=(fvc::domainIntegrate(flux[energyI])).value();
+
+
+			  neutroSource *= aitkenScaling ;
+		}
+		neutroSource2=fvc::domainIntegrate(neutroSource).value();
+		aitkenIterNo++ ;
+		aitkenIterCounter = 0;
+		Info<< "Done: "  << endl;
+	}
+	else
+	{
+		Info << "Aitken not performed because of diverging series" << endl;
+
+			neutroSource0 = neutroSource1;
+			neutroSource1 = neutroSource2;
+			
+		aitkenIterCounter-- ;
+	}
+
+}
+aitkenIterCounter++ ;
+

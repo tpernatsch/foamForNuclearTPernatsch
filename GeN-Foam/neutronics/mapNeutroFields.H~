@@ -1,0 +1,14 @@
+neutroToFluid.mapTgtToSrc( TavFuel, plusEqOp<scalar>(), TfuelNeutro.internalField());
+neutroToFluid.mapTgtToSrc( TavClad, plusEqOp<scalar>(), TcladNeutro.internalField());
+neutroToFluid.mapTgtToSrc( thermo.rho(), plusEqOp<scalar>(), rhoCoolNeutro.internalField());
+neutroToFluid.mapTgtToSrc( thermo.T(), plusEqOp<scalar>(), TCoolNeutro.internalField());
+if(liquidFuel)
+{	
+	neutroToFluid.mapTgtToSrc( U, plusEqOp<vector>(), UNeutro.internalField());
+	UNeutro.correctBoundaryConditions();
+	neutroToFluid.mapTgtToSrc( porosity, plusEqOp<scalar>(), porosityNeutro.internalField());
+	porosityNeutro.correctBoundaryConditions();
+	phiNeutro = linearInterpolate(UNeutro) & neutroMesh.Sf();
+}
+
+

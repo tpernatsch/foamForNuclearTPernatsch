@@ -1,0 +1,292 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+\*---------------------------------------------------------------------------*/
+
+#include "albedo2FvPatchField.H"
+#include "dictionary.H"
+#include "addToRunTimeSelectionTable.H"
+#include "fvPatchFieldMapper.H"
+#include "volFields.H"
+#include "uniformDimensionedFields.H"
+#include "surfaceFields.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+template<class Type>
+albedo2FvPatchField<Type>::albedo2FvPatchField
+(
+    const fvPatch& p,
+    const DimensionedField<Type, volMesh>& iF
+)
+:
+    fvPatchField<Type>(p, iF),
+    gamma_(p.size()),
+    //diffCoeff_(p.size())
+    diffCoeffName_("diffCoeffName")
+{}
+
+
+template<class Type>
+albedo2FvPatchField<Type>::albedo2FvPatchField
+(
+    const albedo2FvPatchField<Type>& ptf,
+    const fvPatch& p,
+    const DimensionedField<Type, volMesh>& iF,
+    const fvPatchFieldMapper& mapper
+)
+:
+    fvPatchField<Type>(ptf, p, iF, mapper),
+    gamma_(ptf.gamma_, mapper),
+    //diffCoeff_(ptf.diffCoeff_, mapper)
+    diffCoeffName_(ptf.diffCoeffName_)
+{}
+
+ 
+template<class Type>
+albedo2FvPatchField<Type>::albedo2FvPatchField
+(
+    const fvPatch& p,
+    const DimensionedField<Type, volMesh>& iF,
+    const dictionary& dict
+)
+:
+    fvPatchField<Type>(p, iF, dict),
+    gamma_("gamma", dict, p.size()),
+    //diffCoeff_("diffCoeff", dict, p.size())
+    diffCoeffName_(dict.lookupOrDefault<word>("diffCoeffName", "diffCoeffName"))
+{
+    evaluate();
+}
+
+
+template<class Type>
+albedo2FvPatchField<Type>::albedo2FvPatchField
+(
+    const albedo2FvPatchField<Type>& ptf
+)
+:
+    fvPatchField<Type>(ptf),
+    gamma_(ptf.gamma_),
+    //diffCoeff_(ptf.diffCoeff_)
+    diffCoeffName_(ptf.diffCoeffName_)
+{}
+
+
+template<class Type>
+albedo2FvPatchField<Type>::albedo2FvPatchField
+(
+    const albedo2FvPatchField<Type>& ptf,
+    const DimensionedField<Type, volMesh>& iF
+)
+:
+    fvPatchField<Type>(ptf, iF),
+    gamma_(ptf.gamma_),
+    //diffCoeff_(ptf.diffCoeff_)
+    diffCoeffName_(ptf.diffCoeffName_)
+{}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+template<class Type>
+void albedo2FvPatchField<Type>::autoMap
+(
+    const fvPatchFieldMapper& m
+)
+{
+    fvPatchField<Type>::autoMap(m);
+    gamma_.autoMap(m);
+}
+
+
+template<class Type>
+void albedo2FvPatchField<Type>::rmap
+(
+    const fvPatchField<Type>& ptf,
+    const labelList& addr
+)
+{
+    fvPatchField<Type>::rmap(ptf, addr);
+
+    const albedo2FvPatchField<Type>& fgptf =
+        refCast<const albedo2FvPatchField<Type> >(ptf);
+
+    gamma_.rmap(fgptf.gamma_, addr);
+    //diffCoeff_.rmap(fgptf.diffCoeff_, addr);
+}
+
+
+template<class Type>
+void albedo2FvPatchField<Type>::evaluate(const Pstream::commsTypes)
+{
+    if (!this->updated())
+    {
+        this->updateCoeffs();
+    }
+
+    const Field<scalar>& diffCoeff =
+        this->patch().template lookupPatchField<volScalarField, scalar>
+        (
+            diffCoeffName_
+        );
+
+    Field<Type>::operator=
+    (
+        this->patchInternalField() + (this->patchInternalField()*gamma_/diffCoeff)/this->patch().deltaCoeffs()
+    );
+
+    fvPatchField<Type>::evaluate();
+}
+
+
+template<class Type>
+tmp<Field<Type> > albedo2FvPatchField<Type>::valueInternalCoeffs
+(
+    const tmp<scalarField>&
+) const
+
+{
+/*
+    return tmp<Field<Type> >
+    (
+        new Field<Type>(this->size(), pTraits<Type>::zero)
+    );
+*/
+
+    const Field<scalar>& diffCoeff =
+        this->patch().template lookupPatchField<volScalarField, scalar>
+        (
+            diffCoeffName_
+        );
+
+	return Type(pTraits<Type>::one) * (1 + gamma_/diffCoeff/this->patch().deltaCoeffs());
+}
+
+
+template<class Type>
+tmp<Field<Type> > albedo2FvPatchField<Type>::valueBoundaryCoeffs
+(
+    const tmp<scalarField>&
+) const
+
+{
+ 
+    return tmp<Field<Type> >
+    (
+        new Field<Type>(this->size(), pTraits<Type>::zero)
+    );
+
+ //  return Type(pTraits<Type>::zero);
+
+}
+
+
+template<class Type>
+tmp<Field<Type> > albedo2FvPatchField<Type>::
+gradientInternalCoeffs() const
+{
+    const Field<scalar>& diffCoeff =
+        this->patch().template lookupPatchField<volScalarField, scalar>
+        (
+            diffCoeffName_
+        );
+
+    /*return tmp<Field<Type> >
+    (
+        new Field<Type>(this->size(), pTraits<Type>::zero)
+    );*/
+    return Type(pTraits<Type>::one)*(- gamma_/diffCoeff);
+}
+
+
+template<class Type>
+tmp<Field<Type> > albedo2FvPatchField<Type>::
+gradientBoundaryCoeffs() const
+{
+    //return gradient();
+    return tmp<Field<Type> >
+    (
+        new Field<Type>(this->size(), pTraits<Type>::zero)
+    );
+}
+
+template<class Type>
+tmp<Field<Type> > albedo2FvPatchField<Type>::snGrad() const
+{
+    const Field<scalar>& diffCoeff =
+        this->patch().template lookupPatchField<volScalarField, scalar>
+        (
+            diffCoeffName_
+        ); 
+
+    //return (- (this->patchInternalField()*gamma_/diffCoeff)/this->patch().deltaCoeffs());
+    return (- (this->patchInternalField()*gamma_/diffCoeff));
+}
+
+template<class Type>
+void albedo2FvPatchField<Type>::write(Ostream& os) const
+/*{
+    fvPatchField<Type>::write(os); 
+    gradient_.writeEntry("gradient", os);
+}*/
+{
+    fvPatchField<Type>::write(os);
+    //fixedGradientFvPatchScalarField::write(os);
+    //writeEntryIfDifferent<word>(os, "diffCoeffName", "diffCoeffName", diffCoeffName_);
+
+
+    gamma_.writeEntry("gamma", os);
+    //diffCoeff_.writeEntry("diffCoeff", os);
+    this->writeEntry("value", os);
+
+    this->template writeEntryIfDifferent<word>(os, "diffCoeffName", "diffCoeffName", diffCoeffName_);
+
+
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+namespace Foam
+{
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+makePatchTypeFieldTypedefs(albedo2);
+
+makePatchFields(albedo2);
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+
+
+
+// ************************************************************************* //

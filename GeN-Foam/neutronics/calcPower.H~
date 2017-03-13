@@ -1,0 +1,12 @@
+	pTot*=0;
+    forAll(flux,energyI)
+    {
+		
+		pTot += fvc::domainIntegrate(flux[energyI] * sigmaPow[energyI]).value();
+
+	}
+	Info << "pTot neutro: " << pTot << endl;
+{
+	scalar pTot2 = fvc::domainIntegrate(volFuelPowerFluid[0]).value();;
+	Info << "pTot fluid: " << pTot2 << endl;
+}

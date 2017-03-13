@@ -1,0 +1,19 @@
+POD/PODOrthoNormalBase/PODOrthoNormalBase.C
+
+fluid/compressibleCourantNo.C
+solid/solidRegionDiffNo.C
+porousClass/porousMedium.C
+porousClass/byZoneCorrelationPorousMedium.C
+porousClass/correlationPorousMedium.C
+porousKepsilon/porouskEpsilon.C
+thermalMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+albedoSP3/albedoSP3FvPatchField.C
+
+fuel/IOFieldFields.C
+fuel/subscaleFuel.C
+fuel/constSubscaleFuel.C
+
+GeN-Foam.C
+
+EXE = $(FOAM_USER_APPBIN)/GeN-FoamPOD
+

@@ -1,0 +1,87 @@
+//#include "calcPower.H"
+
+if(aitkenIterCounter==0) // only happening at timeStepIteration==1 (after extra-step prediciton)
+{
+	//initialStepPower = pTot;
+	//stepPower.clear();
+	//stepPower.append(pTot);
+	integralFlux0[0]=0;
+	forAll(flux, energyI)
+	{
+  	      integralFlux0[0]+=(fvc::domainIntegrate(flux[energyI])).value();
+	}   
+}  
+if(aitkenIterCounter==1)
+{
+	//stepPower.append(pTot);
+	integralFlux1[0]=0;
+	forAll(flux, energyI)
+	{
+  	      integralFlux1[0]+=(fvc::domainIntegrate(flux[energyI])).value();
+	}   
+}
+if(aitkenIterCounter==2)
+{	
+	integralFlux2[0]=0;
+	bool aitkenYesNo = true;
+	//stepPower.append(pTot);
+	forAll(flux, energyI)
+	{
+	    integralFlux2[0]+=(fvc::domainIntegrate(flux[energyI])).value();
+
+
+	}
+
+	Info << "integralFlux0[0]" << integralFlux0[0] << endl ;
+	Info << "integralFlux1[0]" << integralFlux1[0] << endl ;
+	Info << "integralFlux2[0]" << integralFlux2[0] << endl ;
+
+		if((integralFlux2[0]-integralFlux1[0])
+		/(integralFlux1[0]-integralFlux0[0])>1) aitkenYesNo=false;
+
+
+Info << "pippo"  << endl ;
+
+
+	if(aitkenYesNo==true)
+	{
+		Info << "Intra-step Aitken acceleration no: " << aitkenIterNo << endl;
+			scalar aitkenScaling = 
+			(
+				( 
+					integralFlux0[0]
+					- (integralFlux1[0]-integralFlux0[0])
+					* (integralFlux1[0]-integralFlux0[0])
+					/ (integralFlux2[0]-2*integralFlux1[0]+integralFlux0[0])
+				)/integralFlux2[0]
+			);
+		integralFlux0[0]*=0;
+		forAll(flux, energyI)
+		{
+		    //integralFlux2[energyI]=(fvc::domainIntegrate(flux[energyI])).value();
+
+
+			  flux[energyI] *= aitkenScaling ;
+	    	
+			integralFlux0[0]+=(fvc::domainIntegrate(flux[energyI])).value();
+		}
+		#include "initializeNeutroSources.H"
+		aitkenIterNo++ ;
+		aitkenIterCounter = 0;
+		Info<< "Done: "  << endl;
+	}
+	else
+	{
+		Info << "Aitken not performed because of diverging series" << endl;
+		//forAll(flux, energyI)
+		//{
+			integralFlux0[0] = integralFlux1[0];
+			integralFlux1[0] = integralFlux2[0];
+			
+		//}
+		aitkenIterCounter-- ;
+	}
+
+}
+aitkenIterCounter++ ;
+

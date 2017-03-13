@@ -1,0 +1,175 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2011-2015 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef porousCompressiblekEpsilon_H
+#define porousCompressiblekEpsilon_H
+
+#include "porouskEpsilon.H"
+#include "bound.H"
+#include "addToRunTimeSelectionTable.H"
+#include "byZoneCorrelationPorousMedium.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+namespace RASModels
+{
+
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+
+//defineTypeNameAndDebug(porouskEpsilon, 0);
+//addToRunTimeSelectionTable(RASModel, porouskEpsilon, dictionary);
+
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+template<class BasicTurbulenceModel>
+porouskEpsilon<BasicTurbulenceModel>::porouskEpsilon
+(
+    const alphaField& alpha,
+    const rhoField& rho,
+    const volVectorField& U,
+    const surfaceScalarField& alphaRhoPhi,
+    const surfaceScalarField& phi,
+    const transportModel& transport,
+    const word& propertiesName,
+    const word& type
+)
+:
+    eddyViscosity<RASModel<BasicTurbulenceModel> >
+    (
+        alpha,
+        rho,
+        U,
+        alphaRhoPhi,
+        phi,
+        transport,
+        propertiesName,
+        type
+    ),
+    porousMedium_(
+        this->mesh_.lookupObject
+        (
+            "porousMediumProperties"
+        )
+    )
+{
+    if (type == typeName)
+    {
+        this->printCoeffs(type);
+    }
+}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+template<class BasicTurbulenceModel>
+bool porouskEpsilon<BasicTurbulenceModel>::read()
+{
+    if (kEpsilon<BasicTurbulenceModel>::read())
+    {
+
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+template<class BasicTurbulenceModel>
+void porouskEpsilon<BasicTurbulenceModel>::correct()
+{
+    if (!this->turbulence_)
+    {
+        return;
+    }
+
+    // Local references
+    const alphaField& alpha = this->alpha_;
+    const rhoField& rho = this->rho_;
+    const surfaceScalarField& alphaRhoPhi = this->alphaRhoPhi_;
+    const volVectorField& U = this->U_;
+    volScalarField& nut = this->nut_;
+
+    eddyViscosity<RASModel<BasicTurbulenceModel> >::correct();
+
+    volScalarField divU(fvc::div(fvc::absolute(this->phi(), U)));
+
+    tmp<volTensorField> tgradU = fvc::grad(U);
+    volScalarField G(this->GName(), nut*(dev(twoSymm(tgradU())) && tgradU()));
+    tgradU.clear();
+
+    // Update epsilon and G at the wall
+    this->epsilon_.boundaryField().updateCoeffs();
+
+    volScalarField clearYesNo = 1.0 - mag(porousMedium_.kepsilonConvergenceRate())/(mag(porousMedium_.kepsilonConvergenceRate())+dimensionedScalar("", dimensionSet(0,0,-1,0,0,0,0), SMALL) );
+
+    // Dissipation equation
+    tmp<fvScalarMatrix> epsEqn
+    (
+        fvm::ddt(alpha, rho, this->epsilon_)
+      + fvm::div(alphaRhoPhi, this->epsilon_)
+      - fvm::laplacian(alpha*rho*this->DepsilonEff(), this->epsilon_)
+     ==
+        this->C1_*alpha*rho*G*this->epsilon_/this->k_ * clearYesNo
+      - fvm::SuSp(((2.0/3.0)*this->C1_ + this->C3_)*alpha*rho*divU * clearYesNo, this->epsilon_)
+      - fvm::Sp(this->C2_*alpha*rho*this->epsilon_/this->k_ * clearYesNo, this->epsilon_)
+      + epsilonSource()
+      - fvm::Sp(alpha*rho* porousMedium_.kepsilonConvergenceRate(), this->epsilon_)
+      + alpha*rho* porousMedium_.kepsilonConvergenceRate() * porousMedium_.equilibriumEpsilon()
+    );
+    epsEqn.ref().relax();
+    epsEqn().boundaryManipulate(this->epsilon_.boundaryField());
+    solve(epsEqn);
+    bound(this->epsilon_, this->epsilonMin_);
+
+    // Turbulent kinetic energy equation
+    tmp<fvScalarMatrix> kEqn
+    (
+        fvm::ddt(alpha, rho, this->k_)
+      + fvm::div(alphaRhoPhi, this->k_)
+      - fvm::laplacian(alpha*rho*this->DkEff(), this->k_)
+     ==
+        alpha*rho*G * clearYesNo
+      - fvm::SuSp((2.0/3.0)*alpha*rho*divU * clearYesNo, this->k_)
+      - fvm::Sp(alpha*rho*this->epsilon_/this->k_ * clearYesNo, this->k_)
+      - fvm::Sp(alpha*rho* porousMedium_.kepsilonConvergenceRate(), this->k_)
+      + alpha*rho* porousMedium_.kepsilonConvergenceRate() * porousMedium_.equilibriumK()
+      + kSource()
+    );
+    kEqn.ref().relax();
+    solve(kEqn);
+    bound(this->k_, this->kMin_);
+
+    this->correctNut();
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace RASModels
+} // End namespace Foam
+#endif
+// ************************************************************************* //

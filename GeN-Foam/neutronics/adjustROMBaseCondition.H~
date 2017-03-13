@@ -1,0 +1,18 @@
+Info << "Adjusting POD base" << endl ;
+
+if(PODAdjustFrequencyCounter == adjustPODbaseFrequency)
+{
+	#include "adjustROMBase.H"
+	PODAdjustFrequencyCounter = 0; 
+}
+else if(runTime.value() > adjustPODbaseTimes[PODAdjustTimeCounter])
+{
+	#include "adjustROMBase.H"
+	PODAdjustTimeCounter++;
+}
+else
+{
+	PODAdjustFrequencyCounter++;
+}
+
+Info << "Done" << endl ;

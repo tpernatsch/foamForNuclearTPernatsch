@@ -1,0 +1,120 @@
+	Info<< "\nReading nuclear data\n" << endl;
+
+	IOdictionary nuclearData
+	(
+		IOobject
+		(
+			"nuclearData",
+			runTime.constant(),
+			neutroMesh,
+			IOobject::MUST_READ,
+			IOobject::NO_WRITE
+		)
+	);
+
+	label energyGroups(nuclearData.lookupOrDefault("energyGroups",1));
+	label precGroups(nuclearData.lookupOrDefault("precGroups",1));
+
+	scalar pTarget(nuclearData.lookupOrDefault("pTarget",1));
+
+	scalar pTot(1.0);
+	scalar keff(nuclearData.lookupOrDefault("pTarget",1.0));
+
+
+	PtrList<entry> entries(nuclearData.lookup("zones"));
+	label zoneNumber = entries.size();
+
+	PtrList<scalarField > IVList(zoneNumber);
+	PtrList<scalarField > DList(zoneNumber);
+	PtrList<scalarField > nuSigmaEffList(zoneNumber);
+	PtrList<scalarField > sigmaPowList(zoneNumber);
+	PtrList<scalarField > sigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > sigmaFromToList(zoneNumber);	//scattering matrix
+	PtrList<scalarField > chiPromptList(zoneNumber);
+	PtrList<scalarField > chiDelayedList(zoneNumber);
+	PtrList<scalarField > BetaList(zoneNumber);
+	PtrList<scalar > BetaTotList(zoneNumber);
+	PtrList<scalarField > lambdaList(zoneNumber);
+
+	// fuel fraction used to dtermine vol power IN the fuel staring from vol power from sigmaPow
+	PtrList<scalar > fuelFractionList(zoneNumber);
+
+	// reference fuel temperature and coolant density
+	PtrList<scalar > TfuelRefList(zoneNumber);
+	PtrList<scalar > rhoCoolRefList(zoneNumber);
+
+	// fuel temperature coefficient
+	PtrList<scalarField > fuelTempDList(zoneNumber);
+	PtrList<scalarField > fuelTempNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > fuelTempSigmaPowList(zoneNumber);
+	PtrList<scalarField > fuelTempSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > fuelTempSigmaFromToList(zoneNumber);
+
+	// axial expansion coefficient
+	PtrList<scalarField > axialExpDList(zoneNumber);
+	PtrList<scalarField > axialExpNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > axialExpSigmaPowList(zoneNumber);
+	PtrList<scalarField > axialExpSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > axialExpSigmaFromToList(zoneNumber);
+
+	// radial expansion coefficient
+	PtrList<scalarField > radialExpDList(zoneNumber);
+	PtrList<scalarField > radialExpNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > radialExpSigmaPowList(zoneNumber);
+	PtrList<scalarField > radialExpSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > radialExpSigmaFromToList(zoneNumber);
+
+	// coolant expansion coefficient
+	PtrList<scalarField > rhoCoolDList(zoneNumber);
+	PtrList<scalarField > rhoCoolNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > rhoCoolSigmaPowList(zoneNumber);
+	PtrList<scalarField > rhoCoolSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > rhoCoolSigmaFromToList(zoneNumber);
+
+
+	forAll(entries,zoneI)
+	{
+		dictionary& dict = entries[zoneI].dict();
+		IVList.set(zoneI,new scalarField("IV",dict,energyGroups));
+		DList.set(zoneI,new scalarField("D",dict,energyGroups));
+		nuSigmaEffList.set(zoneI,new scalarField("nuSigmaEff",dict,energyGroups));
+		sigmaPowList.set(zoneI,new scalarField("sigmaPow",dict,energyGroups));
+		sigmaDisappList.set(zoneI,new scalarField("sigmaDisapp",dict,energyGroups));
+		sigmaFromToList.set(zoneI,new scalarSquareMatrix(dict.lookup("scatteringMatrix")));
+		chiPromptList.set(zoneI,new scalarField("chiPrompt",dict,energyGroups));
+		chiDelayedList.set(zoneI,new scalarField("chiDelayed",dict,energyGroups));
+		BetaList.set(zoneI,new scalarField("Beta",dict,precGroups));
+		BetaTotList.set(zoneI,new scalar(sum(BetaList[zoneI])));
+		lambdaList.set(zoneI,new scalarField("lambda",dict,precGroups));
+
+		fuelFractionList.set(zoneI,new scalar(dict.lookupOrDefault("fuelFraction",0.0)));
+
+		TfuelRefList.set(zoneI,new scalar(dict.lookupOrDefault("Tfuelref",293.0)));
+		rhoCoolRefList.set(zoneI,new scalar(dict.lookupOrDefault("rhoCoolRef",0.0)));
+
+		fuelTempDList.set(zoneI,new scalarField("fuelTempD",dict,energyGroups));
+		fuelTempNuSigmaEffList.set(zoneI,new scalarField("fuelTempNuSigmaEff",dict,energyGroups));
+		fuelTempSigmaPowList.set(zoneI,new scalarField("fuelTempSigmaPow",dict,energyGroups));
+		fuelTempSigmaDisappList.set(zoneI,new scalarField("fuelTempSigmaDisapp",dict,energyGroups));
+		fuelTempSigmaFromToList.set(zoneI,new scalarSquareMatrix(dict.lookup("fuelTempScatteringMatrix")));
+
+		axialExpDList.set(zoneI,new scalarField("axialExpD",dict,energyGroups));
+		axialExpNuSigmaEffList.set(zoneI,new scalarField("axialExpNuSigmaEff",dict,energyGroups));
+		axialExpSigmaPowList.set(zoneI,new scalarField("axialExpSigmaPow",dict,energyGroups));
+		axialExpSigmaDisappList.set(zoneI,new scalarField("axialExpSigmaDisapp",dict,energyGroups));
+		axialExpSigmaFromToList.set(zoneI,new scalarSquareMatrix(dict.lookup("axialExpScatteringMatrix")));
+
+		radialExpDList.set(zoneI,new scalarField("radialExpD",dict,energyGroups));
+		radialExpNuSigmaEffList.set(zoneI,new scalarField("radialExpNuSigmaEff",dict,energyGroups));
+		radialExpSigmaPowList.set(zoneI,new scalarField("radialExpSigmaPow",dict,energyGroups));
+		radialExpSigmaDisappList.set(zoneI,new scalarField("radialExpSigmaDisapp",dict,energyGroups));
+		radialExpSigmaFromToList.set(zoneI,new scalarSquareMatrix(dict.lookup("radialExpScatteringMatrix")));
+
+		rhoCoolDList.set(zoneI,new scalarField("rhoCoolD",dict,energyGroups));
+		rhoCoolNuSigmaEffList.set(zoneI,new scalarField("rhoCoolNuSigmaEff",dict,energyGroups));
+		rhoCoolSigmaPowList.set(zoneI,new scalarField("rhoCoolSigmaPow",dict,energyGroups));
+		rhoCoolSigmaDisappList.set(zoneI,new scalarField("rhoCoolSigmaDisapp",dict,energyGroups));
+		rhoCoolSigmaFromToList.set(zoneI,new scalarSquareMatrix(dict.lookup("rhoCoolScatteringMatrix")));
+
+	}
+

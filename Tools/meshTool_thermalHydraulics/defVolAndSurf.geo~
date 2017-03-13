@@ -1,0 +1,19 @@
+
+bottomSurfaces = {};
+topSurfaces = {};
+wallSurfaces = {};
+innerAssemblyVolumes = {};
+outerAssemblyVolumes = {};
+controlAssemblyVolumes = {};
+followerVolumes = {};
+reflectorAssemblyVolumes = {};
+upperReflVolumes = {};
+upperFGPVolumes = {};
+diagridVolumes = {};
+lowFGPVolumes = {};
+lowReflVolumes = {};
+
+bottomGapSurfaces = {};
+topGapSurfaces = {};
+assemblyGapVolumes = {};
+

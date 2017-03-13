@@ -1,0 +1,17 @@
+Info<< "Storing integral old fluxes" << endl;
+forAll(flux, energyI)
+{
+	phiLMinusOne[energyI] = fvc::domainIntegrate(flux[energyI]).value();
+}
+
+
+
+
+Info<< "Storing integral old fluxes" << endl; //for residual calc
+forAll(angularFluxes, energyI)
+{
+	forAll(angularFluxes[energyI], directionI)
+	{
+		phiOld[energyI][directionI] = fvc::domainIntegrate(angularFluxes[energyI][directionI]()).value();
+	}
+}

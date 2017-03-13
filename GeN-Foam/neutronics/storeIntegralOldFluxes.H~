@@ -1,0 +1,7 @@
+Info<< "Storing integral old fluxes" << endl;
+forAll(flux, energyI)
+{
+	phiOld[energyI] = fvc::domainIntegrate(flux[energyI]).value();
+}
+
+

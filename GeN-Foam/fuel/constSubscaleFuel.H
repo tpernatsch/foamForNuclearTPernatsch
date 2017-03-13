@@ -1,0 +1,186 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright held by original author
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM; if not, write to the Free Software Foundation,
+    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+
+Class
+    Foam::subscaleFuel::constSubscaleFuel
+
+Description
+    subclass of subscaleFuel. Considers pin-type fuel with constant physical
+    properties and solves the temperature using an explicit or implicit finite difference
+    formulation (see "Finite difference methods in heat transfer" by Necati Ozisik)
+
+Reference publications
+	Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+	"GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+	analysis of nuclear reactors", Nuclear Engineering and Design, submitted
+
+	Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
+	solver to the European Sodium Fast Reactor and verification against available codes",
+	Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+
+
+Author
+    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it; 
+                   carlo.fiorina@epfl.ch;>
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef constSubscaleFuel_H
+#define constSubscaleFuel_H
+
+#include "subscaleFuel.H"
+#include "Field.H"
+#include "scalarField.H"
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+/*---------------------------------------------------------------------------*\
+                            Class constSubscaleFuel Declaration
+\*---------------------------------------------------------------------------*/
+
+class constSubscaleFuel
+:
+    public subscaleFuel
+{
+
+protected:
+
+        //- Cladding conductivity
+        mutable PtrList<scalar> fuelVolPower_;
+
+        //- Cladding conductivity
+        mutable PtrList<scalar> claddingK_;
+
+        //- Fuel conductivity
+        mutable PtrList<scalar> fuelK_;
+
+        //- Cladding density
+        mutable PtrList<scalar> claddingRho_;
+
+        //- Fuel density
+        mutable PtrList<scalar> fuelRho_;
+
+        //- Cladding Cp
+        mutable PtrList<scalar> claddingCp_;
+
+        //- Fuel Cp
+        mutable PtrList<scalar> fuelCp_;
+
+        //- Gap conductance
+        mutable PtrList<scalar> gapH_;
+
+        //- Cladding outer radius
+        mutable PtrList<scalar> rcOut_;
+
+        //- Cladding inner radius
+        mutable PtrList<scalar> rcIn_;
+
+        //- Fuel outer radius
+        mutable PtrList<scalar> rfOut_;
+
+        //- Fuel inner radius
+        mutable PtrList<scalar> rfIn_;
+
+        //- Fuel mesh size
+        mutable PtrList<scalar> dFuel_;
+
+        //- Clad mesh size
+        mutable PtrList<scalar> dClad_;
+
+        //- Plate fuel
+        mutable PtrList<bool> planar_;
+
+private:
+
+    // Private data
+
+
+    // Private Member Functions
+
+        //- Disallow default bitwise copy construct
+        constSubscaleFuel(const constSubscaleFuel&);
+
+        //- Disallow default bitwise assignment
+        void operator=(const constSubscaleFuel&);
+
+		// Solve for temperatures T, given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
+		scalar updateLocalHeatFluxImplicit(label zoneI, label cellIlocal, scalar Tfl, scalar hfl, scalar q);
+
+		// Solve for temperatures T, given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
+		scalar updateLocalHeatFluxImplicitPlanar(label zoneI, label cellIlocal, scalar Tfl, scalar hfl, scalar q);
+
+public:
+
+    //- Runtime type information
+    TypeName("constSubscaleFuel");
+
+
+    // Constructors
+
+		// Construct from mesh and dictionary
+		constSubscaleFuel(const fvMesh& mesh);
+
+    //- Destructor
+    virtual ~constSubscaleFuel();
+
+
+    // Member Functions
+
+		// Solve for fuel heat sources in fluid given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
+		virtual tmp<volScalarField> heatSources(const volScalarField& Tfl, const volScalarField& hfl, const volScalarField& qs);
+
+		// Return centerline fuel temperature
+		virtual tmp<volScalarField> fuelIn();
+
+		// Return average fuel temperature
+		virtual void fuelAverage(volScalarField& TavFuel);
+
+		// Return outer radius fuel temperature
+		virtual tmp<volScalarField> fuelOut();
+
+		// Return inner radius clad temperature
+		virtual tmp<volScalarField> cladIn();
+
+		// Return average fuel temperature
+		virtual void cladAverage(volScalarField& TavClad);
+
+		// Return outer radius fuel temperature
+		virtual tmp<volScalarField> cladOut();
+
+
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //
+

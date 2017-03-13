@@ -1,0 +1,45 @@
+
+
+	meshToMesh neutroToTM
+	(
+		neutroMesh,
+		mechMesh,
+		Foam::meshToMeshNew::interpolationMethod(1)
+	);
+/*
+	meshToMeshNew TMToNeutro
+	(
+		mechMesh,
+		neutroMesh,
+		Foam::meshToMeshNew::interpolationMethod(1)
+	);
+*/
+	PtrList<meshToMesh> fluidToTM(fluidRegions.size());
+	forAll(fluidRegions, i)
+	{
+		fluidToTM.set
+		(
+			i,
+			new meshToMeshNew
+			(
+				fluidRegions[i],
+				mechMesh,
+				Foam::meshToMeshNew::interpolationMethod(1)
+			)
+		);
+	}
+
+	PtrList<meshToMesh> neutroToFluid(fluidRegions.size());
+	forAll(fluidRegions, i)
+	{
+		neutroToFluid.set
+		(
+			i,
+			new meshToMeshNew
+			(
+				neutroMesh,
+				fluidRegions[i],
+				Foam::meshToMeshNew::interpolationMethod(1)
+			)
+		);
+	}
