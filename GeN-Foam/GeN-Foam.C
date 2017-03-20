@@ -110,8 +110,6 @@ int main(int argc, char *argv[])
     while (runTime.run())
     {
 
-Info << "fvc:domainIntegrate(neutroMesh.V())" << fvc::domainIntegrate(neutroMesh.V()) << endl; 
-
 	#include "readTimeControls.H"
         #include "readPIMPLEControls.H"
         #include "readSolidDisplacementFoamControls.H"
