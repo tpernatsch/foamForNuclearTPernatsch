@@ -6,9 +6,13 @@ pointField mechStartPoints = mechMesh.points(); //used to bring back mesh after 
 
 if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foam::Vector<double>(0,0,0))
 {
-	Info << "Bring back meshes to underformed case to create correct interpolators" << nl << endl;
+	Info << "Bring back meshes to underformed case to create correct interpolators" << nl << endl; 
+	//interpolation always based on undeformed mesh!
+
 
 	const volPointInterpolation& neutroMeshPointInterpolationInitial = volPointInterpolation::New(neutroMesh);
+
+	DNeutro.correctBoundaryConditions();
 
 	pointVectorField neutroPointsDisplacementInitial = neutroMeshPointInterpolationInitial.interpolate(DNeutro);
 
@@ -16,9 +20,11 @@ if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foa
 
 	neutroMesh.movePoints(neutroDisplacedPointsInitial);
 
-
+/*
 
 	const volPointInterpolation& fluidMeshPointInterpolationInitial = volPointInterpolation::New(fluidMesh);
+
+	DFluid.correctBoundaryConditions();
 
 	pointVectorField fluidPointsDisplacementInitial = fluidMeshPointInterpolationInitial.interpolate(DFluid);
 
@@ -30,11 +36,15 @@ if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foa
 
 	const volPointInterpolation& mechMeshPointInterpolationInitial = volPointInterpolation::New(mechMesh);
 
+	meshDisp.correctBoundaryConditions();
+
 	pointVectorField mechPointsDisplacementInitial = mechMeshPointInterpolationInitial.interpolate(meshDisp);
 
 	pointField mechDisplacedPointsInitial = mechStartPoints - mechPointsDisplacementInitial.internalField() ;
 
 	mechMesh.movePoints(mechDisplacedPointsInitial);
+
+*/
 
 	Info << "Done" << nl << endl;
 }
@@ -65,38 +75,38 @@ if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foa
 		false
 	);
 
-
 if(runTime.timeOutputValue()!=0 && fvc::domainIntegrate(DNeutro).value() != Foam::Vector<double>(0,0,0))
 {
 	Info << "Re-derform mesh to start calculation" << nl << endl;
 
 	neutroMesh.movePoints(neutroStartPoints);
-	fluidMesh.movePoints(fluidStartPoints);
-	mechMesh.movePoints(mechStartPoints);
-/*
-	neutroMesh.Foam::polyMesh::resetMotion();
-	fluidMesh.Foam::polyMesh::resetMotion();
-	mechMesh.Foam::polyMesh::resetMotion();
-*/
+	//fluidMesh.movePoints(fluidStartPoints);
+	//mechMesh.movePoints(mechStartPoints);
 
-	neutroMesh.readUpdate();
-	fluidMesh.readUpdate();
-	mechMesh.readUpdate();
+
 
 	neutroMesh.moving(false);
-	fluidMesh.moving(false);
-	mechMesh.moving(false);
+	//fluidMesh.moving(false);
+	//mechMesh.moving(false);
 
 	Info << "Done" << nl << endl;
 }
 
 
 
+/*
+	neutroMesh.Foam::polyMesh::resetMotion();
+	fluidMesh.Foam::polyMesh::resetMotion();
+	mechMesh.Foam::polyMesh::resetMotion();
+*/
 
 
 
-
-
+/*
+	neutroMesh.readUpdate();
+	fluidMesh.readUpdate();
+	mechMesh.readUpdate();
+*/
 
 
 

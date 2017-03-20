@@ -1,1 +1,9 @@
-GeN-Foam/Make/**/
+
+
+GeN-Foam/Make/**/ 
+
+*~ .
+DS_Store
+Thumbs.db
+
+

@@ -69,7 +69,20 @@ volVectorField meshDisp
     zeroGradientFvPatchScalarField::typeName
 );
 
-
+volVectorField meshDispOld
+(
+    IOobject
+    (
+        "meshDispOld",
+        runTime.timeName(),
+        mechMesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    mechMesh,
+    dimensionedVector("", dimensionSet(0,1,0,0,0,0,0), vector(0,0,0)),
+    zeroGradientFvPatchScalarField::typeName
+);
 
 autoPtr<volScalarField> Tptr(NULL);
 

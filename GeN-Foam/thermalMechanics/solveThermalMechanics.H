@@ -168,7 +168,11 @@ Author (for the modification of solidDisplacementFoam)
 
 			fuelDispVector = (fuelDisp+CRDisp)*fuelOrientation;
 
+			meshDispOld = meshDisp;
+
 			meshDisp = (Disp-((Disp & fuelOrientation) * fuelOrientation)) + fuelDispVector ;//remove any axial variation
+
+			meshDisp.correctBoundaryConditions();
 
 		//Info << "faceArea: " << faceArea << endl;
 		//Info << "mechMesh.Sf(): " << mechMesh.Sf() << endl;
