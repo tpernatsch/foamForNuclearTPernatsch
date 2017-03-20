@@ -1,4 +1,0 @@
-Info<< "Storing integral fluxes before solver" << endl;
-
-phiLMinusOne[energyI] = fvc::domainIntegrate(fluxStar[energyI]).value();
-
