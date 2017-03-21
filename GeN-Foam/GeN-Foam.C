@@ -74,15 +74,10 @@ Author
 
 int main(int argc, char *argv[])
 {
-    int PODAdjustFrequencyCounter = 0;
-    int PODAdjustTimeCounter = 0;
 
     #include "setRootCase.H"
     #include "createTime.H"
     #include "readPhysicsToSolve.H"
-
-
-    regionProperties rp(runTime);
 
     #include "createFluidMesh.H"
     #include "createNeutroMesh.H"
