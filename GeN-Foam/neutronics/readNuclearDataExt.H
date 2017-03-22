@@ -25,63 +25,62 @@
 	);
 
 	IOdictionary nuclearDataAxialExp
+	(
+		IOobject
 		(
-			IOobject
-			(
-				"nuclearDataAxialExp",
-				runTime.constant(),
-				neutroMesh,
-				IOobject::MUST_READ,
-				IOobject::NO_WRITE
-			)
+			"nuclearDataAxialExp",
+			runTime.constant(),
+			neutroMesh,
+			IOobject::MUST_READ,
+			IOobject::NO_WRITE
+		)
 	);
 
 	IOdictionary nuclearDataFuelTemp
+	(
+		IOobject
 		(
-			IOobject
-			(
-				"nuclearDataFuelTemp",
-				runTime.constant(),
-				neutroMesh,
-				IOobject::MUST_READ,
-				IOobject::NO_WRITE
-			)
+			"nuclearDataFuelTemp",
+			runTime.constant(),
+			neutroMesh,
+			IOobject::MUST_READ,
+			IOobject::NO_WRITE
+		)
 	);
 
 	IOdictionary nuclearDataRhoCool
+	(
+		IOobject
 		(
-			IOobject
-			(
-				"nuclearDataRhoCool",
-				runTime.constant(),
-				neutroMesh,
-				IOobject::MUST_READ,
-				IOobject::NO_WRITE
-			)
+			"nuclearDataRhoCool",
+			runTime.constant(),
+			neutroMesh,
+			IOobject::MUST_READ,
+			IOobject::NO_WRITE
+		)
 	);
 
 	IOdictionary nuclearDataTCool
+	(
+		IOobject
 		(
-			IOobject
-			(
-				"nuclearDataTCool",
-				runTime.constant(),
-				neutroMesh,
-				IOobject::MUST_READ,
-				IOobject::NO_WRITE
-			)
+			"nuclearDataTCool",
+			runTime.constant(),
+			neutroMesh,
+			IOobject::MUST_READ,
+			IOobject::NO_WRITE
+		)
 	);
 
 	IOdictionary nuclearDataCladExp
+	(
+		IOobject
 		(
-			IOobject
-			(
-				"nuclearDataCladExp",
-				runTime.constant(),
-				neutroMesh,
-				IOobject::MUST_READ,
-				IOobject::NO_WRITE
-			)
+			"nuclearDataCladExp",
+			runTime.constant(),
+			neutroMesh,
+			IOobject::MUST_READ,
+			IOobject::NO_WRITE			)
 	);
 
 	label energyGroups(nuclearData.lookupOrDefault("energyGroups",1));
@@ -124,102 +123,97 @@
 	PtrList<scalarField > lambdaList(zoneNumber);
 
 	//Nuclear data affected by feedbacks
-		//Nominal
-		PtrList<scalarField > DList(zoneNumber);
-		PtrList<scalarField > nuSigmaEffList(zoneNumber);
-		PtrList<scalarField > sigmaPowList(zoneNumber);
-		PtrList<scalarField > sigmaDisappList(zoneNumber);
-		PtrList<scalarSquareMatrix > sigmaFromToList(zoneNumber);	//scattering matrix
-		//RadExp
-		scalar RadExp(nuclearDataRadialExp.lookupOrDefault("expansionFromNominal",1.0));
-		PtrList<scalarField > DRadialExpList(zoneNumber);
-		PtrList<scalarField > nuSigmaEffRadialExpList(zoneNumber);
-		PtrList<scalarField > sigmaPowRadialExpList(zoneNumber);
-		PtrList<scalarField > sigmaDisappRadialExpList(zoneNumber);
-		PtrList<scalarSquareMatrix > sigmaFromToRadialExpList(zoneNumber);	//scattering matrix
-		//AxExp
-		scalar AxExp(nuclearDataAxialExp.lookupOrDefault("expansionFromNominal",1.0));
-		PtrList<scalarField > DAxialExpList(zoneNumber);
-		PtrList<scalarField > nuSigmaEffAxialExpList(zoneNumber);
-		PtrList<scalarField > sigmaPowAxialExpList(zoneNumber);
-		PtrList<scalarField > sigmaDisappAxialExpList(zoneNumber);
-		PtrList<scalarSquareMatrix > sigmaFromToAxialExpList(zoneNumber);	//scattering matrix
-		//fuelTemp
-		scalar TfuelRef(nuclearDataFuelTemp.lookupOrDefault("TfuelRef",900.0));
-		scalar TfuelPerturbed(nuclearDataFuelTemp.lookupOrDefault("TfuelPerturbed",1200.0));
-		PtrList<scalarField > DFuelTempList(zoneNumber);
-		PtrList<scalarField > nuSigmaEffFuelTempList(zoneNumber);
-		PtrList<scalarField > sigmaPowFuelTempList(zoneNumber);
-		PtrList<scalarField > sigmaDisappFuelTempList(zoneNumber);
-		PtrList<scalarSquareMatrix > sigmaFromToFuelTempList(zoneNumber);	//scattering matrix
-		//RhoCool
-		scalar rhoCoolRef(nuclearDataRhoCool.lookupOrDefault("rhoCoolRef",860.0));
-		scalar rhoCoolPerturbed(nuclearDataRhoCool.lookupOrDefault("rhoCoolPerturbed",1.0));
-		PtrList<scalarField > DRhoCoolList(zoneNumber);
-		PtrList<scalarField > nuSigmaEffRhoCoolList(zoneNumber);
-		PtrList<scalarField > sigmaPowRhoCoolList(zoneNumber);
-		PtrList<scalarField > sigmaDisappRhoCoolList(zoneNumber);
-		PtrList<scalarSquareMatrix > sigmaFromToRhoCoolList(zoneNumber);	//scattering matrix
-		//TCool
-		scalar TCoolRef(nuclearDataTCool.lookupOrDefault("TCoolRef",900.0));
-		scalar TCoolPerturbed(nuclearDataTCool.lookupOrDefault("TCoolPerturbed",1200.0));
-		PtrList<scalarField > DTCoolList(zoneNumber);
-		PtrList<scalarField > nuSigmaEffTCoolList(zoneNumber);
-		PtrList<scalarField > sigmaPowTCoolList(zoneNumber);
-		PtrList<scalarField > sigmaDisappTCoolList(zoneNumber);
-		PtrList<scalarSquareMatrix > sigmaFromToTCoolList(zoneNumber);	//scattering matrix
-		//cladExp
-		scalar TcladRef(nuclearDataCladExp.lookupOrDefault("TcladRef",900.0));
-		scalar TcladPerturbed(nuclearDataCladExp.lookupOrDefault("TcladPerturbed",1200.0));
-		PtrList<scalarField > DCladExpList(zoneNumber);
-		PtrList<scalarField > nuSigmaEffCladExpList(zoneNumber);
-		PtrList<scalarField > sigmaPowCladExpList(zoneNumber);
-		PtrList<scalarField > sigmaDisappCladExpList(zoneNumber);
-		PtrList<scalarSquareMatrix > sigmaFromToCladExpList(zoneNumber);	//scattering matrix
-
+	//Nominal
+	PtrList<scalarField > DList(zoneNumber);
+	PtrList<scalarField > nuSigmaEffList(zoneNumber);
+	PtrList<scalarField > sigmaPowList(zoneNumber);
+	PtrList<scalarField > sigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > sigmaFromToList(zoneNumber);	//scattering matrix
+	//RadExp
+	scalar RadExp(nuclearDataRadialExp.lookupOrDefault("expansionFromNominal",1.0));
+	PtrList<scalarField > DRadialExpList(zoneNumber);
+	PtrList<scalarField > nuSigmaEffRadialExpList(zoneNumber);
+	PtrList<scalarField > sigmaPowRadialExpList(zoneNumber);
+	PtrList<scalarField > sigmaDisappRadialExpList(zoneNumber);
+	PtrList<scalarSquareMatrix > sigmaFromToRadialExpList(zoneNumber);	//scattering matrix
+	//AxExp
+	scalar AxExp(nuclearDataAxialExp.lookupOrDefault("expansionFromNominal",1.0));
+	PtrList<scalarField > DAxialExpList(zoneNumber);
+	PtrList<scalarField > nuSigmaEffAxialExpList(zoneNumber);
+	PtrList<scalarField > sigmaPowAxialExpList(zoneNumber);
+	PtrList<scalarField > sigmaDisappAxialExpList(zoneNumber);
+	PtrList<scalarSquareMatrix > sigmaFromToAxialExpList(zoneNumber);	//scattering matrix
+	//fuelTemp
+	scalar TfuelRef(nuclearDataFuelTemp.lookupOrDefault("TfuelRef",900.0));
+	scalar TfuelPerturbed(nuclearDataFuelTemp.lookupOrDefault("TfuelPerturbed",1200.0));
+	PtrList<scalarField > DFuelTempList(zoneNumber);
+	PtrList<scalarField > nuSigmaEffFuelTempList(zoneNumber);
+	PtrList<scalarField > sigmaPowFuelTempList(zoneNumber);
+	PtrList<scalarField > sigmaDisappFuelTempList(zoneNumber);
+	PtrList<scalarSquareMatrix > sigmaFromToFuelTempList(zoneNumber);	//scattering matrix
+	//RhoCool
+	scalar rhoCoolRef(nuclearDataRhoCool.lookupOrDefault("rhoCoolRef",860.0));
+	scalar rhoCoolPerturbed(nuclearDataRhoCool.lookupOrDefault("rhoCoolPerturbed",1.0));
+	PtrList<scalarField > DRhoCoolList(zoneNumber);
+	PtrList<scalarField > nuSigmaEffRhoCoolList(zoneNumber);
+	PtrList<scalarField > sigmaPowRhoCoolList(zoneNumber);
+	PtrList<scalarField > sigmaDisappRhoCoolList(zoneNumber);
+	PtrList<scalarSquareMatrix > sigmaFromToRhoCoolList(zoneNumber);	//scattering matrix
+	//TCool
+	scalar TCoolRef(nuclearDataTCool.lookupOrDefault("TCoolRef",900.0));
+	scalar TCoolPerturbed(nuclearDataTCool.lookupOrDefault("TCoolPerturbed",1200.0));
+	PtrList<scalarField > DTCoolList(zoneNumber);
+	PtrList<scalarField > nuSigmaEffTCoolList(zoneNumber);
+	PtrList<scalarField > sigmaPowTCoolList(zoneNumber);
+	PtrList<scalarField > sigmaDisappTCoolList(zoneNumber);
+	PtrList<scalarSquareMatrix > sigmaFromToTCoolList(zoneNumber);	//scattering matrix
+	//cladExp
+	scalar TcladRef(nuclearDataCladExp.lookupOrDefault("TcladRef",900.0));
+	scalar TcladPerturbed(nuclearDataCladExp.lookupOrDefault("TcladPerturbed",1200.0));
+	PtrList<scalarField > DCladExpList(zoneNumber);
+	PtrList<scalarField > nuSigmaEffCladExpList(zoneNumber);
+	PtrList<scalarField > sigmaPowCladExpList(zoneNumber);
+	PtrList<scalarField > sigmaDisappCladExpList(zoneNumber);
+	PtrList<scalarSquareMatrix > sigmaFromToCladExpList(zoneNumber);	//scattering matrix
 	//Feedbacks Coefficients
-		// fuel temperature coefficient
-		PtrList<scalarField > fuelTempDList(zoneNumber);
-		PtrList<scalarField > fuelTempNuSigmaEffList(zoneNumber);
-		PtrList<scalarField > fuelTempSigmaPowList(zoneNumber);
-		PtrList<scalarField > fuelTempSigmaDisappList(zoneNumber);
-		PtrList<scalarSquareMatrix > fuelTempSigmaFromToList(zoneNumber);
+	// fuel temperature coefficient
+	PtrList<scalarField > fuelTempDList(zoneNumber);
+	PtrList<scalarField > fuelTempNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > fuelTempSigmaPowList(zoneNumber);
+	PtrList<scalarField > fuelTempSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > fuelTempSigmaFromToList(zoneNumber);
 
-		// axial expansion coefficient
-		PtrList<scalarField > axialExpDList(zoneNumber);
-		PtrList<scalarField > axialExpNuSigmaEffList(zoneNumber);
-		PtrList<scalarField > axialExpSigmaPowList(zoneNumber);
-		PtrList<scalarField > axialExpSigmaDisappList(zoneNumber);
-		PtrList<scalarSquareMatrix > axialExpSigmaFromToList(zoneNumber);
+	// axial expansion coefficient
+	PtrList<scalarField > axialExpDList(zoneNumber);
+	PtrList<scalarField > axialExpNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > axialExpSigmaPowList(zoneNumber);
+	PtrList<scalarField > axialExpSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > axialExpSigmaFromToList(zoneNumber);
+	// radial expansion coefficient
+	PtrList<scalarField > radialExpDList(zoneNumber);
+	PtrList<scalarField > radialExpNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > radialExpSigmaPowList(zoneNumber);
+	PtrList<scalarField > radialExpSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > radialExpSigmaFromToList(zoneNumber);
+	// coolant expansion coefficient
+	PtrList<scalarField > rhoCoolDList(zoneNumber);
+	PtrList<scalarField > rhoCoolNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > rhoCoolSigmaPowList(zoneNumber);
+	PtrList<scalarField > rhoCoolSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > rhoCoolSigmaFromToList(zoneNumber);
 
-		// radial expansion coefficient
-		PtrList<scalarField > radialExpDList(zoneNumber);
-		PtrList<scalarField > radialExpNuSigmaEffList(zoneNumber);
-		PtrList<scalarField > radialExpSigmaPowList(zoneNumber);
-		PtrList<scalarField > radialExpSigmaDisappList(zoneNumber);
-		PtrList<scalarSquareMatrix > radialExpSigmaFromToList(zoneNumber);
-
-		// coolant expansion coefficient
-		PtrList<scalarField > rhoCoolDList(zoneNumber);
-		PtrList<scalarField > rhoCoolNuSigmaEffList(zoneNumber);
-		PtrList<scalarField > rhoCoolSigmaPowList(zoneNumber);
-		PtrList<scalarField > rhoCoolSigmaDisappList(zoneNumber);
-		PtrList<scalarSquareMatrix > rhoCoolSigmaFromToList(zoneNumber);
-
-		// coolant temperature coefficient
-		PtrList<scalarField > TCoolDList(zoneNumber);
-		PtrList<scalarField > TCoolNuSigmaEffList(zoneNumber);
-		PtrList<scalarField > TCoolSigmaPowList(zoneNumber);
-		PtrList<scalarField > TCoolSigmaDisappList(zoneNumber);
-		PtrList<scalarSquareMatrix > TCoolSigmaFromToList(zoneNumber);
-
-		// cladding expansion coefficient
-		PtrList<scalarField > cladExpDList(zoneNumber);
-		PtrList<scalarField > cladExpNuSigmaEffList(zoneNumber);
-		PtrList<scalarField > cladExpSigmaPowList(zoneNumber);
-		PtrList<scalarField > cladExpSigmaDisappList(zoneNumber);
-		PtrList<scalarSquareMatrix > cladExpSigmaFromToList(zoneNumber);
-
+	// coolant temperature coefficient
+	PtrList<scalarField > TCoolDList(zoneNumber);
+	PtrList<scalarField > TCoolNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > TCoolSigmaPowList(zoneNumber);
+	PtrList<scalarField > TCoolSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > TCoolSigmaFromToList(zoneNumber);
+	// cladding expansion coefficient
+	PtrList<scalarField > cladExpDList(zoneNumber);
+	PtrList<scalarField > cladExpNuSigmaEffList(zoneNumber);
+	PtrList<scalarField > cladExpSigmaPowList(zoneNumber);
+	PtrList<scalarField > cladExpSigmaDisappList(zoneNumber);
+	PtrList<scalarSquareMatrix > cladExpSigmaFromToList(zoneNumber);
 	//Fill the data
 	forAll(entries,zoneI)
 	{

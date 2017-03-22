@@ -87,7 +87,6 @@ int main(int argc, char *argv[])
     #include "readThermoMechanicalProperties.H"
 
     #include "createFluidFields.H"
-  
     #include "initContinuityErrs.H"
     #include "readTimeControls.H"
     #include "readSolidDisplacementFoamControls.H"

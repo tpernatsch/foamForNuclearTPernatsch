@@ -13,10 +13,41 @@
 	volScalarField logT = log(max(0.01,(TfuelNeutro/dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),TfuelRef))));
 	volScalarField diffT = (pow(max(TfuelNeutro,dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),SMALL)),0.5)-pow(dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),TfuelRef),0.5));
 
+
 	forAll(CRentries,CRzoneI)
 	{
+		
+		//recalculate positions in case mesh has moved 
+		label FOLLOWERzoneId = neutroMesh.cellZones().findZoneID(CRFollowerName[CRzoneI]);
+
+		if(FOLLOWERzoneId == -1)
+		{
+		  Info << "Control rod with follower: " << CRFollowerName(CRzoneI) << " does not exists" << endl;
+		}
+
+		scalar cellHeight = -100.0 ;
+		scalar maxFollowerHeight = cellHeight ;
+
+		volScalarField centersVSF(neutroMesh.C() & vector(0,0,1));
+
+		Field<scalar> centersSF(centersVSF.internalField());
+
+		forAll(neutroMesh.cellZones()[FOLLOWERzoneId], cellIlocal)
+		{
+
+			label cellIglobal = neutroMesh.cellZones()[FOLLOWERzoneId][cellIlocal];
+
+			maxFollowerHeight = max(cellHeight,centersSF[cellIglobal]) ;
+
+			cellHeight = maxFollowerHeight;
+
+		}
+		reduce(maxFollowerHeight, maxOp<scalar>());
+		CRinitialPosition.set(CRzoneI, new scalar(maxFollowerHeight-initialDistanceFromMeshCR[CRzoneI]));
+
 		CRposition.set(CRzoneI,new scalar(CRinitialPosition[CRzoneI]-CRspeed[CRzoneI]*(runTime.value()-CRstart[CRzoneI])));
 		Info << "Control rod theoretical position " << CRentries[CRzoneI].keyword() << ": " << CRposition[CRzoneI] << endl;
+
 	}
 
 	forAll(flux,energyI)

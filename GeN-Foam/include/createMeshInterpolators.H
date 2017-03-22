@@ -6,7 +6,11 @@ pointField mechStartPoints = mechMesh.points(); //used to bring back mesh after 
 
 if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foam::Vector<double>(0,0,0))
 {
+<<<<<<< HEAD
 	Info << "Bring back meshes to underformed case to create correct interpolators" << nl << endl; 
+=======
+	Info << "Bring back meshes to undeformed case to create correct interpolators" << nl << endl; 
+>>>>>>> fixTM
 	//interpolation always based on undeformed mesh!
 
 
@@ -44,7 +48,11 @@ if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foa
 
 	mechMesh.movePoints(mechDisplacedPointsInitial);
 
+<<<<<<< HEAD
 */
+=======
+
+>>>>>>> fixTM
 
 	Info << "Done" << nl << endl;
 }
@@ -77,13 +85,18 @@ if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foa
 
 if(runTime.timeOutputValue()!=0 && fvc::domainIntegrate(DNeutro).value() != Foam::Vector<double>(0,0,0))
 {
-	Info << "Re-derform mesh to start calculation" << nl << endl;
+	Info << "Re-deform mesh to start calculation" << nl << endl;
 
 	neutroMesh.movePoints(neutroStartPoints);
+<<<<<<< HEAD
 	//fluidMesh.movePoints(fluidStartPoints);
 	//mechMesh.movePoints(mechStartPoints);
 
 
+=======
+	fluidMesh.movePoints(fluidStartPoints);
+	mechMesh.movePoints(mechStartPoints);
+>>>>>>> fixTM
 
 	neutroMesh.moving(false);
 	//fluidMesh.moving(false);
@@ -102,6 +115,7 @@ if(runTime.timeOutputValue()!=0 && fvc::domainIntegrate(DNeutro).value() != Foam
 
 
 
+<<<<<<< HEAD
 /*
 	neutroMesh.readUpdate();
 	fluidMesh.readUpdate();
@@ -112,5 +126,7 @@ if(runTime.timeOutputValue()!=0 && fvc::domainIntegrate(DNeutro).value() != Foam
 
 
 
+=======
+>>>>>>> fixTM
 
 
