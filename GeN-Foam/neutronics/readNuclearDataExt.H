@@ -80,7 +80,8 @@
 			runTime.constant(),
 			neutroMesh,
 			IOobject::MUST_READ,
-			IOobject::NO_WRITE			)
+			IOobject::NO_WRITE
+		)
 	);
 
 	label energyGroups(nuclearData.lookupOrDefault("energyGroups",1));
