@@ -1,5 +1,6 @@
 Info<< "Set neutro fields\n" << endl;
 {
+
 	volScalarField DNeutroRad = DNeutro & radialOrientation;
 	volScalarField DNeutroAx = DNeutro & axialOrientation;
 
@@ -186,6 +187,7 @@ Info<< "Set neutro fields\n" << endl;
 		BetaTot.correctBoundaryConditions();
 		fuelFraction.correctBoundaryConditions();
 		discFactor[energyI].correctBoundaryConditions();	
+
 	}
 	
 }
