@@ -37,7 +37,7 @@ Info << "Displace meshes" << nl << endl;
 	pointField displacedPoints = fluidMesh.points() + fluidPointsDisplacement.internalField() - fluidPointsDisplacementOld.internalField() ;
 
 	fluidMesh.movePoints(displacedPoints);
-}
+} 
 
 {
 	const volPointInterpolation& mechMeshPointInterpolation = volPointInterpolation::New(mechMesh);
