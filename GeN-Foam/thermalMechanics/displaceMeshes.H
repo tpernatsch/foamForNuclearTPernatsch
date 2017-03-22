@@ -20,7 +20,7 @@ Info << "Displace meshes" << nl << endl;
 
 
 }
-/*
+
 {
 	const volPointInterpolation& fluidMeshPointInterpolation = volPointInterpolation::New(fluidMesh);
 
@@ -37,31 +37,23 @@ Info << "Displace meshes" << nl << endl;
 	pointField displacedPoints = fluidMesh.points() + fluidPointsDisplacement.internalField() - fluidPointsDisplacementOld.internalField() ;
 
 	fluidMesh.movePoints(displacedPoints);
-}
+} 
 
 {
 	const volPointInterpolation& mechMeshPointInterpolation = volPointInterpolation::New(mechMesh);
 
-<<<<<<< HEAD
-	pointVectorField mechPointsDisplacementOld = mechMeshPointInterpolation.interpolate(meshDispOld);
-
-	meshDisp.correctBoundaryConditions();
-
-	pointVectorField mechPointsDisplacement = mechMeshPointInterpolation.interpolate(meshDisp);
-
-=======
 	pointVectorField mechPointsDisplacementOld = mechMeshPointInterpolation.interpolate(meshDisp.oldTime());
 
 	meshDisp.correctBoundaryConditions();
 
 	pointVectorField mechPointsDisplacement = mechMeshPointInterpolation.interpolate(meshDisp);
 
->>>>>>> fixTM
 	pointField displacedPoints = mechMesh.points() + mechPointsDisplacement.internalField() - mechPointsDisplacementOld.internalField() ;
 
 	mechMesh.movePoints(displacedPoints);
 }
-*/
+
+
 
 
 

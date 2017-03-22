@@ -6,14 +6,10 @@ pointField mechStartPoints = mechMesh.points(); //used to bring back mesh after 
 
 if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foam::Vector<double>(0,0,0))
 {
-<<<<<<< HEAD
-	Info << "Bring back meshes to underformed case to create correct interpolators" << nl << endl; 
-=======
+
 	Info << "Bring back meshes to undeformed case to create correct interpolators" << nl << endl; 
->>>>>>> fixTM
 	//interpolation always based on undeformed mesh!
-
-
+ 
 	const volPointInterpolation& neutroMeshPointInterpolationInitial = volPointInterpolation::New(neutroMesh);
 
 	DNeutro.correctBoundaryConditions();
@@ -24,7 +20,6 @@ if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foa
 
 	neutroMesh.movePoints(neutroDisplacedPointsInitial);
 
-/*
 
 	const volPointInterpolation& fluidMeshPointInterpolationInitial = volPointInterpolation::New(fluidMesh);
 
@@ -47,12 +42,6 @@ if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foa
 	pointField mechDisplacedPointsInitial = mechStartPoints - mechPointsDisplacementInitial.internalField() ;
 
 	mechMesh.movePoints(mechDisplacedPointsInitial);
-
-<<<<<<< HEAD
-*/
-=======
-
->>>>>>> fixTM
 
 	Info << "Done" << nl << endl;
 }
@@ -88,45 +77,15 @@ if(runTime.timeOutputValue()!=0 && fvc::domainIntegrate(DNeutro).value() != Foam
 	Info << "Re-deform mesh to start calculation" << nl << endl;
 
 	neutroMesh.movePoints(neutroStartPoints);
-<<<<<<< HEAD
-	//fluidMesh.movePoints(fluidStartPoints);
-	//mechMesh.movePoints(mechStartPoints);
-
-
-=======
 	fluidMesh.movePoints(fluidStartPoints);
 	mechMesh.movePoints(mechStartPoints);
->>>>>>> fixTM
 
 	neutroMesh.moving(false);
-	//fluidMesh.moving(false);
-	//mechMesh.moving(false);
+	fluidMesh.moving(false);
+	mechMesh.moving(false);
 
 	Info << "Done" << nl << endl;
 }
 
-
-
-/*
-	neutroMesh.Foam::polyMesh::resetMotion();
-	fluidMesh.Foam::polyMesh::resetMotion();
-	mechMesh.Foam::polyMesh::resetMotion();
-*/
-
-
-
-<<<<<<< HEAD
-/*
-	neutroMesh.readUpdate();
-	fluidMesh.readUpdate();
-	mechMesh.readUpdate();
-*/
-
-
-
-
-
-=======
->>>>>>> fixTM
 
 
