@@ -15,22 +15,21 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-
 // General
 
 application     GeN-Foam;
 
 startFrom       startTime;//latestTime;//
 
-startTime      1000;
+startTime      0;
 
 stopAt       endTime;//writeNow;//  
 
-endTime        1010;
+endTime        1000;
 
-deltaT          0.00001; // time step (if non adjusted)
+deltaT          5; // time step (if non adjusted)
 
-adjustTimeStep  true; // adjust time step based on CFL condition, max power and max delta T
+adjustTimeStep  false; // adjust time step based on CFL condition, max power and max delta T
 
 maxDeltaT	0.5; // max time step
 
@@ -56,19 +55,19 @@ runTimeModifiable yes;
 
 // Physics to solve
 
-tighltyCoupled  true; // if true it iterates on energy, fuel temp, thermal-mechanics and neutronics (not necessary for very short time steps)
+tighltyCoupled  false; // if true it iterates on energy, fuel temp, thermal-mechanics and neutronics (not necessary for very short time steps)
 
-solveFluidMechanics  false;
+solveFluidMechanics  true;
 
-solveEnergy  false;
+solveEnergy  true;
 
 solveNeutronics  true;
 
 SP3Neutronics  false; //for SP3 instead of diffusion (no accelerations available for the moment)
 
-eigenvalueNeutronics  false;
+eigenvalueNeutronics  true;
 
-solveThermalMechanics  false;
+solveThermalMechanics  true;
 
 compr false; // true for compressible simulation
 
