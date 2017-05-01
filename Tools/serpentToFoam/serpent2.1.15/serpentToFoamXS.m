@@ -19,7 +19,7 @@ else
         break
 end
 
-coreState = input('\n Core state you want the xs to be prepared for:\n N for nominal, \n R for radially expanded, \n A for axially expanded, \n T for Doppler broadened, \n C for expanded coolant, \n CL for expanded cladding  \n', 's');
+coreState = input('\n Core state you want the xs to be prepared for:\n N for nominal, \n R for radially expanded, \n A for axially expanded, \n T for Doppler broadened, \n C for expanded coolant,\n CT for coolant temperature, \n CL for expanded cladding  \n', 's');
 
 
 %creare il file crossSections
@@ -35,6 +35,8 @@ elseif (strcmp('C',coreState))
 	globalfilestr = strcat('nuclearDataRhoCool');
 elseif (strcmp('CL',coreState))
 	globalfilestr = strcat('nuclearDataCladExp');
+elseif (strcmp('CT',coreState))
+	globalfilestr = strcat('nuclearDataTCool');
 end
 
 if exist(globalfilestr)
@@ -115,8 +117,8 @@ end
 
 % Data specific different perturbed states
 if (strcmp('T',coreState))
-	Tfuelref = input('\n Tfuelref:\n');
-	fprintf(fid,' Tfuelref %.6e ; \n',Tfuelref);
+	TfuelRef = input('\n TfuelRef:\n');
+	fprintf(fid,' TfuelRef %.6e ; \n',TfuelRef);
 	TfuelPerturbed = input('\n TfuelPerturbed:\n');
 	fprintf(fid,' TfuelPerturbed %.6e ; \n',TfuelPerturbed);
 end
@@ -125,6 +127,12 @@ if (strcmp('C',coreState))
 	fprintf(fid,' rhoCoolRef %.6e ; \n',rhoCoolRef);
 	rhoCoolPerturbed = input('\n rhoCoolPerturbed:\n');
 	fprintf(fid,' rhoCoolPerturbed %.6e ; \n',rhoCoolPerturbed);
+end
+if (strcmp('CT',coreState))
+	TCoolRef = input('TCoolRef:\n');
+	fprintf(fid,' TCoolRef %.6e ; \n',TCoolRef);
+	TCoolPerturbed = input('\n TCoolPerturbed:\n');
+	fprintf(fid,' TCoolPerturbed %.6e ; \n',TCoolPerturbed);
 end
 if (strcmp('CL',coreState))
 	Tcladref = input('Tcladref:\n');
@@ -273,7 +281,16 @@ while(stop == false)
 				fprintf(fid,'%.6e ',LAM(i));
 		end
 		fprintf(fid,' );');
+
+		%discontinuity factors
+		fprintf(fid,'\n discFactor nonuniform List<scalar> %i (',ng);
+		for i = 1:ng
+
+				fprintf(fid,'1 ');
+		end
+		fprintf(fid,' );');
 		fprintf(fid,'\n } \n');
+
 
 	end
 end
