@@ -13,6 +13,7 @@ FoamFile
     object      Tref;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//used only if compr is set to false in the controDict
 
 dimensions      [0 0 0 1 0 0 0];
 value           500.0;
