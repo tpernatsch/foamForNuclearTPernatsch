@@ -2,8 +2,8 @@
 
 GeN-Foam/Make/**/ 
 
-*~ .
-DS_Store
+*~
+.DS_Store
 Thumbs.db
 
 
