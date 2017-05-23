@@ -1,6 +1,6 @@
 rad = "minicore_3D"; %name of serpent input file
-coreState = "N"; % N nominal; A axially expanded; R dadially expanded; T different fuel temp; C different coolant density; CT different coolant temp; CL different clad temp
-zeroeff = "zero";
+coreState = "N"; % N nominal; A axially expanded; R radially expanded; T different fuel temp; C different coolant density; CT different coolant temp; CL different clad temp
+zeroeff = "zero";//zero or eff
 pTarget = 1e6;%core power
 keff = 1;%initial guess
 
@@ -56,7 +56,7 @@ OF_NAME = [
 ];
 
 
-% corresponding volumetric fuel fractions
+% corresponding volumetric fuel fractions //useful only if there is fuel. Otherwise not used (but still necessary to put a number)
 fuelFraction = [
 1;
 1;

@@ -236,6 +236,18 @@ Foam::correlationPorousMedium::correlationPorousMedium
         dimensionedScalar(IOdictionary::lookup("hydraulicDiameter")),
         zeroGradientFvPatchScalarField::typeName
     ),
+    hydraulicDiameterStructure_(
+        IOobject(
+            "porousMedium::hydraulicDiameterStructure",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(IOdictionary::lookup("hydraulicDiameterStructure")),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     pumpMomentumSource_(
         IOobject(
             "porousMedium::pumpMomentumSource",
@@ -337,6 +349,7 @@ Foam::correlationPorousMedium::correlationPorousMedium
 	const dimensionedVector& nusseltPrExpTurb,
 	const dimensionedVector& nusseltPrExpLam,
 	const dimensionedScalar& hydraulicDiameter,
+	const dimensionedScalar& hydraulicDiameterStructure,
 	const dimensionedVector& pumpMomentumSource,
 	const dimensionedVector& turbulenceIntensityConst,
 	const dimensionedVector& turbulenceIntensityExp,
@@ -523,6 +536,18 @@ Foam::correlationPorousMedium::correlationPorousMedium
         ),
         mesh_,
         hydraulicDiameter,
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    hydraulicDiameterStructure_(
+        IOobject(
+            "porousMedium::hydraulicDiameterStructure",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        hydraulicDiameterStructure,
         zeroGradientFvPatchScalarField::typeName
     ),
     pumpMomentumSource_(

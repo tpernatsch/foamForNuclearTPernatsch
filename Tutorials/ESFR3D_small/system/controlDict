@@ -15,6 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+
 // General
 
 application     GeN-Foam;
@@ -25,9 +26,9 @@ startTime      0;
 
 stopAt       endTime;//writeNow;//  
 
-endTime        1000;
+endTime        10;
 
-deltaT          5; // time step (if non adjusted)
+deltaT          0.1; // time step (if non adjusted)
 
 adjustTimeStep  false; // adjust time step based on CFL condition, max power and max delta T
 
@@ -35,7 +36,7 @@ maxDeltaT	0.5; // max time step
 
 writeControl   adjustableRunTime;//timeStep;//
 
-writeInterval   1000;
+writeInterval   10;
 
 purgeWrite      0;
 
@@ -93,15 +94,15 @@ maxNeutronIterations	50; // up to 3-400 if no acceleration techniques
 
 
 
-// Acceleration of time dependent neutronic solution
+// Acceleration of time dependent neutronic solution. Not tested for SP3 calculations
 
-integralPredictor	false; // integral neutron balance made at each time step to predict fluxes at next step (can be unstable)
+integralPredictor	true; // integral neutron balance made at each time step to predict fluxes at next step (can be unstable)
 
-implicitPredictor	false;
+implicitPredictor	false;//under development
 
 ROMAcceleration		false;
 
-aitkenAcceleration	false;
+aitkenAcceleration	true;
 
 
 

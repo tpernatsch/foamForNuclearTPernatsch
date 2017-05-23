@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011-2015 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::RASModels::porouskEpsilon
+    Foam::RASModels::porousKEpsilon
 
 Group
     grpRASTurbulence
@@ -50,7 +50,7 @@ Description
 
     The default model coefficients are
     \verbatim
-        porouskEpsilonCoeffs
+        porousKEpsilonCoeffs
         {
             Cmu         0.09;
             C1          1.44;
@@ -62,18 +62,15 @@ Description
     \endverbatim
 
 SourceFiles
-    porouskEpsilon.C
+    porousKEpsilon.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef porouskEpsilon_H
-#define porouskEpsilon_H
+#ifndef porousKEpsilon_H
+#define porousKEpsilon_H
 
-#include "kEpsilon.H"
-
-#include "porouskEpsilon.H"
-#include "bound.H"
-#include "addToRunTimeSelectionTable.H"
+#include "RASModel.H"
+#include "eddyViscosity.H"
 #include "byZoneCorrelationPorousMedium.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -84,31 +81,45 @@ namespace RASModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class kEpsilon Declaration
+                           Class porousKEpsilon Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class BasicTurbulenceModel>
-class porouskEpsilon
+class porousKEpsilon
 :
-    public kEpsilon<BasicTurbulenceModel>
+    public eddyViscosity<RASModel<BasicTurbulenceModel>>
 {
     // Private Member Functions
 
         // Disallow default bitwise copy construct and assignment
-        porouskEpsilon(const porouskEpsilon&);
-        void operator=(const porouskEpsilon&);
+        porousKEpsilon(const porousKEpsilon&);
+        void operator=(const porousKEpsilon&);
 
 
 protected:
 
     // Protected data
 
-    // Porous
-        const correlationPorousMedium& porousMedium_;
+        // Model coefficients
 
+            dimensionedScalar Cmu_;
+            dimensionedScalar C1_;
+            dimensionedScalar C2_;
+            dimensionedScalar C3_;
+            dimensionedScalar sigmak_;
+            dimensionedScalar sigmaEps_;
+
+        // Fields
+
+            volScalarField k_;
+            volScalarField epsilon_;
+
+        // Porous
+            const correlationPorousMedium& porousMedium_;
 
     // Protected Member Functions
 
+        virtual void correctNut();
         virtual tmp<fvScalarMatrix> kSource() const;
         virtual tmp<fvScalarMatrix> epsilonSource() const;
 
@@ -121,13 +132,13 @@ public:
 
 
     //- Runtime type information
-    TypeName("porouskEpsilon");
+    TypeName("porousKEpsilon");
 
 
     // Constructors
 
         //- Construct from components
-        porouskEpsilon
+        porousKEpsilon
         (
             const alphaField& alpha,
             const rhoField& rho,
@@ -141,7 +152,7 @@ public:
 
 
     //- Destructor
-    virtual ~porouskEpsilon()
+    virtual ~porousKEpsilon()
     {}
 
 
@@ -149,6 +160,44 @@ public:
 
         //- Re-read model coefficients if they have changed
         virtual bool read();
+
+        //- Return the effective diffusivity for k
+        tmp<volScalarField> DkEff() const
+        {
+            return tmp<volScalarField>
+            (
+                new volScalarField
+                (
+                    "DkEff",
+                    (this->nut_/sigmak_ + this->nu())
+                )
+            );
+        }
+
+        //- Return the effective diffusivity for epsilon
+        tmp<volScalarField> DepsilonEff() const
+        {
+            return tmp<volScalarField>
+            (
+                new volScalarField
+                (
+                    "DepsilonEff",
+                    (this->nut_/sigmaEps_ + this->nu())
+                )
+            );
+        }
+
+        //- Return the turbulence kinetic energy
+        virtual tmp<volScalarField> k() const
+        {
+            return k_;
+        }
+
+        //- Return the turbulence kinetic energy dissipation rate
+        virtual tmp<volScalarField> epsilon() const
+        {
+            return epsilon_;
+        }
 
         //- Solve the turbulence equations and correct the turbulence viscosity
         virtual void correct();
@@ -161,11 +210,11 @@ public:
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-/*
+
 #ifdef NoRepository
-#   include "porouskEpsilon.C"
+    #include "porousKEpsilon.C"
 #endif
-*/
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #endif

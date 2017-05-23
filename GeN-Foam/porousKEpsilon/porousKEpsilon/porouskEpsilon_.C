@@ -23,12 +23,8 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef porousCompressiblekEpsilon_H
-#define porousCompressiblekEpsilon_H
-
 #include "porouskEpsilon.H"
 #include "bound.H"
-#include "addToRunTimeSelectionTable.H"
 #include "byZoneCorrelationPorousMedium.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -38,10 +34,52 @@ namespace Foam
 namespace RASModels
 {
 
-// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+// * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //
 
-//defineTypeNameAndDebug(porouskEpsilon, 0);
-//addToRunTimeSelectionTable(RASModel, porouskEpsilon, dictionary);
+
+template<class BasicTurbulenceModel>
+void porouskEpsilon<BasicTurbulenceModel>::correctNut()
+{
+    volScalarField clearYesNo = 1.0 - mag(porousMedium_.kepsilonConvergenceRate())/(mag(porousMedium_.kepsilonConvergenceRate())+dimensionedScalar("", dimensionSet(0,0,-1,0,0,0,0), SMALL) );
+
+     volScalarField nuStab = pow(mag(this->U_),2)*porousMedium_.hydraulicDiameterStructure() / 100.0; //100 e' un Reynolds laminare 
+
+     this->nut_ = (this->Cmu_*sqr(this->k_)/this->epsilon_)*clearYesNo + (nuStab)*(1-clearYesNo);
+     this->nut_.correctBoundaryConditions();
+     //fv::options::New(this->mesh_).correct(this->nut_);
+ 
+     BasicTurbulenceModel::correctNut();
+}
+
+template<class BasicTurbulenceModel>
+tmp<fvScalarMatrix> porouskEpsilon<BasicTurbulenceModel>::kSource() const
+{
+    return tmp<fvScalarMatrix>
+    (
+        new fvScalarMatrix
+        (
+            k_,
+            dimVolume*this->rho_.dimensions()*k_.dimensions()
+            /dimTime
+        )
+    );
+}
+
+
+template<class BasicTurbulenceModel>
+tmp<fvScalarMatrix> porouskEpsilon<BasicTurbulenceModel>::epsilonSource() const
+{
+    return tmp<fvScalarMatrix>
+    (
+        new fvScalarMatrix
+        (
+            epsilon_,
+            dimVolume*this->rho_.dimensions()*epsilon_.dimensions()
+            /dimTime
+        )
+    );
+}
+
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
@@ -58,7 +96,7 @@ porouskEpsilon<BasicTurbulenceModel>::porouskEpsilon
     const word& type
 )
 :
-    eddyViscosity<RASModel<BasicTurbulenceModel> >
+    eddyViscosity<RASModel<BasicTurbulenceModel>>
     (
         alpha,
         rho,
@@ -69,13 +107,93 @@ porouskEpsilon<BasicTurbulenceModel>::porouskEpsilon
         propertiesName,
         type
     ),
-    porousMedium_(
-        this->mesh_.lookupObject
+
+    Cmu_
+    (
+        dimensioned<scalar>::lookupOrAddToDict
         (
-            "porousMediumProperties"
+            "Cmu",
+            this->coeffDict_,
+            0.09
         )
-    )
+    ),
+    C1_
+    (
+        dimensioned<scalar>::lookupOrAddToDict
+        (
+            "C1",
+            this->coeffDict_,
+            1.44
+        )
+    ),
+    C2_
+    (
+        dimensioned<scalar>::lookupOrAddToDict
+        (
+            "C2",
+            this->coeffDict_,
+            1.92
+        )
+    ),
+    C3_
+    (
+        dimensioned<scalar>::lookupOrAddToDict
+        (
+            "C3",
+            this->coeffDict_,
+            -0.33
+        )
+    ),
+    sigmak_
+    (
+        dimensioned<scalar>::lookupOrAddToDict
+        (
+            "sigmak",
+            this->coeffDict_,
+            1.0
+        )
+    ),
+    sigmaEps_
+    (
+        dimensioned<scalar>::lookupOrAddToDict
+        (
+            "sigmaEps",
+            this->coeffDict_,
+            1.3
+        )
+    ),
+
+    k_
+    (
+        IOobject
+        (
+            IOobject::groupName("k", U.group()),
+            this->runTime_.timeName(),
+            this->mesh_,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        this->mesh_
+    ),
+    epsilon_
+    (
+        IOobject
+        (
+            IOobject::groupName("epsilon", U.group()),
+            this->runTime_.timeName(),
+            this->mesh_,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        this->mesh_
+    ),
+
+    porousMedium_(this->mesh_.objectRegistry::lookupObject<correlationPorousMedium>("porousMediumProperties"))
+
 {
+    bound(k_, this->kMin_);
+    bound(epsilon_, this->epsilonMin_);
+
     if (type == typeName)
     {
         this->printCoeffs(type);
@@ -88,8 +206,14 @@ porouskEpsilon<BasicTurbulenceModel>::porouskEpsilon
 template<class BasicTurbulenceModel>
 bool porouskEpsilon<BasicTurbulenceModel>::read()
 {
-    if (kEpsilon<BasicTurbulenceModel>::read())
+    if (eddyViscosity<RASModel<BasicTurbulenceModel>>::read())
     {
+        Cmu_.readIfPresent(this->coeffDict());
+        C1_.readIfPresent(this->coeffDict());
+        C2_.readIfPresent(this->coeffDict());
+        C3_.readIfPresent(this->coeffDict());
+        sigmak_.readIfPresent(this->coeffDict());
+        sigmaEps_.readIfPresent(this->coeffDict());
 
         return true;
     }
@@ -98,6 +222,7 @@ bool porouskEpsilon<BasicTurbulenceModel>::read()
         return false;
     }
 }
+
 
 template<class BasicTurbulenceModel>
 void porouskEpsilon<BasicTurbulenceModel>::correct()
@@ -165,11 +290,16 @@ void porouskEpsilon<BasicTurbulenceModel>::correct()
     bound(this->k_, this->kMin_);
 
     this->correctNut();
+
+
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace RASModels
 } // End namespace Foam
-#endif
+
+
+
+
 // ************************************************************************* //

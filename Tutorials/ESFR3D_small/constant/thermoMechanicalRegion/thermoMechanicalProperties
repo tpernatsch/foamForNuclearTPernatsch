@@ -28,7 +28,7 @@ zones
 (
     innerCore
     {
-	%for structures
+	//for structures
 	rho				1000; //density
 	E				1e7;  // Young modulus
 	nu				0.1; // Poisson ratio

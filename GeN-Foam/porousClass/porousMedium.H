@@ -79,7 +79,7 @@ protected:
         const fvMesh& mesh_;
 
         //- Reference to thermophysical properties
-		const rhoThermo& thermo_;
+	const rhoThermo& thermo_;
 
         //- Reference to density field
         const volScalarField& rho_;

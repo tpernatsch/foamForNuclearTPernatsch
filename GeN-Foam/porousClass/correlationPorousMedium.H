@@ -104,6 +104,9 @@ protected:
         //- hydraulicDiameter
         volScalarField hydraulicDiameter_;
 
+        //- hydraulicDiameter
+        volScalarField hydraulicDiameterStructure_;
+
         //- pumpMomentumSource
         volVectorField pumpMomentumSource_;
 
@@ -179,6 +182,7 @@ public:
             const dimensionedVector& nusseltPrExpTurb,
             const dimensionedVector& nusseltPrExpLam,
             const dimensionedScalar& hydraulicDiameter,
+            const dimensionedScalar& hydraulicDiameterStructure,
             const dimensionedVector& pumpMomentumSource,
             const dimensionedVector& turbulenceIntensityConst_,
             const dimensionedVector& turbulenceIntensityExp_,
@@ -283,6 +287,13 @@ public:
             {
                 return hydraulicDiameter_;
             }
+
+            //- Return hydraulicDiameter
+            inline const volScalarField& hydraulicDiameterStructure() const
+            {
+                return hydraulicDiameterStructure_;
+            }
+
 
             //- Return pumpMomentumSource
             inline const volVectorField& pumpMomentumSource() const

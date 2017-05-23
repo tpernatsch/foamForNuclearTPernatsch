@@ -82,6 +82,7 @@ Foam::byZoneCorrelationPorousMedium::byZoneCorrelationPorousMedium
         dimensionedVector("", dimless, vector::zero),
         dimensionedVector("", dimless, vector::zero),
         dimensionedScalar("", dimLength, 1.0),
+        dimensionedScalar("", dimLength, 10.0),
         dimensionedVector("", dimensionSet(1,-2,-2,0,0,0,0), vector::zero),
         dimensionedVector("", dimless, vector::zero),
         dimensionedVector("", dimless, vector::zero),
@@ -177,6 +178,9 @@ Foam::byZoneCorrelationPorousMedium::byZoneCorrelationPorousMedium
         IndirectList<scalar>(hydraulicDiameter_.internalField(), addr)
             = scalar(dict.lookupOrDefault("hydraulicDiameter",1.0));
 
+        IndirectList<scalar>(hydraulicDiameterStructure_.internalField(), addr)
+            = scalar(dict.lookupOrDefault("hydraulicDiameterStructure",10.0));
+
         IndirectList<vector>(pumpMomentumSource_.internalField(), addr)
             = vector(dict.lookupOrDefault("pumpMomentumSource",vector::zero));
 
@@ -216,6 +220,7 @@ Foam::byZoneCorrelationPorousMedium::byZoneCorrelationPorousMedium
     nusseltPrExpTurb_.correctBoundaryConditions();
     nusseltPrExpLam_.correctBoundaryConditions();
     hydraulicDiameter_.correctBoundaryConditions();
+    hydraulicDiameterStructure_.correctBoundaryConditions();
     pumpMomentumSource_.correctBoundaryConditions();
     turbulenceIntensityConst_.correctBoundaryConditions();
     turbulenceIntensityExp_.correctBoundaryConditions();

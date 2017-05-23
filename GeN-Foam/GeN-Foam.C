@@ -69,6 +69,7 @@ Author
 #include "PODOrthoNormalBase.H"
 #include "POD.H"
 #include "fvMatrixExt.H"
+#include "porousKEpsilon.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

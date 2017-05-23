@@ -99,7 +99,7 @@ integralPredictor	false; // integral neutron balance made at each time step to p
 
 implicitPredictor	false;
 
-ROMAcceleration		false;
+ROMAcceleration		false; //beta version. do not use!
 
 aitkenAcceleration	false;
 

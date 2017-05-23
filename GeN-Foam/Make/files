@@ -1,10 +1,10 @@
 POD/PODOrthoNormalBase/PODOrthoNormalBase.C
+porousKEpsilon/makeModel.C
 
 fluid/compressibleCourantNo.C
 porousClass/porousMedium.C
-porousClass/byZoneCorrelationPorousMedium.C
 porousClass/correlationPorousMedium.C
-porousKepsilon/porouskEpsilon.C
+porousClass/byZoneCorrelationPorousMedium.C
 thermalMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
 albedoSP3/albedoSP3FvPatchField.C
 
