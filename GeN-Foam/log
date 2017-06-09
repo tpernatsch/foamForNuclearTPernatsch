@@ -1,154 +1,187 @@
-Making dependency list for source file GeN-Foam.C
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c fluid/compressibleCourantNo.C -o Make/linux64GccDPInt32Opt/fluid/compressibleCourantNo.o
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c porousClass/porousMedium.C -o Make/linux64GccDPInt32Opt/porousClass/porousMedium.o
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c porousClass/correlationPorousMedium.C -o Make/linux64GccDPInt32Opt/porousClass/correlationPorousMedium.o
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c porousClass/byZoneCorrelationPorousMedium.C -o Make/linux64GccDPInt32Opt/porousClass/byZoneCorrelationPorousMedium.o
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c thermalMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.C -o Make/linux64GccDPInt32Opt/thermalMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.o
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c albedoSP3/albedoSP3FvPatchField.C -o Make/linux64GccDPInt32Opt/albedoSP3/albedoSP3FvPatchField.o
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘void Foam::albedoSP3FvPatchField<Type>::rmap(const Foam::fvPatchField<Type>&, const labelList&) [with Type = Foam::Tensor<double>; Foam::labelList = Foam::List<int>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:141:40: warning: unused variable ‘fgptf’ [-Wunused-variable]
-     const albedoSP3FvPatchField<Type>& fgptf =
-                                        ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::snGrad() const [with Type = Foam::Tensor<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:321:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::valueInternalCoeffs(const Foam::tmp<Foam::Field<double> >&) const [with Type = Foam::Tensor<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:208:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::gradientInternalCoeffs() const [with Type = Foam::Tensor<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:268:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘void Foam::albedoSP3FvPatchField<Type>::rmap(const Foam::fvPatchField<Type>&, const labelList&) [with Type = Foam::SymmTensor<double>; Foam::labelList = Foam::List<int>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:141:40: warning: unused variable ‘fgptf’ [-Wunused-variable]
-     const albedoSP3FvPatchField<Type>& fgptf =
-                                        ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::snGrad() const [with Type = Foam::SymmTensor<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:321:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::valueInternalCoeffs(const Foam::tmp<Foam::Field<double> >&) const [with Type = Foam::SymmTensor<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:208:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::gradientInternalCoeffs() const [with Type = Foam::SymmTensor<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:268:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘void Foam::albedoSP3FvPatchField<Type>::rmap(const Foam::fvPatchField<Type>&, const labelList&) [with Type = Foam::SphericalTensor<double>; Foam::labelList = Foam::List<int>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:141:40: warning: unused variable ‘fgptf’ [-Wunused-variable]
-     const albedoSP3FvPatchField<Type>& fgptf =
-                                        ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::snGrad() const [with Type = Foam::SphericalTensor<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:321:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::valueInternalCoeffs(const Foam::tmp<Foam::Field<double> >&) const [with Type = Foam::SphericalTensor<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:208:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::gradientInternalCoeffs() const [with Type = Foam::SphericalTensor<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:268:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘void Foam::albedoSP3FvPatchField<Type>::rmap(const Foam::fvPatchField<Type>&, const labelList&) [with Type = Foam::Vector<double>; Foam::labelList = Foam::List<int>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:141:40: warning: unused variable ‘fgptf’ [-Wunused-variable]
-     const albedoSP3FvPatchField<Type>& fgptf =
-                                        ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::snGrad() const [with Type = Foam::Vector<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:321:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::valueInternalCoeffs(const Foam::tmp<Foam::Field<double> >&) const [with Type = Foam::Vector<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:208:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::gradientInternalCoeffs() const [with Type = Foam::Vector<double>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:268:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘void Foam::albedoSP3FvPatchField<Type>::rmap(const Foam::fvPatchField<Type>&, const labelList&) [with Type = double; Foam::labelList = Foam::List<int>]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:141:40: warning: unused variable ‘fgptf’ [-Wunused-variable]
-     const albedoSP3FvPatchField<Type>& fgptf =
-                                        ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::snGrad() const [with Type = double]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:321:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::valueInternalCoeffs(const Foam::tmp<Foam::Field<double> >&) const [with Type = double]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:208:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-albedoSP3/albedoSP3FvPatchField.C: In instantiation of ‘Foam::tmp<Foam::Field<Type> > Foam::albedoSP3FvPatchField<Type>::gradientInternalCoeffs() const [with Type = double]’:
-albedoSP3/albedoSP3FvPatchField.C:382:1:   required from here
-albedoSP3/albedoSP3FvPatchField.C:268:26: warning: unused variable ‘fluxStarAlbedo’ [-Wunused-variable]
-     const Field<scalar>& fluxStarAlbedo =
-                          ^
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c fuel/IOFieldFields.C -o Make/linux64GccDPInt32Opt/fuel/IOFieldFields.o
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c fuel/subscaleFuel.C -o Make/linux64GccDPInt32Opt/fuel/subscaleFuel.o
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c fuel/constSubscaleFuel.C -o Make/linux64GccDPInt32Opt/fuel/constSubscaleFuel.o
-fuel/constSubscaleFuel.C: In member function ‘Foam::scalar Foam::constSubscaleFuel::updateLocalHeatFluxImplicitPlanar(Foam::label, Foam::label, Foam::scalar, Foam::scalar, Foam::scalar)’:
-fuel/constSubscaleFuel.C:241:9: warning: unused variable ‘Beta0F’ [-Wunused-variable]
-  scalar Beta0F = 1 ;
+Making dependency list for source file porousKEpsilon/makeModel.C
+g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c porousKEpsilon/makeModel.C -o Make/linux64GccDPInt32Opt/porousKEpsilon/makeModel.o
+In file included from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/typeInfo.H:57:0,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/token.H:46,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/UILListIO.C:28,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/UILList.C:91,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/UILList.H:383,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/ILList.H:39,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/IDLList.H:35,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/entry.H:45,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/dictionary.H:53,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/IOdictionary.H:42,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude/turbulenceModel.H:41,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude/TurbulenceModel.H:38,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/CompressibleTurbulenceModel.H:39,
+                 from porousKEpsilon/makeModel.C:26:
+porousKEpsilon/makeModel.C:61:14: error: ‘template<class BasicTurbulenceModel> class Foam::RASModels::porousKEpsilon’ used without template parameters
+ makeRASModel(porousKEpsilon);
+              ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:91:24: note: in definition of macro ‘defineTypeNameWithName’
+     const ::Foam::word Type::typeName(Name)
+                        ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:120:5: note: in expansion of macro ‘defineTypeName’
+     defineTypeName(Type);                                                      \
+     ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/makeTurbulenceModel.H:122:13: note: in expansion of macro ‘defineTypeNameAndDebug’
+             defineTypeNameAndDebug(Type, 0);                                   \
+             ^
+porousKEpsilon/makeModel.C:57:5: note: in expansion of macro ‘makeTurbulenceModel’
+     makeTurbulenceModel                                               \
+     ^
+porousKEpsilon/makeModel.C:61:1: note: in expansion of macro ‘makeRASModel’
+ makeRASModel(porousKEpsilon);
+ ^
+porousKEpsilon/makeModel.C:61:14: error: ‘template<class BasicTurbulenceModel> class Foam::RASModels::porousKEpsilon’ used without template parameters
+ makeRASModel(porousKEpsilon);
+              ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:91:39: note: in definition of macro ‘defineTypeNameWithName’
+     const ::Foam::word Type::typeName(Name)
+                                       ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:120:5: note: in expansion of macro ‘defineTypeName’
+     defineTypeName(Type);                                                      \
+     ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/makeTurbulenceModel.H:122:13: note: in expansion of macro ‘defineTypeNameAndDebug’
+             defineTypeNameAndDebug(Type, 0);                                   \
+             ^
+porousKEpsilon/makeModel.C:57:5: note: in expansion of macro ‘makeTurbulenceModel’
+     makeTurbulenceModel                                               \
+     ^
+porousKEpsilon/makeModel.C:61:1: note: in expansion of macro ‘makeRASModel’
+ makeRASModel(porousKEpsilon);
+ ^
+In file included from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:32:0,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/typeInfo.H:57,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/token.H:46,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/UILListIO.C:28,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/UILList.C:91,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/UILList.H:383,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/ILList.H:39,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/IDLList.H:35,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/entry.H:45,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/dictionary.H:53,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/IOdictionary.H:42,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude/turbulenceModel.H:41,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude/TurbulenceModel.H:38,
+                 from /home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/CompressibleTurbulenceModel.H:39,
+                 from porousKEpsilon/makeModel.C:26:
+porousKEpsilon/makeModel.C:61:14: error: ‘template<class BasicTurbulenceModel> class Foam::RASModels::porousKEpsilon’ used without template parameters
+ makeRASModel(porousKEpsilon);
+              ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/defineDebugSwitch.H:108:9: note: in definition of macro ‘defineDebugSwitchWithName’
+     int Type::debug(::Foam::debug::debugSwitch(Name, DebugSwitch))
          ^
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -c GeN-Foam.C -o Make/linux64GccDPInt32Opt/GeN-Foam.o
-In file included from GeN-Foam.C:92:0:
-./include/readTimeControls.H: In function ‘int main(int, char**)’:
-./include/readTimeControls.H:41:12: warning: unused variable ‘compr’ [-Wunused-variable]
- const bool compr =
-            ^
-./include/readTimeControls.H:47:8: warning: unused variable ‘timeStepResidual’ [-Wunused-variable]
- scalar timeStepResidual =
-        ^
-./include/readTimeControls.H:50:8: warning: unused variable ‘neutronIterationResidual’ [-Wunused-variable]
- scalar neutronIterationResidual =
-        ^
-./include/readTimeControls.H:53:5: warning: unused variable ‘maxTimeStepIterations’ [-Wunused-variable]
- int maxTimeStepIterations =
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:121:5: note: in expansion of macro ‘defineDebugSwitch’
+     defineDebugSwitch(Type, DebugSwitch)
      ^
-./include/readTimeControls.H:56:5: warning: unused variable ‘maxNeutronIterations’ [-Wunused-variable]
- int maxNeutronIterations =
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/makeTurbulenceModel.H:122:13: note: in expansion of macro ‘defineTypeNameAndDebug’
+             defineTypeNameAndDebug(Type, 0);                                   \
+             ^
+porousKEpsilon/makeModel.C:57:5: note: in expansion of macro ‘makeTurbulenceModel’
+     makeTurbulenceModel                                               \
      ^
-./include/readTimeControls.H:59:12: warning: unused variable ‘integralPredictor’ [-Wunused-variable]
- const bool integralPredictor =
-            ^
-./include/readTimeControls.H:62:12: warning: unused variable ‘implicitPredictor’ [-Wunused-variable]
- const bool implicitPredictor =
-            ^
-./include/readTimeControls.H:65:12: warning: unused variable ‘aitkenAcceleration’ [-Wunused-variable]
- const bool aitkenAcceleration =
-            ^
-./include/readTimeControls.H:68:12: warning: unused variable ‘ROMAcceleration’ [-Wunused-variable]
- const bool ROMAcceleration = runTime.controlDict().lookupOrDefault("ROMAcceleration", false);
-            ^
-In file included from GeN-Foam.C:93:0:
-./thermalMechanics/readSolidDisplacementFoamControls.H:3:11: warning: unused variable ‘nCorrMech’ [-Wunused-variable]
- const int nCorrMech = stressControl.lookupOrDefault<int>("nCorrectors", 1);
-           ^
-./thermalMechanics/readSolidDisplacementFoamControls.H:5:8: warning: unused variable ‘convergenceTolerance’ [-Wunused-variable]
- scalar convergenceTolerance(readScalar(stressControl.lookup("D")));
-        ^
-g++ -std=c++0x -m64 -Dlinux64 -DWM_ARCH_OPTION=64 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -O3  -DNoRepository -ftemplate-depth-100 -I./fluid -I./porousKEpsilon -I./porousKEpsilon/lnInclude -I./porousKEpsilon/porousKEpsilon -I./porousClass -I./fuel -I./neutronics -I./thermalMechanics -I./thermalMechanics/tractionDisplacement/lnInclude -I./include -I./albedoSP3 -I./POD/EigenSolver -I./POD/POD -I./POD/PODEigenBase -I./POD/PODODE -I./POD/PODOrthoNormalBase -I./POD -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/meshTools/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/sampling/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/finiteVolume/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/turbulenceModels/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/transportModels/compressible/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/basic/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/specie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidThermo/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/thermophysicalModels/solidSpecie/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/regionModels/regionModel/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/ODE/lnInclude -IlnInclude -I. -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude -I/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OSspecific/POSIX/lnInclude   -fPIC -Xlinker --add-needed -Xlinker --no-as-needed Make/linux64GccDPInt32Opt/POD/PODOrthoNormalBase/PODOrthoNormalBase.o Make/linux64GccDPInt32Opt/porousKEpsilon/makeModel.o Make/linux64GccDPInt32Opt/fluid/compressibleCourantNo.o Make/linux64GccDPInt32Opt/porousClass/porousMedium.o Make/linux64GccDPInt32Opt/porousClass/correlationPorousMedium.o Make/linux64GccDPInt32Opt/porousClass/byZoneCorrelationPorousMedium.o Make/linux64GccDPInt32Opt/thermalMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.o Make/linux64GccDPInt32Opt/albedoSP3/albedoSP3FvPatchField.o Make/linux64GccDPInt32Opt/fuel/IOFieldFields.o Make/linux64GccDPInt32Opt/fuel/subscaleFuel.o Make/linux64GccDPInt32Opt/fuel/constSubscaleFuel.o Make/linux64GccDPInt32Opt/GeN-Foam.o -L/home/carlo/OpenFOAM/OpenFOAM-4.1/platforms/linux64GccDPInt32Opt/lib \
-    -lcompressibleTransportModels -lfluidThermophysicalModels -lsolidThermo -lsolidSpecie -lspecie -lcompressibleTurbulenceModels -lturbulenceModels -lmeshTools -lfiniteVolume -lregionModels -lsampling -lsolidSpecie -lODE -lOpenFOAM -ldl  \
-     -lm -o /home/carlo/OpenFOAM/carlo-4.1/platforms/linux64GccDPInt32Opt/bin/GeN-Foam
+porousKEpsilon/makeModel.C:61:1: note: in expansion of macro ‘makeRASModel’
+ makeRASModel(porousKEpsilon);
+ ^
+porousKEpsilon/makeModel.C:61:14: error: ‘template<class BasicTurbulenceModel> class Foam::RASModels::porousKEpsilon’ used without template parameters
+ makeRASModel(porousKEpsilon);
+              ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/defineDebugSwitch.H:108:48: note: in definition of macro ‘defineDebugSwitchWithName’
+     int Type::debug(::Foam::debug::debugSwitch(Name, DebugSwitch))
+                                                ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:121:5: note: in expansion of macro ‘defineDebugSwitch’
+     defineDebugSwitch(Type, DebugSwitch)
+     ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/makeTurbulenceModel.H:122:13: note: in expansion of macro ‘defineTypeNameAndDebug’
+             defineTypeNameAndDebug(Type, 0);                                   \
+             ^
+porousKEpsilon/makeModel.C:57:5: note: in expansion of macro ‘makeTurbulenceModel’
+     makeTurbulenceModel                                               \
+     ^
+porousKEpsilon/makeModel.C:61:1: note: in expansion of macro ‘makeRASModel’
+ makeRASModel(porousKEpsilon);
+ ^
+porousKEpsilon/makeModel.C: In member function ‘virtual void Foam::RASModels::addporousKEpsilonToDebug::readData(Foam::Istream&)’:
+porousKEpsilon/makeModel.C:61:14: error: ‘template<class BasicTurbulenceModel> class Foam::RASModels::porousKEpsilon’ used without template parameters
+ makeRASModel(porousKEpsilon);
+              ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/defineDebugSwitch.H:96:13: note: in definition of macro ‘registerDebugSwitchWithName’
+             Type::debug = readLabel(is);                                       \
+             ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:121:5: note: in expansion of macro ‘defineDebugSwitch’
+     defineDebugSwitch(Type, DebugSwitch)
+     ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/makeTurbulenceModel.H:122:13: note: in expansion of macro ‘defineTypeNameAndDebug’
+             defineTypeNameAndDebug(Type, 0);                                   \
+             ^
+porousKEpsilon/makeModel.C:57:5: note: in expansion of macro ‘makeTurbulenceModel’
+     makeTurbulenceModel                                               \
+     ^
+porousKEpsilon/makeModel.C:61:1: note: in expansion of macro ‘makeRASModel’
+ makeRASModel(porousKEpsilon);
+ ^
+porousKEpsilon/makeModel.C: In member function ‘virtual void Foam::RASModels::addporousKEpsilonToDebug::writeData(Foam::Ostream&) const’:
+porousKEpsilon/makeModel.C:61:14: error: ‘template<class BasicTurbulenceModel> class Foam::RASModels::porousKEpsilon’ used without template parameters
+ makeRASModel(porousKEpsilon);
+              ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/defineDebugSwitch.H:100:19: note: in definition of macro ‘registerDebugSwitchWithName’
+             os << Type::debug;                                                 \
+                   ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:121:5: note: in expansion of macro ‘defineDebugSwitch’
+     defineDebugSwitch(Type, DebugSwitch)
+     ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/makeTurbulenceModel.H:122:13: note: in expansion of macro ‘defineTypeNameAndDebug’
+             defineTypeNameAndDebug(Type, 0);                                   \
+             ^
+porousKEpsilon/makeModel.C:57:5: note: in expansion of macro ‘makeTurbulenceModel’
+     makeTurbulenceModel                                               \
+     ^
+porousKEpsilon/makeModel.C:61:1: note: in expansion of macro ‘makeRASModel’
+ makeRASModel(porousKEpsilon);
+ ^
+porousKEpsilon/makeModel.C: At global scope:
+porousKEpsilon/makeModel.C:61:14: error: ‘template<class BasicTurbulenceModel> class Foam::RASModels::porousKEpsilon’ used without template parameters
+ makeRASModel(porousKEpsilon);
+              ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/defineDebugSwitch.H:103:42: note: in definition of macro ‘registerDebugSwitchWithName’
+     add##Tag##ToDebug add##Tag##ToDebug_(Name)
+                                          ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/className.H:121:5: note: in expansion of macro ‘defineDebugSwitch’
+     defineDebugSwitch(Type, DebugSwitch)
+     ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/makeTurbulenceModel.H:122:13: note: in expansion of macro ‘defineTypeNameAndDebug’
+             defineTypeNameAndDebug(Type, 0);                                   \
+             ^
+porousKEpsilon/makeModel.C:57:5: note: in expansion of macro ‘makeTurbulenceModel’
+     makeTurbulenceModel                                               \
+     ^
+porousKEpsilon/makeModel.C:61:1: note: in expansion of macro ‘makeRASModel’
+ makeRASModel(porousKEpsilon);
+ ^
+In file included from porousKEpsilon/makeModel.C:29:0:
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/addToRunTimeSelectionTable.H:40:57: error: type/value mismatch at argument 1 in template parameter list for ‘template<class BasicTurbulenceModel> template<class RASModelType> class Foam::RASModel<BasicTurbulenceModel>::adddictionaryConstructorToTable’
+     baseType::add##argNames##ConstructorToTable<thisType>                      \
+                                                         ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/makeTurbulenceModel.H:124:13: note: in expansion of macro ‘addToRunTimeSelectionTable’
+             addToRunTimeSelectionTable                                         \
+             ^
+porousKEpsilon/makeModel.C:57:5: note: in expansion of macro ‘makeTurbulenceModel’
+     makeTurbulenceModel                                               \
+     ^
+porousKEpsilon/makeModel.C:61:1: note: in expansion of macro ‘makeRASModel’
+ makeRASModel(porousKEpsilon);
+ ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/OpenFOAM/lnInclude/addToRunTimeSelectionTable.H:40:57: note:   expected a type, got ‘porousKEpsilon’
+     baseType::add##argNames##ConstructorToTable<thisType>                      \
+                                                         ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/src/TurbulenceModels/compressible/lnInclude/makeTurbulenceModel.H:124:13: note: in expansion of macro ‘addToRunTimeSelectionTable’
+             addToRunTimeSelectionTable                                         \
+             ^
+porousKEpsilon/makeModel.C:57:5: note: in expansion of macro ‘makeTurbulenceModel’
+     makeTurbulenceModel                                               \
+     ^
+porousKEpsilon/makeModel.C:61:1: note: in expansion of macro ‘makeRASModel’
+ makeRASModel(porousKEpsilon);
+ ^
+/home/carlo/OpenFOAM/OpenFOAM-4.1/wmake/rules/General/transform:8: recipe for target 'Make/linux64GccDPInt32Opt/porousKEpsilon/makeModel.o' failed
+make: *** [Make/linux64GccDPInt32Opt/porousKEpsilon/makeModel.o] Error 1

@@ -40,8 +40,20 @@ License
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 
+#define createBaseTurbulenceModel(                                             \
+    Alpha, Rho, baseModel, BaseModel, TDModel, Transport)                      \
+                                                                               \
+    namespace Foam                                                             \
+    {                                                                          \
+        typedef TDModel<BaseModel<Transport>>                                  \
+            Transport##BaseModel;                                              \
+        typedef RASModel<EddyDiffusivity<Transport##BaseModel>>                \
+            RAS##Transport##BaseModel;                                         \
+        typedef LESModel<EddyDiffusivity<Transport##BaseModel>>                \
+            LES##Transport##BaseModel;                                         \
+    }
 
-makeBaseTurbulenceModel
+createBaseTurbulenceModel
 (
     geometricOneField,
     volScalarField,
@@ -52,7 +64,6 @@ makeBaseTurbulenceModel
 );
 
 
-
 #define makeRASModel(Type)                                                     \
     makeTemplatedTurbulenceModel                                               \
     (fluidThermoCompressibleTurbulenceModel, RAS, Type)
@@ -60,6 +71,6 @@ makeBaseTurbulenceModel
 #include "porousKEpsilon.H"
 makeRASModel(porousKEpsilon);
 
-//makeTurbulenceModel(fluidThermoCompressibleTurbulenceModel, RAS, porouskEpsilon);
+
 
 // ************************************************************************* //
