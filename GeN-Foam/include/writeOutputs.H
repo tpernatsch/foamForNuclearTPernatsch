@@ -25,27 +25,36 @@ License
 
 Info<< "Writing output files\n" << endl;
 
-powerDat << runTime.time().value() << "\t" << pTot << endl;
+powerDat << runTime.time().value() << ";" << pTot << endl;
+
+// Write flux optputs
 
 fluxDat << runTime.time().value();
 
 forAll(flux, energyI)
 {
-    fluxDat << "\t" << fvc::domainIntegrate(flux[energyI]).value();
+    fluxDat << ";" << fvc::domainIntegrate(flux[energyI]).value();
 }
 
 fluxDat << endl;
+
+// Write delayed neutron precursors output
 
 precsDat << runTime.time().value();
 
 forAll(prec, precI)
 {
-    precsDat << "\t" << fvc::domainIntegrate(prec[precI]).value();
+    precsDat << ";" << fvc::domainIntegrate(prec[precI]).value();
 }
 
 precsDat << endl;
 
-k_eff << keff << endl ;
+// Write keff
+
+k_effDat << runTime.time().value() << ";" << keff << endl ;
+
+// Write max, min and av fuel and cladding temperature
+
 {
 
 dimensionedScalar Tav = fvc::domainIntegrate(thermo.T()*(TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL))))
@@ -74,20 +83,20 @@ scalar TMaxClad = max(TinnerClad.primitiveField()) ;
 
 reduce(TMaxClad, maxOp<scalar>());
 
-TmaxDat << runTime.time().value() << "\t" << Tmax << endl;
+TmaxDat << runTime.time().value() << ";" << Tmax << endl;
 
-TavDat << runTime.time().value() << "\t" << Tav.value() << endl;
+TavDat << runTime.time().value() << ";" << Tav.value() << endl;
 
-TavFuelDat << runTime.time().value() << "\t" << TavAvFuel.value() << endl;
+TavFuelDat << runTime.time().value() << ";" << TavAvFuel.value() << endl;
 
-TavCladDat << runTime.time().value() << "\t" << TavAvClad.value() << endl;
+TavCladDat << runTime.time().value() << ";" << TavAvClad.value() << endl;
 
-TMaxFuelDat << runTime.time().value() << "\t" <<  TMaxFuel << endl;
+TMaxFuelDat << runTime.time().value() << ";" <<  TMaxFuel << endl;
 
-TMaxCladDat << runTime.time().value() << "\t" <<  TMaxClad << endl;
+TMaxCladDat << runTime.time().value() << ";" <<  TMaxClad << endl;
 
-TminDat << runTime.time().value() << "\t" << Tmin << endl;
+TminDat << runTime.time().value() << ";" << Tmin << endl;
 
-totalDisplacedCellsVolumeDat << runTime.time().value() << "\t" << (fvc::domainIntegrate((sigmaPow[0]/(sigmaPow[0]+dimensionedScalar("",dimensionSet(1,1,-2,0,0,0,0),SMALL))))).value() << endl;
+totalDisplacedCellsVolumeDat << runTime.time().value() << ";" << (fvc::domainIntegrate((sigmaPow[0]/(sigmaPow[0]+dimensionedScalar("",dimensionSet(1,1,-2,0,0,0,0),SMALL))))).value() << endl;
 }
 

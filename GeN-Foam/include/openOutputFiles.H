@@ -4,47 +4,57 @@ powerOctave << "% time - power " << endl;
 powerOctave << "power = [" << endl;
 */
 OFstream powerDat( runTime.path()/"power.dat" );
-powerDat << "# time - power" << endl;
+powerDat << "time;power" << endl;
 /*
 OFstream fluxOctave( runTime.path()/"flux.m" );
 fluxOctave << "% time - flux " << endl;
 fluxOctave << "flux = [" << endl;
 */
 OFstream fluxDat( runTime.path()/"flux.dat" );
-fluxDat << "# time - flux" << endl;
+fluxDat << "time";
+forAll(flux, energyI)
+{
+    fluxDat << ";" << "flux" << energyI;
+};
+fluxDat << endl;
 /*
 OFstream precsOctave( runTime.path()/"precs.m" );
 precsOctave << "% time - precs " << endl;
 precsOctave << "precs = [" << endl;
 */
 OFstream precsDat( runTime.path()/"precs.dat" );
-precsDat << "# time - precs" << endl;
+precsDat << "time";
+forAll(prec, precI)
+{
+    precsDat << ";" << "prec" << precI;
+}
+precsDat << endl;
 /*
 OFstream TmaxOctave( runTime.path()/"Tmax.m" );
 TmaxOctave << "% time - Tmax " << endl;
 TmaxOctave << "Tmax = [" << endl;
 */
 OFstream TmaxDat( runTime.path()/"Tmax.dat" );
-TmaxDat << "# time - Tmax" << endl;
+TmaxDat << "time;Tmax" << endl;
 /*
 OFstream TavOctave( runTime.path()/"Tav.m" );
 TavOctave << "% time - Tav " << endl;
 TavOctave << "Tav = [" << endl;
 */
 OFstream TavDat( runTime.path()/"Tav.dat" );
-TavDat << "# time - Tav" << endl;
+TavDat << "time;Tav" << endl;
 
 OFstream TavFuelDat( runTime.path()/"TavFuel.dat" );
-TavFuelDat << "# time - TavFuel" << endl;
+TavFuelDat << "time;TavFuel" << endl;
 
 OFstream TavCladDat( runTime.path()/"TavClad.dat" );
-TavCladDat << "# time - TavClad" << endl;
+TavCladDat << "time;TavClad" << endl;
 
 OFstream TMaxFuelDat( runTime.path()/"TMaxFuel.dat" );
-TMaxFuelDat << "# time - TMaxFuel" << endl;
+TMaxFuelDat << "time;TMaxFuel" << endl;
 
 OFstream TMaxCladDat( runTime.path()/"TMaxClad.dat" );
-TMaxCladDat << "# time - TMaxClad" << endl;
+TMaxCladDat << "time;TMaxClad" << endl;
 
 /*
 OFstream TminOctave( runTime.path()/"Tmin.m" );
@@ -52,13 +62,14 @@ TminOctave << "% time - Tmin " << endl;
 TminOctave << "Tmin = [" << endl;
 */
 OFstream TminDat( runTime.path()/"Tmin.dat" );
-TminDat << "# time - Tmin" << endl;
+TminDat << "time;Tmin" << endl;
 /*
 OFstream totalDisplacedCellsVolumeOctave( runTime.path()/"totalDisplacedCellsVolume.m" );
 totalDisplacedCellsVolumeOctave << "% time - totalDisplacedCellsVolume " << endl;
 totalDisplacedCellsVolumeOctave << "totalDisplacedCellsVolume = [" << endl;
 */
 OFstream totalDisplacedCellsVolumeDat( runTime.path()/"totalDisplacedCellsVolume.dat" );
-totalDisplacedCellsVolumeDat << "# time - totalDisplacedCellsVolume" << endl;
+totalDisplacedCellsVolumeDat << "time;totalDisplacedCellsVolume" << endl;
 
-OFstream k_eff( runTime.path()/"k_eff.txt" );
+OFstream k_effDat( runTime.path()/"k_eff.dat" );
+k_effDat << "time;k_eff" << endl;
