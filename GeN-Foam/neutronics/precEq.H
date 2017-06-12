@@ -17,7 +17,7 @@ forAll(prec,precI)
 			dimensionedScalar("", dimensionSet(0,2,-1,0,0,0,0), 0.0),
 			zeroGradientFvPatchScalarField::typeName
 		);
-		volScalarField diffCoeff = turb.alphaEff()/thermo.rho();
+		volScalarField diffCoeff = turb.alphat()/thermo.rho()+thermo.mu()/thermo.rho()/ScNo;// (alphaEff=nu/Pr+alphat)
 		neutroToFluid.mapTgtToSrc( diffCoeff , plusEqOp<scalar>(), diffCoeffNeutro.primitiveFieldRef());
 		diffCoeffNeutro.correctBoundaryConditions();
 

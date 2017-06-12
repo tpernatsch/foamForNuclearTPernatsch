@@ -4,6 +4,8 @@ neutroToFluid.mapTgtToSrc( thermo.rho(), plusEqOp<scalar>(), rhoCoolNeutro.primi
 neutroToFluid.mapTgtToSrc( thermo.T(), plusEqOp<scalar>(), TCoolNeutro.primitiveFieldRef());
 if(liquidFuel)
 {	
+
+	U.correctBoundaryConditions();
 	neutroToFluid.mapTgtToSrc( U, plusEqOp<vector>(), UNeutro.primitiveFieldRef());
 	UNeutro.correctBoundaryConditions();
 

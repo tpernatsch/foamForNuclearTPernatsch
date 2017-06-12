@@ -56,7 +56,6 @@
 		}
 		else
 		{
-			Info<< "No ROM acc" << nl << endl;
 			neutroEq.solve();
 		}
 

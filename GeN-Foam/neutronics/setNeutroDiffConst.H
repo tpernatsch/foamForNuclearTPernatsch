@@ -160,6 +160,8 @@ Info<< "Set neutro fields\n" << endl;
 
 				fuelFraction[cellIglobal] = fuelFractionList[zone];
 
+				ScNo[cellIglobal] = ScNoList[zone];
+
 				if(useGivenDiscFactors)
 				{
 					discFactor[energyI][cellIglobal] = discFactorList[zone][energyI];
@@ -186,6 +188,7 @@ Info<< "Set neutro fields\n" << endl;
 		chiDelayed[energyI].correctBoundaryConditions();
 		BetaTot.correctBoundaryConditions();
 		fuelFraction.correctBoundaryConditions();
+		ScNo.correctBoundaryConditions();
 		discFactor[energyI].correctBoundaryConditions();	
 
 	}

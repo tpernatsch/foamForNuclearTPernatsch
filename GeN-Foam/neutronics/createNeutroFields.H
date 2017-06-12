@@ -302,6 +302,21 @@
 		zeroGradientFvPatchScalarField::typeName
 	);
 
+	Info<< "Schmidt number\n" << endl;
+	volScalarField ScNo
+	(
+		IOobject
+		(
+			"ScNo",
+			runTime.timeName(),
+			neutroMesh,
+			IOobject::NO_READ,
+			IOobject::NO_WRITE
+		),
+		neutroMesh,
+		dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 1.0),
+		zeroGradientFvPatchScalarField::typeName
+	);
 
 	Info<< "discFactor\n" << endl;
 	PtrList<volScalarField > discFactor(energyGroups);
