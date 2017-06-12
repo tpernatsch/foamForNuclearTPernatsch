@@ -24,7 +24,7 @@ forAll(prec,precI)
 
 		fvScalarMatrix precEq
 		(
-			fvm::ddt(porosityNeutro,prec[precI])
+			fvm::ddt(porosityNeutro*(1-eigenvalueNeutronics),prec[precI])
 		  	+ fvm::Sp(lambda[precI]*porosityNeutro, prec[precI])
 		  	- neutroSource/keff*Beta[precI]
 			+ fvm::div(phiNeutro, prec[precI])
