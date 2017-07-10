@@ -11,6 +11,10 @@
     fvVectorMatrix& UEqn = tUEqn.ref();
     UEqn.relax();
 
+
+
+
+
     //"reconstruct" stuff is used to fake a staggered grid (rhie chow)
     if (momentumPredictor)
     {

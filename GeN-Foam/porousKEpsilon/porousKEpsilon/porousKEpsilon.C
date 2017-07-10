@@ -46,7 +46,17 @@ void porousKEpsilon<BasicTurbulenceModel>::correctNut()
      this->nut_ = (this->Cmu_*sqr(this->k_)/this->epsilon_)*clearYesNo + (nuStab)*(1-clearYesNo);
      this->nut_.correctBoundaryConditions();
  
-     BasicTurbulenceModel::correctNut();
+     //BasicTurbulenceModel::correctNut();
+     // Read Prt if provided
+     this->Prt_ = dimensioned<scalar>::lookupOrDefault
+     (
+         "Prt",
+         this->coeffDict(),
+         1.0
+     );
+     this->alphat_ = this->rho_*(this->Cmu_*sqr(this->k_)/this->epsilon_)/this->Prt_;//keep this one as it should be
+     this->alphat_.correctBoundaryConditions();
+
 }
 
 
