@@ -55,15 +55,6 @@
      subscaleFuel.fuelAverage(TavFuel);
      subscaleFuel.cladAverage(TavClad);
 
-     neutroToFluid.mapTgtToSrc( TavFuel, plusEqOp<scalar>(), TfuelNeutro.primitiveFieldRef ());
-     neutroToFluid.mapTgtToSrc( TavClad, plusEqOp<scalar>(), TcladNeutro.primitiveFieldRef ());
-     neutroToFluid.mapTgtToSrc( thermo.rho(), plusEqOp<scalar>(), rhoCoolNeutro.primitiveFieldRef ());
-     neutroToFluid.mapTgtToSrc( thermo.T(), plusEqOp<scalar>(), TCoolNeutro.primitiveFieldRef ());
-
-     TfuelNeutro.correctBoundaryConditions();
-     TcladNeutro.correctBoundaryConditions();
-     rhoCoolNeutro.correctBoundaryConditions();
-     TCoolNeutro.correctBoundaryConditions();
 
     //solve for Temp of structures
     fvScalarMatrix structureEqn

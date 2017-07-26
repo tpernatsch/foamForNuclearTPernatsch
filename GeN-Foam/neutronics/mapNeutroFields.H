@@ -1,7 +1,11 @@
+{
+volScalarField rhoRhok = thermo.rho()*rhok;
 neutroToFluid.mapTgtToSrc( TavFuel, plusEqOp<scalar>(), TfuelNeutro.primitiveFieldRef());
 neutroToFluid.mapTgtToSrc( TavClad, plusEqOp<scalar>(), TcladNeutro.primitiveFieldRef());
-neutroToFluid.mapTgtToSrc( thermo.rho()*rhok, plusEqOp<scalar>(), rhoCoolNeutro.primitiveFieldRef());
+neutroToFluid.mapTgtToSrc( rhoRhok, plusEqOp<scalar>(), rhoCoolNeutro.primitiveFieldRef());
 neutroToFluid.mapTgtToSrc( thermo.T(), plusEqOp<scalar>(), TCoolNeutro.primitiveFieldRef());
+
+}
 if(liquidFuel)
 {	
 
