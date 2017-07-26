@@ -128,7 +128,7 @@ surfaceScalarField phi
 		IOobject::READ_IF_PRESENT,
 		IOobject::AUTO_WRITE
 	),
-	linearInterpolate(rho*realU) & fluidMesh.Sf()
+	linearInterpolate(rho*U) & fluidMesh.Sf()
 );
 
 volScalarField p_rgh
@@ -150,7 +150,7 @@ p_rgh = thermo.p() - rho*gh; // Force p_rgh to be consistent with p
 
 surfaceScalarField ghf("ghf", g & fluidMesh.Cf());
 
-volScalarField K("K", 0.5*magSqr(U));
+volScalarField K("K", 0.5*magSqr(realU));
 
 volScalarField dpdt
 (
