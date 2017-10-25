@@ -1,6 +1,6 @@
 
 
-if( ((neutroResidual0-neutroResidual2)/max(SMALL,neutroResidual0)>0.1) )
+if( ((neutroResidual0-neutroResidual2)/max(SMALL,neutroResidual0)>0.05) )
 {
 	solveROM = true;
 	fullSolutionCounter = 0;

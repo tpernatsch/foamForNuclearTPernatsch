@@ -25,7 +25,6 @@ Info<< "Set neutro fields\n" << endl;
 			}
 		}
 
-
 		forAll(entries, zoneI)
 		{
 

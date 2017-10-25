@@ -21,7 +21,7 @@ ddtSchemes
 
 gradSchemes
 {
-    default         Gauss linear;
+    default         Gauss leastSquares;
 }
 
 divSchemes

@@ -1,9 +1,10 @@
 
 Info << "Solving neutronics" << endl ;
 
+#include "mapNeutroFields.H"
+
 #include "updateNeutroDiffConst.H"
 
-#include "mapNeutroFields.H"
 
 forAll(flux,energyI)
 {

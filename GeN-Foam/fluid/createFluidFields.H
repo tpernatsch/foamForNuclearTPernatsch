@@ -146,7 +146,7 @@ volScalarField p_rgh
 
 volScalarField gh("gh",	g & fluidMesh.C());
 
-p_rgh = thermo.p() - rho*gh; // Force p_rgh to be consistent with p
+//p_rgh = thermo.p() - rho*gh; // Force p_rgh to be consistent with p
 
 surfaceScalarField ghf("ghf", g & fluidMesh.Cf());
 
