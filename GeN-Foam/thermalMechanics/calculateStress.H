@@ -1,36 +1,36 @@
-    if (runTime.outputTime())
-    {
-        volSymmTensorField sigma
+if (runTime.outputTime())
+{
+    volSymmTensorField sigma
+    (
+        IOobject
         (
-            IOobject
-            (
-                "sigma",
-                runTime.timeName(),
-                mechMesh,
-                IOobject::NO_READ,
-                IOobject::AUTO_WRITE
-            ),
-            rhoMech*sigmaD
-        );
+            "sigma",
+            runTime.timeName(),
+            mechMesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        rhoMech*sigmaD
+    );
 
 
-		const volScalarField& Tmech = Tptr();
-		sigma = sigma - I*(rhoMech*threeKalpha*Tmech);
+    const volScalarField& Tmech = Tptr();
+    sigma = sigma - I*(rhoMech*threeKalpha*Tmech);
 
-        volScalarField sigmaEq
+    volScalarField sigmaEq
+    (
+        IOobject
         (
-            IOobject
-            (
-                "sigmaEq",
-                runTime.timeName(),
-                mechMesh,
-                IOobject::NO_READ,
-                IOobject::AUTO_WRITE
-            ),
-            sqrt((3.0/2.0)*magSqr(dev(sigma)))
-        );
+            "sigmaEq",
+            runTime.timeName(),
+            mechMesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        sqrt((3.0/2.0)*magSqr(dev(sigma)))
+    );
 
-        Info<< "Max sigmaEq = " << max(sigmaEq).value()
-            << endl;
+    Info<< "Max sigmaEq = " << max(sigmaEq).value()
+        << endl;
 
-    }
+}

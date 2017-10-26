@@ -35,18 +35,14 @@ Description
     mesh region
 
 Reference publication (for the modification of solidDisplacementFoam)
-	Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-	"GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-	analysis of nuclear reactors", Nuclear Engineering and Design, 2015
+    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors", Nuclear Engineering and Design, 2015
 
 Author (for the modification of solidDisplacementFoam)
-    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
-
-
-
-
 
     Info<< "\nCalculating displacement field\n" << endl;
 
@@ -55,35 +51,25 @@ Author (for the modification of solidDisplacementFoam)
 
         do
         {
-			Info << "ThermoMechanical iteration no:  " << iCorrMech << nl << endl;
+            Info << "ThermoMechanical iteration no:  " << iCorrMech << nl << endl;
             {
                 volScalarField& Tmech = Tptr();
-                //copy from porous solver instead of solving
 
-                /*
-                solve
-                (
-                    fvm::ddt(Tmech) == fvm::laplacian(DT, Tmech)
-                );
-                */
+                Tmech *= 0;
+                TavFuelMech *= 0;
 
-				Tmech *= 0;
-				TavFuelMech *= 0;
+                fluidToTM.mapSrcToTgt(Tstructures, plusEqOp<scalar>(), Tmech);
+                if(linkedFuel)
+                {
+                    fluidToTM.mapSrcToTgt(TavClad, plusEqOp<scalar>(), TavFuelMech);
+                }
+                else
+                {
+                    fluidToTM.mapSrcToTgt(TavFuel, plusEqOp<scalar>(), TavFuelMech);
+                }
 
-
-				fluidToTM.mapSrcToTgt(Tstructures, plusEqOp<scalar>(), Tmech);
-				if(linkedFuel)
-				{
-					fluidToTM.mapSrcToTgt(TavClad, plusEqOp<scalar>(), TavFuelMech);
-				}
-				else
-				{
-					fluidToTM.mapSrcToTgt(TavFuel, plusEqOp<scalar>(), TavFuelMech);
-				}
-
-
-				Tmech.correctBoundaryConditions();
-				TavFuelMech.correctBoundaryConditions();
+                Tmech.correctBoundaryConditions();
+                TavFuelMech.correctBoundaryConditions();
             }
 
 
@@ -97,7 +83,6 @@ Author (for the modification of solidDisplacementFoam)
 
                 );
 
-                //if (thermalStress)
                 {
                     const volScalarField& Tmech = Tptr();
                     DEqn += fvc::grad(threeKalpha*(Tmech-TrefStructures));
@@ -131,51 +116,48 @@ Author (for the modification of solidDisplacementFoam)
 
         } while (initialResidual > convergenceTolerance && ++iCorrMech < nCorrMech);
 
-		residual = max(residual,initialResidual);
+        residual = max(residual,initialResidual);
 
         #include "calculateStress.H"
 
         // calculating axial fuel expansion
-		{
+        {
 
-			volScalarField& Tmech = Tptr();
-			Tmech *= 0;
-			fluidToTM.mapSrcToTgt(Tstructures, plusEqOp<scalar>(), Tmech);
-			Tmech.correctBoundaryConditions();
+            volScalarField& Tmech = Tptr();
+            Tmech *= 0;
+            fluidToTM.mapSrcToTgt(Tstructures, plusEqOp<scalar>(), Tmech);
+            Tmech.correctBoundaryConditions();
 
 
-			surfaceScalarField faceArea(fuelOrientation & mechMesh.Sf());
+            surfaceScalarField faceArea(fuelOrientation & mechMesh.Sf());
 
-			fvScalarMatrix fuelDispEqn
-			(
-				fvm::div(faceArea,fuelDisp,"div(fuelDisp)")
-			 ==
-				alphaFuel*(TavFuelMech-TrefFuel)
-			);
+            fvScalarMatrix fuelDispEqn
+            (
+                fvm::div(faceArea,fuelDisp,"div(fuelDisp)")
+             ==
+                alphaFuel*(TavFuelMech-TrefFuel)
+            );
 
-			vector CROrientation = -fuelOrientation;
-			surfaceScalarField faceAreaCR(CROrientation & mechMesh.Sf());
+            vector CROrientation = -fuelOrientation;
+            surfaceScalarField faceAreaCR(CROrientation & mechMesh.Sf());
 
-			fvScalarMatrix CRDispEqn
-			(
-				fvm::div(faceAreaCR,CRDisp,"div(CRDisp)")
-			 ==
-				-alphaCR*(Tmech-TrefCR)
-			);
+            fvScalarMatrix CRDispEqn
+            (
+                fvm::div(faceAreaCR,CRDisp,"div(CRDisp)")
+             ==
+                -alphaCR*(Tmech-TrefCR)
+            );
 
-			fuelDispEqn.solve();
-			CRDispEqn.solve();
+            fuelDispEqn.solve();
+            CRDispEqn.solve();
 
-			fuelDispVector = (fuelDisp+CRDisp)*fuelOrientation;
+            fuelDispVector = (fuelDisp+CRDisp)*fuelOrientation;
 
-			meshDispOld = meshDisp;
+            meshDispOld = meshDisp;
 
-			meshDisp = (Disp-((Disp & fuelOrientation) * fuelOrientation)) + fuelDispVector ;//remove any axial variation
+            meshDisp = (Disp-((Disp & fuelOrientation) * fuelOrientation)) + fuelDispVector ;//remove any axial variation
 
-			meshDisp.correctBoundaryConditions();
+            meshDisp.correctBoundaryConditions();
 
-		//Info << "faceArea: " << faceArea << endl;
-		//Info << "mechMesh.Sf(): " << mechMesh.Sf() << endl;
-		//Info << "alphaFuel*(TavFuelMech-TrefFuel): " << alphaFuel*(TavFuelMech-TrefFuel) << endl;
-		}
+        }
 // ************************************************************************* //

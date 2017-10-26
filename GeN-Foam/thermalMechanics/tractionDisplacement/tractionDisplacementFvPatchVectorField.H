@@ -33,7 +33,7 @@ SourceFiles
     tractionDisplacementFvPatchVectorField.C
 
 Author (of modification)
-    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>   
 
 \*---------------------------------------------------------------------------*/
 

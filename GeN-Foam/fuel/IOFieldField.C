@@ -54,10 +54,10 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io)
      || (io.readOpt() == IOobject::READ_IF_PRESENT && headerOk())
     )
     {
-		//readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
-		// problem work around: skip that operator, directly use the read function and provied it with the right pointer
-		FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
-		close();
+        //readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
+        // problem work around: skip that operator, directly use the read function and provied it with the right pointer
+        FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
+        close();
     }
 }
 
@@ -88,10 +88,10 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, const label siz
      || (io.readOpt() == IOobject::READ_IF_PRESENT && headerOk())
     )
     {
-		//readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
-		// problem work around: skip that operator and directly use the read function
-		FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
-		close();
+        //readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
+        // problem work around: skip that operator and directly use the read function
+        FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
+        close();
     }
     else
     {
@@ -127,15 +127,15 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, const FieldFiel
      || (io.readOpt() == IOobject::READ_IF_PRESENT && headerOk())
     )
     {
-		//readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
-		// problem work around: skip that operator and directly use the read function
-		FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
-		close();
+        //readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
+        // problem work around: skip that operator and directly use the read function
+        FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
+        close();
     }
     else
     {
-		PtrList<Field<Type> >::operator=(f);
-		//FieldField<Field,Type>(f);
+        PtrList<Field<Type> >::operator=(f);
+        //FieldField<Field,Type>(f);
         //FieldField<Field,Type>::operator=(f);
     }
 }
@@ -171,10 +171,10 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, const Xfer<Fiel
      || (io.readOpt() == IOobject::READ_IF_PRESENT && headerOk())
     )
     {
-		//readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
-		// problem work around: skip that operator and directly use the read function
-		FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
-		close();
+        //readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
+        // problem work around: skip that operator and directly use the read function
+        FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
+        close();
     }
 }
 
@@ -211,7 +211,7 @@ Foam::IOFieldField<Field,Type>&
 Foam::IOFieldField<Field,Type>::oldTime()
 {
     static_cast<const IOFieldField<Field,Type>&>(*this).oldTime();//static_cast<const subscaleFuel&>(*this) converts *this into const subscaleFuel&.
-    													//Applying the static_cast operator to a null pointer will convert it to a null pointer value of the target type
+                                                        //Applying the static_cast operator to a null pointer will convert it to a null pointer value of the target type
 
     return *field0Ptr_;
 }

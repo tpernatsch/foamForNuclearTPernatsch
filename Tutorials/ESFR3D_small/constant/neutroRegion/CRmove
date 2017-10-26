@@ -11,6 +11,7 @@ FoamFile
 //
 
 // in case one wants to move control rods, he/she should here define the control rods he/she wants to move
+// CRs must be aligned with z axis
 
 zones 
  ( 

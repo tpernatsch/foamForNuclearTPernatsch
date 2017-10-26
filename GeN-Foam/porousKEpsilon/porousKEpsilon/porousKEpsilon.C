@@ -39,11 +39,11 @@ namespace RASModels
 template<class BasicTurbulenceModel>
 void porousKEpsilon<BasicTurbulenceModel>::correctNut()
 {
-    volScalarField clearYesNo = 1.0 - mag(porousMedium_.kepsilonConvergenceRate())/(mag(porousMedium_.kepsilonConvergenceRate())+dimensionedScalar("", dimensionSet(0,0,-1,0,0,0,0), SMALL) );
+    tmp<volScalarField> tClearYesNo = 1.0 - mag(porousMedium_.kepsilonConvergenceRate())/(mag(porousMedium_.kepsilonConvergenceRate())+dimensionedScalar("", dimensionSet(0,0,-1,0,0,0,0), SMALL) );
 
-     volScalarField nuStab = mag(this->U_)*porousMedium_.hydraulicDiameterStructure() / 100.0; //100 e' un Reynolds laminare 
+     tmp<volScalarField> tnuStab = mag(this->U_)*porousMedium_.hydraulicDiameterStructure() / 100.0; //100 e' un Reynolds laminare 
 
-     this->nut_ = (this->Cmu_*sqr(this->k_)/this->epsilon_)*clearYesNo + (nuStab)*(1-clearYesNo);
+     this->nut_ = (this->Cmu_*sqr(this->k_)/this->epsilon_)*tClearYesNo() + (tnuStab)*(1-tClearYesNo());
      this->nut_.correctBoundaryConditions();
  
      //BasicTurbulenceModel::correctNut();
@@ -197,7 +197,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
         this->mesh_
     ),
 
-    porousMedium_(this->mesh_.objectRegistry::lookupObject<correlationPorousMedium>("porousMediumProperties"))
+    porousMedium_(this->mesh_.objectRegistry::template lookupObject<correlationPorousMedium>("porousMediumProperties"))
 
 {
     bound(k_, this->kMin_);
@@ -267,8 +267,9 @@ void porousKEpsilon<BasicTurbulenceModel>::correct()
     epsilon_.boundaryFieldRef().updateCoeffs();
 
     // Dissipation equation
-    volScalarField clearYesNo = 1.0 - mag(porousMedium_.kepsilonConvergenceRate())/(mag(porousMedium_.kepsilonConvergenceRate())+dimensionedScalar("", dimensionSet(0,0,-1,0,0,0,0), SMALL) );
-
+    tmp<volScalarField> tClearYesNo = 1.0 - mag(porousMedium_.kepsilonConvergenceRate())/( mag(porousMedium_.kepsilonConvergenceRate()) + dimensionedScalar("", dimensionSet(0,0,-1,0,0,0,0), SMALL) );
+    const volScalarField& clearYesNo = tClearYesNo();
+    
     tmp<fvScalarMatrix> epsEqn
     (
         fvm::ddt(alpha, rho, epsilon_)

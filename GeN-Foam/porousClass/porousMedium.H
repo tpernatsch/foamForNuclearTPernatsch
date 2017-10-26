@@ -32,18 +32,17 @@ SourceFiles
     porousMedium.C
 
 Reference publications
-	Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-	"GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-	analysis of nuclear reactors", Nuclear Engineering and Design, submitted
+    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors", Nuclear Engineering and Design, submitted
 
-	Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-	solver to the European Sodium Fast Reactor and verification against available codes",
-	Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
+    solver to the European Sodium Fast Reactor and verification against available codes",
+    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
 
 
 Author
-    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it; 
-                   carlo.fiorina@epfl.ch;>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
 
@@ -79,7 +78,7 @@ protected:
         const fvMesh& mesh_;
 
         //- Reference to thermophysical properties
-	const rhoThermo& thermo_;
+        const rhoThermo& thermo_;
 
         //- Reference to density field
         const volScalarField& rho_;
@@ -139,7 +138,7 @@ public:
             (
                 const volScalarField& rho,
                 const volVectorField& U,
-				const rhoThermo& thermo
+                const rhoThermo& thermo
             ),
             (rho, U, thermo)
         );
@@ -152,7 +151,7 @@ public:
         (
             const volScalarField& rho, // in principle not necessary
             const volVectorField& U,
-	    const rhoThermo& thermo
+            const rhoThermo& thermo
         );
 
 
@@ -163,7 +162,7 @@ public:
         (
             const volScalarField& rho,
             const volVectorField& U,
-	    	const rhoThermo& thermo
+            const rhoThermo& thermo
         );
 
 
@@ -239,7 +238,7 @@ public:
             tmp<volVectorField> explicitMomentumSource() const;
 
             //- Return the implicit drag force
-            fvVectorMatrix semiImplicitMomentumSource(volVectorField& U) const;
+            tmp<fvVectorMatrix> semiImplicitMomentumSource(volVectorField& U) const;
 
 
         // Edit

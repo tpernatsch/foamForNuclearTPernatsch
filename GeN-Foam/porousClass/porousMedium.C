@@ -48,8 +48,8 @@ Foam::porousMedium::porousMedium
     const rhoThermo& thermo
 )
 :
-    IOdictionary(// NB: porousMedium e' derivata da IOdictionary -> devi usare un costruttore per IOdictionary per inizializzare tutte le variabile contenute nella parte IOdictionary di porousMedium
-        IOobject(// NB: IOdictionary richiede un IOobject come costruttore
+    IOdictionary(// NB: porousMedium deruved from IOdictionary: need to construct IOdictionary
+        IOobject(// NB: IOdictionary need IOobject as constructor
             "porousMediumProperties",
             U.mesh().time().constant(),
             U.mesh(),
@@ -62,7 +62,7 @@ Foam::porousMedium::porousMedium
     rho_(rho),
     U_(U),
     mu_(thermo.mu()),
-    gamma_(// NB: geometricField e' derivata da IOobject -> devi usare un costruttore per IOobject per inizializzare tutte le variabile contenute nella parte IOobject di geometricField
+    gamma_(
         IOobject(
             "gamma",
             mesh_.time().timeName(),
@@ -98,7 +98,7 @@ Foam::porousMedium::porousMedium
         dimensionedScalar(word(), dimensionSet(0,-1,0,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-	rotate_(
+    rotate_(
         IOobject(
             "porousMedium::rotate",
             mesh_.time().timeName(),
@@ -107,7 +107,6 @@ Foam::porousMedium::porousMedium
             IOobject::NO_WRITE
         ),
         mesh_,
-        //dimensionedTensor(coordinateSystem("",vector::zero,IOdictionary::lookup("localZaxis"),IOdictionary::lookup("localXaxis")).R().T()),
         dimensionedTensor(word(), dimless, tensor::I),
         zeroGradientFvPatchScalarField::typeName
     ),
@@ -208,7 +207,7 @@ Foam::autoPtr<Foam::porousMedium> Foam::porousMedium::New
 
     return autoPtr<porousMedium>
     (
-        cstrIter()(rho, U, thermo) //here is a crucial point: if a porousMedium model exists, the functions return its contructor!
+        cstrIter()(rho, U, thermo) //if a porousMedium model exists, the functions return its contructor
     );
 }
 
@@ -225,20 +224,17 @@ Foam::porousMedium::~porousMedium()
 Foam::tmp< Foam::volVectorField >
 Foam::porousMedium::explicitMomentumSource() const //totally explicit
 {
-	//- Friction coefficient
-	volTensorField CD = dragCoeff();
-	return (-gamma_*CD & U_) + pump();
+    //- Friction coefficient
+    return (-gamma_*dragCoeff() & U_) + pump();
 }
 
 
-Foam::fvVectorMatrix
+Foam::tmp<Foam::fvVectorMatrix>  
 Foam::porousMedium::semiImplicitMomentumSource(volVectorField& U) const  //linear dependence on U left implicit
 {
 
     //- Friction coefficient
-    volTensorField CD = dragCoeff();
-
-    return -gamma_*(fvm::Sp(1.0/3.0*tr(CD) / gamma_, U) + (dev(CD) & U / gamma_)) + pump();
+   return -gamma_*(fvm::Sp(1.0/3.0*tr(dragCoeff()) / gamma_, U) + (dev(dragCoeff()) & U / gamma_)) + pump();
 }
 
 void Foam::porousMedium::correct()

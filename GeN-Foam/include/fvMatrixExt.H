@@ -23,26 +23,15 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Class
-    Foam::subscaleFuel
+    Foam::fvMatrixExt
 
 Description
-    Base class used to calculate behavior of fuel. Details of fuel are specified in subclasses.
-    It uses a dictionary called fuelProperties
-
-Reference publications
-	Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-	"GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-	analysis of nuclear reactors", Nuclear Engineering and Design, submitted
-
-	Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-	solver to the European Sodium Fast Reactor and verification against available codes",
-	Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
-
-Extended fvMatrix to have matrix multiplication and source with effect of boundaries and including already dividion by cell volume. Works only for scalars!
+    Extended fvMatrix to have matrix multiplication and source with effect 
+    of boundaries and including already dividion by cell volume. Works only 
+    for scalars!
 
 Author
-    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it; 
-                   carlo.fiorina@epfl.ch;>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 
 \*---------------------------------------------------------------------------*/
@@ -66,12 +55,11 @@ class fvMatrixExt
 
 public:
 
-
 // Constructors
 
 // Construct from mesh and dictionary
 fvMatrixExt(const tmp<fvMatrix<Type> >& tfvm):
-	fvMatrix<Type>(tfvm)
+    fvMatrix<Type>(tfvm)
 {}
 
 //- Destructor
@@ -80,10 +68,8 @@ fvMatrixExt(const tmp<fvMatrix<Type> >& tfvm):
 
 // Member Functions
 
-
 Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > Source() const
 {
-
 
     tmp<GeometricField<Type, fvPatchField, volMesh> > tSource
     (
@@ -109,9 +95,8 @@ Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > Source() const
     Source.correctBoundaryConditions();
 
     return tSource;
-		
+        
 }
-
 
 Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > SourceWithBC() const //beta version, may give problems
 {
@@ -137,11 +122,9 @@ Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > SourceWithBC() const //
     Source.primitiveFieldRef() = this->source();
     Foam::fvMatrix<Type>::addBoundarySource(Source.primitiveFieldRef(),false);//false exclude processor boundaries
     Source.primitiveFieldRef() /= this->psi().mesh().V();
-    Source.correctBoundaryConditions();	
+    Source.correctBoundaryConditions(); 
     return tSource;
-		
 }
-
 
 Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithBC() 
 {
@@ -164,7 +147,6 @@ Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithBC()
     );
     GeometricField<Type, fvPatchField, volMesh>& AmulWithBC = tAmulWithBC.ref();
 
-
     this->Foam::lduMatrix::Amul(AmulWithBC.primitiveFieldRef(), this->psi().internalField(), this->boundaryCoeffs(),  this->psi().boundaryField().scalarInterfaces() ,  direction(0));
 
     Field<Type> boundaryDiagCmpt(this->psi().size(), 0.0);
@@ -172,7 +154,7 @@ Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithBC()
     AmulWithBC.primitiveFieldRef() += boundaryDiagCmpt*this->psi().internalField();
     AmulWithBC.primitiveFieldRef() /= this->psi().mesh().V();
     AmulWithBC.correctBoundaryConditions();
-    return tAmulWithBC;		
+    return tAmulWithBC;     
 }
 
 
@@ -206,11 +188,8 @@ Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithBC(GeometricFie
     AmulWithBC.primitiveFieldRef() += boundaryDiagCmpt*phi.internalField();
     AmulWithBC.primitiveFieldRef() /= phi.mesh().V();
     AmulWithBC.correctBoundaryConditions();
-    return tAmulWithBC;		
+    return tAmulWithBC;     
 }
-
-
-
 
 Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > SourceWithBCnoV() const //beta version, may give problems
 {
@@ -237,9 +216,7 @@ Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > SourceWithBCnoV() const
     Foam::fvMatrix<Type>::addBoundarySource(Source.primitiveFieldRef(),false);//false exclude processor boundaries
     Source.correctBoundaryConditions();
     return tSource;
-		
 }
-
 
 Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithBCnoV() 
 {
@@ -270,7 +247,6 @@ Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithBCnoV()
     AmulWithBC.primitiveFieldRef() += boundaryDiagCmpt*this->psi().internalField();
     AmulWithBC.correctBoundaryConditions();
     return tAmulWithBC;
-	
 }
 
 Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithBCnoV(GeometricField<Type, fvPatchField, volMesh>& phi) 
@@ -301,10 +277,8 @@ Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithBCnoV(Geometric
     Foam::fvMatrix<Type>::addBoundaryDiag(boundaryDiagCmpt, false);
     AmulWithBC.primitiveFieldRef() += boundaryDiagCmpt*phi.internalField();
     AmulWithBC.correctBoundaryConditions();
-    return tAmulWithBC;			
+    return tAmulWithBC;         
 }
-
-
 
 Type initialResidual() 
 {
@@ -317,73 +291,70 @@ Type initialResidual()
      scalarField psi = this->psi().primitiveField();
     Foam::fvMatrix<Type>::addBoundaryDiag(this->diag(), 0);
 
-         FieldField<Field, scalar> bouCoeffs
-         (
-             this->boundaryCoeffs()
-         );
- 
-         FieldField<Field, scalar> intCoeffs
-         (
-             this->internalCoeffs()
-         );
- 
-         lduInterfaceFieldPtrsList interfaces =
-             this->psi().boundaryField().scalarInterfaces();
+    FieldField<Field, scalar> bouCoeffs
+    (
+        this->boundaryCoeffs()
+    );
+
+    FieldField<Field, scalar> intCoeffs
+    (
+        this->internalCoeffs()
+    );
+
+    lduInterfaceFieldPtrsList interfaces =
+        this->psi().boundaryField().scalarInterfaces();
 
 
-         this->initMatrixInterfaces
-         (
-             bouCoeffs,
-             interfaces,
-             psi,
-             Source,
-             0
-         );
- 
-         this->updateMatrixInterfaces
-         (
-             bouCoeffs,
-             interfaces,
-             psi,
-             Source,
-             0
-         );
+    this->initMatrixInterfaces
+    (
+        bouCoeffs,
+        interfaces,
+        psi,
+        Source,
+        0
+    );
 
+    this->updateMatrixInterfaces
+    (
+        bouCoeffs,
+        interfaces,
+        psi,
+        Source,
+        0
+    );
 
-     label nCells = psi.size();
+    label nCells = psi.size();
 
-     scalarField wA(nCells);
-     scalarField pA(nCells);
+    scalarField wA(nCells);
+    scalarField pA(nCells);
 
     this->Foam::fvMatrix<Type>::Amul(wA, psi, this->boundaryCoeffs(),  this->psi().boundaryField().scalarInterfaces() ,  direction(0));
 
+    // --- Calculate initial residual field
+    scalarField rA(Source - wA);
 
-     // --- Calculate initial residual field
-     scalarField rA(Source - wA);
+    // --- Calculate normalisation factor
 
-     // --- Calculate normalisation factor
+    this->Foam::fvMatrix<Type>::sumA(pA, bouCoeffs, interfaces);
 
-this->Foam::fvMatrix<Type>::sumA(pA, bouCoeffs, interfaces);
+    pA *= gAverage(psi,this->Foam::lduMatrix::mesh().comm());
 
-pA *= gAverage(psi,this->Foam::lduMatrix::mesh().comm());
+    //this->Foam::lduMatrix::mesh().comm()
 
-//this->Foam::lduMatrix::mesh().comm()
-
-scalar normFactor = 
-gSum
-(
-       (mag(wA - pA) + mag(Source - pA))(),
-       this->Foam::lduMatrix::mesh().comm()
-)
-+ SMALL;
+    scalar normFactor = 
+    gSum
+    (
+        (mag(wA - pA) + mag(Source - pA))(),
+        this->Foam::lduMatrix::mesh().comm()
+    )
+    + SMALL;
 
 
-    this->diag() = saveDiag;
+        this->diag() = saveDiag;
 
-    return gSumMag(rA,this->Foam::lduMatrix::mesh().comm())  / normFactor;
-
-		
-}
+        return gSumMag(rA,this->Foam::lduMatrix::mesh().comm())  / normFactor;
+            
+    }
 
 
 

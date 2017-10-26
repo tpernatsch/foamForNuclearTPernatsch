@@ -38,9 +38,6 @@ scalar maxCo =
 scalar maxDeltaT =
     runTime.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
 
-const bool compr =
-    runTime.controlDict().lookupOrDefault("compr", false);
-
 scalar maxPowerVariation =
     runTime.controlDict().lookupOrDefault<scalar>("maxPowerVariation", 0.025);
 
@@ -56,20 +53,7 @@ int maxTimeStepIterations =
 int maxNeutronIterations =
     runTime.controlDict().lookupOrDefault<int>("maxNeutronIterations", 10);
 
-const bool integralPredictor =
-    runTime.controlDict().lookupOrDefault("integralPredictor", false);
 
-const bool implicitPredictor =
-    runTime.controlDict().lookupOrDefault("implicitPredictor", false);
-
-const bool aitkenAcceleration =
-    runTime.controlDict().lookupOrDefault("aitkenAcceleration", false);
-
-const bool ROMAcceleration = runTime.controlDict().lookupOrDefault("ROMAcceleration", false);
-
-List<int> doNotParametrize(runTime.controlDict().lookupOrDefault<List<int> >("doNotParametrize", List<int>()));
-
-List<int> groupsWoDF(runTime.controlDict().lookupOrDefault<List<int> >("groupsWoDF", List<int>()));
 
 
 // ************************************************************************* //

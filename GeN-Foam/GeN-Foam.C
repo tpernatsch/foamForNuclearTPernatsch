@@ -35,20 +35,17 @@ Description
     Derived from chtMultiRegionFoam
 
 Reference publications
-	Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, 2015
-	"GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-	analysis of nuclear reactors", Nuclear Engineering and Design 294, pp. 24-37
+    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, 2015
+    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors", Nuclear Engineering and Design 294, pp. 24-37
 
-	Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-	solver to the European Sodium Fast Reactor and verification against available codes",
-	Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
+    solver to the European Sodium Fast Reactor and verification against available codes",
+    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
 
 
 Author
-    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it; 
-                   carlo.fiorina@epfl.ch;>
-
-
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
 
@@ -61,8 +58,6 @@ Author
 #include "coordinateSystem.H"
 #include "porousMedium.H"
 #include "subscaleFuel.H"
-#include "FieldFields.H"
-#include "FieldField.H"
 #include "volPointInterpolation.H"
 #include "meshToMesh.H"
 #include "SquareMatrix.H"
@@ -105,19 +100,18 @@ int main(int argc, char *argv[])
     while (runTime.run())
     {
 
-	#include "readTimeControls.H"
+        #include "readTimeControls.H"
         #include "readPIMPLEControls.H"
         #include "readSolidDisplacementFoamControls.H"
         #include "compressibleCoNo.H"
 
         if((runTime.timeIndex()-runTime.startTimeIndex())>0)
         {
-        	#include "setMultiRegionDeltaT.H"
-	}
+            #include "setMultiRegionDeltaT.H"
+        }
         runTime++;
 
         Info << "Time = " << runTime.timeName() << nl << endl;
-
 
         if (nOuterCorr != 1)
         {
@@ -125,31 +119,30 @@ int main(int argc, char *argv[])
                #include "storeOldFluidFields.H"
         }
 
-
         // --- PIMPLE loop
         for (int oCorr=0; oCorr<nOuterCorr; oCorr++)
         {
-		Info << "PIMPLE iteration no:  " << oCorr << nl << endl;
+            Info << "PIMPLE iteration no:  " << oCorr << nl << endl;
 
-		bool finalIter = oCorr == nOuterCorr-1;
+            bool finalIter = oCorr == nOuterCorr-1;
 
-		Info<< "\nSolving for fluid region " << endl;
-	
-		#include "setRegionFluidFields.H"
+            Info<< "\nSolving for fluid region " << endl;
 
-		#include "readFluidPIMPLEControls.H"
+            #include "setRegionFluidFields.H"
 
-		#include "solveFluid.H"
+            #include "readFluidPIMPLEControls.H"
+
+            #include "solveFluid.H"
 
         }
 
-	#include "writeOutputs.H"
+        #include "writeOutputs.H"
 
-	runTime.write();
+        runTime.write();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-            << nl << endl;
+        << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+        << nl << endl;
     }
 
     Info<< "End\n" << endl;

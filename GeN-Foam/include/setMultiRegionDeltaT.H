@@ -34,52 +34,48 @@ Description
 if (adjustTimeStep)
 {
 
-	if (CoNum == -GREAT)
-	{
-        	CoNum = SMALL;
-	}
+    if (CoNum == -GREAT)
+    {
+        CoNum = SMALL;
+    }
 
+    #include "calcPower.H"
 
+    scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL)) ;
 
-	#include "calcPower.H"
+    scalar maxDeltaTFluid = maxCo/(CoNum + SMALL);
 
-	scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL)) ;
+    scalar maxDeltaTNeutro = mag(maxPowerVariation / (powerVariation + SMALL)) ;
 
-	scalar maxDeltaTFluid = maxCo/(CoNum + SMALL);
-
-    	scalar maxDeltaTNeutro = mag(maxPowerVariation / (powerVariation + SMALL)) ;
-
-	scalar deltaTNeutro =
+    scalar deltaTNeutro =
         min
         (
-	        maxDeltaTNeutro,
-		2
+            maxDeltaTNeutro,
+            2
         );
 
-    	scalar deltaTFluid =
+        scalar deltaTFluid =
         min
         (
             min(maxDeltaTFluid, 1.0 + 0.1*maxDeltaTFluid),
             1.2
         );
 
-	if(!solveFluidMechanics)
-	{
-		deltaTFluid = GREAT;
-	}
+    if(!solveFluidMechanics)
+    {
+        deltaTFluid = GREAT;
+    }
 
+    runTime.setDeltaT
+    (
+            min
+            (
+                min(deltaTFluid, deltaTNeutro)*runTime.deltaT().value(),
+                maxDeltaT
+            )
+    );
 
-	runTime.setDeltaT
-	(
-        	min
-        	(
-        		min(deltaTFluid, deltaTNeutro)*runTime.deltaT().value(),
-        		maxDeltaT
-        	)
-	);
-
-
-	pTotOld = pTot;
+    pTotOld = pTot;
 
     Info<< "deltaT = " <<  runTime.deltaT().value() << endl;
 }

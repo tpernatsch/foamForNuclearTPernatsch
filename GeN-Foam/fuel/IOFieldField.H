@@ -31,7 +31,7 @@ SourceFiles
     IOFieldField.C
 
 Author
-    Carlo Fiorina <carlo.fiorina@psi.ch; carlo.fiorina@hotmail.it>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
 
@@ -62,29 +62,29 @@ class IOFieldField
 //next few lines needed to overcome the problem described in line 54 of IOFieldField.C
 public:
 
-	typedef Field<Type> typeField;
+    typedef Field<Type> typeField;
 
-	class INew //class INew<T> is the existing one but does not work with Fields. Create class INew (nested in IOFieldField) that works (only) with Field<Type>
-	{
-	public:
-		tmp<typeField> operator()(Foam::Istream& is) const //construct from Istream
-		{
-			return tmp<typeField>
-			(
-				new typeField(is) //the original one gives: T::new(is) where T is a type (Field<Type> for me) and the problem is that "new" is not defined for Field<Type>
-									// "Field" has a contructor from istream
-			);
-		}
-	};
+    class INew //class INew<T> is the existing one but does not work with Fields. Create class INew (nested in IOFieldField) that works (only) with Field<Type>
+    {
+    public:
+        tmp<typeField> operator()(Foam::Istream& is) const //construct from Istream
+        {
+            return tmp<typeField>
+            (
+                new typeField(is) //the original one gives: T::new(is) where T is a type (Field<Type> for me) and the problem is that "new" is not defined for Field<Type>
+                                    // "Field" has a contructor from istream
+            );
+        }
+    };
 
 private:
 
-	//- Current time index.
-	//  Used to trigger the storing of the old-time value
-	mutable label timeIndex_;
+    //- Current time index.
+    //  Used to trigger the storing of the old-time value
+    mutable label timeIndex_;
 
-	//- Pointer to old time field
-	mutable IOFieldField<Field,Type>* field0Ptr_;
+    //- Pointer to old time field
+    mutable IOFieldField<Field,Type>* field0Ptr_;
 
 public:
 
@@ -112,15 +112,15 @@ public:
 
     // Member functions
 
-		//- Return non-const old time field
-		//  (Not a good idea but it is used for sub-cycling)
-		IOFieldField<Field,Type>& oldTime();
+        //- Return non-const old time field
+        //  (Not a good idea but it is used for sub-cycling)
+        IOFieldField<Field,Type>& oldTime();
 
-		//- Return old time field
-		const IOFieldField<Field,Type>& oldTime() const;
+        //- Return old time field
+        const IOFieldField<Field,Type>& oldTime() const;
 
-		//- Store the old-time field
-		void storeOldTime() const;
+        //- Store the old-time field
+        void storeOldTime() const;
 
         bool writeData(Ostream&) const;
 
@@ -140,8 +140,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 
-#include "IOFieldField.C"  //when creating a template, you must call IOFieldField.C here instead of directly compiling it!
-							// Remember that when you create a template, the compiler read and discard everything unless you use the template.
+#include "IOFieldField.C"  //when you create a template, the compiler reads and discards everything unless you use the template.
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

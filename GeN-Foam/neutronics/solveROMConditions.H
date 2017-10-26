@@ -2,21 +2,21 @@
 
 if( ((neutroResidual0-neutroResidual2)/max(SMALL,neutroResidual0)>0.05) )
 {
-	solveROM = true;
-	fullSolutionCounter = 0;
+    solveROM = true;
+    fullSolutionCounter = 0;
 }
 else
 {
-	fullSolutionCounter++;
-	if(fullSolutionCounter > 1)
-	{
-		adjustROM = true;
-		ROMAdjustCounter++;
-	}
-	else
-	{
-		adjustROM = false;
-	}
-	solveROM = false;
+    fullSolutionCounter++;
+    if(fullSolutionCounter > 1)
+    {
+        adjustROM = true;
+        ROMAdjustCounter++;
+    }
+    else
+    {
+        adjustROM = false;
+    }
+    solveROM = false;
 }
 

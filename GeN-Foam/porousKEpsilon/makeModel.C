@@ -39,19 +39,18 @@ License
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-
-#define createBaseTurbulenceModel(                                             \
-    Alpha, Rho, baseModel, BaseModel, TDModel, Transport)                      \
-                                                                               \
-    namespace Foam                                                             \
-    {                                                                          \
-        typedef TDModel<BaseModel<Transport>>                                  \
-            Transport##BaseModel;                                              \
-        typedef RASModel<EddyDiffusivity<Transport##BaseModel>>                \
-            RAS##Transport##BaseModel;                                         \
-        typedef LESModel<EddyDiffusivity<Transport##BaseModel>>                \
-            LES##Transport##BaseModel;                                         \
-    }
+#define createBaseTurbulenceModel(                                         \
+Alpha, Rho, baseModel, BaseModel, TDModel, Transport)                      \
+                                                                           \
+namespace Foam                                                             \
+{                                                                          \
+    typedef TDModel<BaseModel<Transport>>                                  \
+        Transport##BaseModel;                                              \
+    typedef RASModel<EddyDiffusivity<Transport##BaseModel>>                \
+        RAS##Transport##BaseModel;                                         \
+    typedef LESModel<EddyDiffusivity<Transport##BaseModel>>                \
+        LES##Transport##BaseModel;                                         \
+}
 
 createBaseTurbulenceModel
 (
@@ -70,7 +69,5 @@ createBaseTurbulenceModel
 
 #include "porousKEpsilon.H"
 makeRASModel(porousKEpsilon);
-
-
 
 // ************************************************************************* //

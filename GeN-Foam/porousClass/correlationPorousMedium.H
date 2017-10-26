@@ -37,18 +37,17 @@ SourceFiles
     correlationPorousMedium.C
 
 Reference publications
-	Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-	"GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-	analysis of nuclear reactors", Nuclear Engineering and Design, submitted
+    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors", Nuclear Engineering and Design, submitted
 
-	Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-	solver to the European Sodium Fast Reactor and verification against available codes",
-	Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
+    solver to the European Sodium Fast Reactor and verification against available codes",
+    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
 
 
 Author
-    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it; 
-                   carlo.fiorina@epfl.ch;>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
 
@@ -73,7 +72,7 @@ class correlationPorousMedium
 protected:
 
 
-		//- Transition Re numbers
+        //- Transition Re numbers
         volVectorField reynoldsTurb_;
         volVectorField reynoldsLam_;
 
@@ -127,7 +126,6 @@ private:
 
     // Private data
 
-
     // Private Member Functions
 
         //- Disallow default bitwise copy construct
@@ -150,7 +148,7 @@ public:
         (
             const volScalarField& rho,
             const volVectorField& U,
-	    	const rhoThermo& thermo
+            const rhoThermo& thermo
         );
 
         //- Construct from coefficients
@@ -158,7 +156,7 @@ public:
         (
             const volScalarField& rho,
             const volVectorField& U,
-	    const rhoThermo& thermo,
+            const rhoThermo& thermo,
             const dimensionedScalar& gamma,
             const dimensionedScalar& volumetricAreaSS,
             const dimensionedScalar& volumetricAreaFuel,
@@ -294,7 +292,6 @@ public:
                 return hydraulicDiameterStructure_;
             }
 
-
             //- Return pumpMomentumSource
             inline const volVectorField& pumpMomentumSource() const
             {
@@ -319,11 +316,12 @@ public:
                 return turbulenceLengthScaleConst_;
             }
 
+        // Calc
 
-			//-  darcy friction coefficient
+            //-  darcy friction coefficient
             tmp<volVectorField> darcyFrictionFactor() const;
 
-			//-  equilibrium k
+            //-  equilibrium k
             tmp<volScalarField> equilibriumK() const;
 
             //-  equilibrium epsilon
@@ -332,6 +330,9 @@ public:
             //- Return kepsilonConvergenceRate, in 1/s
             tmp<volScalarField> kepsilonConvergenceRate() const ;
 
+
+        // From porous medium
+
             //- Return the drag coefficient tensor
             virtual tmp<volTensorField> dragCoeff() const ;
 
@@ -339,10 +340,10 @@ public:
             virtual tmp<volVectorField> pump() const ;
 
             //- Prandtl number
-           	virtual tmp<volScalarField>  PrandtlNumber() const ;
+            virtual tmp<volScalarField>  PrandtlNumber() const ;
 
             //- Reynolds number
-           	virtual tmp<volScalarField>  ReynoldsNumber() const ;
+            virtual tmp<volScalarField>  ReynoldsNumber() const ;
 
             //- Return the heat transfer coefficient
             virtual tmp<volScalarField> heatTransferCoefficient() const ;

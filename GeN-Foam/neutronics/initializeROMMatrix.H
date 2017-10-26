@@ -5,7 +5,7 @@ forAll(flux,energyI)
 {
 	maxPODBaseSize = max(maxPODBaseSize,base_fluxStar[energyI].size());
 }
-forAll(flux,energyI)//costretto a definire matrici della stessa dimensione
+forAll(flux,energyI)//need matrices of same size
 {
 	matrixROM.set(energyI,new SquareMatrix<scalar>(maxPODBaseSize,maxPODBaseSize,Foam::zero()));
 }

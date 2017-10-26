@@ -31,39 +31,38 @@ Description
 
 if (adjustTimeStep)
 {
-    	#include "calcPower.H"
-    	pTotOld = pTot;
+    #include "calcPower.H"
+    pTotOld = pTot;
 
-    	if (CoNum == -GREAT)
-    	{
-    	    CoNum = SMALL;
-    	}
+    if (CoNum == -GREAT)
+    {
+        CoNum = SMALL;
+    }
 
-	scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL)) ;
+    scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL)) ;
 
+    scalar maxDeltaTFluid = maxCo/(CoNum + SMALL);
 
-	scalar maxDeltaTFluid = maxCo/(CoNum + SMALL);
+    scalar maxDeltaTNeutro = mag(maxPowerVariation / (powerVariation + SMALL)) ;
 
-    	scalar maxDeltaTNeutro = mag(maxPowerVariation / (powerVariation + SMALL)) ;
-
-	scalar deltaTNeutro =
+    scalar deltaTNeutro =
         min
         (
-	        maxDeltaTNeutro,
-		10
+            maxDeltaTNeutro,
+        10
         );
 
-    	scalar deltaTFluid =
+        scalar deltaTFluid =
         min
         (
             min(maxDeltaTFluid, 1.0 + 0.1*maxDeltaTFluid),
             1.2
         );
 
-	if(!solveFluidMechanics)
-	{
-		deltaTFluid = GREAT;
-	}
+    if(!solveFluidMechanics)
+    {
+        deltaTFluid = GREAT;
+    }
 
 
     runTime.setDeltaT
@@ -75,8 +74,7 @@ if (adjustTimeStep)
         )
     );
 
-
-	pTotOld = pTot;
+    pTotOld = pTot;
 
     Info<< "Initial deltaT = " <<  runTime.deltaT().value() << endl;
 }

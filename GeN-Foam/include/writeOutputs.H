@@ -58,13 +58,13 @@ k_effDat << runTime.time().value() << ";" << keff << endl ;
 {
 
 dimensionedScalar Tav = fvc::domainIntegrate(thermo.T()*(TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL))))
-						/ max(fvc::domainIntegrate((TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))),dimensionedScalar("",dimensionSet(0,3,0,0,0),SMALL));
+                        / max(fvc::domainIntegrate((TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))),dimensionedScalar("",dimensionSet(0,3,0,0,0),SMALL));
 
 dimensionedScalar TavAvFuel = fvc::domainIntegrate(TavFuel)
-						/ max(fvc::domainIntegrate((TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))),dimensionedScalar("",dimensionSet(0,3,0,0,0),SMALL));
+                        / max(fvc::domainIntegrate((TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))),dimensionedScalar("",dimensionSet(0,3,0,0,0),SMALL));
 
 dimensionedScalar TavAvClad = fvc::domainIntegrate(TavClad)
-						/ max(fvc::domainIntegrate((TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))),dimensionedScalar("",dimensionSet(0,3,0,0,0),SMALL));
+                        / max(fvc::domainIntegrate((TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))),dimensionedScalar("",dimensionSet(0,3,0,0,0),SMALL));
 
 
 scalar Tmax = max((thermo.T().internalField())*(TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))) ;

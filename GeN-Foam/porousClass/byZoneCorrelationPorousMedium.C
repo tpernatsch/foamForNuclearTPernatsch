@@ -61,7 +61,7 @@ Foam::byZoneCorrelationPorousMedium::byZoneCorrelationPorousMedium
         thermo,
         dimensionedScalar("", dimless, 1.0),
         dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
-	dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
+        dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
         dimensionedTensor("", dimless, tensor::I),
         dimensionedScalar("", dimensionSet(1,0,-3,-1,0,0,0), SMALL),
         dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 0.0),

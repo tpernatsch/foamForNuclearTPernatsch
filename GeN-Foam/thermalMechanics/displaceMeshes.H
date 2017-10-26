@@ -1,56 +1,58 @@
 Info << "Displace meshes" << nl << endl;
 
 {
+    const volPointInterpolation& neutroMeshPointInterpolation = volPointInterpolation::New(neutroMesh);
 
-	const volPointInterpolation& neutroMeshPointInterpolation = volPointInterpolation::New(neutroMesh);
+    tmp<pointVectorField> neutroPointsDisplacementOld = neutroMeshPointInterpolation.interpolate(DNeutro);
 
-	pointVectorField neutroPointsDisplacementOld = neutroMeshPointInterpolation.interpolate(DNeutro);
+    DNeutro*=0;
+    neutroToTM.mapTgtToSrc( meshDisp , plusEqOp<vector>(), DNeutro.primitiveFieldRef());
+    DNeutro.correctBoundaryConditions();
 
-	DNeutro*=0;
+    tmp<pointVectorField> neutroPointsDisplacement = neutroMeshPointInterpolation.interpolate(DNeutro);
 
-	neutroToTM.mapTgtToSrc( meshDisp , plusEqOp<vector>(), DNeutro.primitiveFieldRef());
+    tmp<pointField> displacedPoints = neutroMesh.points()
+                                    + neutroPointsDisplacement->internalField()
+                                    - neutroPointsDisplacementOld->internalField() ;
 
-	DNeutro.correctBoundaryConditions();
-
-	pointVectorField neutroPointsDisplacement = neutroMeshPointInterpolation.interpolate(DNeutro);
-
-	pointField displacedPoints = neutroMesh.points() + neutroPointsDisplacement.internalField() - neutroPointsDisplacementOld.internalField() ;
-
-	neutroMesh.movePoints(displacedPoints);
-
+    neutroMesh.movePoints(displacedPoints);
 
 }
 
 {
-	const volPointInterpolation& fluidMeshPointInterpolation = volPointInterpolation::New(fluidMesh);
+    const volPointInterpolation& fluidMeshPointInterpolation = volPointInterpolation::New(fluidMesh);
 
-	pointVectorField fluidPointsDisplacementOld = fluidMeshPointInterpolation.interpolate(DFluid);
+    tmp<pointVectorField> fluidPointsDisplacementOld = fluidMeshPointInterpolation.interpolate(DFluid);
 
-	DFluid*=0;
+    DFluid*=0;
+    fluidToTM.mapTgtToSrc( meshDisp , plusEqOp<vector>(), DFluid.primitiveFieldRef());
+    DFluid.correctBoundaryConditions();
 
-	fluidToTM.mapTgtToSrc( meshDisp , plusEqOp<vector>(), DFluid.primitiveFieldRef());
+    tmp<pointVectorField> fluidPointsDisplacement = fluidMeshPointInterpolation.interpolate(DFluid);
 
-	DFluid.correctBoundaryConditions();
+    tmp<pointField> displacedPoints = fluidMesh.points() 
+                                    + fluidPointsDisplacement->internalField()
+                                    - fluidPointsDisplacementOld->internalField() ;
 
-	pointVectorField fluidPointsDisplacement = fluidMeshPointInterpolation.interpolate(DFluid);
+    fluidMesh.movePoints(displacedPoints);
 
-	pointField displacedPoints = fluidMesh.points() + fluidPointsDisplacement.internalField() - fluidPointsDisplacementOld.internalField() ;
-
-	fluidMesh.movePoints(displacedPoints);
 } 
 
 {
-	const volPointInterpolation& mechMeshPointInterpolation = volPointInterpolation::New(mechMesh);
+    const volPointInterpolation& mechMeshPointInterpolation = volPointInterpolation::New(mechMesh);
 
-	pointVectorField mechPointsDisplacementOld = mechMeshPointInterpolation.interpolate(meshDisp.oldTime());
+    tmp<pointVectorField> mechPointsDisplacementOld = mechMeshPointInterpolation.interpolate(meshDisp.oldTime());
 
-	meshDisp.correctBoundaryConditions();
+    meshDisp.correctBoundaryConditions();
 
-	pointVectorField mechPointsDisplacement = mechMeshPointInterpolation.interpolate(meshDisp);
+    tmp<pointVectorField> mechPointsDisplacement = mechMeshPointInterpolation.interpolate(meshDisp);
 
-	pointField displacedPoints = mechMesh.points() + mechPointsDisplacement.internalField() - mechPointsDisplacementOld.internalField() ;
+    tmp<pointField> displacedPoints = mechMesh.points()
+                                    + mechPointsDisplacement->internalField()
+                                    - mechPointsDisplacementOld->internalField() ;
 
-	mechMesh.movePoints(displacedPoints);
+    mechMesh.movePoints(displacedPoints);
+
 }
 
 

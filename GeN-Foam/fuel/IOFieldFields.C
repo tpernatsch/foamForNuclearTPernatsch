@@ -27,7 +27,7 @@ License
 
 namespace Foam
 {
-defineTemplateTypeNameAndDebugWithName(scalarIOFieldField, "scalarFieldField", 0); //scalarFieldField is what is to be placed at the top of the file in the case folder
+    defineTemplateTypeNameAndDebugWithName(scalarIOFieldField, "scalarFieldField", 0); //scalarFieldField is what is to be placed at the top of the file in the case folder
 
 }
 

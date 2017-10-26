@@ -30,18 +30,17 @@ Description
     It uses a dictionary called fuelProperties
 
 Reference publications
-	Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-	"GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-	analysis of nuclear reactors", Nuclear Engineering and Design, submitted
+    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors", Nuclear Engineering and Design, submitted
 
-	Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-	solver to the European Sodium Fast Reactor and verification against available codes",
-	Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
+    solver to the European Sodium Fast Reactor and verification against available codes",
+    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
 
 
 Author
-    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it; 
-                   carlo.fiorina@epfl.ch;>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 SourceFiles
     subscaleFuel.C
@@ -129,41 +128,41 @@ public:
 
     // Constructors
 
-		// Construct from mesh
-		subscaleFuel(const fvMesh& mesh);
+        // Construct from mesh
+        subscaleFuel(const fvMesh& mesh);
 
         //- Selector: Return a reference to the selected model
         static autoPtr<subscaleFuel> New
         (
-			const fvMesh& mesh
+            const fvMesh& mesh
         );
 
-	// Destructor
+    // Destructor
 
-		~subscaleFuel();
+        ~subscaleFuel();
 
     // Member functions
 
-		// Solve for fuel heat sources in fluid given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
-		virtual tmp<volScalarField> heatSources(const volScalarField& Tfl, const volScalarField& hfl, const volScalarField& qs) = 0;
+        // Solve for fuel heat sources in fluid given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
+        virtual tmp<volScalarField> heatSources(const volScalarField& Tfl, const volScalarField& hfl, const volScalarField& qs) = 0;
 
-		// Return centerline fuel temperature
-		virtual tmp<volScalarField> fuelIn() = 0;
+        // Return centerline fuel temperature
+        virtual tmp<volScalarField> fuelIn() = 0;
 
-		// Return average fuel temperature
-		virtual void fuelAverage(volScalarField& TavFuel) = 0;
+        // Return average fuel temperature
+        virtual void fuelAverage(volScalarField& TavFuel) = 0;
 
-		// Return outer radius fuel temperature
-		virtual tmp<volScalarField> fuelOut() = 0;
+        // Return outer radius fuel temperature
+        virtual tmp<volScalarField> fuelOut() = 0;
 
-		// Return inner radius clad temperature
-		virtual tmp<volScalarField> cladIn() = 0;
+        // Return inner radius clad temperature
+        virtual tmp<volScalarField> cladIn() = 0;
 
-		// Return average fuel temperature
-		virtual void cladAverage(volScalarField& TavClad) = 0;
+        // Return average fuel temperature
+        virtual void cladAverage(volScalarField& TavClad) = 0;
 
-		// Return outer radius fuel temperature
-		virtual tmp<volScalarField> cladOut() = 0;
+        // Return outer radius fuel temperature
+        virtual tmp<volScalarField> cladOut() = 0;
 
 
 };

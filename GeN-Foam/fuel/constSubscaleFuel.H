@@ -31,18 +31,17 @@ Description
     formulation (see "Finite difference methods in heat transfer" by Necati Ozisik)
 
 Reference publications
-	Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-	"GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-	analysis of nuclear reactors", Nuclear Engineering and Design, submitted
+    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors", Nuclear Engineering and Design, submitted
 
-	Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-	solver to the European Sodium Fast Reactor and verification against available codes",
-	Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
+    solver to the European Sodium Fast Reactor and verification against available codes",
+    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
 
 
 Author
-    Carlo Fiorina <carlo.fiorina@hotmail.it; carlo.fiorina@psi.ch; carlo.fiorina@polimi.it; 
-                   carlo.fiorina@epfl.ch;>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
 
@@ -68,8 +67,17 @@ class constSubscaleFuel
 
 protected:
 
+        //- Fuel mesh size
+        PtrList<scalar> dFuel_;
+
+        //- Clad mesh size
+        PtrList<scalar> dClad_;
+
+        //- Plate fuel
+        PtrList<bool> planar_;
+
         //- Cladding conductivity
-        mutable PtrList<scalar> fuelVolPower_;
+        PtrList<scalar> fuelVolPower_;
 
         //- Cladding conductivity
         mutable PtrList<scalar> claddingK_;
@@ -104,15 +112,6 @@ protected:
         //- Fuel inner radius
         mutable PtrList<scalar> rfIn_;
 
-        //- Fuel mesh size
-        mutable PtrList<scalar> dFuel_;
-
-        //- Clad mesh size
-        mutable PtrList<scalar> dClad_;
-
-        //- Plate fuel
-        mutable PtrList<bool> planar_;
-
 private:
 
     // Private data
@@ -126,11 +125,11 @@ private:
         //- Disallow default bitwise assignment
         void operator=(const constSubscaleFuel&);
 
-		// Solve for temperatures T, given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
-		scalar updateLocalHeatFluxImplicit(label zoneI, label cellIlocal, scalar Tfl, scalar hfl, scalar q);
+        // Solve for temperatures T, given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
+        scalar updateLocalHeatFluxImplicit(label zoneI, label cellIlocal, scalar Tfl, scalar hfl, scalar q);
 
-		// Solve for temperatures T, given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
-		scalar updateLocalHeatFluxImplicitPlanar(label zoneI, label cellIlocal, scalar Tfl, scalar hfl, scalar q);
+        // Solve for temperatures T, given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
+        scalar updateLocalHeatFluxImplicitPlanar(label zoneI, label cellIlocal, scalar Tfl, scalar hfl, scalar q);
 
 public:
 
@@ -140,8 +139,8 @@ public:
 
     // Constructors
 
-		// Construct from mesh and dictionary
-		constSubscaleFuel(const fvMesh& mesh);
+        // Construct from mesh and dictionary
+        constSubscaleFuel(const fvMesh& mesh);
 
     //- Destructor
     virtual ~constSubscaleFuel();
@@ -149,26 +148,26 @@ public:
 
     // Member Functions
 
-		// Solve for fuel heat sources in fluid given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
-		virtual tmp<volScalarField> heatSources(const volScalarField& Tfl, const volScalarField& hfl, const volScalarField& qs);
+        // Solve for fuel heat sources in fluid given the fluid temperature (Tfl), the heat transfer coefficient between fluid and fuel, and heat source in fuel (qs)
+        virtual tmp<volScalarField> heatSources(const volScalarField& Tfl, const volScalarField& hfl, const volScalarField& qs);
 
-		// Return centerline fuel temperature
-		virtual tmp<volScalarField> fuelIn();
+        // Return centerline fuel temperature
+        virtual tmp<volScalarField> fuelIn();
 
-		// Return average fuel temperature
-		virtual void fuelAverage(volScalarField& TavFuel);
+        // Return average fuel temperature
+        virtual void fuelAverage(volScalarField& TavFuel);
 
-		// Return outer radius fuel temperature
-		virtual tmp<volScalarField> fuelOut();
+        // Return outer radius fuel temperature
+        virtual tmp<volScalarField> fuelOut();
 
-		// Return inner radius clad temperature
-		virtual tmp<volScalarField> cladIn();
+        // Return inner radius clad temperature
+        virtual tmp<volScalarField> cladIn();
 
-		// Return average fuel temperature
-		virtual void cladAverage(volScalarField& TavClad);
+        // Return average fuel temperature
+        virtual void cladAverage(volScalarField& TavClad);
 
-		// Return outer radius fuel temperature
-		virtual tmp<volScalarField> cladOut();
+        // Return outer radius fuel temperature
+        virtual tmp<volScalarField> cladOut();
 
 
 };

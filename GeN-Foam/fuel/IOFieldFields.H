@@ -24,6 +24,9 @@ License
 SourceFiles
     IOFieldFields.C
 
+Author
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+
 \*---------------------------------------------------------------------------*/
 
 #ifndef IOFieldFields_H
@@ -37,7 +40,7 @@ SourceFiles
 namespace Foam
 {
 
-typedef IOFieldField<Field, Foam::scalar> scalarIOFieldField;
+  typedef IOFieldField<Field, Foam::scalar> scalarIOFieldField;
 
 } // End namespace Foam
 

@@ -31,12 +31,15 @@ SourceFiles
     albedoSP3FvPatchField.C
 
 Use:
-        type            albedoSP3;
-	gamma		0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
-	diffCoeffName	Dalbedo;  //not to be changed
-	fluxStarAlbedo  fluxStarAlbedo; //not to be changed
-	forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 calculations)
-	value           uniform 1;
+    type            albedoSP3;
+    gamma           0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
+    diffCoeffName   Dalbedo;  //not to be changed
+    fluxStarAlbedo  fluxStarAlbedo; //not to be changed
+    forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 calculations)
+    value           uniform 1;
+
+Author
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>    
 
 \*---------------------------------------------------------------------------*/
 
@@ -67,21 +70,21 @@ class albedoSP3FvPatchField
 {
     // Private data
 
-        Field<Type> gradient_;
-        
-        //- Coeff gamma
-        scalar gamma_;
-        
-        //scalarField diffCoeff_;
-        
-        //- Name of the diffusion coefficient field
-        word diffCoeffName_;
+    Field<Type> gradient_;
+    
+    //- Coeff gamma
+    scalar gamma_;
+    
+    //scalarField diffCoeff_;
+    
+    //- Name of the diffusion coefficient field
+    word diffCoeffName_;
 
-        //- Name of the other moment
-        word fluxStarAlbedo_;
+    //- Name of the other moment
+    word fluxStarAlbedo_;
 
-        //- Bool to change BC based on moment (0 or 2)
-        bool forSecondMoment_;
+    //- Bool to change BC based on moment (0 or 2)
+    bool forSecondMoment_;
 
 public:
 
@@ -91,147 +94,144 @@ public:
 
     // Constructors
 
-        //- Construct from patch and internal field
-        albedoSP3FvPatchField
+    //- Construct from patch and internal field
+    albedoSP3FvPatchField
+    (
+        const fvPatch&,
+        const DimensionedField<Type, volMesh>&
+    );
+
+    //- Construct from patch, internal field and dictionary
+    albedoSP3FvPatchField
+    (
+        const fvPatch&,
+        const DimensionedField<Type, volMesh>&,
+        const dictionary&
+    );
+
+    //- Construct by mapping the given albedoSP3FvPatchField
+    //  onto a new patch
+    albedoSP3FvPatchField
+    (
+        const albedoSP3FvPatchField<Type>&,
+        const fvPatch&,
+        const DimensionedField<Type, volMesh>&,
+        const fvPatchFieldMapper&
+    );
+
+    //- Construct as copy
+    albedoSP3FvPatchField
+    (
+        const albedoSP3FvPatchField<Type>&
+    );
+
+    //- Construct and return a clone
+    virtual tmp<fvPatchField<Type> > clone() const
+    {
+        return tmp<fvPatchField<Type> >
         (
-            const fvPatch&,
-            const DimensionedField<Type, volMesh>&
+            new albedoSP3FvPatchField<Type>(*this)
         );
+    }
 
-        //- Construct from patch, internal field and dictionary
-        albedoSP3FvPatchField
+    //- Construct as copy setting internal field reference
+    albedoSP3FvPatchField
+    (
+        const albedoSP3FvPatchField<Type>&,
+        const DimensionedField<Type, volMesh>&
+    );
+
+    //- Construct and return a clone setting internal field reference
+    virtual tmp<fvPatchField<Type> > clone
+    (
+        const DimensionedField<Type, volMesh>& iF
+    ) const
+    {
+        return tmp<fvPatchField<Type> >
         (
-            const fvPatch&,
-            const DimensionedField<Type, volMesh>&,
-            const dictionary&
+            new albedoSP3FvPatchField<Type>(*this, iF)
         );
-
-        //- Construct by mapping the given albedoSP3FvPatchField
-        //  onto a new patch
-        albedoSP3FvPatchField
-        (
-            const albedoSP3FvPatchField<Type>&,
-            const fvPatch&,
-            const DimensionedField<Type, volMesh>&,
-            const fvPatchFieldMapper&
-        );
-
-        //- Construct as copy
-        albedoSP3FvPatchField
-        (
-            const albedoSP3FvPatchField<Type>&
-        );
-
-        //- Construct and return a clone
-        virtual tmp<fvPatchField<Type> > clone() const
-        {
-            return tmp<fvPatchField<Type> >
-            (
-                new albedoSP3FvPatchField<Type>(*this)
-            );
-        }
-
-        //- Construct as copy setting internal field reference
-        albedoSP3FvPatchField
-        (
-            const albedoSP3FvPatchField<Type>&,
-            const DimensionedField<Type, volMesh>&
-        );
-
-        //- Construct and return a clone setting internal field reference
-        virtual tmp<fvPatchField<Type> > clone
-        (
-            const DimensionedField<Type, volMesh>& iF
-        ) const
-        {
-            return tmp<fvPatchField<Type> >
-            (
-                new albedoSP3FvPatchField<Type>(*this, iF)
-            );
-        }
+    }
 
 
     // Member functions
 
-        // Return defining fields
+    // Return defining fields
 
-            //- Return gradient at boundary
-            virtual Field<Type>& gradient()
-            {
-                return gradient_;
-            }
+    //- Return gradient at boundary
+    virtual Field<Type>& gradient()
+    {
+        return gradient_;
+    }
 
-            virtual const Field<Type>& gradient() const
-            {
-                return gradient_;
-            }
-            
-            virtual scalar& gamma()
-            {
-                return gamma_;
-            }
+    virtual const Field<Type>& gradient() const
+    {
+        return gradient_;
+    }
+    
+    virtual scalar& gamma()
+    {
+        return gamma_;
+    }
 
-            virtual const scalar& gamma() const
-            {
-                return gamma_;
-            }
-
-
-        // Mapping functions
-
-            //- Map (and resize as needed) from self given a mapping object
-            virtual void autoMap
-            (
-                const fvPatchFieldMapper&
-            );
-
-            //- Reverse map the given fvPatchField onto this fvPatchField
-            virtual void rmap
-            (
-                const fvPatchField<Type>&,
-                const labelList&
-            );
+    virtual const scalar& gamma() const
+    {
+        return gamma_;
+    }
 
 
-        // Evaluation functions
+    // Mapping functions
 
-            //- Return gradient at boundary
-            virtual tmp<Field<Type> > snGrad() const;
-            /*{
-                return gradient_;
-            }*/
+    //- Map (and resize as needed) from self given a mapping object
+    virtual void autoMap
+    (
+        const fvPatchFieldMapper&
+    );
 
-            //- Evaluate the patch field
-            virtual void evaluate
-            (
-                const Pstream::commsTypes commsType=Pstream::commsTypes::blocking
-            );
-
-            //- Return the matrix diagonal coefficients corresponding to the
-            //  evaluation of the value of this patchField with given weights
-            virtual tmp<Field<Type> > valueInternalCoeffs
-            (
-                const tmp<scalarField>&
-            ) const;
-
-            //- Return the matrix source coefficients corresponding to the
-            //  evaluation of the value of this patchField with given weights
-            virtual tmp<Field<Type> > valueBoundaryCoeffs
-            (
-                const tmp<scalarField>&
-            ) const;
-
-            //- Return the matrix diagonal coefficients corresponding to the
-            //  evaluation of the gradient of this patchField
-            virtual tmp<Field<Type> > gradientInternalCoeffs() const;
-
-            //- Return the matrix source coefficients corresponding to the
-            //  evaluation of the gradient of this patchField
-            virtual tmp<Field<Type> > gradientBoundaryCoeffs() const;
+    //- Reverse map the given fvPatchField onto this fvPatchField
+    virtual void rmap
+    (
+        const fvPatchField<Type>&,
+        const labelList&
+    );
 
 
-        //- Write
-        virtual void write(Ostream&) const;
+    // Evaluation functions
+
+    //- Return gradient at boundary
+    virtual tmp<Field<Type> > snGrad() const;
+
+    //- Evaluate the patch field
+    virtual void evaluate
+    (
+        const Pstream::commsTypes commsType=Pstream::commsTypes::blocking
+    );
+
+    //- Return the matrix diagonal coefficients corresponding to the
+    //  evaluation of the value of this patchField with given weights
+    virtual tmp<Field<Type> > valueInternalCoeffs
+    (
+        const tmp<scalarField>&
+    ) const;
+
+    //- Return the matrix source coefficients corresponding to the
+    //  evaluation of the value of this patchField with given weights
+    virtual tmp<Field<Type> > valueBoundaryCoeffs
+    (
+        const tmp<scalarField>&
+    ) const;
+
+    //- Return the matrix diagonal coefficients corresponding to the
+    //  evaluation of the gradient of this patchField
+    virtual tmp<Field<Type> > gradientInternalCoeffs() const;
+
+    //- Return the matrix source coefficients corresponding to the
+    //  evaluation of the gradient of this patchField
+    virtual tmp<Field<Type> > gradientBoundaryCoeffs() const;
+
+
+    //- Write
+    virtual void write(Ostream&) const;
 };
 
 
@@ -239,12 +239,6 @@ public:
 
 } // End namespace Foam
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-/*
-#ifdef NoRepository
-#   include "albedoSP3FvPatchField.C"
-#endif
-*/
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #endif

@@ -9,7 +9,7 @@ volVectorField Disp
         IOobject::MUST_READ,
         IOobject::AUTO_WRITE
     ),
-	mechMesh
+    mechMesh
 );
 
 
@@ -23,7 +23,7 @@ volScalarField fuelDisp
         IOobject::MUST_READ,
         IOobject::AUTO_WRITE
     ),
-	mechMesh
+    mechMesh
 );
 
 
@@ -37,7 +37,7 @@ volScalarField CRDisp
         IOobject::MUST_READ,
         IOobject::AUTO_WRITE
     ),
-	mechMesh
+    mechMesh
 );
 
 
@@ -89,20 +89,20 @@ autoPtr<volScalarField> Tptr(NULL);
 Info<< "Reading field Tmech\n" << endl;
 Tptr.reset
 (
-	new volScalarField
-	(
-		IOobject
-		(
-			"Tmech",
-			runTime.timeName(),
-			mechMesh,
-			IOobject::NO_READ,
-			IOobject::AUTO_WRITE
-		),
-		mechMesh,
-		TrefStructures,//important to impose correct BC (this value will remain in the soft region surrounding everything)
-		zeroGradientFvPatchScalarField::typeName
-	)
+    new volScalarField
+    (
+        IOobject
+        (
+            "Tmech",
+            runTime.timeName(),
+            mechMesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mechMesh,
+        TrefStructures,//important to impose correct BC (this value will remain in the soft region surrounding everything)
+        zeroGradientFvPatchScalarField::typeName
+    )
 );
 
 
@@ -155,8 +155,8 @@ volScalarField TavFuelMech
         IOobject::NO_READ,
         IOobject::AUTO_WRITE
     ),
-	mechMesh,
-	dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 1.0),
-	zeroGradientFvPatchScalarField::typeName
+    mechMesh,
+    dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 1.0),
+    zeroGradientFvPatchScalarField::typeName
 );
 
