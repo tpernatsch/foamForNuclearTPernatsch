@@ -25,7 +25,7 @@ FoamFile
 
  pTarget 3.600000e+09 ; 
 
- keff  1.018027;
+ keff  1.011985;
  
  
 zones 

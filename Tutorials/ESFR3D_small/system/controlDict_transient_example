@@ -37,7 +37,7 @@ maxDeltaT	0.5; // max time step
 
 writeControl   adjustableRunTime;//timeStep;//
 
-writeInterval   1000;
+writeInterval   10;
 
 purgeWrite      0;
 
