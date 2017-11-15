@@ -74,7 +74,9 @@ Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter <<
 volFuelPowerNeutro /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
 
 volFuelPower *= 0;
-neutroToFluid.mapSrcToTgt(volFuelPowerNeutro, plusEqOp<scalar>(), volFuelPower);
+
+//neutroToFluid.mapSrcToTgt(volFuelPowerNeutro, plusEqOp<scalar>(), volFuelPower);//does not work properly
+fluidToNeutro.mapTgtToSrc(volFuelPowerNeutro, plusEqOp<scalar>(), volFuelPower);
 volFuelPower.correctBoundaryConditions();
 
 if (eigenvalueNeutronics)

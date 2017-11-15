@@ -1,17 +1,12 @@
 
-tmp<volScalarField> tRhoRhok = thermo.rho()*rhok;
+tmp<volScalarField> tRhoRhok = rho*rhok;
 
-neutroToFluid.mapTgtToSrc( TavFuel, plusEqOp<scalar>(), TfuelNeutro.primitiveFieldRef());
-neutroToFluid.mapTgtToSrc( TavClad, plusEqOp<scalar>(), TcladNeutro.primitiveFieldRef());
-neutroToFluid.mapTgtToSrc( tRhoRhok(), plusEqOp<scalar>(), rhoCoolNeutro.primitiveFieldRef());
-neutroToFluid.mapTgtToSrc( thermo.T(), plusEqOp<scalar>(), TCoolNeutro.primitiveFieldRef());
+neutroToFluid.mapTgtToSrc( TavFuel, plusEqOp<scalar>(), TfuelNeutro);
+neutroToFluid.mapTgtToSrc( TavClad, plusEqOp<scalar>(), TcladNeutro);
+neutroToFluid.mapTgtToSrc( tRhoRhok(), plusEqOp<scalar>(), rhoCoolNeutro);
+neutroToFluid.mapTgtToSrc( thermo.T(), plusEqOp<scalar>(), TCoolNeutro);
 
 tRhoRhok.clear();
-
-TfuelNeutro.correctBoundaryConditions();
-TcladNeutro.correctBoundaryConditions();
-rhoCoolNeutro.correctBoundaryConditions();
-TCoolNeutro.correctBoundaryConditions();
 
 if(liquidFuel)
 {   

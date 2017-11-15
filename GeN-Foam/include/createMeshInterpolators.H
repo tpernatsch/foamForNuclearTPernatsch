@@ -3,8 +3,6 @@ pointField neutroStartPoints = neutroMesh.points(); //used to bring back mesh af
 pointField fluidStartPoints = fluidMesh.points(); 
 pointField mechStartPoints = mechMesh.points(); 
 
-Info << "neutroStartPoints.size()" << neutroStartPoints.size() << endl;
-
 if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foam::Vector<double>(0,0,0))
 {
 
@@ -72,6 +70,14 @@ meshToMesh neutroToFluid
 (
     neutroMesh,
     fluidMesh,
+    Foam::meshToMesh::interpolationMethod(2),
+    false
+);
+
+meshToMesh fluidToNeutro
+(
+    fluidMesh,
+    neutroMesh,
     Foam::meshToMesh::interpolationMethod(2),
     false
 );

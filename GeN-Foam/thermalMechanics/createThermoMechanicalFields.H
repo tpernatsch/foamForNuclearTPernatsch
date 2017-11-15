@@ -86,7 +86,7 @@ volVectorField meshDispOld
 
 autoPtr<volScalarField> Tptr(NULL);
 
-Info<< "Reading field Tmech\n" << endl;
+
 Tptr.reset
 (
     new volScalarField
