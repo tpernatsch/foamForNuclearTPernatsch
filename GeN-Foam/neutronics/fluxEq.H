@@ -4,9 +4,10 @@ if(aitkenAcceleration)
 {
     #include "aitkenAcceleration.H"
 }   
-
-#include "solveROMConditions.H"
-
+if(ROMAcceleration)
+{
+    #include "solveROMConditions.H"
+}
 forAll(flux,energyI)
 {
     Dalbedo = D[energyI];

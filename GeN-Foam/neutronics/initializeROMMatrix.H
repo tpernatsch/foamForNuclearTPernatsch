@@ -16,7 +16,7 @@ neutroResidual0 = 0.0;
 neutroResidual1 = 0.0;
 neutroResidual2 = 0.0;
 
-bool solveROM = true;
+bool solveROM = false;
 label fullSolutionCounter = 0;
 label ROMAdjustCounter = 0;
 bool adjustROM = false;
