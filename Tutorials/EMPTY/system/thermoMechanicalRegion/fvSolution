@@ -57,5 +57,12 @@ stressAnalysis
     nCorrectors     3;
     D               1e-06;
 }
+relaxationFactors
+{
+    fields
+    {
+	Disp 0.99;
 
+    }
+}
 // ************************************************************************* //
