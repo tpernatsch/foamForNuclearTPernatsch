@@ -28,7 +28,7 @@ boundaryField
     }
     bottom
     {
-        type            zeroGradient;
+        type            fixedFluxExtrapolatedPressure;
     }
     walls
     {
