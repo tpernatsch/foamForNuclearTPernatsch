@@ -29,8 +29,8 @@ For j In {0 : (innerRows-1)}
       Y = Y0;
       Call insertInnerAssembly;      
     EndFor
-  EndIf
   EndFor
+  EndIf
 EndFor
 
 
