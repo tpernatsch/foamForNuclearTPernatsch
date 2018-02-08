@@ -23,13 +23,17 @@ fvScalarMatrix EEqn
     + subscaleFuel.heatSources(thermo.T(),porousMedium.heatTransferCoefficient(),volFuelPower) * porousMedium.volumetricAreaFuel()*(1-liquidFuel)
     + liquidFuel*volFuelPower*porosity
     - porousMedium.heatTransferCoefficient()* porousMedium.volumetricAreaSS()*(thermo.T()-Tstructures)
-
+    + fvOptions(rho, he)
 );
 
 EEqn.relax();
 
+fvOptions.constrain(EEqn);
+
 scalar EEqnResidual(EEqn.solve(fluidMesh.solver(he.select(finalIter))).initialResidual());
 residual = max(residual,EEqnResidual);
+
+fvOptions.correct(he);
 
 thermo.correct();
 
@@ -62,12 +66,8 @@ subscaleFuel.cladAverage(TavClad);
 fvScalarMatrix structureEqn
 (
     fvm::ddt(porousMedium.externalRhoCp(), Tstructures)
-    ==
+ ==
     porousMedium.heatTransferCoefficient()* porousMedium.volumetricAreaSS()*(thermo.T()-Tstructures)
 );
 
 structureEqn.solve();
-
-
-
-
