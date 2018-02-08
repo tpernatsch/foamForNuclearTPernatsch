@@ -76,6 +76,7 @@
                 U.correctBoundaryConditions();
                 realU = U / porosity;
                 realU.correctBoundaryConditions();
+                fvOptions.correct(U);
                 K = 0.5*magSqr(realU);
             }
         }
