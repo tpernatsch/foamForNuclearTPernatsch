@@ -71,26 +71,18 @@ Author
 
 int main(int argc, char *argv[])
 {
+    #define NO_CONTROL
+    #define CREATE_MESH createMeshesPostProcess.H
+    #include "postProcess.H"
 
     #include "setRootCase.H"
     #include "createTime.H"
-    #include "readPhysicsToSolve.H"
 
-    #include "createFluidMesh.H"
-    #include "createNeutroMesh.H"
-    #include "createThermoMechanicalMesh.H"
+    #include "createMeshes.H"
+    #include "createFields.H"
 
-    #include "readNuclearDataExt.H"
-    #include "readThermoMechanicalProperties.H"
-
-    #include "createFluidFields.H"
-    fv::options& fvOptions(fv::options::New(fluidMesh));
     #include "initContinuityErrs.H"
     #include "readTimeControls.H"
-    #include "readSolidDisplacementFoamControls.H"
-
-    #include "createNeutroFields.H"
-    #include "createThermoMechanicalFields.H"
 
     #include "compressibleCoNo.H"
     #include "setInitialMultiRegionDeltaT.H"
@@ -98,6 +90,7 @@ int main(int argc, char *argv[])
     #include "createMeshInterpolators.H"
 
     #include "openOutputFiles.H"
+    #include "writeOutputs.H"
 
     while (runTime.run())
     {

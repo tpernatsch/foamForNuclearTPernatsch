@@ -337,5 +337,5 @@ autoPtr<compressible::turbulenceModel> turbulence
 );
 compressible::turbulenceModel& turb = turbulence();
 
-
+fv::options& fvOptions(fv::options::New(fluidMesh));
 
