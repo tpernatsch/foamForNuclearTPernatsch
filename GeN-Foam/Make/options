@@ -40,6 +40,7 @@ EXE_LIBS = \
     -lturbulenceModels \
     -lmeshTools \
     -lfiniteVolume \
+    -lfvOptions \
     -lregionModels \
     -lsampling \
     -lsolidSpecie \

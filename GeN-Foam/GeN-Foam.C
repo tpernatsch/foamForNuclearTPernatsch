@@ -36,7 +36,7 @@ Description
 
 Reference publications
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, 2015
-    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    "GeN-Foam: a novel OpenFOAMÂ® based multi-physics solver for 2D/3D transient
     analysis of nuclear reactors", Nuclear Engineering and Design 294, pp. 24-37
 
     Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
@@ -65,6 +65,7 @@ Author
 #include "POD.H"
 #include "fvMatrixExt.H"
 #include "porousKEpsilon.H"
+#include "fvOptions.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -83,6 +84,7 @@ int main(int argc, char *argv[])
     #include "readThermoMechanicalProperties.H"
 
     #include "createFluidFields.H"
+    fv::options& fvOptions(fv::options::New(fluidMesh));
     #include "initContinuityErrs.H"
     #include "readTimeControls.H"
     #include "readSolidDisplacementFoamControls.H"
