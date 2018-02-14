@@ -1,9 +1,27 @@
-
-
-GeN-Foam/Make/**/ 
-
+# temporary files
 *~
+
+# swap temporary files
+*.swp
+
+# Dolphin file manager files
+.directory
+
+# Mac specific files
 .DS_Store
+
+# Windows specific files
 Thumbs.db
 
+# GeN-Foam compilation files
+GeN-Foam/Make/**
+GeN-Foam/*log*
 
+# Qt creator files
+GeN-Foam/*.config
+GeN-Foam/*.creator*
+GeN-Foam/*.files
+GeN-Foam/*.includes
+
+# Sublime Text 3 files
+GeN-Foam/*.sublime*
