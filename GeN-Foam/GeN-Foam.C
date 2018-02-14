@@ -5,7 +5,7 @@
     \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
-License
+License 
     This file is part of OpenFOAM.
 
     OpenFOAM is free software: you can redistribute it and/or modify it
