@@ -31,8 +31,10 @@ forAll(CRentries,CRzoneI)
     }
     reduce(maxFollowerHeight, maxOp<scalar>());
     CRinitialPosition.set(CRzoneI, new scalar(maxFollowerHeight-initialDistanceFromMeshCR[CRzoneI]));
-
-    CRposition.set(CRzoneI,new scalar(CRinitialPosition[CRzoneI]-CRspeed[CRzoneI]*(max(runTime.value(),CRstart[CRzoneI])-CRstart[CRzoneI])));
+    if(runTime.value()<CRfinish[CRzoneI])
+    {
+        CRposition.set(CRzoneI,new scalar(CRinitialPosition[CRzoneI]-CRspeed[CRzoneI]*(max(runTime.value(),CRstart[CRzoneI])-CRstart[CRzoneI])));
+    }
     Info << "Control rod " << CRentries[CRzoneI].keyword() << " in position: " << CRposition[CRzoneI] << endl;
 }
 
