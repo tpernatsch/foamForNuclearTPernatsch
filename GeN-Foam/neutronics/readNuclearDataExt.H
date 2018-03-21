@@ -561,6 +561,38 @@ forAll(CRentries,CRzoneI)
     CRFollowerName.set(CRzoneI,new word(CRdict.lookup("followerName")));
     initialDistanceFromMeshCR.set(CRzoneI,new scalar(CRdict.lookupOrDefault("initialDistanceFromMeshCR",0.0)));
 
+    label FOLLOWERzoneId = neutroMesh.cellZones().findZoneID(CRFollowerName[CRzoneI]);
+
+    if(FOLLOWERzoneId == -1)
+    {
+      Info << "Control rod with follower: " << CRFollowerName(CRzoneI) << " does not exists" << endl;
+    }
+
+    scalar cellHeight = -100.0 ;
+    scalar maxFollowerHeight = cellHeight ;
+
+    volScalarField centersVSF(neutroMesh.C() & vector(0,0,1));
+
+    Field<scalar> centersSF(centersVSF.internalField());
+
+    forAll(neutroMesh.cellZones()[FOLLOWERzoneId], cellIlocal)
+    {
+
+        label cellIglobal = neutroMesh.cellZones()[FOLLOWERzoneId][cellIlocal];
+
+        maxFollowerHeight = max(cellHeight,centersSF[cellIglobal]) ;
+
+        cellHeight = maxFollowerHeight;
+
+    }
+    reduce(maxFollowerHeight, maxOp<scalar>());
+    CRinitialPosition.set(CRzoneI, new scalar(maxFollowerHeight-initialDistanceFromMeshCR[CRzoneI]));
+    if(runTime.value()<CRfinish[CRzoneI])
+    {
+        CRposition.set(CRzoneI,new scalar(CRinitialPosition[CRzoneI]));
+    }
+    Info << "Control rod " << CRentries[CRzoneI].keyword() << " in position: " << CRposition[CRzoneI] << endl;
+
 }
 
 Info << "Finished reading nuclear data " << endl;
