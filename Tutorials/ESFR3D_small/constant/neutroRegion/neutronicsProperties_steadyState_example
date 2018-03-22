@@ -10,16 +10,23 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSolution;
+    location    "constant";
+    object      neutronicsProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-PIMPLE
-{
-    nOuterCorrectors        1;
-    tighltyCoupled          false; // if true it iterates on energy, fuel temp, thermal-mechanics and neutronics (not necessary for very short time steps)
-    timeStepResidual        0.00005; // required accuracy for the coupling
-    maxTimeStepIterations   3;
-}
+SP3Neutronics           false; //for SP3 instead of diffusion (no accelerations available for the moment)
+
+eigenvalueNeutronics    true;
+
+fastNeutrons            true; // if true interpolates cross section with logarithmic temp for fuel (otherwise, square root)
+
+adjustDiscFactors       false;
+
+//groupsWoDF              (0 1 2 3 4 5 6 7 8 9 14 15 16 17 18 19 20 21 22 23);
+
+useGivenDiscFactors     false;
+
+//doNotParametrize        ();
 
 // ************************************************************************* //

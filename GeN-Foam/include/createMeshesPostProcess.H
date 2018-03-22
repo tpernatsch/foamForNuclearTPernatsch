@@ -2,12 +2,12 @@
 
 /*
 This will soon be used for a multiregion expansion
-if (!fluidRegions.size())
+if (!fluidRegions.size() && !neutroRegions.size())
 {
     FatalErrorIn(args.executable())
-        << "No fluid meshes present" << exit(FatalError);
+        << "No region meshes present" << exit(FatalError);
 }
 
-fvMesh& mesh = fluidRegions[0];
+fvMesh& mesh = fluidRegions.size() ? fluidRegions[0] : neutroRegions[0];
 */
 fvMesh& mesh = fluidMesh;
