@@ -27,6 +27,9 @@
         + phig
     );
 
+    // Update the pressure BCs to ensure flux consistency
+    constrainPressure(p_rgh, rho, U, phiHbyA, rhorAUf);
+
     {
         fvScalarMatrix p_rghDDtEqn
         (
