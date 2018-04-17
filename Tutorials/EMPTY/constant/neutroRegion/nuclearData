@@ -1,7 +1,7 @@
 
 /*
  crossSection dictionary
- Generatd by serpentToFoamXS 
+ Generatd by serpentToFoamXS
  04-Aug-2014
  From SERPENT results file: esfr_core__res
 */
@@ -19,15 +19,11 @@ FoamFile
     object      esfr_core__res;
 }
 
- energyGroups 1 ; 
+ energyGroups 1 ;
 
  precGroups 8 ; 
 
- pTarget 3.600000e+09 ; 
+zones
+ (
 
- keff 1.00974;//1.01174; //1.007552; //1.013332; //  
- 
-zones 
- ( 
-
- ); 
+ );

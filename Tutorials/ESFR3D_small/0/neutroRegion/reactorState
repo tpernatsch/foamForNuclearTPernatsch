@@ -10,16 +10,13 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSolution;
+    location    "0";
+    object      reactorState;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-PIMPLE
-{
-    nOuterCorrectors        1;
-    tightlyCoupled          false; // if true it iterates on energy, fuel temp, thermal-mechanics and neutronics (not necessary for very short time steps)
-    timeStepResidual        0.00005; // required accuracy for the coupling
-    maxTimeStepIterations   3;
-}
+keff    1;
+pTarget 3.600000e+09;
+
 
 // ************************************************************************* //

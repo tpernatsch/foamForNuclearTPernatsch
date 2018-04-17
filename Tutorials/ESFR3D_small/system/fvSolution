@@ -17,7 +17,7 @@ FoamFile
 PIMPLE
 {
     nOuterCorrectors        1;
-    tighltyCoupled          false; // if true it iterates on energy, fuel temp, thermal-mechanics and neutronics (not necessary for very short time steps)
+    tightlyCoupled          false; // if true it iterates on energy, fuel temp, thermal-mechanics and neutronics (not necessary for very short time steps)
     timeStepResidual        0.00005; // required accuracy for the coupling
     maxTimeStepIterations   3;
 }
