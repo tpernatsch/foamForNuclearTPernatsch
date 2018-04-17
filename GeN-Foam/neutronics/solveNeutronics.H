@@ -60,7 +60,7 @@ do
     Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: " 
     << neutroIter << "): " << neutroResidual << " after Aitken no: " << aitkenIterNo << " with solveROM: " << solveROM  << endl;     
 
-}while(((neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) ) &&  !eigenvalueNeutronics);
+}while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics);
 
 volFuelPowerNeutro*=0.0;
 forAll(flux,energyI)

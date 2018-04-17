@@ -41,19 +41,5 @@ scalar maxDeltaT =
 scalar maxPowerVariation =
     runTime.controlDict().lookupOrDefault<scalar>("maxPowerVariation", 0.025);
 
-scalar timeStepResidual =
-    runTime.controlDict().lookupOrDefault<scalar>("timeStepResidual", 0.001);
-
-scalar neutronIterationResidual =
-    runTime.controlDict().lookupOrDefault<scalar>("neutronIterationResidual", 0.00001);
-
-int maxTimeStepIterations =
-    runTime.controlDict().lookupOrDefault<int>("maxTimeStepIterations", 5);
-
-int maxNeutronIterations =
-    runTime.controlDict().lookupOrDefault<int>("maxNeutronIterations", 10);
-
-
-
 
 // ************************************************************************* //

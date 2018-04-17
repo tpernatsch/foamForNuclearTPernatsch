@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
 
     #include "setRootCase.H"
     #include "createTime.H"
+    #include "readPhysicsToSolve.H"
 
     #include "createMeshes.H"
     #include "createFields.H"
@@ -94,9 +95,9 @@ int main(int argc, char *argv[])
 
     while (runTime.run())
     {
-
         #include "readTimeControls.H"
         #include "readPIMPLEControls.H"
+        #include "readNeutronicsControls.H"
         #include "readSolidDisplacementFoamControls.H"
         #include "compressibleCoNo.H"
 
