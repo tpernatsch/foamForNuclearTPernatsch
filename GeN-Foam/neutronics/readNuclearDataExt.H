@@ -589,11 +589,18 @@ forAll(CRentries,CRzoneI)
     CRinitialPosition.set(CRzoneI, new scalar(maxFollowerHeight-initialDistanceFromMeshCR[CRzoneI]));
     if(runTime.value()<CRfinish[CRzoneI])
     {
-        CRposition.set(CRzoneI,new scalar(CRinitialPosition[CRzoneI]));
+        CRinitialPosition[CRzoneI] = (CRinitialPosition[CRzoneI]-CRspeed[CRzoneI]*(max(runTime.value(),CRstart[CRzoneI])-CRstart[CRzoneI]));
     }
+    else
+    {
+        CRinitialPosition[CRzoneI] = (CRinitialPosition[CRzoneI]-CRspeed[CRzoneI]*(CRfinish[CRzoneI]-CRstart[CRzoneI]));
+    }
+    CRposition.set(CRzoneI, new scalar(CRinitialPosition[CRzoneI]));
     Info << "Control rod " << CRentries[CRzoneI].keyword() << " in position: " << CRposition[CRzoneI] << endl;
 
 }
+
+
 
 Info << "Finished reading nuclear data " << endl;
 

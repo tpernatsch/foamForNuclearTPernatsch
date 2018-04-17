@@ -16,6 +16,7 @@ if (eigenvalueNeutronics && (runTime.timeIndex()-runTime.startTimeIndex())==1 )
 }
 
 #include "initializeNeutroSource.H"
+#include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
 
 if(!eigenvalueNeutronics && couplingIter == 0)
