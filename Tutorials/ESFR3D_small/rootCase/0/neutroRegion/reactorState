@@ -10,23 +10,13 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "constant";
-    object      neutronicsProperties;
+    location    "0";
+    object      reactorState;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-SP3Neutronics           false; //for SP3 instead of diffusion (no accelerations available for the moment)
+keff    1;
+pTarget 3.600000e+09;
 
-eigenvalueNeutronics    true;
-
-fastNeutrons            true; // if true interpolates cross section with logarithmic temp for fuel (otherwise, square root)
-
-adjustDiscFactors       false;
-
-//groupsWoDF              (0 1 2 3 4 5 6 7 8 9 14 15 16 17 18 19 20 21 22 23);
-
-useGivenDiscFactors     false;
-
-//doNotParametrize        ();
 
 // ************************************************************************* //

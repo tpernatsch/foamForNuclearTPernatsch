@@ -86,11 +86,6 @@ IOdictionary nuclearDataCladExp
 
 label energyGroups(nuclearData.lookupOrDefault("energyGroups",1));
 label precGroups(nuclearData.lookupOrDefault("precGroups",1));
-scalar pTarget(nuclearData.lookupOrDefault("pTarget",1.0));
-scalar pTot(1.0);
-scalar pTotOld(1.0);
-scalar keff(nuclearData.lookupOrDefault("keff",1.0));
-
 
 PtrList<entry> entries(nuclearData.lookup("zones"));
 label zoneNumber = entries.size();
@@ -428,7 +423,7 @@ forAll(entries,zoneI)
     {
         dimensionedScalar TrefRatio("",dimensionSet(0,0,0,0,0,0,0),(TfuelRef/TfuelPerturbed));
         fuelTempDList.set(zoneI,new scalarField((DList[zoneI]-DFuelTempList[zoneI])/log(TrefRatio).value()));
-        fuelTempNuSigmaEffList.set(zoneI,new scalarField((nuSigmaEffList[zoneI]-nuSigmaEffFuelTempList[zoneI])/log(TrefRatio).value()));    
+        fuelTempNuSigmaEffList.set(zoneI,new scalarField((nuSigmaEffList[zoneI]-nuSigmaEffFuelTempList[zoneI])/log(TrefRatio).value()));
         fuelTempSigmaPowList.set(zoneI,new scalarField((sigmaPowList[zoneI]-sigmaPowFuelTempList[zoneI])/log(TrefRatio).value()));
         fuelTempSigmaDisappList.set(zoneI,new scalarField((sigmaDisappList[zoneI]-sigmaDisappFuelTempList[zoneI])/log(TrefRatio).value()));
         fuelTempSigmaFromToList.set(zoneI,new scalarSquareMatrix(sigmaFromToList[zoneI]));
@@ -444,7 +439,7 @@ forAll(entries,zoneI)
     {
         dimensionedScalar TrefDifference("",dimensionSet(0,0,0,0,0,0,0),(Foam::pow(TfuelRef,0.5)-Foam::pow(TfuelPerturbed,0.5)));
         fuelTempDList.set(zoneI,new scalarField((DList[zoneI]-DFuelTempList[zoneI])/TrefDifference.value()));
-        fuelTempNuSigmaEffList.set(zoneI,new scalarField((nuSigmaEffList[zoneI]-nuSigmaEffFuelTempList[zoneI])/TrefDifference.value()));    
+        fuelTempNuSigmaEffList.set(zoneI,new scalarField((nuSigmaEffList[zoneI]-nuSigmaEffFuelTempList[zoneI])/TrefDifference.value()));
         fuelTempSigmaPowList.set(zoneI,new scalarField((sigmaPowList[zoneI]-sigmaPowFuelTempList[zoneI])/TrefDifference.value()));
         fuelTempSigmaDisappList.set(zoneI,new scalarField((sigmaDisappList[zoneI]-sigmaDisappFuelTempList[zoneI])/TrefDifference.value()));
         fuelTempSigmaFromToList.set(zoneI,new scalarSquareMatrix(sigmaFromToList[zoneI]));
