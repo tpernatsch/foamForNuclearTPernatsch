@@ -1,3 +1,11 @@
+/*
+Leave for MultiRegion expansion
+List<bool> residualReachedFluid(fluidRegions.size(), true);
+List<bool> residualControlUsedFluid(fluidRegions.size(), false);
+*/
+bool residualReachedFluid(true);
+bool residualControlUsedFluid(false);
+
 Info<< "Reading thermophysical properties \n" << endl;
 
 autoPtr<rhoThermo> pThermo

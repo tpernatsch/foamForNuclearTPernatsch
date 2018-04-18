@@ -28,3 +28,7 @@ const bool compr =
 #include "createFluidFields.H"
 #include "createNeutroFields.H"
 #include "createThermoMechanicalFields.H"
+
+SolverPerformance<vector> solvPerfU;
+SolverPerformance<scalar> solvPerfp_rgh;
+SolverPerformance<scalar> solvPerfE;

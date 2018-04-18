@@ -115,12 +115,18 @@ int main(int argc, char *argv[])
                #include "storeOldFluidFields.H"
         }
 
+        bool allRegionsConverged = false;
+        bool finalIter = false;
+
         // --- PIMPLE loop
         for (int oCorr=0; oCorr<nOuterCorr; oCorr++)
         {
             Info << "PIMPLE iteration no:  " << oCorr << nl << endl;
 
-            bool finalIter = oCorr == nOuterCorr-1;
+            if (oCorr == nOuterCorr-1 || allRegionsConverged)
+            {
+                finalIter = true;
+            }
 
             Info<< "\nSolving for fluid region " << endl;
 
@@ -128,8 +134,13 @@ int main(int argc, char *argv[])
 
             #include "readFluidPIMPLEControls.H"
 
+            #include "readFluidMultiRegionResidualControls.H"
+
             #include "solveFluid.H"
 
+            #include "residualControlsFluid.H"
+
+            #include "checkResidualControls.H"
         }
 
         #include "writeOutputs.H"

@@ -55,5 +55,9 @@ if(!compr)
     }
 }
 
-
-
+bool& resReachedFluid = residualReachedFluid;
+bool& residualControlUsed = residualControlUsedFluid;
+/*
+bool& resReachedFluid = residualReachedFluid[i];
+bool& residualControlUsed = residualControlUsedFluid[i];
+*/
