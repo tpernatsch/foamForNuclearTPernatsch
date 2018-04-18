@@ -30,10 +30,12 @@ EEqn.relax();
 
 fvOptions.constrain(EEqn);
 
-scalar EEqnResidual(EEqn.solve(fluidMesh.solver(he.select(finalIter))).initialResidual());
-residual = max(residual,EEqnResidual);
-
 fvOptions.correct(he);
+
+solvPerfE = EEqn.solve(fluidMesh.solver(he.select(finalIter)));
+
+scalar EEqnResidual(solvPerfE.initialResidual());
+residual = max(residual,EEqnResidual);
 
 thermo.correct();
 
