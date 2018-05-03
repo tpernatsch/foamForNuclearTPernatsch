@@ -30,7 +30,9 @@ forAll(prec,precI)
             + fvm::div(phiNeutro, prec[precI])
             - fvm::laplacian(diffCoeffNeutro,prec[precI])                
         );
+	
         precEq.solve();
+	prec[precI] *= porosityNeutro;
     }
     else
     {
