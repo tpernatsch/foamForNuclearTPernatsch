@@ -22,6 +22,7 @@ forAll(prec,precI)
         diffCoeffNeutro.correctBoundaryConditions();
 
 
+	prec[precI] /= porosityNeutro;//solve precs per volume of salt
         fvScalarMatrix precEq
         (
             fvm::ddt(porosityNeutro*(1-eigenvalueNeutronics),prec[precI])
@@ -32,7 +33,7 @@ forAll(prec,precI)
         );
 	
         precEq.solve();
-	prec[precI] *= porosityNeutro;
+	prec[precI] *= porosityNeutro;//go back to precs per total volume
     }
     else
     {
