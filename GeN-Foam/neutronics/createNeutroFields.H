@@ -6,7 +6,7 @@ IOdictionary reactorState
     IOobject
     (
         "reactorState",
-        runTime.timeName(),
+        runTime.constant(),
         neutroMesh,
         IOobject::MUST_READ,
         IOobject::AUTO_WRITE
