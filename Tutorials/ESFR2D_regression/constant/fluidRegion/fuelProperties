@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+    class           dictionary;
+    location        "constant";
+    object          fuelProperties;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+model               constSubscaleFuel;
+
+zones
+(
+    innerCore
+    {
+        fuelSubMeshSize     40;
+        cladSubMeshSize     10;
+        Tf0                 668;
+        Tc0                 668;
+        claddingK           20;
+        fuelK               3;
+        claddingRho         60;
+        fuelRho             1;
+        claddingCp          500;
+        fuelCp              250;
+        gapH                6000;
+        rcOut               0.005365;
+        rcIn                0.004865;
+        rfOut               0.004715;
+        rfIn                0.0012;
+fuelVolPower 0;
+    }
+
+    outerCore
+    {
+        fuelSubMeshSize     20;
+        cladSubMeshSize     10;
+        Tf0                 668;
+        Tc0                 668;
+        claddingK           20;
+        fuelK               3;
+        claddingRho         63;
+        fuelRho             1;
+        claddingCp          500;
+        fuelCp              250;
+        gapH                6000;
+        rcOut               0.005365;
+        rcIn                0.004865;
+        rfOut               0.004715;
+        rfIn                0.0012;
+fuelVolPower 0;
+    }
+);
+
+// ************************************************************************* //

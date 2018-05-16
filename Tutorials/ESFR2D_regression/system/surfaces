@@ -1,0 +1,42 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+#includeEtc "caseDicts/postProcessing/visualization/surfaces.cfg"
+
+fields  (T U);
+
+surfaces
+(
+    yNormal
+    {
+        $cuttingPlane;
+        pointAndNormalDict
+        {
+            normalVector $y;
+        }
+    }
+    /*
+    blockedOutlet
+    {
+        type            patch;
+        patches (blockedOutlet);
+    }
+    freeOutlet
+    {
+        type            patch;
+        patches (freeOutlet);
+    }
+    gapOutlet
+    {
+        type            patch;
+        patches (gapOutlet);
+    }
+    */
+);
+
+// ************************************************************************* //
