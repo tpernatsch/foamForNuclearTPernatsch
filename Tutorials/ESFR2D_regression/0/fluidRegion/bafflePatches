@@ -1,0 +1,83 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      bafflePatches;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+alphat
+{
+	type            compressible::alphatWallFunction;
+    Prt             1.7;
+    value           uniform 0;
+}
+
+epsilon
+{
+    type            epsilonWallFunction;
+    value           uniform 0.01;
+    Cmu             0.09;
+    kappa           0.41;
+    E               9.8;
+}
+
+k
+{
+    type            kqRWallFunction;
+    value           uniform 0.1;
+}
+
+mut
+{
+    type            mutkWallFunction;
+    Cmu             0.09;
+    kappa           0.41;
+    E               9.8;
+    value           uniform 0;
+}
+
+p
+{
+    type            zeroGradient;
+}
+
+p_rgh
+{
+	type			zeroGradient;
+}
+
+rhok
+{
+    type            zeroGradient;
+}
+
+U
+{
+    type            slip;
+}
+
+T
+{
+	type 			zeroGradient;
+}
+
+Tstructures
+{
+	type            zeroGradient;
+}
+
+TavFuel
+{
+	type            zeroGradient;
+}
+
+// ************************************************************************* //
