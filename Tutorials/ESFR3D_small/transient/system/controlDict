@@ -1,0 +1,68 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.x                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    location        "system";
+    object          controlDict;
+}
+
+application     GeN-Foam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         1010;
+
+deltaT          1e-05;
+
+adjustTimeStep  true;
+
+maxDeltaT       0.5;
+
+writeControl    adjustableRunTime;
+
+writeInterval   2;
+
+purgeWrite      2;
+
+writeFormat     ascii;
+
+writePrecision  7;
+
+writeCompression true;
+
+timeFormat      general;
+
+timePrecision   8;
+
+runTimeModifiable true;
+
+solveFluidMechanics false;
+
+solveEnergy     true;
+
+solveNeutronics true;
+
+solveThermalMechanics true;
+
+compr           false;
+
+liquidFuel      false;
+
+maxCo           0.99;
+
+maxPowerVariation 0.025;
+
+
+// ************************************************************************* //
