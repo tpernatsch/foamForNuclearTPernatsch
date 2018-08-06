@@ -17,7 +17,7 @@ FoamFile
 PIMPLE
 {
     nOuterCorrectors 1;
-tightlyCoupled 0;
+tightlyCoupled 1;
     timeStepResidual        0.00005; // required accuracy for the coupling
     maxTimeStepIterations   3;
 }

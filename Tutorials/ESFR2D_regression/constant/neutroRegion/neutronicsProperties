@@ -17,7 +17,7 @@ FoamFile
 
 SP3Neutronics           false; //for SP3 instead of diffusion (no accelerations available for the moment)
 
-eigenvalueNeutronics 0;
+eigenvalueNeutronics 1;
 
 fastNeutrons            true; // if true interpolates cross section with logarithmic temp for fuel (otherwise, square root)
 

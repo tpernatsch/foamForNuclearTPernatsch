@@ -62,6 +62,7 @@ Foam::byZoneCorrelationPorousMedium::byZoneCorrelationPorousMedium
         dimensionedScalar("", dimless, 1.0),
         dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
         dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
+        dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
         dimensionedTensor("", dimless, tensor::I),
         dimensionedScalar("", dimensionSet(1,0,-3,-1,0,0,0), SMALL),
         dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 0.0),
@@ -117,6 +118,9 @@ Foam::byZoneCorrelationPorousMedium::byZoneCorrelationPorousMedium
 
         IndirectList<scalar>(volumetricAreaFuel_.internalField(), addr)
             = scalar(dict.lookupOrDefault("volumetricAreaFuel",1.0));
+
+        IndirectList<scalar>(volumetricAreaHX_.internalField(), addr)
+            = scalar(dict.lookupOrDefault("volumetricAreaHX",1.0));
 
         IndirectList<tensor>(rotate_.internalField(), addr)
             = tensor(coordinateSystem("",vector::zero,dict.lookupOrDefault("localZaxis",vector(0,0,1)),dict.lookupOrDefault("localXaxis",vector(1,0,0))).R().R().T());
@@ -200,6 +204,7 @@ Foam::byZoneCorrelationPorousMedium::byZoneCorrelationPorousMedium
     gamma_.correctBoundaryConditions();
     volumetricAreaSS_.correctBoundaryConditions();
     volumetricAreaFuel_.correctBoundaryConditions();
+    volumetricAreaHX_.correctBoundaryConditions();
     rotate_.correctBoundaryConditions();
     externalHeatTransferCoefficient_.correctBoundaryConditions();
     externalT_.correctBoundaryConditions();

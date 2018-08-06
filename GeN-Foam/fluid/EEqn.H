@@ -19,7 +19,7 @@ fvScalarMatrix EEqn
   - fvm::laplacian(turb.alphaEff(), he)
  ==
       porousMedium.externalVolHeatSource()
-    - pow((pow(porousMedium.externalHeatTransferCoefficient(),-1)+pow(porousMedium.heatTransferCoefficient(),-1)),-1)* porousMedium.volumetricAreaSS()*(thermo.T()-porousMedium.externalT())
+    - pow((pow(porousMedium.externalHeatTransferCoefficient(),-1)+pow(porousMedium.heatTransferCoefficient(),-1)),-1)* porousMedium.volumetricAreaHX()*(thermo.T()-porousMedium.externalT())
     + subscaleFuel.heatSources(thermo.T(),porousMedium.heatTransferCoefficient(),volFuelPower) * porousMedium.volumetricAreaFuel()*(1-liquidFuel)
     + liquidFuel*volFuelPower*porosity
     - porousMedium.heatTransferCoefficient()* porousMedium.volumetricAreaSS()*(thermo.T()-Tstructures)

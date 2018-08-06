@@ -26,7 +26,7 @@ startTime      0;
 
 stopAt      endTime;//  writeNow;// 
 
-endTime 100.0;
+endTime 600.0;
 
 deltaT 0.05;
 
@@ -36,7 +36,7 @@ maxDeltaT	1; // max time step
 
 writeControl   	runTime;//adjustableRunTime;//timeStep;//
 
-writeInterval 100.0;
+writeInterval 600.0;
 
 purgeWrite      0;
 
@@ -55,13 +55,13 @@ runTimeModifiable yes;
 // ************************************************************************* //
 // Physics to solve
 
-solveFluidMechanics 1;
+solveFluidMechanics 0;
 
-solveEnergy 0;
+solveEnergy 1;
 
-solveNeutronics 0;
+solveNeutronics 1;
 
-solveThermalMechanics 0;
+solveThermalMechanics 1;
 
 // ************************************************************************* //
 // Thermal-hydraulic options

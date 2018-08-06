@@ -160,6 +160,7 @@ public:
             const dimensionedScalar& gamma,
             const dimensionedScalar& volumetricAreaSS,
             const dimensionedScalar& volumetricAreaFuel,
+            const dimensionedScalar& volumetricAreaHX,
             const dimensionedTensor& rotate,
             const dimensionedScalar& externalHeatTransferCoefficient,
             const dimensionedScalar& externalT,
