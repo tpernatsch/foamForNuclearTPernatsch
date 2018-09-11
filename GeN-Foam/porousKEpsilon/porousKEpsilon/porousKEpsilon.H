@@ -44,7 +44,7 @@ Author
 
 #include "RASModel.H"
 #include "eddyViscosity.H"
-#include "byZoneCorrelationPorousMedium.H"
+#include "correlationPorousMedium.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

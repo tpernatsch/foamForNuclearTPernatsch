@@ -1,0 +1,5 @@
+SOURCE = \
+frictionFactorModel/frictionFactorModel.C \
+frictionFactorModel/newFrictionFactorModel.C \
+compoundFrictionFactorModel/compoundFrictionFactorModel.C \
+Darcy/Darcy.C 

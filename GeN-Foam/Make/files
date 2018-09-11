@@ -5,6 +5,7 @@ fluid/compressibleCourantNo.C
 porousClass/porousMedium.C
 porousClass/correlationPorousMedium.C
 porousClass/byZoneCorrelationPorousMedium.C
+porousClass/byZoneSodiumCorrelationPorousMedium.C
 thermalMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
 albedoSP3/albedoSP3FvPatchField.C
 
