@@ -55,8 +55,8 @@ Author (for the modification of solidDisplacementFoam)
             {
                 volScalarField& Tmech = Tptr();
 
-                Tmech *= 0;
-                TavFuelMech *= 0;
+                Tmech *= 0.0;
+                TavFuelMech *= 0.0;
 
                 fluidToTM.mapSrcToTgt(Tstructures, plusEqOp<scalar>(), Tmech);
                 if(linkedFuel)
@@ -124,7 +124,7 @@ Author (for the modification of solidDisplacementFoam)
         {
 
             volScalarField& Tmech = Tptr();
-            Tmech *= 0;
+            Tmech *= 0.0;
             fluidToTM.mapSrcToTgt(Tstructures, plusEqOp<scalar>(), Tmech);
             Tmech.correctBoundaryConditions();
 

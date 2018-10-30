@@ -54,6 +54,7 @@ meshToMesh neutroToTM
     neutroMesh,
     mechMesh,
     Foam::meshToMesh::interpolationMethod(2),
+    Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
 
@@ -62,6 +63,7 @@ meshToMesh fluidToTM
     fluidMesh,
     mechMesh,
     Foam::meshToMesh::interpolationMethod(2),
+    Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
 
@@ -71,6 +73,7 @@ meshToMesh neutroToFluid
     neutroMesh,
     fluidMesh,
     Foam::meshToMesh::interpolationMethod(2),
+    Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
 
@@ -79,6 +82,7 @@ meshToMesh fluidToNeutro
     fluidMesh,
     neutroMesh,
     Foam::meshToMesh::interpolationMethod(2),
+    Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
 

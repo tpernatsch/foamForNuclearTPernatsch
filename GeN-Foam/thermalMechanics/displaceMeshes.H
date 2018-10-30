@@ -5,7 +5,7 @@ Info << "Displace meshes" << nl << endl;
 
     tmp<pointVectorField> neutroPointsDisplacementOld = neutroMeshPointInterpolation.interpolate(DNeutro);
 
-    DNeutro*=0;
+    DNeutro*=0.0;
     neutroToTM.mapTgtToSrc( meshDisp , plusEqOp<vector>(), DNeutro.primitiveFieldRef());
     DNeutro.correctBoundaryConditions();
 
@@ -24,7 +24,7 @@ Info << "Displace meshes" << nl << endl;
 
     tmp<pointVectorField> fluidPointsDisplacementOld = fluidMeshPointInterpolation.interpolate(DFluid);
 
-    DFluid*=0;
+    DFluid*=0.0;
     fluidToTM.mapTgtToSrc( meshDisp , plusEqOp<vector>(), DFluid.primitiveFieldRef());
     DFluid.correctBoundaryConditions();
 

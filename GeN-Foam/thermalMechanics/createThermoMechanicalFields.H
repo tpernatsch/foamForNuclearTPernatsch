@@ -84,7 +84,7 @@ volVectorField meshDispOld
     zeroGradientFvPatchScalarField::typeName
 );
 
-autoPtr<volScalarField> Tptr(NULL);
+autoPtr<volScalarField> Tptr;
 
 
 Tptr.reset

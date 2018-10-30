@@ -103,7 +103,7 @@ public:
         IOFieldField(const IOobject&, const FieldField<Field,Type>&);
 
         //- Construct by transferring the FieldField contents
-        IOFieldField(const IOobject&, const Xfer<FieldField<Field,Type> >&);
+        IOFieldField(const IOobject&, FieldField<Field,Type> &);
 
 
     //- Destructor

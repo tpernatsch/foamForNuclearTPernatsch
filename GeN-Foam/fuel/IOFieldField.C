@@ -142,7 +142,7 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, const FieldFiel
 
 
 template<template<class> class Field, class Type>
-Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, const Xfer<FieldField<Field,Type> >& f)
+Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, FieldField<Field,Type>& f)
 :
     regIOobject(io),
     timeIndex_(this->time().timeIndex()),
@@ -160,7 +160,11 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, const Xfer<Fiel
             << endl;
     }
 
-    FieldField<Field,Type>::transfer(f());//careful. This might not work. In case, try the PtrList<Field<Type> > verions of transfer
+    //FieldField<Field,Type>::transfer(f());//careful. This might not work. In case, try the PtrList<Field<Type> > verions of transfer
+    const tmp<FieldField<Field,Type>>& tf(f);
+    FieldField<Field,Type>* fieldPtr = tf.ptr();
+    PtrList<Field<Type>>::transfer(*fieldPtr);
+    delete fieldPtr;
 
     if
     (
