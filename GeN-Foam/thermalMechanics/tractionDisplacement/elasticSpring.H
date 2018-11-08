@@ -26,22 +26,23 @@ Class
 
 Description
     Fixed traction boundary condition for the standard linear elastic, fixed
-    coefficient displacement equation. Modified from original version to allows
-    for a user-selected reference temperature
+    coefficient displacement equation.
 
 SourceFiles
     tractionDisplacementFvPatchVectorField.C
 
-Author (of modification)
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>   
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef tractionDisplacementFvPatchVectorField_H
-#define tractionDisplacementFvPatchVectorField_H
+#ifndef elasticSpring_H
+#define elasticSpring_H
 
 #include "fvPatchFields.H"
 #include "fixedGradientFvPatchFields.H"
+#include "interpolationTable.H"
+#include "tractionDisplacementFvPatchVectorField.H"
+
+
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -49,40 +50,36 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                   Class tractionDisplacementFvPatch Declaration
+                   Class elasticSpring Declaration
 \*---------------------------------------------------------------------------*/
 
-class tractionDisplacementFvPatchVectorField
+class elasticSpring
 :
-    public fixedGradientFvPatchVectorField
+    public tractionDisplacementFvPatchVectorField
 {
 
     // Private Data
 
+        //- Name of strain field
+        word displacementName_;   
 
-
-protected:
-        vectorField traction_;
-        scalarField pressure_;
-
-
-public:
+public:   
 
     //- Runtime type information
-    TypeName("tractionDisplacement");
+    TypeName("elasticSpring");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        tractionDisplacementFvPatchVectorField
+        elasticSpring
         (
             const fvPatch&,
             const DimensionedField<vector, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        tractionDisplacementFvPatchVectorField
+        elasticSpring
         (
             const fvPatch&,
             const DimensionedField<vector, volMesh>&,
@@ -90,19 +87,19 @@ public:
         );
 
         //- Construct by mapping given
-        //  tractionDisplacementFvPatchVectorField onto a new patch
-        tractionDisplacementFvPatchVectorField
+        //  elasticSpring onto a new patch
+        elasticSpring
         (
-            const tractionDisplacementFvPatchVectorField&,
+            const elasticSpring&,
             const fvPatch&,
             const DimensionedField<vector, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        tractionDisplacementFvPatchVectorField
+        elasticSpring
         (
-            const tractionDisplacementFvPatchVectorField&
+            const elasticSpring&
         );
 
         //- Construct and return a clone
@@ -110,14 +107,14 @@ public:
         {
             return tmp<fvPatchVectorField>
             (
-                new tractionDisplacementFvPatchVectorField(*this)
+                new elasticSpring(*this)
             );
         }
 
         //- Construct as copy setting internal field reference
-        tractionDisplacementFvPatchVectorField
+        elasticSpring
         (
-            const tractionDisplacementFvPatchVectorField&,
+            const elasticSpring&,
             const DimensionedField<vector, volMesh>&
         );
 
@@ -129,34 +126,12 @@ public:
         {
             return tmp<fvPatchVectorField>
             (
-                new tractionDisplacementFvPatchVectorField(*this, iF)
+                new elasticSpring(*this, iF)
             );
         }
 
 
     // Member functions
-
-        // Access
-
-            virtual const vectorField& traction() const
-            {
-                return traction_;
-            }
-
-            virtual vectorField& traction()
-            {
-                return traction_;
-            }
-
-            virtual const scalarField& pressure() const
-            {
-                return pressure_;
-            }
-
-            virtual  scalarField& pressure()
-            {
-                return pressure_;
-            }
 
 
         // Mapping functions
@@ -192,3 +167,4 @@ public:
 #endif
 
 // ************************************************************************* //
+

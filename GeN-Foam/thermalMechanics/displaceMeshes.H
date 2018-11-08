@@ -37,13 +37,11 @@ Info << "Displace meshes" << nl << endl;
     fluidMesh.movePoints(displacedPoints);
 
 } 
-
+/*
 {
     const volPointInterpolation& mechMeshPointInterpolation = volPointInterpolation::New(mechMesh);
 
     tmp<pointVectorField> mechPointsDisplacementOld = mechMeshPointInterpolation.interpolate(meshDisp.oldTime());
-
-    meshDisp.correctBoundaryConditions();
 
     tmp<pointVectorField> mechPointsDisplacement = mechMeshPointInterpolation.interpolate(meshDisp);
 
@@ -54,7 +52,7 @@ Info << "Displace meshes" << nl << endl;
     mechMesh.movePoints(displacedPoints);
 
 }
-
+*/
 
 
 
