@@ -1,7 +1,0 @@
-frictionFactorModel/frictionFactorModel.C
-frictionFactorModel/newFrictionFactorModel.C
-compoundFrictionFactorModel/compoundFrictionFactorModel.C
-Darcy/Darcy.C
-
-LIB = $(FOAM_USER_LIBBIN)/libfrictionFactorModels
-

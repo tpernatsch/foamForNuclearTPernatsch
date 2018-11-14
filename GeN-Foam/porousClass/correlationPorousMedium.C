@@ -307,6 +307,30 @@ Foam::correlationPorousMedium::correlationPorousMedium
         mesh_,
         dimensionedVector(IOdictionary::lookup("kepsilonConvergenceRate")),
         zeroGradientFvPatchScalarField::typeName
+    ),
+    turbulenceIntensity_(
+        IOobject(
+            "porousMedium::turbulenceIntensity",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedVector(word(), dimless, vector::zero),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    fRe_(
+        IOobject(
+            "porousMedium::fRe",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(word(), dimless, scalar(0)),
+        zeroGradientFvPatchScalarField::typeName
     )
 {
     porousMedium::gamma_ = dimensionedScalar(IOdictionary::lookup("voidFraction"));
@@ -609,6 +633,30 @@ Foam::correlationPorousMedium::correlationPorousMedium
         mesh_,
         kepsilonConvergenceRate,
         zeroGradientFvPatchScalarField::typeName
+    ),
+    turbulenceIntensity_(
+        IOobject(
+            "porousMedium::turbulenceIntensity",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedVector(word(), dimless, vector::zero),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    fRe_(
+        IOobject(
+            "porousMedium::fRe",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(word(), dimless, scalar(0)),
+        zeroGradientFvPatchScalarField::typeName
     )
 {
     porousMedium::gamma_ = gamma;
@@ -824,17 +872,32 @@ Foam::correlationPorousMedium::equilibriumK() const
     volVectorField& UR = tUR.ref();
     volScalarField& magU = tmagU.ref();
 
-    equilibriumK.replace(0,1.5* pow(magU*turbulenceIntensityConst_.component(0)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(0)),2.0));
-    equilibriumK.replace(1,1.5* pow(magU*turbulenceIntensityConst_.component(1)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(1)),2.0));
-    equilibriumK.replace(2,1.5* pow(magU*turbulenceIntensityConst_.component(2)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(2)),2.0));
+    // SR - Compute turbulence intensity separately and limit it by the laminar-turbulence factor fRe
+    updateFRe();
+    //Info << "porousMedium::fRe min/max/avg from k " << gMin(fRe_) << "/" << gAverage(fRe_) << "/" << gMax(fRe_) << endl;
+    turbulenceIntensity_.replace(0, fRe_*turbulenceIntensityConst_.component(0)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(0)));
+    turbulenceIntensity_.replace(1, fRe_*turbulenceIntensityConst_.component(1)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(1)));
+    turbulenceIntensity_.replace(2, fRe_*turbulenceIntensityConst_.component(2)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(2)));
+
+    equilibriumK.replace(0,1.5* pow(magU*turbulenceIntensity_.component(0), 2.0));
+    equilibriumK.replace(1,1.5* pow(magU*turbulenceIntensity_.component(1), 2.0));
+    equilibriumK.replace(2,1.5* pow(magU*turbulenceIntensity_.component(2), 2.0));
 
     equilibriumK.replace(0,equilibriumK.component(0)*UR.component(0)/max(dimensionedScalar("", dimensionSet(0,1,-1,0,0,0,0),SMALL),mag(UR.component(0))));
     equilibriumK.replace(1,equilibriumK.component(1)*UR.component(1)/max(dimensionedScalar("", dimensionSet(0,1,-1,0,0,0,0),SMALL),mag(UR.component(1))));
     equilibriumK.replace(2,equilibriumK.component(2)*UR.component(2)/max(dimensionedScalar("", dimensionSet(0,1,-1,0,0,0,0),SMALL),mag(UR.component(2))));
 
-    tmp<volScalarField> scalarEquilibriumK(new volScalarField(
-        max(dimensionedScalar("", dimensionSet(0,3,-3,0,0,0,0),SMALL),(equilibriumK & UR))
-        / max(dimensionedScalar("", dimensionSet(0,1,-1,0,0,0,0),SMALL),magU)));
+    tmp<volScalarField> scalarEquilibriumK
+    (
+        new volScalarField
+        (
+            max(dimensionedScalar("", dimensionSet(0,3,-3,0,0,0,0),SMALL),(equilibriumK & UR))
+            / 
+            max(dimensionedScalar("", dimensionSet(0,1,-1,0,0,0,0),SMALL),magU)
+        )
+    );
+
+    //Info << "min/avg/max KEq " << gMin(scalarEquilibriumK()) << "/" << gAverage(scalarEquilibriumK()) << "/" << gMax(scalarEquilibriumK()) << endl;
 
     return scalarEquilibriumK;
 }
@@ -888,9 +951,16 @@ Foam::correlationPorousMedium::equilibriumEpsilon() const
     volVectorField& UR = tUR.ref();
     volScalarField& magU = tmagU.ref();
 
-    equilibriumK.replace(0,1.5* pow(magU*turbulenceIntensityConst_.component(0)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(0)),2.0));
-    equilibriumK.replace(1,1.5* pow(magU*turbulenceIntensityConst_.component(1)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(1)),2.0));
-    equilibriumK.replace(2,1.5* pow(magU*turbulenceIntensityConst_.component(2)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(2)),2.0));
+    // SR - Compute turbulence intensity separately and limit it by the laminar-turbulence factor fRe
+    updateFRe();
+    //Info << "porousMedium::fRe min/max/avg from epsilon " << gMin(fRe_) << "/" << gAverage(fRe_) << "/" << gMax(fRe_) << endl;
+    turbulenceIntensity_.replace(0, fRe_*turbulenceIntensityConst_.component(0)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(0)));
+    turbulenceIntensity_.replace(1, fRe_*turbulenceIntensityConst_.component(1)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(1)));
+    turbulenceIntensity_.replace(2, fRe_*turbulenceIntensityConst_.component(2)*pow(max(SMALL,Re),turbulenceIntensityExp_.component(2)));
+
+    equilibriumK.replace(0,1.5* pow(magU*turbulenceIntensity_.component(0), 2.0));
+    equilibriumK.replace(1,1.5* pow(magU*turbulenceIntensity_.component(1), 2.0));
+    equilibriumK.replace(2,1.5* pow(magU*turbulenceIntensity_.component(2), 2.0));
 
     equilibriumEpsilon.replace(0,pow(0.09,3.0/4.0)*pow(mag(equilibriumK.component(0)),3.0/2.0)/((turbulenceLengthScaleConst_.component(0)+SMALL)*hydraulicDiameter_));
     equilibriumEpsilon.replace(1,pow(0.09,3.0/4.0)*pow(mag(equilibriumK.component(1)),3.0/2.0)/((turbulenceLengthScaleConst_.component(1)+SMALL)*hydraulicDiameter_));
@@ -904,7 +974,28 @@ Foam::correlationPorousMedium::equilibriumEpsilon() const
         max(dimensionedScalar("", dimensionSet(0,3,-4,0,0,0,0),SMALL),(equilibriumEpsilon & UR))
         / max(dimensionedScalar("", dimensionSet(0,1,-1,0,0,0,0),SMALL),magU)));
 
+    //Info << "min/avg/max KEq " << gMin(scalarEquilibriumEpsilon()) << "/" << gAverage(scalarEquilibriumEpsilon()) << "/" << gMax(scalarEquilibriumEpsilon()) << endl;
+
     return scalarEquilibriumEpsilon;
+}
+
+// SR
+void Foam::correlationPorousMedium::updateFRe() const
+{
+    volScalarField Re(ReynoldsNumber());
+    vector highReVector(max(reynoldsTurb()).value());
+    vector lowReVector(max(reynoldsLam()).value());
+    scalar highRe(max(max(highReVector[0], highReVector[1]), highReVector[2]));
+    scalar lowRe(min(min(lowReVector[0], lowReVector[1]), lowReVector[2]));
+
+    scalar m(1/(max(highRe-lowRe, SMALL)));
+    scalar q(-m*lowRe);
+
+    forAll(Re, i)
+    {
+        scalar unboundFRe(m*Re[i]+q);
+        fRe_[i] = max(scalar(0), min(scalar(1), unboundFRe));
+    }
 }
 
 Foam::tmp< Foam::volScalarField >
@@ -1017,6 +1108,15 @@ Foam::correlationPorousMedium::kepsilonConvergenceRate() const
     return scalarKepsilonConvergenceRate;
 }
 
+Foam::tmp<Foam::volScalarField>
+Foam::correlationPorousMedium::fRe() const
+{
+    tmp<volScalarField> tfRe
+    (
+        new volScalarField(fRe_)
+    );
+    return tfRe;
+}
 
 // ************************************************************************* //
 

@@ -93,6 +93,11 @@ int main(int argc, char *argv[])
     #include "openOutputFiles.H"
     #include "writeOutputs.H"
 
+    scalar TMaxInit(gMax(thermo.T()));
+    bool firstTime(true);
+    bool SSOld(false);
+    bool SS(false);
+
     while (runTime.run())
     {
         #include "readTimeControls.H"
@@ -103,6 +108,7 @@ int main(int argc, char *argv[])
 
         if((runTime.timeIndex()-runTime.startTimeIndex())>0)
         {
+            Info << "Initial TMax = " << TMaxInit << " K at t = " << runTime.timeName() << endl;
             #include "setMultiRegionDeltaT.H"
         }
         runTime++;
@@ -150,6 +156,50 @@ int main(int argc, char *argv[])
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
         << "  ClockTime = " << runTime.elapsedClockTime() << " s"
         << nl << endl;
+
+        scalar TMax(gMax(thermo.T()));
+
+        scalar dTMaxdt((TMax-TMaxOld)/runTime.deltaT().value());
+        Info << "dTMax/dt = " << dTMaxdt << " K/s" << endl;
+
+        if (TMax > TMaxInit and firstTime)
+        {
+            Info << "TMax > TMaxInit at t = " << runTime.timeName() << endl;
+            firstTime = false;
+        }
+
+        if (TMax >= TBoil)
+        {
+            Info << "Boiling was reached at t = " << runTime.timeName() << endl;
+            runTime.writeNow();
+            return 0;
+        }
+        else if (untilSS)
+        {
+            if (std::abs(dTMaxdt) < 0.01)
+            {
+                SS = true;
+            }
+            else
+            {
+                SS = false;
+            }
+            
+        }
+
+        if (SS and SSOld)
+        {
+            Info << "Steady state was reached after t = " << runTime.timeName() << endl;
+            runTime.writeNow();
+            return 0;
+        }
+
+        SSOld = SS;
+
+        TMaxOld = TMax;
+        dTMaxdtOld = dTMaxdt;
+
+        nTimeSteps++;
     }
 
     Info<< "End\n" << endl;

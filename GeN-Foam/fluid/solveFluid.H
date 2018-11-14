@@ -15,6 +15,11 @@ else
     rho = rhoRef;
 }
 
+if (incompWithTDepRho)
+{
+    rho = thermo.rho();
+}
+
 #include "UEqn.H"
 
 if(finalIter)
@@ -50,7 +55,7 @@ else
         #include "EEqn.H"
     }
 }
-if(solveFluidMechanics)
+if(solveFluidMechanics and !(solveFluidDynamicsOnlyForFirst10TimeSteps and nTimeSteps > 10))
 {
     for (int corr=0; corr<nCorr; corr++)
     {
@@ -60,7 +65,7 @@ if(solveFluidMechanics)
 }
 
 
-if(compr)
+if(compr or incompWithTDepRho)
 {
     rho = thermo.rho();
 }

@@ -88,6 +88,97 @@ Foam::byZoneSodiumCorrelationPorousMedium::byZoneSodiumCorrelationPorousMedium
         dimensionedVector("", dimless, vector::zero),
         dimensionedVector("", dimless, vector::zero),
         dimensionedVector("", dimensionSet(0,-1,0,0,0,0,0), vector::zero)
+    ),
+    relRough_
+    (
+        IOobject(
+            "porousMedium::relativeRoughness",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(IOdictionary::lookupOrDefault("relativeRoughness", 0.0)),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    Np_
+    (
+        IOobject(
+            "porousMedium::numerOfPinsInAssembly",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(IOdictionary::lookupOrDefault("NPins", 1)),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    Dp_
+    (
+        IOobject(
+            "porousMedium::pinDiameter",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(IOdictionary::lookupOrDefault("pinDiameter", 1e-2)),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    Dw_
+    (
+        IOobject(
+            "porousMedium::wireDiameter",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(IOdictionary::lookupOrDefault("wireDiameter", 1e-3)),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    PWetWall_
+    (
+        IOobject(
+            "porousMedium::wettedWrapperPerimeter",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(IOdictionary::lookupOrDefault("wettedWrapperPerimeter", 1)),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    Lw_
+    (
+        IOobject(
+            "porousMedium::wireLeadLength",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(IOdictionary::lookupOrDefault("wireLeadLength", 1e-1)),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    Pp_
+    (
+        IOobject(
+            "porousMedium::pinPitch",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(IOdictionary::lookupOrDefault("pinPitch", 1e-1)),
+        zeroGradientFvPatchScalarField::typeName
     )
 {
     PtrList<entry> entries(IOdictionary::lookup("zones"));
@@ -139,14 +230,14 @@ Foam::byZoneSodiumCorrelationPorousMedium::byZoneSodiumCorrelationPorousMedium
         IndirectList<scalar>(externalRhoCp_.internalField(), addr)
             = scalar(dict.lookupOrDefault("externalRhoCp",1000000.0));
 
-        IndirectList<vector>(reynoldsTurb_.internalField(), addr)
-            = vector(dict.lookupOrDefault("reynoldsTurb",vector(2.3e3,2.3e3,2.3e3)));
-
-        IndirectList<vector>(reynoldsLam_.internalField(), addr)
-            = vector(dict.lookupOrDefault("reynoldsLam",vector(1e3,1e3,1e3)));
-
         if (frictionModels_[name] == "Darcy")
         {
+            IndirectList<vector>(reynoldsTurb_.internalField(), addr)
+            = vector(dict.lookupOrDefault("reynoldsTurb",vector(2.3e3,2.3e3,2.3e3)));
+
+            IndirectList<vector>(reynoldsLam_.internalField(), addr)
+            = vector(dict.lookupOrDefault("reynoldsLam",vector(1e3,1e3,1e3)));
+
             IndirectList<vector>(darcyConstTurb_.internalField(), addr)
             = vector(dict.lookupOrDefault("darcyConstTurb",vector::zero));
 
@@ -158,6 +249,49 @@ Foam::byZoneSodiumCorrelationPorousMedium::byZoneSodiumCorrelationPorousMedium
 
             IndirectList<vector>(darcyExpLam_.internalField(), addr)
                 = vector(dict.lookupOrDefault("darcyExpLam",vector::zero));
+
+            reynoldsTurb_.correctBoundaryConditions();
+            reynoldsLam_.correctBoundaryConditions();
+            darcyConstTurb_.correctBoundaryConditions();
+            darcyConstLam_.correctBoundaryConditions();
+            darcyExpTurb_.correctBoundaryConditions();
+            darcyExpLam_.correctBoundaryConditions();
+        }
+
+        else if (frictionModels_[name] == "Churchill")
+        {
+            IndirectList<scalar>(relRough_.internalField(), addr)
+            = scalar(readScalar(dict.lookup("relativeRoughness")));
+
+            relRough_.correctBoundaryConditions();
+        }
+
+        else if (frictionModels_[name] == "Rehme")
+        {
+            IndirectList<scalar>(Np_.internalField(), addr)
+            = scalar(readScalar(dict.lookup("NPins")));
+
+            IndirectList<scalar>(Dp_.internalField(), addr)
+            = scalar(readScalar(dict.lookup("pinDiameter")));
+
+            IndirectList<scalar>(Dw_.internalField(), addr)
+            = scalar(readScalar(dict.lookup("wireDiameter")));
+
+            IndirectList<scalar>(PWetWall_.internalField(), addr)
+            = scalar(readScalar(dict.lookup("wettedWrapperPerimeter")));
+
+            IndirectList<scalar>(Lw_.internalField(), addr)
+            = scalar(readScalar(dict.lookup("wireLeadLength")));
+
+            IndirectList<scalar>(Pp_.internalField(), addr)
+            = scalar(readScalar(dict.lookup("pinPitch")));
+
+            Np_.correctBoundaryConditions();
+            Dp_.correctBoundaryConditions();
+            Dw_.correctBoundaryConditions();
+            PWetWall_.correctBoundaryConditions();
+            Lw_.correctBoundaryConditions();
+            Pp_.correctBoundaryConditions();
         }
 
         IndirectList<vector>(nusseltConstTurb1_.internalField(), addr)
@@ -214,12 +348,6 @@ Foam::byZoneSodiumCorrelationPorousMedium::byZoneSodiumCorrelationPorousMedium
     externalT_.correctBoundaryConditions();
     externalVolHeatSource_.correctBoundaryConditions();
     externalRhoCp_.correctBoundaryConditions();
-    reynoldsTurb_.correctBoundaryConditions();
-    reynoldsLam_.correctBoundaryConditions();
-    darcyConstTurb_.correctBoundaryConditions();
-    darcyConstLam_.correctBoundaryConditions();
-    darcyExpTurb_.correctBoundaryConditions();
-    darcyExpLam_.correctBoundaryConditions();
     nusseltConstTurb1_.correctBoundaryConditions();
     nusseltConstLam1_.correctBoundaryConditions();
     nusseltConstTurb2_.correctBoundaryConditions();
@@ -247,6 +375,65 @@ Foam::byZoneSodiumCorrelationPorousMedium::~byZoneSodiumCorrelationPorousMedium(
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
 Foam::tmp<Foam::volVectorField >
+Foam::byZoneSodiumCorrelationPorousMedium::rehmeFrictionFactor() const
+{
+    tmp<volVectorField> trehmeFrictionFactor
+    (
+        new volVectorField
+        (
+            IOobject
+            (
+                "correlationPorousMedium::rehmeFrictionFactor",
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            mesh_,
+            dimensionedVector("", dimless, vector::zero),
+            zeroGradientFvPatchScalarField::typeName
+        )
+    );
+    volVectorField& rehmeFrictionFactor = trehmeFrictionFactor.ref();
+
+    volScalarField Re(max(ReynoldsNumber(), SMALL));
+
+    volScalarField F
+    (
+        pow(Pp_/Dp_, 0.5) +
+        pow
+        (
+            (
+                7.6*(Dp_+Dw_)*pow(Pp_/Dp_, 2)
+                /
+                Lw_
+            ),
+            2.16
+        )
+    );
+
+    scalar pi(3.14159265359);
+    volScalarField PWetBundle(Np_*pi*(Dp_+Dw_));
+
+    volScalarField f
+    (
+        (PWetBundle/(PWetBundle+PWetWall_))
+        *
+        (
+            pow(F, 0.5)*64/Re
+            +
+            pow(F, 0.9335)*0.0816/pow(Re, 0.133)
+        )
+    );
+
+    rehmeFrictionFactor.replace(0, f);
+    rehmeFrictionFactor.replace(1, f);
+    rehmeFrictionFactor.replace(2, f);
+
+    return trehmeFrictionFactor;
+}
+
+Foam::tmp<Foam::volVectorField >
 Foam::byZoneSodiumCorrelationPorousMedium::churchillFrictionFactor() const
 {
     tmp<volVectorField> tChurchillFrictionFactor
@@ -268,10 +455,8 @@ Foam::byZoneSodiumCorrelationPorousMedium::churchillFrictionFactor() const
     );
     volVectorField& churchillFrictionFactor = tChurchillFrictionFactor.ref();
 
-    volScalarField Re(max(ReynoldsNumber(), dimensionedScalar("", dimless, SMALL)));
-    const volScalarField& epsilon = this->db().objectRegistry::lookupObject<volScalarField>("epsilon");
-    
-    dimensionedScalar invDim(word(), dimensionSet(0, -1, 3, 0, 0, 0, 0), 1.0);
+    volScalarField Re(max(ReynoldsNumber(), SMALL));
+
     volScalarField A
     (
         pow
@@ -280,7 +465,7 @@ Foam::byZoneSodiumCorrelationPorousMedium::churchillFrictionFactor() const
             Foam::log
             (
                 pow(7/Re, 0.9)+
-                0.27*(epsilon/hydraulicDiameter())*invDim
+                0.27*relRough_
             ), 
             16
         )
@@ -376,12 +561,15 @@ Foam::byZoneSodiumCorrelationPorousMedium::dragCoeff() const
     const cellZoneMesh& cellZones(mesh_.cellZones());
     wordList cellZoneNames(cellZones.names());
 
+    //Info << "Re min / avg / max : " << gMin(ReynoldsNumber()()) << " / " << gAverage(ReynoldsNumber()()) << " / "<< gMax(ReynoldsNumber()()) << endl;
+
     forAll(cellZones, i)
     {
         word cellZoneName = cellZones.names()[i];
+        
+        
         if      (frictionModels_[cellZoneName] == "Darcy")
         {
-            Info << "Darcy friction for cellZone " << cellZoneName << endl;
             volTensorField partialDragCoeff
             (
                 dragCoeffFromFF
@@ -396,12 +584,25 @@ Foam::byZoneSodiumCorrelationPorousMedium::dragCoeff() const
         }
         else if (frictionModels_[cellZoneName] == "Churchill")
         {
-            Info << "Churchill friction for cellZone " << cellZoneName << endl;
             volTensorField partialDragCoeff
             (
                 dragCoeffFromFF
                 (
                     churchillFrictionFactor()
+                )
+            );
+            forAll(cellZones[i], j)
+            {
+                dragCoeff[cellZones[i][j]] = partialDragCoeff[cellZones[i][j]];
+            }
+        }
+        else if (frictionModels_[cellZoneName] == "Rehme")
+        {
+            volTensorField partialDragCoeff
+            (
+                dragCoeffFromFF
+                (
+                    rehmeFrictionFactor()
                 )
             );
             forAll(cellZones[i], j)

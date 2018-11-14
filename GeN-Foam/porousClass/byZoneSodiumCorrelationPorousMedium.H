@@ -67,8 +67,30 @@ class byZoneSodiumCorrelationPorousMedium
 protected :
 
     HashTable<word, word, word::hash> frictionModels_;
-    
-    // Private data
+
+    //- For the Churchill model
+
+        volScalarField relRough_;
+
+    //- For the Rehme model
+
+        // Number of pins in assembly
+        volScalarField Np_;
+
+        // Pin diameter
+        volScalarField Dp_;
+
+        // Wire diameter
+        volScalarField Dw_;
+
+        // Wetted wrapper perimeter
+        volScalarField PWetWall_;
+
+        // Wire lead lenght (i.e. write wrapper pitch)
+        volScalarField Lw_;
+
+        // Rod lattice pitch
+        volScalarField Pp_;
 
     // Private Member Functions
 
@@ -102,6 +124,9 @@ public:
 
 
     //- Member functions
+
+        //- Friction factor computed with the churchill correlation
+            tmp<volVectorField> rehmeFrictionFactor() const;
 
         //- Friction factor computed with the churchill correlation
             tmp<volVectorField> churchillFrictionFactor() const;

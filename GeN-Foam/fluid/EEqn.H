@@ -72,13 +72,12 @@ TavClad = fvc::domainIntegrate(TavClad*fuelYesNo)/max(fvc::domainIntegrate(TavCl
 subscaleFuel.fuelAverage(TavFuel);
 subscaleFuel.cladAverage(TavClad);
 
-
 //solve for Temp of structures
 fvScalarMatrix structureEqn
 (
     fvm::ddt(porousMedium.externalRhoCp(), Tstructures)
  ==
-    porousMedium.heatTransferCoefficient()* porousMedium.volumetricAreaSS()*(thermo.T()-Tstructures)
+    porousMedium.heatTransferCoefficient()*porousMedium.volumetricAreaSS()*(thermo.T()-Tstructures)
 );
 
 structureEqn.solve();
