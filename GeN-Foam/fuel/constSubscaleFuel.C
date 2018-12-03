@@ -56,6 +56,9 @@ Foam::constSubscaleFuel::constSubscaleFuel
 )
 :
     subscaleFuel(mesh),
+    dFuel_(fuelZoneNumber_),
+    dClad_(fuelZoneNumber_),
+    planar_(fuelZoneNumber_),
     fuelVolPower_(fuelZoneNumber_),
     claddingK_(fuelZoneNumber_),
     fuelK_(fuelZoneNumber_),
@@ -68,10 +71,12 @@ Foam::constSubscaleFuel::constSubscaleFuel
     rcIn_(fuelZoneNumber_),
     rfOut_(fuelZoneNumber_),
     rfIn_(fuelZoneNumber_),
-    dFuel_(fuelZoneNumber_),
-    dClad_(fuelZoneNumber_),
-    planar_(fuelZoneNumber_)
 
+    printLinearPowerBalance_(fuelZoneNumber_),
+    fuelLinPows_(fuelZoneNumber_),
+    gapLinPows_(fuelZoneNumber_),
+    cladLinPows_(fuelZoneNumber_),
+    fluidLinPows_(fuelZoneNumber_)
 {
 
     PtrList<entry> entries(IOdictionary::lookup("zones"));
@@ -94,6 +99,83 @@ Foam::constSubscaleFuel::constSubscaleFuel
         dFuel_.set(zoneI,new scalar((rfOut_[zoneI]-rfIn_[zoneI])/(fuelSubMeshSize_[zoneI]-1)));
         dClad_.set(zoneI,new scalar((rcOut_[zoneI]-rcIn_[zoneI])/(cladSubMeshSize_[zoneI]-1)));
         planar_.set(zoneI,new bool(dict.lookupOrDefault("planar",false)));
+
+        printLinearPowerBalance_.set(zoneI,new bool(dict.lookupOrDefault("printLinearPowerBalance",false)));  
+        if (printLinearPowerBalance_[zoneI])
+        {
+            fuelLinPows_.set
+            (
+                zoneI,
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "fuelLinPow_"+word(zoneI),
+                        mesh_.time().timeName(),
+                        mesh_,
+                        IOobject::NO_READ,
+                        IOobject::NO_WRITE
+                    ),
+                    mesh_,
+                    dimensionedScalar(word(), dimPower/dimLength, 0.0),
+                    zeroGradientFvPatchScalarField::typeName
+                )
+            );
+            gapLinPows_.set
+            (
+                zoneI,
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "gapLinPow_"+word(zoneI),
+                        mesh_.time().timeName(),
+                        mesh_,
+                        IOobject::NO_READ,
+                        IOobject::NO_WRITE
+                    ),
+                    mesh_,
+                    dimensionedScalar(word(), dimPower/dimLength, 0.0),
+                    zeroGradientFvPatchScalarField::typeName
+                )
+            );
+            cladLinPows_.set
+            (
+                zoneI,
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "cladLinPow_"+word(zoneI),
+                        mesh_.time().timeName(),
+                        mesh_,
+                        IOobject::NO_READ,
+                        IOobject::NO_WRITE
+                    ),
+                    mesh_,
+                    dimensionedScalar(word(), dimPower/dimLength, 0.0),
+                    zeroGradientFvPatchScalarField::typeName
+                )
+            );
+            fluidLinPows_.set
+            (
+                zoneI,
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "fluidLinPow_"+word(zoneI),
+                        mesh_.time().timeName(),
+                        mesh_,
+                        IOobject::NO_READ,
+                        IOobject::NO_WRITE
+                    ),
+                    mesh_,
+                    dimensionedScalar(word(), dimPower/dimLength, 0.0),
+                    zeroGradientFvPatchScalarField::typeName
+                )
+            );
+        }  
     }
 }
 
@@ -116,17 +198,17 @@ Foam::constSubscaleFuel::updateLocalHeatFluxImplicit(Foam::label zoneI, Foam::la
     scalar kC = claddingK_[zoneI];
     scalar alphaClad = (kC/(claddingRho_[zoneI]*claddingCp_[zoneI]));
     scalar rC = alphaClad * mesh_.time().deltaT().value() /  pow(dC,2);
-    scalar BetaMC = 1 + (1 + 1/(2*(cladSubMeshSize_[zoneI]-1+rcIn_[zoneI]/dC))) * dC * hfl / kC;
-    scalar gammaMC = (1 + 1/(2*(cladSubMeshSize_[zoneI]-1+rcIn_[zoneI]/dC))) * dC * hfl * Tfl / kC;
-    scalar Beta0C = 1 + (1 - 1/(2*(rcIn_[zoneI]/dC))) * dC * gapH_[zoneI] / kC;
-    scalar gamma0C = (1 - 1/(2*(rcIn_[zoneI]/dC))) * dC * gapH_[zoneI] * TfOld[fuelSubMeshSize_[zoneI]-1] / kC;
+    scalar BetaMC = 1 + (1 + 1/(2*(rcOut_[zoneI]/dC))) * dC * hfl / kC; //(cladSubMeshSize_[zoneI]-1+rcIn_[zoneI]/dC)
+    scalar gammaMC = (1 + 1/(2*(rcOut_[zoneI]/dC))) * dC * hfl * Tfl / kC; //(cladSubMeshSize_[zoneI]-1+rcIn_[zoneI]/dC)
+    scalar Beta0C = 1 + (1 - 1/(2*(rcIn_[zoneI]/dC))) * dC * gapH_[zoneI] * (rfOut_[zoneI]/rcIn_[zoneI]) / kC;
+    scalar gamma0C = (1 - 1/(2*(rcIn_[zoneI]/dC))) * dC * gapH_[zoneI] * (rfOut_[zoneI]/rcIn_[zoneI]) * TfOld[fuelSubMeshSize_[zoneI]-1] / kC;
 
     scalar dF = dFuel_[zoneI];
     scalar kF = fuelK_[zoneI];
     scalar alphaFuel = (kF/(fuelRho_[zoneI]*fuelCp_[zoneI]));
     scalar rF = alphaFuel * mesh_.time().deltaT().value() /  pow(dF,2);
-    scalar BetaMF = 1 + (1 + 1/(2*(fuelSubMeshSize_[zoneI]-1+rfIn_[zoneI]/dF))) * dF * gapH_[zoneI] / kF;
-    scalar gammaMF = (1 + 1/(2*(fuelSubMeshSize_[zoneI]-1+rfIn_[zoneI]/dF))) * dF * gapH_[zoneI] * TcOld[0] / kF;
+    scalar BetaMF = 1 + (1 + 1/(2*(rfOut_[zoneI]/dF))) * dF * gapH_[zoneI] / kF; //(fuelSubMeshSize_[zoneI]-1+rfIn_[zoneI]/dF)
+    scalar gammaMF = (1 + 1/(2*(rfOut_[zoneI]/dF))) * dF * gapH_[zoneI] * TcOld[0] / kF; //(fuelSubMeshSize_[zoneI]-1+rfIn_[zoneI]/dF)
     scalar GF = pow(dF,2) * (q + fuelVolPower_[zoneI]) / kF ;
     scalar Beta0F = 1 ;
 
@@ -204,8 +286,55 @@ Foam::constSubscaleFuel::updateLocalHeatFluxImplicit(Foam::label zoneI, Foam::la
     solve(Tc_[zoneI][cellIlocal],cladMatrix,cladSource);
     solve(Tf_[zoneI][cellIlocal],fuelMatrix,fuelSource);
 
-    return hfl * (Tc_[zoneI][cellIlocal][cladSubMeshSize_[zoneI]-1] - Tfl) ;
+    scalar qOut
+    (
+        hfl*
+        (
+            Tc_[zoneI][cellIlocal][cladSubMeshSize_[zoneI]-1] -
+            Tfl
+        )
+    );
+
+    //
+    if (printLinearPowerBalance_[zoneI])
+    {
+        fuelLinPows_[zoneI][cellIlocal] = 
+            2*3.14159*rfOut_[zoneI]*
+            kF*
+            (
+                Tf_[zoneI][cellIlocal][fuelSubMeshSize_[zoneI]-2] - 
+                Tf_[zoneI][cellIlocal][fuelSubMeshSize_[zoneI]-1]
+            )
+            /
+            dF;
+
+        gapLinPows_[zoneI][cellIlocal] = 
+            2*3.14159*rfOut_[zoneI]*
+            gapH_[zoneI]*
+            (
+                Tf_[zoneI][cellIlocal][fuelSubMeshSize_[zoneI]-1] - 
+                Tc_[zoneI][cellIlocal][0]
+            );
+
+        cladLinPows_[zoneI][cellIlocal] = 
+            2*3.14159*rcOut_[zoneI]*
+            kC*
+            (
+                Tc_[zoneI][cellIlocal][cladSubMeshSize_[zoneI]-2] - 
+                Tc_[zoneI][cellIlocal][cladSubMeshSize_[zoneI]-1]
+            )
+            /
+            dC;
+
+        fluidLinPows_[zoneI][cellIlocal] = 
+            2*3.14159*rcOut_[zoneI]*
+            qOut;
+    }
+    
+    return qOut;
 }
+
+
 
 Foam::scalar
 Foam::constSubscaleFuel::updateLocalHeatFluxImplicitPlanar(Foam::label zoneI, Foam::label cellIlocal, Foam::scalar Tfl, Foam::scalar hfl, Foam::scalar q)
@@ -343,7 +472,15 @@ Foam::constSubscaleFuel::heatSources(const volScalarField& Tfl, const volScalarF
             {
                 qf[cellIglobal] = updateLocalHeatFluxImplicit(zoneI,cellIlocal,Tfl[cellIglobal], hfl[cellIglobal], qs[cellIglobal]); // Pass local temperatures and solve for heat flux on fuel surface
             }
+        }
 
+        if (printLinearPowerBalance_[zoneI])
+        {
+            Info    << "Linear power balance (Fu-G-C-Fl): " 
+                    << gAverage(fuelLinPows_[zoneI]) << " "
+                    << gAverage(gapLinPows_[zoneI]) << " "
+                    << gAverage(cladLinPows_[zoneI]) << " "
+                    << gAverage(fluidLinPows_[zoneI]) << " W/m" << endl;
         }
     }
 
@@ -533,7 +670,8 @@ Foam::constSubscaleFuel::cladAverage(volScalarField& TavClad)
                 }
                 TavClad[cellIglobal] *= 1 / (rcOut_[zoneI] - rcIn_[zoneI]);
             }
-        }else
+        }
+        else
         {
             scalar dC = dClad_[zoneI];
             forAll(Tc_[zoneI], cellIlocal)

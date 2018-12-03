@@ -80,6 +80,7 @@ int main(int argc, char *argv[])
     #include "readPhysicsToSolve.H"
 
     #include "createMeshes.H"
+    #include "createTerminationControls.H"
     #include "createFields.H"
 
     #include "initContinuityErrs.H"
@@ -94,9 +95,6 @@ int main(int argc, char *argv[])
     #include "writeOutputs.H"
 
     scalar TMaxInit(gMax(thermo.T()));
-    bool firstTime(true);
-    bool SSOld(false);
-    bool SS(false);
 
     while (runTime.run())
     {
@@ -157,49 +155,7 @@ int main(int argc, char *argv[])
         << "  ClockTime = " << runTime.elapsedClockTime() << " s"
         << nl << endl;
 
-        scalar TMax(gMax(thermo.T()));
-
-        scalar dTMaxdt((TMax-TMaxOld)/runTime.deltaT().value());
-        Info << "dTMax/dt = " << dTMaxdt << " K/s" << endl;
-
-        if (TMax > TMaxInit and firstTime)
-        {
-            Info << "TMax > TMaxInit at t = " << runTime.timeName() << endl;
-            firstTime = false;
-        }
-
-        if (TMax >= TBoil)
-        {
-            Info << "Boiling was reached at t = " << runTime.timeName() << endl;
-            runTime.writeNow();
-            return 0;
-        }
-        else if (untilSS)
-        {
-            if (std::abs(dTMaxdt) < 0.01)
-            {
-                SS = true;
-            }
-            else
-            {
-                SS = false;
-            }
-            
-        }
-
-        if (SS and SSOld)
-        {
-            Info << "Steady state was reached after t = " << runTime.timeName() << endl;
-            runTime.writeNow();
-            return 0;
-        }
-
-        SSOld = SS;
-
-        TMaxOld = TMax;
-        dTMaxdtOld = dTMaxdt;
-
-        nTimeSteps++;
+        #include "terminationControls.H"
     }
 
     Info<< "End\n" << endl;

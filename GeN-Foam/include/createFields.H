@@ -17,22 +17,6 @@ const bool liquidFuel =
 const bool compr =
     runTime.controlDict().lookupOrDefault("compr", false);
 
-const bool incompWithTDepRho =
-    runTime.controlDict().lookupOrDefault("incompWithTDepRho", false);
-
-const scalar TBoil(runTime.controlDict().lookupOrDefault("TBoil", GREAT));
-scalar TMaxOld(0);
-
-const bool untilSS = 
-	runTime.controlDict().lookupOrDefault("untilSS", false);
-
-const bool solveFluidDynamicsOnlyForFirst10TimeSteps = 
-	runTime.controlDict().lookupOrDefault("solveFluidDynamicsOnlyForFirst10TimeSteps", false);
-
-int nTimeSteps(0);
-
-scalar dTMaxdtOld(0);
-
 // It is important that neutronics and solid displacemente flags are read
 // then properties are read according to the flags
 #include "readNeutronicsProperties.H"

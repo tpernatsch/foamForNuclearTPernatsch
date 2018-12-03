@@ -112,6 +112,17 @@ protected:
         //- Fuel inner radius
         mutable PtrList<scalar> rfIn_;
 
+        //- To check energy conservation
+        PtrList<bool> printLinearPowerBalance_;
+
+        mutable PtrList<volScalarField> fuelLinPows_;
+
+        mutable PtrList<volScalarField> gapLinPows_;
+
+        mutable PtrList<volScalarField> cladLinPows_;
+
+        mutable PtrList<volScalarField> fluidLinPows_;
+
 private:
 
     // Private data

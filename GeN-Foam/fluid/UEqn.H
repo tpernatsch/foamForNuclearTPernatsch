@@ -19,7 +19,7 @@ fvOptions.constrain(UEqn);
 //"reconstruct" used to fake a staggered grid (rhie chow)
 if (momentumPredictor)
 {
-    if(solveFluidMechanics and !(solveFluidDynamicsOnlyForFirst10TimeSteps and nTimeSteps > 10))
+    if(solveFluidMechanics and !(solveFluidMechanicsOnlyForFirstNTimeSteps and nTimeSteps > nTimeStepsSolveFluidMechanics))
     {
         Info<< "Solve the Momentum equation " << nl << endl;
         

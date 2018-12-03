@@ -22,9 +22,12 @@ fvScalarMatrix EEqn
     - pow((pow(porousMedium.externalHeatTransferCoefficient(),-1)+pow(porousMedium.heatTransferCoefficient(),-1)),-1)* porousMedium.volumetricAreaSS()*(thermo.T()-porousMedium.externalT())
     + subscaleFuel.heatSources(thermo.T(),porousMedium.heatTransferCoefficient(),volFuelPower) * porousMedium.volumetricAreaFuel()*(1-liquidFuel)
     + liquidFuel*volFuelPower*porosity
+    //+ volFuelPower
     - porousMedium.heatTransferCoefficient()* porousMedium.volumetricAreaSS()*(thermo.T()-Tstructures)
     + fvOptions(rho, he)
 );
+
+//Info << "volPowSourceFromPin : " << gAverage((subscaleFuel.heatSources(thermo.T(),porousMedium.heatTransferCoefficient(),volFuelPower) * porousMedium.volumetricAreaFuel())()) << " W/m3" << endl;
 
 EEqn.relax();
 
@@ -47,10 +50,12 @@ if(!compr)
 Info<< "Min/max T:" << min(thermo.T()).value() << ' '
 << max(thermo.T()).value() << endl;
 
+
 TinnerFuel = subscaleFuel.fuelIn();
 TouterFuel = subscaleFuel.fuelOut();
 TinnerClad = subscaleFuel.cladIn();
 TouterClad = subscaleFuel.cladOut();
+
 
 //make avarege fuel temps outside of the fuel equals to the average in the fuel
 tmp<volScalarField> tFuelYesNo = TinnerFuel/max(TinnerFuel,dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),SMALL));
