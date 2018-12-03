@@ -33,6 +33,5 @@ else if (untilSS)
 }
 
 TMaxOld = TMax;
-dTMaxdtOld = dTMaxdt;
 
 nTimeSteps++;

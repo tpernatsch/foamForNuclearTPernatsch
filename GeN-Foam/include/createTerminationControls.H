@@ -15,5 +15,4 @@ if (nTimeStepsSolveFluidMechanics > 0)
 int SSCounter(0);
 int nTimeSteps(0);
 scalar TMaxOld(0);
-scalar dTMaxdtOld(0);
 bool firstTimePrintTMaxt(true);
