@@ -303,21 +303,6 @@ volScalarField fuelFraction
     zeroGradientFvPatchScalarField::typeName
 );
 
-volScalarField ScNo
-(
-    IOobject
-    (
-        "ScNo",
-        runTime.timeName(),
-        neutroMesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    neutroMesh,
-    dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 1.0),
-    zeroGradientFvPatchScalarField::typeName
-);
-
 PtrList<volScalarField > discFactor(energyGroups);
 forAll(discFactor,energyI)
 {

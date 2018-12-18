@@ -53,19 +53,19 @@ Author (for the modification of solidDisplacementFoam)
         {
             Info << "ThermoMechanical iteration no:  " << iCorrMech << nl << endl;
             {
-                volScalarField& Tmech = Tptr();
+                //volScalarField& Tmech = Tptr();
 
                 Tmech *= 0.0;
                 TavFuelMech *= 0.0;
 
-                fluidToTM.mapSrcToTgt(Tstructures, plusEqOp<scalar>(), Tmech);
+                TMToFluid.mapTgtToSrc(Tstructures, plusEqOp<scalar>(), Tmech);
                 if(linkedFuel)
                 {
-                    fluidToTM.mapSrcToTgt(TavClad, plusEqOp<scalar>(), TavFuelMech);
+                    TMToFluid.mapTgtToSrc(TavClad, plusEqOp<scalar>(), TavFuelMech);
                 }
                 else
                 {
-                    fluidToTM.mapSrcToTgt(TavFuel, plusEqOp<scalar>(), TavFuelMech);
+                    TMToFluid.mapTgtToSrc(TavFuel, plusEqOp<scalar>(), TavFuelMech);
                 }
 
                 Tmech.correctBoundaryConditions();
@@ -84,7 +84,7 @@ Author (for the modification of solidDisplacementFoam)
                 );
 
                 {
-                    const volScalarField& Tmech = Tptr();
+                    //const volScalarField& Tmech = Tptr();
                     DEqn += fvc::grad(threeKalpha*(Tmech-TrefStructures));
                 }
 
@@ -122,12 +122,6 @@ Author (for the modification of solidDisplacementFoam)
 
         // calculating axial fuel expansion
         {
-
-            volScalarField& Tmech = Tptr();
-            Tmech *= 0.0;
-            fluidToTM.mapSrcToTgt(Tstructures, plusEqOp<scalar>(), Tmech);
-            Tmech.correctBoundaryConditions();
-
 
             surfaceScalarField faceArea(fuelOrientation & mechMesh.Sf());
 

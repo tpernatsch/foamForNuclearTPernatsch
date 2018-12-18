@@ -84,25 +84,19 @@ volVectorField meshDispOld
     zeroGradientFvPatchScalarField::typeName
 );
 
-autoPtr<volScalarField> Tptr;
-
-
-Tptr.reset
+volScalarField Tmech
 (
-    new volScalarField
+    IOobject
     (
-        IOobject
-        (
-            "Tmech",
-            runTime.timeName(),
-            mechMesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
+        "Tmech",
+        runTime.timeName(),
         mechMesh,
-        TrefStructures,//important to impose correct BC (this value will remain in the soft region surrounding everything)
-        zeroGradientFvPatchScalarField::typeName
-    )
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mechMesh,
+    TrefStructures,//important to impose correct BC (this value will remain in the soft region surrounding everything)
+    zeroGradientFvPatchScalarField::typeName
 );
 
 

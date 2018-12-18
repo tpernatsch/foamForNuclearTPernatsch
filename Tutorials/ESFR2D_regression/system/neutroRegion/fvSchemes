@@ -21,13 +21,12 @@ ddtSchemes
 
 gradSchemes
 {
-    default         Gauss linear;
+    default         Gauss cubic;
 }
 
 divSchemes
 {
-    default        none;
-    //div(phi,U)      Gauss upwind;
+    default         Gauss linear;
 }
 
 laplacianSchemes

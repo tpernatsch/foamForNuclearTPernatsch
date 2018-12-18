@@ -33,7 +33,6 @@ forAll(flux,energyI)
                 BetaTot[cellIglobal] = BetaTotList[zone];
 
                 fuelFraction[cellIglobal] = fuelFractionList[zone];
-                ScNo[cellIglobal] = ScNoList[zone];
 
                 
             }
@@ -44,5 +43,4 @@ forAll(flux,energyI)
     chiDelayed[energyI].correctBoundaryConditions();
     BetaTot.correctBoundaryConditions();
     fuelFraction.correctBoundaryConditions();
-    ScNo.correctBoundaryConditions();
 }

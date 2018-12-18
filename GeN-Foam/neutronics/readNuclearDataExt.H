@@ -92,6 +92,7 @@ label zoneNumber = entries.size();
 PtrList<entry> entriesRadialExp(nuclearDataRadialExp.lookup("zones"));
 vector axialOrientation(nuclearDataRadialExp.lookupOrDefault("axialOrientation",Foam::vector(0,1,0)));
 vector radialOrientation(nuclearDataRadialExp.lookupOrDefault("radialOrientation",Foam::vector(1,0,0)));
+scalar ScNo(nuclearData.lookupOrDefault("ScNo",1.0));// Schmidt number
 PtrList<entry> entriesAxialExp(nuclearDataAxialExp.lookup("zones"));
 PtrList<entry> entriesFuelTemp(nuclearDataFuelTemp.lookup("zones"));
 PtrList<entry> entriesRhoCool(nuclearDataRhoCool.lookup("zones"));
@@ -100,9 +101,6 @@ PtrList<entry> entriesCladExp(nuclearDataCladExp.lookup("zones"));
 
 // fuel fraction used to determine vol power IN the fuel starting from vol power from sigmaPow
 PtrList<scalar > fuelFractionList(zoneNumber);
-
-// Schmidt number
-PtrList<scalar > ScNoList(zoneNumber);
 
 // adjust or not DF
 PtrList<bool > dfAdjustList(zoneNumber);
@@ -224,8 +222,6 @@ forAll(entries,zoneI)
     Info << "name: " << name << endl;
 
     fuelFractionList.set(zoneI,new scalar(dict.lookupOrDefault("fuelFraction",0.0)));
-
-    ScNoList.set(zoneI,new scalar(dict.lookupOrDefault("ScNo",1.0)));
 
     dfAdjustList.set(zoneI,new bool(dict.lookupOrDefault("dfAdjust",true)));
 

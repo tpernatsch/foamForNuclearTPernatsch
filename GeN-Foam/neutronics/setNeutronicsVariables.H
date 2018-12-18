@@ -42,16 +42,26 @@ forAll(CRentries,CRzoneI)
     Info << "Control rod " << CRentries[CRzoneI].keyword() << " in position: " << CRposition[CRzoneI] << endl;
 }
 
-tmp<volScalarField> DNeutroRad = DNeutro & radialOrientation;
-tmp<volScalarField> DNeutroAx = DNeutro & axialOrientation;
+tmp<volVectorField> tDNeutroRad(new volVectorField(DNeutro));
+volVectorField& DNeutroRad = tDNeutroRad.ref();
 
-DNeutroRad->correctBoundaryConditions();
-DNeutroAx->correctBoundaryConditions();
+tmp<volScalarField> tDNeutroAx(new volScalarField(DNeutro & axialOrientation));
+volScalarField& DNeutroAx = tDNeutroAx.ref();
 
-radExp = fvc::grad(DNeutroRad)& radialOrientation;
+DNeutroRad.replace(0,DNeutroRad.component(0)*(1-axialOrientation[0]));
+DNeutroRad.replace(1,DNeutroRad.component(1)*(1-axialOrientation[1]));
+DNeutroRad.replace(2,DNeutroRad.component(2)*(1-axialOrientation[2]));
+
+DNeutroRad.correctBoundaryConditions();
+DNeutroAx.correctBoundaryConditions();
+
+radExp = fvc::div(DNeutroRad)/2.0;
 axExp = fvc::grad(DNeutroAx)& axialOrientation;
 
-DNeutroRad.clear();
+radExp.correctBoundaryConditions();
+axExp.correctBoundaryConditions();
+
+tDNeutroRad.clear();
 DNeutroAx.clear();
 
 volScalarField logT( log(max(0.01,(TfuelNeutro/dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),TfuelRef)))) );

@@ -14,7 +14,7 @@ if (runTime.outputTime())
     );
 
 
-    const volScalarField& Tmech = Tptr();
+    //const volScalarField& Tmech = Tptr();
     sigma = sigma - I*(rhoMech*threeKalpha*Tmech);
 
     volScalarField sigmaEq
