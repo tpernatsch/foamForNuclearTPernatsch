@@ -70,13 +70,7 @@ Foam::constSubscaleFuel::constSubscaleFuel
     rcOut_(fuelZoneNumber_),
     rcIn_(fuelZoneNumber_),
     rfOut_(fuelZoneNumber_),
-    rfIn_(fuelZoneNumber_),
-
-    printLinearPowerBalance_(fuelZoneNumber_),
-    fuelLinPows_(fuelZoneNumber_),
-    gapLinPows_(fuelZoneNumber_),
-    cladLinPows_(fuelZoneNumber_),
-    fluidLinPows_(fuelZoneNumber_)
+    rfIn_(fuelZoneNumber_)
 {
 
     PtrList<entry> entries(IOdictionary::lookup("zones"));
@@ -100,82 +94,6 @@ Foam::constSubscaleFuel::constSubscaleFuel
         dClad_.set(zoneI,new scalar((rcOut_[zoneI]-rcIn_[zoneI])/(cladSubMeshSize_[zoneI]-1)));
         planar_.set(zoneI,new bool(dict.lookupOrDefault("planar",false)));
 
-        printLinearPowerBalance_.set(zoneI,new bool(dict.lookupOrDefault("printLinearPowerBalance",false)));  
-        if (printLinearPowerBalance_[zoneI])
-        {
-            fuelLinPows_.set
-            (
-                zoneI,
-                new volScalarField
-                (
-                    IOobject
-                    (
-                        "fuelLinPow_"+word(zoneI),
-                        mesh_.time().timeName(),
-                        mesh_,
-                        IOobject::NO_READ,
-                        IOobject::NO_WRITE
-                    ),
-                    mesh_,
-                    dimensionedScalar(word(), dimPower/dimLength, 0.0),
-                    zeroGradientFvPatchScalarField::typeName
-                )
-            );
-            gapLinPows_.set
-            (
-                zoneI,
-                new volScalarField
-                (
-                    IOobject
-                    (
-                        "gapLinPow_"+word(zoneI),
-                        mesh_.time().timeName(),
-                        mesh_,
-                        IOobject::NO_READ,
-                        IOobject::NO_WRITE
-                    ),
-                    mesh_,
-                    dimensionedScalar(word(), dimPower/dimLength, 0.0),
-                    zeroGradientFvPatchScalarField::typeName
-                )
-            );
-            cladLinPows_.set
-            (
-                zoneI,
-                new volScalarField
-                (
-                    IOobject
-                    (
-                        "cladLinPow_"+word(zoneI),
-                        mesh_.time().timeName(),
-                        mesh_,
-                        IOobject::NO_READ,
-                        IOobject::NO_WRITE
-                    ),
-                    mesh_,
-                    dimensionedScalar(word(), dimPower/dimLength, 0.0),
-                    zeroGradientFvPatchScalarField::typeName
-                )
-            );
-            fluidLinPows_.set
-            (
-                zoneI,
-                new volScalarField
-                (
-                    IOobject
-                    (
-                        "fluidLinPow_"+word(zoneI),
-                        mesh_.time().timeName(),
-                        mesh_,
-                        IOobject::NO_READ,
-                        IOobject::NO_WRITE
-                    ),
-                    mesh_,
-                    dimensionedScalar(word(), dimPower/dimLength, 0.0),
-                    zeroGradientFvPatchScalarField::typeName
-                )
-            );
-        }  
     }
 }
 
@@ -295,41 +213,6 @@ Foam::constSubscaleFuel::updateLocalHeatFluxImplicit(Foam::label zoneI, Foam::la
         )
     );
 
-    //
-    if (printLinearPowerBalance_[zoneI])
-    {
-        fuelLinPows_[zoneI][cellIlocal] = 
-            2*3.14159*rfOut_[zoneI]*
-            kF*
-            (
-                Tf_[zoneI][cellIlocal][fuelSubMeshSize_[zoneI]-2] - 
-                Tf_[zoneI][cellIlocal][fuelSubMeshSize_[zoneI]-1]
-            )
-            /
-            dF;
-
-        gapLinPows_[zoneI][cellIlocal] = 
-            2*3.14159*rfOut_[zoneI]*
-            gapH_[zoneI]*
-            (
-                Tf_[zoneI][cellIlocal][fuelSubMeshSize_[zoneI]-1] - 
-                Tc_[zoneI][cellIlocal][0]
-            );
-
-        cladLinPows_[zoneI][cellIlocal] = 
-            2*3.14159*rcOut_[zoneI]*
-            kC*
-            (
-                Tc_[zoneI][cellIlocal][cladSubMeshSize_[zoneI]-2] - 
-                Tc_[zoneI][cellIlocal][cladSubMeshSize_[zoneI]-1]
-            )
-            /
-            dC;
-
-        fluidLinPows_[zoneI][cellIlocal] = 
-            2*3.14159*rcOut_[zoneI]*
-            qOut;
-    }
     
     return qOut;
 }
@@ -474,14 +357,6 @@ Foam::constSubscaleFuel::heatSources(const volScalarField& Tfl, const volScalarF
             }
         }
 
-        if (printLinearPowerBalance_[zoneI])
-        {
-            Info    << "Linear power balance (Fu-G-C-Fl): " 
-                    << gAverage(fuelLinPows_[zoneI]) << " "
-                    << gAverage(gapLinPows_[zoneI]) << " "
-                    << gAverage(cladLinPows_[zoneI]) << " "
-                    << gAverage(fluidLinPows_[zoneI]) << " W/m" << endl;
-        }
     }
 
     return tqf;

@@ -121,6 +121,11 @@ protected:
         //- k and epsilon convergence rate (1/cm) to their asymptotic value in the porous medium
         volVectorField kepsilonConvergenceRate_;
 
+        //- turbulence intensity
+        mutable volVectorField turbulenceIntensity_;
+
+        //- turbulence transition index field 0 (= fully laminar) < fRe < 1 (= fully turbulent)
+        mutable volScalarField fRe_;
 
 private:
 
@@ -331,6 +336,11 @@ public:
             //- Return kepsilonConvergenceRate, in 1/s
             tmp<volScalarField> kepsilonConvergenceRate() const ;
 
+            //- Return the laminar-turbulent weights
+            tmp<volScalarField> fRe() const;
+
+            //- Update fRe
+            void updateFRe() const;
 
         // From porous medium
 

@@ -41,21 +41,24 @@ void porousKEpsilon<BasicTurbulenceModel>::correctNut()
 {
     tmp<volScalarField> tClearYesNo = 1.0 - mag(porousMedium_.kepsilonConvergenceRate())/(mag(porousMedium_.kepsilonConvergenceRate())+dimensionedScalar("", dimensionSet(0,0,-1,0,0,0,0), SMALL) );
 
-     tmp<volScalarField> tnuStab = mag(this->U_)*porousMedium_.hydraulicDiameterStructure() / 100.0; //100 e' un Reynolds laminare 
+    tmp<volScalarField> tnuStab = mag(this->U_)*porousMedium_.hydraulicDiameterStructure() / 100.0; //100 e' un Reynolds laminare 
 
-     this->nut_ = (this->Cmu_*sqr(this->k_)/this->epsilon_)*tClearYesNo() + (tnuStab)*(1-tClearYesNo());
-     this->nut_.correctBoundaryConditions();
- 
-     //BasicTurbulenceModel::correctNut();
-     // Read Prt if provided
-     this->Prt_ = dimensioned<scalar>::lookupOrDefault
-     (
-         "Prt",
-         this->coeffDict(),
-         1.0
-     );
-     this->alphat_ = this->rho_*(this->Cmu_*sqr(this->k_)/this->epsilon_)/this->Prt_;//keep this one as it should be
-     this->alphat_.correctBoundaryConditions();
+    // Update laminar-turbulent weights
+    porousMedium_.updateFRe();
+
+    this->nut_ = porousMedium_.fRe()()*(this->Cmu_*sqr(this->k_)/this->epsilon_)*tClearYesNo() + (tnuStab)*(1-tClearYesNo());
+    this->nut_.correctBoundaryConditions();
+
+    //BasicTurbulenceModel::correctNut();
+    // Read Prt if provided
+    this->Prt_ = dimensioned<scalar>::lookupOrDefault
+    (
+        "Prt",
+        this->coeffDict(),
+        1.0
+    );
+    this->alphat_ = porousMedium_.fRe()()*this->rho_*(this->Cmu_*sqr(this->k_)/this->epsilon_)/this->Prt_;//keep this one as it should be
+    this->alphat_.correctBoundaryConditions();
 
 }
 
