@@ -1,7 +1,7 @@
 
 pointField neutroStartPoints = neutroMesh.points(); //used to bring back mesh after interpolations
 
-if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foam::Vector<double>(0,0,0))
+if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(neutronics.Disp()).value() != Foam::Vector<double>(0,0,0))
 {
 
     Info << "Bring back meshes to undeformed case to create correct interpolators" << nl << endl; 
@@ -9,9 +9,7 @@ if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(DNeutro).value() != Foa
  
     const volPointInterpolation& neutroMeshPointInterpolationInitial = volPointInterpolation::New(neutroMesh);
 
-    DNeutro.correctBoundaryConditions();
-
-    tmp<pointVectorField> neutroPointsDisplacementInitial = neutroMeshPointInterpolationInitial.interpolate(DNeutro);
+    tmp<pointVectorField> neutroPointsDisplacementInitial = neutroMeshPointInterpolationInitial.interpolate(neutronics.Disp());
 
     tmp<pointField> neutroDisplacedPointsInitial = neutroStartPoints - neutroPointsDisplacementInitial().internalField() ;
 
@@ -57,7 +55,7 @@ meshToMesh fluidToNeutro
     false
 );
 
-if(runTime.timeOutputValue()!=0 && fvc::domainIntegrate(DNeutro).value() != Foam::Vector<double>(0,0,0))
+if(runTime.timeOutputValue()!=0 && fvc::domainIntegrate(neutronics.Disp()).value() != Foam::Vector<double>(0,0,0))
 {
     Info << "Re-deform mesh to start calculation" << nl << endl;
 

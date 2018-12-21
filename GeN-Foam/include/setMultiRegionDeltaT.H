@@ -39,7 +39,7 @@ if (adjustTimeStep)
         CoNum = SMALL;
     }
 
-    #include "calcPower.H"
+    scalar pTot = neutronics.power();
 
     scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL)) ;
 

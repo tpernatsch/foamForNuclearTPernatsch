@@ -19,15 +19,26 @@ const bool compr =
 
 // It is important that neutronics and solid displacemente flags are read
 // then properties are read according to the flags
-#include "readNeutronicsProperties.H"
-#include "readNuclearDataExt.H"
+//#include "readNeutronicsProperties.H"
+//#include "readNuclearDataExt.H"
 #include "readSolidDisplacementFoamControls.H"
 #include "readThermoMechanicalProperties.H"
 
 // and finally the fields are created
 #include "createFluidFields.H"
-#include "createNeutroFields.H"
+//#include "createNeutroFields.H"
 #include "createThermoMechanicalFields.H"
+
+
+
+autoPtr<neutronics> pneutronics
+(
+    neutronics::New
+    (
+        neutroMesh
+    )
+);
+neutronics& neutronics = pneutronics();
 
 SolverPerformance<vector> solvPerfU;
 SolverPerformance<scalar> solvPerfp_rgh;

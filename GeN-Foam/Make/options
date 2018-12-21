@@ -6,7 +6,7 @@ EXE_INC = \
     -I./porousKEpsilon/porousKEpsilon \
     -I./porousClass \
     -I./fuel \
-    -I./neutronics \
+    -I./neutronicClass \
     -I./thermalMechanics \
     -I./thermalMechanics/tractionDisplacement/lnInclude \
     -I./include \

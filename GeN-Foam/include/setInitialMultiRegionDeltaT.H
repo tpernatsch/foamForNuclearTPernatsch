@@ -29,17 +29,19 @@ Description
 
 \*---------------------------------------------------------------------------*/
 
+
+
+scalar pTotOld(0.0);
+
 if (adjustTimeStep)
 {
-    #include "calcPower.H"
-    pTotOld = pTot;
 
     if (CoNum == -GREAT)
     {
         CoNum = SMALL;
     }
 
-    scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL)) ;
+    scalar powerVariation = 0.0 ;
 
     scalar maxDeltaTFluid = maxCo/(CoNum + SMALL);
 
@@ -74,7 +76,7 @@ if (adjustTimeStep)
         )
     );
 
-    pTotOld = pTot;
+    pTotOld = neutronics.power();
 
     Info<< "Initial deltaT = " <<  runTime.deltaT().value() << endl;
 }

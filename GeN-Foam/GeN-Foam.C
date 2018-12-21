@@ -67,6 +67,8 @@ Author
 #include "porousKEpsilon.H"
 #include "fvOptions.H"
 
+#include "neutronics.H"
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
@@ -90,14 +92,14 @@ int main(int argc, char *argv[])
 
     #include "createMeshInterpolators.H"
 
-    #include "openOutputFiles.H"
-    #include "writeOutputs.H"
+    //#include "openOutputFiles.H"
+    //#include "writeOutputs.H"
 
     while (runTime.run())
     {
+
         #include "readTimeControls.H"
         #include "readPIMPLEControls.H"
-        #include "readNeutronicsControls.H"
         #include "readSolidDisplacementFoamControls.H"
         #include "compressibleCoNo.H"
 
@@ -143,7 +145,7 @@ int main(int argc, char *argv[])
             #include "checkResidualControls.H"
         }
 
-        #include "writeOutputs.H"
+        //#include "writeOutputs.H"
 
         runTime.write();
 

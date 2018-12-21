@@ -31,15 +31,20 @@ if(finalIter)
         if(solveThermalMechanics)
         {
             #include "solveThermalMechanics.H"
-            #include "displaceMeshes.H"
+            neutronics.deformMesh(TMToNeutro,meshDisp); 
+
         }
                 
         if(solveNeutronics)
         {
-            #include "solveNeutronics.H"
+            neutronics.getFields(U, porosity, TavFuel, TavClad, thermo.rho()*rhok, thermo.T(), neutroToFluid, thermo, turb);
+            neutronics.correct(couplingIter, residual);
+            volFuelPower *= 0.0;
+            fluidToNeutro.mapTgtToSrc(neutronics.volFuelPower(), plusEqOp<scalar>(), volFuelPower.primitiveFieldRef());
+            volFuelPower.correctBoundaryConditions();
         }
         couplingIter++;
-    }while( (residual > timeStepResidual) && (couplingIter < maxTimeStepIterations) && !eigenvalueNeutronics && tightlyCoupled);
+    }while( (residual > timeStepResidual) && (couplingIter < maxTimeStepIterations) && !neutronics.eigenvalue() && tightlyCoupled);
 
 }
 else
