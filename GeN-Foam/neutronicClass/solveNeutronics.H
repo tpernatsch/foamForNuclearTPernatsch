@@ -38,7 +38,7 @@ if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeInd
 
 if(!eigenvalueNeutronics_ && couplingIter == 0)
 {
-
+/*
     if(integralPredictor)
     {
         #include "integralPredictor.H"
@@ -47,7 +47,7 @@ if(!eigenvalueNeutronics_ && couplingIter == 0)
     {
         #include "implicitPredictor.H"
     }
-
+*/
 }   
 
 int aitkenIterCounter = 0;
@@ -100,7 +100,16 @@ if (eigenvalueNeutronics_)
 
     // Since a keff_ is a scalar, the value inside the dictionary is not updated at runTime automatically.
     // The line below resets the SCALAR IN THE DICTIONARY at runTime so that the dictionary is written with the updated value.
-    reactorState_.set("keff_", keff_);
+    reactorState_.set("keff", keff_);
+    //reactorState_.regIOobject::writeObject;//writeObject(IOstream::ASCII, IOstream::versionNumber(2.0), IOstream::UNCOMPRESSED, true);
+
+    reactorState_.regIOobject::writeObject
+    (
+        IOstream::ASCII,
+        IOstream::currentVersion,
+        reactorState_.time().writeCompression(),
+        true
+    );
 
     #include "normFluxes.H"
     if (adjustDiscFactors)

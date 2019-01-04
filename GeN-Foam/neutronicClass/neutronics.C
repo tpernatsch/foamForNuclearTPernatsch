@@ -63,8 +63,8 @@ Foam::neutronics::neutronics
         IOobject
         (
             "reactorState",
-            mesh.time().constant(),
-            mesh,
+            mesh_.time().constant(),
+            mesh_,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
         )
@@ -101,7 +101,9 @@ Foam::neutronics::neutronics
         dimensionedVector("d_zero", dimensionSet(0,1,0,0,0,0,0), vector(0,0,0)),
         zeroGradientFvPatchScalarField::typeName
     )
-{ }
+{
+Info << "Initial keff: " << keff_ << endl;
+ }
 
 // * * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * //
 

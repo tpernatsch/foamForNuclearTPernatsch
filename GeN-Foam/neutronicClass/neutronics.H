@@ -172,7 +172,7 @@ public:
         }    	
 
         //- Return power
-        virtual inline scalar power() const = 0;  
+        virtual scalar power() const = 0;  
 
         //- Correct/update the properties
         virtual void correct(const label couplingIter, scalar& residual) = 0;  
