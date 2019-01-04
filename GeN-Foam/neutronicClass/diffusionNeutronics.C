@@ -536,12 +536,12 @@ void Foam::diffusionNeutronics::getFields(
     const compressible::turbulenceModel& turb)
 {
 
-    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel.primitiveFieldRef());
-    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad.primitiveFieldRef());
-    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool.primitiveFieldRef());
-    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool.primitiveFieldRef());
-    neutroToFluid.mapTgtToSrc( UOrig, plusEqOp<vector>(), U.primitiveFieldRef());//UNeutro.primitiveFieldRef()
-    neutroToFluid.mapTgtToSrc( porosityOrig, plusEqOp<scalar>(), porosity.primitiveFieldRef());//porosityNeutro.primitiveFieldRef());
+    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel);
+    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad);
+    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool);
+    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool);
+    neutroToFluid.mapTgtToSrc( UOrig, plusEqOp<vector>(), U);//UNeutro.primitiveFieldRef()
+    neutroToFluid.mapTgtToSrc( porosityOrig, plusEqOp<scalar>(), porosity);//porosityNeutro.primitiveFieldRef());
 
     Tfuel.correctBoundaryConditions();
     Tclad.correctBoundaryConditions();

@@ -172,10 +172,7 @@ public:
         }    	
 
         //- Return power
-        inline scalar power() const
-        {
-            return fvc::domainIntegrate(volFuelPower_).value();
-        }    
+        virtual inline scalar power() const = 0;  
 
         //- Correct/update the properties
         virtual void correct(const label couplingIter, scalar& residual) = 0;  

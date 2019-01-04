@@ -271,6 +271,18 @@ public:
             }
 
         // Calc
+        //- Return power
+            virtual inline scalar power() const
+            {
+                scalar pTot = 0;
+                forAll(flux,energyI)
+                {
+                    
+                    pTot += fvc::domainIntegrate(flux[energyI] * sigmaPow[energyI]).value();
+
+                }
+                return pTot;
+            }   
 
             //- Correct/update the properties
             virtual void correct(const label couplingIter, scalar& residual);  

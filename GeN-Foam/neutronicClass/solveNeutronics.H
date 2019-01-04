@@ -17,7 +17,7 @@ List<scalar> integralFlux1(energyGroups);
 List<scalar> integralFlux2(energyGroups);
 
 scalar pTot(1.0); 
-scalar pTotOld(1.0); 
+//scalar pTotOld(1.0); 
 
 #include "setNeutronicsVariables.H"
 
