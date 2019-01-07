@@ -285,19 +285,26 @@ public:
             }   
 
             //- Correct/update the properties
-            virtual void correct(const label couplingIter, scalar& residual);  
+            virtual void correct(const label couplingIter, scalar& residual, const bool& liquidFuel);  
 
             //- Take from another mesh the fields for XS parametrization
-            virtual void getFields(
-                const volVectorField& UOrig, 
-                const volScalarField& porosityOrig, 
-                const volScalarField& TfuelOrig, 
-                const volScalarField& TcladOrig, 
-                const volScalarField& rhoCoolOrig, 
-                const volScalarField& TCoolOrig, 
-                const meshToMesh& neutroToFluid,
-                const rhoThermo& thermo,
-                const compressible::turbulenceModel& turb);  
+        virtual void getFields(
+            const volScalarField& TfuelOrig, 
+            const volScalarField& TcladOrig, 
+            const volScalarField& rhoCoolOrig, 
+            const volScalarField& TCoolOrig, 
+            const meshToMesh& neutroToFluid);  
+
+        virtual void getFieldsLiquidFuel(
+            const volVectorField& UOrig, 
+            const volScalarField& porosityOrig, 
+            const volScalarField& TfuelOrig, 
+            const volScalarField& TcladOrig, 
+            const volScalarField& rhoCoolOrig, 
+            const volScalarField& TCoolOrig, 
+            const meshToMesh& neutroToFluid,
+            const rhoThermo& thermo,
+            const compressible::turbulenceModel& turb);  
 
             //- Deform mesh
             virtual void deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig);  

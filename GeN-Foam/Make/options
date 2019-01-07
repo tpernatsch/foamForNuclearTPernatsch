@@ -7,10 +7,11 @@ EXE_INC = \
     -I./porousClass \
     -I./fuel \
     -I./neutronicClass \
+    -I./neutronicClass/albedoSP3 \
+    -I./neutronicClass/include \    
     -I./thermalMechanics \
     -I./thermalMechanics/tractionDisplacement/lnInclude \
     -I./include \
-    -I./albedoSP3 \
     -I./POD/EigenSolver \
     -I./POD/POD \
     -I./POD/PODEigenBase \

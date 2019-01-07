@@ -17,7 +17,6 @@ List<scalar> integralFlux1(energyGroups);
 List<scalar> integralFlux2(energyGroups);
 
 scalar pTot(1.0); 
-//scalar pTotOld(1.0); 
 
 #include "setNeutronicsVariables.H"
 
@@ -27,9 +26,9 @@ forAll(flux,energyI)
 }
 if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeIndex())==1 )
 {
-    #include "calcPower.H"
+    pTot = power();
     #include "normFluxes.H"
-    #include "calcPower.H"
+    pTot = power();
 }
 
 #include "initializeNeutroSource.H"
@@ -38,7 +37,7 @@ if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeInd
 
 if(!eigenvalueNeutronics_ && couplingIter == 0)
 {
-/*
+
     if(integralPredictor)
     {
         #include "integralPredictor.H"
@@ -47,7 +46,7 @@ if(!eigenvalueNeutronics_ && couplingIter == 0)
     {
         #include "implicitPredictor.H"
     }
-*/
+
 }   
 
 int aitkenIterCounter = 0;
@@ -65,7 +64,6 @@ do
     Info << "Neutron iteration no:  " << neutroIter << nl << endl;
 
     #include "fluxEq.H"
-
     #include "precEq.H"
     #include "initializeDelayedNeutroSource.H"
    
@@ -82,7 +80,7 @@ forAll(flux,energyI)
     volFuelPower_ += flux[energyI] * sigmaPow[energyI];
 }
 
-#include "calcPower.H"
+pTot = power();
 
 Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl; 
 
@@ -101,8 +99,6 @@ if (eigenvalueNeutronics_)
     // Since a keff_ is a scalar, the value inside the dictionary is not updated at runTime automatically.
     // The line below resets the SCALAR IN THE DICTIONARY at runTime so that the dictionary is written with the updated value.
     reactorState_.set("keff", keff_);
-    //reactorState_.regIOobject::writeObject;//writeObject(IOstream::ASCII, IOstream::versionNumber(2.0), IOstream::UNCOMPRESSED, true);
-
     reactorState_.regIOobject::writeObject
     (
         IOstream::ASCII,

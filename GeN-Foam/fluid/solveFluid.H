@@ -37,8 +37,8 @@ if(finalIter)
                 
         if(solveNeutronics)
         {
-            neutronics.getFields(U, porosity, TavFuel, TavClad, thermo.rho()*rhok, thermo.T(), neutroToFluid, thermo, turb);
-            neutronics.correct(couplingIter, residual);
+            neutronics.getFieldsLiquidFuel(U, porosity, TavFuel, TavClad, thermo.rho()*rhok, thermo.T(), neutroToFluid, thermo, turb);
+            neutronics.correct(couplingIter, residual, liquidFuel);
             volFuelPower *= 0.0;
             fluidToNeutro.mapTgtToSrc(neutronics.volFuelPower(), plusEqOp<scalar>(), volFuelPower.primitiveFieldRef());
             volFuelPower.correctBoundaryConditions();

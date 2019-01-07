@@ -175,10 +175,17 @@ public:
         virtual scalar power() const = 0;  
 
         //- Correct/update the properties
-        virtual void correct(const label couplingIter, scalar& residual) = 0;  
+        virtual void correct(const label couplingIter, scalar& residual, const bool& liquidFuel ) = 0;  
 
         //- Take from another mesh the fields for XS parametrization
         virtual void getFields(
+            const volScalarField& TfuelOrig, 
+            const volScalarField& TcladOrig, 
+            const volScalarField& rhoCoolOrig, 
+            const volScalarField& TCoolOrig, 
+            const meshToMesh& neutroToFluid) = 0;  
+
+        virtual void getFieldsLiquidFuel(
             const volVectorField& UOrig, 
             const volScalarField& porosityOrig, 
             const volScalarField& TfuelOrig, 

@@ -519,12 +519,33 @@ Foam::diffusionNeutronics::~diffusionNeutronics()
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::diffusionNeutronics::correct(const label couplingIter, scalar& residual) 
+void Foam::diffusionNeutronics::correct(const label couplingIter, scalar& residual, const bool& liquidFuel ) 
 {
     #include "solveNeutronics.H"
 }
 
+
 void Foam::diffusionNeutronics::getFields(
+    const volScalarField& TfuelOrig, 
+    const volScalarField& TcladOrig, 
+    const volScalarField& rhoCoolOrig, 
+    const volScalarField& TCoolOrig, 
+    const meshToMesh& neutroToFluid)
+{
+
+    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel);
+    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad);
+    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool);
+    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool);
+
+    Tfuel.correctBoundaryConditions();
+    Tclad.correctBoundaryConditions();
+    rhoCool.correctBoundaryConditions();
+    TCool.correctBoundaryConditions();  
+
+}
+
+void Foam::diffusionNeutronics::getFieldsLiquidFuel(
     const volVectorField& UOrig, 
     const volScalarField& porosityOrig, 
     const volScalarField& TfuelOrig, 
