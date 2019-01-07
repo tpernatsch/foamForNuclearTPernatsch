@@ -55,6 +55,7 @@ Author
 #define diffusionNeutronics_H
 
 #include "neutronics.H"
+#include "XS.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -73,32 +74,8 @@ protected:
 
     // Protected data
 
-        //Data
-        IOdictionary nuclearData;
-        IOdictionary nuclearDataRadialExp;
-        IOdictionary nuclearDataAxialExp;
-        IOdictionary nuclearDataFuelTemp;
-        IOdictionary nuclearDataRhoCool;
-        IOdictionary nuclearDataTCool;
-        IOdictionary nuclearDataCladExp;
-        label energyGroups;
-        label precGroups;
-
-        //Data fields
-        PtrList<volScalarField> IV;
-        PtrList<volScalarField> D;
-        volScalarField Dalbedo;
-        PtrList<volScalarField> nuSigmaEff;
-        PtrList<volScalarField> sigmaPow;
-        PtrList<volScalarField> sigmaDisapp;
-        List<PtrList<volScalarField > > sigmaFromTo;
-        PtrList<volScalarField> chiPrompt;
-        PtrList<volScalarField> chiDelayed;
-        PtrList<volScalarField> Beta;
-        volScalarField BetaTot;
-        PtrList<volScalarField> lambda;
-        volScalarField fuelFraction;
-        PtrList<volScalarField > discFactor;
+        // Cross sections
+        XS xs;
 
         //Fields
         PtrList<volScalarField> flux;
@@ -107,14 +84,13 @@ protected:
         volScalarField fluxStarAlbedo;
         volScalarField defaultFlux;
         volScalarField defaultPrec;
+        volScalarField Dalbedo;
 
         //Derived fields
         volScalarField oneGroupFlux;
         volScalarField neutroSource;
         volScalarField delayedNeutroSource;
         volScalarField scatteringSourceExtra;
-        volScalarField radExp;
-        volScalarField axExp;
 
         //mappedFields
         volVectorField U;
@@ -126,99 +102,6 @@ protected:
         volScalarField TCool;
         volScalarField diffCoeffPrec;
 
-        //XS
-            label zoneNumber;
-
-        //Disc factors
-            // fuel fraction used to determine vol power IN the fuel starting from vol power from sigmaPow
-            PtrList<scalar > fuelFractionList;
-            // adjust or not DF
-            PtrList<bool > dfAdjustList;
-            //discontinuity factors
-            PtrList<scalarField > discFactorList;
-            //integral fluxes for adapting disc factors
-            PtrList<scalarField > integralFluxList;
-
-        //Feedbacks Coefficients
-
-            bool fastNeutrons;
-            bool adjustDiscFactors;
-            bool useGivenDiscFactors;
-            List<int> groupsWoDF;
-            List<int> doNotParametrize;
-            PtrList<entry> entries;
-            //Constants
-            PtrList<scalarField > IVList;
-            PtrList<scalarField > chiPromptList;
-            PtrList<scalarField > chiDelayedList;
-            PtrList<scalarField > BetaList;
-            PtrList<scalar > BetaTotList;
-            PtrList<scalarField > lambdaList;
-            //Nominal 
-            PtrList<scalarField > DList;
-            PtrList<scalarField > nuSigmaEffList;
-            PtrList<scalarField > sigmaPowList;
-            PtrList<scalarField > sigmaDisappList;
-            PtrList<scalarSquareMatrix > sigmaFromToList; 
-            // fuel temperature coefficient
-            scalar TfuelRef;
-            scalar TfuelPerturbed;
-            PtrList<scalarField > fuelTempDList;
-            PtrList<scalarField > fuelTempNuSigmaEffList;
-            PtrList<scalarField > fuelTempSigmaPowList;
-            PtrList<scalarField > fuelTempSigmaDisappList;
-            PtrList<scalarSquareMatrix > fuelTempSigmaFromToList;
-            // axial expansion coefficient
-            scalar AxExp;
-            PtrList<scalarField > axialExpDList;
-            PtrList<scalarField > axialExpNuSigmaEffList;
-            PtrList<scalarField > axialExpSigmaPowList;
-            PtrList<scalarField > axialExpSigmaDisappList;
-            PtrList<scalarSquareMatrix > axialExpSigmaFromToList;
-            // radial expansion coefficient
-            scalar RadExp;
-            vector axialOrientation;
-            PtrList<scalarField > radialExpDList;
-            PtrList<scalarField > radialExpNuSigmaEffList;
-            PtrList<scalarField > radialExpSigmaPowList;
-            PtrList<scalarField > radialExpSigmaDisappList;
-            PtrList<scalarSquareMatrix > radialExpSigmaFromToList;
-            // coolant expansion coefficient
-            scalar rhoCoolRef;
-            scalar rhoCoolPerturbed;
-            PtrList<scalarField > rhoCoolDList;
-            PtrList<scalarField > rhoCoolNuSigmaEffList;
-            PtrList<scalarField > rhoCoolSigmaPowList;
-            PtrList<scalarField > rhoCoolSigmaDisappList;
-            PtrList<scalarSquareMatrix > rhoCoolSigmaFromToList;
-            // coolant temperature coefficient
-            scalar TCoolRef;
-            scalar TCoolPerturbed;
-            PtrList<scalarField > TCoolDList;
-            PtrList<scalarField > TCoolNuSigmaEffList;
-            PtrList<scalarField > TCoolSigmaPowList;
-            PtrList<scalarField > TCoolSigmaDisappList;
-            PtrList<scalarSquareMatrix > TCoolSigmaFromToList;
-            // cladding expansion coefficient
-            scalar TcladRef;
-            scalar TcladPerturbed;
-            PtrList<scalarField > cladExpDList;
-            PtrList<scalarField > cladExpNuSigmaEffList;
-            PtrList<scalarField > cladExpSigmaPowList;
-            PtrList<scalarField > cladExpSigmaDisappList;
-            PtrList<scalarSquareMatrix > cladExpSigmaFromToList;
-
-        //For control rods
-        IOdictionary CRmove;
-        PtrList<entry> CRentries;
-        label CRNumber;
-        PtrList<scalar > CRstart;
-        PtrList<scalar > CRfinish;
-        PtrList<scalar > CRspeed;
-        PtrList<word >   CRFollowerName;
-        PtrList<scalar > CRinitialPosition;
-        PtrList<scalar > CRposition;
-        PtrList<scalar > initialDistanceFromMeshCR;
 
 private:
 
@@ -236,7 +119,7 @@ private:
 public:
 
     //- Runtime type information
-    TypeName("diffusionNeutronics");
+        TypeName("diffusionNeutronics");
 
 
     // Constructors
@@ -278,7 +161,7 @@ public:
                 forAll(flux,energyI)
                 {
                     
-                    pTot += fvc::domainIntegrate(flux[energyI] * sigmaPow[energyI]).value();
+                    pTot += fvc::domainIntegrate(flux[energyI] * xs.sigmaPow()[energyI]).value();
 
                 }
                 return pTot;
@@ -288,14 +171,14 @@ public:
             virtual void correct(const label couplingIter, scalar& residual, const bool& liquidFuel);  
 
             //- Take from another mesh the fields for XS parametrization
-        virtual void getFields(
+            virtual void getFields(
             const volScalarField& TfuelOrig, 
             const volScalarField& TcladOrig, 
             const volScalarField& rhoCoolOrig, 
             const volScalarField& TCoolOrig, 
             const meshToMesh& neutroToFluid);  
 
-        virtual void getFieldsLiquidFuel(
+            virtual void getFieldsLiquidFuel(
             const volVectorField& UOrig, 
             const volScalarField& porosityOrig, 
             const volScalarField& TfuelOrig, 

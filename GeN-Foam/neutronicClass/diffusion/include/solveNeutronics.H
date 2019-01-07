@@ -1,5 +1,7 @@
 Info << "Solving neutronics" << endl ;
 
+xs.correct(Tfuel,Tclad,rhoCool,TCool,Disp_);
+#include "setXSFields.H"
 
 const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransport");
 
@@ -12,13 +14,11 @@ int maxNeutronIterations =
     neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
 //for aitken
-List<scalar> integralFlux0(energyGroups);
-List<scalar> integralFlux1(energyGroups);
-List<scalar> integralFlux2(energyGroups);
+List<scalar> integralFlux0(xs.energyGroups());
+List<scalar> integralFlux1(xs.energyGroups());
+List<scalar> integralFlux2(xs.energyGroups());
 
 scalar pTot(1.0); 
-
-#include "setNeutronicsVariables.H"
 
 forAll(flux,energyI)
 {
@@ -33,6 +33,7 @@ if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeInd
 
 #include "initializeNeutroSource.H"
 #include "precEq.H"
+
 #include "initializeDelayedNeutroSource.H"
 
 if(!eigenvalueNeutronics_ && couplingIter == 0)
@@ -82,6 +83,8 @@ forAll(flux,energyI)
 
 pTot = power();
 
+Info << "power: " << pTot << endl;
+
 Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl; 
 
 volFuelPower_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
@@ -108,10 +111,7 @@ if (eigenvalueNeutronics_)
     );
 
     #include "normFluxes.H"
-    if (adjustDiscFactors)
-    {
-        #include "adjustDiscFactors.H"
-    }
+    xs.adjustDiscFactors(fluxStar);
 }
 
 residual = max(residual,neutroResidual);

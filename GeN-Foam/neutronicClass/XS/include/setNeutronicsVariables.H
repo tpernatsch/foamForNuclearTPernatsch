@@ -42,10 +42,10 @@ forAll(CRentries,CRzoneI)
     Info << "Control rod " << CRentries[CRzoneI].keyword() << " in position: " << CRposition[CRzoneI] << endl;
 }
 
-tmp<volVectorField> tDNeutroRad(new volVectorField(Disp_));
+tmp<volVectorField> tDNeutroRad(new volVectorField(Disp));
 volVectorField& DNeutroRad = tDNeutroRad.ref();
 
-tmp<volScalarField> tDNeutroAx(new volScalarField(Disp_ & axialOrientation));
+tmp<volScalarField> tDNeutroAx(new volScalarField(Disp & axialOrientation));
 volScalarField& DNeutroAx = tDNeutroAx.ref();
 
 DNeutroRad.replace(0,DNeutroRad.component(0)*(1-axialOrientation[0]));
@@ -55,8 +55,8 @@ DNeutroRad.replace(2,DNeutroRad.component(2)*(1-axialOrientation[2]));
 DNeutroRad.correctBoundaryConditions();
 DNeutroAx.correctBoundaryConditions();
 
-radExp = fvc::div(DNeutroRad)/2.0;
-axExp = fvc::grad(DNeutroAx)& axialOrientation;
+volScalarField radExp = fvc::div(DNeutroRad)/2.0;
+volScalarField axExp = fvc::grad(DNeutroAx)& axialOrientation;
 
 radExp.correctBoundaryConditions();
 axExp.correctBoundaryConditions();
@@ -67,7 +67,7 @@ DNeutroAx.clear();
 volScalarField logT( log(max(0.01,(Tfuel/dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),TfuelRef)))) );
 volScalarField diffT( (pow(max(Tfuel,dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),SMALL)),0.5)-pow(dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),TfuelRef),0.5)) );
 
-forAll(flux,energyI)
+forAll(nuSigmaEff_,energyI)
 {
 
     bool parametrize = true;
@@ -151,18 +151,18 @@ forAll(flux,energyI)
                 // Adjustment of D and XS for current reactor conditions of:
                 // rhoCool, TCool, fuelTemp, cladExp, axialExp and radialExp.
 
-                D[energyI][cellIglobal] = DList[zone][energyI];
-                nuSigmaEff[energyI][cellIglobal] = nuSigmaEffList[zone][energyI];
-                sigmaPow[energyI][cellIglobal] = sigmaPowList[zone][energyI];
-                sigmaDisapp[energyI][cellIglobal] = sigmaDisappList[zone][energyI];
-                forAll(sigmaFromTo,energyJ)
+                D_[energyI][cellIglobal] = DList[zone][energyI];
+                nuSigmaEff_[energyI][cellIglobal] = nuSigmaEffList[zone][energyI];
+                sigmaPow_[energyI][cellIglobal] = sigmaPowList[zone][energyI];
+                sigmaDisapp_[energyI][cellIglobal] = sigmaDisappList[zone][energyI];
+                forAll(sigmaFromTo_,energyJ)
                 {
-                    sigmaFromTo[energyJ][energyI][cellIglobal] = sigmaFromToList[zone][energyJ][energyI];
+                    sigmaFromTo_[energyJ][energyI][cellIglobal] = sigmaFromToList[zone][energyJ][energyI];
                 }
 
                 if (parametrize)
                 {
-                    D[energyI][cellIglobal]
+                    D_[energyI][cellIglobal]
                  += rhoCoolDList[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
                   + TCoolDList[zone][energyI]*(TCool[cellIglobal] - TCoolRef)
                   + (
@@ -174,7 +174,7 @@ forAll(flux,energyI)
                   + axialExpDList[zone][energyI]*(axExp[cellIglobal])
                   + radialExpDList[zone][energyI]*(radExp[cellIglobal]);
 
-                    nuSigmaEff[energyI][cellIglobal]
+                    nuSigmaEff_[energyI][cellIglobal]
                  += rhoCoolNuSigmaEffList[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
                   + TCoolNuSigmaEffList[zone][energyI]*(TCool[cellIglobal] - TCoolRef)
                   + (
@@ -186,7 +186,7 @@ forAll(flux,energyI)
                   + axialExpNuSigmaEffList[zone][energyI]*(axExp[cellIglobal])
                   + radialExpNuSigmaEffList[zone][energyI]*(radExp[cellIglobal]);
 
-                    sigmaPow[energyI][cellIglobal]
+                    sigmaPow_[energyI][cellIglobal]
                  += rhoCoolSigmaPowList[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
                   + TCoolSigmaPowList[zone][energyI]*(TCool[cellIglobal] - TCoolRef)
                   + (
@@ -198,7 +198,7 @@ forAll(flux,energyI)
                   + axialExpSigmaPowList[zone][energyI]*(axExp[cellIglobal])
                   + radialExpSigmaPowList[zone][energyI]*(radExp[cellIglobal]);
 
-                    sigmaDisapp[energyI][cellIglobal]
+                    sigmaDisapp_[energyI][cellIglobal]
                  += rhoCoolSigmaDisappList[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
                   + TCoolSigmaDisappList[zone][energyI]*(TCool[cellIglobal] - TCoolRef)
                   + (
@@ -210,9 +210,9 @@ forAll(flux,energyI)
                   + axialExpSigmaDisappList[zone][energyI]*(axExp[cellIglobal])
                   + radialExpSigmaDisappList[zone][energyI]*(radExp[cellIglobal]);
 
-                    forAll(sigmaFromTo,energyJ)
+                    forAll(sigmaFromTo_,energyJ)
                     {
-                        sigmaFromTo[energyJ][energyI][cellIglobal]
+                        sigmaFromTo_[energyJ][energyI][cellIglobal]
                      += rhoCoolSigmaFromToList[zone][energyJ][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
                       + TCoolSigmaFromToList[zone][energyJ][energyI]*(TCool[cellIglobal] - TCoolRef)
                       + (
@@ -228,26 +228,26 @@ forAll(flux,energyI)
 
                 if(useGivenDiscFactors || ((mesh_.time().timeIndex()-mesh_.time().startTimeIndex())>0))
                 {
-                    discFactor[energyI][cellIglobal] = discFactorList[zone][energyI] ;
+                    discFactor_[energyI][cellIglobal] = discFactorList[zone][energyI] ;
                 }
                 else
                 {
-                    discFactorList[zone][energyI] = discFactor[energyI][cellIglobal] ;
+                    discFactorList[zone][energyI] = discFactor_[energyI][cellIglobal] ;
                 }
 
             }//close forall cellIlocal in zoneId
         }//close else from zoneId check
     }//close forall zoneI in zone entries
 
-    D[energyI].correctBoundaryConditions();
-    nuSigmaEff[energyI].correctBoundaryConditions();
-    sigmaPow[energyI].correctBoundaryConditions();
-    sigmaDisapp[energyI].correctBoundaryConditions();
-    forAll(sigmaFromTo,energyJ)
+    D_[energyI].correctBoundaryConditions();
+    nuSigmaEff_[energyI].correctBoundaryConditions();
+    sigmaPow_[energyI].correctBoundaryConditions();
+    sigmaDisapp_[energyI].correctBoundaryConditions();
+    forAll(sigmaFromTo_,energyJ)
     {
-        sigmaFromTo[energyJ][energyI].correctBoundaryConditions();
+        sigmaFromTo_[energyJ][energyI].correctBoundaryConditions();
     }
-    discFactor[energyI].correctBoundaryConditions();
+    discFactor_[energyI].correctBoundaryConditions();
 }
 
 Info << "Done" << endl;

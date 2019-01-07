@@ -1,4 +1,4 @@
-forAll(prec,precI)
+forAll(Beta_,precI)
 {
 
     forAll(entries, zoneI)
@@ -12,17 +12,17 @@ forAll(prec,precI)
 
             const UList<label>& addr = mesh_.cellZones()[zoneId];
     
-            IndirectList<scalar>(Beta[precI].internalField(), addr)
+            IndirectList<scalar>(Beta_[precI].internalField(), addr)
             = scalar(BetaList[zoneI][precI]);
 
-            IndirectList<scalar>(lambda[precI].internalField(), addr)
+            IndirectList<scalar>(lambda_[precI].internalField(), addr)
             = scalar(lambdaList[zoneI][precI]);
         }
 
     }
 
-    Beta[precI].correctBoundaryConditions();
-    lambda[precI].correctBoundaryConditions();
+    Beta_[precI].correctBoundaryConditions();
+    lambda_[precI].correctBoundaryConditions();
 
 }
 

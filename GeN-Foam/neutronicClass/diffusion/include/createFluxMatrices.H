@@ -1,8 +1,9 @@
 
-PtrList<fvMatrixExt<scalar> > neutroEqList(energyGroups);
+PtrList<fvMatrixExt<scalar> > neutroEqList(xs.energyGroups());
 
 forAll(neutroEqList, energyI)
 {
+
     Dalbedo = D[energyI];
     fluxStarAlbedo *= 0.0;
     neutroEqList.set

@@ -1,6 +1,6 @@
 
 
-forAll(flux,energyI)
+forAll(fluxStar,energyI)
 {
     bool adjust = true;
     forAll(groupsWoDF, groupI)

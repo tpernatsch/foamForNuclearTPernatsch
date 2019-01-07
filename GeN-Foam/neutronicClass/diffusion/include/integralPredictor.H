@@ -34,7 +34,7 @@
     dimensionedScalar scatteringSourceTermInt("",(dimless/dimTime),scalar(0.0));
     dimensionedScalar scatteringSourceTerm("",(dimless/dimLength),scalar(0.0));
 
-    for(label energyI=0; energyI<energyGroups ; energyI++)
+    for(label energyI=0; energyI<xs.energyGroups() ; energyI++)
     {
 
         Dalbedo = D[energyI];

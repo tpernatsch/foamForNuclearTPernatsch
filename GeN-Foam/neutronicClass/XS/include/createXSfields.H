@@ -2,9 +2,9 @@
 Info<< "Nuclear data fields\n" << endl;
 
 
-forAll(IV, i)
+forAll(IV_, i)
 {
-    IV.set
+    IV_.set
     (
         i,
         new volScalarField
@@ -24,9 +24,9 @@ forAll(IV, i)
     );
 }
 
-forAll(D, i)
+forAll(D_, i)
 {
-    D.set
+    D_.set
     (
         i,
         new volScalarField
@@ -46,9 +46,9 @@ forAll(D, i)
     );
 }
 
-forAll(nuSigmaEff, i)
+forAll(nuSigmaEff_, i)
 {
-    nuSigmaEff.set
+    nuSigmaEff_.set
     (
         i,
         new volScalarField
@@ -68,9 +68,9 @@ forAll(nuSigmaEff, i)
     );
 }
 
-forAll(sigmaPow, i)
+forAll(sigmaPow_, i)
 {
-    sigmaPow.set
+    sigmaPow_.set
     (
         i,
         new volScalarField
@@ -90,9 +90,9 @@ forAll(sigmaPow, i)
     );
 }
 
-forAll(sigmaDisapp, i)
+forAll(sigmaDisapp_, i)
 {
-    sigmaDisapp.set
+    sigmaDisapp_.set
     (
         i,
         new volScalarField
@@ -112,13 +112,13 @@ forAll(sigmaDisapp, i)
     );
 }
 
-forAll(sigmaFromTo,energyJ)
+forAll(sigmaFromTo_,energyJ)
 {
-    sigmaFromTo[energyJ].resize(energyGroups); 
+    sigmaFromTo_[energyJ].resize(energyGroups_); 
 
-    forAll(sigmaFromTo[energyJ],energyI)
+    forAll(sigmaFromTo_[energyJ],energyI)
     {
-        sigmaFromTo[energyJ].set
+        sigmaFromTo_[energyJ].set
         (
             energyI,
             new volScalarField
@@ -140,9 +140,9 @@ forAll(sigmaFromTo,energyJ)
 
 }
 
-forAll(chiPrompt, i)
+forAll(chiPrompt_, i)
 {
-    chiPrompt.set
+    chiPrompt_.set
     (
         i,
         new volScalarField
@@ -162,9 +162,9 @@ forAll(chiPrompt, i)
     );
 }
 
-forAll(chiDelayed, i)
+forAll(chiDelayed_, i)
 {
-    chiDelayed.set
+    chiDelayed_.set
     (
         i,
         new volScalarField
@@ -184,9 +184,9 @@ forAll(chiDelayed, i)
     );
 }
 
-forAll(Beta, i)
+forAll(Beta_, i)
 {
-    Beta.set
+    Beta_.set
     (
         i,
         new volScalarField
@@ -206,9 +206,9 @@ forAll(Beta, i)
     );
 }
 
-forAll(lambda, i)
+forAll(lambda_, i)
 {
-    lambda.set
+    lambda_.set
     (
         i,
         new volScalarField
@@ -228,9 +228,9 @@ forAll(lambda, i)
     );
 }
 
-forAll(discFactor,energyI)
+forAll(discFactor_,energyI)
 {
-    discFactor.set
+    discFactor_.set
     (
         energyI,
         new volScalarField
@@ -250,82 +250,7 @@ forAll(discFactor,energyI)
     );
 }
 
-// Physical fields
 
-forAll(flux,fluxI)
-{
-    flux.set
-    (
-        fluxI,
-        new volScalarField
-        (
-            IOobject
-            (
-                "flux"+Foam::name(fluxI),
-                mesh_.time().timeName(),
-                mesh_,
-                IOobject::READ_IF_PRESENT,
-                IOobject::AUTO_WRITE
-            ),
-            defaultFlux
-        )
-    );
-}
-
-forAll(fluxStar,fluxI)
-{
-        fluxStar.set
-        (
-            fluxI,
-            new volScalarField
-            (
-                IOobject
-                (
-                    "fluxStar"+Foam::name(fluxI),
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::READ_IF_PRESENT,
-                    IOobject::AUTO_WRITE
-                ),
-                defaultFlux
-            )
-        );
-}
-
-oneGroupFlux *= 0.0;
-forAll(flux,energyI)
-{
-    oneGroupFlux+=flux[energyI];
-}
-
-forAll(prec,precI)
-{
-    prec.set
-    (
-        precI,
-        new volScalarField
-        (
-            IOobject
-            (
-                "prec"+Foam::name(precI),
-                mesh_.time().timeName(),
-                mesh_,
-                IOobject::READ_IF_PRESENT,
-                IOobject::AUTO_WRITE
-            ),
-            defaultPrec
-        )
-    );
-}
-
-forAll(prec,precI)
-{
-    delayedNeutroSource += lambda[precI]*prec[precI];
-}
-
-#include "setNeutronicsConstants.H"
-#include "setNeutronicsVariables.H"
-#include "setPrecConst.H"
 
 
 

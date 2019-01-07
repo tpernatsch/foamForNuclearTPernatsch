@@ -8,16 +8,13 @@ EXE_INC = \
     -I./fuel \
     -I./neutronicClass \
     -I./neutronicClass/albedoSP3 \
-    -I./neutronicClass/include \    
+    -I./neutronicClass/diffusion \
+    -I./neutronicClass/diffusion/include \
+    -I./neutronicClass/XS \
+    -I./neutronicClass/XS/include \
     -I./thermalMechanics \
     -I./thermalMechanics/tractionDisplacement/lnInclude \
     -I./include \
-    -I./POD/EigenSolver \
-    -I./POD/POD \
-    -I./POD/PODEigenBase \
-    -I./POD/PODODE \
-    -I./POD/PODOrthoNormalBase \
-    -I./POD \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \

@@ -2,7 +2,7 @@
 // by feedbacks or at least are assumed to not change with time during
 // the simulation.
  
-forAll(flux,energyI)
+forAll(nuSigmaEff_,energyI)
 {
     forAll(entries, zoneI)
     {
@@ -27,20 +27,20 @@ forAll(flux,energyI)
                 zone = zoneI;
 
                 //constant
-                IV[energyI][cellIglobal] = IVList[zone][energyI];
-                chiPrompt[energyI][cellIglobal] = chiPromptList[zone][energyI];
-                chiDelayed[energyI][cellIglobal] = chiDelayedList[zone][energyI];
-                BetaTot[cellIglobal] = BetaTotList[zone];
+                IV_[energyI][cellIglobal] = IVList[zone][energyI];
+                chiPrompt_[energyI][cellIglobal] = chiPromptList[zone][energyI];
+                chiDelayed_[energyI][cellIglobal] = chiDelayedList[zone][energyI];
+                BetaTot_[cellIglobal] = BetaTotList[zone];
 
-                fuelFraction[cellIglobal] = fuelFractionList[zone];
+                fuelFraction_[cellIglobal] = fuelFractionList[zone];
 
                 
             }
         }
     }
-    IV[energyI].correctBoundaryConditions();
-    chiPrompt[energyI].correctBoundaryConditions();
-    chiDelayed[energyI].correctBoundaryConditions();
-    BetaTot.correctBoundaryConditions();
-    fuelFraction.correctBoundaryConditions();
+    IV_[energyI].correctBoundaryConditions();
+    chiPrompt_[energyI].correctBoundaryConditions();
+    chiDelayed_[energyI].correctBoundaryConditions();
+    BetaTot_.correctBoundaryConditions();
+    fuelFraction_.correctBoundaryConditions();
 }

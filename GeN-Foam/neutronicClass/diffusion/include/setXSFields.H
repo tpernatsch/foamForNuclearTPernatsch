@@ -1,0 +1,13 @@
+const PtrList<volScalarField>& IV = xs.IV();
+const PtrList<volScalarField>& D = xs.D();
+const PtrList<volScalarField>& nuSigmaEff = xs.nuSigmaEff();
+const PtrList<volScalarField>& sigmaPow = xs.sigmaPow();
+const PtrList<volScalarField>& sigmaDisapp = xs.sigmaDisapp();
+const List<PtrList<volScalarField > >& sigmaFromTo = xs.sigmaFromTo();
+const PtrList<volScalarField>& chiPrompt = xs.chiPrompt();
+const PtrList<volScalarField>& chiDelayed = xs.chiDelayed();
+const PtrList<volScalarField>& Beta = xs.Beta();
+const volScalarField& BetaTot = xs.BetaTot();
+const PtrList<volScalarField>& lambda = xs.lambda();
+const volScalarField& fuelFraction = xs.fuelFraction();
+const PtrList<volScalarField >& discFactor = xs.discFactor();

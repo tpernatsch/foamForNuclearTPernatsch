@@ -1,7 +1,7 @@
 Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3)" << endl ;
 {
 
-    PtrList<volScalarField> leakages(energyGroups);
+    PtrList<volScalarField> leakages(xs.energyGroups());
     forAll(leakages,energyI)
     {
         Dalbedo = D[energyI];
@@ -24,14 +24,14 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
         );
     }
 
-    PtrList<volScalarField> ddtFlux2(energyGroups);
+    PtrList<volScalarField> ddtFlux2(xs.energyGroups());
 
 
     forAll(fluxStar[0].internalField(),i)
     {
-        SquareMatrix<scalar> matrix(energyGroups,energyGroups,Foam::zero());
-        List<scalar> source(energyGroups,0.0);
-        List<scalar> predictedFlux(energyGroups,0.0);
+        SquareMatrix<scalar> matrix(xs.energyGroups(),xs.energyGroups(),Foam::zero());
+        List<scalar> source(xs.energyGroups(),0.0);
+        List<scalar> predictedFlux(xs.energyGroups(),0.0);
 
         forAll(flux,energyI)//initialized predicted flux
         {

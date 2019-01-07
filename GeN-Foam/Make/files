@@ -17,7 +17,8 @@ porousClass/patchFields/nusseltThermalBaffle1D/nusseltThermalBaffle1DFvPatchScal
 porousClass/patchFields/pUDrop/pUDropFvPatchScalarField.C
 
 neutronicClass/neutronics.C
-neutronicClass/diffusionNeutronics.C
+neutronicClass/XS/XS.C
+neutronicClass/diffusion/diffusionNeutronics.C
 neutronicClass/albedoSP3/albedoSP3FvPatchField.C
 
 GeN-Foam.C
