@@ -1,24 +1,24 @@
 
 if(aitkenIterCounter==0) // only happening at timeStepIteration==1 
 {
-    forAll(fluxStar, energyI)
+    forAll(fluxStar_, energyI)
     {
-          integralFlux0[energyI]=(fvc::domainIntegrate(fluxStar[energyI])).value();
+          integralFlux0[energyI]=(fvc::domainIntegrate(fluxStar_[energyI])).value();
     }   
 }  
 if(aitkenIterCounter==1)
 {
-    forAll(fluxStar, energyI)
+    forAll(fluxStar_, energyI)
     {
-          integralFlux1[energyI]=(fvc::domainIntegrate(fluxStar[energyI])).value();
+          integralFlux1[energyI]=(fvc::domainIntegrate(fluxStar_[energyI])).value();
     }   
 }
 if(aitkenIterCounter==2)
 {
     aitkenYesNo = true;
-    forAll(fluxStar, energyI)
+    forAll(fluxStar_, energyI)
     {
-        integralFlux2[energyI]=(fvc::domainIntegrate(fluxStar[energyI])).value();
+        integralFlux2[energyI]=(fvc::domainIntegrate(fluxStar_[energyI])).value();
 
         if(
         mag(integralFlux2[energyI]-integralFlux1[energyI])/(max(mag(integralFlux1[energyI]-integralFlux0[energyI]),SMALL)) >0.975 
@@ -29,9 +29,9 @@ if(aitkenIterCounter==2)
     if(aitkenYesNo==true)
     {
         Info << "Intra-step Aitken acceleration no: " << aitkenIterNo << endl;
-        forAll(fluxStar, energyI)
+        forAll(fluxStar_, energyI)
         {
-            integralFlux2[energyI]=(fvc::domainIntegrate(fluxStar[energyI])).value();
+            integralFlux2[energyI]=(fvc::domainIntegrate(fluxStar_[energyI])).value();
             scalar aitkenScaling = 
             (
                 ( 
@@ -42,11 +42,11 @@ if(aitkenIterCounter==2)
                 )/integralFlux2[energyI]
             );
 
-            fluxStar[energyI] = fluxStar[energyI] * aitkenScaling ;
+            fluxStar_[energyI] = fluxStar_[energyI] * aitkenScaling ;
             
-                flux[energyI]=fluxStar[energyI]/discFactor[energyI];
+            flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
 
-            integralFlux0[energyI]=(fvc::domainIntegrate(fluxStar[energyI])).value();
+            integralFlux0[energyI]=(fvc::domainIntegrate(fluxStar_[energyI])).value();
         }
         #include "initializeNeutroSource.H"
         aitkenIterNo++ ;

@@ -75,32 +75,32 @@ protected:
     // Protected data
 
         // Cross sections
-        XS xs;
+        XS xs_;
 
         //Fields
-        PtrList<volScalarField> flux;
-        PtrList<volScalarField> fluxStar;
-        PtrList<volScalarField> prec;
-        volScalarField fluxStarAlbedo;
-        volScalarField defaultFlux;
-        volScalarField defaultPrec;
-        volScalarField Dalbedo;
+        PtrList<volScalarField> flux_;
+        PtrList<volScalarField> fluxStar_;
+        PtrList<volScalarField> prec_;
+        volScalarField fluxStarAlbedo_;
+        volScalarField defaultFlux_;
+        volScalarField defaultPrec_;
+        volScalarField Dalbedo_;
 
         //Derived fields
-        volScalarField oneGroupFlux;
-        volScalarField neutroSource;
-        volScalarField delayedNeutroSource;
-        volScalarField scatteringSourceExtra;
+        volScalarField oneGroupFlux_;
+        volScalarField neutroSource_;
+        volScalarField delayedNeutroSource_;
+        volScalarField scatteringSourceExtra_;
 
         //mappedFields
-        volVectorField U;
-        surfaceScalarField phi;
-        volScalarField porosity;
-        volScalarField Tfuel;
-        volScalarField Tclad;
-        volScalarField rhoCool;
-        volScalarField TCool;
-        volScalarField diffCoeffPrec;
+        volVectorField U_;
+        surfaceScalarField phi_;
+        volScalarField porosity_;
+        volScalarField Tfuel_;
+        volScalarField Tclad_;
+        volScalarField rhoCool_;
+        volScalarField TCool_;
+        volScalarField diffCoeffPrec_;
 
 
 private:
@@ -138,19 +138,19 @@ public:
             //- Return fluxes
             inline const PtrList<volScalarField> fluxes() const
             {
-                return flux;
+                return flux_;
             }
 
             //- Return precursors
             inline const PtrList<volScalarField> precursors() const
             {
-                return prec;
+                return prec_;
             }
 
             //- Return one group flux
             inline const volScalarField& Flux() const
             {
-                return oneGroupFlux;
+                return oneGroupFlux_;
             }
 
         // Calc
@@ -158,10 +158,10 @@ public:
             virtual inline scalar power() const
             {
                 scalar pTot = 0;
-                forAll(flux,energyI)
+                forAll(flux_,energyI)
                 {
                     
-                    pTot += fvc::domainIntegrate(flux[energyI] * xs.sigmaPow()[energyI]).value();
+                    pTot += fvc::domainIntegrate(flux_[energyI] * xs_.sigmaPow()[energyI]).value();
 
                 }
                 return pTot;

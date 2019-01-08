@@ -1,8 +1,8 @@
 
-delayedNeutroSource *= 0.0;
-forAll(prec,precI)
+delayedNeutroSource_ *= 0.0;
+forAll(prec_,precI)
 {
-    delayedNeutroSource += lambda[precI]*prec[precI];
+    delayedNeutroSource_ += lambda[precI]*prec_[precI];
 }
 
 

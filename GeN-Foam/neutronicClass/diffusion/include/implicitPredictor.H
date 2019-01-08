@@ -1,11 +1,11 @@
 Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3)" << endl ;
 {
 
-    PtrList<volScalarField> leakages(xs.energyGroups());
+    PtrList<volScalarField> leakages(xs_.energyGroups());
     forAll(leakages,energyI)
     {
-        Dalbedo = D[energyI];
-        fluxStarAlbedo *= 0.0;
+        Dalbedo_ = D[energyI];
+        fluxStarAlbedo_ *= 0.0;
         leakages.set
         (
             energyI,
@@ -19,28 +19,28 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
                     IOobject::NO_READ,
                     IOobject::NO_WRITE
                 ),
-                fvc::laplacian(D[energyI]/discFactor[energyI],fluxStar[energyI])/fluxStar[energyI]
+                fvc::laplacian(D[energyI]/discFactor[energyI],fluxStar_[energyI])/fluxStar_[energyI]
             )
         );
     }
 
-    PtrList<volScalarField> ddtFlux2(xs.energyGroups());
+    PtrList<volScalarField> ddtFlux2(xs_.energyGroups());
 
 
-    forAll(fluxStar[0].internalField(),i)
+    forAll(fluxStar_[0].internalField(),i)
     {
-        SquareMatrix<scalar> matrix(xs.energyGroups(),xs.energyGroups(),Foam::zero());
-        List<scalar> source(xs.energyGroups(),0.0);
-        List<scalar> predictedFlux(xs.energyGroups(),0.0);
+        SquareMatrix<scalar> matrix(xs_.energyGroups(),xs_.energyGroups(),Foam::zero());
+        List<scalar> source(xs_.energyGroups(),0.0);
+        List<scalar> predictedFlux(xs_.energyGroups(),0.0);
 
-        forAll(flux,energyI)//initialized predicted flux
+        forAll(flux_,energyI)//initialized predicted flux
         {
-            predictedFlux[energyI] = fluxStar[energyI].internalField()[i] ;
+            predictedFlux[energyI] = fluxStar_[energyI].internalField()[i] ;
         }   
         
-        forAll(flux,energyI)
+        forAll(flux_,energyI)
         {
-            forAll(flux,energyJ)
+            forAll(flux_,energyJ)
             {
                 if(energyJ==energyI)
                 {
@@ -58,33 +58,34 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
             }
 
             source[energyI]= 
-                      IV[energyI].internalField()[i]*fluxStar[energyI].oldTime().internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
+                      IV[energyI].internalField()[i]*fluxStar_[energyI].oldTime().internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
                     //+ leakages[energyI].internalField()[i]
-                    + delayedNeutroSource.internalField()[i]*chiDelayed[energyI].internalField()[i];
+                    + delayedNeutroSource_.internalField()[i]*chiDelayed[energyI].internalField()[i];
         }
 
         solve(predictedFlux,matrix,source);
 
-        forAll(fluxStar,energyI)
+        forAll(fluxStar_,energyI)
         {
 
-            fluxStar[energyI].primitiveFieldRef()[i] = predictedFlux[energyI];
+            fluxStar_[energyI].primitiveFieldRef()[i] = predictedFlux[energyI];
         
         }   
 
     }
 
-    forAll(flux,energyI)
+    forAll(flux_,energyI)
     {
-        Dalbedo = D[energyI];
-        fluxStarAlbedo *= 0.0;
-        fluxStar[energyI].correctBoundaryConditions();
-        flux[energyI]=fluxStar[energyI]/discFactor[energyI];
-        flux[energyI].correctBoundaryConditions();
+        Dalbedo_ = D[energyI];
+        fluxStarAlbedo_ *= 0.0;
+        fluxStar_[energyI].correctBoundaryConditions();
+        flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
+        flux_[energyI].correctBoundaryConditions();
     
     }
 
     #include "initializeNeutroSource.H"
+
 }
 
 

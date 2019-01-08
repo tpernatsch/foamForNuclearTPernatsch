@@ -1,9 +1,9 @@
 // Nuclear data fields
 Info<< "Nuclear data fields\n" << endl;
 
-forAll(flux,fluxI)
+forAll(flux_,fluxI)
 {
-    flux.set
+    flux_.set
     (
         fluxI,
         new volScalarField
@@ -16,14 +16,14 @@ forAll(flux,fluxI)
                 IOobject::READ_IF_PRESENT,
                 IOobject::AUTO_WRITE
             ),
-            defaultFlux
+            defaultFlux_
         )
     );
 }
 
-forAll(fluxStar,fluxI)
+forAll(fluxStar_,fluxI)
 {
-        fluxStar.set
+        fluxStar_.set
         (
             fluxI,
             new volScalarField
@@ -36,20 +36,20 @@ forAll(fluxStar,fluxI)
                     IOobject::READ_IF_PRESENT,
                     IOobject::AUTO_WRITE
                 ),
-                defaultFlux
+                defaultFlux_
             )
         );
 }
 
-oneGroupFlux *= 0.0;
-forAll(flux,energyI)
+oneGroupFlux_ *= 0.0;
+forAll(flux_,energyI)
 {
-    oneGroupFlux+=flux[energyI];
+    oneGroupFlux_+=flux_[energyI];
 }
 
-forAll(prec,precI)
+forAll(prec_,precI)
 {
-    prec.set
+    prec_.set
     (
         precI,
         new volScalarField
@@ -62,14 +62,14 @@ forAll(prec,precI)
                 IOobject::READ_IF_PRESENT,
                 IOobject::AUTO_WRITE
             ),
-            defaultPrec
+            defaultPrec_
         )
     );
 }
 
-forAll(prec,precI)
+forAll(prec_,precI)
 {
-    delayedNeutroSource += xs.lambda()[precI]*prec[precI];
+    delayedNeutroSource_ += xs_.lambda()[precI]*prec_[precI];
 }
 
 

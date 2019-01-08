@@ -1,7 +1,7 @@
 
-forAll(fluxStar, energyI)
+forAll(fluxStar_, energyI)
 {
-    fluxStar[energyI] *= pTarget_/pTot;
-    flux[energyI]=fluxStar[energyI]/discFactor[energyI];
+    fluxStar_[energyI] *= pTarget_/pTot;
+    flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
 }
 

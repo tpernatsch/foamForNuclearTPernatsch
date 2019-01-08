@@ -1,7 +1,8 @@
 Info << "Solving neutronics" << endl ;
 
-xs.correct(Tfuel,Tclad,rhoCool,TCool,Disp_);
+xs_.correct(Tfuel_,Tclad_,rhoCool_,TCool_,Disp_);
 #include "setXSFields.H"
+Disp_.correctBoundaryConditions();
 
 const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransport");
 
@@ -14,15 +15,15 @@ int maxNeutronIterations =
     neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
 //for aitken
-List<scalar> integralFlux0(xs.energyGroups());
-List<scalar> integralFlux1(xs.energyGroups());
-List<scalar> integralFlux2(xs.energyGroups());
+List<scalar> integralFlux0(xs_.energyGroups());
+List<scalar> integralFlux1(xs_.energyGroups());
+List<scalar> integralFlux2(xs_.energyGroups());
 
 scalar pTot(1.0); 
 
-forAll(flux,energyI)
+forAll(flux_,energyI)
 {
-    flux[energyI]=fluxStar[energyI]/discFactor[energyI];
+    flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
 }
 if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeIndex())==1 )
 {
@@ -76,9 +77,9 @@ do
 }while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
 
 volFuelPower_*=0.0;
-forAll(flux,energyI)
+forAll(flux_,energyI)
 {
-    volFuelPower_ += flux[energyI] * sigmaPow[energyI];
+    volFuelPower_ += flux_[energyI] * sigmaPow[energyI];
 }
 
 pTot = power();
@@ -111,15 +112,15 @@ if (eigenvalueNeutronics_)
     );
 
     #include "normFluxes.H"
-    xs.adjustDiscFactors(fluxStar);
+    xs_.adjustDiscFactors(fluxStar_);
 }
 
 residual = max(residual,neutroResidual);
 
-oneGroupFlux *= 0.0;
-forAll(flux,energyI)
+oneGroupFlux_ *= 0.0;
+forAll(flux_,energyI)
 {
-    oneGroupFlux+=flux[energyI];
+    oneGroupFlux_+=flux_[energyI];
 }
 
 

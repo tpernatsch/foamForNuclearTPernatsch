@@ -5,7 +5,6 @@ if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(neutronics.Disp()).valu
 {
 
     Info << "Bring back meshes to undeformed case to create correct interpolators" << nl << endl; 
-    //interpolation always based on undeformed mesh!
  
     const volPointInterpolation& neutroMeshPointInterpolationInitial = volPointInterpolation::New(neutroMesh);
 

@@ -54,11 +54,11 @@ Foam::diffusionNeutronics::diffusionNeutronics
 )
 :
     neutronics(mesh),//diffusionNeutronics is derived from neutronics
-    xs(mesh),
-    flux(xs.energyGroups()),
-    fluxStar(xs.energyGroups()),
-    prec(xs.precGroups()),
-    fluxStarAlbedo
+    xs_(mesh),
+    flux_(xs_.energyGroups()),
+    fluxStar_(xs_.energyGroups()),
+    prec_(xs_.precGroups()),
+    fluxStarAlbedo_
     (
         IOobject
         (
@@ -72,7 +72,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,-2,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    defaultFlux
+    defaultFlux_
     (
         IOobject
         (
@@ -84,7 +84,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         ),
         mesh
     ),
-    defaultPrec
+    defaultPrec_
     (
         IOobject
         (
@@ -98,7 +98,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,-3,0,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    Dalbedo
+    Dalbedo_
     (
         IOobject
         (
@@ -112,7 +112,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,1,0,0,0,0,0), 1.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    oneGroupFlux
+    oneGroupFlux_
     (
         IOobject
         (
@@ -122,9 +122,9 @@ Foam::diffusionNeutronics::diffusionNeutronics
             IOobject::NO_READ,
             IOobject::AUTO_WRITE
         ),
-        defaultFlux
+        defaultFlux_
     ),
-    neutroSource
+    neutroSource_
     (
         IOobject
         (
@@ -138,7 +138,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,-3,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    delayedNeutroSource
+    delayedNeutroSource_
     (
         IOobject
         (
@@ -152,7 +152,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,-3,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    scatteringSourceExtra
+    scatteringSourceExtra_
     (
         IOobject
         (
@@ -166,7 +166,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,-3,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    U
+    U_
     (
         IOobject
         (
@@ -180,7 +180,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedVector("", dimensionSet(0,1,-1,0,0,0,0), vector(0.0,0.0,0.0)),
         zeroGradientFvPatchVectorField::typeName
     ),
-    phi
+    phi_
     (
         IOobject
         (
@@ -190,9 +190,9 @@ Foam::diffusionNeutronics::diffusionNeutronics
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
-        fvc::flux(U)
+        fvc::flux(U_)
     ),
-    porosity
+    porosity_
     (
         IOobject
         (
@@ -206,7 +206,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0),1.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    Tfuel
+    Tfuel_
     (
         IOobject
         (
@@ -220,7 +220,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    Tclad
+    Tclad_
     (
         IOobject
         (
@@ -234,7 +234,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    rhoCool
+    rhoCool_
     (
         IOobject
         (
@@ -248,7 +248,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(1,-3,0,0,0,0,0), 1.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    TCool
+    TCool_
     (
         IOobject
         (
@@ -262,7 +262,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    diffCoeffPrec
+    diffCoeffPrec_
     (
         IOobject
         (
@@ -304,15 +304,15 @@ void Foam::diffusionNeutronics::getFields(
     const meshToMesh& neutroToFluid)
 {
 
-    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel);
-    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad);
-    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool);
-    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool);
+    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel_);
+    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad_);
+    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool_);
+    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool_);
 
-    Tfuel.correctBoundaryConditions();
-    Tclad.correctBoundaryConditions();
-    rhoCool.correctBoundaryConditions();
-    TCool.correctBoundaryConditions();  
+    Tfuel_.correctBoundaryConditions();
+    Tclad_.correctBoundaryConditions();
+    rhoCool_.correctBoundaryConditions();
+    TCool_.correctBoundaryConditions();  
 
 }
 
@@ -328,25 +328,25 @@ void Foam::diffusionNeutronics::getFieldsLiquidFuel(
     const compressible::turbulenceModel& turb)
 {
 
-    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel);
-    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad);
-    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool);
-    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool);
-    neutroToFluid.mapTgtToSrc( UOrig, plusEqOp<vector>(), U);//UNeutro.primitiveFieldRef()
-    neutroToFluid.mapTgtToSrc( porosityOrig, plusEqOp<scalar>(), porosity);//porosityNeutro.primitiveFieldRef());
+    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel_.primitiveFieldRef());
+    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad_.primitiveFieldRef());
+    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool_.primitiveFieldRef());
+    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool_.primitiveFieldRef());
+    neutroToFluid.mapTgtToSrc( UOrig, plusEqOp<vector>(), U_);
+    neutroToFluid.mapTgtToSrc( porosityOrig, plusEqOp<scalar>(), porosity_);
 
-    Tfuel.correctBoundaryConditions();
-    Tclad.correctBoundaryConditions();
-    rhoCool.correctBoundaryConditions();
-    TCool.correctBoundaryConditions();
-    U.correctBoundaryConditions();
-    porosity.correctBoundaryConditions();
+    Tfuel_.correctBoundaryConditions();
+    Tclad_.correctBoundaryConditions();
+    rhoCool_.correctBoundaryConditions();
+    TCool_.correctBoundaryConditions();
+    U_.correctBoundaryConditions();
+    porosity_.correctBoundaryConditions();
 
-    phi = fvc::flux(U);
+    phi_ = fvc::flux(U_);
 
-    volScalarField diffCoeffOrig = turb.alphat()/thermo.rho()+thermo.mu()/thermo.rho()/xs.ScNo();// (alphaEff=nu/Pr+alphat)
-    neutroToFluid.mapTgtToSrc( diffCoeffOrig , plusEqOp<scalar>(), diffCoeffPrec);//.primitiveFieldRef()
-    diffCoeffPrec.correctBoundaryConditions();     
+    volScalarField diffCoeffOrig = turb.alphat()/thermo.rho()+thermo.mu()/thermo.rho()/xs_.ScNo();// (alphaEff=nu/Pr+alphat)
+    neutroToFluid.mapTgtToSrc( diffCoeffOrig , plusEqOp<scalar>(), diffCoeffPrec_);//.primitiveFieldRef()
+    diffCoeffPrec_.correctBoundaryConditions();     
 
 }
 
@@ -360,7 +360,7 @@ void Foam::diffusionNeutronics::deformMesh(const meshToMesh& TMToNeutro,const vo
     tmp<pointVectorField> neutroPointsDisplacementOld = neutroMeshPointInterpolation.interpolate(Disp_);
 
     Disp_*=0.0;
-    TMToNeutro.mapSrcToTgt( DispOrig , plusEqOp<vector>(), Disp_.primitiveFieldRef());
+    TMToNeutro.mapSrcToTgt( DispOrig , plusEqOp<vector>(), Disp_);//.primitiveFieldRef()
     Disp_.correctBoundaryConditions();
 
     tmp<pointVectorField> neutroPointsDisplacement = neutroMeshPointInterpolation.interpolate(Disp_);
