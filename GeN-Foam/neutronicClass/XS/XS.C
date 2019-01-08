@@ -42,85 +42,85 @@ Foam::XS::XS
 )
 :
     mesh_(mesh),
-    nuclearData
+    nuclearData_
     (
         IOobject
         (
-            "nuclearData",
+            "nuclearData_",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
         )
     ),
-    nuclearDataRadialExp
+    nuclearDataRadialExp_
     (
         IOobject
         (
-            "nuclearDataRadialExp",
+            "nuclearDataRadialExp_",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
         )
     ),
-    nuclearDataAxialExp
+    nuclearDataAxialExp_
     (
         IOobject
         (
-            "nuclearDataAxialExp",
+            "nuclearDataAxialExp_",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
         )
     ),
-    nuclearDataFuelTemp
+    nuclearDataFuelTemp_
     (
         IOobject
         (
-            "nuclearDataFuelTemp",
+            "nuclearDataFuelTemp_",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
         )
     ),
-    nuclearDataRhoCool
+    nuclearDataRhoCool_
     (
         IOobject
         (
-            "nuclearDataRhoCool",
+            "nuclearDataRhoCool_",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
         )
     ),
-    nuclearDataTCool
+    nuclearDataTCool_
     (
         IOobject
         (
-            "nuclearDataTCool",
+            "nuclearDataTCool_",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
         )
     ),
-    nuclearDataCladExp
+    nuclearDataCladExp_
     (
         IOobject
         (
-            "nuclearDataCladExp",
+            "nuclearDataCladExp_",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
         )
     ),
-    energyGroups_(nuclearData.lookupOrDefault("energyGroups",1)),
-    precGroups_(nuclearData.lookupOrDefault("precGroups",1)),
+    energyGroups_(nuclearData_.lookupOrDefault("energyGroups",1)),
+    precGroups_(nuclearData_.lookupOrDefault("precGroups",1)),
     IV_(energyGroups_),
     D_(energyGroups_),
     nuSigmaEff_(energyGroups_),
@@ -160,71 +160,71 @@ Foam::XS::XS
         zeroGradientFvPatchScalarField::typeName
     ),
     discFactor_(energyGroups_),
-    ScNo_(nuclearData.lookupOrDefault("ScNo",1.0)),
-    zoneNumber(nuclearData.lookup("zones").size()),    
-    fuelFractionList(zoneNumber),
-    dfAdjustList(zoneNumber),
-    discFactorList(zoneNumber),
-    integralFluxList(zoneNumber),
-    fastNeutrons(nuclearData.lookupOrDefault("fastNeutrons",true)),
-    adjustDiscFactors_(nuclearData.lookupOrDefault("adjustDiscFactors", false)),
-    useGivenDiscFactors(nuclearData.lookupOrDefault("useGivenDiscFactors", false)),
-    groupsWoDF(nuclearData.lookupOrDefault<List<int> >("groupsWoDF", List<int>())),
-    doNotParametrize(nuclearData.lookupOrDefault<List<int> >("doNotParametrize", List<int>())),
-    entries(nuclearData.lookup("zones")),
-    IVList(zoneNumber),
-    chiPromptList(zoneNumber),
-    chiDelayedList(zoneNumber),
-    BetaList(zoneNumber),
-    BetaTotList(zoneNumber),
-    lambdaList(zoneNumber),
-    DList(zoneNumber),
-    nuSigmaEffList(zoneNumber),
-    sigmaPowList(zoneNumber),
-    sigmaDisappList(zoneNumber),
-    sigmaFromToList(zoneNumber), 
-    TfuelRef(nuclearDataFuelTemp.lookupOrDefault("TfuelRef",900.0)),
-    TfuelPerturbed(nuclearDataFuelTemp.lookupOrDefault("TfuelPerturbed",1200.0)),
-    fuelTempDList(zoneNumber),
-    fuelTempNuSigmaEffList(zoneNumber),
-    fuelTempSigmaPowList(zoneNumber),
-    fuelTempSigmaDisappList(zoneNumber),
-    fuelTempSigmaFromToList(zoneNumber),
-    AxExp(nuclearDataAxialExp.lookupOrDefault("expansionFromNominal",1.0)),
-    axialExpDList(zoneNumber),
-    axialExpNuSigmaEffList(zoneNumber),
-    axialExpSigmaPowList(zoneNumber),
-    axialExpSigmaDisappList(zoneNumber),
-    axialExpSigmaFromToList(zoneNumber),
-    RadExp(nuclearDataRadialExp.lookupOrDefault("expansionFromNominal",1.0)),
-    axialOrientation(nuclearDataRadialExp.lookupOrDefault("axialOrientation",vector(0.0, 0.0, 1.0))),
-    radialExpDList(zoneNumber),
-    radialExpNuSigmaEffList(zoneNumber),
-    radialExpSigmaPowList(zoneNumber),
-    radialExpSigmaDisappList(zoneNumber),
-    radialExpSigmaFromToList(zoneNumber),
-    rhoCoolRef(nuclearDataRhoCool.lookupOrDefault("rhoCoolRef",860.0)),
-    rhoCoolPerturbed(nuclearDataRhoCool.lookupOrDefault("rhoCoolPerturbed",1.0)),
-    rhoCoolDList(zoneNumber),
-    rhoCoolNuSigmaEffList(zoneNumber),
-    rhoCoolSigmaPowList(zoneNumber),
-    rhoCoolSigmaDisappList(zoneNumber),
-    rhoCoolSigmaFromToList(zoneNumber),
-    TCoolRef(nuclearDataTCool.lookupOrDefault("TCoolRef",900.0)),
-    TCoolPerturbed(nuclearDataTCool.lookupOrDefault("TCoolPerturbed",1200.0)),
-    TCoolDList(zoneNumber),
-    TCoolNuSigmaEffList(zoneNumber),
-    TCoolSigmaPowList(zoneNumber),
-    TCoolSigmaDisappList(zoneNumber),
-    TCoolSigmaFromToList(zoneNumber),
-    TcladRef(nuclearDataCladExp.lookupOrDefault("TcladRef",900.0)),
-    TcladPerturbed(nuclearDataCladExp.lookupOrDefault("TcladPerturbed",1200.0)),
-    cladExpDList(zoneNumber),
-    cladExpNuSigmaEffList(zoneNumber),
-    cladExpSigmaPowList(zoneNumber),
-    cladExpSigmaDisappList(zoneNumber),
-    cladExpSigmaFromToList(zoneNumber),
-    CRmove
+    ScNo_(nuclearData_.lookupOrDefault("ScNo",1.0)),
+    zoneNumber_(nuclearData_.lookup("zones").size()),    
+    fuelFractionList_(zoneNumber_),
+    dfAdjustList_(zoneNumber_),
+    discFactorList_(zoneNumber_),
+    integralFluxList_(zoneNumber_),
+    fastNeutrons_(nuclearData_.lookupOrDefault("fastNeutrons",true)),
+    adjustDiscFactors_(nuclearData_.lookupOrDefault("adjustDiscFactors", false)),
+    useGivenDiscFactors_(nuclearData_.lookupOrDefault("useGivenDiscFactors", false)),
+    groupsWoDF_(nuclearData_.lookupOrDefault<List<int> >("groupsWoDF", List<int>())),
+    doNotParametrize_(nuclearData_.lookupOrDefault<List<int> >("doNotParametrize", List<int>())),
+    entries_(nuclearData_.lookup("zones")),
+    IVList_(zoneNumber_),
+    chiPromptList_(zoneNumber_),
+    chiDelayedList_(zoneNumber_),
+    BetaList_(zoneNumber_),
+    BetaTotList_(zoneNumber_),
+    lambdaList_(zoneNumber_),
+    DList_(zoneNumber_),
+    nuSigmaEffList_(zoneNumber_),
+    sigmaPowList_(zoneNumber_),
+    sigmaDisappList_(zoneNumber_),
+    sigmaFromToList_(zoneNumber_), 
+    TfuelRef_(nuclearDataFuelTemp_.lookupOrDefault("TfuelRef",900.0)),
+    TfuelPerturbed_(nuclearDataFuelTemp_.lookupOrDefault("TfuelPerturbed",1200.0)),
+    fuelTempDList_(zoneNumber_),
+    fuelTempNuSigmaEffList_(zoneNumber_),
+    fuelTempSigmaPowList_(zoneNumber_),
+    fuelTempSigmaDisappList_(zoneNumber_),
+    fuelTempSigmaFromToList_(zoneNumber_),
+    AxExp_(nuclearDataAxialExp_.lookupOrDefault("expansionFromNominal",1.0)),
+    axialExpDList_(zoneNumber_),
+    axialExpNuSigmaEffList_(zoneNumber_),
+    axialExpSigmaPowList_(zoneNumber_),
+    axialExpSigmaDisappList_(zoneNumber_),
+    axialExpSigmaFromToList_(zoneNumber_),
+    RadExp_(nuclearDataRadialExp_.lookupOrDefault("expansionFromNominal",1.0)),
+    axialOrientation_(nuclearDataRadialExp_.lookupOrDefault("axialOrientation",vector(0.0, 0.0, 1.0))),
+    radialExpDList_(zoneNumber_),
+    radialExpNuSigmaEffList_(zoneNumber_),
+    radialExpSigmaPowList_(zoneNumber_),
+    radialExpSigmaDisappList_(zoneNumber_),
+    radialExpSigmaFromToList_(zoneNumber_),
+    rhoCoolRef_(nuclearDataRhoCool_.lookupOrDefault("rhoCoolRef",860.0)),
+    rhoCoolPerturbed_(nuclearDataRhoCool_.lookupOrDefault("rhoCoolPerturbed",1.0)),
+    rhoCoolDList_(zoneNumber_),
+    rhoCoolNuSigmaEffList_(zoneNumber_),
+    rhoCoolSigmaPowList_(zoneNumber_),
+    rhoCoolSigmaDisappList_(zoneNumber_),
+    rhoCoolSigmaFromToList_(zoneNumber_),
+    TCoolRef_(nuclearDataTCool_.lookupOrDefault("TCoolRef",900.0)),
+    TCoolPerturbed_(nuclearDataTCool_.lookupOrDefault("TCoolPerturbed",1200.0)),
+    TCoolDList_(zoneNumber_),
+    TCoolNuSigmaEffList_(zoneNumber_),
+    TCoolSigmaPowList_(zoneNumber_),
+    TCoolSigmaDisappList_(zoneNumber_),
+    TCoolSigmaFromToList_(zoneNumber_),
+    TcladRef_(nuclearDataCladExp_.lookupOrDefault("TcladRef",900.0)),
+    TcladPerturbed_(nuclearDataCladExp_.lookupOrDefault("TcladPerturbed",1200.0)),
+    cladExpDList_(zoneNumber_),
+    cladExpNuSigmaEffList_(zoneNumber_),
+    cladExpSigmaPowList_(zoneNumber_),
+    cladExpSigmaDisappList_(zoneNumber_),
+    cladExpSigmaFromToList_(zoneNumber_),
+    CRmove_
     (
         IOobject
         (
@@ -235,15 +235,15 @@ Foam::XS::XS
             IOobject::NO_WRITE
         )
     ),
-    CRentries(CRmove.lookup("zones")),
-    CRNumber(CRmove.lookup("zones").size()),
-    CRstart(CRNumber),
-    CRfinish(CRNumber),
-    CRspeed(CRNumber),
-    CRFollowerName(CRNumber),
-    CRinitialPosition(CRNumber),
-    CRposition(CRNumber),
-    initialDistanceFromMeshCR(CRNumber)        
+    CRentries_(CRmove_.lookup("zones")),
+    CRNumber_(CRmove_.lookup("zones").size()),
+    CRstart_(CRNumber_),
+    CRfinish_(CRNumber_),
+    CRspeed_(CRNumber_),
+    CRFollowerName_(CRNumber_),
+    CRinitialPosition_(CRNumber_),
+    CRposition_(CRNumber_),
+    initialDistanceFromMeshCR_(CRNumber_)        
 {
     #include "readNuclearData.H"
     #include "createXSfields.H"    

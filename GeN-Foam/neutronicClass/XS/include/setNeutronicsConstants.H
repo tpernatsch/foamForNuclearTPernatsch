@@ -4,11 +4,11 @@
  
 forAll(nuSigmaEff_,energyI)
 {
-    forAll(entries, zoneI)
+    forAll(entries_, zoneI)
     {
         label zone = zoneI;
 
-        const word& name = entries[zoneI].keyword();
+        const word& name = entries_[zoneI].keyword();
 
         Info << "Mesh zone: " << name  << endl;
 
@@ -27,12 +27,12 @@ forAll(nuSigmaEff_,energyI)
                 zone = zoneI;
 
                 //constant
-                IV_[energyI][cellIglobal] = IVList[zone][energyI];
-                chiPrompt_[energyI][cellIglobal] = chiPromptList[zone][energyI];
-                chiDelayed_[energyI][cellIglobal] = chiDelayedList[zone][energyI];
-                BetaTot_[cellIglobal] = BetaTotList[zone];
+                IV_[energyI][cellIglobal] = IVList_[zone][energyI];
+                chiPrompt_[energyI][cellIglobal] = chiPromptList_[zone][energyI];
+                chiDelayed_[energyI][cellIglobal] = chiDelayedList_[zone][energyI];
+                BetaTot_[cellIglobal] = BetaTotList_[zone];
 
-                fuelFraction_[cellIglobal] = fuelFractionList[zone];
+                fuelFraction_[cellIglobal] = fuelFractionList_[zone];
 
                 
             }

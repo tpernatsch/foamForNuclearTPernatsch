@@ -2,14 +2,14 @@
 Info<< "Setting neutronics fields\n" << endl;
 
 // Calculate Control Rod position
-forAll(CRentries,CRzoneI)
+forAll(CRentries_,CRzoneI)
 {
     //recalculate positions in case mesh has moved 
-    label FOLLOWERzoneId = mesh_.cellZones().findZoneID(CRFollowerName[CRzoneI]);
+    label FOLLOWERzoneId = mesh_.cellZones().findZoneID(CRFollowerName_[CRzoneI]);
 
     if(FOLLOWERzoneId == -1)
     {
-      Info << "Control rod with follower: " << CRFollowerName(CRzoneI) << " does not exists" << endl;
+      Info << "Control rod with follower: " << CRFollowerName_(CRzoneI) << " does not exists" << endl;
     }
 
     scalar cellHeight = -100.0 ;
@@ -30,33 +30,33 @@ forAll(CRentries,CRzoneI)
 
     }
     reduce(maxFollowerHeight, maxOp<scalar>());
-    CRinitialPosition[CRzoneI] = maxFollowerHeight-initialDistanceFromMeshCR[CRzoneI];
-    if(mesh_.time().value()<CRfinish[CRzoneI])
+    CRinitialPosition_[CRzoneI] = maxFollowerHeight-initialDistanceFromMeshCR_[CRzoneI];
+    if(mesh_.time().value()<CRfinish_[CRzoneI])
     {
-        CRposition[CRzoneI] = (CRinitialPosition[CRzoneI]-CRspeed[CRzoneI]*(max(mesh_.time().value(),CRstart[CRzoneI])-CRstart[CRzoneI]));
+        CRposition_[CRzoneI] = (CRinitialPosition_[CRzoneI]-CRspeed_[CRzoneI]*(max(mesh_.time().value(),CRstart_[CRzoneI])-CRstart_[CRzoneI]));
     }
     else
     {
-        CRposition[CRzoneI] = (CRinitialPosition[CRzoneI]-CRspeed[CRzoneI]*(CRfinish[CRzoneI]-CRstart[CRzoneI]));
+        CRposition_[CRzoneI] = (CRinitialPosition_[CRzoneI]-CRspeed_[CRzoneI]*(CRfinish_[CRzoneI]-CRstart_[CRzoneI]));
     }
-    Info << "Control rod " << CRentries[CRzoneI].keyword() << " in position: " << CRposition[CRzoneI] << endl;
+    Info << "Control rod " << CRentries_[CRzoneI].keyword() << " in position: " << CRposition_[CRzoneI] << endl;
 }
 
 tmp<volVectorField> tDNeutroRad(new volVectorField(Disp));
 volVectorField& DNeutroRad = tDNeutroRad.ref();
 
-tmp<volScalarField> tDNeutroAx(new volScalarField(Disp & axialOrientation));
+tmp<volScalarField> tDNeutroAx(new volScalarField(Disp & axialOrientation_));
 volScalarField& DNeutroAx = tDNeutroAx.ref();
 
-DNeutroRad.replace(0,DNeutroRad.component(0)*(1-axialOrientation[0]));
-DNeutroRad.replace(1,DNeutroRad.component(1)*(1-axialOrientation[1]));
-DNeutroRad.replace(2,DNeutroRad.component(2)*(1-axialOrientation[2]));
+DNeutroRad.replace(0,DNeutroRad.component(0)*(1-axialOrientation_[0]));
+DNeutroRad.replace(1,DNeutroRad.component(1)*(1-axialOrientation_[1]));
+DNeutroRad.replace(2,DNeutroRad.component(2)*(1-axialOrientation_[2]));
 
 DNeutroRad.correctBoundaryConditions();
 DNeutroAx.correctBoundaryConditions();
 
 volScalarField radExp = fvc::div(DNeutroRad)/2.0;
-volScalarField axExp = fvc::grad(DNeutroAx)& axialOrientation;
+volScalarField axExp = fvc::grad(DNeutroAx)& axialOrientation_;
 
 radExp.correctBoundaryConditions();
 axExp.correctBoundaryConditions();
@@ -64,27 +64,27 @@ axExp.correctBoundaryConditions();
 tDNeutroRad.clear();
 DNeutroAx.clear();
 
-volScalarField logT( log(max(0.01,(Tfuel/dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),TfuelRef)))) );
-volScalarField diffT( (pow(max(Tfuel,dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),SMALL)),0.5)-pow(dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),TfuelRef),0.5)) );
+volScalarField logT( log(max(0.01,(Tfuel/dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),TfuelRef_)))) );
+volScalarField diffT( (pow(max(Tfuel,dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),SMALL)),0.5)-pow(dimensionedScalar("",dimensionSet(0,0,0,1,0,0,0),TfuelRef_),0.5)) );
 
 forAll(nuSigmaEff_,energyI)
 {
 
     bool parametrize = true;
-    forAll(doNotParametrize, groupI)
+    forAll(doNotParametrize_, groupI)
     {
-        if(energyI == doNotParametrize[groupI])
+        if(energyI == doNotParametrize_[groupI])
         {
             parametrize = false;
-            Info << "Not Parametrizing XS for group: " << doNotParametrize[groupI] << endl;
+            Info << "Not Parametrizing XS for group: " << doNotParametrize_[groupI] << endl;
         }
     }
 
-    forAll(entries, zoneI)
+    forAll(entries_, zoneI)
     {
         label zone = zoneI;
 
-        const word& name = entries[zoneI].keyword();
+        const word& name = entries_[zoneI].keyword();
 
         Info << "Mesh zone: " << name  << endl;
 
@@ -102,16 +102,16 @@ forAll(nuSigmaEff_,energyI)
             bool isCR = false;
             label CRzone = 0;
 
-            forAll(CRentries,CRzoneI)
+            forAll(CRentries_,CRzoneI)
             {
-                const word& CRname = CRentries[CRzoneI].keyword();
+                const word& CRname = CRentries_[CRzoneI].keyword();
                 
                 if(name == CRname)
                 {
                     isCR = true ;
                     CRzone = CRzoneI;
                 }
-                if(name == CRFollowerName[CRzoneI])
+                if(name == CRFollowerName_[CRzoneI])
                 {
                     isFollower = true ;
                     CRzone = CRzoneI;
@@ -123,24 +123,24 @@ forAll(nuSigmaEff_,energyI)
                 label cellIglobal = mesh_.cellZones()[zoneId][cellIlocal];
                 zone = zoneI;
 
-                if(CRNumber>0)
+                if(CRNumber_>0)
                 {
-                    if(isFollower && mesh_.C()[cellIglobal].z()>CRposition[CRzone])
+                    if(isFollower && mesh_.C()[cellIglobal].z()>CRposition_[CRzone])
                     {
-                        forAll(entries, zoneII)
+                        forAll(entries_, zoneII)
                         {
-                            if(entries[zoneII].keyword() == CRentries[CRzone].keyword())
+                            if(entries_[zoneII].keyword() == CRentries_[CRzone].keyword())
                             {
                                 zone = zoneII;
                             }
                         }
                     }
 
-                    if(isCR && mesh_.C()[cellIglobal].z()<CRposition[CRzone])
+                    if(isCR && mesh_.C()[cellIglobal].z()<CRposition_[CRzone])
                     {
-                        forAll(entries, zoneII)
+                        forAll(entries_, zoneII)
                         {
-                            if(entries[zoneII].keyword() == CRFollowerName[CRzone])
+                            if(entries_[zoneII].keyword() == CRFollowerName_[CRzone])
                             {
                                 zone = zoneII;
                             }
@@ -151,93 +151,93 @@ forAll(nuSigmaEff_,energyI)
                 // Adjustment of D and XS for current reactor conditions of:
                 // rhoCool, TCool, fuelTemp, cladExp, axialExp and radialExp.
 
-                D_[energyI][cellIglobal] = DList[zone][energyI];
-                nuSigmaEff_[energyI][cellIglobal] = nuSigmaEffList[zone][energyI];
-                sigmaPow_[energyI][cellIglobal] = sigmaPowList[zone][energyI];
-                sigmaDisapp_[energyI][cellIglobal] = sigmaDisappList[zone][energyI];
+                D_[energyI][cellIglobal] = DList_[zone][energyI];
+                nuSigmaEff_[energyI][cellIglobal] = nuSigmaEffList_[zone][energyI];
+                sigmaPow_[energyI][cellIglobal] = sigmaPowList_[zone][energyI];
+                sigmaDisapp_[energyI][cellIglobal] = sigmaDisappList_[zone][energyI];
                 forAll(sigmaFromTo_,energyJ)
                 {
-                    sigmaFromTo_[energyJ][energyI][cellIglobal] = sigmaFromToList[zone][energyJ][energyI];
+                    sigmaFromTo_[energyJ][energyI][cellIglobal] = sigmaFromToList_[zone][energyJ][energyI];
                 }
 
                 if (parametrize)
                 {
                     D_[energyI][cellIglobal]
-                 += rhoCoolDList[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
-                  + TCoolDList[zone][energyI]*(TCool[cellIglobal] - TCoolRef)
+                 += rhoCoolDList_[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
+                  + TCoolDList_[zone][energyI]*(TCool[cellIglobal] - TCoolRef_)
                   + (
-                        fastNeutrons
-                      ? fuelTempDList[zone][energyI]*logT[cellIglobal]
-                      : fuelTempDList[zone][energyI]*diffT[cellIglobal]
+                        fastNeutrons_
+                      ? fuelTempDList_[zone][energyI]*logT[cellIglobal]
+                      : fuelTempDList_[zone][energyI]*diffT[cellIglobal]
                     )
-                  + cladExpDList[zone][energyI]*(Tclad[cellIglobal] - TcladRef)
-                  + axialExpDList[zone][energyI]*(axExp[cellIglobal])
-                  + radialExpDList[zone][energyI]*(radExp[cellIglobal]);
+                  + cladExpDList_[zone][energyI]*(Tclad[cellIglobal] - TcladRef_)
+                  + axialExpDList_[zone][energyI]*(axExp[cellIglobal])
+                  + radialExpDList_[zone][energyI]*(radExp[cellIglobal]);
 
                     nuSigmaEff_[energyI][cellIglobal]
-                 += rhoCoolNuSigmaEffList[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
-                  + TCoolNuSigmaEffList[zone][energyI]*(TCool[cellIglobal] - TCoolRef)
+                 += rhoCoolNuSigmaEffList_[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
+                  + TCoolNuSigmaEffList_[zone][energyI]*(TCool[cellIglobal] - TCoolRef_)
                   + (
-                        fastNeutrons
-                      ? fuelTempNuSigmaEffList[zone][energyI]*logT[cellIglobal]
-                      : fuelTempNuSigmaEffList[zone][energyI]*diffT[cellIglobal]
+                        fastNeutrons_
+                      ? fuelTempNuSigmaEffList_[zone][energyI]*logT[cellIglobal]
+                      : fuelTempNuSigmaEffList_[zone][energyI]*diffT[cellIglobal]
                     )
-                  + cladExpNuSigmaEffList[zone][energyI]*(Tclad[cellIglobal] - TcladRef)
-                  + axialExpNuSigmaEffList[zone][energyI]*(axExp[cellIglobal])
-                  + radialExpNuSigmaEffList[zone][energyI]*(radExp[cellIglobal]);
+                  + cladExpNuSigmaEffList_[zone][energyI]*(Tclad[cellIglobal] - TcladRef_)
+                  + axialExpNuSigmaEffList_[zone][energyI]*(axExp[cellIglobal])
+                  + radialExpNuSigmaEffList_[zone][energyI]*(radExp[cellIglobal]);
 
                     sigmaPow_[energyI][cellIglobal]
-                 += rhoCoolSigmaPowList[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
-                  + TCoolSigmaPowList[zone][energyI]*(TCool[cellIglobal] - TCoolRef)
+                 += rhoCoolSigmaPowList_[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
+                  + TCoolSigmaPowList_[zone][energyI]*(TCool[cellIglobal] - TCoolRef_)
                   + (
-                        fastNeutrons
-                      ? fuelTempSigmaPowList[zone][energyI]*logT[cellIglobal]
-                      : fuelTempSigmaPowList[zone][energyI]*diffT[cellIglobal]
+                        fastNeutrons_
+                      ? fuelTempSigmaPowList_[zone][energyI]*logT[cellIglobal]
+                      : fuelTempSigmaPowList_[zone][energyI]*diffT[cellIglobal]
                     )
-                  + cladExpSigmaPowList[zone][energyI]*(Tclad[cellIglobal] - TcladRef)
-                  + axialExpSigmaPowList[zone][energyI]*(axExp[cellIglobal])
-                  + radialExpSigmaPowList[zone][energyI]*(radExp[cellIglobal]);
+                  + cladExpSigmaPowList_[zone][energyI]*(Tclad[cellIglobal] - TcladRef_)
+                  + axialExpSigmaPowList_[zone][energyI]*(axExp[cellIglobal])
+                  + radialExpSigmaPowList_[zone][energyI]*(radExp[cellIglobal]);
 
                     sigmaDisapp_[energyI][cellIglobal]
-                 += rhoCoolSigmaDisappList[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
-                  + TCoolSigmaDisappList[zone][energyI]*(TCool[cellIglobal] - TCoolRef)
+                 += rhoCoolSigmaDisappList_[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
+                  + TCoolSigmaDisappList_[zone][energyI]*(TCool[cellIglobal] - TCoolRef_)
                   + (
-                        fastNeutrons
-                      ? fuelTempSigmaDisappList[zone][energyI]*logT[cellIglobal]
-                      : fuelTempSigmaDisappList[zone][energyI]*diffT[cellIglobal]
+                        fastNeutrons_
+                      ? fuelTempSigmaDisappList_[zone][energyI]*logT[cellIglobal]
+                      : fuelTempSigmaDisappList_[zone][energyI]*diffT[cellIglobal]
                     )
-                  + cladExpSigmaDisappList[zone][energyI]*(Tclad[cellIglobal] - TcladRef)
-                  + axialExpSigmaDisappList[zone][energyI]*(axExp[cellIglobal])
-                  + radialExpSigmaDisappList[zone][energyI]*(radExp[cellIglobal]);
+                  + cladExpSigmaDisappList_[zone][energyI]*(Tclad[cellIglobal] - TcladRef_)
+                  + axialExpSigmaDisappList_[zone][energyI]*(axExp[cellIglobal])
+                  + radialExpSigmaDisappList_[zone][energyI]*(radExp[cellIglobal]);
 
                     forAll(sigmaFromTo_,energyJ)
                     {
                         sigmaFromTo_[energyJ][energyI][cellIglobal]
-                     += rhoCoolSigmaFromToList[zone][energyJ][energyI]*(rhoCool[cellIglobal] - rhoCoolRef)
-                      + TCoolSigmaFromToList[zone][energyJ][energyI]*(TCool[cellIglobal] - TCoolRef)
+                     += rhoCoolSigmaFromToList_[zone][energyJ][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
+                      + TCoolSigmaFromToList_[zone][energyJ][energyI]*(TCool[cellIglobal] - TCoolRef_)
                       + (
-                            fastNeutrons
-                          ? fuelTempSigmaFromToList[zone][energyJ][energyI]*logT[cellIglobal]
-                          : fuelTempSigmaFromToList[zone][energyJ][energyI]*diffT[cellIglobal]
+                            fastNeutrons_
+                          ? fuelTempSigmaFromToList_[zone][energyJ][energyI]*logT[cellIglobal]
+                          : fuelTempSigmaFromToList_[zone][energyJ][energyI]*diffT[cellIglobal]
                         )
-                      + cladExpSigmaFromToList[zone][energyJ][energyI]*(Tclad[cellIglobal] - TcladRef)
-                      + axialExpSigmaFromToList[zone][energyJ][energyI]*(axExp[cellIglobal])
-                      + radialExpSigmaFromToList[zone][energyJ][energyI]*(radExp[cellIglobal]);
+                      + cladExpSigmaFromToList_[zone][energyJ][energyI]*(Tclad[cellIglobal] - TcladRef_)
+                      + axialExpSigmaFromToList_[zone][energyJ][energyI]*(axExp[cellIglobal])
+                      + radialExpSigmaFromToList_[zone][energyJ][energyI]*(radExp[cellIglobal]);
                     }
                 }
 
-                if(useGivenDiscFactors || ((mesh_.time().timeIndex()-mesh_.time().startTimeIndex())>0))
+                if(useGivenDiscFactors_ || ((mesh_.time().timeIndex()-mesh_.time().startTimeIndex())>0))
                 {
-                    discFactor_[energyI][cellIglobal] = discFactorList[zone][energyI] ;
+                    discFactor_[energyI][cellIglobal] = discFactorList_[zone][energyI] ;
                 }
                 else
                 {
-                    discFactorList[zone][energyI] = discFactor_[energyI][cellIglobal] ;
+                    discFactorList_[zone][energyI] = discFactor_[energyI][cellIglobal] ;
                 }
 
             }//close forall cellIlocal in zoneId
         }//close else from zoneId check
-    }//close forall zoneI in zone entries
+    }//close forall zoneI in zone entries_
 
     D_[energyI].correctBoundaryConditions();
     nuSigmaEff_[energyI].correctBoundaryConditions();

@@ -1,9 +1,9 @@
 forAll(Beta_,precI)
 {
 
-    forAll(entries, zoneI)
+    forAll(entries_, zoneI)
     {
-        const word& name = entries[zoneI].keyword();
+        const word& name = entries_[zoneI].keyword();
 
         label zoneId = mesh_.cellZones().findZoneID(name);
 
@@ -13,10 +13,10 @@ forAll(Beta_,precI)
             const UList<label>& addr = mesh_.cellZones()[zoneId];
     
             IndirectList<scalar>(Beta_[precI].internalField(), addr)
-            = scalar(BetaList[zoneI][precI]);
+            = scalar(BetaList_[zoneI][precI]);
 
             IndirectList<scalar>(lambda_[precI].internalField(), addr)
-            = scalar(lambdaList[zoneI][precI]);
+            = scalar(lambdaList_[zoneI][precI]);
         }
 
     }

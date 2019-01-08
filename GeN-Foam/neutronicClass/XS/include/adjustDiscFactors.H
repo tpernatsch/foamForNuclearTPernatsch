@@ -3,12 +3,12 @@
 forAll(fluxStar,energyI)
 {
     bool adjust = true;
-    forAll(groupsWoDF, groupI)
+    forAll(groupsWoDF_, groupI)
     {
-        if(energyI == groupsWoDF[groupI])
+        if(energyI == groupsWoDF_[groupI])
         {
             adjust = false;
-            Info << "Not calculating DF for group: " << groupsWoDF[groupI] << endl;
+            Info << "Not calculating DF for group: " << groupsWoDF_[groupI] << endl;
         }
     }
     if(adjust)
@@ -30,10 +30,10 @@ forAll(fluxStar,energyI)
         scalar totFluxSerpent = 0;
         scalar totFluxGeNFoam = 0;
 
-        forAll(entries, zoneI)
+        forAll(entries_, zoneI)
         {
             
-            const word& name = entries[zoneI].keyword();
+            const word& name = entries_[zoneI].keyword();
 
             label zoneId = mesh_.cellZones().findZoneID(name);
 
@@ -43,7 +43,7 @@ forAll(fluxStar,energyI)
             }
             else
             {
-                if(dfAdjustList[zoneI]==true)
+                if(dfAdjustList_[zoneI]==true)
                 {
         
                     forAll(mesh_.cellZones()[zoneId], cellIlocal)
@@ -54,7 +54,7 @@ forAll(fluxStar,energyI)
                         integrateYesNo[cellIglobal] = 1.0;
             
                     }
-                    totFluxSerpent += integralFluxList[zoneI][energyI];
+                    totFluxSerpent += integralFluxList_[zoneI][energyI];
                 
                 }   
     
@@ -64,10 +64,10 @@ forAll(fluxStar,energyI)
         totFluxGeNFoam = fvc::domainIntegrate(integrateYesNo*fluxStar[energyI]).value();
 
         integrateYesNo *= 0.0 ;
-        forAll(entries, zoneI)
+        forAll(entries_, zoneI)
         {
 
-            const word& name = entries[zoneI].keyword();
+            const word& name = entries_[zoneI].keyword();
 
             Info << "Mesh zone: " << name  << endl;
     
@@ -80,7 +80,7 @@ forAll(fluxStar,energyI)
             }
             else
             {
-                if(dfAdjustList[zoneI]==true)
+                if(dfAdjustList_[zoneI]==true)
                 {
     
                     forAll(mesh_.cellZones()[zoneId], cellIlocal)
@@ -92,10 +92,10 @@ forAll(fluxStar,energyI)
     
                     }
 
-                    discFactorList[zoneI][energyI] =  (fvc::domainIntegrate(integrateYesNo*fluxStar[energyI]).value()/totFluxGeNFoam ) / (integralFluxList[zoneI][energyI]/totFluxSerpent);
+                    discFactorList_[zoneI][energyI] =  (fvc::domainIntegrate(integrateYesNo*fluxStar[energyI]).value()/totFluxGeNFoam ) / (integralFluxList_[zoneI][energyI]/totFluxSerpent);
                 }
                 
-                Info << "discFactorList: zone " <<  entries[zoneI].keyword() << ", energy " << energyI << ": " << discFactorList[zoneI][energyI]  << endl;
+                Info << "discFactorList: zone " <<  entries_[zoneI].keyword() << ", energy " << energyI << ": " << discFactorList_[zoneI][energyI]  << endl;
     
                 integrateYesNo *= 0.0 ;     
     

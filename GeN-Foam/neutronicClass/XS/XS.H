@@ -75,13 +75,13 @@ protected:
             const fvMesh& mesh_;
 
         //Data
-            IOdictionary nuclearData;
-            IOdictionary nuclearDataRadialExp;
-            IOdictionary nuclearDataAxialExp;
-            IOdictionary nuclearDataFuelTemp;
-            IOdictionary nuclearDataRhoCool;
-            IOdictionary nuclearDataTCool;
-            IOdictionary nuclearDataCladExp;
+            IOdictionary nuclearData_;
+            IOdictionary nuclearDataRadialExp_;
+            IOdictionary nuclearDataAxialExp_;
+            IOdictionary nuclearDataFuelTemp_;
+            IOdictionary nuclearDataRhoCool_;
+            IOdictionary nuclearDataTCool_;
+            IOdictionary nuclearDataCladExp_;
 
             label energyGroups_;
             label precGroups_;
@@ -103,98 +103,98 @@ protected:
             scalar ScNo_;
         
         //XS
-            label zoneNumber;
+            label zoneNumber_;
 
         //Disc factors
             // fuel fraction used to determine vol power IN the fuel starting from vol power from sigmaPow
-            PtrList<scalar > fuelFractionList;
+            PtrList<scalar > fuelFractionList_;
             // adjust or not DF
-            PtrList<bool > dfAdjustList;
+            PtrList<bool > dfAdjustList_;
             //discontinuity factors
-            PtrList<scalarField > discFactorList;
+            PtrList<scalarField > discFactorList_;
             //integral fluxes for adapting disc factors
-            PtrList<scalarField > integralFluxList;
+            PtrList<scalarField > integralFluxList_;
 
         //Feedbacks Coefficients
 
-            bool fastNeutrons;
+            bool fastNeutrons_;
             bool adjustDiscFactors_;
-            bool useGivenDiscFactors;
-            List<int> groupsWoDF;
-            List<int> doNotParametrize;
-            PtrList<entry> entries;
+            bool useGivenDiscFactors_;
+            List<int> groupsWoDF_;
+            List<int> doNotParametrize_;
+            PtrList<entry> entries_;
             //Constants
-            PtrList<scalarField > IVList;
-            PtrList<scalarField > chiPromptList;
-            PtrList<scalarField > chiDelayedList;
-            PtrList<scalarField > BetaList;
-            PtrList<scalar > BetaTotList;
-            PtrList<scalarField > lambdaList;
+            PtrList<scalarField > IVList_;
+            PtrList<scalarField > chiPromptList_;
+            PtrList<scalarField > chiDelayedList_;
+            PtrList<scalarField > BetaList_;
+            PtrList<scalar > BetaTotList_;
+            PtrList<scalarField > lambdaList_;
             //Nominal 
-            PtrList<scalarField > DList;
-            PtrList<scalarField > nuSigmaEffList;
-            PtrList<scalarField > sigmaPowList;
-            PtrList<scalarField > sigmaDisappList;
-            PtrList<scalarSquareMatrix > sigmaFromToList; 
+            PtrList<scalarField > DList_;
+            PtrList<scalarField > nuSigmaEffList_;
+            PtrList<scalarField > sigmaPowList_;
+            PtrList<scalarField > sigmaDisappList_;
+            PtrList<scalarSquareMatrix > sigmaFromToList_; 
             // fuel temperature coefficient
-            scalar TfuelRef;
-            scalar TfuelPerturbed;
-            PtrList<scalarField > fuelTempDList;
-            PtrList<scalarField > fuelTempNuSigmaEffList;
-            PtrList<scalarField > fuelTempSigmaPowList;
-            PtrList<scalarField > fuelTempSigmaDisappList;
-            PtrList<scalarSquareMatrix > fuelTempSigmaFromToList;
+            scalar TfuelRef_;
+            scalar TfuelPerturbed_;
+            PtrList<scalarField > fuelTempDList_;
+            PtrList<scalarField > fuelTempNuSigmaEffList_;
+            PtrList<scalarField > fuelTempSigmaPowList_;
+            PtrList<scalarField > fuelTempSigmaDisappList_;
+            PtrList<scalarSquareMatrix > fuelTempSigmaFromToList_;
             // axial expansion coefficient
-            scalar AxExp;
-            PtrList<scalarField > axialExpDList;
-            PtrList<scalarField > axialExpNuSigmaEffList;
-            PtrList<scalarField > axialExpSigmaPowList;
-            PtrList<scalarField > axialExpSigmaDisappList;
-            PtrList<scalarSquareMatrix > axialExpSigmaFromToList;
+            scalar AxExp_;
+            PtrList<scalarField > axialExpDList_;
+            PtrList<scalarField > axialExpNuSigmaEffList_;
+            PtrList<scalarField > axialExpSigmaPowList_;
+            PtrList<scalarField > axialExpSigmaDisappList_;
+            PtrList<scalarSquareMatrix > axialExpSigmaFromToList_;
             // radial expansion coefficient
-            scalar RadExp;
-            vector axialOrientation;
-            PtrList<scalarField > radialExpDList;
-            PtrList<scalarField > radialExpNuSigmaEffList;
-            PtrList<scalarField > radialExpSigmaPowList;
-            PtrList<scalarField > radialExpSigmaDisappList;
-            PtrList<scalarSquareMatrix > radialExpSigmaFromToList;
+            scalar RadExp_;
+            vector axialOrientation_;
+            PtrList<scalarField > radialExpDList_;
+            PtrList<scalarField > radialExpNuSigmaEffList_;
+            PtrList<scalarField > radialExpSigmaPowList_;
+            PtrList<scalarField > radialExpSigmaDisappList_;
+            PtrList<scalarSquareMatrix > radialExpSigmaFromToList_;
             // coolant expansion coefficient
-            scalar rhoCoolRef;
-            scalar rhoCoolPerturbed;
-            PtrList<scalarField > rhoCoolDList;
-            PtrList<scalarField > rhoCoolNuSigmaEffList;
-            PtrList<scalarField > rhoCoolSigmaPowList;
-            PtrList<scalarField > rhoCoolSigmaDisappList;
-            PtrList<scalarSquareMatrix > rhoCoolSigmaFromToList;
+            scalar rhoCoolRef_;
+            scalar rhoCoolPerturbed_;
+            PtrList<scalarField > rhoCoolDList_;
+            PtrList<scalarField > rhoCoolNuSigmaEffList_;
+            PtrList<scalarField > rhoCoolSigmaPowList_;
+            PtrList<scalarField > rhoCoolSigmaDisappList_;
+            PtrList<scalarSquareMatrix > rhoCoolSigmaFromToList_;
             // coolant temperature coefficient
-            scalar TCoolRef;
-            scalar TCoolPerturbed;
-            PtrList<scalarField > TCoolDList;
-            PtrList<scalarField > TCoolNuSigmaEffList;
-            PtrList<scalarField > TCoolSigmaPowList;
-            PtrList<scalarField > TCoolSigmaDisappList;
-            PtrList<scalarSquareMatrix > TCoolSigmaFromToList;
+            scalar TCoolRef_;
+            scalar TCoolPerturbed_;
+            PtrList<scalarField > TCoolDList_;
+            PtrList<scalarField > TCoolNuSigmaEffList_;
+            PtrList<scalarField > TCoolSigmaPowList_;
+            PtrList<scalarField > TCoolSigmaDisappList_;
+            PtrList<scalarSquareMatrix > TCoolSigmaFromToList_;
             // cladding expansion coefficient
-            scalar TcladRef;
-            scalar TcladPerturbed;
-            PtrList<scalarField > cladExpDList;
-            PtrList<scalarField > cladExpNuSigmaEffList;
-            PtrList<scalarField > cladExpSigmaPowList;
-            PtrList<scalarField > cladExpSigmaDisappList;
-            PtrList<scalarSquareMatrix > cladExpSigmaFromToList;
+            scalar TcladRef_;
+            scalar TcladPerturbed_;
+            PtrList<scalarField > cladExpDList_;
+            PtrList<scalarField > cladExpNuSigmaEffList_;
+            PtrList<scalarField > cladExpSigmaPowList_;
+            PtrList<scalarField > cladExpSigmaDisappList_;
+            PtrList<scalarSquareMatrix > cladExpSigmaFromToList_;
 
         //For control rods
-            IOdictionary CRmove;
-            PtrList<entry> CRentries;
-            label CRNumber;
-            PtrList<scalar > CRstart;
-            PtrList<scalar > CRfinish;
-            PtrList<scalar > CRspeed;
-            PtrList<word >   CRFollowerName;
-            PtrList<scalar > CRinitialPosition;
-            PtrList<scalar > CRposition;
-            PtrList<scalar > initialDistanceFromMeshCR;
+            IOdictionary CRmove_;
+            PtrList<entry> CRentries_;
+            label CRNumber_;
+            PtrList<scalar > CRstart_;
+            PtrList<scalar > CRfinish_;
+            PtrList<scalar > CRspeed_;
+            PtrList<word >   CRFollowerName_;
+            PtrList<scalar > CRinitialPosition_;
+            PtrList<scalar > CRposition_;
+            PtrList<scalar > initialDistanceFromMeshCR_;
 
 public:
 
