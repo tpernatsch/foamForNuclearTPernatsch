@@ -1,18 +1,26 @@
 
 pointField neutroStartPoints = neutroMesh.points(); //used to bring back mesh after interpolations
 
+pointIOField neutroUndeformedPoints
+    (
+        IOobject
+        (
+            "neutroUndeformedPoints",
+            neutroMesh.time().timeName(),
+            neutroMesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        neutroMesh.points()
+    );
+
+
 if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(neutronics.Disp()).value() != Foam::Vector<double>(0,0,0))
 {
 
     Info << "Bring back meshes to undeformed case to create correct interpolators" << nl << endl; 
- 
-    const volPointInterpolation& neutroMeshPointInterpolationInitial = volPointInterpolation::New(neutroMesh);
 
-    tmp<pointVectorField> neutroPointsDisplacementInitial = neutroMeshPointInterpolationInitial.interpolate(neutronics.Disp());
-
-    tmp<pointField> neutroDisplacedPointsInitial = neutroStartPoints - neutroPointsDisplacementInitial().internalField() ;
-
-    neutroMesh.movePoints(neutroDisplacedPointsInitial);
+    neutroMesh.movePoints(neutroUndeformedPoints);
 
     Info << "Done" << nl << endl;
 
@@ -27,6 +35,7 @@ meshToMesh TMToNeutro
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
+
 meshToMesh TMToFluid
 (
     mechMesh,

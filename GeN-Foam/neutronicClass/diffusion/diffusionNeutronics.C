@@ -328,10 +328,10 @@ void Foam::diffusionNeutronics::getFieldsLiquidFuel(
     const compressible::turbulenceModel& turb)
 {
 
-    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel_.primitiveFieldRef());
-    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad_.primitiveFieldRef());
-    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool_.primitiveFieldRef());
-    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool_.primitiveFieldRef());
+    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel_);
+    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad_);
+    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool_);
+    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool_);
     neutroToFluid.mapTgtToSrc( UOrig, plusEqOp<vector>(), U_);
     neutroToFluid.mapTgtToSrc( porosityOrig, plusEqOp<scalar>(), porosity_);
 

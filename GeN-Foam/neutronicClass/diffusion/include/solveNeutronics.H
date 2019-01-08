@@ -2,7 +2,6 @@ Info << "Solving neutronics" << endl ;
 
 xs_.correct(Tfuel_,Tclad_,rhoCool_,TCool_,Disp_);
 #include "setXSFields.H"
-Disp_.correctBoundaryConditions();
 
 const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransport");
 
