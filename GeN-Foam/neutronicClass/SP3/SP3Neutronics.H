@@ -23,7 +23,7 @@ License
     Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
 Class
-    Foam::neutronics::diffusionNeutronics
+    Foam::neutronics::SP3Neutronics
 
 Description
     subclass of neutronics. Created to evaluate pressure drops and
@@ -34,7 +34,7 @@ Description
     flow.
 
 SourceFiles
-    diffusionNeutronics.C
+    SP3Neutronics.C
 
 Reference publications
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
@@ -51,8 +51,8 @@ Author
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef diffusionNeutronics_H
-#define diffusionNeutronics_H
+#ifndef SP3Neutronics_H
+#define SP3Neutronics_H
 
 #include "neutronics.H"
 #include "XS.H"
@@ -63,10 +63,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                          Class diffusionNeutronics Declaration
+                          Class SP3Neutronics Declaration
 \*---------------------------------------------------------------------------*/
 
-class diffusionNeutronics
+class SP3Neutronics
 :
     public neutronics//class inheritance
 {
@@ -81,9 +81,11 @@ protected:
         volScalarField Dalbedo_;
         PtrList<volScalarField> flux_;
         PtrList<volScalarField> fluxStar_;
+        PtrList<volScalarField> fluxStar2_;
         PtrList<volScalarField> prec_;
         volScalarField fluxStarAlbedo_;
         volScalarField defaultFlux_;
+        volScalarField defaultFlux2_;
         volScalarField defaultPrec_;
 
         //Derived fields
@@ -110,25 +112,25 @@ private:
     // Private Member Functions
 
         //- Disallow default bitwise copy construct
-        diffusionNeutronics(const diffusionNeutronics&);
+        SP3Neutronics(const SP3Neutronics&);
 
         //- Disallow default bitwise assignment
-        void operator=(const diffusionNeutronics&);
+        void operator=(const SP3Neutronics&);
 
 
 public:
 
     //- Runtime type information
-        TypeName("diffusionNeutronics");
+        TypeName("SP3Neutronics");
 
 
     // Constructors
 
         //- Construct from mesh, read data from IOdictionaries
-        diffusionNeutronics(fvMesh& mesh);
+        SP3Neutronics(fvMesh& mesh);
 
     //- Destructor
-        virtual ~diffusionNeutronics();
+        virtual ~SP3Neutronics();
 
 
     // Member Functions

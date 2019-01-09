@@ -8,8 +8,11 @@ EXE_INC = \
     -I./fuel \
     -I./neutronicClass \
     -I./neutronicClass/albedoSP3 \
+    -I./neutronicClass/include \
     -I./neutronicClass/diffusion \
     -I./neutronicClass/diffusion/include \
+    -I./neutronicClass/SP3 \
+    -I./neutronicClass/SP3/include \    
     -I./neutronicClass/XS \
     -I./neutronicClass/XS/include \
     -I./thermalMechanics \

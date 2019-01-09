@@ -24,7 +24,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "diffusionNeutronics.H"
+#include "SP3Neutronics.H"
 #include "zeroGradientFvPatchFields.H"
 #include "addToRunTimeSelectionTable.H"
 #include "coordinateSystem.H"
@@ -33,12 +33,12 @@ License
 
 namespace Foam
 {
-    defineTypeNameAndDebug(diffusionNeutronics, 0);
+    defineTypeNameAndDebug(SP3Neutronics, 0);
 
     addToRunTimeSelectionTable
     (
         neutronics,
-        diffusionNeutronics,
+        SP3Neutronics,
         dictionary
     );
 }
@@ -48,12 +48,12 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::diffusionNeutronics::diffusionNeutronics
+Foam::SP3Neutronics::SP3Neutronics
 (
     fvMesh& mesh
 )
 :
-    neutronics(mesh),//diffusionNeutronics is derived from neutronics
+    neutronics(mesh),//SP3Neutronics is derived from neutronics
     xs_(mesh),
     Dalbedo_
     (
@@ -71,6 +71,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
     ),
     flux_(xs_.energyGroups()),
     fluxStar_(xs_.energyGroups()),
+    fluxStar2_(xs_.energyGroups()),
     prec_(xs_.precGroups()),
     fluxStarAlbedo_
     (
@@ -91,6 +92,18 @@ Foam::diffusionNeutronics::diffusionNeutronics
         IOobject
         (
             "defaultFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh
+    ),
+    defaultFlux2_
+    (
+        IOobject
+        (
+            "defaultFlux2",
             mesh.time().timeName(),
             mesh,
             IOobject::MUST_READ,
@@ -278,25 +291,25 @@ Foam::diffusionNeutronics::diffusionNeutronics
     )
 
 {
-    #include "createNeutronicsFields.H"
+    #include "createNeutronicsFieldsSP3.H"
 }
 
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::diffusionNeutronics::~diffusionNeutronics()
+Foam::SP3Neutronics::~SP3Neutronics()
 {}
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::diffusionNeutronics::correct(const label couplingIter, scalar& residual, const bool& liquidFuel ) 
+void Foam::SP3Neutronics::correct(const label couplingIter, scalar& residual, const bool& liquidFuel ) 
 {
-    #include "solveNeutronics.H"
+    #include "solveNeutronicsSP3.H"
 }
 
 
-void Foam::diffusionNeutronics::getFields(
+void Foam::SP3Neutronics::getFields(
     const volScalarField& TfuelOrig, 
     const volScalarField& TcladOrig, 
     const volScalarField& rhoCoolOrig, 
@@ -316,7 +329,7 @@ void Foam::diffusionNeutronics::getFields(
 
 }
 
-void Foam::diffusionNeutronics::getFieldsLiquidFuel(
+void Foam::SP3Neutronics::getFieldsLiquidFuel(
     const volVectorField& UOrig, 
     const volScalarField& porosityOrig, 
     const volScalarField& TfuelOrig, 
@@ -350,7 +363,7 @@ void Foam::diffusionNeutronics::getFieldsLiquidFuel(
 
 }
 
-void Foam::diffusionNeutronics::deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig)
+void Foam::SP3Neutronics::deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig)
 {
 
     Info << "Displace neutronic mesh" << endl;

@@ -19,6 +19,7 @@ porousClass/patchFields/pUDrop/pUDropFvPatchScalarField.C
 neutronicClass/neutronics.C
 neutronicClass/XS/XS.C
 neutronicClass/diffusion/diffusionNeutronics.C
+neutronicClass/SP3/SP3Neutronics.C
 neutronicClass/albedoSP3/albedoSP3FvPatchField.C
 
 GeN-Foam.C
