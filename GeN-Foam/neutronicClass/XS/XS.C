@@ -46,7 +46,7 @@ Foam::XS::XS
     (
         IOobject
         (
-            "nuclearData_",
+            "nuclearData",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
@@ -57,7 +57,7 @@ Foam::XS::XS
     (
         IOobject
         (
-            "nuclearDataRadialExp_",
+            "nuclearDataRadialExp",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
@@ -68,7 +68,7 @@ Foam::XS::XS
     (
         IOobject
         (
-            "nuclearDataAxialExp_",
+            "nuclearDataAxialExp",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
@@ -79,7 +79,7 @@ Foam::XS::XS
     (
         IOobject
         (
-            "nuclearDataFuelTemp_",
+            "nuclearDataFuelTemp",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
@@ -90,7 +90,7 @@ Foam::XS::XS
     (
         IOobject
         (
-            "nuclearDataRhoCool_",
+            "nuclearDataRhoCool",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
@@ -101,7 +101,7 @@ Foam::XS::XS
     (
         IOobject
         (
-            "nuclearDataTCool_",
+            "nuclearDataTCool",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
@@ -112,7 +112,7 @@ Foam::XS::XS
     (
         IOobject
         (
-            "nuclearDataCladExp_",
+            "nuclearDataCladExp",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
