@@ -30,8 +30,8 @@ zones
     {
 	//for structures
 	rho				1000; //density
-	E				1e7;  // Young modulus
-	nu				0.1; // Poisson ratio
+	E				1e9;  // Young modulus
+	nu				0.3; // Poisson ratio
 	C				200; // not used
 	k				5; // not used
 	alpha				1.8e-5; // linear expansion coeff (1/K)
@@ -41,71 +41,71 @@ zones
     }
     outerCore
     {
-	rho				1000;
-	E				1e7;
-	nu				0.1;
-	C				200;
-	k				5;
-	alpha				1.8e-5;
+	rho				1000; //density
+	E				1e9;  // Young modulus
+	nu				0.3; // Poisson ratio
+	C				200; // not used
+	k				5; // not used
+	alpha				1.8e-5; // linear expansion coeff (1/K)
 	TrefFuel			668;
 	alphaFuel			1.1e-5;//1.1
     }
     follower
     {
-	rho				1000;
-	E				1e7;
-	nu				0.1;
-	C				293;
-	k				5;
-	alpha				1.8e-5;
+	rho				1000; //density
+	E				1e9;  // Young modulus
+	nu				0.3; // Poisson ratio
+	C				200; // not used
+	k				5; // not used
+	alpha				1.8e-5; // linear expansion coeff (1/K)
     }
      controlRod
     {
-	rho				1000;
-	E				1e7;
-	nu				0.1;
-	C				200;
-	k				5;
-	alpha				1.8e-5;
+	rho				1000; //density
+	E				1e9;  // Young modulus
+	nu				0.3; // Poisson ratio
+	C				200; // not used
+	k				5; // not used
+	alpha				1.8e-5; // linear expansion coeff (1/K)
 	// for control rods (only if this is a control rod)
 	TrefCR				668;
 	alphaCR				5.4e-5;
     }
     diagrid
     {
-	rho				1000;
-	E				1e9;
-	nu				0.3;
-	C				200;
-	k				5;
-	alpha				1.8e-5;
+	rho				1000; //density
+	E				1e9;  // Young modulus
+	nu				0.3; // Poisson ratio
+	C				200; // not used
+	k				5; // not used
+	alpha				1.8e-5; // linear expansion coeff (1/K)
     }
     radialReflector
     {
-	rho				1000;
-	E				1e9;
-	nu				0.3;
-	C				200;
-	k				5;
-	alpha				1.8e-5;
+	rho				1000; //density
+	E				1e9;  // Young modulus
+	nu				0.3; // Poisson ratio
+	C				200; // not used
+	k				5; // not used
+	alpha				1.8e-5; // linear expansion coeff (1/K)
     }
     rest
     {
-	rho				1000;
-	E				1e7;
-	nu				0.1;
-	C				200;
-	k				5;
-	alpha				1.8e-5;
+	rho				1000; //density
+	E				1e9;  // Young modulus
+	nu				0.3; // Poisson ratio
+	C				200; // not used
+	k				5; // not used
+	alpha				1.8e-5; // linear expansion coeff (1/K)
     }
     softStructure
     {
-	rho				1000;
-	E				1e8;
-	nu				0.1;
-	C				200;
-	k				5;
-	alpha				1.8e-5;
+	rho				1000; //density
+	E				1e9;  // Young modulus
+	nu				0.3; // Poisson ratio
+	C				200; // not used
+	k				5; // not used
+	alpha				1.8e-5; // linear expansion coeff (1/K)
     }
 );
 

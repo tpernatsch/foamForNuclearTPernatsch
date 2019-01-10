@@ -29,8 +29,8 @@ For j In {0 : (innerRows+outerRows+reflectorRows-1)}
       Y = Y0;
       Call insertLowFGP;      
     EndFor
-  EndIf
   EndFor
+  EndIf
 EndFor
 
 

@@ -19,8 +19,8 @@ solvers
 {
     "prec.*"
     {
-        solver          PCG;
-        preconditioner  DIC;
+        solver          PBiCG;//PCG;
+        preconditioner  DILU;//DIC;
         tolerance       1e-6;
         relTol          1e-3;
     }
@@ -32,7 +32,8 @@ solvers
         preconditioner  DIC;
         tolerance       1e-6;
         relTol          1e-3;
-    /* 
+
+     /*
         solver          GAMG;
         tolerance       1e-6;
         relTol          0.1;

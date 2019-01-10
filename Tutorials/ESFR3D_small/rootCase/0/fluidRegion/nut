@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  4.x                                   |
+|  \\    /   O peration     | Version:  5.x                                   |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -10,7 +10,7 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volScalarField;
-    location    "0";
+    location    "0/fluidRegion";
     object      nut;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -24,32 +24,25 @@ boundaryField
     top
     {
         type            calculated;
-        value           $internalField;
+        value           uniform 0;
     }
     bottom
     {
         type            calculated;
-        value           $internalField;
+        value           uniform 0;
     }
     walls
     {
         type            zeroGradient;
-        value           $internalField;
     }
     baffle0
     {
         type            zeroGradient;
-        value           $internalField;
     }
     baffle1
     {
         type            zeroGradient;
-        value           $internalField;
-
-//        type            nutkWallFunction;
-//        value           $internalField;
     }
-
 }
 
 

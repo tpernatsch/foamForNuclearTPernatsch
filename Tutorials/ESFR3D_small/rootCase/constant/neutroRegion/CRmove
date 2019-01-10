@@ -17,9 +17,9 @@ zones
  ( 
 controlRod
 {
- startTime 200.5;
- endTime  201.7;
- speed	0.0; // positive entering the core
+ startTime 1001;
+ endTime  1003;
+ speed	0; // positive entering the core
  initialDistanceFromMeshCR 0.0; // distance from the position defined in the mesh (postive towards the core) 
  followerName	follower; 
 } 

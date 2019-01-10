@@ -26,6 +26,7 @@ FoamFile
  rhoCoolPerturbed 5.000000e+02 ; 
 zones 
  ( 
+
 diagrid 
 { 
  IV nonuniform List<scalar> 1 (3.096780e-06  );

@@ -36,7 +36,7 @@ zones
 	darcyExpTurb 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of turbulent flow)
 	darcyExpLam 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of laminar flow)
 	hydraulicDiameter   	0.00365; // characteristic lenght
-	hydraulicDiameterStructure	0.2; // characteristic lenght of the whole structure.
+	hydraulicDiameterStructure	5; // characteristic lenght of the whole structure.
 	nusseltConstTurb1   	(0.0185 0.0185 0.0185); // A in A*Re^b*Pr^c + D for Nusslet (turbulent case)
 	nusseltConstLam1	(0 0 0); // A in A*Re^b*Pr^c + D for Nusslet (laminar case)
 	nusseltConstTurb2   	(4.82 4.82 4.82) ; // D in A*Re^b*Pr^c + D for Nusslet (turbulent case)
@@ -57,7 +57,7 @@ zones
 	darcyExpTurb 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of turbulent flow)
 	darcyExpLam 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of laminar flow)
 	hydraulicDiameter   	0.00365; // characteristic lenght
-	hydraulicDiameterStructure	0.2; // characteristic lenght of the whole structure.
+	hydraulicDiameterStructure	5; // characteristic lenght of the whole structure.
 	nusseltConstTurb1   	(0.0185 0.0185 0.0185); // A in A*Re^b*Pr^c + D for Nusslet (turbulent case)
 	nusseltConstLam1	(0 0 0); // A in A*Re^b*Pr^c + D for Nusslet (laminar case)
 	nusseltConstTurb2   	(4.82 4.82 4.82) ; // D in A*Re^b*Pr^c + D for Nusslet (turbulent case)
@@ -78,7 +78,7 @@ zones
 	darcyExpTurb 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of turbulent flow)
 	darcyExpLam 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of laminar flow)
 	hydraulicDiameter   	0.00365; // characteristic lenght
-	hydraulicDiameterStructure	0.2; // characteristic lenght of the whole structure.
+	hydraulicDiameterStructure	5; // characteristic lenght of the whole structure.
 	nusseltConstTurb1   	(0.0185 0.0185 0.0185); // A in A*Re^b*Pr^c + D for Nusslet (turbulent case)
 	nusseltConstLam1	(0 0 0); // A in A*Re^b*Pr^c + D for Nusslet (laminar case)
 	nusseltConstTurb2   	(4.82 4.82 4.82) ; // D in A*Re^b*Pr^c + D for Nusslet (turbulent case)
@@ -100,7 +100,7 @@ zones
 	darcyExpTurb 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of turbulent flow)
 	darcyExpLam 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of laminar flow)
 	hydraulicDiameter   	0.00365; // characteristic lenght
-	hydraulicDiameterStructure	0.2; // characteristic lenght of the whole structure.
+	hydraulicDiameterStructure	5; // characteristic lenght of the whole structure.
 	nusseltConstTurb1   	(0.0185 0.0185 0.0185); // A in A*Re^b*Pr^c + D for Nusslet (turbulent case)
 	nusseltConstLam1	(0 0 0); // A in A*Re^b*Pr^c + D for Nusslet (laminar case)
 	nusseltConstTurb2   	(4.82 4.82 4.82) ; // D in A*Re^b*Pr^c + D for Nusslet (turbulent case)
@@ -122,7 +122,7 @@ zones
 	darcyExpTurb 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of turbulent flow)
 	darcyExpLam 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of laminar flow)
 	hydraulicDiameter   	0.00365; // characteristic lenght
-	hydraulicDiameterStructure	0.2; // characteristic lenght of the whole structure.
+	hydraulicDiameterStructure	5; // characteristic lenght of the whole structure.
 	nusseltConstTurb1   	(0.0185 0.0185 0.0185); // A in A*Re^b*Pr^c + D for Nusslet (turbulent case)
 	nusseltConstLam1	(0 0 0); // A in A*Re^b*Pr^c + D for Nusslet (laminar case)
 	nusseltConstTurb2   	(4.82 4.82 4.82) ; // D in A*Re^b*Pr^c + D for Nusslet (turbulent case)
@@ -163,7 +163,7 @@ zones
 	darcyExpTurb 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of turbulent flow)
 	darcyExpLam 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of laminar flow)
 	hydraulicDiameter   	0.00365; // characteristic lenght
-	hydraulicDiameterStructure	0.2; // characteristic lenght of the whole structure.
+	hydraulicDiameterStructure	5; // characteristic lenght of the whole structure.
 	nusseltConstTurb1   	(0.0185 0.0185 0.0185); // A in A*Re^b*Pr^c + D for Nusslet (turbulent case)
 	nusseltConstLam1	(0 0 0); // A in A*Re^b*Pr^c + D for Nusslet (laminar case)
 	nusseltConstTurb2   	(4.82 4.82 4.82) ; // D in A*Re^b*Pr^c + D for Nusslet (turbulent case)
@@ -184,7 +184,7 @@ zones
 	darcyExpTurb 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of turbulent flow)
 	darcyExpLam 		(-0.25 -0.25 -0.25) ; // b in A*Re^b for Darcy friction factor (in case of laminar flow)
 	hydraulicDiameter   	0.00365; // characteristic lenght
-	hydraulicDiameterStructure	0.2; // characteristic lenght of the whole structure.
+	hydraulicDiameterStructure	5; // characteristic lenght of the whole structure.
 	nusseltConstTurb1   	(0.0185 0.0185 0.0185); // A in A*Re^b*Pr^c + D for Nusslet (turbulent case)
 	nusseltConstLam1	(0 0 0); // A in A*Re^b*Pr^c + D for Nusslet (laminar case)
 	nusseltConstTurb2   	(4.82 4.82 4.82) ; // D in A*Re^b*Pr^c + D for Nusslet (turbulent case)
@@ -206,7 +206,6 @@ zones
 	voidFraction      	0.2; // fraction of the volume occupied by the fluid
 	volumetricAreaSS      	0.0; // wet area diveded by total volume for sub-scale structures (equivalent eg to the area of heat exchange between fluid and sub-scale structure)
 	volumetricAreaFuel     	0.0; // wet area diveded by total volume for fuel (equivalent eg to the area of heat exchange between fluid and fuel)
-	volumetricAreaHX     	0.0; // wet area diveded by total volume for fuel for the heate exchanger
 	hydraulicDiameter   	0.0032; // characteristic lenght
 	hydraulicDiameterStructure	1; // characteristic lenght of the whole structure. Used to provide a viscosity that stabilze the coarse-mesh soultion
 	localZaxis   		(0 0 1); // z axis for the local coordinate system

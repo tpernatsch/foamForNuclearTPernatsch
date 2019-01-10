@@ -12,9 +12,7 @@ forAll(flux_,energyI)
     #include "calcScatteringSource.H"
     neutroSource_ -= nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_);
 
-    fvMatrixExt<scalar> neutroEq = neutroEqList[energyI];
-
-    neutroEq = neutroEq
+    fvMatrixExt<scalar> neutroEq  = neutroEqList[energyI]
       - neutroSource_*(1.0-BetaTot)*chiPrompt[energyI]/keff_
       - delayedNeutroSource_*chiDelayed[energyI]
       - scatteringSourceExtra_ ;
