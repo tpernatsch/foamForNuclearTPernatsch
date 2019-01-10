@@ -12,7 +12,7 @@ fluxOctave << "flux = [" << endl;
 */
 OFstream fluxDat( runTime.path()/"flux.dat" );
 fluxDat << "time";
-forAll(flux, energyI)
+forAll(neutronics.fluxes(), energyI)
 {
     fluxDat << ";" << "flux" << energyI;
 };
@@ -24,7 +24,7 @@ precsOctave << "precs = [" << endl;
 */
 OFstream precsDat( runTime.path()/"precs.dat" );
 precsDat << "time";
-forAll(prec, precI)
+forAll(neutronics.precursors(), precI)
 {
     precsDat << ";" << "prec" << precI;
 }

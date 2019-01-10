@@ -158,6 +158,11 @@ public:
             return eigenvalueNeutronics_;
         }    	
 
+        //- Return one group flux
+        inline const scalar& keff() const
+        {
+            return keff_;
+        }
 
         //- Return externalVolHeatSource
         inline const volScalarField& volFuelPower() const
@@ -170,6 +175,15 @@ public:
         {
             return Disp_;
         }    	
+
+        //- Return fluxes
+        virtual inline const PtrList<volScalarField> fluxes() const = 0;
+
+        //- Return precursors
+        virtual inline const PtrList<volScalarField> precursors() const = 0;
+
+        //- Return one group flux
+        virtual inline const volScalarField& Flux() const = 0;
 
         //- Return power
         virtual scalar power() const = 0;  

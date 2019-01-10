@@ -136,19 +136,19 @@ public:
         // Access
 
             //- Return fluxes
-            inline const PtrList<volScalarField> fluxes() const
+            virtual inline const PtrList<volScalarField> fluxes() const
             {
                 return flux_;
             }
 
             //- Return precursors
-            inline const PtrList<volScalarField> precursors() const
+            virtual inline const PtrList<volScalarField> precursors() const
             {
                 return prec_;
             }
 
             //- Return one group flux
-            inline const volScalarField& Flux() const
+            virtual inline const volScalarField& Flux() const
             {
                 return oneGroupFlux_;
             }

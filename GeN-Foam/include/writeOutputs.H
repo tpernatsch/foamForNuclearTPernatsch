@@ -25,15 +25,15 @@ License
 
 Info<< "Writing output files\n" << endl;
 
-powerDat << runTime.time().value() << ";" << pTot << endl;
+powerDat << runTime.time().value() << ";" << neutronics.power() << endl;
 
 // Write flux optputs
 
 fluxDat << runTime.time().value();
 
-forAll(flux, energyI)
+forAll(neutronics.fluxes(), energyI)
 {
-    fluxDat << ";" << fvc::domainIntegrate(flux[energyI]).value();
+    fluxDat << ";" << fvc::domainIntegrate(neutronics.fluxes()[energyI]).value();
 }
 
 fluxDat << endl;
@@ -42,16 +42,16 @@ fluxDat << endl;
 
 precsDat << runTime.time().value();
 
-forAll(prec, precI)
+forAll(neutronics.precursors(), precI)
 {
-    precsDat << ";" << fvc::domainIntegrate(prec[precI]).value();
+    precsDat << ";" << fvc::domainIntegrate(neutronics.precursors()[precI]).value();
 }
 
 precsDat << endl;
 
 // Write keff
 
-k_effDat << runTime.time().value() << ";" << keff << endl ;
+k_effDat << runTime.time().value() << ";" << neutronics.keff() << endl ;
 
 // Write max, min and av fuel and cladding temperature
 
@@ -97,6 +97,6 @@ TMaxCladDat << runTime.time().value() << ";" <<  TMaxClad << endl;
 
 TminDat << runTime.time().value() << ";" << Tmin << endl;
 
-totalDisplacedCellsVolumeDat << runTime.time().value() << ";" << (fvc::domainIntegrate((sigmaPow[0]/(sigmaPow[0]+dimensionedScalar("",dimensionSet(1,1,-2,0,0,0,0),SMALL))))).value() << endl;
+totalDisplacedCellsVolumeDat << runTime.time().value() << ";" << (fvc::domainIntegrate((neutronics.fluxes()[0]/(neutronics.fluxes()[0]+dimensionedScalar("",dimensionSet(0,-2,-1,0,0,0,0),SMALL))))).value() << endl;
 }
 
