@@ -30,91 +30,70 @@ Description
     Solves for the displacement vector field D, also generating the
     stress tensor field sigma.
 
-    Derived from solidDisplacementFoam, modified for multi-zone
+    Derived from solidDisp_lacementFoam, modified for mu_lti-zone
     applications through use of a dictionary specifying the properties in each
     mesh region
 
-Reference publication (for the modification of solidDisplacementFoam)
+Reference publication (for the modification of solidDisp_lacementFoam)
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    "GeN-Foam: a novel OpenFOAM® based mu_lti-physics solver for 2D/3D transient
     analysis of nuclear reactors", Nuclear Engineering and Design, 2015
 
-Author (for the modification of solidDisplacementFoam)
+Author (for the modification of solidDisp_lacementFoam)
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
 
     Info<< "\nCalculating displacement field\n" << endl;
 
-        int iCorrMech = 0;
+        int iCorr = 0;
         scalar initialResidual = 0;
 
         do
         {
-            Info << "ThermoMechanical iteration no:  " << iCorrMech << nl << endl;
-            {
-                //volScalarField& Tmech = Tptr();
-
-                Tmech *= 0.0;
-                TavFuelMech *= 0.0;
-
-                TMToFluid.mapTgtToSrc(Tstructures, plusEqOp<scalar>(), Tmech);
-                if(linkedFuel)
-                {
-                    TMToFluid.mapTgtToSrc(TavClad, plusEqOp<scalar>(), TavFuelMech);
-                }
-                else
-                {
-                    TMToFluid.mapTgtToSrc(TavFuel, plusEqOp<scalar>(), TavFuelMech);
-                }
-
-                Tmech.correctBoundaryConditions();
-                TavFuelMech.correctBoundaryConditions();
-            }
-
+            Info << "ThermoMechanical iteration no:  " << iCorr << endl;
 
             {
                 fvVectorMatrix DEqn
                 (
-                    fvm::d2dt2(Disp)
+                    fvm::d2dt2(Disp_)
                  ==
-                    fvm::laplacian(2*muMech + lambdaMech, Disp, "laplacian(DD,D)")
-                  + divSigmaExp
+                    fvm::laplacian(2*mu_ + lambda_, Disp_, "laplacian(DD,D)")
+                  + divSigmaExp_
 
                 );
 
                 {
-                    //const volScalarField& Tmech = Tptr();
-                    DEqn += fvc::grad(threeKalpha*(Tmech-TrefStructures));
+                    DEqn += fvc::grad(threeKalpha_*(T_-TrefStructures_));
                 }
 
                 initialResidual = DEqn.solve().max().initialResidual();
 
-                if (!compactNormalStress)
+                if (!compactNormalStress_)
                 {
-                    divSigmaExp = fvc::div(DEqn.flux());
+                    divSigmaExp_ = fvc::div(DEqn.flux());
                 }
             }
 
             {
-                volTensorField gradD(fvc::grad(Disp));
-                sigmaD = muMech*twoSymm(gradD) + (lambdaMech*I)*tr(gradD);
+                volTensorField gradD(fvc::grad(Disp_));
+                sigmaD_ = mu_*twoSymm(gradD) + (lambda_*I)*tr(gradD);
 
-                if (compactNormalStress)
+                if (compactNormalStress_)
                 {
-                    divSigmaExp = fvc::div
+                    divSigmaExp_ = fvc::div
                     (
-                        sigmaD - (2*muMech + lambdaMech)*gradD,
+                        sigmaD_ - (2*mu_ + lambda_)*gradD,
                         "div(sigmaD)"
                     );
                 }
                 else
                 {
-                    divSigmaExp += fvc::div(sigmaD);
+                    divSigmaExp_ += fvc::div(sigmaD_);
                 }
             }
 
-        } while (initialResidual > convergenceTolerance && ++iCorrMech < nCorrMech);
+        } while (initialResidual > convergenceTolerance_ && ++iCorr < nCorr_);
 
         residual = max(residual,initialResidual);
 
@@ -123,35 +102,33 @@ Author (for the modification of solidDisplacementFoam)
         // calculating axial fuel expansion
         {
 
-            surfaceScalarField faceArea(fuelOrientation & mechMesh.Sf());
+            surfaceScalarField faceArea(fuelOrientation_ & mesh_.Sf());
 
             fvScalarMatrix fuelDispEqn
             (
-                fvm::div(faceArea,fuelDisp,"div(fuelDisp)")
+                fvm::div(faceArea,fuelDisp_,"div(fuelDisp)")
              ==
-                alphaFuel*(TavFuelMech-TrefFuel)
+                alphaFuel_*(TavFuel_-TrefFuel_)
             );
 
-            vector CROrientation = -fuelOrientation;
-            surfaceScalarField faceAreaCR(CROrientation & mechMesh.Sf());
+            vector CROrientation = -fuelOrientation_;
+            surfaceScalarField faceAreaCR(CROrientation & mesh_.Sf());
 
             fvScalarMatrix CRDispEqn
             (
-                fvm::div(faceAreaCR,CRDisp,"div(CRDisp)")
+                fvm::div(faceAreaCR,CRDisp_,"div(CRDisp)")
              ==
-                -alphaCR*(Tmech-TrefCR)
+                -alphaCR_*(T_-TrefCR_)
             );
 
             fuelDispEqn.solve();
             CRDispEqn.solve();
 
-            fuelDispVector = (fuelDisp+CRDisp)*fuelOrientation;
+            fuelDispVector_ = (fuelDisp_+CRDisp_)*fuelOrientation_;
 
-            meshDispOld = meshDisp;
+            meshDisp_ = (Disp_-((Disp_ & fuelOrientation_) * fuelOrientation_)) + fuelDispVector_ ;//remove any axial variation
 
-            meshDisp = (Disp-((Disp & fuelOrientation) * fuelOrientation)) + fuelDispVector ;//remove any axial variation
-
-            meshDisp.correctBoundaryConditions();
+            meshDisp_.correctBoundaryConditions();
 
         }
 // ************************************************************************* //

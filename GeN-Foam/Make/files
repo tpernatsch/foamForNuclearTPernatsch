@@ -3,8 +3,6 @@ porousKEpsilon/makeModel.C
 
 fluid/compressibleCourantNo.C
 
-thermalMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
-
 fuel/IOFieldFields.C
 fuel/subscaleFuel.C
 fuel/constSubscaleFuel.C
@@ -21,6 +19,11 @@ neutronicClass/XS/XS.C
 neutronicClass/diffusion/diffusionNeutronics.C
 neutronicClass/SP3/SP3Neutronics.C
 neutronicClass/albedoSP3/albedoSP3FvPatchField.C
+
+thermoMechanicClass/thermoMechanics.C
+thermoMechanicClass/linearElastic/linearElasticThermoMechanics.C
+thermoMechanicClass/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+
 
 GeN-Foam.C
 

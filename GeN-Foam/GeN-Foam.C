@@ -66,6 +66,7 @@ Author
 #include "fvOptions.H"
 
 #include "neutronics.H"
+#include "thermoMechanics.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -98,7 +99,7 @@ int main(int argc, char *argv[])
 
         #include "readTimeControls.H"
         #include "readPIMPLEControls.H"
-        #include "readSolidDisplacementFoamControls.H"
+        //#include "readSolidDisplacementFoamControls.H"
         #include "compressibleCoNo.H"
 
         if((runTime.timeIndex()-runTime.startTimeIndex())>0)

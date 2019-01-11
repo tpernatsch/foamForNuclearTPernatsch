@@ -1,29 +1,27 @@
-if (runTime.outputTime())
+if (mesh_.time().outputTime())
 {
     volSymmTensorField sigma
     (
         IOobject
         (
             "sigma",
-            runTime.timeName(),
-            mechMesh,
+            mesh_.time().timeName(),
+            mesh_,
             IOobject::NO_READ,
             IOobject::AUTO_WRITE
         ),
-        rhoMech*sigmaD
+        rho_*sigmaD_
     );
 
-
-    //const volScalarField& Tmech = Tptr();
-    sigma = sigma - I*(rhoMech*threeKalpha*Tmech);
+    sigma = sigma - I*(rho_*threeKalpha_*T_);
 
     volScalarField sigmaEq
     (
         IOobject
         (
             "sigmaEq",
-            runTime.timeName(),
-            mechMesh,
+            mesh_.time().timeName(),
+            mesh_,
             IOobject::NO_READ,
             IOobject::AUTO_WRITE
         ),

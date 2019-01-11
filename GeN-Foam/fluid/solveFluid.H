@@ -30,9 +30,10 @@ if(finalIter)
         }
         if(solveThermalMechanics)
         {
-            #include "solveThermalMechanics.H"
-            neutronics.deformMesh(TMToNeutro,meshDisp); 
-
+            //#include "solveThermalMechanics.H"
+            thermoMechanics.getFields(thermo.T(), TavFuel, TavClad, TMToFluid);
+            thermoMechanics.correct(residual);
+            neutronics.deformMesh(TMToNeutro,thermoMechanics.meshDisp()); 
         }
                 
         if(solveNeutronics)

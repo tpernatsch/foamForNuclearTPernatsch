@@ -21,14 +21,24 @@ const bool compr =
 // then properties are read according to the flags
 //#include "readNeutronicsProperties.H"
 //#include "readNuclearDataExt.H"
-#include "readSolidDisplacementFoamControls.H"
-#include "readThermoMechanicalProperties.H"
+//#include "readSolidDisplacementFoamControls.H"
+//#include "readThermoMechanicalProperties.H"
 
 // and finally the fields are created
 #include "createFluidFields.H"
 //#include "createNeutroFields.H"
-#include "createThermoMechanicalFields.H"
+//#include "createThermoMechanicalFields.H"
 
+
+
+autoPtr<thermoMechanics> pthermoMechanics
+(
+    thermoMechanics::New
+    (
+        mechMesh
+    )
+);
+thermoMechanics& thermoMechanics = pthermoMechanics();
 
 
 autoPtr<neutronics> pneutronics

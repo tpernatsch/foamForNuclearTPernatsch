@@ -15,8 +15,11 @@ EXE_INC = \
     -I./neutronicClass/SP3/include \    
     -I./neutronicClass/XS \
     -I./neutronicClass/XS/include \
-    -I./thermalMechanics \
-    -I./thermalMechanics/tractionDisplacement/lnInclude \
+    -I./thermoMechanicClass \
+    -I./thermoMechanicClass/include \
+    -I./thermoMechanicClass/linearElastic \
+    -I./thermoMechanicClass/linearElastic/include \
+    -I./thermoMechanicClass/tractionDisplacement/lnInclude \
     -I./include \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \

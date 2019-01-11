@@ -151,13 +151,13 @@ void tractionDisplacementFvPatchVectorField::updateCoeffs()
 
 
     const fvPatchField<scalar>& rho =
-        patch().lookupPatchField<volScalarField, scalar>("rhoMech");
+        patch().lookupPatchField<volScalarField, scalar>("rho");
 
     const fvPatchField<scalar>& rhoE =
         patch().lookupPatchField<volScalarField, scalar>("E");
 
     const fvPatchField<scalar>& nu =
-        patch().lookupPatchField<volScalarField, scalar>("nuMech");
+        patch().lookupPatchField<volScalarField, scalar>("nu");
 
     scalarField E(rhoE/rho);
     scalarField mu(E/(2.0*(1.0 + nu)));
@@ -194,7 +194,7 @@ void tractionDisplacementFvPatchVectorField::updateCoeffs()
             patch().lookupPatchField<volScalarField, scalar>("threeKalpha");
 
         const fvPatchField<scalar>& Tmech =
-            patch().lookupPatchField<volScalarField, scalar>("Tmech");
+            patch().lookupPatchField<volScalarField, scalar>("T");
 
 		dimensionedScalar TrefStructure("",dimensionSet(0,0,0,1,0,0,0),thermoMechanicalProperties.lookup("TrefStructure")); //modified
 		//fvPatchField<scalar> TrefStructurePatch =

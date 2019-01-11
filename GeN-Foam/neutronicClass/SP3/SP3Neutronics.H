@@ -26,12 +26,7 @@ Class
     Foam::neutronics::SP3Neutronics
 
 Description
-    subclass of neutronics. Created to evaluate pressure drops and
-    heat transfer in a porous medium using available correlations.
-    Different correlations can be used for three principal directions
-    of a local coordinate system defined by the user. The possibility
-    also exists to use different correlations for laminar and turbulent
-    flow.
+    subclass for SP3 neutronics. 
 
 SourceFiles
     SP3Neutronics.C
