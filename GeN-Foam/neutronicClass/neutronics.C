@@ -156,11 +156,11 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-	bool Foam::neutronics::writeData(Ostream& os) const
-	{
+bool Foam::neutronics::writeData(Ostream& os) const
+{
 
-	    return os.good();
-	}
+    return os.good();
+}
 
 
 
