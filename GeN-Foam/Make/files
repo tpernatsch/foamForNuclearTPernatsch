@@ -3,9 +3,9 @@ porousKEpsilon/makeModel.C
 
 fluid/compressibleCourantNo.C
 
-fuel/IOFieldFields.C
-fuel/subscaleFuel.C
-fuel/constSubscaleFuel.C
+fuelClass/IOFieldFields.C
+fuelClass/subscaleFuel.C
+fuelClass/constSubscaleFuel.C
 
 porousClass/porousMedium.C
 porousClass/correlationPorousMedium.C

@@ -5,7 +5,7 @@ EXE_INC = \
     -I./porousKEpsilon/lnInclude \
     -I./porousKEpsilon/porousKEpsilon \
     -I./porousClass \
-    -I./fuel \
+    -I./fuelClass \
     -I./neutronicClass \
     -I./neutronicClass/albedoSP3 \
     -I./neutronicClass/include \
