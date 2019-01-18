@@ -1,27 +1,33 @@
 
 EXE_INC = \
-    -I./fluid \
-    -I./porousKEpsilon \
-    -I./porousKEpsilon/lnInclude \
-    -I./porousKEpsilon/porousKEpsilon \
-    -I./porousClass \
-    -I./fuelClass \
-    -I./neutronicClass \
-    -I./neutronicClass/albedoSP3 \
-    -I./neutronicClass/include \
-    -I./neutronicClass/diffusion \
-    -I./neutronicClass/diffusion/include \
-    -I./neutronicClass/SP3 \
-    -I./neutronicClass/SP3/include \ 
-    -I./neutronicClass/adjointDiffusion \   
-    -I./neutronicClass/adjointDiffusion/include \  
-    -I./neutronicClass/XS \
-    -I./neutronicClass/XS/include \
-    -I./thermoMechanicClass \
-    -I./thermoMechanicClass/include \
-    -I./thermoMechanicClass/linearElastic \
-    -I./thermoMechanicClass/linearElastic/include \
-    -I./thermoMechanicClass/tractionDisplacement/lnInclude \
+    -I./main \
+    -I./main/include \
+    -I./classes/porousKEpsilon \
+    -I./classes/porousKEpsilon/lnInclude \
+    -I./classes/porousKEpsilon/porousKEpsilon \
+    -I./classes/porousClass \
+    -I./classes/porousClass/correlationPorousMedium \
+    -I./classes/porousClass/correlationPorousMedium/byZoneCorrelationPorousMedium \
+    -I./classes/porousClass/correlationPorousMedium/byZoneSodiumCorrelationPorousMedium \
+    -I./classes/fuelClass \
+    -I./classes/fuelClass/include \
+    -I./classes/fuelClass/constSubscaleFuel \
+    -I./classes/neutronicClass \
+    -I./classes/neutronicClass/albedoSP3 \
+    -I./classes/neutronicClass/include \
+    -I./classes/neutronicClass/diffusion \
+    -I./classes/neutronicClass/diffusion/include \
+    -I./classes/neutronicClass/SP3 \
+    -I./classes/neutronicClass/SP3/include \
+    -I./classes/neutronicClass/adjointDiffusion \
+    -I./classes/neutronicClass/adjointDiffusion/include \
+    -I./classes/neutronicClass/XS \
+    -I./classes/neutronicClass/XS/include \
+    -I./classes/thermoMechanicClass \
+    -I./classes/thermoMechanicClass/include \
+    -I./classes/thermoMechanicClass/linearElastic \
+    -I./classes/thermoMechanicClass/linearElastic/include \
+    -I./classes/thermoMechanicClass/tractionDisplacement/lnInclude \
     -I./include \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
