@@ -50,6 +50,11 @@ if(finalIter)
 }
 else
 {
+    if(solveFluidMechanics)//first pressure corrector before energy to avoid that non-continuity of mass generate spurious heat sources 
+    {                       //(can be a probloem with large time steps)
+        #include "pEqn.H"
+    }
+            
     scalar residual = 0.0;
     if(solveEnergy)
     {
@@ -58,7 +63,7 @@ else
 }
 if(solveFluidMechanics)
 {
-    for (int corr=0; corr<nCorr; corr++)
+    for (int corr=1; corr<nCorr; corr++)//start from 1 because first corrector done above
     {
         #include "pEqn.H"
     }
