@@ -74,7 +74,7 @@ Foam::thermoMechanics::thermoMechanics
         zeroGradientFvPatchScalarField::typeName
     )
 {
-Info << "here" << endl;
+
 
 }
 

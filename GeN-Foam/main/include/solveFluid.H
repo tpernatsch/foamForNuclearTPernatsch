@@ -52,6 +52,7 @@ else
 {
     if(solveFluidMechanics)//first pressure corrector before energy to avoid that non-continuity of mass generate spurious heat sources 
     {                       //(can be a probloem with large time steps)
+        int corr = 0;
         #include "pEqn.H"
     }
             

@@ -40,7 +40,7 @@ meshToMesh TMToFluid
 (
     mechMesh,
     fluidMesh,
-    Foam::meshToMesh::interpolationMethod(2),
+    Foam::meshToMesh::interpolationMethod(1),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );

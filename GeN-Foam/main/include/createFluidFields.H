@@ -294,21 +294,6 @@ volScalarField Tstructures
     thermo.T()
 );
 
-//displacement field for the mesh (should come from mechanical solver)
-volVectorField DFluid
-(
-    IOobject
-    (
-        "DFluid",
-        runTime.timeName(),
-        fluidMesh,
-        IOobject::READ_IF_PRESENT,
-        IOobject::AUTO_WRITE
-    ),
-    fluidMesh,
-    dimensionedVector("d_zero", dimensionSet(0,1,0,0,0,0,0), vector(0,0,0)),
-    zeroGradientFvPatchScalarField::typeName
-);
 
 Info<< "Reading main fluid classes \n" << endl;
 
