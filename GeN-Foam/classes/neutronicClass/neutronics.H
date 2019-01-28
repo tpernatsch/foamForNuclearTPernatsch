@@ -205,10 +205,10 @@ public:
             const volScalarField& TfuelOrig, 
             const volScalarField& TcladOrig, 
             const volScalarField& rhoCoolOrig, 
-            const volScalarField& TCoolOrig, 
-            const meshToMesh& neutroToFluid,
-            const rhoThermo& thermo,
-            const compressible::turbulenceModel& turb) = 0;  
+            const volScalarField& TCoolOrig,
+            const volScalarField& muOrig, 
+            const volScalarField& alphatOrig, 
+            const meshToMesh& neutroToFluid) = 0; 
 
         //- Deform mesh
         virtual void deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig) = 0; 

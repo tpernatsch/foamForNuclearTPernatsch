@@ -39,8 +39,8 @@ meshToMesh TMToNeutro
 meshToMesh TMToFluid
 (
     mechMesh,
-    fluidMesh,
-    Foam::meshToMesh::interpolationMethod(1),
+    fluidMeshNB,
+    Foam::meshToMesh::interpolationMethod(2),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
@@ -48,7 +48,7 @@ meshToMesh TMToFluid
 meshToMesh neutroToFluid
 (
     neutroMesh,
-    fluidMesh,
+    fluidMeshNB,
     Foam::meshToMesh::interpolationMethod(2),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false

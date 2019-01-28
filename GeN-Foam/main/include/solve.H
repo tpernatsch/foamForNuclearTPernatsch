@@ -28,17 +28,17 @@ if(finalIter)
         {
             #include "EEqn.H"
         }
+        #include "transferFieldsNB.H"
         if(solveThermalMechanics)
         {
-            //#include "solveThermalMechanics.H"
-            thermoMechanics.getFields(thermo.T(), TavFuel, TavClad, TMToFluid);
+            thermoMechanics.getFields(TstructuresNB, TavFuelNB, TavCladNB, TMToFluid);
             thermoMechanics.correct(residual);
             neutronics.deformMesh(TMToNeutro,thermoMechanics.meshDisp()); 
         }
                 
         if(solveNeutronics)
         {
-            neutronics.getFieldsLiquidFuel(U, porosity, TavFuel, TavClad, thermo.rho()*rhok, thermo.T(), neutroToFluid, thermo, turb);
+            neutronics.getFieldsLiquidFuel(UNB, porosityNB, TavFuelNB, TavCladNB, rhoNB*rhokNB, TNB, muNB, alphatNB,  neutroToFluid);
             neutronics.correct(couplingIter, residual, liquidFuel);
             volFuelPower *= 0.0;
             fluidToNeutro.mapTgtToSrc(neutronics.volFuelPower(), plusEqOp<scalar>(), volFuelPower.primitiveFieldRef());

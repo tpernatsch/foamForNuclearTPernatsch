@@ -68,6 +68,9 @@ Author
 #include "neutronics.H"
 #include "thermoMechanics.H"
 
+#include "mergeOrSplitBaffles.H"
+
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
@@ -136,7 +139,7 @@ int main(int argc, char *argv[])
 
             #include "readFluidMultiRegionResidualControls.H"
 
-            #include "solveFluid.H"
+            #include "solve.H"
 
             #include "residualControlsFluid.H"
 

@@ -339,10 +339,11 @@ void Foam::adjointDiffusionNeutronics::getFieldsLiquidFuel(
     const volScalarField& TfuelOrig, 
     const volScalarField& TcladOrig, 
     const volScalarField& rhoCoolOrig, 
-    const volScalarField& TCoolOrig, 
-    const meshToMesh& neutroToFluid,
-    const rhoThermo& thermo,
-    const compressible::turbulenceModel& turb)
+    const volScalarField& TCoolOrig,
+    const volScalarField& muOrig, 
+    const volScalarField& alphatOrig, 
+    const meshToMesh& neutroToFluid
+    )
 {
 
     neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel_);
@@ -361,7 +362,7 @@ void Foam::adjointDiffusionNeutronics::getFieldsLiquidFuel(
 
     phi_ = fvc::flux(U_);
 
-    volScalarField diffCoeffOrig = turb.alphat()/thermo.rho()+thermo.mu()/thermo.rho()/xs_.ScNo();// (alphaEff=nu/Pr+alphat)
+    volScalarField diffCoeffOrig = alphatOrig/rhoCoolOrig+muOrig/rhoCoolOrig/xs_.ScNo();// (alphaEff=nu/Pr+alphat)
     neutroToFluid.mapTgtToSrc( diffCoeffOrig , plusEqOp<scalar>(), diffCoeffPrec_);//.primitiveFieldRef()
     diffCoeffPrec_.correctBoundaryConditions();     
 
@@ -388,6 +389,7 @@ void Foam::adjointDiffusionNeutronics::deformMesh(const meshToMesh& TMToNeutro,c
 
     mesh_.movePoints(displacedPoints);
 
+    Info << "done" << endl;
 }
 // ************************************************************************* //
 

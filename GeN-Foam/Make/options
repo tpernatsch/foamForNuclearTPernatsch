@@ -40,7 +40,9 @@ EXE_INC = \
     -I$(LIB_SRC)/thermophysicalModels/solidThermo/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/solidSpecie/lnInclude \
     -I$(LIB_SRC)/regionModels/regionModel/lnInclude \
-    -I$(LIB_SRC)/ODE/lnInclude
+    -I$(LIB_SRC)/ODE/lnInclude \
+    -I$(LIB_SRC)/parallel/reconstruct/reconstruct/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude
 
 EXE_LIBS = \
     -lcompressibleTransportModels \
@@ -56,5 +58,8 @@ EXE_LIBS = \
     -lregionModels \
     -lsampling \
     -lsolidSpecie \
-    -lODE
+    -lODE \
+    -lgenericPatchFields \
+    -lreconstruct \
+    -ldynamicMesh
 
