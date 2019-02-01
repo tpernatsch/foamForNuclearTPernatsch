@@ -1,0 +1,208 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Class
+    Foam::gapContactFvPatchVectorField
+
+Description
+    Fixed traction boundary condition for the standard linear elastic, fixed
+    coefficient displacement equation.
+
+SourceFiles
+    gapContactFvPatchVectorField.C
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef gapContactFvPatchVectorField_H
+#define gapContactFvPatchVectorField_H
+
+#include "tractionDisplacementFvPatchVectorField.H"
+#include "regionCoupledBaseFvPatch.H"
+//#include "gapGasModel.H"
+#include "volFields.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+/*---------------------------------------------------------------------------*\
+                   Class tractionDisplacementFvPatch Declaration
+\*---------------------------------------------------------------------------*/
+
+class gapContactFvPatchVectorField
+:
+    public tractionDisplacementFvPatchVectorField
+{
+
+    // Private Data
+
+        //- Local reference to region couple patch
+        const regionCoupledBaseFvPatch& regionCoupledPatch_;
+        
+        //- Penalty factor
+        scalar penaltyFact_;
+        
+        //- Gap width [m]
+        mutable scalarField gapWidth_;
+
+        //- Interface pressure
+        mutable scalarField interfaceP_;
+
+    // Private functions
+        
+protected:
+
+    // Protected functions
+    
+            //- Return the neighbour patchField
+            inline const gapContactFvPatchVectorField& neighbour() const
+            {
+                return refCast<const gapContactFvPatchVectorField>
+                (
+                    regionCoupledPatch_.neighbFvPatch().lookupPatchField
+                    <volVectorField, vector>
+                    (
+                        internalField().name()
+                    )
+                );
+            }
+
+            //- Return the gap width
+            tmp<scalarField> gapWidth() const;
+
+            //- Minimum patch stiffness for interface pressure evaluation
+            scalar boundaryStiffness() const;
+            
+public:
+
+    //- Runtime type information
+    TypeName("gapContact");
+
+
+    // Constructors
+
+        //- Construct from patch and internal field
+        gapContactFvPatchVectorField
+        (
+            const fvPatch&,
+            const DimensionedField<vector, volMesh>&
+        );
+
+        //- Construct from patch, internal field and dictionary
+        gapContactFvPatchVectorField
+        (
+            const fvPatch&,
+            const DimensionedField<vector, volMesh>&,
+            const dictionary&
+        );
+
+        //- Construct by mapping given
+        //  gapContactFvPatchVectorField onto a new patch
+        gapContactFvPatchVectorField
+        (
+            const gapContactFvPatchVectorField&,
+            const fvPatch&,
+            const DimensionedField<vector, volMesh>&,
+            const fvPatchFieldMapper&
+        );
+
+        //- Construct as copy
+        gapContactFvPatchVectorField
+        (
+            const gapContactFvPatchVectorField&
+        );
+
+        //- Construct and return a clone
+        virtual tmp<fvPatchVectorField> clone() const
+        {
+            return tmp<fvPatchVectorField>
+            (
+                new gapContactFvPatchVectorField(*this)
+            );
+        }
+
+        //- Construct as copy setting internal field reference
+        gapContactFvPatchVectorField
+        (
+            const gapContactFvPatchVectorField&,
+            const DimensionedField<vector, volMesh>&
+        );
+
+        //- Construct and return a clone setting internal field reference
+        virtual tmp<fvPatchVectorField> clone
+        (
+            const DimensionedField<vector, volMesh>& iF
+        ) const
+        {
+            return tmp<fvPatchVectorField>
+            (
+                new gapContactFvPatchVectorField(*this, iF)
+            );
+        }
+
+
+    // Member functions
+
+        // Access
+        
+            //- Interface pressure
+            inline const scalarField& interfaceP() const
+            {
+                return interfaceP_;
+            }       
+
+        // Mapping functions
+
+            //- Map (and resize as needed) from self given a mapping object
+            virtual void autoMap
+            (
+                const fvPatchFieldMapper&
+            );
+
+            //- Reverse map the given fvPatchField onto this fvPatchField
+            virtual void rmap
+            (
+                const fvPatchVectorField&,
+                const labelList&
+            );
+            
+        // Modify
+
+            //- Update the coefficients associated with the patch field
+            virtual void updateCoeffs();
+
+        //- Write
+        virtual void write(Ostream&) const;
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //

@@ -24,6 +24,7 @@ classes/neutronicClass/albedoSP3/albedoSP3FvPatchField.C
 classes/thermoMechanicClass/thermoMechanics.C
 classes/thermoMechanicClass/linearElastic/linearElasticThermoMechanics.C
 classes/thermoMechanicClass/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+classes/thermoMechanicClass/tractionDisplacement/gapContactFvPatchVectorField.C
 
 include/mergeOrSplitBaffles.C
 

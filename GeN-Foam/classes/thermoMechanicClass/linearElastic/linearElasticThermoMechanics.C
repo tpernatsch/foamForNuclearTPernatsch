@@ -182,7 +182,9 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             IOobject::NO_READ,
             IOobject::NO_WRITE
         ),
-        rhoE_/rho_
+        mesh,
+        dimensionedScalar("", dimensionSet(0,2,-2,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),   
     mu_
     (
@@ -192,9 +194,11 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::AUTO_WRITE
         ),
-        E_/(2.0*(1.0 + nu_))
+        mesh,
+        dimensionedScalar("", dimensionSet(0,2,-2,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),
     lambda_
     (
@@ -206,7 +210,9 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             IOobject::NO_READ,
             IOobject::NO_WRITE
         ),
-        nu_*E_/((1.0 + nu_)*(1.0 - 2.0*nu_))
+        mesh,
+        dimensionedScalar("", dimensionSet(0,2,-2,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),
     threeK_
     (
@@ -218,7 +224,9 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             IOobject::NO_READ,
             IOobject::NO_WRITE
         ),
-        E_/(1.0 - 2.0*nu_)
+        mesh,
+        dimensionedScalar("", dimensionSet(0,2,-2,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),
     TrefFuel_
     (
@@ -376,6 +384,20 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 1.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    gapWidth
+    (
+        IOobject
+        (
+            "gapWidth",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     nCorr_(mesh.solutionDict().subDict("stressAnalysis").lookupOrDefault<int>("nCorrectors", 1)),
     convergenceTolerance_(readScalar(mesh.solutionDict().subDict("stressAnalysis").lookup("D"))),
     compactNormalStress_(mesh.solutionDict().subDict("stressAnalysis").lookup("compactNormalStress"))
@@ -444,6 +466,12 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
 
     }
 
+    E_ = rhoE_/rho_ ;
+    mu_ = E_/(2.0*(1.0 + nu_)) ;
+    lambda_ = nu_*E_/((1.0 + nu_)*(1.0 - 2.0*nu_)) ;
+    threeK_ = E_/(1.0 - 2.0*nu_) ;
+    sigmaD_ = ((rhoE_/rho_)/(2.0*(1.0 + nu_)))*twoSymm(fvc::grad(Disp_)) + (nu_*(rhoE_/rho_)/((1.0 + nu_)*(1.0 - 2.0*nu_)))*(I*tr(fvc::grad(Disp_))) ;   
+
     rho_.correctBoundaryConditions();
     rhoE_.correctBoundaryConditions();
     nu_.correctBoundaryConditions();
@@ -457,6 +485,11 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
 
     TrefCR_.correctBoundaryConditions();
     alphaCR_.correctBoundaryConditions();
+
+    mu_.correctBoundaryConditions();
+    lambda_.correctBoundaryConditions();
+    threeK_.correctBoundaryConditions();
+    sigmaD_.correctBoundaryConditions();
 
     if (planeStress_)
     {

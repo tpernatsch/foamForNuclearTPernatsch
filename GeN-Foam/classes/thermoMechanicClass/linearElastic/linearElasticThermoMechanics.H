@@ -102,6 +102,7 @@ protected:
         volSymmTensorField sigmaD_;
         volVectorField divSigmaExp_;
         volScalarField TavFuel_;
+        volScalarField gapWidth;/////////////////////////////
 
         //- Control
         int nCorr_;

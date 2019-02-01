@@ -347,6 +347,8 @@ void nusseltThermalBaffle1DFvPatchScalarField<solidType>::setProperties()
                         break;
                     }
                 }
+
+		//Pout << "cZI: " << cellZoneI << " cZ1s: " << cellZones1I << " cZ2s: " << cellZones2I << endl;
                 
                 forAll(cellZones2I, i)
                 {

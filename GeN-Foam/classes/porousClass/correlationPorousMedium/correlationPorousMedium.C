@@ -326,7 +326,7 @@ Foam::correlationPorousMedium::correlationPorousMedium
             mesh_.time().timeName(),
             mesh_,
             IOobject::NO_READ,
-            IOobject::AUTO_WRITE
+            IOobject::NO_WRITE
         ),
         mesh_,
         dimensionedScalar(word(), dimless, scalar(0)),
