@@ -395,8 +395,8 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             IOobject::AUTO_WRITE
         ),
         mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 0.0),
-        zeroGradientFvPatchScalarField::typeName
+        dimensionedScalar("gapWidth", dimensionSet(0,1,0,0,0,0,0), 0.0),
+        calculatedFvPatchField<scalar>::typeName
     ),
     nCorr_(mesh.solutionDict().subDict("stressAnalysis").lookupOrDefault<int>("nCorrectors", 1)),
     convergenceTolerance_(readScalar(mesh.solutionDict().subDict("stressAnalysis").lookup("D"))),
@@ -466,12 +466,6 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
 
     }
 
-    E_ = rhoE_/rho_ ;
-    mu_ = E_/(2.0*(1.0 + nu_)) ;
-    lambda_ = nu_*E_/((1.0 + nu_)*(1.0 - 2.0*nu_)) ;
-    threeK_ = E_/(1.0 - 2.0*nu_) ;
-    sigmaD_ = ((rhoE_/rho_)/(2.0*(1.0 + nu_)))*twoSymm(fvc::grad(Disp_)) + (nu_*(rhoE_/rho_)/((1.0 + nu_)*(1.0 - 2.0*nu_)))*(I*tr(fvc::grad(Disp_))) ;   
-
     rho_.correctBoundaryConditions();
     rhoE_.correctBoundaryConditions();
     nu_.correctBoundaryConditions();
@@ -486,6 +480,13 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
     TrefCR_.correctBoundaryConditions();
     alphaCR_.correctBoundaryConditions();
 
+
+    E_ = rhoE_/rho_ ;
+    mu_ = E_/(2.0*(1.0 + nu_)) ;
+    lambda_ = nu_*E_/((1.0 + nu_)*(1.0 - 2.0*nu_)) ;
+    threeK_ = E_/(1.0 - 2.0*nu_) ;
+
+
     mu_.correctBoundaryConditions();
     lambda_.correctBoundaryConditions();
     threeK_.correctBoundaryConditions();
@@ -497,11 +498,14 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
 
         lambda_ = nu_*E_/((1.0 + nu_)*(1.0 - nu_));
         threeK_ = E_/(1.0 - nu_);
+        lambda_.correctBoundaryConditions();
+        threeK_.correctBoundaryConditions();        
     }
     else
     {
         Info<< "Plane Strain\n" << endl;
     }
+   
 
     Info<< "Normalising k : k/rho\n" << endl;
     volScalarField k(rhoK_/rho_);
@@ -523,6 +527,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
     {
         divSigmaExp_ -= fvc::div((2*mu_ + lambda_)*fvc::grad(Disp_), "div(sigmaD)");
     }
+    mesh_.setFluxRequired(Disp_.name());
 }
 
 

@@ -364,28 +364,6 @@ void Foam::SP3Neutronics::getFieldsLiquidFuel(
 
 }
 
-void Foam::SP3Neutronics::deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig)
-{
 
-    Info << "Displace neutronic mesh" << endl;
-
-    const volPointInterpolation& neutroMeshPointInterpolation = volPointInterpolation::New(mesh_);
-
-    tmp<pointVectorField> neutroPointsDisplacementOld = neutroMeshPointInterpolation.interpolate(Disp_);
-
-    Disp_*=0.0;
-    TMToNeutro.mapSrcToTgt( DispOrig , plusEqOp<vector>(), Disp_);//.primitiveFieldRef()
-    Disp_.correctBoundaryConditions();
-
-    tmp<pointVectorField> neutroPointsDisplacement = neutroMeshPointInterpolation.interpolate(Disp_);
-
-    tmp<pointField> displacedPoints = mesh_.points()
-                                    + neutroPointsDisplacement->internalField()
-                                    - neutroPointsDisplacementOld->internalField() ;
-
-    mesh_.movePoints(displacedPoints);
-
-    Info << "done" << endl;
-}
 // ************************************************************************* //
 

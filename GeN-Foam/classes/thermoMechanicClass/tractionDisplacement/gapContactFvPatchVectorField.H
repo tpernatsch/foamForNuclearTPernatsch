@@ -62,6 +62,9 @@ class gapContactFvPatchVectorField
         
         //- Penalty factor
         scalar penaltyFact_;
+
+        //- POffse
+        scalar offset_;
         
         //- Gap width [m]
         mutable scalarField gapWidth_;

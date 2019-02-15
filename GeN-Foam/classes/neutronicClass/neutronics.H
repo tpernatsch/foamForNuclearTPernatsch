@@ -211,7 +211,7 @@ public:
             const meshToMesh& neutroToFluid) = 0; 
 
         //- Deform mesh
-        virtual void deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig) = 0; 
+        virtual void deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig); 
 
         //- Calculate initialResidual_
         inline double initialResidual() const

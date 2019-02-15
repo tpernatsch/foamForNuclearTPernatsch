@@ -184,8 +184,6 @@ public:
             const volScalarField& alphatOrig, 
             const meshToMesh& neutroToFluid); 
 
-            //- Deform mesh
-            virtual void deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig);  
 
 };
 

@@ -66,7 +66,7 @@ Author (for the modification of solidDisp_lacementFoam)
                 {
                     DEqn += fvc::grad(threeKalpha_*(T_-TrefStructures_));
                 }
-
+                DEqn.relax();
                 initialResidual = DEqn.solve().max().initialResidual();
 
                 if (!compactNormalStress_)

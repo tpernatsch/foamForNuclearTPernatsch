@@ -82,8 +82,8 @@ Foam::gapContactFvPatchVectorField::gapWidth() const
                              nbrPatch.Cf()
                            + totalDispNbrPatch
                       );
-
-    return (nbrCf - Cf) & nf;
+Info << offset_ << endl;
+    return ((nbrCf - Cf) & nf) - offset_;
 }
 
 
@@ -113,6 +113,7 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     tractionDisplacementFvPatchVectorField(p, iF),
     regionCoupledPatch_(refCast<const regionCoupledBaseFvPatch>(p)),
     penaltyFact_(0.1),
+    offset_(0.0),
     gapWidth_(p.size(), 0),
     interfaceP_(p.size(), 0)
 {}
@@ -129,6 +130,7 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     tractionDisplacementFvPatchVectorField(ptf, p, iF, mapper),
     regionCoupledPatch_(refCast<const regionCoupledBaseFvPatch>(p)),
     penaltyFact_(ptf.penaltyFact_),
+    offset_(ptf.offset_),
     gapWidth_(ptf.gapWidth_, mapper),
     interfaceP_(ptf.interfaceP_, mapper)
 {}
@@ -144,12 +146,14 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     tractionDisplacementFvPatchVectorField(p, iF,dict),
     regionCoupledPatch_(refCast<const regionCoupledBaseFvPatch>(p)),
     penaltyFact_(0.1),
+    offset_(0.0),
     gapWidth_(p.size(), 0),
     interfaceP_(p.size(), 0)
 {
     if (regionCoupledPatch_.owner())
     {
         penaltyFact_ = dict.lookupOrDefault<scalar>("penaltyFactor", 1e-2);
+        offset_ = dict.lookupOrDefault<scalar>("offset", 0.0);
     }
     
     if (dict.found("interfaceP"))
@@ -167,6 +171,7 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     tractionDisplacementFvPatchVectorField(ptf),
     regionCoupledPatch_(ptf.regionCoupledPatch_),
     penaltyFact_(ptf.penaltyFact_),
+    offset_(ptf.offset_),
     gapWidth_(ptf.gapWidth_),
     interfaceP_(ptf.interfaceP_)
 {}
@@ -181,6 +186,7 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     tractionDisplacementFvPatchVectorField(ptf, iF),
     regionCoupledPatch_(ptf.regionCoupledPatch_),
     penaltyFact_(ptf.penaltyFact_),
+    offset_(ptf.offset_),
     gapWidth_(ptf.gapWidth_),
     interfaceP_(ptf.interfaceP_)
 {}
@@ -260,8 +266,6 @@ void gapContactFvPatchVectorField::updateCoeffs()
         patch.lookupPatchField<volScalarField, scalar>("gapWidth")
     ) = gapWidth_;
   
-
-
 
     //- Include the gap gas pressure
     //const gapGasModel& gapGas

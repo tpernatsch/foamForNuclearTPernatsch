@@ -156,6 +156,31 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
+
+void Foam::neutronics::deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig)
+{
+
+    Info << "Displace neutronic mesh" << endl;
+
+    const volPointInterpolation& neutroMeshPointInterpolation = volPointInterpolation::New(mesh_);
+
+    tmp<pointVectorField> neutroPointsDisplacementOld = neutroMeshPointInterpolation.interpolate(Disp_);
+
+    Disp_*=0.0;
+    TMToNeutro.mapSrcToTgt( DispOrig , plusEqOp<vector>(), Disp_);//.primitiveFieldRef()
+    Disp_.correctBoundaryConditions();
+
+    tmp<pointVectorField> neutroPointsDisplacement = neutroMeshPointInterpolation.interpolate(Disp_);
+
+    tmp<pointField> displacedPoints = mesh_.points()
+                                    + neutroPointsDisplacement->internalField()
+                                    - neutroPointsDisplacementOld->internalField() ;
+
+    mesh_.movePoints(displacedPoints);
+
+    Info << "done" << endl;
+}
+
 bool Foam::neutronics::writeData(Ostream& os) const
 {
 
