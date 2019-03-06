@@ -123,7 +123,7 @@ Foam::byZoneCorrelationPorousMedium::byZoneCorrelationPorousMedium
             = scalar(dict.lookupOrDefault("volumetricAreaHX",1.0));
 
         IndirectList<tensor>(rotate_.internalField(), addr)
-            = tensor(coordinateSystem("",vector::zero,dict.lookupOrDefault("localZaxis",vector(0,0,1)),dict.lookupOrDefault("localXaxis",vector(1,0,0))).R().R().T());
+            = tensor(coordinateSystem("",vector::zero,dict.lookupOrDefault("localZaxis",vector(0,0,1)),dict.lookupOrDefault("localXaxis",vector(1,0,0))).R().T());
 
         IndirectList<scalar>(externalHeatTransferCoefficient_.internalField(), addr)
             = scalar(dict.lookupOrDefault("externalHeatTransferCoefficient",0.0)+SMALL);

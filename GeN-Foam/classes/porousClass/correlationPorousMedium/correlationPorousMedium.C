@@ -337,7 +337,7 @@ Foam::correlationPorousMedium::correlationPorousMedium
     porousMedium::volumetricAreaSS_ = dimensionedScalar(IOdictionary::lookup("volumetricAreaSS"));
     porousMedium::volumetricAreaFuel_ = dimensionedScalar(IOdictionary::lookup("volumetricAreaFuel"));
     porousMedium::volumetricAreaHX_ = dimensionedScalar(IOdictionary::lookup("volumetricAreaHX"));
-    porousMedium::rotate_ = dimensionedTensor(coordinateSystem("",vector::zero,IOdictionary::lookup("localZaxis"),IOdictionary::lookup("localXaxis")).R().R().T());
+    porousMedium::rotate_ = dimensionedTensor(coordinateSystem("",vector::zero,IOdictionary::lookup("localZaxis"),IOdictionary::lookup("localXaxis")).R().T());
     porousMedium::externalHeatTransferCoefficient_ = dimensionedScalar(IOdictionary::lookup("externalHeatTransferCoefficient"));
     porousMedium::externalT_ = dimensionedScalar(IOdictionary::lookup("externalT"));
     porousMedium::externalVolHeatSource_ = dimensionedScalar(IOdictionary::lookup("externalVolHeatSource"));

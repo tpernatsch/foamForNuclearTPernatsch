@@ -56,7 +56,7 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io)
     {
         //readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
         // problem work around: skip that operator, directly use the read function and provied it with the right pointer
-        FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
+        FieldField<Field, Type>::readIstream(readStream(typeName), IOFieldField<Field, Type>::INew());
         close();
     }
 }
@@ -90,7 +90,7 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, const label siz
     {
         //readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
         // problem work around: skip that operator and directly use the read function
-        FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
+        FieldField<Field, Type>::readIstream(readStream(typeName), IOFieldField<Field, Type>::INew());
         close();
     }
     else
@@ -129,7 +129,7 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, const FieldFiel
     {
         //readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
         // problem work around: skip that operator and directly use the read function
-        FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
+        FieldField<Field, Type>::readIstream(readStream(typeName), IOFieldField<Field, Type>::INew());
         close();
     }
     else
@@ -177,7 +177,7 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io, FieldField<Fiel
     {
         //readStream(typeName) >> *this; // there was a problem with the operator ">>" for Field<Type> (the function "new" is missing for Field<Type>)
         // problem work around: skip that operator and directly use the read function
-        FieldField<Field, Type>::read(readStream(typeName), IOFieldField<Field, Type>::INew());
+        FieldField<Field, Type>::readIstream(readStream(typeName), IOFieldField<Field, Type>::INew());
         close();
     }
 }
