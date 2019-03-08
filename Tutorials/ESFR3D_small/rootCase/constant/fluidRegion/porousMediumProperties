@@ -206,6 +206,7 @@ zones
 	voidFraction      	0.2; // fraction of the volume occupied by the fluid
 	volumetricAreaSS      	0.0; // wet area diveded by total volume for sub-scale structures (equivalent eg to the area of heat exchange between fluid and sub-scale structure)
 	volumetricAreaFuel     	0.0; // wet area diveded by total volume for fuel (equivalent eg to the area of heat exchange between fluid and fuel)
+	volumetricAreaHX      	0.0; // wet area diveded by total volume for heat exchangers
 	hydraulicDiameter   	0.0032; // characteristic lenght
 	hydraulicDiameterStructure	1; // characteristic lenght of the whole structure. Used to provide a viscosity that stabilze the coarse-mesh soultion
 	localZaxis   		(0 0 1); // z axis for the local coordinate system

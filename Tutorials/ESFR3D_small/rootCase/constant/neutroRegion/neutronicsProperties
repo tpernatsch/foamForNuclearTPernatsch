@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model			SP3Neutronics;//diffusionNeutronics;//
+model			SP3Neutronics;//diffusionNeutronics;//adjointDiffusionNeutronics;//
 
 eigenvalueNeutronics    true;
 

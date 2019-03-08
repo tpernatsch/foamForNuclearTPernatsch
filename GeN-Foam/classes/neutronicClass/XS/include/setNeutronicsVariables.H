@@ -86,7 +86,7 @@ forAll(nuSigmaEff_,energyI)
 
         const word& name = entries_[zoneI].keyword();
 
-        Info << "Mesh zone: " << name  << endl;
+        //Info << "Mesh zone: " << name  << endl;
 
         label zoneId = mesh_.cellZones().findZoneID(name);
 
