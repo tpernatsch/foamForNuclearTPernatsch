@@ -44,7 +44,7 @@ elseif (strcmp("CT",coreState))
 end
 
 if exist(globalfilestr)
-        yesno = input("\nWarning: il file verra sovrascritto\ncontinuo? (yes/no)\n", "s");
+        yesno = input("\nWarning: the file will be overwritten \nShould I continue? (yes/no)\n", "s");
         if ((strcmp("yes",yesno)==0))
                 fprintf("\nSTOP (no file modified).\n");
                 break
