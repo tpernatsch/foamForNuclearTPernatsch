@@ -245,6 +245,20 @@ forAll(nuSigmaEff_,energyI)
         }//close else from zoneId check
     }//close forall zoneI in zone entries_
 
+
+    D_[energyI].correctBoundaryConditions();
+    nuSigmaEff_[energyI].correctBoundaryConditions();
+    sigmaPow_[energyI].correctBoundaryConditions();
+    sigmaDisapp_[energyI].correctBoundaryConditions();
+    forAll(sigmaFromTo_, momentI)
+    {
+      forAll(sigmaFromTo_[momentI],energyJ)
+      {
+          sigmaFromTo_[momentI][energyJ][energyI].correctBoundaryConditions();
+      }
+    }
+    discFactor_[energyI].correctBoundaryConditions();
+
 }
 
 Info << "Done" << endl;
