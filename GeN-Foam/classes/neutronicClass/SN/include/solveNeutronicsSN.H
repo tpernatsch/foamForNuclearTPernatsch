@@ -65,9 +65,7 @@ do
     Info << "Neutron iteration no:  " << neutroIter << nl << endl;
 
     #include "fluxEq.H"
-
     #include "precEq.H"
-    
     #include "initializeDelayedNeutroSource.H"
    
     neutroIter++;

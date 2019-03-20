@@ -82,7 +82,7 @@ Foam::gapContactFvPatchVectorField::gapWidth() const
                              nbrPatch.Cf()
                            + totalDispNbrPatch
                       );
-Info << offset_ << endl;
+
     return ((nbrCf - Cf) & nf) - offset_;
 }
 
@@ -277,9 +277,7 @@ void gapContactFvPatchVectorField::updateCoeffs()
     ) = interfaceP_;
  */           
     pressure() = interfaceP_ ;//+ gapGas.p();
-    //Info << "boundaryStiffness() " << boundaryStiffness() << endl;
-    //Info << "gapWidth_ " << gapWidth_ << endl;
-    //Info << "interfaceP_ " << interfaceP_ << endl;
+
     /*
     bool isIncremental = patch.boundaryMesh().mesh().lookupObject<thermoMechanicsSolver>("thermoMechanics").isIncremental();
     if(isIncremental)

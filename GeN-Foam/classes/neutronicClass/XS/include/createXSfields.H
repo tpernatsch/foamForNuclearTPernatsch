@@ -112,32 +112,35 @@ forAll(sigmaDisapp_, i)
     );
 }
 
-forAll(sigmaFromTo_,energyJ)
+forAll(sigmaFromTo_,momentI)
 {
-    sigmaFromTo_[energyJ].resize(energyGroups_); 
-
-    forAll(sigmaFromTo_[energyJ],energyI)
+    sigmaFromTo_[momentI].resize(energyGroups_);
+    forAll(sigmaFromTo_[momentI],energyJ)
     {
-        sigmaFromTo_[energyJ].set
-        (
-            energyI,
-            new volScalarField
+        sigmaFromTo_[momentI][energyJ].resize(energyGroups_); 
+        forAll(sigmaFromTo_[momentI][energyJ],energyI)
+        {
+            sigmaFromTo_[momentI][energyJ].set
             (
-                IOobject
+                energyI,
+                new volScalarField
                 (
-                    "sigmaFromTo"+Foam::name(energyJ)+Foam::name(energyI),
-                    mesh_.time().timeName(),
+                    IOobject
+                    (
+                        "sigmaFromToP"+Foam::name(momentI)+"_"+Foam::name(energyJ)+Foam::name(energyI),
+                        mesh_.time().timeName(),
+                        mesh_,
+                        IOobject::NO_READ,
+                        IOobject::NO_WRITE
+                    ),
                     mesh_,
-                    IOobject::NO_READ,
-                    IOobject::NO_WRITE
-                ),
-                mesh_,
-                dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
-                zeroGradientFvPatchScalarField::typeName
-            )
-        );
-    }
+                    dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
+                    zeroGradientFvPatchScalarField::typeName
+                )
+            );
+        }
 
+    }   
 }
 
 forAll(chiPrompt_, i)
@@ -250,8 +253,7 @@ forAll(discFactor_,energyI)
     );
 }
 
-
-
+Info << "done" << endl;
 
 
 

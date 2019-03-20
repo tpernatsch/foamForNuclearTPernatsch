@@ -85,6 +85,8 @@ protected:
 
             label energyGroups_;
             label precGroups_;
+            label discreteDirections_;
+            label legendreMoments_;
         
         //Data fields
             PtrList<volScalarField> IV_;
@@ -92,7 +94,7 @@ protected:
             PtrList<volScalarField> nuSigmaEff_;
             PtrList<volScalarField> sigmaPow_;
             PtrList<volScalarField> sigmaDisapp_;
-            List<PtrList<volScalarField > > sigmaFromTo_;
+            List<List<PtrList<volScalarField > > > sigmaFromTo_;
             PtrList<volScalarField> chiPrompt_;
             PtrList<volScalarField> chiDelayed_;
             PtrList<volScalarField> Beta_;
@@ -135,7 +137,7 @@ protected:
             PtrList<scalarField > nuSigmaEffList_;
             PtrList<scalarField > sigmaPowList_;
             PtrList<scalarField > sigmaDisappList_;
-            PtrList<scalarSquareMatrix > sigmaFromToList_; 
+            List<PtrList<scalarSquareMatrix > > sigmaFromToList_; 
             // fuel temperature coefficient
             scalar TfuelRef_;
             scalar TfuelPerturbed_;
@@ -143,14 +145,14 @@ protected:
             PtrList<scalarField > fuelTempNuSigmaEffList_;
             PtrList<scalarField > fuelTempSigmaPowList_;
             PtrList<scalarField > fuelTempSigmaDisappList_;
-            PtrList<scalarSquareMatrix > fuelTempSigmaFromToList_;
+            List<PtrList<scalarSquareMatrix > > fuelTempSigmaFromToList_;
             // axial expansion coefficient
             scalar AxExp_;
             PtrList<scalarField > axialExpDList_;
             PtrList<scalarField > axialExpNuSigmaEffList_;
             PtrList<scalarField > axialExpSigmaPowList_;
             PtrList<scalarField > axialExpSigmaDisappList_;
-            PtrList<scalarSquareMatrix > axialExpSigmaFromToList_;
+            List<PtrList<scalarSquareMatrix > > axialExpSigmaFromToList_;
             // radial expansion coefficient
             scalar RadExp_;
             vector axialOrientation_;
@@ -158,7 +160,7 @@ protected:
             PtrList<scalarField > radialExpNuSigmaEffList_;
             PtrList<scalarField > radialExpSigmaPowList_;
             PtrList<scalarField > radialExpSigmaDisappList_;
-            PtrList<scalarSquareMatrix > radialExpSigmaFromToList_;
+            List<PtrList<scalarSquareMatrix > > radialExpSigmaFromToList_;
             // coolant expansion coefficient
             scalar rhoCoolRef_;
             scalar rhoCoolPerturbed_;
@@ -166,7 +168,7 @@ protected:
             PtrList<scalarField > rhoCoolNuSigmaEffList_;
             PtrList<scalarField > rhoCoolSigmaPowList_;
             PtrList<scalarField > rhoCoolSigmaDisappList_;
-            PtrList<scalarSquareMatrix > rhoCoolSigmaFromToList_;
+            List<PtrList<scalarSquareMatrix > > rhoCoolSigmaFromToList_;
             // coolant temperature coefficient
             scalar TCoolRef_;
             scalar TCoolPerturbed_;
@@ -174,7 +176,7 @@ protected:
             PtrList<scalarField > TCoolNuSigmaEffList_;
             PtrList<scalarField > TCoolSigmaPowList_;
             PtrList<scalarField > TCoolSigmaDisappList_;
-            PtrList<scalarSquareMatrix > TCoolSigmaFromToList_;
+            List<PtrList<scalarSquareMatrix > > TCoolSigmaFromToList_;
             // cladding expansion coefficient
             scalar TcladRef_;
             scalar TcladPerturbed_;
@@ -182,7 +184,7 @@ protected:
             PtrList<scalarField > cladExpNuSigmaEffList_;
             PtrList<scalarField > cladExpSigmaPowList_;
             PtrList<scalarField > cladExpSigmaDisappList_;
-            PtrList<scalarSquareMatrix > cladExpSigmaFromToList_;
+            List<PtrList<scalarSquareMatrix > > cladExpSigmaFromToList_;
 
         //For control rods
             IOdictionary CRmove_;
@@ -221,6 +223,14 @@ public:
         {
             return precGroups_;
         }
+        inline const label discreteDirections() const
+        {
+            return discreteDirections_;
+        }
+        inline const label legendreMoments() const
+        {
+            return legendreMoments_;
+        }
         inline const PtrList<volScalarField> IV() const
         {
             return IV_;
@@ -241,7 +251,7 @@ public:
         {
             return sigmaDisapp_;
         }
-        inline const List<PtrList<volScalarField > > sigmaFromTo() const
+        inline const List<List<PtrList<volScalarField > > > sigmaFromTo() const
         {
             return sigmaFromTo_;
         }

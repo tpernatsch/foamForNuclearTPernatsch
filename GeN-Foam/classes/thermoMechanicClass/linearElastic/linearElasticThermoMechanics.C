@@ -403,6 +403,8 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
     compactNormalStress_(mesh.solutionDict().subDict("stressAnalysis").lookup("compactNormalStress"))
 {
 
+    T_ = TrefStructures_;
+
     PtrList<scalar > rhoMechList(TMZoneNumber_);
     PtrList<scalar > rhoEList(TMZoneNumber_);
     PtrList<scalar > nuList(TMZoneNumber_);
@@ -416,6 +418,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
 
     PtrList<scalar > TrefCRList(TMZoneNumber_);
     PtrList<scalar > alphaCRList(TMZoneNumber_);
+
 
     forAll(TMEntries_,zoneI)
     {
@@ -479,7 +482,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
 
     TrefCR_.correctBoundaryConditions();
     alphaCR_.correctBoundaryConditions();
-
+    
 
     E_ = rhoE_/rho_ ;
     mu_ = E_/(2.0*(1.0 + nu_)) ;

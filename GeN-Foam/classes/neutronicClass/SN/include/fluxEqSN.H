@@ -24,7 +24,7 @@ forAll(flux_,energyI)
     Info<< "neutro Residual = " << initRes << nl << endl;
 
     neutroEq.solve();
-
+   
     flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
     flux_[energyI].correctBoundaryConditions();
     neutroSource_ += nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_);

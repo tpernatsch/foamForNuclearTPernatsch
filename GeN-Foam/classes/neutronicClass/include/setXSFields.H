@@ -1,9 +1,11 @@
+Info << "set XS fields" << endl ;
 const PtrList<volScalarField>& IV = xs_.IV();
 const PtrList<volScalarField>& D = xs_.D();
 const PtrList<volScalarField>& nuSigmaEff = xs_.nuSigmaEff();
 const PtrList<volScalarField>& sigmaPow = xs_.sigmaPow();
 const PtrList<volScalarField>& sigmaDisapp = xs_.sigmaDisapp();
-const List<PtrList<volScalarField > >& sigmaFromTo = xs_.sigmaFromTo();
+const List<List<PtrList<volScalarField > > >& sigmaFromToP = xs_.sigmaFromTo();
+const List<PtrList<volScalarField > >& sigmaFromTo = sigmaFromToP[0];
 const PtrList<volScalarField>& chiPrompt = xs_.chiPrompt();
 const PtrList<volScalarField>& chiDelayed = xs_.chiDelayed();
 const PtrList<volScalarField>& Beta = xs_.Beta();
@@ -11,3 +13,4 @@ const volScalarField& BetaTot = xs_.BetaTot();
 const PtrList<volScalarField>& lambda = xs_.lambda();
 const volScalarField& fuelFraction = xs_.fuelFraction();
 const PtrList<volScalarField >& discFactor = xs_.discFactor();
+Info << "done: set XS fields" << endl ;

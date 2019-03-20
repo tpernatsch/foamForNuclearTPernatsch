@@ -14,37 +14,37 @@ PtrList<scalarField > DRadialExpList(zoneNumber_);
 PtrList<scalarField > nuSigmaEffRadialExpList(zoneNumber_);
 PtrList<scalarField > sigmaPowRadialExpList(zoneNumber_);
 PtrList<scalarField > sigmaDisappRadialExpList(zoneNumber_);
-PtrList<scalarSquareMatrix > sigmaFromToRadialExpList(zoneNumber_);  //scattering matrix
+List<PtrList<scalarSquareMatrix > > sigmaFromToRadialExpList(zoneNumber_);  //scattering matrix
 //AxExp
 PtrList<scalarField > DAxialExpList(zoneNumber_);
 PtrList<scalarField > nuSigmaEffAxialExpList(zoneNumber_);
 PtrList<scalarField > sigmaPowAxialExpList(zoneNumber_);
 PtrList<scalarField > sigmaDisappAxialExpList(zoneNumber_);
-PtrList<scalarSquareMatrix > sigmaFromToAxialExpList(zoneNumber_);   //scattering matrix
+List<PtrList<scalarSquareMatrix > > sigmaFromToAxialExpList(zoneNumber_);   //scattering matrix
 //fuelTemp
 PtrList<scalarField > DFuelTempList(zoneNumber_);
 PtrList<scalarField > nuSigmaEffFuelTempList(zoneNumber_);
 PtrList<scalarField > sigmaPowFuelTempList(zoneNumber_);
 PtrList<scalarField > sigmaDisappFuelTempList(zoneNumber_);
-PtrList<scalarSquareMatrix > sigmaFromToFuelTempList(zoneNumber_);   //scattering matrix
+List<PtrList<scalarSquareMatrix > > sigmaFromToFuelTempList(zoneNumber_);   //scattering matrix
 //RhoCool
 PtrList<scalarField > DRhoCoolList(zoneNumber_);
 PtrList<scalarField > nuSigmaEffRhoCoolList(zoneNumber_);
 PtrList<scalarField > sigmaPowRhoCoolList(zoneNumber_);
 PtrList<scalarField > sigmaDisappRhoCoolList(zoneNumber_);
-PtrList<scalarSquareMatrix > sigmaFromToRhoCoolList(zoneNumber_);    //scattering matrix
+List<PtrList<scalarSquareMatrix > > sigmaFromToRhoCoolList(zoneNumber_);    //scattering matrix
 //TCool
 PtrList<scalarField > DTCoolList(zoneNumber_);
 PtrList<scalarField > nuSigmaEffTCoolList(zoneNumber_);
 PtrList<scalarField > sigmaPowTCoolList(zoneNumber_);
 PtrList<scalarField > sigmaDisappTCoolList(zoneNumber_);
-PtrList<scalarSquareMatrix > sigmaFromToTCoolList(zoneNumber_);  //scattering matrix
+List<PtrList<scalarSquareMatrix > > sigmaFromToTCoolList(zoneNumber_);  //scattering matrix
 //cladExp
 PtrList<scalarField > DCladExpList(zoneNumber_);
 PtrList<scalarField > nuSigmaEffCladExpList(zoneNumber_);
 PtrList<scalarField > sigmaPowCladExpList(zoneNumber_);
 PtrList<scalarField > sigmaDisappCladExpList(zoneNumber_);
-PtrList<scalarSquareMatrix > sigmaFromToCladExpList(zoneNumber_);    //scattering matrix
+List<PtrList<scalarSquareMatrix > > sigmaFromToCladExpList(zoneNumber_);    //scattering matrix
 
 //Fill the data
 forAll(entries_,zoneI)
@@ -59,8 +59,6 @@ forAll(entries_,zoneI)
     fuelFractionList_.set(zoneI,new scalar(dict.lookupOrDefault("fuelFraction",0.0)));
 
     dfAdjustList_.set(zoneI,new bool(dict.lookupOrDefault("dfAdjust",true)));
-
-    sigmaFromToList_.set(zoneI,new scalarSquareMatrix(dict.lookup("scatteringMatrix")));
 
     //Nuclear data (assumed to be) not affected by feedbacks
     IVList_.set(zoneI,new scalarField("IV",dict,energyGroups_));
@@ -77,7 +75,11 @@ forAll(entries_,zoneI)
     nuSigmaEffList_.set(zoneI,new scalarField("nuSigmaEff",dict,energyGroups_));
     sigmaPowList_.set(zoneI,new scalarField("sigmaPow",dict,energyGroups_));
     sigmaDisappList_.set(zoneI,new scalarField("sigmaDisapp",dict,energyGroups_));
-    sigmaFromToList_.set(zoneI,new scalarSquareMatrix(dict.lookup("scatteringMatrix")));
+    sigmaFromToList_[zoneI].setSize(legendreMoments_);
+    forAll(sigmaFromToList_[zoneI],momentI)
+    {
+      sigmaFromToList_[zoneI].set(momentI,new scalarSquareMatrix(dict.lookup("scatteringMatrix"+std::string("P")+Foam::name(momentI))));
+    }
     Info << "Finishing reading nominal " << endl;
     //RadExp
     bool read = false;
@@ -97,7 +99,11 @@ forAll(entries_,zoneI)
       nuSigmaEffRadialExpList.set(zoneI,new scalarField("nuSigmaEff",dictRadialExp,energyGroups_));
       sigmaPowRadialExpList.set(zoneI,new scalarField("sigmaPow",dictRadialExp,energyGroups_));
       sigmaDisappRadialExpList.set(zoneI,new scalarField("sigmaDisapp",dictRadialExp,energyGroups_));
-      sigmaFromToRadialExpList.set(zoneI,new scalarSquareMatrix(dictRadialExp.lookup("scatteringMatrix")));
+      sigmaFromToRadialExpList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToRadialExpList[zoneI],momentI)
+      {
+        sigmaFromToRadialExpList[zoneI].set(momentI,new scalarSquareMatrix(dictRadialExp.lookup("scatteringMatrix"+std::string("P")+Foam::name(momentI))));
+      }
     }
     else
     {
@@ -105,7 +111,11 @@ forAll(entries_,zoneI)
       nuSigmaEffRadialExpList.set(zoneI,new scalarField(nuSigmaEffList_[zoneI]));
       sigmaPowRadialExpList.set(zoneI,new scalarField(sigmaPowList_[zoneI]));
       sigmaDisappRadialExpList.set(zoneI,new scalarField(sigmaDisappList_[zoneI]));
-      sigmaFromToRadialExpList.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
+      sigmaFromToRadialExpList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToRadialExpList[zoneI],momentI)
+      {
+        sigmaFromToRadialExpList[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      }
     }
     //AxExp
     read = false;
@@ -125,7 +135,11 @@ forAll(entries_,zoneI)
       nuSigmaEffAxialExpList.set(zoneI,new scalarField("nuSigmaEff",dictAxialExp,energyGroups_));
       sigmaPowAxialExpList.set(zoneI,new scalarField("sigmaPow",dictAxialExp,energyGroups_));
       sigmaDisappAxialExpList.set(zoneI,new scalarField("sigmaDisapp",dictAxialExp,energyGroups_));
-      sigmaFromToAxialExpList.set(zoneI,new scalarSquareMatrix(dictAxialExp.lookup("scatteringMatrix")));
+      sigmaFromToAxialExpList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToAxialExpList[zoneI],momentI)
+      {
+        sigmaFromToAxialExpList[zoneI].set(momentI,new scalarSquareMatrix(dictAxialExp.lookup("scatteringMatrix"+std::string("P")+Foam::name(momentI))));
+      }
     }
     else
     {
@@ -133,7 +147,11 @@ forAll(entries_,zoneI)
       nuSigmaEffAxialExpList.set(zoneI,new scalarField(nuSigmaEffList_[zoneI]));
       sigmaPowAxialExpList.set(zoneI,new scalarField(sigmaPowList_[zoneI]));
       sigmaDisappAxialExpList.set(zoneI,new scalarField(sigmaDisappList_[zoneI]));
-      sigmaFromToAxialExpList.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
+      sigmaFromToAxialExpList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToAxialExpList[zoneI],momentI)
+      {
+        sigmaFromToAxialExpList[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      }
     }
     //fuelTemp
     read = false;
@@ -153,7 +171,11 @@ forAll(entries_,zoneI)
       nuSigmaEffFuelTempList.set(zoneI,new scalarField("nuSigmaEff",dictFuelTemp,energyGroups_));
       sigmaPowFuelTempList.set(zoneI,new scalarField("sigmaPow",dictFuelTemp,energyGroups_));
       sigmaDisappFuelTempList.set(zoneI,new scalarField("sigmaDisapp",dictFuelTemp,energyGroups_));
-      sigmaFromToFuelTempList.set(zoneI,new scalarSquareMatrix(dictFuelTemp.lookup("scatteringMatrix")));
+      sigmaFromToFuelTempList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToFuelTempList[zoneI],momentI)
+      {
+        sigmaFromToFuelTempList[zoneI].set(momentI,new scalarSquareMatrix(dictFuelTemp.lookup("scatteringMatrix"+std::string("P")+Foam::name(momentI))));
+      }
     }
     else
     {
@@ -161,7 +183,11 @@ forAll(entries_,zoneI)
       nuSigmaEffFuelTempList.set(zoneI,new scalarField(nuSigmaEffList_[zoneI]));
       sigmaPowFuelTempList.set(zoneI,new scalarField(sigmaPowList_[zoneI]));
       sigmaDisappFuelTempList.set(zoneI,new scalarField(sigmaDisappList_[zoneI]));
-      sigmaFromToFuelTempList.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
+      sigmaFromToFuelTempList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToFuelTempList[zoneI],momentI)
+      {
+        sigmaFromToFuelTempList[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      }
     }
     //RhoCool
     read = false;
@@ -181,7 +207,11 @@ forAll(entries_,zoneI)
       nuSigmaEffRhoCoolList.set(zoneI,new scalarField("nuSigmaEff",dictRhoCool,energyGroups_));
       sigmaPowRhoCoolList.set(zoneI,new scalarField("sigmaPow",dictRhoCool,energyGroups_));
       sigmaDisappRhoCoolList.set(zoneI,new scalarField("sigmaDisapp",dictRhoCool,energyGroups_));
-      sigmaFromToRhoCoolList.set(zoneI,new scalarSquareMatrix(dictRhoCool.lookup("scatteringMatrix")));
+      sigmaFromToRhoCoolList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToRhoCoolList[zoneI],momentI)
+      {
+        sigmaFromToRhoCoolList[zoneI].set(momentI,new scalarSquareMatrix(dictRhoCool.lookup("scatteringMatrix"+std::string("P")+Foam::name(momentI))));
+      }
     }
     else
     {
@@ -189,7 +219,11 @@ forAll(entries_,zoneI)
       nuSigmaEffRhoCoolList.set(zoneI,new scalarField(nuSigmaEffList_[zoneI]));
       sigmaPowRhoCoolList.set(zoneI,new scalarField(sigmaPowList_[zoneI]));
       sigmaDisappRhoCoolList.set(zoneI,new scalarField(sigmaDisappList_[zoneI]));
-      sigmaFromToRhoCoolList.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
+      sigmaFromToRhoCoolList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToRhoCoolList[zoneI],momentI)
+      {
+        sigmaFromToRhoCoolList[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      }
     }
     //TCool
     read = false;
@@ -209,7 +243,11 @@ forAll(entries_,zoneI)
       nuSigmaEffTCoolList.set(zoneI,new scalarField("nuSigmaEff",dictTCool,energyGroups_));
       sigmaPowTCoolList.set(zoneI,new scalarField("sigmaPow",dictTCool,energyGroups_));
       sigmaDisappTCoolList.set(zoneI,new scalarField("sigmaDisapp",dictTCool,energyGroups_));
-      sigmaFromToTCoolList.set(zoneI,new scalarSquareMatrix(dictTCool.lookup("scatteringMatrix")));
+      sigmaFromToTCoolList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToTCoolList[zoneI],momentI)
+      {
+        sigmaFromToTCoolList[zoneI].set(momentI,new scalarSquareMatrix(dictTCool.lookup("scatteringMatrix"+std::string("P")+Foam::name(momentI))));
+      }
     }
     else
     {
@@ -217,7 +255,11 @@ forAll(entries_,zoneI)
       nuSigmaEffTCoolList.set(zoneI,new scalarField(nuSigmaEffList_[zoneI]));
       sigmaPowTCoolList.set(zoneI,new scalarField(sigmaPowList_[zoneI]));
       sigmaDisappTCoolList.set(zoneI,new scalarField(sigmaDisappList_[zoneI]));
-      sigmaFromToTCoolList.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
+      sigmaFromToTCoolList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToTCoolList[zoneI],momentI)
+      {
+        sigmaFromToTCoolList[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      }
     }
     //cladExp
     read = false;
@@ -237,7 +279,11 @@ forAll(entries_,zoneI)
       nuSigmaEffCladExpList.set(zoneI,new scalarField("nuSigmaEff",dictCladExp,energyGroups_));
       sigmaPowCladExpList.set(zoneI,new scalarField("sigmaPow",dictCladExp,energyGroups_));
       sigmaDisappCladExpList.set(zoneI,new scalarField("sigmaDisapp",dictCladExp,energyGroups_));
-      sigmaFromToCladExpList.set(zoneI,new scalarSquareMatrix(dictCladExp.lookup("scatteringMatrix")));
+      sigmaFromToCladExpList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToCladExpList[zoneI],momentI)
+      {
+        sigmaFromToCladExpList[zoneI].set(momentI,new scalarSquareMatrix(dictCladExp.lookup("scatteringMatrix"+std::string("P")+Foam::name(momentI))));
+      }
     }
     else
     {
@@ -245,7 +291,11 @@ forAll(entries_,zoneI)
       nuSigmaEffCladExpList.set(zoneI,new scalarField(nuSigmaEffList_[zoneI]));
       sigmaPowCladExpList.set(zoneI,new scalarField(sigmaPowList_[zoneI]));
       sigmaDisappCladExpList.set(zoneI,new scalarField(sigmaDisappList_[zoneI]));
-      sigmaFromToCladExpList.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
+      sigmaFromToCladExpList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToCladExpList[zoneI],momentI)
+      {
+        sigmaFromToCladExpList[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      }
     }
 
     //Feedbacks Coefficients
@@ -256,13 +306,17 @@ forAll(entries_,zoneI)
         fuelTempNuSigmaEffList_.set(zoneI,new scalarField((nuSigmaEffList_[zoneI]-nuSigmaEffFuelTempList[zoneI])/log(TrefRatio).value()));
         fuelTempSigmaPowList_.set(zoneI,new scalarField((sigmaPowList_[zoneI]-sigmaPowFuelTempList[zoneI])/log(TrefRatio).value()));
         fuelTempSigmaDisappList_.set(zoneI,new scalarField((sigmaDisappList_[zoneI]-sigmaDisappFuelTempList[zoneI])/log(TrefRatio).value()));
-        fuelTempSigmaFromToList_.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
-        for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+        fuelTempSigmaFromToList_[zoneI].setSize(legendreMoments_);
+        forAll(fuelTempSigmaFromToList_[zoneI],momentI)
         {
-            for(label energyI=0; energyI<energyGroups_ ; energyI++)
-            {
-                fuelTempSigmaFromToList_[zoneI][energyJ][energyI] = (sigmaFromToList_[zoneI][energyJ][energyI]-sigmaFromToFuelTempList[zoneI][energyJ][energyI])/log(TrefRatio).value();
-            }
+          fuelTempSigmaFromToList_[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+          for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+          {
+              for(label energyI=0; energyI<energyGroups_ ; energyI++)
+              {
+                  fuelTempSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToFuelTempList[zoneI][momentI][energyJ][energyI])/log(TrefRatio).value();
+              }
+          }
         }
     }
     else
@@ -272,81 +326,105 @@ forAll(entries_,zoneI)
         fuelTempNuSigmaEffList_.set(zoneI,new scalarField((nuSigmaEffList_[zoneI]-nuSigmaEffFuelTempList[zoneI])/TrefDifference.value()));
         fuelTempSigmaPowList_.set(zoneI,new scalarField((sigmaPowList_[zoneI]-sigmaPowFuelTempList[zoneI])/TrefDifference.value()));
         fuelTempSigmaDisappList_.set(zoneI,new scalarField((sigmaDisappList_[zoneI]-sigmaDisappFuelTempList[zoneI])/TrefDifference.value()));
-        fuelTempSigmaFromToList_.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
-        for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+        fuelTempSigmaFromToList_[zoneI].setSize(legendreMoments_);
+        forAll(fuelTempSigmaFromToList_[zoneI],momentI)
         {
-            for(label energyI=0; energyI<energyGroups_ ; energyI++)
-            {
-                fuelTempSigmaFromToList_[zoneI][energyJ][energyI] = (sigmaFromToList_[zoneI][energyJ][energyI]-sigmaFromToFuelTempList[zoneI][energyJ][energyI])/TrefDifference.value();
-            }
+          fuelTempSigmaFromToList_[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+          for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+          {
+              for(label energyI=0; energyI<energyGroups_ ; energyI++)
+              {
+                  fuelTempSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToFuelTempList[zoneI][momentI][energyJ][energyI])/TrefDifference.value();
+              }
+          }
         }
     }
     axialExpDList_.set(zoneI,new scalarField(-(DList_[zoneI]-DAxialExpList[zoneI])/AxExp_));
     axialExpNuSigmaEffList_.set(zoneI,new scalarField(-(nuSigmaEffList_[zoneI]-nuSigmaEffAxialExpList[zoneI])/AxExp_));
     axialExpSigmaPowList_.set(zoneI,new scalarField(-(sigmaPowList_[zoneI]-sigmaPowAxialExpList[zoneI])/AxExp_));
     axialExpSigmaDisappList_.set(zoneI,new scalarField(-(sigmaDisappList_[zoneI]-sigmaDisappAxialExpList[zoneI])/AxExp_));
-    axialExpSigmaFromToList_.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
-    for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+    axialExpSigmaFromToList_[zoneI].setSize(legendreMoments_);
+    forAll(axialExpSigmaFromToList_[zoneI],momentI)
     {
-        for(label energyI=0; energyI<energyGroups_ ; energyI++)
-        {
-            axialExpSigmaFromToList_[zoneI][energyJ][energyI] = -(sigmaFromToList_[zoneI][energyJ][energyI]-sigmaFromToAxialExpList[zoneI][energyJ][energyI])/AxExp_;
-        }
-    }
+      axialExpSigmaFromToList_[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+      {
+          for(label energyI=0; energyI<energyGroups_ ; energyI++)
+          {
+              axialExpSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToAxialExpList[zoneI][momentI][energyJ][energyI])/AxExp_;
+          }
+      }
+    }    
 
     radialExpDList_.set(zoneI,new scalarField(-(DList_[zoneI]-DRadialExpList[zoneI])/RadExp_));
     radialExpNuSigmaEffList_.set(zoneI,new scalarField(-(nuSigmaEffList_[zoneI]-nuSigmaEffRadialExpList[zoneI])/RadExp_));
     radialExpSigmaPowList_.set(zoneI,new scalarField(-(sigmaPowList_[zoneI]-sigmaPowRadialExpList[zoneI])/RadExp_));
     radialExpSigmaDisappList_.set(zoneI,new scalarField(-(sigmaDisappList_[zoneI]-sigmaDisappRadialExpList[zoneI])/RadExp_));
-    radialExpSigmaFromToList_.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
-    for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+    radialExpSigmaFromToList_[zoneI].setSize(legendreMoments_);
+    forAll(radialExpSigmaFromToList_[zoneI],momentI)
     {
-        for(label energyI=0; energyI<energyGroups_ ; energyI++)
-        {
-            radialExpSigmaFromToList_[zoneI][energyJ][energyI] = -(sigmaFromToList_[zoneI][energyJ][energyI]-sigmaFromToRadialExpList[zoneI][energyJ][energyI])/RadExp_;
-        }
-    }
+      radialExpSigmaFromToList_[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+      {
+          for(label energyI=0; energyI<energyGroups_ ; energyI++)
+          {
+              radialExpSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToRadialExpList[zoneI][momentI][energyJ][energyI])/RadExp_;
+          }
+      }
+    }  
 
     scalar deltaRho(rhoCoolRef_ - rhoCoolPerturbed_);
     rhoCoolDList_.set(zoneI,new scalarField((DList_[zoneI]-DRhoCoolList[zoneI])/deltaRho));
     rhoCoolNuSigmaEffList_.set(zoneI,new scalarField((nuSigmaEffList_[zoneI]-nuSigmaEffRhoCoolList[zoneI])/deltaRho));
     rhoCoolSigmaPowList_.set(zoneI,new scalarField((sigmaPowList_[zoneI]-sigmaPowRhoCoolList[zoneI])/deltaRho));
     rhoCoolSigmaDisappList_.set(zoneI,new scalarField((sigmaDisappList_[zoneI]-sigmaDisappRhoCoolList[zoneI])/deltaRho));
-    rhoCoolSigmaFromToList_.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
-    for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+    rhoCoolSigmaFromToList_[zoneI].setSize(legendreMoments_);
+    forAll(rhoCoolSigmaFromToList_[zoneI],momentI)
     {
-        for(label energyI=0; energyI<energyGroups_ ; energyI++)
-        {
-            rhoCoolSigmaFromToList_[zoneI][energyJ][energyI] = (sigmaFromToList_[zoneI][energyJ][energyI]-sigmaFromToRhoCoolList[zoneI][energyJ][energyI])/deltaRho;
-        }
-    }
+      rhoCoolSigmaFromToList_[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+      {
+          for(label energyI=0; energyI<energyGroups_ ; energyI++)
+          {
+              rhoCoolSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToRhoCoolList[zoneI][momentI][energyJ][energyI])/deltaRho;
+          }
+      }
+    }  
 
     scalar deltaTCool(TCoolRef_ - TCoolPerturbed_);
     TCoolDList_.set(zoneI,new scalarField((DList_[zoneI]-DTCoolList[zoneI])/deltaTCool));
     TCoolNuSigmaEffList_.set(zoneI,new scalarField((nuSigmaEffList_[zoneI]-nuSigmaEffTCoolList[zoneI])/deltaTCool));
     TCoolSigmaPowList_.set(zoneI,new scalarField((sigmaPowList_[zoneI]-sigmaPowTCoolList[zoneI])/deltaTCool));
     TCoolSigmaDisappList_.set(zoneI,new scalarField((sigmaDisappList_[zoneI]-sigmaDisappTCoolList[zoneI])/deltaTCool));
-    TCoolSigmaFromToList_.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
-    for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+    TCoolSigmaFromToList_[zoneI].setSize(legendreMoments_);
+    forAll(TCoolSigmaFromToList_[zoneI],momentI)
     {
-        for(label energyI=0; energyI<energyGroups_ ; energyI++)
-        {
-            TCoolSigmaFromToList_[zoneI][energyJ][energyI] = (sigmaFromToList_[zoneI][energyJ][energyI]-sigmaFromToTCoolList[zoneI][energyJ][energyI])/deltaTCool;
-        }
-    }
+      TCoolSigmaFromToList_[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+      {
+          for(label energyI=0; energyI<energyGroups_ ; energyI++)
+          {
+              TCoolSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToTCoolList[zoneI][momentI][energyJ][energyI])/deltaTCool;
+          }
+      }
+    }  
 
     scalar deltaTClad(TcladRef_ - TcladPerturbed_);
     cladExpDList_.set(zoneI,new scalarField((DList_[zoneI]-DCladExpList[zoneI])/deltaTClad));
     cladExpNuSigmaEffList_.set(zoneI,new scalarField((nuSigmaEffList_[zoneI]-nuSigmaEffCladExpList[zoneI])/deltaTClad));
     cladExpSigmaPowList_.set(zoneI,new scalarField((sigmaPowList_[zoneI]-sigmaPowCladExpList[zoneI])/deltaTClad));
     cladExpSigmaDisappList_.set(zoneI,new scalarField((sigmaDisappList_[zoneI]-sigmaDisappCladExpList[zoneI])/deltaTClad));
-    cladExpSigmaFromToList_.set(zoneI,new scalarSquareMatrix(sigmaFromToList_[zoneI]));
-    for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+    cladExpSigmaFromToList_[zoneI].setSize(legendreMoments_);
+    forAll(cladExpSigmaFromToList_[zoneI],momentI)
     {
-        for(label energyI=0; energyI<energyGroups_ ; energyI++)
-        {
-            cladExpSigmaFromToList_[zoneI][energyJ][energyI] = (sigmaFromToList_[zoneI][energyJ][energyI]-sigmaFromToCladExpList[zoneI][energyJ][energyI])/deltaTClad;
-        }
+      cladExpSigmaFromToList_[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+      {
+          for(label energyI=0; energyI<energyGroups_ ; energyI++)
+          {
+              cladExpSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToCladExpList[zoneI][momentI][energyJ][energyI])/deltaTClad;
+          }
+      }
     }
 }
 
