@@ -18,6 +18,8 @@ classes/neutronicClass/neutronics.C
 classes/neutronicClass/XS/XS.C
 classes/neutronicClass/diffusion/diffusionNeutronics.C
 classes/neutronicClass/SP3/SP3Neutronics.C
+classes/neutronicClass/SN/include/legendrePoly.C
+classes/neutronicClass/SN/SNNeutronics.C
 classes/neutronicClass/adjointDiffusion/adjointDiffusionNeutronics.C
 classes/neutronicClass/albedoSP3/albedoSP3FvPatchField.C
 

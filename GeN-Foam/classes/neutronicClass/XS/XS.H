@@ -85,7 +85,6 @@ protected:
 
             label energyGroups_;
             label precGroups_;
-            label discreteDirections_;
             label legendreMoments_;
         
         //Data fields
@@ -222,10 +221,6 @@ public:
         inline const label precGroups() const
         {
             return precGroups_;
-        }
-        inline const label discreteDirections() const
-        {
-            return discreteDirections_;
         }
         inline const label legendreMoments() const
         {

@@ -1,5 +1,29 @@
 // Nuclear data fields
-Info<< "Nuclear data fields\n" << endl;
+Info<< "Create neutro fields\n" << endl;
+
+forAll(angularFlux_,energyI)
+{
+    angularFlux_[energyI].setSize(discreteDirections_);
+    forAll(angularFlux_[energyI],directionI)
+    {
+        angularFlux_[energyI].set
+        (
+            directionI,
+            new volScalarField
+            (
+                IOobject
+                (
+                    "angularFlux_"+Foam::name(energyI)+"_"+Foam::name(directionI),
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::READ_IF_PRESENT,
+                    IOobject::AUTO_WRITE
+                ),
+                defaultFlux_
+            )
+        );
+    }
+}
 
 forAll(flux_,fluxI)
 {
@@ -21,31 +45,7 @@ forAll(flux_,fluxI)
     );
 }
 
-forAll(fluxStar_,fluxI)
-{
-        fluxStar_.set
-        (
-            fluxI,
-            new volScalarField
-            (
-                IOobject
-                (
-                    "fluxStar"+Foam::name(fluxI),
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::READ_IF_PRESENT,
-                    IOobject::AUTO_WRITE
-                ),
-                defaultFlux_
-            )
-        );
-}
-
-oneGroupFlux_ *= 0.0;
-forAll(flux_,energyI)
-{
-    oneGroupFlux_+=flux_[energyI];
-}
+#include "updateScalarFluxes.H"
 
 forAll(prec_,precI)
 {
@@ -72,7 +72,14 @@ forAll(prec_,precI)
     delayedNeutroSource_ += xs_.lambda()[precI]*prec_[precI];
 }
 
-
+forAll(facePhis_, directionI)
+{
+    facePhis_.set
+    (
+        directionI,
+        new surfaceScalarField("",directionVersors_[directionI] & mesh_.Sf())
+    );
+}    
 
 
 

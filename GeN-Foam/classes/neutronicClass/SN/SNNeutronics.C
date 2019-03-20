@@ -55,6 +55,22 @@ Foam::SNNeutronics::SNNeutronics
 :
     neutronics(mesh),//SNNeutronics is derived from neutronics
     xs_(mesh),
+    quadratureSet_
+    (
+        IOobject
+        (
+            "quadratureSet",
+            mesh.time().constant(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    ),
+    discreteDirections_(8*quadratureSet_.lookupOrDefault<int>("discreteDirectionsOct", 1)),
+    directionVersors_(discreteDirections_),
+    directionWeights_(discreteDirections_),
+    legendreMatrices_(xs_.legendreMoments()),
+    facePhis_(discreteDirections_),
     angularFlux_(xs_.energyGroups()),
     prec_(xs_.precGroups()),
     defaultFlux_
@@ -251,6 +267,9 @@ Foam::SNNeutronics::SNNeutronics
 
 {
     #include "createNeutronicsFieldsSN.H"
+    #include "readQuadratureSet.H"
+    #include "calcLegendreMatrices.H"
+
 }
 
 
@@ -264,7 +283,7 @@ Foam::SNNeutronics::~SNNeutronics()
 
 void Foam::SNNeutronics::correct(const label couplingIter, scalar& residual, const bool& liquidFuel ) 
 {
-    #include "solveNeutronics.H"
+    #include "solveNeutronicsSN.H"
 }
 
 

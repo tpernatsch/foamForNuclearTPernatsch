@@ -1,5 +1,5 @@
 // Nuclear data fields
-Info<< "Nuclear data fields\n" << endl;
+Info<< "Create neutro fields\n" << endl;
 
 forAll(flux_,fluxI)
 {

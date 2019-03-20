@@ -1,21 +1,23 @@
 
-PtrList<fvMatrixExt<scalar> > neutroEqList(xs_.energyGroups());
+List<PtrList<fvMatrixExt<scalar> > > neutroEqList(xs_.energyGroups());
 
 forAll(neutroEqList, energyI)
 {
-
-    Dalbedo_ = D[energyI];
-    fluxStarAlbedo_ *= 0.0;
-    neutroEqList.set
-    (
-        energyI,
-        new fvMatrixExt<scalar>
+    neutroEqList[energyI].setSize(discreteDirections_);
+    forAll(neutroEqList[energyI], directionI)
+    {
+        neutroEqList[energyI].set
         (
-             fvm::ddt((1-eigenvalueNeutronics_)*IV[energyI]/discFactor[energyI],fluxStar_[energyI])
-             - fvm::laplacian(D[energyI]/discFactor[energyI],fluxStar_[energyI])
-             - fvm::Sp(nuSigmaEff[energyI]/keff_*(1.0-BetaTot)*chiPrompt[energyI]*(1-eigenvalueNeutronics_)-sigmaDisapp[energyI]/discFactor[energyI],fluxStar_[energyI])
-        )
-    );
+            directionI,
+            new fvMatrixExt<scalar>
+            (
+                fvm::ddt((1-eigenvalueNeutronics_)*IV[energyI],angularFlux_[energyI][directionI])
+                        + fvm::div(facePhis_[directionI], angularFlux_[energyI][directionI])
+                        + fvm::Sp((sigmaDisapp[energyI]+sigmaFromToP[0][energyI][energyI]), angularFlux_[energyI][directionI])
+                        
+            )
+        );
+    }
 }
 
 

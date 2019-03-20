@@ -1,33 +1,39 @@
 neutroResidual = 0.0;
-
+/*
 if(aitkenAcceleration)
 {
     #include "aitkenAcceleration.H"
 }   
+*/
 
 forAll(flux_,energyI)
 {
-    Dalbedo_ = D[energyI];
-    fluxStarAlbedo_ *= 0.0;
-    #include "calcScatteringSource.H"
-    neutroSource_ -= nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_);
+    #include "calcScatteringSourceSN.H"
+    scalar innerResidual = 0.0;
+    int innerIter = 0;
 
-    fvMatrixExt<scalar> neutroEq  = neutroEqList[energyI]
-      - neutroSource_*(1.0-BetaTot)*chiPrompt[energyI]/keff_
-      - delayedNeutroSource_*chiDelayed[energyI]
-      - scatteringSourceExtra_ ;
-
-
-    scalar initRes = neutroEq.initialResidual();
-    neutroResidual = max(neutroResidual,initRes);
-
-    Info<< "neutro Residual = " << initRes << nl << endl;
-
-    neutroEq.solve();
-   
-    flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
-    flux_[energyI].correctBoundaryConditions();
-    neutroSource_ += nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_);
+    do
+    {
+        innerResidual = 0.0;
+        forAll(angularFlux_[energyI], directionI)
+        {
+            #include "calcThisIntraSource.H"
+            scalar localResidual =  solve
+            (
+                neutroEqList[energyI][directionI]
+                ==
+                extraSources[directionI]
+                + intraSources[directionI]
+                + delayedNeutroSource_*chiDelayed[energyI]
+            ).initialResidual();
+        innerResidual = max(innerResidual, localResidual);
+        neutroResidual = max(neutroResidual, localResidual);
+        if(eigenvalueNeutronics_) angularFlux_[energyI][directionI] = max(angularFlux_[energyI][directionI],(angularFlux_[energyI][directionI]*0.0));
+        #include "updateThisScalarFlux.H"
+        }
+        innerIter++;
+    }
+    while((innerResidual > (neutroResidual*innToOutTolerance))&&(innerIter < maxInnerIter));
 
 }
 

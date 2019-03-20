@@ -42,7 +42,10 @@ Reference publications
 
 
 Author
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+    Derived by Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+    from the work of Manuele Aufiero, "D EVELOPMENT OF ADVANCED SIMULATION TOOLS FOR
+    CIRCULATING - FUEL NUCLEAR REACTORS", PhD Dissertation, Politecnico Di Milano
+
 
 \*---------------------------------------------------------------------------*/
 
@@ -71,6 +74,14 @@ protected:
 
         // Cross sections
         XS xs_;
+
+        //quadrature Set
+        IOdictionary quadratureSet_;
+        label discreteDirections_;
+        vectorField directionVersors_;
+        scalarField directionWeights_;
+        PtrList<scalarSquareMatrix> legendreMatrices_;
+        PtrList<surfaceScalarField>  facePhis_;
 
         //Fields
         List<PtrList<volScalarField> > angularFlux_;
@@ -138,6 +149,11 @@ public:
             virtual inline const PtrList<volScalarField> precursors() const
             {
                 return prec_;
+            }
+
+            inline const label discreteDirections() const
+            {
+                return discreteDirections_;
             }
 
             //- Return one group flux

@@ -1,5 +1,5 @@
 // Nuclear data fields
-Info<< "Nuclear data fields\n" << endl;
+Info<< "Creating nuclear data fields\n" << endl;
 
 
 forAll(IV_, i)

@@ -121,7 +121,6 @@ Foam::XS::XS
     ),
     energyGroups_(nuclearData_.lookupOrDefault("energyGroups",1)),
     precGroups_(nuclearData_.lookupOrDefault("precGroups",1)),
-    discreteDirections_(nuclearData_.lookupOrDefault("discreteDirections",1)),
     legendreMoments_(1+nuclearData_.lookupOrDefault("legendreMoments_",0)),
     IV_(energyGroups_),
     D_(energyGroups_),

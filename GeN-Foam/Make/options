@@ -19,6 +19,8 @@ EXE_INC = \
     -I./classes/neutronicClass/diffusion/include \
     -I./classes/neutronicClass/SP3 \
     -I./classes/neutronicClass/SP3/include \
+    -I./classes/neutronicClass/SN\
+    -I./classes/neutronicClass/SN/include \
     -I./classes/neutronicClass/adjointDiffusion \
     -I./classes/neutronicClass/adjointDiffusion/include \
     -I./classes/neutronicClass/XS \

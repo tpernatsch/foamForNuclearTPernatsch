@@ -1,7 +1,8 @@
 
-forAll(fluxStar_, energyI)
+forAll(flux_, energyI)
 {
-    fluxStar_[energyI] *= pTarget_/pTot;
-    flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
+	forAll(angularFlux_[energyI], directionI)
+	{
+		angularFlux_[energyI][directionI] *= pTarget_/pTot;
+	}
 }
-
