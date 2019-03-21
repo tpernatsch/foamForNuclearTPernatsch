@@ -10,11 +10,13 @@ const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransp
 
 scalar neutronIterationResidual =
     neutronTransport.lookupOrDefault<scalar>("neutronIterationResidual", 0.00001);
+
 int maxNeutronIterations =
     neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
 scalar innToOutTolerance =
     neutronTransport.lookupOrDefault<scalar>("innToOutTolerance", 0.01);    
+
 int maxInnerIter =
     neutronTransport.lookupOrDefault<int>("maxInnerIter", 10);
 
@@ -24,20 +26,25 @@ int maxInnerIter =
 //List<scalar> integralFlux1(xs_.energyGroups());
 //List<scalar> integralFlux2(xs_.energyGroups());
 
-scalar pTot(1.0); 
+scalar pTot(power()); 
 
 if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeIndex())==1 )
 {
+    //#include "normFluxesSN.H"
+    #include "updateScalarFluxes.H"
     pTot = power();
+    Info << pTot << endl;
     #include "normFluxesSN.H"
     #include "updateScalarFluxes.H"
     pTot = power();
 }
 
+
 #include "initializeNeutroSource.H"
 #include "precEq.H"
 
 #include "initializeDelayedNeutroSource.H"
+
 /*
 if(!eigenvalueNeutronics_ && couplingIter == 0)
 {
@@ -87,8 +94,6 @@ forAll(flux_,energyI)
 
 pTot = power();
 
-Info << "power: " << pTot << endl;
-
 Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl; 
 
 volFuelPower_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
@@ -115,7 +120,7 @@ if (eigenvalueNeutronics_)
     );
 
     #include "normFluxesSN.H"
-    #include "updateScalarFluxes.H"
+    //#include "updateScalarFluxes.H"
 }
 
 residual = max(residual,neutroResidual);

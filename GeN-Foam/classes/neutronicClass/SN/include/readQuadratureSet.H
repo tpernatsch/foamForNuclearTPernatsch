@@ -7,9 +7,6 @@ scalarField directionUyOct("directionUyOct", quadratureSet_, discreteDirectionsO
 scalarField directionUzOct("directionUzOct", quadratureSet_, discreteDirectionsOct);
 scalarField directionWeightsOct("directionWeightsOct", quadratureSet_, discreteDirectionsOct);
 
-vectorField directionVersors_(discreteDirections_);
-scalarField directionWeights_(discreteDirections_);
-
 vectorField octants(8);
 octants[0] = vector(1.00, 1.00, 1.00);
 octants[1] = vector(-1.0, 1.00, 1.00);
@@ -94,7 +91,5 @@ Info<< "totalDirectionsWeight: " << totalDirectionsWeight << endl;
 Info<< "maxVersorLenght: " << maxVersorLenght <<  endl;
 
 Info<< "minVersorLenght: " << minVersorLenght << nl << endl;
-
-Info<< "Calculating mu matrix\n" << endl;
 
 

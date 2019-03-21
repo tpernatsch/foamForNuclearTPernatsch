@@ -1,8 +1,7 @@
-Info<< "Calculating intraSource\n" << endl;
 
 isotropicIntraSource *= 0.0;
 
-isotropicIntraSource += flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) * keff_ + sigmaFromToP[0][energyI][energyI] );
+isotropicIntraSource += flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToP[0][energyI][energyI] );
 
 intraSources[directionI] = isotropicIntraSource;
 
@@ -18,8 +17,5 @@ if (xs_.legendreMoments() > 1)
         intraSources[directionI] += angularFlux_[energyI][directionJ] * directionWeights_[directionJ] * intraSourceScatteringCoeff ;
     }
 }
-        
-Info<< "Done\n" << endl;
-
 
 

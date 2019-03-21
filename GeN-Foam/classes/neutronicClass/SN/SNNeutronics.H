@@ -81,6 +81,7 @@ protected:
         vectorField directionVersors_;
         scalarField directionWeights_;
         PtrList<scalarSquareMatrix> legendreMatrices_;
+        surfaceScalarField facePhi_;
         PtrList<surfaceScalarField>  facePhis_;
 
         //Fields

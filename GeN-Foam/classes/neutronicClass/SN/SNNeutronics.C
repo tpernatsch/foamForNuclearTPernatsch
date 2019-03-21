@@ -70,6 +70,7 @@ Foam::SNNeutronics::SNNeutronics
     directionVersors_(discreteDirections_),
     directionWeights_(discreteDirections_),
     legendreMatrices_(xs_.legendreMoments()),
+    facePhi_("facePhi",vector(1, 0, 0) & mesh_.Sf()),
     facePhis_(discreteDirections_),
     angularFlux_(xs_.energyGroups()),
     prec_(xs_.precGroups()),
@@ -266,10 +267,9 @@ Foam::SNNeutronics::SNNeutronics
     )
 
 {
-    #include "createNeutronicsFieldsSN.H"
     #include "readQuadratureSet.H"
     #include "calcLegendreMatrices.H"
-
+    #include "createNeutronicsFieldsSN.H"
 }
 
 
