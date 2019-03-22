@@ -31,7 +31,7 @@ meshToMesh TMToNeutro
 (
     mechMesh,
     neutroMesh,
-    Foam::meshToMesh::interpolationMethod(1),
+    Foam::meshToMesh::interpolationMethod(2),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );

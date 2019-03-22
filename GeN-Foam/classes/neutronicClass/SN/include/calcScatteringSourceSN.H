@@ -18,7 +18,7 @@ if (xs_.legendreMoments() > 1)
     {
         forAll(angularFlux_[energyI], directionJ)
         {
-            volScalarField intraSourceScatteringCoeff = isotropicIntraSource*0.0; 
+            volScalarField intraSourceScatteringCoeff = sigmaFromToP[0][energyI][energyI]*0.0; 
             for(int momentL = 1; momentL < xs_.legendreMoments(); momentL++)
             {
                 intraSourceScatteringCoeff += legendreMatrices_[momentL][directionJ][directionI] * sigmaFromToP[momentL][energyI][energyI] * (2.0 * momentL + 1.0);
@@ -64,7 +64,7 @@ if (xs_.legendreMoments() > 1)
             {
                 forAll(angularFlux_[energyJ], directionJ)
                 {
-                    volScalarField extraSourceScatteringCoeff = isotropicExtraSource*0.0; 
+                    volScalarField extraSourceScatteringCoeff = sigmaFromToP[0][energyI][energyI]*0.0; 
                     for(int momentL = 1; momentL < xs_.legendreMoments(); momentL++)
                     {
                         extraSourceScatteringCoeff += legendreMatrices_[momentL][directionJ][directionI] * sigmaFromToP[momentL][energyJ][energyI] * (2.0 * momentL + 1.0);

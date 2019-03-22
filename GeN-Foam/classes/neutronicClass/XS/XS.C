@@ -121,7 +121,7 @@ Foam::XS::XS
     ),
     energyGroups_(nuclearData_.lookupOrDefault("energyGroups",1)),
     precGroups_(nuclearData_.lookupOrDefault("precGroups",1)),
-    legendreMoments_(1+nuclearData_.lookupOrDefault("legendreMoments_",0)),
+    legendreMoments_(1+nuclearData_.lookupOrDefault("legendreMoments",0)),
     IV_(energyGroups_),
     D_(energyGroups_),
     nuSigmaEff_(energyGroups_),
