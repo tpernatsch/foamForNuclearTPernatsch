@@ -25,25 +25,24 @@ int maxInnerIter =
 //List<scalar> integralFlux0(xs_.energyGroups());
 //List<scalar> integralFlux1(xs_.energyGroups());
 //List<scalar> integralFlux2(xs_.energyGroups());
-
+#include "updateScalarFluxes.H"
 scalar pTot(power()); 
+#include "initializeNeutroSource.H"
+#include "precEq.H"
+#include "initializeDelayedNeutroSource.H"
 
 if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeIndex())==1 )
 {
-    //#include "normFluxesSN.H"
-    #include "updateScalarFluxes.H"
-    pTot = power();
-    Info << pTot << endl;
+
     #include "normFluxesSN.H"
-    #include "updateScalarFluxes.H"
-    pTot = power();
+
 }
+#include "updateScalarFluxes.H"
+//pTot = power();
 
 
-#include "initializeNeutroSource.H"
-#include "precEq.H"
 
-#include "initializeDelayedNeutroSource.H"
+
 
 /*
 if(!eigenvalueNeutronics_ && couplingIter == 0)

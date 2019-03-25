@@ -213,9 +213,11 @@ forAll(nuSigmaEff_,energyI)
                   + axialExpSigmaDisappList_[zone][energyI]*(axExp[cellIglobal])
                   + radialExpSigmaDisappList_[zone][energyI]*(radExp[cellIglobal]);
 
+
+
                   forAll(sigmaFromTo_,momentI)  
                   {
-                    forAll(sigmaFromTo_,energyJ)
+                    forAll(sigmaFromTo_[momentI],energyJ)
                     {
                         sigmaFromTo_[momentI][energyJ][energyI][cellIglobal]
                      += rhoCoolSigmaFromToList_[zone][momentI][energyJ][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)

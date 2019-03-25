@@ -104,6 +104,7 @@ protected:
             scalar ScNo_;
         
         //XS
+            PtrList<entry> entries_;
             label zoneNumber_;
 
         //Disc factors
@@ -123,7 +124,6 @@ protected:
             bool useGivenDiscFactors_;
             List<int> groupsWoDF_;
             List<int> doNotParametrize_;
-            PtrList<entry> entries_;
             //Constants
             PtrList<scalarField > IVList_;
             PtrList<scalarField > chiPromptList_;
