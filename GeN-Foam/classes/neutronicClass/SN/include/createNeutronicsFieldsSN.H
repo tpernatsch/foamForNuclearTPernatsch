@@ -46,9 +46,9 @@ forAll(flux_,fluxI)
 }
 
 
-scalar pTot(power()); 
-#include "normFluxesSN.H"
-#include "updateScalarFluxes.H"
+//scalar pTot(power()); 
+//#include "normFluxesSN.H"
+//#include "updateScalarFluxes.H"
 
 forAll(prec_,precI)
 {

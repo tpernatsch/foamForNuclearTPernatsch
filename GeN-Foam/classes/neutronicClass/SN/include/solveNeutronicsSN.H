@@ -3,6 +3,8 @@ Info << "Solving neutronics" << endl ;
 xs_.correct(Tfuel_,Tclad_,rhoCool_,TCool_,Disp_);
 #include "setXSFieldsSN.H"
 
+//#include "createSourceSN.H"
+
 const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransport");
 //const bool integralPredictor = neutronTransport.lookupOrDefault("integralPredictor", false);
 //const bool implicitPredictor = neutronTransport.lookupOrDefault("implicitPredictor", false);
@@ -25,19 +27,29 @@ int maxInnerIter =
 //List<scalar> integralFlux0(xs_.energyGroups());
 //List<scalar> integralFlux1(xs_.energyGroups());
 //List<scalar> integralFlux2(xs_.energyGroups());
+
+//#include "updateScalarFluxes.H"
+/*
+if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeIndex())==1 )
+{
+    pTot = power();
+    #include "normFluxesSN.H"
+    pTot = power();
+
+}
+*/
+
 #include "updateScalarFluxes.H"
 scalar pTot(power()); 
 #include "initializeNeutroSource.H"
 #include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
-
 if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeIndex())==1 )
 {
-
     #include "normFluxesSN.H"
-
 }
 #include "updateScalarFluxes.H"
+
 //pTot = power();
 
 
@@ -65,7 +77,7 @@ bool aitkenYesNo = true;
 */
 int neutroIter = 0;
 
-#include "createFluxMatricesSN.H"
+//#include "createFluxMatricesSN.H"
 
 scalar neutroResidual = 0.0;
 
@@ -74,9 +86,10 @@ do
     Info << "Neutron iteration no:  " << neutroIter << nl << endl;
 
     #include "fluxEqSN.H"
-    #include "updateScalarFluxes.H"
-    #include "precEq.H"
-    #include "initializeDelayedNeutroSource.H"
+    //#include "updateScalarFluxes.H"
+    //#include "initializeNeutroSource.H"
+    //#include "precEq.H"
+    //#include "initializeDelayedNeutroSource.H"
    
     neutroIter++;
 
@@ -84,6 +97,8 @@ do
     << neutroIter << "): " << neutroResidual << endl;// << " after Aitken no: " << aitkenIterNo << endl;     
 
 }while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
+
+#include "updateScalarFluxes.H"
 
 volFuelPower_*=0.0;
 forAll(flux_,energyI)
@@ -121,6 +136,8 @@ if (eigenvalueNeutronics_)
     #include "normFluxesSN.H"
     //#include "updateScalarFluxes.H"
 }
+
+
 
 residual = max(residual,neutroResidual);
 

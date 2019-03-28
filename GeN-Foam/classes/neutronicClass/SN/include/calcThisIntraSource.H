@@ -1,7 +1,7 @@
 
 isotropicIntraSource *= 0.0;
 
-isotropicIntraSource += flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToP[0][energyI][energyI] );
+isotropicIntraSource += flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToP[0][energyI][energyI]);
 
 intraSources[directionI] = isotropicIntraSource;
 

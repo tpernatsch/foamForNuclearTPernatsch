@@ -13,3 +13,4 @@ const PtrList<volScalarField>& lambda = xs_.lambda();
 const volScalarField& fuelFraction = xs_.fuelFraction();
 const PtrList<volScalarField >& discFactor = xs_.discFactor();
 Info << "done: set XS fields" << endl ;
+

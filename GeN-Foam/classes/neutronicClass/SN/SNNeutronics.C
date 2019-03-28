@@ -141,20 +141,6 @@ Foam::SNNeutronics::SNNeutronics
         dimensionedScalar("", dimensionSet(0,-3,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    scatteringSourceExtra_
-    (
-        IOobject
-        (
-            "scatteringSourceExtra",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimensionSet(0,-3,-1,0,0,0,0), 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
     U_
     (
         IOobject

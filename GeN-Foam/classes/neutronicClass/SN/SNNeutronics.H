@@ -95,7 +95,6 @@ protected:
         volScalarField oneGroupFlux_;
         volScalarField neutroSource_;
         volScalarField delayedNeutroSource_;
-        volScalarField scatteringSourceExtra_;
 
         //mappedFields
         volVectorField U_;

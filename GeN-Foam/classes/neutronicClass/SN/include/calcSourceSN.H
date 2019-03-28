@@ -5,11 +5,14 @@ Info<< "Calculating intraSources" << endl;
 
 PtrList<volScalarField> intraSources(discreteDirections_);
 
-volScalarField isotropicIntraSource = flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToP[0][energyI][energyI] );
+volScalarField isotropicIntraSource = flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToP[0][energyI][energyI]);
+//isotropicIntraSource = flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ );
+
 
 forAll(angularFlux_[energyI], directionI)
 {
-    intraSources.set(directionI, new  volScalarField(isotropicIntraSource));
+    intraSources.set(directionI, new  volScalarField("",isotropicIntraSource));
+    //intraSources[directionI] = isotropicIntraSource;
 }
 
 if (xs_.legendreMoments() > 1)
@@ -38,6 +41,7 @@ Info<< "Calculating extraSources" << endl;
 PtrList<volScalarField> extraSources(discreteDirections_);
 
 volScalarField isotropicExtraSource = isotropicIntraSource * 0.0;
+//isotropicExtraSource = isotropicIntraSource * 0.0;
 
 forAll(flux_, energyJ)
 {
@@ -51,7 +55,8 @@ forAll(flux_, energyJ)
 
 forAll(angularFlux_[energyI], directionI)
 {
-    extraSources.set(directionI, new  volScalarField(isotropicExtraSource));
+    extraSources.set(directionI, new  volScalarField("", isotropicExtraSource));
+    //extraSources[directionI] = isotropicExtraSource;
 }
 
 if (xs_.legendreMoments() > 1)
