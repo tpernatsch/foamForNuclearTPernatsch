@@ -26,7 +26,8 @@ forAll(flux_,energyI)
                 //neutroEqList[energyI][directionI]
                 fvm::ddt((1-eigenvalueNeutronics_)*IV[energyI],angularFlux_[energyI][directionI])
                 + fvm::div(facePhi_, angularFlux_[energyI][directionI],"div(facePhi_,angularFlux_)")
-                + fvm::Sp(sigmaDisapp[energyI] + sigmaFromToP[0][energyI][energyI], angularFlux_[energyI][directionI])
+                //+ fvm::Sp(sigmaDisapp[energyI] + sigmaFromToP[0][energyI][energyI], angularFlux_[energyI][directionI])
+                + fvm::Sp(sigmaDisapp[energyI] + sigmaFromToTempEIEI[0], angularFlux_[energyI][directionI])
                 ==
                 extraSources[directionI]
                 + intraSources[directionI]

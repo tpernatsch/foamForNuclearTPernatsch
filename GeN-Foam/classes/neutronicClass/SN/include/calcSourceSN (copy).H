@@ -5,17 +5,7 @@ Info<< "Calculating intraSources" << endl;
 
 PtrList<volScalarField> intraSources(discreteDirections_);
 
-PtrList<volScalarField> sigmaFromToTempEIEI(xs_.legendreMoments());
-forAll(sigmaFromToTempEIEI,momentL)
-{
-    sigmaFromToTempEIEI.set
-    (
-        momentL,
-        new volScalarField(xs_.sigmaFromTo(momentL,energyI,energyI,Tfuel_,Tclad_,rhoCool_,TCool_,Disp_))
-    );
-}
-
-volScalarField isotropicIntraSource = flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToTempEIEI[0]);
+volScalarField isotropicIntraSource = flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToP[0][energyI][energyI]);
 //isotropicIntraSource = flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ );
 
 
@@ -27,15 +17,14 @@ forAll(angularFlux_[energyI], directionI)
 
 if (xs_.legendreMoments() > 1)
 {
-    
     forAll(angularFlux_[energyI], directionI)
     {
         forAll(angularFlux_[energyI], directionJ)
         {
-            volScalarField intraSourceScatteringCoeff = nuSigmaEff[energyI]*0.0; 
+            volScalarField intraSourceScatteringCoeff = sigmaFromToP[0][energyI][energyI]*0.0; 
             for(int momentL = 1; momentL < xs_.legendreMoments(); momentL++)
             {
-                intraSourceScatteringCoeff += legendreMatrices_[momentL][directionJ][directionI] * sigmaFromToTempEIEI[momentL] * (2.0 * momentL + 1.0);
+                intraSourceScatteringCoeff += legendreMatrices_[momentL][directionJ][directionI] * sigmaFromToP[momentL][energyI][energyI] * (2.0 * momentL + 1.0);
             }
             intraSources[directionI] += angularFlux_[energyI][directionJ] * directionWeights_[directionJ] * intraSourceScatteringCoeff ;
         }
@@ -51,21 +40,6 @@ Info<< "Calculating extraSources" << endl;
 
 PtrList<volScalarField> extraSources(discreteDirections_);
 
-List<PtrList<volScalarField> > sigmaFromToTempEJEI(xs_.legendreMoments());
-forAll(sigmaFromToTempEJEI,momentL)
-{
-    sigmaFromToTempEJEI[momentL].setSize(xs_.energyGroups());
-    forAll(sigmaFromToTempEJEI[momentL],energyJ)
-    {
-        sigmaFromToTempEJEI[momentL].set
-        (
-            energyJ,
-            new volScalarField(xs_.sigmaFromTo(momentL,energyJ,energyI,Tfuel_,Tclad_,rhoCool_,TCool_,Disp_))
-        );
-    }
-
-}
-
 volScalarField isotropicExtraSource = isotropicIntraSource * 0.0;
 //isotropicExtraSource = isotropicIntraSource * 0.0;
 
@@ -73,7 +47,7 @@ forAll(flux_, energyJ)
 {
     if (energyJ != energyI)
     {
-        isotropicExtraSource += flux_[energyJ] * (nuSigmaEff[energyJ] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToTempEJEI[0][energyJ] );
+        isotropicExtraSource += flux_[energyJ] * (nuSigmaEff[energyJ] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToP[0][energyJ][energyI] );
         
     }
 }
@@ -95,10 +69,10 @@ if (xs_.legendreMoments() > 1)
             {
                 forAll(angularFlux_[energyJ], directionJ)
                 {
-                    volScalarField extraSourceScatteringCoeff = nuSigmaEff[energyI]*0.0; 
+                    volScalarField extraSourceScatteringCoeff = sigmaFromToP[0][energyI][energyI]*0.0; 
                     for(int momentL = 1; momentL < xs_.legendreMoments(); momentL++)
                     {
-                        extraSourceScatteringCoeff += legendreMatrices_[momentL][directionJ][directionI] * sigmaFromToTempEJEI[momentL][energyJ] * (2.0 * momentL + 1.0);
+                        extraSourceScatteringCoeff += legendreMatrices_[momentL][directionJ][directionI] * sigmaFromToP[momentL][energyJ][energyI] * (2.0 * momentL + 1.0);
                     }
                     extraSources[directionI] += angularFlux_[energyJ][directionJ] * directionWeights_[directionJ] * extraSourceScatteringCoeff ;
                 }

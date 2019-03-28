@@ -23,8 +23,10 @@ EXE_INC = \
     -I./classes/neutronicClass/SN/include \
     -I./classes/neutronicClass/adjointDiffusion \
     -I./classes/neutronicClass/adjointDiffusion/include \
-    -I./classes/neutronicClass/XS \
-    -I./classes/neutronicClass/XS/include \
+    -I./classes/neutronicClass/XS/XS \
+    -I./classes/neutronicClass/XS/XS/include \
+    -I./classes/neutronicClass/XS/XSLowMem \
+    -I./classes/neutronicClass/XS/XSLowMem/include \
     -I./classes/thermoMechanicClass \
     -I./classes/thermoMechanicClass/include \
     -I./classes/thermoMechanicClass/linearElastic \

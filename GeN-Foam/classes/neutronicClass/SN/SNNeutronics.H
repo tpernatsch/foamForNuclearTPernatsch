@@ -53,7 +53,7 @@ Author
 #define SNNeutronics_H
 
 #include "neutronics.H"
-#include "XS.H"
+#include "XSLowMem.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -73,7 +73,7 @@ protected:
     // Protected data
 
         // Cross sections
-        XS xs_;
+        XSLowMem xs_;
 
         //quadrature Set
         IOdictionary quadratureSet_;
