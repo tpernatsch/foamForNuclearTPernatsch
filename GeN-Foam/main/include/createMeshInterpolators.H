@@ -31,7 +31,7 @@ meshToMesh TMToNeutro
 (
     mechMesh,
     neutroMesh,
-    Foam::meshToMesh::interpolationMethod(2),
+    Foam::meshToMesh::interpolationMethod(runTime.controlDict().lookupOrDefault("TMToNeutro_interpMethod", 2)),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
@@ -40,7 +40,7 @@ meshToMesh TMToFluid
 (
     mechMesh,
     fluidMeshNB,
-    Foam::meshToMesh::interpolationMethod(2),
+    Foam::meshToMesh::interpolationMethod(runTime.controlDict().lookupOrDefault("TMToFluid_interpMethod", 2)),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
@@ -49,7 +49,7 @@ meshToMesh neutroToFluid
 (
     neutroMesh,
     fluidMeshNB,
-    Foam::meshToMesh::interpolationMethod(2),
+    Foam::meshToMesh::interpolationMethod(runTime.controlDict().lookupOrDefault("neutroToFluid_interpMethod", 2)),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
@@ -58,7 +58,7 @@ meshToMesh fluidToNeutro
 (
     fluidMesh,
     neutroMesh,
-    Foam::meshToMesh::interpolationMethod(2),
+    Foam::meshToMesh::interpolationMethod(runTime.controlDict().lookupOrDefault("fluidToNeutro_interpMethod", 2)),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
