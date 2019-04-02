@@ -1,0 +1,78 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "prec.*"
+    {
+        solver          PBiCG;//PCG;
+        preconditioner  DILU;//DIC;
+        tolerance       1e-6;
+        relTol          1e-3;
+    }
+    "flux.*"
+    { 
+      
+
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-7;
+        relTol          1e-1;
+
+     /*
+        solver          GAMG;
+        tolerance       1e-6;
+        relTol          0.1;
+
+        smoother        DICGaussSeidel;//;
+        nPostSweeps     1;
+        nPreSweeps      1;
+        nFinestSweeps   1;
+
+        cacheAgglomeration  true;
+        nCellsInCoarsestLevel 20;
+        agglomerator     faceAreaPair;
+        mergeLevels      1;
+        processorAgglomerator masterCoarsest;
+    */
+    }
+    "angularFlux.*"
+    { 
+      
+
+        solver          PBiCGStab;//GAMG;//
+	//smoother        GaussSeidel;//;
+        preconditioner  DILU;
+        tolerance       1e-7;
+        relTol          1e-1;
+
+    }
+}
+
+neutronTransport
+{
+    maxInnerIter		3; // for SN. Max numer of iteations on directions
+    innToOutTolerance   	0.01; // for SN. Tolerance on directions vs tolerance on energies
+    integralPredictor           false; // integral neutron balance made at each time step to predict fluxes at next step (can be unstable)
+    implicitPredictor           false;
+    ROMAcceleration             false;
+    aitkenAcceleration          false;
+    neutronIterationResidual    0.000001; // required accuracy for the coupling of different energy groups
+    maxNeutronIterations        50; // up to 3-400 if no acceleration techniques 
+}
+
+// ************************************************************************* //

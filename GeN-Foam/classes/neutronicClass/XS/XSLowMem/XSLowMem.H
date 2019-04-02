@@ -25,7 +25,14 @@ Class
     Foam::XSLowMem
 
 Description
-Class for XSLowMem parametrization
+Class for XS parametrization. Used in SNNeutronics. Low memory version of XS. 
+Essentially it does not store the full scattering matrix, but it parametrize and
+return each component on request.
+One additional feature is that it creates (and can return) a sigmaFromToYesNo 
+matrix that is filled with zeros and ones. One in position  (i,j) implies
+that there is an exchange of neutrons from group i to j somewhere in the geometry.
+It can be used to speed up the calculations of scattering sources.
+
 
 
 \*---------------------------------------------------------------------------*/
@@ -102,8 +109,10 @@ protected:
             volScalarField fuelFraction_;
             PtrList<volScalarField > discFactor_;
             scalar ScNo_;
+
+            SquareMatrix<label> sigmaFromToYesNo_; //1 if there is transfer
         
-        //XSLowMem
+        //XS
             PtrList<entry> entries_;
             label zoneNumber_;
 
@@ -297,6 +306,11 @@ public:
         inline const scalar ScNo() const
         {
             return ScNo_;
+        }
+
+        inline const SquareMatrix<label> sigmaFromToYesNo() const
+        {
+            return sigmaFromToYesNo_;
         }
 
     // Constructors

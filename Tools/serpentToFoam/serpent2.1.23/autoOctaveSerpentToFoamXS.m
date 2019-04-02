@@ -78,7 +78,7 @@ fprintf("\nNumber of energy groups: %i\n", ng);
 
 %numero ritardati
 %nd = PRECURSOR_GROUPS(idx);
-nd = length (FWD_ANA_BETA_ZERO)/2 -1;
+nd = length (FWD_ANA_BETA_ZERO(1,:))/2 -1;
 fprintf("\nNumber of delayed neutron precursor group: %i\n", nd);
 
 
@@ -205,13 +205,68 @@ for(k=1:size(SERPENT_NAME,1))
 		fprintf(fid," );");
 
 		%scattering matrix
-		fprintf(fid,"\n scatteringMatrix  %i  %i ( \n",ng,ng);
+		fprintf(fid,"\n scatteringMatrixP0  %i  %i ( \n",ng,ng);
 		MS = zeros(ng,ng);
 		for i = 1:ng
 				fprintf(fid," (");
 				for j = 1:ng
 						MS(i,j) = INF_SP0(idx,2*(i-1)*ng+2*j-1);
 						fprintf(fid," %.6e ",MS(i,j)/cm2m);
+				end
+				fprintf(fid,")\n ");
+		end
+		fprintf(fid,");");
+		fprintf(fid,"\n scatteringMatrixP1  %i  %i ( \n",ng,ng);
+		MS1 = zeros(ng,ng);
+		for i = 1:ng
+				fprintf(fid," (");
+				for j = 1:ng
+						MS1(i,j) = INF_SP1(idx,2*(i-1)*ng+2*j-1);
+						fprintf(fid," %.6e ",MS1(i,j)/cm2m);
+				end
+				fprintf(fid,")\n ");
+		end
+		fprintf(fid,");");
+		fprintf(fid,"\n scatteringMatrixP2  %i  %i ( \n",ng,ng);
+		MS2 = zeros(ng,ng);
+		for i = 1:ng
+				fprintf(fid," (");
+				for j = 1:ng
+						MS2(i,j) = INF_SP2(idx,2*(i-1)*ng+2*j-1);
+						fprintf(fid," %.6e ",MS2(i,j)/cm2m);
+				end
+				fprintf(fid,")\n ");
+		end
+		fprintf(fid,");");
+		fprintf(fid,"\n scatteringMatrixP3  %i  %i ( \n",ng,ng);
+		MS3 = zeros(ng,ng);
+		for i = 1:ng
+				fprintf(fid," (");
+				for j = 1:ng
+						MS3(i,j) = INF_SP3(idx,2*(i-1)*ng+2*j-1);
+						fprintf(fid," %.6e ",MS3(i,j)/cm2m);
+				end
+				fprintf(fid,")\n ");
+		end
+		fprintf(fid,");");
+		fprintf(fid,"\n scatteringMatrixP4  %i  %i ( \n",ng,ng);
+		MS4 = zeros(ng,ng);
+		for i = 1:ng
+				fprintf(fid," (");
+				for j = 1:ng
+						MS4(i,j) = INF_SP4(idx,2*(i-1)*ng+2*j-1);
+						fprintf(fid," %.6e ",MS4(i,j)/cm2m);
+				end
+				fprintf(fid,")\n ");
+		end
+		fprintf(fid,");");
+		fprintf(fid,"\n scatteringMatrixP5  %i  %i ( \n",ng,ng);
+		MS5 = zeros(ng,ng);
+		for i = 1:ng
+				fprintf(fid," (");
+				for j = 1:ng
+						MS5(i,j) = INF_SP5(idx,2*(i-1)*ng+2*j-1);
+						fprintf(fid," %.6e ",MS5(i,j)/cm2m);
 				end
 				fprintf(fid,")\n ");
 		end

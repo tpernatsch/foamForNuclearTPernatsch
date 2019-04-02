@@ -39,7 +39,7 @@ radialReflector
  D nonuniform List<scalar> 1 (1.542210e-02  );
  nuSigmaEff nonuniform List<scalar> 1 (0.000000e+00  );
  sigmaPow nonuniform List<scalar> 1 (0.000000e+00  );
- scatteringMatrix  1  1 ( 
+ scatteringMatrixP0  1  1 ( 
  ( 3.865820e+01 )
  );
  sigmaDisapp nonuniform List<scalar> 1 (1.796000e-01  );
@@ -55,7 +55,7 @@ lowerGasPlenum
  D nonuniform List<scalar> 1 (3.335470e-02  );
  nuSigmaEff nonuniform List<scalar> 1 (0.000000e+00  );
  sigmaPow nonuniform List<scalar> 1 (0.000000e+00  );
- scatteringMatrix  1  1 ( 
+ scatteringMatrixP0  1  1 ( 
  ( 1.395840e+01 )
  );
  sigmaDisapp nonuniform List<scalar> 1 (7.560000e-02  );
@@ -71,7 +71,7 @@ lowerReflector
  D nonuniform List<scalar> 1 (1.582720e-02  );
  nuSigmaEff nonuniform List<scalar> 1 (0.000000e+00  );
  sigmaPow nonuniform List<scalar> 1 (0.000000e+00  );
- scatteringMatrix  1  1 ( 
+ scatteringMatrixP0  1  1 ( 
  ( 3.606600e+01 )
  );
  sigmaDisapp nonuniform List<scalar> 1 (1.438000e-01  );
@@ -87,7 +87,7 @@ innerCore
  D nonuniform List<scalar> 1 (1.347560e-02  );
  nuSigmaEff nonuniform List<scalar> 1 (7.020940e-01  );
  sigmaPow nonuniform List<scalar> 1 (8.0107803e-12  ); //4.999936e+01  
- scatteringMatrix  1  1 ( 
+ scatteringMatrixP0  1  1 ( 
  ( 3.066120e+01 )
  );
  sigmaDisapp nonuniform List<scalar> 1 (6.156000e-01  );
@@ -103,7 +103,7 @@ outerCore
  D nonuniform List<scalar> 1 (1.368020e-02  );
  nuSigmaEff nonuniform List<scalar> 1 (8.037240e-01  );
  sigmaPow nonuniform List<scalar> 1 (9.1476319e-12  ); //5.709503e+01  
- scatteringMatrix  1  1 ( 
+ scatteringMatrixP0  1  1 ( 
  ( 3.031310e+01 )
  );
  sigmaDisapp nonuniform List<scalar> 1 (6.421000e-01  );
@@ -119,7 +119,7 @@ upperGasPlenum
  D nonuniform List<scalar> 1 (4.297410e-02  );
  nuSigmaEff nonuniform List<scalar> 1 (0.000000e+00  );
  sigmaPow nonuniform List<scalar> 1 (0.000000e+00  );
- scatteringMatrix  1  1 ( 
+ scatteringMatrixP0  1  1 ( 
  ( 1.147340e+01 )
  );
  sigmaDisapp nonuniform List<scalar> 1 (2.830000e-02  );
@@ -135,7 +135,7 @@ upperReflector
  D nonuniform List<scalar> 1 (1.563120e-02  );
  nuSigmaEff nonuniform List<scalar> 1 (0.000000e+00  );
  sigmaPow nonuniform List<scalar> 1 (0.000000e+00  );
- scatteringMatrix  1  1 ( 
+ scatteringMatrixP0  1  1 ( 
  ( 3.685310e+01 )
  );
  sigmaDisapp nonuniform List<scalar> 1 (1.713000e-01  );

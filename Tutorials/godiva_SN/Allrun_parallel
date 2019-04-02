@@ -1,0 +1,7 @@
+#!/bin/sh
+exe="GeN-Foam"
+decomposePar -region thermoMechanicalRegion
+decomposePar -region fluidRegion
+decomposePar -region neutroRegion
+mpirun -np 4 $exe -parallel | tee log
+

@@ -43,20 +43,6 @@ forAll(directionVersors_, directionI)
     minVersorLenght = min(mag(directionVersors_[directionI]),minVersorLenght);
 }
     
-Info<< "Done\n" << endl;
-
-
-Info<< "Check report:" << endl;
-
-Info<< "totalDirectionsWeight: " << totalDirectionsWeight << nl << "4 pi: " << 4*Foam::constant::mathematical::pi << endl;
-
-Info<< "maxVersorLenght: " << maxVersorLenght <<  endl;
-
-Info<< "minVersorLenght: " << minVersorLenght <<  endl;
-
-Info<< "Renormalizing directions (weight and lengths)\n" << nl << endl;
-
-
 
 Info<< "Normalizing to 1 instead of 4*pi..." << endl;
 
@@ -67,9 +53,9 @@ forAll(directionVersors_, directionI)
     directionVersors_[directionI] *= 1/mag(directionVersors_[directionI]);
 }
     
-Info<< "Done\n" << endl;
+Info<< "Done" << endl;
 
-Info<< "Checking quadrature consistency... again \n" << endl;
+Info<< "Checking quadrature consistency... again " << endl;
 
 totalDirectionsWeight = 0.0;
 maxVersorLenght = 0.0;
@@ -82,7 +68,7 @@ forAll(directionVersors_, directionI)
     minVersorLenght = min(mag(directionVersors_[directionI]),minVersorLenght);
 }
     
-Info<< "Done\n" << endl;
+Info<< "Done" << endl;
 
 
 Info<< "Check report:" << endl;

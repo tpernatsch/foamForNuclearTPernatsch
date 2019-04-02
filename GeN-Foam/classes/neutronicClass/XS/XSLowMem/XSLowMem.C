@@ -161,6 +161,7 @@ Foam::XSLowMem::XSLowMem
     ),
     discFactor_(energyGroups_),
     ScNo_(nuclearData_.lookupOrDefault("ScNo",1.0)),
+    sigmaFromToYesNo_(energyGroups_),
     entries_(nuclearData_.lookup("zones")),
     zoneNumber_(entries_.size()),    
     fuelFractionList_(zoneNumber_),
@@ -379,7 +380,6 @@ Foam::tmp< Foam::volScalarField > Foam::XSLowMem::sigmaFromTo
         if(energyI == doNotParametrize_[groupI])
         {
             parametrize = false;
-            Info << "Not Parametrizing XS for group: " << doNotParametrize_[groupI] << endl;
         }
     }
 
@@ -389,41 +389,31 @@ Foam::tmp< Foam::volScalarField > Foam::XSLowMem::sigmaFromTo
 
         const word& name = entries_[zoneI].keyword();
 
-        //Info << "Mesh zone: " << name  << endl;
 
         label zoneId = mesh_.cellZones().findZoneID(name);
 
-        if(zoneId == -1)
-        {
-            Info << "WARNING! Mesh zone " << name << " does not exists" << endl;
-            Info << "Ignore this warning if it is a completely withdrawn control rod" << endl;
-        }
-        else
+
+        forAll(mesh_.cellZones()[zoneId], cellIlocal)
         {
 
-            forAll(mesh_.cellZones()[zoneId], cellIlocal)
+            label cellIglobal = mesh_.cellZones()[zoneId][cellIlocal];
+            zone = zoneI;
+
+            sigmaFromTo[cellIglobal] = sigmaFromToList_[zone][momentI][energyJ][energyI];
+
+            if (parametrize)
             {
-
-                label cellIglobal = mesh_.cellZones()[zoneId][cellIlocal];
-                zone = zoneI;
-
-                sigmaFromTo[cellIglobal] = sigmaFromToList_[zone][momentI][energyJ][energyI];
-
-                if (parametrize)
-                {
-
-                        sigmaFromTo[cellIglobal]
-                     += rhoCoolSigmaFromToList_[zone][momentI][energyJ][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
-                      + TCoolSigmaFromToList_[zone][momentI][energyJ][energyI]*(TCool[cellIglobal] - TCoolRef_)
-                      + (
-                            fastNeutrons_
-                          ? fuelTempSigmaFromToList_[zone][momentI][energyJ][energyI]*logT_[cellIglobal]
-                          : fuelTempSigmaFromToList_[zone][momentI][energyJ][energyI]*diffT_[cellIglobal]
-                        )
-                      + cladExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(Tclad[cellIglobal] - TcladRef_)
-                      + axialExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(axExp_[cellIglobal])
-                      + radialExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(radExp_[cellIglobal]);
-                }
+                    sigmaFromTo[cellIglobal]
+                 += rhoCoolSigmaFromToList_[zone][momentI][energyJ][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
+                  + TCoolSigmaFromToList_[zone][momentI][energyJ][energyI]*(TCool[cellIglobal] - TCoolRef_)
+                  + (
+                        fastNeutrons_
+                      ? fuelTempSigmaFromToList_[zone][momentI][energyJ][energyI]*logT_[cellIglobal]
+                      : fuelTempSigmaFromToList_[zone][momentI][energyJ][energyI]*diffT_[cellIglobal]
+                    )
+                  + cladExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(Tclad[cellIglobal] - TcladRef_)
+                  + axialExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(axExp_[cellIglobal])
+                  + radialExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(radExp_[cellIglobal]);
             }
         }
     }

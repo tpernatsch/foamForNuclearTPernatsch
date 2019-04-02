@@ -479,6 +479,20 @@ forAll(CRentries_,CRzoneI)
 
 
 
+forAll(nuSigmaEff_,energyI)
+{
+  forAll(nuSigmaEff_,energyJ)
+  {
+    label exchangeYesNo = 0;
+    forAll(entries_,zoneI)
+    {
+      if(sigmaFromToList_[zoneI][0][energyJ][energyI]>5.0e-6) {exchangeYesNo = 1;}
+    }
+    sigmaFromToYesNo_[energyJ][energyI] = exchangeYesNo;
+  }
+}
+
+
 Info << "Finished reading nuclear data " << endl;
 
 

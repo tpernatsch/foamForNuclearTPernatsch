@@ -15,8 +15,8 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model			SP3Neutronics;//diffusionNeutronics;//adjointDiffusionNeutronics;//
+model			SP3Neutronics;//diffusionNeutronics;//adjointDiffusionNeutronics;//SNNeutronics
 
-eigenvalueNeutronics    false;
+eigenvalueNeutronics    false; //False means time dependent. Warning: only eigenvalue for SN
 
 // ************************************************************************* //

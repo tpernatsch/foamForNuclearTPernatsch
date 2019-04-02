@@ -95,8 +95,7 @@ int main(int argc, char *argv[])
     #include "createMeshInterpolators.H"
 
     #include "openOutputFiles.H"
-    #include "writeOutputs.H"
-
+    
     while (runTime.run())
     {
 

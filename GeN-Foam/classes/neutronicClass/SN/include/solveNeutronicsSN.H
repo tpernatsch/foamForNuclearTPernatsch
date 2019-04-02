@@ -3,8 +3,6 @@ Info << "Solving neutronics" << endl ;
 xs_.correct(Tfuel_,Tclad_,rhoCool_,TCool_,Disp_);
 #include "setXSFieldsSN.H"
 
-//#include "createSourceSN.H"
-
 const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransport");
 //const bool integralPredictor = neutronTransport.lookupOrDefault("integralPredictor", false);
 //const bool implicitPredictor = neutronTransport.lookupOrDefault("implicitPredictor", false);
@@ -20,24 +18,13 @@ scalar innToOutTolerance =
     neutronTransport.lookupOrDefault<scalar>("innToOutTolerance", 0.01);    
 
 int maxInnerIter =
-    neutronTransport.lookupOrDefault<int>("maxInnerIter", 10);
+    neutronTransport.lookupOrDefault<int>("maxInnerIter", 3);
 
 
 //for aitken
 //List<scalar> integralFlux0(xs_.energyGroups());
 //List<scalar> integralFlux1(xs_.energyGroups());
 //List<scalar> integralFlux2(xs_.energyGroups());
-
-//#include "updateScalarFluxes.H"
-/*
-if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeIndex())==1 )
-{
-    pTot = power();
-    #include "normFluxesSN.H"
-    pTot = power();
-
-}
-*/
 
 #include "updateScalarFluxes.H"
 scalar pTot(power()); 
@@ -49,12 +36,6 @@ if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeInd
     #include "normFluxesSN.H"
 }
 #include "updateScalarFluxes.H"
-
-//pTot = power();
-
-
-
-
 
 /*
 if(!eigenvalueNeutronics_ && couplingIter == 0)
@@ -77,7 +58,7 @@ bool aitkenYesNo = true;
 */
 int neutroIter = 0;
 
-//#include "createFluxMatricesSN.H"
+//#include "createFluxMatricesSN.H"// Can be used to speed up, but costs a lot in memory
 
 scalar neutroResidual = 0.0;
 
@@ -86,6 +67,7 @@ do
     Info << "Neutron iteration no:  " << neutroIter << nl << endl;
 
     #include "fluxEqSN.H"
+    //The part here below should be included for transients
     //#include "updateScalarFluxes.H"
     //#include "initializeNeutroSource.H"
     //#include "precEq.H"
@@ -134,7 +116,7 @@ if (eigenvalueNeutronics_)
     );
 
     #include "normFluxesSN.H"
-    //#include "updateScalarFluxes.H"
+
 }
 
 

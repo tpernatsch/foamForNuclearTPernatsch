@@ -29,5 +29,18 @@ boundaryField
   
 }
 
+/*
+boundaryField //for SN
+{
+    ".*"
+    {
+	
+        type            inletOutlet;//zeroGradient;//
+	phi             facePhi;
+	inletValue	uniform 0;
+        value           uniform 0;
+    }
+}
+*/
 
 // ************************************************************************* //
