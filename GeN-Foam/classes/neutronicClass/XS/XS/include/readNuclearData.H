@@ -351,7 +351,7 @@ forAll(entries_,zoneI)
       {
           for(label energyI=0; energyI<energyGroups_ ; energyI++)
           {
-              axialExpSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToAxialExpList[zoneI][momentI][energyJ][energyI])/AxExp_;
+              axialExpSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (-sigmaFromToList_[zoneI][momentI][energyJ][energyI]+sigmaFromToAxialExpList[zoneI][momentI][energyJ][energyI])/AxExp_;
           }
       }
     }    
@@ -368,7 +368,7 @@ forAll(entries_,zoneI)
       {
           for(label energyI=0; energyI<energyGroups_ ; energyI++)
           {
-              radialExpSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToRadialExpList[zoneI][momentI][energyJ][energyI])/RadExp_;
+              radialExpSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (-sigmaFromToList_[zoneI][momentI][energyJ][energyI]+sigmaFromToRadialExpList[zoneI][momentI][energyJ][energyI])/RadExp_;
           }
       }
     }  

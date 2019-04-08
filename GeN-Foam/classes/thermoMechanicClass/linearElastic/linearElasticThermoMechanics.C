@@ -404,6 +404,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
 {
 
     T_ = TrefStructures_;
+    T_.correctBoundaryConditions();
 
     PtrList<scalar > rhoMechList(TMZoneNumber_);
     PtrList<scalar > rhoEList(TMZoneNumber_);

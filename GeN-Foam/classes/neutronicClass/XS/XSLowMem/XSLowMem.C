@@ -177,11 +177,11 @@ Foam::XSLowMem::XSLowMem
     (
         IOobject
         (
-            "fuelFraction",
+            "radExp",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::AUTO_WRITE
         ),
         mesh,
         dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
@@ -191,11 +191,11 @@ Foam::XSLowMem::XSLowMem
     (
         IOobject
         (
-            "fuelFraction",
+            "axExp",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::AUTO_WRITE
         ),
         mesh,
         dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
@@ -205,7 +205,7 @@ Foam::XSLowMem::XSLowMem
     (
         IOobject
         (
-            "fuelFraction",
+            "logT",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -219,7 +219,7 @@ Foam::XSLowMem::XSLowMem
     (
         IOobject
         (
-            "fuelFraction",
+            "diffT",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
