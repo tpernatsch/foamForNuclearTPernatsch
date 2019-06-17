@@ -1,0 +1,58 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;
+    mixture         pureMixture;
+    transport       polynomial;
+    thermo          hPolynomial;
+    equationOfState icoPolynomial;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+mixture
+{
+    specie
+    {
+        nMoles          1;
+        molWeight       22.9898;
+    }
+    equationOfState
+    {
+        //rhoCoeffs<8>       (1004.2957 -0.206854 -1.730055e-05 0 0 0 0 0);
+	rhoCoeffs<8>       (860 0 0 0 0 0 0 0);
+    }
+    thermodynamics
+    {
+        CpCoeffs<8>        (1646.97 -0.831587 4.31182e-04 0 0 0 0 0);
+	//CpCoeffs<8>        (1288 0 0 0 0 0 0 0);
+        Hf             0;
+	Sf             0;
+    }
+    transport
+    {
+       // muCoeffs<8>        (4.47177e-03 -2.45709e-05 6.42693e-08 -9.48578e-11 8.14986e-14 -3.82e-17 7.60382e-21 0);
+        muCoeffs<8>        (2e-4 0 0 0 0 0 0 0);
+	//muCoeffs<8>        (4.47177e-01 -2.45709e-03 6.42693e-06 -9.48578e-9 8.14986e-12 -3.82e-15 7.60382e-19 0);//inmcreased
+//        PrCoeffs<8>        (5.90749e-02 -2.84412e-04 6.54215e-07 -8.06811e-10 5.37116e-13 -1.73328e-16 2.69286e-20 0);
+	//kappaCoeffs<8>     (124.67 -0.11381 5.5226e-05 -1.1842e-08 0 0 0 0);
+	kappaCoeffs<8>     (60 0 0 0 0 0 0 0);
+    }
+}
+
+// ************************************************************************* //

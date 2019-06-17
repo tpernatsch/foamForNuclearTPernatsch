@@ -72,6 +72,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
     flux_(xs_.energyGroups()),
     fluxStar_(xs_.energyGroups()),
     prec_(xs_.precGroups()),
+    precStar_(xs_.precGroups()),
     fluxStarAlbedo_
     (
         IOobject

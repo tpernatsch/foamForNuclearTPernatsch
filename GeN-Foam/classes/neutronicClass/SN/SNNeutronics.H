@@ -86,7 +86,8 @@ protected:
 
         //Fields
         List<PtrList<volScalarField> > angularFlux_;
-        PtrList<volScalarField> prec_;
+        PtrList<volScalarField> prec_;//prec per total volume
+        PtrList<volScalarField> precStar_;//prec per volume salt
         volScalarField defaultFlux_;
         volScalarField defaultPrec_;
 

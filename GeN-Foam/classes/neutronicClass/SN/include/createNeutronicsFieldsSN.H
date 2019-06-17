@@ -45,6 +45,26 @@ forAll(flux_,fluxI)
     );
 }
 
+forAll(precStar_,precI)
+{
+    precStar_.set
+    (
+        precI,
+        new volScalarField
+        (
+            IOobject
+            (
+                "precStar"+Foam::name(precI),
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::READ_IF_PRESENT,
+                IOobject::AUTO_WRITE
+            ),
+            defaultPrec_
+        )
+    );
+}
+
 forAll(prec_,precI)
 {
     prec_.set

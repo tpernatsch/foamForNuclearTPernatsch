@@ -73,6 +73,7 @@ Foam::SP3Neutronics::SP3Neutronics
     fluxStar_(xs_.energyGroups()),
     fluxStar2_(xs_.energyGroups()),
     prec_(xs_.precGroups()),
+    precStar_(xs_.precGroups()),
     fluxStarAlbedo_
     (
         IOobject

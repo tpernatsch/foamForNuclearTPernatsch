@@ -67,7 +67,8 @@ protected:
         volScalarField Dalbedo_;
         PtrList<volScalarField> flux_;
         PtrList<volScalarField> fluxStar_;
-        PtrList<volScalarField> prec_;
+        PtrList<volScalarField> prec_;//prec per total volume
+        PtrList<volScalarField> precStar_;//prec per volume salt
         volScalarField fluxStarAlbedo_;
         volScalarField defaultFlux_;
         volScalarField defaultPrec_;

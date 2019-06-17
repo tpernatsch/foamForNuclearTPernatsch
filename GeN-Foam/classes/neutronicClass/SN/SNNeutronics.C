@@ -74,6 +74,7 @@ Foam::SNNeutronics::SNNeutronics
     facePhis_(discreteDirections_),
     angularFlux_(xs_.energyGroups()),
     prec_(xs_.precGroups()),
+    precStar_(xs_.precGroups()),
     defaultFlux_
     (
         IOobject
