@@ -304,6 +304,11 @@ void gapContactFvPatchVectorField::write(Ostream& os) const
     }
     
     interfaceP_.writeEntry("interfaceP", os);
+    os.writeKeyword("penaltyFactor")
+        << penaltyFact_ << token::END_STATEMENT << nl;   
+    os.writeKeyword("offset")
+        << offset_ << token::END_STATEMENT << nl;
+
 }
 
 
