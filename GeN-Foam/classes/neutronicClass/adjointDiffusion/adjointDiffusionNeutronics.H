@@ -35,6 +35,8 @@ Authors
 	Euqtions: Jun Shi <junshi@berkeley.edu>
     Coding: Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
+The coding was not tested. Use at your own risk!
+
 \*---------------------------------------------------------------------------*/
 
 #ifndef adjointDiffusionNeutronics_H
