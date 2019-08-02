@@ -13,7 +13,7 @@ forAll(prec_,precI)
         );
     	precEq.solve();
         prec_[precI] = precStar_[precI] * porosity_;//precs per total volume
-    	prec_[precI] *= porosity_;//go back to precs per total volume
+    	prec_[precI].correctBoundaryConditions();
     }
     else
     {

@@ -23,9 +23,6 @@ forAll(flux_,energyI)
     flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
     flux_[energyI].correctBoundaryConditions();
     adjointFlux_chiP_ += chiPrompt[energyI]*fluxStar_[energyI]*(1-eigenvalueNeutronics_);
-
 }
-
-
 
 
