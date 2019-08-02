@@ -4,7 +4,7 @@ forAll(flux_,energyI)
 {
     Dalbedo_ = D[energyI];
     fluxStarAlbedo_ *= 0.0;
-    #include "calcScatteringSource.H"
+    #include "calcScatteringSourceAdjoint.H"
     adjointFlux_chiP_ -= chiPrompt[energyI]*fluxStar_[energyI]*(1-eigenvalueNeutronics_);
 
     fvMatrixExt<scalar> neutroEq  = neutroEqList[energyI]
