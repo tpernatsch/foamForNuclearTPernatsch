@@ -191,6 +191,35 @@ Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithBC(GeometricFie
     return tAmulWithBC;     
 }
 
+Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > AmulWithoutBC(GeometricField<Type, fvPatchField, volMesh>& phi) 
+{
+    tmp<GeometricField<Type, fvPatchField, volMesh> > tAmulWithBC
+    (
+        new GeometricField<Type, fvPatchField, volMesh>
+        (
+            IOobject
+            (
+                "AmulWithBC("+phi.name()+')',
+                phi.instance(),
+                phi.mesh(),
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            phi.mesh(),
+            this->dimensions()/dimVol,
+            zeroGradientFvPatchScalarField::typeName
+        )
+    );
+    GeometricField<Type, fvPatchField, volMesh>& AmulWithBC = tAmulWithBC.ref();
+
+
+    this->Foam::lduMatrix::Amul(AmulWithBC.primitiveFieldRef(), phi.internalField(), this->boundaryCoeffs(),  phi.boundaryField().scalarInterfaces() ,  direction(0));
+
+    AmulWithBC.primitiveFieldRef() /= phi.mesh().V();
+    AmulWithBC.correctBoundaryConditions();
+    return tAmulWithBC;     
+}
+
 Foam::tmp< GeometricField<Type, fvPatchField, volMesh> > SourceWithBCnoV() const //beta version, may give problems
 {
     tmp<GeometricField<Type, fvPatchField, volMesh> > tSource
@@ -307,6 +336,7 @@ Type initialResidual()
 
     this->initMatrixInterfaces
     (
+        true,
         bouCoeffs,
         interfaces,
         psi,
@@ -316,6 +346,7 @@ Type initialResidual()
 
     this->updateMatrixInterfaces
     (
+        true,
         bouCoeffs,
         interfaces,
         psi,

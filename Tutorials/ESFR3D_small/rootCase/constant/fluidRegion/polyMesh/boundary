@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.4.0                                 |
+|  \\    /   O peration     | Version:  5.x                                   |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -10,7 +10,7 @@ FoamFile
     version     2.0;
     format      ascii;
     class       polyBoundaryMesh;
-    location    "constant/fluid/polyMesh";
+    location    "constant/fluidRegion/polyMesh";
     object      boundary;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -21,21 +21,22 @@ FoamFile
     {
         type            patch;
         physicalType    patch;
-        nFaces          3786;
-        startFace       306666;
+        nFaces          1014;
+        startFace       45630;
     }
     bottom
     {
         type            patch;
         physicalType    patch;
-        nFaces          3786;
-        startFace       310452;
+        nFaces          1014;
+        startFace       46644;
     }
     walls
     {
-        type            wall;
-        nFaces          7134;
-        startFace       314238;
+        type            patch;
+        physicalType    patch;
+        nFaces          2070;
+        startFace       47658;
     }
     baffle0
     {
@@ -48,8 +49,8 @@ mappedPatch
 baffleFaces
 )
 ;
-        nFaces          74046;
-        startFace       321372;
+        nFaces          10626;
+        startFace       49728;
         sampleMode      nearestPatchFace;
         sampleRegion    fluid;
         samplePatch     baffle1;
@@ -65,8 +66,8 @@ mappedPatch
 baffleFaces
 )
 ;
-        nFaces          74046;
-        startFace       395418;
+        nFaces          10626;
+        startFace       60354;
         sampleMode      nearestPatchFace;
         sampleRegion    fluid;
         samplePatch     baffle0;

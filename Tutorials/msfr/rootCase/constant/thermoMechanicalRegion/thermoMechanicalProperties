@@ -1,0 +1,73 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+    class           dictionary;
+    location	    "constant";
+    object          nuclearData;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+model 		linearElasticThermoMechanics;
+// constants needed to calculate deformation of fuel, control rods AND structure (1D expansion for fuel and CR, displacement-based solver for structures)
+
+planeStress     no;
+linkedFuel      false; // true if there is contact between fuel and cladding (expansion driven by cladding)
+fuelOrientation   (0 0 1); 
+TrefStructure		900; //ref temperature for structures
+
+zones
+(
+//    Fuel1
+//    {
+//	//for structures
+//	rho				1000; //density
+//	E				1e7;  // Young modulus
+//	nu				0.1; // Poisson ratio
+//	C				200; // not used
+//	k				5; // not used
+//	alpha				1.8e-5; // linear expansion coeff (1/K)
+//	// for fuel (only if there is fuel)
+//	TrefFuel			668;
+//	alphaFuel			1.1e-5;
+//    }
+//
+//    Fuel2
+//    {
+//	//for structures
+//	rho				1000; //density
+//	E				1e7;  // Young modulus
+//	nu				0.1; // Poisson ratio
+//	C				200; // not used
+//	k				5; // not used
+//	alpha				1.8e-5; // linear expansion coeff (1/K)
+//	// for fuel (only if there is fuel)
+//	TrefFuel			668;
+//	alphaFuel			1.1e-5;
+//    } 
+//
+//    Coolant
+//    {
+//	rho				1000;
+//	E				1e7;
+//	nu				0.1;
+//	C				200;
+//	k				5;
+//	alpha				1.8e-5;
+//	TrefFuel			668;
+//	alphaFuel			1.1e-5;//1.1
+//    }
+);
+
+
+// ************************************************************************* //

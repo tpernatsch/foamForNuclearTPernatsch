@@ -26,8 +26,8 @@ gradSchemes
 
 divSchemes
 {
-    default        none;
-    //div(phi,U)      Gauss upwind;
+    default         Gauss linear;
+    "div(facePhi_,angularFlux_)"   Gauss upwind;
 }
 
 laplacianSchemes

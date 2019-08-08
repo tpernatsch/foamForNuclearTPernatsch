@@ -1,19 +1,38 @@
-POD/PODOrthoNormalBase/PODOrthoNormalBase.C
-porousKEpsilon/makeModel.C
 
-fluid/compressibleCourantNo.C
-porousClass/porousMedium.C
-porousClass/correlationPorousMedium.C
-porousClass/byZoneCorrelationPorousMedium.C
-thermalMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
-thermalMechanics/tractionDisplacement/elasticSpring.C
-albedoSP3/albedoSP3FvPatchField.C
+classes/porousKEpsilon/makeModel.C
 
-fuel/IOFieldFields.C
-fuel/subscaleFuel.C
-fuel/constSubscaleFuel.C
+main/include/compressibleCourantNo.C
 
-GeN-Foam.C
+classes/fuelClass/include/IOFieldFields.C
+classes/fuelClass/subscaleFuel.C
+classes/fuelClass/constSubscaleFuel/constSubscaleFuel.C
+
+classes/porousClass/porousMedium.C
+classes/porousClass/correlationPorousMedium/correlationPorousMedium.C
+classes/porousClass/correlationPorousMedium/byZoneCorrelationPorousMedium/byZoneCorrelationPorousMedium.C
+classes/porousClass/correlationPorousMedium/byZoneSodiumCorrelationPorousMedium/byZoneSodiumCorrelationPorousMedium.C
+classes/porousClass/patchFields/nusseltThermalBaffle1D/nusseltThermalBaffle1DFvPatchScalarFields.C
+classes/porousClass/patchFields/pUDrop/pUDropFvPatchScalarField.C
+
+classes/neutronicClass/neutronics.C
+classes/neutronicClass/XS/XS/XS.C
+classes/neutronicClass/XS/XSLowMem/XSLowMem.C
+classes/neutronicClass/diffusion/diffusionNeutronics.C
+classes/neutronicClass/SP3/SP3Neutronics.C
+classes/neutronicClass/SN/include/legendrePoly.C
+classes/neutronicClass/SN/SNNeutronics.C
+classes/neutronicClass/adjointDiffusion/adjointDiffusionNeutronics.C
+classes/neutronicClass/albedoSP3/albedoSP3FvPatchField.C
+
+classes/thermoMechanicClass/thermoMechanics.C
+classes/thermoMechanicClass/linearElastic/linearElasticThermoMechanics.C
+classes/thermoMechanicClass/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+classes/thermoMechanicClass/tractionDisplacement/gapContactFvPatchVectorField.C
+
+include/mergeOrSplitBaffles.C
+
+main/GeN-Foam.C
+
 
 EXE = $(FOAM_USER_APPBIN)/GeN-Foam
 

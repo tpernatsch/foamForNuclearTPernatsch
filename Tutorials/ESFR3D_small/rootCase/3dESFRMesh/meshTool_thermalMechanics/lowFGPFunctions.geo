@@ -38,10 +38,11 @@ Function insertLowFGP
     If(((X-RposX[l])*(X-RposX[l]))<0.01 && ((Y-RposY[l])*(Y-RposY[l]))<0.01)
       isR = 1;
     EndIf
+  EndFor
     If(j>=(innerRows+outerRows) && !isO)
       isR = 1;
     EndIf
-  EndFor
+
   
   If(isCR)
     followerVolumes += assembly[1];

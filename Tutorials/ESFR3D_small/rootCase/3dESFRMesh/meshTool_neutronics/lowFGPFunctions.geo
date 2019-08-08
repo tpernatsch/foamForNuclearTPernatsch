@@ -38,10 +38,10 @@ Function insertLowFGP
     If(((X-RposX[l])*(X-RposX[l]))<0.01 && ((Y-RposY[l])*(Y-RposY[l]))<0.01)
       isR = 1;
     EndIf
+  EndFor
     If(j>=(innerRows+outerRows) && !isO)
       isR = 1;
     EndIf
-  EndFor
   
   isCentral = 0;
   If(((X-0.0)*(X-0.0))<0.01 && ((Y-0.0)*(Y-0.0))<0.01)

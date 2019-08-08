@@ -21,29 +21,29 @@ application         GeN-Foam;
 
 startFrom           startTime;//latestTime;//
 
-startTime           0;
+startTime           0;//1000;
 
 stopAt              endTime;//writeNow;//  
 
-endTime             1000;
+endTime             200;//1010;
 
-deltaT              5; // time step (if non adjusted)
+deltaT              1;//0.001; // time step (if non adjusted)
 
-adjustTimeStep      false; // adjust time step based on CFL condition, max power and max delta T
+adjustTimeStep      false;//true; // adjust time step based on CFL condition, max power and max delta T
 
 maxDeltaT           0.5; // max time step
 
-writeControl        runTime;//timeStep;//adjustableRunTime;
+writeControl        timeStep;//runTime;//timeStep;//adjustableRunTime;
 
-writeInterval       100;
+writeInterval       200;//5;
 
-purgeWrite          2;
+purgeWrite          0;
 
 writeFormat         ascii;
 
 writePrecision      7;
 
-writeCompression    true;
+writeCompression    false;
 
 timeFormat          general;
 
