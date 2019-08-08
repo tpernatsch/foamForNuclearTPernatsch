@@ -32,7 +32,7 @@ innerCore
  D nonuniform List<scalar> 1 (1.394290e-02  );
  nuSigmaEff nonuniform List<scalar> 1 (6.687910e-01  );
  sigmaPow nonuniform List<scalar> 1 (7.6317518e-12  ); //4.763365e+01
- scatteringMatrix  1  1 ( 
+ scatteringMatrixP0  1  1 ( 
  ( 2.967730e+01 )
  );
  sigmaDisapp nonuniform List<scalar> 1 (5.889000e-01  );
@@ -47,7 +47,7 @@ outerCore
  D nonuniform List<scalar> 1 (1.415270e-02  );
  nuSigmaEff nonuniform List<scalar> 1 (7.656640e-01  );
  sigmaPow nonuniform List<scalar> 1 (8.7157476e-12  ); //5.439942e+01
- scatteringMatrix  1  1 ( 
+ scatteringMatrixP0  1  1 ( 
  ( 2.934090e+01 )
  );
  sigmaDisapp nonuniform List<scalar> 1 (6.143000e-01  );

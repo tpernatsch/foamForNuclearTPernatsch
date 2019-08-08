@@ -29,8 +29,9 @@ For j In {0 : (innerRows+outerRows+reflectorRows-1)}
       Y = Y0;
       Call insertUpperRefl;      
     EndFor
-  EndIf
   EndFor
+  EndIf
+
 EndFor
 
 

@@ -1,22 +1,38 @@
 
 EXE_INC = \
-    -I./fluid \
-    -I./porousKEpsilon \
-    -I./porousKEpsilon/lnInclude \
-    -I./porousKEpsilon/porousKEpsilon \
-    -I./porousClass \
-    -I./fuel \
-    -I./neutronics \
-    -I./thermalMechanics \
-    -I./thermalMechanics/tractionDisplacement/lnInclude \
+    -I./main \
+    -I./main/include \
+    -I./classes/porousKEpsilon \
+    -I./classes/porousKEpsilon/lnInclude \
+    -I./classes/porousKEpsilon/porousKEpsilon \
+    -I./classes/porousClass \
+    -I./classes/porousClass/correlationPorousMedium \
+    -I./classes/porousClass/correlationPorousMedium/byZoneCorrelationPorousMedium \
+    -I./classes/porousClass/correlationPorousMedium/byZoneSodiumCorrelationPorousMedium \
+    -I./classes/fuelClass \
+    -I./classes/fuelClass/include \
+    -I./classes/fuelClass/constSubscaleFuel \
+    -I./classes/neutronicClass \
+    -I./classes/neutronicClass/albedoSP3 \
+    -I./classes/neutronicClass/include \
+    -I./classes/neutronicClass/diffusion \
+    -I./classes/neutronicClass/diffusion/include \
+    -I./classes/neutronicClass/SP3 \
+    -I./classes/neutronicClass/SP3/include \
+    -I./classes/neutronicClass/SN\
+    -I./classes/neutronicClass/SN/include \
+    -I./classes/neutronicClass/adjointDiffusion \
+    -I./classes/neutronicClass/adjointDiffusion/include \
+    -I./classes/neutronicClass/XS/XS \
+    -I./classes/neutronicClass/XS/XS/include \
+    -I./classes/neutronicClass/XS/XSLowMem \
+    -I./classes/neutronicClass/XS/XSLowMem/include \
+    -I./classes/thermoMechanicClass \
+    -I./classes/thermoMechanicClass/include \
+    -I./classes/thermoMechanicClass/linearElastic \
+    -I./classes/thermoMechanicClass/linearElastic/include \
+    -I./classes/thermoMechanicClass/tractionDisplacement/lnInclude \
     -I./include \
-    -I./albedoSP3 \
-    -I./POD/EigenSolver \
-    -I./POD/POD \
-    -I./POD/PODEigenBase \
-    -I./POD/PODODE \
-    -I./POD/PODOrthoNormalBase \
-    -I./POD \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
@@ -28,7 +44,9 @@ EXE_INC = \
     -I$(LIB_SRC)/thermophysicalModels/solidThermo/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/solidSpecie/lnInclude \
     -I$(LIB_SRC)/regionModels/regionModel/lnInclude \
-    -I$(LIB_SRC)/ODE/lnInclude
+    -I$(LIB_SRC)/ODE/lnInclude \
+    -I$(LIB_SRC)/parallel/reconstruct/reconstruct/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude
 
 EXE_LIBS = \
     -lcompressibleTransportModels \
@@ -44,5 +62,8 @@ EXE_LIBS = \
     -lregionModels \
     -lsampling \
     -lsolidSpecie \
-    -lODE
+    -lODE \
+    -lgenericPatchFields \
+    -lreconstruct \
+    -ldynamicMesh
 

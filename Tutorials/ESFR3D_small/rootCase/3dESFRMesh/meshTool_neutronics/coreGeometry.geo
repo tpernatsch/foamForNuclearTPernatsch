@@ -9,21 +9,21 @@ gap = 0; //0.009
 
 coreHeight = 1;
 lowReflHeight = 0.3;
-lowFGPHeight = 1.36;
+lowFGPHeight = 0.3;
 diagridHeight = 0.3;
 upperFGPHeight = 0.11;
-upperReflHeight = 1.38;
+upperReflHeight = 0.3;
 
 coreNodes = 10;
 lowReflNodes = 3;
-lowFGPNodes = 12;
+lowFGPNodes = 3;
 diagridNodes = 3;
 upperFGPNodes = 1;
-upperReflNodes = 12;
+upperReflNodes = 3;
 
-innerRows = 9;
-outerRows = 4;
-reflectorRows = 2;
+innerRows = 5;
+outerRows = 2;
+reflectorRows = 1;
 assemblyBalance = 0;
 
 //CR position
@@ -55,41 +55,41 @@ CRposyn += {5};
 Iposxn = {};
 Iposyn = {};
 
-Iposxn += {5};
-Iposyn += {4};
+//Iposxn += {5};
+//Iposyn += {4};
 
-Iposxn += {6};
-Iposyn += {3};
+//Iposxn += {6};
+//Iposyn += {3};
 
-Iposxn += {9};
-Iposyn += {-3};
+//Iposxn += {9};
+//Iposyn += {-3};
 
-Iposxn += {9};
-Iposyn += {-4};
+//Iposxn += {9};
+//Iposyn += {-4};
 
 //Outer position
 Oposxn = {};
 Oposyn = {};
 
-Oposxn += {7};
-Oposyn += {6};
+//Oposxn += {7};
+//Oposyn += {6};
 
-Oposxn += {8};
-Oposyn += {5};
+//Oposxn += {8};
+//Oposyn += {5};
 
-Oposxn += {13};
-Oposyn += {-5};
+//Oposxn += {13};
+//Oposyn += {-5};
 
-Oposxn += {13};
-Oposyn += {-6};
+//Oposxn += {13};
+//Oposyn += {-6};
 
 
 //Reflector position
 Rposxn = {};
 Rposyn = {};
 
-Rposxn += {12};
-Rposyn += {0};
+//Rposxn += {12};
+//Rposyn += {0};
 
 totalHeight =  lowFGPHeight + lowReflHeight + coreHeight + upperFGPHeight + upperReflHeight  ;
 

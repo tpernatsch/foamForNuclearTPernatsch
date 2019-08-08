@@ -17,6 +17,8 @@ FoamFile
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+model 		linearElasticThermoMechanics;//only model available now
+
 planeStress     no;
 linkedFuel      false;
 fuelOrientation   (0 0 1);

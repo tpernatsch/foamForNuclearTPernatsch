@@ -21,22 +21,26 @@ internalField   uniform 1;
 
 boundaryField
 {
-    walls
+    ".*"
     {
         type            fixedValue;
         value           uniform 0;
     }
-
-    wedgeY+
-    {
-        type            wedge;
-    }
-    
-    wedgeY-
-    {
-        type            wedge;
-    }  
+  
 }
 
+/*
+boundaryField //for SN
+{
+    ".*"
+    {
+	
+        type            inletOutlet;//zeroGradient;//
+	phi             facePhi;
+	inletValue	uniform 0;
+        value           uniform 0;
+    }
+}
+*/
 
 // ************************************************************************* //

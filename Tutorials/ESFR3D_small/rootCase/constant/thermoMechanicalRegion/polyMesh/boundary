@@ -1,7 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.4.0                                 |
+|  \\    /   O peration     | Version:  5.x                                   |
 |   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
@@ -17,46 +17,46 @@ FoamFile
 
 6
 (
-    topCR
-    {
-        type            patch;
-        physicalType    patch;
-        nFaces          222;
-        startFace       380748;
-    }
     top
     {
         type            patch;
         physicalType    patch;
-        nFaces          3564;
-        startFace       380970;
+        nFaces          906;
+        startFace       56292;
     }
-    bottomCR
+    topCR
     {
         type            patch;
         physicalType    patch;
-        nFaces          216;
-        startFace       384534;
+        nFaces          108;
+        startFace       57198;
     }
     bottom
     {
         type            patch;
         physicalType    patch;
-        nFaces          3564;
-        startFace       384750;
+        nFaces          900;
+        startFace       57306;
+    }
+    bottomCR
+    {
+        type            patch;
+        physicalType    patch;
+        nFaces          108;
+        startFace       58206;
     }
     zeroDispl
     {
         type            patch;
         physicalType    patch;
         nFaces          6;
-        startFace       388314;
+        startFace       58314;
     }
     defaultFaces
     {
         type            patch;
-        nFaces          7152;
-        startFace       388320;
+        nFaces          2088;
+        startFace       58320;
     }
 )
 

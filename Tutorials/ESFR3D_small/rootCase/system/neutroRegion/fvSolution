@@ -10,45 +10,47 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "system";
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 solvers
 {
-    "prec.*"
-    {
-        solver          PCG;
-        preconditioner  DIC;
-        tolerance       1e-6;
-        relTol          1e-3;
+    "prec.*|precStar.*|adjoint_prec.*"
+    {   
+        solver           PBiCG;//Stab;
+        preconditioner   DILU;
+        tolerance        1e-6;
+        relTol           1e-3;
+
+        /*solver           smoothSolver;
+        smoother         GaussSeidel;
+        tolerance        1e-5;
+        relTol           0.01;*/
     }
-    "flux.*"
+    "flux.*|adjoint_flux.*"
     { 
-      
 
         solver          PCG;
         preconditioner  DIC;
         tolerance       1e-6;
         relTol          1e-3;
-    /* 
-        solver          GAMG;
-        tolerance       1e-6;
-        relTol          0.1;
-
-        smoother        DICGaussSeidel;//;
-        nPostSweeps     1;
-        nPreSweeps      1;
-        nFinestSweeps   1;
+   /*
+        solver           GAMG;
+        tolerance        1e-6;
+        relTol           0.01;  //0.1;
+        smoother         DICGaussSeidel;//;
+	    nPostSweeps 	1;
+	    nPreSweeps 	1;
+	    nFinestSweeps 	1;
 
         cacheAgglomeration  true;
         nCellsInCoarsestLevel 20;
         agglomerator     faceAreaPair;
         mergeLevels      1;
-        processorAgglomerator masterCoarsest;
-    */
+	    processorAgglomerator masterCoarsest; */
     }
+
 }
 
 neutronTransport

@@ -1,6 +1,6 @@
 rad = "minicore_3D"; %name of serpent input file
 coreState = "N"; % N nominal; A axially expanded; R radially expanded; T different fuel temp; C different coolant density; CT different coolant temp; CL different clad temp
-zeroeff = "zero";//zero or eff
+zeroeff = "zero";%zero or eff
 pTarget = 1e6;%core power
 keff = 1;%initial guess
 
