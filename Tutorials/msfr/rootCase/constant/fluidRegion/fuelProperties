@@ -1,0 +1,51 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      fuelProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Constants needed to calculate 1-D fuel temperatures for fuel regions treated as porous medium 
+
+model constSubscaleFuel;
+
+zones
+(
+
+);
+
+/*
+E.G.
+
+    innerCore
+    {
+	fuelSubMeshSize		16; // number of nodes for finite difference disctretization of fuel
+	cladSubMeshSize		4; // number of nodes for finite difference disctretization of cladding
+	Tf0				900; // initial fuel temp (used only if the solver does not see fuel temperatures (Tf_) in a time folder)
+	Tc0				968; // initial clad temp (used only if the solver does not see clad temperatures (Tc_) in a time folder) 
+	claddingK			20;
+	fuelK				3;
+	claddingRho			7500;
+	fuelRho				10480;
+	claddingCp			500;
+	fuelCp				250;
+	gapH				3000; // gap conductance
+	rcOut				0.005365; //  outer radius cladding
+	rcIn				0.004865; //  inner radius cladding
+	rfOut				0.004715; // outer radius fuel
+	rfIn				0.0012; // inner radius of fuel
+	//fuelVolPower			1.0e9; // in addition to power from neutronics
+	planar				false; // true for plate fuel
+    }
+
+// ************************************************************************* //

@@ -10,7 +10,7 @@ forAll(prec_,precI)
             fvm::ddt(porosity_*(1-eigenvalueNeutronics_),precStar_[precI])
             + fvm::Sp(lambda[precI]*porosity_, precStar_[precI])
             - neutroSource_/keff_*Beta[precI]
-            + fvm::div(phi_, precStar_[precI])
+            + fvm::div(phi_, precStar_[precI],"div(phi_,precStar_)")
             - fvm::laplacian(diffCoeffPrec_,precStar_[precI])                
         );
         precEq.solve();
