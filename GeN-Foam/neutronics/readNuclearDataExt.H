@@ -86,11 +86,6 @@ IOdictionary nuclearDataCladExp
 
 label energyGroups(nuclearData.lookupOrDefault("energyGroups",1));
 label precGroups(nuclearData.lookupOrDefault("precGroups",1));
-scalar pTarget(nuclearData.lookupOrDefault("pTarget",1.0));
-scalar pTot(1.0);
-scalar pTotOld(1.0);
-scalar keff(nuclearData.lookupOrDefault("keff",1.0));
-
 
 PtrList<entry> entries(nuclearData.lookup("zones"));
 label zoneNumber = entries.size();
@@ -428,7 +423,7 @@ forAll(entries,zoneI)
     {
         dimensionedScalar TrefRatio("",dimensionSet(0,0,0,0,0,0,0),(TfuelRef/TfuelPerturbed));
         fuelTempDList.set(zoneI,new scalarField((DList[zoneI]-DFuelTempList[zoneI])/log(TrefRatio).value()));
-        fuelTempNuSigmaEffList.set(zoneI,new scalarField((nuSigmaEffList[zoneI]-nuSigmaEffFuelTempList[zoneI])/log(TrefRatio).value()));    
+        fuelTempNuSigmaEffList.set(zoneI,new scalarField((nuSigmaEffList[zoneI]-nuSigmaEffFuelTempList[zoneI])/log(TrefRatio).value()));
         fuelTempSigmaPowList.set(zoneI,new scalarField((sigmaPowList[zoneI]-sigmaPowFuelTempList[zoneI])/log(TrefRatio).value()));
         fuelTempSigmaDisappList.set(zoneI,new scalarField((sigmaDisappList[zoneI]-sigmaDisappFuelTempList[zoneI])/log(TrefRatio).value()));
         fuelTempSigmaFromToList.set(zoneI,new scalarSquareMatrix(sigmaFromToList[zoneI]));
@@ -444,7 +439,7 @@ forAll(entries,zoneI)
     {
         dimensionedScalar TrefDifference("",dimensionSet(0,0,0,0,0,0,0),(Foam::pow(TfuelRef,0.5)-Foam::pow(TfuelPerturbed,0.5)));
         fuelTempDList.set(zoneI,new scalarField((DList[zoneI]-DFuelTempList[zoneI])/TrefDifference.value()));
-        fuelTempNuSigmaEffList.set(zoneI,new scalarField((nuSigmaEffList[zoneI]-nuSigmaEffFuelTempList[zoneI])/TrefDifference.value()));    
+        fuelTempNuSigmaEffList.set(zoneI,new scalarField((nuSigmaEffList[zoneI]-nuSigmaEffFuelTempList[zoneI])/TrefDifference.value()));
         fuelTempSigmaPowList.set(zoneI,new scalarField((sigmaPowList[zoneI]-sigmaPowFuelTempList[zoneI])/TrefDifference.value()));
         fuelTempSigmaDisappList.set(zoneI,new scalarField((sigmaDisappList[zoneI]-sigmaDisappFuelTempList[zoneI])/TrefDifference.value()));
         fuelTempSigmaFromToList.set(zoneI,new scalarSquareMatrix(sigmaFromToList[zoneI]));
@@ -561,7 +556,46 @@ forAll(CRentries,CRzoneI)
     CRFollowerName.set(CRzoneI,new word(CRdict.lookup("followerName")));
     initialDistanceFromMeshCR.set(CRzoneI,new scalar(CRdict.lookupOrDefault("initialDistanceFromMeshCR",0.0)));
 
+    label FOLLOWERzoneId = neutroMesh.cellZones().findZoneID(CRFollowerName[CRzoneI]);
+
+    if(FOLLOWERzoneId == -1)
+    {
+      Info << "Control rod with follower: " << CRFollowerName(CRzoneI) << " does not exists" << endl;
+    }
+
+    scalar cellHeight = -100.0 ;
+    scalar maxFollowerHeight = cellHeight ;
+
+    volScalarField centersVSF(neutroMesh.C() & vector(0,0,1));
+
+    Field<scalar> centersSF(centersVSF.internalField());
+
+    forAll(neutroMesh.cellZones()[FOLLOWERzoneId], cellIlocal)
+    {
+
+        label cellIglobal = neutroMesh.cellZones()[FOLLOWERzoneId][cellIlocal];
+
+        maxFollowerHeight = max(cellHeight,centersSF[cellIglobal]) ;
+
+        cellHeight = maxFollowerHeight;
+
+    }
+    reduce(maxFollowerHeight, maxOp<scalar>());
+    CRinitialPosition.set(CRzoneI, new scalar(maxFollowerHeight-initialDistanceFromMeshCR[CRzoneI]));
+    if(runTime.value()<CRfinish[CRzoneI])
+    {
+        CRinitialPosition[CRzoneI] = (CRinitialPosition[CRzoneI]-CRspeed[CRzoneI]*(max(runTime.value(),CRstart[CRzoneI])-CRstart[CRzoneI]));
+    }
+    else
+    {
+        CRinitialPosition[CRzoneI] = (CRinitialPosition[CRzoneI]-CRspeed[CRzoneI]*(CRfinish[CRzoneI]-CRstart[CRzoneI]));
+    }
+    CRposition.set(CRzoneI, new scalar(CRinitialPosition[CRzoneI]));
+    Info << "Control rod " << CRentries[CRzoneI].keyword() << " in position: " << CRposition[CRzoneI] << endl;
+
 }
+
+
 
 Info << "Finished reading nuclear data " << endl;
 

@@ -98,6 +98,9 @@ protected:
         //- Volumetric Area of fuel
         volScalarField volumetricAreaFuel_;
 
+        //- Volumetric Area of Heat Exchanger
+        volScalarField volumetricAreaHX_;
+
         //- rotation tensor from local to global coordinate system
         volTensorField rotate_;
 
@@ -191,6 +194,13 @@ public:
             {
                 return this->volumetricAreaFuel_;
             }
+
+            //- Return the Volumetric Area of Heat exchanger
+            inline const volScalarField& volumetricAreaHX() const 
+            {
+                return this->volumetricAreaHX_;
+            }
+
 
             //- Return rotate (global to local coord system)
             inline const volTensorField& rotate() const

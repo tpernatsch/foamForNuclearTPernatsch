@@ -6,6 +6,8 @@ neutroToFluid.mapTgtToSrc( TavClad, plusEqOp<scalar>(), TcladNeutro);
 neutroToFluid.mapTgtToSrc( tRhoRhok(), plusEqOp<scalar>(), rhoCoolNeutro);
 neutroToFluid.mapTgtToSrc( thermo.T(), plusEqOp<scalar>(), TCoolNeutro);
 
+thermo.T().correctBoundaryConditions();
+
 tRhoRhok.clear();
 
 if(liquidFuel)

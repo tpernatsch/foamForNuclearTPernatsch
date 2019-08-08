@@ -27,6 +27,9 @@
         + phig
     );
 
+    // Update the pressure BCs to ensure flux consistency
+    constrainPressure(p_rgh, rho, U, phiHbyA, rhorAUf);
+
     {
         fvScalarMatrix p_rghDDtEqn
         (
@@ -53,7 +56,8 @@
                 p_rghEqn.setReference(pRefCell, getRefCellValue(p_rgh, pRefCell));
             }
 
-            p_rghEqn.solve
+
+            solvPerfp_rgh = p_rghEqn.solve
             (
                 fluidMesh.solver
                 (
@@ -61,8 +65,8 @@
                     (
                         (
                             oCorr == nOuterCorr-1
-                            && corr == nCorr-1
-                            && nonOrth == nNonOrthCorr
+                         && corr == nCorr-1
+                         && nonOrth == nNonOrthCorr
                         )
                     )
                 )

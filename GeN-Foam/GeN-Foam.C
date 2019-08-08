@@ -5,7 +5,7 @@
     \\  /    A nd           | Copyright (C) 2011-2013 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
-License
+License 
     This file is part of OpenFOAM.
 
     OpenFOAM is free software: you can redistribute it and/or modify it
@@ -77,6 +77,7 @@ int main(int argc, char *argv[])
 
     #include "setRootCase.H"
     #include "createTime.H"
+    #include "readPhysicsToSolve.H"
 
     #include "createMeshes.H"
     #include "createFields.H"
@@ -94,9 +95,9 @@ int main(int argc, char *argv[])
 
     while (runTime.run())
     {
-
         #include "readTimeControls.H"
         #include "readPIMPLEControls.H"
+        #include "readNeutronicsControls.H"
         #include "readSolidDisplacementFoamControls.H"
         #include "compressibleCoNo.H"
 
@@ -114,12 +115,18 @@ int main(int argc, char *argv[])
                #include "storeOldFluidFields.H"
         }
 
+        bool allRegionsConverged = false;
+        bool finalIter = false;
+
         // --- PIMPLE loop
         for (int oCorr=0; oCorr<nOuterCorr; oCorr++)
         {
             Info << "PIMPLE iteration no:  " << oCorr << nl << endl;
 
-            bool finalIter = oCorr == nOuterCorr-1;
+            if (oCorr == nOuterCorr-1 || allRegionsConverged)
+            {
+                finalIter = true;
+            }
 
             Info<< "\nSolving for fluid region " << endl;
 
@@ -127,8 +134,13 @@ int main(int argc, char *argv[])
 
             #include "readFluidPIMPLEControls.H"
 
+            #include "readFluidMultiRegionResidualControls.H"
+
             #include "solveFluid.H"
 
+            #include "residualControlsFluid.H"
+
+            #include "checkResidualControls.H"
         }
 
         #include "writeOutputs.H"

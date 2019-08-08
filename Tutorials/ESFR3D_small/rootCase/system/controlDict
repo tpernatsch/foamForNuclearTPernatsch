@@ -1,0 +1,80 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// General
+
+application         GeN-Foam;
+
+startFrom           startTime;//latestTime;//
+
+startTime           0;
+
+stopAt              endTime;//writeNow;//  
+
+endTime             1000;
+
+deltaT              5; // time step (if non adjusted)
+
+adjustTimeStep      false; // adjust time step based on CFL condition, max power and max delta T
+
+maxDeltaT           0.5; // max time step
+
+writeControl        runTime;//timeStep;//adjustableRunTime;
+
+writeInterval       100;
+
+purgeWrite          2;
+
+writeFormat         ascii;
+
+writePrecision      7;
+
+writeCompression    true;
+
+timeFormat          general;
+
+timePrecision       8;
+
+runTimeModifiable   true;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Physics to solve
+
+solveFluidMechanics     true;
+
+solveEnergy             true;
+
+solveNeutronics         true;
+
+solveThermalMechanics   true;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Global simulation options
+
+compr       false; // true for compressible simulation
+
+liquidFuel  false; // eg, MSRs
+
+// Solution control
+
+maxCo               0.99; // should be below 1 for CFL condition (necessary to guarantee stability if solving NS)
+
+maxPowerVariation   0.025; //max power variation in each time step
+
+// ************************************************************************* //

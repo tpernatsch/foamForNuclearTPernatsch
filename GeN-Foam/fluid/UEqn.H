@@ -22,19 +22,22 @@ if (momentumPredictor)
     if(solveFluidMechanics)
     {
         Info<< "Solve the Momentum equation " << nl << endl;
-        solve
-        (
-            UEqn
-         ==
-            porosity*fvc::reconstruct
+        
+        solvPerfU =
+            solve
             (
+                UEqn
+              ==
+                porosity*fvc::reconstruct
                 (
-                  - ghf*fvc::snGrad(rho*rhok)
-                  - fvc::snGrad(p_rgh)
-                )*fluidMesh.magSf()
-            ),
-            fluidMesh.solver(U.select(finalIter))
-        );
+                    (
+                      - ghf*fvc::snGrad(rho*rhok)
+                      - fvc::snGrad(p_rgh)
+                    )*fluidMesh.magSf()
+                ),
+                fluidMesh.solver(U.select(finalIter))
+            );
+
         realU = U / porosity;
         realU.correctBoundaryConditions();
         fvOptions.correct(U);

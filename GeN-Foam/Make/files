@@ -6,6 +6,7 @@ porousClass/porousMedium.C
 porousClass/correlationPorousMedium.C
 porousClass/byZoneCorrelationPorousMedium.C
 thermalMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+thermalMechanics/tractionDisplacement/elasticSpring.C
 albedoSP3/albedoSP3FvPatchField.C
 
 fuel/IOFieldFields.C

@@ -39,7 +39,7 @@ if(finalIter)
             #include "solveNeutronics.H"
         }
         couplingIter++;
-    }while(residual > timeStepResidual && couplingIter < maxTimeStepIterations && !eigenvalueNeutronics && tighltyCoupled);
+    }while( (residual > timeStepResidual) && (couplingIter < maxTimeStepIterations) && !eigenvalueNeutronics && tightlyCoupled);
 
 }
 else

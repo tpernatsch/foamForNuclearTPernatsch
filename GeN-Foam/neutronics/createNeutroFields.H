@@ -1,6 +1,24 @@
 // Nuclear data fields
 Info<< "Nuclear data fields\n" << endl;
 
+IOdictionary reactorState
+(
+    IOobject
+    (
+        "reactorState",
+        runTime.constant(),
+        neutroMesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    )
+);
+
+scalar keff(reactorState.lookupOrDefault("keff",1.0)); 
+scalar pTarget(reactorState.lookupOrDefault("pTarget",1.0)); 
+scalar pTot(1.0); 
+scalar pTotOld(1.0); 
+
+
 PtrList<volScalarField> IV(energyGroups);
 forAll(IV, i)
 {

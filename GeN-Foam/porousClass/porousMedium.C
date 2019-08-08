@@ -98,6 +98,18 @@ Foam::porousMedium::porousMedium
         dimensionedScalar(word(), dimensionSet(0,-1,0,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    volumetricAreaHX_(
+        IOobject(
+            "volumetricAreaHX",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar(word(), dimensionSet(0,-1,0,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     rotate_(
         IOobject(
             "porousMedium::rotate",

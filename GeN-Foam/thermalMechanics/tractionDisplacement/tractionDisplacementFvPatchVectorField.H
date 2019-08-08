@@ -59,6 +59,9 @@ class tractionDisplacementFvPatchVectorField
 
     // Private Data
 
+
+
+protected:
         vectorField traction_;
         scalarField pressure_;
 

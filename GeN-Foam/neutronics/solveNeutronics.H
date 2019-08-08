@@ -16,6 +16,7 @@ if (eigenvalueNeutronics && (runTime.timeIndex()-runTime.startTimeIndex())==1 )
 }
 
 #include "initializeNeutroSource.H"
+#include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
 
 if(!eigenvalueNeutronics && couplingIter == 0)
@@ -59,7 +60,7 @@ do
     Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: " 
     << neutroIter << "): " << neutroResidual << " after Aitken no: " << aitkenIterNo << " with solveROM: " << solveROM  << endl;     
 
-}while(((neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) ) &&  !eigenvalueNeutronics);
+}while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics);
 
 volFuelPowerNeutro*=0.0;
 forAll(flux,energyI)
@@ -87,6 +88,11 @@ if (eigenvalueNeutronics)
     keff = min(keff,5);
     keff = max(keff,0.1);
     Info << "keff = " << keff << nl << endl;
+
+    // Since a keff is a scalar, the value inside the dictionary is not updated at runTime automatically.
+    // The line below resets the SCALAR IN THE DICTIONARY at runTime so that the dictionary is written with the updated value.
+    reactorState.set("keff", keff);
+
     #include "normFluxes.H"
     if (adjustDiscFactors)
     {

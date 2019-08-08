@@ -19,7 +19,7 @@ fvScalarMatrix EEqn
   - fvm::laplacian(turb.alphaEff(), he)
  ==
       porousMedium.externalVolHeatSource()
-    - pow((pow(porousMedium.externalHeatTransferCoefficient(),-1)+pow(porousMedium.heatTransferCoefficient(),-1)),-1)* porousMedium.volumetricAreaSS()*(thermo.T()-porousMedium.externalT())
+    - pow((pow(porousMedium.externalHeatTransferCoefficient(),-1)+pow(porousMedium.heatTransferCoefficient(),-1)),-1)* porousMedium.volumetricAreaHX()*(thermo.T()-porousMedium.externalT())
     + subscaleFuel.heatSources(thermo.T(),porousMedium.heatTransferCoefficient(),volFuelPower) * porousMedium.volumetricAreaFuel()*(1-liquidFuel)
     + liquidFuel*volFuelPower*porosity
     - porousMedium.heatTransferCoefficient()* porousMedium.volumetricAreaSS()*(thermo.T()-Tstructures)
@@ -30,10 +30,12 @@ EEqn.relax();
 
 fvOptions.constrain(EEqn);
 
-scalar EEqnResidual(EEqn.solve(fluidMesh.solver(he.select(finalIter))).initialResidual());
-residual = max(residual,EEqnResidual);
-
 fvOptions.correct(he);
+
+solvPerfE = EEqn.solve(fluidMesh.solver(he.select(finalIter)));
+
+scalar EEqnResidual(solvPerfE.initialResidual());
+residual = max(residual,EEqnResidual);
 
 thermo.correct();
 
@@ -54,7 +56,16 @@ TouterClad = subscaleFuel.cladOut();
 tmp<volScalarField> tFuelYesNo = TinnerFuel/max(TinnerFuel,dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),SMALL));
 const volScalarField& fuelYesNo = tFuelYesNo();
 
-TavFuel = fvc::domainIntegrate(TavFuel*fuelYesNo)/max(fvc::domainIntegrate(TavFuel*fuelYesNo/max(TavFuel*fuelYesNo,dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),SMALL))),dimensionedScalar("", dimensionSet(0,3,0,0,0,0,0),SMALL));
+
+if(liquidFuel)
+{
+    TavFuel = thermo.T();
+}
+else
+{
+    TavFuel = fvc::domainIntegrate(TavFuel*fuelYesNo)/max(fvc::domainIntegrate(TavFuel*fuelYesNo/max(TavFuel*fuelYesNo,dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),SMALL))),dimensionedScalar("", dimensionSet(0,3,0,0,0,0,0),SMALL));
+}
+
 TavClad = fvc::domainIntegrate(TavClad*fuelYesNo)/max(fvc::domainIntegrate(TavClad*fuelYesNo/max(TavClad*fuelYesNo,dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),SMALL))),dimensionedScalar("", dimensionSet(0,3,0,0,0,0,0),SMALL));
 
 
