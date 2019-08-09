@@ -19,12 +19,32 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
                     IOobject::NO_READ,
                     IOobject::NO_WRITE
                 ),
-                fvc::laplacian(D[energyI]/discFactor[energyI],fluxStar_[energyI])/fluxStar_[energyI]
+                fvc::laplacian(D[energyI]/discFactor[energyI],fluxStar_[energyI]) // /fluxStar_[energyI]
             )
         );
     }
 
     PtrList<volScalarField> ddtFlux2(xs_.energyGroups());
+
+    forAll(ddtFlux2,energyI)
+    {
+        ddtFlux2.set
+        (
+            energyI,
+            new volScalarField
+            (
+                IOobject
+                (
+                    "ddtFlux2"+Foam::name(energyI),
+                    runTime.timeName(),
+                    neutroMesh,
+                    IOobject::NO_READ,
+                    IOobject::NO_WRITE
+                ),
+                fvc::ddt(IV[energyI]/discFactor[energyI],fluxStar2[energyI])
+            )
+        );
+    }
 
 
     forAll(fluxStar_[0].internalField(),i)
@@ -47,8 +67,8 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
                     matrix[energyI][energyJ]=
                                   IV[energyI].internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
                                 - nuSigmaEff[energyI].internalField()[i]/keff_*(1.0-BetaTot.internalField()[i])*chiPrompt[energyI].internalField()[i]/discFactor[energyI].internalField()[i]
-                                + sigmaDisapp[energyI].internalField()[i]/discFactor[energyI].internalField()[i]
-                                - leakages[energyI].internalField()[i];
+                                + sigmaDisapp[energyI].internalField()[i]/discFactor[energyI].internalField()[i];
+                                //- leakages[energyI].internalField()[i];
                 }else
                 {
                     matrix[energyI][energyJ]= 
@@ -59,7 +79,7 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
 
             source[energyI]= 
                       IV[energyI].internalField()[i]*fluxStar_[energyI].oldTime().internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
-                    //+ leakages[energyI].internalField()[i]
+                    + leakages[energyI].internalField()[i]
                     + delayedNeutroSource_.internalField()[i]*chiDelayed[energyI].internalField()[i]
                     + 2*sigmaDisapp[energyI].internalField()[i]*fluxStar2_[energyI].internalField()[i]/discFactor[energyI].internalField()[i] 
                     + 2*ddtFlux2[energyI].internalField()[i];
