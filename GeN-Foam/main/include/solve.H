@@ -17,8 +17,14 @@ else
 
 #include "UEqn.H"
 
+
 if(finalIter)
 {
+    if(solveFluidMechanics)
+    {                       
+        int corr = 0;
+        #include "pEqn.H"
+    }
     scalar residual = 0.0;
     label couplingIter = 0;
     do
