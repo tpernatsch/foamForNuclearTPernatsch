@@ -19,6 +19,4 @@ model			SNNeutronics;//diffusionNeutronics;//SP3Neutronics;//SP3Neutronics;//adj
 
 eigenvalueNeutronics    true;
 
-//SP3Neutronics true;
-
 // ************************************************************************* //

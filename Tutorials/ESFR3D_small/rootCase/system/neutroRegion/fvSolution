@@ -57,7 +57,6 @@ neutronTransport
 {
     integralPredictor           false; // integral neutron balance made at each time step to predict fluxes at next step (can be unstable)
     implicitPredictor           false;
-    ROMAcceleration             false;
     aitkenAcceleration          false;
     neutronIterationResidual    0.000001; // required accuracy for the coupling of different energy groups
     maxNeutronIterations        50; // up to 3-400 if no acceleration techniques 
