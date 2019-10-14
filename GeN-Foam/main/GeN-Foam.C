@@ -65,10 +65,13 @@ Author
 #include "porousKEpsilon.H"
 #include "fvOptions.H"
 
+#include "thermalHydraulicModel.H"
 #include "neutronics.H"
 #include "thermoMechanics.H"
 
 #include "mergeOrSplitBaffles.H"
+
+#include "multiphysicsControl.H"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -85,6 +88,24 @@ int main(int argc, char *argv[])
 
     #include "createMeshes.H"
     #include "createFields.H"
+
+    multiphysicsControl multiphysics
+    (
+        runTime,
+        fluidMesh,
+        neutroMesh,
+        mechMesh
+    );
+
+    autoPtr<thermalHydraulicModel> THM
+    (
+        thermalHydraulicModel::New
+        (
+            fluidMesh, 
+            multiphysics, 
+            fvOptions       //- Created in createFluidFields.H
+        )
+    );
 
     #include "initContinuityErrs.H"
     #include "readTimeControls.H"
@@ -111,38 +132,27 @@ int main(int argc, char *argv[])
 
         Info << "Time = " << runTime.timeName() << nl << endl;
 
-        if (nOuterCorr != 1)
+        if (multiphysics.nOuterCorrectors() != 1)
         {
                #include "setRegionFluidFields.H"
                #include "storeOldFluidFields.H"
         }
 
-        bool allRegionsConverged = false;
-        bool finalIter = false;
-
-        // --- PIMPLE loop
-        for (int oCorr=0; oCorr<nOuterCorr; oCorr++)
+        while(multiphysics.loop())
         {
-            Info << "PIMPLE iteration no:  " << oCorr << nl << endl;
-
-            if (oCorr == nOuterCorr-1 || allRegionsConverged)
-            {
-                finalIter = true;
-            }
-
             Info<< "\nSolving for fluid region " << endl;
 
             #include "setRegionFluidFields.H"
 
             #include "readFluidPIMPLEControls.H"
 
-            #include "readFluidMultiRegionResidualControls.H"
+            //#include "readFluidMultiRegionResidualControls.H"
 
-            #include "solve.H"
+            #include "solve2.H"
 
-            #include "residualControlsFluid.H"
+            //#include "residualControlsFluid.H"
 
-            #include "checkResidualControls.H"
+            //#include "checkResidualControls.H"
         }
 
         #include "writeOutputs.H"

@@ -43,7 +43,7 @@
                 // pressure solution - done in 2 parts. Part 1:
                 thermo.rho() -= psi*p_rgh;
         }
-        for (int nonOrth=0; nonOrth<=nNonOrthCorr; nonOrth++)
+        while (multiphysics.correctNonOrthogonal())
         {
             fvScalarMatrix p_rghEqn
             (
@@ -64,15 +64,14 @@
                     p_rgh.select
                     (
                         (
-                            oCorr == nOuterCorr-1
-                         && corr == nCorr-1
-                         && nonOrth == nNonOrthCorr
+                            multiphysics.finalIter() &&
+                            multiphysics.finalInnerIter()
                         )
                     )
                 )
             );
 
-            if (nonOrth == nNonOrthCorr) //velocity corrector step
+            if (multiphysics.finalNonOrthogonalIter()) //velocity corrector step
             {
                 phi = (phiHbyA + p_rghEqn.flux()); //porosity*rho*H/A (+rho*g*z/A*grad(gamma*rhp)) + grad(P)/A **** the term into the paranthesis is not in Jazak thesis because there is no gravity source there!
                 U = HbyA

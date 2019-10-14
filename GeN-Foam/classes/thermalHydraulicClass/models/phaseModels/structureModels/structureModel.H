@@ -1,0 +1,282 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Class
+    Foam::structureModel
+
+Description
+    Class to handle the description of a mesh-unresolved structure. It is 
+    derived from phaseBase, to represent the volume fraction of the structure.
+    The key member for the understanding of this class is cellFields_. 
+    The structure can be in fact though of as being composed by different
+    subStructures, with properties defined only on certain cells of the mesh.
+    However, as these subStructure are meant NOT to spatially overlap, the 
+    overall structure can be described by a single set of fields (Dh_, iApow_, 
+    etc.) that are initialized/set/modified on a cell-by-cell basis.
+    The cellFields_ member is thus a HashTable of scalarFields indexed by
+    subStructure name. These scalarFields are = 1.0 where the given
+    subStructure exists, and 0 elsewhere. What the subStructure names are, that
+    is set by the actual run-time-selected instance of the structureModel
+    class.
+    Currently, the only available structureModel is byZone, in which
+    the subStructures are effectively cellZones, and the cellFields_ is
+    thus a dicts of scalarFields representing where each cellZone exists.
+
+
+Author 
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+
+SourceFiles
+    structureModel.C
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef structureModel_H
+#define structureModel_H
+
+#include "fvMatrix.H"
+#include "phaseBase.H"
+#include "HashPtrTable.H"
+#include "runTimeSelectionTables.H"
+#include "zeroGradientFvPatchFields.H"
+#include "powerModel.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+
+//- Forward declarations
+class fluid;
+
+/*---------------------------------------------------------------------------*\
+                           Class structureModel Declaration
+\*---------------------------------------------------------------------------*/
+
+class structureModel
+:
+    public phaseBase
+{
+protected:
+
+    typedef HashTable
+    <
+        autoPtr<powerModel>,
+        word,
+        word::hash
+    >   powerModelTable;
+
+    //- List of names of each group of cells into which this structure is split
+    wordList regions_;
+
+    //- Table of limited volume fraction fields indexed by SubStructure name
+    //  Every field is equal to the overall alpha of structure only in those
+    //  cells where the corresponding subStructure is present, and is 0 
+    //  elsewhere
+    volScalarFieldTable alphaFields_;
+
+    //- Table of cell scalarFields indexed by subStructure name
+    scalarFieldTable cellFields_;
+
+    //- Table of cell labelLists indexed by subStructure name
+    labelListTable cellLists_;
+
+    //- Tortuosity of the structure in the global reference frame
+    volTensorField tortuosity_;
+
+    //- Hydraulic diameter
+    volScalarField Dh_;
+
+    //- Hydraulic diameter in the X, Y, Z directions in the local structure 
+    //  frame of reference. Used exclusively for the computation of the local
+    //  vector Reynolds number.
+    volVectorField lDh_;
+
+    //- Table of power models indexed by powerModel name
+    powerModelTable powerModels_;
+
+    //- Surface temperature of power subStructures
+    volScalarField Tact_;
+
+    //- Interfacial area of the powerModel subStructure
+    volScalarField iAact_;
+
+    //- Surface temperature of the passive subStructure
+    volScalarField Tpas_;
+
+    //- Interfacial area of the passive subStructure
+    volScalarField iApas_;
+
+    //- Density of the passive subStructure
+    volScalarField rhopas_;
+
+    //- Cp of the passive subStructure
+    volScalarField Cppas_;
+
+    //- Rotation matrix to move from global to local reference frame
+    volTensorField Rg2l_;
+
+    //- Rotation matrix to move from local to global reference frame
+    volTensorField Rl2g_;
+
+public:
+
+    TypeName("structureModel");
+
+    //- Runtime selection table declaration
+
+        declareRunTimeSelectionTable
+        (
+            autoPtr,
+            structureModel,
+            structureModels,
+            (
+                const dictionary& dict,
+                const fvMesh& mesh
+            ),
+            (dict, mesh)
+        );
+
+    //- Constructors
+
+        structureModel
+        (
+            const dictionary& dict,
+            const fvMesh& mesh
+        );
+
+        //- Destructor
+        virtual ~structureModel(){}
+
+    //- Selectors
+
+        static autoPtr<structureModel> New
+        (
+            const dictionary& dict,
+            const fvMesh& mesh
+        );
+
+    //- Member Functions
+
+        //- In two-phase solvers :
+        //  HT = H1*frac1*T1 + H2*frac2*T2
+        //  H =  H1*frac1 + H2*frac2
+        //- In a mono-phase solver :
+        //  HT = H*T
+        //  H = H
+        virtual void correct
+        (
+            const volScalarField& HT,
+            const volScalarField& H
+        );
+
+        tmp<volScalarField> explicitHeatSource
+        (
+            const fluid& fluid,
+            const volScalarField& H
+        ) const;
+
+        tmp<fvScalarMatrix> linearizedSemiImplicitHeatSource
+        (
+            fluid& fluid,
+            const volScalarField& H
+        ) const;
+
+        //- Const access
+
+            const wordList& regions() const
+            {
+                return regions_;
+            }
+
+            const volScalarFieldTable& alphaFields() const
+            {
+                return alphaFields_;
+            }
+
+            const scalarFieldTable& cellFields() const
+            {
+                return cellFields_;
+            }
+
+            const labelListTable& cellLists() const
+            {
+                return cellLists_;
+            }
+
+            const volTensorField& tortuosity() const
+            {
+                return tortuosity_;
+            }
+
+            const volScalarField& Dh() const
+            {
+                return Dh_;
+            }
+
+            const volVectorField& lDh() const
+            {
+                return lDh_;
+            }
+
+            const volScalarField& Tact() const
+            {
+                return Tact_;
+            }
+
+            const volScalarField& iAact() const
+            {
+                return iAact_;
+            }
+
+            const volScalarField& iApas() const
+            {
+                return iApas_;
+            }
+
+            const volScalarField& Tpas() const
+            {
+                return Tpas_;
+            }
+
+            const volTensorField& Rg2l() const
+            {
+                return Rg2l_;
+            }
+
+            const volTensorField& Rl2g() const
+            {
+                return Rl2g_;
+            }
+};
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //

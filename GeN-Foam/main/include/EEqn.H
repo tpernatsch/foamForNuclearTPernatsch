@@ -32,7 +32,7 @@ fvOptions.constrain(EEqn);
 
 fvOptions.correct(he);
 
-solvPerfE = EEqn.solve(fluidMesh.solver(he.select(finalIter)));
+solvPerfE = EEqn.solve(fluidMesh.solver(he.select(multiphysics.finalIter())));
 
 scalar EEqnResidual(solvPerfE.initialResidual());
 residual = max(residual,EEqnResidual);

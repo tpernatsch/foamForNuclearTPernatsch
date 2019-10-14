@@ -29,6 +29,8 @@ classes/thermoMechanicClass/linearElastic/linearElasticThermoMechanics.C
 classes/thermoMechanicClass/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
 classes/thermoMechanicClass/tractionDisplacement/gapContactFvPatchVectorField.C
 
+classes/multiphysicsControl/multiphysicsControl.C
+
 include/mergeOrSplitBaffles.C
 
 main/GeN-Foam.C

@@ -25,3 +25,9 @@ GeN-Foam/*.includes
 
 # Sublime Text 3 files
 GeN-Foam/*.sublime*
+
+# All compilation files
+**/linux64*
+**/lnInclude*
+*.o
+*.dep

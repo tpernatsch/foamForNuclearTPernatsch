@@ -35,7 +35,7 @@ if (momentumPredictor)
                       - fvc::snGrad(p_rgh)
                     )*fluidMesh.magSf()
                 ),
-                fluidMesh.solver(U.select(finalIter))
+                fluidMesh.solver(U.select(multiphysics.finalIter()))
             );
 
         realU = U / porosity;
