@@ -139,6 +139,14 @@ protected:
     //- Rotation matrix to move from local to global reference frame
     volTensorField Rl2g_;
 
+    //- For GeN-Foam compatibility
+        
+        volScalarField nuclearFuelPowerDensity_;
+
+        volScalarField TavFuel_;
+
+        volScalarField TavClad_;
+        
 public:
 
     TypeName("structureModel");
@@ -268,6 +276,23 @@ public:
             {
                 return Rl2g_;
             }
+
+            //- For GeN-Foam compatibility
+
+                volScalarField& nuclearFuelPowerDensity()
+                {
+                    return nuclearFuelPowerDensity_;
+                }
+
+                const volScalarField& TavFuel() const
+                {
+                    return TavFuel_;
+                }
+
+                const volScalarField& TavClad() const
+                {
+                    return TavClad_;
+                }
 };
 
 

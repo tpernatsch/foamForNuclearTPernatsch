@@ -154,20 +154,6 @@ Foam::thermalHydraulicModel::thermalHydraulicModel
         ),
         mesh,
         dimensionedScalar("dpdt", p_.dimensions()/dimTime, 0)
-    ),
-    solveFluidDynamics_
-    (
-        mesh.time().controlDict().lookupOrDefault<bool>
-        (
-            "solveFluidDynamics", true
-        )
-    ),
-    solveEnergy_
-    (
-        mesh.time().controlDict().lookupOrDefault<bool>
-        (
-            "solveEnergy", true
-        )
     )
 {
     setRefCell

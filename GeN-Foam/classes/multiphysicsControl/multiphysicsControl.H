@@ -89,23 +89,6 @@ protected :
         scalar  timeStepResidual_;
         label   maxTimeStepIterations_;
 
-    //- Variables related to thermalHydraulics are in the PIMPLE base
-
-    //- Related to neutronics
-
-        bool    integralPredictor_;
-        bool    implicitPredictor_;
-        bool    aitkenAcceleration_;
-        scalar  neutronIterationResidual_;
-        label   maxNeutronIterations_;
-
-    //- Related to thermoMechanics
-
-        bool    compactNormalStress_;
-        label   nThermoMechanicCorrs_;
-        label   thermoMechanicCorr_;
-        scalar  D_;
-
 public:
 
     TypeName("multiphysicsControl");
@@ -125,18 +108,34 @@ public:
 
     //- Member Functions
 
-        //- Override PIMPLE read to cope with different file structure
+        //- Override PIMPLE so that the total number of outer iterations to
+        //  perform is read from the topLevelDict and not from the dictionary
+        //  in fluidRegion
         virtual void read();
 
         //- Access
 
-            //- Override main dict path
-            virtual const dictionary& dict() const
+            const dictionary& topLevelDict() const
             {
                 return topLevelDict_;
             }
 
-            bool solveFluidDynamics() const
+            const dictionary& thermalHydraulicsDict() const
+            {
+                return thermalHydraulicDict_;
+            }
+
+            const dictionary& neutronicsDict() const
+            {
+                return neutronicDict_;
+            }
+
+            const dictionary& thermoMechanicsDict() const
+            {
+                return thermoMechanicDict_;
+            }
+
+            bool solveFluidMechanics() const
             {
                 return solveFlow_;
             }
@@ -156,9 +155,24 @@ public:
                 return solveThermoMechanics_;
             }
 
-            label nOuterCorrectors() const
+            const label& nOuterCorrectors() const
             {
                 return nCorrPIMPLE_;
+            }
+
+            bool tightlyCoupled() const
+            {
+                return tightlyCoupled_;
+            }
+
+            const scalar& timeStepResidual() const
+            {
+                return timeStepResidual_;
+            }
+
+            const label& maxTimeStepIterations() const
+            {
+                return maxTimeStepIterations_;
             }
 };
 

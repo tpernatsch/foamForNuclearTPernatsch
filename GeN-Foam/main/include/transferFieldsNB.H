@@ -1,31 +1,20 @@
-
-
-TNB.primitiveFieldRef() = thermo.T().primitiveField();
+TNB.primitiveFieldRef() = thermalHydraulics.TLiquid().primitiveField();
 TNB.correctBoundaryConditions();
 
-TavFuelNB.primitiveFieldRef() = TavFuel.primitiveField();
+TavFuelNB.primitiveFieldRef() = thermalHydraulics.TavFuel().primitiveField();
 TavFuelNB.correctBoundaryConditions();
 
-TavCladNB.primitiveFieldRef() = TavClad.primitiveField();
+TavCladNB.primitiveFieldRef() = thermalHydraulics.TavClad().primitiveField();
 TavCladNB.correctBoundaryConditions();
 
-TstructuresNB.primitiveFieldRef() = Tstructures.primitiveField();
+TstructuresNB.primitiveFieldRef() = thermalHydraulics.TStructure().primitiveField();
 TstructuresNB.correctBoundaryConditions();
 
-porosityNB.primitiveFieldRef() = porousMedium.voidFraction().primitiveField();
+porosityNB.primitiveFieldRef() = thermalHydraulics.alphaStructure().primitiveField();
 porosityNB.correctBoundaryConditions();
 
-rhoNB.primitiveFieldRef() = rho.primitiveField();
+rhoNB.primitiveFieldRef() = thermalHydraulics.rhoLiquid()().primitiveField();
 rhoNB.correctBoundaryConditions();
 
-rhokNB.primitiveFieldRef() = rhok.primitiveField();
-rhokNB.correctBoundaryConditions();
-
-UNB.primitiveFieldRef() = U.primitiveField();
+UNB.primitiveFieldRef() = thermalHydraulics.ULiquid().primitiveField();
 UNB.correctBoundaryConditions();
-
-muNB.primitiveFieldRef() = thermo.mu()().primitiveField();
-muNB.correctBoundaryConditions();
-
-alphatNB.primitiveFieldRef() = turb.alphat()().primitiveField();
-alphatNB.correctBoundaryConditions();

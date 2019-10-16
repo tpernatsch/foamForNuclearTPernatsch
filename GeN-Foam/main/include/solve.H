@@ -1,90 +1,70 @@
-if (finalIter)
+//- As of now, residuals passed to thermalHydraulics (both
+//  correctFluidMechanics and correctEnergy) serve no purpose
+
+scalar residual = 0.0;
+if (multiphysics.solveFluidMechanics())
 {
-    fluidMesh.data::add("finalIteration", true);
+    thermalHydraulics.correctRegimes();
+    thermalHydraulics.correctFluidMechanics(residual);
 }
 
-if(compr)
+if(!multiphysics.finalIter())
 {
-    if (oCorr == 0)
+    if(multiphysics.solveEnergy())
     {
-        #include "rhoEqn.H"
+        thermalHydraulics.correctEnergy(residual);
     }
 }
 else
 {
-    rho = rhoRef;
-}
-
-#include "UEqn.H"
-
-
-if(finalIter)
-{
-    if(solveFluidMechanics)
-    {                       
-        int corr = 0;
-        #include "pEqn.H"
-    }
     scalar residual = 0.0;
     label couplingIter = 0;
     do
     {
         Info << "Coupling iteration no:  " << couplingIter << nl << endl;
-        if(solveEnergy)
+        if(multiphysics.solveEnergy())
         {
-            #include "EEqn.H"
+            thermalHydraulics.correctEnergy(residual);
         }
         #include "transferFieldsNB.H"
-        if(solveThermalMechanics)
+        if(multiphysics.solveThermoMechanics())
         {
-            thermoMechanics.getFields(TstructuresNB, TavFuelNB, TavCladNB, TMToFluid);
+            thermoMechanics.getFields
+            (
+                TstructuresNB, 
+                TavFuelNB, 
+                TavCladNB, 
+                TMToFluid
+            );
             thermoMechanics.correct(residual);
             neutronics.deformMesh(TMToNeutro,thermoMechanics.meshDisp()); 
-        }
-                
-        if(solveNeutronics)
+        }       
+        if(multiphysics.solveNeutronics())
         {
-            neutronics.getFieldsLiquidFuel(UNB, porosityNB, TavFuelNB, TavCladNB, rhoNB*rhokNB, TNB, muNB, alphatNB,  neutroToFluid);
-            neutronics.correct(couplingIter, residual, liquidFuel);
+            neutronics.getFields
+            (
+                TavFuelNB, 
+                TavCladNB, 
+                rhoNB, 
+                TNB, 
+                neutroToFluid
+            );
+            neutronics.correct(couplingIter, residual, false);
             volFuelPower *= 0.0;
-            fluidToNeutro.mapTgtToSrc(neutronics.volFuelPower(), plusEqOp<scalar>(), volFuelPower.primitiveFieldRef());
+            fluidToNeutro.mapTgtToSrc
+            (
+                neutronics.volFuelPower(), 
+                plusEqOp<scalar>(), 
+                volFuelPower.primitiveFieldRef()
+            );
             volFuelPower.correctBoundaryConditions();
         }
         couplingIter++;
-    }while( (residual > timeStepResidual) && (couplingIter < maxTimeStepIterations) && !neutronics.eigenvalue() && tightlyCoupled);
-
-}
-else
-{
-    if(solveFluidMechanics)//first pressure corrector before energy to avoid that non-continuity of mass generate spurious heat sources 
-    {                       //(can be a probloem with large time steps)
-        int corr = 0;
-        #include "pEqn.H"
-    }
-            
-    scalar residual = 0.0;
-    if(solveEnergy)
-    {
-        #include "EEqn.H"
-    }
-}
-if(solveFluidMechanics)
-{
-    for (int corr=1; corr<nCorr; corr++)//start from 1 because first corrector done above
-    {
-        #include "pEqn.H"
-    }
-    turb.correct();
-}
-
-
-if(compr)
-{
-    rho = thermo.rho();
-}
-
-if (finalIter)
-{
-    fluidMesh.data::remove("finalIteration");
-    Re = porousMedium.ReynoldsNumber();
+    }   
+    while
+        ( 
+            (residual > multiphysics.timeStepResidual())
+        &&  (couplingIter < multiphysics.maxTimeStepIterations()) 
+        &&  (!neutronics.eigenvalue() && multiphysics.tightlyCoupled())
+        );
 }

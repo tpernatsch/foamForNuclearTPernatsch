@@ -160,10 +160,6 @@ private:
         //- Face momentum flag
         const Switch faceMomentum_;
 
-        //- Solve for T instead of he. It's experimental, less accurate, somewhat
-        //  more stable... I have the feeling I'm gonna trash this at some point
-        const Switch solveTInsteadOfHe_;
-
 public:
 
     TypeName("twoPhase");
@@ -188,14 +184,92 @@ public:
         //- Return the mixture velocity
         tmp<volVectorField> U() const;
 
-        //- Solve thermal-hydraulics
+        //- Solve all physics altogether
         virtual void correct(scalar& residual);
+
+        //- Correct fluid and structure temperatures without
+        //  updating the flow regime map
+        virtual void correctEnergy(scalar& residual);
+
+        //- Correct alphas, pressure, velocities without updating 
+        //  the flow regime map
+        virtual void correctFluidMechanics(scalar& residual);
+
+        //- Correct flow regime map and all the coupling fields
+        virtual void correctRegimes();
 
         //- Update and print Courant number
         virtual void correctCourant();
 
         //- Update continuity errors of the fluids
         void correctContErrs();
+
+        //- GeN-Foam compatibility
+
+            virtual const volScalarField& alphaLiquid() const
+            {
+                return fluid1_;
+            }
+
+            virtual const volScalarField& alphaVapour() const
+            {
+                return fluid2_;
+            }
+
+            virtual const volScalarField& alphaStructure() const
+            {
+                return structure_;
+            }
+
+            virtual const volScalarField& TLiquid() const
+            {
+                return fluid1_.thermo().T();
+            }
+
+            virtual const volScalarField& TVapour() const
+            {
+                return fluid2_.thermo().T();
+            }
+
+            virtual const volScalarField& TStructure() const
+            {
+                return structure_.Tpas();
+            }
+
+            virtual const volVectorField& ULiquid() const
+            {
+                return fluid1_.U();
+            }
+
+            virtual const volVectorField& UVapour() const
+            {
+                return fluid2_.U();
+            }
+
+            virtual tmp<volScalarField> rhoLiquid() const
+            {
+                return fluid1_.thermo().rho();
+            }
+
+            virtual tmp<volScalarField> rhoVapour() const
+            {
+                return fluid2_.thermo().rho();
+            }
+
+            virtual const volScalarField& TavFuel() const
+            {
+                return structure_.TavFuel();
+            }
+
+            virtual const volScalarField& TavClad() const
+            {
+                return structure_.TavClad();
+            }
+
+            virtual volScalarField& nuclearFuelPowerDensity()
+            {
+                return structure_.nuclearFuelPowerDensity();
+            }
 };
 
 

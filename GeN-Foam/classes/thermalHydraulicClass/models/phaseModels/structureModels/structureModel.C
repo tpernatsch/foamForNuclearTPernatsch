@@ -216,6 +216,63 @@ Foam::structureModel::structureModel
             )
         ),
         zeroGradientFvPatchScalarField::typeName
+    ),
+    nuclearFuelPowerDensity_
+    (
+        IOobject
+        (
+            "nuclearFuelPowerDensity",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar
+        (
+            "nuclearFuelPowerDensity", 
+            dimPower/dimVol, 
+            0
+        ),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TavFuel_
+    (
+        IOobject
+        (
+            "TavFuel",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar
+        (
+            "TavFuel", 
+            dimTemperature, 
+            0
+        ),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TavClad_
+    (
+        IOobject
+        (
+            "TavClad",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar
+        (
+            "TavClad", 
+            dimTemperature, 
+            0
+        ),
+        zeroGradientFvPatchScalarField::typeName
     )
 {}
 

@@ -56,47 +56,23 @@ k_effDat << runTime.time().value() << ";" << neutronics.keff() << endl ;
 // Write max, min and av fuel and cladding temperature
 
 {
-
-dimensionedScalar Tav = fvc::domainIntegrate(thermo.T()*(TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL))))
-                        / max(fvc::domainIntegrate((TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))),dimensionedScalar("",dimensionSet(0,3,0,0,0),SMALL));
-
-dimensionedScalar TavAvFuel = fvc::domainIntegrate(TavFuel)
-                        / max(fvc::domainIntegrate((TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))),dimensionedScalar("",dimensionSet(0,3,0,0,0),SMALL));
-
-dimensionedScalar TavAvClad = fvc::domainIntegrate(TavClad)
-                        / max(fvc::domainIntegrate((TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))),dimensionedScalar("",dimensionSet(0,3,0,0,0),SMALL));
-
-
-scalar Tmax = max((thermo.T().internalField())*(TavFuel/(TavFuel+dimensionedScalar("",dimensionSet(0,0,0,1,0),SMALL)))) ;
-
-reduce(Tmax, maxOp<scalar>());
-
-scalar Tmin = min(thermo.T().primitiveField()) ;
-
-reduce(Tmin, minOp<scalar>());
-
-scalar TMaxFuel = max(TinnerFuel.primitiveField()) ;
-
-reduce(TMaxFuel, maxOp<scalar>());
-
-scalar TMaxClad = max(TinnerClad.primitiveField()) ;
-
-reduce(TMaxClad, maxOp<scalar>());
-
-TmaxDat << runTime.time().value() << ";" << Tmax << endl;
-
-TavDat << runTime.time().value() << ";" << Tav.value() << endl;
-
-TavFuelDat << runTime.time().value() << ";" << TavAvFuel.value() << endl;
-
-TavCladDat << runTime.time().value() << ";" << TavAvClad.value() << endl;
-
-TMaxFuelDat << runTime.time().value() << ";" <<  TMaxFuel << endl;
-
-TMaxCladDat << runTime.time().value() << ";" <<  TMaxClad << endl;
-
-TminDat << runTime.time().value() << ";" << Tmin << endl;
-
-totalDisplacedCellsVolumeDat << runTime.time().value() << ";" << (fvc::domainIntegrate((neutronics.fluxes()[0]/(neutronics.fluxes()[0]+dimensionedScalar("",dimensionSet(0,-2,-1,0,0,0,0),SMALL))))).value() << endl;
+    totalDisplacedCellsVolumeDat 
+        << runTime.time().value() << ";" 
+        << (
+                fvc::domainIntegrate
+                (
+                        (neutronics.fluxes()[0]
+                    /   (
+                                neutronics.fluxes()[0]
+                            +   dimensionedScalar
+                                (
+                                    "",
+                                    dimensionSet(0,-2,-1,0,0,0,0),
+                                    SMALL
+                                )
+                        )
+                    )
+                )
+            ).value() << endl;
 }
 

@@ -68,8 +68,10 @@ protected:
     //  across fuel and cladding
     IOFieldField<Field, scalar> Trad_;
 
-    //- Power density of the fuel (stored in fields_ table for I/O purposes)
-    volScalarField powerDensity_;
+    //- Ref to nuclearFuelPowerDensity_ field in structureModel
+    volScalarField& powerDensity_;
+    volScalarField& TavFuel_;
+    volScalarField& TavClad_;
 
     //- Fields representing pin centerline, outer fuel, inner cladding and 
     //  outer cladding temperatures (stored in fields_ table for I/O purposes)
