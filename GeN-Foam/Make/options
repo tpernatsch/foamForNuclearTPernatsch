@@ -2,16 +2,8 @@
 EXE_INC = \
     -I./main \
     -I./main/include \
-    -I./classes/porousKEpsilon \
-    -I./classes/porousKEpsilon/lnInclude \
-    -I./classes/porousKEpsilon/porousKEpsilon \
-    -I./classes/porousClass \
-    -I./classes/porousClass/correlationPorousMedium \
-    -I./classes/porousClass/correlationPorousMedium/byZoneCorrelationPorousMedium \
-    -I./classes/porousClass/correlationPorousMedium/byZoneSodiumCorrelationPorousMedium \
-    -I./classes/fuelClass \
-    -I./classes/fuelClass/include \
-    -I./classes/fuelClass/constSubscaleFuel \
+    -I./classes/thermalHydraulicClass/models/lnInclude \
+    -I./classes/thermalHydraulicClass/solvers/lnInclude \
     -I./classes/neutronicClass \
     -I./classes/neutronicClass/albedoSP3 \
     -I./classes/neutronicClass/include \
@@ -34,8 +26,6 @@ EXE_INC = \
     -I./classes/thermoMechanicClass/tractionDisplacement/lnInclude \
     -I./classes/multiphysicsControl \
     -I./include \
-    -I./classes/thermalHydraulicClass/models/lnInclude \
-    -I./classes/thermalHydraulicClass/solvers/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
@@ -72,4 +62,3 @@ EXE_LIBS = \
     -lgenericPatchFields \
     -lreconstruct \
     -ldynamicMesh
-

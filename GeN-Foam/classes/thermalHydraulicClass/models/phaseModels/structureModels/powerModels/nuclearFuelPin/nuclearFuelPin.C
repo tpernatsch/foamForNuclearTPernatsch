@@ -73,17 +73,15 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     ),
     powerDensity_
     (
-        IOobject
-        (
-            "powerDensity."+typeName+"."+name,
-            mesh_.time().timeName(),
-            mesh_,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh_,
-        dimensionedScalar("powerDensity", dimPower/dimVol, dict),
-        zeroGradientFvPatchScalarField::typeName
+        mesh_.lookupObjectRef<volScalarField>("nuclearFuelPowerDensity")
+    ),
+    TavFuel_
+    (
+        mesh_.lookupObjectRef<volScalarField>("TavFuel")
+    ),
+    TavClad_
+    (
+        mesh_.lookupObjectRef<volScalarField>("TavClad")
     ),
     Tfi_
     (
@@ -177,6 +175,18 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     forAll(mesh_.cells(), i)
     {
         Trad_.set(i, new Field<scalar>(0, 0));
+    }
+
+    //- If the power keyword is found, write it to the powerDensity field
+    if (this->found("powerDensity"))
+    {
+        scalar q(this->lookupType<scalar>("powerDensity"));
+        forAll(this->cellList_, i)
+        {
+            label celli(this->cellList_[i]);
+            powerDensity_[celli] = q;
+        }
+        powerDensity_.correctBoundaryConditions();
     }
 
     //- If the files are present, reconstruct initial Trad_ profile 
@@ -395,6 +405,32 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     scalar gradQh(gapH_*(Tfo_[celli]-Tci_[celli])*(rfo_)/(rco_));
     Info << gradQc << " " << gradQh << endl;
     */
+
+    //- Compute and set average temperatures
+    
+    //- Fuel
+    scalar totAreaf(sqr(rfo_)-sqr(rfi_));
+    scalar Tavf(0);
+    for (int i = 0; i < fuelSubMeshSize_; i++)
+    {
+        scalar ri(r_[i]);
+        Tavf += 
+                Trad_[celli][i]
+            *   drf_*(2*ri+drf_)/totAreaf;
+    }
+    TavFuel_[celli] = Tavf;
+    
+    //- Cladding
+    scalar totAreac(sqr(rco_)-sqr(rci_));
+    scalar Tavc(0);
+    for (int i = fuelSubMeshSize_; i < subMeshSize_; i++)
+    {
+        scalar ri(r_[i]);
+        Tavc += 
+                Trad_[celli][i]
+            *   drc_*(2*ri+drc_)/totAreac;
+    }
+    TavClad_[celli] = Tavc;
 }
 
 
@@ -429,6 +465,8 @@ void Foam::powerModels::nuclearFuelPin::correct
     Tfo_.correctBoundaryConditions();
     Tci_.correctBoundaryConditions();
     Tco_.correctBoundaryConditions();
+    TavFuel_.correctBoundaryConditions();
+    TavClad_.correctBoundaryConditions();
 }
 
 

@@ -80,22 +80,3 @@ F2SPair_.correct();
         
     }
 }
-
-//- Solve continuity equations to compute new alphas
-#include "alphaEqns.H"
-
-//- Construct momentum matrices
-#include "UEqns.H"
-
-//- Solve pressure equation and reconstruct velocities
-if (faceMomentum_)
-{
-    #include "pEqnf.H"
-}
-else
-{
-    #include "pEqn.H"
-}
-
-//- Solve fluid energy equations and update structure energy sources
-#include "EEqns.H"

@@ -17,9 +17,9 @@ UEqn.relax();
 fvOptions.constrain(UEqn);
 
 //"reconstruct" used to fake a staggered grid (rhie chow)
-if (momentumPredictor)
+if (multiphysics.momentumPredictor())
 {
-    if(solveFluidMechanics)
+    if(multiphysics.solveFluidMechanics())
     {
         Info<< "Solve the Momentum equation " << nl << endl;
         
@@ -44,7 +44,3 @@ if (momentumPredictor)
         K = 0.5*magSqr(realU);
     }
 }
-
-
-
-

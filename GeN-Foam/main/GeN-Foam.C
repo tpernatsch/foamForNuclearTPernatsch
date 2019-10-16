@@ -50,28 +50,20 @@ Author
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "rhoThermo.H"
-#include "turbulentFluidThermoModel.H"
 #include "fixedGradientFvPatchFields.H"
 #include "regionProperties.H"
-#include "compressibleCourantNo.H"
 #include "coordinateSystem.H"
-#include "porousMedium.H"
-#include "subscaleFuel.H"
 #include "volPointInterpolation.H"
 #include "meshToMesh.H"
 #include "SquareMatrix.H"
 #include "fvMatrixExt.H"
-#include "porousKEpsilon.H"
 #include "fvOptions.H"
-
-#include "thermalHydraulicModel.H"
-#include "neutronics.H"
-#include "thermoMechanics.H"
-
 #include "mergeOrSplitBaffles.H"
 
 #include "multiphysicsControl.H"
+#include "thermalHydraulicModel.H"
+#include "neutronics.H"
+#include "thermoMechanics.H"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -80,79 +72,29 @@ int main(int argc, char *argv[])
 {
     #define NO_CONTROL
     #define CREATE_MESH createMeshesPostProcess.H
+    
     #include "postProcess.H"
-
     #include "setRootCase.H"
     #include "createTime.H"
-    #include "readPhysicsToSolve.H"
-
     #include "createMeshes.H"
     #include "createFields.H"
-
-    multiphysicsControl multiphysics
-    (
-        runTime,
-        fluidMesh,
-        neutroMesh,
-        mechMesh
-    );
-
-    autoPtr<thermalHydraulicModel> THM
-    (
-        thermalHydraulicModel::New
-        (
-            fluidMesh, 
-            multiphysics, 
-            fvOptions       //- Created in createFluidFields.H
-        )
-    );
-
-    #include "initContinuityErrs.H"
     #include "readTimeControls.H"
-
-    #include "compressibleCoNo.H"
-    #include "setInitialMultiRegionDeltaT.H"
-
     #include "createMeshInterpolators.H"
-
+    #include "setInitialMultiRegionDeltaT.H"
     #include "openOutputFiles.H"
     
     while (runTime.run())
     {
-
         #include "readTimeControls.H"
-        #include "readPIMPLEControls.H"
-        #include "compressibleCoNo.H"
+        #include "setMultiRegionDeltaT.H"
 
-        if((runTime.timeIndex()-runTime.startTimeIndex())>0)
-        {
-            #include "setMultiRegionDeltaT.H"
-        }
         runTime++;
 
         Info << "Time = " << runTime.timeName() << nl << endl;
 
-        if (multiphysics.nOuterCorrectors() != 1)
+        while (multiphysics.loop())
         {
-               #include "setRegionFluidFields.H"
-               #include "storeOldFluidFields.H"
-        }
-
-        while(multiphysics.loop())
-        {
-            Info<< "\nSolving for fluid region " << endl;
-
-            #include "setRegionFluidFields.H"
-
-            #include "readFluidPIMPLEControls.H"
-
-            //#include "readFluidMultiRegionResidualControls.H"
-
-            #include "solve2.H"
-
-            //#include "residualControlsFluid.H"
-
-            //#include "checkResidualControls.H"
+            #include "solve.H"
         }
 
         #include "writeOutputs.H"

@@ -22,20 +22,21 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Global
-    setInitialDeltaT
+    setMultiRegionDeltaT
 
 Description
-    Set the initial timestep.
+    Reset the timestep to maintain a constant maximum courant and
+    diffusion Numbers. Reduction of time-step is immediate, but
+    increase is damped to avoid unstable oscillations.
 
 \*---------------------------------------------------------------------------*/
 
-
-
+thermalHydraulics.correctCourant();
+scalar CoNum(thermalHydraulics.CoNum());
 scalar pTotOld(0.0);
 
 if (adjustTimeStep)
 {
-
     if (CoNum == -GREAT)
     {
         CoNum = SMALL;
@@ -45,40 +46,38 @@ if (adjustTimeStep)
 
     scalar maxDeltaTFluid = maxCo/(CoNum + SMALL);
 
-    scalar maxDeltaTNeutro = mag(maxPowerVariation / (powerVariation + SMALL)) ;
+    scalar maxDeltaTNeutro = mag(maxPowerVariation/(powerVariation + SMALL));
 
-    scalar deltaTNeutro =
-        min
-        (
-            maxDeltaTNeutro,
-        10
-        );
+    scalar deltaTNeutro = min(maxDeltaTNeutro,10);
+    
+    scalar deltaTFluid =
+    min
+    (
+        min(maxDeltaTFluid, 1.0+0.1*maxDeltaTFluid),
+        1.2
+    );
 
-        scalar deltaTFluid =
-        min
-        (
-            min(maxDeltaTFluid, 1.0 + 0.1*maxDeltaTFluid),
-            1.2
-        );
-
-    if(!solveFluidMechanics)
+    if(!multiphysics.solveFluidMechanics())
     {
         deltaTFluid = GREAT;
     }
-
 
     runTime.setDeltaT
     (
         min
         (
             min(deltaTFluid, deltaTNeutro)*runTime.deltaT().value(),
-            min(maxDeltaT,runTime.controlDict().lookupOrDefault("deltaT", maxDeltaT))
+            min
+            (
+                maxDeltaT,
+                runTime.controlDict().lookupOrDefault("deltaT", maxDeltaT)
+            )
         )
     );
 
     pTotOld = neutronics.power();
 
-    Info<< "Initial deltaT = " <<  runTime.deltaT().value() << endl;
+    Info<< "Initial deltaT = " << runTime.deltaT().value() << endl;
 }
 
 

@@ -125,10 +125,6 @@ protected:
     //- Mean Courant number
     scalar meanCoNum_;
 
-    bool solveFluidDynamics_;
-
-    bool solveEnergy_;
-
 public:
 
     //- Runtime type information
@@ -175,11 +171,44 @@ public:
         //- Solve thermal-hydraulics
         virtual void correct(scalar& residual) = 0;
 
+        //- Correct fluid and structure temperatures without
+        //  updating the flow regime map
+        virtual void correctEnergy(scalar& residual) = 0;
+
+        //- Correct alphas, pressure, velocities without updating 
+        //  the flow regime map
+        virtual void correctFluidMechanics(scalar& residual) = 0;
+
+        //- Correct flow regime map and all the coupling fields
+        virtual void correctRegimes() = 0;
+
         //- Update and print Courant number
         virtual void correctCourant() = 0;
 
         //- Stop execution (for development purposes)
         void stop();
+
+        //- For compatibility with GeN-Foam
+        
+            virtual const volScalarField& alphaLiquid() const = 0;
+            virtual const volScalarField& alphaVapour() const = 0;
+            virtual const volScalarField& alphaStructure() const = 0;
+
+            virtual const volScalarField& TLiquid() const = 0;
+            virtual const volScalarField& TVapour() const = 0;
+            virtual const volScalarField& TStructure() const = 0;
+
+            virtual const volVectorField& ULiquid() const = 0;
+            virtual const volVectorField& UVapour() const = 0;
+
+            virtual tmp<volScalarField> rhoLiquid() const = 0;
+            virtual tmp<volScalarField> rhoVapour() const = 0;
+
+            virtual const volScalarField& TavFuel() const = 0;
+            virtual const volScalarField& TavClad() const = 0;
+
+            // Non-const so it can be modified by the neutronics
+            virtual volScalarField& nuclearFuelPowerDensity() = 0;
 
         // Access
 
@@ -193,6 +222,21 @@ public:
             scalar meanCoNum() const
             {
                 return meanCoNum_;
+            }
+
+            const surfaceScalarField& phi() const
+            {
+                return phi_;
+            }
+
+            const volScalarField& p() const
+            {
+                return p_;
+            }
+
+            const volScalarField& p_rgh() const
+            {
+                return p_rgh_;
             }
 };
 

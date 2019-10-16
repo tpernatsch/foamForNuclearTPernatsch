@@ -31,28 +31,27 @@ Description
 
 \*---------------------------------------------------------------------------*/
 
-if (adjustTimeStep)
+if((runTime.timeIndex()-runTime.startTimeIndex()) > 0)
 {
+    thermalHydraulics.correctCourant();
+    scalar CoNum(thermalHydraulics.CoNum());
 
-    if (CoNum == -GREAT)
+    if (adjustTimeStep)
     {
-        CoNum = SMALL;
-    }
+        if (CoNum == -GREAT)
+        {
+            CoNum = SMALL;
+        }
 
-    scalar pTot = neutronics.power();
+        scalar pTot = neutronics.power();
 
-    scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL)) ;
+        scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL));
 
-    scalar maxDeltaTFluid = maxCo/(CoNum + SMALL);
+        scalar maxDeltaTFluid = maxCo/(CoNum + SMALL);
 
-    scalar maxDeltaTNeutro = mag(maxPowerVariation / (powerVariation + SMALL)) ;
+        scalar maxDeltaTNeutro = mag(maxPowerVariation/(powerVariation + SMALL));
 
-    scalar deltaTNeutro =
-        min
-        (
-            maxDeltaTNeutro,
-            2
-        );
+        scalar deltaTNeutro = min(maxDeltaTNeutro,2);
 
         scalar deltaTFluid =
         min
@@ -61,23 +60,24 @@ if (adjustTimeStep)
             1.2
         );
 
-    if(!solveFluidMechanics)
-    {
-        deltaTFluid = GREAT;
-    }
+        if(!multiphysics.solveFluidMechanics())
+        {
+            deltaTFluid = GREAT;
+        }
 
-    runTime.setDeltaT
-    (
+        runTime.setDeltaT
+        (
             min
             (
                 min(deltaTFluid, deltaTNeutro)*runTime.deltaT().value(),
                 maxDeltaT
             )
-    );
+        );
 
-    pTotOld = pTot;
+        pTotOld = pTot;
 
-    Info<< "deltaT = " <<  runTime.deltaT().value() << endl;
+        Info<< "deltaT = " <<  runTime.deltaT().value() << endl;
+    }
 }
 
 // ************************************************************************* //

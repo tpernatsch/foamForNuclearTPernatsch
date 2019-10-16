@@ -45,7 +45,7 @@ Foam::multiphysicsControl::multiphysicsControl
     pimpleControl
     (
         THMesh,
-        "OuterLoop"
+        "PIMPLE"
     ),
     runTime_(runTime),
     thermalHydraulicMesh_(THMesh),
@@ -62,24 +62,12 @@ Foam::multiphysicsControl::multiphysicsControl
             IOobject::NO_WRITE
         )
     ),
-    thermalHydraulicDict_(topLevelDict_.subDict("thermalHydraulics")),
-    neutronicDict_(topLevelDict_.subDict("neutronics")),
-    thermoMechanicDict_(topLevelDict_.subDict("thermoMechanics")),
+    thermalHydraulicDict_(THMesh.solutionDict()),
+    neutronicDict_(NMesh.solutionDict()),
+    thermoMechanicDict_(TMMesh.solutionDict()),
     tightlyCoupled_(topLevelDict_.get<bool>("tightlyCoupled")),
     timeStepResidual_(topLevelDict_.get<scalar>("timeStepResidual")),
-    maxTimeStepIterations_(topLevelDict_.get<label>("maxTimeStepIterations")),
-    integralPredictor_(neutronicDict_.get<bool>("integralPredictor")),
-    implicitPredictor_(neutronicDict_.get<bool>("implicitPredictor")),
-    aitkenAcceleration_(neutronicDict_.get<bool>("aitkenAcceleration")),
-    neutronIterationResidual_
-    (
-        neutronicDict_.get<scalar>("neutronIterationResidual")
-    ),
-    maxNeutronIterations_(neutronicDict_.get<label>("maxNeutronIterations")),
-    compactNormalStress_(thermoMechanicDict_.get<bool>("compactNormalStress")),
-    nThermoMechanicCorrs_(thermoMechanicDict_.get<label>("nCorrs")),
-    thermoMechanicCorr_(0),
-    D_(thermoMechanicDict_.get<scalar>("D"))
+    maxTimeStepIterations_(topLevelDict_.get<label>("maxTimeStepIterations"))
 {
     read();
 }
@@ -90,10 +78,6 @@ Foam::multiphysicsControl::multiphysicsControl
 void Foam::multiphysicsControl::read()
 {
     nCorrPIMPLE_ = topLevelDict_.lookupOrDefault<label>("nOuterCorrectors", 1);
-    nCorrPISO_ = 
-        thermalHydraulicDict_.lookupOrDefault<label>("nCorrectors", 1);
-    nNonOrthCorr_ = 
-        thermalHydraulicDict_.lookupOrDefault<label>("nNonOrthoCorrectors", 1);
     solveFlow_ = 
         runTime_.controlDict().lookupOrDefault<bool>
         (

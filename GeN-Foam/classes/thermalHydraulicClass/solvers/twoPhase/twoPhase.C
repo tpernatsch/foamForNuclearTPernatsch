@@ -86,21 +86,21 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     (
         this->subDict
         (
-                word(this->lookup("fluid1"))
-            +   "Properties"
+            "liquidProperties"  //- Now hardcoded for simplicity, maybe I'll
+                                //  change it back in the future
         ),
         mesh,
-        word(this->lookup("fluid1"))
+        "liquid"
     ),
     fluid2_
     (
         this->subDict
         (
-                word(this->lookup("fluid2"))
-            +   "Properties"
+            "vapourProperties"  //- Now hardcoded for simplicity, maybe I'll
+                                //  change it back in the future
         ),
         mesh,
-        word(this->lookup("fluid2"))
+        "vapour"
     ),
     structurePtr_
     (
@@ -222,15 +222,17 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     ),
     volatilePhaseName_
     (
-        this->lookupOrDefault<word>("volatilePhase", fluid2_.name())
+        "vapour"
     ),
     partialElimination_
     (
-        pimple.dict().lookupOrDefault<Switch>("partialElimination", false)
+        true
+        //pimple.dict().lookupOrDefault<Switch>("partialElimination", false)
     ),
     faceMomentum_
     (
-        pimple.dict().lookupOrDefault<Switch>("faceMomentum", false)
+        true
+        //pimple.dict().lookupOrDefault<Switch>("faceMomentum", false)
     )
 {
     //- Normalize phase fraction fields, structure has priority over fluid2, 
@@ -301,18 +303,53 @@ Foam::thermalHydraulicModels::twoPhase::rho() const
     return fluid1_*fluid1_.thermo().rho() + fluid2_*fluid2_.thermo().rho();
 }
 
+
 Foam::tmp<Foam::volVectorField> 
 Foam::thermalHydraulicModels::twoPhase::U() const
 {
     return fluid1_*fluid1_.U() + fluid2_*fluid2_.U();
 }
 
+
 void Foam::thermalHydraulicModels::twoPhase::correct(scalar& residual)
 {   
-    #include "solve.H"
+    correctRegimes();
+    correctFluidMechanics(residual);
+    correctEnergy(residual);
     
     Info << endl;
 }
+
+
+void Foam::thermalHydraulicModels::twoPhase::correctEnergy(scalar& residual)
+{
+    #include "EEqns.H"
+}
+
+
+void Foam::thermalHydraulicModels::twoPhase::correctFluidMechanics
+(
+    scalar& residual
+)
+{
+    #include "alphaEqns.H"
+    #include "UEqns.H"
+    if (faceMomentum_)
+    {
+        #include "pEqnf.H"
+    }
+    else
+    {
+        #include "pEqn.H"
+    }
+}
+
+
+void Foam::thermalHydraulicModels::twoPhase::correctRegimes()
+{
+    #include "correctRegimes.H"
+}
+
 
 void Foam::thermalHydraulicModels::twoPhase::correctCourant()
 {
@@ -346,6 +383,7 @@ void Foam::thermalHydraulicModels::twoPhase::correctCourant()
 
     CoNum_ = max(CoNum_, UrCoNum);
 }
+
 
 void Foam::thermalHydraulicModels::twoPhase::correctContErrs()
 {
