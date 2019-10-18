@@ -77,6 +77,7 @@ Foam::tmp<Foam::volTensorField> Foam::dragModels::Autruffe::Kd() const
     volScalarField Kds
     (
         4.31/(2*FFPair_.DhContinuous())*
+        FFPair_.magUr()*
         vapour_.rho()*
         pow
         (

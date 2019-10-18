@@ -25,6 +25,7 @@ physicsModels/dragModels/newDragModel.C
 physicsModels/dragModels/sharedModels/constant/constantDrag.C
 physicsModels/dragModels/sharedModels/phaseConstant/phaseConstant.C
 physicsModels/dragModels/FFModels/Autruffe/Autruffe.C
+physicsModels/dragModels/FSModels/ChurchillGunterShaw/ChurchillGunterShaw.C
 
 physicsModels/heatTransferModels/heatTransferModel.C
 physicsModels/heatTransferModels/newHeatTransferModel.C
@@ -55,4 +56,4 @@ regimeModels/regimeMapModels/oneParameter/oneParameter.C
 
 
 
-LIB = $(FOAM_USER_LIBBIN)/libGeNFoamFFSModels
+LIB = $(FOAM_USER_LIBBIN)/libFFSModels

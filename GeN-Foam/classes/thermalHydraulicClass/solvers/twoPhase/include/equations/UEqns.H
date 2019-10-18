@@ -20,17 +20,17 @@ Kd12.correctBoundaryConditions();
 //- Drag between fluid1 and structure
 volTensorField Kd1s
 (
-        structure_.Rl2g() 
+        structure_.Rg2l() 
     &   Kds_[fluid1_.name()+".structure"]
-    &   structure_.Rg2l()
+    &   structure_.Rl2g()
 );
 
 //- Drag between fluid2 and structure
 volTensorField Kd2s
 (
-        structure_.Rl2g() 
+        structure_.Rg2l() 
     &   Kds_[fluid2_.name()+".structure"]
-    &   structure_.Rg2l()
+    &   structure_.Rl2g()
 );
 
 {

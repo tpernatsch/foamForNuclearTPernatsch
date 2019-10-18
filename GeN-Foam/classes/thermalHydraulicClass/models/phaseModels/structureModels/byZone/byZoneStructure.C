@@ -228,8 +228,6 @@ Foam::structureModels::byZone::byZone
     //  of the one to move from global to local
     Rl2g_ = Rg2l_.T();
     Rl2g_.correctBoundaryConditions();
-
-    Info << tortuosity_ << endl;
 }
 
 

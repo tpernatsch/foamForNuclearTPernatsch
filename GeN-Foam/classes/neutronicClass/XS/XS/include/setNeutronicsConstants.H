@@ -45,3 +45,26 @@ forAll(nuSigmaEff_,energyI)
     fuelFraction_.correctBoundaryConditions();
 }
  
+//- Check that XSs have been specified for all regions
+{
+    forAll(mesh_.cellZones().names(), i)
+    {
+        bool zoneInEntries(false);
+        word zoneName(mesh_.cellZones().names()[i]);
+        forAll(entries_, j)
+        {
+            word entryName(entries_[j].keyword());
+            if (zoneName == entryName)
+            {
+                zoneInEntries = true;
+                break;
+            }
+        }
+        if (!zoneInEntries)
+        {
+            FatalErrorInFunction 
+                << "Zone: " << zoneName << " not found in neutronicProperties!"
+                << exit(FatalError);
+        }
+    }
+}

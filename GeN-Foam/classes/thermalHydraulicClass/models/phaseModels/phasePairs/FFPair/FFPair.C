@@ -98,6 +98,18 @@ Foam::FFPair::FFPair
         mesh_,
         dimensionedScalar("", dimless, 1),
         zeroGradientFvPatchScalarField::typeName
+    ),
+    magUr_
+    (
+        IOobject
+        (
+            "magUr",
+            mesh_.time().timeName(),
+            mesh_
+        ),
+        mesh_,
+        dimensionedScalar("", dimVelocity, 0),
+        zeroGradientFvPatchScalarField::typeName
     )
 {}
 
@@ -131,12 +143,15 @@ void Foam::FFPair::correct()
             dimensionedScalar("", dimArea/dimTime, VSMALL)
         );
 
-    Re_ = mag(U1-U2)*DhDispersed_/nuDispersed_;
+    magUr_ = mag(U1-U2);
+
+    Re_ = magUr_*DhDispersed_/nuDispersed_;
 
     DhDispersed_.correctBoundaryConditions();
     DhContinuous_.correctBoundaryConditions();
     nuDispersed_.correctBoundaryConditions();
-    Re_.correctBoundaryConditions();   
+    Re_.correctBoundaryConditions();
+    magUr_.correctBoundaryConditions();   
 
     
 }

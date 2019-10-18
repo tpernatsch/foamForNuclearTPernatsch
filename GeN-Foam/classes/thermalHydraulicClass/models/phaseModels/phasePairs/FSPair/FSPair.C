@@ -106,9 +106,9 @@ void Foam::FSPair::correct()
     //  efficient approch)
     tmp<volTensorField> tlRet = 
         (structure_.Rg2l()&U)*lDh/fluid_.thermo().nu()();
-    lRe_.component(0) = tlRet().component(0);
-    lRe_.component(1) = tlRet().component(4);
-    lRe_.component(2) = tlRet().component(8);
+    lRe_.replace(0, tlRet().component(0));
+    lRe_.replace(1, tlRet().component(4));
+    lRe_.replace(2, tlRet().component(8));
 
     Re_.correctBoundaryConditions();
     lRe_.correctBoundaryConditions();

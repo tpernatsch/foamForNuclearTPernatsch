@@ -70,6 +70,7 @@ Foam::tmp<Foam::volScalarField> Foam::dragModels::NoKazimi::Cd() const
         new volScalarField
         (
             0.5*iA()*pair_.dispersed().rho() * 
+            FFPair_.magUr() *
             0.005*
             ( 
                 1 + 

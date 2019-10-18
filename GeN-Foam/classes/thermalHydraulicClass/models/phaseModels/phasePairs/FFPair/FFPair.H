@@ -85,6 +85,9 @@ protected :
     //- Reynolds of the pair
     volScalarField Re_;
 
+    //- Magnitude of relative velocity difference between phases
+    volScalarField magUr_;
+
 public:
 
     TypeName("FFPair");
@@ -138,6 +141,11 @@ public:
             {
                 return Re_;
             }       
+
+            const volScalarField& magUr() const
+            {
+                return magUr_;
+            }
 };
 
 
