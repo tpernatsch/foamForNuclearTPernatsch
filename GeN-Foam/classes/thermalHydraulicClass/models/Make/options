@@ -19,7 +19,9 @@ EXE_INC = \
     -I./physicsModels/dragModels/sharedModels/constant \
     -I./physicsModels/dragModels/sharedModels/phaseConstant \
     -I./physicsModels/dragModels/FFModels/Autruffe \
+    -I./physicsModels/dragModels/FSModels/Darcy \
     -I./physicsModels/dragModels/FSModels/ChurchillGunterShaw \
+    -I./physicsModels/dragModels/FSModels/RehmeGunterShaw \
     -I./physicsModels/heatTransferModels \
     -I./physicsModels/heatTransferModels/sharedModels/constant \
     -I./physicsModels/heatTransferModels/sharedModels/Nusselt \

@@ -194,7 +194,12 @@
     fluid2_.alphaRhoPhi() = 
         fvc::interpolate(fluid2_.thermo().rho())*fluid2_.alphaPhi();
 
-    // Limit alphas so that they still add up to movingAlpha_
+    //- Limit alphas so that they still add up to movingAlpha_ and stabilize
+    //  alphas if their sum goes to 0 (helps with single-phase scenarios with
+    //  Courant numbers > 1)
+    volScalarField zeroSum(neg0(alpha1+alpha2));
+    alpha1 += zeroSum*alpha1.oldTime();
+    alpha2 += zeroSum*alpha2.oldTime();
     volScalarField corr(movingAlpha_/(alpha1+alpha2));
     alpha1 *= corr;
     alpha2 *= corr;
