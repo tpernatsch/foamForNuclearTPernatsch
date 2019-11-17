@@ -3,7 +3,6 @@ EXE_INC = \
     -I./main \
     -I./main/include \
     -I./classes/porousKEpsilon \
-    -I./classes/porousKEpsilon/lnInclude \
     -I./classes/porousKEpsilon/porousKEpsilon \
     -I./classes/porousClass \
     -I./classes/porousClass/correlationPorousMedium \
