@@ -25,40 +25,45 @@ Application
     GeN-Foam
 
 Description
-    Multi-physics solver for nuclear reactor analysis. It couples together
-    a multi-scale fine/coarse mesh (porous medium) sub-solver for thermal-hydraulics,
-    a multi-group diffusion sub-solver for neutronics, a displacement-based
-    sub-solver for thermal-mechanics and a finite-difference model for the
-    temperature field in the fuel. It is targeted towards the analysis of
-    pin-based reactors (e.g., liquid metal fast reactors or light water reactors)
-    or homogeneous reactors (e.g., fast-spectrum molten salt reactors).
-    Derived from chtMultiRegionFoam
+    Multi-physics solver for nuclear reactor analysis. It couples a multi-scale
+    fine/coarse mesh 3-phase (liquid, vapour, porous substructure) sub-solver 
+    for thermal-hydraulics, a multi-group diffusion sub-solver for neutronics,
+    a displacement-based sub-solver for thermal-mechanics. The 
+    thermal-hydraulic sub-solver consists of the custom developed FFSEulerFoam 
+    solver  (https://gitlab.com/virmodoetiae/FFSEulerFoam). It is capable of
+    modelling single and two-phase flows, while modelled fuel types consist
+    of either liquid fuel (e.g. MSRs) or fuel pin lattices. For the latter,
+    the energy dynamics is represented via a 1.5-D finite difference model.
 
 Reference publications
+    
+    NOTE: these publications do not cover recent multi-phase development
+
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, 2015
     "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design 294, pp. 24-37
+    analysis of nuclear reactors", Nuclear Engineering and Design 294, pp. 
+    24-37
 
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-    solver to the European Sodium Fast Reactor and verification against available codes",
-    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
+    multi-physics solver to the European Sodium Fast Reactor and verification 
+    against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 - 
+    Nice (France), Paper 15226
 
-
-Author
+Authors
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+    Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "fixedGradientFvPatchFields.H"
-#include "regionProperties.H"
-#include "coordinateSystem.H"
-#include "volPointInterpolation.H"
-#include "meshToMesh.H"
+#include "fvOptions.H"
 #include "SquareMatrix.H"
 #include "fvMatrixExt.H"
-#include "fvOptions.H"
+#include "meshToMesh.H"
+#include "regionProperties.H"
 #include "mergeOrSplitBaffles.H"
+#include "volPointInterpolation.H"
+#include "fixedGradientFvPatchFields.H"
 
 #include "multiphysicsControl.H"
 #include "thermalHydraulicModel.H"
@@ -78,16 +83,21 @@ int main(int argc, char *argv[])
     #include "createTime.H"
     #include "createMeshes.H"
     #include "createFields.H"
-    #include "readTimeControls.H"
     #include "createMeshInterpolators.H"
-    #include "setInitialMultiRegionDeltaT.H"
-    #include "openOutputFiles.H"
+    Info<< "\nStarting time loop\n" << endl;
+
+    Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s" 
+        << nl << endl;
+
+    #include "setDeltaT.H"
     
     while (runTime.run())
     {
-        #include "readTimeControls.H"
-        #include "setMultiRegionDeltaT.H"
-
+        if ((runTime.timeIndex()-runTime.startTimeIndex()) > 0)
+        {    
+            #include "setDeltaT.H"
+        }
+        
         runTime++;
 
         Info << "Time = " << runTime.timeName() << nl << endl;
@@ -95,9 +105,9 @@ int main(int argc, char *argv[])
         while (multiphysics.loop())
         {
             #include "solve.H"
-        }
 
-        #include "writeOutputs.H"
+            Info << endl;
+        }
 
         runTime.write();
 

@@ -75,9 +75,9 @@ Foam::multiphysicsControl::multiphysicsControl
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::multiphysicsControl::read()
+bool Foam::multiphysicsControl::read()
 {
-    nCorrPIMPLE_ = topLevelDict_.lookupOrDefault<label>("nOuterCorrectors", 1);
+    nCorrPIMPLE_ = topLevelDict_.get<label>("nOuterCorrectors");
     solveFlow_ = 
         runTime_.controlDict().lookupOrDefault<bool>
         (
@@ -86,18 +86,20 @@ void Foam::multiphysicsControl::read()
     solveEnergy_ =
         runTime_.controlDict().lookupOrDefault<bool>
         (
-            "solveEnergy", true
+            "solveEnergy", false
         );
     solveNeutronics_ =
         runTime_.controlDict().lookupOrDefault<bool>
         (
-            "solveNeutronics", true
+            "solveNeutronics", false
         );
     solveThermoMechanics_ =
         runTime_.controlDict().lookupOrDefault<bool>
         (
-            "solveThermoMechanics", true
+            "solveThermoMechanics", false
         );
+
+    return true;
 }
 
 // ************************************************************************* //

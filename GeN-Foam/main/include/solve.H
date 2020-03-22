@@ -1,33 +1,34 @@
 //- As of now, residuals passed to thermalHydraulics (both
 //  correctFluidMechanics and correctEnergy) serve no purpose
-
 scalar residual = 0.0;
-if (multiphysics.solveFluidMechanics())
-{
-    thermalHydraulics.correctRegimes();
-    thermalHydraulics.correctFluidMechanics(residual);
-}
 
-if(!multiphysics.finalIter())
+bool solveFM(multiphysics.solveFluidMechanics());
+bool solveE(multiphysics.solveEnergy());
+bool solveN(multiphysics.solveNeutronics());
+bool solveTM(multiphysics.solveThermoMechanics());
+
+//- Correct flow regime map
+thermalHydraulics.correctRegimes(solveFM, solveE);
+
+if (solveFM) thermalHydraulics.correctFluidMechanics(residual);
+
+if (!multiphysics.finalIter())
 {
-    if(multiphysics.solveEnergy())
-    {
-        thermalHydraulics.correctEnergy(residual);
-    }
+    if (solveE) thermalHydraulics.correctEnergy(residual);
 }
-else
+else if (solveE or solveN or solveTM)
 {
     scalar residual = 0.0;
     label couplingIter = 0;
     do
     {
-        Info << "Coupling iteration no:  " << couplingIter << nl << endl;
-        if(multiphysics.solveEnergy())
+        Info << "Coupling: iteration " << couplingIter << nl << endl;
+        if (solveE)
         {
             thermalHydraulics.correctEnergy(residual);
         }
         #include "transferFieldsNB.H"
-        if(multiphysics.solveThermoMechanics())
+        if (solveTM)
         {
             thermoMechanics.getFields
             (
@@ -39,7 +40,7 @@ else
             thermoMechanics.correct(residual);
             neutronics.deformMesh(TMToNeutro,thermoMechanics.meshDisp()); 
         }       
-        if(multiphysics.solveNeutronics())
+        if (solveN)
         {
             neutronics.getFields
             (
@@ -63,7 +64,7 @@ else
     }   
     while
         ( 
-            (residual > multiphysics.timeStepResidual())
+            (residual > multiphysics.timeStepResidual()) //- Currently useless
         &&  (couplingIter < multiphysics.maxTimeStepIterations()) 
         &&  (!neutronics.eigenvalue() && multiphysics.tightlyCoupled())
         );

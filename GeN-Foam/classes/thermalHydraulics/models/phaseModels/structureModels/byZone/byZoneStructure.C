@@ -1,0 +1,416 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+\*---------------------------------------------------------------------------*/
+
+#include "byZoneStructure.H"
+#include "addToRunTimeSelectionTable.H"
+#include "fvcDiv.H"
+#include "myStringOps.H"
+
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+
+namespace Foam
+{
+namespace structureModels
+{
+    defineTypeNameAndDebug(byZone, 0);
+    addToRunTimeSelectionTable
+    (
+        structureModel,
+        byZone,
+        structureModels
+    );
+}
+}
+
+
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+Foam::structureModels::byZone::byZone
+(
+    const dictionary& dict,
+    const fvMesh& mesh
+)
+:
+    structureModel
+    ( 
+        dict,
+        mesh
+    )
+{
+    bool foundAtLeastOnePassivePropertiesDict(false);
+
+    forAll(dict.toc(), i)
+    {
+        //- The sturctureProperties dictionary keys consist in cellZone names.
+        //  These keys can consist in either the name of a single cellZone, or
+        //  for brevitiy, multplie cellZone names in a single string (e.g. if 
+        //  multiple cellZones share the same structure properties, e.g. 
+        //  powerModels, void fraction, hydraulic diameter, etc.). The format
+        //  for the latter is "zone0:zone1:zone2:...:zoneN", i.e. the colon is
+        //  the separation character between zone names
+        word key(dict.toc()[i]);
+        if (key == "type") continue;
+        const dictionary& zoneDict(dict.subDict(key));
+        
+        wordList zones(myStringOps::split<word>(key, ':'));
+
+        forAll(zones, i)
+        {
+            word zone(zones[i]);
+            const labelList& zoneCellList(mesh.cellZones()[zone]);
+        
+            //- Construct cellLists_, cellFields_
+            regions_.append(zone);
+            cellLists_.insert
+            (
+                zone,
+                zoneCellList
+            );
+            scalarField zoneCellField(mesh.cells().size(), 0.0);
+            forAll(zoneCellList, j)
+            {
+                zoneCellField[zoneCellList[j]] = 1.0;
+            }
+            cellFields_.insert
+            (
+                zone,
+                zoneCellField
+            );
+            
+            //- Set volumeFraction of the structure, hydraulic diameter
+            scalar alpha(zoneDict.get<scalar>("volumeFraction"));
+            scalar Dh(zoneDict.get<scalar>("Dh"));
+            forAll(zoneCellList, j)
+            {   
+                label cellj(zoneCellList[j]);
+                (*this)[cellj] = alpha;
+                Dh_[cellj] = Dh;
+            }
+
+            //- Set HashTable of volumeFraction volScalarField indexed by 
+            //  region (i.e. zone) name
+            volScalarField zoneAlphaField(*this);
+            zoneAlphaField.primitiveFieldRef() *= zoneCellField;
+            zoneAlphaField.correctBoundaryConditions();
+            alphaFields_.insert
+            (
+                zone,
+                zoneAlphaField
+            );
+
+            //- Set passive properties fields if keywords present
+            if (zoneDict.isDict("passiveProperties"))
+            {
+                foundAtLeastOnePassivePropertiesDict = true;
+
+                const dictionary& pasDict
+                (
+                    zoneDict.subDict("passiveProperties")
+                );
+
+                //- Set interfacial area and rhoCp (later, alphaRhoCp) of the
+                //  passive subStructure
+                scalar iApas(pasDict.get<scalar>("iA"));
+                
+                scalar rhoCppas(0);
+                if (pasDict.found("rho") and pasDict.found("Cp"))
+                {
+                    rhoCppas =
+                        pasDict.get<scalar>("rho")*
+                        pasDict.get<scalar>("Cp");
+                }
+                else if (pasDict.found("rhoCp"))
+                {
+                    rhoCppas = pasDict.get<scalar>("rhoCp");
+                }
+                else
+                {
+                    FatalErrorInFunction
+                        << "Structure region: " << zone << " -> "
+                        << "specify either rhoCp or both rho and Cp"
+                        << exit(FatalError);
+                }
+
+                forAll(zoneCellList, j)
+                {
+                    label cellj(zoneCellList[j]);
+                    iApas_[cellj] = iApas;
+                    alphaRhoCppas_[cellj] = rhoCppas;   //- The multiplication
+                                                        //  by alphapas_ will
+                                                        //  be done at the end
+                }
+
+                //- Only adjust passive subStructure volume fraction if keyword
+                //  found in the passive properties dictionary
+                if (pasDict.found("volumeFraction"))
+                {
+                    scalar alphapas(pasDict.get<scalar>("volumeFraction"));
+                    forAll(zoneCellList, j)
+                    {
+                        label cellj(zoneCellList[j]);
+                        alphapas_[cellj] = alphapas;
+                    }
+                }
+                //- If the alpha.structure file does not exist in the initial 
+                //  time step folder, and a volumeFraction keyword is not found
+                //  in the passive subStructure dict, init value to region 
+                //  alpha value, read before
+                else if (!this->typeHeaderOk<volScalarField>(true))
+                {
+                    forAll(zoneCellList, j)
+                    {
+                        label cellj(zoneCellList[j]);
+                        alphapas_[cellj] = alpha;
+                    }
+                }
+
+                //- If the passive subStructure temperature field does not 
+                //  exist in the initial time step folder, get it from dict
+                if (!Tpas_.typeHeaderOk<volScalarField>(true))
+                {
+                    scalar Tpas(pasDict.get<scalar>("T"));
+                    forAll(zoneCellList, j)
+                    {
+                        label cellj(zoneCellList[j]);
+                        Tpas_[cellj] = Tpas;
+                    }
+                }
+            }
+        
+            //- Now for the rotation matrices to move from the global to the
+            //  local reference frame
+            vector localX
+            (
+                zoneDict.lookupOrDefault<vector>("localX", vector(1,0,0))
+            );
+            localX /= mag(localX);
+            vector localZ
+            (
+                zoneDict.lookupOrDefault<vector>("localZ", vector(0,0,1))
+            );
+            localZ /= mag(localZ);
+            //- Absorb non-orthogonalities in X
+            localX -= (localX&localZ)*localZ/mag(localZ);
+            localX /= mag(localX);
+            //- Compute third axis
+            vector localY(localZ ^ localX);
+            localY /= mag(localY);
+
+            //- Construct transformation matrices
+
+            //- The basis change matrix is the transfromation to move from
+            //  the local reference frame to the global one. It is constructed
+            //  by simply arraging the local basis vectors (expressed in global
+            //  reference frame coordinates) in columns. Since these are 
+            //  orthonormal, the matrix is orthonormal and its inverse is equal
+            //  to its transpose. This, the transformation matrix to move from
+            //  the global to the local frame is the transpose of the one to
+            //  move from the local to the global frame
+            tensor Rl2g
+            (
+                localX[0], localY[0], localZ[0],
+                localX[1], localY[1], localZ[1],
+                localX[2], localY[2], localZ[2]
+            );
+            tensor Rg2l = Rl2g.T();
+
+            forAll(zoneCellList, j)
+            {
+                label cellj(zoneCellList[j]);
+                Rl2g_[cellj] = Rl2g;
+                Rg2l_[cellj] = Rg2l;
+            }
+            
+            //- Construct lDh_ (for isotropic structures each component of
+            //  lDh_ is equal to Dh cell by cell)
+            vector lDhAnisotropy
+            (
+                zoneDict.lookupOrDefault<vector>
+                (
+                    "localDhAnisotropy", 
+                    vector::one
+                )
+            );
+            forAll(zoneCellList, j)
+            {
+                label cellj(zoneCellList[j]);
+                lDh_[cellj][0] = lDhAnisotropy[0]*Dh_[cellj];
+                lDh_[cellj][1] = lDhAnisotropy[1]*Dh_[cellj];
+                lDh_[cellj][2] = lDhAnisotropy[2]*Dh_[cellj];
+            }
+            
+            //- Construct global tortuosity tensor by transforming it from the
+            //  local frame (as provided in the dictionary) to the global one.
+            //  Recall that if R is the transformation matrix to rotate a 
+            //  vector from the local to the global frame, a local tensor Q can
+            //  be rotated to the global frame via R & Q & R.T(). In this case,
+            //  R = Rl2g. Note that while Rl2g.T() = Rg2l, Rl2g.T() was kept 
+            //  for clarity
+            vector lTortuosityVector
+            (
+                zoneDict.lookupOrDefault<vector>
+                (
+                    "localTortuosity", 
+                    vector::one
+                )
+            );
+            tensor lTortuosity(tensor::zero);
+            lTortuosity[0] = lTortuosityVector[0];
+            lTortuosity[4] = lTortuosityVector[1];
+            lTortuosity[8] = lTortuosityVector[2];
+            forAll(zoneCellList, j)
+            {
+                label cellj(zoneCellList[j]);
+                tortuosity_[cellj] = 
+                    Rl2g & lTortuosity & Rl2g.T();
+            }
+        }
+    }
+
+    //- Don't write passiveStructure temperature field to files if no passive
+    //  properties were specified in the phasePropertiesDict
+    if (!foundAtLeastOnePassivePropertiesDict)
+    {
+        Tpas_.writeOpt() = IOobject::NO_WRITE;
+    }
+
+    //- Correct BCs of fields set cell-by-cell
+    this->correctBoundaryConditions();
+    Dh_.correctBoundaryConditions();
+    Tpas_.correctBoundaryConditions();
+    iApas_.correctBoundaryConditions();
+    alphapas_.correctBoundaryConditions();
+    Rg2l_.correctBoundaryConditions();
+    lDh_.correctBoundaryConditions();
+    tortuosity_.correctBoundaryConditions();
+
+    //- Multiply rhoCppas by alphapas to get actual volumetric heat capacity
+    //  of the passive subStructure, limit to avoid 0 matrix coefficients when
+    //  solving for passive subSubstructure energy equation
+    alphaRhoCppas_ = 
+        Foam::max
+        (
+            alphapas_*alphaRhoCppas_, 
+            dimensionedScalar("", dimEnergy/dimVolume/dimTemperature, 1e-69)
+        );
+    alphaRhoCppas_.correctBoundaryConditions();
+
+    //- Construct powerModels
+    //  First, I need a list of all the typeNames in the various subDicts
+    wordList powerModelTypes(0);
+    forAll(dict.toc(), i)
+    {
+        word key(dict.toc()[i]);
+        if (key == "type") continue;
+        const dictionary regionDict(dict_.subDict(key));
+        if (regionDict.isDict("powerModel"))
+        {
+            const dictionary& powerModelDict
+            (
+                regionDict.subDict("powerModel")
+            );
+
+            word powerModelType(powerModelDict.get<word>("type"));
+
+            bool found(false);
+            forAll(powerModelTypes, i)
+            {
+                if (powerModelTypes[i] == powerModelType)
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                powerModelTypes.append(powerModelType);
+            }
+        }
+    }
+
+    forAll(powerModelTypes, i)
+    {
+        //- Then, for each typeName, create a dict of subDicts
+        dictionary dicts;
+        word powerModelType(powerModelTypes[i]);
+
+        forAll(dict.toc(), i)
+        {
+            word key(dict.toc()[i]);
+            if (key == "type") continue;
+            const dictionary& regionDict(dict_.subDict(key));
+            if (regionDict.isDict("powerModel"))
+            {
+                const dictionary& powerModelDict
+                (
+                    regionDict.subDict("powerModel")
+                );
+
+                wordList zones(myStringOps::split<word>(key, ':'));
+
+                if (powerModelDict.get<word>("type") == powerModelType)
+                {
+                    forAll(zones, i)
+                    {
+                        dicts.add(zones[i], powerModelDict);
+                    }
+                }
+            }
+        }
+
+        //- Finally, construct one powerModel per type
+        powerModels_.insert
+        (
+            powerModelType,
+            powerModel::New
+            (
+                *this,
+                dicts
+            )
+        );
+    }
+
+    //- Adjust iAact that was left out as it is a member of
+    //  powerModel
+    forAllIter
+    (
+        powerModelTable,
+        powerModels_,
+        iter
+    )
+    {
+        iAact_ += iter()->iA();
+    }
+    iAact_.correctBoundaryConditions();
+
+    Rl2g_.correctBoundaryConditions();
+    Rg2l_.correctBoundaryConditions();
+}
+
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+
+// ************************************************************************* //

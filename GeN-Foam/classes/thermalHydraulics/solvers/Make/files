@@ -1,0 +1,6 @@
+thermalHydraulicModel.C
+newThermalHydraulicModel.C
+onePhase/onePhase.C
+twoPhase/twoPhase.C
+
+LIB = $(FOAM_USER_LIBBIN)/libGeNFoamFFSSolvers

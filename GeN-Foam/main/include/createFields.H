@@ -1,5 +1,7 @@
+//- FvOptions
 fv::options& fluidFvOptions(fv::options::New(fluidMesh));
 
+//- Multiphysics solution control
 multiphysicsControl multiphysics
 (
     runTime,
@@ -8,16 +10,34 @@ multiphysicsControl multiphysics
     mechMesh
 );
 
+//- Thermal-hydraulics -------------------------------------------------------/
+
 autoPtr<thermalHydraulicModel> pthermalHydraulics
 (
     thermalHydraulicModel::New
     (
+        runTime,
         fluidMesh, 
         multiphysics, 
         fluidFvOptions
     )
 );
 thermalHydraulicModel& thermalHydraulics = pthermalHydraulics();
+
+volScalarField dummyPowerDensity
+(
+    IOobject
+    (
+        "dummyPowerDensity",
+        fluidMesh.time().timeName(),
+        fluidMesh.time()
+    ),
+    fluidMesh,
+    dimensionedScalar("", dimPower/dimVol, 0.0)
+);
+volScalarField& volFuelPower(dummyPowerDensity);
+
+//- Neutronics ---------------------------------------------------------------/
 
 autoPtr<neutronics> pneutronics
 (
@@ -28,6 +48,8 @@ autoPtr<neutronics> pneutronics
 );
 neutronics& neutronics = pneutronics();
 
+//- Thermo-mechanics ---------------------------------------------------------/
+
 autoPtr<thermoMechanics> pthermoMechanics
 (
     thermoMechanics::New
@@ -37,12 +59,4 @@ autoPtr<thermoMechanics> pthermoMechanics
 );
 thermoMechanics& thermoMechanics = pthermoMechanics();
 
-volScalarField& volFuelPower(thermalHydraulics.nuclearFuelPowerDensity());
-
 #include "createNBFields.H"
-
-/*
-SolverPerformance<vector> solvPerfU;
-SolverPerformance<scalar> solvPerfp_rgh;
-SolverPerformance<scalar> solvPerfE;
-*/

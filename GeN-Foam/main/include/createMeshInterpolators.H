@@ -1,5 +1,5 @@
-
-pointField neutroStartPoints = neutroMesh.points(); //used to bring back mesh after interpolations
+//- Used to bring back mesh after interpolations
+pointField neutroStartPoints = neutroMesh.points(); 
 
 pointIOField neutroUndeformedPoints
     (
@@ -14,24 +14,26 @@ pointIOField neutroUndeformedPoints
         neutroMesh.points()
     );
 
-
-if(runTime.timeOutputValue()!=0  && fvc::domainIntegrate(neutronics.Disp()).value() != Foam::Vector<double>(0,0,0))
+if
+(
+    runTime.timeOutputValue()!=0  
+&&  fvc::domainIntegrate(neutronics.Disp()).value() != vector::zero
+)
 {
-
-    Info << "Bring back meshes to undeformed case to create correct interpolators" << nl << endl; 
+    Info<< "Bringing back meshes to undeformed case to create correct "
+        <<"interpolators" << nl << endl; 
 
     neutroMesh.movePoints(neutroUndeformedPoints);
-
-    Info << "Done" << nl << endl;
-
 }
-
 
 meshToMesh TMToNeutro
 (
     mechMesh,
     neutroMesh,
-    Foam::meshToMesh::interpolationMethod(runTime.controlDict().lookupOrDefault("TMToNeutro_interpMethod", 2)),
+    Foam::meshToMesh::interpolationMethod
+    (
+        runTime.controlDict().lookupOrDefault("TMToNeutro_interpMethod", 2)
+    ),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
@@ -40,7 +42,10 @@ meshToMesh TMToFluid
 (
     mechMesh,
     fluidMeshNB,
-    Foam::meshToMesh::interpolationMethod(runTime.controlDict().lookupOrDefault("TMToFluid_interpMethod", 2)),
+    Foam::meshToMesh::interpolationMethod
+    (
+        runTime.controlDict().lookupOrDefault("TMToFluid_interpMethod", 2)
+    ),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
@@ -49,7 +54,10 @@ meshToMesh neutroToFluid
 (
     neutroMesh,
     fluidMeshNB,
-    Foam::meshToMesh::interpolationMethod(runTime.controlDict().lookupOrDefault("neutroToFluid_interpMethod", 2)),
+    Foam::meshToMesh::interpolationMethod
+    (
+        runTime.controlDict().lookupOrDefault("neutroToFluid_interpMethod", 2)
+    ),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
@@ -58,21 +66,23 @@ meshToMesh fluidToNeutro
 (
     fluidMesh,
     neutroMesh,
-    Foam::meshToMesh::interpolationMethod(runTime.controlDict().lookupOrDefault("fluidToNeutro_interpMethod", 2)),
+    Foam::meshToMesh::interpolationMethod
+    (
+        runTime.controlDict().lookupOrDefault("fluidToNeutro_interpMethod", 2)
+    ),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
 
-if(runTime.timeOutputValue()!=0 && fvc::domainIntegrate(neutronics.Disp()).value() != Foam::Vector<double>(0,0,0))
+if
+(
+    runTime.timeOutputValue() !=0 
+&&  fvc::domainIntegrate(neutronics.Disp()).value() != vector::zero
+)
 {
-    Info << "Re-deform mesh to start calculation" << nl << endl;
+    Info << "Re-deforming mesh to start calculation" << nl << endl;
 
     neutroMesh.movePoints(neutroStartPoints);
 
     neutroMesh.moving(false);
-
-    Info << "Done" << nl << endl;
 }
-
-
-

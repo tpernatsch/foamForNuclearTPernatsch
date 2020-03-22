@@ -1,3 +1,4 @@
+/*
 TNB.primitiveFieldRef() = thermalHydraulics.TLiquid().primitiveField();
 TNB.correctBoundaryConditions();
 
@@ -18,3 +19,4 @@ rhoNB.correctBoundaryConditions();
 
 UNB.primitiveFieldRef() = thermalHydraulics.ULiquid().primitiveField();
 UNB.correctBoundaryConditions();
+*/

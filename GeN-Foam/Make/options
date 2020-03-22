@@ -2,28 +2,28 @@
 EXE_INC = \
     -I./main \
     -I./main/include \
-    -I./classes/thermalHydraulicClass/models/lnInclude \
-    -I./classes/thermalHydraulicClass/solvers/lnInclude \
-    -I./classes/neutronicClass \
-    -I./classes/neutronicClass/albedoSP3 \
-    -I./classes/neutronicClass/include \
-    -I./classes/neutronicClass/diffusion \
-    -I./classes/neutronicClass/diffusion/include \
-    -I./classes/neutronicClass/SP3 \
-    -I./classes/neutronicClass/SP3/include \
-    -I./classes/neutronicClass/SN\
-    -I./classes/neutronicClass/SN/include \
-    -I./classes/neutronicClass/adjointDiffusion \
-    -I./classes/neutronicClass/adjointDiffusion/include \
-    -I./classes/neutronicClass/XS/XS \
-    -I./classes/neutronicClass/XS/XS/include \
-    -I./classes/neutronicClass/XS/XSLowMem \
-    -I./classes/neutronicClass/XS/XSLowMem/include \
-    -I./classes/thermoMechanicClass \
-    -I./classes/thermoMechanicClass/include \
-    -I./classes/thermoMechanicClass/linearElastic \
-    -I./classes/thermoMechanicClass/linearElastic/include \
-    -I./classes/thermoMechanicClass/tractionDisplacement/lnInclude \
+    -I./classes/thermalHydraulics/models/lnInclude \
+    -I./classes/thermalHydraulics/solvers/lnInclude \
+    -I./classes/neutronics \
+    -I./classes/neutronics/albedoSP3 \
+    -I./classes/neutronics/include \
+    -I./classes/neutronics/diffusion \
+    -I./classes/neutronics/diffusion/include \
+    -I./classes/neutronics/SP3 \
+    -I./classes/neutronics/SP3/include \
+    -I./classes/neutronics/SN\
+    -I./classes/neutronics/SN/include \
+    -I./classes/neutronics/adjointDiffusion \
+    -I./classes/neutronics/adjointDiffusion/include \
+    -I./classes/neutronics/XS/XS \
+    -I./classes/neutronics/XS/XS/include \
+    -I./classes/neutronics/XS/XSLowMem \
+    -I./classes/neutronics/XS/XSLowMem/include \
+    -I./classes/thermoMechanics \
+    -I./classes/thermoMechanics/include \
+    -I./classes/thermoMechanics/linearElastic \
+    -I./classes/thermoMechanics/linearElastic/include \
+    -I./classes/thermoMechanics/tractionDisplacement/lnInclude \
     -I./classes/multiphysicsControl \
     -I./include \
     -I$(LIB_SRC)/meshTools/lnInclude \

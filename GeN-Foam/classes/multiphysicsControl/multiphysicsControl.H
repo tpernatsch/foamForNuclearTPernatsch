@@ -111,7 +111,7 @@ public:
         //- Override PIMPLE so that the total number of outer iterations to
         //  perform is read from the topLevelDict and not from the dictionary
         //  in fluidRegion
-        virtual void read();
+        virtual bool read();
 
         //- Access
 

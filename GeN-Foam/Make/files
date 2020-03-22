@@ -1,17 +1,17 @@
-classes/neutronicClass/neutronics.C
-classes/neutronicClass/XS/XS/XS.C
-classes/neutronicClass/XS/XSLowMem/XSLowMem.C
-classes/neutronicClass/diffusion/diffusionNeutronics.C
-classes/neutronicClass/SP3/SP3Neutronics.C
-classes/neutronicClass/SN/include/legendrePoly.C
-classes/neutronicClass/SN/SNNeutronics.C
-classes/neutronicClass/adjointDiffusion/adjointDiffusionNeutronics.C
-classes/neutronicClass/albedoSP3/albedoSP3FvPatchField.C
+classes/neutronics/neutronics.C
+classes/neutronics/XS/XS/XS.C
+classes/neutronics/XS/XSLowMem/XSLowMem.C
+classes/neutronics/diffusion/diffusionNeutronics.C
+classes/neutronics/SP3/SP3Neutronics.C
+classes/neutronics/SN/include/legendrePoly.C
+classes/neutronics/SN/SNNeutronics.C
+classes/neutronics/adjointDiffusion/adjointDiffusionNeutronics.C
+classes/neutronics/albedoSP3/albedoSP3FvPatchField.C
 
-classes/thermoMechanicClass/thermoMechanics.C
-classes/thermoMechanicClass/linearElastic/linearElasticThermoMechanics.C
-classes/thermoMechanicClass/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
-classes/thermoMechanicClass/tractionDisplacement/gapContactFvPatchVectorField.C
+classes/thermoMechanics/thermoMechanics.C
+classes/thermoMechanics/linearElastic/linearElasticThermoMechanics.C
+classes/thermoMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+classes/thermoMechanics/tractionDisplacement/gapContactFvPatchVectorField.C
 
 classes/multiphysicsControl/multiphysicsControl.C
 
