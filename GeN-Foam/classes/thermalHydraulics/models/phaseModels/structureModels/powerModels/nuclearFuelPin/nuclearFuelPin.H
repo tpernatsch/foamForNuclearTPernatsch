@@ -78,6 +78,10 @@ protected:
     volScalarField Tci_;
     volScalarField Tco_;
 
+    //- Average fuel and cladding temperatures
+    volScalarField Tfav_;
+    volScalarField Tcav_;
+
     //- Number of cells in the 1-D radial fuel mesh
     labelList fuelMeshSize_;
 

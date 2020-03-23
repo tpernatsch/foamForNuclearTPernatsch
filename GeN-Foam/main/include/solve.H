@@ -1,5 +1,4 @@
-//- As of now, residuals passed to thermalHydraulics (both
-//  correctFluidMechanics and correctEnergy) serve no purpose
+//- As of now, this serves no purpose
 scalar residual = 0.0;
 
 bool solveFM(multiphysics.solveFluidMechanics());
@@ -10,12 +9,16 @@ bool solveTM(multiphysics.solveThermoMechanics());
 //- Correct flow regime map
 thermalHydraulics.correctRegimes(solveFM, solveE);
 
+//- Solve fluid-mechanics
 if (solveFM) thermalHydraulics.correctFluidMechanics(residual);
 
+//- Solve energy
 if (!multiphysics.finalIter())
 {
     if (solveE) thermalHydraulics.correctEnergy(residual);
 }
+
+//- Solve energy-neutronics-thermomechanics coupling on last iteration
 else if (solveE or solveN or solveTM)
 {
     scalar residual = 0.0;
@@ -27,14 +30,17 @@ else if (solveE or solveN or solveTM)
         {
             thermalHydraulics.correctEnergy(residual);
         }
-        #include "transferFieldsNB.H"
+        if (solveTM or solveN)
+        {
+            #include "correctCouplingFields.H"
+        }
         if (solveTM)
         {
             thermoMechanics.getFields
             (
-                TstructuresNB, 
-                TavFuelNB, 
-                TavCladNB, 
+                bafflelessTStruct, 
+                bafflelessTFuelAv, 
+                bafflelessTCladAv, 
                 TMToFluid
             );
             thermoMechanics.correct(residual);
@@ -42,23 +48,31 @@ else if (solveE or solveN or solveTM)
         }       
         if (solveN)
         {
-            neutronics.getFields
+            neutronics.getFieldsLiquidFuel
             (
-                TavFuelNB, 
-                TavCladNB, 
-                rhoNB, 
-                TNB, 
+                bafflelessU,
+                bafflelessAlpha,
+                bafflelessTFuelAv, 
+                bafflelessTCladAv, 
+                bafflelessRho, 
+                bafflelessTCool,
+                bafflelessNullField,
+                bafflelessNullField,
                 neutroToFluid
             );
-            neutronics.correct(couplingIter, residual, false);
-            volFuelPower *= 0.0;
+            neutronics.correct
+            (
+                couplingIter, 
+                residual, 
+                multiphysics.liquidFuel()
+            );
+            (*volFuelPower) *= 0.0;
             fluidToNeutro.mapTgtToSrc
             (
                 neutronics.volFuelPower(), 
                 plusEqOp<scalar>(), 
-                volFuelPower.primitiveFieldRef()
+                volFuelPower->primitiveFieldRef()
             );
-            volFuelPower.correctBoundaryConditions();
         }
         couplingIter++;
     }   

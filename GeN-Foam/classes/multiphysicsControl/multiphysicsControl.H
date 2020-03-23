@@ -76,18 +76,18 @@ protected :
     //- Solution flags
 
     //- solveFluidDynamics exists in pimpleControl as solveFlow_;
-
     bool solveEnergy_;
-
     bool solveNeutronics_;
-
     bool solveThermoMechanics_;
 
     //- Global loop parameter (i.e. outer iterations)
 
-        bool    tightlyCoupled_;
-        scalar  timeStepResidual_;
-        label   maxTimeStepIterations_;
+    bool    tightlyCoupled_;
+    scalar  timeStepResidual_;
+    label   maxTimeStepIterations_;
+
+    //- liquidFuel flag (true e.g. for MSRs)
+    bool liquidFuel_;
 
 public:
 
@@ -173,6 +173,11 @@ public:
             const label& maxTimeStepIterations() const
             {
                 return maxTimeStepIterations_;
+            }
+
+            bool liquidFuel() const
+            {
+                return liquidFuel_;
             }
 };
 

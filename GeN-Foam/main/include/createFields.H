@@ -24,18 +24,9 @@ autoPtr<thermalHydraulicModel> pthermalHydraulics
 );
 thermalHydraulicModel& thermalHydraulics = pthermalHydraulics();
 
-volScalarField dummyPowerDensity
-(
-    IOobject
-    (
-        "dummyPowerDensity",
-        fluidMesh.time().timeName(),
-        fluidMesh.time()
-    ),
-    fluidMesh,
-    dimensionedScalar("", dimPower/dimVol, 0.0)
-);
-volScalarField& volFuelPower(dummyPowerDensity);
+//- Silence "unused variable" warnings, I actually do use it and have no idea
+//  why the compiler does not "see" it
+(void) thermalHydraulics;
 
 //- Neutronics ---------------------------------------------------------------/
 
@@ -48,6 +39,10 @@ autoPtr<neutronics> pneutronics
 );
 neutronics& neutronics = pneutronics();
 
+//- Silence "unused variable" warnings, I actually do use it and have no idea
+//  why the compiler does not "see" it
+(void) neutronics;
+
 //- Thermo-mechanics ---------------------------------------------------------/
 
 autoPtr<thermoMechanics> pthermoMechanics
@@ -59,4 +54,10 @@ autoPtr<thermoMechanics> pthermoMechanics
 );
 thermoMechanics& thermoMechanics = pthermoMechanics();
 
-#include "createNBFields.H"
+//- Silence "unused variable" warnings, I actually do use it and have no idea
+//  why the compiler does not "see" it
+(void) thermoMechanics;
+
+//- Coupling fields ----------------------------------------------------------/
+
+#include "createCouplingFields.H"

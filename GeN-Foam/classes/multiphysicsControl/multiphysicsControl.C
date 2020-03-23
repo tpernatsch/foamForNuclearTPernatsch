@@ -67,7 +67,11 @@ Foam::multiphysicsControl::multiphysicsControl
     thermoMechanicDict_(TMMesh.solutionDict()),
     tightlyCoupled_(topLevelDict_.get<bool>("tightlyCoupled")),
     timeStepResidual_(topLevelDict_.get<scalar>("timeStepResidual")),
-    maxTimeStepIterations_(topLevelDict_.get<label>("maxTimeStepIterations"))
+    maxTimeStepIterations_(topLevelDict_.get<label>("maxTimeStepIterations")),
+    liquidFuel_
+    (
+        runTime.controlDict().lookupOrDefault<bool>("liquidFuel", false)
+    )
 {
     read();
 }

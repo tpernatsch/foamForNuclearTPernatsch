@@ -140,6 +140,34 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    Tfav_
+    (
+        IOobject
+        (
+            "Tfav."+typeName,
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimTemperature, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    Tcav_
+    (
+        IOobject
+        (
+            "Tcav."+typeName,
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimTemperature, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     fuelMeshSize_(0),//this->get<label>("fuelMeshSize")),
     cladMeshSize_(0),//this->get<label>("cladMeshSize")),
     meshSize_(0),
@@ -393,15 +421,19 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         label regioni(cellToRegion_[celli]);
         label nf(fuelMeshSize_[regioni]);
         label n(meshSize_[regioni]);
-        Tfi_[celli] = Trad_[celli][0];
-        Tfo_[celli] = Trad_[celli][nf-1];
-        Tci_[celli] = Trad_[celli][nf];
-        Tco_[celli] = Trad_[celli][n-1]; 
+        scalarField& Trad(Trad_[celli]);
+        Tfi_[celli] = Trad[0];
+        Tfo_[celli] = Trad[nf-1];
+        Tci_[celli] = Trad[nf];
+        Tco_[celli] = Trad[n-1]; 
     }
+    
+    /*
     Tfi_.correctBoundaryConditions();
     Tfo_.correctBoundaryConditions();
     Tci_.correctBoundaryConditions();
     Tco_.correctBoundaryConditions();
+    */
 }
 
 
@@ -421,6 +453,9 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     scalar HSumi
 )
 {
+    //-
+    scalarField& Trad(Trad_[celli]);
+
     //- Read region values
     label regioni(cellToRegion_[celli]);
     label fuelMeshSize(fuelMeshSize_[regioni]);
@@ -428,13 +463,10 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     const scalarList& rRegion(r_[regioni]);
     scalar drf(drf_[regioni]);
     scalar drc(drc_[regioni]);
-    //scalar drg(drg_[regioni]);
     scalar kf(kf_[regioni]);
     scalar kc(kc_[regioni]);
-    //scalar rfi(rfi_[regioni]);
     scalar rfo(rfo_[regioni]);
     scalar rci(rci_[regioni]);
-    //scalar rco(rco_[regioni]);
     scalar gapH(gapH_[regioni]);
 
     //- Init matrix, source
@@ -465,7 +497,7 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     scalar dt(mesh_.time().deltaT().value());
     scalar Xf(rhoCpf_[regioni]/dt);
     scalar Xc(rhoCpc_[regioni]/dt);
-    Field<scalar>& TOld = Trad_.oldTime()[celli];
+    scalarField& TOld = Trad_.oldTime()[celli];
 
     //- Construct matrix and source
     {
@@ -545,14 +577,36 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     }
     
     //- Solve linear system
-    solve(Trad_[celli], M, S);
+    solve(Trad, M, S);
 
     //- Set fields (inner/outer fuel/clad)
-    Tfi_[celli] = Trad_[celli][0];
-    Tfo_[celli] = Trad_[celli][fuelMeshSize-1];
-    Tci_[celli] = Trad_[celli][fuelMeshSize];
-    Tco_[celli] = Trad_[celli][meshSize-1];
-    
+    Tfi_[celli] = Trad[0];
+    Tfo_[celli] = Trad[fuelMeshSize-1];
+    Tci_[celli] = Trad[fuelMeshSize];
+    Tco_[celli] = Trad[meshSize-1];
+
+    //- Compute average fuel temperature
+    scalar intrf(0);
+    scalar intTrf(0);
+    for(int i = 0; i < fuelMeshSize; i++)
+    {   
+        scalar rdrf(rRegion[i]*drf);
+        intrf += rdrf;
+        intTrf += Trad[i]*rdrf;
+    }
+    Tfav_[celli] = intTrf/intrf;
+
+    //- Compute average cladding temperature
+    scalar intrc(0);
+    scalar intTrc(0);
+    for(int i = fuelMeshSize; i < meshSize; i++)
+    {   
+        scalar rdrc(rRegion[i]*drc);
+        intrc += rdrc;
+        intTrc += Trad[i]*rdrc;
+    }
+    Tcav_[celli] = intTrc/intrc;
+
     /* Check adjusted flux conservation
     scalar gradQc(kc*(Trad_[celli][meshSize-2]-Tco_[celli])/drc);
     scalar gradQh(gapH*(Tfo_[celli]-Tci_[celli])*(rfo)/(rco));
@@ -572,11 +626,14 @@ void Foam::powerModels::nuclearFuelPin::correct
         label celli(this->cellList_[i]);
         updateLocalTemperatureProfile(celli, HTSum[celli], HSum[celli]);
     }
+    
     /*
     Tfi_.correctBoundaryConditions();
     Tfo_.correctBoundaryConditions();
     Tci_.correctBoundaryConditions();
     Tco_.correctBoundaryConditions();
+    Tfav_.correctBoundaryConditions();
+    Tcav_.correctBoundaryConditions();
     */
 }
 

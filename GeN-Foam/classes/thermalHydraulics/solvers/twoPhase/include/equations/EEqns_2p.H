@@ -190,6 +190,16 @@
     E1Eqn -= structure_.linearizedSemiImplicitHeatSource(fluid1_, H1sfrac)();
     E2Eqn -= structure_.linearizedSemiImplicitHeatSource(fluid2_, H2sfrac)();
 
+    //- Add additional sources deposited directly in the fluids, if any
+    if (fluid1_.powerDensityPtr().valid())
+    {
+        E1Eqn -= fluid1_.powerDensity();
+    }
+    if (fluid2_.powerDensityPtr().valid())
+    {
+        E2Eqn -= fluid2_.powerDensity();
+    }
+
     //- Relax and solve equations, re-limit enthalpies, update fluid
     //  temperatures
     E1Eqn.relax();

@@ -104,6 +104,9 @@ private :
     //- Prandtl of the fluid
     volScalarField Pr_;
 
+    //- Additional powerDensity deposited directly to the fluid
+    autoPtr<volScalarField> powerDensityPtr_;
+
     //- Continuity error of the phase 
     //  (== fvc::ddt(alpha, rho) + fvc::div(alphaRhoPhi)) [kg/m3/s]
     volScalarField contErr_;
@@ -277,6 +280,26 @@ public:
             volScalarField& Pr()
             {
                 return Pr_;
+            }
+
+            const autoPtr<volScalarField> powerDensityPtr() const
+            {
+                return powerDensityPtr_;
+            }
+
+            autoPtr<volScalarField>& powerDensityPtr()
+            {
+                return powerDensityPtr_;
+            }
+
+            const volScalarField& powerDensity() const
+            {
+                return powerDensityPtr_();
+            }
+
+            volScalarField& powerDensity()
+            {
+                return powerDensityPtr_();
             }
 
             const volScalarField& contErr() const
