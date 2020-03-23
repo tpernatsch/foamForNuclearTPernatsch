@@ -82,6 +82,13 @@ protected:
     volScalarField Tfav_;
     volScalarField Tcav_;
 
+    //- Scalars that are input in the IOdictionary for passing min/max fuel
+    //  clad temperatures
+    scalar Tfmax_;
+    scalar Tfmin_;
+    scalar Tcmax_;
+    scalar Tcmin_;
+
     //- Number of cells in the 1-D radial fuel mesh
     labelList fuelMeshSize_;
 

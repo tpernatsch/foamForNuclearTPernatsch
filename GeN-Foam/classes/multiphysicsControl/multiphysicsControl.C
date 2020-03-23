@@ -79,6 +79,74 @@ Foam::multiphysicsControl::multiphysicsControl
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
+//- Copied straight from pimpleControl to modify infos
+bool Foam::multiphysicsControl::loop()
+{
+    read();
+ 
+    ++corr_;
+ 
+    setFirstIterFlag();
+ 
+    if (corr_ == nCorrPIMPLE_ + 1)
+    {
+        if (!residualControl_.empty() && (nCorrPIMPLE_ != 1))
+        {
+            Info<< "Outer iterations not converged within "
+                << nCorrPIMPLE_ << " iterations" << endl;
+        }
+ 
+        corr_ = 0;
+        mesh_.data::remove("finalIteration");
+        return false;
+    }
+ 
+    bool completed = false;
+    if (converged_ || criteriaSatisfied())
+    {
+        if (converged_)
+        {
+            Info<< algorithmName_ << ": converged in " << corr_ - 1
+                << " iterations" << endl;
+ 
+            mesh_.data::remove("finalIteration");
+            corr_ = 0;
+            converged_ = false;
+ 
+            completed = true;
+        }
+        else
+        {
+            //- Neutronics and thermoMechanics are solved on the last iteration
+            //  only anyway, so print Outer loop iteration info only if solving
+            //  any of them
+            if (solveFlow_ or solveEnergy_)
+                Info<< "Outer iteration " << corr_ << endl;
+            storePrevIterFields();
+ 
+            mesh_.data::add("finalIteration", true);
+            converged_ = true;
+        }
+    }
+    else
+    {
+        if (finalIter())
+        {
+            mesh_.data::add("finalIteration", true);
+        }
+ 
+        if (corr_ <= nCorrPIMPLE_)
+        {
+            if (solveFlow_ or solveEnergy_)
+                Info<< "Outer iteration " << corr_ << endl;
+            storePrevIterFields();
+            completed = false;
+        }
+    }
+ 
+    return !completed;
+}
+
 bool Foam::multiphysicsControl::read()
 {
     nCorrPIMPLE_ = topLevelDict_.get<label>("nOuterCorrectors");

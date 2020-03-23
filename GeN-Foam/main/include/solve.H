@@ -1,5 +1,6 @@
-//- As of now, this serves no purpose
-scalar residual = 0.0;
+//- As of now, these serves no purpose
+scalar FMResidual = 0.0;
+scalar EResidual = 0.0;
 
 bool solveFM(multiphysics.solveFluidMechanics());
 bool solveE(multiphysics.solveEnergy());
@@ -7,28 +8,36 @@ bool solveN(multiphysics.solveNeutronics());
 bool solveTM(multiphysics.solveThermoMechanics());
 
 //- Correct flow regime map
-thermalHydraulics.correctRegimes(solveFM, solveE);
+if (solveFM or solveE)
+{
+    thermalHydraulics.correctRegimes(solveFM, solveE);
+}
 
 //- Solve fluid-mechanics
-if (solveFM) thermalHydraulics.correctFluidMechanics(residual);
+if (solveFM) thermalHydraulics.correctFluidMechanics(FMResidual);
 
 //- Solve energy
 if (!multiphysics.finalIter())
 {
-    if (solveE) thermalHydraulics.correctEnergy(residual);
+    if (solveE) 
+    {
+        thermalHydraulics.correctEnergy(EResidual);
+        Info << endl;
+    }
 }
 
-//- Solve energy-neutronics-thermomechanics coupling on last iteration
+//- Solve energy-neutronics-thermomechanics coupling on last outer iteration
 else if (solveE or solveN or solveTM)
 {
-    scalar residual = 0.0;
+    scalar couplingResidual = 0.0;
     label couplingIter = 0;
     do
     {
-        Info << "Coupling: iteration " << couplingIter << nl << endl;
+        Info << "Coupling iteration " << couplingIter << endl;
+        
         if (solveE)
         {
-            thermalHydraulics.correctEnergy(residual);
+            thermalHydraulics.correctEnergy(couplingResidual);
         }
         if (solveTM or solveN)
         {
@@ -43,7 +52,7 @@ else if (solveE or solveN or solveTM)
                 bafflelessTCladAv, 
                 TMToFluid
             );
-            thermoMechanics.correct(residual);
+            thermoMechanics.correct(couplingResidual);
             neutronics.deformMesh(TMToNeutro,thermoMechanics.meshDisp()); 
         }       
         if (solveN)
@@ -56,14 +65,14 @@ else if (solveE or solveN or solveTM)
                 bafflelessTCladAv, 
                 bafflelessRho, 
                 bafflelessTCool,
-                bafflelessNullField,
-                bafflelessNullField,
+                bafflelessMu,
+                bafflelessAlphat,
                 neutroToFluid
             );
             neutronics.correct
             (
                 couplingIter, 
-                residual, 
+                couplingResidual, 
                 multiphysics.liquidFuel()
             );
             (*volFuelPower) *= 0.0;
@@ -75,10 +84,11 @@ else if (solveE or solveN or solveTM)
             );
         }
         couplingIter++;
+        Info << endl;
     }   
     while
         ( 
-            (residual > multiphysics.timeStepResidual()) //- Currently useless
+            (couplingResidual > multiphysics.timeStepResidual())
         &&  (couplingIter < multiphysics.maxTimeStepIterations()) 
         &&  (!neutronics.eigenvalue() && multiphysics.tightlyCoupled())
         );

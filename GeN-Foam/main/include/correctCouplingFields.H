@@ -25,9 +25,15 @@ else
 	//- I am not adjusting this if the vapour is present, as if that is the
 	//  case, I know liquidFuel is false, and U is only actually used by the 
 	//  neutronics when doing liquidFuel
+	bafflelessAlphat.primitiveFieldRef() = 
+		liquid->turbulence().alphat()().primitiveField();
+	bafflelessMu.primitiveFieldRef() = 
+		liquid->thermo().mu()().primitiveField();
 	bafflelessU.primitiveFieldRef() = liquid->U().primitiveField();
 }
 
 bafflelessTFuelAv.primitiveFieldRef() = TFuelAv->primitiveField();
 bafflelessTCladAv.primitiveFieldRef() = TCladAv->primitiveField();
 bafflelessTStruct.primitiveFieldRef() = TStruct.primitiveField();
+
+//- Correct BCs? Eh, probably useless

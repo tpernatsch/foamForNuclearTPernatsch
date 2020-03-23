@@ -427,7 +427,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         Tci_[celli] = Trad[nf];
         Tco_[celli] = Trad[n-1]; 
     }
-    
+
     /*
     Tfi_.correctBoundaryConditions();
     Tfo_.correctBoundaryConditions();
@@ -585,25 +585,31 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     Tci_[celli] = Trad[fuelMeshSize];
     Tco_[celli] = Trad[meshSize-1];
 
-    //- Compute average fuel temperature
+    //- Compute average (for this cell), max, min fuel temperature
     scalar intrf(0);
     scalar intTrf(0);
     for(int i = 0; i < fuelMeshSize; i++)
     {   
+        const scalar& T(Trad[i]);
         scalar rdrf(rRegion[i]*drf);
         intrf += rdrf;
-        intTrf += Trad[i]*rdrf;
+        intTrf += T*rdrf;
+        if (T > Tfmax_) Tfmax_ = T;
+        if (T < Tfmin_) Tfmin_ = T;
     }
     Tfav_[celli] = intTrf/intrf;
 
-    //- Compute average cladding temperature
+    //- Compute average (for this cell), max, min cladding temperature 
     scalar intrc(0);
     scalar intTrc(0);
     for(int i = fuelMeshSize; i < meshSize; i++)
     {   
+        const scalar& T(Trad[i]);
         scalar rdrc(rRegion[i]*drc);
         intrc += rdrc;
-        intTrc += Trad[i]*rdrc;
+        intTrc += T*rdrc;
+        if (T > Tcmax_) Tcmax_ = T;
+        if (T < Tcmin_) Tcmin_ = T;
     }
     Tcav_[celli] = intTrc/intrc;
 
@@ -621,20 +627,45 @@ void Foam::powerModels::nuclearFuelPin::correct
     const volScalarField& HSum    // == SUM_j [htc_j*frac_j]
 )
 {
+    //- Reset min, max, fuel, clad temperatures
+    Tfmax_ = 0.0;
+    Tfmin_ = 1e69;
+    Tcmax_ = 0.0;
+    Tcmin_ = 1e69;
+    
+    //- Update temperatures cell-by-cell and compute averages over the entire
+    //  spatial extent of the nuclearFuelPin model
+    const scalarField& V(mesh_.V());
+    scalar totV(0);
+    scalar Tfavav(0);
+    scalar Tcavav(0);
     forAll(this->cellList_, i)
     {
         label celli(this->cellList_[i]);
         updateLocalTemperatureProfile(celli, HTSum[celli], HSum[celli]);
+        const scalar& dV(V[celli]);
+        totV += dV;
+        Tfavav += Tfav_[celli]*dV;
+        Tcavav += Tcav_[celli]*dV;
     }
-    
-    /*
-    Tfi_.correctBoundaryConditions();
-    Tfo_.correctBoundaryConditions();
-    Tci_.correctBoundaryConditions();
-    Tco_.correctBoundaryConditions();
-    Tfav_.correctBoundaryConditions();
-    Tcav_.correctBoundaryConditions();
-    */
+    reduce(totV, sumOp<scalar>());
+    reduce(Tfavav, sumOp<scalar>());
+    reduce(Tcavav, sumOp<scalar>());
+    Tfavav /= totV;
+    Tcavav /= totV;
+
+    reduce(Tfmax_, maxOp<scalar>());
+    reduce(Tfmin_, minOp<scalar>());
+    reduce(Tcmax_, maxOp<scalar>());
+    reduce(Tcmin_, minOp<scalar>());
+
+    //- Save these to the dictionary
+    this->IOdictionary::set("Tfavav", Tfavav);
+    this->IOdictionary::set("Tcavav", Tcavav);
+    this->IOdictionary::set("Tfmax", Tfmax_);
+    this->IOdictionary::set("Tfmin", Tfmin_);
+    this->IOdictionary::set("Tcmax", Tcmax_);
+    this->IOdictionary::set("Tcmin", Tcmin_);
 }
 
 

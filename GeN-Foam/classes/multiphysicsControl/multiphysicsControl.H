@@ -113,6 +113,10 @@ public:
         //  in fluidRegion
         virtual bool read();
 
+        //- Ovveride PIMPLE loop function to modify some Infos (really, 
+        //  Stefan?)
+        virtual bool loop();
+
         //- Access
 
             const dictionary& topLevelDict() const

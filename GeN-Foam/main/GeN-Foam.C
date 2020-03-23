@@ -84,6 +84,8 @@ int main(int argc, char *argv[])
     #include "createMeshes.H"
     #include "createFields.H"
     #include "createMeshInterpolators.H"
+    #include "createOutput.H"
+
     Info<< "\nStarting time loop\n" << endl;
 
     Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s" 
@@ -105,11 +107,11 @@ int main(int argc, char *argv[])
         while (multiphysics.loop())
         {
             #include "solve.H"
-
-            Info << endl;
         }
 
         runTime.write();
+
+        #include "writeOutput.H"
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
         << "  ClockTime = " << runTime.elapsedClockTime() << " s"

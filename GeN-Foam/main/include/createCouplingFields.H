@@ -1,3 +1,18 @@
+//- Brief note on use of the const keyword with pointers:
+/*
+    Type* ptr;  // ptr CAN be reassigned and points to an object of type Type
+                // that CAN be modified via ptr
+
+    const Type* ptr; // ptr CAN be reassigned and points to an object of type
+                // Type that CANNOT be modified via ptr
+
+    Type* const ptr; // ptr CANNOT be reassigned and points to an object of 
+                // type Type that CAN be modified via ptr
+
+    const Type* const ptr // ptr CANNOT be reassigned and points to an object 
+                // of type Type that CANNOT be modified via ptr
+*/
+
 //- Determine if thermalHydraulics is onePhase or twoPhase by counting fluid
 //  objects
 HashTable<fluid*> fluids(fluidMesh.lookupClass<fluid>());
@@ -94,12 +109,19 @@ const volScalarField& TStruct
     (*fluidMesh.findObject<volScalarField>("T.passiveStructure"))
 );
 
+//- The powerDensity field is created exclusively by the nuclearFuelPin,
+//  so if it does exists, so does the nuclearFuelPin model
+const bool nuclearFuelPin
+(
+    (fluidMesh.foundObject<volScalarField>("powerDensity.nuclearFuelPin")) 
+);
+
 //- Create pointers to fuel and cladding average temperatures. These might not
 //  exist, it depends on the existence of the nuclearFuelPin models. Hence, it
 //  is more convenient to have these as ptrs rather than references
 volScalarField* const TFuelAv
 (
-    (fluidMesh.foundObject<volScalarField>("Tfav.nuclearFuelPin"))  ?
+    (nuclearFuelPin)  ?
     fluidMesh.findObject<volScalarField>("Tfav.nuclearFuelPin") :
     new volScalarField
     (
@@ -116,7 +138,7 @@ volScalarField* const TFuelAv
 );
 volScalarField* const TCladAv
 (
-    (fluidMesh.foundObject<volScalarField>("Tcav.nuclearFuelPin"))  ?
+    (nuclearFuelPin)  ?
     fluidMesh.findObject<volScalarField>("Tcav.nuclearFuelPin") :
     new volScalarField
     (
@@ -147,16 +169,23 @@ volScalarField* const volFuelPower
 (
     (multiphysics.liquidFuel()) ? &(liquid->powerDensity()) :
     (
-        (fluidMesh.foundObject<volScalarField>("powerDensity.nuclearFuelPin")) 
+        (nuclearFuelPin) 
         ?
         fluidMesh.findObject<volScalarField>("powerDensity.nuclearFuelPin") :
         new volScalarField
         (
             IOobject
             (
-                "nullPowerDensity",
+                "powerDensity.nuclearFuelPin",
                 fluidMesh.time().timeName(),
-                fluidMesh.time()
+                liquid->db(),
+                IOobject::READ_IF_PRESENT,
+                (
+                    (
+                        multiphysics.solveEnergy()
+                    or  multiphysics.solveNeutronics()
+                    ) ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
+                )
             ),
             fluidMesh,
             dimensionedScalar("", dimless, 0.0),
@@ -254,7 +283,37 @@ volScalarField bafflelessRho
         fluidMeshNB
     ),
     fluidMeshNB,
-    dimensionedScalar("", dimDensity, 0.0),
+    dimensionedScalar("", dimDensity, SMALL),
+    zeroGradientFvPatchScalarField::typeName
+);
+
+//- Turbulent thermal diffusivity of liquid. For some reason, thermal
+//  diffusivity as returned by thermo() is always multiplied by the density and
+//  is not in m2/s, rather, kg/m/s (== Pa*s)
+volScalarField bafflelessAlphat
+(
+    IOobject
+    (
+        "bafflelessAlphat",
+        runTime.timeName(),
+        fluidMesh
+    ),
+    fluidMeshNB,
+    dimensionedScalar("", dimArea/dimTime*dimDensity, 0.0),
+    zeroGradientFvPatchScalarField::typeName
+);
+
+//- Molecular viscosity of liquid
+volScalarField bafflelessMu
+(
+    IOobject
+    (
+        "bafflelessMu",
+        runTime.timeName(),
+        fluidMesh
+    ),
+    fluidMeshNB,
+    dimensionedScalar("", dimPressure*dimTime, 0.0),
     zeroGradientFvPatchScalarField::typeName
 );
 
@@ -269,18 +328,4 @@ volVectorField bafflelessU
     fluidMeshNB,
     dimensionedVector("", dimVelocity, vector::zero),
     zeroGradientFvPatchScalarField::typeName
-);
-
-//- This last one is used in place of mu, alphat, as I noticed they are not
-//  used at all by any neutronics subsolver...
-volScalarField bafflelessNullField
-(
-    IOobject
-    (
-        "bafflelessNullField",
-        runTime.timeName(),
-        fluidMeshNB
-    ),
-    fluidMeshNB,
-    dimensionedScalar("", dimless, 0.0)
 );
