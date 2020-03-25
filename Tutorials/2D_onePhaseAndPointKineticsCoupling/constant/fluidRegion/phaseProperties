@@ -33,13 +33,13 @@ structureProperties
     {
         volumeFraction      0.5;
         Dh                  0.01;
-
         
         powerModel
         {
             type                nuclearFuelPin;
             iA                  300;
-            powerDensity        0;
+            powerDensity        0;  //- fields on disk have priority, if they
+                                    //  are not found, this value is used
             fuelInnerRadius     0.0012;
             fuelOuterRadius     0.004715;
             cladInnerRadius     0.004865;

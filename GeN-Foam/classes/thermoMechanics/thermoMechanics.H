@@ -82,11 +82,11 @@ protected:
         //- Reference to mesh
         fvMesh& mesh_;
 
-		//- Initialize residual
-        double initialResidual_;
-
         //- Mesh displacement
-        volVectorField meshDisp_;        
+        volVectorField meshDisp_;
+
+        //- Initialize residual
+        double initialResidual_;        
 
 private:
 
@@ -133,36 +133,54 @@ public:
 
 
     //- Destructor
-    	virtual ~thermoMechanics();
+    	virtual ~thermoMechanics(){}
 
 
-    // Member Functions
+    // Member Functions   	
 
-        //- Return mesh displacement
-        inline const volVectorField& meshDisp() const
-        {
-            return meshDisp_;
-        }    	
+        //- Substitutes the old getFields. Set local class references to global
+        //  coupling fields, to be called only once after construction. The 
+        //  fields are set via lookup in the src objectRegistry (i.e. 
+        //  fluidMeshNB for the current state of GeN-Foam)
+        virtual void getCouplingFieldRefs
+        (
+            const objectRegistry& src,
+            const meshToMesh& mechToFluid
+        ) = 0;
+
+        //- The old getFields, yet operates on the local refs without having
+        //  the need for all the fields to be passed. This effectively bypasses
+        //  the old limitation of getFields, i.e. if someone wanted to
+        //  implement a new thermoMechanical model that requires more fields 
+        //  for the coupling, then they'd need to modify the getFields function
+        //  in ALL of the other thermoMechanical models too
+        virtual void interpolateCouplingFields
+        (
+            const meshToMesh& mechToFluid
+        ) = 0;
 
         //- Correct/update the properties
-        virtual void correct(scalar& residual) = 0;  
+        virtual void correct(scalar& residual) = 0;    
 
-        //- Take from another mesh the temperature field
-        virtual void getFields(
-            const volScalarField& T, 
-            const volScalarField& TavFuel,
-            const volScalarField& TavClad,
-            const meshToMesh& TMToFluid) = 0;  
-
-        //- Calculate initialResidual_
-        inline double initialResidual() const
+        //- Needed to remove abstractedness from IOdictionary
+        virtual bool writeData(Ostream& os) const
         {
-            return initialResidual_;
-        };
+            return os.good();
+        }
 
-        //- Write data to time directory
-        virtual bool writeData(Ostream& os) const ;    
+        //- Access
 
+            //- Return mesh displacement
+            const volVectorField& meshDisp() const
+            {
+                return meshDisp_;
+            } 
+
+            //- Return initialResidual_
+            double initialResidual() const
+            {
+                return initialResidual_;
+            };   
 };
 
 

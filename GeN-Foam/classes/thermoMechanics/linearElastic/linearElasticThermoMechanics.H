@@ -73,7 +73,7 @@ protected:
         Switch planeStress_;
         Switch linkedFuel_;
         vector fuelOrientation_;
-        dimensionedScalar TrefStructures_;
+        dimensionedScalar TStructRef_;
         PtrList<entry> TMEntries_;
         label TMZoneNumber_;
         volScalarField rho_;
@@ -88,21 +88,25 @@ protected:
         volScalarField mu_;
         volScalarField lambda_;
         volScalarField threeK_;
-        volScalarField TrefFuel_;
+        volScalarField TFuelRef_;
         volScalarField alphaFuel_;
-        volScalarField TrefCR_;
+        volScalarField TCRRef_;
         volScalarField alphaCR_;
 
         //- Fields
-        volVectorField Disp_;
+        volVectorField disp_;
         volScalarField fuelDisp_;
         volScalarField CRDisp_;
         volVectorField fuelDispVector_;
-        volScalarField T_;
+        volScalarField TStruct_;
         volSymmTensorField sigmaD_;
         volVectorField divSigmaExp_;
-        volScalarField TavFuel_;
-        volScalarField gapWidth;/////////////////////////////
+        volScalarField TFuel_;
+        volScalarField gapWidth;
+
+        //- Ptrs to coupling fields
+        const volScalarField* TFuelOrig_;
+        const volScalarField* TStructOrig_;
 
         //- Control
         int nCorr_;
@@ -139,19 +143,29 @@ public:
 
     // Member Functions
 
-        // Access
+        //- Substitutes the old getFields. Set local class references to global
+        //  coupling fields, to be called only once after construction. The 
+        //  fields are set via lookup in the src objectRegistry (i.e. 
+        //  fluidMeshNB for the current state of GeN-Foam)
+        virtual void getCouplingFieldRefs
+        (
+            const objectRegistry& src,
+            const meshToMesh& mechToFluid
+        );
 
-        // Calc
+        //- The old getFields, yet operates on the local refs without having
+        //  the need for all the fields to be passed. This effectively bypasses
+        //  the old limitation of getFields, i.e. if someone wanted to
+        //  implement a new thermoMechanical model that requires more fields 
+        //  for the coupling, then they'd need to modify the getFields function
+        //  in ALL of the other thermoMechanical models too
+        virtual void interpolateCouplingFields
+        (
+            const meshToMesh& mechToFluid
+        );
 
-            //- Correct/update the properties
-            virtual void correct(scalar& residual);  
-
-        //- Take from another mesh the temperature field
-            virtual void getFields(
-                const volScalarField& T, 
-                const volScalarField& TavFuel,
-                const volScalarField& TavClad,
-                const meshToMesh& TMToFluid); 
+        //- Correct/update the properties
+        virtual void correct(scalar& residual);
 
 };
 

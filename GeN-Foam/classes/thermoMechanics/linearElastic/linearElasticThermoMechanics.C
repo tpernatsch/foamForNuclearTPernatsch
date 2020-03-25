@@ -57,7 +57,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
     planeStress_(this->lookup("planeStress")),
     linkedFuel_(this->lookup("linkedFuel")),
     fuelOrientation_(this->lookup("fuelOrientation")),
-    TrefStructures_("",dimensionSet(0,0,0,1,0,0,0),this->lookup("TrefStructure")),
+    TStructRef_("", dimTemperature, this->get<scalar>("TStructRef")),
     TMEntries_(this->lookup("zones")),
     TMZoneNumber_(TMEntries_.size()),
     rho_
@@ -228,11 +228,11 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         dimensionedScalar("", dimensionSet(0,2,-2,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    TrefFuel_
+    TFuelRef_
     (
         IOobject
         (
-            "TrefFuel",
+            "TFuelRef",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -256,11 +256,11 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         dimensionedScalar("0", dimensionSet(0, 0, 0 , -1, 0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    TrefCR_
+    TCRRef_
     (
         IOobject
         (
-            "TrefCR",
+            "TCRRef",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -284,11 +284,11 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         dimensionedScalar("0", dimensionSet(0, 0, 0 , -1, 0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    Disp_
+    disp_
     (
         IOobject
         (
-            "Disp",
+            "disp",
             mesh.time().timeName(),
             mesh,
             IOobject::MUST_READ,
@@ -332,18 +332,18 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         ),
         (fuelDisp_*vector(0,0,1))
     ),
-    T_
+    TStruct_
     (
         IOobject
         (
-            "T",
+            "TStruct",
             mesh.time().timeName(),
             mesh,
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 1.0),//TrefStructures,//important to impose correct BC (this value will remain in the soft region surrounding everything)
+        dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
     sigmaD_
@@ -356,7 +356,12 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             IOobject::NO_READ,
             IOobject::NO_WRITE
         ),
-        ((rhoE_/rho_)/(2.0*(1.0 + nu_)))*twoSymm(fvc::grad(Disp_)) + (nu_*(rhoE_/rho_)/((1.0 + nu_)*(1.0 - 2.0*nu_)))*(I*tr(fvc::grad(Disp_)))
+        (
+            (rhoE_/rho_)/
+            (2.0*(1.0 + nu_)))*
+            twoSymm(fvc::grad(disp_)) 
+        +   (nu_*(rhoE_/rho_)/((1.0 + nu_)*
+            (1.0 - 2.0*nu_)))*(I*tr(fvc::grad(disp_)))
     ),
     divSigmaExp_
     (
@@ -370,11 +375,11 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         ),
         fvc::div(sigmaD_)
     ),
-    TavFuel_
+    TFuel_
     (
         IOobject
         (
-            "TavFuelMech",
+            ((linkedFuel_) ? "TLinkedFuel" : "TFuel"),
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -398,27 +403,45 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         dimensionedScalar("gapWidth", dimensionSet(0,1,0,0,0,0,0), 0.0),
         calculatedFvPatchField<scalar>::typeName
     ),
-    nCorr_(mesh.solutionDict().subDict("stressAnalysis").lookupOrDefault<int>("nCorrectors", 1)),
-    convergenceTolerance_(readScalar(mesh.solutionDict().subDict("stressAnalysis").lookup("D"))),
-    compactNormalStress_(mesh.solutionDict().subDict("stressAnalysis").lookup("compactNormalStress"))
+    nCorr_
+    (
+        mesh.solutionDict().subDict("stressAnalysis").lookupOrDefault<int>
+        (
+            "nCorrectors", 
+            1
+        )
+    ),
+    convergenceTolerance_
+    (
+        readScalar
+        (
+            mesh.solutionDict().subDict("stressAnalysis").lookup("D")
+        )
+    ),
+    compactNormalStress_
+    (
+        mesh.solutionDict().subDict("stressAnalysis").get<bool>
+        (
+            "compactNormalStress"
+        )
+    )
 {
+    TStruct_ = TStructRef_;
+    TStruct_.correctBoundaryConditions();
 
-    T_ = TrefStructures_;
-    T_.correctBoundaryConditions();
+    PtrList<scalar> rhoMechList(TMZoneNumber_);
+    PtrList<scalar> rhoEList(TMZoneNumber_);
+    PtrList<scalar> nuList(TMZoneNumber_);
 
-    PtrList<scalar > rhoMechList(TMZoneNumber_);
-    PtrList<scalar > rhoEList(TMZoneNumber_);
-    PtrList<scalar > nuList(TMZoneNumber_);
+    PtrList<scalar> CList(TMZoneNumber_);
+    PtrList<scalar> rhoKList(TMZoneNumber_);
+    PtrList<scalar> alphaList(TMZoneNumber_);
 
-    PtrList<scalar > CList(TMZoneNumber_);
-    PtrList<scalar > rhoKList(TMZoneNumber_);
-    PtrList<scalar > alphaList(TMZoneNumber_);
+    PtrList<scalar> TFuelRefList(TMZoneNumber_);
+    PtrList<scalar> alphaFuelList(TMZoneNumber_);
 
-    PtrList<scalar > TrefFuelList(TMZoneNumber_);
-    PtrList<scalar > alphaFuelList(TMZoneNumber_);
-
-    PtrList<scalar > TrefCRList(TMZoneNumber_);
-    PtrList<scalar > alphaCRList(TMZoneNumber_);
+    PtrList<scalar> TCRRefList(TMZoneNumber_);
+    PtrList<scalar> alphaCRList(TMZoneNumber_);
 
 
     forAll(TMEntries_,zoneI)
@@ -433,13 +456,20 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         rhoKList.set(zoneI,new scalar(dict.lookupOrDefault("k",1.0)));
         alphaList.set(zoneI,new scalar(dict.lookupOrDefault("alpha",0.0)));
 
-        TrefFuelList.set(zoneI,new scalar(dict.lookupOrDefault("TrefFuel",0.0)));
-        alphaFuelList.set(zoneI,new scalar(dict.lookupOrDefault("alphaFuel",0.0)));
+        TFuelRefList.set
+        (
+            zoneI,
+            new scalar(dict.lookupOrDefault("TFuelRef",0.0))
+        );
+        alphaFuelList.set
+        (
+            zoneI,
+            new scalar(dict.lookupOrDefault("alphaFuel",0.0))
+        );
 
-        TrefCRList.set(zoneI,new scalar(dict.lookupOrDefault("TrefCR",0.0)));
+        TCRRefList.set(zoneI,new scalar(dict.lookupOrDefault("TCRRef",0.0)));
         alphaCRList.set(zoneI,new scalar(dict.lookupOrDefault("alphaCR",0.0)));
     }
-
 
     // Set volFields based on dictionary
     forAll(TMEntries_, zoneI)
@@ -461,10 +491,10 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             rhoK_[cellIglobal] = rhoKList[zoneI];
             alpha_[cellIglobal] = alphaList[zoneI];
 
-            TrefFuel_[cellIglobal] = TrefFuelList[zoneI];
+            TFuelRef_[cellIglobal] = TFuelRefList[zoneI];
             alphaFuel_[cellIglobal] = alphaFuelList[zoneI];
 
-            TrefCR_[cellIglobal] = TrefCRList[zoneI];
+            TCRRef_[cellIglobal] = TCRRefList[zoneI];
             alphaCR_[cellIglobal] = alphaCRList[zoneI];
         }
 
@@ -478,10 +508,10 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
     rhoK_.correctBoundaryConditions();
     alpha_.correctBoundaryConditions();
 
-    TrefFuel_.correctBoundaryConditions();
+    TFuelRef_.correctBoundaryConditions();
     alphaFuel_.correctBoundaryConditions();
 
-    TrefCR_.correctBoundaryConditions();
+    TCRRef_.correctBoundaryConditions();
     alphaCR_.correctBoundaryConditions();
     
 
@@ -519,19 +549,22 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
     threeKalpha_ = threeK_*alpha_;
     DT_ = k/C_;
 
-    sigmaD_ =   mu_*twoSymm(fvc::grad(Disp_)) + lambda_*(I*tr(fvc::grad(Disp_)));
+    sigmaD_ = 
+        mu_*twoSymm(fvc::grad(disp_)) + lambda_*(I*tr(fvc::grad(disp_)));
     divSigmaExp_ = fvc::div(sigmaD_);
 
 
     if (compactNormalStress_)
     {
-        divSigmaExp_ -= fvc::laplacian(2*mu_ + lambda_, Disp_, "laplacian(DD,D)");
+        divSigmaExp_ -= 
+            fvc::laplacian(2*mu_ + lambda_, disp_, "laplacian(DD,D)");
     }
     else
     {
-        divSigmaExp_ -= fvc::div((2*mu_ + lambda_)*fvc::grad(Disp_), "div(sigmaD)");
+        divSigmaExp_ -= 
+            fvc::div((2*mu_ + lambda_)*fvc::grad(disp_), "div(sigmaD)");
     }
-    mesh_.setFluxRequired(Disp_.name());
+    mesh_.setFluxRequired(disp_.name());
 }
 
 
@@ -543,39 +576,38 @@ Foam::linearElasticThermoMechanics::~linearElasticThermoMechanics()
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
+void Foam::linearElasticThermoMechanics::getCouplingFieldRefs
+(
+    const objectRegistry& src,
+    const meshToMesh& mechToFluid
+)
+{
+    //- Field names must reflect those defined in createCouplingFields.H
+    TFuelOrig_ = 
+        (linkedFuel_) ?
+        src.findObject<volScalarField>("bafflelessTCladAv") :
+        src.findObject<volScalarField>("bafflelessTFuelAv");
+    TStructOrig_ = 
+        src.findObject<volScalarField>("bafflelessTStruct");
+    
+    //- Initialize mapped fields
+    this->interpolateCouplingFields(mechToFluid);
+}
+
+void Foam::linearElasticThermoMechanics::interpolateCouplingFields
+(
+    const meshToMesh& mechToFluid
+)
+{
+    mechToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
+    TFuel_.correctBoundaryConditions();
+    mechToFluid.mapTgtToSrc(*TStructOrig_, plusEqOp<scalar>(), TStruct_);
+    TStruct_.correctBoundaryConditions();
+}
+
 void Foam::linearElasticThermoMechanics::correct(scalar& residual) 
 {
     #include "solveThermalMechanics.H"
 }
 
-void Foam::linearElasticThermoMechanics::getFields
-(
-const volScalarField& T, 
-const volScalarField& TavFuel,
-const volScalarField& TavClad,
-const meshToMesh& TMToFluid) 
-{
-
-    TMToFluid.mapTgtToSrc( T, plusEqOp<scalar>(), T_);
-
-
-    TMToFluid.mapTgtToSrc(T, plusEqOp<scalar>(), T_);
-    if(linkedFuel_)
-    {
-        TMToFluid.mapTgtToSrc(TavClad, plusEqOp<scalar>(), TavFuel_);
-    }
-    else
-    {
-        TMToFluid.mapTgtToSrc(TavFuel, plusEqOp<scalar>(), TavFuel_);
-    }
-
-    T_.correctBoundaryConditions();
-    TavFuel_.correctBoundaryConditions();
-
-    T_.correctBoundaryConditions();
-    TavFuel_.correctBoundaryConditions();
-}
-
-
 // ************************************************************************* //
-

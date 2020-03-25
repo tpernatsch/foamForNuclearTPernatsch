@@ -36,9 +36,6 @@ namespace Foam
     defineRunTimeSelectionTable(thermoMechanics, dictionary);
 }
 
-// * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
-
-
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 Foam::thermoMechanics::thermoMechanics
@@ -58,7 +55,6 @@ Foam::thermoMechanics::thermoMechanics
         )
     ),
     mesh_(mesh),
-    initialResidual_(1.0),
     meshDisp_
     (
         IOobject
@@ -70,13 +66,12 @@ Foam::thermoMechanics::thermoMechanics
             IOobject::AUTO_WRITE
         ),
         mesh_,
-        dimensionedVector("", dimensionSet(0,1,0,0,0,0,0), vector(0,0,0)),
+        dimensionedVector("", dimLength, vector::zero),
         zeroGradientFvPatchScalarField::typeName
-    )
-{
+    ),
+    initialResidual_(1.0)
+{}
 
-
-}
 
 // * * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * //
 
@@ -123,30 +118,10 @@ Foam::autoPtr<Foam::thermoMechanics> Foam::thermoMechanics::New
 
     return autoPtr<thermoMechanics>
     (
-        cstrIter()(mesh) //if a thermoMechanics model exists, the functions return its contructor
+        cstrIter()(mesh)
     );
 
 }
-
-// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
-
-	bool Foam::thermoMechanics::writeData(Ostream& os) const
-	{
-
-	    return os.good();
-	}
-
-
-
-// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
-
-Foam::thermoMechanics::~thermoMechanics()
-{}
-
-
-// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
-
-
 
 
 // ************************************************************************* //

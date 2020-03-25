@@ -213,6 +213,23 @@ Foam::SNNeutronics::~SNNeutronics()
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
+void Foam::SNNeutronics::getCouplingFieldRefs
+(
+    const objectRegistry& src,
+    const meshToMesh& neutroToFluid
+)
+{
+    #include "defaultGetCouplingFieldRefs.H"
+}
+
+void Foam::SNNeutronics::interpolateCouplingFields
+(
+    const meshToMesh& neutroToFluid
+)
+{
+    #include "defaultInterpolateCouplingFields.H"
+}
+
 void Foam::SNNeutronics::correct
 (
     scalar& residual, 
@@ -222,92 +239,4 @@ void Foam::SNNeutronics::correct
     #include "solveNeutronicsSN.H"
 }
 
-void Foam::SNNeutronics::getCouplingFieldRefs
-(
-    const objectRegistry& src,
-    const meshToMesh& neutroToFluid
-)
-{
-    //- Field names must reflect those defined in createCouplingFields.H
-    TFuelOrig_ = 
-        src.findObject<volScalarField>("bafflelessTFuelAv");
-    TCladOrig_ = 
-        src.findObject<volScalarField>("bafflelessTCladAv");
-    TCoolOrig_ = 
-        src.findObject<volScalarField>("bafflelessTCool");
-    rhoCoolOrig_ = 
-        src.findObject<volScalarField>("bafflelessRhoCool");
-    if (liquidFuel_)
-    {
-        UOrig_ = 
-            src.findObject<volVectorField>("bafflelessU");
-        alphaOrig_ = 
-            src.findObject<volScalarField>("bafflelessAlpha");
-        alphatOrig_ = 
-            src.findObject<volScalarField>("bafflelessAlphat");
-        muOrig_ =
-            src.findObject<volScalarField>("bafflelessMu");
-    }
-    else
-    {
-        UOrig_ = nullptr;
-        alphaOrig_ = nullptr;
-        alphatOrig_ = nullptr;
-        muOrig_ = nullptr;
-    }
-}
-
-void Foam::SNNeutronics::interpolateCouplingFields
-(
-    const meshToMesh& neutroToFluid
-)
-{
-    neutroToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
-    neutroToFluid.mapTgtToSrc(*TCladOrig_, plusEqOp<scalar>(), TClad_);
-    neutroToFluid.mapTgtToSrc(*TCoolOrig_, plusEqOp<scalar>(), TCool_);
-    neutroToFluid.mapTgtToSrc(*rhoCoolOrig_, plusEqOp<scalar>(), rhoCool_);
-    if (liquidFuel_)
-    {
-        neutroToFluid.mapTgtToSrc(*UOrig_, plusEqOp<vector>(), UPtr_());
-        neutroToFluid.mapTgtToSrc
-        (
-            *alphaOrig_, 
-            plusEqOp<scalar>(), 
-            alphaPtr_()
-        );
-        neutroToFluid.mapTgtToSrc
-        (
-            *alphatOrig_, 
-            plusEqOp<scalar>(), 
-            alphatPtr_()
-        );
-        neutroToFluid.mapTgtToSrc(*muOrig_, plusEqOp<scalar>(), muPtr_());
-        phiPtr_() = fvc::flux(UPtr_());
-        volScalarField diffCoeffOrig
-        (
-            (
-                *alphatOrig_ 
-            +   *muOrig_/xs_.ScNo()
-            )/(*rhoCoolOrig_)
-        ); 
-        neutroToFluid.mapTgtToSrc
-        (
-            diffCoeffOrig, 
-            plusEqOp<scalar>(), 
-            diffCoeffPrecPtr_()
-        );
-
-        UPtr_().correctBoundaryConditions();
-        alphaPtr_().correctBoundaryConditions();
-        alphatPtr_().correctBoundaryConditions();
-        diffCoeffPrecPtr_().correctBoundaryConditions();
-    }
-
-    TFuel_.correctBoundaryConditions();
-    TClad_.correctBoundaryConditions();
-    TCool_.correctBoundaryConditions();
-    rhoCool_.correctBoundaryConditions();
-}
-
 // ************************************************************************* //
-

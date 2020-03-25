@@ -45,15 +45,9 @@ else if (solveE or solveN or solveTM)
         }
         if (solveTM)
         {
-            thermoMechanics.getFields
-            (
-                bafflelessTStruct, 
-                bafflelessTFuelAv, 
-                bafflelessTCladAv, 
-                TMToFluid
-            );
+            thermoMechanics.interpolateCouplingFields(mechToFluid);
             thermoMechanics.correct(couplingResidual);
-            neutronics.deformMesh(TMToNeutro,thermoMechanics.meshDisp()); 
+            neutronics.deformMesh(mechToNeutro,thermoMechanics.meshDisp()); 
         }       
         if (solveN)
         {

@@ -178,7 +178,7 @@ public:
 
             }
             return pTot;
-        }  
+        }
 
         virtual void getCouplingFieldRefs
         (
@@ -189,7 +189,7 @@ public:
         virtual void interpolateCouplingFields
         (
             const meshToMesh& neutroToFluid
-        );
+        );  
 
         //- Correct/update the properties
         virtual void correct

@@ -24,3 +24,4 @@ totalReactivity_ =
     +   TCoolReactivity
     +   rhoCoolReactivity
     +   TStructReactivity;
+    

@@ -13,7 +13,7 @@ if (mesh_.time().outputTime())
         rho_*sigmaD_
     );
 
-    sigma = sigma - I*(rho_*threeKalpha_*T_);
+    sigma = sigma - I*(rho_*threeKalpha_*TStruct_);
 
     volScalarField sigmaEq
     (
@@ -30,5 +30,4 @@ if (mesh_.time().outputTime())
 
     Info<< "Max sigmaEq = " << max(sigmaEq).value()
         << endl;
-
 }

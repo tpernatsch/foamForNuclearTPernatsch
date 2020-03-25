@@ -29,25 +29,25 @@ if
     neutroMesh.movePoints(neutroUndeformedPoints);
 }
 
-meshToMesh TMToNeutro
+meshToMesh mechToNeutro
 (
     mechMesh,
     neutroMesh,
     Foam::meshToMesh::interpolationMethod
     (
-        runTime.controlDict().lookupOrDefault("TMToNeutro_interpMethod", 2)
+        runTime.controlDict().lookupOrDefault("mechToNeutro_interpMethod", 2)
     ),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false
 );
 
-meshToMesh TMToFluid
+meshToMesh mechToFluid
 (
     mechMesh,
     fluidMeshNB,
     Foam::meshToMesh::interpolationMethod
     (
-        runTime.controlDict().lookupOrDefault("TMToFluid_interpMethod", 2)
+        runTime.controlDict().lookupOrDefault("mechToFluid_interpMethod", 2)
     ),
     Foam::meshToMesh::procMapMethod::pmAABB,
     false

@@ -116,19 +116,19 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     ),
     coeffTClad_
     (
-        nuclearData_.get<scalar>("feedbackCoeffTCladding")
+        nuclearData_.get<scalar>("feedbackCoeffTClad")
     ),
     coeffTCool_
     (
-        nuclearData_.get<scalar>("feedbackCoeffTCoolant")
+        nuclearData_.get<scalar>("feedbackCoeffTCool")
     ),
     coeffRhoCool_
     (
-        nuclearData_.get<scalar>("feedbackCoeffRhoCoolant")
+        nuclearData_.get<scalar>("feedbackCoeffRhoCool")
     ),
     coeffTStruct_
     (
-        nuclearData_.get<scalar>("feedbackCoeffTStructures")
+        nuclearData_.get<scalar>("feedbackCoeffTStruct")
     ),
     TFuel_
     (
@@ -634,13 +634,20 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
 
     Info << endl << "pointKinetics (initial conditions): " << endl;
     Info << "    power = " << power_ << " W" << endl;
-    Info << "    totalReactivity = " << (totalReactivity_*1e5) << " pcm" << endl;
-    Info << "    -> Doppler      = " << (DopplerReactivity*1e5) << " pcm" << endl;
-    Info << "    -> TFuel        = " << (TFuelReactivity*1e5) << " pcm" << endl;
-    Info << "    -> TClad        = " << (TCladReactivity*1e5) << " pcm" << endl;
-    Info << "    -> TCool        = " << (TCoolReactivity*1e5) << " pcm" << endl;
-    Info << "    -> rhoCool      = " << (rhoCoolReactivity*1e5) << " pcm" << endl;
-    Info << "    -> TStruct      = " << (TStructReactivity*1e5) <<" pcm" << endl;
+    Info << "    totalReactivity   = " << (totalReactivity_*1e5)<< " pcm" 
+                                                                << endl;
+    Info << "    -> Doppler (fast) = " << (DopplerReactivity*1e5)<< " pcm" 
+                                                                << endl;
+    Info << "    -> TFuel          = " << (TFuelReactivity*1e5) << " pcm" 
+                                                                << endl;
+    Info << "    -> TClad          = " << (TCladReactivity*1e5) << " pcm" 
+                                                                << endl;
+    Info << "    -> TCool          = " << (TCoolReactivity*1e5) << " pcm" 
+                                                                << endl;
+    Info << "    -> rhoCool        = " << (rhoCoolReactivity*1e5) << " pcm" 
+                                                                << endl;
+    Info << "    -> TStruct        = " << (TStructReactivity*1e5) <<" pcm" 
+                                                                << endl;
     Info << "    TFuel = " << TFuelValue << " K" << endl;
     Info << "    TClad = " << TCladValue << " K" << endl;
     Info << "    TCool = " << TCoolValue << " K" << endl;

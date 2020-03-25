@@ -377,3 +377,8 @@ neutronics.getCouplingFieldRefs
     fluidMeshNB,
     neutroToFluid
 );
+thermoMechanics.getCouplingFieldRefs
+(
+    fluidMeshNB,
+    mechToFluid
+);

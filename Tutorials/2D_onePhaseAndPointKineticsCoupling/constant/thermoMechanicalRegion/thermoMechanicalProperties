@@ -12,24 +12,27 @@ FoamFile
     format          ascii;
     class           dictionary;
     location	    "constant";
-    object          nuclearData;
+    object          thermoMechanicalProperties;
 }
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model 		linearElasticThermoMechanics;//only model available now
+model 		linearElasticThermoMechanics;   //- No other models are currently
+											//  available
 
-// constants needed to calculate deformation of fuel, control rods AND structure (1D expansion for fuel and CR, displacement-based solver for structures)
+//- Constants needed to calculate deformation of fuel, control rods AND 
+//  structure (1D expansion for fuel and CR, displacement-based solver for 
+//  structures)
 
 planeStress     no;
-linkedFuel      false; // true if there is contact between fuel and cladding (expansion driven by cladding)
-fuelOrientation   (0 0 1); 
-TrefStructure		668; //ref temperature for structures
+linkedFuel      false; 	//-  True if there is contact between fuel and cladding 
+						//   (expansion driven by cladding)
+fuelOrientation (0 0 1); 
+TStructRef		600;
 
 zones
 (
 
 );
-
 
 // ************************************************************************* //

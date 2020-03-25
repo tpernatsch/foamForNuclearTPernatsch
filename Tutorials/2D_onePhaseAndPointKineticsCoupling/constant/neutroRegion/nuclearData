@@ -35,7 +35,7 @@ Beta
 
 lambda
 (
-	0.0125371
+    0.0125371
     0.0300828
     0.109879
     0.325484
@@ -43,19 +43,19 @@ lambda
     9.51817
 );
 
-feedbackCoeffFastDoppler    0;
-feedbackCoeffTFuel 		   -0.00003;
-feedbackCoeffTCladding 		0.00000;
-feedbackCoeffTCoolant 		0.00000;
-feedbackCoeffRhoCoolant		0.00000;
-feedbackCoeffTStructures    0.00000;
+feedbackCoeffFastDoppler    0; //- Only used if fastNeutrons is True
+feedbackCoeffTFuel         -0.00003;    //- i.e. -3pcm/K
+feedbackCoeffTClad          0.00000;
+feedbackCoeffTCool          0.00000;
+feedbackCoeffRhoCool        0.00000;
+feedbackCoeffTStruct        0.00000;
 
 //- End of pointKinetics related
 
 zones
 (
-	zone0
-	{
+    zone0
+    {
         fuelFraction 1;
 
         sigmaDisapp nonuniform List<scalar> 2 
@@ -72,14 +72,14 @@ zones
 
         sigmaPow nonuniform List<scalar> 2 
         (
-           	1
-           	1
+            1
+            1
         );
 
         scatteringMatrixP0 2 2 
         (
-        	(10 5)
-        	(0 10)
+            (10 5)
+            (0 10)
         );
 
         discFactor nonuniform List<scalar> 2
