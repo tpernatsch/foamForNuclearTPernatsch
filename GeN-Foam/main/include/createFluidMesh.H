@@ -82,3 +82,7 @@ else
 }
 
 fvMesh& fluidMeshNB = fluidMeshNBPtr();
+
+//- Silence "unused variable" warnings, I actually do use it and have no idea
+//  why the compiler does not "see" it
+(void) fluidMeshNB;

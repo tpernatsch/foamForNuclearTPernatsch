@@ -81,9 +81,8 @@ protected:
     //- Decay constants for each delayed group
     scalarList lambdas_;
 
-    //- Precursor "power" for each delayed group
-    //  in W to be compatible with point kinetics
-    //  solved for power rather than neutron density
+    //- Precursor "power" for each delayed group in W to be compatible with
+    //  point kinetics being solved for power rather than neutron density
     scalarList precursorPowers_;
 
     //- Number of delayed groups
@@ -98,46 +97,38 @@ protected:
 
     //- Feedback coefficients
     scalar coeffTFuel_;
-    scalar coeffTCladding_;
-    scalar coeffTCoolant_;
-    scalar coeffRhoCoolant_;
-
-    //- Adaptations for the FFTF, all radial/axial structure expansion
-    //  feedbacks indirectly modelled via the the corresponding structure
-    //  temperature change that caused them
-    scalar coeffTStructures_;
+    scalar coeffTClad_;
+    scalar coeffTCool_;
+    scalar coeffRhoCool_;
+    scalar coeffTStruct_;
 
     //- Reference integral values for feedbacks
     scalar TFuelRef_;
-    scalar TCladdingRef_;
-    scalar TCoolantRef_;
-    scalar rhoCoolantRef_;
-    scalar TStructuresRef_;
+    scalar TCladRef_;
+    scalar TCoolRef_;
+    scalar rhoCoolRef_;
+    scalar TStructRef_;
 
-    //- If the Ref values are present in nuclearData, read those and do not
-    //  compute them in the first correct. I need this because I cannot get
-    //  fields at construction to compute Ref values if they are not provided.
-    //  Thus, if they are provided, I need to find a way to tell the correct
-    //  not to recompute them. This is the only way for now (very ugly...)
-    bool resetTFuelRef_;
-    bool resetTCladdingRef_;
-    bool resetTCoolantRef_;
-    bool resetRhoCoolantRef_;
-    bool resetTStructuresRef_;
+    //- Ptrs to coupling fields (i.e. defined on their original mesh)
+    const volScalarField* TFuelOrig_;
+    const volScalarField* TCladOrig_;
+    const volScalarField* TCoolOrig_;
+    const volScalarField* rhoCoolOrig_;
+    const volScalarField* TStructOrig_;
+    const volScalarField* volFuelPowerOrig_;
 
-    //- Fields for feedbacks
+    //- These have no use for now, will be needed by the liquidFuel version
+    const volVectorField* UOrig_;
+    const volScalarField* alphaOrig_;
+    const volScalarField* alphatOrig_;
+    const volScalarField* muOrig_;
+
+    //- Mapped fields
     volScalarField TFuel_;
-    volScalarField TCladding_;
-    volScalarField TCoolant_;
-    volScalarField rhoCoolant_;
-    volScalarField TStructures_;
-
-    //- Well, these need to be passed via getFields but, ooops, getField
-    //  does not support those fields. This needs to be changed in all the
-    //  neutronic classes, not doing it now
-    //volScalarField axialFuelExpansion_;
-    //volScalarField coreRadialExpansion_;
-    //volScalarField claddingRadialExpansion_;
+    volScalarField TClad_;
+    volScalarField TCool_;
+    volScalarField rhoCool_;
+    volScalarField TStruct_;
 
     //-
     volScalarField oneGroupFlux_;
@@ -174,53 +165,10 @@ protected:
     volScalarField fuelFeedbackCellField_;
 
     //- For rhoCoolant and TCoolant
-    volScalarField coolantFeedbackCellField_;
+    volScalarField coolFeedbackCellField_;
 
     //- For TStructures
-    volScalarField structuresFeedbackCellField_;
-
-    //-----------------------------------------------------------------------//
-    //- For the FFTF only, GEM and driveline --------------------------------//
-    //-----------------------------------------------------------------------//
-    
-    //- Coolant flow
-    surfaceScalarField phi_;
-
-    //- List of face labels over which to compute integral flow values
-    labelList flowFaces_;
-
-    //- Reference value of the integral flow value
-    scalar flowRef_;
-    
-    //- Core flow as a fraction of the reference flow
-    scalar flowFraction_; 
-
-    //- Reference flow fraction at the start of the simulation
-    scalar flowFractionRef_;
-
-    //- An optional offset to the sodium height for fine adjustments
-    //  without having to change all entries in GEMReactivityMap
-    scalar sodiumLevelRef_;
-
-    //- Pairs of GEM sodium level (in m wrt a reference) vs reactivity (in
-    //  absolute units)
-    List<Pair<scalar>> GEMReactivityMap_;
-
-    //- 
-    volScalarField drivelineFeedbackCellField_;
-
-    //- Reference driveline temperature
-    scalar TDrivelineRef_;
-
-    //- Absolute expansion coeff of the driveline in m/K
-    scalar drivelineExpansionCoeff_;
-
-    //- Pairs of CR insertion value (in m wrt a reference) vs reactivity (in
-    //  absolute)
-    List<Pair<scalar>> CRReactivityMap_;
-
-    //- For ease of printing
-    HashTable<scalar, word, word::hash> reactivityValues_;
+    volScalarField structFeedbackCellField_;
 
 private:
 
@@ -245,44 +193,20 @@ public:
 
     //- Member Functions
 
-        //- Solve pointKinetics
-        virtual void correct
-        (
-            const label couplingIter, 
-            scalar& residual, 
-            const bool& liquidFuel
-        );  
-
-        //- Take fields to compute 0-D reactivity feedbacks
-        virtual void getFields
-        (
-            const volVectorFieldTable& vvfTable,
-            const volScalarFieldTable& vsfTable, 
-            const meshToMesh& neutroToFluid
-        );  
-
-        //- "Override" getFieldsLiquidFuel
-        virtual void getFieldsLiquidFuel
-        (
-            const volVectorFieldTable& vvfTable,
-            const volScalarFieldTable& vsfTable, 
-            const meshToMesh& neutroToFluid
-        );
-
         //- Return fluxes
-        virtual inline const PtrList<volScalarField> fluxes() const
+        virtual const PtrList<volScalarField> fluxes() const
         {
             return fluxes_;
         };
 
         //- Return precursors
-        virtual inline const PtrList<volScalarField> precursors() const
+        virtual const PtrList<volScalarField> precursors() const
         {
             return precursors_;
         };
 
         //- Return one group flux
-        virtual inline const volScalarField& Flux() const
+        virtual const volScalarField& oneGroupFlux() const
         {
             return oneGroupFlux_;
         }
@@ -293,16 +217,23 @@ public:
             return power_;
         };
 
-        //- For the FFTF only
+        virtual void getCouplingFieldRefs
+        (
+            const objectRegistry& src,
+            const meshToMesh& neutroToFluid
+        );   
 
-            //- Gas Expansion Modules
-            scalar GEMReactivity(); 
+        virtual void interpolateCouplingFields
+        (
+            const meshToMesh& neutroToFluid
+        );
 
-            //- Driveline thermal expansion
-            scalar drivelineReactivity();
-
-            //- Print individual reactivity contributions
-            virtual void printInfo() const;
+        //- Correct/update the properties
+        virtual void correct
+        (
+            scalar& residual,
+            label couplingIter  
+        );
 };
 
 

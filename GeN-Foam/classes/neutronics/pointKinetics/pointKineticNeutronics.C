@@ -114,61 +114,21 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         nuclearData_.get<scalar>("feedbackCoeffTFuel")
     ),
-    coeffTCladding_
+    coeffTClad_
     (
         nuclearData_.get<scalar>("feedbackCoeffTCladding")
     ),
-    coeffTCoolant_
+    coeffTCool_
     (
         nuclearData_.get<scalar>("feedbackCoeffTCoolant")
     ),
-    coeffRhoCoolant_
+    coeffRhoCool_
     (
         nuclearData_.get<scalar>("feedbackCoeffRhoCoolant")
     ),
-    coeffTStructures_
+    coeffTStruct_
     (
         nuclearData_.get<scalar>("feedbackCoeffTStructures")
-    ),
-    TFuelRef_
-    (
-        nuclearData_.lookupOrDefault<scalar>("TFuelRef", 0)
-    ),
-    TCladdingRef_
-    (
-        nuclearData_.lookupOrDefault<scalar>("TCladdingRef", 0)
-    ),
-    TCoolantRef_
-    (
-        nuclearData_.lookupOrDefault<scalar>("TCoolantRef", 0)
-    ),
-    rhoCoolantRef_
-    (
-        nuclearData_.lookupOrDefault<scalar>("rhoCoolantRef", 0)
-    ),
-    TStructuresRef_
-    (
-        nuclearData_.lookupOrDefault<scalar>("TStructuresRef", 0)
-    ),
-    resetTFuelRef_
-    (
-        nuclearData_.found("TFuelRef") ? false : true
-    ),
-    resetTCladdingRef_
-    (
-        nuclearData_.found("TCladdingRef") ? false : true
-    ),
-    resetTCoolantRef_
-    (
-        nuclearData_.found("TCoolantRef") ? false : true
-    ),
-    resetRhoCoolantRef_
-    (
-        nuclearData_.found("rhoCoolantRef") ? false : true
-    ),
-    resetTStructuresRef_
-    (
-        nuclearData_.found("TStructuresRef") ? false : true
     ),
     TFuel_
     (
@@ -184,11 +144,11 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    TCladding_
+    TClad_
     (
         IOobject
         (
-            "pointKinetics.TCladding",
+            "TClad",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -198,11 +158,11 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    TCoolant_
+    TCool_
     (
         IOobject
         (
-            "pointKinetics.TCoolant",
+            "TCool",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -212,11 +172,11 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    rhoCoolant_
+    rhoCool_
     (
         IOobject
         (
-            "pointKinetics.rhoCoolant",
+            "rhoCool",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -226,11 +186,11 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimDensity, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    TStructures_
+    TStruct_
     (
         IOobject
         (
-            "pointKinetics.TStructures",
+            "TStruct",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -281,11 +241,11 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         mesh,
         dimensionedScalar("", dimless, 0)
     ),
-    coolantFeedbackCellField_
+    coolFeedbackCellField_
     (
         IOobject
         (
-            "pointKinetics.coolantFeedbackCellField",
+            "pointKinetics.coolFeedbackCellField",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -294,11 +254,11 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         mesh,
         dimensionedScalar("", dimless, 0)
     ),
-    structuresFeedbackCellField_
+    structFeedbackCellField_
     (
         IOobject
         (
-            "pointKinetics.structuresFeedbackCellField",
+            "pointKinetics.structFeedbackCellField",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -306,67 +266,20 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         ),
         mesh,
         dimensionedScalar("", dimless, 0)
-    ),
-    phi_
-    (
-        IOobject
-        (
-            "pointKinetics.phi",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimVolume/dimTime, 0)
-    ),
-    flowFaces_(0),
-    flowRef_(0),
-    flowFraction_(1),
-    flowFractionRef_(nuclearData_.get<scalar>("flowFractionRef")),
-    sodiumLevelRef_
-    (
-        nuclearData_.lookupOrDefault<scalar>("sodiumLevelRef", 0.0)
-    ),
-    GEMReactivityMap_
-    (
-        nuclearData_.lookupOrDefault<List<Pair<scalar>>>
-        (
-            "GEMReactivityMap",
-            List<Pair<scalar>>()
-        )
-    ),
-    drivelineFeedbackCellField_
-    (
-        IOobject
-        (
-            "pointKinetics.drivelineFeedbackCellField",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimless, 0)
-    ),
-    drivelineExpansionCoeff_
-    (
-        nuclearData_.lookupOrDefault<scalar>("drivelineExpansionCoeff", 0.0)
-    ),
-    CRReactivityMap_
-    (
-        nuclearData_.lookupOrDefault<List<Pair<scalar>>>
-        (
-            "CRReactivityMap",
-            List<Pair<scalar>>()
-        )
     )
 {
     //- Cannot work in eigenvalue mode for obvious reasons, it makes no sense
     if (eigenvalueNeutronics_)
     {
         FatalErrorInFunction
-            << "pointKinetics model incompatible with eigenvalueNeutronics!"
+            << "pointKinetics model incompatible with eigenvalueNeutronics"
+            << exit(FatalError);
+    }
+
+    if (liquidFuel_)
+    {
+        FatalErrorInFunction
+            << "pointKinetics model does not currently support liquidFuel"
             << exit(FatalError);
     }
 
@@ -560,177 +473,65 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     }
 
     //- Coolant
-    wordList coolantFeedbackZones
+    wordList coolFeedbackZones
     (
-        nuclearData_.lookupOrDefault("coolantFeedbackZones", wordList())
+        nuclearData_.lookupOrDefault("coolFeedbackZones", wordList())
     );
-    if (coolantFeedbackZones.size() == 0)
+    if (coolFeedbackZones.size() == 0)
     {
-        forAll(coolantFeedbackCellField_, i)
+        forAll(coolFeedbackCellField_, i)
         {
-            coolantFeedbackCellField_[i] = 1.0;
+            coolFeedbackCellField_[i] = 1.0;
         }
     }
     else
     {
-        forAll(coolantFeedbackZones, i)
+        forAll(coolFeedbackZones, i)
         {
-            word zoneName(coolantFeedbackZones[i]);
+            word zoneName(coolFeedbackZones[i]);
             labelList zoneCells(mesh_.cellZones()[zoneName]);
             forAll(zoneCells, j)
             {
                 label celli(zoneCells[j]);
-                coolantFeedbackCellField_[celli] = 1.0;
+                coolFeedbackCellField_[celli] = 1.0;
             }
         }
     }
 
     //- Structures
-    wordList structuresFeedbackZones
+    wordList structFeedbackZones
     (
-        nuclearData_.lookupOrDefault("structuresFeedbackZones", wordList())
+        nuclearData_.lookupOrDefault("structFeedbackZones", wordList())
     );
-    if (structuresFeedbackZones.size() == 0)
+    if (structFeedbackZones.size() == 0)
     {
-        forAll(structuresFeedbackCellField_, i)
+        forAll(structFeedbackCellField_, i)
         {
-            structuresFeedbackCellField_[i] = 1.0;
+            structFeedbackCellField_[i] = 1.0;
         }
     }
     else
     {
-        forAll(structuresFeedbackZones, i)
+        forAll(structFeedbackZones, i)
         {
-            word zoneName(structuresFeedbackZones[i]);
+            word zoneName(structFeedbackZones[i]);
             labelList zoneCells(mesh_.cellZones()[zoneName]);
             forAll(zoneCells, j)
             {
                 label celli(zoneCells[j]);
-                structuresFeedbackCellField_[celli] = 1.0;
+                structFeedbackCellField_[celli] = 1.0;
             }
         }
     }
-
-    //- GEM related
-    //- Construct flowFaces_
-    wordList flowFaceZoneNames(nuclearData_.get<wordList>("flowFaceZones"));
-    forAll(flowFaceZoneNames, i)
-    {
-        labelList flowFaces(mesh_.faceZones()[flowFaceZoneNames[i]]);
-        forAll(flowFaces, j)
-        {
-            flowFaces_.append(flowFaces[j]);
-        }
-    }
-
-    //- Check that GEMReactivityMap is indexed by descending sodium level 
-    //  values
-    for (int i = 0; i < GEMReactivityMap_.size()-1; i++)
-    {
-        Pair<scalar> X0(GEMReactivityMap_[i]);
-        Pair<scalar> X1(GEMReactivityMap_[i+1]);
-        if (X0.first() <= X1.first())
-        {
-            FatalErrorInFunction
-            << "GEMReactivityMap should be indexed by descending sodium level"
-            << " values!" << exit(FatalError);
-        }
-    }
-
-    //- Init flowFraction_ to flowFractionRef_
-    flowFraction_ = flowFractionRef_;
-
-    //- Driveline related
-    wordList drivelineFeedbackZones
-    (
-        nuclearData_.lookupOrDefault("drivelineFeedbackZones", wordList())
-    );
-    if (drivelineFeedbackZones.size() == 0)
-    {
-        forAll(drivelineFeedbackCellField_, i)
-        {
-            drivelineFeedbackCellField_[i] = 1.0;
-        }
-    }
-    else
-    {
-        forAll(drivelineFeedbackZones, i)
-        {
-            word zoneName(drivelineFeedbackZones[i]);
-            labelList zoneCells(mesh_.cellZones()[zoneName]);
-            forAll(zoneCells, j)
-            {
-                label celli(zoneCells[j]);
-                drivelineFeedbackCellField_[celli] = 1.0;
-            }
-        }
-    }
-
-    //- Add entries to reactivityValues_
-    reactivityValues_.insert
-    (
-        "total",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "external",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "Doppler",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "GEM",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "TFuel",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "TCladding",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "TCoolant",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "TCoolant",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "rhoCoolant",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "TStructures",
-        0.0
-    );
-    reactivityValues_.insert
-    (
-        "driveline",
-        0.0
-    );  
 
     //- Some notes on modelling choices, for clarity
     Info<< "The pointKinetics neutronics model currently computes average "
         << "perturbed values for feedback fields (T fuel, cladding, etc.) "
         << "by weighting those over oneGroupFlux. This is not technically "
         << "correct as they should be weighted also via the adjoint flux."
-        << "This will be addressed in future commits, but given that the "
+        << "This will be addressed in future updates, but given that the "
         << "adjoint flux is equal to the flux if dealing with only one energy "
-        << "group, this is fine for now." << endl;
+        << "group, this is deemed fine for now." << endl;
 }
 
 
@@ -738,232 +539,168 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
 
 void Foam::pointKineticNeutronics::correct
 (
-    const label couplingIter, 
-    scalar& residual, 
-    const bool& liquidFuel
+    scalar& residual,
+    label couplingIter
 ) 
 {
-    #include "correctReactivityFeedbacks.H"
+    #include "solvePointKinetics.H"
+}
+
+void Foam::pointKineticNeutronics::getCouplingFieldRefs
+(
+    const objectRegistry& src,
+    const meshToMesh& neutroToFluid
+)
+{
+    //- Field names must reflect those defined in createCouplingFields.H
+    TFuelOrig_ = 
+        src.findObject<volScalarField>("bafflelessTFuelAv");
+    TCladOrig_ = 
+        src.findObject<volScalarField>("bafflelessTCladAv");
+    TCoolOrig_ = 
+        src.findObject<volScalarField>("bafflelessTCool");
+    rhoCoolOrig_ = 
+        src.findObject<volScalarField>("bafflelessRhoCool");
     
-    if (!liquidFuel)
+    //- Project thermalHydraulic volFuelPower onto the neutronic one to
+    //  initialize it if the latter does not exist
+    IOobject volFuelPowerHeader
+    (
+        "volFuelPower",
+        mesh_.time().timeName(),
+        mesh_.time(),
+        IOobject::NO_READ
+    );
+    if (!volFuelPowerHeader.typeHeaderOk<volScalarField>(true))
     {
-        #include "solvePointKinetics.H"
+        volFuelPowerOrig_ = 
+            src.findObject<volScalarField>("bafflelessVolFuelPower");
+        neutroToFluid.mapTgtToSrc
+            (
+                *volFuelPowerOrig_, 
+                plusEqOp<scalar>(), 
+                volFuelPower_
+            );
+        volFuelPower_.correctBoundaryConditions(); 
+    }
+
+    //- These have no use now, will be needed by the liquid
+    /*
+    if (liquidFuel_)
+    {
+        UOrig_ = 
+            src.findObject<volVectorField>("bafflelessU");
+        alphaOrig_ = 
+            src.findObject<volScalarField>("bafflelessAlpha");
+        alphatOrig_ = 
+            src.findObject<volScalarField>("bafflelessAlphat");
+        muOrig_ =
+            src.findObject<volScalarField>("bafflelessMu");
     }
     else
     {
-        #include "solveLiquidFuelPointKinetics.H"
+        UOrig_ = nullptr;
+        alphaOrig_ = nullptr;
+        alphatOrig_ = nullptr;
+        muOrig_ = nullptr;
     }
+    */
+
+    //- The rest of this function is for initializing the reference values of
+    //  the feedback parameters. If they are found in the dictionary, use
+    //  those, otherwise compute them from the coupling fields (thus
+    //  assuming that the simulation starts from a steady state)
+    
+    this->interpolateCouplingFields(neutroToFluid);
+
+    #include "computeFeedbackFieldValues.H"
+
+    TFuelRef_ = 
+        nuclearData_.lookupOrDefault<scalar>("TFuelRef", TFuelValue);
+    
+    TCladRef_ =
+        nuclearData_.lookupOrDefault<scalar>("TCladdingRef", TCladValue);
+
+    TCoolRef_ =
+        nuclearData_.lookupOrDefault<scalar>("TCoolantRef", TCoolValue);
+
+    rhoCoolRef_ =
+        nuclearData_.lookupOrDefault<scalar>("rhoCoolantRef", rhoCoolValue);
+
+    TStructRef_ =
+        nuclearData_.lookupOrDefault<scalar>("TStructuresRef", TStructValue);
+
+    #include "correctReactivity.H"
+
+    Info << endl << "pointKinetics (initial conditions): " << endl;
+    Info << "    power = " << power_ << " W" << endl;
+    Info << "    totalReactivity = " << (totalReactivity_*1e5) << " pcm" << endl;
+    Info << "    -> Doppler      = " << (DopplerReactivity*1e5) << " pcm" << endl;
+    Info << "    -> TFuel        = " << (TFuelReactivity*1e5) << " pcm" << endl;
+    Info << "    -> TClad        = " << (TCladReactivity*1e5) << " pcm" << endl;
+    Info << "    -> TCool        = " << (TCoolReactivity*1e5) << " pcm" << endl;
+    Info << "    -> rhoCool      = " << (rhoCoolReactivity*1e5) << " pcm" << endl;
+    Info << "    -> TStruct      = " << (TStructReactivity*1e5) <<" pcm" << endl;
+    Info << "    TFuel = " << TFuelValue << " K" << endl;
+    Info << "    TClad = " << TCladValue << " K" << endl;
+    Info << "    TCool = " << TCoolValue << " K" << endl;
+    Info << "    rhoCool = " << rhoCoolValue << " kg/m3" << endl;
+    Info << "    TStruct = " << TStructValue << " K" << endl;
 }
 
-void Foam::pointKineticNeutronics::getFields
+void Foam::pointKineticNeutronics::interpolateCouplingFields
 (
-    const volVectorFieldTable& vvfTable,
-    const volScalarFieldTable& vsfTable, 
     const meshToMesh& neutroToFluid
 )
 {
-    //- This if is to compensate for the very debatable implementation
-    //  of how volFuelPower is dealt with if the constSubscale fuel power
-    //  is provided instead of a volFuelPower (this also required changes
-    //  in the constSubscale fuel class)
-    if  
-    (
-            mesh_.time().timeIndex()
-        -   mesh_.time().startTimeIndex() == 1 
-    )
+    neutroToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
+    neutroToFluid.mapTgtToSrc(*TCladOrig_, plusEqOp<scalar>(), TClad_);
+    neutroToFluid.mapTgtToSrc(*TCoolOrig_, plusEqOp<scalar>(), TCool_);
+    neutroToFluid.mapTgtToSrc(*rhoCoolOrig_, plusEqOp<scalar>(), rhoCool_);
+    
+    /* This is for when liquidFuel support will be added
+    if (liquidFuel_)
     {
+        neutroToFluid.mapTgtToSrc(*UOrig_, plusEqOp<vector>(), UPtr_());
         neutroToFluid.mapTgtToSrc
         (
-            vsfTable["volFuelPower"], 
+            *alphaOrig_, 
             plusEqOp<scalar>(), 
-            volFuelPower_
+            alphaPtr_()
         );
-        volFuelPower_.correctBoundaryConditions();
-    }
+        neutroToFluid.mapTgtToSrc
+        (
+            *alphatOrig_, 
+            plusEqOp<scalar>(), 
+            alphatPtr_()
+        );
+        neutroToFluid.mapTgtToSrc(*muOrig_, plusEqOp<scalar>(), muPtr_());
+        phiPtr_() = fvc::flux(UPtr_());
+        volScalarField diffCoeffOrig
+        (
+            (
+                *alphatOrig_ 
+            +   *muOrig_/xs_.ScNo()
+            )/(*rhoCoolOrig_)
+        ); 
+        neutroToFluid.mapTgtToSrc
+        (
+            diffCoeffOrig, 
+            plusEqOp<scalar>(), 
+            diffCoeffPrecPtr_()
+        );
 
-    neutroToFluid.mapTgtToSrc(vsfTable["TFuel"], plusEqOp<scalar>(), TFuel_);
-    neutroToFluid.mapTgtToSrc(vsfTable["TClad"], plusEqOp<scalar>(), TCladding_);
-    neutroToFluid.mapTgtToSrc
-    (
-        vsfTable["rhoCool"], 
-        plusEqOp<scalar>(), 
-        rhoCoolant_
-    );
-    neutroToFluid.mapTgtToSrc(vsfTable["TCool"], plusEqOp<scalar>(), TCoolant_);
-    neutroToFluid.mapTgtToSrc
-    (
-        vsfTable["TStructures"], 
-        plusEqOp<scalar>(), 
-        TStructures_
-    );
+        UPtr_().correctBoundaryConditions();
+        alphaPtr_().correctBoundaryConditions();
+        alphatPtr_().correctBoundaryConditions();
+        diffCoeffPrecPtr_().correctBoundaryConditions();
+    }
+    */
 
     TFuel_.correctBoundaryConditions();
-    TCladding_.correctBoundaryConditions();
-    rhoCoolant_.correctBoundaryConditions();
-    TCoolant_.correctBoundaryConditions();
-    TStructures_.correctBoundaryConditions();
-    
-    phi_ = fvc::flux(neutroToFluid.mapTgtToSrc(vvfTable["U"]));  
-}
-
-void Foam::pointKineticNeutronics::getFieldsLiquidFuel
-(
-    const volVectorFieldTable& vvfTable,
-    const volScalarFieldTable& vsfTable, 
-    const meshToMesh& neutroToFluid
-)
-{
-    this->getFields
-    (
-        vvfTable,
-        vsfTable, 
-        neutroToFluid
-    );
-}
-
-scalar Foam::pointKineticNeutronics::GEMReactivity()
-{
-    scalar flow(0);
-    forAll(flowFaces_, i)
-    {
-        flow += phi_[flowFaces_[i]];
-    }
-    flow = std::abs(flow);
-
-    //- Sync integral flow value across processors
-    reduce(flow, sumOp<scalar>()); 
-
-    flowFraction_ = flowFractionRef_*flow/flowRef_;
-
-    //- Specific FFTF relationship between flowFraction and GEM sodium level
-    scalar sodiumLevel = 
-        (265.0-539504/(2440.13+sqr(flowFraction_*100)))/100 - sodiumLevelRef_;
-
-    Info << "GEMSodiumLevel = " << sodiumLevel << " m" << endl;
-
-    scalar GEMReactivity(0);
-    if (GEMReactivityMap_.size() > 1)
-    {
-        for (int i = 0; i < GEMReactivityMap_.size()-1; i++)
-        {
-            Pair<scalar> X0(GEMReactivityMap_[i]);
-            Pair<scalar> X1(GEMReactivityMap_[i+1]);
-            if (sodiumLevel <= X0.first() and sodiumLevel > X1.first())
-            {
-                scalar m((X1.second()-X0.second())/(X1.first()-X0.first()));
-                GEMReactivity = m*(sodiumLevel-X0.first()) + X0.second();
-                break;
-            }
-        }
-    }
-    
-    return GEMReactivity; //flowFraction_;
-}
-
-scalar Foam::pointKineticNeutronics::drivelineReactivity()
-{
-    scalar TDriveline
-    (
-        fvc::domainIntegrate
-        (
-            TStructures_*drivelineFeedbackCellField_
-        ).value()/
-        max
-        (
-            fvc::domainIntegrate(drivelineFeedbackCellField_).value(),
-            SMALL
-        )
-    );
-
-    //- Absolute drivelineExpansion in meters
-    scalar drivelineExpansion
-    (
-        drivelineExpansionCoeff_*(TDriveline-TDrivelineRef_)
-    );
-    Info << drivelineExpansionCoeff_ << " " << TDriveline << " " << TDrivelineRef_ << endl;
-    Info << "drivelineExpansion = " << drivelineExpansion << " m" << endl;
-
-    //- Interpolate reactivity value from table
-    scalar drivelineReactivity(0);
-    label N(CRReactivityMap_.size());
-    if (N > 1)
-    {
-        scalar x0(CRReactivityMap_[0].first());
-        scalar x1(CRReactivityMap_[N-1].first());
-
-        //- If the map is indexed for ascending parameter values
-        if (x0 > x1)
-        {
-            for (int i = 0; i < N-1; i++)
-            {
-                Pair<scalar> p0(CRReactivityMap_[i]);
-                Pair<scalar> p1(CRReactivityMap_[i+1]);
-                if 
-                (
-                    drivelineExpansion <= p0.first() 
-                and drivelineExpansion > p1.first()
-                )
-                {
-                    scalar m((p1.second()-p0.second())/(p1.first()-p0.first()));
-                    drivelineReactivity = 
-                        m*(drivelineExpansion-p0.first()) + p0.second();
-                    break;
-                }
-            }
-        }
-
-        //- If the map is indexed for descending parameter values
-        else
-        {
-            for (int i = 0; i < N-1; i++)
-            {
-                Pair<scalar> p0(CRReactivityMap_[i]);
-                Pair<scalar> p1(CRReactivityMap_[i+1]);
-                if 
-                (
-                    drivelineExpansion > p0.first() 
-                and drivelineExpansion <= p1.first()
-                )
-                {
-                    scalar m((p1.second()-p0.second())/(p1.first()-p0.first()));
-                    drivelineReactivity = 
-                        m*(drivelineExpansion-p0.first()) + p0.second();
-                    break;
-                }
-            }
-        }
-        
-    }
-
-    Info << " ddrivelineReactivity = " << (1e5*drivelineReactivity) << endl;
-
-    return drivelineReactivity;
-}
-
-void Foam::pointKineticNeutronics::printInfo() const
-{
-    typedef HashTable<scalar, word, word::hash> scalarTable;
-    
-    Info << "    power = " << power_ << " W" << endl;
-    Info << "    flowFraction = " << (100*flowFraction_/flowFractionRef_) 
-        << " %" << endl;
-    Info << "    totalReactivity = " << (1e5*reactivityValues_["total"]) 
-        << " pcm" << endl;
-
-    forAllConstIter
-    (
-        scalarTable,
-        reactivityValues_,
-        iter
-    )
-    {
-        if (iter.key() != "total")
-        {
-            scalar value(1e5*iter());
-            Info << "    -> " << iter.key() << " = " << value << " pcm" 
-                << endl; 
-        }
-    }
+    TClad_.correctBoundaryConditions();
+    TCool_.correctBoundaryConditions();
+    rhoCool_.correctBoundaryConditions();
 }
 
 // ************************************************************************* //

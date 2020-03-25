@@ -36,10 +36,10 @@ Reference publications
     "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
     analysis of nuclear reactors", Nuclear Engineering and Design, submitted
 
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-    solver to the European Sodium Fast Reactor and verification against available codes",
-    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
-
+    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
+    multi-physics solver to the European Sodium Fast Reactor and verification 
+    against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
+    Nice (France), Paper 15226
 
 Author
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
@@ -77,41 +77,40 @@ class neutronics
 
 protected:
 
-    // Protected data
+    //- Reference to mesh
+    fvMesh& mesh_;
 
-        //- Reference to mesh
-        fvMesh& mesh_;
+    //- Dictionary from which keff, pTarget are read
+    IOdictionary reactorState_;
 
-        IOdictionary reactorState_;
+    //- k effective
+    scalar keff_;
 
-        //- k effective
-		scalar keff_;
+    //- Target power
+    scalar pTarget_;
 
-        //- Target power
-		scalar pTarget_;
+    //- Fuel power density
+    volScalarField volFuelPower_;
 
-		//- Eigenvalue flag
-		bool eigenvalueNeutronics_;
+    //- Mesh displacement
+    volVectorField disp_;
 
-		//- Initialize residual
-        double initialResidual_;
+    //- Initialize residual
+    scalar initialResidual_;
 
-        //- Vol power
-        volScalarField volFuelPower_;
+    //- Eigenvalue flag
+    bool eigenvalueNeutronics_;
 
-        //- Mesh Displacement
-        volVectorField Disp_;
+    //- Liquid fuel (e.g. true for MSRs)
+    const bool liquidFuel_;
 
 private:
 
-    // Private Member Functions
+    //- Disallow default bitwise copy construct
+    neutronics(const neutronics&);
 
-        //- Disallow default bitwise copy construct
-        neutronics(const neutronics&);
-
-        //- Disallow default bitwise assignment
-        void operator=(const neutronics&);
-
+    //- Disallow default bitwise assignment
+    void operator=(const neutronics&);
 
 public:
 
@@ -131,13 +130,12 @@ public:
         );
 #endif
 
-    // Constructors
+    //- Constructors
 
         //- Construct from mesh
         neutronics(fvMesh& mesh);
 
-
-    // Selectors
+    //- Selectors
 
         //- Return a reference to the selected model
         static autoPtr<neutronics> New
@@ -145,83 +143,93 @@ public:
             fvMesh& mesh
         );
 
-
     //- Destructor
-    	virtual ~neutronics();
+        virtual ~neutronics(){}
 
+    //- Member Functions
 
-    // Member Functions
-
-        //- Return externalVolHeatSource
-        inline const bool& eigenvalue() const
-        {
-            return eigenvalueNeutronics_;
-        }    	
-
-        //- Return one group flux
-        inline const scalar& keff() const
-        {
-            return keff_;
-        }
-
-        //- Return externalVolHeatSource
-        inline const volScalarField& volFuelPower() const
-        {
-            return volFuelPower_;
-        }    	
-
-        //- Return mesh displacement
-        inline const volVectorField& Disp() const
-        {
-            return Disp_;
-        }    	
+        //- Deform mesh
+        virtual void deformMesh
+        (
+            const meshToMesh& TMToNeutro,
+            const volVectorField& dispOrig
+        ); 
 
         //- Return fluxes
-        virtual inline const PtrList<volScalarField> fluxes() const = 0;
+        virtual const PtrList<volScalarField> fluxes() const = 0;
 
         //- Return precursors
-        virtual inline const PtrList<volScalarField> precursors() const = 0;
+        virtual const PtrList<volScalarField> precursors() const = 0;
 
         //- Return one group flux
-        virtual inline const volScalarField& Flux() const = 0;
+        virtual const volScalarField& oneGroupFlux() const = 0;
 
         //- Return power
         virtual scalar power() const = 0;  
 
+        //- Substitutes the old getFields. Set local class references to global
+        //  coupling fields, to be called only once after construction. The 
+        //  fields are set via lookup in the src objectRegistry (i.e. 
+        //  fluidMeshNB for the current state of GeN-Foam)
+        virtual void getCouplingFieldRefs
+        (
+            const objectRegistry& src,
+            const meshToMesh& neutroToFluid
+        ) = 0;
+
+        //- The ond getFields, yet operates on the local refs without having
+        //  the need for all the fields to be passed. This effectively bypasses
+        //  the old limitation of getFields, i.e. if someone wanted to
+        //  implement a new neutronics model that requires more fields for the
+        //  coupling (as it happend with pointKinetics), then they'd need to
+        //  modify the getFields function in ALL of the other neutronics model
+        //  too. Splitting getFields into a getCouplingFieldRefs and 
+        //  interpolateCouplingFields allows one to be as flexible as possible
+        //  with new classes implementations
+        virtual void interpolateCouplingFields
+        (
+            const meshToMesh& neutroToFluid
+        ) = 0;
+
         //- Correct/update the properties
-        virtual void correct(const label couplingIter, scalar& residual, const bool& liquidFuel ) = 0;  
+        virtual void correct
+        (
+            scalar& residual,
+            label couplingIter
+        ) = 0;  
 
-        //- Take from another mesh the fields for XS parametrization
-        virtual void getFields(
-            const volScalarField& TfuelOrig, 
-            const volScalarField& TcladOrig, 
-            const volScalarField& rhoCoolOrig, 
-            const volScalarField& TCoolOrig, 
-            const meshToMesh& neutroToFluid) = 0;  
-
-        virtual void getFieldsLiquidFuel(
-            const volVectorField& UOrig, 
-            const volScalarField& porosityOrig, 
-            const volScalarField& TfuelOrig, 
-            const volScalarField& TcladOrig, 
-            const volScalarField& rhoCoolOrig, 
-            const volScalarField& TCoolOrig,
-            const volScalarField& muOrig, 
-            const volScalarField& alphatOrig, 
-            const meshToMesh& neutroToFluid) = 0; 
-
-        //- Deform mesh
-        virtual void deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig); 
-
-        //- Calculate initialResidual_
-        inline double initialResidual() const
+        //- Required to remove "abstractedness" from IOdictionary
+        virtual bool writeData(Ostream& os) const
         {
-            return initialResidual_;
-        };
+            return os.good();
+        }
 
-        //- Write data to time directory
-        virtual bool writeData(Ostream& os) const ;    
+        //- Access
 
+            scalar keff() const
+            {
+                return keff_;
+            }
+
+            const volScalarField& volFuelPower() const
+            {
+                return volFuelPower_;
+            }       
+
+            const volVectorField& disp() const
+            {
+                return disp_;
+            }       
+
+            bool eigenvalue() const
+            {
+                return eigenvalueNeutronics_;
+            } 
+
+            scalar initialResidual() const
+            {
+                return initialResidual_;
+            }
 };
 
 

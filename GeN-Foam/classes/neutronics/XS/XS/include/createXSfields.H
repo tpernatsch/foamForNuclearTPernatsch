@@ -103,7 +103,7 @@ forAll(sigmaDisapp_, i)
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
-                IOobject::AUTO_WRITE
+                IOobject::NO_WRITE
             ),
             mesh_,
             dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
@@ -243,8 +243,8 @@ forAll(discFactor_,energyI)
                 "discFactor"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
-                IOobject::READ_IF_PRESENT,
-                IOobject::AUTO_WRITE
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
             ),
             mesh_,
             dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 1.0),
@@ -252,9 +252,3 @@ forAll(discFactor_,energyI)
         )
     );
 }
-
-Info << "done" << endl;
-
-
-
-

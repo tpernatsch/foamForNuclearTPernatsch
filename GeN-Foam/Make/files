@@ -7,6 +7,7 @@ classes/neutronics/SN/include/legendrePoly.C
 classes/neutronics/SN/SNNeutronics.C
 classes/neutronics/adjointDiffusion/adjointDiffusionNeutronics.C
 classes/neutronics/albedoSP3/albedoSP3FvPatchField.C
+classes/neutronics/pointKinetics/pointKineticNeutronics.C
 
 classes/thermoMechanics/thermoMechanics.C
 classes/thermoMechanics/linearElastic/linearElasticThermoMechanics.C

@@ -71,8 +71,6 @@ Foam::neutronics::neutronics
     ),
     keff_(reactorState_.lookupOrDefault("keff",1.0)),
     pTarget_(reactorState_.lookupOrDefault("pTarget",1.0)),
-    eigenvalueNeutronics_(IOdictionary::lookupOrDefault("eigenvalueNeutronics",false)),
-    initialResidual_(1.0),
     volFuelPower_
     (
         IOobject
@@ -84,26 +82,48 @@ Foam::neutronics::neutronics
             IOobject::AUTO_WRITE
         ),
         mesh_,
-        dimensionedScalar("", dimensionSet(1,-1,-3,0,0,0,0), 0.0),
+        dimensionedScalar("", dimPower/dimVol, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    Disp_
+    disp_
     (
         IOobject
         (
-            "Disp",
+            "displacement",
             mesh.time().timeName(),
             mesh,
             IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
+            IOobject::NO_WRITE
         ),
         mesh,
-        dimensionedVector("d_zero", dimensionSet(0,1,0,0,0,0,0), vector(0,0,0)),
+        dimensionedVector("d_zero", dimLength, vector::zero),
         zeroGradientFvPatchScalarField::typeName
+    ),
+    initialResidual_(1.0),
+    eigenvalueNeutronics_
+    (
+        IOdictionary::lookupOrDefault("eigenvalueNeutronics", false)
+    ),
+    liquidFuel_
+    (
+        mesh.time().controlDict().lookupOrDefault("liquidFuel", false)
     )
 {
-Info << "Initial keff: " << keff_ << endl;
- }
+    //- Write displacement only if it was present
+    IOobject dispHeader
+    (
+        "displacement",
+        mesh.time().timeName(),
+        mesh,
+        IOobject::NO_READ
+    );
+    if (dispHeader.typeHeaderOk<volVectorField>(true))
+    {
+        disp_.writeOpt() = IOobject::AUTO_WRITE;
+    }
+
+    Info << "Initial keff = " << keff_ << endl;
+}
 
 // * * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * //
 
@@ -114,21 +134,19 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
 {
     word modelName;
 
-    {
-        IOdictionary dict
+    IOdictionary dict
+    (
+        IOobject
         (
-            IOobject
-            (
-                "neutronicsProperties",
-                mesh.time().constant(),
-                mesh,
-                IOobject::MUST_READ,
-                IOobject::NO_WRITE
-            )
-        );
+            "neutronicsProperties",
+            mesh.time().constant(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    );
 
-        dict.lookup("model") >> modelName;
-    }
+    dict.lookup("model") >> modelName;
 
     Info<< "Selecting neutronics model type " << modelName << endl;
 
@@ -150,54 +168,37 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
 
     return autoPtr<neutronics>
     (
-        cstrIter()(mesh) //if a neutronics model exists, the functions return its contructor
+        cstrIter()(mesh)
     );
 }
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-
-void Foam::neutronics::deformMesh(const meshToMesh& TMToNeutro,const volVectorField& DispOrig)
+void Foam::neutronics::deformMesh
+(
+    const meshToMesh& TMToNeutro, 
+    const volVectorField& dispOrig
+)
 {
+    const volPointInterpolation& neutroMeshPointInterpolation = 
+        volPointInterpolation::New(mesh_);
 
-    Info << "Displace neutronic mesh" << endl;
+    tmp<pointVectorField> neutroPointsDisplacementOld = 
+        neutroMeshPointInterpolation.interpolate(disp_);
 
-    const volPointInterpolation& neutroMeshPointInterpolation = volPointInterpolation::New(mesh_);
+    disp_ *= 0.0;
+    TMToNeutro.mapSrcToTgt(dispOrig, plusEqOp<vector>(), disp_);
+    disp_.correctBoundaryConditions();
 
-    tmp<pointVectorField> neutroPointsDisplacementOld = neutroMeshPointInterpolation.interpolate(Disp_);
+    tmp<pointVectorField> neutroPointsDisplacement = 
+        neutroMeshPointInterpolation.interpolate(disp_);
 
-    Disp_*=0.0;
-    TMToNeutro.mapSrcToTgt( DispOrig , plusEqOp<vector>(), Disp_);//.primitiveFieldRef()
-    Disp_.correctBoundaryConditions();
-
-    tmp<pointVectorField> neutroPointsDisplacement = neutroMeshPointInterpolation.interpolate(Disp_);
-
-    tmp<pointField> displacedPoints = mesh_.points()
-                                    + neutroPointsDisplacement->internalField()
-                                    - neutroPointsDisplacementOld->internalField() ;
+    tmp<pointField> displacedPoints = 
+        mesh_.points()
+    +   neutroPointsDisplacement->internalField()
+    -   neutroPointsDisplacementOld->internalField();
 
     mesh_.movePoints(displacedPoints);
-
-    Info << "done" << endl;
 }
-
-bool Foam::neutronics::writeData(Ostream& os) const
-{
-
-    return os.good();
-}
-
-
-
-// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
-
-Foam::neutronics::~neutronics()
-{}
-
-
-// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
-
-
-
 
 // ************************************************************************* //

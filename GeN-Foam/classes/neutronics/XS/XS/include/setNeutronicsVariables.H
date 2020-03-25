@@ -1,6 +1,3 @@
-
-Info<< "Setting neutronics fields\n" << endl;
-
 // Calculate Control Rod position
 forAll(CRentries_,CRzoneI)
 {
@@ -262,5 +259,3 @@ forAll(nuSigmaEff_,energyI)
     discFactor_[energyI].correctBoundaryConditions();
 
 }
-
-Info << "Done" << endl;

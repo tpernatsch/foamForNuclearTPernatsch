@@ -1,5 +1,106 @@
-// Nuclear data fields
-Info<< "Create neutro fields\n" << endl;
+if (liquidFuel_)
+{
+    UPtr_.reset
+    (
+        new volVectorField
+        (
+            IOobject
+            (
+                "U",
+                mesh.time().timeName(),
+                mesh,
+                IOobject::READ_IF_PRESENT,
+                IOobject::AUTO_WRITE
+            ),
+            mesh,
+            dimensionedVector("", dimVelocity, vector::zero),
+            zeroGradientFvPatchVectorField::typeName
+        )
+    );
+    alphaPtr_.reset
+    (
+        new volScalarField
+        (
+            IOobject
+            (
+                "alpha",
+                mesh.time().timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            mesh,
+            dimensionedScalar("", dimless, 1.0),
+            zeroGradientFvPatchScalarField::typeName
+        )
+    );
+    alphatPtr_.reset
+    (
+        new volScalarField
+        (
+            IOobject
+            (
+                "alphat",
+                mesh.time().timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            mesh,
+            dimensionedScalar("", dimMass/dimLength/dimTime, 0.0),
+            zeroGradientFvPatchScalarField::typeName
+        )
+    );
+    muPtr_.reset
+    (
+        new volScalarField
+        (
+            IOobject
+            (
+                "mu",
+                mesh.time().timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            mesh,
+            dimensionedScalar("", dimMass/dimLength/dimTime, 0.0),
+            zeroGradientFvPatchScalarField::typeName
+        )
+    );
+    phiPtr_.reset
+    (
+        new surfaceScalarField
+        (
+            IOobject
+            (
+                "phi",
+                mesh.time().timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            fvc::flux(UPtr_())
+        )
+    );
+    diffCoeffPrecPtr_.reset
+    (
+        new volScalarField
+        (
+            IOobject
+            (
+                "diffCoeffPrec",
+                mesh.time().timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            mesh,
+            dimensionedScalar("", dimArea/dimTime, 0.0),
+            zeroGradientFvPatchScalarField::typeName
+        )
+    );
+}
 
 forAll(flux_,fluxI)
 {

@@ -19,6 +19,8 @@ EXE_INC = \
     -I./classes/neutronics/XS/XS/include \
     -I./classes/neutronics/XS/XSLowMem \
     -I./classes/neutronics/XS/XSLowMem/include \
+    -I./classes/neutronics/pointKinetics \
+    -I./classes/neutronics/pointKinetics/include \
     -I./classes/thermoMechanics \
     -I./classes/thermoMechanics/include \
     -I./classes/thermoMechanics/linearElastic \

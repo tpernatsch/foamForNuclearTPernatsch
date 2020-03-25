@@ -57,23 +57,11 @@ else if (solveE or solveN or solveTM)
         }       
         if (solveN)
         {
-            neutronics.getFieldsLiquidFuel
-            (
-                bafflelessU,
-                bafflelessAlpha,
-                bafflelessTFuelAv, 
-                bafflelessTCladAv, 
-                bafflelessRho, 
-                bafflelessTCool,
-                bafflelessMu,
-                bafflelessAlphat,
-                neutroToFluid
-            );
+            neutronics.interpolateCouplingFields(neutroToFluid);
             neutronics.correct
             (
-                couplingIter, 
-                couplingResidual, 
-                multiphysics.liquidFuel()
+                couplingResidual,
+                couplingIter
             );
             (*volFuelPower) *= 0.0;
             fluidToNeutro.mapTgtToSrc

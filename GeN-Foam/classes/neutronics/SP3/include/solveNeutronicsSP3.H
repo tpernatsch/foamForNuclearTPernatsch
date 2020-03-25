@@ -1,6 +1,4 @@
-Info << "Solving neutronics" << endl ;
-
-xs_.correct(Tfuel_,Tclad_,rhoCool_,TCool_,Disp_);
+xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_);
 #include "setXSFields.H"
 
 const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransport");
@@ -120,6 +118,3 @@ forAll(flux_,energyI)
 {
     oneGroupFlux_+=flux_[energyI];
 }
-
-
-

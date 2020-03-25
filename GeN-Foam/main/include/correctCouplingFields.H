@@ -7,7 +7,8 @@ if (vapour != nullptr)
 	const scalarField& rhov(vapour->thermo().rho().primitiveField());
 	
 	bafflelessAlpha.primitiveFieldRef() = alphal+alphav;
-	bafflelessRho.primitiveFieldRef() = 
+
+	bafflelessRhoCool.primitiveFieldRef() = 
 		(alphal*rhol+alphav*rhov)/bafflelessAlpha.primitiveField();
 	
 	//- Should I weigh coolant temperature by mass or volume, in two-phase
@@ -18,7 +19,9 @@ if (vapour != nullptr)
 else
 {
 	bafflelessAlpha.primitiveFieldRef() = alphal;
-	bafflelessRho.primitiveFieldRef() = rhol;
+
+	bafflelessRhoCool.primitiveFieldRef() = rhol;
+
 	bafflelessTCool.primitiveFieldRef() = 
 		liquid->thermo().T().primitiveField();
 
@@ -27,13 +30,23 @@ else
 	//  neutronics when doing liquidFuel
 	bafflelessAlphat.primitiveFieldRef() = 
 		liquid->turbulence().alphat()().primitiveField();
+	bafflelessAlphat.correctBoundaryConditions();
+
 	bafflelessMu.primitiveFieldRef() = 
 		liquid->thermo().mu()().primitiveField();
+	bafflelessMu.correctBoundaryConditions();
+
 	bafflelessU.primitiveFieldRef() = liquid->U().primitiveField();
+	bafflelessU.correctBoundaryConditions();
 }
 
-bafflelessTFuelAv.primitiveFieldRef() = TFuelAv->primitiveField();
-bafflelessTCladAv.primitiveFieldRef() = TCladAv->primitiveField();
-bafflelessTStruct.primitiveFieldRef() = TStruct.primitiveField();
+bafflelessAlpha.correctBoundaryConditions();
+bafflelessRhoCool.correctBoundaryConditions();
+bafflelessTCool.correctBoundaryConditions();
 
-//- Correct BCs? Eh, probably useless
+bafflelessTFuelAv.primitiveFieldRef() = TFuelAv->primitiveField();
+bafflelessTFuelAv.correctBoundaryConditions();
+bafflelessTCladAv.primitiveFieldRef() = TCladAv->primitiveField();
+bafflelessTCladAv.correctBoundaryConditions();
+bafflelessTStruct.primitiveFieldRef() = TStruct.primitiveField();
+bafflelessTStruct.correctBoundaryConditions();

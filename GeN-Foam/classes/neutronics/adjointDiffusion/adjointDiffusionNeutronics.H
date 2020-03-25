@@ -60,40 +60,56 @@ class adjointDiffusionNeutronics
 {
 protected:
 
-    // Protected data
+    //- Cross sections
+    XS xs_;
 
-        // Cross sections
-        XS xs_;
+    //- Fields
+    volScalarField Dalbedo_;
+    PtrList<volScalarField> flux_;
+    PtrList<volScalarField> fluxStar_;
+    PtrList<volScalarField> prec_;//prec per total volume
+    PtrList<volScalarField> precStar_;//prec per volume salt
+    volScalarField fluxStarAlbedo_;
+    volScalarField defaultFlux_;
+    volScalarField defaultPrec_;
 
-        //Fields
-        volScalarField Dalbedo_;
-        PtrList<volScalarField> flux_;
-        PtrList<volScalarField> fluxStar_;
-        PtrList<volScalarField> prec_;//prec per total volume
-        PtrList<volScalarField> precStar_;//prec per volume salt
-        volScalarField fluxStarAlbedo_;
-        volScalarField defaultFlux_;
-        volScalarField defaultPrec_;
+    //- Derived fields
+    volScalarField oneGroupFlux_;
+    volScalarField scatteringSourceExtra_;
 
-        //Derived fields
-        volScalarField oneGroupFlux_;
-        volScalarField scatteringSourceExtra_;
+    //- Calc
+    List<scalar> calculated_beta_eff;
+    volScalarField adjointPrec_beta_;
+    volScalarField adjointFlux_chiP_;
+    volScalarField adjointFlux_chiD_;
 
-        //mappedFields
-        volVectorField U_;
-        surfaceScalarField phi_;
-        volScalarField porosity_;
-        volScalarField Tfuel_;
-        volScalarField Tclad_;
-        volScalarField rhoCool_;
-        volScalarField TCool_;
-        volScalarField diffCoeffPrec_;
+    //- Ptrs to coupling fields (i.e. defined on their original mesh)
+    const volScalarField* TFuelOrig_;
+    const volScalarField* TCladOrig_;
+    const volScalarField* TCoolOrig_;
+    const volScalarField* rhoCoolOrig_;
+    const volVectorField* UOrig_;
+    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s) 
+    const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
+    const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
 
-        // calc
-        List<scalar> calculated_beta_eff;
-        volScalarField adjointPrec_beta_;
-        volScalarField adjointFlux_chiP_;
-        volScalarField adjointFlux_chiD_;
+    //- Mapped fields
+    volScalarField TFuel_;
+    volScalarField TClad_;
+    volScalarField TCool_;
+    volScalarField rhoCool_;
+    
+    //- Also mapped, but these are autoPtr as these field are not needed at all
+    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
+    //  these fields if they are actually needed
+    autoPtr<volVectorField> UPtr_;
+    autoPtr<volScalarField> alphaPtr_;
+    autoPtr<volScalarField> alphatPtr_;
+    autoPtr<volScalarField> muPtr_;
+    
+    //- Fields derived from mapped fields
+    autoPtr<surfaceScalarField> phiPtr_;
+    autoPtr<volScalarField> diffCoeffPrecPtr_;
 
 private:
 
@@ -125,62 +141,57 @@ public:
 
     // Member Functions
 
-        // Access
+        //- Return fluxes
+        virtual const PtrList<volScalarField> fluxes() const
+        {
+            return flux_;
+        }
 
-            //- Return fluxes
-            virtual inline const PtrList<volScalarField> fluxes() const
-            {
-                return flux_;
-            }
+        //- Return precursors
+        virtual const PtrList<volScalarField> precursors() const
+        {
+            return prec_;
+        }
 
-            //- Return precursors
-            virtual inline const PtrList<volScalarField> precursors() const
-            {
-                return prec_;
-            }
+        //- Return one group flux
+        virtual const volScalarField& oneGroupFlux() const
+        {
+            return oneGroupFlux_;
+        }
 
-            //- Return one group flux
-            virtual inline const volScalarField& Flux() const
-            {
-                return oneGroupFlux_;
-            }
-
-        // Calc
         //- Return power
-            virtual inline scalar power() const
+        virtual scalar power() const
+        {
+            scalar pTot = 0;
+            forAll(flux_,energyI)
             {
-                scalar pTot = 0;
-                forAll(flux_,energyI)
-                {
-                    
-                    pTot += fvc::domainIntegrate(flux_[energyI] * xs_.sigmaPow()[energyI]).value();
+                
+                pTot += fvc::domainIntegrate
+                (
+                    flux_[energyI]*xs_.sigmaPow()[energyI]
+                ).value();
 
-                }
-                return pTot;
-            }   
+            }
+            return pTot;
+        }
 
-            //- Correct/update the properties
-            virtual void correct(const label couplingIter, scalar& residual, const bool& liquidFuel);  
+        virtual void getCouplingFieldRefs
+        (
+            const objectRegistry& src,
+            const meshToMesh& neutroToFluid
+        );   
 
-            //- Take from another mesh the fields for XS parametrization
-            virtual void getFields(
-            const volScalarField& TfuelOrig, 
-            const volScalarField& TcladOrig, 
-            const volScalarField& rhoCoolOrig, 
-            const volScalarField& TCoolOrig, 
-            const meshToMesh& neutroToFluid);  
+        virtual void interpolateCouplingFields
+        (
+            const meshToMesh& neutroToFluid
+        );
 
-            virtual void getFieldsLiquidFuel(
-            const volVectorField& UOrig, 
-            const volScalarField& porosityOrig, 
-            const volScalarField& TfuelOrig, 
-            const volScalarField& TcladOrig, 
-            const volScalarField& rhoCoolOrig, 
-            const volScalarField& TCoolOrig,
-            const volScalarField& muOrig, 
-            const volScalarField& alphatOrig, 
-            const meshToMesh& neutroToFluid); 
-
+        //- Correct/update the properties
+        virtual void correct
+        (
+            scalar& residual,
+            label couplingIter  
+        );  
 };
 
 

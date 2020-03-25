@@ -57,7 +57,3 @@ thermoMechanics& thermoMechanics = pthermoMechanics();
 //- Silence "unused variable" warnings, I actually do use it and have no idea
 //  why the compiler does not "see" it
 (void) thermoMechanics;
-
-//- Coupling fields ----------------------------------------------------------/
-
-#include "createCouplingFields.H"

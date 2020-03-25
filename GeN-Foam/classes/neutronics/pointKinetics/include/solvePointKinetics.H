@@ -1,3 +1,7 @@
+//- Update reactivity coefficients
+#include "computeFeedbackFieldValues.H"
+#include "correctReactivity.H"
+
 //- Update old time step values if time step has changed
 if(timeIndex_ != mesh_.time().timeIndex())
 {
@@ -88,23 +92,20 @@ reactorState_.regIOobject::writeObject
     reactorState_.time().writeCompression(),
     true
 );
+*/
 
 Info << endl << "pointKinetics: " << endl;
 Info << "    power = " << power_ << " W" << endl;
-Info << "    flowFraction    = "<<(100*flowFraction_/flowFractionRef_)<<" %"<<endl;
-Info << "    totalReactivity = " << (totalReactivity_*1e5) << " pcm" << endl;
-Info << "    -> Doppler      = " << (DopplerReactivity*1e5) << " pcm" << endl;
-Info << "    -> TFuel        = " << (TFuelReactivity*1e5) << " pcm" << endl;
-Info << "    -> TCladding    = " << (TCladdingReactivity*1e5) << " pcm"<< endl;
-Info << "    -> TCoolant     = " << (TCoolantReactivity*1e5) << " pcm" << endl;
-Info << "    -> rhoCoolant   = " << (rhoCoolantReactivity*1e5) << " pcm"<<endl;
-Info << "    -> TStructures  = " << (TStructuresReactivity*1e5) <<" pcm"<<endl;
-Info << "    -> GEM          = " << (GEMReactivityValue*1e5) << " pcm" << endl;
-Info << "    TFuel = " << TFuel << " K" << endl;
-Info << "    TCladding = " << TCladding << " K" << endl;
-Info << "    TCoolant = " << TCoolant << " K" << endl;
-Info << "    rhoCoolant = " << rhoCoolant << " kg/m3" << endl;
-Info << "    TStructures = " << TStructures << " K" << endl;
-*/
-
-Info << endl;
+Info << "    totalReactivity   = " << (totalReactivity_*1e5) <<" pcm"<<endl;
+Info << "    -> Doppler (fast) = " << (DopplerReactivity*1e5) <<" pcm"<<endl;
+Info << "    -> TFuel          = " << (TFuelReactivity*1e5) <<" pcm"<<endl;
+Info << "    -> TClad          = " << (TCladReactivity*1e5) <<" pcm"<<endl;
+Info << "    -> TCool          = " << (TCoolReactivity*1e5) <<" pcm"<<endl;
+Info << "    -> rhoCool        = " << (rhoCoolReactivity*1e5) <<" pcm"<<endl;
+Info << "    -> TStruct        = " << (TStructReactivity*1e5) <<" pcm"<<endl;
+Info << "    -> external       = " << (externalReactivity_*1e5) <<" pcm"<<endl;
+Info << "    TFuel = " << TFuelValue << " K" << endl;
+Info << "    TClad = " << TCladValue << " K" << endl;
+Info << "    TCool = " << TCoolValue << " K" << endl;
+Info << "    rhoCool = " << rhoCoolValue << " kg/m3" << endl;
+Info << "    TStruct = " << TStructValue << " K" << endl;

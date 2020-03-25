@@ -142,86 +142,32 @@ Foam::SNNeutronics::SNNeutronics
         dimensionedScalar("", dimensionSet(0,-3,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    U_
+    TFuel_
     (
         IOobject
         (
-            "U",
+            "TFuel",
             mesh.time().timeName(),
             mesh,
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
-        dimensionedVector("", dimensionSet(0,1,-1,0,0,0,0), vector(0.0,0.0,0.0)),
-        zeroGradientFvPatchVectorField::typeName
-    ),
-    phi_
-    (
-        IOobject
-        (
-            "phi",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        fvc::flux(U_)
-    ),
-    porosity_
-    (
-        IOobject
-        (
-            "porosity",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0),1.0),
+        dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    Tfuel_
+    TClad_
     (
         IOobject
         (
-            "Tfuel",
+            "TClad",
             mesh.time().timeName(),
             mesh,
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    Tclad_
-    (
-        IOobject
-        (
-            "Tclad",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    rhoCool_
-    (
-        IOobject
-        (
-            "rhoCool",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimensionSet(1,-3,0,0,0,0,0), 1.0),
+        dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     TCool_
@@ -235,24 +181,23 @@ Foam::SNNeutronics::SNNeutronics
             IOobject::AUTO_WRITE
         ),
         mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0),0.0),
+        dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    diffCoeffPrec_
+    rhoCool_
     (
         IOobject
         (
-            "diffCoeffPrec",
+            "rhoCool",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
             IOobject::NO_WRITE
         ),
         mesh,
-        dimensionedScalar("", dimensionSet(0,2,-1,0,0,0,0), 0.0),
+        dimensionedScalar("", dimTemperature, SMALL),
         zeroGradientFvPatchScalarField::typeName
     )
-
 {
     #include "readQuadratureSet.H"
     #include "calcLegendreMatrices.H"
@@ -268,65 +213,100 @@ Foam::SNNeutronics::~SNNeutronics()
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::SNNeutronics::correct(const label couplingIter, scalar& residual, const bool& liquidFuel ) 
+void Foam::SNNeutronics::correct
+(
+    scalar& residual, 
+    label couplingIter
+) 
 {
     #include "solveNeutronicsSN.H"
 }
 
-
-void Foam::SNNeutronics::getFields(
-    const volScalarField& TfuelOrig, 
-    const volScalarField& TcladOrig, 
-    const volScalarField& rhoCoolOrig, 
-    const volScalarField& TCoolOrig, 
-    const meshToMesh& neutroToFluid)
+void Foam::SNNeutronics::getCouplingFieldRefs
+(
+    const objectRegistry& src,
+    const meshToMesh& neutroToFluid
+)
 {
-
-    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel_);
-    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad_);
-    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool_);
-    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool_);
-
-    Tfuel_.correctBoundaryConditions();
-    Tclad_.correctBoundaryConditions();
-    rhoCool_.correctBoundaryConditions();
-    TCool_.correctBoundaryConditions();  
-
+    //- Field names must reflect those defined in createCouplingFields.H
+    TFuelOrig_ = 
+        src.findObject<volScalarField>("bafflelessTFuelAv");
+    TCladOrig_ = 
+        src.findObject<volScalarField>("bafflelessTCladAv");
+    TCoolOrig_ = 
+        src.findObject<volScalarField>("bafflelessTCool");
+    rhoCoolOrig_ = 
+        src.findObject<volScalarField>("bafflelessRhoCool");
+    if (liquidFuel_)
+    {
+        UOrig_ = 
+            src.findObject<volVectorField>("bafflelessU");
+        alphaOrig_ = 
+            src.findObject<volScalarField>("bafflelessAlpha");
+        alphatOrig_ = 
+            src.findObject<volScalarField>("bafflelessAlphat");
+        muOrig_ =
+            src.findObject<volScalarField>("bafflelessMu");
+    }
+    else
+    {
+        UOrig_ = nullptr;
+        alphaOrig_ = nullptr;
+        alphatOrig_ = nullptr;
+        muOrig_ = nullptr;
+    }
 }
 
-void Foam::SNNeutronics::getFieldsLiquidFuel(
-    const volVectorField& UOrig, 
-    const volScalarField& porosityOrig, 
-    const volScalarField& TfuelOrig, 
-    const volScalarField& TcladOrig, 
-    const volScalarField& rhoCoolOrig, 
-    const volScalarField& TCoolOrig,
-    const volScalarField& muOrig, 
-    const volScalarField& alphatOrig, 
+void Foam::SNNeutronics::interpolateCouplingFields
+(
     const meshToMesh& neutroToFluid
-    )
+)
 {
+    neutroToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
+    neutroToFluid.mapTgtToSrc(*TCladOrig_, plusEqOp<scalar>(), TClad_);
+    neutroToFluid.mapTgtToSrc(*TCoolOrig_, plusEqOp<scalar>(), TCool_);
+    neutroToFluid.mapTgtToSrc(*rhoCoolOrig_, plusEqOp<scalar>(), rhoCool_);
+    if (liquidFuel_)
+    {
+        neutroToFluid.mapTgtToSrc(*UOrig_, plusEqOp<vector>(), UPtr_());
+        neutroToFluid.mapTgtToSrc
+        (
+            *alphaOrig_, 
+            plusEqOp<scalar>(), 
+            alphaPtr_()
+        );
+        neutroToFluid.mapTgtToSrc
+        (
+            *alphatOrig_, 
+            plusEqOp<scalar>(), 
+            alphatPtr_()
+        );
+        neutroToFluid.mapTgtToSrc(*muOrig_, plusEqOp<scalar>(), muPtr_());
+        phiPtr_() = fvc::flux(UPtr_());
+        volScalarField diffCoeffOrig
+        (
+            (
+                *alphatOrig_ 
+            +   *muOrig_/xs_.ScNo()
+            )/(*rhoCoolOrig_)
+        ); 
+        neutroToFluid.mapTgtToSrc
+        (
+            diffCoeffOrig, 
+            plusEqOp<scalar>(), 
+            diffCoeffPrecPtr_()
+        );
 
-    neutroToFluid.mapTgtToSrc( TfuelOrig, plusEqOp<scalar>(), Tfuel_);
-    neutroToFluid.mapTgtToSrc( TcladOrig, plusEqOp<scalar>(), Tclad_);
-    neutroToFluid.mapTgtToSrc( rhoCoolOrig, plusEqOp<scalar>(), rhoCool_);
-    neutroToFluid.mapTgtToSrc( TCoolOrig, plusEqOp<scalar>(), TCool_);
-    neutroToFluid.mapTgtToSrc( UOrig, plusEqOp<vector>(), U_);
-    neutroToFluid.mapTgtToSrc( porosityOrig, plusEqOp<scalar>(), porosity_);
+        UPtr_().correctBoundaryConditions();
+        alphaPtr_().correctBoundaryConditions();
+        alphatPtr_().correctBoundaryConditions();
+        diffCoeffPrecPtr_().correctBoundaryConditions();
+    }
 
-    Tfuel_.correctBoundaryConditions();
-    Tclad_.correctBoundaryConditions();
-    rhoCool_.correctBoundaryConditions();
+    TFuel_.correctBoundaryConditions();
+    TClad_.correctBoundaryConditions();
     TCool_.correctBoundaryConditions();
-    U_.correctBoundaryConditions();
-    porosity_.correctBoundaryConditions();
-
-    phi_ = fvc::flux(U_);
-
-    volScalarField diffCoeffOrig = alphatOrig/rhoCoolOrig+muOrig/rhoCoolOrig/xs_.ScNo();// (alphaEff=nu/Pr+alphat)
-    neutroToFluid.mapTgtToSrc( diffCoeffOrig , plusEqOp<scalar>(), diffCoeffPrec_);//.primitiveFieldRef()
-    diffCoeffPrec_.correctBoundaryConditions();     
-
+    rhoCool_.correctBoundaryConditions();
 }
 
 // ************************************************************************* //

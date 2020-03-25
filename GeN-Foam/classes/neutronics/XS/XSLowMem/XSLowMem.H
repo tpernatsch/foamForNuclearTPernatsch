@@ -230,40 +230,40 @@ public:
     );    
     // Access
 
-        inline const label energyGroups() const
+        label energyGroups() const
         {
             return energyGroups_;
         }
-        inline const label precGroups() const
+        label precGroups() const
         {
             return precGroups_;
         }
-        inline const label legendreMoments() const
+        label legendreMoments() const
         {
             return legendreMoments_;
         }
-        inline const PtrList<volScalarField> IV() const
+        const PtrList<volScalarField> IV() const
         {
             return IV_;
         }
-        inline const PtrList<volScalarField> D() const
+        const PtrList<volScalarField> D() const
         {
             return D_;
         }
-        inline const PtrList<volScalarField> nuSigmaEff() const
+        const PtrList<volScalarField> nuSigmaEff() const
         {
             return nuSigmaEff_;
         }
-        inline const PtrList<volScalarField> sigmaPow() const
+        const PtrList<volScalarField> sigmaPow() const
         {
             return sigmaPow_;
         }
-        inline const PtrList<volScalarField> sigmaDisapp() const
+        const PtrList<volScalarField> sigmaDisapp() const
         {
             return sigmaDisapp_;
         }
 
-        Foam::tmp< Foam::volScalarField > sigmaFromTo
+        Foam::tmp<Foam::volScalarField> sigmaFromTo
         (
             label momentI, 
             label energyI, 
@@ -275,40 +275,40 @@ public:
             const volVectorField& Disp  
         );
 
-        inline const PtrList<volScalarField> chiPrompt() const
+        const PtrList<volScalarField> chiPrompt() const
         {
             return chiPrompt_;
         }
-        inline const PtrList<volScalarField> chiDelayed() const
+        const PtrList<volScalarField> chiDelayed() const
         {
             return chiDelayed_;
         }
-        inline const PtrList<volScalarField> Beta() const
+        const PtrList<volScalarField> Beta() const
         {
             return Beta_;
         }
-        inline const volScalarField BetaTot() const
+        const volScalarField& BetaTot() const
         {
             return BetaTot_;
         }
-        inline const PtrList<volScalarField> lambda() const
+        const PtrList<volScalarField> lambda() const
         {
             return lambda_;
         }
-        inline const volScalarField fuelFraction() const
+        const volScalarField& fuelFraction() const
         {
             return fuelFraction_;
         }
-        inline const PtrList<volScalarField> discFactor() const
+        const PtrList<volScalarField> discFactor() const
         {
             return discFactor_;
         }
-        inline const scalar ScNo() const
+        scalar ScNo() const
         {
             return ScNo_;
         }
 
-        inline const SquareMatrix<label> sigmaFromToYesNo() const
+        const SquareMatrix<label>& sigmaFromToYesNo() const
         {
             return sigmaFromToYesNo_;
         }

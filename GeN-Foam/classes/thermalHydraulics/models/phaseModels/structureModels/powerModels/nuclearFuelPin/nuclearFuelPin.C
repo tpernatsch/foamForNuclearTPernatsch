@@ -168,6 +168,10 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    Tfmax_(0),
+    Tfmin_(1e69),
+    Tcmax_(0),
+    Tcmin_(1e69),
     fuelMeshSize_(0),//this->get<label>("fuelMeshSize")),
     cladMeshSize_(0),//this->get<label>("cladMeshSize")),
     meshSize_(0),
@@ -414,26 +418,82 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                 << Trad_.name() << endl;
     }
     
-    //- Set I/O fields
+    //- Set I/O fields and compute initial scalar max, min
+    scalar Tfavav(0);
+    scalar Tcavav(1e69);
+    scalar totV(0.0);
+    const scalarList& V(mesh_.V());
     forAll(this->cellList_, i)
     {
         label celli(this->cellList_[i]);
         label regioni(cellToRegion_[celli]);
         label nf(fuelMeshSize_[regioni]);
         label n(meshSize_[regioni]);
-        scalarField& Trad(Trad_[celli]);
+        const scalarField& Trad(Trad_[celli]);
         Tfi_[celli] = Trad[0];
         Tfo_[celli] = Trad[nf-1];
         Tci_[celli] = Trad[nf];
-        Tco_[celli] = Trad[n-1]; 
+        Tco_[celli] = Trad[n-1];
+
+        const scalarList& rRegion(r_[regioni]);
+        scalar& Tfav(Tfav_[celli]);
+        scalar intrf(0);
+        scalar intTrf(0);
+        for(int j = 0; j < nf; j++)
+        {   
+            const scalar& T(Trad[j]);
+            scalar rdrf(rRegion[j]*drf_[regioni]);
+            intrf += rdrf;
+            intTrf += T*rdrf;
+            if (T > Tfmax_) Tfmax_ = T;
+            if (T < Tfmin_) Tfmin_ = T;
+        }
+        Tfav = intTrf/intrf;
+
+        scalar& Tcav(Tcav_[celli]);
+        scalar intrc(0);
+        scalar intTrc(0);
+        for(int j = nf; j < n; j++)
+        {   
+            const scalar& T(Trad[j]);
+            scalar rdrc(rRegion[j]*drc_[regioni]);
+            intrc += rdrc;
+            intTrc += T*rdrc;
+            if (T > Tcmax_) Tcmax_ = T;
+            if (T < Tcmin_) Tcmin_ = T;
+        }
+        Tcav = intTrc/intrc;
+
+        const scalar& dV(V[celli]);
+        totV += dV;
+        Tfavav += Tfav*dV;
+        Tcavav += Tcav*dV;
     }
 
-    /*
+    //- Sync across processors
+    reduce(totV, sumOp<scalar>());
+    reduce(Tfavav, sumOp<scalar>());
+    reduce(Tcavav, sumOp<scalar>());
+    reduce(Tfmax_, maxOp<scalar>());
+    reduce(Tfmin_, minOp<scalar>());
+    reduce(Tcmax_, maxOp<scalar>());
+    reduce(Tcmin_, minOp<scalar>());
+
+    Tfavav /= totV;
+    Tcavav /= totV;
+
+    //- Initialize in dict
+    this->IOdictionary::set("Tfavav", Tfavav);
+    this->IOdictionary::set("Tcavav", Tcavav);
+    this->IOdictionary::set("Tfmax", Tfmax_);
+    this->IOdictionary::set("Tfmin", Tfmin_);
+    this->IOdictionary::set("Tcmax", Tcmax_);
+    this->IOdictionary::set("Tcmin", Tcmin_);
+
     Tfi_.correctBoundaryConditions();
     Tfo_.correctBoundaryConditions();
     Tci_.correctBoundaryConditions();
     Tco_.correctBoundaryConditions();
-    */
 }
 
 

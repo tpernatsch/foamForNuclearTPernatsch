@@ -1,4 +1,3 @@
-
 List<PtrList<volScalarField> > sigmaFromToTempEJEI(xs_.legendreMoments());
 forAll(sigmaFromToTempEJEI,momentL)
 {
@@ -8,16 +7,13 @@ forAll(sigmaFromToTempEJEI,momentL)
         sigmaFromToTempEJEI[momentL].set
         (
             energyJ,
-            new volScalarField(xs_.sigmaFromTo(momentL,energyJ,energyI,Tfuel_,Tclad_,rhoCool_,TCool_,Disp_))
+            new volScalarField(xs_.sigmaFromTo(momentL,energyJ,energyI,TFuel_,TClad_,rhoCool_,TCool_,disp_))
         );
     }
 
 }
 
 // Calc intra-group source
-
-Info<< "Calculating intraSources" << endl;
-
 PtrList<volScalarField> intraSources(discreteDirections_);
 
 volScalarField isotropicIntraSource = flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToTempEJEI[0][energyI]);
@@ -47,14 +43,8 @@ if (xs_.legendreMoments() > 1)
         }
     }
 }
-        
-Info<< "Done" << endl;
-
 
 // Calc extra-group source
-
-Info<< "Calculating extraSources" << endl;
-
 PtrList<volScalarField> extraSources(discreteDirections_);
 
 volScalarField isotropicExtraSource = isotropicIntraSource * 0.0;
@@ -99,7 +89,3 @@ if (xs_.legendreMoments() > 1)
         }
     }
 }
-
-
-        
-Info<< "Done" << endl;

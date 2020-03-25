@@ -212,8 +212,6 @@ void Foam::thermalHydraulicModel::adjustTimeStep()
                 maxDeltaT
             )
         );
-
-        Info << "deltaT = " << runTime_.deltaTValue() << endl;
     }
 }
 

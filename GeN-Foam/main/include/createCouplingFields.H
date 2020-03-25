@@ -213,7 +213,7 @@ volScalarField bafflelessTCool
 (
     IOobject
     (
-        "bafflelessTCoolant",
+        "bafflelessTCool",
         runTime.timeName(),
         fluidMeshNB
     ),
@@ -239,7 +239,7 @@ volScalarField bafflelessTCladAv
 (
     IOobject
     (
-        "bafflelessTavClad",
+        "bafflelessTCladAv",
         runTime.timeName(),
         fluidMeshNB
     ),
@@ -274,11 +274,11 @@ volScalarField bafflelessAlpha
     zeroGradientFvPatchScalarField::typeName
 );
 
-volScalarField bafflelessRho
+volScalarField bafflelessRhoCool
 (
     IOobject
     (
-        "bafflelessRho",
+        "bafflelessRhoCool",
         runTime.timeName(),
         fluidMeshNB
     ),
@@ -289,14 +289,15 @@ volScalarField bafflelessRho
 
 //- Turbulent thermal diffusivity of liquid. For some reason, thermal
 //  diffusivity as returned by thermo() is always multiplied by the density and
-//  is not in m2/s, rather, kg/m/s (== Pa*s)
+//  is not in m2/s, rather, kg/m/s (== Pa*s). It's a standard OpenFOAM thing,
+//  not a bug, yet still...
 volScalarField bafflelessAlphat
 (
     IOobject
     (
         "bafflelessAlphat",
         runTime.timeName(),
-        fluidMesh
+        fluidMeshNB
     ),
     fluidMeshNB,
     dimensionedScalar("", dimArea/dimTime*dimDensity, 0.0),
@@ -310,7 +311,7 @@ volScalarField bafflelessMu
     (
         "bafflelessMu",
         runTime.timeName(),
-        fluidMesh
+        fluidMeshNB
     ),
     fluidMeshNB,
     dimensionedScalar("", dimPressure*dimTime, 0.0),
@@ -323,9 +324,56 @@ volVectorField bafflelessU
     (
         "bafflelessU",
         runTime.timeName(),
-        fluidMesh
+        fluidMeshNB
     ),
     fluidMeshNB,
     dimensionedVector("", dimVelocity, vector::zero),
     zeroGradientFvPatchScalarField::typeName
+);
+
+//- This last field is sort of an exception required when using pointKinetics.
+//  PointKinetics by itself simply rescales all neutronic fields according to
+//  the predicted power change. However, if no volFuelPower exists on the
+//  neutroMesh, then look for volFulePower on the fluidMesh. If it exists, copy
+//  it to a bafflelessVolFuelPower that will be interpolated to the
+//  volFuelPower_ on the neutroMesh of pointKinetics in the 
+//  getCouplingFieldRefs function. Since pointKinetics is also just about
+//  rescaling an initial field, this bafflelessVolFuelPower will not need to be
+//  set every time, only the first. Nedless to say, pointKinetics can function
+//  perfectly well with a 0 volFuelPower, it simply won't be re-scaling 
+//  anything (but integral power values will be predicted just fine)
+volScalarField* bafflelessVolFuelPower = nullptr;
+if (neutronics.type() == "pointKinetics")
+{
+    bafflelessVolFuelPower = 
+        new volScalarField
+        (
+            IOobject
+            (
+                "bafflelessVolFuelPower",
+                runTime.timeName(),
+                fluidMeshNB
+            ),
+            fluidMeshNB,
+            dimensionedScalar("", dimPower/dimDensity, 0.0),
+            zeroGradientFvPatchScalarField::typeName
+        );
+    bafflelessVolFuelPower->primitiveFieldRef() = volFuelPower->primitiveField();
+    bafflelessVolFuelPower->correctBoundaryConditions();
+}
+
+//- Update the above fields so that, if any neutronic classes rely on these
+//  fields for further local field initialization (e.g. pointKinetics), correct
+//  initial conditions are set
+#include "correctCouplingFields.H"
+
+//- Set local neutronics and thermoMechanics references to fields they require
+//  for coupling. These are all obtained via lookups. Additionally, the
+//  neutronics->thermalHydraulic interpolator is passed as some classes might
+//  require to project some fields right after construction and before the 
+//  start of the simulation e.g. pointKinetics
+neutronics.getCouplingFieldRefs
+(
+    fluidMeshNB,
+    neutroToFluid
 );

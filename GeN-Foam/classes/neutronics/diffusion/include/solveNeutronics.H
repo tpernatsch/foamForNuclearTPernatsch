@@ -1,19 +1,26 @@
-Info << "Solving neutronics" << endl ;
+xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_);
 
-xs_.correct(Tfuel_,Tclad_,rhoCool_,TCool_,Disp_);
 #include "setXSFields.H"
 
-const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransport");
+const dictionary& neutronTransport = 
+    mesh_.solutionDict().subDict("neutronTransport");
 
-const bool integralPredictor = neutronTransport.lookupOrDefault("integralPredictor", false);
-const bool implicitPredictor = neutronTransport.lookupOrDefault("implicitPredictor", false);
-const bool aitkenAcceleration = neutronTransport.lookupOrDefault("aitkenAcceleration", false);
+const bool integralPredictor = 
+    neutronTransport.lookupOrDefault("integralPredictor", false);
+const bool implicitPredictor = 
+    neutronTransport.lookupOrDefault("implicitPredictor", false);
+const bool aitkenAcceleration = 
+    neutronTransport.lookupOrDefault("aitkenAcceleration", false);
 scalar neutronIterationResidual =
-    neutronTransport.lookupOrDefault<scalar>("neutronIterationResidual", 0.00001);
+    neutronTransport.lookupOrDefault<scalar>
+    (
+        "neutronIterationResidual", 
+        0.00001
+    );
 int maxNeutronIterations =
     neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
-//for aitken
+//- For Aitken
 List<scalar> integralFlux0(xs_.energyGroups());
 List<scalar> integralFlux1(xs_.energyGroups());
 List<scalar> integralFlux2(xs_.energyGroups());
@@ -24,7 +31,12 @@ forAll(flux_,energyI)
 {
     flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
 }
-if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeIndex())==1 )
+
+if 
+(
+    eigenvalueNeutronics_ 
+&&  (mesh_.time().timeIndex() - mesh_.time().startTimeIndex()) == 1 
+)
 {
     pTot = power();
     #include "normFluxes.H"
@@ -33,7 +45,6 @@ if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeInd
 
 #include "initializeNeutroSource.H"
 #include "precEq.H"
-
 #include "initializeDelayedNeutroSource.H"
 
 if(!eigenvalueNeutronics_ && couplingIter == 0)
@@ -53,7 +64,6 @@ if(!eigenvalueNeutronics_ && couplingIter == 0)
 int aitkenIterCounter = 0;
 int aitkenIterNo = 0;
 bool aitkenYesNo = true;
-
 int neutroIter = 0;
 
 #include "createFluxMatrices.H"
@@ -72,10 +82,16 @@ do
    
     neutroIter++;
 
-    Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: " 
-    << neutroIter << "): " << neutroResidual << " after Aitken no: " << aitkenIterNo << endl;     
-
-}while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
+    Info<< "neutroResidual (couplingIter: " << couplingIter 
+        << ", neutroIter: " << neutroIter << "): " << neutroResidual 
+        << " after Aitken no: " << aitkenIterNo << endl;     
+}
+while
+    ( 
+        (neutroResidual > neutronIterationResidual) 
+    &&  (neutroIter < maxNeutronIterations) 
+    && !eigenvalueNeutronics_
+    );
 
 volFuelPower_*=0.0;
 forAll(flux_,energyI)
@@ -87,10 +103,12 @@ pTot = power();
 
 Info << "power: " << pTot << endl;
 
-Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl; 
+Info<< "Final neutroResidual at coupling/neutroIter iter no " 
+    << couplingIter << "/" << neutroIter << ": "  << neutroResidual 
+    << " - pow:" << pTot << endl; 
 
-volFuelPower_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
-
+//- Determine power density in the fuel
+volFuelPower_ /= max(fuelFraction, SMALL);
 
 if (eigenvalueNeutronics_)
 {
@@ -101,8 +119,10 @@ if (eigenvalueNeutronics_)
     keff_ = max(keff_,0.1);
     Info << "keff_ = " << keff_ << nl << endl;
 
-    // Since a keff_ is a scalar, the value inside the dictionary is not updated at runTime automatically.
-    // The line below resets the SCALAR IN THE DICTIONARY at runTime so that the dictionary is written with the updated value.
+    //- Since a keff_ is a scalar, the value inside the dictionary is not 
+    //  updated at runTime automatically. The line below resets the SCALAR IN
+    //  THE DICTIONARY at runTime so that the dictionary is written with the 
+    //  updated value.
     reactorState_.set("keff", keff_);
     reactorState_.regIOobject::writeObject
     (
@@ -123,6 +143,3 @@ forAll(flux_,energyI)
 {
     oneGroupFlux_+=flux_[energyI];
 }
-
-
-

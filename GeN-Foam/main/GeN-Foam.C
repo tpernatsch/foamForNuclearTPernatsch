@@ -84,6 +84,7 @@ int main(int argc, char *argv[])
     #include "createMeshes.H"
     #include "createFields.H"
     #include "createMeshInterpolators.H"
+    #include "createCouplingFields.H"
     #include "createOutput.H"
 
     Info<< "\nStarting time loop\n" << endl;
@@ -92,16 +93,13 @@ int main(int argc, char *argv[])
         << nl << endl;
 
     #include "setDeltaT.H"
-    
+
     while (runTime.run())
     {
-        if ((runTime.timeIndex()-runTime.startTimeIndex()) > 0)
-        {    
-            #include "setDeltaT.H"
-        }
-        
         runTime++;
 
+        #include "setDeltaT.H"
+        
         Info << "Time = " << runTime.timeName() << nl << endl;
 
         while (multiphysics.loop())
