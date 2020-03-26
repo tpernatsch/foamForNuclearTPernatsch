@@ -121,10 +121,20 @@ Foam::thermalHydraulicModels::onePhase::onePhase
     //  immutable, this is done only once
     fluid_.Dh() = structure_.Dh();
 
-    //- Initialize phi. Technically, in a single-phase scenario 
-    //  phi_ = fluid_.alphaPhi();
-    phi_ = 
-        fvc::interpolate(fluid_)*fluid_.phi();
+    //- Initialize fluxes. If alphaPhi exists, it was already read as the
+    //  field is READ_IF_PRESENT. Otherwise, compute it
+    IOobject alphaPhiHeader
+    (
+        fluid_.alphaPhi().name(),
+        mesh.time().timeName(),
+        mesh,
+        IOobject::NO_READ
+    );
+    if (!alphaPhiHeader.typeHeaderOk<surfaceScalarField>(true))
+        fluid_.alphaPhi() = fvc::interpolate(fluid_)*fluid_.phi();
+    phi_ = fluid_.alphaPhi();
+    fluid_.alphaRhoPhi() = 
+        fvc::interpolate(fluid_.thermo().rho())*fluid_.alphaPhi();
     
     //- Initialize dragCoefficient and heatTransferCoefficient tables.
     //  These tables actually consist of only one entry coresponding to the

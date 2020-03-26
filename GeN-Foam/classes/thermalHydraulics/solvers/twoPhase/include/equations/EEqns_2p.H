@@ -15,6 +15,19 @@
     tmp<volScalarField> Cp1(fluid1_.thermo().Cp());
     tmp<volScalarField> Cp2(fluid2_.thermo().Cp());
 
+    /*
+    Info<< "H1i (avg min max) = "
+        << H1i.weightedAverage(mesh_.V()).value()
+        << " " << min(H1i).value()
+        << " " << max(H1i).value()
+        << " W/m2/K" << endl;
+    Info<< "H2i (avg min max) = "
+        << H2i.weightedAverage(mesh_.V()).value()
+        << " " << min(H2i).value()
+        << " " << max(H2i).value()
+        << " W/m2/K" << endl;
+    */
+
     //- Kinetic energy per unit volume
     volScalarField K1(0.5*U1&U1);
     volScalarField K2(0.5*U2&U2);
@@ -69,17 +82,6 @@
     and mesh_.time().controlDict().found("powerOffPhaseName")
     )
     {
-        const volScalarField& alpha
-        (
-            mesh_.lookupObject<volScalarField>
-            (
-                "alpha."+mesh_.time().controlDict().get<word>
-                (
-                    "powerOffPhaseName"
-                )
-            )
-        );
-
         scalar threshold
         (
             mesh_.time().controlDict().get<scalar>
@@ -88,7 +90,7 @@
             )
         );
 
-        if (max(alpha/movingAlpha_).value() > threshold)
+        if (max(*alphaPowerOff_/movingAlpha_).value() > threshold)
         {
             Info << "Power off" << endl;
             structure_.powerOff();

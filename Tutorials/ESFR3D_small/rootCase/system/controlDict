@@ -1,0 +1,78 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// General
+
+application         GeN-Foam;
+
+startFrom           startTime;//latestTime;//
+
+startTime           0;//1000;
+
+stopAt              endTime;//writeNow;//  
+
+endTime             200;//1010;
+
+deltaT              1;//0.001; // time step (if non adjusted)
+
+writeControl        timeStep;//runTime;//timeStep;//adjustableRunTime;
+
+writeInterval       200;//5;
+
+purgeWrite          0;
+
+writeFormat         ascii;
+
+writePrecision      7;
+
+writeCompression    false;
+
+timeFormat          general;
+
+timePrecision       8;
+
+runTimeModifiable   true;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Physics to solve
+
+solveFluidMechanics     true;
+
+solveEnergy             true;
+
+solveNeutronics         true;
+
+solveThermalMechanics   true;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Global simulation options
+
+liquidFuel  false; 
+
+// Solution control
+
+adjusTimeStep false;
+
+maxDeltaT           0.5;
+
+maxCo               1;
+
+maxPowerVariation   0.025;
+
+// ************************************************************************* //

@@ -45,6 +45,7 @@ EXE_INC = \
     -I./physicsModels/phaseChangeModels/kineticGasTheory/ \
     -I./regimeModels/regime \
     -I./regimeModels/regimeMapModels \
+    -I./regimeModels/regimeMapModels/noRegimeMap \
     -I./regimeModels/regimeMapModels/oneParameter \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \

@@ -100,6 +100,7 @@ Foam::autoPtr<Foam::thermoMechanics> Foam::thermoMechanics::New
 
     Info<< "Selecting thermoMechanics model type " << modelName << endl;
 
+
     dictionaryConstructorTable::iterator cstrIter =
         dictionaryConstructorTablePtr_->find(modelName);
 

@@ -25,9 +25,22 @@ Class
     Foam::dragModels::Autruffe
 
 Description
-    Autruffe correlation for the pressure drop. To be used
-    only for momentum transfer between a solid phase (i.e. stationary) 
-    and a fluid phase (i.e. moving).
+    Autruffe correlation for the friction factor between two fluids,
+    originally developed for sodium liquid-vapour pairs. See
+    Autruffe, M.I., Wilson, G.J., Stewart, B., Kazimi, M.S., 1979. A proposed 
+    momentum exchange coefficient for two-phase modeling of sodium boiling. 
+    In: Proc. Int. Meeting on Fast Reactor Safety Tech. 4, Seattle, WA, pp. 
+    2515–2521
+    
+Dictionary Entry Example
+    It takes no parameters, i.e.
+    
+    "liquidName.vapourName"
+    {
+        type    Autruffe;
+    }
+    
+Author
     By Stefan Radman (stefan.radman@epfl.ch)
 
 SourceFiles

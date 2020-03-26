@@ -356,8 +356,12 @@ Foam::fluid::fluid
             << " from " << alphaPhi_.name() << endl;
         alphaRhoPhi_ = fvc::interpolate(thermo_->rho())*alphaPhi_;
     }
+    //- Else, why not compute it here? Well, the reason is that at this stage,
+    //  during fluid creation, there has been no chance to check that the 
+    //  phase fractions are correctly normalized (if there are mutliple 
+    //  fluids). Thus, the alphaPhi might end up being incorrect. Let the main
+    //  solver set the alphaPhi
 }
-
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 

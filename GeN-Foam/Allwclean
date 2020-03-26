@@ -3,4 +3,5 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 wclean libso ./classes/thermalHydraulics/models
 wclean libso ./classes/thermalHydraulics/solvers
+wclean libso ./classes/thermalHydraulics/src
 wclean

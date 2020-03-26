@@ -571,6 +571,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         mesh_.time(),
         IOobject::NO_READ
     );
+
     if (!volFuelPowerHeader.typeHeaderOk<volScalarField>(true))
     {
         volFuelPowerOrig_ = 
@@ -616,7 +617,11 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     #include "computeFeedbackFieldValues.H"
 
     TFuelRef_ = 
-        nuclearData_.lookupOrDefault<scalar>("TFuelRef", TFuelValue);
+        max
+        (
+            nuclearData_.lookupOrDefault<scalar>("TFuelRef", TFuelValue),
+            SMALL
+        );
     
     TCladRef_ =
         nuclearData_.lookupOrDefault<scalar>("TCladdingRef", TCladValue);

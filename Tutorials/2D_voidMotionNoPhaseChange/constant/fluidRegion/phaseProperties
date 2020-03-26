@@ -1,0 +1,198 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// ------------------------------------------------------------------------- //
+// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+thermalHydraulicType    "twoPhase";
+
+// ------------------------------------------------------------------------- //
+// --- FLUID PROPERTIES ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+fluid1 "liquid";
+fluid2 "vapour";
+
+liquidProperties
+{
+    residualAlpha   1e-69;
+}
+
+vapourProperties
+{
+    residualAlpha   1e-69;
+
+    initialAlphas
+    {
+        "mid"      0.5;
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- STRUCTURES PROPERTIES ----------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+structureProperties
+{    
+    type            "byZone";
+
+    "low:top"
+    {
+        volumeFraction      0;
+        Dh                  0.01;
+    }
+
+    "mid"
+    {
+        volumeFraction      0.1;
+        Dh                  0.01;
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME MAP MODEL ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+regimeMapModel
+{
+    type                oneParameter;
+    parameter           "magU.liquid";
+    regimeBounds
+    {
+        "regime0"       (0      0.6);
+        "regime1"       (1      1.5);
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+physicsModelsByRegime
+{
+    "regime0"
+    {
+        dragModels
+        {
+            "liquid.vapour"
+            {
+                type    constant;
+                value   10000;
+            }
+
+            "liquid.structure"
+            {
+                "low:mid:top"
+                {
+                    type    constant;
+                    value   10000;
+                }
+            }
+        }
+
+        heatTransferModels
+        {}
+
+        fluidGeometry
+        {
+            dispersed   "vapour";
+
+            dispersedFluidDiameterModel
+            {
+                type    constant;
+                value   0.01;
+            }
+
+            fluidInterfacialAreaModel
+            {
+                type        constant;
+                value       0;
+            }
+
+            structureInterfacialAreaPartitionModel
+            {
+                type        "constant";
+                value1      1.0;
+                value2      0;
+            }
+        }
+    }  
+
+    "regime1"
+    {
+        dragModels
+        {
+            "liquid.vapour"
+            {
+                type    constant;
+                value   30000;
+            }
+
+            "liquid.structure"
+            {
+                "low:mid:top"
+                {
+                    type    constant;
+                    value   30000;
+                }
+            }
+        }
+
+        heatTransferModels
+        {}
+
+        fluidGeometry
+        {
+            dispersed   "vapour";
+
+            dispersedFluidDiameterModel
+            {
+                type    constant;
+                value   0.01;
+            }
+
+            fluidInterfacialAreaModel
+            {
+                type        constant;
+                value       0;
+            }
+
+            structureInterfacialAreaPartitionModel
+            {
+                type        "constant";
+                value1      1.0;
+                value2      0;
+            }
+        }
+    }  
+}
+
+// ------------------------------------------------------------------------- //
+// --- PHASE-CHANGE RELATED ------------------------------------------------ //
+// ------------------------------------------------------------------------- //
+
+// ------------------------------------------------------------------------- //
+// --- MISCELLANEA --------------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+pMin                    10000;
+pRefCell                0;
+pRefValue               100000;
+residualKd              1;
+
+// ************************************************************************* //

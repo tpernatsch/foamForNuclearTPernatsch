@@ -358,10 +358,16 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         ),
         (
             (rhoE_/rho_)/
-            (2.0*(1.0 + nu_)))*
-            twoSymm(fvc::grad(disp_)) 
-        +   (nu_*(rhoE_/rho_)/((1.0 + nu_)*
-            (1.0 - 2.0*nu_)))*(I*tr(fvc::grad(disp_)))
+            (2.0*(1.0 + nu_))
+        )*
+        twoSymm(fvc::grad(disp_)) 
+    +   (
+            nu_*(rhoE_/rho_)/
+            (
+                (1.0 + nu_)*
+                (1.0 - 2.0*nu_)
+            )
+        )*I*tr(fvc::grad(disp_))
     ),
     divSigmaExp_
     (

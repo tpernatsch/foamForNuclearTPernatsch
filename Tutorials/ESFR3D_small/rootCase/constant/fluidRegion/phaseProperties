@@ -1,0 +1,148 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// ------------------------------------------------------------------------- //
+// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+thermalHydraulicType    "onePhase";
+
+// ------------------------------------------------------------------------- //
+// --- STRUCTURES PROPERTIES ----------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+structureProperties
+{    
+    type            "byZone";
+
+    "diagrid:axialReflector:radialReflector:follower:controlRod"
+    {
+        volumeFraction      0.718520968;
+        Dh                  0.00365;
+    }
+
+    "innerCore:outerCore"
+    {
+        volumeFraction      0.718520968;
+        Dh                  0.00365;
+
+        powerModel
+        {
+            type                nuclearFuelPin;
+            iA                  237.4;
+            powerDensity        0;  //- fields on disk have priority, if they
+                                    //  are not found, this value is used
+            fuelInnerRadius     0.0012;
+            fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     0.005365;
+            fuelMeshSize        16;
+            cladMeshSize        4;
+            fuelRho             10480;
+            fuelCp              250;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               900;
+            cladT               900;
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME MAP MODEL ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+regimeMapModel
+{
+    type                oneParameter;
+    parameter           "Re";
+    regimeBounds
+    {
+        "laminar"       (0      1000);
+        "turbulent"     (2300   2301);
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+physicsModelsByRegime
+{
+    "laminar"
+    {
+        dragModels
+        {
+            "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
+            {
+                type    Darcy;
+                coeff   0.687;
+                exp     -0.25;
+            }
+        }
+
+        heatTransferModels
+        {
+            "innerCore:outerCore"
+            {
+                type    Nusselt;
+                const   4;
+                coeff   0;
+                expRe   0;
+                expPr   0;
+            }
+        }
+    }
+
+    "turbulent"
+    {
+        dragModels
+        {
+            "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
+            {
+                type    Darcy;
+                coeff   0.687;
+                exp     -0.25;
+            }
+        }
+
+        heatTransferModels
+        {
+            "innerCore:outerCore"
+            {
+                type    Nusselt;
+                const   4.82;
+                coeff   0.0185;
+                expRe   0.827;
+                expPr   0.827;
+            }
+        }
+    }  
+}
+
+// ------------------------------------------------------------------------- //
+// --- MISCELLANEA --------------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+pMin                    10000;
+pRefCell                0;
+pRefValue               100000;
+
+// ************************************************************************* //

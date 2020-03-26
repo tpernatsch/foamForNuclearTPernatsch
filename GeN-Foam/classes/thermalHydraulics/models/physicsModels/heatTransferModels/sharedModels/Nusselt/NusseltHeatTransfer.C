@@ -132,14 +132,27 @@ void Foam::heatTransferModels::Nusselt::correctHtc(volScalarField& htc) const
     tmp<volScalarField> tkappa(bulkFluid_.thermo().kappa());
     volScalarField& kappa = tkappa.ref();
 
-    if (usePeclet_)
+    if (B_ != 0)
     {
-        forAll(cellList_, i)
+        if (usePeclet_)
         {
-            label celli(cellList_[i]);
-            htc[celli] = 
-                (kappa[celli]/Dh_[celli])*
-                (A_ + B_*pow(Re_[celli]*Pr_[celli], C_));
+            forAll(cellList_, i)
+            {
+                label celli(cellList_[i]);
+                htc[celli] = 
+                    (kappa[celli]/Dh_[celli])*
+                    (A_ + B_*pow(Re_[celli]*Pr_[celli], C_));
+            }
+        }
+        else
+        {
+            forAll(cellList_, i)
+            {
+                label celli(cellList_[i]);
+                htc[celli] = 
+                    (kappa[celli]/Dh_[celli])*
+                    (A_ + B_*pow(Re_[celli], C_)*pow(Pr_[celli], D_));
+            }
         }
     }
     else
@@ -147,9 +160,7 @@ void Foam::heatTransferModels::Nusselt::correctHtc(volScalarField& htc) const
         forAll(cellList_, i)
         {
             label celli(cellList_[i]);
-            htc[celli] = 
-                (kappa[celli]/Dh_[celli])*
-                (A_ + B_*pow(Re_[celli], C_)*pow(Pr_[celli], D_));
+            htc[celli] = (kappa[celli]/Dh_[celli])*A_;
         }
     }
 }

@@ -365,20 +365,29 @@ if (neutronics.type() == "pointKinetics")
 //- Update the above fields so that, if any neutronic classes rely on these
 //  fields for further local field initialization (e.g. pointKinetics), correct
 //  initial conditions are set
-#include "correctCouplingFields.H"
+if (multiphysics.solveNeutronics() or multiphysics.solveThermoMechanics())
+{
+    #include "correctCouplingFields.H"
+}
 
 //- Set local neutronics and thermoMechanics references to fields they require
 //  for coupling. These are all obtained via lookups. Additionally, the
 //  neutronics->thermalHydraulic interpolator is passed as some classes might
 //  require to project some fields right after construction and before the 
 //  start of the simulation e.g. pointKinetics
-neutronics.getCouplingFieldRefs
-(
-    fluidMeshNB,
-    neutroToFluid
-);
-thermoMechanics.getCouplingFieldRefs
-(
-    fluidMeshNB,
-    mechToFluid
-);
+if (multiphysics.solveNeutronics())
+{
+    neutronics.getCouplingFieldRefs
+    (
+        fluidMeshNB,
+        neutroToFluid
+    );
+}
+if (multiphysics.solveThermoMechanics())
+{
+    thermoMechanics.getCouplingFieldRefs
+    (
+        fluidMeshNB,
+        mechToFluid
+    );
+}

@@ -62,6 +62,7 @@ physicsModels/phaseChangeModels/kineticGasTheory/kineticGasTheoryPhaseChange.C
 regimeModels/regime/regime.C
 regimeModels/regimeMapModels/regimeMapModel.C
 regimeModels/regimeMapModels/newRegimeMapModel.C
+regimeModels/regimeMapModels/none/noRegimeMap.C
 regimeModels/regimeMapModels/oneParameter/oneParameter.C
 
-LIB = $(FOAM_USER_LIBBIN)/libGeNFoamFFSModels
+LIB = $(FOAM_USER_LIBBIN)/libFFSModels2

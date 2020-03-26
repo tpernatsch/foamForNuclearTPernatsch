@@ -249,7 +249,6 @@ Foam::XS::XS
     #include "readNuclearData.H"
     #include "createXSfields.H"    
     init();
-
 }
 
 

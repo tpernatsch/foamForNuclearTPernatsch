@@ -231,6 +231,22 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
             this->subDict("physicsModelsByRegime")
         )
     ),
+    alphaPowerOff_
+    (
+        (
+            mesh_.time().controlDict().found("powerOffPhaseName")
+        and mesh_.time().controlDict().found("powerOffAbovePhaseFraction")
+        ) ? 
+        &(
+            mesh_.lookupObject<volScalarField>
+            (
+                "alpha."
+            +   (
+                    mesh_.time().controlDict().get<word>("powerOffPhaseName")
+                )
+            )
+        ) : nullptr
+    ),
     bothPhasesArePresent_(false),
     withinMarginToPhaseChange_(false),
     partialElimination_
@@ -293,8 +309,12 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
         max((fluid1_*fluid2_)()).value() >= 1e-4 
     );
 
-    //- Initialize phi. If the alphaPhi fields exist, use those, otherwise
-    //  compute an approximate alphaPhi
+    //- Initialize fluxes. If the alphaPhi exist, they have been read
+    //  already as they are READ_IF_PRESENT. Otherwise, compute an 
+    //  approximation. From the alphaPhis, initialize the alphaRhoPhi
+    //  and phi. This step is essential as, if solveEnergy is false,
+    //  the alphaRhoPhis would never get initialized and advection
+    //  won't work in the energy equations
     IOobject alphaPhi1Header
     (
         fluid1_.alphaPhi().name(),
@@ -309,16 +329,20 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
         mesh,
         IOobject::NO_READ
     );
-    phi_ = 
-        (
-            (alphaPhi1Header.typeHeaderOk<surfaceScalarField>(true)) ?
-            fluid1_.alphaPhi() : (fvc::interpolate(fluid1_)*fluid1_.phi())()
-        )
-      + (
-            (alphaPhi2Header.typeHeaderOk<surfaceScalarField>(true)) ?
-            fluid2_.alphaPhi() : (fvc::interpolate(fluid2_)*fluid2_.phi())()
-        );
-    
+    if (!alphaPhi1Header.typeHeaderOk<surfaceScalarField>(true))
+    {
+        fluid1_.alphaPhi() = fvc::interpolate(fluid1_)*fluid1_.phi();
+    }
+    if (!alphaPhi2Header.typeHeaderOk<surfaceScalarField>(true))
+    {
+        fluid2_.alphaPhi() = fvc::interpolate(fluid2_)*fluid2_.phi();
+    }
+    fluid1_.alphaRhoPhi() = 
+        fvc::interpolate(fluid1_.thermo().rho())*fluid1_.alphaPhi();
+    fluid2_.alphaRhoPhi() = 
+        fvc::interpolate(fluid2_.thermo().rho())*fluid2_.alphaPhi();
+    phi_ = fluid1_.alphaPhi() + fluid2_.alphaPhi();
+
     //- Initialize drag coeff and heat transfer coeff tables
     #include "initTables_2p.H"
 

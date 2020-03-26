@@ -5,4 +5,5 @@ clear
 
 wmake libso ./classes/thermalHydraulics/models
 wmake libso ./classes/thermalHydraulics/solvers
+wmake libso ./classes/thermalHydraulics/src
 wmake

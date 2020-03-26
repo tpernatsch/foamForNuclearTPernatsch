@@ -19,7 +19,8 @@ EXE_INC = \
     -I$(LIB_SRC)/meshTools/lnInclude
 
 EXE_LIBS = \
-    -L$(FOAM_USER_LIBBIN) -lGeNFoamFFSModels \
+    -L$(FOAM_USER_LIBBIN) -lFFSModels2 \
+    -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \

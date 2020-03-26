@@ -1,5 +1,6 @@
 scalar DopplerReactivity = 
-    -coeffFastDoppler_*Foam::log(TFuelValue/max(TFuelRef_, SMALL));
+    -coeffFastDoppler_*
+    Foam::log(max(TFuelValue, SMALL)/max(TFuelRef_, SMALL));
 
 scalar TFuelReactivity = 
     coeffTFuel_*(TFuelValue - TFuelRef_);

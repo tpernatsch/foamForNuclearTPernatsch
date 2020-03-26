@@ -28,3 +28,6 @@ else
 
 //- Initialize mapped fields
 this->interpolateCouplingFields(neutroToFluid);
+
+//- Initialize XS correctly
+xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_);

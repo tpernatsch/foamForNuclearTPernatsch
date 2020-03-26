@@ -24,6 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "Autruffe.H"
+#include "fvCFD.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -55,18 +56,31 @@ Foam::dragModels::Autruffe::Autruffe
     ),
     vapour_
     (
-        mesh_.lookupObject<fluid>
-        (
-                "alpha."
-            +   this->get<word>("vapourName")
-        )
+        ( 
+            fvc::domainIntegrate(FFPair.fluid1().thermo().hc()).value() >
+            fvc::domainIntegrate(FFPair.fluid2().thermo().hc()).value()  
+        ) ?
+        FFPair.fluid1() : FFPair.fluid2()
     ),
     liquid_
     (
         (FFPair.fluid1().name() == vapour_.name()) ?
         FFPair.fluid2() : FFPair.fluid1()
     )
-{}
+{
+    if 
+    (
+        fvc::domainIntegrate(FFPair.fluid1().thermo().hc()).value()
+    ==  fvc::domainIntegrate(FFPair.fluid2().thermo().hc()).value() 
+    )
+    {
+        FatalErrorInFunction
+            << "Fluids must have different enthalpies of formation "
+            << "(thermophysicalProperties.Hf) in order to determine which "
+            << "fluid is the vapour and which is the liquid" 
+            << exit(FatalError);
+    }
+}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //

@@ -25,11 +25,20 @@ Class
     Foam::dragModels::SchillerNaumann
 
 Description
-    SchillerNaumann correlation for the fluid-fluid drag coefficient. One among
-    the most widely employed in multi-phase flows
+    Schiller-Naumann correlation for the fluid-fluid drag coefficient. 
+    305    L. Schiller and Z. Naumann. 
+    Z. Ver. Deutsch. Ing., 77:318, 1935.
+
+Dictionary Entry Example
+    It takes no parameters, i.e.
+
+    "fluid1Name.fluid2Name"
+    {
+        type SchillerNaumann;
+    }
 
 Author
-    Stefan Radman (stefan.radman@epfl.ch)
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
     SchillerNaumann.C

@@ -157,14 +157,13 @@ public:
         virtual scalar power() const
         {
             scalar pTot = 0;
+
             forAll(flux_,energyI)
             {
-                
                 pTot += fvc::domainIntegrate
                 (
                     flux_[energyI]*xs_.sigmaPow()[energyI]
                 ).value();
-
             }
             return pTot;
         }

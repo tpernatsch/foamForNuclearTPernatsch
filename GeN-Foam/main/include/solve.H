@@ -14,7 +14,12 @@ if (solveFM or solveE)
 }
 
 //- Solve fluid-mechanics
-if (solveFM) thermalHydraulics.correctFluidMechanics(FMResidual);
+if (solveFM) 
+{
+    thermalHydraulics.correctFluidMechanics(FMResidual);
+    if (!solveE and !solveN and !solveTM)
+        Info << endl;
+}
 
 //- Solve energy
 if (!multiphysics.finalIter())
@@ -22,7 +27,8 @@ if (!multiphysics.finalIter())
     if (solveE) 
     {
         thermalHydraulics.correctEnergy(EResidual);
-        Info << endl;
+        if (!solveN and !solveTM)
+            Info << endl;
     }
 }
 

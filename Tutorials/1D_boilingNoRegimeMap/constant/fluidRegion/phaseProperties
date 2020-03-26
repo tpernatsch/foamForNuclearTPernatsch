@@ -1,0 +1,371 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// ------------------------------------------------------------------------- //
+// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+thermalHydraulicType    "twoPhase";
+
+// ------------------------------------------------------------------------- //
+// --- FLUID PROPERTIES ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+//- These could be anything you want, as long as fields in 0/fluidRegion/ have
+//  these in their name and everyuthing else is re-named accordingly in this
+//  dictionary
+fluid1 "liquid";
+fluid2 "vapour";
+
+liquidProperties
+{
+    residualAlpha   1e-69;
+}
+
+vapourProperties
+{
+    residualAlpha   1e-69;
+    thermoResidualAlpha 0.02;
+}
+
+/*
+
+Example of fluidPropertiesDict
+
+fluidNameProperties
+{
+    //- Used to condition equation matrices and prevent divisions by 0,
+    //  defaults to 1e-9
+    residualAlpha 1e-69;
+
+    //- In those cells where the phase fraction of this fluid is below this
+    //  value, the enthalpy (and thus temperature) of the fluid is set to
+    //  saturation. This is necessary when dealing with boiling phase flows,
+    //  as, due to the explicit nature of the fluid coupling and phaseChange
+    //  models, if one was to add or remove a minusucle energy contribution
+    //  (in absolute terms) to a phase which is just starting to form
+    //  (e.g. vaopour during boiling), massive temperature oscillations can
+    //  take place. It is stressed that this is a consequence of the explicit
+    //  nature of the heat transfer term (for the most part) in the energy
+    //  equation. 
+    //  In practical terms, the energy equation solution of this fluid, vapour,
+    //  is not kept in those cells where alphaVapour < thermoResidualAlpha. 
+    thermoResidualAlpha 0;
+
+    //- If true, the fluid volumetric flux (alphaPhi.fluidName), fluid 
+    //  superficial flux (phi.fluidName) and the dilation term (dgdt.fluidName)
+    //  These are not strictly required to restart a two-phsae simulation from
+    //  the latest available time, yet hugely benefit convergence properties
+    //  during the first time step 
+    writeRestartFields  false;
+}
+
+*/
+
+// ------------------------------------------------------------------------- //
+// --- STRUCTURES PROPERTIES ----------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+structureProperties
+{    
+    //- Only by zone is available now
+    type            "byZone";
+    
+    "low:top"
+    {
+        volumeFraction      0.5;//0.4720574811;
+        Dh                  0.01;
+    }
+    
+    "mid"
+    {
+        volumeFraction      0.5;//0.4720574811;
+        Dh                  0.005;
+
+        powerModel
+        {
+            type                constantPower;
+            iA                  100;
+            T                   652.15;
+            Cp                  500;
+            rho                 7700;
+            powerDensity        1e9;
+        }
+    }
+
+/*
+
+//- Example of structure properties dict for a cellZone or cellZone group.
+//  Now, what if multiple cellZones share the exact same properties? Should I
+//  copy-pase the dict all over? Well, you can, but this is no longer needed!
+//  If e.g. cellZones zone0, zone1 and zone2 share the same properties (and
+//  for whatever reason you did not merge the cellZones), you can provide a 
+//  single subdictionary named "zone0:zone1:zone2" 
+
+"zone0:zone1:zone2"
+{
+    //- i.e. 1-porosity. This entry is REQUIRED
+    volumeFraction      0.5;
+    
+    //- Hydraulic diameter. This entry is REQUIRED
+    Dh                  0.01; 
+
+    //- Local x, y axes of the reference frame in this cellZone. These entries
+    //  are NOT REQUIRED and default to (1 0 0), (0 0 1). If they are provided,
+    //  localY is computed accordingly
+    localX       (1 0 0);
+    localZ       (0 0 1);
+
+    //- Used to compute a "directional hydraulic diameter". It builds upon
+    //  the original idea of the GeN-Foam to use a directional Reyonlds (i.e.
+    //  different for reference frame direction). In particular, the i-th 
+    //  directional Reynolds will "see" a hydraulic diameter
+    //  of Dh*localDhAnisotropy[i] (localAnisotropy is rotated in the local
+    //  reference frame). The actual usefulness of this is debatalbe. This
+    //  entry is NOT REQUIRED
+    localDhAnisotropy     (1 1 1);
+
+    //- Tortuosity of the porous structure (in this cellZone) expressed in the
+    //  local reference frame. This vector quantifies the lengthening of
+    //  diffusion lines (i.e. the path a quantitiy needs to traverse in order
+    //  to diffuse trhough a medium) for each of the tree local reference frame
+    //  axes. To provide an example, for a flow through a bundle of pins,
+    //  the tortuosity will be 1 along the bundle axis and < 1 for directions
+    //  transversal to the bundle axes. How to compute these? Question for
+    //  another time. This entry is NOT REQUIRED and deafults to (1 1 1)
+    localTortuosity     (1 1 1);
+
+    //- Properties of the active-substure, i.e. anything that has an internal
+    //  power source/sink. This subDict IS NOT REQUIRED BY DEFAULT.
+    powerModel
+    {
+        type    model;
+        //- More documentation will be added in the future. It is runTime 
+        //  selectable and the currently available models are:
+        //  -   constantTemperature
+        //  -   constantPower
+        //  -   nuclearFuelPin
+    }
+
+    //- Properties of the passive sub-structure, i.e. anything that does not
+    //  produce power. The temperature of the passive subStructure is solved
+    //  for only if this dict is present. This subDict IS NOT REQUIRED BY
+    //  DEFAULT
+    passiveProperties
+    {
+        //- interfacial surface area density of the passive sub-structure
+        iA      100;
+
+        //- Density of the sub-structure
+        rho     7000;
+
+        //- Heat capacity of the sub-structure
+        Cp      500;
+
+        //- Can be provided AS AN ALTERNATIVE to providing separate rho and Cp.
+        //  If both rho, Cp and rhoCp are provided by mistake, rho and Cp take
+        //  precedence
+        rhoCp   3500000;
+
+        //- IF provided, for the purpose of the sub-structure temperature
+        //  solution, the volumetric heat capacity of the sub-structure will
+        //  be computed using this value instead of the structure
+        //  volumeFraction defined above. It does not affect fluid mechanics
+        //  per se, that is what the main volumeFraction keyword is for
+        volumeFraction  0.01;
+
+        //- Initial temperature of the sub-structure. This is required ONLY
+        //  if the initial temperature field (i.e. T.passiveStructure) was 
+        //  not found on disk (and, of course, if this subDict exists)
+        T      600;
+    }
+}
+
+*/
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME MAP MODEL ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+//  The only currently avialable mapModels are none and oneParameter. More info
+//  to come soon.
+
+regimeMapModel
+{
+    type                none;
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+//- subDict in which allModels are specified
+physicsModelsByRegime
+{
+    //- Drag models. More info to be added soon. The only aspect that should be
+    //  pointed out right away is that if a particular model is NOT specified
+    //  for a key par (key pairs being e.g. liquid.vapour, liquid.structure,
+    //  cellZone name or group of cellZone names within a fluid.structure
+    //  subDict), the field that is handled by the model (e.g. either the
+    //  drag coefficient or heat transfer coefficient) defaults to 0. 
+    //  This subDict is REQUIRED but IT CAN BE LEFT COMPLETELY EMPTY (e.g.
+    //  dragModels{}). If this is the case, however, the fluid-fluid drag
+    //  will not default to 0, rather, it will default to residualKd, which
+    //  a residual drag coefficients specified in the last section of this
+    //  input, under miscellanea
+    dragModels
+    {
+        "liquid.vapour" 
+        {
+            type "Autruffe";
+        }
+
+        "liquid.structure"
+        {
+            "low:mid:top"   //- Supports compound cellZone names so to
+                            //  avoid copy-pasting subDicts all over!
+            {
+                type Darcy;
+                coeff 0.6;
+                exp   -0.125;
+            }
+        }
+    }
+
+    //- Drag models. More info to be added soon. Same aspects apply as those
+    //  discussed for dragModels. Also this dict supports compound cellZone
+    //  names. This subDict is REQUIRED but IT CAN BE LEFT COMPLETELY EMPTY
+    //  (e.g. heatTransferModels{})
+    heatTransferModels
+    {
+        "liquid.vapour"
+        {
+            type constant;
+            value 10000;
+        }
+
+        "vapour.liquid"
+        {
+            type constant;
+            value 100;
+        }
+
+        "liquid.structure"
+        {
+            "mid"
+            {
+                type    Nusselt;
+                const   7;
+                coeff   1e-2;
+                expRe   0.75;
+                expPr   0.75;
+            }
+
+            //- What about low and top? Well, if they don't appear, the heat
+            //  transfer coeff will be simply set to 0 in those regions!
+        }
+    }
+
+    //- This subDict IS REQUIRED.
+    fluidGeometry
+    {
+        //- One of the two fluids. The dispersed phase affects those drag
+        //  and heatTransfer models that require knowledge of which phase
+        //  is considered dispersed and which one is continuous. Only
+        //  the dispersed one needs to be specified. This entry is REQUIRED
+        dispersed   "vapour";
+
+        //- Model that computes the characteristic dimension of the dispersed
+        //  phase. Currently, only a constant model is available. This subDict
+        //  is REQUIRED.
+        dispersedFluidDiameterModel
+        {
+            type    constant;
+
+            //- Characteristic dimension of the dispersed fluid
+            value   0.01;
+        }
+
+        //- Model that computes the interfacial area density between the two
+        //  fluids. This is required for computing the volumetric heat transfer
+        //  coefficients, (i.e. H[W/m3] = iA[m2/m3]*h[W/m3/K]*deltaTemp[K]).
+        //  This subDict is REQUIRED. More info on available models will be
+        //  added soon
+        fluidInterfacialAreaModel
+        {
+            type        "Schor";
+            alphaName   "vapour";
+            P           0.011;
+            D           0.01;
+        }
+
+        //- Model that computes the fraction of structure interfacial area that
+        //  is contacting fluid1 (and thus the fraction that is contacting
+        //  fluid2). This model basically holds information on which fluid
+        //  is responsible for most of the heat transfer between structure 
+        //  and fluids. Currently, only a constant model is avaialble
+        structureInterfacialAreaPartitionModel
+        {
+            type        "constant";
+            value1      1.0;
+            value2      0;
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- PHASE-CHANGE RELATED ------------------------------------------------ //
+// ------------------------------------------------------------------------- //
+
+//- This subDict is NOT REQUIRED. If not present, phaseChange between fluids
+//  is turned off. Currently available models are heatDriven and 
+//  gasKineticTheory. More Info to be added later
+phaseChangeModel
+{
+    type            "heatDriven";
+    mode            conductionLimited; 
+    
+    //- This model is responsible for setting the interfacial temperature
+    //  between the two phases. Currently only constantTemperature and
+    //  BrowningPotter (a saturation model for sodium) are available.
+    //  More info to be added soon.
+    saturationModel
+    {
+        type        "BrowningPotter";
+    }
+}
+
+
+// ------------------------------------------------------------------------- //
+// --- MISCELLANEA --------------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+//- Minimum allowable pressure
+pMin                    10000;
+
+//- Label of the cell in which the pressure is set to pRefValue ONLY IF there
+//  are no p_rgh boundary conditions of type fixedValue
+pRefCell                0;
+pRefValue               100000;
+
+//- Minimum allowable drag coefficient (in kg/m3/s) between the two fluids.
+//  This is required as phase (momentum) decoupling severly affects convergence
+//  speed and, potentially, stability.
+residualKd              10;
+
+// ************************************************************************* //
