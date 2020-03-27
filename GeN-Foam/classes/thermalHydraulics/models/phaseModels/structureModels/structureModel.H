@@ -141,8 +141,8 @@ protected:
     //- Rotation matrix to move from local to global reference frame
     volTensorField Rl2g_;
 
-    //- IOFields table
-    volScalarFieldPtrTable IOFields_;
+    //- Momentum source
+    autoPtr<volVectorField> momentumSourcePtr_;
 
 public:
 
@@ -288,6 +288,16 @@ public:
             const volTensorField& Rl2g() const
             {
                 return Rl2g_;
+            }
+
+            const autoPtr<volVectorField>& momentumSourcePtr() const
+            {
+                return momentumSourcePtr_;
+            }
+
+            const volVectorField& momentumSource() const
+            {
+                return momentumSourcePtr_();
             }
 };
 

@@ -54,6 +54,12 @@ while (pimple_.correct())
         alphaf*(fvc::flux(HbyA)-phig)
     );
 
+    //- Add possible momentumSource (e.g. pump)
+    if (structure_.momentumSourcePtr().valid())
+    {
+       phiHbyA += alphaf*alpharAUf*fvc::flux(structure_.momentumSource());
+    }
+
     //- Pressure laplacian coefficient
     surfaceScalarField rAUf
     (
@@ -120,10 +126,20 @@ while (pimple_.correct())
 
             U = fvc::reconstruct(MRF_.absolute(phi_))/alpha;
             
+            //- If you want to try to use this again, you need to compute
+            //  phiMS = alpharAUf*fvc::flux(structure_.momentumSource()) but
+            //  careful! You need to check that the momentoumSource exists as
+            //  it'shandled via an autoPtr
             /*
+            surfaceScalarField phiMS
+            (
+                (structure_.momentumSourcePtr().valid()) ?
+                alpharAUf*fvc::flux(structure_.momentumSource()) :
+                phig*0.0
+            );
             U =  
                 HbyA 
-            +   fvc::reconstruct(alpharAUf*pEqnIncomp.flux()/rAUf-phig);
+            +   fvc::reconstruct(alpharAUf*pEqnIncomp.flux()/rAUf-phig+phiMS);
             */
             
             U.correctBoundaryConditions();

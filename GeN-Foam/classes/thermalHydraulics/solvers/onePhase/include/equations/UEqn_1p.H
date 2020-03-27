@@ -4,7 +4,7 @@ const volScalarField& alpha(fluid_);
 volScalarField& rho(fluid_.thermo().rho());
 fvVectorMatrix UEqn(U, dimMass*dimLength/dimTime/dimTime);
 
-//- Drag between fluid and structure
+//- Drag between fluid and structure rotated in global reference frame
 volTensorField Kds
 (
         structure_.Rl2g() 

@@ -49,7 +49,7 @@ if (nFluids == 1)
                 (
                     IOobject::groupName("powerDensity", liquid->name()),
                     fluidMesh.time().timeName(),
-                    fluidMesh.time(),
+                    liquid->db(),
                     IOobject::READ_IF_PRESENT,
                     IOobject::AUTO_WRITE
                 ),

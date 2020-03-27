@@ -79,42 +79,49 @@ if (!experimentalPartialElimination_)
             )
         );
 
-        //- Construct fluxes due to buoyancy/gravity effects
+        //- Construct fluxes due to explicit terms namely buoyancy/gravity 
+        //  and the momentum source, if present
         surfaceScalarField ghSnGradRho
         (
             "ghSnGradRho",
             ghf_*fvc::snGrad(rho_)*mesh_.magSf()
         );
         surfaceScalarField deltaRhof12(fvc::interpolate(rho1 - rho2));
-        surfaceScalarField phig1
+        surfaceScalarField phis1
         (
             alpharAUf1*
             (
-               ghSnGradRho
+                ghSnGradRho
             -   alphaf2*deltaRhof12*(g_ & mesh_.Sf())
             )
         );
-        surfaceScalarField phig2
+        surfaceScalarField phis2
         (
             alpharAUf2*
             (
-               ghSnGradRho
+                ghSnGradRho
             +   alphaf1*deltaRhof12*(g_ & mesh_.Sf())
             )
         );
+        if (structure_.momentumSourcePtr().valid())
+        {
+            surfaceScalarField fluxMS(fvc::flux(structure_.momentumSource()));
+            phis1 -= alpharAUf1*fluxMS;
+            phis2 -= alpharAUf2*fluxMS;
+        }
 
         //- Construct phase fluxes
         surfaceScalarField phiHbyA1
         (
             "phiHbyA."+fluid1_.name(),
             fvc::flux(HbyA1)
-        -   phig1
+        -   phis1
         );
         surfaceScalarField phiHbyA2
         (
             "phiHbyA."+fluid2_.name(),
             fvc::flux(HbyA2)
-        -   phig2
+        -   phis2
         );
 
         //- Kd12/A1, Kd12/A2
@@ -238,9 +245,9 @@ if (!experimentalPartialElimination_)
                 mSfGradp = pEqnIncomp.flux()/rAUf;
 
                 volVectorField Us1 = 
-                    HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phig1);
+                    HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phis1);
                 volVectorField Us2 = 
-                    HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phig2);
+                    HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phis2);
 
                 if (partialElimination_)
                 {
@@ -263,7 +270,6 @@ if (!experimentalPartialElimination_)
                     U1 = Us1;
                     U2 = Us2;
                 }
-
                 U1.correctBoundaryConditions();
                 fvOptions_.correct(U1);
                 fluid1_.magU() = mag(U1);
@@ -380,14 +386,16 @@ else    //- i.e. if doing experimentalPartialElimination
             )
         );
             
-        //- Construct fluxes due to buoyancy/gravity effects
+        //- Construct fluxes due to explicit source terms, namely 
+        //  buoyancy/gravity effects and the momentum source, if it
+        //  exists
         surfaceScalarField ghSnGradRho
         (
             "ghSnGradRho",
             ghf_*fvc::snGrad(rho_)*mesh_.magSf()
         );
         surfaceScalarField deltaRhof12(fvc::interpolate(rho1 - rho2));
-        surfaceScalarField gSource1
+        surfaceScalarField source1
         (
             alphaf1*
             (
@@ -396,7 +404,7 @@ else    //- i.e. if doing experimentalPartialElimination
                 deltaRhof12*(g_ & mesh_.Sf())
             )
         );
-        surfaceScalarField gSource2
+        surfaceScalarField source2
         (
             alphaf2*
             (
@@ -405,20 +413,26 @@ else    //- i.e. if doing experimentalPartialElimination
             -   deltaRhof12*(g_ & mesh_.Sf())
             )
         );
-        surfaceScalarField phig1
+        if (structure_.momentumSourcePtr().valid())
+        {
+            surfaceScalarField fluxMS(fvc::flux(structure_.momentumSource()));
+            source1 -= alphaf1*fluxMS;
+            source2 -= alphaf2*fluxMS;
+        }
+        surfaceScalarField phis1
         (
             fvc::interpolate(rAU1)*
             (
-                gSource1
-            +   fvc::interpolate(Kd12/A2)*gSource2
+                source1
+            +   fvc::interpolate(Kd12/A2)*source2
             )
         ); 
-        surfaceScalarField phig2
+        surfaceScalarField phis2
         (
             fvc::interpolate(rAU2)*
             (
-                gSource2
-            +   fvc::interpolate(Kd12/A1)*gSource1
+                source2
+            +   fvc::interpolate(Kd12/A1)*source1
             )
         );
 
@@ -427,13 +441,13 @@ else    //- i.e. if doing experimentalPartialElimination
         (
             "phiHbyA."+fluid1_.name(),
             fvc::flux(HbyA1)
-        -   phig1
+        -   phis1
         );
         surfaceScalarField phiHbyA2
         (
             "phiHbyA."+fluid2_.name(),
             fvc::flux(HbyA2)
-        -   phig2
+        -   phis2
         );
         
         //- Construct the mean mixture flux
@@ -525,8 +539,8 @@ else    //- i.e. if doing experimentalPartialElimination
 
                 mSfGradp = pEqnIncomp.flux()/rAUf;
 
-                U1 = HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phig1);
-                U2 = HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phig2);
+                U1 = HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phis1);
+                U2 = HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phis2);
 
                 U1.correctBoundaryConditions();
                 fvOptions_.correct(U1);

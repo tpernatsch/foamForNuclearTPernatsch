@@ -87,31 +87,37 @@ if(!experimentalPartialElimination_)
         MRF_.correctBoundaryFlux(U1, phi1);
         MRF_.correctBoundaryFlux(U2, phi2);
 
-        //- Compute buoyancy fluxes
+        //- Compute fluxes due to explicit source terms, namely buoyancy and
+        //  momentumSources, if any
         surfaceScalarField ghSnGradRho
         (
             "ghSnGradRho",
             ghf_*fvc::snGrad(rho_)*mesh_.magSf()
         );
-        surfaceScalarField phig1
+        surfaceScalarField phis1
         (
-            "phig."+fluid1_.name(),
+            "phis."+fluid1_.name(),
             alpharAUf1*
             (
                 ghSnGradRho
             -   alphaf2*deltaRhof12*(g_ & mesh_.Sf())
             )
         );
-        surfaceScalarField phig2
+        surfaceScalarField phis2
         (
-            "phig."+fluid2_.name(),
+            "phis."+fluid2_.name(),
             alpharAUf2*
             (
                 ghSnGradRho
             +   alphaf1*deltaRhof12*(g_ & mesh_.Sf())
             )
         );
-
+        if (structure_.momentumSourcePtr().valid())
+        {
+            surfaceScalarField fluxMS(fvc::flux(structure_.momentumSource()));
+            phis1 -= alpharAUf1*fluxMS;
+            phis2 -= alpharAUf2*fluxMS;
+        }
         //- Predicted fluxes
         surfaceScalarField phiHbyA1
         (
@@ -121,7 +127,7 @@ if(!experimentalPartialElimination_)
                 alphaRhof10byDt*MRF_.absolute(phi1.oldTime())
             +   fvc::flux(UEqn1.H())
             )
-            -   phig1
+            -   phis1
         );
         surfaceScalarField phiHbyA2
         (
@@ -131,7 +137,7 @@ if(!experimentalPartialElimination_)
                 alphaRhof20byDt*MRF_.absolute(phi2.oldTime())
             +   fvc::flux(UEqn2.H())
             )
-            -   phig2
+            -   phis2
         );
 
         if (!partialElimination_)
@@ -246,8 +252,6 @@ if(!experimentalPartialElimination_)
                 fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
                 
                 p_rgh_.relax();
-
-                mSfGradp = pEqnIncomp.flux()/rAUf;
 
                 //- The ifs are just to avoid useless field reconstructions
                 //  for integer values of the oscillationLimiterFraction
@@ -425,6 +429,12 @@ else //- i.e. if doing experimentalPartialElimination
             //- Explicit part of time derivative
             +   alphaRhof20byDt*MRF_.absolute(phi2.oldTime())
         );
+        if (structure_.momentumSourcePtr().valid())
+        {
+            surfaceScalarField fluxMS(fvc::flux(structure_.momentumSource()));
+            source1 += alphaf1*fluxMS;
+            source2 += alphaf2*fluxMS;
+        }
         surfaceScalarField phiSource1
         (
             rAUf1*

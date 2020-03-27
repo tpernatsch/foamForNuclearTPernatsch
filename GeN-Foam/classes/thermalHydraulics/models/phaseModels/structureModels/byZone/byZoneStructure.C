@@ -120,6 +120,44 @@ Foam::structureModels::byZone::byZone
                 zoneAlphaField
             );
 
+            //- Read momentum source
+            if (zoneDict.found("momentumSource"))
+            {
+                if (!momentumSourcePtr_.valid())
+                {
+                    momentumSourcePtr_.reset
+                    (
+                        new volVectorField
+                        (
+                            IOobject
+                            (
+                                "momentumSource",
+                                mesh_.time().timeName(),
+                                mesh_
+                            ),
+                            mesh_,
+                            dimensionedVector
+                            (
+                                "momentumSource", 
+                                dimDensity*dimVelocity/dimTime, 
+                                vector::zero
+                            ),
+                            zeroGradientFvPatchVectorField::typeName
+                        )
+                    );
+                }
+
+                vector uSource(zoneDict.get<vector>("momentumSource"));
+
+                forAll(zoneCellList, j)
+                {
+                    momentumSourcePtr_()[zoneCellList[j]] = uSource;
+                }
+
+                //- BCs set outside dict loop, no need to do it multiple
+                //  times
+            }
+
             //- Set passive properties fields if keywords present
             if (zoneDict.isDict("passiveProperties"))
             {
@@ -222,10 +260,10 @@ Foam::structureModels::byZone::byZone
 
             //- The basis change matrix is the transfromation to move from
             //  the local reference frame to the global one. It is constructed
-            //  by simply arraging the local basis vectors (expressed in global
-            //  reference frame coordinates) in columns. Since these are 
+            //  by simply arranging the local basis vectors (expressed in 
+            //  global reference frame coordinates) in columns. Since these are 
             //  orthonormal, the matrix is orthonormal and its inverse is equal
-            //  to its transpose. This, the transformation matrix to move from
+            //  to its transpose. Thus, the transformation matrix to move from
             //  the global to the local frame is the transpose of the one to
             //  move from the local to the global frame
             tensor Rl2g
@@ -305,6 +343,10 @@ Foam::structureModels::byZone::byZone
     Rg2l_.correctBoundaryConditions();
     lDh_.correctBoundaryConditions();
     tortuosity_.correctBoundaryConditions();
+    if (momentumSourcePtr_.valid())
+    {
+        momentumSourcePtr_().correctBoundaryConditions();
+    }
 
     //- Multiply rhoCppas by alphapas to get actual volumetric heat capacity
     //  of the passive subStructure, limit to avoid 0 matrix coefficients when
