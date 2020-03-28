@@ -236,9 +236,38 @@ Foam::structureModels::byZone::byZone
                     }
                 }
             }
-        
+
             //- Now for the rotation matrices to move from the global to the
             //  local reference frame
+
+            //- Lambda function to rotate a vector around an axis by a certain
+            //  angle in radians, counter-clockwise
+            auto rotateCCWAroundAxisByAngle = []
+            (
+                vector& v,
+                const vector& axis,
+                scalar angle
+            )
+            {
+                scalar c(Foam::cos(angle));
+                scalar s(Foam::sin(angle));
+                scalar x(axis[0]);
+                scalar y(axis[1]);
+                scalar z(axis[2]);
+                tensor R
+                (
+                    c+sqr(x)*(1-c),     x*y*(1-c)-z*s,      x*z*(1-c)+y*s,
+
+                    y*x*(1-c)+z*s,      c+sqr(y)*(1-c),     y*z*(1-c)-x*s,
+
+                    z*x*(1-c)-y*s,      z*y*(1-c)+x*s,      c+sqr(z)*(1-c)
+
+                );
+                v = R & v;
+            };
+
+            bool foundLocalX(zoneDict.found("localX"));
+            bool foundLocalZ(zoneDict.found("localZ"));
             vector localX
             (
                 zoneDict.lookupOrDefault<vector>("localX", vector(1,0,0))
@@ -249,12 +278,43 @@ Foam::structureModels::byZone::byZone
                 zoneDict.lookupOrDefault<vector>("localZ", vector(0,0,1))
             );
             localZ /= mag(localZ);
-            //- Absorb non-orthogonalities in X
-            localX -= (localX&localZ)*localZ/mag(localZ);
-            localX /= mag(localX);
+            //- Non orthogonality absorption
+            if (foundLocalX and !foundLocalZ)
+            {
+                //- Absorb non-orthogonalities in Z
+                localZ -= (localX&localZ)*localX/mag(localX);
+                localZ /= mag(localZ);
+            }
+            else if (!foundLocalX and foundLocalZ)
+            {
+                //- Absorb non-orthogonalities in X
+                localX -= (localX&localZ)*localZ/mag(localZ);
+                localX /= mag(localX);
+            }
+            else
+            {
+                //- Split non-orthogonalities equally among X and Z by 
+                //  rotating them in the plane they lie in by an angle
+                //  computeted so that, after the rotation, they will be
+                //  orthogonal
+                scalar deltaTheta
+                (
+                    (
+                        constant::mathematical::pi/2.0
+                    -   Foam::acos(localX&localZ)
+                    )/2.0
+                );
+                vector axis(localX ^ localZ);
+                axis /= mag(axis);
+                rotateCCWAroundAxisByAngle(localX, axis, -deltaTheta);
+                rotateCCWAroundAxisByAngle(localZ, axis, deltaTheta);
+            }
+            
             //- Compute third axis
             vector localY(localZ ^ localX);
             localY /= mag(localY);
+
+            Info << localX << " " << localY << " " << localZ << endl;
 
             //- Construct transformation matrices
 
@@ -318,11 +378,14 @@ Foam::structureModels::byZone::byZone
             lTortuosity[0] = lTortuosityVector[0];
             lTortuosity[4] = lTortuosityVector[1];
             lTortuosity[8] = lTortuosityVector[2];
+            tensor tortuosity = Rl2g & lTortuosity & Rg2l;
+
+            Info << tortuosity << endl;
+
             forAll(zoneCellList, j)
             {
                 label cellj(zoneCellList[j]);
-                tortuosity_[cellj] = 
-                    Rl2g & lTortuosity & Rl2g.T();
+                tortuosity_[cellj] = tortuosity;
             }
         }
     }

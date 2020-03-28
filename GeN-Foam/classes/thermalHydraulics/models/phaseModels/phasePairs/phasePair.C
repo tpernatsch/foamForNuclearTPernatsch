@@ -57,7 +57,14 @@ Foam::phasePair::phasePair
     name1_(name1),
     name2_(name2)
 {
-    Info << endl << "Constructing pair: " << this->name() << endl;
+    if (name1_ != "")
+    {
+        Info << endl << "Constructing pair: " << this->name() << endl;
+    }
+    else
+    {
+        Info << endl << "Constructing phasePair" << endl;
+    }
 }
 
 

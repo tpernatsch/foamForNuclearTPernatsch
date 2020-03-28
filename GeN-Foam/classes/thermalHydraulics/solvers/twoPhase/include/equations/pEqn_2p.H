@@ -1,8 +1,3 @@
-/*
-    PLEASE NOTE THAT partialElimination_ AND experimentalPartialEliminiation_
-    ARE MUTUALLY EXCLUSIVE!
-*/
-
 surfaceScalarField& phi1(fluid1_.phi());
 surfaceScalarField& phi2(fluid2_.phi());
 dimensionedScalar residualAlpha1(fluid1_.residualAlpha());
@@ -11,7 +6,20 @@ surfaceScalarField alphaf1(fvc::interpolate(alpha1));
 surfaceScalarField alphaf2(fvc::interpolate(alpha2));
 surfaceScalarField movingAlphaf(fvc::interpolate(movingAlpha_));
 
-if (!experimentalPartialElimination_)
+bool noPartialElimination
+(
+    partialEliminationMode_ == partialEliminationMode::none
+);
+bool explicitPartialElimination
+(
+    partialEliminationMode_ == partialEliminationMode::legacy
+);
+bool implicitPartialElimination
+(
+    partialEliminationMode_ == partialEliminationMode::implicit
+);
+
+if (!implicitPartialElimination)
 {
     //- Construct 1/A fields and limit to avoid problems for alpha = 0
     volScalarField rAU1
@@ -38,11 +46,11 @@ if (!experimentalPartialElimination_)
     //- Interpolate 1/A to faces and limit
     surfaceScalarField alpharAUf1
     (
-        fvc::interpolate(max(alpha1, residualAlpha1)*rAU1)
+        fvc::interpolate(alpha1*rAU1)
     );
     surfaceScalarField alpharAUf2
     (
-        fvc::interpolate(max(alpha2, residualAlpha2)*rAU2)
+        fvc::interpolate(alpha2*rAU2)
     );
 
     // --- Pressure corrector loop
@@ -132,7 +140,7 @@ if (!experimentalPartialElimination_)
 
         //- Add back explicit interphase drag contributions if not doing
         //  partial elimination
-        if (!partialElimination_)
+        if (noPartialElimination)
         {
             HbyA1 += rAUKd1*U2;
             HbyA2 += rAUKd2*U1;
@@ -147,7 +155,7 @@ if (!experimentalPartialElimination_)
             alphaf1*phiHbyA1
         +   alphaf2*phiHbyA2
         );
-        if (partialElimination_)
+        if (explicitPartialElimination)
         {
             phiHbyA += 
                 alphaf1*rAUKdf1*MRF_.absolute(phi2)
@@ -225,7 +233,7 @@ if (!experimentalPartialElimination_)
                 phi1 = phiHbyA1 + alpharAUf1*mSfGradp;
                 phi2 = phiHbyA2 + alpharAUf2*mSfGradp;
 
-                if (partialElimination_)
+                if (explicitPartialElimination)
                 {
                     surfaceScalarField phir
                     (
@@ -240,36 +248,46 @@ if (!experimentalPartialElimination_)
                 fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
                 fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
 
-                p_rgh_.relax();
-
-                mSfGradp = pEqnIncomp.flux()/rAUf;
-
-                volVectorField Us1 = 
-                    HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phis1);
-                volVectorField Us2 = 
-                    HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phis2);
-
-                if (partialElimination_)
+                if (momentumMode_ == momentumMode::cellCentered)
                 {
-                    volVectorField U
-                    (
-                        alpha1*(Us1 + rAUKd1*U2) + alpha2*(Us2 + rAUKd2*U1)
-                    );
+                    p_rgh_.relax();
 
-                    volVectorField Ur
-                    (
-                        ((1 - rAUKd2)*Us1 - (1 - rAUKd1)*Us2)/
-                        (1 - rAUKd1*rAUKd2)
-                    );
+                    mSfGradp = pEqnIncomp.flux()/rAUf;
 
-                    U1 = (U + alpha2*Ur)/movingAlpha_;
-                    U2 = (U - alpha1*Ur)/movingAlpha_;
+                    volVectorField Us1 = 
+                        HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phis1);
+                    volVectorField Us2 = 
+                        HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phis2);
+
+                    if (explicitPartialElimination)
+                    {
+                        volVectorField U
+                        (
+                            alpha1*(Us1 + rAUKd1*U2) + alpha2*(Us2 + rAUKd2*U1)
+                        );
+
+                        volVectorField Ur
+                        (
+                            ((1 - rAUKd2)*Us1 - (1 - rAUKd1)*Us2)/
+                            (1 - rAUKd1*rAUKd2)
+                        );
+
+                        U1 = (U + alpha2*Ur)/movingAlpha_;
+                        U2 = (U - alpha1*Ur)/movingAlpha_;
+                    }
+                    else
+                    {
+                        U1 = Us1;
+                        U2 = Us2;
+                    }
                 }
-                else
+                else    //- momentumMode_ == 
+                        //  momentumMode::cellCenteredFaceReconstruction
                 {
-                    U1 = Us1;
-                    U2 = Us2;
+                    U1 = fvc::reconstruct(MRF_.absolute(phi1));
+                    U2 = fvc::reconstruct(MRF_.absolute(phi2));
                 }
+                
                 U1.correctBoundaryConditions();
                 fvOptions_.correct(U1);
                 fluid1_.magU() = mag(U1);
@@ -300,7 +318,7 @@ if (!experimentalPartialElimination_)
         p_rgh_.correctBoundaryConditions();
     }
 }
-else    //- i.e. if doing experimentalPartialElimination
+else    //- i.e. if doing implicitPartialElimination
 {
     volScalarField A1
     (
@@ -535,13 +553,22 @@ else    //- i.e. if doing experimentalPartialElimination
                 fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
                 fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
 
-                p_rgh_.relax();
+                if (momentumMode_ == momentumMode::cellCentered)
+                {
+                    p_rgh_.relax();
 
-                mSfGradp = pEqnIncomp.flux()/rAUf;
+                    mSfGradp = pEqnIncomp.flux()/rAUf;
 
-                U1 = HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phis1);
-                U2 = HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phis2);
-
+                    U1 = HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phis1);
+                    U2 = HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phis2);
+                }
+                else    //- momentumMode_ == 
+                        //  momentumMode::cellCenteredFaceReconstruction
+                {
+                    U1 = fvc::reconstruct(MRF_.absolute(phi1));
+                    U2 = fvc::reconstruct(MRF_.absolute(phi2));
+                }
+                
                 U1.correctBoundaryConditions();
                 fvOptions_.correct(U1);
                 fluid1_.magU() = mag(U1);

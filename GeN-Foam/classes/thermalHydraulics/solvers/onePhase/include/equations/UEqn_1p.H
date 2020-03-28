@@ -32,8 +32,7 @@ fluid_.turbulence().correct();
 
     UEqn =
     (
-            fvm::ddt(alpha, rho, U)
-        +   fvm::div(fluid_.alphaRhoPhi(), U, "div(alphaRhoPhi,U)")
+            fvm::div(fluid_.alphaRhoPhi(), U, "div(alphaRhoPhi,U)")
         -   fvm::Sp(fluid_.contErr(), U)
         +   MRF_.DDt(alpha*rho, U)
             //- The following is just a re-arrangement of div(nu*grad(U))
@@ -51,6 +50,11 @@ fluid_.turbulence().correct();
         ==
             fvOptions_(alpha, rho, U)
     );
+
+    if (momentumMode_ != momentumMode::faceCentered)
+    {
+        UEqn += fvm::ddt(alpha, rho, U);
+    }
 
     UEqn.relax();
     fvOptions_.constrain(UEqn);

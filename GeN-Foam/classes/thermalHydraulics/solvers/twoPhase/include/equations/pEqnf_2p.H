@@ -6,6 +6,19 @@ surfaceScalarField alphaf1(fvc::interpolate(alpha1));
 surfaceScalarField alphaf2(fvc::interpolate(alpha2));
 surfaceScalarField movingAlphaf(fvc::interpolate(movingAlpha_));
 
+bool noPartialElimination
+(
+    partialEliminationMode_ == partialEliminationMode::none
+);
+bool explicitPartialElimination
+(
+    partialEliminationMode_ == partialEliminationMode::legacy
+);
+bool implicitPartialElimination
+(
+    partialEliminationMode_ == partialEliminationMode::implicit
+);
+
 //- The faceMomentum algorithm relies on manually adding the time derivative
 //  to the pressure equation, so that it can be defined on the faces (i.e.
 //  deal with it in terms of fluxes). Thus, the time derivative coefficients
@@ -37,7 +50,7 @@ surfaceScalarField alphaRhof20byDt
 
 surfaceScalarField Kdf12(fvc::interpolate(Kd12));
 
-if(!experimentalPartialElimination_)
+if(!implicitPartialElimination)
 {
     //- Construct 1/A fields and limit to avoid problems for alpha = 0
     surfaceScalarField rAUf1
@@ -140,7 +153,7 @@ if(!experimentalPartialElimination_)
             -   phis2
         );
 
-        if (!partialElimination_)
+        if (noPartialElimination)
         {
             phiHbyA1 += rAUf1*Kdf12*MRF_.absolute(phi2);
             phiHbyA2 += rAUf2*Kdf12*MRF_.absolute(phi1);
@@ -154,7 +167,7 @@ if(!experimentalPartialElimination_)
         +   alphaf2*phiHbyA2
         );
 
-        if (partialElimination_)
+        if (explicitPartialElimination)
         {
             phiHbyA += 
                 alphaf1*rAUf1*Kdf12*MRF_.absolute(phi2)
@@ -234,7 +247,7 @@ if(!experimentalPartialElimination_)
                 phi1 = phiHbyA1 + alpharAUf1*mSfGradp;
                 phi2 = phiHbyA2 + alpharAUf2*mSfGradp;
 
-                if (partialElimination_)
+                if (explicitPartialElimination)
                 {
                     surfaceScalarField phir
                     (
@@ -331,7 +344,7 @@ if(!experimentalPartialElimination_)
         p_rgh_.correctBoundaryConditions();
     }
 }
-else //- i.e. if doing experimentalPartialElimination
+else //- i.e. if doing implicitPartialElimination
 {
     //- Diagonal coefficients with time derivative contribution
     surfaceScalarField Af1

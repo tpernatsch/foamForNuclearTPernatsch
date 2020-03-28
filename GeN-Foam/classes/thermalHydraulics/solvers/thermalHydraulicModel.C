@@ -34,6 +34,27 @@ namespace Foam
     defineRunTimeSelectionTable(thermalHydraulicModel, thermalHydraulicModels);
 }
 
+const Foam::Enum
+<
+    Foam::thermalHydraulicModel::momentumMode
+>
+Foam::thermalHydraulicModel::momentumModeNames_
+(
+    {
+        { 
+            momentumMode::cellCentered, 
+            "cellCentered" 
+        },
+        { 
+            momentumMode::cellCenteredFaceReconstruction, 
+            "cellCenteredFaceReconstruction" 
+        },
+        { 
+            momentumMode::faceCentered, 
+            "faceCentered" 
+        }
+    }
+);
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
@@ -156,7 +177,18 @@ Foam::thermalHydraulicModel::thermalHydraulicModel
         mesh,
         dimensionedScalar("dpdt", p_.dimensions()/dimTime, 0)
     ),
-    initialFluidMass_("initialFluidMass", dimMass, 0)
+    initialFluidMass_("initialFluidMass", dimMass, 0),
+    momentumMode_
+    (
+        momentumModeNames_.get
+        (
+            pimple_.dict().lookupOrDefault<word>
+            (
+                "momentumMode", 
+                "cellCentered"
+            )
+        )
+    )
 {
     setRefCell
     (

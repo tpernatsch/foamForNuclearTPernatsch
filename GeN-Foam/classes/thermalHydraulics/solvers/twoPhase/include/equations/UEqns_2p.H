@@ -125,7 +125,7 @@ fluid2_.turbulence().correct();
 
     //- The time derivative is manually added to the pressure equation
     //  contribution if doing faceMomentum. Otherwise, do it here
-    if (!faceMomentum_) 
+    if (momentumMode_ != momentumMode::faceCentered) 
     {
         UEqn1 += fvm::ddt(alpha1, rho1, U1);
         UEqn2 += fvm::ddt(alpha2, rho2, U2);

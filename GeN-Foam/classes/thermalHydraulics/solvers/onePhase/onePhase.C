@@ -93,18 +93,6 @@ Foam::thermalHydraulicModels::onePhase::onePhase
             this->subDict("regimeMapModel"),
             this->subDict("physicsModelsByRegime")
         )
-    ),
-    faceMomentum_
-    (
-        pimple.dict().lookupOrDefault<Switch>("faceMomentum", false)
-    ),
-    oscillationLimiterFraction_
-    (
-        pimple.dict().lookupOrDefault<scalar>
-        (
-            "oscillationLimiterFraction", 
-            0.0
-        )
     )
 {
     //- Create turbulence model
@@ -236,7 +224,14 @@ void Foam::thermalHydraulicModels::onePhase::correctFluidMechanics
 )
 {
     #include "UEqn_1p.H"
-    #include "pEqn_1p.H"
+    if (momentumMode_ == momentumMode::faceCentered)
+    {
+        #include "pEqnf_1p.H"
+    }
+    else
+    {
+        #include "pEqn_1p.H"
+    }
 }
 
 void Foam::thermalHydraulicModels::onePhase::correctEnergy(scalar& residual)

@@ -90,32 +90,55 @@ PIMPLE
     nCorrectors      3;
     nNonOrthogonalCorrectors 0;
 
-    //- PartialElimination improves convergence if the drag coefficient
+    //- The following feature applies only to the twoPhase solver and is
+    //  compatible with all momentumModes (see below)
+    //- Partial elimination improves convergence if the drag coefficient
     //  between the two fluid phases is sufficiently high. It never hurts
-    //  to use it. 
-    //  The partialElimination flag enables the partialElimination algorithm
-    //  as seen in e.g. twoPhaseEulerFoam. The experimentalPartialElimination
-    //  algorithm improves enables a different algorithm developed by authors
-    //  which appreciably improves convergence rate. The two algorithms are
-    //  mutually exlusive
-    partialElimination  false;
-    experimentalPartialElimination true;
+    //  to use it. The possibe modes of this keyword are:
+    //  -   none, no partial elimination;
+    //  -   explicit, explicit adjustement based on partial elimination,
+    //      this is what is found on currently available multiphase solvers
+    //  -   implicit, "true" partial elimination. This was recently implemented
+    //      by the authors. It grants significantly faster convergence rates
+    //      at the cost of less linear solver pressure iterations when compared
+    //      to the explicit variant
+    partialEliminationMode      implicit;
 
-    //- If true, the time derivative term in the momentum equations is not
-    //  evaulated on the cell centers yet at cell faces. This reduces the
-    //  likelyhood of phaseFraction oscillations, and smears out the 
-    //  infamous velocity oscillations at porous body interfaces characterized
-    //  by porosity discontinuities (yet does not remove them) Feature 
-    //  implemented from multiphaseReactingEulerFoam. The time derivative is
-    //  hardcoded to forward Euler
-    faceMomentum        true;
+    //- The following feature applies to both the onePhase and twoPhase solvers
+    //  and defaults to cellCentered. It has an effect with all 
+    //  partialEliminationModes
+    //- This option controls how the pressure equation fluxes due to 
+    //  momentum equation terms are computed. The possible modes are:
+    //  -   cellCentered, the traditional OpenFOAM way. This algorithm is
+    //      know, however, to induce velocity oscillations in the main flow
+    //      direction across porous body interfaces (i.e. sharp porosity 
+    //      changes);
+    //  -   faceCentered, an experimental algorithm implemented from
+    //      some multiphase solvers (e.g. reactingMultiphaseEulerFoam), with 
+    //      minor improvements. All the terms that end in the pressure equation
+    //      are evaulated at the faces and the velocity is reconstructed from
+    //      the fluxes. The time derivative is hard-coded to Euler forward.
+    //      This algorithm appears to be marginally more diffusive than the
+    //      cellCentered one, yet it grants significant advantages in terms
+    //      of velocity oscillation reduction (completely in onePhase,
+    //      partially or completely in twoPhase depending on the 
+    //      oscillationLimiterFraction) and enhanced phase coupling. Currently
+    //      recommended for most applications;
+    //  -   cellCenteredFaceReconstruction, a blending of the cellCentered
+    //      equation construction method and the faceCentered velocity 
+    //      reconstruction method. Mostly for testing purposed, its use is
+    //      currently highly discouraged and the implementation is not yet
+    //      verified;
+    momentumMode                faceCentered;
 
+    //- The following feature only has an effect in the twoPhase solver and 
+    //  only when using the faceCentered momentum algorithm.
     //- Experimental feature by the authors. This coefficient blends two
     //  different ways of reconstructing the velocity field after the pressure
     //  equation solution. If set to 1, the velocity is reconstructed so to
     //  take into account differences between cell-center porosities and 
     //  face porosities, so that the resulting velocity field is completely
-    //  free of both oscillations (if not using faceMomentum) or smearing 
+    //  free of both oscillations (if not using faceCentered) or smearing 
     //  (if using face momentum) at porous interfaces. If set to 0, it 
     //  does nothing. If set in between, it blends the two velocity solutions
     //  together, reducing oscillations/smearing but eliminating them. The

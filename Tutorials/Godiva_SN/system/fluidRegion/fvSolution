@@ -89,43 +89,8 @@ PIMPLE
 {
     nCorrectors      3;
     nNonOrthogonalCorrectors 0;
-
-    //- PartialElimination improves convergence if the drag coefficient
-    //  between the two fluid phases is sufficiently high. It never hurts
-    //  to use it. 
-    //  The partialElimination flag enables the partialElimination algorithm
-    //  as seen in e.g. twoPhaseEulerFoam. The experimentalPartialElimination
-    //  algorithm improves enables a different algorithm developed by authors
-    //  which appreciably improves convergence rate. The two algorithms are
-    //  mutually exlusive
-    partialElimination  false;
-    experimentalPartialElimination true;
-
-    //- If true, the time derivative term in the momentum equations is not
-    //  evaulated on the cell centers yet at cell faces. This reduces the
-    //  likelyhood of phaseFraction oscillations, and smears out the 
-    //  infamous velocity oscillations at porous body interfaces characterized
-    //  by porosity discontinuities (yet does not remove them) Feature 
-    //  implemented from multiphaseReactingEulerFoam. The time derivative is
-    //  hardcoded to forward Euler
-    faceMomentum        true;
-
-    //- Experimental feature by the authors. This coefficient blends two
-    //  different ways of reconstructing the velocity field after the pressure
-    //  equation solution. If set to 1, the velocity is reconstructed so to
-    //  take into account differences between cell-center porosities and 
-    //  face porosities, so that the resulting velocity field is completely
-    //  free of both oscillations (if not using faceMomentum) or smearing 
-    //  (if using face momentum) at porous interfaces. If set to 0, it 
-    //  does nothing. If set in between, it blends the two velocity solutions
-    //  together, reducing oscillations/smearing but eliminating them. The
-    //  issue with always having this set to 1 is that it was noticed that
-    //  while oscillations along the main flow direction were eliminated, in
-    //  certain circumstances (e.g. changes in fluid-structure drag coeff) it
-    //  could acutally lead to velocity oscillations in the plane perpendicular
-    //  to the main flow direction. Fairly ironic. Experiment for yourself and
-    //  see what works
-    oscillationLimiterFraction 0;
+    //- partialEliminationMode      implicit;
+    momentumMode                faceCentered;
 }
 
 relaxationFactors

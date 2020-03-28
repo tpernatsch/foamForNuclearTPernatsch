@@ -100,7 +100,7 @@ physicsModelsByRegime
                 "low:mid:top"
                 {
                     type    constant;
-                    value   10000;
+                    value   1000;
                 }
             }
         }
@@ -148,7 +148,7 @@ physicsModelsByRegime
                 "low:mid:top"
                 {
                     type    constant;
-                    value   30000;
+                    value   3000;
                 }
             }
         }

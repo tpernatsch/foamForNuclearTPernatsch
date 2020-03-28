@@ -83,6 +83,17 @@ class thermalHydraulicModel
 :
     public IOdictionary
 {
+public :
+
+    enum momentumMode
+    {
+        cellCentered, 
+        cellCenteredFaceReconstruction,
+        faceCentered
+    };
+
+    static const Enum<momentumMode> momentumModeNames_;
+
 protected:
 
     Time& runTime_;
@@ -127,6 +138,9 @@ protected:
 
     //- Mean Courant number
     scalar meanCoNum_;
+
+    //- Pressure solution options
+    const momentumMode momentumMode_;
 
 public:
 

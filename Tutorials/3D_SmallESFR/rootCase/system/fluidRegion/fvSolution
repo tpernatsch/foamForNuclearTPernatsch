@@ -62,6 +62,8 @@ PIMPLE
 {
     nCorrectors      2;
     nNonOrthogonalCorrectors 0;
+    //- partialEliminationMode      implicit;
+    momentumMode                faceCentered;
 }
 
 relaxationFactors

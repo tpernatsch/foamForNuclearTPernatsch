@@ -62,6 +62,17 @@ class twoPhase
 :
     public thermalHydraulicModel
 {
+public :
+
+    enum partialEliminationMode
+    {
+        none, 
+        legacy,
+        implicit
+    };
+
+    static const Enum<partialEliminationMode> partialEliminationModeNames_;
+
 private:
 
     //- Phases
@@ -165,14 +176,8 @@ private:
 
     //- Solution control
 
-        //- Partial elimination flag
-        const Switch partialElimination_;
-
-        //- An alternative partial elimination algorithm, experimental
-        const Switch experimentalPartialElimination_;
-
-        //- Face momentum flag
-        const Switch faceMomentum_;
+        //- partialElimination mode
+        const partialEliminationMode partialEliminationMode_;
 
         //- Feature that removes velocity oscillations and/or smearing in the 
         //  main flow direction. However, if dealing with structures that have

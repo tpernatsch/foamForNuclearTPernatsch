@@ -102,26 +102,6 @@ private:
         //- Regime map
         autoPtr<regimeMapModel> regimeMap_;
 
-    //- Solution control
-
-        //- Face momentum flag
-        const Switch faceMomentum_;
-
-        //- Feature that removes velocity oscillations and/or smearing in the 
-        //  main flow direction. However, if dealing with structures that have
-        //  large porosity gradiens (i.e. > 0.5 between consecutive cells) or
-        //  large gradients in the structure drag tensor, this feature may
-        //  actually induce velocity oscillations in the directions 
-        //  perpendicular to the main flow directions (nedless to say, not in 
-        //  1D). Only applicable to the face-momentum based algorithm.
-        //  This factor weights the "traditional" faceMomentum velocity 
-        //  reconstruction (the one which always causes smearing/oscillations)
-        //  in the main flow direction) with a moving phase fraction-adjusted 
-        //  velocity reconstruction (which may induced the aforementioned
-        //  transversal oscillations). If set to 0, it is a pure "traditional"
-        //  faceMomentum.
-        const scalar oscillationLimiterFraction_;
-
 public:
 
     TypeName("onePhase");

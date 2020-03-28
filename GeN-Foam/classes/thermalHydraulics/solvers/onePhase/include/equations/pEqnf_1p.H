@@ -1,27 +1,44 @@
 surfaceScalarField alphaf(fvc::interpolate(alpha));
 
-//- Update fluxes
+//- Update fluxes only once per pEqn solution, improves convergence
 fluid_.alphaPhi() = alphaf*fluid_.phi();
 fluid_.alphaRhoPhi() = 
     fvc::interpolate(rho)*fluid_.alphaPhi();
 
-//- Check if compressible
 dimensionedScalar compressibility(fvc::domainIntegrate(fluid_.thermo().psi()));
 dimensionedScalar VTot("", dimVol, gSum(mesh_.V()));
 bool compressible(compressibility.value()/VTot.value() >= 1e-8);
 
+surfaceScalarField alphaRhofByDt
+(
+    "alphaRhof1",
+    fvc::interpolate(alpha*rho)/
+    mesh_.time().deltaT()
+);
+
+surfaceScalarField alphaRhof0ByDt
+(
+    "alphaRhof1",
+    fvc::interpolate(alpha.oldTime()*rho.oldTime())/
+    mesh_.time().deltaT()
+);
+
 //- Construct 1/A field and interpolate to faces
-volScalarField rAU
+surfaceScalarField rAUf
 (
     "rAU",
-    1.0/(UEqn.A())
+    1.0/
+    (
+        fvc::interpolate(UEqn.A())
+    +   alphaRhofByDt
+    )
 );
 surfaceScalarField alpharAUf
 (
-    fvc::interpolate(alpha*rAU)
+    alphaf*rAUf
 );
 
-//- Pressure corrector loop
+// --- Pressure corrector loop
 while (pimple_.correct())
 {
     this->correctContErr();
@@ -30,13 +47,6 @@ while (pimple_.correct())
 
     //- Correct fixed-flux BCs to be consistent with the velocity BCs
     MRF_.correctBoundaryFlux(U, fluid_.phi());
-
-    //- Construct H/A field
-    volVectorField HbyA
-    (
-        "HbyA",
-        rAU*UEqn.H()
-    );
 
     //- Construct flux due to explicit sources, namely buoyancy/gravity effects
     //  and the structure momentum source, if present
@@ -48,38 +58,20 @@ while (pimple_.correct())
     {
        phiSource += alpharAUf*fvc::flux(structure_.momentumSource());
     }
-    
-    /* NOTE 
-        
-        To add a new source term S in the momentum equation, e.g.:
-        
-        ddt(alpha,rho,U) + ... = + S
-        
-        it is sufficient to add it to phiSource as:
-        
-        rAUf*fvc::flux(S)
-
-        if alpha figures in S so that it can be written as:
-
-        S = alpha*Q
-
-        it is better to add the following to phiSource
-
-        alpharAUf*fvc:flux(Q)
-
-        rather than what was said before
-    */
 
     //- Construct phase flux
     surfaceScalarField phiHbyA
     (
         "phiHbyA",
-        alphaf*
+        alpharAUf*
         (
-            fvc::flux(HbyA)
-        +   phiSource
+            alphaRhof0ByDt*MRF_.absolute(fluid_.phi().oldTime())
+        +   fvc::flux(UEqn.H())
         )
+        +   alphaf*phiSource
     );
+
+    MRF_.makeRelative(phiHbyA);
 
     //- Pressure laplacian coefficient
     surfaceScalarField rAUf
@@ -88,17 +80,13 @@ while (pimple_.correct())
         mag(alphaf*alpharAUf)
     );
 
-    //- Update the fixedFluxPressure BCs to ensure flux consistency. Please
-    //  make sure that wherever you use this BC, the U is NOT zeroGradient,
-    //  as the boundary U (and thus phi) are not yet updated at this point.
-    //  You get un-physical results in those circumstances. Instead, use
-    //  zeroGradient for pressure were you use zeroGradient for U
+    //- Update the fixedFluxPressure BCs to ensure flux consistency
     setSnGrad<fixedFluxPressureFvPatchScalarField>
     (
         p_rgh_.boundaryFieldRef(),
         (
             phiHbyA.boundaryField()
-          - (
+        -   (
                 alphaf.boundaryField()*fluid_.phi().boundaryField()
             )
         )/(mesh_.magSf().boundaryField()*rAUf.boundaryField())
@@ -147,20 +135,7 @@ while (pimple_.correct())
 
             fluid_.dgdt() = -pEqnComp & p_rgh_;
 
-            if (momentumMode_ == momentumMode::cellCentered)
-            {
-                p_rgh_.relax();
-                U =  
-                    HbyA 
-                +   fvc::reconstruct
-                    (
-                        alpharAUf*pEqnIncomp.flux()/rAUf + phiSource
-                    );
-            }
-            else
-            {
-                U = fvc::reconstruct(phi_)/alpha;
-            }
+            U = fvc::reconstruct(MRF_.absolute(phi_))/alpha;
             
             U.correctBoundaryConditions();
             fvOptions_.correct(U);
@@ -205,10 +180,10 @@ while (pimple_.correct())
             << (deltaMass.value()/initialFluidMass_).value() << endl;
             p_ += deltaMass/compressibility;
         }
-    }
 
-    //- Re-limit after correction
-    p_ = max(p_, pMin_);
+        //- Re-limit after correction
+        p_ = max(p_, pMin_);
+    }
 
     //- Update densities from change in p_rgh
     rho += fluid_.thermo().psi()*(p_rgh_ - p_rgh_0);

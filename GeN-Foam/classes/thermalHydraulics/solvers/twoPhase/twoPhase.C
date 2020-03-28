@@ -47,6 +47,27 @@ namespace thermalHydraulicModels
 }
 }
 
+const Foam::Enum
+<
+    Foam::thermalHydraulicModels::twoPhase::partialEliminationMode
+>
+Foam::thermalHydraulicModels::twoPhase::partialEliminationModeNames_
+(
+    {
+        { 
+            partialEliminationMode::none, 
+            "none" 
+        },
+        { 
+            partialEliminationMode::legacy, 
+            "explicit" 
+        },
+        { 
+            partialEliminationMode::implicit, 
+            "implicit" 
+        }
+    }
+);
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
@@ -249,28 +270,16 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     ),
     bothPhasesArePresent_(false),
     withinMarginToPhaseChange_(false),
-    partialElimination_
+    partialEliminationMode_
     (
-        pimple.dict().lookupOrDefault<Switch>("partialElimination", false)
-    ),
-    experimentalPartialElimination_
-    (
-        
-        pimple.dict().lookupOrDefault<Switch>
+        partialEliminationModeNames_.get
         (
-            "experimentalPartialElimination", false
+            pimple_.dict().lookupOrDefault<word>
+            (
+                "partialEliminationMode", 
+                "none"
+            )
         )
-        //false   //- It is wrong right now due to missing gravity fluxes, and
-                //  even on top of those, there is something fishy that I
-                //  have not figured out yet. I don't wanna get rid of this
-                //  as it would be a neat feature to do "proper" partial
-                //  elimination (the partialElimination_ algorithm does not
-                //  seem to be a real partial elimination... but it works for
-                //  now, whatever)
-    ),
-    faceMomentum_
-    (
-        pimple.dict().lookupOrDefault<Switch>("faceMomentum", false)
     ),
     oscillationLimiterFraction_
     (
@@ -281,13 +290,6 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
         )
     )
 {
-    if (experimentalPartialElimination_ and partialElimination_)
-    {
-        FatalErrorInFunction
-            << "The partialElimination and experimentalPartialElimination " 
-            << "algorithms are mutually exclusive!" << exit(FatalError);
-    }
-
     //- Create turbulence models. This is done outside of fluid constructors as
     //  turbulence models might require references to fields that do not exist
     //  yet (e.g. the Reynolds number between fluid and structure, or between
@@ -474,7 +476,7 @@ void Foam::thermalHydraulicModels::twoPhase::correctFluidMechanics
     #include "UEqns_2p.H"
 
     //- Solve pressure equation and reconstruct velocities
-    if (faceMomentum_)
+    if (momentumMode_ == momentumMode::faceCentered)
     {
         #include "pEqnf_2p.H"
     }

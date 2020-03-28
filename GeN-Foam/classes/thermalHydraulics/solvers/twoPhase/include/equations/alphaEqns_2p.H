@@ -291,7 +291,7 @@
     label nSubCycles
     (
         (adjustSubCycles and bothPhasesArePresent_) ?
-        min(ceil(CoNum_/alphaMaxCoNum), maxSubCycles) :
+        min(ceil((CoNum_+SMALL)/alphaMaxCoNum), maxSubCycles) :
         alphaDict.lookupOrDefault<label>("nSubCycles", 1)
     );
 
