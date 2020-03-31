@@ -84,7 +84,8 @@ Foam::dragModels::Darcy::Darcy
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 void Foam::dragModels::Darcy::correctKd(volTensorField& Kd) const
-{    
+{   
+    const volScalarField& alpha(FSPair_->fluidRef()); 
     const volScalarField& rho(FSPair_->fluidRef().thermo().rho());
     const volScalarField& magU(FSPair_->fluidRef().magU());
     
@@ -99,8 +100,8 @@ void Foam::dragModels::Darcy::correctKd(volTensorField& Kd) const
             label celli(cellList_[i]);
             scalar value
             (
-                0.5*rho[celli]*magU[celli]*coeff_[0]*pow(Re[celli], exp_[0])/
-                Dh[celli]
+                0.5*alpha[i]*rho[celli]*magU[celli]*coeff_[0]*
+                pow(Re[celli], exp_[0])/Dh[celli]
             );
             tensor& Kdi(Kd[celli]);
             Kdi[0] = value;
@@ -123,7 +124,7 @@ void Foam::dragModels::Darcy::correctKd(volTensorField& Kd) const
             forAll(coeff_, j)
             {
                 Kdi[j*4] = 
-                    0.5*rho[celli]*magU[celli]*coeff_[j]*
+                    0.5*alpha[i]*rho[celli]*magU[celli]*coeff_[j]*
                     pow(lRei[j], exp_[j])/lDhi[j];
             }
         }

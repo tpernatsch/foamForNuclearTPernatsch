@@ -97,10 +97,11 @@ Foam::dragModels::RehmeGunterShaw::RehmeGunterShaw
 void Foam::dragModels::RehmeGunterShaw::correctKd(volTensorField& Kd) const
 {    
     //- Init refs
+    const volScalarField& alpha(FSPair_->fluidRef());
     const volVectorField& lRe(FSPair_->lRe());
     const volVectorField& lDh(FSPair_->structure().lDh());
     const volScalarField& magU(FSPair_->fluidRef().magU());
-    volScalarField halfRhoMagU(0.5*FSPair_->fluidRef().thermo().rho()*magU);
+    const volScalarField& rho(FSPair_->fluidRef().thermo().rho());
 
     //- Direction labeles
     label d0(lcmpt_[0]); //- Transverse direction 0
@@ -112,18 +113,19 @@ void Foam::dragModels::RehmeGunterShaw::correctKd(volTensorField& Kd) const
         label celli(cellList_[i]);
         const vector& lRei(lRe[celli]);
         const vector& lDhi(lDh[celli]);
-        const scalar& halfRhoMagUi(halfRhoMagU[celli]);
         const scalar& Re0(lRei[d0]);
         const scalar& Re1(lRei[d1]);
         const scalar& Re2(lRei[d2]);
         tensor& Kdi(Kd[celli]);
+        
+        scalar alphaRhoMagUi(0.5*alpha[celli]*rho[celli]*magU[celli]);
 
         //- Rehme correlation in principalAxis local dir (i.e. d2)
-        Kdi[d2*4] = halfRhoMagUi*(A_*(B1_/Re2 + B2_/pow(Re2, 0.133)));
+        Kdi[d2*4] = alphaRhoMagUi*(A_*(B1_/Re2 + B2_/pow(Re2, 0.133)));
 
         //- Gunter-Shaw for transverse axes
-        Kdi[d0*4] = halfRhoMagUi*0.96*pow(Re0, -0.145)/lDhi[d0];
-        Kdi[d1*4] = halfRhoMagUi*0.96*pow(Re1, -0.145)/lDhi[d1];
+        Kdi[d0*4] = alphaRhoMagUi*0.96*pow(Re0, -0.145)/lDhi[d0];
+        Kdi[d1*4] = alphaRhoMagUi*0.96*pow(Re1, -0.145)/lDhi[d1];
     }
 }
 

@@ -33,6 +33,31 @@ structureProperties
     {
         volumeFraction      0.718520968;
         Dh                  0.00365;
+
+        passiveProperties
+        {
+            //- interfacial surface area density of the passive sub-structure
+            iA      100;
+            //- Density of the sub-structure
+            rho     7000;
+            //- Heat capacity of the sub-structure
+            Cp      500;
+            //- Can be provided AS AN ALTERNATIVE to providing separate rho and Cp.
+            //  If both rho, Cp and rhoCp are provided by mistake, rho and Cp take
+            //  precedence
+            rhoCp   3500000;
+            //- IF provided, for the purpose of the sub-structure temperature
+            //  solution, the volumetric heat capacity of the sub-structure will
+            //  be computed using this value instead of the structure
+            //  volumeFraction defined above. It does not affect fluid mechanics
+            //  per se, that is what the main volumeFraction keyword is for
+            volumeFraction  0.01;
+            //- Initial temperature of the sub-structure. This is required ONLY
+            //  if the initial temperature field (i.e. T.passiveStructure) was
+            //  not found on disk (and, of course, if this subDict exists)
+            T      600;
+        }
+        
     }
 
     "innerCore:outerCore"
