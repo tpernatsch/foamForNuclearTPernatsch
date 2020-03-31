@@ -23,7 +23,7 @@ setTransient()
     printf "Setting transient case...\n"
     foamDictionary transient/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
 
-    foamDictionary transient/system/fvSolution -entry PIMPLE.tightlyCoupled -set true
+    foamDictionary transient/system/fvSolution -entry tightlyCoupled -set true
 
     foamDictionary transient/system/controlDict -entry startFrom -set latestTime
     foamDictionary transient/system/controlDict -entry endTime -set 210

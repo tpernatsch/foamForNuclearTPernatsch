@@ -314,8 +314,6 @@ Foam::structureModels::byZone::byZone
             vector localY(localZ ^ localX);
             localY /= mag(localY);
 
-            Info << localX << " " << localY << " " << localZ << endl;
-
             //- Construct transformation matrices
 
             //- The basis change matrix is the transfromation to move from
@@ -379,8 +377,6 @@ Foam::structureModels::byZone::byZone
             lTortuosity[4] = lTortuosityVector[1];
             lTortuosity[8] = lTortuosityVector[2];
             tensor tortuosity = Rl2g & lTortuosity & Rg2l;
-
-            Info << tortuosity << endl;
 
             forAll(zoneCellList, j)
             {
