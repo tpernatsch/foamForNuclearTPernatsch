@@ -14,9 +14,9 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
     
-    nOuterCorrectors        3;
+    nOuterCorrectors        6;
     tightlyCoupled          false;
     timeStepResidual        0.00005;
-    maxTimeStepIterations   3;
+    maxTimeStepIterations   6;
 
 // ************************************************************************* //

@@ -652,8 +652,20 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     {   
         const scalar& T(Trad[i]);
         scalar rdrf(rRegion[i]*drf);
-        intrf += rdrf;
-        intTrf += T*rdrf;
+        
+        //- Fuel cells at the mesh ends are only half as wide (the other half
+        //  belongs to the ghost node). Thus, weigh temperatures at the extrema
+        //  by a factor 0.5
+        if (i == 0 or i == fuelMeshSize-1)
+        {
+            intrf += rdrf/2.0;
+            intTrf += T*rdrf/2.0;
+        }
+        else
+        {
+            intrf += rdrf;
+            intTrf += T*rdrf;
+        }
         if (T > Tfmax_) Tfmax_ = T;
         if (T < Tfmin_) Tfmin_ = T;
     }
@@ -666,8 +678,20 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     {   
         const scalar& T(Trad[i]);
         scalar rdrc(rRegion[i]*drc);
-        intrc += rdrc;
-        intTrc += T*rdrc;
+        
+        //- Clad cells at the mesh ends are only half as wide (the other half
+        //  belongs to the ghost node). Thus, weigh temperatures at the extrema
+        //  by a factor 0.5
+        if (i == fuelMeshSize or i == meshSize-1)
+        {
+            intrc += rdrc/2.0;
+            intTrc += T*rdrc/2.0;
+        }
+        else
+        {
+            intrc += rdrc;
+            intTrc += T*rdrc;
+        }
         if (T > Tcmax_) Tcmax_ = T;
         if (T < Tcmin_) Tcmin_ = T;
     }
@@ -719,6 +743,11 @@ void Foam::powerModels::nuclearFuelPin::correct
     reduce(Tcmax_, maxOp<scalar>());
     reduce(Tcmin_, minOp<scalar>());
 
+    Info<< "T.nuclearFuelPin.fuel (avg min max) = " 
+        << Tfavav << " " << Tfmin_ << " " << Tfmax_ << " K" << endl;
+    Info<< "T.nuclearFuelPin.clad (avg min max) = " 
+        << Tcavav << " " << Tcmin_ << " " << Tcmax_ << " K" << endl;
+
     //- Save these to the dictionary
     this->IOdictionary::set("Tfavav", Tfavav);
     this->IOdictionary::set("Tcavav", Tcavav);
@@ -751,8 +780,7 @@ who will unfortunately have to deal with this code after me. It shows how the
 
 Let us start with the heat diffusion equation in cylindrical coordinates with
 temporally constant cp, rho and spatially constant k. For simplicity,
-let us not consider a pin right now, just a regular uniform hollow cylinder
-cylinder:
+let us not consider a pin right now, just a regular uniform hollow cylinder:
 
 rho*cp*ddtT - div(k*grad(T)) = q    =>    rho*cp*ddt - (k/r)*ddr(r*ddr(T)) = q
 

@@ -44,6 +44,8 @@ else if (solveE or solveN or solveTM)
         if (solveE)
         {
             thermalHydraulics.correctEnergy(couplingResidual);
+            if (!solveN and !solveTM)
+                Info << endl;
         }
         if (solveTM or solveN)
         {
@@ -78,6 +80,6 @@ else if (solveE or solveN or solveTM)
         ( 
             (couplingResidual > multiphysics.timeStepResidual())
         &&  (couplingIter < multiphysics.maxTimeStepIterations()) 
-        &&  (!neutronics.eigenvalue() && multiphysics.tightlyCoupled())
+        &&  (multiphysics.tightlyCoupled())
         );
 }

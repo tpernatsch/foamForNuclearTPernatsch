@@ -89,11 +89,11 @@ Foam::neutronics::neutronics
     (
         IOobject
         (
-            "displacement",
+            "disp",
             mesh.time().timeName(),
             mesh,
             IOobject::READ_IF_PRESENT,
-            IOobject::NO_WRITE
+            IOobject::AUTO_WRITE
         ),
         mesh,
         dimensionedVector("d_zero", dimLength, vector::zero),
@@ -109,19 +109,6 @@ Foam::neutronics::neutronics
         mesh.time().controlDict().lookupOrDefault("liquidFuel", false)
     )
 {
-    //- Write displacement only if it was present
-    IOobject dispHeader
-    (
-        "displacement",
-        mesh.time().timeName(),
-        mesh,
-        IOobject::NO_READ
-    );
-    if (dispHeader.typeHeaderOk<volVectorField>(true))
-    {
-        disp_.writeOpt() = IOobject::AUTO_WRITE;
-    }
-
     Info << "Initial keff = " << keff_ << endl;
 }
 

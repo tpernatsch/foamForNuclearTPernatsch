@@ -12,7 +12,6 @@ classes/neutronics/pointKinetics/pointKineticNeutronics.C
 classes/thermoMechanics/thermoMechanics.C
 classes/thermoMechanics/linearElastic/linearElasticThermoMechanics.C
 classes/thermoMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorField.C
-classes/thermoMechanics/tractionDisplacement/gapContactFvPatchVectorField.C
 
 classes/multiphysicsControl/multiphysicsControl.C
 

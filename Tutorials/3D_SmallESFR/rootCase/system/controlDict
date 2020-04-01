@@ -47,6 +47,8 @@ timePrecision       8;
 
 runTimeModifiable   true;
 
+removeBaffles 		true;
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // Physics to solve
@@ -57,7 +59,7 @@ solveEnergy             true;
 
 solveNeutronics         true;
 
-solveThermalMechanics   true;
+solveThermalMechanics  	true;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

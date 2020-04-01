@@ -168,7 +168,7 @@ bool Foam::multiphysicsControl::read()
     solveThermoMechanics_ =
         runTime_.controlDict().lookupOrDefault<bool>
         (
-            "solveThermoMechanics", false
+            "solveThermalMechanics", false
         );
 
     return true;

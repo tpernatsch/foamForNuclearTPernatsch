@@ -194,13 +194,13 @@ void tractionDisplacementFvPatchVectorField::updateCoeffs()
             patch().lookupPatchField<volScalarField, scalar>("threeKalpha");
 
         const fvPatchField<scalar>& Tmech =
-            patch().lookupPatchField<volScalarField, scalar>("T");
+            patch().lookupPatchField<volScalarField, scalar>("TStruct");
 
 		dimensionedScalar TrefStructure
         (
             "",
             dimTemperature,
-            thermoMechanicalProperties.get<scalar>("TrefStructure")
+            thermoMechanicalProperties.get<scalar>("TStructRef")
         ); //modified
 		//fvPatchField<scalar> TrefStructurePatch =
 		//patch().lookupPatchField<volScalarField, scalar>("Tmech");

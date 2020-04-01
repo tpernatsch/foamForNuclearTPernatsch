@@ -64,6 +64,7 @@ Authors
 #include "mergeOrSplitBaffles.H"
 #include "volPointInterpolation.H"
 #include "fixedGradientFvPatchFields.H"
+#include "UPstream.H"
 
 #include "multiphysicsControl.H"
 #include "thermalHydraulicModel.H"

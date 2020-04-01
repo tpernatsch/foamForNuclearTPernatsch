@@ -39,16 +39,16 @@ solvers
 
         solver          PBiCG;
         preconditioner  DILU;
-        tolerance       1e-5;
-        relTol          0.01;
+        tolerance       1e-6;
+        relTol          0.001;
     }
     "CRDisp"
     {
 
         solver          PBiCG;
         preconditioner  DILU;
-        tolerance       1e-5;
-        relTol          0.01;
+        tolerance       1e-6;
+        relTol          0.001;
     }
 }
 stressAnalysis
@@ -61,8 +61,7 @@ relaxationFactors
 {
     fields
     {
-	Disp 0.99;
-
+	   disp 0.99;
     }
 }
 // ************************************************************************* //

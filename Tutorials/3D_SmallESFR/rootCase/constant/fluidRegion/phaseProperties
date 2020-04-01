@@ -36,26 +36,9 @@ structureProperties
 
         passiveProperties
         {
-            //- interfacial surface area density of the passive sub-structure
-            iA      100;
-            //- Density of the sub-structure
-            rho     7000;
-            //- Heat capacity of the sub-structure
-            Cp      500;
-            //- Can be provided AS AN ALTERNATIVE to providing separate rho and Cp.
-            //  If both rho, Cp and rhoCp are provided by mistake, rho and Cp take
-            //  precedence
-            rhoCp   3500000;
-            //- IF provided, for the purpose of the sub-structure temperature
-            //  solution, the volumetric heat capacity of the sub-structure will
-            //  be computed using this value instead of the structure
-            //  volumeFraction defined above. It does not affect fluid mechanics
-            //  per se, that is what the main volumeFraction keyword is for
-            volumeFraction  0.01;
-            //- Initial temperature of the sub-structure. This is required ONLY
-            //  if the initial temperature field (i.e. T.passiveStructure) was
-            //  not found on disk (and, of course, if this subDict exists)
-            T      600;
+            iA      5;
+            rhoCp   4.8e6;
+            T       668;
         }
         
     }
@@ -75,8 +58,8 @@ structureProperties
             fuelOuterRadius     0.004715;
             cladInnerRadius     0.004865;
             cladOuterRadius     0.005365;
-            fuelMeshSize        16;
-            cladMeshSize        4;
+            fuelMeshSize        30;
+            cladMeshSize        5;
             fuelRho             10480;
             fuelCp              250;
             cladRho             7500;
@@ -84,8 +67,15 @@ structureProperties
             gapH                3000;
             fuelK               3;
             cladK               20;
-            fuelT               900;
-            cladT               900;
+            fuelT               668;
+            cladT               668;
+        }
+
+        passiveProperties
+        {
+            iA      5;
+            rhoCp   4.8e6;
+            T       668;
         }
     }
 }
@@ -125,7 +115,7 @@ physicsModelsByRegime
 
         heatTransferModels
         {
-            "innerCore:outerCore"
+            "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
             {
                 type    Nusselt;
                 const   4;
@@ -150,7 +140,7 @@ physicsModelsByRegime
 
         heatTransferModels
         {
-            "innerCore:outerCore"
+            "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
             {
                 type    Nusselt;
                 const   4.82;
