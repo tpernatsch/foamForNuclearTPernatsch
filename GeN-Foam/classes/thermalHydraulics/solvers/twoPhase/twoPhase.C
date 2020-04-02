@@ -709,7 +709,8 @@ void Foam::thermalHydraulicModels::twoPhase::correctCourant()
 
     scalarField sumPhi
     (
-        fvc::surfaceSum(mag(phi_))().primitiveField()
+        fvc::surfaceSum(mag(phi_))().primitiveField()/
+        movingAlpha_.primitiveField()
     );
 
     CoNum_ = 0.5*gMax(sumPhi/mesh_.V().field())*runTime_.deltaTValue();
@@ -727,6 +728,7 @@ void Foam::thermalHydraulicModels::twoPhase::correctCourant()
             (
                 mag(fluid1_.phi()-fluid2_.phi())
             )().primitiveField()/
+            movingAlpha_/
             mesh_.V().field()
         )*runTime_.deltaTValue();
 

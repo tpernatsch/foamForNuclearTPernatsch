@@ -354,7 +354,7 @@ void Foam::thermalHydraulicModels::onePhase::correctCourant()
 
     scalarField sumPhi
     (
-        fvc::surfaceSum(mag(phi_))().primitiveField()
+        fvc::surfaceSum(mag(phi_))().primitiveField()/fluid_.primitiveField()
     );
 
     CoNum_ = 0.5*gMax(sumPhi/mesh_.V().field())*runTime_.deltaTValue();

@@ -36,7 +36,10 @@ else
 		liquid->thermo().mu()().primitiveField();
 	bafflelessMu.correctBoundaryConditions();
 
-	bafflelessU.primitiveFieldRef() = liquid->U().primitiveField();
+	//- Baffleless should be the superficial velocity, not the real one!
+	//  Thus, multiply by the void fraction (no vapour here so it's just 
+	//  alphal)
+	bafflelessU.primitiveFieldRef() = liquid->U().primitiveField()*alphal;
 	bafflelessU.correctBoundaryConditions();
 }
 
