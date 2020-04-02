@@ -47,7 +47,11 @@ bafflelessAlpha.correctBoundaryConditions();
 bafflelessRhoCool.correctBoundaryConditions();
 bafflelessTCool.correctBoundaryConditions();
 
-bafflelessTFuelAv.primitiveFieldRef() = TFuelAv->primitiveField();
+//- The fuel temperature is the liquid temperature if doing liquidFuel
+bafflelessTFuelAv.primitiveFieldRef() = 
+	(multiphysics.liquidFuel()) ?	
+	liquid->thermo().T().primitiveField() :
+	TFuelAv->primitiveField();
 bafflelessTFuelAv.correctBoundaryConditions();
 bafflelessTCladAv.primitiveFieldRef() = TCladAv->primitiveField();
 bafflelessTCladAv.correctBoundaryConditions();
