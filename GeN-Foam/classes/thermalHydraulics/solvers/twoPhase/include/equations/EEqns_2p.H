@@ -33,8 +33,16 @@
     volScalarField K2(0.5*U2&U2);
 
     //- Limiter fields
-    volScalarField diffAlpha1(fluid1_-fluid1_.thermoResidualAlpha());
-    volScalarField diffAlpha2(fluid2_-fluid2_.thermoResidualAlpha());
+    volScalarField diffAlpha1
+    (
+        fluid1_
+    -   fluid1_.thermoResidualAlpha()/movingAlpha_
+    );
+    volScalarField diffAlpha2
+    (
+        fluid2_
+    -   fluid2_.thermoResidualAlpha()/movingAlpha_
+    );
     volScalarField pos1(pos0(diffAlpha1));
     volScalarField pos2(pos0(diffAlpha2));
     volScalarField neg1(neg(diffAlpha1));
@@ -292,7 +300,7 @@
     fluid2_.heErr().correctBoundaryConditions();
     */
     
-    Info<< "T interface (avg min max) = "
+    Info<< "T.interface (avg min max) = "
         << iT12_.weightedAverage(mesh_.V()).value()
         << " " << min(iT12_).value()
         << " " << max(iT12_).value()

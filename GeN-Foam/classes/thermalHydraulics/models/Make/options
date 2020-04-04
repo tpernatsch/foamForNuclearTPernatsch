@@ -35,8 +35,8 @@ EXE_INC = \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/integralConstant \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/Schor \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/sphericalTopology \
-    -I./physicsModels/fluidGeometryModels/structureInterfacialAreaPartitionModels \
-    -I./physicsModels/fluidGeometryModels/structureInterfacialAreaPartitionModels/constant \
+    -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels \
+    -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels/constant \
     -I./physicsModels/phaseChangeModels/saturationModels \
     -I./physicsModels/phaseChangeModels/saturationModels/constantTemperature \
     -I./physicsModels/phaseChangeModels/saturationModels/BrowningPotter \

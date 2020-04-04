@@ -47,7 +47,7 @@ Foam::fluidDiameterModel::fluidDiameterModel
     (
         IOobject
         (
-            IOobject::groupName(typeName, fluid.name()),
+            IOobject::groupName("fluidDiameterModel.", fluid.name()),
             fluid.mesh().time().timeName(),
             objReg,
             IOobject::NO_READ,

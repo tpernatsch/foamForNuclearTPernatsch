@@ -40,7 +40,7 @@ Foam::fluidGeometry::fluidGeometry
     (
         IOobject
         (
-            "fluidGeometry",
+            typeName,
             fluid1.mesh().time().timeName(),
             objReg,
             IOobject::NO_READ,
@@ -133,10 +133,10 @@ Foam::fluidGeometry::fluidGeometry
     ),
     structureInterfacialAreaPartition_
     (
-        structureInterfacialAreaPartitionModel::New
+        structureVolumetricAreaPartitionModel::New
         (
             objReg,
-            this->subDict("structureInterfacialAreaPartitionModel"),
+            this->subDict("structureVolumetricAreaPartitionModel"),
             dispersed_,
             continuous_,
             structure

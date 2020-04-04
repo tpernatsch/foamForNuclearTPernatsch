@@ -29,6 +29,7 @@ License
 #include "fvOptions.H"
 #include "bound.H"
 
+#include "fluid.H"
 #include "structureModel.H"
 #include "FSPair.H"
 #include "myStringOps.H"
@@ -47,11 +48,30 @@ template<class BasicTurbulenceModel>
 void porousKEpsilon<BasicTurbulenceModel>::correctNut()
 {
     this->nut_ = Cmu_*sqr(k_)/epsilon_;
-
     this->nut_.correctBoundaryConditions();
+
+    //- Correct alphat before nut is stabilized
+    this->Prt_ = dimensioned<scalar>::lookupOrDefault
+    (
+        "Prt",
+        this->coeffDict(),
+        1.0
+    );
+    this->alphat_ = this->rho_*this->nut_/this->Prt_;
+    this->alphat_.correctBoundaryConditions();
+
+    if (nutStabilization_)
+    {
+        this->nut_ += 
+            pos(structure_)*FSPair_.fluidRef().magU()*DhStructPtr_()/
+            laminarReStructPtr_();
+        this->nut_.correctBoundaryConditions();
+    }
+
     fv::options::New(this->mesh_).correct(this->nut_);
 
-    BasicTurbulenceModel::correctNut();
+    // BasicTurbulenceModel::correctNut();  //- Eh, I don't want other things
+                                            //  messing with the stabilized nut
 }
 
 
@@ -195,10 +215,6 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
     (
         alpha.name() == "alpha" ? 
         "" : myStringOps::split<word>(alpha.name(), '.')[1]
-        /*
-        word(stringOps::split(string(alpha.name()), ".").last()) == "alpha" ?
-        "" : word(stringOps::split(string(alpha.name()), ".").last())
-        */
     ),
     structure_
     (
@@ -292,6 +308,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
         this->mesh_,
         dimensionedScalar("", dimArea/dimTime/dimTime, 0)
     ),
+    nutStabilization_(false),
     Cmu3by4_(pow(Cmu_, 0.75))
 {
     bound(k_, this->kMin_);
@@ -356,7 +373,72 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
             convergenceLength_.correctBoundaryConditions();
             turbulenceIntensityCoeff_.correctBoundaryConditions();
             turbulenceIntensityExp_.correctBoundaryConditions();
-            turbulenceLengthScaleCoeff_.correctBoundaryConditions();    
+            turbulenceLengthScaleCoeff_.correctBoundaryConditions();  
+
+            //- nut stabilization fields, create only if keyword found
+            if (regionDict.found("DhStruct"))
+            {
+                scalar defaultLaminarReStruct(500);
+                nutStabilization_ = true;
+                if (!DhStructPtr_.valid())
+                {
+                    DhStructPtr_.reset
+                    (
+                        new volScalarField
+                        (
+                            IOobject
+                            (
+                                "DhStructure.porousKEpsilon",
+                                this->mesh_.time().timeName(),
+                                this->mesh_
+                            ),
+                            this->mesh_,
+                            dimensionedScalar("", dimLength, 0.0),
+                            zeroGradientFvPatchScalarField::typeName
+                        )
+                    );
+                }
+                if (!laminarReStructPtr_.valid())
+                {
+                    laminarReStructPtr_.reset
+                    (
+                        new volScalarField
+                        (
+                            IOobject
+                            (
+                                "laminarReStructure.porousKEpsilon",
+                                this->mesh_.time().timeName(),
+                                this->mesh_
+                            ),
+                            this->mesh_,
+                            dimensionedScalar
+                            (
+                                "", 
+                                dimless, 
+                                defaultLaminarReStruct
+                            ),
+                            zeroGradientFvPatchScalarField::typeName
+                        )
+                    );
+                }
+                scalar DhStruct(regionDict.get<scalar>("DhStruct"));
+                scalar laminarReStruct
+                (
+                    regionDict.lookupOrDefault<scalar>
+                    (
+                        "laminarReStruct", 
+                        defaultLaminarReStruct
+                    )
+                );
+                forAll(cellList, k)
+                {
+                    label celli(cellList[k]);
+                    DhStructPtr_()[celli] = DhStruct;
+                    laminarReStructPtr_()[celli] = laminarReStruct;
+                }
+                DhStructPtr_().correctBoundaryConditions();
+                laminarReStructPtr_().correctBoundaryConditions();
+            }  
         }
     }
 

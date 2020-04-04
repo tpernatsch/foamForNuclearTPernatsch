@@ -43,7 +43,7 @@ structureProperties
         powerModel
         {
             type            constantTemperature;
-            iA              200;
+            volumetricArea  200;
             T               900;
         }
     }

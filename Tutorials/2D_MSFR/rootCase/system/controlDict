@@ -18,7 +18,7 @@ FoamFile
 
 // General
 
-application     GeN-ROM;
+application     GeN-Foam;
 
 startFrom       startTime;//latestTime;//
 

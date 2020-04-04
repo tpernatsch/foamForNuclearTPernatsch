@@ -68,7 +68,7 @@ Foam::powerModels::constantTemperature::constantTemperature
             IOobject::NO_WRITE //AUTO_WRITE
         ),
         mesh_,
-        dimensionedScalar("T", dimTemperature, 0.0),
+        dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
     )
 {

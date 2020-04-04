@@ -36,9 +36,9 @@ structureProperties
 
         passiveProperties
         {
-            iA      5;
-            rhoCp   4.8e6;
-            T       668;
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
         }
         
     }
@@ -51,7 +51,7 @@ structureProperties
         powerModel
         {
             type                nuclearFuelPin;
-            iA                  237.4;
+            volumetricArea      237.4;
             powerDensity        0;  //- fields on disk have priority, if they
                                     //  are not found, this value is used
             fuelInnerRadius     0.0012;
@@ -73,9 +73,9 @@ structureProperties
 
         passiveProperties
         {
-            iA      5;
-            rhoCp   4.8e6;
-            T       668;
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
         }
     }
 }

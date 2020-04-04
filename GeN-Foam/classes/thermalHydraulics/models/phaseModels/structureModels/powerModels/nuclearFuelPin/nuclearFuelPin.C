@@ -182,7 +182,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     rco_(0),//this->get<scalar>("cladOuterRadius")),
     drf_(0),//(rfo_-rfi_)/(fuelSubMeshSize_-1)),
     drc_(0),//(rco_-rci_)/(cladSubMeshSize_-1)),
-    drg_(0),//rci_-rfo_),
+    drg_(0),//(rci_-rfo_),
     rhoCpf_(0),//this->get<scalar>("fuelDensity")),
     rhoCpc_(0),//this->get<scalar>("cladDensity")),
     kf_(0),//this->get<scalar>("fuelConductivity")),

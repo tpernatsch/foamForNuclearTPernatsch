@@ -71,13 +71,12 @@ fluid2_.turbulence().correct();
     //- Mass transfer
     volScalarField dmdt12(posPart(dmdt_));
     volScalarField dmdt21(-negPart(dmdt_)); 
-
+    
     UEqn1 =
     (
             fvm::div(fluid1_.alphaRhoPhi(), U1, "div(alphaRhoPhi,U)")
         -   fvm::Sp(fluid1_.contErr(), U1)
         +   fvm::Sp(dmdt12, U1)
-        +   MRF_.DDt(alpha1*rho1, U1)
         //- The following is just a re-arrangement of div(nu*grad(U)),
         //  i.e. + fluid1_.turbulence().divDevRhoReff(U1). However, it is
         //  necessary to do this, otherwise the tensor nature of nuEff can't
@@ -104,7 +103,6 @@ fluid2_.turbulence().correct();
             fvm::div(fluid2_.alphaRhoPhi(), U2, "div(alphaRhoPhi,U)")
         -   fvm::Sp(fluid2_.contErr(), U2)
         +   fvm::Sp(dmdt21, U2)
-        +   MRF_.DDt(alpha2*rho2, U2)
             //- The following is just a re-arrangement of div(nu*grad(U))
         +   (
                 -   fvm::laplacian(alpha2*rho2*nuEff2, U2)
@@ -117,7 +115,7 @@ fluid2_.turbulence().correct();
         +   fvm::Sp(Kd12, U2)
             //- Implicit diagonal contribution of fluid-structure drag,
             //  explicit off-diagonal contribution
-        +   fvm::Sp((1.0/3.0)*tr(Kd2s), U2) + (dev(Kd2s)&U2)
+        +   fvm::Sp((1.0/3.0)*tr(Kd2s), U2) + (dev(Kd2s)&U2) 
         ==
             dmdt12*U1
         +   fvOptions_(alpha2, rho2, U2)
@@ -129,6 +127,53 @@ fluid2_.turbulence().correct();
     {
         UEqn1 += fvm::ddt(alpha1, rho1, U1);
         UEqn2 += fvm::ddt(alpha2, rho2, U2);
+    }
+
+    //- Vritual mass coefficient, not handled by regimes for now
+    dimensionedScalar Vm
+    (
+        this->lookupOrDefault<scalar>("virtualMassCoeff", 0.0)
+    );
+    if (Vm.value() > 0)
+    {
+        const surfaceScalarField& phi1(fluid1_.phi());
+        const surfaceScalarField& phi2(fluid2_.phi());
+        volScalarField rhoVm(Vm*FFPair_.rhoContinuous());
+        volVectorField DDtU1 = 
+            fvc::ddt(U1)
+        +   fvc::div(phi1, U1)
+        -   fvc::div(phi1)*U1;
+        volVectorField DDtU2 =
+            fvc::ddt(U2)
+        +   fvc::div(phi2, U2)
+        -   fvc::div(phi2)*U2;
+        
+        UEqn1 +=  
+            rhoVm()*
+            (
+                fvm::ddt(U1)
+            +   fvm::div(phi1, U1)
+            -   fvm::Sp(fvc::div(phi1), U1)
+            -   DDtU2
+            );
+        UEqn2 += 
+            rhoVm()*
+            (
+                fvm::ddt(U2)
+            +   fvm::div(phi2, U2)
+            -   fvm::Sp(fvc::div(phi2), U2)
+            -   DDtU1
+            );
+        //- Modify MRF and add contributions
+        MRF_.addAcceleration(U1, DDtU1);
+        MRF_.addAcceleration(U2, DDtU2);
+        UEqn1 += MRF_.DDt(alpha1*rho1 + rhoVm, U1);
+        UEqn2 += MRF_.DDt(alpha2*rho2 + rhoVm, U2);
+    }
+    else //- Just add unmodified MRF contributions
+    {
+        UEqn1 += MRF_.DDt(alpha1*rho1, U1);
+        UEqn2 += MRF_.DDt(alpha2*rho2, U2);
     }
 
     UEqn1.relax();

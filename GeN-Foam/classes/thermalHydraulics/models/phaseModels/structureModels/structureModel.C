@@ -65,7 +65,7 @@ Foam::structureModel::structureModel
             mesh
         ),
         mesh,
-        dimensionedTensor("Dh", dimless, tensor::one),
+        dimensionedTensor("", dimless, tensor::one),
         zeroGradientFvPatchScalarField::typeName
     ),
     Dh_
@@ -77,7 +77,7 @@ Foam::structureModel::structureModel
             mesh
         ),
         mesh,
-        dimensionedScalar("Dh", dimLength, SMALL),
+        dimensionedScalar("", dimLength, SMALL),
         zeroGradientFvPatchScalarField::typeName
     ),
     lDh_
@@ -89,7 +89,7 @@ Foam::structureModel::structureModel
             mesh
         ),
         mesh,
-        dimensionedVector("lDh", dimLength, vector(SMALL, SMALL, SMALL)),
+        dimensionedVector("", dimLength, vector(SMALL, SMALL, SMALL)),
         zeroGradientFvPatchScalarField::typeName
     ),
     Tact_
@@ -103,19 +103,19 @@ Foam::structureModel::structureModel
             IOobject::NO_WRITE
         ),
         mesh,
-        dimensionedScalar("T.structure", dimTemperature, 0),
+        dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
     iAact_
     (
         IOobject
         (
-            "iA.activeStructure",
+            "volumetricArea.activeStructure",
             mesh.time().timeName(),
             mesh
         ),
         mesh,
-        dimensionedScalar("iA.structure", dimArea/dimVol, 0),
+        dimensionedScalar("", dimArea/dimVol, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
     alphapas_
@@ -139,19 +139,19 @@ Foam::structureModel::structureModel
             IOobject::AUTO_WRITE
         ),
         mesh,
-        dimensionedScalar("T.passiveStructure", dimTemperature, 0),
+        dimensionedScalar("T", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
     iApas_
     (
         IOobject
         (
-            "iA.passiveStructure",
+            "volumetricArea.passiveStructure",
             mesh.time().timeName(),
             mesh
         ),
         mesh,
-        dimensionedScalar("iA.passiveStructure", dimArea/dimVol, 0),
+        dimensionedScalar("", dimArea/dimVol, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
     alphaRhoCppas_
@@ -164,11 +164,7 @@ Foam::structureModel::structureModel
         ),
         mesh,
         dimensionedScalar
-        (
-            "alphaRhoCp.passiveStructure", 
-            dimEnergy/dimVol/dimTemperature, 
-            0
-        ),
+        ("", dimEnergy/dimVol/dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
     Rg2l_

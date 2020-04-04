@@ -67,14 +67,14 @@ Foam::powerModel::powerModel
     (
         IOobject
         (
-            IOobject::groupName("iA", typeName),
+            IOobject::groupName("volumetricArea", typeName),
             mesh_.time().timeName(),
             mesh_
         ),
         mesh_,
         dimensionedScalar
         (
-            "iA",
+            "",
             dimArea/dimVol,
             0
         ),
@@ -89,7 +89,7 @@ Foam::powerModel::powerModel
             mesh_
         ),
         mesh_,
-        dimensionedScalar("alpha", dimless, 0),
+        dimensionedScalar("", dimless, 0),
         zeroGradientFvPatchScalarField::typeName
     )
 {
@@ -104,7 +104,7 @@ Foam::powerModel::powerModel
     {
         word region(regions[i]);
         const dictionary& regionDict(this->subDict(region));
-        scalar iA(regionDict.get<scalar>("iA"));
+        scalar iA(regionDict.get<scalar>("volumetricArea"));
         
         const labelList& regionCells(structure_.cellLists()[region]);
         forAll(regionCells, j)

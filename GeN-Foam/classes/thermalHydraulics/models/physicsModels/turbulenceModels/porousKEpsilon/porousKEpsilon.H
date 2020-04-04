@@ -152,6 +152,12 @@ protected:
             volScalarField equilibriumEpsilon_;
             volScalarField equilibriumK_;
 
+            //- Fields for nutStabilization as seen in the old GeN-Foam 
+            //  porousKEpsilon
+            bool nutStabilization_;
+            autoPtr<volScalarField> DhStructPtr_;
+            autoPtr<volScalarField> laminarReStructPtr_;
+
         //- Precomputed constants
 
             dimensionedScalar Cmu3by4_;

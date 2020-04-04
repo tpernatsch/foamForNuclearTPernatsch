@@ -52,7 +52,7 @@ SourceFiles
 #include "structureModel.H"
 #include "fluidDiameterModel.H"
 #include "fluidInterfacialAreaModel.H"
-#include "structureInterfacialAreaPartitionModel.H"
+#include "structureVolumetricAreaPartitionModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -87,7 +87,7 @@ protected:
 
     autoPtr<fluidInterfacialAreaModel> fluidInterfacialArea_;
 
-    autoPtr<structureInterfacialAreaPartitionModel>
+    autoPtr<structureVolumetricAreaPartitionModel>
         structureInterfacialAreaPartition_;
 
 public:

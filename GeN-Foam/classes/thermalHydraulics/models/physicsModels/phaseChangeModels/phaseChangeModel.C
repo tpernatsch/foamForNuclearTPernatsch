@@ -55,7 +55,7 @@ Foam::phaseChangeModel::phaseChangeModel
     (
         IOobject
         (
-            "phaseChangeModel",
+            IOobject::groupName("phaseChangeModel", typeName),
             fluid1.mesh().time().constant(),
             fluid1.mesh()
         ),
@@ -90,7 +90,7 @@ Foam::phaseChangeModel::phaseChangeModel
             "residualInterfacialArea",
             *this,
             dimArea/dimVolume,
-            1e-9
+            1e-6
         )
     )
 {
@@ -114,7 +114,7 @@ Foam::phaseChangeModel::phaseChangeModel
 
 Foam::scalar Foam::phaseChangeModel::relaxationFactor() const
 {
-    scalar f(mesh_.fieldRelaxationFactor("dmdt"));
+    scalar f(mesh_.fieldRelaxationFactor("massTransfer"));
     if (pimple_.finalIter() and !relaxOnFinalIter_)
     {
         f = 1.0;
@@ -142,7 +142,7 @@ void Foam::phaseChangeModel::limitMassTransfer()
 
 void Foam::phaseChangeModel::correctInterfacialT()
 {
-    scalar f(mesh_.fieldRelaxationFactor("iT12"));
+    scalar f(mesh_.fieldRelaxationFactor("interfacialTemperature"));
     iT_ = (1-f)*iT_ + f*saturation_->Tsat(p_);
 }
 

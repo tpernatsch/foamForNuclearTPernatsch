@@ -170,27 +170,42 @@ Foam::structureModels::byZone::byZone
 
                 //- Set interfacial area and rhoCp (later, alphaRhoCp) of the
                 //  passive subStructure
-                scalar iApas(pasDict.get<scalar>("iA"));
-                
+                scalar iApas(pasDict.get<scalar>("volumetricArea"));
                 scalar rhoCppas(0);
-                if (pasDict.found("rho") and pasDict.found("Cp"))
-                {
-                    rhoCppas =
-                        pasDict.get<scalar>("rho")*
-                        pasDict.get<scalar>("Cp");
-                }
-                else if (pasDict.found("rhoCp"))
-                {
-                    rhoCppas = pasDict.get<scalar>("rhoCp");
-                }
-                else
+                if 
+                (
+                    pasDict.found("rho") 
+                and pasDict.found("Cp") 
+                and pasDict.found("rhoCp")
+                )
                 {
                     FatalErrorInFunction
                         << "Structure region: " << zone << " -> "
-                        << "specify either rhoCp or both rho and Cp"
+                        << "specify either rhoCp or both rho and Cp but not "
+                        << "all of them"
                         << exit(FatalError);
                 }
-
+                else
+                {
+                    if (pasDict.found("rho") and pasDict.found("Cp"))
+                    {
+                        rhoCppas =
+                            pasDict.get<scalar>("rho")*
+                            pasDict.get<scalar>("Cp");
+                    }
+                    else if (pasDict.found("rhoCp"))
+                    {
+                        rhoCppas = pasDict.get<scalar>("rhoCp");
+                    }
+                    else
+                    {
+                        FatalErrorInFunction
+                            << "Structure region: " << zone << " -> "
+                            << "specify either rhoCp or both rho and Cp"
+                            << exit(FatalError);
+                    }
+                }
+                
                 forAll(zoneCellList, j)
                 {
                     label cellj(zoneCellList[j]);
@@ -295,7 +310,7 @@ Foam::structureModels::byZone::byZone
             {
                 //- Split non-orthogonalities equally among X and Z by 
                 //  rotating them in the plane they lie in by an angle
-                //  computeted so that, after the rotation, they will be
+                //  computed so that, after the rotation, they will be
                 //  orthogonal
                 scalar deltaTheta
                 (

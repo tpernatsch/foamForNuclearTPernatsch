@@ -96,7 +96,7 @@ while (pimple_.correct())
     tmp<fvScalarMatrix> pEqnComp;
     pEqnComp =
         (
-            fluid_.contErr()
+            fluid_.contErr() // +dmdt in contErr
           - fvc::Sp(fvc::ddt(alpha) + fvc::div(fluid_.alphaPhi()), rho)
         )/rho
       + (alpha*fluid_.thermo().psi()/rho)*correction(fvm::ddt(p_rgh_));

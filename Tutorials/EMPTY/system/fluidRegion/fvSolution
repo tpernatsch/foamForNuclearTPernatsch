@@ -163,7 +163,7 @@ relaxationFactors
     fields
     {
         //- Under-relaxation of the mass transfer term
-        "dmdt"              0.25;
+        "massTransfer"              0.25;
 
         //- Under-relaxation of the interfacial temperature between the fluids.
         //  This only has an effect if the employed saturationModel in
@@ -172,7 +172,7 @@ relaxationFactors
         //  boiling will more often than not induce sharp changes in the
         //  interfacialTemperature, resulting in massive changes in the mass
         //  transfer term 
-        "iT12"              0.25;
+        "interfacialTemperature"    0.25;
     }
 }
 
