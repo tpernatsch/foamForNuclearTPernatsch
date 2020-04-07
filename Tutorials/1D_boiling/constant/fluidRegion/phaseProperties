@@ -26,8 +26,8 @@ thermalHydraulicType    "twoPhase";
 // --- FLUID PROPERTIES ---------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-//- These could be anything you want, as long as fields in 0/fluidRegion/ have
-//  these in their name and everything else is re-named accordingly in this
+//- These entries could be anything you want, as long as fields in 0/fluidRegion/ have
+//  these in their name (after the dot) and everything else is re-named accordingly in this
 //  dictionary. For the sake of the comments in this dictionary, I will refer
 //  to these names as fluid1Name and fluid2Name
 fluid1 "liquid";
@@ -38,16 +38,16 @@ fluid2 "vapour";
 //  They only support three entries:
 //
 //  -   residualAlpha ->    residual fluid volumeFraction used to stabilize
-//                          equations as/if its volumeFraction goes to 0. This
+//                          equations when/if its volumeFraction tends to 0. This
 //                          defaults to 1e-9 and IS NOT a mandatory entry;
 //
-//  -   thermoResidualAlpha ->  residual fluid volumeFraction below wich the
+//  -   thermoResidualAlpha ->  residual fluid volumeFraction below which the
 //                              fluid temperature is not obtained from the
 //                              enthalpy equation solution, but is set to
-//                              the fluid-fluid interfacial temperature. This
+//                              the fluid1-fluid2 interfacial temperature. This
 //                              is applied on a cell-by-cell basis (e.g. only
 //                              in those cells whose volumeFraction of this 
-//                              fluid is below thermoResidualAlpha. This
+//                              fluid is below thermoResidualAlpha). This
 //                              is meant to be used to stabilize the
 //                              temperature field of a fluid being produced
 //                              during phase change (either boiling or 
@@ -92,13 +92,13 @@ virtualMassCoeff        0.01;
 // --- STRUCTURES PROPERTIES ----------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-//- Dictionary where porous structure properties are specified. Unlike fluids,
-//  the structure cannot be named, and this dictionary is always called
-//  structureProperties
+//- Dictionary where porous (sub-scale) structure properties are specified. 
+//  Unlike fluids, the structure cannot be named, and this dictionary is always
+//  called structureProperties
 structureProperties
 {    
     //- The only structure model currently available is byZone, wherein the
-    //  porous properties are specified on a cellZone by cellZone basis. This
+    //  porous properties are specified on a cellZone basis. This
     //  entry (type) IS MANDATORY and currently MUST be set to byZone
     type            "byZone";
     
@@ -108,7 +108,7 @@ structureProperties
     //  subDicts IS NOT MANDATORY, and the structure defaults, globally, to
     //  having a null volumeFraction and infinite (1e6m) hydraulic diameter.
     //  For convenience, if multiple cellZones share the
-    //  same exact properties, these names key be grouped by using a colon as
+    //  same exact properties, these names can be grouped by using a colon as
     //  separator. For this case, three cellZones are present in the system, 
     //  low, mid and top. Low and mid share the same properties, so their
     //  subDict key is low:top. These subDicts support many options, yet only
@@ -147,28 +147,28 @@ structureProperties
         //  MANDATORY are such only if this subDict ("zone0:zone1:zone2")
         //  exists
 
-        //- This is the volumeFraction occupied by the structure. This 
-        //  corresponds to 1-voidFraction when compared to the old GeN-Foam.
+        //- This is the volumeFraction occupied by the structure.  
         //  This entry IS MANDATORY
         volumeFraction      0.5;
         
-        //- Hydraulic diameter. This entry IS MANDATORY
+        //- Hydraulic diameter. This entry IS MANDATORY and represents the 
+	//- hydraulic diameter for a fluid flowing through the sub-structure
         Dh                  0.01; 
 
         //- Local x, y axes of the reference frame in this cellZone. These 
         //  entries ARE NOT MANDATORY and default to (1 0 0), (0 0 1). If they 
         //  are provided, localY is computed accordingly. localY CANNOT be
         //  be provided. The purpose of a local reference frame is to more
-        //  easily describe anisotropic drag and porous medium tortuosity
+        //  easily describe anisotropic drag and porous medium tortuosity.
         localX       (1 0 0);
         localZ       (0 0 1);
 
         //- Used to compute a "directional hydraulic diameter". It builds upon
-        //  the original idea of the GeN-Foam to use a directional Reyonlds 
+        //  the initial idea of GeN-Foam to use a directional Reyonlds number
         //  (i.e. different for reference frame direction). In particular, the
         //  i-th directional Reynolds will "see" a hydraulic diameter of 
-        //  Dh*localDhAnisotropy[i] (localAnisotropy is rotated in the local
-        //  reference frame). This entry IS NOT MANDATORY and defaults to 
+        //  Dh*localDhAnisotropy[i]. localDhAnisotropy is rotated to the local
+        //  reference frame. This entry IS NOT MANDATORY and defaults to 
         //  (1 1 1)
         localDhAnisotropy     (1 1 1);
 
@@ -180,8 +180,8 @@ structureProperties
         //  along the bundle axis and < 1 for directions transversal to the 
         //  bundle axis. Components greater than 1 mean that diffusion is 
         //  easier along said direction. For components smaller than 1, the 
-        //  opposite holds How to compute these? Question for another time. 
-        //  It is important to state that this is ONLY IMPACTS THE DIFFUSION of
+        //  opposite holds. How to compute these? Question for another time. 
+        //  It is important to state that this ONLY IMPACTS THE DIFFUSION of
         //  fluid heat and momentum, not their advection. This entry
         //  IS NOT REQUIRED and deafults to (1 1 1)
         localTortuosity     (1 1 1);
@@ -201,7 +201,7 @@ structureProperties
             type    model;
 
             //- The dict entries that are common to all of these models
-            //  are commented first. The, the model-specific ones are presented
+            //  are commented first. Then, the model-specific ones are presented
             
             //- Used to compute the VOLUMETRIC heat capacity of the
             //  structure as volumeFraction*rho*Cp. This entry IS NOT MANDATORY
