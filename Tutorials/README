@@ -1,33 +1,16 @@
-These tutorials have been recently updated to run with the latest GeN-Foam
-on the branch developSRFFS. The main difference consists in a revamped 
-thermal-hydraulics, now entirely based on the FFSEulerFoam multi-phase
-solver (private repository at https://gitlab.com/virmodoetiae/FFSEulerFoam,
-contact Stefan Radman, stefan.radman@epfl.ch or Carlo Fiorina,
-carlo.fiorina@epfl.ch for info). 
+This folder contains a set of tutorials that have been selcted to provide
+a relatively comprhensive outlook of the functionalities of GeN-Foam.
 
-The single-phase or two-phase thermal-hydraulic variants are run time
-selectable (just like neutronics models). Examples on the single-phase variant
-are found in 2D_onePhaseAndPointKineticsCoupling, 3D_MSFR, 3D_SmallESFR.
-Examples of the two-phase variant are found in 1D_boilingNoRegimeMap and 
-2D_voidMotionNoPhaseChange. The most commented inputs are currently found in
-1D_boilingNoRegimeMap, yet these tutorials are not in their final form and are
-still susceptible to updates. The 2D_RegressionESFR is the last tutorial that
-needs to be updated to be compatible with the latest GeN-Foam; it will take
-some time due to its complexity.
+In each tutorial:
 
-While the original GeN-Foam thermal-hydraulics and the new one have a
-significant amount of differences, for the time being, the most immediate ones
-are:
+- a README file provides a general description of the tutorials
 
--	the U field now represents the REAL fluid velocity, not the superficial
-	one! Be mindful of this when setting boundary conditions
+- the input files (dictionaries) are normally commented to allow 
+indentifying the role of non-obvious paramenters
 
--	the volumeFraction keyword to be specified in the phasePropertiesDict
-	(i.e. the dict that substitues porousMediumProperties and fuelProperties)
-	represents the volume fraction of the porous structure and is the 
-	opposite of what was previously known as voidFraction, i.e.
-	volumeFraction = 1 - voidFraction
-	
-Needless to say, this is a stub and only the most vital/primary info with
-respect to the changes is provided. This will be greatly expanded with the
-provision of actual documentation in the coming months
+- an Allrun bash script is provided that can be used to run the tutorial.
+The steps of the Allrun script can also give an understanding of the steps
+to take to run other simulations.
+
+- In complex cases, an Allclean script is provided to clean up a case after
+running it and before another simulation
