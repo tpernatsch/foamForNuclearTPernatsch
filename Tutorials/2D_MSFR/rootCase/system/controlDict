@@ -40,7 +40,7 @@ writeFormat     ascii;
 
 writePrecision  6;
 
-writeCompression on;
+writeCompression off;
 
 timeFormat      general;
 
