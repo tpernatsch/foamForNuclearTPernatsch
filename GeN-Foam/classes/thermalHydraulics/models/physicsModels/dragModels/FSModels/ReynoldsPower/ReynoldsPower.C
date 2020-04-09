@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "Darcy.H"
+#include "ReynoldsPower.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -32,15 +32,15 @@ namespace Foam
 {
 namespace dragModels
 {
-    defineTypeNameAndDebug(Darcy, 0);
-    addToRunTimeSelectionTable(dragModel, Darcy, FSDragModels);
+    defineTypeNameAndDebug(ReynoldsPower, 0);
+    addToRunTimeSelectionTable(dragModel, ReynoldsPower, FSDragModels);
 }
 }
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::dragModels::Darcy::Darcy
+Foam::dragModels::ReynoldsPower::ReynoldsPower
 (
     const objectRegistry& objReg,
     const dictionary& dict,
@@ -83,7 +83,7 @@ Foam::dragModels::Darcy::Darcy
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::dragModels::Darcy::correctKd(volTensorField& Kd) const
+void Foam::dragModels::ReynoldsPower::correctKd(volTensorField& Kd) const
 {   
     const volScalarField& alpha(FSPair_->fluidRef()); 
     const volScalarField& rho(FSPair_->fluidRef().thermo().rho());

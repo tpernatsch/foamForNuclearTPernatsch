@@ -111,9 +111,6 @@ private :
     //  (== fvc::ddt(alpha, rho) + fvc::div(alphaRhoPhi)) [kg/m3/s]
     volScalarField contErr_;
 
-    //- Energy density error of the phase [J/m3]
-    volScalarField heErr_;
-
     //- Characteristic dimension of the fluid. This is equal to the structure
     //  hydraulic diameter if this fluid is continuous, else it is specified
     //  by the fluidDiameterModel within fluidGeometry. Information on whether
@@ -153,6 +150,11 @@ public:
 
         //- To remove abstractness from phaseBase
         virtual void abstract() {}
+
+        //- Initialize alphaPhi and alphaRhoPhi, to be called as a separate
+        //  function in the solver main after adequate phase fraction
+        //  normalization
+        void initAlphaPhis();
 
         //- Construct turbulence model. Required as the turbulence model might
         //  require refs to fields (via objectRegistry lookup) that do not or
@@ -310,16 +312,6 @@ public:
             volScalarField& contErr()
             {
                 return contErr_;
-            }
-
-            const volScalarField& heErr() const
-            {
-                return heErr_;
-            }
-
-            volScalarField& heErr()
-            {
-                return heErr_;
             }
 
             const volScalarField& Dh() const

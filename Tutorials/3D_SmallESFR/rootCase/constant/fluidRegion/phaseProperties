@@ -107,7 +107,7 @@ physicsModelsByRegime
         {
             "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
             {
-                type    Darcy;
+                type    ReynoldsPower;
                 coeff   0.687;
                 exp     -0.25;
             }
@@ -132,7 +132,7 @@ physicsModelsByRegime
         {
             "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
             {
-                type    Darcy;
+                type    ReynoldsPower;
                 coeff   0.687;
                 exp     -0.25;
             }

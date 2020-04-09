@@ -98,8 +98,7 @@ Foam::thermalHydraulicModels::onePhase::onePhase
     //- Create turbulence model
     fluid_.constructTurbulenceModel();
 
-    //- Normalize phase fraction fields, structure has priority over fluid2, 
-    //  fluid2 has priority over fluid1
+    //- Normalize phase fraction fields, structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
 
     //- Set fluid characteristic dimension to structure hydraulic diameter.
@@ -109,21 +108,22 @@ Foam::thermalHydraulicModels::onePhase::onePhase
     //  immutable, this is done only once
     fluid_.Dh() = structure_.Dh();
 
-    //- Initialize fluxes. If alphaPhi exists, it was already read as the
-    //  field is READ_IF_PRESENT. Otherwise, compute it
-    IOobject alphaPhiHeader
-    (
-        fluid_.alphaPhi().name(),
-        mesh.time().timeName(),
-        mesh,
-        IOobject::NO_READ
-    );
-    if (!alphaPhiHeader.typeHeaderOk<surfaceScalarField>(true))
-        fluid_.alphaPhi() = fvc::interpolate(fluid_)*fluid_.phi();
+    //- Initialize fluid-intensive fluxes (i.e. that depend on the phase
+    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL 
+    //  volumetric flux in m3/s and the REAL mass flux in kg/s. By REAL I mean
+    //  not superficial). This is done after the phaseFraction normalization 
+    //  step to ensure consistency. This step has an effect ONLY IF the
+    //  alphaPhi, alphaRhoPhi fields were NOT found on disk
+    fluid_.initAlphaPhis();
+
+    //- Initialize continuity errors. It's important to do it here or, if not
+    //  solving for fluidMechanics, these would never get corrected
+    correctContErr();
+
+    //- The total volumetric flux is the REAL fluid volumetric flux. Might
+    //  as well remove phi_ entirely as a field, I know... Maybe in the future
     phi_ = fluid_.alphaPhi();
-    fluid_.alphaRhoPhi() = 
-        fvc::interpolate(fluid_.thermo().rho())*fluid_.alphaPhi();
-    
+
     //- Initialize dragCoefficient and heatTransferCoefficient tables.
     //  These tables actually consist of only one entry coresponding to the
     //  fluid-structure pair. Why have a table then?  Well, I first
@@ -236,6 +236,26 @@ void Foam::thermalHydraulicModels::onePhase::correctFluidMechanics
 
 void Foam::thermalHydraulicModels::onePhase::correctEnergy(scalar& residual)
 {
+    this->correctContErr();
+    volScalarField contErrRel(fluid_.contErr()/fluid_.thermo().rho());
+
+    Info << endl;
+    Info<< "Continuity error seen by energy (avg min max) ="
+        << " " << contErrRel.weightedAverage(mesh_.V()).value()
+        << " " << min(contErrRel).value()
+        << " " << max(contErrRel).value()
+        << " 1/s"  << endl;
+    Info<< "alphaPhi (avg min max) = "
+        << fluid_.alphaPhi().weightedAverage(mesh_.magSf()).value()
+        << " " << min(fluid_.alphaPhi()).value()
+        << " " << max(fluid_.alphaPhi()).value()
+        << " kg/m3" << endl;
+    Info<< "alphaRhoPhi (avg min max) = "
+        << fluid_.alphaRhoPhi().weightedAverage(mesh_.magSf()).value()
+        << " " << min(fluid_.alphaRhoPhi()).value()
+        << " " << max(fluid_.alphaRhoPhi()).value()
+        << " kg/m3" << endl;
+    Info << endl;
     #include "EEqn_1p.H"
 }
 
@@ -267,8 +287,10 @@ void Foam::thermalHydraulicModels::onePhase::correctRegimes
         htc *= 0.0;
     }
 
-    //- Update continuity errors
-    correctContErr();
+    //- Update continuity errors. These only depend on alphaPhi and alphaRhoPhi
+    //  so its useless to updated them in not doing solveFluidDynamics, as they
+    //  would be constant in such case
+    if (solveFluidDynamics) correctContErr();
 
     //- Correct regimes (i.e. regime marker fields)
     regimeMap_->correct();

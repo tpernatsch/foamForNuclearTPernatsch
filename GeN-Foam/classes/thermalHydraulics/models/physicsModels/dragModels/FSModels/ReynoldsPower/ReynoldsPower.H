@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::dragModels::Darcy
+    Foam::dragModels::ReynoldsPower
 
 Description
     Drag coefficient in the form coeff*Re^exp. The coeff and exp are specified
@@ -32,12 +32,12 @@ Description
     to compute a single drag coefficient for all directions
 
 SourceFiles
-    Darcy.C
+    ReynoldsPower.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef Darcy_H
-#define Darcy_H
+#ifndef ReynoldsPower_H
+#define ReynoldsPower_H
 
 #include "dragModel.H"
 
@@ -50,10 +50,10 @@ namespace dragModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class Darcy Declaration
+                           Class ReynoldsPower Declaration
 \*---------------------------------------------------------------------------*/
 
-class Darcy
+class ReynoldsPower
 :
     public dragModel
 {
@@ -70,12 +70,12 @@ private:
 
 public:
 
-    TypeName("Darcy");
+    TypeName("ReynoldsPower");
 
     //- Constructors
 
         //- Construct for a fluid-structure pair
-        Darcy
+        ReynoldsPower
         (
             const objectRegistry& objReg,
             const dictionary& dict,
@@ -83,7 +83,7 @@ public:
         );
 
         //- Destructor
-        virtual ~Darcy(){}
+        virtual ~ReynoldsPower(){}
 
 
     //- Member Functions

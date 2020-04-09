@@ -75,7 +75,7 @@ physicsModelsByRegime
     {
         "hx"
         {
-            type    Darcy;
+            type    ReynoldsPower;
             coeff   0.687;
             exp     -0.25;
         }

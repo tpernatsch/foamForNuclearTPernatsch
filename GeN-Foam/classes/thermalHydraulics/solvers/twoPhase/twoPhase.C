@@ -311,38 +311,16 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
         max((fluid1_*fluid2_)()).value() >= 1e-4 
     );
 
-    //- Initialize fluxes. If the alphaPhi exist, they have been read
-    //  already as they are READ_IF_PRESENT. Otherwise, compute an 
-    //  approximation. From the alphaPhis, initialize the alphaRhoPhi
-    //  and phi. This step is essential as, if solveEnergy is false,
-    //  the alphaRhoPhis would never get initialized and advection
-    //  won't work in the energy equations
-    IOobject alphaPhi1Header
-    (
-        fluid1_.alphaPhi().name(),
-        mesh.time().timeName(),
-        mesh,
-        IOobject::NO_READ
-    );
-    IOobject alphaPhi2Header
-    (
-        fluid2_.alphaPhi().name(),
-        mesh.time().timeName(),
-        mesh,
-        IOobject::NO_READ
-    );
-    if (!alphaPhi1Header.typeHeaderOk<surfaceScalarField>(true))
-    {
-        fluid1_.alphaPhi() = fvc::interpolate(fluid1_)*fluid1_.phi();
-    }
-    if (!alphaPhi2Header.typeHeaderOk<surfaceScalarField>(true))
-    {
-        fluid2_.alphaPhi() = fvc::interpolate(fluid2_)*fluid2_.phi();
-    }
-    fluid1_.alphaRhoPhi() = 
-        fvc::interpolate(fluid1_.thermo().rho())*fluid1_.alphaPhi();
-    fluid2_.alphaRhoPhi() = 
-        fvc::interpolate(fluid2_.thermo().rho())*fluid2_.alphaPhi();
+    //- Initialize fluid-intensive fluxes (i.e. that depend on the phase
+    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL 
+    //  volumetric flux in m3/s and the REAL mass flux in kg/s. By REAL I mean
+    //  not superficial). This is done after the phaseFraction normalization 
+    //  step to ensure consistency. This step has an effect ONLY IF the
+    //  alphaPhi, alphaRhoPhi fields were NOT found on disk
+    fluid1_.initAlphaPhis();
+    fluid2_.initAlphaPhis();
+
+    //- Set total volumetric flux (real one, not superficial)
     phi_ = fluid1_.alphaPhi() + fluid2_.alphaPhi();
 
     //- Initialize drag coeff and heat transfer coeff tables
@@ -552,7 +530,11 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
         htc *= 0.0;
     }
 
-    //- Update continuity errors, incluisve of mass transfer
+    //- Update continuity errors, incluisve of mass transfer. As mass transfer
+    //  can vary also if not doing fluidMechanics, continuityErrors are always
+    //  corrected, just in case (even though I have no clue why one would
+    //  do phase change simulations with fluidMechanics off, maybe a weird 
+    //  steady state?)
     correctContErrs();
 
     //- Correct local regime fluid geometry models

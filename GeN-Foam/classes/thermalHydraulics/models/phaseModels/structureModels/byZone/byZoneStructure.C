@@ -230,7 +230,16 @@ Foam::structureModels::byZone::byZone
                 //  time step folder, and a volumeFraction keyword is not found
                 //  in the passive subStructure dict, init value to region 
                 //  alpha value, read before
-                else if (!this->typeHeaderOk<volScalarField>(true))
+
+                //- NOTE: Oddly enough, the class keyword in the file headers
+                //  of alphapas_, Tpas_, are set to byZone rather than 
+                //  volScalarField. This is due to some weird dark magic of
+                //  the runTimeSelection mechanism, which I have no will to
+                //  investigate. Thus, to check that fields are present, the
+                //  headerType that needs to be looked for is byZone, not
+                //  volScalarField. Thanks to Carlo for finding out about this
+                //  odd behaviour
+                else if (!this->typeHeaderOk<byZone>(true))
                 {
                     forAll(zoneCellList, j)
                     {
@@ -241,7 +250,7 @@ Foam::structureModels::byZone::byZone
 
                 //- If the passive subStructure temperature field does not 
                 //  exist in the initial time step folder, get it from dict
-                if (!Tpas_.typeHeaderOk<volScalarField>(true))
+                if (!Tpas_.typeHeaderOk<byZone>(true))
                 {
                     scalar Tpas(pasDict.get<scalar>("T"));
                     forAll(zoneCellList, j)

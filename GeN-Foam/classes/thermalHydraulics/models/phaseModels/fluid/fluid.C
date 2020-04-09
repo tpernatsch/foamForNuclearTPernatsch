@@ -91,7 +91,13 @@ Foam::fluid::fluid
             mesh,
             IOobject::READ_IF_PRESENT,
             (
-                (dict_.lookupOrDefault<bool>("writeRestartFields", false)) ?
+                (
+                    mesh.time().controlDict().lookupOrDefault<bool>
+                    (
+                        "writeRestartFields", 
+                        true
+                    )
+                ) ?
                 IOobject::AUTO_WRITE :
                 IOobject::NO_WRITE
             )
@@ -107,7 +113,17 @@ Foam::fluid::fluid
             mesh.time().timeName(),
             mesh,
             IOobject::READ_IF_PRESENT,
-            IOobject::NO_WRITE
+            (
+                (
+                    mesh.time().controlDict().lookupOrDefault<bool>
+                    (
+                        "writeRestartFields", 
+                        true
+                    )
+                ) ?
+                IOobject::AUTO_WRITE :
+                IOobject::NO_WRITE
+            )
         ),
         mesh,
         dimensionedScalar("", dimMass/dimTime, 0)
@@ -121,7 +137,13 @@ Foam::fluid::fluid
             mesh,
             IOobject::READ_IF_PRESENT,
             (
-                (dict_.lookupOrDefault<bool>("writeRestartFields", false)) ?
+                (
+                    mesh.time().controlDict().lookupOrDefault<bool>
+                    (
+                        "writeRestartFields", 
+                        true
+                    )
+                ) ?
                 IOobject::AUTO_WRITE :
                 IOobject::NO_WRITE
             )
@@ -148,24 +170,22 @@ Foam::fluid::fluid
         (
             IOobject::groupName("contErr", this->name()),
             mesh.time().timeName(),
-            mesh
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            (
+                (
+                    mesh.time().controlDict().lookupOrDefault<bool>
+                    (
+                        "writeContinuityErrors", 
+                        false
+                    )
+                ) ?
+                IOobject::AUTO_WRITE :
+                IOobject::NO_WRITE
+            )
         ),
         mesh,
         dimensionedScalar("", dimDensity/dimTime, 0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    heErr_
-    (
-        IOobject
-        (
-            IOobject::groupName("heErr", this->name()),
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimless/dimTime, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
     Dh_
@@ -244,13 +264,6 @@ Foam::fluid::fluid
         this->correctBoundaryConditions();
     }
 
-    //- Init continuity and thermo error (thermo is 0)
-    contErr_ = 
-            fvc::ddt(*this, this->thermo().rho()) 
-        +   fvc::div(this->alphaRhoPhi());
-    contErr_.correctBoundaryConditions();
-    heErr_.correctBoundaryConditions();
-
     thermo_->validate(phaseName, "h", "e");
 
     //- Init magU and Pr
@@ -326,10 +339,10 @@ Foam::fluid::fluid
                     IOobject::NO_READ,
                     (
                         (
-                            dict_.lookupOrDefault<bool>
+                            mesh.time().controlDict().lookupOrDefault<bool>
                             (
                                 "writeRestartFields", 
-                                false
+                                true
                             )
                         ) ?
                         IOobject::AUTO_WRITE :
@@ -341,26 +354,16 @@ Foam::fluid::fluid
             )
         );
     }
-
-    //- Init alphaRhoPhi from alphaPhi if alphaPhi present
-    IOobject alphaPhiHeader
-    (
-        alphaPhi_.name(),
-        mesh.time().timeName(),
-        mesh,
-        IOobject::NO_READ
-    );
-    if (alphaPhiHeader.typeHeaderOk<surfaceScalarField>(true))
-    {
-        Info<< "Calculating mass face flux field" << alphaRhoPhi_.name() 
-            << " from " << alphaPhi_.name() << endl;
-        alphaRhoPhi_ = fvc::interpolate(thermo_->rho())*alphaPhi_;
-    }
-    //- Else, why not compute it here? Well, the reason is that at this stage,
-    //  during fluid creation, there has been no chance to check that the 
-    //  phase fractions are correctly normalized (if there are mutliple 
-    //  fluids). Thus, the alphaPhi might end up being incorrect. Let the main
-    //  solver set the alphaPhi
+    
+    //- What about alphaPhi, alphaRhoPhi? Well, these depend on the 
+    //  phase fraction (unlike phi) but at this step there have been no
+    //  phase fractions normalizations (which can only be done by the main
+    //  solver). Thus, rather than tentatively set the fields twice (here,
+    //  maybe wrong, and then in the main to correct for potential phase
+    //  fraction normalization issues), this needs to be handled by the
+    //  main solver via the initAlphaPhis function. Needless to say, if
+    //  alphaPhi and alphaRhoPhi are found on disk, those are read and that's
+    //  the end of it
 }
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
@@ -370,6 +373,33 @@ Foam::fluid::~fluid()
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+void Foam::fluid::initAlphaPhis()
+{
+    IOobject alphaPhiHeader
+    (
+        alphaPhi_.name(),
+        mesh_.time().timeName(),
+        mesh_,
+        IOobject::NO_READ
+    );
+    IOobject alphaRhoPhiHeader
+    (
+        alphaRhoPhi_.name(),
+        mesh_.time().timeName(),
+        mesh_,
+        IOobject::NO_READ
+    );
+
+    if (!alphaPhiHeader.typeHeaderOk<surfaceScalarField>(true))
+    {
+        alphaPhi_ = fvc::interpolate(*this)*phiPtr_();
+    }
+    if (!alphaRhoPhiHeader.typeHeaderOk<surfaceScalarField>(true))
+    {
+        alphaRhoPhi_ = fvc::interpolate(thermo_->rho())*alphaPhi_;
+    }
+}
 
 void Foam::fluid::constructTurbulenceModel()
 {

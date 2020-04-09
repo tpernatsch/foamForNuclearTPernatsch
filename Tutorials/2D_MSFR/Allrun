@@ -46,7 +46,7 @@ setSteadyStateEN()
     foamDictionary steadyStateEN/system/controlDict -entry startFrom -set startTime
     foamDictionary steadyStateEN/system/controlDict -entry startTime -set 5
     foamDictionary steadyStateEN/system/controlDict -entry endTime -set 100
-    foamDictionary steadyStateEN/system/controlDict -entry deltaT -set 0.5
+    foamDictionary steadyStateEN/system/controlDict -entry deltaT -set 0.25
     foamDictionary steadyStateEN/system/controlDict -entry adjustTimeStep -set false
     foamDictionary steadyStateEN/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary steadyStateEN/system/controlDict -entry writeInterval -set 95
