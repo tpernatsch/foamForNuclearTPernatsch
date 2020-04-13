@@ -63,6 +63,10 @@ solveThermalMechanics   false;
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // Global simulation options
+// This is the crucial flag for MSR simulations. Thanks to this: the power 
+// calculated by the neutronics will be released directly in the coolant; the 
+// delayed neutron precursors will be moved according to the collant velocity;
+// the fuel temperature will be set equal to the coolant temperature.
 
 liquidFuel  			true; 
 
