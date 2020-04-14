@@ -43,12 +43,14 @@ lambda
     9.51817
 );
 
-feedbackCoeffFastDoppler    0; //- Only used if fastNeutrons is True
-feedbackCoeffTFuel         -0.00003;    //- i.e. -3pcm/K
-feedbackCoeffTClad          0.00000;
-feedbackCoeffTCool          0.00000;
-feedbackCoeffRhoCool        0.00000;
-feedbackCoeffTStruct        0.00000;
+
+feedbackCoeffFastDoppler            0; //- Only used if fastNeutrons is True
+feedbackCoeffTFuel                 -0.00003;    //- i.e. -1pcm/K
+feedbackCoeffTClad                  0.00000;
+feedbackCoeffTCool                  0.00000;
+feedbackCoeffRhoCool                0.00000;
+feedbackCoeffTStruct                0.00000;
+absoluteDrivelineExpansionCoeff     0;
 
 //- End of pointKinetics related
 

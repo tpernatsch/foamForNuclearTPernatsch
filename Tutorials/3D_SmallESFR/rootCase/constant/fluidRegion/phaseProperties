@@ -117,7 +117,7 @@ physicsModelsByRegime
         {
             "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
             {
-                type    Nusselt;
+                type    NusseltReynoldsPrandtlPower;
                 const   4;
                 coeff   0;
                 expRe   0;
@@ -142,7 +142,7 @@ physicsModelsByRegime
         {
             "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
             {
-                type    Nusselt;
+                type    NusseltReynoldsPrandtlPower;
                 const   4.82;
                 coeff   0.0185;
                 expRe   0.827;

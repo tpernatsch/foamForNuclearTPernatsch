@@ -65,12 +65,8 @@ structureProperties
 
 regimeMapModel
 {
-    type                oneParameter;
-    parameter           "magU";
-    regimeBounds
-    {
-        "regime0"       (0      1);
-    }
+    type                none;
+
 }
 
 // ------------------------------------------------------------------------- //
@@ -79,30 +75,27 @@ regimeMapModel
 
 physicsModelsByRegime
 {
-    "regime0"
+    dragModels
     {
-        dragModels
+        "zone0"
         {
-            "zone0"
-            {
-                type    ReynoldsPower;
-                coeff   0.687;
-                exp     -0.25;
-            }
+            type    ReynoldsPower;
+            coeff   0.687;
+            exp     -0.25;
         }
+    }
 
-        heatTransferModels
+    heatTransferModels
+    {
+        "zone0"
         {
-            "zone0"
-            {
-                type    Nusselt;
-                const   4.82;
-                coeff   0.0185;
-                expRe   0.827;
-                expPr   0.827;
-            }
+            type    NusseltReynoldsPrandtlPower;
+            const   4.82;
+            coeff   0.0185;
+            expRe   0.827;
+            expPr   0.827;
         }
-    }  
+    }
 }
 
 // ------------------------------------------------------------------------- //

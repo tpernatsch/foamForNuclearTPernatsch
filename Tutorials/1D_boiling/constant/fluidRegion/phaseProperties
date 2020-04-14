@@ -500,7 +500,7 @@ physicsModelsByRegime
         {
             "liquid.vapour"
             {
-                type    Nusselt;
+                type    NusseltReynoldsPrandtlPower;
                 const   10;
                 coeff   0;
                 expRe   0;
@@ -509,7 +509,7 @@ physicsModelsByRegime
 
             "vapour.liquid"
             {
-                type    Nusselt;
+                type    NusseltReynoldsPrandtlPower;
                 const   10;
                 coeff   0;
                 expRe   0;
@@ -520,7 +520,7 @@ physicsModelsByRegime
             {
                 "mid"
                 {
-                    type    Nusselt;
+                    type    NusseltReynoldsPrandtlPower;
                     const   7;
                     coeff   1e-2;
                     expRe   0.75;
@@ -577,7 +577,7 @@ physicsModelsByRegime
         {
             "liquid.vapour"
             {
-                type    Nusselt;
+                type    NusseltReynoldsPrandtlPower;
                 const   10;
                 coeff   0;
                 expRe   0;
@@ -586,7 +586,7 @@ physicsModelsByRegime
 
             "vapour.liquid"
             {
-                type    Nusselt;
+                type    NusseltReynoldsPrandtlPower;
                 const   10;
                 coeff   0;
                 expRe   0;
@@ -597,7 +597,7 @@ physicsModelsByRegime
             {
                 "mid"
                 {
-                    type    Nusselt;
+                    type    NusseltReynoldsPrandtlPower;
                     const   7;
                     coeff   1e-2;
                     expRe   0.75;
