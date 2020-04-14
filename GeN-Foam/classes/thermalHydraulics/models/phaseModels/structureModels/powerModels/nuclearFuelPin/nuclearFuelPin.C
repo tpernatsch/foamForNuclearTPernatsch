@@ -427,8 +427,8 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     {
         label celli(this->cellList_[i]);
         label regioni(cellToRegion_[celli]);
-        label nf(fuelMeshSize_[regioni]);
-        label n(meshSize_[regioni]);
+        const label& nf(fuelMeshSize_[regioni]);
+        const label& n(meshSize_[regioni]);
         const scalarField& Trad(Trad_[celli]);
         Tfi_[celli] = Trad[0];
         Tfo_[celli] = Trad[nf-1];
@@ -436,38 +436,37 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         Tco_[celli] = Trad[n-1];
 
         const scalarList& rRegion(r_[regioni]);
-        scalar& Tfav(Tfav_[celli]);
-        scalar intrf(0);
-        scalar intTrf(0);
-        for(int j = 0; j < nf; j++)
-        {   
-            const scalar& T(Trad[j]);
-            scalar rdrf(rRegion[j]*drf_[regioni]);
-            intrf += rdrf;
-            intTrf += T*rdrf;
-            if (T > Tfmax_) Tfmax_ = T;
-            if (T < Tfmin_) Tfmin_ = T;
-        }
-        Tfav = intTrf/intrf;
+        scalar& Tfavi(Tfav_[celli]);
+        scalar& Tcavi(Tcav_[celli]);
+        
+        updateLocalAvgGlobalMinMaxT
+        (
+            0,
+            nf,
+            rRegion,
+            drf_[regioni],
+            Trad,
+            Tfavi,
+            Tfmin_,
+            Tfmax_
+        );
+        updateLocalAvgGlobalMinMaxT
+        (
+            nf,
+            n,
+            rRegion,
+            drc_[regioni],
+            Trad,
+            Tcavi,
+            Tcmin_,
+            Tcmax_
+        );
 
-        scalar& Tcav(Tcav_[celli]);
-        scalar intrc(0);
-        scalar intTrc(0);
-        for(int j = nf; j < n; j++)
-        {   
-            const scalar& T(Trad[j]);
-            scalar rdrc(rRegion[j]*drc_[regioni]);
-            intrc += rdrc;
-            intTrc += T*rdrc;
-            if (T > Tcmax_) Tcmax_ = T;
-            if (T < Tcmin_) Tcmin_ = T;
-        }
-        Tcav = intTrc/intrc;
-
+        //- This is for updating the global averages, not the local cell ones!
         const scalar& dV(V[celli]);
         totV += dV;
-        Tfavav += Tfav*dV;
-        Tcavav += Tcav*dV;
+        Tfavav += Tfavi*dV;
+        Tcavav += Tcavi*dV;
     }
 
     //- Sync across processors
@@ -505,12 +504,50 @@ Foam::powerModels::nuclearFuelPin::~nuclearFuelPin()
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
+void Foam::powerModels::nuclearFuelPin::updateLocalAvgGlobalMinMaxT
+(
+    const label& starti,
+    const label& endi,
+    const scalarList& r,
+    const scalar& dr,
+    const scalarField& Trad,
+    scalar& Tavi,
+    scalar& Tmin,
+    scalar& Tmax
+)
+{
+    scalar intr(0);
+    scalar intTr(0);
+    for(int j = starti; j < endi; j++)
+    {   
+        const scalar& T(Trad[j]);
+        scalar rdr(r[j]*dr);
+        
+        //- Cells at the mesh ends are only half as wide (the other half
+        //  belongs to the ghost node). Thus, weigh temperatures at the extrema
+        //  by a factor 0.5
+        if (j == starti or j == endi-1)
+        {
+            intr += rdr/2.0;
+            intTr += T*rdr/2.0;
+        }
+        else
+        {
+            intr += rdr;
+            intTr += T*rdr;
+        }
+        if (T > Tmax) Tmax = T;
+        if (T < Tmin) Tmin = T;
+    }
+    Tavi = intTr/intr;
+}
+
 void 
 Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
 (
-    label celli,
-    scalar HTSumi,
-    scalar HSumi
+    const label& celli,
+    const scalar& HTSumi,
+    const scalar& HSumi
 )
 {
     //-
@@ -645,57 +682,31 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     Tci_[celli] = Trad[fuelMeshSize];
     Tco_[celli] = Trad[meshSize-1];
 
-    //- Compute average (for this cell), max, min fuel temperature
-    scalar intrf(0);
-    scalar intTrf(0);
-    for(int i = 0; i < fuelMeshSize; i++)
-    {   
-        const scalar& T(Trad[i]);
-        scalar rdrf(rRegion[i]*drf);
-        
-        //- Fuel cells at the mesh ends are only half as wide (the other half
-        //  belongs to the ghost node). Thus, weigh temperatures at the extrema
-        //  by a factor 0.5
-        if (i == 0 or i == fuelMeshSize-1)
-        {
-            intrf += rdrf/2.0;
-            intTrf += T*rdrf/2.0;
-        }
-        else
-        {
-            intrf += rdrf;
-            intTrf += T*rdrf;
-        }
-        if (T > Tfmax_) Tfmax_ = T;
-        if (T < Tfmin_) Tfmin_ = T;
-    }
-    Tfav_[celli] = intTrf/intrf;
-
-    //- Compute average (for this cell), max, min cladding temperature 
-    scalar intrc(0);
-    scalar intTrc(0);
-    for(int i = fuelMeshSize; i < meshSize; i++)
-    {   
-        const scalar& T(Trad[i]);
-        scalar rdrc(rRegion[i]*drc);
-        
-        //- Clad cells at the mesh ends are only half as wide (the other half
-        //  belongs to the ghost node). Thus, weigh temperatures at the extrema
-        //  by a factor 0.5
-        if (i == fuelMeshSize or i == meshSize-1)
-        {
-            intrc += rdrc/2.0;
-            intTrc += T*rdrc/2.0;
-        }
-        else
-        {
-            intrc += rdrc;
-            intTrc += T*rdrc;
-        }
-        if (T > Tcmax_) Tcmax_ = T;
-        if (T < Tcmin_) Tcmin_ = T;
-    }
-    Tcav_[celli] = intTrc/intrc;
+    //- Update local T averages and local min/max
+    scalar& Tfavi(Tfav_[celli]);
+    scalar& Tcavi(Tcav_[celli]);
+    updateLocalAvgGlobalMinMaxT
+    (
+        0,
+        fuelMeshSize,
+        rRegion,
+        drf,
+        Trad,
+        Tfavi,
+        Tfmin_,
+        Tfmax_
+    );
+    updateLocalAvgGlobalMinMaxT
+    (
+        fuelMeshSize,
+        meshSize,
+        rRegion,
+        drc,
+        Trad,
+        Tcavi,
+        Tcmin_,
+        Tcmax_
+    );
 
     /* Check adjusted flux conservation
     scalar gradQc(kc*(Trad_[celli][meshSize-2]-Tco_[celli])/drc);
@@ -718,7 +729,9 @@ void Foam::powerModels::nuclearFuelPin::correct
     Tcmin_ = 1e69;
     
     //- Update temperatures cell-by-cell and compute averages over the entire
-    //  spatial extent of the nuclearFuelPin model
+    //  spatial extent of the nuclearFuelPin model (what I call global 
+    //  averages, opposed to local averages, which are the average temperature
+    //  values, fuel and clad, of the local radial pin temperature profile)
     const scalarField& V(mesh_.V());
     scalar totV(0);
     scalar Tfavav(0);

@@ -83,15 +83,17 @@ forAllIter
 }
 
 //- Write precursorPowers to reactorState
-
-reactorState_.set("precursorPowers", precursorPowers_);
-reactorState_.regIOobject::writeObject
-(
-    IOstream::ASCII,
-    IOstream::currentVersion,
-    reactorState_.time().writeCompression(),
-    true
-);
+if (TFuel_.mesh().time().write())
+{
+    reactorState_.set("precursorPowers", precursorPowers_);
+    reactorState_.regIOobject::writeObject
+    (
+        IOstream::ASCII,
+        IOstream::currentVersion,
+        reactorState_.time().writeCompression(),
+        true
+    );
+}
 
 Info << endl << "pointKinetics: " << endl;
 #include "pointKineticsInfo.H"

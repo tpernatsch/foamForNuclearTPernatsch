@@ -102,7 +102,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         reactorState_.lookupOrDefault<scalarList>
         (
-            "precursorPowers",
+            "initialPrecursorPowers",
             scalarList(betas_.size(), 0.0)
         )
     ),

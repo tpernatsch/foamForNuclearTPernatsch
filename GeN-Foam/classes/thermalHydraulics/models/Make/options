@@ -20,7 +20,7 @@ EXE_INC = \
     -I./physicsModels/dragModels/FFModels/Autruffe \
     -I./physicsModels/dragModels/FFModels/SchillerNaumann \
     -I./physicsModels/dragModels/FSModels/phaseConstant \
-    -I./physicsModels/dragModels/FSModels/ReynoldsPower \
+    -I./physicsModels/dragModels/FSModels/DarcyReynoldsPower \
     -I./physicsModels/dragModels/FSModels/ChurchillGunterShaw \
     -I./physicsModels/dragModels/FSModels/RehmeGunterShaw \
     -I./physicsModels/heatTransferModels \

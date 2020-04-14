@@ -26,7 +26,7 @@ physicsModels/dragModels/sharedModels/constant/constantDrag.C
 physicsModels/dragModels/FFModels/Autruffe/Autruffe.C
 physicsModels/dragModels/FFModels/SchillerNaumann/SchillerNaumann.C
 physicsModels/dragModels/FSModels/phaseConstant/phaseConstant.C
-physicsModels/dragModels/FSModels/ReynoldsPower/ReynoldsPower.C
+physicsModels/dragModels/FSModels/DarcyReynoldsPower/DarcyReynoldsPower.C
 physicsModels/dragModels/FSModels/ChurchillGunterShaw/ChurchillGunterShaw.C
 physicsModels/dragModels/FSModels/RehmeGunterShaw/RehmeGunterShaw.C
 

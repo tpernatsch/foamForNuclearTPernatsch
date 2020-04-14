@@ -31,8 +31,8 @@ Description
     Derivation of the equations is provided at the end of the present file.
 
 Authors
-    Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
     
 SourceFiles
     nuclearFuelPin.C
@@ -161,9 +161,26 @@ public:
 
     // Member Functions
 
+        void updateLocalAvgGlobalMinMaxT
+        (
+            const label& starti,
+            const label& endi,
+            const scalarList& r,
+            const scalar& dr,
+            const scalarField& Trad,
+            scalar& Tav,
+            scalar& Tmin,
+            scalar& Tmax
+        );
+
         //- Update temperature profiles Tc, Tf, in a single domain cell with
         //  current system conditions
-        void updateLocalTemperatureProfile(label celli, scalar ht, scalar h);
+        void updateLocalTemperatureProfile
+        (
+            const label& celli, 
+            const scalar& ht, 
+            const scalar& h
+        );
 
         //- In two-phase solvers :
         //  HT = H1*frac1*Tfluid1 + H2*frac2*Tfluid2
