@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "NusseltHeatTransfer.H"
+#include "NusseltReynoldsPrandtlPower.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -32,17 +32,17 @@ namespace Foam
 {
 namespace heatTransferModels
 {
-    defineTypeNameAndDebug(Nusselt, 0);
+    defineTypeNameAndDebug(NusseltReynoldsPrandtlPower, 0);
     addToRunTimeSelectionTable
     (
         heatTransferModel, 
-        Nusselt, 
+        NusseltReynoldsPrandtlPower, 
         FFHeatTransferModels
     );
     addToRunTimeSelectionTable
     (
         heatTransferModel, 
-        Nusselt, 
+        NusseltReynoldsPrandtlPower, 
         FSHeatTransferModels
     );
 }
@@ -51,7 +51,8 @@ namespace heatTransferModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::heatTransferModels::Nusselt::Nusselt
+Foam::heatTransferModels::NusseltReynoldsPrandtlPower::
+NusseltReynoldsPrandtlPower
 (
     const objectRegistry& objReg,
     const dictionary& dict,
@@ -98,7 +99,8 @@ Foam::heatTransferModels::Nusselt::Nusselt
 }
 
 
-Foam::heatTransferModels::Nusselt::Nusselt
+Foam::heatTransferModels::NusseltReynoldsPrandtlPower::
+NusseltReynoldsPrandtlPower
 (
     const objectRegistry& objReg,
     const dictionary& dict,
@@ -125,7 +127,10 @@ Foam::heatTransferModels::Nusselt::Nusselt
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::heatTransferModels::Nusselt::correctHtc(volScalarField& htc) const
+void Foam::heatTransferModels::NusseltReynoldsPrandtlPower::correctHtc
+(
+    volScalarField& htc
+) const
 {    
     //- NEVER use a function that returns a tmp to init a const ref, do this
     //  instead

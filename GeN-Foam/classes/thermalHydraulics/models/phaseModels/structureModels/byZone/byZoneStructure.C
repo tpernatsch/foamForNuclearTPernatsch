@@ -61,6 +61,25 @@ Foam::structureModels::byZone::byZone
 {
     bool foundAtLeastOnePassivePropertiesDict(false);
 
+    //- Correct header class names. This is necessary for all volScalarField
+    //  of the structure that are read/written from disk, as, for whatever
+    //  reason I can't figure out, their class header defaults to "byZone"
+    //  instead of "volScalarField". This can mess up field reading.
+    //  Now the fun part. Changing the headerClassName via the headerClassName
+    //  method only works for member fields BUT NOT for the base volScalarField
+    //  (i.e. for the alpha.structure field). I tried all of the three variants
+    //  below but literally no variant works... What the actual fuck in the
+    //  name of sweet baby Jesus? Jasak help pls
+    this->headerClassName() = "volScalarField";
+    this->IOobject::headerClassName() = "volScalarField";
+    this->volScalarField::headerClassName() = "volScalarField";
+
+    //- At least it worked for this field
+    Tpas_.headerClassName() = "volScalarField";
+
+    bool alphaHeaderOk(this->typeHeaderOk<volScalarField>(true));
+    bool TpasHeaderOk(Tpas_.typeHeaderOk<volScalarField>(true));
+
     forAll(dict.toc(), i)
     {
         //- The sturctureProperties dictionary keys consist in cellZone names.
@@ -99,15 +118,29 @@ Foam::structureModels::byZone::byZone
                 zoneCellField
             );
             
-            //- Set volumeFraction of the structure, hydraulic diameter
-            scalar alpha(zoneDict.get<scalar>("volumeFraction"));
+            //- Set volumeFraction of the structure, hydraulic diameter.
+            //  volumeFraction set here only if alpha.structure not found
+            //  on disk
             scalar Dh(zoneDict.get<scalar>("Dh"));
-            forAll(zoneCellList, j)
-            {   
-                label cellj(zoneCellList[j]);
-                (*this)[cellj] = alpha;
-                Dh_[cellj] = Dh;
+            if (!alphaHeaderOk)
+            {
+                scalar alpha(zoneDict.get<scalar>("volumeFraction"));
+                forAll(zoneCellList, j)
+                {   
+                    label cellj(zoneCellList[j]);
+                    (*this)[cellj] = alpha;
+                    Dh_[cellj] = Dh;
+                }
             }
+            else
+            {
+                forAll(zoneCellList, j)
+                {   
+                    label cellj(zoneCellList[j]);
+                    Dh_[cellj] = Dh;
+                }
+            }
+            
 
             //- Set HashTable of volumeFraction volScalarField indexed by 
             //  region (i.e. zone) name
@@ -239,8 +272,9 @@ Foam::structureModels::byZone::byZone
                 //  headerType that needs to be looked for is byZone, not
                 //  volScalarField. Thanks to Carlo for finding out about this
                 //  odd behaviour
-                else if (!this->typeHeaderOk<byZone>(true))
+                else if (!alphaHeaderOk)
                 {
+                    scalar alpha(zoneDict.get<scalar>("volumeFraction"));
                     forAll(zoneCellList, j)
                     {
                         label cellj(zoneCellList[j]);
@@ -250,7 +284,7 @@ Foam::structureModels::byZone::byZone
 
                 //- If the passive subStructure temperature field does not 
                 //  exist in the initial time step folder, get it from dict
-                if (!Tpas_.typeHeaderOk<byZone>(true))
+                if (!TpasHeaderOk)
                 {
                     scalar Tpas(pasDict.get<scalar>("T"));
                     forAll(zoneCellList, j)

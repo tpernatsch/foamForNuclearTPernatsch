@@ -17,6 +17,12 @@ scalar rhoCoolReactivity =
 scalar TStructReactivity = 
     coeffTStruct_*(TStructValue - TStructRef_);
 
+scalar drivelineExpValue
+(
+    coeffDrivelineExp_*(TDrivelineValue - TDrivelineRef_)
+);
+scalar drivelineReactivity(calcDrivelineReactivity(drivelineExpValue));
+
 totalReactivity_ = 
         externalReactivity_ 
     +   DopplerReactivity
@@ -24,5 +30,6 @@ totalReactivity_ =
     +   TCladReactivity
     +   TCoolReactivity
     +   rhoCoolReactivity
-    +   TStructReactivity;
+    +   TStructReactivity
+    +   drivelineReactivity;
     

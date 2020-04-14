@@ -25,7 +25,7 @@ EXE_INC = \
     -I./physicsModels/dragModels/FSModels/RehmeGunterShaw \
     -I./physicsModels/heatTransferModels \
     -I./physicsModels/heatTransferModels/sharedModels/constant \
-    -I./physicsModels/heatTransferModels/sharedModels/Nusselt \
+    -I./physicsModels/heatTransferModels/sharedModels/NusseltReynoldsPrandtlPower \
     -I./physicsModels/fluidGeometryModels \
     -I./physicsModels/fluidGeometryModels/fluidDiameterModels \
     -I./physicsModels/fluidGeometryModels/fluidDiameterModels/constant \

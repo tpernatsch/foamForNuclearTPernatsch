@@ -22,19 +22,22 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::heatTransferModels::Nusselt
+    Foam::heatTransferModels::NusseltReynoldsPrandtlPower
 
 Description
     Heat transfer coefficient computed from Nusselt via a correlation in the
-    form: A + B*Re^(C)*Pr^(D).
+    form: A + B*Reynolds^(C)*Prandtl^(D).
+
+Author
+    Stefan Radman (stefan.radman@epfl.ch, stefanradman92@gmail.com)
 
 SourceFiles
-    NusseltHeatTransfer.C
+    NusseltReynoldsPrandtlPower.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef Nusselt_H
-#define Nusselt_H
+#ifndef NusseltReynoldsPrandtlPower_H
+#define NusseltReynoldsPrandtlPower_H
 
 #include "heatTransferModel.H"
 
@@ -47,10 +50,10 @@ namespace heatTransferModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class Nusselt Declaration
+                           Class NusseltReynoldsPrandtlPower Declaration
 \*---------------------------------------------------------------------------*/
 
-class Nusselt
+class NusseltReynoldsPrandtlPower
 :
     public heatTransferModel
 {
@@ -81,13 +84,13 @@ private:
 
 public:
 
-    TypeName("Nusselt");
+    TypeName("NusseltReynoldsPrandtlPower");
 
 
     //- Constructors
 
         //- Construct for a fluid-fluid pair
-        Nusselt
+        NusseltReynoldsPrandtlPower
         (
             const objectRegistry& objReg,
             const dictionary& dict,
@@ -97,7 +100,7 @@ public:
         );
 
         //- Construct for a fluid-structure pair
-        Nusselt
+        NusseltReynoldsPrandtlPower
         (
             const objectRegistry& objReg,
             const dictionary& dict,
@@ -105,7 +108,7 @@ public:
         );
 
         //- Destructor
-        virtual ~Nusselt(){}
+        virtual ~NusseltReynoldsPrandtlPower(){}
 
 
     //- Member Functions

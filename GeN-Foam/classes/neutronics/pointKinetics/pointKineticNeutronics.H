@@ -95,12 +95,15 @@ protected:
     scalar powerOld_;
     scalarList precursorPowersOld_;
 
-    //- Feedback coefficients
+    //- Feedback coefficients in 1/K (i.e. 1e5 pcm/K)
     scalar coeffTFuel_;
     scalar coeffTClad_;
     scalar coeffTCool_;
     scalar coeffRhoCool_;
     scalar coeffTStruct_;
+
+    //- Absolute driveline expansion coefficient in m/K
+    scalar coeffDrivelineExp_;
 
     //- Reference integral values for feedbacks
     scalar TFuelRef_;
@@ -108,6 +111,7 @@ protected:
     scalar TCoolRef_;
     scalar rhoCoolRef_;
     scalar TStructRef_;
+    scalar TDrivelineRef_;
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
     const volScalarField* TFuelOrig_;
@@ -128,7 +132,7 @@ protected:
     volScalarField TClad_;
     volScalarField TCool_;
     volScalarField rhoCool_;
-    volScalarField TStruct_;
+    volScalarField TStruct_; //- This is also used to compute TDriveline
 
     //-
     volScalarField oneGroupFlux_;
@@ -170,6 +174,13 @@ protected:
     //- For TStructures
     volScalarField structFeedbackCellField_;
 
+    //- For the control rod driveline
+    volScalarField drivelineFeedbackCellField_;
+
+    //- Pairs of control rod insertion value (in m w.r.t. a reference) vs 
+    // reactivity in absolute units (i.e. 1e5 pcm)
+    List<Pair<scalar>> controlRodReactivityMap_;
+
 private:
 
     //- Disallow default bitwise copy construct
@@ -193,47 +204,91 @@ public:
 
     //- Member Functions
 
-        //- Return fluxes
-        virtual const PtrList<volScalarField> fluxes() const
-        {
-            return fluxes_;
-        };
+        //- Used to set the *FeedbackCellField fields
+        void setFeedbackCellField
+        (
+            volScalarField& feedbackCellField, 
+            const word& keyword
+        );
 
-        //- Return precursors
-        virtual const PtrList<volScalarField> precursors() const
-        {
-            return precursors_;
-        };
+        //- Compute driveline expansion reactivity from controlRod reactivity
+        //  map given the absolute driveline expansion in meters
+        scalar calcDrivelineReactivity(const scalar& drivelineExpansion);
 
-        //- Return one group flux
-        virtual const volScalarField& oneGroupFlux() const
-        {
-            return oneGroupFlux_;
-        }
-
-        //- Return power
-        virtual scalar power() const
-        {
-            return power_;
-        };
-
+        //- Used to set all the pointer member variables (the members that end
+        //  with *Orig_) after class initialization (needs to be called by
+        //  solver main)
         virtual void getCouplingFieldRefs
         (
             const objectRegistry& src,
             const meshToMesh& neutroToFluid
         );   
 
+        //- Update local (i.e. on local neutronicMesh) instances of the Orig_
+        //  fields defined on the (baffleless) thermalHydraulic mesh
         virtual void interpolateCouplingFields
         (
             const meshToMesh& neutroToFluid
         );
 
-        //- Correct/update the properties
+        //- Solve pointKinetics
         virtual void correct
         (
             scalar& residual,
             label couplingIter  
         );
+
+        //- To split strings. The file where I got this function originally
+        //  defined is in classes/thermalHydraulics/models/include. However,
+        //  including things from thermalHydraulics in neutronics, even if it's
+        //  just a helper function such as this one, is tremendously
+        //  un-elegant. I don't want the code structure to be spaghetti, so
+        //  I am re-implementing the function here
+        
+        //- The deliminter is a char, so it must be provided in single-
+        //  quotation marks. Type can be either word or string
+        template<class Type>
+        List<Type> split(const Type& compoundItem, char d)
+        {
+            List<Type> items(1, "");
+            int i = 0;
+            for (char const &c : compoundItem)
+            {
+                if (c == d)
+                {
+                    i += 1;
+                    items.append("");
+                }
+                else items[i] += c;
+            }
+            return items;
+        }
+
+        //- Access
+
+            //- Return fluxes
+            virtual const PtrList<volScalarField> fluxes() const
+            {
+                return fluxes_;
+            };
+
+            //- Return precursors
+            virtual const PtrList<volScalarField> precursors() const
+            {
+                return precursors_;
+            };
+
+            //- Return one group flux
+            virtual const volScalarField& oneGroupFlux() const
+            {
+                return oneGroupFlux_;
+            }
+
+            //- Return power
+            virtual scalar power() const
+            {
+                return power_;
+            };
 };
 
 

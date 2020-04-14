@@ -83,7 +83,7 @@ forAllIter
 }
 
 //- Write precursorPowers to reactorState
-/*
+
 reactorState_.set("precursorPowers", precursorPowers_);
 reactorState_.regIOobject::writeObject
 (
@@ -92,20 +92,6 @@ reactorState_.regIOobject::writeObject
     reactorState_.time().writeCompression(),
     true
 );
-*/
 
 Info << endl << "pointKinetics: " << endl;
-Info << "    power = " << power_ << " W" << endl;
-Info << "    totalReactivity   = " << (totalReactivity_*1e5) <<" pcm"<<endl;
-Info << "    -> Doppler (fast) = " << (DopplerReactivity*1e5) <<" pcm"<<endl;
-Info << "    -> TFuel          = " << (TFuelReactivity*1e5) <<" pcm"<<endl;
-Info << "    -> TClad          = " << (TCladReactivity*1e5) <<" pcm"<<endl;
-Info << "    -> TCool          = " << (TCoolReactivity*1e5) <<" pcm"<<endl;
-Info << "    -> rhoCool        = " << (rhoCoolReactivity*1e5) <<" pcm"<<endl;
-Info << "    -> TStruct        = " << (TStructReactivity*1e5) <<" pcm"<<endl;
-Info << "    -> external       = " << (externalReactivity_*1e5) <<" pcm"<<endl;
-Info << "    TFuel = " << TFuelValue << " K" << endl;
-Info << "    TClad = " << TCladValue << " K" << endl;
-Info << "    TCool = " << TCoolValue << " K" << endl;
-Info << "    rhoCool = " << rhoCoolValue << " kg/m3" << endl;
-Info << "    TStruct = " << TStructValue << " K" << endl;
+#include "pointKineticsInfo.H"

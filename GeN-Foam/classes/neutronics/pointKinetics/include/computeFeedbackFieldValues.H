@@ -53,3 +53,11 @@ scalar TStructValue
     ).value()/
     fvc::domainIntegrate(oneGroupFluxSqr*structFeedbackCellField_).value()
 );
+scalar TDrivelineValue
+(
+    fvc::domainIntegrate
+    (
+        oneGroupFluxSqr*TStruct_*drivelineFeedbackCellField_
+    ).value()/
+    fvc::domainIntegrate(oneGroupFluxSqr*drivelineFeedbackCellField_).value()
+);

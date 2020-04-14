@@ -33,7 +33,7 @@ physicsModels/dragModels/FSModels/RehmeGunterShaw/RehmeGunterShaw.C
 physicsModels/heatTransferModels/heatTransferModel.C
 physicsModels/heatTransferModels/newHeatTransferModel.C
 physicsModels/heatTransferModels/sharedModels/constant/constantHeatTransfer.C
-physicsModels/heatTransferModels/sharedModels/Nusselt/NusseltHeatTransfer.C
+physicsModels/heatTransferModels/sharedModels/NusseltReynoldsPrandtlPower/NusseltReynoldsPrandtlPower.C
 
 physicsModels/fluidGeometryModels/fluidDiameterModels/fluidDiameterModel.C
 physicsModels/fluidGeometryModels/fluidDiameterModels/newFluidDiameterModel.C

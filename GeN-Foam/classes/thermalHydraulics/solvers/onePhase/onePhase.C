@@ -236,26 +236,6 @@ void Foam::thermalHydraulicModels::onePhase::correctFluidMechanics
 
 void Foam::thermalHydraulicModels::onePhase::correctEnergy(scalar& residual)
 {
-    this->correctContErr();
-    volScalarField contErrRel(fluid_.contErr()/fluid_.thermo().rho());
-
-    Info << endl;
-    Info<< "Continuity error seen by energy (avg min max) ="
-        << " " << contErrRel.weightedAverage(mesh_.V()).value()
-        << " " << min(contErrRel).value()
-        << " " << max(contErrRel).value()
-        << " 1/s"  << endl;
-    Info<< "alphaPhi (avg min max) = "
-        << fluid_.alphaPhi().weightedAverage(mesh_.magSf()).value()
-        << " " << min(fluid_.alphaPhi()).value()
-        << " " << max(fluid_.alphaPhi()).value()
-        << " kg/m3" << endl;
-    Info<< "alphaRhoPhi (avg min max) = "
-        << fluid_.alphaRhoPhi().weightedAverage(mesh_.magSf()).value()
-        << " " << min(fluid_.alphaRhoPhi()).value()
-        << " " << max(fluid_.alphaRhoPhi()).value()
-        << " kg/m3" << endl;
-    Info << endl;
     #include "EEqn_1p.H"
 }
 
