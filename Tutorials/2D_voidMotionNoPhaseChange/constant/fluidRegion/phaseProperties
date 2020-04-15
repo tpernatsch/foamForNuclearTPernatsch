@@ -124,7 +124,7 @@ physicsModelsByRegime
                 value       0;
             }
 
-            structureInterfacialAreaPartitionModel
+            structureVolumetricAreaPartitionModel
             {
                 type        "constant";
                 value1      1.0;
@@ -172,7 +172,7 @@ physicsModelsByRegime
                 value       0;
             }
 
-            structureInterfacialAreaPartitionModel
+            structureVolumetricAreaPartitionModel
             {
                 type        "constant";
                 value1      1.0;

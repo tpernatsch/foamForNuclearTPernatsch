@@ -6,17 +6,22 @@ This is a simplified test-case for the pointKinetics neutronics model.
 It consists of a 2-D square domain consisting of a single cellZone containing
 fuel. A coolant (properties ~ sodium) flows from the bottom of the domain to
 the top. Cross-sections have been arbitrarily chosen so to obtain a critical
-system in 2 groups. Two transients are simulated:
+system in 2 groups. They are used in an initial steady-state diffusion 
+calculation to obtain the power shape to be used in the point kinetics 
+transient calculations. In case an initial diffusion calculation is not 
+performed, the point kinetic solver will assume a spatially uniform power.
+
+Two transients are simulated:
 
 -   0.2$ reactivity insertion with the only feedback being fuel temperature,
     with the feedback set a -0.3 pcm/K (arbitrary);
 
--   like the trasient above, but feedback from an assumed driveline expansion
-    is modelled too. The control rod reactivity map (see constant/neutroRegion/
-    nuclearData) is arbitrarily set to 100pcm/cm (arbitrary and more than one
+-   like the trasient above, but including the feedback from an assumed 
+    driveline expansion. The control rod reactivity map (constant/neutroRegion/
+    nuclearData) is arbitrarily set to 100 pcm/cm (more than one
     order of magnitude higher than realistic values, used here only for feature
-    demonstratory purposes). Furthermore, the absolute driveline geometry 
-    expansion is assumed to be 8e-5 m/K;
+    demonstration purposes). The absolute driveline expansion coefficient
+    is assumed to be 8e-5 m/K;
 
 In both transienst, the time steps are adjusted so to keep a power change of
 ~ 1% per time step.
