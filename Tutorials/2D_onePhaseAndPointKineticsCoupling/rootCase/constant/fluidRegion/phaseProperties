@@ -29,30 +29,40 @@ structureProperties
 {    
     type            "byZone";
 
-    "intermed:main_fd"
+    "zone0"
     {
-        volumeFraction      0;
-        Dh                  1;
-    }
-
-    "hx"
-    {
-        volumeFraction      0.6;
+        volumeFraction      0.5;
         Dh                  0.01;
 
         powerModel
         {
-            type            constantTemperature;
-            volumetricArea  200;
-            T               900;
+            type                nuclearFuelPin;
+            volumetricArea      300;
+            powerDensity        0;
+            fuelInnerRadius     0.0012;
+            fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     0.005365;
+            fuelMeshSize        16;
+            cladMeshSize        4;
+            fuelRho             10480;
+            fuelCp              250;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               600;
+            cladT               600;
         }
-    }
 
-    "pump"
-    {
-        volumeFraction      0;
-        Dh                  1;
-        momentumSource      (0 0 -300000);
+        passiveProperties
+        {
+            volumetricArea      2;
+            rho                 7700;
+            Cp                  500;
+            T                   600;
+        }
     }
 }
 
@@ -73,7 +83,7 @@ physicsModelsByRegime
 {
     dragModels
     {
-        "hx"
+        "zone0"
         {
             type    DarcyReynoldsPower;
             coeff   0.687;
@@ -83,13 +93,13 @@ physicsModelsByRegime
 
     heatTransferModels
     {
-        "hx"
+        "zone0"
         {
             type    NusseltReynoldsPrandtlPower;
-            const   0;
-            coeff   0.023;
-            expRe   0.8;
-            expPr   0.3;
+            const   4.82;
+            coeff   0.0185;
+            expRe   0.827;
+            expPr   0.827;
         }
     }
 }

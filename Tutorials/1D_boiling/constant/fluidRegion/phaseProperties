@@ -489,7 +489,7 @@ physicsModelsByRegime
             {
                 "low:mid:top"
                 {
-                    type    ReynoldsPower;
+                    type    DarcyReynoldsPower;
                     coeff   2; // coeff A in A*Re^b
                     exp     -0.125; // coeff b in A*Re^b
                 }
@@ -566,7 +566,7 @@ physicsModelsByRegime
             {
                 "low:mid:top"
                 {
-                    type    ReynoldsPower;
+                    type    DarcyReynoldsPower;
                     coeff   2;
                     exp     -0.125;
                 }

@@ -1,7 +1,5 @@
 #!/bin/sh
-rm GeN-Foam.dat log.GeN-Foam
-mv 200 b200
-rm -fr  2* 3*
-mv b200 200
-
+rm -r steady*
+rm -r transient*
+rm *.log
 
