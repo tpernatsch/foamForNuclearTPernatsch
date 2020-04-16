@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -fr 100  log.GeN-Foam GeN-Foam.dat processor*
+
+
+

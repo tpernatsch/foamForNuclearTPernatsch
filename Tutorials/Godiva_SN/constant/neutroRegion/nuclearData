@@ -27,7 +27,7 @@ FoamFile
 
  keff 1.000000e+00 ; 
 
-legendreMoments 5;
+legendreMoments 3;
  
 zones 
  ( 
