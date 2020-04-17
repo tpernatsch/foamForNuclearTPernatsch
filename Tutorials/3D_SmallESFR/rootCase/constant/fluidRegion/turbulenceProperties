@@ -14,11 +14,16 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+// Same as standard OpenFOAM. porousKEpsilon is provided as additional model.
+// The only difference is that it forces k and epsilon to equilibrium values
+// inside the porous zones. These equilibium values can be set in the
+// porousKepsionProperties sub-dictionary here below
+
 simulationType laminar; //RAS
 
 RAS
 {
-    RASModel        porousKEpsilon; //laminar;//kEpsilon;//;
+    RASModel        porousKEpsilon; //laminar;//kEpsilon;
 
     turbulence      on;
 
@@ -29,10 +34,20 @@ porousKEpsilonProperties
 {
     "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
     {
-        convergenceLength           0.5;
-        turbulenceIntensityCoeff    0.16;
+	
+        convergenceLength           0.5; // k and epsilon will exponentially 
+					 // converge to equilibrium according 
+					 // to this exponent
+	// k and epsilon are determined based on correlations for tubulent
+	// intensity (I) and lengh scale (L) 
+	// Turbulent intensity correlation in the form 0.16*Reynolds^-0.125
+	// Reynolds number calculated by the thermal-hydraulic class, accordin
+	// to the input data in phaseProperties	
+        turbulenceIntensityCoeff    0.16; 
         turbulenceIntensityExp      -0.125;
-        turbulenceLengthScaleCoeff  0.07;
+        turbulenceLengthScaleCoeff  0.07; // L = 0.07*Dh (Dh is the hydraulic 
+					  // diameter secificied in 
+					  // phaseProperties)
     }
 }
 
