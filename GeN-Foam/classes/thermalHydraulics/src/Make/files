@@ -1,0 +1,4 @@
+boundaryConditions/FFSWallHeatTransfer/FFSWallHeatTransferFvPatchScalarField.C
+boundaryConditions/velocityRundown/velocityRundownFvPatchVectorField.C
+
+LIB = $(FOAM_USER_LIBBIN)/libFFSSrc2

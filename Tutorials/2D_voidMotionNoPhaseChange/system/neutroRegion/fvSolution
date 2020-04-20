@@ -1,0 +1,61 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    "prec.*|precStar.*|adjoint_prec.*"
+    {   
+        solver           PBiCG;
+        preconditioner   DILU;
+        tolerance        1e-6;
+        relTol           1e-3;
+    }
+    "flux.*|adjoint_flux.*"
+    { 
+
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-6;
+        relTol          1e-3;
+    }
+    
+    "angularFlux.*"
+    { 
+        solver          PBiCGStab;
+        preconditioner  DILU;
+        tolerance       1e-7;
+        relTol          1e-1;
+    }
+}
+
+neutronTransport
+{
+    //- Integral neutron balance made at each time step to predict fluxes at 
+    //  next time step (can be unstable)
+    integralPredictor           false; 
+    
+    implicitPredictor           false;
+    
+    aitkenAcceleration          false;
+
+    //- Required accuracy for the coupling of different energy groups
+    neutronIterationResidual    0.000001; 
+
+    //- Up to 3-400 without acceleration techniques 
+    maxNeutronIterations        50; 
+}
+
+// ************************************************************************* //

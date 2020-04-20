@@ -1,0 +1,42 @@
+if (writeOutput)
+{
+    //- Now write stuff
+    Info<< "Writing output files" << endl << endl;
+
+    out.precision(10);
+    out << runTime.time().value() << ";";
+
+    out.precision(6);
+    out << neutronics.keff() << ";";
+
+    out.precision(5);
+    out << neutronics.power() << ";";
+
+    out.precision(5);
+    forAll(neutronics.fluxes(), energyI)
+    {
+        out << fvc::domainIntegrate(neutronics.fluxes()[energyI]).value() << ";";
+    }
+
+    if (nuclearFuelPin)
+    {        
+        out << pinIO->get<scalar>("Tfmax") << ";";
+        out << pinIO->get<scalar>("Tfavav") << ";";
+        out << pinIO->get<scalar>("Tfmin") << ";";
+        out << pinIO->get<scalar>("Tcmax") << ";";
+        out << pinIO->get<scalar>("Tcavav") << ";";
+        out << pinIO->get<scalar>("Tcmin") << ";";
+        //- Missing coolant temperature for now
+    }
+    else
+    {
+        out << "0;";
+        out << "0;";
+        out << "0;";
+        out << "0;";
+        out << "0;";
+        out << "0;";
+    }
+
+    out << endl;
+}

@@ -1,0 +1,9 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+clear
+
+wmake libso ./classes/thermalHydraulics/models
+wmake libso ./classes/thermalHydraulics/solvers
+wmake libso ./classes/thermalHydraulics/src
+wmake

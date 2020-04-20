@@ -25,50 +25,51 @@ Application
     GeN-Foam
 
 Description
-    Multi-physics solver for nuclear reactor analysis. It couples together
-    a multi-scale fine/coarse mesh (porous medium) sub-solver for thermal-hydraulics,
-    a multi-group diffusion sub-solver for neutronics, a displacement-based
-    sub-solver for thermal-mechanics and a finite-difference model for the
-    temperature field in the fuel. It is targeted towards the analysis of
-    pin-based reactors (e.g., liquid metal fast reactors or light water reactors)
-    or homogeneous reactors (e.g., fast-spectrum molten salt reactors).
-    Derived from chtMultiRegionFoam
+    Multi-physics solver for nuclear reactor analysis. It couples a multi-scale
+    fine/coarse mesh 3-phase (liquid, vapour, porous substructure) sub-solver 
+    for thermal-hydraulics, a multi-group diffusion sub-solver for neutronics,
+    a displacement-based sub-solver for thermal-mechanics. The 
+    thermal-hydraulic sub-solver consists of the custom developed FFSEulerFoam 
+    solver  (https://gitlab.com/virmodoetiae/FFSEulerFoam). It is capable of
+    modelling single and two-phase flows, while modelled fuel types consist
+    of either liquid fuel (e.g. MSRs) or fuel pin lattices. For the latter,
+    the energy dynamics is represented via a 1.5-D finite difference model.
 
 Reference publications
+    
+    NOTE: these publications do not cover recent multi-phase development
+
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, 2015
     "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design 294, pp. 24-37
+    analysis of nuclear reactors", Nuclear Engineering and Design 294, pp. 
+    24-37
 
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-    solver to the European Sodium Fast Reactor and verification against available codes",
-    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
+    multi-physics solver to the European Sodium Fast Reactor and verification 
+    against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 - 
+    Nice (France), Paper 15226
 
-
-Author
+Authors
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+    Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "rhoThermo.H"
-#include "turbulentFluidThermoModel.H"
-#include "fixedGradientFvPatchFields.H"
-#include "regionProperties.H"
-#include "compressibleCourantNo.H"
-#include "coordinateSystem.H"
-#include "porousMedium.H"
-#include "subscaleFuel.H"
-#include "volPointInterpolation.H"
-#include "meshToMesh.H"
+#include "fvOptions.H"
 #include "SquareMatrix.H"
 #include "fvMatrixExt.H"
-#include "porousKEpsilon.H"
-#include "fvOptions.H"
+#include "meshToMesh.H"
+#include "regionProperties.H"
+#include "mergeOrSplitBaffles.H"
+#include "volPointInterpolation.H"
+#include "fixedGradientFvPatchFields.H"
+#include "UPstream.H"
 
+#include "multiphysicsControl.H"
+#include "thermalHydraulicModel.H"
 #include "neutronics.H"
 #include "thermoMechanics.H"
-
-#include "mergeOrSplitBaffles.H"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -77,77 +78,39 @@ int main(int argc, char *argv[])
 {
     #define NO_CONTROL
     #define CREATE_MESH createMeshesPostProcess.H
+    
     #include "postProcess.H"
-
     #include "setRootCase.H"
     #include "createTime.H"
-    #include "readPhysicsToSolve.H"
-
     #include "createMeshes.H"
     #include "createFields.H"
-
-    #include "initContinuityErrs.H"
-    #include "readTimeControls.H"
-
-    #include "compressibleCoNo.H"
-    #include "setInitialMultiRegionDeltaT.H"
-
     #include "createMeshInterpolators.H"
+    #include "createCouplingFields.H"
+    #include "createOutput.H"
 
-    #include "openOutputFiles.H"
-    
+    Info<< "\nStarting time loop\n" << endl;
+
+    Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s" 
+        << nl << endl;
+
+    #include "setDeltaT.H"
+
     while (runTime.run())
     {
-
-        #include "readTimeControls.H"
-        #include "readPIMPLEControls.H"
-        #include "compressibleCoNo.H"
-
-        if((runTime.timeIndex()-runTime.startTimeIndex())>0)
-        {
-            #include "setMultiRegionDeltaT.H"
-        }
         runTime++;
 
+        #include "setDeltaT.H"
+        
         Info << "Time = " << runTime.timeName() << nl << endl;
 
-        if (nOuterCorr != 1)
+        while (multiphysics.loop())
         {
-               #include "setRegionFluidFields.H"
-               #include "storeOldFluidFields.H"
-        }
-
-        bool allRegionsConverged = false;
-        bool finalIter = false;
-
-        // --- PIMPLE loop
-        for (int oCorr=0; oCorr<nOuterCorr; oCorr++)
-        {
-            Info << "PIMPLE iteration no:  " << oCorr << nl << endl;
-
-            if (oCorr == nOuterCorr-1 || allRegionsConverged)
-            {
-                finalIter = true;
-            }
-
-            Info<< "\nSolving for fluid region " << endl;
-
-            #include "setRegionFluidFields.H"
-
-            #include "readFluidPIMPLEControls.H"
-
-            #include "readFluidMultiRegionResidualControls.H"
-
             #include "solve.H"
-
-            #include "residualControlsFluid.H"
-
-            #include "checkResidualControls.H"
         }
-
-        #include "writeOutputs.H"
 
         runTime.write();
+
+        #include "writeOutput.H"
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
         << "  ClockTime = " << runTime.elapsedClockTime() << " s"

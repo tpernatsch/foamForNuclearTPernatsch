@@ -1,9 +1,9 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
-|    \\/     M anipulation  |                                                 |
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -15,68 +15,56 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// General
+application     GeN-Foam;
 
-application         GeN-Foam;
+startFrom       startTime;
 
-startFrom           startTime;
+startTime       0;
 
-startTime           0;
+stopAt          endTime;
 
-stopAt              endTime;
+endTime         1;
 
-endTime             1000;
+deltaT          1;
 
-deltaT              5; // time step (if non adjusted)
+writeControl    timeStep;
 
-adjustTimeStep      false; // adjust time step based on CFL condition, max power and max delta T
+writeInterval   1;
 
-maxDeltaT           0.5; // max time step
+purgeWrite      0;
 
-writeControl        runTime;
+writeFormat     ascii;
 
-writeInterval       100;
+writePrecision  6;
 
-purgeWrite          2;
+writeCompression off;
 
-writeFormat         ascii;
+timeFormat      general;
 
-writePrecision      7;
+timePrecision   6;
 
-writeCompression    true;
+runTimeModifiable true;
 
-timeFormat          general;
+//- Physics to Solve
 
-timePrecision       8;
+solveFluidMechanics false;
 
-runTimeModifiable   true;
+solveEnergy     false;
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+solveNeutronics false;
 
-// Physics to solve
+solveThermalMechanics false;
 
-solveFluidMechanics     true;
+//- Global options
 
-solveEnergy             true;
+liquidFuel false;
 
-solveNeutronics         true;
+//- Time step control options
 
-solveThermalMechanics   true;
+adjustTimeStep      false;
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+maxDeltaT           1;
 
-// Global simulation options
-
-compr       false; // true for compressible simulation
-
-liquidFuel  false; // eg, MSRs
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-// Solution control
-
-maxCo               0.99; // should be below 1 for CFL condition (necessary to guarantee stability if solving NS)
-
-maxPowerVariation   0.025; //max power variation in each time step
+maxCo               1;
 
 // ************************************************************************* //

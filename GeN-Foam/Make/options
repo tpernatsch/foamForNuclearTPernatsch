@@ -2,41 +2,38 @@
 EXE_INC = \
     -I./main \
     -I./main/include \
-    -I./classes/porousKEpsilon \
-    -I./classes/porousKEpsilon/porousKEpsilon \
-    -I./classes/porousClass \
-    -I./classes/porousClass/correlationPorousMedium \
-    -I./classes/porousClass/correlationPorousMedium/byZoneCorrelationPorousMedium \
-    -I./classes/porousClass/correlationPorousMedium/byZoneSodiumCorrelationPorousMedium \
-    -I./classes/fuelClass \
-    -I./classes/fuelClass/include \
-    -I./classes/fuelClass/constSubscaleFuel \
-    -I./classes/neutronicClass \
-    -I./classes/neutronicClass/albedoSP3 \
-    -I./classes/neutronicClass/include \
-    -I./classes/neutronicClass/diffusion \
-    -I./classes/neutronicClass/diffusion/include \
-    -I./classes/neutronicClass/SP3 \
-    -I./classes/neutronicClass/SP3/include \
-    -I./classes/neutronicClass/SN\
-    -I./classes/neutronicClass/SN/include \
-    -I./classes/neutronicClass/adjointDiffusion \
-    -I./classes/neutronicClass/adjointDiffusion/include \
-    -I./classes/neutronicClass/XS/XS \
-    -I./classes/neutronicClass/XS/XS/include \
-    -I./classes/neutronicClass/XS/XSLowMem \
-    -I./classes/neutronicClass/XS/XSLowMem/include \
-    -I./classes/thermoMechanicClass \
-    -I./classes/thermoMechanicClass/include \
-    -I./classes/thermoMechanicClass/linearElastic \
-    -I./classes/thermoMechanicClass/linearElastic/include \
-    -I./classes/thermoMechanicClass/tractionDisplacement/lnInclude \
+    -I./classes/thermalHydraulics/models/lnInclude \
+    -I./classes/thermalHydraulics/solvers/lnInclude \
+    -I./classes/neutronics \
+    -I./classes/neutronics/albedoSP3 \
+    -I./classes/neutronics/include \
+    -I./classes/neutronics/diffusion \
+    -I./classes/neutronics/diffusion/include \
+    -I./classes/neutronics/SP3 \
+    -I./classes/neutronics/SP3/include \
+    -I./classes/neutronics/SN\
+    -I./classes/neutronics/SN/include \
+    -I./classes/neutronics/adjointDiffusion \
+    -I./classes/neutronics/adjointDiffusion/include \
+    -I./classes/neutronics/XS/XS \
+    -I./classes/neutronics/XS/XS/include \
+    -I./classes/neutronics/XS/XSLowMem \
+    -I./classes/neutronics/XS/XSLowMem/include \
+    -I./classes/neutronics/pointKinetics \
+    -I./classes/neutronics/pointKinetics/include \
+    -I./classes/thermoMechanics \
+    -I./classes/thermoMechanics/include \
+    -I./classes/thermoMechanics/linearElastic \
+    -I./classes/thermoMechanics/linearElastic/include \
+    -I./classes/thermoMechanics/tractionDisplacement/lnInclude \
+    -I./classes/multiphysicsControl \
     -I./include \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/TurbulenceModels/compressible/lnInclude \
     -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/specie/lnInclude \
@@ -48,6 +45,9 @@ EXE_INC = \
     -I$(LIB_SRC)/dynamicMesh/lnInclude
 
 EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) -lFFSModels2 \
+    -L$(FOAM_USER_LIBBIN) -lFFSSolvers2 \
+    -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \
     -lsolidThermo \
@@ -65,4 +65,3 @@ EXE_LIBS = \
     -lgenericPatchFields \
     -lreconstruct \
     -ldynamicMesh
-

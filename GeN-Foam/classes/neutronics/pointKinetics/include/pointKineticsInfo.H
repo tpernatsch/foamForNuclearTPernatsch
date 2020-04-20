@@ -1,0 +1,18 @@
+Info<< "    power = " << power_ << " W" << endl;
+Info<< "    totalReactivity   = " << (totalReactivity_*1e5)<< " pcm" << endl;
+Info<< "    -> Doppler (fast) = " << (DopplerReactivity*1e5)<< " pcm" << endl;
+Info<< "    -> TFuel          = " << (TFuelReactivity*1e5) << " pcm" << endl;
+Info<< "    -> TClad          = " << (TCladReactivity*1e5) << " pcm" << endl;
+Info<< "    -> TCool          = " << (TCoolReactivity*1e5) << " pcm" << endl;
+Info<< "    -> rhoCool        = " << (rhoCoolReactivity*1e5) << " pcm" << endl;
+Info<< "    -> TStruct        = " << (TStructReactivity*1e5) << " pcm" << endl;
+Info<< "    -> driveline      = " << (drivelineReactivity*1e5) << " pcm"<<endl;
+Info<< "    TFuel = " << TFuelValue << " K" << endl;
+Info<< "    TClad = " << TCladValue << " K" << endl;
+Info<< "    TCool = " << TCoolValue << " K" << endl;
+Info<< "    rhoCool = " << rhoCoolValue << " kg/m3" << endl;
+Info<< "    TStruct = " << TStructValue << " K" << endl;
+Info<< "    driveline (T, exp) = " 
+    << TDrivelineValue << " K, " 
+    << drivelineExpValue << " m"
+    << endl;
