@@ -50,7 +50,8 @@ runTimeModifiable   true;
 removeBaffles       true;// this flag is not mandatory and allow to create 
 			 // a ghost thermal-hydraulics mesh without baffles.
 			 // This ghost mesh allows obtained better mesh-to-mesh 
-			 // projections between different physics. 
+			 // projections between different physics.
+			 // may not worked in parallel - to be tested 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

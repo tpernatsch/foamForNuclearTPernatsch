@@ -4,6 +4,7 @@ zeroeff = "zero";%zero or eff
 pTarget = 1e6;%core power
 keff = 1;%initial guess
 
+% do not touch from here
 if (strcmp("R",coreState))
 	expansionFromNominalR = 1;
 	radialOrientationX = 1;
@@ -34,6 +35,7 @@ if (strcmp("CL",coreState))
 	Tcladref = 560;
 	TcladPerturbed = 560;
 end
+% do not touch before here
 
 % Serpent name of the univereses you want to include
 SERPENT_NAME(1, [1:  2])  = '11' ;
@@ -44,7 +46,7 @@ SERPENT_NAME(5, [1:  3])  = '150' ;
 SERPENT_NAME(6, [1:  3])  = '250' ;
 SERPENT_NAME(7, [1:  3])  = '350' ;
 
-% corresponding names in the neutro mesh
+% corresponding cellZones names in the neutronics mesh
 OF_NAME = [
 'radialReflector';
 'UO2bundle';
