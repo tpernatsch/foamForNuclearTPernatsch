@@ -15,9 +15,23 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model					diffusionNeutronics;
+// This is the madel used to solve neutronics. It can be:
+// - diffusionNeutronics
+// - SP3Neutronics
+// - SNNeutronics
+// - pointKinetics
+// - adjointDiffusion
+//
+// adjointDiffusion has been developed only as an eigenvalue solver.
+// The others can be used for transient calculations. However, the 
+// SN transient solver has not been tested. In addition, it is
+// currently not accelrated, thus extremely slow (it can require
+// hundreds of iterations per time step).
 
-eigenvalueNeutronics    true;
+
+model					diffusionNeutronics; 
+
+eigenvalueNeutronics    true; // transient calculation if set to false
 
 
 // ************************************************************************* //

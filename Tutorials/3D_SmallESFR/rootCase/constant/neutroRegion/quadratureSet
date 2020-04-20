@@ -8,8 +8,10 @@ FoamFile
     object      esfr_core__res;
 }
 
-discreteDirectionsOct 4;
+// Used only in SN calculations. The meaning of various entries
+// should be self-evident
 
+discreteDirectionsOct 4;
 
  directionUxOct nonuniform List<scalar> 4 (
 2.09769106510711E-01

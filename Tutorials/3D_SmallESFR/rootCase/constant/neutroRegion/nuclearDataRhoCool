@@ -22,9 +22,10 @@ FoamFile
 energyGroups 1 ; 
 
 precGroups 8 ; 
-rhoCoolRef 8.600000e+02 ; 
-rhoCoolPerturbed 5.000000e+02 ;
+rhoCoolRef 8.600000e+02 ; // coolant density at which the nominal XSs in nuclearData have been obtained
+rhoCoolPerturbed 5.000000e+02 ; // coolant density at which the perturbed XSs below have been obtained
 
+// Perturbed XSs.  Only cellZone that you want to parametrize must be specified
 zones 
 ( 
 

@@ -23,12 +23,13 @@ energyGroups 1 ;
 
 precGroups 8 ; 
 
-expansionFromNominal 0.05 ; 
+expansionFromNominal 0.05 ; // expansion from nominal state
 
 radialOrientation (1 0 0) ; 
 
 axialOrientation (0 0 1) ;
 
+// XSs obtained for the expanded geometry.  Only cellZones that you want to parametrize must be specified
 zones 
 ( 
 

@@ -23,10 +23,11 @@ energyGroups 1 ;
 
 precGroups 8 ; 
 
-TCoolRef 8.600000e+02 ; 
+TCoolRef 8.600000e+02 ; // coolant temperature at which the nominal XSs in nuclearData have been obtained
 
-TCoolPerturbed 5.000000e+02 ; 
+TCoolPerturbed 5.000000e+02 ; // coolant temperature at which the the perturbed XSs below have been obtained
 
+// Perturbed XSs. You can also leave the sub-dict empty. No parametrization will be done
 zones
 (
 ); 

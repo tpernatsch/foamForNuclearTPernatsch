@@ -23,8 +23,11 @@ energyGroups 1 ;
 
 precGroups 8 ; 
 
-expansionFromNominal 5.0e-02 ; 
+expansionFromNominal 5.0e-02 ; // define to which expansion compared to nominal
+			       // the XS below correspond
 
+// XSs obtained for the geometry expanded as specified above
+// Only cellZones that you want to parametrize must be specified
 zones 
 ( 
 
