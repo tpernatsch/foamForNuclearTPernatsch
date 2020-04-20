@@ -29,7 +29,20 @@ planeStress      no;
 //  cladding)
 linkedFuel       false; 
 fuelOrientation  (0 0 1); 
-TStructRef       668;
+TStructRef       668; // reference temperature for zero deformation
+
+// Here below an example of properties that forces the core to
+// deform as desired. You'll see that sponge-like structures
+// are used as a trick. Please notice that the fnal deformation
+// will be a composition of the radial expansion calculated by 
+// a linear-elastic solver using the temperatures and properties
+// of structures, and of the axial expansion obtained using the 
+// temperatures and properties of fuel and control rods.
+// Please also look at the boundary conditions in the 0 folder
+// to get a better understanding of what is happening here.
+
+// As a mater of fact, the base solver was not developed for
+// multimaterial analyses. This will be changed asap
 
 zones
 (
