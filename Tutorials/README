@@ -1,5 +1,8 @@
 This folder contains a set of tutorials that have been selcted to provide
-a relatively comprhensive outlook of the functionalities of GeN-Foam.
+a relatively comprhensive outlook of the functionalities of GeN-Foam. In
+3D_SmallESFR, essentially all non-obvious or non-OpenFOAM standard input
+parameters are commented, or they include an indication on the tutorial to
+look at for additional comments.
 
 In each tutorial:
 
