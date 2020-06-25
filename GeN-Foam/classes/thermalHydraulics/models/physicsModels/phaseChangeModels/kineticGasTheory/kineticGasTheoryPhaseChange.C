@@ -56,7 +56,7 @@ Foam::phaseChangeModels::kineticGasTheoryPhaseChange::kineticGasTheoryPhaseChang
     const fluid& fluid1,
     const fluid& fluid2,
     const volScalarField& p,
-    const volScalarFieldTable& htcs,
+    const volScalarFieldPtrTable& htcs,
     volScalarField& dmdt,
     volScalarField& iT,
     volScalarField& iA
@@ -74,7 +74,6 @@ Foam::phaseChangeModels::kineticGasTheoryPhaseChange::kineticGasTheoryPhaseChang
         iT,
         iA
     ),
-    fluid1IsLiquid_(this->get<word>("liquidPhase") == fluid1_.name()),
     sigma_("sigma", dimless, 1.0), //this),
     lambdaEvap_("evaporationCoeff", dimless, this),
     lambdaCond_("condensationCoeff", dimless, this),
@@ -88,21 +87,25 @@ Foam::phaseChangeModels::kineticGasTheoryPhaseChange::kineticGasTheoryPhaseChang
                 2.0*constant::mathematical::pi*constant::physicoChemical::R
             )
         )
-    )
-    //alphaDryout_("alphaDryout", dimless, this)
-{
-    word liquidPhaseName(this->get<word>("liquidPhase"));
-    if  
+    ),
+    //alphaDryout_("alphaDryout", dimless, this),
+    Tl_
     (
-        liquidPhaseName != fluid1_.name()
-    and liquidPhaseName != fluid2_.name()
+        (fluid1_.isLiquid()) ? fluid1_.thermo().T() : fluid2_.thermo().T()
+    ),
+    Tv_
+    (
+        (fluid1_.isGas()) ? fluid1_.thermo().T() : fluid2_.thermo().T()
+    ),
+    alphal_
+    (
+        (fluid1_.isLiquid()) ? fluid1_ : fluid2_
+    ),
+    alphav_
+    (
+        (fluid1_.isGas()) ? fluid1_ : fluid2_
     )
-    {
-        FatalErrorInFunction
-        << "phaseChangeModel: phase " << liquidPhaseName << " not found!"
-        << exit(FatalError);
-    }
-
+{
     dimensionedScalar M1(fluid1_.thermo().W()().average().value());
     dimensionedScalar M2(fluid2_.thermo().W()().average().value());
 
@@ -126,24 +129,6 @@ Foam::phaseChangeModels::kineticGasTheoryPhaseChange::kineticGasTheoryPhaseChang
 
 void Foam::phaseChangeModels::kineticGasTheoryPhaseChange::correctMassTransfer() 
 {
-    //- Refs
-    const volScalarField& Tl
-    (
-        (fluid1IsLiquid_) ? fluid1_.thermo().T() : fluid2_.thermo().T()
-    );
-    const volScalarField& Tv
-    (
-        (fluid1IsLiquid_) ? fluid2_.thermo().T() : fluid1_.thermo().T()
-    );
-    const volScalarField& alphal
-    (
-        (fluid1IsLiquid_) ? fluid1_ : fluid2_
-    );
-    const volScalarField& alphav
-    (
-        (fluid1IsLiquid_) ? fluid2_ : fluid1_
-    );
-
     //- Limit interfacial area so boiling can start 
     //  (very crude, it's the best I have for now)
     this->limitInterfacialArea();
@@ -161,15 +146,16 @@ void Foam::phaseChangeModels::kineticGasTheoryPhaseChange::correctMassTransfer()
     //  G can be different than 0 after conditions for phase change are met
     volScalarField G
     (
-        coeff_*max(alphal, 1e-2)*max(alphav, 1e-2)*
+        coeff_*max(alphal_, 1e-2)*max(alphav_, 1e-2)*
         (
-            lambdaEvap_*posPart(saturation_->pSat(Tl)-p_) 
-        +   lambdaCond_*negPart(saturation_->pSat(Tv)-p_)
+            lambdaEvap_*posPart(saturation_->pSat(Tl_)-p_) 
+        +   lambdaCond_*negPart(saturation_->pSat(Tv_)-p_)
         )/sqrt(iT_)
     );
 
     dmdt_ = 
-        (1.0-f)*dmdt_ + f*iA_*G; //- fiGA_ would have been nicer
+        (1.0-f)*dmdt_ + f*iA_*G;    //- fiGA_ would have been nicer for 
+                                    //  obvious italian reasons
 
     this->limitMassTransfer();
 }

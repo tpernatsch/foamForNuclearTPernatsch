@@ -93,11 +93,11 @@ private:
         
         //- table of drag coefficients between the fluid and each
         //  structure region (currently only defined in terms of cellZone)
-        volTensorFieldTable Kds_;
+        volTensorFieldPtrTable Kds_;
 
         //- table of heat transfer coefficients between the fluid and each
         //  structure region
-        volScalarFieldTable htcs_;
+        volScalarFieldPtrTable htcs_;
 
         //- Regime map
         autoPtr<regimeMapModel> regimeMap_;

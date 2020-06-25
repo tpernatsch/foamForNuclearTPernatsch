@@ -64,8 +64,6 @@ class kineticGasTheoryPhaseChange
 {
 protected:
 
-    const bool fluid1IsLiquid_;
-
     //- Sigma
     const dimensionedScalar sigma_;
 
@@ -84,6 +82,12 @@ protected:
     //  by the liquid temperature or vapour temperature
     //const dimensionedScalar alphaDryout_;
 
+    //- Refs to liquid, vapour temperature and phase fraction
+    const volScalarField& Tl_;
+    const volScalarField& Tv_;
+    const volScalarField& alphal_;
+    const volScalarField& alphav_;
+
 public:
 
     TypeName("kineticGasTheory");
@@ -98,7 +102,7 @@ public:
             const fluid& fluid1,
             const fluid& fluid2,
             const volScalarField& p,
-            const volScalarFieldTable& htcs,
+            const volScalarFieldPtrTable& htcs,
             volScalarField& dmdt,
             volScalarField& iT,
             volScalarField& iA

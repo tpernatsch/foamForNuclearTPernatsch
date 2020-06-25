@@ -36,7 +36,14 @@ fluid2 "vapour";
 //- These dictionaries should always be named fluid1NameProperties and
 //  fluid2NameProperties. The presence of these dictionaries IS MANDATORY
 //  for two-phase simulations
-//  They only support three entries:
+//  They only support 4 entries:
+//  -   stateOfMatter ->    supported entries are either "gas" or "liquid";
+//                          This entry is used by some drag, heat or mass 
+//                          transfer models as knowledge of which phase is
+//                          gaseous(/vapourous) and which phase is liquid
+//                          is necessary sometimes. This entry IS NOT
+//                          MANDATORY in principle but might be REQUIRED
+//                          by specific choices of models;
 //
 //  -   residualAlpha ->    residual fluid volumeFraction used to stabilize
 //                          equations when/if its volumeFraction tends to 0. This
@@ -73,6 +80,7 @@ liquidProperties
     // residualAlpha 1e-9;
     // thermoResidualAlpha 0;
     // writeRestartFields false;
+    stateOfMatter   liquid;
 }
 
 vapourProperties
@@ -80,6 +88,7 @@ vapourProperties
     //- I.e. the vapour temperature is set at saturation temperature in those
     //  cells where the vapour volumeFraction is below 5% (with respect to 
     //  the volume available to fluid flow, accounting for structure)
+    stateOfMatter   gas;
     thermoResidualAlpha 0.05;
 }
 
@@ -389,8 +398,43 @@ structureProperties
         //--End of passiveProperties
     }
     
-    //--End of "zone0:zone1:zone2" dubDict
+    //--End of "zone0:zone1:zone2" subDict
+
 */
+
+    //- Start of powerOffCriterionModel subDict
+
+/*
+    Used to turn off structure power sources (of all powerModels in all 
+    cellZones) if a certain criterion is met. The following will turn all
+    power sources off after normalized.alpha.vapour exceeds 0.957 in any
+    cell of the mesh at any given point. Power sources can't currently be
+    turned on again after they are turned off. This feature was added
+    specifically to model pin bundle boiling experiments
+*/
+    powerOffCriterionModel
+    {
+        //- Only type currently available is fieldValue
+        type            fieldValue;
+
+        //- Name of the volScalarField used for the criterion evaluation. 
+        fieldName       "normalized.alpha.vapour";
+
+        //- Field operation performed to obtain value for comparison against
+        //  a threshold. Currently, only min and max are available
+        fieldOperation  max;
+
+        //- Criterion to be applied. Currently, only valueAboveThreshold and
+        //  valueBelowThresholdAreAvailable
+        criterion       valueAboveThreshold;
+
+        //- 
+        threshold       0.957;
+
+        //- Time delay between the satifaction of the criterion and the moment
+        //  power is actually turned off
+        timeDelay       0.0;
+    }
 
 }
 

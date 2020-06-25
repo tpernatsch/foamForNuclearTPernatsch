@@ -82,6 +82,13 @@ namespace Foam
         word::hash
     >   volTensorFieldTable;
 
+    typedef HashPtrTable
+    <
+        volTensorField,
+        word,
+        word::hash
+    >   volTensorFieldPtrTable;
+
     typedef HashTable
     <
         autoPtr<regime>,

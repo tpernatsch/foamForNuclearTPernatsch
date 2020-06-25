@@ -75,5 +75,11 @@ makeRASModel(kEpsilon);
 #include "porousKEpsilon.H"
 makeRASModel(porousKEpsilon);
 
+#include "LaheyKEpsilon.H"
+makeRASModel(LaheyKEpsilon);
+
+#include "mixtureKEpsilon.H"
+makeRASModel(mixtureKEpsilon);
+
 
 // ************************************************************************* //

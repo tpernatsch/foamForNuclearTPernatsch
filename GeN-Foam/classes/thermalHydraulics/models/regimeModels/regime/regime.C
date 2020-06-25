@@ -178,15 +178,15 @@ Foam::regime::regime
 
 void Foam::regime::initLocalTables
 (
-    volTensorFieldTable& KdTable, 
-    volScalarFieldTable& htcTable
+    volTensorFieldPtrTable& KdTable, 
+    volScalarFieldPtrTable& htcTable
 )
 {
     if (!isInterpolated_)
     {
         forAllConstIter
         (
-            volTensorFieldTable,
+            volTensorFieldPtrTable,
             KdTable,
             iter
         )
@@ -197,17 +197,20 @@ void Foam::regime::initLocalTables
                 Kds_.insert
                 (
                     key,
-                    KdTable[key]
+                    autoPtr<volTensorField>
+                    (
+                        new volTensorField(*KdTable[key])
+                    )
                 );
             }
-            volTensorField& Kd(Kds_[key]);
+            volTensorField& Kd(*Kds_[key]);
             Kd *= 0.0;
             //Kd.correctBoundaryConditions();
         }
 
         forAllConstIter
         (
-            volScalarFieldTable,
+            volScalarFieldPtrTable,
             htcTable,
             iter
         )
@@ -218,10 +221,13 @@ void Foam::regime::initLocalTables
                 htcs_.insert
                 (
                     key,
-                    htcTable[key]
+                    autoPtr<volScalarField>
+                    (
+                        new volScalarField(*htcTable[key])
+                    )
                 );
             }
-            volScalarField& htc(htcs_[key]);
+            volScalarField& htc(*htcs_[key]);
             htc *= 0.0;
             //htc.correctBoundaryConditions();
         }
@@ -234,13 +240,13 @@ void Foam::regime::correctDragModels()
     {
         forAllConstIter
         (
-            volTensorFieldTable,
+            volTensorFieldPtrTable,
             Kds_,
             iter
         )
         {
             word key(iter.key());
-            volTensorField& Kd(Kds_[key]);
+            volTensorField& Kd(*Kds_[key]);
             Kd *= 0.0;
 
             //- Cycles over all dragModels, the ones between a fluid and 
@@ -268,13 +274,13 @@ void Foam::regime::correctHeatTransferModels()
     {
         forAllConstIter
         (
-            volScalarFieldTable,
+            volScalarFieldPtrTable,
             htcs_,
             iter
         )
         {
             word key(iter.key());
-            volScalarField& htc(htcs_[key]);
+            volScalarField& htc(*htcs_[key]);
             htc *= 0.0;
 
             //- Cycles over all dragModels, the ones between a fluid and 
@@ -304,20 +310,20 @@ void Foam::regime::correctFluidGeometryModels()
     }
 }
 
-void Foam::regime::correctDragTable(volTensorFieldTable& KdTable) const
+void Foam::regime::correctDragTable(volTensorFieldPtrTable& KdTable) const
 {
     if (!isInterpolated_)
     {
         forAllIter
         (
-            volTensorFieldTable,
+            volTensorFieldPtrTable,
             KdTable,
             iter
         )
         {
             word key(iter.key());
-            volTensorField& Kd(KdTable[key]);
-            const volTensorField& KdR(Kds_[key]);
+            volTensorField& Kd(*KdTable[key]);
+            const volTensorField& KdR(*Kds_[key]);
             forAll(cellList_, i)
             {
                 label celli(cellList_[i]);
@@ -329,15 +335,15 @@ void Foam::regime::correctDragTable(volTensorFieldTable& KdTable) const
     {
         forAllIter
         (
-            volTensorFieldTable,
+            volTensorFieldPtrTable,
             KdTable,
             iter
         )
         {
             word key(iter.key());
-            volTensorField& Kd(KdTable[key]);
-            const volTensorField& KdR1(regime1_->Kds()[key]);
-            const volTensorField& KdR2(regime2_->Kds()[key]);
+            volTensorField& Kd(*KdTable[key]);
+            const volTensorField& KdR1(*(regime1_->Kds()[key]));
+            const volTensorField& KdR2(*(regime2_->Kds()[key]));
             forAll(cellList_, i)
             {
                 label celli(cellList_[i]);
@@ -349,21 +355,21 @@ void Foam::regime::correctDragTable(volTensorFieldTable& KdTable) const
     }
 }
 
-void Foam::regime::correctHeatTransferTable(volScalarFieldTable& htcTable) 
+void Foam::regime::correctHeatTransferTable(volScalarFieldPtrTable& htcTable) 
 const
 {
     if (!isInterpolated_)
     {
         forAllIter
         (
-            volScalarFieldTable,
+            volScalarFieldPtrTable,
             htcTable,
             iter
         )
         {
             word key(iter.key());
-            volScalarField& htc(htcTable[key]);
-            const volScalarField& htcR(htcs_[key]);
+            volScalarField& htc(*htcTable[key]);
+            const volScalarField& htcR(*htcs_[key]);
             forAll(cellList_, i)
             {
                 label celli(cellList_[i]);
@@ -375,15 +381,15 @@ const
     {
         forAllIter
         (
-            volScalarFieldTable,
+            volScalarFieldPtrTable,
             htcTable,
             iter
         )
         {
             word key(iter.key());
-            volScalarField& htc(htcTable[key]);
-            const volScalarField& htcR1(regime1_->htcs()[key]);
-            const volScalarField& htcR2(regime2_->htcs()[key]);
+            volScalarField& htc(*htcTable[key]);
+            const volScalarField& htcR1(*(regime1_->htcs()[key]));
+            const volScalarField& htcR2(*(regime2_->htcs()[key]));
             forAll(cellList_, i)
             {
                 label celli(cellList_[i]);

@@ -28,6 +28,9 @@ License
 #include "fvcDiv.H"
 #include "myStringOps.H"
 
+//- From forward declarations in structureModel.C
+#include "fluid.H"
+
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
@@ -91,6 +94,7 @@ Foam::structureModels::byZone::byZone
         //  the separation character between zone names
         word key(dict.toc()[i]);
         if (key == "type") continue;
+        if (key == "powerOffCriterionModel") continue;
         const dictionary& zoneDict(dict.subDict(key));
         
         wordList zones(myStringOps::split<word>(key, ':'));

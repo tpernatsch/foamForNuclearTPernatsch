@@ -7,10 +7,20 @@ fvVectorMatrix UEqn(U, dimMass*dimLength/dimTime/dimTime);
 //- Drag between fluid and structure rotated in global reference frame
 volTensorField Kds
 (
+    IOobject
+    (
+        "Kds",
+        mesh_.time().timeName(),
+        mesh_
+    ),
+    (
         structure_.Rl2g() 
-    &   Kds_["FSPair"]
+    &   (*Kds_["FSPair"])
     &   structure_.Rg2l()
+    ),
+    zeroGradientFvPatchScalarField::typeName
 );
+Kds.correctBoundaryConditions();
 
 /*
 volScalarField magKds(mag(Kds)/sqrt(3.0));

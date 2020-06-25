@@ -53,15 +53,6 @@ solveNeutronics false;
 
 solveThermalMechanics false;
 
-//- If the following two keywords are specified, structure powerDensity fields
-//  (of any structure type, constantPower, nuclearFuelPin, etc.) are turned
-//  off if the phaseFraction of the fluid named under powerOffPhaseName 
-//  exceeds powerOffAbovePhaseFraction. Used to simulate power source shut down
-//  after dryout (e.g. common in sodium boiling transient carried out at
-//  experimental facilities)
-powerOffPhaseName "vapour";
-powerOffAbovePhaseFraction  0.957;
-
 //- timeStep control options
 
 adjustTimeStep      true;

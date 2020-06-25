@@ -120,7 +120,20 @@ private:
         //      - fluid1 and fluid2;
         //      - fluid1 and the structure
         //      - fluid2 and the structure
-        volTensorFieldTable Kds_;
+        volTensorFieldPtrTable Kds_;
+
+        //- Fluid-fluid drag coefficient reconstructed from drag factor as
+        //  Cd12_ = 2*Kd12*DhDispersed/(rhoContinuous*mag(Urel))/alpha1/alpha2.
+        //  Why do I even need this? Well, some turbulence models require it
+        //  and reconstructing it from within said turbulence models is
+        //  difficult at low dispersed phase fractions. Kd would go to 0, but
+        //  it is limited (in the solver) to residualKd, so that the
+        //  reconstructed Cd can be significantly over-estimated at low phase
+        //  fractions. Thus, I compute Cd (i.e. this FFCd_) before limiting
+        //  the Kd in the main solver, and look up this field from within the
+        //  turbulence models that need it. All this applies only to the 
+        //  fluid-fluid drag
+        volScalarField Cd12_;
 
         //- Avoid momentum decoupling between the two fluids by imposing a 
         //  minimum value for the drag coefficient
@@ -131,7 +144,7 @@ private:
         //      - fluid2 and interface between fluid2 and fluid1;
         //      - fluid1 and the structure
         //      - fluid2 and the structure
-        volScalarFieldTable htcs_;
+        volScalarFieldPtrTable htcs_;
 
         //- interfacial area between fluid1 and fluid2
         volScalarField iA12_;

@@ -186,6 +186,34 @@ template
     class PsiMaxType,
     class PsiMinType
 >
+void Foam::myMULES::explicitSolve
+(
+    const RdeltaTType& rDeltaT,
+    const RhoType& rho,
+    volScalarField& psi,
+    const surfaceScalarField& phi,
+    surfaceScalarField& phiPsi,
+    const SpType& Sp,
+    const SuType& Su,
+    const PsiMaxType& psiMax,
+    const PsiMinType& psiMin
+)
+{
+    psi.correctBoundaryConditions();
+    limit(rDeltaT, rho, psi, phi, phiPsi, Sp, Su, psiMax, psiMin, false);
+    explicitSolve(rDeltaT, rho, psi, phiPsi, Sp, Su);
+}
+
+
+template
+<
+    class RdeltaTType,
+    class RhoType,
+    class SpType,
+    class SuType,
+    class PsiMaxType,
+    class PsiMinType
+>
 void Foam::myMULES::limiter
 (
     scalarField& allLambda,
@@ -205,7 +233,7 @@ void Foam::myMULES::limiter
 
     const fvMesh& mesh = psi.mesh();
 
-    const dictionary& myMULEScontrols = mesh.solverDict(psi.name());
+    const dictionary& myMULEScontrols = mesh.solverDict("alpha");
 
     const label nLimiterIter
     (

@@ -56,10 +56,24 @@ class fluid
 :
     public phaseBase
 {
+public:
+
+    enum stateOfMatter
+    {
+        undetermined,
+        liquid,
+        gas
+    };
+
+    static const Enum<stateOfMatter> stateOfMatterNames_;
+
 private :
 
     //- Thermophysical properties
     autoPtr<rhoThermo> thermo_;
+
+    //- State of matter
+    const stateOfMatter stateOfMatter_;
 
     //- Velocity
     volVectorField U_;
@@ -166,6 +180,16 @@ public:
         //  desireable to have a separate "constructur function" for the
         //  turbulenceModel
         void constructTurbulenceModel();
+
+        //- Related to stateOfMatter
+        bool isLiquid() const
+        {
+            return stateOfMatter_ == stateOfMatter::liquid;
+        }
+        bool isGas() const
+        {
+            return stateOfMatter_ == stateOfMatter::gas;
+        }
 
         //- Access (const and non-const)
 

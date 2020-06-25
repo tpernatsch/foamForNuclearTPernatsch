@@ -18,9 +18,24 @@ volScalarField Kd12
         mesh_.time().timeName(),
         mesh_
     ),
-    (1.0/3.0)*tr(Kds_[fluid1_.name()+"."+fluid2_.name()]),
+    (1.0/3.0)*tr(*Kds_[fluid1_.name()+"."+fluid2_.name()]),
     zeroGradientFvPatchScalarField::typeName
 );
+//- The Cd is the actual drag coefficient that is required only by some
+//  turbulence models and it is never used elsewhere in the code. I compute it
+//  here rather than in the turbulence models because, if I were to use Kd12,
+//  the this reconstruction might not work as intended at small Kd12 values, as
+//  Kd12 is limited to a minimum of residualKd (so the Cd calculated from
+//  within the turbulence models might end up being severely over-estimated is
+//  such scenarios)
+Cd12_ = 
+    (2.0)*Kd12*FFPair_.DhDispersed()/FFPair_.rhoContinuous()/
+    max
+    (
+        fluid1_*fluid2_*FFPair_.magUr(), 
+        dimensionedScalar("", dimVelocity, 1e-3)
+    );
+
 Kd12 = max(Kd12, residualKd_);
 Kd12.correctBoundaryConditions(); //- <= REQUIRED OR SHIT HAPPENS IN MPI RUNS
 
@@ -37,24 +52,61 @@ Info<< "Kd12 (avg min max) = "
 //  frame
 volTensorField Kd1s
 (
+    IOobject
+    (
+        "Kd1s",
+        mesh_.time().timeName(),
+        mesh_
+    ),
+    (
         structure_.Rl2g() 
-    &   Kds_[fluid1_.name()+".structure"]
+    &   (*Kds_[fluid1_.name()+".structure"])
     &   structure_.Rg2l()
+    ),
+    zeroGradientFvPatchScalarField::typeName
 );
+Kd1s.correctBoundaryConditions();
 
 //- Drag between fluid2 and structure. It is expressed in the local
 //  structure frame coordinates, so rotate it back into the global
 //  frame
 volTensorField Kd2s
 (
+    IOobject
+    (
+        "Kd2s",
+        mesh_.time().timeName(),
+        mesh_
+    ),
+    (
         structure_.Rl2g() 
-    &   Kds_[fluid2_.name()+".structure"]
+    &   (*Kds_[fluid2_.name()+".structure"])
     &   structure_.Rg2l()
+    ),
+    zeroGradientFvPatchScalarField::typeName
 );
+Kd2s.correctBoundaryConditions();
 
-//- Correct turbulence
+//- Correct turbulence. What about this copy-setting fuss? Well, the standard
+//  OpenFOAM turbulence models (e.g. kEpsilon) do not limit the phase fraction
+//  before constructing the epsilon and k equations. This means that if a phase
+//  fraction happens to be 0 somewhere, it will end up causing some null
+//  entries in the k or epsilon matrices (pure genius, whomever made it...).
+//  The solutions are: 1) copy some of the standard kEpslion models and make
+//  them part of FFSEulerFoam and make the changes directly in the turbulence
+//  classes; 2) limit the phase fractions before solving the turbulence models
+//  and them re-setting them to the un-limited values cahced before. Option 1)
+//  is a NO-NO as I don't want to break compatibility with standard OpenFOAM
+//  stuff as well as avoiding code duplication... so, here's the damn ugly
+//  solution 2)
+volScalarField fluid10(fluid1_);
+volScalarField fluid20(fluid2_);
+fluid1_.volScalarField::operator=(max(fluid1_, fluid1_.residualAlpha()));
+fluid2_.volScalarField::operator=(max(fluid2_, fluid2_.residualAlpha()));
 fluid1_.turbulence().correct();
 fluid2_.turbulence().correct();
+fluid1_.volScalarField::operator=(fluid10);
+fluid2_.volScalarField::operator=(fluid20);
 
 {
     volTensorField nuEff1
@@ -90,7 +142,7 @@ fluid2_.turbulence().correct();
                     )
             )
             
-        +   fvm::Sp(Kd12, U1)
+        //+   fvm::Sp(Kd12, U1)
             //- Implicit diagonal contribution of fluid-structure drag, 
             //  explicit off-diagonal contribution
         +   fvm::Sp((1.0/3.0)*tr(Kd1s), U1) + (dev(Kd1s)&U1)
@@ -112,7 +164,7 @@ fluid2_.turbulence().correct();
                         "div(alphaRhoPhiNu,U)"
                     )
             )
-        +   fvm::Sp(Kd12, U2)
+        //+   fvm::Sp(Kd12, U2)
             //- Implicit diagonal contribution of fluid-structure drag,
             //  explicit off-diagonal contribution
         +   fvm::Sp((1.0/3.0)*tr(Kd2s), U2) + (dev(Kd2s)&U2) 
@@ -127,6 +179,13 @@ fluid2_.turbulence().correct();
     {
         UEqn1 += fvm::ddt(alpha1, rho1, U1);
         UEqn2 += fvm::ddt(alpha2, rho2, U2);
+    }
+
+    //
+    if (partialEliminationMode_ != partialEliminationMode::implicit)
+    {
+        UEqn1 += fvm::Sp(Kd12, U1);
+        UEqn2 += fvm::Sp(Kd12, U2);
     }
 
     //- Vritual mass coefficient, not handled by regimes for now

@@ -47,6 +47,7 @@ feedbackCoeffTCool 0;
 feedbackCoeffTClad 0;
 feedbackCoeffRhoCool 0;
 feedbackCoeffFastDoppler 0;
+absoluteDrivelineExpansionCoeff 0;
 
 zones
 ();

@@ -6,8 +6,8 @@
     volScalarField& T2(fluid2_.thermo().T());
     const volVectorField& U1(fluid1_.U());
     const volVectorField& U2(fluid2_.U());
-    const volScalarField& H1i(htcs_[fluid1_.name()+"."+fluid2_.name()]);
-    const volScalarField& H2i(htcs_[fluid2_.name()+"."+fluid1_.name()]);
+    const volScalarField& H1i(*htcs_[fluid1_.name()+"."+fluid2_.name()]);
+    const volScalarField& H2i(*htcs_[fluid2_.name()+"."+fluid1_.name()]);
     const volScalarField& contErr1(fluid1_.contErr());
     const volScalarField& contErr2(fluid2_.contErr());
     volScalarField& rho1(fluid1_.thermo().rho());
@@ -84,6 +84,7 @@
     alpha1 = max(alpha1, fluid1_.residualAlpha());
     alpha2 = max(alpha2, fluid2_.residualAlpha());
 
+    /*
     if 
     (
         mesh_.time().controlDict().found("powerOffAbovePhaseFraction")
@@ -104,6 +105,8 @@
             structure_.powerOff();
         }
     }
+    */
+    structure_.checkPowerOff();
 
     volTensorField alphaEff1
     (
@@ -190,8 +193,18 @@
     //- Correct surface temperature of the power-generating subStructures 
     //  of the structures and add source/sink terms to the fluids energy 
     //  eqns
-    volScalarField H1sfrac(htcs_[fluid1_.name()+".structure"]*frac1_);
-    volScalarField H2sfrac(htcs_[fluid2_.name()+".structure"]*frac2_);
+    //const volScalarField& H1s(*htcs_[fluid1_.name()+".structure"]);
+    //const volScalarField& H2s(*htcs_[fluid2_.name()+".structure"]);
+    volScalarField H1sfrac(*htcs_[fluid1_.name()+".structure"]*frac1_);
+    volScalarField H2sfrac(*htcs_[fluid2_.name()+".structure"]*frac2_);
+    
+    /*
+    forAll(fluid1_, i)
+    {
+        Info<< alpha2[i] << " " << frac1_[i] << " " << frac2_[i] << " "
+            << H1s[i] << " " << H2s[i] << endl;
+    }*/
+    
     structure_.correct
     (
         H1sfrac*T1 + H2sfrac*T2, 

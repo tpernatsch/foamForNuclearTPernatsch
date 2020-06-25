@@ -88,9 +88,11 @@ protected :
     //- Pr of the continuous phase
     volScalarField PrContinuous_;
 
-
     //- Reynolds of the pair
     volScalarField Re_;
+
+    //- Minimum allowable Reynolds
+    dimensionedScalar minRe_;
 
     //- Magnitude of relative velocity difference between phases
     volScalarField magUr_;

@@ -69,6 +69,24 @@ Foam::regimeMapModel::regimeMapModel
 
 void Foam::regimeMapModel::setRequiresModelCorrection()
 {
+    //- I cannot do both these actions in a single loop. Imagine having 3 
+    //  regimes, r0,r1,r2, of which r1 is an interpolated regime between
+    //  r0 and r2 (its name will be r0.r2 but for the sake of discussiong
+    //  let us call it simply r1). Imagine r0 and r1 are the only regimes
+    //  present. It means that r0 requires model correction as well as r1.
+    //  Since r1 is interpolated from r0 and r2, correcting the models of r1
+    //  consists of correcting the models of both r0 and r2. The model
+    //  correction is done elsewhere in the code and is done on the basis
+    //  of the requiresModelCorrection flag, set here. If both the ifs are
+    //  handled in only one loop, if the order in which the regimes are
+    //  iterated is r0,r1,r2, it is easy to see that, at the end of the loop,
+    //  the requiresModelCorrection of r2 will be set to false, even though
+    //  it should be true, as r2 models are used by the interpolated regime r1.
+    //  Thus, the loop is split in two, first to set the flag based on
+    //  the physical existence of the regime, secondly to account for the
+    //  fact that interpolated regimes rely on other models in regimes that
+    //  might not be present (yet that need to be updated for interpolation
+    //  purposes)
     forAllIter
     (
         regimeTable,
@@ -77,11 +95,18 @@ void Foam::regimeMapModel::setRequiresModelCorrection()
     )
     {
         regime& regime(iter()());
-        if (!regime.isInterpolated())
-        {
-            regime.requiresModelCorrection() = regime.isCurrentlyPresent();
-        }
-        else
+        regime.requiresModelCorrection() = regime.isCurrentlyPresent();
+    }
+
+    forAllIter
+    (
+        regimeTable,
+        regimes_,
+        iter
+    )
+    {
+        regime& regime(iter()());
+        if (regime.isInterpolated())
         {
             regime.regime1().requiresModelCorrection() = true;
             regime.regime2().requiresModelCorrection() = true;

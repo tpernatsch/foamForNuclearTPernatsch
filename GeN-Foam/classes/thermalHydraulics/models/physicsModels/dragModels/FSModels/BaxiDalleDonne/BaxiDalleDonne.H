@@ -22,20 +22,32 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::dragModels::ChurchillGunterShaw
+    Foam::dragModels::BaxiDalleDonne
 
 Description
-    Churchill correlation for pressure drop along local principal axis 
-    direction, Gunter-Shaw correlation for the pressure drop in the transverse 
-    directions
+    BaxiDalleDonne correlation for pressure drop
+
+    @ARTICLE{Baxi1981410,
+    author={Baxi, C.B. and Dalle Donne, M.},
+    title={Helium cooled systems, the gas cooled fast breeder reactor},
+    journal={Heat Transfer and Fluid Flow in Nuclear Systems},
+    year={1981},
+    pages={410-462}
+    }
+
+Dictionary entries (mandatory)
+    pinPitch        0.006;
+    pinDiameter     0.0076;
+    wireDiameter    0.0016;
+    wireLeadLen     0.2;
 
 SourceFiles
-    ChurchillGunterShaw.C
+    BaxiDalleDonne.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef ChurchillGunterShaw_H
-#define ChurchillGunterShaw_H
+#ifndef BaxiDalleDonne_H
+#define BaxiDalleDonne_H
 
 #include "dragModel.H"
 
@@ -48,34 +60,28 @@ namespace dragModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class ChurchillGunterShaw Declaration
+                           Class BaxiDalleDonne Declaration
 \*---------------------------------------------------------------------------*/
 
-class ChurchillGunterShaw
+class BaxiDalleDonne
 :
     public dragModel
 {
 private:
 
-    //- These three vector components tell me if the principal axis is aligned
-    //  along the local X, Y or Z axes (local axis depend on the 
-    //  structureModel). The principal component direction index is always
-    //  stored on the last entry (i.e. [2]), while the transverse direction
-    //  indices are stored in the first two entries. The direction indices
-    //  are 0 for localX, 1 for localY, 2 for localZ
-    vector lcmpt_;
-
-    //- Surface roughness of the structure
-    scalar surfaceRoughness_;
+    //- Pre-computed coeffs
+    scalar A_;
+    scalar B_;
+    scalar C_;
     
 public:
 
-    TypeName("ChurchillGunterShaw");
+    TypeName("BaxiDalleDonne");
 
     //- Constructors
 
         //- Construct for a fluid-structure pair
-        ChurchillGunterShaw
+        BaxiDalleDonne
         (
             const objectRegistry& objReg,
             const dictionary& dict,
@@ -83,13 +89,15 @@ public:
         );
 
         //- Destructor
-        virtual ~ChurchillGunterShaw(){}
+        virtual ~BaxiDalleDonne(){}
 
 
     //- Member Functions
 
         //- Drag coefficient
         virtual void correctKd(volTensorField& Kd) const;
+
+        scalar fd(const scalar& Re) const;
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -137,10 +137,10 @@ private :
     autoPtr<fluidGeometry> fluidGeometry_;
 
     //- Local drag coeff table
-    volTensorFieldTable Kds_;
+    volTensorFieldPtrTable Kds_;
 
     //- Local heat transfer coeff table
-    volScalarFieldTable htcs_;
+    volScalarFieldPtrTable htcs_;
 
 public:
 
@@ -173,8 +173,8 @@ public:
         //  respectively
         void initLocalTables
         (
-            volTensorFieldTable& KdTable, 
-            volScalarFieldTable& htcTable
+            volTensorFieldPtrTable& KdTable, 
+            volScalarFieldPtrTable& htcTable
         );
 
         //- Update local regime dragModels
@@ -188,11 +188,11 @@ public:
 
         //- Update the global drag coefficients in a table according to the
         //  spatial regime distribution
-        void correctDragTable(volTensorFieldTable& KdTable) const;
+        void correctDragTable(volTensorFieldPtrTable& KdTable) const;
 
         //- Update the global heat transfer coefficients in a table according 
         //  to the spatial regime distribution
-        void correctHeatTransferTable(volScalarFieldTable& htcTable) const;
+        void correctHeatTransferTable(volScalarFieldPtrTable& htcTable) const;
 
         //- Update the provided global:
         //      - fluid-fluid interfacial area;
@@ -309,13 +309,13 @@ public:
             }
 
             //- Local drag table
-            const volTensorFieldTable& Kds() const
+            const volTensorFieldPtrTable& Kds() const
             {
                 return Kds_;
             }
 
             //- Local heat transfer table
-            const volScalarFieldTable& htcs() const
+            const volScalarFieldPtrTable& htcs() const
             {
                 return htcs_;
             }

@@ -41,6 +41,9 @@ SourceFiles
 
 \*---------------------------------------------------------------------------*/
 
+#ifndef MYSTRINGOPS_H
+#define MYSTRINGOPS_H
+
 #include "List.H"
 
 namespace Foam
@@ -67,5 +70,7 @@ namespace myStringOps
     }
 }
 }
+
+#endif
 
 /*---------------------------------------------------------------------------*/

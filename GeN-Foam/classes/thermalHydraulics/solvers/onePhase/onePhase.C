@@ -134,43 +134,49 @@ Foam::thermalHydraulicModels::onePhase::onePhase
     Kds_.insert
     (
         "FSPair",
-        volTensorField
+        autoPtr<volTensorField>
         (
-            IOobject
+            new volTensorField
             (
-                "Kd",
-                mesh_.time().timeName(),
+                IOobject
+                (
+                    "Kd",
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::NO_WRITE
+                ),
                 mesh_,
-                IOobject::NO_READ,
-                IOobject::NO_WRITE
-            ),
-            mesh_,
-            dimensionedTensor
-            (
-                "", 
-                dimDensity/dimTime, 
-                tensor(0,0,0,0,0,0,0,0,0)
-            ),
-            zeroGradientFvPatchScalarField::typeName
+                dimensionedTensor
+                (
+                    "", 
+                    dimDensity/dimTime, 
+                    tensor(0,0,0,0,0,0,0,0,0)
+                ),
+                zeroGradientFvPatchScalarField::typeName
+            )
         )
     );
 
     htcs_.insert
     (
         "FSPair",
-        volScalarField
+        autoPtr<volScalarField>
         (
-            IOobject
+            new volScalarField
             (
-                "htc",
-                mesh_.time().timeName(),
+                IOobject
+                (
+                    "htc",
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::NO_WRITE
+                ),
                 mesh_,
-                IOobject::NO_READ,
-                IOobject::NO_WRITE
-            ),
-            mesh_,
-            dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
-            zeroGradientFvPatchScalarField::typeName
+                dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
+                zeroGradientFvPatchScalarField::typeName
+            )
         )
     );
 
@@ -248,22 +254,22 @@ void Foam::thermalHydraulicModels::onePhase::correctRegimes
     //- Reset all fields relevant for fluid-structure coupling
     forAllIter
     (
-        volTensorFieldTable,
+        volTensorFieldPtrTable,
         Kds_,
         iter
     )
     {
-        volTensorField& Kd(iter());
+        volTensorField& Kd(*iter());
         Kd *= 0.0;
     }
     forAllIter
     (
-        volScalarFieldTable,
+        volScalarFieldPtrTable,
         htcs_,
         iter
     )
     {
-        volScalarField& htc(iter());
+        volScalarField& htc(*iter());
         htc *= 0.0;
     }
 
@@ -319,34 +325,6 @@ void Foam::thermalHydraulicModels::onePhase::correctRegimes
         if (solveFluidDynamics) regime.correctDragTable(Kds_);
         if (solveEnergy) regime.correctHeatTransferTable(htcs_); 
     }
-
-    //- Correct BCs of global fields outside of regimes, as not the same
-    //  regimes might be present on all processors, meaning that a 
-    //  correctBoundaryConditions would be called on a global field an unequal
-    //  amount of times, resulting in an MPI wait error. Nonetheless, the
-    //  usefuleness of these BCs is debatable given that these fields are
-    //  (amlost?) always maniupulated on a cell-by-cell basis
-    /*
-    forAllIter
-    (
-        volTensorFieldTable,
-        Kds_,
-        iter
-    )
-    {
-        volTensorField& Kd(iter());
-        Kd.correctBoundaryConditions();
-    }
-    forAllIter
-    (
-        volScalarFieldTable,
-        htcs_,
-        iter
-    )
-    {
-        volScalarField& htc(iter());
-        htc.correctBoundaryConditions();
-    }*/
 }
 
 void Foam::thermalHydraulicModels::onePhase::correctCourant()

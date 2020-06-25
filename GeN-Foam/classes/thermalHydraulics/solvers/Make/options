@@ -8,7 +8,9 @@ EXE_INC = \
     -I./twoPhase/include \
     -I./twoPhase/include/equations \
     -I./twoPhase/include/equations/myMULES \
+    -I./twoPhase/KNSProbe \
     -I./../models/lnInclude \
+    -I./../src/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/transportModels/incompressible/transportModel \
@@ -16,6 +18,8 @@ EXE_INC = \
     -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
     -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/sampling/lnInclude \
+    -I$(LIB_SRC)/surfMesh/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude
 
 EXE_LIBS = \
@@ -29,4 +33,6 @@ EXE_LIBS = \
     -lcompressibleTurbulenceModels \
     -lfiniteVolume \
     -lfvOptions \
+    -lsampling \
+    -lsurfMesh \
     -lmeshTools

@@ -358,19 +358,6 @@ else //- i.e. if doing implicitPartialElimination
     +   alphaRhof2byDt
     );
 
-    //- Construct inverse coefficients. The additional terms come from
-    //  partial elimination
-    surfaceScalarField rAUf1
-    (
-        "rAUf."+fluid1_.name(),
-        1.0/(Af1 - sqr(Kdf12)/Af2)
-    );
-    surfaceScalarField rAUf2
-    (
-        "rAUf."+fluid2_.name(),
-        1.0/(Af2 - sqr(Kdf12)/Af1)
-    );
-
     //-
     surfaceScalarField KdbyAf1
     (
@@ -381,16 +368,31 @@ else //- i.e. if doing implicitPartialElimination
         Kdf12/Af2
     );
 
+    //- Construct inverse coefficients. The additional terms come from
+    //  partial elimination
+    surfaceScalarField rAUf1
+    (
+        "rAUf."+fluid1_.name(),
+        1.0/(Af1 + Kdf12*(1.0+Af1/Af2))
+    );
+    surfaceScalarField rAUf2
+    (
+        "rAUf."+fluid2_.name(),
+        1.0/(Af2 + Kdf12*(1.0+Af2/Af1))
+    );
+
     //- 
     surfaceScalarField limitedAlphaf1(max(alphaf1, residualAlpha1));
     surfaceScalarField limitedAlphaf2(max(alphaf2, residualAlpha2));
-    surfaceScalarField alpharAUf1
+    surfaceScalarField alpharAUf1(limitedAlphaf1*rAUf1);
+    surfaceScalarField alpharAUf2(limitedAlphaf1*rAUf2);
+    surfaceScalarField alpharAUf1Star
     (
-        rAUf1*(limitedAlphaf1 + limitedAlphaf2*KdbyAf2)
+        (alphaf1+KdbyAf2*(alphaf1+alphaf2))*rAUf1
     );
-    surfaceScalarField alpharAUf2
+    surfaceScalarField alpharAUf2Star
     (
-        rAUf2*(limitedAlphaf2 + limitedAlphaf1*KdbyAf1)
+        (alphaf2+KdbyAf1*(alphaf1+alphaf2))*rAUf2
     );
 
     while (pimple_.correct())
@@ -418,7 +420,7 @@ else //- i.e. if doing implicitPartialElimination
             "ghSnGradRho",
             ghf_*fvc::snGrad(rho_)*mesh_.magSf()
         );
-        surfaceScalarField source1
+        surfaceScalarField phiSource1
         (
             //- Gravity/buoyancy
             -   alphaf1*
@@ -430,7 +432,7 @@ else //- i.e. if doing implicitPartialElimination
             //- Explicit part of time derivative   
             +   alphaRhof10byDt*MRF_.absolute(phi1.oldTime())
         );
-        surfaceScalarField source2
+        surfaceScalarField phiSource2
         (
             //- Gravity/buoyancy
             -   alphaf2*
@@ -445,40 +447,29 @@ else //- i.e. if doing implicitPartialElimination
         if (structure_.momentumSourcePtr().valid())
         {
             surfaceScalarField fluxMS(fvc::flux(structure_.momentumSource()));
-            source1 += alphaf1*fluxMS;
-            source2 += alphaf2*fluxMS;
+            phiSource1 += alphaf1*fluxMS;
+            phiSource2 += alphaf2*fluxMS;
         }
-        surfaceScalarField phiSource1
-        (
-            rAUf1*
-            (
-                source1
-            +   KdbyAf2*source2
-            )
-        ); 
-        surfaceScalarField phiSource2
-        (
-            rAUf2*
-            (
-                source2
-            +   KdbyAf1*source1
-            )
-        );
-
         //- Predicted fluxes
         surfaceScalarField phiH1(fvc::flux(UEqn1.H()));
         surfaceScalarField phiH2(fvc::flux(UEqn2.H()));
         surfaceScalarField phiHbyA1
         (
             IOobject::groupName("phiHbyA", fluid1_.name()),
-            rAUf1*(phiH1 + phiH2*KdbyAf2)
-        +   phiSource1
+            rAUf1*
+            (
+                (1.0+KdbyAf2)*(phiH1+phiSource1)
+            +   KdbyAf2*(phiH2+phiSource2)
+            )
         );
         surfaceScalarField phiHbyA2
         (
             IOobject::groupName("phiHbyA", fluid2_.name()),
-            rAUf2*(phiH2 + phiH1*KdbyAf1)
-        +   phiSource2
+            rAUf2*
+            (
+                (1.0+KdbyAf1)*(phiH2+phiSource2)
+            +   KdbyAf1*(phiH1+phiSource1)
+            )
         );
 
         //- Predicted mixture flux
@@ -495,7 +486,7 @@ else //- i.e. if doing implicitPartialElimination
         surfaceScalarField rAUf
         (
             "rAUf",
-            mag(alphaf1*alpharAUf1 + alphaf2*alpharAUf2)
+            mag(alphaf1*alpharAUf1Star + alphaf2*alpharAUf2Star)
         );
 
         //- Update the fixedFluxPressure BCs to ensure flux consistency
@@ -559,8 +550,8 @@ else //- i.e. if doing implicitPartialElimination
 
                 surfaceScalarField mSfGradp("mSfGradp", pEqnFlux/rAUf);
                 
-                phi1 = phiHbyA1 + alpharAUf1*mSfGradp;
-                phi2 = phiHbyA2 + alpharAUf2*mSfGradp;
+                phi1 = phiHbyA1 + alpharAUf1Star*mSfGradp;
+                phi2 = phiHbyA2 + alpharAUf2Star*mSfGradp;
 
                 fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
                 fluid2_.dgdt() = -pEqnComp2 & p_rgh_;

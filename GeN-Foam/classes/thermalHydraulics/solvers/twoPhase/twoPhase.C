@@ -163,6 +163,19 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
         mesh,
         dimensionedScalar("", dimDensity, 0.0)
     ),
+    Cd12_
+    (
+        IOobject
+        (
+            "Cd."+fluid1_.name()+"."+fluid2_.name(),
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless, 1e-6)
+    ),
     residualKd_
     (
         dimensionedScalar::lookupOrDefault
@@ -511,22 +524,22 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
     //- Reset all relevant fields that need to be set by the regimes
     forAllIter
     (
-        volTensorFieldTable,
+        volTensorFieldPtrTable,
         Kds_,
         iter
     )
     {
-        volTensorField& Kd(iter());
+        volTensorField& Kd(*iter());
         Kd *= 0.0;
     }
     forAllIter
     (
-        volScalarFieldTable,
+        volScalarFieldPtrTable,
         htcs_,
         iter
     )
     {
-        volScalarField& htc(iter());
+        volScalarField& htc(*iter());
         htc *= 0.0;
     }
 
@@ -664,22 +677,22 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
     /*
     forAllIter
     (
-        volTensorFieldTable,
+        volTensorFieldPtrTable,
         Kds_,
         iter
     )
     {
-        volTensorField& Kd(iter());
+        volTensorField& Kd(*iter());
         Kd.correctBoundaryConditions();
     }
     forAllIter
     (
-        volScalarFieldTable,
+        volScalarFieldPtrTable,
         htcs_,
         iter
     )
     {
-        volScalarField& htc(iter());
+        volScalarField& htc(*iter());
         htc.correctBoundaryConditions();
     }*/
 }
@@ -723,7 +736,6 @@ void Foam::thermalHydraulicModels::twoPhase::adjustTimeStep()
 {
     this->correctCourant();
 
-    bool bothPhasesWerePresent(bothPhasesArePresent_);
     bool phase1(max(fluid1_).value() >= 1e-6);
     bool phase2(max(fluid2_).value() >= 1e-6);
     bothPhasesArePresent_ = (phase1 and phase2);
@@ -752,39 +764,27 @@ void Foam::thermalHydraulicModels::twoPhase::adjustTimeStep()
                 and phaseChange_.valid()
                 )
                 {
-                    if (!withinMarginToPhaseChange_)
+                    scalar marginToPhaseChange
+                    (
+                        runTime_.controlDict().get<scalar>
+                        (
+                            "marginToPhaseChange"
+                        )
+                    );
+                    scalar DT1(min(mag(fluid1_.T()-iT12_)().primitiveField()));
+                    scalar DT2(min(mag(fluid2_.T()-iT12_)().primitiveField()));
+                    if 
+                    (
+                        (
+                            phase1 and !phase2 and DT1 < marginToPhaseChange
+                        ) or
+                        (
+                            phase2 and !phase1 and DT2 < marginToPhaseChange
+                        )
+                    )
                     {
-                        scalar marginToPhaseChange
-                        (
-                            runTime_.controlDict().get<scalar>
-                            (
-                                "marginToPhaseChange"
-                            )
-                        );
-                        if 
-                        (
-                            phase1 
-                        and !phase2 
-                        and max(mag(fluid1_.T()-iT12_)).value() 
-                            < marginToPhaseChange
-                        )
-                        {
-                            withinMarginToPhaseChange_ = true;
-                        }
-                        else if 
-                        (
-                            phase2 
-                        and !phase1 
-                        and max(mag(fluid2_.T()-iT12_)).value() 
-                            < marginToPhaseChange
-                        )
-                        {
-                            withinMarginToPhaseChange_ = true;
-                        }
+                        maxCo = maxCoTwoPhase;
                     }
-                    else if (bothPhasesWerePresent) 
-                        withinMarginToPhaseChange_ = false;
-                    else maxCo = maxCoTwoPhase;
                 }
             }
         }

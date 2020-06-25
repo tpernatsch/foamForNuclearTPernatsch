@@ -330,15 +330,26 @@ else    //- i.e. if doing implicitPartialElimination
         UEqn2.A() 
     +   max(residualAlpha2 - alpha2, 0.0)*rho2/mesh_.time().deltaT()
     );
+
+    //-
+    volScalarField KdbyA1
+    (
+        Kd12/A1
+    );
+    volScalarField KdbyA2
+    (
+        Kd12/A2
+    );
+
     volScalarField rAU1
     (
         "rAU."+fluid1_.name(),
-        1.0/(A1-sqr(Kd12)/A2)
+        1.0/(A1 + Kd12*(1.0+A1/A2))
     );
     volScalarField rAU2
     (
         "rAU."+fluid2_.name(),
-        1.0/(A2-sqr(Kd12)/A1)
+        1.0/(A2 + Kd12*(1.0+A2/A1))
     );
 
     //- 
@@ -346,25 +357,19 @@ else    //- i.e. if doing implicitPartialElimination
     volScalarField limitedAlpha2(max(alpha2, residualAlpha2));
     surfaceScalarField alpharAUf1
     (
-        fvc::interpolate
-        (
-            rAU1*
-            (
-                limitedAlpha1
-            +   limitedAlpha2*Kd12/A2
-            )
-        )
+        fvc::interpolate(limitedAlpha1*rAU1)
     );
     surfaceScalarField alpharAUf2
     (
-        fvc::interpolate
-        (
-            rAU2*
-            (
-                limitedAlpha2
-            +   limitedAlpha1*Kd12/A1
-            )
-        )
+        fvc::interpolate(limitedAlpha2*rAU2)
+    );
+    surfaceScalarField alpharAUf1Star
+    (
+        fvc::interpolate((alpha1+KdbyA2*(alpha1+alpha2))*rAU1)
+    );
+    surfaceScalarField alpharAUf2Star
+    (
+        fvc::interpolate((alpha2+KdbyA1*(alpha1+alpha2))*rAU2)
     );
 
     while (pimple_.correct())
@@ -385,8 +390,8 @@ else    //- i.e. if doing implicitPartialElimination
             "HbyA."+fluid1_.name(),
             rAU1
            *(
-                H1()
-            +   H2()*Kd12/A2
+                (1.0+KdbyA2)*H1()
+            +   KdbyA2*H2()
             +   max(residualAlpha1 - alpha1, 0.0)*
                 rho1*U1.oldTime()/mesh_.time().deltaT()
             )
@@ -397,8 +402,8 @@ else    //- i.e. if doing implicitPartialElimination
             "HbyA."+fluid2_.name(),
             rAU2
            *(
-                H2()
-            +   H1()*Kd12/A1
+                (1.0+KdbyA1)*H2()
+            +   KdbyA1*H1()
             +   max(residualAlpha2 - alpha2, 0.0)*
                 rho2*U2.oldTime()/mesh_.time().deltaT()
             )
@@ -441,7 +446,7 @@ else    //- i.e. if doing implicitPartialElimination
         (
             fvc::interpolate(rAU1)*
             (
-                source1
+                fvc::interpolate(1.0+Kd12/A2)*source1
             +   fvc::interpolate(Kd12/A2)*source2
             )
         ); 
@@ -449,7 +454,7 @@ else    //- i.e. if doing implicitPartialElimination
         (
             fvc::interpolate(rAU2)*
             (
-                source2
+                fvc::interpolate(1.0+Kd12/A1)*source2
             +   fvc::interpolate(Kd12/A1)*source1
             )
         );
@@ -482,7 +487,7 @@ else    //- i.e. if doing implicitPartialElimination
         surfaceScalarField rAUf
         (
             "rAUf",
-            mag(alphaf1*alpharAUf1 + alphaf2*alpharAUf2)
+            mag(alphaf1*alpharAUf1Star + alphaf2*alpharAUf2Star)
         );
 
         //- Update the fixedFluxPressure BCs to ensure flux consistency
@@ -547,8 +552,8 @@ else    //- i.e. if doing implicitPartialElimination
 
                 surfaceScalarField mSfGradp("mSfGradp", pEqnFlux/rAUf);
                 
-                phi1 = phiHbyA1 + alpharAUf1*mSfGradp;
-                phi2 = phiHbyA2 + alpharAUf2*mSfGradp;
+                phi1 = phiHbyA1 + alpharAUf1Star*mSfGradp;
+                phi2 = phiHbyA2 + alpharAUf2Star*mSfGradp;
 
                 fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
                 fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
@@ -559,8 +564,12 @@ else    //- i.e. if doing implicitPartialElimination
 
                     mSfGradp = pEqnIncomp.flux()/rAUf;
 
-                    U1 = HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phis1);
-                    U2 = HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phis2);
+                    U1 = 
+                        HbyA1 
+                    +   fvc::reconstruct(alpharAUf1Star*mSfGradp - phis1);
+                    U2 = 
+                        HbyA2 
+                    +   fvc::reconstruct(alpharAUf2Star*mSfGradp - phis2);
                 }
                 else    //- momentumMode_ == 
                         //  momentumMode::cellCenteredFaceReconstruction

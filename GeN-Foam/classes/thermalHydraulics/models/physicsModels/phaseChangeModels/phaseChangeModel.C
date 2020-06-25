@@ -24,8 +24,9 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "phaseChangeModel.H"
-#include "fluid.H"
 #include "zeroGradientFvPatchFields.H"
+#include "fluid.H"
+#include "fvCFD.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -45,7 +46,7 @@ Foam::phaseChangeModel::phaseChangeModel
     const fluid& fluid1,
     const fluid& fluid2,
     const volScalarField& p,
-    const volScalarFieldTable& htcs,
+    const volScalarFieldPtrTable& htcs,
     volScalarField& dmdt,
     volScalarField& iT,
     volScalarField& iA
@@ -106,6 +107,59 @@ Foam::phaseChangeModel::phaseChangeModel
     if (!iTHeader.typeHeaderOk<volScalarField>(true))
     {
         iT_ = saturation_->Tsat(p_);
+    }
+
+    //- Knowledge of which phase is liquid and which is vapour are not
+    //  required by all phaseChange models (e.g. the heatDrivenPhaseChange one
+    //  does not require it and distinguishes the phases precisely on the basis
+    //  of the latent heat (pardon the inconsistency with the error message,
+    //  yet it's for the user's sake). Having this check regardless of the
+    //  models adds however a further layer of double-checking thinks that can
+    //  be beneficial
+    if 
+    (
+        fluid1_.isLiquid() and fluid2_.isGas() and
+        (
+            fvc::domainIntegrate(fluid1_.thermo().hc()).value() >=
+            fvc::domainIntegrate(fluid2_.thermo().hc()).value() 
+        )
+    )
+    {
+        FatalErrorInFunction
+            << "Negative latent heat! Ensure that the liquid phase (i.e. " 
+            << fluid1_.name() << ") enthalpy of formation (Hc) in its "
+            << "thermoPhysicalProperties file is smaller than the vapour "
+            << "phase (i.e. " << fluid2_.name() << ") enthalpy of formation" 
+            << exit(FatalError);
+    }
+    else if 
+    (
+        fluid1_.isGas() and fluid2_.isLiquid() and
+        (
+            fvc::domainIntegrate(fluid1_.thermo().hc()).value() <=
+            fvc::domainIntegrate(fluid2_.thermo().hc()).value() 
+        )
+    )
+    {
+        FatalErrorInFunction
+            << "Negative latent heat! Ensure that the liquid phase (i.e. " 
+            << fluid2_.name() << ") enthalpy of formation (Hc) in its "
+            << "thermoPhysicalProperties file is smaller than the vapour "
+            << "phase (i.e. " << fluid1_.name() << ") enthalpy of formation" 
+            << exit(FatalError);
+    }
+    else if 
+    (
+        (!fluid1_.isLiquid() and !fluid1_.isGas()) or 
+        (!fluid2_.isLiquid() and !fluid2_.isGas())
+    )
+    {
+        FatalErrorInFunction
+            << "Either phase " << fluid1_.name() << " or " << fluid2_.name()
+            << " have an undetermined stateOfMatter (should be specified in "
+            << "phaseProperties." << fluid1_.name() << "Properties and/or "
+            << "phaseProperties." << fluid2_.name() << "Properties)"
+            << exit(FatalError);
     }
 }
 

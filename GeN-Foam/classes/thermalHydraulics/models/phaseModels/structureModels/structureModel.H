@@ -60,6 +60,7 @@ SourceFiles
 #include "runTimeSelectionTables.H"
 #include "zeroGradientFvPatchFields.H"
 #include "powerModel.H"
+#include "powerOffCriterionModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -144,6 +145,9 @@ protected:
     //- Momentum source
     autoPtr<volVectorField> momentumSourcePtr_;
 
+    //- Power off criterion
+    autoPtr<powerOffCriterionModel> powerOffCriterionModelPtr_;
+
 public:
 
     TypeName("structureModel");
@@ -220,8 +224,9 @@ public:
         //- Function to access any member field of a powerModel, needed e.g.
         //  to get temperatures from the fuelModel
 
-        //- Turn off all powerDensity fields of all the powerModels
-        void powerOff();
+        //- Turn off all powerDensity fields of all the powerModels if the
+        //  powerOffCriterionModel criterion is satisfied
+        void checkPowerOff();
 
         //- Const access
 
