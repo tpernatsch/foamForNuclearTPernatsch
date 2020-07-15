@@ -26,6 +26,7 @@ License
 #include "phaseChangeModel.H"
 #include "zeroGradientFvPatchFields.H"
 #include "fluid.H"
+#include "structureModel.H"
 #include "fvCFD.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -66,6 +67,7 @@ Foam::phaseChangeModel::phaseChangeModel
     pimple_(pimple),
     fluid1_(fluid1),
     fluid2_(fluid2),
+    structure_(mesh_.lookupObject<structureModel>("alpha.structure")),
     p_(p),
     htcs_(htcs),
     dmdt_(dmdt),
@@ -93,7 +95,8 @@ Foam::phaseChangeModel::phaseChangeModel
             dimArea/dimVolume,
             1e-6
         )
-    )
+    ),
+    residualIACells_(0)
 {
     //- Set initial interfacial temperature (to avoid problems with the
     //  under-relaxation at the first time-step in EEqns.H
@@ -161,6 +164,24 @@ Foam::phaseChangeModel::phaseChangeModel
             << "phaseProperties." << fluid2_.name() << "Properties)"
             << exit(FatalError);
     }
+
+    //- Read residualIACells from regions
+    wordList residualIARegions
+    (
+        this->lookupOrDefault<wordList>("residualInterfacialAreaRegions", wordList())
+    );
+    forAll(residualIARegions, i)
+    {
+        const labelList& regionCells
+        (
+            structure_.cellLists()[residualIARegions[i]]
+        );
+
+        forAll(regionCells, j)
+        {
+            residualIACells_.append(regionCells[j]);
+        }
+    }
 }
 
 
@@ -182,7 +203,19 @@ void Foam::phaseChangeModel::limitInterfacialArea()
 {
     if (residualIA_.value() != 0.0)
     {
-        iA_ = max(iA_, residualIA_);
+        if (residualIACells_.size() != 0)
+        {
+            scalar residualIAValue(residualIA_.value());
+            forAll(residualIACells_, i)
+            {
+                scalar& iAi(iA_[residualIACells_[i]]);
+                iAi = max(iAi, residualIAValue);
+            }
+        }
+        else
+        {
+            iA_ = max(iA_, residualIA_);
+        }
     }
 }
 

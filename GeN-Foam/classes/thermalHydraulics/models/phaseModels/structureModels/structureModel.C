@@ -56,6 +56,7 @@ Foam::structureModel::structureModel
         "structure"
     ),
     regions_(0),
+    cells_(0),
     tortuosity_
     (
         IOobject
@@ -90,6 +91,20 @@ Foam::structureModel::structureModel
         ),
         mesh,
         dimensionedVector("", dimLength, vector(SMALL, SMALL, SMALL)),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    heatFlux_
+    (
+        IOobject
+        (
+            "heatFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimPower/dimArea, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     Tact_
@@ -259,6 +274,9 @@ void Foam::structureModel::correct
         );
         pasEqn.solve();
     }
+
+    //- Update active structure heat flux (IO only)
+    heatFlux_ = pos(iAact_)*(H*Tact_-HT);
 }
 
 Foam::tmp<Foam::volScalarField> Foam::structureModel::explicitHeatSource

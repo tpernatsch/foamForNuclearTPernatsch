@@ -71,7 +71,7 @@ Foam::dragModels::Autruffe::Autruffe
     )
     {
         FatalErrorInFunction
-            << "The Autruffe model only works for liquid-gas systems. Set the "
+            << "The Autruffe model only works for liquid-gas systems. Set "
             << "the stateOfMatter entry in "
             << "phaseProperties." << fluid1.name() << "Properties and/or "
             << "phaseProperties." << fluid2.name() << "Properties) to "

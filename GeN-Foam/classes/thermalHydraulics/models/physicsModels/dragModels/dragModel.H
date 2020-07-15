@@ -116,9 +116,8 @@ protected:
         label dpa_;
 
         //- i.e. 0.5*alpha*rho*magU, not a volScalarField because the dragModel
-        //  only affects certain cellZone(s). Alpha is the phase fraction of
-        //  the (only) fluid in fluid-structure drag, rho its density, magU its
-        //  velocity magnitude
+        //  only affects certain cellZone(s). Alpha is 1.0-alpha.structure, 
+        //  rho is fluid density, magU is its velocity magnitude
         mutable scalarField* halfAlphaRhoMagU_;
 
     //- Protected member functions

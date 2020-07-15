@@ -30,7 +30,7 @@ boundaryField
     outlet
     {
     	type            fixedValue;
-    	value 			1e5;
+    	value 			uniform 1e5;
     }
     fixedWalls
     {

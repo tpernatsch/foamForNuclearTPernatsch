@@ -189,7 +189,9 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     kc_(0),//this->get<scalar>("cladConductivity")),
     gapH_(0),//this->get<scalar>("gapConductance")),
     hollowFuel_(0),// (rfi_ >= 1e-5) ? true : false),
-    cellToRegion_(mesh_.cells().size(), 0)
+    cellToRegion_(mesh_.cells().size(), 0),
+    pi_(constant::mathematical::pi),
+    dA_(0)
 {   
     structure_.setRegionField(this, powerDensity_, "powerDensity");
 
@@ -297,6 +299,30 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
             r.append(r.last() + drc);
         }
 
+        //- Calc dA
+        scalarList dA(0);
+        dA.append(pi_*(sqr(r[0]+drf/2.0)-sqr(r[0])));
+        for(int i = 1; i < fuelMeshSize-1; i++)
+        {
+            dA.append(pi_*(sqr(r[i]+drf/2.0)-sqr(r[i]-drf/2.0)));
+        }
+        dA.append
+        (
+            pi_*(sqr(r[fuelMeshSize-1])-sqr(r[fuelMeshSize-1]-drf/2.0))
+        );
+        dA.append
+        (
+            pi_*(sqr(r[fuelMeshSize]+drf/2.0)-sqr(r[fuelMeshSize]))
+        );
+        for(int i = 1; i < cladMeshSize-1; i++)
+        {
+            dA.append(pi_*(sqr(r[i]+drc/2.0)-sqr(r[i]-drc/2.0)));
+        }
+        dA.append
+        (
+            pi_*(sqr(r[meshSize-1])-sqr(r[meshSize-1]-drc/2.0))
+        );
+
         //- Fill in lists for this region
         fuelMeshSize_.append(fuelMeshSize);
         cladMeshSize_.append(cladMeshSize);
@@ -315,6 +341,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         kc_.append(kc);
         gapH_.append(gapH);
         hollowFuel_.append(hollowFuel);
+        dA_.append(dA);
     }
 
     //- If Trad not found, init it from either the boundary temperatures
@@ -554,125 +581,120 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     scalarField& Trad(Trad_[celli]);
 
     //- Read region values
-    label regioni(cellToRegion_[celli]);
-    label fuelMeshSize(fuelMeshSize_[regioni]);
-    label meshSize(meshSize_[regioni]);
+    const label& regioni(cellToRegion_[celli]);
+    const label& fuelMeshSize(fuelMeshSize_[regioni]);
+    const label& meshSize(meshSize_[regioni]);
     const scalarList& rRegion(r_[regioni]);
-    scalar drf(drf_[regioni]);
-    scalar drc(drc_[regioni]);
-    scalar kf(kf_[regioni]);
-    scalar kc(kc_[regioni]);
-    scalar rfo(rfo_[regioni]);
-    scalar rci(rci_[regioni]);
-    scalar gapH(gapH_[regioni]);
+    const scalarList& dARegion(dA_[regioni]);
+    const scalar& drf(drf_[regioni]);
+    const scalar& drc(drc_[regioni]);
+    const scalar& kf(kf_[regioni]);
+    const scalar& kc(kc_[regioni]);
+    const scalar& rfo(rfo_[regioni]);
+    const scalar& rci(rci_[regioni]);
+    const scalar& gapH(gapH_[regioni]);
+    const scalarField& TOld = Trad_.oldTime()[celli];
+    const scalar& q(powerDensity_[celli]);
 
     //- Init matrix, source
     SquareMatrix<scalar> M(meshSize, meshSize, Foam::zero());
     List<scalar> S(meshSize, 0.0);
 
     //- Recurrent quantities
-    scalar irf2(1.0/sqr(drf));
-    scalar irc2(1.0/sqr(drc));
-
-    scalar q(powerDensity_[celli]);
-
-    /*
-    Info << "power = " << q << endl;
-    Info << "regioni = " << regioni << endl;
-    Info << "fuMeSi = " << fuelMeshSize << endl;
-    Info << "meSi = " << meshSize << endl;
-    Info << "rRegion = " << rRegion << endl;
-    Info << "drf = " << drf << endl;
-    Info << "drc = " << drc << endl;
-    Info << "kf = " << kf << endl;
-    Info << "kc = " << kc << endl;
-    Info << "rfo = " << rfo << endl;
-    Info << "rci = " << rci << endl;
-    Info << "gapH = " << gapH << endl;
-    */
-
     scalar dt(mesh_.time().deltaT().value());
     scalar Xf(rhoCpf_[regioni]/dt);
     scalar Xc(rhoCpc_[regioni]/dt);
-    scalarField& TOld = Trad_.oldTime()[celli];
-
-    //- Construct matrix and source
+    scalar twoPkByDrf(2.0*pi_*kf/drf);
+    scalar twoPkByDrc(2.0*pi_*kc/drc);
+    scalar drhf(drf/2.0);
+    scalar drhc(drc/2.0);
+    
+    //- Construct matrix, source
     {
         //- Set zeroGradient BC at fuel inner surface
-        M[0][1] =   -2*irf2*kf;
-        M[0][0] =   -M[0][1]+Xf;
-        S[0] =      q+TOld[0]*Xf;
+        {
+            const scalar& r(rRegion[0]);
+            const scalar& dA(dARegion[0]);
+            scalar B(twoPkByDrf*(r+drhf));
+            scalar XdA(Xf*dA);
+            M[0][1] =   -B;
+            M[0][0] =   B+XdA;
+            S[0] =      q*dA+TOld[0]*XdA;
+        }
 
         //- Fuel bulk
         for (int i = 1; i < fuelMeshSize-1; i++)
         {
-            scalar r(rRegion[i]);
-
-            M[i][i+1] =     -kf*(irf2+1.0/(2*r*drf));
-            M[i][i-1] =     -kf*(irf2-1.0/(2*r*drf));
-            M[i][i] =       -M[i][i+1]-M[i][i-1]+Xf;
-            S[i] =          q+TOld[i]*Xf;
+            const scalar& r(rRegion[i]);
+            const scalar& dA(dARegion[i]);
+            scalar B(twoPkByDrf*(r+drhf));
+            scalar C(twoPkByDrf*(r-drhf));
+            scalar XdA(Xf*dA);
+            M[i][i+1] =     -B;
+            M[i][i-1] =     -C;
+            M[i][i] =       B+C+XdA;
+            S[i] =          q*dA+TOld[i]*XdA;
         }
 
         //- Fuel outer surface, convective BC with inner cladding surface via
         //  gap conductance
         {
             label i(fuelMeshSize-1);
-            scalar A(kf*irf2);
-            scalar B(kf/(2*rfo*drf));
-            scalar C(2*drf/kf);
-
-            M[i][i+1] =     -gapH*C*(A+B);
-            M[i][i-1] =     -2*A;
-            M[i][i] =       -M[i][i+1]-M[i][i-1]+Xf;
-            S[i] =          q+TOld[i]*Xf;
+            const scalar& r(rRegion[i]);
+            const scalar& dA(dARegion[i]);
+            scalar C(twoPkByDrf*(r-drhf));
+            scalar D(2.0*pi_*r*gapH);
+            scalar XdA(Xf*dA);
+            M[i][i+1] =     -D;
+            M[i][i-1] =     -C;
+            M[i][i] =       C+D+XdA;
+            S[i] =          q*dA+TOld[i]*XdA;
         }
-        
+
         //- Cladding inner surface, convective BC with outer fuel surface via
         //  gap conductance adjusted by radii ratio (to preserve total heat
         //  flow as geometry is cylindrical)
-        //- EDIT: while the corrective ratio should be (rfo_/rci_), the actual
-        //  factor that works is (rfo_/(rci_+drc_)). I have no mathematical 
-        //  justification for this, I simply had an intuition that it just
-        //  might help avoid temperature profile overestimation for coarse
-        //  pin meshes (for fine meshes drc_ -> 0 and it does not make a
-        //  difference) or for very low fluid heat transfer coefficients. And
-        //  it does work!
         {
             label i(fuelMeshSize);
-            scalar A(kc*irc2);
-            scalar B(kc/(2*rci*drc));
-            scalar C(2*drc*(rfo/(rci+drc))/kc);
-
-            M[i][i-1] =     -gapH*C*(A+B);
-            M[i][i+1] =     -2*A;
-            M[i][i] =       -M[i][i+1]-M[i][i-1]+Xc;
-            S[i] =          TOld[i]*Xc;
+            const scalar& r(rRegion[i]);
+            const scalar& dA(dARegion[i]);
+            scalar C(twoPkByDrc*(r+drhc));
+            scalar D(2.0*pi_*r*(rfo/rci)*gapH);
+            scalar XdA(Xc*dA);
+            M[i][i+1] =     -C;
+            M[i][i-1] =     -D;
+            M[i][i] =       C+D+XdA;
+            S[i] =          TOld[i]*XdA;
         }
 
         //- Cladding bulk
         for (int i = fuelMeshSize+1; i < meshSize-1; i++)
         {
-            scalar r(rRegion[i]);
-            M[i][i+1] = -kc*(irc2+1.0/(2*r*drc));
-            M[i][i-1] = -kc*(irc2-1.0/(2*r*drc));
-            M[i][i] =   -M[i][i+1]-M[i][i-1]+Xc;
-            S[i] =      TOld[i]*Xc;
+            const scalar& r(rRegion[i]);
+            const scalar& dA(dARegion[i]);
+            scalar B(twoPkByDrc*(r+drhc));
+            scalar C(twoPkByDrc*(r-drhc));
+            scalar XdA(Xc*dA);
+            M[i][i+1] =     -B;
+            M[i][i-1] =     -C;
+            M[i][i] =       B+C+XdA;
+            S[i] =          TOld[i]*XdA;
         }
 
         //- Cladding outer surface, convective BC with fluid(s) wetting the pin
         {
             label i(meshSize-1);
-            scalar A(kc*irc2);
-            scalar B(kc/(2*rci*drc));
-            scalar C(2*drc/kc);
-
-            M[i][i-1] =     -2*A;
-            M[i][i] =       2*A + HSumi*C*(A+B)+Xc;
-            S[i] =          HTSumi*C*(A+B)+TOld[i]*Xc;
+            const scalar& r(rRegion[i]);
+            const scalar& dA(dARegion[i]);
+            scalar C(twoPkByDrc*(r-drhc));
+            scalar D(2.0*pi_*r);
+            scalar XdA(Xc*dA);
+            M[i][i-1] =     -C;
+            M[i][i] =       C+D*HSumi+XdA;
+            S[i] =          TOld[i]*XdA + D*HTSumi;
         }
     }
-    
+
     //- Solve linear system
     solve(Trad, M, S);
 
@@ -708,10 +730,31 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
         Tcmax_
     );
 
-    /* Check adjusted flux conservation
-    scalar gradQc(kc*(Trad_[celli][meshSize-2]-Tco_[celli])/drc);
-    scalar gradQh(gapH*(Tfo_[celli]-Tci_[celli])*(rfo)/(rco));
-    Info << gradQc << " " << gradQh << endl;
+    /*
+    //- Check energy conservation via linear power comparison (analytic
+    //  vs numerical at cladding surface)
+    const scalar& rfi(rfi_[regioni]);
+    const scalar& rco(rco_[regioni]);
+    scalar analyticalLP
+    (
+        q*pi_*(sqr(rfo)-sqr(rfi))
+    );
+    scalar numericalLP
+    (
+        (HSumi*Tco_[celli]-HTSumi)*2.0*pi_*rco
+    );
+    Info<< celli << " " << numericalLP << " " << analyticalLP << " W/m" 
+        << endl;
+
+    //- Check energy conservation via heat flux comparison. However, since
+    //  you can't directly compare heat fluxes (it's total heat that is
+    //  conserved, not heat fluxes), the heat flux trhough the cladding is
+    //  adjusted to take into consideration the difference in surface areas
+    //  between outer cladding and outer fuel
+    scalar heatFluxg(gapH*(Tfo_[celli]-Tci_[celli]));
+    scalar heatFluxAdjc((HSumi*Tco_[celli]-HTSumi)*(rco/rfo));
+    Info<< celli << " " << heatFluxg << " " << heatFluxAdjc << " W/m2" 
+        << endl;
     */
 }
 
@@ -786,6 +829,12 @@ void Foam::powerModels::nuclearFuelPin::correctT(volScalarField& T) const
 
 
 /*-------------------------- EQUATION DERIVATION ----------------------------*\
+
+//- WARNING: THIS IS THE DERIVATION OF THE PREVIOUS FINITE-DIFFERENCE EQUATIONS
+//  WHICH ARE NO LONGER USED. THE CURRENT CODE IS BASED ON FINITE VOLUME SCHEME
+//  WHICH IS SIGNIFICANTLY MORE CONSERVATIVE THAN THE FINITE-DIFFERENCE ONE
+//  FOR THE SAME MESH SIZE. THE FINITE VOLUME DERIVATION IS NOT REPORTED AS...
+//  I SIMPLY DON'T HAVE TIME NOW
 
 I added this section in the hope that it might spare quite some time to anyone
 who will unfortunately have to deal with this code after me. It shows how the

@@ -90,10 +90,6 @@ private:
         //- Total fluid phase fraction
         volScalarField movingAlpha_;
 
-        //- Phase fractions of fluids 1 and 2 normalized wrt movingAlpha_
-        volScalarField normalizedAlpha1_;
-        volScalarField normalizedAlpha2_;
-
     //- Phase pairs
         
         //- Fluid1 - fluid2
@@ -173,11 +169,6 @@ private:
         //- Phase change model
         autoPtr<phaseChangeModel> phaseChange_;
 
-    //- Ptr to a fluid phase for powerOff mangement (i.e., if one desires to
-    //  turn off the power of all structures if the phase fraction of a field
-    //  is above a certain value. The flags and values are read at runTime)
-        const volScalarField* alphaPowerOff_; 
-
     //- Global flags for time/subCycle control
 
         //- Self explanatory, come on...
@@ -217,7 +208,7 @@ public:
         (
             Time& time,
             fvMesh& mesh, 
-            pimpleControl& pimple, 
+            myPimpleControl& pimple, 
             fv::options& fvOptions
         );
 

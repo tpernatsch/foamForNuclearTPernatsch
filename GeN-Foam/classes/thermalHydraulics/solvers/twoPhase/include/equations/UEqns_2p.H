@@ -197,37 +197,37 @@ fluid2_.volScalarField::operator=(fluid20);
     {
         const surfaceScalarField& phi1(fluid1_.phi());
         const surfaceScalarField& phi2(fluid2_.phi());
-        volScalarField rhoVm(Vm*FFPair_.rhoContinuous());
+        volScalarField alphaRhoVm
+        (
+            Vm*
+            FFPair_.alphaDispersed()*
+            FFPair_.rhoContinuous()
+        );
         volVectorField DDtU1 = 
             fvc::ddt(U1)
-        +   fvc::div(phi1, U1)
-        -   fvc::div(phi1)*U1;
+        +   fvc::div(phi1)*U1;
         volVectorField DDtU2 =
             fvc::ddt(U2)
-        +   fvc::div(phi2, U2)
-        -   fvc::div(phi2)*U2;
-        
+        +   fvc::div(phi2)*U2;
         UEqn1 +=  
-            rhoVm()*
+            alphaRhoVm*
             (
                 fvm::ddt(U1)
-            +   fvm::div(phi1, U1)
-            -   fvm::Sp(fvc::div(phi1), U1)
+            +   fvm::SuSp(fvc::div(phi1), U1)
             -   DDtU2
             );
         UEqn2 += 
-            rhoVm()*
+            alphaRhoVm*
             (
                 fvm::ddt(U2)
-            +   fvm::div(phi2, U2)
-            -   fvm::Sp(fvc::div(phi2), U2)
+            +   fvm::SuSp(fvc::div(phi2), U2)
             -   DDtU1
             );
         //- Modify MRF and add contributions
         MRF_.addAcceleration(U1, DDtU1);
         MRF_.addAcceleration(U2, DDtU2);
-        UEqn1 += MRF_.DDt(alpha1*rho1 + rhoVm, U1);
-        UEqn2 += MRF_.DDt(alpha2*rho2 + rhoVm, U2);
+        UEqn1 += MRF_.DDt(alpha1*rho1 + alphaRhoVm, U1);
+        UEqn2 += MRF_.DDt(alpha2*rho2 + alphaRhoVm, U2);
     }
     else //- Just add unmodified MRF contributions
     {

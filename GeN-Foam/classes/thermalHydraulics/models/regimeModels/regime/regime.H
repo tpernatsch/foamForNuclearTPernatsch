@@ -54,6 +54,7 @@ SourceFiles
 #include "HashPtrTable.H"
 #include "typedefs.H"
 #include "dragModel.H"
+#include "twoPhaseDragMultiplierModel.H"
 #include "heatTransferModel.H"
 #include "fluidGeometry.H"
 
@@ -123,6 +124,9 @@ private :
         word::hash
     > dragModelTable;
     dragModelTable dragModels_;
+
+    //- Two phase drag multiplier model
+    autoPtr<twoPhaseDragMultiplierModel> twoPhaseDragMultiplier_;
 
     //- Heat transfer model table
     typedef HashTable

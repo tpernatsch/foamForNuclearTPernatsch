@@ -75,7 +75,7 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
 (
     Time& time,
     fvMesh& mesh,
-    pimpleControl& pimple,
+    myPimpleControl& pimple,
     fv::options& fvOptions
 )
 :
@@ -123,16 +123,6 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     (
         "movingAlpha",
         1.0 - structure_
-    ),
-    normalizedAlpha1_
-    (
-        "normalized.alpha."+fluid1_.name(),
-        fluid1_/movingAlpha_
-    ),
-    normalizedAlpha2_
-    (
-        "normalized.alpha."+fluid2_.name(),
-        fluid2_/movingAlpha_
     ),
     FFPair_(fluid1_, fluid2_),
     F1SPair_(fluid1_, structure_),
@@ -264,22 +254,6 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
             this->subDict("regimeMapModel"),
             this->subDict("physicsModelsByRegime")
         )
-    ),
-    alphaPowerOff_
-    (
-        (
-            mesh_.time().controlDict().found("powerOffPhaseName")
-        and mesh_.time().controlDict().found("powerOffAbovePhaseFraction")
-        ) ? 
-        &(
-            mesh_.lookupObject<volScalarField>
-            (
-                "alpha."
-            +   (
-                    mesh_.time().controlDict().get<word>("powerOffPhaseName")
-                )
-            )
-        ) : nullptr
     ),
     bothPhasesArePresent_(false),
     withinMarginToPhaseChange_(false),

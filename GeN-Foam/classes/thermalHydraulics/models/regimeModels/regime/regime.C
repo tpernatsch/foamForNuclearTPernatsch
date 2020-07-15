@@ -124,6 +124,20 @@ Foam::regime::regime
                 fluidGeometryDict
             )
         );
+
+        const dictionary& twoPhaseDragMultiplierDict
+        (
+            dict.subDict("twoPhaseDragMultiplierModel")
+        );
+        twoPhaseDragMultiplier_.reset
+        (
+            twoPhaseDragMultiplierModel::New
+            (
+                *this,
+                twoPhaseDragMultiplierDict,
+                mesh
+            )
+        );
     }
 }
 
@@ -262,7 +276,13 @@ void Foam::regime::correctDragModels()
                 const dragModel& dragModel(iter2());
                 if (key == dragModel.pairName()) dragModel.correctKd(Kd);
             }
-            //Kd.correctBoundaryConditions();
+        }
+
+        //- Correct the twoPhaseMultiplier
+        if (twoPhaseDragMultiplier_.valid())
+        {
+            twoPhaseDragMultiplier_->correct();
+            twoPhaseDragMultiplier_->correctKdTable(fluidGeometry_(), Kds_);
         }
     }
 }

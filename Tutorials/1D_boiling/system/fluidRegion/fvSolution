@@ -149,6 +149,24 @@ PIMPLE
     //  to the main flow direction. Fairly ironic. Experiment for yourself and
     //  see what works
     oscillationLimiterFraction 0;
+
+    corrPISOUntilConvergence true;
+
+    residualControl
+    {
+        p_rgh
+        {
+            tolerance 5e-4;
+            relTol 0;
+            useFirstPISOInitialResidual true;
+        }
+
+        h.liquid
+        {
+            tolerance  1e-5;
+            relTol 0;
+        }
+    }
 }
 
 relaxationFactors

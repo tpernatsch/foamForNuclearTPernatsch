@@ -39,7 +39,7 @@ Foam::structureVolumetricAreaPartitionModel::New
 {
     word type(dict.lookup("type"));
 
-    Info<< "Selecting structureVolumetricAreaPartitionModel : " 
+    Info<< "Selecting structureVolumetricAreaPartitionModel: " 
         << type << endl;
 
     structureVolumetricAreaPartitionModelsConstructorTable::iterator 

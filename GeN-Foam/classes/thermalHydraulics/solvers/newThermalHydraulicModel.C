@@ -31,7 +31,7 @@ Foam::autoPtr<Foam::thermalHydraulicModel> Foam::thermalHydraulicModel::New
 (
     Time& time,
     fvMesh& mesh,
-    pimpleControl& pimple,
+    myPimpleControl& pimple,
     fv::options& fvOpt
 )
 {

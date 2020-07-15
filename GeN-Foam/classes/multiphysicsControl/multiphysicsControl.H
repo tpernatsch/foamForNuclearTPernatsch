@@ -39,7 +39,7 @@ SourceFiles
 #define multiphysicsControl_H
 
 #include "fvMesh.H"
-#include "pimpleControl.H"
+#include "myPimpleControl.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -52,7 +52,7 @@ namespace Foam
 
 class multiphysicsControl
 : 
-    public pimpleControl
+    public myPimpleControl
 {
 protected :
 
@@ -75,7 +75,7 @@ protected :
 
     //- Solution flags
 
-    //- solveFluidDynamics exists in pimpleControl as solveFlow_;
+    //- solveFluidDynamics exists in myPimpleControl as solveFlow_;
     bool solveEnergy_;
     bool solveNeutronics_;
     bool solveThermoMechanics_;

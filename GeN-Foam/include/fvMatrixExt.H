@@ -333,6 +333,7 @@ Type initialResidual()
     lduInterfaceFieldPtrsList interfaces =
         this->psi().boundaryField().scalarInterfaces();
 
+    const label startRequest = Pstream::nRequests();
 
     this->initMatrixInterfaces
     (
@@ -351,7 +352,8 @@ Type initialResidual()
         interfaces,
         psi,
         Source,
-        0
+        0,
+        startRequest
     );
 
     label nCells = psi.size();

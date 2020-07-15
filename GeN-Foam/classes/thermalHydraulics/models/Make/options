@@ -10,8 +10,10 @@ EXE_INC = \
     -I./phaseModels/structureModels/powerModels/constantPower \
     -I./phaseModels/structureModels/powerModels/constantTemperature \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPin \
+    -I./phaseModels/structureModels/powerModels/heatedPin \
     -I./phaseModels/structureModels/powerOffCriterionModels/ \
     -I./phaseModels/structureModels/powerOffCriterionModels/fieldValue \
+    -I./phaseModels/structureModels/powerOffCriterionModels/timer \
     -I./phaseModels/phasePairs \
     -I./phaseModels/phasePairs/FFPair \
     -I./phaseModels/phasePairs/FSPair \
@@ -35,6 +37,13 @@ EXE_INC = \
     -I./physicsModels/dragModels/FSModels/modifiedEngel \
     -I./physicsModels/dragModels/FSModels/BaxiDalleDonne \
     -I./physicsModels/dragModels/FSModels/NoKazimi \
+    -I./physicsModels/twoPhaseDragMultiplierModels \
+    -I./physicsModels/twoPhaseDragMultiplierModels/LottesFlinn \
+    -I./physicsModels/twoPhaseDragMultiplierModels/LockhartMartinelli \
+    -I./physicsModels/twoPhaseDragMultiplierModels/KottowskiSavatteri \
+    -I./physicsModels/twoPhaseDragMultiplierModels/Kaiser74 \
+    -I./physicsModels/twoPhaseDragMultiplierModels/Kaiser88 \
+    -I./physicsModels/twoPhaseDragMultiplierModels/ChenKalish \
     -I./physicsModels/heatTransferModels \
     -I./physicsModels/heatTransferModels/sharedModels/constant \
     -I./physicsModels/heatTransferModels/sharedModels/NusseltReynoldsPrandtlPower \
@@ -52,6 +61,7 @@ EXE_INC = \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/annularTopology \
     -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels \
     -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels/constant \
+    -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels/AzadShirani \
     -I./physicsModels/phaseChangeModels/saturationModels \
     -I./physicsModels/phaseChangeModels/saturationModels/constantTemperature \
     -I./physicsModels/phaseChangeModels/saturationModels/BrowningPotter \

@@ -93,10 +93,10 @@ Foam::dragModels::NoKazimiFF::NoKazimiFF
 
 void Foam::dragModels::NoKazimiFF::correctKd(volTensorField& Kd) const
 {
-    const volScalarField& DhContinuous(FFPair_->DhContinuous());
+    //const volScalarField& DhContinuous(FFPair_->DhContinuous());
     const volScalarField& magUr(FFPair_->magUr());
     const volScalarField& rhov(vapour_.rho());
-    volScalarField alpha(vapour_/(vapour_+liquid_));
+    const volScalarField& alpha(vapour_.normalized());
     volScalarField iA(A_*alpha*min((1.0-alpha)/0.043, 1.0));
 
     forAll(mesh_.cells(), i)

@@ -1,0 +1,73 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    location    "0/thermoMechanicalRegion";
+    object      disp;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 0 0 0 0 0];
+
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    top
+    {
+        type            tractionDisplacement;
+        traction        uniform ( 0 0 0 );
+        pressure        uniform 0;
+        value           nonuniform List<vector> 0();
+    }
+    topCR
+    {
+        type            tractionDisplacement;
+        traction        uniform ( 0 0 0 );
+        pressure        uniform 0;
+        value           nonuniform List<vector> 0();
+    }
+    bottom
+    {
+        type            tractionDisplacement;
+        traction        uniform ( 0 0 0 );
+        pressure        uniform 0;
+        value           uniform (0 0 0);
+    }
+    bottomCR
+    {
+        type            tractionDisplacement;
+        traction        uniform ( 0 0 0 );
+        pressure        uniform 0;
+        value           uniform (0 0 0);
+    }
+    zeroDispl
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }
+    defaultFaces
+    {
+        type            tractionDisplacement;
+        traction        uniform ( 0 0 0 );
+        pressure        uniform 0;
+        value           uniform (0 0 0);
+    }
+    procBoundary0to1
+    {
+        type            processor;
+        value           uniform (0 0 0);
+    }
+}
+
+
+// ************************************************************************* //

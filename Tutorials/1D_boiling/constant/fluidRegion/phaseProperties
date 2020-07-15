@@ -504,8 +504,8 @@ regimeMapModel
     //  is such scenarios is undefined
     regimeBounds
     {
-        "bubbly-slug"           (0      0.6);
-        "mist"                  (0.95     1);
+        "slug"              (0      0.85);
+        "mist"              (0.95     1);
     }
 
     //--End of oneParameter entries
@@ -520,7 +520,7 @@ regimeMapModel
 
 physicsModelsByRegime
 {
-    "bubbly-slug"
+    "slug"
     {
         dragModels
         {
@@ -538,6 +538,12 @@ physicsModelsByRegime
                     exp     -0.125; // coeff b in A*Re^b
                 }
             }
+        }
+
+        twoPhaseDragMultiplierModel
+        {
+            type                LottesFlinn;
+            multiplierFluid     liquid;
         }
 
         heatTransferModels
@@ -606,7 +612,7 @@ physicsModelsByRegime
                 type SchillerNaumann;
             }
 
-            "liquid.structure"
+            "vapour.structure"
             {
                 "low:mid:top"
                 {
@@ -615,6 +621,12 @@ physicsModelsByRegime
                     exp     -0.125;
                 }
             }
+        }
+
+        twoPhaseDragMultiplierModel
+        {
+            type                LottesFlinn;
+            multiplierFluid     vapour;
         }
 
         heatTransferModels
@@ -690,6 +702,9 @@ physicsModelsByRegime
     dragModels
     {...}
 
+    twoPhaseDragMultiplierModel
+    {...}
+
     heatTransferModels
     {...}
 
@@ -707,6 +722,9 @@ physicsModelsByRegime
         dragModels
         {...}
 
+        twoPhaseDragMultiplierModel
+        {...}
+
         heatTransferModels
         {...}
 
@@ -717,6 +735,9 @@ physicsModelsByRegime
     "regime1"
     {
         dragModels
+        {...}
+
+        twoPhaseDragMultiplierModel
         {...}
 
         heatTransferModels
@@ -784,6 +805,8 @@ dragModel ->    With regards to the momentum equation for a fluid, the role
                 fluid-structure drag). This is exactly how the drag term
                 enters the momentum equation, e.g. 
                 ddt(fluidVolFrac*fluidRho*fluidU) + ... = Kd*deltaU + ...
+
+twoPhaseDragMultiplierModel ->      More on this at a future update
 
 heatTransferModel ->    With regards to the energy equation for a fluid, the 
                 heatTransferModel returns a heat transfer coefficient 

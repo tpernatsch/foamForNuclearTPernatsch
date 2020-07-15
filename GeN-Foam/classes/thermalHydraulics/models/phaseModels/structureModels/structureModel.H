@@ -29,17 +29,17 @@ Description
     derived from phaseBase, to represent the volume fraction of the structure.
     The key member for the understanding of this class is cellFields_. 
     The structure can be in fact though of as being composed by different
-    subStructures, with properties defined only on certain cells of the mesh.
-    However, as these subStructure are meant NOT to spatially overlap, the 
+    regions, with properties defined only on certain cells of the mesh.
+    However, as these region are meant NOT to spatially overlap, the 
     overall structure can be described by a single set of fields (Dh_, iApow_, 
     etc.) that are initialized/set/modified on a cell-by-cell basis.
     The cellFields_ member is thus a HashTable of scalarFields indexed by
-    subStructure name. These scalarFields are = 1.0 where the given
-    subStructure exists, and 0 elsewhere. What the subStructure names are, that
+    region name. These scalarFields are = 1.0 where the given
+    region exists, and 0 elsewhere. What the region names are, that
     is set by the actual run-time-selected instance of the structureModel
     class.
     Currently, the only available structureModel is byZone, in which
-    the subStructures are effectively cellZones, and the cellFields_ is
+    the regions are effectively cellZones, and the cellFields_ is
     thus a dicts of scalarFields representing where each cellZone exists.
 
 
@@ -90,17 +90,20 @@ protected:
     //- List of names of each group of cells into which this structure is split
     wordList regions_;
 
-    //- Table of limited volume fraction fields indexed by SubStructure name
+    //- Table of limited volume fraction fields indexed by region name
     //  Every field is equal to the overall alpha of structure only in those
-    //  cells where the corresponding subStructure is present, and is 0 
+    //  cells where the corresponding region is present, and is 0 
     //  elsewhere
     volScalarFieldTable alphaFields_;
 
-    //- Table of cell scalarFields indexed by subStructure name
+    //- Table of cell scalarFields indexed by region name
     scalarFieldTable cellFields_;
 
-    //- Table of cell labelLists indexed by subStructure name
+    //- Table of cell labelLists indexed by region name
     labelListTable cellLists_;
+
+    //- All cells in which the structure exists ()
+    labelList cells_;
 
     //- Tortuosity of the structure in the global reference frame
     volTensorField tortuosity_;
@@ -116,24 +119,28 @@ protected:
     //- Table of power models indexed by powerModel name
     powerModelTable powerModels_;
 
-    //- Surface temperature of power subStructures
+    //- Heat flux from active structures only. Positive if from structure to
+    //  fluid
+    volScalarField heatFlux_;
+
+    //- Surface temperature of power regions
     volScalarField Tact_;
 
-    //- Interfacial area of the powerModel subStructure
+    //- Interfacial area of the powerModel region
     volScalarField iAact_;
 
     //- Volume fraction of the passive structure (might be different than
     //  global structure volumefraction)
     volScalarField alphapas_;
 
-    //- Surface temperature of the passive subStructure
+    //- Surface temperature of the passive region
     volScalarField Tpas_;
 
-    //- Interfacial area of the passive subStructure
+    //- Interfacial area of the passive region
     volScalarField iApas_;
 
-    //- Volumetric heat capacity of the passive subStructure times volume
-    //  fraction of passive subStructure
+    //- Volumetric heat capacity of the passive region times volume
+    //  fraction of passive region
     volScalarField alphaRhoCppas_;
 
     //- Rotation matrix to move from global to local reference frame
@@ -248,6 +255,11 @@ public:
             const labelListTable& cellLists() const
             {
                 return cellLists_;
+            }
+
+            const labelList& cells() const
+            {
+                return cells_;
             }
 
             const volTensorField& tortuosity() const

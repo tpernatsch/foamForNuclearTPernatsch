@@ -73,6 +73,9 @@ protected :
     //- Ref to fluid2
     const fluid& fluid2_;
 
+    //- Phase fraction of the dispersed phase
+    volScalarField alphaDispersed_;
+
     //- Hydraulic diameter of the dispersed phase
     volScalarField DhDispersed_;
 
@@ -127,6 +130,11 @@ public:
             const fluid& fluid2() const
             {
                 return fluid2_;
+            }
+
+            const volScalarField& alphaDispersed() const
+            {
+                return alphaDispersed_;
             }
 
             const volScalarField& DhDispersed() const

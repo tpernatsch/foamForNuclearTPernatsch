@@ -49,6 +49,18 @@ Foam::FFPair::FFPair
     ),
     fluid1_(fluid1),
     fluid2_(fluid2),
+    alphaDispersed_
+    (
+        IOobject
+        (
+            "alphaDispersed",
+            mesh_.time().timeName(),
+            mesh_
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     DhDispersed_
     (
         IOobject
@@ -167,6 +179,11 @@ void Foam::FFPair::correct()
     const volScalarField& Dh2(fluid2_.Dh());
     scalarField continuity1(1.0-fluid1_.dispersion());
     scalarField continuity2(1.0-fluid2_.dispersion());
+
+    alphaDispersed_.primitiveFieldRef() = 
+        fluid1_.primitiveField()*fluid1_.dispersion() 
+    +   fluid2_.primitiveField()*fluid2_.dispersion();
+    alphaDispersed_.correctBoundaryConditions();
 
     DhDispersed_.primitiveFieldRef() = 
         Dh1.primitiveField()*fluid1_.dispersion() 

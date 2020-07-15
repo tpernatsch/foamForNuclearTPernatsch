@@ -50,6 +50,7 @@ namespace Foam
 
 //- Forward declarations
 class fluid;
+class structureModel;
 
 /*---------------------------------------------------------------------------*\
             Class phaseChangeModel Declaration
@@ -73,6 +74,9 @@ protected:
     //- Ref to fluid2
     const fluid& fluid2_;
 
+    //- Ref to structure
+    const structureModel& structure_;
+
     //- Ref to system pressure
     const volScalarField& p_;
 
@@ -92,6 +96,10 @@ protected:
 
     //- Minimum interfacial area
     const dimensionedScalar residualIA_;
+
+    //- Cells in which the interfacial area is limited to a minimum so that
+    //  boilng can start
+    labelList residualIACells_;
 
 public:
 

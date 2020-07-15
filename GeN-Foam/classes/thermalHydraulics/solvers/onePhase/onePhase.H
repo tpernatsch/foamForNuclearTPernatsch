@@ -112,7 +112,7 @@ public:
         (
             Time& time,
             fvMesh& mesh, 
-            pimpleControl& pimple, 
+            myPimpleControl& pimple, 
             fv::options& fvOptions
         );
 

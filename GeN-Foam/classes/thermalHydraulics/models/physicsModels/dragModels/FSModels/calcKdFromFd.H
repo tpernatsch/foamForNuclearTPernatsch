@@ -1,7 +1,8 @@
 //- The only thing that should be defined by the class that includes this is
 //  the scalar drag factor fd(Re)
 
-const volScalarField& alpha(FSPair_->fluidRef());
+//- Alpha is the void fraction
+volScalarField alpha(1.0-FSPair_->structure());
 const volScalarField& magU(FSPair_->fluidRef().magU());
 const volScalarField& rho(FSPair_->fluidRef().thermo().rho());
 

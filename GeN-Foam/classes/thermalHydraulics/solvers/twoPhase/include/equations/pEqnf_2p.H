@@ -82,7 +82,9 @@ if(!implicitPartialElimination)
         max(alphaf2, residualAlpha2)*rAUf2
     );
 
-    while (pimple_.correct())
+    bool convergedPISO(false);
+
+    while (pimple_.correct(convergedPISO))
     {
         this->correctContErrs();
 
@@ -230,10 +232,13 @@ if(!implicitPartialElimination)
 
             pEqn.setReference(pRefCell_, pRefValue_);
 
-            solve
-            (
-                pEqn,
-                mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
+            convergedPISO =
+            ( 
+                pEqn.solve
+                (
+                    mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
+                ).max().nIterations()
+            ==  0.0
             );
 
             if (pimple_.finalNonOrthogonalIter())
@@ -395,7 +400,9 @@ else //- i.e. if doing implicitPartialElimination
         (alphaf2+KdbyAf1*(alphaf1+alphaf2))*rAUf2
     );
 
-    while (pimple_.correct())
+    bool convergedPISO(false);
+
+    while (pimple_.correct(convergedPISO))
     {
         this->correctContErrs();
 
@@ -536,10 +543,13 @@ else //- i.e. if doing implicitPartialElimination
 
             pEqn.setReference(pRefCell_, pRefValue_);
 
-            solve
-            (
-                pEqn,
-                mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
+            convergedPISO =
+            ( 
+                pEqn.solve
+                (
+                    mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
+                ).max().nIterations()
+            ==  0.0
             );
 
             if (pimple_.finalNonOrthogonalIter())
@@ -616,7 +626,7 @@ else //- i.e. if doing implicitPartialElimination
                 //- Update mixture velocity
                 U_ = this->U();
                 U_.correctBoundaryConditions();
-            }   
+            }
         }
 
         //- Update and limit the static pressure

@@ -42,7 +42,7 @@ SourceFiles
 #include "fvCFD.H"
 #include "fvOptions.H"
 #include "IOdictionary.H"
-#include "pimpleControl.H"
+#include "myPimpleControl.H"
 #include "runTimeSelectionTables.H"
 
 //- It is pointless to include these in the .C files as any derived solver 
@@ -100,7 +100,7 @@ protected:
 
     fvMesh& mesh_;
 
-    pimpleControl& pimple_;
+    myPimpleControl& pimple_;
 
     fv::options& fvOptions_;
 
@@ -157,7 +157,7 @@ public:
             (
                 Time& time,
                 fvMesh& mesh,
-                pimpleControl& pimple,
+                myPimpleControl& pimple,
                 fv::options& fvOpt
             ),
             (time, mesh, pimple, fvOpt)
@@ -169,7 +169,7 @@ public:
         (
             Time& time,
             fvMesh& mesh,
-            pimpleControl& pimple,
+            myPimpleControl& pimple,
             fv::options& fvOpt
         );
 
@@ -182,7 +182,7 @@ public:
         (
             Time& time,
             fvMesh& mesh,
-            pimpleControl& pimple,
+            myPimpleControl& pimple,
             fv::options& fvOpt
         );
 

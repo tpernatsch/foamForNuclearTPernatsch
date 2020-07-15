@@ -115,6 +115,16 @@ private :
     */
     volScalarField dgdt_;
 
+    //- Static and flow qualities of the phase. While these are not intrinsic
+    //  properties to the fluid itself (they depend on the properties of the
+    //  other fluid too), it is way easier to just set them here rather than
+    //  in the FFPair class, where it would make more logical sense
+    volScalarField staticQuality_;
+    volScalarField flowQuality_;
+
+    //- Normalized phase fraction
+    volScalarField normalized_;
+
     //- Prandtl of the fluid
     volScalarField Pr_;
 
@@ -296,6 +306,36 @@ public:
             volScalarField& dgdt()
             {
                 return dgdt_;
+            }
+
+            const volScalarField& staticQuality() const
+            {
+                return staticQuality_;
+            }
+
+            volScalarField& staticQuality()
+            {
+                return staticQuality_;
+            }
+
+            const volScalarField& flowQuality() const
+            {
+                return flowQuality_;
+            }
+
+            volScalarField& flowQuality()
+            {
+                return flowQuality_;
+            }
+
+            const volScalarField& normalized() const
+            {
+                return normalized_;
+            }
+
+            volScalarField& normalized()
+            {
+                return normalized_;
             }
 
             const volScalarField& Pr() const

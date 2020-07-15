@@ -42,9 +42,9 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-    //- Solve MULES only for solveFluid, while otherFluid fields are computed
+    //- Solve MULES only for solveFluid, while otherFluid is computed
     //  to ensure continuity. This is an alternative to always solving both
-    //  phaseFractions with MULES. Needs testing to see which one performs
+    //  phase fractions with MULES. Needs testing to see which one performs
     //  better in which scenarios
     auto solveAlpha = [&]
     (
@@ -535,16 +535,37 @@
         alpha2.oldTime().timeIndex() = timeIndex;
     }
 
-    //- Adjust mass fluxes
+    //- Correct mass fluxes
     fluid1_.alphaRhoPhi() = 
             fvc::interpolate(fluid1_.thermo().rho())*fluid1_.alphaPhi();
     fluid2_.alphaRhoPhi() = 
         fvc::interpolate(fluid2_.thermo().rho())*fluid2_.alphaPhi();
 
+    //- Correct phase qualities
+    volScalarField totalSpecificMass
+    (
+        alpha1*fluid1_.thermo().rho()+alpha2*fluid2_.thermo().rho()
+    );
+    fluid1_.staticQuality() = alpha1*fluid1_.thermo().rho()/totalSpecificMass;
+    fluid2_.staticQuality() = alpha2*fluid2_.thermo().rho()/totalSpecificMass;
+    volScalarField totalMassFlux
+    (
+        max
+        (
+            alpha1*fluid1_.thermo().rho()*fluid1_.magU()
+        +   alpha2*fluid2_.thermo().rho()*fluid2_.magU(),
+            dimensionedScalar("", dimDensity*dimVelocity, 1e-6)
+        )
+    );
+    fluid1_.flowQuality() = 
+        alpha1*fluid1_.thermo().rho()*fluid1_.magU()/totalMassFlux;
+    fluid2_.flowQuality() = 
+        alpha2*fluid2_.thermo().rho()*fluid2_.magU()/totalMassFlux;
+
     //- Update normalized alpha fields (only useful for regime map 
     //  parametrization, if selected as regime map parameter)
-    normalizedAlpha1_ = alpha1/movingAlpha_;
-    normalizedAlpha2_ = alpha2/movingAlpha_;
+    fluid1_.normalized() = fluid1_/movingAlpha_;
+    fluid2_.normalized() = fluid2_/movingAlpha_;
 
     //- Infos
     Info<< alpha1.name() << " (avg min max) ="

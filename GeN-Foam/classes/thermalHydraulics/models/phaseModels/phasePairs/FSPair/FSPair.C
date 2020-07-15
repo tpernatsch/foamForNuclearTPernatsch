@@ -81,7 +81,7 @@ Foam::FSPair::FSPair
             mesh_.time().timeName(),
             mesh_,
             IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::AUTO_WRITE
         ),
         mesh_,
         minRe_,

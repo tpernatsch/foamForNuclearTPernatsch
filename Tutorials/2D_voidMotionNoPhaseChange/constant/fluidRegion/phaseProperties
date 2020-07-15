@@ -105,6 +105,12 @@ physicsModelsByRegime
             }
         }
 
+        twoPhaseDragMultiplierModel
+        {
+            type            LottesFlinn;
+            multiplierFluid liquid;
+        }
+
         heatTransferModels
         {}
 
@@ -151,6 +157,12 @@ physicsModelsByRegime
                     value   3000;
                 }
             }
+        }
+
+        twoPhaseDragMultiplierModel
+        {
+            type            LottesFlinn;
+            multiplierFluid liquid;
         }
 
         heatTransferModels
