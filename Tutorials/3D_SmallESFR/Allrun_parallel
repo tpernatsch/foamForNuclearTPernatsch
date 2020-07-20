@@ -54,9 +54,12 @@ do
     #( cd $caseName && runApplication `getApplication` )
     printf "Running $exe on $caseName\n"
     decomposePar -case $caseName -region thermoMechanicalRegion
-    decomposePar -case $caseName -region fluidRegion
     decomposePar -case $caseName -region neutroRegion
-    mpirun -np 4 $exe -parallel -case $caseName 2>&1 | tee "$caseName/log.$exe"
+    decomposePar -case $caseName -region fluidRegion
+    #mpirun -np 4 $exe -parallel -case $caseName 2>&1 | tee "$caseName/log.$exe"
+    cd $caseName
+    runParallel $exe
+    cd ../
     #$exe -case $caseName 2>&1 | tee "$caseName/log.$exe"
 done
 

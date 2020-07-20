@@ -25,11 +25,12 @@ Class
     Foam::dragModels::DarcyReynoldsPower
 
 Description
-    Drag coefficient in the form coeff*Re^exp. The coeff and exp are specified
-    in vector form, one per local component (i.e. in the local structure frame
-    of reference). An isotropic variant can be specified via the isotropic
-    flag, if the isotropic Reynolds and hydrauluic diameters are to be used
-    to compute a single drag coefficient for all directions
+    Drag coefficient in the form fd = coeff*Re^exp with 
+    Kd = 0.5*fd*alpha*rho*magU/Dh
+
+Dictionary entries (mandatory)
+    coeff   0.316;
+    exp     -0.25;
 
 SourceFiles
     DarcyReynoldsPower.C
@@ -59,14 +60,11 @@ class DarcyReynoldsPower
 {
 private:
 
-    //- Coefficients in f = coeffs_.*Re.^(exps_)
-    vector coeff_;
+    //-
+    scalar coeff_;
 
-    //- Exponents in f = coeffs_.*Re.^(exps_)
-    vector exp_;
-
-    //- True if coeff_, exp_ uniform in all directions
-    bool isotropic_;
+    //-
+    scalar exp_;
 
 public:
 
@@ -90,6 +88,9 @@ public:
 
         //- Drag coefficient
         virtual void correctKd(volTensorField& Kd) const;
+
+        //- Scalar drag factor fd in Kd = 0.5*fd*alpha*rho*magU/Dh
+        scalar fd(const scalar& Re) const;
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -75,7 +75,7 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::heatDrivenPhaseChange
     const fluid& fluid1,
     const fluid& fluid2,
     const volScalarField& p,
-    const volScalarFieldTable& htcs,
+    const volScalarFieldPtrTable& htcs,
     volScalarField& dmdt,
     volScalarField& iT,
     volScalarField& iA
@@ -129,8 +129,8 @@ void Foam::phaseChangeModels::heatDrivenPhaseChange::correctMassTransfer()
     const volScalarField& he2(fluid2_.thermo().he());
     const volScalarField& T1(fluid1_.thermo().T());
     const volScalarField& T2(fluid2_.thermo().T());
-    const volScalarField& H1i(htcs_[fluid1_.name()+"."+fluid2_.name()]);
-    const volScalarField& H2i(htcs_[fluid2_.name()+"."+fluid1_.name()]);
+    const volScalarField& H1i(*htcs_[fluid1_.name()+"."+fluid2_.name()]);
+    const volScalarField& H2i(*htcs_[fluid2_.name()+"."+fluid1_.name()]);
 
     //- Limit interfacial area so boiling can start 
     //  (very crude, it's the best I have for now)
@@ -156,6 +156,10 @@ void Foam::phaseChangeModels::heatDrivenPhaseChange::correctMassTransfer()
     //  fluid2_.thermo().hc() - fluid1_.thermo().hc(), with hc() being
     //  the enthalpy of formation specified under the Hf keyword in the
     //  thermophysical dict of each phase
+
+    //- Please note that the code here does not make use of the isLiquid or
+    //  isGas methods of the fluids to determine which is the liquid and 
+    //  which is the vapour. It does that via the sign of the latent heat
     volScalarField L(fluid2_.thermo().hc() - fluid1_.thermo().hc());
     if (correctLatentHeat_)
     {

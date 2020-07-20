@@ -28,6 +28,9 @@ License
 #include "fvcDiv.H"
 #include "myStringOps.H"
 
+//- From forward declarations in structureModel.C
+#include "fluid.H"
+
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
@@ -91,6 +94,7 @@ Foam::structureModels::byZone::byZone
         //  the separation character between zone names
         word key(dict.toc()[i]);
         if (key == "type") continue;
+        if (key == "powerOffCriterionModel") continue;
         const dictionary& zoneDict(dict.subDict(key));
         
         wordList zones(myStringOps::split<word>(key, ':'));
@@ -100,13 +104,17 @@ Foam::structureModels::byZone::byZone
             word zone(zones[i]);
             const labelList& zoneCellList(mesh.cellZones()[zone]);
         
-            //- Construct cellLists_, cellFields_
+            //- Construct cellLists_, cells_, cellFields_
             regions_.append(zone);
             cellLists_.insert
             (
                 zone,
                 zoneCellList
             );
+            forAll(zoneCellList, i)
+            {
+                cells_.append(zoneCellList[i]);
+            }
             scalarField zoneCellField(mesh.cells().size(), 0.0);
             forAll(zoneCellList, j)
             {
@@ -374,7 +382,7 @@ Foam::structureModels::byZone::byZone
 
             //- Construct transformation matrices
 
-            //- The basis change matrix is the transfromation to move from
+            //- The basis change matrix is the transformation to move from
             //  the local reference frame to the global one. It is constructed
             //  by simply arranging the local basis vectors (expressed in 
             //  global reference frame coordinates) in columns. Since these are 

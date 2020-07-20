@@ -90,10 +90,6 @@ private:
         //- Total fluid phase fraction
         volScalarField movingAlpha_;
 
-        //- Phase fractions of fluids 1 and 2 normalized wrt movingAlpha_
-        volScalarField normalizedAlpha1_;
-        volScalarField normalizedAlpha2_;
-
     //- Phase pairs
         
         //- Fluid1 - fluid2
@@ -120,7 +116,24 @@ private:
         //      - fluid1 and fluid2;
         //      - fluid1 and the structure
         //      - fluid2 and the structure
-        volTensorFieldTable Kds_;
+        volTensorFieldPtrTable Kds_;
+
+        //- drag coefficients at previous PIMPLE iteration for under-relaxation
+        //  purposes
+        volTensorFieldPtrTable oldKds_;
+
+        //- Fluid-fluid drag coefficient reconstructed from drag factor as
+        //  Cd12_ = 2*Kd12*DhDispersed/(rhoContinuous*mag(Urel))/alpha1/alpha2.
+        //  Why do I even need this? Well, some turbulence models require it
+        //  and reconstructing it from within said turbulence models is
+        //  difficult at low dispersed phase fractions. Kd would go to 0, but
+        //  it is limited (in the solver) to residualKd, so that the
+        //  reconstructed Cd can be significantly over-estimated at low phase
+        //  fractions. Thus, I compute Cd (i.e. this FFCd_) before limiting
+        //  the Kd in the main solver, and look up this field from within the
+        //  turbulence models that need it. All this applies only to the 
+        //  fluid-fluid drag
+        volScalarField Cd12_;
 
         //- Avoid momentum decoupling between the two fluids by imposing a 
         //  minimum value for the drag coefficient
@@ -131,7 +144,11 @@ private:
         //      - fluid2 and interface between fluid2 and fluid1;
         //      - fluid1 and the structure
         //      - fluid2 and the structure
-        volScalarFieldTable htcs_;
+        volScalarFieldPtrTable htcs_;
+
+        //- heat transfer coefficients at previous PIMPLE iteration for 
+        //  under-relaxation purposes
+        volScalarFieldPtrTable oldHtcs_;
 
         //- interfacial area between fluid1 and fluid2
         volScalarField iA12_;
@@ -159,11 +176,6 @@ private:
 
         //- Phase change model
         autoPtr<phaseChangeModel> phaseChange_;
-
-    //- Ptr to a fluid phase for powerOff mangement (i.e., if one desires to
-    //  turn off the power of all structures if the phase fraction of a field
-    //  is above a certain value. The flags and values are read at runTime)
-        const volScalarField* alphaPowerOff_; 
 
     //- Global flags for time/subCycle control
 
@@ -204,14 +216,40 @@ public:
         (
             Time& time,
             fvMesh& mesh, 
-            pimpleControl& pimple, 
+            myPimpleControl& pimple, 
             fv::options& fvOptions
         );
 
         //- Destructor
         virtual ~twoPhase(){}
 
-    //- Member Functions
+    //- Protected member Functions
+
+protected :
+
+    //- Under-relax coupling fields (i.e. Kd, htc) in the provided
+    //  table with the fields in the other table
+    template<class fieldType>
+    void relaxFieldPtrTable
+    (
+        const word& relaxFactorName,
+        const HashPtrTable
+        <
+            fieldType, 
+            word, 
+            word::hash
+        >& oldFieldPtrTable,
+        HashPtrTable
+        <
+            fieldType, 
+            word, 
+            word::hash
+        >& fieldPtrTable
+    );
+    
+    //- Public member Functions
+
+public :
 
         //- Return the mixture density
         tmp<volScalarField> rho() const;

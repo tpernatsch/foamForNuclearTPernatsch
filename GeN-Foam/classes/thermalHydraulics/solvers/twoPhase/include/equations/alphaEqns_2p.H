@@ -7,6 +7,10 @@
     const surfaceScalarField& phi2(fluid2_.phi());
     word phirScheme("div(phir,alpha)");
 
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////    
+
     //- START OF LAMBDA FUNCTION DEFINITIONS
 
     //- This is a lambda function (standard C++ stuff) that adjusts the
@@ -35,6 +39,104 @@
             }
         }
     };
+
+///////////////////////////////////////////////////////////////////////////////
+
+    //- Solve MULES only for solveFluid, while otherFluid is computed
+    //  to ensure continuity. This is an alternative to always solving both
+    //  phase fractions with MULES. Needs testing to see which one performs
+    //  better in which scenarios
+    auto solveAlpha = [&]
+    (
+        fluid& solveFluid, 
+        fluid& otherFluid, 
+        scalar rDeltaT
+    )
+    {
+        surfaceScalarField alphaPhic = 
+        (
+            fvc::flux(phi_, solveFluid, "div(phi,alpha)")
+        +   fvc::flux
+            (
+                -fvc::flux
+                (
+                    -(solveFluid.phi()-otherFluid.phi()), 
+                    movingAlpha_-solveFluid, 
+                    phirScheme
+                ),
+                solveFluid,
+                phirScheme
+            )
+        +   fvc::flux
+            (
+                -fvc::flux(-solveFluid.phi(), structure_, phirScheme),
+                solveFluid,
+                phirScheme
+            )
+        );
+        correctInflowOutflow(solveFluid, solveFluid.phi(), alphaPhic);
+        volScalarField::Internal Sp
+        (
+            IOobject
+            (
+                "Sp",
+                mesh_.time().timeName(),
+                mesh_
+            ),
+            mesh_,
+            dimensionedScalar("Sp", dimless/dimTime, 0)
+        );
+        volScalarField::Internal Su
+        (
+            
+            IOobject
+            (
+                "Su",
+                mesh_.time().timeName(),
+                mesh_
+            ),
+            mesh_,
+            dimensionedScalar("Su", dimless/dimTime, 0)
+        );
+        const volScalarField& dgdt(solveFluid.dgdt());
+        forAll(dgdt, celli)
+        {
+            if (dgdt[celli] < 0.0)
+            {
+                Sp[celli] += dgdt[celli]/max(solveFluid[celli], 1e-15);
+            }
+            else
+            {
+                Su[celli] += dgdt[celli];
+            }
+        }
+        myMULES::explicitSolve
+        (
+            rDeltaT,
+            geometricOneField(),
+            solveFluid,
+            phi_,
+            alphaPhic,
+            Sp,
+            Su,
+            movingAlpha_.primitiveField(),
+            zeroField()
+        );
+
+        solveFluid.alphaPhi() = alphaPhic;
+        otherFluid.alphaPhi() = phi_-solveFluid.alphaPhi();
+        correctInflowOutflow
+        (
+            otherFluid, 
+            otherFluid.phi(), 
+            otherFluid.alphaPhi()
+        );
+        solveFluid.volScalarField::operator=(min(max(solveFluid, 0.0), 1.0));
+        solveFluid.correctBoundaryConditions();
+        otherFluid.volScalarField::operator=(movingAlpha_-solveFluid);
+    };
+
+///////////////////////////////////////////////////////////////////////////////
 
     //- This is a lambda function (standard C++ stuff) that solves the volume
     //  fraction equations with the MULES algorithm (explicit) with a given
@@ -222,7 +324,7 @@
             Sp1,
             Su1
         );
-        alpha1 = max(alpha1, 0.0);
+        alpha1 = min(max(alpha1, 0.0), 1.0);
         fluid1_.alphaPhi() = alphaPhic1;
 
         //- Solve fluid2
@@ -236,12 +338,15 @@
             Sp2,
             Su2
         );
-        alpha2 = max(alpha2, 0.0);
+        alpha2 = min(max(alpha2, 0.0), 1.0);
         fluid2_.alphaPhi() = alphaPhic2;
         
         //- Limit alphas so that they still add up to movingAlpha_ and 
         //  stabilize alphas if their sum goes to 0 (helps with single-phase 
-        //  scenarios with Courant numbers > 1 when not doing subCycles)
+        //  scenarios with Courant numbers > 1 when not doing subCycles).
+        //  Please note that, depending on the choice of boundaryConditions for
+        //  the phaseFractions, the correctBoundaryConditions might ever so
+        //  slightly break the normalization by small amounts
         volScalarField zeroSum(neg0(alpha1+alpha2));
         alpha1 += zeroSum*alpha1.oldTime();
         alpha2 += zeroSum*alpha2.oldTime();
@@ -252,7 +357,46 @@
         alpha2.correctBoundaryConditions();
     }; 
 
+///////////////////////////////////////////////////////////////////////////////
+
+    //- Actual function that either solves for one or both phaseFractions
+    //  via MULES.
+    auto solve = [&](word solvePhase, scalar rDeltaT)
+    {
+        if (solvePhase == "both")
+        {
+            solveAlphas(rDeltaT);
+        }
+        else if (solvePhase == fluid1_.name())
+        {
+            solveAlpha
+            (
+                fluid1_,
+                fluid2_,
+                rDeltaT
+            );
+        }
+        else if (solvePhase == fluid2_.name())
+        {
+            solveAlpha
+            (
+                fluid2_,
+                fluid1_,
+                rDeltaT
+            );
+        }
+        else
+            FatalErrorInFunction 
+            << "Phase named " << solvePhase << " not found. Available phases " 
+            << "are " << fluid1_.name() << " and " << fluid2_.name()
+            << exit(FatalError);
+    };
+
     //- END OF LAMBDA FUNCTION DEFINITIONS
+
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
     //- All right, let's talk sub-cycles. The phase fraction equations are the
     //  only fully-explicit set of equations, which means that ultimately all
@@ -272,6 +416,11 @@
     //  the alphaEqns (user provided but it should never exceed 0.5)
     
     const dictionary& alphaDict(mesh_.solverDict("alpha"));
+
+    word solvePhase
+    (
+        alphaDict.lookupOrDefault<word>("solvePhase", "both")
+    );
 
     bool adjustSubCycles
     (
@@ -295,7 +444,12 @@
         alphaDict.lookupOrDefault<label>("nSubCycles", 1)
     );
 
-    Info<< "MULES:  Solving for " << alpha1.name() << ", " << alpha2.name() 
+    Info<< "MULES:  Solving for " 
+        << (
+                (solvePhase == "both") ?
+                word(alpha1.name()+", "+alpha2.name()) :
+                word("alpha."+solvePhase)
+            ) 
         << ", No SubCycles " << nSubCycles << " (alphaCo = " 
         << (CoNum_/nSubCycles) << ")" << endl;
 
@@ -307,7 +461,7 @@
     //  the global time step and call it a day
     if (nSubCycles == 1)
     {
-        solveAlphas(rDeltaT);
+        solve(solvePhase, rDeltaT);
     }
     else
     {   
@@ -353,7 +507,7 @@
         for(label subCycle = 0; subCycle < nSubCycles; subCycle++)
         {
             //- Compute new alphas, alphaPhis with reduced timeStep
-            solveAlphas(rDeltaT);
+            solve(solvePhase, rDeltaT);
 
             //- Set the computed alphas as oldTime fields (required to make it
             //  work)
@@ -381,16 +535,37 @@
         alpha2.oldTime().timeIndex() = timeIndex;
     }
 
-    //- Adjust mass fluxes
+    //- Correct mass fluxes
     fluid1_.alphaRhoPhi() = 
             fvc::interpolate(fluid1_.thermo().rho())*fluid1_.alphaPhi();
     fluid2_.alphaRhoPhi() = 
         fvc::interpolate(fluid2_.thermo().rho())*fluid2_.alphaPhi();
 
+    //- Correct phase qualities
+    volScalarField totalSpecificMass
+    (
+        alpha1*fluid1_.thermo().rho()+alpha2*fluid2_.thermo().rho()
+    );
+    fluid1_.staticQuality() = alpha1*fluid1_.thermo().rho()/totalSpecificMass;
+    fluid2_.staticQuality() = alpha2*fluid2_.thermo().rho()/totalSpecificMass;
+    volScalarField totalMassFlux
+    (
+        max
+        (
+            alpha1*fluid1_.thermo().rho()*fluid1_.magU()
+        +   alpha2*fluid2_.thermo().rho()*fluid2_.magU(),
+            dimensionedScalar("", dimDensity*dimVelocity, 1e-6)
+        )
+    );
+    fluid1_.flowQuality() = 
+        alpha1*fluid1_.thermo().rho()*fluid1_.magU()/totalMassFlux;
+    fluid2_.flowQuality() = 
+        alpha2*fluid2_.thermo().rho()*fluid2_.magU()/totalMassFlux;
+
     //- Update normalized alpha fields (only useful for regime map 
     //  parametrization, if selected as regime map parameter)
-    normalizedAlpha1_ = alpha1/movingAlpha_;
-    normalizedAlpha2_ = alpha2/movingAlpha_;
+    fluid1_.normalized() = fluid1_/movingAlpha_;
+    fluid2_.normalized() = fluid2_/movingAlpha_;
 
     //- Infos
     Info<< alpha1.name() << " (avg min max) ="

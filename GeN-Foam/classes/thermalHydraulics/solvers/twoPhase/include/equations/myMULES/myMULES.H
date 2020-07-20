@@ -136,6 +136,28 @@ template
     class PsiMaxType,
     class PsiMinType
 >
+void explicitSolve
+(
+    const RdeltaTType& rDeltaT,
+    const RhoType& rho,
+    volScalarField& psi,
+    const surfaceScalarField& phiBD,
+    surfaceScalarField& phiPsi,
+    const SpType& Sp,
+    const SuType& Su,
+    const PsiMaxType& psiMax,
+    const PsiMinType& psiMin
+);
+
+template
+<
+    class RdeltaTType,
+    class RhoType,
+    class SpType,
+    class SuType,
+    class PsiMaxType,
+    class PsiMinType
+>
 void limiter
 (
     scalarField& allLambda,

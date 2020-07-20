@@ -49,6 +49,18 @@ Foam::FFPair::FFPair
     ),
     fluid1_(fluid1),
     fluid2_(fluid2),
+    alphaDispersed_
+    (
+        IOobject
+        (
+            "alphaDispersed",
+            mesh_.time().timeName(),
+            mesh_
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     DhDispersed_
     (
         IOobject
@@ -123,6 +135,24 @@ Foam::FFPair::FFPair
         dimensionedScalar("", dimless, 1),
         zeroGradientFvPatchScalarField::typeName
     ),
+    minRe_
+    (
+        dimensionedScalar::lookupOrDefault
+        (
+            "residualFluidFluidRe",
+            IOdictionary
+            (
+                IOobject
+                (
+                    "phaseProperties",
+                    mesh_.time().constant(),
+                    mesh_
+                )
+            ),
+            dimless,
+            1e-3
+        )
+    ),
     magUr_
     (
         IOobject
@@ -150,34 +180,39 @@ void Foam::FFPair::correct()
     scalarField continuity1(1.0-fluid1_.dispersion());
     scalarField continuity2(1.0-fluid2_.dispersion());
 
+    alphaDispersed_.primitiveFieldRef() = 
+        fluid1_.primitiveField()*fluid1_.dispersion() 
+    +   fluid2_.primitiveField()*fluid2_.dispersion();
+    alphaDispersed_.correctBoundaryConditions();
+
     DhDispersed_.primitiveFieldRef() = 
         Dh1.primitiveField()*fluid1_.dispersion() 
     +   Dh2.primitiveField()*fluid2_.dispersion();
+    DhDispersed_.correctBoundaryConditions();
 
     DhContinuous_.primitiveFieldRef() = 
         Dh1.primitiveField()*continuity1
     +   Dh2.primitiveField()*continuity2;
+    DhContinuous_.correctBoundaryConditions();
 
     rhoContinuous_.primitiveFieldRef() =
         fluid1_.thermo().rho()().primitiveField()*continuity1
     +   fluid2_.thermo().rho()().primitiveField()*continuity2;
+    rhoContinuous_.correctBoundaryConditions();
 
     nuContinuous_.primitiveFieldRef() = 
         fluid1_.thermo().nu()()*continuity1
     +   fluid2_.thermo().nu()()*continuity2;
+    nuContinuous_.correctBoundaryConditions();
     
     PrContinuous_.primitiveFieldRef() = 
         fluid1_.Pr()*continuity1
     +   fluid2_.Pr()*continuity2;
+    PrContinuous_.correctBoundaryConditions();
     
     magUr_ = mag(U1-U2);
     
-    Re_ = 
-        max
-        (
-            magUr_*DhDispersed_/nuContinuous_, 
-            dimensionedScalar("", dimless, 10)
-        );
+    Re_ = max(magUr_*DhDispersed_/nuContinuous_, minRe_);
 }
 
 

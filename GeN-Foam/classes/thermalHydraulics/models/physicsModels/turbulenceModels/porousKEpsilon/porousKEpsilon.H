@@ -245,6 +245,23 @@ public:
             return epsilon_;
         }
 
+        //- Return the (estimated) specific dissipation rate. This function
+        //  is required by the new v2006 OpenFOAM version, as it is pure
+        //  virtual in EddyViscosity
+        virtual tmp<volScalarField> omega() const
+        {
+            return tmp<volScalarField>::New
+            (
+                IOobject
+                (
+                    IOobject::groupName("omega", this->alphaRhoPhi_.group()),
+                    this->runTime_.timeName(),
+                    this->mesh_
+                ),
+                epsilon_/(Cmu_*k_)
+            );
+        }
+
         //- Solve the turbulence equations and correct the turbulence viscosity
         virtual void correct();
 };

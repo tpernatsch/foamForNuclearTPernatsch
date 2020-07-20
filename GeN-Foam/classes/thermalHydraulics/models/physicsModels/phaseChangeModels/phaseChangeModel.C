@@ -24,8 +24,10 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "phaseChangeModel.H"
-#include "fluid.H"
 #include "zeroGradientFvPatchFields.H"
+#include "fluid.H"
+#include "structureModel.H"
+#include "fvCFD.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -45,7 +47,7 @@ Foam::phaseChangeModel::phaseChangeModel
     const fluid& fluid1,
     const fluid& fluid2,
     const volScalarField& p,
-    const volScalarFieldTable& htcs,
+    const volScalarFieldPtrTable& htcs,
     volScalarField& dmdt,
     volScalarField& iT,
     volScalarField& iA
@@ -65,6 +67,7 @@ Foam::phaseChangeModel::phaseChangeModel
     pimple_(pimple),
     fluid1_(fluid1),
     fluid2_(fluid2),
+    structure_(mesh_.lookupObject<structureModel>("alpha.structure")),
     p_(p),
     htcs_(htcs),
     dmdt_(dmdt),
@@ -92,7 +95,8 @@ Foam::phaseChangeModel::phaseChangeModel
             dimArea/dimVolume,
             1e-6
         )
-    )
+    ),
+    residualIACells_(0)
 {
     //- Set initial interfacial temperature (to avoid problems with the
     //  under-relaxation at the first time-step in EEqns.H
@@ -107,6 +111,77 @@ Foam::phaseChangeModel::phaseChangeModel
     {
         iT_ = saturation_->Tsat(p_);
     }
+
+    //- Knowledge of which phase is liquid and which is vapour are not
+    //  required by all phaseChange models (e.g. the heatDrivenPhaseChange one
+    //  does not require it and distinguishes the phases precisely on the basis
+    //  of the latent heat (pardon the inconsistency with the error message,
+    //  yet it's for the user's sake). Having this check regardless of the
+    //  models adds however a further layer of double-checking thinks that can
+    //  be beneficial
+    if 
+    (
+        fluid1_.isLiquid() and fluid2_.isGas() and
+        (
+            fvc::domainIntegrate(fluid1_.thermo().hc()).value() >=
+            fvc::domainIntegrate(fluid2_.thermo().hc()).value() 
+        )
+    )
+    {
+        FatalErrorInFunction
+            << "Negative latent heat! Ensure that the liquid phase (i.e. " 
+            << fluid1_.name() << ") enthalpy of formation (Hc) in its "
+            << "thermoPhysicalProperties file is smaller than the vapour "
+            << "phase (i.e. " << fluid2_.name() << ") enthalpy of formation" 
+            << exit(FatalError);
+    }
+    else if 
+    (
+        fluid1_.isGas() and fluid2_.isLiquid() and
+        (
+            fvc::domainIntegrate(fluid1_.thermo().hc()).value() <=
+            fvc::domainIntegrate(fluid2_.thermo().hc()).value() 
+        )
+    )
+    {
+        FatalErrorInFunction
+            << "Negative latent heat! Ensure that the liquid phase (i.e. " 
+            << fluid2_.name() << ") enthalpy of formation (Hc) in its "
+            << "thermoPhysicalProperties file is smaller than the vapour "
+            << "phase (i.e. " << fluid1_.name() << ") enthalpy of formation" 
+            << exit(FatalError);
+    }
+    else if 
+    (
+        (!fluid1_.isLiquid() and !fluid1_.isGas()) or 
+        (!fluid2_.isLiquid() and !fluid2_.isGas())
+    )
+    {
+        FatalErrorInFunction
+            << "Either phase " << fluid1_.name() << " or " << fluid2_.name()
+            << " have an undetermined stateOfMatter (should be specified in "
+            << "phaseProperties." << fluid1_.name() << "Properties and/or "
+            << "phaseProperties." << fluid2_.name() << "Properties)"
+            << exit(FatalError);
+    }
+
+    //- Read residualIACells from regions
+    wordList residualIARegions
+    (
+        this->lookupOrDefault<wordList>("residualInterfacialAreaRegions", wordList())
+    );
+    forAll(residualIARegions, i)
+    {
+        const labelList& regionCells
+        (
+            structure_.cellLists()[residualIARegions[i]]
+        );
+
+        forAll(regionCells, j)
+        {
+            residualIACells_.append(regionCells[j]);
+        }
+    }
 }
 
 
@@ -114,10 +189,32 @@ Foam::phaseChangeModel::phaseChangeModel
 
 Foam::scalar Foam::phaseChangeModel::relaxationFactor() const
 {
-    scalar f(mesh_.fieldRelaxationFactor("massTransfer"));
-    if (pimple_.finalIter() and !relaxOnFinalIter_)
+    //- Read relaxation factor if present
+    scalar f(1.0);
+    if (mesh_.relaxField("massTransfer"))
     {
-        f = 1.0;
+        f = mesh_.fieldRelaxationFactor("massTransfer");
+        //- Basically stabilizedMassTransfer amounts to a constant
+        //  underrelaxation, even between consecutive time steps and on the 
+        //  last PIMPLE iteration (which is not how underrelaxation should be 
+        //  applied). However, if the time-steps are small enough (and they do 
+        //  get so if the boiling is violent enough, i.e. ~ 10-100  
+        //  microseconds), it greatly enchances stability (if the chosen 
+        //  relaxation factor is small enough, e.g. ~ 0.1-0.2) and does not
+        //  appear to affect results at all.
+        bool stabilizedMassTransfer
+        (
+            pimple_.dict().lookupOrDefault<bool>
+            (
+                "stabilizedMassTransfer", false
+            )
+        );
+
+        if 
+        (
+            !stabilizedMassTransfer
+        and (pimple_.firstIter() or pimple_.finalIter())
+        )   f = 1.0;
     }
 
     return f;
@@ -128,7 +225,19 @@ void Foam::phaseChangeModel::limitInterfacialArea()
 {
     if (residualIA_.value() != 0.0)
     {
-        iA_ = max(iA_, residualIA_);
+        if (residualIACells_.size() != 0)
+        {
+            scalar residualIAValue(residualIA_.value());
+            forAll(residualIACells_, i)
+            {
+                scalar& iAi(iA_[residualIACells_[i]]);
+                iAi = max(iAi, residualIAValue);
+            }
+        }
+        else
+        {
+            iA_ = max(iA_, residualIA_);
+        }
     }
 }
 
@@ -142,7 +251,11 @@ void Foam::phaseChangeModel::limitMassTransfer()
 
 void Foam::phaseChangeModel::correctInterfacialT()
 {
-    scalar f(mesh_.fieldRelaxationFactor("interfacialTemperature"));
+    scalar f(1.0);
+    if (mesh_.relaxField("interfacialTemperature"))
+    {
+        f = mesh_.fieldRelaxationFactor("interfacialTemperature");
+    }
     iT_ = (1-f)*iT_ + f*saturation_->Tsat(p_);
 }
 

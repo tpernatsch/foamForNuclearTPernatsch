@@ -56,10 +56,24 @@ class fluid
 :
     public phaseBase
 {
+public:
+
+    enum stateOfMatter
+    {
+        undetermined,
+        liquid,
+        gas
+    };
+
+    static const Enum<stateOfMatter> stateOfMatterNames_;
+
 private :
 
     //- Thermophysical properties
     autoPtr<rhoThermo> thermo_;
+
+    //- State of matter
+    const stateOfMatter stateOfMatter_;
 
     //- Velocity
     volVectorField U_;
@@ -100,6 +114,16 @@ private :
         dgdt
     */
     volScalarField dgdt_;
+
+    //- Static and flow qualities of the phase. While these are not intrinsic
+    //  properties to the fluid itself (they depend on the properties of the
+    //  other fluid too), it is way easier to just set them here rather than
+    //  in the FFPair class, where it would make more logical sense
+    volScalarField staticQuality_;
+    volScalarField flowQuality_;
+
+    //- Normalized phase fraction
+    volScalarField normalized_;
 
     //- Prandtl of the fluid
     volScalarField Pr_;
@@ -166,6 +190,16 @@ public:
         //  desireable to have a separate "constructur function" for the
         //  turbulenceModel
         void constructTurbulenceModel();
+
+        //- Related to stateOfMatter
+        bool isLiquid() const
+        {
+            return stateOfMatter_ == stateOfMatter::liquid;
+        }
+        bool isGas() const
+        {
+            return stateOfMatter_ == stateOfMatter::gas;
+        }
 
         //- Access (const and non-const)
 
@@ -272,6 +306,36 @@ public:
             volScalarField& dgdt()
             {
                 return dgdt_;
+            }
+
+            const volScalarField& staticQuality() const
+            {
+                return staticQuality_;
+            }
+
+            volScalarField& staticQuality()
+            {
+                return staticQuality_;
+            }
+
+            const volScalarField& flowQuality() const
+            {
+                return flowQuality_;
+            }
+
+            volScalarField& flowQuality()
+            {
+                return flowQuality_;
+            }
+
+            const volScalarField& normalized() const
+            {
+                return normalized_;
+            }
+
+            volScalarField& normalized()
+            {
+                return normalized_;
             }
 
             const volScalarField& Pr() const

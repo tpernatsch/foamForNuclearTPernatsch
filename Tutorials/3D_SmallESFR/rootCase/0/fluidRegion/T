@@ -28,7 +28,7 @@ boundaryField
     bottom
     {
         type            fixedValue;
-	value		668;
+	   value		    uniform 668;
     }
     walls
     {

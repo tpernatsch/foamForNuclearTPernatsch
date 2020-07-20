@@ -53,7 +53,21 @@ Foam::FSPair::FSPair
     structure_(structure),
     minRe_
     (
-        "", dimless, 10
+        dimensionedScalar::lookupOrDefault
+        (
+            "residualFluidStructureRe",
+            IOdictionary
+            (
+                IOobject
+                (
+                    "phaseProperties",
+                    mesh_.time().constant(),
+                    mesh_
+                )
+            ),
+            dimless,
+            10
+        )
     ),
     Re_
     (
@@ -67,10 +81,10 @@ Foam::FSPair::FSPair
             mesh_.time().timeName(),
             mesh_,
             IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::AUTO_WRITE
         ),
         mesh_,
-        dimensionedScalar("", dimless, 1),
+        minRe_,
         zeroGradientFvPatchScalarField::typeName
     ),
     lRe_

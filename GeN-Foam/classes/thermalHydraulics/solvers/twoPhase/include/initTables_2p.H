@@ -2,146 +2,200 @@
 Kds_.insert
 (
     fluid1_.name()+"."+fluid2_.name(),
-    volTensorField
+    autoPtr<volTensorField>
     (
-        IOobject
+        new volTensorField
         (
-            "Kd."+fluid1_.name()+"."+fluid2_.name(),
-            mesh_.time().timeName(),
+            IOobject
+            (
+                "Kd."+fluid1_.name()+"."+fluid2_.name(),
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE,
+                false
+            ),
             mesh_,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh_,
-        dimensionedTensor
-        (
-            "", 
-            dimDensity/dimTime, 
-            tensor(0,0,0,0,0,0,0,0,0)
-        ),
-        zeroGradientFvPatchScalarField::typeName
+            dimensionedTensor
+            (
+                "", 
+                dimDensity/dimTime, 
+                tensor(0,0,0,0,0,0,0,0,0)
+            ),
+            zeroGradientFvPatchScalarField::typeName
+        )
     )
 );
 Kds_.insert
 (
     fluid1_.name()+".structure",
-    volTensorField
+    autoPtr<volTensorField>
     (
-        IOobject
+        new volTensorField
         (
-            "Kd."+fluid1_.name()+".structure",
-            mesh_.time().timeName(),
+            IOobject
+            (
+                "Kd."+fluid1_.name()+".structure",
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE,
+                false
+            ),
             mesh_,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh_,
-        dimensionedTensor
-        (
-            "", 
-            dimDensity/dimTime, 
-            tensor(0,0,0,0,0,0,0,0,0)
-        ),
-        zeroGradientFvPatchScalarField::typeName
+            dimensionedTensor
+            (
+                "", 
+                dimDensity/dimTime, 
+                tensor(0,0,0,0,0,0,0,0,0)
+            ),
+            zeroGradientFvPatchScalarField::typeName
+        )
     )
 );
 Kds_.insert
 (
     fluid2_.name()+".structure",
-    volTensorField
+    autoPtr<volTensorField>
     (
-        IOobject
+        new volTensorField
         (
-            "Kd."+fluid2_.name()+".structure",
-            mesh_.time().timeName(),
+            IOobject
+            (
+                "Kd."+fluid2_.name()+".structure",
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE,
+                false
+            ),
             mesh_,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh_,
-        dimensionedTensor
-        (
-            "", 
-            dimDensity/dimTime, 
-            tensor(0,0,0,0,0,0,0,0,0)
-        ),
-        zeroGradientFvPatchScalarField::typeName
+            dimensionedTensor
+            (
+                "", 
+                dimDensity/dimTime, 
+                tensor(0,0,0,0,0,0,0,0,0)
+            ),
+            zeroGradientFvPatchScalarField::typeName
+        )
     )
 );
+
+//- Create oldKds by copy
+forAllConstIter
+(
+    volTensorFieldPtrTable,
+    Kds_,
+    iter
+)
+{
+    word key(iter.key());
+    volTensorField& Kd(*Kds_[key]);
+    oldKds_.insert(key, autoPtr<volTensorField>(new volTensorField(Kd)));
+}
 
 //- Heat transfer coefficient
 htcs_.insert
 (
     fluid1_.name()+"."+fluid2_.name(),
-    volScalarField
+    autoPtr<volScalarField>
     (
-        IOobject
+        new volScalarField
         (
-            "htc."+fluid1_.name()+"."+fluid2_.name(),
-            mesh_.time().timeName(),
+            IOobject
+            (
+                "htc."+fluid1_.name()+"."+fluid2_.name(),
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE,
+                false
+            ),
             mesh_,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh_,
-        dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
-        zeroGradientFvPatchScalarField::typeName
+            dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
+            zeroGradientFvPatchScalarField::typeName
+        )
     )
 );
 
 htcs_.insert
 (
     fluid2_.name()+"."+fluid1_.name(),
-    volScalarField
+    autoPtr<volScalarField>
     (
-        IOobject
+        new volScalarField
         (
-            "htc."+fluid2_.name()+"."+fluid1_.name(),
-            mesh_.time().timeName(),
+            IOobject
+            (
+                "htc."+fluid2_.name()+"."+fluid1_.name(),
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE,
+                false
+            ),
             mesh_,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh_,
-        dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
-        zeroGradientFvPatchScalarField::typeName
+            dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
+            zeroGradientFvPatchScalarField::typeName
+        )
     )
 );
 
 htcs_.insert
 (
     fluid1_.name()+".structure",
-    volScalarField
+    autoPtr<volScalarField>
     (
-        IOobject
+        new volScalarField
         (
-            "htc."+fluid2_.name()+".structure",
-            mesh_.time().timeName(),
+            IOobject
+            (
+                "htc."+fluid2_.name()+".structure",
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE,
+                false
+            ),
             mesh_,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh_,
-        dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
-        zeroGradientFvPatchScalarField::typeName
+            dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
+            zeroGradientFvPatchScalarField::typeName
+        )
     )
 );
 
 htcs_.insert
 (
     fluid2_.name()+".structure",
-    volScalarField
+    autoPtr<volScalarField>
     (
-        IOobject
+        new volScalarField
         (
-            "htc."+fluid2_.name()+".structure",
-            mesh_.time().timeName(),
+            IOobject
+            (
+                "htc."+fluid2_.name()+".structure",
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE,
+                false
+            ),
             mesh_,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh_,
-        dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
-        zeroGradientFvPatchScalarField::typeName
+            dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
+            zeroGradientFvPatchScalarField::typeName
+        )
     )
 );
+
+//- Create oldHtcs by copy
+forAllConstIter
+(
+    volScalarFieldPtrTable,
+    htcs_,
+    iter
+)
+{
+    word key(iter.key());
+    volScalarField& htc(*htcs_[key]);
+    oldHtcs_.insert(key, autoPtr<volScalarField>(new volScalarField(htc)));
+}

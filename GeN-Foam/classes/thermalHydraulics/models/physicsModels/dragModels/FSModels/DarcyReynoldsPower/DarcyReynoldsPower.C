@@ -53,9 +53,10 @@ Foam::dragModels::DarcyReynoldsPower::DarcyReynoldsPower
         dict,
         FSPair
     ),
-    coeff_(vector::zero),
-    exp_(vector::zero)
+    coeff_(dict.get<scalar>("coeff")),
+    exp_(dict.get<scalar>("exp"))
 {
+    /*
     const entry* eCoeff(this->findEntry("coeff"));
     const entry* eExp(this->findEntry("exp"));
     if (eCoeff->stream().size() == 1 and eExp->stream().size() == 1)
@@ -78,13 +79,21 @@ Foam::dragModels::DarcyReynoldsPower::DarcyReynoldsPower
             << "coeff and exp must both be either scalars or vectors!" << endl
             << exit(FatalError);
     }
+    */
 }
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
+Foam::scalar Foam::dragModels::DarcyReynoldsPower::fd(const scalar& Re) const
+{
+    return coeff_*pow(Re, exp_);
+}
+
 void Foam::dragModels::DarcyReynoldsPower::correctKd(volTensorField& Kd) const
 {   
+    #include "calcKdFromFd.H"
+    /*
     const volScalarField& alpha(FSPair_->fluidRef()); 
     const volScalarField& rho(FSPair_->fluidRef().thermo().rho());
     const volScalarField& magU(FSPair_->fluidRef().magU());
@@ -129,6 +138,7 @@ void Foam::dragModels::DarcyReynoldsPower::correctKd(volTensorField& Kd) const
             }
         }
     }
+    */
 }
 
 

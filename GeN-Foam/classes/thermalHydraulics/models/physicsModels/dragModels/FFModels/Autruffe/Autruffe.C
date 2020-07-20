@@ -24,7 +24,6 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "Autruffe.H"
-#include "fvCFD.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -56,28 +55,27 @@ Foam::dragModels::Autruffe::Autruffe
     ),
     vapour_
     (
-        ( 
-            fvc::domainIntegrate(FFPair.fluid1().thermo().hc()).value() >
-            fvc::domainIntegrate(FFPair.fluid2().thermo().hc()).value()  
-        ) ?
-        FFPair.fluid1() : FFPair.fluid2()
+        (FFPair.fluid1().isGas()) ? FFPair.fluid1() : FFPair.fluid2()
     ),
     liquid_
     (
-        (FFPair.fluid1().name() == vapour_.name()) ?
-        FFPair.fluid2() : FFPair.fluid1()
+        (FFPair.fluid1().isLiquid()) ? FFPair.fluid1() : FFPair.fluid2()
     )
 {
+    const fluid& fluid1(FFPair.fluid1());
+    const fluid& fluid2(FFPair.fluid2());
     if 
     (
-        fvc::domainIntegrate(FFPair.fluid1().thermo().hc()).value()
-    ==  fvc::domainIntegrate(FFPair.fluid2().thermo().hc()).value() 
+        !(fluid1.isLiquid() and fluid2.isGas()) and
+        !(fluid2.isLiquid() and fluid1.isGas())
     )
     {
         FatalErrorInFunction
-            << "Fluids must have different enthalpies of formation "
-            << "(thermophysicalProperties.Hf) in order to determine which "
-            << "fluid is the vapour and which is the liquid" 
+            << "The Autruffe model only works for liquid-gas systems. Set "
+            << "the stateOfMatter entry in "
+            << "phaseProperties." << fluid1.name() << "Properties and/or "
+            << "phaseProperties." << fluid2.name() << "Properties) to "
+            << "distinguish between gas and liquid"
             << exit(FatalError);
     }
 }
@@ -89,7 +87,7 @@ void Foam::dragModels::Autruffe::correctKd(volTensorField& Kd) const
 {
     const volScalarField& DhContinuous(FFPair_->DhContinuous());
     const volScalarField& magUr(FFPair_->magUr());
-    const volScalarField& rhoVap(vapour_.rho());
+    const volScalarField& rhov(vapour_.rho());
 
     //- I don't care about mesh boundaries, cell-by-cell is faster
     forAll(mesh_.cells(), i)
@@ -98,7 +96,7 @@ void Foam::dragModels::Autruffe::correctKd(volTensorField& Kd) const
         scalar alpha(vapour_[i]/(vapour_[i]+liquid_[i]));
         scalar value
         (
-            4.31/(2*DhContinuous[i])*magUr[i]*rhoVap[i]*
+            4.31/(2*DhContinuous[i])*magUr[i]*rhov[i]*
             pow
             (
                 (1.0-alpha)*

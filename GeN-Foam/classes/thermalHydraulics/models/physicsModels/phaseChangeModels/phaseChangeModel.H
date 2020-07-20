@@ -50,6 +50,7 @@ namespace Foam
 
 //- Forward declarations
 class fluid;
+class structureModel;
 
 /*---------------------------------------------------------------------------*\
             Class phaseChangeModel Declaration
@@ -73,11 +74,14 @@ protected:
     //- Ref to fluid2
     const fluid& fluid2_;
 
+    //- Ref to structure
+    const structureModel& structure_;
+
     //- Ref to system pressure
     const volScalarField& p_;
 
     //- Ref to heat transfer coefficients table
-    const volScalarFieldTable& htcs_;
+    const volScalarFieldPtrTable& htcs_;
 
     //- Refs to volumetric mass transfer, interfacial temperature and area
     volScalarField& dmdt_;
@@ -92,6 +96,10 @@ protected:
 
     //- Minimum interfacial area
     const dimensionedScalar residualIA_;
+
+    //- Cells in which the interfacial area is limited to a minimum so that
+    //  boilng can start
+    labelList residualIACells_;
 
 public:
 
@@ -109,7 +117,7 @@ public:
             const fluid& fluid1,
             const fluid& fluid2,
             const volScalarField& p,
-            const volScalarFieldTable& htcs,
+            const volScalarFieldPtrTable& htcs,
             volScalarField& dmdt,
             volScalarField& iT,
             volScalarField& iA
@@ -127,7 +135,7 @@ public:
             const fluid& fluid1,
             const fluid& fluid2,
             const volScalarField& p,
-            const volScalarFieldTable& htcs,
+            const volScalarFieldPtrTable& htcs,
             volScalarField& dmdt,
             volScalarField& iT,
             volScalarField& iA
@@ -145,7 +153,7 @@ public:
             const fluid& fluid1,
             const fluid& fluid2,
             const volScalarField& p,
-            const volScalarFieldTable& htcs,
+            const volScalarFieldPtrTable& htcs,
             volScalarField& dmdt,
             volScalarField& iT,
             volScalarField& iA

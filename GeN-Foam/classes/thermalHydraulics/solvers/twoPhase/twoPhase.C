@@ -69,13 +69,52 @@ Foam::thermalHydraulicModels::twoPhase::partialEliminationModeNames_
     }
 );
 
+// * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //
+
+template<class fieldType>
+void Foam::thermalHydraulicModels::twoPhase::relaxFieldPtrTable
+(
+    const word& relaxFactorName,
+    const HashPtrTable
+    <
+        fieldType,
+        word, 
+        word::hash
+    >& oldFieldPtrTable,
+    HashPtrTable
+    <
+        fieldType,
+        word, 
+        word::hash
+    >& fieldPtrTable
+)
+{
+    //- Underrelax only if factor is present
+    if (mesh_.relaxField(relaxFactorName))
+    {
+        scalar f = mesh_.fieldRelaxationFactor(relaxFactorName);
+
+        //- Do not underrelax on first or last PIMPLE iterations
+        if (f != 1.0 and !pimple_.finalIter() and !pimple_.firstIter())
+        {
+            forAll(fieldPtrTable.toc(), i)
+            {
+                word key(fieldPtrTable.toc()[i]);
+                fieldType& field(*fieldPtrTable[key]);
+                fieldType& oldField(*oldFieldPtrTable[key]);
+                field = f*field+(1.0-f)*oldField;
+            }
+        }
+    }
+}
+
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 Foam::thermalHydraulicModels::twoPhase::twoPhase
 (
     Time& time,
     fvMesh& mesh,
-    pimpleControl& pimple,
+    myPimpleControl& pimple,
     fv::options& fvOptions
 )
 :
@@ -124,16 +163,6 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
         "movingAlpha",
         1.0 - structure_
     ),
-    normalizedAlpha1_
-    (
-        "normalized.alpha."+fluid1_.name(),
-        fluid1_/movingAlpha_
-    ),
-    normalizedAlpha2_
-    (
-        "normalized.alpha."+fluid2_.name(),
-        fluid2_/movingAlpha_
-    ),
     FFPair_(fluid1_, fluid2_),
     F1SPair_(fluid1_, structure_),
     F2SPair_(fluid2_, structure_),
@@ -162,6 +191,19 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
         ),
         mesh,
         dimensionedScalar("", dimDensity, 0.0)
+    ),
+    Cd12_
+    (
+        IOobject
+        (
+            "Cd."+fluid1_.name()+"."+fluid2_.name(),
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless, 1e-6)
     ),
     residualKd_
     (
@@ -251,22 +293,6 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
             this->subDict("regimeMapModel"),
             this->subDict("physicsModelsByRegime")
         )
-    ),
-    alphaPowerOff_
-    (
-        (
-            mesh_.time().controlDict().found("powerOffPhaseName")
-        and mesh_.time().controlDict().found("powerOffAbovePhaseFraction")
-        ) ? 
-        &(
-            mesh_.lookupObject<volScalarField>
-            (
-                "alpha."
-            +   (
-                    mesh_.time().controlDict().get<word>("powerOffPhaseName")
-                )
-            )
-        ) : nullptr
     ),
     bothPhasesArePresent_(false),
     withinMarginToPhaseChange_(false),
@@ -511,22 +537,30 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
     //- Reset all relevant fields that need to be set by the regimes
     forAllIter
     (
-        volTensorFieldTable,
+        volTensorFieldPtrTable,
         Kds_,
         iter
     )
     {
-        volTensorField& Kd(iter());
+        volTensorField& Kd(*iter());
+
+        //- Cache previous field for underrelaxation
+        *oldKds_[iter.key()] = Kd;  
+
         Kd *= 0.0;
     }
     forAllIter
     (
-        volScalarFieldTable,
+        volScalarFieldPtrTable,
         htcs_,
         iter
     )
     {
-        volScalarField& htc(iter());
+        volScalarField& htc(*iter());
+
+        //- Cache previous field of underrelaxation
+        *oldHtcs_[iter.key()] = htc;
+
         htc *= 0.0;
     }
 
@@ -664,22 +698,22 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
     /*
     forAllIter
     (
-        volTensorFieldTable,
+        volTensorFieldPtrTable,
         Kds_,
         iter
     )
     {
-        volTensorField& Kd(iter());
+        volTensorField& Kd(*iter());
         Kd.correctBoundaryConditions();
     }
     forAllIter
     (
-        volScalarFieldTable,
+        volScalarFieldPtrTable,
         htcs_,
         iter
     )
     {
-        volScalarField& htc(iter());
+        volScalarField& htc(*iter());
         htc.correctBoundaryConditions();
     }*/
 }
@@ -723,7 +757,6 @@ void Foam::thermalHydraulicModels::twoPhase::adjustTimeStep()
 {
     this->correctCourant();
 
-    bool bothPhasesWerePresent(bothPhasesArePresent_);
     bool phase1(max(fluid1_).value() >= 1e-6);
     bool phase2(max(fluid2_).value() >= 1e-6);
     bothPhasesArePresent_ = (phase1 and phase2);
@@ -752,39 +785,27 @@ void Foam::thermalHydraulicModels::twoPhase::adjustTimeStep()
                 and phaseChange_.valid()
                 )
                 {
-                    if (!withinMarginToPhaseChange_)
+                    scalar marginToPhaseChange
+                    (
+                        runTime_.controlDict().get<scalar>
+                        (
+                            "marginToPhaseChange"
+                        )
+                    );
+                    scalar DT1(min(mag(fluid1_.T()-iT12_)().primitiveField()));
+                    scalar DT2(min(mag(fluid2_.T()-iT12_)().primitiveField()));
+                    if 
+                    (
+                        (
+                            phase1 and !phase2 and DT1 < marginToPhaseChange
+                        ) or
+                        (
+                            phase2 and !phase1 and DT2 < marginToPhaseChange
+                        )
+                    )
                     {
-                        scalar marginToPhaseChange
-                        (
-                            runTime_.controlDict().get<scalar>
-                            (
-                                "marginToPhaseChange"
-                            )
-                        );
-                        if 
-                        (
-                            phase1 
-                        and !phase2 
-                        and max(mag(fluid1_.T()-iT12_)).value() 
-                            < marginToPhaseChange
-                        )
-                        {
-                            withinMarginToPhaseChange_ = true;
-                        }
-                        else if 
-                        (
-                            phase2 
-                        and !phase1 
-                        and max(mag(fluid2_.T()-iT12_)).value() 
-                            < marginToPhaseChange
-                        )
-                        {
-                            withinMarginToPhaseChange_ = true;
-                        }
+                        maxCo = maxCoTwoPhase;
                     }
-                    else if (bothPhasesWerePresent) 
-                        withinMarginToPhaseChange_ = false;
-                    else maxCo = maxCoTwoPhase;
                 }
             }
         }

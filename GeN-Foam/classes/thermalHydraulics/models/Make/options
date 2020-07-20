@@ -10,33 +10,58 @@ EXE_INC = \
     -I./phaseModels/structureModels/powerModels/constantPower \
     -I./phaseModels/structureModels/powerModels/constantTemperature \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPin \
+    -I./phaseModels/structureModels/powerModels/heatedPin \
+    -I./phaseModels/structureModels/powerOffCriterionModels/ \
+    -I./phaseModels/structureModels/powerOffCriterionModels/fieldValue \
+    -I./phaseModels/structureModels/powerOffCriterionModels/timer \
     -I./phaseModels/phasePairs \
     -I./phaseModels/phasePairs/FFPair \
     -I./phaseModels/phasePairs/FSPair \
     -I./physicsModels/turbulenceModels \
     -I./physicsModels/turbulenceModels/porousKEpsilon \
+    -I./physicsModels/turbulenceModels/LaheyKEpsilon \
+    -I./physicsModels/turbulenceModels/mixtureKEpsilon \
     -I./physicsModels/dragModels \
     -I./physicsModels/dragModels/sharedModels/constant \
     -I./physicsModels/dragModels/FFModels/Autruffe \
+    -I./physicsModels/dragModels/FFModels/Wallis \
+    -I./physicsModels/dragModels/FFModels/NoKazimi \
     -I./physicsModels/dragModels/FFModels/SchillerNaumann \
+    -I./physicsModels/dragModels/FSModels \
+    -I./physicsModels/dragModels/FSModels/include \
     -I./physicsModels/dragModels/FSModels/phaseConstant \
     -I./physicsModels/dragModels/FSModels/DarcyReynoldsPower \
-    -I./physicsModels/dragModels/FSModels/ChurchillGunterShaw \
-    -I./physicsModels/dragModels/FSModels/RehmeGunterShaw \
+    -I./physicsModels/dragModels/FSModels/Churchill \
+    -I./physicsModels/dragModels/FSModels/Rehme \
+    -I./physicsModels/dragModels/FSModels/Engel \
+    -I./physicsModels/dragModels/FSModels/modifiedEngel \
+    -I./physicsModels/dragModels/FSModels/BaxiDalleDonne \
+    -I./physicsModels/dragModels/FSModels/NoKazimi \
+    -I./physicsModels/twoPhaseDragMultiplierModels \
+    -I./physicsModels/twoPhaseDragMultiplierModels/LottesFlinn \
+    -I./physicsModels/twoPhaseDragMultiplierModels/LockhartMartinelli \
+    -I./physicsModels/twoPhaseDragMultiplierModels/KottowskiSavatteri \
+    -I./physicsModels/twoPhaseDragMultiplierModels/Kaiser74 \
+    -I./physicsModels/twoPhaseDragMultiplierModels/Kaiser88 \
+    -I./physicsModels/twoPhaseDragMultiplierModels/ChenKalish \
     -I./physicsModels/heatTransferModels \
     -I./physicsModels/heatTransferModels/sharedModels/constant \
     -I./physicsModels/heatTransferModels/sharedModels/NusseltReynoldsPrandtlPower \
     -I./physicsModels/fluidGeometryModels \
     -I./physicsModels/fluidGeometryModels/fluidDiameterModels \
     -I./physicsModels/fluidGeometryModels/fluidDiameterModels/constant \
+    -I./physicsModels/fluidGeometryModels/fluidDiameterModels/isothermal \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/constant \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/limitedConstant \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/integralConstant \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/Schor \
+    -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/NoKazimi \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/sphericalTopology \
+    -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/annularTopology \
     -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels \
     -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels/constant \
+    -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels/AzadShirani \
     -I./physicsModels/phaseChangeModels/saturationModels \
     -I./physicsModels/phaseChangeModels/saturationModels/constantTemperature \
     -I./physicsModels/phaseChangeModels/saturationModels/BrowningPotter \

@@ -37,6 +37,30 @@ License
 #include "slipFvPatchFields.H"
 #include "partialSlipFvPatchFields.H"
 
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+
+const Foam::Enum
+<
+    Foam::fluid::stateOfMatter
+>
+Foam::fluid::stateOfMatterNames_
+(
+    {
+        { 
+            stateOfMatter::undetermined, 
+            "undetermined" 
+        },
+        { 
+            stateOfMatter::liquid, 
+            "liquid" 
+        },
+        { 
+            stateOfMatter::gas, 
+            "gas" 
+        }
+    }
+);
+
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 Foam::fluid::fluid
@@ -54,6 +78,17 @@ Foam::fluid::fluid
         phaseName,
         readIfPresentAndWrite,
         readIfPresentAndWrite
+    ),
+    stateOfMatter_
+    (
+        stateOfMatterNames_.get
+        (
+            dict_.lookupOrDefault<word>
+            (
+                "stateOfMatter", 
+                "undetermined"
+            )
+        )
     ),
     U_
     (
@@ -150,6 +185,65 @@ Foam::fluid::fluid
         ),
         mesh,
         dimensionedScalar("", dimless/dimTime, 0)
+    ),
+    staticQuality_
+    (
+        IOobject
+        (
+            IOobject::groupName("staticQuality", this->name()),
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            (
+                (
+                    mesh.time().controlDict().lookupOrDefault<bool>
+                    (
+                        "writeAllFields", 
+                        false
+                    )
+                ) ?
+                IOobject::AUTO_WRITE :
+                IOobject::NO_WRITE
+            )
+        ),
+        mesh,
+        dimensionedScalar("", dimless, 0)
+    ),
+    flowQuality_
+    (
+        IOobject
+        (
+            IOobject::groupName("flowQuality", this->name()),
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            (
+                (
+                    mesh.time().controlDict().lookupOrDefault<bool>
+                    (
+                        "writeAllFields", 
+                        false
+                    )
+                ) ?
+                IOobject::AUTO_WRITE :
+                IOobject::NO_WRITE
+            )
+        ),
+        mesh,
+        dimensionedScalar("", dimless, 0)
+    ),
+    normalized_
+    (
+        IOobject
+        (
+            IOobject::groupName("normalized.alpha", this->name()),
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless, 0)
     ),
     Pr_
     (

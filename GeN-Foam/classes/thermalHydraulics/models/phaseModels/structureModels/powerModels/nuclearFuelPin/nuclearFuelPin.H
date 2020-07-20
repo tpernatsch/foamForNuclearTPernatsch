@@ -143,6 +143,12 @@ protected:
     //- List that maps from cell index to region index
     labelList cellToRegion_;
 
+    //- Just to avoid typing constant::mathematical::pi every time...
+    scalar pi_;
+
+    //- Mesh ring areas
+    scalarListList dA_;
+
 public:
 
     //- Runtime type information

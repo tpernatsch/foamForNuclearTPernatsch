@@ -72,8 +72,8 @@ Foam::fluidInterfacialAreaModels::Schor::Schor
         :
         continuous_
     ),
-    D_("D", dimLength, dict),
-    P_("P", dimLength, dict),
+    D_("pinDiameter", dimLength, dict),
+    P_("pinPitch", dimLength, dict),
     PD_(P_/D_),
     A_
     (

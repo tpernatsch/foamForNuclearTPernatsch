@@ -56,6 +56,7 @@ Foam::structureModel::structureModel
         "structure"
     ),
     regions_(0),
+    cells_(0),
     tortuosity_
     (
         IOobject
@@ -90,6 +91,20 @@ Foam::structureModel::structureModel
         ),
         mesh,
         dimensionedVector("", dimLength, vector(SMALL, SMALL, SMALL)),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    heatFlux_
+    (
+        IOobject
+        (
+            "heatFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimPower/dimArea, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     Tact_
@@ -211,7 +226,19 @@ Foam::structureModel::structureModel
         ),
         zeroGradientFvPatchScalarField::typeName
     )
-{}
+{
+    if (this->dict().isDict("powerOffCriterionModel"))
+    {
+        powerOffCriterionModelPtr_.reset
+        (
+            powerOffCriterionModel::New
+            (
+                mesh,
+                this->dict().subDict("powerOffCriterionModel")
+            )
+        );
+    }
+}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
@@ -247,6 +274,9 @@ void Foam::structureModel::correct
         );
         pasEqn.solve();
     }
+
+    //- Update active structure heat flux (IO only)
+    heatFlux_ = pos(iAact_)*(H*Tact_-HT);
 }
 
 Foam::tmp<Foam::volScalarField> Foam::structureModel::explicitHeatSource
@@ -292,16 +322,22 @@ Foam::structureModel::linearizedSemiImplicitHeatSource
     return tQ;
 }
 
-void Foam::structureModel::powerOff()
+void Foam::structureModel::checkPowerOff()
 {
-    forAllIter
-    (
-        powerModelTable,
-        powerModels_,
-        iter
-    )
+    if (powerOffCriterionModelPtr_.valid())
     {
-        iter()->powerOff();
+        if (powerOffCriterionModelPtr_->powerOffCriterion())
+        {
+            forAllIter
+            (
+                powerModelTable,
+                powerModels_,
+                iter
+            )
+            {
+                iter()->powerOff();
+            }
+        }
     }
 }
 

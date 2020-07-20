@@ -22,101 +22,79 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::dragModels::RehmeGunterShaw
+    Foam::powerOffControlModels::timer
 
 Description
-    Rheme correlation for pressure drop along local principal axis direction,
-    Gunter-Shaw correlation for the pressure drop in the transverse directions
+    Turns power off if the field value maximum exceeds a provided value.
+
+Author
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
-    RehmeGunterShaw.C
+    timer.C
+
+DictEntryExample ("" is the placeholder for the variable to be inserted)
+
+    powerOffControlModel
+    {
+        type        "timer";
+        value       "";   
+    }
+
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef RehmeGunterShaw_H
-#define RehmeGunterShaw_H
+#ifndef timer_H
+#define timer_H
 
-#include "dragModel.H"
+#include "powerOffCriterionModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-namespace dragModels
+namespace powerOffCriterionModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class RehmeGunterShaw Declaration
+                           Class timer Declaration
 \*---------------------------------------------------------------------------*/
 
-class RehmeGunterShaw
+class timer
 :
-    public dragModel
+    public powerOffCriterionModel
 {
 private:
 
-    //- These three vector components tell me if the principal axis is aligned
-    //  along the local X, Y or Z axes (local axis depend on the 
-    //  structureModel). The principal component direction index is always
-    //  stored on the last entry (i.e. [2]), while the transverse direction
-    //  indices are stored in the first two entries. The direction indices
-    //  are 0 for localX, 1 for localY, 2 for localZ
-    vector lcmpt_;
-
-    //- Number of pins in assembly
-    label Np_;
-
-    //- Pin diameter
-    scalar Dp_;
-
-    //- Pin pitch
-    scalar Pp_;
-
-    //- Wrapper wire diameter
-    scalar Dw_;
-
-    //- Wrapper wire lead lenght
-    scalar Lw_;
-
-    //- Wetted wrapper perimeter
-    scalar wetWrapPer_;
-
-    //- Wetted pin perimeter
-    scalar wetPinPer_;
-
-    //- Pre-computed coeffs
-    scalar A_;
-    scalar B1_;
-    scalar B2_;
+    const scalar t0_;
 
 public:
 
-    TypeName("RehmeGunterShaw");
+    //- Runtime type information
+    TypeName("timer");
 
     //- Constructors
 
-        //- Construct for a fluid-structure pair
-        RehmeGunterShaw
+        timer
         (
-            const objectRegistry& objReg,
-            const dictionary& dict,
-            const FSPair& FSPair
+            const fvMesh& mesh,
+            const dictionary& dict
         );
 
-        //- Destructor
-        virtual ~RehmeGunterShaw(){}
-
+    //- Destructor
+    virtual ~timer();
 
     //- Member Functions
 
-        //- Drag coefficient
-        virtual void correctKd(volTensorField& Kd) const;
+        //- Interfacial area
+        virtual bool powerOffCriterion();
 };
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace dragModels
+} // End namespace powerOffControlModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

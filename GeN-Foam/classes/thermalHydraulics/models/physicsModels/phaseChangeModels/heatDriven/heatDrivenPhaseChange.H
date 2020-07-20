@@ -132,7 +132,7 @@ public:
             const fluid& fluid1,
             const fluid& fluid2,
             const volScalarField& p,
-            const volScalarFieldTable& htcs,
+            const volScalarFieldPtrTable& htcs,
             volScalarField& dmdt,
             volScalarField& iT,
             volScalarField& iA

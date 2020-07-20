@@ -66,6 +66,18 @@ class dragModel
 :
     public IOdictionary
 {
+public :
+
+    //- Only relevant for fluid-structure drag
+    enum transverseDragModel
+    {
+        isotropic,
+        same,
+        Blasius, 
+        GunterShaw
+    };
+    static const Enum<transverseDragModel> transverseDragModelNames_;
+
 protected:
 
     //- Ref to mesh
@@ -74,10 +86,10 @@ protected:
     //- Name of phase pair
     const word pairName_;
 
-    //- Ref to FFPair if this dragModel is between fluid and fluid
+    //- Ptr to FFPair if this dragModel is between fluid and fluid
     const FFPair* const FFPair_;
 
-    //- Ref to FSPair if this dragModel is between fluid and structure
+    //- Ptr to FSPair if this dragModel is between fluid and structure
     const FSPair* const FSPair_;
 
     //- List of cells in which the dragModel exists (only for FS  and shared
@@ -87,6 +99,33 @@ protected:
     //- Field of 1s where in which the dragModel exists (only for FS 
     //  and shared dragModels)
     scalarField cellField_;
+
+    //- The following is only for fluid-structure dragModels
+        
+        //-
+        const transverseDragModel transverseDragModel_;
+
+        //- Minuscule optimizations...
+        bool isotropic_;
+
+        //- These three labels tell me the orientation of the two transverse
+        //  axes (dta0,1) and the principal axis (dpa_). The values range from 0 to
+        //  2 and are 0 for localX, 1 for localY, 2 for localZ
+        label dta0_;
+        label dta1_;
+        label dpa_;
+
+        //- i.e. 0.5*alpha*rho*magU, not a volScalarField because the dragModel
+        //  only affects certain cellZone(s). Alpha is 1.0-alpha.structure, 
+        //  rho is fluid density, magU is its velocity magnitude
+        mutable scalarField* halfAlphaRhoMagU_;
+
+    //- Protected member functions
+
+        //- Correct drag components perpendicular to main flow direction. Only 
+        //  used for fluid-structure drag (fluid-fluid drag in inherently 
+        //  isotropic)
+        void correctTransverseKd(volTensorField& Kd) const;
 
 public:
 
@@ -175,9 +214,16 @@ public:
 
     //- Member Functions
 
-        //- Drag coefficient used in momentum equations
-        //    ddt(alpha1*rho1*U1) + ... = ... Kd&(U1-U2)
-        //    ddt(alpha2*rho2*U2) + ... = ... Kd&(U2-U1)
+        //- Drag coefficient used in momentum equations:
+        //    ddt(alpha1*rho1*U1) + ... = ... Kd&(U2-U1)
+        //    ddt(alpha2*rho2*U2) + ... = ... Kd&(U1-U2)
+        //  for fluid-fluid drag or 
+        //    ddt(alpha_i*rho_i*U_i) + ... = ... -Kd&U_i
+        //  for fluid-structure drag.
+        //  Kd is a tensor for fluid-structure drag and a
+        //  scalar for fluid-fluid drag, but for programming
+        //  convenience, fluid-fluid Kd is also represented
+        //  as a diagonal tensor with all equal entries.
         virtual void correctKd(volTensorField& Kd) const = 0;
 
         //- Access

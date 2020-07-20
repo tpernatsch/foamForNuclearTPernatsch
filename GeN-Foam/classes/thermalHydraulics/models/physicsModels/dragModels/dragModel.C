@@ -37,9 +37,40 @@ namespace Foam
 
 const Foam::dimensionSet Foam::dragModel::dimK(1, -3, -1, 0, 0);
 
+const Foam::Enum
+<
+    Foam::dragModel::transverseDragModel
+>
+Foam::dragModel::transverseDragModelNames_
+(
+    {
+        { 
+            transverseDragModel::isotropic, 
+            "isotropic" 
+        },
+        { 
+            transverseDragModel::same, 
+            "same" 
+        },
+        { 
+            transverseDragModel::Blasius, 
+            "Blasius" 
+        },
+        { 
+            transverseDragModel::GunterShaw, 
+            "GunterShaw" 
+        }/*,
+        { 
+            transverseDragModel::anotherTransverseDragModel, 
+            "anotherTransverseDragModelName" 
+        }*/
+    }
+);
+
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
+//- Construct fluid-fluid drag model
 Foam::dragModel::dragModel
 (
     const objectRegistry& objReg,
@@ -64,7 +95,19 @@ Foam::dragModel::dragModel
     FFPair_(&FFPair),
     FSPair_(nullptr),
     cellList_(0),
-    cellField_(FFPair.mesh().cells().size(), 0.0)
+    cellField_(FFPair.mesh().cells().size(), 0.0),
+    transverseDragModel_    //- All the following initializations are useless 
+    (                       //  for fluid-fluid drag, they are here just for
+        transverseDragModelNames_.get // safety
+        (
+            "isotropic"
+        )
+    ),
+    isotropic_(true),
+    dta0_(0),
+    dta1_(1),
+    dpa_(2),
+    halfAlphaRhoMagU_(nullptr)
 {
     forAll(mesh_.cells(), i)
     {
@@ -73,6 +116,7 @@ Foam::dragModel::dragModel
     }
 }
 
+//- Construct fluid-structure drag model
 Foam::dragModel::dragModel
 (
     const objectRegistry& objReg,
@@ -97,7 +141,23 @@ Foam::dragModel::dragModel
     FFPair_(nullptr),
     FSPair_(&FSPair),
     cellList_(0),
-    cellField_(FSPair.mesh().cells().size(), 0.0)
+    cellField_(FSPair.mesh().cells().size(), 0.0),
+    transverseDragModel_
+    (
+        transverseDragModelNames_.get
+        (
+            dict.lookupOrDefault<word>
+            (
+                "transverseDragModel", 
+                "isotropic"
+            )
+        )
+    ),
+    isotropic_(true),
+    dta0_(0),
+    dta1_(1),
+    dpa_(2),
+    halfAlphaRhoMagU_(nullptr)
 {
     //- Determine possible multiple regions from dictName. If the key looks
     //  something like "region0:region1:huhu" then regions will be 
@@ -116,10 +176,93 @@ Foam::dragModel::dragModel
             cellField_[cellj] = 1.0;
         }
     }
+
+    if (transverseDragModel_ != transverseDragModel::isotropic) 
+        isotropic_ = false;
+
+    //- Checks
+    wordList transverseDragModelNamesNoIso(0, "");
+    forAll(transverseDragModelNames_.names(), i)
+    {
+        word name(transverseDragModelNames_.names()[i]);
+        if (name != "isotropic")
+            transverseDragModelNamesNoIso.append(name);
+    }
+
+    if (this->found("principalAxis") and isotropic_)
+    {
+        FatalErrorInFunction
+            << "A principalAxis was specified but either no "
+            << "transverseDragModel or an isotropic transverseDragModel were " 
+            << "specified. Available transverseDragModels are: " 
+            << transverseDragModelNamesNoIso
+            << exit(FatalError);
+    }
+
+    if (!this->found("principalAxis") and !isotropic_)
+    {
+        FatalErrorInFunction
+            << "A transverseDragModel different than isotropic was specified "
+            << "but no principalAxis was specified. Possible axes keywords "
+            << "are localX, localY or localZ. They refer to the local X, Y or "
+            << "Z axes of the structure in the cellZones where this dragModel "
+            << "is being specified."
+            << exit(FatalError);
+    }
+
+    //- Determine principal axis, if any
+    if (!isotropic_)
+    {
+        word principalAxis(this->get<word>("principalAxis"));
+        if (principalAxis == "localX")
+        {
+            dta0_ = 1;
+            dta1_ = 2;
+            dpa_= 0;  
+        }
+        else if (principalAxis == "localY")
+        {
+            dta0_ = 2;
+            dta1_ = 0;
+            dpa_= 1;  
+        }
+        else if (principalAxis == "localZ")
+        {
+            dta0_ = 0;
+            dta1_ = 1;
+            dpa_= 2; 
+        }
+    }
+
+    //- Init halfAlphaRhoMagU_
+    halfAlphaRhoMagU_ = new scalarField(cellList_.size(), 0);
 }
 
 
-// * * * * * * * * * * * * * * * Static Member Functions   * * * * * * * * * //
+// * * * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * //
+
+//- Expand this function as you add more transverse drag models
+void Foam::dragModel::correctTransverseKd(volTensorField& Kd) const
+{
+    switch (transverseDragModel_)
+    {
+        default :
+            break;
+        case transverseDragModel::Blasius :
+            {
+                #include "calcTransverseDragBlasius.H"
+            }
+            break;
+        case transverseDragModel::GunterShaw :
+            {
+                #include "calcTransverseDragGunterShaw.H"
+            }
+            break;
+    }
+}
+
+
+// * * * * * * * * * * * * * * * Static Member Functions * * * * * * * * * * //
 
 void
 Foam::dragModel::makeInTable
@@ -251,116 +394,7 @@ Foam::dragModel::makeInTable
                 << exit(FatalError);
         }
     }
-    
-    /*
-    bool fatalError(false);
-    
-    if 
-    (
-        srcObjReg.foundObject<FFPair>(key12) 
-        or 
-        srcObjReg.foundObject<FFPair>(key21)
-    )
-    {
-        const FFPair& pair
-        (
-            (srcObjReg.names().found(key12)) ?
-            srcObjReg.lookupObject<FFPair>(key12) :
-            srcObjReg.lookupObject<FFPair>(key21)
-        );
-        table.insert
-        (
-            pair.name(),
-            dragModel::New
-            (
-                dstObjReg,
-                dict,
-                pair 
-            )
-        );
-    }
-    else if 
-    (
-        srcObjReg.foundObject<FSPair>(key1s) 
-        or 
-        srcObjReg.foundObject<FSPair>(key2s)
-    )
-    {
-        word keyStruct;
-        word keyRegion;
-        word region;
-        if (srcObjReg.names().found(key1s))
-        {   
-            keyStruct = key1s;
-            keyRegion = key12;
-            region = phase2Name;
-        }
-        else
-        {
-            keyStruct = key2s;
-            keyRegion = key21;
-            region = phase1Name;
-        }
-        const FSPair& pair
-        (
-            srcObjReg.lookupObject<FSPair>(keyStruct)
-        );
-        if (!pair.structureRegions().found(region))
-        {
-            fatalError = true;
-        }
-        table.insert
-        (
-            keyRegion,
-            dragModel::New
-            (
-                dstObjReg,
-                dict,
-                pair,
-                region
-            )
-        );
-    }
-    //- The following only happens for the monoPhase solver
-    //  (see constructor of FSPair in FSPair.C)
-    else if (srcObjReg.foundObject<FSPair>("FSPair"))
-    {
-        const FSPair& pair
-        (
-            srcObjReg.lookupObject<FSPair>("FSPair")
-        );
-        if (!pair.structureRegions().found(key))
-        {
-            fatalError = true;
-        }
-        table.insert
-        (
-            key,
-            dragModel::New
-            (
-                dstObjReg,
-                dict,
-                pair,
-                key
-            )
-        );
-    }
-    else
-    {
-        fatalError = true;
-    }
-    if (fatalError)
-    {
-        FatalErrorInFunction
-            << "Key " << key << " contains unkown phases/regions!" << endl
-            << exit(FatalError);
-    }
-    */
 }
-
-
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
 
 
 // ************************************************************************* //
