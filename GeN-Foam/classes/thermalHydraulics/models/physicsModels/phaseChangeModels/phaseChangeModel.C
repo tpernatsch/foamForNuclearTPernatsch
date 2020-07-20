@@ -189,10 +189,32 @@ Foam::phaseChangeModel::phaseChangeModel
 
 Foam::scalar Foam::phaseChangeModel::relaxationFactor() const
 {
-    scalar f(mesh_.fieldRelaxationFactor("massTransfer"));
-    if (pimple_.finalIter() and !relaxOnFinalIter_)
+    //- Read relaxation factor if present
+    scalar f(1.0);
+    if (mesh_.relaxField("massTransfer"))
     {
-        f = 1.0;
+        f = mesh_.fieldRelaxationFactor("massTransfer");
+        //- Basically stabilizedMassTransfer amounts to a constant
+        //  underrelaxation, even between consecutive time steps and on the 
+        //  last PIMPLE iteration (which is not how underrelaxation should be 
+        //  applied). However, if the time-steps are small enough (and they do 
+        //  get so if the boiling is violent enough, i.e. ~ 10-100  
+        //  microseconds), it greatly enchances stability (if the chosen 
+        //  relaxation factor is small enough, e.g. ~ 0.1-0.2) and does not
+        //  appear to affect results at all.
+        bool stabilizedMassTransfer
+        (
+            pimple_.dict().lookupOrDefault<bool>
+            (
+                "stabilizedMassTransfer", false
+            )
+        );
+
+        if 
+        (
+            !stabilizedMassTransfer
+        and (pimple_.firstIter() or pimple_.finalIter())
+        )   f = 1.0;
     }
 
     return f;
@@ -229,7 +251,11 @@ void Foam::phaseChangeModel::limitMassTransfer()
 
 void Foam::phaseChangeModel::correctInterfacialT()
 {
-    scalar f(mesh_.fieldRelaxationFactor("interfacialTemperature"));
+    scalar f(1.0);
+    if (mesh_.relaxField("interfacialTemperature"))
+    {
+        f = mesh_.fieldRelaxationFactor("interfacialTemperature");
+    }
     iT_ = (1-f)*iT_ + f*saturation_->Tsat(p_);
 }
 

@@ -1,4 +1,12 @@
 {
+    //- Relax heat transfer coefficients in table if requested
+    this->relaxFieldPtrTable<volScalarField>
+    (
+        word("heatTransfer"), 
+        oldHtcs_, 
+        htcs_
+    );
+
     //- Field references
     volScalarField& he1(fluid1_.thermo().he());
     volScalarField& he2(fluid2_.thermo().he());

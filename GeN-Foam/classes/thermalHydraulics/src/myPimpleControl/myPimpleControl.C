@@ -45,6 +45,8 @@ bool Foam::myPimpleControl::read()
 
     const dictionary pimpleDict(dict());
 
+    minNCorrPIMPLE_ = 
+        pimpleDict.lookupOrDefault("minOuterCorrectors", 1);
     corrPISOUntilConvergence_ = 
         pimpleDict.lookupOrDefault("correctUntilConvergence", false);
 
@@ -54,7 +56,13 @@ bool Foam::myPimpleControl::read()
 bool Foam::myPimpleControl::criteriaSatisfied()
 {
     // no checks on first iteration - nothing has been calculated yet
-    if ((corr_ == 1) || residualControl_.empty() || finalIter())
+    if 
+    (
+        (corr_ == 1) 
+    ||  residualControl_.empty() 
+    ||  finalIter() 
+    ||  corr_ < minNCorrPIMPLE_
+    )
     {
         return false;
     }
@@ -181,7 +189,7 @@ Foam::Pair<Foam::scalar> Foam::myPimpleControl::firstPISOPrevPIMPLEResidual
 
     if (!ok && solutionControl::debug)
     {
-        Info<<"no residual for " << solverPerfDictEntry.keyword()
+        Info<<"No residual for " << solverPerfDictEntry.keyword()
             << " on mesh " << mesh_.name() << nl;
     }
 
@@ -199,6 +207,7 @@ Foam::myPimpleControl::myPimpleControl
 )
 :
     pimpleControl(mesh, dictName, verbose),
+    minNCorrPIMPLE_(1),
     corrPISOUntilConvergence_(false),
     nCorrPISOInPrevPIMPLE_(0)
 {

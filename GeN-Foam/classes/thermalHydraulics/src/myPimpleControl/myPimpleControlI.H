@@ -46,6 +46,8 @@ inline bool Foam::myPimpleControl::correct(bool interrupt)
         Info<< algorithmName_ << " correct: corrPISO = " << corrPISO_ << endl;
     }
 
+    interrupt = corrPISOUntilConvergence_ and interrupt;
+
     if (corrPISO_ <= nCorrPISO_ and !interrupt)
     {
         return true;

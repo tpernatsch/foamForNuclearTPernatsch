@@ -87,7 +87,12 @@ solvers
 
 PIMPLE
 {
-    nCorrectors      3;
+    //- Number of pressure correctors (i.e. PISO iterations) within each outer
+    //  iteration (i.e. PIMPLE iteration). The number of outer iterations is
+    //  set in the global fvSolution file (i.e. controlDict/fvSolution)
+    nCorrectors      6;
+
+    //-
     nNonOrthogonalCorrectors 0;
 
     //- The following feature applies only to the twoPhase solver and is
@@ -150,14 +155,34 @@ PIMPLE
     //  see what works
     oscillationLimiterFraction 0;
 
-    corrPISOUntilConvergence true;
+    //- If true, under-relaxation to the mass transfer field (i.e. dmdt) is
+    //  applied also at the first and last PIMPLE iterations in a time-step.
+    //  While numerically incorrect, if the time-steps are short enough (e.g. 
+    //  10-100 us), the inaccuracies are mitigated to a minimum while greatly
+    //  enhancing stability, which is especially true for severe boiling
+    //  transients. Defaults to false.
+    stabilizedMassTransfer true;
+
+    //- If true, pressure corrector iterations within a each PIMPLE iteration
+    //  are performed only as long as the residuals decrease (i.e. it spares
+    //  useless pressure corrector iterations). Defaults to false
+    correctUntilConvergence true;
 
     residualControl
     {
         p_rgh
         {
-            tolerance 5e-4;
+            tolerance 3e-4;
             relTol 0;
+
+            //- This is only meant to be used for the pressure field. If true,
+            //  the residuals used for the tolerance check consist of the
+            //  initialResidual of the first PISO iteration (i.e. the first
+            //  pressure corrector) of each PIMPLE (i.e. outer) iteration.
+            //  This is a more meaningful metric of convergence in two-phase
+            //  scenarios, rather than the initialResidual of the last PISO
+            //  iteration of each PIMPLE iteration (which is the one that is
+            //  being used if this flag is set to false).
             useFirstPISOInitialResidual true;
         }
 

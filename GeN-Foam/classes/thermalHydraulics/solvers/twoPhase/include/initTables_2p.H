@@ -81,6 +81,19 @@ Kds_.insert
     )
 );
 
+//- Create oldKds by copy
+forAllConstIter
+(
+    volTensorFieldPtrTable,
+    Kds_,
+    iter
+)
+{
+    word key(iter.key());
+    volTensorField& Kd(*Kds_[key]);
+    oldKds_.insert(key, autoPtr<volTensorField>(new volTensorField(Kd)));
+}
+
 //- Heat transfer coefficient
 htcs_.insert
 (
@@ -173,3 +186,16 @@ htcs_.insert
         )
     )
 );
+
+//- Create oldHtcs by copy
+forAllConstIter
+(
+    volScalarFieldPtrTable,
+    htcs_,
+    iter
+)
+{
+    word key(iter.key());
+    volScalarField& htc(*htcs_[key]);
+    oldHtcs_.insert(key, autoPtr<volScalarField>(new volScalarField(htc)));
+}

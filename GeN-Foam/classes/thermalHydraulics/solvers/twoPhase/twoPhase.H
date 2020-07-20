@@ -118,6 +118,10 @@ private:
         //      - fluid2 and the structure
         volTensorFieldPtrTable Kds_;
 
+        //- drag coefficients at previous PIMPLE iteration for under-relaxation
+        //  purposes
+        volTensorFieldPtrTable oldKds_;
+
         //- Fluid-fluid drag coefficient reconstructed from drag factor as
         //  Cd12_ = 2*Kd12*DhDispersed/(rhoContinuous*mag(Urel))/alpha1/alpha2.
         //  Why do I even need this? Well, some turbulence models require it
@@ -141,6 +145,10 @@ private:
         //      - fluid1 and the structure
         //      - fluid2 and the structure
         volScalarFieldPtrTable htcs_;
+
+        //- heat transfer coefficients at previous PIMPLE iteration for 
+        //  under-relaxation purposes
+        volScalarFieldPtrTable oldHtcs_;
 
         //- interfacial area between fluid1 and fluid2
         volScalarField iA12_;
@@ -215,7 +223,33 @@ public:
         //- Destructor
         virtual ~twoPhase(){}
 
-    //- Member Functions
+    //- Protected member Functions
+
+protected :
+
+    //- Under-relax coupling fields (i.e. Kd, htc) in the provided
+    //  table with the fields in the other table
+    template<class fieldType>
+    void relaxFieldPtrTable
+    (
+        const word& relaxFactorName,
+        const HashPtrTable
+        <
+            fieldType, 
+            word, 
+            word::hash
+        >& oldFieldPtrTable,
+        HashPtrTable
+        <
+            fieldType, 
+            word, 
+            word::hash
+        >& fieldPtrTable
+    );
+    
+    //- Public member Functions
+
+public :
 
         //- Return the mixture density
         tmp<volScalarField> rho() const;

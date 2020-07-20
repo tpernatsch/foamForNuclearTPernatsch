@@ -101,6 +101,9 @@ protected:
 
         // Solution controls
 
+            //- Minimum amount of PIMPLE iterations to be performed
+            int minNCorrPIMPLE_;
+
             //- If true, the number of PISO iterations performed in every
             //  PIMPLE iteration will be at most nCorrPISO_, but the PISO
             //  iterations will stop if the linear solver has reached 

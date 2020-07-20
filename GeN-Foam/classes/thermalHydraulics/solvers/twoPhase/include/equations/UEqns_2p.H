@@ -8,6 +8,14 @@ volScalarField& rho2(fluid2_.thermo().rho());
 fvVectorMatrix UEqn1(U1, dimMass*dimLength/dimTime/dimTime);
 fvVectorMatrix UEqn2(U2, dimMass*dimLength/dimTime/dimTime);
 
+//- Relax drag coefficients in table if requested
+this->relaxFieldPtrTable<volTensorField>
+(
+    word("momentumTransfer"), 
+    oldKds_, 
+    Kds_
+);
+
 //- Drag between fluids is always a scalar, so I convert it. Additionaly,
 //  limit it to a minimum > 0 to avoid phase decoupling
 volScalarField Kd12

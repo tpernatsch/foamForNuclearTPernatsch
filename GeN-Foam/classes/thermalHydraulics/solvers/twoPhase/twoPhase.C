@@ -69,6 +69,45 @@ Foam::thermalHydraulicModels::twoPhase::partialEliminationModeNames_
     }
 );
 
+// * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //
+
+template<class fieldType>
+void Foam::thermalHydraulicModels::twoPhase::relaxFieldPtrTable
+(
+    const word& relaxFactorName,
+    const HashPtrTable
+    <
+        fieldType,
+        word, 
+        word::hash
+    >& oldFieldPtrTable,
+    HashPtrTable
+    <
+        fieldType,
+        word, 
+        word::hash
+    >& fieldPtrTable
+)
+{
+    //- Underrelax only if factor is present
+    if (mesh_.relaxField(relaxFactorName))
+    {
+        scalar f = mesh_.fieldRelaxationFactor(relaxFactorName);
+
+        //- Do not underrelax on first or last PIMPLE iterations
+        if (f != 1.0 and !pimple_.finalIter() and !pimple_.firstIter())
+        {
+            forAll(fieldPtrTable.toc(), i)
+            {
+                word key(fieldPtrTable.toc()[i]);
+                fieldType& field(*fieldPtrTable[key]);
+                fieldType& oldField(*oldFieldPtrTable[key]);
+                field = f*field+(1.0-f)*oldField;
+            }
+        }
+    }
+}
+
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 Foam::thermalHydraulicModels::twoPhase::twoPhase
@@ -504,6 +543,10 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
     )
     {
         volTensorField& Kd(*iter());
+
+        //- Cache previous field for underrelaxation
+        *oldKds_[iter.key()] = Kd;  
+
         Kd *= 0.0;
     }
     forAllIter
@@ -514,6 +557,10 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
     )
     {
         volScalarField& htc(*iter());
+
+        //- Cache previous field of underrelaxation
+        *oldHtcs_[iter.key()] = htc;
+
         htc *= 0.0;
     }
 
