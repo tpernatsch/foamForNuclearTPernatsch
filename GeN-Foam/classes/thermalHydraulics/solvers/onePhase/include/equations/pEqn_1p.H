@@ -40,6 +40,12 @@ while (pimple_.correct())
 
     //- Construct flux due to explicit sources, namely buoyancy/gravity effects
     //  and the structure momentum source, if present
+    //- The first term here below is the gravity term. In case one wanted to 
+    //  implement a Boussinesq approximation, it should be enough to create
+    //  an additional non-dimensional field (normally called rhok) and 
+    //  equal to (1-Beta*DeltaT). One can then: 1) set the density as constant 
+    //  in the thermoPhysicalProperties; 2) multiply the rho by rhok in the 
+    //  term here below; 3) do not forget to pass to neutronics rho*rhok 
     surfaceScalarField phiSource
     (
         -alpharAUf*ghf_*fvc::snGrad(rho)*mesh_.magSf()
