@@ -1,3 +1,7 @@
+//- The velocity predictor is missing in this implementation for
+//  consistency with the two-phase treatment. It could be implemented
+//  to improve convergence of specifc cases
+
 //- Field refs
 volVectorField& U(fluid_.U());
 const volScalarField& alpha(fluid_);
