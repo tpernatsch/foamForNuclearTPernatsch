@@ -147,21 +147,14 @@ while (pimple_.correct())
 
             fluid_.dgdt() = -pEqnComp & p_rgh_;
 
-            if (momentumMode_ == momentumMode::cellCentered)
-            {
-                p_rgh_.relax();
-                U =  
-                    HbyA 
-                +   fvc::reconstruct
-                    (
-                        alpharAUf*pEqnIncomp.flux()/rAUf + phiSource
-                    );
-            }
-            else
-            {
-                U = fvc::reconstruct(phi_)/alpha;
-            }
-            
+            p_rgh_.relax();
+            U =  
+                HbyA 
+            +   fvc::reconstruct
+                (
+                    alpharAUf*pEqnIncomp.flux()/rAUf + phiSource
+                );
+
             U.correctBoundaryConditions();
             fvOptions_.correct(U);
             fluid_.magU() = mag(U);
