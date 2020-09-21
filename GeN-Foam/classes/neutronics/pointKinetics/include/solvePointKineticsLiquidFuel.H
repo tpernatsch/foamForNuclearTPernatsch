@@ -1,3 +1,16 @@
+//- Get solution contro
+const dictionary& neutronTransport = 
+    mesh_.solutionDict().subDict("neutronTransport");
+
+scalar neutronIterationResidual =
+    neutronTransport.lookupOrDefault<scalar>
+    (
+        "neutronIterationResidual", 
+        0.00001
+    );
+int maxNeutronIterations =
+    neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
+
 //- Update reactivity coefficients
 #include "computeFeedbackFieldValues.H"
 #include "correctReactivity.H"
@@ -7,22 +20,12 @@ if(timeIndex_ != mesh_.time().timeIndex())
 {
     timeIndex_ = mesh_.time().timeIndex();
     powerOld_ = power_;
-    //for (int i=0; i<delayedGroups_; i++)
-    //{
-    //    precursorPowersOld_[i] = precursorPowers_[i];
-    //}
 }
 
 label n(delayedGroups_+1);
 scalar dt(mesh_.time().deltaT().value());
 
-//- Coefficient matrix, source, solution field
-SquareMatrix<scalar> A(n, 0.0);
-List<scalar> B(n, 0.0);
-List<scalar> x(n, 0.0);
-
-// calc precursors
-
+//- prepare fields necessary to weight precursors
 PtrList<scalar> weightedPrec(delayedGroups_);
 scalar domainIntegratedFluxSqr
 (
@@ -33,21 +36,30 @@ volScalarField normaizedOneGroupFlux
     oneGroupFlux_/fvc::domainIntegrate(oneGroupFlux_)
 );
 
-    
-for (int i = 0; i < 10; i++)
+
+//- Iterate precursors and power till sufficiently small prec residual
+int neutroIter = 0;
+scalar neutroResidual = 0.0;
+do
 {
+    Info << "Neutron iteration no:  " << neutroIter << nl << endl;
+
+    //- Check if you need to initialize precurosr distribution
     bool initialize = false;
     if(initPrecursorsLiquidFuel_ &&  
-        (mesh_.time().timeIndex() == mesh_.time().startTimeIndex()+1) && i==0)
+        (mesh_.time().timeIndex() == mesh_.time().startTimeIndex()+1) && neutroIter==0)
     {
         initialize = true;
     }
 
+    //- Solve for precursors
+    neutroResidual = 0.0;
     forAll(precPK_,precI)
     {
+        //- Initialize precurosr distribution, if needed
         if(initialize)
         {
-            fvScalarMatrix precEq
+            fvMatrix<scalar> precEq
             (
                 fvm::Sp(dimensionedScalar("",dimless/dimTime,lambdas_[precI])*alphaPtr_(), precPKStar_[precI])
             -   normaizedOneGroupFlux*dimensionedScalar("",dimPower,power_)*betas_[precI]/
@@ -58,25 +70,31 @@ for (int i = 0; i < 10; i++)
             precEq.solve();
             precPKStar_[precI].storePrevIter();  
         }
-        else
-        {
-            fvScalarMatrix precEq
-            (
-                fvm::ddt(alphaPtr_(), precPKStar_[precI])
-            +   fvm::Sp(dimensionedScalar("",dimless/dimTime,lambdas_[precI])*alphaPtr_(), precPKStar_[precI])
-            -   normaizedOneGroupFlux*dimensionedScalar("",dimPower,power_)*betas_[precI]/
-                dimensionedScalar("",dimTime,promptGenerationTime_)
-            +   fvm::div(phiPtr_(), precPKStar_[precI], "div(phi_,precStar_)")
-            -   fvm::laplacian(diffCoeffPrecPtr_(), precPKStar_[precI])                
-            );
-            precEq.solve();            
-        }
-        precPK_[precI] = precPKStar_[precI] * alphaPtr_(); // Precs per total volume
+
+        //- Solve precursors
+        fvMatrix<scalar> precEq
+        (
+            fvm::ddt(alphaPtr_(), precPKStar_[precI])
+        +   fvm::Sp(dimensionedScalar("",dimless/dimTime,lambdas_[precI])*alphaPtr_(), precPKStar_[precI])
+        -   normaizedOneGroupFlux*dimensionedScalar("",dimPower,power_)*betas_[precI]/
+            dimensionedScalar("",dimTime,promptGenerationTime_)
+        +   fvm::div(phiPtr_(), precPKStar_[precI], "div(phi_,precStar_)")
+        -   fvm::laplacian(diffCoeffPrecPtr_(), precPKStar_[precI])                
+        );
+        scalar initRes = precEq.solve().max().initialResidual();;
+        neutroResidual = max(neutroResidual,initRes);            
+        
+        //- Conver to precs per total volume
+        precPK_[precI] = precPKStar_[precI] * alphaPtr_(); 
         precPK_[precI].correctBoundaryConditions();
+
+        //- Calculate weighted precursors to be fed to power equation
         weightedPrec.set(precI,new scalar(fvc::domainIntegrate(
             oneGroupFlux_*precPK_[precI]).value()/domainIntegratedFluxSqr));
     }
 
+    //- If you have calculated a new precursor concentration at the initialization step,
+    //  correct reactivity to start from a steady state
     if(initialize)
     {
         precEquilibriumReactivity_ += beta_;
@@ -88,9 +106,7 @@ for (int i = 0; i < 10; i++)
     }
 
 
-    //- First line of matrix has the coefficients of the discretized power 
-    //  differential equation, the first element of the solution vector is the
-    //  power
+    //- Calc power
     scalar sumPrecLamda = 0.0;
     forAll(precPK_,precI)
     {
@@ -101,9 +117,20 @@ for (int i = 0; i < 10; i++)
                 1.0/dt
                 - (totalReactivity_-beta_)/promptGenerationTime_
             );
+    neutroIter++;
 
+    //- Some info on iteartions 
+    Info<< "neutroResidual (couplingIter: " << couplingIter 
+        << ", neutroIter: " << neutroIter << "): " << neutroResidual 
+        <<  endl;     
 }
-//- Re-scale fluxes, volFuelPower, precursors
+while
+    ( 
+        (neutroResidual > neutronIterationResidual) 
+    &&  (neutroIter < maxNeutronIterations) 
+    );
+
+//- Re-scale fluxes, volFuelPower
 scalar fluxScaleFactor = power_/powerOld_;
 
 for (int i = 0; i < energyGroups_; i++)
@@ -116,38 +143,6 @@ oneGroupFlux_.correctBoundaryConditions();
 
 volFuelPower_ *= fluxScaleFactor;
 volFuelPower_.correctBoundaryConditions();
-
-//- Only possible to re-scale precursors if they were initially present,
-//  so I'm using a forAllIter rather than a for, as delayedGroups_ is not
-//  necessarily representative of the length of the precursors_ PtrList
-int i = 0;
-forAllIter
-(
-    PtrList<volScalarField>,
-    precursors_,
-    iter
-)
-{
-    if (precursorPowersOld_[i] != 0)
-    {
-        volScalarField& precursori(iter());
-        precursori *= precursorPowers_[i]/precursorPowersOld_[i];
-    }
-    i++;
-}
-
-//- Write precursorPowers to reactorState
-if (TFuel_.mesh().time().write())
-{
-    reactorState_.set("precursorPowers", precursorPowers_);
-    reactorState_.regIOobject::writeObject
-    (
-        IOstream::ASCII,
-        IOstream::currentVersion,
-        reactorState_.time().writeCompression(),
-        true
-    );
-}
 
 Info << endl << "pointKinetics: " << endl;
 #include "pointKineticsInfo.H"

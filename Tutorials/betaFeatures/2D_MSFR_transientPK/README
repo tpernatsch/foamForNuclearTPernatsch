@@ -1,0 +1,6 @@
+Starts from the steady state of 2D_MSFR and run a point kinetics without 
+traqnsient initiators. Used only to check whether the point kinetic solver
+is capable of maintaining a steady state. 
+The flag "initPrecursorsLiquidFuel" is set to true in nuclearData. This is used 
+to create, at the first iteration, an equilibrium distribution of precursors 
+(for the given salt velocity field). 
