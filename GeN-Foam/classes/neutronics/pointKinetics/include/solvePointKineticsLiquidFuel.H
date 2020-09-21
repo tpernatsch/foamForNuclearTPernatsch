@@ -74,7 +74,7 @@ for (int i = 0; i < 10; i++)
         precPK_[precI] = precPKStar_[precI] * alphaPtr_(); // Precs per total volume
         precPK_[precI].correctBoundaryConditions();
         weightedPrec.set(precI,new scalar(fvc::domainIntegrate(
-            oneGroupFluxSqr*precPK_[precI]).value()/domainIntegratedFluxSqr));
+            oneGroupFlux_*precPK_[precI]).value()/domainIntegratedFluxSqr));
     }
 
     if(initialize)
@@ -84,6 +84,7 @@ for (int i = 0; i < 10; i++)
         {
             precEquilibriumReactivity_ -= weightedPrec[precI] * lambdas_[precI] * promptGenerationTime_ / powerOld_;
         }
+        #include "correctReactivity.H"
     }
 
 
