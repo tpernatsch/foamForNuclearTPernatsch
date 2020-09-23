@@ -111,7 +111,7 @@ forAll(flux_,fluxI)
         (
             IOobject
             (
-                "flux"+Foam::name(fluxI),
+                "adjointFlux"+Foam::name(fluxI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::READ_IF_PRESENT,
@@ -131,7 +131,7 @@ forAll(fluxStar_,fluxI)
             (
                 IOobject
                 (
-                    "fluxStar"+Foam::name(fluxI),
+                    "adjointFluxStar"+Foam::name(fluxI),
                     mesh_.time().timeName(),
                     mesh_,
                     IOobject::READ_IF_PRESENT,
@@ -158,7 +158,7 @@ forAll(precStar_,precI)
         (
             IOobject
             (
-                "precStar"+Foam::name(precI),
+                "adjointPrecStar"+Foam::name(precI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::READ_IF_PRESENT,
@@ -179,7 +179,7 @@ forAll(prec_,precI)
         (
             IOobject
             (
-                "prec"+Foam::name(precI),
+                "adjointPrec"+Foam::name(precI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::READ_IF_PRESENT,
