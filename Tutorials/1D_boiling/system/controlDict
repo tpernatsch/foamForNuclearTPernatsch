@@ -53,6 +53,8 @@ solveNeutronics false;
 
 solveThermalMechanics false;
 
+writeContinuityErrors true;
+
 //- timeStep control options
 
 adjustTimeStep      true;
@@ -76,8 +78,8 @@ maxDeltaT           0.01;
 //    saturation (either boiling or condensation);
 maxCo               5.0;
 
-maxCoTwoPhase       1.0;
+maxCoTwoPhase       0.5;
 
-marginToPhaseChange 5;
+marginToPhaseChange 20;
 
 // ************************************************************************* //

@@ -143,7 +143,7 @@ structureProperties
             T                   652.15;
             Cp                  500;
             rho                 7700;
-            powerDensity        1e9;
+            powerDensity        4.5e8;
         }
     }
 
@@ -414,6 +414,7 @@ structureProperties
 */
     powerOffCriterionModel
     {
+        /*
         //- Only type currently available is fieldValue
         type            fieldValue;
 
@@ -434,6 +435,13 @@ structureProperties
         //- Time delay between the satifaction of the criterion and the moment
         //  power is actually turned off
         timeDelay       0.0;
+        */
+
+        //-
+        type            timer;
+        
+        //-
+        time            7;
     }
 
 }
@@ -542,7 +550,7 @@ physicsModelsByRegime
 
         twoPhaseDragMultiplierModel
         {
-            type                LottesFlinn;
+            type                Kaiser88;
             multiplierFluid     liquid;
         }
 
@@ -594,11 +602,11 @@ physicsModelsByRegime
                 type        sphericalTopology;
             }
 
-            structureVolumetricAreaPartitionModel
+            fluidPartitionModel
             {
                 type        constant;
-                value1      1.0;
-                value2      0;
+                liquid      1.0;
+                vapour      0.0;
             }
         }
     }
@@ -625,7 +633,7 @@ physicsModelsByRegime
 
         twoPhaseDragMultiplierModel
         {
-            type                LottesFlinn;
+            type                Kaiser88;
             multiplierFluid     vapour;
         }
 
@@ -649,7 +657,7 @@ physicsModelsByRegime
                 expPr   0;
             }
 
-            "liquid.structure"
+            "vapour.structure"
             {
                 "mid"
                 {
@@ -677,11 +685,11 @@ physicsModelsByRegime
                 type        sphericalTopology;
             }
 
-            structureVolumetricAreaPartitionModel
+            fluidPartitionModel
             {
                 type        constant;
-                value1      0.025;
-                value2      0.975;
+                liquid      0.1;
+                vapour      0.9;
             }
         }
     }
@@ -855,8 +863,9 @@ This section will be further expanded
 
 phaseChangeModel
 {
-    type            heatDriven;
-    mode            conductionLimited; 
+    type                heatDriven;
+    mode                conductionLimited; 
+    correctLatentHeat   true;
     
     saturationModel
     {
