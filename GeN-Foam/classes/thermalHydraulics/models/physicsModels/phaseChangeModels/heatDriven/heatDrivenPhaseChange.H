@@ -118,6 +118,9 @@ protected:
 
     const word drivingPhaseName_;
 
+    //- Latent heat
+    volScalarField L_;
+
 public:
 
     TypeName("heatDriven");

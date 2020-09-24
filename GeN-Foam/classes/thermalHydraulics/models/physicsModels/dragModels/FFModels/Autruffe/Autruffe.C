@@ -88,20 +88,36 @@ void Foam::dragModels::Autruffe::correctKd(volTensorField& Kd) const
     const volScalarField& DhContinuous(FFPair_->DhContinuous());
     const volScalarField& magUr(FFPair_->magUr());
     const volScalarField& rhov(vapour_.rho());
+    const volScalarField& alpha(vapour_.normalized());
+
+    //- Quick breakdown, generally the F-F drag models are in the form
+    //  Kd = 0.5*rhoVapour*magUr*iA*f
+    //  with iA being the interfacial area between phases (hardcoded by the
+    //  model here) and f being the actual dimensionless drag coefficient.
+    //  For Autruffe:
+    //  iA = 4.31/Dh
+    //  f = (1-a)*(1+75*(1-a))^0.95
+    //  I actually limit f to a min of 0.005 to avoid complete decoupling
+    //  between the phases
 
     //- I don't care about mesh boundaries, cell-by-cell is faster
     forAll(mesh_.cells(), i)
     {
         tensor& Kdi(Kd[i]);
-        scalar alpha(vapour_[i]/(vapour_[i]+liquid_[i]));
+        const scalar& a(alpha[i]);
         scalar value
         (
-            4.31/(2*DhContinuous[i])*magUr[i]*rhov[i]*
-            pow
+            (a+liquid_[i])* // Re-scale by void fraction
+            2.155/(DhContinuous[i])*magUr[i]*rhov[i]*
+            max
             (
-                (1.0-alpha)*
-                (1.0+75.0*(1.0-alpha)),
-                0.95
+                pow
+                (
+                    (1.0-alpha[i])*
+                    (1.0+75.0*(1.0-alpha[i])),
+                    0.95
+                ),
+                0.005
             )
         );
 

@@ -104,14 +104,16 @@ NusseltReynoldsPrandtlPower
 (
     const objectRegistry& objReg,
     const dictionary& dict,
-    const FSPair& FSPair
+    const FSPair& FSPair,
+    const wordList& regions
 )
 :
     heatTransferModel
     (
         objReg,
         dict,
-        FSPair
+        FSPair,
+        regions
     ),
     bulkFluid_(FSPair.fluidRef()),
     Re_(FSPair.Re()),

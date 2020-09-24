@@ -125,9 +125,10 @@ public:
             (
                 const objectRegistry& objReg,
                 const dictionary& heatTransferModelsDict,
-                const FSPair& FSPair
+                const FSPair& FSPair,
+                const wordList& regions
             ),
-            (objReg, heatTransferModelsDict, FSPair)
+            (objReg, heatTransferModelsDict, FSPair, regions)
         );
 
     //- Constructors
@@ -145,7 +146,8 @@ public:
         (
             const objectRegistry& objReg,
             const dictionary& heatTransferModelsDict,
-            const FSPair& FSPair
+            const FSPair& FSPair,
+            const wordList& regions
         );
 
         //- Destructor
@@ -166,7 +168,8 @@ public:
         (
             const objectRegistry& objReg,
             const dictionary& heatTransferModelsDict,
-            const FSPair& FSPair
+            const FSPair& FSPair,
+            const wordList& regions
         );
 
         //- Make in table given a key, dict, source and destination object
@@ -190,6 +193,11 @@ public:
         virtual void correctHtc(volScalarField& htc) const = 0;
 
     //- Access
+
+        const fvMesh& mesh() const
+        {
+            return mesh_;
+        }
 
         const word pairName() const
         {

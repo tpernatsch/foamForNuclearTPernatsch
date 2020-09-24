@@ -22,7 +22,7 @@
     (
             fvm::ddt(alpha, rho, he) 
         +   fvm::div(fluid_.alphaRhoPhi(), he, "div(alphaRhoPhi,he)")
-        -   fvm::Sp(contErr, he)
+        -   fvm::SuSp(contErr, he)
         +   fvc::ddt(alpha, rho, K) 
         +   fvc::div(fluid_.alphaRhoPhi(), K, "div(alphaRhoPhi,K)")
         -   contErr*K

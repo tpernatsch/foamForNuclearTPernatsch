@@ -30,46 +30,46 @@ License
 
 namespace Foam
 {
-namespace structureVolumetricAreaPartitionModels
+namespace fluidPartitionModels
 {
     defineTypeNameAndDebug(AzadShirani, 0);
     addToRunTimeSelectionTable
     (
-        structureVolumetricAreaPartitionModel, 
+        fluidPartitionModel, 
         AzadShirani, 
-        structureVolumetricAreaPartitionModels);
+        fluidPartitionModels);
 }
 }
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::structureVolumetricAreaPartitionModels::AzadShirani::AzadShirani
+Foam::fluidPartitionModels::AzadShirani::AzadShirani
 (
     const objectRegistry& objReg,
     const dictionary& dict,
-    const fluid& fluid1,
-    const fluid& fluid2,
+    const fluid& dispersed,
+    const fluid& continuous,
     const structureModel& structure
 )
 :
-    structureVolumetricAreaPartitionModel
+    fluidPartitionModel
     (
         objReg,
         dict,
-        fluid1,
-        fluid2,
+        dispersed,
+        continuous,
         structure
     ),
     alpha_
     (
-        (fluid1.isGas()) ? 
-        fluid1.normalized() : fluid2.normalized()
+        (dispersed.isGas()) ? 
+        dispersed.normalized() : continuous.normalized()
     ),
     x_
     (
-        (fluid1.isGas()) ? 
-        fluid1.flowQuality() : fluid2.flowQuality()
+        (dispersed.isGas()) ? 
+        dispersed.flowQuality() : continuous.flowQuality()
     ),
     alphaCrit_
     (
@@ -79,11 +79,11 @@ Foam::structureVolumetricAreaPartitionModels::AzadShirani::AzadShirani
     (
         dict.lookupOrDefault<scalar>("xCrit", 0.3)
     ),
-    frac1_
+    fracD_
     (
         IOobject
         (
-            IOobject::groupName("frac."+fluid1.name(), typeName),
+            IOobject::groupName("frac."+dispersed.name(), typeName),
             mesh_.time().timeName(),
             objReg
         ),
@@ -91,11 +91,11 @@ Foam::structureVolumetricAreaPartitionModels::AzadShirani::AzadShirani
         dimensionedScalar(0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    frac2_
+    fracC_
     (
         IOobject
         (
-            IOobject::groupName("frac."+fluid2.name(), typeName),
+            IOobject::groupName("frac."+continuous.name(), typeName),
             mesh_.time().timeName(),
             objReg
         ),
@@ -106,15 +106,15 @@ Foam::structureVolumetricAreaPartitionModels::AzadShirani::AzadShirani
 {
     if 
     (
-        !(fluid1.isLiquid() and fluid2.isGas()) and
-        !(fluid2.isLiquid() and fluid1.isGas())
+        !(dispersed.isLiquid() and continuous.isGas()) and
+        !(continuous.isLiquid() and dispersed.isGas())
     )
     {
         FatalErrorInFunction
             << "The AzadShirani model only works for liquid-gas systems. Set "
             << "the stateOfMatter entry in "
-            << "phaseProperties." << fluid1.name() << "Properties and/or "
-            << "phaseProperties." << fluid2.name() << "Properties) to "
+            << "phaseProperties." << dispersed.name() << "Properties and/or "
+            << "phaseProperties." << continuous.name() << "Properties) to "
             << "distinguish between gas and liquid"
             << exit(FatalError);
     }
@@ -123,16 +123,16 @@ Foam::structureVolumetricAreaPartitionModels::AzadShirani::AzadShirani
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::structureVolumetricAreaPartitionModels::AzadShirani::~AzadShirani()
+Foam::fluidPartitionModels::AzadShirani::~AzadShirani()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 Foam::tmp<Foam::volScalarField> 
-Foam::structureVolumetricAreaPartitionModels::AzadShirani::frac1() const
+Foam::fluidPartitionModels::AzadShirani::fracC() const
 {
-    tmp<volScalarField> tfrac1
+    tmp<volScalarField> tfracC
     (
         new volScalarField
         (
@@ -146,25 +146,25 @@ Foam::structureVolumetricAreaPartitionModels::AzadShirani::frac1() const
             dimensionedScalar("", dimless, 0.0)
         )
     );
-    volScalarField& frac1 = tfrac1.ref();
-    frac1 = 
-        max
+    volScalarField& fracC = tfracC.ref();
+    fracC = 
+        min
         (
             pow((1.0-alpha_)/(1.0-alphaCrit_),0.5), 1.0
         )*
-        max
+        min
         (
             pow((1-x_)/(1-xCrit_), 1.5), 1.0
         );
     
-    return tfrac1;
+    return tfracC;
 }
 
 
 Foam::tmp<Foam::volScalarField> 
-Foam::structureVolumetricAreaPartitionModels::AzadShirani::frac2() const
+Foam::fluidPartitionModels::AzadShirani::fracD() const
 {    
-    return 1.0-frac1();
+    return 1.0-fracC();
 }
 
 

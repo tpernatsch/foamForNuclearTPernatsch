@@ -154,39 +154,37 @@ Foam::fluidInterfacialAreaModels::Schor::iA() const
     (
         new volScalarField
         (
-            neg(alpha-alpha1_)*
+            alphaSum*   //- Need to multiply by void fraction to account for
+                        //  structure porosity
             (
-                (4.0/D_)*Foam::sqrt
+                neg(alpha-alpha1_)*
                 (
-                    PI_*alpha/(3.0*(A_-PI_))
+                    (4.0/D_)*Foam::sqrt
+                    (
+                        PI_*alpha/(3.0*(A_-PI_))
+                    )
+                ) 
+            +   pos0(alpha-alpha2_)*
+                (
+                    (4.0/D_)*Foam::sqrt(PI_)
+                    /
+                    (
+                        3.0*(A_-PI_)
+                    )*
+                    Foam::sqrt
+                    (
+                        (1.0-alpha)*A_ + PI_*alpha
+                    )*
+                    min
+                    (
+                        (1-alpha)/(0.043),
+                        1.0
+                    )
                 )
-            ) 
-
-            +
-            
-            pos0(alpha-alpha2_)*
-            (
-                (4.0/D_)*Foam::sqrt(PI_)
-                /
+            +   pos0(alpha-alpha1_)*neg(alpha-alpha2_)*
                 (
-                    3.0*(A_-PI_)
-                )*
-                Foam::sqrt
-                (
-                    (1.0-alpha)*A_ + PI_*alpha
-                )*
-                min
-                (
-                    (1-alpha)/(0.043),
-                    1.0
+                    weight*iA1_ + (1.0-weight)*iA2_
                 )
-            )
-
-            + 
-
-            pos0(alpha-alpha1_)*neg(alpha-alpha2_)*
-            (
-                weight*iA1_ + (1.0-weight)*iA2_
             )
         )
     );

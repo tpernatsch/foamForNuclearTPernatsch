@@ -289,9 +289,7 @@ Foam::powerModels::heatedPin::heatedPin
                     Trad_[celli][j] +=
                         (hollow) ? C*log(r)/k : 0.0;
                 }
-                
-                Info << Trad_[celli] << endl; 
-           }
+            }
         }
         else //- Otherwise, read from dict
         {
@@ -494,9 +492,11 @@ Foam::powerModels::heatedPin::updateLocalTemperatureProfile
     To_[celli] = Trad[meshSize-1];
 
     //- Check energy conservation via linear power
+    /*
     scalar aLP(q*pi_*(sqr(rRegion[0])-sqr(rRegion[meshSize-1])));
     scalar nLP((HSumi*To_[celli]-HTSumi)*2.0*pi_*rRegion[meshSize-1]);
     Info<< celli << " " << nLP << " " << aLP << " W/m" << endl;
+    */
 
     //- Update local T averages and local min/max
     scalar& Tavi(Tav_[celli]);
@@ -567,5 +567,10 @@ void Foam::powerModels::heatedPin::correctT(volScalarField& T) const
     }
 }
 
+
+void Foam::powerModels::heatedPin::powerOff()
+{
+    powerDensity_ *= 0.0;
+}
 
 // ************************************************************************* //

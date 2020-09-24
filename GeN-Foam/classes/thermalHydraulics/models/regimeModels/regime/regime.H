@@ -214,8 +214,6 @@ public:
         void correctFluidGeometryFields
         (
             volScalarField& iA,
-            volScalarField& frac1,
-            volScalarField& frac2,
             fluid& fluid1,
             fluid& fluid2
         ) const;

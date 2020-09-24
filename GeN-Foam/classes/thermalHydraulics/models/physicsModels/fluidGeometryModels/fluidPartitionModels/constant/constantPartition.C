@@ -23,49 +23,49 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "constantAreaPartition.H"
+#include "constantPartition.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace structureVolumetricAreaPartitionModels
+namespace fluidPartitionModels
 {
     defineTypeNameAndDebug(constant, 0);
     addToRunTimeSelectionTable
     (
-        structureVolumetricAreaPartitionModel, 
+        fluidPartitionModel, 
         constant, 
-        structureVolumetricAreaPartitionModels);
+        fluidPartitionModels);
 }
 }
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::structureVolumetricAreaPartitionModels::constant::constant
+Foam::fluidPartitionModels::constant::constant
 (
     const objectRegistry& objReg,
     const dictionary& dict,
-    const fluid& fluid1,
-    const fluid& fluid2,
+    const fluid& dispersed,
+    const fluid& continuous,
     const structureModel& structure
 )
 :
-    structureVolumetricAreaPartitionModel
+    fluidPartitionModel
     (
         objReg,
         dict,
-        fluid1,
-        fluid2,
+        dispersed,
+        continuous,
         structure
     ),
-    frac1_
+    fracD_
     (
         IOobject
         (
-            IOobject::groupName("frac."+fluid1.name(), typeName),
+            IOobject::groupName("frac."+dispersed.name(), typeName),
             mesh_.time().timeName(),
             objReg
         ),
@@ -73,11 +73,11 @@ Foam::structureVolumetricAreaPartitionModels::constant::constant
         dimensionedScalar(0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    frac2_
+    fracC_
     (
         IOobject
         (
-            IOobject::groupName("frac."+fluid2.name(), typeName),
+            IOobject::groupName("frac."+continuous.name(), typeName),
             mesh_.time().timeName(),
             objReg
         ),
@@ -86,34 +86,34 @@ Foam::structureVolumetricAreaPartitionModels::constant::constant
         zeroGradientFvPatchScalarField::typeName
     )
 {
-    if (dict.found("value1"))
+    if (dict.found(dispersed.name()))
     {
-        dimensionedScalar value1("value1", dimless, dict);
+        dimensionedScalar valueD(dispersed.name(), dimless, dict);
         forAll(mesh_.cells(), celli)
         {
-            frac1_[celli] = value1.value();
+            fracD_[celli] = valueD.value();
         }
-        if (dict.found("value2"))
+        if (dict.found(continuous.name()))
         {
-            dimensionedScalar value2("value2", dimless, dict);
+            dimensionedScalar valueC(continuous.name(), dimless, dict);
             forAll(mesh_.cells(), celli)
             {
-                frac2_[celli] = value2.value();
+                fracC_[celli] = valueC.value();
             }
         }
         else
         {
-            frac2_ = 1.0 - frac1_;
+            fracC_ = 1.0 - fracD_;
         }
     }
-    else if (dict.found("value2"))
+    else if (dict.found(continuous.name()))
     {
-        dimensionedScalar value2("value2", dimless, dict);
+        dimensionedScalar valueC(continuous.name(), dimless, dict);
         forAll(mesh_.cells(), celli)
         {
-            frac2_[celli] = value2.value();
+            fracC_[celli] = valueC.value();
         }
-        frac1_ = 1.0 - frac2_;
+        fracD_ = 1.0 - fracC_;
     }
     else
     {
@@ -122,9 +122,9 @@ Foam::structureVolumetricAreaPartitionModels::constant::constant
             << exit(FatalError);
     }
     
-    frac1_.correctBoundaryConditions();
-    frac2_.correctBoundaryConditions();
-    volScalarField fracSum(frac1_+frac2_);
+    fracD_.correctBoundaryConditions();
+    fracC_.correctBoundaryConditions();
+    volScalarField fracSum(fracD_+fracC_);
     
     if 
     ( 
@@ -132,13 +132,13 @@ Foam::structureVolumetricAreaPartitionModels::constant::constant
         or 
         (min(fracSum).value() != 1)
         or 
-        (max(frac1_).value() > 1)
+        (max(fracD_).value() > 1)
         or 
-        (min(frac1_).value() < 0)
+        (min(fracD_).value() < 0)
         or 
-        (max(frac2_).value() > 1)
+        (max(fracC_).value() > 1)
         or 
-        (min(frac2_).value() < 0)
+        (min(fracC_).value() < 0)
     )
     {
         FatalErrorInFunction
@@ -151,39 +151,39 @@ Foam::structureVolumetricAreaPartitionModels::constant::constant
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::structureVolumetricAreaPartitionModels::constant::~constant()
+Foam::fluidPartitionModels::constant::~constant()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 Foam::tmp<Foam::volScalarField> 
-Foam::structureVolumetricAreaPartitionModels::constant::frac1() const
+Foam::fluidPartitionModels::constant::fracD() const
 {
-    tmp<volScalarField> tfrac1
+    tmp<volScalarField> tfracD
     (
         new volScalarField
         (
-            frac1_
+            fracD_
         )
     );
     
-    return tfrac1;
+    return tfracD;
 }
 
 
 Foam::tmp<Foam::volScalarField> 
-Foam::structureVolumetricAreaPartitionModels::constant::frac2() const
+Foam::fluidPartitionModels::constant::fracC() const
 {
-    tmp<volScalarField> tfrac2
+    tmp<volScalarField> tfracC
     (
         new volScalarField
         (
-            frac2_
+            fracC_
         )
     );
     
-    return tfrac2;
+    return tfracC;
 }
 
 

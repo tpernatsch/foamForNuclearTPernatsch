@@ -31,8 +31,8 @@ Foam::fluidGeometry::fluidGeometry
 (
     const objectRegistry& objReg,
     const dictionary& dict,
-    const fluid& fluid1,
-    const fluid& fluid2,
+    const fluid& dispersed,
+    const fluid& continuous,
     const structureModel& structure
 )
 :
@@ -41,7 +41,7 @@ Foam::fluidGeometry::fluidGeometry
         IOobject
         (
             typeName,
-            fluid1.mesh().time().timeName(),
+            dispersed.mesh().time().timeName(),
             objReg,
             IOobject::NO_READ,
             IOobject::NO_WRITE
@@ -50,15 +50,11 @@ Foam::fluidGeometry::fluidGeometry
     ),
     dispersed_
     (
-        (word(this->lookup("dispersed")) == fluid1.name()) ?
-        fluid1 :
-        fluid2
+        dispersed
     ),
     continuous_
     (
-        (dispersed_.name() == fluid1.name()) ?
-        fluid2 :
-        fluid1
+        continuous
     ),
     structure_
     (
@@ -69,10 +65,10 @@ Foam::fluidGeometry::fluidGeometry
         IOobject
         (
             "DhDispersed",
-            fluid1.mesh().time().timeName(),
+            dispersed.mesh().time().timeName(),
             objReg
         ),
-        fluid1.mesh(),
+        dispersed.mesh(),
         dimensionedScalar("", dimLength, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
@@ -81,34 +77,58 @@ Foam::fluidGeometry::fluidGeometry
         IOobject
         (
             "fluidInterfacialArea",
-            fluid1.mesh().time().timeName(),
+            dispersed.mesh().time().timeName(),
             objReg
         ),
-        fluid1.mesh(),
+        dispersed.mesh(),
         dimensionedScalar("", dimArea/dimVolume, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    frac1_
+    fKdD_
     (
         IOobject
         (
-            "frac1",
-            fluid1.mesh().time().timeName(),
+            "fKd."+dispersed.name(),
+            dispersed.mesh().time().timeName(),
             objReg
         ),
-        fluid1.mesh(),
+        dispersed.mesh(),
         dimensionedScalar("", dimless, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    frac2_
+    fKdC_
     (
         IOobject
         (
-            "frac2",
-            fluid1.mesh().time().timeName(),
+            "fKd."+continuous.name(),
+            continuous.mesh().time().timeName(),
             objReg
         ),
-        fluid1.mesh(),
+        continuous.mesh(),
+        dimensionedScalar("", dimless, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    fHtcD_
+    (
+        IOobject
+        (
+            "fHtc."+dispersed.name(),
+            dispersed.mesh().time().timeName(),
+            objReg
+        ),
+        dispersed.mesh(),
+        dimensionedScalar("", dimless, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    fHtcC_
+    (
+        IOobject
+        (
+            "fHtc."+continuous.name(),
+            continuous.mesh().time().timeName(),
+            objReg
+        ),
+        continuous.mesh(),
         dimensionedScalar("", dimless, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
@@ -130,32 +150,50 @@ Foam::fluidGeometry::fluidGeometry
             dispersed_,
             continuous_
         )
-    ),
-    structureInterfacialAreaPartition_
-    (
-        structureVolumetricAreaPartitionModel::New
-        (
-            objReg,
-            this->subDict("structureVolumetricAreaPartitionModel"),
-            dispersed_,
-            continuous_,
-            structure
-        )
     )
 {
-    word dispersedName(this->lookup("dispersed"));
-    if 
-    (
-        dispersedName != fluid1.name() 
-        and 
-        dispersedName != fluid2.name()
-    )
+    //- If the same partition model is to be used for both drag and heat
+    //  and heat transfer, specify it via a single fluidPartitionModel 
+    //  keyword for simplicity
+    if (this->isDict("fluidPartitionModel"))
     {
-        FatalErrorInFunction
-            << "Dispersed fluid " << dispersedName
-            << " does not match any existing fluid : " << endl
-            << "- " << fluid1.name() << endl
-            << "- " << fluid2.name() << exit(FatalError);
+        fluidPartition_.reset
+        (
+            fluidPartitionModel::New
+            (
+                objReg,
+                this->subDict("fluidPartitionModel"),
+                dispersed_,
+                continuous_,
+                structure
+            )
+        );
+    }
+    else
+    {
+        dragPartition_.reset
+        (
+            fluidPartitionModel::New
+            (
+                objReg,
+                this->subDict("dragPartitionModel"),
+                dispersed_,
+                continuous_,
+                structure
+            )
+        );
+
+        heatTransferPartition_.reset
+        (
+            fluidPartitionModel::New
+            (
+                objReg,
+                this->subDict("heatTransferPartitionModel"),
+                dispersed_,
+                continuous_,
+                structure
+            )
+        );
     }
 }
 
@@ -193,6 +231,7 @@ Foam::autoPtr<Foam::fluidGeometry> Foam::fluidGeometry::makeModel
     (
         srcObjReg.lookupObject<fluid>("alpha."+continuousName)
     );
+
     const structureModel& structure
     (
         srcObjReg.lookupObject<structureModel>("alpha.structure")
@@ -222,9 +261,53 @@ void Foam::fluidGeometry::correct()
     //  sphericalTopology)
     DhDispersed_= fluidDiameter_->Dh()();
     iA_ = fluidInterfacialArea_->iA()();
-    frac1_ = structureInterfacialAreaPartition_->frac1()();
-    frac2_ = structureInterfacialAreaPartition_->frac2()();
+    if (fluidPartition_.valid())
+    {
+        volScalarField fD(fluidPartition_->fracD()());
+        volScalarField fC(fluidPartition_->fracC()());
+        fKdD_ = fD;
+        fKdC_ = fC;
+        fHtcD_ = fD;
+        fHtcC_ = fC;
+    }
+    else
+    {
+        fKdD_ = dragPartition_->fracD()();
+        fKdC_ = dragPartition_->fracC()();
+        fHtcD_ = heatTransferPartition_->fracD()();
+        fHtcC_ = heatTransferPartition_->fracC()();
+    }
+}
+    
+const Foam::volScalarField& Foam::fluidGeometry::fKd(const word& name) const
+{
+    if (word("fKd."+name) == fKdD_.name())
+    {
+
+        Info << "A, Asked for " << name << " returning " << max(fKdD_).value() << endl;
+        return fKdD_;
+    }
+    else if (word("fKd."+name) == fKdC_.name())
+    {
+        Info << "B, Asked for " << name << " returning " << max(fKdC_).value() << endl;
+        return fKdC_;
+    }
+    FatalErrorInFunction
+    << "Requested fluid " << name
+    << " does not match any existing fluid!" << exit(FatalError);
+    return fKdD_;
 }
 
+const Foam::volScalarField& Foam::fluidGeometry::fHtc(const word& name) const
+{
+    if (word("fHtc."+name) == fHtcD_.name())
+        return fHtcD_;
+    else if (word("fHtc."+name) == fHtcC_.name())
+        return fHtcC_;
+    FatalErrorInFunction
+    << "Requested fluid " << name
+    << " does not match any existing fluid!" << exit(FatalError);
+    return fHtcD_;
+}
 
 // ************************************************************************* //

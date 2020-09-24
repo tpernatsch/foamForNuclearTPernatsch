@@ -47,7 +47,7 @@ fluid_.turbulence().correct();
     UEqn =
     (
             fvm::div(fluid_.alphaRhoPhi(), U, "div(alphaRhoPhi,U)")
-        -   fvm::Sp(fluid_.contErr(), U)
+        -   fvm::SuSp(fluid_.contErr(), U)
         +   MRF_.DDt(alpha*rho, U)
             //- The following is just a re-arrangement of div(nu*grad(U))
         +   (

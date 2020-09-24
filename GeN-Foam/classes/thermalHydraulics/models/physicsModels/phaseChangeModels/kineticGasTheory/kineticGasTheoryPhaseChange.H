@@ -64,17 +64,13 @@ class kineticGasTheoryPhaseChange
 {
 protected:
 
-    //- Sigma
+    //- Sigma. This represents the fraction of molecules from either phase 
+    //  that actually move through the interface to join the other phase
+    //  rather than "bouncing back" thus not resulting in a change of state
     const dimensionedScalar sigma_;
 
-    //- Evaporation coefficient
-    const dimensionedScalar lambdaEvap_;
-
-    //- Condensation coefficient
-    const dimensionedScalar lambdaCond_;
-
     //- Coeff of the interfacial mass flux computed once as 
-    //      sqrt(M/2*pi*R)
+    //      (2*sigma/(2-sigma))*sqrt(M/2*pi*R)
     //  with M being the molar mass in kg/mol and R the universal gas constant
     const dimensionedScalar coeff_;
 
@@ -83,10 +79,8 @@ protected:
     //const dimensionedScalar alphaDryout_;
 
     //- Refs to liquid, vapour temperature and phase fraction
-    const volScalarField& Tl_;
-    const volScalarField& Tv_;
-    const volScalarField& alphal_;
-    const volScalarField& alphav_;
+    const fluid& liquid_;
+    const fluid& vapour_;
 
 public:
 

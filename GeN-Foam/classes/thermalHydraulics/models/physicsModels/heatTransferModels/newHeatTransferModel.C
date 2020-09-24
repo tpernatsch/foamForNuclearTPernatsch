@@ -64,7 +64,8 @@ Foam::autoPtr<Foam::heatTransferModel> Foam::heatTransferModel::New
 (
     const objectRegistry& objReg,
     const dictionary& dict,
-    const FSPair& FSPair
+    const FSPair& FSPair,
+    const wordList& regions
 )
 {
     word type(dict.get<word>("type"));
@@ -90,7 +91,7 @@ Foam::autoPtr<Foam::heatTransferModel> Foam::heatTransferModel::New
             << exit(FatalError);
     }
 
-    return cstrIter()(objReg, dict, FSPair);
+    return cstrIter()(objReg, dict, FSPair, regions);
 }
 
 // ************************************************************************* //

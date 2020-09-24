@@ -23,50 +23,46 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "structureVolumetricAreaPartitionModel.H"
+#include "flowFactorModel.H"
+#include "fluid.H"
+#include "structureModel.H"
+#include "FSPair.H"
+#include "heatTransferModel.H"
 
 // * * * * * * * * * * * * * * * * Selector  * * * * * * * * * * * * * * * * //
 
-Foam::autoPtr<Foam::structureVolumetricAreaPartitionModel> 
-Foam::structureVolumetricAreaPartitionModel::New
+Foam::autoPtr
+<
+    Foam::heatTransferModels::nucleateBoilingSubModels::flowFactorModel
+> 
+Foam::heatTransferModels::nucleateBoilingSubModels::flowFactorModel::New
 (
+    const heatTransferModel& htm,
     const objectRegistry& objReg,
-    const dictionary& dict,
-    const fluid& fluid1,
-    const fluid& fluid2,
-    const structureModel& structure
+    const FSPair& FSPair
 )
 {
-    word type(dict.lookup("type"));
+    word type(htm.subDict("flowFactorModel").get<word>("type"));
+    Info<< "Constructing flowFactorModel of type " << type 
+        << " in region(s): " << FSPair.structure().regions() << endl;
 
-    Info<< "Selecting structureVolumetricAreaPartitionModel: " 
-        << type << endl;
-
-    structureVolumetricAreaPartitionModelsConstructorTable::iterator 
-        cstrIter = 
-        structureVolumetricAreaPartitionModelsConstructorTablePtr_->find
+    flowFactorModelsConstructorTable::iterator cstrIter =
+        flowFactorModelsConstructorTablePtr_->find
         (
             type
         );
 
-    if 
-    (
-        cstrIter 
-        == 
-        structureVolumetricAreaPartitionModelsConstructorTablePtr_->end()
-    )
+    if (cstrIter == flowFactorModelsConstructorTablePtr_->end())
     {
         FatalErrorInFunction
-            << "Unknown structureVolumetricAreaPartitionModel type "
+            << "Unknown type type "
             << type << endl << endl
-            << "Valid structureVolumetricAreaPartitionModel types are : " 
-            << endl
-            << structureVolumetricAreaPartitionModelsConstructorTablePtr_
-            ->sortedToc()
+            << "Valid flowFactorModel types are : " << endl
+            << flowFactorModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
 
-    return cstrIter()(objReg, dict, fluid1, fluid2, structure);
+    return cstrIter()(htm, objReg, FSPair);
 }
 
 

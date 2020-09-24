@@ -1,3 +1,12 @@
+bool writeTransferCoeffs 
+(
+    mesh.time().controlDict().lookupOrDefault<bool>
+    (
+        "writeTransferCoeffs", 
+        true
+    )
+);
+
 //- Drag
 Kds_.insert
 (
@@ -12,8 +21,12 @@ Kds_.insert
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
-                IOobject::NO_WRITE,
-                false
+                (
+                    (writeTransferCoeffs) ?
+                    IOobject::AUTO_WRITE :
+                    IOobject::NO_WRITE
+                ),
+                writeTransferCoeffs
             ),
             mesh_,
             dimensionedTensor
@@ -39,8 +52,12 @@ Kds_.insert
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
-                IOobject::NO_WRITE,
-                false
+                (
+                    (writeTransferCoeffs) ?
+                    IOobject::AUTO_WRITE :
+                    IOobject::NO_WRITE
+                ),
+                writeTransferCoeffs
             ),
             mesh_,
             dimensionedTensor
@@ -66,8 +83,12 @@ Kds_.insert
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
-                IOobject::NO_WRITE,
-                false
+                (
+                    (writeTransferCoeffs) ?
+                    IOobject::AUTO_WRITE :
+                    IOobject::NO_WRITE
+                ),
+                writeTransferCoeffs
             ),
             mesh_,
             dimensionedTensor
@@ -80,19 +101,6 @@ Kds_.insert
         )
     )
 );
-
-//- Create oldKds by copy
-forAllConstIter
-(
-    volTensorFieldPtrTable,
-    Kds_,
-    iter
-)
-{
-    word key(iter.key());
-    volTensorField& Kd(*Kds_[key]);
-    oldKds_.insert(key, autoPtr<volTensorField>(new volTensorField(Kd)));
-}
 
 //- Heat transfer coefficient
 htcs_.insert
@@ -108,8 +116,12 @@ htcs_.insert
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
-                IOobject::NO_WRITE,
-                false
+                (
+                    (writeTransferCoeffs) ?
+                    IOobject::AUTO_WRITE :
+                    IOobject::NO_WRITE
+                ),
+                writeTransferCoeffs
             ),
             mesh_,
             dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
@@ -131,8 +143,12 @@ htcs_.insert
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
-                IOobject::NO_WRITE,
-                false
+                (
+                    (writeTransferCoeffs) ?
+                    IOobject::AUTO_WRITE :
+                    IOobject::NO_WRITE
+                ),
+                writeTransferCoeffs
             ),
             mesh_,
             dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
@@ -150,12 +166,16 @@ htcs_.insert
         (
             IOobject
             (
-                "htc."+fluid2_.name()+".structure",
+                "htc."+fluid1_.name()+".structure",
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
-                IOobject::NO_WRITE,
-                false
+                (
+                    (writeTransferCoeffs) ?
+                    IOobject::AUTO_WRITE :
+                    IOobject::NO_WRITE
+                ),
+                writeTransferCoeffs
             ),
             mesh_,
             dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
@@ -177,8 +197,12 @@ htcs_.insert
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
-                IOobject::NO_WRITE,
-                false
+                (
+                    (writeTransferCoeffs) ?
+                    IOobject::AUTO_WRITE :
+                    IOobject::NO_WRITE
+                ),
+                writeTransferCoeffs
             ),
             mesh_,
             dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
@@ -186,16 +210,3 @@ htcs_.insert
         )
     )
 );
-
-//- Create oldHtcs by copy
-forAllConstIter
-(
-    volScalarFieldPtrTable,
-    htcs_,
-    iter
-)
-{
-    word key(iter.key());
-    volScalarField& htc(*htcs_[key]);
-    oldHtcs_.insert(key, autoPtr<volScalarField>(new volScalarField(htc)));
-}

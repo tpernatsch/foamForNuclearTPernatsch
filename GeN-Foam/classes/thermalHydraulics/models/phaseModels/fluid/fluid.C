@@ -304,7 +304,7 @@ Foam::fluid::fluid
             "thermoResidualAlpha",
             dict_,
             dimless, 
-            1e-9
+            0.0
         )
     )
 {

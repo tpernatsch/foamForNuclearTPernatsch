@@ -91,11 +91,11 @@ Foam::twoPhaseDragMultiplierModels::Kaiser88::correct()
     //  range as the Kottowski-Savatteri model, i.e. 7e-2 < X < 30 which
     //  translates in:
     //      sqrt(X) > sqrt(7e-2) = 0.265 
-    //      log(sqrt(X)) < log(sqrt(30)) = 1.701
+    //      sqrt(X) < sqrt(30) = 5.477
     logSqrtX_ =
-        min
+        log
         ( 
-            log
+            min
             (
                 max
                 (   
@@ -116,22 +116,23 @@ Foam::twoPhaseDragMultiplierModels::Kaiser88::correct()
                         0.25
                     ),
                     dimensionedScalar("", dimless, 0.265)
-                )
-            ),
-            dimensionedScalar("", dimless, 1.701)
+                ),
+                dimensionedScalar("", dimless, 5.477)
+            )
         );
 
-    phi2_ = Foam::exp
+    this->setPhi2
     (
-        2.0*
+        Foam::exp
         (
-            1.48
-        -   1.05*logSqrtX_
-        +   0.09*sqr(logSqrtX_)
+            2.0*
+            (
+                1.48
+            -   1.05*logSqrtX_
+            +   0.09*sqr(logSqrtX_)
+            )
         )
     );
-
-    this->limitPhi2();
 }
 
 

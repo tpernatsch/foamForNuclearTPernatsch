@@ -2,10 +2,13 @@ myPimpleControl/myPimpleControl.C
 
 boundaryConditions/FFSWallHeatTransfer/FFSWallHeatTransferFvPatchScalarField.C
 boundaryConditions/velocityRundown/velocityRundownFvPatchVectorField.C
+boundaryConditions/timeFieldTable/timeFieldTableFvPatchScalarField.C
 
 functionObjects/fieldDiffExtents/fieldDiffExtents.C
 functionObjects/TBulk/TBulk.C
 functionObjects/massFlowFlux/massFlowFlux.C
 functionObjects/pressureDrop/pressureDrop.C
+functionObjects/stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
+functionObjects/patchScalarFieldValue/patchScalarFieldValue.C
 
 LIB = $(FOAM_USER_LIBBIN)/libFFSSrc2

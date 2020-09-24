@@ -81,7 +81,8 @@ Foam::twoPhaseDragMultiplierModels::Kaiser74::correct()
     ratio and 1 for the density ratio. Multiplied by 0.55, they become the
     values below
     */
-    phi2_ =
+    this->setPhi2
+    (
         67.24/
         max
         (   
@@ -102,9 +103,8 @@ Foam::twoPhaseDragMultiplierModels::Kaiser74::correct()
                 0.55
             ),
             dimensionedScalar("", dimless, 1e-9)
-        );
-
-    this->limitPhi2();
+        )
+    );
 }
 
 

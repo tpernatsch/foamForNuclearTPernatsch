@@ -97,7 +97,7 @@ Foam::structureModel::structureModel
     (
         IOobject
         (
-            "heatFlux",
+            "heatFlux.structure",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -182,6 +182,20 @@ Foam::structureModel::structureModel
         ("", dimEnergy/dimVol/dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    Twall_
+    (
+        IOobject
+        (
+            "T.wall",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("T", dimTemperature, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     Rg2l_
     (
         IOobject
@@ -264,19 +278,59 @@ void Foam::structureModel::correct
 
     if (Tpas_.writeOpt() == IOobject::AUTO_WRITE)
     {
-        //- Correct inert subStructure
-        fvScalarMatrix pasEqn
-        (
-                fvm::ddt(alphaRhoCppas_, Tpas_)
-            ==
-                iApas_*HT
-            -   fvm::Sp(iApas_*H, Tpas_)
-        );
-        pasEqn.solve();
+        //- Correct inert subStructure. What follows is the equivalent of doing
+        //  the following:
+        /*
+            fvScalarMatrix pasEqn
+            (
+                    fvm::ddt(alphaRhoCppas_, Tpas_)
+                ==
+                    iApas_*HT
+                -   fvm::Sp(iApas_*H, Tpas_)
+            );
+            pasEqn.solve();
+        */
+        //  Except, it is faster like this rather than to solve an equation 
+        //  over the entire mesh, as the passive subStructure might not exist
+        //  everywhere
+
+        scalar dt(mesh_.time().deltaT().value());
+        const volScalarField& Tpas0(Tpas_.oldTime()); 
+        forAll(cells_, i)
+        {
+            label celli(cells_[i]);
+            const scalar& iA(iApas_[celli]);
+            if (iA == 0) continue;  //- Avoid solving where the passive 
+                                    //  structure does not exist
+            scalar alphaRhoCpByDt(alphaRhoCppas_[celli]/dt);
+            Tpas_[celli] = 
+                (
+                    iA*HT[celli] 
+                +   alphaRhoCpByDt*Tpas0[celli]
+                )/
+                (alphaRhoCpByDt + iA*H[celli]);
+        }
+        Tpas_.correctBoundaryConditions();
     }
 
-    //- Update active structure heat flux (IO only)
-    heatFlux_ = pos(iAact_)*(H*Tact_-HT);
+    //- Update Twall, heatFlux    
+    forAll(cells_, i)
+    {
+        const label& celli(cells_[i]);
+        scalar& Twall(Twall_[celli]);
+
+        //- Set indicative wall temperature as max between power structure
+        //  surface temperature and passive structure surface temperature
+        Twall = Foam::max(Tact_[celli], Tpas_[celli]);
+
+        //- Update heat flux (mostly for extra info purposes, maybe only
+        //  used by the Shah pool boiling model under some circumstances).
+        //  For representativity, it is set as the max heat flux to the fluid
+        //  calculated between the active and passive subStructures
+        heatFlux_[celli] = H[celli]*Twall-HT[celli];
+    }
+    Twall_.correctBoundaryConditions();
+    heatFlux_.correctBoundaryConditions();
 }
 
 Foam::tmp<Foam::volScalarField> Foam::structureModel::explicitHeatSource

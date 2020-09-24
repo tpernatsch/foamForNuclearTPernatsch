@@ -94,9 +94,10 @@ Foam::fluidInterfacialAreaModels::annularTopology::iA() const
 
     forAll(dispersed_.mesh().cells(), i)
     {
-        scalar alpha(dispersed_[i]/(dispersed_[i]+continuous_[i]));
+        scalar gamma(dispersed_[i]+continuous_[i]);
+        scalar alpha(dispersed_.normalized()[i]);
         scalar& iAi(iA[i]);
-        iAi = 4.0*Foam::sqrt(alpha)/max(DhDispersed_[i], 1e-4);
+        iAi = gamma*4.0*Foam::sqrt(alpha)/max(DhDispersed_[i], 1e-4);
         if (alpha > cutoffAlpha_)
         {
             iAi *= (1.0-alpha)/(1.0-cutoffAlpha_);

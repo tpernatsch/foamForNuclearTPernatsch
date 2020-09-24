@@ -78,6 +78,12 @@ protected:
     //- Ptr to other fluid
     const fluid* oFluidPtr_;
 
+    //- Ptr to mFluid-structure contact fraction
+    const volScalarField* mFracPtr_;
+
+    //- Ptr to oFluid-structure contact fraction
+    const volScalarField* oFracPtr_;
+
     //- Two phase multiplier
     volScalarField phi2_;
 
@@ -127,8 +133,8 @@ public:
 
     //- Member Functions
 
-        //- Limit phi2 by maxPhi
-        void limitPhi2();
+        //- Sets phi2 while storing the prevIter and limiting it
+        void setPhi2(const volScalarField& phi2);
 
         //- Correct two phase multiplier phi2_
         virtual void correct() = 0;
@@ -138,7 +144,7 @@ public:
         (
             const fluidGeometry& fG,
             volTensorFieldPtrTable& Kd
-        ) const;
+        );
 
         //- Access
 };

@@ -135,10 +135,9 @@ void Foam::FSPair::correct()
     //  structure_.Dh() which does not change in time.
     const volScalarField& Dh(structure_.Dh());
     const volVectorField& lDh(structure_.lDh());
-    volScalarField alpha(fluid_/(1-structure_));
     
     //- Correct
-    Re_ = alpha*mag(U)*Dh/fluid_.thermo().nu()();
+    Re_ = fluid_.normalized()*mag(U)*Dh/fluid_.thermo().nu()();
     Re_ = max(Re_, minRe_);
 
     //- Rotate U in the local frame, make an outer product with lDh so that
@@ -146,7 +145,7 @@ void Foam::FSPair::correct()
     //  Then directly set these diagonal elemets (I guess this is the most
     //  efficient approch)
     tmp<volTensorField> tlRet = 
-        alpha*(structure_.Rg2l()&U)*lDh/fluid_.thermo().nu()();
+        fluid_.normalized()*(structure_.Rg2l()&U)*lDh/fluid_.thermo().nu()();
     lRe_.replace(0, max(tlRet().component(0), minRe_));
     lRe_.replace(1, max(tlRet().component(4), minRe_));
     lRe_.replace(2, max(tlRet().component(8), minRe_));

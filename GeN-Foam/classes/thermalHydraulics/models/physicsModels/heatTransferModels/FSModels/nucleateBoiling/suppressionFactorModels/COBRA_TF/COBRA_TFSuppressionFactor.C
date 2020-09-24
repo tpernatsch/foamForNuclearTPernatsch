@@ -23,60 +23,77 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "structureVolumetricAreaPartitionModel.H"
+#include "COBRA_TFSuppressionFactor.H"
+#include "addToRunTimeSelectionTable.H"
+#include "fluid.H"
+#include "structureModel.H"
+#include "FSPair.H"
+#include "heatTransferModel.H"
+
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    defineTypeNameAndDebug(structureVolumetricAreaPartitionModel, 0);
-    defineRunTimeSelectionTable
+namespace heatTransferModels
+{
+namespace nucleateBoilingSubModels
+{
+namespace suppressionFactorModels
+{
+    defineTypeNameAndDebug(COBRA_TF, 0);
+    addToRunTimeSelectionTable
     (
-        structureVolumetricAreaPartitionModel, 
-        structureVolumetricAreaPartitionModels
+        suppressionFactorModel, 
+        COBRA_TF, 
+        suppressionFactorModels
     );
+}
+}
+}
 }
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::structureVolumetricAreaPartitionModel::
-structureVolumetricAreaPartitionModel
+Foam::heatTransferModels::nucleateBoilingSubModels::suppressionFactorModels::
+COBRA_TF::COBRA_TF
 (
+    const heatTransferModel& htm,
     const objectRegistry& objReg,
-    const dictionary& dict,
-    const fluid& fluid1,
-    const fluid& fluid2,
-    const structureModel& structure
+    const FSPair& FSPair
 )
 :
-    IOdictionary
+    suppressionFactorModel
     (
-        IOobject
-        (
-            typeName,
-            fluid1.mesh().time().timeName(),
-            objReg,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        dict
+        htm,
+        objReg,
+        FSPair
     ),
-    mesh_(fluid1.mesh()),
-    fluid1_(fluid1),
-    fluid2_(fluid2),
-    structure_(structure)
-{}
-
-
-// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
-
-Foam::structureVolumetricAreaPartitionModel::~structureVolumetricAreaPartitionModel()
+    Twall_(FSPair.structure().Twall()),
+    Tf_(FSPair.fluidRef().thermo().T()),
+    Tsat_
+    (
+        //- The interface is always at saturation when doing simulations
+        //  with phase change enabled, so use this for Tsat_
+        FSPair.fluidRef().mesh().lookupObject<volScalarField>("T.interface")
+    )
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
+void Foam::heatTransferModels::nucleateBoilingSubModels::suppressionFactorModels::
+COBRA_TF::correct()
+{
+    forAll(cellList_, i)
+    {
+        const label& celli(cellList_[i]);
+        const scalar& Tf(Tf_[celli]);
+        suppressionFactor_[i] = 
+            max(Tf-Tsat_[celli], 0)/max(Twall_[celli]-Tf, 1e-3);
+    }
+}
 
 
 // ************************************************************************* //

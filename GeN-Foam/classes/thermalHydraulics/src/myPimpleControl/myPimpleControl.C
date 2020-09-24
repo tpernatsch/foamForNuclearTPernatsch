@@ -91,7 +91,23 @@ bool Foam::myPimpleControl::criteriaSatisfied()
                 (
                     fieldName
                 ).lookupOrDefault<bool>("useFirstPISOInitialResidual", false)
-            ); 
+            );
+
+            bool stopIfFirstResRelChangeAboveRelTol
+            (
+
+                dict().subDict
+                (
+                    "residualControl"
+                ).subDict
+                (
+                    fieldName
+                ).lookupOrDefault<bool>
+                (
+                    "stopIfFirstResRelChangeAboveRelTol", false
+                )
+            and useFirstPISOInitialResidual
+            );
 
             Pair<scalar> residuals = (useFirstPISOInitialResidual) ? 
                 firstPISOPrevPIMPLEResidual(solverPerfDictEntry)
@@ -115,11 +131,21 @@ bool Foam::myPimpleControl::criteriaSatisfied()
                 const scalar iniRes =
                     residualControl_[fieldi].initialResidual + ROOTVSMALL;
 
-                relative = residuals.last() / iniRes;
-                relCheck = (relative < residualControl_[fieldi].relTol);
+                relative = 
+                    (stopIfFirstResRelChangeAboveRelTol) ? 
+                    residuals.last() / residuals.first() :
+                    residuals.last() / iniRes;
+
+                relCheck = 
+                    (stopIfFirstResRelChangeAboveRelTol) ? 
+                    (relative >= residualControl_[fieldi].relTol) :
+                    (relative < residualControl_[fieldi].relTol);
+
+                if (stopIfFirstResRelChangeAboveRelTol and relCheck)
+                    stopLoop_ = true;
             }
 
-            achieved = achieved && (absCheck || relCheck);
+            achieved = achieved && (absCheck || relCheck || stopLoop_);
 
             if (debug)
             {
@@ -156,8 +182,18 @@ bool Foam::myPimpleControl::firstPISOPrevPIMPLETypeResidual
     {
         const List<SolverPerformance<Type>> sp(solverPerfDictEntry.stream());
 
-        residuals.first() = mag(sp.first().initialResidual());
-        residuals.last() = mag(sp[sp.size()-nCorrPISOInPrevPIMPLE_].initialResidual());
+        residuals.first() = 
+            mag
+            (
+                sp
+                [
+                    sp.size()
+                -   nCorrPISOInPrevPIMPLE_
+                -   nCorrPISOInPrevPrevPIMPLE_
+                ].initialResidual()
+            );
+        residuals.last() = 
+            mag(sp[sp.size()-nCorrPISOInPrevPIMPLE_].initialResidual());
 
         return true;
     }
@@ -209,7 +245,9 @@ Foam::myPimpleControl::myPimpleControl
     pimpleControl(mesh, dictName, verbose),
     minNCorrPIMPLE_(1),
     corrPISOUntilConvergence_(false),
-    nCorrPISOInPrevPIMPLE_(0)
+    nCorrPISOInPrevPIMPLE_(0),
+    nCorrPISOInPrevPrevPIMPLE_(0),
+    stopLoop_(false)
 {
     read();
 }
@@ -242,6 +280,8 @@ bool Foam::myPimpleControl::loop()
         }
 
         corr_ = 0;
+        nCorrPISOInPrevPrevPIMPLE_ = 0;
+        stopLoop_ = false;
         mesh_.data::remove("finalIteration");
         return false;
     }
@@ -251,11 +291,17 @@ bool Foam::myPimpleControl::loop()
     {
         if (converged_)
         {
-            Info<< algorithmName_ << ": converged in " << corr_ - 1
-                << " iterations" << endl;
+            if (!stopLoop_)
+                Info<< algorithmName_ << ": converged in " << corr_ - 1
+                    << " iterations" << endl;
+            else
+                Info<< algorithmName_ << ": loop interrupted due to poor "
+                    << "first PISO initialResidual convergence" << endl;
 
             mesh_.data::remove("finalIteration");
             corr_ = 0;
+            nCorrPISOInPrevPrevPIMPLE_ = 0;
+            stopLoop_ = false;
             converged_ = false;
 
             completed = true;
@@ -283,6 +329,8 @@ bool Foam::myPimpleControl::loop()
             completed = false;
         }
     }
+
+    nCorrPISOInPrevPrevPIMPLE_ = nCorrPISOInPrevPIMPLE_;
 
     return !completed;
 }

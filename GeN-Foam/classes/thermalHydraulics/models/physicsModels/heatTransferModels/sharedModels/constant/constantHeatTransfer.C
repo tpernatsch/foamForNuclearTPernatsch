@@ -75,14 +75,16 @@ Foam::heatTransferModels::constant::constant
 (
     const objectRegistry& objReg,
     const dictionary& dict,
-    const FSPair& FSPair
+    const FSPair& FSPair,
+    const wordList& regions
 )
 :
     heatTransferModel
     (
         objReg,
         dict,
-        FSPair
+        FSPair,
+        regions
     ),
     htc_(this->get<scalar>("value"))
 {}

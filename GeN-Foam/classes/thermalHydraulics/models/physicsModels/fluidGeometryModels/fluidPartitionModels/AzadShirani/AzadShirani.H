@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::structureVolumetricAreaPartitionModels::AzadShirani
+    Foam::fluidPartitionModels::AzadShirani
 
 Description
     Based on work presented by H. M. Azad, A. S. Shirani, "Subchannel 
@@ -35,7 +35,7 @@ SourceFiles
 
 DictEntryExample ("" is the placeholder for the variable to be inserted)
 
-    structureVolumetricAreaPartitionModel
+    fluidPartitionModel
     {
         type        "AzadShirani";  
     }
@@ -48,14 +48,14 @@ DictEntryExample ("" is the placeholder for the variable to be inserted)
 #ifndef AzadShirani_H
 #define AzadShirani_H
 
-#include "structureVolumetricAreaPartitionModel.H"
+#include "fluidPartitionModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-namespace structureVolumetricAreaPartitionModels
+namespace fluidPartitionModels
 {
 
 /*---------------------------------------------------------------------------*\
@@ -64,7 +64,7 @@ namespace structureVolumetricAreaPartitionModels
 
 class AzadShirani
 :
-    public structureVolumetricAreaPartitionModel
+    public fluidPartitionModel
 {
 private:
 
@@ -77,12 +77,12 @@ private:
     const scalar xCrit_;
 
     //- Fraction of interfacial area of the structure that is in contact
-    //  with fluid1
-    volScalarField frac1_;
+    //  with the dispersed fluid
+    volScalarField fracD_;
 
     //- Fraction of interfacial area of the structure that is in contact
-    //  with fluid2
-    volScalarField frac2_;
+    //  with the continuous fluid
+    volScalarField fracC_;
 
 public:
 
@@ -97,8 +97,8 @@ public:
         (
             const objectRegistry& objReg,
             const dictionary& dict,
-            const fluid& fluid1,
-            const fluid& fluid2,
+            const fluid& dispersed,
+            const fluid& continuous,
             const structureModel& structure
         );
 
@@ -109,16 +109,16 @@ public:
     // Member Functions
 
         //- Interfacial area
-        virtual tmp<volScalarField> frac1() const;
+        virtual tmp<volScalarField> fracD() const;
 
         //- Interfacial area
-        virtual tmp<volScalarField> frac2() const;
+        virtual tmp<volScalarField> fracC() const;
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace structureVolumetricAreaPartitionModels
+} // End namespace fluidPartitionModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

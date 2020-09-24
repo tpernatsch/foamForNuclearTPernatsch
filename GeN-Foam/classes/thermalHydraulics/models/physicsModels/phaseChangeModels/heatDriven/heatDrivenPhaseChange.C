@@ -102,6 +102,16 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::heatDrivenPhaseChange
     (
         (mode_ == heatDrivenPhaseChange::mode::onePhaseDriven) ?
         this->get<word>("drivingPhase") : ""
+    ),
+    L_
+    (
+        IOobject
+        (
+            "latentHeat",
+            mesh_.time().timeName(),
+            mesh_
+        ),
+        fluid2_.thermo().hc() - fluid1_.thermo().hc()
     )
 {
     if (drivingPhaseName_ != "")
@@ -160,63 +170,62 @@ void Foam::phaseChangeModels::heatDrivenPhaseChange::correctMassTransfer()
     //- Please note that the code here does not make use of the isLiquid or
     //  isGas methods of the fluids to determine which is the liquid and 
     //  which is the vapour. It does that via the sign of the latent heat
-    volScalarField L(fluid2_.thermo().hc() - fluid1_.thermo().hc());
     if (correctLatentHeat_)
     {
-        L += 
-            neg0(dmdt_)*(he2 - fluid2_.thermo().he(p_, iT_))
-        -   pos0(dmdt_)*(he1 - fluid1_.thermo().he(p_, iT_));
-
+        L_.storePrevIter();
+        
+        L_ = 
+            fluid2_.thermo().hc()
+        -   fluid1_.thermo().hc()
+        +   neg(dmdt_)*(he2 - fluid2_.thermo().he(p_, iT_))
+        -   pos(dmdt_)*(he1 - fluid1_.thermo().he(p_, iT_));
+        
+        L_.relax();
+        
         Info<< "L (avg min max) ="
-        << " " << L.weightedAverage(mesh_.V()).value()
-        << " " << min(L).value()
-        << " " << max(L).value()
+        << " " << L_.weightedAverage(mesh_.V()).value()
+        << " " << min(L_).value()
+        << " " << max(L_).value()
         << " J/kg" << endl;
     }
-
-    scalar f(this->relaxationFactor());
     
     volScalarField dmdt1i
     (
-        pos0(fluid1_-fluid1_.residualAlpha())*
-        H1i*iA_*(T1-iT_)/L
+        //pos0(fluid1_.normalized()-fluid1_.thermoResidualAlpha())*
+        H1i*iA_*(T1-iT_)/L_
     );
     volScalarField dmdt2i
     (
-        pos0(fluid2_-fluid2_.residualAlpha())*
-        H2i*iA_*(T2-iT_)/L
+
+        //pos0(fluid2_.normalized()-fluid2_.thermoResidualAlpha())*
+        H2i*iA_*(T2-iT_)/L_
     );
+
+    dmdt_.storePrevIter();
 
     switch (mode_)
     {
         case heatDrivenPhaseChange::mode::conductionLimited : 
 
-            dmdt_ = 
-                (1.0-f)*dmdt_ + f*(dmdt1i + dmdt2i);
+            dmdt_ = dmdt1i + dmdt2i;
             break;
 
         case heatDrivenPhaseChange::mode::twoPhaseDriven :
-            dmdt_ = 
-                (1.0-f)*dmdt_ + f*(posPart(dmdt1i) + negPart(dmdt2i));
+            dmdt_ = posPart(dmdt1i) + negPart(dmdt2i);
             break;
 
         case heatDrivenPhaseChange::mode::onePhaseDriven :
             dmdt_ = 
-                (1.0-f)*dmdt_ 
-            +   
-                f*
-                (
-                    (fluid1_.name() == drivingPhaseName_) ?
-                    dmdt1i 
-                    :
-                    dmdt2i 
-                );      
+                (fluid1_.name() == drivingPhaseName_) ?
+                dmdt1i : dmdt2i;      
             break;
 
         default : break;
     }
 
     this->limitMassTransfer();
+
+    dmdt_.relax();
 }
 
 

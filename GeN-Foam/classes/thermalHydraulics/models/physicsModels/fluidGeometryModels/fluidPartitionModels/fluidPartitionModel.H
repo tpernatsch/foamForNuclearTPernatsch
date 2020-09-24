@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::structureVolumetricAreaPartitionModel
+    Foam::fluidPartitionModel
 
 Description
     Class to handle fluid-fluid and fluid-structure interfacial area.
@@ -31,13 +31,13 @@ Author
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
-    structureVolumetricAreaPartitionModel.C
+    fluidPartitionModel.C
     newDragModel.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef structureVolumetricAreaPartitionModel_H
-#define structureVolumetricAreaPartitionModel_H
+#ifndef fluidPartitionModel_H
+#define fluidPartitionModel_H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -51,10 +51,10 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-            Class structureVolumetricAreaPartitionModel Declaration
+            Class fluidPartitionModel Declaration
 \*---------------------------------------------------------------------------*/
 
-class structureVolumetricAreaPartitionModel
+class fluidPartitionModel
 :
     public IOdictionary
 {
@@ -62,68 +62,68 @@ protected:
 
     const fvMesh& mesh_;
 
-    const fluid& fluid1_;
+    const fluid& dispersed_;
 
-    const fluid& fluid2_;
+    const fluid& continuous_;
 
     const structureModel& structure_;
 
 public:
 
     //- Runtime type information
-    TypeName("structureVolumetricAreaPartitionModel");
+    TypeName("fluidPartitionModel");
 
     //- Declare runtime construction
         
         declareRunTimeSelectionTable
         (
             autoPtr,
-            structureVolumetricAreaPartitionModel,
-            structureVolumetricAreaPartitionModels,
+            fluidPartitionModel,
+            fluidPartitionModels,
             (
                 const objectRegistry& objReg,
                 const dictionary& dict,
-                const fluid& fluid1,
-                const fluid& fluid2,
+                const fluid& dispersed,
+                const fluid& continuous,
                 const structureModel& structure
             ),
-            (objReg, dict, fluid1, fluid2, structure)
+            (objReg, dict, dispersed, continuous, structure)
         );
 
     // Constructors
 
-        structureVolumetricAreaPartitionModel
+        fluidPartitionModel
         (
             const objectRegistry& objReg,
             const dictionary& dict,
-            const fluid& fluid1,
-            const fluid& fluid2,
+            const fluid& dispersed,
+            const fluid& continuous,
             const structureModel& structure
         );
 
         //- Destructor
-        virtual ~structureVolumetricAreaPartitionModel();
+        virtual ~fluidPartitionModel();
 
     // Selectors
 
-        static autoPtr<structureVolumetricAreaPartitionModel> New
+        static autoPtr<fluidPartitionModel> New
         (
             const objectRegistry& objReg,
             const dictionary& dict,
-            const fluid& fluid1,
-            const fluid& fluid2,
+            const fluid& dispersed,
+            const fluid& continuous,
             const structureModel& structure
         );
 
     // Member Functions
 
         //- Return fraction of structure interfacial area in
-        //  contact with fluid1
-        virtual tmp<volScalarField> frac1() const = 0;
+        //  contact with the dispersed fluid
+        virtual tmp<volScalarField> fracD() const = 0;
 
         //- Return fraction of structure interfacial area in
-        //  contact with fluid2
-        virtual tmp<volScalarField> frac2() const = 0;
+        //  contact with continuous fluid
+        virtual tmp<volScalarField> fracC() const = 0;
 
         // Access
 };

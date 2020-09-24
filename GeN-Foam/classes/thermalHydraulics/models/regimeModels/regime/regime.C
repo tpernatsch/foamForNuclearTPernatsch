@@ -278,7 +278,7 @@ void Foam::regime::correctDragModels()
             }
         }
 
-        //- Correct the twoPhaseMultiplier
+        //- Correct the twoPhaseMultiplier and apply it to Kd
         if (twoPhaseDragMultiplier_.valid())
         {
             twoPhaseDragMultiplier_->correct();
@@ -316,8 +316,19 @@ void Foam::regime::correctHeatTransferModels()
                 const heatTransferModel& heatTransferModel(iter2());
                 if (key == heatTransferModel.pairName()) 
                     heatTransferModel.correctHtc(htc);
+
+                //- Multiply by the fluid-structure contact fraction if this
+                //  is a two-phase simulation (fluidGeometry_ only valid in
+                //  two-phase and, obviously, fluid-structure htc models)
+                if 
+                (
+                    fluidGeometry_.valid() 
+                and heatTransferModel.nameInterface() == "structure"
+                )
+                {
+                    htc *= fluidGeometry_->fHtc(heatTransferModel.nameBulk());
+                }
             }
-            //htc.correctBoundaryConditions();
         }
     }
 }
@@ -424,8 +435,6 @@ const
 void Foam::regime::correctFluidGeometryFields
 (
     volScalarField& iA,
-    volScalarField& frac1,
-    volScalarField& frac2,
     fluid& fluid1,
     fluid& fluid2
 ) const
@@ -440,8 +449,6 @@ void Foam::regime::correctFluidGeometryFields
         const volScalarField& DhDispersedR(fluidGeometry_->DhDispersed());
         const volScalarField& DhStructureR(fluidGeometry_->DhStructure());
         const volScalarField& iAR(fluidGeometry_->iA());
-        const volScalarField& frac1R(fluidGeometry_->frac1());
-        const volScalarField& frac2R(fluidGeometry_->frac2());
         if (fluidGeometry_->nameDispersed() == fluid1.name())
         {
             forAll(cellList_, i)
@@ -451,8 +458,6 @@ void Foam::regime::correctFluidGeometryFields
                 Dh2[celli] = DhStructureR[celli];
                 dispersion1[celli] = 1.0;
                 iA[celli] = iAR[celli];
-                frac1[celli] = frac1R[celli];
-                frac2[celli] = frac2R[celli];
             }
         }
         else
@@ -464,8 +469,6 @@ void Foam::regime::correctFluidGeometryFields
                 Dh1[celli] = DhStructureR[celli];
                 dispersion2[celli] = 1.0;
                 iA[celli] = iAR[celli];
-                frac1[celli] = frac1R[celli];
-                frac2[celli] = frac2R[celli];
             }
         }
     }
@@ -483,15 +486,11 @@ void Foam::regime::correctFluidGeometryFields
             regime1_->fluidGeometry_->DhDispersed()
         );
         const volScalarField& iAR1(regime1_->fluidGeometry_->iA());
-        const volScalarField& frac1R1(regime1_->fluidGeometry_->frac1());
-        const volScalarField& frac2R1(regime1_->fluidGeometry_->frac2());
         const volScalarField& DhDispersedR2
         (
             regime2_->fluidGeometry_->DhDispersed()
         );
         const volScalarField& iAR2(regime2_->fluidGeometry_->iA());
-        const volScalarField& frac1R2(regime2_->fluidGeometry_->frac1());
-        const volScalarField& frac2R2(regime2_->fluidGeometry_->frac2());
         const volScalarField& DhStructure
         (
             regime1_->fluidGeometry_->DhStructure()
@@ -515,45 +514,6 @@ void Foam::regime::correctFluidGeometryFields
         (
             !fluid1DispersedInR2
         );
-        
-        /*
-        if (fluid1DispersedInR1)
-        {
-            forAll(cellList_, i)
-            {
-                label celli(cellList_[i]);
-                Dh1R1[i] = DhDispersedR1[celli];
-                Dh2R1[i] = DhStructure[celli];
-            }
-        }
-        else
-        {
-            forAll(cellList_, i)
-            {
-                label celli(cellList_[i]);
-                Dh2R1[i] = DhDispersedR1[celli];
-                Dh1R1[i] = DhStructure[celli];
-            }
-        }
-        if (fluid1DispersedInR2)
-        {
-            forAll(cellList_, i)
-            {
-                label celli(cellList_[i]);
-                Dh1R2[i] = DhDispersedR2[celli];
-                Dh2R2[i] = DhStructure[celli];
-            }
-        }
-        else
-        {
-            forAll(cellList_, i)
-            {
-                label celli(cellList_[i]);
-                Dh2R2[i] = DhDispersedR2[celli];
-                Dh1R2[i] = DhStructure[celli];
-            }
-        }
-        */
     
         forAll(cellList_, i)
         {
@@ -570,8 +530,6 @@ void Foam::regime::correctFluidGeometryFields
                 c1*((fluid2DispersedInR1) ? DhDispersedR1i : DhStructurei)
             +   c2*((fluid2DispersedInR2) ? DhDispersedR2i : DhStructurei);
             iA[celli] = c1*iAR1[celli] + c2*iAR2[celli];
-            frac1[celli] = c1*frac1R1[celli] + c2*frac1R2[celli];
-            frac2[celli] = c1*frac2R1[celli] + c2*frac2R2[celli];
             dispersion1[celli] = 
                 c1*(fluid1DispersedInR1) + c2*(fluid1DispersedInR2);
             dispersion2[celli] = 

@@ -21,8 +21,10 @@ surfaceScalarField alpharAUf
     fvc::interpolate(alpha*rAU)
 );
 
+bool convergedPISO(false);
+
 //- Pressure corrector loop
-while (pimple_.correct())
+while (pimple_.correct(convergedPISO))
 {
     this->correctContErr();
 
@@ -40,12 +42,6 @@ while (pimple_.correct())
 
     //- Construct flux due to explicit sources, namely buoyancy/gravity effects
     //  and the structure momentum source, if present
-    //- The first term here below is the gravity term. In case one wanted to 
-    //  implement a Boussinesq approximation, it should be enough to create
-    //  an additional non-dimensional field (normally called rhok) and 
-    //  equal to (1-Beta*DeltaT). One can then: 1) set the density as constant 
-    //  in the thermoPhysicalProperties; 2) multiply the rho by rhok in the 
-    //  term here below; 3) do not forget to pass to neutronics rho*rhok 
     surfaceScalarField phiSource
     (
         -alpharAUf*ghf_*fvc::snGrad(rho)*mesh_.magSf()
@@ -139,11 +135,14 @@ while (pimple_.correct())
             compressible ? getRefCellValue(p_rgh_, pRefCell_) : pRefValue_
         );
 
-        solve
-        (
-            pEqn,
-            mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
-        );
+        convergedPISO =
+            ( 
+                pEqn.solve
+                (
+                    mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
+                ).max().nIterations()
+            ==  0.0
+            );
 
         if (pimple_.finalNonOrthogonalIter())
         {
@@ -154,6 +153,7 @@ while (pimple_.correct())
             fluid_.dgdt() = -pEqnComp & p_rgh_;
 
             p_rgh_.relax();
+            
             U =  
                 HbyA 
             +   fvc::reconstruct

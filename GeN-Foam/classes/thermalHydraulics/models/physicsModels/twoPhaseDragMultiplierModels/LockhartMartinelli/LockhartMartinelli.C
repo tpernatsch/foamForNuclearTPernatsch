@@ -116,9 +116,10 @@ Foam::twoPhaseDragMultiplierModels::LockhartMartinelli::correct()
             dimensionedScalar("", dimless, 1e-3)
         );
 
-    phi2_ = 1.0 + C_/sqrt(X2_) + 1.0/X2_;
-
-    this->limitPhi2();
+    this->setPhi2
+    (
+        1.0 + C_/sqrt(X2_) + 1.0/X2_
+    );
 }
 
 
