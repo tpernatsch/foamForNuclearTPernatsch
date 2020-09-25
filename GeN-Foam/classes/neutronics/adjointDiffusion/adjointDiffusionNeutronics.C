@@ -91,7 +91,7 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
     (
         IOobject
         (
-            "defaultFlux",
+            "adjointDefaultFlux",
             mesh.time().timeName(),
             mesh,
             IOobject::MUST_READ,
@@ -103,7 +103,7 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
     (
         IOobject
         (
-            "defaultPrec",
+            "adjointDefaultPrec",
             mesh.time().timeName(),
             mesh,
             IOobject::READ_IF_PRESENT,
@@ -162,7 +162,7 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
-            IOobject::AUTO_WRITE
+            IOobject::NO_WRITE
         ),
         mesh,
         dimensionedScalar("", dimensionSet(0,-2,-1,0,0,0,0), 0.0),
@@ -176,7 +176,7 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
-            IOobject::AUTO_WRITE
+            IOobject::NO_WRITE
         ),
         mesh,
         dimensionedScalar("", dimensionSet(0,-2,-1,0,0,0,0), 0.0),
