@@ -1,0 +1,68 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+tutorials="1D_boiling 3D_SmallESFR 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange " #Godiva_SN
+touch regressionResults
+resFile="./regressionResults"
+
+# run all tutorials and check for clean finish 
+for tutorialName in $tutorials
+do
+
+    case "$tutorialName" in
+    "3D_SmallESFR")
+        printf "Running tutorial $tutorialName...\n"
+        cd $tutorialName
+        # source ./Allrun_parallel
+        cd ..
+        printf "Done running tutorial $tutorialName...\n"
+        # check that keff for esfr steady State is ~0.9370011
+        keff=$(foamDictionary $tutorialName/steadyState/processor0/constant/neutroRegion/reactorState -entry keff -value)
+        printf "keff is $keff . It should be 0.9369564  \n" >> $resFile
+        # check that power in esfr transient is ~8e08
+        ;;
+    "1D_boiling")
+        printf "Running tutorial $tutorialName...\n"
+        cd $tutorialName
+        # source ./Allrun
+        cd ..
+        printf "Done running tutorial $tutorialName...\n"
+        ;;
+    "2D_MSFR")
+        printf "Running tutorial $tutorialName...\n"
+        cd $tutorialName
+        # source ./Allrun
+        cd ..
+        printf "Done running tutorial $tutorialName...\n"
+        ;;
+    "2D_onePhaseAndPointKineticsCoupling")
+        printf "Running tutorial $tutorialName...\n"
+        cd $tutorialName
+        # source ./Allrun
+        cd ..
+        printf "Done running tutorial $tutorialName...\n"
+        ;;
+    "2D_voidMotionNoPhaseChange")
+        printf "Running tutorial $tutorialName...\n"
+        cd $tutorialName
+        # source ./Allrun
+        cd ..
+        printf "Done running tutorial $tutorialName...\n"
+        ;;
+    "Godiva_SN")
+        printf "Running tutorial $tutorialName...\n"
+        cd $tutorialName
+        # source ./Allrun_parallel
+        cd ..
+        printf "Done running tutorial $tutorialName...\n"
+        #check that keff in godiva is 0.980106
+        ;;
+    esac
+
+
+done
+
+
+# clean all
+
+#------------------------------------------------------------------------------
