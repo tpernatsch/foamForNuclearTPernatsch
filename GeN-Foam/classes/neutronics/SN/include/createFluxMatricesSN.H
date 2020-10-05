@@ -1,5 +1,5 @@
 
-List<PtrList<fvMatrixExt<scalar> > > neutroEqList(xs_.energyGroups());
+List<PtrList<fvMatrix<scalar> > > neutroEqList(xs_.energyGroups());
 
 forAll(neutroEqList, energyI)
 {
@@ -9,7 +9,7 @@ forAll(neutroEqList, energyI)
         neutroEqList[energyI].set
         (
             directionI,
-            new fvMatrixExt<scalar>
+            new fvMatrix<scalar>
             (
                 fvm::ddt((1-eigenvalueNeutronics_)*IV[energyI],angularFlux_[energyI][directionI])
                         + fvm::div(facePhis_[directionI], angularFlux_[energyI][directionI],"div(facePhi_,angularFlux_)")

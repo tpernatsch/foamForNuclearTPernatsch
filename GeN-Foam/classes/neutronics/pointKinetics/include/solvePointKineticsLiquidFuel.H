@@ -81,7 +81,7 @@ do
         +   fvm::div(phiPtr_(), precPKStar_[precI], "div(phi_,precStar_)")
         -   fvm::laplacian(diffCoeffPrecPtr_(), precPKStar_[precI])                
         );
-        scalar initRes = precEq.solve().max().initialResidual();;
+        scalar initRes = precEq.solve().max().initialResidual();
         neutroResidual = max(neutroResidual,initRes);            
         
         //- Conver to precs per total volume

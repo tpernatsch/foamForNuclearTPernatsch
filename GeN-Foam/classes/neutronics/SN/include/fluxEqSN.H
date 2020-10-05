@@ -31,7 +31,7 @@ forAll(flux_,energyI)
                 extraSources[directionI]
                 + intraSources[directionI]
                 + delayedNeutroSource_*chiDelayed[energyI]
-            ).initialResidual();
+            ).max().initialResidual();
             innerResidual = max(innerResidual, localResidual);
             neutroResidual = max(neutroResidual, localResidual);
             //if(eigenvalueNeutronics_) angularFlux_[energyI][directionI] = max(angularFlux_[energyI][directionI],(angularFlux_[energyI][directionI]*0.0));
