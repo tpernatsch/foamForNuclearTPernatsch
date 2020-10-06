@@ -17,7 +17,16 @@ FoamFile
 // Same as standard OpenFOAM. porousKEpsilon is provided as additional model.
 // The only difference is that it forces k and epsilon to equilibrium values
 // inside the porous zones. These equilibium values can be set in the
-// porousKepsionProperties sub-dictionary here below
+// porousKepsionProperties sub-dictionary here below.
+// Please notice that a porous medium simulation using the porousKEpsilon 
+// model entails the risk of an unstable solution. This is due to the fact 
+// that the turbulent viscosity will be that of the sub-scale structure, and 
+// thus not enough to stabilize a solution on the length scale of the coarse 
+// mesh. To address this problem, one can define the keyword DhStruct in 
+// constant/fluidRegion/phaseProperties/dragModels.(nameOfPhase).structure.
+// (nameOfCellZones). This keyword defines the hydraulic diameter of the whole
+// porous structure. The code uses it to make sure the turbulent viscosity 
+// results in a  laminar Reynolds number (defaulted to 500).
 
 simulationType laminar; //RAS
 
