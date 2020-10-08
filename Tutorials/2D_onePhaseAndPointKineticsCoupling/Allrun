@@ -64,15 +64,24 @@ do
     case "$caseName" in
     "steadyState")
         setSteadyState rootCase $caseName
+        printf "Running $exe on $caseName\n"
+        cd $caseName
+        $exe | tee "log.GeN-Foam"
+        cd ..
         ;;
     "transientNoDriveline")
         setTransientNoDriveline steadyState $caseName
+        cd $caseName
+        $exe | tee "log.GeN-Foam"
+        cd ..
         ;;
     "transientWithDriveline")
         setTransientWithDriveline steadyState $caseName
+        cd $caseName
+        $exe | tee "log.GeN-Foam"
+        cd ..
         ;;
     esac
 
     printf "Running $exe on $caseName\n"
-    $exe -case $caseName | tee "$caseName.log"
 done
