@@ -75,25 +75,6 @@ public:
 
 private:
 
-    //- Additional, temporary fields for the solver
-
-        //- Darcy velocity which is the 
-        autoPtr<volVectorField> UDarcy_;
-
-        //- Continuous Darcy flux 
-        autoPtr<surfaceScalarField> phiDarcy_;
-
-        //- The temperature correction term for the Boussinesq approximation
-        autoPtr<volScalarField> rhok_;
-
-    //- Additional dimensioned constants for the Boussinesq approximation
-
-        //- Reference temperature
-        autoPtr<dimensionedScalar> Tref_;
-
-        //- Thermal expansion coefficient
-        autoPtr<dimensionedScalar> beta_;
-
     //- Phases
 
         //- Structure
@@ -123,6 +104,32 @@ private:
 
     //- Container for the cumulative continuity error
         scalar cumulativeContErr_;
+
+    //- Member variable that contains the compressibility indicator
+        bool compressible_;
+
+    //- Additional, temporary fields for the solver
+
+        //- Darcy velocity which is the 
+        autoPtr<volVectorField> UDarcy_;
+
+        //- Continuous Darcy flux 
+        autoPtr<surfaceScalarField> phiDarcy_;
+
+        //- A field that contains a fixed density throughout 
+        //- the iteration.
+        volScalarField fixedRho_;
+
+        //- The temperature correction term for the Boussinesq approximation
+        volScalarField rhok_;
+
+    //- Additional dimensioned constants for the Boussinesq approximation
+
+        //- Reference temperature
+        autoPtr<dimensionedScalar> Tref_;
+
+        //- Thermal expansion coefficient
+        autoPtr<dimensionedScalar> beta_;
 
 public:
 

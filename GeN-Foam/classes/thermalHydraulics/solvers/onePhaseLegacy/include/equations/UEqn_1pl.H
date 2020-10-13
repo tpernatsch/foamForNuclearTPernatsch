@@ -1,9 +1,7 @@
 //- Field refs
 const volScalarField& alpha(fluid_);
+const volScalarField& psi(fluid_.thermo().psi());
 
-volScalarField& rho(fluid_.thermo().rho());
-volScalarField& rhok(rhok_());
-volScalarField& p_rgh(p_rgh_);
 volVectorField& UDarcy(UDarcy_());
 volVectorField& U(fluid_.U());
 surfaceScalarField& phiDarcy(phiDarcy_());
@@ -47,14 +45,14 @@ volTensorField nuEff
 
 UEqn = 
 (
-        fvm::ddt(rho, UDarcy)
+        fvm::ddt(fixedRho_, UDarcy)
     +   (1/alpha)*fvm::div(phiDarcy, UDarcy, "div(phiDarcy,UDarcy)")
         //- The following is just a re-arrangement of div(nu*grad(U))
     +   (
-            -   fvm::laplacian(rho*nuEff, UDarcy)
+            -   fvm::laplacian(fixedRho_*nuEff, UDarcy)
             -   fvc::div
                 (
-                    rho*nuEff&dev2(T(fvc::grad(UDarcy))), 
+                    fixedRho_*nuEff&dev2(T(fvc::grad(UDarcy))), 
                     "div(RhoPhiNu,UDarcy)"
                 )
         )
@@ -64,15 +62,13 @@ UEqn =
     ==
     (
         structure_.momentumSourcePtr().valid() ? 
-        (structure_.momentumSource() + fvOptions_(rho, UDarcy)) :
-        fvOptions_(rho, UDarcy)
+        (structure_.momentumSource() + fvOptions_(fixedRho_, UDarcy)) :
+        fvOptions_(fixedRho_, UDarcy)
     )
 );
 
 UEqn.relax();
 fvOptions_.constrain(UEqn);
-
-Info << "Solve the Darcy Momentum equation" << nl << endl;
 
 solve
 (
@@ -81,8 +77,8 @@ solve
     alpha*fvc::reconstruct
     (
         (
-          - ghf_*fvc::snGrad(rho*rhok)
-          - fvc::snGrad(p_rgh)
+          - ghf_*fvc::snGrad(fixedRho_*rhok_)
+          - fvc::snGrad(p_rgh_)
         )*mesh_.magSf()
     ),
     mesh_.solver(UDarcy.select(pimple_.finalInnerIter()))

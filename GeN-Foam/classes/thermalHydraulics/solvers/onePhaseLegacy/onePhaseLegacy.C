@@ -93,12 +93,33 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
             this->subDict("regimeMapModel"),
             this->subDict("physicsModelsByRegime")
         )
+    ),
+    fixedRho_(fluid_.thermo().rho()),
+    rhok_
+    (
+        volScalarField
+        (
+            IOobject
+            (
+                "rhok",
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::READ_IF_PRESENT,
+                IOobject::NO_WRITE
+            ),
+            mesh_,
+            dimensionedScalar("", dimless, 1.0),
+            zeroGradientFvPatchScalarField::typeName
+        )
     )
 {
+    fixedRho_.correctBoundaryConditions();
+    rhok_.correctBoundaryConditions();
 
     //- Checking if heRhoThermo has the correct equationOfState for the 
     //- current solver
-    if(fluid_.thermo().thermoName().find("rhoConst") == Foam::word::npos)
+    dictionary thermoDict = fluid_.thermo().subDict("thermoType");
+    if(word(thermoDict.lookup("equationOfState")) != "rhoConst")
     {
         Foam::error e("The equation of state is not rhoConst (constant density)! "
                       "The selected thermo-hydraulics solver is compatible "
@@ -139,7 +160,6 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     fluid_.volScalarField::operator=(1.0-structure_);
 
     //- Setting up the initial Darcy velocity and flux
-
     UDarcy_.set
     (
         new volVectorField
@@ -156,7 +176,7 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
         )
     );
 
-    //- MAking sure that the division of boundary conditions does not result in 
+    //- Making sure that the division of boundary conditions does not result in 
     //- a "calculated" boundary field. So we set the same boundary conditions as 
     //- the ones given for the real velocity. Exceptions are wedge and empty BCs, 
     //- because those are not touched.
@@ -201,24 +221,17 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
         )
     );
 
-    //- Creating or reading rhok field for Boussinesq approximation
-    rhok_.set
-    (
-        new volScalarField
-        (
-            IOobject
-            (
-                "rhok",
-                mesh_.time().timeName(),
-                mesh_,
-                IOobject::READ_IF_PRESENT,
-                IOobject::NO_WRITE
-            ),
-            mesh_,
-            dimensionedScalar("", dimless, 1.0),
-            zeroGradientFvPatchScalarField::typeName
-        )
-    );
+    //- Checking if the fluid is compressible or not
+    dimensionedScalar compressibility(fvc::domainIntegrate(fluid_.thermo().psi()));
+    dimensionedScalar VTot("", dimVol, gSum(mesh_.V()));
+    compressible_ = (compressibility.value()/VTot.value() >= 1e-10);
+
+    //- Calculating rhok value for boussinesq approximation if incompressible flow
+    if(!compressible_)
+    {
+        rhok_ = 1.0 - beta_()*(fluid_.thermo().T() - Tref_());
+        rhok_.correctBoundaryConditions();
+    }
 
     //- Set fluid characteristic dimension to structure hydraulic diameter.
     //  This is handled by the fluidGeometry class in the twoPhase solver
@@ -459,14 +472,12 @@ void Foam::thermalHydraulicModels::onePhaseLegacy::correctCourant()
 }
 
 void Foam::thermalHydraulicModels::onePhaseLegacy::correctContErr()
-{
-    volScalarField& rho(fluid_.thermo().rho());
-    
+{  
     fluid_.contErr() = 
     (
-            fvc::ddt(fluid_, rho)
+            fvc::ddt(fluid_, fixedRho_)
         +   fvc::div(phiDarcy_())
-        -   (fvOptions_(fluid_, rho) & rho)
+        -   (fvOptions_(fluid_, fixedRho_) & fixedRho_)
     );
     fluid_.contErr().correctBoundaryConditions();
 }

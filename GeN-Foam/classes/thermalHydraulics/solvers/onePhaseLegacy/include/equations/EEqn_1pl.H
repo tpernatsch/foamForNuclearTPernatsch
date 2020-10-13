@@ -4,8 +4,9 @@
     volScalarField& he(fluid_.thermo().he());
     volScalarField& T(fluid_.thermo().T());
     const volVectorField& U(fluid_.U());
-    const volScalarField& contErr(fluid_.contErr());
-    volScalarField& rho(fluid_.thermo().rho());
+    const volVectorField& UDarcy(UDarcy_());
+    const surfaceScalarField& phiDarcy(phiDarcy_());
+    volScalarField rho(fluid_.thermo().rho());
     tmp<volScalarField> cp(fluid_.thermo().Cp());
 
     //- Kinetic energy per unit volume
@@ -20,22 +21,25 @@
     //- Energy equations
     fvScalarMatrix EEqn
     (
-            fvm::ddt(alpha, rho, he) 
-        +   fvm::div(fluid_.alphaRhoPhi(), he, "div(alphaRhoPhi,he)")
-        -   fvm::Sp(contErr, he)
-        // +   fvc::ddt(alpha, rho, K) 
-        // +   fvc::div(fluid_.alphaRhoPhi(), K, "div(alphaRhoPhi,K)")
-        // -   contErr*K
-        // +   alpha*dpdt_
+            fvm::ddt(alpha, rho, he) + fvm::div(phiDarcy, he, "div(phiDarcy,he)")
+        +   fvc::ddt(alpha, rho, K) + fvc::div(phiDarcy, K, "div(phiDarcy,K)")
+        +   (
+                he.name() == "e"
+                ?   fvc::div
+                    (
+                        fvc::absolute(phiDarcy/fvc::interpolate(rho), UDarcy),
+                        p_,
+                        "div(phiv,p)"
+                    )
+                :   -dpdt_
+            )
         -   fvm::laplacian
             (
-                fvc::interpolate(alpha)
-                *fvc::interpolate(alphaEff),
+                fvc::interpolate(alpha*alphaEff),
                 he
             )
         ==  
-        //    alpha*rho*(U&g_) 
-        /*+*/   fvOptions_(alpha, rho, he)
+        fvOptions_(alpha, rho, he)
     );
 
     //- Structure heat sources
