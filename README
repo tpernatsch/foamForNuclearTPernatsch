@@ -20,6 +20,8 @@ GeN-Foam is built as a standard OpenFOAM solver, based on the www.openfoam.com d
 from the GeN-Foam source code folder.
 Please notice that a new version of OpenFOAM is released twice a year. It may take a few weeks for the developers to update GeN-Foam to a new version.
 
+N.B.: GeN-Foam is a code for advanced users, requiring a good familiarity with OpenFOAM and a solid back-ground in multi-physics nuclear applications, with particular regards to CFD.  On the other hand, it is a powerful tool that allows modeling irregular geometries and particularly complex phenomena. It has been profitably used to model non-traditional reactors (viz., Molten Salt Reactor types), non-traditional geometries (viz., experimental reactors), and complex multi-physics phenomena (such as sodium flow through assembly windows and core thermal deformation in Sodium Fast Reactors).
+
 References
 [1] Weller, H.G., Tabor, G., Jasak, H., Fureby, C., 1998. A Tensorial Approach to Computational Continuum Mechanics Using Object-Oriented Techniques. Computers in Physics 12, 620-631.
 [2] https://www.openfoam.com/
