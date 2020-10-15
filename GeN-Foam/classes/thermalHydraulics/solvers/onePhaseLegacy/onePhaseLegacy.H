@@ -105,9 +105,6 @@ private:
     //- Container for the cumulative continuity error
         scalar cumulativeContErr_;
 
-    //- Member variable that contains the compressibility indicator
-        bool compressible_;
-
     //- Additional, temporary fields for the solver
 
         //- Darcy velocity which is the 
@@ -117,7 +114,8 @@ private:
         autoPtr<surfaceScalarField> phiDarcy_;
 
         //- A field that contains a fixed density throughout 
-        //- the iteration.
+        //- the iteration. In other words, this is a temporary container 
+        //- for the current density. 
         volScalarField fixedRho_;
 
         //- The temperature correction term for the Boussinesq approximation
@@ -130,6 +128,13 @@ private:
 
         //- Thermal expansion coefficient
         autoPtr<dimensionedScalar> beta_;
+
+    //- Member variable that contains the compressibility indicator
+
+        //- User defined (in phaseDict) switch to use incompressible treatment 
+        //- with Boussinesq approximation. If true, the equation of state must be 
+        //- rhoConst
+        bool incompressibleTreatment_;
 
 public:
 

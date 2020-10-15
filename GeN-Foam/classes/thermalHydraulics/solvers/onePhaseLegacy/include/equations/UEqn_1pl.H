@@ -24,6 +24,7 @@ volTensorField Kds
     ),
     zeroGradientFvPatchScalarField::typeName
 );
+Kds = Kds/alpha;
 Kds.correctBoundaryConditions();
 
 /*
@@ -58,7 +59,7 @@ UEqn =
         )
         //- Implicit diagonal contribution of fluid-structure drag, 
         //  explicit off-diagonal contribution
-    +   fvm::Sp((1.0/3.0)*tr(Kds)/alpha, UDarcy) + (dev(Kds/alpha)&UDarcy)
+    +   fvm::Sp((1.0/3.0)*tr(Kds), UDarcy) + (dev(Kds) & UDarcy)
     ==
     (
         structure_.momentumSourcePtr().valid() ? 

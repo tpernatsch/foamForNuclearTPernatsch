@@ -116,14 +116,26 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     fixedRho_.correctBoundaryConditions();
     rhok_.correctBoundaryConditions();
 
+    //- checking if the incompressible treatment is activated. In that case 
+    //- the solver becomes a porous version of buoyantBoussinesqPIMPLFoam.
+    //- If this is activated, the only equation of state accepted is 
+    //- rhoConst.
+    dictionary phaseDict = fluid_.dict();
+    bool incompressibleTreatment_ = phaseDict.lookupOrDefault<bool>
+    (
+        "incompressibleBuoyantBoussinesqTreatment", 
+        false
+    );
+
     //- Checking if heRhoThermo has the correct equationOfState for the 
-    //- current solver
+    //- current solver.
     dictionary thermoDict = fluid_.thermo().subDict("thermoType");
-    if(word(thermoDict.lookup("equationOfState")) != "rhoConst")
+    if(incompressibleTreatment_ 
+       and word(thermoDict.lookup("equationOfState")) != "rhoConst")
     {
         Foam::error e("The equation of state is not rhoConst (constant density)! "
-                      "The selected thermo-hydraulics solver is compatible "
-                      "with rhoConst only!");
+                      "If 'incompressibleBuoyantBoussinesqTreatment' is activated,"
+                      "one is only allowed to use rhoConst!");
         e.exit(100);
     }
 
@@ -159,75 +171,8 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     //- Normalize phase fraction fields, structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
 
-    //- Setting up the initial Darcy velocity and flux
-    UDarcy_.set
-    (
-        new volVectorField
-        (
-            IOobject
-            (
-                "UDarcy",
-                mesh_.time().timeName(),
-                mesh_,
-                IOobject::NO_READ,
-                IOobject::AUTO_WRITE
-            ),
-            fluid_.U()*fluid_
-        )
-    );
-
-    //- Making sure that the division of boundary conditions does not result in 
-    //- a "calculated" boundary field. So we set the same boundary conditions as 
-    //- the ones given for the real velocity. Exceptions are wedge and empty BCs, 
-    //- because those are not touched.
-
-    forAll(fluid_.U().boundaryField(), bcInd)
-    {
-        if(fluid_.U().boundaryField()[bcInd].type() == "empty" or
-           fluid_.U().boundaryField()[bcInd].type() == "wedge")
-        {
-            Info << "Skipping boundary type assignment for UDarcy" 
-                 << "because it is empty/wedge." << endl;
-            continue;
-        }
-
-        word bcType = fluid_.U().boundaryField()[bcInd].type();
-
-        UDarcy_().boundaryFieldRef().set
-        (
-            bcInd, 
-            fvPatchField<vector>::New
-            (
-                bcType,
-                mesh_.boundary()[bcInd], 
-                UDarcy_()
-            )
-        );
-    }
-
-    phiDarcy_.set
-    (
-        new surfaceScalarField
-        (
-            IOobject
-            (
-                "phiDarcy",
-                mesh_.time().timeName(),
-                mesh_,
-                IOobject::NO_READ,
-                IOobject::NO_WRITE
-            ),
-            fvc::interpolate(fluid_.thermo().rho()*UDarcy_()) & mesh_.Sf()
-        )
-    );
-
-    //- Checking if the fluid is compressible or not
-    dimensionedScalar compressibility(fvc::domainIntegrate(fluid_.thermo().psi()));
-    dimensionedScalar VTot("", dimVol, gSum(mesh_.V()));
-    compressible_ = (compressibility.value()/VTot.value() >= 1e-10);
-
     //- Calculating rhok value for boussinesq approximation if incompressible flow
-    if(!compressible_)
+    if(incompressibleTreatment_)
     {
         rhok_ = 1.0 - beta_()*(fluid_.thermo().T() - Tref_());
         rhok_.correctBoundaryConditions();
@@ -247,10 +192,6 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     //  step to ensure consistency. This step has an effect ONLY IF the
     //  alphaPhi, alphaRhoPhi fields were NOT found on disk
     fluid_.initAlphaPhis();
-
-    //- Initialize continuity errors. It's important to do it here or, if not
-    //  solving for fluidMechanics, these would never get corrected
-    correctContErr();
 
     //- The total volumetric flux is the REAL fluid volumetric flux. Might
     //  as well remove phi_ entirely as a field, I know... Maybe in the future
@@ -327,6 +268,73 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
 
     //- Compute initialFluidMass
     initialFluidMass_ = fvc::domainIntegrate(fluid_.thermo().rho()*fluid_);
+
+    //- Setting up the initial Darcy velocity and flux
+    UDarcy_.set
+    (
+        new volVectorField
+        (
+            IOobject
+            (
+                "UDarcy",
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::AUTO_WRITE
+            ),
+            fluid_.U()*fluid_
+        )
+    );
+
+    //- Making sure that the division of boundary conditions does not result in 
+    //- a "calculated" boundary field. So we set the same boundary conditions as 
+    //- the ones given for the real velocity. Exceptions are wedge and empty BCs, 
+    //- because those are not touched.
+
+    forAll(fluid_.U().boundaryField(), bcInd)
+    {
+        if(fluid_.U().boundaryField()[bcInd].type() == "empty" or
+           fluid_.U().boundaryField()[bcInd].type() == "wedge")
+        {
+            Info << "Skipping boundary type assignment for UDarcy" 
+                 << "because it is empty/wedge." << endl;
+            continue;
+        }
+
+        word bcType = fluid_.U().boundaryField()[bcInd].type();
+
+        UDarcy_().boundaryFieldRef().set
+        (
+            bcInd, 
+            fvPatchField<vector>::New
+            (
+                bcType,
+                mesh_.boundary()[bcInd], 
+                UDarcy_()
+            )
+        );
+    }
+    UDarcy_().correctBoundaryConditions();
+
+    phiDarcy_.set
+    (
+        new surfaceScalarField
+        (
+            IOobject
+            (
+                "phiDarcy",
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            fvc::interpolate(fluid_.thermo().rho()*UDarcy_()) & mesh_.Sf()
+        )
+    );
+
+    //- Initialize continuity errors. It's important to do it here or, if not
+    //  solving for fluidMechanics, these would never get corrected
+    correctContErr();
 
     Info << endl;
 }
@@ -459,7 +467,7 @@ void Foam::thermalHydraulicModels::onePhaseLegacy::correctCourant()
 
     scalarField sumPhi
     (
-        fvc::surfaceSum(mag(phi_))().primitiveField()/fluid_.primitiveField()
+        fvc::surfaceSum(mag(phiDarcy_()))().primitiveField()/fluid_.primitiveField()
     );
 
     CoNum_ = 0.5*gMax(sumPhi/mesh_.V().field())*runTime_.deltaTValue();

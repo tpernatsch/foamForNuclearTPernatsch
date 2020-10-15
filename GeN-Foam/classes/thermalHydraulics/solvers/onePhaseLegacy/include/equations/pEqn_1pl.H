@@ -2,17 +2,17 @@
 //- Compute the total volume here
 dimensionedScalar VTot("", dimVol, gSum(mesh_.V()));
 
+//- Check if the density depends on the pressure
+dimensionedScalar compressibility(fvc::domainIntegrate(psi));
+bool compressible = (compressibility.value()/VTot.value() >= 1e-10);
+
 //- Construct 1/A field and interpolate to faces
 volScalarField rAU("rAUDarcy", 1.0/UEqn.A());
 
 //- Pressure corrector loop.
 while (pimple_.correct())
 {
-    //- Check if compressible
-    dimensionedScalar compressibility(fvc::domainIntegrate(psi));
-    compressible_ = (compressibility.value()/VTot.value() >= 1e-10);
-
-    if(compressible_)
+    if(!incompressibleTreatment_)
     {
         fixedRho_ = fluid_.thermo().rho();
     }
@@ -43,7 +43,7 @@ while (pimple_.correct())
 
     fvScalarMatrix p_rghDDtEqn
     (
-        (compressible_)*(fvc::ddt(alpha,fixedRho_) + psi*correction(fvm::ddt(alpha,p_rgh_)))
+        (incompressibleTreatment_)*(fvc::ddt(alpha,fixedRho_) + psi*correction(fvm::ddt(alpha,p_rgh_)))
         + fvc::div(phiHbyA)
     );
 
@@ -62,7 +62,7 @@ while (pimple_.correct())
         pEqn.setReference
         (
             pRefCell_, 
-            compressible_ ? getRefCellValue(p_rgh_, pRefCell_) : pRefValue_
+            !incompressibleTreatment_ ? getRefCellValue(p_rgh_, pRefCell_) : pRefValue_
         );
 
         solve
@@ -92,20 +92,22 @@ while (pimple_.correct())
     //- Update and limit the static pressure
     p_ = max(p_rgh_ + fixedRho_*rhok_*gh_, pMin_);
 
-    if(compressible_)
+    if(!incompressibleTreatment_)
     {
         //- Update densities from change in p_rgh
         fluid_.thermo().rho() += psi*(p_rgh_ - p_rgh_0);
 
-        dpdt_ = fvc::ddt(p_);
+        dpdt_ = fvc::ddt(alpha,p_);
 
         solve(fvm::ddt(alpha,fixedRho_) + fvc::div(phiDarcy));
         
-        if(p_rgh_.needReference() && pimple_.corrPISO() == pimple_.nCorrPISO())
+        if(p_rgh_.needReference()
+           and pimple_.corrPISO() == pimple_.nCorrPISO() 
+           and compressible)
         {
             dimensionedScalar deltaMass
             (
-                initialFluidMass_ - fvc::domainIntegrate(fluid_.thermo().rho()*fluid_)
+                initialFluidMass_ - fvc::domainIntegrate(alpha*fluid_.thermo().rho())
             );
 
             Info<< "Compressibile relative mass defect = " 
@@ -123,18 +125,21 @@ while (pimple_.correct())
     p_rgh_ = p_ - fixedRho_*rhok_*gh_;
     p_rgh_.correctBoundaryConditions();
 
-    if(compressible_)
+    //- Computing continuity errors. If the incompressible treatment is chosen 
+    //- the error is the residual in the continuity equation. Otherwise it is 
+    //- the deviation between the predicted and computed fluid masses.
+    if(!incompressibleTreatment_)
     {
-        dimensionedScalar totalMass = fvc::domainIntegrate(fixedRho_);
+        dimensionedScalar totalMass = fvc::domainIntegrate(alpha*fixedRho_);
 
         scalar sumLocalContErr =
         (
-            fvc::domainIntegrate(mag(fixedRho_ - fluid_.thermo().rho()))/totalMass
+            fvc::domainIntegrate(alpha*mag(fixedRho_ - fluid_.thermo().rho()))/totalMass
         ).value();
     
         scalar globalContErr =
         (
-            fvc::domainIntegrate(fixedRho_ - fluid_.thermo().rho())/totalMass
+            fvc::domainIntegrate(alpha*(fixedRho_ - fluid_.thermo().rho()))/totalMass
         ).value();
     
         cumulativeContErr_ += globalContErr;
