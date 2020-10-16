@@ -69,6 +69,11 @@
     fvOptions_.correct(he);
     fluid_.thermo().correct();
 
+    if(incompressibleTreatment_)
+    {
+        rhok_ = 1.0 - beta_()*(fluid_.thermo().T()-Tref_());
+    }
+
     Info<< "T (avg min max) = "
         << T.weightedAverage(mesh_.V()).value()
         << " " << min(T).value()
