@@ -90,10 +90,4 @@ U.correctBoundaryConditions();
 
 fvOptions_.correct(UDarcy);
 
-if(runTime_.outputTime())
-{
-    volVectorField implicitMomentumSource("implicitMomentumSource", -Kds & U);
-    implicitMomentumSource.write();
-}
-
 
