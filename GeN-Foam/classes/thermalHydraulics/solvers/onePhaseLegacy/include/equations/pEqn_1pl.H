@@ -1,6 +1,7 @@
 
 //- Compute the total volume here
 dimensionedScalar VTot("", dimVol, gSum(mesh_.V()));
+surfaceScalarField alphaf(fvc::interpolate(alpha));
 
 //- Check if the density depends on the pressure
 dimensionedScalar compressibility(fvc::domainIntegrate(psi));
@@ -12,6 +13,8 @@ volScalarField rAU("rAUDarcy", 1.0/UEqn.A());
 //- Pressure corrector loop.
 while (pimple_.correct())
 {
+    this->correctContErr();
+    
     if(!incompressibleTreatment_)
     {
         fixedRho_ = fluid_.thermo().rho();
@@ -74,6 +77,15 @@ while (pimple_.correct())
         if (pimple_.finalNonOrthogonalIter())
         {
             phiDarcy = phiHbyA + pEqn.flux();
+
+            //- The following fields are updated because they provide the 
+            //- coupling to the turbulence model and other sub-solvers.
+
+            fluid_.alphaRhoPhi() = phiDarcy;
+            fluid_.alphaPhi() = fluid_.alphaRhoPhi()/fvc::interpolate(fixedRho_);
+            fluid_.phi() = fluid_.alphaPhi() /alphaf;
+
+            p_rgh_.relax();
 
             UDarcy = HbyA + rAU*alpha*fvc::reconstruct((phig + pEqn.flux())/alphaRhorAUf);
 

@@ -36,6 +36,15 @@ Info<< "Kds (avg min max) = "
         << " kg/m3/s" << endl;
 */
 
+//- Resetting rho to the reference value in case of incompressible 
+//- Boussinesq flow. It is important, because otherwise the 
+//- turbulence module would use a temperature corrected density, 
+//- which we do not want.
+if(incompressibleTreatment_)
+{
+    fluid_.thermo().rho() = fixedRho_;
+    fluid_.thermo().rho().correctBoundaryConditions();
+}
 fluid_.turbulence().correct();
 
 volTensorField nuEff
@@ -48,6 +57,7 @@ UEqn =
 (
         fvm::ddt(fixedRho_, UDarcy)
     +   (1/alpha)*fvm::div(phiDarcy, UDarcy, "div(phiDarcy,UDarcy)")
+    -   (1/alpha)*fvm::SuSp(fluid_.contErr(), UDarcy)
         //- The following is just a re-arrangement of div(nu*grad(U))
     +   (
             -   fvm::laplacian(fixedRho_*nuEff, UDarcy)

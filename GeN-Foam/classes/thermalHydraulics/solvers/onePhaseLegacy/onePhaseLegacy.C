@@ -121,10 +121,12 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     //- If this is activated, the only equation of state accepted is 
     //- rhoConst.
     dictionary phaseDict = fluid_.dict();
-    bool incompressibleTreatment_ = phaseDict.lookupOrDefault<bool>
+    incompressibleTreatment_ = bool
     (
-        "incompressibleBuoyantBoussinesqTreatment", 
-        false
+    	phaseDict.lookup
+    	(
+        	"incompressibleBuoyantBoussinesqTreatment"
+    	)
     );
 
     //- Checking if heRhoThermo has the correct equationOfState for the 
@@ -171,11 +173,15 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     //- Normalize phase fraction fields, structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
 
-    //- Calculating rhok value for boussinesq approximation if incompressible flow
+    //- Calculating rhok value for boussinesq approximation if incompressible flow.
+    //- also, update thermo.tho() to make sure the neutronics solver has access to 
+    //- the density feedback.
     if(incompressibleTreatment_)
     {
         rhok_ = 1.0 - beta_()*(fluid_.thermo().T() - Tref_());
         rhok_.correctBoundaryConditions();
+        fluid_.thermo().rho() = fixedRho_*rhok_;
+        fluid_.thermo().rho().correctBoundaryConditions();
     }
 
     //- Set fluid characteristic dimension to structure hydraulic diameter.
@@ -303,18 +309,23 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
 
         word bcType = fluid_.U().boundaryField()[bcInd].type();
 
+        const fvPatchField<vector> originalPatch(UDarcy_().boundaryField()[bcInd]);
+
         UDarcy_().boundaryFieldRef().set
         (
             bcInd, 
             fvPatchField<vector>::New
             (
                 bcType,
-                mesh_.boundary()[bcInd], 
+                UDarcy_().mesh().boundary()[bcInd], 
                 UDarcy_()
             )
         );
+
+        UDarcy_().boundaryFieldRef()[bcInd] = originalPatch;
     }
     UDarcy_().correctBoundaryConditions();
+    UDarcy_().write();
 
     phiDarcy_.set
     (
@@ -328,7 +339,7 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
                 IOobject::NO_READ,
                 IOobject::NO_WRITE
             ),
-            fvc::interpolate(fluid_.thermo().rho()*UDarcy_()) & mesh_.Sf()
+            fvc::interpolate(fixedRho_)*fvc::interpolate(fluid_)*fluid_.phi()
         )
     );
 
@@ -360,7 +371,6 @@ void Foam::thermalHydraulicModels::onePhaseLegacy::correct
     {
         correctEnergy(residual);
     }
-
     Info << endl;
 }
 
@@ -467,7 +477,7 @@ void Foam::thermalHydraulicModels::onePhaseLegacy::correctCourant()
 
     scalarField sumPhi
     (
-        fvc::surfaceSum(mag(phiDarcy_()))().primitiveField()/fluid_.primitiveField()
+        fvc::surfaceSum(mag(fvc::interpolate(UDarcy_()) & mesh_.Sf()))().primitiveField()/fluid_.primitiveField()
     );
 
     CoNum_ = 0.5*gMax(sumPhi/mesh_.V().field())*runTime_.deltaTValue();
@@ -480,14 +490,27 @@ void Foam::thermalHydraulicModels::onePhaseLegacy::correctCourant()
 }
 
 void Foam::thermalHydraulicModels::onePhaseLegacy::correctContErr()
-{  
-    fluid_.contErr() = 
-    (
-            fvc::ddt(fluid_, fixedRho_)
-        +   fvc::div(phiDarcy_())
-        -   (fvOptions_(fluid_, fixedRho_) & fixedRho_)
-    );
-    fluid_.contErr().correctBoundaryConditions();
+{
+	if(incompressibleTreatment_)
+	{
+		fluid_.contErr() = 
+    	(
+    	    fvc::div(phiDarcy_())
+    	);
+    	fluid_.contErr().correctBoundaryConditions();
+	}
+	else
+	{
+		volScalarField& rho(fluid_.thermo().rho());
+		fluid_.contErr() = 
+    	(
+    	        fvc::ddt(fluid_, rho)
+    	    +   fvc::div(phiDarcy_())
+    	    -   (fvOptions_(fluid_, fixedRho_) & rho)
+    	);
+    	fluid_.contErr().correctBoundaryConditions();
+	}  
+    
 }
 
 

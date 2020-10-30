@@ -6,6 +6,7 @@
     const volVectorField& U(fluid_.U());
     const volVectorField& UDarcy(UDarcy_());
     const surfaceScalarField& phiDarcy(phiDarcy_());
+    const volScalarField& contErr(fluid_.contErr());
     volScalarField rho(fluid_.thermo().rho());
     tmp<volScalarField> cp(fluid_.thermo().Cp());
 
@@ -22,7 +23,9 @@
     fvScalarMatrix EEqn
     (
             fvm::ddt(alpha, rho, he) + fvm::div(phiDarcy, he, "div(phiDarcy,he)")
+        -   fvm::SuSp(contErr, he)
         +   fvc::ddt(alpha, rho, K) + fvc::div(phiDarcy, K, "div(phiDarcy,K)")
+        -   contErr*K
         +   (
                 he.name() == "e"
                 ?   fvc::div
@@ -69,9 +72,15 @@
     fvOptions_.correct(he);
     fluid_.thermo().correct();
 
+    //- If the incompressible treatment is activated we have to update
+    //- therm.rho() to make sure that the neutronics equations have acess 
+    //- to the density feedback.
     if(incompressibleTreatment_)
     {
         rhok_ = 1.0 - beta_()*(fluid_.thermo().T()-Tref_());
+        rhok_.correctBoundaryConditions();
+        fluid_.thermo().rho() = fixedRho_*rhok_;
+        fluid_.thermo().rho().correctBoundaryConditions();
     }
 
     Info<< "T (avg min max) = "
