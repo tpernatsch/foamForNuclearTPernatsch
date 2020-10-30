@@ -25,11 +25,14 @@ Class
     Foam::onePhaseLegacy
 
 Description
-    This class encapsulates a single fluid + 1 stationary structure 
-    Eulerian solver with a user-defineable regime-map based phyiscs modelling.
+    This class is based on onePhase.H and implements the legacy porous medium 
+    Navier Stokes solver with upgrades from the current formulations in onePhase.H.
 
 Author
+    Mixer: Peter German (peter.german@tamu.edu / grmnptr@gmail.com)
+    Authors of the original solvers: 
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
 SourceFiles
     onePhaseLegacy.C
