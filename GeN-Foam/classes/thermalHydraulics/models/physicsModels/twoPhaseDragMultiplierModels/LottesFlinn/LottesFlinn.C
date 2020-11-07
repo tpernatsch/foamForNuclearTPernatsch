@@ -77,14 +77,14 @@ Foam::twoPhaseDragMultiplierModels::LottesFlinn::~LottesFlinn()
 void
 Foam::twoPhaseDragMultiplierModels::LottesFlinn::correct()
 {
-    phi2_ = 
+    this->setPhi2
+    (
         pow
         (
             max(mFluid_.normalized(), mFluid_.residualAlpha()), 
             -exp_
-        );
-
-    this->limitPhi2();
+        )
+    );
 }
 
 

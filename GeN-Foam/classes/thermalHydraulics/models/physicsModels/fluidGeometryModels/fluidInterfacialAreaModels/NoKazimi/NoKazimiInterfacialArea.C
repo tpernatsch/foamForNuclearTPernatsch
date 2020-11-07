@@ -108,7 +108,7 @@ Foam::fluidInterfacialAreaModels::NoKazimiInterfacialArea::iA() const
     (
         new volScalarField
         (
-            A_*alpha*
+            A_*alpha_* //- alpha*alphaSum == alpha_
             min
             (
                 (1.0-alpha)/0.043,

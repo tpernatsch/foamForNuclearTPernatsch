@@ -78,6 +78,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             0.0
         )
     ),
+    precEquilibriumReactivity_(0.0),
     totalReactivity_
     (
         externalReactivity_
@@ -110,6 +111,20 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     timeIndex_(mesh.time().timeIndex()),
     powerOld_(power_),
     precursorPowersOld_(precursorPowers_),
+    defaultPrec_
+    (
+        IOobject
+        (
+            "defaultPrec",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimVol, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     coeffTFuel_
     (
         nuclearData_.get<scalar>("feedbackCoeffTFuel")
@@ -221,7 +236,8 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     energyGroups_(0),
     fluxes_(0),
     precursors_(0),
-    liquidFuelPrecursorPowers_(0),
+    precPK_(delayedGroups_),
+    precPKStar_(delayedGroups_),
     fastNeutrons_
     (
         nuclearData_.lookupOrDefault<bool>("fastNeutrons", false)
@@ -291,7 +307,13 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             "controlRodReactivityMap",
             List<Pair<scalar>>()
         )
-    )
+    ),
+    ScNo_
+    (
+        nuclearData_.lookupOrDefault<scalar>("ScNo",1.0)
+    ),
+    initPrecursorsLiquidFuel_
+        (nuclearData_.lookupOrDefault<bool>("initPrecursorsLiquidFuel",false))    
 {
     //- Cannot work in eigenvalue mode for obvious reasons, it makes no sense
     if (eigenvalueNeutronics_)
@@ -303,9 +325,106 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
 
     if (liquidFuel_)
     {
-        FatalErrorInFunction
-            << "pointKinetics model does not currently support liquidFuel"
-            << exit(FatalError);
+        UPtr_.reset
+        (
+            new volVectorField
+            (
+                IOobject
+                (
+                    "U",
+                    mesh.time().timeName(),
+                    mesh,
+                    IOobject::READ_IF_PRESENT,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh,
+                dimensionedVector("", dimVelocity, vector::zero),
+                zeroGradientFvPatchVectorField::typeName
+            )
+        );
+        alphaPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "alpha",
+                    mesh.time().timeName(),
+                    mesh,
+                    IOobject::NO_READ,
+                    IOobject::NO_WRITE
+                ),
+                mesh,
+                dimensionedScalar("", dimless, 1.0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        alphatPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "alphat",
+                    mesh.time().timeName(),
+                    mesh,
+                    IOobject::NO_READ,
+                    IOobject::NO_WRITE
+                ),
+                mesh,
+                dimensionedScalar("", dimMass/dimLength/dimTime, 0.0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        muPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "mu",
+                    mesh.time().timeName(),
+                    mesh,
+                    IOobject::NO_READ,
+                    IOobject::NO_WRITE
+                ),
+                mesh,
+                dimensionedScalar("", dimMass/dimLength/dimTime, 0.0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        phiPtr_.reset
+        (
+            new surfaceScalarField
+            (
+                IOobject
+                (
+                    "phi",
+                    mesh.time().timeName(),
+                    mesh,
+                    IOobject::NO_READ,
+                    IOobject::NO_WRITE
+                ),
+                fvc::flux(UPtr_())
+            )
+        );
+        diffCoeffPrecPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "diffCoeffPrec",
+                    mesh.time().timeName(),
+                    mesh,
+                    IOobject::NO_READ,
+                    IOobject::NO_WRITE
+                ),
+                mesh,
+                dimensionedScalar("", dimArea/dimTime, 0.0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
     }
 
     //- Check that provided power is > 0
@@ -452,6 +571,55 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         {
             break;
         }
+    }
+
+    forAll(precPK_,precI)
+    {
+        if(liquidFuel_)
+        {
+            precPK_.set
+            (
+                precI,
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "precPK"+Foam::name(precI),
+                        mesh_.time().timeName(),
+                        mesh_,
+                        IOobject::READ_IF_PRESENT,
+                        IOobject::AUTO_WRITE
+                    ),
+                    //chenge the precursors units to power for PK calculations
+                    defaultPrec_
+                )
+            );
+            precPK_[precI] *= dimensionedScalar("", dimPower, 1.0);  
+            precPKStar_.set
+            (
+                precI,
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "precPKStar"+Foam::name(precI),
+                        mesh_.time().timeName(),
+                        mesh_,
+                        IOobject::READ_IF_PRESENT,
+                        IOobject::AUTO_WRITE
+                    ),
+                    //chenge the precursors units to power for PK calculations
+                    defaultPrec_
+                )
+            );
+            precPKStar_[precI] *= dimensionedScalar("", dimPower, 1.0);             
+        }
+        else
+        {
+            precPK_.set(precI, nullptr);
+            precPKStar_.set(precI, nullptr);
+        }    
+
     }
 
     //- Set precursorPowers so that, if they are not found in reactorState, the
@@ -657,9 +825,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         volFuelPower_.correctBoundaryConditions(); 
     }
 
-    //- These have no use now, will be needed by the liquid fuel model by
-    //  whomever will implement it
-    /*
+    
     if (liquidFuel_)
     {
         UOrig_ = 
@@ -678,7 +844,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         alphatOrig_ = nullptr;
         muOrig_ = nullptr;
     }
-    */
+    
 
     //- The rest of this function is for initializing the reference values of
     //  the feedback parameters. If they are found in the dictionary, use
@@ -730,7 +896,6 @@ void Foam::pointKineticNeutronics::interpolateCouplingFields
     neutroToFluid.mapTgtToSrc(*rhoCoolOrig_, plusEqOp<scalar>(), rhoCool_);
     neutroToFluid.mapTgtToSrc(*TStructOrig_, plusEqOp<scalar>(), TStruct_);
 
-    /* This is for when liquidFuel support will be added
     if (liquidFuel_)
     {
         neutroToFluid.mapTgtToSrc(*UOrig_, plusEqOp<vector>(), UPtr_());
@@ -752,7 +917,7 @@ void Foam::pointKineticNeutronics::interpolateCouplingFields
         (
             (
                 *alphatOrig_ 
-            +   *muOrig_/xs_.ScNo()
+            +   *muOrig_/ScNo_
             )/(*rhoCoolOrig_)
         ); 
         neutroToFluid.mapTgtToSrc
@@ -767,7 +932,7 @@ void Foam::pointKineticNeutronics::interpolateCouplingFields
         alphatPtr_().correctBoundaryConditions();
         diffCoeffPrecPtr_().correctBoundaryConditions();
     }
-    */
+    
 
     TFuel_.correctBoundaryConditions();
     TClad_.correctBoundaryConditions();
@@ -782,7 +947,14 @@ void Foam::pointKineticNeutronics::correct
     label couplingIter
 ) 
 {
-    #include "solvePointKinetics.H"
+    if(!liquidFuel_)
+    {
+        #include "solvePointKinetics.H"
+    }else
+    {
+        #include "solvePointKineticsLiquidFuel.H"
+    }
+    
 }
 
 // ************************************************************************* //

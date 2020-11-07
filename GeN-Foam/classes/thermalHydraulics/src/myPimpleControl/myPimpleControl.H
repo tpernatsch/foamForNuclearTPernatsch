@@ -115,6 +115,12 @@ protected:
             //-
             int nCorrPISOInPrevPIMPLE_;
 
+            //-
+            int nCorrPISOInPrevPrevPIMPLE_;
+
+            //-
+            bool stopLoop_;
+
     // Protected Member Functions
 
         //- Based on maxTypeResidual in solutionControl. The idea is to get 

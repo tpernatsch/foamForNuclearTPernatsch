@@ -12,7 +12,6 @@ fvVectorMatrix UEqn2(U2, dimMass*dimLength/dimTime/dimTime);
 this->relaxFieldPtrTable<volTensorField>
 (
     word("momentumTransfer"), 
-    oldKds_, 
     Kds_
 );
 
@@ -26,7 +25,7 @@ volScalarField Kd12
         mesh_.time().timeName(),
         mesh_
     ),
-    (1.0/3.0)*tr(*Kds_[fluid1_.name()+"."+fluid2_.name()]),
+    (*Kds_[fluid1_.name()+"."+fluid2_.name()]).component(0),
     zeroGradientFvPatchScalarField::typeName
 );
 //- The Cd is the actual drag coefficient that is required only by some
@@ -34,7 +33,7 @@ volScalarField Kd12
 //  here rather than in the turbulence models because, if I were to use Kd12,
 //  the this reconstruction might not work as intended at small Kd12 values, as
 //  Kd12 is limited to a minimum of residualKd (so the Cd calculated from
-//  within the turbulence models might end up being severely over-estimated is
+//  within the turbulence models might end up being severely over-estimated in
 //  such scenarios)
 Cd12_ = 
     (2.0)*Kd12*FFPair_.DhDispersed()/FFPair_.rhoContinuous()/
@@ -44,7 +43,23 @@ Cd12_ =
         dimensionedScalar("", dimVelocity, 1e-3)
     );
 
-Kd12 = max(Kd12, residualKd_);
+//- Limit to > 0 to avoid phase decoupling
+Kd12 = 
+    max
+    (
+        Kd12,
+        dimensionedScalar("", dimDensity/dimTime, 1)
+    );
+
+//- Limit to a very high value in those regions that are single-phase only to
+//  avoid numerical bullshit
+volScalarField twoPhaseMarkerField
+(
+    pos(fluid1_-fluid1_.residualAlpha())*pos(fluid2_-fluid2_.residualAlpha())
+);
+Kd12 = 
+    twoPhaseMarkerField*Kd12
++   (1.0-twoPhaseMarkerField)*dimensionedScalar("", dimDensity/dimTime, 1e5);
 Kd12.correctBoundaryConditions(); //- <= REQUIRED OR SHIT HAPPENS IN MPI RUNS
 
 /*
@@ -135,7 +150,7 @@ fluid2_.volScalarField::operator=(fluid20);
     UEqn1 =
     (
             fvm::div(fluid1_.alphaRhoPhi(), U1, "div(alphaRhoPhi,U)")
-        -   fvm::Sp(fluid1_.contErr(), U1)
+        -   fvm::SuSp(fluid1_.contErr(), U1)
         +   fvm::Sp(dmdt12, U1)
         //- The following is just a re-arrangement of div(nu*grad(U)),
         //  i.e. + fluid1_.turbulence().divDevRhoReff(U1). However, it is
@@ -161,7 +176,7 @@ fluid2_.volScalarField::operator=(fluid20);
     UEqn2 =
     (
             fvm::div(fluid2_.alphaRhoPhi(), U2, "div(alphaRhoPhi,U)")
-        -   fvm::Sp(fluid2_.contErr(), U2)
+        -   fvm::SuSp(fluid2_.contErr(), U2)
         +   fvm::Sp(dmdt21, U2)
             //- The following is just a re-arrangement of div(nu*grad(U))
         +   (
@@ -205,32 +220,92 @@ fluid2_.volScalarField::operator=(fluid20);
     {
         const surfaceScalarField& phi1(fluid1_.phi());
         const surfaceScalarField& phi2(fluid2_.phi());
+
+        fvVectorMatrix VmVolForce1(U1, dimMass*dimLength/dimTime/dimTime);
+        fvVectorMatrix VmVolForce2(U2, dimMass*dimLength/dimTime/dimTime);
+
+        bool virtualMassUsesMixtureDensity
+        (
+            pimple_.dict().lookupOrDefault<bool>
+            (
+                "virtualMassUsesMixtureDensity", 
+                false
+            )
+        );
+
         volScalarField alphaRhoVm
         (
             Vm*
             FFPair_.alphaDispersed()*
-            FFPair_.rhoContinuous()
+            (
+                (virtualMassUsesMixtureDensity) ?
+                (
+                    fluid1_.normalized()*fluid1_.thermo().rho() 
+                +   fluid2_.normalized()*fluid2_.thermo().rho()
+                )() :
+                FFPair_.rhoContinuous()
+            )
         );
         volVectorField DDtU1 = 
             fvc::ddt(U1)
-        +   fvc::div(phi1)*U1;
+        +   fvc::div(phi1, U1)
+        -   fvc::div(phi1)*U1;
         volVectorField DDtU2 =
             fvc::ddt(U2)
-        +   fvc::div(phi2)*U2;
-        UEqn1 +=  
-            alphaRhoVm*
-            (
-                fvm::ddt(U1)
-            +   fvm::SuSp(fvc::div(phi1), U1)
-            -   DDtU2
-            );
-        UEqn2 += 
-            alphaRhoVm*
-            (
-                fvm::ddt(U2)
-            +   fvm::SuSp(fvc::div(phi2), U2)
-            -   DDtU1
-            );
+        +   fvc::div(phi2, U2)
+        -   fvc::div(phi2)*U2;
+        scalar f(1.0);
+        if (mesh_.relaxField("virtualMass"))
+            f = mesh_.fieldRelaxationFactor("virtualMass");
+        if (f == 1.0)
+        {
+            UEqn1 +=  
+                alphaRhoVm*
+                (
+                    fvm::ddt(U1)
+                +   fvm::div(phi1, U1)
+                +   fvm::SuSp(-fvc::div(phi1), U1)
+                -   DDtU2
+                );
+            UEqn2 += 
+                alphaRhoVm*
+                (
+                    fvm::ddt(U2)
+                +   fvm::div(phi2, U2)
+                +   fvm::SuSp(-fvc::div(phi2), U2)
+                -   DDtU1
+                );
+        }
+        else
+        {
+            VmVolForce1_ = 
+                f*
+                (
+                    alphaRhoVm*
+                    (
+                        fvm::ddt(U1)
+                    +   fvm::div(phi1, U1)
+                    +   fvm::SuSp(-fvc::div(phi1), U1)
+                    -   DDtU2
+                    )
+                )
+            +   (1.0-f)*VmVolForce1_;
+            VmVolForce2_ = 
+                f*
+                (
+                    alphaRhoVm*
+                    (
+                        fvm::ddt(U2)
+                    +   fvm::div(phi2, U2)
+                    +   fvm::SuSp(-fvc::div(phi2), U2)
+                    -   DDtU1
+                    )
+                )
+            +   (1.0-f)*VmVolForce2_;
+            UEqn1 += VmVolForce1_;
+            UEqn2 += VmVolForce2_;
+        }
+
         //- Modify MRF and add contributions
         MRF_.addAcceleration(U1, DDtU1);
         MRF_.addAcceleration(U2, DDtU2);

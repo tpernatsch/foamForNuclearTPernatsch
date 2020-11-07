@@ -74,7 +74,7 @@ solvers
         adjustSubCycles     true;
         
         //- Maximum subCycle Courant
-        alphaMaxCo          0.20;
+        alphaMaxCo          0.25;
 
         //- If provided, limits the maximum amount of subCycles that can be
         //  performed if adjustSubCycles is true
@@ -90,7 +90,7 @@ PIMPLE
     //- Number of pressure correctors (i.e. PISO iterations) within each outer
     //  iteration (i.e. PIMPLE iteration). The number of outer iterations is
     //  set in the global fvSolution file (i.e. controlDict/fvSolution)
-    nCorrectors      6;
+    nCorrectors      9;
 
     //-
     nNonOrthogonalCorrectors 0;
@@ -155,24 +155,22 @@ PIMPLE
     //  see what works
     oscillationLimiterFraction 0;
 
-    //- If true, under-relaxation to the mass transfer field (i.e. dmdt) is
-    //  applied also at the first and last PIMPLE iterations in a time-step.
-    //  While numerically incorrect, if the time-steps are short enough (e.g. 
-    //  10-100 us), the inaccuracies are mitigated to a minimum while greatly
-    //  enhancing stability, which is especially true for severe boiling
-    //  transients. Defaults to false.
-    stabilizedMassTransfer true;
-
     //- If true, pressure corrector iterations within a each PIMPLE iteration
     //  are performed only as long as the residuals decrease (i.e. it spares
     //  useless pressure corrector iterations). Defaults to false
-    correctUntilConvergence true;
+    correctUntilConvergence     true;
+
+    //- 
+    adaptiveMassTransferLimiter true;
+
+    //-
+    maxTInterfaceDdt            1e4;
 
     residualControl
     {
         p_rgh
         {
-            tolerance 3e-4;
+            tolerance 1e-5;
             relTol 0;
 
             //- This is only meant to be used for the pressure field. If true,
@@ -199,6 +197,7 @@ relaxationFactors
     equations
     {
         ".*"            1;
+        "h.vapour"      0.1;
     }
 
     //- The two most important relaxation factors for explicitly coupled
@@ -206,7 +205,8 @@ relaxationFactors
     fields
     {
         //- Under-relaxation of the mass transfer term
-        "massTransfer"              0.25;
+        "dmdt"              0.25;
+        "dmdtFinal"         0.25;
 
         //- Under-relaxation of the interfacial temperature between the fluids.
         //  This only has an effect if the employed saturationModel in
@@ -215,7 +215,7 @@ relaxationFactors
         //  boiling will more often than not induce sharp changes in the
         //  interfacialTemperature, resulting in massive changes in the mass
         //  transfer term 
-        "interfacialTemperature"              0.25;
+        "T.interface"              0.1;
     }
 }
 

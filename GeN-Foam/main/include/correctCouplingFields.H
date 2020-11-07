@@ -1,7 +1,7 @@
 const scalarField& alphal(liquid->primitiveField());
 const scalarField& rhol(liquid->thermo().rho().primitiveField());
 
-if (vapour != nullptr)
+if (vapour != nullptr)//if 2 phases
 {
 	const scalarField& alphav(vapour->primitiveField());
 	const scalarField& rhov(vapour->thermo().rho().primitiveField());
@@ -15,6 +15,25 @@ if (vapour != nullptr)
 	//  scenarios? I don't know, I'll use the liquid temperature for now
 	bafflelessTCool.primitiveFieldRef() = 
 		liquid->thermo().T().primitiveField();
+
+	//- Baffleless should be the superficial velocity, not the real one!
+	//  Thus, multiply by the void fraction (no vapour here so it's just 
+	//  alphal). 
+	bafflelessU.primitiveFieldRef() = 
+		liquid->U().primitiveField()*alphal 
+	+ 	vapour->U().primitiveField()*alphav;
+	bafflelessU.correctBoundaryConditions();	
+
+	//- Weighted average of the two phases
+	bafflelessAlphat.primitiveFieldRef() = 
+		liquid->turbulence().alphat()().primitiveField()*liquid->normalized() 
+	+ 	vapour->turbulence().alphat()().primitiveField()*vapour->normalized();
+	bafflelessAlphat.correctBoundaryConditions();
+
+	bafflelessMu.primitiveFieldRef() = 
+		liquid->thermo().mu()().primitiveField()*liquid->normalized() 
+	+ 	vapour->thermo().mu()().primitiveField()*vapour->normalized();
+	bafflelessMu.correctBoundaryConditions();		
 }
 else
 {
@@ -25,9 +44,6 @@ else
 	bafflelessTCool.primitiveFieldRef() = 
 		liquid->thermo().T().primitiveField();
 
-	//- I am not adjusting this if the vapour is present, as if that is the
-	//  case, I know liquidFuel is false, and U is only actually used by the 
-	//  neutronics when doing liquidFuel
 	bafflelessAlphat.primitiveFieldRef() = 
 		liquid->turbulence().alphat()().primitiveField();
 	bafflelessAlphat.correctBoundaryConditions();

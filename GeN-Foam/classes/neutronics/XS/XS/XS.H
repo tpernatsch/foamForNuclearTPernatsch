@@ -40,7 +40,6 @@ Class for XS parametrization
 #include "runTimeSelectionTables.H"
 #include "coordinateSystem.H"
 #include "fvCFD.H"
-#include "fvMatrixExt.H"
 #include "turbulentFluidThermoModel.H"
 #include "volPointInterpolation.H"
 #include "meshToMesh.H"

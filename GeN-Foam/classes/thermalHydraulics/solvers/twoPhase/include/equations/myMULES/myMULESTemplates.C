@@ -44,6 +44,17 @@ void Foam::myMULES::explicitSolve
     const SuType& Su
 )
 {
+    /*
+        Assuming rho = unity, psi = alpha, phiPsi = alpha_f*phi (with _f
+        denoting interpolation to the faces), then this function
+        explicitly solves the following equation:
+
+        ddt(alpha) + div(alpha_f*phi) = Su + alpha*Sp
+
+        with ddt being evaulated as forward Euler, div being evaulated 
+        explicitly and alpha*Sp being treated implicitly. Please note that Sp
+        should be negative for its implicit treatment to increase stability
+    */
     const fvMesh& mesh = psi.mesh();
 
     scalarField& psiIf = psi;
@@ -68,6 +79,12 @@ void Foam::myMULES::explicitSolve
         (
             rho.oldTime().field()*psi0*rDeltaT
           + Su.field()
+        //- this psiIf is NOT alpha. Note that psiIf was set to 0 and that
+        //  psiIf was used as a placeholder to store fvc::surfaceIntegrate(
+        //  psiIf, phiPsi), which is the explicit evaluation of 
+        //  div(alpha_f*phi). So the psiIf in here IS div(alpha_f*phi). This is
+        //  just a computer trick to save RAM and avoid creating extra data 
+        //  structures for holding variables
           - psiIf
         )/(rho.field()*rDeltaT - Sp.field());
     }

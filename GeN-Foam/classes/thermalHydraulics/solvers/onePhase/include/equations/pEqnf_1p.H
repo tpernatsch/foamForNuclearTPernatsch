@@ -38,8 +38,10 @@ surfaceScalarField alpharAUf
     alphaf*rAUf
 );
 
+bool convergedPISO(false);
+
 // --- Pressure corrector loop
-while (pimple_.correct())
+while (pimple_.correct(convergedPISO))
 {
     this->correctContErr();
 
@@ -121,11 +123,14 @@ while (pimple_.correct())
             compressible ? getRefCellValue(p_rgh_, pRefCell_) : pRefValue_
         );
 
-        solve
-        (
-            pEqn,
-            mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
-        );
+        convergedPISO =
+            ( 
+                pEqn.solve
+                (
+                    mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
+                ).max().nIterations()
+            ==  0.0
+            );
 
         if (pimple_.finalNonOrthogonalIter())
         {

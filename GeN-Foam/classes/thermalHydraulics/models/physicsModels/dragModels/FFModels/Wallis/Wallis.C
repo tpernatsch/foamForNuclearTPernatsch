@@ -90,16 +90,19 @@ Foam::dragModels::Wallis::Wallis
 void Foam::dragModels::Wallis::correctKd(volTensorField& Kd) const
 {
     const volScalarField& magUr(FFPair_->magUr());
+    const volScalarField& Dhv(vapour_.Dh());
     const volScalarField& rhov(vapour_.rho());
-    volScalarField alpha(vapour_/(vapour_+liquid_));
+    const volScalarField& alpha(vapour_.normalized());
 
     forAll(mesh_.cells(), i)
     {
         tensor& Kdi(Kd[i]);
+        const scalar& a(alpha[i]);
         scalar value
         (
-            0.02*sqrt(alpha[i])/std::max(DhStructure_[i], 1e-3)*
-            magUr[i]*rhov[i]*(1.0+150*(1.0-sqrt(alpha[i])))
+            (a+liquid_[i])* // Re-scale by void fraction
+            sqrt(a)/std::max(Dhv[i], 1e-6)*magUr[i]*rhov[i]*
+            0.01*(1.0+150*(1.0-sqrt(a)))
         );
 
         Kdi[0] = value;

@@ -81,7 +81,8 @@ Foam::heatTransferModel::heatTransferModel
 (
     const objectRegistry& objReg,
     const dictionary& dict,
-    const FSPair& FSPair
+    const FSPair& FSPair,
+    const wordList& regions
 )
 :
     IOdictionary
@@ -107,13 +108,7 @@ Foam::heatTransferModel::heatTransferModel
     FSPair_(&FSPair),
     cellList_(0),
     cellField_(FSPair.mesh().cells().size(), 0.0)
-{
-    //- Determine possible multiple regions from dictName. If the key looks
-    //  something like "region0:region1:huhu" then regions will be 
-    //  = ["region0", "region1", "huhu"]. Also works for keys that consist of
-    //  one region only
-    wordList regions(myStringOps::split<word>(dict.dictName(), ':'));
-    
+{    
     forAll(regions, i)
     {
         word region(regions[i]);
@@ -175,14 +170,25 @@ Foam::heatTransferModel::makeInTable
                 )
                 {
                     word key((*iter).keyword());
+                    const dictionary& subDictFS(dictFS.subDict(key));
+
+                    //- Determine possible multiple regions from dictName. If 
+                    //  the key looks something like "region0:region1:huhu"  
+                    //  then regions will be = ["region0", "region1", "huhu"].
+                    //  Also works for keys that consist of one region only
+                    const wordList& regions
+                    (
+                        myStringOps::split<word>(subDictFS.dictName(), ':')
+                    );
                     table.insert
                     (
                         IOobject::groupName(pair.name(), key),
                         heatTransferModel::New
                         (
                             dstObjReg,
-                            dictFS.subDict(key),
-                            pair
+                            subDictFS,
+                            pair,
+                            regions
                         )
                     );
                 }
@@ -254,14 +260,26 @@ Foam::heatTransferModel::makeInTable
                 srcObjReg.lookupObject<FSPair>(keyFS)
             );
 
+            const dictionary& subDict(dict.subDict(key));
+
+            //- Determine possible multiple regions from dictName. If 
+            //  the key looks something like "region0:region1:huhu"  
+            //  then regions will be = ["region0", "region1", "huhu"].
+            //  Also works for keys that consist of one region only
+            const wordList& regions
+            (
+                myStringOps::split<word>(subDict.dictName(), ':')
+            );
+
             table.insert
             (
                 IOobject::groupName(pair.name(), key),
                 heatTransferModel::New
                 (
                     dstObjReg,
-                    dict.subDict(key),
-                    pair
+                    subDict,
+                    pair,
+                    regions
                 )
             );
         }

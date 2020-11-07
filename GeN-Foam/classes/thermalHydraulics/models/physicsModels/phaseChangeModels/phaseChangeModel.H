@@ -91,15 +91,16 @@ protected:
     //- Ptr to saturation model
     autoPtr<saturationModel> saturation_;
 
-    //- 
-    const bool relaxOnFinalIter_;
-
     //- Minimum interfacial area
     const dimensionedScalar residualIA_;
 
     //- Cells in which the interfacial area is limited to a minimum so that
     //  boilng can start
     labelList residualIACells_;
+
+    //- Total cumulative mass that should have been transferred between the 
+    //  phases that was removed by the dmdt limiter 
+    scalar dmLostToLimiter_;
 
 public:
 
@@ -161,9 +162,6 @@ public:
 
     //- Member Functions
 
-        //- Read, correct and return the relaxation factor
-        scalar relaxationFactor() const;
-
         //- Set interfacial temperature to saturation temperature, under-relax
         //  if necessary
         void correctInterfacialT();
@@ -172,8 +170,17 @@ public:
         //  for now)
         void limitInterfacialArea();
 
-        //- Limit mass transfer so there can't be phase change from phase i to
-        //  phase j in a given cell if the phase fraction of phase i = 0
+        //- Limit mass transfer in two ways:
+        //  -   make it so that mass cannot be removed from a fluid in a cell
+        //      if there is no fluid to remove mass from in that cell (it is
+        //  -   apply an adaptive mass transfer limiter to limit the impact of
+        //      sporious continuity error contributions on the parameters that
+        //      govern mass transfer (e.g. temperatures) in cells where the
+        //      continuity error is excessive. The idea behind the limiter is
+        //      described in the source file. Am I sure this is needed? Nope,
+        //      but this PhD I'm doing is basically about testing whatever
+        //      bullshit idea I can come up with to make things better. Jesus
+        //      fucking Christ, I hate this
         void limitMassTransfer();
 
         //- Calculate mass transfer term

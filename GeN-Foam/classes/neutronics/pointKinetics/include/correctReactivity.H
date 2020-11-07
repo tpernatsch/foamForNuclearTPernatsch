@@ -23,8 +23,9 @@ scalar drivelineExpValue
 );
 scalar drivelineReactivity(calcDrivelineReactivity(drivelineExpValue));
 
-totalReactivity_ = 
-        externalReactivity_ 
+totalReactivity_ =
+        precEquilibriumReactivity_ 
+    +   externalReactivity_ 
     +   DopplerReactivity
     +   TFuelReactivity
     +   TCladReactivity

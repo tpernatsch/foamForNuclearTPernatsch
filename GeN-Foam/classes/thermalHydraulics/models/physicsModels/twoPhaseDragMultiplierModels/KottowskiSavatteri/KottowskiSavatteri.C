@@ -113,18 +113,19 @@ Foam::twoPhaseDragMultiplierModels::KottowskiSavatteri::correct()
             )
         );
 
-    phi2_ = pow
+    this->setPhi2
     (
-        10,
-        2.0*
+        pow
         (
-            0.1046*sqr(log10X_)
-        -   0.5098*log10X_
-        +   0.6252
+            10,
+            2.0*
+            (
+                0.1046*sqr(log10X_)
+            -   0.5098*log10X_
+            +   0.6252
+            )
         )
     );
-
-    this->limitPhi2();
 }
 
 

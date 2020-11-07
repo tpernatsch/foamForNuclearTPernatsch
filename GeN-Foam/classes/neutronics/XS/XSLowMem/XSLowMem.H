@@ -47,7 +47,6 @@ It can be used to speed up the calculations of scattering sources.
 #include "runTimeSelectionTables.H"
 #include "coordinateSystem.H"
 #include "fvCFD.H"
-#include "fvMatrixExt.H"
 #include "turbulentFluidThermoModel.H"
 #include "volPointInterpolation.H"
 #include "meshToMesh.H"

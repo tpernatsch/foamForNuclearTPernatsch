@@ -80,7 +80,8 @@ public:
         (
             const objectRegistry& objReg,
             const dictionary& dict,
-            const FSPair& FSPair
+            const FSPair& FSPair,
+            const wordList& regions
         );
 
         //- Destructor

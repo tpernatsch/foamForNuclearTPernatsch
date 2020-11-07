@@ -13,14 +13,14 @@ forAll(flux_,energyI)
 
     #include "calcScatteringSource.H"
 
-    fvMatrixExt<scalar> neutroEq  = neutroEqList[energyI]
+    fvMatrix<scalar> neutroEq  = neutroEqList[energyI]
       - neutroSource_*(1.0-BetaTot)*chiPrompt[energyI]/keff_
       - delayedNeutroSource_*chiDelayed[energyI]
       - scatteringSourceExtra_
       - (sigmaDisapp[energyI]*(fluxStar2_[energyI]/discFactor[energyI])*2.0) ;
       - fvc::ddt((1-eigenvalueNeutronics_)*IV[energyI]/discFactor[energyI],fluxStar2_[energyI])*2.0 ;
 
-    scalar initRes = neutroEq.initialResidual();
+    scalar initRes = neutroEq.solve().max().initialResidual();
     neutroResidual = max(neutroResidual,initRes);
 
     Info<< "neutro Residual = " << initRes << nl << endl;
@@ -30,7 +30,7 @@ forAll(flux_,energyI)
     fluxStarAlbedo_ = fluxStar_[energyI];
     /*
     Dalbedo_ = D[energyI]/discFactor[energyI]*9.0/7.0; //like in PARCS
-    fvMatrixExt<scalar> neutroEq2 //like in PARCS
+    fvMatrix<scalar> neutroEq2 //like in PARCS
     (
       fvm::ddt((1-eigenvalueNeutronics_)*IV[energyI]/discFactor[energyI]*3.0,fluxStar2_[energyI])
       - fvm::laplacian((D[energyI]/discFactor[energyI]*9.0/7.0),fluxStar2_[energyI])
@@ -43,7 +43,7 @@ forAll(flux_,energyI)
      );
     */
     Dalbedo_ = 1.0/(sigmaDisapp[energyI]+sigmaFromTo[energyI][energyI])*3.0/7.0;
-    fvMatrixExt<scalar>  neutroEq2
+    fvMatrix<scalar>  neutroEq2
     (
       fvm::ddt((1-eigenvalueNeutronics_)*IV[energyI]/discFactor[energyI]*3.0,fluxStar2_[energyI])
       - fvm::laplacian((discFactor[energyI]/(sigmaDisapp[energyI]+sigmaFromTo[energyI][energyI])*3.0/7.0),fluxStar2_[energyI])
@@ -55,7 +55,7 @@ forAll(flux_,energyI)
       - fvc::ddt((1-eigenvalueNeutronics_)*IV[energyI]/discFactor[energyI],fluxStar_[energyI])*2.0/3.0
      );
 
-    initRes = neutroEq2.initialResidual();
+    initRes = neutroEq2.solve().max().initialResidual();
     neutroResidual = max(neutroResidual,initRes);
     neutroEq2.solve();
 

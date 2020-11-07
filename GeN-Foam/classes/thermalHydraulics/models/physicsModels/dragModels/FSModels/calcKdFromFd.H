@@ -6,6 +6,16 @@ volScalarField alpha(1.0-FSPair_->structure());
 const volScalarField& magU(FSPair_->fluidRef().magU());
 const volScalarField& rho(FSPair_->fluidRef().thermo().rho());
 
+//- Minimum allowable velocity in the calculation Kd to avoid 0 Kd
+scalar minMagU
+(
+    mesh_.solutionDict().subDict("PIMPLE").lookupOrDefault<scalar>
+    (
+        "minMagU", 
+        0.0
+    )
+);
+
 if (isotropic_) //- Use scalar values for Re, Dh, compute a single Kd and
                 //  apply it to all directions
 {
@@ -21,7 +31,8 @@ if (isotropic_) //- Use scalar values for Re, Dh, compute a single Kd and
         
         //- Yes, i, not celli, as alphaRhoMagU_ is not a volScalarField
         scalar& halfAlphaRhoMagUi((*halfAlphaRhoMagU_)[i]);
-        halfAlphaRhoMagUi = (0.5*alpha[celli]*rho[celli]*magU[celli]);
+        halfAlphaRhoMagUi = 
+            (0.5*alpha[celli]*rho[celli]*max(magU[celli], minMagU));
         
         //- Same fd, same value for all components
         scalar KdValue = (halfAlphaRhoMagUi/Dhi)*fd(Rei);
@@ -47,7 +58,8 @@ else if (transverseDragModel_ == transverseDragModel::same)
         
         //- Yes, i, not celli, as alphaRhoMagU_ is not a volScalarField
         scalar& halfAlphaRhoMagUi((*halfAlphaRhoMagU_)[i]);
-        halfAlphaRhoMagUi = (0.5*alpha[celli]*rho[celli]*magU[celli]);
+        halfAlphaRhoMagUi = 
+            (0.5*alpha[celli]*rho[celli]*max(magU[celli], minMagU));
         
         //- Rehme correlation for all direction with directional Re, Dh
         Kdi[dpa_*4] = 
@@ -75,7 +87,8 @@ else            //- Use vector values for Re, Dh for each direction and
         
         //- Yes, i, not celli, as alphaRhoMagU_ is not a volScalarField
         scalar& halfAlphaRhoMagUi((*halfAlphaRhoMagU_)[i]);
-        halfAlphaRhoMagUi = (0.5*alpha[celli]*rho[celli]*magU[celli]);
+        halfAlphaRhoMagUi = 
+            (0.5*alpha[celli]*rho[celli]*max(magU[celli], minMagU));
         
         //- Rehme correlation in the principal direction
         Kdi[dpa_*4] = 

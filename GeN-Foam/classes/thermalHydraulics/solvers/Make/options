@@ -4,6 +4,9 @@ EXE_INC = \
     -I./onePhase \
     -I./onePhase/include \
     -I./onePhase/include/equations \
+    -I./onePhaseLegacy \
+    -I./onePhaseLegacy/include \
+    -I./onePhaseLegacy/include/equations \
     -I./twoPhase \
     -I./twoPhase/include \
     -I./twoPhase/include/equations \

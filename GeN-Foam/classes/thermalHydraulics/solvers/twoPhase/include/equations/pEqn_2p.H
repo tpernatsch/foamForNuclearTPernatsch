@@ -617,20 +617,3 @@ else    //- i.e. if doing implicitPartialElimination
         p_rgh_.correctBoundaryConditions();
     }
 }
-
-{
-    this->correctContErrs();
-    volScalarField contErrRel1(fluid1_.contErr()/rho1);
-    volScalarField contErrRel2(fluid2_.contErr()/rho2);
-
-    Info    << "Continuity error " << fluid1_.name() << " (avg min max) ="
-            << " " << contErrRel1.weightedAverage(mesh_.V()).value()
-            << " " << min(contErrRel1).value()
-            << " " << max(contErrRel1).value()
-            << " 1/s"  << endl;
-    Info    << "Continuity error " << fluid2_.name() << " (avg min max) ="
-            << " " << contErrRel2.weightedAverage(mesh_.V()).value()
-            << " " << min(contErrRel2).value()
-            << " " << max(contErrRel2).value() 
-            << " 1/s" << endl;
-}

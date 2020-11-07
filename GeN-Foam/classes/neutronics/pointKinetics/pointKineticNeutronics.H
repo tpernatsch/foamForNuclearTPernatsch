@@ -66,6 +66,9 @@ protected:
     //- Due to whatever the user might please
     scalar externalReactivity_;
 
+    //- Used to set an initial steady state for liquid fuel
+    scalar precEquilibriumReactivity_;
+
     //-
     scalar totalReactivity_;
 
@@ -94,6 +97,9 @@ protected:
     label timeIndex_;
     scalar powerOld_;
     scalarList precursorPowersOld_;
+
+    // default precursor field. Only used for liquid fuel
+    volScalarField defaultPrec_;    
 
     //- Feedback coefficients in 1/K (i.e. 1e5 pcm/K)
     scalar coeffTFuel_;
@@ -134,6 +140,18 @@ protected:
     volScalarField rhoCool_;
     volScalarField TStruct_; //- This is also used to compute TDriveline
 
+    //- Also mapped, but these are autoPtr as these field are not needed at all
+    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
+    //  these fields if they are actually needed
+    autoPtr<volVectorField> UPtr_;
+    autoPtr<volScalarField> alphaPtr_;
+    autoPtr<volScalarField> alphatPtr_;
+    autoPtr<volScalarField> muPtr_;
+    
+    //- Fields derived from mapped fields
+    autoPtr<surfaceScalarField> phiPtr_;
+    autoPtr<volScalarField> diffCoeffPrecPtr_;
+
     //-
     volScalarField oneGroupFlux_;
 
@@ -147,8 +165,13 @@ protected:
     //- Delayed-group-wise precursor concentrations
     PtrList<volScalarField> precursors_;
 
-    //- Delayed-group-wise precursor power fields, to be used for MSRs
-    PtrList<volScalarField> liquidFuelPrecursorPowers_;
+    //- Delayed-group-wise precursor concentrations resulting from point 
+    //  kinetics calculations with liquid fuel. This second set of fields is 
+    //  necessary because the unit for precursors in point kinetics is power,
+    //   instead of 1/m3
+    PtrList<volScalarField> precPK_;//reconstructed based on porosity
+    PtrList<volScalarField> precPKStar_;//solved for
+
 
     //- If true, fuel temperature feedback (Doppler) computed as 
     //  deltaReactivity = -coeffFastDoppler*ln(TFuel/TFuelRef) with 
@@ -180,6 +203,13 @@ protected:
     //- Pairs of control rod insertion value (in m w.r.t. a reference) vs 
     // reactivity in absolute units (i.e. 1e5 pcm)
     List<Pair<scalar>> controlRodReactivityMap_;
+
+    //Schmidt number. Only used for liquid fuel
+    scalar ScNo_;
+
+    //Flag to initialize the concentration of precursors to their
+    // equilibtium value at the beginning of the simulation
+    bool initPrecursorsLiquidFuel_;
 
 private:
 

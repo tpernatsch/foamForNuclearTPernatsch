@@ -1,5 +1,5 @@
 
-PtrList<fvMatrixExt<scalar> > neutroEqList(xs_.energyGroups());
+PtrList<fvMatrix<scalar> > neutroEqList(xs_.energyGroups());
 
 forAll(neutroEqList, energyI)
 {
@@ -9,7 +9,7 @@ forAll(neutroEqList, energyI)
     neutroEqList.set
     (
         energyI,
-        new fvMatrixExt<scalar>
+        new fvMatrix<scalar>
         (
              fvm::ddt((1-eigenvalueNeutronics_)*IV[energyI]/discFactor[energyI],fluxStar_[energyI])
              - fvm::laplacian(D[energyI]/discFactor[energyI],fluxStar_[energyI])

@@ -73,6 +73,23 @@ public :
 
     static const Enum<partialEliminationMode> partialEliminationModeNames_;
 
+    enum contErrCompensationMode
+    {
+        Su,
+        Sp, 
+        SuSp
+    };
+
+    static const Enum<contErrCompensationMode> contErrCompensationModeNames_;
+
+    enum heStabilizationMode
+    {
+        cutoff,
+        source
+    };
+
+    static const Enum<heStabilizationMode> heStabilizationModeNames_;
+
 private:
 
     //- Phases
@@ -101,6 +118,11 @@ private:
         //- Fluid2 - structure
         FSPair F2SPair_;
 
+        //- Reynolds of the two-phase mixture. Logically this belongs to none
+        //  of the pairs above, as it depends on both fluids and the structure 
+        //  (namely its hydraluic diameter) at the same time
+        volScalarField ReTwoPhase_;
+
     //- Mixture quantities (while the solver is Euler-Euler, these can be of
     //  intereset and are occasionally used)
         
@@ -118,26 +140,18 @@ private:
         //      - fluid2 and the structure
         volTensorFieldPtrTable Kds_;
 
-        //- drag coefficients at previous PIMPLE iteration for under-relaxation
-        //  purposes
-        volTensorFieldPtrTable oldKds_;
-
         //- Fluid-fluid drag coefficient reconstructed from drag factor as
         //  Cd12_ = 2*Kd12*DhDispersed/(rhoContinuous*mag(Urel))/alpha1/alpha2.
         //  Why do I even need this? Well, some turbulence models require it
         //  and reconstructing it from within said turbulence models is
         //  difficult at low dispersed phase fractions. Kd would go to 0, but
-        //  it is limited (in the solver) to residualKd, so that the
-        //  reconstructed Cd can be significantly over-estimated at low phase
-        //  fractions. Thus, I compute Cd (i.e. this FFCd_) before limiting
-        //  the Kd in the main solver, and look up this field from within the
-        //  turbulence models that need it. All this applies only to the 
-        //  fluid-fluid drag
+        //  it is limited (in the solver) to a small value (1 kg/m3/s), so that
+        //  the reconstructed Cd can be significantly over-estimated at low 
+        //  phase fractions. Thus, I compute Cd (i.e. this FFCd_) before 
+        //  limiting the Kd in the main solver, and look up this field from 
+        //  within the turbulence models that need it. All this applies only to
+        //  the fluid-fluid drag
         volScalarField Cd12_;
-
-        //- Avoid momentum decoupling between the two fluids by imposing a 
-        //  minimum value for the drag coefficient
-        dimensionedScalar residualKd_;
 
         //- table of heat transfer coefficients between:
         //      - fluid1 and interface between fluid1 and fluid2;
@@ -146,20 +160,8 @@ private:
         //      - fluid2 and the structure
         volScalarFieldPtrTable htcs_;
 
-        //- heat transfer coefficients at previous PIMPLE iteration for 
-        //  under-relaxation purposes
-        volScalarFieldPtrTable oldHtcs_;
-
         //- interfacial area between fluid1 and fluid2
         volScalarField iA12_;
-
-        //- fraction of interfacialArea of the corresponding structure present
-        //  in a given cell that is in contact with fluid1
-        volScalarField frac1_;
-
-        //- fraction of interfacialArea of the corresponding structure present
-        //  in a given cell that is in contact with fluid2
-        volScalarField frac2_;
 
         //- Mass transfer term from fluid1 to fluid2 so that:
         /*
@@ -177,6 +179,17 @@ private:
         //- Phase change model
         autoPtr<phaseChangeModel> phaseChange_;
 
+    //- Extra field for under-relaxation of certain quantities
+        fvVectorMatrix  VmVolForce1_;
+        fvVectorMatrix  VmVolForce2_;
+
+    //- Miscellanea
+
+        //- Cumulated sum of continuity errors
+        scalar cumulContErr1_;
+
+        scalar cumulContErr2_;
+
     //- Global flags for time/subCycle control
 
         //- Self explanatory, come on...
@@ -190,6 +203,12 @@ private:
 
         //- partialElimination mode
         const partialEliminationMode partialEliminationMode_;
+
+        //- contErrCompensation mode
+        const contErrCompensationMode contErrCompensationMode_;
+
+        //-
+        const heStabilizationMode heStabilizationMode_;
 
         //- Feature that removes velocity oscillations and/or smearing in the 
         //  main flow direction. However, if dealing with structures that have
@@ -228,17 +247,11 @@ public:
 protected :
 
     //- Under-relax coupling fields (i.e. Kd, htc) in the provided
-    //  table with the fields in the other table
+    //  table
     template<class fieldType>
     void relaxFieldPtrTable
     (
         const word& relaxFactorName,
-        const HashPtrTable
-        <
-            fieldType, 
-            word, 
-            word::hash
-        >& oldFieldPtrTable,
         HashPtrTable
         <
             fieldType, 
@@ -288,6 +301,12 @@ public :
 
         //- Update continuity errors of the fluids
         void correctContErrs();
+
+        //- Print continuity error information
+        void printContErrs();
+
+        //- Computes the cumulated continuity errors
+        void calcCumulContErrs();
 };
 
 

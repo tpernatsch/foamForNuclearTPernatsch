@@ -47,6 +47,14 @@ EXE_INC = \
     -I./physicsModels/heatTransferModels \
     -I./physicsModels/heatTransferModels/sharedModels/constant \
     -I./physicsModels/heatTransferModels/sharedModels/NusseltReynoldsPrandtlPower \
+    -I./physicsModels/heatTransferModels/FFModels/NoKazimi \
+    -I./physicsModels/heatTransferModels/FSModels/nucleateBoiling \
+    -I./physicsModels/heatTransferModels/FSModels/nucleateBoiling\flowFactorModels \
+    -I./physicsModels/heatTransferModels/FSModels/nucleateBoiling\flowFactorModels\COBRA_TF \
+    -I./physicsModels/heatTransferModels/FSModels/nucleateBoiling\suppressionFactorModels \
+    -I./physicsModels/heatTransferModels/FSModels/nucleateBoiling\suppressionFactorModels\COBRA_TF \
+    -I./physicsModels/heatTransferModels/FSModels/nucleateBoiling\poolBoilingModels \
+    -I./physicsModels/heatTransferModels/FSModels/nucleateBoiling\poolBoilingModels\Shah \
     -I./physicsModels/fluidGeometryModels \
     -I./physicsModels/fluidGeometryModels/fluidDiameterModels \
     -I./physicsModels/fluidGeometryModels/fluidDiameterModels/constant \
@@ -59,9 +67,9 @@ EXE_INC = \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/NoKazimi \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/sphericalTopology \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/annularTopology \
-    -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels \
-    -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels/constant \
-    -I./physicsModels/fluidGeometryModels/structureVolumetricAreaPartitionModels/AzadShirani \
+    -I./physicsModels/fluidGeometryModels/fluidPartitionModels \
+    -I./physicsModels/fluidGeometryModels/fluidPartitionModels/constant \
+    -I./physicsModels/fluidGeometryModels/fluidPartitionModels/AzadShirani \
     -I./physicsModels/phaseChangeModels/saturationModels \
     -I./physicsModels/phaseChangeModels/saturationModels/constantTemperature \
     -I./physicsModels/phaseChangeModels/saturationModels/BrowningPotter \

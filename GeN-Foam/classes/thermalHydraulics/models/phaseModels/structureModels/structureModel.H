@@ -143,6 +143,9 @@ protected:
     //  fraction of passive region
     volScalarField alphaRhoCppas_;
 
+    //- Max between Tact_ and Tpas_;
+    volScalarField Twall_;
+
     //- Rotation matrix to move from global to local reference frame
     volTensorField Rg2l_;
 
@@ -295,6 +298,11 @@ public:
             const volScalarField& Tpas() const
             {
                 return Tpas_;
+            }
+
+            const volScalarField& Twall() const
+            {
+                return Twall_;
             }
 
             const volTensorField& Rg2l() const

@@ -114,17 +114,18 @@ Foam::twoPhaseDragMultiplierModels::ChenKalish::correct()
             )
         );
 
-    phi2_ = exp
+    this->setPhi2
     (
-        2.0*
+        exp
         (
-            0.0867*sqr(logX_)
-        -   0.518*logX_
-        +   1.59
+            2.0*
+            (
+                0.0867*sqr(logX_)
+            -   0.518*logX_
+            +   1.59
+            )
         )
     );
-
-    this->limitPhi2();
 }
 
 

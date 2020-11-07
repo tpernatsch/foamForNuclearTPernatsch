@@ -21,6 +21,7 @@ setTransient()
     runCloneCase $1 $2
 
     printf "Setting transient case...\n"
+    rm -fr ./transient/log.*
     foamDictionary transient/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
 
     foamDictionary transient/system/fvSolution -entry tightlyCoupled -set true
@@ -43,23 +44,27 @@ do
     "steadyState")
         runCloneCase $caseName rootCase
         printf "Steady state case is prepared!\n"
+    	printf "Running $exe on $caseName\n"
+    	decomposePar -case $caseName -region thermoMechanicalRegion
+    	decomposePar -case $caseName -region neutroRegion
+    	decomposePar -case $caseName -region fluidRegion
+    	cd $caseName
+    	runParallel $exe
+    	cd ../
+
         ;;
     "transient")
-
         printf "Transient case entered...\n"
         setTransient $caseName steadyState
+    	printf "Running $exe on $caseName\n"
+    	cd $caseName
+    	runParallel $exe
+    	cd ../
         ;;
     esac
 
     #( cd $caseName && runApplication `getApplication` )
-    printf "Running $exe on $caseName\n"
-    decomposePar -case $caseName -region thermoMechanicalRegion
-    decomposePar -case $caseName -region neutroRegion
-    decomposePar -case $caseName -region fluidRegion
     #mpirun -np 4 $exe -parallel -case $caseName 2>&1 | tee "$caseName/log.$exe"
-    cd $caseName
-    runParallel $exe
-    cd ../
     #$exe -case $caseName 2>&1 | tee "$caseName/log.$exe"
 done
 

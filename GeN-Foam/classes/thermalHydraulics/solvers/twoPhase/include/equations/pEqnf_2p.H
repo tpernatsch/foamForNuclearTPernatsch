@@ -86,7 +86,7 @@ if(!implicitPartialElimination)
 
     while (pimple_.correct(convergedPISO))
     {
-        this->correctContErrs();
+        //this->correctContErrs();
 
         rho_ = this->rho();
 
@@ -203,18 +203,33 @@ if(!implicitPartialElimination)
         tmp<fvScalarMatrix> pEqnComp1;
         tmp<fvScalarMatrix> pEqnComp2;
         pEqnComp1 =
+            pos(alpha1)*
             (
-                fluid1_.contErr() // +dmdt in contErr
-            -   fvc::Sp(fvc::ddt(alpha1) + fvc::div(fluid1_.alphaPhi()), rho1)
+                fvc::ddt(alpha1, rho1)
+            +   fvc::div(fluid1_.alphaRhoPhi())
+            -   fvc::Sp
+                (
+                    fvc::ddt(alpha1) 
+                +   fvc::div(fluid1_.alphaPhi()), 
+                    rho1
+                )
             )/rho1
-        +   (alpha1*fluid1_.thermo().psi()/rho1)*p_rghCorr();
+        +   (alpha1*fluid1_.thermo().psi()/rho1)*p_rghCorr()
+        +   dmdt_/rho1;
 
         pEqnComp2 =
+            pos(alpha2)*
             (
-                fluid2_.contErr() // -dmdt in contErr
-            -   fvc::Sp(fvc::ddt(alpha2) + fvc::div(fluid2_.alphaPhi()), rho2)
+                fvc::ddt(alpha2, rho2)
+            +   fvc::div(fluid2_.alphaRhoPhi()) 
+            -   fvc::Sp
+                (
+                    fvc::ddt(alpha2) 
+                +   fvc::div(fluid2_.alphaPhi()), rho2
+                )
             )/rho2
-        +   (alpha2*fluid2_.thermo().psi()/rho2)*p_rghCorr();
+        +   (alpha2*fluid2_.thermo().psi()/rho2)*p_rghCorr()
+        -   dmdt_/rho2;
 
         //- Cache p prior to solve for density update
         volScalarField p_rgh_0(p_rgh_);
@@ -404,7 +419,7 @@ else //- i.e. if doing implicitPartialElimination
 
     while (pimple_.correct(convergedPISO))
     {
-        this->correctContErrs();
+        //this->correctContErrs();
 
         rho_ = this->rho();
 
@@ -514,18 +529,33 @@ else //- i.e. if doing implicitPartialElimination
         tmp<fvScalarMatrix> pEqnComp1;
         tmp<fvScalarMatrix> pEqnComp2;
         pEqnComp1 =
+            pos(alpha1)*
             (
-                fluid1_.contErr() // +dmdt in contErr
-              - fvc::Sp(fvc::ddt(alpha1) + fvc::div(fluid1_.alphaPhi()), rho1)
+                fvc::ddt(alpha1, rho1)
+            +   fvc::div(fluid1_.alphaRhoPhi())
+            -   fvc::Sp
+                (
+                    fvc::ddt(alpha1) 
+                +   fvc::div(fluid1_.alphaPhi()), 
+                    rho1
+                )
             )/rho1
-        +   (alpha1*fluid1_.thermo().psi()/rho1)*p_rghCorr();
+        +   (alpha1*fluid1_.thermo().psi()/rho1)*p_rghCorr()
+        +   dmdt_/rho1;
 
         pEqnComp2 =
+            pos(alpha2)*
             (
-                fluid2_.contErr() // -dmdt in contErr
-              - fvc::Sp(fvc::ddt(alpha2) + fvc::div(fluid2_.alphaPhi()), rho2)
+                fvc::ddt(alpha2, rho2)
+            +   fvc::div(fluid2_.alphaRhoPhi()) 
+            -   fvc::Sp
+                (
+                    fvc::ddt(alpha2) 
+                +   fvc::div(fluid2_.alphaPhi()), rho2
+                )
             )/rho2
-        +   (alpha2*fluid2_.thermo().psi()/rho2)*p_rghCorr();
+        +   (alpha2*fluid2_.thermo().psi()/rho2)*p_rghCorr()
+        -   dmdt_/rho2;
 
         //- Cache p prior to solve for density update
         volScalarField p_rgh_0(p_rgh_);
@@ -644,21 +674,4 @@ else //- i.e. if doing implicitPartialElimination
         p_rgh_ = p_ - rho_*gh_;
         p_rgh_.correctBoundaryConditions();
     }
-}
-
-{
-    this->correctContErrs();
-    volScalarField contErrRel1(fluid1_.contErr()/rho1);
-    volScalarField contErrRel2(fluid2_.contErr()/rho2);
-
-    Info    << "Continuity error " << fluid1_.name() << " (avg min max) ="
-            << " " << contErrRel1.weightedAverage(mesh_.V()).value()
-            << " " << min(contErrRel1).value()
-            << " " << max(contErrRel1).value()
-            << " 1/s"  << endl;
-    Info    << "Continuity error " << fluid2_.name() << " (avg min max) ="
-            << " " << contErrRel2.weightedAverage(mesh_.V()).value()
-            << " " << min(contErrRel2).value()
-            << " " << max(contErrRel2).value() 
-            << " 1/s" << endl;
 }

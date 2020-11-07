@@ -7,6 +7,13 @@
     const surfaceScalarField& phi2(fluid2_.phi());
     word phirScheme("div(phir,alpha)");
 
+    //- Dict and dict parameters used in lambda functions
+    const dictionary& alphaDict(mesh_.solverDict("alpha"));
+    scalar minAlphaSp
+    (
+        alphaDict.lookupOrDefault<scalar>("minAlphaSp", 1e-6)
+    );
+
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////    
@@ -101,9 +108,17 @@
         const volScalarField& dgdt(solveFluid.dgdt());
         forAll(dgdt, celli)
         {
-            if (dgdt[celli] < 0.0)
+            if (minAlphaSp != 0)
             {
-                Sp[celli] += dgdt[celli]/max(solveFluid[celli], 1e-15);
+                if (dgdt[celli] < 0.0)
+                {
+                    Sp[celli] += 
+                        dgdt[celli]/max(solveFluid[celli], minAlphaSp);
+                }
+                else
+                {
+                    Su[celli] += dgdt[celli];
+                }
             }
             else
             {
@@ -131,9 +146,15 @@
             otherFluid.phi(), 
             otherFluid.alphaPhi()
         );
-        solveFluid.volScalarField::operator=(min(max(solveFluid, 0.0), 1.0));
+        solveFluid.volScalarField::operator=
+        (
+            min(max(solveFluid, 0.0), movingAlpha_)
+        );
         solveFluid.correctBoundaryConditions();
-        otherFluid.volScalarField::operator=(movingAlpha_-solveFluid);
+        otherFluid.volScalarField::operator=
+        (
+            min(max(movingAlpha_-solveFluid, 0.0), movingAlpha_)
+        );
     };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -213,9 +234,17 @@
         const volScalarField& dgdt1(fluid1_.dgdt());
         forAll(dgdt1, celli)
         {
-            if (dgdt1[celli] < 0.0)
+            if (minAlphaSp != 0)
             {
-                Sp1[celli] += dgdt1[celli]/max(alpha1[celli], 1e-15);
+                if (dgdt1[celli] < 0.0)
+                {
+                    Sp1[celli] += 
+                        dgdt1[celli]/max(alpha1[celli], minAlphaSp);
+                }
+                else
+                {
+                    Su1[celli] += dgdt1[celli];
+                }
             }
             else
             {
@@ -280,9 +309,17 @@
         const volScalarField& dgdt2(fluid2_.dgdt());
         forAll(dgdt2, celli)
         {
-            if (dgdt2[celli] < 0.0)
+            if (minAlphaSp != 0)
             {
-                Sp2[celli] += dgdt2[celli]/max(alpha2[celli], 1e-15);
+                if (dgdt2[celli] < 0.0)
+                {
+                    Sp2[celli] += 
+                        dgdt2[celli]/max(alpha2[celli], minAlphaSp);
+                }
+                else
+                {
+                    Su2[celli] += dgdt2[celli];
+                }
             }
             else
             {
@@ -414,9 +451,6 @@
     //  Furthermore, I introduced a simple way to adjust the number of
     //  sub-cycles at runTime based on a user provided maximum Co num for
     //  the alphaEqns (user provided but it should never exceed 0.5)
-    
-    const dictionary& alphaDict(mesh_.solverDict("alpha"));
-
     word solvePhase
     (
         alphaDict.lookupOrDefault<word>("solvePhase", "both")

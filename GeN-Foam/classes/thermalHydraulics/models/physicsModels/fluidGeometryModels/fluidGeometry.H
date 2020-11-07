@@ -52,7 +52,7 @@ SourceFiles
 #include "structureModel.H"
 #include "fluidDiameterModel.H"
 #include "fluidInterfacialAreaModel.H"
-#include "structureVolumetricAreaPartitionModel.H"
+#include "fluidPartitionModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -69,26 +69,53 @@ class fluidGeometry
 {
 protected:
 
+    //- Ref to dispersed fluid
     const fluid& dispersed_;
 
+    //- Ref to continuous fluid
     const fluid& continuous_;
 
+    //- Ref to structure
     const structureModel& structure_;
 
+    //- Characteristic dimension of the dispersed phase, computed by 
+    //  fluidDiameter_
     volScalarField DhDispersed_;
 
+    //- Fluid-fluid interfacial area, computed by fluidInterfacialArea_
     volScalarField iA_;
 
-    volScalarField frac1_;
+    //- Coefficients that weighs how much of the total two-phase drag is
+    //  applied to the dispersed fluid, computed by dragPartition_
+    volScalarField fKdD_;
 
-    volScalarField frac2_;
+    //- Coefficients that weighs how much of the total two-phase drag is
+    //  applied to the continuous fluid, computed by dragPartition_
+    volScalarField fKdC_;
 
+    //- Coefficients that weighs how much of the total two-phase drag is
+    //  applied to the dispersed fluid, computed by heatTransferPartition_
+    volScalarField fHtcD_;
+
+    //- Coefficients that weighs how much of the total two-phase drag is
+    //  applied to the continuous fluid, computed by heatTransferPartition_
+    volScalarField fHtcC_;
+
+    //-
     autoPtr<fluidDiameterModel> fluidDiameter_;
 
+    //- 
     autoPtr<fluidInterfacialAreaModel> fluidInterfacialArea_;
 
-    autoPtr<structureVolumetricAreaPartitionModel>
-        structureInterfacialAreaPartition_;
+    //- This is set only if the same partitionModel is used for both drag
+    //  and heat transfer
+    autoPtr<fluidPartitionModel> fluidPartition_;
+
+    //- Else these two are set
+    autoPtr<fluidPartitionModel> dragPartition_;
+
+    //- 
+    autoPtr<fluidPartitionModel> heatTransferPartition_;
 
 public:
 
@@ -98,8 +125,8 @@ public:
         (
             const objectRegistry& objReg,
             const dictionary& dict,
-            const fluid& fluid1,
-            const fluid& fluid2,
+            const fluid& dispersed,
+            const fluid& continuous,
             const structureModel& structure
         );
 
@@ -122,6 +149,12 @@ public:
         void correct();
 
         // Access
+
+            //- Return fKd for the provided fluid name
+            const volScalarField& fKd(const word& name) const;
+
+            //- Return fHtc for the provided fluid name
+            const volScalarField& fHtc(const word& name) const;
 
             const fluid& dispersed() const
             {
@@ -156,16 +189,6 @@ public:
             const volScalarField& iA() const
             {
                 return iA_;
-            }
-
-            const volScalarField& frac1() const
-            {
-                return frac1_;
-            }
-
-            const volScalarField& frac2() const
-            {
-                return frac2_;
             }
 };
 

@@ -68,6 +68,8 @@ Foam::twoPhaseDragMultiplierModel::twoPhaseDragMultiplierModel
             word("alpha."+dict.get<word>("multiplierFluid"))
         )
     ),
+    mFracPtr_(nullptr),
+    oFracPtr_(nullptr),
     phi2_
     (
         IOobject
@@ -88,17 +90,63 @@ Foam::twoPhaseDragMultiplierModel::twoPhaseDragMultiplierModel
 {
     HashTable<const fluid*> fluids(mesh_.lookupClass<fluid>());
     wordList fluidNames(fluids.toc());
-    oFluidPtr_ = (fluidNames[0] == mFluid_.name()) ?
+
+    //- PORCO DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    oFluidPtr_ = (fluidNames[0] == "alpha."+mFluid_.name()) ?
         fluids[fluidNames[1]] : fluids[fluidNames[0]];
 }
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::twoPhaseDragMultiplierModel::limitPhi2()
+void Foam::twoPhaseDragMultiplierModel::setPhi2(const volScalarField& phi2)
 {
-    phi2_ = min(phi2_, maxPhi2_);
+    //- Under-relax if necessary
+    scalar f(1.0);
+    if (mesh_.relaxField("twoPhaseDragMultiplier"))
+        f = mesh_.fieldRelaxationFactor("twoPhaseDragMultiplier");
+    if (f!= 1.0) 
+        phi2_ = f*phi2+(1.0-f)*phi2_;
+    else
+        phi2_ = phi2;
+
+    //- Limit extrema
+    phi2_ = max(min(phi2_, maxPhi2_), 1.0);  
+
+    //- Limit spatially only to two-phase regions
+    forAll(phi2_, i)
+    {
+        scalar phaseProduct(mFluid_[i]*(*oFluidPtr_)[i]);
+
+        if (phaseProduct < 1e-6)
+        {
+            phi2_[i] = 1.0;
+        }
+    }  
 }
+
+/*
+void Foam::twoPhaseDragMultiplierModel::limitPhi2
+(
+    const volScalarField& x,
+    const scalar& x0,
+    const scalar& x1
+)
+{
+    this->limitPhi2();
+
+    volScalarField marker(pos(x-x0));
+
+    phi2_ = 
+        marker*
+        (
+            phi2_
+        +   (1.0-phi2_)*min((x-x0)/(x1-x0), 1.0)
+        ) 
+    +   (1.0-marker)*phi2_;
+    
+}
+*/
 
 /*
 
@@ -120,8 +168,7 @@ with gamma being the structure void fraction (i.e. 1.0-alpha_s) and
 
 Re_i = u_i*Dh/nu_i
 
-being the Reynolds number (note that alpha_i/gamma = 1.0 if 
-there is only one phase in the system). 
+being the Reynolds number.
 
 The idea behind the twoPhaseFlow multiplier is saying that the TOTAL volumetric
 force due to structure drag (i.e. the one arising when considering the two
@@ -160,7 +207,8 @@ volumetric drag F_wtot starting from the F_wI1p drag of ONE of the two phases.
 (which is the fluid specified by mFluid_ in this class).
 How do I compute the individual F_wi components (whose sum is F_wtot) to
 apply to the individual phase momentum equations? I use structure contact
-fraction areas c_i, which tell me which fluid is contacting the structure. So:
+fraction areas frac_i, which tell me which fluid is contacting the structure.
+So:
 
 F_wi = frac_i*F_wtot
 
@@ -210,8 +258,20 @@ void Foam::twoPhaseDragMultiplierModel::correctKdTable
 (
     const fluidGeometry& fG,
     volTensorFieldPtrTable& Kds
-) const
+)
 {
+    //- Set ptrs to contact fractions if not set
+    if (mFracPtr_ == nullptr)
+    {
+        mFracPtr_ = &(fG.fKd(mFluid_.name()));
+    }
+    if (oFracPtr_ == nullptr)
+    {
+        oFracPtr_ = &(fG.fKd(oFluidPtr_->name()));
+    }
+    const volScalarField& mFrac(*mFracPtr_);
+    const volScalarField& oFrac(*oFracPtr_);
+
     volTensorField& KdI(*Kds[mFluid_.name()+".structure"]);
     volTensorField& KdO(*Kds[oFluidPtr_->name()+".structure"]);
     volScalarField corr(phi2_*sqr(mFluid_.normalized()));
@@ -219,9 +279,16 @@ void Foam::twoPhaseDragMultiplierModel::correctKdTable
     /*
     Info << mFluid_.name() << " " << oFluidPtr_->name() << endl;    
     Info << "Before" << endl;
-    forAll(KdI, celli)
+    labelList cells(0);
+    label i0(500);
+    for (int i = i0; i<i0+20; i++)
     {
-        Info << KdI[celli] << " " << KdO[celli] << " " << phi2_[celli] << endl;
+        cells.append(i);
+    }
+    forAll(cells, i)
+    {
+        label celli(cells[i]);
+        Info << mFrac[i] << " " << KdI[celli] << " " << oFrac[i] << " " << KdO[celli] << " " << phi2_[celli] << endl;
     }
     */
 
@@ -235,22 +302,22 @@ void Foam::twoPhaseDragMultiplierModel::correctKdTable
                 dimensionedScalar("", dimVelocity, 1e-3)
             )
         );
-
     /*
     Info << "After1" << endl;
-    forAll(KdI, celli)
+    forAll(cells, i)
     {
+        label celli(cells[i]);
         Info << KdI[celli] << " " << KdO[celli] << endl;
     }
     */
-
-    KdI *= fG.frac1();
-    KdO *= fG.frac2();
+    KdI *= mFrac;
+    KdO *= oFrac;
 
     /*
     Info << "After2" << endl;
-    forAll(KdI, celli)
+    forAll(cells, i)
     {
+        label celli(cells[i]);
         Info << KdI[celli] << " " << KdO[celli] << endl;
     }
     */

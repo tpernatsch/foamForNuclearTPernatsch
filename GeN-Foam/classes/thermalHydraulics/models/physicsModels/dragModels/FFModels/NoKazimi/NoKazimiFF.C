@@ -99,13 +99,25 @@ void Foam::dragModels::NoKazimiFF::correctKd(volTensorField& Kd) const
     const volScalarField& alpha(vapour_.normalized());
     volScalarField iA(A_*alpha*min((1.0-alpha)/0.043, 1.0));
 
+    /*
+    Info<< "iANoKazimiFFDrag (avg min max) = "
+        << iA.weightedAverage(mesh_.V()).value() << " "
+        << min(iA).value() << " "
+        << max(iA).value() << " m2/m3"
+        << endl;
+    */
+
     forAll(mesh_.cells(), i)
     {
         tensor& Kdi(Kd[i]);
+        const scalar& a(alpha[i]);
         scalar value
         (
+            (a+liquid_[i])*     // Re-scale void fraction
             rhov[i]*magUr[i]*
-            iA[i]*0.0025*
+            (
+                A_*min(a, 0.99)*min((1.0-a)/0.043, 1.0)
+            )*0.0025*
             (
                 1.0 + 234.3*pow((1.0-sqrt(alpha[i])), 1.15)
             )   

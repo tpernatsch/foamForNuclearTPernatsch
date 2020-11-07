@@ -74,9 +74,7 @@ Foam::phaseChangeModels::kineticGasTheoryPhaseChange::kineticGasTheoryPhaseChang
         iT,
         iA
     ),
-    sigma_("sigma", dimless, 1.0), //this),
-    lambdaEvap_("evaporationCoeff", dimless, this),
-    lambdaCond_("condensationCoeff", dimless, this),
+    sigma_("sigma", dimless, this),
     coeff_
     (
         2.0*sigma_/(2.0-sigma_)*
@@ -88,20 +86,11 @@ Foam::phaseChangeModels::kineticGasTheoryPhaseChange::kineticGasTheoryPhaseChang
             )
         )
     ),
-    //alphaDryout_("alphaDryout", dimless, this),
-    Tl_
-    (
-        (fluid1_.isLiquid()) ? fluid1_.thermo().T() : fluid2_.thermo().T()
-    ),
-    Tv_
-    (
-        (fluid1_.isGas()) ? fluid1_.thermo().T() : fluid2_.thermo().T()
-    ),
-    alphal_
+    liquid_
     (
         (fluid1_.isLiquid()) ? fluid1_ : fluid2_
     ),
-    alphav_
+    vapour_
     (
         (fluid1_.isGas()) ? fluid1_ : fluid2_
     )
@@ -133,8 +122,6 @@ void Foam::phaseChangeModels::kineticGasTheoryPhaseChange::correctMassTransfer()
     //  (very crude, it's the best I have for now)
     this->limitInterfacialArea();
 
-    scalar f(this->relaxationFactor());
-
     //volScalarField alphaDiff(alphav/(alphav+alphal)-alphaDryout_);
 
     //- This should be implict w.r.t. alphav, Tl, Tv, but yeah, good luck
@@ -146,16 +133,20 @@ void Foam::phaseChangeModels::kineticGasTheoryPhaseChange::correctMassTransfer()
     //  G can be different than 0 after conditions for phase change are met
     volScalarField G
     (
-        coeff_*max(alphal_, 1e-2)*max(alphav_, 1e-2)*
+        coeff_*max(liquid_, 1e-2)*max(vapour_, 1e-2)*
         (
-            lambdaEvap_*posPart(saturation_->pSat(Tl_)-p_) 
-        +   lambdaCond_*negPart(saturation_->pSat(Tv_)-p_)
+            saturation_->pSat(liquid_.thermo().T())
+        -   saturation_->pSat(vapour_.thermo().T())
+            /*
+            posPart(saturation_->pSat(liquid_.thermo().T())-p_) 
+        +   negPart(saturation_->pSat(vapour_.thermo().T())-p_)
+            */
         )/sqrt(iT_)
     );
 
-    dmdt_ = 
-        (1.0-f)*dmdt_ + f*iA_*G;    //- fiGA_ would have been nicer for 
-                                    //  obvious italian reasons
+    dmdt_.storePrevIter();
+    dmdt_ = iA_*G;
+    dmdt_.relax();
 
     this->limitMassTransfer();
 }

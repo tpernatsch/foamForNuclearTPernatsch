@@ -27,9 +27,9 @@ stopAt              endTime;
 
 endTime             200;
 
-deltaT              1e-3;// time step (if non adjusted)
+deltaT              2;// time step (if non adjusted)
 
-writeControl        timeStep;//runTime;//timeStep;//adjustableRunTime;
+writeControl        runTime;//timeStep;//timeStep;//adjustableRunTime;
 
 writeInterval       200;
 
@@ -73,7 +73,7 @@ liquidFuel  false; // to be set to true in case of MSRs
 
 // Time step control
 
-adjustTimeStep      true; // adjust the time step based on the parameters 
+adjustTimeStep      false; // adjust the time step based on the parameters 
 			   // below (most stringent condition)
 
 maxDeltaT           1; // maximum time step
