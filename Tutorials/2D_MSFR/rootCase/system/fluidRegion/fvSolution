@@ -54,7 +54,7 @@ solvers
         solver          PBiCGStab;
         preconditioner  diagonal;
         tolerance       1e-07;
-        relTol          0.001;
+        relTol          0.0;
     }
 }
 
@@ -63,14 +63,14 @@ PIMPLE
     nCorrectors      6;
     nNonOrthogonalCorrectors 1;
     partialEliminationMode      implicit;
-    momentumMode                faceCentered;
+    momentumMode                cellCentered;
 }
 
 relaxationFactors
 {
     equations
     {
-        ".*"            1;
+        ".*"            0.7;
     }
 }
 
