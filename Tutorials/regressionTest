@@ -88,6 +88,17 @@ do
         fi
         cd ..
         printf "Done running tutorial $tutorialName...\n"
+
+        # check that keff for MSFR steady State is ~0.958765
+        keff=$(foamDictionary ./steadyStateSSEN/processor0/constant/neutroRegion/reactorState -entry keff -value)
+        printf "\nkeff is $keff . It should be ~0.958765  \n" >> ../$resFile
+
+        # check that power in MSFR transient is ~2e07
+        power=$(grep power ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        printf "power is $power . It should be ~2e+07  \n" >> ../$resFile
+        cd ..
+        ;;
+
         ;;
 
     "2D_onePhaseAndPointKineticsCoupling")
