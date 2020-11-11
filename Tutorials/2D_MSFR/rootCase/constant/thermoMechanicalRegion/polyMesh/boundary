@@ -8,7 +8,7 @@
 FoamFile
 {
     version     2.0;
-    format      binary;
+    format      ascii;
     class       polyBoundaryMesh;
     location    "constant/polyMesh";
     object      boundary;
@@ -21,39 +21,39 @@ FoamFile
     {
         type            wedge;
         inGroups        1(wedge);
-        nFaces          16140;
-        startFace       31851;
-    }
-    topwall
-    {
-        type            patch;
-        nFaces          70;
-        startFace       47991;
-    }
-    bottomwall
-    {
-        type            patch;
-        nFaces          70;
-        startFace       48061;
-    }
-    reflector
-    {
-        type            patch;
-        nFaces          105;
-        startFace       48131;
-    }
-    hx
-    {
-        type            patch;
-        nFaces          540;
-        startFace       48236;
+        nFaces          8595;
+        startFace       16957;
     }
     back
     {
         type            wedge;
         inGroups        1(wedge);
-        nFaces          16140;
-        startFace       48776;
+        nFaces          8595;
+        startFace       25552;
+    }
+    bottomwall
+    {
+        type            patch;
+        nFaces          30;
+        startFace       34147;
+    }
+    topwall
+    {
+        type            patch;
+        nFaces          30;
+        startFace       34177;
+    }
+    reflector
+    {
+        type            patch;
+        nFaces          95;
+        startFace       34207;
+    }
+    hx
+    {
+        type            patch;
+        nFaces          276;
+        startFace       34302;
     }
 )
 

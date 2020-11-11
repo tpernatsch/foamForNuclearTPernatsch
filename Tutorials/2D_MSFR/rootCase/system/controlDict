@@ -76,7 +76,7 @@ adjustTimeStep 		true;
 
 maxDeltaT           1;
 
-maxCo               10;
+maxCo               5;
 
 maxPowerVariation   0.025;
 
