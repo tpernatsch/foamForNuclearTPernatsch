@@ -99,8 +99,6 @@ do
         cd ..
         ;;
 
-        ;;
-
     "2D_onePhaseAndPointKineticsCoupling")
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
