@@ -14,7 +14,7 @@ do
     "3D_SmallESFR")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         # check that keff for esfr steady State is ~0.9370011
@@ -23,35 +23,35 @@ do
     "1D_boiling")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         ;;
     "2D_MSFR")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         ;;
     "2D_onePhaseAndPointKineticsCoupling")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         ;;
     "2D_voidMotionNoPhaseChange")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         ;;
     "Godiva_SN")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         #check that keff in godiva ~8e08

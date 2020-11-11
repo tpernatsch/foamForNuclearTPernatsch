@@ -16,7 +16,7 @@ do
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
-        # source ./Allrun_parallel
+        ./Allrun_parallel
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
@@ -47,7 +47,7 @@ do
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
-        # source ./Allrun
+        ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
@@ -65,7 +65,7 @@ do
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
-        # source ./Allrun
+        ./Allrun
 
         # check it ran
         endStringSSEN=$(tail -3 ./steadyStateEN/log.GeN-Foam | grep End)
@@ -86,11 +86,11 @@ do
         else
             printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
         fi
-        cd ..
+        
         printf "Done running tutorial $tutorialName...\n"
 
         # check that keff for MSFR steady State is ~0.958765
-        keff=$(foamDictionary ./steadyStateSSEN/processor0/constant/neutroRegion/reactorState -entry keff -value)
+        keff=$(foamDictionary ./steadyStateEN/constant/neutroRegion/reactorState -entry keff -value)
         printf "\nkeff is $keff . It should be ~0.958765  \n" >> ../$resFile
 
         # check that power in MSFR transient is ~2e07
@@ -103,7 +103,7 @@ do
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
-        # source ./Allrun
+        ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
@@ -134,7 +134,7 @@ do
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
-        # source ./Allrun
+        ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
@@ -153,7 +153,7 @@ do
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
-        # source ./Allrun_parallel
+        ./Allrun_parallel
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
