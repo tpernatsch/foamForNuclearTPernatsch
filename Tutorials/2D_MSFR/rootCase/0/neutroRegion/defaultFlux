@@ -31,23 +31,39 @@ boundaryField
     }
     topwall
     {
-        type fixedValue;
-        value uniform 0;
+        type            albedoSP3;
+        gamma           0.1;
+        diffCoeffName   Dalbedo;
+        fluxStarAlbedo  fluxStarAlbedo;
+        forSecondMoment 0;
+        value           uniform 1;
     }
     bottomwall
     {
-        type fixedValue;
-        value uniform 0;
+        type            albedoSP3;
+        gamma           0.1;
+        diffCoeffName   Dalbedo;
+        fluxStarAlbedo  fluxStarAlbedo;
+        forSecondMoment 0;
+        value           uniform 1;
     }
     reflector
     {
-       type fixedValue;
-        value uniform 0;
+        type            albedoSP3;
+        gamma           0.1;
+        diffCoeffName   Dalbedo;
+        fluxStarAlbedo  fluxStarAlbedo;
+        forSecondMoment 0;
+        value           uniform 1;
     }
     hx
     {
-        type fixedValue;
-        value uniform 0;
+        type            albedoSP3;
+        gamma           0.5;
+        diffCoeffName   Dalbedo;
+        fluxStarAlbedo  fluxStarAlbedo;
+        forSecondMoment 0;
+        value           uniform 1;
     }
 }
 

@@ -15,3 +15,6 @@ time, the fluid-dynamics equations are not solved in the second steady-state and
 in the transient simulation. Note also that an upwind scheme is employed for the
 divergence term in the diffusion equations (in system/neutroRegion/fvSchemes),
 which is necessary to achieve convergence.
+
+Lastly, a considerably finer mesh is provided under constant/*/polyMeshFiner 
+directories.

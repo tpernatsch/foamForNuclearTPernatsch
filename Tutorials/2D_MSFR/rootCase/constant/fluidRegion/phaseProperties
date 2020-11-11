@@ -76,7 +76,7 @@ physicsModelsByRegime
         "hx"
         {
             type    DarcyReynoldsPower;
-            coeff   0.687;
+            coeff   0.5;
             exp     -0.25;
         }
     }
@@ -85,11 +85,8 @@ physicsModelsByRegime
     {
         "hx"
         {
-            type    NusseltReynoldsPrandtlPower;
-            const   0;
-            coeff   0.023;
-            expRe   0.8;
-            expPr   0.3;
+            type    constant;
+            value   1e+4;
         }
     }
 }
