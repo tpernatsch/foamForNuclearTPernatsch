@@ -73,37 +73,36 @@ Foam::twoPhaseDragMultiplierModels::Kaiser74::~Kaiser74()
 void
 Foam::twoPhaseDragMultiplierModels::Kaiser74::correct()
 {
+    volScalarField phi2
+    (
+        IOobject
+        (
+            "",
+            mesh_.time().timeName(),
+            this->db()
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 1)
+    );
+
     /*
     So 
         phi = 8.2/X^0.55    ->
-        phi2 = 67.24/(X2)^0.55
-    The exponents in X2 are 0.2 for the mu ratio, 1.8 for the flow quality
-    ratio and 1 for the density ratio. Multiplied by 0.55, they become the
-    values below
+        phi2 = 67.24/(X^1.1)
     */
+    const volScalarField& X(mFluid_.XLM());
+    forAll(X, i)
+    {
+        //- I am limiting this for 7e-2 < X < 30 like Kottowski-Savatteri
+        //  out of consistency
+        scalar powX(pow(min(max(X[i], 0.07), 30), 1.1));
+        phi2[i] = 67.24/powX;
+    }
+
+    //- This under-relaxes phi2_ and limits its extrema
     this->setPhi2
     (
-        67.24/
-        max
-        (   
-            pow(mFluid_.thermo().mu()/oFluidPtr_->thermo().mu(), 0.11)*
-            pow
-            (
-                mFluid_.flowQuality()/
-                max
-                (
-                    oFluidPtr_->flowQuality(),
-                    dimensionedScalar("", dimless, 1e-69)
-                ), 
-                0.99
-            )*
-            pow
-            (
-                oFluidPtr_->thermo().rho()/mFluid_.thermo().rho(), 
-                0.55
-            ),
-            dimensionedScalar("", dimless, 1e-9)
-        )
+        phi2
     );
 }
 

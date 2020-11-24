@@ -88,7 +88,7 @@ protected:
     volScalarField phi2_;
 
     //- Maximum allowable value of phi2
-    dimensionedScalar maxPhi2_;
+    scalar maxPhi2_;
 
 public:
 

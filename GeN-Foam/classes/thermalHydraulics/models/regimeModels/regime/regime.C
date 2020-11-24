@@ -303,8 +303,8 @@ void Foam::regime::correctHeatTransferModels()
             volScalarField& htc(*htcs_[key]);
             htc *= 0.0;
 
-            //- Cycles over all dragModels, the ones between a fluid and 
-            //  structure are named fluidName.structure.typeName, but the
+            //- Cycles over all heatTransferModels, the ones between a fluid 
+            //  and structure are named fluidName.structure.typeName, but the
             //  dragModel.pairName() will always be just fluidName.structure
             forAllConstIter
             (
@@ -315,18 +315,22 @@ void Foam::regime::correctHeatTransferModels()
             {
                 const heatTransferModel& heatTransferModel(iter2());
                 if (key == heatTransferModel.pairName()) 
-                    heatTransferModel.correctHtc(htc);
-
-                //- Multiply by the fluid-structure contact fraction if this
-                //  is a two-phase simulation (fluidGeometry_ only valid in
-                //  two-phase and, obviously, fluid-structure htc models)
-                if 
-                (
-                    fluidGeometry_.valid() 
-                and heatTransferModel.nameInterface() == "structure"
-                )
                 {
-                    htc *= fluidGeometry_->fHtc(heatTransferModel.nameBulk());
+                    heatTransferModel.correctHtc(htc);
+                       
+                    //- A momenti sono più coglione di quanto la Madonna
+                    //  sia puttana o Maometto stronzo
+                    //- Multiply by the fluid-structure contact fraction if 
+                    //  this is a two-phase simulation (fluidGeometry_ only 
+                    //  valid in two-phase) and, obviously, if this htc is
+                    //  between a fluid and the structure
+                    if 
+                    (
+                        fluidGeometry_.valid() 
+                    and heatTransferModel.withStructure()
+                    )
+                        htc *= 
+                            fluidGeometry_->fHtc(heatTransferModel.nameBulk());
                 }
             }
         }
@@ -474,13 +478,6 @@ void Foam::regime::correctFluidGeometryFields
     }
     else //- If regime is interpolated
     {
-        /*
-        scalarField Dh1R1(cellList_.size(), 0);
-        scalarField Dh1R2(cellList_.size(), 0);
-        scalarField Dh2R1(cellList_.size(), 0);
-        scalarField Dh2R2(cellList_.size(), 0);
-        */
-
         const volScalarField& DhDispersedR1
         (
             regime1_->fluidGeometry_->DhDispersed()
@@ -523,10 +520,10 @@ void Foam::regime::correctFluidGeometryFields
             const scalar& DhStructurei(DhStructure[celli]);
             const scalar& DhDispersedR1i(DhDispersedR1[celli]);
             const scalar& DhDispersedR2i(DhDispersedR2[celli]);
-            Dh1[celli] = //c1*Dh1R1[i] + c2*Dh1R2[i];
+            Dh1[celli] =
                 c1*((fluid1DispersedInR1) ? DhDispersedR1i : DhStructurei)
             +   c2*((fluid1DispersedInR2) ? DhDispersedR2i : DhStructurei);
-            Dh2[celli] = //c1*Dh2R1[i] + c2*Dh2R2[i];
+            Dh2[celli] =
                 c1*((fluid2DispersedInR1) ? DhDispersedR1i : DhStructurei)
             +   c2*((fluid2DispersedInR2) ? DhDispersedR2i : DhStructurei);
             iA[celli] = c1*iAR1[celli] + c2*iAR2[celli];

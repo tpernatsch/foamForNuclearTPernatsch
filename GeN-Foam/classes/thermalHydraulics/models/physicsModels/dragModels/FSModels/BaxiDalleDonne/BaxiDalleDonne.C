@@ -57,13 +57,15 @@ Foam::dragModels::BaxiDalleDonne::BaxiDalleDonne
     B_(0),
     C_(0)
 {
-    scalar P(dict.get<scalar>("pinPitch"));
+    
     scalar Dp(dict.get<scalar>("pinDiameter"));
     scalar Dw(dict.get<scalar>("wireDiameter"));
     scalar H(dict.get<scalar>("wireLeadLen"));
-    A_ = (80.0/sqrt(H))*pow(P/Dp, 1.5);
-    B_ = 1.034/pow(P/Dp, 0.124);
-    C_ = 29.7*pow(P/Dp, 6.9)/pow(H/(Dp+Dw), 2.239);
+    scalar Pt(Dp+1.0444*Dw);
+    A_ = (80.0/sqrt(100*H))*pow(Pt/Dp, 1.5); //- H provided in m but need to be 
+                                             //  in cm
+    B_ = 1.034/pow(Pt/Dp, 0.124);
+    C_ = 29.7*pow(Pt/Dp, 6.9)/pow(H/(Dp+Dw), 2.239);
 }
 
 

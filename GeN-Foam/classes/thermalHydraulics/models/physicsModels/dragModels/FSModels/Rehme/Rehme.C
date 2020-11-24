@@ -52,20 +52,19 @@ Foam::dragModels::Rehme::Rehme
         objReg,
         dict,
         FSPair
-    ),
-    Np_(this->get<label>("numberOfPins")),
-    Dp_(this->get<scalar>("pinDiameter")),
-    Pp_(this->get<scalar>("pinPitch")),
-    Dw_(this->get<scalar>("wireDiameter")),
-    Lw_(this->get<scalar>("wireLeadLen")),
-    wetWrapPer_(this->get<scalar>("wetWrapPerimeter")),
-    wetPinPer_(Np_*constant::mathematical::pi*(Dp_+Dw_)),
-    A_
-    (
-        wetPinPer_/(wetPinPer_+wetWrapPer_)
     )
 {
-    scalar B(sqrt(Pp_/Dp_) + pow((7.6*(Dp_+Dw_)*sqr(Pp_/Dp_)/Lw_), 2.16));
+    scalar Np(this->get<label>("numberOfPins"));
+    scalar Dp(this->get<scalar>("pinDiameter"));
+    scalar Dw(this->get<scalar>("wireDiameter"));
+    scalar Lw(this->get<scalar>("wireLeadLen"));
+    scalar wetWrapPer(this->get<scalar>("wetWrapPerimeter"));
+    
+    scalar Pt(Dp+1.0444*Dw);
+    scalar wetPinPer(Np*constant::mathematical::pi*(Dp+Dw));
+    scalar B(sqrt(Pt/Dp) + pow((7.6*(Dp+Dw)*sqr(Pt/Dp)/Lw), 2.16));
+    
+    A_ = wetPinPer/(wetPinPer+wetWrapPer);
     B1_ = 64*sqrt(B);
     B2_ = 0.0816*pow(B, 0.9335);
 }

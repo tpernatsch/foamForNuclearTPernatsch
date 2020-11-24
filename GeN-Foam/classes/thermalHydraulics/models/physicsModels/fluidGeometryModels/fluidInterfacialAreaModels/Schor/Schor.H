@@ -94,11 +94,17 @@ private:
     //- Interpolation high alpha
     const dimensionedScalar alpha2_;
 
+    //- Cutoff alpha
+    const dimensionedScalar alpha3_;
+
     //- Interpolation low iA
     const dimensionedScalar iA1_;
 
     //- Interpolation high iA
     const dimensionedScalar iA2_;
+
+    //- Min allowable iA at high alpha
+    const dimensionedScalar iA3_;
 
 
 public:

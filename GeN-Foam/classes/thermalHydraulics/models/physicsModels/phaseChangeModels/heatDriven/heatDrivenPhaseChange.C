@@ -61,6 +61,10 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::modeNames_
         { 
             mode::twoPhaseDriven, 
             "twoPhaseDriven" 
+        },
+        { 
+            mode::mixedDriven, 
+            "mixedDriven" 
         }
     }
 );
@@ -94,10 +98,6 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::heatDrivenPhaseChange
         iA
     ),
     mode_(modeNames_.get(this->get<word>("mode"))),
-    correctLatentHeat_
-    (
-        this->lookupOrDefault<bool>("correctLatentHeat", false)
-    ),
     drivingPhaseName_
     (
         (mode_ == heatDrivenPhaseChange::mode::onePhaseDriven) ?
@@ -105,13 +105,7 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::heatDrivenPhaseChange
     ),
     L_
     (
-        IOobject
-        (
-            "latentHeat",
-            mesh_.time().timeName(),
-            mesh_
-        ),
-        fluid2_.thermo().hc() - fluid1_.thermo().hc()
+        latentHeat_->L()
     )
 {
     if (drivingPhaseName_ != "")
@@ -135,8 +129,6 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::heatDrivenPhaseChange
 void Foam::phaseChangeModels::heatDrivenPhaseChange::correctMassTransfer() 
 {
     //- Refs
-    const volScalarField& he1(fluid1_.thermo().he());
-    const volScalarField& he2(fluid2_.thermo().he());
     const volScalarField& T1(fluid1_.thermo().T());
     const volScalarField& T2(fluid2_.thermo().T());
     const volScalarField& H1i(*htcs_[fluid1_.name()+"."+fluid2_.name()]);
@@ -146,58 +138,15 @@ void Foam::phaseChangeModels::heatDrivenPhaseChange::correctMassTransfer()
     //  (very crude, it's the best I have for now)
     this->limitInterfacialArea();
 
-    //- correctLatentHeat_ =
-    //  compute the latent heat of vaporization in a manner consistent
-    //  with how massTransfer related enthalpy is added to the energy
-    //  equations. In particular, assuming 2 is vapour and 1 is liquid
-    //  (but it works the other way around too):
-    //  * when evaporating, mass is removed from the liquid at its current
-    //    enthalpy and is added to the vapour at vapour saturation
-    //    entalphy;
-    //  * when condensing, mass is removed from the vapour at its current
-    //    enthalpy and is added to the liquid at liquid saturation
-    //    enthalpy.
-    //    For example, in the case of condensing super-heated steam, its
-    //    enthalpy will be larger than saturation enthalpy. However, if
-    //    you remove mass from the steam at an enthalpy lower than its
-    //    current enthalpy, the remaining steam will inevitably be
-    //    hotter.
-    //  The un-adjusted latent heat itself would be
-    //  fluid2_.thermo().hc() - fluid1_.thermo().hc(), with hc() being
-    //  the enthalpy of formation specified under the Hf keyword in the
-    //  thermophysical dict of each phase
-
-    //- Please note that the code here does not make use of the isLiquid or
-    //  isGas methods of the fluids to determine which is the liquid and 
-    //  which is the vapour. It does that via the sign of the latent heat
-    if (correctLatentHeat_)
-    {
-        L_.storePrevIter();
-        
-        L_ = 
-            fluid2_.thermo().hc()
-        -   fluid1_.thermo().hc()
-        +   neg(dmdt_)*(he2 - fluid2_.thermo().he(p_, iT_))
-        -   pos(dmdt_)*(he1 - fluid1_.thermo().he(p_, iT_));
-        
-        L_.relax();
-        
-        Info<< "L (avg min max) ="
-        << " " << L_.weightedAverage(mesh_.V()).value()
-        << " " << min(L_).value()
-        << " " << max(L_).value()
-        << " J/kg" << endl;
-    }
+    //- Update latent heat
+    latentHeat_->correct();
     
     volScalarField dmdt1i
     (
-        //pos0(fluid1_.normalized()-fluid1_.thermoResidualAlpha())*
         H1i*iA_*(T1-iT_)/L_
     );
     volScalarField dmdt2i
     (
-
-        //pos0(fluid2_.normalized()-fluid2_.thermoResidualAlpha())*
         H2i*iA_*(T2-iT_)/L_
     );
 
@@ -206,7 +155,6 @@ void Foam::phaseChangeModels::heatDrivenPhaseChange::correctMassTransfer()
     switch (mode_)
     {
         case heatDrivenPhaseChange::mode::conductionLimited : 
-
             dmdt_ = dmdt1i + dmdt2i;
             break;
 
@@ -218,6 +166,13 @@ void Foam::phaseChangeModels::heatDrivenPhaseChange::correctMassTransfer()
             dmdt_ = 
                 (fluid1_.name() == drivingPhaseName_) ?
                 dmdt1i : dmdt2i;      
+            break;
+
+        case heatDrivenPhaseChange::mode::mixedDriven :
+            dmdt_ = 
+                (fluid1_.name() == drivingPhaseName_) ?
+                dmdt1i + negPart(dmdt2i) :
+                posPart(dmdt1i) + dmdt2i;
             break;
 
         default : break;

@@ -105,21 +105,22 @@ public:
     {
         conductionLimited, 
         onePhaseDriven,
-        twoPhaseDriven
+        twoPhaseDriven,
+        mixedDriven
     };
 
     static const Enum<mode> modeNames_;
 
 protected:
 
+    //-
     const mode mode_;
 
-    const bool correctLatentHeat_;
-
+    //-
     const word drivingPhaseName_;
 
-    //- Latent heat
-    volScalarField L_;
+    //- Non-const ref to latent heat
+    const volScalarField& L_;
 
 public:
 

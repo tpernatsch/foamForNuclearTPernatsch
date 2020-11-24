@@ -33,7 +33,12 @@ Description
     the multiplierFluid and exp defaulting to 2 (which is the actual
     Lottes-Flinn model). The exp can be user-provided (it is know from e.g.
     TRACE development that this exponent can be slightly smaller for bubbly
-    flows, e.g. in the 1.7-1.8 range)
+    flows, e.g. in the 1.7-1.8 range). The optional mode keyword is 
+    used to specify whether the actual phase-fraction of the vapour should
+    be used of if alpha should be computed via the correlation by Nguyen,
+    H. Nguyen "A finite element method for one-dimensional sodium boiling
+    simulation" in Third International Topical Meeting on Reactor 
+    Thermal-hydraulics, p.17C
 
 Author
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
@@ -48,6 +53,7 @@ DictEntryExample
         type            LottesFlinn;
         multiplierFluid liquid;
         exp             2;         //- Not required, defaults to 2  
+        mode            alpha;     //- Not required, defaults to alpha
     }
 
 
@@ -74,10 +80,24 @@ class LottesFlinn
 :
     public twoPhaseDragMultiplierModel
 {
+public:
+
+    enum mode
+    {
+        alpha,
+        XLM
+    };
+
+    static const Enum<mode> modeNames_;
+
 private:
 
     //- exp in phi2 = 1/(alpha^exp)
     scalar exp_;
+
+    //- If set to XLM, the Nguyen correlation for alpha will be used instead of
+    //  the phase fraction field available from the solver
+    const mode mode_;
 
 public:
 

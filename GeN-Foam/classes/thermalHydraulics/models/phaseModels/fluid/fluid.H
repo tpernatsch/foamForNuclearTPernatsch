@@ -115,12 +115,32 @@ private :
     */
     volScalarField dgdt_;
 
-    //- Static and flow qualities of the phase. While these are not intrinsic
+    //- A field that represents the sign of phase change in each cell, i.e.
+    //  1 if the phase is appearning, -1 if disappearing, 0 else. This field
+    //  is currently only used by the nucleateBoiling heatTransfer model
+    autoPtr<scalarField> phaseChangeSignPtr_; 
+
+    //- Flow quality of the phase. While these are not intrinsic
     //  properties to the fluid itself (they depend on the properties of the
-    //  other fluid too), it is way easier to just set them here rather than
-    //  in the FFPair class, where it would make more logical sense
-    volScalarField staticQuality_;
-    volScalarField flowQuality_;
+    //  other fluid too), their are placed here for programming convenience.
+    //  Handled by an autoPtr as it is non-trivial only in two-phase scenarios
+    autoPtr<volScalarField> flowQualityPtr_;
+
+    //- Place-holder for the Lockhart-Martinelli parameter. Logically, just as
+    //  flow quality, it should belong to FFPair. However, if I place it there
+    //  I loose the ability to computed it differently cell-by-cell based on
+    //  the fluid multiplier that was selected for the regime that exists in
+    //  said cell. Conversely, the twoPhaseDragMultiplierModels access a phase
+    //  directly, so by placing it here, I avoid a lot of issues. I generally
+    //  favour coding simplicity over philosophical consistency.
+    //  Handled by an autoPtr as it is useless for the onePhase solver
+    autoPtr<volScalarField> XLMPtr_;
+
+    //- Minimum allowable value of the Lockhart-Martinelli parameter
+    dimensionedScalar minXLM_;
+
+    //- Maximum allowable value of the Lockhart-Martinelli parameter
+    dimensionedScalar maxXLM_;
 
     //- Normalized phase fraction
     volScalarField normalized_;
@@ -145,8 +165,9 @@ private :
     volScalarField Dh_;
 
     //- Marker field that is 1 where the phase is dispersed, 0 where it is 
-    //  continuous, and between 0 and 1 in interpolation regimes
-    scalarField dispersion_;
+    //  continuous, and between 0 and 1 in interpolation regimes.
+    //  Handled by an autoPtr as it is non-trivial only in two-phase scenarios
+    autoPtr<scalarField> dispersionPtr_;
 
     //- Turbulence model
     autoPtr<phaseCompressibleTurbulenceModel> turbulence_;
@@ -175,6 +196,10 @@ public:
         //- To remove abstractness from phaseBase
         virtual void abstract() {}
 
+        //- Set all the autoPtr to the fields required for two-phase 
+        //  simulations
+        void initTwoPhaseFields();
+
         //- Initialize alphaPhi and alphaRhoPhi, to be called as a separate
         //  function in the solver main after adequate phase fraction
         //  normalization
@@ -190,6 +215,9 @@ public:
         //  desireable to have a separate "constructur function" for the
         //  turbulenceModel
         void constructTurbulenceModel();
+
+        //- Correct flow quality and Lockhart-Martinelli Parameter
+        void correctTwoPhaseFields(const fluid& otherFluid);
 
         //- Related to stateOfMatter
         bool isLiquid() const
@@ -308,24 +336,34 @@ public:
                 return dgdt_;
             }
 
-            const volScalarField& staticQuality() const
+            const scalarField& phaseChangeSign() const
             {
-                return staticQuality_;
+                return phaseChangeSignPtr_();
             }
 
-            volScalarField& staticQuality()
+            scalarField& phaseChangeSign()
             {
-                return staticQuality_;
+                return phaseChangeSignPtr_();
             }
 
             const volScalarField& flowQuality() const
             {
-                return flowQuality_;
+                return flowQualityPtr_();
             }
 
             volScalarField& flowQuality()
             {
-                return flowQuality_;
+                return flowQualityPtr_();
+            }
+
+            const volScalarField& XLM() const
+            {
+                return XLMPtr_();
+            }
+
+            volScalarField& XLM()
+            {
+                return XLMPtr_();
             }
 
             const volScalarField& normalized() const
@@ -390,12 +428,12 @@ public:
 
             const scalarField& dispersion() const
             {
-                return dispersion_;
+                return dispersionPtr_();
             }
 
             scalarField& dispersion()
             {
-                return dispersion_;
+                return dispersionPtr_();
             }
 
             const dimensionedScalar thermoResidualAlpha() const

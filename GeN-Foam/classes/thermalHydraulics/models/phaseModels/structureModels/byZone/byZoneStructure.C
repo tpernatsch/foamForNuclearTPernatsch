@@ -96,6 +96,26 @@ Foam::structureModels::byZone::byZone
         if (key == "type") continue;
         if (key == "powerOffCriterionModel") continue;
         const dictionary& zoneDict(dict.subDict(key));
+
+        if (key == "heatExchangers")
+        {
+            const dictionary& HXDicts(dict.subDict(key));
+            forAll(HXDicts.toc(), j)
+            {
+                word HXKey(HXDicts.toc()[j]);
+                const dictionary& HXDict(HXDicts.subDict(HXKey));
+                heatExchangers_.insert
+                (
+                    HXKey,
+                    heatExchanger
+                    (
+                        mesh_,
+                        HXDict
+                    )
+                );
+            }
+            continue;
+        }
         
         wordList zones(myStringOps::split<word>(key, ':'));
 
@@ -558,9 +578,8 @@ Foam::structureModels::byZone::byZone
             )
         );
     }
-
-    //- Adjust iAact that was left out as it is a member of
-    //  powerModel
+ 
+    //- Adjust iAact that was left out as it is a member of powerModel
     forAllIter
     (
         powerModelTable,
@@ -571,6 +590,57 @@ Foam::structureModels::byZone::byZone
         iAact_ += iter()->iA();
     }
     iAact_.correctBoundaryConditions();
+
+    //- If HXs were specified, created the HX-specific fields, THXPtr_ and
+    //  iAHXPtr_
+    if (heatExchangers_.size() > 0)
+    {
+        THXPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "T.HX",
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimensionedScalar("", dimTemperature, 0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        iAHXPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "",
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimensionedScalar("", dimArea/dimVol, 0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        volScalarField& iAHX(iAHXPtr_());
+        forAllIter
+        (
+            heatExchangerTable,
+            heatExchangers_,
+            iter
+        )
+        {
+            iAHX += iter().iA();
+        }
+        iAHX.correctBoundaryConditions();
+    }
 
     Rl2g_.correctBoundaryConditions();
     Rg2l_.correctBoundaryConditions();

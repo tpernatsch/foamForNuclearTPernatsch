@@ -62,16 +62,6 @@ nucleateBoiling
         FSPair,
         regions
     ),
-    Twall_(FSPair.structure().Twall()),
-    Tf_(FSPair.fluidRef().thermo().T()),
-    Tsat_
-    (
-        //- The interface is always at saturation when doing simulations
-        //  with phase change enabled, so use this for Tsat_
-        FSPair.fluidRef().mesh().lookupObject<volScalarField>("T.interface")
-    ),
-    p_(FSPair.fluidRef().mesh().lookupObject<volScalarField>("p")),
-    pCrit_(3.5e7), //- Specific to Sodium
     flowFactor_
     (
         flowFactorModel::New
@@ -110,6 +100,38 @@ nucleateBoiling
             objReg,
             FSPair
         )
+    ),
+    F_
+    (
+        IOobject
+        (
+            "flowFactor."+objReg.name(),
+            FSPair.fluidRef().mesh().time().timeName(),
+            FSPair.fluidRef().mesh(),
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        FSPair.fluidRef().mesh(),
+        dimensionedScalar("", dimless, 1.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    S_
+    (
+        IOobject
+        (
+            "suppressionFactor."+objReg.name(),
+            FSPair.fluidRef().mesh().time().timeName(),
+            FSPair.fluidRef().mesh(),
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        FSPair.fluidRef().mesh(),
+        dimensionedScalar("", dimless, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    dmdt_
+    (
+        mesh_.lookupObject<volScalarField>("dmdt")
     )
 {}
 
@@ -125,26 +147,53 @@ void Foam::heatTransferModels::nucleateBoiling::correctHtc
     //  consists only of the purely convective component
     convectionHeatTransfer_->correctHtc(htc);
 
-    //- Correct the convection enhancement flow factor
-    flowFactor_->correct();
-    const scalarField& F(flowFactor_->flowFactor());
-
-    //- Correct the nucleate boiling suppression factor
-    suppressionFactor_->correct();
-    const scalarField& S(suppressionFactor_->suppressionFactor());
-
-    //- Correct the pool boiling heat transfer coefficient
-    poolBoilingHeatTransfer_->correct();
-    const scalarField& htcPB(poolBoilingHeatTransfer_->htc());
-
-    forAll(cellList_, i)
+    //- Only correct nucleate boiling models if the normalized vapour alpha is
+    //  larger than 1.0-alpha0
+    //scalar alpha0(0.99999);
+    //const volScalarField& alphaNorm(FSPair_->fluidRef().normalized());
+    const scalarField& phaseChangeSign(FSPair_->fluidRef().phaseChangeSign());
+    if (min(phaseChangeSign) < 0.0)
     {
-        const label& celli(cellList_[i]);
+        //- Correct the convection enhancement flow factor
+        flowFactor_->correct();
+        const scalarField& F(flowFactor_->flowFactor());
 
-        //- Recall that htc[celli] on the right hand side consists only of
-        //  the convective component
-        htc[celli] = F[i]*htc[celli]+S[i]*htcPB[i];
-    }
+        //- Correct the nucleate boiling suppression factor
+        suppressionFactor_->correct();
+        const scalarField& S(suppressionFactor_->suppressionFactor());
+
+        forAll(cellList_, i)
+        {
+            const label& celli(cellList_[i]);
+            F_[celli] = F[i];
+            S_[celli] = S[i];
+        }
+        F_.correctBoundaryConditions();
+        S_.correctBoundaryConditions();
+
+        //- Correct the pool boiling heat transfer coefficient
+        poolBoilingHeatTransfer_->correct();
+        const scalarField& htcPB(poolBoilingHeatTransfer_->htc());
+
+        forAll(cellList_, i)
+        {
+            const label& celli(cellList_[i]);
+
+            //- Correct only in those cells where I am boiling
+            //- Recall that htc[celli] on the right hand side consists only of
+            //  the convective component before the assignment is done
+            if (phaseChangeSign[celli] < 0.0)
+            {
+                scalar& htci(htc[celli]);
+                htci = F[i]*htci + S[i]*htcPB[i];
+                /*
+                Info<< celli << " " << htc[celli] << " " << htcC << " " 
+                    << htcPB[i] << " " << min(F[i], 50) << " " << S[i] 
+                    << endl;
+                */
+            }
+        }
+    }    
 }
 
 

@@ -1,7 +1,14 @@
 const volVectorField& lRe(FSPair_->lRe());
 const volVectorField& lDh(FSPair_->structure().lDh());
 
-scalar maxTr2PrRatio(100);
+scalar maxTr2PrRatio
+(
+	mesh_.solutionDict().subDict("PIMPLE").lookupOrDefault<scalar>
+    (
+        "maxTransverseToPrincipalDragRatio", 
+        100.0
+    )
+);
 
 forAll(cellList_, i)
 {

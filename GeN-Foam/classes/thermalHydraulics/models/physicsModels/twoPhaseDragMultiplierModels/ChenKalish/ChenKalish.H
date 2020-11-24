@@ -79,9 +79,6 @@ class ChenKalish
 {
 private:
 
-    //- log of the sqrt of the Lockhart-Martinelli parameter
-    volScalarField logX_;
-
 public:
 
     //- Runtime type information

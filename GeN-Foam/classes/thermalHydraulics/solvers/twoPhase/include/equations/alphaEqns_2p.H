@@ -569,37 +569,20 @@
         alpha2.oldTime().timeIndex() = timeIndex;
     }
 
+    //- Update normalized alpha fields (only useful for regime map 
+    //  parametrization, if selected as regime map parameter)
+    fluid1_.normalized() = fluid1_/movingAlpha_;
+    fluid2_.normalized() = fluid2_/movingAlpha_;
+
     //- Correct mass fluxes
     fluid1_.alphaRhoPhi() = 
             fvc::interpolate(fluid1_.thermo().rho())*fluid1_.alphaPhi();
     fluid2_.alphaRhoPhi() = 
         fvc::interpolate(fluid2_.thermo().rho())*fluid2_.alphaPhi();
 
-    //- Correct phase qualities
-    volScalarField totalSpecificMass
-    (
-        alpha1*fluid1_.thermo().rho()+alpha2*fluid2_.thermo().rho()
-    );
-    fluid1_.staticQuality() = alpha1*fluid1_.thermo().rho()/totalSpecificMass;
-    fluid2_.staticQuality() = alpha2*fluid2_.thermo().rho()/totalSpecificMass;
-    volScalarField totalMassFlux
-    (
-        max
-        (
-            alpha1*fluid1_.thermo().rho()*fluid1_.magU()
-        +   alpha2*fluid2_.thermo().rho()*fluid2_.magU(),
-            dimensionedScalar("", dimDensity*dimVelocity, 1e-6)
-        )
-    );
-    fluid1_.flowQuality() = 
-        alpha1*fluid1_.thermo().rho()*fluid1_.magU()/totalMassFlux;
-    fluid2_.flowQuality() = 
-        alpha2*fluid2_.thermo().rho()*fluid2_.magU()/totalMassFlux;
-
-    //- Update normalized alpha fields (only useful for regime map 
-    //  parametrization, if selected as regime map parameter)
-    fluid1_.normalized() = fluid1_/movingAlpha_;
-    fluid2_.normalized() = fluid2_/movingAlpha_;
+    //- Correct flow qualities, Lockhart-Martinelli parameter
+    fluid1_.correctTwoPhaseFields(fluid2_);
+    fluid2_.correctTwoPhaseFields(fluid1_);
 
     //- Infos
     Info<< alpha1.name() << " (avg min max) ="

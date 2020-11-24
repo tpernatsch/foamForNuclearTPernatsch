@@ -217,6 +217,8 @@ if (!implicitPartialElimination)
 
             pEqn.setReference(pRefCell_, pRefValue_);
 
+            pEqn.relax();
+
             convergedPISO =
             ( 
                 pEqn.solve
@@ -249,13 +251,24 @@ if (!implicitPartialElimination)
                     phi2 = (phi_ - alphaf1*phir)/movingAlphaf;
                 }
 
-                fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
-                fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
+                p_rgh_.relax();
+
+                scalar f(myOps::relaxationFactor(mesh_, "dgdt"));
+                if (f != 1.0)
+                {
+                    fluid1_.dgdt() = 
+                        f*(-pEqnComp1 & p_rgh_)+(1.0-f)*fluid1_.dgdt();
+                    fluid2_.dgdt() = 
+                        f*(-pEqnComp2 & p_rgh_)+(1.0-f)*fluid2_.dgdt();
+                }
+                else
+                {
+                    fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
+                    fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
+                }
 
                 if (momentumMode_ == momentumMode::cellCentered)
                 {
-                    p_rgh_.relax();
-
                     mSfGradp = pEqnIncomp.flux()/rAUf;
 
                     volVectorField Us1 = 
@@ -544,6 +557,8 @@ else    //- i.e. if doing implicitPartialElimination
 
             pEqn.setReference(pRefCell_, pRefValue_);
 
+            pEqn.relax();
+
             convergedPISO =
             ( 
                 pEqn.solve
@@ -564,13 +579,24 @@ else    //- i.e. if doing implicitPartialElimination
                 phi1 = phiHbyA1 + alpharAUf1Star*mSfGradp;
                 phi2 = phiHbyA2 + alpharAUf2Star*mSfGradp;
 
-                fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
-                fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
+                p_rgh_.relax();
+
+                scalar f(myOps::relaxationFactor(mesh_, "dgdt"));
+                if (f != 1.0)
+                {
+                    fluid1_.dgdt() = 
+                        f*(-pEqnComp1 & p_rgh_)+(1.0-f)*fluid1_.dgdt();
+                    fluid2_.dgdt() = 
+                        f*(-pEqnComp2 & p_rgh_)+(1.0-f)*fluid2_.dgdt();
+                }
+                else
+                {
+                    fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
+                    fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
+                }
 
                 if (momentumMode_ == momentumMode::cellCentered)
                 {
-                    p_rgh_.relax();
-
                     mSfGradp = pEqnIncomp.flux()/rAUf;
 
                     U1 = 

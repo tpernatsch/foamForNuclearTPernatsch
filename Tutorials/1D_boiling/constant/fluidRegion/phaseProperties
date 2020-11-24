@@ -96,7 +96,7 @@ vapourProperties
 //  two-phase transients. Use with care, as due to its partly explicit nature 
 //  it can substantially lower time steps requirements to guarantee stability.
 //  This entry IS NOT MANDATORY and defaults to 0;
-virtualMassCoeff        0.01;
+virtualMassCoeff        0.1;
 
 // ------------------------------------------------------------------------- //
 // --- STRUCTURES PROPERTIES ----------------------------------------------- //
@@ -620,7 +620,7 @@ physicsModelsByRegime
                 type SchillerNaumann;
             }
 
-            "vapour.structure"
+            "liquid.structure"
             {
                 "low:mid:top"
                 {
@@ -634,7 +634,7 @@ physicsModelsByRegime
         twoPhaseDragMultiplierModel
         {
             type                Kaiser88;
-            multiplierFluid     vapour;
+            multiplierFluid     "liquid";
         }
 
         heatTransferModels
@@ -866,6 +866,12 @@ phaseChangeModel
     type                heatDriven;
     mode                conductionLimited; 
     correctLatentHeat   true;
+
+    latentHeatModel
+    {
+        type        FinkLeibowitz;
+        adjust      true;
+    }
     
     saturationModel
     {

@@ -6,10 +6,6 @@
     const volVectorField& U(fluid_.U());
     const volScalarField& contErr(fluid_.contErr());
     volScalarField& rho(fluid_.thermo().rho());
-    tmp<volScalarField> cp(fluid_.thermo().Cp());
-
-    //- Kinetic energy per unit volume
-    volScalarField K(0.5*U&U);
 
     volTensorField alphaEff
     (
@@ -22,10 +18,7 @@
     (
             fvm::ddt(alpha, rho, he) 
         +   fvm::div(fluid_.alphaRhoPhi(), he, "div(alphaRhoPhi,he)")
-        -   fvm::SuSp(contErr, he)
-        +   fvc::ddt(alpha, rho, K) 
-        +   fvc::div(fluid_.alphaRhoPhi(), K, "div(alphaRhoPhi,K)")
-        -   contErr*K
+        +   fvm::SuSp(-contErr, he)
         +   alpha*dpdt_
         -   fvm::laplacian
             (
@@ -38,17 +31,21 @@
         +   fvOptions_(alpha, rho, he)
     );
 
-    //- Structure heat sources
-    //- Correct surface temperature of the power-generating subStructures 
-    //  of the structures and add source/sink terms to the fluids energy 
-    //  eqns
-    const volScalarField& Hs(*htcs_["FSPair"]);
+    //- Add kinetic energy contributions
+    if (runTime_.controlDict().lookupOrDefault("includeKineticEnergy", true))
+    {
+        //- Kinetic energy per unit volume
+        volScalarField K(0.5*U&U);
+        EEqn +=
+        (
+            fvc::ddt(alpha, rho, K) 
+        +   fvc::div(fluid_.alphaRhoPhi(), K, "div(alphaRhoPhi,K)")
+        -   contErr*K
+        );
+    }
 
-    structure_.correct
-    (
-        Hs*T,
-        Hs
-    );
+    //- Add structure heat sources (i.e. powerModels and HX)
+    const volScalarField& Hs(*htcs_["FSPair"]);
     EEqn -= structure_.linearizedSemiImplicitHeatSource(fluid_, Hs)();
 
     //- Add additional sources deposited directly in the fluids, if any
@@ -63,7 +60,19 @@
     fvOptions_.constrain(EEqn);
     EEqn.solve();
     fvOptions_.correct(he);
+    he.relax();
     fluid_.thermo().correct();
+
+    //- Correct surface temperature of the power-generating subStructures 
+    structure_.correct
+    (
+        Hs*T,
+        Hs
+    );
+
+    //- Correct fluid pradntl number;
+    fluid_.Pr() = 
+        fluid_.thermo().Cp()*fluid_.thermo().mu()/fluid_.thermo().kappa();
 
     Info<< "T (avg min max) = "
         << T.weightedAverage(mesh_.V()).value()

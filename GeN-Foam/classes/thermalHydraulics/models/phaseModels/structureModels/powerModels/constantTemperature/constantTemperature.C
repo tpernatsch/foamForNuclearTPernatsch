@@ -72,6 +72,7 @@ Foam::powerModels::constantTemperature::constantTemperature
         zeroGradientFvPatchScalarField::typeName
     )
 {
+    this->setInterfacialArea();
     structure_.setRegionField(this, T_, "T");
 }
 

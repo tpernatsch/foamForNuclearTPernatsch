@@ -203,7 +203,6 @@ if(!implicitPartialElimination)
         tmp<fvScalarMatrix> pEqnComp1;
         tmp<fvScalarMatrix> pEqnComp2;
         pEqnComp1 =
-            pos(alpha1)*
             (
                 fvc::ddt(alpha1, rho1)
             +   fvc::div(fluid1_.alphaRhoPhi())
@@ -218,7 +217,6 @@ if(!implicitPartialElimination)
         +   dmdt_/rho1;
 
         pEqnComp2 =
-            pos(alpha2)*
             (
                 fvc::ddt(alpha2, rho2)
             +   fvc::div(fluid2_.alphaRhoPhi()) 
@@ -246,6 +244,8 @@ if(!implicitPartialElimination)
             fvScalarMatrix pEqn(pEqnComp1() + pEqnComp2() + pEqnIncomp);
 
             pEqn.setReference(pRefCell_, pRefValue_);
+
+            pEqn.relax();
 
             convergedPISO =
             ( 
@@ -281,10 +281,21 @@ if(!implicitPartialElimination)
                     phi2 = (phi_ + alphaf1*phir)/movingAlphaf;
                 }
 
-                fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
-                fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
-                
                 p_rgh_.relax();
+
+                scalar f(myOps::relaxationFactor(mesh_, "dgdt"));
+                if (f != 1.0)
+                {
+                    fluid1_.dgdt() = 
+                        f*(-pEqnComp1 & p_rgh_)+(1.0-f)*fluid1_.dgdt();
+                    fluid2_.dgdt() = 
+                        f*(-pEqnComp2 & p_rgh_)+(1.0-f)*fluid2_.dgdt();
+                }
+                else
+                {
+                    fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
+                    fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
+                }
 
                 //- The ifs are just to avoid useless field reconstructions
                 //  for integer values of the oscillationLimiterFraction
@@ -529,7 +540,6 @@ else //- i.e. if doing implicitPartialElimination
         tmp<fvScalarMatrix> pEqnComp1;
         tmp<fvScalarMatrix> pEqnComp2;
         pEqnComp1 =
-            pos(alpha1)*
             (
                 fvc::ddt(alpha1, rho1)
             +   fvc::div(fluid1_.alphaRhoPhi())
@@ -544,7 +554,6 @@ else //- i.e. if doing implicitPartialElimination
         +   dmdt_/rho1;
 
         pEqnComp2 =
-            pos(alpha2)*
             (
                 fvc::ddt(alpha2, rho2)
             +   fvc::div(fluid2_.alphaRhoPhi()) 
@@ -573,6 +582,8 @@ else //- i.e. if doing implicitPartialElimination
 
             pEqn.setReference(pRefCell_, pRefValue_);
 
+            pEqn.relax();
+
             convergedPISO =
             ( 
                 pEqn.solve
@@ -582,22 +593,33 @@ else //- i.e. if doing implicitPartialElimination
             ==  0.0
             );
 
+            //bool finalInnerIter(pimple_.finalInnerIter() or convergedPISO);
+
             if (pimple_.finalNonOrthogonalIter())
             {
                 surfaceScalarField pEqnFlux(pEqnIncomp.flux());
-                
-                phi_ = phiHbyA + pEqnFlux;
-
                 surfaceScalarField mSfGradp("mSfGradp", pEqnFlux/rAUf);
-                
+
+                phi_ = phiHbyA + pEqnFlux;
                 phi1 = phiHbyA1 + alpharAUf1Star*mSfGradp;
                 phi2 = phiHbyA2 + alpharAUf2Star*mSfGradp;
 
-                fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
-                fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
-                
                 p_rgh_.relax();
 
+                scalar f(myOps::relaxationFactor(mesh_, "dgdt"));
+                if (f != 1.0)
+                {
+                    fluid1_.dgdt() = 
+                        f*(-pEqnComp1 & p_rgh_)+(1.0-f)*fluid1_.dgdt();
+                    fluid2_.dgdt() = 
+                        f*(-pEqnComp2 & p_rgh_)+(1.0-f)*fluid2_.dgdt();
+                }
+                else
+                {
+                    fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
+                    fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
+                }
+                
                 //- The ifs are just to avoid useless field reconstructions
                 //  for integer values of the oscillationLimiterFraction
                 if (oscillationLimiterFraction_ != 0.0)

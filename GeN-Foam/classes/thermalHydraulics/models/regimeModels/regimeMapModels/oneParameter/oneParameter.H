@@ -56,6 +56,16 @@ class oneParameter
 :
     public regimeMapModel
 {
+public:
+
+    enum class interpolationMode
+    {
+        linear, 
+        quadratic
+    };
+
+    static const Enum<interpolationMode> interpolationModeNames_;
+
 private:
 
     const scalarField& parameter_;
@@ -63,6 +73,8 @@ private:
     wordList orderedRegimeNames_;
 
     scalarList thresholds_;
+
+    const interpolationMode interpolationMode_;
 
 public:
 

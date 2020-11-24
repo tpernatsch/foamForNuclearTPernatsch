@@ -12,7 +12,7 @@ scalar minMagU
     mesh_.solutionDict().subDict("PIMPLE").lookupOrDefault<scalar>
     (
         "minMagU", 
-        0.0
+        1e-2
     )
 );
 

@@ -64,7 +64,7 @@ class twoPhase
 {
 public :
 
-    enum partialEliminationMode
+    enum class partialEliminationMode
     {
         none, 
         legacy,
@@ -73,8 +73,9 @@ public :
 
     static const Enum<partialEliminationMode> partialEliminationModeNames_;
 
-    enum contErrCompensationMode
+    enum class contErrCompensationMode
     {
+        none,
         Su,
         Sp, 
         SuSp
@@ -82,7 +83,7 @@ public :
 
     static const Enum<contErrCompensationMode> contErrCompensationModeNames_;
 
-    enum heStabilizationMode
+    enum class heStabilizationMode
     {
         cutoff,
         source
@@ -140,25 +141,16 @@ private:
         //      - fluid2 and the structure
         volTensorFieldPtrTable Kds_;
 
-        //- Fluid-fluid drag coefficient reconstructed from drag factor as
-        //  Cd12_ = 2*Kd12*DhDispersed/(rhoContinuous*mag(Urel))/alpha1/alpha2.
-        //  Why do I even need this? Well, some turbulence models require it
-        //  and reconstructing it from within said turbulence models is
-        //  difficult at low dispersed phase fractions. Kd would go to 0, but
-        //  it is limited (in the solver) to a small value (1 kg/m3/s), so that
-        //  the reconstructed Cd can be significantly over-estimated at low 
-        //  phase fractions. Thus, I compute Cd (i.e. this FFCd_) before 
-        //  limiting the Kd in the main solver, and look up this field from 
-        //  within the turbulence models that need it. All this applies only to
-        //  the fluid-fluid drag
-        volScalarField Cd12_;
-
         //- table of heat transfer coefficients between:
         //      - fluid1 and interface between fluid1 and fluid2;
         //      - fluid2 and interface between fluid2 and fluid1;
         //      - fluid1 and the structure
         //      - fluid2 and the structure
         volScalarFieldPtrTable htcs_;
+
+        //- Virtual mass coefficient, currently handled outside the
+        //  regime framework
+        scalar Vm_;
 
         //- interfacial area between fluid1 and fluid2
         volScalarField iA12_;
@@ -205,7 +197,8 @@ private:
         const partialEliminationMode partialEliminationMode_;
 
         //- contErrCompensation mode
-        const contErrCompensationMode contErrCompensationMode_;
+        const contErrCompensationMode UContErrCompensationMode_;
+        const contErrCompensationMode heContErrCompensationMode_;
 
         //-
         const heStabilizationMode heStabilizationMode_;

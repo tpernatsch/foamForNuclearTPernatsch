@@ -2,7 +2,7 @@
     //- Relax heat transfer coefficients in table if requested
     this->relaxFieldPtrTable<volScalarField>
     (
-        word("heatTransfer"), 
+        word("htc"), 
         htcs_
     );
 
@@ -21,7 +21,7 @@
     volScalarField& rho2(fluid2_.thermo().rho());
     tmp<volScalarField> Cp1(fluid1_.thermo().Cp());
     tmp<volScalarField> Cp2(fluid2_.thermo().Cp());
-
+    
     /*
     Info<< "H1i (avg min max) = "
         << H1i.weightedAverage(mesh_.V()).value()
@@ -114,7 +114,6 @@
     (
             fvm::ddt(alpha1, rho1, he1) 
         +   fvm::div(fluid1_.alphaRhoPhi(), he1, "div(alphaRhoPhi,he)")
-        -   fvm::SuSp(contErr1, he1)
         +   alpha1*dpdt_
         -   fvm::laplacian
             (
@@ -130,7 +129,6 @@
     (
             fvm::ddt(alpha2, rho2, he2)
         +   fvm::div(fluid2_.alphaRhoPhi(), he2, "div(alphaRhoPhi,he)")
-        -   fvm::SuSp(contErr2, he2)
         +   alpha2*dpdt_
         -   fvm::laplacian
             (
@@ -142,6 +140,41 @@
             alpha2*rho2*(U2&g_) 
         +   fvOptions_(alpha2, rho2, he2)
     );
+
+    scalar c
+    (
+        pimple_.dict().lookupOrDefault<scalar>
+        (
+            "continuityErrorScaleFactor", 
+            1.0
+        )
+    );
+
+    switch (heContErrCompensationMode_)
+    {
+        case contErrCompensationMode::none :
+        {
+            break;
+        }
+        case contErrCompensationMode::Su :
+        {
+            E1Eqn -= c*fluid1_.contErr()*he1;
+            E2Eqn -= c*fluid2_.contErr()*he2;
+            break;
+        }
+        case contErrCompensationMode::Sp :
+        {
+            E1Eqn -= fvm::Sp(c*fluid1_.contErr(), he1);
+            E2Eqn -= fvm::Sp(c*fluid2_.contErr(), he2);
+            break;
+        }
+        case contErrCompensationMode::SuSp :
+        {
+            E1Eqn += fvm::SuSp(-c*fluid1_.contErr(), he1);
+            E2Eqn += fvm::SuSp(-c*fluid2_.contErr(), he2);
+            break;
+        }
+    }
 
     //- Add kinetic energy contributions
     if (runTime_.controlDict().lookupOrDefault("includeKineticEnergy", true))
@@ -168,8 +201,20 @@
         //- Compute/update dmdt_
         phaseChange_->correctMassTransfer();
 
+        //- Set phaseChange marker fields (currently only used by the
+        //  nucleateBoiling model)
+        scalarField& pCS1(fluid1_.phaseChangeSign());
+        scalarField& pCS2(fluid2_.phaseChangeSign());
+        forAll(dmdt_, i)
+        {
+            const scalar& dmdti(dmdt_[i]);
+            pCS1[i] = (dmdti > 0) ? -1.0 : ((dmdti < 0) ? 1.0 : 0);
+            pCS2[i] = -pCS1[i];
+        }
+
         volScalarField dmdt12(posPart(dmdt_));
         volScalarField dmdt21(-negPart(dmdt_));
+
         E1Eqn -= dmdt21*he1i - fvm::Sp(dmdt12, he1);
         E2Eqn -= dmdt12*he2i - fvm::Sp(dmdt21, he2);
 
@@ -182,12 +227,12 @@
     
     //- Add linearized interfacial heat transfer contributions
     E1Eqn -= 
-        pos1pos2*(
+        (
             H1i*iA12_*(he1/Cp1() + iT12_ - T1)
         -   fvm::Sp(H1i*iA12_/Cp1(), he1)
         );
     E2Eqn -= 
-        pos1pos2*(
+        (
             H2i*iA12_*(he2/Cp2() + iT12_ - T2)
         -   fvm::Sp(H2i*iA12_/Cp2(), he2)
         );
@@ -195,15 +240,13 @@
     //- Structure heat sources
     //- Correct surface temperature of the power-generating subStructures 
     //  of the structures and add source/sink terms to the fluids energy 
-    //  eqns
-    volScalarField H1s(*htcs_[fluid1_.name()+".structure"]);
-    volScalarField H2s(*htcs_[fluid2_.name()+".structure"]);
+    //  eqns. Also, limit fluid-structure HTCs only to regions where the fluid
+    //  phase fraction is above thermoResidualAlpha
+    volScalarField& H1s(*htcs_[fluid1_.name()+".structure"]);
+    //H1s *= pos1;
+    volScalarField& H2s(*htcs_[fluid2_.name()+".structure"]);
+    //H2s *= pos2;
     
-    structure_.correct
-    (
-        H1s*T1 + H2s*T2, 
-        H1s + H2s
-    );
     E1Eqn -= structure_.linearizedSemiImplicitHeatSource(fluid1_, H1s)();
     E2Eqn -= structure_.linearizedSemiImplicitHeatSource(fluid2_, H2s)();
 
@@ -252,6 +295,9 @@
             );
         }
     }
+    //- Store prev iter for structure T solution
+    T1.storePrevIter();
+    T2.storePrevIter();
 
     //- Relax and solve equations
     E1Eqn.relax();
@@ -287,6 +333,13 @@
     fluid1_.thermo().correct();
     fluid2_.thermo().correct();
 
+    //- Update structure temperature
+    structure_.correct
+    (
+        H1s*T1.prevIter() + H2s*T2.prevIter(), 
+        H1s + H2s
+    );
+    
     //- Correct fluid Prandtl numbers
     fluid1_.Pr() = Cp1()*fluid1_.thermo().mu()/fluid1_.thermo().kappa();
     fluid2_.Pr() = Cp2()*fluid2_.thermo().mu()/fluid2_.thermo().kappa();

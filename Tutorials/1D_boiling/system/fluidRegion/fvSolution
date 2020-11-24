@@ -72,6 +72,14 @@ solvers
         //  of subCycles is set to ceil(Co/alphaMaxCo) with Co being the
         //  current global courant number.
         adjustSubCycles     true;
+
+        //- For which phase fraction should the continuity equation be solved?
+        //  If not provided, it defaults to both phase fractions being solved
+        //  and then normalized one against the other. Solving only for one
+        //  phase can significantly reduce simulation times by up to 30%
+        //  depending on the mesh size (the reduction is larger for larger
+        //  meshes)
+        solveAlpha          "vapour";
         
         //- Maximum subCycle Courant
         alphaMaxCo          0.25;
@@ -160,10 +168,19 @@ PIMPLE
     //  useless pressure corrector iterations). Defaults to false
     correctUntilConvergence     true;
 
-    //- 
-    adaptiveMassTransferLimiter true;
+    //- The mass transfer term will be limited so that, at max, it will be
+    //  able to result in a 40% reduction of the phase fraction of the
+    //  disappearing phase in each cell. The losses due to this limiter
+    //  are print in the log as "Cumulative dm loss". If these are too 
+    //  large, you are used a time-step that is too large to properly
+    //  resolve boiling. If not provided, defaults to infinity (i.e.
+    //  no limitation on the mass transfer term). Providing this
+    //  can play a role in stabilizing the simulation
+    massTransferSafetyFactor 0.4;
 
-    //-
+    //- Maximum time derivative that the interfacial temperature is allowed
+    //  to have (acts similarly to an under-relaxation, yet not exactly the
+    //  same thing, should be easy to see why)
     maxTInterfaceDdt            1e4;
 
     residualControl
@@ -201,12 +218,15 @@ relaxationFactors
     }
 
     //- The two most important relaxation factors for explicitly coupled
-    //  two-phase flows with phaseChange
+    //  two-phase flows with phaseChange. Adding the "Final" word to 
+    //  any keyword will apply the under-relaxation on the last outer iteration
+    //  too which, while not mathematically correct and while it can result
+    //  in a slow-down of the transient dynamics if too small, it can help
+    //  stabilize the simulation
     fields
     {
         //- Under-relaxation of the mass transfer term
         "dmdt"              0.25;
-        "dmdtFinal"         0.25;
 
         //- Under-relaxation of the interfacial temperature between the fluids.
         //  This only has an effect if the employed saturationModel in
@@ -216,6 +236,7 @@ relaxationFactors
         //  interfacialTemperature, resulting in massive changes in the mass
         //  transfer term 
         "T.interface"              0.1;
+        "T.interfaceFinal"         0.1;
     }
 }
 

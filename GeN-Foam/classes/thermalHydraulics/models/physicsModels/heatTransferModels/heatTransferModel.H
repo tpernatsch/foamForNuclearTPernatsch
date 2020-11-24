@@ -93,6 +93,9 @@ protected:
     //  and shared dragModels)
     scalarField cellField_;
 
+    //- True if this heatTransferModel is between a fluid and the structure
+    const bool withStructure_; 
+
 public:
 
     TypeName("heatTransferModel");
@@ -222,6 +225,11 @@ public:
         const scalarField& cellField() const
         {
             return cellField_;
+        }
+
+        bool withStructure() const
+        {
+            return withStructure_;
         }
 };
 

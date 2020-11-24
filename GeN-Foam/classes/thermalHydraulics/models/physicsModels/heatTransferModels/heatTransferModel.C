@@ -68,7 +68,8 @@ Foam::heatTransferModel::heatTransferModel
     FFPair_(&FFPair),
     FSPair_(nullptr),
     cellList_(0),
-    cellField_(FFPair.mesh().cells().size(), 0.0)
+    cellField_(FFPair.mesh().cells().size(), 0.0),
+    withStructure_(false)
 {
     forAll(mesh_.cells(), i)
     {
@@ -107,7 +108,8 @@ Foam::heatTransferModel::heatTransferModel
     FFPair_(nullptr),
     FSPair_(&FSPair),
     cellList_(0),
-    cellField_(FSPair.mesh().cells().size(), 0.0)
+    cellField_(FSPair.mesh().cells().size(), 0.0),
+    withStructure_(true)
 {    
     forAll(regions, i)
     {

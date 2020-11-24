@@ -25,8 +25,23 @@ Class
     Foam::heatTransferModels::nucleateBoiling
 
 Description
-    Heat transfer coefficient computed from Nusselt via a correlation in the
-    form: A + B*Reynolds^(C)*Prandtl^(D).
+    Heat transfer coefficient computed via a super-position model in the form:
+
+    htc = F*htcC + S*htcPB
+
+    where:
+
+    -   htcC is a purely convective heat transfer coefficient
+    -   htcPB is a purely pool-boiling related heat transfer coefficient
+    -   F is a flow enhancement factor that quantifies the convective HTC
+        enhancement due to increased wall turbulence due to vapour bullbe
+        departure 
+    -   S is a suppression factor that is meant to "turn-off" pool boiling
+        as the vapour flow quality increased (as the boiling transitions to
+        film boiling).
+
+    In particular, 1 <= F <= inf and 0 <= S <= 1. All these terms are run-time 
+    selectable.
 
 Author
     Stefan Radman (stefan.radman@epfl.ch, stefanradman92@gmail.com)
@@ -64,21 +79,6 @@ class nucleateBoiling
 {
 private:
 
-    //- Ref to structure wall temperature
-    const volScalarField& Twall_;
-
-    //- Ref to fluid temperature
-    const volScalarField& Tf_;
-
-    //- Ref to saturation temperature
-    const volScalarField& Tsat_;
-
-    //- Ref to pressure
-    const volScalarField& p_;
-
-    //- Critical pressure in Pa
-    scalar pCrit_;
-
     mutable autoPtr<flowFactorModel> flowFactor_;
 
     mutable autoPtr<suppressionFactorModel> suppressionFactor_;
@@ -86,6 +86,13 @@ private:
     mutable autoPtr<heatTransferModel> convectionHeatTransfer_;
 
     mutable autoPtr<poolBoilingModel> poolBoilingHeatTransfer_;
+
+    //-
+    mutable volScalarField F_;
+    mutable volScalarField S_;
+
+    //- Ref to mass transfer
+    const volScalarField dmdt_;
 
 public:
 

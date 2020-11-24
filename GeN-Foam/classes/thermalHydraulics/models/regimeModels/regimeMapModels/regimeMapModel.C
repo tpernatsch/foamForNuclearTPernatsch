@@ -106,7 +106,7 @@ void Foam::regimeMapModel::setRequiresModelCorrection()
     )
     {
         regime& regime(iter()());
-        if (regime.isInterpolated())
+        if (regime.isInterpolated() and regime.isCurrentlyPresent())
         {
             regime.regime1().requiresModelCorrection() = true;
             regime.regime2().requiresModelCorrection() = true;

@@ -58,19 +58,6 @@ Foam::twoPhaseDragMultiplierModels::KottowskiSavatteri::KottowskiSavatteri
         objReg,
         dict,
         mesh
-    ),
-    log10X_
-    (
-        IOobject
-        (
-            IOobject::groupName("log10X", objReg.name()),
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimless, 1e-9)
     )
 {}
 
@@ -86,45 +73,40 @@ Foam::twoPhaseDragMultiplierModels::KottowskiSavatteri::~KottowskiSavatteri()
 void
 Foam::twoPhaseDragMultiplierModels::KottowskiSavatteri::correct()
 {
-    //- Compute log of the sqrt of the Lockhart-Martinelli parameter. Recall
-    //  the correlation is valid only for 7e-2 < X < 30
-    log10X_ =
-        log10
-        ( 
-            min
-            (
-                max
-                (   
-                    pow(mFluid_.thermo().mu()/oFluidPtr_->thermo().mu(), 0.1)*
-                    pow
-                    (
-                        mFluid_.flowQuality()/
-                        max
-                        (
-                            oFluidPtr_->flowQuality(),
-                            dimensionedScalar("", dimless, 1e-69)
-                        ), 
-                        0.9
-                    )*
-                    sqrt(oFluidPtr_->thermo().rho()/mFluid_.thermo().rho()),
-                    dimensionedScalar("", dimless, 7e-2)
-                ),
-                dimensionedScalar("", dimless, 30)
-            )
-        );
+    volScalarField phi2
+    (
+        IOobject
+        (
+            "",
+            mesh_.time().timeName(),
+            this->db()
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 1)
+    );
 
+    const volScalarField& X(mFluid_.XLM());
+    forAll(X, i)
+    {
+        //- The correlation is valid only for 7e-2 < X < 30
+        scalar log10X(log10(min(max(X[i], 0.07), 30)));
+        phi2[i] = 
+            pow
+            (
+                10,
+                2.0*
+                (
+                    0.1046*sqr(log10X)
+                -   0.5098*log10X
+                +   0.6252
+                )
+            );
+    }
+
+    //- This under-relaxes phi2_ and limits its extrema
     this->setPhi2
     (
-        pow
-        (
-            10,
-            2.0*
-            (
-                0.1046*sqr(log10X_)
-            -   0.5098*log10X_
-            +   0.6252
-            )
-        )
+        phi2
     );
 }
 

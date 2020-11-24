@@ -60,6 +60,7 @@ SourceFiles
 #include "runTimeSelectionTables.H"
 #include "zeroGradientFvPatchFields.H"
 #include "powerModel.H"
+#include "heatExchanger.H"
 #include "powerOffCriterionModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -86,6 +87,13 @@ protected:
         word,
         word::hash
     >   powerModelTable;
+
+    typedef HashTable
+    <
+        heatExchanger,
+        word,
+        word::hash
+    >   heatExchangerTable;
 
     //- List of names of each group of cells into which this structure is split
     wordList regions_;
@@ -119,6 +127,9 @@ protected:
     //- Table of power models indexed by powerModel name
     powerModelTable powerModels_;
 
+    //- Table of heat exchangers
+    heatExchangerTable heatExchangers_;
+
     //- Heat flux from active structures only. Positive if from structure to
     //  fluid
     volScalarField heatFlux_;
@@ -128,6 +139,13 @@ protected:
 
     //- Interfacial area of the powerModel region
     volScalarField iAact_;
+
+    //- Heat exchanger surface temperature
+    autoPtr<volScalarField> THXPtr_;
+
+    //- Heat exchanger interfacial area (no difference between inner and outer,
+    //  don't ask too much pls thnx. Maybe in the future)
+    autoPtr<volScalarField> iAHXPtr_;
 
     //- Volume fraction of the passive structure (might be different than
     //  global structure volumefraction)

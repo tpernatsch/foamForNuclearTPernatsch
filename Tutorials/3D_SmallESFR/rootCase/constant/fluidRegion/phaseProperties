@@ -58,7 +58,14 @@ structureProperties
         powerModel // power production model for the sub-scale structure
         {
             type                nuclearFuelPin;
-            volumetricArea      237.4;
+            
+            // The volumetricArea keyword is now deprecated for the
+            // nuclearFuelPin and heatedPin powerModels, as it can be shown
+            // that by averaging a cylindrical pin (or a bundle of pins) over
+            // a volume of any shape, the interfacialArea and volumeFraction
+            // of the resulting porous pin structure are not independent, yet
+            // are tied by volumetricArea = 2*volumeFraction/outerPinRadius
+            // volumetricArea      267.855;
             powerDensity        0;  //- fields on disk have priority, if they
                                     //  are not found, this value is used
             fuelInnerRadius     0.0012;

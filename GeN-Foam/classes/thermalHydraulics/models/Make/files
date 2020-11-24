@@ -6,7 +6,10 @@ phaseModels/structureModels/structureModel.C
 phaseModels/structureModels/newStructureModel.C
 phaseModels/structureModels/byZone/byZoneStructure.C
 
+include/myOps.C
 include/IOFieldField/IOFieldFields.C
+
+phaseModels/structureModels/heatExchanger/heatExchanger.C
 
 phaseModels/structureModels/powerModels/powerModel.C
 phaseModels/structureModels/powerModels/newPowerModel.C
@@ -59,9 +62,11 @@ physicsModels/heatTransferModels/FFModels/NoKazimi/NoKazimiFFHeatTransfer.C
 physicsModels/heatTransferModels/FSModels/nucleateBoiling/nucleateBoiling.C
 physicsModels/heatTransferModels/FSModels/nucleateBoiling/flowFactorModels/flowFactorModel.C
 physicsModels/heatTransferModels/FSModels/nucleateBoiling/flowFactorModels/newFlowFactorModel.C
+physicsModels/heatTransferModels/FSModels/nucleateBoiling/flowFactorModels/Chen/ChenFlowFactor.C
 physicsModels/heatTransferModels/FSModels/nucleateBoiling/flowFactorModels/COBRA_TF/COBRA_TFFlowFactor.C
 physicsModels/heatTransferModels/FSModels/nucleateBoiling/suppressionFactorModels/suppressionFactorModel.C
 physicsModels/heatTransferModels/FSModels/nucleateBoiling/suppressionFactorModels/newSuppressionFactorModel.C
+physicsModels/heatTransferModels/FSModels/nucleateBoiling/suppressionFactorModels/Chen/ChenSuppressionFactor.C
 physicsModels/heatTransferModels/FSModels/nucleateBoiling/suppressionFactorModels/COBRA_TF/COBRA_TFSuppressionFactor.C
 physicsModels/heatTransferModels/FSModels/nucleateBoiling/poolBoilingModels/poolBoilingModel.C
 physicsModels/heatTransferModels/FSModels/nucleateBoiling/poolBoilingModels/newPoolBoilingModel.C
@@ -86,6 +91,10 @@ physicsModels/fluidGeometryModels/fluidPartitionModels/constant/constantPartitio
 physicsModels/fluidGeometryModels/fluidPartitionModels/AzadShirani/AzadShirani.C
 physicsModels/fluidGeometryModels/fluidGeometry.C
 
+physicsModels/phaseChangeModels/latentHeatModels/latentHeatModel.C
+physicsModels/phaseChangeModels/latentHeatModels/newLatentHeatModel.C
+physicsModels/phaseChangeModels/latentHeatModels/FinkLeibowitz/FinkLeibowitz.C
+physicsModels/phaseChangeModels/latentHeatModels/fromThermophysicalProperties/latentHeatFromThermophysicalProperties.C
 physicsModels/phaseChangeModels/saturationModels/saturationModel.C
 physicsModels/phaseChangeModels/saturationModels/newSaturationModel.C
 physicsModels/phaseChangeModels/saturationModels/constantTemperature/constantSaturationTemperature.C
