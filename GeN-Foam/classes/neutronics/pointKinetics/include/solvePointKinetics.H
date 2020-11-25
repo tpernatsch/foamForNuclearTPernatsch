@@ -89,8 +89,8 @@ if (TFuel_.mesh().time().write())
     reactorState_.regIOobject::writeObject
     (
         IOstream::ASCII,
-        IOstream::currentVersion,
-        reactorState_.time().writeCompression(),
+        //IOstream::currentVersion,
+        //reactorState_.time().writeCompression(),
         true
     );
 }

@@ -7,6 +7,8 @@ Info<< "    -> TCool          = " << (TCoolReactivity*1e5) << " pcm" << endl;
 Info<< "    -> rhoCool        = " << (rhoCoolReactivity*1e5) << " pcm" << endl;
 Info<< "    -> TStruct        = " << (TStructReactivity*1e5) << " pcm" << endl;
 Info<< "    -> driveline      = " << (drivelineReactivity*1e5) << " pcm"<<endl;
+if (this->get<bool>("GEM"))
+	Info<< "    -> GEM            = " << (GEMReactivity*1e5) << " pcm" << endl;
 Info<< "    TFuel = " << TFuelValue << " K" << endl;
 Info<< "    TClad = " << TCladValue << " K" << endl;
 Info<< "    TCool = " << TCoolValue << " K" << endl;
@@ -16,3 +18,5 @@ Info<< "    driveline (T, exp) = "
     << TDrivelineValue << " K, " 
     << drivelineExpValue << " m"
     << endl;
+if (this->get<bool>("GEM"))
+	Info<< "    GEMSodiumLevel = " << GEMSodiumLevel << " m" << endl;

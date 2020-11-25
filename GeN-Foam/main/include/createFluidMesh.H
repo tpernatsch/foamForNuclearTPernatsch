@@ -17,7 +17,7 @@ if(runTime.controlDict().lookupOrDefault<bool>("removeBaffles", false))
     if (UPstream::nProcs() > 1)
     {
         Info<< "WARNING: the removeBaffles feature is guaranteed to work only "
-            << "if each processor contains complete pairs of master an slave "
+            << "if each processor contains complete pairs of master and slave "
             << "faces of baffe patches! Otherwise, projection artifacts can "
             << " still occur" << nl << endl;
     }
@@ -66,6 +66,63 @@ if(runTime.controlDict().lookupOrDefault<bool>("removeBaffles", false))
 
     //- Remove baffles
     removeBaffles(fluidMeshNBPtr(), runTime);   
+
+    //- Copy mesh zones
+    List<pointZone*> pointZonesNB(0);
+    List<faceZone*> faceZonesNB(0);
+    List<cellZone*> cellZonesNB(0);
+    forAll(fluidMesh.pointZones().names(), i)
+    {
+        word name(fluidMesh.pointZones().names()[i]);
+        const pointZone& origZone(fluidMesh.pointZones()[name]);
+        pointZonesNB.append
+        (
+            new pointZone
+            (
+                name,
+                origZone,
+                i,
+                fluidMesh.pointZones()  //- Not sure whether I should use
+                                        //  fluidMesh or fluidMeshNBPtr() here,
+                                        //  both seem to result in the same
+                                        //  zones getting assembled, so, not
+                                        //  too big of a deal but this should
+                                        //  be checked eventually
+            )
+        );
+    }
+    forAll(fluidMesh.faceZones().names(), i)
+    {
+        word name(fluidMesh.faceZones().names()[i]);
+        const faceZone& origZone(fluidMesh.faceZones()[name]);
+        faceZonesNB.append
+        (
+            new faceZone
+            (
+                name,
+                origZone,
+                origZone.flipMap(),
+                i,
+                fluidMesh.faceZones()
+            )
+        );
+    }
+    forAll(fluidMesh.cellZones().names(), i)
+    {
+        word name(fluidMesh.cellZones().names()[i]);
+        const cellZone& origZone(fluidMesh.cellZones()[name]);
+        cellZonesNB.append
+        (
+            new cellZone
+            (
+                name,
+                origZone,
+                i,
+                fluidMesh.cellZones()
+            )
+        );
+    }
+    fluidMeshNBPtr().addZones(pointZonesNB, faceZonesNB, cellZonesNB);
 }
 else
 {
@@ -86,6 +143,40 @@ else
 
 fvMesh& fluidMeshNB = fluidMeshNBPtr();
 
+/*
+Info << "Print NB zones" << endl;
+forAllIter
+(
+    pointZoneMesh,
+    fluidMeshNBPtr().pointZones(),
+    iter
+)
+{
+    Info << (*iter).name() << endl;
+    Info << (*iter) << endl;
+}
+forAllIter
+(
+    faceZoneMesh,
+    fluidMeshNBPtr().faceZones(),
+    iter
+)
+{
+    Info << (*iter).name() << endl;
+    Info << (*iter) << endl;
+}
+forAllIter
+(
+    cellZoneMesh,
+    fluidMeshNBPtr().cellZones(),
+    iter
+)
+{
+    Info << (*iter).name() << endl;
+    Info << (*iter) << endl;
+}
+Info << "Done printing NB zones" << endl;
+*/
 
 //- Silence "unused variable" warnings, I actually do use it and have no idea
 //  why the compiler does not "see" it
