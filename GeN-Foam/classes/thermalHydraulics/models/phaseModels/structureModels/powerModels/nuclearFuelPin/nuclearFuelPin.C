@@ -662,10 +662,6 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
         gapH_[regioni]
     );
 
-    Info<< "Region " << region << " cell " << celli << " q " << q
-        << " gapH " << gapH << endl;
-
-
     //- Init matrix, source
     SquareMatrix<scalar> M(meshSize, meshSize, Foam::zero());
     List<scalar> S(meshSize, 0.0);
