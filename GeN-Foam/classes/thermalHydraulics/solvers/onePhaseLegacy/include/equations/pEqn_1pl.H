@@ -109,8 +109,6 @@ while (pimple_.correct())
         //- Update densities from change in p_rgh
         fluid_.thermo().rho() += psi*(p_rgh_ - p_rgh_0);
 
-        dpdt_ = fvc::ddt(alpha,p_);
-
         solve(fvm::ddt(alpha,fixedRho_) + fvc::div(phiDarcy));
         
         if(p_rgh_.needReference()

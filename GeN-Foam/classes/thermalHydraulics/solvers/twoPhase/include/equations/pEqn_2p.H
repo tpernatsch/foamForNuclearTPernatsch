@@ -1,23 +1,4 @@
-surfaceScalarField& phi1(fluid1_.phi());
-surfaceScalarField& phi2(fluid2_.phi());
-dimensionedScalar residualAlpha1(fluid1_.residualAlpha());
-dimensionedScalar residualAlpha2(fluid2_.residualAlpha());
-surfaceScalarField alphaf1(fvc::interpolate(alpha1));
-surfaceScalarField alphaf2(fvc::interpolate(alpha2));
-surfaceScalarField movingAlphaf(fvc::interpolate(movingAlpha_));
-
-bool noPartialElimination
-(
-    partialEliminationMode_ == partialEliminationMode::none
-);
-bool explicitPartialElimination
-(
-    partialEliminationMode_ == partialEliminationMode::legacy
-);
-bool implicitPartialElimination
-(
-    partialEliminationMode_ == partialEliminationMode::implicit
-);
+#include "refsAndControls_2p.H"
 
 if (!implicitPartialElimination)
 {
@@ -43,6 +24,13 @@ if (!implicitPartialElimination)
         )
     );
 
+    //- Fields required either way, whether doing explicit Partial Elimination
+    //  or not
+    volScalarField rAUKd1 = rAU1*Kd12;
+    volScalarField rAUKd2 = rAU2*Kd12;
+    surfaceScalarField rAUKdf1(fvc::interpolate(rAUKd1));
+    surfaceScalarField rAUKdf2(fvc::interpolate(rAUKd2));
+
     //- Interpolate 1/A to faces and limit
     surfaceScalarField alpharAUf1
     (
@@ -57,90 +45,50 @@ if (!implicitPartialElimination)
 
     while (pimple_.correct(convergedPISO))
     {
-        this->correctContErrs();
         rho_ = this->rho();
         p_rgh_ = p_ - rho_*gh_;
 
-        //- Correct fixed-flux BCs to be consistent with the velocity BCs
+        //- Correct boundary fluxes to account for MRF rotation
         MRF_.correctBoundaryFlux(U1, phi1);
         MRF_.correctBoundaryFlux(U2, phi2);
 
-        //- Construct H/A fields and limit to avoid problems for alpha = 0
+        //- Construct H/A fields
         volVectorField HbyA1
         (
             "HbyA."+fluid1_.name(),
-            rAU1*
-            (
-                UEqn1.H()
-            +   max(residualAlpha1 - alpha1, 0.0)*
-                rho1*U1.oldTime()/mesh_.time().deltaT()
-            )
+            rAU1*UEqn1.H()
         );
-            
         volVectorField HbyA2
         (
             "HbyA."+fluid2_.name(),
-            rAU2*
-            (
-                UEqn2.H()
-            +   max(residualAlpha2 - alpha2, 0.0)*
-                rho2*U2.oldTime()/mesh_.time().deltaT()
-            )
+            rAU2*UEqn2.H()
         );
 
-        //- Construct fluxes due to explicit terms namely buoyancy/gravity 
-        //  and the momentum source, if present
-        surfaceScalarField ghSnGradRho
-        (
-            "ghSnGradRho",
-            ghf_*fvc::snGrad(rho_)*mesh_.magSf()
-        );
-        surfaceScalarField deltaRhof12(fvc::interpolate(rho1 - rho2));
-        surfaceScalarField phis1
-        (
-            alpharAUf1*
-            (
-                ghSnGradRho
-            -   alphaf2*deltaRhof12*(g_ & mesh_.Sf())
-            )
-        );
-        surfaceScalarField phis2
-        (
-            alpharAUf2*
-            (
-                ghSnGradRho
-            +   alphaf1*deltaRhof12*(g_ & mesh_.Sf())
-            )
-        );
-        if (structure_.momentumSourcePtr().valid())
-        {
-            surfaceScalarField fluxMS(fvc::flux(structure_.momentumSource()));
-            phis1 -= alpharAUf1*fluxMS;
-            phis2 -= alpharAUf2*fluxMS;
-        }
+        //- Face-interpolated momentum source terms.
+        //  Currently includes only gravity/buoyancy and the optional pump 
+        //  momentum source. Any new explicit source terms in the momentum  
+        //  equation (that were NOT included in the momentum equation) should
+        //  be added here 
+        #include "calcPhiS_2p.H"
+
+        surfaceScalarField phiSbyA1(fvc::interpolate(rAU1)*phiS1);
+        surfaceScalarField phiSbyA2(fvc::interpolate(rAU2)*phiS2);
 
         //- Construct phase fluxes
         surfaceScalarField phiHbyA1
         (
             "phiHbyA."+fluid1_.name(),
             fvc::flux(HbyA1)
-        -   phis1
+        +   phiSbyA1
         );
         surfaceScalarField phiHbyA2
         (
             "phiHbyA."+fluid2_.name(),
             fvc::flux(HbyA2)
-        -   phis2
+        +   phiSbyA2
         );
-
-        //- Kd12/A1, Kd12/A2
-        volScalarField rAUKd1 = rAU1*Kd12;
-        volScalarField rAUKd2 = rAU2*Kd12;
-        surfaceScalarField rAUKdf1(fvc::interpolate(rAUKd1));
-        surfaceScalarField rAUKdf2(fvc::interpolate(rAUKd2));
-
         //- Add back explicit interphase drag contributions if not doing
-        //  partial elimination
+        //  Partial Elimination
         if (noPartialElimination)
         {
             HbyA1 += rAUKd1*U2;
@@ -170,36 +118,9 @@ if (!implicitPartialElimination)
             mag(alphaf1*alpharAUf1 + alphaf2*alpharAUf2)
         );
 
-        //- Update the fixedFluxPressure BCs to ensure flux consistency
-        setSnGrad<fixedFluxPressureFvPatchScalarField>
-        (
-            p_rgh_.boundaryFieldRef(),
-            (
-                phiHbyA.boundaryField()
-            -   (
-                    alphaf1.boundaryField()*phi1.boundaryField()
-                +   alphaf2.boundaryField()*phi2.boundaryField()
-                )
-            )/(mesh_.magSf().boundaryField()*rAUf.boundaryField())
-        );
+        #include "setSnGradP_rgh_2p.H"
 
-        //- Construct the compressibility parts of the pressure equation
-        tmp<fvScalarMatrix> p_rghCorr(correction(fvm::ddt(p_rgh_)));
-        tmp<fvScalarMatrix> pEqnComp1;
-        tmp<fvScalarMatrix> pEqnComp2;
-        pEqnComp1 =
-            (
-                fluid1_.contErr() // +dmdt in contErr
-            -   fvc::Sp(fvc::ddt(alpha1) + fvc::div(fluid1_.alphaPhi()), rho1)
-            )/rho1
-        +   (alpha1*fluid1_.thermo().psi()/rho1)*p_rghCorr();
-
-        pEqnComp2 =
-            (
-                fluid2_.contErr() // -dmdt in contErr
-            -   fvc::Sp(fvc::ddt(alpha2) + fvc::div(fluid2_.alphaPhi()), rho2)
-            )/rho2
-        +   (alpha2*fluid2_.thermo().psi()/rho2)*p_rghCorr();
+        #include "calcComp_2p.H"
 
         //- Cache p prior to solve for density update
         volScalarField p_rgh_0(p_rgh_);
@@ -207,26 +128,7 @@ if (!implicitPartialElimination)
         //- Iterate over the pressure equation to correct for non-orthogonality
         while (pimple_.correctNonOrthogonal())
         {
-            fvScalarMatrix pEqnIncomp
-            (
-                fvc::div(phiHbyA)
-            -   fvm::laplacian(rAUf, p_rgh_)
-            );
-
-            fvScalarMatrix pEqn(pEqnComp1() + pEqnComp2() + pEqnIncomp);
-
-            pEqn.setReference(pRefCell_, pRefValue_);
-
-            pEqn.relax();
-
-            convergedPISO =
-            ( 
-                pEqn.solve
-                (
-                    mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
-                ).max().nIterations()
-            ==  0.0
-            );
+            #include "solveP_rgh_2p.H"
 
             if (pimple_.finalNonOrthogonalIter())
             {
@@ -244,7 +146,7 @@ if (!implicitPartialElimination)
                     surfaceScalarField phir
                     (
                         ((phi1 + rAUKdf1*phi2) - (phi2 + rAUKdf2*phi1))/
-                        (1 - rAUKdf1*rAUKdf2)
+                        (1.0 - rAUKdf1*rAUKdf2)
                     );
 
                     phi1 = (phi_ + alphaf2*phir)/movingAlphaf;
@@ -253,56 +155,38 @@ if (!implicitPartialElimination)
 
                 p_rgh_.relax();
 
-                scalar f(myOps::relaxationFactor(mesh_, "dgdt"));
-                if (f != 1.0)
+                fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
+                fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
+
+                mSfGradp = pEqnIncomp.flux()/rAUf;
+
+                volVectorField Us1 = 
+                    HbyA1 
+                +   fvc::reconstruct(alpharAUf1*mSfGradp + phiSbyA1);
+                volVectorField Us2 = 
+                    HbyA2 
+                +   fvc::reconstruct(alpharAUf2*mSfGradp + phiSbyA2);
+
+                if (explicitPartialElimination)
                 {
-                    fluid1_.dgdt() = 
-                        f*(-pEqnComp1 & p_rgh_)+(1.0-f)*fluid1_.dgdt();
-                    fluid2_.dgdt() = 
-                        f*(-pEqnComp2 & p_rgh_)+(1.0-f)*fluid2_.dgdt();
+                    volVectorField U
+                    (
+                        alpha1*(Us1 + rAUKd1*U2) + alpha2*(Us2 + rAUKd2*U1)
+                    );
+
+                    volVectorField Ur
+                    (
+                        ((1.0 - rAUKd2)*Us1 - (1.0 - rAUKd1)*Us2)/
+                        (1.0 - rAUKd1*rAUKd2)
+                    );
+
+                    U1 = (U + alpha2*Ur)/movingAlpha_;
+                    U2 = (U - alpha1*Ur)/movingAlpha_;
                 }
                 else
                 {
-                    fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
-                    fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
-                }
-
-                if (momentumMode_ == momentumMode::cellCentered)
-                {
-                    mSfGradp = pEqnIncomp.flux()/rAUf;
-
-                    volVectorField Us1 = 
-                        HbyA1 + fvc::reconstruct(alpharAUf1*mSfGradp - phis1);
-                    volVectorField Us2 = 
-                        HbyA2 + fvc::reconstruct(alpharAUf2*mSfGradp - phis2);
-
-                    if (explicitPartialElimination)
-                    {
-                        volVectorField U
-                        (
-                            alpha1*(Us1 + rAUKd1*U2) + alpha2*(Us2 + rAUKd2*U1)
-                        );
-
-                        volVectorField Ur
-                        (
-                            ((1 - rAUKd2)*Us1 - (1 - rAUKd1)*Us2)/
-                            (1 - rAUKd1*rAUKd2)
-                        );
-
-                        U1 = (U + alpha2*Ur)/movingAlpha_;
-                        U2 = (U - alpha1*Ur)/movingAlpha_;
-                    }
-                    else
-                    {
-                        U1 = Us1;
-                        U2 = Us2;
-                    }
-                }
-                else    //- momentumMode_ == 
-                        //  momentumMode::cellCenteredFaceReconstruction
-                {
-                    U1 = fvc::reconstruct(MRF_.absolute(phi1));
-                    U2 = fvc::reconstruct(MRF_.absolute(phi2));
+                    U1 = Us1;
+                    U2 = Us2;
                 }
                 
                 U1.correctBoundaryConditions();
@@ -319,24 +203,12 @@ if (!implicitPartialElimination)
             }
         }
         
-        //- Update and limit the static pressure
-        p_ = max(p_rgh_ + rho_*gh_, pMin_);
-
-        //- Limit p_rgh
-        p_rgh_ = p_ - rho_*gh_;
-
-        //- Update densities from change in p_rgh
-        rho1 += fluid1_.thermo().psi()*(p_rgh_ - p_rgh_0);
-        rho2 += fluid2_.thermo().psi()*(p_rgh_ - p_rgh_0);
-
-        //- Correct p_rgh for consistency with p and the updated densities
-        rho_ = (rho1*alpha1 + rho2*alpha2)/movingAlpha_;
-        p_rgh_ = p_ - rho_*gh_;
-        p_rgh_.correctBoundaryConditions();
+        #include "updatePP_rghRho_2p.H"
     }
 }
 else    //- i.e. if doing implicitPartialElimination
 {
+    //- Diagonal coefficients with time derivative contribution
     volScalarField A1
     (
         UEqn1.A() 
@@ -348,16 +220,13 @@ else    //- i.e. if doing implicitPartialElimination
     +   max(residualAlpha2 - alpha2, 0.0)*rho2/mesh_.time().deltaT()
     );
 
-    //-
-    volScalarField KdbyA1
-    (
-        Kd12/A1
-    );
-    volScalarField KdbyA2
-    (
-        Kd12/A2
-    );
+    //- Drag factor by diagonal coeffs required throughout the algorithm by
+    //  Partial Elimination
+    volScalarField KdbyA1(Kd12/A1);
+    volScalarField KdbyA2(Kd12/A2);
 
+    //- Construct 1/A fields with additional terms coming from Partial 
+    //  Elimination
     volScalarField rAU1
     (
         "rAU."+fluid1_.name(),
@@ -368,18 +237,8 @@ else    //- i.e. if doing implicitPartialElimination
         "rAU."+fluid2_.name(),
         1.0/(A2 + Kd12*(1.0+A2/A1))
     );
-
-    //- 
-    volScalarField limitedAlpha1(max(alpha1, residualAlpha1));
-    volScalarField limitedAlpha2(max(alpha2, residualAlpha2));
-    surfaceScalarField alpharAUf1
-    (
-        fvc::interpolate(limitedAlpha1*rAU1)
-    );
-    surfaceScalarField alpharAUf2
-    (
-        fvc::interpolate(limitedAlpha2*rAU2)
-    );
+    surfaceScalarField alpharAUf1(fvc::interpolate(alpha1*rAU1));
+    surfaceScalarField alpharAUf2(fvc::interpolate(alpha2*rAU2));
     surfaceScalarField alpharAUf1Star
     (
         fvc::interpolate((alpha1+KdbyA2*(alpha1+alpha2))*rAU1)
@@ -393,89 +252,43 @@ else    //- i.e. if doing implicitPartialElimination
 
     while (pimple_.correct(convergedPISO))
     {
-        this->correctContErrs();
         rho_ = this->rho();
         p_rgh_ = p_ - rho_*gh_;
 
-        //- Correct fixed-flux BCs to be consistent with the velocity BCs
+        //- Correct boundary fluxes to account for MRF rotation
         MRF_.correctBoundaryFlux(U1, phi1);
         MRF_.correctBoundaryFlux(U2, phi2);
 
         //- Construct H/A fields and limit to avoid problems for alpha = 0
-        tmp<volVectorField> H1(UEqn1.H());
-        tmp<volVectorField> H2(UEqn2.H());
+        volVectorField H1(UEqn1.H());
+        volVectorField H2(UEqn2.H());
         volVectorField HbyA1
         (
             "HbyA."+fluid1_.name(),
-            rAU1
-           *(
-                (1.0+KdbyA2)*H1()
-            +   KdbyA2*H2()
-            +   max(residualAlpha1 - alpha1, 0.0)*
-                rho1*U1.oldTime()/mesh_.time().deltaT()
-            )
+            rAU1*((1.0+KdbyA2)*H1 + KdbyA2*H2)
         );
-            
         volVectorField HbyA2
         (
             "HbyA."+fluid2_.name(),
-            rAU2
-           *(
-                (1.0+KdbyA1)*H2()
-            +   KdbyA1*H1()
-            +   max(residualAlpha2 - alpha2, 0.0)*
-                rho2*U2.oldTime()/mesh_.time().deltaT()
-            )
+            rAU2*((1.0+KdbyA1)*H2 + KdbyA1*H1)
         );
-            
-        //- Construct fluxes due to explicit source terms, namely 
-        //  buoyancy/gravity effects and the momentum source, if it
-        //  exists
-        surfaceScalarField ghSnGradRho
+        
+        //- Face-interpolated momentum source terms
+        //  Currently includes only gravity/buoyancy and the optional pump 
+        //  momentum source. Any new explicit source terms in the momentum  
+        //  equation (that were NOT included in the momentum equation) should
+        //  be added here    
+        #include "calcPhiS_2p.H"
+
+        surfaceScalarField phiSbyA1
         (
-            "ghSnGradRho",
-            ghf_*fvc::snGrad(rho_)*mesh_.magSf()
-        );
-        surfaceScalarField deltaRhof12(fvc::interpolate(rho1 - rho2));
-        surfaceScalarField source1
-        (
-            alphaf1*
-            (
-                ghSnGradRho
-            -   alphaf2/movingAlphaf*
-                deltaRhof12*(g_ & mesh_.Sf())
-            )
-        );
-        surfaceScalarField source2
-        (
-            alphaf2*
-            (
-                ghSnGradRho
-            -   alphaf1/movingAlphaf*
-            -   deltaRhof12*(g_ & mesh_.Sf())
-            )
-        );
-        if (structure_.momentumSourcePtr().valid())
-        {
-            surfaceScalarField fluxMS(fvc::flux(structure_.momentumSource()));
-            source1 -= alphaf1*fluxMS;
-            source2 -= alphaf2*fluxMS;
-        }
-        surfaceScalarField phis1
-        (
-            fvc::interpolate(rAU1)*
-            (
-                fvc::interpolate(1.0+Kd12/A2)*source1
-            +   fvc::interpolate(Kd12/A2)*source2
-            )
+            fvc::interpolate(rAU1*(1.0+KdbyA2))*phiS1
+        +   fvc::interpolate(rAU1*KdbyA2)*phiS2
         ); 
-        surfaceScalarField phis2
+        surfaceScalarField phiSbyA2
         (
-            fvc::interpolate(rAU2)*
-            (
-                fvc::interpolate(1.0+Kd12/A1)*source2
-            +   fvc::interpolate(Kd12/A1)*source1
-            )
+            fvc::interpolate(rAU2*(1.0+KdbyA1))*phiS2
+        +   fvc::interpolate(rAU2*KdbyA1)*phiS1
         );
 
         //- Construct phase fluxes
@@ -483,16 +296,16 @@ else    //- i.e. if doing implicitPartialElimination
         (
             "phiHbyA."+fluid1_.name(),
             fvc::flux(HbyA1)
-        -   phis1
+        +   phiSbyA1
         );
         surfaceScalarField phiHbyA2
         (
             "phiHbyA."+fluid2_.name(),
             fvc::flux(HbyA2)
-        -   phis2
+        +   phiSbyA2
         );
         
-        //- Construct the mean mixture flux
+        //- Construct mixture flux
         surfaceScalarField phiHbyA
         (
             "phiHbyA",
@@ -502,44 +315,16 @@ else    //- i.e. if doing implicitPartialElimination
 
         MRF_.makeRelative(phiHbyA);
 
-        //- Interpolate mixture 1/A field
+        //- Construct mixture 1/A field
         surfaceScalarField rAUf
         (
             "rAUf",
             mag(alphaf1*alpharAUf1Star + alphaf2*alpharAUf2Star)
         );
 
-        //- Update the fixedFluxPressure BCs to ensure flux consistency
-        setSnGrad<fixedFluxPressureFvPatchScalarField>
-        (
-            p_rgh_.boundaryFieldRef(),
-            (
-                phiHbyA.boundaryField()
-            -   (
-                    alphaf1.boundaryField()*phi1.boundaryField()
-                +   alphaf2.boundaryField()*phi2.boundaryField()
-                )
-            )/(mesh_.magSf().boundaryField()*rAUf.boundaryField())
-        );
+        #include "setSnGradP_rgh_2p.H"
 
-        //- Construct the compressibility parts of the pressure equation
-        tmp<fvScalarMatrix> p_rghCorr(correction(fvm::ddt(p_rgh_)));
-        tmp<fvScalarMatrix> pEqnComp1;
-        tmp<fvScalarMatrix> pEqnComp2;
-        
-        pEqnComp1 =
-            (
-                fluid1_.contErr() // +dmdt in contErr
-            -   fvc::Sp(fvc::ddt(alpha1) + fvc::div(fluid1_.alphaPhi()), rho1)
-            )/rho1
-        +   (alpha1*fluid1_.thermo().psi()/rho1)*p_rghCorr();
-
-        pEqnComp2 =
-            (
-                fluid2_.contErr() // -dmdt in contErr
-            -   fvc::Sp(fvc::ddt(alpha2) + fvc::div(fluid2_.alphaPhi()), rho2)
-            )/rho2
-        +   (alpha2*fluid2_.thermo().psi()/rho2)*p_rghCorr();
+        #include "calcComp_2p.H"
 
         //- Cache p prior to solve for density update
         volScalarField p_rgh_0(p_rgh_);
@@ -547,26 +332,7 @@ else    //- i.e. if doing implicitPartialElimination
         //- Iterate over the pressure equation to correct for non-orthogonality
         while (pimple_.correctNonOrthogonal())
         {
-            fvScalarMatrix pEqnIncomp
-            (
-                fvc::div(phiHbyA)
-            -   fvm::laplacian(rAUf, p_rgh_)
-            );
-
-            fvScalarMatrix pEqn(pEqnComp1() + pEqnComp2() + pEqnIncomp);
-
-            pEqn.setReference(pRefCell_, pRefValue_);
-
-            pEqn.relax();
-
-            convergedPISO =
-            ( 
-                pEqn.solve
-                (
-                    mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
-                ).max().nIterations()
-            ==  0.0
-            );
+            #include "solveP_rgh_2p.H"
 
             if (pimple_.finalNonOrthogonalIter())
             {
@@ -581,37 +347,17 @@ else    //- i.e. if doing implicitPartialElimination
 
                 p_rgh_.relax();
 
-                scalar f(myOps::relaxationFactor(mesh_, "dgdt"));
-                if (f != 1.0)
-                {
-                    fluid1_.dgdt() = 
-                        f*(-pEqnComp1 & p_rgh_)+(1.0-f)*fluid1_.dgdt();
-                    fluid2_.dgdt() = 
-                        f*(-pEqnComp2 & p_rgh_)+(1.0-f)*fluid2_.dgdt();
-                }
-                else
-                {
-                    fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
-                    fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
-                }
+                fluid1_.dgdt() = -pEqnComp1 & p_rgh_;
+                fluid2_.dgdt() = -pEqnComp2 & p_rgh_;
 
-                if (momentumMode_ == momentumMode::cellCentered)
-                {
-                    mSfGradp = pEqnIncomp.flux()/rAUf;
+                mSfGradp = pEqnIncomp.flux()/rAUf;
 
-                    U1 = 
-                        HbyA1 
-                    +   fvc::reconstruct(alpharAUf1Star*mSfGradp - phis1);
-                    U2 = 
-                        HbyA2 
-                    +   fvc::reconstruct(alpharAUf2Star*mSfGradp - phis2);
-                }
-                else    //- momentumMode_ == 
-                        //  momentumMode::cellCenteredFaceReconstruction
-                {
-                    U1 = fvc::reconstruct(MRF_.absolute(phi1));
-                    U2 = fvc::reconstruct(MRF_.absolute(phi2));
-                }
+                U1 = 
+                    HbyA1 
+                +   fvc::reconstruct(alpharAUf1Star*mSfGradp + phiSbyA1);
+                U2 = 
+                    HbyA2 
+                +   fvc::reconstruct(alpharAUf2Star*mSfGradp + phiSbyA2);
                 
                 U1.correctBoundaryConditions();
                 fvOptions_.correct(U1);
@@ -627,19 +373,6 @@ else    //- i.e. if doing implicitPartialElimination
             }
         }
         
-        //- Update and limit the static pressure
-        p_ = max(p_rgh_ + rho_*gh_, pMin_);
-
-        //- Limit p_rgh
-        p_rgh_ = p_ - rho_*gh_;
-
-        //- Update densities from change in p_rgh
-        rho1 += fluid1_.thermo().psi()*(p_rgh_ - p_rgh_0);
-        rho2 += fluid2_.thermo().psi()*(p_rgh_ - p_rgh_0);
-        
-        //- Correct p_rgh for consistency with p and the updated densities
-        rho_ = (rho1*alpha1 + rho2*alpha2)/movingAlpha_;
-        p_rgh_ = p_ - rho_*gh_;
-        p_rgh_.correctBoundaryConditions();
+        #include "updatePP_rghRho_2p.H"
     }
 }

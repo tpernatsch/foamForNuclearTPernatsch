@@ -25,27 +25,14 @@ Class
     N/A
 
 Description
-    Given a word "name", the function returns:
-
-        -   if NOT on the last PIMPLE iteration:
-            --  the scalar found under 
-                fvSolution.relaxationFactors.fields."name" if name exists;
-            --  1.0 otherwise;
-        -   if on the last PIMPLE iteration:
-            --  the scalar found under 
-                fvSolution.relaxationFactors.fields.("name"+"Final") if name 
-                exists;
-            --  1.0 otherwise;
-
-    This is the standard behaviour of the relax function of a geometric field,
-    however, I need to be able to read relaxation factors in this way even
-    without them being tied to a geometric field
+    A collection of functions that are currently only used for under-relaxation
+    and word-porcessing purposes
 
 Author
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
-    None
+    myOps.C
 
 
 \*---------------------------------------------------------------------------*/
@@ -59,12 +46,54 @@ namespace Foam
 {
 namespace myOps
 {
+    /*
+    Given a word name, the function returns:
+    -   if NOT on the last PIMPLE iteration:
+        --  true if the keyword fvSolution.relaxationFactors.fields.name
+            exists;
+        --  false otherwise;
+    -   if on the last PIMPLE iteration:
+        --  true if the keyword 
+            fvSolution.relaxationFactors.fields.(name+"Final") exists;
+        --  false otherwise;
+    */
     bool relax(const fvMesh& mesh, word name);
 
+    /*
+    Given a word name, the function returns:
+    -   if NOT on the last PIMPLE iteration:
+        --  the scalar found under 
+            fvSolution.relaxationFactors.fields.name if name exists;
+        --  1.0 otherwise;
+    -   if on the last PIMPLE iteration:
+        --  the scalar found under 
+            fvSolution.relaxationFactors.fields.(name+"Final") if name 
+            exists;
+        --  1.0 otherwise;
 
+    This is the standard behaviour of the relax function of a geometricField,
+    however, I need to be able to read relaxation factors in this way even
+    without them being tied to a geometricField object
+    */
     scalar relaxationFactor(const fvMesh& mesh, word name);
+
+    //- Split a string or word according to a delimiter char d, and return a
+    //  list of split elements
+    template<class Type>
+    List<Type> split(const Type& compoundItem, char d);
+
+    //- Split a string or word according to any delimiter char in ds, and 
+    //  return a list of split elements
+    template<class Type>
+    List<Type> split(const Type& compoundItem, List<char> ds);
 }
 }
+
+//- Templated functions must be defined in the header file too, not in myOps.C,
+//  so their definitions are in a source file that is included in the header
+#ifdef NoRepository
+    #include "myOpsTemplates.C"
+#endif
 
 #endif
 

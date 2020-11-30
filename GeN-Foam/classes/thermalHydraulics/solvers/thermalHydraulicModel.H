@@ -127,9 +127,6 @@ protected:
     label pRefCell_;
     scalar pRefValue_;
 
-    //- Pressure power term
-    volScalarField dpdt_;
-
     //- Initial fluid(s) mass
     dimensionedScalar initialFluidMass_;
 

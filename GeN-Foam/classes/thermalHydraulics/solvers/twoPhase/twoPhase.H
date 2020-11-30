@@ -177,11 +177,6 @@ private:
 
     //- Miscellanea
 
-        //- Cumulated sum of continuity errors
-        scalar cumulContErr1_;
-
-        scalar cumulContErr2_;
-
     //- Global flags for time/subCycle control
 
         //- Self explanatory, come on...

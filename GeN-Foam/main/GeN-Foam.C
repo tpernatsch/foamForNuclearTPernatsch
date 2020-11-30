@@ -37,7 +37,7 @@ Description
 
 Reference publications
     
-    NOTE: these publications do not cover recent multi-phase development
+    NOTE: these publications do not cover recent multi-phase developments
 
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, 2015
     "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient

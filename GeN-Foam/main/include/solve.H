@@ -1,4 +1,4 @@
-//- As of now, these serves no purpose
+//- As of now, these serve no purpose
 scalar FMResidual = 0.0;
 scalar EResidual = 0.0;
 
@@ -40,7 +40,13 @@ else if (solveE or solveN or solveTM)
     do
     {
         Info << "Coupling iteration " << couplingIter << endl;
-        
+     
+        //- Reset as the thermoMechanics.correct(couplingResidual) and 
+        //  neutronics.correct(couplingResidual) always max() it against their
+        //  solution residual, meaning that with no reset, it will stay stuck
+        //  at its max value (likely the one of the first coupling iteration)
+        couplingResidual = 0.0;
+
         if (solveE)
         {
             thermalHydraulics.correctEnergy(couplingResidual);

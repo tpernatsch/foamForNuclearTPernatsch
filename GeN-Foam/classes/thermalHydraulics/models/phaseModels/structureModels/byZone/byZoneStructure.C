@@ -26,7 +26,7 @@ License
 #include "byZoneStructure.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvcDiv.H"
-#include "myStringOps.H"
+#include "myOps.H"
 
 //- From forward declarations in structureModel.C
 #include "fluid.H"
@@ -117,7 +117,7 @@ Foam::structureModels::byZone::byZone
             continue;
         }
         
-        wordList zones(myStringOps::split<word>(key, ':'));
+        wordList zones(myOps::split<word>(key, ':'));
 
         forAll(zones, i)
         {
@@ -555,7 +555,7 @@ Foam::structureModels::byZone::byZone
                     regionDict.subDict("powerModel")
                 );
 
-                wordList zones(myStringOps::split<word>(key, ':'));
+                wordList zones(myOps::split<word>(key, ':'));
 
                 if (powerModelDict.get<word>("type") == powerModelType)
                 {

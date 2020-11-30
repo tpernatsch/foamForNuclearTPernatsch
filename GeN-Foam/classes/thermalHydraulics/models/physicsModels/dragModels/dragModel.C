@@ -24,7 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "dragModel.H"
-#include "myStringOps.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -163,7 +163,7 @@ Foam::dragModel::dragModel
     //  something like "region0:region1:huhu" then regions will be 
     //  = ["region0", "region1", "huhu"]. Also works for keys that consist of
     //  one region only
-    wordList regions(myStringOps::split<word>(dict.dictName(), ':'));
+    wordList regions(myOps::split<word>(dict.dictName(), ':'));
     
     forAll(regions, i)
     {
@@ -274,7 +274,7 @@ Foam::dragModel::makeInTable
     HashTable<autoPtr<dragModel>, word, word::hash>& table
 )
 {
-    wordList entries = myStringOps::split<word>(key, '.');
+    wordList entries = myOps::split<word>(key, '.');
     word entry1(entries[0]);
     word entry2((entries.size() == 1) ? entries[0] : entries[1]);
 

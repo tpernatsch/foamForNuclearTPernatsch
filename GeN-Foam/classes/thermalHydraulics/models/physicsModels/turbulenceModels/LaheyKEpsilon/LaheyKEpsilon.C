@@ -30,7 +30,7 @@ License
 #include "zeroGradientFvPatchFields.H"
 #include "fluid.H"
 #include "FFPair.H"
-#include "myStringOps.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

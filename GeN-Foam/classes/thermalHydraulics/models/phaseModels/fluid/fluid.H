@@ -152,8 +152,11 @@ private :
     autoPtr<volScalarField> powerDensityPtr_;
 
     //- Continuity error of the phase 
-    //  (== fvc::ddt(alpha, rho) + fvc::div(alphaRhoPhi)) [kg/m3/s]
+    //  (== fvc::ddt(alpha, rho) + fvc::div(alphaRhoPhi)) (kg/m3/s)
     volScalarField contErr_;
+
+    //- Cumulat-ive/ed continuity error integrated in time and volume (kg)
+    scalar cumulContErr_;
 
     //- Characteristic dimension of the fluid. This is equal to the structure
     //  hydraulic diameter if this fluid is continuous, else it is specified
@@ -175,6 +178,12 @@ private :
     //- Phase fraction below which the fluid energy equation is not solved
     //  and the phase temperature is set to the interfacial temperature
     dimensionedScalar thermoResidualAlpha_;
+
+    //- True if equationOfState is Boussinesq
+    bool Boussinesq_;
+
+    //- Reference density field when using Boussinesq (never used otherwise)
+    volScalarField* rho0Ptr_;
 
 public:
 
@@ -219,6 +228,12 @@ public:
         //- Correct flow quality and Lockhart-Martinelli Parameter
         void correctTwoPhaseFields(const fluid& otherFluid);
 
+        //- Boussinesq-sensitive density. If both the Boussinesq_ and 
+        //  isConstant flags are true, the returned density is equal
+        //  to rho0 provided in thermoPhysicalProperties in equationOfState
+        volScalarField& rho(bool isVariableIfBoussinesq=false);
+        const volScalarField& rho(bool isVariableIfBoussinesq=false) const;
+
         //- Related to stateOfMatter
         bool isLiquid() const
         {
@@ -259,21 +274,6 @@ public:
             volScalarField& T()
             {
                 return thermo_->T();
-            }
-
-            const volScalarField& rho() const
-            {
-                return thermo_->rho();
-            }
-
-            const volScalarField& Cp() const
-            {
-                return thermo_->Cp();
-            }
-
-            const volScalarField& Cv() const
-            {
-                return thermo_->Cv();
             }
 
             const volVectorField& U() const
@@ -416,6 +416,16 @@ public:
                 return contErr_;
             }
 
+            const scalar& cumulContErr() const
+            {
+                return cumulContErr_;
+            }
+
+            scalar& cumulContErr()
+            {
+                return cumulContErr_;
+            }
+
             const volScalarField& Dh() const
             {
                 return Dh_;
@@ -439,6 +449,11 @@ public:
             const dimensionedScalar thermoResidualAlpha() const
             {
                 return thermoResidualAlpha_;
+            }
+
+            bool Boussinesq() const
+            {
+                return Boussinesq_;
             }
 };
 

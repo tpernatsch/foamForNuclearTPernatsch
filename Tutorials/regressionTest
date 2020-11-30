@@ -91,7 +91,7 @@ do
 
         # check that keff for MSFR steady State is ~0.958765
         keff=$(foamDictionary ./steadyStateEN/constant/neutroRegion/reactorState -entry keff -value)
-        printf "\nkeff is $keff . It should be ~0.958766  \n" >> ../$resFile
+        printf "\nkeff is $keff . It should be ~0.958782  \n" >> ../$resFile
 
         # check that power in MSFR transient is ~2e07
         power=$(grep power ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")

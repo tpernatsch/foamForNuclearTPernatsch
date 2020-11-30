@@ -75,7 +75,6 @@ and (runTime.timeIndex()-runTime.startTimeIndex()) > 1
         //- If solveFluidMechanics is true, the timeStep could have already
         //  been adjusted by the thermalHyraulics, in which case set the new
         //  timeStep only if the neutronics requires an even shorter time-step.
-
         runTime.setDeltaT
         (
             min

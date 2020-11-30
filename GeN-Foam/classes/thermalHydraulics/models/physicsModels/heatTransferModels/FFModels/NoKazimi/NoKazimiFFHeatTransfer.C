@@ -128,7 +128,7 @@ void Foam::heatTransferModels::NoKazimiFFHeatTransfer::correctHtc
 {    
     //- Refs
     const volScalarField& alpha(bulkFluid_.normalized());
-    const volScalarField& rho(bulkFluid_.thermo().rho());
+    const volScalarField& rho(bulkFluid_.rho());
     const volVectorField& U(bulkFluid_.U());
     
     //- Tmps to which I cannot take refs but need to be evaulated on the fly

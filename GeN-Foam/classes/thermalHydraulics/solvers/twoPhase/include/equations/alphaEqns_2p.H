@@ -576,13 +576,16 @@
 
     //- Correct mass fluxes
     fluid1_.alphaRhoPhi() = 
-            fvc::interpolate(fluid1_.thermo().rho())*fluid1_.alphaPhi();
+            fvc::interpolate(fluid1_.rho())*fluid1_.alphaPhi();
     fluid2_.alphaRhoPhi() = 
-        fvc::interpolate(fluid2_.thermo().rho())*fluid2_.alphaPhi();
+        fvc::interpolate(fluid2_.rho())*fluid2_.alphaPhi();
 
     //- Correct flow qualities, Lockhart-Martinelli parameter
     fluid1_.correctTwoPhaseFields(fluid2_);
     fluid2_.correctTwoPhaseFields(fluid1_);
+
+    //- Correct continuity errors
+    correctContErrs();
 
     //- Infos
     Info<< alpha1.name() << " (avg min max) ="

@@ -194,7 +194,7 @@ Foam::thermalHydraulicModels::onePhase::onePhase
     }
 
     //- Compute initialFluidMass
-    initialFluidMass_ = fvc::domainIntegrate(fluid_.thermo().rho()*fluid_);
+    initialFluidMass_ = fvc::domainIntegrate(fluid_.rho()*fluid_);
 
     Info << endl;
 }
@@ -238,6 +238,11 @@ void Foam::thermalHydraulicModels::onePhase::correctFluidMechanics
     {
         #include "pEqn_1p.H"
     }
+
+    //- Continuity error adjustment and infos
+    correctContErr();
+    printContErr();
+    calcCumulContErr();
 }
 
 void Foam::thermalHydraulicModels::onePhase::correctEnergy(scalar& residual)
@@ -348,15 +353,56 @@ void Foam::thermalHydraulicModels::onePhase::correctCourant()
 
 void Foam::thermalHydraulicModels::onePhase::correctContErr()
 {
-    volScalarField& rho(fluid_.thermo().rho());
-    
-    fluid_.contErr() = 
+    volScalarField& cE(fluid_.contErr());
+    volScalarField& rho(fluid_.rho());
+
+    cE = 
     (
-            fvc::ddt(fluid_, rho)
-        +   fvc::div(fluid_.alphaRhoPhi())
-        -   (fvOptions_(fluid_, rho) & rho)
+        fvc::ddt(fluid_, rho)
+    +   fvc::div(fluid_.alphaRhoPhi())
+    -   (fvOptions_(fluid_, rho) & rho)
     );
-    fluid_.contErr().correctBoundaryConditions();
+    
+    cE.correctBoundaryConditions();
+}
+
+
+void Foam::thermalHydraulicModels::onePhase::printContErr()
+{
+    volScalarField contErrRel(fluid_.contErr()/fluid_.rho());
+
+    Info<< "Instantaneous relative continuity error (avg) = "
+        << contErrRel.weightedAverage(mesh_.V()).value() << " "
+        << "1/s" << endl;
+}
+
+void Foam::thermalHydraulicModels::onePhase::calcCumulContErr()
+{
+    if (pimple_.finalIter())
+    {
+        scalar& cumulContErr(fluid_.cumulContErr());
+
+        scalarField integralContErr
+        (
+            mesh_.time().deltaTValue()*
+            fvc::volumeIntegrate(fluid_.contErr())
+        );
+
+        const scalarField& V(mesh_.V());
+        scalar totV(0);
+
+        forAll(V, i)
+        {
+            cumulContErr += integralContErr[i];
+            totV += V[i];
+        }
+        reduce(cumulContErr, sumOp<scalar>());
+        reduce(totV, sumOp<scalar>());
+
+        Info<< "Cumulative continuity error = " 
+            << (cumulContErr/totV)
+            << " kg/m3" << endl;
+    }
 }
 
 

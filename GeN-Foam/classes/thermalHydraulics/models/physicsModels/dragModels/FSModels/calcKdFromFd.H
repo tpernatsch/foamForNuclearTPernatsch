@@ -4,7 +4,7 @@
 //- Alpha is the void fraction
 volScalarField alpha(1.0-FSPair_->structure());
 const volScalarField& magU(FSPair_->fluidRef().magU());
-const volScalarField& rho(FSPair_->fluidRef().thermo().rho());
+const volScalarField& rho(FSPair_->fluidRef().rho());
 
 //- Minimum allowable velocity in the calculation Kd to avoid 0 Kd
 scalar minMagU
