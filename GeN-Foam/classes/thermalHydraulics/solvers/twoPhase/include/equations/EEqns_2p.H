@@ -17,8 +17,8 @@
     const volScalarField& H2i(*htcs_[fluid2_.name()+"."+fluid1_.name()]);
     const volScalarField& contErr1(fluid1_.contErr());
     const volScalarField& contErr2(fluid2_.contErr());
-    volScalarField& rho1(fluid1_.thermo().rho());
-    volScalarField& rho2(fluid2_.thermo().rho());
+    volScalarField& rho1(fluid1_.rho());
+    volScalarField& rho2(fluid2_.rho());
     tmp<volScalarField> Cp1(fluid1_.thermo().Cp());
     tmp<volScalarField> Cp2(fluid2_.thermo().Cp());
     
@@ -109,12 +109,37 @@
        *fluid2_.thermo().alphaEff(fluid2_.turbulence().mut())()
     );
 
+    autoPtr<volScalarField> dpdtPtr;
+    if (fluid1_.thermo().dpdt() or fluid2_.thermo().dpdt())
+    {
+        //- Pressure power term limited to 10 bar/s
+        dimensionedScalar maxDpdt
+        (
+            "", 
+            dimPressure/dimTime, 
+            pimple_.dict().lookupOrDefault<scalar>("maxDpdt", 1e6)
+        );
+        dpdtPtr.reset
+        (
+            new volScalarField
+            (
+                max
+                (
+                    min
+                    (
+                        fvc::ddt(p_), maxDpdt
+                    ),
+                    -maxDpdt
+                )
+            )
+        );
+    }
+    
     //- Construct enthalpy equations
     fvScalarMatrix E1Eqn
     (
             fvm::ddt(alpha1, rho1, he1) 
         +   fvm::div(fluid1_.alphaRhoPhi(), he1, "div(alphaRhoPhi,he)")
-        +   alpha1*dpdt_
         -   fvm::laplacian
             (
                 fvc::interpolate(alpha1)
@@ -129,7 +154,6 @@
     (
             fvm::ddt(alpha2, rho2, he2)
         +   fvm::div(fluid2_.alphaRhoPhi(), he2, "div(alphaRhoPhi,he)")
-        +   alpha2*dpdt_
         -   fvm::laplacian
             (
                 fvc::interpolate(alpha2)
@@ -140,6 +164,11 @@
             alpha2*rho2*(U2&g_) 
         +   fvOptions_(alpha2, rho2, he2)
     );
+
+    if (fluid1_.thermo().dpdt())
+        E1Eqn -= alpha1*dpdtPtr();
+    if (fluid2_.thermo().dpdt())
+        E2Eqn -= alpha2*dpdtPtr();
 
     scalar c
     (

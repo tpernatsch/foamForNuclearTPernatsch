@@ -34,7 +34,7 @@ License
 
 #include "fluid.H"
 #include "FFPair.H"
-#include "myStringOps.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -172,7 +172,7 @@ mixtureKEpsilon<BasicTurbulenceModel>::mixtureKEpsilon
     }
 
     setFluidNames();
-    word thisName(myStringOps::split<word>(alpha.name(), '.')[1]);
+    word thisName(myOps::split<word>(alpha.name(), '.')[1]);
     isGas_ = (thisName == gasName_);
 }
 
@@ -458,19 +458,19 @@ tmp<volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::Ct2() const
     volScalarField Kd
     (
         liquid()*gas()*
-        0.5*Cd()*liquid().thermo().rho()*pair().magUr()/
+        0.5*Cd()*liquid().rho()*pair().magUr()/
         max(gas().Dh(), dimensionedScalar("", dimLength, 1e-3))
     );
 
     volScalarField beta
     (
         (6*this->Cmu_/(4*sqrt(3.0/2.0)))*
-        Kd/liquid().thermo().rho()*
+        Kd/liquid().rho()*
         (liquid().turbulence().k()/liquid().turbulence().epsilon())
     );
     volScalarField Ct0
     (
-        (3 + beta)/(1 + beta + 2*gas().thermo().rho()/liquid().thermo().rho())
+        (3 + beta)/(1 + beta + 2*gas().rho()/liquid().rho())
     );
     volScalarField fAlphad((180 + (-4.71e3 + 4.26e4*gas())*gas())*gas());
 
@@ -481,7 +481,7 @@ tmp<volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::Ct2() const
 template<class BasicTurbulenceModel>
 tmp<volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::rholEff() const
 {
-    return liquid().thermo().rho();
+    return liquid().rho();
 }
 
 
@@ -502,8 +502,8 @@ tmp<volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::rhogEff() const
     );
 
     return
-        gas().thermo().rho()
-      + Vm*liquid().thermo().rho();
+        gas().rho()
+      + Vm*liquid().rho();
 }
 
 
@@ -569,7 +569,7 @@ tmp<volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::bubbleG() const
         //   |
         //  \|/
         //   *
-        liquid()*liquid().thermo().rho()*
+        liquid()*liquid().rho()*
         (
             1.0
         +   pow(Cd(), 4.0/3.0)

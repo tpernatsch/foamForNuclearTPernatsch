@@ -3,7 +3,7 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 rm regressionResults
 
-tutorials="1D_boiling 1D_HX/onePhase 1D_HX/twoPhase 3D_SmallESFR 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange Godiva_SN" #Godiva_SN
+tutorials="1D_boiling 1D_HX/onePhase 1D_HX/twoPhase 3D_SmallESFR 2D_MSFR 2D_cavityBoussinesq 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange Godiva_SN" #Godiva_SN
 
 
 # run all tutorials and check for clean finish 
@@ -42,6 +42,13 @@ do
         printf "Done cleaning tutorial $tutorialName...\n"
         ;;
     "2D_MSFR")
+        printf "Cleaning tutorial $tutorialName...\n"
+        cd $tutorialName
+        ./Allclean
+        cd ..
+        printf "Done cleaning tutorial $tutorialName...\n"
+        ;;
+    "2D_cavityBoussinesq")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
         ./Allclean

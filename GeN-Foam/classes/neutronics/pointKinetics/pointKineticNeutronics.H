@@ -204,12 +204,36 @@ protected:
     // reactivity in absolute units (i.e. 1e5 pcm)
     List<Pair<scalar>> controlRodReactivityMap_;
 
-    //Schmidt number. Only used for liquid fuel
+    //- Schmidt number. Only used for liquid fuel
     scalar ScNo_;
 
-    //Flag to initialize the concentration of precursors to their
-    // equilibtium value at the beginning of the simulation
+    //- Flag to initialize the concentration of precursors to their
+    //  equilibtium value at the beginning of the simulation
     bool initPrecursorsLiquidFuel_;
+
+    //- GEM related
+
+    //- Reactivity map
+    List<Pair<scalar>> GEMReactivityMap_;
+
+    //- Reference height of sodium in GEM
+    scalar GEMSodiumLevelRef_;
+
+    //- Ref to volumetric flux on fluid mesh
+    const surfaceScalarField* phiOrig_;
+
+    //- Reference surface-integrated value of phi
+    scalar intPhiRef_;
+
+    //- List of face labels over which to compute integral flow values
+    labelList phiFaces_;
+
+    //- Surface areas of the phiFaces_ (I cannot access fvMesh from polyMesh,
+    //  which is the only mesh-related object I can access from the mapping,
+    //  thus magSf needs to be computed by calling the faceArea() method
+    //  of polyMesh. To avoid that, I calculated the areas only once and 
+    //  store them in pgiMagSf_) 
+    scalarList phiMagSf_;
 
 private:
 
@@ -244,6 +268,9 @@ public:
         //- Compute driveline expansion reactivity from controlRod reactivity
         //  map given the absolute driveline expansion in meters
         scalar calcDrivelineReactivity(const scalar& drivelineExpansion);
+
+        //- Compute GEM sodium height and their reactivity contributions
+        Pair<scalar> calcGEMLevelAndReactivity();
 
         //- Used to set all the pointer member variables (the members that end
         //  with *Orig_) after class initialization (needs to be called by

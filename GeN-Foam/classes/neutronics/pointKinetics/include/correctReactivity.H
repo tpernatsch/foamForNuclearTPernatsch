@@ -23,6 +23,12 @@ scalar drivelineExpValue
 );
 scalar drivelineReactivity(calcDrivelineReactivity(drivelineExpValue));
 
+Pair<scalar> GEMLevelAndReactivity(calcGEMLevelAndReactivity());
+scalar GEMSodiumLevel(GEMLevelAndReactivity.first());
+scalar GEMReactivity(GEMLevelAndReactivity.second());
+
+(void) GEMSodiumLevel;
+
 totalReactivity_ =
         precEquilibriumReactivity_ 
     +   externalReactivity_ 
@@ -32,5 +38,6 @@ totalReactivity_ =
     +   TCoolReactivity
     +   rhoCoolReactivity
     +   TStructReactivity
-    +   drivelineReactivity;
+    +   drivelineReactivity
+    +   GEMReactivity;
     

@@ -166,17 +166,6 @@ Foam::thermalHydraulicModel::thermalHydraulicModel
     (
         this->lookupOrDefault("pRefValue", 0)
     ),
-    dpdt_
-    (
-        IOobject
-        (
-            "dpdt",
-            mesh.time().timeName(),
-            mesh
-        ),
-        mesh,
-        dimensionedScalar("dpdt", p_.dimensions()/dimTime, 0)
-    ),
     initialFluidMass_("initialFluidMass", dimMass, 0),
     momentumMode_
     (

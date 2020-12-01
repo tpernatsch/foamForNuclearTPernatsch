@@ -196,8 +196,8 @@ void Foam::FFPair::correct()
     DhContinuous_.correctBoundaryConditions();
 
     rhoContinuous_.primitiveFieldRef() =
-        fluid1_.thermo().rho()().primitiveField()*continuity1
-    +   fluid2_.thermo().rho()().primitiveField()*continuity2;
+        fluid1_.rho().primitiveField()*continuity1
+    +   fluid2_.rho().primitiveField()*continuity2;
     rhoContinuous_.correctBoundaryConditions();
 
     nuContinuous_.primitiveFieldRef() = 

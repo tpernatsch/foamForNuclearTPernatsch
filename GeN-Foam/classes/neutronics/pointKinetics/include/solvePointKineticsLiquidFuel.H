@@ -22,7 +22,7 @@ if(timeIndex_ != mesh_.time().timeIndex())
     powerOld_ = power_;
 }
 
-label n(delayedGroups_+1);
+//label n(delayedGroups_+1);
 scalar dt(mesh_.time().deltaT().value());
 
 //- prepare fields necessary to weight precursors

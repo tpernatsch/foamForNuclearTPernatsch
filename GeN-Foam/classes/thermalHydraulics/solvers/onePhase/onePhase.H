@@ -147,8 +147,14 @@ public:
         //- Update and print Courant number
         virtual void correctCourant();
 
-        //- Update continuity error of the fluid
+        //- Update continuity errors of the fluid
         void correctContErr();
+
+        //- Print continuity error information
+        void printContErr();
+
+        //- Computes the cumulated continuity error
+        void calcCumulContErr();
 };
 
 

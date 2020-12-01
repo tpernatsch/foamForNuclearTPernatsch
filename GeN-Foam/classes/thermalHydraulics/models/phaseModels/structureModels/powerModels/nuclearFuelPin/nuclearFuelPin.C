@@ -463,6 +463,8 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                         Trad_[celli][j] = Cc*log(r)/kc + Dc;
                     }
                 }
+                
+                Info << Trad_[celli] << endl; 
            }
         }
         else //- Otherwise, read from dict

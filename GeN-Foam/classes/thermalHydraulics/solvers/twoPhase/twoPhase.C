@@ -306,8 +306,6 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     (
         fluid2_.U(), dimMass*dimLength/dimTime/dimTime
     ),
-    cumulContErr1_(0),
-    cumulContErr2_(0),
     bothPhasesArePresent_(false),
     withinMarginToPhaseChange_(false),
     partialEliminationMode_
@@ -510,8 +508,8 @@ Foam::thermalHydraulicModels::twoPhase::rho() const
 {
     return 
         (
-            fluid1_*fluid1_.thermo().rho() 
-        +   fluid2_*fluid2_.thermo().rho()
+            fluid1_*fluid1_.rho() 
+        +   fluid2_*fluid2_.rho()
         )/movingAlpha_;
 }
 
@@ -557,8 +555,6 @@ void Foam::thermalHydraulicModels::twoPhase::correctFluidMechanics
     scalar& residual
 )
 {
-    correctContErrs();
-
     //- Solve continuity equations to compute new alphas
     #include "alphaEqns_2p.H"
     
@@ -914,8 +910,8 @@ void Foam::thermalHydraulicModels::twoPhase::correctContErrs()
 {
     volScalarField& cE1(fluid1_.contErr());
     volScalarField& cE2(fluid2_.contErr());
-    volScalarField& rho1(fluid1_.thermo().rho());
-    volScalarField& rho2(fluid2_.thermo().rho());
+    volScalarField& rho1(fluid1_.rho());
+    volScalarField& rho2(fluid2_.rho());
 
     cE1 = 
     (
@@ -953,6 +949,9 @@ void Foam::thermalHydraulicModels::twoPhase::calcCumulContErrs()
 {
     if (pimple_.finalIter())
     {
+        scalar& cumulContErr1(fluid1_.cumulContErr());
+        scalar& cumulContErr2(fluid2_.cumulContErr());
+
         scalarField integralContErr1
         (
             mesh_.time().deltaTValue()*
@@ -970,14 +969,17 @@ void Foam::thermalHydraulicModels::twoPhase::calcCumulContErrs()
 
         forAll(V, i)
         {
-            cumulContErr1_ += integralContErr1[i];
-            cumulContErr2_ += integralContErr2[i];
+            cumulContErr1 += integralContErr1[i];
+            cumulContErr2 += integralContErr2[i];
             totV += V[i];
         }
+        reduce(cumulContErr1, sumOp<scalar>());
+        reduce(cumulContErr2, sumOp<scalar>());
+        reduce(totV, sumOp<scalar>());
 
         Info<< "Cumulative continuity errors ("
             << fluid1_.name() << " " << fluid2_.name() << ") = " 
-            << (cumulContErr1_/totV) << " " << (cumulContErr2_/totV)
+            << (cumulContErr1/totV) << " " << (cumulContErr2/totV)
             << " kg/m3" << endl;
     }
 }

@@ -25,7 +25,7 @@ License
 
 #include "nucleateBoiling.H"
 #include "addToRunTimeSelectionTable.H"
-#include "myStringOps.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -88,8 +88,8 @@ nucleateBoiling
             dict.subDict("convectionModel"),
             FSPair,
             //- Use the regions list obtained from the top level  
-            //  heatTransferModel dictionary name via myStringOps
-            myStringOps::split<word>(this->dictName(), ':')
+            //  heatTransferModel dictionary name via myOps
+            myOps::split<word>(this->dictName(), ':')
         )
     ),
     poolBoilingHeatTransfer_

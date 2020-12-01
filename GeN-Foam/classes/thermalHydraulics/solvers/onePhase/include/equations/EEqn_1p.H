@@ -5,7 +5,7 @@
     volScalarField& T(fluid_.thermo().T());
     const volVectorField& U(fluid_.U());
     const volScalarField& contErr(fluid_.contErr());
-    volScalarField& rho(fluid_.thermo().rho());
+    volScalarField& rho(fluid_.rho());
 
     volTensorField alphaEff
     (
@@ -19,7 +19,6 @@
             fvm::ddt(alpha, rho, he) 
         +   fvm::div(fluid_.alphaRhoPhi(), he, "div(alphaRhoPhi,he)")
         +   fvm::SuSp(-contErr, he)
-        +   alpha*dpdt_
         -   fvm::laplacian
             (
                 fvc::interpolate(alpha)
@@ -30,6 +29,9 @@
             alpha*rho*(U&g_) 
         +   fvOptions_(alpha, rho, he)
     );
+
+    if (fluid_.thermo().dpdt())
+        EEqn -= alpha*fvc::ddt(p_);
 
     //- Add kinetic energy contributions
     if (runTime_.controlDict().lookupOrDefault("includeKineticEnergy", true))
@@ -54,6 +56,9 @@
         EEqn -= fluid_.powerDensity();
     }
 
+    //- Cache before solution
+    T.storePrevIter();
+
     //- Relax and solve equations, re-limit enthalpies, update fluid
     //  temperatures
     EEqn.relax();
@@ -66,7 +71,7 @@
     //- Correct surface temperature of the power-generating subStructures 
     structure_.correct
     (
-        Hs*T,
+        Hs*T.prevIter(),
         Hs
     );
 
@@ -79,33 +84,4 @@
         << " " << min(T).value()
         << " " << max(T).value()
         << " K" << endl;
-
-    //- Energy conservation
-    /*
-    fluid_.heErr() =
-        (
-                fvc::ddt(alpha, rho, he)
-            +   fvc::div(fluid_.alphaRhoPhi(), he, "div(alphaRhoPhi,he)")
-            -   contErr*he
-            -   fvc::laplacian
-                (
-                    fvc::interpolate(alpha)
-                   *fvc::interpolate(alphaEff),
-                    he
-                )
-            +   fvc::ddt(alpha, rho, K) 
-            +   fvc::div(fluid_.alphaRhoPhi(), K, "div(alphaRhoPhi,K)")
-            -   contErr*K
-            +   alpha*dpdt_
-            -   structure_.explicitHeatSource(fluid_, Hs)
-            -   alpha*rho*(U&g_)
-        )/(alpha*rho*he);
-    fluid_.heErr().correctBoundaryConditions();
-    
-    Info<< "Fluid energy error (avg min max) = "
-        << fluid_.heErr().weightedAverage(mesh_.V()).value()
-        << " " << min(fluid_.heErr()).value()
-        << " " << max(fluid_.heErr()).value()
-        << " 1/s" << endl;
-    */
 }

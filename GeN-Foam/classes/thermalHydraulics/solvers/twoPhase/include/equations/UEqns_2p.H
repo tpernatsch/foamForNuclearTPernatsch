@@ -3,8 +3,8 @@ volVectorField& U1(fluid1_.U());
 volVectorField& U2(fluid2_.U());
 const volScalarField& alpha1(fluid1_);
 const volScalarField& alpha2(fluid2_);
-volScalarField& rho1(fluid1_.thermo().rho());
-volScalarField& rho2(fluid2_.thermo().rho());
+volScalarField& rho1(fluid1_.rho());
+volScalarField& rho2(fluid2_.rho());
 fvVectorMatrix UEqn1(U1, dimMass*dimLength/dimTime/dimTime);
 fvVectorMatrix UEqn2(U2, dimMass*dimLength/dimTime/dimTime);
 volTensorField& Kd12t(*Kds_[fluid1_.name()+"."+fluid2_.name()]);
@@ -283,8 +283,8 @@ Info<< "Kd12 (avg min max) = "
             (
                 (virtualMassUsesMixtureDensity) ?
                 (
-                    fluid1_.normalized()*fluid1_.thermo().rho() 
-                +   fluid2_.normalized()*fluid2_.thermo().rho()
+                    fluid1_.normalized()*fluid1_.rho() 
+                +   fluid2_.normalized()*fluid2_.rho()
                 )() :
                 FFPair_.rhoContinuous()
             )
