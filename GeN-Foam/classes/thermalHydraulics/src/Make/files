@@ -6,7 +6,7 @@ boundaryConditions/timeFieldTable/timeFieldTableFvPatchScalarField.C
 
 functionObjects/fieldDiffExtents/fieldDiffExtents.C
 functionObjects/TBulk/TBulk.C
-functionObjects/massFlowFlux/massFlowFlux.C
+functionObjects/massFlow/massFlow.C
 functionObjects/pressureDrop/pressureDrop.C
 functionObjects/stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
 functionObjects/patchScalarFieldValue/patchScalarFieldValue.C

@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "TBulk.H"
+#include "massFlow.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -32,16 +32,16 @@ namespace Foam
 {
 namespace functionObjects
 {
-    defineTypeNameAndDebug(TBulk, 0);
-    addToRunTimeSelectionTable(functionObject, TBulk, dictionary);
+    defineTypeNameAndDebug(massFlow, 0);
+    addToRunTimeSelectionTable(functionObject, massFlow, dictionary);
 }
 }
 
 const Foam::Enum
 <
-    Foam::functionObjects::TBulk::regionType
+    Foam::functionObjects::massFlow::regionType
 >
-Foam::functionObjects::TBulk::regionTypeNames_
+Foam::functionObjects::massFlow::regionTypeNames_
 (
     {
         { 
@@ -62,7 +62,7 @@ Foam::functionObjects::TBulk::regionTypeNames_
 
 // * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //
 
-void Foam::functionObjects::TBulk::writeFileHeader(Ostream& os)
+void Foam::functionObjects::massFlow::writeFileHeader(Ostream& os)
 {
     if (writtenHeader_)
     {
@@ -75,6 +75,21 @@ void Foam::functionObjects::TBulk::writeFileHeader(Ostream& os)
 
     writeCommented(os, "Time");
 
+    /*
+    for (const word& fieldName : fieldSet_.selectionNames())
+    {
+        if (internalField_)
+        {
+            writeTabbed(os, fieldName + "_internal");
+        }
+        for (const label patchi : patchIDs_)
+        {
+            const word& patchName = mesh_.boundaryMesh()[patchi].name();
+            writeTabbed(os, fieldName + "_" + patchName);
+        }
+    }
+    */
+
     os  << endl;
 
     writtenHeader_ = true;
@@ -83,7 +98,7 @@ void Foam::functionObjects::TBulk::writeFileHeader(Ostream& os)
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::functionObjects::TBulk::TBulk
+Foam::functionObjects::massFlow::massFlow
 (
     const word& name,
     const Time& runTime,
@@ -95,8 +110,8 @@ Foam::functionObjects::TBulk::TBulk
     regionName_(""),
     patchID_(0),
     faces_(0),
-    thermoPtr_(nullptr),
-    alphaRhoPhiPtr_(nullptr)
+    alphaRhoPhiPtr_(nullptr),
+    scaleFactor_(1.0)
 {
     read(dict);
 }
@@ -104,7 +119,7 @@ Foam::functionObjects::TBulk::TBulk
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-bool Foam::functionObjects::TBulk::read(const dictionary& dict)
+bool Foam::functionObjects::massFlow::read(const dictionary& dict)
 {
     if (fvMeshFunctionObject::read(dict) && writeFile::read(dict))
     {
@@ -119,8 +134,8 @@ bool Foam::functionObjects::TBulk::read(const dictionary& dict)
             )
         );
         regionName_ = dict.get<word>("regionName");
-        thermoName_ = dict.get<word>("thermoName");
         alphaRhoPhiName_ = dict.get<word>("alphaRhoPhiName");
+        scaleFactor_ = dict.lookupOrDefault<scalar>("scaleFactor", 1.0);
 
         if (regionType_ == regionType::patch)
         {
@@ -169,74 +184,63 @@ bool Foam::functionObjects::TBulk::read(const dictionary& dict)
 }
 
 
-bool Foam::functionObjects::TBulk::execute()
+bool Foam::functionObjects::massFlow::execute()
 {
     return true;
 }
 
 
-bool Foam::functionObjects::TBulk::write()
+bool Foam::functionObjects::massFlow::write()
 {
     writeFileHeader(file());
 
     Log << type() << " " << name() <<  " write:" << nl;
 
-    //- Set pointers
-    if (thermoPtr_ == nullptr)
-    {
-        thermoPtr_ = &mesh_.lookupObject<rhoThermo>(thermoName_);
-    }
     if (alphaRhoPhiPtr_ == nullptr)
     {
         alphaRhoPhiPtr_ = 
             &mesh_.lookupObject<surfaceScalarField>(alphaRhoPhiName_);
     }
 
-    const rhoThermo& thermo(*thermoPtr_);
-    const volScalarField& T(thermo.T());
-    tmp<volScalarField> Cp(thermo.Cp());
     const surfaceScalarField& alphaRhoPhi(*alphaRhoPhiPtr_);
 
-    scalar hDot(0.0);
-    scalar hDotByT(0.0);
+    scalar S(0.0);
+    scalar mDot(0.0);
 
     if (regionType_ == regionType::patch)
     {
-        const fvPatchScalarField& Cpp = Cp().boundaryField()[patchID_];
-        const fvPatchScalarField& Tp = T.boundaryField()[patchID_];
         const fvsPatchField<scalar>& alphaRhoPhip 
             = alphaRhoPhi.boundaryField()[patchID_];
         const fvPatch& patch(mesh_.boundary()[patchID_]);
         const scalarField& magSf(patch.magSf());
         forAll(magSf, i)
         {
-            scalar magAlphaRhoCpPhipi(mag(alphaRhoPhip[i])*Cpp[i]);
-            hDotByT += magAlphaRhoCpPhipi;
-            hDot += magAlphaRhoCpPhipi*Tp[i];
+            const scalar& magSfi(magSf[i]);
+            S += magSfi;
+            mDot += mag(alphaRhoPhip[i]);
         }
     }
     else
     {
-        surfaceScalarField Tf(fvc::interpolate(T));
-        surfaceScalarField Cpf(fvc::interpolate(Cp));
+        const scalarField& magSf(mesh_.magSf());
         forAll(faces_, i)
         {
             const label& facei(faces_[i]);
-            scalar magAlphaRhoCpPhii(mag(alphaRhoPhi[facei])*Cpf[facei]);
-            hDotByT += magAlphaRhoCpPhii;
-            hDot += magAlphaRhoCpPhii*Tf[facei];
+            const scalar& magSfi(magSf[facei]);
+            S += magSfi;
+            mDot += mag(alphaRhoPhi[facei]);
         }
     }
 
-    reduce(hDotByT, sumOp<scalar>());
-    reduce(hDot, sumOp<scalar>());
+    reduce(S, sumOp<scalar>());
+    reduce(mDot, sumOp<scalar>());
 
-    scalar Tb(hDot/max(hDotByT, 1e-9));
+    mDot *= scaleFactor_;
 
     Log << "    " << regionTypeNames_[regionType_] << " " << regionName_ 
-        << " TBulk = " << Tb << " K" << endl;
-    file() << Tb;
-    this->setResult(regionName_+"_TBulk", Tb);
+        << " massFlow = " << mDot << " kg/s over " << S << " m2" << endl;
+    file() << mDot;
+    this->setResult(regionName_+"_massFlow", mDot);
 
     Log << endl;
 

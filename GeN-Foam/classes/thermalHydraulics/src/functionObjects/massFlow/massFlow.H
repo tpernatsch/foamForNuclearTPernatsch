@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::functionObjects::massFlowFlux
+    Foam::functionObjects::massFlow
 
 Group
     grpFieldFunctionObjects
@@ -34,36 +34,32 @@ Description
 Usage
     Example of function object specification:
     \verbatim
-    massFlowFlux1
+    massFlow1
     {
-        type                massFlowFlux;
+        type                massFlow;
         libs                ("libfieldFunctionObjects.so");
         ...
         writeToFile         yes;
         log                 yes;
-        thermo              thermophysicalProperties.liquid;
-        U                   U.liquid
-        alpha               alpha.liquid
         regionType          patch;
-        patches             (outlet);
+        regionName          outlet;
+        alphaRhoPhiName     "alphaRhoPhi.liquid"
     }
     \endverbatim
 
     Where the entries comprise:
     \table
         Property      | Description              | Required   | Default value
-        type          | type name: massFlowFlux      | yes        |
+        type          | type name: massFlow      | yes        |
         writeToFile   | write extents data to file | no       | yes
         log           | write extents data to standard output | no | yes
-        thermo        | thermophysicalProperties | yes
-        U             | velocity field name      | yes
-        alpha         | phase fraction field name| no | defaults to field of 1
-        regionType    | Either cellZone or patch | Yes 
-        patches       | list of patches to process | depends on regionType
-        cellZones     | list of cellZones to process | depends on regionType
+        alphaRhoPhiName | name of mass face flow field | yes |
+        regionType    | either cellZone or patch | yes |
+        regionName    | name of the regionType to process | yes |
+        scaleFactor   | rescale the output by this factor | no | 1.0
     \endtable
 
-    Output data is written to the file \<timeDir\>/massFlowFlux.dat
+    Output data is written to the file \<timeDir\>/massFlow.dat
 
 Note
     For non-scalar fields, the magnitude of the field is employed and compared
@@ -74,17 +70,20 @@ See also
     Foam::functionObjects::writeFile
 
 SourceFiles
-    massFlowFlux.C
+    massFlow.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef functionObjects_massFlowFlux_H
-#define functionObjects_massFlowFlux_H
+#ifndef functionObjects_massFlow_H
+#define functionObjects_massFlow_H
 
 #include "fvMeshFunctionObject.H"
 #include "writeFile.H"
 #include "volFieldSelection.H"
-#include "rhoThermo.H"
+#include "IOobjectList.H"
+#include "faceSet.H"
+#include "surfaceFields.H"
+#include "fvc.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -94,10 +93,10 @@ namespace functionObjects
 {
 
 /*---------------------------------------------------------------------------*\
-                        Class massFlowFlux Declaration
+                        Class massFlow Declaration
 \*---------------------------------------------------------------------------*/
 
-class massFlowFlux
+class massFlow
 :
     public fvMeshFunctionObject,
     public writeFile
@@ -118,23 +117,26 @@ protected:
 
     // Protected data
 
-        //- Patches to assess
-        wordReList patchNames_;
-        labelHashSet patchIDs_;
-        word compoundPatchesName_;
+        //-
+        word regionName_;
+
+        //- Patch related
+        label patchID_;
+    
+        //- faceZone or faceSet related
+        labelList faces_;
 
         //- Region type
         regionType regionType_;
 
         //- Field names
-        word thermoName_;
-        word alphaName_;
-        word UName_;
+        word alphaRhoPhiName_;
 
         //- Field ptrs
-        const rhoThermo* thermoPtr_;
-        const volScalarField* alphaPtr_;
-        const volVectorField* UPtr_;
+        const surfaceScalarField* alphaRhoPhiPtr_;
+
+        //- Optional scale factor
+        scalar scaleFactor_;
 
     // Protected Member Functions
 
@@ -142,22 +144,22 @@ protected:
         virtual void writeFileHeader(Ostream& os);
 
         //- No copy construct
-        massFlowFlux(const massFlowFlux&) = delete;
+        massFlow(const massFlow&) = delete;
 
         //- No copy assignment
-        void operator=(const massFlowFlux&) = delete;
+        void operator=(const massFlow&) = delete;
 
 
 public:
 
     //- Runtime type information
-    TypeName("massFlowFlux");
+    TypeName("massFlow");
 
 
     // Constructors
 
         //- Construct from Time and dictionary
-        massFlowFlux
+        massFlow
         (
             const word& name,
             const Time& runTime,
@@ -166,7 +168,7 @@ public:
 
 
     //- Destructor
-    virtual ~massFlowFlux() = default;
+    virtual ~massFlow() = default;
 
 
     // Member Functions
@@ -177,7 +179,7 @@ public:
         //- Execute, currently does nothing
         virtual bool execute();
 
-        //- Write the massFlowFlux
+        //- Write the massFlow
         virtual bool write();
 };
 
