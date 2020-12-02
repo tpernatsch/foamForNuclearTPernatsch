@@ -65,12 +65,19 @@ while (pimple_.correct(convergedPISO))
 
             p_rgh_.relax();
             
-            U =  
-                HbyA 
-            +   fvc::reconstruct
-                (
-                    alpharAUf*pEqnIncomp.flux()/rAUf + phiSbyA
-                );
+            if (momentumMode_ == momentumMode::cellCenteredFaceReconstruction)
+            {
+                #include "reconstructU_1p.H"
+            }
+            else
+            {
+                U =
+                    HbyA 
+                +   fvc::reconstruct
+                    (
+                        alpharAUf*pEqnIncomp.flux()/rAUf + phiSbyA
+                    );
+            }
 
             U.correctBoundaryConditions();
             fvOptions_.correct(U);

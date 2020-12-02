@@ -6,7 +6,7 @@ fvScalarMatrix pEqnIncomp
 
 fvScalarMatrix pEqn(pEqnComp1() + pEqnComp2() + pEqnIncomp);
 
-pEqn.setReference(pRefCell_, pRefValue_);
+pEqn.setReference(pRefCell_, pRefValue_, forcePRef_);
 
 pEqn.relax();
 

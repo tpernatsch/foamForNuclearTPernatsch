@@ -9,7 +9,8 @@ fvScalarMatrix pEqn(pEqnComp() + pEqnIncomp);
 pEqn.setReference
 (
     pRefCell_, 
-    compressible ? getRefCellValue(p_rgh_, pRefCell_) : pRefValue_
+    compressible ? getRefCellValue(p_rgh_, pRefCell_) : pRefValue_,
+    forcePRef_
 );
 
 bool converged =

@@ -76,7 +76,7 @@ while (pimple_.correct(convergedPISO))
 
             fluid_.dgdt() = -pEqnComp & p_rgh_;
 
-            U = fvc::reconstruct(MRF_.absolute(phi_))/alpha;
+            U = fvc::reconstruct(MRF_.absolute(fluid_.phi()));
             
             U.correctBoundaryConditions();
             fvOptions_.correct(U);

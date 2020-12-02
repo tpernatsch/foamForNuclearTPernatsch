@@ -1,8 +1,8 @@
 //- The ifs are just to avoid useless field reconstructions
-//  for integer values of the oscillationLimiterFraction
-if (oscillationLimiterFraction_ != 0.0)
+//  for integer values of the porousInterfaceSharpness_ factor
+if (porousInterfaceSharpness_ != 0.0)
 {
-    if (oscillationLimiterFraction_ == 1.0)
+    if (porousInterfaceSharpness_ == 1.0)
     {
         U1 = 
             fvc::reconstruct(MRF_.absolute(phi1*movingAlphaf))/
@@ -14,7 +14,7 @@ if (oscillationLimiterFraction_ != 0.0)
     else
     {
         U1 = 
-            oscillationLimiterFraction_*
+            porousInterfaceSharpness_*
             (
                 fvc::reconstruct
                 (
@@ -22,12 +22,12 @@ if (oscillationLimiterFraction_ != 0.0)
                 )/
                 movingAlpha_
             )
-        +   (1-oscillationLimiterFraction_)*
+        +   (1-porousInterfaceSharpness_)*
             (   
                 fvc::reconstruct(MRF_.absolute(phi1))
             );
         U2 = 
-            oscillationLimiterFraction_*
+            porousInterfaceSharpness_*
             (
                 fvc::reconstruct
                 (
@@ -35,7 +35,7 @@ if (oscillationLimiterFraction_ != 0.0)
                 )/
                 movingAlpha_
             )
-        +   (1-oscillationLimiterFraction_)*
+        +   (1-porousInterfaceSharpness_)*
             (   
                 fvc::reconstruct(MRF_.absolute(phi2))
             );
@@ -46,6 +46,7 @@ else
     U1 = fvc::reconstruct(MRF_.absolute(phi1));
     U2 = fvc::reconstruct(MRF_.absolute(phi2));
 }
+
 U1.correctBoundaryConditions();
 fvOptions_.correct(U1);
 fluid1_.magU() = mag(U1);

@@ -160,46 +160,57 @@ if (!implicitPartialElimination)
 
                 mSfGradp = pEqnIncomp.flux()/rAUf;
 
-                volVectorField Us1 = 
-                    HbyA1 
-                +   fvc::reconstruct(alpharAUf1*mSfGradp + phiSbyA1);
-                volVectorField Us2 = 
-                    HbyA2 
-                +   fvc::reconstruct(alpharAUf2*mSfGradp + phiSbyA2);
-
-                if (explicitPartialElimination)
+                if 
+                (
+                    momentumMode_ 
+                ==  momentumMode::cellCenteredFaceReconstruction
+                )
                 {
-                    volVectorField U
-                    (
-                        alpha1*(Us1 + rAUKd1*U2) + alpha2*(Us2 + rAUKd2*U1)
-                    );
-
-                    volVectorField Ur
-                    (
-                        ((1.0 - rAUKd2)*Us1 - (1.0 - rAUKd1)*Us2)/
-                        (1.0 - rAUKd1*rAUKd2)
-                    );
-
-                    U1 = (U + alpha2*Ur)/movingAlpha_;
-                    U2 = (U - alpha1*Ur)/movingAlpha_;
+                    #include "reconstructU_2p.H"
                 }
                 else
                 {
-                    U1 = Us1;
-                    U2 = Us2;
+                    volVectorField Us1 = 
+                        HbyA1 
+                    +   fvc::reconstruct(alpharAUf1*mSfGradp + phiSbyA1);
+                    volVectorField Us2 = 
+                        HbyA2 
+                    +   fvc::reconstruct(alpharAUf2*mSfGradp + phiSbyA2);
+
+                    if (explicitPartialElimination)
+                    {
+                        volVectorField U
+                        (
+                            alpha1*(Us1 + rAUKd1*U2) + alpha2*(Us2 + rAUKd2*U1)
+                        );
+
+                        volVectorField Ur
+                        (
+                            ((1.0 - rAUKd2)*Us1 - (1.0 - rAUKd1)*Us2)/
+                            (1.0 - rAUKd1*rAUKd2)
+                        );
+
+                        U1 = (U + alpha2*Ur)/movingAlpha_;
+                        U2 = (U - alpha1*Ur)/movingAlpha_;
+                    }
+                    else
+                    {
+                        U1 = Us1;
+                        U2 = Us2;
+                    }
+
+                    U1.correctBoundaryConditions();
+                    fvOptions_.correct(U1);
+                    fluid1_.magU() = mag(U1);
+
+                    U2.correctBoundaryConditions();
+                    fvOptions_.correct(U2);
+                    fluid2_.magU() = mag(U2);
+
+                    //- Update mixture velocity
+                    U_ = this->U();
+                    U_.correctBoundaryConditions();
                 }
-                
-                U1.correctBoundaryConditions();
-                fvOptions_.correct(U1);
-                fluid1_.magU() = mag(U1);
-
-                U2.correctBoundaryConditions();
-                fvOptions_.correct(U2);
-                fluid2_.magU() = mag(U2);
-
-                //- Update mixture velocity
-                U_ = this->U();
-                U_.correctBoundaryConditions();
             }
         }
         
@@ -352,24 +363,43 @@ else    //- i.e. if doing implicitPartialElimination
 
                 mSfGradp = pEqnIncomp.flux()/rAUf;
 
-                U1 = 
-                    HbyA1 
-                +   fvc::reconstruct(alpharAUf1Star*mSfGradp + phiSbyA1);
-                U2 = 
-                    HbyA2 
-                +   fvc::reconstruct(alpharAUf2Star*mSfGradp + phiSbyA2);
-                
-                U1.correctBoundaryConditions();
-                fvOptions_.correct(U1);
-                fluid1_.magU() = mag(U1);
-                
-                U2.correctBoundaryConditions();
-                fvOptions_.correct(U2);
-                fluid2_.magU() = mag(U2);
+                if 
+                (
+                    momentumMode_ 
+                ==  momentumMode::cellCenteredFaceReconstruction
+                )
+                {
+                    #include "reconstructU_2p.H"
+                }
+                else
+                {
+                    U1 = 
+                        HbyA1 
+                    +   fvc::reconstruct
+                        (
+                            alpharAUf1Star*mSfGradp 
+                        +   phiSbyA1
+                        );
+                    U2 = 
+                        HbyA2 
+                    +   fvc::reconstruct
+                        (
+                            alpharAUf2Star*mSfGradp 
+                        +   phiSbyA2
+                        );
 
-                //- Update mixture velocity
-                U_ = this->U();
-                U_.correctBoundaryConditions();
+                    U1.correctBoundaryConditions();
+                    fvOptions_.correct(U1);
+                    fluid1_.magU() = mag(U1);
+                    
+                    U2.correctBoundaryConditions();
+                    fvOptions_.correct(U2);
+                    fluid2_.magU() = mag(U2);
+
+                    //- Update mixture velocity
+                    U_ = this->U();
+                    U_.correctBoundaryConditions();
+                }
             }
         }
         

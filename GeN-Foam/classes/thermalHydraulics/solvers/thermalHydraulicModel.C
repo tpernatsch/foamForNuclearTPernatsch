@@ -166,6 +166,10 @@ Foam::thermalHydraulicModel::thermalHydraulicModel
     (
         this->lookupOrDefault("pRefValue", 0)
     ),
+    forcePRef_
+    (
+        this->lookupOrDefault<bool>("forcePRef", false)
+    ),
     initialFluidMass_("initialFluidMass", dimMass, 0),
     momentumMode_
     (
@@ -177,6 +181,14 @@ Foam::thermalHydraulicModel::thermalHydraulicModel
                 "cellCentered"
             )
         )
+    ),
+    porousInterfaceSharpness_
+    (
+        pimple.dict().lookupOrDefault<scalar>
+        (
+            "porousInterfaceSharpness", 
+            0.0
+        )
     )
 {
     setRefCell
@@ -185,7 +197,8 @@ Foam::thermalHydraulicModel::thermalHydraulicModel
         p_rgh_,
         this,
         pRefCell_,
-        pRefValue_
+        pRefValue_,
+        forcePRef_
     );
     mesh.setFluxRequired(p_rgh_.name());
 }
