@@ -399,8 +399,10 @@ void Foam::thermalHydraulicModels::onePhase::printContErr()
     volScalarField contErrRel(fluid_.contErr()/fluid_.rho());
 
     Info<< "Instantaneous relative continuity error (avg) = "
-        << contErrRel.weightedAverage(mesh_.V()).value() << " "
-        << "1/s" << endl;
+        << contErrRel.weightedAverage(mesh_.V()).value()
+        //<< " " << min(contErrRel).value()
+        //<< " " << max(contErrRel).value()
+        << " 1/s" << endl;
 }
 
 void Foam::thermalHydraulicModels::onePhase::calcCumulContErr()
@@ -408,23 +410,24 @@ void Foam::thermalHydraulicModels::onePhase::calcCumulContErr()
     if (pimple_.finalIter())
     {
         scalar& cumulContErr(fluid_.cumulContErr());
-
-        scalarField integralContErr
-        (
-            mesh_.time().deltaTValue()*
-            fvc::volumeIntegrate(fluid_.contErr())
-        );
+        const volScalarField& cE(fluid_.contErr());
 
         const scalarField& V(mesh_.V());
+        const scalar& dt(mesh_.time().deltaTValue());
+
         scalar totV(0);
+        scalar deltaCumulContErr(0);
 
         forAll(V, i)
         {
-            cumulContErr += integralContErr[i];
-            totV += V[i];
+            const scalar& Vi(V[i]);
+            deltaCumulContErr += cE[i]*Vi*dt;
+            totV += Vi;
         }
-        reduce(cumulContErr, sumOp<scalar>());
+        reduce(deltaCumulContErr, sumOp<scalar>());
         reduce(totV, sumOp<scalar>());
+
+        cumulContErr += deltaCumulContErr;
 
         Info<< "Cumulative continuity error = " 
             << (cumulContErr/totV)

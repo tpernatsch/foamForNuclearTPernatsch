@@ -86,6 +86,8 @@ Foam::heatExchanger::heatExchanger
         pCOV += V[celli]*C[celli];
         pV += V[celli];
     }
+    reduce(pCOV, sumOp<vector>());
+    reduce(pV, sumOp<scalar>());
     pCOV /= pV;
     forAll(secondaryCells_, i)
     {
@@ -93,6 +95,8 @@ Foam::heatExchanger::heatExchanger
         sCOV += V[celli]*C[celli];
         sV += V[celli];
     }
+    reduce(sCOV, sumOp<vector>());
+    reduce(sV, sumOp<scalar>());
     sCOV /= sV;
     vector delta(sCOV-pCOV);
     scalar errV((pV-sV)/pV);

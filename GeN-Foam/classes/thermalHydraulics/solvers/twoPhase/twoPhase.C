@@ -952,30 +952,29 @@ void Foam::thermalHydraulicModels::twoPhase::calcCumulContErrs()
         scalar& cumulContErr1(fluid1_.cumulContErr());
         scalar& cumulContErr2(fluid2_.cumulContErr());
 
-        scalarField integralContErr1
-        (
-            mesh_.time().deltaTValue()*
-            fvc::volumeIntegrate(fluid1_.contErr())
-        );
-
-        scalarField integralContErr2
-        (
-            mesh_.time().deltaTValue()*
-            fvc::volumeIntegrate(fluid2_.contErr())
-        );
+        const volScalarField& cE1(fluid1_.contErr());
+        const volScalarField& cE2(fluid2_.contErr());
 
         const scalarField& V(mesh_.V());
+        const scalar& dt(mesh_.time().deltaTValue());
+
         scalar totV(0);
+        scalar deltaCumulContErr1(0);
+        scalar deltaCumulContErr2(0);
 
         forAll(V, i)
         {
-            cumulContErr1 += integralContErr1[i];
-            cumulContErr2 += integralContErr2[i];
-            totV += V[i];
+            const scalar& Vi(V[i]);
+            deltaCumulContErr1 += cE1[i]*Vi*dt;
+            deltaCumulContErr2 += cE2[i]*Vi*dt;
+            totV += Vi;
         }
-        reduce(cumulContErr1, sumOp<scalar>());
-        reduce(cumulContErr2, sumOp<scalar>());
+        reduce(deltaCumulContErr1, sumOp<scalar>());
+        reduce(deltaCumulContErr2, sumOp<scalar>());
         reduce(totV, sumOp<scalar>());
+
+        cumulContErr1 += deltaCumulContErr1;
+        cumulContErr2 += deltaCumulContErr2;
 
         Info<< "Cumulative continuity errors ("
             << fluid1_.name() << " " << fluid2_.name() << ") = " 
