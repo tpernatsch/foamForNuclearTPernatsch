@@ -1,0 +1,92 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/fluidRegion";
+    object      epsilon;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -3 0 0 0 0];
+
+
+internalField   uniform 200;
+
+boundaryField
+{
+    vesselWall
+    {
+        type            zeroGradient;
+    }
+    vesselFront
+    {
+        type            wedge;
+    }
+    vesselBack
+    {
+        type            wedge;
+    }
+    outVesselFrontAndBack
+    {
+        type            zeroGradient;
+    }
+    outVesselWall
+    {
+        type            zeroGradient;
+    }
+    secLoopFrontAndBack
+    {
+        type            zeroGradient;
+    }
+    hotLegSecondaryOutlet
+    {
+        type            zeroGradient;
+    }
+    coldLegSecondaryInlet
+    {
+        type            zeroGradient;
+    }
+    secLoopWall
+    {
+        type            zeroGradient;
+    }
+    baffle1_master
+    {
+        type            zeroGradient;
+    }
+    baffle1_slave
+    {
+        type            zeroGradient;
+    }
+    baffle2_master
+    {
+        type            zeroGradient;
+    }
+    baffle2_slave
+    {
+        type            zeroGradient;
+    }
+    baffle3
+    {
+        type            zeroGradient;
+    }
+    baffle4
+    {
+        type            zeroGradient;
+    }
+    vesselValve
+    {
+        type            zeroGradient;
+    }
+}
+
+
+// ************************************************************************* //

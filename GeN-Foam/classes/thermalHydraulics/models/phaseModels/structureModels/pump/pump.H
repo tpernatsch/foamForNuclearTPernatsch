@@ -74,6 +74,9 @@ protected :
     //  source on time
     autoPtr<Function1<scalar>> timeProfilePtr_;
 
+    //- Optional offset time
+    scalar t0_;
+
     //- True if a timeProfilePtr_ exists
     bool timeDependent_;
 

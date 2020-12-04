@@ -1,0 +1,98 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/fluidRegion";
+    object      nut;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -1 0 0 0 0];
+
+
+internalField   uniform 0;
+
+boundaryField
+{
+    vesselWall
+    {
+        type            zeroGradient;
+    }
+    vesselFront
+    {
+        type            wedge;
+    }
+    vesselBack
+    {
+        type            wedge;
+    }
+    outVesselFrontAndBack
+    {
+        type            zeroGradient;
+    }
+    outVesselWall
+    {
+        type            zeroGradient;
+    }
+    secLoopFrontAndBack
+    {
+        type            zeroGradient;
+    }
+    hotLegSecondaryOutlet
+    {
+        type            zeroGradient;
+    }
+    coldLegSecondaryInlet
+    {
+        type            zeroGradient;
+    }
+    secLoopWall
+    {
+        type            zeroGradient;
+    }
+    baffle1_master
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    baffle1_slave
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    baffle2_master
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    baffle2_slave
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    baffle3
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    baffle4
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    vesselValve
+    {
+        type            zeroGradient;
+    }
+}
+
+
+// ************************************************************************* //

@@ -59,6 +59,7 @@ Foam::pump::pump
     mesh_(mesh),
     cellList_(cellList),
     pumpValue_(this->get<vector>("momentumSource")),
+    t0_(0.0),
     timeDependent_(false)
 {
     Info << "Creating pump in " << dict.dictName() << endl;
@@ -66,9 +67,10 @@ Foam::pump::pump
     word timeProfileDictName("momentumSourceTimeProfile");
     if (this->found(timeProfileDictName))
     {
+        const dictionary& timeProfileDict(dict.subDict(timeProfileDictName));
         word type
         (
-            dict.subDict(timeProfileDictName).get<word>("type")
+            timeProfileDict.get<word>("type")
         );
         timeProfilePtr_.reset        
         (
@@ -80,6 +82,7 @@ Foam::pump::pump
             )
         );
         timeDependent_ = true;
+        t0_ = timeProfileDict.lookupOrDefault("startTime", 0.0);
     }
 }
 
@@ -94,7 +97,7 @@ void Foam::pump::correct
     vector pumpValue(pumpValue_);
     if (timeDependent_)
     {
-        const scalar& t(mesh_.time().timeOutputValue());
+        scalar t(mesh_.time().timeOutputValue()-t0_);
         pumpValue *= timeProfilePtr_->value(t);
     }
 
