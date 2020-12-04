@@ -95,27 +95,8 @@ Foam::structureModels::byZone::byZone
         word key(dict.toc()[i]);
         if (key == "type") continue;
         if (key == "powerOffCriterionModel") continue;
+        if (key == "heatExchangers") continue;
         const dictionary& zoneDict(dict.subDict(key));
-
-        if (key == "heatExchangers")
-        {
-            const dictionary& HXDicts(dict.subDict(key));
-            forAll(HXDicts.toc(), j)
-            {
-                word HXKey(HXDicts.toc()[j]);
-                const dictionary& HXDict(HXDicts.subDict(HXKey));
-                heatExchangers_.insert
-                (
-                    HXKey,
-                    heatExchanger
-                    (
-                        mesh_,
-                        HXDict
-                    )
-                );
-            }
-            continue;
-        }
         
         wordList zones(myOps::split<word>(key, ':'));
 
@@ -184,6 +165,17 @@ Foam::structureModels::byZone::byZone
             //- Read momentum source
             if (zoneDict.found("momentumSource"))
             {
+                pumps_.insert
+                (
+                    zone,
+                    pump
+                    (
+                        mesh_,
+                        zoneDict,
+                        zoneCellList
+                    )
+                );
+
                 if (!momentumSourcePtr_.valid())
                 {
                     momentumSourcePtr_.reset
@@ -207,16 +199,6 @@ Foam::structureModels::byZone::byZone
                         )
                     );
                 }
-
-                vector uSource(zoneDict.get<vector>("momentumSource"));
-
-                forAll(zoneCellList, j)
-                {
-                    momentumSourcePtr_()[zoneCellList[j]] = uSource;
-                }
-
-                //- BCs set outside dict loop, no need to do it multiple
-                //  times
             }
 
             //- Set passive properties fields if keywords present
@@ -591,59 +573,10 @@ Foam::structureModels::byZone::byZone
     }
     iAact_.correctBoundaryConditions();
 
-    //- If HXs were specified, created the HX-specific fields, THXPtr_ and
-    //  iAHXPtr_
-    if (heatExchangers_.size() > 0)
-    {
-        THXPtr_.reset
-        (
-            new volScalarField
-            (
-                IOobject
-                (
-                    "T.HX",
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::NO_READ,
-                    IOobject::AUTO_WRITE
-                ),
-                mesh_,
-                dimensionedScalar("", dimTemperature, 0),
-                zeroGradientFvPatchScalarField::typeName
-            )
-        );
-        iAHXPtr_.reset
-        (
-            new volScalarField
-            (
-                IOobject
-                (
-                    "",
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::NO_READ,
-                    IOobject::AUTO_WRITE
-                ),
-                mesh_,
-                dimensionedScalar("", dimArea/dimVol, 0),
-                zeroGradientFvPatchScalarField::typeName
-            )
-        );
-        volScalarField& iAHX(iAHXPtr_());
-        forAllIter
-        (
-            heatExchangerTable,
-            heatExchangers_,
-            iter
-        )
-        {
-            iAHX += iter().iA();
-        }
-        iAHX.correctBoundaryConditions();
-    }
-
     Rl2g_.correctBoundaryConditions();
     Rg2l_.correctBoundaryConditions();
+
+    this->constructHeatExchangers();
 }
 
 

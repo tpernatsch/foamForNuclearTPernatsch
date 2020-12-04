@@ -352,10 +352,52 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         //- Construct gapHPowerDensityTable if found, otherwise use the
         //  provided constant value
         scalar gapH(0);
-        bool foundTable(dict.found("gapHPowerDensityTable"));
+        word tableName("gapHPowerDensity");
+        bool foundTable(dict.found(tableName));
         bool foundValue(dict.found("gapH"));
         if (foundTable)
         {
+            /*
+                The table Function1 requires a particular input. In general,
+                it should be something like this
+
+                topLevelDictName
+                {
+                    type                table;
+                    topLevelDictName    table
+                    (
+                        (0 0)
+                        (1 1)
+                        (...)
+                    );
+                }
+
+                however, I only want the user to give an input in the form
+
+                powerModel
+                {
+                    type        nuclearFuelPin;
+
+                    ...
+
+                    gapHPowerDensity table
+                    (
+                        (0 0)
+                        (1 1)
+                        (...)
+                    );
+                }
+
+                in which powerModel is the topLevelDictName.
+
+                The code below does just this, by creating a copy dict of
+                powerModel renaming it to gapHPowerDensity table, resetting
+                type to table, and passing that to the Function1 table 
+                selector
+            */
+            dictionary tableDict(tableName);
+            tableDict.merge(dict);
+            tableDict.set("type", "table");
             gapHPowerDensityTable_.insert
             (
                 region,
@@ -363,8 +405,9 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                 (
                     Function1<scalar>::New
                     (
-                        "uniformValue",
-                        dict.subDict("gapHPowerDensityTable")
+                        tableName,
+                        tableDict,
+                        "table"
                     )
                 )
             );
@@ -463,8 +506,6 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                         Trad_[celli][j] = Cc*log(r)/kc + Dc;
                     }
                 }
-                
-                Info << Trad_[celli] << endl; 
            }
         }
         else //- Otherwise, read from dict

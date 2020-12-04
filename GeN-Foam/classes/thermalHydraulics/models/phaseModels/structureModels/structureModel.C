@@ -258,6 +258,91 @@ Foam::structureModel::structureModel
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
+const Foam::volVectorField& Foam::structureModel::momentumSource()
+{
+    momentumSourcePtr_() *= 0.0;
+    forAllIter
+    (
+        pumpTable,
+        pumps_,
+        iter
+    )
+    {
+        iter().correct(momentumSourcePtr_());
+    }
+    return momentumSourcePtr_();
+}
+
+void Foam::structureModel::constructHeatExchangers()
+{
+    if (this->dict().found("heatExchangers"))
+    {
+        const dictionary& HXDicts(this->dict().subDict("heatExchangers"));
+        forAll(HXDicts.toc(), j)
+        {
+            word HXKey(HXDicts.toc()[j]);
+            const dictionary& HXDict(HXDicts.subDict(HXKey));
+            heatExchangers_.insert
+            (
+                HXKey,
+                heatExchanger
+                (
+                    mesh_,
+                    HXDict
+                )
+            );
+        }
+
+        //- If HXs were specified, created the HX-specific fields, THXPtr_ and
+        //  iAHXPtr_
+        THXPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "T.HX",
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimensionedScalar("", dimTemperature, 0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        iAHXPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "",
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimensionedScalar("", dimArea/dimVol, 0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        volScalarField& iAHX(iAHXPtr_());
+        forAllIter
+        (
+            heatExchangerTable,
+            heatExchangers_,
+            iter
+        )
+        {
+            iAHX += iter().iA();
+        }
+        iAHX.correctBoundaryConditions();
+    }
+}
+
 void Foam::structureModel::correct
 (
     const volScalarField& HT,

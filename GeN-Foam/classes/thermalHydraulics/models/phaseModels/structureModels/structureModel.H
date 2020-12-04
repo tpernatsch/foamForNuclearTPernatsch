@@ -59,8 +59,9 @@ SourceFiles
 #include "HashPtrTable.H"
 #include "runTimeSelectionTables.H"
 #include "zeroGradientFvPatchFields.H"
-#include "powerModel.H"
+#include "pump.H"
 #include "heatExchanger.H"
+#include "powerModel.H"
 #include "powerOffCriterionModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -83,10 +84,10 @@ protected:
 
     typedef HashTable
     <
-        autoPtr<powerModel>,
+        pump,
         word,
         word::hash
-    >   powerModelTable;
+    >   pumpTable;
 
     typedef HashTable
     <
@@ -94,6 +95,13 @@ protected:
         word,
         word::hash
     >   heatExchangerTable;
+
+    typedef HashTable
+    <
+        autoPtr<powerModel>,
+        word,
+        word::hash
+    >   powerModelTable;
 
     //- List of names of each group of cells into which this structure is split
     wordList regions_;
@@ -124,11 +132,14 @@ protected:
     //  vector Reynolds number.
     volVectorField lDh_;
 
-    //- Table of power models indexed by powerModel name
-    powerModelTable powerModels_;
+    //- Table of momentum sources (e.g. pumps)
+    pumpTable pumps_;
 
     //- Table of heat exchangers
     heatExchangerTable heatExchangers_;
+
+    //- Table of power models indexed by powerModel name
+    powerModelTable powerModels_;
 
     //- Heat flux from active structures only. Positive if from structure to
     //  fluid
@@ -170,7 +181,7 @@ protected:
     //- Rotation matrix to move from local to global reference frame
     volTensorField Rl2g_;
 
-    //- Momentum source
+    //- Total momentum source
     autoPtr<volVectorField> momentumSourcePtr_;
 
     //- Power off criterion
@@ -224,6 +235,13 @@ public:
             GeometricField<Type, fvPatchField, volMesh>& field,
             word key
         ) const;
+
+        //- Adjust pumps and return momentum source
+        const volVectorField& momentumSource();
+
+        //- By default heatExchangers operate on cellZones, so the way they are
+        //  constructed is handled by a function here rather than in byZone
+        void constructHeatExchangers();
 
         //- In two-phase solvers :
         //  HT = H1*frac1*T1 + H2*frac2*T2
@@ -336,11 +354,6 @@ public:
             const autoPtr<volVectorField>& momentumSourcePtr() const
             {
                 return momentumSourcePtr_;
-            }
-
-            const volVectorField& momentumSource() const
-            {
-                return momentumSourcePtr_();
             }
 };
 

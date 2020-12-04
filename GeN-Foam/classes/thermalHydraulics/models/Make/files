@@ -9,6 +9,7 @@ phaseModels/structureModels/byZone/byZoneStructure.C
 include/myOps.C
 include/IOFieldField/IOFieldFields.C
 
+phaseModels/structureModels/pump/pump.C
 phaseModels/structureModels/heatExchanger/heatExchanger.C
 
 phaseModels/structureModels/powerModels/powerModel.C

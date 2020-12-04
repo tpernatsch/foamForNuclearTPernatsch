@@ -161,10 +161,10 @@ volScalarField* const TCladAv
 //  powerModel figures in phaseProperties), use that one. Otherwise again, if
 //  no powerDensity field exists, create a null one. The volFuelPower field is 
 //  a ptr and not a reference as references cannot be initialized with rvalues,
-//  such as is the new volScalarField (i.e., I would to create it outside the 
-//  ptr initialization, and that again would happen always and just waste 
+//  such as is the new volScalarField (i.e., I would nned to create it outside  
+//  the ptr initialization, and that again would happen always and just waste 
 //  memory if the other powerDensity fields exist). I do realize these are 
-//  laughably small amounts, but hey, whatever helps
+//  laughably small of memory to bitch about, but hey, whatever helps
 volScalarField* const volFuelPower
 (
     (multiphysics.liquidFuel()) ? &(liquid->powerDensity()) :

@@ -6,7 +6,7 @@ bool adjustTimeStep
 //- First, the thermalHydraulic class adjusts the global time step based on
 //  possible Co number limitations. The adjustTimeStep flag is read within the
 //  fuction itself and runTime.deltaT is set (if applicable) within it
-if (multiphysics.solveFluidMechanics())
+if (multiphysics.solveFluidMechanics() or multiphysics.solveEnergy())
 {
     thermalHydraulics.adjustTimeStep();
 }
