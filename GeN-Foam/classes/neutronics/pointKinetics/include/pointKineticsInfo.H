@@ -1,4 +1,6 @@
-Info<< "    power = " << power_ << " W" << endl;
+Info<< "    totalPower = " << power_ << " W" << endl;
+Info<< "    -> fission = " << fissionPower_ << " W" << endl;
+Info<< "    -> decay   = " << decayPower_ << " W" << endl;
 Info<< "    totalReactivity   = " << (totalReactivity_*1e5)<< " pcm" << endl;
 Info<< "    -> Doppler (fast) = " << (DopplerReactivity*1e5)<< " pcm" << endl;
 Info<< "    -> TFuel          = " << (TFuelReactivity*1e5) << " pcm" << endl;

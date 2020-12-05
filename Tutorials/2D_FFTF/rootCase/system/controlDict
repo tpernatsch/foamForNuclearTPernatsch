@@ -65,9 +65,9 @@ solveThermalMechanics   false;
 
 adjustTimeStep      true;
 
-maxDeltaT           5;
+maxDeltaT           2;
 
-maxCo               1000;
+maxCo               500;
 
 maxPowerVariation   0.025;
 

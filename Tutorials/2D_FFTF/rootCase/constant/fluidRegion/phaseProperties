@@ -263,11 +263,11 @@ structureProperties
             type                            table;
 
             //- Time after which the time table is applied
-            startTime                       905;
+            startTime                       910;
 
             //- Left column is time elapsed since the startTime defined
             //  above
-            momentumSourceTimeProfile       table
+            table       table
             (
                 (   0   1   )
                 (   1   0.8490104619    )

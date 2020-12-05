@@ -41,6 +41,7 @@ Authors
 #define pointKineticNeutronics_H
 
 #include "neutronics.H"
+#include "Function1.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -60,8 +61,21 @@ protected:
     //-
     IOdictionary nuclearData_;
 
-    //-
+    //- Total power, sum of fission power and decay power
     scalar power_;
+
+    //- Point kinetics operates on fissionPower
+    scalar fissionPower_;
+
+    //- Decay power value set by decayPowerPtr_
+    scalar decayPower_;
+
+    //- Optional decay power
+    autoPtr<Function1<scalar>> decayPowerPtr_;
+
+    //- Time offset for the calcuation of the decayPower based on the
+    //  provided Function1, if any
+    scalar decayPowerStartTime_;
 
     //- Due to whatever the user might please
     scalar externalReactivity_;
@@ -96,6 +110,7 @@ protected:
     //  of a better way to get something equivalent to the finalInnerIter flag)
     label timeIndex_;
     scalar powerOld_;
+    scalar fissionPowerOld_;
     scalarList precursorPowersOld_;
 
     // default precursor field. Only used for liquid fuel

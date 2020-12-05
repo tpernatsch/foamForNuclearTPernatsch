@@ -39,13 +39,12 @@ the power evolution.
 The case is currently hard-coded to run of 5 cores via the Allrun script.
 On 5 cores of an Intel i5-8600K CPU @ 3.60GHz the calculation durations were:
 -	~ 820 s for the steady state
-- 	~ 1620 s for the transient
+- 	~ 3700 s for the transient
 
-The transient starts at t = 905 s. Please note that due to 
-the large time step discrepancy between the steady state step (avgCo ~ 50, 
-maxCo = 500) and the transient one (avgCo ~ 1, maxCo = 10), there will be a 
-slight reactivity imbalance (~1 pcm) at the start of the simulation, which is
-corrected by the feedbacks before the simulation reaches 905 s.
+The transient starts at t = 910 s. For convenience, the transient simulation
+ends at 1200 s, as most of the dynamics is resolved at that point (even though
+a new steady state is not reached). Change the endTimeT variable in the Allrun
+script to run up to any point you desire.
 
 ### GEN-FOAM FEATURES #########################################################
 
@@ -60,7 +59,14 @@ name of the faceZone over which total flow is kept track of. The hard-coded
 part consist of the dependence of the free surface sodium height with respect
 to the total integral volume flow throgh said faceZone (correlation provided
 by the experimentalists). Thus, this feature is fairly useless for any other 
-application for now. The heatExchanger feature is also used to model heat
+application for now. Apart from that, the case showcases the use of the novel
+decay power model point kinetics (not implemtend for liquidFuel yet, though).
+In constant/neutroRegion/reactorState one can optionally define a decay power
+and its evolution in time (via a table or expressions evaulated via the
+standard OpenFOAM Function1 feature). The power provided under pTarget is
+the initial TOTAL power, and the pointKinetics model will operate only on
+the fission power, initially set as total-decay.
+The heatExchanger feature is also used to model heat
 transfer between the two physically separated mesh-domains representing the
 primary and the secondary. Furthermore, the model uses the novel momentumMode
 name cellCenteredFaceReconstruction, which in very simple terms is a mix of

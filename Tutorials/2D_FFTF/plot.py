@@ -126,8 +126,12 @@ for q in range(len(sys.argv)-1) :
     #axT.plot(times, TIHXOutSecondary, label="IHXSecondaryOutlet")
 
     try:
-        power = readValues(times, loglines, "power =", 2, 180)
-        axP.plot(times, power, label="power")
+        totalPower = readValues(times, loglines, "totalPower =", 2, 180)
+        fissionPower = readValues(times, loglines, "-> fission", 3, 180)
+        decayPower = readValues(times, loglines, "-> decay", 3, 180)
+        axP.plot(times, totalPower, label="totalPower")
+        axP.plot(times, fissionPower, label="fissionPower")
+        axP.plot(times, decayPower, label="decayPower")
     except :
         pass
 
@@ -153,12 +157,12 @@ for q in range(len(sys.argv)-1) :
 
 ###
 
-timeOffset = 906
+timeOffset = 910
 
 log = open("expFlow", "r")
 loglines = log.readlines()
 expFlowTimes, expFlowValues = readExpTimesAndValues(loglines, timeOffset, 0, 1)
-axF.plot(expFlowTimes, expFlowValues, label="exp")
+axF.plot(expFlowTimes, expFlowValues, label="expTotal")
 
 log = open("expPIOTA2", "r")
 loglines = log.readlines()
@@ -175,12 +179,12 @@ axT.plot(expPIOTA6Times, expPIOTA6Values, label="expPIOTA6")
 log = open("expPow", "r")
 loglines = log.readlines()
 expPowTimes, expPowValues = readExpTimesAndValues(loglines, timeOffset, 0, 1000000)
-axP.plot(expPowTimes, expPowValues, label="exp")
+axP.plot(expPowTimes, expPowValues, label="expPrimary")
 
 log = open("expReactivity", "r")
 loglines = log.readlines()
 expRTimes, expRValues = readExpTimesAndValues(loglines, timeOffset, 0, 1)
-axR.plot(expRTimes, expRValues, label="exp")
+axR.plot(expRTimes, expRValues, label="expTotal")
 
 for ax in axes.flatten() :
     ax.legend()

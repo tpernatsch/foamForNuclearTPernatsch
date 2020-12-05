@@ -70,6 +70,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             "pTarget"
         )
     ),
+    fissionPower_(power_),
+    decayPower_(0.0),
+    decayPowerStartTime_(0.0),
     externalReactivity_
     (
         reactorState_.lookupOrDefault<scalar>
@@ -110,6 +113,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     delayedGroups_(betas_.size()),
     timeIndex_(mesh.time().timeIndex()),
     powerOld_(power_),
+    fissionPowerOld_(fissionPower_),
     precursorPowersOld_(precursorPowers_),
     defaultPrec_
     (
@@ -334,6 +338,36 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         FatalErrorInFunction
             << "pointKinetics model incompatible with eigenvalueNeutronics"
             << exit(FatalError);
+    }
+
+    //- Check if decay power provided
+    word decayPowerDictName("decayPowerTimeProfile");
+    if (reactorState_.found(decayPowerDictName))
+    {
+        const dictionary& decayPowerDict
+        (
+            reactorState_.subDict(decayPowerDictName)
+        );
+        word type
+        (
+            decayPowerDict.get<word>("type")
+        );
+        decayPowerPtr_.reset        
+        (
+            Function1<scalar>::New
+            (
+                type,
+                decayPowerDict,
+                type
+            )
+        );
+        decayPowerStartTime_ = 
+            decayPowerDict.lookupOrDefault<scalar>("startTime", 0.0);
+        const scalar& t(mesh_.time().timeOutputValue());
+        decayPower_ = decayPowerPtr_->value(t-decayPowerStartTime_);
+        fissionPower_ = power_ - decayPower_;
+        fissionPowerOld_ = fissionPower_;
+
     }
 
     if (liquidFuel_)
@@ -655,7 +689,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         for (int i = 0; i < delayedGroups_; i++)
         {
             precursorPowers_[i] = 
-                (betas_[i]*power_)/(lambdas_[i]*promptGenerationTime_);
+                (betas_[i]*fissionPower_)/(lambdas_[i]*promptGenerationTime_);
         }
     }
 

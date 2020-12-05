@@ -76,8 +76,8 @@ Foam::pump::pump
         (
             Function1<scalar>::New
             (
-                timeProfileDictName,
-                dict,
+                type,
+                timeProfileDict,
                 type
             )
         );
