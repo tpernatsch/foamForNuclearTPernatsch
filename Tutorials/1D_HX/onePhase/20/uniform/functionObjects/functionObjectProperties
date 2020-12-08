@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "20/uniform/functionObjects";
+    object      functionObjectProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+results
+{
+    inletPValues
+    {
+        scalar
+        {
+            average(inletP,alphaRhoPhi) -8.620468720557692;
+            average(inletP,T) 653.15;
+        }
+    }
+    inletSValues
+    {
+        scalar
+        {
+            average(inletS,alphaRhoPhi) -8.620468720557689;
+            average(inletS,T) 653.15;
+        }
+    }
+    outletPValues
+    {
+        scalar
+        {
+            average(outletP,alphaRhoPhi) 8.62046758254629;
+            average(outletP,T) 909.2825250862639;
+        }
+    }
+    outletSValues
+    {
+        scalar
+        {
+            average(outletS,alphaRhoPhi) 8.620466152108595;
+            average(outletS,T) 907.3024810946994;
+        }
+    }
+}
+
+
+// ************************************************************************* //

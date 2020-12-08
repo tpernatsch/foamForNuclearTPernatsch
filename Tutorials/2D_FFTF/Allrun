@@ -77,7 +77,7 @@ do
 
     printf "Running $exe on $caseName\n"
     
-    $exe -case $caseName | tee "$caseName/log"
+    $exe -case $caseName | tee "$caseName/log.GeN-Foam"
 
 
 done

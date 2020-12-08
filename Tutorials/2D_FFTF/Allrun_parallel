@@ -80,7 +80,7 @@ do
 
     printf "Running $exe on $caseName\n"
     
-    mpirun -np 5 $exe -parallel -case $caseName | tee "$caseName/log"
+    mpirun -np 5 $exe -parallel -case $caseName | tee "$caseName/log.GeN-Foam"
 
     case "$caseName" in
         "transient")

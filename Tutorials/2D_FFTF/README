@@ -36,7 +36,8 @@ From a calculation perspective, the steady state is run for 900 s of model time,
 followed by a transient case in which a pointKinetics model is used to model the
 the power evolution. 
 
-The case is currently hard-coded to run of 5 cores via the Allrun script.
+The case can run on 5 cores via the Allrun_parallel script (suggested) or on
+1 core using the Allrun script.
 On 5 cores of an Intel i5-8600K CPU @ 3.60GHz the calculation durations were:
 -	~ 820 s for the steady state
 - 	~ 3700 s for the transient
@@ -87,8 +88,9 @@ porousInterfaceSharpness = 0.5 (see fvSolution)
 
 ### HOW TO RUN ################################################################
 
-To run everything, simply launch the ./Allrun script. To plot results, use the 
-plot script by passing the log name as an argument, i.e. either
+To run everything, simply launch the ./Allrun or ./Allrun_parallel script. 
+To plot results, use the plot script by passing the log name as an argument, 
+i.e. either
 
 python3 plot.py steadyState/log
 
