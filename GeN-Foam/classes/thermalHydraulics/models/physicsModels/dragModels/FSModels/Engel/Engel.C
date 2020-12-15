@@ -69,9 +69,9 @@ Foam::scalar Foam::dragModels::Engel::fd(const scalar& Re) const
         {
             scalar psi
             (
-                max
+                min
                 (
-                    min
+                    max
                     (
                         ((Re-400.0)/4600.0), 
                         0.0
