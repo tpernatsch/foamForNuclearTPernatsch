@@ -54,9 +54,9 @@ do
         # check it ran
         endString=$(tail -3 ./log.GeN-Foam | grep End)
         if [ "$endString" = "End" ]; then
-            printf "$tutorialName/onePhase has converged \n"  >> ../$resFile
+            printf "$tutorialName/onePhase has converged \n"  >> ../../$resFile
         else
-            printf "$tutorialName/onePhase has NOT converged \n"  >> ../$resFile
+            printf "$tutorialName/onePhase has NOT converged \n"  >> ../../$resFile
         fi
         cd ../..
  
@@ -68,9 +68,9 @@ do
         # check it ran
         endString=$(tail -3 ./log.GeN-Foam | grep End)
         if [ "$endString" = "End" ]; then
-            printf "$tutorialName/twoPhase has converged \n"  >> ../$resFile
+            printf "$tutorialName/twoPhase has converged \n"  >> ../../$resFile
         else
-            printf "$tutorialName/twoPhase has NOT converged \n"  >> ../$resFile
+            printf "$tutorialName/twoPhase has NOT converged \n"  >> ../../$resFile
         fi
         cd ../..       
         ;;
