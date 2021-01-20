@@ -43,6 +43,23 @@ namespace twoPhaseDragMultiplierModels
 }
 }
 
+const Foam::Enum
+<
+    Foam::twoPhaseDragMultiplierModels::LottesFlinn::mode
+>
+Foam::twoPhaseDragMultiplierModels::LottesFlinn::modeNames_
+(
+    {
+        { 
+            mode::alpha, 
+            "alpha" 
+        },
+        { 
+            mode::XLM, 
+            "Nguyen" 
+        }
+    }
+);
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
@@ -62,6 +79,17 @@ Foam::twoPhaseDragMultiplierModels::LottesFlinn::LottesFlinn
     exp_
     (
         dict.lookupOrDefault<scalar>("exp", 2.0)
+    ),
+    mode_
+    (
+        modeNames_.get
+        (
+            this->lookupOrDefault<word>
+            (
+                "mode", 
+                "alpha"
+            )
+        )
     )
 {}
 
@@ -77,13 +105,52 @@ Foam::twoPhaseDragMultiplierModels::LottesFlinn::~LottesFlinn()
 void
 Foam::twoPhaseDragMultiplierModels::LottesFlinn::correct()
 {
+    volScalarField phi2
+    (
+        IOobject
+        (
+            "",
+            mesh_.time().timeName(),
+            this->db()
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 1)
+    );
+
+    switch(mode_)
+    {
+        case mode::alpha :
+        {
+            forAll(phi2, i)
+            {
+                phi2[i] = pow
+                (
+                    max
+                    (
+                        mFluid_.normalized()[i], 
+                        mFluid_.residualAlpha().value()
+                    ),
+                    -exp_
+                );
+            }
+        }
+        break;
+
+        case mode::XLM :
+        {
+            const volScalarField& X(mFluid_.XLM());
+            forAll(X, i)
+            {
+                phi2[i] = 
+                    pow(1.0-pow(1.0+pow(X[i], 0.8), -0.378), -exp_);
+            }
+        }
+        break;
+    }
+
     this->setPhi2
     (
-        pow
-        (
-            max(mFluid_.normalized(), mFluid_.residualAlpha()), 
-            -exp_
-        )
+        phi2
     );
 }
 

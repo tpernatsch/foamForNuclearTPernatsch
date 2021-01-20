@@ -70,6 +70,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             "pTarget"
         )
     ),
+    fissionPower_(power_),
+    decayPower_(0.0),
+    decayPowerStartTime_(0.0),
     externalReactivity_
     (
         reactorState_.lookupOrDefault<scalar>
@@ -110,6 +113,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     delayedGroups_(betas_.size()),
     timeIndex_(mesh.time().timeIndex()),
     powerOld_(power_),
+    fissionPowerOld_(fissionPower_),
     precursorPowersOld_(precursorPowers_),
     defaultPrec_
     (
@@ -313,7 +317,20 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         nuclearData_.lookupOrDefault<scalar>("ScNo",1.0)
     ),
     initPrecursorsLiquidFuel_
-        (nuclearData_.lookupOrDefault<bool>("initPrecursorsLiquidFuel",false))    
+    (
+        nuclearData_.lookupOrDefault<bool>("initPrecursorsLiquidFuel",false)
+    ),
+    GEMReactivityMap_
+    (
+        nuclearData_.lookupOrDefault<List<Pair<scalar>>>
+        (
+            "GEMReactivityMap",
+            List<Pair<scalar>>()
+        )
+    ),
+    intPhiRef_(0),
+    phiFaces_(0),
+    phiMagSf_(0)
 {
     //- Cannot work in eigenvalue mode for obvious reasons, it makes no sense
     if (eigenvalueNeutronics_)
@@ -321,6 +338,36 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         FatalErrorInFunction
             << "pointKinetics model incompatible with eigenvalueNeutronics"
             << exit(FatalError);
+    }
+
+    //- Check if decay power provided
+    word decayPowerDictName("decayPowerTimeProfile");
+    if (reactorState_.found(decayPowerDictName))
+    {
+        const dictionary& decayPowerDict
+        (
+            reactorState_.subDict(decayPowerDictName)
+        );
+        word type
+        (
+            decayPowerDict.get<word>("type")
+        );
+        decayPowerPtr_.reset        
+        (
+            Function1<scalar>::New
+            (
+                type,
+                decayPowerDict,
+                type
+            )
+        );
+        decayPowerStartTime_ = 
+            decayPowerDict.lookupOrDefault<scalar>("startTime", 0.0);
+        const scalar& t(mesh_.time().timeOutputValue());
+        decayPower_ = decayPowerPtr_->value(t-decayPowerStartTime_);
+        fissionPower_ = power_ - decayPower_;
+        fissionPowerOld_ = fissionPower_;
+
     }
 
     if (liquidFuel_)
@@ -642,7 +689,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         for (int i = 0; i < delayedGroups_; i++)
         {
             precursorPowers_[i] = 
-                (betas_[i]*power_)/(lambdas_[i]*promptGenerationTime_);
+                (betas_[i]*fissionPower_)/(lambdas_[i]*promptGenerationTime_);
         }
     }
 
@@ -673,6 +720,29 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         drivelineFeedbackCellField_, 
         "drivelineFeedbackZones"
     );
+
+    //- Set flag in base class dict so it can be accessed by the GeN-Foam main
+    bool GEMReactivity(GEMReactivityMap_.size() > 1);
+    this->IOdictionary::set("GEM", GEMReactivity);
+
+    if (GEMReactivity)
+    {
+        GEMSodiumLevelRef_ = nuclearData_.get<scalar>("GEMSodiumLevelRef");
+        
+        //- Check that GEMReactivityMap is indexed by descending sodium level 
+        //  values
+        for (int i = 0; i < GEMReactivityMap_.size()-1; i++)
+        {
+            Pair<scalar> X0(GEMReactivityMap_[i]);
+            Pair<scalar> X1(GEMReactivityMap_[i+1]);
+            if (X0.first() <= X1.first())
+            {
+                FatalErrorInFunction
+                << "GEMReactivityMap should be indexed by descending sodium "
+                << "level values!" << exit(FatalError);
+            }
+        }
+    }
 
     //- Some notes on modelling choices, for clarity
     Info<< "The pointKinetics neutronics model currently computes average "
@@ -784,6 +854,67 @@ Foam::scalar Foam::pointKineticNeutronics::calcDrivelineReactivity
     return drivelineReactivity;
 }
 
+Foam::Pair<Foam::scalar> 
+Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
+{
+    scalar GEMSodiumLevel(0);
+    scalar GEMReactivity(0);
+    if (this->get<bool>("GEM"))
+    {
+        scalar intPhiFrac(0);
+        forAll(phiFaces_, i)
+        {
+            const label& facei(phiFaces_[i]);
+            intPhiFrac += (*phiOrig_)[facei]*phiMagSf_[i];
+        }
+        reduce(intPhiFrac, sumOp<scalar>());
+        intPhiFrac /= intPhiRef_;
+
+        //- Specific FFTF relationship between flow fraction and GEM sodium 
+        //  level
+        GEMSodiumLevel = 
+            (265.0-539504/(2440.13+sqr(intPhiFrac*100)))/100 
+        -   GEMSodiumLevelRef_;
+
+        label N(GEMReactivityMap_.size()-1);
+        if (GEMReactivityMap_.size() > 1)
+        {
+            if (GEMSodiumLevel >= GEMReactivityMap_[0].first())
+            {
+                GEMReactivity = GEMReactivityMap_[0].second();
+            }
+            else if (GEMSodiumLevel <= GEMReactivityMap_[N].first())
+            {
+                GEMReactivity = GEMReactivityMap_[N].second();
+            }
+            else
+            {
+                for (int i = 0; i < GEMReactivityMap_.size()-1; i++)
+                {
+                    Pair<scalar> X0(GEMReactivityMap_[i]);
+                    Pair<scalar> X1(GEMReactivityMap_[i+1]);
+                    if 
+                    (
+                        GEMSodiumLevel <= X0.first() 
+                    and GEMSodiumLevel > X1.first()
+                    )
+                    {
+                        scalar m
+                        (
+                            (X1.second()-X0.second())/(X1.first()-X0.first())
+                        );
+                        GEMReactivity = 
+                            m*(GEMSodiumLevel-X0.first()) + X0.second();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    
+    return Pair<scalar>(GEMSodiumLevel, GEMReactivity);
+}
+
 void Foam::pointKineticNeutronics::getCouplingFieldRefs
 (
     const objectRegistry& src,
@@ -844,7 +975,33 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         alphatOrig_ = nullptr;
         muOrig_ = nullptr;
     }
-    
+
+    //- If doing GEM modelling
+    if (this->get<bool>("GEM"))
+    {
+        phiOrig_ = 
+            src.findObject<surfaceScalarField>("phi");
+        const labelList& faces
+        (
+            neutroToFluid.tgtRegion().faceZones()
+            [
+                nuclearData_.get<word>("GEMFlowFaceZone")
+            ]
+        );
+        scalarField magSf(mag(neutroToFluid.tgtRegion().faceAreas()));
+        forAll(faces, i)
+        {
+            const label& facei(faces[i]);
+            phiFaces_.append(facei);
+            phiMagSf_.append(magSf[facei]);
+            intPhiRef_ += (*phiOrig_)[facei]*magSf[facei];
+        }
+        reduce(intPhiRef_, sumOp<scalar>());
+    }
+    else
+    {
+        phiOrig_ = nullptr;
+    }
 
     //- The rest of this function is for initializing the reference values of
     //  the feedback parameters. If they are found in the dictionary, use

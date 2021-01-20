@@ -190,8 +190,11 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     gapH_(0),//this->get<scalar>("gapConductance")),
     hollowFuel_(0),// (rfi_ >= 1e-5) ? true : false),
     cellToRegion_(mesh_.cells().size(), 0),
+    regionIndexToRegionName_(0),
     pi_(constant::mathematical::pi),
-    dA_(0)
+    dA_(0),
+    gapHPowerDensityTable_(0),
+    useGapHPowerDensityTable_(0)
 {   
     structure_.setRegionField(this, powerDensity_, "powerDensity");
 
@@ -227,6 +230,9 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
             label celli(regionCells[i]);
             cellToRegion_[celli] = regioni;
         }
+
+        //- Add to regionIndexToRegionName_ mapping
+        regionIndexToRegionName_.append(region);
 
         //- Read region dict entries
         scalar rfi(dict.get<scalar>("fuelInnerRadius"));
@@ -277,7 +283,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         }
         scalar kf(dict.get<scalar>("fuelK"));
         scalar kc(dict.get<scalar>("cladK"));
-        scalar gapH(dict.get<scalar>("gapH"));
+        
         bool hollowFuel((rfi >= 1e-5) ? true : false);
 
         if (!foundBoundaryTemperatures and !foundTrad)
@@ -339,9 +345,93 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         rhoCpc_.append(rhoCpc);
         kf_.append(kf);
         kc_.append(kc);
-        gapH_.append(gapH);
+        
         hollowFuel_.append(hollowFuel);
         dA_.append(dA);
+
+        //- Construct gapHPowerDensityTable if found, otherwise use the
+        //  provided constant value
+        scalar gapH(0);
+        word tableName("gapHPowerDensity");
+        bool foundTable(dict.found(tableName));
+        bool foundValue(dict.found("gapH"));
+        if (foundTable)
+        {
+            /*
+                The table Function1 requires a particular input. In general,
+                it should be something like this
+
+                topLevelDictName
+                {
+                    type                table;
+                    topLevelDictName    table
+                    (
+                        (0 0)
+                        (1 1)
+                        (...)
+                    );
+                }
+
+                however, I only want the user to give an input in the form
+
+                powerModel
+                {
+                    type        nuclearFuelPin;
+
+                    ...
+
+                    gapHPowerDensity table
+                    (
+                        (0 0)
+                        (1 1)
+                        (...)
+                    );
+                }
+
+                in which powerModel is the topLevelDictName.
+
+                The code below does just this, by creating a copy dict of
+                powerModel renaming it to gapHPowerDensity table, resetting
+                type to table, and passing that to the Function1 table 
+                selector
+            */
+            dictionary tableDict(tableName);
+            tableDict.merge(dict);
+            tableDict.set("type", "table");
+            gapHPowerDensityTable_.insert
+            (
+                region,
+                autoPtr<Function1<scalar>>
+                (
+                    Function1<scalar>::New
+                    (
+                        tableName,
+                        tableDict,
+                        "table"
+                    )
+                )
+            );
+        }
+        if (foundValue)
+        {
+            gapH = dict.get<scalar>("gapH");
+        }
+
+        //- The gapH list needs to have the same length as the number of 
+        //  regions no matter what, or the indexing will stop working as 
+        //  intended
+        gapH_.append(gapH);
+
+        useGapHPowerDensityTable_.append(foundTable);
+
+        if (foundTable and foundValue)
+        {
+            FatalErrorInFunction
+                << "nuclearFuelPin region: " << region << " -> "
+                << "provide either a gapH value or a gapHPowerDensityTable "
+                << "but not both!"
+                << exit(FatalError);
+        }
     }
 
     //- If Trad not found, init it from either the boundary temperatures
@@ -416,8 +506,6 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                         Trad_[celli][j] = Cc*log(r)/kc + Dc;
                     }
                 }
-                
-                Info << Trad_[celli] << endl; 
            }
         }
         else //- Otherwise, read from dict
@@ -520,6 +608,9 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     Tfo_.correctBoundaryConditions();
     Tci_.correctBoundaryConditions();
     Tco_.correctBoundaryConditions();
+
+    //- Finally, set up interfacial area
+    this->setInterfacialArea();
 }
 
 
@@ -530,6 +621,16 @@ Foam::powerModels::nuclearFuelPin::~nuclearFuelPin()
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+void Foam::powerModels::nuclearFuelPin::setInterfacialArea()
+{
+    forAll(this->cellList_, i)
+    {
+        const label& celli(this->cellList_[i]);
+        iA_[celli] = 2.0*alpha_[celli]/(rco_[cellToRegion_[celli]]);
+    }
+    iA_.correctBoundaryConditions();
+}
 
 void Foam::powerModels::nuclearFuelPin::updateLocalAvgGlobalMinMaxT
 (
@@ -582,6 +683,7 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
 
     //- Read region values
     const label& regioni(cellToRegion_[celli]);
+    const word& region(regionIndexToRegionName_[regioni]);
     const label& fuelMeshSize(fuelMeshSize_[regioni]);
     const label& meshSize(meshSize_[regioni]);
     const scalarList& rRegion(r_[regioni]);
@@ -592,9 +694,16 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     const scalar& kc(kc_[regioni]);
     const scalar& rfo(rfo_[regioni]);
     const scalar& rci(rci_[regioni]);
-    const scalar& gapH(gapH_[regioni]);
+    
     const scalarField& TOld = Trad_.oldTime()[celli];
     const scalar& q(powerDensity_[celli]);
+
+    scalar gapH
+    (
+        (useGapHPowerDensityTable_[regioni]) ?
+        gapHPowerDensityTable_[region]->value(q) :
+        gapH_[regioni]
+    );
 
     //- Init matrix, source
     SquareMatrix<scalar> M(meshSize, meshSize, Foam::zero());

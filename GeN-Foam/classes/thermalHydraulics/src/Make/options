@@ -7,7 +7,7 @@ EXE_INC = \
     -I./boundaryConditions/timeFieldTable \
     -I./functionObjects/fieldDiffExtents \
     -I./functionObjects/TBulk \
-    -I./functionObjects/massFlowFlux \
+    -I./functionObjects/massFlow \
     -I./functionObjects/pressureDrop \
     -I./functionObjects/stopIfMaxFieldDiff \
     -I./functionObjects/patchScalarFieldValue \

@@ -34,7 +34,7 @@
                         p_,
                         "div(phiv,p)"
                     )
-                :   -dpdt_
+                :   -alpha*fvc::ddt(p_)
             )
         -   fvm::laplacian
             (

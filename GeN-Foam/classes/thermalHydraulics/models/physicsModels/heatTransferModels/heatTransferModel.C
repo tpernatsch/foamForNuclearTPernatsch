@@ -24,7 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "heatTransferModel.H"
-#include "myStringOps.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -68,7 +68,8 @@ Foam::heatTransferModel::heatTransferModel
     FFPair_(&FFPair),
     FSPair_(nullptr),
     cellList_(0),
-    cellField_(FFPair.mesh().cells().size(), 0.0)
+    cellField_(FFPair.mesh().cells().size(), 0.0),
+    withStructure_(false)
 {
     forAll(mesh_.cells(), i)
     {
@@ -107,7 +108,8 @@ Foam::heatTransferModel::heatTransferModel
     FFPair_(nullptr),
     FSPair_(&FSPair),
     cellList_(0),
-    cellField_(FSPair.mesh().cells().size(), 0.0)
+    cellField_(FSPair.mesh().cells().size(), 0.0),
+    withStructure_(true)
 {    
     forAll(regions, i)
     {
@@ -135,7 +137,7 @@ Foam::heatTransferModel::makeInTable
     HashTable<autoPtr<heatTransferModel>, word, word::hash>& table
 )
 {
-    wordList entries = myStringOps::split<word>(key, '.');
+    wordList entries = myOps::split<word>(key, '.');
     word entry1(entries[0]);
     word entry2((entries.size() == 1) ? entries[0] : entries[1]);
 
@@ -178,7 +180,7 @@ Foam::heatTransferModel::makeInTable
                     //  Also works for keys that consist of one region only
                     const wordList& regions
                     (
-                        myStringOps::split<word>(subDictFS.dictName(), ':')
+                        myOps::split<word>(subDictFS.dictName(), ':')
                     );
                     table.insert
                     (
@@ -268,7 +270,7 @@ Foam::heatTransferModel::makeInTable
             //  Also works for keys that consist of one region only
             const wordList& regions
             (
-                myStringOps::split<word>(subDict.dictName(), ':')
+                myOps::split<word>(subDict.dictName(), ':')
             );
 
             table.insert

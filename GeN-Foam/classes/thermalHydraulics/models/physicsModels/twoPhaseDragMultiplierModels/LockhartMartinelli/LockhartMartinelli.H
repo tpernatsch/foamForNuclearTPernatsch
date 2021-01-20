@@ -90,13 +90,6 @@ private:
     //- C in phi2 = 1 + C/X + 1/X^2
     scalar C_;
 
-    //- Lockhart-Martinelli parameter
-    volScalarField X2_;
-
-    //- exp in X = 
-    //  ((mu_I/mu_O)^exp)*((flowQuality_I/flowQuality_O)^(1-exp))*rho_O/rho_I
-    scalar exp_;
-
 public:
 
     //- Runtime type information

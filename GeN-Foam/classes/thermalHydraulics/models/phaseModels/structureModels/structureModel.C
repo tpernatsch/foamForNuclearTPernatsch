@@ -53,7 +53,8 @@ Foam::structureModel::structureModel
     ( 
         dict,
         mesh,
-        "structure"
+        "structure",
+        zeroGradientFvPatchScalarField::typeName
     ),
     regions_(0),
     cells_(0),
@@ -257,6 +258,91 @@ Foam::structureModel::structureModel
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
+const Foam::volVectorField& Foam::structureModel::momentumSource()
+{
+    momentumSourcePtr_() *= 0.0;
+    forAllIter
+    (
+        pumpTable,
+        pumps_,
+        iter
+    )
+    {
+        iter().correct(momentumSourcePtr_());
+    }
+    return momentumSourcePtr_();
+}
+
+void Foam::structureModel::constructHeatExchangers()
+{
+    if (this->dict().found("heatExchangers"))
+    {
+        const dictionary& HXDicts(this->dict().subDict("heatExchangers"));
+        forAll(HXDicts.toc(), j)
+        {
+            word HXKey(HXDicts.toc()[j]);
+            const dictionary& HXDict(HXDicts.subDict(HXKey));
+            heatExchangers_.insert
+            (
+                HXKey,
+                heatExchanger
+                (
+                    mesh_,
+                    HXDict
+                )
+            );
+        }
+
+        //- If HXs were specified, created the HX-specific fields, THXPtr_ and
+        //  iAHXPtr_
+        THXPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "T.HX",
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimensionedScalar("", dimTemperature, 0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        iAHXPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "",
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimensionedScalar("", dimArea/dimVol, 0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        volScalarField& iAHX(iAHXPtr_());
+        forAllIter
+        (
+            heatExchangerTable,
+            heatExchangers_,
+            iter
+        )
+        {
+            iAHX += iter().iA();
+        }
+        iAHX.correctBoundaryConditions();
+    }
+}
+
 void Foam::structureModel::correct
 (
     const volScalarField& HT,
@@ -276,6 +362,26 @@ void Foam::structureModel::correct
     }
     Tact_.correctBoundaryConditions();
 
+    //- Correct HX surface temperature
+    if (THXPtr_.valid())
+    {
+        forAllIter
+        (
+            heatExchangerTable,
+            heatExchangers_,
+            iter
+        )
+        {
+            //- Unlike powerModels, the functionalities of correct and correctT
+            //  are merged into a single correct. Why didn't I do so in 
+            //  powerModels? A very good question for past Stefan which present
+            //  Stefan does not know the answer to. Probably for added
+            //  """flexibility""" given that powerModel is runTimeSelectable 
+            //  and heatExchanger is not?
+            iter().correct(HT, H, THXPtr_());
+        }
+    }
+    
     if (Tpas_.writeOpt() == IOobject::AUTO_WRITE)
     {
         //- Correct inert subStructure. What follows is the equivalent of doing
@@ -348,6 +454,19 @@ Foam::tmp<Foam::volScalarField> Foam::structureModel::explicitHeatSource
             +   iApas_*H*(Tpas_-T)
         )
     );
+
+    if (THXPtr_.valid())
+    {
+        //- Read comment on the same piece of code in
+        //  linearizedSemiImplicitHeatSource
+        if (Foam::max(THXPtr_()).value() > 1e-69)
+        {
+            volScalarField& Q = tQ.ref();
+            const volScalarField& iAHX(iAHXPtr_());
+            const volScalarField& THX(THXPtr_());
+            Q += iAHX*H*(THX-T);
+        }
+    }
     return tQ;
 }
 
@@ -373,6 +492,38 @@ Foam::structureModel::linearizedSemiImplicitHeatSource
             -   fvm::Sp(iApas_*H/Cp(), he)
         )
     );
+    
+    //- Add HX contribution
+    if (THXPtr_.valid())
+    {
+        //- What is the deal with this funky max? Well, the heatExchanger class
+        //  does not set THX at construction (as the class itself only accesses
+        //  THX though the correct function), so that, if the 
+        //  linearizedSemiImplicitHeatSource function is called BEFORE
+        //  structure correct (depending on how the EEqn of the solver is
+        //  implemented), then at the VERY FIRST PIMPLE iteration of the VERY
+        //  FIRST time-step, THX = 0 and the resulting massive heat transfer 
+        //  with the fluid will make the simulation explode. Thus, if THX is 0
+        //  everywhere (i.e. if it was not set yet at all), do not add HX
+        //  contributions. I could do this by checking if I am in the first 
+        //  PIMPLE iteration of the first simulation time step, but whatever.
+        //  Ok, ok, what if I wanted to set it at construction? Well, you 
+        //  cannot because you inherently need T and H*T to correct the HX
+        //  temperatures, and those need to be passed some-how. Wanna use 
+        //  registry lookup? Very bad idea, all the heat transfer tables
+        //  that contain the Hs are constructed only after the structure (and
+        //  it cannot be otherwise). So, just shut up and go with the flow!
+        if (Foam::max(THXPtr_()).value() > 1e-69)
+        {
+            fvScalarMatrix& Q = tQ.ref();
+            const volScalarField& iAHX(iAHXPtr_());
+            const volScalarField& THX(THXPtr_());
+            Q += 
+                    iAHX*H*(THX-T+he/Cp())
+                -   fvm::Sp(iAHX*H/Cp(), he);
+        }
+    }
+
     return tQ;
 }
 

@@ -170,8 +170,15 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     //- Create turbulence model
     fluid_.constructTurbulenceModel();
 
-    //- Normalize phase fraction fields, structure has priority
+    //- Set phase fraction fields (constant in time), structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
+    
+    //- The normalized field is non-trivial (i.e. different than 1) only in the
+    //  twoPhase solver. However, it is used by some models in the shared 
+    //  thermal-hydraulics library, so it should be set nonetheless! The most
+    //  important quantity that relies on this is the Reynolds computed by
+    //  the FSPair object
+    fluid_.normalized() = fluid_/(1.0-structure_);
 
     //- Calculating rhok value for boussinesq approximation if incompressible flow.
     //- also, update thermo.tho() to make sure the neutronics solver has access to 

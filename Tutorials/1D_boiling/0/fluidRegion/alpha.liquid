@@ -22,11 +22,13 @@ boundaryField
 {
     inlet
     {
-        type            zeroGradient;
+        type            calulated;
+        value           $internalField;
     }
     outlet
     {
-        type            zeroGradient;
+        type            calulated;
+        value           $internalField;
     }
     fixedWalls
     {

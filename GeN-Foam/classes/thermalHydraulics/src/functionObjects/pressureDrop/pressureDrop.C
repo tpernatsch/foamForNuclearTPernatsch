@@ -95,7 +95,8 @@ Foam::functionObjects::pressureDrop::pressureDrop
     faces1_(0),
     faces2_(0),
     S1_(0),
-    S2_(0)
+    S2_(0),
+    pPtr_(nullptr)
 {
     read(dict);
 }
@@ -245,22 +246,11 @@ bool Foam::functionObjects::pressureDrop::write()
 
     Log << type() << " " << name() <<  " write:" << nl;
 
-    //- I am truly disgusted by this. Appartently setting a pointer to the
-    //  field via lookup and then taking a const ref to it does not work 
-    //  in this case (but this does work with no problems for the TBulk...).
-    //  I am disgusted
-    
-    //- Set pointers
-    /*
     if (pPtr_ == nullptr)
     {
         pPtr_ = &mesh_.lookupObject<volScalarField>(pName_);
     }
-    const volScalarField p(*pPtr);
-    */
-
-    //- So I need to do a lookup and creat a field EVERY TIME...
-    volScalarField p(mesh_.lookupObject<volScalarField>(pName_));
+    const volScalarField& p(*pPtr_);
     surfaceScalarField pi(fvc::interpolate(p));
 
     //- Pressures at regions 1, 2
@@ -288,7 +278,7 @@ bool Foam::functionObjects::pressureDrop::write()
             forAll(faces1_, i)
             {
                 const label& facei(faces1_[i]);
-                p1 += p[facei]*magSf[facei];
+                p1 += pi[facei]*magSf[facei];
             }
             reduce(p1, sumOp<scalar>());
             p1 /= S1_;
@@ -317,7 +307,7 @@ bool Foam::functionObjects::pressureDrop::write()
             forAll(faces2_, i)
             {
                 const label& facei(faces2_[i]);
-                p2 += p[facei]*magSf[facei];
+                p2 += pi[facei]*magSf[facei];
             }
             reduce(p2, sumOp<scalar>());
             p2 /= S2_;

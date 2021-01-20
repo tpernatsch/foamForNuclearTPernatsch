@@ -75,27 +75,6 @@ class Rehme
 {
 private:
 
-    //- Number of pins in assembly
-    label Np_;
-
-    //- Pin diameter
-    scalar Dp_;
-
-    //- Pin pitch
-    scalar Pp_;
-
-    //- Wrapper wire diameter
-    scalar Dw_;
-
-    //- Wrapper wire lead lenght
-    scalar Lw_;
-
-    //- Wetted wrapper perimeter
-    scalar wetWrapPer_;
-
-    //- Wetted pin perimeter
-    scalar wetPinPer_;
-
     //- Pre-computed coeffs
     scalar A_;
     scalar B1_;

@@ -32,7 +32,7 @@ License
 #include "fluid.H"
 #include "structureModel.H"
 #include "FSPair.H"
-#include "myStringOps.H"
+#include "myOps.H"
 #include "zeroGradientFvPatchFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -214,7 +214,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
     fluidName_
     (
         alpha.name() == "alpha" ? 
-        "" : myStringOps::split<word>(alpha.name(), '.')[1]
+        "" : myOps::split<word>(alpha.name(), '.')[1]
     ),
     structure_
     (
@@ -326,7 +326,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
         word key(porousKEpsilonDict_.toc()[i]);
         const dictionary& regionDict(porousKEpsilonDict_.subDict(key));
         
-        wordList regions(myStringOps::split<word>(key, ':'));
+        wordList regions(myOps::split<word>(key, ':'));
 
         forAll(regions, j)
         {

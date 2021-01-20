@@ -25,6 +25,7 @@ License
 
 #include "twoPhaseDragMultiplierModel.H"
 #include "fluidGeometry.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -81,7 +82,8 @@ Foam::twoPhaseDragMultiplierModel::twoPhaseDragMultiplierModel
             IOobject::AUTO_WRITE
         ),
         mesh,
-        dimensionedScalar("", dimless, 0.0)
+        dimensionedScalar("", dimless, 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),
     maxPhi2_
     (
@@ -90,6 +92,24 @@ Foam::twoPhaseDragMultiplierModel::twoPhaseDragMultiplierModel
 {
     HashTable<const fluid*> fluids(mesh_.lookupClass<fluid>());
     wordList fluidNames(fluids.toc());
+
+    /*-----------------------------------------------------------------------*\
+    |                                                                         |
+    |                          H I C   M A N E B I T                          |  
+    \*                                                                       */
+    /*-----------------------------------------------------------------------*\
+    |                                                                         |
+    |   It was Monday, September 7th 2020 when I found out about a bug here   |
+    |   and the severe consequences it had on the previous work I had done.   |
+    |   Together with Friday, September 25th 2020, these two dates represe-   |
+    |   nt the lowest point of my academic and private life respectively.     |
+    |   The absolute worst days I've ever had since 2012. I just wanted th-   |
+    |   is to be remembered. This comment might be futile, yet this is my     |
+    |   code, something that took quite some time and life away from me.      |                                         
+    |                                                                         |
+    |    - virmodoetiae                                                       |
+    |                                                                         |
+    \*-----------------------------------------------------------------------*/
 
     //- PORCO DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     oFluidPtr_ = (fluidNames[0] == "alpha."+mFluid_.name()) ?
@@ -101,52 +121,34 @@ Foam::twoPhaseDragMultiplierModel::twoPhaseDragMultiplierModel
 
 void Foam::twoPhaseDragMultiplierModel::setPhi2(const volScalarField& phi2)
 {
-    //- Under-relax if necessary
-    scalar f(1.0);
-    if (mesh_.relaxField("twoPhaseDragMultiplier"))
-        f = mesh_.fieldRelaxationFactor("twoPhaseDragMultiplier");
+    //- Under-relax, limit extrema and apply only to regions where the other
+    //  phase exists (threshold arbitrarily put at 1e-3)
+    scalar f(myOps::relaxationFactor(mesh_, "phi2"));
+    scalar omf(1.0-f);
     if (f!= 1.0) 
-        phi2_ = f*phi2+(1.0-f)*phi2_;
-    else
-        phi2_ = phi2;
-
-    //- Limit extrema
-    phi2_ = max(min(phi2_, maxPhi2_), 1.0);  
-
-    //- Limit spatially only to two-phase regions
-    forAll(phi2_, i)
     {
-        scalar phaseProduct(mFluid_[i]*(*oFluidPtr_)[i]);
-
-        if (phaseProduct < 1e-6)
+        forAll(phi2_, i)
         {
-            phi2_[i] = 1.0;
+            scalar& phi2i(phi2_[i]);
+            phi2i = 
+                ((*oFluidPtr_)[i] >= 1e-3) ? 
+                max(min(f*phi2[i]+omf*phi2i, maxPhi2_), 1.0) :
+                1.0;
         }
-    }  
+    }
+    else
+    {
+        forAll(phi2_, i)
+        {
+            phi2_[i] = 
+                ((*oFluidPtr_)[i] >= 1e-3) ? 
+                max(min(phi2[i], maxPhi2_), 1.0) :
+                1.0;
+        }
+    }
+
+    phi2_.correctBoundaryConditions();
 }
-
-/*
-void Foam::twoPhaseDragMultiplierModel::limitPhi2
-(
-    const volScalarField& x,
-    const scalar& x0,
-    const scalar& x1
-)
-{
-    this->limitPhi2();
-
-    volScalarField marker(pos(x-x0));
-
-    phi2_ = 
-        marker*
-        (
-            phi2_
-        +   (1.0-phi2_)*min((x-x0)/(x1-x0), 1.0)
-        ) 
-    +   (1.0-marker)*phi2_;
-    
-}
-*/
 
 /*
 
@@ -182,7 +184,7 @@ available structure cross-section (i.e. assuming that there is no other phase).
 Please note that due to the porous context, even if there was no other phase,
 phase I would still flow at most in a gamma fraction of the total available 
 mesh volume. For simplicity, I will define alphaNorm_i = alpha_i/gamma. 
-Ultimatley, the I1p subscript means "if "phase I flows throught the entirety of
+Ultimatley, the I1p subscript means "if phase I flows throught the entirety of
 the available void fraction as if it was a single-phase flow".
 So, what does F_wI1p look like?
 
@@ -212,7 +214,7 @@ So:
 
 F_wi = frac_i*F_wtot
 
-with the frac_i being calculated by the structureInterfacialAreaPartitonModel
+with the frac_i being calculated by the fluidPartitonModel
 that applies in the regime of interest.
 
 The final expression of F_wi thus is:
@@ -241,16 +243,16 @@ So that:
 F_w1 = modKd_1*u_1
 F_w2 = modKd_2*u_1
 
-The correctKdTable essential turns Kd_wi into modKd_wi. However, the drag is
-finally added in the momentum equations (see UEqns.H) always and exclusively
-as -modKd_i*u_i. This is fine for phase 1 (which is the one on which the
+The correctKdTable essentially turns Kd_wi into modKd_wi. However, the drag is
+finally added in the momentum equations (see UEqns.H) always and exclusively as
+-modKd_i*u_i. This is fine for phase 1 (which is the one on which the 
 multiplier is based). This NOT fine for phase 2, as u_2 should be used, not
-u_1. Thus, modKd_2 is additionally modified by mag(u_1)/mag(u_2). Now, is
-this correct? Well, no, because I am losing directional information by 
-rescaling by magnitudes, yet I am not bothered by this as the two phase
-multiplier method was not even meant to be applied outside 1-D cases, yet
-people still do it (see SABENA). To connect this example with the code 
-below, KdI is Kd1 and KdO is Kd2.
+u_1. Thus, modKd_2 is additionally modified by mag(u_1)/mag(u_2). Now, is this
+correct? Well, no, because I am losing directional information by rescaling by
+magnitudes, yet I am not bothered by this as the two phase multiplier method
+was not even meant to be applied outside 1-D cases, yet people still do it (see
+SABENA). To connect this example with the code below, KdI is Kd1 and KdO is 
+Kd2.
 
 */
 
@@ -274,23 +276,19 @@ void Foam::twoPhaseDragMultiplierModel::correctKdTable
 
     volTensorField& KdI(*Kds[mFluid_.name()+".structure"]);
     volTensorField& KdO(*Kds[oFluidPtr_->name()+".structure"]);
-    volScalarField corr(phi2_*sqr(mFluid_.normalized()));
-
-    /*
-    Info << mFluid_.name() << " " << oFluidPtr_->name() << endl;    
-    Info << "Before" << endl;
-    labelList cells(0);
-    label i0(500);
-    for (int i = i0; i<i0+20; i++)
-    {
-        cells.append(i);
-    }
-    forAll(cells, i)
-    {
-        label celli(cells[i]);
-        Info << mFrac[i] << " " << KdI[celli] << " " << oFrac[i] << " " << KdO[celli] << " " << phi2_[celli] << endl;
-    }
-    */
+    volScalarField corr
+    (
+        phi2_*
+        sqr
+        (
+            max
+            (
+                mFluid_.normalized(),
+                mFluid_.residualAlpha()
+            )
+            
+        )
+    );
 
     KdI *= corr;
     KdO =   
@@ -302,25 +300,9 @@ void Foam::twoPhaseDragMultiplierModel::correctKdTable
                 dimensionedScalar("", dimVelocity, 1e-3)
             )
         );
-    /*
-    Info << "After1" << endl;
-    forAll(cells, i)
-    {
-        label celli(cells[i]);
-        Info << KdI[celli] << " " << KdO[celli] << endl;
-    }
-    */
+
     KdI *= mFrac;
     KdO *= oFrac;
-
-    /*
-    Info << "After2" << endl;
-    forAll(cells, i)
-    {
-        label celli(cells[i]);
-        Info << KdI[celli] << " " << KdO[celli] << endl;
-    }
-    */
 }
 
 // ************************************************************************* //

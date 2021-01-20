@@ -82,9 +82,6 @@ class Kaiser88
 {
 private:
 
-    //- log of the sqrt of the sqrt of the Lockhart-Martinelli parameter
-    volScalarField logSqrtX_;
-
 public:
 
     //- Runtime type information

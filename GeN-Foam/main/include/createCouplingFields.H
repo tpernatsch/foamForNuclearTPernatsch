@@ -161,10 +161,10 @@ volScalarField* const TCladAv
 //  powerModel figures in phaseProperties), use that one. Otherwise again, if
 //  no powerDensity field exists, create a null one. The volFuelPower field is 
 //  a ptr and not a reference as references cannot be initialized with rvalues,
-//  such as is the new volScalarField (i.e., I would to create it outside the 
-//  ptr initialization, and that again would happen always and just waste 
+//  such as is the new volScalarField (i.e., I would nned to create it outside  
+//  the ptr initialization, and that again would happen always and just waste 
 //  memory if the other powerDensity fields exist). I do realize these are 
-//  laughably small amounts, but hey, whatever helps
+//  laughably small of memory to bitch about, but hey, whatever helps
 volScalarField* const volFuelPower
 (
     (multiphysics.liquidFuel()) ? &(liquid->powerDensity()) :
@@ -331,10 +331,10 @@ volVectorField bafflelessU
     zeroGradientFvPatchScalarField::typeName
 );
 
-//- This last field is sort of an exception required when using pointKinetics.
+//- This field is sort of an exception required when using pointKinetics.
 //  PointKinetics by itself simply rescales all neutronic fields according to
 //  the predicted power change. However, if no volFuelPower exists on the
-//  neutroMesh, then look for volFulePower on the fluidMesh. If it exists, copy
+//  neutroMesh, then look for volFuelPower on the fluidMesh. If it exists, copy
 //  it to a bafflelessVolFuelPower that will be interpolated to the
 //  volFuelPower_ on the neutroMesh of pointKinetics in the 
 //  getCouplingFieldRefs function. Since pointKinetics is also just about
@@ -343,6 +343,22 @@ volVectorField bafflelessU
 //  perfectly well with a 0 volFuelPower, it simply won't be re-scaling 
 //  anything (but integral power values will be predicted just fine)
 volScalarField* bafflelessVolFuelPower = nullptr;
+
+//- This is only required when point kinetics model Gas Expansion Modules (i.e.
+//  a safety feature specific to one SFR, the FFTF. I hate this level of hard-
+//  coding but I don't have alternatives for now). It is not baffleless as this
+//  field is not interpolated, it is required on the original fluidMesh by the
+//  pointKinetics model, yet it needs to be inserted in the fluidMeshNB 
+//  objectRegistry, or the pointKinetics model won't be able to look it up.
+//  phiFMNBReg is the phi but checked in the the fluidMeshNB registry, while
+//  phiFMReg is the phi in the fluidMesh registry (i.e., the original one).
+//  both are however defined on the fluidMesh mesh anyway
+surfaceScalarField* phiFMNBReg = nullptr;
+const surfaceScalarField& phiFMReg
+(
+    (fluidMesh.lookupObject<surfaceScalarField>("phi"))
+);
+
 if (neutronics.type() == "pointKinetics")
 {
     bafflelessVolFuelPower = 
@@ -358,8 +374,27 @@ if (neutronics.type() == "pointKinetics")
             dimensionedScalar("", dimPower/dimDensity, 0.0),
             zeroGradientFvPatchScalarField::typeName
         );
-    bafflelessVolFuelPower->primitiveFieldRef() = volFuelPower->primitiveField();
+    bafflelessVolFuelPower->primitiveFieldRef() = 
+        volFuelPower->primitiveField();
     bafflelessVolFuelPower->correctBoundaryConditions();
+    
+    //- Phi only required by GEM modelling
+    if (neutronics.get<bool>("GEM"))
+    {
+        phiFMNBReg =
+            new surfaceScalarField
+            (
+                IOobject
+                (
+                    "phi",
+                    runTime.timeName(),
+                    fluidMeshNB
+                ),
+                fluidMesh,
+                dimensionedScalar("", dimVolume/dimTime, 0.0)
+            );
+        *phiFMNBReg = phiFMReg;
+    }
 }
 
 //- Update the above fields so that, if any neutronic classes rely on these

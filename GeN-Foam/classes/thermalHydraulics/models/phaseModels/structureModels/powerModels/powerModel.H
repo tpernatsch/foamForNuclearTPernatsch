@@ -127,6 +127,17 @@ public:
 
     // Members
 
+        //- For some models it is mandatory, others (e.g. the pin ones) should
+        //  allow for the option for the interfacial area to be computed
+        //  starting from other powerModel geometric properties (e.g. again,
+        //  for a pin geometry, the interfacial area is directly linked to the
+        //  volume-averaged pin volume fraction and the pin outermost radius).
+        //  This, this functions inits interfacialArea as a must-read when
+        //  called from the derived calsses constructors, while derived classes
+        //  that do not use this will construct the interfacial area their own
+        //  way
+        virtual void setInterfacialArea();
+
         /*
         volScalarField& initFieldInTable
         (

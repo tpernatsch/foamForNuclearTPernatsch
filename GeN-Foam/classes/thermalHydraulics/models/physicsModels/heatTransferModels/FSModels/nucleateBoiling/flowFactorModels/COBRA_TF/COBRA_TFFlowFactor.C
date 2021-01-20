@@ -71,7 +71,13 @@ COBRA_TF::COBRA_TF
         FSPair
     ),
     Re1p_(FSPair.Re()),
-    Re2p_(FSPair.fluidRef().mesh().lookupObject<volScalarField>("ReTwoPhase"))
+    Re2p_
+    (
+        FSPair.fluidRef().mesh().lookupObject<volScalarField>
+        (
+            "Re.mixture.structure"
+        )
+    )
 {}
 
 
@@ -84,10 +90,14 @@ COBRA_TF::correct()
     {
         const label& celli(cellList_[i]);
         flowFactor_[i] = 
-            max
+            min
             (
-                pow(Re2p_[celli]/Re1p_[celli], 0.8),
-                1.0
+                max
+                (
+                    pow(Re2p_[celli]/Re1p_[celli], 0.8),
+                    1.0
+                ),
+                50
             );
     }
 }

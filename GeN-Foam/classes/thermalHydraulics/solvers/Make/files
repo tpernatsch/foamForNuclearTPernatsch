@@ -4,5 +4,4 @@ onePhase/onePhase.C
 onePhaseLegacy/onePhaseLegacy.C
 twoPhase/twoPhase.C
 
-
 LIB = $(FOAM_USER_LIBBIN)/libFFSSolvers2

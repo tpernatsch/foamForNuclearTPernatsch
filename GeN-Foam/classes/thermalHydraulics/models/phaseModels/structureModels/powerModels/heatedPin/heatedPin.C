@@ -363,6 +363,9 @@ Foam::powerModels::heatedPin::heatedPin
 
     Ti_.correctBoundaryConditions();
     To_.correctBoundaryConditions();
+
+    //- Finally, set up interfacial area
+    this->setInterfacialArea();
 }
 
 
@@ -373,6 +376,16 @@ Foam::powerModels::heatedPin::~heatedPin()
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+void Foam::powerModels::heatedPin::setInterfacialArea()
+{
+    forAll(this->cellList_, i)
+    {
+        const label& celli(this->cellList_[i]);
+        iA_[celli] = 2.0*alpha_[celli]/(ro_[cellToRegion_[celli]]);
+    }
+    iA_.correctBoundaryConditions();
+}
 
 void Foam::powerModels::heatedPin::updateLocalAvgGlobalMinMaxT
 (

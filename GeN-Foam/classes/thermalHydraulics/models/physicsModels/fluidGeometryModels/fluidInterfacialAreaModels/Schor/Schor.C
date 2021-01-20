@@ -63,14 +63,10 @@ Foam::fluidInterfacialAreaModels::Schor::Schor
     ),
     alpha_
     (
-        (
-            fvc::domainIntegrate(dispersed_.thermo().hc()).value() 
-        >   fvc::domainIntegrate(continuous_.thermo().hc()).value()
-        ) ?
-        //(dispersed_.name() == this->get<word>("alphaName")) ?
-        dispersed_
+        (dispersed.isGas()) ?
+        dispersed
         :
-        continuous_
+        continuous
     ),
     D_("pinDiameter", dimLength, dict),
     P_("pinPitch", dimLength, dict),
@@ -82,6 +78,16 @@ Foam::fluidInterfacialAreaModels::Schor::Schor
     PI_(3.1415927),
     alpha1_("", dimless, 0.55),
     alpha2_("", dimless, 0.65),
+    alpha3_
+    (
+        dimensionedScalar::lookupOrDefault
+        (
+            word("cutoffAlpha"), 
+            *this, 
+            dimless, 
+            0.957
+        )
+    ),
     iA1_
     (
         (4.0/D_)*Foam::sqrt
@@ -100,34 +106,30 @@ Foam::fluidInterfacialAreaModels::Schor::Schor
         (
             (1.0-alpha2_)*A_ + PI_*alpha2_
         )
+    ),
+    iA3_
+    (
+        dimensionedScalar::lookupOrDefault
+        (
+            word("minInterfacialAreaAtLargeAlpha"), 
+            *this, 
+            dimArea/dimVol, 
+            0
+        )
     )
 {
-    /*
-    word alphaName(this->get<word>("alphaName"));
     if 
     (
-        alphaName != dispersed_.name() 
-        and 
-        alphaName != continuous_.name()
+        (dispersed.isGas() and continuous.isGas())
+    or  (dispersed.isLiquid() and continuous.isLiquid())
     )
     {
         FatalErrorInFunction
-            << "Fluid " << alphaName << " specified for the Schorr model does "
-            << "not match any existing fluid : " << endl
-            << "- " << dispersed_.name() << endl
-            << "- " << continuous_.name() << exit(FatalError);
-    }
-    */
-    if 
-    (
-        fvc::domainIntegrate(dispersed_.thermo().hc()).value() 
-    ==  fvc::domainIntegrate(continuous_.thermo().hc()).value()
-    )
-    {
-        FatalErrorInFunction
-            << "Fluids must have different enthalpies of formation "
-            << "(thermophysicalProperties.Hf) in order to determine which "
-            << "fluid is the vapour and which is the liquid" 
+            << "The Schor model only works for liquid-gas systems. Set "
+            << "the stateOfMatter entry in "
+            << "phaseProperties." << dispersed.name() << "Properties and/or "
+            << "phaseProperties." << continuous.name() << "Properties) to "
+            << "distinguish between gas and liquid"
             << exit(FatalError);
     }
 }
@@ -166,19 +168,23 @@ Foam::fluidInterfacialAreaModels::Schor::iA() const
                 ) 
             +   pos0(alpha-alpha2_)*
                 (
-                    (4.0/D_)*Foam::sqrt(PI_)
-                    /
+                    max
                     (
-                        3.0*(A_-PI_)
-                    )*
-                    Foam::sqrt
-                    (
-                        (1.0-alpha)*A_ + PI_*alpha
-                    )*
-                    min
-                    (
-                        (1-alpha)/(0.043),
-                        1.0
+                        (4.0/D_)*Foam::sqrt(PI_)
+                        /
+                        (
+                            3.0*(A_-PI_)
+                        )*
+                        Foam::sqrt
+                        (
+                            (1.0-alpha)*A_ + PI_*alpha
+                        )*
+                        min
+                        (
+                            (1-alpha)/(1.0-alpha3_),
+                            1.0
+                        ),
+                        iA3_/alphaSum
                     )
                 )
             +   pos0(alpha-alpha1_)*neg(alpha-alpha2_)*

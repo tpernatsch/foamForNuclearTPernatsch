@@ -44,6 +44,7 @@ SourceFiles
 
 #include "powerModel.H"
 #include "IOFieldFields.H"
+#include "Function1.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -143,11 +144,25 @@ protected:
     //- List that maps from cell index to region index
     labelList cellToRegion_;
 
+    //- List that maps the region index to the region name
+    wordList regionIndexToRegionName_;
+
+    //-
+    wordList regionNames_;
+
     //- Just to avoid typing constant::mathematical::pi every time...
     scalar pi_;
 
     //- Mesh ring areas
     scalarListList dA_;
+
+    //- Optional table to describe the dependence of the gap condunctance on
+    //  the volumetric power density
+    HashTable<autoPtr<Function1<scalar>>, word, word::hash> 
+        gapHPowerDensityTable_;
+
+    //-
+    boolList useGapHPowerDensityTable_;
 
 public:
 
@@ -166,6 +181,12 @@ public:
         virtual ~nuclearFuelPin();
 
     // Member Functions
+
+        //- Set interfacial area consistently with the pin geometry. In
+        //  particular, if the overall total volume-fraction of the pins
+        //  in a given mesh cell is alpha, it can be shown that the interfacial
+        //  area density iA of the pin surface is 2*alpha/outerRadius
+        virtual void setInterfacialArea();
 
         void updateLocalAvgGlobalMinMaxT
         (

@@ -3,7 +3,7 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 rm regressionResults
 
-tutorials="1D_boiling 3D_SmallESFR 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange Godiva_SN" #Godiva_SN
+tutorials="1D_boiling 1D_HX/onePhase 1D_HX/twoPhase 3D_SmallESFR 2D_FFTF 2D_MSFR 2D_cavityBoussinesq 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange Godiva_SN" #Godiva_SN
 
 
 # run all tutorials and check for clean finish 
@@ -14,47 +14,74 @@ do
     "3D_SmallESFR")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
-        # check that keff for esfr steady State is ~0.9370011
-        # check that power in esfr transient is ~8e08
         ;;
     "1D_boiling")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
+        cd ..
+        printf "Done cleaning tutorial $tutorialName...\n"
+        ;;
+    "1D_HX/onePhase")
+        printf "Cleaning tutorial $tutorialName...\n"
+        cd $tutorialName
+        ./Allclean
+        cd ..
+        cd ..
+        printf "Done cleaning tutorial $tutorialName...\n"
+        ;;
+    "1D_HX/twoPhase")
+        printf "Cleaning tutorial $tutorialName...\n"
+        cd $tutorialName
+        ./Allclean
+        cd ..
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         ;;
     "2D_MSFR")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
+        cd ..
+        printf "Done cleaning tutorial $tutorialName...\n"
+        ;;
+    "2D_FFTF")
+        printf "Cleaning tutorial $tutorialName...\n"
+        cd $tutorialName
+        ./Allclean
+        cd ..
+        printf "Done cleaning tutorial $tutorialName...\n"
+        ;;        
+    "2D_cavityBoussinesq")
+        printf "Cleaning tutorial $tutorialName...\n"
+        cd $tutorialName
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         ;;
     "2D_onePhaseAndPointKineticsCoupling")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         ;;
     "2D_voidMotionNoPhaseChange")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
         ;;
     "Godiva_SN")
         printf "Cleaning tutorial $tutorialName...\n"
         cd $tutorialName
-        source ./Allclean
+        ./Allclean
         cd ..
         printf "Done cleaning tutorial $tutorialName...\n"
-        #check that keff in godiva ~8e08
         ;;
     esac
 

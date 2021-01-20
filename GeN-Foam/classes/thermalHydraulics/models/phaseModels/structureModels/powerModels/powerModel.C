@@ -104,7 +104,6 @@ Foam::powerModel::powerModel
     {
         word region(regions[i]);
         const dictionary& regionDict(this->subDict(region));
-        scalar iA(regionDict.get<scalar>("volumetricArea"));
         
         const labelList& regionCells(structure_.cellLists()[region]);
         forAll(regionCells, j)
@@ -112,7 +111,6 @@ Foam::powerModel::powerModel
             label cellj(regionCells[j]);
             cellList_.append(cellj);
             cellField_[cellj] = 1.0;
-            iA_[cellj] = iA;
         }
         if (regionDict.found("volumeFraction"))
         {
@@ -143,6 +141,25 @@ Foam::powerModel::powerModel
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+void Foam::powerModel::setInterfacialArea()
+{
+    const wordList& regions(this->toc());
+    forAll(regions, i)
+    {
+        word region(regions[i]);
+        const dictionary& regionDict(this->subDict(region));
+        scalar iA(regionDict.get<scalar>("volumetricArea"));
+        
+        const labelList& regionCells(structure_.cellLists()[region]);
+        forAll(regionCells, j)
+        {
+            label cellj(regionCells[j]);
+            iA_[cellj] = iA;
+        }
+    }
+    iA_.correctBoundaryConditions();
+}
 
 /*
 Foam::volScalarField& Foam::powerModel::initFieldInTable

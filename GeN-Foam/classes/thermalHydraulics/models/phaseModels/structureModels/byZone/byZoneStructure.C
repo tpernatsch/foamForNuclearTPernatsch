@@ -26,7 +26,7 @@ License
 #include "byZoneStructure.H"
 #include "addToRunTimeSelectionTable.H"
 #include "fvcDiv.H"
-#include "myStringOps.H"
+#include "myOps.H"
 
 //- From forward declarations in structureModel.C
 #include "fluid.H"
@@ -95,9 +95,10 @@ Foam::structureModels::byZone::byZone
         word key(dict.toc()[i]);
         if (key == "type") continue;
         if (key == "powerOffCriterionModel") continue;
+        if (key == "heatExchangers") continue;
         const dictionary& zoneDict(dict.subDict(key));
         
-        wordList zones(myStringOps::split<word>(key, ':'));
+        wordList zones(myOps::split<word>(key, ':'));
 
         forAll(zones, i)
         {
@@ -164,6 +165,17 @@ Foam::structureModels::byZone::byZone
             //- Read momentum source
             if (zoneDict.found("momentumSource"))
             {
+                pumps_.insert
+                (
+                    zone,
+                    pump
+                    (
+                        mesh_,
+                        zoneDict,
+                        zoneCellList
+                    )
+                );
+
                 if (!momentumSourcePtr_.valid())
                 {
                     momentumSourcePtr_.reset
@@ -187,16 +199,6 @@ Foam::structureModels::byZone::byZone
                         )
                     );
                 }
-
-                vector uSource(zoneDict.get<vector>("momentumSource"));
-
-                forAll(zoneCellList, j)
-                {
-                    momentumSourcePtr_()[zoneCellList[j]] = uSource;
-                }
-
-                //- BCs set outside dict loop, no need to do it multiple
-                //  times
             }
 
             //- Set passive properties fields if keywords present
@@ -535,7 +537,7 @@ Foam::structureModels::byZone::byZone
                     regionDict.subDict("powerModel")
                 );
 
-                wordList zones(myStringOps::split<word>(key, ':'));
+                wordList zones(myOps::split<word>(key, ':'));
 
                 if (powerModelDict.get<word>("type") == powerModelType)
                 {
@@ -558,9 +560,8 @@ Foam::structureModels::byZone::byZone
             )
         );
     }
-
-    //- Adjust iAact that was left out as it is a member of
-    //  powerModel
+ 
+    //- Adjust iAact that was left out as it is a member of powerModel
     forAllIter
     (
         powerModelTable,
@@ -574,6 +575,8 @@ Foam::structureModels::byZone::byZone
 
     Rl2g_.correctBoundaryConditions();
     Rg2l_.correctBoundaryConditions();
+
+    this->constructHeatExchangers();
 }
 
 

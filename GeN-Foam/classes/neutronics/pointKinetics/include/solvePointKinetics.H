@@ -2,17 +2,28 @@
 #include "computeFeedbackFieldValues.H"
 #include "correctReactivity.H"
 
+//- Update decayPower_, if available
+if (decayPowerPtr_.valid())
+{
+    decayPower_ = decayPowerPtr_->value
+    (
+        mesh_.time().timeOutputValue() - decayPowerStartTime_
+    );
+}
+
+//- Update fissionPower_ and precursorPowers_ via actual pointKinetics model
+
 //- Update old time step values if time step has changed
 if(timeIndex_ != mesh_.time().timeIndex())
 {
     timeIndex_ = mesh_.time().timeIndex();
     powerOld_ = power_;
+    fissionPowerOld_ = fissionPower_;
     for (int i=0; i<delayedGroups_; i++)
     {
         precursorPowersOld_[i] = precursorPowers_[i];
     }
 }
-
 label n(delayedGroups_+1);
 scalar dt(mesh_.time().deltaT().value());
 
@@ -28,7 +39,7 @@ A[0][0] = 1.0/dt-(totalReactivity_-beta_)/promptGenerationTime_;
 for (int i = 1; i < n; i++)
 {
     A[0][i] = -lambdas_[i-1];
-    B[0] = powerOld_/dt;
+    B[0] = fissionPowerOld_/dt;
 }
 
 //- Rest of the matrix for the precursor coefficients
@@ -41,16 +52,17 @@ for (int i = 1; i < n; i++)
 
 //- Solve
 solve(x, A, B);
-
-//- Set member values
-power_ = x[0];
+fissionPower_ = x[0];
 for (int i=1; i<n; i++)
 {
     precursorPowers_[i-1] = x[i];
 }
 
-//- Re-scale fluxes, volFuelPower, precursors
-scalar fluxScaleFactor = power_/powerOld_;
+//- Update total power
+power_ = fissionPower_ + decayPower_;
+
+//- Re-scale fluxes, precursors by change in fissionPower
+scalar fluxScaleFactor = fissionPower_/fissionPowerOld_;
 
 for (int i = 0; i < energyGroups_; i++)
 {
@@ -60,7 +72,9 @@ for (int i = 0; i < energyGroups_; i++)
 oneGroupFlux_ *= fluxScaleFactor;
 oneGroupFlux_.correctBoundaryConditions();
 
-volFuelPower_ *= fluxScaleFactor;
+//- Re-scale volFuelPower by change in total power
+scalar volFuelPowerScaleFactor = power_/powerOld_;
+volFuelPower_ *= volFuelPowerScaleFactor;
 volFuelPower_.correctBoundaryConditions();
 
 //- Only possible to re-scale precursors if they were initially present,
@@ -89,8 +103,8 @@ if (TFuel_.mesh().time().write())
     reactorState_.regIOobject::writeObject
     (
         IOstream::ASCII,
-        IOstream::currentVersion,
-        reactorState_.time().writeCompression(),
+        //IOstream::currentVersion,
+        //reactorState_.time().writeCompression(),
         true
     );
 }

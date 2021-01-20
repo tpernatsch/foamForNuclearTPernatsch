@@ -81,9 +81,6 @@ class KottowskiSavatteri
 {
 private:
 
-    //- log of the sqrt of the Lockhart-Martinelli parameter
-    volScalarField log10X_;
-
 public:
 
     //- Runtime type information

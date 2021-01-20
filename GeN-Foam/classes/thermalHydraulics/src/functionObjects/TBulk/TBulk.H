@@ -28,10 +28,8 @@ Group
     grpFieldFunctionObjects
 
 Description
-    Calculates the spatial minimum and maximum extents of a field
-
-    The extents are derived from the bound box limits after identifying the
-    locations where field values exceed the user-supplied threshold value.
+    Calculates the total mass flux through a set of faceSets, faceZones or
+    patches.
 
 Usage
     Example of function object specification:
@@ -43,26 +41,22 @@ Usage
         ...
         writeToFile         yes;
         log                 yes;
-        temperatureField    T.liquid
-        velocityField       U.liquid
-        densityField        rho.liquid
         regionType          patch;
-        patches             ();
+        regionName          outlet;
+        alphaRhoPhiName     "alphaRhoPhi.liquid"
     }
     \endverbatim
 
     Where the entries comprise:
     \table
         Property      | Description              | Required   | Default value
-        type          | type name: TBulk  | yes        |
+        type          | type name: TBulk      | yes        |
         writeToFile   | write extents data to file | no       | yes
         log           | write extents data to standard output | no | yes
-        temperatureField |                       | Yes
-        velocityField |                          | Yes
-        densityField  |                          | Yes
-        regionType    | Either cellZone or patch | Yes 
-        patches       | list of patches to process | depends on regionType
-        cellZones     | list of cellZones to process | depends on regionType
+        thermoName    | name of fluid thermophysicalProperties dict | yes
+        alphaRhoPhiName | name of mass face flow field | yes |
+        regionType    | either cellZone or patch | yes |
+        regionName    | name of the regionType to process | yes |
     \endtable
 
     Output data is written to the file \<timeDir\>/TBulk.dat
@@ -114,8 +108,8 @@ public:
     enum regionType
     {
         patch,
-        faceSet_,
-        faceZone_
+        faceSet,
+        faceZone
     };
 
     static const Enum<regionType> regionTypeNames_;
@@ -124,23 +118,23 @@ protected:
 
     // Protected data
 
-        //- Region type
-        regionType regionType_;
-        
-        //- Regions to assess
-        wordReList regionNames_;
-        
-        //- List of patchIDs if regions are patches
-        labelHashSet patchIDs_;
+        //-
+        word regionName_;
 
-        //- List of cellFaces if regions are faceSets or faceZones
+        //- Patch related
+        label patchID_;
+    
+        //- faceZone or faceSet related
         labelList faces_;
 
-        //- Field names
+        //- Region type
+        regionType regionType_;
+
+        //- Field/object names
         word thermoName_;
         word alphaRhoPhiName_;
-        
-        //- Field ptrs
+
+        //- Field/object ptrs
         const rhoThermo* thermoPtr_;
         const surfaceScalarField* alphaRhoPhiPtr_;
 

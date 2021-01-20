@@ -58,19 +58,6 @@ Foam::twoPhaseDragMultiplierModels::ChenKalish::ChenKalish
         objReg,
         dict,
         mesh
-    ),
-    logX_
-    (
-        IOobject
-        (
-            IOobject::groupName("logX", objReg.name()),
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimless, 1e-9)
     )
 {}
 
@@ -86,45 +73,40 @@ Foam::twoPhaseDragMultiplierModels::ChenKalish::~ChenKalish()
 void
 Foam::twoPhaseDragMultiplierModels::ChenKalish::correct()
 {
-    //- Compute log of the sqrt of the Lockhart-Martinelli parameter. 
-    //  For numerical stability, values of X are limited between 7e-2 and 30
-    //  just like the Kottowksi-Savatteri model
-    logX_ =
-        log
-        ( 
-            min
-            (
-                max
-                (   
-                    pow(mFluid_.thermo().mu()/oFluidPtr_->thermo().mu(), 0.1)*
-                    pow
-                    (
-                        mFluid_.flowQuality()/
-                        max
-                        (
-                            oFluidPtr_->flowQuality(),
-                            dimensionedScalar("", dimless, 1e-69)
-                        ), 
-                        0.9
-                    )*
-                    sqrt(oFluidPtr_->thermo().rho()/mFluid_.thermo().rho()),
-                    dimensionedScalar("", dimless, 7e-2)
-                ),
-                dimensionedScalar("", dimless, 30)
-            )
-        );
+    volScalarField phi2
+    (
+        IOobject
+        (
+            "",
+            mesh_.time().timeName(),
+            this->db()
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 1)
+    );
 
+    const volScalarField& X(mFluid_.XLM());
+    forAll(X, i)
+    {
+        //- I am limiting this for 7e-2 < X < 30 like Kottowski-Savatteri
+        //  out of consistency
+        scalar logX(log(min(max(X[i], 0.07), 30)));
+        phi2[i] = 
+            exp
+            (
+                2.0*
+                (
+                    0.0867*sqr(logX)
+                -   0.518*logX
+                +   1.59
+                )
+            );
+    }
+
+    //- This under-relaxes phi2_ and limits its extrema
     this->setPhi2
     (
-        exp
-        (
-            2.0*
-            (
-                0.0867*sqr(logX_)
-            -   0.518*logX_
-            +   1.59
-            )
-        )
+        phi2
     );
 }
 

@@ -62,28 +62,8 @@ Foam::twoPhaseDragMultiplierModels::LockhartMartinelli::LockhartMartinelli
     C_
     (
         dict.lookupOrDefault<scalar>("C", 20)
-    ),
-    X2_
-    (
-        IOobject
-        (
-            IOobject::groupName("LockhartMartinelliParameter", objReg.name()),
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimless, 1e-9)
-    ),
-    exp_
-    (
-        dict.lookupOrDefault<scalar>("exp", 0.2)
     )
-{
-    //- Just in case the user provides something remarkably stupid
-    exp_ = min(exp_, 1.9);
-}
+{}
 
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
@@ -97,28 +77,28 @@ Foam::twoPhaseDragMultiplierModels::LockhartMartinelli::~LockhartMartinelli()
 void
 Foam::twoPhaseDragMultiplierModels::LockhartMartinelli::correct()
 {
-    //- Compute Lockhart-Martinelli parameter
-    X2_ = 
-        max
+    volScalarField phi2
+    (
+        IOobject
         (
-            pow(mFluid_.thermo().mu()/oFluidPtr_->thermo().mu(), exp_)*
-            pow
-            (
-                mFluid_.flowQuality()/
-                max
-                (
-                    oFluidPtr_->flowQuality(),
-                    dimensionedScalar("", dimless, 1e-69)
-                ), 
-                2.0-exp_
-            )*
-            (oFluidPtr_->thermo().rho()/mFluid_.thermo().rho()),
-            dimensionedScalar("", dimless, 1e-3)
-        );
+            "",
+            mesh_.time().timeName(),
+            this->db()
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 1)
+    );
 
+    const volScalarField& X(mFluid_.XLM());
+    forAll(X, i)
+    {
+        phi2[i] = 1.0 + C_/X[i] + 1.0/sqr(X[i]);
+    }
+
+    //- This under-relaxes phi2_ and limits its extrema
     this->setPhi2
     (
-        1.0 + C_/sqrt(X2_) + 1.0/X2_
+        phi2
     );
 }
 

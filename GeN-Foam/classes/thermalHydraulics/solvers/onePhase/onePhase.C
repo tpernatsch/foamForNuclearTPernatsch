@@ -98,8 +98,15 @@ Foam::thermalHydraulicModels::onePhase::onePhase
     //- Create turbulence model
     fluid_.constructTurbulenceModel();
 
-    //- Normalize phase fraction fields, structure has priority
+    //- Set phase fraction fields (constant in time), structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
+    
+    //- The normalized field is non-trivial (i.e. different than 1) only in the
+    //  twoPhase solver. However, it is used by some models in the shared 
+    //  thermal-hydraulics library, so it should be set nonetheless! The most
+    //  important quantity that relies on this is the Reynolds computed by
+    //  the FSPair object
+    fluid_.normalized() = fluid_/(1.0-structure_);
 
     //- Set fluid characteristic dimension to structure hydraulic diameter.
     //  This is handled by the fluidGeometry class in the twoPhase solver
@@ -131,6 +138,16 @@ Foam::thermalHydraulicModels::onePhase::onePhase
     //  multiple pairs. Since I want to keep the same base library and code
     //  structure for both the single and two phase, I decided to keep this
     //  rather than unnecessarily duplicate the base code of the models library
+
+    bool writeTransferCoeffs 
+    (
+        mesh.time().controlDict().lookupOrDefault<bool>
+        (
+            "writeTransferCoeffs", 
+            true
+        )
+    );
+    
     Kds_.insert
     (
         "FSPair",
@@ -144,14 +161,19 @@ Foam::thermalHydraulicModels::onePhase::onePhase
                     mesh_.time().timeName(),
                     mesh_,
                     IOobject::NO_READ,
-                    IOobject::NO_WRITE
+                    (
+                        (writeTransferCoeffs) ?
+                        IOobject::AUTO_WRITE :
+                        IOobject::NO_WRITE
+                    ),
+                    writeTransferCoeffs
                 ),
                 mesh_,
                 dimensionedTensor
                 (
                     "", 
                     dimDensity/dimTime, 
-                    tensor(0,0,0,0,0,0,0,0,0)
+                    tensor::zero
                 ),
                 zeroGradientFvPatchScalarField::typeName
             )
@@ -171,7 +193,12 @@ Foam::thermalHydraulicModels::onePhase::onePhase
                     mesh_.time().timeName(),
                     mesh_,
                     IOobject::NO_READ,
-                    IOobject::NO_WRITE
+                    (
+                        (writeTransferCoeffs) ?
+                        IOobject::AUTO_WRITE :
+                        IOobject::NO_WRITE
+                    ),
+                    writeTransferCoeffs
                 ),
                 mesh_,
                 dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
@@ -194,7 +221,7 @@ Foam::thermalHydraulicModels::onePhase::onePhase
     }
 
     //- Compute initialFluidMass
-    initialFluidMass_ = fvc::domainIntegrate(fluid_.thermo().rho()*fluid_);
+    initialFluidMass_ = fvc::domainIntegrate(fluid_.rho()*fluid_);
 
     Info << endl;
 }
@@ -238,6 +265,11 @@ void Foam::thermalHydraulicModels::onePhase::correctFluidMechanics
     {
         #include "pEqn_1p.H"
     }
+
+    //- Continuity error adjustment and infos
+    correctContErr();
+    printContErr();
+    calcCumulContErr();
 }
 
 void Foam::thermalHydraulicModels::onePhase::correctEnergy(scalar& residual)
@@ -348,15 +380,59 @@ void Foam::thermalHydraulicModels::onePhase::correctCourant()
 
 void Foam::thermalHydraulicModels::onePhase::correctContErr()
 {
-    volScalarField& rho(fluid_.thermo().rho());
-    
-    fluid_.contErr() = 
+    volScalarField& cE(fluid_.contErr());
+    volScalarField& rho(fluid_.rho());
+
+    cE = 
     (
-            fvc::ddt(fluid_, rho)
-        +   fvc::div(fluid_.alphaRhoPhi())
-        -   (fvOptions_(fluid_, rho) & rho)
+        fvc::ddt(fluid_, rho)
+    +   fvc::div(fluid_.alphaRhoPhi())
+    -   (fvOptions_(fluid_, rho) & rho)
     );
-    fluid_.contErr().correctBoundaryConditions();
+    
+    cE.correctBoundaryConditions();
+}
+
+
+void Foam::thermalHydraulicModels::onePhase::printContErr()
+{
+    volScalarField contErrRel(fluid_.contErr()/fluid_.rho());
+
+    Info<< "Instantaneous relative continuity error (avg) = "
+        << contErrRel.weightedAverage(mesh_.V()).value()
+        //<< " " << min(contErrRel).value()
+        //<< " " << max(contErrRel).value()
+        << " 1/s" << endl;
+}
+
+void Foam::thermalHydraulicModels::onePhase::calcCumulContErr()
+{
+    if (pimple_.finalIter())
+    {
+        scalar& cumulContErr(fluid_.cumulContErr());
+        const volScalarField& cE(fluid_.contErr());
+
+        const scalarField& V(mesh_.V());
+        const scalar& dt(mesh_.time().deltaTValue());
+
+        scalar totV(0);
+        scalar deltaCumulContErr(0);
+
+        forAll(V, i)
+        {
+            const scalar& Vi(V[i]);
+            deltaCumulContErr += cE[i]*Vi*dt;
+            totV += Vi;
+        }
+        reduce(deltaCumulContErr, sumOp<scalar>());
+        reduce(totV, sumOp<scalar>());
+
+        cumulContErr += deltaCumulContErr;
+
+        Info<< "Cumulative continuity error = " 
+            << (cumulContErr/totV)
+            << " kg/m3" << endl;
+    }
 }
 
 

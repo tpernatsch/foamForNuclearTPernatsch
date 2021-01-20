@@ -36,6 +36,7 @@ License
 #include "fixedValueFvPatchFields.H"
 #include "slipFvPatchFields.H"
 #include "partialSlipFvPatchFields.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -76,6 +77,7 @@ Foam::fluid::fluid
         dict,
         mesh,
         phaseName,
+        calculatedFvPatchScalarField::typeName,
         readIfPresentAndWrite,
         readIfPresentAndWrite
     ),
@@ -186,51 +188,25 @@ Foam::fluid::fluid
         mesh,
         dimensionedScalar("", dimless/dimTime, 0)
     ),
-    staticQuality_
+    minXLM_
     (
-        IOobject
+        dimensionedScalar::lookupOrDefault
         (
-            IOobject::groupName("staticQuality", this->name()),
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            (
-                (
-                    mesh.time().controlDict().lookupOrDefault<bool>
-                    (
-                        "writeAllFields", 
-                        false
-                    )
-                ) ?
-                IOobject::AUTO_WRITE :
-                IOobject::NO_WRITE
-            )
-        ),
-        mesh,
-        dimensionedScalar("", dimless, 0)
+            "minXLM",
+            dict_,
+            dimless, 
+            0.01
+        )
     ),
-    flowQuality_
+    maxXLM_
     (
-        IOobject
+        dimensionedScalar::lookupOrDefault
         (
-            IOobject::groupName("flowQuality", this->name()),
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            (
-                (
-                    mesh.time().controlDict().lookupOrDefault<bool>
-                    (
-                        "writeAllFields", 
-                        false
-                    )
-                ) ?
-                IOobject::AUTO_WRITE :
-                IOobject::NO_WRITE
-            )
-        ),
-        mesh,
-        dimensionedScalar("", dimless, 0)
+            "maxXLM",
+            dict_,
+            dimless, 
+            100
+        )
     ),
     normalized_
     (
@@ -282,6 +258,7 @@ Foam::fluid::fluid
         dimensionedScalar("", dimDensity/dimTime, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    cumulContErr_(0),
     Dh_
     (
         IOobject
@@ -296,7 +273,7 @@ Foam::fluid::fluid
         dimensionedScalar("", dimLength, SMALL),
         zeroGradientFvPatchScalarField::typeName
     ),
-    dispersion_(mesh.C().size(), scalar(0.0)),
+    //dispersion_(mesh.C().size(), scalar(0.0)),
     thermoResidualAlpha_
     (
         dimensionedScalar::lookupOrDefault
@@ -306,7 +283,9 @@ Foam::fluid::fluid
             dimless, 
             0.0
         )
-    )
+    ),
+    Boussinesq_(false),
+    rho0Ptr_(nullptr)
 {
     if (phaseName != "")
     {
@@ -359,6 +338,50 @@ Foam::fluid::fluid
     }
 
     thermo_->validate(phaseName, "h", "e");
+
+    //- Set Boussinesq_ flag by reading thermophysicalProperties data and init
+    //  rho0Ptr if using the Boussinesq approx
+    List<char> delimiters(3);
+    delimiters[0] = '<';
+    delimiters[1] = '>';
+    delimiters[2] = ',';
+    for 
+    (
+        word const &w : 
+        myOps::split<word>
+        (
+            thermo_->thermoName(), delimiters
+        )
+    )
+    {
+        if (w == "Boussinesq")
+        {
+            Boussinesq_ = true;
+            break;
+        }
+    }
+    Info << "Boussinesq = " << Boussinesq_ << endl << endl;
+    if (Boussinesq_)
+    {
+        rho0Ptr_ = 
+            new volScalarField
+            (
+                IOobject
+                (
+                    "",
+                    mesh_.time().timeName(),
+                    mesh_
+                ),
+                mesh_,
+                dimensionedScalar
+                (
+                    "rho0", 
+                    dimDensity, 
+                    thermo_->subDict("mixture").subDict("equationOfState")
+                ),
+                zeroGradientFvPatchScalarField::typeName
+            );
+    }
 
     //- Init magU and Pr
     magU_ = mag(U_);
@@ -413,8 +436,8 @@ Foam::fluid::fluid
             if
             (
                 isA<fixedValueFvPatchVectorField>(U_.boundaryField()[i])
-             || isA<slipFvPatchVectorField>(U_.boundaryField()[i])
-             || isA<partialSlipFvPatchVectorField>(U_.boundaryField()[i])
+            ||  isA<slipFvPatchVectorField>(U_.boundaryField()[i])
+            ||  isA<partialSlipFvPatchVectorField>(U_.boundaryField()[i])
             )
             {
                 phiTypes[i] = fixedValueFvsPatchScalarField::typeName;
@@ -468,6 +491,73 @@ Foam::fluid::~fluid()
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
+void Foam::fluid::initTwoPhaseFields()
+{
+    phaseChangeSignPtr_.reset
+    (
+        new scalarField(mesh_.C().size(), int(0))
+    );
+    
+    flowQualityPtr_.reset
+    (
+        new volScalarField
+        (
+            IOobject
+            (
+                IOobject::groupName("flowQuality", this->name()),
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                (
+                    (
+                        mesh_.time().controlDict().lookupOrDefault<bool>
+                        (
+                            "writeAllFields", 
+                            false
+                        )
+                    ) ?
+                    IOobject::AUTO_WRITE :
+                    IOobject::NO_WRITE
+                )
+            ),
+            mesh_,
+            dimensionedScalar("", dimless, 0)
+        )
+    );
+    
+    XLMPtr_.reset
+    (
+        new volScalarField
+        (
+            IOobject
+            (
+                IOobject::groupName("XLM", this->name()),
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                (
+                    (
+                        mesh_.time().controlDict().lookupOrDefault<bool>
+                        (
+                            "writeAllFields", 
+                            false
+                        )
+                    ) ?
+                    IOobject::AUTO_WRITE :
+                    IOobject::NO_WRITE
+                )
+            ),
+            mesh_,
+            dimensionedScalar("", dimless, 100)
+        )
+    );
+
+    dispersionPtr_.reset
+    (
+        new scalarField(mesh_.C().size(), scalar(0.0))
+    );
+}
+
 void Foam::fluid::initAlphaPhis()
 {
     IOobject alphaPhiHeader
@@ -491,7 +581,7 @@ void Foam::fluid::initAlphaPhis()
     }
     if (!alphaRhoPhiHeader.typeHeaderOk<surfaceScalarField>(true))
     {
-        alphaRhoPhi_ = fvc::interpolate(thermo_->rho())*alphaPhi_;
+        alphaRhoPhi_ = fvc::interpolate(this->rho())*alphaPhi_;
     }
 }
 
@@ -501,12 +591,64 @@ void Foam::fluid::constructTurbulenceModel()
         phaseCompressibleTurbulenceModel::New
         (
             *this,
-            thermo_->rho(),
+            this->rho(),
             U_,
             alphaRhoPhi_,
             phi(),
             thermo_
         ); 
+}
+
+void Foam::fluid::correctTwoPhaseFields(const fluid& otherFluid)
+{
+    volScalarField& flowQuality(flowQualityPtr_());
+    volScalarField& XLM(XLMPtr_());
+
+    flowQuality = 
+        (*this)*this->rho()*magU_/
+        (
+            (*this)*this->rho()*magU_
+        +   otherFluid*otherFluid.rho()*otherFluid.magU()
+        );
+
+    //- Lockhart-Martinelli parameter
+    XLM = 
+        Foam::min
+        (
+            Foam::max
+            (
+                pow(thermo_->mu()/otherFluid.thermo().mu(), 0.1)*
+                pow
+                (
+                    flowQuality/
+                    Foam::max
+                    (
+                        (1.0-flowQuality)(), 
+                        dimensionedScalar("", dimless, 1e-6)
+                    ), 
+                    0.9
+                )*
+                sqrt(otherFluid.rho()/this->rho()),
+                minXLM_
+            ),
+            maxXLM_
+        );
+}
+
+volScalarField& Foam::fluid::rho(bool isVariableIfBoussinesq)
+{
+    if (Boussinesq_ and !isVariableIfBoussinesq)
+        return *rho0Ptr_;
+    else
+        return thermo_->rho();
+}
+
+const volScalarField& Foam::fluid::rho(bool isVariableIfBoussinesq) const
+{
+    if (Boussinesq_ and !isVariableIfBoussinesq)
+        return *rho0Ptr_;
+    else
+        return thermo_->rho();
 }
 
 

@@ -1,0 +1,106 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0/fluidRegion";
+    object      p;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+
+internalField   uniform 100000;
+
+boundaryField
+{
+    vesselWall
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    vesselFront
+    {
+        type            wedge;
+    }
+    vesselBack
+    {
+        type            wedge;
+    }
+    outVesselFrontAndBack
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    outVesselWall
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    secLoopFrontAndBack
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    hotLegSecondaryOutlet
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    coldLegSecondaryInlet
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    secLoopWall
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    baffle1_master
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    baffle1_slave
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    baffle2_master
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    baffle2_slave
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    baffle3
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    baffle4
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+    vesselValve
+    {
+        type            calculated;
+        value           uniform 100000;
+    }
+}
+
+
+// ************************************************************************* //

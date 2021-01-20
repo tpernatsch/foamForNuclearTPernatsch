@@ -40,6 +40,7 @@ SourceFiles
 #include "dictionary.H"
 #include "runTimeSelectionTables.H"
 #include "pimpleControl.H"
+#include "latentHeatModel.H"
 #include "saturationModel.H"
 #include "typedefs.H" //- To access typedef of volScalarFieldTable
 
@@ -87,6 +88,9 @@ protected:
     volScalarField& dmdt_;
     volScalarField& iT_;
     volScalarField& iA_;
+
+    //- Ptr to latentHeatModel
+    autoPtr<latentHeatModel> latentHeat_;
    
     //- Ptr to saturation model
     autoPtr<saturationModel> saturation_;
@@ -101,6 +105,9 @@ protected:
     //- Total cumulative mass that should have been transferred between the 
     //  phases that was removed by the dmdt limiter 
     scalar dmLostToLimiter_;
+
+    const dimensionedScalar posDmdtResidualIA_;
+    const dimensionedScalar negDmdtResidualIA_;
 
 public:
 
@@ -181,12 +188,18 @@ public:
         //      but this PhD I'm doing is basically about testing whatever
         //      bullshit idea I can come up with to make things better. Jesus
         //      fucking Christ, I hate this
+        //  -   set the dmdt in the forcedRemovalCells_, if applicable
         void limitMassTransfer();
 
         //- Calculate mass transfer term
         virtual void correctMassTransfer() = 0;
 
         //- Access
+
+            const volScalarField& L() const
+            {
+                return latentHeat_->L();
+            }
 
             const saturationModel& saturation() const
             {

@@ -89,9 +89,9 @@ COBRA_TF::correct()
     forAll(cellList_, i)
     {
         const label& celli(cellList_[i]);
-        const scalar& Tf(Tf_[celli]);
+        const scalar& Ts(Tsat_[celli]);
         suppressionFactor_[i] = 
-            max(Tf-Tsat_[celli], 0)/max(Twall_[celli]-Tf, 1e-3);
+            min(max(Tf_[celli]-Ts, 0)/max(Twall_[celli]-Ts, 1e-3), 1.0);
     }
 }
 

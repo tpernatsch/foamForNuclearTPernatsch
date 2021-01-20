@@ -58,19 +58,6 @@ Foam::twoPhaseDragMultiplierModels::Kaiser88::Kaiser88
         objReg,
         dict,
         mesh
-    ),
-    logSqrtX_
-    (
-        IOobject
-        (
-            IOobject::groupName("logSqrtX", objReg.name()),
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimless, 1e-9)
     )
 {}
 
@@ -86,52 +73,40 @@ Foam::twoPhaseDragMultiplierModels::Kaiser88::~Kaiser88()
 void
 Foam::twoPhaseDragMultiplierModels::Kaiser88::correct()
 {
-    //- Compute log of the sqrt of the sqrt of the Lockhart-Martinelli 
-    //  parameter. To avoid numerical problems, X is limited in the same data
-    //  range as the Kottowski-Savatteri model, i.e. 7e-2 < X < 30 which
-    //  translates in:
-    //      sqrt(X) > sqrt(7e-2) = 0.265 
-    //      sqrt(X) < sqrt(30) = 5.477
-    logSqrtX_ =
-        log
-        ( 
-            min
-            (
-                max
-                (   
-                    pow(mFluid_.thermo().mu()/oFluidPtr_->thermo().mu(), 0.05)*
-                    pow
-                    (
-                        mFluid_.flowQuality()/
-                        max
-                        (
-                            oFluidPtr_->flowQuality(),
-                            dimensionedScalar("", dimless, 1e-69)
-                        ), 
-                        0.45
-                    )*
-                    pow
-                    (
-                        oFluidPtr_->thermo().rho()/mFluid_.thermo().rho(), 
-                        0.25
-                    ),
-                    dimensionedScalar("", dimless, 0.265)
-                ),
-                dimensionedScalar("", dimless, 5.477)
-            )
-        );
+    volScalarField phi2
+    (
+        IOobject
+        (
+            "",
+            mesh_.time().timeName(),
+            this->db()
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 1)
+    );
 
+    const volScalarField& X(mFluid_.XLM());
+    forAll(X, i)
+    {
+        //- I am limiting this for 7e-2 < X < 30 like Kottowski-Savatteri
+        //  out of consistency
+        scalar logSqrtX(log(sqrt(min(max(X[i], 0.07), 30))));
+        phi2[i] = 
+            exp
+            (
+                2.0*
+                (
+                    1.48
+                -   1.05*logSqrtX
+                +   0.09*sqr(logSqrtX)
+                )
+            );
+    }
+
+    //- This under-relaxes phi2_ and limits its extrema
     this->setPhi2
     (
-        Foam::exp
-        (
-            2.0*
-            (
-                1.48
-            -   1.05*logSqrtX_
-            +   0.09*sqr(logSqrtX_)
-            )
-        )
+        phi2
     );
 }
 

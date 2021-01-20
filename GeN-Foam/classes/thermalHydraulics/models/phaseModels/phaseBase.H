@@ -83,6 +83,7 @@ public:
             const dictionary& dict,
             const fvMesh& mesh,
             const word& name,
+            const word& defaultBoundaryType,
             bool readIfPresFlag = true,
             bool writeFlag = true
         );

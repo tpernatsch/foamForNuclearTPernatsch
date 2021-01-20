@@ -5,7 +5,7 @@
 //- Field refs
 volVectorField& U(fluid_.U());
 const volScalarField& alpha(fluid_);
-volScalarField& rho(fluid_.thermo().rho());
+volScalarField& rho(fluid_.rho());
 fvVectorMatrix UEqn(U, dimMass*dimLength/dimTime/dimTime);
 
 //- Drag between fluid and structure rotated in global reference frame
@@ -47,7 +47,7 @@ fluid_.turbulence().correct();
     UEqn =
     (
             fvm::div(fluid_.alphaRhoPhi(), U, "div(alphaRhoPhi,U)")
-        -   fvm::SuSp(fluid_.contErr(), U)
+        +   fvm::SuSp(-fluid_.contErr(), U)
         +   MRF_.DDt(alpha*rho, U)
             //- The following is just a re-arrangement of div(nu*grad(U))
         +   (

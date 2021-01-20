@@ -27,7 +27,7 @@ for q in range(len(sys.argv)-1) :
     totRho = 0
     TFuel = 0
     for line in lines :
-        if "power = " in line :
+        if "totalPower" in line :
             power = float(line.split()[2])
         if "totalReactivity" in line :
             totRho = float(line.split()[2])

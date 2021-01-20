@@ -126,9 +126,7 @@ protected:
     //- Reference cell and pressure if no fixedValue BCs provided
     label pRefCell_;
     scalar pRefValue_;
-
-    //- Pressure power term
-    volScalarField dpdt_;
+    bool forcePRef_;
 
     //- Initial fluid(s) mass
     dimensionedScalar initialFluidMass_;
@@ -141,6 +139,22 @@ protected:
 
     //- Pressure solution options
     const momentumMode momentumMode_;
+
+    //- Feature that removes velocity oscillations and/or smearing in the 
+    //  main flow direction. However, if dealing with structures that have
+    //  large porosity gradiens (i.e. > 0.5 between consecutive cells) or
+    //  large gradients in the structure drag tensor, this feature may
+    //  actually induce velocity oscillations in the directions 
+    //  perpendicular to the main flow direction.
+    //  This factor weights the "traditional" faceMomentum velocity 
+    //  reconstruction (the one which always causes smearing/oscillations)
+    //  in the main flow direction) with a moving phase fraction-adjusted 
+    //  velocity reconstruction (which may induced the aforementioned
+    //  transversal oscillations). This feature only has an affect on the 
+    //  cellCentered and the cellCenteredFaceReconstruction momentum modes.
+    //  Deafults to 0, which amounts to a "traditional" velocity reconstruction
+    //  procedure from phi
+    const scalar porousInterfaceSharpness_;
 
 public:
 

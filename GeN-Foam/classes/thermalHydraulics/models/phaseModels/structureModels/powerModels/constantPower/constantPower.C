@@ -102,6 +102,8 @@ Foam::powerModels::constantPower::constantPower
         zeroGradientFvPatchScalarField::typeName
     )
 {
+    this->setInterfacialArea();
+    
     structure_.setRegionField(this, powerDensity_, "powerDensity");
     structure_.setRegionField(this, T_, "T");
 

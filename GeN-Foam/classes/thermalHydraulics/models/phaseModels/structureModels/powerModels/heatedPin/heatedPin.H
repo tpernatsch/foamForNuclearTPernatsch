@@ -133,6 +133,12 @@ public:
 
     // Member Functions
 
+        //- Set interfacial area consistently with the pin geometry. In
+        //  particular, if the overall total volume-fraction of the pins
+        //  in a given mesh cell is alpha, it can be shown that the interfacial
+        //  area density iA of the pin surface is 2*alpha/outerRadius
+        virtual void setInterfacialArea();
+
         void updateLocalAvgGlobalMinMaxT
         (
             const label& starti,

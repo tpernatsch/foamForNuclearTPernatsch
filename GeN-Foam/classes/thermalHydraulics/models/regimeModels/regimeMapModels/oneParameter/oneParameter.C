@@ -25,6 +25,7 @@ License
 
 #include "oneParameter.H"
 #include "addToRunTimeSelectionTable.H"
+#include "myOps.H"
 
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -43,6 +44,23 @@ namespace regimeMapModels
 }
 }
 
+const Foam::Enum
+<
+    Foam::regimeMapModels::oneParameter::interpolationMode
+>
+Foam::regimeMapModels::oneParameter::interpolationModeNames_
+(
+    {
+        { 
+            interpolationMode::linear, 
+            "linear" 
+        },
+        { 
+            interpolationMode::quadratic, 
+            "quadratic" 
+        }
+    }
+);
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
@@ -67,7 +85,18 @@ Foam::regimeMapModels::oneParameter::oneParameter
             word(this->lookup("parameter"))
         ).field()
     ),
-    thresholds_(0)
+    thresholds_(0),
+    interpolationMode_
+    (
+        interpolationModeNames_.get
+        (
+            this->lookupOrDefault<word>
+            (
+                "interpolationMode", 
+                "linear"
+            )
+        )
+    )
 {
     //- Read the regimeNames and the bounds from the dict
     wordList unorderedRegimeNames(0);
@@ -243,19 +272,93 @@ void Foam::regimeMapModels::oneParameter::correct()
             }
         }
 
+        scalar f(myOps::relaxationFactor(mesh_, "regime"));
         scalarField& cellField(regime.cellField());
         if (isCurrentlyPresent)
         {
             cellField = pos0(p_t0ByDt)*pos(t1_pByDt);
             if (regime.isInterpolated())
             {
-                forAll(mesh_.cells(), j)
+                switch (interpolationMode_)
                 {
-                    if (cellField[j] == 1)
+                    case interpolationMode::linear :
                     {
-                        cellList.append(j);
-                        regime.coeffs1()[j] = t1_pByDt[j];
-                        regime.coeffs2()[j] = p_t0ByDt[j];
+                        if (f == 1.0)
+                        {
+                            forAll(mesh_.cells(), j)
+                            {
+                                if (cellField[j] == 1)
+                                {
+                                    cellList.append(j);
+                                    regime.coeffs1()[j] = t1_pByDt[j];
+                                    regime.coeffs2()[j] = p_t0ByDt[j];
+                                }
+                            }
+                        }
+                        else
+                        {
+                            scalarField& C1(regime.coeffs1());
+                            scalarField& C2(regime.coeffs2());
+                            forAll(mesh_.cells(), j)
+                            {
+                                if (cellField[j] == 1)
+                                {
+                                    cellList.append(j);
+                                    scalar& c1(C1[j]);
+                                    scalar& c2(C2[j]);
+                                    c1 = f*t1_pByDt[j] + (1.0-f)*c1;
+                                    c2 = 1.0-c1;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case interpolationMode::quadratic :
+                    {
+                        scalar mid(t0+dt/2.0);
+                        if (f == 1.0)
+                        {
+                            forAll(mesh_.cells(), j)
+                            {
+                                if (cellField[j] == 1)
+                                {
+                                    cellList.append(j);
+                                    scalar& c1(regime.coeffs1()[j]);
+                                    scalar& c2(regime.coeffs2()[j]);
+                                    c1 = 
+                                    (
+                                        (parameter_[j] <= mid) ?
+                                        1.0-2.0*sqr(p_t0ByDt[j]) :
+                                        2.0*sqr(t1_pByDt[j])
+                                    );
+                                    c2 = 1.0-c1;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            forAll(mesh_.cells(), j)
+                            {
+                                if (cellField[j] == 1)
+                                {
+                                    cellList.append(j);
+                                    scalar& c1(regime.coeffs1()[j]);
+                                    scalar& c2(regime.coeffs2()[j]);
+                                    c1 = 
+                                    (
+                                        f*
+                                        (
+                                            (parameter_[j] <= mid) ?
+                                            1.0-2.0*sqr(p_t0ByDt[j]) :
+                                            2.0*sqr(t1_pByDt[j])
+                                        ) 
+                                    +   (1.0-f)*c1
+                                    );
+                                    c2 = 1.0-c1;
+                                }
+                            }
+                        }
+                        break;
                     }
                 }
             }
@@ -275,80 +378,9 @@ void Foam::regimeMapModels::oneParameter::correct()
             cellField *= 0;
         }
     }
-    
-    /*
-    This commented section was the previous implementation, arguably more
-    cell-by-cell based than the one currently used. It appears (this one below)
-    to be slower (~ 10% slower, tested on meshes up to 100k cells on a single
-    processors with 9 regimes) than the final version (the one above)
-
-    //- Reset regimes
-    forAll(orderedRegimeNames_, i)
-    {
-        regime& regime(regimes_[orderedRegimeNames_[i]]());
-        regime.cellField() *= 0.0;
-        regime.cellList() = labelList(0);
-    }
-    
-    //- The are n orderedRegimes bounds by n+1 thresholds
-    label n(orderedRegimeNames_.size());
-    if (n == 1) //- No need for cell-by-cell ifs if there is only one regime
-    {
-        regime& regime(regimes_[orderedRegimeNames_[0]]());
-        forAll(mesh_.cells(), i)
-        {
-            regime.cellField()[i] = 1;
-            regime.cellList().append(i);
-        }
-    }
-    else
-    {
-        label n_1(n-1);
-        forAll(mesh_.cells(), i)
-        {
-            const scalar& p(parameter_[i]);
-            label j(0);
-            while (j < n_1)
-            {
-                const scalar& t0(thresholds_[j]);
-                const scalar& t1(thresholds_[j+1]);
-                if (t0 < p)
-                {
-                    if (p <= t1) break;
-                }
-                j++;
-            }
-            regime& regime(regimes_[orderedRegimeNames_[j]]());
-            regime.cellField()[i] = 1;
-            regime.cellList().append(i);
-        }
-    }
-
-    //- Compute the interpolation coefficients for the interpolated regimes
-    forAll(orderedRegimeNames_, i)
-    {
-        regime& regime(regimes_[orderedRegimeNames_[i]]());
-        if (regime.isInterpolated() and regime.isCurrentlyPresent())
-        {
-            const scalar& t0(thresholds_[i]);
-            const scalar& t1(thresholds_[i+1]);
-            scalar dt(t1-t0);
-            const labelList& cellList(regime.cellList());
-            scalarField& c1(regime.coeffs1());
-            scalarField& c2(regime.coeffs2());
-            forAll(cellList, j)
-            {
-                const label& cellj(cellList[j]);
-                const scalar& pj(parameter_[cellj]);
-                c1[cellj] = (t1-pj)/dt;
-                c2[cellj] = (pj-t0)/dt;
-            }
-        }
-    }
-    */
 
     //- Update the requiresModelCorrection flag. The way this is done is
-    //  not related to the specific way run-time-selectable regimeMapModel,
+    //  not related to the specific run-time-selectable regimeMapModel,
     //  so its wrapped in a function in the base class
     this->setRequiresModelCorrection();
 }

@@ -33,6 +33,7 @@ Foam::phaseBase::phaseBase
     const dictionary& dict,
     const fvMesh& mesh,
     const word& name,
+    const word& defaultBoundaryType,
     bool readIfPresFlag,
     bool writeFlag
 )
@@ -57,7 +58,7 @@ Foam::phaseBase::phaseBase
         ),
         mesh,
         dimensionedScalar("alpha", dimless, 0),
-        zeroGradientFvPatchScalarField::typeName
+        defaultBoundaryType//zeroGradientFvPatchScalarField::typeName
     ),
     dict_
     (

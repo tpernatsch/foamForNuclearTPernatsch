@@ -22,7 +22,7 @@ if(timeIndex_ != mesh_.time().timeIndex())
     powerOld_ = power_;
 }
 
-label n(delayedGroups_+1);
+//label n(delayedGroups_+1);
 scalar dt(mesh_.time().deltaT().value());
 
 //- prepare fields necessary to weight precursors
@@ -90,7 +90,7 @@ do
 
         //- Calculate weighted precursors to be fed to power equation
         weightedPrec.set(precI,new scalar(fvc::domainIntegrate(
-            oneGroupFlux_*precPK_[precI]).value()/domainIntegratedFluxSqr));
+            oneGroupFluxSqr_*precPK_[precI]).value()/domainIntegratedFluxSqr));
     }
 
     //- If you have calculated a new precursor concentration at the initialization step,
