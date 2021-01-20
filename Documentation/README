@@ -1,2 +1,2 @@
-This folder only contains reference papers and the standard OpenFOAM user guide. For information on how to install and use GeN-Foam, 
+This folder contains reference papers, the standard OpenFOAM user guide, an introductory presentation about the logic behind GeN-Foam (IntroToGeN-Foam_theory), and an introduction on how to use GeN-Foam (IntroToGeN-Foam_practice). For information on how to install and use GeN-Foam, 
 please refer to the wiki of the gitLab repository. 
