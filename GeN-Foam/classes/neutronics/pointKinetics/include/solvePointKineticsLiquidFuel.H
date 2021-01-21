@@ -90,7 +90,7 @@ do
 
         //- Calculate weighted precursors to be fed to power equation
         weightedPrec.set(precI,new scalar(fvc::domainIntegrate(
-            oneGroupFlux_*oneGroupFlux_*precPK_[precI]).value()/domainIntegratedFluxSqr));
+            oneGroupFlux_*precPK_[precI]).value()/domainIntegratedFluxSqr));
     }
 
     //- If you have calculated a new precursor concentration at the initialization step,
