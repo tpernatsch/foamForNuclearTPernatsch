@@ -237,6 +237,61 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimless/dimArea/dimTime, 1),
         zeroGradientFvPatchScalarField::typeName
     ),
+    initOneGroupFlux_
+    (
+        IOobject
+        (
+            "initOneGroupFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimArea/dimTime, 1),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    initOneGroupFluxN_
+    (
+        IOobject
+        (
+            "initOneGroupFluxN",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_)
+    ),        
+    domainIntegratedInitOneGroupFluxN_(fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value()),
+    Dalbedo_
+    (
+        IOobject
+        (
+        "   Dalbedo",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimLength, 1.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    fluxStarAlbedo_
+        (
+        IOobject
+        (
+            "fluxStarAlbedo",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimArea/dimTime, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),    
     energyGroups_(0),
     fluxes_(0),
     precursors_(0),
