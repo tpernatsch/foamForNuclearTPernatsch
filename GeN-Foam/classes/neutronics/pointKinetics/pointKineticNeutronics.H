@@ -167,6 +167,11 @@ protected:
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
+    //- Fields necessary when an albedo boundary condition has been used
+    //  to calculate the initial fluxes
+    volScalarField Dalbedo_;
+    volScalarField fluxStarAlbedo_;
+
     //- 
     volScalarField oneGroupFlux_;
 
@@ -178,11 +183,6 @@ protected:
 
     //- Integral of the square of the normalized flux
     scalar domainIntegratedInitOneGroupFluxN_;
-
-    //- Fields necessary when an albedo boundary condition has been used
-    //  to calculate the initial fluxes
-    volScalarField Dalbedo_;
-    volScalarField fluxStarAlbedo_;
 
     //- Number of energy groups (for scaling fluxes of a possibly existing
     //  previous simulation)

@@ -223,47 +223,6 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    oneGroupFlux_
-    (
-        IOobject
-        (
-            "oneGroupFlux",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimless/dimArea/dimTime, 1),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    initOneGroupFlux_
-    (
-        IOobject
-        (
-            "initOneGroupFlux",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimless/dimArea/dimTime, 1),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    initOneGroupFluxN_
-    (
-        IOobject
-        (
-            "initOneGroupFluxN",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_)
-    ),        
-    domainIntegratedInitOneGroupFluxN_(fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value()),
     Dalbedo_
     (
         IOobject
@@ -291,7 +250,46 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         mesh,
         dimensionedScalar("", dimless/dimArea/dimTime, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    ),    
+    ),     
+    oneGroupFlux_
+    (
+        IOobject
+        (
+            "oneGroupFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimArea/dimTime, 1),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    initOneGroupFlux_
+    (
+        IOobject
+        (
+            "initOneGroupFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        oneGroupFlux_
+    ),
+    initOneGroupFluxN_
+    (
+        IOobject
+        (
+            "initOneGroupFluxN",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_)
+    ),        
+    domainIntegratedInitOneGroupFluxN_(fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value()),
     energyGroups_(0),
     fluxes_(0),
     precursors_(0),
