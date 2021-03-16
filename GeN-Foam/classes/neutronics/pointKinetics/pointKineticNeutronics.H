@@ -31,9 +31,10 @@ Description
 SourceFiles
     pointKineticNeutronics.C
 
-Authors
+Author of this file (and associated .C or included .H files)
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
+
 
 \*---------------------------------------------------------------------------*/
 

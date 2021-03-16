@@ -41,8 +41,9 @@ Reference publications
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
     Nice (France), Paper 15226
 
-Author
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+Author of this file (and associated .C or included .H files)
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Swizerland)
+    
 
 \*---------------------------------------------------------------------------*/
 

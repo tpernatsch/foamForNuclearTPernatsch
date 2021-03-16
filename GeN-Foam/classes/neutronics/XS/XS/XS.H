@@ -27,6 +27,8 @@ Class
 Description
 Class for XS parametrization
 
+Author of this file (and associated .C or included .H files)
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 

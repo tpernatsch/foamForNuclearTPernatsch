@@ -33,6 +33,8 @@ matrix that is filled with zeros and ones. One in position  (i,j) implies
 that there is an exchange of neutrons from group i to j somewhere in the geometry.
 It can be used to speed up the calculations of scattering sources.
 
+Author of this file (and associated .C or included .H files)
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 
 \*---------------------------------------------------------------------------*/

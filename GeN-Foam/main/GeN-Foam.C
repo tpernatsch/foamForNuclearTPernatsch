@@ -49,9 +49,10 @@ Reference publications
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 - 
     Nice (France), Paper 15226
 
-Authors
+Authors of this file (and associated .C or included .H files)
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
+    EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 
