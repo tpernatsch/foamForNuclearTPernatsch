@@ -691,10 +691,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
                         IOobject::AUTO_WRITE
                     ),
                     //chenge the precursors units to power for PK calculations
-                    defaultPrec_
+                    defaultPrec_ * dimensionedScalar("", dimPower, 1.0)
                 )
             );
-            precPK_[precI] *= dimensionedScalar("", dimPower, 1.0);  
             precPKStar_.set
             (
                 precI,
@@ -709,10 +708,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
                         IOobject::AUTO_WRITE
                     ),
                     //chenge the precursors units to power for PK calculations
-                    defaultPrec_
+                    defaultPrec_ * dimensionedScalar("", dimPower, 1.0)
                 )
-            );
-            precPKStar_[precI] *= dimensionedScalar("", dimPower, 1.0);             
+            );           
         }
         else
         {
