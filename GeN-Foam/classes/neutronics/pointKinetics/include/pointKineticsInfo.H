@@ -9,6 +9,11 @@ Info<< "    -> TCool          = " << (TCoolReactivity*1e5) << " pcm" << endl;
 Info<< "    -> rhoCool        = " << (rhoCoolReactivity*1e5) << " pcm" << endl;
 Info<< "    -> TStruct        = " << (TStructReactivity*1e5) << " pcm" << endl;
 Info<< "    -> driveline      = " << (drivelineReactivity*1e5) << " pcm"<<endl;
+if(liquidFuel_)
+{
+    Info<< "    Initial reactivity loss due to delayed neutron precursors movement = "
+    << (precEquilibriumReactivity_ *1e+5) << " pcm"<<endl;
+}
 if (this->get<bool>("GEM"))
 	Info<< "    -> GEM            = " << (GEMReactivity*1e5) << " pcm" << endl;
 Info<< "    TFuel = " << TFuelValue << " K" << endl;

@@ -227,7 +227,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         IOobject
         (
-        "   Dalbedo",
+        "Dalbedo",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -1091,8 +1091,8 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
 
     #include "correctReactivity.H"
 
-    Info << endl << "pointKinetics (initial conditions): " << endl;
-    #include "pointKineticsInfo.H"
+    //Info << endl << "pointKinetics (initial conditions): " << endl;
+    //#include "pointKineticsInfo.H"
 }
 
 void Foam::pointKineticNeutronics::interpolateCouplingFields
