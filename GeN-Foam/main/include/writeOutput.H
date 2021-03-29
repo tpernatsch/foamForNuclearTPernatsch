@@ -28,6 +28,15 @@ if (writeOutput)
         out << pinIO->get<scalar>("Tcmin") << ";";
         //- Missing coolant temperature for now
     }
+    else if (multiphysics.liquidFuel())//add coolant Temp!!
+    {
+        out << "0;";
+        out << "0;";
+        out << "0;";
+        out << "0;";
+        out << "0;";
+        out << "0;";
+    }
     else
     {
         out << "0;";

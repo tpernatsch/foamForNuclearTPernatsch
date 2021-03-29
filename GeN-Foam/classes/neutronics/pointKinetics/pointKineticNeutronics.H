@@ -31,9 +31,10 @@ Description
 SourceFiles
     pointKineticNeutronics.C
 
-Authors
+Author of this file (and associated .C or included .H files)
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
+
 
 \*---------------------------------------------------------------------------*/
 
@@ -167,8 +168,22 @@ protected:
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
-    //-
+    //- Fields necessary when an albedo boundary condition has been used
+    //  to calculate the initial fluxes
+    volScalarField Dalbedo_;
+    volScalarField fluxStarAlbedo_;
+
+    //- 
     volScalarField oneGroupFlux_;
+
+    //- Initial flux
+    volScalarField initOneGroupFlux_;
+
+    //- Normalized initial flux
+    volScalarField initOneGroupFluxN_;
+
+    //- Integral of the square of the normalized flux
+    scalar domainIntegratedInitOneGroupFluxN_;
 
     //- Number of energy groups (for scaling fluxes of a possibly existing
     //  previous simulation)

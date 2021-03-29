@@ -223,6 +223,34 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    Dalbedo_
+    (
+        IOobject
+        (
+        "Dalbedo",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimLength, 1.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    fluxStarAlbedo_
+        (
+        IOobject
+        (
+            "fluxStarAlbedo",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimArea/dimTime, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),     
     oneGroupFlux_
     (
         IOobject
@@ -237,6 +265,31 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimless/dimArea/dimTime, 1),
         zeroGradientFvPatchScalarField::typeName
     ),
+    initOneGroupFlux_
+    (
+        IOobject
+        (
+            "initOneGroupFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        oneGroupFlux_
+    ),
+    initOneGroupFluxN_
+    (
+        IOobject
+        (
+            "initOneGroupFluxN",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_)
+    ),        
+    domainIntegratedInitOneGroupFluxN_(fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value()),
     energyGroups_(0),
     fluxes_(0),
     precursors_(0),
@@ -638,10 +691,10 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
                         IOobject::AUTO_WRITE
                     ),
                     //chenge the precursors units to power for PK calculations
-                    defaultPrec_
+                    defaultPrec_ //* dimensionedScalar("", dimPower, 1.0)
                 )
             );
-            precPK_[precI] *= dimensionedScalar("", dimPower, 1.0);  
+            precPK_[precI].dimensions().reset(defaultPrec_.dimensions()*dimPower);
             precPKStar_.set
             (
                 precI,
@@ -656,10 +709,10 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
                         IOobject::AUTO_WRITE
                     ),
                     //chenge the precursors units to power for PK calculations
-                    defaultPrec_
+                    defaultPrec_ //* dimensionedScalar("", dimPower, 1.0)
                 )
-            );
-            precPKStar_[precI] *= dimensionedScalar("", dimPower, 1.0);             
+            );         
+            precPKStar_[precI].dimensions().reset(defaultPrec_.dimensions()*dimPower);  
         }
         else
         {
@@ -1038,8 +1091,8 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
 
     #include "correctReactivity.H"
 
-    Info << endl << "pointKinetics (initial conditions): " << endl;
-    #include "pointKineticsInfo.H"
+    //Info << endl << "pointKinetics (initial conditions): " << endl;
+    //#include "pointKineticsInfo.H"
 }
 
 void Foam::pointKineticNeutronics::interpolateCouplingFields

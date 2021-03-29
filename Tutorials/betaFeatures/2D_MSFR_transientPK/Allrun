@@ -1,5 +1,0 @@
-#!/bin/sh
-exe="GeN-Foam"
-$exe | tee log.GeN-Foam
-
-

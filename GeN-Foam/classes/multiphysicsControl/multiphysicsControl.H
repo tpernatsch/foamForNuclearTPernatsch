@@ -24,8 +24,8 @@ License
 Description
     Class to handle fvSolution dictionaries for the three regions.
 
-Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+Author of this file (and associated .C or included .H files)
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com), EPFL (Swizerland)
 
 Class
     Foam::multiphysicsControl

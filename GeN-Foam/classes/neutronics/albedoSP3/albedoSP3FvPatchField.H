@@ -38,8 +38,8 @@ Use:
     forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 calculations)
     value           uniform 1;
 
-Author
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>    
+Author of this file (and associated .C or included .H files)
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)    
 
 \*---------------------------------------------------------------------------*/
 

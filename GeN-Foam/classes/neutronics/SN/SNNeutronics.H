@@ -41,8 +41,9 @@ Reference publications
     Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
 
 
-Author
-    Derived by Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+Author of this file (and associated .C or included .H files)
+    Derived by Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;> 
+    (EPFL, Switzerland)
     from the work of Manuele Aufiero, "D EVELOPMENT OF ADVANCED SIMULATION TOOLS FOR
     CIRCULATING - FUEL NUCLEAR REACTORS", PhD Dissertation, Politecnico Di Milano
 

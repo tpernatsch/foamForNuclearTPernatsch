@@ -1,5 +1,0 @@
-#!/bin/sh
-rm -fr 110 log GeN-Foam.dat log.GeN-Foam
-
-
-
