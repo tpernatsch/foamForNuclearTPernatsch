@@ -84,6 +84,9 @@ protected:
     //- Used to set an initial steady state for liquid fuel
     scalar precEquilibriumReactivity_;
 
+    //- Estimated value of Beta for liquid fuel
+    scalar liquidFuelBeta_;
+
     //-
     scalar totalReactivity_;
 

@@ -82,6 +82,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         )
     ),
     precEquilibriumReactivity_(0.0),
+    liquidFuelBeta_(0.0),
     totalReactivity_
     (
         externalReactivity_

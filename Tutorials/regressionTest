@@ -121,7 +121,7 @@ do
             printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
         fi
 
-        # check that power at the end of transient is ~6.141e+08
+        # check that power at the end of transient is ~6.14e+08
         power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
         printf "power is $power . It should be ~6.13794e+08 \n" >> ../$resFile
         cd ..
