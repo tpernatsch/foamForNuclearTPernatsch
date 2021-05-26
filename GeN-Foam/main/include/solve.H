@@ -71,12 +71,12 @@ else if (solveE or solveN or solveTM)
                 couplingResidual,
                 couplingIter
             );
-            (*volFuelPower) *= 0.0;
+            (*powerDensity) *= 0.0;
             fluidToNeutro.mapTgtToSrc
             (
-                neutronics.volFuelPower(), 
+                neutronics.powerDensity(), 
                 plusEqOp<scalar>(), 
-                volFuelPower->primitiveFieldRef()
+                powerDensity->primitiveFieldRef()
             );
         }
         couplingIter++;

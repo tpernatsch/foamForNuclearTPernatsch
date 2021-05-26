@@ -154,18 +154,18 @@ volScalarField* const TCladAv
     )
 );
 
-//- Set the actual volFuelPower field reference, that gets modfied by
-//  the neutronics for coupling purposes. If doing liquidFuel, the volFuelPower
+//- Set the actual powerDensity field reference, that gets modfied by
+//  the neutronics for coupling purposes. If doing liquidFuel, the powerDensity
 //  field is the liquid powerDensity. Otherwise, if a nuclearFuelPin-related
 //  powerDensity field exists (which is true if at least one nuclearFuelPin
 //  powerModel figures in phaseProperties), use that one. Otherwise again, if
-//  no powerDensity field exists, create a null one. The volFuelPower field is 
+//  no powerDensity field exists, create a null one. The powerDensity field is 
 //  a ptr and not a reference as references cannot be initialized with rvalues,
 //  such as is the new volScalarField (i.e., I would nned to create it outside  
 //  the ptr initialization, and that again would happen always and just waste 
 //  memory if the other powerDensity fields exist). I do realize these are 
 //  laughably small of memory to bitch about, but hey, whatever helps
-volScalarField* const volFuelPower
+volScalarField* const powerDensity
 (
     (multiphysics.liquidFuel()) ? &(liquid->powerDensity()) :
     (
@@ -201,7 +201,7 @@ volScalarField* const volFuelPower
 (void) TStruct;
 (void) TFuelAv;
 (void) TCladAv;
-(void) volFuelPower;
+(void) powerDensity;
 
 //- Then, create the actual fields for the coupling. These are created over the
 //  fluidMeshNB mesh, which is a baffle-less mesh that is created if the 
@@ -333,16 +333,16 @@ volVectorField bafflelessU
 
 //- This field is sort of an exception required when using pointKinetics.
 //  PointKinetics by itself simply rescales all neutronic fields according to
-//  the predicted power change. However, if no volFuelPower exists on the
-//  neutroMesh, then look for volFuelPower on the fluidMesh. If it exists, copy
-//  it to a bafflelessVolFuelPower that will be interpolated to the
-//  volFuelPower_ on the neutroMesh of pointKinetics in the 
+//  the predicted power change. However, if no powerDensity exists on the
+//  neutroMesh, then look for powerDensity on the fluidMesh. If it exists, copy
+//  it to a bafflelessPowerDensity that will be interpolated to the
+//  powerDensity_ on the neutroMesh of pointKinetics in the 
 //  getCouplingFieldRefs function. Since pointKinetics is also just about
-//  rescaling an initial field, this bafflelessVolFuelPower will not need to be
+//  rescaling an initial field, this bafflelessPowerDensity will not need to be
 //  set every time, only the first. Nedless to say, pointKinetics can function
-//  perfectly well with a 0 volFuelPower, it simply won't be re-scaling 
+//  perfectly well with a 0 powerDensity, it simply won't be re-scaling 
 //  anything (but integral power values will be predicted just fine)
-volScalarField* bafflelessVolFuelPower = nullptr;
+volScalarField* bafflelessPowerDensity = nullptr;
 
 //- This is only required when point kinetics model Gas Expansion Modules (i.e.
 //  a safety feature specific to one SFR, the FFTF. I hate this level of hard-
@@ -361,12 +361,12 @@ const surfaceScalarField& phiFMReg
 
 if (neutronics.type() == "pointKinetics")
 {
-    bafflelessVolFuelPower = 
+    bafflelessPowerDensity = 
         new volScalarField
         (
             IOobject
             (
-                "bafflelessVolFuelPower",
+                "bafflelessPowerDensity",
                 runTime.timeName(),
                 fluidMeshNB
             ),
@@ -374,9 +374,9 @@ if (neutronics.type() == "pointKinetics")
             dimensionedScalar("", dimPower/dimDensity, 0.0),
             zeroGradientFvPatchScalarField::typeName
         );
-    bafflelessVolFuelPower->primitiveFieldRef() = 
-        volFuelPower->primitiveField();
-    bafflelessVolFuelPower->correctBoundaryConditions();
+    bafflelessPowerDensity->primitiveFieldRef() = 
+        powerDensity->primitiveField();
+    bafflelessPowerDensity->correctBoundaryConditions();
     
     //- Phi only required by GEM modelling
     if (neutronics.get<bool>("GEM"))

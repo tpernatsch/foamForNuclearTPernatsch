@@ -633,6 +633,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         }
         oneGroupFlux_.correctBoundaryConditions();
     }
+    //- Update the initOneGroupFlux related quantities after possible
+    //  changes in the oneGroupFlux
+    setInitOneGroupFlux();
 
     //- Read real precursors if present, they only get re-scaled by 
     //  pointKinetic results
@@ -811,6 +814,15 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
+void Foam::pointKineticNeutronics::setInitOneGroupFlux()
+{
+    initOneGroupFlux_ = oneGroupFlux_;
+    initOneGroupFluxN_ = 
+        initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_);
+    domainIntegratedInitOneGroupFluxN_ = 
+        fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value();
+}
+
 void Foam::pointKineticNeutronics::setFeedbackCellField
 (
     volScalarField& feedbackCellField, 
@@ -987,29 +999,41 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     TStructOrig_ = 
         src.findObject<volScalarField>("bafflelessTStruct");
     
-    //- Project thermalHydraulic volFuelPower onto the neutronic one to
+    //- Project thermalHydraulic powerDensity onto the neutronic one to
     //  initialize it if the latter does not exist
-    IOobject volFuelPowerHeader
+    IOobject powerDensityHeader
     (
-        "volFuelPower",
+        "powerDensity",
         mesh_.time().timeName(),
         mesh_.time(),
         IOobject::NO_READ
     );
 
-    if (!volFuelPowerHeader.typeHeaderOk<volScalarField>(true))
+    if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
     {
-        volFuelPowerOrig_ = 
-            src.findObject<volScalarField>("bafflelessVolFuelPower");
+        powerDensityOrig_ = 
+            src.findObject<volScalarField>("bafflelessPowerDensity");
         neutroToFluid.mapTgtToSrc
             (
-                *volFuelPowerOrig_, 
+                *powerDensityOrig_, 
                 plusEqOp<scalar>(), 
-                volFuelPower_
+                powerDensity_
             );
-        volFuelPower_.correctBoundaryConditions(); 
+        powerDensity_.correctBoundaryConditions(); 
     }
 
+    //- If the oneGroupFlux file does not exists on disk, set its spatial 
+    //  extent from the powerDensity and reset all the other 
+    //  oneGroupFlux related things
+    if (!oneGroupFlux_.typeHeaderOk<volScalarField>(true))
+    {
+        forAll(oneGroupFlux_, i)
+        {
+            oneGroupFlux_[i] = (powerDensity_[i] != 0) ? 1.0 : 0.0;
+        }
+        oneGroupFlux_.correctBoundaryConditions();
+        setInitOneGroupFlux();
+    }
     
     if (liquidFuel_)
     {

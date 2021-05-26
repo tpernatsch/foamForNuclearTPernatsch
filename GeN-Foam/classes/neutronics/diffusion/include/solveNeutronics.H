@@ -88,10 +88,10 @@ while
     && !eigenvalueNeutronics_
     );
 
-volFuelPower_*=0.0;
+powerDensity_*=0.0;
 forAll(flux_,energyI)
 {
-    volFuelPower_ += flux_[energyI] * sigmaPow[energyI];
+    powerDensity_ += flux_[energyI] * sigmaPow[energyI];
 }
 
 pTot = power();
@@ -103,7 +103,7 @@ Info<< "Final neutroResidual at coupling/neutroIter iter no "
     << " - pow:" << pTot << endl; 
 
 //- Determine power density in the fuel
-volFuelPower_ /= max(fuelFraction, SMALL);
+powerDensity_ /= max(fuelFraction, SMALL);
 
 if (eigenvalueNeutronics_)
 {

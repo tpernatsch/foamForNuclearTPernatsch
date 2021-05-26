@@ -72,10 +72,10 @@ for (int i = 0; i < energyGroups_; i++)
 oneGroupFlux_ *= fluxScaleFactor;
 oneGroupFlux_.correctBoundaryConditions();
 
-//- Re-scale volFuelPower by change in total power
-scalar volFuelPowerScaleFactor = power_/powerOld_;
-volFuelPower_ *= volFuelPowerScaleFactor;
-volFuelPower_.correctBoundaryConditions();
+//- Re-scale powerDensity by change in total power
+scalar powerDensityScaleFactor = power_/powerOld_;
+powerDensity_ *= powerDensityScaleFactor;
+powerDensity_.correctBoundaryConditions();
 
 //- Only possible to re-scale precursors if they were initially present,
 //  so I'm using a forAllIter rather than a for, as delayedGroups_ is not

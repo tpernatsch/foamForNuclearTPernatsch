@@ -177,7 +177,7 @@ while((neutroResidual > neutronIterationResidual)
       &&  (neutroIter < maxNeutronIterations)
     );
 
-//- Re-scale fluxes, volFuelPower
+//- Re-scale fluxes, powerDensity
 scalar fluxScaleFactor = power_/powerOld_;
 
 
@@ -190,8 +190,8 @@ for (int i = 0; i < energyGroups_; i++)
 oneGroupFlux_ *= fluxScaleFactor;
 oneGroupFlux_.correctBoundaryConditions();
 
-volFuelPower_ *= fluxScaleFactor;
-volFuelPower_.correctBoundaryConditions();
+powerDensity_ *= fluxScaleFactor;
+powerDensity_.correctBoundaryConditions();
 
 Info << endl << "pointKinetics: " << endl;
 #include "pointKineticsInfo.H"

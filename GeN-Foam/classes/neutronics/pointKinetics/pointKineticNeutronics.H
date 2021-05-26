@@ -144,7 +144,7 @@ protected:
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructOrig_;
-    const volScalarField* volFuelPowerOrig_;
+    const volScalarField* powerDensityOrig_;
 
     //- These have no use for now, will be needed by the liquidFuel version
     const volVectorField* UOrig_;
@@ -290,6 +290,10 @@ public:
         virtual ~pointKineticNeutronics(){}
 
     //- Member Functions
+
+        //- Update all the oneGroupFlux related quantities following changes in
+        //  the oneGroupFlux after proper initialization
+        void setInitOneGroupFlux();
 
         //- Used to set the *FeedbackCellField fields
         void setFeedbackCellField

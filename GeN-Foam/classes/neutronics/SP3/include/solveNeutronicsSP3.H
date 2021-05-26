@@ -74,17 +74,17 @@ do
 
 }while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
 
-volFuelPower_*=0.0;
+powerDensity_*=0.0;
 forAll(flux_,energyI)
 {
-    volFuelPower_ += flux_[energyI] * sigmaPow[energyI];
+    powerDensity_ += flux_[energyI] * sigmaPow[energyI];
 }
 
 pTot = power();
 
 Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl; 
 
-volFuelPower_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
+powerDensity_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
 
 
 if (eigenvalueNeutronics_)

@@ -90,7 +90,7 @@ protected:
     scalar pTarget_;
 
     //- Fuel power density
-    volScalarField volFuelPower_;
+    volScalarField powerDensity_;
 
     //- Mesh displacement
     volVectorField disp_;
@@ -211,9 +211,9 @@ public:
                 return keff_;
             }
 
-            const volScalarField& volFuelPower() const
+            const volScalarField& powerDensity() const
             {
-                return volFuelPower_;
+                return powerDensity_;
             }       
 
             const volVectorField& disp() const
