@@ -255,6 +255,7 @@
     }
     
     //- Add linearized interfacial heat transfer contributions
+    
     E1Eqn -= 
         (
             H1i*iA12_*(he1/Cp1() + iT12_ - T1)
@@ -265,7 +266,31 @@
             H2i*iA12_*(he2/Cp2() + iT12_ - T2)
         -   fvm::Sp(H2i*iA12_/Cp2(), he2)
         );
-
+    
+    /*
+    volScalarField noDmdt
+    (
+        pos0(dmdt_)*neg0(dmdt_)
+    );
+    E1Eqn -= 
+        pos1pos2*
+        (
+            noDmdt*(
+                H1i*iA12_*(he1/Cp1() + iT12_ - T1)
+            -   fvm::Sp(H1i*iA12_/Cp1(), he1)
+            )
+        +   fvm::Sp(posPart(dmdt_)*phaseChange_->L()/he1, he1)
+        );
+    E2Eqn -= 
+        pos1pos2*
+        (
+            noDmdt*(
+                H2i*iA12_*(he2/Cp2() + iT12_ - T2)
+            -   fvm::Sp(H2i*iA12_/Cp2(), he2)
+            )
+        +   pos(T2-iT12_)*fvm::Sp(negPart(dmdt_)*phaseChange_->L()/he2, he2)
+        );
+    */
     //- Structure heat sources
     //- Correct surface temperature of the power-generating subStructures 
     //  of the structures and add source/sink terms to the fluids energy 

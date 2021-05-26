@@ -60,7 +60,7 @@ public:
 
     enum stateOfMatter
     {
-        undetermined,
+        notSpecified,
         liquid,
         gas
     };
@@ -242,6 +242,10 @@ public:
         bool isGas() const
         {
             return stateOfMatter_ == stateOfMatter::gas;
+        }
+        bool stateOfMatterNotSpecified() const
+        {
+            return stateOfMatter_ == stateOfMatter::notSpecified;
         }
 
         //- Access (const and non-const)

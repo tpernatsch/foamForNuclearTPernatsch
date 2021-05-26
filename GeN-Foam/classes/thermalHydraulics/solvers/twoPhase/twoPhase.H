@@ -64,11 +64,20 @@ class twoPhase
 {
 public :
 
+	enum class alphaEqnsSolver
+    {
+        MULES,
+        implicitUpwind
+    };
+
+    static const Enum<alphaEqnsSolver> alphaEqnsSolverNames_;
+
     enum class partialEliminationMode
     {
         none, 
         legacy,
-        implicit
+        implicit,
+        implicitWithDmdt
     };
 
     static const Enum<partialEliminationMode> partialEliminationModeNames_;
@@ -187,6 +196,9 @@ private:
         bool withinMarginToPhaseChange_;
 
     //- Solution control
+
+        //-
+        const alphaEqnsSolver alphaEqnsSolver_;
 
         //- partialElimination mode
         const partialEliminationMode partialEliminationMode_;

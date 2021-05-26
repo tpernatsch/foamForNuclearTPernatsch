@@ -39,7 +39,7 @@ if (nFluids == 1)
     //  volScalarField? Well, that would force the fluid class to always create
     //  a power density field (also for the vapour), and that is a useless
     //  waste of RAM and disk memory (the field needs to be written)
-    if (multiphysics.liquidFuel())
+    if (multiphysics.liquidFuel() and !liquid->powerDensityPtr().valid())
     {
         liquid->powerDensityPtr().reset
         (

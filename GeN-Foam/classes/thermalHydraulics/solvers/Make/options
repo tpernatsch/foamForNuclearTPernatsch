@@ -10,7 +10,9 @@ EXE_INC = \
     -I./twoPhase \
     -I./twoPhase/include \
     -I./twoPhase/include/equations \
-    -I./twoPhase/include/equations/myMULES \
+    -I./twoPhase/include/equations/pEqnRoutines \
+    -I./twoPhase/include/equations/alphaEqnsRoutines \
+    -I./twoPhase/include/equations/alphaEqnsRoutines/myMULES \
     -I./twoPhase/KNSProbe \
     -I./../models/lnInclude \
     -I./../src/lnInclude \

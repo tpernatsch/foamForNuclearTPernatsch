@@ -31,7 +31,7 @@ surfaceScalarField alphaRhof20byDt
 
 surfaceScalarField Kdf12(fvc::interpolate(Kd12));
 
-if(!implicitPartialElimination)
+if(!(implicitPartialElimination or implicitPartialEliminationWithDmdt))
 {
     //- Construct 1/A fields
     surfaceScalarField rAUf1
@@ -172,23 +172,64 @@ else //- i.e. if doing implicitPartialElimination
     surfaceScalarField Af1(fvc::interpolate(UEqn1.A()) + alphaRhof1byDt);
     surfaceScalarField Af2(fvc::interpolate(UEqn2.A()) + alphaRhof2byDt);
 
-    //- Drag factor by diagonal coeffs required throughout the algorithm by
-    //  Partial Elimination
-    surfaceScalarField KdbyAf1(Kdf12/Af1);
-    surfaceScalarField KdbyAf2(Kdf12/Af2);
-
     //- Construct 1/A fields with additional terms coming from Partial 
     //  Elimination
-    surfaceScalarField rAUf1
-    (
-        "rAUf."+fluid1_.name(),
-        1.0/(Af1 + Kdf12*(1.0+Af1/Af2))
-    );
-    surfaceScalarField rAUf2
-    (
-        "rAUf."+fluid2_.name(),
-        1.0/(Af2 + Kdf12*(1.0+Af2/Af1))
-    );
+    autoPtr<surfaceScalarField> KdbyAf1Ptr;
+    autoPtr<surfaceScalarField> KdbyAf2Ptr;
+    autoPtr<surfaceScalarField> rAUf1Ptr;
+    autoPtr<surfaceScalarField> rAUf2Ptr;
+    autoPtr<surfaceScalarField> phiSu1Ptr;
+    autoPtr<surfaceScalarField> phiSu2Ptr;
+    if (implicitPartialEliminationWithDmdt)
+    {
+        surfaceScalarField dmdtf(fvc::interpolate(dmdt_));
+        surfaceScalarField Kf1(Kdf12+posPart(dmdtf));
+        surfaceScalarField Kf2(Kdf12-negPart(dmdtf));
+        surfaceScalarField AfmKf1(Af1-Kf1);
+        surfaceScalarField AfmKf2(Af2-Kf2);
+        KdbyAf1Ptr.reset(new surfaceScalarField(Kf1/AfmKf1));
+        KdbyAf2Ptr.reset(new surfaceScalarField(Kf2/AfmKf2));
+        
+        surfaceScalarField Kf2AfmKf1by2(KdbyAf2Ptr()*AfmKf1);
+        surfaceScalarField Kf1AfmKf2by1(KdbyAf1Ptr()*AfmKf2);
+        phiSu1Ptr.reset
+        (
+            new surfaceScalarField(negPart(Kf2AfmKf1by2)*fluid1_.phi())
+        );
+        phiSu2Ptr.reset
+        (
+            new surfaceScalarField(negPart(Kf1AfmKf2by1)*fluid2_.phi())
+        );
+        
+        //- These are the actual 1/A fields
+        rAUf1Ptr.reset
+        (
+            new surfaceScalarField(1.0/(Af1 + posPart(Kf2AfmKf1by2)))
+        );
+        rAUf2Ptr.reset
+        (
+            new surfaceScalarField(1.0/(Af2 + posPart(Kf1AfmKf2by1)))
+        );
+    }
+    else
+    {
+        KdbyAf1Ptr.reset(new surfaceScalarField(Kdf12/Af1));
+        KdbyAf2Ptr.reset(new surfaceScalarField(Kdf12/Af2));
+        
+        //- These are the actual 1/A fields
+        rAUf1Ptr.reset
+        (
+            new surfaceScalarField(1.0/(Af1 + Kdf12*(1.0+Af1/Af2)))
+        );
+        rAUf2Ptr.reset
+        (
+            new surfaceScalarField(1.0/(Af2 + Kdf12*(1.0+Af2/Af1)))
+        );
+    }
+    surfaceScalarField& KdbyAf1(KdbyAf1Ptr());
+    surfaceScalarField& KdbyAf2(KdbyAf2Ptr());
+    surfaceScalarField& rAUf1(rAUf1Ptr());
+    surfaceScalarField& rAUf2(rAUf2Ptr());
 
     surfaceScalarField alpharAUf1(alphaf1*rAUf1);
     surfaceScalarField alpharAUf2(alphaf2*rAUf2);
@@ -244,6 +285,14 @@ else //- i.e. if doing implicitPartialElimination
             +   KdbyAf1*phiH1
             )
         );
+        if (phiSu1Ptr.valid())
+        {
+            phiHbyA1 -= rAUf1*phiSu1Ptr();
+        }
+        if (phiSu2Ptr.valid())
+        {
+            phiHbyA2 -= rAUf2*phiSu2Ptr();
+        }
 
         //- Construct mixture flux
         surfaceScalarField phiHbyA

@@ -48,8 +48,8 @@ Foam::fluid::stateOfMatterNames_
 (
     {
         { 
-            stateOfMatter::undetermined, 
-            "undetermined" 
+            stateOfMatter::notSpecified, 
+            "notSpecified" 
         },
         { 
             stateOfMatter::liquid, 
@@ -88,7 +88,7 @@ Foam::fluid::fluid
             dict_.lookupOrDefault<word>
             (
                 "stateOfMatter", 
-                "undetermined"
+                "notSpecified"
             )
         )
     ),
@@ -216,7 +216,7 @@ Foam::fluid::fluid
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::AUTO_WRITE
         ),
         mesh,
         dimensionedScalar("", dimless, 0)
@@ -301,12 +301,67 @@ Foam::fluid::fluid
 
     mesh.setFluxRequired(this->name());
 
+    //- Set initial cellZone powerDensity, if present, to make Carlo happy (I
+    //  kinda despise this, as well as the alpha setter below... oh well!)
+    if (dict_.found("initialPowerDensity"))
+    {
+        powerDensityPtr_.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    IOobject::groupName("powerDensity", this->name()),
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::READ_IF_PRESENT,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimensionedScalar("", dimPower/dimVol, 0.0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+        volScalarField& powerDensity(powerDensityPtr_());
+        const dictionary& powerDensity0s
+        (
+            dict_.subDict("initialPowerDensity")
+        );
+
+        forAllConstIter
+        (
+            dictionary,
+            powerDensity0s,
+            powerDensity0Iter
+        )
+        {
+            DynamicList<label> cells(0);
+            word zoneName(powerDensity0Iter->keyword());
+            scalar powerDensity0(powerDensity0s.get<scalar>(zoneName));
+            forAllConstIter
+            (
+                DynamicList<label>,
+                mesh.cellZones()[zoneName],
+                cIter
+            )
+            {
+                cells.append(*cIter);
+            }
+            forAll(cells, i)
+            {
+                powerDensity[cells[i]] = powerDensity0;
+            }
+        }
+
+        powerDensity.correctBoundaryConditions();
+    }
+
     //- Set initial cellZone phase fractions, if present
-    if (dict_.found("initialAlphas"))
+    if (dict_.found("initialAlpha"))
     {
         const dictionary& alpha0s
         (
-            dict_.subDict("initialAlphas")
+            dict_.subDict("initialAlpha")
         );
 
         forAllConstIter
@@ -316,12 +371,12 @@ Foam::fluid::fluid
             alpha0Iter
         )
         {
-            labelList cells;
+            DynamicList<label> cells(0);
             word zoneName(alpha0Iter->keyword());
             scalar alpha0(alpha0s.get<scalar>(zoneName));
             forAllConstIter
             (
-                labelList,
+                DynamicList<label>,
                 mesh.cellZones()[zoneName],
                 cIter
             )
