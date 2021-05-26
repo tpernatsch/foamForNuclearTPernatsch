@@ -20,11 +20,6 @@ scalar neutronIterationResidual =
 int maxNeutronIterations =
     neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
-//- For Aitken
-List<scalar> integralFlux0(xs_.energyGroups());
-List<scalar> integralFlux1(xs_.energyGroups());
-List<scalar> integralFlux2(xs_.energyGroups());
-
 scalar pTot(1.0); 
 
 forAll(flux_,energyI)
@@ -83,8 +78,8 @@ do
     neutroIter++;
 
     Info<< "neutroResidual (couplingIter: " << couplingIter 
-        << ", neutroIter: " << neutroIter << "): " << neutroResidual 
-        << " after Aitken no: " << aitkenIterNo << endl;     
+        << ", neutroIter: " << neutroIter << "): " << neutroResidual << endl;
+        //<< " after Aitken no: " << aitkenIterNo << endl;     
 }
 while
     ( 

@@ -75,9 +75,21 @@ do
         ;;
     esac
 
+    # Start gnuplot if it exist
+    if ! command -v gnuplot &> /dev/null
+    then
+        echo "gnuplot could not be found"
+    else
+        gnuplot -e "log='$caseName/log.$exe'" residuals - &> /dev/null &
+    fi
+
     printf "Running $exe on $caseName\n"
-    
     $exe -case $caseName | tee "$caseName/log.GeN-Foam"
 
+    # Kill gnuplot if it was started
+    if command -v gnuplot &> /dev/null
+    then
+        pkill -x gnuplot
+    fi
 
 done
