@@ -591,6 +591,47 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     }
     if (fluxes_.size() == 0)
     {
+        //- One group flux is init from this dict ONLY IF no existing flux
+        //  files are already present (otherwise it is just reconstructed 
+        //  from the sum of those)
+        if (nuclearData_.found("initialOneGroupFluxByZone"))
+        {
+            const dictionary& initialOneGroupFluxes
+            (
+                nuclearData_.subDict("initialOneGroupFluxByZone")
+            );
+            oneGroupFlux_ *= 0.0;
+            forAllConstIter
+            (
+                dictionary,
+                initialOneGroupFluxes,
+                iter
+            )
+            {
+                DynamicList<label> cells(0);
+                word zoneName(iter->keyword());
+                scalar initialOneGroupFlux
+                (
+                    initialOneGroupFluxes.get<scalar>(zoneName)
+                );
+                forAllConstIter
+                (
+                    DynamicList<label>,
+                    mesh.cellZones()[zoneName],
+                    cIter
+                )
+                {
+                    cells.append(*cIter);
+                }
+                forAll(cells, i)
+                {
+                    oneGroupFlux_[cells[i]] = initialOneGroupFlux;
+                }
+            }
+            oneGroupFlux_.correctBoundaryConditions();
+            setInitOneGroupFlux();
+        }
+
         energyGroups_ = 
             nuclearData_.lookupOrDefault<scalar>("energyGroups", 1);
 
@@ -1020,19 +1061,6 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
                 powerDensity_
             );
         powerDensity_.correctBoundaryConditions(); 
-    }
-
-    //- If the oneGroupFlux file does not exists on disk, set its spatial 
-    //  extent from the powerDensity and reset all the other 
-    //  oneGroupFlux related things
-    if (!oneGroupFlux_.typeHeaderOk<volScalarField>(true))
-    {
-        forAll(oneGroupFlux_, i)
-        {
-            oneGroupFlux_[i] = (powerDensity_[i] != 0) ? 1.0 : 0.0;
-        }
-        oneGroupFlux_.correctBoundaryConditions();
-        setInitOneGroupFlux();
     }
     
     if (liquidFuel_)
