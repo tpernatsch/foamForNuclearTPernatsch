@@ -26,9 +26,8 @@ if (writeOutput)
         out << pinIO->get<scalar>("Tcmax") << ";";
         out << pinIO->get<scalar>("Tcavav") << ";";
         out << pinIO->get<scalar>("Tcmin") << ";";
-        //- Missing coolant temperature for now
     }
-    else if (multiphysics.liquidFuel())//add coolant Temp!!
+    else if (multiphysics.liquidFuel())
     {
         out << "0;";
         out << "0;";
@@ -46,6 +45,11 @@ if (writeOutput)
         out << "0;";
         out << "0;";
     }
+
+    //- Coolant
+    out << max(liquid->T()).value() << ";";
+    out << liquid->T().weightedAverage(fluidMesh.V()).value() << ";";
+    out << min(liquid->T()).value() << ";";
 
     out << endl;
 }

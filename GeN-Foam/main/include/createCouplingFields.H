@@ -73,33 +73,22 @@ else
     fluid* const fluid0(fluids[fluids.toc()[0]]);
     fluid* const fluid1(fluids[fluids.toc()[1]]);
 
-    //- Use average enthalpies of formation for comparison. Doesn't really
-    //  matter unless one has a space-dependent enthalpy of formation, which
-    //  I have not seen so far in OpenFOAM
-    scalar hc0(gAverage(fluid0->thermo().hc()()));
-    scalar hc1(gAverage(fluid1->thermo().hc()()));
-
-    if (hc1 > hc0)
+    if (fluid0->isLiquid() and fluid1->isGas())
     {
         liquid = fluid0;
         vapour = fluid1;
     }
-    else if (hc0 > hc1)
+    else if (fluid1->isLiquid() and fluid0->isGas())
     {
-        vapour = fluid0;
         liquid = fluid1;
+        vapour = fluid0;
     }
-    else
+    else    //- Default case for liquid-liquid or gas-gas systems (no clue if 
+            //  GeN-Foam will ever be used for those. Pardon the hard-coded 
+            //  names)
     {
-        FatalErrorInFunction
-            << "When running in twoPhase mode, vapour and liquid are "
-            << "distinguished by their enthalpy of formation, i.e. the Hf "
-            << "keyword specified in the thermophysicalProperties of each "
-            << "fluid. " << endl
-            << "The fluid with the higher Hf will be the vapour, and the "
-            << "latent heat of evaporation will be difference between the two."
-            << "Currently, both fluids appear to have the same Hf. "
-            << exit(FatalError);
+        liquid = fluid0;
+        vapour = fluid1;
     }
 }
 
