@@ -10,7 +10,7 @@
     volTensorField alphaEff
     (
         structure_.tortuosity()
-       *fluid_.thermo().alphaEff(fluid_.turbulence().mut())()
+       *fluid_.thermo().alphaEff(fluid_.turbulence().alphat())()
     );
 
     //- Energy equations

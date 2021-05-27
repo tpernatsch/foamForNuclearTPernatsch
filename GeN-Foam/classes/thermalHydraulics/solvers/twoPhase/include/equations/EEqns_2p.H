@@ -101,12 +101,12 @@
     volTensorField alphaEff1
     (
         structure_.tortuosity()
-       *fluid1_.thermo().alphaEff(fluid1_.turbulence().mut())()
+       *fluid1_.thermo().alphaEff(fluid1_.turbulence().alphat())()
     );
     volTensorField alphaEff2
     (
         structure_.tortuosity()
-       *fluid2_.thermo().alphaEff(fluid2_.turbulence().mut())()
+       *fluid2_.thermo().alphaEff(fluid2_.turbulence().alphat())()
     );
 
     autoPtr<volScalarField> dpdtPtr;
