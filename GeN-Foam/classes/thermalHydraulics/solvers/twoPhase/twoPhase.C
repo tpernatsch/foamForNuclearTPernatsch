@@ -699,7 +699,9 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
         (
             iA12_,
             fluid1_,
-            fluid2_
+            fluid2_,
+            F1SPair_,
+            F2SPair_
         );
     }
 

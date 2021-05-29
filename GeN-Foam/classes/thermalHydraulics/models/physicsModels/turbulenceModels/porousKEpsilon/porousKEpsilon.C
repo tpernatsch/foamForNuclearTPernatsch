@@ -67,13 +67,13 @@ void porousKEpsilon<BasicTurbulenceModel>::correctNut()
         >
 
         And correctNut is declared frist in EddyDiffusivity, and defaults to:
-        
         // Read Prt if provided
         Prt_ = dimensionedScalar("Prt", dimless, 1.0, this->coeffDict());
         alphat_ = this->rho_*this->nut()/Prt_;
         alphat_.correctBoundaryConditions();
 
-        Thus, that is what the function below does
+        Thus, that is what the function below does (i.e., it does not change 
+        nut at all, only the alphat)
     */
     
     BasicTurbulenceModel::correctNut();

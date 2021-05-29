@@ -73,6 +73,7 @@ EXE_INC = \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/annularTopology \
     -I./physicsModels/fluidGeometryModels/fluidPartitionModels \
     -I./physicsModels/fluidGeometryModels/fluidPartitionModels/constant \
+    -I./physicsModels/fluidGeometryModels/fluidPartitionModels/linear \
     -I./physicsModels/fluidGeometryModels/fluidPartitionModels/AzadShirani \
     -I./physicsModels/phaseChangeModels/latentHeatModels \
     -I./physicsModels/phaseChangeModels/latentHeatModels/FinkLeibowitz \

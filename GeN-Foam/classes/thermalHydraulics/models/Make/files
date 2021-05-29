@@ -90,6 +90,7 @@ physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/annularTopology/ann
 physicsModels/fluidGeometryModels/fluidPartitionModels/fluidPartitionModel.C
 physicsModels/fluidGeometryModels/fluidPartitionModels/newFluidPartitionModel.C
 physicsModels/fluidGeometryModels/fluidPartitionModels/constant/constantPartition.C
+physicsModels/fluidGeometryModels/fluidPartitionModels/linear/linearPartition.C
 physicsModels/fluidGeometryModels/fluidPartitionModels/AzadShirani/AzadShirani.C
 physicsModels/fluidGeometryModels/fluidGeometry.C
 
