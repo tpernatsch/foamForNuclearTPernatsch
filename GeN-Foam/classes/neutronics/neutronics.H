@@ -206,7 +206,7 @@ public:
 
         //- Access
 
-            scalar keff() const
+            virtual scalar keff() const
             {
                 return keff_;
             }

@@ -291,6 +291,12 @@ public:
 
     //- Member Functions
 
+        //- Calc keff from reactivity
+        virtual scalar keff() const override
+        {
+            return 1.0/(1.0-totalReactivity_);
+        }
+
         //- Update all the oneGroupFlux related quantities following changes in
         //  the oneGroupFlux after proper initialization
         void setInitOneGroupFlux();
