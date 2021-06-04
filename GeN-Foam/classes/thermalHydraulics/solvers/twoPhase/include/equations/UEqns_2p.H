@@ -46,21 +46,35 @@ scalar a1
 (
     pimple_.dict().lookupOrDefault<scalar>("maxAlphaKdFF", 0)
 );
-forAll(mesh_.C(), i)
+if (KdFF1 != KdFF0 and a1 != 0)
 {
-    tensor& Kd12ti(Kd12t[i]);
-    scalar Kdlim(KdFF0);
-    if (KdFF1 != KdFF0 and a1 != 0)
+    forAll(mesh_.C(), i)
     {
-        const scalar& a(min(fluid1_.normalized()[i], fluid2_.normalized()[i]));
+        tensor& Kd12ti(Kd12t[i]);
+        scalar Kdlim(KdFF0);
+        scalar a(min(fluid1_.normalized()[i], fluid2_.normalized()[i]));
         if (a < a1)
-            Kdlim = KdFF1;
+        {
+            scalar c((a1-a)/a1);
+            Kdlim = c*KdFF1 + (1.0-c)*KdFF0; //KdFF1;
+        }
+        Kd12ti[0] = max(Kd12ti[0], Kdlim);
+        Kd12ti[4] = max(Kd12ti[4], Kdlim);
+        Kd12ti[8] = max(Kd12ti[8], Kdlim);  
     }
-    Kd12ti[0] = max(Kd12ti[0], Kdlim);
-    Kd12ti[4] = max(Kd12ti[4], Kdlim);
-    Kd12ti[8] = max(Kd12ti[8], Kdlim);  
+    Kd12t.correctBoundaryConditions();
 }
-Kd12t.correctBoundaryConditions();
+else if (KdFF0 != 0)
+{
+    forAll(mesh_.C(), i)
+    {
+        tensor& Kd12ti(Kd12t[i]);
+        Kd12ti[0] = max(Kd12ti[0], KdFF0);
+        Kd12ti[4] = max(Kd12ti[4], KdFF0);
+        Kd12ti[8] = max(Kd12ti[8], KdFF0);  
+    }
+    Kd12t.correctBoundaryConditions();
+}
 scalar KdFS
 (
     pimple_.dict().lookupOrDefault<scalar>("minKdFS", 0)
@@ -184,8 +198,8 @@ Info<< "Kd12 (avg min max) = "
             //  explicit off-diagonal contribution
         +   fvm::Sp((1.0/3.0)*tr(Kd1s), U1) + (dev(Kd1s)&U1)
         ==
-            dmdt21*U2
-        +   fvOptions_(alpha1, rho1, U1)
+            //dmdt21*U2
+            fvOptions_(alpha1, rho1, U1)
     );
     UEqn2 =
     (
@@ -204,9 +218,15 @@ Info<< "Kd12 (avg min max) = "
             //  explicit off-diagonal contribution
         +   fvm::Sp((1.0/3.0)*tr(Kd2s), U2) + (dev(Kd2s)&U2) 
         ==
-            dmdt12*U1
-        +   fvOptions_(alpha2, rho2, U2)
+            //dmdt12*U1
+            fvOptions_(alpha2, rho2, U2)
     );
+
+    if (partialEliminationMode_ != partialEliminationMode::implicitWithDmdt)
+    {
+        UEqn1 -= dmdt21*U2;
+        UEqn2 -= dmdt12*U1;
+    }
 
     scalar c
     (
@@ -251,7 +271,9 @@ Info<< "Kd12 (avg min max) = "
         UEqn2 += fvm::ddt(alpha2, rho2, U2);
     }
 
-    //
+    //- The implicit and implicitWithDmdt are formulated differently
+    //  even when there is no mass transfer. I should write the derivations
+    //  somewhere down in the source code (eventually)
     if (partialEliminationMode_ != partialEliminationMode::implicit)
     {
         UEqn1 += fvm::Sp(Kd12, U1);

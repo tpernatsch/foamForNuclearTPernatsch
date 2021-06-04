@@ -152,6 +152,12 @@ void Foam::FSPair::correct()
 
     Re_.correctBoundaryConditions();
     lRe_.correctBoundaryConditions();
+
+    if (fPtr_.valid())
+    {
+        volScalarField& f(fPtr_());
+        f.correctBoundaryConditions();
+    }
 }
 
 

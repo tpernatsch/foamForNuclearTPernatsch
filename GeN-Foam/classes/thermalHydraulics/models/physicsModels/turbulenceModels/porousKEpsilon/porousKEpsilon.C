@@ -49,16 +49,34 @@ void porousKEpsilon<BasicTurbulenceModel>::correctNut()
 {
     this->nut_ = Cmu_*sqr(k_)/epsilon_;
     this->nut_.correctBoundaryConditions();
+    
+    /* 
+        Due to how porousKEpsilon is templated in 
+        multiphaseCompressibleTurbulenceModels.C, "BasicTurbulenceModel"
+        corresponds to:
+    
+        EddyDiffusivity
+        <
+            ThermalDiffusivity
+            <   
+                PhaseCompressibleTurbulenceModel
+                <
+                    rhoThermo
+                >
+            >
+        >
 
-    //- Correct alphat before nut is stabilized
-    this->Prt_ = dimensioned<scalar>::lookupOrDefault
-    (
-        "Prt",
-        this->coeffDict(),
-        1.0
-    );
-    this->alphat_ = this->rho_*this->nut_/this->Prt_;
-    this->alphat_.correctBoundaryConditions();
+        And correctNut is declared frist in EddyDiffusivity, and defaults to:
+        // Read Prt if provided
+        Prt_ = dimensionedScalar("Prt", dimless, 1.0, this->coeffDict());
+        alphat_ = this->rho_*this->nut()/Prt_;
+        alphat_.correctBoundaryConditions();
+
+        Thus, that is what the function below does (i.e., it does not change 
+        nut at all, only the alphat)
+    */
+    
+    BasicTurbulenceModel::correctNut();
 
     if (nutStabilization_)
     {
@@ -70,8 +88,7 @@ void porousKEpsilon<BasicTurbulenceModel>::correctNut()
 
     fv::options::New(this->mesh_).correct(this->nut_);
 
-    // BasicTurbulenceModel::correctNut();  //- Eh, I don't want other things
-                                            //  messing with the stabilized nut
+    
 }
 
 

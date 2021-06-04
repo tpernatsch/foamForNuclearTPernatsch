@@ -27,6 +27,9 @@ License
 #include "fluid.H"
 #include "structureModel.H"
 
+#include "FFPair.H"
+#include "FSPair.H"
+
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 //- Constructor for non-interpolated regimes
@@ -440,9 +443,53 @@ void Foam::regime::correctFluidGeometryFields
 (
     volScalarField& iA,
     fluid& fluid1,
-    fluid& fluid2
+    fluid& fluid2,
+    FSPair& FSPair1,
+    FSPair& FSPair2
 ) const
 {
+    autoPtr<volScalarField>& f1Ptr(FSPair1.fPtr());
+    autoPtr<volScalarField>& f2Ptr(FSPair2.fPtr());
+
+    if(!f1Ptr.valid())
+    {
+        f1Ptr.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "f."+FSPair1.name(),
+                    mesh_.time().timeName(),
+                    mesh_
+                ),
+                mesh_,
+                scalar(0.0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+    }
+    if(!f2Ptr.valid())
+    {
+        f2Ptr.reset
+        (
+            new volScalarField
+            (
+                IOobject
+                (
+                    "f."+FSPair2.name(),
+                    mesh_.time().timeName(),
+                    mesh_
+                ),
+                mesh_,
+                scalar(0.0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+    }
+    volScalarField& f1(f1Ptr());
+    volScalarField& f2(f2Ptr());
+
     volScalarField& Dh1(fluid1.Dh());
     volScalarField& Dh2(fluid2.Dh());
     scalarField& dispersion1(fluid1.dispersion());
@@ -450,6 +497,8 @@ void Foam::regime::correctFluidGeometryFields
     
     if (!isInterpolated_)
     {
+        const volScalarField& f1R(fluidGeometry_->fHtc(fluid1.name()));
+        const volScalarField& f2R(fluidGeometry_->fHtc(fluid2.name()));
         const volScalarField& DhDispersedR(fluidGeometry_->DhDispersed());
         const volScalarField& DhStructureR(fluidGeometry_->DhStructure());
         const volScalarField& iAR(fluidGeometry_->iA());
@@ -462,6 +511,8 @@ void Foam::regime::correctFluidGeometryFields
                 Dh2[celli] = DhStructureR[celli];
                 dispersion1[celli] = 1.0;
                 iA[celli] = iAR[celli];
+                f1[celli] = f1R[celli];
+                f2[celli] = f2R[celli];
             }
         }
         else
@@ -473,11 +524,29 @@ void Foam::regime::correctFluidGeometryFields
                 Dh1[celli] = DhStructureR[celli];
                 dispersion2[celli] = 1.0;
                 iA[celli] = iAR[celli];
+                f1[celli] = f1R[celli];
+                f2[celli] = f2R[celli];
             }
         }
     }
     else //- If regime is interpolated
     {
+        const volScalarField& f1R1
+        (
+            regime1_->fluidGeometry_->fHtc(fluid1.name())
+        );
+        const volScalarField& f2R1
+        (
+            regime1_->fluidGeometry_->fHtc(fluid2.name())
+        );
+        const volScalarField& f1R2
+        (
+            regime2_->fluidGeometry_->fHtc(fluid1.name())
+        );
+        const volScalarField& f2R2
+        (
+            regime2_->fluidGeometry_->fHtc(fluid2.name())
+        );
         const volScalarField& DhDispersedR1
         (
             regime1_->fluidGeometry_->DhDispersed()
@@ -531,6 +600,8 @@ void Foam::regime::correctFluidGeometryFields
                 c1*(fluid1DispersedInR1) + c2*(fluid1DispersedInR2);
             dispersion2[celli] = 
                 c1*(fluid2DispersedInR1) + c2*(fluid2DispersedInR2);
+            f1[celli] = c1*f1R1[celli] + c2*f1R2[celli];
+            f2[celli] = c1*f2R1[celli] + c2*f2R2[celli];
         }
     }
 }

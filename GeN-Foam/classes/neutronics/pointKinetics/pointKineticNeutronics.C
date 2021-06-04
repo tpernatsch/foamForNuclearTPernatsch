@@ -591,6 +591,47 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     }
     if (fluxes_.size() == 0)
     {
+        //- One group flux is init from this dict ONLY IF no existing flux
+        //  files are already present (otherwise it is just reconstructed 
+        //  from the sum of those)
+        if (nuclearData_.found("initialOneGroupFluxByZone"))
+        {
+            const dictionary& initialOneGroupFluxes
+            (
+                nuclearData_.subDict("initialOneGroupFluxByZone")
+            );
+            oneGroupFlux_ *= 0.0;
+            forAllConstIter
+            (
+                dictionary,
+                initialOneGroupFluxes,
+                iter
+            )
+            {
+                DynamicList<label> cells(0);
+                word zoneName(iter->keyword());
+                scalar initialOneGroupFlux
+                (
+                    initialOneGroupFluxes.get<scalar>(zoneName)
+                );
+                forAllConstIter
+                (
+                    DynamicList<label>,
+                    mesh.cellZones()[zoneName],
+                    cIter
+                )
+                {
+                    cells.append(*cIter);
+                }
+                forAll(cells, i)
+                {
+                    oneGroupFlux_[cells[i]] = initialOneGroupFlux;
+                }
+            }
+            oneGroupFlux_.correctBoundaryConditions();
+            setInitOneGroupFlux();
+        }
+
         energyGroups_ = 
             nuclearData_.lookupOrDefault<scalar>("energyGroups", 1);
 
@@ -633,6 +674,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         }
         oneGroupFlux_.correctBoundaryConditions();
     }
+    //- Update the initOneGroupFlux related quantities after possible
+    //  changes in the oneGroupFlux
+    setInitOneGroupFlux();
 
     //- Read real precursors if present, they only get re-scaled by 
     //  pointKinetic results
@@ -811,6 +855,15 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
+void Foam::pointKineticNeutronics::setInitOneGroupFlux()
+{
+    initOneGroupFlux_ = oneGroupFlux_;
+    initOneGroupFluxN_ = 
+        initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_);
+    domainIntegratedInitOneGroupFluxN_ = 
+        fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value();
+}
+
 void Foam::pointKineticNeutronics::setFeedbackCellField
 (
     volScalarField& feedbackCellField, 
@@ -987,29 +1040,28 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     TStructOrig_ = 
         src.findObject<volScalarField>("bafflelessTStruct");
     
-    //- Project thermalHydraulic volFuelPower onto the neutronic one to
+    //- Project thermalHydraulic powerDensity onto the neutronic one to
     //  initialize it if the latter does not exist
-    IOobject volFuelPowerHeader
+    IOobject powerDensityHeader
     (
-        "volFuelPower",
+        "powerDensity",
         mesh_.time().timeName(),
         mesh_.time(),
         IOobject::NO_READ
     );
 
-    if (!volFuelPowerHeader.typeHeaderOk<volScalarField>(true))
+    if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
     {
-        volFuelPowerOrig_ = 
-            src.findObject<volScalarField>("bafflelessVolFuelPower");
+        powerDensityOrig_ = 
+            src.findObject<volScalarField>("bafflelessPowerDensity");
         neutroToFluid.mapTgtToSrc
             (
-                *volFuelPowerOrig_, 
+                *powerDensityOrig_, 
                 plusEqOp<scalar>(), 
-                volFuelPower_
+                powerDensity_
             );
-        volFuelPower_.correctBoundaryConditions(); 
+        powerDensity_.correctBoundaryConditions(); 
     }
-
     
     if (liquidFuel_)
     {

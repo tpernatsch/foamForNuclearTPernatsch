@@ -20,11 +20,6 @@ scalar neutronIterationResidual =
 int maxNeutronIterations =
     neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
-//- For Aitken
-List<scalar> integralFlux0(xs_.energyGroups());
-List<scalar> integralFlux1(xs_.energyGroups());
-List<scalar> integralFlux2(xs_.energyGroups());
-
 scalar pTot(1.0); 
 
 forAll(flux_,energyI)
@@ -83,8 +78,8 @@ do
     neutroIter++;
 
     Info<< "neutroResidual (couplingIter: " << couplingIter 
-        << ", neutroIter: " << neutroIter << "): " << neutroResidual 
-        << " after Aitken no: " << aitkenIterNo << endl;     
+        << ", neutroIter: " << neutroIter << "): " << neutroResidual << endl;
+        //<< " after Aitken no: " << aitkenIterNo << endl;     
 }
 while
     ( 
@@ -93,10 +88,10 @@ while
     && !eigenvalueNeutronics_
     );
 
-volFuelPower_*=0.0;
+powerDensity_*=0.0;
 forAll(flux_,energyI)
 {
-    volFuelPower_ += flux_[energyI] * sigmaPow[energyI];
+    powerDensity_ += flux_[energyI] * sigmaPow[energyI];
 }
 
 pTot = power();
@@ -108,7 +103,7 @@ Info<< "Final neutroResidual at coupling/neutroIter iter no "
     << " - pow:" << pTot << endl; 
 
 //- Determine power density in the fuel
-volFuelPower_ /= max(fuelFraction, SMALL);
+powerDensity_ /= max(fuelFraction, SMALL);
 
 if (eigenvalueNeutronics_)
 {

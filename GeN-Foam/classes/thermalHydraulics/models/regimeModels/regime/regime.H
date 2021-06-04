@@ -64,9 +64,10 @@ namespace Foam
 {
 
 //- Forward declarations
-class FFPair;
 class fluid;
 class structureModel;
+class FFPair;
+class FSPair;
 
 /*---------------------------------------------------------------------------*\
                            Class regimeMapModel Declaration
@@ -215,7 +216,9 @@ public:
         (
             volScalarField& iA,
             fluid& fluid1,
-            fluid& fluid2
+            fluid& fluid2,
+            FSPair& FSPair1,
+            FSPair& FSPair2
         ) const;
 
         //- Access (const and non-const)

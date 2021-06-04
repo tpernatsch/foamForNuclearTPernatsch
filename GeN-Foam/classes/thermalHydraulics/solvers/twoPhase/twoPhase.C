@@ -30,6 +30,7 @@ License
 #include "regimeMapModel.H"
 #include "phaseChangeModel.H"
 #include "myOps.H"
+#include "gaussConvectionScheme.H"
 //#include <chrono>
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -50,6 +51,24 @@ namespace thermalHydraulicModels
 
 const Foam::Enum
 <
+    Foam::thermalHydraulicModels::twoPhase::alphaEqnsSolver
+>
+Foam::thermalHydraulicModels::twoPhase::alphaEqnsSolverNames_
+(
+    {
+        { 
+            alphaEqnsSolver::MULES, 
+            "MULES" 
+        },
+        { 
+            alphaEqnsSolver::implicitUpwind, 
+            "implicitUpwind" 
+        }
+    }
+);
+
+const Foam::Enum
+<
     Foam::thermalHydraulicModels::twoPhase::partialEliminationMode
 >
 Foam::thermalHydraulicModels::twoPhase::partialEliminationModeNames_
@@ -66,6 +85,10 @@ Foam::thermalHydraulicModels::twoPhase::partialEliminationModeNames_
         { 
             partialEliminationMode::implicit, 
             "implicit" 
+        },
+        {
+            partialEliminationMode::implicitWithDmdt, 
+            "implicitWithDmdt"
         }
     }
 );
@@ -308,6 +331,16 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     ),
     bothPhasesArePresent_(false),
     withinMarginToPhaseChange_(false),
+    alphaEqnsSolver_
+    (
+        alphaEqnsSolverNames_.get
+        (
+            mesh_.solverDict("alpha").get<word>
+            (
+                "solver"
+            )
+        )
+    ),
     partialEliminationMode_
     (
         partialEliminationModeNames_.get
@@ -557,11 +590,10 @@ void Foam::thermalHydraulicModels::twoPhase::correctFluidMechanics
 {
     //- Solve continuity equations to compute new alphas
     #include "alphaEqns_2p.H"
-    
+
     //- Construct momentum matrices
     #include "UEqns_2p.H"
 
-    //- Solve pressure equation and reconstruct velocities
     if (momentumMode_ == momentumMode::faceCentered)
     {
         #include "pEqnf_2p.H"
@@ -570,7 +602,7 @@ void Foam::thermalHydraulicModels::twoPhase::correctFluidMechanics
     {
         #include "pEqn_2p.H"
     }
-    
+
     //- Continuity error adjustments and infos
     correctContErrs();
     printContErrs();
@@ -667,7 +699,9 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
         (
             iA12_,
             fluid1_,
-            fluid2_
+            fluid2_,
+            F1SPair_,
+            F2SPair_
         );
     }
 

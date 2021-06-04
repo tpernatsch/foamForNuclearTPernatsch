@@ -1,5 +1,14 @@
 #include "refsAndControls_2p.H"
 
+if (implicitPartialEliminationWithDmdt)
+{
+    FatalErrorInFunction
+        << "The partialElimination mode implicitWithDmdt has not been yet "
+        << "implemented for the cell-centered algorithm. Use the face-"
+        << "centered one"
+        << exit(FatalError);
+}
+
 if (!implicitPartialElimination)
 {
     //- Construct 1/A fields and limit to avoid problems for alpha = 0

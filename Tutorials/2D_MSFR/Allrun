@@ -91,14 +91,29 @@ do
         printf "Steady state NE case is prepared!\n"
         ;;
     "transient")
-        printf "Transient case entered...\n"
+        printf "Transient case is prepared!\n"
         setTransient $caseName steadyStateEN
         ;;
     esac
 
+    # Start gnuplot if it exist
+    if ! command -v gnuplot &> /dev/null
+    then
+        echo "gnuplot could not be found"
+    else
+        gnuplot -e "log='$caseName/log.$exe'" residuals - &> /dev/null &
+    fi
+
     #( cd $caseName && runApplication `getApplication` )
     printf "Running $exe on $caseName\n"
     $exe -case $caseName 2>&1 | tee "$caseName/log.$exe"
+
+    # Kill gnuplot if it was started
+    if command -v gnuplot &> /dev/null
+    then
+        pkill -x gnuplot
+    fi
+
 done
 
 # expected keff: 0.958765

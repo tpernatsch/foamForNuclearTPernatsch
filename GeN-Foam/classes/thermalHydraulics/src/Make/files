@@ -1,8 +1,8 @@
 myPimpleControl/myPimpleControl.C
 
-boundaryConditions/FFSWallHeatTransfer/FFSWallHeatTransferFvPatchScalarField.C
 boundaryConditions/velocityRundown/velocityRundownFvPatchVectorField.C
 boundaryConditions/timeFieldTable/timeFieldTableFvPatchScalarField.C
+boundaryConditions/NusseltThermalBaffle1D/NusseltThermalBaffle1DFvPatchScalarField.C
 
 functionObjects/fieldDiffExtents/fieldDiffExtents.C
 functionObjects/TBulk/TBulk.C

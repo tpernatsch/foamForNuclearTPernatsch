@@ -34,6 +34,13 @@ License
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+/*
+The command below creates, among others, the following typedef
+
+typedef ThermalDiffusivity<PhaseCompressibleTurbulenceModel<rhoThermo>>
+        rhoThermoPhaseCompressibleTurbulenceModel;
+
+*/
 makeTurbulenceModelTypes
 (
     volScalarField,
@@ -58,9 +65,22 @@ makeBaseTurbulenceModel
     makeTemplatedLaminarModel                                                  \
     (rhoThermoPhaseCompressibleTurbulenceModel, laminar, Type)
 
+/*
+The command below creates, among others, the following typedef
+
+typedef Foam::RAS##Models::Type
+        <
+            Foam::EddyDiffusivity
+            <   
+                Foam::rhoThermoPhaseCompressibleTurbulenceModel
+            >
+        >
+        Type##RAS##rhoThermoPhaseCompressibleTurbulenceModel;
+*/
 #define makeRASModel(Type)                                                     \
     makeTemplatedTurbulenceModel                                               \
     (rhoThermoPhaseCompressibleTurbulenceModel, RAS, Type)
+
 
 #define makeLESModel(Type)                                                     \
     makeTemplatedTurbulenceModel                                               \
@@ -72,6 +92,20 @@ makeLaminarModel(Stokes);
 #include "kEpsilon.H"
 makeRASModel(kEpsilon);
 
+//- In short, this creates the porousKEpsilon model with porousKEpsilon
+//  templated with BasicTurbulenceModel = 
+/*  
+    EddyDiffusivity
+    <
+        ThermalDiffusivity
+        <   
+            PhaseCompressibleTurbulenceModel
+            <
+                rhoThermo
+            >
+        >
+    >
+*/
 #include "porousKEpsilon.H"
 makeRASModel(porousKEpsilon);
 

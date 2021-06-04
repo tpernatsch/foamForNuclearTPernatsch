@@ -78,9 +78,12 @@ protected :
     //- Reynolds of the pair
     volScalarField Re_;
 
-    //- local components of the Reynolds number in the local frame of
+    //- Local components of the Reynolds number in the local frame of
     //  reference directions
     volVectorField lRe_;
+
+    //- Fluid-structure contact fractions for two-phase scenarios 
+    autoPtr<volScalarField> fPtr_;
 
 public:
 
@@ -127,7 +130,22 @@ public:
             const volVectorField& lRe() const
             {
                 return lRe_;
-            }    
+            }  
+
+            autoPtr<volScalarField>& fPtr()
+            {
+                return fPtr_;
+            }
+
+            const autoPtr<volScalarField>& fPtr() const
+            {
+                return fPtr_;
+            }  
+
+            const volScalarField& f() const
+            {
+                return fPtr_();
+            }  
 };
 
 

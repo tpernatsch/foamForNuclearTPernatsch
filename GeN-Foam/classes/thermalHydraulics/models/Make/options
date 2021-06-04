@@ -6,7 +6,6 @@ EXE_INC = \
     -I./phaseModels/structureModels \
     -I./phaseModels/fluid \
     -I./phaseModels/structureModels \
-    -I./phaseModels/structureModels/pump \
     -I./phaseModels/structureModels/heatExchanger \
     -I./phaseModels/structureModels/powerModels \
     -I./phaseModels/structureModels/powerModels/constantPower \
@@ -39,6 +38,7 @@ EXE_INC = \
     -I./physicsModels/dragModels/FSModels/modifiedEngel \
     -I./physicsModels/dragModels/FSModels/BaxiDalleDonne \
     -I./physicsModels/dragModels/FSModels/NoKazimi \
+    -I./physicsModels/dragModels/FSModels/upgradedChengTodreas \
     -I./physicsModels/twoPhaseDragMultiplierModels \
     -I./physicsModels/twoPhaseDragMultiplierModels/LottesFlinn \
     -I./physicsModels/twoPhaseDragMultiplierModels/LockhartMartinelli \
@@ -73,6 +73,7 @@ EXE_INC = \
     -I./physicsModels/fluidGeometryModels/fluidInterfacialAreaModels/annularTopology \
     -I./physicsModels/fluidGeometryModels/fluidPartitionModels \
     -I./physicsModels/fluidGeometryModels/fluidPartitionModels/constant \
+    -I./physicsModels/fluidGeometryModels/fluidPartitionModels/linear \
     -I./physicsModels/fluidGeometryModels/fluidPartitionModels/AzadShirani \
     -I./physicsModels/phaseChangeModels/latentHeatModels \
     -I./physicsModels/phaseChangeModels/latentHeatModels/FinkLeibowitz \
