@@ -1,11 +1,4 @@
 neutroResidual = 0.0;
-/*
-if(aitkenAcceleration)
-{
-    #include "aitkenAcceleration.H"
-}   
-*/
-
 
 forAll(flux_,energyI)
 {
