@@ -19,7 +19,7 @@ FoamFile
 // --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-thermalHydraulicType    "onePhase";
+thermalHydraulicsType    "onePhase";
 
 // ------------------------------------------------------------------------- //
 // --- STRUCTURES PROPERTIES ----------------------------------------------- //
@@ -27,8 +27,6 @@ thermalHydraulicType    "onePhase";
 
 structureProperties
 {    
-    type            "byZone";
-
     "zone0"
     {
         volumeFraction      0.5;
@@ -67,25 +65,24 @@ structureProperties
 }
 
 // ------------------------------------------------------------------------- //
-// --- REGIME MAP MODEL ---------------------------------------------------- //
+// --- REGIME MAP MODELS --------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-regimeMapModel
+regimeMapModels
 {
-    type                none;
 }
 
 // ------------------------------------------------------------------------- //
 // --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-physicsModelsByRegime
+physicsModels
 {
     dragModels
     {
         "zone0"
         {
-            type    DarcyReynoldsPower;
+            type    ReynoldsPower;
             coeff   0.687;
             exp     -0.25;
         }

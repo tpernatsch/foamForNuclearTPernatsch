@@ -25,11 +25,11 @@ Class
     Foam::twoPhase
 
 Description
-    This class encapsulates a two-fluid phases + 1 stationary structure 
-    Eulerian solver with a user-defineable regime-map based phyiscs modelling.
+    This class encapsulates a two fluid + 1 stationary structure 
+    Eulerian solver
 
 Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch / )
 
 SourceFiles
     twoPhase.C
@@ -39,19 +39,19 @@ SourceFiles
 #ifndef twoPhase_H
 #define twoPhase_H
 
-#include "thermalHydraulicModel.H"
+#include "thermalHydraulicsModel.H"
+#include "twoPhaseDragFactor.H"
+#include "myOps.H"
+#include "upwind.H"
+#include "gaussConvectionScheme.H"
+#include "myMULES.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-//- Forward declarations
-class regime;
-class regimeMapModel;
-class phaseChangeModel;
-
-namespace thermalHydraulicModels
+namespace thermalHydraulicsModels
 {
 
 /*---------------------------------------------------------------------------*\
@@ -60,11 +60,11 @@ namespace thermalHydraulicModels
 
 class twoPhase
 :
-    public thermalHydraulicModel
+    public thermalHydraulicsModel
 {
-public :
+public:
 
-	enum class alphaEqnsSolver
+    enum class alphaEqnsSolver
     {
         MULES,
         implicitUpwind
@@ -105,13 +105,10 @@ private:
     //- Phases
 
         //- Structure
-        autoPtr<structureModel> structurePtr_;
-        structureModel& structure_;
+        structure structure_;
 
-        //- Fluid1
+        //- Fluids
         fluid fluid1_;
-
-        //- Fluid2
         fluid fluid2_;
 
         //- Total fluid phase fraction
@@ -128,67 +125,22 @@ private:
         //- Fluid2 - structure
         FSPair F2SPair_;
 
-        //- Reynolds of the two-phase mixture. Logically this belongs to none
-        //  of the pairs above, as it depends on both fluids and the structure 
-        //  (namely its hydraluic diameter) at the same time
-        volScalarField ReTwoPhase_;
+    //- 
+        autoPtr<twoPhaseDragFactor> twoPhaseDragFactorPtr_;
 
-    //- Mixture quantities (while the solver is Euler-Euler, these can be of
-    //  intereset and are occasionally used)
-        
+    //- Mixture quantities
+
         //- Mixture velocity
         volVectorField U_;
         
         //- Mixture density
         volScalarField rho_;
-    
-    //- Phase interaction related  
-        
-        //- table of drag coefficients between:
-        //      - fluid1 and fluid2;
-        //      - fluid1 and the structure
-        //      - fluid2 and the structure
-        volTensorFieldPtrTable Kds_;
-
-        //- table of heat transfer coefficients between:
-        //      - fluid1 and interface between fluid1 and fluid2;
-        //      - fluid2 and interface between fluid2 and fluid1;
-        //      - fluid1 and the structure
-        //      - fluid2 and the structure
-        volScalarFieldPtrTable htcs_;
-
-        //- Virtual mass coefficient, currently handled outside the
-        //  regime framework
-        scalar Vm_;
-
-        //- interfacial area between fluid1 and fluid2
-        volScalarField iA12_;
-
-        //- Mass transfer term from fluid1 to fluid2 so that:
-        /*
-            ddt(rho1*alpha1) + div(alphaRhoPhi1) = -dmdt
-            ddt(rho2*alpha2) + div(alphaRhoPhi2) = dmdt
-        */
-        volScalarField dmdt_;
-
-        //- Interfacial temperature between phase1 and phase2
-        volScalarField iT12_;
-
-        //- Regime map model
-        autoPtr<regimeMapModel> regimeMap_;
-
-        //- Phase change model
-        autoPtr<phaseChangeModel> phaseChange_;
-
-    //- Extra field for under-relaxation of certain quantities
-        fvVectorMatrix  VmVolForce1_;
-        fvVectorMatrix  VmVolForce2_;
 
     //- Miscellanea
 
     //- Global flags for time/subCycle control
 
-        //- Self explanatory, come on...
+        //- Self explanatory
         bool bothPhasesArePresent_;
 
         //- True if the temperature of of one of the two fluids is within a 
@@ -235,40 +187,14 @@ public:
         (
             Time& time,
             fvMesh& mesh, 
-            myPimpleControl& pimple, 
+            customPimpleControl& pimple, 
             fv::options& fvOptions
         );
 
         //- Destructor
         virtual ~twoPhase(){}
 
-    //- Protected member Functions
-
-protected :
-
-    //- Under-relax coupling fields (i.e. Kd, htc) in the provided
-    //  table
-    template<class fieldType>
-    void relaxFieldPtrTable
-    (
-        const word& relaxFactorName,
-        HashPtrTable
-        <
-            fieldType, 
-            word, 
-            word::hash
-        >& fieldPtrTable
-    );
-    
-    //- Public member Functions
-
-public :
-
-        //- Return the mixture density
-        tmp<volScalarField> rho() const;
-
-        //- Return the mixture velocity
-        tmp<volVectorField> U() const;
+    //- Member Functions
 
         //- Solve thermal-hydraulics
         virtual void correct
@@ -282,12 +208,12 @@ public :
         //  updating the flow regime map
         virtual void correctEnergy(scalar& residual);
 
-        //- Correct alphas, pressure, velocities without updating 
+        //- Correct pressure, velocities without updating 
         //  the flow regime map
         virtual void correctFluidMechanics(scalar& residual);
 
-        //- Correct flow regime map and all the coupling fields
-        virtual void correctRegimes
+        //- Correct models and coupling fields
+        virtual void correctModels
         (
             bool solveFluidDynamics, 
             bool solveEnergy
@@ -299,20 +225,20 @@ public :
         //- Custom adjustTimeStep
         virtual void adjustTimeStep();
 
-        //- Update continuity errors of the fluids
+        //- Update continuity errors of the fluid
         void correctContErrs();
 
         //- Print continuity error information
         void printContErrs();
 
-        //- Computes the cumulated continuity errors
+        //- Computes the cumulated continuity error
         void calcCumulContErrs();
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace thermalHydraulicModels
+} // End namespace thermalHydraulicsModels
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

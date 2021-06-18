@@ -26,8 +26,8 @@ License
 Class
     Foam::compressible::NusseltThermalBaffle1DFvPatchScalarField
 
-Group
-    grpThermoBoundaryConditions
+Author
+    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 Description
     This BC models heat conduction through a thin 1-D baffle thermally coupling
@@ -89,10 +89,7 @@ SourceFiles
 #include "autoPtr.H"
 #include "mappedPatchBase.H"
 
-#include "fluid.H"
-#include "structureModel.H"
 #include "FSPair.H"
-#include "myOps.C"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

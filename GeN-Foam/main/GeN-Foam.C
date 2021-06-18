@@ -68,7 +68,7 @@ Authors of this file (and associated .C or included .H files)
 #include "UPstream.H"
 
 #include "multiphysicsControl.H"
-#include "thermalHydraulicModel.H"
+#include "thermalHydraulicsModel.H"
 #include "neutronics.H"
 #include "thermoMechanics.H"
 

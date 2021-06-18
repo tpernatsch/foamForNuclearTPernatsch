@@ -31,6 +31,7 @@ License
 #include "turbulentFluidThermoModel.H"
 #include "mapDistribute.H"
 #include "NusseltThermalBaffle1DFvPatchScalarField.H"
+#include "myOps.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -77,7 +78,6 @@ NusseltThermalBaffle1DFvPatchScalarField
     hw_(0)
 {}
 
-
 NusseltThermalBaffle1DFvPatchScalarField::
 NusseltThermalBaffle1DFvPatchScalarField
 (
@@ -107,7 +107,6 @@ NusseltThermalBaffle1DFvPatchScalarField
     kw_(ptf.kw_),
     hw_(ptf.hw_)
 {}
-
 
 NusseltThermalBaffle1DFvPatchScalarField::
 NusseltThermalBaffle1DFvPatchScalarField
@@ -267,7 +266,6 @@ NusseltThermalBaffle1DFvPatchScalarField
     }
 }
 
-
 NusseltThermalBaffle1DFvPatchScalarField::
 NusseltThermalBaffle1DFvPatchScalarField
 (
@@ -294,7 +292,6 @@ NusseltThermalBaffle1DFvPatchScalarField
     kw_(ptf.kw_),
     hw_(ptf.hw_)
 {}
-
 
 NusseltThermalBaffle1DFvPatchScalarField::
 NusseltThermalBaffle1DFvPatchScalarField
@@ -324,7 +321,6 @@ NusseltThermalBaffle1DFvPatchScalarField
     hw_(ptf.hw_)
 {}
 
-
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 bool NusseltThermalBaffle1DFvPatchScalarField::owner() const
@@ -335,7 +331,6 @@ bool NusseltThermalBaffle1DFvPatchScalarField::owner() const
 
     return (patchi < nbrPatchi);
 }
-
 
 void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
 {    
@@ -493,7 +488,6 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
     */
 }
 
-
 void NusseltThermalBaffle1DFvPatchScalarField::autoMap
 (
     const fvPatchFieldMapper& m
@@ -508,7 +502,6 @@ void NusseltThermalBaffle1DFvPatchScalarField::autoMap
         anyScalarFieldMember_.autoMap(m);
     }*/
 }
-
 
 void NusseltThermalBaffle1DFvPatchScalarField::rmap
 (
@@ -557,7 +550,6 @@ void NusseltThermalBaffle1DFvPatchScalarField::evaluate
   
     fvPatchScalarField::evaluate();
 }
-
 
 void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
 {
@@ -685,10 +677,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
             scalarField oneByAnbrAminOne(max(A*nbrA-1.0, 1e-69));
             scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne); //- New T wall
             scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne); //- New nbr T wall
-
-            //- Effective thermal conductivies 
             
-
             //this->valueFraction() = 0;
             //this->refValue() = 0;
             this->refGrad() = (hf/kfEff)*(Tw-Ti);
@@ -792,7 +781,6 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
     mixedFvPatchScalarField::updateCoeffs();
 }
 
-
 tmp<scalarField> NusseltThermalBaffle1DFvPatchScalarField::calcH
 (
     const FSPair& pair,
@@ -804,7 +792,7 @@ tmp<scalarField> NusseltThermalBaffle1DFvPatchScalarField::calcH
     scalarField k(pair.fluidRef().thermo().kappa(patchi));
     const scalarField& Re(pair.Re().boundaryField()[patchi]);
     const scalarField& Pr(pair.fluidRef().Pr().boundaryField()[patchi]);
-    const scalarField& Dh(pair.structure().Dh().boundaryField()[patchi]);
+    const scalarField& Dh(pair.structureRef().Dh().boundaryField()[patchi]);
     if (pair.fPtr().valid()) //- Not valid in onePhase
     {
         const scalarField& f(pair.f().boundaryField()[patchi]);
@@ -832,7 +820,6 @@ tmp<scalarField> NusseltThermalBaffle1DFvPatchScalarField::calcH
     }
 }
 
-
 void NusseltThermalBaffle1DFvPatchScalarField::write(Ostream& os) const
 {
     mixedFvPatchScalarField::write(os);
@@ -855,7 +842,6 @@ void NusseltThermalBaffle1DFvPatchScalarField::write(Ostream& os) const
             << token::END_STATEMENT << nl;
     }
 }
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

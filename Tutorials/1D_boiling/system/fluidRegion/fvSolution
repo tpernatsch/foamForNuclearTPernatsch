@@ -246,7 +246,7 @@ relaxationFactors
     fields
     {
         //- Under-relaxation of the mass transfer term
-        "dmdt"              0.25;
+        "dmdt.*"              0.25;
 
         //- Under-relaxation of the interfacial temperature between the fluids.
         //  This only has an effect if the employed saturationModel in

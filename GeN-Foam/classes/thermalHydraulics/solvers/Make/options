@@ -4,14 +4,10 @@ EXE_INC = \
     -I./onePhase \
     -I./onePhase/include \
     -I./onePhase/include/equations \
+    -I./onePhase/include/equations/pEqnRoutines \
     -I./twoPhase \
-    -I./twoPhase/include \
-    -I./twoPhase/include/equations \
-    -I./twoPhase/include/equations/pEqnRoutines \
-    -I./twoPhase/include/equations/alphaEqnsRoutines \
-    -I./twoPhase/include/equations/alphaEqnsRoutines/myMULES \
-    -I./twoPhase/KNSProbe \
-    -I./../models/lnInclude \
+    -I./twoPhase/include/pEqnRoutines \
+    -I./twoPhase/include/alphaEqnRoutines \
     -I./../src/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
@@ -25,7 +21,6 @@ EXE_INC = \
     -I$(LIB_SRC)/meshTools/lnInclude
 
 EXE_LIBS = \
-    -L$(FOAM_USER_LIBBIN) -lFFSModels2 \
     -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
