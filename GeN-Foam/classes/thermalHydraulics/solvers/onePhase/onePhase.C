@@ -26,6 +26,7 @@ License
 #include "onePhase.H"
 #include "addToRunTimeSelectionTable.H"
 #include "regimeMapModel.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 

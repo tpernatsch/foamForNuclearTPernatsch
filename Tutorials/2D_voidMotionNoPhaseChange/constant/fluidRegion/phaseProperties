@@ -19,7 +19,7 @@ FoamFile
 // --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-thermalHydraulicType    "twoPhase";
+thermalHydraulicsType    "twoPhase";
 
 // ------------------------------------------------------------------------- //
 // --- FLUID PROPERTIES ---------------------------------------------------- //
@@ -31,13 +31,25 @@ fluid2 "vapour";
 liquidProperties
 {
     residualAlpha   1e-69;
+
+    dispersedDiameterModel
+    {
+        type        constant;
+        value       0.01;
+    }
 }
 
 vapourProperties
 {
     residualAlpha   1e-69;
 
-    initialAlphas
+    dispersedDiameterModel
+    {
+        type        constant;
+        value       0.01;
+    }
+
+    initialAlpha
     {
         "mid"      0.5;
     }
@@ -49,8 +61,6 @@ vapourProperties
 
 structureProperties
 {    
-    type            "byZone";
-
     "low:top"
     {
         volumeFraction      0;
@@ -65,138 +75,90 @@ structureProperties
 }
 
 // ------------------------------------------------------------------------- //
-// --- REGIME MAP MODEL ---------------------------------------------------- //
+// --- REGIME MAP MODELS --------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-regimeMapModel
+regimeMapModels
 {
-    type                oneParameter;
-    parameter           "magU.liquid";
-    regimeBounds
+    "totallyNonPhysicalRegimeMapJustToShowYouHowToUseOne"
     {
-        "regime0"       (0      0.6);
-        "regime1"       (1      1.5);
+        type                oneParameter;
+        parameter           "magU.liquid";
+        regimeBounds
+        {
+            "regime0"       (0      0.6);
+            "regime1"       (1     1.5);
+        }
     }
 }
 
 // ------------------------------------------------------------------------- //
-// --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
+// --- PHYSICS MODELS ------------------------------------------------------ //
 // ------------------------------------------------------------------------- //
 
-physicsModelsByRegime
+physicsModels
 {
-    "regime0"
+    dragModels
     {
-        dragModels
+        "liquid.vapour"
         {
-            "liquid.vapour"
+            type        SchillerNaumann;
+        }
+        "liquid.structure"
+        {
+            "low:mid:top"
             {
-                type    constant;
-                value   10000;
-            }
-
-            "liquid.structure"
-            {
-                "low:mid:top"
+                type        byRegime;
+                regimeMap   "totallyNonPhysicalRegimeMapJustToShowYouHowToUseOne";
+                "regime0"
                 {
                     type    constant;
-                    value   1000;
+                    value   10000;
+                }
+                "regime1"
+                {
+                    type    constant;
+                    value   30000;
                 }
             }
         }
+    }
 
-        twoPhaseDragMultiplierModel
-        {
-            type            LottesFlinn;
-            multiplierFluid liquid;
-        }
-
-        heatTransferModels
-        {}
-
-        fluidGeometry
-        {
-            dispersed   "vapour";
-
-            dispersedFluidDiameterModel
-            {
-                type    constant;
-                value   0.01;
-            }
-
-            fluidInterfacialAreaModel
-            {
-                type        constant;
-                value       0;
-            }
-
-            fluidPartitionModel
-            {
-                type        "constant";
-                liquid      1.0;
-                vapour      0;
-            }
-        }
-    }  
-
-    "regime1"
+    twoPhaseDragMultiplierModel
     {
-        dragModels
-        {
-            "liquid.vapour"
-            {
-                type    constant;
-                value   30000;
-            }
+        type            LottesFlinn;
+        multiplierFluid liquid;
+    }
 
-            "liquid.structure"
+    heatTransferModels
+    {}
+
+    pairGeometryModels
+    {
+        "liquid.vapour"
+        {
+            dispersionModel
             {
-                "low:mid:top"
-                {
-                    type    constant;
-                    value   3000;
-                }
+                type            constant;
+                dispersedPhase  "vapour";
+            }
+            interfacialAreaDensityModel
+            {
+                type            constant;
+                value           0;
             }
         }
 
-        twoPhaseDragMultiplierModel
+        "liquid.structure"
         {
-            type            LottesFlinn;
-            multiplierFluid liquid;
-        }
-
-        heatTransferModels
-        {}
-
-        fluidGeometry
-        {
-            dispersed   "vapour";
-
-            dispersedFluidDiameterModel
+            contactPartitionModel
             {
-                type    constant;
-                value   0.01;
-            }
-
-            fluidInterfacialAreaModel
-            {
-                type        constant;
-                value       0;
-            }
-
-            fluidPartitionModel
-            {
-                type        "constant";
-                liquid      1.0;
-                vapour      0;
+                type            constant;
+                value           1.0;
             }
         }
-    }  
+    }
 }
-
-// ------------------------------------------------------------------------- //
-// --- PHASE-CHANGE RELATED ------------------------------------------------ //
-// ------------------------------------------------------------------------- //
 
 // ------------------------------------------------------------------------- //
 // --- MISCELLANEA --------------------------------------------------------- //

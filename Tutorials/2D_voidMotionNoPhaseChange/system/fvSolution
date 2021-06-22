@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-nOuterCorrectors 6;
+nOuterCorrectors 18;
 
 tightlyCoupled  false;
 
