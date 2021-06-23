@@ -56,7 +56,7 @@ solvers
     }
     alpha
     {
-    	solver 			"MULES";
+        solver          "MULES";
         adjustSubCycles true;
         alphaMaxCo      0.25;
         solvePhase      "vapour";
@@ -71,9 +71,7 @@ PIMPLE
     partialEliminationMode              implicit;
     momentumMode                        faceCentered;
     massTransferSafetyFactor            0.90;
-    enthalpyStabilizationMode           cutoff;
-    continuityErrorCompensationMode     Su;
-    continuityErrorScaleFactor          0.6;
+    enthalpyStabilizationMode           source;
     
     residualControl
     {
@@ -96,17 +94,14 @@ relaxationFactors
     equations
     {
         ".*"                1;
-        "h.vapour"          0.05;
-        "h.vapourFinal"     0.05;
+        "h.vapour"          0.25;
+        "h.vapourFinal"     0.25;
     }
     fields
     {
         "T.interface"               0.25;
         "T.interfaceFinal"          0.25;
-        "Kd"                        0.25;
-        "KdFinal"                   0.25;
-        "dmdt"                      0.125;
-        "dmdtFinal"                 0.125;
+        "dmdt.*"                    0.125;
     }
 }
 

@@ -24,36 +24,30 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "twoPhase.H"
+#include <chrono> 
 #include "addToRunTimeSelectionTable.H"
-#include "myMULES.H"
-#include "regime.H"
-#include "regimeMapModel.H"
-#include "phaseChangeModel.H"
-#include "myOps.H"
-#include "gaussConvectionScheme.H"
-//#include <chrono>
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace thermalHydraulicModels
+namespace thermalHydraulicsModels
 {
     defineTypeNameAndDebug(twoPhase, 0);
     addToRunTimeSelectionTable
     (
-        thermalHydraulicModel, 
+        thermalHydraulicsModel, 
         twoPhase, 
-        thermalHydraulicModels
+        thermalHydraulicsModels
     );
 }
 }
 
 const Foam::Enum
 <
-    Foam::thermalHydraulicModels::twoPhase::alphaEqnsSolver
+    Foam::thermalHydraulicsModels::twoPhase::alphaEqnsSolver
 >
-Foam::thermalHydraulicModels::twoPhase::alphaEqnsSolverNames_
+Foam::thermalHydraulicsModels::twoPhase::alphaEqnsSolverNames_
 (
     {
         { 
@@ -69,9 +63,9 @@ Foam::thermalHydraulicModels::twoPhase::alphaEqnsSolverNames_
 
 const Foam::Enum
 <
-    Foam::thermalHydraulicModels::twoPhase::partialEliminationMode
+    Foam::thermalHydraulicsModels::twoPhase::partialEliminationMode
 >
-Foam::thermalHydraulicModels::twoPhase::partialEliminationModeNames_
+Foam::thermalHydraulicsModels::twoPhase::partialEliminationModeNames_
 (
     {
         { 
@@ -95,9 +89,9 @@ Foam::thermalHydraulicModels::twoPhase::partialEliminationModeNames_
 
 const Foam::Enum
 <
-    Foam::thermalHydraulicModels::twoPhase::contErrCompensationMode
+    Foam::thermalHydraulicsModels::twoPhase::contErrCompensationMode
 >
-Foam::thermalHydraulicModels::twoPhase::contErrCompensationModeNames_
+Foam::thermalHydraulicsModels::twoPhase::contErrCompensationModeNames_
 (
     {
         { 
@@ -121,9 +115,9 @@ Foam::thermalHydraulicModels::twoPhase::contErrCompensationModeNames_
 
 const Foam::Enum
 <
-    Foam::thermalHydraulicModels::twoPhase::heStabilizationMode
+    Foam::thermalHydraulicsModels::twoPhase::heStabilizationMode
 >
-Foam::thermalHydraulicModels::twoPhase::heStabilizationModeNames_
+Foam::thermalHydraulicsModels::twoPhase::heStabilizationModeNames_
 (
     {
         { 
@@ -137,71 +131,33 @@ Foam::thermalHydraulicModels::twoPhase::heStabilizationModeNames_
     }
 );
 
-// * * * * * * * * * * * * Protected Member Functions  * * * * * * * * * * * //
-
-template<class fieldType>
-void Foam::thermalHydraulicModels::twoPhase::relaxFieldPtrTable
-(
-    const word& defaultRelaxFactorName,
-    HashPtrTable
-    <
-        fieldType,
-        word, 
-        word::hash
-    >& fieldPtrTable
-)
-{
-    scalar f0(myOps::relaxationFactor(mesh_, defaultRelaxFactorName));    
-    forAll(fieldPtrTable.toc(), i)
-    {   
-        word key(fieldPtrTable.toc()[i]);
-        fieldType& field(*fieldPtrTable[key]);
-        //- If a relaxation factor was provided specifically for one of the
-        //  table fields, use that instead of the one specified by 
-        //  defaultRelaxFactorName
-        scalar f = 
-            (myOps::relax(mesh_, field.name())) ?
-            myOps::relaxationFactor(mesh_, field.name()) :
-            f0;
-
-        if (f != 1.0)
-        {
-            field = f*field+(1.0-f)*field.prevIter();
-            field.correctBoundaryConditions();
-        }
-    }
-}
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::thermalHydraulicModels::twoPhase::twoPhase
+Foam::thermalHydraulicsModels::twoPhase::twoPhase
 (
     Time& time,
     fvMesh& mesh,
-    myPimpleControl& pimple,
+    customPimpleControl& pimple,
     fv::options& fvOptions
 )
 :
-    thermalHydraulicModel
+    thermalHydraulicsModel
     (
         time,
         mesh,
         pimple,
         fvOptions
     ),
-    //- The structure model needs to be created before the fluids because
+    //- The structure needs to be created before the fluids because
     //  the turbulence models created by the fluids might require a reference
     //  to the structure (obtained via objectRegistry lookup in the specific
     //  turbulence model class)
-    structurePtr_
+    structure_
     (
-        structureModel::New
-        (
-            this->subDict("structureProperties"),
-            mesh   
-        )
+        this->subDict("structureProperties"),
+        mesh 
     ),
-    structure_(structurePtr_()),
     fluid1_
     (
         this->subDict
@@ -227,27 +183,14 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
         "movingAlpha",
         1.0 - structure_
     ),
-    FFPair_(fluid1_, fluid2_),
-    F1SPair_(fluid1_, structure_),
-    F2SPair_(fluid2_, structure_),
-    ReTwoPhase_
-    (
-        IOobject
-        (
-            "Re.mixture.structure",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimless, 10)
-    ),
+    FFPair_(fluid1_, fluid2_, *this),
+    F1SPair_(fluid1_, structure_, *this),
+    F2SPair_(fluid2_, structure_, *this),
     U_
     (
         IOobject
         (
-            "U",
+            "U.mixture",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -260,7 +203,7 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     (
         IOobject
         (
-            "rho",
+            "rho.mixture",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -269,76 +212,13 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
         mesh,
         dimensionedScalar("", dimDensity, 0.0)
     ),
-    Vm_(this->lookupOrDefault<scalar>("virtualMassCoeff", 0)),
-    iA12_
-    (
-        IOobject
-        (
-            "areaDensity.interface",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimArea/dimVol, 0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    dmdt_
-    (
-        IOobject
-        (
-            "dmdt",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimMass/dimVol/dimTime, 0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    iT12_
-    (
-        IOobject
-        (
-            "T.interface",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimTemperature, 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    regimeMap_
-    (
-        regimeMapModel::New
-        (
-            mesh,
-            this->subDict("regimeMapModel"),
-            this->subDict("physicsModelsByRegime")
-        )
-    ),
-    VmVolForce1_
-    (
-        fluid1_.U(), dimMass*dimLength/dimTime/dimTime
-    ),
-    VmVolForce2_
-    (
-        fluid2_.U(), dimMass*dimLength/dimTime/dimTime
-    ),
     bothPhasesArePresent_(false),
     withinMarginToPhaseChange_(false),
     alphaEqnsSolver_
     (
         alphaEqnsSolverNames_.get
         (
-            mesh_.solverDict("alpha").get<word>
-            (
-                "solver"
-            )
+            mesh_.solverDict("alpha").get<word>("solver")
         )
     ),
     partialEliminationMode_
@@ -408,6 +288,19 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     //  Lockhart-Martinelli parameter) and dispersion
     fluid1_.initTwoPhaseFields();
     fluid2_.initTwoPhaseFields();
+
+    //- Construct twoPhaseDragFactor (needs to be done AFTER fluid twoPhase
+    //  field init as some fields of the fluid class that can be required by
+    //  some twoPhaseDragFactor sub-models are not initialized yet)
+    twoPhaseDragFactorPtr_.reset
+    (
+        new twoPhaseDragFactor
+        (
+            F1SPair_,
+            F2SPair_,
+            *this
+        )
+    );
     
     //- This is specifically to avoid problem when solveAlpha is set to solve
     //  for only one phase, the one for which BCs and initial conditions are
@@ -478,9 +371,6 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     //- Set total volumetric flux (real one, not superficial)
     phi_ = fluid1_.alphaPhi() + fluid2_.alphaPhi();
 
-    //- Initialize drag coeff and heat transfer coeff tables
-    #include "initTables_2p.H"
-
     //- Create turbulence models. This is done outside of fluid constructors as
     //  turbulence models might require references to fields that do not exist
     //  yet (e.g. the Reynolds number between fluid and structure, or between
@@ -489,46 +379,12 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
     fluid1_.constructTurbulenceModel();
     fluid2_.constructTurbulenceModel();
 
-    //- Initialize local drag coeff and heat transfer coeff tables for each
-    //  (non-interpolated) regime
-    forAllIter
-    (
-        regimeTable,
-        regimeMap_->regimes(),
-        regimeIter
-    )
-    {
-        regime& regime(regimeIter()());
-        regime.initLocalTables(Kds_, htcs_);
-    }
+    //- Construct fluid diameter models
+    fluid1_.constructDiameterModel();
+    fluid2_.constructDiameterModel();
 
-    //- Init phaseChangeModel
-    if (this->found("phaseChangeModel"))
-    {
-        phaseChange_.reset
-        (
-            phaseChangeModel::New
-            (
-                this->subDict("phaseChangeModel"),
-                pimple_,
-                fluid1_,
-                fluid2_,
-                p_,
-                htcs_,
-                dmdt_,
-                iT12_,
-                iA12_
-            )
-        );
-    }
-
-    //-
-    U_ = this->U();
-    rho_ = this->rho();
-
-    //- Compute initialFluidMass (only relevant for compressibility effects,
-    //  yet it is still work in progress)
-    initialFluidMass_ = fvc::domainIntegrate(this->rho()*movingAlpha_);
+    //- Compute initialFluidMass
+    //initialFluidMass_ = fvc::domainIntegrate(fluid_.rho()*fluid_);
 
     Info << endl;
 }
@@ -536,64 +392,52 @@ Foam::thermalHydraulicModels::twoPhase::twoPhase
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-Foam::tmp<Foam::volScalarField> 
-Foam::thermalHydraulicModels::twoPhase::rho() const
-{
-    return 
-        (
-            fluid1_*fluid1_.rho() 
-        +   fluid2_*fluid2_.rho()
-        )/movingAlpha_;
-}
-
-
-Foam::tmp<Foam::volVectorField> 
-Foam::thermalHydraulicModels::twoPhase::U() const
-{
-    return fluid1_*fluid1_.U() + fluid2_*fluid2_.U();
-}
-
-
-void Foam::thermalHydraulicModels::twoPhase::correct
+//- Solve according to flags
+void Foam::thermalHydraulicsModels::twoPhase::correct
 (
     scalar& residual,
     bool solveFluidDynamics, 
     bool solveEnergy
 )
 {   
-    correctRegimes(solveFluidDynamics, solveEnergy);
+    correctModels(solveFluidDynamics, solveEnergy);
+    
+    //auto start = std::chrono::steady_clock::now();
     if (solveFluidDynamics)
     {
         correctFluidMechanics(residual);
     }
     
+    /*if (solveEnergy and pimple_.finalIter())
+    {
+        int N(pimple_.dict().getOrDefault<int>("nEnergyIter", 1));
+        for(int c = 1; c < N+1; c++)
+        {
+            Info << "\nEnergy: iteration " << c << endl;
+            //if (c != 1)
+                //correctModels(solveFluidDynamics, solveEnergy);
+            correctEnergy(residual);
+        }
+    }*/
+
     if (solveEnergy)
     {
         correctEnergy(residual);
     }
+    //auto end = std::chrono::steady_clock::now();
+    //std::chrono::duration<double> elapsed_seconds = end-start;
+    //Info << "solveAll: " << elapsed_seconds.count() << "s\n";
 
     Info << endl;
 }
 
-
-void Foam::thermalHydraulicModels::twoPhase::correctEnergy(scalar& residual)
-{
-    //- Solve fluid energy equations and update structure energy sources
-    #include "EEqns_2p.H"
-}
-
-
-void Foam::thermalHydraulicModels::twoPhase::correctFluidMechanics
+void Foam::thermalHydraulicsModels::twoPhase::correctFluidMechanics
 (
     scalar& residual
 )
 {
-    //- Solve continuity equations to compute new alphas
     #include "alphaEqns_2p.H"
-
-    //- Construct momentum matrices
     #include "UEqns_2p.H"
-
     if (momentumMode_ == momentumMode::faceCentered)
     {
         #include "pEqnf_2p.H"
@@ -603,128 +447,26 @@ void Foam::thermalHydraulicModels::twoPhase::correctFluidMechanics
         #include "pEqn_2p.H"
     }
 
-    //- Continuity error adjustments and infos
+    //- Continuity error adjustment and infos
     correctContErrs();
     printContErrs();
     calcCumulContErrs();
 }
 
+void Foam::thermalHydraulicsModels::twoPhase::correctEnergy(scalar& residual)
+{
+    #include "EEqns_2p.H"
+}
 
-void Foam::thermalHydraulicModels::twoPhase::correctRegimes
+void Foam::thermalHydraulicsModels::twoPhase::correctModels
 (
     bool solveFluidDynamics, 
     bool solveEnergy
 )
 {
-    //- Update spatial extent of regimes
-    regimeMap_->correct();
-    
-    //- Reset all relevant fields that need to be set by the regimes
-    forAllIter
-    (
-        volTensorFieldPtrTable,
-        Kds_,
-        iter
-    )
-    {
-        volTensorField& Kd(*iter());
-        //- Cache previous field for underrelaxation
-        Kd.storePrevIter(); 
-        Kd *= 0.0;
-    }
-    forAllIter
-    (
-        volScalarFieldPtrTable,
-        htcs_,
-        iter
-    )
-    {
-        volScalarField& htc(*iter());
-        //- Cache previous field of underrelaxation
-        //*oldHtcs_[iter.key()] = htc;
-        htc.storePrevIter();
-        htc *= 0.0;
-    }
-
-    //- Update continuity errors, incluisve of mass transfer. As mass transfer
-    //  can vary also if not doing fluidMechanics, continuityErrors are always
-    //  corrected, just in case (even though I have no clue why one would
-    //  do phase change simulations with fluidMechanics off, maybe a weird 
-    //  steady state?)
-    //correctContErrs();
-
-    //- Correct local regime fluid geometry models
-    forAllIter
-    (
-        regimeTable,
-        regimeMap_->regimes(),
-        regimeIter
-    )
-    {
-        regime& regime(regimeIter()());
-        if (!regime.requiresModelCorrection()) continue;
-        regime.correctFluidGeometryModels();
-    }
-
-    //- Some fluidGeometry models (e.g. sphericalTopology of 
-    //  fluidInterfacialArea) might depend on other fluidGeometry quantities,
-    //  so reset them only after having updated the local regime fluidModel
-    fluid1_.dispersion() *= 0.0;
-    fluid2_.dispersion() *= 0.0;
-    fluid1_.Dh() *= 0.0;
-    fluid2_.Dh() *= 0.0;
-
-    if(mesh_.relaxField(iA12_.name()))
-        iA12_.storePrevIter();
-    iA12_ *= 0.0;
-
-    //- Correct global fluid geometry fields. Why didn't I do these two loops
-    //  in one? Well, in the loop below, if the regime is interpolated, It will
-    //  be looking at the respective fields of interest (iA, fracs, etc.) of 
-    //  both the regimes from which it is interpolated from. However, nothing
-    //  guarantees that by the time I'm correcting an interpolated regime, I am
-    //  done correcting the regimes from which it is interpolated from. Thus, 
-    //  the previous loop corrects all non-interpolated regimes before using
-    //  them (among the non-interpolated ones) to correct the global fields
-    forAllConstIter
-    (
-        regimeTable,
-        regimeMap_->regimes(),
-        regimeIter
-    )
-    {
-        const regime& regime(regimeIter());
-        if (!regime.isCurrentlyPresent()) continue;
-        regime.correctFluidGeometryFields
-        (
-            iA12_,
-            fluid1_,
-            fluid2_,
-            F1SPair_,
-            F2SPair_
-        );
-    }
-
-    //- Correct BCs of global fields outside of regimes, as not the same
-    //  regimes might be present on all processors, meaning that a 
-    //  correctBoundaryConditions would be called on a global field an unequal
-    //  amount of times, resulting in an MPI wait error. Nonetheless, the
-    //  usefuleness of these BCs is debatable given that these fields are
-    //  (amlost?) always maniupulated on a cell-by-cell basis, except maybe for
-    //  the Dh
-    iA12_.correctBoundaryConditions();
-    fluid1_.Dh().correctBoundaryConditions();
-    fluid2_.Dh().correctBoundaryConditions();
-
-    //- Relax iA12_
-    iA12_.relax();
-
-    //- Update dimensionless numbers (Re, etc.). Done now as the previous loop
-    //  corrected (among others) the fluid characteristic dimensions which are
-    //  needed e.g. to compute the Reynolds numbers
-    FFPair_.correct();
-    F1SPair_.correct();
-    F2SPair_.correct();
+    //- Two-phase Reynolds. Logically it does not belong anywere else as it
+    //  involves both fluids and the structure (via the hydraulic diameter)
+    /*
     ReTwoPhase_ = 
         max
         (
@@ -738,72 +480,31 @@ void Foam::thermalHydraulicModels::twoPhase::correctRegimes
             +   fluid2_.normalized()*fluid2_.thermo().mu()
             ),
             dimensionedScalar("", dimless, 10)
-        );       
-    //- Correct local drag and heat transfer models. As these might depend on
-    //  dimensionless numbers such as Re, this must be done only after having
-    //  updated the pairs, which in turn is done only after updating the fluid
-    //  geometry. This is why it cannot be done in one loop
-    forAllIter
-    (
-        regimeTable,
-        regimeMap_->regimes(),
-        regimeIter
-    )
+        );*/
+    //auto start0 = std::chrono::steady_clock::now();
+    this->correctRegimeMaps();
+    //auto end0 = std::chrono::steady_clock::now();
+    //std::chrono::duration<double> elapsed_seconds0 = end0-start0;
+    //Info << "correctRegimes: " << elapsed_seconds0.count() << "s\n";
+    //auto start = std::chrono::steady_clock::now();
+    FFPair_.correct(solveFluidDynamics, solveEnergy);
+    F1SPair_.correct(solveFluidDynamics, solveEnergy);
+    F2SPair_.correct(solveFluidDynamics, solveEnergy);
+    twoPhaseDragFactorPtr_->correct();
+    //auto end = std::chrono::steady_clock::now();
+    //std::chrono::duration<double> elapsed_seconds = end-start;
+    //Info << "correctModels: " << elapsed_seconds.count() << "s\n";
+    /*
+    forAll(mesh_.cells(), i)
     {
-        regime& regime(regimeIter()());
-        if (!regime.requiresModelCorrection()) continue;
-        if (solveFluidDynamics) regime.correctDragModels();
-        if (solveEnergy) regime.correctHeatTransferModels();
+        Info<< i << " " << F1SPair_.Re()[i] << " " << fluid1_.dispersion()[i] 
+            << " " << fluid2_.dispersion()[i] << " " << F2SPair_.f()[i] 
+            << endl;
     }
-
-    //- Correct global drag and heat transfer coefficients' table. As stated
-    //  before, this loop and the previous one cannot be merged as nothing
-    //  guarantees that the local drag/heat transfer models of all the non-
-    //  interpolated regimes will have been updated before updating the
-    //  local interpolated regimes
-    forAllConstIter
-    (
-        regimeTable,
-        regimeMap_->regimes(),
-        regimeIter
-    )
-    {
-        const regime& regime(regimeIter());
-        if (!regime.isCurrentlyPresent()) continue;
-        if (solveFluidDynamics) regime.correctDragTable(Kds_);
-        if (solveEnergy) regime.correctHeatTransferTable(htcs_); 
-    }
-
-    //- Correct BCs of global fields outside of regimes, as not the same
-    //  regimes might be present on all processors, meaning that a 
-    //  correctBoundaryConditions would be called on a global field an unequal
-    //  amount of times, resulting in an MPI wait error. Nonetheless, the
-    //  usefuleness of these BCs is debatable given that these fields are
-    //  (amlost?) always maniupulated on a cell-by-cell basis
-    forAllIter
-    (
-        volTensorFieldPtrTable,
-        Kds_,
-        iter
-    )
-    {
-        volTensorField& Kd(*iter());
-        Kd.correctBoundaryConditions();
-    }
-    forAllIter
-    (
-        volScalarFieldPtrTable,
-        htcs_,
-        iter
-    )
-    {
-        volScalarField& htc(*iter());
-        htc.correctBoundaryConditions();
-    }
+    */
 }
 
-
-void Foam::thermalHydraulicModels::twoPhase::correctCourant()
+void Foam::thermalHydraulicsModels::twoPhase::correctCourant()
 {
     CoNum_ = 0.0;
     meanCoNum_ = 0.0;
@@ -839,7 +540,7 @@ void Foam::thermalHydraulicModels::twoPhase::correctCourant()
 }
 
 
-void Foam::thermalHydraulicModels::twoPhase::adjustTimeStep()
+void Foam::thermalHydraulicsModels::twoPhase::adjustTimeStep()
 {
     this->correctCourant();
 
@@ -868,7 +569,7 @@ void Foam::thermalHydraulicModels::twoPhase::adjustTimeStep()
                 if 
                 (
                     runTime_.controlDict().found("marginToPhaseChange")
-                and phaseChange_.valid()
+                //  and phaseChange_.valid()
                 )
                 {
                     scalar marginToPhaseChange
@@ -879,8 +580,14 @@ void Foam::thermalHydraulicModels::twoPhase::adjustTimeStep()
                         )
                     );
 
-                    scalar DT1(min(mag(fluid1_.T()-iT12_)().primitiveField()));
-                    scalar DT2(min(mag(fluid2_.T()-iT12_)().primitiveField()));
+                    scalar DT1
+                    (
+                        min(mag(fluid1_.T()-FFPair_.iT())().primitiveField())
+                    );
+                    scalar DT2
+                    (
+                        min(mag(fluid2_.T()-FFPair_.iT())().primitiveField())
+                    );
                     if 
                     (
                         (
@@ -940,7 +647,7 @@ void Foam::thermalHydraulicModels::twoPhase::adjustTimeStep()
 }
 
 
-void Foam::thermalHydraulicModels::twoPhase::correctContErrs()
+void Foam::thermalHydraulicsModels::twoPhase::correctContErrs()
 {
     volScalarField& cE1(fluid1_.contErr());
     volScalarField& cE2(fluid2_.contErr());
@@ -952,22 +659,25 @@ void Foam::thermalHydraulicModels::twoPhase::correctContErrs()
         fvc::ddt(fluid1_, rho1)
     +   fvc::div(fluid1_.alphaRhoPhi())
     -   (fvOptions_(fluid1_, rho1) & rho1)
-    +   dmdt_
     );
     cE2 = 
     (
         fvc::ddt(fluid2_, rho2) 
     +   fvc::div(fluid2_.alphaRhoPhi())
     -   (fvOptions_(fluid2_, rho2) & rho2)
-    -   dmdt_
     );
+    if (FFPair_.phaseChange())
+    {
+        cE1 += FFPair_.dmdt();
+        cE2 -= FFPair_.dmdt();
+    }
     
     cE1.correctBoundaryConditions();
     cE2.correctBoundaryConditions();
 }
 
 
-void Foam::thermalHydraulicModels::twoPhase::printContErrs()
+void Foam::thermalHydraulicsModels::twoPhase::printContErrs()
 {
     volScalarField contErrRel1(fluid1_.contErr()/fluid1_.rho());
     volScalarField contErrRel2(fluid2_.contErr()/fluid2_.rho());
@@ -979,7 +689,7 @@ void Foam::thermalHydraulicModels::twoPhase::printContErrs()
         << "1/s" << endl;
 }
 
-void Foam::thermalHydraulicModels::twoPhase::calcCumulContErrs()
+void Foam::thermalHydraulicsModels::twoPhase::calcCumulContErrs()
 {
     if (pimple_.finalIter())
     {
@@ -1016,5 +726,6 @@ void Foam::thermalHydraulicModels::twoPhase::calcCumulContErrs()
             << " kg/m3" << endl;
     }
 }
+
 
 // ************************************************************************* //

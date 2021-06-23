@@ -12,9 +12,9 @@ multiphysicsControl multiphysics
 
 //- Thermal-hydraulics -------------------------------------------------------/
 
-autoPtr<thermalHydraulicModel> pthermalHydraulics
+autoPtr<thermalHydraulicsModel> pthermalHydraulics
 (
-    thermalHydraulicModel::New
+    thermalHydraulicsModel::New
     (
         runTime,
         fluidMesh, 
@@ -22,7 +22,7 @@ autoPtr<thermalHydraulicModel> pthermalHydraulics
         fluidFvOptions
     )
 );
-thermalHydraulicModel& thermalHydraulics = pthermalHydraulics();
+thermalHydraulicsModel& thermalHydraulics = pthermalHydraulics();
 
 //- Silence "unused variable" warnings, I actually do use it and have no idea
 //  why the compiler does not "see" it

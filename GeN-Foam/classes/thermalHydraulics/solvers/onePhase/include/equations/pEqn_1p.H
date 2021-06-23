@@ -18,8 +18,8 @@ while (pimple_.correct(convergedPISO))
 {
     p_rgh_ = p_ - rho*gh_;
 
-    //- Correct fixed-flux BCs to be consistent with the velocity BCs
-    MRF_.correctBoundaryFlux(U, fluid_.phi());
+    //- Correct fixed-flux phi BCs to be consistent with the velocity BCs
+    #include "correctBoundaryFlux_1p.H"
 
     //- Construct H/A field
     volVectorField HbyA

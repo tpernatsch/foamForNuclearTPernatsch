@@ -2,20 +2,17 @@
 exe="GeN-Foam"
 
 # Start gnuplot if it exist
-if ! command -v gnuplot &> /dev/null
+if command -v gnuplot &> /dev/null
 then
-    echo "gnuplot could not be found"
+    gnuplot -e "log='log.$exe'" residuals - &> /dev/null &
 else
-    gnuplot residuals - &> /dev/null &
+    echo "gnuplot could not be found"
 fi
 
 decomposePar -region thermoMechanicalRegion
 decomposePar -region fluidRegion
 decomposePar -region neutroRegion
-mpirun -np 4 $exe -parallel | tee log.GeN-Foam
+mpirun -np 4 $exe -parallel | tee "log.$exe"
 
 # Kill gnuplot if it was started
-if command -v gnuplot &> /dev/null
-then
-    pkill -x gnuplot
-fi
+pkill -x gnuplot &> /dev/null &

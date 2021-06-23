@@ -36,8 +36,8 @@ while (pimple_.correct(convergedPISO))
 {
     p_rgh_ = p_ - rho*gh_;
 
-    //- Correct fixed-flux BCs to be consistent with the velocity BCs
-    MRF_.correctBoundaryFlux(U, fluid_.phi());
+    //- Correct fixed-flux phi BCs to be consistent with the velocity BCs
+    #include "correctBoundaryFlux_1p.H"
 
     //- Face-interpolated momentum source terms divided by diagonal coeffs.
     //  Currently includes only gravity/buoyancy and the optional pump momentum
@@ -51,12 +51,11 @@ while (pimple_.correct(convergedPISO))
         "phiHbyA",
         alpharAUf*
         (
-            alphaRhof0ByDt*MRF_.absolute(fluid_.phi().oldTime())
+            alphaRhof0ByDt*fluid_.phi().oldTime()
         +   fvc::flux(UEqn.H())
         )
         +   alphaf*phiSbyA
     );
-    MRF_.makeRelative(phiHbyA);
 
     #include "calcrAUfSetSnGradCalcComp_1p.H"
 
@@ -76,7 +75,8 @@ while (pimple_.correct(convergedPISO))
 
             fluid_.dgdt() = -pEqnComp & p_rgh_;
 
-            U = fvc::reconstruct(MRF_.absolute(fluid_.phi()));
+            //U = fvc::reconstruct(fluid_.phi());
+            #include "reconstructU_1p.H"
             
             U.correctBoundaryConditions();
             fvOptions_.correct(U);

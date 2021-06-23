@@ -10,7 +10,7 @@ bool solveTM(multiphysics.solveThermoMechanics());
 //- Correct flow regime map
 if (solveFM or solveE)
 {
-    thermalHydraulics.correctRegimes(solveFM, solveE);
+    thermalHydraulics.correctModels(solveFM, solveE);
 }
 
 //- Solve fluid-mechanics
