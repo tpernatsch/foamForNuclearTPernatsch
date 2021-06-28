@@ -64,7 +64,17 @@ Foam::structure::structure
             mesh
         ),
         mesh,
-        dimensionedTensor("", dimless, tensor::one),
+        dimensionedTensor
+        (
+            "", 
+            dimless, 
+            tensor
+            (
+                1, 0, 0,
+                0, 1, 0,
+                0, 0, 1
+            )
+        ),
         zeroGradientFvPatchScalarField::typeName
     ),
     Dh_
