@@ -15,7 +15,7 @@ FoamFile
     object          phaseProperties;
 }
 
-thermalHydraulicType "twoPhase";
+thermalHydraulicsType "twoPhase";
 
 fluid1          "liquid";
 
@@ -25,20 +25,28 @@ liquidProperties
 {
     thermoResidualAlpha 1e-05;
     stateOfMatter       liquid;
+    dispersedDiameterModel
+    {
+        type    constant;
+        value   0.005;
+    }
 }
 
 vapourProperties
 {
     thermoResidualAlpha 0.01;
     stateOfMatter       gas;
+    dispersedDiameterModel
+    {
+        type    constant;
+        value   0.005;
+    }
 }
 
 virtualMassCoeff 1e-1;
 
 structureProperties
 {
-    type            "byZone";
-    
     "pPipe:sPipe:pHX:sHX"
     {
         volumeFraction  0.5;
@@ -92,124 +100,51 @@ structureProperties
     }
 }
 
-regimeMapModel
+regimeMapModels
 {
-    type                oneParameter;
-    interpolationMode   quadratic;
-    parameter           "normalized.alpha.vapour";
-    regimeBounds
+    "regimeMap01"
     {
-        "regime0"       ( 0     0.79);
-        "regime1"       ( 0.99  1 );
-    }
+        type                oneParameter;
+        interpolationMode   quadratic;
+        parameter           "normalized.alpha.vapour";
+        regimeBounds
+        {
+            "regime0"       ( 0     0.79);
+            "regime1"       ( 0.99  1 );
+        }
+    }   
 }
 
-physicsModelsByRegime
+physicsModels
 {
-    "regime0"
+    dragModels
     {
-        dragModels
+        "liquid.vapour"
         {
-            "liquid.vapour"
-            {
-                type    SchillerNaumann;
-            }
-            "liquid.structure"
-            {
-                "pPipe:sPipe:pHX:sHX:heater"
-                {
-                    type                DarcyReynoldsPower;
-                    coeff               0.316;
-                    exp                 -0.25;
-                }
-            }
+            type    SchillerNaumann;
         }
-
-        twoPhaseDragMultiplierModel
+        "liquid.structure"
         {
-            type                LottesFlinn;
-            multiplierFluid     "liquid";
-        }
-
-        heatTransferModels
-        {
-            "liquid.vapour"
+            "pPipe:sPipe:pHX:sHX:heater"
             {
-                type            NusseltReynoldsPrandtlPower;
-                const           10;
-                coeff           0;
-                expRe           0;
-                expPr           0;
-            }
-            "vapour.liquid"
-            {
-                type            NusseltReynoldsPrandtlPower;
-                const           10;
-                coeff           0;
-                expRe           0;
-                expPr           0;
-            }
-            "liquid.structure"
-            {
-                "heater:pHX:sHX"
-                {
-                    type            NusseltReynoldsPrandtlPower;
-                    const           4;
-                    coeff           0.015;
-                    expRe           0.7;
-                    expPr           0.7;
-                }
-            }
-        }
-
-        fluidGeometry
-        {
-            dispersed       "vapour";
-            dispersedFluidDiameterModel
-            {
-                type            constant;
-                value           0.005;
-            }
-            fluidInterfacialAreaModel
-            {
-                type            sphericalTopology;
-            }
-            fluidPartitionModel
-            {
-                type            constant;
-                liquid          1.0;
-                vapour          0;
+                type                ReynoldsPower;
+                coeff               0.316;
+                exp                 -0.25;
             }
         }
     }
-    "regime1"
+
+    twoPhaseDragMultiplierModel
     {
-        dragModels
-        {
-            "liquid.vapour"
-            {
-                type    SchillerNaumann;
-            }
-            "liquid.structure"
-            {
-                "pPipe:sPipe:pHX:sHX:heater"
-                {
-                    type                DarcyReynoldsPower;
-                    coeff               0.316;
-                    exp                 -0.25;
-                }
-            }
-        }
+        type                LottesFlinn;
+        multiplierFluid     "liquid";
+    }
 
-        twoPhaseDragMultiplierModel
+    heatTransferModels
+    {
+        "liquid.vapour"
         {
-            type                LottesFlinn;
-            multiplierFluid     "liquid";
-        }
-
-        heatTransferModels
-        {
-            "liquid.vapour"
+            "liquid"
             {
                 type            NusseltReynoldsPrandtlPower;
                 const           10;
@@ -217,7 +152,7 @@ physicsModelsByRegime
                 expRe           0;
                 expPr           0;
             }
-            "vapour.liquid"
+            "vapour"
             {
                 type            NusseltReynoldsPrandtlPower;
                 const           10;
@@ -225,53 +160,77 @@ physicsModelsByRegime
                 expRe           0;
                 expPr           0;
             }
-            "vapour.structure"
+        }
+        "liquid.structure"
+        {
+            "heater:pHX:sHX"
             {
-                "heater:pHX:sHX"
+                type            NusseltReynoldsPrandtlPower;
+                const           4;
+                coeff           0.015;
+                expRe           0.7;
+                expPr           0.7;
+            }
+        }
+    }
+
+    pairGeometryModels
+    {
+        "liquid.vapour"
+        {
+            dispersionModel
+            {
+                type            byRegime;
+                regimeMap       "regimeMap01";
+                "regime0"
                 {
-                    type            NusseltReynoldsPrandtlPower;
-                    const           4;
-                    coeff           0.015;
-                    expRe           0.7;
-                    expPr           0.7;
+                    type            constant;
+                    dispersedPhase  "vapour";
+                }
+                "regime1"
+                {
+                    type            constant;
+                    dispersedPhase  "liquid";
+                }
+            }
+            interfacialAreaDensityModel
+            {
+                type            spherical;
+            }
+        }
+        "liquid.structure"
+        {
+            contactPartitionModel
+            {
+                type            byRegime;
+                regimeMap       "regimeMap01";
+                "regime0"
+                {
+                    type        constant;
+                    value       1.0;
+                }
+                "regime1"
+                {
+                    type        constant;
+                    value       0;
                 }
             }
         }
+    }
 
-        fluidGeometry
+    phaseChangeModel
+    {
+        type                heatDriven;
+        mode                conductionLimited;
+        latentHeatModel
         {
-            dispersed       "vapour";
-            dispersedFluidDiameterModel
-            {
-                type            constant;
-                value           0.005;
-            }
-            fluidInterfacialAreaModel
-            {
-                type            sphericalTopology;
-            }
-            fluidPartitionModel
-            {
-                type            constant;
-                liquid          0.0;
-                vapour          1.0;
-            }
+            type            FinkLeibowitz;
+            adjust          true;
         }
-    }
-}
-
-phaseChangeModel
-{
-    type                            heatDriven;
-    mode                            conductionLimited;
-    latentHeatModel
-    {
-        type            FinkLeibowitz;
-        adjust          true;
-    }
-    saturationModel
-    {
-        type            BrowningPotter;
+        saturationModel
+        {
+            type            BrowningPotter;
+        }
     }
 }
 

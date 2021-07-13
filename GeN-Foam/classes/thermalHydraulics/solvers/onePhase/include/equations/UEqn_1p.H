@@ -7,33 +7,7 @@ volVectorField& U(fluid_.U());
 const volScalarField& alpha(fluid_);
 volScalarField& rho(fluid_.rho());
 fvVectorMatrix UEqn(U, dimMass*dimLength/dimTime/dimTime);
-
-//- Drag between fluid and structure rotated in global reference frame
-volTensorField Kds
-(
-    IOobject
-    (
-        "Kds",
-        mesh_.time().timeName(),
-        mesh_
-    ),
-    (
-        structure_.Rl2g() 
-    &   (*Kds_["FSPair"])
-    &   structure_.Rg2l()
-    ),
-    zeroGradientFvPatchScalarField::typeName
-);
-Kds.correctBoundaryConditions();
-
-/*
-volScalarField magKds(mag(Kds)/sqrt(3.0));
-Info<< "Kds (avg min max) = "
-        << magKds.weightedAverage(mesh_.V()).value()
-        << " " << min(magKds).value()
-        << " " << max(magKds).value()
-        << " kg/m3/s" << endl;
-*/
+const volTensorField& Kds(FSPair_.Kd());
 
 fluid_.turbulence().correct();
 
@@ -48,7 +22,6 @@ fluid_.turbulence().correct();
     (
             fvm::div(fluid_.alphaRhoPhi(), U, "div(alphaRhoPhi,U)")
         +   fvm::SuSp(-fluid_.contErr(), U)
-        +   MRF_.DDt(alpha*rho, U)
             //- The following is just a re-arrangement of div(nu*grad(U))
         +   (
                 -   fvm::laplacian(alpha*rho*nuEff, U)

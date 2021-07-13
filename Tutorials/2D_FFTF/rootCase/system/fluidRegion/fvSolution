@@ -53,7 +53,7 @@ PIMPLE
     correctUntilConvergence true;
     momentumMode    cellCenteredFaceReconstruction;
     porousInterfaceSharpness 0.5;
-    minKdFS         1;
+
     residualControl
     {
         p_rgh

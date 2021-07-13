@@ -2,9 +2,8 @@
 EXE_INC = \
     -I./main \
     -I./main/include \
-    -I./classes/thermalHydraulics/models/lnInclude \
-    -I./classes/thermalHydraulics/solvers/lnInclude \
     -I./classes/thermalHydraulics/src/lnInclude \
+    -I./classes/thermalHydraulics/solvers/lnInclude \
     -I./classes/neutronics \
     -I./classes/neutronics/albedoSP3 \
     -I./classes/neutronics/include \
@@ -46,9 +45,8 @@ EXE_INC = \
     -I$(LIB_SRC)/dynamicMesh/lnInclude
 
 EXE_LIBS = \
-    -L$(FOAM_USER_LIBBIN) -lFFSModels2 \
-    -L$(FOAM_USER_LIBBIN) -lFFSSolvers2 \
     -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
+    -L$(FOAM_USER_LIBBIN) -lFFSSolvers2 \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \
     -lsolidThermo \

@@ -42,7 +42,7 @@ Foam::multiphysicsControl::multiphysicsControl
     fvMesh& TMMesh
 )
 :
-    myPimpleControl
+    customPimpleControl
     (
         THMesh,
         "PIMPLE"
@@ -79,7 +79,7 @@ Foam::multiphysicsControl::multiphysicsControl
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-//- Copied straight from myPimpleControl to modify infos
+//- Copied straight from customPimpleControl to modify infos
 bool Foam::multiphysicsControl::loop()
 {
     read();
@@ -102,7 +102,7 @@ bool Foam::multiphysicsControl::loop()
     }
  
     bool completed = false;
-    if (converged_ || myPimpleControl::criteriaSatisfied())
+    if (converged_ || customPimpleControl::criteriaSatisfied())
     {
         if (converged_)
         {
@@ -149,7 +149,7 @@ bool Foam::multiphysicsControl::loop()
 
 bool Foam::multiphysicsControl::read()
 {
-    myPimpleControl::read();
+    customPimpleControl::read();
     nCorrPIMPLE_ = topLevelDict_.get<label>("nOuterCorrectors");
     solveFlow_ = 
         runTime_.controlDict().lookupOrDefault<bool>

@@ -42,7 +42,7 @@ SourceFiles
 #ifndef onePhaseLegacy_H
 #define onePhaseLegacy_H
 
-#include "thermalHydraulicModel.H"
+#include "thermalHydraulicsModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -54,7 +54,7 @@ class regime;
 class regimeMapModel;
 class saturationModel;
 
-namespace thermalHydraulicModels
+namespace thermalHydraulicsModels
 {
 
 /*---------------------------------------------------------------------------*\
@@ -63,7 +63,7 @@ namespace thermalHydraulicModels
 
 class onePhaseLegacy
 :
-    public thermalHydraulicModel
+    public thermalHydraulicsModel
 {
 public:
 
@@ -81,29 +81,15 @@ private:
     //- Phases
 
         //- Structure
-        autoPtr<structureModel> structurePtr_;
-        structureModel& structure_;
+        structure structure_;
 
         //- Fluid
         fluid fluid_;
 
     //- Phase pairs
         
-        //- Fluid2 - structure
+        //- Fluid - structure
         FSPair FSPair_;
-    
-    //- Phase interaction related  
-        
-        //- table of drag coefficients between the fluid and each
-        //  structure region (currently only defined in terms of cellZone)
-        volTensorFieldPtrTable Kds_;
-
-        //- table of heat transfer coefficients between the fluid and each
-        //  structure region
-        volScalarFieldPtrTable htcs_;
-
-        //- Regime map
-        autoPtr<regimeMapModel> regimeMap_;
 
     //- Container for the cumulative continuity error
         scalar cumulativeContErr_;
@@ -149,7 +135,7 @@ public:
         (
             Time& time,
             fvMesh& mesh, 
-            myPimpleControl& pimple, 
+            customPimpleControl& pimple, 
             fv::options& fvOptions
         );
 
@@ -174,8 +160,8 @@ public:
         //  the flow regime map
         virtual void correctFluidMechanics(scalar& residual);
 
-        //- Correct flow regime map and all the coupling fields
-        virtual void correctRegimes
+        //- Correct models and coupling fields
+        virtual void correctModels
         (
             bool solveFluidDynamics, 
             bool solveEnergy
@@ -191,7 +177,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace thermalHydraulicModels
+} // End namespace thermalHydraulicsModels
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

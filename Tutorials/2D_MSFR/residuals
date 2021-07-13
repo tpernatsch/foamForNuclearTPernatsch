@@ -6,14 +6,14 @@ set title log
 set logscale y
 set ylabel 'Residual (-)'
 set xlabel 'Iteration (-)'
-plot "< cat ". log ." | grep 'Solving for p_rgh' | cut -d' ' -f9 | tr -d ','" title 'p-rgh' with lines,\
+plot x notitle with line linecolor rgb"#ffffff",\
+"< cat ". log ." | grep 'Solving for p_rgh' | cut -d' ' -f9 | tr -d ','" title 'p-rgh' with lines,\
 "< cat ". log ." | grep 'Solving for h,' | cut -d' ' -f9 | tr -d ','" title 'h' with lines,\
 "< cat ". log ." | grep 'Solving for h.". fluid1 ."' | cut -d' ' -f9 | tr -d ','" title 'h.'.fluid1 with lines,\
 "< cat ". log ." | grep 'Solving for h.". fluid2 ."' | cut -d' ' -f9 | tr -d ','" title 'h.'.fluid2 with lines,\
 "< cat ". log ." | grep 'Final neutroResidual' | cut -d' ' -f8 | tr -d ','" title 'fluxes' with lines,\
 "< cat ". log ." | grep 'Solving for dispx' | cut -d' ' -f9 | tr -d ','" title 'dispx' with lines,\
 "< cat ". log ." | grep 'Solving for dispy' | cut -d' ' -f9 | tr -d ','" title 'dispy' with lines,\
-"< cat ". log ." | grep 'Solving for dispz' | cut -d' ' -f9 | tr -d ','" title 'dispz' with lines,\
-x notitle with line linecolor rgb"#ffffff" # This is required to have an empty plot before the log is created
+"< cat ". log ." | grep 'Solving for dispz' | cut -d' ' -f9 | tr -d ','" title 'dispz' with lines
 pause 1
 reread

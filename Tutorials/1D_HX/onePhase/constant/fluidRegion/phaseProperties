@@ -15,12 +15,10 @@ FoamFile
     object          phaseProperties;
 }
 
-thermalHydraulicType "onePhase";
+thermalHydraulicsType "onePhase";
 
 structureProperties
 {
-    type            "byZone";
-    
     "pPipe:sPipe:pHX:sHX"
     {
         volumeFraction  0.5;
@@ -75,18 +73,17 @@ structureProperties
     }
 }
 
-regimeMapModel
+regimeMapModels
 {
-    type                none;
 }
 
-physicsModelsByRegime
+physicsModels
 {
     dragModels
     {
         "pPipe:sPipe:pHX:sHX:heater"
         {
-            type                DarcyReynoldsPower;
+            type                ReynoldsPower;
             coeff               0.316;
             exp                 -0.25;
         }
