@@ -2,7 +2,7 @@
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-tutorials="1D_HX 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange " #Godiva_SN
+tutorials="1D_HX 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange Godiva_SN"
 #tutorials="1D_MSR_pointKinetics" #Godiva_SN
 touch regressionResults
 rm regressionResults
@@ -292,7 +292,7 @@ do
         cd ..
         
         # check that keff for esfr steady State is ~0.980106
-        keff=$(foamDictionary ./steadyState/processor0/constant/neutroRegion/reactorState -entry keff -value)
+        keff=$(foamDictionary ./processor0/constant/neutroRegion/reactorState -entry keff -value)
         printf "keff is $keff . It should be 0.980106  \n" >> ../$resFile
 
         ;;

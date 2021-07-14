@@ -73,7 +73,7 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     fluid_
     (
         (this->found("fluidProperties")) 
-    ?   this->subDict("fluidProperties") : this,
+    ?   this->subDict("fluidProperties") : *this,
         mesh,
         word(""),   //- This is the phase name, setting it to "" signals a
                     //  onePhase solver to the rest of the FFS library

@@ -23,7 +23,8 @@ delayed neutron precursors in MSRs would require knowledge of the adjoint
 flux. In GeN-Foam, the adjoint flux is approximated by the oneGroupFlux.
 When fluxes are not calculated via a diffusion calculation, one has to
 manually provide the oneGroupFlux in 0/neutroRegion. In this tutorial,
-the oneGroupFlux has been set to 1 in the core and zero elsewhere. 
+the oneGroupFlux has been set to 1 in the core and zero elsewhere. This
+is done via the initialOneGroupFluxByZone keyword in nuclearData.
 
 A few python files are provided to plot essential results (for instance:
  python plotPKPower_Temp.py ./transient/log.GeN-Foam ). In addition, a 

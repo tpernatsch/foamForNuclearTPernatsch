@@ -104,8 +104,8 @@ Foam::powerModels::constantPower::constantPower
 {
     this->setInterfacialArea();
     
-    structure_.setRegionField(this, powerDensity_, "powerDensity");
-    structure_.setRegionField(this, T_, "T");
+    structure_.setRegionField(*this, powerDensity_, "powerDensity");
+    structure_.setRegionField(*this, T_, "T");
 
     forAll(this->toc(), regioni)
     {

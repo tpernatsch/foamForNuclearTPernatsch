@@ -73,7 +73,7 @@ Foam::powerModels::constantTemperature::constantTemperature
     )
 {
     this->setInterfacialArea();
-    structure_.setRegionField(this, T_, "T");
+    structure_.setRegionField(*this, T_, "T");
 }
 
 

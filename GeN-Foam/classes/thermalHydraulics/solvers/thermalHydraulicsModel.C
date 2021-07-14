@@ -195,7 +195,7 @@ Foam::thermalHydraulicsModel::thermalHydraulicsModel
     (
         p_,
         p_rgh_,
-        this,
+        *this,
         pRefCell_,
         pRefValue_,
         forcePRef_

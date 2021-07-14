@@ -196,7 +196,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     gapHPowerDensityTable_(0),
     useGapHPowerDensityTable_(0)
 {   
-    structure_.setRegionField(this, powerDensity_, "powerDensity");
+    structure_.setRegionField(*this, powerDensity_, "powerDensity");
 
     bool foundBoundaryTemperatures
     (
