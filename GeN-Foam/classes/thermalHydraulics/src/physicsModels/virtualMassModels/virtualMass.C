@@ -88,12 +88,12 @@ Foam::virtualMass::virtualMass
     VmForces_.set
     (
         U1_.name(),
-        fvVectorMatrix(fluid1_.U(), dimMass*dimLength/dimTime/dimTime)
+        new fvVectorMatrix(fluid1_.U(), dimMass*dimLength/dimTime/dimTime)
     );
     VmForces_.set
     (
         U2_.name(),
-        fvVectorMatrix(fluid2_.U(), dimMass*dimLength/dimTime/dimTime)
+        new fvVectorMatrix(fluid2_.U(), dimMass*dimLength/dimTime/dimTime)
     );
 }
 
@@ -124,7 +124,7 @@ void Foam::virtualMass::correct()
         alphaRhoVm *= pair_.rhoContinuous();
 
     //-
-    VmForces_[U1_.name()] = 
+    *(VmForces_[U1_.name()]) = 
         alphaRhoVm*
         (
             fvm::ddt(U1_)
@@ -137,7 +137,7 @@ void Foam::virtualMass::correct()
             )
         );
 
-    VmForces_[U2_.name()] = 
+    *(VmForces_[U2_.name()]) = 
         alphaRhoVm*
         (
             fvm::ddt(U2_)

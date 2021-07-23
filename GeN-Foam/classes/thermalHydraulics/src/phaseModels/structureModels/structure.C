@@ -55,28 +55,6 @@ Foam::structure::structure
     ),
     regions_(0),
     cells_(0),
-    tortuosity_
-    (
-        IOobject
-        (
-            "tortuosity",
-            mesh.time().timeName(),
-            mesh
-        ),
-        mesh,
-        dimensionedTensor
-        (
-            "", 
-            dimless, 
-            tensor
-            (
-                1, 0, 0,
-                0, 1, 0,
-                0, 0, 1
-            )
-        ),
-        zeroGradientFvPatchScalarField::typeName
-    ),
     Dh_
     (
         IOobject
@@ -482,56 +460,58 @@ Foam::structure::structure
             bool foundLocalZ(zoneDict.found("localZ"));
             if (foundLocalX or foundLocalZ)
             {
-                Rl2gPtr_.reset
-                (
-                    new volTensorField
+                if (!Rl2gPtr_.valid())
+                    Rl2gPtr_.reset
                     (
-                        IOobject
+                        new volTensorField
                         (
-                            "R.localToGlobal",
-                            mesh.time().timeName(),
-                            mesh
-                        ),
-                        mesh,
-                        dimensionedTensor
-                        (
-                            "", 
-                            dimless, 
-                            tensor
+                            IOobject
                             (
-                                1,0,0,
-                                0,1,0,
-                                0,0,1
-                            )
-                        ),
-                        zeroGradientFvPatchTensorField::typeName
-                    )
-                );
-                Rg2lPtr_.reset
-                (
-                    new volTensorField
+                                "R.localToGlobal",
+                                mesh.time().timeName(),
+                                mesh
+                            ),
+                            mesh,
+                            dimensionedTensor
+                            (
+                                "", 
+                                dimless, 
+                                tensor
+                                (
+                                    1,0,0,
+                                    0,1,0,
+                                    0,0,1
+                                )
+                            ),
+                            zeroGradientFvPatchTensorField::typeName
+                        )
+                    );
+                if (!Rg2lPtr_.valid())
+                    Rg2lPtr_.reset
                     (
-                        IOobject
+                        new volTensorField
                         (
-                            "R.globalToLocal",
-                            mesh.time().timeName(),
-                            mesh
-                        ),
-                        mesh,
-                        dimensionedTensor
-                        (
-                            "", 
-                            dimless, 
-                            tensor
+                            IOobject
                             (
-                                1,0,0,
-                                0,1,0,
-                                0,0,1
-                            )
-                        ),
-                        zeroGradientFvPatchTensorField::typeName
-                    )
-                );
+                                "R.globalToLocal",
+                                mesh.time().timeName(),
+                                mesh
+                            ),
+                            mesh,
+                            dimensionedTensor
+                            (
+                                "", 
+                                dimless, 
+                                tensor
+                                (
+                                    1,0,0,
+                                    0,1,0,
+                                    0,0,1
+                                )
+                            ),
+                            zeroGradientFvPatchTensorField::typeName
+                        )
+                    );
                 volTensorField& Rl2g(Rl2gPtr_());
                 volTensorField& Rg2l(Rg2lPtr_());
 
@@ -634,32 +614,56 @@ Foam::structure::structure
             //  be rotated to the global frame via R & Q & R.T(). In this case,
             //  R = Rl2g. Note that while Rl2g.T() = Rg2l, Rl2g.T() was kept 
             //  for clarity
-            vector lTortuosityVector
-            (
-                zoneDict.lookupOrDefault<vector>
+            if (zoneDict.found("localTortuosity"))
+            {
+                if (!tortuosityPtr_.valid())
+                    tortuosityPtr_.reset
+                    (
+                        new volTensorField
+                        (
+                            IOobject
+                            (
+                                "tortuosity",
+                                mesh.time().timeName(),
+                                mesh
+                            ),
+                            mesh,
+                            dimensionedTensor
+                            (
+                                "", 
+                                dimless, 
+                                tensor(1,0,0,0,1,0,0,0,1)
+                            ),
+                            zeroGradientFvPatchScalarField::typeName
+                        )
+                    );
+                volTensorField& tortuosity = tortuosityPtr_();
+                vector lTortuosityVector
                 (
-                    "localTortuosity", 
-                    vector::one
-                )
-            );
-            tensor lTortuosity(tensor::zero);
-            lTortuosity[0] = lTortuosityVector[0];
-            lTortuosity[4] = lTortuosityVector[1];
-            lTortuosity[8] = lTortuosityVector[2];
-            if (this->hasLocalReferenceFrame())
-            {
-                forAll(zoneCellList, j)
+                    zoneDict.get<vector>("localTortuosity")
+                );
+                tensor lTortuosity
+                (
+                    lTortuosityVector[0], 0, 0,
+                    0, lTortuosityVector[1], 0,
+                    0, 0, lTortuosityVector[2]
+                );
+                if (this->hasLocalReferenceFrame())
                 {
-                    label cellj(zoneCellList[j]);
-                    tortuosity_[cellj] = Rl2g()[cellj] & lTortuosity & Rg2l()[cellj];
+                    forAll(zoneCellList, j)
+                    {
+                        label cellj(zoneCellList[j]);
+                        tortuosity[cellj] = 
+                            Rl2g()[cellj] & lTortuosity & Rg2l()[cellj];
+                    }
                 }
-            }
-            else
-            {
-                forAll(zoneCellList, j)
+                else
                 {
-                    label cellj(zoneCellList[j]);
-                    tortuosity_[cellj] = lTortuosity;
+                    forAll(zoneCellList, j)
+                    {
+                        label cellj(zoneCellList[j]);
+                        tortuosity[cellj] = lTortuosity;
+                    }
                 }
             }
         }
@@ -679,7 +683,10 @@ Foam::structure::structure
     iApas_.correctBoundaryConditions();
     alphapas_.correctBoundaryConditions();
     lDh_.correctBoundaryConditions();
-    tortuosity_.correctBoundaryConditions();
+    if (tortuosityPtr_.valid())
+    {
+        tortuosityPtr_().correctBoundaryConditions();
+    }
     if (momentumSourcePtr_.valid())
     {
         momentumSourcePtr_().correctBoundaryConditions();

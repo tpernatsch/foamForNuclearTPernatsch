@@ -62,7 +62,6 @@ Foam::contactPartitionModels::complementary::complementary
     complementaryModel_(nullptr)
 {}
 
-
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 Foam::scalar Foam::contactPartitionModels::complementary::value
@@ -70,9 +69,21 @@ Foam::scalar Foam::contactPartitionModels::complementary::value
     const label& celli
 ) const
 {
-    return 0.0;
-}
+    if (complementaryModel_ == nullptr)
+    {
+        HashTable<const contactPartitionModel*> models
+        (
+            mesh_.lookupClass<contactPartitionModel>()
+        );
+        complementaryModel_ = 
+        (
+            (this->type() == models[models.toc()[0]]->type()) ?
+            models[models.toc()[1]] : models[models.toc()[0]]
+        );
+    }
 
+    return 1.0 - complementaryModel_->value(celli);
+}
 
 void Foam::contactPartitionModels::complementary::correctField
 (
@@ -86,7 +97,7 @@ void Foam::contactPartitionModels::complementary::correctField
         complementaryPair_ = 
         &(
             (pair_.name() == pairs[pairs.toc()[0]]->name()) ? 
-            pairs[pairs.toc()[0]] : pairs[pairs.toc()[0]]
+            pairs[pairs.toc()[1]] : pairs[pairs.toc()[0]]
         );
     }
     f = 1.0-complementaryPair_->f();
@@ -100,7 +111,7 @@ void Foam::contactPartitionModels::complementary::correctField
         complementaryModel_ = 
         (
             (this->type() == models[models.toc()[0]]->type()) ?
-            models[models.toc()[0]] : models[models.toc()[0]]
+            models[models.toc()[1]] : models[models.toc()[0]]
         );
     }
 
@@ -110,6 +121,5 @@ void Foam::contactPartitionModels::complementary::correctField
     }
     f.correctBoundaryConditions();
 }
-
 
 // ************************************************************************* //

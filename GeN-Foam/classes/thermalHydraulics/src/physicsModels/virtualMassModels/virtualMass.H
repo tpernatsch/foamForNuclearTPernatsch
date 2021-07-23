@@ -82,9 +82,9 @@ protected:
 
     volScalarField Vm_;
 
-    typedef HashTable<fvVectorMatrix, word, word::hash> VmForceTable;
-
-    VmForceTable VmForces_;
+    typedef HashTable<fvVectorMatrix*, word, word::hash> 
+        fvVectorMatrixPtrTable;
+    fvVectorMatrixPtrTable VmForces_;
 
 public:
 
@@ -111,7 +111,7 @@ public:
 
             const fvVectorMatrix& force(const word& UName) const
             {
-                return VmForces_[UName];
+                return *VmForces_[UName];
             }
 };
 

@@ -60,7 +60,7 @@ protected:
 
     //const FSPair* complementaryPair_;
 
-    const contactPartitionModel* complementaryModel_;
+    mutable const contactPartitionModel* complementaryModel_;
 
 public:
 
@@ -88,7 +88,6 @@ public:
         //-
         virtual void correctField(volScalarField& f) override;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

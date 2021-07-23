@@ -92,8 +92,7 @@ public:
 
     // Member Functions
 
-        //- Return fraction of structure interfacial contact in
-        //  contact with the dispersed fluid
+        //- Return value predicted by model
         virtual valueType value(const label& celli) const;
 };
 

@@ -348,7 +348,7 @@ void Foam::FSPair::correct
     {
         //- This is to rotate the fluid velocity from the global frame to the
         //  local one
-        const volTensorField R(structure_.Rg2l());
+        const volTensorField& R(structure_.Rg2l());
         forAll(mesh_.cells(), i)
         {
             scalar alphaByNu(fluid_.normalized()[i]/nu[i]);

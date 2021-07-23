@@ -22,25 +22,41 @@ if(incompressibleTreatment_)
 }
 fluid_.turbulence().correct();
 
-volTensorField nuEff
-(
-    structure_.tortuosity()
-   *fluid_.turbulence().nuEff()()
-);
+volScalarField nuEff(fluid_.turbulence().nuEff()());
 
 UEqn = 
 (
         fvm::ddt(fixedRho_, UDarcy)
     +   (1/alpha)*fvm::div(phiDarcy, UDarcy, "div(phiDarcy,UDarcy)")
     -   (1/alpha)*fvm::SuSp(fluid_.contErr(), UDarcy)
-        //- The following is just a re-arrangement of div(nu*grad(U))
+    //- Diffusion term (i.e. fluid_.turbulence().divDevRhoReff(U))
+    //  but re-expressed so to: 1) either allow to use a tensor
+    //  diffusivity (i.e. nuEff*structure_.tortuosity()) if the 
+    //  structure is tortuous; 2) if not tortuous, still allow me to
+    //  specify the div interpolation scheme (i.e. "div(RhoPhiNu,UDarcy)")
     +   (
+            (structure_.tortuosityPtr().valid()) ? 
+            (
+            -   fvm::laplacian
+                (
+                    fixedRho_*nuEff*structure_.tortuosity(), 
+                    UDarcy
+                )
+            -   fvc::div
+                (
+                    fixedRho_*nuEff*structure_.tortuosity()
+                &   dev2(T(fvc::grad(UDarcy))), 
+                    "div(RhoPhiNu,UDarcy)"
+                )
+            ) :
+            (
             -   fvm::laplacian(fixedRho_*nuEff, UDarcy)
             -   fvc::div
                 (
-                    fixedRho_*nuEff&dev2(T(fvc::grad(UDarcy))), 
+                    fixedRho_*nuEff*dev2(T(fvc::grad(UDarcy))), 
                     "div(RhoPhiNu,UDarcy)"
                 )
+            )
         )
         //- Implicit diagonal contribution of fluid-structure drag, 
         //  explicit off-diagonal contribution

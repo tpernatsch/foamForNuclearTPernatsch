@@ -53,11 +53,16 @@ contactPartitionModel
     (
         IOobject
         (
-            typeName,
+            typeName+"."+pair.name(),
             pair.mesh().time().timeName(),
             objReg,
             IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::NO_WRITE,
+            true    //- Force registry check-in. If you do not do this, for 
+                    //  some reason, the code fails to check-in the second
+                    //  contact partition model that is constructed (and this
+                    //  is required in order to have a properly working 
+                    //  complemetaryContactPartition model, if it exists)
         ),
         dict
     ),
