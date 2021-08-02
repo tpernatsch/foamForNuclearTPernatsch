@@ -22,99 +22,94 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::virtualMass
+    Foam::flowEnhancementFactorModel
 
 Description
-    Class to handle fluid-fluid interfacial area
 
 Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Stefan Radman (sradman@protonmail.com; stefan.radman@epfl.ch)
 
 SourceFiles
-    virtualMass.C
-    newInterfacialAreaModel.C
+    flowEnhancementFactorModel.C
+    newFlowEnhancementFactorModel.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef virtualMass_H
-#define virtualMass_H
+#ifndef flowEnhancementFactorModel_H
+#define flowEnhancementFactorModel_H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #include "fluid.H"
-#include "fvMatrix.H"
-#include "virtualMassCoefficientModel.H"
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+#include "structure.H"
+#include "runTimeSelectionTables.H"
 
 namespace Foam
 {
 
-class FFPair;
+//- Put them in a new FSHeatTransferCoefficientSubModels namespace? Eh, I don't 
+//  know how handy this is
+
+//-
+class FSPair;
 
 /*---------------------------------------------------------------------------*\
-            Class virtualMass Declaration
+                           Class flowEnhancementFactorModel Declaration
 \*---------------------------------------------------------------------------*/
 
-class virtualMass
+class flowEnhancementFactorModel
 :
     public IOdictionary
 {
 protected:
 
-    const fvMesh& mesh_;
-
-    const FFPair& pair_;
-
-    const fluid& fluid1_;
-
-    const fluid& fluid2_;
-
-    const volVectorField& U1_;
-    
-    const volVectorField& U2_;
-    
-    const surfaceScalarField& phi1_;
-    
-    const surfaceScalarField& phi2_;
-
-    autoPtr<virtualMassCoefficientModel> VmPtr_;
-
-    volScalarField Vm_;
-
-    typedef HashTable<fvVectorMatrix, word, word::hash> VmForceTable;
-
-    VmForceTable VmForces_;
+    //- Ref to pair
+    const FSPair& pair_;
 
 public:
 
-    //- Runtime type information
-    TypeName("virtualMass");
+    TypeName("flowEnhancementFactorModel");
 
-    // Constructors
+    //- Declare runtime construction
 
-        virtualMass
+        declareRunTimeSelectionTable
         (
-            const FFPair& pair,
-            const dictionary& dict
+            autoPtr,
+            flowEnhancementFactorModel,
+            flowEnhancementFactorModels,
+            (
+                const FSPair& pair,
+                const dictionary& dict,
+                const objectRegistry& objReg
+            ),
+            (pair, dict, objReg)
+        );
+
+    //- Constructors
+
+        flowEnhancementFactorModel
+        (
+            const FSPair& pair,
+            const dictionary& dict,
+            const objectRegistry& objReg
         );
 
         //- Destructor
-        virtual ~virtualMass(){}
+        virtual ~flowEnhancementFactorModel(){}
 
-    // Member Functions
+    //- Selectors
 
-        //-
-        virtual void correct();
+        static autoPtr<flowEnhancementFactorModel> New
+        (
+            const FSPair& pair,
+            const dictionary& dict,
+            const objectRegistry& objReg
+        );
 
-        //- Access
+    //- Member Functions
 
-            const fvVectorMatrix& force(const word& UName) const
-            {
-                return VmForces_[UName];
-            }
+        virtual scalar value(const label& celli) const = 0;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

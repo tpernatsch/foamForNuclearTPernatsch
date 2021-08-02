@@ -5,9 +5,6 @@ EXE_INC = \
     -I./onePhase/include \
     -I./onePhase/include/equations \
     -I./onePhase/include/equations/pEqnRoutines \
-    -I./onePhaseLegacy \
-    -I./onePhaseLegacy/include \
-    -I./onePhaseLegacy/include/equations \
     -I./twoPhase \
     -I./twoPhase/include/pEqnRoutines \
     -I./twoPhase/include/alphaEqnRoutines \

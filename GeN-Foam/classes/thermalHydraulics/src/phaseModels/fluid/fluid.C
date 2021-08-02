@@ -724,25 +724,25 @@ void Foam::fluid::correctThermoResidualMarkers()
     if (aboveThermoResidualAlphaPtr_.valid())
     {
         aboveThermoResidualAlphaPtr_() = 
-            pos(normalized_-thermoResidualAlpha_);
+            pos0(normalized_-thermoResidualAlpha_);
     }
     else
     {
         aboveThermoResidualAlphaPtr_.reset
         (
-            new volScalarField(pos(normalized_-thermoResidualAlpha_))
+            new volScalarField(pos0(normalized_-thermoResidualAlpha_))
         );
     }
     if (belowThermoResidualAlphaPtr_.valid())
     {
         belowThermoResidualAlphaPtr_() = 
-            neg0(normalized_-thermoResidualAlpha_);
+            neg(normalized_-thermoResidualAlpha_);
     }
     else
     {
         belowThermoResidualAlphaPtr_.reset
         (
-            new volScalarField(neg0(normalized_-thermoResidualAlpha_))
+            new volScalarField(neg(normalized_-thermoResidualAlpha_))
         );
     }
 }

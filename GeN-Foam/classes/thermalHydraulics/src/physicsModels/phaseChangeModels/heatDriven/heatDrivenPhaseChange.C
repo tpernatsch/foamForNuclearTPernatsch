@@ -109,43 +109,59 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::heatDrivenPhaseChange
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::phaseChangeModels::heatDrivenPhaseChange::correctInterfacialDmdt() 
+void Foam::phaseChangeModels::heatDrivenPhaseChange::correct() 
 {
+    //- Limit interfacial area so boiling can start
+    //  (very crude, it's the best I have for now)
+    limitInterfacialArea();
+
+    //- Update saturation temperature
+    correctInterfacialTemperature();
+
+    //- Update latent heat
+    myOps::storePrevIterIfRelax(L_);
+    latentHeatPtr_->correctField(L_);
+    L_.relax();
+    
     //- Interfacial mass transfers for each side
-    volScalarField dmdtI1i
+    volScalarField dmdt1i
     (
         htc1_*iA_*(T1_-iT_)/L_
     );
-    volScalarField dmdtI2i
+    volScalarField dmdt2i
     (
         htc2_*iA_*(T2_-iT_)/L_
     );
 
+    myOps::storePrevIterIfRelax(dmdt_);
     switch (mode_)
     {
         case heatDrivenPhaseChange::mode::conductionLimited : 
-            dmdtI_ = dmdtI1i + dmdtI2i;
+            dmdt_ = dmdt1i + dmdt2i;
             break;
 
         case heatDrivenPhaseChange::mode::twoPhaseDriven :
-            dmdtI_ = posPart(dmdtI1i) + negPart(dmdtI2i);
+            dmdt_ = posPart(dmdt1i) + negPart(dmdt2i);
             break;
 
         case heatDrivenPhaseChange::mode::onePhaseDriven :
-            dmdtI_ = 
+            dmdt_ = 
                 (fluid1_.name() == drivingPhaseName_) ?
-                dmdtI1i : dmdtI2i;      
+                dmdt1i : dmdt2i;      
             break;
 
         case heatDrivenPhaseChange::mode::mixedDriven :
-            dmdtI_ = 
+            dmdt_ = 
                 (fluid1_.name() == drivingPhaseName_) ?
-                dmdtI1i + negPart(dmdtI2i) :
-                posPart(dmdtI1i) + dmdtI2i;
+                dmdt1i + negPart(dmdt2i) :
+                posPart(dmdt1i) + dmdt2i;
             break;
 
         default : break;
     }
+    limitMassTransfer();
+    dmdt_.relax();
 }
+
 
 // ************************************************************************* //

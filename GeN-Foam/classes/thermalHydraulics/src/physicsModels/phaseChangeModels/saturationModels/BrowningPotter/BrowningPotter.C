@@ -2,12 +2,13 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2015-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
- OpenFOAM is free software: you can redistribute it and/or modify it
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -22,94 +23,95 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "FSPair.H"
-#include "complementaryContactPartition.H"
+#include "FFPair.H"
+#include "BrowningPotter.H"
 #include "addToRunTimeSelectionTable.H"
+#include "phaseChangeModel.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace contactPartitionModels
+namespace saturationModels
 {
-    defineTypeNameAndDebug(complementary, 0);
+    defineTypeNameAndDebug(BrowningPotter, 0);
     addToRunTimeSelectionTable
     (
-        contactPartitionModel,
-        complementary,
-        contactPartitionModels
+        saturationModel,
+        BrowningPotter,
+        saturationModels
     );
 }
 }
 
-
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::contactPartitionModels::complementary::complementary
+Foam::saturationModels::BrowningPotter::
+BrowningPotter
 (
-    const FSPair& pair,
-    const dictionary& dict,
+    const phaseChangeModel& pcm,
+    const dictionary& dict, 
     const objectRegistry& objReg
 )
 :
-    contactPartitionModel
+    saturationModel
     (
-        pair,
+        pcm,
         dict,
         objReg
     ),
-    //complementaryPair_(nullptr),
-    complementaryModel_(nullptr)
+    iT_(pcm.pair().iT()),
+    p_(pcm.mesh().lookupObject<volScalarField>("p"))
 {}
-
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::contactPartitionModels::complementary::value
+Foam::scalar Foam::saturationModels::BrowningPotter::valuePSat
 (
     const label& celli
 ) const
 {
-    return 0.0;
+    return exp(valueLnPSat(celli));
 }
 
-
-void Foam::contactPartitionModels::complementary::correctField
+Foam::scalar Foam::saturationModels::BrowningPotter::valuePSatPrime
 (
-    volScalarField& f
-)
+    const label& celli
+) const
 {
-    /*
-    if (complementaryPair_ == nullptr)
-    {
-        HashTable<const FSPair*> pairs(mesh_.lookupClass<FSPair>());
-        complementaryPair_ = 
-        &(
-            (pair_.name() == pairs[pairs.toc()[0]]->name()) ? 
-            pairs[pairs.toc()[0]] : pairs[pairs.toc()[0]]
-        );
-    }
-    f = 1.0-complementaryPair_->f();
-    */
-    if (complementaryModel_ == nullptr)
-    {
-        HashTable<const contactPartitionModel*> models
-        (
-            mesh_.lookupClass<contactPartitionModel>()
-        );
-        complementaryModel_ = 
-        (
-            (this->type() == models[models.toc()[0]]->type()) ?
-            models[models.toc()[0]] : models[models.toc()[0]]
-        );
-    }
-
-    forAll(mesh_.cells(), i)
-    {
-        f[i] = 1.0 - complementaryModel_->value(i);
-    }
-    f.correctBoundaryConditions();
+    const scalar& T(iT_[celli]);
+    return valuePSat(celli)*(-0.4672/T + 12633.37/sqr(T));
 }
 
+Foam::scalar Foam::saturationModels::BrowningPotter::valueLnPSat
+(
+    const label& celli
+) const
+{
+    const scalar& T(iT_[celli]);
+    //- The + log(1e6) is to have p in Pa rather than MPa
+    return 
+        (11.9463 - 12633.37/T - 0.4672*log(T)) + log(1e6); 
+}
+
+Foam::scalar Foam::saturationModels::BrowningPotter::valueTSat
+(
+    const label& celli
+) const
+{
+    return 
+        923840.0/
+        (
+        -   11275 
+        +   Foam::sqrt
+            (
+                127125625 + 1847680*
+                (
+                    7.8270 
+                -   log(p_[celli]/1e6) // p in MPa
+                ) 
+            )
+        );
+}
 
 // ************************************************************************* //

@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2015-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -22,102 +22,76 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::virtualMass
+    Foam::saturationModels::BrowningPotter
 
 Description
-    Class to handle fluid-fluid interfacial area
-
-Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Saturation model based on results by Browning and Potter, refer to 
+    https://www.ne.anl.gov/eda/ANL-RE-95-2.pdf. The saturation pressure form is
+    lnPSat = A + B/TSat + C*ln(TSat), which is not invertible in TSat. TSat is 
+    inverted by approximateding ln(TSat) by a second order polyinomial.
 
 SourceFiles
-    virtualMass.C
-    newInterfacialAreaModel.C
+    BrowningPotter.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef virtualMass_H
-#define virtualMass_H
+#ifndef BrowningPotter_H
+#define BrowningPotter_H
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#include "fluid.H"
-#include "fvMatrix.H"
-#include "virtualMassCoefficientModel.H"
+#include "saturationModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-
-class FFPair;
+namespace saturationModels
+{
 
 /*---------------------------------------------------------------------------*\
-            Class virtualMass Declaration
+                         Class BrowningPotter Declaration
 \*---------------------------------------------------------------------------*/
 
-class virtualMass
+class BrowningPotter
 :
-    public IOdictionary
+    public saturationModel
 {
-protected:
+private :
 
-    const fvMesh& mesh_;
+    const volScalarField& iT_;
 
-    const FFPair& pair_;
-
-    const fluid& fluid1_;
-
-    const fluid& fluid2_;
-
-    const volVectorField& U1_;
-    
-    const volVectorField& U2_;
-    
-    const surfaceScalarField& phi1_;
-    
-    const surfaceScalarField& phi2_;
-
-    autoPtr<virtualMassCoefficientModel> VmPtr_;
-
-    volScalarField Vm_;
-
-    typedef HashTable<fvVectorMatrix, word, word::hash> VmForceTable;
-
-    VmForceTable VmForces_;
+    const volScalarField& p_;
 
 public:
 
-    //- Runtime type information
-    TypeName("virtualMass");
+    TypeName("BrowningPotter");
 
-    // Constructors
+    //- Constructors
 
-        virtualMass
+        //- Construct from a dictionary
+        BrowningPotter
         (
-            const FFPair& pair,
-            const dictionary& dict
+            const phaseChangeModel& pcm,
+            const dictionary& dict, 
+            const objectRegistry& objReg
         );
 
         //- Destructor
-        virtual ~virtualMass(){}
+        virtual ~BrowningPotter(){}
 
-    // Member Functions
+    //- Member Functions
 
-        //-
-        virtual void correct();
+        virtual scalar valueTSat(const label& celli) const;
 
-        //- Access
+        virtual scalar valuePSat(const label& celli) const;
 
-            const fvVectorMatrix& force(const word& UName) const
-            {
-                return VmForces_[UName];
-            }
+        virtual scalar valueLnPSat(const label& celli) const;
+
+        virtual scalar valuePSatPrime(const label& celli) const;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+} // End namespace saturationModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

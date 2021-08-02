@@ -292,30 +292,16 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     //- Construct twoPhaseDragFactor (needs to be done AFTER fluid twoPhase
     //  field init as some fields of the fluid class that can be required by
     //  some twoPhaseDragFactor sub-models are not initialized yet)
-    if (this->subDict("physicsModels").found("twoPhaseDragMultiplierModel"))
-    {
-        if 
+    twoPhaseDragFactorPtr_.reset
+    (
+        new twoPhaseDragFactor
         (
-            this->subDict
-            (
-                "physicsModels"
-            ).subDict
-            (
-                "twoPhaseDragMultiplierModel"
-            ).toc().size() != 0
+            F1SPair_,
+            F2SPair_,
+            *this
         )
-        {
-            twoPhaseDragFactorPtr_.reset
-            (
-                new twoPhaseDragFactor
-                (
-                    F1SPair_,
-                    F2SPair_,
-                    *this
-                )
-            );
-        }
-    }
+    );
+    
     //- This is specifically to avoid problem when solveAlpha is set to solve
     //  for only one phase, the one for which BCs and initial conditions are
     //  provided, yet this phase starts at 0 while the other phase BC and
@@ -504,8 +490,7 @@ void Foam::thermalHydraulicsModels::twoPhase::correctModels
     FFPair_.correct(solveFluidDynamics, solveEnergy);
     F1SPair_.correct(solveFluidDynamics, solveEnergy);
     F2SPair_.correct(solveFluidDynamics, solveEnergy);
-    if (twoPhaseDragFactorPtr_.valid())
-        twoPhaseDragFactorPtr_->correct();
+    twoPhaseDragFactorPtr_->correct();
     //auto end = std::chrono::steady_clock::now();
     //std::chrono::duration<double> elapsed_seconds = end-start;
     //Info << "correctModels: " << elapsed_seconds.count() << "s\n";

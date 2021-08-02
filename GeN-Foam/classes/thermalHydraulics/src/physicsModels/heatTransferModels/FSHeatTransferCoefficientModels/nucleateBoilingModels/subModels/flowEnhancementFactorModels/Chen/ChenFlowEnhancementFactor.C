@@ -23,93 +23,58 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "complementaryContactPartition.H"
+#include "ChenFlowEnhancementFactor.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace contactPartitionModels
+namespace flowEnhancementFactorModels
 {
-    defineTypeNameAndDebug(complementary, 0);
+    defineTypeNameAndDebug(Chen, 0);
     addToRunTimeSelectionTable
     (
-        contactPartitionModel,
-        complementary,
-        contactPartitionModels
+        flowEnhancementFactorModel,
+        Chen,
+        flowEnhancementFactorModels
     );
 }
 }
 
-
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::contactPartitionModels::complementary::complementary
+Foam::flowEnhancementFactorModels::Chen::Chen
 (
     const FSPair& pair,
     const dictionary& dict,
     const objectRegistry& objReg
 )
 :
-    contactPartitionModel
+    flowEnhancementFactorModel
     (
         pair,
         dict,
         objReg
     ),
-    //complementaryPair_(nullptr),
-    complementaryModel_(nullptr)
+    XLM_
+    (
+        pair.fluidRef().XLM()
+    )
 {}
-
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::contactPartitionModels::complementary::value
+Foam::scalar Foam::flowEnhancementFactorModels::Chen::value
 (
     const label& celli
 ) const
 {
-    return 0.0;
+    scalar invX(1.0/XLM_[celli]);
+    return 
+        (invX > 0.1002071798) ?
+        min(2.35*pow(0.213+invX, 0.736), 50) :
+        1.0;
 }
-
-
-void Foam::contactPartitionModels::complementary::correctField
-(
-    volScalarField& f
-)
-{
-    /*
-    if (complementaryPair_ == nullptr)
-    {
-        HashTable<const FSPair*> pairs(mesh_.lookupClass<FSPair>());
-        complementaryPair_ = 
-        &(
-            (pair_.name() == pairs[pairs.toc()[0]]->name()) ? 
-            pairs[pairs.toc()[0]] : pairs[pairs.toc()[0]]
-        );
-    }
-    f = 1.0-complementaryPair_->f();
-    */
-    if (complementaryModel_ == nullptr)
-    {
-        HashTable<const contactPartitionModel*> models
-        (
-            mesh_.lookupClass<contactPartitionModel>()
-        );
-        complementaryModel_ = 
-        (
-            (this->type() == models[models.toc()[0]]->type()) ?
-            models[models.toc()[0]] : models[models.toc()[0]]
-        );
-    }
-
-    forAll(mesh_.cells(), i)
-    {
-        f[i] = 1.0 - complementaryModel_->value(i);
-    }
-    f.correctBoundaryConditions();
-}
-
 
 // ************************************************************************* //

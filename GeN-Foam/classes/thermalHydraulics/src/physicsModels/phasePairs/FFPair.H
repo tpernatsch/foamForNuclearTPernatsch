@@ -128,17 +128,12 @@ protected :
     autoPtr<FFHeatTransferCoefficientModel> htc1Ptr_;
     autoPtr<FFHeatTransferCoefficientModel> htc2Ptr_;
 
-    //- Heat transfer coefficients between bulk of each fluid and interface,
-    //  indexed by fluid name
+    //- Table of volScalarFields (for htcs)
     typedef HashTable<volScalarField*, word, word::hash> 
         volScalarFieldPtrTable;
-    volScalarFieldPtrTable htcs_;
 
-    //- Linearized semi-implicit heat sources due to interfacial heat and mass
-    //  transfer (inclusive of intrinsic mass transfer enthalpy contribution)
-    typedef HashTable<fvScalarMatrix*, word, word::hash> 
-        fvScalarMatrixPtrTable;
-    fvScalarMatrixPtrTable heSources_;
+    //- Heat transfer coefficients between bulk of each fluid and interface
+    volScalarFieldPtrTable htcs_;
 
     //- Fluid dispersion model (controls which phase is dispersed and which is
     //  continuous)
@@ -155,11 +150,6 @@ protected :
 
     //- Interfacial area
     volScalarField iA_;
-
-    //- This sucks... A flag just to avoid u-relaxing the interfacial T (if not
-    //  set by a phasChangeModel) on the first time step. It is by far the
-    //  simplest but also less elegant way to do it
-    bool firstTimeStepAndIter_;
 
 public:
 
@@ -195,7 +185,27 @@ public:
             const bool& correctEnergy
         );
 
-        //- Access-related
+        //- Access
+
+            const fvMesh& mesh() const
+            {
+                return mesh_;
+            }
+
+            const customPimpleControl& pimple() const
+            {
+                return pimple_;
+            }
+
+            const fluid& fluid1() const
+            {
+                return fluid1_;
+            }
+
+            const fluid& fluid2() const
+            {
+                return fluid2_;
+            }
 
             word reversedName() const
             {
@@ -243,28 +253,6 @@ public:
                     (dict.found(this->name())) ?
                     dict.subDict(this->name()) :
                     dict.subDict(this->reversedName());
-            }
-
-        //- Access
-
-            const fvMesh& mesh() const
-            {
-                return mesh_;
-            }
-
-            const customPimpleControl& pimple() const
-            {
-                return pimple_;
-            }
-
-            const fluid& fluid1() const
-            {
-                return fluid1_;
-            }
-
-            const fluid& fluid2() const
-            {
-                return fluid2_;
             }
 
             const volScalarField& alphaDispersed() const
@@ -317,34 +305,14 @@ public:
                 return Kd_;
             }
 
-            volScalarField& htc(const word& fluidName)
-            {
-                return *htcs_[fluidName];
-            }
-
             const volScalarField& htc(const word& fluidName) const
             {
                 return *htcs_[fluidName];
             }
 
-            const fvScalarMatrix& heSource(const word& heName) const
-            {
-                return *heSources_[heName];
-            }
-
-            const fvVectorMatrix& virtualMassForce(const word& UName) const
-            {
-                return virtualMassPtr_->force(UName);
-            }
-
             bool phaseChange() const
             {
                 return phaseChangePtr_.valid();
-            }
-
-            bool validVirtualMass() const
-            {
-                return virtualMassPtr_.valid();
             }
 
             //- Latent heat

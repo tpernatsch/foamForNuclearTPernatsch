@@ -7,7 +7,8 @@
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
- OpenFOAM is free software: you can redistribute it and/or modify it
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -23,93 +24,45 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "complementaryContactPartition.H"
-#include "addToRunTimeSelectionTable.H"
+#include "flowEnhancementFactorModel.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace contactPartitionModels
-{
-    defineTypeNameAndDebug(complementary, 0);
-    addToRunTimeSelectionTable
+    defineTypeNameAndDebug(flowEnhancementFactorModel, 0);
+    defineRunTimeSelectionTable
     (
-        contactPartitionModel,
-        complementary,
-        contactPartitionModels
+        flowEnhancementFactorModel, 
+        flowEnhancementFactorModels
     );
 }
-}
-
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::contactPartitionModels::complementary::complementary
+Foam::flowEnhancementFactorModel::flowEnhancementFactorModel
 (
     const FSPair& pair,
     const dictionary& dict,
     const objectRegistry& objReg
 )
 :
-    contactPartitionModel
+    IOdictionary
     (
-        pair,
-        dict,
-        objReg
+        IOobject
+        (
+            "flowEnhancementFactorModel."+typeName,
+            pair.mesh().time().timeName(),
+            objReg,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        dict
     ),
-    //complementaryPair_(nullptr),
-    complementaryModel_(nullptr)
+    pair_(pair)
 {}
 
-
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-Foam::scalar Foam::contactPartitionModels::complementary::value
-(
-    const label& celli
-) const
-{
-    return 0.0;
-}
-
-
-void Foam::contactPartitionModels::complementary::correctField
-(
-    volScalarField& f
-)
-{
-    /*
-    if (complementaryPair_ == nullptr)
-    {
-        HashTable<const FSPair*> pairs(mesh_.lookupClass<FSPair>());
-        complementaryPair_ = 
-        &(
-            (pair_.name() == pairs[pairs.toc()[0]]->name()) ? 
-            pairs[pairs.toc()[0]] : pairs[pairs.toc()[0]]
-        );
-    }
-    f = 1.0-complementaryPair_->f();
-    */
-    if (complementaryModel_ == nullptr)
-    {
-        HashTable<const contactPartitionModel*> models
-        (
-            mesh_.lookupClass<contactPartitionModel>()
-        );
-        complementaryModel_ = 
-        (
-            (this->type() == models[models.toc()[0]]->type()) ?
-            models[models.toc()[0]] : models[models.toc()[0]]
-        );
-    }
-
-    forAll(mesh_.cells(), i)
-    {
-        f[i] = 1.0 - complementaryModel_->value(i);
-    }
-    f.correctBoundaryConditions();
-}
-
 
 // ************************************************************************* //

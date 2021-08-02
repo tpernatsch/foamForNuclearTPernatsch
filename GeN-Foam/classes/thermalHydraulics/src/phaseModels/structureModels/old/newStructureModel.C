@@ -23,65 +23,36 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "contactPartitionModel.H"
-#include "FSPair.H"
-
-// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
-
-namespace Foam
-{
-    defineTypeNameAndDebug(contactPartitionModel, 0);
-    defineRunTimeSelectionTable
-    (
-        contactPartitionModel, 
-        contactPartitionModels
-    );
-}
+#include "structureModel.H"
 
 
-// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * Selector  * * * * * * * * * * * * * * * * //
 
-Foam::contactPartitionModel::
-contactPartitionModel
+Foam::autoPtr<Foam::structureModel> Foam::structureModel::New
 (
-    const FSPair& pair,
     const dictionary& dict,
-    const objectRegistry& objReg
+    const fvMesh& mesh
 )
-:
-    IOdictionary
-    (
-        IOobject
-        (
-            typeName,
-            pair.mesh().time().timeName(),
-            objReg,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        dict
-    ),
-    mesh_(pair.mesh()),
-    pair_(pair),
-    fluid_(pair.fluidRef())
-{}
-
-
-// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
-
-Foam::contactPartitionModel::~contactPartitionModel()
-{}
-
-
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-void Foam::contactPartitionModel::correctField(volScalarField& f)
 {
-    forAll(mesh_.cells(), i)
+    word type(dict.lookup("type"));
+
+    Info<< endl << "Constructing structure of type: " << type << endl;
+
+    structureModelsConstructorTable::iterator cstrIter =
+        structureModelsConstructorTablePtr_->find(type);
+
+    if (cstrIter == structureModelsConstructorTablePtr_->end())
     {
-        f[i] = this->value(i);
+        FatalErrorInFunction
+            << "Unknown structure of type "
+            << type << endl << endl
+            << "Valid structure types are : " << endl
+            << structureModelsConstructorTablePtr_->sortedToc()
+            << exit(FatalError);
     }
-    f.correctBoundaryConditions();
+
+    return cstrIter()(dict, mesh);
 }
+
 
 // ************************************************************************* //

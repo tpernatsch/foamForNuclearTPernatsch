@@ -110,6 +110,7 @@ class LaheyKEpsilon
         //  construction. The private access functions serve that purpose
         mutable const fluid* gasPtr_;
         mutable const fluid* liquidPtr_;
+        mutable const volTensorField* KdPtr_;
         mutable const FFPair* pairPtr_;
 
     //- Private functions

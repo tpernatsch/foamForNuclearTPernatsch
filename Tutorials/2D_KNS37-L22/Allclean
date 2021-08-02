@@ -1,6 +1,0 @@
-#!/bin/bash
-
-shopt -s extglob
-rm -r -f !(-2|constant|system|Allrun|Allclean|README|residuals|plot.py|experimentalResults)
-rm -r rm ./-1*
-rm -r rm ./-0*

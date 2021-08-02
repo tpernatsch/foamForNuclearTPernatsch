@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::structure
+    Foam::structureModel
 
 Description
     Class to handle the description of a mesh-unresolved structure. It is 
@@ -36,9 +36,9 @@ Description
     The cellFields_ member is thus a HashTable of scalarFields indexed by
     region name. These scalarFields are = 1.0 where the given
     region exists, and 0 elsewhere. What the region names are, that
-    is set by the actual run-time-selected instance of the structure
+    is set by the actual run-time-selected instance of the structureModel
     class.
-    Currently, the only available structure is byZone, in which
+    Currently, the only available structureModel is byZone, in which
     the regions are effectively cellZones, and the cellFields_ is
     thus a dicts of scalarFields representing where each cellZone exists.
 
@@ -47,12 +47,12 @@ Author
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
-    structure.C
+    structureModel.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef structure_H
-#define structure_H
+#ifndef structureModel_H
+#define structureModel_H
 
 #include "fvMatrix.H"
 #include "phaseBase.H"
@@ -73,36 +73,14 @@ namespace Foam
 class fluid;
 
 /*---------------------------------------------------------------------------*\
-                           Class structure Declaration
+                           Class structureModel Declaration
 \*---------------------------------------------------------------------------*/
 
-class structure
+class structureModel
 :
     public phaseBase
 {
 protected:
-
-    //- Typedefs
-    typedef HashTable
-    <
-        labelList,
-        word,
-        word::hash
-    >   labelListTable;
-
-    typedef HashTable
-    <
-        scalarField,
-        word,
-        word::hash
-    >   scalarFieldTable;
-
-    typedef HashTable
-    <
-        volScalarField,
-        word,
-        word::hash
-    >   volScalarFieldTable;
 
     typedef HashTable
     <
@@ -198,10 +176,10 @@ protected:
     volScalarField Twall_;
 
     //- Rotation matrix to move from global to local reference frame
-    autoPtr<volTensorField> Rg2lPtr_;
+    volTensorField Rg2l_;
 
     //- Rotation matrix to move from local to global reference frame
-    autoPtr<volTensorField> Rl2gPtr_;
+    volTensorField Rl2g_;
 
     //- Total momentum source
     autoPtr<volVectorField> momentumSourcePtr_;
@@ -211,18 +189,42 @@ protected:
 
 public:
 
-    TypeName("structure");
+    TypeName("structureModel");
+
+    //- Runtime selection table declaration
+
+        declareRunTimeSelectionTable
+        (
+            autoPtr,
+            structureModel,
+            structureModels,
+            (
+                const dictionary& dict,
+                const fvMesh& mesh
+            ),
+            (dict, mesh)
+        );
 
     //- Constructors
 
-        structure
+        structureModel
         (
             const dictionary& dict,
             const fvMesh& mesh
         );
 
         //- Destructor
-        virtual ~structure(){}
+        virtual ~structureModel(){}
+
+    //- Static member functions
+
+        //- Selector
+
+        static autoPtr<structureModel> New
+        (
+            const dictionary& dict,
+            const fvMesh& mesh
+        );
 
     //- Member Functions
 
@@ -271,22 +273,6 @@ public:
         //- Turn off all powerDensity fields of all the powerModels if the
         //  powerOffCriterionModel criterion is satisfied
         void checkPowerOff();
-
-        //- Rotate a tensor field from the local reference frame to the global
-        //  mesh one
-        void localToGlobalRotateField(volTensorField& field) const;
-
-        //- Rotate a vector field from the local reference frame to the global
-        //  mesh one
-        void localToGlobalRotateField(volVectorField& field) const;
-
-        //- Rotate a tensor field from the global reference frame to the local 
-        //  one
-        void globalToLocalRotateField(volTensorField& field) const;
-
-        //- Rotate a vector field from the global reference frame to the local 
-        //  one
-        void globalToLocalRotateField(volVectorField& field) const;
 
         //- Const access
 
@@ -355,29 +341,14 @@ public:
                 return Twall_;
             }
 
-            const autoPtr<volTensorField>& Rg2lPtr() const
-            {
-                return Rg2lPtr_;
-            }
-
-            const autoPtr<volTensorField>& Rl2gPtr() const
-            {
-                return Rl2gPtr_;
-            }
-
-            bool hasLocalReferenceFrame() const
-            {
-            	return (Rg2lPtr_.valid() and Rl2gPtr_.valid());
-            }
-
             const volTensorField& Rg2l() const
             {
-                return Rg2lPtr_();
+                return Rg2l_;
             }
 
             const volTensorField& Rl2g() const
             {
-                return Rl2gPtr_();
+                return Rl2g_;
             }
 
             const autoPtr<volVectorField>& momentumSourcePtr() const
@@ -389,7 +360,7 @@ public:
 //- Definition of templated static function in header, it's best practice
 //  according to C++ 11 guidelines
 template<class Type>
-void structure::setRegionField 
+void structureModel::setRegionField 
 (
     const dictionary& dicts,
     GeometricField<Type, fvPatchField, volMesh>& field,

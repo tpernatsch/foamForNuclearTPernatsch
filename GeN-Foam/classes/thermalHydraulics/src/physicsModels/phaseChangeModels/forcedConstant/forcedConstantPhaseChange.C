@@ -71,11 +71,21 @@ Foam::phaseChangeModels::forcedConstantPhaseChange::forcedConstantPhaseChange
     dmdt_.correctBoundaryConditions();
 }
 
+
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void 
-Foam::phaseChangeModels::forcedConstantPhaseChange::correctInterfacialDmdt() 
+void Foam::phaseChangeModels::forcedConstantPhaseChange::correct() 
 {
+    //- Limit interfacial area so boiling can start
+    //  (very crude, it's the best I have for now)
+    limitInterfacialArea();
+
+    //- Update saturation temperature
+    correctInterfacialTemperature();
+
+    //- Update latent heat
+    latentHeatPtr_->correctField(L_);
 }
+
 
 // ************************************************************************* //

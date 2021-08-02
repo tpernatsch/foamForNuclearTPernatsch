@@ -22,102 +22,71 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::virtualMass
 
 Description
-    Class to handle fluid-fluid interfacial area
 
 Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles
-    virtualMass.C
-    newInterfacialAreaModel.C
+    Chen.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef virtualMass_H
-#define virtualMass_H
+#ifndef ChenFlowEnhancementFactor_H
+#define ChenFlowEnhancementFactor_H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "fluid.H"
-#include "fvMatrix.H"
-#include "virtualMassCoefficientModel.H"
+#include "flowEnhancementFactorModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-
-class FFPair;
+namespace flowEnhancementFactorModels
+{
 
 /*---------------------------------------------------------------------------*\
-            Class virtualMass Declaration
+            Class Chen Declaration
 \*---------------------------------------------------------------------------*/
 
-class virtualMass
+class Chen
 :
-    public IOdictionary
+    public flowEnhancementFactorModel
 {
 protected:
 
-    const fvMesh& mesh_;
-
-    const FFPair& pair_;
-
-    const fluid& fluid1_;
-
-    const fluid& fluid2_;
-
-    const volVectorField& U1_;
-    
-    const volVectorField& U2_;
-    
-    const surfaceScalarField& phi1_;
-    
-    const surfaceScalarField& phi2_;
-
-    autoPtr<virtualMassCoefficientModel> VmPtr_;
-
-    volScalarField Vm_;
-
-    typedef HashTable<fvVectorMatrix, word, word::hash> VmForceTable;
-
-    VmForceTable VmForces_;
+    //- Ref to Lockhart-Martinelli parameter
+    const volScalarField& XLM_;
 
 public:
 
     //- Runtime type information
-    TypeName("virtualMass");
+    TypeName("Chen");
 
     // Constructors
 
-        virtualMass
+        Chen
         (
-            const FFPair& pair,
-            const dictionary& dict
+            const FSPair& pair,
+            const dictionary& dict,
+            const objectRegistry& objReg
         );
 
         //- Destructor
-        virtual ~virtualMass(){}
+        virtual ~Chen(){}
 
     // Member Functions
 
-        //-
-        virtual void correct();
-
-        //- Access
-
-            const fvVectorMatrix& force(const word& UName) const
-            {
-                return VmForces_[UName];
-            }
+        //- Return fraction of structure interfacial contact in
+        //  contact with the dispersed fluid
+        virtual scalar value(const label& celli) const;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+} // End namespace flowEnhancementFactorModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

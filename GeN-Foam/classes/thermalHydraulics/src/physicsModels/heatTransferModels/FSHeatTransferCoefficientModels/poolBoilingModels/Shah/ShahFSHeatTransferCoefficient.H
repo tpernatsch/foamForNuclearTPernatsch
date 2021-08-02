@@ -22,54 +22,84 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::complementary
+    Foam::FSHeatTransferCoefficientModels::Shah
 
 Description
+    Drag coefficient in the form fd = coeff*Re^exp with 
+    Kd = 0.5*fd*alpha*rho*magU/Dh
 
-Author
-    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
+Dictionary entries (mandatory)
+    coeff   0.316;
+    exp     -0.25;
 
 SourceFiles
-    complementary.C
+    Shah.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef complementaryContactPartition_H
-#define complementaryContactPartition_H
+#ifndef ShahFSHeatTransferCoefficient_H
+#define ShahFSHeatTransferCoefficient_H
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#include "contactPartitionModel.H"
+#include "FSHeatTransferCoefficientModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace contactPartitionModels
+
+namespace FSHeatTransferCoefficientModels
 {
 
 /*---------------------------------------------------------------------------*\
-            Class complementary Declaration
+                           Class Shah Declaration
 \*---------------------------------------------------------------------------*/
 
-class complementary
+class Shah
 :
-    public contactPartitionModel
+    public FSHeatTransferCoefficientModel
 {
-protected:
+private:
 
-    //const FSPair* complementaryPair_;
+    bool useExplicitHeatFlux_;
 
-    const contactPartitionModel* complementaryModel_;
+    //- Ptr to structure wall temperature (only used if !useExplicitHeatFlux_)
+    const volScalarField* Twall_;
+ 
+    //- Ptr to fluid temperature (only used if !useExplicitHeatFlux_)
+    const volScalarField* Tf_;
+
+    //- Ptr to structure heat flux (only used if useExplicitHeatFlux_)
+    const volScalarField* q_;
+
+    //- Ref to pressure
+    const volScalarField& p_;
+
+    //- Critical pressure in Pa
+    scalar pCrit_;
+
+    //- Model coefficients
+    scalar C0_;
+    scalar C1_;
+    scalar m0_;
+    scalar m1_;
+    scalar n_;
+    scalar exp_;
+
+    //- Interpolation limits (I've chones them arbitrarily but and abrupt
+    //  change in the model coefficients is for sure not helpful). The 
+    //  abrupt threhsold provided by Shah is at a reduced pressure (i.e.
+    //  p_/pCrit_) of 1e-3
+    scalar pR0_;
+    scalar deltaPR_;
 
 public:
 
-    //- Runtime type information
-    TypeName("complementary");
+    TypeName("Shah");
 
-    // Constructors
+    //- Constructors
 
-        complementary
+        //- Construct for a fluid-structure pair
+        Shah
         (
             const FSPair& pair,
             const dictionary& dict,
@@ -77,22 +107,18 @@ public:
         );
 
         //- Destructor
-        virtual ~complementary(){}
+        virtual ~Shah(){}
 
-    // Member Functions
 
-        //- Return fraction of structure interfacial contact in
-        //  contact with the dispersed fluid
+    //- Member Functions
+
+        //- Drag coefficient
         virtual scalar value(const label& celli) const;
-
-        //-
-        virtual void correctField(volScalarField& f) override;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace contactPartitionModels
+} // End namespace FSHeatTransferCoefficientModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

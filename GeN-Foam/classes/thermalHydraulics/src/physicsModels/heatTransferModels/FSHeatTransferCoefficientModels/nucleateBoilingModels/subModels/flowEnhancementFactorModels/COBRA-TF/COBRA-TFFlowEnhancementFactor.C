@@ -23,93 +23,79 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "complementaryContactPartition.H"
+#include "COBRA-TFFlowEnhancementFactor.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace contactPartitionModels
+namespace flowEnhancementFactorModels
 {
-    defineTypeNameAndDebug(complementary, 0);
+    defineTypeNameAndDebug(COBRA_TF, 0);
     addToRunTimeSelectionTable
     (
-        contactPartitionModel,
-        complementary,
-        contactPartitionModels
+        flowEnhancementFactorModel,
+        COBRA_TF,
+        flowEnhancementFactorModels
     );
 }
 }
 
-
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::contactPartitionModels::complementary::complementary
+Foam::flowEnhancementFactorModels::COBRA_TF::COBRA_TF
 (
     const FSPair& pair,
     const dictionary& dict,
     const objectRegistry& objReg
 )
 :
-    contactPartitionModel
+    flowEnhancementFactorModel
     (
         pair,
         dict,
         objReg
     ),
-    //complementaryPair_(nullptr),
-    complementaryModel_(nullptr)
+    otherFluidPtr_(nullptr)
 {}
-
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::contactPartitionModels::complementary::value
+Foam::scalar Foam::flowEnhancementFactorModels::COBRA_TF::value
 (
     const label& celli
 ) const
 {
-    return 0.0;
-}
-
-
-void Foam::contactPartitionModels::complementary::correctField
-(
-    volScalarField& f
-)
-{
-    /*
-    if (complementaryPair_ == nullptr)
+    if (otherFluidPtr_ == nullptr)
     {
-        HashTable<const FSPair*> pairs(mesh_.lookupClass<FSPair>());
-        complementaryPair_ = 
-        &(
-            (pair_.name() == pairs[pairs.toc()[0]]->name()) ? 
-            pairs[pairs.toc()[0]] : pairs[pairs.toc()[0]]
-        );
-    }
-    f = 1.0-complementaryPair_->f();
-    */
-    if (complementaryModel_ == nullptr)
-    {
-        HashTable<const contactPartitionModel*> models
+        HashTable<const fluid*> fluids(pair_.mesh().lookupClass<fluid>());
+        otherFluidPtr_ = 
+            (fluids[fluids.toc()[0]]->name() == pair_.fluidRef().name()) ?
+            fluids[fluids.toc()[1]] : fluids[fluids.toc()[0]];
+    }   
+
+    const scalar& a(pair_.fluidRef().normalized()[celli]);
+    const scalar& oa(otherFluidPtr_->normalized()[celli]);
+    const scalar& Re1pi(pair_.Re()[celli]);
+    scalar Re2pi
+    (
+        max
         (
-            mesh_.lookupClass<contactPartitionModel>()
-        );
-        complementaryModel_ = 
-        (
-            (this->type() == models[models.toc()[0]]->type()) ?
-            models[models.toc()[0]] : models[models.toc()[0]]
-        );
-    }
+            mag
+            (
+                a*pair_.fluidRef().rho()[celli]*pair_.fluidRef().U()[celli]
+            +   oa*otherFluidPtr_->rho()[celli]*otherFluidPtr_->U()[celli]
+            )*pair_.structureRef().Dh()[celli]/
+            (
+                    a*pair_.fluidRef().mu()[celli]
+                +   oa*otherFluidPtr_->mu()[celli]
+            ),
+            10.0
+        )
+    );
 
-    forAll(mesh_.cells(), i)
-    {
-        f[i] = 1.0 - complementaryModel_->value(i);
-    }
-    f.correctBoundaryConditions();
+    return min(max(pow(Re2pi/Re1pi, 0.8),1.0),50);
 }
-
 
 // ************************************************************************* //

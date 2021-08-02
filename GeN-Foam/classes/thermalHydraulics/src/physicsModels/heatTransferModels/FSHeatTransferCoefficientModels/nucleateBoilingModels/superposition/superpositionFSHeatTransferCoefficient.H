@@ -22,102 +22,85 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::virtualMass
+    Foam::FSHeatTransferCoefficientModels::superposition
 
 Description
-    Class to handle fluid-fluid interfacial area
+    Drag coefficient in the form fd = coeff*Re^exp with 
+    Kd = 0.5*fd*alpha*rho*magU/Dh
 
-Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+Dictionary entries (mandatory)
+    coeff   0.316;
+    exp     -0.25;
 
 SourceFiles
-    virtualMass.C
-    newInterfacialAreaModel.C
+    superposition.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef virtualMass_H
-#define virtualMass_H
+#ifndef superpositionFSHeatTransferCoefficient_H
+#define superpositionFSHeatTransferCoefficient_H
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#include "fluid.H"
-#include "fvMatrix.H"
-#include "virtualMassCoefficientModel.H"
+#include "FSHeatTransferCoefficientModel.H"
+#include "flowEnhancementFactorModel.H"
+#include "suppressionFactorModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-class FFPair;
+namespace FSHeatTransferCoefficientModels
+{
 
 /*---------------------------------------------------------------------------*\
-            Class virtualMass Declaration
+                           Class superposition Declaration
 \*---------------------------------------------------------------------------*/
 
-class virtualMass
+class superposition
 :
-    public IOdictionary
+    public FSHeatTransferCoefficientModel
 {
-protected:
+private:
 
-    const fvMesh& mesh_;
+    //- Forced convection heat transfer coefficient
+    autoPtr<FSHeatTransferCoefficientModel> htcFCPtr_;
 
-    const FFPair& pair_;
+    //- Pool boiling heat transfer coefficient
+    autoPtr<FSHeatTransferCoefficientModel> htcPBPtr_;
 
-    const fluid& fluid1_;
+    //- 
+    autoPtr<flowEnhancementFactorModel> FPtr_;
 
-    const fluid& fluid2_;
-
-    const volVectorField& U1_;
-    
-    const volVectorField& U2_;
-    
-    const surfaceScalarField& phi1_;
-    
-    const surfaceScalarField& phi2_;
-
-    autoPtr<virtualMassCoefficientModel> VmPtr_;
-
-    volScalarField Vm_;
-
-    typedef HashTable<fvVectorMatrix, word, word::hash> VmForceTable;
-
-    VmForceTable VmForces_;
+    //- 
+    autoPtr<suppressionFactorModel> SPtr_;
 
 public:
 
-    //- Runtime type information
-    TypeName("virtualMass");
+    TypeName("superpositionNucleateBoiling");
 
-    // Constructors
+    //- Constructors
 
-        virtualMass
+        //- Construct for a fluid-structure pair
+        superposition
         (
-            const FFPair& pair,
-            const dictionary& dict
+            const FSPair& pair,
+            const dictionary& dict,
+            const objectRegistry& objReg
         );
 
         //- Destructor
-        virtual ~virtualMass(){}
+        virtual ~superposition(){}
 
-    // Member Functions
 
-        //-
-        virtual void correct();
+    //- Member Functions
 
-        //- Access
-
-            const fvVectorMatrix& force(const word& UName) const
-            {
-                return VmForces_[UName];
-            }
+        //- Drag coefficient
+        virtual scalar value(const label& celli) const;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+} // End namespace FSHeatTransferCoefficientModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

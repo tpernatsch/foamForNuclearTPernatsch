@@ -7,9 +7,10 @@
     const volScalarField& contErr(fluid_.contErr());
     volScalarField& rho(fluid_.rho());
 
-    volScalarField alphaEff
+    volTensorField alphaEff
     (
-        fluid_.thermo().alphaEff(fluid_.turbulence().alphat())()
+        structure_.tortuosity()
+       *fluid_.thermo().alphaEff(fluid_.turbulence().alphat())()
     );
 
     //- Energy equations
@@ -18,20 +19,11 @@
             fvm::ddt(alpha, rho, he) 
         +   fvm::div(fluid_.alphaRhoPhi(), he, "div(alphaRhoPhi,he)")
         +   fvm::SuSp(-contErr, he)
-        -   (
-                (structure_.tortuosityPtr().valid()) ?
-                fvm::laplacian
-                (
-                    fvc::interpolate(alpha)*
-                    fvc::interpolate(structure_.tortuosity()*alphaEff),
-                    he
-                ) :
-                fvm::laplacian
-                (
-                    fvc::interpolate(alpha)*
-                    fvc::interpolate(alphaEff),
-                    he
-                )
+        -   fvm::laplacian
+            (
+                fvc::interpolate(alpha)
+               *fvc::interpolate(alphaEff),
+                he
             )
         ==  
             alpha*rho*(U&g_) 

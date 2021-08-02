@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2015-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -22,102 +22,64 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::virtualMass
+    Foam::latentHeatModels::FinkLeibowitz
 
 Description
-    Class to handle fluid-fluid interfacial area
-
-Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    This class describes the latent heat of vaporization of liquid sodium
+    according to the data presented in the report by Fink & Leibowitz 
+    (ANL RE 95/2), https://www.ne.anl.gov/eda/ANL-RE-95-2.pdf
 
 SourceFiles
-    virtualMass.C
-    newInterfacialAreaModel.C
+    FinkLeibowitz.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef virtualMass_H
-#define virtualMass_H
+#ifndef FinkLeibowitz_H
+#define FinkLeibowitz_H
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#include "fluid.H"
-#include "fvMatrix.H"
-#include "virtualMassCoefficientModel.H"
+#include "latentHeatModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-
-class FFPair;
+namespace latentHeatModels
+{
 
 /*---------------------------------------------------------------------------*\
-            Class virtualMass Declaration
+            Class FinkLeibowitz Declaration
 \*---------------------------------------------------------------------------*/
 
-class virtualMass
+class FinkLeibowitz
 :
-    public IOdictionary
+    public latentHeatModel
 {
-protected:
-
-    const fvMesh& mesh_;
-
-    const FFPair& pair_;
-
-    const fluid& fluid1_;
-
-    const fluid& fluid2_;
-
-    const volVectorField& U1_;
-    
-    const volVectorField& U2_;
-    
-    const surfaceScalarField& phi1_;
-    
-    const surfaceScalarField& phi2_;
-
-    autoPtr<virtualMassCoefficientModel> VmPtr_;
-
-    volScalarField Vm_;
-
-    typedef HashTable<fvVectorMatrix, word, word::hash> VmForceTable;
-
-    VmForceTable VmForces_;
-
 public:
 
-    //- Runtime type information
-    TypeName("virtualMass");
+    TypeName("FinkLeibowitz");
 
-    // Constructors
+    //- Constructors
 
-        virtualMass
+        //- Construct from a dictionary
+        FinkLeibowitz
         (
-            const FFPair& pair,
-            const dictionary& dict
+            const phaseChangeModel& pcm,
+            const dictionary& dict, 
+            const objectRegistry& objReg
         );
 
         //- Destructor
-        virtual ~virtualMass(){}
+        virtual ~FinkLeibowitz(){}
 
-    // Member Functions
+    //- Member Functions
 
-        //-
-        virtual void correct();
-
-        //- Access
-
-            const fvVectorMatrix& force(const word& UName) const
-            {
-                return VmForces_[UName];
-            }
+        virtual scalar value(const label& celli) const;
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+} // End namespace latentHeatModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

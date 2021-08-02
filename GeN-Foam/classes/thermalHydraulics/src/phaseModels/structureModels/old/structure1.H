@@ -82,28 +82,6 @@ class structure
 {
 protected:
 
-    //- Typedefs
-    typedef HashTable
-    <
-        labelList,
-        word,
-        word::hash
-    >   labelListTable;
-
-    typedef HashTable
-    <
-        scalarField,
-        word,
-        word::hash
-    >   scalarFieldTable;
-
-    typedef HashTable
-    <
-        volScalarField,
-        word,
-        word::hash
-    >   volScalarFieldTable;
-
     typedef HashTable
     <
         pump,
@@ -198,10 +176,10 @@ protected:
     volScalarField Twall_;
 
     //- Rotation matrix to move from global to local reference frame
-    autoPtr<volTensorField> Rg2lPtr_;
+    volTensorField Rg2l_;
 
     //- Rotation matrix to move from local to global reference frame
-    autoPtr<volTensorField> Rl2gPtr_;
+    volTensorField Rl2g_;
 
     //- Total momentum source
     autoPtr<volVectorField> momentumSourcePtr_;
@@ -272,22 +250,6 @@ public:
         //  powerOffCriterionModel criterion is satisfied
         void checkPowerOff();
 
-        //- Rotate a tensor field from the local reference frame to the global
-        //  mesh one
-        void localToGlobalRotateField(volTensorField& field) const;
-
-        //- Rotate a vector field from the local reference frame to the global
-        //  mesh one
-        void localToGlobalRotateField(volVectorField& field) const;
-
-        //- Rotate a tensor field from the global reference frame to the local 
-        //  one
-        void globalToLocalRotateField(volTensorField& field) const;
-
-        //- Rotate a vector field from the global reference frame to the local 
-        //  one
-        void globalToLocalRotateField(volVectorField& field) const;
-
         //- Const access
 
             const wordList& regions() const
@@ -355,29 +317,14 @@ public:
                 return Twall_;
             }
 
-            const autoPtr<volTensorField>& Rg2lPtr() const
-            {
-                return Rg2lPtr_;
-            }
-
-            const autoPtr<volTensorField>& Rl2gPtr() const
-            {
-                return Rl2gPtr_;
-            }
-
-            bool hasLocalReferenceFrame() const
-            {
-            	return (Rg2lPtr_.valid() and Rl2gPtr_.valid());
-            }
-
             const volTensorField& Rg2l() const
             {
-                return Rg2lPtr_();
+                return Rg2l_;
             }
 
             const volTensorField& Rl2g() const
             {
-                return Rl2gPtr_();
+                return Rl2g_;
             }
 
             const autoPtr<volVectorField>& momentumSourcePtr() const

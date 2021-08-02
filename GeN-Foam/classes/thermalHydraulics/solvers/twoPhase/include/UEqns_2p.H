@@ -27,7 +27,6 @@ fluid1_.volScalarField::operator=(max(fluid1_, fluid1_.residualAlpha()));
 fluid2_.volScalarField::operator=(max(fluid2_, fluid2_.residualAlpha()));
 fluid1_.turbulence().correct();
 fluid2_.turbulence().correct();
-
 fluid1_.volScalarField::operator=(fluid10);
 fluid2_.volScalarField::operator=(fluid20);
 
@@ -39,105 +38,69 @@ const volTensorField& Kd1s(F1SPair_.Kd());
 const volTensorField& Kd2s(F2SPair_.Kd());
 
 {
-    volScalarField nuEff1(fluid1_.turbulence().nuEff()());
-    volScalarField nuEff2(fluid2_.turbulence().nuEff()());
+    volTensorField nuEff1
+    (
+        structure_.tortuosity()
+       *fluid1_.turbulence().nuEff()()
+    );
+    volTensorField nuEff2
+    (
+        structure_.tortuosity()
+       *fluid2_.turbulence().nuEff()()
+    );
     
     UEqn1 =
-    (
-        fvm::div(fluid1_.alphaRhoPhi(), U1, "div(alphaRhoPhi,U)")
-        
-        //- Diffusion term (i.e. fluid1_.turbulence().divDevRhoReff(U1))
-        //  but re-expressed so to: 1) either allow to use a tensor
-        //  diffusivity (i.e. nuEff1*structure_.tortuosity()) if the 
-        //  structure is tortuous; 2) if not tortuous, still allow me to
-        //  specify the div interpolation scheme (i.e. "div(alphaRhoPhiNu,U))
-    +   (
-            (structure_.tortuosityPtr().valid()) ? 
-            (
-            -   fvm::laplacian
-                (
-                    alpha1*rho1*nuEff1*structure_.tortuosity(), 
-                    U1
-                )
-            -   fvc::div
-                (
-                    alpha1*rho1*nuEff1*structure_.tortuosity()
-                &   dev2(T(fvc::grad(U1))), 
-                    "div(alphaRhoPhiNu,U)"
-                )
-            ) :
-            (
-            -   fvm::laplacian(alpha1*rho1*nuEff1, U1)
-            -   fvc::div
-                (
-                    alpha1*rho1*nuEff1*dev2(T(fvc::grad(U1))), 
-                    "div(alphaRhoPhiNu,U)"
-                )
+        (
+            fvm::div(fluid1_.alphaRhoPhi(), U1, "div(alphaRhoPhi,U)")
+        //- The following is just a re-arrangement of div(nu*grad(U)),
+        //  i.e. + fluid1_.turbulence().divDevRhoReff(U1). However, it is
+        //  necessary to do this, otherwise the tensor nature of nuEff can't
+        //  be resolved in anisotropic porous media
+        +   (
+                -   fvm::laplacian(alpha1*rho1*nuEff1, U1)
+                -   fvc::div
+                    (
+                        alpha1*rho1*nuEff1&dev2(T(fvc::grad(U1))), 
+                        "div(alphaRhoPhiNu,U)"
+                    )
             )
-        )
-        
-        //- Implicit diagonal contribution of fluid-structure drag, 
-        //  explicit off-diagonal contribution
-    +   fvm::Sp((1.0/3.0)*tr(Kd1s), U1) + (dev(Kd1s)&U1)
-    ==
-        fvOptions_(alpha1, rho1, U1)
-    );
+            //- Implicit diagonal contribution of fluid-structure drag, 
+            //  explicit off-diagonal contribution
+        +   fvm::Sp((1.0/3.0)*tr(Kd1s), U1) + (dev(Kd1s)&U1)
+        ==
+            fvOptions_(alpha1, rho1, U1)
+        );
     UEqn2 =
-    (
-        fvm::div(fluid2_.alphaRhoPhi(), U2, "div(alphaRhoPhi,U)")
-
-        //- Diffusion term (i.e. fluid2_.turbulence().divDevRhoReff(U2))
-        //  but re-expressed so to: 1) either allow to use a tensor
-        //  diffusivity (i.e. nuEff2*structure_.tortuosity()) if the 
-        //  structure is tortuous; 2) if not tortuous, still allow me to
-        //  specify the div interpolation scheme (i.e. "div(alphaRhoPhiNu,U))
-    +   (
-            (structure_.tortuosityPtr().valid()) ? 
-            (
-            -   fvm::laplacian
-                (
-                    alpha2*rho2*nuEff2*structure_.tortuosity(), 
-                    U2
-                )
-            -   fvc::div
-                (
-                    alpha2*rho2*nuEff2*structure_.tortuosity()
-                &   dev2(T(fvc::grad(U2))), 
-                    "div(alphaRhoPhiNu,U)"
-                )
-            ) :
-            (
-            -   fvm::laplacian(alpha2*rho2*nuEff2, U2)
-            -   fvc::div
-                (
-                    alpha2*rho2*nuEff2*dev2(T(fvc::grad(U2))), 
-                    "div(alphaRhoPhiNu,U)"
-                )
+        (
+            fvm::div(fluid2_.alphaRhoPhi(), U2, "div(alphaRhoPhi,U)")
+            //- The following is just a re-arrangement of div(nu*grad(U))
+        +   (
+                -   fvm::laplacian(alpha2*rho2*nuEff2, U2)
+                -   fvc::div
+                    (
+                        alpha2*rho2*nuEff2&dev2(T(fvc::grad(U2))), 
+                        "div(alphaRhoPhiNu,U)"
+                    )
             )
-        )
-
-        //- Implicit diagonal contribution of fluid-structure drag,
-        //  explicit off-diagonal contribution
-    +   fvm::Sp((1.0/3.0)*tr(Kd2s), U2) + (dev(Kd2s)&U2) 
-    ==
-        fvOptions_(alpha2, rho2, U2)
-    );
+            //- Implicit diagonal contribution of fluid-structure drag,
+            //  explicit off-diagonal contribution
+        +   fvm::Sp((1.0/3.0)*tr(Kd2s), U2) + (dev(Kd2s)&U2) 
+        ==
+            fvOptions_(alpha2, rho2, U2)
+        );
 
     //- Add mass transfer contributions
     if (FFPair_.phaseChange())
     {
         volScalarField dmdt12(posPart(FFPair_.dmdt()));
         volScalarField dmdt21(-negPart(FFPair_.dmdt())); 
-        UEqn1 += fvm::Sp(dmdt12, U1) - dmdt21*U2;
-        UEqn2 += fvm::Sp(dmdt21, U2) - dmdt12*U1;
+        //UEqn1 += fvm::Sp(dmdt12, U1) - dmdt21*U2;
+        //UEqn2 += fvm::Sp(dmdt21, U2) - dmdt12*U1;
     }
 
     //- Add virtual mass forces, if applicable
-    if (FFPair_.validVirtualMass())
-    {
-        UEqn1 += FFPair_.virtualMassForce(UEqn1.psi().name());
-        UEqn2 += FFPair_.virtualMassForce(UEqn2.psi().name());
-    }
+    FFPair_.addVirtualMassForce(UEqn1);
+    FFPair_.addVirtualMassForce(UEqn2);
 
     //- The implicit and implicitWithDmdt are formulated differently
     //  even when there is no mass transfer. I should write the derivations

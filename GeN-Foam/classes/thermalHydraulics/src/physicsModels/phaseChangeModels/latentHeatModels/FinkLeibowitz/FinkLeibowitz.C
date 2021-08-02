@@ -2,7 +2,7 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+    \\  /    A nd           | Copyright (C) 2015-2018 OpenFOAM Foundation
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
@@ -24,84 +24,52 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FFPair.H"
-#include "NusseltFFHeatTransferCoefficient.H"
+#include "FinkLeibowitz.H"
 #include "addToRunTimeSelectionTable.H"
+#include "phaseChangeModel.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace FFHeatTransferCoefficientModels
+namespace latentHeatModels
 {
-    defineTypeNameAndDebug(Nusselt, 0);
+    defineTypeNameAndDebug(FinkLeibowitz, 0);
     addToRunTimeSelectionTable
     (
-        FFHeatTransferCoefficientModel, 
-        Nusselt, 
-        FFHeatTransferCoefficientModels
+        latentHeatModel,
+        FinkLeibowitz,
+        latentHeatModels
     );
 }
 }
 
-
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::FFHeatTransferCoefficientModels::Nusselt::Nusselt
+Foam::latentHeatModels::FinkLeibowitz::
+FinkLeibowitz
 (
-    const FFPair& pair,
-    const dictionary& dict,
+    const phaseChangeModel& pcm,
+    const dictionary& dict, 
     const objectRegistry& objReg
 )
 :
-    FFHeatTransferCoefficientModel
+    latentHeatModel
     (
-        pair,
+        pcm,
         dict,
         objReg
-    ),
-    Re_(pair.Re()),
-    kappa_(bulkFluid_.kappa()),
-    Pr_(pair.PrContinuous()),//(bulkFluid_.Pr()),(bulkFluid_.Pr()),
-    Dh_(pair.DhDispersed()),//(bulkFluid_.Dh()),(bulkFluid_.Dh()),
-    A_(dict.get<scalar>("const")),
-    B_(dict.get<scalar>("coeff")),
-    C_(dict.get<scalar>("expRe")),
-    D_(dict.get<scalar>("expPr")),
-    usePeclet_(C_ == D_)
+    )
 {}
-
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::FFHeatTransferCoefficientModels::Nusselt::value
-(
-    const label& celli
-) const
+Foam::scalar Foam::latentHeatModels::FinkLeibowitz::value(const label& celli)
+const
 {
-    //- I am creating a scalar on return to (hopefully) force Return Value
-    //  Optimizations (RVOs, C++ performance stuff)
-    scalar Dhi(max(Dh_[celli], 1e-4));
-    if (B_ != 0)
-    {
-        if (usePeclet_)
-            return
-                scalar
-                ( 
-                    (kappa_[celli]/Dhi)*
-                    (A_ + B_*pow(Re_[celli]*Pr_[celli], C_))
-                );
-        else
-            return 
-                scalar
-                (
-                    (kappa_[celli]/Dhi)*
-                    (A_ + B_*pow(Re_[celli], C_)*pow(Pr_[celli], D_))
-                );
-    }
-    else
-        return scalar((kappa_[celli]/Dhi)*A_);
-
+    scalar T(min(max(iT_[celli], 371), 2500));
+    scalar oneMinTByTc(1.0-(T/2503.7));
+    return 393370*oneMinTByTc + 4398600*pow(oneMinTByTc, 0.29302);
 }
-
 
 // ************************************************************************* //

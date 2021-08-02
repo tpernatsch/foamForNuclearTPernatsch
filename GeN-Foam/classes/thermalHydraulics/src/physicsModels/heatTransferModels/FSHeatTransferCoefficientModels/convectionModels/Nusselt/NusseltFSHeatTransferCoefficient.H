@@ -22,102 +22,93 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::virtualMass
+    Foam::FSHeatTransferCoefficientModels::Nusselt
 
 Description
-    Class to handle fluid-fluid interfacial area
+    Drag coefficient in the form fd = coeff*Re^exp with 
+    Kd = 0.5*fd*alpha*rho*magU/Dh
 
-Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+Dictionary entries (mandatory)
+    coeff   0.316;
+    exp     -0.25;
 
 SourceFiles
-    virtualMass.C
-    newInterfacialAreaModel.C
+    Nusselt.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef virtualMass_H
-#define virtualMass_H
+#ifndef NusseltFSHeatTransferCoefficient_H
+#define NusseltFSHeatTransferCoefficient_H
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#include "fluid.H"
-#include "fvMatrix.H"
-#include "virtualMassCoefficientModel.H"
+#include "FSHeatTransferCoefficientModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-class FFPair;
+namespace FSHeatTransferCoefficientModels
+{
 
 /*---------------------------------------------------------------------------*\
-            Class virtualMass Declaration
+                           Class Nusselt Declaration
 \*---------------------------------------------------------------------------*/
 
-class virtualMass
+class Nusselt
 :
-    public IOdictionary
+    public FSHeatTransferCoefficientModel
 {
-protected:
+private:
 
-    const fvMesh& mesh_;
+    //- Ref to Reynolds of pair
+    const volScalarField& Re_;
 
-    const FFPair& pair_;
+    //- Fluid thermal conductivity
+    const volScalarField& kappa_;
 
-    const fluid& fluid1_;
+    //- Ref to Prandtl of fluid
+    const volScalarField& Pr_;
 
-    const fluid& fluid2_;
+    //- Ref to characteristic dimension of pair
+    const volScalarField& Dh_;
 
-    const volVectorField& U1_;
-    
-    const volVectorField& U2_;
-    
-    const surfaceScalarField& phi1_;
-    
-    const surfaceScalarField& phi2_;
+    //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)
+    const scalar A_;
+    const scalar B_;
+    const scalar C_;
+    const scalar D_;
 
-    autoPtr<virtualMassCoefficientModel> VmPtr_;
-
-    volScalarField Vm_;
-
-    typedef HashTable<fvVectorMatrix, word, word::hash> VmForceTable;
-
-    VmForceTable VmForces_;
+    //- If C_ == D_, no need to do pow(Re, C_)*pow(Pr, D_), you can just do
+    //  pow(Re*Pr, C_) which is faster. Re*Pr = Pe (Peclet)
+    const bool usePeclet_;
 
 public:
 
-    //- Runtime type information
-    TypeName("virtualMass");
+    TypeName("NusseltReynoldsPrandtlPower");
 
-    // Constructors
+    //- Constructors
 
-        virtualMass
+        //- Construct for a fluid-structure pair
+        Nusselt
         (
-            const FFPair& pair,
-            const dictionary& dict
+            const FSPair& pair,
+            const dictionary& dict,
+            const objectRegistry& objReg
         );
 
         //- Destructor
-        virtual ~virtualMass(){}
+        virtual ~Nusselt(){}
 
-    // Member Functions
 
-        //-
-        virtual void correct();
+    //- Member Functions
 
-        //- Access
-
-            const fvVectorMatrix& force(const word& UName) const
-            {
-                return VmForces_[UName];
-            }
+        //- Drag coefficient
+        virtual scalar value(const label& celli) const;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+} // End namespace FSHeatTransferCoefficientModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

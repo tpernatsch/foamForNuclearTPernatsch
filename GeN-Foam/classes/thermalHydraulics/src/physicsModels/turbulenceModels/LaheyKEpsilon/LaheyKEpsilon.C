@@ -67,6 +67,7 @@ LaheyKEpsilon<BasicTurbulenceModel>::LaheyKEpsilon
     ),
     gasPtr_(nullptr),
     liquidPtr_(nullptr),
+    KdPtr_(nullptr),
     pairPtr_(nullptr),
     alphaInversion_
     (
@@ -171,6 +172,19 @@ template<class BasicTurbulenceModel>
 const Foam::tmp<Foam::volScalarField> LaheyKEpsilon<BasicTurbulenceModel>::Cd()
 const
 {
+    if (!KdPtr_)
+    {
+        const fvMesh& mesh(this->mesh_);
+        word keyLG("Kd."+IOobject::groupName(liquidName_, gasName_));
+        word keyGL("Kd."+IOobject::groupName(gasName_, liquidName_));
+        KdPtr_ = 
+            &(
+                (mesh.foundObject<volTensorField>(keyLG)) ?
+                mesh.lookupObject<volTensorField>(keyLG) :
+                mesh.lookupObject<volTensorField>(keyGL)
+            );
+    }
+
     tmp<volScalarField> tCd
     (
         new volScalarField
@@ -194,7 +208,7 @@ const
 
     //- Compute Cd from Kd
     Cd = 
-    (2.0)*p.Kd()*p.DhDispersed()/p.rhoContinuous()/
+    (2.0)*KdPtr_->component(0)*p.DhDispersed()/p.rhoContinuous()/
     max
     (
         (l*g)/(l+g)*p.magUr(), dimensionedScalar("", dimVelocity, 1e-3)

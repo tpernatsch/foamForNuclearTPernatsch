@@ -7,7 +7,8 @@
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
- OpenFOAM is free software: you can redistribute it and/or modify it
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -23,21 +24,21 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "complementaryContactPartition.H"
+#include "superpositionFSHeatTransferCoefficient.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace contactPartitionModels
+namespace FSHeatTransferCoefficientModels
 {
-    defineTypeNameAndDebug(complementary, 0);
+    defineTypeNameAndDebug(superposition, 0);
     addToRunTimeSelectionTable
     (
-        contactPartitionModel,
-        complementary,
-        contactPartitionModels
+        FSHeatTransferCoefficientModel, 
+        superposition, 
+        FSHeatTransferCoefficientModels
     );
 }
 }
@@ -45,71 +46,67 @@ namespace contactPartitionModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::contactPartitionModels::complementary::complementary
+Foam::FSHeatTransferCoefficientModels::superposition::superposition
 (
     const FSPair& pair,
     const dictionary& dict,
     const objectRegistry& objReg
 )
 :
-    contactPartitionModel
+    FSHeatTransferCoefficientModel
     (
         pair,
         dict,
         objReg
     ),
-    //complementaryPair_(nullptr),
-    complementaryModel_(nullptr)
+    htcFCPtr_
+    (
+        FSHeatTransferCoefficientModel::New
+        (
+            pair,
+            this->subDict("forcedConvection"),
+            pair.mesh()
+        )
+    ),
+    htcPBPtr_
+    (
+        FSHeatTransferCoefficientModel::New
+        (
+            pair,
+            this->subDict("poolBoiling"),
+            pair.mesh()
+        )
+    ),
+    FPtr_
+    (
+        flowEnhancementFactorModel::New
+        (
+            pair,
+            this->subDict("flowEnhancementFactor"),
+            pair.mesh()
+        )
+    ),
+    SPtr_
+    (
+        suppressionFactorModel::New
+        (
+            pair,
+            this->subDict("suppressionFactor"),
+            pair.mesh()
+        )
+    )
 {}
-
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::contactPartitionModels::complementary::value
+Foam::scalar Foam::FSHeatTransferCoefficientModels::superposition::value
 (
     const label& celli
 ) const
 {
-    return 0.0;
+    return 
+        htcFCPtr_->value(celli)*FPtr_->value(celli)
+    +   htcPBPtr_->value(celli)*SPtr_->value(celli);
 }
-
-
-void Foam::contactPartitionModels::complementary::correctField
-(
-    volScalarField& f
-)
-{
-    /*
-    if (complementaryPair_ == nullptr)
-    {
-        HashTable<const FSPair*> pairs(mesh_.lookupClass<FSPair>());
-        complementaryPair_ = 
-        &(
-            (pair_.name() == pairs[pairs.toc()[0]]->name()) ? 
-            pairs[pairs.toc()[0]] : pairs[pairs.toc()[0]]
-        );
-    }
-    f = 1.0-complementaryPair_->f();
-    */
-    if (complementaryModel_ == nullptr)
-    {
-        HashTable<const contactPartitionModel*> models
-        (
-            mesh_.lookupClass<contactPartitionModel>()
-        );
-        complementaryModel_ = 
-        (
-            (this->type() == models[models.toc()[0]]->type()) ?
-            models[models.toc()[0]] : models[models.toc()[0]]
-        );
-    }
-
-    forAll(mesh_.cells(), i)
-    {
-        f[i] = 1.0 - complementaryModel_->value(i);
-    }
-    f.correctBoundaryConditions();
-}
-
 
 // ************************************************************************* //
