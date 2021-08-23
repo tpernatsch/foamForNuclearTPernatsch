@@ -1,58 +1,7 @@
 
- ##### 1D_HX  ###### 
-1D_HX/onePhase has converged 
-1D_HX/twoPhase has converged 
-
- ##### 1D_boiling  ###### 
-1D_boiling has converged 
-
- ##### 1D_MSR_pointKinetics  ###### 
-Steady state of 1D_MSR_pointKinetics has converged 
-Transient of 1D_MSR_pointKinetics has converged 
-Transient of 1D_MSR_pointKinetics has converged 
-power is 6.13778e+08  . It should be ~6.13794e+08 
-
  ##### 3D_SmallESFR  ###### 
 Steady state of 3D_SmallESFR has converged 
 Transient of 3D_SmallESFR has converged 
 
 keff is 0.936873 . It should be ~0.936827  
 power is 7.999454e+08 . It should be ~8e+08  
-
- ##### 2D_cavityBoussinesq  ###### 
-2D_cavityBoussinesq has converged 
-
- ##### 2D_FFTF  ###### 
-Energy steady state of 2D_FFTF has converged 
-Transient of 2D_FFTF has converged 
-reactivityDoppler is 234.096  . It should be 234.0619  
-reactivityClad is 0.7122872  . It should be 0.7126157   
-reactivityDensity is -3.247937  . It should be -3.248574  
-reactivityStructures is -1.618667  . It should be -1.614754  
-reactivityDriveline is -11.33646  . It should be -11.31405  
-reactivityGEM is -441.8483  . It should be -441.8483  
-totalPower is 30553.25  . It should be 30533.5  
-
- ##### 2D_MSFR  ###### 
-Energy steady state of 2D_MSFR has converged 
-Thernal-hydraulic steady state of 2D_MSFR has converged 
-Transient of 2D_MSFR has converged 
-
-keff is 0.960284 . It should be ~0.960283  
-power is 2e+07 . It should be ~2e+07  
-
- ##### 2D_onePhaseAndPointKineticsCoupling  ###### 
-Steady state of 2D_onePhaseAndPointKineticsCoupling has converged 
-Transient (no driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
-Transient (with driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
-
- ##### 2D_voidMotionNoPhaseChange  ###### 
-2D_voidMotionNoPhaseChange has converged 
-
- ##### 2D_KNS37-L22  ###### 
-2D_KNS37-L22 has converged 
-time, average alpha.vapour and aveage T.structure when alpha is approximately max are: 12.665272554727872	1.515507e-01	8.163611e+02 . They should be 12.665272554727872 1.515507e-01 8.163611e+02 
-
- ##### Godiva_SN  ###### 
-Godiva_SN has converged 
-keff is 0.980106 . It should be 0.980106  
