@@ -1,7 +1,11 @@
 
- ##### 3D_SmallESFR  ###### 
-Steady state of 3D_SmallESFR has converged 
-Transient of 3D_SmallESFR has converged 
-
-keff is 0.936873 . It should be ~0.936827  
-power is 7.999454e+08 . It should be ~8e+08  
+ ##### 2D_FFTF  ###### 
+Energy steady state of 2D_FFTF has converged 
+Transient of 2D_FFTF has converged 
+reactivityDoppler is 240.6606  . It should be 234.0619  
+reactivityClad is 0.8156143  . It should be 0.7126157   
+reactivityDensity is -3.25089  . It should be -3.248574  
+reactivityStructures is -1.319733  . It should be -1.614754  
+reactivityDriveline is -10.12475  . It should be -11.31405  
+reactivityGEM is -464.8485  . It should be -441.8483  
+totalPower is 29966.92  . It should be 30533.5  

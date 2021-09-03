@@ -51,7 +51,7 @@ setTransient()
     foamDictionary $1/system/controlDict -entry solveFluidMechanics -set true
     foamDictionary $1/system/controlDict -entry solveEnergy -set true
     foamDictionary $1/system/controlDict -entry solveNeutronics -set true
-    foamDictionary $1/system/controlDict -entry maxCo -set 2.5;
+    foamDictionary $1/system/controlDict -entry maxCo -set 2.0;
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.h -set 0.95
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.hFinal -set 1.0
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.U -set 1.0

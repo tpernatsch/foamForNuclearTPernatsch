@@ -9,51 +9,55 @@ FoamFile
 
 energyGroups   1;//;24;
 
-precGroups     6;
+precGroups     8;
 
 //- Point Kinetics data
 fastNeutrons true;
 
-promptGenerationTime 5.27777e-7;
+promptGenerationTime 5.0e-7;
 
 Beta
 (
-    0.0000831411
-    0.000588517
-    0.000490074
-    0.00110581
-    0.00063604
-    0.000227678
+    6.15E-5
+    5.66E-4
+    2.18E-4
+    4.67E-4
+    1.04E-3
+    3.48E-4
+    3.50E-4
+    1.58E-4
 );
 
 lambda
 (
-    0.0133533
-    0.0309845
-    0.116786
-    0.306009
-    0.880307
-    2.91286
+    1.25E-2
+    2.83E-2
+    4.25E-2
+    1.33E-1
+    2.92E-1
+    6.66E-1
+    1.63
+    3.55
 );
 
 //- Representative of fuel axial expansion
-feedbackCoeffTFuel          -3.902088E-06;
+feedbackCoeffTFuel          -4.0E-06;
 
 //- Representative of in-assebly structure density change 
-//  (i.e. cladding AND wrapper write)
-feedbackCoeffTClad          -9.93163E-07;
+//  (i.e. cladding AND wrapper wire)
+feedbackCoeffTClad          -1.0E-06;
 
 //-
 feedbackCoeffTCool          0;
 
 //-
-feedbackCoeffRhoCool        1.42675E-05;
+feedbackCoeffRhoCool        1.5E-05;
 
 //-
-feedbackCoeffFastDoppler    4.8878395E-03;
+feedbackCoeffFastDoppler    5.0E-03;
 
 //- Representative of structure radial expansion
-feedbackCoeffTStruct        -1.0037559E-05;
+feedbackCoeffTStruct        -1.0E-05;
 
 fuelFeedbackZones
 (
@@ -87,27 +91,27 @@ GEMFlowFaceZone "coreMiddleCut";
 //- Map of GEM sodium level (wrt reference) vs reactivity
 GEMReactivityMap
 (
-    (0.2046     1e-5)
+    (0.2046     0e-5)
     (0.1024     0e-5)
     (0.0046     0e-5)
     (0          0e-5)
     (-0.0954    -1e-5)
-    (-0.1954    -6e-5)
-    (-0.2954    -18e-5)
-    (-0.3954    -42e-5)
-    (-0.4943    -72e-5)
-    (-0.5954    -116e-5)
-    (-0.6954    -161e-5)
-    (-0.7954    -220e-5)
-    (-0.8954    -270e-5)
-    (-0.9954    -324e-5)
-    (-1.0968    -368e-5)
-    (-1.1954    -403e-5)
-    (-1.2954    -423e-5)
-    (-1.3954    -434e-5)
-    (-1.4954    -439e-5)
-    (-1.5954    -441e-5)
-    (-2.216     -444e-5)
+    (-0.1954    -5e-5)
+    (-0.2954    -20e-5)
+    (-0.3954    -45e-5)
+    (-0.4943    -76e-5)
+    (-0.5954    -120e-5)
+    (-0.6954    -170e-5)
+    (-0.7954    -230e-5)
+    (-0.8954    -285e-5)
+    (-0.9954    -340e-5)
+    (-1.0968    -385e-5)
+    (-1.1954    -420e-5)
+    (-1.2954    -440e-5)
+    (-1.3954    -458e-5)
+    (-1.4954    -462e-5)
+    (-1.5954    -464e-5)
+    (-2.216     -467e-5)
 );
 
 drivelineFeedbackZones
@@ -116,18 +120,18 @@ drivelineFeedbackZones
 );
 
 //- In m/K
-absoluteDrivelineExpansionCoeff 0.00006768;
+absoluteDrivelineExpansionCoeff 0.00007;
 
 //- CR insertion/driveline expansion (in m) vs reactivity
 controlRodReactivityMap
 (
-    (-0.1113    1010.9e-5)
-    (-0.0613    579.5e-5)
-    (-0.0113    111.7e-5)
+    (-0.1113    1000e-5)
+    (-0.0613    600e-5)
+    (-0.0113    100e-5)
     (0           0)
-    (0.0387     -408.0e-5)
-    (0.0887     -997.3e-5)
-    (0.1387     -1639.7e-5)
+    (0.0387     -400e-5)
+    (0.0887     -1000e-5)
+    (0.1387     -1600e-5)
 );
 
 //- End of pointKinetics data
