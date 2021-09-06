@@ -71,11 +71,11 @@ Foam::neutronics::neutronics
     ),
     keff_(reactorState_.lookupOrDefault("keff",1.0)),
     pTarget_(reactorState_.lookupOrDefault("pTarget",1.0)),
-    volFuelPower_
+    powerDensity_
     (
         IOobject
         (
-            "volFuelPower",
+            "powerDensity",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,

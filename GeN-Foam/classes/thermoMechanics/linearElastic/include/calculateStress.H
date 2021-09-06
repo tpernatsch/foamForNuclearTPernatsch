@@ -13,7 +13,7 @@ if (mesh_.time().outputTime())
         rho_*sigmaD_
     );
 
-    sigma = sigma - I*(rho_*threeKalpha_*TStruct_);
+    sigma = sigma - I*(rho_*threeKalpha_*(TStruct_-TStructRef_));
 
     volScalarField sigmaEq
     (

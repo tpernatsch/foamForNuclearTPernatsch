@@ -3,21 +3,17 @@
 if (porousInterfaceSharpness_ != 0.0)
 {
     if (porousInterfaceSharpness_ == 1.0)
-        U = fvc::reconstruct(MRF_.absolute(fluid_.phi()*alphaf))/alpha;
+        U = fvc::reconstruct(phi_)/alpha;
     else
         U = 
             porousInterfaceSharpness_*
             (
-                fvc::reconstruct
-                (
-                    MRF_.absolute(fluid_.phi()*alphaf)
-                )/
-                alpha
+                fvc::reconstruct(phi_)/alpha
             )
         +   (1-porousInterfaceSharpness_)*
             (   
-                fvc::reconstruct(MRF_.absolute(fluid_.phi()))
+                fvc::reconstruct(fluid_.phi())
             );
 }
 else
-    U = fvc::reconstruct(MRF_.absolute(fluid_.phi()));
+    U = fvc::reconstruct(fluid_.phi());

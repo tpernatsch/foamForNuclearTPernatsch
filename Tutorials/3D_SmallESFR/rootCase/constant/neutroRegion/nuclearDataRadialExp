@@ -1,4 +1,3 @@
-
 /*
  crossSection dictionary
  Generatd by serpentToFoamXS 
@@ -98,7 +97,7 @@ innerCore
     IV nonuniform List<scalar> 1 (4.080030e-07  );
     D nonuniform List<scalar> 1 (1.426420e-02  );
     nuSigmaEff nonuniform List<scalar> 1 (6.548070e-01  );
-    sigmaPow nonuniform List<scalar> 1 (4.665371e+01  );
+    sigmaPow nonuniform List<scalar> 1 (7.47486E-11  );
     scatteringMatrixP0  1  1 ( 
     ( 2.893590e+01 )
     );
@@ -113,7 +112,7 @@ outerCore
     IV nonuniform List<scalar> 1 (3.849620e-07  );
     D nonuniform List<scalar> 1 (1.451270e-02  );
     nuSigmaEff nonuniform List<scalar> 1 (7.445910e-01  );
-    sigmaPow nonuniform List<scalar> 1 (5.290407e+01  );
+    sigmaPow nonuniform List<scalar> 1 (8.47629E-11  );
     scatteringMatrixP0  1  1 ( 
     ( 2.855330e+01 )
     );

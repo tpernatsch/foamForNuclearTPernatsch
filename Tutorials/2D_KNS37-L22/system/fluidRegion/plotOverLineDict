@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      plotOverLineDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+radialTemperature
+{
+    field "T.liquid";
+    time 9.095619;
+    p0 (0 0 -0.571);
+    p1 (0.03 0 -0.571);
+    includeBoundaryValues false;
+}
+
+axialTemperature
+{
+    field "T.liquid";
+    time 9.095619;
+    p0 (0.0001 0 -1.35001);
+    p1 (0.0001 0 0);
+    includeBoundaryValues true;
+}
+
+axialTemperatureSteadyState
+{
+    field "T.liquid";
+    time 2.995619;
+    p0 (0.0001 0 -1.35001);
+    p1 (0.0001 0 0);
+    includeBoundaryValues true;
+}
+
+// ************************************************************************* //

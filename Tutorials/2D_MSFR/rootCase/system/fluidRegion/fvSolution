@@ -60,8 +60,9 @@ solvers
 
 PIMPLE
 {
-    nCorrectors      6;
-    nNonOrthogonalCorrectors 1;
+    nCorrectors                 6;
+    nNonOrthogonalCorrectors    0;
+    correctUntilConvergence     true;
     partialEliminationMode      implicit;
     momentumMode                cellCentered;
 }

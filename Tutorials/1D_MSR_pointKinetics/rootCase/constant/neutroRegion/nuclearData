@@ -23,8 +23,17 @@ fastNeutrons            true; // if true interpolates cross section with logarit
 
 adjustDiscFactors       false;
 
-
 useGivenDiscFactors     false;
+
+energyGroups 6 ;
+
+precGroups 8 ; 
+
+zones
+(
+
+
+);
 
 //- Relevant only for pointKinetics
 
@@ -52,6 +61,11 @@ controlRodReactivityMap ( ( 0.1 -0.01 ) ( 0 0 ) ( -0.1 0.01 ) );
 
 initPrecursorsLiquidFuel true;
 
+initialOneGroupFluxByZone
+{
+    "core"      1.0;
+}
+
 fuelFeedbackZones
 (
     "core"
@@ -60,14 +74,3 @@ coolantFeedbackZones
 (
     "core"
 );
-
-
-energyGroups 6 ;
-
-precGroups 8 ; 
-
-zones
- (
-
-
- );

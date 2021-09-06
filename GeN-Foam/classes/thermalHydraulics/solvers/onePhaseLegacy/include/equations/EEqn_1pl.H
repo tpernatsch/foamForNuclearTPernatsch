@@ -16,7 +16,7 @@
     volTensorField alphaEff
     (
         structure_.tortuosity()
-       *fluid_.thermo().alphaEff(fluid_.turbulence().mut())()
+       *fluid_.thermo().alphaEff(fluid_.turbulence().alphat())()
     );
 
     //- Energy equations
@@ -49,7 +49,7 @@
     //- Correct surface temperature of the power-generating subStructures 
     //  of the structures and add source/sink terms to the fluids energy 
     //  eqns
-    const volScalarField& Hs(*htcs_["FSPair"]);
+    const volScalarField& Hs(FSPair_.htc());
 
     structure_.correct
     (

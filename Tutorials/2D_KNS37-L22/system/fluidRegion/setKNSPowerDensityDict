@@ -1,0 +1,29 @@
+/*--------------------------------*- C++ -*----------------------------------*\ 
+| ========                 |                                                 | 
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           | 
+|  \    /   O peration     | Version:  5.0                                   | 
+|   \  /    A nd           | Web:      www.OpenFOAM.org                      | 
+|    \/     M anipulation  |                                                 | 
+\*---------------------------------------------------------------------------*/ 
+FoamFile
+{
+    version     5.0;
+    format      ascii;
+    class       dictionary;
+    object      setKNSPowerDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+field "powerDensity.heatedPin";
+
+"midIn"
+{
+	avgValue 	5.925E+08;
+	offset 		-1.35;
+}
+
+"midOut"
+{
+	avgValue 	5.925E+08;
+	offset 		-1.35;
+}

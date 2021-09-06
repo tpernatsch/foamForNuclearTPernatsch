@@ -15,12 +15,10 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-thermalHydraulicType    "onePhase";
+thermalHydraulicsType           "onePhase";
 
 structureProperties
 {    
-    type            "byZone";
-
     "outletPlenum:inletPlenum"
     {
         volumeFraction          0;
@@ -400,25 +398,23 @@ structureProperties
 }
 
 // ------------------------------------------------------------------------- //
-// --- REGIME MAP MODEL ---------------------------------------------------- //
+// --- REGIME MAP MODELS --------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-regimeMapModel
-{
-    type                none;
-}
+regimeMapModels
+{}
 
 // ------------------------------------------------------------------------- //
-// --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
+// --- PHYSICS MODLS ------------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-physicsModelsByRegime
+physicsModels
 {
     dragModels
     {
         "lowerShieldInnerCore:lowerShieldOuterCore:lowerShieldCR:bypass:outletPlenum:hotLegPrimary:pipePumpIHXPrimary:coldLegPrimary:inletPlenum:hotLegSecondary:coldLegSecondary:pipePumpIHXSecondary"
         {
-            type    DarcyReynoldsPower;
+            type    ReynoldsPower;
             coeff   0.687;
             exp     -0.25;
         }
@@ -430,15 +426,32 @@ physicsModelsByRegime
         }
 
         "innerCore:outerCore:upperShieldCore"
-        {
-            type                Rehme;
-            numberOfPins        217;
-            pinDiameter         0.005842;
-            wireDiameter        0.001445;
-            wireLeadLen         0.302;
-            wetWrapPerimeter    0.38143;
-            principalAxis       localZ;
-            transverseDragModel GunterShaw;
+        {   
+            "localZ"
+            {
+                type                Rehme;
+                numberOfPins        217;
+                pinDiameter         0.005842;
+                wireDiameter        0.001445;
+                wireLeadLen         0.302;
+                wetWrapPerimeter    0.38143;
+            }
+            "localX"
+            {
+                //- This is GunterShaw
+                type    ReynoldsPower;
+                coeff   0.96;
+                exp     -0.145;
+            }
+            //- In theory drag along the Y axis should not matter (as it is 
+            //  perpendicular to the wedge plane), but for consistency I set it
+            "localY"
+            {
+                //- This is GunterShaw
+                type    ReynoldsPower;
+                coeff   0.96;
+                exp     -0.145;
+            }
         }
 
         "CR"

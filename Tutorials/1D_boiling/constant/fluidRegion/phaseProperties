@@ -20,7 +20,7 @@ FoamFile
 // ------------------------------------------------------------------------- //
 
 //-
-thermalHydraulicType    "twoPhase";
+thermalHydraulicsType    "twoPhase";
 
 // ------------------------------------------------------------------------- //
 // --- FLUID PROPERTIES ---------------------------------------------------- //
@@ -81,6 +81,11 @@ liquidProperties
     // thermoResidualAlpha 0;
     // writeRestartFields false;
     stateOfMatter   liquid;
+    dispersedDiameterModel
+    {
+        type    constant;
+        value   0.01;
+    }
 }
 
 vapourProperties
@@ -90,13 +95,12 @@ vapourProperties
     //  the volume available to fluid flow, accounting for structure)
     stateOfMatter   gas;
     thermoResidualAlpha 0.05;
+    dispersedDiameterModel
+    {
+        type    constant;
+        value   0.01;
+    }
 }
-
-//- Virtual mass coefficient to account for virtual mass effect during
-//  two-phase transients. Use with care, as due to its partly explicit nature 
-//  it can substantially lower time steps requirements to guarantee stability.
-//  This entry IS NOT MANDATORY and defaults to 0;
-virtualMassCoeff        0.1;
 
 // ------------------------------------------------------------------------- //
 // --- STRUCTURES PROPERTIES ----------------------------------------------- //
@@ -106,12 +110,7 @@ virtualMassCoeff        0.1;
 //  Unlike fluids, the structure cannot be named, and this dictionary is always
 //  called structureProperties
 structureProperties
-{    
-    //- The only structure model currently available is byZone, wherein the
-    //  porous properties are specified on a cellZone basis. This
-    //  entry (type) IS MANDATORY and currently MUST be set to byZone
-    type            "byZone";
-    
+{        
     //- The rest of the structureProperties consists of a series of subDicts
     //  whose properties are applied to the cellZones that have their name
     //  in the subDict keys. Please note that the presence of any of these
@@ -443,80 +442,77 @@ structureProperties
         //-
         time            7;
     }
-
 }
 
 // ------------------------------------------------------------------------- //
 // --- REGIME MAP MODEL ---------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-//- This entry specifies which regimeMap to use, i.e. how to tell which
-//  flow regime exists in which mesh cells at a given time. Every flow regime
-//  acts as a placeholder for different interaction models between the fluids
-//  themselves and between fluids and structure. These interaction models
-//  are specified on a regime-by-regime basis in the physicsModelsByRegime
-//  subDict after the regimeMapModel dict, and will be covered later. 
-//  Please note that the regimeMap can be used both with the onePhase and the
-//  twoPhase thermalHydraulic subSolvers! The regimeMapModel subDict IS
-//  MANDATORY
-regimeMapModel
+//- This entry specifies which regimeMaps to use, i.e. how to tell which
+//  flow regime exists in which mesh cells at a given time. This can be a list
+//  of any number of flow regime maps, with custom names. These CAN be used by
+//  interaction models of type "byRegime".
+regimeMapModels
 {
-    //- This entry IS MANDATORY and currently supports two models:
-    //  -   none            ->  no flow regime maps, i.e. only one set
-    //                          of interaction models needs to be specified
-    //                          in physicsModelsByRegime. This model
-    //                          takes no further options
-    //  -   oneParameter    ->  the flow regime depends on the value of a
-    //                          scalar parameter, cell-by-cell (a field).
-    //                          any number of regimes can be constructed
-    //                          and managed
-    type                oneParameter;
-
-    //--Start of oneParameter entries
-
-    //- Name of the field to be used for parametrization. Technically, this
-    //  can consists of any volScalarField registered within the mesh
-    //  objectRegistry. A list of the the possible fields depends on the
-    //  thermalHydrauliuc model type (whether twoPhase or onePhase).
-    //  A meaningful choice for the twoPhase is "normalized.alpha.fluidName"
-    //  with fluidName being the name of one of the two fluids. This field
-    //  consists of the fluid volumeFraction normalized with respect to the
-    //  total volumeFraction available for fluid flow. A meaningful choice
-    //  for the onePhase type is the fluid-structure Reynolds field, simply
-    //  called "Re"
-    parameter           "normalized.alpha.vapour";
-    
-    //- This dict contains a series of user selected regime names (i.e. 
-    //  "bubbly-slug" and "mist" in this case) and to each of them a pair
-    //  of numbers is associated. These represents the uppwer and lower bound
-    //  of the parameter value for that regime to be present in a mesh cell.
-    //  Just to be as thorough as it gets, in this example, if a cell has a 
-    //  normalized.alpha.vapour of 0.34 in a certain cell, the regime that
-    //  exists in that cell will be "bubbly-slug", and the interaction models
-    //  specified in the "bubbly-slug" subDict in physicsModelsByRegime
-    //  will apply (in that cell). The uppwer and lower bounds of consecutive
-    //  regimes DO NOT NEED TO MATCH. If the bounds do not match, additional
-    //  interpolation regimes are created at runTime. These regimes are 
-    //  (linearly) interpolated between the specified interaction models so
-    //  to avoid harsh discontinuities in time and space of these model, which
-    //  would lead to sever numerical stability problems. In the case below,
-    //  an interpolation regime exists between parameter values 0.6 and 0.95.
-    //  It is important to note that the lowest and highest bounds among all
-    //  regimes are automatically extended to -infinity and +infinity to avoid
-    //  out-of-bounds parameter issues.
-    //  At an input level, the order in which the regimes are provided DOES NOT
-    //  MATTER, this is determined automatically by the parameter bounds. 
-    //  The order in which the bounds are provided in the list also DOES NOT
-    //  MATTER as it is automatically adjusted. However, please note that
-    //  regime overlap checks ARE NOT PERFORMED (yet), and that the behaviour
-    //  is such scenarios is undefined
-    regimeBounds
+    //- Custom name of this regimeMap
+    "slugMist"
     {
-        "slug"              (0      0.85);
-        "mist"              (0.95     1);
-    }
+        //- This entry IS MANDATORY and currently supports two models:
+        //  -   none            ->  no flow regime maps, i.e. only one set
+        //                          of interaction models needs to be specified
+        //                          in physicsModelsByRegime. This model
+        //                          takes no further options
+        //  -   oneParameter    ->  the flow regime depends on the value of a
+        //                          scalar parameter, cell-by-cell (a field).
+        //                          any number of regimes can be constructed
+        //                          and managed
+        type                oneParameter;
 
-    //--End of oneParameter entries
+        //--Start of oneParameter entries
+
+        //- Name of the field to be used for parametrization. Technically, this
+        //  can consists of any volScalarField registered within the mesh
+        //  objectRegistry. A list of the the possible fields depends on the
+        //  thermalHydrauliuc model type (whether twoPhase or onePhase).
+        //  A meaningful choice for the twoPhase is "normalized.alpha.fluidName"
+        //  with fluidName being the name of one of the two fluids. This field
+        //  consists of the fluid volumeFraction normalized with respect to the
+        //  total volumeFraction available for fluid flow. A meaningful choice
+        //  for the onePhase type is the fluid-structure Reynolds field, simply
+        //  called "Re"
+        parameter           "normalized.alpha.vapour";
+        
+        //- This dict contains a series of user selected regime names (i.e. 
+        //  "bubbly-slug" and "mist" in this case) and to each of them a pair
+        //  of numbers is associated. These represents the uppwer and lower bound
+        //  of the parameter value for that regime to be present in a mesh cell.
+        //  Just to be as thorough as it gets, in this example, if a cell has a 
+        //  normalized.alpha.vapour of 0.34 in a certain cell, the regime that
+        //  exists in that cell will be "bubbly-slug", and the interaction models
+        //  specified in the "bubbly-slug" subDict in physicsModelsByRegime
+        //  will apply (in that cell). The uppwer and lower bounds of consecutive
+        //  regimes DO NOT NEED TO MATCH. If the bounds do not match, additional
+        //  interpolation regimes are created at runTime. These regimes are 
+        //  (linearly) interpolated between the specified interaction models so
+        //  to avoid harsh discontinuities in time and space of these model, which
+        //  would lead to sever numerical stability problems. In the case below,
+        //  an interpolation regime exists between parameter values 0.6 and 0.95.
+        //  It is important to note that the lowest and highest bounds among all
+        //  regimes are automatically extended to -infinity and +infinity to avoid
+        //  out-of-bounds parameter issues.
+        //  At an input level, the order in which the regimes are provided DOES NOT
+        //  MATTER, this is determined automatically by the parameter bounds. 
+        //  The order in which the bounds are provided in the list also DOES NOT
+        //  MATTER as it is automatically adjusted. However, please note that
+        //  regime overlap checks ARE NOT PERFORMED (yet), and that the behaviour
+        //  is such scenarios is undefined
+        regimeBounds
+        {
+            "slug"              (0      0.85);
+            "mist"              (0.95     1);
+        }
+    }
+    //--End of the slugMist flow regime map
 }
 
 // ------------------------------------------------------------------------- //
@@ -526,120 +522,37 @@ regimeMapModel
 //- See section at the end of the physicsModelsByRegime dictionary for further
 //  info on its setup
 
-physicsModelsByRegime
+physicsModels
 {
-    "slug"
+    dragModels
     {
-        dragModels
+        "liquid.vapour" 
         {
-            "liquid.vapour" 
-            {
-                type    SchillerNaumann;
-            }
-
-            "liquid.structure"
-            {
-                "low:mid:top"
-                {
-                    type    DarcyReynoldsPower;
-                    coeff   2; // coeff A in A*Re^b
-                    exp     -0.125; // coeff b in A*Re^b
-                }
-            }
+            type    SchillerNaumann;
         }
 
-        twoPhaseDragMultiplierModel
+        "liquid.structure"
         {
-            type                Kaiser88;
-            multiplierFluid     liquid;
-        }
-
-        heatTransferModels
-        {
-            "liquid.vapour"
+            "low:mid:top"
             {
-                type    NusseltReynoldsPrandtlPower;
-                const   10;
-                coeff   0;
-                expRe   0;
-                expPr   0;
-            }
-
-            "vapour.liquid"
-            {
-                type    NusseltReynoldsPrandtlPower;
-                const   10;
-                coeff   0;
-                expRe   0;
-                expPr   0;
-            }
-
-            "liquid.structure"
-            {
-                "mid"
-                {
-                    type    NusseltReynoldsPrandtlPower;
-                    const   7;
-                    coeff   1e-2;
-                    expRe   0.75;
-                    expPr   0.75;
-                }
-            }
-        }
-
-        fluidGeometry
-        {
-            dispersed   "vapour";
-
-            dispersedFluidDiameterModel
-            {
-                type    constant;
-                value   0.01;
-            }
-
-            fluidInterfacialAreaModel
-            {
-                type        sphericalTopology;
-            }
-
-            fluidPartitionModel
-            {
-                type        constant;
-                liquid      1.0;
-                vapour      0.0;
+                type    ReynoldsPower;
+                coeff   2; // coeff A in A*Re^b
+                exp     -0.125; // coeff b in A*Re^b
             }
         }
     }
 
-    "mist"
+    twoPhaseDragMultiplierModel
     {
-        dragModels
-        {
-            "liquid.vapour" 
-            {
-                type SchillerNaumann;
-            }
+        type                Kaiser88;
+        multiplierFluid     liquid;
+    }
 
-            "liquid.structure"
-            {
-                "low:mid:top"
-                {
-                    type    DarcyReynoldsPower;
-                    coeff   2;
-                    exp     -0.125;
-                }
-            }
-        }
-
-        twoPhaseDragMultiplierModel
+    heatTransferModels
+    {
+        "liquid.vapour"
         {
-            type                Kaiser88;
-            multiplierFluid     "liquid";
-        }
-
-        heatTransferModels
-        {
-            "liquid.vapour"
+            "liquid"
             {
                 type    NusseltReynoldsPrandtlPower;
                 const   10;
@@ -647,8 +560,7 @@ physicsModelsByRegime
                 expRe   0;
                 expPr   0;
             }
-
-            "vapour.liquid"
+            "vapour"
             {
                 type    NusseltReynoldsPrandtlPower;
                 const   10;
@@ -656,152 +568,93 @@ physicsModelsByRegime
                 expRe   0;
                 expPr   0;
             }
+        }
 
-            "vapour.structure"
+        "liquid.structure"
+        {
+            "mid"
             {
-                "mid"
+                type    NusseltReynoldsPrandtlPower;
+                const   7;
+                coeff   1e-2;
+                expRe   0.75;
+                expPr   0.75;
+            }
+        }
+    }
+
+    virtualMassCoefficientModel
+    {
+        type    constant;
+        value   0.1;
+    }
+
+    pairGeometryModels
+    {
+        "liquid.vapour"
+        {
+            dispersionModel
+            {
+                type        byRegime;
+                regimeMap   "slugMist";
+                "slug"
                 {
-                    type    NusseltReynoldsPrandtlPower;
-                    const   7;
-                    coeff   1e-2;
-                    expRe   0.75;
-                    expPr   0.75;
+                    type            constant;
+                    dispersedPhase  "vapour";
+                }
+                "mist"
+                {
+                    type            constant;
+                    dispersedPhase  "liquid";
+                }
+            }
+
+            interfacialAreaDensityModel
+            {
+                type        spherical;
+            } 
+        }
+        
+        "liquid.structure"
+        {
+            contactPartitionModel
+            {
+                type        byRegime;
+                regimeMap   "slugMist";
+                "slug"
+                {
+                    type        constant;
+                    value       1.0;
+                }
+                "mist"
+                {
+                    type        constant;
+                    value       0.1;
                 }
             }
         }
+    }
 
-        fluidGeometry
+    phaseChangeModel
+    {
+        type                heatDriven;
+        mode                conductionLimited; 
+        correctLatentHeat   true;
+
+        latentHeatModel
         {
-            dispersed   "liquid";
-
-            dispersedFluidDiameterModel
-            {
-                type    constant;
-                value   0.01;
-            }
-
-            fluidInterfacialAreaModel
-            {
-                type        sphericalTopology;
-            }
-
-            fluidPartitionModel
-            {
-                type        constant;
-                liquid      0.1;
-                vapour      0.9;
-            }
+            type        FinkLeibowitz;
+            adjust      true;
+        }
+        
+        saturationModel
+        {
+            type        BrowningPotter;
         }
     }
 }
 
 /*
-Example of a physicsModelsByRegimeDict. This dictionary can take on marginally
-different layouts depending on whether the thermalHydraulicType is twoPhase or
-onePhase and whether the regimeMapModel is oneParameter or none. Before
-focusing on the details of each dict, the layout is discussed for each of the
-four cases. Please note that the collapsed subDicts listed within the
-physicsModelsByRegime for each of the four cases ARE MANDATORY for that case
-
-//--twoPhase thermalHydraulics with none regimeMap
-
-physicsModelsByRegime
-{
-    dragModels
-    {...}
-
-    twoPhaseDragMultiplierModel
-    {...}
-
-    heatTransferModels
-    {...}
-
-    fluidGeometry
-    {...}
-}
-
-//--twoPhase thermalHydraulics with oneParameter regimeMap 
-//  (e.g. "regime0", 1, 2...)
-
-physicsModelsByRegime
-{
-    "regime0"
-    {
-        dragModels
-        {...}
-
-        twoPhaseDragMultiplierModel
-        {...}
-
-        heatTransferModels
-        {...}
-
-        fluidGeometry
-        {...}
-    }
-
-    "regime1"
-    {
-        dragModels
-        {...}
-
-        twoPhaseDragMultiplierModel
-        {...}
-
-        heatTransferModels
-        {...}
-
-        fluidGeometry
-        {...}
-    }
-
-    "regime2"
-    ...
-}
-
-//--onePhase thermalHydraulics with none regimeMap
-
-physicsModelsByRegime
-{
-    dragModels
-    {...}
-
-    heatTransferModels
-    {...}
-}
-
-//--onePhase thermalHydraulics with oneParameter regimeMap
-
-physicsModelsByRegime
-{
-    "regime0"
-    {
-        dragModels
-        {...}
-
-        heatTransferModels
-        {...}
-    }
-
-    "regime1"
-    {
-        dragModels
-        {...}
-
-        heatTransferModels
-        {...}
-    }
-
-    "regime2"
-    ...
-}
-
-In essence, the fundamental difference between onePhase and twoPhase is that
-twoPhase requires a fluidGeometry subDict and onePhse doesn't. Conversely, the
-difference between oneParameter and none is that in oneParameter the models
-subDicts are enclosed within a subDict that bears the regime name. Now, what
-is the point of these models?
-
 dragModel ->    With regards to the momentum equation for a fluid, the role
                 of the dragModel is to return a drag coefficient between
                 fluid and fluid (twoPhase only) or fluid and structure (both
@@ -852,32 +705,7 @@ fluidGeometry ->    This is ONLY required by twoPhase and served the following
                 -   computing the structure volumetric area partition 
                     fractions, i.e. the f terms for fluid-structure heat
                     transfer seen above
-
-This section will be further expanded 
-
 */
-
-// ------------------------------------------------------------------------- //
-// --- PHASE-CHANGE RELATED ------------------------------------------------ //
-// ------------------------------------------------------------------------- //
-
-phaseChangeModel
-{
-    type                heatDriven;
-    mode                conductionLimited; 
-    correctLatentHeat   true;
-
-    latentHeatModel
-    {
-        type        FinkLeibowitz;
-        adjust      true;
-    }
-    
-    saturationModel
-    {
-        type        BrowningPotter;
-    }
-}
 
 // ------------------------------------------------------------------------- //
 // --- MISCELLANEA --------------------------------------------------------- //

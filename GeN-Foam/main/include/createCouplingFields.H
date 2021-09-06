@@ -39,7 +39,7 @@ if (nFluids == 1)
     //  volScalarField? Well, that would force the fluid class to always create
     //  a power density field (also for the vapour), and that is a useless
     //  waste of RAM and disk memory (the field needs to be written)
-    if (multiphysics.liquidFuel())
+    if (multiphysics.liquidFuel() and !liquid->powerDensityPtr().valid())
     {
         liquid->powerDensityPtr().reset
         (
@@ -73,33 +73,22 @@ else
     fluid* const fluid0(fluids[fluids.toc()[0]]);
     fluid* const fluid1(fluids[fluids.toc()[1]]);
 
-    //- Use average enthalpies of formation for comparison. Doesn't really
-    //  matter unless one has a space-dependent enthalpy of formation, which
-    //  I have not seen so far in OpenFOAM
-    scalar hc0(gAverage(fluid0->thermo().hc()()));
-    scalar hc1(gAverage(fluid1->thermo().hc()()));
-
-    if (hc1 > hc0)
+    if (fluid0->isLiquid() and fluid1->isGas())
     {
         liquid = fluid0;
         vapour = fluid1;
     }
-    else if (hc0 > hc1)
+    else if (fluid1->isLiquid() and fluid0->isGas())
     {
-        vapour = fluid0;
         liquid = fluid1;
+        vapour = fluid0;
     }
-    else
+    else    //- Default case for liquid-liquid or gas-gas systems (no clue if 
+            //  GeN-Foam will ever be used for those. Pardon the hard-coded 
+            //  names)
     {
-        FatalErrorInFunction
-            << "When running in twoPhase mode, vapour and liquid are "
-            << "distinguished by their enthalpy of formation, i.e. the Hf "
-            << "keyword specified in the thermophysicalProperties of each "
-            << "fluid. " << endl
-            << "The fluid with the higher Hf will be the vapour, and the "
-            << "latent heat of evaporation will be difference between the two."
-            << "Currently, both fluids appear to have the same Hf. "
-            << exit(FatalError);
+        liquid = fluid0;
+        vapour = fluid1;
     }
 }
 
@@ -154,18 +143,18 @@ volScalarField* const TCladAv
     )
 );
 
-//- Set the actual volFuelPower field reference, that gets modfied by
-//  the neutronics for coupling purposes. If doing liquidFuel, the volFuelPower
+//- Set the actual powerDensity field reference, that gets modfied by
+//  the neutronics for coupling purposes. If doing liquidFuel, the powerDensity
 //  field is the liquid powerDensity. Otherwise, if a nuclearFuelPin-related
 //  powerDensity field exists (which is true if at least one nuclearFuelPin
 //  powerModel figures in phaseProperties), use that one. Otherwise again, if
-//  no powerDensity field exists, create a null one. The volFuelPower field is 
+//  no powerDensity field exists, create a null one. The powerDensity field is 
 //  a ptr and not a reference as references cannot be initialized with rvalues,
 //  such as is the new volScalarField (i.e., I would nned to create it outside  
 //  the ptr initialization, and that again would happen always and just waste 
 //  memory if the other powerDensity fields exist). I do realize these are 
 //  laughably small of memory to bitch about, but hey, whatever helps
-volScalarField* const volFuelPower
+volScalarField* const powerDensity
 (
     (multiphysics.liquidFuel()) ? &(liquid->powerDensity()) :
     (
@@ -201,7 +190,7 @@ volScalarField* const volFuelPower
 (void) TStruct;
 (void) TFuelAv;
 (void) TCladAv;
-(void) volFuelPower;
+(void) powerDensity;
 
 //- Then, create the actual fields for the coupling. These are created over the
 //  fluidMeshNB mesh, which is a baffle-less mesh that is created if the 
@@ -333,16 +322,16 @@ volVectorField bafflelessU
 
 //- This field is sort of an exception required when using pointKinetics.
 //  PointKinetics by itself simply rescales all neutronic fields according to
-//  the predicted power change. However, if no volFuelPower exists on the
-//  neutroMesh, then look for volFuelPower on the fluidMesh. If it exists, copy
-//  it to a bafflelessVolFuelPower that will be interpolated to the
-//  volFuelPower_ on the neutroMesh of pointKinetics in the 
+//  the predicted power change. However, if no powerDensity exists on the
+//  neutroMesh, then look for powerDensity on the fluidMesh. If it exists, copy
+//  it to a bafflelessPowerDensity that will be interpolated to the
+//  powerDensity_ on the neutroMesh of pointKinetics in the 
 //  getCouplingFieldRefs function. Since pointKinetics is also just about
-//  rescaling an initial field, this bafflelessVolFuelPower will not need to be
+//  rescaling an initial field, this bafflelessPowerDensity will not need to be
 //  set every time, only the first. Nedless to say, pointKinetics can function
-//  perfectly well with a 0 volFuelPower, it simply won't be re-scaling 
+//  perfectly well with a 0 powerDensity, it simply won't be re-scaling 
 //  anything (but integral power values will be predicted just fine)
-volScalarField* bafflelessVolFuelPower = nullptr;
+volScalarField* bafflelessPowerDensity = nullptr;
 
 //- This is only required when point kinetics model Gas Expansion Modules (i.e.
 //  a safety feature specific to one SFR, the FFTF. I hate this level of hard-
@@ -361,12 +350,12 @@ const surfaceScalarField& phiFMReg
 
 if (neutronics.type() == "pointKinetics")
 {
-    bafflelessVolFuelPower = 
+    bafflelessPowerDensity = 
         new volScalarField
         (
             IOobject
             (
-                "bafflelessVolFuelPower",
+                "bafflelessPowerDensity",
                 runTime.timeName(),
                 fluidMeshNB
             ),
@@ -374,9 +363,9 @@ if (neutronics.type() == "pointKinetics")
             dimensionedScalar("", dimPower/dimDensity, 0.0),
             zeroGradientFvPatchScalarField::typeName
         );
-    bafflelessVolFuelPower->primitiveFieldRef() = 
-        volFuelPower->primitiveField();
-    bafflelessVolFuelPower->correctBoundaryConditions();
+    bafflelessPowerDensity->primitiveFieldRef() = 
+        powerDensity->primitiveField();
+    bafflelessPowerDensity->correctBoundaryConditions();
     
     //- Phi only required by GEM modelling
     if (neutronics.get<bool>("GEM"))

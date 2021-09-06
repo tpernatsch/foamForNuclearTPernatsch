@@ -59,11 +59,11 @@ if(initialize)
     }
 }
 
-
+/*
 //Calc the precEquilibriumReactivity
 if(initialize)
 {
-    precEquilibriumReactivity_=0.0;
+    precEquilibriumReactivity_= 0.0;
     precEquilibriumReactivity_ += beta_;
 
     forAll(precPKStar_,precI)
@@ -81,7 +81,37 @@ if(initialize)
     #include "correctReactivity.H"
     Info << "precEquilibriumReactivity[pcm] =  " << precEquilibriumReactivity_ *1e+5 << nl << endl;
 }
+*/
 
+
+
+//Calc beta for liquid fuel
+liquidFuelBeta_ *= 0.0;
+forAll(precPKStar_,precI)
+{
+    //- Convert to precs per total volume
+    precPK_[precI] = precPKStar_[precI] * alphaPtr_();
+    precPK_[precI].correctBoundaryConditions();
+
+    weightedPrec.set(precI,new scalar(fvc::domainIntegrate(
+    initOneGroupFluxN_*precPK_[precI]).value()/domainIntegratedInitOneGroupFluxN_ ));
+
+    liquidFuelBeta_ += weightedPrec[precI] * lambdas_[precI] *
+    promptGenerationTime_ / powerOld_;
+}
+
+//Calc the precEquilibriumReactivity
+if(initialize)
+{
+    precEquilibriumReactivity_ = 0.0;
+    precEquilibriumReactivity_ += beta_;
+    precEquilibriumReactivity_ -= liquidFuelBeta_;
+    #include "correctReactivity.H"
+}
+
+Info << "Beta[pcm] =  " << beta_ *1e+5 << nl << endl;
+Info << "liquidFuelBeta[pcm] =  " << liquidFuelBeta_ *1e+5 << nl << endl;
+Info << "precEquilibriumReactivity[pcm] =  " << precEquilibriumReactivity_ *1e+5 << nl << endl;
 
 
 do
@@ -148,7 +178,7 @@ while((neutroResidual > neutronIterationResidual)
       &&  (neutroIter < maxNeutronIterations)
     );
 
-//- Re-scale fluxes, volFuelPower
+//- Re-scale fluxes, powerDensity
 scalar fluxScaleFactor = power_/powerOld_;
 
 
@@ -161,8 +191,8 @@ for (int i = 0; i < energyGroups_; i++)
 oneGroupFlux_ *= fluxScaleFactor;
 oneGroupFlux_.correctBoundaryConditions();
 
-volFuelPower_ *= fluxScaleFactor;
-volFuelPower_.correctBoundaryConditions();
+powerDensity_ *= fluxScaleFactor;
+powerDensity_.correctBoundaryConditions();
 
 Info << endl << "pointKinetics: " << endl;
 #include "pointKineticsInfo.H"

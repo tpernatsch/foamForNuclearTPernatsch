@@ -111,6 +111,13 @@ protected:
     volScalarField TClad_;
     volScalarField TCool_;
     volScalarField rhoCool_;
+
+    //- For Aitken eigenvalue
+    scalar keff0_;
+    scalar keff1_;
+    scalar keff2_;
+    int aitkenIterCounter_;
+    int aitkenIterNo_;
     
     //- Also mapped, but these are autoPtr as these field are not needed at all
     //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
