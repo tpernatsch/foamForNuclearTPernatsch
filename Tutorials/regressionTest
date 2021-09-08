@@ -292,7 +292,7 @@ do
         # check that results are correct
         input="./postProcessing/fluidRegion/averageValues/-2/volFieldValue.dat"
         averageAt=$(head -9424 "$input" | tail -1  )
-        printf "time, average alpha.vapour and aveage T.structure when alpha is approximately max are: $averageAt . They should be 12.665272554727872 1.515507e-01 8.163611e+02 \n" >> ../$resFile
+        printf "time, average alpha.vapour and aveage T.structure when alpha is approximately max are: $averageAt . They should be 12.56424533593758    1.577348e-01    8.210752e+02 \n" >> ../$resFile
 
         cd ..
 
