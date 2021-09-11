@@ -129,11 +129,16 @@ protected :
     autoPtr<FFHeatTransferCoefficientModel> htc2Ptr_;
 
     //- Table of volScalarFields (for htcs)
+    //- Heat transfer coefficients between bulk of each fluid and interface
     typedef HashTable<volScalarField*, word, word::hash> 
         volScalarFieldPtrTable;
-
-    //- Heat transfer coefficients between bulk of each fluid and interface
     volScalarFieldPtrTable htcs_;
+
+    //- Linearized semi-implicit heat sources due to interfacial heat and mass
+    //  transfer (inclusive of intrinsic mass transfer enthalpy contribution)
+    typedef HashTable<fvScalarMatrix*, word, word::hash> 
+        fvScalarMatrixPtrTable;
+    fvScalarMatrixPtrTable heSources_;
 
     //- Fluid dispersion model (controls which phase is dispersed and which is
     //  continuous)
@@ -150,6 +155,11 @@ protected :
 
     //- Interfacial area
     volScalarField iA_;
+
+    //- This sucks... A flag just to avoid u-relaxing the interfacial T (if not
+    //  set by a phasChangeModel) on the first time step. It is by far the
+    //  simplest but also less elegant way to do it
+    bool firstTimeStepAndIter_;
 
 public:
 
@@ -305,9 +315,19 @@ public:
                 return Kd_;
             }
 
+            volScalarField& htc(const word& fluidName)
+            {
+                return *htcs_[fluidName];
+            }
+
             const volScalarField& htc(const word& fluidName) const
             {
                 return *htcs_[fluidName];
+            }
+
+            const fvScalarMatrix& heSource(const word& heName) const
+            {
+                return *heSources_[heName];
             }
 
             bool phaseChange() const

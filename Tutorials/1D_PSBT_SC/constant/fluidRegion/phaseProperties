@@ -1,0 +1,243 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// ------------------------------------------------------------------------- //
+// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+thermalHydraulicsType    "twoPhase";
+
+// ------------------------------------------------------------------------- //
+// --- FLUID PROPERTIES ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+fluid1 "liquid";
+fluid2 "vapour";
+
+liquidProperties
+{
+    stateOfMatter   liquid;
+    dispersedDiameterModel
+    {
+        type    constant;
+        value   0.001;
+    }
+    thermoResidualAlpha 1e-6;
+}
+
+vapourProperties
+{
+    stateOfMatter   gas;
+
+    dispersedDiameterModel
+    {
+        type    constant;
+        value   0.001;
+    }
+    thermoResidualAlpha 1e-2;
+}
+
+// ------------------------------------------------------------------------- //
+// --- STRUCTURES PROPERTIES ----------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+structureProperties
+{
+    "dummyIn:dummyOut"
+    {
+        volumeFraction  0.4464738237;
+        Dh              0.0117778432;
+    }
+
+    "heated"
+    {
+        volumeFraction  0.4464738237;
+        Dh              0.0117778432;
+
+        powerModel
+        {
+            type            constantPower;
+
+            //- The heater "coats" 0.85 mm of the 4.75 mm radius pin, and 
+            //  for simplicity it is thus treated as a constantPower source
+            //  with a volume fraction equal to the total heater volume 
+            //  fraction (with respect to the total mesh volume).
+            volumeFraction  0.145493575;
+            volumetricArea  187.9889784;
+            powerDensity    2.5e9;//2.1603E+09;
+            T               602.85;
+            Cp              500;
+            rho             7700;
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME MAP MODELS --------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+regimeMapModels
+{}
+
+// ------------------------------------------------------------------------- //
+// --- PHYSICS MODELS ------------------------------------------------------ //
+// ------------------------------------------------------------------------- //
+
+physicsModels
+{
+    dragModels
+    {
+        "liquid.vapour"
+        {
+            type    SchillerNaumann;
+        }
+
+        "liquid.structure"
+        {
+            "dummyIn:dummyOut:heated"
+            {
+                type    ReynoldsPower;
+                coeff   0.316;
+                exp     -0.25;
+            }
+        }
+    }
+
+    twoPhaseDragMultiplierModel
+    {
+        type                LockhartMartinelli;
+        multiplierFluid     "liquid";
+    }
+
+    heatTransferModels
+    {
+        "liquid.structure"
+        {
+            "heated"
+            {
+                /*
+                type    NusseltReynoldsPrandtlPower;
+                const   2.0;
+                coeff   0.6;
+                expRe   0.5;
+                expPr   0.33;
+                */
+                type    multiRegimeBoiling;
+                forcedConvectionModel
+                {
+                    type    NusseltReynoldsPrandtlPower;
+                    const   4;
+                    coeff   0.02;
+                    expRe   0.8;
+                    expPr   0.8;
+                }
+                poolBoilingModel
+                {
+                    type    Gorenflo;
+                }
+                flowEnhancementFactorModel
+                {
+                    type    RezkallahSims;
+                    exp     0.8;
+                }
+                suppressionFactorModel
+                {
+                    type    Chen;
+                }
+                nucleateBoilingOnsetModel
+                {
+                    type            Basu;
+                    surfaceTension  8e-3;   //- In N/m
+                    contactAngle    38;     //- In degrees
+                }
+                subCooledBoilingFractionModel
+                {
+                    type            constant;
+                    value           0.5;
+                }
+            }
+        }
+        "liquid.vapour"
+        {
+            "liquid"
+            {
+                type    NusseltReynoldsPrandtlPower;
+                const   2.0;
+                coeff   0.6;
+                expRe   0.5;
+                expPr   0.33;
+            }
+            "vapour"
+            {
+                type    constant;
+                value   1e3;
+            }
+        }
+    }
+
+    phaseChangeModel
+    {
+        type                        heatDriven;
+        mode                        conductionLimited;
+        residualInterfacialArea     1e-3;
+        latentHeatModel
+        {
+            type                    water;
+        }
+        saturationModel
+        {
+            type                    water;
+        }
+    }
+
+    pairGeometryModels
+    {
+        "liquid.vapour"
+        {
+            dispersionModel
+            {
+                type            constant;
+                dispersedPhase  "vapour";
+            }
+
+            interfacialAreaDensityModel
+            {
+                type        spherical;
+            }
+        }
+
+        "liquid.structure"
+        {
+            contactPartitionModel
+            {
+                type    constant;
+                value   1.0;
+            }
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- MISCELLANEA --------------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+pMin                    10000;
+pRefCell                0;
+pRefValue               100000;
+residualKd              1;
+
+// ************************************************************************* //

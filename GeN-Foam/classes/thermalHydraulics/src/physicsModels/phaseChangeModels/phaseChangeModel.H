@@ -100,7 +100,14 @@ protected:
     //- Latent heat
     volScalarField L_;
 
-    //- Mass transfer (from fluid1 to fluid2)
+    //- Mass transfer (from fluid1 to fluid2) at the fluid-fluid interface
+    volScalarField dmdtI_;
+
+    //- Mass transfer (from fluid1 to fluid2) at the fluid1-wall (if > 0) or 
+    //  fluid2-wall (if < 0) interface (e.g. sub-cooled boiling)
+    volScalarField dmdtW_;
+
+    //- Total mass transfer
     volScalarField dmdt_;
 
     //- Ptr to latentHeatModel
@@ -118,6 +125,12 @@ protected:
     //- Total cumulative mass that should have been transferred between the 
     //  phases that was removed by the dmdt limiter 
     scalar dmLostToLimiter_;
+
+    //- Linearized semi-implicit heat sources due to mass transfer (inclusive
+    //  of intrinsic mass transfer enthalpy contribution)
+    typedef HashTable<fvScalarMatrix*, word, word::hash> 
+        fvScalarMatrixPtrTable;
+    fvScalarMatrixPtrTable heSources_;
 
     //- Protected member functions
 
@@ -181,7 +194,10 @@ public:
     //- Member Functions
 
         //- Calculate mass transfer term
-        virtual void correct() = 0;
+        virtual void correct();
+
+        //- Calculate interfacial mass transfer term
+        virtual void correctInterfacialDmdt() = 0;
 
         //- Access
 
@@ -213,6 +229,11 @@ public:
             const volScalarField& dmdt() const
             {
                 return dmdt_;
+            }
+
+            const fvScalarMatrix& heSource(const word& heName)
+            {
+                return *heSources_[heName];
             }
 
             /*

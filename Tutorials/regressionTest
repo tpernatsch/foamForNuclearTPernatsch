@@ -2,7 +2,7 @@
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-tutorials="1D_HX 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
+tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
 #tutorials="2D_FFTF" #Godiva_SN
 rm regressionResults
 touch regressionResults
@@ -77,6 +77,24 @@ do
         ;;
 
     "1D_boiling")
+        printf "Running tutorial $tutorialName...\n"
+        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
+        cd $tutorialName
+        ./Allrun
+        printf "Done running tutorial $tutorialName...\n"
+
+        # check it ran
+        endString=$(tail -3 ./log.GeN-Foam | grep End)
+        if [ "$endString" = "End" ]; then
+            printf "$tutorialName has converged \n"  >> ../$resFile
+        else
+            printf "$tutorialName has NOT converged \n"  >> ../$resFile
+        fi
+        cd ..
+        
+        ;;
+
+    "1D_PSBT_SC")
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName

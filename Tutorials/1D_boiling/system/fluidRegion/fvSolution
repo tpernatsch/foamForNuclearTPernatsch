@@ -118,7 +118,7 @@ PIMPLE
     //- Number of pressure correctors (i.e. PISO iterations) within each outer
     //  iteration (i.e. PIMPLE iteration). The number of outer iterations is
     //  set in the global fvSolution file (i.e. controlDict/fvSolution)
-    nCorrectors      9;
+    nCorrectors      12;
 
     //-
     nNonOrthogonalCorrectors 0;
@@ -196,12 +196,15 @@ PIMPLE
     //  resolve boiling. If not provided, defaults to infinity (i.e.
     //  no limitation on the mass transfer term). Providing this
     //  can play a role in stabilizing the simulation
-    massTransferSafetyFactor 0.4;
+    massTransferSafetyFactor 0.1;
 
     //- Maximum time derivative that the interfacial temperature is allowed
     //  to have (acts similarly to an under-relaxation, yet not exactly the
     //  same thing, should be easy to see why)
     maxTInterfaceDdt            1e4;
+
+    //-
+    enthalpyStabilizationMode           source;
 
     residualControl
     {
@@ -229,12 +232,16 @@ PIMPLE
     }
 }
 
+//- The three single most important parameters in the stability of a boiling
+//  simulation are, in order, the mass transfer under-relaxation dmdt, the
+//  vapour enthaply under-relaxation h.vapour, the interfacial temperature
+//  under-relaxation T.interface. In particular, h.vapour requires the heaviest
+//  under-relaxation
 relaxationFactors
 {
     equations
     {
         ".*"            1;
-        "h.vapour"      0.1;
     }
 
     //- The two most important relaxation factors for explicitly coupled
@@ -245,8 +252,11 @@ relaxationFactors
     //  stabilize the simulation
     fields
     {
+        //-
+        "alpha.*"                   0.5;
+
         //- Under-relaxation of the mass transfer term
-        "dmdt.*"              0.25;
+        "dmdt.*"                    0.125;
 
         //- Under-relaxation of the interfacial temperature between the fluids.
         //  This only has an effect if the employed saturationModel in
@@ -255,8 +265,12 @@ relaxationFactors
         //  boiling will more often than not induce sharp changes in the
         //  interfacialTemperature, resulting in massive changes in the mass
         //  transfer term 
-        "T.interface"              0.1;
-        "T.interfaceFinal"         0.1;
+        "T.interface"               0.125;
+        "T.interfaceFinal"          0.125;
+
+        //- Under-relaxation of vapour enthalpy
+        "h.vapour"                  0.0125;
+        "h.vapourFinal"             0.0125;
     }
 }
 
