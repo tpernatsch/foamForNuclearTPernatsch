@@ -9,7 +9,9 @@ surfaceScalarField& phiDarcy(phiDarcy_());
 fvVectorMatrix UEqn(UDarcy, dimMass*dimLength/dimTime/dimTime);
 
 //- Drag between fluid and structure rotated in global reference frame
-const volTensorField& Kds(FSPair_.Kd());
+volTensorField Kds(FSPair_.Kd());
+Kds = Kds/alpha;
+Kds.correctBoundaryConditions();
 
 //- Resetting rho to the reference value in case of incompressible
 //- Boussinesq flow. It is important, because otherwise the
