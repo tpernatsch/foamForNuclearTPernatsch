@@ -15,8 +15,12 @@
 
     volTensorField alphaEff
     (
+        structure_.tortuosityPtr().valid() ?
         structure_.tortuosity()
-       *fluid_.thermo().alphaEff(fluid_.turbulence().alphat())()
+        *fluid_.thermo().alphaEff(fluid_.turbulence().alphat())()
+        :
+        tensor::I
+        *fluid_.thermo().alphaEff(fluid_.turbulence().alphat())()
     );
 
     //- Energy equations
@@ -41,13 +45,13 @@
                 fvc::interpolate(alpha*alphaEff),
                 he
             )
-        ==  
+        ==
         fvOptions_(alpha, rho, he)
     );
 
     //- Structure heat sources
-    //- Correct surface temperature of the power-generating subStructures 
-    //  of the structures and add source/sink terms to the fluids energy 
+    //- Correct surface temperature of the power-generating subStructures
+    //  of the structures and add source/sink terms to the fluids energy
     //  eqns
     const volScalarField& Hs(FSPair_.htc());
 
@@ -73,7 +77,7 @@
     fluid_.thermo().correct();
 
     //- If the incompressible treatment is activated we have to update
-    //- therm.rho() to make sure that the neutronics equations have acess 
+    //- therm.rho() to make sure that the neutronics equations have acess
     //- to the density feedback.
     if(incompressibleTreatment_)
     {
@@ -102,7 +106,7 @@
                    *fvc::interpolate(alphaEff),
                     he
                 )
-            +   fvc::ddt(alpha, rho, K) 
+            +   fvc::ddt(alpha, rho, K)
             +   fvc::div(fluid_.alphaRhoPhi(), K, "div(alphaRhoPhi,K)")
             -   contErr*K
             +   alpha*dpdt_
@@ -110,7 +114,7 @@
             -   alpha*rho*(U&g_)
         )/(alpha*rho*he);
     fluid_.heErr().correctBoundaryConditions();
-    
+
     Info<< "Fluid energy error (avg min max) = "
         << fluid_.heErr().weightedAverage(mesh_.V()).value()
         << " " << min(fluid_.heErr()).value()
