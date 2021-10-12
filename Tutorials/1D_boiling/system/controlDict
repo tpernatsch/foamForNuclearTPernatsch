@@ -78,7 +78,7 @@ maxDeltaT           0.01;
 //    saturation (either boiling or condensation);
 maxCo               2.0;
 
-maxCoTwoPhase       0.5;
+maxCoTwoPhase       0.25;
 
 marginToPhaseChange 20;
 

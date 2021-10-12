@@ -31,7 +31,7 @@ solvers
         relTol          0;
     }
 
-    "e.*"
+    "e"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
@@ -40,7 +40,7 @@ solvers
         minIter         0;
     }
 
-    "h.*"
+    "h"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;

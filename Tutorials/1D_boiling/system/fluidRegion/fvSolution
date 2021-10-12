@@ -81,7 +81,7 @@ solvers
     alpha
     {
         //- Either implicitUpwind or MULES
-        solver "implicitUpwind";
+        solver "MULES";
 
         //- For which phase fraction should the continuity equation be solved?
         //  If not provided, it defaults to both phase fractions being solved
@@ -89,7 +89,7 @@ solvers
         //  phase can significantly reduce simulation times by up to 30%
         //  depending on the mesh size (the reduction is larger for larger
         //  meshes)
-        solvePhase          "vapour";
+        //solvePhase          "vapour";
 
         //- This keyword is used only by the MULES solver
         //- If true, the number of times the phase fraction equations are
@@ -276,3 +276,4 @@ relaxationFactors
 
 
 // ************************************************************************* //
+
