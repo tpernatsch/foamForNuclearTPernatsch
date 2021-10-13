@@ -241,30 +241,27 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
                 scalar qPBi(hPBi*(Twi-Tsati));
                 scalar qNBi = pow(pow(qFCi, 3)+pow(qPBi-qBIi, 3), 1.0/3.0);
 
-                if ((Tfi < Tsati) and (TONBi > Tsati)) //- Subcooled boil    
+                //- Please note that only the dmdtW is set in this scope as
+                //  the subcooled boiling heat transfer coefficient and the 
+                //  nucleate boiling heat transfer coefficient are computed 
+                //  in the same way, outside and after this scope
+                scalar f(1.0);
+                if (SCBFPtr_.valid())
                 {
-                    //- Please note that only the dmdtW is set in this scope as
-                    //  the subcooled boiling heat transfer coefficient and the 
-                    //  nucleate boiling heat transfer coefficient are computed 
-                    //  in the same way, outside and after this scope
-                    scalar f(1.0);
-                    if (SCBFPtr_.valid())
-                    {
-                        f = SCBFPtr_->value(celli, qNBi);
-                    }
-                    scalar qSCDmdti(f*(qNBi-qFCi));
-
-                    //- If fluid1 is liquid and 2 is vapour then L > 0 and 
-                    //  this sub-cooled boiling term is also > 0. If fluid2
-                    //  is liquid and fluid1 is vapour then L < 0 and 
-                    //  everything still  works out in terms of the dmdtW 
-                    //  sign, as I recall that it is positive for phase
-                    //  changes from fluid1 to fluid2 and negative 
-                    //  vice-versa
-                    (*dmdtWPtr_)[celli] = 
-                        pair_.structureRef().iAact()[celli]*qSCDmdti/
-                        mag(FFPairPtr_->L()[celli]);
+                    f = SCBFPtr_->value(celli, qNBi);
                 }
+                scalar qSCDmdti(f*(qNBi-qFCi));
+
+                //- If fluid1 is liquid and 2 is vapour then L > 0 and 
+                //  this sub-cooled boiling term is also > 0. If fluid2
+                //  is liquid and fluid1 is vapour then L < 0 and 
+                //  everything still  works out in terms of the dmdtW 
+                //  sign, as I recall that it is positive for phase
+                //  changes from fluid1 to fluid2 and negative 
+                //  vice-versa
+                (*dmdtWPtr_)[celli] = 
+                    pair_.structureRef().iAact()[celli]*qSCDmdti/
+                    mag(FFPairPtr_->L()[celli]);
 
                 scalar dT(Twi-Tfi);
                 dT = (dT >= 0.0) ? max(dT, 1e-3) : min(-dT, -1e-3);

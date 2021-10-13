@@ -80,35 +80,28 @@ Foam::scalar Foam::TONBModels::Basu::value
     const scalar& Tli(pair_.fluidRef().T()[celli]);
     const scalar& Tsati(Tsat_[celli]);
 
-    if (Tli < Tsati)
-    {
-        this->setPtrs();
-        
-        scalar deltaTONBsat
+    this->setPtrs();
+    
+    scalar deltaTONBsat
+    (
+        A_*htc2pFCi*Tsati/
         (
-            A_*htc2pFCi*Tsati/
-            (
-                otherFluidPtr_->rho()[celli]*
-                ((*LPtr_)[celli])*
-                pair_.fluidRef().kappa()[celli]
-            )
-        );
+            otherFluidPtr_->rho()[celli]*
+            (mag((*LPtr_)[celli]))*
+            pair_.fluidRef().kappa()[celli]
+        )
+    );
 
-        return  
+    return  
+    (
+        Tli + 0.25*
+        sqr
         (
-            Tli + 0.25*
-            sqr
-            (
-                sqrt(deltaTONBsat)
-            +   sqrt(deltaTONBsat+4.0*(Tsati-Tli))
-            )
-        );
-    }
-    else 
-        //- if Tli > Tsati then whatever I return is fundamentally irrelevant
-        //  due to the over-arching code structure of multiRegimeBoiling
-        //  that uses this class
-        return 0.0;
+            sqrt(deltaTONBsat)
+        +   sqrt(max(deltaTONBsat+4.0*(Tsati-Tli), 0.0))
+        )
+    );
+
 }
 
 // ************************************************************************* //
