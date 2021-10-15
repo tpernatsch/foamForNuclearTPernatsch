@@ -74,7 +74,7 @@ private:
     //- Ref to fluid temperature
     const volScalarField& Tf_;
 
-    //- Ptr to FFPair (fUcK eNcApSuLaTi1o0N!11!1)
+    //- Ptr to FFPair (breaking encapsulation as usual)
     mutable const FFPair* FFPairPtr_;
 
     //- Forced convection heat transfer coefficient
@@ -103,6 +103,8 @@ private:
 
     //- Ptr to mass transfer term at the wall (of the phaseChange class) so
     //  that it can be set here to account e.g. for sub-cooled boiling
+    // Breaking encapsulation in an awful manner, as this modifies 
+    // a private member of another class. Should be changed....
     mutable volScalarField* dmdtWPtr_;
 
     //-

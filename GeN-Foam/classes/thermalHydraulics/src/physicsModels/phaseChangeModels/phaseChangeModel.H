@@ -246,6 +246,11 @@ public:
             {
                 return saturation_();
             }*/
+
+    // Multi-regime boiling access and modifies  dmdtW_
+    // This awfully breaks encapsulation, but at list 
+    // making it a friend function...        
+    friend class multiRegimeBoiling;
 };
 
 

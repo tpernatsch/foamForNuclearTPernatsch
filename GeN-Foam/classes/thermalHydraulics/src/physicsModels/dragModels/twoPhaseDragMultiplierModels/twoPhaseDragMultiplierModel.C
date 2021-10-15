@@ -75,25 +75,6 @@ Foam::twoPhaseDragMultiplierModel::twoPhaseDragMultiplierModel
                 word("alpha."+this->get<word>("multiplierFluid"))
             )
         );
-
-    /*-----------------------------------------------------------------------*\
-    |                                                                         |
-    |                          H I C   M A N E B I T                          |  
-    \*                                                                       */
-    /*-----------------------------------------------------------------------*\
-    |                                                                         |
-    |   September 2020 was such a shit month it deserves a special mention.   |                                         
-    |   In particular, Monday, September 7th 2020 saw a pretty damn bad bug   |
-    |   down here which broke like 3 months of calculations without me        |
-    |   realizing. Let us not forget Friday, September 25th 2020, which was   |
-    |   just as shit, just not due to the computer code but due to, well,     |
-    |   a certain Svetlana in my (now past) life. Sic transit!                |                                                          
-    |                                                                         |
-    |    - virmodoetiae                                                       |
-    |                                                                         |
-    \*-----------------------------------------------------------------------*/
-
-    //- PORCO DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     
     //- Set ptr to other fluid
     HashTable<const fluid*> fluids(mesh_.lookupClass<fluid>());
