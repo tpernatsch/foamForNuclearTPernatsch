@@ -99,7 +99,10 @@ multiRegimeBoiling
             this->subDict("suppressionFactorModel"),
             pair.mesh()
         )
-    )
+    ),
+    SCBFPtr_(nullptr),
+    TONBPtr_(nullptr),
+    dmdtWPtr_(nullptr)
 {
     if (this->found("filmCondensationModel"))
     {
