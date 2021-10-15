@@ -223,7 +223,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
         {
             return htc2pFCi;
         }
-        else //- Wall above saturation and onset of nucleate boiling
+        else //- Wall above onset of nucleate boiling
         {
             scalar TCHFi(1e69); //- Needs dedicated model for its setting
             if (Twi < TCHFi)    //- Below CHF, i.e. either nucleate boiling

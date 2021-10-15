@@ -74,31 +74,32 @@ Foam::scalar Foam::subCooledBoilingFractionModels::SahaZuber::value
 
     //- Minimum liquid tempreature for bubble detachment
     scalar Tldi =
+        max
+        (
+            Tsati
+        -   qi*pair_.structureRef().Dh()[celli]/
+            (
+                0.0065*max
+                (
+                    pair_.Re()[celli]*pair_.fluidRef().Pr()[celli], 
+                    7e4
+                )
+            ),
+            0.0
+        );
+
+    return 
         min
         (
             max
             (
-                Tsati
-            -   qi*pair_.structureRef().Dh()[celli]/
-                (
-                    0.0065*max
-                    (
-                        pair_.Re()[celli]*pair_.fluidRef().Pr()[celli], 
-                        7e4
-                    )
-                ),
+                (pair_.fluidRef().thermo().T()[celli] - Tldi)/
+                max(Tsati-Tldi, 1e-3),
                 0.0
             ),
             1
         );
 
-    return 
-        max
-        (
-            (pair_.fluidRef().thermo().T()[celli] - Tldi)/
-            max(Tsati-Tldi, 1e-3),
-            0.0
-        );
 }
 
 // ************************************************************************* //
