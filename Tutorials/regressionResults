@@ -1,61 +1,11 @@
 
- ##### 1D_HX  ###### 
-1D_HX/onePhase has converged 
-1D_HX/twoPhase has converged 
-
- ##### 1D_PSBT_SC  ###### 
-1D_PSBT_SC has converged 
-
- ##### 1D_boiling  ###### 
-1D_boiling has converged 
-
- ##### 1D_MSR_pointKinetics  ###### 
-Steady state of 1D_MSR_pointKinetics has converged 
-Transient of 1D_MSR_pointKinetics has converged 
-Transient of 1D_MSR_pointKinetics has converged 
-power is 6.13778e+08  . It should be ~6.13794e+08 
-
- ##### 3D_SmallESFR  ###### 
-Steady state of 3D_SmallESFR has converged 
-Transient of 3D_SmallESFR has converged 
-
-keff is 0.936873 . It should be ~0.936827  
-power is 7.999454e+08 . It should be ~8e+08  
-
- ##### 2D_cavityBoussinesq  ###### 
-2D_cavityBoussinesq has converged 
-
  ##### 2D_FFTF  ###### 
 Energy steady state of 2D_FFTF has converged 
 Transient of 2D_FFTF has converged 
-reactivityDoppler is 240.6607  . It should be 240.6606  
-reactivityClad is 0.8156139  . It should be 0.8156143   
-reactivityDensity is -3.251095  . It should be -3.25089   
-reactivityStructures is -1.319735  . It should be -1.319733   
-reactivityDriveline is -10.12476  . It should be -10.12475  
-reactivityGEM is -464.8485  . It should be -464.8485  
-totalPower is 29966.89  . It should be 29966.92  
-
- ##### 2D_MSFR  ###### 
-Energy steady state of 2D_MSFR has converged 
-Thernal-hydraulic steady state of 2D_MSFR has converged 
-Transient of 2D_MSFR has converged 
-
-keff is 0.960282 . It should be ~0.960283  
-power is 2.00015e+07 . It should be ~2e+07  
-
- ##### 2D_onePhaseAndPointKineticsCoupling  ###### 
-Steady state of 2D_onePhaseAndPointKineticsCoupling has converged 
-Transient (no driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
-Transient (with driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
-
- ##### 2D_voidMotionNoPhaseChange  ###### 
-2D_voidMotionNoPhaseChange has converged 
-
- ##### 2D_KNS37-L22  ###### 
-2D_KNS37-L22 has converged 
-time, average alpha.vapour and aveage T.structure when alpha is approximately max are: 12.492082791546254	1.631793e-01	8.229900e+02 . They should be 12.56424533593758    1.577348e-01    8.210752e+02 
-
- ##### Godiva_SN  ###### 
-Godiva_SN has converged 
-keff is 0.980106 . It should be 0.980106  
+reactivityDoppler is 237.1212  . It should be 240.6606  
+reactivityClad is 0.813305  . It should be 0.8156143   
+reactivityDensity is -2.789199  . It should be -3.25089   
+reactivityStructures is -1.10996  . It should be -1.319733   
+reactivityDriveline is -8.96642  . It should be -10.12475  
+reactivityGEM is -464.8488  . It should be -464.8485  
+totalPower is 29388.48  . It should be 29966.92  
