@@ -25,21 +25,20 @@ License
 
 #include "onePhaseLegacy.H"
 #include "addToRunTimeSelectionTable.H"
-#include "regime.H"
 #include "regimeMapModel.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace thermalHydraulicModels
+namespace thermalHydraulicsModels
 {
     defineTypeNameAndDebug(onePhaseLegacy, 0);
     addToRunTimeSelectionTable
     (
-        thermalHydraulicModel, 
-        onePhaseLegacy, 
-        thermalHydraulicModels
+        thermalHydraulicsModel,
+        onePhaseLegacy,
+        thermalHydraulicsModels
     );
 }
 }
@@ -47,15 +46,15 @@ namespace thermalHydraulicModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
+Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
 (
     Time& time,
     fvMesh& mesh,
-    myPimpleControl& pimple,
+    customPimpleControl& pimple,
     fv::options& fvOptions
 )
 :
-    thermalHydraulicModel
+    thermalHydraulicsModel
     (
         time,
         mesh,
@@ -66,34 +65,22 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     //  the turbulence models created by the fluids might require a reference
     //  to the structure (obtained via objectRegistry lookup in the specific
     //  turbulence model class)
-    structurePtr_
+    structure_
     (
-        structureModel::New
-        (
-            this->subDict("structureProperties"),
-            mesh   
-        )
+        this->subDict("structureProperties"),
+        mesh
     ),
-    structure_(structurePtr_()),
     fluid_
     (
-        this,
+        (this->found("fluidProperties"))
+    ?   this->subDict("fluidProperties") : *this,
         mesh,
         word(""),   //- This is the phase name, setting it to "" signals a
                     //  onePhase solver to the rest of the FFS library
         false       //- No need to read or write the fluid phaseFraction in
                     //  onePhase, it is tied to the structure phaseFraction
     ),
-    FSPair_(fluid_, structure_),
-    regimeMap_
-    (
-        regimeMapModel::New
-        (
-            mesh,
-            this->subDict("regimeMapModel"),
-            this->subDict("physicsModelsByRegime")
-        )
-    ),
+    FSPair_(fluid_, structure_, *this),
     fixedRho_(fluid_.thermo().rho()),
     rhok_
     (
@@ -116,9 +103,9 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     fixedRho_.correctBoundaryConditions();
     rhok_.correctBoundaryConditions();
 
-    //- checking if the incompressible treatment is activated. In that case 
+    //- checking if the incompressible treatment is activated. In that case
     //- the solver becomes a porous version of buoyantBoussinesqPIMPLFoam.
-    //- If this is activated, the only equation of state accepted is 
+    //- If this is activated, the only equation of state accepted is
     //- rhoConst.
     dictionary phaseDict = fluid_.dict();
     incompressibleTreatment_ = bool
@@ -129,10 +116,10 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     	)
     );
 
-    //- Checking if heRhoThermo has the correct equationOfState for the 
+    //- Checking if heRhoThermo has the correct equationOfState for the
     //- current solver.
     dictionary thermoDict = fluid_.thermo().subDict("thermoType");
-    if(incompressibleTreatment_ 
+    if(incompressibleTreatment_
        and word(thermoDict.lookup("equationOfState")) != "rhoConst")
     {
         Foam::error e("The equation of state is not rhoConst (constant density)! "
@@ -141,18 +128,18 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
         e.exit(100);
     }
 
-    //- Reading reference temperature and thermal expansion coefficient 
+    //- Reading reference temperature and thermal expansion coefficient
     //- for the Boussinesq approximation
     dictionary eosDict = fluid_.thermo()
                          .subDict("mixture")
                          .subDict("equationOfState");
-    
+
     beta_.set
     (
         new dimensionedScalar
         (
-            "beta", 
-            pow(dimTemperature,-1), 
+            "beta",
+            pow(dimTemperature,-1),
             eosDict.lookupOrDefault<scalar>("beta", 0.0)
         )
     );
@@ -161,8 +148,8 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     (
         new dimensionedScalar
         (
-            "Tref", 
-            dimTemperature, 
+            "Tref",
+            dimTemperature,
             eosDict.lookupOrDefault<scalar>("T0", 0.0)
         )
     );
@@ -170,11 +157,18 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     //- Create turbulence model
     fluid_.constructTurbulenceModel();
 
-    //- Normalize phase fraction fields, structure has priority
+    //- Set phase fraction fields (constant in time), structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
 
+    //- The normalized field is non-trivial (i.e. different than 1) only in the
+    //  twoPhase solver. However, it is used by some models in the shared
+    //  thermal-hydraulics library, so it should be set nonetheless! The most
+    //  important quantity that relies on this is the Reynolds computed by
+    //  the FSPair object
+    fluid_.normalized() = fluid_/(1.0-structure_);
+
     //- Calculating rhok value for boussinesq approximation if incompressible flow.
-    //- also, update thermo.tho() to make sure the neutronics solver has access to 
+    //- also, update thermo.tho() to make sure the neutronics solver has access to
     //- the density feedback.
     if(incompressibleTreatment_)
     {
@@ -192,9 +186,9 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     fluid_.Dh() = structure_.Dh();
 
     //- Initialize fluid-intensive fluxes (i.e. that depend on the phase
-    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL 
+    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL
     //  volumetric flux in m3/s and the REAL mass flux in kg/s. By REAL I mean
-    //  not superficial). This is done after the phaseFraction normalization 
+    //  not superficial). This is done after the phaseFraction normalization
     //  step to ensure consistency. This step has an effect ONLY IF the
     //  alphaPhi, alphaRhoPhi fields were NOT found on disk
     fluid_.initAlphaPhis();
@@ -202,75 +196,6 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
     //- The total volumetric flux is the REAL fluid volumetric flux. Might
     //  as well remove phi_ entirely as a field, I know... Maybe in the future
     phi_ = fluid_.alphaPhi();
-
-    //- Initialize dragCoefficient and heatTransferCoefficient tables.
-    //  These tables actually consist of only one entry coresponding to the
-    //  fluid-structure pair. Why have a table then?  Well, I first
-    //  developed the twoPhase solver, which requires tables as there are
-    //  multiple pairs. Since I want to keep the same base library and code
-    //  structure for both the single and two phase, I decided to keep this
-    //  rather than unnecessarily duplicate the base code of the models library
-    Kds_.insert
-    (
-        "FSPair",
-        autoPtr<volTensorField>
-        (
-            new volTensorField
-            (
-                IOobject
-                (
-                    "Kd",
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::NO_READ,
-                    IOobject::NO_WRITE
-                ),
-                mesh_,
-                dimensionedTensor
-                (
-                    "", 
-                    dimDensity/dimTime, 
-                    tensor(0,0,0,0,0,0,0,0,0)
-                ),
-                zeroGradientFvPatchScalarField::typeName
-            )
-        )
-    );
-
-    htcs_.insert
-    (
-        "FSPair",
-        autoPtr<volScalarField>
-        (
-            new volScalarField
-            (
-                IOobject
-                (
-                    "htc",
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::NO_READ,
-                    IOobject::NO_WRITE
-                ),
-                mesh_,
-                dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
-                zeroGradientFvPatchScalarField::typeName
-            )
-        )
-    );
-
-    //- Initialize local drag coeff and heat transfer coeff tables for each
-    //  (non-interpolated) regime. 
-    forAllIter
-    (
-        regimeTable,
-        regimeMap_->regimes(),
-        regimeIter
-    )
-    {
-        regime& regime(regimeIter()());
-        regime.initLocalTables(Kds_, htcs_);
-    }
 
     //- Compute initialFluidMass
     initialFluidMass_ = fvc::domainIntegrate(fluid_.thermo().rho()*fluid_);
@@ -292,9 +217,9 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
         )
     );
 
-    //- Making sure that the division of boundary conditions does not result in 
-    //- a "calculated" boundary field. So we set the same boundary conditions as 
-    //- the ones given for the real velocity. Exceptions are wedge and empty BCs, 
+    //- Making sure that the division of boundary conditions does not result in
+    //- a "calculated" boundary field. So we set the same boundary conditions as
+    //- the ones given for the real velocity. Exceptions are wedge and empty BCs,
     //- because those are not touched.
 
     forAll(fluid_.U().boundaryField(), bcInd)
@@ -302,29 +227,31 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
         if(fluid_.U().boundaryField()[bcInd].type() == "empty" or
            fluid_.U().boundaryField()[bcInd].type() == "wedge")
         {
-            Info << "Skipping boundary type assignment for UDarcy" 
+            Info << "Skipping boundary type assignment for UDarcy"
                  << "because it is empty/wedge." << endl;
             continue;
         }
 
         word bcType = fluid_.U().boundaryField()[bcInd].type();
 
-        const fvPatchField<vector> originalPatch(UDarcy_().boundaryField()[bcInd]);
-
+        tmp<fvPatchField<vector>> originalPatch(UDarcy_().boundaryField()[bcInd]);
+        
         UDarcy_().boundaryFieldRef().set
         (
-            bcInd, 
+            bcInd,
             fvPatchField<vector>::New
             (
                 bcType,
-                UDarcy_().mesh().boundary()[bcInd], 
+                UDarcy_().mesh().boundary()[bcInd],
                 UDarcy_()
             )
         );
 
-        UDarcy_().boundaryFieldRef()[bcInd] = originalPatch;
+        forAll(UDarcy_().boundaryFieldRef()[bcInd], faceI)
+        {
+            UDarcy_().boundaryFieldRef()[bcInd][faceI] = originalPatch()[faceI];
+        }
     }
-    UDarcy_().correctBoundaryConditions();
     UDarcy_().write();
 
     phiDarcy_.set
@@ -354,19 +281,19 @@ Foam::thermalHydraulicModels::onePhaseLegacy::onePhaseLegacy
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
 //- Solve according to flags
-void Foam::thermalHydraulicModels::onePhaseLegacy::correct
+void Foam::thermalHydraulicsModels::onePhaseLegacy::correct
 (
     scalar& residual,
-    bool solveFluidDynamics, 
+    bool solveFluidDynamics,
     bool solveEnergy
 )
-{   
-    correctRegimes(solveFluidDynamics, solveEnergy);
+{
+    correctModels(solveFluidDynamics, solveEnergy);
     if (solveFluidDynamics)
     {
         correctFluidMechanics(residual);
     }
-    
+
     if (solveEnergy)
     {
         correctEnergy(residual);
@@ -374,7 +301,7 @@ void Foam::thermalHydraulicModels::onePhaseLegacy::correct
     Info << endl;
 }
 
-void Foam::thermalHydraulicModels::onePhaseLegacy::correctFluidMechanics
+void Foam::thermalHydraulicsModels::onePhaseLegacy::correctFluidMechanics
 (
     scalar& residual
 )
@@ -383,101 +310,35 @@ void Foam::thermalHydraulicModels::onePhaseLegacy::correctFluidMechanics
     #include "pEqn_1pl.H"
 }
 
-void Foam::thermalHydraulicModels::onePhaseLegacy::correctEnergy(scalar& residual)
+void Foam::thermalHydraulicsModels::onePhaseLegacy::correctEnergy(scalar& residual)
 {
     #include "EEqn_1pl.H"
 }
 
-void Foam::thermalHydraulicModels::onePhaseLegacy::correctRegimes
+void Foam::thermalHydraulicsModels::onePhaseLegacy::correctModels
 (
-    bool solveFluidDynamics, 
+    bool solveFluidDynamics,
     bool solveEnergy
 )
 {
-    //- Reset all fields relevant for fluid-structure coupling
-    forAllIter
-    (
-        volTensorFieldPtrTable,
-        Kds_,
-        iter
-    )
-    {
-        volTensorField& Kd(*iter());
-        Kd *= 0.0;
-    }
-    forAllIter
-    (
-        volScalarFieldPtrTable,
-        htcs_,
-        iter
-    )
-    {
-        volScalarField& htc(*iter());
-        htc *= 0.0;
-    }
-
-    //- Update continuity errors. These only depend on alphaPhi and alphaRhoPhi
-    //  so its useless to updated them in not doing solveFluidDynamics, as they
-    //  would be constant in such case
-    if (solveFluidDynamics) correctContErr();
-
-    //- Correct regimes (i.e. regime marker fields)
-    regimeMap_->correct();
-
-    //- Update dimensionless numbers (Re, etc.)
-    FSPair_.correct();
-
-    //- Correct field tables for drag and heat transfer according
-    //  to new regime distribution in domain
-    //- It is kind of overkill as the table consist only of one entry,
-    //  but I do not want to duplicate the code by creating single-phase
-    //  variants of the correctDragTable and correctHeatTransferTable
-    //  functions, that'd be pointless and the overhead associated with
-    //  looping over a hashTable with a single entry is irrelevant
-
-    //- Correct local drag and heat transfer models. As these might depend on
-    //  dimensionless numbers such as Re, this must be done only after having
-    //  updated the FSPair that contains the dimensionless numbers that might
-    //  be used by drag or heatTransfer models
-    forAllIter
-    (
-        regimeTable,
-        regimeMap_->regimes(),
-        regimeIter
-    )
-    {
-        regime& regime(regimeIter()());
-        if (!regime.requiresModelCorrection()) continue;
-        if (solveFluidDynamics) regime.correctDragModels();
-        if (solveEnergy) regime.correctHeatTransferModels();
-    }
-
-    //- Correct global drag and heat transfer coefficients' table. This loop
-    //  and the previous one cannot be merged as nothing guarantees that the
-    //  local drag/heat transfer models of all the non-interpolated regimes
-    //  will have been updated before updating the local interpolated regimes
-    forAllConstIter
-    (
-        regimeTable,
-        regimeMap_->regimes(),
-        regimeIter
-    )
-    {
-        const regime& regime(regimeIter());
-        if (!regime.isCurrentlyPresent()) continue;
-        if (solveFluidDynamics) regime.correctDragTable(Kds_);
-        if (solveEnergy) regime.correctHeatTransferTable(htcs_); 
-    }
+    this->correctRegimeMaps();
+    FSPair_.correct(solveFluidDynamics, solveEnergy);
 }
 
-void Foam::thermalHydraulicModels::onePhaseLegacy::correctCourant()
+void Foam::thermalHydraulicsModels::onePhaseLegacy::correctCourant()
 {
     CoNum_ = 0.0;
     meanCoNum_ = 0.0;
 
     scalarField sumPhi
     (
-        fvc::surfaceSum(mag(fvc::interpolate(UDarcy_()) & mesh_.Sf()))().primitiveField()/fluid_.primitiveField()
+        fvc::surfaceSum
+        (
+            mag
+            (
+                fvc::interpolate(UDarcy_()) & mesh_.Sf()
+            )
+        )().primitiveField()/fluid_.primitiveField()
     );
 
     CoNum_ = 0.5*gMax(sumPhi/mesh_.V().field())*runTime_.deltaTValue();
@@ -489,11 +350,11 @@ void Foam::thermalHydraulicModels::onePhaseLegacy::correctCourant()
         << " " << CoNum_ << endl;
 }
 
-void Foam::thermalHydraulicModels::onePhaseLegacy::correctContErr()
+void Foam::thermalHydraulicsModels::onePhaseLegacy::correctContErr()
 {
 	if(incompressibleTreatment_)
 	{
-		fluid_.contErr() = 
+		fluid_.contErr() =
     	(
     	    fvc::div(phiDarcy_())
     	);
@@ -502,16 +363,15 @@ void Foam::thermalHydraulicModels::onePhaseLegacy::correctContErr()
 	else
 	{
 		volScalarField& rho(fluid_.thermo().rho());
-		fluid_.contErr() = 
+		fluid_.contErr() =
     	(
     	        fvc::ddt(fluid_, rho)
     	    +   fvc::div(phiDarcy_())
     	    -   (fvOptions_(fluid_, fixedRho_) & rho)
     	);
     	fluid_.contErr().correctBoundaryConditions();
-	}  
-    
-}
+	}
 
+}
 
 // ************************************************************************* //

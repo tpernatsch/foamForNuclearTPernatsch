@@ -31,6 +31,9 @@ Description
 SourceFiles
     gapContactFvPatchVectorField.C
 
+Modification of this file (and associated .C or included .H files)
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
+
 \*---------------------------------------------------------------------------*/
 
 #ifndef gapContactFvPatchVectorField_H

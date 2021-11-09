@@ -1,0 +1,11 @@
+
+ ##### 2D_FFTF  ###### 
+Energy steady state of 2D_FFTF has converged 
+Transient of 2D_FFTF has converged 
+reactivityDoppler is 237.1212  . It should be 240.6606  
+reactivityClad is 0.813305  . It should be 0.8156143   
+reactivityDensity is -2.789199  . It should be -3.25089   
+reactivityStructures is -1.10996  . It should be -1.319733   
+reactivityDriveline is -8.96642  . It should be -10.12475  
+reactivityGEM is -464.8488  . It should be -464.8485  
+totalPower is 29388.48  . It should be 29966.92  

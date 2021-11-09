@@ -1,3 +1,6 @@
+List<scalar> integralFlux0(xs_.energyGroups());
+List<scalar> integralFlux1(xs_.energyGroups());
+List<scalar> integralFlux2(xs_.energyGroups());
 
 if(aitkenIterCounter==0) // only happening at timeStepIteration==1 
 {
@@ -68,4 +71,3 @@ if(aitkenIterCounter==2)
 
 }
 aitkenIterCounter++ ;
-

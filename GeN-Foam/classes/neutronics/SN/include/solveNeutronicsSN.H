@@ -7,6 +7,8 @@ const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransp
 //const bool integralPredictor = neutronTransport.lookupOrDefault("integralPredictor", false);
 //const bool implicitPredictor = neutronTransport.lookupOrDefault("implicitPredictor", false);
 //const bool aitkenAcceleration = neutronTransport.lookupOrDefault("aitkenAcceleration", false);
+const bool aitkenAccelerationEigenvalue = 
+    neutronTransport.lookupOrDefault("aitkenAccelerationEigenvalue", false);
 
 scalar neutronIterationResidual =
     neutronTransport.lookupOrDefault<scalar>("neutronIterationResidual", 0.00001);
@@ -25,6 +27,12 @@ int maxInnerIter =
 //List<scalar> integralFlux0(xs_.energyGroups());
 //List<scalar> integralFlux1(xs_.energyGroups());
 //List<scalar> integralFlux2(xs_.energyGroups());
+
+if(aitkenAccelerationEigenvalue)
+{
+    #include "aitkenAccelerationEigenvalue.H"
+}   
+
 
 #include "updateScalarFluxes.H"
 scalar pTot(power()); 
@@ -51,11 +59,8 @@ if(!eigenvalueNeutronics_ && couplingIter == 0)
     }
 
 }   
-
-int aitkenIterCounter = 0;
-int aitkenIterNo = 0;
-bool aitkenYesNo = true;
 */
+
 int neutroIter = 0;
 
 //#include "createFluxMatricesSN.H"// Can be used to speed up, but costs a lot in memory
@@ -76,23 +81,23 @@ do
     neutroIter++;
 
     Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: " 
-    << neutroIter << "): " << neutroResidual << endl;// << " after Aitken no: " << aitkenIterNo << endl;     
+    << neutroIter << "): " << neutroResidual << endl << " after Aitken no: " << aitkenIterNo_ << endl;     
 
 }while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
 
 #include "updateScalarFluxes.H"
 
-volFuelPower_*=0.0;
+powerDensity_*=0.0;
 forAll(flux_,energyI)
 {
-    volFuelPower_ += flux_[energyI] * sigmaPow[energyI];
+    powerDensity_ += flux_[energyI] * sigmaPow[energyI];
 }
 
 pTot = power();
 
 Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl; 
 
-volFuelPower_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
+powerDensity_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
 
 
 if (eigenvalueNeutronics_)

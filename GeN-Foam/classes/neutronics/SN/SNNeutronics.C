@@ -197,7 +197,12 @@ Foam::SNNeutronics::SNNeutronics
         mesh,
         dimensionedScalar("", dimTemperature, SMALL),
         zeroGradientFvPatchScalarField::typeName
-    )
+    ),
+    keff0_(0.0),
+    keff1_(0.0),
+    keff2_(0.0),
+    aitkenIterCounter_(0),
+    aitkenIterNo_(0)
 {
     #include "readQuadratureSet.H"
     #include "calcLegendreMatrices.H"

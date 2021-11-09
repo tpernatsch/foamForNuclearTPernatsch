@@ -1,0 +1,81 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+\*---------------------------------------------------------------------------*/
+
+#include "Kaiser74TwoPhaseDragMultiplier.H"
+#include "addToRunTimeSelectionTable.H"
+
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+
+namespace Foam
+{
+namespace twoPhaseDragMultiplierModels
+{
+    defineTypeNameAndDebug(Kaiser74, 0);
+    addToRunTimeSelectionTable
+    (
+        twoPhaseDragMultiplierModel, 
+        Kaiser74, 
+        twoPhaseDragMultiplierModels
+    );
+}
+}
+
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+Foam::twoPhaseDragMultiplierModels::Kaiser74::Kaiser74
+(
+    const fvMesh& mesh,
+    const dictionary& dict,
+    const objectRegistry& objReg
+)
+:
+    twoPhaseDragMultiplierModel
+    (
+        mesh,
+        dict,
+        objReg
+    )
+{}
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+Foam::scalar Foam::twoPhaseDragMultiplierModels::Kaiser74::phi2
+(
+    const label& celli
+) const
+{
+    if (onePhase(celli))
+        return 1.0;
+    /*
+    So 
+        phi = 8.2/X^0.55    ->
+        phi2 = 67.24/(X^1.1)
+    */
+    //- I am limiting this for 7e-2 < X < 30 like Kottowski-Savatteri
+    //  out of consistency
+    return 67.24/pow(min(max(mFluidPtr_->XLM()[celli], 0.07), 30), 1.1);
+}
+
+// ************************************************************************* //

@@ -7,62 +7,49 @@ volVectorField& U(fluid_.U());
 const volScalarField& alpha(fluid_);
 volScalarField& rho(fluid_.rho());
 fvVectorMatrix UEqn(U, dimMass*dimLength/dimTime/dimTime);
-
-//- Drag between fluid and structure rotated in global reference frame
-volTensorField Kds
-(
-    IOobject
-    (
-        "Kds",
-        mesh_.time().timeName(),
-        mesh_
-    ),
-    (
-        structure_.Rl2g() 
-    &   (*Kds_["FSPair"])
-    &   structure_.Rg2l()
-    ),
-    zeroGradientFvPatchScalarField::typeName
-);
-Kds.correctBoundaryConditions();
-
-/*
-volScalarField magKds(mag(Kds)/sqrt(3.0));
-Info<< "Kds (avg min max) = "
-        << magKds.weightedAverage(mesh_.V()).value()
-        << " " << min(magKds).value()
-        << " " << max(magKds).value()
-        << " kg/m3/s" << endl;
-*/
+const volTensorField& Kds(FSPair_.Kd());
 
 fluid_.turbulence().correct();
 
 {
-    volTensorField nuEff
-    (
-        structure_.tortuosity()
-       *fluid_.turbulence().nuEff()()
-    );
+    volScalarField nuEff(fluid_.turbulence().nuEff()());
 
     UEqn =
     (
-            fvm::div(fluid_.alphaRhoPhi(), U, "div(alphaRhoPhi,U)")
-        +   fvm::SuSp(-fluid_.contErr(), U)
-        +   MRF_.DDt(alpha*rho, U)
-            //- The following is just a re-arrangement of div(nu*grad(U))
-        +   (
-                -   fvm::laplacian(alpha*rho*nuEff, U)
-                -   fvc::div
-                    (
-                        alpha*rho*nuEff&dev2(T(fvc::grad(U))), 
-                        "div(alphaRhoPhiNu,U)"
-                    )
+        fvm::div(fluid_.alphaRhoPhi(), U, "div(alphaRhoPhi,U)")
+    +   fvm::SuSp(-fluid_.contErr(), U)
+        //- Diffusion term (i.e. fluid_.turbulence().divDevRhoReff(U))
+        //  but re-expressed so to: 1) either allow to use a tensor
+        //  diffusivity (i.e. nuEff*structure_.tortuosity()) if the 
+        //  structure is tortuous; 2) if not tortuous, still allow me to
+        //  specify the div interpolation scheme (i.e. "div(alphaRhoPhiNu,U))
+    +   (
+            (structure_.tortuosityPtr().valid()) ? 
+            (
+            -   fvm::laplacian
+                (
+                    alpha*rho*nuEff*structure_.tortuosity(), 
+                    U
+                )
+            -   fvc::div
+                (
+                    alpha*rho*nuEff*structure_.tortuosity()
+                &   dev2(T(fvc::grad(U))), 
+                    "div(alphaRhoPhiNu,U)"
+                )
+            ) :
+            (
+            -   fvm::laplacian(alpha*rho*nuEff, U)
+            -   fvc::div
+                (
+                    alpha*rho*nuEff*dev2(T(fvc::grad(U))), 
+                    "div(alphaRhoPhiNu,U)"
+                )
             )
-            //- Implicit diagonal contribution of fluid-structure drag, 
-            //  explicit off-diagonal contribution
-        +   fvm::Sp((1.0/3.0)*tr(Kds), U) + (dev(Kds)&U)
-        ==
-            fvOptions_(alpha, rho, U)
+        )
+    +   fvm::Sp((1.0/3.0)*tr(Kds), U) + (dev(Kds)&U)
+    ==
+        fvOptions_(alpha, rho, U)
     );
 
     if (momentumMode_ != momentumMode::faceCentered)

@@ -59,18 +59,30 @@ solvers
 
     "alpha"
     {
+        solver              MULES;
         adjustSubCycles     true;
-        alphaMaxCo          0.2;
+        alphaMaxCo          0.25;
     }
 }
 
 PIMPLE
 {
-    nCorrectors                 3;
+    nCorrectors                 6;
+    correctUntilConvergence     true;
     nNonOrthogonalCorrectors    0;
     partialEliminationMode      implicit;
     momentumMode                faceCentered;
     oscillationLimiterFraction  0.5;
+
+    residualControl
+    {
+        p_rgh
+        {
+            tolerance       5e-06;
+            relTol          0;
+            useFirstPISOInitialResidual true;
+        }
+    }
 }
 
 relaxationFactors
@@ -78,6 +90,11 @@ relaxationFactors
     equations
     {
         ".*"            1;
+    }
+    fields
+    {
+        "alpha.*"       0.75;
+        "Kd.*"          0.25;
     }
 }
 

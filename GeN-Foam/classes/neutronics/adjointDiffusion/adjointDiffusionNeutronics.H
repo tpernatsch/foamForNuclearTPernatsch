@@ -31,9 +31,9 @@ Description
 SourceFiles
     adjointDiffusionNeutronics.C
 
-Authors
-	Euqtions: Jun Shi <junshi@berkeley.edu>
-    Coding: Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+Author of this file (and associated .C or included .H files)
+    Equations: Jun Shi <junshi@berkeley.edu>
+    Coding: Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Swizerland)
 
 The coding was not tested. Use at your own risk!
 

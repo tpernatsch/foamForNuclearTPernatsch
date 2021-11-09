@@ -39,7 +39,7 @@ SourceFiles
 #ifndef onePhase_H
 #define onePhase_H
 
-#include "thermalHydraulicModel.H"
+#include "thermalHydraulicsModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -47,11 +47,10 @@ namespace Foam
 {
 
 //- Forward declarations
-class regime;
-class regimeMapModel;
-class saturationModel;
+//class regime;
+//class regimeMapModel;
 
-namespace thermalHydraulicModels
+namespace thermalHydraulicsModels
 {
 
 /*---------------------------------------------------------------------------*\
@@ -60,26 +59,14 @@ namespace thermalHydraulicModels
 
 class onePhase
 :
-    public thermalHydraulicModel
+    public thermalHydraulicsModel
 {
-public:
-
-    enum class phaseChangeModel
-    {
-        none,
-        heatConductionLimited, 
-        individualSideDriven
-    };
-
-    static const Enum<phaseChangeModel> phaseChangeModelNames;
-
 private:
 
     //- Phases
 
         //- Structure
-        autoPtr<structureModel> structurePtr_;
-        structureModel& structure_;
+        structure structure_;
 
         //- Fluid
         fluid fluid_;
@@ -88,7 +75,7 @@ private:
         
         //- Fluid2 - structure
         FSPair FSPair_;
-    
+    /*
     //- Phase interaction related  
         
         //- table of drag coefficients between the fluid and each
@@ -101,6 +88,7 @@ private:
 
         //- Regime map
         autoPtr<regimeMapModel> regimeMap_;
+    */
 
 public:
 
@@ -112,7 +100,7 @@ public:
         (
             Time& time,
             fvMesh& mesh, 
-            myPimpleControl& pimple, 
+            customPimpleControl& pimple, 
             fv::options& fvOptions
         );
 
@@ -137,8 +125,8 @@ public:
         //  the flow regime map
         virtual void correctFluidMechanics(scalar& residual);
 
-        //- Correct flow regime map and all the coupling fields
-        virtual void correctRegimes
+        //- Correct models and coupling fields
+        virtual void correctModels
         (
             bool solveFluidDynamics, 
             bool solveEnergy
@@ -160,7 +148,7 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace thermalHydraulicModels
+} // End namespace thermalHydraulicsModels
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -31,9 +31,10 @@ Description
 SourceFiles
     pointKineticNeutronics.C
 
-Authors
+Author of this file (and associated .C or included .H files)
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
+
 
 \*---------------------------------------------------------------------------*/
 
@@ -41,6 +42,7 @@ Authors
 #define pointKineticNeutronics_H
 
 #include "neutronics.H"
+#include "Function1.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -60,14 +62,30 @@ protected:
     //-
     IOdictionary nuclearData_;
 
-    //-
+    //- Total power, sum of fission power and decay power
     scalar power_;
+
+    //- Point kinetics operates on fissionPower
+    scalar fissionPower_;
+
+    //- Decay power value set by decayPowerPtr_
+    scalar decayPower_;
+
+    //- Optional decay power
+    autoPtr<Function1<scalar>> decayPowerPtr_;
+
+    //- Time offset for the calcuation of the decayPower based on the
+    //  provided Function1, if any
+    scalar decayPowerStartTime_;
 
     //- Due to whatever the user might please
     scalar externalReactivity_;
 
     //- Used to set an initial steady state for liquid fuel
     scalar precEquilibriumReactivity_;
+
+    //- Estimated value of Beta for liquid fuel
+    scalar liquidFuelBeta_;
 
     //-
     scalar totalReactivity_;
@@ -96,6 +114,7 @@ protected:
     //  of a better way to get something equivalent to the finalInnerIter flag)
     label timeIndex_;
     scalar powerOld_;
+    scalar fissionPowerOld_;
     scalarList precursorPowersOld_;
 
     // default precursor field. Only used for liquid fuel
@@ -125,7 +144,7 @@ protected:
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructOrig_;
-    const volScalarField* volFuelPowerOrig_;
+    const volScalarField* powerDensityOrig_;
 
     //- These have no use for now, will be needed by the liquidFuel version
     const volVectorField* UOrig_;
@@ -152,8 +171,22 @@ protected:
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
-    //-
+    //- Fields necessary when an albedo boundary condition has been used
+    //  to calculate the initial fluxes
+    volScalarField Dalbedo_;
+    volScalarField fluxStarAlbedo_;
+
+    //- 
     volScalarField oneGroupFlux_;
+
+    //- Initial flux
+    volScalarField initOneGroupFlux_;
+
+    //- Normalized initial flux
+    volScalarField initOneGroupFluxN_;
+
+    //- Integral of the square of the normalized flux
+    scalar domainIntegratedInitOneGroupFluxN_;
 
     //- Number of energy groups (for scaling fluxes of a possibly existing
     //  previous simulation)
@@ -257,6 +290,16 @@ public:
         virtual ~pointKineticNeutronics(){}
 
     //- Member Functions
+
+        //- Calc keff from reactivity
+        virtual scalar keff() const override
+        {
+            return 1.0/(1.0-totalReactivity_);
+        }
+
+        //- Update all the oneGroupFlux related quantities following changes in
+        //  the oneGroupFlux after proper initialization
+        void setInitOneGroupFlux();
 
         //- Used to set the *FeedbackCellField fields
         void setFeedbackCellField

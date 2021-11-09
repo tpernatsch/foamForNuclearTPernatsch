@@ -217,7 +217,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::AUTO_WRITE
         ),
         mesh,
         dimensionedScalar("", dimTemperature, SMALL),

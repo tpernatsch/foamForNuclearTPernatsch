@@ -9,36 +9,13 @@ surfaceScalarField& phiDarcy(phiDarcy_());
 fvVectorMatrix UEqn(UDarcy, dimMass*dimLength/dimTime/dimTime);
 
 //- Drag between fluid and structure rotated in global reference frame
-volTensorField Kds
-(
-    IOobject
-    (
-        "Kds",
-        mesh_.time().timeName(),
-        mesh_
-    ),
-    (
-        structure_.Rl2g() 
-    &   (*Kds_["FSPair"])
-    &   structure_.Rg2l()
-    ),
-    zeroGradientFvPatchScalarField::typeName
-);
+volTensorField Kds(FSPair_.Kd());
 Kds = Kds/alpha;
 Kds.correctBoundaryConditions();
 
-/*
-volScalarField magKds(mag(Kds)/sqrt(3.0));
-Info<< "Kds (avg min max) = "
-        << magKds.weightedAverage(mesh_.V()).value()
-        << " " << min(magKds).value()
-        << " " << max(magKds).value()
-        << " kg/m3/s" << endl;
-*/
-
-//- Resetting rho to the reference value in case of incompressible 
-//- Boussinesq flow. It is important, because otherwise the 
-//- turbulence module would use a temperature corrected density, 
+//- Resetting rho to the reference value in case of incompressible
+//- Boussinesq flow. It is important, because otherwise the
+//- turbulence module would use a temperature corrected density,
 //- which we do not want.
 if(incompressibleTreatment_)
 {
@@ -49,11 +26,12 @@ fluid_.turbulence().correct();
 
 volTensorField nuEff
 (
-    structure_.tortuosity()
-   *fluid_.turbulence().nuEff()()
+    structure_.tortuosityPtr().valid() ?
+    structure_.tortuosity()*fluid_.turbulence().nuEff()() :
+    tensor::I * fluid_.turbulence().nuEff()()
 );
 
-UEqn = 
+UEqn =
 (
         fvm::ddt(fixedRho_, UDarcy)
     +   (1/alpha)*fvm::div(phiDarcy, UDarcy, "div(phiDarcy,UDarcy)")
@@ -63,16 +41,16 @@ UEqn =
             -   fvm::laplacian(fixedRho_*nuEff, UDarcy)
             -   fvc::div
                 (
-                    fixedRho_*nuEff&dev2(T(fvc::grad(UDarcy))), 
+                    fixedRho_*nuEff&dev2(T(fvc::grad(UDarcy))),
                     "div(RhoPhiNu,UDarcy)"
                 )
         )
-        //- Implicit diagonal contribution of fluid-structure drag, 
+        //- Implicit diagonal contribution of fluid-structure drag,
         //  explicit off-diagonal contribution
     +   fvm::Sp((1.0/3.0)*tr(Kds), UDarcy) + (dev(Kds) & UDarcy)
     ==
     (
-        structure_.momentumSourcePtr().valid() ? 
+        structure_.momentumSourcePtr().valid() ?
         (structure_.momentumSource() + fvOptions_(fixedRho_, UDarcy)) :
         fvOptions_(fixedRho_, UDarcy)
     )
@@ -99,5 +77,3 @@ U = UDarcy / alpha;
 U.correctBoundaryConditions();
 
 fvOptions_.correct(UDarcy);
-
-

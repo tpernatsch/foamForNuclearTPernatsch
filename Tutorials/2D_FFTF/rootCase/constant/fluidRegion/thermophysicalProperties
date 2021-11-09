@@ -1,0 +1,59 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type                heRhoThermo;
+    mixture             pureMixture;
+    equationOfState     Boussinesq;
+    thermo              hConst;
+    transport           const;
+    specie              specie;
+    energy              sensibleEnthalpy;
+}
+
+pRef                        100000;
+
+//- Properties are those of liquid Sodium evaluated at 600 K
+mixture
+{
+    specie
+    {
+        molWeight           22.989769;
+    }
+
+    equationOfState
+    {
+        rho0                874;
+        T0                  600;
+        beta                2.602975e-4;
+    }
+
+    thermodynamics
+    {
+        Cp                  1301;
+        Hf                  0;
+    }
+    transport
+    {
+        mu                  3.21e-4;
+        Pr                  5.6664993e-3;
+    }
+}
+
+
+// ************************************************************************* //

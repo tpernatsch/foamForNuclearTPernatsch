@@ -57,21 +57,31 @@ solvers
         relTol          0.001;
     }
 
-    //- "Solver" dictionary of the phase fraction equations. The employed
-    //  algorithm is MULES. This dict serves to specify options for subcycling.
-    //  Subcycling consists in solving a fully explicit equation (except for
-    //  the time derivative term, which is hardcoded to be forward-Euler) for
-    //  N times with a time step reduced by a factor N. This is useful for
-    //  advection problems (such as the phase fraction equations, i.e. the 
-    //  continuity equations) that might have strong Courant limitations, such
-    //  as the phase fraction equations.
+    //- "Solver" dictionary of the phase fraction equations to specify the
+    //  solution algorithm. Two possible algorithms are available, the MULES
+    //  algorithm and a simpler implicit solution algorithm with first-order
+    //  upwind discretization (hard-coded). In short, MULES (which stands for
+    //  Mutli-dimensional Universal Limiter with Explicit Solution) is an
+    //  explicit solution algorithm (i.e. the phase fraction in the advective
+    //  term is treated explicitly) that tries to reach a compromise between
+    //  numerical stability (granted by low-order, e.g. upwind, discretization
+    //  schemes for the treatment of the advective term) and numerical 
+    //  accuracy (achieved by high-order, e.g. van Leer, discretization schemes
+    //  for the treatment of the advective term), and because of this, it 
+    //  requires an explcit treatment of said term as the discretization is
+    //  constructed iteratively via a form of Flux Corrected Transport (FCT)
+    //  tecniques. On the flip-side, the implicit solution algorithm treats the
+    //  advective term implicitly, and used a hard-coded upwind discretization
+    //  for the advective fluxes for maximum stability.
+    //  MULES can be significantly more computationally expensive on larger
+    //  meshes and imposes strict Courant limitations which can be somewhat
+    //  loosened via the use of subCycling. On the flip-side, the implicit
+    //  approach is expected to be significant more diffusive in certain
+    //  scenarios
     alpha
     {
-        //- If true, the number of times the phase fraction equations are
-        //  are solved is determined by the Co. In particular, the number
-        //  of subCycles is set to ceil(Co/alphaMaxCo) with Co being the
-        //  current global courant number.
-        adjustSubCycles     true;
+        //- Either implicitUpwind or MULES
+        solver "MULES";
 
         //- For which phase fraction should the continuity equation be solved?
         //  If not provided, it defaults to both phase fractions being solved
@@ -79,15 +89,25 @@ solvers
         //  phase can significantly reduce simulation times by up to 30%
         //  depending on the mesh size (the reduction is larger for larger
         //  meshes)
-        solveAlpha          "vapour";
-        
+        //solvePhase          "vapour";
+
+        //- This keyword is used only by the MULES solver
+        //- If true, the number of times the phase fraction equations are
+        //  are solved is determined by the Co. In particular, the number
+        //  of subCycles is set to ceil(Co/alphaMaxCo) with Co being the
+        //  current global courant number.
+        adjustSubCycles     true;
+
+        //- This keyword is used only by the MULES solver
         //- Maximum subCycle Courant
         alphaMaxCo          0.25;
 
+        //- This keyword is used only by the MULES solver
         //- If provided, limits the maximum amount of subCycles that can be
         //  performed if adjustSubCycles is true
         //maxSubCycles M; 
 
+        //- This keyword is used only by the MULES solver
         //- Only used if adjustSubCycles is false. Defaults to 1.
         //nSubCycles   N; 
     }
@@ -98,7 +118,7 @@ PIMPLE
     //- Number of pressure correctors (i.e. PISO iterations) within each outer
     //  iteration (i.e. PIMPLE iteration). The number of outer iterations is
     //  set in the global fvSolution file (i.e. controlDict/fvSolution)
-    nCorrectors      9;
+    nCorrectors      12;
 
     //-
     nNonOrthogonalCorrectors 0;
@@ -176,12 +196,15 @@ PIMPLE
     //  resolve boiling. If not provided, defaults to infinity (i.e.
     //  no limitation on the mass transfer term). Providing this
     //  can play a role in stabilizing the simulation
-    massTransferSafetyFactor 0.4;
+    massTransferSafetyFactor 0.1;
 
     //- Maximum time derivative that the interfacial temperature is allowed
     //  to have (acts similarly to an under-relaxation, yet not exactly the
     //  same thing, should be easy to see why)
     maxTInterfaceDdt            1e4;
+
+    //-
+    enthalpyStabilizationMode           source;
 
     residualControl
     {
@@ -209,12 +232,16 @@ PIMPLE
     }
 }
 
+//- The three single most important parameters in the stability of a boiling
+//  simulation are, in order, the mass transfer under-relaxation dmdt, the
+//  vapour enthaply under-relaxation h.vapour, the interfacial temperature
+//  under-relaxation T.interface. In particular, h.vapour requires the heaviest
+//  under-relaxation
 relaxationFactors
 {
     equations
     {
         ".*"            1;
-        "h.vapour"      0.1;
     }
 
     //- The two most important relaxation factors for explicitly coupled
@@ -225,8 +252,11 @@ relaxationFactors
     //  stabilize the simulation
     fields
     {
+        //-
+        "alpha.*"                   0.5;
+
         //- Under-relaxation of the mass transfer term
-        "dmdt"              0.25;
+        "dmdt.*"                    0.125;
 
         //- Under-relaxation of the interfacial temperature between the fluids.
         //  This only has an effect if the employed saturationModel in
@@ -235,10 +265,15 @@ relaxationFactors
         //  boiling will more often than not induce sharp changes in the
         //  interfacialTemperature, resulting in massive changes in the mass
         //  transfer term 
-        "T.interface"              0.1;
-        "T.interfaceFinal"         0.1;
+        "T.interface"               0.125;
+        "T.interfaceFinal"          0.125;
+
+        //- Under-relaxation of vapour enthalpy
+        "h.vapour"                  0.0125;
+        "h.vapourFinal"             0.0125;
     }
 }
 
 
 // ************************************************************************* //
+

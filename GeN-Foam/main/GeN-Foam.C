@@ -49,9 +49,10 @@ Reference publications
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 - 
     Nice (France), Paper 15226
 
-Authors
+Authors of this file (and associated .C or included .H files)
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
+    EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 
@@ -67,7 +68,7 @@ Authors
 #include "UPstream.H"
 
 #include "multiphysicsControl.H"
-#include "thermalHydraulicModel.H"
+#include "thermalHydraulicsModel.H"
 #include "neutronics.H"
 #include "thermoMechanics.H"
 
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
     #include "createCouplingFields.H"
     #include "createOutput.H"
 
-    Info<< "\nStarting time loop\n" << endl;
+    Info<< "\nStarting time loop - \n" << endl;
 
     Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s" 
         << nl << endl;

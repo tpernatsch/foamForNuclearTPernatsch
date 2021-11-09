@@ -49,11 +49,11 @@ Foam::functionObjects::TBulk::regionTypeNames_
             "patch" 
         },
         { 
-            regionType::faceSet_, 
+            regionType::faceSet, 
             "faceSet" 
         },
         { 
-            regionType::faceZone_, 
+            regionType::faceZone, 
             "faceZone" 
         }
     }
@@ -66,26 +66,16 @@ void Foam::functionObjects::TBulk::writeFileHeader(Ostream& os)
 {
     if (writtenHeader_)
     {
-        //writeBreak(os);
-        os << endl;
+        writeBreak(os);
     }
     else
     {
-        writeHeader(os, "TBulk for regions: ");
-        os << "    ";
-        forAll(regionNames_, i)
-        {
-            os << regionNames_[i];
-            if (i != regionNames_.size()-1)
-                os << ", ";
-            else
-                os << endl;
-        }
+        writeHeader(os, "Field extents");
     }
-    
-    word time("Time = "+mesh_.time().timeName());
 
-    os << time << endl;
+    writeCommented(os, "Time");
+
+    os  << endl;
 
     writtenHeader_ = true;
 }
@@ -102,8 +92,9 @@ Foam::functionObjects::TBulk::TBulk
 :
     fvMeshFunctionObject(name, runTime, dict),
     writeFile(mesh_, name, typeName, dict),
-    regionNames_(0),
-    patchIDs_(),
+    regionName_(""),
+    patchID_(0),
+    faces_(0),
     thermoPtr_(nullptr),
     alphaRhoPhiPtr_(nullptr)
 {
@@ -127,20 +118,25 @@ bool Foam::functionObjects::TBulk::read(const dictionary& dict)
                 )
             )
         );
-        regionNames_ = dict.get<wordReList>("regions");
-        thermoName_ = dict.get<word>("thermo");
-        alphaRhoPhiName_ = dict.get<word>("alphaRhoPhi");
+        regionName_ = dict.get<word>("regionName");
+        thermoName_ = dict.get<word>("thermoName");
+        alphaRhoPhiName_ = dict.get<word>("alphaRhoPhiName");
 
         if (regionType_ == regionType::patch)
         {
-            patchIDs_.clear();
             const polyBoundaryMesh& pbm = mesh_.boundaryMesh();
-            for (const wordRe& name : regionNames_)
+            patchID_ = pbm.findPatchID(regionName_);
+        }
+        else if (regionType_ == regionType::faceZone)
+        {
+            const faceZoneMesh& faceZones(mesh_.faceZones());
+            const labelList& faceis(faceZones[regionName_]);
+            forAll(faceis, i)
             {
-                patchIDs_.insert(pbm.findIndices(name));
+                faces_.append(faceis[i]);
             }
         }
-        else if (regionType_ == regionType::faceSet_)
+        else if (regionType_ == regionType::faceSet)
         {
             IOobjectList objects
             (
@@ -155,26 +151,15 @@ bool Foam::functionObjects::TBulk::read(const dictionary& dict)
                 polyMesh::meshSubDir/"sets"
             );
             IOobjectList faceSets(objects.lookupClass(faceSet::typeName));
-            for (const wordRe& name : regionNames_)
+            if (faceSets.found(regionName_))
             {
-                Info << name << " " << faceSets.found(name) << endl;
-                if (faceSets.found(name))
+                Foam::faceSet set(*faceSets[regionName_]);
+                forAllIter(faceSet, set, iter)
                 {
-                    faceSet set(*faceSets[name]);
-                    forAllIter(faceSet, set, iter)
-                    {
-                        label facei(*iter);
-                        faces_.append(facei);
-                    }
+                    label facei(*iter);
+                    faces_.append(facei);
                 }
             }
-            
-        }
-        else 
-        {
-            FatalErrorInFunction
-                << "faceZone region types currently not implemented"
-                << exit(FatalError);
         }
 
         return true;
@@ -203,92 +188,55 @@ bool Foam::functionObjects::TBulk::write()
     }
     if (alphaRhoPhiPtr_ == nullptr)
     {
-        alphaRhoPhiPtr_ = &mesh_.lookupObject<surfaceScalarField>(alphaRhoPhiName_);
-    } 
-    
-    //- Get refs for convenience
+        alphaRhoPhiPtr_ = 
+            &mesh_.lookupObject<surfaceScalarField>(alphaRhoPhiName_);
+    }
+
     const rhoThermo& thermo(*thermoPtr_);
     const volScalarField& T(thermo.T());
+    tmp<volScalarField> Cp(thermo.Cp());
     const surfaceScalarField& alphaRhoPhi(*alphaRhoPhiPtr_);
 
-    //- Cp is the only one that is computed on the fly, no refs to it
-    tmp<volScalarField> Cp(thermo.Cp());
+    scalar hDot(0.0);
+    scalar hDotByT(0.0);
 
-    switch (regionType_)
+    if (regionType_ == regionType::patch)
     {
-        case regionType::patch :
-        {   
-            //- Total enthalpy flow (J/s) through patch
-            scalar hDot(0.0);
-
-            //- Total enthalpy flow per unit fluid temperature (J/s/K)
-            scalar hDotByT(0.0);    
-            
-            for (const label patchi : patchIDs_)
-            {
-                const fvPatchScalarField& Cpp = Cp().boundaryField()[patchi];
-                const fvPatchScalarField& Tp = T.boundaryField()[patchi];
-                const fvsPatchField<scalar>& alphaRhoPhip = alphaRhoPhi.boundaryField()[patchi];
-                forAll(Tp, i)
-                {
-                    scalar alphaRhoCpUDotSf
-                    (
-                        //alphap[i]*rhop[i]*Cpp[i]*Up[i]&Sf[i]
-                        alphaRhoPhip[i]*Cpp[i]
-                    );
-                    hDotByT += alphaRhoCpUDotSf;
-                    hDot += alphaRhoCpUDotSf*Tp[i];
-                }
-            }
-            reduce(hDot, sumOp<scalar>());
-            reduce(hDotByT, sumOp<scalar>());
-            scalar TBulkValue(hDot/max(hDotByT, 1e-6));
-
-            Log << "    patch(es) " << regionNames_ << " TBulk = " << TBulkValue
-                << " K" << endl;
-            file() << "TBulk = " << TBulkValue << " K";
-            //this->setResult(compoundPatchesName_ + "_TBulk", TBulkValue);
-            break;
-        }
-        case regionType::faceSet_ :
+        const fvPatchScalarField& Cpp = Cp().boundaryField()[patchID_];
+        const fvPatchScalarField& Tp = T.boundaryField()[patchID_];
+        const fvsPatchField<scalar>& alphaRhoPhip 
+            = alphaRhoPhi.boundaryField()[patchID_];
+        const fvPatch& patch(mesh_.boundary()[patchID_]);
+        const scalarField& magSf(patch.magSf());
+        forAll(magSf, i)
         {
-            //- Total enthalpy flow (J/s) through faceSet
-            scalar hDot(0.0);
-
-            //- Total enthalpy flow per unit fluid temperature (J/s/K)
-            scalar hDotByT(0.0); 
-            surfaceScalarField Cpp(fvc::interpolate(Cp));
-            surfaceScalarField Tp(fvc::interpolate(T));
-
-            forAll(faces_, i)
-            {
-                const label& facei(faces_[i]);
-                scalar alphaRhoCpUDotSf
-                (
-                    alphaRhoPhi[facei]*Cpp[facei]
-                );
-                hDotByT += alphaRhoCpUDotSf;
-                hDot += alphaRhoCpUDotSf*Tp[facei];
-            }
-
-            reduce(hDot, sumOp<scalar>());
-            reduce(hDotByT, sumOp<scalar>());
-            scalar TBulkValue(hDot/max(hDotByT, 1e-6));
-
-            Log << "    faceSet(s) " << regionNames_ << " TBulk = " << TBulkValue
-                << " K" << endl;
-            file() << "TBulk = " << TBulkValue << " K";
-
-            break;
-        }
-        default :
-        {
-            FatalErrorInFunction
-                << "faceZone region types currently not implemented"
-                << exit(FatalError);
-            break;
+            scalar magAlphaRhoCpPhipi(mag(alphaRhoPhip[i])*Cpp[i]);
+            hDotByT += magAlphaRhoCpPhipi;
+            hDot += magAlphaRhoCpPhipi*Tp[i];
         }
     }
+    else
+    {
+        surfaceScalarField Tf(fvc::interpolate(T));
+        surfaceScalarField Cpf(fvc::interpolate(Cp));
+        forAll(faces_, i)
+        {
+            const label& facei(faces_[i]);
+            scalar magAlphaRhoCpPhii(mag(alphaRhoPhi[facei])*Cpf[facei]);
+            hDotByT += magAlphaRhoCpPhii;
+            hDot += magAlphaRhoCpPhii*Tf[facei];
+        }
+    }
+
+    reduce(hDotByT, sumOp<scalar>());
+    reduce(hDot, sumOp<scalar>());
+
+    scalar Tb(hDot/max(hDotByT, 1e-9));
+
+    Log << "    " << regionTypeNames_[regionType_] << " " << regionName_ 
+        << " TBulk = " << Tb << " K" << endl;
+    file() << Tb;
+    this->setResult(regionName_+"_TBulk", Tb);
 
     Log << endl;
 

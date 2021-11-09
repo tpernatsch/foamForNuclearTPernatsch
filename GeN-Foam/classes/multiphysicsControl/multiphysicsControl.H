@@ -24,8 +24,8 @@ License
 Description
     Class to handle fvSolution dictionaries for the three regions.
 
-Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+Author of this file (and associated .C or included .H files)
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com), EPFL (Swizerland)
 
 Class
     Foam::multiphysicsControl
@@ -39,7 +39,7 @@ SourceFiles
 #define multiphysicsControl_H
 
 #include "fvMesh.H"
-#include "myPimpleControl.H"
+#include "customPimpleControl.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -52,7 +52,7 @@ namespace Foam
 
 class multiphysicsControl
 : 
-    public myPimpleControl
+    public customPimpleControl
 {
 protected :
 
@@ -75,7 +75,7 @@ protected :
 
     //- Solution flags
 
-    //- solveFluidDynamics exists in myPimpleControl as solveFlow_;
+    //- solveFluidDynamics exists in customPimpleControl as solveFlow_;
     bool solveEnergy_;
     bool solveNeutronics_;
     bool solveThermoMechanics_;

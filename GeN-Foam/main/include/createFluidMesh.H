@@ -64,8 +64,17 @@ if(runTime.controlDict().lookupOrDefault<bool>("removeBaffles", false))
     //- Add boundary data
     fluidMeshNBPtr().addFvPatches(pList);
 
-    //- Remove baffles
-    removeBaffles(fluidMeshNBPtr(), runTime);   
+    //- One of the main issues when passing the actual runTime to removeBaffles
+    //  was that the functionObjects execution flags were getting reset to
+    //  false. Probably other aspects of runTime were getting modified too. To
+    //  avoid all these issues, let removeBaffles operate with a dummy runTime
+    //  created on the fly, which is deleted afterwards
+    autoPtr<Time> dummyRunTimePtr
+    (
+        new Time(Foam::Time::controlDictName, args)
+    );
+    removeBaffles(fluidMeshNBPtr(), dummyRunTimePtr());
+    dummyRunTimePtr.clear();    
 
     //- Copy mesh zones
     List<pointZone*> pointZonesNB(0);

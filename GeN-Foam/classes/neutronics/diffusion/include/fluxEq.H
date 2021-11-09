@@ -21,7 +21,7 @@ forAll(flux_,energyI)
     scalar initRes = neutroEq.solve().max().initialResidual();
     neutroResidual = max(neutroResidual,initRes);
 
-    Info<< "neutro Residual = " << initRes << nl << endl;
+    //Info<< "neutro Residual = " << initRes << nl << endl;
 
     neutroEq.solve();
 

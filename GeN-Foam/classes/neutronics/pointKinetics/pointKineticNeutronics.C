@@ -70,6 +70,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             "pTarget"
         )
     ),
+    fissionPower_(power_),
+    decayPower_(0.0),
+    decayPowerStartTime_(0.0),
     externalReactivity_
     (
         reactorState_.lookupOrDefault<scalar>
@@ -79,6 +82,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         )
     ),
     precEquilibriumReactivity_(0.0),
+    liquidFuelBeta_(0.0),
     totalReactivity_
     (
         externalReactivity_
@@ -110,6 +114,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     delayedGroups_(betas_.size()),
     timeIndex_(mesh.time().timeIndex()),
     powerOld_(power_),
+    fissionPowerOld_(fissionPower_),
     precursorPowersOld_(precursorPowers_),
     defaultPrec_
     (
@@ -219,6 +224,34 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    Dalbedo_
+    (
+        IOobject
+        (
+        "Dalbedo",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimLength, 1.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    fluxStarAlbedo_
+        (
+        IOobject
+        (
+            "fluxStarAlbedo",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimArea/dimTime, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),     
     oneGroupFlux_
     (
         IOobject
@@ -233,6 +266,31 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimless/dimArea/dimTime, 1),
         zeroGradientFvPatchScalarField::typeName
     ),
+    initOneGroupFlux_
+    (
+        IOobject
+        (
+            "initOneGroupFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        oneGroupFlux_
+    ),
+    initOneGroupFluxN_
+    (
+        IOobject
+        (
+            "initOneGroupFluxN",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_)
+    ),        
+    domainIntegratedInitOneGroupFluxN_(fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value()),
     energyGroups_(0),
     fluxes_(0),
     precursors_(0),
@@ -334,6 +392,36 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         FatalErrorInFunction
             << "pointKinetics model incompatible with eigenvalueNeutronics"
             << exit(FatalError);
+    }
+
+    //- Check if decay power provided
+    word decayPowerDictName("decayPowerTimeProfile");
+    if (reactorState_.found(decayPowerDictName))
+    {
+        const dictionary& decayPowerDict
+        (
+            reactorState_.subDict(decayPowerDictName)
+        );
+        word type
+        (
+            decayPowerDict.get<word>("type")
+        );
+        decayPowerPtr_.reset        
+        (
+            Function1<scalar>::New
+            (
+                type,
+                decayPowerDict,
+                type
+            )
+        );
+        decayPowerStartTime_ = 
+            decayPowerDict.lookupOrDefault<scalar>("startTime", 0.0);
+        const scalar& t(mesh_.time().timeOutputValue());
+        decayPower_ = decayPowerPtr_->value(t-decayPowerStartTime_);
+        fissionPower_ = power_ - decayPower_;
+        fissionPowerOld_ = fissionPower_;
+
     }
 
     if (liquidFuel_)
@@ -503,6 +591,47 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     }
     if (fluxes_.size() == 0)
     {
+        //- One group flux is init from this dict ONLY IF no existing flux
+        //  files are already present (otherwise it is just reconstructed 
+        //  from the sum of those)
+        if (nuclearData_.found("initialOneGroupFluxByZone"))
+        {
+            const dictionary& initialOneGroupFluxes
+            (
+                nuclearData_.subDict("initialOneGroupFluxByZone")
+            );
+            oneGroupFlux_ *= 0.0;
+            forAllConstIter
+            (
+                dictionary,
+                initialOneGroupFluxes,
+                iter
+            )
+            {
+                DynamicList<label> cells(0);
+                word zoneName(iter->keyword());
+                scalar initialOneGroupFlux
+                (
+                    initialOneGroupFluxes.get<scalar>(zoneName)
+                );
+                forAllConstIter
+                (
+                    DynamicList<label>,
+                    mesh.cellZones()[zoneName],
+                    cIter
+                )
+                {
+                    cells.append(*cIter);
+                }
+                forAll(cells, i)
+                {
+                    oneGroupFlux_[cells[i]] = initialOneGroupFlux;
+                }
+            }
+            oneGroupFlux_.correctBoundaryConditions();
+            setInitOneGroupFlux();
+        }
+
         energyGroups_ = 
             nuclearData_.lookupOrDefault<scalar>("energyGroups", 1);
 
@@ -545,6 +674,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         }
         oneGroupFlux_.correctBoundaryConditions();
     }
+    //- Update the initOneGroupFlux related quantities after possible
+    //  changes in the oneGroupFlux
+    setInitOneGroupFlux();
 
     //- Read real precursors if present, they only get re-scaled by 
     //  pointKinetic results
@@ -604,10 +736,10 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
                         IOobject::AUTO_WRITE
                     ),
                     //chenge the precursors units to power for PK calculations
-                    defaultPrec_
+                    defaultPrec_ //* dimensionedScalar("", dimPower, 1.0)
                 )
             );
-            precPK_[precI] *= dimensionedScalar("", dimPower, 1.0);  
+            precPK_[precI].dimensions().reset(defaultPrec_.dimensions()*dimPower);
             precPKStar_.set
             (
                 precI,
@@ -622,10 +754,10 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
                         IOobject::AUTO_WRITE
                     ),
                     //chenge the precursors units to power for PK calculations
-                    defaultPrec_
+                    defaultPrec_ //* dimensionedScalar("", dimPower, 1.0)
                 )
-            );
-            precPKStar_[precI] *= dimensionedScalar("", dimPower, 1.0);             
+            );         
+            precPKStar_[precI].dimensions().reset(defaultPrec_.dimensions()*dimPower);  
         }
         else
         {
@@ -655,7 +787,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         for (int i = 0; i < delayedGroups_; i++)
         {
             precursorPowers_[i] = 
-                (betas_[i]*power_)/(lambdas_[i]*promptGenerationTime_);
+                (betas_[i]*fissionPower_)/(lambdas_[i]*promptGenerationTime_);
         }
     }
 
@@ -722,6 +854,15 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
+
+void Foam::pointKineticNeutronics::setInitOneGroupFlux()
+{
+    initOneGroupFlux_ = oneGroupFlux_;
+    initOneGroupFluxN_ = 
+        initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_);
+    domainIntegratedInitOneGroupFluxN_ = 
+        fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value();
+}
 
 void Foam::pointKineticNeutronics::setFeedbackCellField
 (
@@ -899,29 +1040,28 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     TStructOrig_ = 
         src.findObject<volScalarField>("bafflelessTStruct");
     
-    //- Project thermalHydraulic volFuelPower onto the neutronic one to
+    //- Project thermalHydraulic powerDensity onto the neutronic one to
     //  initialize it if the latter does not exist
-    IOobject volFuelPowerHeader
+    IOobject powerDensityHeader
     (
-        "volFuelPower",
+        "powerDensity",
         mesh_.time().timeName(),
         mesh_.time(),
         IOobject::NO_READ
     );
 
-    if (!volFuelPowerHeader.typeHeaderOk<volScalarField>(true))
+    if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
     {
-        volFuelPowerOrig_ = 
-            src.findObject<volScalarField>("bafflelessVolFuelPower");
+        powerDensityOrig_ = 
+            src.findObject<volScalarField>("bafflelessPowerDensity");
         neutroToFluid.mapTgtToSrc
             (
-                *volFuelPowerOrig_, 
+                *powerDensityOrig_, 
                 plusEqOp<scalar>(), 
-                volFuelPower_
+                powerDensity_
             );
-        volFuelPower_.correctBoundaryConditions(); 
+        powerDensity_.correctBoundaryConditions(); 
     }
-
     
     if (liquidFuel_)
     {
@@ -1004,8 +1144,8 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
 
     #include "correctReactivity.H"
 
-    Info << endl << "pointKinetics (initial conditions): " << endl;
-    #include "pointKineticsInfo.H"
+    //Info << endl << "pointKinetics (initial conditions): " << endl;
+    //#include "pointKineticsInfo.H"
 }
 
 void Foam::pointKineticNeutronics::interpolateCouplingFields

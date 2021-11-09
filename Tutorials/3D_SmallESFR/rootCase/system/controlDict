@@ -27,7 +27,7 @@ stopAt              endTime;
 
 endTime             200;
 
-deltaT              2;// time step (if non adjusted)
+deltaT              1;// time step (if non adjusted)
 
 writeControl        runTime;//timeStep;//timeStep;//adjustableRunTime;
 

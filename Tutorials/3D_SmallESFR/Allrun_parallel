@@ -44,28 +44,31 @@ do
     "steadyState")
         runCloneCase $caseName rootCase
         printf "Steady state case is prepared!\n"
-    	printf "Running $exe on $caseName\n"
-    	decomposePar -case $caseName -region thermoMechanicalRegion
-    	decomposePar -case $caseName -region neutroRegion
-    	decomposePar -case $caseName -region fluidRegion
-    	cd $caseName
-    	runParallel $exe
-    	cd ../
-
+        printf "Running $exe on $caseName\n"
+        decomposePar -case $caseName -region thermoMechanicalRegion
+        decomposePar -case $caseName -region neutroRegion
+        decomposePar -case $caseName -region fluidRegion
         ;;
     "transient")
         printf "Transient case entered...\n"
         setTransient $caseName steadyState
-    	printf "Running $exe on $caseName\n"
-    	cd $caseName
-    	runParallel $exe
-    	cd ../
         ;;
     esac
 
-    #( cd $caseName && runApplication `getApplication` )
-    #mpirun -np 4 $exe -parallel -case $caseName 2>&1 | tee "$caseName/log.$exe"
-    #$exe -case $caseName 2>&1 | tee "$caseName/log.$exe"
+    # Start gnuplot if it exist
+    if command -v gnuplot &> /dev/null
+    then
+        gnuplot -e "log='$caseName/log.$exe'" residuals - &> /dev/null &
+    else
+        echo "gnuplot could not be found"
+    fi
+
+    printf "Running $exe on $caseName\n"
+    mpirun -np 4 $exe -parallel -case $caseName | tee "$caseName/log.$exe"
+
+    # Kill gnuplot if it was started
+    pkill -x gnuplot &> /dev/null
+
 done
 
 #------------------------------------------------------------------------------

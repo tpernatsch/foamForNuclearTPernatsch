@@ -23,7 +23,7 @@ FoamFile
 // --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-thermalHydraulicType    "onePhase";
+thermalHydraulicsType    "onePhase";
 
 // ------------------------------------------------------------------------- //
 // --- STRUCTURES PROPERTIES ----------------------------------------------- //
@@ -31,17 +31,15 @@ thermalHydraulicType    "onePhase";
 
 structureProperties
 {    
-    type            "byZone";
-
     "diagrid:axialReflector:radialReflector:follower:controlRod"
     {
         volumeFraction      0.718520968;
         Dh                  0.00365; //hydraulic diameter
 
         passiveProperties // properties of the passive (non-power-producing)
-			  // structure. In this case, the metallic wrapper.
-			  // As a matter of fact one should include also 
-			  // the dummy pins. Not done here for simplcity.
+              // structure. In this case, the metallic wrapper.
+              // As a matter of fact one should include also 
+              // the dummy pins. Not done here for simplcity.
         {
             volumetricArea  5;
             rhoCp           4.8e6;
@@ -98,14 +96,43 @@ structureProperties
 // --- REGIME MAP MODEL ---------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-regimeMapModel
+/*  List of all regime map models dictionaries, with arbitrary name (only one, 
+    lamTurb in this case). There can be any number of regime maps. Current
+    types are oneParameter and twoParameters. 
+
+    The oneParameter type is a 1-D regime map.
+    Here, the map name is lamTurb and it depends on the fluid Reynolds number.
+    Mismatches in the regime bounds of adjacent regimes automatically create
+    an interpolation region, wherein the interpolation type can be changed via
+    the interpolationMode keyword, which currently offers either linear or
+    quadratic interpolation. In the oneParameter map, the lowest bound of the
+    "lowest" regime is extended to -inf and the upper bound of the "upmost"
+    regime is extended to +inf
+
+    The twoParameter type is a 2-D regime map, tutorials will be eventually 
+    added on it.
+
+    To use a regimeMap in a model, select the "byRegime" type for said model.
+    All physicsModels support it. The name of the regime map to be used
+    is specified via a regimeMap keyword. Then, the model for each regime is
+    specfied in subDicts named like each corresponding regime in the regimeMap.
+    To see an example of this, have a look at the heatTransferModel used for
+    this case.
+*/
+
+regimeMapModels
 {
-    type                oneParameter;
-    parameter           "Re";
-    regimeBounds
+    "lamTurb"
     {
-        "laminar"       (0      1000);
-        "turbulent"     (2300   2301);
+        type                oneParameter;
+        parameter           "Re";
+        regimeBounds
+        {
+            "laminar"       (0      1000);  //- 0 is automatically extended
+                                            //  to -inf
+            "turbulent"     (2300   2301);  //- 2031 is automatically extended
+                                            //  to +inf
+        }
     }
 }
 
@@ -113,49 +140,37 @@ regimeMapModel
 // --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-physicsModelsByRegime
+physicsModels
 {
-    "laminar"
+    dragModels
     {
-        dragModels
+        "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
         {
-            "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
-            {
-                type    DarcyReynoldsPower; // Darcy = coeff * Re^exp
-                coeff   0.687;
-                exp     -0.25;
-            }
+            type    ReynoldsPower;
+            coeff   0.687;
+            exp     -0.25;
         }
+    }
 
-        heatTransferModels
+    heatTransferModels
+    {
+        "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
         {
-            "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
+            type        byRegime;
+            regimeMap   "lamTurb";
+            
+            //- List of subdicts specifying a heatTransferModel for each regime
+            //  in the lamTurb regimeMap
+            "laminar"
             {
+                // Nu = const + coeff * Re^expRe * Pr^expPr
                 type    NusseltReynoldsPrandtlPower; 
-			// Nu = const + coeff * Re^expRe * Pr^expPr
                 const   4;
                 coeff   0;
                 expRe   0;
                 expPr   0;
             }
-        }
-    }
-
-    "turbulent"
-    {
-        dragModels
-        {
-            "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
-            {
-                type    DarcyReynoldsPower;
-                coeff   0.687;
-                exp     -0.25;
-            }
-        }
-
-        heatTransferModels
-        {
-            "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
+            "turbulent"
             {
                 type    NusseltReynoldsPrandtlPower;
                 const   4.82;
@@ -164,7 +179,7 @@ physicsModelsByRegime
                 expPr   0.827;
             }
         }
-    }  
+    }
 }
 
 // ------------------------------------------------------------------------- //
