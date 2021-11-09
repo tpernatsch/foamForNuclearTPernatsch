@@ -315,6 +315,12 @@ public:
                 return Kd_;
             }
 
+            //- Virtual mass coefficient
+            const volScalarField& Vm() const
+            {
+                return virtualMassPtr_->Vm();
+            }
+
             volScalarField& htc(const word& fluidName)
             {
                 return *htcs_[fluidName];

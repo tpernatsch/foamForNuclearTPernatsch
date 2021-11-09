@@ -22,20 +22,23 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::isomolar
+    Foam::isothermal
 
 Description
+    Compute bubble/droplet diameter based on pressure changes assuming
+    constant temperature and mass within bubble/droplet (i.e. no mass exchange)
+    via ideal gas law
 
 Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles
-    isomolar.C
+    isothermalBubbleFluidDiameter.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef isomolar_H
-#define isomolar_H
+#ifndef isothermal_H
+#define isothermal_H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -47,33 +50,29 @@ namespace fluidDiameterModels
 {
 
 /*---------------------------------------------------------------------------*\
-            Class isomolar Declaration
+            Class isothermal Declaration
 \*---------------------------------------------------------------------------*/
 
-class isomolar
+class isothermal
 :
     public fluidDiameterModel
 {
 protected:
 
+    //- Reference values
     const scalar d0_;
-
     const scalar p0_;
 
-    const scalar T0_;
-
     const volScalarField& p_;
-
-    const volScalarField& T_;
 
 public:
 
     //- Runtime type information
-    TypeName("isomolar");
+    TypeName("isothermal");
 
     // Constructors
 
-        isomolar
+        isothermal
         (
             const FSPair& pair,
             const dictionary& dict,
@@ -81,7 +80,7 @@ public:
         );
 
         //- Destructor
-        virtual ~isomolar(){}
+        virtual ~isothermal(){}
 
     // Member Functions
 

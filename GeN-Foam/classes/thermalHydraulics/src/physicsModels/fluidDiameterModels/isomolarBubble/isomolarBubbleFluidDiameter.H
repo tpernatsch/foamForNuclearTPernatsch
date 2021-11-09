@@ -22,82 +22,60 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::fluidDiameterModel
+    Foam::isomolarBubble
 
 Description
-    Class to handle fluid diameter
+    Compute bubble/droplet diameter based on pressure and temperature
+    changes assuming constant moles within bubble/droplet (i.e. no mass 
+    exchange) via ideal gas law
 
 Author
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles
-    fluidDiameterModel.C
-    newfluidDiameterModel.C
+    isomolarBubbleFluidDiameter.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef fluidDiameterModel_H
-#define fluidDiameterModel_H
+#ifndef isomolarBubble_H
+#define isomolarBubble_H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "volFields.H"
-#include "dictionary.H"
-#include "runTimeSelectionTables.H"
-#include "fluid.H"
+#include "fluidDiameterModel.H"
 
 namespace Foam
 {
-
-class FSPair;
+namespace fluidDiameterModels
+{
 
 /*---------------------------------------------------------------------------*\
-            Class fluidDiameterModel Declaration
+            Class isomolarBubble Declaration
 \*---------------------------------------------------------------------------*/
 
-class fluidDiameterModel
+class isomolarBubble
 :
-    public IOdictionary
+    public fluidDiameterModel
 {
 protected:
 
-    const fvMesh& mesh_;
+    //- Reference values for diameter, pressure, temperature
+    const scalar d0_;
+    const scalar p0_;
+    const scalar T0_;
 
-    const FSPair& pair_;
+    const volScalarField& p_;
 
-    const fluid& fluid_;
-
-    const scalarField& dispersion_;
-
-    //- Structure hydraulic diameter
-    const volScalarField& Dhs_;
-
-    //- Fluid diameter
-    const volScalarField& Dh_;
+    const volScalarField& T_;
 
 public:
 
     //- Runtime type information
-    TypeName("fluidDiameterModel");
-
-    //- Declare runtime construction
-        
-        declareRunTimeSelectionTable
-        (
-            autoPtr,
-            fluidDiameterModel,
-            fluidDiameterModels,
-            (
-                const FSPair& pair,
-                const dictionary& dict,
-                const objectRegistry& objReg
-            ),
-            (pair, dict, objReg)
-        );
+    TypeName("isomolarBubble");
 
     // Constructors
 
-        fluidDiameterModel
+        isomolarBubble
         (
             const FSPair& pair,
             const dictionary& dict,
@@ -105,36 +83,18 @@ public:
         );
 
         //- Destructor
-        virtual ~fluidDiameterModel();
-
-    // Selectors
-
-        static autoPtr<fluidDiameterModel> New
-        (
-            const fluid& fluid,
-            const dictionary& dict,
-            const objectRegistry& objReg
-        );
-
-        static autoPtr<fluidDiameterModel> New
-        (
-            const FSPair& pair,
-            const dictionary& dict,
-            const objectRegistry& objReg
-        );
+        virtual ~isomolarBubble(){}
 
     // Member Functions
 
-        //- Return diameter
-        virtual scalar value(const label& celli) const = 0;
-
-        //-
-        void correctField(volScalarField& Dh) const;
+        //- Return fraction of structure interfacial contact in
+        //  contact with the dispersed fluid
+        virtual scalar value(const label& celli) const;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+} // End namespace fluidDiameterModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

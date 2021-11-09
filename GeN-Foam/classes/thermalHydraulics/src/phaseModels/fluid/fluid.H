@@ -92,6 +92,10 @@ private :
     //- Mass flux of the phase
     surfaceScalarField alphaRhoPhi_;
 
+    //- Mass flux (but non-directional and stored in cell centers, needed only
+    //  for regimeMap parametrization (if any is wanted/defined)
+    volScalarField alphaRhoMagU_;
+
     //- Dilation term of the phase.
     //  It encompasses the "compressible" part of the continuity
     //  equation, including mass sources/sinks, if any.
@@ -243,6 +247,10 @@ public:
         //  desireable to have a separate "constructur function" for the
         //  turbulenceModel
         void constructTurbulenceModel();
+
+        //- I recall that alphaRhoMagU serves no purpose other than being a
+        //  placeholder for the mass flux if requested by any regimeMap model
+        void correctAlphaRhoMagU();
 
         //- Update diameter based on the diameterModel
         void correctDiameter();

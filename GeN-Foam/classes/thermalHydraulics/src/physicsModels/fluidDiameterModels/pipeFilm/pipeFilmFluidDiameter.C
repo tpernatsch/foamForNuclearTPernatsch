@@ -7,8 +7,7 @@
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
-
-    OpenFOAM is free software: you can redistribute it and/or modify it
+ OpenFOAM is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -23,36 +22,57 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "structureModel.H"
+#include "FSPair.H"
+#include "pipeFilmFluidDiameter.H"
+#include "addToRunTimeSelectionTable.H"
 
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
-// * * * * * * * * * * * * * * * * Selector  * * * * * * * * * * * * * * * * //
-
-Foam::autoPtr<Foam::structureModel> Foam::structureModel::New
-(
-    const dictionary& dict,
-    const fvMesh& mesh
-)
+namespace Foam
 {
-    word type(dict.lookup("type"));
-
-    Info<< endl << "Constructing structure of type: " << type << endl;
-
-    structureModelsConstructorTable::iterator cstrIter =
-        structureModelsConstructorTablePtr_->find(type);
-
-    if (cstrIter == structureModelsConstructorTablePtr_->end())
-    {
-        FatalErrorInFunction
-            << "Unknown structure of type "
-            << type << endl << endl
-            << "Valid structure types are : " << endl
-            << structureModelsConstructorTablePtr_->sortedToc()
-            << exit(FatalError);
-    }
-
-    return cstrIter()(dict, mesh);
+namespace fluidDiameterModels
+{
+    defineTypeNameAndDebug(pipeFilm, 0);
+    addToRunTimeSelectionTable
+    (
+        fluidDiameterModel,
+        pipeFilm,
+        fluidDiameterModels
+    );
+}
 }
 
+// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
+
+Foam::fluidDiameterModels::pipeFilm::pipeFilm
+(
+    const FSPair& pair,
+    const dictionary& dict,
+    const objectRegistry& objReg
+)
+:
+    fluidDiameterModel
+    (
+        pair,
+        dict,
+        objReg
+    ),
+    residualAlpha_(dict.getOrDefault<scalar>("residualAlpha", 1e-2))
+{}
+
+// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
+
+Foam::scalar Foam::fluidDiameterModels::pipeFilm::value
+(
+    const label& celli
+) const
+{
+    return 
+        scalar
+        (   
+            (1.0-sqrt(1.0-max(fluid_.normalized()[celli], residualAlpha_)))*
+            pair_.structureRef().Dh()[celli]
+        );
+}
 
 // ************************************************************************* //

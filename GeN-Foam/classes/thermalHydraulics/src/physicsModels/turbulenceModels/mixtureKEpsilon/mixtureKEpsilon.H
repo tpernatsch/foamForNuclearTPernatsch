@@ -106,7 +106,6 @@ class mixtureKEpsilon
         //- Ptrs to access global solver field
         mutable const fluid* liquidPtr_;
         mutable const fluid* gasPtr_;
-        mutable const volScalarField* CdPtr_;
         mutable const FFPair* pairPtr_;
 
     //- Private functions
@@ -126,9 +125,18 @@ class mixtureKEpsilon
             
             const fluid& liquid() const;
             
-            const volScalarField& Cd() const;
-            
             const FFPair& pair() const;
+
+            //- This looks up the liquid-vapour friction factor Kd and
+            //  starting from it, it inverts it to obtain what was the
+            //  drag coefficient Cd. In particular
+            //  Kd = 
+            //      0.5*(alpha_c*alpha_d)/(alpha_c+alpha_d)*
+            //      (rho_c/Dh_d)*mag(U_c-U_d)*Cd
+            //
+            //  with c and d standing for the continuous and dispersed
+            //  phase respectively
+            const tmp<volScalarField> Cd() const;
 
 
 protected:

@@ -17,3 +17,5 @@ if (porousInterfaceSharpness_ != 0.0)
 }
 else
     U = fvc::reconstruct(fluid_.phi());
+
+fluid_.correctAlphaRhoMagU();

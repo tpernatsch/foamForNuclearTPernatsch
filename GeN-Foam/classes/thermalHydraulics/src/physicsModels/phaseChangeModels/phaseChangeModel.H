@@ -51,6 +51,12 @@ namespace Foam
 //- Forward declarations
 class FFPair;
 
+//- For the friend declaration (which is probably unnecessary)
+namespace FSHeatTransferCoefficients
+{
+    class multiRegimeBoiling;
+}
+
 /*---------------------------------------------------------------------------*\
             Class phaseChangeModel Declaration
 \*---------------------------------------------------------------------------*/
@@ -159,6 +165,16 @@ public:
 
     TypeName("phaseChangeModel");
 
+    //- This was added by
+    //  Carlo to make sure that multiRegimeBoiling can access dmdtW_ without
+    //  issues. However, I believe this to be unnecessary as dmdtW_ is accessed
+    //  via the objectRegistry lookup mechanism (in multiRegimeBoiling).
+    //  If friend keywords were necessary, you would see them all over 
+    //  OpenFOAM wherever objectRegistry lookups are involved, and in any
+    //  class whose members (or the class itself) could be targets of a lookup.
+    //  This is not the case
+    friend class Foam::FSHeatTransferCoefficients::multiRegimeBoiling;
+
     //- Declare runtime construction
     declareRunTimeSelectionTable
     (
@@ -246,11 +262,6 @@ public:
             {
                 return saturation_();
             }*/
-
-    // Multi-regime boiling access and modifies  dmdtW_
-    // This awfully breaks encapsulation, but at list 
-    // making it a friend function...        
-    friend class multiRegimeBoiling;
 };
 
 

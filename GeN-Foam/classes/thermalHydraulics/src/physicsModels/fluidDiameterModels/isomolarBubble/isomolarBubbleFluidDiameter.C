@@ -7,8 +7,7 @@
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
-
-    OpenFOAM is free software: you can redistribute it and/or modify it
+ OpenFOAM is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -23,70 +22,58 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "contactPartitionModel.H"
 #include "FSPair.H"
+#include "isomolarBubbleFluidDiameter.H"
+#include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-    defineTypeNameAndDebug(contactPartitionModel, 0);
-    defineRunTimeSelectionTable
+namespace fluidDiameterModels
+{
+    defineTypeNameAndDebug(isomolarBubble, 0);
+    addToRunTimeSelectionTable
     (
-        contactPartitionModel, 
-        contactPartitionModels
+        fluidDiameterModel,
+        isomolarBubble,
+        fluidDiameterModels
     );
+}
 }
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::contactPartitionModel::
-contactPartitionModel
+Foam::fluidDiameterModels::isomolarBubble::isomolarBubble
 (
     const FSPair& pair,
     const dictionary& dict,
     const objectRegistry& objReg
 )
 :
-    IOdictionary
+    fluidDiameterModel
     (
-        IOobject
-        (
-            typeName+"."+pair.name(),
-            pair.mesh().time().timeName(),
-            objReg,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE,
-            true    //- Force registry check-in. If you do not do this, for 
-                    //  some reason, the code fails to check-in the second
-                    //  contact partition model that is constructed (and this
-                    //  is required in order to have a properly working 
-                    //  complemetaryContactPartition model, if it exists)
-        ),
-        dict
+        pair,
+        dict,
+        objReg
     ),
-    mesh_(pair.mesh()),
-    pair_(pair),
-    fluid_(pair.fluidRef())
-{}
-
-
-// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
-
-Foam::contactPartitionModel::~contactPartitionModel()
+    d0_(dict.get<scalar>("value")),
+    p0_(dict.get<scalar>("p0")),
+    T0_(dict.get<scalar>("T0")),
+    p_(pair.mesh().lookupObject<volScalarField>("p")),
+    T_(pair.fluidRef().thermo().T())
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::contactPartitionModel::correctField(volScalarField& f)
+Foam::scalar Foam::fluidDiameterModels::isomolarBubble::value
+(
+    const label& celli
+) const
 {
-    forAll(mesh_.cells(), i)
-    {
-        f[i] = this->value(i);
-    }
-    f.correctBoundaryConditions();
+    return d0_*Foam::cbrt((p0_*T_[celli])/(p_[celli]*T0_));
 }
 
 // ************************************************************************* //

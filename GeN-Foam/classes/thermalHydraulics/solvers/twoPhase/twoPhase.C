@@ -190,7 +190,7 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     (
         IOobject
         (
-            "U.mixture",
+            "U",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -203,7 +203,9 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     (
         IOobject
         (
-            "rho.mixture",
+            "rho",  // <- Cannot be named anything other than "rho" as it is
+                    // looked-up by methods internal to some standard OpenFOAM
+                    // ones I use. I recall this is the mixture density
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
