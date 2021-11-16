@@ -8,7 +8,7 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 exe="GeN-Foam"
 
-cases="steadyState transientNoDriveline transientWithDriveline"
+cases="steadyState transientNoDriveline transientWithDriveline transientWithBoron"
 
 runCloneCase()
 {
@@ -59,6 +59,23 @@ setTransientWithDriveline()
     foamDictionary $2/constant/neutroRegion/nuclearData -entry absoluteDrivelineExpansionCoeff -set 8e-5
 }
 
+
+setTransientWithBoron()
+{
+    runCloneCase $1 $2
+    printf "Setting transient with driveline case...\n"
+    rm $2/constant/neutroRegion/nuclearData
+    cp $2/constant/neutroRegion/nuclearData_withBoron $2/constant/neutroRegion/nuclearData
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    foamDictionary $2/constant/neutroRegion/nuclearData -entry absoluteDrivelineExpansionCoeff -set 0.0
+    foamDictionary $2/system/controlDict -entry startTime -set 100
+    foamDictionary $2/system/controlDict -entry endTime -set 200
+    foamDictionary $2/system/controlDict -entry deltaT -set 1e-6
+    foamDictionary $2/system/controlDict -entry writeControl -set timeStep
+    foamDictionary $2/system/controlDict -entry writeInterval -set 10
+}
+
 for caseName in $cases
 do
     case "$caseName" in
@@ -67,10 +84,12 @@ do
         ;;
     "transientNoDriveline")
         setTransientNoDriveline steadyState $caseName
-
         ;;
     "transientWithDriveline")
         setTransientWithDriveline steadyState $caseName
+        ;;
+    "transientWithBoron")
+        setTransientWithBoron steadyState $caseName
         ;;
     esac
 

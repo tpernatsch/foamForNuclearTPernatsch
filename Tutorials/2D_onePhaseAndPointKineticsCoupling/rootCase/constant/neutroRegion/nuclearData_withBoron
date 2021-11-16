@@ -42,7 +42,7 @@ absoluteDrivelineExpansionCoeff 8e-05;
 
 controlRodReactivityMap ( ( 0.1 -0.01 ) ( 0 0 ) ( -0.1 0.01 ) );
 
-/*
+
 //- Evolution of decay power in time
 boronReactivityTimeProfile
 {
@@ -63,7 +63,7 @@ boronReactivityTimeProfile
         (   200   1e-4   )
     );
 }
-*/
+
 //- Relevant only for diffusionNeutronics
 
 adjustDiscFactors false;

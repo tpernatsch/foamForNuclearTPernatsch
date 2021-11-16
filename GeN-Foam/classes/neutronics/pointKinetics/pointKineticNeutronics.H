@@ -130,6 +130,9 @@ protected:
     //- Absolute driveline expansion coefficient in m/K
     scalar coeffDrivelineExp_;
 
+    //- Optional Boron reactivity curve
+    autoPtr<Function1<scalar>> boronReactivityPtr_;    
+
     //- Reference integral values for feedbacks
     scalar TFuelRef_;
     scalar TCladRef_;
