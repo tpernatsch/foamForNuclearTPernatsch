@@ -136,7 +136,7 @@ physicsModels
                 expRe   0.5;
                 expPr   0.33;
                 */
-                type    multiRegimeBoiling;
+                type    multiRegimeBoilingTRACE;
                 forcedConvectionModel
                 {
                     type    NusseltReynoldsPrandtlPower;
@@ -169,6 +169,8 @@ physicsModels
                     type            constant;
                     value           0.5;
                 }
+                superpositionExponent 3;
+                heatFluxSuperposition true;
             }
         }
         "liquid.vapour"

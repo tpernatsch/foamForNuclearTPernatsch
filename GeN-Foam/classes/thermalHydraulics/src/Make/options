@@ -70,6 +70,7 @@ EXE_INC = \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Shah \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/superpositionNucleateBoiling \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoiling \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingTRACE \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/Nusselt \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/NoKazimi \

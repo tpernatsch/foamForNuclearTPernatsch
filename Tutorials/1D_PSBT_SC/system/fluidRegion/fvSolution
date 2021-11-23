@@ -78,7 +78,7 @@ solvers
 PIMPLE
 {
     minNOuterCorrectors         3;
-    nCorrectors                 9;
+    nCorrectors                 18;
     correctUntilConvergence     true;
     nNonOrthogonalCorrectors    0;
     partialEliminationMode      implicit;
