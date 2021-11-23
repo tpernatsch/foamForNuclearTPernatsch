@@ -72,7 +72,6 @@ mixtureKEpsilon<BasicTurbulenceModel>::mixtureKEpsilon
     isGas_(false),
     liquidPtr_(nullptr),
     gasPtr_(nullptr),
-    CdPtr_(nullptr),
     pairPtr_(nullptr),
     Cmu_
     (
@@ -379,25 +378,6 @@ const Foam::fluid& mixtureKEpsilon<BasicTurbulenceModel>::liquid() const
 
 
 template<class BasicTurbulenceModel>
-const Foam::volScalarField& mixtureKEpsilon<BasicTurbulenceModel>::Cd() const
-{
-    if (!CdPtr_)
-    {
-        const fvMesh& mesh(this->mesh_);
-        word keyLG("Cd."+IOobject::groupName(liquidName_, gasName_));
-        word keyGL("Cd."+IOobject::groupName(gasName_, liquidName_));
-        CdPtr_ = 
-            &(
-                (mesh.foundObject<volScalarField>(keyLG)) ?
-                mesh.lookupObject<volScalarField>(keyLG) :
-                mesh.lookupObject<volScalarField>(keyGL)
-            );
-    }
-    return *CdPtr_;
-}
-
-
-template<class BasicTurbulenceModel>
 const Foam::FFPair& mixtureKEpsilon<BasicTurbulenceModel>::pair() const
 {
     if (!pairPtr_)
@@ -413,6 +393,50 @@ const Foam::FFPair& mixtureKEpsilon<BasicTurbulenceModel>::pair() const
             );
     }
     return *pairPtr_;
+}
+
+
+template<class BasicTurbulenceModel>
+const Foam::tmp<Foam::volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::Cd()
+const
+{
+    tmp<volScalarField> tCd
+    (
+        new volScalarField
+        (
+            IOobject
+            (
+                "Cd",
+                this->mesh_.time().timeName(),
+                this->mesh_
+            ),
+            this->mesh_,
+            dimensionedScalar("", dimless, 1e-3),
+            zeroGradientFvPatchScalarField::typeName
+        )
+    );
+    volScalarField& Cd = tCd.ref();
+
+    const FFPair& p(pair());
+    const volScalarField& l(liquid());
+    const volScalarField& g(gas());
+
+    //- Compute Cd from Kd, cell-by-cell as it's faster (I don't really care 
+    //  about BCs)
+    forAll(Cd, i)
+    {
+        const scalar& li(l[i]);
+        const scalar& gi(g[i]);
+        Cd[i] = 
+            (2.0)*p.Kd()[i]*p.DhDispersed()[i]/p.rhoContinuous()[i]/
+            max
+            (
+                (li*gi)/(li+gi)*p.magUr()[i], 1e-3
+            );
+    }
+    Cd.correctBoundaryConditions();
+
+    return tCd;
 }
 
 
@@ -450,22 +474,10 @@ void mixtureKEpsilon<BasicTurbulenceModel>::correctNut()
 template<class BasicTurbulenceModel>
 tmp<volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::Ct2() const
 {
-    //- Reconstruct Kd from Cd. This will not work as expected when using
-    //  this model in scenarios where gas and fluid switch their roles
-    //  (i.e. gas becomes continuous and fluid becomes dispersed). Yet
-    //  (I guess) this turbulence model was not really supposed to model such 
-    //  scenarios
-    volScalarField Kd
-    (
-        liquid()*gas()*
-        0.5*Cd()*liquid().rho()*pair().magUr()/
-        max(gas().Dh(), dimensionedScalar("", dimLength, 1e-3))
-    );
-
     volScalarField beta
     (
         (6*this->Cmu_/(4*sqrt(3.0/2.0)))*
-        Kd/liquid().rho()*
+        pair().Kd()/liquid().rho()*
         (liquid().turbulence().k()/liquid().turbulence().epsilon())
     );
     volScalarField Ct0
@@ -488,22 +500,9 @@ tmp<volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::rholEff() const
 template<class BasicTurbulenceModel>
 tmp<volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::rhogEff() const
 {
-    dimensionedScalar Vm
-    (
-        IOdictionary
-        (
-            IOobject
-            (
-                "phaseProperties",
-                this->mesh_.time().constant(),
-                this->mesh_
-            )
-        ).lookupOrDefault<scalar>("virtualMassCoeff", 0.0)
-    );
-
     return
         gas().rho()
-      + Vm*liquid().rho();
+      + pair().Vm()*liquid().rho();
 }
 
 

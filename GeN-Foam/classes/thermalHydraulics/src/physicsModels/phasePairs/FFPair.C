@@ -507,9 +507,10 @@ void Foam::FFPair::correct
         scalar& XLM2i(XLM2[i]);
 
         scalar mDot1i(fluid1_[i]*rho1[i]*magU1[i]);
-        X1i = mDot1i/(mDot1i+fluid2_[i]*rho2[i]*magU2[i]);
-        X2i = 1.0-X1i;
-        
+        scalar mDot2i(fluid2_[i]*rho2[i]*magU2[i]);
+        scalar mDotSum(max(mDot1i+mDot2i, 1e-69));
+        X1i = mDot1i/mDotSum;
+        X2i = mDot2i/mDotSum;
         if (X1i < 1e-6)
         {
             XLM1i = fluid1_.minXLM();
@@ -533,16 +534,35 @@ void Foam::FFPair::correct
                     fluid1_.maxXLM()
                 );
         }
-        XLM2i = 
-            min
-            (
-                max
+        if (X2i < 1e-6)
+        {
+            XLM2i = fluid2_.minXLM();
+        }
+        else if (X1i < 1e-6)
+        {
+            XLM2i = fluid2_.maxXLM();
+        }
+        else
+        {
+            XLM2i = 
+                min
                 (
-                    1.0/XLM1i,
-                    fluid2_.minXLM()
-                ),
-                fluid2_.maxXLM()
-            );
+                    max
+                    (
+                        pow(mu2[i]/mu1[i], 0.1)*
+                        pow(X2i/X1i, 0.9)*
+                        sqrt(rho1[i]/rho2[i]),
+                        fluid2_.minXLM()
+                    ),
+                    fluid2_.maxXLM()
+                );
+        }
+        //- Normalize to account for the fact that the clipping for XLM1 and
+        //  XLM2 might differ, so that XML1*XLM2 = 1.0 could be violated. So,
+        //  restore it via a normalization
+        scalar c(sqrt(1.0/(XLM1i*XLM2i)));
+        XLM1i *= c;
+        XLM2i *= c;
     }
     X1.correctBoundaryConditions();
     X2.correctBoundaryConditions();

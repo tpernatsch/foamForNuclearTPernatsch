@@ -86,8 +86,7 @@ Foam::scalar Foam::subCooledBoilingFractionModels::SahaZuber::value
                 )
             ),
             0.0
-        );
-
+        ); 
     return 
         min
         (
@@ -99,7 +98,6 @@ Foam::scalar Foam::subCooledBoilingFractionModels::SahaZuber::value
             ),
             1
         );
-
 }
 
 // ************************************************************************* //

@@ -66,7 +66,7 @@ class multiRegimeBoiling
 :
     public FSHeatTransferCoefficientModel
 {
-private:
+protected:
 
     //- Ref to wall temperature
     const volScalarField& Tw_;
@@ -74,7 +74,7 @@ private:
     //- Ref to fluid temperature
     const volScalarField& Tf_;
 
-    //- Ptr to FFPair (breaking encapsulation as usual)
+    //- Ptr to FFPair (breaks encapsulation but so does the objectRegistry)
     mutable const FFPair* FFPairPtr_;
 
     //- Forced convection heat transfer coefficient
@@ -102,13 +102,44 @@ private:
     autoPtr<TONBModel> TONBPtr_;
 
     //- Ptr to mass transfer term at the wall (of the phaseChange class) so
-    //  that it can be set here to account e.g. for sub-cooled boiling
-    // Breaking encapsulation in an awful manner, as this modifies 
-    // a private member of another class. Should be changed....
+    //  that it can be set here to account e.g. for sub-cooled boiling.
+    //  Please, never forget that encapsulation leads to total madness if 
+    //  followed religiously. Still I encourage people to find more
+    //  elegant and simpler solutions, if any
     mutable volScalarField* dmdtWPtr_;
 
-    //-
-    int dmdtSign_;
+    //- Superposition exponent
+    scalar exp_;
+    scalar oneByExp_;
+
+    //- Superposition is performed on heat fluxes rather than heat transfer 
+    //  coefficients
+    bool qMode_;
+
+    //- Cache (yikes!)
+    mutable scalar htc2pFCi_;
+    mutable scalar TONBi_;
+    mutable scalar htcNBi_;
+
+//- Protected methods
+
+    //- Set the subcooled boiling mass transfer term for celli 
+    void setDmdtW
+    (
+        const label& celli, 
+        const scalar& qNBi, 
+        const scalar& qFCi
+    ) const;
+
+    //- Return the nucleate boiling heat flux in celli for a given value of the
+    //  wall temperature (will be used to numerically calculate the derivative 
+    //  of qNB, which is required to find the critical heat flux temperature 
+    //  given the critical flux value)
+    scalar qNB
+    (
+        const label& celli, 
+        const scalar& Twi1
+    ) const; 
 
 public:
 
@@ -130,8 +161,10 @@ public:
 
     //- Member Functions
 
-        //- Drag coefficient
+        //- Return htc for cell celli
         virtual scalar value(const label& celli) const;
+
+        
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

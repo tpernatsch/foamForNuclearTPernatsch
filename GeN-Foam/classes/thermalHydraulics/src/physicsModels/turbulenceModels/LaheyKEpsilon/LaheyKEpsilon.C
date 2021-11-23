@@ -168,6 +168,25 @@ const Foam::fluid& LaheyKEpsilon<BasicTurbulenceModel>::liquid() const
 
 
 template<class BasicTurbulenceModel>
+const Foam::FFPair& LaheyKEpsilon<BasicTurbulenceModel>::pair() const
+{
+    if (!pairPtr_)
+    {
+        const fvMesh& mesh(this->mesh_);
+        word keyLG(IOobject::groupName(liquidName_, gasName_));
+        word keyGL(IOobject::groupName(gasName_, liquidName_));
+        pairPtr_ = 
+            &(
+                (mesh.foundObject<FFPair>(keyLG)) ?
+                mesh.lookupObject<FFPair>(keyLG) :
+                mesh.lookupObject<FFPair>(keyGL)
+            );
+    }
+    return *pairPtr_;
+}
+
+
+template<class BasicTurbulenceModel>
 const Foam::tmp<Foam::volScalarField> LaheyKEpsilon<BasicTurbulenceModel>::Cd()
 const
 {
@@ -192,36 +211,22 @@ const
     const volScalarField& l(liquid());
     const volScalarField& g(gas());
 
-    //- Compute Cd from Kd
-    Cd = 
-    (2.0)*p.Kd()*p.DhDispersed()/p.rhoContinuous()/
-    max
-    (
-        (l*g)/(l+g)*p.magUr(), dimensionedScalar("", dimVelocity, 1e-3)
-    );
-
+    //- Compute Cd from Kd, cell-by-cell as it's faster (I don't really care 
+    //  about BCs)
+    forAll(Cd, i)
+    {
+        const scalar& li(l[i]);
+        const scalar& gi(g[i]);
+        Cd[i] = 
+            (2.0)*p.Kd()[i]*p.DhDispersed()[i]/p.rhoContinuous()[i]/
+            max
+            (
+                (li*gi)/(li+gi)*p.magUr()[i], 1e-3
+            );
+    }
     Cd.correctBoundaryConditions();
 
     return tCd;
-}
-
-
-template<class BasicTurbulenceModel>
-const Foam::FFPair& LaheyKEpsilon<BasicTurbulenceModel>::pair() const
-{
-    if (!pairPtr_)
-    {
-        const fvMesh& mesh(this->mesh_);
-        word keyLG(IOobject::groupName(liquidName_, gasName_));
-        word keyGL(IOobject::groupName(gasName_, liquidName_));
-        pairPtr_ = 
-            &(
-                (mesh.foundObject<FFPair>(keyLG)) ?
-                mesh.lookupObject<FFPair>(keyLG) :
-                mesh.lookupObject<FFPair>(keyGL)
-            );
-    }
-    return *pairPtr_;
 }
 
 

@@ -23,7 +23,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "isomolarFluidDiameter.H"
+#include "WallisFilmFluidDiameter.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -32,20 +32,19 @@ namespace Foam
 {
 namespace fluidDiameterModels
 {
-    defineTypeNameAndDebug(isomolar, 0);
+    defineTypeNameAndDebug(WallisFilm, 0);
     addToRunTimeSelectionTable
     (
         fluidDiameterModel,
-        isomolar,
+        WallisFilm,
         fluidDiameterModels
     );
 }
 }
 
-
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::fluidDiameterModels::isomolar::isomolar
+Foam::fluidDiameterModels::WallisFilm::WallisFilm
 (
     const FSPair& pair,
     const dictionary& dict,
@@ -58,22 +57,22 @@ Foam::fluidDiameterModels::isomolar::isomolar
         dict,
         objReg
     ),
-    d0_(dict.get<scalar>("value")),
-    p0_(dict.get<scalar>("p0")),
-    T0_(dict.get<scalar>("T0")),
-    p_(pair.mesh().lookupObject<volScalarField>("p")),
-    T_(pair.fluidRef().thermo().T())
+    residualAlpha_(dict.getOrDefault<scalar>("residualAlpha", 1e-2))
 {}
-
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::fluidDiameterModels::isomolar::value
+Foam::scalar Foam::fluidDiameterModels::WallisFilm::value
 (
     const label& celli
 ) const
 {
-    return d0_*Foam::cbrt((p0_*T_[celli])/(p_[celli]*T0_));
+    return 
+        scalar
+        (   
+            0.25*max(fluid_.normalized()[celli], residualAlpha_)*
+            pair_.structureRef().Dh()[celli]
+        );
 }
 
 // ************************************************************************* //

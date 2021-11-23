@@ -81,13 +81,13 @@ Foam::scalar Foam::TONBModels::Basu::value
     const scalar& Tsati(Tsat_[celli]);
 
     this->setPtrs();
-    
+
     scalar deltaTONBsat
     (
         A_*htc2pFCi*Tsati/
         (
             otherFluidPtr_->rho()[celli]*
-            (mag((*LPtr_)[celli]))*
+            mag((*LPtr_)[celli])*
             pair_.fluidRef().kappa()[celli]
         )
     );
@@ -101,7 +101,6 @@ Foam::scalar Foam::TONBModels::Basu::value
         +   sqrt(max(deltaTONBsat+4.0*(Tsati-Tli), 0.0))
         )
     );
-
 }
 
 // ************************************************************************* //

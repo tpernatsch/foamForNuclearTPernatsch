@@ -591,6 +591,31 @@ void Foam::phaseChangeModel::correct()
         dmdtW_[i] = 0;
     }
     dmdtW_.correctBoundaryConditions();
+
+    /*
+    forAll(mesh_.cells(), i)
+    {
+        scalar deltai
+        (
+            he1I[i]+L_[i]-he2I[i]
+        );
+        
+        scalar Xi
+        (
+            (
+                (
+                    fluid1_.normalized()[i]*fluid1_.rho()[i]*he1[i]
+                +   fluid2_.normalized()[i]*fluid2_.rho()[i]*(he2[i]+deltai)
+                )/
+                (
+                    fluid1_.normalized()[i]*fluid1_.rho()[i]
+                +   fluid2_.normalized()[i]*fluid2_.rho()[i]
+                ) - he1I[i]
+            )/(he2I[i]+deltai-he1I[i])
+        );
+        Info<< he1[i] << " " << he1I[i] << " " << (he2[i]+deltai) << " " 
+            << (he2I[i]+deltai) << " " << L_[i] << " | X = " << Xi << endl;
+    }*/
 }
 
 // ************************************************************************* //

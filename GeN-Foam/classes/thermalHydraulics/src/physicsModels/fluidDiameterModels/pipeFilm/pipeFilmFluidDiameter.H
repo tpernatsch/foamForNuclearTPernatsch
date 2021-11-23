@@ -22,82 +22,57 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::fluidDiameterModel
+    Foam::pipeFilm
 
 Description
-    Class to handle fluid diameter
+    Correlation to be used in annular flow scenarios in which the phase of
+    interest to which this model is applied flows in a film along the walls
+    of a circular pipe, so that the film thickness is proportional to
+    1-sqrt(1-alphaN) with alphaN being the normalized phase fraction of the
+    phase of interest
 
 Author
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles
-    fluidDiameterModel.C
-    newfluidDiameterModel.C
+    pipeFilmFluidDiameter.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef fluidDiameterModel_H
-#define fluidDiameterModel_H
+#ifndef pipeFilm_H
+#define pipeFilm_H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#include "volFields.H"
-#include "dictionary.H"
-#include "runTimeSelectionTables.H"
-#include "fluid.H"
+#include "fluidDiameterModel.H"
 
 namespace Foam
 {
-
-class FSPair;
+namespace fluidDiameterModels
+{
 
 /*---------------------------------------------------------------------------*\
-            Class fluidDiameterModel Declaration
+            Class pipeFilm Declaration
 \*---------------------------------------------------------------------------*/
 
-class fluidDiameterModel
+class pipeFilm
 :
-    public IOdictionary
+    public fluidDiameterModel
 {
 protected:
 
-    const fvMesh& mesh_;
-
-    const FSPair& pair_;
-
-    const fluid& fluid_;
-
-    const scalarField& dispersion_;
-
-    //- Structure hydraulic diameter
-    const volScalarField& Dhs_;
-
-    //- Fluid diameter
-    const volScalarField& Dh_;
+    //- Minimum allowable value of the phase fraction to avoid null fluid 
+    //  diameter
+    scalar residualAlpha_;
 
 public:
 
     //- Runtime type information
-    TypeName("fluidDiameterModel");
-
-    //- Declare runtime construction
-        
-        declareRunTimeSelectionTable
-        (
-            autoPtr,
-            fluidDiameterModel,
-            fluidDiameterModels,
-            (
-                const FSPair& pair,
-                const dictionary& dict,
-                const objectRegistry& objReg
-            ),
-            (pair, dict, objReg)
-        );
+    TypeName("pipeFilm");
 
     // Constructors
 
-        fluidDiameterModel
+        pipeFilm
         (
             const FSPair& pair,
             const dictionary& dict,
@@ -105,36 +80,18 @@ public:
         );
 
         //- Destructor
-        virtual ~fluidDiameterModel();
-
-    // Selectors
-
-        static autoPtr<fluidDiameterModel> New
-        (
-            const fluid& fluid,
-            const dictionary& dict,
-            const objectRegistry& objReg
-        );
-
-        static autoPtr<fluidDiameterModel> New
-        (
-            const FSPair& pair,
-            const dictionary& dict,
-            const objectRegistry& objReg
-        );
+        virtual ~pipeFilm(){}
 
     // Member Functions
 
-        //- Return diameter
-        virtual scalar value(const label& celli) const = 0;
-
-        //-
-        void correctField(volScalarField& Dh) const;
+        //- Return fraction of structure interfacial contact in
+        //  contact with the dispersed fluid
+        virtual scalar value(const label& celli) const;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+} // End namespace fluidDiameterModels
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

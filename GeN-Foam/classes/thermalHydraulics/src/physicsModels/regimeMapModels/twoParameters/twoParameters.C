@@ -314,7 +314,10 @@ void Foam::regimeMapModels::twoParameters::correct()
     for (int i=0; i < N; i++)
     {
         //- Reset regimeLabelCoeffs for the i-th mesh cell
-        DynamicList<Tuple2<label,scalar>>& regimeLabelCoeffsi(regimeLabelCoeffs_[i]);
+        DynamicList<Tuple2<label,scalar>>& regimeLabelCoeffsi
+        (
+            regimeLabelCoeffs_[i]
+        );
         regimeLabelCoeffsi = DynamicList<Tuple2<label,scalar>>(0);
 
         //- Value of the tuple parameter1-parameter2 which is used to determine
@@ -335,8 +338,8 @@ void Foam::regimeMapModels::twoParameters::correct()
             //  mesh cell, wherein for each cell, the tuple consists of the ID
             //  of the regime that exists in said cell (first tuple element)
             //  and the coefficient weighting the contribution of said regime
-            //  (which is 1.0 if only one regime exists). To check who this
-            //  if factually used to interpolate the value of models of 
+            //  (which is 1.0 if only one regime exists). To check how this
+            //  is factually used to interpolate the value of models of 
             //  interest, go see the interpolateValue, interpolateValueCmpt
             //  template functions in regimeMapModelTemplates.C
             if (iter().containsPoint(p))
@@ -360,7 +363,12 @@ void Foam::regimeMapModels::twoParameters::correct()
                 );
                 if (internalBoundaryPtrs.size() != 0)
                 {
-                    scalar distance(1e6);
+                    //- In theory, a starting max distance of sqrt(2) should
+                    //  be sufficient as these distances are in the normalized
+                    //  domain, whose range for both parameters is [0, 1] (so
+                    //  the max possible distance is between (0,0) and (1,1)). 
+                    //  Nonetheless, I want to play it safe so 2 it is
+                    scalar distance(2);
                     scalar nbrId(-1);
                     forAll(internalBoundaryPtrs, j)
                     {   
@@ -405,9 +413,9 @@ void Foam::regimeMapModels::twoParameters::correct()
                 }
             }
             //- Debug & development infos
-            Info<< i << " | " << x[i] << " " << y[i] << " " << p << " | " 
-                << regimePtr->id() << " | " << regimeLabelCoeffsi << endl;
             
+            //Info<< i << ", (" << x[i] << " " << y[i] << ") => " << p << ", "
+            //    << regimePtr->id() << ", " << regimeLabelCoeffsi << endl;
         }
         else //- Point is outside regime map bounds, throw an error
         {

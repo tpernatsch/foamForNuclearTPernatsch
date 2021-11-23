@@ -23,7 +23,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "isothermalFluidDiameter.H"
+#include "isothermalBubbleFluidDiameter.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //

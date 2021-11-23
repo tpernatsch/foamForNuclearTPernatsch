@@ -24,8 +24,10 @@ EXE_INC = \
     -I./physicsModels/regimeMapModels\oneParameter \
     -I./physicsModels/regimeMapModels\twoParameters \
     -I./physicsModels/diameterModels \
-    -I./physicsModels/diameterModels/isothermal \
-    -I./physicsModels/diameterModels/isomolar \
+    -I./physicsModels/diameterModels/isothermalBubble \
+    -I./physicsModels/diameterModels/isomolarBubble \
+    -I./physicsModels/diameterModels/WallisFilm \
+    -I./physicsModels/diameterModels/pipeFilm \
     -I./physicsModels/dragModels \
     -I./physicsModels/dragModels/FSDragCoefficientModels \
     -I./physicsModels/dragModels/FSDragCoefficientModels/BaxiDalleDonne \

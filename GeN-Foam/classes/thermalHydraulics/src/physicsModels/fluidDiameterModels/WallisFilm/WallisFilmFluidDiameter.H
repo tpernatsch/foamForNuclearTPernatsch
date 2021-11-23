@@ -22,20 +22,35 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::isothermal
+    Foam::WallisFilm
 
 Description
+    Correlation to be used in annular flow scenarios in which the phase of
+    interest to which this model is applied flows in a film along the 
+    structures (e.g. pins) of interest. It assumes that the dimensionless
+    film thickness d+ (=d/Dh with Dh being the structure hydraulic diameter)
+    is proportional to the Wallis interfacial drag coefficient so that:
+    
+    0.005*75*alphaN = 0.005*300*d/Dh
+
+    with alphaN being the normalized phase fraction of the phase of interest 
+    and the film thickness is thus computed as:
+
+    d = 0.25*alphaN*Dh
+
+    See TRACE theory manual (https://www.nrc.gov/docs/ML1200/ML120060218.pdf,
+    pp. 135-136, eqns. 4-37, 4-38) for further info  
 
 Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles
-    isothermal.C
+    WallisFilmFluidDiameter.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef isothermal_H
-#define isothermal_H
+#ifndef WallisFilm_H
+#define WallisFilm_H
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -47,29 +62,27 @@ namespace fluidDiameterModels
 {
 
 /*---------------------------------------------------------------------------*\
-            Class isothermal Declaration
+            Class WallisFilm Declaration
 \*---------------------------------------------------------------------------*/
 
-class isothermal
+class WallisFilm
 :
     public fluidDiameterModel
 {
 protected:
 
-    const scalar d0_;
-
-    const scalar p0_;
-
-    const volScalarField& p_;
-
+    //- Minimum allowable value of the phase fraction to avoid null fluid 
+    //  diameter
+    scalar residualAlpha_;
+    
 public:
 
     //- Runtime type information
-    TypeName("isothermal");
+    TypeName("WallisFilm");
 
     // Constructors
 
-        isothermal
+        WallisFilm
         (
             const FSPair& pair,
             const dictionary& dict,
@@ -77,7 +90,7 @@ public:
         );
 
         //- Destructor
-        virtual ~isothermal(){}
+        virtual ~WallisFilm(){}
 
     // Member Functions
 
@@ -85,7 +98,6 @@ public:
         //  contact with the dispersed fluid
         virtual scalar value(const label& celli) const;
 };
-
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

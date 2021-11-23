@@ -12,7 +12,7 @@ fvVectorMatrix UEqn2(U2, dimMass*dimLength/dimTime/dimTime);
 //  OpenFOAM turbulence models (e.g. kEpsilon) do not limit the phase fraction
 //  before constructing the epsilon and k equations. This means that if a phase
 //  fraction happens to be 0 somewhere, it will end up causing some null
-//  entries in the k or epsilon matrices (pure genius, whomever made it...).
+//  entries in the k or epsilon matrices (...).
 //  The solutions are: 1) copy some of the standard kEpslion models and make
 //  them part of FFSEulerFoam and make the changes directly in the turbulence
 //  classes; 2) limit the phase fractions before solving the turbulence models
@@ -20,7 +20,7 @@ fvVectorMatrix UEqn2(U2, dimMass*dimLength/dimTime/dimTime);
 //  is a NO-NO as I don't want to break compatibility with standard OpenFOAM
 //  stuff and I want to avoid code duplication too (as if "code duplication" 
 //  is a concern in a code that is 22k+ lines without even counting the 
-//  underlying OpenFOAM library...)
+//  underlying OpenFOAM library)
 volScalarField fluid10(fluid1_);
 volScalarField fluid20(fluid2_);
 fluid1_.volScalarField::operator=(max(fluid1_, fluid1_.residualAlpha()));
