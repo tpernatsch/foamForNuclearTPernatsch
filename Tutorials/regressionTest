@@ -2,8 +2,8 @@
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
-#tutorials="2D_FFTF" #Godiva_SN
+#tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
+tutorials="1D_PSBT_SC" #Godiva_SN
 rm regressionResults
 touch regressionResults
 resFile="./regressionResults"
@@ -108,6 +108,13 @@ do
         else
             printf "$tutorialName has NOT converged \n"  >> ../$resFile
         fi
+
+        # check that results are correct
+        input="./1/fluidRegion/alpha.vapour"
+        averageAt=$(head -123 "$input" | tail -1  )
+        printf "time,  alpha.vapour at the end of the channel is: $averageAt . It should be 0.130519 \n" >> ../$resFile
+
+
         cd ..
         
         ;;
@@ -230,7 +237,7 @@ do
             printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
         fi
         
-        printf "Done running tutorial $tutorialName...\n"
+        printf "Done running tutorial $tutorialName...\n"  >> ../$resFile
 
         # check that keff for MSFR steady State is ~0.958765
         keff=$(foamDictionary ./steadyStateEN/constant/neutroRegion/reactorState -entry keff -value)
