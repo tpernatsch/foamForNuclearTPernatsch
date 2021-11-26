@@ -1,4 +1,4 @@
-# Compiling GeN-Foam
+# Compiling GeN-Foam {#COMPILE}
 
 
 

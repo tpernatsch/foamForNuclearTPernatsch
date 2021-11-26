@@ -1,4 +1,4 @@
-# Tips and tricks
+# Tips and tricks {#TIPS}
 
 * When unsure about the functionalities of a class, take a look at the corresponding header file in the source code. In most case you'll find useful information.
 

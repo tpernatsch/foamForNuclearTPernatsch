@@ -1,4 +1,4 @@
-# Important notes
+# Important notes {#NOTES}
 
 * The master branch includes the most stable version of GeN-Foam, but the develop branch include all the latest developments
 * Please notice that models for water boiling are still preliminary, incomplete (missing models for boiling crisis) and in Beta testing.

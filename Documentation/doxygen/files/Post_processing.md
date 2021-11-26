@@ -1,4 +1,4 @@
-# Postprocessing
+# Postprocessing {#POSTPROCESSING}
 
 Postprocessing can be performed using Paraview, the standard post-processing tool used with OpenFOAM.  Paraview is launched using the command line:
 

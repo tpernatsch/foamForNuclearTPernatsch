@@ -1,4 +1,4 @@
-# Running GeN-Foam
+# Running GeN-Foam {#RUNNING}
 
 GeN-Foam is launched like any OpenFOAM solver, by executing the following commands in a terminal (after sourcing the OpenFOAM environment):
 

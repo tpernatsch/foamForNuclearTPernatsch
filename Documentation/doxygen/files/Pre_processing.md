@@ -1,4 +1,4 @@
-# Preprocessing
+# Preprocessing {#PREPROCESSING}
 
 Before running GeN-Foam, one has to provide meshes, physical properties, discretization methods (if one does not want to use the default ones) and simulation details.
 

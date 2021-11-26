@@ -1,4 +1,4 @@
-# Tutorials
+# Tutorials {#TUTORIALS}
 
 Several tutorials have been prepared to help users familiarize with GeN-Foam and provide a relatively comprehensive outlook of its functionalities. In each tutorial:
 * a README file provides a general description of the tutorials.

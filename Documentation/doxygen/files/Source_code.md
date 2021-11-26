@@ -1,4 +1,4 @@
-# Source code
+# Source code {#SOURCE}
 
 The source code is subdivided into 3 main folders:
 * main: containing the main  GeN-Foam.C source file (and other files directly employed by it);
