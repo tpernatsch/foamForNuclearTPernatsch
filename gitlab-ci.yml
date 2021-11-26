@@ -1,0 +1,13 @@
+image: alpine
+
+pages:
+  stage: deploy
+
+  script:
+  - apk update && apk add doxygen
+  - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
+  - mv Documentation/doxygen/Doxygen/html/ public/
+    
+  artifacts:
+    paths:
+      - public

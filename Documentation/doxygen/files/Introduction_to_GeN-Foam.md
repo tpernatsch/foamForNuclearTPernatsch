@@ -1,0 +1,31 @@
+
+
+GeN-Foam is a multi-physics solver for reactor analysis based on OpenFOAM [1,2] (N.B.: from openfoam.com !). It can solve (coupled or alternatively) for:
+* neutronics, with models for point kinetics, diffusion (transient and eigenvalue), adjoint diffusion (only eigenvalue), SP3 (transient and eigenvalue), discrete ordinates (only eigenvalue);
+* one-phase thermal-hydraulics, with both RANS-CFD and porous-medium coarse-mesh approaches;
+* two-phase porous medium according to an Euler-Euler model, and currently mainly oriented to sodium-cooled fast-reactors;
+* thermal-mechanics based on linear thermo-elasticity, which can be used to evaluate deformations in a core. Such deformations are used to modify the meshes for thermal-hydraulics and neutronics.
+A 1-D sub-scale model is also employed cell-by-cell for calculating fuel temperatures in coarse-mesh models of a core.  It should be mentioned that GeN-Foam was mainly designed for coarse-mesh analyses of a reactor core (with porous medium approach and sub-scale representation of fuel), and not for detailed pin-by-pin models. 
+
+Using GeN-Foam requires a good knowledge of OpenFOAM. One should at least be familiar with the OpenFOAM user guide [3], and have run and understood the related tutorials. This gives an introduction to the overall logic of OpenFOAM, and to its simplest solvers. More specialized OpenFOAM solvers are normally not provided with a user guide and users are expected to learn how to use them based on:
+* the above-mentioned user guide and basic tutorials;
+* a sound knowledge of their field;
+* the presence of a tutorial;
+* the high-level C++-based object-oriented language of OpenFOAM, which normally allows to easily understand the logic of a solver;
+* the support of the community. 
+
+However, GeN-Foam is an unusually complex OpenFOAM solver. This wiki has then been written to facilitate its use. In addition, several tutorials have been prepared to show-case use and capabilities of the solver. An EMPTY case is also provided that can be used for step-by-step building one’s own case. It is recommended to start from the EMPTY case to build a case, as it already includes a consistent minimum set of (dummy) files that have to be present independent of the physics that are solved for. 
+
+N.B.: GeN-Foam is a powerful tool that allows modeling irregular geometries and particularly complex phenomena. However, it is a code for advanced users, requiring a good familiarity with OpenFOAM and a very solid back-ground in multi-physics nuclear applications, with particular regard to CFD. In addition, good familiarity with C++ and the OpenFOAM API will be necessary to unlock the full potential of the code, since the OpenFOAM API and the class-based structure of GeN-Foam allows an experienced user to quickly an safely add models and equations, thus tailoring the code to their needs.
+
+N.B.2: The master branch includes the most stable version of GeN-Foam, but the develop branch include all the latest developments
+
+
+**References**
+
+[1] Weller, H.G., Tabor, G., Jasak, H., Fureby, C., 1998. A Tensorial Approach to Computational Continuum Mechanics Using Object-Oriented Techniques. Computers in Physics 12, 620-631.
+
+[2] https://www.openfoam.com/
+
+[3] https://www.openfoam.com/documentation/user-guide/ 
+

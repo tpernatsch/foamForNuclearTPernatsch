@@ -48,6 +48,8 @@ EXE_INC = \
     -I./physicsModels/dragModels/twoPhaseDragMultiplierModels/LottesFlinnNguyen \
     -I./physicsModels/dragModels/FFDragCoefficientModels \
     -I./physicsModels/dragModels/FFDragCoefficientModels/Autruffe \
+    -I./physicsModels/dragModels/FFDragCoefficientModels/Bestion \
+    -I./physicsModels/dragModels/FFDragCoefficientModels/BestionTRACE \
     -I./physicsModels/dragModels/FFDragCoefficientModels/NoKazimi \
     -I./physicsModels/dragModels/FFDragCoefficientModels/SchillerNaumann \
     -I./physicsModels/dragModels/FFDragCoefficientModels/Wallis \

@@ -73,16 +73,16 @@ vapourProperties
 
 structureProperties
 {
-    "dummyIn:dummyOut"
+    "dummyIn"
     {
-        volumeFraction  0.4464738237;
-        Dh              0.0117778432;
+        volumeFraction  0.5655077285; //0.4464738237;
+        Dh              0.0078395462; //0.0117778432
     }
 
     "heated"
     {
-        volumeFraction  0.4464738237;
-        Dh              0.0117778432;
+        volumeFraction  0.5655077285; //0.4464738237;
+        Dh              0.0078395462; // 0.0117778432;// 
 
         powerModel
         {
@@ -92,10 +92,10 @@ structureProperties
             //  for simplicity it is thus treated as a constantPower source
             //  with a volume fraction equal to the total heater volume 
             //  fraction (with respect to the total mesh volume).
-            volumeFraction  0.145493575;
-            volumetricArea  187.9889784;
-            powerDensity    2.5e9;//2.1603E+09;
-            T               602.85;
+            volumeFraction  0.0937099273; //0.145493575;  
+            volumetricArea  121.08049093;//121.08049093; //187.9889784;  //=heating surface area/cellzone volume
+            powerDensity    1943301220; 
+            T               592.75;
             Cp              500;
             rho             7700;
         }
@@ -188,12 +188,12 @@ physicsModels
     {
         "liquid.vapour"
         {
-            type    SchillerNaumann;
+            type    Bestion;
         }
 
         "liquid.structure"
         {
-            "dummyIn:dummyOut:heated"
+            "dummyIn:heated"
             {
                 type    ReynoldsPower;
                 coeff   0.316;
@@ -221,14 +221,14 @@ physicsModels
                 expRe   0.5;
                 expPr   0.33;
                 */
-                type    multiRegimeBoiling;
+                type    multiRegimeBoilingTRACE;
                 forcedConvectionModel
                 {
                     type    NusseltReynoldsPrandtlPower;
-                    const   4;
-                    coeff   0.02;
+                    const   0.0;
+                    coeff   0.023;
                     expRe   0.8;
-                    expPr   0.8;
+                    expPr   0.4;
                 }
                 poolBoilingModel
                 {
@@ -239,6 +239,10 @@ physicsModels
                     type    RezkallahSims;
                     exp     0.8;
                 }
+                suppressionFactorModel
+                {
+                    type    Chen;
+                }
                 nucleateBoilingOnsetModel
                 {
                     type            Basu;
@@ -247,8 +251,8 @@ physicsModels
                 }
                 subCooledBoilingFractionModel
                 {
-                    type            constant;
-                    value           0.5;
+                    type            SahaZuber;  //constant;//
+                    //value           0.5;
                 }
                 superpositionExponent 3;
                 heatFluxSuperposition true;

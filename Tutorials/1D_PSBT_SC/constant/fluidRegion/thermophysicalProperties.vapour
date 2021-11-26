@@ -31,7 +31,7 @@ thermoType
     energy          sensibleEnthalpy;
 }
 
-pRef                        1.6572E+07;
+pRef                        14719781.65;
 
 mixture
 {
