@@ -50,18 +50,18 @@ then
     dirName=${filePath%/[^/]*}
     fileName=${filePath##*/}
 
-    awkScript=doxyFilter/doxyFilter.awk
+    awkScript=./doxyFilter/doxyFilter.awk
 
     case "$1" in
     */applications/solvers/*.C | */applications/utilities/*.C )
-        awkScript=doxyFilter/doxyFilter-top.awk
+        awkScript=./doxyFilter/doxyFilter-top.awk
         ;;
     esac
 
-    sed -f doxyFilter/doxyFilter-table.sed $1 | \
-    awk -f doxyFilter/doxyFilter-table.awk | \
+    sed -f ./doxyFilter/doxyFilter-table.sed $1 | \
+    awk -f ./doxyFilter/doxyFilter-table.awk | \
     awk -f $awkScript  | \
-    sed -f doxyFilter/doxyFilter.sed \
+    sed -f ./doxyFilter/doxyFilter.sed \
         -e s@%realFilePath%@$realFilePath@g \
         -e s@%filePath%@$filePath@g \
         -e s@%fileName%@$fileName@g \
