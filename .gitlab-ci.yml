@@ -1,10 +1,11 @@
-image: alpine
+image: ubuntu
 
 pages:
   stage: deploy
 
   script:
-  - apk update && apk add doxygen
+  - export DEBIAN_FRONTEND=noninteractive
+  - apt-get update && apt-get install doxygen && apt-get install -y texlive-bibtex-extra 
   - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
   - mv Documentation/doxygen/Doxygen/html/ public/
     
