@@ -5,7 +5,7 @@ pages:
 
   script:
   - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update && apt-get install doxygen && apt-get install -y texlive-bibtex-extra 
+  - apt-get update && apt-get install -y doxygen && apt-get install -y texlive-bibtex-extra 
   - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
   - mv Documentation/doxygen/Doxygen/html/ public/
     
