@@ -64,10 +64,14 @@ private :
 
     const volScalarField& p_;
 
-    //- Coeffs
+    /*
+    // ----- Stefan Radman Version - Interpolation NIST  ----- //
     const scalar A_;
     const scalar B_;
     const scalar C_;
+    */
+    // Constants 
+    const scalar Rv_;
 
 public:
 

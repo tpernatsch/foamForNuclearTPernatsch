@@ -62,9 +62,15 @@ water
     ),
     iT_(pcm.pair().iT()),
     p_(pcm.mesh().lookupObject<volScalarField>("p")),
+    /*
+    // GeN-Foam Model
     A_(1e6*2.590718143628726e-10),
     B_(273.159),
-    C_(4.247368421052632)
+    C_(4.247368421052632),
+    */
+    // Constant of water 
+    Rv_(461.4975)  // J/kg/K
+
 {}
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
@@ -75,7 +81,51 @@ Foam::scalar Foam::saturationModels::water::valuePSat
 ) const
 {
     const scalar& T(iT_[celli]);
+    /*
+    // ----- Stefan Radman Version - Interpolation NIST  ----- //
     return A_*pow(T-B_, C_);
+    */
+
+    // ----- TRACE Version - different formulas according to temperature ----- //
+     if (T<370.4251)
+    {
+        scalar Ts = T;
+        if (T<=273.15)
+        {
+            Ts = 273.15;
+        }
+        const scalar AAP(24821.0);
+        const scalar BAP(338.0);
+        const scalar CAP(-5.3512);
+        const scalar DAP(20.387);
+        scalar ps(AAP*pow(Ts/BAP,CAP)*exp(DAP*(Ts-BAP)/Ts));
+        return ps; 
+    }
+    else if (T<609.62462615967)
+    {
+        const scalar AB(117.8);
+        const scalar BB(1e-5);
+        const scalar CB(0.223);
+        const scalar DB(255.2);
+        scalar ps(BB*pow((T-DB)/AB,1.0/CB));
+        return ps;
+    }
+    else if (T<647.3)
+    {
+        const scalar AC(7.2166948490268e11);
+        const scalar BC(-8529.6481905883);
+        const scalar CC(1166669.3278328);
+        scalar ps(AC*exp((BC+CC/T)/T));
+        return ps;
+    }
+    else
+    {
+        const scalar AD(22.12e6);
+        const scalar BD(7.6084087);
+        const scalar CD(4924.9229);
+        scalar ps(AD*exp(BD-CD/T));
+        return ps;
+    }
 }
 
 Foam::scalar Foam::saturationModels::water::valuePSatPrime
@@ -84,7 +134,46 @@ Foam::scalar Foam::saturationModels::water::valuePSatPrime
 ) const
 {
     const scalar& T(iT_[celli]);
-    return (C_-1.0)*A_*pow(T-B_, C_-1.0);
+    const scalar& ps(p_[celli]);
+
+    /*
+    // ----- Stefan Radman Version - Interpolation NIST  ----- //
+    return C_*A_*pow(T-B_, C_-1.0);
+    */
+
+    if (T<370.4251)
+    {
+        scalar Ts = T;
+        if (T<=273.15)
+        {
+            Ts = 273.15;
+        }
+        const scalar AA(3180619.59);
+        const scalar BA(2470.2120);
+        scalar hs(AA-BA*Ts);
+        scalar slope(hs*ps/Rv_/sqr(Ts)); 
+        return slope; 
+    }
+    else if (T<609.62462615967)
+    {
+        const scalar AB(0.223);
+        const scalar BB(255.2);
+        scalar slope(ps/(AB*(T-BB)));
+        return slope;
+    }
+    else if (T<647.3)
+    {
+        const scalar AC(-8529.6481905883);
+        const scalar BC(2333338.6556656);
+        scalar slope(-ps*(AC+BC/T)/sqr(T));
+        return slope;
+    }
+    else
+    {
+        const scalar AD(2.0304886238506e-4);
+        scalar slope(ps/(AD*sqr(T)));
+        return slope;
+    }
 }
 
 Foam::scalar Foam::saturationModels::water::valueLnPSat
@@ -100,7 +189,73 @@ Foam::scalar Foam::saturationModels::water::valueTSat
     const label& celli
 ) const
 {
-    return pow(p_[celli]/A_, 1.0/C_) + B_;       
+    const scalar& pi(p_[celli]); 
+    /*
+    // ----- Stefan Radman Version - Interpolation NIST  ----- //
+    scalar TsRAD(pow(pi/A_, 1.0/C_) + B_ );
+    //Info << "Tsat Interpolation NIST --" << TsRAD << endl;
+    */
+
+    //-------------------------------------------------------------//
+    
+    // ----- TRACE Version - different formulas according to pressure ----- //
+
+    if (pi<90.56466*1000)
+    {
+        scalar ps = pi;
+        if (pi<610.8)
+        {
+            ps = 610.8;
+        }
+        const scalar AA(-2263.0);
+        const scalar BA(0.434);
+        const scalar CA(100000.0);
+        const scalar DA(6.064);
+        const scalar AAP(24821.0);
+        const scalar BAP(338.0);
+        const scalar CAP(-5.3512);
+        const scalar DAP(20.387);
+        const scalar AAH(3180619.59);
+        const scalar BAH(2470.2120);
+
+        scalar Tsapprox(0);
+        scalar psapprox (0);
+        scalar hsapprox(0);
+        scalar Ts(AA/(BA*log(ps/CA)-DA));
+        for (int step=0; step<2; step++)
+        {
+            Tsapprox=Ts;
+            psapprox=AAP*pow(Tsapprox/BAP,CAP)*exp(DAP*(Tsapprox-BAP)/Tsapprox);
+            hsapprox=AAH - BAH*Tsapprox;
+            Ts=Tsapprox/(1-Rv_*Tsapprox/hsapprox*log(ps/psapprox));
+        }
+        return Ts; 
+    }
+    else if (pi<13.969971285053*1e6)
+    {
+        const scalar AB(117.8);
+        const scalar BB(1.0*pow(10,-5));
+        const scalar CB(0.223);
+        const scalar DB(255.2);
+        scalar Ts(AB*pow(BB*pi,CB)+DB);
+        return Ts;
+    }
+    else if (pi<22.12*1e6)
+    {
+        const scalar AC(4264.8240952941);
+        const scalar BC(13666986.708428);
+        const scalar CC(1166669.3278328);
+        const scalar DC(27.304833093884);
+        scalar Ts((AC+sqrt(-BC+CC*log(pi)))/(DC-log(pi)));
+        return Ts;
+    }
+    else
+    {
+        const scalar AD(4924.9229);
+        const scalar BD(24.520401);
+        scalar Ts(AD/(BD-log(pi)));
+        return Ts;
+    }
 }
 
 // ************************************************************************* //

@@ -2,8 +2,8 @@
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
-#tutorials="1D_PSBT_SC" #Godiva_SN
+#tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
+tutorials="1D_PSBT_SC" #Godiva_SN
 rm regressionResults
 touch regressionResults
 resFile="./regressionResults"
@@ -112,7 +112,7 @@ do
         # check that results are correct
         input="./0.6/fluidRegion/alpha.vapour"
         averageAt=$(head -98 "$input" | tail -1  )
-        printf "time,  alpha.vapour at the end of the channel is: $averageAt . It should be 0.135139 \n" >> ../$resFile
+        printf "time,  alpha.vapour at the end of the channel is: $averageAt . It should be 0.133727 \n" >> ../$resFile
 
 
         cd ..
