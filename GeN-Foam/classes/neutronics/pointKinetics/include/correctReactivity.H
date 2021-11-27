@@ -29,6 +29,16 @@ scalar GEMReactivity(GEMLevelAndReactivity.second());
 
 (void) GEMSodiumLevel;
 
+scalar boronReactivity = 0.0;
+if(boronReactivityPtr_.valid())
+{
+    boronReactivity =
+        boronReactivityPtr_->value
+        (
+            mesh_.time().timeOutputValue()
+        );
+}
+
 totalReactivity_ =
         precEquilibriumReactivity_ 
     +   externalReactivity_ 
@@ -39,5 +49,6 @@ totalReactivity_ =
     +   rhoCoolReactivity
     +   TStructReactivity
     +   drivelineReactivity
-    +   GEMReactivity;
+    +   GEMReactivity
+    +   boronReactivity;
     

@@ -72,6 +72,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     ),
     fissionPower_(power_),
     decayPower_(0.0),
+    decayPowerPtr_(nullptr),
     decayPowerStartTime_(0.0),
     externalReactivity_
     (
@@ -154,6 +155,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         nuclearData_.get<scalar>("absoluteDrivelineExpansionCoeff")
     ),
+    boronReactivityPtr_(nullptr),
     TFuel_
     (
         IOobject
@@ -224,6 +226,12 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    UPtr_(nullptr),
+    alphaPtr_(nullptr),
+    alphatPtr_(nullptr),
+    muPtr_(nullptr),
+    phiPtr_(nullptr),
+    diffCoeffPrecPtr_(nullptr),  
     Dalbedo_
     (
         IOobject
@@ -421,6 +429,30 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         decayPower_ = decayPowerPtr_->value(t-decayPowerStartTime_);
         fissionPower_ = power_ - decayPower_;
         fissionPowerOld_ = fissionPower_;
+
+    }
+
+    //- Check Boron reactivity
+    word boronReactivityDictName("boronReactivityTimeProfile");
+    if (nuclearData_.found(boronReactivityDictName))
+    {
+        const dictionary& boronReactivityDict
+        (
+            nuclearData_.subDict(boronReactivityDictName)
+        );
+        word type
+        (
+            boronReactivityDict.get<word>("type")
+        );
+        boronReactivityPtr_.reset        
+        (
+            Function1<scalar>::New
+            (
+                type,
+                boronReactivityDict,
+                type
+            )
+        );
 
     }
 

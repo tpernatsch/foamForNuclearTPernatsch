@@ -36,8 +36,8 @@ namespace thermalHydraulicsModels
     defineTypeNameAndDebug(onePhaseLegacy, 0);
     addToRunTimeSelectionTable
     (
-        thermalHydraulicsModel, 
-        onePhaseLegacy, 
+        thermalHydraulicsModel,
+        onePhaseLegacy,
         thermalHydraulicsModels
     );
 }
@@ -68,11 +68,11 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     structure_
     (
         this->subDict("structureProperties"),
-        mesh 
+        mesh
     ),
     fluid_
     (
-        (this->found("fluidProperties")) 
+        (this->found("fluidProperties"))
     ?   this->subDict("fluidProperties") : *this,
         mesh,
         word(""),   //- This is the phase name, setting it to "" signals a
@@ -103,9 +103,9 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     fixedRho_.correctBoundaryConditions();
     rhok_.correctBoundaryConditions();
 
-    //- checking if the incompressible treatment is activated. In that case 
+    //- checking if the incompressible treatment is activated. In that case
     //- the solver becomes a porous version of buoyantBoussinesqPIMPLFoam.
-    //- If this is activated, the only equation of state accepted is 
+    //- If this is activated, the only equation of state accepted is
     //- rhoConst.
     dictionary phaseDict = fluid_.dict();
     incompressibleTreatment_ = bool
@@ -116,10 +116,10 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     	)
     );
 
-    //- Checking if heRhoThermo has the correct equationOfState for the 
+    //- Checking if heRhoThermo has the correct equationOfState for the
     //- current solver.
     dictionary thermoDict = fluid_.thermo().subDict("thermoType");
-    if(incompressibleTreatment_ 
+    if(incompressibleTreatment_
        and word(thermoDict.lookup("equationOfState")) != "rhoConst")
     {
         Foam::error e("The equation of state is not rhoConst (constant density)! "
@@ -128,18 +128,18 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         e.exit(100);
     }
 
-    //- Reading reference temperature and thermal expansion coefficient 
+    //- Reading reference temperature and thermal expansion coefficient
     //- for the Boussinesq approximation
     dictionary eosDict = fluid_.thermo()
                          .subDict("mixture")
                          .subDict("equationOfState");
-    
+
     beta_.set
     (
         new dimensionedScalar
         (
-            "beta", 
-            pow(dimTemperature,-1), 
+            "beta",
+            pow(dimTemperature,-1),
             eosDict.lookupOrDefault<scalar>("beta", 0.0)
         )
     );
@@ -148,8 +148,8 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     (
         new dimensionedScalar
         (
-            "Tref", 
-            dimTemperature, 
+            "Tref",
+            dimTemperature,
             eosDict.lookupOrDefault<scalar>("T0", 0.0)
         )
     );
@@ -159,16 +159,16 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
 
     //- Set phase fraction fields (constant in time), structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
-    
+
     //- The normalized field is non-trivial (i.e. different than 1) only in the
-    //  twoPhase solver. However, it is used by some models in the shared 
+    //  twoPhase solver. However, it is used by some models in the shared
     //  thermal-hydraulics library, so it should be set nonetheless! The most
     //  important quantity that relies on this is the Reynolds computed by
     //  the FSPair object
     fluid_.normalized() = fluid_/(1.0-structure_);
 
     //- Calculating rhok value for boussinesq approximation if incompressible flow.
-    //- also, update thermo.tho() to make sure the neutronics solver has access to 
+    //- also, update thermo.tho() to make sure the neutronics solver has access to
     //- the density feedback.
     if(incompressibleTreatment_)
     {
@@ -186,9 +186,9 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     fluid_.Dh() = structure_.Dh();
 
     //- Initialize fluid-intensive fluxes (i.e. that depend on the phase
-    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL 
+    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL
     //  volumetric flux in m3/s and the REAL mass flux in kg/s. By REAL I mean
-    //  not superficial). This is done after the phaseFraction normalization 
+    //  not superficial). This is done after the phaseFraction normalization
     //  step to ensure consistency. This step has an effect ONLY IF the
     //  alphaPhi, alphaRhoPhi fields were NOT found on disk
     fluid_.initAlphaPhis();
@@ -217,9 +217,9 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         )
     );
 
-    //- Making sure that the division of boundary conditions does not result in 
-    //- a "calculated" boundary field. So we set the same boundary conditions as 
-    //- the ones given for the real velocity. Exceptions are wedge and empty BCs, 
+    //- Making sure that the division of boundary conditions does not result in
+    //- a "calculated" boundary field. So we set the same boundary conditions as
+    //- the ones given for the real velocity. Exceptions are wedge and empty BCs,
     //- because those are not touched.
 
     forAll(fluid_.U().boundaryField(), bcInd)
@@ -227,29 +227,31 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         if(fluid_.U().boundaryField()[bcInd].type() == "empty" or
            fluid_.U().boundaryField()[bcInd].type() == "wedge")
         {
-            Info << "Skipping boundary type assignment for UDarcy" 
+            Info << "Skipping boundary type assignment for UDarcy"
                  << "because it is empty/wedge." << endl;
             continue;
         }
 
         word bcType = fluid_.U().boundaryField()[bcInd].type();
 
-        const fvPatchField<vector> originalPatch(UDarcy_().boundaryField()[bcInd]);
-
+        tmp<fvPatchField<vector>> originalPatch(UDarcy_().boundaryField()[bcInd]);
+        
         UDarcy_().boundaryFieldRef().set
         (
-            bcInd, 
+            bcInd,
             fvPatchField<vector>::New
             (
                 bcType,
-                UDarcy_().mesh().boundary()[bcInd], 
+                UDarcy_().mesh().boundary()[bcInd],
                 UDarcy_()
             )
         );
 
-        UDarcy_().boundaryFieldRef()[bcInd] = originalPatch;
+        forAll(UDarcy_().boundaryFieldRef()[bcInd], faceI)
+        {
+            UDarcy_().boundaryFieldRef()[bcInd][faceI] = originalPatch()[faceI];
+        }
     }
-    UDarcy_().correctBoundaryConditions();
     UDarcy_().write();
 
     phiDarcy_.set
@@ -282,16 +284,16 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
 void Foam::thermalHydraulicsModels::onePhaseLegacy::correct
 (
     scalar& residual,
-    bool solveFluidDynamics, 
+    bool solveFluidDynamics,
     bool solveEnergy
 )
-{   
+{
     correctModels(solveFluidDynamics, solveEnergy);
     if (solveFluidDynamics)
     {
         correctFluidMechanics(residual);
     }
-    
+
     if (solveEnergy)
     {
         correctEnergy(residual);
@@ -315,7 +317,7 @@ void Foam::thermalHydraulicsModels::onePhaseLegacy::correctEnergy(scalar& residu
 
 void Foam::thermalHydraulicsModels::onePhaseLegacy::correctModels
 (
-    bool solveFluidDynamics, 
+    bool solveFluidDynamics,
     bool solveEnergy
 )
 {
@@ -352,7 +354,7 @@ void Foam::thermalHydraulicsModels::onePhaseLegacy::correctContErr()
 {
 	if(incompressibleTreatment_)
 	{
-		fluid_.contErr() = 
+		fluid_.contErr() =
     	(
     	    fvc::div(phiDarcy_())
     	);
@@ -361,15 +363,15 @@ void Foam::thermalHydraulicsModels::onePhaseLegacy::correctContErr()
 	else
 	{
 		volScalarField& rho(fluid_.thermo().rho());
-		fluid_.contErr() = 
+		fluid_.contErr() =
     	(
     	        fvc::ddt(fluid_, rho)
     	    +   fvc::div(phiDarcy_())
     	    -   (fvOptions_(fluid_, fixedRho_) & rho)
     	);
     	fluid_.contErr().correctBoundaryConditions();
-	}  
-    
+	}
+
 }
 
 // ************************************************************************* //

@@ -12,7 +12,7 @@ fvVectorMatrix UEqn2(U2, dimMass*dimLength/dimTime/dimTime);
 //  OpenFOAM turbulence models (e.g. kEpsilon) do not limit the phase fraction
 //  before constructing the epsilon and k equations. This means that if a phase
 //  fraction happens to be 0 somewhere, it will end up causing some null
-//  entries in the k or epsilon matrices (pure genius, whomever made it...).
+//  entries in the k or epsilon matrices (...).
 //  The solutions are: 1) copy some of the standard kEpslion models and make
 //  them part of FFSEulerFoam and make the changes directly in the turbulence
 //  classes; 2) limit the phase fractions before solving the turbulence models
@@ -20,13 +20,14 @@ fvVectorMatrix UEqn2(U2, dimMass*dimLength/dimTime/dimTime);
 //  is a NO-NO as I don't want to break compatibility with standard OpenFOAM
 //  stuff and I want to avoid code duplication too (as if "code duplication" 
 //  is a concern in a code that is 22k+ lines without even counting the 
-//  underlying OpenFOAM library...)
+//  underlying OpenFOAM library)
 volScalarField fluid10(fluid1_);
 volScalarField fluid20(fluid2_);
 fluid1_.volScalarField::operator=(max(fluid1_, fluid1_.residualAlpha()));
 fluid2_.volScalarField::operator=(max(fluid2_, fluid2_.residualAlpha()));
 fluid1_.turbulence().correct();
 fluid2_.turbulence().correct();
+
 fluid1_.volScalarField::operator=(fluid10);
 fluid2_.volScalarField::operator=(fluid20);
 
@@ -38,56 +39,89 @@ const volTensorField& Kd1s(F1SPair_.Kd());
 const volTensorField& Kd2s(F2SPair_.Kd());
 
 {
-    volTensorField nuEff1
-    (
-        structure_.tortuosity()
-       *fluid1_.turbulence().nuEff()()
-    );
-    volTensorField nuEff2
-    (
-        structure_.tortuosity()
-       *fluid2_.turbulence().nuEff()()
-    );
+    volScalarField nuEff1(fluid1_.turbulence().nuEff()());
+    volScalarField nuEff2(fluid2_.turbulence().nuEff()());
     
     UEqn1 =
-        (
-            fvm::div(fluid1_.alphaRhoPhi(), U1, "div(alphaRhoPhi,U)")
-        //- The following is just a re-arrangement of div(nu*grad(U)),
-        //  i.e. + fluid1_.turbulence().divDevRhoReff(U1). However, it is
-        //  necessary to do this, otherwise the tensor nature of nuEff can't
-        //  be resolved in anisotropic porous media
-        +   (
-                -   fvm::laplacian(alpha1*rho1*nuEff1, U1)
-                -   fvc::div
-                    (
-                        alpha1*rho1*nuEff1&dev2(T(fvc::grad(U1))), 
-                        "div(alphaRhoPhiNu,U)"
-                    )
+    (
+        fvm::div(fluid1_.alphaRhoPhi(), U1, "div(alphaRhoPhi,U)")
+        
+        //- Diffusion term (i.e. fluid1_.turbulence().divDevRhoReff(U1))
+        //  but re-expressed so to: 1) either allow to use a tensor
+        //  diffusivity (i.e. nuEff1*structure_.tortuosity()) if the 
+        //  structure is tortuous; 2) if not tortuous, still allow me to
+        //  specify the div interpolation scheme (i.e. "div(alphaRhoPhiNu,U))
+    +   (
+            (structure_.tortuosityPtr().valid()) ? 
+            (
+            -   fvm::laplacian
+                (
+                    alpha1*rho1*nuEff1*structure_.tortuosity(), 
+                    U1
+                )
+            -   fvc::div
+                (
+                    alpha1*rho1*nuEff1*structure_.tortuosity()
+                &   dev2(T(fvc::grad(U1))), 
+                    "div(alphaRhoPhiNu,U)"
+                )
+            ) :
+            (
+            -   fvm::laplacian(alpha1*rho1*nuEff1, U1)
+            -   fvc::div
+                (
+                    alpha1*rho1*nuEff1*dev2(T(fvc::grad(U1))), 
+                    "div(alphaRhoPhiNu,U)"
+                )
             )
-            //- Implicit diagonal contribution of fluid-structure drag, 
-            //  explicit off-diagonal contribution
-        +   fvm::Sp((1.0/3.0)*tr(Kd1s), U1) + (dev(Kd1s)&U1)
-        ==
-            fvOptions_(alpha1, rho1, U1)
-        );
+        )
+        
+        //- Implicit diagonal contribution of fluid-structure drag, 
+        //  explicit off-diagonal contribution
+    +   fvm::Sp((1.0/3.0)*tr(Kd1s), U1) + (dev(Kd1s)&U1)
+    ==
+        fvOptions_(alpha1, rho1, U1)
+    );
     UEqn2 =
-        (
-            fvm::div(fluid2_.alphaRhoPhi(), U2, "div(alphaRhoPhi,U)")
-            //- The following is just a re-arrangement of div(nu*grad(U))
-        +   (
-                -   fvm::laplacian(alpha2*rho2*nuEff2, U2)
-                -   fvc::div
-                    (
-                        alpha2*rho2*nuEff2&dev2(T(fvc::grad(U2))), 
-                        "div(alphaRhoPhiNu,U)"
-                    )
+    (
+        fvm::div(fluid2_.alphaRhoPhi(), U2, "div(alphaRhoPhi,U)")
+
+        //- Diffusion term (i.e. fluid2_.turbulence().divDevRhoReff(U2))
+        //  but re-expressed so to: 1) either allow to use a tensor
+        //  diffusivity (i.e. nuEff2*structure_.tortuosity()) if the 
+        //  structure is tortuous; 2) if not tortuous, still allow me to
+        //  specify the div interpolation scheme (i.e. "div(alphaRhoPhiNu,U))
+    +   (
+            (structure_.tortuosityPtr().valid()) ? 
+            (
+            -   fvm::laplacian
+                (
+                    alpha2*rho2*nuEff2*structure_.tortuosity(), 
+                    U2
+                )
+            -   fvc::div
+                (
+                    alpha2*rho2*nuEff2*structure_.tortuosity()
+                &   dev2(T(fvc::grad(U2))), 
+                    "div(alphaRhoPhiNu,U)"
+                )
+            ) :
+            (
+            -   fvm::laplacian(alpha2*rho2*nuEff2, U2)
+            -   fvc::div
+                (
+                    alpha2*rho2*nuEff2*dev2(T(fvc::grad(U2))), 
+                    "div(alphaRhoPhiNu,U)"
+                )
             )
-            //- Implicit diagonal contribution of fluid-structure drag,
-            //  explicit off-diagonal contribution
-        +   fvm::Sp((1.0/3.0)*tr(Kd2s), U2) + (dev(Kd2s)&U2) 
-        ==
-            fvOptions_(alpha2, rho2, U2)
-        );
+        )
+
+        //- Implicit diagonal contribution of fluid-structure drag,
+        //  explicit off-diagonal contribution
+    +   fvm::Sp((1.0/3.0)*tr(Kd2s), U2) + (dev(Kd2s)&U2) 
+    ==
+        fvOptions_(alpha2, rho2, U2)
+    );
 
     //- Add mass transfer contributions
     if (FFPair_.phaseChange())

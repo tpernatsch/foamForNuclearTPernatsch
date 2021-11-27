@@ -1,7 +1,4 @@
 #!/bin/bash
 
 shopt -s extglob
-rm -r -f !(-2|constant|system|Allrun|Allclean|README|residuals|plot.py|experimentalResults)
-rm -r ./-1*
-rm -r ./-0*
-
+rm -rf -- !(-2|constant|system|Allrun|Allclean|README|residuals|plot.py|experimentalResults)

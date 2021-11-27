@@ -98,6 +98,8 @@ while (pimple_.correct())
             fvOptions_.correct(UDarcy);
 
             fluid_.magU() = mag(U);
+
+            fluid_.correctAlphaRhoMagU();
         }
     }
 

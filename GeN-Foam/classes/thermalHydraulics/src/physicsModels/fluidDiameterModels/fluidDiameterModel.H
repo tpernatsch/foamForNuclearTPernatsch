@@ -28,7 +28,7 @@ Description
     Class to handle fluid diameter
 
 Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles
     fluidDiameterModel.C

@@ -11,7 +11,7 @@ calculation to obtain the power shape to be used in the point kinetics
 transient calculations. In case an initial diffusion calculation is not 
 performed, the point kinetic solver will assume a spatially uniform power.
 
-Two transients are simulated:
+Three transients are simulated:
 
 -   0.2$ reactivity insertion with the only feedback being fuel temperature,
     with the feedback set a -0.3 pcm/K (arbitrary);
@@ -22,6 +22,9 @@ Two transients are simulated:
     order of magnitude higher than realistic values, used here only for feature
     demonstration purposes). The absolute driveline expansion coefficient
     is assumed to be 8e-5 m/K;
+
+- like the first transient, but with time dependent insertion of reactivity 
+  from Boron (removal). This reactivity profile is specified in nuclearData
 
 In both transienst, the time steps are adjusted so to keep a power change of
 ~ 1% per time step.

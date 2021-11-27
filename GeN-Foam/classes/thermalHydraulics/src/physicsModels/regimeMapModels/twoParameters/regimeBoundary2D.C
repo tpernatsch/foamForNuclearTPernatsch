@@ -120,22 +120,6 @@ bool Foam::regimeMapModels::regimeBoundary2D::operator==
     const regimeBoundary2D& rhs
 ) const
 {
-    /*
-    scalar cos = this->vNorm_ & rhs.vNorm_;
-    scalar one = 0.999999;
-    if (cos >= one or cos <= -one)
-    {
-        if 
-        (
-            (this->p0_ == rhs.p0_ and this->p1_ == rhs.p1_)
-        or  (this->p0_ == rhs.p1_ and this->p1_ == rhs.p0_)
-        )
-        {
-            return true;
-        }
-    }
-    return false;
-    */
     if 
     (
         (p0() == rhs.p0() and p1() == rhs.p1())

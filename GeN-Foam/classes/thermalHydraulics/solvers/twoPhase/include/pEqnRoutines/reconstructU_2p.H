@@ -53,10 +53,12 @@ else
 U1.correctBoundaryConditions();
 fvOptions_.correct(U1);
 fluid1_.magU() = mag(U1);
+fluid1_.correctAlphaRhoMagU();
 
 U2.correctBoundaryConditions();
 fvOptions_.correct(U2);
 fluid2_.magU() = mag(U2);
+fluid2_.correctAlphaRhoMagU();
 
 //- Update mixture velocity
 U_ = fluid1_*U1+fluid2_*U2;

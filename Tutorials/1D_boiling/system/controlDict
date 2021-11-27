@@ -76,9 +76,9 @@ maxDeltaT           0.01;
 //  - Co = maxCo if only one phase is present;
 //  - Co = maxCoTwoPhase if both phases are present or if one phase is close to
 //    saturation (either boiling or condensation);
-maxCo               5.0;
+maxCo               2.0;
 
-maxCoTwoPhase       0.5;
+maxCoTwoPhase       0.25;
 
 marginToPhaseChange 20;
 

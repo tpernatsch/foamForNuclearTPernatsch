@@ -1,5 +1,7 @@
 //- Construct the compressibility parts of the pressure equation
-tmp<fvScalarMatrix> p_rghCorr(correction(fvm::ddt(p_rgh_)));
+tmp<fvScalarMatrix> p_rghCorr(correction(fvm::ddt(p_rgh_)));    // <- might do 
+                                                                // a lookup for
+                                                                // rho
 tmp<fvScalarMatrix> pEqnComp1;
 tmp<fvScalarMatrix> pEqnComp2;
 if (FFPair_.phaseChange())

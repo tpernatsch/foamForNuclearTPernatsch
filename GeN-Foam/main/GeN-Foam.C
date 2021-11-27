@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
     #include "createCouplingFields.H"
     #include "createOutput.H"
 
-    Info<< "\nStarting time loop\n" << endl;
+    Info<< "\nStarting time loop - \n" << endl;
 
     Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s" 
         << nl << endl;

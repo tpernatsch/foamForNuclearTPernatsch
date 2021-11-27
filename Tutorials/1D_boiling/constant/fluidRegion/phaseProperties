@@ -79,7 +79,6 @@ liquidProperties
 {
     // residualAlpha 1e-9;
     // thermoResidualAlpha 0;
-    // writeRestartFields false;
     stateOfMatter   liquid;
     dispersedDiameterModel
     {
@@ -90,11 +89,12 @@ liquidProperties
 
 vapourProperties
 {
+    stateOfMatter       gas;
+
     //- I.e. the vapour temperature is set at saturation temperature in those
-    //  cells where the vapour volumeFraction is below 5% (with respect to 
+    //  cells where the vapour volumeFraction is below 10% (with respect to 
     //  the volume available to fluid flow, accounting for structure)
-    stateOfMatter   gas;
-    thermoResidualAlpha 0.05;
+    thermoResidualAlpha 0.1;
     dispersedDiameterModel
     {
         type    constant;
@@ -574,11 +574,28 @@ physicsModels
         {
             "mid"
             {
-                type    NusseltReynoldsPrandtlPower;
-                const   7;
-                coeff   1e-2;
-                expRe   0.75;
-                expPr   0.75;
+                type                superpositionNucleateBoiling;
+                forcedConvection
+                {
+                    type            NusseltReynoldsPrandtlPower;
+                    const           7.48467;
+                    coeff           0.02994;
+                    expRe           0.77;
+                    expPr           0.77;
+                }
+                poolBoiling
+                {
+                    type                    Shah;
+                    useExplicitHeatFlux     false;
+                }
+                flowEnhancementFactor
+                {
+                    type            COBRA-TF;
+                }
+                suppressionFactor
+                {
+                    type            COBRA-TF;
+                }
             }
         }
     }
@@ -639,7 +656,7 @@ physicsModels
     {
         type                heatDriven;
         mode                conductionLimited; 
-        correctLatentHeat   true;
+        correctLatentHeat   false;
 
         latentHeatModel
         {

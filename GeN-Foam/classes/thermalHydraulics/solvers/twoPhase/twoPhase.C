@@ -190,7 +190,7 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     (
         IOobject
         (
-            "U.mixture",
+            "U",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -203,7 +203,9 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     (
         IOobject
         (
-            "rho.mixture",
+            "rho",  // <- Cannot be named anything other than "rho" as it is
+                    // looked-up by methods internal to some standard OpenFOAM
+                    // ones I use. I recall this is the mixture density
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -292,16 +294,30 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     //- Construct twoPhaseDragFactor (needs to be done AFTER fluid twoPhase
     //  field init as some fields of the fluid class that can be required by
     //  some twoPhaseDragFactor sub-models are not initialized yet)
-    twoPhaseDragFactorPtr_.reset
-    (
-        new twoPhaseDragFactor
+    if (this->subDict("physicsModels").found("twoPhaseDragMultiplierModel"))
+    {
+        if 
         (
-            F1SPair_,
-            F2SPair_,
-            *this
+            this->subDict
+            (
+                "physicsModels"
+            ).subDict
+            (
+                "twoPhaseDragMultiplierModel"
+            ).toc().size() != 0
         )
-    );
-    
+        {
+            twoPhaseDragFactorPtr_.reset
+            (
+                new twoPhaseDragFactor
+                (
+                    F1SPair_,
+                    F2SPair_,
+                    *this
+                )
+            );
+        }
+    }
     //- This is specifically to avoid problem when solveAlpha is set to solve
     //  for only one phase, the one for which BCs and initial conditions are
     //  provided, yet this phase starts at 0 while the other phase BC and
@@ -490,7 +506,8 @@ void Foam::thermalHydraulicsModels::twoPhase::correctModels
     FFPair_.correct(solveFluidDynamics, solveEnergy);
     F1SPair_.correct(solveFluidDynamics, solveEnergy);
     F2SPair_.correct(solveFluidDynamics, solveEnergy);
-    twoPhaseDragFactorPtr_->correct();
+    if (twoPhaseDragFactorPtr_.valid())
+        twoPhaseDragFactorPtr_->correct();
     //auto end = std::chrono::steady_clock::now();
     //std::chrono::duration<double> elapsed_seconds = end-start;
     //Info << "correctModels: " << elapsed_seconds.count() << "s\n";

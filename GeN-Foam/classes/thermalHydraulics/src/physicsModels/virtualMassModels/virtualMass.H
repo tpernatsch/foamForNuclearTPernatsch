@@ -109,6 +109,11 @@ public:
 
         //- Access
 
+            const volScalarField& Vm() const
+            {
+                return Vm_;
+            }
+
             const fvVectorMatrix& force(const word& UName) const
             {
                 return VmForces_[UName];

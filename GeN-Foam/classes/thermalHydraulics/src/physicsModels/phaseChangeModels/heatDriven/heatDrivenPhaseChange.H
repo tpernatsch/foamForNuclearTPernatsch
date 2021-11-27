@@ -137,8 +137,8 @@ public:
 
     //- Member Functions
 
-        //- Return mass transfer term
-        virtual void correct();
+        //-
+        virtual void correctInterfacialDmdt();
         
 };
 

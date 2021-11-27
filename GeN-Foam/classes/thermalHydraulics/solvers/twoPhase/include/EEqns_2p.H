@@ -6,47 +6,29 @@
     const volScalarField& T2(fluid2_.thermo().T());
     const volVectorField& U1(fluid1_.U());
     const volVectorField& U2(fluid2_.U());
-    const volScalarField& H1i(FFPair_.htc(fluid1_.name()));
-    const volScalarField& H2i(FFPair_.htc(fluid2_.name()));
     const volScalarField& contErr1(fluid1_.contErr());
     const volScalarField& contErr2(fluid2_.contErr());
     const volScalarField& Cp1(fluid1_.Cp());
     const volScalarField& Cp2(fluid2_.Cp());
     const volScalarField& rho1(fluid1_.rho());
     const volScalarField& rho2(fluid2_.rho());
-    const volScalarField& iA12(FFPair_.iA());
     const volScalarField& iT12(FFPair_.iT());
-    
-    //- Limiter fields
-    //fluid1_.correctThermoResidualMarkers();
-    //fluid2_.correctThermoResidualMarkers();
-    const volScalarField& pos1(fluid1_.aboveThermoResidualAlpha());
-    const volScalarField& pos2(fluid2_.aboveThermoResidualAlpha());
-    const volScalarField& neg1(fluid1_.belowThermoResidualAlpha());
-    const volScalarField& neg2(fluid2_.belowThermoResidualAlpha());
-    
+    const volScalarField& alpha1(fluid1_);
+    const volScalarField& alpha2(fluid2_);
     volScalarField he1i(fluid1_.thermo().he(p_, iT12));
     volScalarField he2i(fluid2_.thermo().he(p_, iT12));
-
-    //- Avoid 0 matrix coeffs by limiting the alphas that will figure in the
-    //  equations
-    volScalarField alpha1(fluid1_);
-    volScalarField alpha2(fluid2_);
-    alpha1 = max(alpha1, fluid1_.residualAlpha());
-    alpha2 = max(alpha2, fluid2_.residualAlpha());
 
     //- Check if structure power off criteria are met and turn off power if so
     structure_.checkPowerOff();
 
-    volTensorField alphaEff1
+    //-
+    volScalarField alphaEff1
     (
-        structure_.tortuosity()
-       *fluid1_.thermo().alphaEff(fluid1_.turbulence().alphat())()
+        fluid1_.thermo().alphaEff(fluid1_.turbulence().alphat())()
     );
-    volTensorField alphaEff2
+    volScalarField alphaEff2
     (
-        structure_.tortuosity()
-       *fluid2_.thermo().alphaEff(fluid2_.turbulence().alphat())()
+        fluid2_.thermo().alphaEff(fluid2_.turbulence().alphat())()
     );
 
     autoPtr<volScalarField> dpdtPtr;
@@ -80,11 +62,20 @@
     (
             fvm::ddt(alpha1, rho1, he1) 
         +   fvm::div(fluid1_.alphaRhoPhi(), he1, "div(alphaRhoPhi,he)")
-        -   fvm::laplacian
-            (
-                fvc::interpolate(alpha1)
-               *fvc::interpolate(alphaEff1),
-                he1
+        -   (
+                (structure_.tortuosityPtr().valid()) ?
+                fvm::laplacian
+                (
+                    fvc::interpolate(alpha1)*
+                    fvc::interpolate(structure_.tortuosity()*alphaEff1),
+                    he1
+                ) :
+                fvm::laplacian
+                (
+                    fvc::interpolate(alpha1)*
+                    fvc::interpolate(alphaEff1),
+                    he1
+                )
             )
         ==  
             alpha1*rho1*(U1&g_) 
@@ -94,11 +85,20 @@
     (
             fvm::ddt(alpha2, rho2, he2)
         +   fvm::div(fluid2_.alphaRhoPhi(), he2, "div(alphaRhoPhi,he)")
-        -   fvm::laplacian
-            (
-                fvc::interpolate(alpha2)
-               *fvc::interpolate(alphaEff2),
-                he2
+        -   (
+                (structure_.tortuosityPtr().valid()) ?
+                fvm::laplacian
+                (
+                    fvc::interpolate(alpha2)*
+                    fvc::interpolate(structure_.tortuosity()*alphaEff2),
+                    he2
+                ) :
+                fvm::laplacian
+                (
+                    fvc::interpolate(alpha2)*
+                    fvc::interpolate(alphaEff2),
+                    he2
+                )
             )
         ==  
             alpha2*rho2*(U2&g_) 
@@ -164,74 +164,22 @@
         );
     }
 
-    //- Add mass transfer enthalpy contributions
+    //- Print dmdt info
     if (FFPair_.phaseChange())
     {
-        //- Compute/update dmdt_
-        //phaseChange_->correctMassTransfer();
-        const volScalarField& dmdt_(FFPair_.dmdt());
-
-        //- Set phaseChange marker fields (currently only used by the
-        //  nucleateBoiling model)
-        scalarField& pCS1(fluid1_.phaseChangeSign());
-        scalarField& pCS2(fluid2_.phaseChangeSign());
-        forAll(dmdt_, i)
-        {
-            const scalar& dmdti(dmdt_[i]);
-            pCS1[i] = (dmdti > 0) ? -1.0 : ((dmdti < 0) ? 1.0 : 0);
-            pCS2[i] = -pCS1[i];
-        }
-
-        volScalarField dmdt12(posPart(dmdt_));
-        volScalarField dmdt21(-negPart(dmdt_));
-
-        E1Eqn -= dmdt21*he1i - fvm::Sp(dmdt12, he1);
-        E2Eqn -= dmdt12*he2i - fvm::Sp(dmdt21, he2);
-
+        const volScalarField& dmdt(FFPair_.dmdt());
         Info<< "dmdt " << fluid1_.name() << "->" << fluid2_.name() 
-            << " (avg min max) = " << dmdt_.weightedAverage(mesh_.V()).value()
-            << " " << min(dmdt_).value()
-            << " " << max(dmdt_).value()
+            << " (avg min max) = " << dmdt.weightedAverage(mesh_.V()).value()
+            << " " << min(dmdt).value()
+            << " " << max(dmdt).value()
             << " kg/m3/s" << endl;
     }
     
-    //- Add linearized interfacial heat transfer contributions
+    //- Add interfacial heat transfer contributions due to heat and mass
+    //  transfer
+    E1Eqn += FFPair_.heSource(E1Eqn.psi().name());
+    E2Eqn += FFPair_.heSource(E2Eqn.psi().name());
     
-    E1Eqn -= 
-        (
-            H1i*iA12*(he1/Cp1 + iT12 - T1)
-        -   fvm::Sp(H1i*iA12/Cp1, he1)
-        );
-    E2Eqn -= 
-        (
-            H2i*iA12*(he2/Cp2 + iT12 - T2)
-        -   fvm::Sp(H2i*iA12/Cp2, he2)
-        );
-    
-    /*
-    volScalarField noDmdt
-    (
-        pos0(dmdt_)*neg0(dmdt_)
-    );
-    E1Eqn -= 
-        pos1pos2*
-        (
-            noDmdt*(
-                H1i*iA12*(he1/Cp1 + iT12 - T1)
-            -   fvm::Sp(H1i*iA12/Cp1, he1)
-            )
-        +   fvm::Sp(posPart(dmdt_)*phaseChange_->L()/he1, he1)
-        );
-    E2Eqn -= 
-        pos1pos2*
-        (
-            noDmdt*(
-                H2i*iA12*(he2/Cp2 + iT12 - T2)
-            -   fvm::Sp(H2i*iA12/Cp2, he2)
-            )
-        +   pos(T2-iT12)*fvm::Sp(negPart(dmdt_)*phaseChange_->L()/he2, he2)
-        );
-    */
     //- Structure heat sources
     //- Correct surface temperature of the power-generating subStructures 
     //  of the structures and add source/sink terms to the fluids energy 
@@ -259,6 +207,7 @@
     //  interfacial values if the phase fraction is below thermoResidualAlpha
     if (heStabilizationMode_ == heStabilizationMode::source)
     {
+        /* This is the old source stabilizer
         scalar HStab(1e10);
         if (fluid1_.thermoResidualAlpha().value() != 0.0)
         {
@@ -295,8 +244,50 @@
             }
             C.correctBoundaryConditions();
             E2Eqn -= (C*(he2/Cp2 + iT12-T2) - fvm::Sp(C/Cp2, he2));
+        }*/
+        
+        //- Relaxation time
+        scalar tau(1e-12);
+        if (fluid1_.thermoResidualAlpha().value() != 0.0)
+        {
+            volScalarField C
+            (
+                IOobject("", mesh_.time().timeName(), mesh_), mesh_, 
+                dimensionedScalar("", dimDensity/dimTime, 0.0),
+                zeroGradientFvPatchScalarField::typeName
+            );
+            const scalar& t(fluid1_.thermoResidualAlpha().value());
+            forAll(C, i)
+            {
+                scalar deltaAlpha(fluid1_.normalized()[i] - t);
+                if (deltaAlpha < 0.0)
+                    C[i] = t*rho1[i]/tau; //(-neg1[i]*deltaAlpha/t)*HStab;
+            }
+            C.correctBoundaryConditions();
+            E1Eqn -= C*he1i-fvm::Sp(C, he1); 
+                //(C*(he1/Cp1 + iT12-T1) - fvm::Sp(C/Cp1, he1));
+        }
+        if (fluid2_.thermoResidualAlpha().value() != 0.0)
+        {
+            volScalarField C 
+            (
+                IOobject("", mesh_.time().timeName(), mesh_), mesh_, 
+                dimensionedScalar("", dimDensity/dimTime, 0.0),
+                zeroGradientFvPatchScalarField::typeName
+            );
+            const scalar& t(fluid2_.thermoResidualAlpha().value());
+            forAll(C, i)
+            {
+                scalar deltaAlpha(fluid2_.normalized()[i] - t);
+                if (deltaAlpha < 0.0)
+                    C[i] = t*rho2[i]/tau; //(-neg2[i]*deltaAlpha/t)*HStab;
+            }
+            C.correctBoundaryConditions();
+            E2Eqn -= C*he2i-fvm::Sp(C, he2); 
+                //(C*(he2/Cp2 + iT12-T2) - fvm::Sp(C/Cp2, he2));
         }
     }
+    
     //- Relax and solve equations
     E1Eqn.relax();
     fvOptions_.constrain(E1Eqn);
@@ -312,6 +303,10 @@
     //- Stabilize enthalpies by cutoff if source mode not used
     if (heStabilizationMode_ == heStabilizationMode::cutoff)
     {
+        const volScalarField& pos1(fluid1_.aboveThermoResidualAlpha());
+        const volScalarField& pos2(fluid2_.aboveThermoResidualAlpha());
+        const volScalarField& neg1(fluid1_.belowThermoResidualAlpha());
+        const volScalarField& neg2(fluid2_.belowThermoResidualAlpha());
         he1 = 
             max
             (

@@ -27,8 +27,105 @@ Class
 Description
     Regime map model that depends on two parameters.
 
+Dictionary example
+
+    regimeMaps
+    {
+        "mapName"
+        {
+            type twoParameters;
+            
+            // These corrspond to the desired parameters for the 2-D map.
+            // These can only correspond to the IOobject names of 
+            // tvolScalarField ype objects in the mesh object registry. No 
+            // other volTypeFields are supported
+            parameter1      "name1";
+            parameter2      "name2";
+
+            // This sets the size (width) of the interpolation region that
+            // sits across the line that separates two different regimes. This
+            // is used to avoid sharp changes in the transfer coefficients that
+            // might depend on this flow regime map to avoid numerical
+            // instabilities. In order to deal with the fact that the two axes
+            // (or dimensions) of the regime map might refer to parameters with
+            // wildy different domains (e.g. one axis corresponds to a volume
+            // fraction, which spans 0-1, while the other corresponds to a 
+            // mass flux, which can spans up to e.g. 10000 kg/m2/s), it is
+            // difficult to define an absolute meaningful "distance" in this
+            // 2-D domain. Thus, this width refers to the relative width of
+            // this interpolation region compared to a normalized map wherein
+            // both axes span the 0-1 range only. Thus, this width needs to be
+            // comprised between 0 and 1, wherein 0 = no interpolation (not
+            // recommended) and 1 = everything is interpolated (then the map
+            // loses meaning). A generic value of 0.1 would serve a good 
+            // starting guess.
+            interpolationWidth  value;
+
+            // This specifies how the transfer coefficients are interpolated
+            // in the interpolation regions described above. The only possile
+            // modes are linear or quadratic.
+            interpolationMode linear; //quadratic;
+
+            // Dictionary that holds pairs of point names and point coordinates
+            // (par1_X, par2_X) for a generic point pX in the parameters space.
+            // These points are used to construct the regime domains in the 
+            // regime map. The names of the points can be set to anything, as
+            // long as they are referenced correctly in the reigmes dictionary
+            // when building the regime domains
+            regimePoints
+            {
+                p0 (par1_0, par2_0)
+                p1 (par1_1, par2_1)
+                //...
+                pN (par1_N, par2_N)
+            }
+
+            // Dictionary of all regime domains and the points that define
+            // their boundaries. For any domain, the point list can start
+            // from any point as long as the resulting domain boundaries
+            // (i.e. the lines that connect one point to the next one, and
+            // last back to the first) never cross each other. Both convex
+            // and concave shapes are possible. Please note, however, that no
+            // consistency checks are made to enforce the no-crossing
+            // condition (it will be implemented some time in the future).
+            // The last condition for this approach to work is with regards
+            // to scenarios like the one show below, wherein the boundary
+            // of a domain (AB of ABEF) intersects the straight boundary (CE)
+            // of another domain (EDC) at a given point (B).
+            /*
+                ^ parameter2
+                |
+                |   
+                |                     C
+                |                     |\
+                |                     | \
+                |          A----------B  \
+                |          |          |   \
+                |          |          |    \
+                |          |          |     \
+                |          F----------E------D
+                |
+                i-------------------------------------------------> parameter1 
+            *//*
+            // In this scenario, while the domain EDC could be constructed
+            // from only those three points (as CE is straight), the code 
+            // requires it to be constructed as EDCB (or DCBE, CBED, EBCD, you 
+            // get the idea), as if the B point is not included, the "internal
+            // boundary" BE between the two domains will never be recognized
+            // as such, thus leading to outright interpolation errors.
+            regimes
+            {
+                "regime0" (p0 p1 ... pI);
+                "regime1" (p7 p9 ... pJ);
+                //...
+                "regimeM" (p10 p27 ... pK);
+
+            }
+        }
+    }
+
 Autor
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Stefan Radman (sradman@protonmail.com / stefan.radman@alumni.epfl.ch)
 
 SourceFiles
     twoParameters.C

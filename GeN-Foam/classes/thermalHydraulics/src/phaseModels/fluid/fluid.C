@@ -167,6 +167,29 @@ Foam::fluid::fluid
         mesh,
         dimensionedScalar("", dimMass/dimTime, 0)
     ),
+    alphaRhoMagU_
+    (
+        IOobject
+        (
+            IOobject::groupName("alphaRhoMagU", this->name()),
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            (
+                (
+                    mesh.time().controlDict().lookupOrDefault<bool>
+                    (
+                        "writeRestartFields", 
+                        true
+                    )
+                ) ?
+                IOobject::AUTO_WRITE :
+                IOobject::NO_WRITE
+            )
+        ),
+        mesh,
+        dimensionedScalar("", dimMass/dimArea/dimTime, 0)
+    ),
     dgdt_
     (
         IOobject
@@ -195,7 +218,7 @@ Foam::fluid::fluid
         dict.getOrDefault<scalar>
         (
             "minXLM",
-            0.01
+            0.0001
         )
     ),
     maxXLM_
@@ -203,7 +226,7 @@ Foam::fluid::fluid
         dict.getOrDefault<scalar>
         (
             "maxXLM",
-            1e4
+            1.0/minXLM_
         )
     ),
     normalized_
@@ -672,6 +695,13 @@ void Foam::fluid::initAlphaPhis()
         mesh_,
         IOobject::NO_READ
     );
+    IOobject alphaRhoMagUHeader
+    (
+        alphaRhoMagU_.name(),
+        mesh_.time().timeName(),
+        mesh_,
+        IOobject::NO_READ
+    );
 
     if (!alphaPhiHeader.typeHeaderOk<surfaceScalarField>(true))
     {
@@ -680,6 +710,10 @@ void Foam::fluid::initAlphaPhis()
     if (!alphaRhoPhiHeader.typeHeaderOk<surfaceScalarField>(true))
     {
         alphaRhoPhi_ = fvc::interpolate(this->rho())*alphaPhi_;
+    }
+    if (!alphaRhoMagUHeader.typeHeaderOk<volScalarField>(true))
+    {
+        alphaRhoMagU_ = (*this)*this->rho()*magU_;
     }
 }
 
@@ -710,6 +744,11 @@ void Foam::fluid::constructTurbulenceModel()
         ); 
 }
 
+void Foam::fluid::correctAlphaRhoMagU()
+{
+    alphaRhoMagU_ = (*this)*this->rho()*magU_;
+}
+
 void Foam::fluid::correctDiameter()
 {
     if (diameterPtr_.valid())
@@ -724,25 +763,25 @@ void Foam::fluid::correctThermoResidualMarkers()
     if (aboveThermoResidualAlphaPtr_.valid())
     {
         aboveThermoResidualAlphaPtr_() = 
-            pos0(normalized_-thermoResidualAlpha_);
+            pos(normalized_-thermoResidualAlpha_);
     }
     else
     {
         aboveThermoResidualAlphaPtr_.reset
         (
-            new volScalarField(pos0(normalized_-thermoResidualAlpha_))
+            new volScalarField(pos(normalized_-thermoResidualAlpha_))
         );
     }
     if (belowThermoResidualAlphaPtr_.valid())
     {
         belowThermoResidualAlphaPtr_() = 
-            neg(normalized_-thermoResidualAlpha_);
+            neg0(normalized_-thermoResidualAlpha_);
     }
     else
     {
         belowThermoResidualAlphaPtr_.reset
         (
-            new volScalarField(neg(normalized_-thermoResidualAlpha_))
+            new volScalarField(neg0(normalized_-thermoResidualAlpha_))
         );
     }
 }

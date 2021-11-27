@@ -69,6 +69,14 @@ private:
     //  regimeDomain. Used for interpolation purposes
     List<const regimeBoundary2D*> internalBoundaryPtrs_;
 
+    //- If positive, the polygon is convex with counter-clockwise ordered 
+    //  points. If negaative, it is convex with clockwise ordered points.
+    //  if 0 then the polygon is concave
+    int sign_;
+
+    //-
+    Vector2D<scalar> rayNorm_;
+
 public:
 
     //- Runtime type information
@@ -99,6 +107,16 @@ public:
 
         //- Check whether point p is contained within the domain
         bool containsPoint(const Vector2D<scalar>& p) const;
+
+        //- Check whether point p is contained within the domain, but works
+        //  only if the domain is convex (regardless of point orientation)
+        bool convexContainsPoint(const Vector2D<scalar>& p) const;
+
+        //- Check whether point p is contained within the domain. Also works
+        //  for convex polygons though more expensive than the other
+        //  formulation and so it should really be used only for concave 
+        //  polygons
+        bool concaveContainsPoint(const Vector2D<scalar>& p) const;
 
         //- Access
 

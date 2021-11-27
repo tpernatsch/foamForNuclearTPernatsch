@@ -24,6 +24,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FFPair.H"
+#include "fvCFD.H"
 #include "myOps.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -204,7 +205,7 @@ Foam::FFPair::FFPair
             IOobject::AUTO_WRITE
         ),
         mesh_,
-        dimensionedScalar("", dimTemperature, 1),
+        dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
     iA_
@@ -220,9 +221,11 @@ Foam::FFPair::FFPair
         mesh_,
         dimensionedScalar("", dimArea/dimVolume, 0),
         zeroGradientFvPatchScalarField::typeName
-    )
+    ),
+    firstTimeStepAndIter_(true)
 {
     Info << endl;
+    
     //- Init htcs
     htcs_.set
     (
@@ -259,6 +262,23 @@ Foam::FFPair::FFPair
             dimensionedScalar("", dimPower/dimArea/dimTemperature, 0),
             zeroGradientFvPatchScalarField::typeName
         )
+    );
+
+    //- It is dimPower instead of dimPower/dimVolume as the fvScalarMatrix
+    //  expects objects that are either already integrated over the volume
+    //  (e.g. what the fvm::Su, SuSp, etc. return) or objects that are not
+    //  already volume integrated, yet whose dimensions are equal to the
+    //  dimension of the fvScalarMatrix (dimPower in this case) divided by
+    //  dimVolume (e.g. explicit terms)
+    heSources_.set
+    (
+        fluid1_.thermo().he().name(), 
+        new fvScalarMatrix(fluid1_.thermo().he(), dimPower)
+    );
+    heSources_.set
+    (
+        fluid2_.thermo().he().name(), 
+        new fvScalarMatrix(fluid2_.thermo().he(), dimPower)
     );
 
     const dictionary& physicsModelsDict(dict_.subDict("physicsModels"));
@@ -487,9 +507,10 @@ void Foam::FFPair::correct
         scalar& XLM2i(XLM2[i]);
 
         scalar mDot1i(fluid1_[i]*rho1[i]*magU1[i]);
-        X1i = mDot1i/(mDot1i+fluid2_[i]*rho2[i]*magU2[i]);
-        X2i = 1.0-X1i;
-        
+        scalar mDot2i(fluid2_[i]*rho2[i]*magU2[i]);
+        scalar mDotSum(max(mDot1i+mDot2i, 1e-69));
+        X1i = mDot1i/mDotSum;
+        X2i = mDot2i/mDotSum;
         if (X1i < 1e-6)
         {
             XLM1i = fluid1_.minXLM();
@@ -513,16 +534,35 @@ void Foam::FFPair::correct
                     fluid1_.maxXLM()
                 );
         }
-        XLM2i = 
-            min
-            (
-                max
+        if (X2i < 1e-6)
+        {
+            XLM2i = fluid2_.minXLM();
+        }
+        else if (X1i < 1e-6)
+        {
+            XLM2i = fluid2_.maxXLM();
+        }
+        else
+        {
+            XLM2i = 
+                min
                 (
-                    1.0/XLM1i,
-                    fluid2_.minXLM()
-                ),
-                fluid2_.maxXLM()
-            );
+                    max
+                    (
+                        pow(mu2[i]/mu1[i], 0.1)*
+                        pow(X2i/X1i, 0.9)*
+                        sqrt(rho1[i]/rho2[i]),
+                        fluid2_.minXLM()
+                    ),
+                    fluid2_.maxXLM()
+                );
+        }
+        //- Normalize to account for the fact that the clipping for XLM1 and
+        //  XLM2 might differ, so that XML1*XLM2 = 1.0 could be violated. So,
+        //  restore it via a normalization
+        scalar c(sqrt(1.0/(XLM1i*XLM2i)));
+        XLM1i *= c;
+        XLM2i *= c;
     }
     X1.correctBoundaryConditions();
     X2.correctBoundaryConditions();
@@ -636,7 +676,39 @@ void Foam::FFPair::correct
                 )
             +   pos1*neg2*fluid1_.thermo().T()
             +   neg1*pos2*fluid2_.thermo().T();
-            iT_.relax();
+            if (!firstTimeStepAndIter_)
+                iT_.relax();
+            else
+                firstTimeStepAndIter_ = false;
+        }
+
+        //- Add interfacial and mass transfer enthalpy contributions to
+        //  heSources
+        const volScalarField& he1(fluid1_.thermo().he());
+        const volScalarField& he2(fluid2_.thermo().he());
+        const volScalarField& Cp1(fluid1_.Cp());
+        const volScalarField& Cp2(fluid2_.Cp());
+        *(heSources_[he1.name()]) =  
+        -   (
+                htc1*iA_*(he1/Cp1 + iT_ - fluid1_.thermo().T())
+            -   fvm::Sp(htc1*iA_/Cp1, he1)
+            )();
+        *(heSources_[he2.name()]) =  
+        -   (
+                htc2*iA_*(he2/Cp2 + iT_ - fluid2_.thermo().T())
+            -   fvm::Sp(htc2*iA_/Cp2, he2)
+            )();
+
+        if (phaseChangePtr_.valid())
+        {
+            *heSources_[he1.name()] += phaseChangePtr_->heSource(he1.name()); 
+            *heSources_[he2.name()] += phaseChangePtr_->heSource(he2.name()); 
+            
+            //- Re-set htc to their values before their were modified by
+            //  phaseChangePtr_->correctHeSources() (which caches them in
+            //  prevIter)
+            htc1 = htc1.prevIter();
+            htc2 = htc2.prevIter();
         }
     }
 }

@@ -36,7 +36,9 @@ consist of paralellopipes. All the absolute volumes are scaled by a factor
 From a calculation perspective, the steady state is run for 900 s of model time,
 followed by a transient case in which a pointKinetics model is used to model the
 the power evolution. Please notice that the power for the steady state is set
-directly via the field powerDensity.nuclearFuelPin in 0/fluidRegion.
+directly via the field powerDensity.nuclearFuelPin in 0/fluidRegion. As an 
+alternative, the Allrun_powerFromDiffusion script is provided that runs an initial 
+diffusion calculations and uses the resulting power profile in the transient.
 
 The case can run on 5 cores via the Allrun_parallel script (suggested) or on
 1 core using the Allrun script.

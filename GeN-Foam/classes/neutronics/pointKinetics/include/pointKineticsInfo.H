@@ -9,6 +9,7 @@ Info<< "    -> TCool          = " << (TCoolReactivity*1e5) << " pcm" << endl;
 Info<< "    -> rhoCool        = " << (rhoCoolReactivity*1e5) << " pcm" << endl;
 Info<< "    -> TStruct        = " << (TStructReactivity*1e5) << " pcm" << endl;
 Info<< "    -> driveline      = " << (drivelineReactivity*1e5) << " pcm"<<endl;
+Info<< "    -> Boron      = " << (boronReactivity*1e5) << " pcm"<<endl;
 if(liquidFuel_)
 {
     Info<< "    Initial reactivity loss due to delayed neutron precursors movement = "

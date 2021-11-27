@@ -2,8 +2,8 @@
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-tutorials="1D_HX 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
-#tutorials="2D_FFTF" #Godiva_SN
+#tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
+tutorials="1D_PSBT_SC" #Godiva_SN
 rm regressionResults
 touch regressionResults
 resFile="./regressionResults"
@@ -94,6 +94,31 @@ do
         
         ;;
 
+    "1D_PSBT_SC")
+        printf "Running tutorial $tutorialName...\n"
+        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
+        cd $tutorialName
+        ./Allrun
+        printf "Done running tutorial $tutorialName...\n"
+
+        # check it ran
+        endString=$(tail -3 ./log.GeN-Foam | grep End)
+        if [ "$endString" = "End" ]; then
+            printf "$tutorialName has converged \n"  >> ../$resFile
+        else
+            printf "$tutorialName has NOT converged \n"  >> ../$resFile
+        fi
+
+        # check that results are correct
+        input="./0.6/fluidRegion/alpha.vapour"
+        averageAt=$(head -98 "$input" | tail -1  )
+        printf "time,  alpha.vapour at the end of the channel is: $averageAt . It should be 0.133727 \n" >> ../$resFile
+
+
+        cd ..
+        
+        ;;
+
     "1D_MSR_pointKinetics")
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
@@ -169,19 +194,19 @@ do
 
         # check that reactivities are correct
         reactivityDoppler=$(grep -e "-> Doppler" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityDoppler is $reactivityDoppler . It should be 240.6606  \n" >> ../$resFile
+        printf "reactivityDoppler is $reactivityDoppler . It should be 237.1212  \n" >> ../$resFile
         reactivityClad=$(grep -e "-> TClad" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityClad is $reactivityClad . It should be 0.8156143   \n" >> ../$resFile
+        printf "reactivityClad is $reactivityClad . It should be 0.8156143    \n" >> ../$resFile
         reactivityDensity=$(grep -e "-> rhoCool" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityDensity is $reactivityDensity . It should be -3.25089   \n" >> ../$resFile
+        printf "reactivityDensity is $reactivityDensity . It should be -2.789199   \n" >> ../$resFile
         reactivityStructures=$(grep -e "-> TStruct" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityStructures is $reactivityStructures . It should be -1.319733   \n" >> ../$resFile
+        printf "reactivityStructures is $reactivityStructures . It should be -1.10996   \n" >> ../$resFile
         reactivityDriveline=$(grep -e "-> driveline" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityDriveline is $reactivityDriveline . It should be -10.12475  \n" >> ../$resFile
+        printf "reactivityDriveline is $reactivityDriveline . It should be -8.96642  \n" >> ../$resFile
         reactivityGEM=$(grep -e "-> GEM" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityGEM is $reactivityGEM . It should be -464.8485  \n" >> ../$resFile
+        printf "reactivityGEM is $reactivityGEM . It should be -464.8488  \n" >> ../$resFile
         totalPower=$(grep -e "totalPower" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "totalPower is $totalPower . It should be 29966.92  \n" >> ../$resFile
+        printf "totalPower is $totalPower . It should be 29388.48 \n" >> ../$resFile
         cd ..
         ;;
 
@@ -212,7 +237,7 @@ do
             printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
         fi
         
-        printf "Done running tutorial $tutorialName...\n"
+        printf "Done running tutorial $tutorialName...\n"  >> ../$resFile
 
         # check that keff for MSFR steady State is ~0.958765
         keff=$(foamDictionary ./steadyStateEN/constant/neutroRegion/reactorState -entry keff -value)
@@ -292,7 +317,7 @@ do
         # check that results are correct
         input="./postProcessing/fluidRegion/averageValues/-2/volFieldValue.dat"
         averageAt=$(head -9424 "$input" | tail -1  )
-        printf "time, average alpha.vapour and aveage T.structure when alpha is approximately max are: $averageAt . They should be 12.665272554727872 1.515507e-01 8.163611e+02 \n" >> ../$resFile
+        printf "time, average alpha.vapour and aveage T.structure when alpha is approximately max are: $averageAt . They should be 12.56424533593758    1.577348e-01    8.210752e+02 \n" >> ../$resFile
 
         cd ..
 

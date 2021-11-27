@@ -143,9 +143,6 @@ protected:
     //- All cells in which the structure exists ()
     labelList cells_;
 
-    //- Tortuosity of the structure in the global reference frame
-    volTensorField tortuosity_;
-
     //- Hydraulic diameter
     volScalarField Dh_;
 
@@ -196,6 +193,9 @@ protected:
 
     //- Max between Tact_ and Tpas_;
     volScalarField Twall_;
+
+    //- Tortuosity of the structure in the global reference frame
+    autoPtr<volTensorField> tortuosityPtr_;
 
     //- Rotation matrix to move from global to local reference frame
     autoPtr<volTensorField> Rg2lPtr_;
@@ -315,9 +315,14 @@ public:
                 return cells_;
             }
 
+            const autoPtr<volTensorField>& tortuosityPtr() const
+            {
+                return tortuosityPtr_;
+            }
+
             const volTensorField& tortuosity() const
             {
-                return tortuosity_;
+                return tortuosityPtr_();
             }
 
             const volScalarField& Dh() const
