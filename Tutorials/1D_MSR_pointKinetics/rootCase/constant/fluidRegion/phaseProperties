@@ -48,7 +48,7 @@ structureProperties
 
         powerModel
         {
-            type            constantTemperature;
+            type            fixedTemperature;
             volumetricArea  200;
             T               900;
         }

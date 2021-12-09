@@ -86,10 +86,10 @@ structureProperties
 
         powerModel
         {
-            type            constantPower;
+            type            fixedPower;
 
             //- The heater "coats" 0.85 mm of the 4.75 mm radius pin, and 
-            //  for simplicity it is thus treated as a constantPower source
+            //  for simplicity it is thus treated as a fixedPower source
             //  with a volume fraction equal to the total heater volume 
             //  fraction (with respect to the total mesh volume).
             volumeFraction  0.0937099273; //0.145493575;  
@@ -98,6 +98,27 @@ structureProperties
             T               592.75;
             Cp              500;
             rho             7700;
+
+            /*
+            // This is an example on how to provide a linear variation of power
+            // from zero to nominal
+            powerDensityTimeProfile
+            {
+                type                            table;
+
+                //- Time after which the time table is applied
+                startTime                       0;
+
+                //- Left column is time elapsed since the startTime defined
+                //  above
+                table       table
+                (
+                    (   0   #eval{ 1943301220 * 0 }  )
+                    (   0.6   #eval{ 1943301220 * 1 }   )
+
+                );
+            }
+            */
         }
     }
 }

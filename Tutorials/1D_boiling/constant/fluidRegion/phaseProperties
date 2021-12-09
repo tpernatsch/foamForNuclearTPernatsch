@@ -137,7 +137,7 @@ structureProperties
 
         powerModel
         {
-            type                constantPower;
+            type                fixedPower;
             volumetricArea      100;
             T                   652.15;
             Cp                  500;
@@ -204,8 +204,8 @@ structureProperties
             //  as MANDATORY are such only if the powerModel dict exists
 
             //- This entry IS MANDATORY and currently supports three models:
-            //  -   constantTemperature
-            //  -   constantPower
+            //  -   fixedTemperature
+            //  -   fixedPower
             //  -   nuclearFuelPin
             type    model;
 
@@ -224,16 +224,35 @@ structureProperties
             //- Structure surface area per unit volume in m2/m3
             volumetricArea  100;
             
-            //--Start of constantTemperature entries. The constantTemperature
+            //--Start of fixedTemperature entries. The fixedTemperature
             //  model models a structure with a surface temperature that is
             //  constant in TIME
                 
                 //- Surface temperature. This entry IS MANDATORY ONLY IF a
-                //  field called T.constantTemperature does not exist in the
+                //  field called T.fixedTemperature does not exist in the
                 //  start time folder
                 T   293.15;
 
-            //--End of constantTemperature entries
+                // This shows how to provide a linear variation of temperature
+                // from 300 to 600 in 1 sec
+                temperatureTimeProfile
+                {
+                    type                            table;
+
+                    //- Time after which the time table is applied
+                    startTime                       0;
+
+                    //- Left column is time elapsed since the startTime defined
+                    //  above
+                    table       table
+                    (
+                        (   0   300  )
+                        (   1   600   )
+
+                    );
+                }
+
+            //--End of fixedTemperature entries
 
             //--Start of nuclearFuelPin entries. The nuclearFuelPin model
             //  is used to compute representative nuclear pin temperatures
@@ -320,7 +339,7 @@ structureProperties
 
             //--End of nuclearFuelPin entries
 
-            //--Start of constantPower entries. A constantPower model represent
+            //--Start of fixedPower entries. A fixedPower model represent
             //  a structure with a power density that is constant in TIME. The
             //  structure is characterized by an average temperature, which is
             //  also the temperature at which it exchanges heat with the fluid.
@@ -328,7 +347,7 @@ structureProperties
             //  not currently diffuse within the structure
     
                 //- Initial structure temperature. This entry IS MANDATORY ONLY
-                //  IF the T.constantPower field does not exist in the start
+                //  IF the T.fixedPower field does not exist in the start
                 //  time folder, in which case this entry is not read
                 T                   652.15;
 
@@ -344,12 +363,31 @@ structureProperties
 
                 //- Power density of the structure (intrinsic, i.e. independent
                 //  of the volumeFraction) in W/m3. This entry IS MANDATORY
-                //  ONLY IF the powerDensity.constantPower field is not found
+                //  ONLY IF the powerDensity.fixedPower field is not found
                 //  in the start time folder, in which case this entry is not 
                 //  read
                 powerDensity        1e9;
 
-            //--End of constantPower entries
+                // This shows how to provide a linear variation of power
+                // from 1e9 to 2e9 in 100 sec
+                powerDensityTimeProfile
+                {
+                    type                            table;
+
+                    //- Time after which the time table is applied
+                    startTime                       0;
+
+                    //- Left column is time elapsed since the startTime defined
+                    //  above
+                    table       table
+                    (
+                        (   1   1e9  )
+                        (   100   2e9   )
+
+                    );
+                }
+
+            //--End of fixedPower entries
         }
         
         //--End of powerModel subDict

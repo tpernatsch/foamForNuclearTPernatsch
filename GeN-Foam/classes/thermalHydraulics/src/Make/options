@@ -8,8 +8,8 @@ EXE_INC = \
     -I./phaseModels/structureModels \
     -I./phaseModels/structureModels/heatExchanger \
     -I./phaseModels/structureModels/powerModels \
-    -I./phaseModels/structureModels/powerModels/constantPower \
-    -I./phaseModels/structureModels/powerModels/constantTemperature \
+    -I./phaseModels/structureModels/powerModels/fixedPower \
+    -I./phaseModels/structureModels/powerModels/fixedTemperature \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPin \
     -I./phaseModels/structureModels/powerModels/heatedPin \
     -I./phaseModels/structureModels/powerOffCriterionModels/ \

@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "constantPower.H"
+#include "fixedPower.H"
 #include "addToRunTimeSelectionTable.H"
 #include "structure.H"
 #include "fvMatrix.H"
@@ -37,11 +37,11 @@ namespace Foam
 {
 namespace powerModels
 {
-    defineTypeNameAndDebug(constantPower, 0);
+    defineTypeNameAndDebug(fixedPower, 0);
     addToRunTimeSelectionTable
     (
         powerModel, 
-        constantPower, 
+        fixedPower, 
         powerModels
     );
 }
@@ -50,7 +50,7 @@ namespace powerModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::powerModels::constantPower::constantPower
+Foam::powerModels::fixedPower::fixedPower
 (
     const structure& structureRef,
     const dictionary& dicts
@@ -75,6 +75,9 @@ Foam::powerModels::constantPower::constantPower
         dimensionedScalar("", dimPower/dimVol, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    timeProfile_(this->toc().size()),
+    t0_(this->toc().size()),
+    timeDependent_(this->toc().size()),
     T_
     (
         IOobject
@@ -111,7 +114,7 @@ Foam::powerModels::constantPower::constantPower
     {
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
-        
+
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (
@@ -131,7 +134,7 @@ Foam::powerModels::constantPower::constantPower
         else
         {
             FatalErrorInFunction
-                << "constantPower region: " << region << " -> "
+                << "fixedPower region: " << region << " -> "
                 << "specify either rhoCp or both rho and Cp"
                 << exit(FatalError);
         }
@@ -140,6 +143,34 @@ Foam::powerModels::constantPower::constantPower
             label celli(regionCells[i]);
             alphaRhoCp_[celli] = rhoCp;
         }
+
+        // Preparing data to update power
+        word timeProfileDictName("powerTimeProfile");
+        timeDependent_[regioni] = false;
+        if (dict.found(timeProfileDictName))
+        {
+            
+            const dictionary& timeProfileDict(dict.subDict(timeProfileDictName));
+            word type
+            (
+                timeProfileDict.get<word>("type")
+            );
+
+            timeProfile_.set        
+            (
+                regioni,
+                Function1<scalar>::New
+                (
+                    type,
+                    timeProfileDict,
+                    type
+                )
+            );
+            timeDependent_[regioni] = true;
+            t0_[regioni] = timeProfileDict.lookupOrDefault("startTime", 0.0);
+
+        }
+
     }
 
     //- The alphaRhoCp is read as a rhoCp, alpha is multiplied at this step
@@ -151,18 +182,20 @@ Foam::powerModels::constantPower::constantPower
             ("", dimEnergy/dimVol/dimTemperature, 1e-69)
         );
     alphaRhoCp_.correctBoundaryConditions();
+
+
 }
 
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::powerModels::constantPower::~constantPower()
+Foam::powerModels::fixedPower::~fixedPower()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::powerModels::constantPower::correctT(volScalarField& T) const
+void Foam::powerModels::fixedPower::correctT(volScalarField& T) const
 {
     forAll(cellList_, i)
     {
@@ -174,18 +207,42 @@ void Foam::powerModels::constantPower::correctT(volScalarField& T) const
 }
 
 
-void Foam::powerModels::constantPower::powerOff()
+void Foam::powerModels::fixedPower::powerOff()
 {
     powerDensity_ *= 0.0;
 }
 
+void Foam::powerModels::fixedPower::powerUpdate()
+{
+    forAll(this->toc(), regioni)
+    {
+        word region(this->toc()[regioni]);
+        
+        //- Setup cellToRegion_ mapping
+        const labelList& regionCells
+        (
+            structure_.cellLists()[region]
+        );
+        if(timeDependent_[regioni])
+        {
+            scalar t(mesh_.time().timeOutputValue()-t0_[regioni]);
+            scalar timeDependentPowerDensity(timeProfile_[regioni].value(t));
+            forAll(regionCells, i)
+            {
+                label celli(regionCells[i]);
+                powerDensity_[celli] =  timeDependentPowerDensity;
+            }          
+        }
+    }
+}
 
-void Foam::powerModels::constantPower::correct
+void Foam::powerModels::fixedPower::correct
 (
     const volScalarField& HTSum,  // == SUM_j [htc_j*T_j*frac_j]
     const volScalarField& HSum    // == SUM_j [htc_j*frac_j]
 )
 {
+    this->powerUpdate();
     scalar dt(mesh_.time().deltaT().value());
     volScalarField& T0(T_.oldTime()); 
     
@@ -207,7 +264,7 @@ void Foam::powerModels::constantPower::correct
     /*
     What I did above is equivalent to doing this, but possibly faster, given
     that I might not have to solve the equation for the entire mesh, but only
-    over the cells over which the constantPower models exists. The time
+    over the cells over which the fixedPower models exists. The time
     derivative was hardcoded to be forward Euler
 
     fvScalarMatrix EEqn

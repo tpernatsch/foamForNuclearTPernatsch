@@ -22,21 +22,24 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::structures::constantTemperature
+    Foam::structures::timeDependentPower
 
 Description
-    Describes a structure with a constant surface temperature
+    Describes a generic structure with a time dependent internal power production.
+    Solves an energy equation for the structure, updating the average
+    structure temperature (assumed equal to the structure surface temperature
+    for fluid heat transfer purposes).
 
 Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
 SourceFiles
-    constantTemperature.C
+    timeDependentPower.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef constantTemperature_H
-#define constantTemperature_H
+#ifndef timeDependentPower_H
+#define timeDependentPower_H
 
 #include "powerModel.H"
 
@@ -45,37 +48,49 @@ SourceFiles
 namespace Foam
 {
 
+//- Forward declaration
+class structure;
+
 namespace powerModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class constantTemperature Declaration
+                           Class timeDependentPower Declaration
 \*---------------------------------------------------------------------------*/
 
-class constantTemperature
+class timeDependentPower
 :
     public powerModel
 {
 protected :
 
-    //- Surface temperature
+    //- Volumetric power
+    volScalarField powerDensity_;
+
+    //- Time dependent power
+    autoPtr<Function1<scalar>> timeDependentPowerPtr_;    
+
+    //- Structure temperature
     volScalarField T_;
+
+    //- Volumetric heat capacity of the structure
+    volScalarField alphaRhoCp_;
 
 public:
 
     //- Runtime type information
-    TypeName("constantTemperature");
+    TypeName("timeDependentPower");
 
     //- Constructors
 
-        constantTemperature
+        timeDependentPower
         (
             const structure& structure,
             const dictionary& dicts
         );
 
         //- Destructor
-        virtual ~constantTemperature();
+        virtual ~timeDependentPower();
 
     //- Member Functions
 
@@ -89,12 +104,12 @@ public:
         (
             const volScalarField& HT,
             const volScalarField& H
-        ){}
+        );
 
         //- Set provided field with structure surface temperature
         virtual void correctT(volScalarField& T) const;
 
-        //- Turn off power
+        //- Power off
         virtual void powerOff();
 };
 

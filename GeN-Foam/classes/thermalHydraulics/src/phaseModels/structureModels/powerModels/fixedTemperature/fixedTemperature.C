@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "constantTemperature.H"
+#include "fixedTemperature.H"
 #include "structure.H"
 #include "addToRunTimeSelectionTable.H"
 
@@ -33,11 +33,11 @@ namespace Foam
 {
 namespace powerModels
 {
-    defineTypeNameAndDebug(constantTemperature, 0);
+    defineTypeNameAndDebug(fixedTemperature, 0);
     addToRunTimeSelectionTable
     (
         powerModel, 
-        constantTemperature, 
+        fixedTemperature, 
         powerModels
     );
 }
@@ -46,7 +46,7 @@ namespace powerModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::powerModels::constantTemperature::constantTemperature
+Foam::powerModels::fixedTemperature::fixedTemperature
 (
     const structure& structureRef,
     const dictionary& dicts
@@ -70,23 +70,85 @@ Foam::powerModels::constantTemperature::constantTemperature
         mesh_,
         dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    )
+    ),
+    timeProfile_(this->toc().size()),
+    t0_(this->toc().size()),
+    timeDependent_(this->toc().size())
 {
     this->setInterfacialArea();
     structure_.setRegionField(*this, T_, "T");
+
+    forAll(this->toc(), regioni)
+    {
+        word region(this->toc()[regioni]);
+        const dictionary& dict(this->subDict(region));
+
+        // Preparing data to update temperature
+        timeDependent_[regioni] = false;
+        word timeProfileDictName("temperatureTimeProfile");
+        if (dict.found(timeProfileDictName))
+        {
+            
+            const dictionary& timeProfileDict(dict.subDict(timeProfileDictName));
+            word type
+            (
+                timeProfileDict.get<word>("type")
+            );
+
+            timeProfile_.set        
+            (
+                regioni,
+                Function1<scalar>::New
+                (
+                    type,
+                    timeProfileDict,
+                    type
+                )
+            );
+            timeDependent_[regioni] = true;
+            t0_[regioni] = timeProfileDict.lookupOrDefault("startTime", 0.0);
+
+        }
+    }
+
 }
 
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::powerModels::constantTemperature::~constantTemperature()
+Foam::powerModels::fixedTemperature::~fixedTemperature()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::powerModels::constantTemperature::correctT(volScalarField& T) const
+void Foam::powerModels::fixedTemperature::temperatureUpdate() const
 {
+    forAll(this->toc(), regioni)
+    {
+        word region(this->toc()[regioni]);
+        
+        //- Setup cellToRegion_ mapping
+        const labelList& regionCells
+        (
+            structure_.cellLists()[region]
+        );
+        if(timeDependent_[regioni])
+        {
+            scalar t(mesh_.time().timeOutputValue()-t0_[regioni]);
+            scalar timeDependentTemperature(timeProfile_[regioni].value(t));
+            forAll(regionCells, i)
+            {
+                label celli(regionCells[i]);
+                T_[celli] =  timeDependentTemperature;
+            }          
+        }
+    }
+}
+
+void Foam::powerModels::fixedTemperature::correctT(volScalarField& T) const
+{
+    this->temperatureUpdate();
     forAll(cellList_, i)
     {
         label celli(cellList_[i]);
@@ -94,7 +156,7 @@ void Foam::powerModels::constantTemperature::correctT(volScalarField& T) const
     }
 }
 
-void Foam::powerModels::constantTemperature::powerOff()
+void Foam::powerModels::fixedTemperature::powerOff()
 {
     //- If you set iA to 0, the energy contribution from this powerModel to the
     //  fluid energy equation will be 0, equivalent to a "power" off scenario

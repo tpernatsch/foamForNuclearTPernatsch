@@ -22,26 +22,30 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::structures::constantPower
+    Foam::structures::fixedPower
 
 Description
-    Describes a generic structure with a constant internal power production.
+    Describes a generic structure with a constant or time depdendent internal 
+    power production.
     Solves an energy equation for the structure, updating the average
     structure temperature (assumed equal to the structure surface temperature
     for fluid heat transfer purposes).
 
 Author
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
 SourceFiles
-    constantPower.C
+    fixedPower.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef constantPower_H
-#define constantPower_H
+#ifndef fixedPower_H
+#define fixedPower_H
 
 #include "powerModel.H"
+#include "Function1.H"
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -55,10 +59,10 @@ namespace powerModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class constantPower Declaration
+                           Class fixedPower Declaration
 \*---------------------------------------------------------------------------*/
 
-class constantPower
+class fixedPower
 :
     public powerModel
 {
@@ -66,6 +70,16 @@ protected :
 
     //- Volumetric power
     volScalarField powerDensity_;
+
+    //- Optional table to describe any possible dependence of the power
+    //  on time
+    PtrList<Function1<scalar>> timeProfile_;
+
+    //- Optional offset time
+    List<scalar> t0_;
+
+    //- True if a timeProfilePtr_ exists
+    List<bool> timeDependent_;
 
     //- Structure temperature
     volScalarField T_;
@@ -76,18 +90,18 @@ protected :
 public:
 
     //- Runtime type information
-    TypeName("constantPower");
+    TypeName("fixedPower");
 
     //- Constructors
 
-        constantPower
+        fixedPower
         (
             const structure& structure,
             const dictionary& dicts
         );
 
         //- Destructor
-        virtual ~constantPower();
+        virtual ~fixedPower();
 
     //- Member Functions
 
@@ -108,6 +122,17 @@ public:
 
         //- Power off
         virtual void powerOff();
+
+        //- Power update based on given profile
+        void powerUpdate();
+
+        //- Access
+
+            //-
+            //bool timeDependent() const
+            //{
+            //    return timeDependent_;
+            //}
 };
 
 
