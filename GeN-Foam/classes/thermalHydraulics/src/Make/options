@@ -73,6 +73,17 @@ EXE_INC = \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/superpositionNucleateBoiling \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoiling \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingTRACE \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingVapourTRACE \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingTRACECHF \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/CriticalHeatFluxModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/CriticalHeatFluxModels/ConstantCHF \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/CriticalHeatFluxModels/LookUpTableCHF \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels/GroeneveldStewart \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/PostCHFModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/PostCHFModels/CachardLiquid \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/PostCHFModels/CachardVapour \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/Nusselt \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/NoKazimi \
