@@ -347,7 +347,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
             scalar F(1.73*pow(pR, 0.27) + (6.1+0.68/(1.0-pR))*sqr(pR));
             scalar n(0.9-0.3*pow(pR, 0.15));
 
-            scalar TCHF(Tsati+pow(qCHFi/Areai,1.0-n)*pow(q0,n)/h0/F/A);
+            scalar TCHF(Tsati+pow(qCHFi,1.0-n)*pow(q0,n)/h0/F/A);
 
             // Print of Temperature for checking results
             //Info << "Twall --- " << Twi << " ---" << endl;
@@ -450,11 +450,11 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
 
                     dT=Twi-Tfi;
                     dT = (dT >= 0.0) ? max(dT, 1e-6) : min(dT, -1e-6);
-                    scalar hwlTB(qCHFi*wfTB/dT/Areai);
+                    scalar hwlTB(qCHFi*wfTB/dT);
 
                     // Same as Stefan did :
                     (*dmdtWPtr_)[celli] = 
-                        (qCHFi*wfTB+Areai*(1-wfTB)*hGammaiMIN*(Twi-Tfi))/max(Li,1e-6);
+                        (qCHFi*Areai*wfTB+Areai*(1-wfTB)*hGammaiMIN*(Twi-Tfi))/max(Li,1e-6);
                     return (hwlTB+(1-wfTB)*hFBiMIN);
             
                 }

@@ -65,7 +65,7 @@ Foam::powerModels::fixedTemperature::fixedTemperature
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,
-            IOobject::NO_WRITE //AUTO_WRITE
+            IOobject::AUTO_WRITE //AUTO_WRITE
         ),
         mesh_,
         dimensionedScalar("", dimTemperature, 0.0),

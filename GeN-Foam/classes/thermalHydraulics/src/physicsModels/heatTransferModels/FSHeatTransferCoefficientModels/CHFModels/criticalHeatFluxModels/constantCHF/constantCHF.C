@@ -23,66 +23,51 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "GroeneveldStewartTLF.H"
+#include "constantCHF.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace LeidenFrostTemperatureModels
+namespace criticalHeatFluxModels
 {
-    defineTypeNameAndDebug(GroeneveldStewart, 0);
+    defineTypeNameAndDebug(constantCHF, 0);
     addToRunTimeSelectionTable
     (
-        TLFModel,
-        GroeneveldStewart,
-        LeidenFrostTemperatureModels
+        CHFModel,
+        constantCHF,
+        criticalHeatFluxModels
     );
 }
 }
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::LeidenFrostTemperatureModels::GroeneveldStewart::GroeneveldStewart
+Foam::criticalHeatFluxModels::constantCHF::constantCHF
 (
     const FSPair& pair,
     const dictionary& dict,
     const objectRegistry& objReg
 )
 :
-    TLFModel
+    CHFModel
     (
         pair,
         dict,
         objReg
     ),
-    criticalPressure_(dict.get<scalar>("criticalPressure"))
+    value_(dict.get<scalar>("value"))
 {}
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::LeidenFrostTemperatureModels::GroeneveldStewart::value
+Foam::scalar Foam::criticalHeatFluxModels::constantCHF::value
 (
     const label& celli
 ) const
 {
-    const scalar& pli(p_[celli]);
-    const scalar& Tsati(Tsat_[celli]);
-
-    scalar Tmin(0);
-    if (pli<9*1e6) // Correlation from GroeneveldStewart, valid for pressure P<9 MPa
-    {
-        Tmin = 557.85+44.1*pli*(1e-6)-3.72*pow(pli*1e-6,2);
-    }
-    else // Ramp up to critical pressure 
-    {
-        scalar DeltaTmin(557.85+44.1*9-3.72*pow(9,2)-Tsati);
-        Tmin = Tsati+(criticalPressure_-pli)/(criticalPressure_-9*1e6)*DeltaTmin;  
-    }
-
-    return Tmin;
-
+  return value_;
 }
 
 // ************************************************************************* //

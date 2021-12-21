@@ -7,7 +7,8 @@
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
- OpenFOAM is free software: you can redistribute it and/or modify it
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
@@ -23,66 +24,46 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "GroeneveldStewartTLF.H"
-#include "addToRunTimeSelectionTable.H"
+#include "CHFModel.H"
+#include "myOps.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace LeidenFrostTemperatureModels
-{
-    defineTypeNameAndDebug(GroeneveldStewart, 0);
-    addToRunTimeSelectionTable
+    defineTypeNameAndDebug(CHFModel, 0);
+    defineRunTimeSelectionTable
     (
-        TLFModel,
-        GroeneveldStewart,
-        LeidenFrostTemperatureModels
+        CHFModel, 
+        criticalHeatFluxModels
     );
-}
 }
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::LeidenFrostTemperatureModels::GroeneveldStewart::GroeneveldStewart
+Foam::CHFModel::CHFModel
 (
     const FSPair& pair,
     const dictionary& dict,
     const objectRegistry& objReg
 )
 :
-    TLFModel
+    IOdictionary
     (
-        pair,
-        dict,
-        objReg
+        IOobject
+        (
+            "CHFModel."+typeName,
+            pair.mesh().time().timeName(),
+            objReg,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        dict
     ),
-    criticalPressure_(dict.get<scalar>("criticalPressure"))
+    pair_(pair)
 {}
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::LeidenFrostTemperatureModels::GroeneveldStewart::value
-(
-    const label& celli
-) const
-{
-    const scalar& pli(p_[celli]);
-    const scalar& Tsati(Tsat_[celli]);
-
-    scalar Tmin(0);
-    if (pli<9*1e6) // Correlation from GroeneveldStewart, valid for pressure P<9 MPa
-    {
-        Tmin = 557.85+44.1*pli*(1e-6)-3.72*pow(pli*1e-6,2);
-    }
-    else // Ramp up to critical pressure 
-    {
-        scalar DeltaTmin(557.85+44.1*9-3.72*pow(9,2)-Tsati);
-        Tmin = Tsati+(criticalPressure_-pli)/(criticalPressure_-9*1e6)*DeltaTmin;  
-    }
-
-    return Tmin;
-
-}
 
 // ************************************************************************* //

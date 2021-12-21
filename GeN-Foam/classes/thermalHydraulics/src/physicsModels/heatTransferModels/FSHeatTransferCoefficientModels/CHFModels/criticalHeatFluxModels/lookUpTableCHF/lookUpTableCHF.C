@@ -23,66 +23,73 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "GroeneveldStewartTLF.H"
+#include "lookUpTableCHF.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace LeidenFrostTemperatureModels
+namespace criticalHeatFluxModels
 {
-    defineTypeNameAndDebug(GroeneveldStewart, 0);
+    defineTypeNameAndDebug(lookUpTableCHF, 0);
     addToRunTimeSelectionTable
     (
-        TLFModel,
-        GroeneveldStewart,
-        LeidenFrostTemperatureModels
+        CHFModel,
+        lookUpTableCHF,
+        criticalHeatFluxModels
     );
 }
 }
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::LeidenFrostTemperatureModels::GroeneveldStewart::GroeneveldStewart
+Foam::criticalHeatFluxModels::lookUpTableCHF::lookUpTableCHF
 (
     const FSPair& pair,
     const dictionary& dict,
     const objectRegistry& objReg
 )
 :
-    TLFModel
+    CHFModel
     (
         pair,
         dict,
         objReg
     ),
-    criticalPressure_(dict.get<scalar>("criticalPressure"))
+    quality_(pair.fluidRef().flowQuality()),
+    p_(pair.mesh().lookupObject<volScalarField>("p")),
+    rhoL_(pair.mesh().lookupObject<volScalarField>("thermo:rho.liquid")),
+    rhoV_(pair.mesh().lookupObject<volScalarField>("thermo:rho.vapour")),
+    uL_(pair.fluidRef().magU()),
+    uV_(pair.mesh().lookupObject<volScalarField>("magU.vapour")),
+    normalizedL_(pair.fluidRef().normalized())
 {}
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::LeidenFrostTemperatureModels::GroeneveldStewart::value
+Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
 (
     const label& celli
 ) const
 {
-    const scalar& pli(p_[celli]);
-    const scalar& Tsati(Tsat_[celli]);
+    const scalar& xi(quality_[celli]);
+    const scalar& pi(p_[celli]);
+    const scalar& rhoLi(rhoL_[celli]);
+    const scalar& rhoVi(rhoV_[celli]);
+    const scalar& uLi(uL_[celli]);
+    const scalar& uVi(uV_[celli]);
+    const scalar& aLi(normalizedL_[celli]);
 
-    scalar Tmin(0);
-    if (pli<9*1e6) // Correlation from GroeneveldStewart, valid for pressure P<9 MPa
-    {
-        Tmin = 557.85+44.1*pli*(1e-6)-3.72*pow(pli*1e-6,2);
-    }
-    else // Ramp up to critical pressure 
-    {
-        scalar DeltaTmin(557.85+44.1*9-3.72*pow(9,2)-Tsati);
-        Tmin = Tsati+(criticalPressure_-pli)/(criticalPressure_-9*1e6)*DeltaTmin;  
-    }
 
-    return Tmin;
+    scalar massFlowi(rhoLi*uLi*aLi+rhoVi*uVi*(1-aLi));
 
+    // Temporary Gauthier 
+
+
+
+
+    return 0;
 }
 
 // ************************************************************************* //
