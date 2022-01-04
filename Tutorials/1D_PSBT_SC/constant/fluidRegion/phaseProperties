@@ -102,7 +102,7 @@ structureProperties
             /*
             // This is an example on how to provide a linear variation of power
             // from zero to nominal
-            powerDensityTimeProfile
+            powerTimeProfile
             {
                 type                            table;
 
