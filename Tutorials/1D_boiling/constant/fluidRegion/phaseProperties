@@ -370,7 +370,7 @@ structureProperties
 
                 // This shows how to provide a linear variation of power
                 // from 1e9 to 2e9 in 100 sec
-                powerDensityTimeProfile
+                powerTimeProfile
                 {
                     type                            table;
 
