@@ -40,16 +40,9 @@ Foam::twoPhaseDragMultiplierModel::New
     Info<< "Selecting twoPhaseDragMultiplierModel: " 
         << type << endl;
 
-    twoPhaseDragMultiplierModelsConstructorTable::iterator 
-        cstrIter = 
-            twoPhaseDragMultiplierModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = twoPhaseDragMultiplierModelsConstructorTable(type);
 
-    if 
-    (
-        cstrIter 
-        == 
-        twoPhaseDragMultiplierModelsConstructorTablePtr_->end()
-    )
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown twoPhaseDragMultiplierModel type "
@@ -60,8 +53,12 @@ Foam::twoPhaseDragMultiplierModel::New
             ->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<twoPhaseDragMultiplierModel>
+        (
+            ctorPtr(mesh, dict, objReg)
+        );
 
-    return cstrIter()(mesh, dict, objReg);
 }
 
 // ************************************************************************* //

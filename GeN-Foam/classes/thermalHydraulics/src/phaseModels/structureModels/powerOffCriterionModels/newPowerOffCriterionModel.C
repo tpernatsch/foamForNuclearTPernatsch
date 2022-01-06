@@ -37,10 +37,9 @@ Foam::autoPtr<Foam::powerOffCriterionModel> Foam::powerOffCriterionModel::New
 
     Info<< "Selecting powerOffCriterionModel type :" << type << endl;
 
-    powerOffCriterionModelsConstructorTable::iterator cstrIter =
-        powerOffCriterionModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = powerOffCriterionModelsConstructorTable(type);
 
-    if (cstrIter == powerOffCriterionModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown type type "
@@ -49,8 +48,11 @@ Foam::autoPtr<Foam::powerOffCriterionModel> Foam::powerOffCriterionModel::New
             << powerOffCriterionModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
-
-    return cstrIter()(mesh, dict);
+    return
+        autoPtr<powerOffCriterionModel>
+        (
+            ctorPtr(mesh, dict)
+        );
 }
 
 

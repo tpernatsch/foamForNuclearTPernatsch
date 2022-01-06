@@ -38,11 +38,10 @@ Foam::autoPtr<Foam::regimeMapModel> Foam::regimeMapModel::New
 
     Info<< endl << "Constructing regimeMap " << dict.dictName() 
         << " of type: " << type << endl;
- 
-    regimeMapModelsConstructorTable::iterator cstrIter =
-        regimeMapModelsConstructorTablePtr_->find(type);
 
-    if (cstrIter == regimeMapModelsConstructorTablePtr_->end())
+    auto* ctorPtr = regimeMapModelsConstructorTable(type);
+
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown type type "
@@ -51,8 +50,12 @@ Foam::autoPtr<Foam::regimeMapModel> Foam::regimeMapModel::New
             << regimeMapModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<regimeMapModel>
+        (
+            ctorPtr(mesh, dict)
+        );
 
-    return cstrIter()(mesh, dict);
 }
 
 

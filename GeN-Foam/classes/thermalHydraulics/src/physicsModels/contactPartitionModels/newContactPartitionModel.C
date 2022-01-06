@@ -41,15 +41,9 @@ Foam::contactPartitionModel::New
     Info<< "Selecting contactPartitionModel for pair " << pair.name() << ": " 
         << type << endl;
 
-    contactPartitionModelsConstructorTable::iterator 
-        cstrIter = contactPartitionModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = contactPartitionModelsConstructorTable(type);
 
-    if 
-    (
-        cstrIter 
-        == 
-        contactPartitionModelsConstructorTablePtr_->end()
-    )
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown contactPartitionModel type "
@@ -60,8 +54,12 @@ Foam::contactPartitionModel::New
             ->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<contactPartitionModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 

@@ -93,9 +93,8 @@ Foam::autoPtr<className> Foam::className::New                               \
     word type(dict.get<word>("type"));                                      \
     Info<< "Selecting " << STRING(className) << " for pair "                \
         << pair.name() << ": " << type << endl;                             \
-    className##sConstructorTable::iterator cstrIter =                       \
-        className##sConstructorTablePtr_->find(type);                       \
-    if (cstrIter == className##sConstructorTablePtr_->end())                \
+    auto* ctorPtr = className##sConstructorTable(type);                     \
+    if (!ctorPtr)                                                           \
     {                                                                       \
         FatalErrorInFunction                                                \
             << "Unknown " << STRING(className) << " type "                  \
@@ -105,7 +104,11 @@ Foam::autoPtr<className> Foam::className::New                               \
             << className##sConstructorTablePtr_->sortedToc()                \
             << exit(FatalError);                                            \
     }                                                                       \
-    return cstrIter()(pair, dict, objReg);                                  \
+    return                                                                  \
+        autoPtr<FFHeatTransferCoefficientModel>                             \
+        (                                                                   \
+            ctorPtr(pair, dict, objReg)                                     \
+        );                                                                  \
 }                                                                           \
 Foam::className::className                                                  \
 (                                                                           \

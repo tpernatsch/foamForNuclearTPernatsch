@@ -59,7 +59,7 @@ structureProperties
         Dh              0.005;
         powerModel
         {
-            type            constantPower;
+            type            fixedPower;
             volumetricArea  300;
             T               653.15;
             Cp              500;

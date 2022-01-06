@@ -45,10 +45,9 @@ Foam::TONBModel::New
     Info<< "Selecting TONBModel for pair " << pair.name()
         << ": " << type << endl;
     
-    TONBModelsConstructorTable::iterator cstrIter =
-        TONBModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = TONBModelsConstructorTable(type);
 
-    if (cstrIter == TONBModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluid-structure TONBModel type "
@@ -58,8 +57,12 @@ Foam::TONBModel::New
             << TONBModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<TONBModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 // ************************************************************************* //

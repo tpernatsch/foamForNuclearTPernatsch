@@ -40,15 +40,9 @@ Foam::autoPtr<Foam::dispersionModel> Foam::dispersionModel::New
     Info<< "Selecting dispersionModel for pair " << pair.name() << ": " 
         << type << endl;
 
-    dispersionModelsConstructorTable::iterator 
-        cstrIter = dispersionModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = dispersionModelsConstructorTable(type);
 
-    if 
-    (
-        cstrIter 
-        == 
-        dispersionModelsConstructorTablePtr_->end()
-    )
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown dispersionModel type "
@@ -59,8 +53,12 @@ Foam::autoPtr<Foam::dispersionModel> Foam::dispersionModel::New
             ->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<dispersionModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 
