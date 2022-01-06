@@ -45,10 +45,9 @@ Foam::flowEnhancementFactorModel::New
     Info<< "Selecting flowEnhancementFactorModel for pair " << pair.name()
         << ": " << type << endl;
     
-    flowEnhancementFactorModelsConstructorTable::iterator cstrIter =
-        flowEnhancementFactorModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = flowEnhancementFactorModelsConstructorTable(type);
 
-    if (cstrIter == flowEnhancementFactorModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluid-structure flowEnhancementFactorModel type "
@@ -58,8 +57,12 @@ Foam::flowEnhancementFactorModel::New
             << flowEnhancementFactorModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<flowEnhancementFactorModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 // ************************************************************************* //

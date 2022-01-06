@@ -44,11 +44,10 @@ Foam::FSHeatTransferCoefficientModel::New
 
     Info<< "Selecting FSHeatTransferCoefficientModel for pair " << pair.name()
         << ": " << type << endl;
-    
-    FSHeatTransferCoefficientModelsConstructorTable::iterator cstrIter =
-        FSHeatTransferCoefficientModelsConstructorTablePtr_->find(type);
 
-    if (cstrIter == FSHeatTransferCoefficientModelsConstructorTablePtr_->end())
+    auto* ctorPtr = FSHeatTransferCoefficientModelsConstructorTable(type);
+
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluid-structure FSHeatTransferCoefficientModel type "
@@ -58,8 +57,12 @@ Foam::FSHeatTransferCoefficientModel::New
             << FSHeatTransferCoefficientModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<FSHeatTransferCoefficientModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 // ************************************************************************* //

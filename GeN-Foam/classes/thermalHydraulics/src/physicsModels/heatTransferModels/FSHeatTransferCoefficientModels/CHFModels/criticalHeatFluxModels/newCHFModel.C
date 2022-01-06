@@ -45,10 +45,9 @@ Foam::CHFModel::New
     Info<< "Selecting CHFModel for pair " << pair.name()
         << ": " << type << endl;
     
-    criticalHeatFluxModelsConstructorTable::iterator cstrIter =
-        criticalHeatFluxModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = criticalHeatFluxModelsConstructorTable(type);
 
-    if (cstrIter == criticalHeatFluxModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluid-structure CHFModel type "
@@ -58,8 +57,11 @@ Foam::CHFModel::New
             << criticalHeatFluxModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
-
-    return cstrIter()(pair, dict, objReg);
+    return
+        autoPtr<CHFModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 }
 
 // ************************************************************************* //

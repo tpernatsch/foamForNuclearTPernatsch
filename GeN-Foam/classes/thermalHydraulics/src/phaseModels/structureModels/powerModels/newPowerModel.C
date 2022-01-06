@@ -38,13 +38,9 @@ Foam::autoPtr<Foam::powerModel> Foam::powerModel::New
     Info<< "Constructing powerModel of type " << type 
         << " in region(s): " << dicts.keys() << endl;
 
-    powerModelsConstructorTable::iterator cstrIter =
-        powerModelsConstructorTablePtr_->find
-        (
-            type
-        );
+    auto* ctorPtr = powerModelsConstructorTable(type);
 
-    if (cstrIter == powerModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown type type "
@@ -54,7 +50,12 @@ Foam::autoPtr<Foam::powerModel> Foam::powerModel::New
             << exit(FatalError);
     }
 
-    return cstrIter()(structureRef, dicts);
+    return
+        autoPtr<powerModel>
+        (
+            ctorPtr(structureRef, dicts)
+        );
+
 }
 
 

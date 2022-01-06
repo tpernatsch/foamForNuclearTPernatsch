@@ -137,10 +137,9 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
 
     Info<< "Selecting neutronics model type " << modelName << endl;
 
-    dictionaryConstructorTable::iterator cstrIter =
-        dictionaryConstructorTablePtr_->find(modelName);
+    auto* ctorPtr = dictionaryConstructorTable(modelName);
 
-    if (cstrIter == dictionaryConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorIn
         (
@@ -152,11 +151,11 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
             << dictionaryConstructorTablePtr_->toc()
             << exit(FatalError);
     }
-
-    return autoPtr<neutronics>
-    (
-        cstrIter()(mesh)
-    );
+    return
+        autoPtr<neutronics>
+        (
+            ctorPtr(mesh)
+        );
 }
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //

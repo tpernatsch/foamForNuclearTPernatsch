@@ -44,11 +44,10 @@ Foam::suppressionFactorModel::New
 
     Info<< "Selecting suppressionFactorModel for pair " << pair.name()
         << ": " << type << endl;
-    
-    suppressionFactorModelsConstructorTable::iterator cstrIter =
-        suppressionFactorModelsConstructorTablePtr_->find(type);
 
-    if (cstrIter == suppressionFactorModelsConstructorTablePtr_->end())
+    auto* ctorPtr = suppressionFactorModelsConstructorTable(type);
+
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluid-structure suppressionFactorModel type "
@@ -58,8 +57,12 @@ Foam::suppressionFactorModel::New
             << suppressionFactorModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<suppressionFactorModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 // ************************************************************************* //

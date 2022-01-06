@@ -38,10 +38,9 @@ Foam::autoPtr<Foam::phaseChangeModel> Foam::phaseChangeModel::New
     Info<< "Selecting phaseChangeModel: "
         << type << endl;
 
-    phaseChangeModelsConstructorTable::iterator cstrIter =
-        phaseChangeModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = phaseChangeModelsConstructorTable(type);
 
-    if (cstrIter == phaseChangeModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown phaseChangeModel type "
@@ -50,8 +49,12 @@ Foam::autoPtr<Foam::phaseChangeModel> Foam::phaseChangeModel::New
             << phaseChangeModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<phaseChangeModel>
+        (
+            ctorPtr(pair, dict)
+        );
     
-    return cstrIter()(pair, dict);
 }
 
 

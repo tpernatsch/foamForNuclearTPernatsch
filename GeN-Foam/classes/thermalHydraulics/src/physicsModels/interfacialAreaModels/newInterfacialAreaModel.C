@@ -41,15 +41,9 @@ Foam::interfacialAreaModel::New
     Info<< "Selecting interfacialAreaModel for pair " << pair.name() << ": " 
         << type << endl;
 
-    interfacialAreaModelsConstructorTable::iterator 
-        cstrIter = interfacialAreaModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = interfacialAreaModelsConstructorTable(type);
 
-    if 
-    (
-        cstrIter 
-        == 
-        interfacialAreaModelsConstructorTablePtr_->end()
-    )
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown interfacialAreaModel type "
@@ -60,8 +54,12 @@ Foam::interfacialAreaModel::New
             ->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<interfacialAreaModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 

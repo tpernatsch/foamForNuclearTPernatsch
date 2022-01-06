@@ -39,11 +39,10 @@ Foam::autoPtr<Foam::FFDragCoefficientModel> Foam::FFDragCoefficientModel::New
 
     Info<< "Selecting FFDragCoefficientModel for pair " << pair.name()
         << ": " << type << endl;
-    
-    FFDragCoefficientModelsConstructorTable::iterator cstrIter =
-        FFDragCoefficientModelsConstructorTablePtr_->find(type);
 
-    if (cstrIter == FFDragCoefficientModelsConstructorTablePtr_->end())
+    auto* ctorPtr = FFDragCoefficientModelsConstructorTable(type);
+
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluid-fluid dragCoefficientModel type "
@@ -53,8 +52,12 @@ Foam::autoPtr<Foam::FFDragCoefficientModel> Foam::FFDragCoefficientModel::New
             << FFDragCoefficientModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<FFDragCoefficientModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 // ************************************************************************* //

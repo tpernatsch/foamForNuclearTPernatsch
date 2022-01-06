@@ -41,10 +41,9 @@ Foam::autoPtr<Foam::latentHeatModel> Foam::latentHeatModel::New
     Info<< "Selecting latentHeatModel: "
         << type << endl;
 
-    latentHeatModelsConstructorTable::iterator cstrIter =
-        latentHeatModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = latentHeatModelsConstructorTable(type);
 
-    if (cstrIter == latentHeatModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown latentHeatModel type "
@@ -53,8 +52,11 @@ Foam::autoPtr<Foam::latentHeatModel> Foam::latentHeatModel::New
             << latentHeatModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
-
-    return cstrIter()(pcm, dict, objReg);
+    return
+        autoPtr<latentHeatModel>
+        (
+            ctorPtr(pcm, dict, objReg)
+        );
 }
 
 

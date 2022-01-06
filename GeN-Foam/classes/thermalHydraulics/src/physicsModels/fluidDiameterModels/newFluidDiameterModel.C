@@ -40,20 +40,14 @@ Foam::autoPtr<Foam::fluidDiameterModel> Foam::fluidDiameterModel::New
     Info<< "Selecting fluidDiameterModel for fluid " << fluid.name() << ": " 
         << type << endl;
 
-    fluidDiameterModelsConstructorTable::iterator 
-        cstrIter = fluidDiameterModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = fluidDiameterModelsConstructorTable(type);
 
     FSPair& pair
     (
         fluid.mesh().lookupObjectRef<FSPair>(fluid.name()+".structure")
     );
 
-    if 
-    (
-        cstrIter 
-        == 
-        fluidDiameterModelsConstructorTablePtr_->end()
-    )
+    if(!ctorPtr) 
     {
         FatalErrorInFunction
             << "Unknown fluidDiameterModel type "
@@ -64,8 +58,11 @@ Foam::autoPtr<Foam::fluidDiameterModel> Foam::fluidDiameterModel::New
             ->sortedToc()
             << exit(FatalError);
     }
-
-    return cstrIter()(pair, dict, objReg);
+    return
+        autoPtr<fluidDiameterModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 }
 
 Foam::autoPtr<Foam::fluidDiameterModel> Foam::fluidDiameterModel::New
@@ -80,15 +77,9 @@ Foam::autoPtr<Foam::fluidDiameterModel> Foam::fluidDiameterModel::New
     Info<< "Selecting fluidDiameterModel for fluid " << pair.fluidRef().name() 
         << ": " << type << endl;
 
-    fluidDiameterModelsConstructorTable::iterator 
-        cstrIter = fluidDiameterModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = fluidDiameterModelsConstructorTable(type);
 
-    if 
-    (
-        cstrIter 
-        == 
-        fluidDiameterModelsConstructorTablePtr_->end()
-    )
+    if(!ctorPtr) 
     {
         FatalErrorInFunction
             << "Unknown fluidDiameterModel type "
@@ -99,8 +90,11 @@ Foam::autoPtr<Foam::fluidDiameterModel> Foam::fluidDiameterModel::New
             ->sortedToc()
             << exit(FatalError);
     }
-
-    return cstrIter()(pair, dict, objReg);
+    return
+        autoPtr<fluidDiameterModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 }
 
 // ************************************************************************* //

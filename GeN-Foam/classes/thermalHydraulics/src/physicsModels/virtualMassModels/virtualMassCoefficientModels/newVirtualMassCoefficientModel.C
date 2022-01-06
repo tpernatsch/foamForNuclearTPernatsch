@@ -41,16 +41,9 @@ Foam::virtualMassCoefficientModel::New
     Info<< "Selecting virtualMassCoefficientModel for pair " << pair.name() 
         << ": " << type << endl;
 
-    virtualMassCoefficientModelsConstructorTable::iterator 
-        cstrIter = 
-            virtualMassCoefficientModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = virtualMassCoefficientModelsConstructorTable(type);
 
-    if 
-    (
-        cstrIter 
-        == 
-        virtualMassCoefficientModelsConstructorTablePtr_->end()
-    )
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown virtualMassCoefficientModel type "
@@ -61,8 +54,11 @@ Foam::virtualMassCoefficientModel::New
             ->sortedToc()
             << exit(FatalError);
     }
-
-    return cstrIter()(pair, dict, objReg);
+    return
+        autoPtr<virtualMassCoefficientModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 }
 
 // ************************************************************************* //

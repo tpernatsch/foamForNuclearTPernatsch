@@ -54,10 +54,9 @@ Foam::autoPtr<Foam::thermalHydraulicsModel> Foam::thermalHydraulicsModel::New
 
     Info<< "Selecting thermalHydraulicsModel of type: " << type << endl;
 
-    thermalHydraulicsModelsConstructorTable::iterator cstrIter =
-        thermalHydraulicsModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = thermalHydraulicsModelsConstructorTable(type);
 
-    if (cstrIter == thermalHydraulicsModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown thermalHydraulicsModel of type: "
@@ -66,8 +65,12 @@ Foam::autoPtr<Foam::thermalHydraulicsModel> Foam::thermalHydraulicsModel::New
             << thermalHydraulicsModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<thermalHydraulicsModel>
+        (
+            ctorPtr(time, mesh, pimple, fvOpt)
+        );
 
-    return cstrIter()(time, mesh, pimple, fvOpt);
 }
 
 

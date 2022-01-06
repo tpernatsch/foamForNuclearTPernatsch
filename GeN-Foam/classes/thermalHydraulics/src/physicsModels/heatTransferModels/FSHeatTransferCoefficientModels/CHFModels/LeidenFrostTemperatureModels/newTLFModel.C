@@ -45,10 +45,9 @@ Foam::TLFModel::New
     Info<< "Selecting TLFModel for pair " << pair.name()
         << ": " << type << endl;
     
-    LeidenFrostTemperatureModelsConstructorTable::iterator cstrIter =
-        LeidenFrostTemperatureModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = LeidenFrostTemperatureModelsConstructorTable(type);
 
-    if (cstrIter == LeidenFrostTemperatureModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluid-structure TLFModel type "
@@ -58,8 +57,12 @@ Foam::TLFModel::New
             << LeidenFrostTemperatureModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<TLFModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 // ************************************************************************* //

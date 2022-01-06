@@ -2,8 +2,8 @@
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-#tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
-tutorials="1D_CHF" #Godiva_SN
+tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
+#tutorials="1D_CHF" #Godiva_SN
 rm regressionResults
 touch regressionResults
 resFile="./regressionResults"
@@ -36,7 +36,7 @@ do
 
         # check that keff for esfr steady State is ~0.9370011
         keff=$(foamDictionary ./steadyState/processor0/constant/neutroRegion/reactorState -entry keff -value)
-        printf "\nkeff is $keff . It should be ~0.936827  \n" >> ../$resFile
+        printf "keff is $keff . It should be ~0.936827  \n" >> ../$resFile
 
         # check that power in esfr transient is ~8e08
         power=$(grep power ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
@@ -94,7 +94,7 @@ do
         # check that results are correct
         input="./90/fluidRegion/T.fixedPower"
         TwallTop=$(head -40 "$input" | tail -1  )
-        printf "temperature of the structure at the top of the channel at 90 seconds is: $TwallTop . It should be 2625.18 \n"  >> ../../$resFile
+        printf "Temperature of the structure at the top of the channel at 90 seconds is: $TwallTop . It should be 2625.18 \n"  >> ../../$resFile
 
         cd ../..
  
@@ -281,7 +281,7 @@ do
 
         # check that keff for MSFR steady State is ~0.958765
         keff=$(foamDictionary ./steadyStateEN/constant/neutroRegion/reactorState -entry keff -value)
-        printf "\nkeff is $keff . It should be ~0.960283  \n" >> ../$resFile
+        printf "keff is $keff . It should be ~0.960283  \n" >> ../$resFile
 
         # check that power in MSFR transient is ~2e07
         power=$(grep power ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")

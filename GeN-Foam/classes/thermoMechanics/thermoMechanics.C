@@ -100,11 +100,9 @@ Foam::autoPtr<Foam::thermoMechanics> Foam::thermoMechanics::New
 
     Info<< "Selecting thermoMechanics model type " << modelName << endl;
 
+    auto* ctorPtr = dictionaryConstructorTable(modelName);
 
-    dictionaryConstructorTable::iterator cstrIter =
-        dictionaryConstructorTablePtr_->find(modelName);
-
-    if (cstrIter == dictionaryConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorIn
         (
@@ -116,11 +114,12 @@ Foam::autoPtr<Foam::thermoMechanics> Foam::thermoMechanics::New
             << dictionaryConstructorTablePtr_->toc()
             << exit(FatalError);
     }
-
-    return autoPtr<thermoMechanics>
+    return
+    autoPtr<thermoMechanics>
     (
-        cstrIter()(mesh)
+        ctorPtr(mesh)
     );
+
 
 }
 

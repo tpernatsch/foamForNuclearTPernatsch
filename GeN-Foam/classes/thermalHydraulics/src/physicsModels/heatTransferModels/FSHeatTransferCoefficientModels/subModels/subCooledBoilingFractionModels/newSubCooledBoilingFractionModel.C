@@ -45,10 +45,9 @@ Foam::subCooledBoilingFractionModel::New
     Info<< "Selecting subCooledBoilingFractionModel for pair " << pair.name()
         << ": " << type << endl;
     
-    subCooledBoilingFractionModelsConstructorTable::iterator cstrIter =
-        subCooledBoilingFractionModelsConstructorTablePtr_->find(type);
+    auto* ctorPtr = subCooledBoilingFractionModelsConstructorTable(type);
 
-    if (cstrIter == subCooledBoilingFractionModelsConstructorTablePtr_->end())
+    if (!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluid-structure subCooledBoilingFractionModel type "
@@ -58,8 +57,12 @@ Foam::subCooledBoilingFractionModel::New
             << subCooledBoilingFractionModelsConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
+    return
+        autoPtr<subCooledBoilingFractionModel>
+        (
+            ctorPtr(pair, dict, objReg)
+        );
 
-    return cstrIter()(pair, dict, objReg);
 }
 
 // ************************************************************************* //
