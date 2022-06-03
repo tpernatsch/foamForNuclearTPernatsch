@@ -365,8 +365,7 @@ Foam::fluid::fluid
 
     mesh.setFluxRequired(this->name());
 
-    //- Set initial cellZone powerDensity, if present, to make Carlo happy (I
-    //  kinda despise this, as well as the alpha setter below... oh well!)
+    //- Set initial cellZone powerDensity, if present
     if (dict_.found("initialPowerDensity"))
     {
         powerDensityPtr_.reset
