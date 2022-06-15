@@ -149,6 +149,7 @@ physicsModels/phaseChangeModels/saturationModels/newSaturationModel.C
 physicsModels/phaseChangeModels/saturationModels/BrowningPotter/BrowningPotterSaturation.C
 physicsModels/phaseChangeModels/saturationModels/constantTemperature/constantTemperatureSaturation.C
 physicsModels/phaseChangeModels/saturationModels/water/waterSaturation.C
+physicsModels/phaseChangeModels/saturationModels/waterTRACE/waterTRACESaturation.C
 
 physicsModels/templatedModels/constant/constantModels.C
 physicsModels/templatedModels/byRegime/byRegimeModels.C

@@ -22,24 +22,23 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::saturationModels::water
+    Foam::saturationModels::waterTRACE
 
 Description
-    Saturation model for water in the 0.01-350 *C range based on an 
-    interpolation of NIST data in the form Psat = A*(T-B)^C. The NIST data
-    can be found at:
-    https://www.nist.gov/system/files/documents/srd/NISTIR5078-Tab1.pdf
+    Saturation model for water in the 0.01-350 *C range based on TRACE:
+    https://www.nrc.gov/docs/ML1200/ML120060218.pdf
 
 Author
-    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+    
+	Gauthier Lazare, Carlo Fiorina
 
 SourceFiles
-    waterSaturation.C
+    waterTRACESaturation.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef waterSaturation_H
-#define waterSaturation_H
+#ifndef waterTRACESaturation_H
+#define waterTRACESaturation_H
 
 #include "saturationModel.H"
 
@@ -51,10 +50,10 @@ namespace saturationModels
 {
 
 /*---------------------------------------------------------------------------*\
-                         Class water Declaration
+                         Class waterTRACE Declaration
 \*---------------------------------------------------------------------------*/
 
-class water
+class waterTRACE
 :
     public saturationModel
 {
@@ -64,19 +63,23 @@ private :
 
     const volScalarField& p_;
 
-    //- Coeffs
+    /*
+    // ----- Stefan Radman Version - Interpolation NIST  ----- //
     const scalar A_;
     const scalar B_;
     const scalar C_;
+    */
+    // Constants 
+    const scalar Rv_;
 
 public:
 
-    TypeName("water");
+    TypeName("waterTRACE");
 
     //- Constructors
 
         //- Construct from a dictionary
-        water
+        waterTRACE
         (
             const phaseChangeModel& pcm,
             const dictionary& dict, 
@@ -84,7 +87,7 @@ public:
         );
 
         //- Destructor
-        virtual ~water(){}
+        virtual ~waterTRACE(){}
 
     //- Member Functions
 
