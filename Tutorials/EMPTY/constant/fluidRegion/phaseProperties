@@ -19,7 +19,7 @@ FoamFile
 // --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-thermalHydraulicType    "onePhase";
+thermalHydraulicsType    "onePhase";
 
 // ------------------------------------------------------------------------- //
 // --- STRUCTURES PROPERTIES ----------------------------------------------- //
@@ -43,7 +43,7 @@ regimeMapModel
 // --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-physicsModelsByRegime
+physicsModels
 {
     dragModels
     {}
