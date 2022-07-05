@@ -86,7 +86,9 @@ Foam::powerModel::powerModel
         (
             IOobject::groupName("alpha", typeName),
             mesh_.time().timeName(),
-            mesh_
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
         ),
         mesh_,
         dimensionedScalar("", dimless, 0),
