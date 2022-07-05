@@ -18,6 +18,7 @@ EXE_INC = \
     -I./physicsModels/phasePairs \
     -I./physicsModels/turbulenceModels \
     -I./physicsModels/turbulenceModels/porousKEpsilon \
+    -I./physicsModels/turbulenceModels/porousKEpsilon2PhaseCorrected \
     -I./physicsModels/turbulenceModels/LaheyKEpsilon \
     -I./physicsModels/turbulenceModels/mixtureKEpsilon \
     -I./physicsModels/regimeMapModels \

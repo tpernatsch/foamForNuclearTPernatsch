@@ -75,6 +75,9 @@ makeRASModel(kEpsilon);
 #include "porousKEpsilon.H"
 makeRASModel(porousKEpsilon);
 
+#include "porousKEpsilon2PhaseCorrected.H"
+makeRASModel(porousKEpsilon2PhaseCorrected);
+
 #include "LaheyKEpsilon.H"
 makeRASModel(LaheyKEpsilon);
 

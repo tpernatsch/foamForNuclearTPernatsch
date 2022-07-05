@@ -24,52 +24,24 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::RASModels::porousKEpsilon
+    Foam::RASModels::porousKEpsilon2PhaseCorrected
 
 Group
     grpRASTurbulence
 
 Description
-    Same as standard OpenFOAM. porousKEpsilon is provided as additional model.
-    The only difference is that it forces k and epsilon to equilibrium values
-    inside the porous zones. These equilibium values can be set in the
-    porousKepsionProperties sub-dictionary here below.k and epsilon are 
-    determined based on correlations for tubulent intensity (I) and lengh 
-    scale (L). Turbulent intensity correlation in the form 
-    turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp,
-    with Reynolds number calculated by the thermal-hydraulic class, according 
-    to the input data in phaseProperties. 
-
-    Please notice that a porous medium simulation using the porousKEpsilon 
-    model entails the risk of an unstable solution. This is due to the fact 
-    that the turbulent viscosity will be that of the sub-scale structure, and 
-    thus not enough to stabilize a solution on the length scale of the coarse 
-    mesh. To address this problem, one can define the keyword DhStruct in 
-    constant/fluidRegion/phaseProperties/dragModels.(nameOfPhase).structure.
-    (nameOfCellZones). This keyword defines the hydraulic diameter of the whole
-    porous structure. The code uses it to make sure the turbulent viscosity 
-    results in a  laminar Reynolds number (defaulted to 500).
-
-    porousKEpsilonProperties
-    {
-        "zones of application"
-        {
-        
-            convergenceLength           0.5; // k and epsilon will exponentially 
-                         // converge to equilibrium according to this exponent
-            turbulenceIntensityCoeff    0.16; 
-            turbulenceIntensityExp      -0.125;
-            turbulenceLengthScaleCoeff  0.07;
-    }
-
+   Same as porousKEpsiolon but turbulent intensity correlation in the form 
+   turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp + 
+   turbulenceIntensityAlphaCoeff * 
+   * (1-alpha), where alpha is the phase fraction. 
 
 SourceFiles
-    porousKEpsilon.C
+    porousKEpsilon2PhaseCorrected.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef porousKEpsilon_H
-#define porousKEpsilon_H
+#ifndef porousKEpsilon2PhaseCorrected_H
+#define porousKEpsilon2PhaseCorrected_H
 
 #include "RASModel.H"
 #include "eddyViscosity.H"
@@ -87,21 +59,21 @@ namespace RASModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class porousKEpsilon Declaration
+                           Class porousKEpsilon2PhaseCorrected Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class BasicTurbulenceModel>
-class porousKEpsilon
+class porousKEpsilon2PhaseCorrected
 :
     public eddyViscosity<RASModel<BasicTurbulenceModel>>
 {
     // Private Member Functions
 
         //- No copy construct
-        porousKEpsilon(const porousKEpsilon&) = delete;
+        porousKEpsilon2PhaseCorrected(const porousKEpsilon2PhaseCorrected&) = delete;
 
         //- No copy assignment
-        void operator=(const porousKEpsilon&) = delete;
+        void operator=(const porousKEpsilon2PhaseCorrected&) = delete;
 
 
 protected:
@@ -133,17 +105,20 @@ protected:
             const FSPair& FSPair_;
 
             //- Sub-dict
-            dictionary porousKEpsilonDict_;
+            dictionary porousKEpsilon2PhaseCorrectedDict_;
 
             //- Characteristic length over which k and epsilon converge to 
             //  their equilibrium values
             volScalarField convergenceLength_;
 
-            //- A in I_t = A*Re^B
+            //- A in I_t = A*Re^B + D*(1-alpha)
             volScalarField turbulenceIntensityCoeff_;
 
-            //- B in I_t = A*Re^B
+            //- B in I_t = A*Re^B + D*(1-alpha)
             volScalarField turbulenceIntensityExp_;
+
+            //- D in I_t = A*Re^B + D*(1-alpha)
+            volScalarField turbulenceIntensityAlphaCoeff_;
 
             //- C in L_t = C*Dh
             volScalarField turbulenceLengthScaleCoeff_;
@@ -153,7 +128,7 @@ protected:
             volScalarField equilibriumK_;
 
             //- Fields for nutStabilization as seen in the old GeN-Foam 
-            //  porousKEpsilon
+            //  porousKEpsilon2PhaseCorrected
             bool nutStabilization_;
             autoPtr<volScalarField> DhStructPtr_;
             autoPtr<volScalarField> laminarReStructPtr_;
@@ -178,13 +153,13 @@ public:
 
 
     //- Runtime type information
-    TypeName("porousKEpsilon");
+    TypeName("porousKEpsilon2PhaseCorrected");
 
 
     // Constructors
 
         //- Construct from components
-        porousKEpsilon
+        porousKEpsilon2PhaseCorrected
         (
             const alphaField& alpha,
             const rhoField& rho,
@@ -198,7 +173,7 @@ public:
 
 
     //- Destructor
-    virtual ~porousKEpsilon()
+    virtual ~porousKEpsilon2PhaseCorrected()
     {}
 
 
@@ -275,7 +250,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #ifdef NoRepository
-    #include "porousKEpsilon.C"
+    #include "porousKEpsilon2PhaseCorrected.C"
 #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
