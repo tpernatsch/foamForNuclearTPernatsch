@@ -109,6 +109,7 @@ EXE_INC = \
     -I./physicsModels/phaseChangeModels/saturationModels/BrowningPotter \
     -I./physicsModels/phaseChangeModels/saturationModels/constantTemperature \
     -I./physicsModels/phaseChangeModels/saturationModels/water \
+    -I./physicsModels/phaseChangeModels/saturationModels/waterTRACE \
     -I./physicsModels/templatedModels/constant \
     -I./physicsModels/templatedModels/byRegime \
     -I./physicsModels/templatedModels/BasePairModels \

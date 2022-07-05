@@ -298,7 +298,7 @@ physicsModels
         }
         saturationModel
         {
-            type                    water;
+            type                    waterTRACE;
         }
     }
 

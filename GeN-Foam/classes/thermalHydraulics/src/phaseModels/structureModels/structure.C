@@ -125,7 +125,9 @@ Foam::structure::structure
         (
             "alpha.passiveStructure",
             mesh.time().timeName(),
-            mesh
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
         ),
         *this
     ),
