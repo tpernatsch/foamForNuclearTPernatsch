@@ -6,9 +6,9 @@
     <filename>Compiling__GeN-Foam_8md</filename>
   </compound>
   <compound kind="file">
-    <name>GeN-Foam_Theory.md</name>
+    <name>Coupling.md</name>
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Documentation/doxygen/files/</path>
-    <filename>GeN-Foam__Theory_8md</filename>
+    <filename>Coupling_8md</filename>
   </compound>
   <compound kind="file">
     <name>Important_notes.md</name>
@@ -44,6 +44,16 @@
     <name>Source_code.md</name>
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Source__code_8md</filename>
+  </compound>
+  <compound kind="file">
+    <name>thermalHydraulics.md</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Documentation/doxygen/files/</path>
+    <filename>thermalHydraulics_8md</filename>
+  </compound>
+  <compound kind="file">
+    <name>thermoMechanics.md</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Documentation/doxygen/files/</path>
+    <filename>thermoMechanics_8md</filename>
   </compound>
   <compound kind="file">
     <name>Tips_and_tricks.md</name>
@@ -31771,9 +31781,9 @@
     <filename>COMPILE</filename>
   </compound>
   <compound kind="page">
-    <name>THEORY</name>
-    <title>GeN-Foam Theory</title>
-    <filename>THEORY</filename>
+    <name>COUPLING</name>
+    <title>Coupling options and time stepping</title>
+    <filename>COUPLING</filename>
   </compound>
   <compound kind="page">
     <name>NOTES</name>
@@ -31804,6 +31814,16 @@
     <name>SOURCE</name>
     <title>Source code</title>
     <filename>SOURCE</filename>
+  </compound>
+  <compound kind="page">
+    <name>TH</name>
+    <title>Thermal-hydraulics</title>
+    <filename>TH</filename>
+  </compound>
+  <compound kind="page">
+    <name>TM</name>
+    <title>Thermal-mechanics</title>
+    <filename>TM</filename>
   </compound>
   <compound kind="page">
     <name>TIPS</name>

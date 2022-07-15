@@ -17,6 +17,9 @@ The *reactorState* dictionary is a bit of a special dictionary, in the sense tha
 <LI> *externalReactivity* is read both by the spatial kinetics and point kinetics solvers and is used to instantly add (or remove) a certain reactivity at the beginning of a transient.
 <LI> *initialPrecursorPowers* can be read by the point kinetics sub-solver in case the user wishes to set initial concentrations of precursors. If not found, precursor concentration are initialized so to be in equilibrium with the starting conditions (i.e. a steady state is assumed). Please note that precursor concentrations are written to reactorState as the simulation progresses, yet time information (i.e. at which time did I have these precursor concentrations?) is lost in this way. Thus, to avoid obtaining different results when re-starting from the same-time step, the precursor concentrations are written on disk under the precursorPowers keyword, NOT initialPrecursorPowers. If the user wishes to restart a point-kinetics simulation from a different time-step in the middle of a transient, they needs to change the precursorPowers keyword into initialPrecursorPowers.
 </UL>
+
+All GeN-Foam neutronics models can be used for liquid-fuel reactors. One can activate this option using the  *liquidFuel* keyword in */system/controlDict*. Of course, in such case one should pay attention to setting proper boundary conditions for the precursors.
+
 A commented  reactorState can be found in
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/reactorState) (single phase). 
 
@@ -64,7 +67,9 @@ The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It con
 
 N.B.: cross sections must be expressed according to the International System of Units (so m, not cm).
 
-N.B.2: the *nuclearData...* files must always be present, even when not parametrizing cross-sections. If no parametrization is needed, the “zone” card must be left “blank” as:
+N.B.2: defaultPrec has 1/m3 units except for the adjoint solver that needs 1/m2/s.
+
+N.B.3: the *nuclearData...* files must always be present, even when not parametrizing cross-sections. If no parametrization is needed, the “zone” card must be left “blank” as:
 `zones();`
 </p>
 </div>
@@ -93,15 +98,9 @@ The CRMove* dictionary can be found under *constant/neutroRegion/*. It contains 
 </div>
 
 
-## Initial conditions
+## Initial and boundary conditions
 
-As in all standard OpenFOAM solvers, initial values (IC) and boundary conditions (BC) should be provided in the “0” folder, or in the folder corresponding to the *startTime* of the simulation, if different than 0. In the case of neutronics, the user can either specify different IC and BC for each one of the energy groups (with fluxes that must be named *fluxStar0*, *fluxStar1*, etc…), or provide the same IC and BC to all fluxes by using the *defaultFlux* field. In case of SP3 calculations, the IC and BC for the second moment can be imposed either for each energy (using fields named *fluxStar20*, *fluxStar21*, etc…), or to all energies by using the *defaultFlux2* field. When both *defaultFlux* and *fluxStar...* are present, the solver gives priority to *fluxStar...*. In case of SN calculations, it is suggested not to modify the boundary conditions and to use the *defaultFlux* file (an example is providedin the Godiva_SN tutorial).
-
-N.B.: when employing the adjoint solver, you will have to add the fields *adjointDefaultPrec* and *adjointDefaultFlux* in your initial time.
-
-
-
-## Boundary conditions
+As in all standard OpenFOAM solvers, initial values (IC) and boundary conditions (BC) should be provided in the “0” folder, or in the folder corresponding to the *startTime* of the simulation, if different than 0. In the case of neutronics, the user can either specify different IC and BC for each one of the energy groups (with fluxes that must be named *fluxStar0*, *fluxStar1*, etc…), or provide the same IC and BC to all fluxes by using the *defaultFlux* field. In case of SP3 calculations, the IC and BC for the second moment can be imposed either for each energy (using fields named *fluxStar20*, *fluxStar21*, etc…), or to all energies by using the *defaultFlux2* field. When both *defaultFlux* and *fluxStar...* are present, the solver gives priority to *fluxStar...*. In case of SN calculations, it is suggested not to modify the boundary conditions and to use the *defaultFlux* file (an example is providedin the Godiva_SN tutorial). When employing the adjoint solver, you will have to add the fields *adjointDefaultPrec* and *adjointDefaultFlux* in your initial time.
 
 In addition to the standard OpenFOAM BC, an albedo boundary condition (see *albedoSP3FvPatchField.H*) is available in GeN-Foam for diffusion and SP3 calculations and can be used according to the following syntax:
 
@@ -117,7 +116,12 @@ Please note that the boundary condition needs to be set both for first and secon
 
 IC and BC for precursors do not have to be specified for standard reactors. On the other hand, they should be specified in case of liquid fuel reactors (e.g., Molten Salt Reactors). This is possible by creating a *defaultPrec* field, in case the same conditions apply to all precursor groups, or by creating the fields named *prec0*, *prec1*, etc., in case different conditions must be provided for different precursor groups. 
 
+N.B.: boundary conditions must be applied to *fluxStar...* and not to *flux...* since GeN-Foam solves for these variables. *fluxStar...* represent continuous fluxes, while *flux...* represent the real fluxes. They differ only in case discontinuity factors are employed /cite FIORINA2016212. 
 
+
+## Discretization and solution
+
+Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/neutroRegion*. 
 
 
 © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021
