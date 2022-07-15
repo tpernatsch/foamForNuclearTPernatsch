@@ -52,17 +52,17 @@ then
     dirName=${filePath%/[^/]*}
     fileName=${filePath##*/}
 
-    awkScript=$WM_PROJECT_DIR/bin/tools/doxyFilter.awk
+    awkScript=./doxyFilter/doxyFilter.awk
 
     case "$1" in
     */applications/solvers/*.C | */applications/utilities/*.C )
-        awkScript=$WM_PROJECT_DIR/bin/tools/doxyFilter-top.awk
+        awkScript=./doxyFilter/doxyFilter-top.awk
         ;;
     esac
 
-    awk -f $WM_PROJECT_DIR/bin/tools/doxyFilter-table.awk "$1" | \
+    awk -f ./doxyFilter/doxyFilter-table.awk "$1" | \
     awk -f $awkScript  | \
-    sed -f $WM_PROJECT_DIR/bin/tools/doxyFilter.sed \
+    sed -f ./doxyFilter/doxyFilter.sed \
         -e s@%realFilePath%@$realFilePath@g \
         -e s@%filePath%@$filePath@g \
         -e s@%fileName%@$fileName@g \
