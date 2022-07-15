@@ -10,6 +10,7 @@ Beside the usual Doxygen documentation of the source code, it provides a basic u
 *  [Tutorials](@ref TUTORIALS)
 *  [Tips and tricks](@ref TIPS)
 *  [Important notes](@ref NOTES)
+*  [User manual](@ref USERMAN)
 
 
 © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021

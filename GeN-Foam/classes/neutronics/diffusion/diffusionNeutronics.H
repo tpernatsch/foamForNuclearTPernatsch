@@ -5,13 +5,15 @@
     \\  /    A nd           | Copyright held by original author
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
 
-    OpenFOAM is free software; you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by the
-    Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
     OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
@@ -19,23 +21,19 @@ License
     for more details.
 
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM; if not, write to the Free Software Foundation,
-    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
 
 Class
-    Foam::neutronics::diffusionNeutronics
+    Foam::diffusionNeutronics
 
 Description
-    subclass for diffusion neutronics.
-
-SourceFiles
-    diffusionNeutronics.C
+    Subclass for diffusion neutronics.
 
 Reference publications
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
     "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design, submitted
-
+    analysis of nuclear reactors", Nuclear Engineering and Design, submitted. 
     Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
     multi-physics solver to the European Sodium Fast Reactor and verification 
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
@@ -43,6 +41,9 @@ Reference publications
 
 Author of this file (and associated .C or included .H files)
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
+
+SourceFiles
+    diffusionNeutronics.C
 
 \*---------------------------------------------------------------------------*/
 

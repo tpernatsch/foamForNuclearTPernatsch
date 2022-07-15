@@ -14,13 +14,6 @@ s?^License.*?\*\/\
 \/\*! \\file %realFilePath%\
 <b>Original source file</b> <a href="%filePath%">%fileName%</a>\
 \
-\
-\
-\
-\
-\
-\
-\
 ?
 /^    /d
 }
@@ -76,6 +69,17 @@ s/Class *\n *\(.*\) */\\class \1/
 }
 
 
+# Group
+#     groupName
+# =>
+# \ingroup groupName
+#
+/^Group *$/,/^[^ ]/{
+s/^Group//
+s/^    /\\ingroup /
+}
+
+
 # Namespace
 #     namespaceName
 # =>
@@ -101,7 +105,8 @@ s/^    /\\typedef /
 # the first paragraph will be 'brief' and the others 'detail'
 /^Description *$/,/^[^ ]/{
 /^Description/c\
-<a class="anchor" name="Description"></a> \\brief
+<a class="anchor" name="Description"></a>\
+\\brief
 s/^    //
 }
 
@@ -134,7 +139,8 @@ s/^    //
 
 /^SourceFiles *$/,/^$/{
 s?SourceFiles?\\par Source files\
-<ul><li><a href="%filePath%">%fileName%</a></li>?
+<ul>\
+  <li><a href="%filePath%">%fileName%</a></li> ?
 s? *\([a-zA-Z0-9]*\.[a-zA-Z]*\)?  <li><a href="%dirName%/\1">\1</a></li>?
 s?^$?</ul>?
 }
@@ -148,6 +154,13 @@ s? *\([a-zA-Z0-9]*\.[a-zA-Z]*\)?  <li><a href="%dirName%/\1">\1</a></li>?
 }
 
 s/.*\*\//\*\//
+
+
+# Convert \heading in source files to bold font and add some space
+s#\\heading \(.*\)#<br><b>\1</b>#g
+
+# Add a linebreak
+s#\\linebreak#<br>#g
 
 }
 

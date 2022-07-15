@@ -2,9 +2,11 @@
 #------------------------------------------------------------------------------
 # =========                 |
 # \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-#  \\    /   O peration     | Website:  https://openfoam.org
-#   \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
 #    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011-2016 OpenFOAM Foundation
 #------------------------------------------------------------------------------
 # License
 #     This file is part of OpenFOAM.
@@ -39,10 +41,10 @@
 if [ "$#" -gt 0 ]
 then
 
-    realFilePath=$(echo $1 | sed -e s@^$WM_PROJECT_DIR@../../..@ )
+    realFilePath=$(echo "$1" | sed -e "s?^$WM_PROJECT_DIR?../../..?" )
     if [ -n "$FOAM_ONLINE_REPO" ]
     then
-        filePath=$(echo $1 | sed -e s@^$WM_PROJECT_DIR@$FOAM_ONLINE_REPO@ )
+        filePath=$(echo "$1" | sed -e "s?^$WM_PROJECT_DIR?$FOAM_ONLINE_REPO?" )
     else
         filePath=$realFilePath
     fi
@@ -50,18 +52,17 @@ then
     dirName=${filePath%/[^/]*}
     fileName=${filePath##*/}
 
-    awkScript=./doxyFilter/doxyFilter.awk
+    awkScript=$WM_PROJECT_DIR/bin/tools/doxyFilter.awk
 
     case "$1" in
     */applications/solvers/*.C | */applications/utilities/*.C )
-        awkScript=./doxyFilter/doxyFilter-top.awk
+        awkScript=$WM_PROJECT_DIR/bin/tools/doxyFilter-top.awk
         ;;
     esac
 
-    sed -f ./doxyFilter/doxyFilter-table.sed $1 | \
-    awk -f ./doxyFilter/doxyFilter-table.awk | \
+    awk -f $WM_PROJECT_DIR/bin/tools/doxyFilter-table.awk "$1" | \
     awk -f $awkScript  | \
-    sed -f ./doxyFilter/doxyFilter.sed \
+    sed -f $WM_PROJECT_DIR/bin/tools/doxyFilter.sed \
         -e s@%realFilePath%@$realFilePath@g \
         -e s@%filePath%@$filePath@g \
         -e s@%fileName%@$fileName@g \
