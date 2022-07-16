@@ -5,20 +5,26 @@
 
 ## Introduction
 
-The thermal-hydraulics class (see *thermalHydraulicsModel.H*) is a high-level class that contains essential data and variables that are common to various thermal-hydraulics sub-solvers. 
+Both single- and two-phase simulations can be performed using GeN-Foam. All sub-solvers were developed for a coarse-mesh porous-medium treatment of complex structures such as core and heat exchanger, and for a standard RANS treatment of clear-fluid regions. The sub-solvers automatically switch from a porous-medium (coarse-mesh) treatment to a standard CFD (fine-mesh) treatment when the colume fraction of the sub-scale structures is set to zero. This allows for an implict coupling of porous-medium (sub-channel-like in 2D and 3D, or system-code-like) treatment of compelex structures (e.g., core and heat exchnagers) with a standard CFD treatment of clear-fluid regions (e.g., plena and pools).
 
-Both single- and two-phase simulations can be performed using GeN-Foam. All sub-solvers were developed for a coarse-mesh porous-medium treatment of complex structures such as core and heat exchanger, and for a standard RANS treatment of clear-fluid regions. A coarse-mesh porous-medium treatment of the core implies that the core is modeled without resolving each pin. As a matter of fact, in principle and for consistency, the finest radial mesh chosen by a user should not finer than one cell per pin cell. Pressure drops are modeled based on user-selectable correlations. Correlations are also  used to evaluate the heat exchange with the fuel. The fuel can be modeled using a 1-D sub-scale model that will calculate temperatures in the cladding and pellet for the pins that are contained in a cell. In addition to fuel, one can model simpler structures. In this case, one single temperature (and not a radial profile) is evaluated for each cell. This can be used to model structures like the assembly wrappers, the reflectors, or for a simplified modelling of a heat exchanger. 
+A coarse-mesh porous-medium treatment of the core implies that the core is modeled without resolving the sub-scale structure (e.g., the fuel rods or the heat exchanger tubes). As a matter of fact, in principle and for consistency, the finest radial mesh chosen by a user should not finer than one cell per pin cell. A porous-medium formulation derives from a volume averaging of the Navier-Stokes equations. The volume averaging results in source terms that describe the interaction (drag and heat transfer) of the fluid with the sub-scale structure. In GeN-Foam, these source terms are modeled using user-selectable correlations for drag (e.g., correlations for the Darcy friction factor) and heat transfer (e.g., correlations for the Nusselt number). In this sense, a porous-medium model can be associated with a 3-D version of a system code.
 
+With regards to the modelling of the sub-scale structures, GeN-Foam allows to model simultaneously in the same region both a "power model" and a "passive structure". Power models are used to model fo instance the nuclear fuel (based on a 1-D approximation), electrically heated rods, or a fixed temperature body (which can be used to approximate a heat exchanger). Passive structures are structures that passively heats up or cool down based on their own heat capacity, volumetric area, and heat tranfer with the coolant. This can be used to model structures like the assembly wrappers or the reflectors.
 
-## Models and properties
+All thermal-hydraulics functionalities are handled by the class *thermalHydraulicsModel.H*, the derived classes for the various sub-solvers (see below), and a thermal-hydraulic library that can be found under */GeN-Foam/classes/thermalHydraulics/src*.
+
+## Sub-solvers
 
 Thermal-hydraulics calculations are performed by classes derived from *thermalHydraulicsModel.H* that contain specific sub-solvers:
 * *onePhase* for single-phase calculations, using the formulation proposed in Refs. \cite Radman2019ADesign \cite RADMAN2021111178 \cite RADMAN2021111422  (see *onePhase.H*)
 * *onePhaseLegacy* for single-phase calculations, using the formulation proposed in Ref. \cite FIORINA201524 (see *onePhaseLegacy.H*)
 * *twoPhase* for adjoint diffusion calculations, using the formulation proposed in Refs. \cite Radman2019ADesign \cite RADMAN2021111178 \cite RADMAN2021111422 (see *twoPhase.H*)
-For the user, the derived classes translate into runtime selectable models. The specific sub-solver along with the associated parameters to be used in a simulation can be selected at runtime in the *constant/fluidRegion/phaseProperties* dictionary. 
+For the user, the derived classes translate into runtime selectable models. The specific sub-solver  to be used in a simulation can be selected at runtime in the *phaseProperties* dictionary in *constant/fluidRegion/*, using the keyword *thermalHydraulicsType*. 
 
 
+## Porous-medium properties
+
+The various parameters to be used in a porous-medium simulation can be set using the *phaseProperties* dictionary. 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
 <b>For the user: the *phaseProperties* dictionary</b>
 
@@ -33,18 +39,10 @@ The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
 <b>For the user: the *g* dictionary</b>
 
+
+## Physical properties
+
 The *g* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows specifying the gravitational acceleration.
-</p>
-</div>
-<br>
-
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *turbulenceProperties* dictionary</b>
-
-The *turbulenceProperties* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows defining the turbulence model to be used.
-
-One can find a detailed, commented example in the tutorial 
-[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/turbulenceProperties).
 </p>
 </div>
 <br>
@@ -58,6 +56,20 @@ One can find a detailed, commented example in hte tutorials
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/thermophysicalProperties) (one-phase), 
 [1D_boiling (liquid)](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/thermophysicalProperties.liquid) (two-phase, liquid)
 [1D_boiling (vapour)](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/thermophysicalProperties.vapour) (two-phase, vapour)
+</p>
+</div>
+<br>
+
+
+## Turbulence properties
+
+<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<b>For the user: the *turbulenceProperties* dictionary</b>
+
+The *turbulenceProperties* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows defining the turbulence model to be used.
+
+One can find a detailed, commented example in the tutorial 
+[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/turbulenceProperties).
 </p>
 </div>
 <br>

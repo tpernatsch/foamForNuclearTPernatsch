@@ -35,9 +35,9 @@ A dummy mesh must always be present in all physics (region) directories, even if
 </div>
 
 The following sections describe the use of the 3 main classes of GeN-Foam, incuding some theory and useful references:
-* The [*neutronics* class](@ref NEUTRONICS)
-* The [*thermalHydraulics* class](@ref TH)
-* The [*thermoMechanics* class](@ref TM)
+* [*neutronics*](@ref NEUTRONICS)
+* [*thermalHydraulics*](@ref TH)
+* [*thermoMechanics*](@ref TM)
 
 The following section describes instead the coupling strategy and the general GeN-Foam options.
 
