@@ -73,29 +73,104 @@ The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is 
 		</UL>	
 	<LI> Fluid-structure heat-tranfer models (see FSHeatTransferCoefficientModel.H)
 		<UL>
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
-		<LI>  (see *.H*)
+		<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_) (see *NusseltFSHeatTransferCoefficient.H*)
+		<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_), plus and additional heat transfer coefficient to take into account the resistance of a wall, such that  H = Nu * kappa / Dh + H_wall (see *NusseltAndWallFSHeatTransferCoefficient.H*)
+		<LI>  Shah (see *ShahFSHeatTransferCoefficient.H*)
+		<LI>  Gorenflo (see *GorenfloFSHeatTransferCoefficient.H*)
+		<LI>  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does below CHF (see *multiRegimeBoilingTRACEFSHeatTransferCoefficient.H*) ADD REF GAUTHIER
+		<LI>  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does, including CHF and post-CHF. Not verified! It requires specifiyng the *multiRegimeBoilingTRACECHF* model for the water.structure heat tranfer, and the *multiRegimeBoilingVapourTRACE* model for the vapour.structure heat tranfer (see *multiRegimeBoilingTRACECHFFSHeatTransferCoefficient.H* and *multiRegimeBoilingVapourTRACEFSHeatTransferCoefficient.H*). Please notice that a lookup table for CHF is still missing. 
+		<LI>  multiRegimeBoiling - multi-regime heat transfer coefficient that replicates  the same logic as TRACE, but with more flexibility for user-selectable sub-models (see *.H*). Can be used below CHF.
+		<LI>  Sub-models employed by the multi-regime models:
+			<UL>
+			<LI> Critical heat flux related models (see *CHFModel.H*):
+				<UL>
+				<LI> Critical heat flux models
+					<UL> 
+					<LI> Constant, user-selctable value (see *constantCHF.H*)
+					<LI> Lookup table, not yet implemented (empty class at *lookUpTableCHF.H*)
+					</UL>
+				<LI> Leidenfrost models (see *TLFModel.H*)
+					<UL> 
+					<LI> Groeneveld Stewart (see *GroeneveldStewartTLF.H*)
+					</UL>
+				</UL>
+			<LI> Flow Enhancement Factor Models (see *flowEnhancementFactorModel.H*)
+				<UL>
+				<LI> Chen (see *ChenFlowEnhancementFactor.H*)
+				<LI> COBRA-TF (see *COBRA-TFFlowEnhancementFactor.H*)
+				<LI> Rezkallah Sims (see *RezkallahSimsFlowEnhancementFactor.H*)
+				</UL>
+			<LI> Post-CHF models (see *.H*)
+				<UL>
+				<LI> Cachard (for liquid) (see *CachardLiquidFSHeatTransferCoefficient.H*)
+				<LI> Cachard (for vapour) (see *CachardVapourFSHeatTransferCoefficient.H*)
+				</UL>
+			<LI> Sub-Cooled Boiling Fraction Models (see *.H*)
+				<UL>
+				<LI> Constant (see *constantSubCooledBoilingFraction.H*)
+				<LI> Saha Zuber (see *SahaZuberSubCooledBoilingFraction.H*)
+				</UL>
+			<LI> Superposition Nucleate Boiling (see *superpositionNucleateBoilingFSHeatTransferCoefficient.H*)
+			<LI> Suppression factor models (see *suppressionFactorModel.H*)
+				<UL>
+				<LI> Chen (see *ChenSuppressionFactor.H*)
+				<LI> COBRA-TF (see *COBRA-TFSuppressionFactor.H*)
+				</UL>
+			<LI> Temperature of the onset of nucleate boiling (see *TONBModel.H*)
+				<UL>
+				<LI> Basu (see *BasuTONB.H*)
+				</UL>
+			</UL>
 		</UL>	
 	</UL>
-<LI> Contact partition models
-<LI> Disperions models
-<LI> Fluid diameter models
-<LI> Virtual mass models
-<LI> Interfacial area models
+<LI> Contact partition models (see *contactPartitionModel.H*)
+	<UL>
+	<LI> Linear (see *linearContactPartition.H*)
+	<LI> Complementary (see *complementaryContactPartition.H*)
+	</UL>
+<LI> Disperions models (see *dispersionModel.H*)
+	<UL>
+	<LI> Constant (see *constantDispersion.H*)
+	</UL>	
+<LI> Fluid diameter models (see *fluidDiameterModel.H*)
+	<UL>
+	<LI> Iso-molar bubble (see *isomolarBubbleFluidDiameter.H*)
+	<LI> Iso-thermal bubble  (see *isothermalBubbleFluidDiameter.H*)
+	<LI> Pipe film (see *pipeFilmFluidDiameter.H*)
+	<LI> Wallis film (see *WallisFilmFluidDiameter.H*)
+	</UL>
+<LI> Virtual mass models (see *virtualMass.H*)
+	<UL>
+	<LI> Virtual mass coefficient (see *virtualMassCoefficientModel.H*)
+	</UL>	
+<LI> Interfacial area models (see *interfacialAreaModel.H*)
+	<UL>
+	<LI> Annular (see *annularInterfacialArea.H*)
+	<LI> No Kazimi  (see *NoKazimiInterfacialArea.H*)
+	<LI> Schor (see *SchorInterfacialArea.H*)
+	<LI> Spherical (see *sphericalInterfacialArea.H*)
+	</UL>	
 <LI> Phase change models
+	<UL>
+	<LI> Forced constant (see *forcedConstantPhaseChange.H*)
+	<LI> Heat driven  (see *heatDrivenPhaseChange.H*)
+	<LI> Latent heat (see *latentHeatModel.H*)
+		<UL>
+		<LI> Fink Leibowitz for sodium (see *FinkLeibowitzLatentHeat.H*)
+		<LI> NIST interpolation for water (see *waterLatentHeat.h*)
+		<LI> Use value for thermoPhysicalProerties dictionary (see *fromThermophysicalPropertiesLatentHeat.H*)
+		</UL>
+	<LI> Saturation temperature/pressure (see *saturationModel.H*)
+		<UL>
+		<LI> Browning Potter for sodium (see *BrowningPotterSaturation.H*)
+		<LI> NIST interpolation for water (see *waterSaturation.h*)
+		<LI> TRACE model interpolation for water - YET TO BE VEIFIED (see *waterTRACESaturation.h*)
+		<LI> Constant temperature (see *constantTemperatureSaturation.H*)
+		</UL>
+	</UL>	
 </UL>
 <br><br> Phase pairs
-<br><br> Regime maps
+<br><br> Regime maps. 1 or 2D maps. Can be mixed with multi-regime. example in 1D_PSBT_SC
 <br><br>One can find detailed, commented examples in the tutorials 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/phaseProperties) (single phase) and
 [1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/phaseProperties) (two phases). In addition, an example on how to use a two-dimensional flow-regime map can be found in [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_PSBT_SC/constant/fluidRegion/phaseProperties).

@@ -25,7 +25,7 @@ Class
     Foam::FSHeatTransferCoefficientModels::superposition
 
 Description
-    Heat transfer coefficient for that covers many regimes, from single phase
+    Heat transfer coefficient that covers many regimes, from single phase
     convection, two-phase convection, sub-cooled and nucleate boiling, to
     film boiling (the latter, hopefully).
 
