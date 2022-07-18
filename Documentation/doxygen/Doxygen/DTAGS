@@ -8653,180 +8653,6 @@
     <namespace>Foam::FFHeatTransferCoefficientModels</namespace>
   </compound>
   <compound kind="file">
-    <name>CHFModel.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/</path>
-    <filename>CHFModel_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="CHFModel_8H" name="CHFModel.H" local="yes" imported="no">CHFModel.H</includes>
-    <includes id="myOps_8H" name="myOps.H" local="yes" imported="no">myOps.H</includes>
-    <namespace>Foam</namespace>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam.html</anchorfile>
-      <anchor>a965eeee336473fdef01a764079f9c67f</anchor>
-      <arglist>(CHFModel, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>defineRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam.html</anchorfile>
-      <anchor>a7372fc01e45e28725fa54e51719f27ae</anchor>
-      <arglist>(CHFModel, criticalHeatFluxModels)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>CHFModel.H</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/</path>
-    <filename>CHFModel_8H</filename>
-    <includes id="fluid_8H" name="fluid.H" local="yes" imported="no">fluid.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
-    <class kind="class">Foam::CHFModel</class>
-    <namespace>Foam</namespace>
-  </compound>
-  <compound kind="file">
-    <name>constantCHF.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/constantCHF/</path>
-    <filename>constantCHF_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="constantCHF_8H" name="constantCHF.H" local="yes" imported="no">constantCHF.H</includes>
-    <namespace>Foam</namespace>
-    <namespace>Foam::criticalHeatFluxModels</namespace>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam_1_1criticalHeatFluxModels.html</anchorfile>
-      <anchor>a1342289283e87cbfe1afb5f35d7d9ace</anchor>
-      <arglist>(constantCHF, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>addToRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam_1_1criticalHeatFluxModels.html</anchorfile>
-      <anchor>a026104d1fab4088b2ae232c33dafd5ae</anchor>
-      <arglist>(CHFModel, constantCHF, criticalHeatFluxModels)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>constantCHF.H</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/constantCHF/</path>
-    <filename>constantCHF_8H</filename>
-    <includes id="CHFModel_8H" name="CHFModel.H" local="yes" imported="no">CHFModel.H</includes>
-    <class kind="class">Foam::criticalHeatFluxModels::constantCHF</class>
-    <namespace>Foam</namespace>
-    <namespace>Foam::criticalHeatFluxModels</namespace>
-  </compound>
-  <compound kind="file">
-    <name>lookUpTableCHF.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/lookUpTableCHF/</path>
-    <filename>lookUpTableCHF_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="lookUpTableCHF_8H" name="lookUpTableCHF.H" local="yes" imported="no">lookUpTableCHF.H</includes>
-    <namespace>Foam</namespace>
-    <namespace>Foam::criticalHeatFluxModels</namespace>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam_1_1criticalHeatFluxModels.html</anchorfile>
-      <anchor>a085ec610c2c983d6c29bda0d3e4ec1a8</anchor>
-      <arglist>(lookUpTableCHF, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>addToRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam_1_1criticalHeatFluxModels.html</anchorfile>
-      <anchor>a1aa2f47173f30829f9245afb6f02b073</anchor>
-      <arglist>(CHFModel, lookUpTableCHF, criticalHeatFluxModels)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>lookUpTableCHF.H</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/lookUpTableCHF/</path>
-    <filename>lookUpTableCHF_8H</filename>
-    <includes id="CHFModel_8H" name="CHFModel.H" local="yes" imported="no">CHFModel.H</includes>
-    <class kind="class">Foam::criticalHeatFluxModels::lookUpTableCHF</class>
-    <namespace>Foam</namespace>
-    <namespace>Foam::criticalHeatFluxModels</namespace>
-  </compound>
-  <compound kind="file">
-    <name>newCHFModel.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/</path>
-    <filename>newCHFModel_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="CHFModel_8H" name="CHFModel.H" local="yes" imported="no">CHFModel.H</includes>
-  </compound>
-  <compound kind="file">
-    <name>GroeneveldStewartTLF.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels/GroeneveldStewart/</path>
-    <filename>GroeneveldStewartTLF_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="GroeneveldStewartTLF_8H" name="GroeneveldStewartTLF.H" local="yes" imported="no">GroeneveldStewartTLF.H</includes>
-    <namespace>Foam</namespace>
-    <namespace>Foam::LeidenFrostTemperatureModels</namespace>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam_1_1LeidenFrostTemperatureModels.html</anchorfile>
-      <anchor>a84992aa76dd8a9d5e051ff8f301105c5</anchor>
-      <arglist>(GroeneveldStewart, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>addToRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam_1_1LeidenFrostTemperatureModels.html</anchorfile>
-      <anchor>a998d7da77eb9239b6d5bce8abbc60b95</anchor>
-      <arglist>(TLFModel, GroeneveldStewart, LeidenFrostTemperatureModels)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>GroeneveldStewartTLF.H</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels/GroeneveldStewart/</path>
-    <filename>GroeneveldStewartTLF_8H</filename>
-    <includes id="TLFModel_8H" name="TLFModel.H" local="yes" imported="no">TLFModel.H</includes>
-    <class kind="class">Foam::LeidenFrostTemperatureModels::GroeneveldStewart</class>
-    <namespace>Foam</namespace>
-    <namespace>Foam::LeidenFrostTemperatureModels</namespace>
-  </compound>
-  <compound kind="file">
-    <name>newTLFModel.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels/</path>
-    <filename>newTLFModel_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="TLFModel_8H" name="TLFModel.H" local="yes" imported="no">TLFModel.H</includes>
-  </compound>
-  <compound kind="file">
-    <name>TLFModel.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels/</path>
-    <filename>TLFModel_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="TLFModel_8H" name="TLFModel.H" local="yes" imported="no">TLFModel.H</includes>
-    <includes id="myOps_8H" name="myOps.H" local="yes" imported="no">myOps.H</includes>
-    <namespace>Foam</namespace>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam.html</anchorfile>
-      <anchor>a6d89079e1d5c7f1774161c5a79be8624</anchor>
-      <arglist>(TLFModel, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>defineRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam.html</anchorfile>
-      <anchor>a6a0fca32917a71d25d7e45f426af6ccf</anchor>
-      <arglist>(TLFModel, LeidenFrostTemperatureModels)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>TLFModel.H</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels/</path>
-    <filename>TLFModel_8H</filename>
-    <includes id="fluid_8H" name="fluid.H" local="yes" imported="no">fluid.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
-    <class kind="class">Foam::TLFModel</class>
-    <namespace>Foam</namespace>
-  </compound>
-  <compound kind="file">
     <name>FSHeatTransferCoefficientModel.C</name>
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/</path>
     <filename>FSHeatTransferCoefficientModel_8C</filename>
@@ -9108,70 +8934,6 @@
     <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
   </compound>
   <compound kind="file">
-    <name>CachardLiquidFSHeatTransferCoefficient.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels/CachardLiquid/</path>
-    <filename>CachardLiquidFSHeatTransferCoefficient_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="CachardLiquidFSHeatTransferCoefficient_8H" name="CachardLiquidFSHeatTransferCoefficient.H" local="yes" imported="no">CachardLiquidFSHeatTransferCoefficient.H</includes>
-    <namespace>Foam</namespace>
-    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
-      <anchor>a3a11c801138bfa25f60a895351be07ba</anchor>
-      <arglist>(CachardLiquid, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>addToRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
-      <anchor>a41cb4ed8067c3384088f1bccbea434e1</anchor>
-      <arglist>(FSHeatTransferCoefficientModel, CachardLiquid, FSHeatTransferCoefficientModels)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>CachardLiquidFSHeatTransferCoefficient.H</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels/CachardLiquid/</path>
-    <filename>CachardLiquidFSHeatTransferCoefficient_8H</filename>
-    <includes id="FSHeatTransferCoefficientModel_8H" name="FSHeatTransferCoefficientModel.H" local="yes" imported="no">FSHeatTransferCoefficientModel.H</includes>
-    <class kind="class">Foam::FSHeatTransferCoefficientModels::CachardLiquid</class>
-    <namespace>Foam</namespace>
-    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
-  </compound>
-  <compound kind="file">
-    <name>CachardVapourFSHeatTransferCoefficient.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels/CachardVapour/</path>
-    <filename>CachardVapourFSHeatTransferCoefficient_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="CachardVapourFSHeatTransferCoefficient_8H" name="CachardVapourFSHeatTransferCoefficient.H" local="yes" imported="no">CachardVapourFSHeatTransferCoefficient.H</includes>
-    <namespace>Foam</namespace>
-    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
-      <anchor>aa6d8ea7c345a56fdddf36a00b2607634</anchor>
-      <arglist>(CachardVapour, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>addToRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
-      <anchor>afe9667c2d878e144c3f3712ef8a1588b</anchor>
-      <arglist>(FSHeatTransferCoefficientModel, CachardVapour, FSHeatTransferCoefficientModels)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>CachardVapourFSHeatTransferCoefficient.H</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels/CachardVapour/</path>
-    <filename>CachardVapourFSHeatTransferCoefficient_8H</filename>
-    <includes id="FSHeatTransferCoefficientModel_8H" name="FSHeatTransferCoefficientModel.H" local="yes" imported="no">FSHeatTransferCoefficientModel.H</includes>
-    <class kind="class">Foam::FSHeatTransferCoefficientModels::CachardVapour</class>
-    <namespace>Foam</namespace>
-    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
-  </compound>
-  <compound kind="file">
     <name>ShahFSHeatTransferCoefficient.C</name>
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Shah/</path>
     <filename>ShahFSHeatTransferCoefficient_8C</filename>
@@ -9202,6 +8964,180 @@
     <class kind="class">Foam::FSHeatTransferCoefficientModels::Shah</class>
     <namespace>Foam</namespace>
     <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
+  </compound>
+  <compound kind="file">
+    <name>CHFModel.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/</path>
+    <filename>CHFModel_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="CHFModel_8H" name="CHFModel.H" local="yes" imported="no">CHFModel.H</includes>
+    <includes id="myOps_8H" name="myOps.H" local="yes" imported="no">myOps.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a965eeee336473fdef01a764079f9c67f</anchor>
+      <arglist>(CHFModel, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a7372fc01e45e28725fa54e51719f27ae</anchor>
+      <arglist>(CHFModel, criticalHeatFluxModels)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>CHFModel.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/</path>
+    <filename>CHFModel_8H</filename>
+    <includes id="fluid_8H" name="fluid.H" local="yes" imported="no">fluid.H</includes>
+    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
+    <class kind="class">Foam::CHFModel</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>constantCHF.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/constantCHF/</path>
+    <filename>constantCHF_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="constantCHF_8H" name="constantCHF.H" local="yes" imported="no">constantCHF.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::criticalHeatFluxModels</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1criticalHeatFluxModels.html</anchorfile>
+      <anchor>a1342289283e87cbfe1afb5f35d7d9ace</anchor>
+      <arglist>(constantCHF, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1criticalHeatFluxModels.html</anchorfile>
+      <anchor>a026104d1fab4088b2ae232c33dafd5ae</anchor>
+      <arglist>(CHFModel, constantCHF, criticalHeatFluxModels)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>constantCHF.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/constantCHF/</path>
+    <filename>constantCHF_8H</filename>
+    <includes id="CHFModel_8H" name="CHFModel.H" local="yes" imported="no">CHFModel.H</includes>
+    <class kind="class">Foam::criticalHeatFluxModels::constantCHF</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::criticalHeatFluxModels</namespace>
+  </compound>
+  <compound kind="file">
+    <name>lookUpTableCHF.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/lookUpTableCHF/</path>
+    <filename>lookUpTableCHF_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="lookUpTableCHF_8H" name="lookUpTableCHF.H" local="yes" imported="no">lookUpTableCHF.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::criticalHeatFluxModels</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1criticalHeatFluxModels.html</anchorfile>
+      <anchor>a085ec610c2c983d6c29bda0d3e4ec1a8</anchor>
+      <arglist>(lookUpTableCHF, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1criticalHeatFluxModels.html</anchorfile>
+      <anchor>a1aa2f47173f30829f9245afb6f02b073</anchor>
+      <arglist>(CHFModel, lookUpTableCHF, criticalHeatFluxModels)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>lookUpTableCHF.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/lookUpTableCHF/</path>
+    <filename>lookUpTableCHF_8H</filename>
+    <includes id="CHFModel_8H" name="CHFModel.H" local="yes" imported="no">CHFModel.H</includes>
+    <class kind="class">Foam::criticalHeatFluxModels::lookUpTableCHF</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::criticalHeatFluxModels</namespace>
+  </compound>
+  <compound kind="file">
+    <name>newCHFModel.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/</path>
+    <filename>newCHFModel_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="CHFModel_8H" name="CHFModel.H" local="yes" imported="no">CHFModel.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>GroeneveldStewartTLF.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/LeidenFrostTemperatureModels/GroeneveldStewart/</path>
+    <filename>GroeneveldStewartTLF_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="GroeneveldStewartTLF_8H" name="GroeneveldStewartTLF.H" local="yes" imported="no">GroeneveldStewartTLF.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::LeidenFrostTemperatureModels</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1LeidenFrostTemperatureModels.html</anchorfile>
+      <anchor>a84992aa76dd8a9d5e051ff8f301105c5</anchor>
+      <arglist>(GroeneveldStewart, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1LeidenFrostTemperatureModels.html</anchorfile>
+      <anchor>a998d7da77eb9239b6d5bce8abbc60b95</anchor>
+      <arglist>(TLFModel, GroeneveldStewart, LeidenFrostTemperatureModels)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>GroeneveldStewartTLF.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/LeidenFrostTemperatureModels/GroeneveldStewart/</path>
+    <filename>GroeneveldStewartTLF_8H</filename>
+    <includes id="TLFModel_8H" name="TLFModel.H" local="yes" imported="no">TLFModel.H</includes>
+    <class kind="class">Foam::LeidenFrostTemperatureModels::GroeneveldStewart</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::LeidenFrostTemperatureModels</namespace>
+  </compound>
+  <compound kind="file">
+    <name>newTLFModel.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/LeidenFrostTemperatureModels/</path>
+    <filename>newTLFModel_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="TLFModel_8H" name="TLFModel.H" local="yes" imported="no">TLFModel.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>TLFModel.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/LeidenFrostTemperatureModels/</path>
+    <filename>TLFModel_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="TLFModel_8H" name="TLFModel.H" local="yes" imported="no">TLFModel.H</includes>
+    <includes id="myOps_8H" name="myOps.H" local="yes" imported="no">myOps.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a6d89079e1d5c7f1774161c5a79be8624</anchor>
+      <arglist>(TLFModel, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a6a0fca32917a71d25d7e45f426af6ccf</anchor>
+      <arglist>(TLFModel, LeidenFrostTemperatureModels)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>TLFModel.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/LeidenFrostTemperatureModels/</path>
+    <filename>TLFModel_8H</filename>
+    <includes id="fluid_8H" name="fluid.H" local="yes" imported="no">fluid.H</includes>
+    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
+    <class kind="class">Foam::TLFModel</class>
+    <namespace>Foam</namespace>
   </compound>
   <compound kind="file">
     <name>ChenFlowEnhancementFactor.C</name>
@@ -9339,6 +9275,70 @@
     <namespace>Foam::flowEnhancementFactorModels</namespace>
   </compound>
   <compound kind="file">
+    <name>CachardLiquidFSHeatTransferCoefficient.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels/CachardLiquid/</path>
+    <filename>CachardLiquidFSHeatTransferCoefficient_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="CachardLiquidFSHeatTransferCoefficient_8H" name="CachardLiquidFSHeatTransferCoefficient.H" local="yes" imported="no">CachardLiquidFSHeatTransferCoefficient.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>a3a11c801138bfa25f60a895351be07ba</anchor>
+      <arglist>(CachardLiquid, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>a41cb4ed8067c3384088f1bccbea434e1</anchor>
+      <arglist>(FSHeatTransferCoefficientModel, CachardLiquid, FSHeatTransferCoefficientModels)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>CachardLiquidFSHeatTransferCoefficient.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels/CachardLiquid/</path>
+    <filename>CachardLiquidFSHeatTransferCoefficient_8H</filename>
+    <includes id="FSHeatTransferCoefficientModel_8H" name="FSHeatTransferCoefficientModel.H" local="yes" imported="no">FSHeatTransferCoefficientModel.H</includes>
+    <class kind="class">Foam::FSHeatTransferCoefficientModels::CachardLiquid</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
+  </compound>
+  <compound kind="file">
+    <name>CachardVapourFSHeatTransferCoefficient.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels/CachardVapour/</path>
+    <filename>CachardVapourFSHeatTransferCoefficient_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="CachardVapourFSHeatTransferCoefficient_8H" name="CachardVapourFSHeatTransferCoefficient.H" local="yes" imported="no">CachardVapourFSHeatTransferCoefficient.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>aa6d8ea7c345a56fdddf36a00b2607634</anchor>
+      <arglist>(CachardVapour, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>afe9667c2d878e144c3f3712ef8a1588b</anchor>
+      <arglist>(FSHeatTransferCoefficientModel, CachardVapour, FSHeatTransferCoefficientModels)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>CachardVapourFSHeatTransferCoefficient.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels/CachardVapour/</path>
+    <filename>CachardVapourFSHeatTransferCoefficient_8H</filename>
+    <includes id="FSHeatTransferCoefficientModel_8H" name="FSHeatTransferCoefficientModel.H" local="yes" imported="no">FSHeatTransferCoefficientModel.H</includes>
+    <class kind="class">Foam::FSHeatTransferCoefficientModels::CachardVapour</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
+  </compound>
+  <compound kind="file">
     <name>constantSubCooledBoilingFraction.C</name>
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/subCooledBoilingFractionModels/constant/</path>
     <filename>constantSubCooledBoilingFraction_8C</filename>
@@ -9443,6 +9443,40 @@
     <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
     <class kind="class">Foam::subCooledBoilingFractionModel</class>
     <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>superpositionNucleateBoilingFSHeatTransferCoefficient.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/superpositionNucleateBoiling/</path>
+    <filename>superpositionNucleateBoilingFSHeatTransferCoefficient_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="superpositionNucleateBoilingFSHeatTransferCoefficient_8H" name="superpositionNucleateBoilingFSHeatTransferCoefficient.H" local="yes" imported="no">superpositionNucleateBoilingFSHeatTransferCoefficient.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>af3b9f6c9cfde02a04d9369c7e7fdf29d</anchor>
+      <arglist>(superpositionNucleateBoiling, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>a10299c3acec9d80a639650acf609c5db</anchor>
+      <arglist>(FSHeatTransferCoefficientModel, superpositionNucleateBoiling, FSHeatTransferCoefficientModels)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>superpositionNucleateBoilingFSHeatTransferCoefficient.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/superpositionNucleateBoiling/</path>
+    <filename>superpositionNucleateBoilingFSHeatTransferCoefficient_8H</filename>
+    <includes id="FSHeatTransferCoefficientModel_8H" name="FSHeatTransferCoefficientModel.H" local="yes" imported="no">FSHeatTransferCoefficientModel.H</includes>
+    <includes id="flowEnhancementFactorModel_8H" name="flowEnhancementFactorModel.H" local="yes" imported="no">flowEnhancementFactorModel.H</includes>
+    <includes id="suppressionFactorModel_8H" name="suppressionFactorModel.H" local="yes" imported="no">suppressionFactorModel.H</includes>
+    <class kind="class">Foam::FSHeatTransferCoefficientModels::superpositionNucleateBoiling</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
   </compound>
   <compound kind="file">
     <name>ChenSuppressionFactor.C</name>
@@ -9617,40 +9651,6 @@
     <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
     <class kind="class">Foam::TONBModel</class>
     <namespace>Foam</namespace>
-  </compound>
-  <compound kind="file">
-    <name>superpositionNucleateBoilingFSHeatTransferCoefficient.C</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/superpositionNucleateBoiling/</path>
-    <filename>superpositionNucleateBoilingFSHeatTransferCoefficient_8C</filename>
-    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
-    <includes id="superpositionNucleateBoilingFSHeatTransferCoefficient_8H" name="superpositionNucleateBoilingFSHeatTransferCoefficient.H" local="yes" imported="no">superpositionNucleateBoilingFSHeatTransferCoefficient.H</includes>
-    <namespace>Foam</namespace>
-    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
-      <anchor>af3b9f6c9cfde02a04d9369c7e7fdf29d</anchor>
-      <arglist>(superpositionNucleateBoiling, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>addToRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
-      <anchor>a10299c3acec9d80a639650acf609c5db</anchor>
-      <arglist>(FSHeatTransferCoefficientModel, superpositionNucleateBoiling, FSHeatTransferCoefficientModels)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>superpositionNucleateBoilingFSHeatTransferCoefficient.H</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/superpositionNucleateBoiling/</path>
-    <filename>superpositionNucleateBoilingFSHeatTransferCoefficient_8H</filename>
-    <includes id="FSHeatTransferCoefficientModel_8H" name="FSHeatTransferCoefficientModel.H" local="yes" imported="no">FSHeatTransferCoefficientModel.H</includes>
-    <includes id="flowEnhancementFactorModel_8H" name="flowEnhancementFactorModel.H" local="yes" imported="no">flowEnhancementFactorModel.H</includes>
-    <includes id="suppressionFactorModel_8H" name="suppressionFactorModel.H" local="yes" imported="no">suppressionFactorModel.H</includes>
-    <class kind="class">Foam::FSHeatTransferCoefficientModels::superpositionNucleateBoiling</class>
-    <namespace>Foam</namespace>
-    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
   </compound>
   <compound kind="file">
     <name>annularInterfacialArea.C</name>
@@ -13461,6 +13461,10 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::constant</name>
+    <filename>classFoam_1_1constant.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::dispersionModels::constant</name>
     <filename>classFoam_1_1dispersionModels_1_1constant.html</filename>
     <base>Foam::dispersionModel</base>
@@ -13508,10 +13512,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::constant</name>
-    <filename>classFoam_1_1constant.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::subCooledBoilingFractionModels::constant</name>
     <filename>classFoam_1_1subCooledBoilingFractionModels_1_1constant.html</filename>
     <base>Foam::subCooledBoilingFractionModel</base>
@@ -13552,6 +13552,10 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::CHFModel::constantCHF</name>
+    <filename>classFoam_1_1CHFModel_1_1constantCHF.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::criticalHeatFluxModels::constantCHF</name>
     <filename>classFoam_1_1criticalHeatFluxModels_1_1constantCHF.html</filename>
     <base>Foam::CHFModel</base>
@@ -13590,10 +13594,6 @@
       <anchor>abd6b279d338e5e141f1057229cac3ef0</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::CHFModel::constantCHF</name>
-    <filename>classFoam_1_1CHFModel_1_1constantCHF.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::constantModel</name>
@@ -18565,6 +18565,10 @@
     <filename>classFoam_1_1LockhartMartinelli.html</filename>
   </compound>
   <compound kind="class">
+    <name>Foam::CHFModel::lookUpTableCHF</name>
+    <filename>classFoam_1_1CHFModel_1_1lookUpTableCHF.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::criticalHeatFluxModels::lookUpTableCHF</name>
     <filename>classFoam_1_1criticalHeatFluxModels_1_1lookUpTableCHF.html</filename>
     <base>Foam::CHFModel</base>
@@ -18645,10 +18649,6 @@
       <anchor>a5e620c7dc0eee9db009e480d508a2814</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::CHFModel::lookUpTableCHF</name>
-    <filename>classFoam_1_1CHFModel_1_1lookUpTableCHF.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::twoPhaseDragMultiplierModels::LottesFlinn</name>
@@ -20454,39 +20454,6 @@
     <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPin.html</filename>
   </compound>
   <compound kind="class">
-    <name>Foam::FFHeatTransferCoefficientModels::Nusselt</name>
-    <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</filename>
-    <base>Foam::FFHeatTransferCoefficientModel</base>
-    <member kind="function">
-      <type></type>
-      <name>TypeName</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>a560b7b6bb9ebe392d9d91aa9ce2ae98c</anchor>
-      <arglist>(&quot;NusseltReynoldsPrandtlPower&quot;)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>Nusselt</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>a809259339657615ee1b1342055870824</anchor>
-      <arglist>(const FFPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>~Nusselt</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>adc44b85005e84c604806654d02d420a4</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual scalar</type>
-      <name>value</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
-      <arglist>(const label &amp;celli) const</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
     <name>Foam::FSHeatTransferCoefficientModels::Nusselt</name>
     <filename>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</filename>
     <base>Foam::FSHeatTransferCoefficientModel</base>
@@ -20515,6 +20482,39 @@
       <type>virtual scalar</type>
       <name>value</name>
       <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
+      <arglist>(const label &amp;celli) const</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::FFHeatTransferCoefficientModels::Nusselt</name>
+    <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</filename>
+    <base>Foam::FFHeatTransferCoefficientModel</base>
+    <member kind="function">
+      <type></type>
+      <name>TypeName</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>a560b7b6bb9ebe392d9d91aa9ce2ae98c</anchor>
+      <arglist>(&quot;NusseltReynoldsPrandtlPower&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>Nusselt</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>a809259339657615ee1b1342055870824</anchor>
+      <arglist>(const FFPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~Nusselt</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>adc44b85005e84c604806654d02d420a4</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual scalar</type>
+      <name>value</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
       <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
       <arglist>(const label &amp;celli) const</arglist>
     </member>
@@ -20778,6 +20778,10 @@
     <filename>classFoam_1_1regimeMapModel_1_1oneParameter.html</filename>
   </compound>
   <compound kind="class">
+    <name>Foam::onePhase</name>
+    <filename>classFoam_1_1onePhase.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::thermalHydraulicsModels::onePhase</name>
     <filename>classFoam_1_1thermalHydraulicsModels_1_1onePhase.html</filename>
     <base>Foam::thermalHydraulicsModel</base>
@@ -20860,8 +20864,8 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::onePhase</name>
-    <filename>classFoam_1_1onePhase.html</filename>
+    <name>Foam::onePhaseLegacy</name>
+    <filename>classFoam_1_1onePhaseLegacy.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::thermalHydraulicsModels::onePhaseLegacy</name>
@@ -20947,10 +20951,6 @@
       <anchor>a964e3a45d8bf0c9f774166d07466fe4c</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::onePhaseLegacy</name>
-    <filename>classFoam_1_1onePhaseLegacy.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::functionObjects::patchScalarFieldValue</name>
@@ -21432,6 +21432,10 @@
     <templarg></templarg>
   </compound>
   <compound kind="class">
+    <name>Foam::pipeFilm</name>
+    <filename>classFoam_1_1pipeFilm.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::fluidDiameterModels::pipeFilm</name>
     <filename>classFoam_1_1fluidDiameterModels_1_1pipeFilm.html</filename>
     <base>Foam::fluidDiameterModel</base>
@@ -21470,10 +21474,6 @@
       <anchor>ad2692e89af38be9306bf3194c54434bf</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::pipeFilm</name>
-    <filename>classFoam_1_1pipeFilm.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::pointKineticNeutronics</name>
@@ -23310,6 +23310,10 @@
     <filename>classFoam_1_1regimeMapModel_1_1regimeBoundary2D.html</filename>
   </compound>
   <compound kind="class">
+    <name>Foam::regimeMapModel::twoParameters::regimeDomain2D</name>
+    <filename>classFoam_1_1regimeMapModel_1_1twoParameters_1_1regimeDomain2D.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::regimeMapModels::regimeDomain2D</name>
     <filename>classFoam_1_1regimeMapModels_1_1regimeDomain2D.html</filename>
     <member kind="function">
@@ -23403,10 +23407,6 @@
       <anchor>ab5239a34265cf47952c67ced24f1a875</anchor>
       <arglist>() const</arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::regimeMapModel::twoParameters::regimeDomain2D</name>
-    <filename>classFoam_1_1regimeMapModel_1_1twoParameters_1_1regimeDomain2D.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::regimeMapModel</name>
@@ -26210,6 +26210,10 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::powerOffControlModels::timer</name>
+    <filename>classFoam_1_1powerOffControlModels_1_1timer.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::powerOffCriterionModels::timer</name>
     <filename>classFoam_1_1powerOffCriterionModels_1_1timer.html</filename>
     <base>Foam::powerOffCriterionModel</base>
@@ -26241,10 +26245,6 @@
       <anchor>af50e5b3df017f27103aff3abd4346b05</anchor>
       <arglist>()</arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::powerOffControlModels::timer</name>
-    <filename>classFoam_1_1powerOffControlModels_1_1timer.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::TLFModel</name>
@@ -26526,11 +26526,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::regimeMapModel::twoParameters</name>
-    <filename>classFoam_1_1regimeMapModel_1_1twoParameters.html</filename>
-    <class kind="class">Foam::regimeMapModel::twoParameters::regimeDomain2D</class>
-  </compound>
-  <compound kind="class">
     <name>Foam::regimeMapModels::twoParameters</name>
     <filename>classFoam_1_1regimeMapModels_1_1twoParameters.html</filename>
     <base>Foam::regimeMapModel</base>
@@ -26578,6 +26573,15 @@
       <anchor>ab27551eebb91a2b0df3dd4e5a743894c</anchor>
       <arglist></arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::regimeMapModel::twoParameters</name>
+    <filename>classFoam_1_1regimeMapModel_1_1twoParameters.html</filename>
+    <class kind="class">Foam::regimeMapModel::twoParameters::regimeDomain2D</class>
+  </compound>
+  <compound kind="class">
+    <name>Foam::twoPhase</name>
+    <filename>classFoam_1_1twoPhase.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::thermalHydraulicsModels::twoPhase</name>
@@ -26735,10 +26739,6 @@
       <anchor>af02a4f231a65729467fc0f13e2ffe155</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::twoPhase</name>
-    <filename>classFoam_1_1twoPhase.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::twoPhaseDragFactor</name>
@@ -29810,6 +29810,20 @@
       <type></type>
       <name>defineTypeNameAndDebug</name>
       <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a5a1a46642f703b6eb41c4849cb09bf05</anchor>
+      <arglist>(FSHeatTransferCoefficientModel, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>adf596c7bfcd7d200cd4a93663f5f4529</anchor>
+      <arglist>(FSHeatTransferCoefficientModel, FSHeatTransferCoefficientModels)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
       <anchor>a965eeee336473fdef01a764079f9c67f</anchor>
       <arglist>(CHFModel, 0)</arglist>
     </member>
@@ -29833,20 +29847,6 @@
       <anchorfile>namespaceFoam.html</anchorfile>
       <anchor>a6a0fca32917a71d25d7e45f426af6ccf</anchor>
       <arglist>(TLFModel, LeidenFrostTemperatureModels)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam.html</anchorfile>
-      <anchor>a5a1a46642f703b6eb41c4849cb09bf05</anchor>
-      <arglist>(FSHeatTransferCoefficientModel, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>defineRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam.html</anchorfile>
-      <anchor>adf596c7bfcd7d200cd4a93663f5f4529</anchor>
-      <arglist>(FSHeatTransferCoefficientModel, FSHeatTransferCoefficientModels)</arglist>
     </member>
     <member kind="function">
       <type></type>
@@ -30758,6 +30758,20 @@
       <type></type>
       <name>defineTypeNameAndDebug</name>
       <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>a8c27110573122b19b9cbebf0b67037f7</anchor>
+      <arglist>(Shah, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>a1cc1e3ecf6587c98e98d4dafd7cc6f2e</anchor>
+      <arglist>(FSHeatTransferCoefficientModel, Shah, FSHeatTransferCoefficientModels)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
       <anchor>a3a11c801138bfa25f60a895351be07ba</anchor>
       <arglist>(CachardLiquid, 0)</arglist>
     </member>
@@ -30781,20 +30795,6 @@
       <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
       <anchor>afe9667c2d878e144c3f3712ef8a1588b</anchor>
       <arglist>(FSHeatTransferCoefficientModel, CachardVapour, FSHeatTransferCoefficientModels)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>defineTypeNameAndDebug</name>
-      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
-      <anchor>a8c27110573122b19b9cbebf0b67037f7</anchor>
-      <arglist>(Shah, 0)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>addToRunTimeSelectionTable</name>
-      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
-      <anchor>a1cc1e3ecf6587c98e98d4dafd7cc6f2e</anchor>
-      <arglist>(FSHeatTransferCoefficientModel, Shah, FSHeatTransferCoefficientModels)</arglist>
     </member>
     <member kind="function">
       <type></type>

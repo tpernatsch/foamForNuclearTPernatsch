@@ -25,15 +25,26 @@ Class
     Foam::FFHeatTransferCoefficientModels::Nusselt
 
 Description
-    Drag coefficient in the form fd = coeff*Re^exp with 
-    Kd = 0.5*fd*alpha*rho*magU/Dh
+    Heat transfer coefficient for forced convective flows that is computed
+    starting from the Nusselt, which is turn obtained via correlation in the
+    form 
 
-Dictionary entries (mandatory)
-    coeff   0.316;
-    exp     -0.25;
+    Nu = A_+B_*(Re^C_)*(Pr^D_)
+
+    with Re, Pr being the Reynolds (superficial in two-phase) and Prandlt
+    of the fluid, and A, B, C, D selectable consts
+
+Author
+    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+
+Dictionary entries example (mandatory)
+    const   4;
+    coeff   0.01;
+    expRe   0.8;
+    expPr   0.8;
 
 SourceFiles
-    Nusselt.C
+    NusseltFFHeatTransferCoefficient.C
 
 \*---------------------------------------------------------------------------*/
 

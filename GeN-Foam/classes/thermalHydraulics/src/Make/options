@@ -72,20 +72,20 @@ EXE_INC = \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Nusselt \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltAndWall \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Shah \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/superpositionNucleateBoiling \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/superpositionNucleateBoiling \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoiling \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingTRACE \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingVapourTRACE \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingTRACECHF \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/constantCHF \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/lookUpTableCHF \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels/GroeneveldStewart \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels/CachardLiquid \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels/CachardVapour \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/constantCHF \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/lookUpTableCHF \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/LeidenFrostTemperatureModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/LeidenFrostTemperatureModels/GroeneveldStewart \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels/CachardLiquid \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels/CachardVapour \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/Nusselt \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/NoKazimi \

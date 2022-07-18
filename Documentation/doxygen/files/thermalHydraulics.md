@@ -26,21 +26,90 @@ For the user, the derived classes translate into runtime selectable models. The 
 
 The various parameters to be used in a porous-medium simulation can be set using the *phaseProperties* dictionary. 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *phaseProperties* dictionary</b>
+<b>The *phaseProperties* dictionary</b>
 
-The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is a large dictionary that can be used to: chose the sub-solver to be used (one-phase, legacy one-phase or two-phase); set various properties of the phases (beside basic thermo-physical properties defined in the *thermophysicalProperties* dictionary); set the properties of the sub-scale structures (fuel pins, heat exchangers, etc) in the porous zones, including the possibility to assign a *powerModel* for power production (e.g., nuclear fuel, or constant power) and the *passiveProperties* of another sub-structure that interacts thermally with the fluid (for instance the wrappers in sodium fast reactors).  The name of the porous zones must coincide with that of the cellZones of the fluidRegion mesh. Anisotropic pressure drops can be set by using the keywords *transverseDragModel* (Blasius, GunterShaw, same) and *principalAxis*(localX, localY, localZ) in the sub-dictionary *dragModels.(nameOfPhase).structure.(nameOfCellZones)*. *principalAxis* sets the axis on which the nominal dragModel is used. *transverseDragModel* sets the model to be used on the two directions that are perpendicular to *principalAxis*. If *same* is chosen as *transverseDragModel*, the code will use the nominal model in all directions, but with the possibility of an anisotropic hydraulic diameter. The anisotropy of the hydraulic diameter can be set using the keyword *localDhAnisotrpy* and assign to it a vector of 3 scaling factors (one for each local directions). 
+The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is a large dictionary that can be used to: chose the sub-solver to be used (one-phase, legacy one-phase or two-phase); set various properties of the phases (beside basic thermo-physical properties defined in the *thermophysicalProperties* dictionary); set the properties of the sub-scale structures (fuel pins, heat exchangers, etc) in the porous zones, including the possibility to assign a *powerModel* for power production (e.g., nuclear fuel, or constant power) and the *passiveProperties* of another sub-structure that interacts thermally with the fluid (for instance the wrappers in sodium fast reactors).  The name of the porous zones must coincide with that of the cellZones of the fluidRegion mesh.  
+<br><br>Currently available models inlcude:
+<UL>
+<LI> Drag models
+	<UL>
+	<LI> Fluid-fluid drag models (see *FFDragCoefficientModel.H*)	
+		<UL>
+		<LI> Autruffe (see *AutruffeFFDragCoefficient.H*)
+		<LI> Bestion (see *BestionFFDragCoefficient.H*)
+		<LI> Bestion as in TRACE (see *BestionTRACEFFDragCoefficient.H*)
+		<LI> No Kazimi (see *NoKazimiFFDragCoefficient.H*)
+		<LI> Schiller Naumann (see *SchillerNaumannFFDragCoefficient.H*)
+		<LI> Wallis (see *WallisFFDragCoefficient.H*)
+		</UL>	
+	<LI> Fluid-structure drag models (see *FSDragCoefficientModel.H*)
+		<UL>
+		<LI> Baxi Dalle Donne (see *BaxiDalleDonneFSDragCoefficient.H*)
+		<LI> Churchill (see *ChurchillFSDragCoefficient.H*)
+		<LI> Engel as in TRACE (see *EngelFSDragCoefficient.H*)
+		<LI> Modified Engel (see *modifiedEngelFSDragCoefficient.H*)
+		<LI> No Kazimi (see *NoKazimiFSDragCoefficient.H*)
+		<LI> Rehme (see *RehmeFSDragCoefficient.H*)
+		<LI> Drag coefficient as a A*Re^B (see *ReynoldsPowerFSDragCoefficient.H*)
+		</UL>	
+	<LI> Two-phase drag multipliers	(see *twoPhaseDragMultiplierModel.H*)
+		<UL>
+		<LI> Chen Kalish (see *ChenKalishTwoPhaseDragMultiplier.H*)
+		<LI> Constant (see *constantTwoPhaseDragMultiplier.H*)
+		<LI> Kaiser 74 (see *Kaiser74TwoPhaseDragMultiplier.H*)
+		<LI> Kaiser 88 (see *Kaiser88TwoPhaseDragMultiplier.H*)
+		<LI> Kottowski Savatteri (see *KottowskiSavatteriTwoPhaseDragMultiplier.H*)
+		<LI> Lockhart Martinelli (see *LockhartMartinelli.H*)
+		<LI> Lottes Flinn(see *LottesFlinnTwoPhaseDragMultiplier.H*)
+		<LI> Lottes Flinn Nguyen(see *LottesFlinnNguyenTwoPhaseDragMultiplier.H*)
+		</UL>	
+	</UL>
+<LI> Heat transfer models
+	<UL>
+	<LI> Fluid-fluid heat-tranfer models (see *FFHeatTransferCoefficientModel.H*)	
+		<UL>
+		<LI> No Kazimi (see *NoKazimiFFHeatTransferCoefficient.H*)
+		<LI> Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_) (see *NusseltFFHeatTransferCoefficient.H*)
+		</UL>	
+	<LI> Fluid-structure heat-tranfer models (see FSHeatTransferCoefficientModel.H)
+		<UL>
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		<LI>  (see *.H*)
+		</UL>	
+	</UL>
+<LI> Contact partition models
+<LI> Disperions models
+<LI> Fluid diameter models
+<LI> Virtual mass models
+<LI> Interfacial area models
+<LI> Phase change models
+</UL>
+<br><br> Phase pairs
+<br><br> Regime maps
 <br><br>One can find detailed, commented examples in the tutorials 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/phaseProperties) (single phase) and
-[1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/phaseProperties) (two phases).
+[1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/phaseProperties) (two phases). In addition, an example on how to use a two-dimensional flow-regime map can be found in [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_PSBT_SC/constant/fluidRegion/phaseProperties).
+
+N.B.: Anisotropic pressure drops can be set by using the keywords *transverseDragModel* (Blasius, GunterShaw, same) and *principalAxis*(localX, localY, localZ) in the sub-dictionary *dragModels.(nameOfPhase).structure.(nameOfCellZones)*. *principalAxis* sets the axis on which the nominal dragModel is used. *transverseDragModel* sets the model to be used on the two directions that are perpendicular to *principalAxis*. If *same* is chosen as *transverseDragModel*, the code will use the nominal model in all directions, but with the possibility of an anisotropic hydraulic diameter. The anisotropy of the hydraulic diameter can be set using the keyword *localDhAnisotrpy* and assign to it a vector of 3 scaling factors (one for each local directions).
 </p>
 </div>
 <br>
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *g* dictionary</b>
-
 
 ## Physical properties
+
+<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<b>The *g* dictionary</b>
 
 The *g* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows specifying the gravitational acceleration.
 </p>
@@ -48,11 +117,10 @@ The *g* dictionary can be found under *constant/fluidRegion/*. It is a standard 
 <br>
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *thermophysicalProperties* dictionary</b>
+<b>The *thermophysicalProperties* dictionary</b>
 
 The *thermophysicalProperties* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows defining the thermo-physical properties of the coolant. When performing two-phase flow analyses, two dictionaries must be employed named*thermophysicalProperties.(name of fluid)*. The name of the two fluids are defined in the *phaseProperties* dictionary.
-
-One can find a detailed, commented example in hte tutorials 
+<br><br>One can find a detailed, commented example in hte tutorials 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/thermophysicalProperties) (one-phase), 
 [1D_boiling (liquid)](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/thermophysicalProperties.liquid) (two-phase, liquid)
 [1D_boiling (vapour)](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/thermophysicalProperties.vapour) (two-phase, vapour)
@@ -64,11 +132,13 @@ One can find a detailed, commented example in hte tutorials
 ## Turbulence properties
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *turbulenceProperties* dictionary</b>
+<b>The *turbulenceProperties* dictionary</b>
 
-The *turbulenceProperties* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows defining the turbulence model to be used.
-
-One can find a detailed, commented example in the tutorial 
+The *turbulenceProperties* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows defining the turbulence model to be used. 
+<br><br>When clear-fluid simulations (i.e., without porous zones) are performed, on can used the standard kEpsilon model of OpenFOAM.
+<br><br>When porous zones are present in the simulation, it is reccomended to use *porousKEpsilon* (see *porousKEpsilon.H*). The only difference w.r.t. the standard k-epsilon model is that it forces k and epsilon to equilibrium values inside the porous zones. These equilibium values can be set in the *porousKepsionProperties* sub-dictionary. Please notice that a porous medium simulation using the equilibium values of k and epsilon for the sub-scale structure (viz., the values inside a fuel sub-channel) would entail the risk of an unstable solution. This is due to the fact that the turbulent viscosity will be that of the sub-scale structure, and  thus potentially not enough to stabilize a solution on the length scale of the coarse mesh. To address this problem, one can define the keyword DhStruct in *constant/fluidRegion/phaseProperties/dragModels.(nameOfPhase).structure.(nameOfCellZones)*. This keyword defines the hydraulic diameter of the whole porous structure (viz., the dimension of the assembly, if using baffles to model wrappers, or of the entire core). The code uses it to make sure the turbulent viscosity results in a laminar Reynolds number (defaulted to 500).
+<br><br>While some approaches to model k and epsilon for two-phase flow simulations are presently included in the code. In particular, the Lahey model (see *LaheyKEpsilon.H*) and a mixture model (see *mixtureKEpsilon.H*) can be uses for clear-fluids, or for mixed clear-fluid and porous-medium simulations when in case of strongly advective two-phase flow scenarios where turbulent mixing mat be neglected. In addition, as simple extension of the *porousKEpsilon* model has been implemented that allows to correct the turbulent intensity using a term that is proportional to the fraction of the other phase (see *porousKEpsilon2PhaseCorrected.H*). 
+<br><br>One can find a detailed, commented example for a porous one-phase simulation in the tutorial 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/turbulenceProperties).
 </p>
 </div>

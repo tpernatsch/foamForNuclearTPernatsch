@@ -2,10 +2,10 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2004-2011 OpenCFD Ltd.
+    \\  /    A nd           | Copyright held by original author
      \\/     M anipulation  |
 -------------------------------------------------------------------------------
-                            | Copyright (C) 2011-2016 OpenFOAM Foundation
+
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
@@ -33,7 +33,7 @@ Description
     Same as standard OpenFOAM. porousKEpsilon is provided as additional model.
     The only difference is that it forces k and epsilon to equilibrium values
     inside the porous zones. These equilibium values can be set in the
-    porousKepsionProperties sub-dictionary here below.k and epsilon are 
+    porousKepsionProperties sub-dictionary here below. k and epsilon are 
     determined based on correlations for tubulent intensity (I) and lengh 
     scale (L). Turbulent intensity correlation in the form 
     turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp,
@@ -50,6 +50,10 @@ Description
     porous structure. The code uses it to make sure the turbulent viscosity 
     results in a  laminar Reynolds number (defaulted to 500).
 
+Usage
+    The following sub-dictionary should be included in the turbulenceProperties 
+    dictionary:
+    \verbatim
     porousKEpsilonProperties
     {
         "zones of application"
@@ -60,7 +64,9 @@ Description
             turbulenceIntensityCoeff    0.16; 
             turbulenceIntensityExp      -0.125;
             turbulenceLengthScaleCoeff  0.07;
+        }
     }
+    \endverbatim
 
 
 SourceFiles

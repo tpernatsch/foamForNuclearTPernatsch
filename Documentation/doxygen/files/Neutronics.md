@@ -8,7 +8,7 @@
 The neutronics class (see *neutronics.H*) is a high-level class that contains essential data and variables that are common to various neutronics models. In particular, the neutronics class handles the variables that are included in the *constant/neutroRegion/reactorState* dictionary.
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *reactorState* dictionary</b>
+<b>The *reactorState* dictionary</b>
 
 The *reactorState* dictionary is a bit of a special dictionary, in the sense that it is found under the *constant/neutroRegion/* sub-folder even though it is updated during a simulation (which typically happens to fields in the time folder). It included essentially 4 keywords:
 <UL>
@@ -39,7 +39,7 @@ For the user, the derived classes translate into runtime selectable models. The 
 
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *neutronicsProperties* dictionary</b>
+<b>The *neutronicsProperties* dictionary</b>
 
 The *neutronicsProperties* dictionary is found under *constant/neutroRegion/* and it can be used to set the type of neutronic simulation by using the following keywords:
 <UL>
@@ -57,7 +57,7 @@ One can find detailed, commented examples in most tutorials. See for instance
 In GeN-Foam, cross-sections and several other neutronics properties are handled by the *XS.H* class, or by its low-memory version *XSLowMem.H*.
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *nuclearData* dictionaries</b>
+<b>The *nuclearData* dictionaries</b>
 
 The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It contains all basic nuclear properties for the reference reactor state. The other *nuclearData...* files in *constant/neutronics/* should include the cross-sections for perturbed reactor states. In addition, these files include information about the perturbed and reference (*nuclearData*) reactor state. For instance, *nuclearDataFuelTemp* must include *TfuelRef* and *TfuelPerturbed*, which represent the temperatures at which the reference (*nuclearData*) and perturbed  (*nuclearDataFuelTemp*) cross sections have been calculated, respectively. Linear interpolation is performed by GeN-Foam between reference and perturbed reactor states, except for fuel temperature, for which a logarithmic or square root interpolation is provided (depending on the spectrum, which in turns is defined by the keyword *fastNeutrons*).  If no data are provided, the reference cross sections are used. Nuclear data can be generated using any nuclear code.  The [serpentToFoam](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/serpentToFoam/serpent2.1.23) routines provided with GeN-Foam (in the *Tools* folder) is an Octave script that automatically converts Serpent output files into the nuclear data files employed by GeN-Foam. The entry *discFactor* is used only if discontinuity factors have to be used. The term *integralFlux*, is used only if the automatic adjustment of discontinuity factors is performed \cite FIORINA2016212. Nonetheless, these entries should always be present. 
 <br><br>One can find detailed, commented examples of nuclearData in the tutorials 
@@ -77,7 +77,7 @@ N.B.3: the *nuclearData...* files must always be present, even when not parametr
 An additional dictionary is needed to provide the quadrature set when performing discrete ordinate calculations.
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *quadratureSet* dictionary</b>
+<b>The *quadratureSet* dictionary</b>
 
 The *quadratureSet* dictionary is found under *constant/neutroRegion/*. It ccontains the quadrature set for discrete ordinate calculations. 
 <br><br>One can find examples of three different quadrature set in the tutorial 
@@ -89,7 +89,7 @@ S4 and S8 chebichev Legendre quadrature sets can be found in [Godiva_SN](https:/
 Finally, the *CRMove* dictionary can be used to move control rods. 
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>For the user: the *CRMove* dictionary</b>
+<b>The *CRMove* dictionary</b>
 
 The CRMove* dictionary can be found under *constant/neutroRegion/*. It contains input data for control rods movement. Control rods can be moved from the initial position to a new one by selecting initial and final time of the insertion/extraction and the speed of insertion/extraction (positive speed for insertion).
 <br><br>One can find a commented example in the tutorial 
