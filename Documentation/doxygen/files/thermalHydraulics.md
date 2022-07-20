@@ -29,7 +29,7 @@ The various parameters to be used in a porous-medium simulation can be set using
 <b>The *phaseProperties* dictionary</b>
 
 The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is a large dictionary that can be used to: chose the sub-solver to be used (one-phase, legacy one-phase or two-phase); set various properties of the phases (beside basic thermo-physical properties defined in the *thermophysicalProperties* dictionary); set the properties of the sub-scale structures (fuel pins, heat exchangers, etc) in the porous zones, including the possibility to assign a *powerModel* for power production (e.g., nuclear fuel, or constant power) and the *passiveProperties* of another sub-structure that interacts thermally with the fluid (for instance the wrappers in sodium fast reactors).  The name of the porous zones must coincide with that of the cellZones of the fluidRegion mesh.  
-<br><br>Currently available models inlcude:
+<br><br>Currently available models to describe the interaction of the fuel with a sub-scale structure inlcude:
 <UL>
 <LI> Drag models
 	<UL>
@@ -79,7 +79,7 @@ The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is 
 		<LI>  Gorenflo (see *GorenfloFSHeatTransferCoefficient.H*)
 		<LI>  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does below CHF (see *multiRegimeBoilingTRACEFSHeatTransferCoefficient.H*) ADD REF GAUTHIER
 		<LI>  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does, including CHF and post-CHF. Not verified! It requires specifiyng the *multiRegimeBoilingTRACECHF* model for the water.structure heat tranfer, and the *multiRegimeBoilingVapourTRACE* model for the vapour.structure heat tranfer (see *multiRegimeBoilingTRACECHFFSHeatTransferCoefficient.H* and *multiRegimeBoilingVapourTRACEFSHeatTransferCoefficient.H*). Please notice that a lookup table for CHF is still missing. 
-		<LI>  multiRegimeBoiling - multi-regime heat transfer coefficient that replicates  the same logic as TRACE, but with more flexibility for user-selectable sub-models (see *.H*). Can be used below CHF.
+		<LI>  multiRegimeBoiling - multi-regime heat transfer coefficient that replicates  the same logic as TRACE, but with more flexibility for user-selectable sub-models (see *multiRegimeBoiling.H*). Can be used below CHF.
 		<LI>  Sub-models employed by the multi-regime models:
 			<UL>
 			<LI> Critical heat flux related models (see *CHFModel.H*):
@@ -100,12 +100,12 @@ The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is 
 				<LI> COBRA-TF (see *COBRA-TFFlowEnhancementFactor.H*)
 				<LI> Rezkallah Sims (see *RezkallahSimsFlowEnhancementFactor.H*)
 				</UL>
-			<LI> Post-CHF models (see *.H*)
+			<LI> Post-CHF models
 				<UL>
 				<LI> Cachard (for liquid) (see *CachardLiquidFSHeatTransferCoefficient.H*)
 				<LI> Cachard (for vapour) (see *CachardVapourFSHeatTransferCoefficient.H*)
 				</UL>
-			<LI> Sub-Cooled Boiling Fraction Models (see *.H*)
+			<LI> Sub-Cooled Boiling Fraction Models (see *subCooledBoilingFractionModel.H*)
 				<UL>
 				<LI> Constant (see *constantSubCooledBoilingFraction.H*)
 				<LI> Saha Zuber (see *SahaZuberSubCooledBoilingFraction.H*)
@@ -123,6 +123,21 @@ The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is 
 			</UL>
 		</UL>	
 	</UL>
+</UL>
+<br><br> Currently available models for specific sub-scale structures inlcude:
+<UL>
+<LI> Power models, including:
+	<UL>
+	<LI> Fixed (possibly time-dependent) power (see *fixedPower.H* and the tutorial *1D_CHF/imposedPower*)
+	<LI> Fixed (possibly time-dependent) temperature (see *fixedTemperature.H* and the tutorial *1D_CHF/imposedTemperature*)
+	<LI> Heated pin, typically used for electrically heated pins (see *heatedPin.H* and the tutorial *2D_KNS37-L22*)
+	<LI> Nuclear fuel pin (see *nuclearFuelPin.H* and the tutorials *3D_SmallESFR* and *2D_FFTF*)
+	</UL>
+<LI> A heat exchanger model that is used to model the heat transfer between two disconnected regions, for instance representing the primary and secondary circuit (see *heatExchanger.H* and the tutorials *1D_HX* and *2D_FFTF*)
+<LI> A pump model used to set a (possibly time-dependent) momentum source (see *pump.H* and tutorials *2D_FFTF* and *2D_MSFR*).
+</UL>
+Currently available models for two-phase flow simulations include:
+<UL>
 <LI> Contact partition models (see *contactPartitionModel.H*)
 	<UL>
 	<LI> Linear (see *linearContactPartition.H*)
@@ -157,14 +172,14 @@ The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is 
 	<LI> Latent heat (see *latentHeatModel.H*)
 		<UL>
 		<LI> Fink Leibowitz for sodium (see *FinkLeibowitzLatentHeat.H*)
-		<LI> NIST interpolation for water (see *waterLatentHeat.h*)
+		<LI> NIST interpolation for water (see *waterLatentHeat.H*)
 		<LI> Use value for thermoPhysicalProerties dictionary (see *fromThermophysicalPropertiesLatentHeat.H*)
 		</UL>
 	<LI> Saturation temperature/pressure (see *saturationModel.H*)
 		<UL>
 		<LI> Browning Potter for sodium (see *BrowningPotterSaturation.H*)
-		<LI> NIST interpolation for water (see *waterSaturation.h*)
-		<LI> TRACE model interpolation for water - YET TO BE VEIFIED (see *waterTRACESaturation.h*)
+		<LI> NIST interpolation for water (see *waterSaturation.H*)
+		<LI> TRACE model interpolation for water - YET TO BE VEIFIED (see *waterTRACESaturation.H*)
 		<LI> Constant temperature (see *constantTemperatureSaturation.H*)
 		</UL>
 	</UL>	
@@ -179,6 +194,7 @@ N.B.: Anisotropic pressure drops can be set by using the keywords *transverseDra
 </p>
 </div>
 <br>
+
 
 
 ## Physical properties

@@ -25,11 +25,7 @@ Class
     Foam::powerOffCriterionModel
 
 Description
-    Class to handle the charachteristic dimension of a dispersed fluid phase. 
-    This is used to compute the two-phase Reynolds number and fluid-fluid
-    heat transfer coefficients if correlations are based on the Nusselt 
-    number. It is alway limited by the hydraulic diameter of the structure the 
-    fluid is in, if applicable.
+
 
 Author
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
