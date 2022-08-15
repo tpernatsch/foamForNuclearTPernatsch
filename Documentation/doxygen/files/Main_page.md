@@ -13,7 +13,7 @@ Beside the usual Doxygen documentation of the source code, it provides a basic u
 	* [neutronics](@ref NEUTRONICS)
 	* [thermalHydraulics](@ref TH)
 	* [thermoMechanics](@ref TM)
-	* [Coupling options and time stepping](@ref COUPLING)
+	* [Coupling and time stepping](@ref COUPLING)
 
 * [Tutorials](@ref TUTORIALS)
 
@@ -22,5 +22,8 @@ Beside the usual Doxygen documentation of the source code, it provides a basic u
 * [Tips and tricks](@ref TIPS)
 
 * [Important notes](@ref NOTES)
+
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/C%C3%B4ne_orange_-_under_construction.png"  width="200">
 
 © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021

@@ -21,7 +21,7 @@ The *reactorState* dictionary is a bit of a special dictionary, in the sense tha
 All GeN-Foam neutronics models can be used for liquid-fuel reactors. One can activate this option using the  *liquidFuel* keyword in */system/controlDict*. Of course, in such case one should pay attention to setting proper boundary conditions for the precursors.
 
 A commented  reactorState can be found in
-[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/reactorState) (single phase). 
+[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/reactorState). 
 
 NB: Please note that in parallel calculations, the updated *reactorState* can be found in *processor0/constant/neutroRegion/*.
 </p>
