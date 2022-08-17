@@ -249,6 +249,25 @@ One thing that instead specific to GeN-Foam (except for the one-phase legacy sub
 OpenFOAM provides most of the boundary conditions one may need for thermal-hydraulics models. In addition, a few boundary conditions have been included in GeN-Foam and can be found in *GeN-Foam/classes/thermalHydraulics/src/boundaryConditions*. Information on the use of each boundary condition can be found in the header files (.H). 
 
 
+<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<b>Setting the *powerDensity*</b>
+
+Read from *startTime* if stand-alone
+
+From neutronics if activated
+
+Can be provided on a cell-zone base by definiing the powerDensity keyword in selected regions, and override what available in folder
+
+
+powerDensity.nuclearFuelPin or powerDensity.liquid
+
+setting power in point kinetics
+
+NB: power of fuel
+NB2: Fuel fraction needed!!
+</p>
+</div>
+
 ## Discretization and solution
 
 Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/fluidRegion*. 

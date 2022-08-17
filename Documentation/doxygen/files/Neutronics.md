@@ -116,12 +116,45 @@ Please note that the boundary condition needs to be set both for first and secon
 
 IC and BC for precursors do not have to be specified for standard reactors. On the other hand, they should be specified in case of liquid fuel reactors (e.g., Molten Salt Reactors). This is possible by creating a *defaultPrec* field, in case the same conditions apply to all precursor groups, or by creating the fields named *prec0*, *prec1*, etc., in case different conditions must be provided for different precursor groups. 
 
-N.B.: boundary conditions must be applied to *fluxStar...* and not to *flux...* since GeN-Foam solves for these variables. *fluxStar...* represent continuous fluxes, while *flux...* represent the real fluxes. They differ only in case discontinuity factors are employed /cite FIORINA2016212. 
+N.B.: boundary conditions must be applied to *fluxStar...* and not to *flux...* since GeN-Foam solves for these variables. *fluxStar...* represent continuous fluxes, while *flux...* represent the real fluxes. They differ only in case discontinuity factors are employed \cite FIORINA2016212. 
+
+
+<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<b>Setting the weighting in point-kinetics calculations</b>
+
+
+
+Please notice also that a correct evaluation of the reactivity worth of 
+delayed neutron precursors in MSRs would require knowledge of the adjoint
+flux. In GeN-Foam, the adjoint flux is approximated by the oneGroupFlux.
+When fluxes are not calculated via a diffusion calculation, one has to
+manually provide the oneGroupFlux in 0/neutroRegion. In this tutorial,
+the oneGroupFlux has been set to 1 in the core and zero elsewhere. This
+is done via the initialOneGroupFluxByZone keyword in nuclearData.
+
+Overwritten only if no existing flux files!
+
+Summarizing: 
+- fluxes take
+priority
+- if no fluxes, oneGrouoFlux is read. If not present, set to 1 everywhere
+- if initialOneGroupFluxByZone keyword in nuclearData, overwrite oneGroupFlux
+
+
+Example in [1D_MSR_pointKinetics](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData)
+
+NB: power of fuel
+NB2: Fuel fraction needed!!
+</p>
+</div>
+
 
 
 ## Discretization and solution
 
 Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/neutroRegion*. 
+
+## Miscellanea: how to set power in a simulation
 
 
 © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021

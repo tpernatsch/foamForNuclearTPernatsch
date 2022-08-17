@@ -10,9 +10,9 @@ Beside the usual Doxygen documentation of the source code, it provides a basic u
 	* [Postprocessing](@ref POSTPROCESSING)
 
 * [User manual](@ref USERMAN)
-	* [neutronics](@ref NEUTRONICS)
-	* [thermalHydraulics](@ref TH)
-	* [thermoMechanics](@ref TM)
+	* [Neutronics](@ref NEUTRONICS)
+	* [Thermal-hydraulics](@ref TH)
+	* [Thermal-mechanics](@ref TM)
 	* [Coupling and time stepping](@ref COUPLING)
 
 * [Tutorials](@ref TUTORIALS)
