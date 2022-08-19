@@ -31,3 +31,6 @@ GeN-Foam/*.sublime*
 **/lnInclude*
 *.o
 *.dep
+
+# Doxygen
+Documentation/doxygen/Doxygen/html/
