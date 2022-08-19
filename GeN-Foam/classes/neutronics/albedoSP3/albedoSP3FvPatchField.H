@@ -2,8 +2,10 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2011 OpenFOAM Foundation
+    \\  /    A nd           | Copyright held by original author
      \\/     M anipulation  |
+-------------------------------------------------------------------------------
+
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
@@ -25,21 +27,27 @@ Class
     Foam::albedoSP3FvPatchField
 
 Description
-    Foam::albedoSP3FvPatchField
+    Albedo boundary condition for SP3 or diffusion calculations. Please note that the
+    boundary condition needs to be set both for first and second moments in SP3.
 
-SourceFiles
-    albedoSP3FvPatchField.C
-
-Use:
-    type            albedoSP3;
-    gamma           0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
-    diffCoeffName   Dalbedo;  //not to be changed
-    fluxStarAlbedo  fluxStarAlbedo; //not to be changed
-    forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 calculations)
-    value           uniform 1;
+Usage
+    \verbatim
+    <patchName>
+    {
+        type            albedoSP3;
+        gamma           0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
+        diffCoeffName   Dalbedo;  //not to be changed
+        fluxStarAlbedo  fluxStarAlbedo; //not to be changed
+        forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 calculations)
+        value           uniform 1;
+    }
+    \endverbatim
 
 Author of this file (and associated .C or included .H files)
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)    
+
+SourceFiles
+    albedoSP3FvPatchField.C
 
 \*---------------------------------------------------------------------------*/
 

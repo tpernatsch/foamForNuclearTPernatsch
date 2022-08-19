@@ -2,8 +2,10 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2013 OpenFOAM Foundation
+    \\  /    A nd           | Copyright held by original author
      \\/     M anipulation  |
+-------------------------------------------------------------------------------
+
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
@@ -25,17 +27,19 @@ Class
     Foam::XSLowMem
 
 Description
-Class for XS parametrization. Used in SNNeutronics. Low memory version of XS. 
-Essentially it does not store the full scattering matrix, but it parametrize and
-return each component on request.
-One additional feature is that it creates (and can return) a sigmaFromToYesNo 
-matrix that is filled with zeros and ones. One in position  (i,j) implies
-that there is an exchange of neutrons from group i to j somewhere in the geometry.
-It can be used to speed up the calculations of scattering sources.
+    Class for XS parametrization. Used in SNNeutronics. Low memory version of XS. 
+    Essentially it does not store the full scattering matrix, but it parametrize and
+    return each component on request.
+    One additional feature is that it creates (and can return) a sigmaFromToYesNo 
+    matrix that is filled with zeros and ones. One in position  (i,j) implies
+    that there is an exchange of neutrons from group i to j somewhere in the geometry.
+    It can be used to speed up the calculations of scattering sources.
 
 Author of this file (and associated .C or included .H files)
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
+SourceFiles
+    XS.H
 
 \*---------------------------------------------------------------------------*/
 

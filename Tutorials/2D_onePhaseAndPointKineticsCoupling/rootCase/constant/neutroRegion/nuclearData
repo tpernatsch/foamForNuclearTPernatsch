@@ -266,6 +266,15 @@ zones
         "driveline"
         ...
     );
+
+    //- Overwrite oneGroupFlux with a cellZone by cellZone value. 
+    //  It works only if fluxes are not found in the folder, otherwise
+    //  they take priority. NOT REQUIRED,
+    initialOneGroupFluxByZone
+    {
+        "core"      1.0;
+    }
+
 */
 
 // ************************************************************************* //

@@ -38,7 +38,7 @@ PROJECT_NAME           = GeN-Foam
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = as-of-current-master
+PROJECT_NUMBER         = as-of-current-develop-branch
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -775,6 +775,7 @@ WARN_LOGFILE           =
 
 INPUT                  = ../../../README.md \
                          ../files \
+                         ../files/images \
                          ../../../GeN-Foam 
 
 # This tag can be used to specify the character encoding of the source files
@@ -872,7 +873,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             =
+IMAGE_PATH             = ../files/images
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -1640,7 +1641,7 @@ PAPER_TYPE             = a4wide
 # If left blank no extra packages will be included.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-EXTRA_PACKAGES         = $(WM_PROJECT_DIR)/doxygen/Doxygen/Macros/tensorOperator
+EXTRA_PACKAGES         = ./Macros/tensorOperator
 
 # The LATEX_HEADER tag can be used to specify a personal LaTeX header for the
 # generated LaTeX document. The header should contain everything until the first
@@ -2396,3 +2397,6 @@ GENERATE_LEGEND        = YES
 # This tag requires that the tag HAVE_DOT is set to YES.
 
 DOT_CLEANUP            = YES
+
+
+

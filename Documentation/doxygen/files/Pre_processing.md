@@ -1,11 +1,9 @@
 # Preprocessing {#PREPROCESSING}
 
-Before running GeN-Foam, one has to provide meshes, physical properties, discretization methods (if one does not want to use the default ones) and simulation details.
-
-N.B. A dummy mesh must always be present in all physics (region) directories, even if not solved for. The EMPTY case is already provided with minimal dummy meshes and consistent fields in the “0” folder. Be careful! In case of parallel calculations all your meshes will have to have a number of cells equal or higher than the number of domains you are decomposing your geometry into. In case you need more cells than what available in the EMPTY case, you can run a refineMesh
+Before running GeN-Foam, one has to provide meshes, physical properties, discretization methods (if one does not want to use the default ones) and simulation details.  This section provides a quick overview of the input deck of GeN-Foam. For more details, please refer to the [User manual](@ref USERMAN).
 
 
-**Meshing**
+## Meshing
 
 GeN-Foam uses three different meshes for neutronics, thermal-hydraulics and thermal-mechanics. There is no requirement for the three meshes to occupy the same region of space. Consistent mapping of fields is performed and a reference value is given to a field if no correspondence is found in the mesh where its value is being projected from. It follows that the geometry for neutronics can cover only a small part of the overall reactor geometry.  Meshes can be created with every OpenFOAM-compatible tool. Meshes can (should) be divided into zones (cellZones) to allow the use of different physical properties (e.g., cross sections) in different reactor regions. Sometimes, when converting a mesh to the OpenFOAM (polymesh) format, cellSets (and not cellZones) are created. The topoSetDict can be used to convert cellSets to cellZones.
 
@@ -23,10 +21,11 @@ a *polyMesh* folder will be created (or updated) in the folder *constant*. One s
 
 Please notice that the 3D_SmallESFR tutorial already contains the correct *polymesh* folders so that one can avoid the mesh generation step.
 
+N.B. **A dummy mesh must always be present in all physics (region) directories**, even if not solved for. The EMPTY case is already provided with minimal dummy meshes and consistent fields in the “0” folder. Be careful! In case of parallel calculations all your meshes will have to have a number of cells equal or higher than the number of domains you are decomposing your geometry into. In case you need more cells than what available in the EMPTY case, you can run a refineMesh
 
-**Physical properties**
+## Physical properties
 
-The data for the GeN-Foam simulations can be filled in the following input files (dictionaries):
+All the data for the GeN-Foam simulations can be filled in the following input files (dictionaries):
 * *constant/thermoMechanicalRegion/thermoMechanicalProperties* - thermo-mechanical properties of structures, subdivided according to the cellZones of the thermoMechanicalRegion mesh. 
 One can find a detailed, commented example in the tutorial 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/thermoMechanicalRegion/thermoMechanicalProperties).
@@ -68,8 +67,6 @@ One can find detailed, commented examples of nuclearData in the tutorials
 One can find examples of the *nuclearData...* files in the tutorial 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion) 
 
-N.B.: cross sections must be expressed according to the International System of Units (so m, not cm).
-
 * *constant/neutroRegion/quadratureSet* - contains the quadrature set for discrete ordinate calculations. 
 One can find examples of three different quadrature set in the tutorial 
 [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/Godiva_SN/constant/neutroRegion/).
@@ -78,35 +75,16 @@ One can find examples of three different quadrature set in the tutorial
 One can find a commented example in the tutorial 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/CRmove), though this option is not actually used in the tutorial.
 
-N.B.: the *nuclearData...* files must always be present, even when not parametrizing cross-sections. If no parametrization is needed, the “zone” card must be left “blank” as:
-`zones();`
 
-N.B.2: the thermal hydraulic class can make use of a local coordinate system, which can be used by setting the keywords *localX* and *localY*  in the sub-dictionary *dragModels.(nameOfPhase).structure.(nameOfCellZones)* of the dictionary *constant/fluidRegion/phaseProperties*. A local coordinate system can be used for instance when one knows the pressure drop correlation in a direction that is different from the x, y, and z directions of the global coordinate system. Besides drag models, the local coordinate system can be used also for defining a tortuosity (keyword *localTortuosity*, to be defined as a vector in the local coordinate system).
 
-N.B.3: Please notice that a porous medium simulation using the porousKEpsilon model entails the risk of an unstable solution. This is due to the fact that the turbulent viscosity will be that of the sub-scale structure, and thus not enough to stabilize a solution on the length scale of the coarse mesh. To address this problem, one can define the keyword *DhStruct* in *constant/fluidRegion/phaseProperties/dragModels.(nameOfPhase).structure.(nameOfCellZones)*. This keyword defines the hydraulic diameter of the whole porous structure. The code uses it to make sure the turbulent viscosity results in a  laminar Reynolds number (defaulted to 500).
+## Initial values and boundary conditions
 
-**Initial values and boundary conditions**
+As in all standard OpenFOAM solvers, initial values (IC) and boundary conditions (BC) should be provided in the “0” folder, or in the time folder corresponding to the *startTime* of the simulation, if different than 0. 
 
-As in all standard OpenFOAM solvers, initial values (IC) and boundary conditions (BC) should be provided in the “0” folder, or in the folder corresponding to the *startTime* of the simulation, if different than 0. In the case of neutronics, the user can either specify different IC and BC for each one of the energy groups (with fluxes that must be named *fluxStar0*, *fluxStar1*, etc…), or provide the same IC and BC to all fluxes by using the *defaultFlux* field. In case of SP3 calculations, the IC and BC for the second moment can be imposed either for each energy (using fields named *fluxStar20*, *fluxStar21*, etc…), or to all energies by using the *defaultFlux2* field. When both *defaultFlux* and *fluxStar...* are present, the solver gives priority to *fluxStar...*. In case of SN calculations, it is suggested not to modify the boundary conditions and to use the *defaultFlux* file (an example is providedin the Godiva_SN tutorial).
 
-In addition to the standard OpenFOAM BC, an albedo boundary condition is available in GeN-Foam for diffusion and SP3 calculations and can be used according to the following syntax:
+## Discretization and solution
 
-```
-	type            albedoSP3;
-	gamma		0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
-	diffCoeffName	Dalbedo;  //not to be changed
-	fluxStarAlbedo  fluxStarAlbedo; //not to be changed
-	forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 					calculations)
-	value           uniform 1;
-```
-
-IC and BC for precursors do not have to be specified for standard reactors. On the other hand, they should be specified in case of liquid fuel reactors (e.g., Molten Salt Reactors). This is possible by creating a *defaultPrec* field, in case the same conditions apply to all precursor groups, or by creating the fields named *prec0*, *prec1*, etc., in case different conditions must be provided for different precursor groups. 
-
-N.B.: when employing the adjoint solver, you will have to add the fields *adjointDefaultPrec* and *adjointDefaultFlux* in your initial time.
-
-**Discretization and solution**
-
-Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/neutroRegion*, *constant/fluidRegion* or *constant/ thermalMechanicalRegion*. Simulation details are determined through the *controlDict* in the *system* folder. The *controlDict* is extended compared to a standard OpenFOAM controlDict in order to control what solvers are activated and flags that affect the behaviour of GeN-Foam as a whole.
+Details for discretization and solution of single-physics equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/neutroRegion*, *constant/fluidRegion* or *constant/ thermalMechanicalRegion*. Coupling and simulation details are determined through the *fvSolution* and *controlDict* in the *system* folder. The *controlDict* is significantly extended compared to a standard OpenFOAM controlDict in order to control what solvers are activated and flags that affect the behaviour of GeN-Foam as a whole.
 
 
 

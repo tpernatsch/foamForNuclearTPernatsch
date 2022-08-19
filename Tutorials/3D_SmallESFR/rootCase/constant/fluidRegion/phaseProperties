@@ -109,8 +109,7 @@ structureProperties
     "lowest" regime is extended to -inf and the upper bound of the "upmost"
     regime is extended to +inf
 
-    The twoParameter type is a 2-D regime map, tutorials will be eventually 
-    added on it.
+    The twoParameter type is a 2-D regime map.
 
     To use a regimeMap in a model, select the "byRegime" type for said model.
     All physicsModels support it. The name of the regime map to be used

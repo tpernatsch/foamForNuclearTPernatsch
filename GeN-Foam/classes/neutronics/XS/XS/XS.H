@@ -2,8 +2,10 @@
   =========                 |
   \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
    \\    /   O peration     |
-    \\  /    A nd           | Copyright (C) 2013 OpenFOAM Foundation
+    \\  /    A nd           | Copyright held by original author
      \\/     M anipulation  |
+-------------------------------------------------------------------------------
+
 -------------------------------------------------------------------------------
 License
     This file is part of OpenFOAM.
@@ -25,10 +27,13 @@ Class
     Foam::XS
 
 Description
-Class for XS parametrization
+    Class for XS parametrization and other nuclear data.
 
 Author of this file (and associated .C or included .H files)
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
+
+SourceFiles
+    XS.C
 
 \*---------------------------------------------------------------------------*/
 
