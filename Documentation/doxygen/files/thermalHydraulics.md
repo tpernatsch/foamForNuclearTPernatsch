@@ -1,8 +1,6 @@
 
 # Thermal-hydraulics {#TH}
 
-**Work in progress!!**
-
 ## Introduction
 
 Both single- and two-phase simulations can be performed using GeN-Foam. All sub-solvers were developed for a coarse-mesh porous-medium treatment of complex structures such as core and heat exchanger, and for a standard RANS treatment of clear-fluid regions. The sub-solvers automatically switch from a porous-medium (coarse-mesh) treatment to a standard CFD (fine-mesh) treatment when the colume fraction of the sub-scale structures is set to zero. This allows for an implict coupling of porous-medium (sub-channel-like in 2D and 3D, or system-code-like) treatment of compelex structures (e.g., core and heat exchnagers) with a standard CFD treatment of clear-fluid regions (e.g., plena and pools).
@@ -29,104 +27,112 @@ The various parameters to be used in a porous-medium simulation can be set using
 <b>The *phaseProperties* dictionary</b>
 
 The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is a large dictionary that can be used to: chose the sub-solver to be used (one-phase, legacy one-phase or two-phase); set various properties of the phases (beside basic thermo-physical properties defined in the *thermophysicalProperties* dictionary); set the properties of the sub-scale structures (fuel pins, heat exchangers, etc) in the porous zones, including the possibility to assign a *powerModel* for power production (e.g., nuclear fuel, or constant power) and the *passiveProperties* of another sub-structure that interacts thermally with the fluid (for instance the wrappers in sodium fast reactors). In addition models are available to model pumps and heat exchangers.  The name of the porous zones must coincide with that of the cellZones of the fluidRegion mesh.  
-<br><br>Currently available models to describe the interaction of the fuel with the sub-scale structures inlcude:
+<br>
+<br>
+One can find detailed, commented examples in the tutorials 
+[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/phaseProperties) (single phase) and
+[1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/phaseProperties) (two phases). In addition, an example on how to use a two-dimensional flow-regime map can be found in [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_PSBT_SC/constant/fluidRegion/phaseProperties).
+<br>
+<p>
+**Drag models**. Currently available models to describe presure drops induced by the sub-scale structure or by a second phase include:
 <UL>
-<LI> Drag models
+<LI> Fluid-fluid drag models (see *FFDragCoefficientModel.H*)	
 	<UL>
-	<LI> Fluid-fluid drag models (see *FFDragCoefficientModel.H*)	
-		<UL>
-		<LI> Autruffe (see *AutruffeFFDragCoefficient.H*)
-		<LI> Bestion (see *BestionFFDragCoefficient.H*)
-		<LI> Bestion as in TRACE (see *BestionTRACEFFDragCoefficient.H*)
-		<LI> No Kazimi (see *NoKazimiFFDragCoefficient.H*)
-		<LI> Schiller Naumann (see *SchillerNaumannFFDragCoefficient.H*)
-		<LI> Wallis (see *WallisFFDragCoefficient.H*)
-		</UL>	
-	<LI> Fluid-structure drag models (see *FSDragCoefficientModel.H*)
-		<UL>
-		<LI> Baxi Dalle Donne (see *BaxiDalleDonneFSDragCoefficient.H*)
-		<LI> Churchill (see *ChurchillFSDragCoefficient.H*)
-		<LI> Engel as in TRACE (see *EngelFSDragCoefficient.H*)
-		<LI> Modified Engel (see *modifiedEngelFSDragCoefficient.H*)
-		<LI> No Kazimi (see *NoKazimiFSDragCoefficient.H*)
-		<LI> Rehme (see *RehmeFSDragCoefficient.H*)
-		<LI> Drag coefficient as a A*Re^B (see *ReynoldsPowerFSDragCoefficient.H*)
-		</UL>	
-	<LI> Two-phase drag multipliers	(see *twoPhaseDragMultiplierModel.H*)
-		<UL>
-		<LI> Chen Kalish (see *ChenKalishTwoPhaseDragMultiplier.H*)
-		<LI> Constant (see *constantTwoPhaseDragMultiplier.H*)
-		<LI> Kaiser 74 (see *Kaiser74TwoPhaseDragMultiplier.H*)
-		<LI> Kaiser 88 (see *Kaiser88TwoPhaseDragMultiplier.H*)
-		<LI> Kottowski Savatteri (see *KottowskiSavatteriTwoPhaseDragMultiplier.H*)
-		<LI> Lockhart Martinelli (see *LockhartMartinelli.H*)
-		<LI> Lottes Flinn(see *LottesFlinnTwoPhaseDragMultiplier.H*)
-		<LI> Lottes Flinn Nguyen(see *LottesFlinnNguyenTwoPhaseDragMultiplier.H*)
-		</UL>	
-	</UL>
-<LI> Heat transfer models
+	<LI> Autruffe (see *AutruffeFFDragCoefficient.H*)
+	<LI> Bestion (see *BestionFFDragCoefficient.H*)
+	<LI> Bestion as in TRACE (see *BestionTRACEFFDragCoefficient.H*)
+	<LI> No Kazimi (see *NoKazimiFFDragCoefficient.H*)
+	<LI> Schiller Naumann (see *SchillerNaumannFFDragCoefficient.H*)
+	<LI> Wallis (see *WallisFFDragCoefficient.H*)
+	</UL>	
+<LI> Fluid-structure drag models (see *FSDragCoefficientModel.H*)
 	<UL>
-	<LI> Fluid-fluid heat-tranfer models (see *FFHeatTransferCoefficientModel.H*)	
+	<LI> Baxi Dalle Donne (see *BaxiDalleDonneFSDragCoefficient.H*)
+	<LI> Churchill (see *ChurchillFSDragCoefficient.H*)
+	<LI> Engel as in TRACE (see *EngelFSDragCoefficient.H*)
+	<LI> Modified Engel (see *modifiedEngelFSDragCoefficient.H*)
+	<LI> No Kazimi (see *NoKazimiFSDragCoefficient.H*)
+	<LI> Rehme (see *RehmeFSDragCoefficient.H*)
+	<LI> Drag coefficient as a A*Re^B (see *ReynoldsPowerFSDragCoefficient.H*)
+	</UL>	
+<LI> Two-phase drag multipliers	(see *twoPhaseDragMultiplierModel.H*)
+	<UL>
+	<LI> Chen Kalish (see *ChenKalishTwoPhaseDragMultiplier.H*)
+	<LI> Constant (see *constantTwoPhaseDragMultiplier.H*)
+	<LI> Kaiser 74 (see *Kaiser74TwoPhaseDragMultiplier.H*)
+	<LI> Kaiser 88 (see *Kaiser88TwoPhaseDragMultiplier.H*)
+	<LI> Kottowski Savatteri (see *KottowskiSavatteriTwoPhaseDragMultiplier.H*)
+	<LI> Lockhart Martinelli (see *LockhartMartinelli.H*)
+	<LI> Lottes Flinn(see *LottesFlinnTwoPhaseDragMultiplier.H*)
+	<LI> Lottes Flinn Nguyen(see *LottesFlinnNguyenTwoPhaseDragMultiplier.H*)
+	</UL>	
+</UL>
+<br>
+<p>
+**Heat transfer models**. Currently available models to describe the enrgy exchange with a sub-scale structure or with a second phase include:
+<UL>
+<LI> Fluid-fluid heat-tranfer models (see *FFHeatTransferCoefficientModel.H*)	
+	<UL>
+	<LI> No Kazimi (see *NoKazimiFFHeatTransferCoefficient.H*)
+	<LI> Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_) (see *NusseltFFHeatTransferCoefficient.H*)
+	</UL>	
+<LI> Fluid-structure heat-tranfer models (see FSHeatTransferCoefficientModel.H)
+	<UL>
+	<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_) (see *NusseltFSHeatTransferCoefficient.H*)
+	<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_), plus and additional heat transfer coefficient to take into account the resistance of a wall, such that  H = Nu * kappa / Dh + H_wall (see *NusseltAndWallFSHeatTransferCoefficient.H*)
+	<LI>  Shah (see *ShahFSHeatTransferCoefficient.H*)
+	<LI>  Gorenflo (see *GorenfloFSHeatTransferCoefficient.H*)
+	<LI>  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does below CHF (see *multiRegimeBoilingTRACEFSHeatTransferCoefficient.H*) ADD REF GAUTHIER
+	<LI>  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does, including CHF and post-CHF. Not verified! It requires specifiyng the *multiRegimeBoilingTRACECHF* model for the water.structure heat tranfer, and the *multiRegimeBoilingVapourTRACE* model for the vapour.structure heat tranfer (see *multiRegimeBoilingTRACECHFFSHeatTransferCoefficient.H* and *multiRegimeBoilingVapourTRACEFSHeatTransferCoefficient.H*). Please notice that a lookup table for CHF is still missing. 
+	<LI>  multiRegimeBoiling - multi-regime heat transfer coefficient that replicates  the same logic as TRACE, but with more flexibility for user-selectable sub-models (see *multiRegimeBoiling.H*). Can be used below CHF.
+	<LI>  Sub-models employed by the multi-regime models:
 		<UL>
-		<LI> No Kazimi (see *NoKazimiFFHeatTransferCoefficient.H*)
-		<LI> Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_) (see *NusseltFFHeatTransferCoefficient.H*)
-		</UL>	
-	<LI> Fluid-structure heat-tranfer models (see FSHeatTransferCoefficientModel.H)
-		<UL>
-		<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_) (see *NusseltFSHeatTransferCoefficient.H*)
-		<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_), plus and additional heat transfer coefficient to take into account the resistance of a wall, such that  H = Nu * kappa / Dh + H_wall (see *NusseltAndWallFSHeatTransferCoefficient.H*)
-		<LI>  Shah (see *ShahFSHeatTransferCoefficient.H*)
-		<LI>  Gorenflo (see *GorenfloFSHeatTransferCoefficient.H*)
-		<LI>  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does below CHF (see *multiRegimeBoilingTRACEFSHeatTransferCoefficient.H*) ADD REF GAUTHIER
-		<LI>  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does, including CHF and post-CHF. Not verified! It requires specifiyng the *multiRegimeBoilingTRACECHF* model for the water.structure heat tranfer, and the *multiRegimeBoilingVapourTRACE* model for the vapour.structure heat tranfer (see *multiRegimeBoilingTRACECHFFSHeatTransferCoefficient.H* and *multiRegimeBoilingVapourTRACEFSHeatTransferCoefficient.H*). Please notice that a lookup table for CHF is still missing. 
-		<LI>  multiRegimeBoiling - multi-regime heat transfer coefficient that replicates  the same logic as TRACE, but with more flexibility for user-selectable sub-models (see *multiRegimeBoiling.H*). Can be used below CHF.
-		<LI>  Sub-models employed by the multi-regime models:
+		<LI> Critical heat flux related models (see *CHFModel.H*):
 			<UL>
-			<LI> Critical heat flux related models (see *CHFModel.H*):
-				<UL>
-				<LI> Critical heat flux models
-					<UL> 
-					<LI> Constant, user-selctable value (see *constantCHF.H*)
-					<LI> Lookup table, not yet implemented (empty class at *lookUpTableCHF.H*)
-					</UL>
-				<LI> Leidenfrost models (see *TLFModel.H*)
-					<UL> 
-					<LI> Groeneveld Stewart (see *GroeneveldStewartTLF.H*)
-					</UL>
+			<LI> Critical heat flux models
+				<UL> 
+				<LI> Constant, user-selctable value (see *constantCHF.H*)
+				<LI> Lookup table, not yet implemented (empty class at *lookUpTableCHF.H*)
 				</UL>
-			<LI> Flow Enhancement Factor Models (see *flowEnhancementFactorModel.H*)
-				<UL>
-				<LI> Chen (see *ChenFlowEnhancementFactor.H*)
-				<LI> COBRA-TF (see *COBRA-TFFlowEnhancementFactor.H*)
-				<LI> Rezkallah Sims (see *RezkallahSimsFlowEnhancementFactor.H*)
-				</UL>
-			<LI> Post-CHF models
-				<UL>
-				<LI> Cachard (for liquid) (see *CachardLiquidFSHeatTransferCoefficient.H*)
-				<LI> Cachard (for vapour) (see *CachardVapourFSHeatTransferCoefficient.H*)
-				</UL>
-			<LI> Sub-Cooled Boiling Fraction Models (see *subCooledBoilingFractionModel.H*)
-				<UL>
-				<LI> Constant (see *constantSubCooledBoilingFraction.H*)
-				<LI> Saha Zuber (see *SahaZuberSubCooledBoilingFraction.H*)
-				</UL>
-			<LI> Superposition Nucleate Boiling (see *superpositionNucleateBoilingFSHeatTransferCoefficient.H*)
-			<LI> Suppression factor models (see *suppressionFactorModel.H*)
-				<UL>
-				<LI> Chen (see *ChenSuppressionFactor.H*)
-				<LI> COBRA-TF (see *COBRA-TFSuppressionFactor.H*)
-				</UL>
-			<LI> Temperature of the onset of nucleate boiling (see *TONBModel.H*)
-				<UL>
-				<LI> Basu (see *BasuTONB.H*)
+			<LI> Leidenfrost models (see *TLFModel.H*)
+				<UL> 
+				<LI> Groeneveld Stewart (see *GroeneveldStewartTLF.H*)
 				</UL>
 			</UL>
-		</UL>	
-	</UL>
+		<LI> Flow Enhancement Factor Models (see *flowEnhancementFactorModel.H*)
+			<UL>
+			<LI> Chen (see *ChenFlowEnhancementFactor.H*)
+			<LI> COBRA-TF (see *COBRA-TFFlowEnhancementFactor.H*)
+			<LI> Rezkallah Sims (see *RezkallahSimsFlowEnhancementFactor.H*)
+			</UL>
+		<LI> Post-CHF models
+			<UL>
+			<LI> Cachard (for liquid) (see *CachardLiquidFSHeatTransferCoefficient.H*)
+			<LI> Cachard (for vapour) (see *CachardVapourFSHeatTransferCoefficient.H*)
+			</UL>
+		<LI> Sub-Cooled Boiling Fraction Models (see *subCooledBoilingFractionModel.H*)
+			<UL>
+			<LI> Constant (see *constantSubCooledBoilingFraction.H*)
+			<LI> Saha Zuber (see *SahaZuberSubCooledBoilingFraction.H*)
+			</UL>
+		<LI> Superposition Nucleate Boiling (see *superpositionNucleateBoilingFSHeatTransferCoefficient.H*)
+		<LI> Suppression factor models (see *suppressionFactorModel.H*)
+			<UL>
+			<LI> Chen (see *ChenSuppressionFactor.H*)
+			<LI> COBRA-TF (see *COBRA-TFSuppressionFactor.H*)
+			</UL>
+		<LI> Temperature of the onset of nucleate boiling (see *TONBModel.H*)
+			<UL>
+			<LI> Basu (see *BasuTONB.H*)
+			</UL>
+		</UL>
+	</UL>	
 </UL>
-<br><br> Currently available models for specific sub-scale structures inlcude:
+<br>
+<p>
+**Special models**. Dedicated models for specific sub-scale structures inlcude:
 <UL>
-<LI> Power models, including:
+<LI> Power models, i.e., active media that can provide and substract energy, including:
 	<UL>
 	<LI> Fixed (possibly time-dependent) power (see *fixedPower.H* and the tutorial *1D_CHF/imposedPower*)
 	<LI> Fixed (possibly time-dependent) temperature (see *fixedTemperature.H* and the tutorial *1D_CHF/imposedTemperature*)
@@ -136,7 +142,9 @@ The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is 
 <LI> A heat exchanger model that is used to model the heat transfer between two disconnected regions, for instance representing the primary and secondary circuit (see *heatExchanger.H* and the tutorials *1D_HX* and *2D_FFTF*)
 <LI> A pump model used to set a (possibly time-dependent) momentum source (see *pump.H* and tutorials *2D_FFTF* and *2D_MSFR*).
 </UL>
-Currently available models for two-phase flow simulations include:
+<br>
+<p>
+**Models for two-phase flows**. Currently available models for two-phase flow simulations include:
 <UL>
 <LI> Contact partition models (see *contactPartitionModel.H*)
 	<UL>
@@ -184,14 +192,13 @@ Currently available models for two-phase flow simulations include:
 		</UL>
 	</UL>	
 </UL>
-<br><br> Phase pairs
-<br><br> Regime maps. 1 or 2D maps. Can be mixed with multi-regime. example in 1D_PSBT_SC
-<br><br>One can find detailed, commented examples in the tutorials 
-[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/phaseProperties) (single phase) and
-[1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/phaseProperties) (two phases). In addition, an example on how to use a two-dimensional flow-regime map can be found in [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_PSBT_SC/constant/fluidRegion/phaseProperties).
-
+<br>
+<p> 
+**Regime maps**. In GeN-Foam the possibility exists to employ 1- and 2-dimensinal regime maps in order to employ different models for different flow conditions. This can be used for instance in one-phae simulation to provide different correlations for turbulent and laminar flow  (see [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/phaseProperties) for a commented example), or in 2-phase flow simulations to provide full regime maps (see [1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_boiling/constant/fluidRegion/phaseProperties) for a commented example of 1-dimensinal map, [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_PSBT_SC/constant/fluidRegion/phaseProperties) and for a commented example of 2-dimensinal map). Multiple maps can be used in the same simulation. In addition, regime-maps models can be mixed with multi-regime models, as in [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_PSBT_SC/constant/fluidRegion/phaseProperties), where a *preCHFTraceRegimeMap* is employed to assign models for phase dispersion, interfacial area and bubble diameter, while a single multi-regime model is employed to describe heat transfer between liquid and structure throughout the various regimes.
+<p>
 N.B.: Anisotropic pressure drops can be set by using the keywords *transverseDragModel* (Blasius, GunterShaw, same) and *principalAxis*(localX, localY, localZ) in the sub-dictionary *dragModels.(nameOfPhase).structure.(nameOfCellZones)*. *principalAxis* sets the axis on which the nominal dragModel is used. *transverseDragModel* sets the model to be used on the two directions that are perpendicular to *principalAxis*. If *same* is chosen as *transverseDragModel*, the code will use the nominal model in all directions, but with the possibility of an anisotropic hydraulic diameter. The anisotropy of the hydraulic diameter can be set using the keyword *localDhAnisotrpy* and assign to it a vector of 3 scaling factors (one for each local directions).
-</p>
+<p>
+N.B.2: The thermal hydraulic class can make use of a local coordinate system, which can be used by setting the keywords *localX* and *localY*  in the sub-dictionary *dragModels.(nameOfPhase).structure.(nameOfCellZones)* of the dictionary *constant/fluidRegion/phaseProperties*. A local coordinate system can be used for instance when one knows the pressure drop correlation in a direction that is different from the x, y, and z directions of the global coordinate system. Besides drag models, the local coordinate system can be used also for defining a tortuosity (keyword *localTortuosity*, to be defined as a vector in the local coordinate system).
 </div>
 <br>
 
@@ -203,7 +210,6 @@ N.B.: Anisotropic pressure drops can be set by using the keywords *transverseDra
 <b>The *g* dictionary</b>
 
 The *g* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows specifying the gravitational acceleration.
-</p>
 </div>
 <br>
 
@@ -215,7 +221,6 @@ The *thermophysicalProperties* dictionary can be found under *constant/fluidRegi
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/thermophysicalProperties) (one-phase), 
 [1D_boiling (liquid)](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/thermophysicalProperties.liquid) (two-phase, liquid)
 [1D_boiling (vapour)](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/1D_boiling/constant/fluidRegion/thermophysicalProperties.vapour) (two-phase, vapour)
-</p>
 </div>
 <br>
 
@@ -231,7 +236,6 @@ The *turbulenceProperties* dictionary can be found under *constant/fluidRegion/*
 <br><br>While some approaches to model k and epsilon for two-phase flow simulations are presently included in the code. In particular, the Lahey model (see *LaheyKEpsilon.H*) and a mixture model (see *mixtureKEpsilon.H*) can be uses for clear-fluids, or for mixed clear-fluid and porous-medium simulations when in case of strongly advective two-phase flow scenarios where turbulent mixing mat be neglected. In addition, as simple extension of the *porousKEpsilon* model has been implemented that allows to correct the turbulent intensity using a term that is proportional to the fraction of the other phase (see *porousKEpsilon2PhaseCorrected.H*). 
 <br><br>One can find a detailed, commented example for a porous one-phase simulation in the tutorial 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/fluidRegion/turbulenceProperties).
-</p>
 </div>
 <br>
 
@@ -250,22 +254,21 @@ OpenFOAM provides most of the boundary conditions one may need for thermal-hydra
 
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
-<b>Setting the *powerDensity*</b>
+<b>Setting the initial power</b>
 
-Read from *startTime* if stand-alone
-
-From neutronics if activated
-
-Can be provided on a cell-zone base by definiing the powerDensity keyword in selected regions, and override what available in folder
-
-
-powerDensity.nuclearFuelPin or powerDensity.liquid
-
-setting power in point kinetics
-
-NB: power of fuel
-NB2: Fuel fraction needed!!
-</p>
+There are several ways to set the power in GeN-Foam. For the power generated in subscale structures:
+<UL>
+<LI> The thermal-hydraulics solver will normally use the *powerDensity.* fields (for instance, *powerDensity.nuclearFuelPin* for pin-based reactors) that it finds in the 0 (or *startTime*) folder.
+<LI> As an alternative, one can provide cellZone-by-cellZone values via the keyword *powerDensity* in the various power models in the *phase* properties (see for instance [1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_boiling/constant/fluidRegion/phaseProperties)). However, if GeN-Foam finds the corresponding field in  the 0 (or *startTime*) folder, this will take priority.
+</UL>
+For the power generated in the fluid itself:
+<UL>
+<LI> The thermal-hydraulics solver will normally use the *powerDensity* field that it finds in the 0 (or *startTime*) folder.
+<LI> One can override this behavior by using the *initialPowerDensity* keyword in the *phaseProperties* (see [1D_MSR_pointKinetics](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_MSR_pointKinetics/rootCase/constant/fluidRegion/phaseProperties)) for an example. Also in this case the field in the 0 (or *startTime*) folder, this will take priority.
+</UL>
+If neutronics if activated, the neutronic sub-solver will overwrite everything with the power it calculates. For eigenvalue calculations, this power is set in the *pTarget* keyword in the *reactorState* dictionary. For transients, the power is a result of calculations. There is one important exception to this behavior: the point kinetics solver will only rescale the power density that it finds in *neutroRegion*, or, if it does not find it, the one that it finds in *fluidRegion*. The rescaled power density will be written to both *neutroRegion* and *fluidRegion*. For point kinetics, the *pTarget* keyword in *reactorState* is not used by the solver itslef. However, to correctly plot point kinetics results, pTarget must be consistent with the mentioned power densities.
+NB: The power density defined in *powerDensity.nuclearFuelPin* for pin-based reactors refers to the power density inside the fuel matrix.
+NB2: The *fuelFraction* in *nuclearData* is used to translate the volume-average power density that is normally calculated by neutronics solvers into the fuel-averaged power density used by the thermal-hydraulic sub-solver. 
 </div>
 
 ## Discretization and solution

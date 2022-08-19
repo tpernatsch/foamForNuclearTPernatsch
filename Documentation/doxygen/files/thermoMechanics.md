@@ -1,15 +1,9 @@
 
 # Thermal-mechanics {#TM}
 
-**Work in progress!!**
-
 ## Introduction
 
 The thermal-mechanics solver of GeN-Foam is a simple linear elasticity solver that can be used to evaluate thermal deformations in a core. Temperatures are projected from the thermal-hydraulic solver (temperatures of fuels and structures) and the deformation field is used to deform the mesh for neutronics and thermal-hydraulics. In particular, the radial deformation of structures and the axial deformation of fuel are employed. to deform the neutronics mesh. 
-
-
-## Models
-
 
 
 ## Various properties
@@ -20,7 +14,6 @@ The thermal-mechanics solver of GeN-Foam is a simple linear elasticity solver th
 The *thermoMechanicalProperties* dictionary can be found under *constant/thermoMechanicalRegion* and allow to define the thermo-mechanical properties of structures, subdivided according to the cellZones of the thermoMechanicalRegion mesh. 
 <br><br>One can find a detailed, commented example in the tutorial 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/thermoMechanicalRegion/thermoMechanicalProperties).
-</p>
 </div>
 <br>
 

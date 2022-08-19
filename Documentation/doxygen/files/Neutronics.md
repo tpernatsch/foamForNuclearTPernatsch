@@ -1,8 +1,6 @@
 
 # Neutronics {#NEUTRONICS}
 
-**Work in progress!!**
-
 ## Introduction
 
 The neutronics class (see *neutronics.H*) is a high-level class that contains essential data and variables that are common to various neutronics models. In particular, the neutronics class handles the variables that are included in the *constant/neutroRegion/reactorState* dictionary.
@@ -13,7 +11,7 @@ The neutronics class (see *neutronics.H*) is a high-level class that contains es
 The *reactorState* dictionary is a bit of a special dictionary, in the sense that it is found under the *constant/neutroRegion/* sub-folder even though it is updated during a simulation (which typically happens to fields in the time folder). It included essentially 4 keywords:
 <UL>
 <LI> *keff*  is used in the spatial kinetics solvers as initial guess for keff when doing an eigenvalue calculation. It is then updated automatically at each time step (i.e., at each power iteration) with the calculated value of keff. When performing a transient calculation with the spatial kinetics solvers, *keff* is instead used to divide the neutron source term and is not updated during the simulation. Typically, to run spatial kinetics transient simulations, one first runs an eigenvalue calculation. The resuling *keff* will be the one that makes the reactor critical in a subsequent transient simulation. *keff* is diregarded by the point kinetics sub-solver.
-<LI> *pTarget* is used in the spatial kinetics solvers as target power when doing an eigenvalue calculation. It is also used by the point kinetics sub-solver, but only to correctly plot results. As power, GeN-Foam uses what it finds under powerDensity of the neutroRegion, or under the powerDensity of the fluidRegion if it does not find a powerDensity in the neutroRegion. To correctly plot point kinetics result, pTarget must be consistent with the mentioned powerDensities.
+<LI> *pTarget* is used in the spatial kinetics solvers as target power when doing an eigenvalue calculation. It is also used by the point kinetics sub-solver, but only to correctly plot results. As power, GeN-Foam uses what it finds under powerDensity of the neutroRegion, or under the powerDensity of the fluidRegion if it does not find a powerDensity in the neutroRegion. To correctly plot point kinetics result, pTarget must be consistent with the mentioned power densities.
 <LI> *externalReactivity* is read both by the spatial kinetics and point kinetics solvers and is used to instantly add (or remove) a certain reactivity at the beginning of a transient.
 <LI> *initialPrecursorPowers* can be read by the point kinetics sub-solver in case the user wishes to set initial concentrations of precursors. If not found, precursor concentration are initialized so to be in equilibrium with the starting conditions (i.e. a steady state is assumed). Please note that precursor concentrations are written to reactorState as the simulation progresses, yet time information (i.e. at which time did I have these precursor concentrations?) is lost in this way. Thus, to avoid obtaining different results when re-starting from the same-time step, the precursor concentrations are written on disk under the precursorPowers keyword, NOT initialPrecursorPowers. If the user wishes to restart a point-kinetics simulation from a different time-step in the middle of a transient, they needs to change the precursorPowers keyword into initialPrecursorPowers.
 </UL>
@@ -24,7 +22,6 @@ A commented  reactorState can be found in
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/reactorState). 
 
 NB: Please note that in parallel calculations, the updated *reactorState* can be found in *processor0/constant/neutroRegion/*.
-</p>
 </div>
 
 ## Models
@@ -49,7 +46,6 @@ hundreds of iterations per time step).
 </UL>
 One can find detailed, commented examples in most tutorials. See for instance 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/neutronicsProperties) (single phase).
-</p>
 </div>
 
 ## Various properties
@@ -71,7 +67,6 @@ N.B.2: defaultPrec has 1/m3 units except for the adjoint solver that needs 1/m2/
 
 N.B.3: the *nuclearData...* files must always be present, even when not parametrizing cross-sections. If no parametrization is needed, the “zone” card must be left “blank” as:
 `zones();`
-</p>
 </div>
 
 An additional dictionary is needed to provide the quadrature set when performing discrete ordinate calculations.
@@ -83,7 +78,6 @@ The *quadratureSet* dictionary is found under *constant/neutroRegion/*. It ccont
 <br><br>One can find examples of three different quadrature set in the tutorial 
 [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/Godiva_SN/constant/neutroRegion/). 
 S4 and S8 chebichev Legendre quadrature sets can be found in [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/develop/Tools/chebichevLegendreQuadratureSets/)
-</p>
 </div>
 
 Finally, the *CRMove* dictionary can be used to move control rods. 
@@ -94,7 +88,6 @@ Finally, the *CRMove* dictionary can be used to move control rods.
 The CRMove* dictionary can be found under *constant/neutroRegion/*. It contains input data for control rods movement. Control rods can be moved from the initial position to a new one by selecting initial and final time of the insertion/extraction and the speed of insertion/extraction (positive speed for insertion).
 <br><br>One can find a commented example in the tutorial 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/CRmove), though this option is not actually used in the tutorial.
-</p>
 </div>
 
 
@@ -121,31 +114,12 @@ N.B.: boundary conditions must be applied to *fluxStar...* and not to *flux...* 
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
 <b>Setting the weighting in point-kinetics calculations</b>
-
-
-
-Please notice also that a correct evaluation of the reactivity worth of 
-delayed neutron precursors in MSRs would require knowledge of the adjoint
-flux. In GeN-Foam, the adjoint flux is approximated by the oneGroupFlux.
-When fluxes are not calculated via a diffusion calculation, one has to
-manually provide the oneGroupFlux in 0/neutroRegion. In this tutorial,
-the oneGroupFlux has been set to 1 in the core and zero elsewhere. This
-is done via the initialOneGroupFluxByZone keyword in nuclearData.
-
-Overwritten only if no existing flux files!
-
-Summarizing: 
-- fluxes take
-priority
-- if no fluxes, oneGrouoFlux is read. If not present, set to 1 everywhere
-- if initialOneGroupFluxByZone keyword in nuclearData, overwrite oneGroupFlux
-
-
-Example in [1D_MSR_pointKinetics](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData)
-
-NB: power of fuel
-NB2: Fuel fraction needed!!
-</p>
+A correct evaluation of the reactivity worth of delayed neutron precursors in MSRs, as well as of the impact of temperatures on reactivities, normally  requires the knowledge of the adjoint flux. In GeN-Foam, the field *oneGroupFlux* is used by the point kinetic solver for weighting temperatures, densities and precursors. When fluxes are not calculated via a spatial neutronics calculation, one has to manually provide the *oneGroupFlux* in *0/neutroRegion*. As an alternative, one can use the *initialOneGroupFluxByZone* keyword in *nuclearData* (see [1D_MSR_pointKinetics](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData)). Please notice that:
+<UL>
+<LI>  If calcuclated fluxes are available in *neutroRegion*, these will be user to recacluate and overwrite *oneGroupFlux*.
+<LI>  If no fluxes are available, the neutronic-subsolver will use the provided *oneGroupFlux*
+<LI>  If the *initialOneGroupFluxByZone* keyword in used in *nuclearData*, this will be used to overwrite *oneGroupFlux*
+</UL>
 </div>
 
 
@@ -154,7 +128,6 @@ NB2: Fuel fraction needed!!
 
 Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/neutroRegion*. 
 
-## Miscellanea: how to set power in a simulation
 
 
 © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021

@@ -41,11 +41,6 @@
     <filename>Running__GeN-Foam_8md</filename>
   </compound>
   <compound kind="file">
-    <name>Source_code.md</name>
-    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Documentation/doxygen/files/</path>
-    <filename>Source__code_8md</filename>
-  </compound>
-  <compound kind="file">
     <name>thermalHydraulics.md</name>
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>thermalHydraulics_8md</filename>
@@ -31682,11 +31677,6 @@
     <name>RUNNING</name>
     <title>Running GeN-Foam</title>
     <filename>RUNNING</filename>
-  </compound>
-  <compound kind="page">
-    <name>SOURCE</name>
-    <title>Source code</title>
-    <filename>SOURCE</filename>
   </compound>
   <compound kind="page">
     <name>TH</name>

@@ -366,6 +366,7 @@ Foam::fluid::fluid
     mesh.setFluxRequired(this->name());
 
     //- Set initial cellZone powerDensity, if present
+    //  and if no field already available in time folder
     if (dict_.found("initialPowerDensity"))
     {
         powerDensityPtr_.reset
@@ -385,38 +386,42 @@ Foam::fluid::fluid
                 zeroGradientFvPatchScalarField::typeName
             )
         );
-        volScalarField& powerDensity(powerDensityPtr_());
-        const dictionary& powerDensity0s
-        (
-            dict_.subDict("initialPowerDensity")
-        );
 
-        forAllConstIter
-        (
-            dictionary,
-            powerDensity0s,
-            powerDensity0Iter
-        )
+        if(!powerDensityPtr_().typeHeaderOk<volScalarField>(true))
         {
-            DynamicList<label> cells(0);
-            word zoneName(powerDensity0Iter->keyword());
-            scalar powerDensity0(powerDensity0s.get<scalar>(zoneName));
+            volScalarField& powerDensity(powerDensityPtr_());
+            const dictionary& powerDensity0s
+            (
+                dict_.subDict("initialPowerDensity")
+            );
+
             forAllConstIter
             (
-                DynamicList<label>,
-                mesh.cellZones()[zoneName],
-                cIter
+                dictionary,
+                powerDensity0s,
+                powerDensity0Iter
             )
             {
-                cells.append(*cIter);
+                DynamicList<label> cells(0);
+                word zoneName(powerDensity0Iter->keyword());
+                scalar powerDensity0(powerDensity0s.get<scalar>(zoneName));
+                forAllConstIter
+                (
+                    DynamicList<label>,
+                    mesh.cellZones()[zoneName],
+                    cIter
+                )
+                {
+                    cells.append(*cIter);
+                }
+                forAll(cells, i)
+                {
+                    powerDensity[cells[i]] = powerDensity0;
+                }
             }
-            forAll(cells, i)
-            {
-                powerDensity[cells[i]] = powerDensity0;
-            }
-        }
 
-        powerDensity.correctBoundaryConditions();
+            powerDensity.correctBoundaryConditions();
+        }
     }
 
     //- Set initial cellZone phase fractions, if present

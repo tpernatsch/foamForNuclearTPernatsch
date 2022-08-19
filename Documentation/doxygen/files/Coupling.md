@@ -19,8 +19,6 @@ The *controlDict* is an extended version of the one that is normally used in oth
 <LI> An option for mesh manipulation called *removeBaffles*. This flag is not mandatory and allows to create a ghost thermal-hydraulics mesh without baffles.This ghost mesh allows for better mesh-to-mesh projections between different physics. WARNING: parallel execution not tested.
 </UL>
 Fairly complete examples of *controlDict* for single-phase flow can be found in [2D_FFTF](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/2D_FFTF/rootCase/system/controlDict) and [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/3D_SmallESFR/rootCase/system/controlDict), while an explanation of the two-phase flow options can be found in [1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_boiling/system/controlDict).
-
-</p>
 </div>
 
 ## Coupling logic
@@ -67,7 +65,6 @@ The parameters for the coupling are set in *system/fvSolution*.
 The general *fvSolution* dictionary is found under */system/*  and allows to specify parameters related to the coupling among physics, and in particular: the type of coupling (implicit or explicit); and the parameters that affect the tightness pof the implicit coupling.
 
 A commented  *fvSolution* can be found in [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/3D_SmallESFR/rootCase/system/fvSolution). 
-</p>
 </div>
 
 
