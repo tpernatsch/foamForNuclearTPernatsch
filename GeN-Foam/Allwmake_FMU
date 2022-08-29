@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# cmake and boost missing
+
+git clone https://github.com/DLR-RY/FMU4FOAM.git
+cd FMU4FOAM/
+
+sudo apt-get -y install python3.8-dev python3.8-venv
+mkdir virtual_env
+/usr/bin/python3.8 -m venv ~/virtual_env/venv_with_python3.8
+source ~/virtual_env/venv_with_python3.8/bin/activate
+pip install oftest conan
+
+./build-ECI4FOAM.sh
+
+deactivate
+
+cd ..
+
+cd ..
+cd ${0%/*} || exit 1    # Run from this directory
+
+clear
+
+wmake $1 libso ./classes/thermalHydraulics/src
+wmake $1 libso ./classes/thermalHydraulics/solvers
+wmake $1 
