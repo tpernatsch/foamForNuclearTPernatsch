@@ -1,39 +1,19 @@
 #!/bin/sh
-
 cd ${0%/*} || exit 1    # Run from this directory
-
-clear
-
-# Prerequisites 
-#  Anaconda
-#  conan
-#  Boost version equal or above 1.66. I had to download it and add 
-#  the following in the option file of externalComm and embeddingPython
-#  -lboost_system \
-#  -I/home/carlo/boost_1_66_0 \
-
-
-# Build FMU4FOAM
-#  git clone https://github.com/DLR-RY/FMU4FOAM.git
-#  cd FMU4FOAM/
-#  pip install oftest conan
-#  ./build-ECI4FOAM.sh
-#  ./Allwmake
-#  pip install fmu4foam
-
 
 # Use a modified make
 cp -r classes/thermalHydraulics/src/Make classes/thermalHydraulics/src/Make_backup
 cp classes/thermalHydraulics/src/Make_FMU/files classes/thermalHydraulics/src/Make/
 cp classes/thermalHydraulics/src/Make_FMU/options classes/thermalHydraulics/src/Make/
 
-# Compile
-wmake $1 libso ./classes/thermalHydraulics/src
-wmake $1 libso ./classes/thermalHydraulics/solvers
-wmake $1 
+# clean
+wclean libso ./classes/thermalHydraulics/src
+wclean libso ./classes/thermalHydraulics/solvers
+wclean
 
 
 # Bring back the original make
 cp classes/thermalHydraulics/src/Make_backup/files classes/thermalHydraulics/src/Make/
 cp classes/thermalHydraulics/src/Make_backup/options classes/thermalHydraulics/src/Make/
 rm -fr classes/thermalHydraulics/src/Make_backup
+
