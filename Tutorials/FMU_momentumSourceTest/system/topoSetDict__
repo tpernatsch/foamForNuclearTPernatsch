@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      topoSetDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    {
+        name    core;
+        type    cellZoneSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            box (0 0 0.5886) (0.29433 0.29433 1.47165);               //(0 0 2) (1 1 5);
+        }
+    }
+    {
+        name    HotLeg;
+        type    cellZoneSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            box (0 0 1.47165) (0.29433 0.29433 2.35464);                                      //(0 0 5) (1 1 8);
+        }
+    }
+    {
+        name    pump;
+        type    cellZoneSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            box (0 0 2.35464) (0.29433  0.29433 2.64897);    // (0 0 8) (1  1 9);
+          
+        }
+    }
+
+    {
+        name    hx;
+        type    cellZoneSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            box (0 0 2.64897) (0.29433 0.29433 3.532056);  //(0 0 9) (1 1 11); lenght = 
+        }
+    }
+    {
+        name    ColdLeg;
+        type    cellZoneSet;
+        action  new;
+        source  boxToCell;
+        sourceInfo
+        {
+            
+            boxes 
+            (
+                  (0 0 0.2943) (0.29433 0.29433 0.5886)
+                  (0 0 3.532056) (0.29433 0.29433 3.826386)
+            );
+                  
+                  
+            
+            
+            /*boxes
+            (
+                (0 0 0) (0.29433 0.29433 0.5886)                           //(0 0 0) (1 1 2)
+                (0 0 3.23763) (0.29433 0.29433 3.53196)                          //(0 0 11) (1 1 12)
+            );*/
+        }
+    }
+
+);
+

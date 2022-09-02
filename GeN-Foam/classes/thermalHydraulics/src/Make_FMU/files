@@ -7,7 +7,7 @@ phaseModels/fluid/fluid.C
 
 phaseModels/structureModels/structure.C
 
-phaseModels/structureModels/pump/pump.C
+phaseModels/structureModels/pump_FMU/pump.C
 phaseModels/structureModels/heatExchanger/heatExchanger.C
 
 phaseModels/structureModels/powerModels/powerModel.C

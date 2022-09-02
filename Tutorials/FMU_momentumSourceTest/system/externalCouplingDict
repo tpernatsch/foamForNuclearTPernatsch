@@ -1,0 +1,42 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2012                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      externalCouplingDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+externalFunctions
+{
+    
+    extSensor
+    {
+        type extSensor;
+        sensorName powerDensitySensor;
+        fieldName powerDensity;
+        region     fluidRegion;
+        sensorPosition (0.2 0.2 2) ;
+        //sensorPosition (5 5 2.5);
+    }
+
+    /*Toutlet
+    {
+        type extPatch;
+        patchName outlet; //TempSens;
+        fieldName T;
+        outputName Toutlet;
+    }*/
+
+
+}
+// ************************************************************************* //

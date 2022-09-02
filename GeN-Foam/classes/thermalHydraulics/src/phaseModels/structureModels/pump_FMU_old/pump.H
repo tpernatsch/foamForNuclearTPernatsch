@@ -22,11 +22,10 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Description
-    Pump.
+    pump.
 
-Authors
+Author
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
-    Carlo Fiorina for the FMU part
 
 Class
     Foam::pump
@@ -68,24 +67,12 @@ protected :
     //- List of cells in which this pump exists
     const labelList& cellList_;
 
-    //- Const value of the momentum source
-    const vector pumpValue_;
-    
-    //- Optional table to describe any possible dependence of the momentum
-    //  source on time
-    autoPtr<Function1<scalar>> timeProfilePtr_;
+    //- Direction of the pump
+    const vector pumpDirection_;
 
-    //- Optional offset time
-    scalar t0_;
+    //- Const value of the  initial momentum source
+    const scalar momentumSourceInit_;
 
-    //- True if a timeProfilePtr_ exists
-    bool timeProfile_;
-
-    //- Name of the momentum source for FMU coupling
-    word pumpMultiplierNameFromFMU_;
-
-    //- True if a momentumSourceNameForFMU exists
-    bool fromFMU_;
 
 public:
 
@@ -106,15 +93,14 @@ public:
     //- Member Functions
 
         //- Update momentum source field
-        void correct(volVectorField& pumpField);    
+//       void correct(volVectorField& pumpField);    
 
-        //- Access
 
-            //-
-            bool timeDependent() const
-            {
-                return timeProfile_ || fromFMU_;
-            }
+
+        void correct(volVectorField& momentumSourceVectorField);
+
+            
+            
 };
 
 

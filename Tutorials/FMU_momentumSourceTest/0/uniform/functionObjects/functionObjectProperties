@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2112                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       dictionary;
+    location    "32.751/uniform/functionObjects";
+    object      functionObjectProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+cdf7e925f5746741c316f5fbcf39ad0dfca90775
+{
+    TCoreInlet
+    {
+        scalar
+        {
+            TcoreInlet_TBulk 870.6964100559184;
+        }
+    }
+    TCoreOutlet
+    {
+        scalar
+        {
+            TcoreOutlet_TBulk 972.0801289050422;
+        }
+    }
+    massFlow1
+    {
+        scalar
+        {
+            massFlowSurface_z1_massFlow 574.1509838669631;
+        }
+    }
+    massFlow2
+    {
+        scalar
+        {
+            massFlowSurface_z2_massFlow 574.150983836919;
+        }
+    }
+}
+
+
+// ************************************************************************* //

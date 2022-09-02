@@ -61,12 +61,13 @@ Foam::pump::pump
     pumpValue_(this->get<vector>("momentumSource")),
     t0_(0.0),
     timeProfile_(false),
-    pumpMultiplierFromFMU_("modelicaMomentumSource")
+    pumpMultiplierNameFromFMU_("momentumSourceCoupled"),
+    fromFMU_(false)
 {
     Info << "Creating pump in " << dict.dictName() << endl;
 
     word timeProfileDictName("momentumSourceTimeProfile");
-    word FMUDictName("momentumSourceNameForFMU");
+    word pumpMultiplierKeyFromFMU("pumpMultiplierNameFromFMU");
 
     if (this->found(timeProfileDictName))
     {
@@ -90,16 +91,16 @@ Foam::pump::pump
         Info << "Using a time profile for the pump in " << dict.dictName() << endl;
     }
     
-    if (this->found(FMUDictName))
+    if (this->found(pumpMultiplierKeyFromFMU))
     {
-        pumpMultiplierFromFMU_ = this->get<word>("momentumSourceNameForFMU");
+        pumpMultiplierNameFromFMU_ = this->get<word>(pumpMultiplierKeyFromFMU);
         // Communicating with the FMU
         const Time& runTime = this->db().time();
         commDataLayer& data = commDataLayer::New(runTime); 
         // Store in data layer and set its initial value to 1       
         data.storeObj(
-            pumpValue_/max(SMALL,mag(pumpValue_)),
-            pumpMultiplierFromFMU_,
+            scalar(1.0),
+            pumpMultiplierNameFromFMU_,
             commDataLayer::causality::in
             );
         fromFMU_ = true;
@@ -136,10 +137,10 @@ void Foam::pump::correct
     {
         const Time& runTime = this->db().time();
         commDataLayer& data = commDataLayer::New(runTime);
-
+        Info << "here1" << endl;
         const scalar pumpMultiplierFromFMU =
-            data.getObj<scalar>(pumpMultiplierFromFMU_,commDataLayer::causality::in);
-
+            data.getObj<scalar>(pumpMultiplierNameFromFMU_,commDataLayer::causality::in);
+        Info << "here2" << endl;
         //update the vector field by adjusting the magnitude
         pumpValue = pumpValue_ * pumpMultiplierFromFMU;
       
