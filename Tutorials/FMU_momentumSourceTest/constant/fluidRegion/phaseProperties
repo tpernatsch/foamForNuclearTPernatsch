@@ -48,7 +48,8 @@ structureProperties
 
         powerModel
         {
-            type            fixedTemperature;
+            type            fixedTemperatureFMU;
+            temperatureNameFromFMU  temperatureSourceCoupled;
             volumetricArea  450;
             T               850;
         }

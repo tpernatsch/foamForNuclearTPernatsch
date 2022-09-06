@@ -14,6 +14,7 @@ phaseModels/structureModels/powerModels/powerModel.C
 phaseModels/structureModels/powerModels/newPowerModel.C
 phaseModels/structureModels/powerModels/fixedPower/fixedPower.C
 phaseModels/structureModels/powerModels/fixedTemperature/fixedTemperature.C
+phaseModels/structureModels/powerModels/fixedTemperatureFMU/fixedTemperatureFMU.C
 phaseModels/structureModels/powerModels/nuclearFuelPin/nuclearFuelPin.C
 phaseModels/structureModels/powerModels/heatedPin/heatedPin.C
 

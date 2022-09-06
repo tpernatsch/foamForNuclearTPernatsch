@@ -1016,14 +1016,11 @@ void Foam::structure::correct
         const label& celli(cells_[i]);
         scalar& Twall(Twall_[celli]);
 
-        //- Set indicative wall temperature as max between power structure
-        //  surface temperature and passive structure surface temperature
-        Twall = Foam::max(Tact_[celli], Tpas_[celli]);
+        //- Set wall temperature as  power structure surface temperature
+        Twall = Tact_[celli];
 
         //- Update heat flux (mostly for extra info purposes, maybe only
         //  used by the Shah pool boiling model under some circumstances).
-        //  For representativity, it is set as the max heat flux to the fluid
-        //  calculated between the active and passive subStructures
         heatFlux_[celli] = H[celli]*Twall-HT[celli];
     }
     Twall_.correctBoundaryConditions();

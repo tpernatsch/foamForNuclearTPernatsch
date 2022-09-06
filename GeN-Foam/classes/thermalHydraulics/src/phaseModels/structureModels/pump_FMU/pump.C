@@ -137,10 +137,8 @@ void Foam::pump::correct
     {
         const Time& runTime = this->db().time();
         commDataLayer& data = commDataLayer::New(runTime);
-        Info << "here1" << endl;
         const scalar pumpMultiplierFromFMU =
             data.getObj<scalar>(pumpMultiplierNameFromFMU_,commDataLayer::causality::in);
-        Info << "here2" << endl;
         //update the vector field by adjusting the magnitude
         pumpValue = pumpValue_ * pumpMultiplierFromFMU;
       
