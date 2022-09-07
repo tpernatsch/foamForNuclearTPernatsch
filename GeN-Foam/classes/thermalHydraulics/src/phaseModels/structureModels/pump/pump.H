@@ -22,7 +22,8 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Description
-    Pump.
+    Allow defining a momentum source, including an option for a time 
+    dependent source
 
 Author
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)

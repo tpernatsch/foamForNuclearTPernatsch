@@ -27,15 +27,22 @@ Class
 Description
     Heat transfer coefficient for forced convective flows that is computed
     starting from the Nusselt, which is turn obtained via correlation in the
-    form 
+    form
 
     Nu = A_+B_*(Re^C_)*(Pr^D_)
 
     with Re, Pr being the Reynolds (superficial in two-phase) and Prandlt
     of the fluid, and A, B, C, D selectable consts
 
+    Additional heat transfer coeff to take into account the wall resistance,
+    such that
+
+    1/H = (1/(Nu * kappa / Dh)) + (1/H_wall) + (1/ H_fromFMU)
+
 Author
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+    Carlo Fiorina for the FMU part
 
 Dictionary entries example (mandatory)
 \verbatim
@@ -43,15 +50,17 @@ Dictionary entries example (mandatory)
     coeff   0.01;
     expRe   0.8;
     expPr   0.8;
+    addH    10000;
+    HNameFromFMU   HCoupled; //This is the name given to the H in OpenFOAM
 \endverbatim
 
 SourceFiles
-    NusseltFSHeatTransferCoefficient.C
+    NusseltWallAndHfromFMUFSHeatTransferCoefficient.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef NusseltFSHeatTransferCoefficient_H
-#define NusseltFSHeatTransferCoefficient_H
+#ifndef NusseltWallAndHfromFMUFSHeatTransferCoefficient_H
+#define NusseltWallAndHfromFMUFSHeatTransferCoefficient_H
 
 #include "FSHeatTransferCoefficientModel.H"
 
@@ -67,7 +76,7 @@ namespace FSHeatTransferCoefficientModels
                            Class Nusselt Declaration
 \*---------------------------------------------------------------------------*/
 
-class Nusselt
+class NusseltWallAndHfromFMU
 :
     public FSHeatTransferCoefficientModel
 {
@@ -91,18 +100,24 @@ private:
     const scalar C_;
     const scalar D_;
 
+    //- Additional heat transfer for the wall resistance
+    const scalar H_wall;
+
     //- If C_ == D_, no need to do pow(Re, C_)*pow(Pr, D_), you can just do
     //  pow(Re*Pr, C_) which is faster. Re*Pr = Pe (Peclet)
     const bool usePeclet_;
 
+    //- Name of Nusselt from FMU
+    word HNameFromFMU_;
+
 public:
 
-    TypeName("NusseltReynoldsPrandtlPower");
+    TypeName("NusseltWallAndHfromFMU");
 
     //- Constructors
 
         //- Construct for a fluid-structure pair
-        Nusselt
+        NusseltWallAndHfromFMU
         (
             const FSPair& pair,
             const dictionary& dict,
@@ -110,7 +125,7 @@ public:
         );
 
         //- Destructor
-        virtual ~Nusselt(){}
+        virtual ~NusseltWallAndHfromFMU(){}
 
 
     //- Member Functions

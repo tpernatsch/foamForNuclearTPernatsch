@@ -49,7 +49,7 @@ structureProperties
         powerModel
         {
             type            fixedTemperatureFMU;
-            temperatureNameFromFMU  temperatureSourceCoupled;
+            temperatureNameFromFMU  temperatureCoupled;
             volumetricArea  450;
             T               850;
         }
@@ -128,8 +128,15 @@ physicsModels
     {
         "hx"
         {
-            type    constant;
-            value   2.55e+4;
+            //type    constant;
+            //value   2.55e+4;
+            type            NusseltWallAndHfromFMU;
+            HNameFromFMU    HCoupled;
+            const   0.0;
+            coeff   0.023;
+            expRe   0.8;
+            expPr   0.4;
+            addH    30000;
         }
     }
 }
