@@ -29,14 +29,14 @@ externalFunctions
         //sensorPosition (5 5 2.5);
     }
 
-    /*Toutlet
+    fieldIntegralToFMU
     {
-        type extPatch;
-        patchName outlet; //TempSens;
-        fieldName T;
-        outputName Toutlet;
-    }*/
-
+        type fieldIntegralToFMU;
+        nameFMU hxPowerOut;
+        fieldName heatFlux.structure;
+        region     fluidRegion;
+        cellZone hx;
+    }  
 
 }
 // ************************************************************************* //

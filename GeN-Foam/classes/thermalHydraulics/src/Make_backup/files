@@ -7,14 +7,13 @@ phaseModels/fluid/fluid.C
 
 phaseModels/structureModels/structure.C
 
-phaseModels/structureModels/pump_FMU/pump.C
+phaseModels/structureModels/pump/pump.C
 phaseModels/structureModels/heatExchanger/heatExchanger.C
 
 phaseModels/structureModels/powerModels/powerModel.C
 phaseModels/structureModels/powerModels/newPowerModel.C
 phaseModels/structureModels/powerModels/fixedPower/fixedPower.C
 phaseModels/structureModels/powerModels/fixedTemperature/fixedTemperature.C
-phaseModels/structureModels/powerModels/fixedTemperatureFMU/fixedTemperatureFMU.C
 phaseModels/structureModels/powerModels/nuclearFuelPin/nuclearFuelPin.C
 phaseModels/structureModels/powerModels/heatedPin/heatedPin.C
 
@@ -96,7 +95,6 @@ physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/subCo
 physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Gorenflo/GorenfloFSHeatTransferCoefficient.C
 physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Nusselt/NusseltFSHeatTransferCoefficient.C
 physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltAndWall/NusseltAndWallFSHeatTransferCoefficient.C
-physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU/NusseltWallAndHfromFMUFSHeatTransferCoefficient.C
 physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Shah/ShahFSHeatTransferCoefficient.C
 physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/superpositionNucleateBoiling/superpositionNucleateBoilingFSHeatTransferCoefficient.C
 physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoiling/multiRegimeBoilingFSHeatTransferCoefficient.C
@@ -169,7 +167,5 @@ functionObjects/massFlow/massFlow.C
 functionObjects/pressureDrop/pressureDrop.C
 functionObjects/stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
 functionObjects/patchScalarFieldValue/patchScalarFieldValue.C
-functionObjects/fieldIntegralToFMU/fieldIntegralToFMU.C
-
 
 LIB = $(FOAM_USER_LIBBIN)/libFFSSrc2

@@ -169,5 +169,7 @@ functionObjects/massFlow/massFlow.C
 functionObjects/pressureDrop/pressureDrop.C
 functionObjects/stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
 functionObjects/patchScalarFieldValue/patchScalarFieldValue.C
+functionObjects/fieldIntegralToFMU/fieldIntegralToFMU.C
+
 
 LIB = $(FOAM_USER_LIBBIN)/libFFSSrc2
