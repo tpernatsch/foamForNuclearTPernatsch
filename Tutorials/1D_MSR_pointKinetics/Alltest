@@ -1,0 +1,57 @@
+#!/bin/bash
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+# --- Initialize the output file
+resFile=test.out
+rm $resFile
+touch $resFile
+
+# --- Run the simulation
+echo -e "Run tutorial 1D_MSR_pointKinetics ...\n" | tee -a $resFile
+./Allrun
+echo -e "Done running tutorial 1D_MSR_pointKinetics ...\n" | tee -a $resFile
+
+# --- Check it ran
+endStringSS=$(tail -3 ./steadyState/log.GeN-Foam | grep End)
+if [ "$endStringSS" = "End" ]; then
+    echo -e "Steady state of $tutorialName has converged \n" | tee -a $resFile
+else
+    echo -e "Steady state of $tutorialName has NOT converged \n" | tee -a $resFile
+    exit 1
+fi
+endStringT=$(tail -3 ./transient/log.GeN-Foam | grep End)
+if [ "$endStringT" = "End" ]; then
+    echo -e "Transient of $tutorialName has converged \n" | tee -a $resFile
+else
+    echo -e "Transient of $tutorialName has NOT converged \n" | tee -a $resFile
+    exit 1
+fi
+endStringT=$(tail -3 ./transientEnd/log.GeN-Foam | grep End)
+if [ "$endStringT" = "End" ]; then
+    echo -e "Transient of $tutorialName has converged \n" | tee -a $resFile
+else
+    echo -e "Transient of $tutorialName has NOT converged \n" | tee -a $resFile
+    exit 1
+fi
+
+# --- Recover the results
+power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+expectedAt=6.13794e+08
+
+# --- Check that results are correct
+echo "Power" | tee -a $resFile
+if [ $power = $expectedAt ]; then
+    echo "Perfect match:" | tee -a $resFile
+    echo "    Expected  : $expectedAt" | tee -a $resFile
+    echo "    Simulated : $power" | tee -a $resFile
+else
+    echo "Perfect match:" | tee -a $resFile
+    echo "    Expected  : $expectedAt" | tee -a $resFile
+    echo "    Simulated : $power" | tee -a $resFile
+    exit 1
+fi
+
+# --- Exit successfully
+exit 0
