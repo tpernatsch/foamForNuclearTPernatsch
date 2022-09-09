@@ -42,8 +42,8 @@ Usage
 
     where the entries mean:
     \table
-      Property     | Description                        | Type | Req'd | Dflt
-      type         | Type name: extFunction                     | word |  yes  | -
+      Property     | Description                   | Type | Req'd | Dflt
+      type         | Type name: fieldIntegralToFMU       | word |  yes  | -
       nameFMU     | name of the output scalar    | word |  yes  | -
       fieldName     | name of the measurement field | word |  yes  | -
       region      | name of the region         | word |  yes  | -
