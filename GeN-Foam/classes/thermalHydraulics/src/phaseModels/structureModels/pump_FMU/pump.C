@@ -59,6 +59,7 @@ Foam::pump::pump
     mesh_(mesh),
     cellList_(cellList),
     pumpValue_(this->get<vector>("momentumSource")),
+    timeProfilePtr_(nullptr),
     t0_(0.0),
     timeProfile_(false),
     pumpMultiplierNameFromFMU_("momentumSourceCoupled"),
