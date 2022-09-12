@@ -27,6 +27,17 @@ Class
 Description
     Describes a structure with a temperature taken from an FMU
 
+Dictionary entries example (mandatory)
+\verbatim
+    type            NusseltWallAndHfromFMU;
+    HNameFromFMU    HCoupled;
+    const   0.0;
+    coeff   0.023;
+    expRe   0.8;
+    expPr   0.4;
+    addH    30000;
+\endverbatim
+
 Authors
     Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
