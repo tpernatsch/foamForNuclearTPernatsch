@@ -22,6 +22,13 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
+#if __has_include("commDataLayer.H") 
+#include "commDataLayer.H"
+#define isCommDataLayerIncluded
+#endif
+
+#ifdef isCommDataLayerIncluded
+
 
 #include "fieldIntegralToFMU.H"
 #include "addToRunTimeSelectionTable.H"
@@ -120,4 +127,5 @@ bool Foam::externalIOObject::fieldIntegralToFMU::write()
     return false;
 }
 
+#endif
 // ************************************************************************* //

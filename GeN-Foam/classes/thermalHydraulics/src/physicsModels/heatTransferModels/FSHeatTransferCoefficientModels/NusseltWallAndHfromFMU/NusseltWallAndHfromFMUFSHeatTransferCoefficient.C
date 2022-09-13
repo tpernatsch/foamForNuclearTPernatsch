@@ -23,6 +23,14 @@ License
 
 \*---------------------------------------------------------------------------*/
 
+#if __has_include("commDataLayer.H") 
+#include "commDataLayer.H"
+#define isCommDataLayerIncluded
+#endif
+
+#ifdef isCommDataLayerIncluded
+
+
 #include "FSPair.H"
 #include "NusseltWallAndHfromFMUFSHeatTransferCoefficient.H"
 #include "addToRunTimeSelectionTable.H"
@@ -139,5 +147,5 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::NusseltWallAndHfromFMU::valu
         );
 }
 
-
+#endif
 // ************************************************************************* //

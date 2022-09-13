@@ -22,11 +22,12 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Description
-    Allow defining a momentum source, including an option for a time 
-    dependent source
+    Allow defining a momentum source, including options for a time 
+    dependent source, and a source coming from an FMU
 
-Author
+Authors
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Carlo Fiorina for the FMU part
 
 Class
     Foam::pump
@@ -79,7 +80,13 @@ protected :
     scalar t0_;
 
     //- True if a timeProfilePtr_ exists
-    bool timeDependent_;
+    bool timeProfile_;
+
+    //- Name of the momentum source for FMU coupling
+    word pumpMultiplierNameFromFMU_;
+
+    //- True if a momentumSourceNameForFMU exists
+    bool fromFMU_;
 
 public:
 
@@ -107,7 +114,7 @@ public:
             //-
             bool timeDependent() const
             {
-                return timeDependent_;
+                return (timeProfile_ || fromFMU_);
             }
 };
 

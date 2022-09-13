@@ -23,6 +23,14 @@ License
 
 \*---------------------------------------------------------------------------*/
 
+#if __has_include("commDataLayer.H") 
+#include "commDataLayer.H"
+#define isCommDataLayerIncluded
+#endif
+
+#ifdef isCommDataLayerIncluded
+
+
 #include "fixedTemperatureFMU.H"
 #include "structure.H"
 #include "addToRunTimeSelectionTable.H"
@@ -156,4 +164,5 @@ void Foam::powerModels::fixedTemperatureFMU::powerOff()
     iA_ *= 0.0;
 }
 
+#endif
 // ************************************************************************* //

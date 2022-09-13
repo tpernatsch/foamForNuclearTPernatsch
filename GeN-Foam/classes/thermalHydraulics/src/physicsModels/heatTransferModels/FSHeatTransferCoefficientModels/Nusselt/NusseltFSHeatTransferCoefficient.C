@@ -23,6 +23,14 @@ License
 
 \*---------------------------------------------------------------------------*/
 
+#if __has_include("commDataLayer.H") 
+#include "commDataLayer.H"
+#define isCommDataLayerIncluded
+#endif
+
+#ifdef isCommDataLayerIncluded
+
+
 #include "FSPair.H"
 #include "NusseltFSHeatTransferCoefficient.H"
 #include "addToRunTimeSelectionTable.H"
@@ -101,5 +109,5 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Nusselt::value
         return scalar((kappa_[celli]/Dh_[celli])*A_);
 }
 
-
+#endif
 // ************************************************************************* //
