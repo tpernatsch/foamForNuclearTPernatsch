@@ -1,16 +1,16 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  6
-     \\/     M anipulation  |
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "system";
+    location    "system/fluidRegion";
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -62,7 +62,7 @@ solvers
     //  Subcycling consists in solving a fully explicit equation (except for
     //  the time derivative term, which is hardcoded to be forward-Euler) for
     //  N times with a time step reduced by a factor N. This is useful for
-    //  advection problems (such as the phase fraction equations, i.e. the 
+    //  advection problems (such as the phase fraction equations, i.e. the
     //  continuity equations) that might have strong Courant limitations, such
     //  as the phase fraction equations.
     alpha
@@ -72,16 +72,16 @@ solvers
         //  of subCycles is set to ceil(Co/alphaMaxCo) with Co being the
         //  current global courant number.
         adjustSubCycles     true;
-        
+
         //- Maximum subCycle Courant
         alphaMaxCo          0.20;
 
         //- If provided, limits the maximum amount of subCycles that can be
         //  performed if adjustSubCycles is true
-        //maxSubCycles M; 
+        //maxSubCycles M;
 
         //- Only used if adjustSubCycles is false. Defaults to 1.
-        //nSubCycles   N; 
+        //nSubCycles   N;
     }
 }
 
@@ -105,41 +105,41 @@ PIMPLE
     partialEliminationMode      implicit;
 
     //- The following feature applies to both the onePhase and twoPhase solvers
-    //  and defaults to cellCentered. It has an effect with all 
+    //  and defaults to cellCentered. It has an effect with all
     //  partialEliminationModes
-    //- This option controls how the pressure equation fluxes due to 
+    //- This option controls how the pressure equation fluxes due to
     //  momentum equation terms are computed. The possible modes are:
     //  -   cellCentered, the traditional OpenFOAM way. This algorithm is
     //      know, however, to induce velocity oscillations in the main flow
-    //      direction across porous body interfaces (i.e. sharp porosity 
+    //      direction across porous body interfaces (i.e. sharp porosity
     //      changes);
     //  -   faceCentered, an experimental algorithm implemented from
-    //      some multiphase solvers (e.g. reactingMultiphaseEulerFoam), with 
+    //      some multiphase solvers (e.g. reactingMultiphaseEulerFoam), with
     //      minor improvements. All the terms that end in the pressure equation
     //      are evaulated at the faces and the velocity is reconstructed from
     //      the fluxes. The time derivative is hard-coded to Euler forward.
     //      This algorithm appears to be marginally more diffusive than the
     //      cellCentered one, yet it grants significant advantages in terms
     //      of velocity oscillation reduction (completely in onePhase,
-    //      partially or completely in twoPhase depending on the 
+    //      partially or completely in twoPhase depending on the
     //      oscillationLimiterFraction) and enhanced phase coupling. Currently
     //      recommended for most applications;
     //  -   cellCenteredFaceReconstruction, a blending of the cellCentered
-    //      equation construction method and the faceCentered velocity 
+    //      equation construction method and the faceCentered velocity
     //      reconstruction method. Mostly for testing purposed, its use is
     //      currently highly discouraged and the implementation is not yet
     //      verified;
     momentumMode                faceCentered;
 
-    //- The following feature only has an effect in the twoPhase solver and 
+    //- The following feature only has an effect in the twoPhase solver and
     //  only when using the faceCentered momentum algorithm.
     //- Experimental feature by the authors. This coefficient blends two
     //  different ways of reconstructing the velocity field after the pressure
     //  equation solution. If set to 1, the velocity is reconstructed so to
-    //  take into account differences between cell-center porosities and 
+    //  take into account differences between cell-center porosities and
     //  face porosities, so that the resulting velocity field is completely
-    //  free of both oscillations (if not using faceCentered) or smearing 
-    //  (if using face momentum) at porous interfaces. If set to 0, it 
+    //  free of both oscillations (if not using faceCentered) or smearing
+    //  (if using face momentum) at porous interfaces. If set to 0, it
     //  does nothing. If set in between, it blends the two velocity solutions
     //  together, reducing oscillations/smearing but eliminating them. The
     //  issue with always having this set to 1 is that it was noticed that
@@ -168,10 +168,10 @@ relaxationFactors
         //- Under-relaxation of the interfacial temperature between the fluids.
         //  This only has an effect if the employed saturationModel in
         //  phaseProperties is not constant (e.g. BrowningPotter). In
-        //  particular, this is required as rapid changes in pressure during 
+        //  particular, this is required as rapid changes in pressure during
         //  boiling will more often than not induce sharp changes in the
         //  interfacialTemperature, resulting in massive changes in the mass
-        //  transfer term 
+        //  transfer term
         "interfacialTemperature"    0.25;
     }
 }

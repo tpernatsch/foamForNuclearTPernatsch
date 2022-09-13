@@ -3,5 +3,7 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 rm -r steadyState*
 rm -r transient
+rm log.*
+rm *.out
 
 #------------------------------------------------------------------------------

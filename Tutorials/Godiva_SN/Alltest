@@ -10,7 +10,7 @@ touch $resFile
 
 # --- Run the simulation
 echo -e "Run tutorial Godiva_SN ...\n" | tee -a $resFile
-./Allrun_parallel
+./Allrun_parallel >> log.simulation
 echo -e "Done running tutorial Godiva_SN ...\n" | tee -a $resFile
 
 # --- Check it ran
@@ -33,7 +33,7 @@ if [ $keff = $expectedAt ]; then
     echo "    Expected  : $expectedAt" | tee -a $resFile
     echo "    Simulated : $keff" | tee -a $resFile
 else
-    echo "Perfect match:" | tee -a $resFile
+    echo "Divergent results:" | tee -a $resFile
     echo "    Expected  : $expectedAt" | tee -a $resFile
     echo "    Simulated : $keff" | tee -a $resFile
     exit 1

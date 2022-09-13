@@ -32,7 +32,7 @@ SquareMatrix<scalar> A(n, 0.0);
 List<scalar> B(n, 0.0);
 List<scalar> x(n, 0.0);
 
-//- First line of matrix has the coefficients of the discretized power 
+//- First line of matrix has the coefficients of the discretized power
 //  differential equation, the first element of the solution vector is the
 //  power
 A[0][0] = 1.0/dt-(totalReactivity_-beta_)/promptGenerationTime_;
@@ -99,14 +99,15 @@ forAllIter
 //- Write precursorPowers to reactorState
 if (TFuel_.mesh().time().write())
 {
+    reactorState_.set("pTarget", power_);
     reactorState_.set("precursorPowers", precursorPowers_);
-    reactorState_.regIOobject::writeObject
-    (
-        IOstream::ASCII,
-        //IOstream::currentVersion,
-        //reactorState_.time().writeCompression(),
-        true
-    );
+    // reactorState_.regIOobject::writeObject
+    // (
+    //     IOstream::ASCII,
+    //     //IOstream::currentVersion,
+    //     //reactorState_.time().writeCompression(),
+    //     true
+    // );
 }
 
 Info << endl << "pointKinetics: " << endl;

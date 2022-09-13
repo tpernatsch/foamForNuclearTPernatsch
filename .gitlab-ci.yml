@@ -1,5 +1,94 @@
 image: ubuntu
 
+# Merge request pipeline rule
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+
+
+# --- Build
+build-job:
+  stage: build
+  script:
+    - sudo apt-get install make cmake gcc g++
+    - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | sudo bash
+    - sudo apt-get update
+    - sudo apt-get install openfoam2112-default
+    - echo "source /usr/lib/openfoam/openfoam2112/etc/bashrc" >> ~/.bashrc
+    - source ~/.bashrc
+    - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
+    - cd GeN-Foam/GeN-Foam
+    - ./Allwclean && ./Allwmake -j14
+
+
+# --- Test
+test-1D_boiling:
+  stage: test
+  script:
+    - cd Tutorials/1D_boiling
+    - ./Alltest
+
+test-1D_CHF-imposedPower:
+  stage: test
+  script:
+    - cd Tutorials/1D_CHF/imposedPower
+    - ./Alltest
+
+test-1D_CHF-imposedTemperature:
+  stage: test
+  script:
+    - cd Tutorials/1D_CHF/imposedTemperature
+    - ./Alltest
+
+test-1D_HX-onePhase:
+  stage: test
+  script:
+    - cd Tutorials/1D_HX/onePhase
+    - ./Alltest
+
+test-1D_HX-twoPhase:
+  stage: test
+  script:
+    - cd Tutorials/1D_HX/twoPhase
+    - ./Alltest
+
+test-1D_MSR_pointKinetics:
+  stage: test
+  script:
+    - cd Tutorials/1D_MSR_pointKinetics
+    - ./Alltest
+
+test-1D_PSBT_SC:
+  stage: test
+  script:
+    - cd Tutorials/1D_PSBT_SC
+    - ./Alltest
+
+test-2D_cavityBoussinesq:
+  stage: test
+  script:
+    - cd Tutorials/2D_cavityBoussinesq
+    - ./Alltest
+
+# test-2D_KNS37-L22:
+#   stage: test
+#   script:
+#     - cd Tutorials/2D_KNS37-L22
+#     - ./Alltest
+
+test-2D_FFTF:
+  stage: test
+  script:
+    - cd Tutorials/2D_FFTF
+    - ./Alltest
+
+test-Godiva_SN:
+  stage: test
+  script:
+    - cd Tutorials/Godiva_SN
+    - ./Alltest
+
+# --- Deploy
 pages:
   stage: deploy
 
@@ -8,13 +97,9 @@ pages:
   - apt-get update && apt-get -y install doxygen && apt-get -y install graphviz && apt-get -y install texlive-bibtex-extra
   - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
   - mv Documentation/doxygen/Doxygen/html/ public/
-    
+
   artifacts:
     paths:
       - public
-
   rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
-
-
-
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

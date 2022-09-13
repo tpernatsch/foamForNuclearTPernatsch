@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -10,6 +10,7 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volVectorField;
+    location    "0/thermoMechanicalRegion";
     object      disp;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -17,7 +18,6 @@ FoamFile
 dimensions      [0 1 0 0 0 0 0];
 
 internalField   uniform (0 0 0);
-
 
 boundaryField
 {
@@ -27,7 +27,8 @@ boundaryField
         traction        uniform ( 0 0 0 );
         pressure        uniform 0;
         value           uniform (0 0 0);
-    }  
-
+    }
 }
+
+
 // ************************************************************************* //

@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -10,6 +10,7 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
+    location    "system/neutroRegion";
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -17,7 +18,7 @@ FoamFile
 solvers
 {
     "prec.*|precStar.*|adjoint_prec.*"
-    {   
+    {
         solver           PBiCG;//Stab;
         preconditioner   DILU;
         tolerance        1e-6;
@@ -29,8 +30,7 @@ solvers
         relTol           0.01;*/
     }
     "flux.*|adjoint_flux.*"
-    { 
-
+    {
         solver          PCG;
         preconditioner  DIC;
         tolerance       1e-6;
@@ -51,15 +51,12 @@ solvers
 	    processorAgglomerator masterCoarsest; */
     }
     "angularFlux.*"
-    { 
-      
-
+    {
         solver          PBiCGStab;//GAMG;//
 	//smoother        GaussSeidel;//;
         preconditioner  DILU;
         tolerance       1e-7;
         relTol          1e-1;
-
     }
 }
 
@@ -69,7 +66,8 @@ neutronTransport
     implicitPredictor           false;
     aitkenAcceleration          true;
     neutronIterationResidual    0.000001; // required accuracy for the coupling of different energy groups
-    maxNeutronIterations        50; // up to 3-400 if no acceleration techniques 
+    maxNeutronIterations        50; // up to 3-400 if no acceleration techniques
 }
+
 
 // ************************************************************************* //

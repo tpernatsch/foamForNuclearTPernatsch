@@ -34,7 +34,8 @@ Description
 
 Author of this file (and associated .C or included .H files)
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
+    Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL (Switzerland)
 
 SourceFiles
     pointKineticNeutronics.C
@@ -46,6 +47,7 @@ SourceFiles
 
 #include "neutronics.H"
 #include "Function1.H"
+#include "timeProfile.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -82,7 +84,8 @@ protected:
     scalar decayPowerStartTime_;
 
     //- Due to whatever the user might please
-    scalar externalReactivity_;
+    // scalar externalReactivity_;
+    timeProfile externalReactivityTimeProfile_;
 
     //- Used to set an initial steady state for liquid fuel
     scalar precEquilibriumReactivity_;
@@ -95,7 +98,7 @@ protected:
 
     //-
     scalar promptGenerationTime_;
-    
+
     //- Total effective delayed neutron fraction
     scalar beta_;
 
@@ -121,7 +124,7 @@ protected:
     scalarList precursorPowersOld_;
 
     // default precursor field. Only used for liquid fuel
-    volScalarField defaultPrec_;    
+    volScalarField defaultPrec_;
 
     //- Feedback coefficients in 1/K (i.e. 1e5 pcm/K)
     scalar coeffTFuel_;
@@ -134,7 +137,8 @@ protected:
     scalar coeffDrivelineExp_;
 
     //- Optional Boron reactivity curve
-    autoPtr<Function1<scalar>> boronReactivityPtr_;    
+    // autoPtr<Function1<scalar>> boronReactivityPtr_;
+    timeProfile boronReactivityTimeProfile_;
 
     //- Reference integral values for feedbacks
     scalar TFuelRef_;
@@ -166,13 +170,13 @@ protected:
     volScalarField TStruct_; //- This is also used to compute TDriveline
 
     //- Also mapped, but these are autoPtr as these field are not needed at all
-    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
+    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
     //  these fields if they are actually needed
     autoPtr<volVectorField> UPtr_;
     autoPtr<volScalarField> alphaPtr_;
     autoPtr<volScalarField> alphatPtr_;
     autoPtr<volScalarField> muPtr_;
-    
+
     //- Fields derived from mapped fields
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
@@ -182,7 +186,7 @@ protected:
     volScalarField Dalbedo_;
     volScalarField fluxStarAlbedo_;
 
-    //- 
+    //-
     volScalarField oneGroupFlux_;
 
     //- Initial flux
@@ -204,16 +208,16 @@ protected:
     //- Delayed-group-wise precursor concentrations
     PtrList<volScalarField> precursors_;
 
-    //- Delayed-group-wise precursor concentrations resulting from point 
-    //  kinetics calculations with liquid fuel. This second set of fields is 
+    //- Delayed-group-wise precursor concentrations resulting from point
+    //  kinetics calculations with liquid fuel. This second set of fields is
     //  necessary because the unit for precursors in point kinetics is power,
     //   instead of 1/m3
     PtrList<volScalarField> precPK_;//reconstructed based on porosity
     PtrList<volScalarField> precPKStar_;//solved for
 
 
-    //- If true, fuel temperature feedback (Doppler) computed as 
-    //  deltaReactivity = -coeffFastDoppler*ln(TFuel/TFuelRef) with 
+    //- If true, fuel temperature feedback (Doppler) computed as
+    //  deltaReactivity = -coeffFastDoppler*ln(TFuel/TFuelRef) with
     //  coeffFastDoppler being the Doppler constant. If false, Doppler feedback
     //  computed as deltaReactivity = coeffTFuel*(TFuel-TFuelRef)
     bool fastNeutrons_;
@@ -226,7 +230,7 @@ protected:
     //  Indeed, the spatial extent of these marker fields should reflect
     //  the spatial extent of the domain that was perturbed in neutronics
     //  calculations to compute feedback coefficients
-    
+
     //- For TFuel and TCladding
     volScalarField fuelFeedbackCellField_;
 
@@ -239,7 +243,7 @@ protected:
     //- For the control rod driveline
     volScalarField drivelineFeedbackCellField_;
 
-    //- Pairs of control rod insertion value (in m w.r.t. a reference) vs 
+    //- Pairs of control rod insertion value (in m w.r.t. a reference) vs
     // reactivity in absolute units (i.e. 1e5 pcm)
     List<Pair<scalar>> controlRodReactivityMap_;
 
@@ -270,8 +274,8 @@ protected:
     //- Surface areas of the phiFaces_ (I cannot access fvMesh from polyMesh,
     //  which is the only mesh-related object I can access from the mapping,
     //  thus magSf needs to be computed by calling the faceArea() method
-    //  of polyMesh. To avoid that, I calculated the areas only once and 
-    //  store them in pgiMagSf_) 
+    //  of polyMesh. To avoid that, I calculated the areas only once and
+    //  store them in pgiMagSf_)
     scalarList phiMagSf_;
 
 private:
@@ -310,7 +314,7 @@ public:
         //- Used to set the *FeedbackCellField fields
         void setFeedbackCellField
         (
-            volScalarField& feedbackCellField, 
+            volScalarField& feedbackCellField,
             const word& keyword
         );
 
@@ -328,7 +332,7 @@ public:
         (
             const objectRegistry& src,
             const meshToMesh& neutroToFluid
-        );   
+        );
 
         //- Update local (i.e. on local neutronicMesh) instances of the Orig_
         //  fields defined on the (baffleless) thermalHydraulic mesh
@@ -341,7 +345,7 @@ public:
         virtual void correct
         (
             scalar& residual,
-            label couplingIter  
+            label couplingIter
         );
 
         //- To split strings. The file where I got this function originally
@@ -350,7 +354,7 @@ public:
         //  just a helper function such as this one, is tremendously
         //  un-elegant. I don't want the code structure to be spaghetti, so
         //  I am re-implementing the function here
-        
+
         //- The deliminter is a char, so it must be provided in single-
         //  quotation marks. Type can be either word or string
         template<class Type>

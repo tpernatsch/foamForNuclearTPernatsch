@@ -1,8 +1,8 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
@@ -10,6 +10,7 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
+    location    "system/thermoMechanicalRegion";
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -31,32 +32,34 @@ solvers
         nCellsInCoarsestLevel 50;
         agglomerator    faceAreaPair;
         mergeLevels     1;
-	processorAgglomerator masterCoarsest; 
+	processorAgglomerator masterCoarsest;
 */
     }
+
     "fuelDisp"
     {
-
         solver          PBiCG;
         preconditioner  DILU;
         tolerance       1e-6;
         relTol          0.001;
     }
+
     "CRDisp"
     {
-
         solver          PBiCG;
         preconditioner  DILU;
         tolerance       1e-6;
         relTol          0.001;
     }
 }
+
 stressAnalysis
 {
     compactNormalStress yes;
-    nCorrectors     3;
-    D               1e-06;
+    nCorrectors         3;
+    D                   1e-06;
 }
+
 relaxationFactors
 {
     fields
@@ -64,4 +67,6 @@ relaxationFactors
 	   disp 0.99;
     }
 }
+
+
 // ************************************************************************* //

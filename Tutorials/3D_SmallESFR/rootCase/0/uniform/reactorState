@@ -1,16 +1,17 @@
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v1906                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|  \\    /   O peration     | Version:  2112                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
 |    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
+    arch        "LSB;label=32;scalar=64";
     class       dictionary;
-    location    "constant/neutroRegion";
+    location    "0/uniform";
     object      reactorState;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -19,10 +20,10 @@ keff            0.9388902; // In eigenvalue calculations, this represent the
 			   // initial guess, and it will be replaves by the
 			   // final result.
 			   // In transient calculations. This parameter
-			   // divides the production term in the neutronics 
+			   // divides the production term in the neutronics
 			   // equations. In this way, if one performs an
-			   // eigenvalue calculation and then restart from 
-			   // there as a transient, the reactor will be 
+			   // eigenvalue calculation and then restart from
+			   // there as a transient, the reactor will be
 			   // critical (unless something is changed).
 
 pTarget         8e+08; // Target value for the eigenvalue calculations

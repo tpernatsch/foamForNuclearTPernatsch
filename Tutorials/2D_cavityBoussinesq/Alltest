@@ -10,7 +10,7 @@ touch $resFile
 
 # --- Run the simulation
 echo -e "Run tutorial 2D_cavityBoussinesq ...\n" | tee -a $resFile
-./Allrun
+./Allrun >> log.simulation
 echo -e "Done running tutorial 2D_cavityBoussinesq ...\n" | tee -a $resFile
 
 # --- Check it ran

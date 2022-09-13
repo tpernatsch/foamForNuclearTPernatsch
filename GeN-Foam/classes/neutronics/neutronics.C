@@ -63,10 +63,11 @@ Foam::neutronics::neutronics
         IOobject
         (
             "reactorState",
-            mesh_.time().constant(),
-            mesh_,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
+            mesh_.time().timeName(),
+            "uniform",
+            mesh_.time(),
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
         )
     ),
     keff_(reactorState_.lookupOrDefault("keff",1.0)),
@@ -162,24 +163,24 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
 
 void Foam::neutronics::deformMesh
 (
-    const meshToMesh& TMToNeutro, 
+    const meshToMesh& TMToNeutro,
     const volVectorField& dispOrig
 )
 {
-    const volPointInterpolation& neutroMeshPointInterpolation = 
+    const volPointInterpolation& neutroMeshPointInterpolation =
         volPointInterpolation::New(mesh_);
 
-    tmp<pointVectorField> neutroPointsDisplacementOld = 
+    tmp<pointVectorField> neutroPointsDisplacementOld =
         neutroMeshPointInterpolation.interpolate(disp_);
 
     disp_ *= 0.0;
     TMToNeutro.mapSrcToTgt(dispOrig, plusEqOp<vector>(), disp_);
     disp_.correctBoundaryConditions();
 
-    tmp<pointVectorField> neutroPointsDisplacement = 
+    tmp<pointVectorField> neutroPointsDisplacement =
         neutroMeshPointInterpolation.interpolate(disp_);
 
-    tmp<pointField> displacedPoints = 
+    tmp<pointField> displacedPoints =
         mesh_.points()
     +   neutroPointsDisplacement->internalField()
     -   neutroPointsDisplacementOld->internalField();
