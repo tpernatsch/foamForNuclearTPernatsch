@@ -15,6 +15,7 @@ EXE_INC = \
     -I./phaseModels/structureModels/powerOffCriterionModels/ \
     -I./phaseModels/structureModels/powerOffCriterionModels/fieldValue \
     -I./phaseModels/structureModels/powerOffCriterionModels/timer \
+    -I./phaseModels/structureModels/pump \
     -I./physicsModels/phasePairs \
     -I./physicsModels/turbulenceModels \
     -I./physicsModels/turbulenceModels/porousKEpsilon \

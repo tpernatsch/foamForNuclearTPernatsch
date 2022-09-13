@@ -69,7 +69,7 @@ protected :
     const labelList& cellList_;
 
     //- Const value of the momentum source
-    const vector pumpValue_;
+    vector pumpValue_;
     
     //- Optional table to describe any possible dependence of the momentum
     //  source on time
