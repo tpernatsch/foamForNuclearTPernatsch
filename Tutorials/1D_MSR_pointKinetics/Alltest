@@ -14,27 +14,21 @@ echo -e "Run tutorial 1D_MSR_pointKinetics ...\n" | tee -a $resFile
 echo -e "Done running tutorial 1D_MSR_pointKinetics ...\n" | tee -a $resFile
 
 # --- Check it ran
-endStringSS=$(tail -3 ./steadyState/log.GeN-Foam | grep End)
-if [ "$endStringSS" = "End" ]; then
-    echo -e "Steady state of $tutorialName has converged \n" | tee -a $resFile
-else
-    echo -e "Steady state of $tutorialName has NOT converged \n" | tee -a $resFile
-    exit 1
-fi
-endStringT=$(tail -3 ./transient/log.GeN-Foam | grep End)
-if [ "$endStringT" = "End" ]; then
-    echo -e "Transient of $tutorialName has converged \n" | tee -a $resFile
-else
-    echo -e "Transient of $tutorialName has NOT converged \n" | tee -a $resFile
-    exit 1
-fi
-endStringT=$(tail -3 ./transientEnd/log.GeN-Foam | grep End)
-if [ "$endStringT" = "End" ]; then
-    echo -e "Transient of $tutorialName has converged \n" | tee -a $resFile
-else
-    echo -e "Transient of $tutorialName has NOT converged \n" | tee -a $resFile
-    exit 1
-fi
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" | tee -a $resFile
+    else
+        echo -e "$name has NOT converged \n" | tee -a $resFile
+        exit 1
+    fi
+}
+isConverge steadyState "Steady state"
+isConverge transient "Transient"
+isConverge transientEnd "Transient end"
 
 # --- Recover the results
 power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
