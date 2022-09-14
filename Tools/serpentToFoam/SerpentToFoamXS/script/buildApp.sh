@@ -1,7 +1,7 @@
 #!/bin/bash
 # Command to build an application for SerpentToFoamXS
 # Must be executed in the current folder.
-# Author: Thomas Guilbaud
+# Author: Thomas Guilbaud, EPFL/Transmutex SA
 # Last update: 18/03/2022
 
 # Create build directory

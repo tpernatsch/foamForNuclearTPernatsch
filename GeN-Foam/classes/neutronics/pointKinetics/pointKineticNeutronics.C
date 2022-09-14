@@ -63,39 +63,20 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             IOobject::NO_WRITE
         )
     ),
-    power_
-    (
-        reactorState_.get<scalar>
-        (
-            "pTarget"
-        )
-    ),
+    power_(reactorState_.get<scalar>("pTarget")),
     fissionPower_(power_),
     decayPower_(0.0),
     decayPowerPtr_(nullptr),
     decayPowerStartTime_(0.0),
-    // externalReactivity_
-    // (
-    //     reactorState_.lookupOrDefault<scalar>
-    //     (
-    //         "externalReactivity",
-    //         0.0
-    //     )
-    // ),
-    externalReactivityTimeProfile_(
+    externalReactivityTimeProfile_
+    (
         nuclearData_,
         "externalReactivityTimeProfile"
     ),
     precEquilibriumReactivity_(0.0),
     liquidFuelBeta_(0.0),
     totalReactivity_(0.0),
-    promptGenerationTime_
-    (
-        nuclearData_.get<scalar>
-        (
-            "promptGenerationTime"
-        )
-    ),
+    promptGenerationTime_(nuclearData_.get<scalar>("promptGenerationTime")),
     beta_(0.0),
     betas_
     (
@@ -109,7 +90,6 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         reactorState_.lookupOrDefault<scalarList>
         (
-            // "initialPrecursorPowers",
             "precursorPowers",
             scalarList(betas_.size(), 0.0)
         )
@@ -157,8 +137,8 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         nuclearData_.get<scalar>("absoluteDrivelineExpansionCoeff")
     ),
-    // boronReactivityPtr_(nullptr),
-    boronReactivityTimeProfile_(
+    boronReactivityTimeProfile_
+    (
         nuclearData_,
         "boronReactivityTimeProfile"
     ),
@@ -437,30 +417,6 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         fissionPowerOld_ = fissionPower_;
 
     }
-
-    //- Check Boron reactivity
-    // word boronReactivityDictName("boronReactivityTimeProfile");
-    // if (nuclearData_.found(boronReactivityDictName))
-    // {
-    //     const dictionary& boronReactivityDict
-    //     (
-    //         nuclearData_.subDict(boronReactivityDictName)
-    //     );
-    //     word type
-    //     (
-    //         boronReactivityDict.get<word>("type")
-    //     );
-    //     boronReactivityPtr_.reset
-    //     (
-    //         Function1<scalar>::New
-    //         (
-    //             type,
-    //             boronReactivityDict,
-    //             type
-    //         )
-    //     );
-    //
-    // }
 
     if (liquidFuel_)
     {
@@ -806,18 +762,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     }
 
     //- Set precursorPowers so that, if they are not found in reactorState, the
-    //  system starts from a steady-state. Given that precursorPowers are
-    //  written in reactorState, which cannot keep track of time by itself,
-    //  the precursorPowers are written under the precursorPowers keywords
-    //  but read from the initialPrecursorPowers keyword. This avoids
-    //  situations where, if they were both written/read from the same key,
-    //  re-starting a simulation from the same time-step could lead to
-    //  different results (e.g. the first time you run it, no precursors are
-    //  read and a steady state it assumed. You run it until a new state, not
-    //  necessarily steady. The next time you re-start, you'd restart from
-    //  that non-steady state). It is up to the user to joggle the keywords
-    //  for now until a more intelligent system is put in place
-    // if (!reactorState_.found("initialPrecursorPowers"))
+    //  system starts from a steady-state.
     if (!reactorState_.found("precursorPowers"))
     {
         for (int i = 0; i < delayedGroups_; i++)

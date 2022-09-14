@@ -35,7 +35,7 @@ Description
 Author of this file (and associated .C or included .H files)
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
-    Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL (Switzerland)
+    Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 
 SourceFiles
     pointKineticNeutronics.C
@@ -47,6 +47,7 @@ SourceFiles
 
 #include "neutronics.H"
 #include "Function1.H"
+#include "interpolationTable.H"
 #include "timeProfile.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -84,7 +85,6 @@ protected:
     scalar decayPowerStartTime_;
 
     //- Due to whatever the user might please
-    // scalar externalReactivity_;
     timeProfile externalReactivityTimeProfile_;
 
     //- Used to set an initial steady state for liquid fuel
@@ -137,7 +137,6 @@ protected:
     scalar coeffDrivelineExp_;
 
     //- Optional Boron reactivity curve
-    // autoPtr<Function1<scalar>> boronReactivityPtr_;
     timeProfile boronReactivityTimeProfile_;
 
     //- Reference integral values for feedbacks

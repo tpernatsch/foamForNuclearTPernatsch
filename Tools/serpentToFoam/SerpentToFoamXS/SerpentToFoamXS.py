@@ -4,7 +4,7 @@ SerpentToFoamXS
 Application for Easy Extraction of Serpent output files for GeN-Foam.
 Can be use in Bash mode or using a Graphical User Interface.
 
-Author: Thomas Guilbaud, EPFL
+Author: Thomas Guilbaud, EPFL/Transmutex SA
 Last Update: 18/03/2022
 """
 

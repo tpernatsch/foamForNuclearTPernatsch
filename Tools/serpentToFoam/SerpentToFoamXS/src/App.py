@@ -3,7 +3,7 @@ SerpentToFoamXS
 
 Application for Easy Extraction of Serpent output files for GeN-Foam
 
-Author: Thomas Guilbaud, EPFL
+Author: Thomas Guilbaud, EPFL/Transmutex SA
 Last Update: 25/03/2022
 """
 

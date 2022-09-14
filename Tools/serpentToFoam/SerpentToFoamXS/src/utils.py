@@ -3,7 +3,7 @@ SerpentToFoamXS
 
 Generic usefull functions
 
-Author: Thomas Guilbaud, EPFL
+Author: Thomas Guilbaud, EPFL/Transmutex SA
 Last Update: 24/03/2022
 """
 

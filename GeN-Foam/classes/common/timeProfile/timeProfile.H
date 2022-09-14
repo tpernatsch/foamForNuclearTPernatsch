@@ -32,7 +32,7 @@ SourceFiles
     timeProfile.C
 
 Author of this file (and associated .C or included .H files)
-    Thomas Guilbaud <cthomas.guilbaud@epfl.ch;>, EPFL (Swizerland)
+    Thomas Guilbaud <thomas.guilbaud@epfl.ch;>, EPFL/Transmutex SA (Swizerland)
 
 
 \*---------------------------------------------------------------------------*/

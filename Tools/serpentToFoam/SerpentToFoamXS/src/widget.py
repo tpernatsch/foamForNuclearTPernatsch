@@ -3,7 +3,7 @@ SerpentToFoamXS
 
 Generic widgets definitions
 
-Author: Thomas Guilbaud, EPFL
+Author: Thomas Guilbaud, EPFL/Transmutex SA
 Last Update: 18/03/2022
 """
 

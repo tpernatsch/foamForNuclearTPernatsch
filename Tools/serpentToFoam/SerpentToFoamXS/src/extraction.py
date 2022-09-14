@@ -4,7 +4,7 @@ SerpentToFoamXS
 Generic functions for test and data extraction from the Serpent output file
 _res.m
 
-Author: Thomas Guilbaud, EPFL
+Author: Thomas Guilbaud, EPFL/Transmutex SA
 Last Update: 25/03/2022
 """
 

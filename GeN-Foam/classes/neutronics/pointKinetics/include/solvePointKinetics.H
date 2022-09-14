@@ -14,7 +14,7 @@ if (decayPowerPtr_.valid())
 //- Update fissionPower_ and precursorPowers_ via actual pointKinetics model
 
 //- Update old time step values if time step has changed
-if(timeIndex_ != mesh_.time().timeIndex())
+if (timeIndex_ != mesh_.time().timeIndex())
 {
     timeIndex_ = mesh_.time().timeIndex();
     powerOld_ = power_;
@@ -101,13 +101,6 @@ if (TFuel_.mesh().time().write())
 {
     reactorState_.set("pTarget", power_);
     reactorState_.set("precursorPowers", precursorPowers_);
-    // reactorState_.regIOobject::writeObject
-    // (
-    //     IOstream::ASCII,
-    //     //IOstream::currentVersion,
-    //     //reactorState_.time().writeCompression(),
-    //     true
-    // );
 }
 
 Info << endl << "pointKinetics: " << endl;

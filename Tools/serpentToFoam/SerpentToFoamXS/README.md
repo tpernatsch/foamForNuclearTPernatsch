@@ -1,6 +1,6 @@
 # Serpent to Foam XS
 
-Author: Thomas Guilbaud, EPFL  
+Author: Thomas Guilbaud, EPFL/Transmutex SA  
 Last update: 13/09/2022  
 
 ---
