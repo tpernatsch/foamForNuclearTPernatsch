@@ -229,20 +229,20 @@ test-merge-results:
   stage: test
   # Need all the previous tests to be completed before running
   needs: [
-    test-1D_boiling
-    test-1D_CHF-imposedPower
-    test-1D_CHF-imposedTemperature
-    test-1D_HX-onePhase
-    test-1D_HX-twoPhase
-    test-1D_MSR_pointKinetics
-    test-1D_PSBT_SC
-    test-2D_cavityBoussinesq
-    test-2D_KNS37-L22
-    test-2D_FFTF
-    test-2D_MSFR
-    test-2D_onePhaseAndPointKineticsCoupling
-    test-2D_voidMotionNoPhaseChange
-    test-3D_SmallESFR
+    test-1D_boiling, 
+    test-1D_CHF-imposedPower, 
+    test-1D_CHF-imposedTemperature,
+    test-1D_HX-onePhase,
+    test-1D_HX-twoPhase,
+    test-1D_MSR_pointKinetics,
+    test-1D_PSBT_SC,
+    test-2D_cavityBoussinesq,
+    test-2D_KNS37-L22,
+    test-2D_FFTF,
+    test-2D_MSFR,
+    test-2D_onePhaseAndPointKineticsCoupling,
+    test-2D_voidMotionNoPhaseChange,
+    test-3D_SmallESFR, 
     test-Godiva_SN
   ]
   script:
