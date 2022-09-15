@@ -30,12 +30,12 @@ build-job:
     - apt-get install make cmake gcc g++
     - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash
     - apt-get update
-    - apt-get install openfoam2112-default
-    - echo "source /usr/lib/openfoam/openfoam2112/etc/bashrc" >> ~/.bashrc
+    - apt-get install openfoam2206-default
+    - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc" >> ~/.bashrc
     - source ~/.bashrc
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
-    # - cd GeN-Foam/GeN-Foam
-    # - ./Allwclean && ./Allwmake -j14
+    - cd GeN-Foam
+    - ./Allwclean; ./Allwmake -j14
 
 
 #==============================================================================*
@@ -270,7 +270,7 @@ pages:
     paths:
       - public
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_COMMIT_BRANCH == "develop"
 
 
 #==============================================================================*
