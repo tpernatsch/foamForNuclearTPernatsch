@@ -28,6 +28,8 @@ build-job:
     - apt-get -y install openfoam2206-default
     - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc" >> ~/.bashrc
     - source ~/.bashrc
+    - ls /usr/lib/openfoam/openfoam2206/etc/
+    - ls /usr/lib/
     -  . /usr/lib/openfoam/openfoam2206/etc/bashrc
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
