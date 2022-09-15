@@ -33,6 +33,7 @@ build-job:
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
     - ./Allwclean; ./Allwmake -j14
+  timeout: 6h
 
 
 #==============================================================================*
