@@ -25,7 +25,7 @@ build-job:
     - apt-get update
     - apt-get -y install make cmake gcc g++ wget
     - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash
-    - apt-get install openfoam2206-default
+    - apt-get -y install openfoam2206-default
     - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc" >> ~/.bashrc
     - source ~/.bashrc
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
