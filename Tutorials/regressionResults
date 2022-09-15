@@ -13,3 +13,55 @@ time,  alpha.vapour at the end of the channel is: 0.133727 . It should be 0.1337
  ##### 1D_CHF  ###### 
 1D_CHF/imposedPower has converged 
 Temperature of the structure at the top of the channel at 90 seconds is: 2625.18 . It should be 2625.18 
+1D_CHF/imposedTemperature has converged 
+heat flux of the structure at the top of the channel at 40 seconds is: 33423.1 . It should be 33423.1 
+
+ ##### 1D_MSR_pointKinetics  ###### 
+Steady state of 1D_MSR_pointKinetics has converged 
+Transient of 1D_MSR_pointKinetics has converged 
+Transient of 1D_MSR_pointKinetics has converged 
+power is 6.13794e+08  . It should be ~6.13794e+08 
+
+ ##### 3D_SmallESFR  ###### 
+Steady state of 3D_SmallESFR has converged 
+Transient of 3D_SmallESFR has converged 
+keff is 0.936873 . It should be ~0.936827  
+power is 7.999454e+08 . It should be ~8e+08  
+
+ ##### 2D_cavityBoussinesq  ###### 
+2D_cavityBoussinesq has converged 
+
+ ##### 2D_FFTF  ###### 
+Energy steady state of 2D_FFTF has converged 
+Transient of 2D_FFTF has converged 
+reactivityDoppler is 237.1212  . It should be 237.1212  
+reactivityClad is 0.8133269  . It should be 0.8156143    
+reactivityDensity is -2.789152  . It should be -2.789199   
+reactivityStructures is -1.109908  . It should be -1.10996   
+reactivityDriveline is -8.966235  . It should be -8.96642  
+reactivityGEM is -464.8488  . It should be -464.8488  
+totalPower is 29388.62  . It should be 29388.48 
+
+ ##### 2D_MSFR  ###### 
+Energy steady state of 2D_MSFR has converged 
+Thernal-hydraulic steady state of 2D_MSFR has converged 
+Transient of 2D_MSFR has converged 
+Done running tutorial 2D_MSFR...
+keff is  . It should be ~0.960283  
+power is 2e+07 . It should be ~2e+07  
+
+ ##### 2D_onePhaseAndPointKineticsCoupling  ###### 
+Steady state of 2D_onePhaseAndPointKineticsCoupling has converged 
+Transient (no driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
+Transient (with driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
+
+ ##### 2D_voidMotionNoPhaseChange  ###### 
+2D_voidMotionNoPhaseChange has converged 
+
+ ##### 2D_KNS37-L22  ###### 
+2D_KNS37-L22 has converged 
+time, average alpha.vapour and aveage T.structure when alpha is approximately max are: 12.498097238593784	1.843242e-01	8.335506e+02 . They should be 12.56424533593758    1.577348e-01    8.210752e+02 
+
+ ##### Godiva_SN  ###### 
+Godiva_SN has converged 
+keff is 0.980106 . It should be 0.980106  

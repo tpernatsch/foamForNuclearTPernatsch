@@ -10,6 +10,8 @@ touch $resFile
 
 # --- Run the simulation
 echo -e "Run tutorial Godiva_SN ...\n" | tee -a $resFile
+foamDictionary system/controlDict -entry endTime -set 3
+foamDictionary system/controlDict -entry writeInterval -set 3
 ./Allrun_parallel >> log.simulation
 echo -e "Done running tutorial Godiva_SN ...\n" | tee -a $resFile
 
@@ -23,12 +25,29 @@ else
 fi
 
 # --- Recover the results
-keff=$(foamDictionary ./20/uniform/reactorState -entry keff -value)
-expectedAt=0.980106
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+keff=$(foamDictionary ./3/uniform/reactorState -entry keff -value)
+expectedAt=0.971135
 
 # --- Check that results are correct
-echo "keff" | tee -a $resFile
-if [ $keff = $expectedAt ]; then
+error=0.001
+echo "keff with $error relative error" | tee -a $resFile
+if [ $(isInRange $expectedAt $keff $error) -eq 0 ]; then
     echo "Perfect match:" | tee -a $resFile
     echo "    Expected  : $expectedAt" | tee -a $resFile
     echo "    Simulated : $keff" | tee -a $resFile

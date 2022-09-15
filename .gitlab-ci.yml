@@ -1,10 +1,18 @@
 #==============================================================================*
 #
-# GeN-Foam gitlab CI/CD
+# GeN-Foam GitLab CI/CD
 #
+# Prepared by:
+#     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland) 
+#     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 #==============================================================================*
 
 image: ubuntu
+
+stages:
+  - build
+  - test
+  - deploy
 
 # Merge request pipeline rule
 workflow:
@@ -20,14 +28,14 @@ build-job:
   stage: build
   script:
     - apt-get install make cmake gcc g++
-    - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | sudo bash
+    - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash
     - apt-get update
     - apt-get install openfoam2112-default
     - echo "source /usr/lib/openfoam/openfoam2112/etc/bashrc" >> ~/.bashrc
     - source ~/.bashrc
-    - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
-    - cd GeN-Foam/GeN-Foam
-    - ./Allwclean && ./Allwmake -j14
+    # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
+    # - cd GeN-Foam/GeN-Foam
+    # - ./Allwclean && ./Allwmake -j14
 
 
 #==============================================================================*
@@ -41,42 +49,77 @@ test-1D_boiling:
   script:
     - cd Tutorials/1D_boiling
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-1D_CHF-imposedPower:
   stage: test
   script:
     - cd Tutorials/1D_CHF/imposedPower
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-1D_CHF-imposedTemperature:
   stage: test
   script:
     - cd Tutorials/1D_CHF/imposedTemperature
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-1D_HX-onePhase:
   stage: test
   script:
     - cd Tutorials/1D_HX/onePhase
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-1D_HX-twoPhase:
   stage: test
   script:
     - cd Tutorials/1D_HX/twoPhase
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-1D_MSR_pointKinetics:
   stage: test
   script:
     - cd Tutorials/1D_MSR_pointKinetics
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-1D_PSBT_SC:
   stage: test
   script:
     - cd Tutorials/1D_PSBT_SC
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 
 #------------------------------------------------------------------------------*
@@ -87,36 +130,81 @@ test-2D_cavityBoussinesq:
   script:
     - cd Tutorials/2D_cavityBoussinesq
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-2D_KNS37-L22:
   stage: test
   script:
     - cd Tutorials/2D_KNS37-L22
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-2D_FFTF:
   stage: test
   script:
     - cd Tutorials/2D_FFTF
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-2D_MSFR:
   stage: test
   script:
     - cd Tutorials/2D_MSFR
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-2D_onePhaseAndPointKineticsCoupling:
   stage: test
   script:
     - cd Tutorials/2D_onePhaseAndPointKineticsCoupling
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 test-2D_voidMotionNoPhaseChange:
   stage: test
   script:
     - cd Tutorials/2D_voidMotionNoPhaseChange
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
+
+
+#------------------------------------------------------------------------------*
+# --- 3D Tutorials
+
+test-3D_SmallESFR:
+  stage: test
+  script:
+    - cd Tutorials/3D_SmallESFR
+    - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
 
 
 #------------------------------------------------------------------------------*
@@ -127,6 +215,42 @@ test-Godiva_SN:
   script:
     - cd Tutorials/Godiva_SN
     - ./Alltest
+  timeout: 6h
+  artifacts:
+    paths:
+      - log.simulation
+      - test.out
+
+
+#------------------------------------------------------------------------------*
+# --- End concat all test.out
+
+test-merge-results:
+  stage: test
+  # Need all the previous tests to be completed before running
+  needs: [
+    test-1D_boiling
+    test-1D_CHF-imposedPower
+    test-1D_CHF-imposedTemperature
+    test-1D_HX-onePhase
+    test-1D_HX-twoPhase
+    test-1D_MSR_pointKinetics
+    test-1D_PSBT_SC
+    test-2D_cavityBoussinesq
+    test-2D_KNS37-L22
+    test-2D_FFTF
+    test-2D_MSFR
+    test-2D_onePhaseAndPointKineticsCoupling
+    test-2D_voidMotionNoPhaseChange
+    test-3D_SmallESFR
+    test-Godiva_SN
+  ]
+  script:
+    - cd Tutorials
+    - ./concatAllTests
+  artifacts:
+    paths:
+      - regressionResults
 
 
 #==============================================================================*
