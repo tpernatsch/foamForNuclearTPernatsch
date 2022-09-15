@@ -30,7 +30,7 @@ build-job:
     - source ~/.bashrc
     - ls /usr/lib/openfoam/openfoam2206/etc/
     - ls /usr/lib/
-    -  . /usr/lib/openfoam/openfoam2206/etc/bashrc
+    - source /usr/lib/openfoam/openfoam2206/etc/bashrc
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
     - ./Allwclean; ./Allwmake -j14
