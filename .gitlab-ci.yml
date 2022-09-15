@@ -27,6 +27,7 @@ build-job:
     - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash
     - apt-get -y install openfoam2206-default
     - chmod 775 /usr/lib/openfoam/openfoam2206/etc/bashrc
+    - chmod +x /usr/lib/openfoam/openfoam2206/etc/bashrc
     - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc" >> ~/.bashrc
     - source ~/.bashrc
     - ls /usr/lib/openfoam/openfoam2206/etc/
