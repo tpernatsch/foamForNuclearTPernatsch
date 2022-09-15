@@ -27,12 +27,9 @@ build-job:
     - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash
     - apt-get -y install openfoam2206-default
     - chmod 775 /usr/lib/openfoam/openfoam2206/etc/bashrc
-    - chmod +x /usr/lib/openfoam/openfoam2206/etc/bashrc
-    - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc" >> ~/.bashrc
-    - source ~/.bashrc
-    - ls /usr/lib/openfoam/openfoam2206/etc/
-    - ls /usr/lib/
-    - source /usr/lib/openfoam/openfoam2206/etc/bashrc
+    - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc || true" >> ~/.bashrc
+    - source ~/.bashrc || true
+    - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
     - ./Allwclean; ./Allwmake -j14
