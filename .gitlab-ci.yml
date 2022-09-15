@@ -14,9 +14,6 @@ stages:
   - test
   - deploy
 
-
-
-
 #==============================================================================*
 #                                    Build
 #==============================================================================*
@@ -24,8 +21,9 @@ stages:
 build-job:
   stage: build
   script:
+    - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
-    - apt-get install make cmake gcc g++
+    - apt-get -y install make cmake gcc g++
     - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash
     - apt-get install openfoam2206-default
     - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc" >> ~/.bashrc
