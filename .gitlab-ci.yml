@@ -7,7 +7,7 @@
 #     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 #==============================================================================*
 
-image: ubuntu
+image: opencfd/openfoam-dev
 
 stages:
   - build
