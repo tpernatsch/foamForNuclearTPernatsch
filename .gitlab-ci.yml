@@ -60,7 +60,7 @@ test-1D_boiling:
   script:
     - source ~/.bashrc || true
     - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
-    - alias GeN-Foam='/root/foam-for-nuclear/builds/GeN-Foam/GeN-Foam' 
+    - alias GeN-Foam='/builds/foam-for-nuclear/GeN-Foam/GeN-Foam' 
     - cd Tutorials/1D_boiling
     - ./Alltest
   timeout: 6h
