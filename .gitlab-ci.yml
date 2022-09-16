@@ -35,12 +35,8 @@ build-job:
     - ./Allwclean; ./Allwmake
   timeout: 6h
   artifacts:
-    paths:
-      - /usr/
-      - GeN-Foam/
-      - OpenFOAM/
-      - .bashrc
-      - ~/
+    untracked: true
+
 
 
 #==============================================================================*
