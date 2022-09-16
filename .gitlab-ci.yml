@@ -36,6 +36,13 @@ build-job:
   timeout: 6h
   artifacts:
     untracked: true
+    paths:
+    - /usr/lib/openfoam
+    - GeN-Foam/
+    - OpenFOAM/
+    - .bashrc
+    - ~/
+
 
 
 
