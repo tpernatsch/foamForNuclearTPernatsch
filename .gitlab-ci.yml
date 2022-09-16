@@ -21,6 +21,7 @@ stages:
 build-job:
   stage: build
   script:
+    - pwd
     - export DEBIAN_FRONTEND=noninteractive
     #- apt-get update
     #- apt-get -y install make cmake gcc g++ wget
@@ -36,6 +37,7 @@ build-job:
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
     - ./Allwclean; ./Allwmake
+    - cp /root/OpenFOAM/user-v2206/platforms/linux64GccDPInt32Opt/bin/GeN-Foam ./
   #timeout: 6h
   #artifacts:
     #paths:
@@ -58,7 +60,7 @@ test-1D_boiling:
   script:
     - source ~/.bashrc || true
     - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
-    - export WM_PROJECT_USER_DIR="/builds/foam-for-nuclear/GeN-Foam"
+    - alias GeN-Foam='/root/foam-for-nuclear/builds/GeN-Foam/GeN-Foam' 
     - cd Tutorials/1D_boiling
     - ./Alltest
   timeout: 6h
