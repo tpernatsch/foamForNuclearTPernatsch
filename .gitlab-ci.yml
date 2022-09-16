@@ -22,26 +22,26 @@ build-job:
   stage: build
   script:
     - export DEBIAN_FRONTEND=noninteractive
-    - apt-get update
-    - apt-get -y install make cmake gcc g++ wget
-    - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash
-    - apt-get -y install openfoam2206-default
-    - chmod 775 /usr/lib/openfoam/openfoam2206/etc/bashrc
-    - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc || true" >> ~/.bashrc
-    - source ~/.bashrc || true
+    #- apt-get update
+    #- apt-get -y install make cmake gcc g++ wget
+    #- wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash
+    #- apt-get -y install openfoam2206-default
+    #- chmod 775 /usr/lib/openfoam/openfoam2206/etc/bashrc
+    #- echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc || true" >> ~/.bashrc
+    #- source ~/.bashrc || true
     - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
-    - pwd
-    - which icoFoam
+    #- pwd
+    #- which icoFoam
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
     - ./Allwclean; ./Allwmake
-  timeout: 6h
-  artifacts:
-    paths:
-    - ../../../usr/lib/openfoam
-    - GeN-Foam/
-    - ../../../root/OpenFOAM/
-    - ../../../root/.bashrc
+  #timeout: 6h
+  #artifacts:
+    #paths:
+    #- ../../../usr/lib/openfoam
+    #- GeN-Foam/
+    #- ../../../root/OpenFOAM/
+    #- ../../../root/.bashrc
 
 
 
