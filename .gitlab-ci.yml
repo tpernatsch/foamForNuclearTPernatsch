@@ -30,6 +30,8 @@ build-job:
     - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc || true" >> ~/.bashrc
     - source ~/.bashrc || true
     - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
+    - pwd
+    - which icoFoam
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
     - ./Allwclean; ./Allwmake
