@@ -23,17 +23,22 @@ build-job:
   script:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update
-    - apt-get -y install make cmake gcc g++ wget
+    - apt-get -y install make cmake gcc g++ wget gnuplot
     - wget -q -O - https://dl.openfoam.com/add-debian-repo.sh | bash
     - apt-get -y install openfoam2206-default
     - chmod 775 /usr/lib/openfoam/openfoam2206/etc/bashrc
     - echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc || true" >> ~/.bashrc
     - source ~/.bashrc || true
-    - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
     - ./Allwclean; ./Allwmake
   timeout: 6h
+  artifacts:
+    paths:
+      - /usr/
+      - GeN-Foam/
+      - ~/.bashrc
+      - /
 
 
 #==============================================================================*
@@ -48,10 +53,12 @@ test-1D_boiling:
     - cd Tutorials/1D_boiling
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/1D_boiling/log.simulation
+      - Tutorials/1D_boiling/test.out
 
 test-1D_CHF-imposedPower:
   stage: test
@@ -59,10 +66,12 @@ test-1D_CHF-imposedPower:
     - cd Tutorials/1D_CHF/imposedPower
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/1D_CHF/imposedPower/log.simulation
+      - Tutorials/1D_CHF/imposedPower/test.out
 
 test-1D_CHF-imposedTemperature:
   stage: test
@@ -70,10 +79,12 @@ test-1D_CHF-imposedTemperature:
     - cd Tutorials/1D_CHF/imposedTemperature
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/1D_CHF/imposedTemperature/log.simulation
+      - Tutorials/1D_CHF/imposedTemperature/test.out
 
 test-1D_HX-onePhase:
   stage: test
@@ -81,10 +92,12 @@ test-1D_HX-onePhase:
     - cd Tutorials/1D_HX/onePhase
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/1D_HX/onePhase/log.simulation
+      - Tutorials/1D_HX/onePhase/test.out
 
 test-1D_HX-twoPhase:
   stage: test
@@ -92,10 +105,12 @@ test-1D_HX-twoPhase:
     - cd Tutorials/1D_HX/twoPhase
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/1D_HX/twoPhase/log.simulation
+      - Tutorials/1D_HX/twoPhase/test.out
 
 test-1D_MSR_pointKinetics:
   stage: test
@@ -103,10 +118,12 @@ test-1D_MSR_pointKinetics:
     - cd Tutorials/1D_MSR_pointKinetics
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/1D_MSR_pointKinetics/log.simulation
+      - Tutorials/1D_MSR_pointKinetics/test.out
 
 test-1D_PSBT_SC:
   stage: test
@@ -114,10 +131,12 @@ test-1D_PSBT_SC:
     - cd Tutorials/1D_PSBT_SC
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/1D_PSBT_SC/log.simulation
+      - Tutorials/1D_PSBT_SC/test.out
 
 
 #------------------------------------------------------------------------------*
@@ -129,10 +148,12 @@ test-2D_cavityBoussinesq:
     - cd Tutorials/2D_cavityBoussinesq
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/2D_cavityBoussinesq/log.simulation
+      - Tutorials/2D_cavityBoussinesq/test.out
 
 test-2D_KNS37-L22:
   stage: test
@@ -140,10 +161,12 @@ test-2D_KNS37-L22:
     - cd Tutorials/2D_KNS37-L22
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/2D_KNS37-L22/log.simulation
+      - Tutorials/2D_KNS37-L22/test.out
 
 test-2D_FFTF:
   stage: test
@@ -151,10 +174,12 @@ test-2D_FFTF:
     - cd Tutorials/2D_FFTF
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/2D_FFTF/log.simulation
+      - Tutorials/2D_FFTF/test.out
 
 test-2D_MSFR:
   stage: test
@@ -162,10 +187,12 @@ test-2D_MSFR:
     - cd Tutorials/2D_MSFR
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/2D_MSFR/log.simulation
+      - Tutorials/2D_MSFR/test.out
 
 test-2D_onePhaseAndPointKineticsCoupling:
   stage: test
@@ -173,10 +200,12 @@ test-2D_onePhaseAndPointKineticsCoupling:
     - cd Tutorials/2D_onePhaseAndPointKineticsCoupling
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/2D_onePhaseAndPointKineticsCoupling/log.simulation
+      - Tutorials/2D_onePhaseAndPointKineticsCoupling/test.out
 
 test-2D_voidMotionNoPhaseChange:
   stage: test
@@ -184,10 +213,12 @@ test-2D_voidMotionNoPhaseChange:
     - cd Tutorials/2D_voidMotionNoPhaseChange
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/2D_voidMotionNoPhaseChange/log.simulation
+      - Tutorials/2D_voidMotionNoPhaseChange/test.out
 
 
 #------------------------------------------------------------------------------*
@@ -199,10 +230,12 @@ test-3D_SmallESFR:
     - cd Tutorials/3D_SmallESFR
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/3D_SmallESFR/log.simulation
+      - Tutorials/3D_SmallESFR/test.out
 
 
 #------------------------------------------------------------------------------*
@@ -214,10 +247,12 @@ test-Godiva_SN:
     - cd Tutorials/Godiva_SN
     - ./Alltest
   timeout: 6h
+  dependencies:
+    - build-job
   artifacts:
     paths:
-      - log.simulation
-      - test.out
+      - Tutorials/Godiva_SN/log.simulation
+      - Tutorials/Godiva_SN/test.out
 
 
 #------------------------------------------------------------------------------*
@@ -227,6 +262,7 @@ test-merge-results:
   stage: test
   # Need all the previous tests to be completed before running
   needs: [
+    build-job,
     test-1D_boiling, 
     test-1D_CHF-imposedPower, 
     test-1D_CHF-imposedTemperature,
@@ -246,9 +282,27 @@ test-merge-results:
   script:
     - cd Tutorials
     - ./concatAllTests
+  dependencies:
+    - build-job
+    - test-1D_boiling
+    - test-1D_CHF-imposedPower
+    - test-1D_CHF-imposedTemperature
+    - test-1D_HX-onePhase
+    - test-1D_HX-twoPhase
+    - test-1D_MSR_pointKinetics
+    - test-1D_PSBT_SC
+    - test-2D_cavityBoussinesq
+    - test-2D_KNS37-L22
+    - test-2D_FFTF
+    - test-2D_MSFR
+    - test-2D_onePhaseAndPointKineticsCoupling
+    - test-2D_voidMotionNoPhaseChange
+    - test-3D_SmallESFR
+    - test-Godiva_SN
   artifacts:
     paths:
-      - regressionResults
+      - Tutorials/regressionResults
+  allow_failure: true
 
 
 #==============================================================================*
