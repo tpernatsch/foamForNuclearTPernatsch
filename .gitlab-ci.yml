@@ -30,6 +30,7 @@ build-job:
     #- echo "source /usr/lib/openfoam/openfoam2206/etc/bashrc || true" >> ~/.bashrc
     #- source ~/.bashrc || true
     - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
+    - export WM_PROJECT_USER_DIR="/builds/foam-for-nuclear/GeN-Foam"
     #- pwd
     #- which icoFoam
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
@@ -57,6 +58,7 @@ test-1D_boiling:
   script:
     - source ~/.bashrc || true
     - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
+    - export WM_PROJECT_USER_DIR="/builds/foam-for-nuclear/GeN-Foam"
     - cd Tutorials/1D_boiling
     - ./Alltest
   timeout: 6h
