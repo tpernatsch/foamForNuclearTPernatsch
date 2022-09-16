@@ -37,13 +37,11 @@ build-job:
     - ./Allwclean; ./Allwmake
   timeout: 6h
   artifacts:
-    untracked: true
     paths:
-    - /usr/lib/openfoam
+    - ../../../usr/lib/openfoam
     - GeN-Foam/
-    - OpenFOAM/
-    - .bashrc
-    - ~/
+    - ../../../root/OpenFOAM/
+    - ../../../root/.bashrc
 
 
 
