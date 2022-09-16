@@ -37,7 +37,7 @@ build-job:
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
     - ./Allwclean; ./Allwmake
-    - cp /root/OpenFOAM/user-v2206/platforms/linux64GccDPInt32Opt/bin/GeN-Foam ./
+    - cp -r /root/OpenFOAM/ ./
   #timeout: 6h
   #artifacts:
     #paths:
@@ -58,9 +58,9 @@ build-job:
 test-1D_boiling:
   stage: test
   script:
+    - cp -r OpenFOAM /root/
     - source ~/.bashrc || true
     - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
-    - alias GeN-Foam='/builds/foam-for-nuclear/GeN-Foam/GeN-Foam' 
     - cd Tutorials/1D_boiling
     - ./Alltest
   timeout: 6h
