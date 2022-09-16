@@ -32,7 +32,7 @@ build-job:
     - source /usr/lib/openfoam/openfoam2206/etc/bashrc || true
     # - git clone https://gitlab.com/foam-for-nuclear/GeN-Foam.git
     - cd GeN-Foam
-    - ./Allwclean; ./Allwmake -j14
+    - ./Allwclean; ./Allwmake
   timeout: 6h
 
 
