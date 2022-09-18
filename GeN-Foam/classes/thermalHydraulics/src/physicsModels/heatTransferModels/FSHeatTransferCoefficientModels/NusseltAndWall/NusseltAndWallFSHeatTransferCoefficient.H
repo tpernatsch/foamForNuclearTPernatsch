@@ -37,21 +37,25 @@ Description
     Additional heat transfer coeff to take into account the wall resistance,
     such that
 
-    H = Nu * kappa / Dh + H_wall
+    1/H = (1/(Nu * kappa / Dh)) + (1/H_wall)
 
 Author
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
     Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 Dictionary entries example (mandatory)
+\verbatim
     const   4;
     coeff   0.01;
     expRe   0.8;
     expPr   0.8;
+    addH    10000;
+\endverbatim
 
 SourceFiles
     NusseltAndWallFSHeatTransferCoefficient.C
 
+https://foam-for-nuclear.gitlab.io/builds/foam-for-nuclear/GeN-Foam/GeN-Foam/classes/neutronics/albedoSP3/albedoSP3FvPatchField.H
 \*---------------------------------------------------------------------------*/
 
 #ifndef NusseltAndWallFSHeatTransferCoefficient_H
@@ -104,7 +108,7 @@ private:
 
 public:
 
-    TypeName("NusseltAndWallReynoldsPrandtlPower");
+    TypeName("NusseltAndWall");
 
     //- Constructors
 

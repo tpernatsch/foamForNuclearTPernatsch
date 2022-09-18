@@ -38,10 +38,12 @@ Author
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 Dictionary entries example (mandatory)
+\verbatim
     const   4;
     coeff   0.01;
     expRe   0.8;
     expPr   0.8;
+\endverbatim
 
 SourceFiles
     NusseltFSHeatTransferCoefficient.C
