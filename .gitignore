@@ -35,3 +35,5 @@ GeN-Foam/*.sublime*
 # Doxygen files
 Documentation/doxygen/Doxygen/html/**
 
+# FMU installation
+GeN-Foam/FMU4FOAM
