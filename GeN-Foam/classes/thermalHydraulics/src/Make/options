@@ -134,8 +134,7 @@ EXE_INC = \
     -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
-    -I$(LIB_SRC)/sampling/lnInclude \
-    -I./../../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
+    -I$(LIB_SRC)/sampling/lnInclude
 
 LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) \
@@ -148,5 +147,4 @@ LIB_LIBS = \
     -lfiniteVolume \
     -lfvOptions \
     -lmeshTools \
-    -lsampling \
-    -lexternalComm
+    -lsampling 

@@ -36,6 +36,11 @@
     <filename>Pre__processing_8md</filename>
   </compound>
   <compound kind="file">
+    <name>Recent_changes.md</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Documentation/doxygen/files/</path>
+    <filename>Recent__changes_8md</filename>
+  </compound>
+  <compound kind="file">
     <name>Running_GeN-Foam.md</name>
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Running__GeN-Foam_8md</filename>
@@ -64,6 +69,19 @@
     <name>User_manual.md</name>
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>User__manual_8md</filename>
+  </compound>
+  <compound kind="file">
+    <name>timeProfile.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/common/timeProfile/</path>
+    <filename>timeProfile_8C</filename>
+    <includes id="timeProfile_8H" name="timeProfile.H" local="yes" imported="no">timeProfile.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>timeProfile.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/common/timeProfile/</path>
+    <filename>timeProfile_8H</filename>
+    <class kind="class">Foam::timeProfile</class>
+    <namespace>Foam</namespace>
   </compound>
   <compound kind="file">
     <name>multiphysicsControl.C</name>
@@ -1351,11 +1369,11 @@
       <arglist>(GEMLevelAndReactivity.second())</arglist>
     </member>
     <member kind="function">
-      <type></type>
-      <name>if</name>
+      <type>scalar</type>
+      <name>t</name>
       <anchorfile>correctReactivity_8H.html</anchorfile>
-      <anchor>a3e1bae3c93218adc5f7205229f142c26</anchor>
-      <arglist>(boronReactivityPtr_.valid())</arglist>
+      <anchor>af8e30ff2e3fe21800ba55c8d7534a828</anchor>
+      <arglist>(mesh_.time().timeOutputValue())</arglist>
     </member>
     <member kind="variable">
       <type>scalar</type>
@@ -1404,6 +1422,13 @@
       <name>GEMSodiumLevel</name>
       <anchorfile>correctReactivity_8H.html</anchorfile>
       <anchor>ada688315955c2733c6208ecefdd38475</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>scalar</type>
+      <name>externalReactivity</name>
+      <anchorfile>correctReactivity_8H.html</anchorfile>
+      <anchor>a49d2206965ac3f071748e09ceea41464</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -1745,6 +1770,7 @@
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/neutronics/pointKinetics/</path>
     <filename>pointKineticNeutronics_8H</filename>
     <includes id="neutronics_8H" name="neutronics.H" local="yes" imported="no">neutronics.H</includes>
+    <includes id="timeProfile_8H" name="timeProfile.H" local="yes" imported="no">timeProfile.H</includes>
     <class kind="class">Foam::pointKineticNeutronics</class>
     <namespace>Foam</namespace>
   </compound>
@@ -8865,6 +8891,24 @@
     <name>NusseltFSHeatTransferCoefficient.C</name>
     <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Nusselt/</path>
     <filename>NusseltFSHeatTransferCoefficient_8C</filename>
+    <includes id="FSPair_8H" name="FSPair.H" local="yes" imported="no">FSPair.H</includes>
+    <includes id="NusseltFSHeatTransferCoefficient_8H" name="NusseltFSHeatTransferCoefficient.H" local="yes" imported="no">NusseltFSHeatTransferCoefficient.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::FSHeatTransferCoefficientModels</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>aa6a9b0191f7bdee4c445c53d9be8881c</anchor>
+      <arglist>(Nusselt, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>af38cfccb40c483ccc30bf67afc8481b5</anchor>
+      <arglist>(FSHeatTransferCoefficientModel, Nusselt, FSHeatTransferCoefficientModels)</arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>NusseltFSHeatTransferCoefficient.H</name>
@@ -21441,6 +21485,10 @@
     <filename>classFoam_1_1LockhartMartinelli.html</filename>
   </compound>
   <compound kind="class">
+    <name>Foam::CHFModel::lookUpTableCHF</name>
+    <filename>classFoam_1_1CHFModel_1_1lookUpTableCHF.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::criticalHeatFluxModels::lookUpTableCHF</name>
     <filename>classFoam_1_1criticalHeatFluxModels_1_1lookUpTableCHF.html</filename>
     <base>Foam::CHFModel</base>
@@ -21521,10 +21569,6 @@
       <anchor>a5e620c7dc0eee9db009e480d508a2814</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::CHFModel::lookUpTableCHF</name>
-    <filename>classFoam_1_1CHFModel_1_1lookUpTableCHF.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::twoPhaseDragMultiplierModels::LottesFlinn</name>
@@ -22811,36 +22855,57 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::FFHeatTransferCoefficientModels::NoKazimi</name>
-    <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</filename>
-    <base>Foam::FFHeatTransferCoefficientModel</base>
+    <name>Foam::FSDragCoefficientModels::NoKazimi</name>
+    <filename>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</filename>
+    <base>Foam::FSDragCoefficientModel</base>
     <member kind="function">
       <type></type>
       <name>TypeName</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
       <anchor>ae70ed6cb89c054e743d136113d5e4e41</anchor>
       <arglist>(&quot;NoKazimi&quot;)</arglist>
     </member>
     <member kind="function">
       <type></type>
       <name>NoKazimi</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>ae108db9c96c6b2362c958ffd1eedc839</anchor>
-      <arglist>(const FFPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
+      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>ac13031f3f248145bf582aea9b8e2131c</anchor>
+      <arglist>(const FSPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
       <name>~NoKazimi</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
       <anchor>a4c9b55ab582b0efe308a25a3d4e1b15d</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual scalar</type>
       <name>value</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
       <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
       <arglist>(const label &amp;celli) const</arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>A_</name>
+      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>a470f484be0b7ecd159b0971e3023a490</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>B_</name>
+      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>ad44554fe371bb59836624cad1c370de7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>C_</name>
+      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>af3f148ae868a08db7f6a83a3a64a236a</anchor>
+      <arglist></arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -22888,6 +22953,39 @@
       <anchorfile>classFoam_1_1FFDragCoefficientModels_1_1NoKazimi.html</anchorfile>
       <anchor>a470f484be0b7ecd159b0971e3023a490</anchor>
       <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::FFHeatTransferCoefficientModels::NoKazimi</name>
+    <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</filename>
+    <base>Foam::FFHeatTransferCoefficientModel</base>
+    <member kind="function">
+      <type></type>
+      <name>TypeName</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>ae70ed6cb89c054e743d136113d5e4e41</anchor>
+      <arglist>(&quot;NoKazimi&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>NoKazimi</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>ae108db9c96c6b2362c958ffd1eedc839</anchor>
+      <arglist>(const FFPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~NoKazimi</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>a4c9b55ab582b0efe308a25a3d4e1b15d</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual scalar</type>
+      <name>value</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
+      <arglist>(const label &amp;celli) const</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -22959,58 +23057,8 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::FSDragCoefficientModels::NoKazimi</name>
-    <filename>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</filename>
-    <base>Foam::FSDragCoefficientModel</base>
-    <member kind="function">
-      <type></type>
-      <name>TypeName</name>
-      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>ae70ed6cb89c054e743d136113d5e4e41</anchor>
-      <arglist>(&quot;NoKazimi&quot;)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>NoKazimi</name>
-      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>ac13031f3f248145bf582aea9b8e2131c</anchor>
-      <arglist>(const FSPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>~NoKazimi</name>
-      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>a4c9b55ab582b0efe308a25a3d4e1b15d</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual scalar</type>
-      <name>value</name>
-      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
-      <arglist>(const label &amp;celli) const</arglist>
-    </member>
-    <member kind="variable" protection="protected">
-      <type>scalar</type>
-      <name>A_</name>
-      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>a470f484be0b7ecd159b0971e3023a490</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" protection="protected">
-      <type>scalar</type>
-      <name>B_</name>
-      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>ad44554fe371bb59836624cad1c370de7</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" protection="protected">
-      <type>scalar</type>
-      <name>C_</name>
-      <anchorfile>classFoam_1_1FSDragCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>af3f148ae868a08db7f6a83a3a64a236a</anchor>
-      <arglist></arglist>
-    </member>
+    <name>Foam::thermoSubstructures::nuclearFuelPin</name>
+    <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPin.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::powerModels::nuclearFuelPin</name>
@@ -23326,10 +23374,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::thermoSubstructures::nuclearFuelPin</name>
-    <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPin.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::FFHeatTransferCoefficientModels::Nusselt</name>
     <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</filename>
     <base>Foam::FFHeatTransferCoefficientModel</base>
@@ -23391,7 +23435,7 @@
       <type>virtual scalar</type>
       <name>value</name>
       <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>a38ef1c2a1054b848c33bee73538a676b</anchor>
+      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
       <arglist>(const label &amp;celli) const</arglist>
     </member>
   </compound>
@@ -23773,6 +23817,10 @@
     <filename>classFoam_1_1onePhase.html</filename>
   </compound>
   <compound kind="class">
+    <name>Foam::onePhaseLegacy</name>
+    <filename>classFoam_1_1onePhaseLegacy.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::thermalHydraulicsModels::onePhaseLegacy</name>
     <filename>classFoam_1_1thermalHydraulicsModels_1_1onePhaseLegacy.html</filename>
     <base>Foam::thermalHydraulicsModel</base>
@@ -23856,10 +23904,6 @@
       <anchor>a964e3a45d8bf0c9f774166d07466fe4c</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::onePhaseLegacy</name>
-    <filename>classFoam_1_1onePhaseLegacy.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::functionObjects::patchScalarFieldValue</name>
@@ -24341,6 +24385,10 @@
     <templarg></templarg>
   </compound>
   <compound kind="class">
+    <name>Foam::pipeFilm</name>
+    <filename>classFoam_1_1pipeFilm.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::fluidDiameterModels::pipeFilm</name>
     <filename>classFoam_1_1fluidDiameterModels_1_1pipeFilm.html</filename>
     <base>Foam::fluidDiameterModel</base>
@@ -24379,10 +24427,6 @@
       <anchor>ad2692e89af38be9306bf3194c54434bf</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::pipeFilm</name>
-    <filename>classFoam_1_1pipeFilm.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::pointKineticNeutronics</name>
@@ -24543,10 +24587,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
-      <type>scalar</type>
-      <name>externalReactivity_</name>
+      <type>timeProfile</type>
+      <name>externalReactivityTimeProfile_</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
-      <anchor>ad1bc784d08ac7d19721ff25b7bec6bd6</anchor>
+      <anchor>a1a6be493a1ebefcad92a0dbce9d06acd</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -24690,10 +24734,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
-      <type>autoPtr&lt; Function1&lt; scalar &gt; &gt;</type>
-      <name>boronReactivityPtr_</name>
+      <type>timeProfile</type>
+      <name>boronReactivityTimeProfile_</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
-      <anchor>ad90f8e16361d222ea56afc887b9234f8</anchor>
+      <anchor>aadd1831eaafa067b3307df02730927bd</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -26318,6 +26362,10 @@
     <filename>classFoam_1_1regimeMapModel_1_1regimeBoundary2D.html</filename>
   </compound>
   <compound kind="class">
+    <name>Foam::regimeMapModel::twoParameters::regimeDomain2D</name>
+    <filename>classFoam_1_1regimeMapModel_1_1twoParameters_1_1regimeDomain2D.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::regimeMapModels::regimeDomain2D</name>
     <filename>classFoam_1_1regimeMapModels_1_1regimeDomain2D.html</filename>
     <member kind="function">
@@ -26411,10 +26459,6 @@
       <anchor>ab5239a34265cf47952c67ced24f1a875</anchor>
       <arglist>() const</arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::regimeMapModel::twoParameters::regimeDomain2D</name>
-    <filename>classFoam_1_1regimeMapModel_1_1twoParameters_1_1regimeDomain2D.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::regimeMapModel</name>
@@ -29232,6 +29276,87 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::timeProfile</name>
+    <filename>classFoam_1_1timeProfile.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>timeProfile</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>a5076b4ecf43c6e02c4c97cafe1243340</anchor>
+      <arglist>(const timeProfile &amp;)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>operator=</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>a2909e2bb417056ae3bb3038213b5a509</anchor>
+      <arglist>(const timeProfile &amp;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>timeProfile</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>ac92fb8fde8b4ecb8eccc653894d361a6</anchor>
+      <arglist>(const dictionary &amp;dict)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>timeProfile</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>a7ac944da8a3372ee1800ecbc35d4dda2</anchor>
+      <arglist>(IOdictionary object, word timeProfileName)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~timeProfile</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>a81645763c1def16d1eec37f26bb330c1</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>valid</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>a1153e3a77aa46ed8f7683e71c60f4584</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>scalar</type>
+      <name>value</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>a18e8d053af1f216e0b4770d4e9104fc9</anchor>
+      <arglist>(scalar time)</arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>dictionary</type>
+      <name>dict_</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>a5c644b0ad2ff77590a77fb0198c4a785</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>word</type>
+      <name>type_</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>addee41d6ac047acd59c85e776d4e6fb9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>startTime_</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>ad3af15e21885db634f1c0a0aa207d674</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>autoPtr&lt; Function1&lt; scalar &gt; &gt;</type>
+      <name>functionPtr_</name>
+      <anchorfile>classFoam_1_1timeProfile.html</anchorfile>
+      <anchor>ae45cec85de6c65941ab18eff890a495e</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>Foam::powerOffControlModels::timer</name>
     <filename>classFoam_1_1powerOffControlModels_1_1timer.html</filename>
   </compound>
@@ -29602,6 +29727,10 @@
     <class kind="class">Foam::regimeMapModel::twoParameters::regimeDomain2D</class>
   </compound>
   <compound kind="class">
+    <name>Foam::twoPhase</name>
+    <filename>classFoam_1_1twoPhase.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::thermalHydraulicsModels::twoPhase</name>
     <filename>classFoam_1_1thermalHydraulicsModels_1_1twoPhase.html</filename>
     <base>Foam::thermalHydraulicsModel</base>
@@ -29757,10 +29886,6 @@
       <anchor>af02a4f231a65729467fc0f13e2ffe155</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::twoPhase</name>
-    <filename>classFoam_1_1twoPhase.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::twoPhaseDragFactor</name>
@@ -30301,6 +30426,39 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::latentHeatModels::water</name>
+    <filename>classFoam_1_1latentHeatModels_1_1water.html</filename>
+    <base>Foam::latentHeatModel</base>
+    <member kind="function">
+      <type></type>
+      <name>TypeName</name>
+      <anchorfile>classFoam_1_1latentHeatModels_1_1water.html</anchorfile>
+      <anchor>a0b6fcc7b9fe5dba6173053be9d177e07</anchor>
+      <arglist>(&quot;water&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>water</name>
+      <anchorfile>classFoam_1_1latentHeatModels_1_1water.html</anchorfile>
+      <anchor>a7a3a2ede223d47af06e2e4db4d181364</anchor>
+      <arglist>(const phaseChangeModel &amp;pcm, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~water</name>
+      <anchorfile>classFoam_1_1latentHeatModels_1_1water.html</anchorfile>
+      <anchor>a6e3cf97ff93096aee3e4f9e6b9580bce</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual scalar</type>
+      <name>value</name>
+      <anchorfile>classFoam_1_1latentHeatModels_1_1water.html</anchorfile>
+      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
+      <arglist>(const label &amp;celli) const</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>Foam::saturationModels::water</name>
     <filename>classFoam_1_1saturationModels_1_1water.html</filename>
     <base>Foam::saturationModel</base>
@@ -30351,39 +30509,6 @@
       <name>valuePSatPrime</name>
       <anchorfile>classFoam_1_1saturationModels_1_1water.html</anchorfile>
       <anchor>acfe2ee8e32ce482cc86e523e7266bb1f</anchor>
-      <arglist>(const label &amp;celli) const</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::latentHeatModels::water</name>
-    <filename>classFoam_1_1latentHeatModels_1_1water.html</filename>
-    <base>Foam::latentHeatModel</base>
-    <member kind="function">
-      <type></type>
-      <name>TypeName</name>
-      <anchorfile>classFoam_1_1latentHeatModels_1_1water.html</anchorfile>
-      <anchor>a0b6fcc7b9fe5dba6173053be9d177e07</anchor>
-      <arglist>(&quot;water&quot;)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>water</name>
-      <anchorfile>classFoam_1_1latentHeatModels_1_1water.html</anchorfile>
-      <anchor>a7a3a2ede223d47af06e2e4db4d181364</anchor>
-      <arglist>(const phaseChangeModel &amp;pcm, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>~water</name>
-      <anchorfile>classFoam_1_1latentHeatModels_1_1water.html</anchorfile>
-      <anchor>a6e3cf97ff93096aee3e4f9e6b9580bce</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual scalar</type>
-      <name>value</name>
-      <anchorfile>classFoam_1_1latentHeatModels_1_1water.html</anchorfile>
-      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
       <arglist>(const label &amp;celli) const</arglist>
     </member>
   </compound>
@@ -32406,6 +32531,7 @@
     <class kind="class">Foam::thermalHydraulicsModel</class>
     <class kind="class">Foam::thermoMechanics</class>
     <class kind="class">Foam::timeFieldTableFvPatchScalarField</class>
+    <class kind="class">Foam::timeProfile</class>
     <class kind="class">Foam::TLFModel</class>
     <class kind="class">Foam::TONBModel</class>
     <class kind="class">Foam::tractionDisplacementFvPatchVectorField</class>
@@ -34171,6 +34297,20 @@
       <type></type>
       <name>defineTypeNameAndDebug</name>
       <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>aa6a9b0191f7bdee4c445c53d9be8881c</anchor>
+      <arglist>(Nusselt, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
+      <anchor>af38cfccb40c483ccc30bf67afc8481b5</anchor>
+      <arglist>(FSHeatTransferCoefficientModel, Nusselt, FSHeatTransferCoefficientModels)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1FSHeatTransferCoefficientModels.html</anchorfile>
       <anchor>a115fd7eb1c901dbfb149cbd609f02f67</anchor>
       <arglist>(NusseltAndWall, 0)</arglist>
     </member>
@@ -35324,6 +35464,11 @@
     <name>PREPROCESSING</name>
     <title>Preprocessing</title>
     <filename>PREPROCESSING</filename>
+  </compound>
+  <compound kind="page">
+    <name>CHANGES</name>
+    <title>Recent changes in the case folder</title>
+    <filename>CHANGES</filename>
   </compound>
   <compound kind="page">
     <name>RUNNING</name>

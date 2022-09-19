@@ -73,18 +73,9 @@ reactivity approaches 0 as the fuel slowly heats up.
     concentrations (expressed in W for consistency with the pointKinetic
     equation being solved for reactor power rathern than neutron density).
     The intial precursor concentrations can be specified via the
-    initialPrecursorPowers keyword. If not found, precursor concentration are
+    precursorPowers keyword. If not found, precursor concentration are
     initialized so to be in equilibrium with the starting conditions (i.e.
-    a steady state is assumed). Please note that precursor concentrations
-    are written to reactorState as the simulation progresses, yet time
-    information (i.e. at which time did I have these precursor concentrations?)
-    is lost in this way. Thus, to avoid obtaining different results when
-    re-starting from the same-time step, the precursor concentrations are
-    written on disk under the precursorPowers keyword, NOT
-    initialPrecursorPowers. If the user wishes to re-start a point-kinetics
-    simulation from a different time-step in the middle of a transient, he
-    needs to change the precursorPowers keyword into initialPrecursorPowers.
-    A better way of managing this will be implemented in the future.
+    a steady state is assumed).
 
 -   constant/neutroRegion/nuclearData. The pointKinetics-related keywords that
     can be specified are
