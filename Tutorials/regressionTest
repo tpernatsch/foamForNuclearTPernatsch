@@ -3,7 +3,7 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 clear
 #tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
-tutorials="3D_SmallESFR 2D_FFTF  2D_onePhaseAndPointKineticsCoupling Godiva_SN" #Godiva_SN
+tutorials=" 2D_onePhaseAndPointKineticsCoupling Godiva_SN" #Godiva_SN
 rm regressionResults
 touch regressionResults
 resFile="./regressionResults"
@@ -304,7 +304,7 @@ do
             printf "Steady state of $tutorialName has NOT converged \n"  >> ../$resFile
         fi
         endStringSTNoDriveLine=$(tail -3 ./transientNoDriveline/log.GeN-Foam | grep End)
-        if [ "$endStringSSTH" = "End" ]; then
+        if [ "$endStringSTNoDriveLine" = "End" ]; then
             printf "Transient (no driveline) of $tutorialName has converged \n"  >> ../$resFile
         else
             printf "Transient (no driveline) state of $tutorialName has NOT converged \n"  >> ../$resFile

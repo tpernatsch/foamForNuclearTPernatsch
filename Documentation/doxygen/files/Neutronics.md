@@ -114,6 +114,7 @@ N.B.: boundary conditions must be applied to *fluxStar...* and not to *flux...* 
 
 <div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
 <b>Setting the weighting in point-kinetics calculations</b>
+
 A correct evaluation of the reactivity worth of delayed neutron precursors in MSRs, as well as of the impact of temperatures on reactivities, normally  requires the knowledge of the adjoint flux. In GeN-Foam, the field *oneGroupFlux* is used by the point kinetic solver for weighting temperatures, densities and precursors. When fluxes are not calculated via a spatial neutronics calculation, one has to manually provide the *oneGroupFlux* in *0/neutroRegion*. As an alternative, one can use the *initialOneGroupFluxByZone* keyword in *nuclearData* (see [1D_MSR_pointKinetics](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData)). Please notice that:
 <UL>
 <LI>  If calcuclated fluxes are available in *neutroRegion*, these will be user to recacluate and overwrite *oneGroupFlux*.

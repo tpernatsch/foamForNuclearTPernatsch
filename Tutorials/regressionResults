@@ -1,24 +1,7 @@
 
- ##### 3D_SmallESFR  ###### 
-Steady state of 3D_SmallESFR has converged 
-Transient of 3D_SmallESFR has converged 
-keff is 0.936873 . It should be ~0.936827  
-power is 7.999454e+08 . It should be ~8e+08  
-
- ##### 2D_FFTF  ###### 
-Energy steady state of 2D_FFTF has converged 
-Transient of 2D_FFTF has converged 
-reactivityDoppler is 237.1212  . It should be 237.1212  
-reactivityClad is 0.813308  . It should be 0.8156143    
-reactivityDensity is -2.789104  . It should be -2.789199   
-reactivityStructures is -1.109953  . It should be -1.10996   
-reactivityDriveline is -8.966405  . It should be -8.96642  
-reactivityGEM is -464.8488  . It should be -464.8488  
-totalPower is 29388.51  . It should be 29388.48 
-
  ##### 2D_onePhaseAndPointKineticsCoupling  ###### 
 Steady state of 2D_onePhaseAndPointKineticsCoupling has converged 
-Transient (no driveline) state of 2D_onePhaseAndPointKineticsCoupling has NOT converged 
+Transient (no driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
 Transient (with driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
 
  ##### Godiva_SN  ###### 

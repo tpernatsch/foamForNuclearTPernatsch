@@ -26,4 +26,4 @@
 N.B.: While the documentation reported in this page is mostly finished, several classes have been
      created in the last 8 years that still lack a proper documentation in the header files. We are working on it...
 
-© All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021
+© ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021
