@@ -16,7 +16,7 @@ List<scalar> integralFlux0(xs_.energyGroups());
 List<scalar> integralFlux1(xs_.energyGroups());
 List<scalar> integralFlux2(xs_.energyGroups());
 
-scalar pTot(1.0); 
+scalar pTot(1.0);
 
 forAll(flux_,energyI)
 {
@@ -42,12 +42,12 @@ if(!eigenvalueNeutronics_ && couplingIter == 0)
     {
         #include "integralPredictorSP3.H"
     }
-    if(implicitPredictor)   
+    if(implicitPredictor)
     {
         #include "implicitPredictorSP3.H"
     }
 
-}   
+}
 
 int aitkenIterCounter = 0;
 int aitkenIterNo = 0;
@@ -66,11 +66,11 @@ do
     #include "fluxEqSP3.H"
     #include "precEq.H"
     #include "initializeDelayedNeutroSource.H"
-   
+
     neutroIter++;
 
-    Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: " 
-    << neutroIter << "): " << neutroResidual << " after Aitken no: " << aitkenIterNo << endl;     
+    Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: "
+    << neutroIter << "): " << neutroResidual << " after Aitken no: " << aitkenIterNo << endl;
 
 }while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
 
@@ -82,7 +82,7 @@ forAll(flux_,energyI)
 
 pTot = power();
 
-Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl; 
+Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl;
 
 powerDensity_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
 
@@ -99,13 +99,13 @@ if (eigenvalueNeutronics_)
     // Since a keff_ is a scalar, the value inside the dictionary is not updated at runTime automatically.
     // The line below resets the SCALAR IN THE DICTIONARY at runTime so that the dictionary is written with the updated value.
     reactorState_.set("keff", keff_);
-    reactorState_.regIOobject::writeObject
-    (
-        IOstream::ASCII,
-        IOstream::currentVersion,
-        reactorState_.time().writeCompression(),
-        true
-    );
+    // reactorState_.regIOobject::writeObject
+    // (
+    //     IOstream::ASCII,
+    //     IOstream::currentVersion,
+    //     reactorState_.time().writeCompression(),
+    //     true
+    // );
 
     #include "normFluxesSP3.H"
     xs_.adjustDiscFactors(fluxStar_);
