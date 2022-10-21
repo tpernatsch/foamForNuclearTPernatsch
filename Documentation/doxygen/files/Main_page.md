@@ -23,7 +23,7 @@
 * [Recent changes in the case folder](@ref CHANGES)
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/C%C3%B4ne_orange_-_under_construction.png"  width="100">
-N.B.: While the documentation reported in this page is mostly finished, several classes have been
+N.B.: While the documentation reported in this page is preliminary but mostly finished, several classes have been
      created in the last 8 years that still lack a proper documentation in the header files. We are working on it...
 
 © ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021

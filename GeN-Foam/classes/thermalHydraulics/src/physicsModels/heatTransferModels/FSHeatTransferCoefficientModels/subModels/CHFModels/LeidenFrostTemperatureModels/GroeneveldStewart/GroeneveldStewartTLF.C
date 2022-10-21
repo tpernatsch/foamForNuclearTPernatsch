@@ -77,7 +77,7 @@ Foam::scalar Foam::LeidenFrostTemperatureModels::GroeneveldStewart::value
     }
     else // Ramp up to critical pressure 
     {
-        scalar DeltaTmin(557.85+44.1*9-3.72*pow(9,2)-Tsati);
+        scalar DeltaTmin(557.85+44.1*9-3.72*pow(9.0,2)-Tsati);
         Tmin = Tsati+(criticalPressure_-pli)/(criticalPressure_-9*1e6)*DeltaTmin;  
     }
 

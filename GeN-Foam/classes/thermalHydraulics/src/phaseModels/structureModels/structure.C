@@ -86,7 +86,7 @@ Foam::structure::structure
             "heatFlux.structure",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,

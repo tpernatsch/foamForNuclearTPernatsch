@@ -255,7 +255,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
     }
     // ---------------------------------- //
     //--- Refs --//
-    const scalar& alphai(this->pair_.fluidRef().normalized()[celli]);
+    const scalar& alphai(1.0-this->pair_.fluidRef().normalized()[celli]);
     const scalar& Twi(Tw_[celli]);
     const scalar& Tfi(Tf_[celli]);
     const scalar& Tsati(FFPairPtr_->iT()[celli]);

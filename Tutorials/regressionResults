@@ -1,9 +1,13 @@
 
- ##### 2D_onePhaseAndPointKineticsCoupling  ###### 
-Steady state of 2D_onePhaseAndPointKineticsCoupling has converged 
-Transient (no driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
-Transient (with driveline) of 2D_onePhaseAndPointKineticsCoupling has converged 
+ ##### 1D_PSBT_SC  ###### 
+1D_PSBT_SC has converged 
+time,  alpha.vapour at the end of the channel is: 0.133727 . It should be 0.133727 
 
- ##### Godiva_SN  ###### 
-Godiva_SN has converged 
-keff is  . It should be 0.980106  
+ ##### 1D_boiling  ###### 
+1D_boiling has converged 
+
+ ##### 1D_CHF  ###### 
+1D_CHF/imposedPower has converged 
+Temperature of the structure at the top of the channel at 90 seconds is: 2625.18 . It should be 2625.18 
+1D_CHF/imposedTemperature has converged 
+heat flux of the structure at the top of the channel at 40 seconds is: 33423.1 . It should be 33423.1 

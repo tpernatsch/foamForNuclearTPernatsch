@@ -234,7 +234,7 @@ Foam::scalar Foam::saturationModels::waterTRACE::valueTSat
     else if (pi<13.969971285053*1e6)
     {
         const scalar AB(117.8);
-        const scalar BB(1.0*pow(10,-5));
+        const scalar BB(1.0*pow(10.0,-5));
         const scalar CB(0.223);
         const scalar DB(255.2);
         scalar Ts(AB*pow(BB*pi,CB)+DB);
