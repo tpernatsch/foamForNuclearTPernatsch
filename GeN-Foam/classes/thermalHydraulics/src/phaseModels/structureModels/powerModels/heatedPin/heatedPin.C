@@ -49,7 +49,7 @@ namespace powerModels
 
 Foam::powerModels::heatedPin::heatedPin
 (
-    const structure& structureRef,
+    structure& structureRef,
     const dictionary& dicts
 )
 :

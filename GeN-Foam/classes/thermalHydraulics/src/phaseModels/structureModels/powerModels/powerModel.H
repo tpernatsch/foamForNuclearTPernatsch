@@ -65,7 +65,7 @@ class powerModel
 protected:
 
     //- Ref to parent structure
-    const structure& structure_;
+    structure& structure_;
 
     //- Reference to mesh
     const fvMesh& mesh_;
@@ -97,7 +97,7 @@ public:
         powerModel,
         powerModels,
         (
-            const structure& structure,
+            structure& structure,
             const dictionary& dicts
         ),
         (structure, dicts)
@@ -108,7 +108,7 @@ public:
         //- Construct over specific cells
         powerModel
         (
-            const structure& structure,
+            structure& structure,
             const dictionary& dicts
         );
 
@@ -119,7 +119,7 @@ public:
 
         static autoPtr<powerModel> New
         (
-            const structure& structure,
+            structure& structure,
             const dictionary& dicts
         );
 
@@ -181,6 +181,12 @@ public:
             {
                 return cellField_;
             }
+
+            structure& structureRef() 
+            {
+                return structure_;
+            }
+
 };
 
 

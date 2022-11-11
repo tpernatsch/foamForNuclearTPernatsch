@@ -49,7 +49,7 @@ namespace powerModels
 
 Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
 (
-    const structure& structureRef,
+    structure& structureRef,
     const dictionary& dicts
 )
 :
@@ -590,6 +590,10 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
             Tcmax_
         );
 
+        // Update average fuel and clad temp used for coupling
+        this->structureRef().TFuelAv()[celli] = Tfav_[celli];
+        this->structureRef().TCladAv()[celli] = Tcav_[celli];
+
         //- This is for updating the global averages, not the local cell ones!
         const scalar& dV(V[celli]);
         totV += dV;
@@ -860,6 +864,10 @@ Foam::powerModels::nuclearFuelPinTest::updateLocalTemperatureProfile
         Tcmin_,
         Tcmax_
     );
+
+    // Update average fuel and clad temp used for coupling
+    this->structureRef().TFuelAv()[celli] = Tfav_[celli];
+    this->structureRef().TCladAv()[celli] = Tcav_[celli];
 
     /*
     //- Check energy conservation via linear power comparison (analytic

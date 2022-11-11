@@ -18,7 +18,7 @@ if (writeOutput)
         out << fvc::domainIntegrate(neutronics.fluxes()[energyI]).value() << ";";
     }
 
-    if (nuclearFuelPin)
+    if (fluidMesh.foundObject<volScalarField>("powerDensity.nuclearFuelPin"))
     {        
         out << pinIO->get<scalar>("Tfmax") << ";";
         out << pinIO->get<scalar>("Tfavav") << ";";

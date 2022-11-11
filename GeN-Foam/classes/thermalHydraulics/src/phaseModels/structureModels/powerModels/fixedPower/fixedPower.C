@@ -52,7 +52,7 @@ namespace powerModels
 
 Foam::powerModels::fixedPower::fixedPower
 (
-    const structure& structureRef,
+    structure& structureRef,
     const dictionary& dicts
 )
 :

@@ -82,7 +82,7 @@ public:
 
         fixedTemperature
         (
-            const structure& structure,
+            structure& structure,
             const dictionary& dicts
         );
 

@@ -182,7 +182,7 @@ public:
 
         nuclearFuelPinTest
         (
-            const structure& structure,
+            structure& structure,
             const dictionary& dicts
         );
 

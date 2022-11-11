@@ -98,16 +98,29 @@ const volScalarField& TStruct
     (*fluidMesh.findObject<volScalarField>("T.passiveStructure"))
 );
 
+/*
 //- The powerDensity field is created exclusively by the nuclearFuelPin,
 //  so if it does exists, so does the nuclearFuelPin model
 const bool nuclearFuelPin
 (
     (fluidMesh.foundObject<volScalarField>("powerDensity.nuclearFuelPin")) 
 );
-
+*/
 //- Create pointers to fuel and cladding average temperatures. These might not
 //  exist, it depends on the existence of the nuclearFuelPin models. Hence, it
 //  is more convenient to have these as ptrs rather than references
+
+const volScalarField& TFuelAv
+(
+    (*fluidMesh.findObject<volScalarField>("T.fuelAvForNeutronics"))
+);
+
+const volScalarField& TCladAv
+(
+    (*fluidMesh.findObject<volScalarField>("T.cladAvForNeutronics"))
+);
+
+/*
 volScalarField* const TFuelAv
 (
     (nuclearFuelPin)  ?
@@ -142,7 +155,7 @@ volScalarField* const TCladAv
         zeroGradientFvPatchScalarField::typeName
     )
 );
-
+*/
 //- Set the actual powerDensity field reference, that gets modfied by
 //  the neutronics for coupling purposes. If doing liquidFuel, the powerDensity
 //  field is the liquid powerDensity. Otherwise, if a nuclearFuelPin-related
@@ -351,6 +364,7 @@ const surfaceScalarField& phiFMReg
 
 if (neutronics.type() == "pointKinetics")
 {
+    
     bafflelessPowerDensity = 
         new volScalarField
         (
@@ -364,8 +378,8 @@ if (neutronics.type() == "pointKinetics")
             dimensionedScalar("", dimPower/dimDensity, 0.0),
             zeroGradientFvPatchScalarField::typeName
         );
-    //bafflelessPowerDensity->primitiveFieldRef() = 
-    //    powerDensity->primitiveField();
+    bafflelessPowerDensity->primitiveFieldRef() = 
+        fluidMesh.findObject<volScalarField>("powerDensityFromNeutronics")->primitiveField();
     bafflelessPowerDensity->correctBoundaryConditions();
     
     //- Phi only required by GEM modelling

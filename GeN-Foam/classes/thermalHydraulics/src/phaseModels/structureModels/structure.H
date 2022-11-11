@@ -187,6 +187,12 @@ protected:
     //- Surface temperature of the passive region
     volScalarField Tpas_;
 
+    //- Temperature of the fuel (for coupling purposes)
+    volScalarField TFuelAv_;
+
+    //- Temperature of the cladding (for coupling purposes)
+    volScalarField TCladAv_;
+
     //- Interfacial area of the passive region
     volScalarField iApas_;
 
@@ -362,6 +368,16 @@ public:
             const volScalarField& Tpas() const
             {
                 return Tpas_;
+            }
+
+            volScalarField& TFuelAv()
+            {
+                return TFuelAv_;
+            }
+
+            volScalarField& TCladAv()
+            {
+                return TCladAv_;
             }
 
             const volScalarField& Twall() const

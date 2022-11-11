@@ -48,7 +48,7 @@ namespace powerModels
 
 Foam::powerModels::fixedTemperature::fixedTemperature
 (
-    const structure& structureRef,
+    structure& structureRef,
     const dictionary& dicts
 )
 :

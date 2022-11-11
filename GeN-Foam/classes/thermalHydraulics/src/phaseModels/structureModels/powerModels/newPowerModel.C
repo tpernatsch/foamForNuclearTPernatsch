@@ -30,7 +30,7 @@ License
 
 Foam::autoPtr<Foam::powerModel> Foam::powerModel::New
 (
-    const structure& structureRef,
+    structure& structureRef,
     const dictionary& dicts
 )
 {

@@ -67,9 +67,9 @@ bafflelessTCool.correctBoundaryConditions();
 bafflelessTFuelAv.primitiveFieldRef() = 
     (multiphysics.liquidFuel()) ?   
     liquid->thermo().T().primitiveField() :
-    TFuelAv->primitiveField();
+    TFuelAv.primitiveField();
 bafflelessTFuelAv.correctBoundaryConditions();
-bafflelessTCladAv.primitiveFieldRef() = TCladAv->primitiveField();
+bafflelessTCladAv.primitiveFieldRef() = TCladAv.primitiveField();
 bafflelessTCladAv.correctBoundaryConditions();
 bafflelessTStruct.primitiveFieldRef() = TStruct.primitiveField();
 bafflelessTStruct.correctBoundaryConditions();

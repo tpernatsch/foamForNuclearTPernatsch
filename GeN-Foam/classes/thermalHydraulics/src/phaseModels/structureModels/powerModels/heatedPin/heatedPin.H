@@ -124,7 +124,7 @@ public:
 
         heatedPin
         (
-            const structure& structure,
+            structure& structure,
             const dictionary& dicts
         );
 

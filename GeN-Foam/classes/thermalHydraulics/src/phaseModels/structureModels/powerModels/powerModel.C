@@ -43,7 +43,7 @@ namespace Foam
 
 Foam::powerModel::powerModel
 (
-    const structure& structureRef,
+    structure& structureRef,
     const dictionary& dicts
 )
 :

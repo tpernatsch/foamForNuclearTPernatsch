@@ -147,6 +147,34 @@ Foam::structure::structure
         dimensionedScalar("T", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    TFuelAv_
+    (
+        IOobject
+        (
+            "T.fuelAvForNeutronics",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("T", dimTemperature, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TCladAv_
+    (
+        IOobject
+        (
+            "T.cladAvForNeutronics",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("T", dimTemperature, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     iApas_
     (
         IOobject
