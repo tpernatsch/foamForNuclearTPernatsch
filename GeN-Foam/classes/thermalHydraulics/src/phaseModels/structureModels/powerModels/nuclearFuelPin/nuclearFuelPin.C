@@ -479,6 +479,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                 powerDensity_[celli] = structure_.powerDensityFromNeutronics()[celli]
                                         * powerProducingVolumeFraction 
                                         * fractionOfPowerFromNeutronics;
+                structure_.powerDensityPowerModels()[celli] = powerDensity_[celli];
 
                 Trad_.set(celli, new Field<scalar>(meshSize_[regioni], 0));
                 scalar q = powerDensity_[celli];
@@ -721,6 +722,7 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     powerDensity_[celli] = structure_.powerDensityFromNeutronics()[celli]
                             * powerProducingVolumeFraction 
                             * fractionOfPowerFromNeutronics;
+    structure_.powerDensityPowerModels()[celli] = powerDensity_[celli];
 
     const scalar& q(powerDensity_[celli]);
 

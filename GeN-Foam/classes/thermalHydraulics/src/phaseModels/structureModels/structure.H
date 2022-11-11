@@ -143,8 +143,11 @@ protected:
     //- All cells in which the structure exists ()
     labelList cells_;
 
-    //- Ref to powerDensity from neutronics
+    //- Ref to powerDensity from neutronics (projected on fluid mesh)
     const volScalarField& powerDensityFromNeutronics_;
+
+    //- powerDensity of power structures, in one single field (useful for pk)
+    volScalarField powerDensityPowerModels_;
 
     //- Hydraulic diameter
     volScalarField Dh_;
@@ -340,6 +343,11 @@ public:
                 return powerDensityFromNeutronics_;
             }
 
+            volScalarField& powerDensityPowerModels()
+            {
+                return powerDensityPowerModels_;
+            }
+
             const volScalarField& Dh() const
             {
                 return Dh_;
@@ -446,7 +454,7 @@ void structure::setRegionField
             field.readOpt() == IOobject::MUST_READ
         or  field.readOpt() == IOobject::READ_IF_PRESENT
         )
-    and fieldHeader.typeHeaderOk<fieldType>(true)
+        and fieldHeader.typeHeaderOk<fieldType>(true)
     )
     {
         scalarField cellField(mesh_.cells().size(), 0);

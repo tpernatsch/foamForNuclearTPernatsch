@@ -50,7 +50,10 @@ else if (solveE or solveN or solveTM)
 
         if (solveE)
         {
-            thermalHydraulics.interpolateCouplingFields(fluidToNeutro);
+            if (solveN)//update power denisty only if neutronics is solved for
+            {
+                thermalHydraulics.interpolateCouplingFields(fluidToNeutro);
+            }
             thermalHydraulics.correctEnergy(couplingResidual);
             if (!solveN and !solveTM)
                 Info << endl;
