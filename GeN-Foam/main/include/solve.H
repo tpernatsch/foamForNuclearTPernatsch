@@ -26,6 +26,7 @@ if (!multiphysics.finalIter())
 {
     if (solveE) 
     {
+        thermalHydraulics.interpolateCouplingFields(fluidToNeutro);
         thermalHydraulics.correctEnergy(EResidual);
         if (!solveN and !solveTM)
             Info << endl;
@@ -49,6 +50,7 @@ else if (solveE or solveN or solveTM)
 
         if (solveE)
         {
+            thermalHydraulics.interpolateCouplingFields(fluidToNeutro);
             thermalHydraulics.correctEnergy(couplingResidual);
             if (!solveN and !solveTM)
                 Info << endl;
@@ -66,11 +68,8 @@ else if (solveE or solveN or solveTM)
         if (solveN)
         {
             neutronics.interpolateCouplingFields(neutroToFluid);
-            neutronics.correct
-            (
-                couplingResidual,
-                couplingIter
-            );
+            neutronics.correct(couplingResidual,couplingIter);
+            /*
             (*powerDensity) *= 0.0;
             fluidToNeutro.mapTgtToSrc
             (
@@ -78,6 +77,7 @@ else if (solveE or solveN or solveTM)
                 plusEqOp<scalar>(), 
                 powerDensity->primitiveFieldRef()
             );
+            */
         }
         couplingIter++;
         Info << endl;

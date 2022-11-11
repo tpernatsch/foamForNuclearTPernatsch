@@ -162,6 +162,12 @@ protected:
     //  procedure from phi
     const scalar porousInterfaceSharpness_;
 
+    //- Ptrs to coupling fields (i.e. defined on their original mesh)
+    const volScalarField* powerDensityOrig_;
+
+    //- Mapped fields
+    volScalarField powerDensityFromNeutronics_;
+
 public:
 
     //- Runtime type information
@@ -207,6 +213,28 @@ public:
         );
 
     //- Member Functions
+
+        //- Substitutes the old getFields. Set local class references to global
+        //  coupling fields, to be called only once after construction. The 
+        //  fields are set via lookup in the src objectRegistry (i.e. 
+        //  neutroMesh for the current state of GeN-Foam)
+        virtual void getCouplingFieldRefs
+        (
+            const objectRegistry& src,
+            const meshToMesh& fluidToNeutro
+        );
+
+        //- The old getFields, yet operates on the local refs without having
+        //  the need for all the fields to be passed. This effectively bypasses
+        //  the old limitation of getFields, i.e. if someone wanted to
+        //  implement a new  model that requires more fields for the
+        //  coupling. Splitting getFields into a getCouplingFieldRefs and 
+        //  interpolateCouplingFields allows one to be as flexible as possible
+        //  with new classes implementations
+        virtual void interpolateCouplingFields
+        (
+            const meshToMesh& fluidToNeutro
+        );
 
         //- Solve thermal-hydraulics, combination of the other corrects
         virtual void correct

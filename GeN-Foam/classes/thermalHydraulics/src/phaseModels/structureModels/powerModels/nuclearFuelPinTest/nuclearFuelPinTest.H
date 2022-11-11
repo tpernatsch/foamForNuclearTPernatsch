@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::thermoSubstructures::nuclearFuelPin
+    Foam::thermoSubstructures::nuclearFuelPinTest
 
 Description
     Model for representing a nuclear fuel pin with constant material
@@ -35,12 +35,12 @@ Authors
     Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
     
 SourceFiles
-    nuclearFuelPin.C
+    nuclearFuelPinTest.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef nuclearFuelPin_H
-#define nuclearFuelPin_H
+#ifndef nuclearFuelPinTest_H
+#define nuclearFuelPinTest_H
 
 #include "powerModel.H"
 #include "IOFieldFields.H"
@@ -55,10 +55,10 @@ namespace powerModels
 {
 
 /*---------------------------------------------------------------------------*\
-                           Class nuclearFuelPin Declaration
+                           Class nuclearFuelPinTest Declaration
 \*---------------------------------------------------------------------------*/
 
-class nuclearFuelPin
+class nuclearFuelPinTest
 :
     public powerModel
 {
@@ -176,18 +176,18 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("nuclearFuelPin");
+    TypeName("nuclearFuelPinTest");
 
     // Constructors
 
-        nuclearFuelPin
+        nuclearFuelPinTest
         (
             const structure& structure,
             const dictionary& dicts
         );
 
         //- Destructor
-        virtual ~nuclearFuelPin();
+        virtual ~nuclearFuelPinTest();
 
     // Member Functions
 

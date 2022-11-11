@@ -68,7 +68,8 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     structure_
     (
         this->subDict("structureProperties"),
-        mesh
+        mesh,
+        this->powerDensityFromNeutronics_
     ),
     fluid_
     (

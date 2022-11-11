@@ -188,7 +188,22 @@ Foam::thermalHydraulicsModel::thermalHydraulicsModel
             "porousInterfaceSharpness", 
             0.0
         )
-    )
+    ),
+    powerDensityOrig_(nullptr),
+    powerDensityFromNeutronics_
+    (
+        IOobject
+        (
+            "powerDensityFromNeutronics",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower/dimVol, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    )    
 {
     //-
     setRefCell
@@ -240,6 +255,30 @@ Foam::thermalHydraulicsModel::~thermalHydraulicsModel()
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
+
+
+void Foam::thermalHydraulicsModel::getCouplingFieldRefs
+(
+    const objectRegistry& src,
+    const meshToMesh& fluidToNeutro
+)
+{
+    //- Field names must reflect those defined in createCouplingFields.H
+    powerDensityOrig_ = 
+        src.findObject<volScalarField>("powerDensity");
+
+    //- Initialize mapped fields
+    this->interpolateCouplingFields(fluidToNeutro);    
+}
+
+void Foam::thermalHydraulicsModel::interpolateCouplingFields
+(
+    const meshToMesh& fluidToNeutro
+)
+{
+    fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityFromNeutronics_);
+    powerDensityFromNeutronics_.correctBoundaryConditions();
+}
 
 void Foam::thermalHydraulicsModel::correctRegimeMaps()
 {

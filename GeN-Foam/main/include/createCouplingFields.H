@@ -154,6 +154,7 @@ volScalarField* const TCladAv
 //  the ptr initialization, and that again would happen always and just waste 
 //  memory if the other powerDensity fields exist). I do realize these are 
 //  laughably small of memory to bitch about, but hey, whatever helps
+/*
 volScalarField* const powerDensity
 (
     (multiphysics.liquidFuel()) ? &(liquid->powerDensity()) :
@@ -182,7 +183,7 @@ volScalarField* const powerDensity
         )
     )
 );
-
+*/
 //- Silence "unused variable" warnings, I actually do use them and have no idea
 //  why the compiler does not "see" them
 (void) liquid;
@@ -190,7 +191,7 @@ volScalarField* const powerDensity
 (void) TStruct;
 (void) TFuelAv;
 (void) TCladAv;
-(void) powerDensity;
+//(void) powerDensity;
 
 //- Then, create the actual fields for the coupling. These are created over the
 //  fluidMeshNB mesh, which is a baffle-less mesh that is created if the 
@@ -363,8 +364,8 @@ if (neutronics.type() == "pointKinetics")
             dimensionedScalar("", dimPower/dimDensity, 0.0),
             zeroGradientFvPatchScalarField::typeName
         );
-    bafflelessPowerDensity->primitiveFieldRef() = 
-        powerDensity->primitiveField();
+    //bafflelessPowerDensity->primitiveFieldRef() = 
+    //    powerDensity->primitiveField();
     bafflelessPowerDensity->correctBoundaryConditions();
     
     //- Phi only required by GEM modelling
@@ -399,6 +400,14 @@ if (multiphysics.solveNeutronics() or multiphysics.solveThermoMechanics())
 //  neutronics->thermalHydraulic interpolator is passed as some classes might
 //  require to project some fields right after construction and before the 
 //  start of the simulation e.g. pointKinetics
+if (multiphysics.solveEnergy())
+{
+    thermalHydraulics.getCouplingFieldRefs
+    (
+        neutroMesh,
+        fluidToNeutro
+    );
+}
 if (multiphysics.solveNeutronics())
 {
     neutronics.getCouplingFieldRefs

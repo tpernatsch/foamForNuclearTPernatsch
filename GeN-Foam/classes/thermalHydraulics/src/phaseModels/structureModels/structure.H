@@ -143,6 +143,9 @@ protected:
     //- All cells in which the structure exists ()
     labelList cells_;
 
+    //- Ref to powerDensity from neutronics
+    const volScalarField& powerDensityFromNeutronics_;
+
     //- Hydraulic diameter
     volScalarField Dh_;
 
@@ -218,7 +221,8 @@ public:
         structure
         (
             const dictionary& dict,
-            const fvMesh& mesh
+            const fvMesh& mesh,
+            const volScalarField& powerDensityFromNeutronics
         );
 
         //- Destructor
@@ -323,6 +327,11 @@ public:
             const volTensorField& tortuosity() const
             {
                 return tortuosityPtr_();
+            }
+
+            const volScalarField& powerDensityFromNeutronics() const
+            {
+                return powerDensityFromNeutronics_;
             }
 
             const volScalarField& Dh() const

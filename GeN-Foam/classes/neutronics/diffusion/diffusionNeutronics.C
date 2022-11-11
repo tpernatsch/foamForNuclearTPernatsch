@@ -167,6 +167,14 @@ Foam::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimless/dimVol/dimTime, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    TFuelOrig_(nullptr),
+    TCladOrig_(nullptr),
+    TCoolOrig_(nullptr),
+    rhoCoolOrig_(nullptr),
+    UOrig_(nullptr),
+    alphaOrig_(nullptr),
+    alphatOrig_(nullptr),
+    muOrig_(nullptr),
     TFuel_
     (
         IOobject

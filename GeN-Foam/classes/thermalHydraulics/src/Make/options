@@ -12,6 +12,7 @@ EXE_INC = \
     -I./phaseModels/structureModels/powerModels/fixedPower \
     -I./phaseModels/structureModels/powerModels/fixedTemperature \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPin \
+    -I./phaseModels/structureModels/powerModels/nuclearFuelPinTest \
     -I./phaseModels/structureModels/powerModels/heatedPin \
     -I./phaseModels/structureModels/powerOffCriterionModels/ \
     -I./phaseModels/structureModels/powerOffCriterionModels/fieldValue \

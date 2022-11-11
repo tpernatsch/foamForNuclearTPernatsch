@@ -23,7 +23,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "nuclearFuelPin.H"
+#include "nuclearFuelPinTest.H"
 #include "structure.H"
 #include "addToRunTimeSelectionTable.H"
 #include "SquareMatrix.H"
@@ -34,11 +34,11 @@ namespace Foam
 {
 namespace powerModels
 {
-    defineTypeNameAndDebug(nuclearFuelPin, 0);
+    defineTypeNameAndDebug(nuclearFuelPinTest, 0);
     addToRunTimeSelectionTable
     (
         powerModel, 
-        nuclearFuelPin, 
+        nuclearFuelPinTest, 
         powerModels
     );
 }
@@ -47,7 +47,7 @@ namespace powerModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::powerModels::nuclearFuelPin::nuclearFuelPin
+Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
 (
     const structure& structureRef,
     const dictionary& dicts
@@ -263,7 +263,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         else
         {
             FatalErrorInFunction
-                << "nuclearFuelPin region: " << region << " -> "
+                << "nuclearFuelPinTest region: " << region << " -> "
                 << "specify either fuelRhoCp or both fuelRho and fuelCp"
                 << exit(FatalError);
         }
@@ -281,7 +281,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         else
         {
             FatalErrorInFunction
-                << "nuclearFuelPin region: " << region << " -> "
+                << "nuclearFuelPinTest region: " << region << " -> "
                 << "specify either cladRhoCp or both cladRho and cladCp"
                 << exit(FatalError);
         }
@@ -382,7 +382,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
 
                 powerModel
                 {
-                    type        nuclearFuelPin;
+                    type        nuclearFuelPinTest;
 
                     ...
 
@@ -433,7 +433,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         if (foundTable and foundValue)
         {
             FatalErrorInFunction
-                << "nuclearFuelPin region: " << region << " -> "
+                << "nuclearFuelPinTest region: " << region << " -> "
                 << "provide either a gapH value or a gapHPowerDensityTable "
                 << "but not both!"
                 << exit(FatalError);
@@ -457,7 +457,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         //  equal to the starting temperatures found in the files.
         if (foundBoundaryTemperatures)
         {
-            Info<< "Found nuclearFuelPin temperatures "
+            Info<< "Found nuclearFuelPinTest temperatures "
                 << "reconstructing profiles " << endl;
             forAll(this->cellList_, i)
             {
@@ -523,7 +523,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         }
         else //- Otherwise, read from dict
         {
-            Info<< "Reading nuclearFuelPin initial temperatures from "
+            Info<< "Reading nuclearFuelPinTest initial temperatures from "
                 << "dictionary" << endl;
 
             forAll(this->cellList_, i)
@@ -542,7 +542,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     }
     else
     {
-        Info<< "Setting nuclearFuelPin initial temperatures from "
+        Info<< "Setting nuclearFuelPinTest initial temperatures from "
                 << Trad_.name() << endl;
     }
     
@@ -629,13 +629,13 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::powerModels::nuclearFuelPin::~nuclearFuelPin()
+Foam::powerModels::nuclearFuelPinTest::~nuclearFuelPinTest()
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::powerModels::nuclearFuelPin::setInterfacialArea()
+void Foam::powerModels::nuclearFuelPinTest::setInterfacialArea()
 {
     forAll(this->cellList_, i)
     {
@@ -645,7 +645,7 @@ void Foam::powerModels::nuclearFuelPin::setInterfacialArea()
     iA_.correctBoundaryConditions();
 }
 
-void Foam::powerModels::nuclearFuelPin::updateLocalAvgGlobalMinMaxT
+void Foam::powerModels::nuclearFuelPinTest::updateLocalAvgGlobalMinMaxT
 (
     const label& starti,
     const label& endi,
@@ -684,7 +684,7 @@ void Foam::powerModels::nuclearFuelPin::updateLocalAvgGlobalMinMaxT
 }
 
 void 
-Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
+Foam::powerModels::nuclearFuelPinTest::updateLocalTemperatureProfile
 (
     const label& celli,
     const scalar& HTSumi,
@@ -890,7 +890,7 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
 }
 
 
-void Foam::powerModels::nuclearFuelPin::correct
+void Foam::powerModels::nuclearFuelPinTest::correct
 (
     const volScalarField& HTSum,  // == SUM_j [htc_j*T_j*frac_j]
     const volScalarField& HSum    // == SUM_j [htc_j*frac_j]
@@ -903,7 +903,7 @@ void Foam::powerModels::nuclearFuelPin::correct
     Tcmin_ = 1e69;
     
     //- Update temperatures cell-by-cell and compute averages over the entire
-    //  spatial extent of the nuclearFuelPin model (what I call global 
+    //  spatial extent of the nuclearFuelPinTest model (what I call global 
     //  averages, opposed to local averages, which are the average temperature
     //  values, fuel and clad, of the local radial pin temperature profile)
     const scalarField& V(mesh_.V());
@@ -930,9 +930,9 @@ void Foam::powerModels::nuclearFuelPin::correct
     reduce(Tcmax_, maxOp<scalar>());
     reduce(Tcmin_, minOp<scalar>());
 
-    Info<< "T.nuclearFuelPin.fuel (avg min max) = " 
+    Info<< "T.nuclearFuelPinTest.fuel (avg min max) = " 
         << Tfavav << " " << Tfmin_ << " " << Tfmax_ << " K" << endl;
-    Info<< "T.nuclearFuelPin.clad (avg min max) = " 
+    Info<< "T.nuclearFuelPinTest.clad (avg min max) = " 
         << Tcavav << " " << Tcmin_ << " " << Tcmax_ << " K" << endl;
 
     //- Save these to the dictionary
@@ -945,7 +945,7 @@ void Foam::powerModels::nuclearFuelPin::correct
 }
 
 
-void Foam::powerModels::nuclearFuelPin::correctT(volScalarField& T) const
+void Foam::powerModels::nuclearFuelPinTest::correctT(volScalarField& T) const
 {
     //- Set T to pin surface temperature, i.e. Tco_
     forAll(cellList_, i)

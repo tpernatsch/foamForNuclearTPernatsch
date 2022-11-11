@@ -156,7 +156,8 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     structure_
     (
         this->subDict("structureProperties"),
-        mesh 
+        mesh,
+        this->powerDensityFromNeutronics_ 
     ),
     fluid1_
     (
