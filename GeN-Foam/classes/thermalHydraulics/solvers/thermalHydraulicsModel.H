@@ -166,7 +166,7 @@ protected:
     const volScalarField* powerDensityOrig_;
 
     //- Mapped fields
-    volScalarField powerDensityFromNeutronics_;
+    volScalarField powerDensityNeutronics_;
 
 public:
 

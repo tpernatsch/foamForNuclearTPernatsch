@@ -69,7 +69,7 @@ Foam::thermalHydraulicsModels::onePhase::onePhase
     (
         this->subDict("structureProperties"),
         mesh,
-        this->powerDensityFromNeutronics_ 
+        this->powerDensityNeutronics_ 
     ),
     fluid_
     (

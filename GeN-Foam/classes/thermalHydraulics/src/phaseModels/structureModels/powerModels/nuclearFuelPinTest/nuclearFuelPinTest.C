@@ -70,7 +70,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
         ),
         mesh_.cells().size()
     ),
-    powerDensity_
+    /*powerDensity_
     (
         IOobject
         (
@@ -83,7 +83,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
         mesh_,
         dimensionedScalar("powerDensity", dimPower/dimVol, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    ),
+    ),*/
     Tfi_
     (
         IOobject
@@ -198,7 +198,8 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
     gapHPowerDensityTable_(0),
     useGapHPowerDensityTable_(0)
 {   
-    structure_.setRegionField(*this, powerDensity_, "powerDensity");
+    //structure_.setRegionField(*this, powerDensity_, "powerDensity");
+    structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensity");
 
     bool foundBoundaryTemperatures
     (
@@ -475,13 +476,8 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
                 scalar fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
                 bool hollowFuel(hollowFuel_[regioni]);
 
-                //- Update power density
-                powerDensity_[celli] = structure_.powerDensityFromNeutronics()[celli]
-                                        * powerProducingVolumeFraction 
-                                        * fractionOfPowerFromNeutronics;
-
                 Trad_.set(celli, new Field<scalar>(meshSize_[regioni], 0));
-                scalar q = powerDensity_[celli];
+                scalar q = structure_.powerDensityNeutronics()[celli] * fractionOfPowerFromNeutronics;
                 scalar tfi = Tfi_[celli];
                 scalar tfo = Tfo_[celli];
                 scalar tci = Tci_[celli];
@@ -718,11 +714,8 @@ Foam::powerModels::nuclearFuelPinTest::updateLocalTemperatureProfile
     const scalarField& TOld = Trad_.oldTime()[celli];
 
     //- Update power density
-    powerDensity_[celli] = structure_.powerDensityFromNeutronics()[celli]
-                            * powerProducingVolumeFraction 
-                            * fractionOfPowerFromNeutronics;
-
-    const scalar& q(powerDensity_[celli]);
+    const scalar& qRef(structure_.powerDensityNeutronics()[celli]);
+    scalar q = qRef * fractionOfPowerFromNeutronics;
 
     scalar gapH
     (

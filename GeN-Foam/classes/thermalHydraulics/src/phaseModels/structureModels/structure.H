@@ -144,10 +144,10 @@ protected:
     labelList cells_;
 
     //- Ref to powerDensity from neutronics (projected on fluid mesh)
-    const volScalarField& powerDensityFromNeutronics_;
+    volScalarField& powerDensityNeutronics_;
 
     //- powerDensity of power structures, in one single field (useful for pk)
-    volScalarField powerDensityPowerModels_;
+    //volScalarField powerDensityPowerModels_;
 
     //- Hydraulic diameter
     volScalarField Dh_;
@@ -231,7 +231,7 @@ public:
         (
             const dictionary& dict,
             const fvMesh& mesh,
-            const volScalarField& powerDensityFromNeutronics
+            volScalarField& powerDensityNeutronics
         );
 
         //- Destructor
@@ -338,16 +338,16 @@ public:
                 return tortuosityPtr_();
             }
 
-            const volScalarField& powerDensityFromNeutronics() const
+            volScalarField& powerDensityNeutronics()
             {
-                return powerDensityFromNeutronics_;
+                return powerDensityNeutronics_;
             }
-
+            /*
             volScalarField& powerDensityPowerModels()
             {
                 return powerDensityPowerModels_;
             }
-
+            */
             const volScalarField& Dh() const
             {
                 return Dh_;
@@ -447,16 +447,20 @@ void structure::setRegionField
     //- field is a reference to a field that already exists. If it was
     //  created with a READ_IF_PRESENT or MUST_READ option, it is not a bad
     //  idea to spatially limit the field only over the cells overwhich it
-    //  should be defined, just in case
+    //  should be defined, just in case.
+    //  Removed. This creates problems to setting powerDenistyNeutronics
+    //  since each powerModel will set it to zero outside its cells 
     if 
     (
-        (
+        ((
             field.readOpt() == IOobject::MUST_READ
         or  field.readOpt() == IOobject::READ_IF_PRESENT
         )
-        and fieldHeader.typeHeaderOk<fieldType>(true)
+        and fieldHeader.typeHeaderOk<fieldType>(true))
     )
     {
+        // DO NOTHING
+        /*
         scalarField cellField(mesh_.cells().size(), 0);
         forAll(dicts.toc(), i)
         {
@@ -468,6 +472,7 @@ void structure::setRegionField
             }
         }
         field.primitiveFieldRef() *= cellField;
+        */
     }
     //- Otherwise, read the value the field should have on a 
     //  region-by-region basis

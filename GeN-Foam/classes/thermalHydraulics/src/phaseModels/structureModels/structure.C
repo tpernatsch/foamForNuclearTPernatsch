@@ -44,7 +44,7 @@ Foam::structure::structure
 (
     const dictionary& dict,
     const fvMesh& mesh,
-    const volScalarField& powerDensityFromNeutronics
+    volScalarField& powerDensityNeutronics
 )
 :
     phaseBase
@@ -56,8 +56,8 @@ Foam::structure::structure
     ),
     regions_(0),
     cells_(0),
-    powerDensityFromNeutronics_(powerDensityFromNeutronics),
-    powerDensityPowerModels_
+    powerDensityNeutronics_(powerDensityNeutronics),
+    /*powerDensityPowerModels_
     (
         IOobject
         (
@@ -70,7 +70,7 @@ Foam::structure::structure
         mesh,
         dimensionedScalar("", dimPower/dimVol, 0),
         zeroGradientFvPatchScalarField::typeName
-    ),
+    ),*/
     Dh_
     (
         IOobject

@@ -190,11 +190,11 @@ Foam::thermalHydraulicsModel::thermalHydraulicsModel
         )
     ),
     powerDensityOrig_(nullptr),
-    powerDensityFromNeutronics_
+    powerDensityNeutronics_
     (
         IOobject
         (
-            "powerDensityFromNeutronics",
+            "powerDensityNeutronics",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,
@@ -276,8 +276,8 @@ void Foam::thermalHydraulicsModel::interpolateCouplingFields
     const meshToMesh& fluidToNeutro
 )
 {
-    fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityFromNeutronics_);
-    powerDensityFromNeutronics_.correctBoundaryConditions();
+    fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
+    powerDensityNeutronics_.correctBoundaryConditions();
 }
 
 void Foam::thermalHydraulicsModel::correctRegimeMaps()

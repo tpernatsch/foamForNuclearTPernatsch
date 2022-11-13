@@ -379,7 +379,7 @@ if (neutronics.type() == "pointKinetics")
             zeroGradientFvPatchScalarField::typeName
         );
     bafflelessPowerDensity->primitiveFieldRef() = 
-        fluidMesh.findObject<volScalarField>("powerDensity.PowerModels")->primitiveField();
+        fluidMesh.findObject<volScalarField>("powerDensityNeutronics")->primitiveField();
     bafflelessPowerDensity->correctBoundaryConditions();
     
     //- Phi only required by GEM modelling
