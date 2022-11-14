@@ -78,6 +78,7 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         mesh,
         word(""),   //- This is the phase name, setting it to "" signals a
                     //  onePhase solver to the rest of the FFS library
+        this->powerDensityNeutronicsToLiquid_,
         false       //- No need to read or write the fluid phaseFraction in
                     //  onePhase, it is tied to the structure phaseFraction
     ),

@@ -39,6 +39,7 @@ if (nFluids == 1)
     //  volScalarField? Well, that would force the fluid class to always create
     //  a power density field (also for the vapour), and that is a useless
     //  waste of RAM and disk memory (the field needs to be written)
+    /*
     if (multiphysics.liquidFuel() and !liquid->powerDensityPtr().valid())
     {
         liquid->powerDensityPtr().reset
@@ -59,6 +60,7 @@ if (nFluids == 1)
             )
         );
     }
+    */
 }
 else
 {   
@@ -346,6 +348,7 @@ volVectorField bafflelessU
 //  perfectly well with a 0 powerDensity, it simply won't be re-scaling 
 //  anything (but integral power values will be predicted just fine)
 volScalarField* bafflelessPowerDensity = nullptr;
+volScalarField* bafflelessPowerDensityToLiquid = nullptr;
 
 //- This is only required when point kinetics model Gas Expansion Modules (i.e.
 //  a safety feature specific to one SFR, the FFTF. I hate this level of hard-
@@ -380,6 +383,23 @@ if (neutronics.type() == "pointKinetics")
         );
     bafflelessPowerDensity->primitiveFieldRef() = 
         fluidMesh.findObject<volScalarField>("powerDensityNeutronics")->primitiveField();
+    bafflelessPowerDensity->correctBoundaryConditions();
+
+    bafflelessPowerDensityToLiquid = 
+        new volScalarField
+        (
+            IOobject
+            (
+                "bafflelessPowerDensityToLiquid",
+                runTime.timeName(),
+                fluidMeshNB
+            ),
+            fluidMeshNB,
+            dimensionedScalar("", dimPower/dimDensity, 0.0),
+            zeroGradientFvPatchScalarField::typeName
+        );
+    bafflelessPowerDensity->primitiveFieldRef() = 
+        fluidMesh.findObject<volScalarField>("powerDensityNeutronicsToLiquid")->primitiveField();
     bafflelessPowerDensity->correctBoundaryConditions();
     
     //- Phi only required by GEM modelling

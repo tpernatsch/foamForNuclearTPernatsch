@@ -194,14 +194,14 @@
     E2Eqn -= structure_.linearizedSemiImplicitHeatSource(fluid2_, H2s)();
 
     //- Add additional sources deposited directly in the fluids, if any
-    if (fluid1_.powerDensityPtr().valid())
-    {
+    //if (fluid1_.powerDensityPtr().valid())
+    //{
         E1Eqn -= fluid1_.powerDensity();
-    }
-    if (fluid2_.powerDensityPtr().valid())
-    {
+    //}
+    //if (fluid2_.powerDensityPtr().valid())
+    //{
         E2Eqn -= fluid2_.powerDensity();
-    }
+    //}
 
     //- Add stabilization sources so that the temperatures will tend to their
     //  interfacial values if the phase fraction is below thermoResidualAlpha

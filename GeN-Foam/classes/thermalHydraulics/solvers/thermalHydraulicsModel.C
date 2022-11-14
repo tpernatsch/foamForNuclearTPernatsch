@@ -203,7 +203,21 @@ Foam::thermalHydraulicsModel::thermalHydraulicsModel
         mesh_,
         dimensionedScalar("", dimPower/dimVol, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    )    
+    ),
+    powerDensityNeutronicsToLiquid_
+    (
+        IOobject
+        (
+            "powerDensityNeutronicsToLiquid",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower/dimVol, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    )        
 {
     //-
     setRefCell
@@ -267,17 +281,25 @@ void Foam::thermalHydraulicsModel::getCouplingFieldRefs
     powerDensityOrig_ = 
         src.findObject<volScalarField>("powerDensity");
 
-    //- Initialize mapped fields
-    this->interpolateCouplingFields(fluidToNeutro);    
+    //- Do not initialize mapped fields. This has to happen only if
+    //  neutronics is solved for. This is responsability
+    //  of the main
+    //this->interpolateCouplingFields(fluidToNeutro);    
 }
 
 void Foam::thermalHydraulicsModel::interpolateCouplingFields
 (
-    const meshToMesh& fluidToNeutro
+    const meshToMesh& fluidToNeutro,
+    label liquidFuel
 )
 {
     fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
     powerDensityNeutronics_.correctBoundaryConditions();
+    if(liquidFuel)
+    {
+        fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronicsToLiquid_);
+        powerDensityNeutronicsToLiquid_.correctBoundaryConditions();
+    }
 }
 
 void Foam::thermalHydraulicsModel::correctRegimeMaps()

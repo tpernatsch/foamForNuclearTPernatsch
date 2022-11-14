@@ -90,10 +90,6 @@ protected:
     scalar Tcmax_;
     scalar Tcmin_;
 
-    //- Fraction of TOTAL volume occupied by the power producing region.
-    //  For instance, the fraction occupied by UO2 in a reactor core
-    scalarList powerProducingVolumeFraction_;
-
     //- Fraction of power from neutronics that goes to this powerModel
     //  This take sinto account for instance cases where some of the 
     //  heating goes to the moderator

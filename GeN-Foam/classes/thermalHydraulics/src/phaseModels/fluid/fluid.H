@@ -164,7 +164,10 @@ private :
     volScalarField Pr_;
 
     //- Additional powerDensity deposited directly to the fluid
-    autoPtr<volScalarField> powerDensityPtr_;
+    //autoPtr<volScalarField> powerDensityPtr_;
+
+    //- Ref to powerDensity from neutronics (projected on fluid mesh)
+    volScalarField& powerDensityNeutronicsToLiquid_;
 
     //- Continuity error of the phase 
     //  (== fvc::ddt(alpha, rho) + fvc::div(alphaRhoPhi)) (kg/m3/s)
@@ -217,6 +220,7 @@ public:
             const dictionary& dict,
             const fvMesh& mesh,
             const word& phaseName,
+            volScalarField& powerDensityNeutronicsToLiquid,
             bool readIfPresentAndWrite = true
         );
 
@@ -456,7 +460,7 @@ public:
             {
                 return Pr_;
             }
-
+/*
             const autoPtr<volScalarField> powerDensityPtr() const
             {
                 return powerDensityPtr_;
@@ -466,15 +470,15 @@ public:
             {
                 return powerDensityPtr_;
             }
-
+*/
             const volScalarField& powerDensity() const
             {
-                return powerDensityPtr_();
+                return powerDensityNeutronicsToLiquid_;
             }
 
             volScalarField& powerDensity()
             {
-                return powerDensityPtr_();
+                return powerDensityNeutronicsToLiquid_;
             }
 
             const volScalarField& contErr() const

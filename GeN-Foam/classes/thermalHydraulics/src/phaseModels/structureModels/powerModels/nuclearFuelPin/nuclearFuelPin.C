@@ -172,7 +172,6 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     Tfmin_(1e69),
     Tcmax_(0),
     Tcmin_(1e69),
-    powerProducingVolumeFraction_(0),
     fractionOfPowerFromNeutronics_(0),
     fuelMeshSize_(0),//this->get<label>("fuelMeshSize")),
     cladMeshSize_(0),//this->get<label>("cladMeshSize")),
@@ -238,7 +237,6 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         regionIndexToRegionName_.append(region);
 
         //- Read region dict entries
-        scalar powerProducingVolumeFraction(dict.get<scalar>("powerProducingVolumeFraction"));
         scalar fractionOfPowerFromNeutronics(dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics",1.0));        
         scalar rfi(dict.get<scalar>("fuelInnerRadius"));
         scalar rfo(dict.get<scalar>("fuelOuterRadius"));
@@ -335,7 +333,6 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         );
 
         //- Fill in lists for this region
-        powerProducingVolumeFraction_.append(powerProducingVolumeFraction),
         fractionOfPowerFromNeutronics_.append(fractionOfPowerFromNeutronics), 
         fuelMeshSize_.append(fuelMeshSize);
         cladMeshSize_.append(cladMeshSize);
@@ -472,7 +469,6 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                 scalar rfo(rfo_[regioni]);
                 scalar rci(rci_[regioni]);
                 scalar rco(rco_[regioni]);
-                scalar powerProducingVolumeFraction(powerProducingVolumeFraction_[regioni]);
                 scalar fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
                 bool hollowFuel(hollowFuel_[regioni]);
 
@@ -708,7 +704,6 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     const scalar& kc(kc_[regioni]);
     const scalar& rfo(rfo_[regioni]);
     const scalar& rci(rci_[regioni]);
-    const scalar& powerProducingVolumeFraction(powerProducingVolumeFraction_[regioni]);
     const scalar& fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
     
     const scalarField& TOld = Trad_.oldTime()[celli];

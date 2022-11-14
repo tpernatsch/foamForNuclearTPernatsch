@@ -167,6 +167,7 @@ protected:
 
     //- Mapped fields
     volScalarField powerDensityNeutronics_;
+    volScalarField powerDensityNeutronicsToLiquid_;
 
 public:
 
@@ -233,7 +234,8 @@ public:
         //  with new classes implementations
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& fluidToNeutro
+            const meshToMesh& fluidToNeutro,
+            label liquidFuel
         );
 
         //- Solve thermal-hydraulics, combination of the other corrects

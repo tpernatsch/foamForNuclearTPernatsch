@@ -71,6 +71,7 @@ Foam::fluid::fluid
     const dictionary& dict,
     const fvMesh& mesh,
     const word& phaseName,
+    volScalarField& powerDensityNeutronicsToLiquid,
     bool readIfPresentAndWrite
 )
 :
@@ -298,6 +299,7 @@ Foam::fluid::fluid
         dimensionedScalar("", dimless, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    powerDensityNeutronicsToLiquid_(powerDensityNeutronicsToLiquid),
     contErr_
     (
         IOobject
@@ -365,10 +367,11 @@ Foam::fluid::fluid
 
     mesh.setFluxRequired(this->name());
 
-    //- Set initial cellZone powerDensity, if present
-    //  and if no field already available in time folder
+    //- Set initial cellZone powerDensity, 
+    //  if no field already available in time folder
     if (dict_.found("initialPowerDensity"))
     {
+        /*
         powerDensityPtr_.reset
         (
             new volScalarField
@@ -386,10 +389,12 @@ Foam::fluid::fluid
                 zeroGradientFvPatchScalarField::typeName
             )
         );
-
-        if(!powerDensityPtr_().typeHeaderOk<volScalarField>(true))
+        */
+        //if(!powerDensityPtr_().typeHeaderOk<volScalarField>(true))
+        if(!powerDensityNeutronicsToLiquid.typeHeaderOk<volScalarField>(true))
         {
-            volScalarField& powerDensity(powerDensityPtr_());
+            //volScalarField& powerDensity(powerDensityPtr_());
+            volScalarField& powerDensity(powerDensityNeutronicsToLiquid);
             const dictionary& powerDensity0s
             (
                 dict_.subDict("initialPowerDensity")

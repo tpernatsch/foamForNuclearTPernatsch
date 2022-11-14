@@ -1034,7 +1034,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
     {
         powerDensityOrig_ =
-            src.findObject<volScalarField>("bafflelessPowerDensity");
+            src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
         neutroToFluid.mapTgtToSrc
             (
                 *powerDensityOrig_,

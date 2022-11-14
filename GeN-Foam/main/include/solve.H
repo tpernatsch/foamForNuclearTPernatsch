@@ -26,7 +26,14 @@ if (!multiphysics.finalIter())
 {
     if (solveE) 
     {
-        thermalHydraulics.interpolateCouplingFields(fluidToNeutro);
+        if (solveN)//update power denisty only if neutronics is solved for
+        {
+            thermalHydraulics.interpolateCouplingFields
+            (
+                fluidToNeutro,
+                multiphysics.liquidFuel()
+            );
+        }
         thermalHydraulics.correctEnergy(EResidual);
         if (!solveN and !solveTM)
             Info << endl;
@@ -52,7 +59,11 @@ else if (solveE or solveN or solveTM)
         {
             if (solveN)//update power denisty only if neutronics is solved for
             {
-                thermalHydraulics.interpolateCouplingFields(fluidToNeutro);
+                thermalHydraulics.interpolateCouplingFields
+                (
+                    fluidToNeutro,
+                    multiphysics.liquidFuel()
+                );
             }
             thermalHydraulics.correctEnergy(couplingResidual);
             if (!solveN and !solveTM)

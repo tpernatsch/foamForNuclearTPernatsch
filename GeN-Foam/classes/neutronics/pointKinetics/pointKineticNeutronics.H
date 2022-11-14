@@ -154,6 +154,7 @@ protected:
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructOrig_;
     const volScalarField* powerDensityOrig_;
+    const volScalarField* powerDensityToLiquidOrig_;
 
     //- These have no use for now, will be needed by the liquidFuel version
     const volVectorField* UOrig_;

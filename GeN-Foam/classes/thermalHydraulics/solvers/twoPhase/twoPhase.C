@@ -167,7 +167,8 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
             +   "Properties"
         ),
         mesh,
-        word(this->lookup("fluid1"))
+        word(this->lookup("fluid1")),
+        this->powerDensityNeutronicsToLiquid_
     ),
     fluid2_
     (
@@ -177,7 +178,8 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
             +   "Properties"
         ),
         mesh,
-        word(this->lookup("fluid2"))
+        word(this->lookup("fluid2")),
+        this->powerDensityNeutronicsToLiquid_
     ),
     movingAlpha_
     (
