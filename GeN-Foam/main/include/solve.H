@@ -69,7 +69,12 @@ else if (solveE or solveN or solveTM)
             if (!solveN and !solveTM)
                 Info << endl;
         }
-        if (solveTM or solveN)
+        // correctCouplingFields.H is needed only beacuse of the speacial treatment of the 
+        // thermalHydraulic mesh, where we go through a set of fields on a "phantom" mesh 
+        // without baffles that is needed to facilitate the mapping.
+        // If it was not for that, interpolateCouplingFields of neutronics and thermalMechanics
+        // could be change to directly search for coupling fields directly in thermalHydraulics
+        if (solveTM or solveN) 
         {
             #include "correctCouplingFields.H"
         }
@@ -83,15 +88,6 @@ else if (solveE or solveN or solveTM)
         {
             neutronics.interpolateCouplingFields(neutroToFluid);
             neutronics.correct(couplingResidual,couplingIter);
-            /*
-            (*powerDensity) *= 0.0;
-            fluidToNeutro.mapTgtToSrc
-            (
-                neutronics.powerDensity(), 
-                plusEqOp<scalar>(), 
-                powerDensity->primitiveFieldRef()
-            );
-            */
         }
         couplingIter++;
         Info << endl;

@@ -371,26 +371,6 @@ Foam::fluid::fluid
     //  if no field already available in time folder
     if (dict_.found("initialPowerDensity"))
     {
-        /*
-        powerDensityPtr_.reset
-        (
-            new volScalarField
-            (
-                IOobject
-                (
-                    IOobject::groupName("powerDensity", this->name()),
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::READ_IF_PRESENT,
-                    IOobject::AUTO_WRITE
-                ),
-                mesh_,
-                dimensionedScalar("", dimPower/dimVol, 0.0),
-                zeroGradientFvPatchScalarField::typeName
-            )
-        );
-        */
-        //if(!powerDensityPtr_().typeHeaderOk<volScalarField>(true))
         if(!powerDensityNeutronicsToLiquid.typeHeaderOk<volScalarField>(true))
         {
             //volScalarField& powerDensity(powerDensityPtr_());

@@ -1021,30 +1021,13 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     TStructOrig_ =
         src.findObject<volScalarField>("bafflelessTStruct");
 
-    //- Project thermalHydraulic powerDensities onto the neutronic one to
-    //  initialize it if the latter does not exist
-    /*
-    IOobject powerDensityHeader
-    (
-        "powerDensity",
-        mesh_.time().timeName(),
-        mesh_.time(),
-        IOobject::NO_READ
-    );
-
-    if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
-    {
-        powerDensityOrig_ =
-            src.findObject<volScalarField>("bafflelessPowerDensity");
-        neutroToFluid.mapTgtToSrc
-            (
-                *powerDensityOrig_,
-                plusEqOp<scalar>(),
-                powerDensity_
-            );
-        powerDensity_.correctBoundaryConditions();
-    }
-    */
+    //- Project thermalHydraulic powerDensities onto the neutronic ones to
+    //  initialize them if the latters do not exist.
+    //  Mirroring what happens in thermalHydraulics.interpolateCouplingFields:
+    //  - if(liquidFuel), map powerDensityNeutronicsToLiquid_ to powerDensity_ 
+    //    and powerDensityNeutronics_ to secondaryPowerDenisty_
+    //  - else, map powerDensityNeutronics_ to powerDensity_ and 
+    //    powerDensityNeutronicsToLiquid_ to secondaryPowerDenisty_
     if(liquidFuel_)
     {
         IOobject powerDensityHeader
@@ -1110,6 +1093,27 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
                     powerDensity_
                 );
             powerDensity_.correctBoundaryConditions();
+        }
+
+        IOobject secondaryPowerDensityHeader
+        (
+            "secondaryPowerDensity",
+            mesh_.time().timeName(),
+            mesh_.time(),
+            IOobject::NO_READ
+        );
+
+        if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
+        {
+            powerDensityToLiquidOrig_ =
+                src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
+            neutroToFluid.mapTgtToSrc
+                (
+                    *powerDensityToLiquidOrig_,
+                    plusEqOp<scalar>(),
+                    secondaryPowerDenisty_
+                );
+            secondaryPowerDenisty_.correctBoundaryConditions();
         }
     }
 

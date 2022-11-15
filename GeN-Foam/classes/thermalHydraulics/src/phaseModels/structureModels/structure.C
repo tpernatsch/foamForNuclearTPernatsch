@@ -57,20 +57,6 @@ Foam::structure::structure
     regions_(0),
     cells_(0),
     powerDensityNeutronics_(powerDensityNeutronics),
-    /*powerDensityPowerModels_
-    (
-        IOobject
-        (
-            "powerDensity.PowerModels",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimPower/dimVol, 0),
-        zeroGradientFvPatchScalarField::typeName
-    ),*/
     Dh_
     (
         IOobject

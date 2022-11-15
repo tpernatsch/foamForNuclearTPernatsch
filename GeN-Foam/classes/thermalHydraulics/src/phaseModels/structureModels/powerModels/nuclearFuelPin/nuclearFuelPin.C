@@ -70,20 +70,6 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         ),
         mesh_.cells().size()
     ),
-    /*powerDensity_
-    (
-        IOobject
-        (
-            "powerDensity."+typeName,
-            mesh_.time().timeName(),
-            mesh_,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh_,
-        dimensionedScalar("powerDensity", dimPower/dimVol, 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),*/
     Tfi_
     (
         IOobject
@@ -197,7 +183,6 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     gapHPowerDensityTable_(0),
     useGapHPowerDensityTable_(0)
 {   
-    //structure_.setRegionField(*this, powerDensity_, "powerDensity");
     structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensity");
 
     bool foundBoundaryTemperatures

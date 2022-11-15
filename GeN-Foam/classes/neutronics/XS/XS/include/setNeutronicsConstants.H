@@ -36,7 +36,6 @@ forAll(nuSigmaEff_,energyI)
                 secondaryPowerVolumeFraction_[cellIglobal] = secondaryPowerVolumeFractionList_[zone];
                 fractionToSecondaryPower_[cellIglobal] = fractionToSecondaryPowerList_[zone];
 
-
             }
         }
     }

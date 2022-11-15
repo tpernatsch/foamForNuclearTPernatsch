@@ -25,10 +25,9 @@ Class
     Foam::thermoSubstructures::nuclearFuelPinTest
 
 Description
-    Model for representing a nuclear fuel pin with constant material
-    properties. Models fuel, gap, cladding and solves for the heat equation
-    with a finite differences scheme. Only radial heat diffusion is considered.
-    Derivation of the equations is provided at the end of the present file.
+    Same as nuclearFuelPin. This is a dummy class used in the ESFR
+    regression test to verify capability to handle multiple
+    "nuclear" power models
 
 Authors
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)

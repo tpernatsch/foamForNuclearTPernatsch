@@ -95,7 +95,8 @@ protected:
     //- Fuel power density
     volScalarField powerDensity_;
 
-    //- Fuel power density for liquid fuel
+    //- Power density for for powerStructure, in case of liquid
+    //  fuel, or for liquid, in case of solid fuel
     volScalarField secondaryPowerDenisty_;
 
     //- Mesh displacement

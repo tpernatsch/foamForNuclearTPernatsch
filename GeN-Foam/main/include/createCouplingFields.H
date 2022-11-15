@@ -22,54 +22,24 @@ int nFluids(fluids.size());
 //  as they need to be set here. If only one fluid is present, no big deal. If
 //  two are present, determine which is the vapour and which is the liquid.
 //  This is based by comparing enthalpies of formation as specified in the
-//  thermophysicalProperties dictionaries. The liquidFuel option (e.g. for
-//  modelling MSRs) is only meaningful for single-phase simulations. Ever heard
-//  of boiling MSRs? Yeah, me neither...
+//  thermophysicalProperties dictionaries.
+//  This is necessary to correctly determine the coupling fields, which could
+//  be an avarage of 2 fields in the 2-phase scenarios
 fluid* liquid(nullptr);
 fluid* vapour(nullptr);
 if (nFluids == 1)
 {
     liquid = fluids[fluids.toc()[0]];
-
-    //- If the liquidFuel option is on, the powerDensity will be inserted in
-    //  the liquid energy equation automatically by the thermalHydraulic
-    //  class when doing correctEnergy. However, the actual fluid powerDensity
-    //  field needs to be created (i.e., the autoPtr to said field within the
-    //  fluid class). Why did I use an autoPtr, and not just a regular
-    //  volScalarField? Well, that would force the fluid class to always create
-    //  a power density field (also for the vapour), and that is a useless
-    //  waste of RAM and disk memory (the field needs to be written)
-    /*
-    if (multiphysics.liquidFuel() and !liquid->powerDensityPtr().valid())
-    {
-        liquid->powerDensityPtr().reset
-        (
-            new volScalarField
-            (
-                IOobject
-                (
-                    IOobject::groupName("powerDensity", liquid->name()),
-                    fluidMesh.time().timeName(),
-                    liquid->db(),
-                    IOobject::READ_IF_PRESENT,
-                    IOobject::AUTO_WRITE
-                ),
-                fluidMesh,
-                dimensionedScalar("", dimPower/dimVol, 0.0),
-                zeroGradientFvPatchScalarField::typeName
-            )
-        );
-    }
-    */
 }
 else
 {   
     if (multiphysics.liquidFuel())
     {
-        FatalErrorInFunction
-        << "Simulation of twoPhase scenarios involving liquidFuel is "
-        << "unsupported"
-        << exit(FatalError);
+        Info << "WARNING: " << endl
+        << "In two-phase simulations with liquid fuel, all the "  << endl
+        << "powerDensity in neutronics goes to anything that is "  << endl
+        << "liquid. You are supposed to have one liquid and one gas"  << endl
+        << "otherwise, power will be counted twice" << endl; 
     }
     
     fluid* const fluid0(fluids[fluids.toc()[0]]);
@@ -93,24 +63,17 @@ else
         vapour = fluid1;
     }
 }
+//- Silence "unused variable" warnings, I actually do use them and have no idea
+//  why the compiler does not "see" them
+(void) liquid;
+(void) vapour;
 
-//- Get ref to passive structure temperature
+//- Get ref to passive structure temperature, and fuel and cladding average
+//  temperatures
 const volScalarField& TStruct
 (
     (*fluidMesh.findObject<volScalarField>("T.passiveStructure"))
 );
-
-/*
-//- The powerDensity field is created exclusively by the nuclearFuelPin,
-//  so if it does exists, so does the nuclearFuelPin model
-const bool nuclearFuelPin
-(
-    (fluidMesh.foundObject<volScalarField>("powerDensity.nuclearFuelPin")) 
-);
-*/
-//- Create pointers to fuel and cladding average temperatures. These might not
-//  exist, it depends on the existence of the nuclearFuelPin models. Hence, it
-//  is more convenient to have these as ptrs rather than references
 
 const volScalarField& TFuelAv
 (
@@ -121,92 +84,6 @@ const volScalarField& TCladAv
 (
     (*fluidMesh.findObject<volScalarField>("T.cladAvForNeutronics"))
 );
-
-/*
-volScalarField* const TFuelAv
-(
-    (nuclearFuelPin)  ?
-    fluidMesh.findObject<volScalarField>("Tfav.nuclearFuelPin") :
-    new volScalarField
-    (
-        IOobject
-        (
-            "nullTFuelAv0",
-            fluidMesh.time().timeName(),
-            fluidMesh.time()
-        ),
-        fluidMesh,
-        dimensionedScalar("", dimTemperature, 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    )
-);
-volScalarField* const TCladAv
-(
-    (nuclearFuelPin)  ?
-    fluidMesh.findObject<volScalarField>("Tcav.nuclearFuelPin") :
-    new volScalarField
-    (
-        IOobject
-        (
-            "nullTCladAv0",
-            fluidMesh.time().timeName(),
-            fluidMesh.time()
-        ),
-        fluidMesh,
-        dimensionedScalar("", dimTemperature, 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    )
-);
-*/
-//- Set the actual powerDensity field reference, that gets modfied by
-//  the neutronics for coupling purposes. If doing liquidFuel, the powerDensity
-//  field is the liquid powerDensity. Otherwise, if a nuclearFuelPin-related
-//  powerDensity field exists (which is true if at least one nuclearFuelPin
-//  powerModel figures in phaseProperties), use that one. Otherwise again, if
-//  no powerDensity field exists, create a null one. The powerDensity field is 
-//  a ptr and not a reference as references cannot be initialized with rvalues,
-//  such as is the new volScalarField (i.e., I would nned to create it outside  
-//  the ptr initialization, and that again would happen always and just waste 
-//  memory if the other powerDensity fields exist). I do realize these are 
-//  laughably small of memory to bitch about, but hey, whatever helps
-/*
-volScalarField* const powerDensity
-(
-    (multiphysics.liquidFuel()) ? &(liquid->powerDensity()) :
-    (
-        (nuclearFuelPin) 
-        ?
-        fluidMesh.findObject<volScalarField>("powerDensity.nuclearFuelPin") :
-        new volScalarField
-        (
-            IOobject
-            (
-                "powerDensity.nuclearFuelPin",
-                fluidMesh.time().timeName(),
-                liquid->db(),
-                IOobject::READ_IF_PRESENT,
-                (
-                    (
-                        multiphysics.solveEnergy()
-                    or  multiphysics.solveNeutronics()
-                    ) ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
-                )
-            ),
-            fluidMesh,
-            dimensionedScalar("", dimless, 0.0),
-            zeroGradientFvPatchScalarField::typeName
-        )
-    )
-);
-*/
-//- Silence "unused variable" warnings, I actually do use them and have no idea
-//  why the compiler does not "see" them
-(void) liquid;
-(void) vapour;
-(void) TStruct;
-(void) TFuelAv;
-(void) TCladAv;
-//(void) powerDensity;
 
 //- Then, create the actual fields for the coupling. These are created over the
 //  fluidMeshNB mesh, which is a baffle-less mesh that is created if the 
@@ -336,23 +213,18 @@ volVectorField bafflelessU
     zeroGradientFvPatchScalarField::typeName
 );
 
-//- This field is sort of an exception required when using pointKinetics.
+//- This fields are sort of an exception required when using pointKinetics.
 //  PointKinetics by itself simply rescales all neutronic fields according to
-//  the predicted power change. However, if no powerDensity exists on the
+//  the predicted power change. However, if no powerDensities exists on the
 //  neutroMesh, then look for powerDensity on the fluidMesh. If it exists, copy
-//  it to a bafflelessPowerDensity that will be interpolated to the
-//  powerDensity_ on the neutroMesh of pointKinetics in the 
-//  getCouplingFieldRefs function. Since pointKinetics is also just about
-//  rescaling an initial field, this bafflelessPowerDensity will not need to be
-//  set every time, only the first. Nedless to say, pointKinetics can function
-//  perfectly well with a 0 powerDensity, it simply won't be re-scaling 
-//  anything (but integral power values will be predicted just fine)
+//  it to a bafflelessPowerDensities that will be interpolated to the
+//  powerDensities on the neutroMesh of pointKinetics in the 
+//  getCouplingFieldRefs function.
 volScalarField* bafflelessPowerDensity = nullptr;
 volScalarField* bafflelessPowerDensityToLiquid = nullptr;
 
 //- This is only required when point kinetics model Gas Expansion Modules (i.e.
-//  a safety feature specific to one SFR, the FFTF. I hate this level of hard-
-//  coding but I don't have alternatives for now). It is not baffleless as this
+//  a safety feature specific to one SFR, the FFTF. It is not baffleless as this
 //  field is not interpolated, it is required on the original fluidMesh by the
 //  pointKinetics model, yet it needs to be inserted in the fluidMeshNB 
 //  objectRegistry, or the pointKinetics model won't be able to look it up.

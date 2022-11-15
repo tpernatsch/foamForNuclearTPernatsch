@@ -215,7 +215,6 @@ protected:
     PtrList<volScalarField> precPK_;//reconstructed based on porosity
     PtrList<volScalarField> precPKStar_;//solved for
 
-
     //- If true, fuel temperature feedback (Doppler) computed as
     //  deltaReactivity = -coeffFastDoppler*ln(TFuel/TFuelRef) with
     //  coeffFastDoppler being the Doppler constant. If false, Doppler feedback

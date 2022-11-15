@@ -164,7 +164,7 @@ protected:
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
     const volScalarField* powerDensityOrig_;
-    const volScalarField* secondaryPowerDenistyOrig_;
+    const volScalarField* secondaryPowerDenistyOrig_; // Used for graphite in MSRs
 
     //- Mapped fields
     volScalarField powerDensityNeutronics_;

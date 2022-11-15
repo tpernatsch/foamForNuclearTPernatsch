@@ -69,9 +69,6 @@ protected:
     //  across fuel and cladding
     IOFieldField<Field, scalar> Trad_;
 
-    //- Power density of the fuel
-    //volScalarField powerDensity_;
-
     //- Fields representing pin centerline, outer fuel, inner cladding and 
     //  outer cladding temperatures
     volScalarField Tfi_;

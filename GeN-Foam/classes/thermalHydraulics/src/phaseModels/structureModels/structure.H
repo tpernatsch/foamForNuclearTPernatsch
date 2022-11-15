@@ -146,9 +146,6 @@ protected:
     //- Ref to powerDensity from neutronics (projected on fluid mesh)
     volScalarField& powerDensityNeutronics_;
 
-    //- powerDensity of power structures, in one single field (useful for pk)
-    //volScalarField powerDensityPowerModels_;
-
     //- Hydraulic diameter
     volScalarField Dh_;
 
@@ -342,12 +339,7 @@ public:
             {
                 return powerDensityNeutronics_;
             }
-            /*
-            volScalarField& powerDensityPowerModels()
-            {
-                return powerDensityPowerModels_;
-            }
-            */
+
             const volScalarField& Dh() const
             {
                 return Dh_;
@@ -445,11 +437,7 @@ void structure::setRegionField
     );
 
     //- field is a reference to a field that already exists. If it was
-    //  created with a READ_IF_PRESENT or MUST_READ option, it is not a bad
-    //  idea to spatially limit the field only over the cells overwhich it
-    //  should be defined, just in case.
-    //  Removed. This creates problems to setting powerDenistyNeutronics
-    //  since each powerModel will set it to zero outside its cells 
+    //  created with a READ_IF_PRESENT or MUST_READ option, do nothing
     if 
     (
         ((
@@ -461,6 +449,10 @@ void structure::setRegionField
     {
         // DO NOTHING
         /*
+        //  This part used to spatially limit the field only over the cells 
+        //  overwhich it should be defined.
+        //  Removed. This creates problems to setting powerDenistyNeutronics
+        //  since each powerModel will set it to zero outside its cells 
         scalarField cellField(mesh_.cells().size(), 0);
         forAll(dicts.toc(), i)
         {

@@ -460,17 +460,7 @@ public:
             {
                 return Pr_;
             }
-/*
-            const autoPtr<volScalarField> powerDensityPtr() const
-            {
-                return powerDensityPtr_;
-            }
 
-            autoPtr<volScalarField>& powerDensityPtr()
-            {
-                return powerDensityPtr_;
-            }
-*/
             const volScalarField& powerDensity() const
             {
                 return powerDensityNeutronicsToLiquid_;

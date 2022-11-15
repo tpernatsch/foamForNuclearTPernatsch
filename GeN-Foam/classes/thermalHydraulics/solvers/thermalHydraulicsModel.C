@@ -295,16 +295,14 @@ void Foam::thermalHydraulicsModel::interpolateCouplingFields
     label liquidFuel
 )
 {
-    //fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
-    //powerDensityNeutronics_.correctBoundaryConditions();
-    if(liquidFuel)
+    if(liquidFuel) // Map powerDensity to powerDensityNeutronicsToLiquid_ and secondaryPowerDenisty to powerDensityNeutronics_
     {
         fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronicsToLiquid_);
         powerDensityNeutronicsToLiquid_.correctBoundaryConditions();
         fluidToNeutro.mapTgtToSrc(*secondaryPowerDenistyOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
         powerDensityNeutronics_.correctBoundaryConditions();
     }
-    else
+    else // Map powerDensity to powerDensityNeutronics_ and secondaryPowerDenisty to powerDensityNeutronicsToLiquid_
     {
         fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
         powerDensityNeutronics_.correctBoundaryConditions();
