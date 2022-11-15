@@ -112,6 +112,10 @@ protected:
             volScalarField BetaTot_;
             PtrList<volScalarField> lambda_;
             volScalarField fuelFraction_;
+            volScalarField secondaryPowerVolumeFraction_; // Volume fraction of secondary power-producing structure
+                                                         // e.g., graphite in MSRs
+            volScalarField fractionToSecondaryPower_;  // Fraction of total power that goes to secondary
+                                                       // power-producing structure
             PtrList<volScalarField > discFactor_;
             scalar ScNo_;
 
@@ -124,6 +128,8 @@ protected:
         //Disc factors
             // fuel fraction used to determine vol power IN the fuel starting from vol power from sigmaPow
             PtrList<scalar > fuelFractionList_;
+            PtrList<scalar > secondaryPowerVolumeFractionList_;
+            PtrList<scalar > fractionToSecondaryPowerList_;
             // adjust or not DF
             PtrList<bool > dfAdjustList_;
             //discontinuity factors
@@ -303,6 +309,14 @@ public:
         const volScalarField& fuelFraction() const
         {
             return fuelFraction_;
+        }
+        const volScalarField secondaryPowerVolumeFraction() const
+        {
+            return secondaryPowerVolumeFraction_;
+        }
+        const volScalarField fractionToSecondaryPower() const
+        {
+            return fractionToSecondaryPower_;
         }
         const PtrList<volScalarField> discFactor() const
         {

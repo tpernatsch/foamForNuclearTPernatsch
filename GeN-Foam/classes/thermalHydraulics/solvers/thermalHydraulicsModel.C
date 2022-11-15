@@ -280,6 +280,8 @@ void Foam::thermalHydraulicsModel::getCouplingFieldRefs
     //- Field names must reflect those defined in createCouplingFields.H
     powerDensityOrig_ = 
         src.findObject<volScalarField>("powerDensity");
+    secondaryPowerDenistyOrig_ = 
+        src.findObject<volScalarField>("secondaryPowerDenisty");
 
     //- Do not initialize mapped fields. This has to happen only if
     //  neutronics is solved for. This is responsability
@@ -293,11 +295,20 @@ void Foam::thermalHydraulicsModel::interpolateCouplingFields
     label liquidFuel
 )
 {
-    fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
-    powerDensityNeutronics_.correctBoundaryConditions();
+    //fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
+    //powerDensityNeutronics_.correctBoundaryConditions();
     if(liquidFuel)
     {
         fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronicsToLiquid_);
+        powerDensityNeutronicsToLiquid_.correctBoundaryConditions();
+        fluidToNeutro.mapTgtToSrc(*secondaryPowerDenistyOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
+        powerDensityNeutronics_.correctBoundaryConditions();
+    }
+    else
+    {
+        fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
+        powerDensityNeutronics_.correctBoundaryConditions();
+        fluidToNeutro.mapTgtToSrc(*secondaryPowerDenistyOrig_, plusEqOp<scalar>(), powerDensityNeutronicsToLiquid_);
         powerDensityNeutronicsToLiquid_.correctBoundaryConditions();
     }
 }

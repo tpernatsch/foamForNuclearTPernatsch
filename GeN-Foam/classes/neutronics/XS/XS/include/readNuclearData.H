@@ -56,7 +56,9 @@ forAll(entries_,zoneI)
 
     Info << "name: " << name << endl;
 
-    fuelFractionList_.set(zoneI,new scalar(dict.lookupOrDefault("fuelFraction",0.0)));
+    fuelFractionList_.set(zoneI,new scalar(dict.lookupOrDefault("fuelFraction",1.0)));
+    secondaryPowerVolumeFractionList_.set(zoneI,new scalar(dict.lookupOrDefault("secondaryPowerVolumeFraction",1.0)));
+    fractionToSecondaryPowerList_.set(zoneI,new scalar(dict.lookupOrDefault("fractionToSecondaryPower",0.0)));
 
     dfAdjustList_.set(zoneI,new bool(dict.lookupOrDefault("dfAdjust",true)));
 

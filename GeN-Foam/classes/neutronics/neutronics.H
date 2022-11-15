@@ -95,6 +95,9 @@ protected:
     //- Fuel power density
     volScalarField powerDensity_;
 
+    //- Fuel power density for liquid fuel
+    volScalarField secondaryPowerDenisty_;
+
     //- Mesh displacement
     volVectorField disp_;
 
@@ -217,7 +220,12 @@ public:
             const volScalarField& powerDensity() const
             {
                 return powerDensity_;
-            }       
+            } 
+
+            const volScalarField& secondaryPowerDenisty() const
+            {
+                return secondaryPowerDenisty_;
+            }  
 
             const volVectorField& disp() const
             {

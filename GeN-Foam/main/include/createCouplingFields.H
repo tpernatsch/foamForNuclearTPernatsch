@@ -398,9 +398,9 @@ if (neutronics.type() == "pointKinetics")
             dimensionedScalar("", dimPower/dimDensity, 0.0),
             zeroGradientFvPatchScalarField::typeName
         );
-    bafflelessPowerDensity->primitiveFieldRef() = 
+    bafflelessPowerDensityToLiquid->primitiveFieldRef() = 
         fluidMesh.findObject<volScalarField>("powerDensityNeutronicsToLiquid")->primitiveField();
-    bafflelessPowerDensity->correctBoundaryConditions();
+    bafflelessPowerDensityToLiquid->correctBoundaryConditions();
     
     //- Phi only required by GEM modelling
     if (neutronics.get<bool>("GEM"))

@@ -62,7 +62,10 @@ Info << "power: " << pTot << endl;
 
 Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl;
 
-powerDensity_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
+//- Determine power densities
+secondaryPowerDenisty_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
+powerDensity_ /= max(fuelFraction, SMALL) * (1.0 - fractionToSecondaryPower);
+
 
 
 if (eigenvalueNeutronics_)

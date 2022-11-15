@@ -192,6 +192,8 @@ oneGroupFlux_.correctBoundaryConditions();
 
 powerDensity_ *= fluxScaleFactor;
 powerDensity_.correctBoundaryConditions();
+secondaryPowerDenisty_ *= fluxScaleFactor;
+secondaryPowerDenisty_.correctBoundaryConditions();
 
 Info << endl << "pointKinetics: " << endl;
 #include "pointKineticsInfo.H"

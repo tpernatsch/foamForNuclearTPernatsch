@@ -76,6 +76,8 @@ oneGroupFlux_.correctBoundaryConditions();
 scalar powerDensityScaleFactor = power_/powerOld_;
 powerDensity_ *= powerDensityScaleFactor;
 powerDensity_.correctBoundaryConditions();
+secondaryPowerDenisty_ *= powerDensityScaleFactor;
+secondaryPowerDenisty_.correctBoundaryConditions();
 
 //- Only possible to re-scale precursors if they were initially present,
 //  so I'm using a forAllIter rather than a for, as delayedGroups_ is not

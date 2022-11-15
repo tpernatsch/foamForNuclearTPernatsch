@@ -86,6 +86,20 @@ Foam::neutronics::neutronics
         dimensionedScalar("", dimPower/dimVol, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    secondaryPowerDenisty_
+    (
+        IOobject
+        (
+            "secondaryPowerDenisty",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower/dimVol, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     disp_
     (
         IOobject

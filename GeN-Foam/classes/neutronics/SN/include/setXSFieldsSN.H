@@ -12,6 +12,8 @@ const PtrList<volScalarField>& Beta = xs_.Beta();
 const volScalarField& BetaTot = xs_.BetaTot();
 const PtrList<volScalarField>& lambda = xs_.lambda();
 const volScalarField& fuelFraction = xs_.fuelFraction();
+const volScalarField& secondaryPowerVolumeFraction = xs_.secondaryPowerVolumeFraction();
+const volScalarField& fractionToSecondaryPower = xs_.fractionToSecondaryPower();
 const PtrList<volScalarField >& discFactor = xs_.discFactor();
 Info << "done: set XS fields" << endl ;
 

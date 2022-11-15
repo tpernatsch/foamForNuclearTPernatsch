@@ -1021,8 +1021,9 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     TStructOrig_ =
         src.findObject<volScalarField>("bafflelessTStruct");
 
-    //- Project thermalHydraulic powerDensity onto the neutronic one to
+    //- Project thermalHydraulic powerDensities onto the neutronic one to
     //  initialize it if the latter does not exist
+    /*
     IOobject powerDensityHeader
     (
         "powerDensity",
@@ -1034,7 +1035,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
     {
         powerDensityOrig_ =
-            src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
+            src.findObject<volScalarField>("bafflelessPowerDensity");
         neutroToFluid.mapTgtToSrc
             (
                 *powerDensityOrig_,
@@ -1042,6 +1043,74 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
                 powerDensity_
             );
         powerDensity_.correctBoundaryConditions();
+    }
+    */
+    if(liquidFuel_)
+    {
+        IOobject powerDensityHeader
+        (
+            "powerDensity",
+            mesh_.time().timeName(),
+            mesh_.time(),
+            IOobject::NO_READ
+        );
+
+        if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
+        {
+            powerDensityToLiquidOrig_ =
+                src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
+            neutroToFluid.mapTgtToSrc
+                (
+                    *powerDensityToLiquidOrig_,
+                    plusEqOp<scalar>(),
+                    powerDensity_
+                );
+            powerDensity_.correctBoundaryConditions();
+        }
+
+        IOobject secondaryPowerDensityHeader
+        (
+            "secondaryPowerDensity",
+            mesh_.time().timeName(),
+            mesh_.time(),
+            IOobject::NO_READ
+        );
+
+        if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
+        {
+            powerDensityOrig_ =
+                src.findObject<volScalarField>("bafflelessPowerDensity");
+            neutroToFluid.mapTgtToSrc
+                (
+                    *powerDensityOrig_,
+                    plusEqOp<scalar>(),
+                    secondaryPowerDenisty_
+                );
+            secondaryPowerDenisty_.correctBoundaryConditions();
+        }
+    }
+    else
+    {
+        IOobject powerDensityHeader
+        (
+            "powerDensity",
+            mesh_.time().timeName(),
+            mesh_.time(),
+            IOobject::NO_READ
+        );
+
+        if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
+        {
+            powerDensityOrig_ =
+                src.findObject<volScalarField>("bafflelessPowerDensity");
+            neutroToFluid.mapTgtToSrc
+                (
+                    *powerDensityOrig_,
+                    plusEqOp<scalar>(),
+                    powerDensity_
+                );
+            powerDensity_.correctBoundaryConditions();
+        }
     }
 
     if (liquidFuel_)
