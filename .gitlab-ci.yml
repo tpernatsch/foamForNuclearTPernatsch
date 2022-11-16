@@ -9,7 +9,8 @@
 # Comment: fix problem with build environment for test cases
 #==============================================================================*
 
-image: ubuntu # opencfd/openfoam-dev
+#image: ubuntu # opencfd/openfoam-dev
+image: ubuntu:18.04
 
 #stages:
 #  - build
@@ -380,7 +381,7 @@ pages:
 
   script:
   - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update && apt-get -y install doxygen=1.8.13-10 graphviz texlive-bibtex-extra
+  - apt-get update && apt-get -y install doxygen graphviz texlive-bibtex-extra
   - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
   - mv Documentation/doxygen/Doxygen/html/ public/
 
