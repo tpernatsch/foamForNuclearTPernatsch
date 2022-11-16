@@ -1,0 +1,209 @@
+\hypertarget{calcSourceSN_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/include/calc\+Source\+SN.H File Reference}
+\label{calcSourceSN_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/include/calc\+Source\+S\+N.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/include/calc\+Source\+S\+N.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=272pt]{calcSourceSN_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ Ptr\+List$<$ vol\+Scalar\+Field $>$ $>$ \hyperlink{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602}{sigma\+From\+To\+Temp\+E\+J\+EI} (xs\+\_\+.\+legendre\+Moments())
+\item 
+\hyperlink{calcSourceSN_8H_a55d322735b9113ca7871c7ffdba5e45d}{for\+All} (\hyperlink{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602}{sigma\+From\+To\+Temp\+E\+J\+EI}, momentL)
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{calcSourceSN_8H_a42696704cf86cd819b9fc477e83f296f}{intra\+Sources} (discrete\+Directions\+\_\+)
+\item 
+\hyperlink{calcSourceSN_8H_ac3a31177f4831feac0e8b2f0bec36529}{for\+All} (angular\+Flux\+\_\+\mbox{[}energyI\mbox{]}, directionI)
+\item 
+\hyperlink{calcSourceSN_8H_a00c663d6c8793a0a0b80f33b128832df}{if} (xs\+\_\+.\+legendre\+Moments() $>$ 1)
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{calcSourceSN_8H_a0bbd82b9d9cc98de13fc792d3363c319}{extra\+Sources} (discrete\+Directions\+\_\+)
+\item 
+\hyperlink{calcSourceSN_8H_a179dd098a2ad6e1915f9dc7ceba827a5}{for\+All} (flux\+\_\+, energyJ)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+vol\+Scalar\+Field \hyperlink{calcSourceSN_8H_a7935724ab5135b2ef4d04b1b0effa6e3}{isotropic\+Intra\+Source} = flux\+\_\+\mbox{[}energyI\mbox{]} $\ast$ (\hyperlink{setXSFieldsSN_8H_aa603f5e77d24550aec5d6843a62d3707}{nu\+Sigma\+Eff}\mbox{[}energyI\mbox{]} $\ast$ \hyperlink{setXSFieldsSN_8H_ae99cb941c26b8d02c30336ffe9d73cd2}{chi\+Prompt}\mbox{[}energyI\mbox{]} $\ast$ (1 -\/ \hyperlink{setXSFieldsSN_8H_a3ad4facb2dd0406d605dcb63190ce6f1}{Beta\+Tot}) / keff\+\_\+ + \hyperlink{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602}{sigma\+From\+To\+Temp\+E\+J\+EI}\mbox{[}0\mbox{]}\mbox{[}energyI\mbox{]})
+\item 
+vol\+Scalar\+Field \hyperlink{calcSourceSN_8H_adbaffd854db58900603ab44e16e3cf3b}{isotropic\+Extra\+Source} = \hyperlink{calcSourceSN_8H_a7935724ab5135b2ef4d04b1b0effa6e3}{isotropic\+Intra\+Source} $\ast$ 0.\+0
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602}\label{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602}} 
+\index{calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}!sigma\+From\+To\+Temp\+E\+J\+EI@{sigma\+From\+To\+Temp\+E\+J\+EI}}
+\index{sigma\+From\+To\+Temp\+E\+J\+EI@{sigma\+From\+To\+Temp\+E\+J\+EI}!calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}}
+\subsubsection{\texorpdfstring{sigma\+From\+To\+Temp\+E\+J\+E\+I()}{sigmaFromToTempEJEI()}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$vol\+Scalar\+Field$>$ $>$ sigma\+From\+To\+Temp\+E\+J\+EI (\begin{DoxyParamCaption}\item[{xs\+\_\+.}]{legendre\+Moments() }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All(), and if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=343pt]{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcSourceSN_8H_a55d322735b9113ca7871c7ffdba5e45d}\label{calcSourceSN_8H_a55d322735b9113ca7871c7ffdba5e45d}} 
+\index{calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{\hyperlink{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602}{sigma\+From\+To\+Temp\+E\+J\+EI}}]{,  }\item[{momentL}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 2 of file calc\+Source\+S\+N.\+H.
+
+
+
+References intra\+Sources(), and sigma\+From\+To\+Temp\+E\+J\+E\+I().
+
+
+
+Referenced by for\+All(), and if().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{calcSourceSN_8H_a55d322735b9113ca7871c7ffdba5e45d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{calcSourceSN_8H_a55d322735b9113ca7871c7ffdba5e45d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcSourceSN_8H_a42696704cf86cd819b9fc477e83f296f}\label{calcSourceSN_8H_a42696704cf86cd819b9fc477e83f296f}} 
+\index{calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}!intra\+Sources@{intra\+Sources}}
+\index{intra\+Sources@{intra\+Sources}!calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}}
+\subsubsection{\texorpdfstring{intra\+Sources()}{intraSources()}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ intra\+Sources (\begin{DoxyParamCaption}\item[{discrete\+Directions\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All(), and if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=291pt]{calcSourceSN_8H_a42696704cf86cd819b9fc477e83f296f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcSourceSN_8H_ac3a31177f4831feac0e8b2f0bec36529}\label{calcSourceSN_8H_ac3a31177f4831feac0e8b2f0bec36529}} 
+\index{calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{angular\+Flux\+\_\+}]{\mbox{[}energy\+I\mbox{]},  }\item[{directionI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 23 of file calc\+Source\+S\+N.\+H.
+
+
+
+References intra\+Sources(), and isotropic\+Intra\+Source.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{calcSourceSN_8H_ac3a31177f4831feac0e8b2f0bec36529_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcSourceSN_8H_a00c663d6c8793a0a0b80f33b128832df}\label{calcSourceSN_8H_a00c663d6c8793a0a0b80f33b128832df}} 
+\index{calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}!if@{if}}
+\index{if@{if}!calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{xs\+\_\+.}]{legendre\+Moments(),  }\item[{1}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 29 of file calc\+Source\+S\+N.\+H.
+
+
+
+References extra\+Sources(), for\+All(), intra\+Sources(), nu\+Sigma\+Eff, and sigma\+From\+To\+Temp\+E\+J\+E\+I().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{calcSourceSN_8H_a00c663d6c8793a0a0b80f33b128832df_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcSourceSN_8H_a0bbd82b9d9cc98de13fc792d3363c319}\label{calcSourceSN_8H_a0bbd82b9d9cc98de13fc792d3363c319}} 
+\index{calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}!extra\+Sources@{extra\+Sources}}
+\index{extra\+Sources@{extra\+Sources}!calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}}
+\subsubsection{\texorpdfstring{extra\+Sources()}{extraSources()}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ extra\+Sources (\begin{DoxyParamCaption}\item[{discrete\+Directions\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All(), and if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{calcSourceSN_8H_a0bbd82b9d9cc98de13fc792d3363c319_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcSourceSN_8H_a179dd098a2ad6e1915f9dc7ceba827a5}\label{calcSourceSN_8H_a179dd098a2ad6e1915f9dc7ceba827a5}} 
+\index{calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{flux\+\_\+}]{,  }\item[{energyJ}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 53 of file calc\+Source\+S\+N.\+H.
+
+
+
+References Beta\+Tot, chi\+Prompt, for\+All(), nu\+Sigma\+Eff, and sigma\+From\+To\+Temp\+E\+J\+E\+I().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{calcSourceSN_8H_a179dd098a2ad6e1915f9dc7ceba827a5_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{calcSourceSN_8H_a7935724ab5135b2ef4d04b1b0effa6e3}\label{calcSourceSN_8H_a7935724ab5135b2ef4d04b1b0effa6e3}} 
+\index{calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}!isotropic\+Intra\+Source@{isotropic\+Intra\+Source}}
+\index{isotropic\+Intra\+Source@{isotropic\+Intra\+Source}!calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}}
+\subsubsection{\texorpdfstring{isotropic\+Intra\+Source}{isotropicIntraSource}}
+{\footnotesize\ttfamily vol\+Scalar\+Field isotropic\+Intra\+Source = flux\+\_\+\mbox{[}energyI\mbox{]} $\ast$ (\hyperlink{setXSFieldsSN_8H_aa603f5e77d24550aec5d6843a62d3707}{nu\+Sigma\+Eff}\mbox{[}energyI\mbox{]} $\ast$ \hyperlink{setXSFieldsSN_8H_ae99cb941c26b8d02c30336ffe9d73cd2}{chi\+Prompt}\mbox{[}energyI\mbox{]} $\ast$ (1 -\/ \hyperlink{setXSFieldsSN_8H_a3ad4facb2dd0406d605dcb63190ce6f1}{Beta\+Tot}) / keff\+\_\+ + \hyperlink{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602}{sigma\+From\+To\+Temp\+E\+J\+EI}\mbox{[}0\mbox{]}\mbox{[}energyI\mbox{]})}
+
+
+
+Definition at line 19 of file calc\+Source\+S\+N.\+H.
+
+
+
+Referenced by for\+All().
+
+\mbox{\Hypertarget{calcSourceSN_8H_adbaffd854db58900603ab44e16e3cf3b}\label{calcSourceSN_8H_adbaffd854db58900603ab44e16e3cf3b}} 
+\index{calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}!isotropic\+Extra\+Source@{isotropic\+Extra\+Source}}
+\index{isotropic\+Extra\+Source@{isotropic\+Extra\+Source}!calc\+Source\+S\+N.\+H@{calc\+Source\+S\+N.\+H}}
+\subsubsection{\texorpdfstring{isotropic\+Extra\+Source}{isotropicExtraSource}}
+{\footnotesize\ttfamily vol\+Scalar\+Field isotropic\+Extra\+Source = \hyperlink{calcSourceSN_8H_a7935724ab5135b2ef4d04b1b0effa6e3}{isotropic\+Intra\+Source} $\ast$ 0.\+0}
+
+
+
+Definition at line 50 of file calc\+Source\+S\+N.\+H.
+

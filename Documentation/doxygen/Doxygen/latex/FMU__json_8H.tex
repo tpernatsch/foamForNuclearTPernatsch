@@ -1,0 +1,83 @@
+\hypertarget{FMU__json_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/src/\+O\+F\+\_\+\+F\+M\+U/py\+F\+M\+U\+Sim/\+F\+M\+U\+\_\+json.H File Reference}
+\label{FMU__json_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/src/\+O\+F\+\_\+\+F\+M\+U/py\+F\+M\+U\+Sim/\+F\+M\+U\+\_\+json.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/src/\+O\+F\+\_\+\+F\+M\+U/py\+F\+M\+U\+Sim/\+F\+M\+U\+\_\+json.\+H}}
+
+
+Defines the conversion from json to registered objects.  
+
+
+Include dependency graph for F\+M\+U\+\_\+json.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=294pt]{FMU__json_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{FMU__json_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceFoam}{Foam}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{FMU__json_8H_ab701e3ac61a85b337ec5c1abaad6742d}{json} = nlohmann\+::json
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{namespaceFoam_a8f902008c5eedaec2a88f46546efb8d3}{to\+\_\+json} (\hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} \&j, const registered\+Object$<$ scalar $>$ \&s)
+\item 
+void \hyperlink{namespaceFoam_a13d3dea89b2df135b0f566e278cd4287}{from\+\_\+json} (const \hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} \&j, registered\+Object$<$ scalar $>$ \&s)
+\item 
+void \hyperlink{namespaceFoam_ab6b994e03fc133ac6c8505123774e803}{add\+\_\+to\+\_\+json} (\hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} \&j, const registered\+Object$<$ scalar $>$ \&s)
+\item 
+void \hyperlink{namespaceFoam_aaa31b2da863e0a9f79a75f01797f5107}{to\+\_\+json} (\hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} \&j, const registered\+Object$<$ vector $>$ \&s)
+\item 
+void \hyperlink{namespaceFoam_a520a95b521a147b32c5bbebd6d1c41cf}{from\+\_\+json} (const \hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} \&j, registered\+Object$<$ vector $>$ \&s)
+\item 
+void \hyperlink{namespaceFoam_a4afc81c4d80dd5e8bfc906bb9a5e00de}{add\+\_\+to\+\_\+json} (\hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} \&j, const registered\+Object$<$ vector $>$ \&s)
+\item 
+{\footnotesize template$<$class T $>$ }\\void \hyperlink{namespaceFoam_a03317fe9c30acb9bb1849d7437bb900a}{add\+\_\+to\+\_\+json} (\hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} \&j, const object\+Registry \&obj)
+\item 
+{\footnotesize template$<$class T $>$ }\\void \hyperlink{namespaceFoam_a158ba8737a94de14739f7b9af1d30118}{get\+\_\+from\+\_\+json} (const \hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} \&j, object\+Registry \&obj)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Defines the conversion from json to registered objects. 
+
+{\bfseries Original source file} \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/pyFMUSim/FMU_json.H}{\tt F\+M\+U\+\_\+json.\+H}
+
+\begin{DoxyVerb}unofficial extension to OpenFOAM.
+\end{DoxyVerb}
+
+
+\label{_Description}%
+ Author Henning Scheufler, D\+LR, all rights reserved.
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/pyFMUSim/FMU_json.H}{\tt F\+M\+U\+\_\+json.\+H} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{FMU__json_8H_ab701e3ac61a85b337ec5c1abaad6742d}\label{FMU__json_8H_ab701e3ac61a85b337ec5c1abaad6742d}} 
+\index{F\+M\+U\+\_\+json.\+H@{F\+M\+U\+\_\+json.\+H}!json@{json}}
+\index{json@{json}!F\+M\+U\+\_\+json.\+H@{F\+M\+U\+\_\+json.\+H}}
+\subsubsection{\texorpdfstring{json}{json}}
+{\footnotesize\ttfamily using \hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} =  nlohmann\+::json}
+
+
+
+Definition at line 27 of file F\+M\+U\+\_\+json.\+H.
+

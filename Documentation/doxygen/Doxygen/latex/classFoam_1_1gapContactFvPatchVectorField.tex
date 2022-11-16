@@ -1,0 +1,515 @@
+\hypertarget{classFoam_1_1gapContactFvPatchVectorField}{}\section{gap\+Contact\+Fv\+Patch\+Vector\+Field Class Reference}
+\label{classFoam_1_1gapContactFvPatchVectorField}\index{gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+
+
+Fixed traction boundary condition for the standard linear elastic, fixed coefficient displacement equation.  
+
+
+
+
+Inheritance diagram for gap\+Contact\+Fv\+Patch\+Vector\+Field\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{classFoam_1_1gapContactFvPatchVectorField__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for gap\+Contact\+Fv\+Patch\+Vector\+Field\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{classFoam_1_1gapContactFvPatchVectorField__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1gapContactFvPatchVectorField_acda6365d54c52608d887ddb53538f85f}{Type\+Name} (\char`\"{}gap\+Contact\char`\"{})
+\item 
+\hyperlink{classFoam_1_1gapContactFvPatchVectorField_a1b260509dca8e2b01322d76e168fcd90}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (const fv\+Patch \&, const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&)
+\item 
+\hyperlink{classFoam_1_1gapContactFvPatchVectorField_a237cd91f79b89ee71a795bf8a988abf7}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (const fv\+Patch \&, const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&, const dictionary \&)
+\item 
+\hyperlink{classFoam_1_1gapContactFvPatchVectorField_ae8104d371f4caf6d42aaa9b143100271}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (const \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} \&, const fv\+Patch \&, const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&, const fv\+Patch\+Field\+Mapper \&)
+\item 
+\hyperlink{classFoam_1_1gapContactFvPatchVectorField_a36ac2bb69cc57ce8790363e7a8c58721}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (const \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} \&)
+\item 
+virtual tmp$<$ fv\+Patch\+Vector\+Field $>$ \hyperlink{classFoam_1_1gapContactFvPatchVectorField_af0f4bc68c73acc08f11adb3a8957d875}{clone} () const
+\item 
+\hyperlink{classFoam_1_1gapContactFvPatchVectorField_ac59bcd7a93447be493ecc9fe1c2bc233}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (const \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} \&, const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&)
+\item 
+virtual tmp$<$ fv\+Patch\+Vector\+Field $>$ \hyperlink{classFoam_1_1gapContactFvPatchVectorField_a089f8c8dc7161cb741c2b911efc67d76}{clone} (const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&iF) const
+\item 
+const scalar\+Field \& \hyperlink{classFoam_1_1gapContactFvPatchVectorField_ab1c481a7677071c89600bb5295c7a606}{interfaceP} () const
+\item 
+virtual void \hyperlink{classFoam_1_1gapContactFvPatchVectorField_a0ab0c43ce90d756c88dd81e3d0a9eef5}{auto\+Map} (const fv\+Patch\+Field\+Mapper \&)
+\item 
+virtual void \hyperlink{classFoam_1_1gapContactFvPatchVectorField_a4fe41b169c41bfcd4311c1d1e27a96ed}{rmap} (const fv\+Patch\+Vector\+Field \&, const label\+List \&)
+\item 
+virtual void \hyperlink{classFoam_1_1gapContactFvPatchVectorField_a7e24eafac629d3733181cd942d4c902f}{update\+Coeffs} ()
+\item 
+virtual void \hyperlink{classFoam_1_1gapContactFvPatchVectorField_a293fdfec8bdfbd5c3913ab4c9f3454ff}{write} (Ostream \&) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} \& \hyperlink{classFoam_1_1gapContactFvPatchVectorField_ab2e303f32e766aefa59c6b2eb4eb9b0d}{neighbour} () const
+\item 
+tmp$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1gapContactFvPatchVectorField_a66d6ceb4f8baa05f6925129e54af8130}{gap\+Width} () const
+\item 
+scalar \hyperlink{classFoam_1_1gapContactFvPatchVectorField_a200d97d8bb99741d5a1ce420403a3ee1}{boundary\+Stiffness} () const
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Fixed traction boundary condition for the standard linear elastic, fixed coefficient displacement equation. 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermoMechanics/tractionDisplacement/gapContactFvPatchVectorField.H}{\tt gap\+Contact\+Fv\+Patch\+Vector\+Field.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermoMechanics/tractionDisplacement/gapContactFvPatchVectorField.C}{\tt gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C} 
+\end{DoxyItemize}Modification of this file (and associated .C or included .H files) Carlo Fiorina $<$\href{mailto:carlo.fiorina@outlook.com}{\tt carlo.\+fiorina@outlook.\+com}; \href{mailto:carlo.fiorina@epfl.ch}{\tt carlo.\+fiorina@epfl.\+ch};$>$, E\+P\+FL (Switzerland) 
+\end{DoxyParagraph}
+
+
+Definition at line 51 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a1b260509dca8e2b01322d76e168fcd90}\label{classFoam_1_1gapContactFvPatchVectorField_a1b260509dca8e2b01322d76e168fcd90}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\index{gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{gap\+Contact\+Fv\+Patch\+Vector\+Field()}{gapContactFvPatchVectorField()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (\begin{DoxyParamCaption}\item[{const fv\+Patch \&}]{p,  }\item[{const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&}]{iF }\end{DoxyParamCaption})}
+
+
+
+Definition at line 101 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+Referenced by gap\+Contact\+Fv\+Patch\+Vector\+Field\+::boundary\+Stiffness(), gap\+Contact\+Fv\+Patch\+Vector\+Field\+::clone(), gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Contact\+Fv\+Patch\+Vector\+Field(), and gap\+Contact\+Fv\+Patch\+Vector\+Field\+::neighbour().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1gapContactFvPatchVectorField_a1b260509dca8e2b01322d76e168fcd90_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a237cd91f79b89ee71a795bf8a988abf7}\label{classFoam_1_1gapContactFvPatchVectorField_a237cd91f79b89ee71a795bf8a988abf7}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\index{gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{gap\+Contact\+Fv\+Patch\+Vector\+Field()}{gapContactFvPatchVectorField()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (\begin{DoxyParamCaption}\item[{const fv\+Patch \&}]{p,  }\item[{const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&}]{iF,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 133 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Contact\+Fv\+Patch\+Vector\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1gapContactFvPatchVectorField_a237cd91f79b89ee71a795bf8a988abf7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_ae8104d371f4caf6d42aaa9b143100271}\label{classFoam_1_1gapContactFvPatchVectorField_ae8104d371f4caf6d42aaa9b143100271}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\index{gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{gap\+Contact\+Fv\+Patch\+Vector\+Field()}{gapContactFvPatchVectorField()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} \&}]{ptf,  }\item[{const fv\+Patch \&}]{p,  }\item[{const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&}]{iF,  }\item[{const fv\+Patch\+Field\+Mapper \&}]{mapper }\end{DoxyParamCaption})}
+
+
+
+Definition at line 116 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Contact\+Fv\+Patch\+Vector\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1gapContactFvPatchVectorField_ae8104d371f4caf6d42aaa9b143100271_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a36ac2bb69cc57ce8790363e7a8c58721}\label{classFoam_1_1gapContactFvPatchVectorField_a36ac2bb69cc57ce8790363e7a8c58721}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\index{gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{gap\+Contact\+Fv\+Patch\+Vector\+Field()}{gapContactFvPatchVectorField()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} \&}]{ptf }\end{DoxyParamCaption})}
+
+
+
+Definition at line 160 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Contact\+Fv\+Patch\+Vector\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1gapContactFvPatchVectorField_a36ac2bb69cc57ce8790363e7a8c58721_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_ac59bcd7a93447be493ecc9fe1c2bc233}\label{classFoam_1_1gapContactFvPatchVectorField_ac59bcd7a93447be493ecc9fe1c2bc233}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\index{gap\+Contact\+Fv\+Patch\+Vector\+Field@{gap\+Contact\+Fv\+Patch\+Vector\+Field}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{gap\+Contact\+Fv\+Patch\+Vector\+Field()}{gapContactFvPatchVectorField()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field} \&}]{ptf,  }\item[{const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&}]{iF }\end{DoxyParamCaption})}
+
+
+
+Definition at line 174 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::auto\+Map().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=323pt]{classFoam_1_1gapContactFvPatchVectorField_ac59bcd7a93447be493ecc9fe1c2bc233_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_ab2e303f32e766aefa59c6b2eb4eb9b0d}\label{classFoam_1_1gapContactFvPatchVectorField_ab2e303f32e766aefa59c6b2eb4eb9b0d}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!neighbour@{neighbour}}
+\index{neighbour@{neighbour}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{neighbour()}{neighbour()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1gapContactFvPatchVectorField}{gap\+Contact\+Fv\+Patch\+Vector\+Field}\& neighbour (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 80 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+H.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::boundary\+Stiffness(), gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Contact\+Fv\+Patch\+Vector\+Field(), gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Width(), and gap\+Contact\+Fv\+Patch\+Vector\+Field\+::\+Type\+Name().
+
+
+
+Referenced by gap\+Contact\+Fv\+Patch\+Vector\+Field\+::update\+Coeffs().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1gapContactFvPatchVectorField_ab2e303f32e766aefa59c6b2eb4eb9b0d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{classFoam_1_1gapContactFvPatchVectorField_ab2e303f32e766aefa59c6b2eb4eb9b0d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a66d6ceb4f8baa05f6925129e54af8130}\label{classFoam_1_1gapContactFvPatchVectorField_a66d6ceb4f8baa05f6925129e54af8130}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!gap\+Width@{gap\+Width}}
+\index{gap\+Width@{gap\+Width}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{gap\+Width()}{gapWidth()}}
+{\footnotesize\ttfamily Foam\+::tmp$<$ Foam\+::scalar\+Field $>$ gap\+Width (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 36 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+Referenced by gap\+Contact\+Fv\+Patch\+Vector\+Field\+::neighbour(), and gap\+Contact\+Fv\+Patch\+Vector\+Field\+::update\+Coeffs().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{classFoam_1_1gapContactFvPatchVectorField_a66d6ceb4f8baa05f6925129e54af8130_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a200d97d8bb99741d5a1ce420403a3ee1}\label{classFoam_1_1gapContactFvPatchVectorField_a200d97d8bb99741d5a1ce420403a3ee1}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!boundary\+Stiffness@{boundary\+Stiffness}}
+\index{boundary\+Stiffness@{boundary\+Stiffness}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{boundary\+Stiffness()}{boundaryStiffness()}}
+{\footnotesize\ttfamily Foam\+::scalar boundary\+Stiffness (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 83 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Contact\+Fv\+Patch\+Vector\+Field(), lambda, and mu().
+
+
+
+Referenced by gap\+Contact\+Fv\+Patch\+Vector\+Field\+::neighbour(), and gap\+Contact\+Fv\+Patch\+Vector\+Field\+::update\+Coeffs().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1gapContactFvPatchVectorField_a200d97d8bb99741d5a1ce420403a3ee1_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1gapContactFvPatchVectorField_a200d97d8bb99741d5a1ce420403a3ee1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_acda6365d54c52608d887ddb53538f85f}\label{classFoam_1_1gapContactFvPatchVectorField_acda6365d54c52608d887ddb53538f85f}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}gap\+Contact\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by gap\+Contact\+Fv\+Patch\+Vector\+Field\+::neighbour().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{classFoam_1_1gapContactFvPatchVectorField_acda6365d54c52608d887ddb53538f85f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_af0f4bc68c73acc08f11adb3a8957d875}\label{classFoam_1_1gapContactFvPatchVectorField_af0f4bc68c73acc08f11adb3a8957d875}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!clone@{clone}}
+\index{clone@{clone}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{clone()}{clone()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual tmp$<$fv\+Patch\+Vector\+Field$>$ clone (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1tractionDisplacementFvPatchVectorField_af0f4bc68c73acc08f11adb3a8957d875}{traction\+Displacement\+Fv\+Patch\+Vector\+Field}.
+
+
+
+Definition at line 138 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+H.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Contact\+Fv\+Patch\+Vector\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=309pt]{classFoam_1_1gapContactFvPatchVectorField_af0f4bc68c73acc08f11adb3a8957d875_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a089f8c8dc7161cb741c2b911efc67d76}\label{classFoam_1_1gapContactFvPatchVectorField_a089f8c8dc7161cb741c2b911efc67d76}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!clone@{clone}}
+\index{clone@{clone}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{clone()}{clone()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual tmp$<$fv\+Patch\+Vector\+Field$>$ clone (\begin{DoxyParamCaption}\item[{const Dimensioned\+Field$<$ vector, vol\+Mesh $>$ \&}]{iF }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1tractionDisplacementFvPatchVectorField_a089f8c8dc7161cb741c2b911efc67d76}{traction\+Displacement\+Fv\+Patch\+Vector\+Field}.
+
+
+
+Definition at line 155 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+H.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Contact\+Fv\+Patch\+Vector\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=309pt]{classFoam_1_1gapContactFvPatchVectorField_a089f8c8dc7161cb741c2b911efc67d76_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_ab1c481a7677071c89600bb5295c7a606}\label{classFoam_1_1gapContactFvPatchVectorField_ab1c481a7677071c89600bb5295c7a606}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!interfaceP@{interfaceP}}
+\index{interfaceP@{interfaceP}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{interface\+P()}{interfaceP()}}
+{\footnotesize\ttfamily const scalar\+Field\& interfaceP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 171 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+H.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::auto\+Map(), gap\+Contact\+Fv\+Patch\+Vector\+Field\+::rmap(), gap\+Contact\+Fv\+Patch\+Vector\+Field\+::update\+Coeffs(), and gap\+Contact\+Fv\+Patch\+Vector\+Field\+::write().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{classFoam_1_1gapContactFvPatchVectorField_ab1c481a7677071c89600bb5295c7a606_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a0ab0c43ce90d756c88dd81e3d0a9eef5}\label{classFoam_1_1gapContactFvPatchVectorField_a0ab0c43ce90d756c88dd81e3d0a9eef5}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!auto\+Map@{auto\+Map}}
+\index{auto\+Map@{auto\+Map}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{auto\+Map()}{autoMap()}}
+{\footnotesize\ttfamily void auto\+Map (\begin{DoxyParamCaption}\item[{const fv\+Patch\+Field\+Mapper \&}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1tractionDisplacementFvPatchVectorField_a0ab0c43ce90d756c88dd81e3d0a9eef5}{traction\+Displacement\+Fv\+Patch\+Vector\+Field}.
+
+
+
+Definition at line 192 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+References traction\+Displacement\+Fv\+Patch\+Vector\+Field\+::auto\+Map(), and gap\+Contact\+Fv\+Patch\+Vector\+Field\+::rmap().
+
+
+
+Referenced by gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Contact\+Fv\+Patch\+Vector\+Field(), and gap\+Contact\+Fv\+Patch\+Vector\+Field\+::interface\+P().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classFoam_1_1gapContactFvPatchVectorField_a0ab0c43ce90d756c88dd81e3d0a9eef5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=323pt]{classFoam_1_1gapContactFvPatchVectorField_a0ab0c43ce90d756c88dd81e3d0a9eef5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a4fe41b169c41bfcd4311c1d1e27a96ed}\label{classFoam_1_1gapContactFvPatchVectorField_a4fe41b169c41bfcd4311c1d1e27a96ed}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!rmap@{rmap}}
+\index{rmap@{rmap}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{rmap()}{rmap()}}
+{\footnotesize\ttfamily void rmap (\begin{DoxyParamCaption}\item[{const fv\+Patch\+Vector\+Field \&}]{ptf,  }\item[{const label\+List \&}]{addr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1tractionDisplacementFvPatchVectorField_a4fe41b169c41bfcd4311c1d1e27a96ed}{traction\+Displacement\+Fv\+Patch\+Vector\+Field}.
+
+
+
+Definition at line 203 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+References traction\+Displacement\+Fv\+Patch\+Vector\+Field\+::rmap().
+
+
+
+Referenced by gap\+Contact\+Fv\+Patch\+Vector\+Field\+::auto\+Map(), and gap\+Contact\+Fv\+Patch\+Vector\+Field\+::interface\+P().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=294pt]{classFoam_1_1gapContactFvPatchVectorField_a4fe41b169c41bfcd4311c1d1e27a96ed_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=305pt]{classFoam_1_1gapContactFvPatchVectorField_a4fe41b169c41bfcd4311c1d1e27a96ed_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a7e24eafac629d3733181cd942d4c902f}\label{classFoam_1_1gapContactFvPatchVectorField_a7e24eafac629d3733181cd942d4c902f}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!update\+Coeffs@{update\+Coeffs}}
+\index{update\+Coeffs@{update\+Coeffs}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{update\+Coeffs()}{updateCoeffs()}}
+{\footnotesize\ttfamily void update\+Coeffs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1tractionDisplacementFvPatchVectorField_a7e24eafac629d3733181cd942d4c902f}{traction\+Displacement\+Fv\+Patch\+Vector\+Field}.
+
+
+
+Definition at line 218 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+References gap\+Contact\+Fv\+Patch\+Vector\+Field\+::boundary\+Stiffness(), gap\+Contact\+Fv\+Patch\+Vector\+Field\+::gap\+Width(), gap\+Contact\+Fv\+Patch\+Vector\+Field\+::neighbour(), traction\+Displacement\+Fv\+Patch\+Vector\+Field\+::pressure(), and traction\+Displacement\+Fv\+Patch\+Vector\+Field\+::update\+Coeffs().
+
+
+
+Referenced by gap\+Contact\+Fv\+Patch\+Vector\+Field\+::interface\+P().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1gapContactFvPatchVectorField_a7e24eafac629d3733181cd942d4c902f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{classFoam_1_1gapContactFvPatchVectorField_a7e24eafac629d3733181cd942d4c902f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1gapContactFvPatchVectorField_a293fdfec8bdfbd5c3913ab4c9f3454ff}\label{classFoam_1_1gapContactFvPatchVectorField_a293fdfec8bdfbd5c3913ab4c9f3454ff}} 
+\index{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}!write@{write}}
+\index{write@{write}!Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field@{Foam\+::gap\+Contact\+Fv\+Patch\+Vector\+Field}}
+\subsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily void write (\begin{DoxyParamCaption}\item[{Ostream \&}]{os }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1tractionDisplacementFvPatchVectorField_a293fdfec8bdfbd5c3913ab4c9f3454ff}{traction\+Displacement\+Fv\+Patch\+Vector\+Field}.
+
+
+
+Definition at line 290 of file gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C.
+
+
+
+References Foam\+::make\+Patch\+Type\+Field(), and traction\+Displacement\+Fv\+Patch\+Vector\+Field\+::write().
+
+
+
+Referenced by gap\+Contact\+Fv\+Patch\+Vector\+Field\+::interface\+P().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1gapContactFvPatchVectorField_a293fdfec8bdfbd5c3913ab4c9f3454ff_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=215pt]{classFoam_1_1gapContactFvPatchVectorField_a293fdfec8bdfbd5c3913ab4c9f3454ff_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermo\+Mechanics/traction\+Displacement/\hyperlink{gapContactFvPatchVectorField_8H}{gap\+Contact\+Fv\+Patch\+Vector\+Field.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermo\+Mechanics/traction\+Displacement/\hyperlink{gapContactFvPatchVectorField_8C}{gap\+Contact\+Fv\+Patch\+Vector\+Field.\+C}\end{DoxyCompactItemize}

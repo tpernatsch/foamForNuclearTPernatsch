@@ -1,0 +1,249 @@
+\hypertarget{classFoam_1_1heatExchanger}{}\section{heat\+Exchanger Class Reference}
+\label{classFoam_1_1heatExchanger}\index{heat\+Exchanger@{heat\+Exchanger}}
+
+
+Inheritance diagram for heat\+Exchanger\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=162pt]{classFoam_1_1heatExchanger__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for heat\+Exchanger\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=162pt]{classFoam_1_1heatExchanger__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1heatExchanger_a3b2b9d49f7fd21a79ad4c7763c234075}{Type\+Name} (\char`\"{}heat\+Exchanger\char`\"{})
+\item 
+\hyperlink{classFoam_1_1heatExchanger_aab7f6e7f7cc3dd809defbc4ad9bb5cff}{heat\+Exchanger} (const fv\+Mesh \&\hyperlink{createMeshesPostProcess_8H_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh}, const dictionary \&dict)
+\item 
+virtual \hyperlink{classFoam_1_1heatExchanger_ab820cedfe0907ebe9826e61fd01b3508}{$\sim$heat\+Exchanger} ()
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1heatExchanger_a0b96e40eecfd56b0f51eaf6407fa795e}{iA} () const
+\item 
+void \hyperlink{classFoam_1_1heatExchanger_a274a7d840c7f2d6174f0b33881978634}{correct} (const vol\+Scalar\+Field \&HT, const vol\+Scalar\+Field \&H, vol\+Scalar\+Field \&T\+HX)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1heatExchanger_a23edeeeecebcef11921a33dd5d990570}{mesh\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1heatExchanger_ab140fb867465b745d81c3603d93a1ef3}{i\+A\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1heatExchanger_a82781ead8c036e7736578c2047b9c3f4}{Hw\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1heatExchanger_a6ea409210e15fc6e9e5437736f6b1fa9}{primary\+Cells\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1heatExchanger_a9d38251d8c4019c88acb6406ca10a840}{secondary\+Cells\+\_\+}
+\item 
+auto\+Ptr$<$ mesh\+To\+Mesh $>$ \hyperlink{classFoam_1_1heatExchanger_a123fd6cbf85f0e10cc3e6e43836eacba}{mapping\+Ptr\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/heatExchanger/heatExchanger.H}{\tt heat\+Exchanger.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/heatExchanger/heatExchanger.C}{\tt heat\+Exchanger.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 55 of file heat\+Exchanger.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_aab7f6e7f7cc3dd809defbc4ad9bb5cff}\label{classFoam_1_1heatExchanger_aab7f6e7f7cc3dd809defbc4ad9bb5cff}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!heat\+Exchanger@{heat\+Exchanger}}
+\index{heat\+Exchanger@{heat\+Exchanger}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{heat\+Exchanger()}{heatExchanger()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1heatExchanger}{heat\+Exchanger} (\begin{DoxyParamCaption}\item[{const fv\+Mesh \&}]{mesh,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 37 of file heat\+Exchanger.\+C.
+
+
+
+References for\+All(), i, and reduce().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{classFoam_1_1heatExchanger_aab7f6e7f7cc3dd809defbc4ad9bb5cff_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_ab820cedfe0907ebe9826e61fd01b3508}\label{classFoam_1_1heatExchanger_ab820cedfe0907ebe9826e61fd01b3508}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!````~heat\+Exchanger@{$\sim$heat\+Exchanger}}
+\index{````~heat\+Exchanger@{$\sim$heat\+Exchanger}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{$\sim$heat\+Exchanger()}{~heatExchanger()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1heatExchanger}{heat\+Exchanger} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 94 of file heat\+Exchanger.\+H.
+
+
+
+References heat\+Exchanger\+::correct(), and heat\+Exchanger\+::i\+A().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classFoam_1_1heatExchanger_ab820cedfe0907ebe9826e61fd01b3508_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_a3b2b9d49f7fd21a79ad4c7763c234075}\label{classFoam_1_1heatExchanger_a3b2b9d49f7fd21a79ad4c7763c234075}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}heat\+Exchanger\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_a0b96e40eecfd56b0f51eaf6407fa795e}\label{classFoam_1_1heatExchanger_a0b96e40eecfd56b0f51eaf6407fa795e}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!iA@{iA}}
+\index{iA@{iA}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{i\+A()}{iA()}}
+{\footnotesize\ttfamily Foam\+::tmp$<$ Foam\+::vol\+Scalar\+Field $>$ iA (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 184 of file heat\+Exchanger.\+C.
+
+
+
+References heat\+Exchanger\+::correct(), for\+All(), and i.
+
+
+
+Referenced by heat\+Exchanger\+::$\sim$heat\+Exchanger().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=267pt]{classFoam_1_1heatExchanger_a0b96e40eecfd56b0f51eaf6407fa795e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{classFoam_1_1heatExchanger_a0b96e40eecfd56b0f51eaf6407fa795e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_a274a7d840c7f2d6174f0b33881978634}\label{classFoam_1_1heatExchanger_a274a7d840c7f2d6174f0b33881978634}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!correct@{correct}}
+\index{correct@{correct}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{HT,  }\item[{const vol\+Scalar\+Field \&}]{H,  }\item[{vol\+Scalar\+Field \&}]{T\+HX }\end{DoxyParamCaption})}
+
+
+
+Definition at line 322 of file heat\+Exchanger.\+C.
+
+
+
+References for\+All(), and i.
+
+
+
+Referenced by heat\+Exchanger\+::i\+A(), and heat\+Exchanger\+::$\sim$heat\+Exchanger().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{classFoam_1_1heatExchanger_a274a7d840c7f2d6174f0b33881978634_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classFoam_1_1heatExchanger_a274a7d840c7f2d6174f0b33881978634_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_a23edeeeecebcef11921a33dd5d990570}\label{classFoam_1_1heatExchanger_a23edeeeecebcef11921a33dd5d990570}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!mesh\+\_\+@{mesh\+\_\+}}
+\index{mesh\+\_\+@{mesh\+\_\+}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{mesh\+\_\+}{mesh\_}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 62 of file heat\+Exchanger.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_ab140fb867465b745d81c3603d93a1ef3}\label{classFoam_1_1heatExchanger_ab140fb867465b745d81c3603d93a1ef3}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!i\+A\+\_\+@{i\+A\+\_\+}}
+\index{i\+A\+\_\+@{i\+A\+\_\+}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{i\+A\+\_\+}{iA\_}}
+{\footnotesize\ttfamily scalar i\+A\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 67 of file heat\+Exchanger.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_a82781ead8c036e7736578c2047b9c3f4}\label{classFoam_1_1heatExchanger_a82781ead8c036e7736578c2047b9c3f4}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!Hw\+\_\+@{Hw\+\_\+}}
+\index{Hw\+\_\+@{Hw\+\_\+}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{Hw\+\_\+}{Hw\_}}
+{\footnotesize\ttfamily scalar Hw\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 70 of file heat\+Exchanger.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_a6ea409210e15fc6e9e5437736f6b1fa9}\label{classFoam_1_1heatExchanger_a6ea409210e15fc6e9e5437736f6b1fa9}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!primary\+Cells\+\_\+@{primary\+Cells\+\_\+}}
+\index{primary\+Cells\+\_\+@{primary\+Cells\+\_\+}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{primary\+Cells\+\_\+}{primaryCells\_}}
+{\footnotesize\ttfamily label\+List primary\+Cells\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 73 of file heat\+Exchanger.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_a9d38251d8c4019c88acb6406ca10a840}\label{classFoam_1_1heatExchanger_a9d38251d8c4019c88acb6406ca10a840}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!secondary\+Cells\+\_\+@{secondary\+Cells\+\_\+}}
+\index{secondary\+Cells\+\_\+@{secondary\+Cells\+\_\+}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{secondary\+Cells\+\_\+}{secondaryCells\_}}
+{\footnotesize\ttfamily label\+List secondary\+Cells\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 76 of file heat\+Exchanger.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1heatExchanger_a123fd6cbf85f0e10cc3e6e43836eacba}\label{classFoam_1_1heatExchanger_a123fd6cbf85f0e10cc3e6e43836eacba}} 
+\index{Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}!mapping\+Ptr\+\_\+@{mapping\+Ptr\+\_\+}}
+\index{mapping\+Ptr\+\_\+@{mapping\+Ptr\+\_\+}!Foam\+::heat\+Exchanger@{Foam\+::heat\+Exchanger}}
+\subsubsection{\texorpdfstring{mapping\+Ptr\+\_\+}{mappingPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$mesh\+To\+Mesh$>$ mapping\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 79 of file heat\+Exchanger.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/heat\+Exchanger/\hyperlink{heatExchanger_8H}{heat\+Exchanger.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/heat\+Exchanger/\hyperlink{heatExchanger_8C}{heat\+Exchanger.\+C}\end{DoxyCompactItemize}

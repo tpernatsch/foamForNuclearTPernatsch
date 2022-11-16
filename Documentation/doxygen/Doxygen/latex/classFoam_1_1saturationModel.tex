@@ -1,0 +1,332 @@
+\hypertarget{classFoam_1_1saturationModel}{}\section{saturation\+Model Class Reference}
+\label{classFoam_1_1saturationModel}\index{saturation\+Model@{saturation\+Model}}
+
+
+Inheritance diagram for saturation\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for saturation\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classFoam_1_1saturationModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1saturationModel_a2a215f420d2477c10cc6566c95115624}{Type\+Name} (\char`\"{}saturation\+Model\char`\"{})
+\item 
+\hyperlink{classFoam_1_1saturationModel_a2921282189940dabd35f2dd037aca830}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1saturationModel}{saturation\+Model}, saturation\+Models,(const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&pcm, const dictionary \&dict, const object\+Registry \&obj\+Reg),(pcm, dict, obj\+Reg))
+\item 
+\hyperlink{classFoam_1_1saturationModel_a971e7ac30910c413f5424f76de0e04ed}{saturation\+Model} (const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&pcm, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1saturationModel_acfc67e88448a9c0641427cd8056c1064}{$\sim$saturation\+Model} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModel_aef8350cb17e8b8f92597160f1dd2a238}{value\+T\+Sat} (const label \&celli) const =0
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModel_a20f0c2e04da2086bb7cbcdf3e2078e7f}{value\+P\+Sat} (const label \&celli) const =0
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModel_a9b04e4a2fa5b275d1d5637c464b55ab4}{value\+Ln\+P\+Sat} (const label \&celli) const =0
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModel_a2d5563aa609bea35032a40c7f766e48c}{value\+P\+Sat\+Prime} (const label \&celli) const =0
+\item 
+virtual void \hyperlink{classFoam_1_1saturationModel_afced535c7e4edc410c65206de603ef9c}{correct\+Field} (vol\+Scalar\+Field \&field, const word \&func)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1saturationModel}{saturation\+Model} $>$ \hyperlink{classFoam_1_1saturationModel_a42778de81567ba32a8f004afce3aaf5a}{New} (const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&pcm, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1saturationModel_a23edeeeecebcef11921a33dd5d990570}{mesh\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1saturationModel_a908415555f3c334379400a3eb5759639}{liquid\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1saturationModel_a2675e35060f71c22823e4a0b3c816dad}{vapour\+\_\+}
+\item 
+scalar(Foam\+::saturation\+Model\+::$\ast$ \hyperlink{classFoam_1_1saturationModel_a3916a5fe849e3553b2a19270255cc791}{func\+Ptr\+\_\+} )(const label \&) const
+\item 
+std\+::map$<$ word, scalar(Foam\+::saturation\+Model\+::$\ast$)(const label \&) const  $>$ \hyperlink{classFoam_1_1saturationModel_a9bd85ba5786a73880ae096c2733fa366}{map\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\label{_Description}%
+ \begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/saturationModels/saturationModel.H}{\tt saturation\+Model.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/saturationModels/saturationModel.C}{\tt saturation\+Model.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/saturationModels/newSaturationModel.C}{\tt new\+Saturation\+Model.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 49 of file saturation\+Model.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a971e7ac30910c413f5424f76de0e04ed}\label{classFoam_1_1saturationModel_a971e7ac30910c413f5424f76de0e04ed}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!saturation\+Model@{saturation\+Model}}
+\index{saturation\+Model@{saturation\+Model}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{saturation\+Model()}{saturationModel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1saturationModel}{saturation\+Model} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&}]{pcm,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 34 of file saturation\+Model.\+C.
+
+
+
+References saturation\+Model\+::correct\+Field(), saturation\+Model\+::value\+Ln\+P\+Sat(), saturation\+Model\+::value\+P\+Sat(), saturation\+Model\+::value\+P\+Sat\+Prime(), and saturation\+Model\+::value\+T\+Sat().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=289pt]{classFoam_1_1saturationModel_a971e7ac30910c413f5424f76de0e04ed_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModel_acfc67e88448a9c0641427cd8056c1064}\label{classFoam_1_1saturationModel_acfc67e88448a9c0641427cd8056c1064}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!````~saturation\+Model@{$\sim$saturation\+Model}}
+\index{````~saturation\+Model@{$\sim$saturation\+Model}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{$\sim$saturation\+Model()}{~saturationModel()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1saturationModel}{saturation\+Model} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 98 of file saturation\+Model.\+H.
+
+
+
+References saturation\+Model\+::correct\+Field(), saturation\+Model\+::\+New(), saturation\+Model\+::value\+Ln\+P\+Sat(), saturation\+Model\+::value\+P\+Sat(), saturation\+Model\+::value\+P\+Sat\+Prime(), and saturation\+Model\+::value\+T\+Sat().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{classFoam_1_1saturationModel_acfc67e88448a9c0641427cd8056c1064_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a2a215f420d2477c10cc6566c95115624}\label{classFoam_1_1saturationModel_a2a215f420d2477c10cc6566c95115624}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}saturation\+Model\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a2921282189940dabd35f2dd037aca830}\label{classFoam_1_1saturationModel_a2921282189940dabd35f2dd037aca830}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}}]{,  }\item[{saturation\+Models}]{,  }\item[{(const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&pcm, const dictionary \&dict, const object\+Registry \&obj\+Reg)}]{,  }\item[{(pcm, dict, obj\+Reg)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a42778de81567ba32a8f004afce3aaf5a}\label{classFoam_1_1saturationModel_a42778de81567ba32a8f004afce3aaf5a}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!New@{New}}
+\index{New@{New}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1saturationModel}{Foam\+::saturation\+Model} $>$ New (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&}]{pcm,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 26 of file new\+Saturation\+Model.\+C.
+
+
+
+Referenced by saturation\+Model\+::$\sim$saturation\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{classFoam_1_1saturationModel_a42778de81567ba32a8f004afce3aaf5a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModel_aef8350cb17e8b8f92597160f1dd2a238}\label{classFoam_1_1saturationModel_aef8350cb17e8b8f92597160f1dd2a238}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!value\+T\+Sat@{value\+T\+Sat}}
+\index{value\+T\+Sat@{value\+T\+Sat}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{value\+T\+Sat()}{valueTSat()}}
+{\footnotesize\ttfamily virtual scalar value\+T\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_a7d5f6259360b96b89a000c84ef880614}{water\+T\+R\+A\+CE}, \hyperlink{classFoam_1_1saturationModels_1_1water_a7d5f6259360b96b89a000c84ef880614}{water}, \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_a7d5f6259360b96b89a000c84ef880614}{Browning\+Potter}, and \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_a7d5f6259360b96b89a000c84ef880614}{constant\+Temperature}.
+
+
+
+Referenced by saturation\+Model\+::saturation\+Model(), and saturation\+Model\+::$\sim$saturation\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=269pt]{classFoam_1_1saturationModel_aef8350cb17e8b8f92597160f1dd2a238_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a20f0c2e04da2086bb7cbcdf3e2078e7f}\label{classFoam_1_1saturationModel_a20f0c2e04da2086bb7cbcdf3e2078e7f}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!value\+P\+Sat@{value\+P\+Sat}}
+\index{value\+P\+Sat@{value\+P\+Sat}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{value\+P\+Sat()}{valuePSat()}}
+{\footnotesize\ttfamily virtual scalar value\+P\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_a800a121f3086c2580a025d245a1b8178}{water\+T\+R\+A\+CE}, \hyperlink{classFoam_1_1saturationModels_1_1water_a800a121f3086c2580a025d245a1b8178}{water}, \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_a800a121f3086c2580a025d245a1b8178}{Browning\+Potter}, and \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_a800a121f3086c2580a025d245a1b8178}{constant\+Temperature}.
+
+
+
+Referenced by saturation\+Model\+::saturation\+Model(), and saturation\+Model\+::$\sim$saturation\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=270pt]{classFoam_1_1saturationModel_a20f0c2e04da2086bb7cbcdf3e2078e7f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a9b04e4a2fa5b275d1d5637c464b55ab4}\label{classFoam_1_1saturationModel_a9b04e4a2fa5b275d1d5637c464b55ab4}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!value\+Ln\+P\+Sat@{value\+Ln\+P\+Sat}}
+\index{value\+Ln\+P\+Sat@{value\+Ln\+P\+Sat}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{value\+Ln\+P\+Sat()}{valueLnPSat()}}
+{\footnotesize\ttfamily virtual scalar value\+Ln\+P\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_ac2c267657ff259967a96210a8fcb3c3f}{water\+T\+R\+A\+CE}, \hyperlink{classFoam_1_1saturationModels_1_1water_ac2c267657ff259967a96210a8fcb3c3f}{water}, \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_ac2c267657ff259967a96210a8fcb3c3f}{Browning\+Potter}, and \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_ac2c267657ff259967a96210a8fcb3c3f}{constant\+Temperature}.
+
+
+
+Referenced by saturation\+Model\+::saturation\+Model(), and saturation\+Model\+::$\sim$saturation\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=280pt]{classFoam_1_1saturationModel_a9b04e4a2fa5b275d1d5637c464b55ab4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a2d5563aa609bea35032a40c7f766e48c}\label{classFoam_1_1saturationModel_a2d5563aa609bea35032a40c7f766e48c}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!value\+P\+Sat\+Prime@{value\+P\+Sat\+Prime}}
+\index{value\+P\+Sat\+Prime@{value\+P\+Sat\+Prime}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{value\+P\+Sat\+Prime()}{valuePSatPrime()}}
+{\footnotesize\ttfamily virtual scalar value\+P\+Sat\+Prime (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_acfe2ee8e32ce482cc86e523e7266bb1f}{water\+T\+R\+A\+CE}, \hyperlink{classFoam_1_1saturationModels_1_1water_acfe2ee8e32ce482cc86e523e7266bb1f}{water}, \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_acfe2ee8e32ce482cc86e523e7266bb1f}{Browning\+Potter}, and \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_acfe2ee8e32ce482cc86e523e7266bb1f}{constant\+Temperature}.
+
+
+
+Referenced by saturation\+Model\+::saturation\+Model(), and saturation\+Model\+::$\sim$saturation\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{classFoam_1_1saturationModel_a2d5563aa609bea35032a40c7f766e48c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModel_afced535c7e4edc410c65206de603ef9c}\label{classFoam_1_1saturationModel_afced535c7e4edc410c65206de603ef9c}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!correct\+Field@{correct\+Field}}
+\index{correct\+Field@{correct\+Field}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{correct\+Field()}{correctField()}}
+{\footnotesize\ttfamily void correct\+Field (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field \&}]{field,  }\item[{const word \&}]{func }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 63 of file saturation\+Model.\+C.
+
+
+
+References for\+All(), and i.
+
+
+
+Referenced by saturation\+Model\+::saturation\+Model(), and saturation\+Model\+::$\sim$saturation\+Model().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classFoam_1_1saturationModel_afced535c7e4edc410c65206de603ef9c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{classFoam_1_1saturationModel_afced535c7e4edc410c65206de603ef9c_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a23edeeeecebcef11921a33dd5d990570}\label{classFoam_1_1saturationModel_a23edeeeecebcef11921a33dd5d990570}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!mesh\+\_\+@{mesh\+\_\+}}
+\index{mesh\+\_\+@{mesh\+\_\+}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{mesh\+\_\+}{mesh\_}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 56 of file saturation\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a908415555f3c334379400a3eb5759639}\label{classFoam_1_1saturationModel_a908415555f3c334379400a3eb5759639}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!liquid\+\_\+@{liquid\+\_\+}}
+\index{liquid\+\_\+@{liquid\+\_\+}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{liquid\+\_\+}{liquid\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& liquid\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 59 of file saturation\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a2675e35060f71c22823e4a0b3c816dad}\label{classFoam_1_1saturationModel_a2675e35060f71c22823e4a0b3c816dad}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!vapour\+\_\+@{vapour\+\_\+}}
+\index{vapour\+\_\+@{vapour\+\_\+}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{vapour\+\_\+}{vapour\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& vapour\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 62 of file saturation\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a3916a5fe849e3553b2a19270255cc791}\label{classFoam_1_1saturationModel_a3916a5fe849e3553b2a19270255cc791}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!func\+Ptr\+\_\+@{func\+Ptr\+\_\+}}
+\index{func\+Ptr\+\_\+@{func\+Ptr\+\_\+}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{func\+Ptr\+\_\+}{funcPtr\_}}
+{\footnotesize\ttfamily scalar(Foam\+::saturation\+Model\+::$\ast$ func\+Ptr\+\_\+) (const label \&) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 65 of file saturation\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1saturationModel_a9bd85ba5786a73880ae096c2733fa366}\label{classFoam_1_1saturationModel_a9bd85ba5786a73880ae096c2733fa366}} 
+\index{Foam\+::saturation\+Model@{Foam\+::saturation\+Model}!map\+\_\+@{map\+\_\+}}
+\index{map\+\_\+@{map\+\_\+}!Foam\+::saturation\+Model@{Foam\+::saturation\+Model}}
+\subsubsection{\texorpdfstring{map\+\_\+}{map\_}}
+{\footnotesize\ttfamily std\+::map$<$word, scalar (Foam\+::saturation\+Model\+::$\ast$)(const label\&) const$>$ map\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 68 of file saturation\+Model.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/saturation\+Models/\hyperlink{saturationModel_8H}{saturation\+Model.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/saturation\+Models/\hyperlink{newSaturationModel_8C}{new\+Saturation\+Model.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/saturation\+Models/\hyperlink{saturationModel_8C}{saturation\+Model.\+C}\end{DoxyCompactItemize}

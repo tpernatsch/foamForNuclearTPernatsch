@@ -1,0 +1,260 @@
+\hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource}{}\section{coupled\+Acceleration\+Source Class Reference}
+\label{classFoam_1_1fv_1_1coupledAccelerationSource}\index{coupled\+Acceleration\+Source@{coupled\+Acceleration\+Source}}
+
+
+Solid-\/body 6-\/\+DoF acceleration source from external data.  
+
+
+
+
+Inheritance diagram for coupled\+Acceleration\+Source\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=215pt]{classFoam_1_1fv_1_1coupledAccelerationSource__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for coupled\+Acceleration\+Source\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=215pt]{classFoam_1_1fv_1_1coupledAccelerationSource__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_a5f7eeaec46b2fdf437db166c14c02bdd}{Type\+Name} (\char`\"{}coupled\+Acceleration\+Source\char`\"{})
+\item 
+\hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_af602dd4c3a64d8abdf58db6290d1f774}{coupled\+Acceleration\+Source} (const word \&name, const word \&model\+Type, const dictionary \&dict, const fv\+Mesh \&\hyperlink{createMeshesPostProcess_8H_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh})
+\item 
+\hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_aa2a92d3cd5793fb4d2c14fd49a4abcdd}{coupled\+Acceleration\+Source} (const \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource}{coupled\+Acceleration\+Source} \&)=delete
+\item 
+void \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_ab9fab09a6c8e6dd7402c6ebd6c46adaa}{operator=} (const \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource}{coupled\+Acceleration\+Source} \&)=delete
+\item 
+virtual \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_a28e56f77c2b3ac285c938747d9e383b4}{$\sim$coupled\+Acceleration\+Source} ()=default
+\item 
+virtual void \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_acc46a837211b94ef481dfe3c66ea3a87}{add\+Sup} (fv\+Matrix$<$ vector $>$ \&eqn, const label fieldi)
+\item 
+virtual void \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_adc84a8ca9dcd47957cde0e01aadd984f}{add\+Sup} (const vol\+Scalar\+Field \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, fv\+Matrix$<$ vector $>$ \&eqn, const label fieldi)
+\item 
+virtual bool \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_a6ce0c64db98eb6144d363dbfc86104eb}{read} (const dictionary \&dict)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+word \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_ac6ed1b6034e0d4c6c85cb7f131cca30c}{acceleration\+Name\+\_\+}
+\item 
+word \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_aecc5f3574a7b55ec42a203620cd68ef3}{omega\+Name\+\_\+}
+\item 
+word \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_a11cd1a167561974e025932276918132c}{d\+Omega\+D\+T\+Name\+\_\+}
+\item 
+word \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_a26baeb8965b38a0f4d68f1ce68b39500}{U\+Name\+\_\+}
+\item 
+dimensioned\+Vector \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource_a565d2d50f78b2025f20ec1f4dec1d93b}{g0\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Solid-\/body 6-\/\+DoF acceleration source from external data. 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Usage}
+Minimal example by using {\ttfamily constant/fv\+Options}\+: \begin{DoxyVerb}coupledAccelerationSource1
+{
+    // Mandatory entries (unmodifiable)
+    type             coupledAccelerationSource;
+
+    accelerationName acc;
+    omegaName omega;
+    dOmegaDTName dOmegaDT;
+
+    // Optional entries (unmodifiable)
+    U                U;
+
+    // Mandatory/Optional (inherited) entries
+    ...
+}
+\end{DoxyVerb}
+
+\end{DoxyParagraph}
+where the entries mean\+: \tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{5}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Type } }&\PBS\centering \textbf{ {\bfseries  Reqd } }&\PBS\centering \textbf{ {\bfseries  Dflt}  }\\\cline{1-5}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Type } }&\PBS\centering \textbf{ {\bfseries  Reqd } }&\PBS\centering \textbf{ {\bfseries  Dflt}  }\\\cline{1-5}
+\endhead
+{\ttfamily type}  &Type name\+: \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource}{coupled\+Acceleration\+Source}  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily acceleration\+Name}  &name of the acceleration vector  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily omega\+Name}  &name of the angular velocity vector  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily d\+Omega\+D\+T\+Name}  &name of the angular acceleration vector  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily U}  &Name of operand velocity field  &word  &no  &U  \\\cline{1-5}
+\end{longtabu}
+\begin{DoxyVerb}The inherited entries are elaborated in:
+ - \link fvOption.H \endlink
+\end{DoxyVerb}
+
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/fvOptions/coupledAccelerationSource/coupledAccelerationSource.H}{\tt coupled\+Acceleration\+Source.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/fvOptions/coupledAccelerationSource/coupledAccelerationSource.C}{\tt coupled\+Acceleration\+Source.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/fvOptions/coupledAccelerationSource/coupledAccelerationSourceTemplates.C}{\tt coupled\+Acceleration\+Source\+Templates.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 114 of file coupled\+Acceleration\+Source.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_af602dd4c3a64d8abdf58db6290d1f774}\label{classFoam_1_1fv_1_1coupledAccelerationSource_af602dd4c3a64d8abdf58db6290d1f774}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!coupled\+Acceleration\+Source@{coupled\+Acceleration\+Source}}
+\index{coupled\+Acceleration\+Source@{coupled\+Acceleration\+Source}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{coupled\+Acceleration\+Source()}{coupledAccelerationSource()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource}{coupled\+Acceleration\+Source} (\begin{DoxyParamCaption}\item[{const word \&}]{name,  }\item[{const word \&}]{model\+Type,  }\item[{const dictionary \&}]{dict,  }\item[{const fv\+Mesh \&}]{mesh }\end{DoxyParamCaption})}
+
+
+
+Definition at line 34 of file coupled\+Acceleration\+Source.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_aa2a92d3cd5793fb4d2c14fd49a4abcdd}\label{classFoam_1_1fv_1_1coupledAccelerationSource_aa2a92d3cd5793fb4d2c14fd49a4abcdd}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!coupled\+Acceleration\+Source@{coupled\+Acceleration\+Source}}
+\index{coupled\+Acceleration\+Source@{coupled\+Acceleration\+Source}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{coupled\+Acceleration\+Source()}{coupledAccelerationSource()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource}{coupled\+Acceleration\+Source} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource}{coupled\+Acceleration\+Source} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_a28e56f77c2b3ac285c938747d9e383b4}\label{classFoam_1_1fv_1_1coupledAccelerationSource_a28e56f77c2b3ac285c938747d9e383b4}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!````~coupled\+Acceleration\+Source@{$\sim$coupled\+Acceleration\+Source}}
+\index{````~coupled\+Acceleration\+Source@{$\sim$coupled\+Acceleration\+Source}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{$\sim$coupled\+Acceleration\+Source()}{~coupledAccelerationSource()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource}{coupled\+Acceleration\+Source} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_a5f7eeaec46b2fdf437db166c14c02bdd}\label{classFoam_1_1fv_1_1coupledAccelerationSource_a5f7eeaec46b2fdf437db166c14c02bdd}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}coupled\+Acceleration\+Source\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_ab9fab09a6c8e6dd7402c6ebd6c46adaa}\label{classFoam_1_1fv_1_1coupledAccelerationSource_ab9fab09a6c8e6dd7402c6ebd6c46adaa}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!operator=@{operator=}}
+\index{operator=@{operator=}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily void operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1fv_1_1coupledAccelerationSource}{coupled\+Acceleration\+Source} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_acc46a837211b94ef481dfe3c66ea3a87}\label{classFoam_1_1fv_1_1coupledAccelerationSource_acc46a837211b94ef481dfe3c66ea3a87}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!add\+Sup@{add\+Sup}}
+\index{add\+Sup@{add\+Sup}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{add\+Sup()}{addSup()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void add\+Sup (\begin{DoxyParamCaption}\item[{fv\+Matrix$<$ vector $>$ \&}]{eqn,  }\item[{const label}]{fieldi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 64 of file coupled\+Acceleration\+Source.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_adc84a8ca9dcd47957cde0e01aadd984f}\label{classFoam_1_1fv_1_1coupledAccelerationSource_adc84a8ca9dcd47957cde0e01aadd984f}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!add\+Sup@{add\+Sup}}
+\index{add\+Sup@{add\+Sup}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{add\+Sup()}{addSup()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void add\+Sup (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{rho,  }\item[{fv\+Matrix$<$ vector $>$ \&}]{eqn,  }\item[{const label}]{fieldi }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 74 of file coupled\+Acceleration\+Source.\+C.
+
+
+
+References rho.
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_a6ce0c64db98eb6144d363dbfc86104eb}\label{classFoam_1_1fv_1_1coupledAccelerationSource_a6ce0c64db98eb6144d363dbfc86104eb}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!read@{read}}
+\index{read@{read}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily bool read (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 84 of file coupled\+Acceleration\+Source.\+C.
+
+
+
+References comm\+Data\+Layer\+::\+New().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=297pt]{classFoam_1_1fv_1_1coupledAccelerationSource_a6ce0c64db98eb6144d363dbfc86104eb_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_ac6ed1b6034e0d4c6c85cb7f131cca30c}\label{classFoam_1_1fv_1_1coupledAccelerationSource_ac6ed1b6034e0d4c6c85cb7f131cca30c}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!acceleration\+Name\+\_\+@{acceleration\+Name\+\_\+}}
+\index{acceleration\+Name\+\_\+@{acceleration\+Name\+\_\+}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{acceleration\+Name\+\_\+}{accelerationName\_}}
+{\footnotesize\ttfamily word acceleration\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 126 of file coupled\+Acceleration\+Source.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_aecc5f3574a7b55ec42a203620cd68ef3}\label{classFoam_1_1fv_1_1coupledAccelerationSource_aecc5f3574a7b55ec42a203620cd68ef3}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!omega\+Name\+\_\+@{omega\+Name\+\_\+}}
+\index{omega\+Name\+\_\+@{omega\+Name\+\_\+}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{omega\+Name\+\_\+}{omegaName\_}}
+{\footnotesize\ttfamily word omega\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 129 of file coupled\+Acceleration\+Source.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_a11cd1a167561974e025932276918132c}\label{classFoam_1_1fv_1_1coupledAccelerationSource_a11cd1a167561974e025932276918132c}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!d\+Omega\+D\+T\+Name\+\_\+@{d\+Omega\+D\+T\+Name\+\_\+}}
+\index{d\+Omega\+D\+T\+Name\+\_\+@{d\+Omega\+D\+T\+Name\+\_\+}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{d\+Omega\+D\+T\+Name\+\_\+}{dOmegaDTName\_}}
+{\footnotesize\ttfamily word d\+Omega\+D\+T\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 132 of file coupled\+Acceleration\+Source.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_a26baeb8965b38a0f4d68f1ce68b39500}\label{classFoam_1_1fv_1_1coupledAccelerationSource_a26baeb8965b38a0f4d68f1ce68b39500}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!U\+Name\+\_\+@{U\+Name\+\_\+}}
+\index{U\+Name\+\_\+@{U\+Name\+\_\+}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{U\+Name\+\_\+}{UName\_}}
+{\footnotesize\ttfamily word U\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 135 of file coupled\+Acceleration\+Source.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fv_1_1coupledAccelerationSource_a565d2d50f78b2025f20ec1f4dec1d93b}\label{classFoam_1_1fv_1_1coupledAccelerationSource_a565d2d50f78b2025f20ec1f4dec1d93b}} 
+\index{Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}!g0\+\_\+@{g0\+\_\+}}
+\index{g0\+\_\+@{g0\+\_\+}!Foam\+::fv\+::coupled\+Acceleration\+Source@{Foam\+::fv\+::coupled\+Acceleration\+Source}}
+\subsubsection{\texorpdfstring{g0\+\_\+}{g0\_}}
+{\footnotesize\ttfamily dimensioned\+Vector g0\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 138 of file coupled\+Acceleration\+Source.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/external\+I\+O/input/fv\+Options/coupled\+Acceleration\+Source/\hyperlink{coupledAccelerationSource_8H}{coupled\+Acceleration\+Source.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/external\+I\+O/input/fv\+Options/coupled\+Acceleration\+Source/\hyperlink{coupledAccelerationSource_8C}{coupled\+Acceleration\+Source.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/external\+I\+O/input/fv\+Options/coupled\+Acceleration\+Source/\hyperlink{coupledAccelerationSourceTemplates_8C}{coupled\+Acceleration\+Source\+Templates.\+C}\end{DoxyCompactItemize}

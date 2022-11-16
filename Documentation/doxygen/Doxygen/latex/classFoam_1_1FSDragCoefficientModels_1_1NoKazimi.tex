@@ -1,0 +1,196 @@
+\hypertarget{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi}{}\section{No\+Kazimi Class Reference}
+\label{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi}\index{No\+Kazimi@{No\+Kazimi}}
+
+
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi}{No\+Kazimi} correlation for fluid-\/structure pressure drop \href{https://dspace.mit.edu/handle/1721.1/60581}{\tt https\+://dspace.\+mit.\+edu/handle/1721.\+1/60581}.  
+
+
+
+
+Inheritance diagram for No\+Kazimi\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for No\+Kazimi\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ae70ed6cb89c054e743d136113d5e4e41}{Type\+Name} (\char`\"{}No\+Kazimi\char`\"{})
+\item 
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ac13031f3f248145bf582aea9b8e2131c}{No\+Kazimi} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a4c9b55ab582b0efe308a25a3d4e1b15d}{$\sim$\+No\+Kazimi} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a2c1e1872d359910de4c35cf8f003871c}{value} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a470f484be0b7ecd159b0971e3023a490}{A\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ad44554fe371bb59836624cad1c370de7}{B\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_af3f148ae868a08db7f6a83a3a64a236a}{C\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi}{No\+Kazimi} correlation for fluid-\/structure pressure drop \href{https://dspace.mit.edu/handle/1721.1/60581}{\tt https\+://dspace.\+mit.\+edu/handle/1721.\+1/60581}. 
+
+\label{_Description}%
+ Author Stefan Radman (\href{mailto:sradman@protonmail.com}{\tt sradman@protonmail.\+com} / \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch})
+
+Dictionary entries (mandatory) pin\+Pitch 0.\+006; pin\+Diameter 0.\+0076; wire\+Diameter 0.\+0016; wire\+Lead\+Len 0.\+2;
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragCoefficientModels/NoKazimi/NoKazimiFSDragCoefficient.H}{\tt No\+Kazimi\+F\+S\+Drag\+Coefficient.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragCoefficientModels/NoKazimi/NoKazimi.C}{\tt No\+Kazimi.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 62 of file No\+Kazimi\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ac13031f3f248145bf582aea9b8e2131c}\label{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ac13031f3f248145bf582aea9b8e2131c}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}!No\+Kazimi@{No\+Kazimi}}
+\index{No\+Kazimi@{No\+Kazimi}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}}
+\subsubsection{\texorpdfstring{No\+Kazimi()}{NoKazimi()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi}{No\+Kazimi} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 42 of file No\+Kazimi\+F\+S\+Drag\+Coefficient.\+C.
+
+
+
+References No\+Kazimi\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=215pt]{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ac13031f3f248145bf582aea9b8e2131c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a4c9b55ab582b0efe308a25a3d4e1b15d}\label{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a4c9b55ab582b0efe308a25a3d4e1b15d}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}!````~No\+Kazimi@{$\sim$\+No\+Kazimi}}
+\index{````~No\+Kazimi@{$\sim$\+No\+Kazimi}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}}
+\subsubsection{\texorpdfstring{$\sim$\+No\+Kazimi()}{~NoKazimi()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi}{No\+Kazimi} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 88 of file No\+Kazimi\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+References No\+Kazimi\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a4c9b55ab582b0efe308a25a3d4e1b15d_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ae70ed6cb89c054e743d136113d5e4e41}\label{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ae70ed6cb89c054e743d136113d5e4e41}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}No\+Kazimi\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a2c1e1872d359910de4c35cf8f003871c}\label{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a2c1e1872d359910de4c35cf8f003871c}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}!value@{value}}
+\index{value@{value}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Foam\+::scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1FSDragCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}{F\+S\+Drag\+Coefficient\+Model}.
+
+
+
+Definition at line 67 of file No\+Kazimi\+F\+S\+Drag\+Coefficient.\+C.
+
+
+
+References psi().
+
+
+
+Referenced by No\+Kazimi\+::\+No\+Kazimi(), and No\+Kazimi\+::$\sim$\+No\+Kazimi().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a2c1e1872d359910de4c35cf8f003871c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a2c1e1872d359910de4c35cf8f003871c_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a470f484be0b7ecd159b0971e3023a490}\label{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_a470f484be0b7ecd159b0971e3023a490}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}!A\+\_\+@{A\+\_\+}}
+\index{A\+\_\+@{A\+\_\+}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}}
+\subsubsection{\texorpdfstring{A\+\_\+}{A\_}}
+{\footnotesize\ttfamily scalar A\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 69 of file No\+Kazimi\+F\+S\+Drag\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ad44554fe371bb59836624cad1c370de7}\label{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_ad44554fe371bb59836624cad1c370de7}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}!B\+\_\+@{B\+\_\+}}
+\index{B\+\_\+@{B\+\_\+}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}}
+\subsubsection{\texorpdfstring{B\+\_\+}{B\_}}
+{\footnotesize\ttfamily scalar B\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 70 of file No\+Kazimi\+F\+S\+Drag\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_af3f148ae868a08db7f6a83a3a64a236a}\label{classFoam_1_1FSDragCoefficientModels_1_1NoKazimi_af3f148ae868a08db7f6a83a3a64a236a}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}!C\+\_\+@{C\+\_\+}}
+\index{C\+\_\+@{C\+\_\+}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+No\+Kazimi}}
+\subsubsection{\texorpdfstring{C\+\_\+}{C\_}}
+{\footnotesize\ttfamily scalar C\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 71 of file No\+Kazimi\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+S\+Drag\+Coefficient\+Models/\+No\+Kazimi/\hyperlink{NoKazimiFSDragCoefficient_8H}{No\+Kazimi\+F\+S\+Drag\+Coefficient.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+S\+Drag\+Coefficient\+Models/\+No\+Kazimi/\hyperlink{NoKazimiFSDragCoefficient_8C}{No\+Kazimi\+F\+S\+Drag\+Coefficient.\+C}\end{DoxyCompactItemize}

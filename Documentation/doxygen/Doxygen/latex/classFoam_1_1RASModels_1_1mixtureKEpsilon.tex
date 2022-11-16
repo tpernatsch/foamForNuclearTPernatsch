@@ -1,0 +1,838 @@
+\hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon}{}\section{mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$ Class Template Reference}
+\label{classFoam_1_1RASModels_1_1mixtureKEpsilon}\index{mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$@{mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$}}
+
+
+Mixture k-\/epsilon turbulence model for two-\/phase gas-\/liquid systems.  
+
+
+
+
+Inheritance diagram for mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Basic\+Turbulence\+Model\+::alpha\+Field \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a06a66094f33d6817d19225445c5ea874}{alpha\+Field}
+\item 
+typedef Basic\+Turbulence\+Model\+::rho\+Field \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a1dda906cfc9022335f0782a632302cd8}{rho\+Field}
+\item 
+typedef Basic\+Turbulence\+Model\+::transport\+Model \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}{transport\+Model}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_adbf46a734f80cfe0ac2e8257da209273}{Type\+Name} (\char`\"{}mixture\+K\+Epsilon\char`\"{})
+\item 
+\hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a8a7ec1494a8e894fa723875426b4c21b}{mixture\+K\+Epsilon} (const \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a06a66094f33d6817d19225445c5ea874}{alpha\+Field} \&\hyperlink{UEqn__1pl_8H_a7fe02434a19f3e00e927f32adcbb193b}{alpha}, const \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a1dda906cfc9022335f0782a632302cd8}{rho\+Field} \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, const vol\+Vector\+Field \&\hyperlink{UEqn__1pl_8H_abe23fa3afe09cc511569a7dca4160561}{U}, const surface\+Scalar\+Field \&\hyperlink{updateAlphaPhiAndInitControls__1p_8H_adb16eab5a684ddb62e40a6ffdc2d646c}{alpha\+Rho\+Phi}, const surface\+Scalar\+Field \&phi, const \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}{transport\+Model} \&transport, const word \&properties\+Name=turbulence\+Model\+::properties\+Name, const word \&type=type\+Name)
+\item 
+virtual \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ae6ef2c36e578a861d5971b95f45ce9a0}{$\sim$mixture\+K\+Epsilon} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_af816873151ddb0126e98bb2f914d8ed5}{read} ()
+\item 
+virtual tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2cc3daa68147a9052c2b37e9ac37eca4}{k} () const
+\item 
+virtual tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad79e047917669fbb490d351478651e20}{epsilon} () const
+\item 
+virtual tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a384ad699f7960a8b9686b4a5fe7f3e1a}{omega} () const
+\item 
+virtual void \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1}{correct} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+word\+List \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_acd126d9f66656609b863fc64abb95ebb}{epsilon\+Boundary\+Types} (const vol\+Scalar\+Field \&\hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad79e047917669fbb490d351478651e20}{epsilon}) const
+\item 
+void \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6c9b72005b8fcf50b18e3a402ca6df13}{correct\+Inlet\+Outlet} (vol\+Scalar\+Field \&vsf, const vol\+Scalar\+Field \&ref\+Vsf) const
+\item 
+void \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a40ddbf65a437e96f6eb32570efbe2406}{init\+Mixture\+Fields} ()
+\item 
+virtual void \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_aaffe89433f18f1ee4137486e19219448}{correct\+Nut} ()
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2025b7aa290d9718fd3ec3836b8638ad}{Ct2} () const
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad20e49762dcdd6c26212a137b31428a9}{rhol\+Eff} () const
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a27adc4bedfa8846c8b1de026e52dbf46}{rhog\+Eff} () const
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a56d7a7c8700e627733e88944d62ea0da}{rhom} () const
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad6ae3b3ff7f405c5378f7943f5bf5506}{mix} (const vol\+Scalar\+Field \&fc, const vol\+Scalar\+Field \&fd) const
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2db5aef5cb2e243e22eceff5560e798a}{mixU} (const vol\+Scalar\+Field \&fc, const vol\+Scalar\+Field \&fd) const
+\item 
+tmp$<$ surface\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac173b78051f80cc1d7826a9db9690c9c}{mix\+Flux} (const surface\+Scalar\+Field \&fc, const surface\+Scalar\+Field \&fd) const
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a627e30c80dd2737d19b4c4163b766488}{bubbleG} () const
+\item 
+virtual tmp$<$ fv\+Scalar\+Matrix $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_abd7aa1bd65c38f9773745c8d98a2fed0}{k\+Source} () const
+\item 
+virtual tmp$<$ fv\+Scalar\+Matrix $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a11abcc44df285cf748c77aa0a7cac6b8}{epsilon\+Source} () const
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_acb1a26f6c65825590d663e4e382e4851}{Dk\+Eff} (const vol\+Scalar\+Field \&nutm) const
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ababb0f32d48597fe6a0fccc5ed0b2c53}{Depsilon\+Eff} (const vol\+Scalar\+Field \&nutm) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_aca8750ac64529f08a5e0ddbd69d538db}{Cmu\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a25ef984db7a92f8f2421ed817e616206}{C1\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6ecae7b56fdac924dca1bf174f157f69}{C2\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_aed8039605824e63ab9ac285e15c70bb7}{C3\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a928506392267e759f5e7065ea4ce1dcb}{Cp\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a1c4d80e34d39e7ffccd625df6016b6f7}{sigmak\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2f26c65464368e5619b31aa5d5392a19}{sigma\+Eps\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2166e9ffd139700fb0f21c44414e3545}{k\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a027dddd791551bd248d0fcacb013dd68}{epsilon\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_aae2210cfff2c76e68e12398c3e21c717}{Ct2\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6a1727ac1b9495fe87a3caec9ba742b1}{rhom\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a844a88970f0a98d219eac0603ecc21b6}{km\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad5e528caf764b09f47f74b00a2a9a808}{epsilonm\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class Basic\+Turbulence\+Model$>$\newline
+class Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$}
+
+Mixture k-\/epsilon turbulence model for two-\/phase gas-\/liquid systems. 
+
+\label{_Description}%
+ The basic structure of the model is based on\+: \begin{DoxyVerb}    Behzadi, A., Issa, R. I., & Rusche, H. (2004).
+    Modelling of dispersed bubble and droplet flow at high phase fractions.
+    Chemical Engineering Science, 59(4), 759-770.
+\end{DoxyVerb}
+
+
+but an effective density for the gas is used in the averaging and an alternative model for bubble-\/generated turbulence from\+: \begin{DoxyVerb}    Lahey Jr, R. T. (2005).
+    The simulation of multidimensional multiphase flows.
+    Nuclear Engineering and Design, 235(10), 1043-1060.
+\end{DoxyVerb}
+
+
+The default model coefficients are \begin{DoxyVerb}    mixtureKEpsilonCoeffs
+    {
+        Cmu         0.09;
+        C1          1.44;
+        C2          1.92;
+        C3          C2;
+        sigmak      1.0;
+        sigmaEps    1.3;
+    }
+\end{DoxyVerb}
+
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/turbulenceModels/mixtureKEpsilon/mixtureKEpsilon.H}{\tt mixture\+K\+Epsilon.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/turbulenceModels/mixtureKEpsilon/mixtureKEpsilon.C}{\tt mixture\+K\+Epsilon.\+C} 
+\end{DoxyItemize}Last modified by Stefan Radman for compatibility with F\+F\+S\+Euler\+Foam (\href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch}, \href{mailto:stefanradman92@gmail.com}{\tt stefanradman92@gmail.\+com}) 
+\end{DoxyParagraph}
+
+
+Definition at line 88 of file mixture\+K\+Epsilon.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a06a66094f33d6817d19225445c5ea874}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a06a66094f33d6817d19225445c5ea874}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!alpha\+Field@{alpha\+Field}}
+\index{alpha\+Field@{alpha\+Field}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{alpha\+Field}{alphaField}}
+{\footnotesize\ttfamily typedef Basic\+Turbulence\+Model\+::alpha\+Field \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a06a66094f33d6817d19225445c5ea874}{alpha\+Field}}
+
+
+
+Definition at line 234 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a1dda906cfc9022335f0782a632302cd8}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a1dda906cfc9022335f0782a632302cd8}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!rho\+Field@{rho\+Field}}
+\index{rho\+Field@{rho\+Field}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{rho\+Field}{rhoField}}
+{\footnotesize\ttfamily typedef Basic\+Turbulence\+Model\+::rho\+Field \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a1dda906cfc9022335f0782a632302cd8}{rho\+Field}}
+
+
+
+Definition at line 235 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!transport\+Model@{transport\+Model}}
+\index{transport\+Model@{transport\+Model}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{transport\+Model}{transportModel}}
+{\footnotesize\ttfamily typedef Basic\+Turbulence\+Model\+::transport\+Model \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}{transport\+Model}}
+
+
+
+Definition at line 236 of file mixture\+K\+Epsilon.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a8a7ec1494a8e894fa723875426b4c21b}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a8a7ec1494a8e894fa723875426b4c21b}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!mixture\+K\+Epsilon@{mixture\+K\+Epsilon}}
+\index{mixture\+K\+Epsilon@{mixture\+K\+Epsilon}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{mixture\+K\+Epsilon()}{mixtureKEpsilon()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon}{mixture\+K\+Epsilon} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a06a66094f33d6817d19225445c5ea874}{alpha\+Field} \&}]{alpha,  }\item[{const \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_a1dda906cfc9022335f0782a632302cd8}{rho\+Field} \&}]{rho,  }\item[{const vol\+Vector\+Field \&}]{U,  }\item[{const surface\+Scalar\+Field \&}]{alpha\+Rho\+Phi,  }\item[{const surface\+Scalar\+Field \&}]{phi,  }\item[{const \hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}{transport\+Model} \&}]{transport,  }\item[{const word \&}]{properties\+Name = {\ttfamily turbulenceModel\+:\+:propertiesName},  }\item[{const word \&}]{type = {\ttfamily typeName} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 43 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::epsilon\+Boundary\+Types().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a8a7ec1494a8e894fa723875426b4c21b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_ae6ef2c36e578a861d5971b95f45ce9a0}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_ae6ef2c36e578a861d5971b95f45ce9a0}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!````~mixture\+K\+Epsilon@{$\sim$mixture\+K\+Epsilon}}
+\index{````~mixture\+K\+Epsilon@{$\sim$mixture\+K\+Epsilon}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{$\sim$mixture\+K\+Epsilon()}{~mixtureKEpsilon()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1RASModels_1_1mixtureKEpsilon}{mixture\+K\+Epsilon} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 260 of file mixture\+K\+Epsilon.\+H.
+
+
+
+References mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::read().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_ae6ef2c36e578a861d5971b95f45ce9a0_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_acd126d9f66656609b863fc64abb95ebb}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_acd126d9f66656609b863fc64abb95ebb}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!epsilon\+Boundary\+Types@{epsilon\+Boundary\+Types}}
+\index{epsilon\+Boundary\+Types@{epsilon\+Boundary\+Types}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{epsilon\+Boundary\+Types()}{epsilonBoundaryTypes()}}
+{\footnotesize\ttfamily word\+List epsilon\+Boundary\+Types (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{epsilon }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 174 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct\+Inlet\+Outlet(), and for\+All().
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::mixture\+K\+Epsilon().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_acd126d9f66656609b863fc64abb95ebb_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_acd126d9f66656609b863fc64abb95ebb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6c9b72005b8fcf50b18e3a402ca6df13}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6c9b72005b8fcf50b18e3a402ca6df13}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!correct\+Inlet\+Outlet@{correct\+Inlet\+Outlet}}
+\index{correct\+Inlet\+Outlet@{correct\+Inlet\+Outlet}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{correct\+Inlet\+Outlet()}{correctInletOutlet()}}
+{\footnotesize\ttfamily void correct\+Inlet\+Outlet (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field \&}]{vsf,  }\item[{const vol\+Scalar\+Field \&}]{ref\+Vsf }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 196 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References for\+All().
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::epsilon\+Boundary\+Types().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6c9b72005b8fcf50b18e3a402ca6df13_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6c9b72005b8fcf50b18e3a402ca6df13_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a40ddbf65a437e96f6eb32570efbe2406}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a40ddbf65a437e96f6eb32570efbe2406}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!init\+Mixture\+Fields@{init\+Mixture\+Fields}}
+\index{init\+Mixture\+Fields@{init\+Mixture\+Fields}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{init\+Mixture\+Fields()}{initMixtureFields()}}
+{\footnotesize\ttfamily void init\+Mixture\+Fields (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 223 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References F\+F\+Pair\+::\+Dh\+Dispersed(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::epsilon(), fluid1(), fluids(), for\+All(), i, fluid\+::is\+Gas(), fluid\+::is\+Liquid(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::k(), F\+F\+Pair\+::\+Kd(), liquid, F\+F\+Pair\+::mag\+Ur(), mesh, phase\+Base\+::name(), and F\+F\+Pair\+::rho\+Continuous().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a40ddbf65a437e96f6eb32570efbe2406_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_aaffe89433f18f1ee4137486e19219448}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_aaffe89433f18f1ee4137486e19219448}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!correct\+Nut@{correct\+Nut}}
+\index{correct\+Nut@{correct\+Nut}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{correct\+Nut()}{correctNut()}}
+{\footnotesize\ttfamily void correct\+Nut (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 457 of file mixture\+K\+Epsilon.\+C.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=225pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_aaffe89433f18f1ee4137486e19219448_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2025b7aa290d9718fd3ec3836b8638ad}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2025b7aa290d9718fd3ec3836b8638ad}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!Ct2@{Ct2}}
+\index{Ct2@{Ct2}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Ct2()}{Ct2()}}
+{\footnotesize\ttfamily tmp$<$ vol\+Scalar\+Field $>$ Ct2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 468 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References liquid, rho, and turbulence().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2025b7aa290d9718fd3ec3836b8638ad_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad20e49762dcdd6c26212a137b31428a9}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad20e49762dcdd6c26212a137b31428a9}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!rhol\+Eff@{rhol\+Eff}}
+\index{rhol\+Eff@{rhol\+Eff}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{rhol\+Eff()}{rholEff()}}
+{\footnotesize\ttfamily tmp$<$ vol\+Scalar\+Field $>$ rhol\+Eff (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 487 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References liquid.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a27adc4bedfa8846c8b1de026e52dbf46}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a27adc4bedfa8846c8b1de026e52dbf46}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!rhog\+Eff@{rhog\+Eff}}
+\index{rhog\+Eff@{rhog\+Eff}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{rhog\+Eff()}{rhogEff()}}
+{\footnotesize\ttfamily tmp$<$ vol\+Scalar\+Field $>$ rhog\+Eff (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 494 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References liquid.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a56d7a7c8700e627733e88944d62ea0da}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a56d7a7c8700e627733e88944d62ea0da}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!rhom@{rhom}}
+\index{rhom@{rhom}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{rhom()}{rhom()}}
+{\footnotesize\ttfamily tmp$<$ vol\+Scalar\+Field $>$ rhom (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 503 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References liquid, and mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::mix().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a56d7a7c8700e627733e88944d62ea0da_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad6ae3b3ff7f405c5378f7943f5bf5506}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad6ae3b3ff7f405c5378f7943f5bf5506}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!mix@{mix}}
+\index{mix@{mix}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{mix()}{mix()}}
+{\footnotesize\ttfamily tmp$<$ vol\+Scalar\+Field $>$ mix (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{fc,  }\item[{const vol\+Scalar\+Field \&}]{fd }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 511 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References liquid, and mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::mix\+U().
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::rhom().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad6ae3b3ff7f405c5378f7943f5bf5506_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad6ae3b3ff7f405c5378f7943f5bf5506_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2db5aef5cb2e243e22eceff5560e798a}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2db5aef5cb2e243e22eceff5560e798a}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!mixU@{mixU}}
+\index{mixU@{mixU}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{mix\+U()}{mixU()}}
+{\footnotesize\ttfamily tmp$<$ vol\+Scalar\+Field $>$ mixU (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{fc,  }\item[{const vol\+Scalar\+Field \&}]{fd }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 522 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References liquid, and mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::mix\+Flux().
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::mix().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2db5aef5cb2e243e22eceff5560e798a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2db5aef5cb2e243e22eceff5560e798a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac173b78051f80cc1d7826a9db9690c9c}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac173b78051f80cc1d7826a9db9690c9c}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!mix\+Flux@{mix\+Flux}}
+\index{mix\+Flux@{mix\+Flux}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{mix\+Flux()}{mixFlux()}}
+{\footnotesize\ttfamily tmp$<$ surface\+Scalar\+Field $>$ mix\+Flux (\begin{DoxyParamCaption}\item[{const surface\+Scalar\+Field \&}]{fc,  }\item[{const surface\+Scalar\+Field \&}]{fd }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 535 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References liquid.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::mix\+U().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_ac173b78051f80cc1d7826a9db9690c9c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a627e30c80dd2737d19b4c4163b766488}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a627e30c80dd2737d19b4c4163b766488}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!bubbleG@{bubbleG}}
+\index{bubbleG@{bubbleG}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{bubble\+G()}{bubbleG()}}
+{\footnotesize\ttfamily tmp$<$ vol\+Scalar\+Field $>$ bubbleG (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 553 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References liquid, and rho.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_abd7aa1bd65c38f9773745c8d98a2fed0}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_abd7aa1bd65c38f9773745c8d98a2fed0}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!k\+Source@{k\+Source}}
+\index{k\+Source@{k\+Source}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{k\+Source()}{kSource()}}
+{\footnotesize\ttfamily tmp$<$ fv\+Scalar\+Matrix $>$ k\+Source (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 578 of file mixture\+K\+Epsilon.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a11abcc44df285cf748c77aa0a7cac6b8}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a11abcc44df285cf748c77aa0a7cac6b8}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!epsilon\+Source@{epsilon\+Source}}
+\index{epsilon\+Source@{epsilon\+Source}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{epsilon\+Source()}{epsilonSource()}}
+{\footnotesize\ttfamily tmp$<$ fv\+Scalar\+Matrix $>$ epsilon\+Source (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 585 of file mixture\+K\+Epsilon.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_acb1a26f6c65825590d663e4e382e4851}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_acb1a26f6c65825590d663e4e382e4851}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!Dk\+Eff@{Dk\+Eff}}
+\index{Dk\+Eff@{Dk\+Eff}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Dk\+Eff()}{DkEff()}}
+{\footnotesize\ttfamily tmp$<$vol\+Scalar\+Field$>$ Dk\+Eff (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{nutm }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 207 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_ababb0f32d48597fe6a0fccc5ed0b2c53}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_ababb0f32d48597fe6a0fccc5ed0b2c53}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!Depsilon\+Eff@{Depsilon\+Eff}}
+\index{Depsilon\+Eff@{Depsilon\+Eff}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Depsilon\+Eff()}{DepsilonEff()}}
+{\footnotesize\ttfamily tmp$<$vol\+Scalar\+Field$>$ Depsilon\+Eff (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{nutm }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 220 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_adbf46a734f80cfe0ac2e8257da209273}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_adbf46a734f80cfe0ac2e8257da209273}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_af816873151ddb0126e98bb2f914d8ed5}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_af816873151ddb0126e98bb2f914d8ed5}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!read@{read}}
+\index{read@{read}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily bool read (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 437 of file mixture\+K\+Epsilon.\+C.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::$\sim$mixture\+K\+Epsilon().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_af816873151ddb0126e98bb2f914d8ed5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2cc3daa68147a9052c2b37e9ac37eca4}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2cc3daa68147a9052c2b37e9ac37eca4}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!k@{k}}
+\index{k@{k}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{k()}{k()}}
+{\footnotesize\ttfamily virtual tmp$<$vol\+Scalar\+Field$>$ k (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 270 of file mixture\+K\+Epsilon.\+H.
+
+
+
+References mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::k\+\_\+.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::init\+Mixture\+Fields().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2cc3daa68147a9052c2b37e9ac37eca4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad79e047917669fbb490d351478651e20}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad79e047917669fbb490d351478651e20}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!epsilon@{epsilon}}
+\index{epsilon@{epsilon}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{epsilon()}{epsilon()}}
+{\footnotesize\ttfamily virtual tmp$<$vol\+Scalar\+Field$>$ epsilon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 276 of file mixture\+K\+Epsilon.\+H.
+
+
+
+References mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::epsilon\+\_\+.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::init\+Mixture\+Fields().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=251pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad79e047917669fbb490d351478651e20_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a384ad699f7960a8b9686b4a5fe7f3e1a}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a384ad699f7960a8b9686b4a5fe7f3e1a}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!omega@{omega}}
+\index{omega@{omega}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{omega()}{omega()}}
+{\footnotesize\ttfamily virtual tmp$<$vol\+Scalar\+Field$>$ omega (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 282 of file mixture\+K\+Epsilon.\+H.
+
+
+
+References mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a384ad699f7960a8b9686b4a5fe7f3e1a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!correct@{correct}}
+\index{correct@{correct}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 592 of file mixture\+K\+Epsilon.\+C.
+
+
+
+References alphal(), correct(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct\+Nut(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::epsilon\+\_\+, mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::k\+\_\+, mesh, solve, and U\+\_\+.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::omega().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=225pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classFoam_1_1RASModels_1_1mixtureKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_aca8750ac64529f08a5e0ddbd69d538db}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_aca8750ac64529f08a5e0ddbd69d538db}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!Cmu\+\_\+@{Cmu\+\_\+}}
+\index{Cmu\+\_\+@{Cmu\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Cmu\+\_\+}{Cmu\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar Cmu\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 143 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a25ef984db7a92f8f2421ed817e616206}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a25ef984db7a92f8f2421ed817e616206}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!C1\+\_\+@{C1\+\_\+}}
+\index{C1\+\_\+@{C1\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{C1\+\_\+}{C1\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar C1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 144 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6ecae7b56fdac924dca1bf174f157f69}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6ecae7b56fdac924dca1bf174f157f69}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!C2\+\_\+@{C2\+\_\+}}
+\index{C2\+\_\+@{C2\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{C2\+\_\+}{C2\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar C2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 145 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_aed8039605824e63ab9ac285e15c70bb7}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_aed8039605824e63ab9ac285e15c70bb7}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!C3\+\_\+@{C3\+\_\+}}
+\index{C3\+\_\+@{C3\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{C3\+\_\+}{C3\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar C3\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 146 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a928506392267e759f5e7065ea4ce1dcb}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a928506392267e759f5e7065ea4ce1dcb}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!Cp\+\_\+@{Cp\+\_\+}}
+\index{Cp\+\_\+@{Cp\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Cp\+\_\+}{Cp\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar Cp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 147 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a1c4d80e34d39e7ffccd625df6016b6f7}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a1c4d80e34d39e7ffccd625df6016b6f7}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!sigmak\+\_\+@{sigmak\+\_\+}}
+\index{sigmak\+\_\+@{sigmak\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{sigmak\+\_\+}{sigmak\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar sigmak\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 148 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2f26c65464368e5619b31aa5d5392a19}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2f26c65464368e5619b31aa5d5392a19}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!sigma\+Eps\+\_\+@{sigma\+Eps\+\_\+}}
+\index{sigma\+Eps\+\_\+@{sigma\+Eps\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{sigma\+Eps\+\_\+}{sigmaEps\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar sigma\+Eps\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 149 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2166e9ffd139700fb0f21c44414e3545}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a2166e9ffd139700fb0f21c44414e3545}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!k\+\_\+@{k\+\_\+}}
+\index{k\+\_\+@{k\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{k\+\_\+}{k\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field k\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 153 of file mixture\+K\+Epsilon.\+H.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct(), and mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::k().
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a027dddd791551bd248d0fcacb013dd68}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a027dddd791551bd248d0fcacb013dd68}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!epsilon\+\_\+@{epsilon\+\_\+}}
+\index{epsilon\+\_\+@{epsilon\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{epsilon\+\_\+}{epsilon\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field epsilon\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 154 of file mixture\+K\+Epsilon.\+H.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct(), and mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::epsilon().
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_aae2210cfff2c76e68e12398c3e21c717}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_aae2210cfff2c76e68e12398c3e21c717}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!Ct2\+\_\+@{Ct2\+\_\+}}
+\index{Ct2\+\_\+@{Ct2\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Ct2\+\_\+}{Ct2\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ Ct2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 158 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6a1727ac1b9495fe87a3caec9ba742b1}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a6a1727ac1b9495fe87a3caec9ba742b1}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!rhom\+\_\+@{rhom\+\_\+}}
+\index{rhom\+\_\+@{rhom\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{rhom\+\_\+}{rhom\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ rhom\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 159 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_a844a88970f0a98d219eac0603ecc21b6}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_a844a88970f0a98d219eac0603ecc21b6}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!km\+\_\+@{km\+\_\+}}
+\index{km\+\_\+@{km\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{km\+\_\+}{km\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ km\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 160 of file mixture\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad5e528caf764b09f47f74b00a2a9a808}\label{classFoam_1_1RASModels_1_1mixtureKEpsilon_ad5e528caf764b09f47f74b00a2a9a808}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}!epsilonm\+\_\+@{epsilonm\+\_\+}}
+\index{epsilonm\+\_\+@{epsilonm\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::mixture\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{epsilonm\+\_\+}{epsilonm\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ epsilonm\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 161 of file mixture\+K\+Epsilon.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/turbulence\+Models/mixture\+K\+Epsilon/\hyperlink{mixtureKEpsilon_8H}{mixture\+K\+Epsilon.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/turbulence\+Models/mixture\+K\+Epsilon/\hyperlink{mixtureKEpsilon_8C}{mixture\+K\+Epsilon.\+C}\end{DoxyCompactItemize}

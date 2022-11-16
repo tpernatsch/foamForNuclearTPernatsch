@@ -1,0 +1,402 @@
+\hypertarget{UEqns__2p_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/\+U\+Eqns\+\_\+2p.H File Reference}
+\label{UEqns__2p_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/\+U\+Eqns\+\_\+2p.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/\+U\+Eqns\+\_\+2p.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{UEqns__2p_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+vol\+Vector\+Field \& \hyperlink{UEqns__2p_8H_a36d208f2338b1dd1ec90b2b1333d5f42}{U1} (\hyperlink{UEqn__1pl_8H_abe23fa3afe09cc511569a7dca4160561}{fluid1\+\_\+.\+U}())
+\item 
+vol\+Vector\+Field \& \hyperlink{UEqns__2p_8H_af55bc79119bfe60c39e86c5ddf988e7a}{U2} (\hyperlink{UEqn__1pl_8H_abe23fa3afe09cc511569a7dca4160561}{fluid2\+\_\+.\+U}())
+\item 
+const vol\+Scalar\+Field \& \hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1} (fluid1\+\_\+)
+\item 
+const vol\+Scalar\+Field \& \hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2} (fluid2\+\_\+)
+\item 
+vol\+Scalar\+Field \& \hyperlink{UEqns__2p_8H_a80ad9333a5b4812b1033ab05efb3a65d}{rho1} (\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{fluid1\+\_\+.\+rho}())
+\item 
+vol\+Scalar\+Field \& \hyperlink{UEqns__2p_8H_a2a5e0e37e61560baf7b55ce8b70e01c0}{rho2} (\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{fluid2\+\_\+.\+rho}())
+\item 
+fv\+Vector\+Matrix \hyperlink{UEqns__2p_8H_aae13b369a8a095eff1fbd9502846e5ed}{U\+Eqn1} (\hyperlink{UEqns__2p_8H_a36d208f2338b1dd1ec90b2b1333d5f42}{U1}, dim\+Mass $\ast$dim\+Length/dim\+Time/dim\+Time)
+\item 
+fv\+Vector\+Matrix \hyperlink{UEqns__2p_8H_a22a244ef3f804b6129767149e4ff2e95}{U\+Eqn2} (\hyperlink{UEqns__2p_8H_af55bc79119bfe60c39e86c5ddf988e7a}{U2}, dim\+Mass $\ast$dim\+Length/dim\+Time/dim\+Time)
+\item 
+vol\+Scalar\+Field \hyperlink{UEqns__2p_8H_a3c803536c288a716ede4363139595977}{fluid10} (fluid1\+\_\+)
+\item 
+vol\+Scalar\+Field \hyperlink{UEqns__2p_8H_a02f706144cdc92fb5b9b6d4991109e32}{fluid20} (fluid2\+\_\+)
+\item 
+fluid1\+\_\+ \hyperlink{UEqns__2p_8H_a1769aacd25eec8e30f213b1c177e12d6}{turbulence} ().\hyperlink{hEqn_8H_a3a2458f7f54158be848527a3fdedd5dd}{correct}()
+\item 
+const vol\+Scalar\+Field \& \hyperlink{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}{Kd12} (F\+F\+Pair\+\_\+.\+Kd())
+\item 
+const vol\+Tensor\+Field \& \hyperlink{UEqns__2p_8H_aa1b00e7ca6e3dff3ac8d9fec497ff62a}{Kd1s} (F1\+S\+Pair\+\_\+.\+Kd())
+\item 
+const vol\+Tensor\+Field \& \hyperlink{UEqns__2p_8H_a853f2977c4ca96ca44d537739d24d707}{Kd2s} (F2\+S\+Pair\+\_\+.\+Kd())
+\item 
+vol\+Scalar\+Field \hyperlink{UEqns__2p_8H_af0c0b1dc192a2846ed0d497c6b4b56a7}{nu\+Eff2} (\hyperlink{UEqns__2p_8H_a1769aacd25eec8e30f213b1c177e12d6}{fluid2\+\_\+.\+turbulence}().\hyperlink{UEqn__1pl_8H_a45b99c6eed207f4b52ba0f4a48682586}{nu\+Eff}()())
+\item 
+\hyperlink{UEqns__2p_8H_a97ae903740550c29a2c4daa299c86967}{if} (F\+F\+Pair\+\_\+.\+phase\+Change())
+\item 
+F\+F\+Pair\+\_\+ \hyperlink{UEqns__2p_8H_a5d47249e0353755ef05fa72ce53ed5b7}{add\+Virtual\+Mass\+Force} (\hyperlink{UEqns__2p_8H_aae13b369a8a095eff1fbd9502846e5ed}{U\+Eqn1})
+\item 
+F\+F\+Pair\+\_\+ \hyperlink{UEqns__2p_8H_a91493c7bfd156a6f4d2a7d1bad26fca6}{add\+Virtual\+Mass\+Force} (\hyperlink{UEqns__2p_8H_a22a244ef3f804b6129767149e4ff2e95}{U\+Eqn2})
+\item 
+\hyperlink{UEqns__2p_8H_af1e25f96fb77d3d5e95a4bfcfa302a5b}{if} (partial\+Elimination\+Mode\+\_\+ !=partial\+Elimination\+Mode\+::implicit)
+\item 
+\hyperlink{UEqns__2p_8H_adbc397c1ba3b678cf4aa2e28cff527d8}{if} (momentum\+Mode\+\_\+ !=momentum\+Mode\+::face\+Centered)
+\item 
+scalar \hyperlink{UEqns__2p_8H_a41a371debc8f4fa40469231470618dda}{c} (pimple\+\_\+.\+dict().lookup\+Or\+Default$<$ scalar $>$(\char`\"{}continuity\+Error\+Scale\+Factor\char`\"{}, 1.\+0))
+\item 
+\hyperlink{UEqns__2p_8H_aee351757b3664beb7bf808cf73ab6447}{switch} (U\+Cont\+Err\+Compensation\+Mode\+\_\+)
+\item 
+fv\+Options\+\_\+ \hyperlink{UEqns__2p_8H_ac80de419cb7619e208e83703d65a25f3}{constrain} (\hyperlink{UEqns__2p_8H_aae13b369a8a095eff1fbd9502846e5ed}{U\+Eqn1})
+\item 
+fv\+Options\+\_\+ \hyperlink{UEqns__2p_8H_ac860d508f187a8c6f977225a619722d1}{correct} (\hyperlink{UEqns__2p_8H_a36d208f2338b1dd1ec90b2b1333d5f42}{U1})
+\item 
+fv\+Options\+\_\+ \hyperlink{UEqns__2p_8H_a6ba298cfb6cb3a2323e9d07a6d33fa05}{constrain} (\hyperlink{UEqns__2p_8H_a22a244ef3f804b6129767149e4ff2e95}{U\+Eqn2})
+\item 
+fv\+Options\+\_\+ \hyperlink{UEqns__2p_8H_a5d6c5de5f4047930e6ba910e27399db8}{correct} (\hyperlink{UEqns__2p_8H_af55bc79119bfe60c39e86c5ddf988e7a}{U2})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{UEqns__2p_8H_ac3b68d7f14e859dbaf0e8c9b850c0288}{U\+Eqn1}
+\item 
+\hyperlink{UEqns__2p_8H_ab77d5a05bf95d2d48d8283c9d3567de7}{U\+Eqn2}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{UEqns__2p_8H_a36d208f2338b1dd1ec90b2b1333d5f42}\label{UEqns__2p_8H_a36d208f2338b1dd1ec90b2b1333d5f42}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!U1@{U1}}
+\index{U1@{U1}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{U1()}{U1()}}
+{\footnotesize\ttfamily vol\+Vector\+Field\& U1 (\begin{DoxyParamCaption}\item[{fluid1\+\_\+.}]{U() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and switch().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{UEqns__2p_8H_a36d208f2338b1dd1ec90b2b1333d5f42_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_af55bc79119bfe60c39e86c5ddf988e7a}\label{UEqns__2p_8H_af55bc79119bfe60c39e86c5ddf988e7a}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!U2@{U2}}
+\index{U2@{U2}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{U2()}{U2()}}
+{\footnotesize\ttfamily vol\+Vector\+Field\& U2 (\begin{DoxyParamCaption}\item[{fluid2\+\_\+.}]{U() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and switch().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{UEqns__2p_8H_af55bc79119bfe60c39e86c5ddf988e7a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}\label{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!alpha1@{alpha1}}
+\index{alpha1@{alpha1}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alpha1()}{alpha1()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& alpha1 (\begin{DoxyParamCaption}\item[{fluid1\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}\label{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!alpha2@{alpha2}}
+\index{alpha2@{alpha2}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alpha2()}{alpha2()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& alpha2 (\begin{DoxyParamCaption}\item[{fluid2\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_a80ad9333a5b4812b1033ab05efb3a65d}\label{UEqns__2p_8H_a80ad9333a5b4812b1033ab05efb3a65d}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!rho1@{rho1}}
+\index{rho1@{rho1}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{rho1()}{rho1()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& rho1 (\begin{DoxyParamCaption}\item[{fluid1\+\_\+.}]{rho() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=180pt]{UEqns__2p_8H_a80ad9333a5b4812b1033ab05efb3a65d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_a2a5e0e37e61560baf7b55ce8b70e01c0}\label{UEqns__2p_8H_a2a5e0e37e61560baf7b55ce8b70e01c0}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!rho2@{rho2}}
+\index{rho2@{rho2}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{rho2()}{rho2()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& rho2 (\begin{DoxyParamCaption}\item[{fluid2\+\_\+.}]{rho() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=180pt]{UEqns__2p_8H_a2a5e0e37e61560baf7b55ce8b70e01c0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_aae13b369a8a095eff1fbd9502846e5ed}\label{UEqns__2p_8H_aae13b369a8a095eff1fbd9502846e5ed}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!U\+Eqn1@{U\+Eqn1}}
+\index{U\+Eqn1@{U\+Eqn1}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{U\+Eqn1()}{UEqn1()}}
+{\footnotesize\ttfamily fv\+Vector\+Matrix U\+Eqn1 (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_a36d208f2338b1dd1ec90b2b1333d5f42}{U1}}]{,  }\item[{dim\+Mass $\ast$dim\+Length/dim\+Time/}]{dim\+Time }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a22a244ef3f804b6129767149e4ff2e95}\label{UEqns__2p_8H_a22a244ef3f804b6129767149e4ff2e95}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!U\+Eqn2@{U\+Eqn2}}
+\index{U\+Eqn2@{U\+Eqn2}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{U\+Eqn2()}{UEqn2()}}
+{\footnotesize\ttfamily fv\+Vector\+Matrix U\+Eqn2 (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_af55bc79119bfe60c39e86c5ddf988e7a}{U2}}]{,  }\item[{dim\+Mass $\ast$dim\+Length/dim\+Time/}]{dim\+Time }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a3c803536c288a716ede4363139595977}\label{UEqns__2p_8H_a3c803536c288a716ede4363139595977}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!fluid10@{fluid10}}
+\index{fluid10@{fluid10}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{fluid10()}{fluid10()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field fluid10 (\begin{DoxyParamCaption}\item[{fluid1\+\_\+}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a02f706144cdc92fb5b9b6d4991109e32}\label{UEqns__2p_8H_a02f706144cdc92fb5b9b6d4991109e32}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!fluid20@{fluid20}}
+\index{fluid20@{fluid20}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{fluid20()}{fluid20()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field fluid20 (\begin{DoxyParamCaption}\item[{fluid2\+\_\+}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a1769aacd25eec8e30f213b1c177e12d6}\label{UEqns__2p_8H_a1769aacd25eec8e30f213b1c177e12d6}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!turbulence@{turbulence}}
+\index{turbulence@{turbulence}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{turbulence()}{turbulence()}}
+{\footnotesize\ttfamily fluid1\+\_\+ turbulence (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}\label{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!Kd12@{Kd12}}
+\index{Kd12@{Kd12}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kd12()}{Kd12()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Kd12 (\begin{DoxyParamCaption}\item[{F\+F\+Pair\+\_\+.}]{Kd() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_aa1b00e7ca6e3dff3ac8d9fec497ff62a}\label{UEqns__2p_8H_aa1b00e7ca6e3dff3ac8d9fec497ff62a}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!Kd1s@{Kd1s}}
+\index{Kd1s@{Kd1s}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kd1s()}{Kd1s()}}
+{\footnotesize\ttfamily const vol\+Tensor\+Field\& Kd1s (\begin{DoxyParamCaption}\item[{F1\+S\+Pair\+\_\+.}]{Kd() }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a853f2977c4ca96ca44d537739d24d707}\label{UEqns__2p_8H_a853f2977c4ca96ca44d537739d24d707}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!Kd2s@{Kd2s}}
+\index{Kd2s@{Kd2s}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kd2s()}{Kd2s()}}
+{\footnotesize\ttfamily const vol\+Tensor\+Field\& Kd2s (\begin{DoxyParamCaption}\item[{F2\+S\+Pair\+\_\+.}]{Kd() }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_af0c0b1dc192a2846ed0d497c6b4b56a7}\label{UEqns__2p_8H_af0c0b1dc192a2846ed0d497c6b4b56a7}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!nu\+Eff2@{nu\+Eff2}}
+\index{nu\+Eff2@{nu\+Eff2}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{nu\+Eff2()}{nuEff2()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field nu\+Eff2 (\begin{DoxyParamCaption}\item[{fluid2\+\_\+.}]{turbulence).\+nu\+Eff()( }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a97ae903740550c29a2c4daa299c86967}\label{UEqns__2p_8H_a97ae903740550c29a2c4daa299c86967}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!if@{if}}
+\index{if@{if}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{F\+F\+Pair\+\_\+.}]{phase\+Change() }\end{DoxyParamCaption})}
+
+
+
+Definition at line 136 of file U\+Eqns\+\_\+2p.\+H.
+
+
+
+References U\+Eqn1, and U\+Eqn2.
+
+\mbox{\Hypertarget{UEqns__2p_8H_a5d47249e0353755ef05fa72ce53ed5b7}\label{UEqns__2p_8H_a5d47249e0353755ef05fa72ce53ed5b7}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!add\+Virtual\+Mass\+Force@{add\+Virtual\+Mass\+Force}}
+\index{add\+Virtual\+Mass\+Force@{add\+Virtual\+Mass\+Force}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{add\+Virtual\+Mass\+Force()}{addVirtualMassForce()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily F\+F\+Pair\+\_\+ add\+Virtual\+Mass\+Force (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_aae13b369a8a095eff1fbd9502846e5ed}{U\+Eqn1}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a91493c7bfd156a6f4d2a7d1bad26fca6}\label{UEqns__2p_8H_a91493c7bfd156a6f4d2a7d1bad26fca6}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!add\+Virtual\+Mass\+Force@{add\+Virtual\+Mass\+Force}}
+\index{add\+Virtual\+Mass\+Force@{add\+Virtual\+Mass\+Force}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{add\+Virtual\+Mass\+Force()}{addVirtualMassForce()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily F\+F\+Pair\+\_\+ add\+Virtual\+Mass\+Force (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_a22a244ef3f804b6129767149e4ff2e95}{U\+Eqn2}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_af1e25f96fb77d3d5e95a4bfcfa302a5b}\label{UEqns__2p_8H_af1e25f96fb77d3d5e95a4bfcfa302a5b}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!if@{if}}
+\index{if@{if}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{partial\+Elimination\+Mode\+\_\+ !}]{ = {\ttfamily partialEliminationMode\+:\+:implicit} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 151 of file U\+Eqns\+\_\+2p.\+H.
+
+
+
+References Kd12(), U1(), U2(), U\+Eqn1, and U\+Eqn2.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{UEqns__2p_8H_af1e25f96fb77d3d5e95a4bfcfa302a5b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_adbc397c1ba3b678cf4aa2e28cff527d8}\label{UEqns__2p_8H_adbc397c1ba3b678cf4aa2e28cff527d8}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!if@{if}}
+\index{if@{if}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{momentum\+Mode\+\_\+ !}]{ = {\ttfamily momentumMode\+:\+:faceCentered} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 159 of file U\+Eqns\+\_\+2p.\+H.
+
+
+
+References alpha1(), alpha2(), c(), rho1(), rho2(), U1(), U2(), U\+Eqn1, and U\+Eqn2.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{UEqns__2p_8H_adbc397c1ba3b678cf4aa2e28cff527d8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_a41a371debc8f4fa40469231470618dda}\label{UEqns__2p_8H_a41a371debc8f4fa40469231470618dda}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!c@{c}}
+\index{c@{c}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{c()}{c()}}
+{\footnotesize\ttfamily scalar c (\begin{DoxyParamCaption}\item[{pimple\+\_\+.}]{dict).\+lookup\+Or\+Default$<$ scalar $>$(\char`\"{}continuity\+Error\+Scale\+Factor\char`\"{}, 1.\+0 }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=174pt]{UEqns__2p_8H_a41a371debc8f4fa40469231470618dda_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_aee351757b3664beb7bf808cf73ab6447}\label{UEqns__2p_8H_aee351757b3664beb7bf808cf73ab6447}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!switch@{switch}}
+\index{switch@{switch}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{switch()}{switch()}}
+{\footnotesize\ttfamily switch (\begin{DoxyParamCaption}\item[{U\+Cont\+Err\+Compensation\+Mode\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 174 of file U\+Eqns\+\_\+2p.\+H.
+
+
+
+References U1(), U2(), U\+Eqn1, and U\+Eqn2.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{UEqns__2p_8H_aee351757b3664beb7bf808cf73ab6447_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{UEqns__2p_8H_ac80de419cb7619e208e83703d65a25f3}\label{UEqns__2p_8H_ac80de419cb7619e208e83703d65a25f3}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!constrain@{constrain}}
+\index{constrain@{constrain}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{constrain()}{constrain()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily fv\+Options\+\_\+ constrain (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_aae13b369a8a095eff1fbd9502846e5ed}{U\+Eqn1}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_ac860d508f187a8c6f977225a619722d1}\label{UEqns__2p_8H_ac860d508f187a8c6f977225a619722d1}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!correct@{correct}}
+\index{correct@{correct}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{correct()}{correct()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily fv\+Options\+\_\+ correct (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_a36d208f2338b1dd1ec90b2b1333d5f42}{U1}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a6ba298cfb6cb3a2323e9d07a6d33fa05}\label{UEqns__2p_8H_a6ba298cfb6cb3a2323e9d07a6d33fa05}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!constrain@{constrain}}
+\index{constrain@{constrain}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{constrain()}{constrain()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily fv\+Options\+\_\+ constrain (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_a22a244ef3f804b6129767149e4ff2e95}{U\+Eqn2}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{UEqns__2p_8H_a5d6c5de5f4047930e6ba910e27399db8}\label{UEqns__2p_8H_a5d6c5de5f4047930e6ba910e27399db8}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!correct@{correct}}
+\index{correct@{correct}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{correct()}{correct()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily fv\+Options\+\_\+ correct (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_af55bc79119bfe60c39e86c5ddf988e7a}{U2}}]{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{UEqns__2p_8H_ac3b68d7f14e859dbaf0e8c9b850c0288}\label{UEqns__2p_8H_ac3b68d7f14e859dbaf0e8c9b850c0288}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!U\+Eqn1@{U\+Eqn1}}
+\index{U\+Eqn1@{U\+Eqn1}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{U\+Eqn1}{UEqn1}}
+{\footnotesize\ttfamily U\+Eqn1}
+
+
+
+Definition at line 54 of file U\+Eqns\+\_\+2p.\+H.
+
+
+
+Referenced by if(), switch(), and while().
+
+\mbox{\Hypertarget{UEqns__2p_8H_ab77d5a05bf95d2d48d8283c9d3567de7}\label{UEqns__2p_8H_ab77d5a05bf95d2d48d8283c9d3567de7}} 
+\index{U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}!U\+Eqn2@{U\+Eqn2}}
+\index{U\+Eqn2@{U\+Eqn2}!U\+Eqns\+\_\+2p.\+H@{U\+Eqns\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{U\+Eqn2}{UEqn2}}
+{\footnotesize\ttfamily U\+Eqn2}
+
+
+
+Definition at line 94 of file U\+Eqns\+\_\+2p.\+H.
+
+
+
+Referenced by if(), switch(), and while().
+

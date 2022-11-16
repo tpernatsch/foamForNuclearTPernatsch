@@ -1,0 +1,599 @@
+\hypertarget{classFoam_1_1multiphysicsControl}{}\section{multiphysics\+Control Class Reference}
+\label{classFoam_1_1multiphysicsControl}\index{multiphysics\+Control@{multiphysics\+Control}}
+
+
+Inheritance diagram for multiphysics\+Control\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{classFoam_1_1multiphysicsControl__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for multiphysics\+Control\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{classFoam_1_1multiphysicsControl__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1multiphysicsControl_a1a21dba53591e4ac438c136ff08431d4}{Type\+Name} (\char`\"{}multiphysics\+Control\char`\"{})
+\item 
+\hyperlink{classFoam_1_1multiphysicsControl_a516f632110c1526d2feb7ad4aa5f96cb}{multiphysics\+Control} (const Time \&run\+Time, fv\+Mesh \&T\+H\+Mesh, fv\+Mesh \&N\+Mesh, fv\+Mesh \&T\+M\+Mesh)
+\item 
+virtual \hyperlink{classFoam_1_1multiphysicsControl_a7729ac49402cd44d8c563bd7768f8c23}{$\sim$multiphysics\+Control} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1multiphysicsControl_af816873151ddb0126e98bb2f914d8ed5}{read} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1multiphysicsControl_adf77b77054c2d4c23b70556fe767f23e}{loop} ()
+\item 
+const dictionary \& \hyperlink{classFoam_1_1multiphysicsControl_a231c754952bbec07457ea05c03ec91f6}{top\+Level\+Dict} () const
+\item 
+const dictionary \& \hyperlink{classFoam_1_1multiphysicsControl_a40f6fcba572beb5e5daffe1559a07e7c}{thermal\+Hydraulics\+Dict} () const
+\item 
+const dictionary \& \hyperlink{classFoam_1_1multiphysicsControl_aacdb5e3c6cd56ce91a7baadfcb8bc061}{neutronics\+Dict} () const
+\item 
+const dictionary \& \hyperlink{classFoam_1_1multiphysicsControl_a5a7a64bf607870c94d234581444f1102}{thermo\+Mechanics\+Dict} () const
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_a7673cb2daf7aa992cc1c55e4f37b7d36}{solve\+Fluid\+Mechanics} () const
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_ad8fff023499dda7fdbd2c81a31861e0e}{solve\+Energy} () const
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_ac6145d491fb669957dc010cd38ebcc35}{solve\+Neutronics} () const
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_a1802a25723969278d0a1dd57abbc1611}{solve\+Thermo\+Mechanics} () const
+\item 
+const label \& \hyperlink{classFoam_1_1multiphysicsControl_a5247e4528d54b1fd494777b5e8b5f0c8}{n\+Outer\+Correctors} () const
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_aa143142d0978efbc7d57e5b08f5a941b}{tightly\+Coupled} () const
+\item 
+const scalar \& \hyperlink{classFoam_1_1multiphysicsControl_a288322a24a6195966cc616b0cfc01760}{time\+Step\+Residual} () const
+\item 
+const label \& \hyperlink{classFoam_1_1multiphysicsControl_a528b923003af65d04bd5b33e3069e057}{max\+Time\+Step\+Iterations} () const
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_acdbd914add6a8c8c9a09276fa003206e}{liquid\+Fuel} () const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const Time \& \hyperlink{classFoam_1_1multiphysicsControl_a8e84834799e62c4db747387a5ac21c78}{run\+Time\+\_\+}
+\item 
+fv\+Mesh \& \hyperlink{classFoam_1_1multiphysicsControl_aaa2e81e0391d923443a69d2fdfd3f019}{thermal\+Hydraulic\+Mesh\+\_\+}
+\item 
+fv\+Mesh \& \hyperlink{classFoam_1_1multiphysicsControl_a4c724e2b67effdcbe7fb2f07bb54b451}{neutronic\+Mesh\+\_\+}
+\item 
+fv\+Mesh \& \hyperlink{classFoam_1_1multiphysicsControl_a15b45777d69480c07a6f55a4592bcfed}{thermo\+Mechanic\+Mesh\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1multiphysicsControl_a7eff7514276e3ed2457c12cb4f9fa2b5}{top\+Level\+Dict\+\_\+}
+\item 
+const dictionary \& \hyperlink{classFoam_1_1multiphysicsControl_aaec86d5ff5c09bd92fed152511fd2157}{thermal\+Hydraulic\+Dict\+\_\+}
+\item 
+const dictionary \& \hyperlink{classFoam_1_1multiphysicsControl_af7e38e6089ee0698477645174dca70df}{neutronic\+Dict\+\_\+}
+\item 
+const dictionary \& \hyperlink{classFoam_1_1multiphysicsControl_ada048303635c403ad16bb119cbca5e6e}{thermo\+Mechanic\+Dict\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_a61e49ad2dc69912019f1a585353efc36}{solve\+Energy\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_ac71a84f5e214a5ef8eecc8eeb78cb181}{solve\+Neutronics\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_ab791b50e0e6d7f36b5dda939f1426914}{solve\+Thermo\+Mechanics\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_ace96c2451c51ae6a58533506af2b2ac6}{tightly\+Coupled\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1multiphysicsControl_aeeb527045747f19d73cf0987e3df28ba}{time\+Step\+Residual\+\_\+}
+\item 
+label \hyperlink{classFoam_1_1multiphysicsControl_ad189249675714cfcdcf8ca42d7751ee5}{max\+Time\+Step\+Iterations\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1multiphysicsControl_af11691a185a4d561900c44d810050ddb}{liquid\+Fuel\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/multiphysicsControl/multiphysicsControl.H}{\tt multiphysics\+Control.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/multiphysicsControl/multiphysicsControl.C}{\tt multiphysics\+Control.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 48 of file multiphysics\+Control.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a516f632110c1526d2feb7ad4aa5f96cb}\label{classFoam_1_1multiphysicsControl_a516f632110c1526d2feb7ad4aa5f96cb}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!multiphysics\+Control@{multiphysics\+Control}}
+\index{multiphysics\+Control@{multiphysics\+Control}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{multiphysics\+Control()}{multiphysicsControl()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1multiphysicsControl}{multiphysics\+Control} (\begin{DoxyParamCaption}\item[{const Time \&}]{run\+Time,  }\item[{fv\+Mesh \&}]{T\+H\+Mesh,  }\item[{fv\+Mesh \&}]{N\+Mesh,  }\item[{fv\+Mesh \&}]{T\+M\+Mesh }\end{DoxyParamCaption})}
+
+
+
+Definition at line 31 of file multiphysics\+Control.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a7729ac49402cd44d8c563bd7768f8c23}\label{classFoam_1_1multiphysicsControl_a7729ac49402cd44d8c563bd7768f8c23}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!````~multiphysics\+Control@{$\sim$multiphysics\+Control}}
+\index{````~multiphysics\+Control@{$\sim$multiphysics\+Control}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{$\sim$multiphysics\+Control()}{~multiphysicsControl()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1multiphysicsControl}{multiphysics\+Control} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 102 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::loop(), and multiphysics\+Control\+::read().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{classFoam_1_1multiphysicsControl_a7729ac49402cd44d8c563bd7768f8c23_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a1a21dba53591e4ac438c136ff08431d4}\label{classFoam_1_1multiphysicsControl_a1a21dba53591e4ac438c136ff08431d4}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}multiphysics\+Control\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_af816873151ddb0126e98bb2f914d8ed5}\label{classFoam_1_1multiphysicsControl_af816873151ddb0126e98bb2f914d8ed5}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!read@{read}}
+\index{read@{read}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily bool read (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1customPimpleControl_af816873151ddb0126e98bb2f914d8ed5}{custom\+Pimple\+Control}.
+
+
+
+Definition at line 145 of file multiphysics\+Control.\+C.
+
+
+
+References custom\+Pimple\+Control\+::read().
+
+
+
+Referenced by multiphysics\+Control\+::$\sim$multiphysics\+Control().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{classFoam_1_1multiphysicsControl_af816873151ddb0126e98bb2f914d8ed5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{classFoam_1_1multiphysicsControl_af816873151ddb0126e98bb2f914d8ed5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_adf77b77054c2d4c23b70556fe767f23e}\label{classFoam_1_1multiphysicsControl_adf77b77054c2d4c23b70556fe767f23e}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!loop@{loop}}
+\index{loop@{loop}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{loop()}{loop()}}
+{\footnotesize\ttfamily bool loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1customPimpleControl_adf77b77054c2d4c23b70556fe767f23e}{custom\+Pimple\+Control}.
+
+
+
+Definition at line 78 of file multiphysics\+Control.\+C.
+
+
+
+References custom\+Pimple\+Control\+::criteria\+Satisfied().
+
+
+
+Referenced by main(), and multiphysics\+Control\+::$\sim$multiphysics\+Control().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{classFoam_1_1multiphysicsControl_adf77b77054c2d4c23b70556fe767f23e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=260pt]{classFoam_1_1multiphysicsControl_adf77b77054c2d4c23b70556fe767f23e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a231c754952bbec07457ea05c03ec91f6}\label{classFoam_1_1multiphysicsControl_a231c754952bbec07457ea05c03ec91f6}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!top\+Level\+Dict@{top\+Level\+Dict}}
+\index{top\+Level\+Dict@{top\+Level\+Dict}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{top\+Level\+Dict()}{topLevelDict()}}
+{\footnotesize\ttfamily const dictionary\& top\+Level\+Dict (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 117 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::top\+Level\+Dict\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a40f6fcba572beb5e5daffe1559a07e7c}\label{classFoam_1_1multiphysicsControl_a40f6fcba572beb5e5daffe1559a07e7c}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!thermal\+Hydraulics\+Dict@{thermal\+Hydraulics\+Dict}}
+\index{thermal\+Hydraulics\+Dict@{thermal\+Hydraulics\+Dict}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{thermal\+Hydraulics\+Dict()}{thermalHydraulicsDict()}}
+{\footnotesize\ttfamily const dictionary\& thermal\+Hydraulics\+Dict (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 122 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::thermal\+Hydraulic\+Dict\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_aacdb5e3c6cd56ce91a7baadfcb8bc061}\label{classFoam_1_1multiphysicsControl_aacdb5e3c6cd56ce91a7baadfcb8bc061}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!neutronics\+Dict@{neutronics\+Dict}}
+\index{neutronics\+Dict@{neutronics\+Dict}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{neutronics\+Dict()}{neutronicsDict()}}
+{\footnotesize\ttfamily const dictionary\& neutronics\+Dict (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 127 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::neutronic\+Dict\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a5a7a64bf607870c94d234581444f1102}\label{classFoam_1_1multiphysicsControl_a5a7a64bf607870c94d234581444f1102}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!thermo\+Mechanics\+Dict@{thermo\+Mechanics\+Dict}}
+\index{thermo\+Mechanics\+Dict@{thermo\+Mechanics\+Dict}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{thermo\+Mechanics\+Dict()}{thermoMechanicsDict()}}
+{\footnotesize\ttfamily const dictionary\& thermo\+Mechanics\+Dict (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 132 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::thermo\+Mechanic\+Dict\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a7673cb2daf7aa992cc1c55e4f37b7d36}\label{classFoam_1_1multiphysicsControl_a7673cb2daf7aa992cc1c55e4f37b7d36}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!solve\+Fluid\+Mechanics@{solve\+Fluid\+Mechanics}}
+\index{solve\+Fluid\+Mechanics@{solve\+Fluid\+Mechanics}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{solve\+Fluid\+Mechanics()}{solveFluidMechanics()}}
+{\footnotesize\ttfamily bool solve\+Fluid\+Mechanics (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 137 of file multiphysics\+Control.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_ad8fff023499dda7fdbd2c81a31861e0e}\label{classFoam_1_1multiphysicsControl_ad8fff023499dda7fdbd2c81a31861e0e}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!solve\+Energy@{solve\+Energy}}
+\index{solve\+Energy@{solve\+Energy}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{solve\+Energy()}{solveEnergy()}}
+{\footnotesize\ttfamily bool solve\+Energy (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 142 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::solve\+Energy\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_ac6145d491fb669957dc010cd38ebcc35}\label{classFoam_1_1multiphysicsControl_ac6145d491fb669957dc010cd38ebcc35}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!solve\+Neutronics@{solve\+Neutronics}}
+\index{solve\+Neutronics@{solve\+Neutronics}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{solve\+Neutronics()}{solveNeutronics()}}
+{\footnotesize\ttfamily bool solve\+Neutronics (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 147 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::solve\+Neutronics\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a1802a25723969278d0a1dd57abbc1611}\label{classFoam_1_1multiphysicsControl_a1802a25723969278d0a1dd57abbc1611}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!solve\+Thermo\+Mechanics@{solve\+Thermo\+Mechanics}}
+\index{solve\+Thermo\+Mechanics@{solve\+Thermo\+Mechanics}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{solve\+Thermo\+Mechanics()}{solveThermoMechanics()}}
+{\footnotesize\ttfamily bool solve\+Thermo\+Mechanics (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 152 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::solve\+Thermo\+Mechanics\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a5247e4528d54b1fd494777b5e8b5f0c8}\label{classFoam_1_1multiphysicsControl_a5247e4528d54b1fd494777b5e8b5f0c8}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!n\+Outer\+Correctors@{n\+Outer\+Correctors}}
+\index{n\+Outer\+Correctors@{n\+Outer\+Correctors}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{n\+Outer\+Correctors()}{nOuterCorrectors()}}
+{\footnotesize\ttfamily const label\& n\+Outer\+Correctors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 157 of file multiphysics\+Control.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_aa143142d0978efbc7d57e5b08f5a941b}\label{classFoam_1_1multiphysicsControl_aa143142d0978efbc7d57e5b08f5a941b}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!tightly\+Coupled@{tightly\+Coupled}}
+\index{tightly\+Coupled@{tightly\+Coupled}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{tightly\+Coupled()}{tightlyCoupled()}}
+{\footnotesize\ttfamily bool tightly\+Coupled (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 162 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::tightly\+Coupled\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a288322a24a6195966cc616b0cfc01760}\label{classFoam_1_1multiphysicsControl_a288322a24a6195966cc616b0cfc01760}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!time\+Step\+Residual@{time\+Step\+Residual}}
+\index{time\+Step\+Residual@{time\+Step\+Residual}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{time\+Step\+Residual()}{timeStepResidual()}}
+{\footnotesize\ttfamily const scalar\& time\+Step\+Residual (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 167 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::time\+Step\+Residual\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a528b923003af65d04bd5b33e3069e057}\label{classFoam_1_1multiphysicsControl_a528b923003af65d04bd5b33e3069e057}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!max\+Time\+Step\+Iterations@{max\+Time\+Step\+Iterations}}
+\index{max\+Time\+Step\+Iterations@{max\+Time\+Step\+Iterations}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{max\+Time\+Step\+Iterations()}{maxTimeStepIterations()}}
+{\footnotesize\ttfamily const label\& max\+Time\+Step\+Iterations (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 172 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::max\+Time\+Step\+Iterations\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_acdbd914add6a8c8c9a09276fa003206e}\label{classFoam_1_1multiphysicsControl_acdbd914add6a8c8c9a09276fa003206e}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!liquid\+Fuel@{liquid\+Fuel}}
+\index{liquid\+Fuel@{liquid\+Fuel}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{liquid\+Fuel()}{liquidFuel()}}
+{\footnotesize\ttfamily bool liquid\+Fuel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 177 of file multiphysics\+Control.\+H.
+
+
+
+References multiphysics\+Control\+::liquid\+Fuel\+\_\+.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a8e84834799e62c4db747387a5ac21c78}\label{classFoam_1_1multiphysicsControl_a8e84834799e62c4db747387a5ac21c78}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!run\+Time\+\_\+@{run\+Time\+\_\+}}
+\index{run\+Time\+\_\+@{run\+Time\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{run\+Time\+\_\+}{runTime\_}}
+{\footnotesize\ttfamily const Time\& run\+Time\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 55 of file multiphysics\+Control.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_aaa2e81e0391d923443a69d2fdfd3f019}\label{classFoam_1_1multiphysicsControl_aaa2e81e0391d923443a69d2fdfd3f019}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!thermal\+Hydraulic\+Mesh\+\_\+@{thermal\+Hydraulic\+Mesh\+\_\+}}
+\index{thermal\+Hydraulic\+Mesh\+\_\+@{thermal\+Hydraulic\+Mesh\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{thermal\+Hydraulic\+Mesh\+\_\+}{thermalHydraulicMesh\_}}
+{\footnotesize\ttfamily fv\+Mesh\& thermal\+Hydraulic\+Mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 58 of file multiphysics\+Control.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a4c724e2b67effdcbe7fb2f07bb54b451}\label{classFoam_1_1multiphysicsControl_a4c724e2b67effdcbe7fb2f07bb54b451}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!neutronic\+Mesh\+\_\+@{neutronic\+Mesh\+\_\+}}
+\index{neutronic\+Mesh\+\_\+@{neutronic\+Mesh\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{neutronic\+Mesh\+\_\+}{neutronicMesh\_}}
+{\footnotesize\ttfamily fv\+Mesh\& neutronic\+Mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 61 of file multiphysics\+Control.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a15b45777d69480c07a6f55a4592bcfed}\label{classFoam_1_1multiphysicsControl_a15b45777d69480c07a6f55a4592bcfed}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!thermo\+Mechanic\+Mesh\+\_\+@{thermo\+Mechanic\+Mesh\+\_\+}}
+\index{thermo\+Mechanic\+Mesh\+\_\+@{thermo\+Mechanic\+Mesh\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{thermo\+Mechanic\+Mesh\+\_\+}{thermoMechanicMesh\_}}
+{\footnotesize\ttfamily fv\+Mesh\& thermo\+Mechanic\+Mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 64 of file multiphysics\+Control.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a7eff7514276e3ed2457c12cb4f9fa2b5}\label{classFoam_1_1multiphysicsControl_a7eff7514276e3ed2457c12cb4f9fa2b5}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!top\+Level\+Dict\+\_\+@{top\+Level\+Dict\+\_\+}}
+\index{top\+Level\+Dict\+\_\+@{top\+Level\+Dict\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{top\+Level\+Dict\+\_\+}{topLevelDict\_}}
+{\footnotesize\ttfamily I\+Odictionary top\+Level\+Dict\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 66 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::top\+Level\+Dict().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_aaec86d5ff5c09bd92fed152511fd2157}\label{classFoam_1_1multiphysicsControl_aaec86d5ff5c09bd92fed152511fd2157}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!thermal\+Hydraulic\+Dict\+\_\+@{thermal\+Hydraulic\+Dict\+\_\+}}
+\index{thermal\+Hydraulic\+Dict\+\_\+@{thermal\+Hydraulic\+Dict\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{thermal\+Hydraulic\+Dict\+\_\+}{thermalHydraulicDict\_}}
+{\footnotesize\ttfamily const dictionary\& thermal\+Hydraulic\+Dict\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 67 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::thermal\+Hydraulics\+Dict().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_af7e38e6089ee0698477645174dca70df}\label{classFoam_1_1multiphysicsControl_af7e38e6089ee0698477645174dca70df}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!neutronic\+Dict\+\_\+@{neutronic\+Dict\+\_\+}}
+\index{neutronic\+Dict\+\_\+@{neutronic\+Dict\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{neutronic\+Dict\+\_\+}{neutronicDict\_}}
+{\footnotesize\ttfamily const dictionary\& neutronic\+Dict\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 68 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::neutronics\+Dict().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_ada048303635c403ad16bb119cbca5e6e}\label{classFoam_1_1multiphysicsControl_ada048303635c403ad16bb119cbca5e6e}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!thermo\+Mechanic\+Dict\+\_\+@{thermo\+Mechanic\+Dict\+\_\+}}
+\index{thermo\+Mechanic\+Dict\+\_\+@{thermo\+Mechanic\+Dict\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{thermo\+Mechanic\+Dict\+\_\+}{thermoMechanicDict\_}}
+{\footnotesize\ttfamily const dictionary\& thermo\+Mechanic\+Dict\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 69 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::thermo\+Mechanics\+Dict().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_a61e49ad2dc69912019f1a585353efc36}\label{classFoam_1_1multiphysicsControl_a61e49ad2dc69912019f1a585353efc36}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!solve\+Energy\+\_\+@{solve\+Energy\+\_\+}}
+\index{solve\+Energy\+\_\+@{solve\+Energy\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{solve\+Energy\+\_\+}{solveEnergy\_}}
+{\footnotesize\ttfamily bool solve\+Energy\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 74 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::solve\+Energy().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_ac71a84f5e214a5ef8eecc8eeb78cb181}\label{classFoam_1_1multiphysicsControl_ac71a84f5e214a5ef8eecc8eeb78cb181}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!solve\+Neutronics\+\_\+@{solve\+Neutronics\+\_\+}}
+\index{solve\+Neutronics\+\_\+@{solve\+Neutronics\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{solve\+Neutronics\+\_\+}{solveNeutronics\_}}
+{\footnotesize\ttfamily bool solve\+Neutronics\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 75 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::solve\+Neutronics().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_ab791b50e0e6d7f36b5dda939f1426914}\label{classFoam_1_1multiphysicsControl_ab791b50e0e6d7f36b5dda939f1426914}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!solve\+Thermo\+Mechanics\+\_\+@{solve\+Thermo\+Mechanics\+\_\+}}
+\index{solve\+Thermo\+Mechanics\+\_\+@{solve\+Thermo\+Mechanics\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{solve\+Thermo\+Mechanics\+\_\+}{solveThermoMechanics\_}}
+{\footnotesize\ttfamily bool solve\+Thermo\+Mechanics\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 76 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::solve\+Thermo\+Mechanics().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_ace96c2451c51ae6a58533506af2b2ac6}\label{classFoam_1_1multiphysicsControl_ace96c2451c51ae6a58533506af2b2ac6}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!tightly\+Coupled\+\_\+@{tightly\+Coupled\+\_\+}}
+\index{tightly\+Coupled\+\_\+@{tightly\+Coupled\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{tightly\+Coupled\+\_\+}{tightlyCoupled\_}}
+{\footnotesize\ttfamily bool tightly\+Coupled\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 80 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::tightly\+Coupled().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_aeeb527045747f19d73cf0987e3df28ba}\label{classFoam_1_1multiphysicsControl_aeeb527045747f19d73cf0987e3df28ba}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!time\+Step\+Residual\+\_\+@{time\+Step\+Residual\+\_\+}}
+\index{time\+Step\+Residual\+\_\+@{time\+Step\+Residual\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{time\+Step\+Residual\+\_\+}{timeStepResidual\_}}
+{\footnotesize\ttfamily scalar time\+Step\+Residual\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 81 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::time\+Step\+Residual().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_ad189249675714cfcdcf8ca42d7751ee5}\label{classFoam_1_1multiphysicsControl_ad189249675714cfcdcf8ca42d7751ee5}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!max\+Time\+Step\+Iterations\+\_\+@{max\+Time\+Step\+Iterations\+\_\+}}
+\index{max\+Time\+Step\+Iterations\+\_\+@{max\+Time\+Step\+Iterations\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{max\+Time\+Step\+Iterations\+\_\+}{maxTimeStepIterations\_}}
+{\footnotesize\ttfamily label max\+Time\+Step\+Iterations\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 82 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::max\+Time\+Step\+Iterations().
+
+\mbox{\Hypertarget{classFoam_1_1multiphysicsControl_af11691a185a4d561900c44d810050ddb}\label{classFoam_1_1multiphysicsControl_af11691a185a4d561900c44d810050ddb}} 
+\index{Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}!liquid\+Fuel\+\_\+@{liquid\+Fuel\+\_\+}}
+\index{liquid\+Fuel\+\_\+@{liquid\+Fuel\+\_\+}!Foam\+::multiphysics\+Control@{Foam\+::multiphysics\+Control}}
+\subsubsection{\texorpdfstring{liquid\+Fuel\+\_\+}{liquidFuel\_}}
+{\footnotesize\ttfamily bool liquid\+Fuel\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 85 of file multiphysics\+Control.\+H.
+
+
+
+Referenced by multiphysics\+Control\+::liquid\+Fuel().
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/multiphysics\+Control/\hyperlink{multiphysicsControl_8H}{multiphysics\+Control.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/multiphysics\+Control/\hyperlink{multiphysicsControl_8C}{multiphysics\+Control.\+C}\end{DoxyCompactItemize}

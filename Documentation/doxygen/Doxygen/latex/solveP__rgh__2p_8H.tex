@@ -1,0 +1,84 @@
+\hypertarget{solveP__rgh__2p_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqn\+Routines/solve\+P\+\_\+rgh\+\_\+2p.H File Reference}
+\label{solveP__rgh__2p_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqn\+Routines/solve\+P\+\_\+rgh\+\_\+2p.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqn\+Routines/solve\+P\+\_\+rgh\+\_\+2p.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{solveP__rgh__2p_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+fv\+Scalar\+Matrix \hyperlink{solveP__rgh__2p_8H_a73205a3cb71010293a28021e0feabba5}{p\+Eqn\+Incomp} (fvc\+::div(phi\+HbyA) -\/ fvm\+::laplacian(\hyperlink{calcrAUfSetSnGradCalcComp__1p_8H_a61479bb7ccdc1151cea5792eab56d00e}{r\+A\+Uf}, \hyperlink{updatePP__rghRho__2p_8H_a320090d1a3c1675778a59e981765c77c}{p\+\_\+rgh\+\_\+}))
+\item 
+fv\+Scalar\+Matrix \hyperlink{solveP__rgh__2p_8H_a2181bb507e6192fba9adef805bdb5892}{p\+Eqn} (\hyperlink{calcComp__2p_8H_a92a3a7292cb18de09b0b1a96a1f5b324}{p\+Eqn\+Comp1}()+\hyperlink{calcComp__2p_8H_a3df9c3de4511043ef8fa72f7853eeef1}{p\+Eqn\+Comp2}()+\hyperlink{solveP__rgh__2p_8H_a73205a3cb71010293a28021e0feabba5}{p\+Eqn\+Incomp})
+\item 
+\hyperlink{solveP__rgh__2p_8H_a2181bb507e6192fba9adef805bdb5892}{p\+Eqn} \hyperlink{solveP__rgh__2p_8H_a22a9c43bb854b6f7520f21547e12d319}{set\+Reference} (p\+Ref\+Cell\+\_\+, p\+Ref\+Value\+\_\+, force\+P\+Ref\+\_\+)
+\item 
+\hyperlink{solveP__rgh__2p_8H_a2181bb507e6192fba9adef805bdb5892}{p\+Eqn} \hyperlink{solveP__rgh__2p_8H_a062403939a36fe69962152b37352ba58}{relax} ()
+\item 
+\hyperlink{solveP__rgh__2p_8H_aaf40ea368460029d6221dfede253de7c}{if} (pimple\+\_\+.\+corr\+Non\+Ortho()==1) \hyperlink{pEqnf__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}{converged\+P\+I\+SO}
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{solveP__rgh__2p_8H_afcd780f72325f856f84ec1de84464211}{converged}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{solveP__rgh__2p_8H_a73205a3cb71010293a28021e0feabba5}\label{solveP__rgh__2p_8H_a73205a3cb71010293a28021e0feabba5}} 
+\index{solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}!p\+Eqn\+Incomp@{p\+Eqn\+Incomp}}
+\index{p\+Eqn\+Incomp@{p\+Eqn\+Incomp}!solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{p\+Eqn\+Incomp()}{pEqnIncomp()}}
+{\footnotesize\ttfamily fv\+Scalar\+Matrix p\+Eqn\+Incomp (\begin{DoxyParamCaption}\item[{fvc\+::div(phi\+HbyA) -\/ fvm\+::laplacian(\hyperlink{calcrAUfSetSnGradCalcComp__1p_8H_a61479bb7ccdc1151cea5792eab56d00e}{r\+A\+Uf}, \hyperlink{updatePP__rghRho__2p_8H_a320090d1a3c1675778a59e981765c77c}{p\+\_\+rgh\+\_\+})}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveP__rgh__2p_8H_a2181bb507e6192fba9adef805bdb5892}\label{solveP__rgh__2p_8H_a2181bb507e6192fba9adef805bdb5892}} 
+\index{solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}!p\+Eqn@{p\+Eqn}}
+\index{p\+Eqn@{p\+Eqn}!solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{p\+Eqn()}{pEqn()}}
+{\footnotesize\ttfamily fv\+Scalar\+Matrix p\+Eqn (\begin{DoxyParamCaption}\item[{\hyperlink{calcComp__2p_8H_a92a3a7292cb18de09b0b1a96a1f5b324}{p\+Eqn\+Comp1}()+\hyperlink{calcComp__2p_8H_a3df9c3de4511043ef8fa72f7853eeef1}{p\+Eqn\+Comp2}()+}]{p\+Eqn\+Incomp }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveP__rgh__2p_8H_a22a9c43bb854b6f7520f21547e12d319}\label{solveP__rgh__2p_8H_a22a9c43bb854b6f7520f21547e12d319}} 
+\index{solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}!set\+Reference@{set\+Reference}}
+\index{set\+Reference@{set\+Reference}!solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{set\+Reference()}{setReference()}}
+{\footnotesize\ttfamily \hyperlink{solveP__rgh__2p_8H_a2181bb507e6192fba9adef805bdb5892}{p\+Eqn} set\+Reference (\begin{DoxyParamCaption}\item[{p\+Ref\+Cell\+\_\+}]{,  }\item[{p\+Ref\+Value\+\_\+}]{,  }\item[{force\+P\+Ref\+\_\+}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveP__rgh__2p_8H_a062403939a36fe69962152b37352ba58}\label{solveP__rgh__2p_8H_a062403939a36fe69962152b37352ba58}} 
+\index{solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}!relax@{relax}}
+\index{relax@{relax}!solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{relax()}{relax()}}
+{\footnotesize\ttfamily \hyperlink{solveP__rgh__2p_8H_a2181bb507e6192fba9adef805bdb5892}{p\+Eqn} relax (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveP__rgh__2p_8H_aaf40ea368460029d6221dfede253de7c}\label{solveP__rgh__2p_8H_aaf40ea368460029d6221dfede253de7c}} 
+\index{solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}!if@{if}}
+\index{if@{if}!solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{pimple\+\_\+.}]{corr\+Non\+Ortho() = {\ttfamily =1} }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{solveP__rgh__2p_8H_afcd780f72325f856f84ec1de84464211}\label{solveP__rgh__2p_8H_afcd780f72325f856f84ec1de84464211}} 
+\index{solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}!converged@{converged}}
+\index{converged@{converged}!solve\+P\+\_\+rgh\+\_\+2p.\+H@{solve\+P\+\_\+rgh\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{converged}{converged}}
+{\footnotesize\ttfamily bool converged}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+( 
+    \hyperlink{solveP__rgh__2p_8H_a2181bb507e6192fba9adef805bdb5892}{pEqn}.solve
+    (
+        mesh\_.solver(\hyperlink{updatePP__rghRho__1p_8H_a320090d1a3c1675778a59e981765c77c}{p\_rgh\_}.select(pimple\_.finalInnerIter()))
+    ).max().nIterations()
+==  0.0 
+)
+\end{DoxyCode}
+
+
+Definition at line 13 of file solve\+P\+\_\+rgh\+\_\+2p.\+H.
+

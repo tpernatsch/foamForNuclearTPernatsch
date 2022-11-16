@@ -1,0 +1,80 @@
+\hypertarget{nuclearFuelPin_8C}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/power\+Models/nuclear\+Fuel\+Pin/nuclear\+Fuel\+Pin.C File Reference}
+\label{nuclearFuelPin_8C}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/power\+Models/nuclear\+Fuel\+Pin/nuclear\+Fuel\+Pin.\+C@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/power\+Models/nuclear\+Fuel\+Pin/nuclear\+Fuel\+Pin.\+C}}
+Include dependency graph for nuclear\+Fuel\+Pin.\+C\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{nuclearFuelPin_8C__incl}
+\end{center}
+\end{figure}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceFoam}{Foam}
+\item 
+ \hyperlink{namespaceFoam_1_1powerModels}{Foam\+::power\+Models}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFoam_1_1powerModels_ac9e561a2a6665dc8cffe73772ae18819}{define\+Type\+Name\+And\+Debug} (nuclear\+Fuel\+Pin, 0)
+\item 
+\hyperlink{namespaceFoam_1_1powerModels_af21d10fadf0788ab3bcbc738f2676c67}{add\+To\+Run\+Time\+Selection\+Table} (power\+Model, nuclear\+Fuel\+Pin, power\+Models)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the \hyperlink{setXSFieldsSN_8H_a70ac93a527a85b4edf386830643d1561}{D} matrices in update\+Local\+Temperature\+Profile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant \hyperlink{nuclearFuelPin_8C_ae5fc70d73cd9d6fbeb7bf5456b34ef16}{cp}
+\item 
+I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the \hyperlink{setXSFieldsSN_8H_a70ac93a527a85b4edf386830643d1561}{D} matrices in update\+Local\+Temperature\+Profile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho} and spatially constant k For \hyperlink{nuclearFuelPin_8C_ab5364626cf5774043302fd6c7196a05f}{simplicity}
+\item 
+I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the \hyperlink{setXSFieldsSN_8H_a70ac93a527a85b4edf386830643d1561}{D} matrices in update\+Local\+Temperature\+Profile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho} and spatially constant k For let us not consider a pin right \hyperlink{nuclearFuelPin_8C_a09404a3c5e8ea04b3e44ae4cb130f396}{now}
+\item 
+I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the \hyperlink{setXSFieldsSN_8H_a70ac93a527a85b4edf386830643d1561}{D} matrices in update\+Local\+Temperature\+Profile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho} and spatially constant k For let us not consider a pin right just a regular uniform hollow \hyperlink{nuclearFuelPin_8C_aa5e8becd7f504abaf6e34b6dcd491e94}{cylinder}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+{\bfseries Original source file} \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelPin/nuclearFuelPin.C}{\tt nuclear\+Fuel\+Pin.\+C} 
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{nuclearFuelPin_8C_ae5fc70d73cd9d6fbeb7bf5456b34ef16}\label{nuclearFuelPin_8C_ae5fc70d73cd9d6fbeb7bf5456b34ef16}} 
+\index{nuclear\+Fuel\+Pin.\+C@{nuclear\+Fuel\+Pin.\+C}!cp@{cp}}
+\index{cp@{cp}!nuclear\+Fuel\+Pin.\+C@{nuclear\+Fuel\+Pin.\+C}}
+\subsubsection{\texorpdfstring{cp}{cp}}
+{\footnotesize\ttfamily I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the \hyperlink{setXSFieldsSN_8H_a70ac93a527a85b4edf386830643d1561}{D} matrices in update\+Local\+Temperature\+Profile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant cp}
+
+
+
+Definition at line 952 of file nuclear\+Fuel\+Pin.\+C.
+
+\mbox{\Hypertarget{nuclearFuelPin_8C_ab5364626cf5774043302fd6c7196a05f}\label{nuclearFuelPin_8C_ab5364626cf5774043302fd6c7196a05f}} 
+\index{nuclear\+Fuel\+Pin.\+C@{nuclear\+Fuel\+Pin.\+C}!simplicity@{simplicity}}
+\index{simplicity@{simplicity}!nuclear\+Fuel\+Pin.\+C@{nuclear\+Fuel\+Pin.\+C}}
+\subsubsection{\texorpdfstring{simplicity}{simplicity}}
+{\footnotesize\ttfamily I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the \hyperlink{setXSFieldsSN_8H_a70ac93a527a85b4edf386830643d1561}{D} matrices in update\+Local\+Temperature\+Profile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho} and spatially constant k For simplicity}
+
+
+
+Definition at line 952 of file nuclear\+Fuel\+Pin.\+C.
+
+\mbox{\Hypertarget{nuclearFuelPin_8C_a09404a3c5e8ea04b3e44ae4cb130f396}\label{nuclearFuelPin_8C_a09404a3c5e8ea04b3e44ae4cb130f396}} 
+\index{nuclear\+Fuel\+Pin.\+C@{nuclear\+Fuel\+Pin.\+C}!now@{now}}
+\index{now@{now}!nuclear\+Fuel\+Pin.\+C@{nuclear\+Fuel\+Pin.\+C}}
+\subsubsection{\texorpdfstring{now}{now}}
+{\footnotesize\ttfamily I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the \hyperlink{setXSFieldsSN_8H_a70ac93a527a85b4edf386830643d1561}{D} matrices in update\+Local\+Temperature\+Profile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho} and spatially constant k For let us not consider a pin right now}
+
+
+
+Definition at line 952 of file nuclear\+Fuel\+Pin.\+C.
+
+\mbox{\Hypertarget{nuclearFuelPin_8C_aa5e8becd7f504abaf6e34b6dcd491e94}\label{nuclearFuelPin_8C_aa5e8becd7f504abaf6e34b6dcd491e94}} 
+\index{nuclear\+Fuel\+Pin.\+C@{nuclear\+Fuel\+Pin.\+C}!cylinder@{cylinder}}
+\index{cylinder@{cylinder}!nuclear\+Fuel\+Pin.\+C@{nuclear\+Fuel\+Pin.\+C}}
+\subsubsection{\texorpdfstring{cylinder}{cylinder}}
+{\footnotesize\ttfamily I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the \hyperlink{setXSFieldsSN_8H_a70ac93a527a85b4edf386830643d1561}{D} matrices in update\+Local\+Temperature\+Profile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho} and spatially constant k For let us not consider a pin right just a regular uniform hollow cylinder}
+
+
+
+Definition at line 952 of file nuclear\+Fuel\+Pin.\+C.
+

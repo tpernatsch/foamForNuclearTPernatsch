@@ -1,0 +1,178 @@
+\hypertarget{calcLegendreMatrices_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/include/calc\+Legendre\+Matrices.H File Reference}
+\label{calcLegendreMatrices_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/include/calc\+Legendre\+Matrices.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/include/calc\+Legendre\+Matrices.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=256pt]{calcLegendreMatrices_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+double \hyperlink{calcLegendreMatrices_8H_ad27427e4bcb16b18937b0bf2ca436296}{legendre\+Poly} (int, double)
+\item 
+Info$<$$<$ \char`\"{}Calculating Legendre matrices\textbackslash{}\char`\"{}$<$$<$ endl;Info$<$$<$ \char`\"{}Warning\+: considering Legendre scattering moments up to 7$^\wedge$th at maximum.\char`\"{}$<$$<$ endl;scalar\+Square\+Matrix mu\+Matrix(discrete\+Directions\+\_\+);scalar\+Square\+Matrix weight\+Matrix(discrete\+Directions\+\_\+);\hyperlink{correctBoundaryFlux__2p_8H_a72582193b0ba782b35945b2502401afd}{for\+All}(direction\+Versors\+\_\+, directionI)\{ \hyperlink{correctBoundaryFlux__2p_8H_a72582193b0ba782b35945b2502401afd}{for\+All}(direction\+Versors\+\_\+, directionJ) \{ mu\+Matrix\mbox{[}directionI\mbox{]}\mbox{[}directionJ\mbox{]}=direction\+Versors\+\_\+\mbox{[}directionI\mbox{]} \&direction\+Versors\+\_\+\mbox{[}directionJ\mbox{]};weight\+Matrix\mbox{[}directionI\mbox{]}\mbox{[}directionJ\mbox{]}=direction\+Weights\+\_\+\mbox{[}directionJ\mbox{]};\}\}Info$<$$<$ \char`\"{}Done\textbackslash{}\char`\"{}$<$$<$ endl;Ptr\+List$<$ scalar $>$ \hyperlink{calcLegendreMatrices_8H_aca7173d47ee3def5f50a4e2693fc5b31}{max\+Legendre\+Integral} (xs\+\_\+.\+legendre\+Moments())
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{calcLegendreMatrices_8H_a379818ae2c8b40656a8c3b42d9b195e1}{min\+Legendre\+Integral} (xs\+\_\+.\+legendre\+Moments())
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{calcLegendreMatrices_8H_a432a4386152ea9f997acf3b7b75304a9}{max\+Abs\+Legendre\+Integral} (xs\+\_\+.\+legendre\+Moments())
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{calcLegendreMatrices_8H_aca3b860bf76e38dcf8c33d0727d948e9}{min\+Abs\+Legendre\+Integral} (xs\+\_\+.\+legendre\+Moments())
+\item 
+\hyperlink{calcLegendreMatrices_8H_a76fa282db59e7ee5d1bfca6d063fbabb}{for\+All} (legendre\+Matrices\+\_\+, legendreI)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+scalar \hyperlink{calcLegendreMatrices_8H_ac0b8de0e03838e5955c68b6bbd8b813d}{legendre\+Integral}
+\item 
+scalar \hyperlink{calcLegendreMatrices_8H_a5e15e45be3e658edaaf221dcddb6d766}{legendre\+Abs\+Integral}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{calcLegendreMatrices_8H_ad27427e4bcb16b18937b0bf2ca436296}\label{calcLegendreMatrices_8H_ad27427e4bcb16b18937b0bf2ca436296}} 
+\index{calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}!legendre\+Poly@{legendre\+Poly}}
+\index{legendre\+Poly@{legendre\+Poly}!calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}}
+\subsubsection{\texorpdfstring{legendre\+Poly()}{legendrePoly()}}
+{\footnotesize\ttfamily double legendre\+Poly (\begin{DoxyParamCaption}\item[{int}]{,  }\item[{double}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 4 of file legendre\+Poly.\+C.
+
+
+
+References mu().
+
+
+
+Referenced by for\+All().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=219pt]{calcLegendreMatrices_8H_ad27427e4bcb16b18937b0bf2ca436296_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{calcLegendreMatrices_8H_ad27427e4bcb16b18937b0bf2ca436296_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcLegendreMatrices_8H_aca7173d47ee3def5f50a4e2693fc5b31}\label{calcLegendreMatrices_8H_aca7173d47ee3def5f50a4e2693fc5b31}} 
+\index{calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}!max\+Legendre\+Integral@{max\+Legendre\+Integral}}
+\index{max\+Legendre\+Integral@{max\+Legendre\+Integral}!calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}}
+\subsubsection{\texorpdfstring{max\+Legendre\+Integral()}{maxLegendreIntegral()}}
+{\footnotesize\ttfamily Info$<$$<$ \char`\"{}Calculating Legendre \hyperlink{solvePointKinetics_8H_adb283ac99a91b10be7420fca0134b932}{matrices\textbackslash{}n}\char`\"{} $<$$<$ endl;Info$<$$<$ \char`\"{}Warning\+: considering Legendre scattering moments up to 7$^\wedge$th at maximum.\char`\"{} $<$$<$ endl;scalar\+Square\+Matrix mu\+Matrix(discrete\+Directions\+\_\+);scalar\+Square\+Matrix weight\+Matrix(discrete\+Directions\+\_\+);\hyperlink{correctBoundaryFlux__2p_8H_a72582193b0ba782b35945b2502401afd}{for\+All}(direction\+Versors\+\_\+, directionI)\{ \hyperlink{correctBoundaryFlux__2p_8H_a72582193b0ba782b35945b2502401afd}{for\+All}(direction\+Versors\+\_\+, directionJ) \{ mu\+Matrix\mbox{[}directionI\mbox{]}\mbox{[}directionJ\mbox{]} = direction\+Versors\+\_\+\mbox{[}directionI\mbox{]} \& direction\+Versors\+\_\+\mbox{[}directionJ\mbox{]}; weight\+Matrix\mbox{[}directionI\mbox{]}\mbox{[}directionJ\mbox{]} = direction\+Weights\+\_\+\mbox{[}directionJ\mbox{]}; \}\}Info$<$$<$ \char`\"{}Done\textbackslash{}n\char`\"{} $<$$<$ endl;Ptr\+List$<$scalar$>$ max\+Legendre\+Integral (\begin{DoxyParamCaption}\item[{xs\+\_\+.}]{legendre\+Moments() }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{calcLegendreMatrices_8H_aca7173d47ee3def5f50a4e2693fc5b31_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcLegendreMatrices_8H_a379818ae2c8b40656a8c3b42d9b195e1}\label{calcLegendreMatrices_8H_a379818ae2c8b40656a8c3b42d9b195e1}} 
+\index{calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}!min\+Legendre\+Integral@{min\+Legendre\+Integral}}
+\index{min\+Legendre\+Integral@{min\+Legendre\+Integral}!calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}}
+\subsubsection{\texorpdfstring{min\+Legendre\+Integral()}{minLegendreIntegral()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar$>$ min\+Legendre\+Integral (\begin{DoxyParamCaption}\item[{xs\+\_\+.}]{legendre\+Moments() }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=259pt]{calcLegendreMatrices_8H_a379818ae2c8b40656a8c3b42d9b195e1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcLegendreMatrices_8H_a432a4386152ea9f997acf3b7b75304a9}\label{calcLegendreMatrices_8H_a432a4386152ea9f997acf3b7b75304a9}} 
+\index{calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}!max\+Abs\+Legendre\+Integral@{max\+Abs\+Legendre\+Integral}}
+\index{max\+Abs\+Legendre\+Integral@{max\+Abs\+Legendre\+Integral}!calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}}
+\subsubsection{\texorpdfstring{max\+Abs\+Legendre\+Integral()}{maxAbsLegendreIntegral()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar$>$ max\+Abs\+Legendre\+Integral (\begin{DoxyParamCaption}\item[{xs\+\_\+.}]{legendre\+Moments() }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=280pt]{calcLegendreMatrices_8H_a432a4386152ea9f997acf3b7b75304a9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcLegendreMatrices_8H_aca3b860bf76e38dcf8c33d0727d948e9}\label{calcLegendreMatrices_8H_aca3b860bf76e38dcf8c33d0727d948e9}} 
+\index{calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}!min\+Abs\+Legendre\+Integral@{min\+Abs\+Legendre\+Integral}}
+\index{min\+Abs\+Legendre\+Integral@{min\+Abs\+Legendre\+Integral}!calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}}
+\subsubsection{\texorpdfstring{min\+Abs\+Legendre\+Integral()}{minAbsLegendreIntegral()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar$>$ min\+Abs\+Legendre\+Integral (\begin{DoxyParamCaption}\item[{xs\+\_\+.}]{legendre\+Moments() }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=277pt]{calcLegendreMatrices_8H_aca3b860bf76e38dcf8c33d0727d948e9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcLegendreMatrices_8H_a76fa282db59e7ee5d1bfca6d063fbabb}\label{calcLegendreMatrices_8H_a76fa282db59e7ee5d1bfca6d063fbabb}} 
+\index{calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{legendre\+Matrices\+\_\+}]{,  }\item[{legendreI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 30 of file calc\+Legendre\+Matrices.\+H.
+
+
+
+References legendre\+Poly(), max\+Abs\+Legendre\+Integral(), max\+Legendre\+Integral(), min\+Abs\+Legendre\+Integral(), and min\+Legendre\+Integral().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=280pt]{calcLegendreMatrices_8H_a76fa282db59e7ee5d1bfca6d063fbabb_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{calcLegendreMatrices_8H_ac0b8de0e03838e5955c68b6bbd8b813d}\label{calcLegendreMatrices_8H_ac0b8de0e03838e5955c68b6bbd8b813d}} 
+\index{calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}!legendre\+Integral@{legendre\+Integral}}
+\index{legendre\+Integral@{legendre\+Integral}!calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}}
+\subsubsection{\texorpdfstring{legendre\+Integral}{legendreIntegral}}
+{\footnotesize\ttfamily scalar legendre\+Integral}
+
+
+
+Definition at line 27 of file calc\+Legendre\+Matrices.\+H.
+
+\mbox{\Hypertarget{calcLegendreMatrices_8H_a5e15e45be3e658edaaf221dcddb6d766}\label{calcLegendreMatrices_8H_a5e15e45be3e658edaaf221dcddb6d766}} 
+\index{calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}!legendre\+Abs\+Integral@{legendre\+Abs\+Integral}}
+\index{legendre\+Abs\+Integral@{legendre\+Abs\+Integral}!calc\+Legendre\+Matrices.\+H@{calc\+Legendre\+Matrices.\+H}}
+\subsubsection{\texorpdfstring{legendre\+Abs\+Integral}{legendreAbsIntegral}}
+{\footnotesize\ttfamily scalar legendre\+Abs\+Integral}
+
+
+
+Definition at line 28 of file calc\+Legendre\+Matrices.\+H.
+

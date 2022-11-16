@@ -1,0 +1,65 @@
+\hypertarget{namespaceFoam_1_1latentHeatModels}{}\section{Foam\+:\+:latent\+Heat\+Models Namespace Reference}
+\label{namespaceFoam_1_1latentHeatModels}\index{Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFoam_1_1latentHeatModels_1_1FinkLeibowitz}{Fink\+Leibowitz}
+\begin{DoxyCompactList}\small\item\em This class describes the latent heat of vaporization of liquid sodium according to the data presented in the report by Fink \& Leibowitz (A\+NL RE 95/2), \href{https://www.ne.anl.gov/eda/ANL-RE-95-2.pdf}{\tt https\+://www.\+ne.\+anl.\+gov/eda/\+A\+N\+L-\/\+R\+E-\/95-\/2.\+pdf}. \end{DoxyCompactList}\item 
+class \hyperlink{classFoam_1_1latentHeatModels_1_1fromThermophysicalPropertiesLatentHeat}{from\+Thermophysical\+Properties\+Latent\+Heat}
+\begin{DoxyCompactList}\small\item\em Class that computes latent heat based on the specified enthalpies of formation of the fluids. These are specified under the Hf keyword in the thermophysical properties of the two fluids. The latent heat is thus computed as Hf.\+vapour -\/ Hf.\+liquid. \end{DoxyCompactList}\item 
+class \hyperlink{classFoam_1_1latentHeatModels_1_1water}{water}
+\begin{DoxyCompactList}\small\item\em This class describes the latent heat of vaporization of water in the 0.\+01-\/350 C range. It was obtained from a fit (in the form of L = A+\+B$\ast$log(C-\/T) with T being the liquid temperature (K)) of N\+I\+ST water data at saturation found at\+: \href{https://www.nist.gov/system/files/documents/srd/NISTIR5078-Tab1.pdf}{\tt https\+://www.\+nist.\+gov/system/files/documents/srd/\+N\+I\+S\+T\+I\+R5078-\/\+Tab1.\+pdf}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFoam_1_1latentHeatModels_a6587082eb2c87a2f463a5471becc8f80}{define\+Type\+Name\+And\+Debug} (\hyperlink{classFoam_1_1latentHeatModels_1_1FinkLeibowitz}{Fink\+Leibowitz}, 0)
+\item 
+\hyperlink{namespaceFoam_1_1latentHeatModels_a71a7c2465d9bd19ff3e5e83888e4687d}{add\+To\+Run\+Time\+Selection\+Table} (\hyperlink{classFoam_1_1latentHeatModel}{latent\+Heat\+Model}, \hyperlink{classFoam_1_1latentHeatModels_1_1FinkLeibowitz}{Fink\+Leibowitz}, latent\+Heat\+Models)
+\item 
+\hyperlink{namespaceFoam_1_1latentHeatModels_a0a9f11acdbbfc539e16f6d9faa16f5a9}{define\+Type\+Name\+And\+Debug} (\hyperlink{classFoam_1_1latentHeatModels_1_1fromThermophysicalPropertiesLatentHeat}{from\+Thermophysical\+Properties\+Latent\+Heat}, 0)
+\item 
+\hyperlink{namespaceFoam_1_1latentHeatModels_a65d0300798ac32623fcc1ad44f46eb08}{add\+To\+Run\+Time\+Selection\+Table} (\hyperlink{classFoam_1_1latentHeatModel}{latent\+Heat\+Model}, \hyperlink{classFoam_1_1latentHeatModels_1_1fromThermophysicalPropertiesLatentHeat}{from\+Thermophysical\+Properties\+Latent\+Heat}, latent\+Heat\+Models)
+\item 
+\hyperlink{namespaceFoam_1_1latentHeatModels_af72dbd61a38fe62a8dfc1baca12fa596}{define\+Type\+Name\+And\+Debug} (\hyperlink{classFoam_1_1latentHeatModels_1_1water}{water}, 0)
+\item 
+\hyperlink{namespaceFoam_1_1latentHeatModels_a541220b30957205cae1c7d90d5996619}{add\+To\+Run\+Time\+Selection\+Table} (\hyperlink{classFoam_1_1latentHeatModel}{latent\+Heat\+Model}, \hyperlink{classFoam_1_1latentHeatModels_1_1water}{water}, latent\+Heat\+Models)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceFoam_1_1latentHeatModels_a6587082eb2c87a2f463a5471becc8f80}\label{namespaceFoam_1_1latentHeatModels_a6587082eb2c87a2f463a5471becc8f80}} 
+\index{Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}!define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}}
+\index{define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}!Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}}
+\subsubsection{\texorpdfstring{define\+Type\+Name\+And\+Debug()}{defineTypeNameAndDebug()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Foam\+::latent\+Heat\+Models\+::define\+Type\+Name\+And\+Debug (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1latentHeatModels_1_1FinkLeibowitz}{Fink\+Leibowitz}}]{,  }\item[{0}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1latentHeatModels_a71a7c2465d9bd19ff3e5e83888e4687d}\label{namespaceFoam_1_1latentHeatModels_a71a7c2465d9bd19ff3e5e83888e4687d}} 
+\index{Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}!add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}}
+\index{add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}!Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}}
+\subsubsection{\texorpdfstring{add\+To\+Run\+Time\+Selection\+Table()}{addToRunTimeSelectionTable()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily Foam\+::latent\+Heat\+Models\+::add\+To\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1latentHeatModel}{latent\+Heat\+Model}}]{,  }\item[{\hyperlink{classFoam_1_1latentHeatModels_1_1FinkLeibowitz}{Fink\+Leibowitz}}]{,  }\item[{latent\+Heat\+Models}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1latentHeatModels_a0a9f11acdbbfc539e16f6d9faa16f5a9}\label{namespaceFoam_1_1latentHeatModels_a0a9f11acdbbfc539e16f6d9faa16f5a9}} 
+\index{Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}!define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}}
+\index{define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}!Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}}
+\subsubsection{\texorpdfstring{define\+Type\+Name\+And\+Debug()}{defineTypeNameAndDebug()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Foam\+::latent\+Heat\+Models\+::define\+Type\+Name\+And\+Debug (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1latentHeatModels_1_1fromThermophysicalPropertiesLatentHeat}{from\+Thermophysical\+Properties\+Latent\+Heat}}]{,  }\item[{0}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1latentHeatModels_a65d0300798ac32623fcc1ad44f46eb08}\label{namespaceFoam_1_1latentHeatModels_a65d0300798ac32623fcc1ad44f46eb08}} 
+\index{Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}!add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}}
+\index{add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}!Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}}
+\subsubsection{\texorpdfstring{add\+To\+Run\+Time\+Selection\+Table()}{addToRunTimeSelectionTable()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily Foam\+::latent\+Heat\+Models\+::add\+To\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1latentHeatModel}{latent\+Heat\+Model}}]{,  }\item[{\hyperlink{classFoam_1_1latentHeatModels_1_1fromThermophysicalPropertiesLatentHeat}{from\+Thermophysical\+Properties\+Latent\+Heat}}]{,  }\item[{latent\+Heat\+Models}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1latentHeatModels_af72dbd61a38fe62a8dfc1baca12fa596}\label{namespaceFoam_1_1latentHeatModels_af72dbd61a38fe62a8dfc1baca12fa596}} 
+\index{Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}!define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}}
+\index{define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}!Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}}
+\subsubsection{\texorpdfstring{define\+Type\+Name\+And\+Debug()}{defineTypeNameAndDebug()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Foam\+::latent\+Heat\+Models\+::define\+Type\+Name\+And\+Debug (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1latentHeatModels_1_1water}{water}}]{,  }\item[{0}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1latentHeatModels_a541220b30957205cae1c7d90d5996619}\label{namespaceFoam_1_1latentHeatModels_a541220b30957205cae1c7d90d5996619}} 
+\index{Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}!add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}}
+\index{add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}!Foam\+::latent\+Heat\+Models@{Foam\+::latent\+Heat\+Models}}
+\subsubsection{\texorpdfstring{add\+To\+Run\+Time\+Selection\+Table()}{addToRunTimeSelectionTable()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily Foam\+::latent\+Heat\+Models\+::add\+To\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1latentHeatModel}{latent\+Heat\+Model}}]{,  }\item[{\hyperlink{classFoam_1_1latentHeatModels_1_1water}{water}}]{,  }\item[{latent\+Heat\+Models}]{ }\end{DoxyParamCaption})}
+

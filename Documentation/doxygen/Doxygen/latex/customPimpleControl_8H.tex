@@ -1,0 +1,47 @@
+\hypertarget{customPimpleControl_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/custom\+Pimple\+Control/custom\+Pimple\+Control.H File Reference}
+\label{customPimpleControl_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/custom\+Pimple\+Control/custom\+Pimple\+Control.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/custom\+Pimple\+Control/custom\+Pimple\+Control.\+H}}
+Include dependency graph for custom\+Pimple\+Control.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=310pt]{customPimpleControl_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{customPimpleControl_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFoam_1_1customPimpleControl}{custom\+Pimple\+Control}
+\begin{DoxyCompactList}\small\item\em P\+I\+M\+P\+LE control class to supply convergence information/checks for the P\+I\+M\+P\+LE loop. In addition to standard P\+I\+M\+P\+LE functions, this class adds support for a variable number of P\+I\+SO iterations (via the corr\+P\+I\+S\+O\+Until\+Convergence\+\_\+ flag) within each P\+I\+M\+P\+LE iteration, and adds an optional residual control for the number of P\+I\+M\+P\+LE iterations performed in each time step based on the evaulation of the initial\+Residual of the first P\+I\+SO iteration in every P\+I\+M\+P\+LE iteration (rather than the latest available initial\+Residual, from any P\+I\+SO iteration, as done by the base class). This proves particularly more useful for multiphase simulation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceFoam}{Foam}
+\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{customPimpleControl_8H_a52239628f1ec6b32bb02938913b8f038}{custom\+Pimple\+\_\+\+C\+O\+N\+T\+R\+OL}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+{\bfseries Original source file} \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/customPimpleControl/customPimpleControl.H}{\tt custom\+Pimple\+Control.\+H} 
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{customPimpleControl_8H_a52239628f1ec6b32bb02938913b8f038}\label{customPimpleControl_8H_a52239628f1ec6b32bb02938913b8f038}} 
+\index{custom\+Pimple\+Control.\+H@{custom\+Pimple\+Control.\+H}!custom\+Pimple\+\_\+\+C\+O\+N\+T\+R\+OL@{custom\+Pimple\+\_\+\+C\+O\+N\+T\+R\+OL}}
+\index{custom\+Pimple\+\_\+\+C\+O\+N\+T\+R\+OL@{custom\+Pimple\+\_\+\+C\+O\+N\+T\+R\+OL}!custom\+Pimple\+Control.\+H@{custom\+Pimple\+Control.\+H}}
+\subsubsection{\texorpdfstring{custom\+Pimple\+\_\+\+C\+O\+N\+T\+R\+OL}{customPimple\_CONTROL}}
+{\footnotesize\ttfamily \#define custom\+Pimple\+\_\+\+C\+O\+N\+T\+R\+OL}
+
+
+
+Definition at line 69 of file custom\+Pimple\+Control.\+H.
+

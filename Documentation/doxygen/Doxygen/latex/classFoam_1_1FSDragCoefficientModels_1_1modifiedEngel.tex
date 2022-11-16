@@ -1,0 +1,164 @@
+\hypertarget{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel}{}\section{modified\+Engel Class Reference}
+\label{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel}\index{modified\+Engel@{modified\+Engel}}
+
+
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel}{modified\+Engel} correlation for pressure drop  
+
+
+
+
+Inheritance diagram for modified\+Engel\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for modified\+Engel\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a23d938d6e2528ca25b19371a148c4d6a}{Type\+Name} (\char`\"{}modified\+Engel\char`\"{})
+\item 
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a770c3d5eddade3ddfa557c039e97feb3}{modified\+Engel} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a7d4584c2b1b18f50432fa0e2227e210f}{$\sim$modified\+Engel} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a2c1e1872d359910de4c35cf8f003871c}{value} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel}{modified\+Engel} correlation for pressure drop 
+
+\label{_Description}%
+ \{B\+U\+B\+E\+L\+I\+S20083299, title = "Review and proposal for best fit of wire-\/wrapped fuel bundle friction factor and pressure drop predictions using various existing correlations\char`\"{},
+journal = \char`\"{}Nuclear Engineering and Design\char`\"{},
+volume = \char`\"{}238\char`\"{},
+number = \char`\"{}12\char`\"{},
+pages = \char`\"{}3299 -\/ 3320\char`\"{},
+year = \char`\"{}2008\char`\"{},
+issn = \char`\"{}0029-\/5493\char`\"{},
+doi = \char`\"{}\href{https://doi.org/10.1016/j.nucengdes.2008.06.024}{\tt https\+://doi.\+org/10.\+1016/j.\+nucengdes.\+2008.\+06.\+024}\char`\"{},
+url = \char`\"{}\href{http://www.sciencedirect.com/science/article/pii/S0029549308003762}{\tt http\+://www.\+sciencedirect.\+com/science/article/pii/\+S0029549308003762}\char`\"{},
+author = \char`\"{}E. Bubelis and M. Schikorr\char`\"{},
+abstract = \char`\"{}The aim of this paper is to provide an overview of the existing wire-\/wrapped fuel bundle friction factor/pressure drop correlations and to qualitatively evaluate which of the existing friction factor correlations are the best in retracing the results of a large set of the experimental data available on wire-\/wrapped fuel assemblies tested under different coolant conditions." \}
+
+Author Stefan Radman (\href{mailto:sradman@protonmail.com}{\tt sradman@protonmail.\+com} / \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragCoefficientModels/modifiedEngel/modifiedEngelFSDragCoefficient.H}{\tt modified\+Engel\+F\+S\+Drag\+Coefficient.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragCoefficientModels/modifiedEngel/modifiedEngel.C}{\tt modified\+Engel.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 76 of file modified\+Engel\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a770c3d5eddade3ddfa557c039e97feb3}\label{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a770c3d5eddade3ddfa557c039e97feb3}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel}!modified\+Engel@{modified\+Engel}}
+\index{modified\+Engel@{modified\+Engel}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel}}
+\subsubsection{\texorpdfstring{modified\+Engel()}{modifiedEngel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel}{modified\+Engel} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 42 of file modified\+Engel\+F\+S\+Drag\+Coefficient.\+C.
+
+
+
+References modified\+Engel\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a770c3d5eddade3ddfa557c039e97feb3_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a7d4584c2b1b18f50432fa0e2227e210f}\label{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a7d4584c2b1b18f50432fa0e2227e210f}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel}!````~modified\+Engel@{$\sim$modified\+Engel}}
+\index{````~modified\+Engel@{$\sim$modified\+Engel}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel}}
+\subsubsection{\texorpdfstring{$\sim$modified\+Engel()}{~modifiedEngel()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel}{modified\+Engel} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 95 of file modified\+Engel\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+References modified\+Engel\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a7d4584c2b1b18f50432fa0e2227e210f_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a23d938d6e2528ca25b19371a148c4d6a}\label{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a23d938d6e2528ca25b19371a148c4d6a}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}modified\+Engel\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a2c1e1872d359910de4c35cf8f003871c}\label{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a2c1e1872d359910de4c35cf8f003871c}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel}!value@{value}}
+\index{value@{value}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::modified\+Engel}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Foam\+::scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1FSDragCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}{F\+S\+Drag\+Coefficient\+Model}.
+
+
+
+Definition at line 59 of file modified\+Engel\+F\+S\+Drag\+Coefficient.\+C.
+
+
+
+References psi().
+
+
+
+Referenced by modified\+Engel\+::modified\+Engel(), and modified\+Engel\+::$\sim$modified\+Engel().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a2c1e1872d359910de4c35cf8f003871c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{classFoam_1_1FSDragCoefficientModels_1_1modifiedEngel_a2c1e1872d359910de4c35cf8f003871c_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+S\+Drag\+Coefficient\+Models/modified\+Engel/\hyperlink{modifiedEngelFSDragCoefficient_8H}{modified\+Engel\+F\+S\+Drag\+Coefficient.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+S\+Drag\+Coefficient\+Models/modified\+Engel/\hyperlink{modifiedEngelFSDragCoefficient_8C}{modified\+Engel\+F\+S\+Drag\+Coefficient.\+C}\end{DoxyCompactItemize}

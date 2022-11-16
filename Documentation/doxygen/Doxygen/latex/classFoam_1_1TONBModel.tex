@@ -1,0 +1,260 @@
+\hypertarget{classFoam_1_1TONBModel}{}\section{T\+O\+N\+B\+Model Class Reference}
+\label{classFoam_1_1TONBModel}\index{T\+O\+N\+B\+Model@{T\+O\+N\+B\+Model}}
+
+
+Model for the prediction of the temperature of the onset of nucleate boiling (i.\+e. T\+\_\+\+O\+NB)  
+
+
+
+
+Inheritance diagram for T\+O\+N\+B\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=151pt]{classFoam_1_1TONBModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for T\+O\+N\+B\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=315pt]{classFoam_1_1TONBModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1TONBModel_a9bd14316f0244647350e1a7bc705d0a2}{Type\+Name} (\char`\"{}T\+O\+N\+B\+Model\char`\"{})
+\item 
+\hyperlink{classFoam_1_1TONBModel_a8e50c35d0a37a79d3c2a0cda5fa5a1ff}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1TONBModel}{T\+O\+N\+B\+Model}, T\+O\+N\+B\+Models,(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg),(pair, dict, obj\+Reg))
+\item 
+\hyperlink{classFoam_1_1TONBModel_aa7d0530b8ec42c43482ba8e37fa4c25f}{T\+O\+N\+B\+Model} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1TONBModel_a0f2035a01e42bec4d8c78bf082ed4410}{$\sim$\+T\+O\+N\+B\+Model} ()
+\item 
+void \hyperlink{classFoam_1_1TONBModel_a12633c5de7a404c234cd51053ce6e0cd}{set\+Ptrs} () const
+\item 
+virtual scalar \hyperlink{classFoam_1_1TONBModel_a070a7f290ab5e02b61edd3de2bd475bd}{value} (const label \&celli, const scalar \&htc2p\+F\+Ci) const =0
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1TONBModel}{T\+O\+N\+B\+Model} $>$ \hyperlink{classFoam_1_1TONBModel_adb431ddf087e79fec7a2b09c0c469715}{New} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \& \hyperlink{classFoam_1_1TONBModel_a587e19a1b4f4b498d2604d20c093a73b}{pair\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1TONBModel_a850ac645f80266cb218d8aa58aac9bc0}{Tsat\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} $\ast$ \hyperlink{classFoam_1_1TONBModel_a4615ddb7d592b36a28f7812ea1e824f7}{other\+Fluid\+Ptr\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1TONBModel_a8865a7fcf53a1aaaf4091b83f658c47b}{L\+Ptr\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Model for the prediction of the temperature of the onset of nucleate boiling (i.\+e. T\+\_\+\+O\+NB) 
+
+\label{_Description}%
+ Author Stefan Radman (\href{mailto:sradman@pm.me}{\tt sradman@pm.\+me} / \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/TONBModels/TONBModel.H}{\tt T\+O\+N\+B\+Model.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/TONBModels/TONBModel.C}{\tt T\+O\+N\+B\+Model.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/TONBModels/newTONBModel.C}{\tt new\+T\+O\+N\+B\+Model.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 56 of file T\+O\+N\+B\+Model.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1TONBModel_aa7d0530b8ec42c43482ba8e37fa4c25f}\label{classFoam_1_1TONBModel_aa7d0530b8ec42c43482ba8e37fa4c25f}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!T\+O\+N\+B\+Model@{T\+O\+N\+B\+Model}}
+\index{T\+O\+N\+B\+Model@{T\+O\+N\+B\+Model}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{T\+O\+N\+B\+Model()}{TONBModel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1TONBModel}{T\+O\+N\+B\+Model} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 38 of file T\+O\+N\+B\+Model.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1TONBModel_a0f2035a01e42bec4d8c78bf082ed4410}\label{classFoam_1_1TONBModel_a0f2035a01e42bec4d8c78bf082ed4410}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!````~T\+O\+N\+B\+Model@{$\sim$\+T\+O\+N\+B\+Model}}
+\index{````~T\+O\+N\+B\+Model@{$\sim$\+T\+O\+N\+B\+Model}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{$\sim$\+T\+O\+N\+B\+Model()}{~TONBModel()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1TONBModel}{T\+O\+N\+B\+Model} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 104 of file T\+O\+N\+B\+Model.\+H.
+
+
+
+References T\+O\+N\+B\+Model\+::\+New(), T\+O\+N\+B\+Model\+::set\+Ptrs(), and T\+O\+N\+B\+Model\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classFoam_1_1TONBModel_a0f2035a01e42bec4d8c78bf082ed4410_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1TONBModel_a9bd14316f0244647350e1a7bc705d0a2}\label{classFoam_1_1TONBModel_a9bd14316f0244647350e1a7bc705d0a2}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}T\+O\+N\+B\+Model\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1TONBModel_a8e50c35d0a37a79d3c2a0cda5fa5a1ff}\label{classFoam_1_1TONBModel_a8e50c35d0a37a79d3c2a0cda5fa5a1ff}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1TONBModel}{T\+O\+N\+B\+Model}}]{,  }\item[{T\+O\+N\+B\+Models}]{,  }\item[{(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)}]{,  }\item[{(pair, dict, obj\+Reg)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1TONBModel_adb431ddf087e79fec7a2b09c0c469715}\label{classFoam_1_1TONBModel_adb431ddf087e79fec7a2b09c0c469715}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!New@{New}}
+\index{New@{New}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1TONBModel}{Foam\+::\+T\+O\+N\+B\+Model} $>$ New (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 26 of file new\+T\+O\+N\+B\+Model.\+C.
+
+
+
+References F\+S\+Pair\+::fluid\+Name().
+
+
+
+Referenced by multi\+Regime\+Boiling\+::multi\+Regime\+Boiling(), multi\+Regime\+Boiling\+T\+R\+A\+C\+E\+::multi\+Regime\+Boiling\+T\+R\+A\+C\+E(), multi\+Regime\+Boiling\+T\+R\+A\+C\+E\+C\+H\+F\+::multi\+Regime\+Boiling\+T\+R\+A\+C\+E\+C\+H\+F(), and T\+O\+N\+B\+Model\+::$\sim$\+T\+O\+N\+B\+Model().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{classFoam_1_1TONBModel_adb431ddf087e79fec7a2b09c0c469715_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{classFoam_1_1TONBModel_adb431ddf087e79fec7a2b09c0c469715_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1TONBModel_a12633c5de7a404c234cd51053ce6e0cd}\label{classFoam_1_1TONBModel_a12633c5de7a404c234cd51053ce6e0cd}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!set\+Ptrs@{set\+Ptrs}}
+\index{set\+Ptrs@{set\+Ptrs}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{set\+Ptrs()}{setPtrs()}}
+{\footnotesize\ttfamily void set\+Ptrs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 64 of file T\+O\+N\+B\+Model.\+C.
+
+
+
+References fluids().
+
+
+
+Referenced by T\+O\+N\+B\+Model\+::$\sim$\+T\+O\+N\+B\+Model().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1TONBModel_a12633c5de7a404c234cd51053ce6e0cd_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classFoam_1_1TONBModel_a12633c5de7a404c234cd51053ce6e0cd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1TONBModel_a070a7f290ab5e02b61edd3de2bd475bd}\label{classFoam_1_1TONBModel_a070a7f290ab5e02b61edd3de2bd475bd}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!value@{value}}
+\index{value@{value}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily virtual scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli,  }\item[{const scalar \&}]{htc2p\+F\+Ci }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1TONBModels_1_1Basu_ab752e3dda28f8798cf99e3d4b7edaf83}{Basu}.
+
+
+
+Referenced by T\+O\+N\+B\+Model\+::$\sim$\+T\+O\+N\+B\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{classFoam_1_1TONBModel_a070a7f290ab5e02b61edd3de2bd475bd_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1TONBModel_a587e19a1b4f4b498d2604d20c093a73b}\label{classFoam_1_1TONBModel_a587e19a1b4f4b498d2604d20c093a73b}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!pair\+\_\+@{pair\+\_\+}}
+\index{pair\+\_\+@{pair\+\_\+}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{pair\+\_\+}{pair\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair}\& pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 63 of file T\+O\+N\+B\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1TONBModel_a850ac645f80266cb218d8aa58aac9bc0}\label{classFoam_1_1TONBModel_a850ac645f80266cb218d8aa58aac9bc0}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!Tsat\+\_\+@{Tsat\+\_\+}}
+\index{Tsat\+\_\+@{Tsat\+\_\+}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{Tsat\+\_\+}{Tsat\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Tsat\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 66 of file T\+O\+N\+B\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1TONBModel_a4615ddb7d592b36a28f7812ea1e824f7}\label{classFoam_1_1TONBModel_a4615ddb7d592b36a28f7812ea1e824f7}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!other\+Fluid\+Ptr\+\_\+@{other\+Fluid\+Ptr\+\_\+}}
+\index{other\+Fluid\+Ptr\+\_\+@{other\+Fluid\+Ptr\+\_\+}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{other\+Fluid\+Ptr\+\_\+}{otherFluidPtr\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}$\ast$ other\+Fluid\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 70 of file T\+O\+N\+B\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1TONBModel_a8865a7fcf53a1aaaf4091b83f658c47b}\label{classFoam_1_1TONBModel_a8865a7fcf53a1aaaf4091b83f658c47b}} 
+\index{Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}!L\+Ptr\+\_\+@{L\+Ptr\+\_\+}}
+\index{L\+Ptr\+\_\+@{L\+Ptr\+\_\+}!Foam\+::\+T\+O\+N\+B\+Model@{Foam\+::\+T\+O\+N\+B\+Model}}
+\subsubsection{\texorpdfstring{L\+Ptr\+\_\+}{LPtr\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ L\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 73 of file T\+O\+N\+B\+Model.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/\+T\+O\+N\+B\+Models/\hyperlink{TONBModel_8H}{T\+O\+N\+B\+Model.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/\+T\+O\+N\+B\+Models/\hyperlink{newTONBModel_8C}{new\+T\+O\+N\+B\+Model.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/\+T\+O\+N\+B\+Models/\hyperlink{TONBModel_8C}{T\+O\+N\+B\+Model.\+C}\end{DoxyCompactItemize}

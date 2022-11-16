@@ -1,0 +1,661 @@
+\hypertarget{classFoam_1_1phaseChangeModel}{}\section{phase\+Change\+Model Class Reference}
+\label{classFoam_1_1phaseChangeModel}\index{phase\+Change\+Model@{phase\+Change\+Model}}
+
+
+Inheritance diagram for phase\+Change\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1phaseChangeModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for phase\+Change\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1phaseChangeModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1phaseChangeModel_a4c1ea440c2a0212fe2b5d2475911fc1e}{Type\+Name} (\char`\"{}phase\+Change\+Model\char`\"{})
+\item 
+\hyperlink{classFoam_1_1phaseChangeModel_a635dec53aec936a330f79b517549fad3}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model}, phase\+Change\+Models,(\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&\hyperlink{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}{pair}, const dictionary \&dict),(\hyperlink{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}{pair}, dict))
+\item 
+\hyperlink{classFoam_1_1phaseChangeModel_a300cf8460a39408081ad845c806f59f0}{phase\+Change\+Model} (\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&\hyperlink{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}{pair}, const dictionary \&dict)
+\item 
+virtual \hyperlink{classFoam_1_1phaseChangeModel_afc700336202652f0f8dddb9617cbf90f}{$\sim$phase\+Change\+Model} ()
+\item 
+virtual void \hyperlink{classFoam_1_1phaseChangeModel_a3ae44b28050c3aa494c1d8e18cf618c1}{correct} ()
+\item 
+virtual void \hyperlink{classFoam_1_1phaseChangeModel_a86dbc75d58cb99c2c3597abb0c7bb91c}{correct\+Interfacial\+Dmdt} ()=0
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1phaseChangeModel_a470f06cfb9b6ee887cd85d63de275607}{mesh} () const
+\item 
+const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \& \hyperlink{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}{pair} () const
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1phaseChangeModel_a8a45a422be431da8423bc1d5cb290ca7}{liquid} () const
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1phaseChangeModel_a6f06ed151635e5eddf72f9c23b6854bb}{vapour} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1phaseChangeModel_abe53da7ab6885a0c606832841d7bb49f}{L} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1phaseChangeModel_a918f3d5a64d7cf4215c6429757e28486}{dmdt} () const
+\item 
+const fv\+Scalar\+Matrix \& \hyperlink{classFoam_1_1phaseChangeModel_af01666438168c59e8b9fc12789b81c37}{he\+Source} (const word \&he\+Name)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} $>$ \hyperlink{classFoam_1_1phaseChangeModel_a1b699138c52c74753235bcd814ee7bb0}{New} (\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&\hyperlink{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}{pair}, const dictionary \&dict)
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Hash\+Table$<$ fv\+Scalar\+Matrix $\ast$, word, word\+::hash $>$ \hyperlink{classFoam_1_1phaseChangeModel_a47dacb23df9a151e6da0902f1726ef21}{fv\+Scalar\+Matrix\+Ptr\+Table}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFoam_1_1phaseChangeModel_a83bbe51818d5f8fa41ca19f3d79b0dde}{limit\+Interfacial\+Area} ()
+\item 
+void \hyperlink{classFoam_1_1phaseChangeModel_aa9020c2a4bc10b0363d27e5ace5674a8}{correct\+Interfacial\+Temperature} ()
+\item 
+void \hyperlink{classFoam_1_1phaseChangeModel_aa93c4a9b27364904542c70963bef9aa6}{limit\+Mass\+Transfer} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1phaseChangeModel_a23edeeeecebcef11921a33dd5d990570}{mesh\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1customPimpleControl}{custom\+Pimple\+Control} \& \hyperlink{classFoam_1_1phaseChangeModel_a06f54c6f34cf95f4f0b3d573a196e0c5}{pimple\+\_\+}
+\item 
+\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \& \hyperlink{classFoam_1_1phaseChangeModel_a34eaebd15a485f0ebfb0d0093191b903}{pair\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1phaseChangeModel_a5e2d96f5c8eaf3d2ba2fd36db82b8e8b}{fluid1\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1phaseChangeModel_a10350fa01c5980453030c19e26a2253f}{fluid2\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1phaseChangeModel_a908415555f3c334379400a3eb5759639}{liquid\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1phaseChangeModel_a2675e35060f71c22823e4a0b3c816dad}{vapour\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1phaseChangeModel_a4c9ce31e482786bbeeed352570fd8d09}{p\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1phaseChangeModel_a60ade7bb6e9a5c05333e335b4cfee3b8}{T1\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1phaseChangeModel_aa613d70e11e45888cd30054d51ba8557}{T2\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1phaseChangeModel_a37d95d641ff7ef8baac9580273f0cc18}{htc1\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1phaseChangeModel_a0ba63bf91e29253c57fbab3587bf4aad}{htc2\+\_\+}
+\item 
+vol\+Scalar\+Field \& \hyperlink{classFoam_1_1phaseChangeModel_ac30ca4a3968c5d5a58b653dab6fcafc8}{i\+T\+\_\+}
+\item 
+vol\+Scalar\+Field \& \hyperlink{classFoam_1_1phaseChangeModel_a97ae6ee1949b5d7f65cb435f9b218737}{i\+A\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1phaseChangeModel_a29caca749e7ec1ad8a2855e041f82e88}{L\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1phaseChangeModel_a0cbe0dc9999d3655f2118fbb615f6163}{dmdt\+I\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1phaseChangeModel_a5eed5a27c67b82e66739d5b0a9b3701b}{dmdt\+W\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1phaseChangeModel_a82c457d870d3464c7bad1bd4e5efdc0b}{dmdt\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1latentHeatModel}{latent\+Heat\+Model} $>$ \hyperlink{classFoam_1_1phaseChangeModel_a0306f24f52a3541db5de1ae50bf87fd0}{latent\+Heat\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1saturationModel}{saturation\+Model} $>$ \hyperlink{classFoam_1_1phaseChangeModel_adb7e5fad34c7f40c5b1a4cb3c3016f97}{saturation\+Ptr\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1phaseChangeModel_a9b3de14f2d6b232e13c9a6acd7cf0fab}{residual\+I\+A\+\_\+}
+\item 
+Dynamic\+List$<$ label $>$ \hyperlink{classFoam_1_1phaseChangeModel_a66d0d4a237686555d8f7120802e05c07}{residual\+I\+A\+Cells\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1phaseChangeModel_a3c8d8ff7d6c55677a05cca3647a9c214}{dm\+Lost\+To\+Limiter\+\_\+}
+\item 
+\hyperlink{classFoam_1_1phaseChangeModel_a47dacb23df9a151e6da0902f1726ef21}{fv\+Scalar\+Matrix\+Ptr\+Table} \hyperlink{classFoam_1_1phaseChangeModel_a1fb6dd21f501635afc552fde5a0fc7b3}{he\+Sources\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFoam_1_1phaseChangeModel_ac7d3409606e3e4844f9613fbc2d943c7}{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficients\+::multi\+Regime\+Boiling}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\label{_Description}%
+ \begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/phaseChangeModel.H}{\tt phase\+Change\+Model.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/phaseChangeModel.C}{\tt phase\+Change\+Model.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/newphaseChangeModel.C}{\tt newphase\+Change\+Model.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 63 of file phase\+Change\+Model.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a47dacb23df9a151e6da0902f1726ef21}\label{classFoam_1_1phaseChangeModel_a47dacb23df9a151e6da0902f1726ef21}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!fv\+Scalar\+Matrix\+Ptr\+Table@{fv\+Scalar\+Matrix\+Ptr\+Table}}
+\index{fv\+Scalar\+Matrix\+Ptr\+Table@{fv\+Scalar\+Matrix\+Ptr\+Table}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{fv\+Scalar\+Matrix\+Ptr\+Table}{fvScalarMatrixPtrTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$fv\+Scalar\+Matrix$\ast$, word, word\+::hash$>$ \hyperlink{classFoam_1_1phaseChangeModel_a47dacb23df9a151e6da0902f1726ef21}{fv\+Scalar\+Matrix\+Ptr\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 137 of file phase\+Change\+Model.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a300cf8460a39408081ad845c806f59f0}\label{classFoam_1_1phaseChangeModel_a300cf8460a39408081ad845c806f59f0}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!phase\+Change\+Model@{phase\+Change\+Model}}
+\index{phase\+Change\+Model@{phase\+Change\+Model}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{phase\+Change\+Model()}{phaseChangeModel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 35 of file phase\+Change\+Model.\+C.
+
+
+
+References for\+All(), and i.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=258pt]{classFoam_1_1phaseChangeModel_a300cf8460a39408081ad845c806f59f0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_afc700336202652f0f8dddb9617cbf90f}\label{classFoam_1_1phaseChangeModel_afc700336202652f0f8dddb9617cbf90f}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!````~phase\+Change\+Model@{$\sim$phase\+Change\+Model}}
+\index{````~phase\+Change\+Model@{$\sim$phase\+Change\+Model}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{$\sim$phase\+Change\+Model()}{~phaseChangeModel()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 199 of file phase\+Change\+Model.\+H.
+
+
+
+References correct().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=272pt]{classFoam_1_1phaseChangeModel_afc700336202652f0f8dddb9617cbf90f_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a83bbe51818d5f8fa41ca19f3d79b0dde}\label{classFoam_1_1phaseChangeModel_a83bbe51818d5f8fa41ca19f3d79b0dde}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!limit\+Interfacial\+Area@{limit\+Interfacial\+Area}}
+\index{limit\+Interfacial\+Area@{limit\+Interfacial\+Area}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{limit\+Interfacial\+Area()}{limitInterfacialArea()}}
+{\footnotesize\ttfamily void limit\+Interfacial\+Area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 226 of file phase\+Change\+Model.\+C.
+
+
+
+References for\+All(), and i.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=253pt]{classFoam_1_1phaseChangeModel_a83bbe51818d5f8fa41ca19f3d79b0dde_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_aa9020c2a4bc10b0363d27e5ace5674a8}\label{classFoam_1_1phaseChangeModel_aa9020c2a4bc10b0363d27e5ace5674a8}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!correct\+Interfacial\+Temperature@{correct\+Interfacial\+Temperature}}
+\index{correct\+Interfacial\+Temperature@{correct\+Interfacial\+Temperature}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{correct\+Interfacial\+Temperature()}{correctInterfacialTemperature()}}
+{\footnotesize\ttfamily void correct\+Interfacial\+Temperature (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 326 of file phase\+Change\+Model.\+C.
+
+
+
+References dt(), for\+All(), and i.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=299pt]{classFoam_1_1phaseChangeModel_aa9020c2a4bc10b0363d27e5ace5674a8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_aa93c4a9b27364904542c70963bef9aa6}\label{classFoam_1_1phaseChangeModel_aa93c4a9b27364904542c70963bef9aa6}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!limit\+Mass\+Transfer@{limit\+Mass\+Transfer}}
+\index{limit\+Mass\+Transfer@{limit\+Mass\+Transfer}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{limit\+Mass\+Transfer()}{limitMassTransfer()}}
+{\footnotesize\ttfamily void limit\+Mass\+Transfer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 250 of file phase\+Change\+Model.\+C.
+
+
+
+References dt(), for\+All(), and i.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{classFoam_1_1phaseChangeModel_aa93c4a9b27364904542c70963bef9aa6_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a4c1ea440c2a0212fe2b5d2475911fc1e}\label{classFoam_1_1phaseChangeModel_a4c1ea440c2a0212fe2b5d2475911fc1e}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}phase\+Change\+Model\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a635dec53aec936a330f79b517549fad3}\label{classFoam_1_1phaseChangeModel_a635dec53aec936a330f79b517549fad3}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model}}]{,  }\item[{phase\+Change\+Models}]{,  }\item[{(\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&\hyperlink{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}{pair}, const dictionary \&dict)}]{,  }\item[{(\hyperlink{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}{pair}, dict)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a1b699138c52c74753235bcd814ee7bb0}\label{classFoam_1_1phaseChangeModel_a1b699138c52c74753235bcd814ee7bb0}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!New@{New}}
+\index{New@{New}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1phaseChangeModel}{Foam\+::phase\+Change\+Model} $>$ New (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 24 of file new\+Phase\+Change\+Model.\+C.
+
+
+
+Referenced by F\+F\+Pair\+::\+F\+F\+Pair().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{classFoam_1_1phaseChangeModel_a1b699138c52c74753235bcd814ee7bb0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a3ae44b28050c3aa494c1d8e18cf618c1}\label{classFoam_1_1phaseChangeModel_a3ae44b28050c3aa494c1d8e18cf618c1}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!correct@{correct}}
+\index{correct@{correct}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 361 of file phase\+Change\+Model.\+C.
+
+
+
+References for\+All(), he1i(), he2(), he2i(), i, p\+\_\+, Foam\+::my\+Ops\+::store\+Prev\+Iter\+If\+Relax(), T1(), and T2().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{classFoam_1_1phaseChangeModel_a3ae44b28050c3aa494c1d8e18cf618c1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a86dbc75d58cb99c2c3597abb0c7bb91c}\label{classFoam_1_1phaseChangeModel_a86dbc75d58cb99c2c3597abb0c7bb91c}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!correct\+Interfacial\+Dmdt@{correct\+Interfacial\+Dmdt}}
+\index{correct\+Interfacial\+Dmdt@{correct\+Interfacial\+Dmdt}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{correct\+Interfacial\+Dmdt()}{correctInterfacialDmdt()}}
+{\footnotesize\ttfamily virtual void correct\+Interfacial\+Dmdt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1phaseChangeModels_1_1heatDrivenPhaseChange_a26b9e463af1a7ec39a18891734bd0759}{heat\+Driven\+Phase\+Change}, and \hyperlink{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_a26b9e463af1a7ec39a18891734bd0759}{forced\+Constant\+Phase\+Change}.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a470f06cfb9b6ee887cd85d63de275607}\label{classFoam_1_1phaseChangeModel_a470f06cfb9b6ee887cd85d63de275607}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!mesh@{mesh}}
+\index{mesh@{mesh}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{mesh()}{mesh()}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 219 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}\label{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!pair@{pair}}
+\index{pair@{pair}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{pair()}{pair()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair}\& pair (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 224 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a8a45a422be431da8423bc1d5cb290ca7}\label{classFoam_1_1phaseChangeModel_a8a45a422be431da8423bc1d5cb290ca7}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!liquid@{liquid}}
+\index{liquid@{liquid}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{liquid()}{liquid()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& liquid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 229 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a6f06ed151635e5eddf72f9c23b6854bb}\label{classFoam_1_1phaseChangeModel_a6f06ed151635e5eddf72f9c23b6854bb}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!vapour@{vapour}}
+\index{vapour@{vapour}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{vapour()}{vapour()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& vapour (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 234 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_abe53da7ab6885a0c606832841d7bb49f}\label{classFoam_1_1phaseChangeModel_abe53da7ab6885a0c606832841d7bb49f}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!L@{L}}
+\index{L@{L}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{L()}{L()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& L (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 239 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a918f3d5a64d7cf4215c6429757e28486}\label{classFoam_1_1phaseChangeModel_a918f3d5a64d7cf4215c6429757e28486}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!dmdt@{dmdt}}
+\index{dmdt@{dmdt}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{dmdt()}{dmdt()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& dmdt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 244 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_af01666438168c59e8b9fc12789b81c37}\label{classFoam_1_1phaseChangeModel_af01666438168c59e8b9fc12789b81c37}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!he\+Source@{he\+Source}}
+\index{he\+Source@{he\+Source}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{he\+Source()}{heSource()}}
+{\footnotesize\ttfamily const fv\+Scalar\+Matrix\& he\+Source (\begin{DoxyParamCaption}\item[{const word \&}]{he\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 249 of file phase\+Change\+Model.\+H.
+
+
+
+\subsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_ac7d3409606e3e4844f9613fbc2d943c7}\label{classFoam_1_1phaseChangeModel_ac7d3409606e3e4844f9613fbc2d943c7}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficients\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficients\+::multi\+Regime\+Boiling}}
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficients\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficients\+::multi\+Regime\+Boiling}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficients\+::multi\+Regime\+Boiling}{Foam::FSHeatTransferCoefficients::multiRegimeBoiling}}
+{\footnotesize\ttfamily friend class Foam\+::\+F\+S\+Heat\+Transfer\+Coefficients\+::multi\+Regime\+Boiling\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Definition at line 175 of file phase\+Change\+Model.\+H.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a23edeeeecebcef11921a33dd5d990570}\label{classFoam_1_1phaseChangeModel_a23edeeeecebcef11921a33dd5d990570}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!mesh\+\_\+@{mesh\+\_\+}}
+\index{mesh\+\_\+@{mesh\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{mesh\+\_\+}{mesh\_}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 70 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a06f54c6f34cf95f4f0b3d573a196e0c5}\label{classFoam_1_1phaseChangeModel_a06f54c6f34cf95f4f0b3d573a196e0c5}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!pimple\+\_\+@{pimple\+\_\+}}
+\index{pimple\+\_\+@{pimple\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{pimple\+\_\+}{pimple\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1customPimpleControl}{custom\+Pimple\+Control}\& pimple\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 73 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a34eaebd15a485f0ebfb0d0093191b903}\label{classFoam_1_1phaseChangeModel_a34eaebd15a485f0ebfb0d0093191b903}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!pair\+\_\+@{pair\+\_\+}}
+\index{pair\+\_\+@{pair\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{pair\+\_\+}{pair\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair}\& pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 76 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a5e2d96f5c8eaf3d2ba2fd36db82b8e8b}\label{classFoam_1_1phaseChangeModel_a5e2d96f5c8eaf3d2ba2fd36db82b8e8b}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!fluid1\+\_\+@{fluid1\+\_\+}}
+\index{fluid1\+\_\+@{fluid1\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{fluid1\+\_\+}{fluid1\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& fluid1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 79 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a10350fa01c5980453030c19e26a2253f}\label{classFoam_1_1phaseChangeModel_a10350fa01c5980453030c19e26a2253f}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!fluid2\+\_\+@{fluid2\+\_\+}}
+\index{fluid2\+\_\+@{fluid2\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{fluid2\+\_\+}{fluid2\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& fluid2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 82 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a908415555f3c334379400a3eb5759639}\label{classFoam_1_1phaseChangeModel_a908415555f3c334379400a3eb5759639}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!liquid\+\_\+@{liquid\+\_\+}}
+\index{liquid\+\_\+@{liquid\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{liquid\+\_\+}{liquid\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& liquid\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 85 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a2675e35060f71c22823e4a0b3c816dad}\label{classFoam_1_1phaseChangeModel_a2675e35060f71c22823e4a0b3c816dad}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!vapour\+\_\+@{vapour\+\_\+}}
+\index{vapour\+\_\+@{vapour\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{vapour\+\_\+}{vapour\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& vapour\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 88 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a4c9ce31e482786bbeeed352570fd8d09}\label{classFoam_1_1phaseChangeModel_a4c9ce31e482786bbeeed352570fd8d09}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!p\+\_\+@{p\+\_\+}}
+\index{p\+\_\+@{p\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{p\+\_\+}{p\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& p\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 91 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a60ade7bb6e9a5c05333e335b4cfee3b8}\label{classFoam_1_1phaseChangeModel_a60ade7bb6e9a5c05333e335b4cfee3b8}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!T1\+\_\+@{T1\+\_\+}}
+\index{T1\+\_\+@{T1\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{T1\+\_\+}{T1\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& T1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 94 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_aa613d70e11e45888cd30054d51ba8557}\label{classFoam_1_1phaseChangeModel_aa613d70e11e45888cd30054d51ba8557}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!T2\+\_\+@{T2\+\_\+}}
+\index{T2\+\_\+@{T2\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{T2\+\_\+}{T2\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& T2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 95 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a37d95d641ff7ef8baac9580273f0cc18}\label{classFoam_1_1phaseChangeModel_a37d95d641ff7ef8baac9580273f0cc18}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!htc1\+\_\+@{htc1\+\_\+}}
+\index{htc1\+\_\+@{htc1\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{htc1\+\_\+}{htc1\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& htc1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 98 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a0ba63bf91e29253c57fbab3587bf4aad}\label{classFoam_1_1phaseChangeModel_a0ba63bf91e29253c57fbab3587bf4aad}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!htc2\+\_\+@{htc2\+\_\+}}
+\index{htc2\+\_\+@{htc2\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{htc2\+\_\+}{htc2\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& htc2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 99 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_ac30ca4a3968c5d5a58b653dab6fcafc8}\label{classFoam_1_1phaseChangeModel_ac30ca4a3968c5d5a58b653dab6fcafc8}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!i\+T\+\_\+@{i\+T\+\_\+}}
+\index{i\+T\+\_\+@{i\+T\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{i\+T\+\_\+}{iT\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& i\+T\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 102 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a97ae6ee1949b5d7f65cb435f9b218737}\label{classFoam_1_1phaseChangeModel_a97ae6ee1949b5d7f65cb435f9b218737}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!i\+A\+\_\+@{i\+A\+\_\+}}
+\index{i\+A\+\_\+@{i\+A\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{i\+A\+\_\+}{iA\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& i\+A\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 103 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a29caca749e7ec1ad8a2855e041f82e88}\label{classFoam_1_1phaseChangeModel_a29caca749e7ec1ad8a2855e041f82e88}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!L\+\_\+@{L\+\_\+}}
+\index{L\+\_\+@{L\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{L\+\_\+}{L\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field L\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 106 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a0cbe0dc9999d3655f2118fbb615f6163}\label{classFoam_1_1phaseChangeModel_a0cbe0dc9999d3655f2118fbb615f6163}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!dmdt\+I\+\_\+@{dmdt\+I\+\_\+}}
+\index{dmdt\+I\+\_\+@{dmdt\+I\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{dmdt\+I\+\_\+}{dmdtI\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field dmdt\+I\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 109 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a5eed5a27c67b82e66739d5b0a9b3701b}\label{classFoam_1_1phaseChangeModel_a5eed5a27c67b82e66739d5b0a9b3701b}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!dmdt\+W\+\_\+@{dmdt\+W\+\_\+}}
+\index{dmdt\+W\+\_\+@{dmdt\+W\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{dmdt\+W\+\_\+}{dmdtW\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field dmdt\+W\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 113 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a82c457d870d3464c7bad1bd4e5efdc0b}\label{classFoam_1_1phaseChangeModel_a82c457d870d3464c7bad1bd4e5efdc0b}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!dmdt\+\_\+@{dmdt\+\_\+}}
+\index{dmdt\+\_\+@{dmdt\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{dmdt\+\_\+}{dmdt\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field dmdt\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 116 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a0306f24f52a3541db5de1ae50bf87fd0}\label{classFoam_1_1phaseChangeModel_a0306f24f52a3541db5de1ae50bf87fd0}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!latent\+Heat\+Ptr\+\_\+@{latent\+Heat\+Ptr\+\_\+}}
+\index{latent\+Heat\+Ptr\+\_\+@{latent\+Heat\+Ptr\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{latent\+Heat\+Ptr\+\_\+}{latentHeatPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1latentHeatModel}{latent\+Heat\+Model}$>$ latent\+Heat\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 119 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_adb7e5fad34c7f40c5b1a4cb3c3016f97}\label{classFoam_1_1phaseChangeModel_adb7e5fad34c7f40c5b1a4cb3c3016f97}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!saturation\+Ptr\+\_\+@{saturation\+Ptr\+\_\+}}
+\index{saturation\+Ptr\+\_\+@{saturation\+Ptr\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{saturation\+Ptr\+\_\+}{saturationPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}$>$ saturation\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 122 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a9b3de14f2d6b232e13c9a6acd7cf0fab}\label{classFoam_1_1phaseChangeModel_a9b3de14f2d6b232e13c9a6acd7cf0fab}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!residual\+I\+A\+\_\+@{residual\+I\+A\+\_\+}}
+\index{residual\+I\+A\+\_\+@{residual\+I\+A\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{residual\+I\+A\+\_\+}{residualIA\_}}
+{\footnotesize\ttfamily scalar residual\+I\+A\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 125 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a66d0d4a237686555d8f7120802e05c07}\label{classFoam_1_1phaseChangeModel_a66d0d4a237686555d8f7120802e05c07}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!residual\+I\+A\+Cells\+\_\+@{residual\+I\+A\+Cells\+\_\+}}
+\index{residual\+I\+A\+Cells\+\_\+@{residual\+I\+A\+Cells\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{residual\+I\+A\+Cells\+\_\+}{residualIACells\_}}
+{\footnotesize\ttfamily Dynamic\+List$<$label$>$ residual\+I\+A\+Cells\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 128 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a3c8d8ff7d6c55677a05cca3647a9c214}\label{classFoam_1_1phaseChangeModel_a3c8d8ff7d6c55677a05cca3647a9c214}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!dm\+Lost\+To\+Limiter\+\_\+@{dm\+Lost\+To\+Limiter\+\_\+}}
+\index{dm\+Lost\+To\+Limiter\+\_\+@{dm\+Lost\+To\+Limiter\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{dm\+Lost\+To\+Limiter\+\_\+}{dmLostToLimiter\_}}
+{\footnotesize\ttfamily scalar dm\+Lost\+To\+Limiter\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 132 of file phase\+Change\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModel_a1fb6dd21f501635afc552fde5a0fc7b3}\label{classFoam_1_1phaseChangeModel_a1fb6dd21f501635afc552fde5a0fc7b3}} 
+\index{Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}!he\+Sources\+\_\+@{he\+Sources\+\_\+}}
+\index{he\+Sources\+\_\+@{he\+Sources\+\_\+}!Foam\+::phase\+Change\+Model@{Foam\+::phase\+Change\+Model}}
+\subsubsection{\texorpdfstring{he\+Sources\+\_\+}{heSources\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1phaseChangeModel_a47dacb23df9a151e6da0902f1726ef21}{fv\+Scalar\+Matrix\+Ptr\+Table} he\+Sources\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 138 of file phase\+Change\+Model.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/\hyperlink{phaseChangeModel_8H}{phase\+Change\+Model.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/\hyperlink{newPhaseChangeModel_8C}{new\+Phase\+Change\+Model.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/\hyperlink{phaseChangeModel_8C}{phase\+Change\+Model.\+C}\end{DoxyCompactItemize}

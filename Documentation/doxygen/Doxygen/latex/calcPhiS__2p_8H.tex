@@ -1,0 +1,108 @@
+\hypertarget{calcPhiS__2p_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqn\+Routines/calc\+Phi\+S\+\_\+2p.H File Reference}
+\label{calcPhiS__2p_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqn\+Routines/calc\+Phi\+S\+\_\+2p.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqn\+Routines/calc\+Phi\+S\+\_\+2p.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{calcPhiS__2p_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+vol\+Scalar\+Field \& \hyperlink{calcPhiS__2p_8H_a91d1f9ec51e6b9a48a4e138602396604}{rho1b} (\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{fluid1\+\_\+.\+rho}(true))
+\item 
+vol\+Scalar\+Field \& \hyperlink{calcPhiS__2p_8H_a05007b79f2d136ddfa62517a751f3d7a}{rho2b} (\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{fluid2\+\_\+.\+rho}(true))
+\item 
+surface\+Scalar\+Field \hyperlink{calcPhiS__2p_8H_a927b6934c2b9e9cfe771d567c3e748c3}{gh\+Sn\+Grad\+Rho} (\char`\"{}gh\+Sn\+Grad\+Rho\char`\"{}, ghf\+\_\+ $\ast$fvc\+::sn\+Grad((fluid1\+\_\+ $\ast$\hyperlink{calcPhiS__2p_8H_a91d1f9ec51e6b9a48a4e138602396604}{rho1b}+fluid2\+\_\+ $\ast$\hyperlink{calcPhiS__2p_8H_a05007b79f2d136ddfa62517a751f3d7a}{rho2b})/moving\+Alpha\+\_\+) $\ast$mesh\+\_\+.\+mag\+Sf())
+\item 
+surface\+Scalar\+Field \hyperlink{calcPhiS__2p_8H_a6acd4b60e5a0c44877d5ee8e018d1084}{delta\+Rhof12} (fvc\+::interpolate(\hyperlink{calcPhiS__2p_8H_a91d1f9ec51e6b9a48a4e138602396604}{rho1b}) -\/ fvc\+::interpolate(\hyperlink{calcPhiS__2p_8H_a05007b79f2d136ddfa62517a751f3d7a}{rho2b}))
+\item 
+surface\+Scalar\+Field \hyperlink{calcPhiS__2p_8H_ab7aef2692ec494c47ff7316176555687}{phi\+S1} (-\/ \hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1} $\ast$(\hyperlink{calcPhiS__2p_8H_a927b6934c2b9e9cfe771d567c3e748c3}{gh\+Sn\+Grad\+Rho} -\/ \hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2}/\hyperlink{refsAndControls__2p_8H_a698564459013ee34ed0ecc1254f98096}{moving\+Alphaf} $\ast$\hyperlink{calcPhiS__2p_8H_a6acd4b60e5a0c44877d5ee8e018d1084}{delta\+Rhof12} $\ast$(g\+\_\+ \&mesh\+\_\+.\+Sf())))
+\item 
+surface\+Scalar\+Field \hyperlink{calcPhiS__2p_8H_ab15d155ef00d6329248c6e0c70ff2f66}{phi\+S2} (-\/ \hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2} $\ast$(\hyperlink{calcPhiS__2p_8H_a927b6934c2b9e9cfe771d567c3e748c3}{gh\+Sn\+Grad\+Rho} -\/ \hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1}/\hyperlink{refsAndControls__2p_8H_a698564459013ee34ed0ecc1254f98096}{moving\+Alphaf} $\ast$-\/ \hyperlink{calcPhiS__2p_8H_a6acd4b60e5a0c44877d5ee8e018d1084}{delta\+Rhof12} $\ast$(g\+\_\+ \&mesh\+\_\+.\+Sf())))
+\item 
+\hyperlink{calcPhiS__2p_8H_a0f4fbab0f4b5e59997f738b1d74e0916}{if} (structure\+\_\+.\+momentum\+Source\+Ptr().valid())
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{calcPhiS__2p_8H_a91d1f9ec51e6b9a48a4e138602396604}\label{calcPhiS__2p_8H_a91d1f9ec51e6b9a48a4e138602396604}} 
+\index{calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}!rho1b@{rho1b}}
+\index{rho1b@{rho1b}!calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{rho1b()}{rho1b()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& rho1b (\begin{DoxyParamCaption}\item[{fluid1\+\_\+.}]{rhotrue }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{calcPhiS__2p_8H_a05007b79f2d136ddfa62517a751f3d7a}\label{calcPhiS__2p_8H_a05007b79f2d136ddfa62517a751f3d7a}} 
+\index{calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}!rho2b@{rho2b}}
+\index{rho2b@{rho2b}!calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{rho2b()}{rho2b()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& rho2b (\begin{DoxyParamCaption}\item[{fluid2\+\_\+.}]{rhotrue }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{calcPhiS__2p_8H_a927b6934c2b9e9cfe771d567c3e748c3}\label{calcPhiS__2p_8H_a927b6934c2b9e9cfe771d567c3e748c3}} 
+\index{calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}!gh\+Sn\+Grad\+Rho@{gh\+Sn\+Grad\+Rho}}
+\index{gh\+Sn\+Grad\+Rho@{gh\+Sn\+Grad\+Rho}!calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{gh\+Sn\+Grad\+Rho()}{ghSnGradRho()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field gh\+Sn\+Grad\+Rho (\begin{DoxyParamCaption}\item[{\char`\"{}gh\+Sn\+Grad\+Rho\char`\"{}}]{,  }\item[{ghf\+\_\+ $\ast$}]{fvc\+::sn\+Grad(fluid1\+\_\+ $\ast$rho1b+fluid2\+\_\+ $\ast$rho2b)/moving\+Alpha\+\_\+) $\ast$mesh\+\_\+.\+mag\+Sf( }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{calcPhiS__2p_8H_a6acd4b60e5a0c44877d5ee8e018d1084}\label{calcPhiS__2p_8H_a6acd4b60e5a0c44877d5ee8e018d1084}} 
+\index{calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}!delta\+Rhof12@{delta\+Rhof12}}
+\index{delta\+Rhof12@{delta\+Rhof12}!calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{delta\+Rhof12()}{deltaRhof12()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field delta\+Rhof12 (\begin{DoxyParamCaption}\item[{fvc\+::interpolate(\hyperlink{calcPhiS__2p_8H_a91d1f9ec51e6b9a48a4e138602396604}{rho1b}) -\/ fvc\+::interpolate(\hyperlink{calcPhiS__2p_8H_a05007b79f2d136ddfa62517a751f3d7a}{rho2b})}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{calcPhiS__2p_8H_ab7aef2692ec494c47ff7316176555687}\label{calcPhiS__2p_8H_ab7aef2692ec494c47ff7316176555687}} 
+\index{calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}!phi\+S1@{phi\+S1}}
+\index{phi\+S1@{phi\+S1}!calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{phi\+S1()}{phiS1()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field phi\+S1 (\begin{DoxyParamCaption}\item[{-\/ \hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1} $\ast$}]{gh\+Sn\+Grad\+Rho -\/ alphaf2/moving\+Alphaf $\ast$delta\+Rhof12 $\ast$(g\+\_\+ \&mesh\+\_\+.\+Sf()) }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{calcPhiS__2p_8H_ab7aef2692ec494c47ff7316176555687_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcPhiS__2p_8H_ab15d155ef00d6329248c6e0c70ff2f66}\label{calcPhiS__2p_8H_ab15d155ef00d6329248c6e0c70ff2f66}} 
+\index{calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}!phi\+S2@{phi\+S2}}
+\index{phi\+S2@{phi\+S2}!calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{phi\+S2()}{phiS2()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field phi\+S2 (\begin{DoxyParamCaption}\item[{-\/ \hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2} $\ast$}]{gh\+Sn\+Grad\+Rho -\/ alphaf1/moving\+Alphaf $\ast$-\/ delta\+Rhof12 $\ast$(g\+\_\+ \&mesh\+\_\+.\+Sf()) }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{calcPhiS__2p_8H_ab15d155ef00d6329248c6e0c70ff2f66_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{calcPhiS__2p_8H_a0f4fbab0f4b5e59997f738b1d74e0916}\label{calcPhiS__2p_8H_a0f4fbab0f4b5e59997f738b1d74e0916}} 
+\index{calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}!if@{if}}
+\index{if@{if}!calc\+Phi\+S\+\_\+2p.\+H@{calc\+Phi\+S\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{structure\+\_\+.}]{momentum\+Source\+Ptr).\+valid( }\end{DoxyParamCaption})}
+
+
+
+Definition at line 46 of file calc\+Phi\+S\+\_\+2p.\+H.
+
+
+
+References alphaf1(), alphaf2(), phi\+S1(), and phi\+S2().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=193pt]{calcPhiS__2p_8H_a0f4fbab0f4b5e59997f738b1d74e0916_cgraph}
+\end{center}
+\end{figure}

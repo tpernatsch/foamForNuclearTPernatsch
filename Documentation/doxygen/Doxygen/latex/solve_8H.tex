@@ -1,0 +1,217 @@
+\hypertarget{solve_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/solve.H File Reference}
+\label{solve_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/solve.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/solve.\+H}}
+Include dependency graph for solve.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{solve_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{solve_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{solve_8H_af6162e115cf620178803ff56f87c336b}{solve\+FM} (multiphysics.\+solve\+Fluid\+Mechanics())
+\item 
+bool \hyperlink{solve_8H_afbf93d76a4fb473347c715e2cde50b28}{solveE} (multiphysics.\+solve\+Energy())
+\item 
+bool \hyperlink{solve_8H_a1e5c6e10262a112e6733cb2c49ca4777}{solveN} (multiphysics.\+solve\+Neutronics())
+\item 
+bool \hyperlink{solve_8H_a4dcb9ab7c7da8d64a99b23f49f48f99c}{solve\+TM} (multiphysics.\+solve\+Thermo\+Mechanics())
+\item 
+\hyperlink{solve_8H_ac62fbac94fc8d379135b1f9b304fde57}{if} (\hyperlink{solve_8H_af6162e115cf620178803ff56f87c336b}{solve\+FM} or \hyperlink{solve_8H_afbf93d76a4fb473347c715e2cde50b28}{solveE})
+\item 
+\hyperlink{solve_8H_a5a7b4acc2066112b79c7e339f8a019ea}{if} (\hyperlink{solve_8H_af6162e115cf620178803ff56f87c336b}{solve\+FM})
+\item 
+\hyperlink{solve_8H_a7bbf29951ce2e4a40c7ba7f46485eb08}{if} (!multiphysics.\+final\+Iter())
+\item 
+\hyperlink{createFluidMesh_8H_a0544c3fe466e421738dae463968b70ba}{else} \hyperlink{solve_8H_a3a4fa44798f3cf6964edb8ba25755057}{if} (\hyperlink{solve_8H_afbf93d76a4fb473347c715e2cde50b28}{solveE} or \hyperlink{solve_8H_a1e5c6e10262a112e6733cb2c49ca4777}{solveN} or \hyperlink{solve_8H_a4dcb9ab7c7da8d64a99b23f49f48f99c}{solve\+TM})
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+scalar \hyperlink{solve_8H_ae36403c61616232a5413ff63ff085bf6}{F\+M\+Residual} = 0.\+0
+\item 
+scalar \hyperlink{solve_8H_a35af53331edb7c063348620f6e7d0819}{E\+Residual} = 0.\+0
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{solve_8H_af6162e115cf620178803ff56f87c336b}\label{solve_8H_af6162e115cf620178803ff56f87c336b}} 
+\index{solve.\+H@{solve.\+H}!solve\+FM@{solve\+FM}}
+\index{solve\+FM@{solve\+FM}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{solve\+F\+M()}{solveFM()}}
+{\footnotesize\ttfamily bool solve\+FM (\begin{DoxyParamCaption}\item[{multiphysics.}]{solve\+Fluid\+Mechanics() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{solve_8H_af6162e115cf620178803ff56f87c336b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{solve_8H_afbf93d76a4fb473347c715e2cde50b28}\label{solve_8H_afbf93d76a4fb473347c715e2cde50b28}} 
+\index{solve.\+H@{solve.\+H}!solveE@{solveE}}
+\index{solveE@{solveE}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{solve\+E()}{solveE()}}
+{\footnotesize\ttfamily bool solveE (\begin{DoxyParamCaption}\item[{multiphysics.}]{solve\+Energy() }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solve_8H_a1e5c6e10262a112e6733cb2c49ca4777}\label{solve_8H_a1e5c6e10262a112e6733cb2c49ca4777}} 
+\index{solve.\+H@{solve.\+H}!solveN@{solveN}}
+\index{solveN@{solveN}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{solve\+N()}{solveN()}}
+{\footnotesize\ttfamily bool solveN (\begin{DoxyParamCaption}\item[{multiphysics.}]{solve\+Neutronics() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{solve_8H_a1e5c6e10262a112e6733cb2c49ca4777_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{solve_8H_a4dcb9ab7c7da8d64a99b23f49f48f99c}\label{solve_8H_a4dcb9ab7c7da8d64a99b23f49f48f99c}} 
+\index{solve.\+H@{solve.\+H}!solve\+TM@{solve\+TM}}
+\index{solve\+TM@{solve\+TM}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{solve\+T\+M()}{solveTM()}}
+{\footnotesize\ttfamily bool solve\+TM (\begin{DoxyParamCaption}\item[{multiphysics.}]{solve\+Thermo\+Mechanics() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{solve_8H_a4dcb9ab7c7da8d64a99b23f49f48f99c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{solve_8H_ac62fbac94fc8d379135b1f9b304fde57}\label{solve_8H_ac62fbac94fc8d379135b1f9b304fde57}} 
+\index{solve.\+H@{solve.\+H}!if@{if}}
+\index{if@{if}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{\hyperlink{solve_8H_af6162e115cf620178803ff56f87c336b}{solve\+FM} or}]{solveE }\end{DoxyParamCaption})}
+
+
+
+Definition at line 15 of file solve.\+H.
+
+
+
+References solve\+F\+M(), and thermal\+Hydraulics.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{solve_8H_ac62fbac94fc8d379135b1f9b304fde57_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{solve_8H_a5a7b4acc2066112b79c7e339f8a019ea}\label{solve_8H_a5a7b4acc2066112b79c7e339f8a019ea}} 
+\index{solve.\+H@{solve.\+H}!if@{if}}
+\index{if@{if}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{\hyperlink{solve_8H_af6162e115cf620178803ff56f87c336b}{solve\+FM}}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 23 of file solve.\+H.
+
+
+
+References F\+M\+Residual, solve\+N(), solve\+T\+M(), and thermal\+Hydraulics.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{solve_8H_a5a7b4acc2066112b79c7e339f8a019ea_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{solve_8H_a7bbf29951ce2e4a40c7ba7f46485eb08}\label{solve_8H_a7bbf29951ce2e4a40c7ba7f46485eb08}} 
+\index{solve.\+H@{solve.\+H}!if@{if}}
+\index{if@{if}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{!multiphysics.}]{final\+Iter() }\end{DoxyParamCaption})}
+
+
+
+Definition at line 33 of file solve.\+H.
+
+
+
+References E\+Residual, fluid\+To\+Neutro(), multiphysics(), solve\+N(), solve\+T\+M(), and thermal\+Hydraulics.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{solve_8H_a7bbf29951ce2e4a40c7ba7f46485eb08_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{solve_8H_a3a4fa44798f3cf6964edb8ba25755057}\label{solve_8H_a3a4fa44798f3cf6964edb8ba25755057}} 
+\index{solve.\+H@{solve.\+H}!if@{if}}
+\index{if@{if}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \hyperlink{createFluidMesh_8H_a0544c3fe466e421738dae463968b70ba}{else} if (\begin{DoxyParamCaption}\item[{\hyperlink{solve_8H_afbf93d76a4fb473347c715e2cde50b28}{solveE} or \hyperlink{solve_8H_a1e5c6e10262a112e6733cb2c49ca4777}{solveN} or}]{solve\+TM }\end{DoxyParamCaption})}
+
+
+
+Definition at line 54 of file solve.\+H.
+
+
+
+References fluid\+To\+Neutro(), mech\+To\+Fluid(), mech\+To\+Neutro(), multiphysics(), neutronics, neutro\+To\+Fluid(), solve\+N(), thermal\+Hydraulics, and thermo\+Mechanics.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{solve_8H_a3a4fa44798f3cf6964edb8ba25755057_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{solve_8H_ae36403c61616232a5413ff63ff085bf6}\label{solve_8H_ae36403c61616232a5413ff63ff085bf6}} 
+\index{solve.\+H@{solve.\+H}!F\+M\+Residual@{F\+M\+Residual}}
+\index{F\+M\+Residual@{F\+M\+Residual}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{F\+M\+Residual}{FMResidual}}
+{\footnotesize\ttfamily scalar F\+M\+Residual = 0.\+0}
+
+
+
+Definition at line 4 of file solve.\+H.
+
+
+
+Referenced by if().
+
+\mbox{\Hypertarget{solve_8H_a35af53331edb7c063348620f6e7d0819}\label{solve_8H_a35af53331edb7c063348620f6e7d0819}} 
+\index{solve.\+H@{solve.\+H}!E\+Residual@{E\+Residual}}
+\index{E\+Residual@{E\+Residual}!solve.\+H@{solve.\+H}}
+\subsubsection{\texorpdfstring{E\+Residual}{EResidual}}
+{\footnotesize\ttfamily scalar E\+Residual = 0.\+0}
+
+
+
+Definition at line 5 of file solve.\+H.
+
+
+
+Referenced by if().
+

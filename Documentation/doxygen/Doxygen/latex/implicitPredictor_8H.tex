@@ -1,0 +1,114 @@
+\hypertarget{implicitPredictor_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/diffusion/include/implicit\+Predictor.H File Reference}
+\label{implicitPredictor_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/diffusion/include/implicit\+Predictor.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/diffusion/include/implicit\+Predictor.\+H}}
+Include dependency graph for implicit\+Predictor.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=218pt]{implicitPredictor_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=218pt]{implicitPredictor_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Info$<$$<$ \char`\"{}Accelerating neutronic solution\+: implicit predictor (not tested \hyperlink{integralPredictorSP3_8H_a9e2f51bb368ba752c8b024e174e2908b}{for} S\+P3)\char`\"{}$<$$<$ endl ;\{ Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{implicitPredictor_8H_a0b4472cf0c1cb06b45a3d81069bd2a55}{leakages} (xs\+\_\+.\+energy\+Groups())
+\item 
+\hyperlink{implicitPredictor_8H_ad56e91289c298261196ff6d4edae7513}{for\+All} (\hyperlink{implicitPredictorSP3_8H_a0b4472cf0c1cb06b45a3d81069bd2a55}{leakages}, energyI)
+\item 
+\hyperlink{implicitPredictor_8H_ad4152604cc2cfb2d05dfe6d0749d12e8}{for\+All} (flux\+Star\+\_\+\mbox{[}0\mbox{]}.internal\+Field(), \hyperlink{solvePointKinetics_8H_acb559820d9ca11295b4500f179ef6392}{i})
+\item 
+\hyperlink{implicitPredictor_8H_a72f1858746fb864f8d04fe468bbd8465}{for\+All} (flux\+\_\+, energyI)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{implicitPredictor_8H_a0b4472cf0c1cb06b45a3d81069bd2a55}\label{implicitPredictor_8H_a0b4472cf0c1cb06b45a3d81069bd2a55}} 
+\index{implicit\+Predictor.\+H@{implicit\+Predictor.\+H}!leakages@{leakages}}
+\index{leakages@{leakages}!implicit\+Predictor.\+H@{implicit\+Predictor.\+H}}
+\subsubsection{\texorpdfstring{leakages()}{leakages()}}
+{\footnotesize\ttfamily Info$<$$<$ \char`\"{}Accelerating neutronic solution\+: implicit predictor (not tested \hyperlink{integralPredictorSP3_8H_a9e2f51bb368ba752c8b024e174e2908b}{for} S\+P3)\char`\"{} $<$$<$ endl ;\{ Ptr\+List$<$vol\+Scalar\+Field$>$ leakages (\begin{DoxyParamCaption}\item[{xs\+\_\+.}]{energy\+Groups() }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{implicitPredictor_8H_a0b4472cf0c1cb06b45a3d81069bd2a55_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{implicitPredictor_8H_ad56e91289c298261196ff6d4edae7513}\label{implicitPredictor_8H_ad56e91289c298261196ff6d4edae7513}} 
+\index{implicit\+Predictor.\+H@{implicit\+Predictor.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!implicit\+Predictor.\+H@{implicit\+Predictor.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{\hyperlink{implicitPredictorSP3_8H_a0b4472cf0c1cb06b45a3d81069bd2a55}{leakages}}]{,  }\item[{energyI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 6 of file implicit\+Predictor.\+H.
+
+
+
+References D, disc\+Factor, and leakages().
+
+
+
+Referenced by for\+All().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{implicitPredictor_8H_ad56e91289c298261196ff6d4edae7513_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{implicitPredictor_8H_ad56e91289c298261196ff6d4edae7513_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{implicitPredictor_8H_ad4152604cc2cfb2d05dfe6d0749d12e8}\label{implicitPredictor_8H_ad4152604cc2cfb2d05dfe6d0749d12e8}} 
+\index{implicit\+Predictor.\+H@{implicit\+Predictor.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!implicit\+Predictor.\+H@{implicit\+Predictor.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{flux\+Star\+\_\+.}]{internal\+Field()\mbox{[}0\mbox{]},  }\item[{\hyperlink{solvePointKinetics_8H_acb559820d9ca11295b4500f179ef6392}{i}}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 29 of file implicit\+Predictor.\+H.
+
+
+
+References Beta\+Tot, chi\+Delayed, chi\+Prompt, disc\+Factor, for\+All(), i, IV, leakages(), nu\+Sigma\+Eff, sigma\+Disapp, sigma\+From\+To, and solve.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{implicitPredictor_8H_ad4152604cc2cfb2d05dfe6d0749d12e8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{implicitPredictor_8H_a72f1858746fb864f8d04fe468bbd8465}\label{implicitPredictor_8H_a72f1858746fb864f8d04fe468bbd8465}} 
+\index{implicit\+Predictor.\+H@{implicit\+Predictor.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!implicit\+Predictor.\+H@{implicit\+Predictor.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{flux\+\_\+}]{,  }\item[{energyI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 76 of file implicit\+Predictor.\+H.
+
+
+
+References D, and disc\+Factor.
+

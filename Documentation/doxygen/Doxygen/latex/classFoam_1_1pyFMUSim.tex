@@ -1,0 +1,136 @@
+\hypertarget{classFoam_1_1pyFMUSim}{}\section{py\+F\+M\+U\+Sim Class Reference}
+\label{classFoam_1_1pyFMUSim}\index{py\+F\+M\+U\+Sim@{py\+F\+M\+U\+Sim}}
+
+
+Author Henning Scheufler, D\+LR, all rights reserved.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1pyFMUSim_aa9cca774047c6dea4f8cbc228d4965ad}{Type\+Name} (\char`\"{}py\+F\+M\+U\+Sim\char`\"{})
+\item 
+\hyperlink{classFoam_1_1pyFMUSim_a593c04dc8c1b5a19575a3a4f84176d6a}{py\+F\+M\+U\+Sim} (const Time \&time, word pymodule, word pyclass)
+\item 
+virtual \hyperlink{classFoam_1_1pyFMUSim_a60a90e4b802011109dc4ff17b12b54a0}{$\sim$py\+F\+M\+U\+Sim} ()=default
+\item 
+py\+::object \& \hyperlink{classFoam_1_1pyFMUSim_aeb31c786a30f052e3d236b6bbea36f66}{F\+M\+Us} ()
+\item 
+void \hyperlink{classFoam_1_1pyFMUSim_a6b850002ddd6a28e773a0a0e7d6f9f74}{step\+Until} (scalar \hyperlink{correctReactivity_8H_af8e30ff2e3fe21800ba55c8d7534a828}{t})
+\item 
+void \hyperlink{classFoam_1_1pyFMUSim_a3d006b21bef4f156262bd22b275114cb}{from\+\_\+\+OF} (word dumped\+\_\+json)
+\item 
+word \hyperlink{classFoam_1_1pyFMUSim_a90f2502f325075b4b2a10a9be24f1673}{to\+\_\+\+OF} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Author Henning Scheufler, D\+LR, all rights reserved. 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/pyFMUSim/pyFMUSim.H}{\tt py\+F\+M\+U\+Sim.\+H} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 42 of file py\+F\+M\+U\+Sim.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1pyFMUSim_a593c04dc8c1b5a19575a3a4f84176d6a}\label{classFoam_1_1pyFMUSim_a593c04dc8c1b5a19575a3a4f84176d6a}} 
+\index{Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}!py\+F\+M\+U\+Sim@{py\+F\+M\+U\+Sim}}
+\index{py\+F\+M\+U\+Sim@{py\+F\+M\+U\+Sim}!Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}}
+\subsubsection{\texorpdfstring{py\+F\+M\+U\+Sim()}{pyFMUSim()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1pyFMUSim}{py\+F\+M\+U\+Sim} (\begin{DoxyParamCaption}\item[{const Time \&}]{time,  }\item[{word}]{pymodule,  }\item[{word}]{pyclass }\end{DoxyParamCaption})}
+
+
+
+Definition at line 27 of file py\+F\+M\+U\+Sim.\+C.
+
+
+
+References py\+Interp\+::\+New(), and set().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=291pt]{classFoam_1_1pyFMUSim_a593c04dc8c1b5a19575a3a4f84176d6a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1pyFMUSim_a60a90e4b802011109dc4ff17b12b54a0}\label{classFoam_1_1pyFMUSim_a60a90e4b802011109dc4ff17b12b54a0}} 
+\index{Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}!````~py\+F\+M\+U\+Sim@{$\sim$py\+F\+M\+U\+Sim}}
+\index{````~py\+F\+M\+U\+Sim@{$\sim$py\+F\+M\+U\+Sim}!Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}}
+\subsubsection{\texorpdfstring{$\sim$py\+F\+M\+U\+Sim()}{~pyFMUSim()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1pyFMUSim}{py\+F\+M\+U\+Sim} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1pyFMUSim_aa9cca774047c6dea4f8cbc228d4965ad}\label{classFoam_1_1pyFMUSim_aa9cca774047c6dea4f8cbc228d4965ad}} 
+\index{Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}py\+F\+M\+U\+Sim\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1pyFMUSim_aeb31c786a30f052e3d236b6bbea36f66}\label{classFoam_1_1pyFMUSim_aeb31c786a30f052e3d236b6bbea36f66}} 
+\index{Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}!F\+M\+Us@{F\+M\+Us}}
+\index{F\+M\+Us@{F\+M\+Us}!Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}}
+\subsubsection{\texorpdfstring{F\+M\+Us()}{FMUs()}}
+{\footnotesize\ttfamily py\+::object\& F\+M\+Us (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 64 of file py\+F\+M\+U\+Sim.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1pyFMUSim_a6b850002ddd6a28e773a0a0e7d6f9f74}\label{classFoam_1_1pyFMUSim_a6b850002ddd6a28e773a0a0e7d6f9f74}} 
+\index{Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}!step\+Until@{step\+Until}}
+\index{step\+Until@{step\+Until}!Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}}
+\subsubsection{\texorpdfstring{step\+Until()}{stepUntil()}}
+{\footnotesize\ttfamily void step\+Until (\begin{DoxyParamCaption}\item[{scalar}]{t }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 70 of file py\+F\+M\+U\+Sim.\+H.
+
+
+
+References t().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=201pt]{classFoam_1_1pyFMUSim_a6b850002ddd6a28e773a0a0e7d6f9f74_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1pyFMUSim_a3d006b21bef4f156262bd22b275114cb}\label{classFoam_1_1pyFMUSim_a3d006b21bef4f156262bd22b275114cb}} 
+\index{Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}!from\+\_\+\+OF@{from\+\_\+\+OF}}
+\index{from\+\_\+\+OF@{from\+\_\+\+OF}!Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}}
+\subsubsection{\texorpdfstring{from\+\_\+\+O\+F()}{from\_OF()}}
+{\footnotesize\ttfamily void from\+\_\+\+OF (\begin{DoxyParamCaption}\item[{word}]{dumped\+\_\+json }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 76 of file py\+F\+M\+U\+Sim.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1pyFMUSim_a90f2502f325075b4b2a10a9be24f1673}\label{classFoam_1_1pyFMUSim_a90f2502f325075b4b2a10a9be24f1673}} 
+\index{Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}!to\+\_\+\+OF@{to\+\_\+\+OF}}
+\index{to\+\_\+\+OF@{to\+\_\+\+OF}!Foam\+::py\+F\+M\+U\+Sim@{Foam\+::py\+F\+M\+U\+Sim}}
+\subsubsection{\texorpdfstring{to\+\_\+\+O\+F()}{to\_OF()}}
+{\footnotesize\ttfamily word to\+\_\+\+OF (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 82 of file py\+F\+M\+U\+Sim.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/src/\+O\+F\+\_\+\+F\+M\+U/py\+F\+M\+U\+Sim/\hyperlink{pyFMUSim_8H}{py\+F\+M\+U\+Sim.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/src/\+O\+F\+\_\+\+F\+M\+U/py\+F\+M\+U\+Sim/\hyperlink{pyFMUSim_8C}{py\+F\+M\+U\+Sim.\+C}\end{DoxyCompactItemize}

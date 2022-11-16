@@ -1,0 +1,187 @@
+\hypertarget{classFoam_1_1FSDragCoefficientModels_1_1Rehme}{}\section{Rehme Class Reference}
+\label{classFoam_1_1FSDragCoefficientModels_1_1Rehme}\index{Rehme@{Rehme}}
+
+
+Rheme correlation for pressure drop.  
+
+
+
+
+Inheritance diagram for Rehme\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1FSDragCoefficientModels_1_1Rehme__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Rehme\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1FSDragCoefficientModels_1_1Rehme__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a7203134e5c13a8703a9910af30d1e883}{Type\+Name} (\char`\"{}Rehme\char`\"{})
+\item 
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a786840458937af5f59368fbea3e63268}{Rehme} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme_acf2e088d574516b15defbeca1ace6396}{$\sim$\+Rehme} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a2c1e1872d359910de4c35cf8f003871c}{value} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a470f484be0b7ecd159b0971e3023a490}{A\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a7b38357c168a413e83f795a9b6b78380}{B1\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a977e9d92f6ccebb18e888b2a99a16705}{B2\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Rheme correlation for pressure drop. 
+
+\label{_Description}%
+ \{Rehme197315, author=\{\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme}{Rehme}, Klaus\}, title=\{P\+R\+E\+S\+S\+U\+RE D\+R\+OP C\+O\+R\+R\+E\+L\+A\+T\+I\+O\+NS F\+OR F\+U\+EL E\+L\+E\+M\+E\+NT S\+P\+A\+C\+E\+RS.\}, journal=\{Nuclear Technology\}, year=\{1973\}, volume=\{17\}, number=\{1\}, pages=\{15-\/23\}, doi=\{10.\+13182/\+N\+T73-\/\+A31250\}, \}
+
+Dictionary entries (mandatory) number\+Of\+Pins 37; pin\+Diameter 0.\+006000; pin\+Pitch 0.\+007600; wire\+Diameter 0.\+0016; wire\+Lead\+Len 0.\+1; //-\/ I.\+e. pitch of the wrapper wire wet\+Wrap\+Perimeter 0.\+175237; //-\/ Wetted wrapper perimeter (wrapper only)
+
+Author Stefan Radman (\href{mailto:sradman@protonmail.com}{\tt sradman@protonmail.\+com} / \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragCoefficientModels/Rehme/RehmeFSDragCoefficient.H}{\tt Rehme\+F\+S\+Drag\+Coefficient.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragCoefficientModels/Rehme/Rehme.C}{\tt Rehme.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 74 of file Rehme\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a786840458937af5f59368fbea3e63268}\label{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a786840458937af5f59368fbea3e63268}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}!Rehme@{Rehme}}
+\index{Rehme@{Rehme}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}}
+\subsubsection{\texorpdfstring{Rehme()}{Rehme()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme}{Rehme} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 42 of file Rehme\+F\+S\+Drag\+Coefficient.\+C.
+
+
+
+References B(), and Rehme\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a786840458937af5f59368fbea3e63268_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1Rehme_acf2e088d574516b15defbeca1ace6396}\label{classFoam_1_1FSDragCoefficientModels_1_1Rehme_acf2e088d574516b15defbeca1ace6396}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}!````~Rehme@{$\sim$\+Rehme}}
+\index{````~Rehme@{$\sim$\+Rehme}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}}
+\subsubsection{\texorpdfstring{$\sim$\+Rehme()}{~Rehme()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1Rehme}{Rehme} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 100 of file Rehme\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+References Rehme\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{classFoam_1_1FSDragCoefficientModels_1_1Rehme_acf2e088d574516b15defbeca1ace6396_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a7203134e5c13a8703a9910af30d1e883}\label{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a7203134e5c13a8703a9910af30d1e883}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}Rehme\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a2c1e1872d359910de4c35cf8f003871c}\label{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a2c1e1872d359910de4c35cf8f003871c}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}!value@{value}}
+\index{value@{value}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Foam\+::scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1FSDragCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}{F\+S\+Drag\+Coefficient\+Model}.
+
+
+
+Definition at line 73 of file Rehme\+F\+S\+Drag\+Coefficient.\+C.
+
+
+
+Referenced by Rehme\+::\+Rehme(), and Rehme\+::$\sim$\+Rehme().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a2c1e1872d359910de4c35cf8f003871c_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a470f484be0b7ecd159b0971e3023a490}\label{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a470f484be0b7ecd159b0971e3023a490}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}!A\+\_\+@{A\+\_\+}}
+\index{A\+\_\+@{A\+\_\+}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}}
+\subsubsection{\texorpdfstring{A\+\_\+}{A\_}}
+{\footnotesize\ttfamily scalar A\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 81 of file Rehme\+F\+S\+Drag\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a7b38357c168a413e83f795a9b6b78380}\label{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a7b38357c168a413e83f795a9b6b78380}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}!B1\+\_\+@{B1\+\_\+}}
+\index{B1\+\_\+@{B1\+\_\+}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}}
+\subsubsection{\texorpdfstring{B1\+\_\+}{B1\_}}
+{\footnotesize\ttfamily scalar B1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 82 of file Rehme\+F\+S\+Drag\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a977e9d92f6ccebb18e888b2a99a16705}\label{classFoam_1_1FSDragCoefficientModels_1_1Rehme_a977e9d92f6ccebb18e888b2a99a16705}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}!B2\+\_\+@{B2\+\_\+}}
+\index{B2\+\_\+@{B2\+\_\+}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Rehme}}
+\subsubsection{\texorpdfstring{B2\+\_\+}{B2\_}}
+{\footnotesize\ttfamily scalar B2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 83 of file Rehme\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+S\+Drag\+Coefficient\+Models/\+Rehme/\hyperlink{RehmeFSDragCoefficient_8H}{Rehme\+F\+S\+Drag\+Coefficient.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+S\+Drag\+Coefficient\+Models/\+Rehme/\hyperlink{RehmeFSDragCoefficient_8C}{Rehme\+F\+S\+Drag\+Coefficient.\+C}\end{DoxyCompactItemize}

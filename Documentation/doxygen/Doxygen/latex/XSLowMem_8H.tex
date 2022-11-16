@@ -1,0 +1,30 @@
+\hypertarget{XSLowMem_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+X\+S/\+X\+S\+Low\+Mem/\+X\+S\+Low\+Mem.H File Reference}
+\label{XSLowMem_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+X\+S/\+X\+S\+Low\+Mem/\+X\+S\+Low\+Mem.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+X\+S/\+X\+S\+Low\+Mem/\+X\+S\+Low\+Mem.\+H}}
+Include dependency graph for X\+S\+Low\+Mem.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{XSLowMem_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{XSLowMem_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFoam_1_1XSLowMem}{X\+S\+Low\+Mem}
+\begin{DoxyCompactList}\small\item\em Class for \hyperlink{classFoam_1_1XS}{XS} parametrization. Used in \hyperlink{classFoam_1_1SNNeutronics}{S\+N\+Neutronics}. Low memory version of \hyperlink{classFoam_1_1XS}{XS}. Essentially it does not store the full scattering matrix, but it parametrize and return each component on request. One additional feature is that it creates (and can return) a sigma\+From\+To\+Yes\+No matrix that is filled with zeros and ones. One in position (i,j) implies that there is an exchange of neutrons from group i to j somewhere in the geometry. It can be used to speed up the calculations of scattering sources. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceFoam}{Foam}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+{\bfseries Original source file} \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/neutronics/XS/XSLowMem/XSLowMem.H}{\tt X\+S\+Low\+Mem.\+H} 

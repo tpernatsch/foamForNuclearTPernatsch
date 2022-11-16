@@ -1,0 +1,274 @@
+\hypertarget{classFoam_1_1fluidDiameterModel}{}\section{fluid\+Diameter\+Model Class Reference}
+\label{classFoam_1_1fluidDiameterModel}\index{fluid\+Diameter\+Model@{fluid\+Diameter\+Model}}
+
+
+Class to handle fluid diameter.  
+
+
+
+
+Inheritance diagram for fluid\+Diameter\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1fluidDiameterModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for fluid\+Diameter\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{classFoam_1_1fluidDiameterModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1fluidDiameterModel_a7715a6655c3f68d294439f5815ea756a}{Type\+Name} (\char`\"{}fluid\+Diameter\+Model\char`\"{})
+\item 
+\hyperlink{classFoam_1_1fluidDiameterModel_a20cae715fd2ec84a3a04cc554dc67de9}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1fluidDiameterModel}{fluid\+Diameter\+Model}, fluid\+Diameter\+Models,(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg),(pair, dict, obj\+Reg))
+\item 
+\hyperlink{classFoam_1_1fluidDiameterModel_a269b306e6f73e3dade6ca7764e7ce283}{fluid\+Diameter\+Model} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1fluidDiameterModel_a5660e31060f5ebad949b879388294613}{$\sim$fluid\+Diameter\+Model} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1fluidDiameterModel_a139457cae4c5e04785e143fd8b9ed092}{value} (const label \&celli) const =0
+\item 
+void \hyperlink{classFoam_1_1fluidDiameterModel_aa99943bda90a4539aad2a1e8544c1a79}{correct\+Field} (vol\+Scalar\+Field \&Dh) const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1fluidDiameterModel}{fluid\+Diameter\+Model} $>$ \hyperlink{classFoam_1_1fluidDiameterModel_a6f22fb248e45888d4afe527f6e17e593}{New} (const \hyperlink{classFoam_1_1fluid}{fluid} \&\hyperlink{classFoam_1_1fluid}{fluid}, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1fluidDiameterModel}{fluid\+Diameter\+Model} $>$ \hyperlink{classFoam_1_1fluidDiameterModel_a82a20d6b34a97bdca678c50daddf7de9}{New} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1fluidDiameterModel_a23edeeeecebcef11921a33dd5d990570}{mesh\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \& \hyperlink{classFoam_1_1fluidDiameterModel_a587e19a1b4f4b498d2604d20c093a73b}{pair\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1fluidDiameterModel_aef274d0faea6f388e2907dc335349bc9}{fluid\+\_\+}
+\item 
+const scalar\+Field \& \hyperlink{classFoam_1_1fluidDiameterModel_a8fa76190053050d68abc04479f2c54e0}{dispersion\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1fluidDiameterModel_a8891c9fe98566d620d631ac0d6687060}{Dhs\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1fluidDiameterModel_a9f354183d629b4422e533a56df9634a4}{Dh\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to handle fluid diameter. 
+
+\label{_Description}%
+ Author Stefan Radman (\href{mailto:stefan.radman@alumni.epfl.ch}{\tt stefan.\+radman@alumni.\+epfl.\+ch}; \href{mailto:sradman@protonmail.com}{\tt sradman@protonmail.\+com})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/fluidDiameterModels/fluidDiameterModel.H}{\tt fluid\+Diameter\+Model.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/fluidDiameterModels/fluidDiameterModel.C}{\tt fluid\+Diameter\+Model.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/fluidDiameterModels/newfluidDiameterModel.C}{\tt newfluid\+Diameter\+Model.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 53 of file fluid\+Diameter\+Model.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a269b306e6f73e3dade6ca7764e7ce283}\label{classFoam_1_1fluidDiameterModel_a269b306e6f73e3dade6ca7764e7ce283}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!fluid\+Diameter\+Model@{fluid\+Diameter\+Model}}
+\index{fluid\+Diameter\+Model@{fluid\+Diameter\+Model}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{fluid\+Diameter\+Model()}{fluidDiameterModel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1fluidDiameterModel}{fluid\+Diameter\+Model} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 38 of file fluid\+Diameter\+Model.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a5660e31060f5ebad949b879388294613}\label{classFoam_1_1fluidDiameterModel_a5660e31060f5ebad949b879388294613}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!````~fluid\+Diameter\+Model@{$\sim$fluid\+Diameter\+Model}}
+\index{````~fluid\+Diameter\+Model@{$\sim$fluid\+Diameter\+Model}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{$\sim$fluid\+Diameter\+Model()}{~fluidDiameterModel()}}
+{\footnotesize\ttfamily $\sim$\hyperlink{classFoam_1_1fluidDiameterModel}{fluid\+Diameter\+Model} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 67 of file fluid\+Diameter\+Model.\+C.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a7715a6655c3f68d294439f5815ea756a}\label{classFoam_1_1fluidDiameterModel_a7715a6655c3f68d294439f5815ea756a}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}fluid\+Diameter\+Model\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a20cae715fd2ec84a3a04cc554dc67de9}\label{classFoam_1_1fluidDiameterModel_a20cae715fd2ec84a3a04cc554dc67de9}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1fluidDiameterModel}{fluid\+Diameter\+Model}}]{,  }\item[{fluid\+Diameter\+Models}]{,  }\item[{(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)}]{,  }\item[{(pair, dict, obj\+Reg)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a6f22fb248e45888d4afe527f6e17e593}\label{classFoam_1_1fluidDiameterModel_a6f22fb248e45888d4afe527f6e17e593}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!New@{New}}
+\index{New@{New}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1fluidDiameterModel}{Foam\+::fluid\+Diameter\+Model} $>$ New (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1fluid}{fluid} \&}]{fluid,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 25 of file new\+Fluid\+Diameter\+Model.\+C.
+
+
+
+References phase\+Base\+::mesh(), and phase\+Base\+::name().
+
+
+
+Referenced by fluid\+::construct\+Diameter\+Model().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=279pt]{classFoam_1_1fluidDiameterModel_a6f22fb248e45888d4afe527f6e17e593_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=305pt]{classFoam_1_1fluidDiameterModel_a6f22fb248e45888d4afe527f6e17e593_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a82a20d6b34a97bdca678c50daddf7de9}\label{classFoam_1_1fluidDiameterModel_a82a20d6b34a97bdca678c50daddf7de9}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!New@{New}}
+\index{New@{New}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1fluidDiameterModel}{Foam\+::fluid\+Diameter\+Model} $>$ New (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 62 of file new\+Fluid\+Diameter\+Model.\+C.
+
+
+
+References F\+S\+Pair\+::fluid\+Ref(), and phase\+Base\+::name().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=279pt]{classFoam_1_1fluidDiameterModel_a82a20d6b34a97bdca678c50daddf7de9_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a139457cae4c5e04785e143fd8b9ed092}\label{classFoam_1_1fluidDiameterModel_a139457cae4c5e04785e143fd8b9ed092}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!value@{value}}
+\index{value@{value}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily virtual scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1fluidDiameterModels_1_1WallisFilm_a2c1e1872d359910de4c35cf8f003871c}{Wallis\+Film}, \hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a2c1e1872d359910de4c35cf8f003871c}{isomolar\+Bubble}, \hyperlink{classFoam_1_1fluidDiameterModels_1_1isothermal_a2c1e1872d359910de4c35cf8f003871c}{isothermal}, and \hyperlink{classFoam_1_1fluidDiameterModels_1_1pipeFilm_a2c1e1872d359910de4c35cf8f003871c}{pipe\+Film}.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_aa99943bda90a4539aad2a1e8544c1a79}\label{classFoam_1_1fluidDiameterModel_aa99943bda90a4539aad2a1e8544c1a79}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!correct\+Field@{correct\+Field}}
+\index{correct\+Field@{correct\+Field}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{correct\+Field()}{correctField()}}
+{\footnotesize\ttfamily void correct\+Field (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field \&}]{Dh }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 73 of file fluid\+Diameter\+Model.\+C.
+
+
+
+References for\+All(), and i.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classFoam_1_1fluidDiameterModel_aa99943bda90a4539aad2a1e8544c1a79_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a23edeeeecebcef11921a33dd5d990570}\label{classFoam_1_1fluidDiameterModel_a23edeeeecebcef11921a33dd5d990570}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!mesh\+\_\+@{mesh\+\_\+}}
+\index{mesh\+\_\+@{mesh\+\_\+}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{mesh\+\_\+}{mesh\_}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 59 of file fluid\+Diameter\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a587e19a1b4f4b498d2604d20c093a73b}\label{classFoam_1_1fluidDiameterModel_a587e19a1b4f4b498d2604d20c093a73b}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!pair\+\_\+@{pair\+\_\+}}
+\index{pair\+\_\+@{pair\+\_\+}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{pair\+\_\+}{pair\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair}\& pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 61 of file fluid\+Diameter\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_aef274d0faea6f388e2907dc335349bc9}\label{classFoam_1_1fluidDiameterModel_aef274d0faea6f388e2907dc335349bc9}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!fluid\+\_\+@{fluid\+\_\+}}
+\index{fluid\+\_\+@{fluid\+\_\+}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{fluid\+\_\+}{fluid\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& fluid\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 63 of file fluid\+Diameter\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a8fa76190053050d68abc04479f2c54e0}\label{classFoam_1_1fluidDiameterModel_a8fa76190053050d68abc04479f2c54e0}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!dispersion\+\_\+@{dispersion\+\_\+}}
+\index{dispersion\+\_\+@{dispersion\+\_\+}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{dispersion\+\_\+}{dispersion\_}}
+{\footnotesize\ttfamily const scalar\+Field\& dispersion\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 65 of file fluid\+Diameter\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a8891c9fe98566d620d631ac0d6687060}\label{classFoam_1_1fluidDiameterModel_a8891c9fe98566d620d631ac0d6687060}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!Dhs\+\_\+@{Dhs\+\_\+}}
+\index{Dhs\+\_\+@{Dhs\+\_\+}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{Dhs\+\_\+}{Dhs\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Dhs\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 68 of file fluid\+Diameter\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModel_a9f354183d629b4422e533a56df9634a4}\label{classFoam_1_1fluidDiameterModel_a9f354183d629b4422e533a56df9634a4}} 
+\index{Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}!Dh\+\_\+@{Dh\+\_\+}}
+\index{Dh\+\_\+@{Dh\+\_\+}!Foam\+::fluid\+Diameter\+Model@{Foam\+::fluid\+Diameter\+Model}}
+\subsubsection{\texorpdfstring{Dh\+\_\+}{Dh\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Dh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 71 of file fluid\+Diameter\+Model.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/fluid\+Diameter\+Models/\hyperlink{fluidDiameterModel_8H}{fluid\+Diameter\+Model.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/fluid\+Diameter\+Models/\hyperlink{fluidDiameterModel_8C}{fluid\+Diameter\+Model.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/fluid\+Diameter\+Models/\hyperlink{newFluidDiameterModel_8C}{new\+Fluid\+Diameter\+Model.\+C}\end{DoxyCompactItemize}

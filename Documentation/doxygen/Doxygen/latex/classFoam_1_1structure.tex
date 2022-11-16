@@ -1,0 +1,1343 @@
+\hypertarget{classFoam_1_1structure}{}\section{structure Class Reference}
+\label{classFoam_1_1structure}\index{structure@{structure}}
+
+
+Class to handle the description of a mesh-\/unresolved structure. It is derived from \hyperlink{classFoam_1_1phaseBase}{phase\+Base}, to represent the volume fraction of the structure. The key member for the understanding of this class is cell\+Fields\+\_\+. The structure can be in fact though of as being composed by different regions, with properties defined only on certain cells of the mesh. However, as these region are meant N\+OT to spatially overlap, the overall structure can be described by a single set of fields (Dh\+\_\+, i\+Apow\+\_\+, etc.) that are initialized/set/modified on a cell-\/by-\/cell basis. The cell\+Fields\+\_\+ member is thus a Hash\+Table of scalar\+Fields indexed by region name. These scalar\+Fields are = 1.\+0 where the given region exists, and 0 elsewhere. What the region names are, that is set by the actual run-\/time-\/selected instance of the structure class. Currently, the only available structure is \hyperlink{classFoam_1_1byZone}{by\+Zone}, in which the regions are effectively cell\+Zones, and the cell\+Fields\+\_\+ is thus a dicts of scalar\+Fields representing where each cell\+Zone exists.  
+
+
+
+
+Inheritance diagram for structure\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=145pt]{classFoam_1_1structure__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for structure\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=145pt]{classFoam_1_1structure__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1structure_a15ddcef8a2e638c8566288229de86628}{Type\+Name} (\char`\"{}structure\char`\"{})
+\item 
+\hyperlink{classFoam_1_1structure_ac725130cc4964290bf27d822d4159f5b}{structure} (const dictionary \&\hyperlink{classFoam_1_1phaseBase_a19650e729ef6a0899b8fbe25f5238728}{dict}, const fv\+Mesh \&\hyperlink{classFoam_1_1phaseBase_a470f06cfb9b6ee887cd85d63de275607}{mesh}, vol\+Scalar\+Field \&\hyperlink{classFoam_1_1structure_a2eb0a266a288909b3480c78cc83348ed}{power\+Density\+Neutronics})
+\item 
+virtual \hyperlink{classFoam_1_1structure_a11f9e4dcea80a6c1277a1148b1464ac3}{$\sim$structure} ()
+\item 
+{\footnotesize template$<$class Type $>$ }\\void \hyperlink{classFoam_1_1structure_a9252328db1f82344da0559bc347f3e0a}{set\+Region\+Field} (const dictionary \&dicts, Geometric\+Field$<$ Type, fv\+Patch\+Field, vol\+Mesh $>$ \&field, word key) const
+\item 
+const vol\+Vector\+Field \& \hyperlink{classFoam_1_1structure_ae48e3602be4e34ee25797e126fac93a2}{momentum\+Source} ()
+\item 
+void \hyperlink{classFoam_1_1structure_a63bdd3eb3bd22e196cd0ea0c0cad5455}{construct\+Heat\+Exchangers} ()
+\item 
+virtual void \hyperlink{classFoam_1_1structure_a08cf6ccfed7f616074be223f0d2379f3}{correct} (const vol\+Scalar\+Field \&HT, const vol\+Scalar\+Field \&H)
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1structure_ac1d902746e45c59a040dc16151d08411}{explicit\+Heat\+Source} (const \hyperlink{classFoam_1_1fluid}{fluid} \&\hyperlink{classFoam_1_1fluid}{fluid}, const vol\+Scalar\+Field \&H) const
+\item 
+tmp$<$ fv\+Scalar\+Matrix $>$ \hyperlink{classFoam_1_1structure_aa9d78d8aeeb07a10342fbde2abf3bc98}{linearized\+Semi\+Implicit\+Heat\+Source} (\hyperlink{classFoam_1_1fluid}{fluid} \&\hyperlink{classFoam_1_1fluid}{fluid}, const vol\+Scalar\+Field \&H) const
+\item 
+void \hyperlink{classFoam_1_1structure_a5d0334a8e2ad05de13eda9fa499fc058}{check\+Power\+Off} ()
+\item 
+void \hyperlink{classFoam_1_1structure_ada5cdb49f841dc3bb45c815efd04cf35}{local\+To\+Global\+Rotate\+Field} (vol\+Tensor\+Field \&field) const
+\item 
+void \hyperlink{classFoam_1_1structure_a6616ca3cfc243eaca728368b78ec58df}{local\+To\+Global\+Rotate\+Field} (vol\+Vector\+Field \&field) const
+\item 
+void \hyperlink{classFoam_1_1structure_a69f2ccb67163e71df8e19e59f35d70ff}{global\+To\+Local\+Rotate\+Field} (vol\+Tensor\+Field \&field) const
+\item 
+void \hyperlink{classFoam_1_1structure_a850fa7567fc6326932fcae9227598b3c}{global\+To\+Local\+Rotate\+Field} (vol\+Vector\+Field \&field) const
+\item 
+const word\+List \& \hyperlink{classFoam_1_1structure_ab0b4f2fe70836c04375a5b12d9655dd7}{regions} () const
+\item 
+const \hyperlink{classFoam_1_1structure_a821486e30c5f9ed2852aeddc4ff8ff30}{vol\+Scalar\+Field\+Table} \& \hyperlink{classFoam_1_1structure_aa8ba27c1f6cefdd2cf3456b668e3ebec}{alpha\+Fields} () const
+\item 
+const \hyperlink{classFoam_1_1structure_a2fdb5cf3126746b10e53fb86215f3249}{scalar\+Field\+Table} \& \hyperlink{classFoam_1_1structure_a130f54cdf5e2e7bc9df67ac9ab50e6d9}{cell\+Fields} () const
+\item 
+const \hyperlink{classFoam_1_1structure_afefd20eeb8d2675bfba9c1ce9aa78ca7}{label\+List\+Table} \& \hyperlink{classFoam_1_1structure_a5266b7f2620c92c2ebc4b161bb508dd9}{cell\+Lists} () const
+\item 
+const label\+List \& \hyperlink{classFoam_1_1structure_a6c52bb4668a4987505228de74f076b7b}{cells} () const
+\item 
+const auto\+Ptr$<$ vol\+Tensor\+Field $>$ \& \hyperlink{classFoam_1_1structure_a275cc4ad82f621e5e79286e3e8d76c32}{tortuosity\+Ptr} () const
+\item 
+const vol\+Tensor\+Field \& \hyperlink{classFoam_1_1structure_a37021dc7173903ecbaffef0cee5632c4}{tortuosity} () const
+\item 
+vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_a2eb0a266a288909b3480c78cc83348ed}{power\+Density\+Neutronics} ()
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_ac7cf53b510afce511c82e2097ea86d02}{Dh} () const
+\item 
+const vol\+Vector\+Field \& \hyperlink{classFoam_1_1structure_a1cc5649e59ac6459f9dc1bbdf7c2de22}{l\+Dh} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_abebe2d39aa018c9e0279a27bf5e201f6}{Tact} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_afedf45f11522786f95df7228a3f2d35a}{i\+Aact} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_acba35586ab8aff24636d1147ec8878a9}{i\+Apas} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_aee77d3c69364c93087597bb03ca5093b}{Tpas} () const
+\item 
+vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_a814968a5ac76932267a7dfbb719addb1}{T\+Fuel\+Av} ()
+\item 
+vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_abe4bfe7372120f3a230fe28d058efdf5}{T\+Clad\+Av} ()
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_af6b7af3c51ef942fc34f8268c85acdc2}{Twall} () const
+\item 
+const auto\+Ptr$<$ vol\+Tensor\+Field $>$ \& \hyperlink{classFoam_1_1structure_a96bcfb58cf44353ee1cc244bb6a3733c}{Rg2l\+Ptr} () const
+\item 
+const auto\+Ptr$<$ vol\+Tensor\+Field $>$ \& \hyperlink{classFoam_1_1structure_a3104e223423d689b72e514aee2850df6}{Rl2g\+Ptr} () const
+\item 
+bool \hyperlink{classFoam_1_1structure_a5a3d010cf4cd69644e72fa59863407cd}{has\+Local\+Reference\+Frame} () const
+\item 
+const vol\+Tensor\+Field \& \hyperlink{classFoam_1_1structure_a1badf9a3cb26af2f18f59c7a0c9408fa}{Rg2l} () const
+\item 
+const vol\+Tensor\+Field \& \hyperlink{classFoam_1_1structure_af8fc9f8f08164248e643e6ba949f5fb0}{Rl2g} () const
+\item 
+const auto\+Ptr$<$ vol\+Vector\+Field $>$ \& \hyperlink{classFoam_1_1structure_a85d9cfb7d462a6f932057418008ad496}{momentum\+Source\+Ptr} () const
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Hash\+Table$<$ label\+List, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_afefd20eeb8d2675bfba9c1ce9aa78ca7}{label\+List\+Table}
+\item 
+typedef Hash\+Table$<$ scalar\+Field, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a2fdb5cf3126746b10e53fb86215f3249}{scalar\+Field\+Table}
+\item 
+typedef Hash\+Table$<$ vol\+Scalar\+Field, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a821486e30c5f9ed2852aeddc4ff8ff30}{vol\+Scalar\+Field\+Table}
+\item 
+typedef Hash\+Table$<$ \hyperlink{classFoam_1_1pump}{pump}, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a3cad7e6a25055d05c668b06551d372c5}{pump\+Table}
+\item 
+typedef Hash\+Table$<$ \hyperlink{classFoam_1_1heatExchanger}{heat\+Exchanger}, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a22ffcc3b5fb77bcb044a05e138ec4076}{heat\+Exchanger\+Table}
+\item 
+typedef Hash\+Table$<$ auto\+Ptr$<$ \hyperlink{classFoam_1_1powerModel}{power\+Model} $>$, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a5b1d82b72cd629a4695e6c44b37da7a7}{power\+Model\+Table}
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+word\+List \hyperlink{classFoam_1_1structure_a1cbd024d79c53570b3e04cc2e4f0abd3}{regions\+\_\+}
+\item 
+\hyperlink{classFoam_1_1structure_a821486e30c5f9ed2852aeddc4ff8ff30}{vol\+Scalar\+Field\+Table} \hyperlink{classFoam_1_1structure_a8ddca6cc34b86786d9370b225a5a7e8e}{alpha\+Fields\+\_\+}
+\item 
+\hyperlink{classFoam_1_1structure_a2fdb5cf3126746b10e53fb86215f3249}{scalar\+Field\+Table} \hyperlink{classFoam_1_1structure_a7136e90f04e342e45cde90d74b7e296e}{cell\+Fields\+\_\+}
+\item 
+\hyperlink{classFoam_1_1structure_afefd20eeb8d2675bfba9c1ce9aa78ca7}{label\+List\+Table} \hyperlink{classFoam_1_1structure_adbcc8a0fc193681fc80b55dee1f8d5b2}{cell\+Lists\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1structure_a668e23f1aa896d53b68f6182e48f32d9}{cells\+\_\+}
+\item 
+vol\+Scalar\+Field \& \hyperlink{classFoam_1_1structure_a70eafb5d670fefbe4115321567671063}{power\+Density\+Neutronics\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_a756541524cb4e87ec3823d173aab0675}{Dh\+\_\+}
+\item 
+vol\+Vector\+Field \hyperlink{classFoam_1_1structure_ad394169e8f50e599cab1a73138d0fd79}{l\+Dh\+\_\+}
+\item 
+\hyperlink{classFoam_1_1structure_a3cad7e6a25055d05c668b06551d372c5}{pump\+Table} \hyperlink{classFoam_1_1structure_a6d3127c82b86b076dc03459b1c07cb3e}{pumps\+\_\+}
+\item 
+\hyperlink{classFoam_1_1structure_a22ffcc3b5fb77bcb044a05e138ec4076}{heat\+Exchanger\+Table} \hyperlink{classFoam_1_1structure_a8bed91afa878a475acee3bd862315af3}{heat\+Exchangers\+\_\+}
+\item 
+\hyperlink{classFoam_1_1structure_a5b1d82b72cd629a4695e6c44b37da7a7}{power\+Model\+Table} \hyperlink{classFoam_1_1structure_a7997eb980796e45c86549228b08730c7}{power\+Models\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_a152fbbd517b80ae251b415ddc38cb03f}{heat\+Flux\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_a01d6a4bb2749a27e36668b204ac96b3e}{Tact\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_afddfb535fdc0bdf71455350377cf04b0}{i\+Aact\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1structure_a10561a5a0129d753f69986052d8f6915}{T\+H\+X\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1structure_a2e32a84d29e89c7ca3d68eba83e0951b}{i\+A\+H\+X\+Ptr\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_a344017f457bb8d5ccd4d5aa50bfdbd67}{alphapas\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_a73c71b4d8cf465b7169f1a6ab38eb98f}{Tpas\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_a2559cca0fa27c0e3e477299c9e8fee23}{T\+Fuel\+Av\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_a2c1ab8d88c56439bff862edf333e7920}{T\+Clad\+Av\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_a8db66c97ee877400eb17a41988b36995}{i\+Apas\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_a331e87b4e7ad7605604e2ee79adc5005}{alpha\+Rho\+Cppas\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1structure_af6a8342527933c92e5c816c0e95d3a9c}{Twall\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Tensor\+Field $>$ \hyperlink{classFoam_1_1structure_ae0ff056471711dcbd82d9453f5b5dca0}{tortuosity\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Tensor\+Field $>$ \hyperlink{classFoam_1_1structure_aad4be68517f93bfd5183e78b0546af58}{Rg2l\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Tensor\+Field $>$ \hyperlink{classFoam_1_1structure_a1d90e77d688e89667573d8b298559160}{Rl2g\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Vector\+Field $>$ \hyperlink{classFoam_1_1structure_ac6ed53902f4341c29ea2143f2349ac8d}{momentum\+Source\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1powerOffCriterionModel}{power\+Off\+Criterion\+Model} $>$ \hyperlink{classFoam_1_1structure_a48dc19b9ab7e78e72916646ec5b4623c}{power\+Off\+Criterion\+Model\+Ptr\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to handle the description of a mesh-\/unresolved structure. It is derived from \hyperlink{classFoam_1_1phaseBase}{phase\+Base}, to represent the volume fraction of the structure. The key member for the understanding of this class is cell\+Fields\+\_\+. The structure can be in fact though of as being composed by different regions, with properties defined only on certain cells of the mesh. However, as these region are meant N\+OT to spatially overlap, the overall structure can be described by a single set of fields (Dh\+\_\+, i\+Apow\+\_\+, etc.) that are initialized/set/modified on a cell-\/by-\/cell basis. The cell\+Fields\+\_\+ member is thus a Hash\+Table of scalar\+Fields indexed by region name. These scalar\+Fields are = 1.\+0 where the given region exists, and 0 elsewhere. What the region names are, that is set by the actual run-\/time-\/selected instance of the structure class. Currently, the only available structure is \hyperlink{classFoam_1_1byZone}{by\+Zone}, in which the regions are effectively cell\+Zones, and the cell\+Fields\+\_\+ is thus a dicts of scalar\+Fields representing where each cell\+Zone exists. 
+
+\label{_Description}%
+ Author Stefan Radman (\href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch} / \href{mailto:stefanradman92@gmail.com}{\tt stefanradman92@gmail.\+com})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/structure.H}{\tt structure.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/structure.C}{\tt structure.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 76 of file structure.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classFoam_1_1structure_afefd20eeb8d2675bfba9c1ce9aa78ca7}\label{classFoam_1_1structure_afefd20eeb8d2675bfba9c1ce9aa78ca7}} 
+\index{Foam\+::structure@{Foam\+::structure}!label\+List\+Table@{label\+List\+Table}}
+\index{label\+List\+Table@{label\+List\+Table}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{label\+List\+Table}{labelListTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$ label\+List, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_afefd20eeb8d2675bfba9c1ce9aa78ca7}{label\+List\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 88 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a2fdb5cf3126746b10e53fb86215f3249}\label{classFoam_1_1structure_a2fdb5cf3126746b10e53fb86215f3249}} 
+\index{Foam\+::structure@{Foam\+::structure}!scalar\+Field\+Table@{scalar\+Field\+Table}}
+\index{scalar\+Field\+Table@{scalar\+Field\+Table}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{scalar\+Field\+Table}{scalarFieldTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$ scalar\+Field, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a2fdb5cf3126746b10e53fb86215f3249}{scalar\+Field\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 95 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a821486e30c5f9ed2852aeddc4ff8ff30}\label{classFoam_1_1structure_a821486e30c5f9ed2852aeddc4ff8ff30}} 
+\index{Foam\+::structure@{Foam\+::structure}!vol\+Scalar\+Field\+Table@{vol\+Scalar\+Field\+Table}}
+\index{vol\+Scalar\+Field\+Table@{vol\+Scalar\+Field\+Table}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{vol\+Scalar\+Field\+Table}{volScalarFieldTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$ vol\+Scalar\+Field, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a821486e30c5f9ed2852aeddc4ff8ff30}{vol\+Scalar\+Field\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 102 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a3cad7e6a25055d05c668b06551d372c5}\label{classFoam_1_1structure_a3cad7e6a25055d05c668b06551d372c5}} 
+\index{Foam\+::structure@{Foam\+::structure}!pump\+Table@{pump\+Table}}
+\index{pump\+Table@{pump\+Table}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{pump\+Table}{pumpTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$ \hyperlink{classFoam_1_1pump}{pump}, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a3cad7e6a25055d05c668b06551d372c5}{pump\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 109 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a22ffcc3b5fb77bcb044a05e138ec4076}\label{classFoam_1_1structure_a22ffcc3b5fb77bcb044a05e138ec4076}} 
+\index{Foam\+::structure@{Foam\+::structure}!heat\+Exchanger\+Table@{heat\+Exchanger\+Table}}
+\index{heat\+Exchanger\+Table@{heat\+Exchanger\+Table}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{heat\+Exchanger\+Table}{heatExchangerTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$ \hyperlink{classFoam_1_1heatExchanger}{heat\+Exchanger}, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a22ffcc3b5fb77bcb044a05e138ec4076}{heat\+Exchanger\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 116 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a5b1d82b72cd629a4695e6c44b37da7a7}\label{classFoam_1_1structure_a5b1d82b72cd629a4695e6c44b37da7a7}} 
+\index{Foam\+::structure@{Foam\+::structure}!power\+Model\+Table@{power\+Model\+Table}}
+\index{power\+Model\+Table@{power\+Model\+Table}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{power\+Model\+Table}{powerModelTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$ auto\+Ptr$<$\hyperlink{classFoam_1_1powerModel}{power\+Model}$>$, word, word\+::hash $>$ \hyperlink{classFoam_1_1structure_a5b1d82b72cd629a4695e6c44b37da7a7}{power\+Model\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 123 of file structure.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1structure_ac725130cc4964290bf27d822d4159f5b}\label{classFoam_1_1structure_ac725130cc4964290bf27d822d4159f5b}} 
+\index{Foam\+::structure@{Foam\+::structure}!structure@{structure}}
+\index{structure@{structure}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{structure()}{structure()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1structure}{structure} (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict,  }\item[{const fv\+Mesh \&}]{mesh,  }\item[{vol\+Scalar\+Field \&}]{power\+Density\+Neutronics }\end{DoxyParamCaption})}
+
+
+
+Definition at line 37 of file structure.\+C.
+
+
+
+References alpha(), c(), correct\+Boundary\+Conditions(), for\+All(), for\+All\+Iter(), i, mesh, power\+Off\+Criterion\+Model\+::\+New(), power\+Model\+::\+New(), and x().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{classFoam_1_1structure_ac725130cc4964290bf27d822d4159f5b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_a11f9e4dcea80a6c1277a1148b1464ac3}\label{classFoam_1_1structure_a11f9e4dcea80a6c1277a1148b1464ac3}} 
+\index{Foam\+::structure@{Foam\+::structure}!````~structure@{$\sim$structure}}
+\index{````~structure@{$\sim$structure}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{$\sim$structure()}{~structure()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1structure}{structure} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 232 of file structure.\+H.
+
+
+
+References structure\+::check\+Power\+Off(), structure\+::construct\+Heat\+Exchangers(), structure\+::correct(), structure\+::explicit\+Heat\+Source(), structure\+::global\+To\+Local\+Rotate\+Field(), structure\+::linearized\+Semi\+Implicit\+Heat\+Source(), structure\+::local\+To\+Global\+Rotate\+Field(), structure\+::momentum\+Source(), and structure\+::set\+Region\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1structure_a11f9e4dcea80a6c1277a1148b1464ac3_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1structure_a15ddcef8a2e638c8566288229de86628}\label{classFoam_1_1structure_a15ddcef8a2e638c8566288229de86628}} 
+\index{Foam\+::structure@{Foam\+::structure}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}structure\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1structure_a9252328db1f82344da0559bc347f3e0a}\label{classFoam_1_1structure_a9252328db1f82344da0559bc347f3e0a}} 
+\index{Foam\+::structure@{Foam\+::structure}!set\+Region\+Field@{set\+Region\+Field}}
+\index{set\+Region\+Field@{set\+Region\+Field}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{set\+Region\+Field()}{setRegionField()}}
+{\footnotesize\ttfamily void set\+Region\+Field (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dicts,  }\item[{Geometric\+Field$<$ Type, fv\+Patch\+Field, vol\+Mesh $>$ \&}]{field,  }\item[{word}]{key }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 423 of file structure.\+H.
+
+
+
+References structure\+::cell\+Lists\+\_\+, structure\+::cells(), for\+All(), i, and phase\+Base\+::mesh\+\_\+.
+
+
+
+Referenced by structure\+::momentum\+Source\+Ptr(), and structure\+::$\sim$structure().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=237pt]{classFoam_1_1structure_a9252328db1f82344da0559bc347f3e0a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=307pt]{classFoam_1_1structure_a9252328db1f82344da0559bc347f3e0a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_ae48e3602be4e34ee25797e126fac93a2}\label{classFoam_1_1structure_ae48e3602be4e34ee25797e126fac93a2}} 
+\index{Foam\+::structure@{Foam\+::structure}!momentum\+Source@{momentum\+Source}}
+\index{momentum\+Source@{momentum\+Source}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{momentum\+Source()}{momentumSource()}}
+{\footnotesize\ttfamily const Foam\+::vol\+Vector\+Field \& momentum\+Source (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 875 of file structure.\+C.
+
+
+
+References for\+All\+Iter().
+
+
+
+Referenced by structure\+::$\sim$structure().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{classFoam_1_1structure_ae48e3602be4e34ee25797e126fac93a2_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=273pt]{classFoam_1_1structure_ae48e3602be4e34ee25797e126fac93a2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_a63bdd3eb3bd22e196cd0ea0c0cad5455}\label{classFoam_1_1structure_a63bdd3eb3bd22e196cd0ea0c0cad5455}} 
+\index{Foam\+::structure@{Foam\+::structure}!construct\+Heat\+Exchangers@{construct\+Heat\+Exchangers}}
+\index{construct\+Heat\+Exchangers@{construct\+Heat\+Exchangers}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{construct\+Heat\+Exchangers()}{constructHeatExchangers()}}
+{\footnotesize\ttfamily void construct\+Heat\+Exchangers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 890 of file structure.\+C.
+
+
+
+References structure\+::correct(), for\+All(), and for\+All\+Iter().
+
+
+
+Referenced by structure\+::$\sim$structure().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1structure_a63bdd3eb3bd22e196cd0ea0c0cad5455_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=307pt]{classFoam_1_1structure_a63bdd3eb3bd22e196cd0ea0c0cad5455_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_a08cf6ccfed7f616074be223f0d2379f3}\label{classFoam_1_1structure_a08cf6ccfed7f616074be223f0d2379f3}} 
+\index{Foam\+::structure@{Foam\+::structure}!correct@{correct}}
+\index{correct@{correct}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{HT,  }\item[{const vol\+Scalar\+Field \&}]{H }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 961 of file structure.\+C.
+
+
+
+References dt(), structure\+::explicit\+Heat\+Source(), for\+All(), for\+All\+Iter(), and i.
+
+
+
+Referenced by structure\+::construct\+Heat\+Exchangers(), and structure\+::$\sim$structure().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{classFoam_1_1structure_a08cf6ccfed7f616074be223f0d2379f3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1structure_a08cf6ccfed7f616074be223f0d2379f3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_ac1d902746e45c59a040dc16151d08411}\label{classFoam_1_1structure_ac1d902746e45c59a040dc16151d08411}} 
+\index{Foam\+::structure@{Foam\+::structure}!explicit\+Heat\+Source@{explicit\+Heat\+Source}}
+\index{explicit\+Heat\+Source@{explicit\+Heat\+Source}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{explicit\+Heat\+Source()}{explicitHeatSource()}}
+{\footnotesize\ttfamily Foam\+::tmp$<$ Foam\+::vol\+Scalar\+Field $>$ explicit\+Heat\+Source (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1fluid}{fluid} \&}]{fluid,  }\item[{const vol\+Scalar\+Field \&}]{H }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 1054 of file structure.\+C.
+
+
+
+References structure\+::linearized\+Semi\+Implicit\+Heat\+Source(), T(), and fluid\+::thermo().
+
+
+
+Referenced by structure\+::correct(), and structure\+::$\sim$structure().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1structure_ac1d902746e45c59a040dc16151d08411_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1structure_ac1d902746e45c59a040dc16151d08411_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_aa9d78d8aeeb07a10342fbde2abf3bc98}\label{classFoam_1_1structure_aa9d78d8aeeb07a10342fbde2abf3bc98}} 
+\index{Foam\+::structure@{Foam\+::structure}!linearized\+Semi\+Implicit\+Heat\+Source@{linearized\+Semi\+Implicit\+Heat\+Source}}
+\index{linearized\+Semi\+Implicit\+Heat\+Source@{linearized\+Semi\+Implicit\+Heat\+Source}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{linearized\+Semi\+Implicit\+Heat\+Source()}{linearizedSemiImplicitHeatSource()}}
+{\footnotesize\ttfamily Foam\+::tmp$<$ Foam\+::fv\+Scalar\+Matrix $>$ linearized\+Semi\+Implicit\+Heat\+Source (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1fluid}{fluid} \&}]{fluid,  }\item[{const vol\+Scalar\+Field \&}]{H }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 1086 of file structure.\+C.
+
+
+
+References Cp(), fluid\+::\+Cp(), he(), T(), and fluid\+::thermo().
+
+
+
+Referenced by structure\+::explicit\+Heat\+Source(), and structure\+::$\sim$structure().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1structure_aa9d78d8aeeb07a10342fbde2abf3bc98_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1structure_aa9d78d8aeeb07a10342fbde2abf3bc98_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_a5d0334a8e2ad05de13eda9fa499fc058}\label{classFoam_1_1structure_a5d0334a8e2ad05de13eda9fa499fc058}} 
+\index{Foam\+::structure@{Foam\+::structure}!check\+Power\+Off@{check\+Power\+Off}}
+\index{check\+Power\+Off@{check\+Power\+Off}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{check\+Power\+Off()}{checkPowerOff()}}
+{\footnotesize\ttfamily void check\+Power\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1141 of file structure.\+C.
+
+
+
+References for\+All\+Iter().
+
+
+
+Referenced by structure\+::$\sim$structure().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=253pt]{classFoam_1_1structure_a5d0334a8e2ad05de13eda9fa499fc058_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{classFoam_1_1structure_a5d0334a8e2ad05de13eda9fa499fc058_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_ada5cdb49f841dc3bb45c815efd04cf35}\label{classFoam_1_1structure_ada5cdb49f841dc3bb45c815efd04cf35}} 
+\index{Foam\+::structure@{Foam\+::structure}!local\+To\+Global\+Rotate\+Field@{local\+To\+Global\+Rotate\+Field}}
+\index{local\+To\+Global\+Rotate\+Field@{local\+To\+Global\+Rotate\+Field}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{local\+To\+Global\+Rotate\+Field()}{localToGlobalRotateField()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void local\+To\+Global\+Rotate\+Field (\begin{DoxyParamCaption}\item[{vol\+Tensor\+Field \&}]{field }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 839 of file structure.\+C.
+
+
+
+Referenced by structure\+::$\sim$structure().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=303pt]{classFoam_1_1structure_ada5cdb49f841dc3bb45c815efd04cf35_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_a6616ca3cfc243eaca728368b78ec58df}\label{classFoam_1_1structure_a6616ca3cfc243eaca728368b78ec58df}} 
+\index{Foam\+::structure@{Foam\+::structure}!local\+To\+Global\+Rotate\+Field@{local\+To\+Global\+Rotate\+Field}}
+\index{local\+To\+Global\+Rotate\+Field@{local\+To\+Global\+Rotate\+Field}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{local\+To\+Global\+Rotate\+Field()}{localToGlobalRotateField()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void local\+To\+Global\+Rotate\+Field (\begin{DoxyParamCaption}\item[{vol\+Vector\+Field \&}]{field }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 848 of file structure.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a69f2ccb67163e71df8e19e59f35d70ff}\label{classFoam_1_1structure_a69f2ccb67163e71df8e19e59f35d70ff}} 
+\index{Foam\+::structure@{Foam\+::structure}!global\+To\+Local\+Rotate\+Field@{global\+To\+Local\+Rotate\+Field}}
+\index{global\+To\+Local\+Rotate\+Field@{global\+To\+Local\+Rotate\+Field}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{global\+To\+Local\+Rotate\+Field()}{globalToLocalRotateField()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void global\+To\+Local\+Rotate\+Field (\begin{DoxyParamCaption}\item[{vol\+Tensor\+Field \&}]{field }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 857 of file structure.\+C.
+
+
+
+Referenced by structure\+::$\sim$structure().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{classFoam_1_1structure_a69f2ccb67163e71df8e19e59f35d70ff_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_a850fa7567fc6326932fcae9227598b3c}\label{classFoam_1_1structure_a850fa7567fc6326932fcae9227598b3c}} 
+\index{Foam\+::structure@{Foam\+::structure}!global\+To\+Local\+Rotate\+Field@{global\+To\+Local\+Rotate\+Field}}
+\index{global\+To\+Local\+Rotate\+Field@{global\+To\+Local\+Rotate\+Field}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{global\+To\+Local\+Rotate\+Field()}{globalToLocalRotateField()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void global\+To\+Local\+Rotate\+Field (\begin{DoxyParamCaption}\item[{vol\+Vector\+Field \&}]{field }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 866 of file structure.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1structure_ab0b4f2fe70836c04375a5b12d9655dd7}\label{classFoam_1_1structure_ab0b4f2fe70836c04375a5b12d9655dd7}} 
+\index{Foam\+::structure@{Foam\+::structure}!regions@{regions}}
+\index{regions@{regions}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{regions()}{regions()}}
+{\footnotesize\ttfamily const word\+List\& regions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 300 of file structure.\+H.
+
+
+
+References structure\+::regions\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_aa8ba27c1f6cefdd2cf3456b668e3ebec}\label{classFoam_1_1structure_aa8ba27c1f6cefdd2cf3456b668e3ebec}} 
+\index{Foam\+::structure@{Foam\+::structure}!alpha\+Fields@{alpha\+Fields}}
+\index{alpha\+Fields@{alpha\+Fields}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{alpha\+Fields()}{alphaFields()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1structure_a821486e30c5f9ed2852aeddc4ff8ff30}{vol\+Scalar\+Field\+Table}\& alpha\+Fields (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 305 of file structure.\+H.
+
+
+
+References structure\+::alpha\+Fields\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a130f54cdf5e2e7bc9df67ac9ab50e6d9}\label{classFoam_1_1structure_a130f54cdf5e2e7bc9df67ac9ab50e6d9}} 
+\index{Foam\+::structure@{Foam\+::structure}!cell\+Fields@{cell\+Fields}}
+\index{cell\+Fields@{cell\+Fields}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{cell\+Fields()}{cellFields()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1structure_a2fdb5cf3126746b10e53fb86215f3249}{scalar\+Field\+Table}\& cell\+Fields (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 310 of file structure.\+H.
+
+
+
+References structure\+::cell\+Fields\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a5266b7f2620c92c2ebc4b161bb508dd9}\label{classFoam_1_1structure_a5266b7f2620c92c2ebc4b161bb508dd9}} 
+\index{Foam\+::structure@{Foam\+::structure}!cell\+Lists@{cell\+Lists}}
+\index{cell\+Lists@{cell\+Lists}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{cell\+Lists()}{cellLists()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1structure_afefd20eeb8d2675bfba9c1ce9aa78ca7}{label\+List\+Table}\& cell\+Lists (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 315 of file structure.\+H.
+
+
+
+References structure\+::cell\+Lists\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a6c52bb4668a4987505228de74f076b7b}\label{classFoam_1_1structure_a6c52bb4668a4987505228de74f076b7b}} 
+\index{Foam\+::structure@{Foam\+::structure}!cells@{cells}}
+\index{cells@{cells}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{cells()}{cells()}}
+{\footnotesize\ttfamily const label\+List\& cells (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 320 of file structure.\+H.
+
+
+
+References structure\+::cells\+\_\+.
+
+
+
+Referenced by structure\+::set\+Region\+Field().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=235pt]{classFoam_1_1structure_a6c52bb4668a4987505228de74f076b7b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_a275cc4ad82f621e5e79286e3e8d76c32}\label{classFoam_1_1structure_a275cc4ad82f621e5e79286e3e8d76c32}} 
+\index{Foam\+::structure@{Foam\+::structure}!tortuosity\+Ptr@{tortuosity\+Ptr}}
+\index{tortuosity\+Ptr@{tortuosity\+Ptr}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{tortuosity\+Ptr()}{tortuosityPtr()}}
+{\footnotesize\ttfamily const auto\+Ptr$<$vol\+Tensor\+Field$>$\& tortuosity\+Ptr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 325 of file structure.\+H.
+
+
+
+References structure\+::tortuosity\+Ptr\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a37021dc7173903ecbaffef0cee5632c4}\label{classFoam_1_1structure_a37021dc7173903ecbaffef0cee5632c4}} 
+\index{Foam\+::structure@{Foam\+::structure}!tortuosity@{tortuosity}}
+\index{tortuosity@{tortuosity}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{tortuosity()}{tortuosity()}}
+{\footnotesize\ttfamily const vol\+Tensor\+Field\& tortuosity (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 330 of file structure.\+H.
+
+
+
+References structure\+::tortuosity\+Ptr\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a2eb0a266a288909b3480c78cc83348ed}\label{classFoam_1_1structure_a2eb0a266a288909b3480c78cc83348ed}} 
+\index{Foam\+::structure@{Foam\+::structure}!power\+Density\+Neutronics@{power\+Density\+Neutronics}}
+\index{power\+Density\+Neutronics@{power\+Density\+Neutronics}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{power\+Density\+Neutronics()}{powerDensityNeutronics()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& power\+Density\+Neutronics (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 335 of file structure.\+H.
+
+
+
+References structure\+::power\+Density\+Neutronics\+\_\+.
+
+
+
+Referenced by nuclear\+Fuel\+Pin\+::nuclear\+Fuel\+Pin(), and nuclear\+Fuel\+Pin\+Test\+::nuclear\+Fuel\+Pin\+Test().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1structure_a2eb0a266a288909b3480c78cc83348ed_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_ac7cf53b510afce511c82e2097ea86d02}\label{classFoam_1_1structure_ac7cf53b510afce511c82e2097ea86d02}} 
+\index{Foam\+::structure@{Foam\+::structure}!Dh@{Dh}}
+\index{Dh@{Dh}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Dh()}{Dh()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Dh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 340 of file structure.\+H.
+
+
+
+References structure\+::\+Dh\+\_\+.
+
+
+
+Referenced by Nusselt\+Thermal\+Baffle1\+D\+Fv\+Patch\+Scalar\+Field\+::calc\+H().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{classFoam_1_1structure_ac7cf53b510afce511c82e2097ea86d02_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_a1cc5649e59ac6459f9dc1bbdf7c2de22}\label{classFoam_1_1structure_a1cc5649e59ac6459f9dc1bbdf7c2de22}} 
+\index{Foam\+::structure@{Foam\+::structure}!l\+Dh@{l\+Dh}}
+\index{l\+Dh@{l\+Dh}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{l\+Dh()}{lDh()}}
+{\footnotesize\ttfamily const vol\+Vector\+Field\& l\+Dh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 345 of file structure.\+H.
+
+
+
+References structure\+::l\+Dh\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_abebe2d39aa018c9e0279a27bf5e201f6}\label{classFoam_1_1structure_abebe2d39aa018c9e0279a27bf5e201f6}} 
+\index{Foam\+::structure@{Foam\+::structure}!Tact@{Tact}}
+\index{Tact@{Tact}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Tact()}{Tact()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Tact (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 350 of file structure.\+H.
+
+
+
+References structure\+::\+Tact\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_afedf45f11522786f95df7228a3f2d35a}\label{classFoam_1_1structure_afedf45f11522786f95df7228a3f2d35a}} 
+\index{Foam\+::structure@{Foam\+::structure}!i\+Aact@{i\+Aact}}
+\index{i\+Aact@{i\+Aact}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{i\+Aact()}{iAact()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& i\+Aact (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 355 of file structure.\+H.
+
+
+
+References structure\+::i\+Aact\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_acba35586ab8aff24636d1147ec8878a9}\label{classFoam_1_1structure_acba35586ab8aff24636d1147ec8878a9}} 
+\index{Foam\+::structure@{Foam\+::structure}!i\+Apas@{i\+Apas}}
+\index{i\+Apas@{i\+Apas}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{i\+Apas()}{iApas()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& i\+Apas (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 360 of file structure.\+H.
+
+
+
+References structure\+::i\+Apas\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_aee77d3c69364c93087597bb03ca5093b}\label{classFoam_1_1structure_aee77d3c69364c93087597bb03ca5093b}} 
+\index{Foam\+::structure@{Foam\+::structure}!Tpas@{Tpas}}
+\index{Tpas@{Tpas}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Tpas()}{Tpas()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Tpas (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 365 of file structure.\+H.
+
+
+
+References structure\+::\+Tpas\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a814968a5ac76932267a7dfbb719addb1}\label{classFoam_1_1structure_a814968a5ac76932267a7dfbb719addb1}} 
+\index{Foam\+::structure@{Foam\+::structure}!T\+Fuel\+Av@{T\+Fuel\+Av}}
+\index{T\+Fuel\+Av@{T\+Fuel\+Av}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{T\+Fuel\+Av()}{TFuelAv()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& T\+Fuel\+Av (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 370 of file structure.\+H.
+
+
+
+References structure\+::\+T\+Fuel\+Av\+\_\+.
+
+
+
+Referenced by nuclear\+Fuel\+Pin\+::nuclear\+Fuel\+Pin(), nuclear\+Fuel\+Pin\+Test\+::nuclear\+Fuel\+Pin\+Test(), nuclear\+Fuel\+Pin\+::update\+Local\+Temperature\+Profile(), and nuclear\+Fuel\+Pin\+Test\+::update\+Local\+Temperature\+Profile().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=321pt]{classFoam_1_1structure_a814968a5ac76932267a7dfbb719addb1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_abe4bfe7372120f3a230fe28d058efdf5}\label{classFoam_1_1structure_abe4bfe7372120f3a230fe28d058efdf5}} 
+\index{Foam\+::structure@{Foam\+::structure}!T\+Clad\+Av@{T\+Clad\+Av}}
+\index{T\+Clad\+Av@{T\+Clad\+Av}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{T\+Clad\+Av()}{TCladAv()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& T\+Clad\+Av (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 375 of file structure.\+H.
+
+
+
+References structure\+::\+T\+Clad\+Av\+\_\+.
+
+
+
+Referenced by nuclear\+Fuel\+Pin\+::nuclear\+Fuel\+Pin(), nuclear\+Fuel\+Pin\+Test\+::nuclear\+Fuel\+Pin\+Test(), nuclear\+Fuel\+Pin\+::update\+Local\+Temperature\+Profile(), and nuclear\+Fuel\+Pin\+Test\+::update\+Local\+Temperature\+Profile().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=323pt]{classFoam_1_1structure_abe4bfe7372120f3a230fe28d058efdf5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1structure_af6b7af3c51ef942fc34f8268c85acdc2}\label{classFoam_1_1structure_af6b7af3c51ef942fc34f8268c85acdc2}} 
+\index{Foam\+::structure@{Foam\+::structure}!Twall@{Twall}}
+\index{Twall@{Twall}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Twall()}{Twall()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Twall (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 380 of file structure.\+H.
+
+
+
+References structure\+::\+Twall\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a96bcfb58cf44353ee1cc244bb6a3733c}\label{classFoam_1_1structure_a96bcfb58cf44353ee1cc244bb6a3733c}} 
+\index{Foam\+::structure@{Foam\+::structure}!Rg2l\+Ptr@{Rg2l\+Ptr}}
+\index{Rg2l\+Ptr@{Rg2l\+Ptr}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Rg2l\+Ptr()}{Rg2lPtr()}}
+{\footnotesize\ttfamily const auto\+Ptr$<$vol\+Tensor\+Field$>$\& Rg2l\+Ptr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 385 of file structure.\+H.
+
+
+
+References structure\+::\+Rg2l\+Ptr\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a3104e223423d689b72e514aee2850df6}\label{classFoam_1_1structure_a3104e223423d689b72e514aee2850df6}} 
+\index{Foam\+::structure@{Foam\+::structure}!Rl2g\+Ptr@{Rl2g\+Ptr}}
+\index{Rl2g\+Ptr@{Rl2g\+Ptr}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Rl2g\+Ptr()}{Rl2gPtr()}}
+{\footnotesize\ttfamily const auto\+Ptr$<$vol\+Tensor\+Field$>$\& Rl2g\+Ptr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 390 of file structure.\+H.
+
+
+
+References structure\+::\+Rl2g\+Ptr\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a5a3d010cf4cd69644e72fa59863407cd}\label{classFoam_1_1structure_a5a3d010cf4cd69644e72fa59863407cd}} 
+\index{Foam\+::structure@{Foam\+::structure}!has\+Local\+Reference\+Frame@{has\+Local\+Reference\+Frame}}
+\index{has\+Local\+Reference\+Frame@{has\+Local\+Reference\+Frame}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{has\+Local\+Reference\+Frame()}{hasLocalReferenceFrame()}}
+{\footnotesize\ttfamily bool has\+Local\+Reference\+Frame (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 395 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a1badf9a3cb26af2f18f59c7a0c9408fa}\label{classFoam_1_1structure_a1badf9a3cb26af2f18f59c7a0c9408fa}} 
+\index{Foam\+::structure@{Foam\+::structure}!Rg2l@{Rg2l}}
+\index{Rg2l@{Rg2l}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Rg2l()}{Rg2l()}}
+{\footnotesize\ttfamily const vol\+Tensor\+Field\& Rg2l (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 400 of file structure.\+H.
+
+
+
+References structure\+::\+Rg2l\+Ptr\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_af8fc9f8f08164248e643e6ba949f5fb0}\label{classFoam_1_1structure_af8fc9f8f08164248e643e6ba949f5fb0}} 
+\index{Foam\+::structure@{Foam\+::structure}!Rl2g@{Rl2g}}
+\index{Rl2g@{Rl2g}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Rl2g()}{Rl2g()}}
+{\footnotesize\ttfamily const vol\+Tensor\+Field\& Rl2g (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 405 of file structure.\+H.
+
+
+
+References structure\+::\+Rl2g\+Ptr\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a85d9cfb7d462a6f932057418008ad496}\label{classFoam_1_1structure_a85d9cfb7d462a6f932057418008ad496}} 
+\index{Foam\+::structure@{Foam\+::structure}!momentum\+Source\+Ptr@{momentum\+Source\+Ptr}}
+\index{momentum\+Source\+Ptr@{momentum\+Source\+Ptr}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{momentum\+Source\+Ptr()}{momentumSourcePtr()}}
+{\footnotesize\ttfamily const auto\+Ptr$<$vol\+Vector\+Field$>$\& momentum\+Source\+Ptr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 410 of file structure.\+H.
+
+
+
+References structure\+::momentum\+Source\+Ptr\+\_\+, and structure\+::set\+Region\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=307pt]{classFoam_1_1structure_a85d9cfb7d462a6f932057418008ad496_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1structure_a1cbd024d79c53570b3e04cc2e4f0abd3}\label{classFoam_1_1structure_a1cbd024d79c53570b3e04cc2e4f0abd3}} 
+\index{Foam\+::structure@{Foam\+::structure}!regions\+\_\+@{regions\+\_\+}}
+\index{regions\+\_\+@{regions\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{regions\+\_\+}{regions\_}}
+{\footnotesize\ttfamily word\+List regions\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 126 of file structure.\+H.
+
+
+
+Referenced by structure\+::regions().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a8ddca6cc34b86786d9370b225a5a7e8e}\label{classFoam_1_1structure_a8ddca6cc34b86786d9370b225a5a7e8e}} 
+\index{Foam\+::structure@{Foam\+::structure}!alpha\+Fields\+\_\+@{alpha\+Fields\+\_\+}}
+\index{alpha\+Fields\+\_\+@{alpha\+Fields\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{alpha\+Fields\+\_\+}{alphaFields\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1structure_a821486e30c5f9ed2852aeddc4ff8ff30}{vol\+Scalar\+Field\+Table} alpha\+Fields\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 132 of file structure.\+H.
+
+
+
+Referenced by structure\+::alpha\+Fields().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a7136e90f04e342e45cde90d74b7e296e}\label{classFoam_1_1structure_a7136e90f04e342e45cde90d74b7e296e}} 
+\index{Foam\+::structure@{Foam\+::structure}!cell\+Fields\+\_\+@{cell\+Fields\+\_\+}}
+\index{cell\+Fields\+\_\+@{cell\+Fields\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{cell\+Fields\+\_\+}{cellFields\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1structure_a2fdb5cf3126746b10e53fb86215f3249}{scalar\+Field\+Table} cell\+Fields\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 135 of file structure.\+H.
+
+
+
+Referenced by structure\+::cell\+Fields().
+
+\mbox{\Hypertarget{classFoam_1_1structure_adbcc8a0fc193681fc80b55dee1f8d5b2}\label{classFoam_1_1structure_adbcc8a0fc193681fc80b55dee1f8d5b2}} 
+\index{Foam\+::structure@{Foam\+::structure}!cell\+Lists\+\_\+@{cell\+Lists\+\_\+}}
+\index{cell\+Lists\+\_\+@{cell\+Lists\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{cell\+Lists\+\_\+}{cellLists\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1structure_afefd20eeb8d2675bfba9c1ce9aa78ca7}{label\+List\+Table} cell\+Lists\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 138 of file structure.\+H.
+
+
+
+Referenced by structure\+::cell\+Lists(), and structure\+::set\+Region\+Field().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a668e23f1aa896d53b68f6182e48f32d9}\label{classFoam_1_1structure_a668e23f1aa896d53b68f6182e48f32d9}} 
+\index{Foam\+::structure@{Foam\+::structure}!cells\+\_\+@{cells\+\_\+}}
+\index{cells\+\_\+@{cells\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{cells\+\_\+}{cells\_}}
+{\footnotesize\ttfamily label\+List cells\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 141 of file structure.\+H.
+
+
+
+Referenced by structure\+::cells().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a70eafb5d670fefbe4115321567671063}\label{classFoam_1_1structure_a70eafb5d670fefbe4115321567671063}} 
+\index{Foam\+::structure@{Foam\+::structure}!power\+Density\+Neutronics\+\_\+@{power\+Density\+Neutronics\+\_\+}}
+\index{power\+Density\+Neutronics\+\_\+@{power\+Density\+Neutronics\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{power\+Density\+Neutronics\+\_\+}{powerDensityNeutronics\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& power\+Density\+Neutronics\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 144 of file structure.\+H.
+
+
+
+Referenced by structure\+::power\+Density\+Neutronics().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a756541524cb4e87ec3823d173aab0675}\label{classFoam_1_1structure_a756541524cb4e87ec3823d173aab0675}} 
+\index{Foam\+::structure@{Foam\+::structure}!Dh\+\_\+@{Dh\+\_\+}}
+\index{Dh\+\_\+@{Dh\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Dh\+\_\+}{Dh\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Dh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 147 of file structure.\+H.
+
+
+
+Referenced by structure\+::\+Dh().
+
+\mbox{\Hypertarget{classFoam_1_1structure_ad394169e8f50e599cab1a73138d0fd79}\label{classFoam_1_1structure_ad394169e8f50e599cab1a73138d0fd79}} 
+\index{Foam\+::structure@{Foam\+::structure}!l\+Dh\+\_\+@{l\+Dh\+\_\+}}
+\index{l\+Dh\+\_\+@{l\+Dh\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{l\+Dh\+\_\+}{lDh\_}}
+{\footnotesize\ttfamily vol\+Vector\+Field l\+Dh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 152 of file structure.\+H.
+
+
+
+Referenced by structure\+::l\+Dh().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a6d3127c82b86b076dc03459b1c07cb3e}\label{classFoam_1_1structure_a6d3127c82b86b076dc03459b1c07cb3e}} 
+\index{Foam\+::structure@{Foam\+::structure}!pumps\+\_\+@{pumps\+\_\+}}
+\index{pumps\+\_\+@{pumps\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{pumps\+\_\+}{pumps\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1structure_a3cad7e6a25055d05c668b06551d372c5}{pump\+Table} pumps\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 155 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a8bed91afa878a475acee3bd862315af3}\label{classFoam_1_1structure_a8bed91afa878a475acee3bd862315af3}} 
+\index{Foam\+::structure@{Foam\+::structure}!heat\+Exchangers\+\_\+@{heat\+Exchangers\+\_\+}}
+\index{heat\+Exchangers\+\_\+@{heat\+Exchangers\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{heat\+Exchangers\+\_\+}{heatExchangers\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1structure_a22ffcc3b5fb77bcb044a05e138ec4076}{heat\+Exchanger\+Table} heat\+Exchangers\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 158 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a7997eb980796e45c86549228b08730c7}\label{classFoam_1_1structure_a7997eb980796e45c86549228b08730c7}} 
+\index{Foam\+::structure@{Foam\+::structure}!power\+Models\+\_\+@{power\+Models\+\_\+}}
+\index{power\+Models\+\_\+@{power\+Models\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{power\+Models\+\_\+}{powerModels\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1structure_a5b1d82b72cd629a4695e6c44b37da7a7}{power\+Model\+Table} power\+Models\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 161 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a152fbbd517b80ae251b415ddc38cb03f}\label{classFoam_1_1structure_a152fbbd517b80ae251b415ddc38cb03f}} 
+\index{Foam\+::structure@{Foam\+::structure}!heat\+Flux\+\_\+@{heat\+Flux\+\_\+}}
+\index{heat\+Flux\+\_\+@{heat\+Flux\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{heat\+Flux\+\_\+}{heatFlux\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field heat\+Flux\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 165 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a01d6a4bb2749a27e36668b204ac96b3e}\label{classFoam_1_1structure_a01d6a4bb2749a27e36668b204ac96b3e}} 
+\index{Foam\+::structure@{Foam\+::structure}!Tact\+\_\+@{Tact\+\_\+}}
+\index{Tact\+\_\+@{Tact\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Tact\+\_\+}{Tact\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Tact\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 168 of file structure.\+H.
+
+
+
+Referenced by structure\+::\+Tact().
+
+\mbox{\Hypertarget{classFoam_1_1structure_afddfb535fdc0bdf71455350377cf04b0}\label{classFoam_1_1structure_afddfb535fdc0bdf71455350377cf04b0}} 
+\index{Foam\+::structure@{Foam\+::structure}!i\+Aact\+\_\+@{i\+Aact\+\_\+}}
+\index{i\+Aact\+\_\+@{i\+Aact\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{i\+Aact\+\_\+}{iAact\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field i\+Aact\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 171 of file structure.\+H.
+
+
+
+Referenced by structure\+::i\+Aact().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a10561a5a0129d753f69986052d8f6915}\label{classFoam_1_1structure_a10561a5a0129d753f69986052d8f6915}} 
+\index{Foam\+::structure@{Foam\+::structure}!T\+H\+X\+Ptr\+\_\+@{T\+H\+X\+Ptr\+\_\+}}
+\index{T\+H\+X\+Ptr\+\_\+@{T\+H\+X\+Ptr\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{T\+H\+X\+Ptr\+\_\+}{THXPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ T\+H\+X\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 174 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a2e32a84d29e89c7ca3d68eba83e0951b}\label{classFoam_1_1structure_a2e32a84d29e89c7ca3d68eba83e0951b}} 
+\index{Foam\+::structure@{Foam\+::structure}!i\+A\+H\+X\+Ptr\+\_\+@{i\+A\+H\+X\+Ptr\+\_\+}}
+\index{i\+A\+H\+X\+Ptr\+\_\+@{i\+A\+H\+X\+Ptr\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{i\+A\+H\+X\+Ptr\+\_\+}{iAHXPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ i\+A\+H\+X\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 178 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a344017f457bb8d5ccd4d5aa50bfdbd67}\label{classFoam_1_1structure_a344017f457bb8d5ccd4d5aa50bfdbd67}} 
+\index{Foam\+::structure@{Foam\+::structure}!alphapas\+\_\+@{alphapas\+\_\+}}
+\index{alphapas\+\_\+@{alphapas\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{alphapas\+\_\+}{alphapas\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field alphapas\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 182 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_a73c71b4d8cf465b7169f1a6ab38eb98f}\label{classFoam_1_1structure_a73c71b4d8cf465b7169f1a6ab38eb98f}} 
+\index{Foam\+::structure@{Foam\+::structure}!Tpas\+\_\+@{Tpas\+\_\+}}
+\index{Tpas\+\_\+@{Tpas\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Tpas\+\_\+}{Tpas\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Tpas\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 185 of file structure.\+H.
+
+
+
+Referenced by structure\+::\+Tpas().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a2559cca0fa27c0e3e477299c9e8fee23}\label{classFoam_1_1structure_a2559cca0fa27c0e3e477299c9e8fee23}} 
+\index{Foam\+::structure@{Foam\+::structure}!T\+Fuel\+Av\+\_\+@{T\+Fuel\+Av\+\_\+}}
+\index{T\+Fuel\+Av\+\_\+@{T\+Fuel\+Av\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{T\+Fuel\+Av\+\_\+}{TFuelAv\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field T\+Fuel\+Av\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 188 of file structure.\+H.
+
+
+
+Referenced by structure\+::\+T\+Fuel\+Av().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a2c1ab8d88c56439bff862edf333e7920}\label{classFoam_1_1structure_a2c1ab8d88c56439bff862edf333e7920}} 
+\index{Foam\+::structure@{Foam\+::structure}!T\+Clad\+Av\+\_\+@{T\+Clad\+Av\+\_\+}}
+\index{T\+Clad\+Av\+\_\+@{T\+Clad\+Av\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{T\+Clad\+Av\+\_\+}{TCladAv\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field T\+Clad\+Av\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 191 of file structure.\+H.
+
+
+
+Referenced by structure\+::\+T\+Clad\+Av().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a8db66c97ee877400eb17a41988b36995}\label{classFoam_1_1structure_a8db66c97ee877400eb17a41988b36995}} 
+\index{Foam\+::structure@{Foam\+::structure}!i\+Apas\+\_\+@{i\+Apas\+\_\+}}
+\index{i\+Apas\+\_\+@{i\+Apas\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{i\+Apas\+\_\+}{iApas\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field i\+Apas\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 194 of file structure.\+H.
+
+
+
+Referenced by structure\+::i\+Apas().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a331e87b4e7ad7605604e2ee79adc5005}\label{classFoam_1_1structure_a331e87b4e7ad7605604e2ee79adc5005}} 
+\index{Foam\+::structure@{Foam\+::structure}!alpha\+Rho\+Cppas\+\_\+@{alpha\+Rho\+Cppas\+\_\+}}
+\index{alpha\+Rho\+Cppas\+\_\+@{alpha\+Rho\+Cppas\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{alpha\+Rho\+Cppas\+\_\+}{alphaRhoCppas\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field alpha\+Rho\+Cppas\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 198 of file structure.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1structure_af6a8342527933c92e5c816c0e95d3a9c}\label{classFoam_1_1structure_af6a8342527933c92e5c816c0e95d3a9c}} 
+\index{Foam\+::structure@{Foam\+::structure}!Twall\+\_\+@{Twall\+\_\+}}
+\index{Twall\+\_\+@{Twall\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Twall\+\_\+}{Twall\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Twall\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 201 of file structure.\+H.
+
+
+
+Referenced by structure\+::\+Twall().
+
+\mbox{\Hypertarget{classFoam_1_1structure_ae0ff056471711dcbd82d9453f5b5dca0}\label{classFoam_1_1structure_ae0ff056471711dcbd82d9453f5b5dca0}} 
+\index{Foam\+::structure@{Foam\+::structure}!tortuosity\+Ptr\+\_\+@{tortuosity\+Ptr\+\_\+}}
+\index{tortuosity\+Ptr\+\_\+@{tortuosity\+Ptr\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{tortuosity\+Ptr\+\_\+}{tortuosityPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Tensor\+Field$>$ tortuosity\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 204 of file structure.\+H.
+
+
+
+Referenced by structure\+::tortuosity(), and structure\+::tortuosity\+Ptr().
+
+\mbox{\Hypertarget{classFoam_1_1structure_aad4be68517f93bfd5183e78b0546af58}\label{classFoam_1_1structure_aad4be68517f93bfd5183e78b0546af58}} 
+\index{Foam\+::structure@{Foam\+::structure}!Rg2l\+Ptr\+\_\+@{Rg2l\+Ptr\+\_\+}}
+\index{Rg2l\+Ptr\+\_\+@{Rg2l\+Ptr\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Rg2l\+Ptr\+\_\+}{Rg2lPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Tensor\+Field$>$ Rg2l\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 207 of file structure.\+H.
+
+
+
+Referenced by structure\+::\+Rg2l(), and structure\+::\+Rg2l\+Ptr().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a1d90e77d688e89667573d8b298559160}\label{classFoam_1_1structure_a1d90e77d688e89667573d8b298559160}} 
+\index{Foam\+::structure@{Foam\+::structure}!Rl2g\+Ptr\+\_\+@{Rl2g\+Ptr\+\_\+}}
+\index{Rl2g\+Ptr\+\_\+@{Rl2g\+Ptr\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{Rl2g\+Ptr\+\_\+}{Rl2gPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Tensor\+Field$>$ Rl2g\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 210 of file structure.\+H.
+
+
+
+Referenced by structure\+::\+Rl2g(), and structure\+::\+Rl2g\+Ptr().
+
+\mbox{\Hypertarget{classFoam_1_1structure_ac6ed53902f4341c29ea2143f2349ac8d}\label{classFoam_1_1structure_ac6ed53902f4341c29ea2143f2349ac8d}} 
+\index{Foam\+::structure@{Foam\+::structure}!momentum\+Source\+Ptr\+\_\+@{momentum\+Source\+Ptr\+\_\+}}
+\index{momentum\+Source\+Ptr\+\_\+@{momentum\+Source\+Ptr\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{momentum\+Source\+Ptr\+\_\+}{momentumSourcePtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Vector\+Field$>$ momentum\+Source\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 213 of file structure.\+H.
+
+
+
+Referenced by structure\+::momentum\+Source\+Ptr().
+
+\mbox{\Hypertarget{classFoam_1_1structure_a48dc19b9ab7e78e72916646ec5b4623c}\label{classFoam_1_1structure_a48dc19b9ab7e78e72916646ec5b4623c}} 
+\index{Foam\+::structure@{Foam\+::structure}!power\+Off\+Criterion\+Model\+Ptr\+\_\+@{power\+Off\+Criterion\+Model\+Ptr\+\_\+}}
+\index{power\+Off\+Criterion\+Model\+Ptr\+\_\+@{power\+Off\+Criterion\+Model\+Ptr\+\_\+}!Foam\+::structure@{Foam\+::structure}}
+\subsubsection{\texorpdfstring{power\+Off\+Criterion\+Model\+Ptr\+\_\+}{powerOffCriterionModelPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1powerOffCriterionModel}{power\+Off\+Criterion\+Model}$>$ power\+Off\+Criterion\+Model\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 216 of file structure.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/\hyperlink{structure_8H}{structure.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/\hyperlink{structure_8C}{structure.\+C}\end{DoxyCompactItemize}

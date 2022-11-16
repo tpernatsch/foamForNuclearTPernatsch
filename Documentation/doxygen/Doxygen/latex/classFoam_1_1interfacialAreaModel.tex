@@ -1,0 +1,249 @@
+\hypertarget{classFoam_1_1interfacialAreaModel}{}\section{interfacial\+Area\+Model Class Reference}
+\label{classFoam_1_1interfacialAreaModel}\index{interfacial\+Area\+Model@{interfacial\+Area\+Model}}
+
+
+Class to handle fluid-\/fluid interfacial area.  
+
+
+
+
+Inheritance diagram for interfacial\+Area\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{classFoam_1_1interfacialAreaModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for interfacial\+Area\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFoam_1_1interfacialAreaModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1interfacialAreaModel_ad8caf6af97ae990ff992ae2011d568ae}{Type\+Name} (\char`\"{}interfacial\+Area\+Model\char`\"{})
+\item 
+\hyperlink{classFoam_1_1interfacialAreaModel_a2abd9ca9a844baff5c408f2ab2260140}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1interfacialAreaModel}{interfacial\+Area\+Model}, interfacial\+Area\+Models,(const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg),(pair, dict, obj\+Reg))
+\item 
+\hyperlink{classFoam_1_1interfacialAreaModel_aef02e6183cd468742f7aafd0606aad3f}{interfacial\+Area\+Model} (const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1interfacialAreaModel_a02e40f3d07110ec4343cfc40dbe4c540}{$\sim$interfacial\+Area\+Model} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1interfacialAreaModel_a139457cae4c5e04785e143fd8b9ed092}{value} (const label \&celli) const =0
+\item 
+virtual void \hyperlink{classFoam_1_1interfacialAreaModel_a5d571b2ecac55f1902a493c03d3195cf}{correct\+Field} (vol\+Scalar\+Field \&iA)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1interfacialAreaModel}{interfacial\+Area\+Model} $>$ \hyperlink{classFoam_1_1interfacialAreaModel_a081ab720653d117b3290f0b6e04287de}{New} (const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1interfacialAreaModel_a23edeeeecebcef11921a33dd5d990570}{mesh\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \& \hyperlink{classFoam_1_1interfacialAreaModel_ad015e769561f394d7c717d4356dcded4}{pair\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1interfacialAreaModel_a5e2d96f5c8eaf3d2ba2fd36db82b8e8b}{fluid1\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1interfacialAreaModel_a10350fa01c5980453030c19e26a2253f}{fluid2\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to handle fluid-\/fluid interfacial area. 
+
+\label{_Description}%
+ Author Stefan Radman (\href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch} / \href{mailto:stefanradman92@gmail.com}{\tt stefanradman92@gmail.\+com})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/interfacialAreaModels/interfacialAreaModel.H}{\tt interfacial\+Area\+Model.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/interfacialAreaModels/interfacialAreaModel.C}{\tt interfacial\+Area\+Model.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/interfacialAreaModels/newInterfacialAreaModel.C}{\tt new\+Interfacial\+Area\+Model.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 55 of file interfacial\+Area\+Model.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_aef02e6183cd468742f7aafd0606aad3f}\label{classFoam_1_1interfacialAreaModel_aef02e6183cd468742f7aafd0606aad3f}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!interfacial\+Area\+Model@{interfacial\+Area\+Model}}
+\index{interfacial\+Area\+Model@{interfacial\+Area\+Model}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{interfacial\+Area\+Model()}{interfacialAreaModel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1interfacialAreaModel}{interfacial\+Area\+Model} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 39 of file interfacial\+Area\+Model.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_a02e40f3d07110ec4343cfc40dbe4c540}\label{classFoam_1_1interfacialAreaModel_a02e40f3d07110ec4343cfc40dbe4c540}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!````~interfacial\+Area\+Model@{$\sim$interfacial\+Area\+Model}}
+\index{````~interfacial\+Area\+Model@{$\sim$interfacial\+Area\+Model}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{$\sim$interfacial\+Area\+Model()}{~interfacialAreaModel()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1interfacialAreaModel}{interfacial\+Area\+Model} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 99 of file interfacial\+Area\+Model.\+H.
+
+
+
+References interfacial\+Area\+Model\+::correct\+Field(), interfacial\+Area\+Model\+::\+New(), and interfacial\+Area\+Model\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{classFoam_1_1interfacialAreaModel_a02e40f3d07110ec4343cfc40dbe4c540_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_ad8caf6af97ae990ff992ae2011d568ae}\label{classFoam_1_1interfacialAreaModel_ad8caf6af97ae990ff992ae2011d568ae}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}interfacial\+Area\+Model\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_a2abd9ca9a844baff5c408f2ab2260140}\label{classFoam_1_1interfacialAreaModel_a2abd9ca9a844baff5c408f2ab2260140}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1interfacialAreaModel}{interfacial\+Area\+Model}}]{,  }\item[{interfacial\+Area\+Models}]{,  }\item[{(const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)}]{,  }\item[{(pair, dict, obj\+Reg)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_a081ab720653d117b3290f0b6e04287de}\label{classFoam_1_1interfacialAreaModel_a081ab720653d117b3290f0b6e04287de}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!New@{New}}
+\index{New@{New}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1interfacialAreaModel}{Foam\+::interfacial\+Area\+Model} $>$ New (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 26 of file new\+Interfacial\+Area\+Model.\+C.
+
+
+
+Referenced by F\+F\+Pair\+::\+F\+F\+Pair(), and interfacial\+Area\+Model\+::$\sim$interfacial\+Area\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{classFoam_1_1interfacialAreaModel_a081ab720653d117b3290f0b6e04287de_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_a139457cae4c5e04785e143fd8b9ed092}\label{classFoam_1_1interfacialAreaModel_a139457cae4c5e04785e143fd8b9ed092}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!value@{value}}
+\index{value@{value}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily virtual scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a2c1e1872d359910de4c35cf8f003871c}{Schor}, \hyperlink{classFoam_1_1interfacialAreaModels_1_1NoKazimi_a2c1e1872d359910de4c35cf8f003871c}{No\+Kazimi}, \hyperlink{classFoam_1_1interfacialAreaModels_1_1annular_a2c1e1872d359910de4c35cf8f003871c}{annular}, and \hyperlink{classFoam_1_1interfacialAreaModels_1_1spherical_a2c1e1872d359910de4c35cf8f003871c}{spherical}.
+
+
+
+Referenced by interfacial\+Area\+Model\+::$\sim$interfacial\+Area\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=267pt]{classFoam_1_1interfacialAreaModel_a139457cae4c5e04785e143fd8b9ed092_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_a5d571b2ecac55f1902a493c03d3195cf}\label{classFoam_1_1interfacialAreaModel_a5d571b2ecac55f1902a493c03d3195cf}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!correct\+Field@{correct\+Field}}
+\index{correct\+Field@{correct\+Field}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{correct\+Field()}{correctField()}}
+{\footnotesize\ttfamily void correct\+Field (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field \&}]{iA }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 65 of file interfacial\+Area\+Model.\+C.
+
+
+
+References for\+All(), and i.
+
+
+
+Referenced by interfacial\+Area\+Model\+::$\sim$interfacial\+Area\+Model().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classFoam_1_1interfacialAreaModel_a5d571b2ecac55f1902a493c03d3195cf_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=295pt]{classFoam_1_1interfacialAreaModel_a5d571b2ecac55f1902a493c03d3195cf_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_a23edeeeecebcef11921a33dd5d990570}\label{classFoam_1_1interfacialAreaModel_a23edeeeecebcef11921a33dd5d990570}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!mesh\+\_\+@{mesh\+\_\+}}
+\index{mesh\+\_\+@{mesh\+\_\+}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{mesh\+\_\+}{mesh\_}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 61 of file interfacial\+Area\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_ad015e769561f394d7c717d4356dcded4}\label{classFoam_1_1interfacialAreaModel_ad015e769561f394d7c717d4356dcded4}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!pair\+\_\+@{pair\+\_\+}}
+\index{pair\+\_\+@{pair\+\_\+}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{pair\+\_\+}{pair\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair}\& pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 63 of file interfacial\+Area\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_a5e2d96f5c8eaf3d2ba2fd36db82b8e8b}\label{classFoam_1_1interfacialAreaModel_a5e2d96f5c8eaf3d2ba2fd36db82b8e8b}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!fluid1\+\_\+@{fluid1\+\_\+}}
+\index{fluid1\+\_\+@{fluid1\+\_\+}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{fluid1\+\_\+}{fluid1\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& fluid1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 65 of file interfacial\+Area\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModel_a10350fa01c5980453030c19e26a2253f}\label{classFoam_1_1interfacialAreaModel_a10350fa01c5980453030c19e26a2253f}} 
+\index{Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}!fluid2\+\_\+@{fluid2\+\_\+}}
+\index{fluid2\+\_\+@{fluid2\+\_\+}!Foam\+::interfacial\+Area\+Model@{Foam\+::interfacial\+Area\+Model}}
+\subsubsection{\texorpdfstring{fluid2\+\_\+}{fluid2\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& fluid2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 67 of file interfacial\+Area\+Model.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/interfacial\+Area\+Models/\hyperlink{interfacialAreaModel_8H}{interfacial\+Area\+Model.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/interfacial\+Area\+Models/\hyperlink{interfacialAreaModel_8C}{interfacial\+Area\+Model.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/interfacial\+Area\+Models/\hyperlink{newInterfacialAreaModel_8C}{new\+Interfacial\+Area\+Model.\+C}\end{DoxyCompactItemize}

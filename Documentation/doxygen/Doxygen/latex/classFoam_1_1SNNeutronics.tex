@@ -1,0 +1,818 @@
+\hypertarget{classFoam_1_1SNNeutronics}{}\section{S\+N\+Neutronics Class Reference}
+\label{classFoam_1_1SNNeutronics}\index{S\+N\+Neutronics@{S\+N\+Neutronics}}
+
+
+Subclass for diffusion neutronics.  
+
+
+
+
+Inheritance diagram for S\+N\+Neutronics\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=158pt]{classFoam_1_1SNNeutronics__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for S\+N\+Neutronics\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{classFoam_1_1SNNeutronics__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1SNNeutronics_a0d741c9fb831d57a03e40f6e330f9f12}{Type\+Name} (\char`\"{}S\+N\+Neutronics\char`\"{})
+\item 
+\hyperlink{classFoam_1_1SNNeutronics_a07fe2cc199ec1b9962d7c4f720c69e44}{S\+N\+Neutronics} (fv\+Mesh \&\hyperlink{classFoam_1_1neutronics_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh})
+\item 
+virtual \hyperlink{classFoam_1_1SNNeutronics_a17102ed6edfda70619e265eefa6ae041}{$\sim$\+S\+N\+Neutronics} ()
+\item 
+virtual const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_abf64af4a1378deee4038292ef2bed74e}{fluxes} () const
+\item 
+virtual const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_adff280398fa801b37b673a30623f5afe}{precursors} () const
+\item 
+virtual const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1SNNeutronics_a67faa978ebf3e97a9df21f1e37a68a8d}{one\+Group\+Flux} () const
+\item 
+virtual scalar \hyperlink{classFoam_1_1SNNeutronics_a96a4e39548be52ca563c1e5b7dd885b8}{power} () const
+\item 
+virtual void \hyperlink{classFoam_1_1SNNeutronics_a92e79ddc2a3b75672fd0abdb39c642a5}{get\+Coupling\+Field\+Refs} (const object\+Registry \&src, const mesh\+To\+Mesh \&\hyperlink{createMeshInterpolators_8H_aa7d8334dd5ea1819a83900ea05ace02f}{neutro\+To\+Fluid})
+\item 
+virtual void \hyperlink{classFoam_1_1SNNeutronics_a8b317ca01efa1efb32264be43472ec10}{interpolate\+Coupling\+Fields} (const mesh\+To\+Mesh \&\hyperlink{createMeshInterpolators_8H_aa7d8334dd5ea1819a83900ea05ace02f}{neutro\+To\+Fluid})
+\item 
+virtual void \hyperlink{classFoam_1_1SNNeutronics_ae019379f6473a5b4fa9fcf696c9a4235}{correct} (scalar \&\hyperlink{solveThermalMechanics_8H_a840cf6bbf9aacf15bd364b478394c3a7}{residual}, label coupling\+Iter)
+\item 
+label \hyperlink{classFoam_1_1SNNeutronics_af63489ca3438516aad72b156e00e3879}{discrete\+Directions} () const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1XSLowMem}{X\+S\+Low\+Mem} \hyperlink{classFoam_1_1SNNeutronics_a84be2347b2c0068d37366f5d8dbdd9b1}{xs\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1SNNeutronics_a34568af31b3cc5418a99621f80401292}{quadrature\+Set\+\_\+}
+\item 
+label \hyperlink{classFoam_1_1SNNeutronics_a1389106de00fb1942f57ee53805729e6}{discrete\+Directions\+\_\+}
+\item 
+vector\+Field \hyperlink{classFoam_1_1SNNeutronics_abcd9973c76f1e331c38b1d6c211ec21a}{direction\+Versors\+\_\+}
+\item 
+scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_ab1b466a358b7b5bd3051f28daf744920}{direction\+Weights\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Square\+Matrix $>$ \hyperlink{classFoam_1_1SNNeutronics_addc4571b2b960c070a5b6d04c97edc91}{legendre\+Matrices\+\_\+}
+\item 
+surface\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_a24a55e1efbeb433be1eb071848b06e81}{face\+Phi\+\_\+}
+\item 
+Ptr\+List$<$ surface\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_adf5904f9bf333fdc8b35eddbc4a67635}{face\+Phis\+\_\+}
+\item 
+List$<$ Ptr\+List$<$ vol\+Scalar\+Field $>$ $>$ \hyperlink{classFoam_1_1SNNeutronics_aa8c6002f50dbc6b20470b11beb7723df}{angular\+Flux\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_a736f28d690625a0f42809a45e9b99116}{prec\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_a2cb778e2ea68ca016f0215fa178155cf}{prec\+Star\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_a0e57f3e6c5cec9d5d7824e9e742cf102}{default\+Flux\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_ad421eb70060f1b275d7e9814cc52830a}{default\+Prec\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_a43492f1b1f254ce7ca6ec7d88e792c60}{flux\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_a05a39571155b6ded783dee3b1e8d5faf}{one\+Group\+Flux\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_ae8c2f3662525402bc2e5301933aad9d2}{neutro\+Source\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_a4f32d94eef99bf362b74d4f4e0cf29e1}{delayed\+Neutro\+Source\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1SNNeutronics_a871434fb035f6837b1b236a1ec520abc}{T\+Fuel\+Orig\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1SNNeutronics_a9abfa8412a2bd9f5eab3df63b82e6272}{T\+Clad\+Orig\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1SNNeutronics_a5997986d4c1a95752dfbf17e4d533cbc}{T\+Cool\+Orig\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1SNNeutronics_a1da8adeb20ff6742068c9befe8b16f25}{rho\+Cool\+Orig\+\_\+}
+\item 
+const vol\+Vector\+Field $\ast$ \hyperlink{classFoam_1_1SNNeutronics_a92f1255350afa632167f9df0b8cd0d54}{U\+Orig\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1SNNeutronics_a274c5fa5568001183ce2f40523b458f3}{alpha\+Orig\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1SNNeutronics_a0b2a30a35ad577545e222153fd84d363}{alphat\+Orig\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1SNNeutronics_a7fa28815680aa43e2c72f58a8eee9e43}{mu\+Orig\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_a40daf0cf699f5ce2bea8554707d8e11d}{T\+Fuel\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_a20ddcf74e7279560e0c7ce78d0319b93}{T\+Clad\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_af81c8770211826f576f6d7290a9f8103}{T\+Cool\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1SNNeutronics_af82ea76dc249b3661c882a65cba78a2c}{rho\+Cool\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1SNNeutronics_a4faa30c4f8be70fcd024fb3896691d6b}{keff0\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1SNNeutronics_a28e451154a3e5ad29ce75a4a3ea272a9}{keff1\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1SNNeutronics_a75e49bf270780f6ae476375b810c9d9c}{keff2\+\_\+}
+\item 
+int \hyperlink{classFoam_1_1SNNeutronics_a3c0788f46df8163cdddb30b4369a1626}{aitken\+Iter\+Counter\+\_\+}
+\item 
+int \hyperlink{classFoam_1_1SNNeutronics_a03f16e8616c83b72fdb7b6f06013e919}{aitken\+Iter\+No\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Vector\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_a3f2bd9de379a4b68b01ed2da13922d86}{U\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_abc7c5bd59d290d277926652df30d5325}{alpha\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_ab6fbf6c23c7b0560bebc841cd9a548cf}{alphat\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_a02a6957e64f8ee5582ee4bcd4104b608}{mu\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ surface\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_a497673767745b44b26977e35496c55df}{phi\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1SNNeutronics_aa68fdcce7eec7392d06d8be2a783ac8c}{diff\+Coeff\+Prec\+Ptr\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Subclass for diffusion neutronics. 
+
+\label{_Description}%
+ Reference publications Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, \char`\"{}\+Ge\+N-\/\+Foam\+: a novel Open\+F\+O\+A\+M® based multi-\/physics solver for 2\+D/3\+D transient
+    analysis of nuclear reactors\char`\"{}, Nuclear Engineering and Design, submitted
+
+Carlo Fiorina, Konstantin Mikityuk, \char`\"{} Application of the new Ge\+N-\/\+Foam multi-\/physics
+    solver to the European Sodium Fast Reactor and verification against available codes\char`\"{}, Proceedings of I\+C\+A\+PP 2015, May 03-\/06, 2015 -\/ Nice (France), Paper 15226
+
+Author of this file (and associated .C or included .H files) Derived by Carlo Fiorina $<$\href{mailto:carlo.fiorina@outlook.com}{\tt carlo.\+fiorina@outlook.\+com}; \href{mailto:carlo.fiorina@epfl.ch}{\tt carlo.\+fiorina@epfl.\+ch};$>$ (E\+P\+FL, Switzerland) from the work of Manuele Aufiero, \char`\"{}\+D E\+V\+E\+L\+O\+P\+M\+E\+N\+T O\+F A\+D\+V\+A\+N\+C\+E\+D S\+I\+M\+U\+L\+A\+T\+I\+O\+N T\+O\+O\+L\+S F\+O\+R
+    C\+I\+R\+C\+U\+L\+A\+T\+I\+N\+G -\/ F\+U\+E\+L N\+U\+C\+L\+E\+A\+R R\+E\+A\+C\+T\+O\+R\+S\char`\"{}, PhD Dissertation, Politecnico Di Milano
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/neutronics/SN/SNNeutronics.H}{\tt S\+N\+Neutronics.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/neutronics/SN/SNNeutronics.C}{\tt S\+N\+Neutronics.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 64 of file S\+N\+Neutronics.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a07fe2cc199ec1b9962d7c4f720c69e44}\label{classFoam_1_1SNNeutronics_a07fe2cc199ec1b9962d7c4f720c69e44}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!S\+N\+Neutronics@{S\+N\+Neutronics}}
+\index{S\+N\+Neutronics@{S\+N\+Neutronics}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{S\+N\+Neutronics()}{SNNeutronics()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1SNNeutronics}{S\+N\+Neutronics} (\begin{DoxyParamCaption}\item[{fv\+Mesh \&}]{mesh }\end{DoxyParamCaption})}
+
+
+
+Definition at line 44 of file S\+N\+Neutronics.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a17102ed6edfda70619e265eefa6ae041}\label{classFoam_1_1SNNeutronics_a17102ed6edfda70619e265eefa6ae041}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!````~S\+N\+Neutronics@{$\sim$\+S\+N\+Neutronics}}
+\index{````~S\+N\+Neutronics@{$\sim$\+S\+N\+Neutronics}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{$\sim$\+S\+N\+Neutronics()}{~SNNeutronics()}}
+{\footnotesize\ttfamily $\sim$\hyperlink{classFoam_1_1SNNeutronics}{S\+N\+Neutronics} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 207 of file S\+N\+Neutronics.\+C.
+
+
+
+References S\+N\+Neutronics\+::get\+Coupling\+Field\+Refs().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=310pt]{classFoam_1_1SNNeutronics_a17102ed6edfda70619e265eefa6ae041_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a0d741c9fb831d57a03e40f6e330f9f12}\label{classFoam_1_1SNNeutronics_a0d741c9fb831d57a03e40f6e330f9f12}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}S\+N\+Neutronics\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_abf64af4a1378deee4038292ef2bed74e}\label{classFoam_1_1SNNeutronics_abf64af4a1378deee4038292ef2bed74e}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!fluxes@{fluxes}}
+\index{fluxes@{fluxes}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{fluxes()}{fluxes()}}
+{\footnotesize\ttfamily virtual const Ptr\+List$<$vol\+Scalar\+Field$>$ fluxes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1neutronics_a10f1010740ab17237b99564ef3cb0ba6}{neutronics}.
+
+
+
+Definition at line 161 of file S\+N\+Neutronics.\+H.
+
+
+
+References S\+N\+Neutronics\+::flux\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_adff280398fa801b37b673a30623f5afe}\label{classFoam_1_1SNNeutronics_adff280398fa801b37b673a30623f5afe}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!precursors@{precursors}}
+\index{precursors@{precursors}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{precursors()}{precursors()}}
+{\footnotesize\ttfamily virtual const Ptr\+List$<$vol\+Scalar\+Field$>$ precursors (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1neutronics_a9bc58c1b726592572ed3726d56ed41c4}{neutronics}.
+
+
+
+Definition at line 167 of file S\+N\+Neutronics.\+H.
+
+
+
+References S\+N\+Neutronics\+::prec\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a67faa978ebf3e97a9df21f1e37a68a8d}\label{classFoam_1_1SNNeutronics_a67faa978ebf3e97a9df21f1e37a68a8d}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!one\+Group\+Flux@{one\+Group\+Flux}}
+\index{one\+Group\+Flux@{one\+Group\+Flux}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{one\+Group\+Flux()}{oneGroupFlux()}}
+{\footnotesize\ttfamily virtual const vol\+Scalar\+Field\& one\+Group\+Flux (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1neutronics_acc2b21a70318742930a68da6543ca259}{neutronics}.
+
+
+
+Definition at line 173 of file S\+N\+Neutronics.\+H.
+
+
+
+References S\+N\+Neutronics\+::one\+Group\+Flux\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a96a4e39548be52ca563c1e5b7dd885b8}\label{classFoam_1_1SNNeutronics_a96a4e39548be52ca563c1e5b7dd885b8}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!power@{power}}
+\index{power@{power}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{power()}{power()}}
+{\footnotesize\ttfamily virtual scalar power (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1neutronics_a786b9a8bc4f4d4ba9489ba8fce53adc6}{neutronics}.
+
+
+
+Definition at line 179 of file S\+N\+Neutronics.\+H.
+
+
+
+References S\+N\+Neutronics\+::correct(), for\+All(), S\+N\+Neutronics\+::get\+Coupling\+Field\+Refs(), S\+N\+Neutronics\+::interpolate\+Coupling\+Fields(), neutro\+To\+Fluid(), p\+Tot(), residual, and X\+S\+Low\+Mem\+::sigma\+Pow().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1SNNeutronics_a96a4e39548be52ca563c1e5b7dd885b8_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a92e79ddc2a3b75672fd0abdb39c642a5}\label{classFoam_1_1SNNeutronics_a92e79ddc2a3b75672fd0abdb39c642a5}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!get\+Coupling\+Field\+Refs@{get\+Coupling\+Field\+Refs}}
+\index{get\+Coupling\+Field\+Refs@{get\+Coupling\+Field\+Refs}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{get\+Coupling\+Field\+Refs()}{getCouplingFieldRefs()}}
+{\footnotesize\ttfamily void get\+Coupling\+Field\+Refs (\begin{DoxyParamCaption}\item[{const object\+Registry \&}]{src,  }\item[{const mesh\+To\+Mesh \&}]{neutro\+To\+Fluid }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1neutronics_a9986a08f7046b9aa2576e3d91dbd4371}{neutronics}.
+
+
+
+Definition at line 214 of file S\+N\+Neutronics.\+C.
+
+
+
+References S\+N\+Neutronics\+::interpolate\+Coupling\+Fields().
+
+
+
+Referenced by S\+N\+Neutronics\+::power(), and S\+N\+Neutronics\+::$\sim$\+S\+N\+Neutronics().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1SNNeutronics_a92e79ddc2a3b75672fd0abdb39c642a5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=310pt]{classFoam_1_1SNNeutronics_a92e79ddc2a3b75672fd0abdb39c642a5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a8b317ca01efa1efb32264be43472ec10}\label{classFoam_1_1SNNeutronics_a8b317ca01efa1efb32264be43472ec10}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!interpolate\+Coupling\+Fields@{interpolate\+Coupling\+Fields}}
+\index{interpolate\+Coupling\+Fields@{interpolate\+Coupling\+Fields}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{interpolate\+Coupling\+Fields()}{interpolateCouplingFields()}}
+{\footnotesize\ttfamily void interpolate\+Coupling\+Fields (\begin{DoxyParamCaption}\item[{const mesh\+To\+Mesh \&}]{neutro\+To\+Fluid }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1neutronics_a61337211ba3e4087e68080e29e772bf0}{neutronics}.
+
+
+
+Definition at line 223 of file S\+N\+Neutronics.\+C.
+
+
+
+References S\+N\+Neutronics\+::correct().
+
+
+
+Referenced by S\+N\+Neutronics\+::get\+Coupling\+Field\+Refs(), and S\+N\+Neutronics\+::power().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=289pt]{classFoam_1_1SNNeutronics_a8b317ca01efa1efb32264be43472ec10_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1SNNeutronics_a8b317ca01efa1efb32264be43472ec10_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_ae019379f6473a5b4fa9fcf696c9a4235}\label{classFoam_1_1SNNeutronics_ae019379f6473a5b4fa9fcf696c9a4235}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!correct@{correct}}
+\index{correct@{correct}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}\item[{scalar \&}]{residual,  }\item[{label}]{coupling\+Iter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1neutronics_a5827973e95da22d868b33feb6ed2d2d3}{neutronics}.
+
+
+
+Definition at line 231 of file S\+N\+Neutronics.\+C.
+
+
+
+Referenced by S\+N\+Neutronics\+::interpolate\+Coupling\+Fields(), and S\+N\+Neutronics\+::power().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1SNNeutronics_ae019379f6473a5b4fa9fcf696c9a4235_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_af63489ca3438516aad72b156e00e3879}\label{classFoam_1_1SNNeutronics_af63489ca3438516aad72b156e00e3879}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!discrete\+Directions@{discrete\+Directions}}
+\index{discrete\+Directions@{discrete\+Directions}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{discrete\+Directions()}{discreteDirections()}}
+{\footnotesize\ttfamily label discrete\+Directions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 214 of file S\+N\+Neutronics.\+H.
+
+
+
+References S\+N\+Neutronics\+::discrete\+Directions\+\_\+.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a84be2347b2c0068d37366f5d8dbdd9b1}\label{classFoam_1_1SNNeutronics_a84be2347b2c0068d37366f5d8dbdd9b1}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!xs\+\_\+@{xs\+\_\+}}
+\index{xs\+\_\+@{xs\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{xs\+\_\+}{xs\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1XSLowMem}{X\+S\+Low\+Mem} xs\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 71 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a34568af31b3cc5418a99621f80401292}\label{classFoam_1_1SNNeutronics_a34568af31b3cc5418a99621f80401292}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!quadrature\+Set\+\_\+@{quadrature\+Set\+\_\+}}
+\index{quadrature\+Set\+\_\+@{quadrature\+Set\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{quadrature\+Set\+\_\+}{quadratureSet\_}}
+{\footnotesize\ttfamily I\+Odictionary quadrature\+Set\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 74 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a1389106de00fb1942f57ee53805729e6}\label{classFoam_1_1SNNeutronics_a1389106de00fb1942f57ee53805729e6}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!discrete\+Directions\+\_\+@{discrete\+Directions\+\_\+}}
+\index{discrete\+Directions\+\_\+@{discrete\+Directions\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{discrete\+Directions\+\_\+}{discreteDirections\_}}
+{\footnotesize\ttfamily label discrete\+Directions\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 75 of file S\+N\+Neutronics.\+H.
+
+
+
+Referenced by S\+N\+Neutronics\+::discrete\+Directions().
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_abcd9973c76f1e331c38b1d6c211ec21a}\label{classFoam_1_1SNNeutronics_abcd9973c76f1e331c38b1d6c211ec21a}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!direction\+Versors\+\_\+@{direction\+Versors\+\_\+}}
+\index{direction\+Versors\+\_\+@{direction\+Versors\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{direction\+Versors\+\_\+}{directionVersors\_}}
+{\footnotesize\ttfamily vector\+Field direction\+Versors\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 76 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_ab1b466a358b7b5bd3051f28daf744920}\label{classFoam_1_1SNNeutronics_ab1b466a358b7b5bd3051f28daf744920}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!direction\+Weights\+\_\+@{direction\+Weights\+\_\+}}
+\index{direction\+Weights\+\_\+@{direction\+Weights\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{direction\+Weights\+\_\+}{directionWeights\_}}
+{\footnotesize\ttfamily scalar\+Field direction\+Weights\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 77 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_addc4571b2b960c070a5b6d04c97edc91}\label{classFoam_1_1SNNeutronics_addc4571b2b960c070a5b6d04c97edc91}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!legendre\+Matrices\+\_\+@{legendre\+Matrices\+\_\+}}
+\index{legendre\+Matrices\+\_\+@{legendre\+Matrices\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{legendre\+Matrices\+\_\+}{legendreMatrices\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Square\+Matrix$>$ legendre\+Matrices\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 78 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a24a55e1efbeb433be1eb071848b06e81}\label{classFoam_1_1SNNeutronics_a24a55e1efbeb433be1eb071848b06e81}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!face\+Phi\+\_\+@{face\+Phi\+\_\+}}
+\index{face\+Phi\+\_\+@{face\+Phi\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{face\+Phi\+\_\+}{facePhi\_}}
+{\footnotesize\ttfamily surface\+Scalar\+Field face\+Phi\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 79 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_adf5904f9bf333fdc8b35eddbc4a67635}\label{classFoam_1_1SNNeutronics_adf5904f9bf333fdc8b35eddbc4a67635}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!face\+Phis\+\_\+@{face\+Phis\+\_\+}}
+\index{face\+Phis\+\_\+@{face\+Phis\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{face\+Phis\+\_\+}{facePhis\_}}
+{\footnotesize\ttfamily Ptr\+List$<$surface\+Scalar\+Field$>$ face\+Phis\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 80 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_aa8c6002f50dbc6b20470b11beb7723df}\label{classFoam_1_1SNNeutronics_aa8c6002f50dbc6b20470b11beb7723df}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!angular\+Flux\+\_\+@{angular\+Flux\+\_\+}}
+\index{angular\+Flux\+\_\+@{angular\+Flux\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{angular\+Flux\+\_\+}{angularFlux\_}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$vol\+Scalar\+Field$>$ $>$ angular\+Flux\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 83 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a736f28d690625a0f42809a45e9b99116}\label{classFoam_1_1SNNeutronics_a736f28d690625a0f42809a45e9b99116}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!prec\+\_\+@{prec\+\_\+}}
+\index{prec\+\_\+@{prec\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{prec\+\_\+}{prec\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ prec\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 84 of file S\+N\+Neutronics.\+H.
+
+
+
+Referenced by S\+N\+Neutronics\+::precursors().
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a2cb778e2ea68ca016f0215fa178155cf}\label{classFoam_1_1SNNeutronics_a2cb778e2ea68ca016f0215fa178155cf}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!prec\+Star\+\_\+@{prec\+Star\+\_\+}}
+\index{prec\+Star\+\_\+@{prec\+Star\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{prec\+Star\+\_\+}{precStar\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ prec\+Star\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 85 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a0e57f3e6c5cec9d5d7824e9e742cf102}\label{classFoam_1_1SNNeutronics_a0e57f3e6c5cec9d5d7824e9e742cf102}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!default\+Flux\+\_\+@{default\+Flux\+\_\+}}
+\index{default\+Flux\+\_\+@{default\+Flux\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{default\+Flux\+\_\+}{defaultFlux\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field default\+Flux\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 86 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_ad421eb70060f1b275d7e9814cc52830a}\label{classFoam_1_1SNNeutronics_ad421eb70060f1b275d7e9814cc52830a}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!default\+Prec\+\_\+@{default\+Prec\+\_\+}}
+\index{default\+Prec\+\_\+@{default\+Prec\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{default\+Prec\+\_\+}{defaultPrec\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field default\+Prec\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 87 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a43492f1b1f254ce7ca6ec7d88e792c60}\label{classFoam_1_1SNNeutronics_a43492f1b1f254ce7ca6ec7d88e792c60}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!flux\+\_\+@{flux\+\_\+}}
+\index{flux\+\_\+@{flux\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{flux\+\_\+}{flux\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ flux\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 90 of file S\+N\+Neutronics.\+H.
+
+
+
+Referenced by S\+N\+Neutronics\+::fluxes().
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a05a39571155b6ded783dee3b1e8d5faf}\label{classFoam_1_1SNNeutronics_a05a39571155b6ded783dee3b1e8d5faf}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!one\+Group\+Flux\+\_\+@{one\+Group\+Flux\+\_\+}}
+\index{one\+Group\+Flux\+\_\+@{one\+Group\+Flux\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{one\+Group\+Flux\+\_\+}{oneGroupFlux\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field one\+Group\+Flux\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 91 of file S\+N\+Neutronics.\+H.
+
+
+
+Referenced by S\+N\+Neutronics\+::one\+Group\+Flux().
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_ae8c2f3662525402bc2e5301933aad9d2}\label{classFoam_1_1SNNeutronics_ae8c2f3662525402bc2e5301933aad9d2}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!neutro\+Source\+\_\+@{neutro\+Source\+\_\+}}
+\index{neutro\+Source\+\_\+@{neutro\+Source\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{neutro\+Source\+\_\+}{neutroSource\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field neutro\+Source\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 92 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a4f32d94eef99bf362b74d4f4e0cf29e1}\label{classFoam_1_1SNNeutronics_a4f32d94eef99bf362b74d4f4e0cf29e1}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!delayed\+Neutro\+Source\+\_\+@{delayed\+Neutro\+Source\+\_\+}}
+\index{delayed\+Neutro\+Source\+\_\+@{delayed\+Neutro\+Source\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{delayed\+Neutro\+Source\+\_\+}{delayedNeutroSource\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field delayed\+Neutro\+Source\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 93 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a871434fb035f6837b1b236a1ec520abc}\label{classFoam_1_1SNNeutronics_a871434fb035f6837b1b236a1ec520abc}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!T\+Fuel\+Orig\+\_\+@{T\+Fuel\+Orig\+\_\+}}
+\index{T\+Fuel\+Orig\+\_\+@{T\+Fuel\+Orig\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{T\+Fuel\+Orig\+\_\+}{TFuelOrig\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ T\+Fuel\+Orig\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 96 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a9abfa8412a2bd9f5eab3df63b82e6272}\label{classFoam_1_1SNNeutronics_a9abfa8412a2bd9f5eab3df63b82e6272}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!T\+Clad\+Orig\+\_\+@{T\+Clad\+Orig\+\_\+}}
+\index{T\+Clad\+Orig\+\_\+@{T\+Clad\+Orig\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{T\+Clad\+Orig\+\_\+}{TCladOrig\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ T\+Clad\+Orig\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 97 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a5997986d4c1a95752dfbf17e4d533cbc}\label{classFoam_1_1SNNeutronics_a5997986d4c1a95752dfbf17e4d533cbc}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!T\+Cool\+Orig\+\_\+@{T\+Cool\+Orig\+\_\+}}
+\index{T\+Cool\+Orig\+\_\+@{T\+Cool\+Orig\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{T\+Cool\+Orig\+\_\+}{TCoolOrig\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ T\+Cool\+Orig\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 98 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a1da8adeb20ff6742068c9befe8b16f25}\label{classFoam_1_1SNNeutronics_a1da8adeb20ff6742068c9befe8b16f25}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!rho\+Cool\+Orig\+\_\+@{rho\+Cool\+Orig\+\_\+}}
+\index{rho\+Cool\+Orig\+\_\+@{rho\+Cool\+Orig\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{rho\+Cool\+Orig\+\_\+}{rhoCoolOrig\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ rho\+Cool\+Orig\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 99 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a92f1255350afa632167f9df0b8cd0d54}\label{classFoam_1_1SNNeutronics_a92f1255350afa632167f9df0b8cd0d54}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!U\+Orig\+\_\+@{U\+Orig\+\_\+}}
+\index{U\+Orig\+\_\+@{U\+Orig\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{U\+Orig\+\_\+}{UOrig\_}}
+{\footnotesize\ttfamily const vol\+Vector\+Field$\ast$ U\+Orig\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 100 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a274c5fa5568001183ce2f40523b458f3}\label{classFoam_1_1SNNeutronics_a274c5fa5568001183ce2f40523b458f3}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!alpha\+Orig\+\_\+@{alpha\+Orig\+\_\+}}
+\index{alpha\+Orig\+\_\+@{alpha\+Orig\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{alpha\+Orig\+\_\+}{alphaOrig\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ alpha\+Orig\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 101 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a0b2a30a35ad577545e222153fd84d363}\label{classFoam_1_1SNNeutronics_a0b2a30a35ad577545e222153fd84d363}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!alphat\+Orig\+\_\+@{alphat\+Orig\+\_\+}}
+\index{alphat\+Orig\+\_\+@{alphat\+Orig\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{alphat\+Orig\+\_\+}{alphatOrig\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ alphat\+Orig\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 102 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a7fa28815680aa43e2c72f58a8eee9e43}\label{classFoam_1_1SNNeutronics_a7fa28815680aa43e2c72f58a8eee9e43}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!mu\+Orig\+\_\+@{mu\+Orig\+\_\+}}
+\index{mu\+Orig\+\_\+@{mu\+Orig\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{mu\+Orig\+\_\+}{muOrig\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ mu\+Orig\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 103 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a40daf0cf699f5ce2bea8554707d8e11d}\label{classFoam_1_1SNNeutronics_a40daf0cf699f5ce2bea8554707d8e11d}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!T\+Fuel\+\_\+@{T\+Fuel\+\_\+}}
+\index{T\+Fuel\+\_\+@{T\+Fuel\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{T\+Fuel\+\_\+}{TFuel\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field T\+Fuel\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 106 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a20ddcf74e7279560e0c7ce78d0319b93}\label{classFoam_1_1SNNeutronics_a20ddcf74e7279560e0c7ce78d0319b93}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!T\+Clad\+\_\+@{T\+Clad\+\_\+}}
+\index{T\+Clad\+\_\+@{T\+Clad\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{T\+Clad\+\_\+}{TClad\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field T\+Clad\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 107 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_af81c8770211826f576f6d7290a9f8103}\label{classFoam_1_1SNNeutronics_af81c8770211826f576f6d7290a9f8103}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!T\+Cool\+\_\+@{T\+Cool\+\_\+}}
+\index{T\+Cool\+\_\+@{T\+Cool\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{T\+Cool\+\_\+}{TCool\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field T\+Cool\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 108 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_af82ea76dc249b3661c882a65cba78a2c}\label{classFoam_1_1SNNeutronics_af82ea76dc249b3661c882a65cba78a2c}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!rho\+Cool\+\_\+@{rho\+Cool\+\_\+}}
+\index{rho\+Cool\+\_\+@{rho\+Cool\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{rho\+Cool\+\_\+}{rhoCool\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field rho\+Cool\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 109 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a4faa30c4f8be70fcd024fb3896691d6b}\label{classFoam_1_1SNNeutronics_a4faa30c4f8be70fcd024fb3896691d6b}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!keff0\+\_\+@{keff0\+\_\+}}
+\index{keff0\+\_\+@{keff0\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{keff0\+\_\+}{keff0\_}}
+{\footnotesize\ttfamily scalar keff0\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 112 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a28e451154a3e5ad29ce75a4a3ea272a9}\label{classFoam_1_1SNNeutronics_a28e451154a3e5ad29ce75a4a3ea272a9}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!keff1\+\_\+@{keff1\+\_\+}}
+\index{keff1\+\_\+@{keff1\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{keff1\+\_\+}{keff1\_}}
+{\footnotesize\ttfamily scalar keff1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 113 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a75e49bf270780f6ae476375b810c9d9c}\label{classFoam_1_1SNNeutronics_a75e49bf270780f6ae476375b810c9d9c}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!keff2\+\_\+@{keff2\+\_\+}}
+\index{keff2\+\_\+@{keff2\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{keff2\+\_\+}{keff2\_}}
+{\footnotesize\ttfamily scalar keff2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 114 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a3c0788f46df8163cdddb30b4369a1626}\label{classFoam_1_1SNNeutronics_a3c0788f46df8163cdddb30b4369a1626}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!aitken\+Iter\+Counter\+\_\+@{aitken\+Iter\+Counter\+\_\+}}
+\index{aitken\+Iter\+Counter\+\_\+@{aitken\+Iter\+Counter\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{aitken\+Iter\+Counter\+\_\+}{aitkenIterCounter\_}}
+{\footnotesize\ttfamily int aitken\+Iter\+Counter\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 115 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a03f16e8616c83b72fdb7b6f06013e919}\label{classFoam_1_1SNNeutronics_a03f16e8616c83b72fdb7b6f06013e919}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!aitken\+Iter\+No\+\_\+@{aitken\+Iter\+No\+\_\+}}
+\index{aitken\+Iter\+No\+\_\+@{aitken\+Iter\+No\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{aitken\+Iter\+No\+\_\+}{aitkenIterNo\_}}
+{\footnotesize\ttfamily int aitken\+Iter\+No\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 116 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a3f2bd9de379a4b68b01ed2da13922d86}\label{classFoam_1_1SNNeutronics_a3f2bd9de379a4b68b01ed2da13922d86}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!U\+Ptr\+\_\+@{U\+Ptr\+\_\+}}
+\index{U\+Ptr\+\_\+@{U\+Ptr\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{U\+Ptr\+\_\+}{UPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Vector\+Field$>$ U\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 121 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_abc7c5bd59d290d277926652df30d5325}\label{classFoam_1_1SNNeutronics_abc7c5bd59d290d277926652df30d5325}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!alpha\+Ptr\+\_\+@{alpha\+Ptr\+\_\+}}
+\index{alpha\+Ptr\+\_\+@{alpha\+Ptr\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{alpha\+Ptr\+\_\+}{alphaPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ alpha\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 122 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_ab6fbf6c23c7b0560bebc841cd9a548cf}\label{classFoam_1_1SNNeutronics_ab6fbf6c23c7b0560bebc841cd9a548cf}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!alphat\+Ptr\+\_\+@{alphat\+Ptr\+\_\+}}
+\index{alphat\+Ptr\+\_\+@{alphat\+Ptr\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{alphat\+Ptr\+\_\+}{alphatPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ alphat\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 123 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a02a6957e64f8ee5582ee4bcd4104b608}\label{classFoam_1_1SNNeutronics_a02a6957e64f8ee5582ee4bcd4104b608}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!mu\+Ptr\+\_\+@{mu\+Ptr\+\_\+}}
+\index{mu\+Ptr\+\_\+@{mu\+Ptr\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{mu\+Ptr\+\_\+}{muPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ mu\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 124 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_a497673767745b44b26977e35496c55df}\label{classFoam_1_1SNNeutronics_a497673767745b44b26977e35496c55df}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!phi\+Ptr\+\_\+@{phi\+Ptr\+\_\+}}
+\index{phi\+Ptr\+\_\+@{phi\+Ptr\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{phi\+Ptr\+\_\+}{phiPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$surface\+Scalar\+Field$>$ phi\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 127 of file S\+N\+Neutronics.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1SNNeutronics_aa68fdcce7eec7392d06d8be2a783ac8c}\label{classFoam_1_1SNNeutronics_aa68fdcce7eec7392d06d8be2a783ac8c}} 
+\index{Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}!diff\+Coeff\+Prec\+Ptr\+\_\+@{diff\+Coeff\+Prec\+Ptr\+\_\+}}
+\index{diff\+Coeff\+Prec\+Ptr\+\_\+@{diff\+Coeff\+Prec\+Ptr\+\_\+}!Foam\+::\+S\+N\+Neutronics@{Foam\+::\+S\+N\+Neutronics}}
+\subsubsection{\texorpdfstring{diff\+Coeff\+Prec\+Ptr\+\_\+}{diffCoeffPrecPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ diff\+Coeff\+Prec\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 128 of file S\+N\+Neutronics.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/\hyperlink{SNNeutronics_8H}{S\+N\+Neutronics.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/\hyperlink{SNNeutronics_8C}{S\+N\+Neutronics.\+C}\end{DoxyCompactItemize}

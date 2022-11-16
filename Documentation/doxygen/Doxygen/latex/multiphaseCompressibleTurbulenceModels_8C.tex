@@ -1,0 +1,139 @@
+\hypertarget{multiphaseCompressibleTurbulenceModels_8C}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/turbulence\+Models/multiphase\+Compressible\+Turbulence\+Models.C File Reference}
+\label{multiphaseCompressibleTurbulenceModels_8C}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/turbulence\+Models/multiphase\+Compressible\+Turbulence\+Models.\+C@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/turbulence\+Models/multiphase\+Compressible\+Turbulence\+Models.\+C}}
+Include dependency graph for multiphase\+Compressible\+Turbulence\+Models.\+C\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{multiphaseCompressibleTurbulenceModels_8C__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{multiphaseCompressibleTurbulenceModels_8C_a1f03f77aa1e0f8611566206c99dda647}{make\+Laminar\+Model}(Type)
+\item 
+\#define \hyperlink{multiphaseCompressibleTurbulenceModels_8C_a774964b9c69e7eb4c950bf8899fabe10}{make\+R\+A\+S\+Model}(Type)
+\item 
+\#define \hyperlink{multiphaseCompressibleTurbulenceModels_8C_af0d95159f8968bae1e71a9f29ab8359f}{make\+L\+E\+S\+Model}(Type)
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_af870ea713204ad3d78e94706815d4c44}{make\+Turbulence\+Model\+Types} (vol\+Scalar\+Field, vol\+Scalar\+Field, compressible\+Turbulence\+Model, Phase\+Compressible\+Turbulence\+Model, Thermal\+Diffusivity, rho\+Thermo)
+\item 
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_a6dacff1f606adb2cd5c61df568d17b44}{make\+Base\+Turbulence\+Model} (vol\+Scalar\+Field, vol\+Scalar\+Field, compressible\+Turbulence\+Model, Phase\+Compressible\+Turbulence\+Model, Thermal\+Diffusivity, rho\+Thermo)
+\item 
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_a7a8dc5e6787918955678dbcffc14e9cd}{make\+Templated\+Laminar\+Model} (rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model, laminar, Stokes)
+\item 
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_a31356fdc4a477f59da9ad0a6e70e481e}{make\+Templated\+Turbulence\+Model} (rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model, R\+AS, k\+Epsilon)
+\item 
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_a08c1ddf7e60c4f12ea6b772221f4afe5}{make\+Templated\+Turbulence\+Model} (rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model, R\+AS, porous\+K\+Epsilon)
+\item 
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_a029de6c224e1ee2398732cef70db57d8}{make\+Templated\+Turbulence\+Model} (rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model, R\+AS, porous\+K\+Epsilon2\+Phase\+Corrected)
+\item 
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_ad878dbb9112236936353b91c13e4353b}{make\+Templated\+Turbulence\+Model} (rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model, R\+AS, Lahey\+K\+Epsilon)
+\item 
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_a18939dd2bd1b1958d1c1412c286688a5}{make\+Templated\+Turbulence\+Model} (rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model, R\+AS, mixture\+K\+Epsilon)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+{\bfseries Original source file} \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/turbulenceModels/multiphaseCompressibleTurbulenceModels.C}{\tt multiphase\+Compressible\+Turbulence\+Models.\+C} 
+
+\subsection{Macro Definition Documentation}
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_a1f03f77aa1e0f8611566206c99dda647}\label{multiphaseCompressibleTurbulenceModels_8C_a1f03f77aa1e0f8611566206c99dda647}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+Laminar\+Model@{make\+Laminar\+Model}}
+\index{make\+Laminar\+Model@{make\+Laminar\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+Laminar\+Model}{makeLaminarModel}}
+{\footnotesize\ttfamily \#define make\+Laminar\+Model(\begin{DoxyParamCaption}\item[{}]{Type }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_a7a8dc5e6787918955678dbcffc14e9cd}{makeTemplatedLaminarModel}                                                  \(\backslash\)
+    (rhoThermoPhaseCompressibleTurbulenceModel, laminar, Type)
+\end{DoxyCode}
+
+
+Definition at line 50 of file multiphase\+Compressible\+Turbulence\+Models.\+C.
+
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_a774964b9c69e7eb4c950bf8899fabe10}\label{multiphaseCompressibleTurbulenceModels_8C_a774964b9c69e7eb4c950bf8899fabe10}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+R\+A\+S\+Model@{make\+R\+A\+S\+Model}}
+\index{make\+R\+A\+S\+Model@{make\+R\+A\+S\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+R\+A\+S\+Model}{makeRASModel}}
+{\footnotesize\ttfamily \#define make\+R\+A\+S\+Model(\begin{DoxyParamCaption}\item[{}]{Type }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_a31356fdc4a477f59da9ad0a6e70e481e}{makeTemplatedTurbulenceModel}                                               \(\backslash\)
+    (rhoThermoPhaseCompressibleTurbulenceModel, RAS, Type)
+\end{DoxyCode}
+
+
+Definition at line 54 of file multiphase\+Compressible\+Turbulence\+Models.\+C.
+
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_af0d95159f8968bae1e71a9f29ab8359f}\label{multiphaseCompressibleTurbulenceModels_8C_af0d95159f8968bae1e71a9f29ab8359f}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+L\+E\+S\+Model@{make\+L\+E\+S\+Model}}
+\index{make\+L\+E\+S\+Model@{make\+L\+E\+S\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+L\+E\+S\+Model}{makeLESModel}}
+{\footnotesize\ttfamily \#define make\+L\+E\+S\+Model(\begin{DoxyParamCaption}\item[{}]{Type }\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}
+\hyperlink{multiphaseCompressibleTurbulenceModels_8C_a31356fdc4a477f59da9ad0a6e70e481e}{makeTemplatedTurbulenceModel}                                               \(\backslash\)
+    (rhoThermoPhaseCompressibleTurbulenceModel, LES, Type)
+\end{DoxyCode}
+
+
+Definition at line 58 of file multiphase\+Compressible\+Turbulence\+Models.\+C.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_af870ea713204ad3d78e94706815d4c44}\label{multiphaseCompressibleTurbulenceModels_8C_af870ea713204ad3d78e94706815d4c44}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+Turbulence\+Model\+Types@{make\+Turbulence\+Model\+Types}}
+\index{make\+Turbulence\+Model\+Types@{make\+Turbulence\+Model\+Types}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+Turbulence\+Model\+Types()}{makeTurbulenceModelTypes()}}
+{\footnotesize\ttfamily make\+Turbulence\+Model\+Types (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field}]{,  }\item[{vol\+Scalar\+Field}]{,  }\item[{compressible\+Turbulence\+Model}]{,  }\item[{Phase\+Compressible\+Turbulence\+Model}]{,  }\item[{Thermal\+Diffusivity}]{,  }\item[{rho\+Thermo}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_a6dacff1f606adb2cd5c61df568d17b44}\label{multiphaseCompressibleTurbulenceModels_8C_a6dacff1f606adb2cd5c61df568d17b44}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+Base\+Turbulence\+Model@{make\+Base\+Turbulence\+Model}}
+\index{make\+Base\+Turbulence\+Model@{make\+Base\+Turbulence\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+Base\+Turbulence\+Model()}{makeBaseTurbulenceModel()}}
+{\footnotesize\ttfamily make\+Base\+Turbulence\+Model (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field}]{,  }\item[{vol\+Scalar\+Field}]{,  }\item[{compressible\+Turbulence\+Model}]{,  }\item[{Phase\+Compressible\+Turbulence\+Model}]{,  }\item[{Thermal\+Diffusivity}]{,  }\item[{rho\+Thermo}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_a7a8dc5e6787918955678dbcffc14e9cd}\label{multiphaseCompressibleTurbulenceModels_8C_a7a8dc5e6787918955678dbcffc14e9cd}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+Templated\+Laminar\+Model@{make\+Templated\+Laminar\+Model}}
+\index{make\+Templated\+Laminar\+Model@{make\+Templated\+Laminar\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+Templated\+Laminar\+Model()}{makeTemplatedLaminarModel()}}
+{\footnotesize\ttfamily make\+Templated\+Laminar\+Model (\begin{DoxyParamCaption}\item[{rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model}]{,  }\item[{laminar}]{,  }\item[{Stokes}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_a31356fdc4a477f59da9ad0a6e70e481e}\label{multiphaseCompressibleTurbulenceModels_8C_a31356fdc4a477f59da9ad0a6e70e481e}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}}
+\index{make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+Templated\+Turbulence\+Model()}{makeTemplatedTurbulenceModel()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily make\+Templated\+Turbulence\+Model (\begin{DoxyParamCaption}\item[{rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model}]{,  }\item[{R\+AS}]{,  }\item[{k\+Epsilon}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_a08c1ddf7e60c4f12ea6b772221f4afe5}\label{multiphaseCompressibleTurbulenceModels_8C_a08c1ddf7e60c4f12ea6b772221f4afe5}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}}
+\index{make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+Templated\+Turbulence\+Model()}{makeTemplatedTurbulenceModel()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily make\+Templated\+Turbulence\+Model (\begin{DoxyParamCaption}\item[{rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model}]{,  }\item[{R\+AS}]{,  }\item[{porous\+K\+Epsilon}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_a029de6c224e1ee2398732cef70db57d8}\label{multiphaseCompressibleTurbulenceModels_8C_a029de6c224e1ee2398732cef70db57d8}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}}
+\index{make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+Templated\+Turbulence\+Model()}{makeTemplatedTurbulenceModel()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily make\+Templated\+Turbulence\+Model (\begin{DoxyParamCaption}\item[{rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model}]{,  }\item[{R\+AS}]{,  }\item[{porous\+K\+Epsilon2\+Phase\+Corrected}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_ad878dbb9112236936353b91c13e4353b}\label{multiphaseCompressibleTurbulenceModels_8C_ad878dbb9112236936353b91c13e4353b}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}}
+\index{make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+Templated\+Turbulence\+Model()}{makeTemplatedTurbulenceModel()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily make\+Templated\+Turbulence\+Model (\begin{DoxyParamCaption}\item[{rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model}]{,  }\item[{R\+AS}]{,  }\item[{Lahey\+K\+Epsilon}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{multiphaseCompressibleTurbulenceModels_8C_a18939dd2bd1b1958d1c1412c286688a5}\label{multiphaseCompressibleTurbulenceModels_8C_a18939dd2bd1b1958d1c1412c286688a5}} 
+\index{multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}!make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}}
+\index{make\+Templated\+Turbulence\+Model@{make\+Templated\+Turbulence\+Model}!multiphase\+Compressible\+Turbulence\+Models.\+C@{multiphase\+Compressible\+Turbulence\+Models.\+C}}
+\subsubsection{\texorpdfstring{make\+Templated\+Turbulence\+Model()}{makeTemplatedTurbulenceModel()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily make\+Templated\+Turbulence\+Model (\begin{DoxyParamCaption}\item[{rho\+Thermo\+Phase\+Compressible\+Turbulence\+Model}]{,  }\item[{R\+AS}]{,  }\item[{mixture\+K\+Epsilon}]{ }\end{DoxyParamCaption})}
+

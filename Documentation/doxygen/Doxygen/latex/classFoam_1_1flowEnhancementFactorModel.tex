@@ -1,0 +1,200 @@
+\hypertarget{classFoam_1_1flowEnhancementFactorModel}{}\section{flow\+Enhancement\+Factor\+Model Class Reference}
+\label{classFoam_1_1flowEnhancementFactorModel}\index{flow\+Enhancement\+Factor\+Model@{flow\+Enhancement\+Factor\+Model}}
+
+
+Author Stefan Radman (\href{mailto:sradman@protonmail.com}{\tt sradman@protonmail.\+com}; \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch})  
+
+
+
+
+Inheritance diagram for flow\+Enhancement\+Factor\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=310pt]{classFoam_1_1flowEnhancementFactorModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for flow\+Enhancement\+Factor\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{classFoam_1_1flowEnhancementFactorModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1flowEnhancementFactorModel_aba8d99d729d3f57440fb09db991e3ce2}{Type\+Name} (\char`\"{}flow\+Enhancement\+Factor\+Model\char`\"{})
+\item 
+\hyperlink{classFoam_1_1flowEnhancementFactorModel_a9adbb10ab9f2cfa8288518465b320da7}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1flowEnhancementFactorModel}{flow\+Enhancement\+Factor\+Model}, flow\+Enhancement\+Factor\+Models,(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg),(pair, dict, obj\+Reg))
+\item 
+\hyperlink{classFoam_1_1flowEnhancementFactorModel_ad868ddf0c113fdfdbb8bbef31ad71e4d}{flow\+Enhancement\+Factor\+Model} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1flowEnhancementFactorModel_a410b02275028d3c48e98b78a0a2860df}{$\sim$flow\+Enhancement\+Factor\+Model} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1flowEnhancementFactorModel_a139457cae4c5e04785e143fd8b9ed092}{value} (const label \&celli) const =0
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1flowEnhancementFactorModel}{flow\+Enhancement\+Factor\+Model} $>$ \hyperlink{classFoam_1_1flowEnhancementFactorModel_aaefd41c8414c438fc5006a8fa0fdb238}{New} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \& \hyperlink{classFoam_1_1flowEnhancementFactorModel_a587e19a1b4f4b498d2604d20c093a73b}{pair\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1flowEnhancementFactorModel_aa04cd6ffbeccc356b182712760353140}{max\+Value\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Author Stefan Radman (\href{mailto:sradman@protonmail.com}{\tt sradman@protonmail.\+com}; \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch}) 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/flowEnhancementFactorModels/flowEnhancementFactorModel.H}{\tt flow\+Enhancement\+Factor\+Model.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/flowEnhancementFactorModels/flowEnhancementFactorModel.C}{\tt flow\+Enhancement\+Factor\+Model.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/flowEnhancementFactorModels/newFlowEnhancementFactorModel.C}{\tt new\+Flow\+Enhancement\+Factor\+Model.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 60 of file flow\+Enhancement\+Factor\+Model.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1flowEnhancementFactorModel_ad868ddf0c113fdfdbb8bbef31ad71e4d}\label{classFoam_1_1flowEnhancementFactorModel_ad868ddf0c113fdfdbb8bbef31ad71e4d}} 
+\index{Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}!flow\+Enhancement\+Factor\+Model@{flow\+Enhancement\+Factor\+Model}}
+\index{flow\+Enhancement\+Factor\+Model@{flow\+Enhancement\+Factor\+Model}!Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}}
+\subsubsection{\texorpdfstring{flow\+Enhancement\+Factor\+Model()}{flowEnhancementFactorModel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1flowEnhancementFactorModel}{flow\+Enhancement\+Factor\+Model} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 38 of file flow\+Enhancement\+Factor\+Model.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1flowEnhancementFactorModel_a410b02275028d3c48e98b78a0a2860df}\label{classFoam_1_1flowEnhancementFactorModel_a410b02275028d3c48e98b78a0a2860df}} 
+\index{Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}!````~flow\+Enhancement\+Factor\+Model@{$\sim$flow\+Enhancement\+Factor\+Model}}
+\index{````~flow\+Enhancement\+Factor\+Model@{$\sim$flow\+Enhancement\+Factor\+Model}!Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}}
+\subsubsection{\texorpdfstring{$\sim$flow\+Enhancement\+Factor\+Model()}{~flowEnhancementFactorModel()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1flowEnhancementFactorModel}{flow\+Enhancement\+Factor\+Model} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 101 of file flow\+Enhancement\+Factor\+Model.\+H.
+
+
+
+References flow\+Enhancement\+Factor\+Model\+::\+New(), and flow\+Enhancement\+Factor\+Model\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=311pt]{classFoam_1_1flowEnhancementFactorModel_a410b02275028d3c48e98b78a0a2860df_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1flowEnhancementFactorModel_aba8d99d729d3f57440fb09db991e3ce2}\label{classFoam_1_1flowEnhancementFactorModel_aba8d99d729d3f57440fb09db991e3ce2}} 
+\index{Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}flow\+Enhancement\+Factor\+Model\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1flowEnhancementFactorModel_a9adbb10ab9f2cfa8288518465b320da7}\label{classFoam_1_1flowEnhancementFactorModel_a9adbb10ab9f2cfa8288518465b320da7}} 
+\index{Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1flowEnhancementFactorModel}{flow\+Enhancement\+Factor\+Model}}]{,  }\item[{flow\+Enhancement\+Factor\+Models}]{,  }\item[{(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)}]{,  }\item[{(pair, dict, obj\+Reg)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1flowEnhancementFactorModel_aaefd41c8414c438fc5006a8fa0fdb238}\label{classFoam_1_1flowEnhancementFactorModel_aaefd41c8414c438fc5006a8fa0fdb238}} 
+\index{Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}!New@{New}}
+\index{New@{New}!Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1flowEnhancementFactorModel}{Foam\+::flow\+Enhancement\+Factor\+Model} $>$ New (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 26 of file new\+Flow\+Enhancement\+Factor\+Model.\+C.
+
+
+
+References F\+S\+Pair\+::fluid\+Name().
+
+
+
+Referenced by flow\+Enhancement\+Factor\+Model\+::$\sim$flow\+Enhancement\+Factor\+Model().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{classFoam_1_1flowEnhancementFactorModel_aaefd41c8414c438fc5006a8fa0fdb238_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{classFoam_1_1flowEnhancementFactorModel_aaefd41c8414c438fc5006a8fa0fdb238_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1flowEnhancementFactorModel_a139457cae4c5e04785e143fd8b9ed092}\label{classFoam_1_1flowEnhancementFactorModel_a139457cae4c5e04785e143fd8b9ed092}} 
+\index{Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}!value@{value}}
+\index{value@{value}!Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily virtual scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1flowEnhancementFactorModels_1_1RezkallahSims_a2c1e1872d359910de4c35cf8f003871c}{Rezkallah\+Sims}, \hyperlink{classFoam_1_1flowEnhancementFactorModels_1_1COBRA__TF_a2c1e1872d359910de4c35cf8f003871c}{C\+O\+B\+R\+A\+\_\+\+TF}, and \hyperlink{classFoam_1_1flowEnhancementFactorModels_1_1Chen_a2c1e1872d359910de4c35cf8f003871c}{Chen}.
+
+
+
+Referenced by flow\+Enhancement\+Factor\+Model\+::$\sim$flow\+Enhancement\+Factor\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=311pt]{classFoam_1_1flowEnhancementFactorModel_a139457cae4c5e04785e143fd8b9ed092_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1flowEnhancementFactorModel_a587e19a1b4f4b498d2604d20c093a73b}\label{classFoam_1_1flowEnhancementFactorModel_a587e19a1b4f4b498d2604d20c093a73b}} 
+\index{Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}!pair\+\_\+@{pair\+\_\+}}
+\index{pair\+\_\+@{pair\+\_\+}!Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}}
+\subsubsection{\texorpdfstring{pair\+\_\+}{pair\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair}\& pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 67 of file flow\+Enhancement\+Factor\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1flowEnhancementFactorModel_aa04cd6ffbeccc356b182712760353140}\label{classFoam_1_1flowEnhancementFactorModel_aa04cd6ffbeccc356b182712760353140}} 
+\index{Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}!max\+Value\+\_\+@{max\+Value\+\_\+}}
+\index{max\+Value\+\_\+@{max\+Value\+\_\+}!Foam\+::flow\+Enhancement\+Factor\+Model@{Foam\+::flow\+Enhancement\+Factor\+Model}}
+\subsubsection{\texorpdfstring{max\+Value\+\_\+}{maxValue\_}}
+{\footnotesize\ttfamily const scalar max\+Value\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 70 of file flow\+Enhancement\+Factor\+Model.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/flow\+Enhancement\+Factor\+Models/\hyperlink{flowEnhancementFactorModel_8H}{flow\+Enhancement\+Factor\+Model.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/flow\+Enhancement\+Factor\+Models/\hyperlink{flowEnhancementFactorModel_8C}{flow\+Enhancement\+Factor\+Model.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/flow\+Enhancement\+Factor\+Models/\hyperlink{newFlowEnhancementFactorModel_8C}{new\+Flow\+Enhancement\+Factor\+Model.\+C}\end{DoxyCompactItemize}

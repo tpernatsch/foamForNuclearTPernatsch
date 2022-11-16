@@ -1,0 +1,405 @@
+\hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling}{}\section{multi\+Regime\+Boiling Class Reference}
+\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling}\index{multi\+Regime\+Boiling@{multi\+Regime\+Boiling}}
+
+
+Inheritance diagram for multi\+Regime\+Boiling\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for multi\+Regime\+Boiling\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=280pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a5b5e231f896bb6727d2cf80e0584c79f}{Type\+Name} (\char`\"{}multi\+Regime\+Boiling\char`\"{})
+\item 
+\hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aeb615903bb3ddaa54f52ddf17d80d603}{multi\+Regime\+Boiling} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a7b2353facbe538b2df34bb7a76c61488}{$\sim$multi\+Regime\+Boiling} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a2c1e1872d359910de4c35cf8f003871c}{value} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a9e20848b5c04c22bd2a959331fba04c5}{set\+DmdtW} (const label \&celli, const scalar \&q\+N\+Bi, const scalar \&q\+F\+Ci) const
+\item 
+scalar \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a8da0c59bb2babb865070a9afac8e5309}{q\+NB} (const label \&celli, const scalar \&Twi1) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_ae9fe0c2c0680b9be8e8b857242026717}{Tw\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_af142f541f24bec13980e7975746111fd}{Tf\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} $\ast$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_adca848d730733f4692fbd95dfea33c54}{F\+F\+Pair\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModel}{F\+S\+Heat\+Transfer\+Coefficient\+Model} $>$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_adf8ce3cd4d7519ffb8797dd90637f5ac}{htc\+F\+C\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModel}{F\+S\+Heat\+Transfer\+Coefficient\+Model} $>$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aa72a4e83a5f780166b4b0302bc8d3f65}{htc\+P\+B\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModel}{F\+S\+Heat\+Transfer\+Coefficient\+Model} $>$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a2d09dd01d38897d05040952ea5d2959e}{htc\+Cnd\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1flowEnhancementFactorModel}{flow\+Enhancement\+Factor\+Model} $>$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aa4c7b43d4957bed6a0bcdfb511d05789}{F\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1suppressionFactorModel}{suppression\+Factor\+Model} $>$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a50ec1152102f6d0ac7630cde373de172}{S\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1subCooledBoilingFractionModel}{sub\+Cooled\+Boiling\+Fraction\+Model} $>$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_ac9f716850c8561763e061760b8bafdac}{S\+C\+B\+F\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1TONBModel}{T\+O\+N\+B\+Model} $>$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_adae4cc1441e333a7d78bafb69db13d92}{T\+O\+N\+B\+Ptr\+\_\+}
+\item 
+vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_ac0faf076a0c692fe45fb2b3fb7d62214}{dmdt\+W\+Ptr\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a1bfcb112440d1e03115c95d8f7fa6b1b}{exp\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_acee358bcf72043d5bf26d252ab1cc571}{one\+By\+Exp\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a4df8fbbb186fb7c5bba1143c3416bb74}{q\+Mode\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a47ed18388c29c90b26f979fb75e74055}{htc2p\+F\+Ci\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aafb292db1c539da049319617d7533314}{T\+O\+N\+Bi\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a8f44c8131b7ae470b9082bb7c8d2a852}{htc\+N\+Bi\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 60 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aeb615903bb3ddaa54f52ddf17d80d603}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aeb615903bb3ddaa54f52ddf17d80d603}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!multi\+Regime\+Boiling@{multi\+Regime\+Boiling}}
+\index{multi\+Regime\+Boiling@{multi\+Regime\+Boiling}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{multi\+Regime\+Boiling()}{multiRegimeBoiling()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling}{multi\+Regime\+Boiling} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 45 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+C.
+
+
+
+References F\+S\+Pair\+::mesh(), F\+S\+Heat\+Transfer\+Coefficient\+Model\+::\+New(), sub\+Cooled\+Boiling\+Fraction\+Model\+::\+New(), suppression\+Factor\+Model\+::\+New(), T\+O\+N\+B\+Model\+::\+New(), and multi\+Regime\+Boiling\+::set\+Dmdt\+W().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aeb615903bb3ddaa54f52ddf17d80d603_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a7b2353facbe538b2df34bb7a76c61488}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a7b2353facbe538b2df34bb7a76c61488}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!````~multi\+Regime\+Boiling@{$\sim$multi\+Regime\+Boiling}}
+\index{````~multi\+Regime\+Boiling@{$\sim$multi\+Regime\+Boiling}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{$\sim$multi\+Regime\+Boiling()}{~multiRegimeBoiling()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling}{multi\+Regime\+Boiling} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 156 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+
+
+References multi\+Regime\+Boiling\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=263pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a7b2353facbe538b2df34bb7a76c61488_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a9e20848b5c04c22bd2a959331fba04c5}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a9e20848b5c04c22bd2a959331fba04c5}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!set\+DmdtW@{set\+DmdtW}}
+\index{set\+DmdtW@{set\+DmdtW}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{set\+Dmdt\+W()}{setDmdtW()}}
+{\footnotesize\ttfamily void set\+DmdtW (\begin{DoxyParamCaption}\item[{const label \&}]{celli,  }\item[{const scalar \&}]{q\+N\+Bi,  }\item[{const scalar \&}]{q\+F\+Ci }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 148 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+C.
+
+
+
+References multi\+Regime\+Boiling\+::q\+N\+B().
+
+
+
+Referenced by multi\+Regime\+Boiling\+::multi\+Regime\+Boiling().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a9e20848b5c04c22bd2a959331fba04c5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a9e20848b5c04c22bd2a959331fba04c5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a8da0c59bb2babb865070a9afac8e5309}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a8da0c59bb2babb865070a9afac8e5309}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!q\+NB@{q\+NB}}
+\index{q\+NB@{q\+NB}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{q\+N\+B()}{qNB()}}
+{\footnotesize\ttfamily Foam\+::scalar q\+NB (\begin{DoxyParamCaption}\item[{const label \&}]{celli,  }\item[{const scalar \&}]{Twi1 }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 183 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+C.
+
+
+
+References multi\+Regime\+Boiling\+::value().
+
+
+
+Referenced by multi\+Regime\+Boiling\+::set\+Dmdt\+W().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=192pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a8da0c59bb2babb865070a9afac8e5309_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a8da0c59bb2babb865070a9afac8e5309_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a5b5e231f896bb6727d2cf80e0584c79f}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a5b5e231f896bb6727d2cf80e0584c79f}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}multi\+Regime\+Boiling\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a2c1e1872d359910de4c35cf8f003871c}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a2c1e1872d359910de4c35cf8f003871c}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!value@{value}}
+\index{value@{value}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Foam\+::scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1FSHeatTransferCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}{F\+S\+Heat\+Transfer\+Coefficient\+Model}.
+
+
+
+Definition at line 280 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+C.
+
+
+
+Referenced by multi\+Regime\+Boiling\+::q\+N\+B(), and multi\+Regime\+Boiling\+::$\sim$multi\+Regime\+Boiling().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=263pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a2c1e1872d359910de4c35cf8f003871c_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_ae9fe0c2c0680b9be8e8b857242026717}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_ae9fe0c2c0680b9be8e8b857242026717}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!Tw\+\_\+@{Tw\+\_\+}}
+\index{Tw\+\_\+@{Tw\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{Tw\+\_\+}{Tw\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Tw\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 67 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_af142f541f24bec13980e7975746111fd}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_af142f541f24bec13980e7975746111fd}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!Tf\+\_\+@{Tf\+\_\+}}
+\index{Tf\+\_\+@{Tf\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{Tf\+\_\+}{Tf\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Tf\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 70 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_adca848d730733f4692fbd95dfea33c54}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_adca848d730733f4692fbd95dfea33c54}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!F\+F\+Pair\+Ptr\+\_\+@{F\+F\+Pair\+Ptr\+\_\+}}
+\index{F\+F\+Pair\+Ptr\+\_\+@{F\+F\+Pair\+Ptr\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{F\+F\+Pair\+Ptr\+\_\+}{FFPairPtr\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair}$\ast$ F\+F\+Pair\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 73 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_adf8ce3cd4d7519ffb8797dd90637f5ac}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_adf8ce3cd4d7519ffb8797dd90637f5ac}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!htc\+F\+C\+Ptr\+\_\+@{htc\+F\+C\+Ptr\+\_\+}}
+\index{htc\+F\+C\+Ptr\+\_\+@{htc\+F\+C\+Ptr\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{htc\+F\+C\+Ptr\+\_\+}{htcFCPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1FSHeatTransferCoefficientModel}{F\+S\+Heat\+Transfer\+Coefficient\+Model}$>$ htc\+F\+C\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 76 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aa72a4e83a5f780166b4b0302bc8d3f65}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aa72a4e83a5f780166b4b0302bc8d3f65}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!htc\+P\+B\+Ptr\+\_\+@{htc\+P\+B\+Ptr\+\_\+}}
+\index{htc\+P\+B\+Ptr\+\_\+@{htc\+P\+B\+Ptr\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{htc\+P\+B\+Ptr\+\_\+}{htcPBPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1FSHeatTransferCoefficientModel}{F\+S\+Heat\+Transfer\+Coefficient\+Model}$>$ htc\+P\+B\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 79 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a2d09dd01d38897d05040952ea5d2959e}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a2d09dd01d38897d05040952ea5d2959e}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!htc\+Cnd\+Ptr\+\_\+@{htc\+Cnd\+Ptr\+\_\+}}
+\index{htc\+Cnd\+Ptr\+\_\+@{htc\+Cnd\+Ptr\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{htc\+Cnd\+Ptr\+\_\+}{htcCndPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1FSHeatTransferCoefficientModel}{F\+S\+Heat\+Transfer\+Coefficient\+Model}$>$ htc\+Cnd\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 82 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aa4c7b43d4957bed6a0bcdfb511d05789}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aa4c7b43d4957bed6a0bcdfb511d05789}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!F\+Ptr\+\_\+@{F\+Ptr\+\_\+}}
+\index{F\+Ptr\+\_\+@{F\+Ptr\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{F\+Ptr\+\_\+}{FPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1flowEnhancementFactorModel}{flow\+Enhancement\+Factor\+Model}$>$ F\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 87 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a50ec1152102f6d0ac7630cde373de172}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a50ec1152102f6d0ac7630cde373de172}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!S\+Ptr\+\_\+@{S\+Ptr\+\_\+}}
+\index{S\+Ptr\+\_\+@{S\+Ptr\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{S\+Ptr\+\_\+}{SPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1suppressionFactorModel}{suppression\+Factor\+Model}$>$ S\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 91 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_ac9f716850c8561763e061760b8bafdac}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_ac9f716850c8561763e061760b8bafdac}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!S\+C\+B\+F\+Ptr\+\_\+@{S\+C\+B\+F\+Ptr\+\_\+}}
+\index{S\+C\+B\+F\+Ptr\+\_\+@{S\+C\+B\+F\+Ptr\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{S\+C\+B\+F\+Ptr\+\_\+}{SCBFPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1subCooledBoilingFractionModel}{sub\+Cooled\+Boiling\+Fraction\+Model}$>$ S\+C\+B\+F\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 94 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_adae4cc1441e333a7d78bafb69db13d92}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_adae4cc1441e333a7d78bafb69db13d92}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!T\+O\+N\+B\+Ptr\+\_\+@{T\+O\+N\+B\+Ptr\+\_\+}}
+\index{T\+O\+N\+B\+Ptr\+\_\+@{T\+O\+N\+B\+Ptr\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{T\+O\+N\+B\+Ptr\+\_\+}{TONBPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1TONBModel}{T\+O\+N\+B\+Model}$>$ T\+O\+N\+B\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 97 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_ac0faf076a0c692fe45fb2b3fb7d62214}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_ac0faf076a0c692fe45fb2b3fb7d62214}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!dmdt\+W\+Ptr\+\_\+@{dmdt\+W\+Ptr\+\_\+}}
+\index{dmdt\+W\+Ptr\+\_\+@{dmdt\+W\+Ptr\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{dmdt\+W\+Ptr\+\_\+}{dmdtWPtr\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field$\ast$ dmdt\+W\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 104 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a1bfcb112440d1e03115c95d8f7fa6b1b}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a1bfcb112440d1e03115c95d8f7fa6b1b}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!exp\+\_\+@{exp\+\_\+}}
+\index{exp\+\_\+@{exp\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{exp\+\_\+}{exp\_}}
+{\footnotesize\ttfamily scalar exp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 107 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_acee358bcf72043d5bf26d252ab1cc571}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_acee358bcf72043d5bf26d252ab1cc571}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!one\+By\+Exp\+\_\+@{one\+By\+Exp\+\_\+}}
+\index{one\+By\+Exp\+\_\+@{one\+By\+Exp\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{one\+By\+Exp\+\_\+}{oneByExp\_}}
+{\footnotesize\ttfamily scalar one\+By\+Exp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 108 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a4df8fbbb186fb7c5bba1143c3416bb74}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a4df8fbbb186fb7c5bba1143c3416bb74}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!q\+Mode\+\_\+@{q\+Mode\+\_\+}}
+\index{q\+Mode\+\_\+@{q\+Mode\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{q\+Mode\+\_\+}{qMode\_}}
+{\footnotesize\ttfamily bool q\+Mode\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 112 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a47ed18388c29c90b26f979fb75e74055}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a47ed18388c29c90b26f979fb75e74055}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!htc2p\+F\+Ci\+\_\+@{htc2p\+F\+Ci\+\_\+}}
+\index{htc2p\+F\+Ci\+\_\+@{htc2p\+F\+Ci\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{htc2p\+F\+Ci\+\_\+}{htc2pFCi\_}}
+{\footnotesize\ttfamily scalar htc2p\+F\+Ci\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 115 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aafb292db1c539da049319617d7533314}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_aafb292db1c539da049319617d7533314}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!T\+O\+N\+Bi\+\_\+@{T\+O\+N\+Bi\+\_\+}}
+\index{T\+O\+N\+Bi\+\_\+@{T\+O\+N\+Bi\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{T\+O\+N\+Bi\+\_\+}{TONBi\_}}
+{\footnotesize\ttfamily scalar T\+O\+N\+Bi\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 116 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a8f44c8131b7ae470b9082bb7c8d2a852}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling_a8f44c8131b7ae470b9082bb7c8d2a852}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}!htc\+N\+Bi\+\_\+@{htc\+N\+Bi\+\_\+}}
+\index{htc\+N\+Bi\+\_\+@{htc\+N\+Bi\+\_\+}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::multi\+Regime\+Boiling}}
+\subsubsection{\texorpdfstring{htc\+N\+Bi\+\_\+}{htcNBi\_}}
+{\footnotesize\ttfamily scalar htc\+N\+Bi\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 117 of file multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/multi\+Regime\+Boiling/\hyperlink{multiRegimeBoilingFSHeatTransferCoefficient_8H}{multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/multi\+Regime\+Boiling/\hyperlink{multiRegimeBoilingFSHeatTransferCoefficient_8C}{multi\+Regime\+Boiling\+F\+S\+Heat\+Transfer\+Coefficient.\+C}\end{DoxyCompactItemize}

@@ -1,0 +1,1822 @@
+\hypertarget{classFoam_1_1XS}{}\section{XS Class Reference}
+\label{classFoam_1_1XS}\index{XS@{XS}}
+
+
+Class for \hyperlink{classFoam_1_1XS}{XS} parametrization and other nuclear data.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1XS_a505c0bff76aae4fd2564ecdc6d31e501}{Type\+Name} (\char`\"{}XS\char`\"{})
+\item 
+\hyperlink{classFoam_1_1XS_a83cc058a37d82e00893b94e84e7ddc75}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1XS}{XS}, dictionary,(const fv\+Mesh \&\hyperlink{createMeshesPostProcess_8H_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh}),(\hyperlink{createMeshesPostProcess_8H_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh}))
+\item 
+label \hyperlink{classFoam_1_1XS_a4ac79b302698620f0566eac803ba02d3}{energy\+Groups} () const
+\item 
+label \hyperlink{classFoam_1_1XS_aeb1380355ff0a9cc7ab7e8b55aea673b}{prec\+Groups} () const
+\item 
+label \hyperlink{classFoam_1_1XS_ab1770d82e9777642e1373706c733606d}{legendre\+Moments} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_af7bd963d20dabfe2e8c89aefe489694a}{IV} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a183948adfa6649ba954e96d3ff1fb262}{D} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a2d54b65ba527abfbece66dee3572e935}{nu\+Sigma\+Eff} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_aa3757df4a20f8fb067a76e9acb069849}{sigma\+Pow} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_aa09312f1afef2b2c3841e527175493b0}{sigma\+Disapp} () const
+\item 
+const List$<$ List$<$ Ptr\+List$<$ vol\+Scalar\+Field $>$ $>$ $>$ \hyperlink{classFoam_1_1XS_a1e4c802aa11f66b27a8294a66e83aa6e}{sigma\+From\+To} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a3a5e5dc25bec8fab86781d7eb546a92f}{chi\+Prompt} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a8453995c1f390f686ffb8d0f3fd639c6}{chi\+Delayed} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a18490f453da25d7d0de6e64d27566fe5}{Beta} () const
+\item 
+const vol\+Scalar\+Field \hyperlink{classFoam_1_1XS_aa96d596b47a6028287270cfd82bed41f}{Beta\+Tot} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a9fe5da186e1af8ac5b1a3adff2686609}{lambda} () const
+\item 
+const vol\+Scalar\+Field \hyperlink{classFoam_1_1XS_a3d14d73bfcd0223e7a1c79a407611517}{fuel\+Fraction} () const
+\item 
+const vol\+Scalar\+Field \hyperlink{classFoam_1_1XS_a52899ae5805771cf443d9a7e6ba81dc5}{secondary\+Power\+Volume\+Fraction} () const
+\item 
+const vol\+Scalar\+Field \hyperlink{classFoam_1_1XS_aa8387c8a487d8285a32ef61af121e35e}{fraction\+To\+Secondary\+Power} () const
+\item 
+const Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a37492f221b3e42a24a81a6defba591fc}{disc\+Factor} () const
+\item 
+scalar \hyperlink{classFoam_1_1XS_a35ef675ab2b1fab8ba01a2fc817df427}{Sc\+No} () const
+\item 
+\hyperlink{classFoam_1_1XS_a5dcffd55a0e6d9328ac35d8195ad4b4f}{XS} (const fv\+Mesh \&\hyperlink{createMeshesPostProcess_8H_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh})
+\item 
+virtual \hyperlink{classFoam_1_1XS_ad91a4085b47550ac2d047e2a2042abfe}{$\sim$\+XS} ()
+\item 
+void \hyperlink{classFoam_1_1XS_adea4123ce2829dffe4bcf6104a52e8a7}{correct} (const vol\+Scalar\+Field \&Tfuel, const vol\+Scalar\+Field \&Tclad, const vol\+Scalar\+Field \&rho\+Cool, const vol\+Scalar\+Field \&T\+Cool, const vol\+Vector\+Field \&Disp)
+\item 
+void \hyperlink{classFoam_1_1XS_a02fd73d861ef2e4aabb38c0c9ff82947}{init} ()
+\item 
+void \hyperlink{classFoam_1_1XS_af611217ca3fa489260d3f17c7b29f71d}{adjust\+Disc\+Factors} (const Ptr\+List$<$ vol\+Scalar\+Field $>$ \&flux\+Star)
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1XS}{XS} $>$ \hyperlink{classFoam_1_1XS_a42a2224cfae7af754fbfc469f5a861eb}{New} (const fv\+Mesh \&\hyperlink{createMeshesPostProcess_8H_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh})
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1XS_a23edeeeecebcef11921a33dd5d990570}{mesh\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1XS_a5f8311a3a430c76dd8ad948460751646}{nuclear\+Data\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1XS_a9480d6e0437856b9c8f92ff75bc2b293}{nuclear\+Data\+Radial\+Exp\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1XS_a63645f4a1c5df874d88ae896920a8971}{nuclear\+Data\+Axial\+Exp\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1XS_a48e05dd8011f2d4305e3bad0f0fe1f0a}{nuclear\+Data\+Fuel\+Temp\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1XS_a15c1504755965c53fbbe6a429abc28a8}{nuclear\+Data\+Rho\+Cool\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1XS_ae38071e829db93ddf1c47ee3d8df5c4d}{nuclear\+Data\+T\+Cool\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1XS_afa518738c6f456b2cec2aaa1ad8ddf43}{nuclear\+Data\+Clad\+Exp\+\_\+}
+\item 
+label \hyperlink{classFoam_1_1XS_a455b047ba459073908c08fd5e087dc45}{energy\+Groups\+\_\+}
+\item 
+label \hyperlink{classFoam_1_1XS_acf21654ea27e2240302c291a95738ea2}{prec\+Groups\+\_\+}
+\item 
+label \hyperlink{classFoam_1_1XS_a3ff89536c8e3ea70e46d35eccdfbfc4a}{legendre\+Moments\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a931edd829a09bca4fb290036a3971f1d}{I\+V\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a96fec6b80cb2df43e7ea27107115e475}{D\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ad9ea9685d6576d9868c809bb50a504fa}{nu\+Sigma\+Eff\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a2bd39d2565aedaffcd623ae0adbd4921}{sigma\+Pow\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a2999bf91da8ba50addd3ea539d873d50}{sigma\+Disapp\+\_\+}
+\item 
+List$<$ List$<$ Ptr\+List$<$ vol\+Scalar\+Field $>$ $>$ $>$ \hyperlink{classFoam_1_1XS_a3446c6c1eba7715a184c7198bcf6d874}{sigma\+From\+To\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_aed62b74823cc5c088012d6ae59d23c1d}{chi\+Prompt\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ab5552da3b10e90d186bf98aead06bcd4}{chi\+Delayed\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a7f7fe9267b6666b38fa5534851251f7b}{Beta\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1XS_aada58fbe9089eb21ee65471a6e424c93}{Beta\+Tot\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a5c475176377784b2717714cb353fa3c0}{lambda\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1XS_a84c8e05dd16ae93d11fcbcf94b099f3f}{fuel\+Fraction\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1XS_aa28c5a5068196250beec05e9965ff0eb}{secondary\+Power\+Volume\+Fraction\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1XS_a76bb21d48d91e623afe804402160c87a}{fraction\+To\+Secondary\+Power\+\_\+}
+\item 
+Ptr\+List$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a2195b3c3e3a904c4e04924328f611d5c}{disc\+Factor\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_a4c4a4ba88fdfadec3edee27595650f75}{Sc\+No\+\_\+}
+\item 
+Ptr\+List$<$ entry $>$ \hyperlink{classFoam_1_1XS_ae321eb5a93a161d86891d04ceba5de38}{entries\+\_\+}
+\item 
+label \hyperlink{classFoam_1_1XS_ada6a4a148b99570ba7b0d85af309e381}{zone\+Number\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_a0eed7ae40daff8d8f928a816c03238dc}{fuel\+Fraction\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_a9866d718d7ff6dd34cb5932a6d7a20f4}{secondary\+Power\+Volume\+Fraction\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_af5b51be2f020a92e77d75e81656cb523}{fraction\+To\+Secondary\+Power\+List\+\_\+}
+\item 
+Ptr\+List$<$ bool $>$ \hyperlink{classFoam_1_1XS_aa1a72609f886403c648b883afd2324d8}{df\+Adjust\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ac6878d1b2f43142f73523fef972e86a5}{disc\+Factor\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ac55209828437fab67c22579de8659507}{integral\+Flux\+List\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1XS_ad36ef1463ce7c1bf8b5b083ad229af93}{fast\+Neutrons\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1XS_a995f00ddfa8d7afec0beb58f40044b8e}{adjust\+Disc\+Factors\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1XS_af0d46dbd8f4bf0d838e61b1a847b542a}{use\+Given\+Disc\+Factors\+\_\+}
+\item 
+List$<$ int $>$ \hyperlink{classFoam_1_1XS_af96c29e836fe8fbd52a58c51babc1e49}{groups\+Wo\+D\+F\+\_\+}
+\item 
+List$<$ int $>$ \hyperlink{classFoam_1_1XS_af530df78adddbde30f97428e0c97515a}{do\+Not\+Parametrize\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a19d53fda58dda9527cd576aeb4bb5d80}{I\+V\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_adea7ad629cca35c92aa378f83e83c538}{chi\+Prompt\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a00d7a6e60e7706bef715997006d0ec98}{chi\+Delayed\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ac61f3369da634aa67bc96d748b18926f}{Beta\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_a7f082da7ac7d2c42560f7c37b1aa00ea}{Beta\+Tot\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a37af06cda2ab5af98b94777e4798a67d}{lambda\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a75affe491d72f7c8f8bfee9646944e7c}{D\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a5ef650c5f31d9ce711fa23fd0e41aa25}{nu\+Sigma\+Eff\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_aca36c81fd45ba2181ad6fd4909e23c22}{sigma\+Pow\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a274ed8e7933c604c11f62cf24f2e2235}{sigma\+Disapp\+List\+\_\+}
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{classFoam_1_1XS_abee7c68a33baa5d80b71d09034eb2b8e}{sigma\+From\+To\+List\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_afb9aa7be3330545222d1b55f9c11a305}{Tfuel\+Ref\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_a0dc5e6d6ef7dce5ab4285edb38ce1950}{Tfuel\+Perturbed\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a89df9893e9de8311c3d836074cebe392}{fuel\+Temp\+D\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a2930058a326b118fe694a0794ae99c29}{fuel\+Temp\+Nu\+Sigma\+Eff\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a714482ef732352d0a87e42fbca21cdbc}{fuel\+Temp\+Sigma\+Pow\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_adb55e4fd3a655717d7919018ee32045c}{fuel\+Temp\+Sigma\+Disapp\+List\+\_\+}
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{classFoam_1_1XS_a0250fdac7dd6025d57959c7c46b2eefa}{fuel\+Temp\+Sigma\+From\+To\+List\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_a6c7284f6579cd88a4f1e8e2abebcd9e9}{Ax\+Exp\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a349cde89aa9862e228baf7c3be7cc03e}{axial\+Exp\+D\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a7e2217620eb3984c160751e54bf3d15f}{axial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ac374043dbb221475f4e06e36934756f5}{axial\+Exp\+Sigma\+Pow\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_afb3bfd4f175b31844a5d5a1f552bce74}{axial\+Exp\+Sigma\+Disapp\+List\+\_\+}
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{classFoam_1_1XS_a8a816b90c2317ba6735ad9071392d21e}{axial\+Exp\+Sigma\+From\+To\+List\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_a2c773fe264b61d1ee3f73136280c5b21}{Rad\+Exp\+\_\+}
+\item 
+vector \hyperlink{classFoam_1_1XS_a7a45b2d3cbea8c88b84341d51fa665c1}{axial\+Orientation\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a8ebf78b2210e6d7f66288988fc6c7050}{radial\+Exp\+D\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_aaeacc9ac4b30e1685c3c2115fa4fedd1}{radial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a5926e12e988c7a3717247957b0ddff91}{radial\+Exp\+Sigma\+Pow\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a4676a6a55f8e7aa4173442a6511038e8}{radial\+Exp\+Sigma\+Disapp\+List\+\_\+}
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{classFoam_1_1XS_a1fb3f1d9a8cdb19d7cfde4add417cbdd}{radial\+Exp\+Sigma\+From\+To\+List\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_af7db5962fe92b6af73ffe43f583a75ab}{rho\+Cool\+Ref\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_ac789326719f83e8384cc945cbb3c57f1}{rho\+Cool\+Perturbed\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ae8c0f1a7dfa0b2cd3c8cc86ddde632b8}{rho\+Cool\+D\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ad4cce6811fcdd11ab6bcb477a5f170c7}{rho\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a5704f26b12e1c6fb981734d71e9d22e8}{rho\+Cool\+Sigma\+Pow\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a77db4a4d3785dae9a8ce558e973f873c}{rho\+Cool\+Sigma\+Disapp\+List\+\_\+}
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{classFoam_1_1XS_a7733a51d2c633e4fed22e7061659ec6b}{rho\+Cool\+Sigma\+From\+To\+List\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_ac3372b0ed28d321ccedf66628393b4ad}{T\+Cool\+Ref\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_a1850ffc8a76b1b29964c4ddf8e4d49d0}{T\+Cool\+Perturbed\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a7073f6cbfc582be57db1b669a666a6e6}{T\+Cool\+D\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a4aeda1b004e53153607ab34a8535c78b}{T\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a1cb5f2c736e678047486275b8d30a012}{T\+Cool\+Sigma\+Pow\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a1fbe508bbd07aa65cdb20fd850eec54a}{T\+Cool\+Sigma\+Disapp\+List\+\_\+}
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{classFoam_1_1XS_a399ed20b9c50c782cc7a6d4149b8911e}{T\+Cool\+Sigma\+From\+To\+List\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_a87e79a2257e79d89e25c61ee039d91a0}{Tclad\+Ref\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1XS_a0c6ce4615de673dc1b394551383a4306}{Tclad\+Perturbed\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ae03abbd2301246ee28d49d2308db30d1}{clad\+Exp\+D\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_aff0842a57f719497e0b218011a9f2bb7}{clad\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_ae912b858880f1eab676702606d27daca}{clad\+Exp\+Sigma\+Pow\+List\+\_\+}
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{classFoam_1_1XS_a431532a3f51fc5c0b3f6c2dacf9eaf15}{clad\+Exp\+Sigma\+Disapp\+List\+\_\+}
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{classFoam_1_1XS_ae08aea5cb35d13155b6500359220a610}{clad\+Exp\+Sigma\+From\+To\+List\+\_\+}
+\item 
+I\+Odictionary \hyperlink{classFoam_1_1XS_a29c44ad7cad96a26dabbceeb7e4726eb}{C\+Rmove\+\_\+}
+\item 
+Ptr\+List$<$ entry $>$ \hyperlink{classFoam_1_1XS_a3db65236cfa499f3d1af3a6d138b901b}{C\+Rentries\+\_\+}
+\item 
+label \hyperlink{classFoam_1_1XS_aca1bc9cd45aa65bba5648dfef95f3ade}{C\+R\+Number\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_ae701fac84afdd0314da1c5afd8167c0b}{C\+Rstart\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_a95fdbf3240e83a55b03524b573c4d004}{C\+Rfinish\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_a65e78652b96aa06c69280257ca9aa536}{C\+Rspeed\+\_\+}
+\item 
+Ptr\+List$<$ word $>$ \hyperlink{classFoam_1_1XS_a8179271f63974b5ee1ca293495877e9f}{C\+R\+Follower\+Name\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_a8d008d308ad81906d031bf59ee715e3b}{C\+Rinitial\+Position\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_a40a7dacaf9eb33f6bde0de0da08f30de}{C\+Rposition\+\_\+}
+\item 
+Ptr\+List$<$ scalar $>$ \hyperlink{classFoam_1_1XS_a950f9c7de67d1956bd963be294a6ab4e}{initial\+Distance\+From\+Mesh\+C\+R\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class for \hyperlink{classFoam_1_1XS}{XS} parametrization and other nuclear data. 
+
+\label{_Description}%
+ Author of this file (and associated .C or included .H files) Carlo Fiorina $<$\href{mailto:carlo.fiorina@outlook.com}{\tt carlo.\+fiorina@outlook.\+com}; \href{mailto:carlo.fiorina@epfl.ch}{\tt carlo.\+fiorina@epfl.\+ch};$>$, E\+P\+FL (Switzerland)
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/neutronics/XS/XS/XS.H}{\tt X\+S.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/neutronics/XS/XS/XS.C}{\tt X\+S.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 59 of file X\+S.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1XS_a5dcffd55a0e6d9328ac35d8195ad4b4f}\label{classFoam_1_1XS_a5dcffd55a0e6d9328ac35d8195ad4b4f}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!XS@{XS}}
+\index{XS@{XS}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{X\+S()}{XS()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1XS}{XS} (\begin{DoxyParamCaption}\item[{const fv\+Mesh \&}]{mesh }\end{DoxyParamCaption})}
+
+
+
+Definition at line 33 of file X\+S.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ad91a4085b47550ac2d047e2a2042abfe}\label{classFoam_1_1XS_ad91a4085b47550ac2d047e2a2042abfe}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!````~XS@{$\sim$\+XS}}
+\index{````~XS@{$\sim$\+XS}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{$\sim$\+X\+S()}{~XS()}}
+{\footnotesize\ttfamily $\sim$\hyperlink{classFoam_1_1XS}{XS} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 280 of file X\+S.\+C.
+
+
+
+References X\+S\+::correct().
+
+
+
+Referenced by X\+S\+::\+Sc\+No().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=199pt]{classFoam_1_1XS_ad91a4085b47550ac2d047e2a2042abfe_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=193pt]{classFoam_1_1XS_ad91a4085b47550ac2d047e2a2042abfe_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1XS_a505c0bff76aae4fd2564ecdc6d31e501}\label{classFoam_1_1XS_a505c0bff76aae4fd2564ecdc6d31e501}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}XS\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1XS_a83cc058a37d82e00893b94e84e7ddc75}\label{classFoam_1_1XS_a83cc058a37d82e00893b94e84e7ddc75}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1XS}{XS}}]{,  }\item[{dictionary}]{,  }\item[{(const fv\+Mesh \&\hyperlink{createMeshesPostProcess_8H_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh})}]{,  }\item[{(\hyperlink{createMeshesPostProcess_8H_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh})}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1XS_a4ac79b302698620f0566eac803ba02d3}\label{classFoam_1_1XS_a4ac79b302698620f0566eac803ba02d3}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!energy\+Groups@{energy\+Groups}}
+\index{energy\+Groups@{energy\+Groups}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{energy\+Groups()}{energyGroups()}}
+{\footnotesize\ttfamily label energy\+Groups (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 224 of file X\+S.\+H.
+
+
+
+References X\+S\+::energy\+Groups\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_aeb1380355ff0a9cc7ab7e8b55aea673b}\label{classFoam_1_1XS_aeb1380355ff0a9cc7ab7e8b55aea673b}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!prec\+Groups@{prec\+Groups}}
+\index{prec\+Groups@{prec\+Groups}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{prec\+Groups()}{precGroups()}}
+{\footnotesize\ttfamily label prec\+Groups (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 228 of file X\+S.\+H.
+
+
+
+References X\+S\+::prec\+Groups\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ab1770d82e9777642e1373706c733606d}\label{classFoam_1_1XS_ab1770d82e9777642e1373706c733606d}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!legendre\+Moments@{legendre\+Moments}}
+\index{legendre\+Moments@{legendre\+Moments}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{legendre\+Moments()}{legendreMoments()}}
+{\footnotesize\ttfamily label legendre\+Moments (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 232 of file X\+S.\+H.
+
+
+
+References X\+S\+::legendre\+Moments\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_af7bd963d20dabfe2e8c89aefe489694a}\label{classFoam_1_1XS_af7bd963d20dabfe2e8c89aefe489694a}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!IV@{IV}}
+\index{IV@{IV}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{I\+V()}{IV()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ IV (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 236 of file X\+S.\+H.
+
+
+
+References X\+S\+::\+I\+V\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a183948adfa6649ba954e96d3ff1fb262}\label{classFoam_1_1XS_a183948adfa6649ba954e96d3ff1fb262}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!D@{D}}
+\index{D@{D}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{D()}{D()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ D (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 240 of file X\+S.\+H.
+
+
+
+References X\+S\+::\+D\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a2d54b65ba527abfbece66dee3572e935}\label{classFoam_1_1XS_a2d54b65ba527abfbece66dee3572e935}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nu\+Sigma\+Eff@{nu\+Sigma\+Eff}}
+\index{nu\+Sigma\+Eff@{nu\+Sigma\+Eff}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nu\+Sigma\+Eff()}{nuSigmaEff()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ nu\+Sigma\+Eff (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 244 of file X\+S.\+H.
+
+
+
+References X\+S\+::nu\+Sigma\+Eff\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_aa3757df4a20f8fb067a76e9acb069849}\label{classFoam_1_1XS_aa3757df4a20f8fb067a76e9acb069849}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!sigma\+Pow@{sigma\+Pow}}
+\index{sigma\+Pow@{sigma\+Pow}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{sigma\+Pow()}{sigmaPow()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ sigma\+Pow (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 248 of file X\+S.\+H.
+
+
+
+References X\+S\+::sigma\+Pow\+\_\+.
+
+
+
+Referenced by diffusion\+Neutronics\+::power(), adjoint\+Diffusion\+Neutronics\+::power(), and S\+P3\+Neutronics\+::power().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{classFoam_1_1XS_aa3757df4a20f8fb067a76e9acb069849_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1XS_aa09312f1afef2b2c3841e527175493b0}\label{classFoam_1_1XS_aa09312f1afef2b2c3841e527175493b0}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!sigma\+Disapp@{sigma\+Disapp}}
+\index{sigma\+Disapp@{sigma\+Disapp}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{sigma\+Disapp()}{sigmaDisapp()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ sigma\+Disapp (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 252 of file X\+S.\+H.
+
+
+
+References X\+S\+::sigma\+Disapp\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a1e4c802aa11f66b27a8294a66e83aa6e}\label{classFoam_1_1XS_a1e4c802aa11f66b27a8294a66e83aa6e}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!sigma\+From\+To@{sigma\+From\+To}}
+\index{sigma\+From\+To@{sigma\+From\+To}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{sigma\+From\+To()}{sigmaFromTo()}}
+{\footnotesize\ttfamily const List$<$List$<$Ptr\+List$<$vol\+Scalar\+Field $>$ $>$ $>$ sigma\+From\+To (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 256 of file X\+S.\+H.
+
+
+
+References X\+S\+::sigma\+From\+To\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a3a5e5dc25bec8fab86781d7eb546a92f}\label{classFoam_1_1XS_a3a5e5dc25bec8fab86781d7eb546a92f}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!chi\+Prompt@{chi\+Prompt}}
+\index{chi\+Prompt@{chi\+Prompt}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{chi\+Prompt()}{chiPrompt()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ chi\+Prompt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 260 of file X\+S.\+H.
+
+
+
+References X\+S\+::chi\+Prompt\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a8453995c1f390f686ffb8d0f3fd639c6}\label{classFoam_1_1XS_a8453995c1f390f686ffb8d0f3fd639c6}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!chi\+Delayed@{chi\+Delayed}}
+\index{chi\+Delayed@{chi\+Delayed}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{chi\+Delayed()}{chiDelayed()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ chi\+Delayed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 264 of file X\+S.\+H.
+
+
+
+References X\+S\+::chi\+Delayed\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a18490f453da25d7d0de6e64d27566fe5}\label{classFoam_1_1XS_a18490f453da25d7d0de6e64d27566fe5}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Beta@{Beta}}
+\index{Beta@{Beta}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Beta()}{Beta()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ Beta (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 268 of file X\+S.\+H.
+
+
+
+References X\+S\+::\+Beta\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_aa96d596b47a6028287270cfd82bed41f}\label{classFoam_1_1XS_aa96d596b47a6028287270cfd82bed41f}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Beta\+Tot@{Beta\+Tot}}
+\index{Beta\+Tot@{Beta\+Tot}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Beta\+Tot()}{BetaTot()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field Beta\+Tot (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 272 of file X\+S.\+H.
+
+
+
+References X\+S\+::\+Beta\+Tot\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a9fe5da186e1af8ac5b1a3adff2686609}\label{classFoam_1_1XS_a9fe5da186e1af8ac5b1a3adff2686609}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!lambda@{lambda}}
+\index{lambda@{lambda}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{lambda()}{lambda()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ lambda (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 276 of file X\+S.\+H.
+
+
+
+References X\+S\+::lambda\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a3d14d73bfcd0223e7a1c79a407611517}\label{classFoam_1_1XS_a3d14d73bfcd0223e7a1c79a407611517}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fuel\+Fraction@{fuel\+Fraction}}
+\index{fuel\+Fraction@{fuel\+Fraction}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fuel\+Fraction()}{fuelFraction()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field fuel\+Fraction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 280 of file X\+S.\+H.
+
+
+
+References X\+S\+::fuel\+Fraction\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a52899ae5805771cf443d9a7e6ba81dc5}\label{classFoam_1_1XS_a52899ae5805771cf443d9a7e6ba81dc5}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!secondary\+Power\+Volume\+Fraction@{secondary\+Power\+Volume\+Fraction}}
+\index{secondary\+Power\+Volume\+Fraction@{secondary\+Power\+Volume\+Fraction}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{secondary\+Power\+Volume\+Fraction()}{secondaryPowerVolumeFraction()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field secondary\+Power\+Volume\+Fraction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 284 of file X\+S.\+H.
+
+
+
+References X\+S\+::secondary\+Power\+Volume\+Fraction\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_aa8387c8a487d8285a32ef61af121e35e}\label{classFoam_1_1XS_aa8387c8a487d8285a32ef61af121e35e}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fraction\+To\+Secondary\+Power@{fraction\+To\+Secondary\+Power}}
+\index{fraction\+To\+Secondary\+Power@{fraction\+To\+Secondary\+Power}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fraction\+To\+Secondary\+Power()}{fractionToSecondaryPower()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field fraction\+To\+Secondary\+Power (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 288 of file X\+S.\+H.
+
+
+
+References X\+S\+::fraction\+To\+Secondary\+Power\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a37492f221b3e42a24a81a6defba591fc}\label{classFoam_1_1XS_a37492f221b3e42a24a81a6defba591fc}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!disc\+Factor@{disc\+Factor}}
+\index{disc\+Factor@{disc\+Factor}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{disc\+Factor()}{discFactor()}}
+{\footnotesize\ttfamily const Ptr\+List$<$vol\+Scalar\+Field$>$ disc\+Factor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 292 of file X\+S.\+H.
+
+
+
+References X\+S\+::disc\+Factor\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a35ef675ab2b1fab8ba01a2fc817df427}\label{classFoam_1_1XS_a35ef675ab2b1fab8ba01a2fc817df427}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Sc\+No@{Sc\+No}}
+\index{Sc\+No@{Sc\+No}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Sc\+No()}{ScNo()}}
+{\footnotesize\ttfamily scalar Sc\+No (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 296 of file X\+S.\+H.
+
+
+
+References X\+S\+::adjust\+Disc\+Factors(), X\+S\+::correct(), X\+S\+::init(), X\+S\+::\+New(), X\+S\+::\+Sc\+No\+\_\+, and X\+S\+::$\sim$\+X\+S().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{classFoam_1_1XS_a35ef675ab2b1fab8ba01a2fc817df427_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1XS_a42a2224cfae7af754fbfc469f5a861eb}\label{classFoam_1_1XS_a42a2224cfae7af754fbfc469f5a861eb}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!New@{New}}
+\index{New@{New}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily static auto\+Ptr$<$\hyperlink{classFoam_1_1XS}{XS}$>$ New (\begin{DoxyParamCaption}\item[{const fv\+Mesh \&}]{mesh }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Referenced by X\+S\+::\+Sc\+No().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{classFoam_1_1XS_a42a2224cfae7af754fbfc469f5a861eb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1XS_adea4123ce2829dffe4bcf6104a52e8a7}\label{classFoam_1_1XS_adea4123ce2829dffe4bcf6104a52e8a7}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!correct@{correct}}
+\index{correct@{correct}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{Tfuel,  }\item[{const vol\+Scalar\+Field \&}]{Tclad,  }\item[{const vol\+Scalar\+Field \&}]{rho\+Cool,  }\item[{const vol\+Scalar\+Field \&}]{T\+Cool,  }\item[{const vol\+Vector\+Field \&}]{Disp }\end{DoxyParamCaption})}
+
+
+
+Definition at line 287 of file X\+S.\+C.
+
+
+
+Referenced by X\+S\+::\+Sc\+No(), and X\+S\+::$\sim$\+X\+S().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{classFoam_1_1XS_adea4123ce2829dffe4bcf6104a52e8a7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1XS_a02fd73d861ef2e4aabb38c0c9ff82947}\label{classFoam_1_1XS_a02fd73d861ef2e4aabb38c0c9ff82947}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!init@{init}}
+\index{init@{init}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily void init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 298 of file X\+S.\+C.
+
+
+
+Referenced by X\+S\+::\+Sc\+No().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=186pt]{classFoam_1_1XS_a02fd73d861ef2e4aabb38c0c9ff82947_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1XS_af611217ca3fa489260d3f17c7b29f71d}\label{classFoam_1_1XS_af611217ca3fa489260d3f17c7b29f71d}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!adjust\+Disc\+Factors@{adjust\+Disc\+Factors}}
+\index{adjust\+Disc\+Factors@{adjust\+Disc\+Factors}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{adjust\+Disc\+Factors()}{adjustDiscFactors()}}
+{\footnotesize\ttfamily void adjust\+Disc\+Factors (\begin{DoxyParamCaption}\item[{const Ptr\+List$<$ vol\+Scalar\+Field $>$ \&}]{flux\+Star }\end{DoxyParamCaption})}
+
+
+
+Definition at line 304 of file X\+S.\+C.
+
+
+
+Referenced by X\+S\+::\+Sc\+No().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=253pt]{classFoam_1_1XS_af611217ca3fa489260d3f17c7b29f71d_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1XS_a23edeeeecebcef11921a33dd5d990570}\label{classFoam_1_1XS_a23edeeeecebcef11921a33dd5d990570}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!mesh\+\_\+@{mesh\+\_\+}}
+\index{mesh\+\_\+@{mesh\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{mesh\+\_\+}{mesh\_}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 76 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a5f8311a3a430c76dd8ad948460751646}\label{classFoam_1_1XS_a5f8311a3a430c76dd8ad948460751646}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nuclear\+Data\+\_\+@{nuclear\+Data\+\_\+}}
+\index{nuclear\+Data\+\_\+@{nuclear\+Data\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nuclear\+Data\+\_\+}{nuclearData\_}}
+{\footnotesize\ttfamily I\+Odictionary nuclear\+Data\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 79 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a9480d6e0437856b9c8f92ff75bc2b293}\label{classFoam_1_1XS_a9480d6e0437856b9c8f92ff75bc2b293}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nuclear\+Data\+Radial\+Exp\+\_\+@{nuclear\+Data\+Radial\+Exp\+\_\+}}
+\index{nuclear\+Data\+Radial\+Exp\+\_\+@{nuclear\+Data\+Radial\+Exp\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nuclear\+Data\+Radial\+Exp\+\_\+}{nuclearDataRadialExp\_}}
+{\footnotesize\ttfamily I\+Odictionary nuclear\+Data\+Radial\+Exp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 80 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a63645f4a1c5df874d88ae896920a8971}\label{classFoam_1_1XS_a63645f4a1c5df874d88ae896920a8971}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nuclear\+Data\+Axial\+Exp\+\_\+@{nuclear\+Data\+Axial\+Exp\+\_\+}}
+\index{nuclear\+Data\+Axial\+Exp\+\_\+@{nuclear\+Data\+Axial\+Exp\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nuclear\+Data\+Axial\+Exp\+\_\+}{nuclearDataAxialExp\_}}
+{\footnotesize\ttfamily I\+Odictionary nuclear\+Data\+Axial\+Exp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 81 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a48e05dd8011f2d4305e3bad0f0fe1f0a}\label{classFoam_1_1XS_a48e05dd8011f2d4305e3bad0f0fe1f0a}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nuclear\+Data\+Fuel\+Temp\+\_\+@{nuclear\+Data\+Fuel\+Temp\+\_\+}}
+\index{nuclear\+Data\+Fuel\+Temp\+\_\+@{nuclear\+Data\+Fuel\+Temp\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nuclear\+Data\+Fuel\+Temp\+\_\+}{nuclearDataFuelTemp\_}}
+{\footnotesize\ttfamily I\+Odictionary nuclear\+Data\+Fuel\+Temp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 82 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a15c1504755965c53fbbe6a429abc28a8}\label{classFoam_1_1XS_a15c1504755965c53fbbe6a429abc28a8}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nuclear\+Data\+Rho\+Cool\+\_\+@{nuclear\+Data\+Rho\+Cool\+\_\+}}
+\index{nuclear\+Data\+Rho\+Cool\+\_\+@{nuclear\+Data\+Rho\+Cool\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nuclear\+Data\+Rho\+Cool\+\_\+}{nuclearDataRhoCool\_}}
+{\footnotesize\ttfamily I\+Odictionary nuclear\+Data\+Rho\+Cool\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 83 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ae38071e829db93ddf1c47ee3d8df5c4d}\label{classFoam_1_1XS_ae38071e829db93ddf1c47ee3d8df5c4d}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nuclear\+Data\+T\+Cool\+\_\+@{nuclear\+Data\+T\+Cool\+\_\+}}
+\index{nuclear\+Data\+T\+Cool\+\_\+@{nuclear\+Data\+T\+Cool\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nuclear\+Data\+T\+Cool\+\_\+}{nuclearDataTCool\_}}
+{\footnotesize\ttfamily I\+Odictionary nuclear\+Data\+T\+Cool\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 84 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_afa518738c6f456b2cec2aaa1ad8ddf43}\label{classFoam_1_1XS_afa518738c6f456b2cec2aaa1ad8ddf43}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nuclear\+Data\+Clad\+Exp\+\_\+@{nuclear\+Data\+Clad\+Exp\+\_\+}}
+\index{nuclear\+Data\+Clad\+Exp\+\_\+@{nuclear\+Data\+Clad\+Exp\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nuclear\+Data\+Clad\+Exp\+\_\+}{nuclearDataCladExp\_}}
+{\footnotesize\ttfamily I\+Odictionary nuclear\+Data\+Clad\+Exp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 85 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a455b047ba459073908c08fd5e087dc45}\label{classFoam_1_1XS_a455b047ba459073908c08fd5e087dc45}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!energy\+Groups\+\_\+@{energy\+Groups\+\_\+}}
+\index{energy\+Groups\+\_\+@{energy\+Groups\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{energy\+Groups\+\_\+}{energyGroups\_}}
+{\footnotesize\ttfamily label energy\+Groups\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 87 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::energy\+Groups().
+
+\mbox{\Hypertarget{classFoam_1_1XS_acf21654ea27e2240302c291a95738ea2}\label{classFoam_1_1XS_acf21654ea27e2240302c291a95738ea2}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!prec\+Groups\+\_\+@{prec\+Groups\+\_\+}}
+\index{prec\+Groups\+\_\+@{prec\+Groups\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{prec\+Groups\+\_\+}{precGroups\_}}
+{\footnotesize\ttfamily label prec\+Groups\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 88 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::prec\+Groups().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a3ff89536c8e3ea70e46d35eccdfbfc4a}\label{classFoam_1_1XS_a3ff89536c8e3ea70e46d35eccdfbfc4a}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!legendre\+Moments\+\_\+@{legendre\+Moments\+\_\+}}
+\index{legendre\+Moments\+\_\+@{legendre\+Moments\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{legendre\+Moments\+\_\+}{legendreMoments\_}}
+{\footnotesize\ttfamily label legendre\+Moments\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 89 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::legendre\+Moments().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a931edd829a09bca4fb290036a3971f1d}\label{classFoam_1_1XS_a931edd829a09bca4fb290036a3971f1d}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!I\+V\+\_\+@{I\+V\+\_\+}}
+\index{I\+V\+\_\+@{I\+V\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{I\+V\+\_\+}{IV\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ I\+V\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 92 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::\+I\+V().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a96fec6b80cb2df43e7ea27107115e475}\label{classFoam_1_1XS_a96fec6b80cb2df43e7ea27107115e475}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!D\+\_\+@{D\+\_\+}}
+\index{D\+\_\+@{D\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{D\+\_\+}{D\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ D\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 93 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::\+D().
+
+\mbox{\Hypertarget{classFoam_1_1XS_ad9ea9685d6576d9868c809bb50a504fa}\label{classFoam_1_1XS_ad9ea9685d6576d9868c809bb50a504fa}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nu\+Sigma\+Eff\+\_\+@{nu\+Sigma\+Eff\+\_\+}}
+\index{nu\+Sigma\+Eff\+\_\+@{nu\+Sigma\+Eff\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nu\+Sigma\+Eff\+\_\+}{nuSigmaEff\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ nu\+Sigma\+Eff\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 94 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::nu\+Sigma\+Eff().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a2bd39d2565aedaffcd623ae0adbd4921}\label{classFoam_1_1XS_a2bd39d2565aedaffcd623ae0adbd4921}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!sigma\+Pow\+\_\+@{sigma\+Pow\+\_\+}}
+\index{sigma\+Pow\+\_\+@{sigma\+Pow\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{sigma\+Pow\+\_\+}{sigmaPow\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ sigma\+Pow\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 95 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::sigma\+Pow().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a2999bf91da8ba50addd3ea539d873d50}\label{classFoam_1_1XS_a2999bf91da8ba50addd3ea539d873d50}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!sigma\+Disapp\+\_\+@{sigma\+Disapp\+\_\+}}
+\index{sigma\+Disapp\+\_\+@{sigma\+Disapp\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{sigma\+Disapp\+\_\+}{sigmaDisapp\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ sigma\+Disapp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 96 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::sigma\+Disapp().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a3446c6c1eba7715a184c7198bcf6d874}\label{classFoam_1_1XS_a3446c6c1eba7715a184c7198bcf6d874}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!sigma\+From\+To\+\_\+@{sigma\+From\+To\+\_\+}}
+\index{sigma\+From\+To\+\_\+@{sigma\+From\+To\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{sigma\+From\+To\+\_\+}{sigmaFromTo\_}}
+{\footnotesize\ttfamily List$<$List$<$Ptr\+List$<$vol\+Scalar\+Field $>$ $>$ $>$ sigma\+From\+To\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 97 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::sigma\+From\+To().
+
+\mbox{\Hypertarget{classFoam_1_1XS_aed62b74823cc5c088012d6ae59d23c1d}\label{classFoam_1_1XS_aed62b74823cc5c088012d6ae59d23c1d}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!chi\+Prompt\+\_\+@{chi\+Prompt\+\_\+}}
+\index{chi\+Prompt\+\_\+@{chi\+Prompt\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{chi\+Prompt\+\_\+}{chiPrompt\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ chi\+Prompt\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 98 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::chi\+Prompt().
+
+\mbox{\Hypertarget{classFoam_1_1XS_ab5552da3b10e90d186bf98aead06bcd4}\label{classFoam_1_1XS_ab5552da3b10e90d186bf98aead06bcd4}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!chi\+Delayed\+\_\+@{chi\+Delayed\+\_\+}}
+\index{chi\+Delayed\+\_\+@{chi\+Delayed\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{chi\+Delayed\+\_\+}{chiDelayed\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ chi\+Delayed\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 99 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::chi\+Delayed().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a7f7fe9267b6666b38fa5534851251f7b}\label{classFoam_1_1XS_a7f7fe9267b6666b38fa5534851251f7b}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Beta\+\_\+@{Beta\+\_\+}}
+\index{Beta\+\_\+@{Beta\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Beta\+\_\+}{Beta\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ Beta\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 100 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::\+Beta().
+
+\mbox{\Hypertarget{classFoam_1_1XS_aada58fbe9089eb21ee65471a6e424c93}\label{classFoam_1_1XS_aada58fbe9089eb21ee65471a6e424c93}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Beta\+Tot\+\_\+@{Beta\+Tot\+\_\+}}
+\index{Beta\+Tot\+\_\+@{Beta\+Tot\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Beta\+Tot\+\_\+}{BetaTot\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Beta\+Tot\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 101 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::\+Beta\+Tot().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a5c475176377784b2717714cb353fa3c0}\label{classFoam_1_1XS_a5c475176377784b2717714cb353fa3c0}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!lambda\+\_\+@{lambda\+\_\+}}
+\index{lambda\+\_\+@{lambda\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{lambda\+\_\+}{lambda\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field$>$ lambda\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 102 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::lambda().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a84c8e05dd16ae93d11fcbcf94b099f3f}\label{classFoam_1_1XS_a84c8e05dd16ae93d11fcbcf94b099f3f}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fuel\+Fraction\+\_\+@{fuel\+Fraction\+\_\+}}
+\index{fuel\+Fraction\+\_\+@{fuel\+Fraction\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fuel\+Fraction\+\_\+}{fuelFraction\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field fuel\+Fraction\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 103 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::fuel\+Fraction().
+
+\mbox{\Hypertarget{classFoam_1_1XS_aa28c5a5068196250beec05e9965ff0eb}\label{classFoam_1_1XS_aa28c5a5068196250beec05e9965ff0eb}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!secondary\+Power\+Volume\+Fraction\+\_\+@{secondary\+Power\+Volume\+Fraction\+\_\+}}
+\index{secondary\+Power\+Volume\+Fraction\+\_\+@{secondary\+Power\+Volume\+Fraction\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{secondary\+Power\+Volume\+Fraction\+\_\+}{secondaryPowerVolumeFraction\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field secondary\+Power\+Volume\+Fraction\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 104 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::secondary\+Power\+Volume\+Fraction().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a76bb21d48d91e623afe804402160c87a}\label{classFoam_1_1XS_a76bb21d48d91e623afe804402160c87a}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fraction\+To\+Secondary\+Power\+\_\+@{fraction\+To\+Secondary\+Power\+\_\+}}
+\index{fraction\+To\+Secondary\+Power\+\_\+@{fraction\+To\+Secondary\+Power\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fraction\+To\+Secondary\+Power\+\_\+}{fractionToSecondaryPower\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field fraction\+To\+Secondary\+Power\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 106 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::fraction\+To\+Secondary\+Power().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a2195b3c3e3a904c4e04924328f611d5c}\label{classFoam_1_1XS_a2195b3c3e3a904c4e04924328f611d5c}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!disc\+Factor\+\_\+@{disc\+Factor\+\_\+}}
+\index{disc\+Factor\+\_\+@{disc\+Factor\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{disc\+Factor\+\_\+}{discFactor\_}}
+{\footnotesize\ttfamily Ptr\+List$<$vol\+Scalar\+Field $>$ disc\+Factor\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 108 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::disc\+Factor().
+
+\mbox{\Hypertarget{classFoam_1_1XS_a4c4a4ba88fdfadec3edee27595650f75}\label{classFoam_1_1XS_a4c4a4ba88fdfadec3edee27595650f75}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Sc\+No\+\_\+@{Sc\+No\+\_\+}}
+\index{Sc\+No\+\_\+@{Sc\+No\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Sc\+No\+\_\+}{ScNo\_}}
+{\footnotesize\ttfamily scalar Sc\+No\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 109 of file X\+S.\+H.
+
+
+
+Referenced by X\+S\+::\+Sc\+No().
+
+\mbox{\Hypertarget{classFoam_1_1XS_ae321eb5a93a161d86891d04ceba5de38}\label{classFoam_1_1XS_ae321eb5a93a161d86891d04ceba5de38}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!entries\+\_\+@{entries\+\_\+}}
+\index{entries\+\_\+@{entries\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{entries\+\_\+}{entries\_}}
+{\footnotesize\ttfamily Ptr\+List$<$entry$>$ entries\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 112 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ada6a4a148b99570ba7b0d85af309e381}\label{classFoam_1_1XS_ada6a4a148b99570ba7b0d85af309e381}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!zone\+Number\+\_\+@{zone\+Number\+\_\+}}
+\index{zone\+Number\+\_\+@{zone\+Number\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{zone\+Number\+\_\+}{zoneNumber\_}}
+{\footnotesize\ttfamily label zone\+Number\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 113 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a0eed7ae40daff8d8f928a816c03238dc}\label{classFoam_1_1XS_a0eed7ae40daff8d8f928a816c03238dc}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fuel\+Fraction\+List\+\_\+@{fuel\+Fraction\+List\+\_\+}}
+\index{fuel\+Fraction\+List\+\_\+@{fuel\+Fraction\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fuel\+Fraction\+List\+\_\+}{fuelFractionList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ fuel\+Fraction\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 117 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a9866d718d7ff6dd34cb5932a6d7a20f4}\label{classFoam_1_1XS_a9866d718d7ff6dd34cb5932a6d7a20f4}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!secondary\+Power\+Volume\+Fraction\+List\+\_\+@{secondary\+Power\+Volume\+Fraction\+List\+\_\+}}
+\index{secondary\+Power\+Volume\+Fraction\+List\+\_\+@{secondary\+Power\+Volume\+Fraction\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{secondary\+Power\+Volume\+Fraction\+List\+\_\+}{secondaryPowerVolumeFractionList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ secondary\+Power\+Volume\+Fraction\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 118 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_af5b51be2f020a92e77d75e81656cb523}\label{classFoam_1_1XS_af5b51be2f020a92e77d75e81656cb523}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fraction\+To\+Secondary\+Power\+List\+\_\+@{fraction\+To\+Secondary\+Power\+List\+\_\+}}
+\index{fraction\+To\+Secondary\+Power\+List\+\_\+@{fraction\+To\+Secondary\+Power\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fraction\+To\+Secondary\+Power\+List\+\_\+}{fractionToSecondaryPowerList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ fraction\+To\+Secondary\+Power\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 119 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_aa1a72609f886403c648b883afd2324d8}\label{classFoam_1_1XS_aa1a72609f886403c648b883afd2324d8}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!df\+Adjust\+List\+\_\+@{df\+Adjust\+List\+\_\+}}
+\index{df\+Adjust\+List\+\_\+@{df\+Adjust\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{df\+Adjust\+List\+\_\+}{dfAdjustList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$bool $>$ df\+Adjust\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 121 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ac6878d1b2f43142f73523fef972e86a5}\label{classFoam_1_1XS_ac6878d1b2f43142f73523fef972e86a5}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!disc\+Factor\+List\+\_\+@{disc\+Factor\+List\+\_\+}}
+\index{disc\+Factor\+List\+\_\+@{disc\+Factor\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{disc\+Factor\+List\+\_\+}{discFactorList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ disc\+Factor\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 123 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ac55209828437fab67c22579de8659507}\label{classFoam_1_1XS_ac55209828437fab67c22579de8659507}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!integral\+Flux\+List\+\_\+@{integral\+Flux\+List\+\_\+}}
+\index{integral\+Flux\+List\+\_\+@{integral\+Flux\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{integral\+Flux\+List\+\_\+}{integralFluxList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ integral\+Flux\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 125 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ad36ef1463ce7c1bf8b5b083ad229af93}\label{classFoam_1_1XS_ad36ef1463ce7c1bf8b5b083ad229af93}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fast\+Neutrons\+\_\+@{fast\+Neutrons\+\_\+}}
+\index{fast\+Neutrons\+\_\+@{fast\+Neutrons\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fast\+Neutrons\+\_\+}{fastNeutrons\_}}
+{\footnotesize\ttfamily bool fast\+Neutrons\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 129 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a995f00ddfa8d7afec0beb58f40044b8e}\label{classFoam_1_1XS_a995f00ddfa8d7afec0beb58f40044b8e}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!adjust\+Disc\+Factors\+\_\+@{adjust\+Disc\+Factors\+\_\+}}
+\index{adjust\+Disc\+Factors\+\_\+@{adjust\+Disc\+Factors\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{adjust\+Disc\+Factors\+\_\+}{adjustDiscFactors\_}}
+{\footnotesize\ttfamily bool adjust\+Disc\+Factors\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 130 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_af0d46dbd8f4bf0d838e61b1a847b542a}\label{classFoam_1_1XS_af0d46dbd8f4bf0d838e61b1a847b542a}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!use\+Given\+Disc\+Factors\+\_\+@{use\+Given\+Disc\+Factors\+\_\+}}
+\index{use\+Given\+Disc\+Factors\+\_\+@{use\+Given\+Disc\+Factors\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{use\+Given\+Disc\+Factors\+\_\+}{useGivenDiscFactors\_}}
+{\footnotesize\ttfamily bool use\+Given\+Disc\+Factors\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 131 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_af96c29e836fe8fbd52a58c51babc1e49}\label{classFoam_1_1XS_af96c29e836fe8fbd52a58c51babc1e49}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!groups\+Wo\+D\+F\+\_\+@{groups\+Wo\+D\+F\+\_\+}}
+\index{groups\+Wo\+D\+F\+\_\+@{groups\+Wo\+D\+F\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{groups\+Wo\+D\+F\+\_\+}{groupsWoDF\_}}
+{\footnotesize\ttfamily List$<$int$>$ groups\+Wo\+D\+F\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 132 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_af530df78adddbde30f97428e0c97515a}\label{classFoam_1_1XS_af530df78adddbde30f97428e0c97515a}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!do\+Not\+Parametrize\+\_\+@{do\+Not\+Parametrize\+\_\+}}
+\index{do\+Not\+Parametrize\+\_\+@{do\+Not\+Parametrize\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{do\+Not\+Parametrize\+\_\+}{doNotParametrize\_}}
+{\footnotesize\ttfamily List$<$int$>$ do\+Not\+Parametrize\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 133 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a19d53fda58dda9527cd576aeb4bb5d80}\label{classFoam_1_1XS_a19d53fda58dda9527cd576aeb4bb5d80}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!I\+V\+List\+\_\+@{I\+V\+List\+\_\+}}
+\index{I\+V\+List\+\_\+@{I\+V\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{I\+V\+List\+\_\+}{IVList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ I\+V\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 135 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_adea7ad629cca35c92aa378f83e83c538}\label{classFoam_1_1XS_adea7ad629cca35c92aa378f83e83c538}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!chi\+Prompt\+List\+\_\+@{chi\+Prompt\+List\+\_\+}}
+\index{chi\+Prompt\+List\+\_\+@{chi\+Prompt\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{chi\+Prompt\+List\+\_\+}{chiPromptList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ chi\+Prompt\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 136 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a00d7a6e60e7706bef715997006d0ec98}\label{classFoam_1_1XS_a00d7a6e60e7706bef715997006d0ec98}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!chi\+Delayed\+List\+\_\+@{chi\+Delayed\+List\+\_\+}}
+\index{chi\+Delayed\+List\+\_\+@{chi\+Delayed\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{chi\+Delayed\+List\+\_\+}{chiDelayedList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ chi\+Delayed\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 137 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ac61f3369da634aa67bc96d748b18926f}\label{classFoam_1_1XS_ac61f3369da634aa67bc96d748b18926f}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Beta\+List\+\_\+@{Beta\+List\+\_\+}}
+\index{Beta\+List\+\_\+@{Beta\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Beta\+List\+\_\+}{BetaList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ Beta\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 138 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a7f082da7ac7d2c42560f7c37b1aa00ea}\label{classFoam_1_1XS_a7f082da7ac7d2c42560f7c37b1aa00ea}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Beta\+Tot\+List\+\_\+@{Beta\+Tot\+List\+\_\+}}
+\index{Beta\+Tot\+List\+\_\+@{Beta\+Tot\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Beta\+Tot\+List\+\_\+}{BetaTotList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ Beta\+Tot\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 139 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a37af06cda2ab5af98b94777e4798a67d}\label{classFoam_1_1XS_a37af06cda2ab5af98b94777e4798a67d}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!lambda\+List\+\_\+@{lambda\+List\+\_\+}}
+\index{lambda\+List\+\_\+@{lambda\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{lambda\+List\+\_\+}{lambdaList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ lambda\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 140 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a75affe491d72f7c8f8bfee9646944e7c}\label{classFoam_1_1XS_a75affe491d72f7c8f8bfee9646944e7c}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!D\+List\+\_\+@{D\+List\+\_\+}}
+\index{D\+List\+\_\+@{D\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{D\+List\+\_\+}{DList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ D\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 142 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a5ef650c5f31d9ce711fa23fd0e41aa25}\label{classFoam_1_1XS_a5ef650c5f31d9ce711fa23fd0e41aa25}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!nu\+Sigma\+Eff\+List\+\_\+@{nu\+Sigma\+Eff\+List\+\_\+}}
+\index{nu\+Sigma\+Eff\+List\+\_\+@{nu\+Sigma\+Eff\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{nu\+Sigma\+Eff\+List\+\_\+}{nuSigmaEffList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ nu\+Sigma\+Eff\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 143 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_aca36c81fd45ba2181ad6fd4909e23c22}\label{classFoam_1_1XS_aca36c81fd45ba2181ad6fd4909e23c22}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!sigma\+Pow\+List\+\_\+@{sigma\+Pow\+List\+\_\+}}
+\index{sigma\+Pow\+List\+\_\+@{sigma\+Pow\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{sigma\+Pow\+List\+\_\+}{sigmaPowList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Pow\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 144 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a274ed8e7933c604c11f62cf24f2e2235}\label{classFoam_1_1XS_a274ed8e7933c604c11f62cf24f2e2235}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!sigma\+Disapp\+List\+\_\+@{sigma\+Disapp\+List\+\_\+}}
+\index{sigma\+Disapp\+List\+\_\+@{sigma\+Disapp\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{sigma\+Disapp\+List\+\_\+}{sigmaDisappList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Disapp\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 145 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_abee7c68a33baa5d80b71d09034eb2b8e}\label{classFoam_1_1XS_abee7c68a33baa5d80b71d09034eb2b8e}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!sigma\+From\+To\+List\+\_\+@{sigma\+From\+To\+List\+\_\+}}
+\index{sigma\+From\+To\+List\+\_\+@{sigma\+From\+To\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{sigma\+From\+To\+List\+\_\+}{sigmaFromToList\_}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ sigma\+From\+To\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 146 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_afb9aa7be3330545222d1b55f9c11a305}\label{classFoam_1_1XS_afb9aa7be3330545222d1b55f9c11a305}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Tfuel\+Ref\+\_\+@{Tfuel\+Ref\+\_\+}}
+\index{Tfuel\+Ref\+\_\+@{Tfuel\+Ref\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Tfuel\+Ref\+\_\+}{TfuelRef\_}}
+{\footnotesize\ttfamily scalar Tfuel\+Ref\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 148 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a0dc5e6d6ef7dce5ab4285edb38ce1950}\label{classFoam_1_1XS_a0dc5e6d6ef7dce5ab4285edb38ce1950}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Tfuel\+Perturbed\+\_\+@{Tfuel\+Perturbed\+\_\+}}
+\index{Tfuel\+Perturbed\+\_\+@{Tfuel\+Perturbed\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Tfuel\+Perturbed\+\_\+}{TfuelPerturbed\_}}
+{\footnotesize\ttfamily scalar Tfuel\+Perturbed\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 149 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a89df9893e9de8311c3d836074cebe392}\label{classFoam_1_1XS_a89df9893e9de8311c3d836074cebe392}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fuel\+Temp\+D\+List\+\_\+@{fuel\+Temp\+D\+List\+\_\+}}
+\index{fuel\+Temp\+D\+List\+\_\+@{fuel\+Temp\+D\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fuel\+Temp\+D\+List\+\_\+}{fuelTempDList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ fuel\+Temp\+D\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 150 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a2930058a326b118fe694a0794ae99c29}\label{classFoam_1_1XS_a2930058a326b118fe694a0794ae99c29}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fuel\+Temp\+Nu\+Sigma\+Eff\+List\+\_\+@{fuel\+Temp\+Nu\+Sigma\+Eff\+List\+\_\+}}
+\index{fuel\+Temp\+Nu\+Sigma\+Eff\+List\+\_\+@{fuel\+Temp\+Nu\+Sigma\+Eff\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fuel\+Temp\+Nu\+Sigma\+Eff\+List\+\_\+}{fuelTempNuSigmaEffList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ fuel\+Temp\+Nu\+Sigma\+Eff\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 151 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a714482ef732352d0a87e42fbca21cdbc}\label{classFoam_1_1XS_a714482ef732352d0a87e42fbca21cdbc}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fuel\+Temp\+Sigma\+Pow\+List\+\_\+@{fuel\+Temp\+Sigma\+Pow\+List\+\_\+}}
+\index{fuel\+Temp\+Sigma\+Pow\+List\+\_\+@{fuel\+Temp\+Sigma\+Pow\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fuel\+Temp\+Sigma\+Pow\+List\+\_\+}{fuelTempSigmaPowList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ fuel\+Temp\+Sigma\+Pow\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 152 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_adb55e4fd3a655717d7919018ee32045c}\label{classFoam_1_1XS_adb55e4fd3a655717d7919018ee32045c}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fuel\+Temp\+Sigma\+Disapp\+List\+\_\+@{fuel\+Temp\+Sigma\+Disapp\+List\+\_\+}}
+\index{fuel\+Temp\+Sigma\+Disapp\+List\+\_\+@{fuel\+Temp\+Sigma\+Disapp\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fuel\+Temp\+Sigma\+Disapp\+List\+\_\+}{fuelTempSigmaDisappList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ fuel\+Temp\+Sigma\+Disapp\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 153 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a0250fdac7dd6025d57959c7c46b2eefa}\label{classFoam_1_1XS_a0250fdac7dd6025d57959c7c46b2eefa}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!fuel\+Temp\+Sigma\+From\+To\+List\+\_\+@{fuel\+Temp\+Sigma\+From\+To\+List\+\_\+}}
+\index{fuel\+Temp\+Sigma\+From\+To\+List\+\_\+@{fuel\+Temp\+Sigma\+From\+To\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{fuel\+Temp\+Sigma\+From\+To\+List\+\_\+}{fuelTempSigmaFromToList\_}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ fuel\+Temp\+Sigma\+From\+To\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 154 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a6c7284f6579cd88a4f1e8e2abebcd9e9}\label{classFoam_1_1XS_a6c7284f6579cd88a4f1e8e2abebcd9e9}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Ax\+Exp\+\_\+@{Ax\+Exp\+\_\+}}
+\index{Ax\+Exp\+\_\+@{Ax\+Exp\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Ax\+Exp\+\_\+}{AxExp\_}}
+{\footnotesize\ttfamily scalar Ax\+Exp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 156 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a349cde89aa9862e228baf7c3be7cc03e}\label{classFoam_1_1XS_a349cde89aa9862e228baf7c3be7cc03e}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!axial\+Exp\+D\+List\+\_\+@{axial\+Exp\+D\+List\+\_\+}}
+\index{axial\+Exp\+D\+List\+\_\+@{axial\+Exp\+D\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{axial\+Exp\+D\+List\+\_\+}{axialExpDList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ axial\+Exp\+D\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 157 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a7e2217620eb3984c160751e54bf3d15f}\label{classFoam_1_1XS_a7e2217620eb3984c160751e54bf3d15f}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!axial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+@{axial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}}
+\index{axial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+@{axial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{axial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}{axialExpNuSigmaEffList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ axial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 158 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ac374043dbb221475f4e06e36934756f5}\label{classFoam_1_1XS_ac374043dbb221475f4e06e36934756f5}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!axial\+Exp\+Sigma\+Pow\+List\+\_\+@{axial\+Exp\+Sigma\+Pow\+List\+\_\+}}
+\index{axial\+Exp\+Sigma\+Pow\+List\+\_\+@{axial\+Exp\+Sigma\+Pow\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{axial\+Exp\+Sigma\+Pow\+List\+\_\+}{axialExpSigmaPowList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ axial\+Exp\+Sigma\+Pow\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 159 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_afb3bfd4f175b31844a5d5a1f552bce74}\label{classFoam_1_1XS_afb3bfd4f175b31844a5d5a1f552bce74}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!axial\+Exp\+Sigma\+Disapp\+List\+\_\+@{axial\+Exp\+Sigma\+Disapp\+List\+\_\+}}
+\index{axial\+Exp\+Sigma\+Disapp\+List\+\_\+@{axial\+Exp\+Sigma\+Disapp\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{axial\+Exp\+Sigma\+Disapp\+List\+\_\+}{axialExpSigmaDisappList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ axial\+Exp\+Sigma\+Disapp\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 160 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a8a816b90c2317ba6735ad9071392d21e}\label{classFoam_1_1XS_a8a816b90c2317ba6735ad9071392d21e}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!axial\+Exp\+Sigma\+From\+To\+List\+\_\+@{axial\+Exp\+Sigma\+From\+To\+List\+\_\+}}
+\index{axial\+Exp\+Sigma\+From\+To\+List\+\_\+@{axial\+Exp\+Sigma\+From\+To\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{axial\+Exp\+Sigma\+From\+To\+List\+\_\+}{axialExpSigmaFromToList\_}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ axial\+Exp\+Sigma\+From\+To\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 161 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a2c773fe264b61d1ee3f73136280c5b21}\label{classFoam_1_1XS_a2c773fe264b61d1ee3f73136280c5b21}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Rad\+Exp\+\_\+@{Rad\+Exp\+\_\+}}
+\index{Rad\+Exp\+\_\+@{Rad\+Exp\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Rad\+Exp\+\_\+}{RadExp\_}}
+{\footnotesize\ttfamily scalar Rad\+Exp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 163 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a7a45b2d3cbea8c88b84341d51fa665c1}\label{classFoam_1_1XS_a7a45b2d3cbea8c88b84341d51fa665c1}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!axial\+Orientation\+\_\+@{axial\+Orientation\+\_\+}}
+\index{axial\+Orientation\+\_\+@{axial\+Orientation\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{axial\+Orientation\+\_\+}{axialOrientation\_}}
+{\footnotesize\ttfamily vector axial\+Orientation\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 164 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a8ebf78b2210e6d7f66288988fc6c7050}\label{classFoam_1_1XS_a8ebf78b2210e6d7f66288988fc6c7050}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!radial\+Exp\+D\+List\+\_\+@{radial\+Exp\+D\+List\+\_\+}}
+\index{radial\+Exp\+D\+List\+\_\+@{radial\+Exp\+D\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{radial\+Exp\+D\+List\+\_\+}{radialExpDList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ radial\+Exp\+D\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 165 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_aaeacc9ac4b30e1685c3c2115fa4fedd1}\label{classFoam_1_1XS_aaeacc9ac4b30e1685c3c2115fa4fedd1}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!radial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+@{radial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}}
+\index{radial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+@{radial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{radial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}{radialExpNuSigmaEffList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ radial\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 166 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a5926e12e988c7a3717247957b0ddff91}\label{classFoam_1_1XS_a5926e12e988c7a3717247957b0ddff91}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!radial\+Exp\+Sigma\+Pow\+List\+\_\+@{radial\+Exp\+Sigma\+Pow\+List\+\_\+}}
+\index{radial\+Exp\+Sigma\+Pow\+List\+\_\+@{radial\+Exp\+Sigma\+Pow\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{radial\+Exp\+Sigma\+Pow\+List\+\_\+}{radialExpSigmaPowList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ radial\+Exp\+Sigma\+Pow\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 167 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a4676a6a55f8e7aa4173442a6511038e8}\label{classFoam_1_1XS_a4676a6a55f8e7aa4173442a6511038e8}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!radial\+Exp\+Sigma\+Disapp\+List\+\_\+@{radial\+Exp\+Sigma\+Disapp\+List\+\_\+}}
+\index{radial\+Exp\+Sigma\+Disapp\+List\+\_\+@{radial\+Exp\+Sigma\+Disapp\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{radial\+Exp\+Sigma\+Disapp\+List\+\_\+}{radialExpSigmaDisappList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ radial\+Exp\+Sigma\+Disapp\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 168 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a1fb3f1d9a8cdb19d7cfde4add417cbdd}\label{classFoam_1_1XS_a1fb3f1d9a8cdb19d7cfde4add417cbdd}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!radial\+Exp\+Sigma\+From\+To\+List\+\_\+@{radial\+Exp\+Sigma\+From\+To\+List\+\_\+}}
+\index{radial\+Exp\+Sigma\+From\+To\+List\+\_\+@{radial\+Exp\+Sigma\+From\+To\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{radial\+Exp\+Sigma\+From\+To\+List\+\_\+}{radialExpSigmaFromToList\_}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ radial\+Exp\+Sigma\+From\+To\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 169 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_af7db5962fe92b6af73ffe43f583a75ab}\label{classFoam_1_1XS_af7db5962fe92b6af73ffe43f583a75ab}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!rho\+Cool\+Ref\+\_\+@{rho\+Cool\+Ref\+\_\+}}
+\index{rho\+Cool\+Ref\+\_\+@{rho\+Cool\+Ref\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{rho\+Cool\+Ref\+\_\+}{rhoCoolRef\_}}
+{\footnotesize\ttfamily scalar rho\+Cool\+Ref\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 171 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ac789326719f83e8384cc945cbb3c57f1}\label{classFoam_1_1XS_ac789326719f83e8384cc945cbb3c57f1}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!rho\+Cool\+Perturbed\+\_\+@{rho\+Cool\+Perturbed\+\_\+}}
+\index{rho\+Cool\+Perturbed\+\_\+@{rho\+Cool\+Perturbed\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{rho\+Cool\+Perturbed\+\_\+}{rhoCoolPerturbed\_}}
+{\footnotesize\ttfamily scalar rho\+Cool\+Perturbed\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 172 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ae8c0f1a7dfa0b2cd3c8cc86ddde632b8}\label{classFoam_1_1XS_ae8c0f1a7dfa0b2cd3c8cc86ddde632b8}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!rho\+Cool\+D\+List\+\_\+@{rho\+Cool\+D\+List\+\_\+}}
+\index{rho\+Cool\+D\+List\+\_\+@{rho\+Cool\+D\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{rho\+Cool\+D\+List\+\_\+}{rhoCoolDList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ rho\+Cool\+D\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 173 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ad4cce6811fcdd11ab6bcb477a5f170c7}\label{classFoam_1_1XS_ad4cce6811fcdd11ab6bcb477a5f170c7}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!rho\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+@{rho\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+}}
+\index{rho\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+@{rho\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{rho\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+}{rhoCoolNuSigmaEffList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ rho\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 174 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a5704f26b12e1c6fb981734d71e9d22e8}\label{classFoam_1_1XS_a5704f26b12e1c6fb981734d71e9d22e8}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!rho\+Cool\+Sigma\+Pow\+List\+\_\+@{rho\+Cool\+Sigma\+Pow\+List\+\_\+}}
+\index{rho\+Cool\+Sigma\+Pow\+List\+\_\+@{rho\+Cool\+Sigma\+Pow\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{rho\+Cool\+Sigma\+Pow\+List\+\_\+}{rhoCoolSigmaPowList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ rho\+Cool\+Sigma\+Pow\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 175 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a77db4a4d3785dae9a8ce558e973f873c}\label{classFoam_1_1XS_a77db4a4d3785dae9a8ce558e973f873c}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!rho\+Cool\+Sigma\+Disapp\+List\+\_\+@{rho\+Cool\+Sigma\+Disapp\+List\+\_\+}}
+\index{rho\+Cool\+Sigma\+Disapp\+List\+\_\+@{rho\+Cool\+Sigma\+Disapp\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{rho\+Cool\+Sigma\+Disapp\+List\+\_\+}{rhoCoolSigmaDisappList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ rho\+Cool\+Sigma\+Disapp\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 176 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a7733a51d2c633e4fed22e7061659ec6b}\label{classFoam_1_1XS_a7733a51d2c633e4fed22e7061659ec6b}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!rho\+Cool\+Sigma\+From\+To\+List\+\_\+@{rho\+Cool\+Sigma\+From\+To\+List\+\_\+}}
+\index{rho\+Cool\+Sigma\+From\+To\+List\+\_\+@{rho\+Cool\+Sigma\+From\+To\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{rho\+Cool\+Sigma\+From\+To\+List\+\_\+}{rhoCoolSigmaFromToList\_}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ rho\+Cool\+Sigma\+From\+To\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 177 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ac3372b0ed28d321ccedf66628393b4ad}\label{classFoam_1_1XS_ac3372b0ed28d321ccedf66628393b4ad}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!T\+Cool\+Ref\+\_\+@{T\+Cool\+Ref\+\_\+}}
+\index{T\+Cool\+Ref\+\_\+@{T\+Cool\+Ref\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{T\+Cool\+Ref\+\_\+}{TCoolRef\_}}
+{\footnotesize\ttfamily scalar T\+Cool\+Ref\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 179 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a1850ffc8a76b1b29964c4ddf8e4d49d0}\label{classFoam_1_1XS_a1850ffc8a76b1b29964c4ddf8e4d49d0}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!T\+Cool\+Perturbed\+\_\+@{T\+Cool\+Perturbed\+\_\+}}
+\index{T\+Cool\+Perturbed\+\_\+@{T\+Cool\+Perturbed\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{T\+Cool\+Perturbed\+\_\+}{TCoolPerturbed\_}}
+{\footnotesize\ttfamily scalar T\+Cool\+Perturbed\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 180 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a7073f6cbfc582be57db1b669a666a6e6}\label{classFoam_1_1XS_a7073f6cbfc582be57db1b669a666a6e6}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!T\+Cool\+D\+List\+\_\+@{T\+Cool\+D\+List\+\_\+}}
+\index{T\+Cool\+D\+List\+\_\+@{T\+Cool\+D\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{T\+Cool\+D\+List\+\_\+}{TCoolDList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ T\+Cool\+D\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 181 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a4aeda1b004e53153607ab34a8535c78b}\label{classFoam_1_1XS_a4aeda1b004e53153607ab34a8535c78b}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!T\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+@{T\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+}}
+\index{T\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+@{T\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{T\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+}{TCoolNuSigmaEffList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ T\+Cool\+Nu\+Sigma\+Eff\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 182 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a1cb5f2c736e678047486275b8d30a012}\label{classFoam_1_1XS_a1cb5f2c736e678047486275b8d30a012}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!T\+Cool\+Sigma\+Pow\+List\+\_\+@{T\+Cool\+Sigma\+Pow\+List\+\_\+}}
+\index{T\+Cool\+Sigma\+Pow\+List\+\_\+@{T\+Cool\+Sigma\+Pow\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{T\+Cool\+Sigma\+Pow\+List\+\_\+}{TCoolSigmaPowList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ T\+Cool\+Sigma\+Pow\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 183 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a1fbe508bbd07aa65cdb20fd850eec54a}\label{classFoam_1_1XS_a1fbe508bbd07aa65cdb20fd850eec54a}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!T\+Cool\+Sigma\+Disapp\+List\+\_\+@{T\+Cool\+Sigma\+Disapp\+List\+\_\+}}
+\index{T\+Cool\+Sigma\+Disapp\+List\+\_\+@{T\+Cool\+Sigma\+Disapp\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{T\+Cool\+Sigma\+Disapp\+List\+\_\+}{TCoolSigmaDisappList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ T\+Cool\+Sigma\+Disapp\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 184 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a399ed20b9c50c782cc7a6d4149b8911e}\label{classFoam_1_1XS_a399ed20b9c50c782cc7a6d4149b8911e}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!T\+Cool\+Sigma\+From\+To\+List\+\_\+@{T\+Cool\+Sigma\+From\+To\+List\+\_\+}}
+\index{T\+Cool\+Sigma\+From\+To\+List\+\_\+@{T\+Cool\+Sigma\+From\+To\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{T\+Cool\+Sigma\+From\+To\+List\+\_\+}{TCoolSigmaFromToList\_}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ T\+Cool\+Sigma\+From\+To\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 185 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a87e79a2257e79d89e25c61ee039d91a0}\label{classFoam_1_1XS_a87e79a2257e79d89e25c61ee039d91a0}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Tclad\+Ref\+\_\+@{Tclad\+Ref\+\_\+}}
+\index{Tclad\+Ref\+\_\+@{Tclad\+Ref\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Tclad\+Ref\+\_\+}{TcladRef\_}}
+{\footnotesize\ttfamily scalar Tclad\+Ref\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 187 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a0c6ce4615de673dc1b394551383a4306}\label{classFoam_1_1XS_a0c6ce4615de673dc1b394551383a4306}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!Tclad\+Perturbed\+\_\+@{Tclad\+Perturbed\+\_\+}}
+\index{Tclad\+Perturbed\+\_\+@{Tclad\+Perturbed\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{Tclad\+Perturbed\+\_\+}{TcladPerturbed\_}}
+{\footnotesize\ttfamily scalar Tclad\+Perturbed\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 188 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ae03abbd2301246ee28d49d2308db30d1}\label{classFoam_1_1XS_ae03abbd2301246ee28d49d2308db30d1}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!clad\+Exp\+D\+List\+\_\+@{clad\+Exp\+D\+List\+\_\+}}
+\index{clad\+Exp\+D\+List\+\_\+@{clad\+Exp\+D\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{clad\+Exp\+D\+List\+\_\+}{cladExpDList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ clad\+Exp\+D\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 189 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_aff0842a57f719497e0b218011a9f2bb7}\label{classFoam_1_1XS_aff0842a57f719497e0b218011a9f2bb7}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!clad\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+@{clad\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}}
+\index{clad\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+@{clad\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{clad\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+}{cladExpNuSigmaEffList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ clad\+Exp\+Nu\+Sigma\+Eff\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 190 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ae912b858880f1eab676702606d27daca}\label{classFoam_1_1XS_ae912b858880f1eab676702606d27daca}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!clad\+Exp\+Sigma\+Pow\+List\+\_\+@{clad\+Exp\+Sigma\+Pow\+List\+\_\+}}
+\index{clad\+Exp\+Sigma\+Pow\+List\+\_\+@{clad\+Exp\+Sigma\+Pow\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{clad\+Exp\+Sigma\+Pow\+List\+\_\+}{cladExpSigmaPowList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ clad\+Exp\+Sigma\+Pow\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 191 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a431532a3f51fc5c0b3f6c2dacf9eaf15}\label{classFoam_1_1XS_a431532a3f51fc5c0b3f6c2dacf9eaf15}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!clad\+Exp\+Sigma\+Disapp\+List\+\_\+@{clad\+Exp\+Sigma\+Disapp\+List\+\_\+}}
+\index{clad\+Exp\+Sigma\+Disapp\+List\+\_\+@{clad\+Exp\+Sigma\+Disapp\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{clad\+Exp\+Sigma\+Disapp\+List\+\_\+}{cladExpSigmaDisappList\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ clad\+Exp\+Sigma\+Disapp\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 192 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ae08aea5cb35d13155b6500359220a610}\label{classFoam_1_1XS_ae08aea5cb35d13155b6500359220a610}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!clad\+Exp\+Sigma\+From\+To\+List\+\_\+@{clad\+Exp\+Sigma\+From\+To\+List\+\_\+}}
+\index{clad\+Exp\+Sigma\+From\+To\+List\+\_\+@{clad\+Exp\+Sigma\+From\+To\+List\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{clad\+Exp\+Sigma\+From\+To\+List\+\_\+}{cladExpSigmaFromToList\_}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ clad\+Exp\+Sigma\+From\+To\+List\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 193 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a29c44ad7cad96a26dabbceeb7e4726eb}\label{classFoam_1_1XS_a29c44ad7cad96a26dabbceeb7e4726eb}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!C\+Rmove\+\_\+@{C\+Rmove\+\_\+}}
+\index{C\+Rmove\+\_\+@{C\+Rmove\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{C\+Rmove\+\_\+}{CRmove\_}}
+{\footnotesize\ttfamily I\+Odictionary C\+Rmove\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 196 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a3db65236cfa499f3d1af3a6d138b901b}\label{classFoam_1_1XS_a3db65236cfa499f3d1af3a6d138b901b}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!C\+Rentries\+\_\+@{C\+Rentries\+\_\+}}
+\index{C\+Rentries\+\_\+@{C\+Rentries\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{C\+Rentries\+\_\+}{CRentries\_}}
+{\footnotesize\ttfamily Ptr\+List$<$entry$>$ C\+Rentries\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 197 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_aca1bc9cd45aa65bba5648dfef95f3ade}\label{classFoam_1_1XS_aca1bc9cd45aa65bba5648dfef95f3ade}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!C\+R\+Number\+\_\+@{C\+R\+Number\+\_\+}}
+\index{C\+R\+Number\+\_\+@{C\+R\+Number\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{C\+R\+Number\+\_\+}{CRNumber\_}}
+{\footnotesize\ttfamily label C\+R\+Number\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 198 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_ae701fac84afdd0314da1c5afd8167c0b}\label{classFoam_1_1XS_ae701fac84afdd0314da1c5afd8167c0b}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!C\+Rstart\+\_\+@{C\+Rstart\+\_\+}}
+\index{C\+Rstart\+\_\+@{C\+Rstart\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{C\+Rstart\+\_\+}{CRstart\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ C\+Rstart\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 199 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a95fdbf3240e83a55b03524b573c4d004}\label{classFoam_1_1XS_a95fdbf3240e83a55b03524b573c4d004}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!C\+Rfinish\+\_\+@{C\+Rfinish\+\_\+}}
+\index{C\+Rfinish\+\_\+@{C\+Rfinish\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{C\+Rfinish\+\_\+}{CRfinish\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ C\+Rfinish\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 200 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a65e78652b96aa06c69280257ca9aa536}\label{classFoam_1_1XS_a65e78652b96aa06c69280257ca9aa536}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!C\+Rspeed\+\_\+@{C\+Rspeed\+\_\+}}
+\index{C\+Rspeed\+\_\+@{C\+Rspeed\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{C\+Rspeed\+\_\+}{CRspeed\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ C\+Rspeed\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 201 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a8179271f63974b5ee1ca293495877e9f}\label{classFoam_1_1XS_a8179271f63974b5ee1ca293495877e9f}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!C\+R\+Follower\+Name\+\_\+@{C\+R\+Follower\+Name\+\_\+}}
+\index{C\+R\+Follower\+Name\+\_\+@{C\+R\+Follower\+Name\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{C\+R\+Follower\+Name\+\_\+}{CRFollowerName\_}}
+{\footnotesize\ttfamily Ptr\+List$<$word $>$ C\+R\+Follower\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 202 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a8d008d308ad81906d031bf59ee715e3b}\label{classFoam_1_1XS_a8d008d308ad81906d031bf59ee715e3b}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!C\+Rinitial\+Position\+\_\+@{C\+Rinitial\+Position\+\_\+}}
+\index{C\+Rinitial\+Position\+\_\+@{C\+Rinitial\+Position\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{C\+Rinitial\+Position\+\_\+}{CRinitialPosition\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ C\+Rinitial\+Position\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 203 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a40a7dacaf9eb33f6bde0de0da08f30de}\label{classFoam_1_1XS_a40a7dacaf9eb33f6bde0de0da08f30de}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!C\+Rposition\+\_\+@{C\+Rposition\+\_\+}}
+\index{C\+Rposition\+\_\+@{C\+Rposition\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{C\+Rposition\+\_\+}{CRposition\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ C\+Rposition\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 204 of file X\+S.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1XS_a950f9c7de67d1956bd963be294a6ab4e}\label{classFoam_1_1XS_a950f9c7de67d1956bd963be294a6ab4e}} 
+\index{Foam\+::\+XS@{Foam\+::\+XS}!initial\+Distance\+From\+Mesh\+C\+R\+\_\+@{initial\+Distance\+From\+Mesh\+C\+R\+\_\+}}
+\index{initial\+Distance\+From\+Mesh\+C\+R\+\_\+@{initial\+Distance\+From\+Mesh\+C\+R\+\_\+}!Foam\+::\+XS@{Foam\+::\+XS}}
+\subsubsection{\texorpdfstring{initial\+Distance\+From\+Mesh\+C\+R\+\_\+}{initialDistanceFromMeshCR\_}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar $>$ initial\+Distance\+From\+Mesh\+C\+R\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 205 of file X\+S.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+X\+S/\+X\+S/\hyperlink{XS_8H}{X\+S.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+X\+S/\+X\+S/\hyperlink{XS_8C}{X\+S.\+C}\end{DoxyCompactItemize}

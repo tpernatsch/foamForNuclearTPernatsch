@@ -1,0 +1,39 @@
+\hypertarget{classFoam_1_1regimeMapModel_1_1twoParameters}{}\section{regime\+Map\+Model\+:\+:two\+Parameters Class Reference}
+\label{classFoam_1_1regimeMapModel_1_1twoParameters}\index{regime\+Map\+Model\+::two\+Parameters@{regime\+Map\+Model\+::two\+Parameters}}
+
+
+Regime map model that depends on two parameters.  
+
+
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFoam_1_1regimeMapModel_1_1twoParameters_1_1regimeDomain2D}{regime\+Domain2D}
+\begin{DoxyCompactList}\small\item\em Regime domain representation in 2D parameter-\/space. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Regime map model that depends on two parameters. 
+
+\label{_Description}%
+ Dictionary example \begin{DoxyVerb}regimeMaps
+{
+    "mapName"
+    {
+        type twoParameters;
+\end{DoxyVerb}
+
+
+These corrspond to the desired parameters for the 2-\/D map. These can only correspond to the I\+Oobject names of tvol\+Scalar\+Field ype objects in the mesh object registry. No other vol\+Type\+Fields are supported parameter1 \char`\"{}name1\char`\"{}; parameter2 \char`\"{}name2\char`\"{};
+
+This sets the size (width) of the interpolation region that sits across the line that separates two different regimes. This is used to avoid sharp changes in the transfer coefficients that might depend on this flow regime map to avoid numerical instabilities. In order to deal with the fact that the two axes (or dimensions) of the regime map might refer to parameters with wildy different domains (e.\+g. one axis corresponds to a volume fraction, which spans 0-\/1, while the other corresponds to a mass flux, which can spans up to e.\+g. 10000 kg/m2/s), it is difficult to define an absolute meaningful \char`\"{}distance\char`\"{} in this 2-\/D domain. Thus, this width refers to the relative width of this interpolation region compared to a normalized map wherein both axes span the 0-\/1 range only. Thus, this width needs to be comprised between 0 and 1, wherein 0 = no interpolation (not recommended) and 1 = everything is interpolated (then the map loses meaning). A generic value of 0.\+1 would serve a good starting guess. interpolation\+Width value;
+
+This specifies how the transfer coefficients are interpolated in the interpolation regions described above. The only possile modes are linear or quadratic. interpolation\+Mode linear; //quadratic;
+
+Dictionary that holds pairs of point names and point coordinates (par1\+\_\+X, par2\+\_\+X) for a generic point pX in the parameters space. These points are used to construct the regime domains in the regime map. The names of the points can be set to anything, as long as they are referenced correctly in the reigmes dictionary when building the regime domains regime\+Points \{ p0 (par1\+\_\+0, par2\+\_\+0) p1 (par1\+\_\+1, par2\+\_\+1) ... pN (par1\+\_\+N, par2\+\_\+N) \}
+
+Dictionary of all regime domains and the points that define their boundaries. For any domain, the point list can start from any point as long as the resulting domain boundaries (i.\+e. the lines that connect one point to the next one, and last back to the first) never cross each other. Both convex and concave shapes are possible. Please note, however, that no consistency checks are made to enforce the no-\/crossing condition (it will be implemented some time in the future). The last condition for this approach to work is with regards to scenarios like the one show below, wherein the boundary of a domain (AB of A\+B\+EF) intersects the straight boundary (CE) of another domain (E\+DC) at a given point (B). /$\ast$ $^\wedge$ parameter2 $\vert$ $\vert$ $\vert$ C $\vert$ $\vert$\textbackslash{} $\vert$ $\vert$ \textbackslash{} $\vert$ A-\/-\/-\/-\/-\/-\/-\/---B \textbackslash{} $\vert$ $\vert$ $\vert$ \textbackslash{} $\vert$ $\vert$ $\vert$ \textbackslash{} $\vert$ $\vert$ $\vert$ \textbackslash{} $\vert$ F-\/-\/-\/-\/-\/-\/-\/---E-\/-\/-\/---D $\vert$ i-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/---$>$ parameter1 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/regime\+Map\+Models/two\+Parameters/\hyperlink{twoParameters_8H}{two\+Parameters.\+H}\end{DoxyCompactItemize}

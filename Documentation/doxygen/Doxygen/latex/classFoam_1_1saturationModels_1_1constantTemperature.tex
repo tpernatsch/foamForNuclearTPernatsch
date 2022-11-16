@@ -1,0 +1,283 @@
+\hypertarget{classFoam_1_1saturationModels_1_1constantTemperature}{}\section{constant\+Temperature Class Reference}
+\label{classFoam_1_1saturationModels_1_1constantTemperature}\index{constant\+Temperature@{constant\+Temperature}}
+
+
+Constant saturation pressure and temperature.  
+
+
+
+
+Inheritance diagram for constant\+Temperature\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=189pt]{classFoam_1_1saturationModels_1_1constantTemperature__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for constant\+Temperature\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=189pt]{classFoam_1_1saturationModels_1_1constantTemperature__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_a91338e7f85f01060318544697cc564fe}{Type\+Name} (\char`\"{}constant\+Temperature\char`\"{})
+\item 
+\hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_ab458e7c9e229214c825d2fee85bbd9ee}{constant\+Temperature} (const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&pcm, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_a2db13ee7a4288605b08daa434d4da8a7}{$\sim$constant\+Temperature} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_a7d5f6259360b96b89a000c84ef880614}{value\+T\+Sat} (const label \&celli) const
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_a800a121f3086c2580a025d245a1b8178}{value\+P\+Sat} (const label \&celli) const
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_ac2c267657ff259967a96210a8fcb3c3f}{value\+Ln\+P\+Sat} (const label \&celli) const
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_acfe2ee8e32ce482cc86e523e7266bb1f}{value\+P\+Sat\+Prime} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+scalar \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_a80b4b3ccd6d90834eef458f1b5c95370}{T\+Sat\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature_a4c9ce31e482786bbeeed352570fd8d09}{p\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Constant saturation pressure and temperature. 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/saturationModels/constantTemperature/constantTemperatureSaturation.H}{\tt constant\+Temperature\+Saturation.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/saturationModels/constantTemperature/constantTemperature.C}{\tt constant\+Temperature.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 46 of file constant\+Temperature\+Saturation.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1constantTemperature_ab458e7c9e229214c825d2fee85bbd9ee}\label{classFoam_1_1saturationModels_1_1constantTemperature_ab458e7c9e229214c825d2fee85bbd9ee}} 
+\index{Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}!constant\+Temperature@{constant\+Temperature}}
+\index{constant\+Temperature@{constant\+Temperature}!Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}}
+\subsubsection{\texorpdfstring{constant\+Temperature()}{constantTemperature()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature}{constant\+Temperature} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&}]{pcm,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 44 of file constant\+Temperature\+Saturation.\+C.
+
+
+
+References constant\+Temperature\+::value\+T\+Sat().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{classFoam_1_1saturationModels_1_1constantTemperature_ab458e7c9e229214c825d2fee85bbd9ee_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1constantTemperature_a2db13ee7a4288605b08daa434d4da8a7}\label{classFoam_1_1saturationModels_1_1constantTemperature_a2db13ee7a4288605b08daa434d4da8a7}} 
+\index{Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}!````~constant\+Temperature@{$\sim$constant\+Temperature}}
+\index{````~constant\+Temperature@{$\sim$constant\+Temperature}!Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}}
+\subsubsection{\texorpdfstring{$\sim$constant\+Temperature()}{~constantTemperature()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1saturationModels_1_1constantTemperature}{constant\+Temperature} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 73 of file constant\+Temperature\+Saturation.\+H.
+
+
+
+References constant\+Temperature\+::value\+Ln\+P\+Sat(), constant\+Temperature\+::value\+P\+Sat(), constant\+Temperature\+::value\+P\+Sat\+Prime(), and constant\+Temperature\+::value\+T\+Sat().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1constantTemperature_a2db13ee7a4288605b08daa434d4da8a7_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1constantTemperature_a91338e7f85f01060318544697cc564fe}\label{classFoam_1_1saturationModels_1_1constantTemperature_a91338e7f85f01060318544697cc564fe}} 
+\index{Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}constant\+Temperature\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1constantTemperature_a7d5f6259360b96b89a000c84ef880614}\label{classFoam_1_1saturationModels_1_1constantTemperature_a7d5f6259360b96b89a000c84ef880614}} 
+\index{Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}!value\+T\+Sat@{value\+T\+Sat}}
+\index{value\+T\+Sat@{value\+T\+Sat}!Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}}
+\subsubsection{\texorpdfstring{value\+T\+Sat()}{valueTSat()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+T\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_aef8350cb17e8b8f92597160f1dd2a238}{saturation\+Model}.
+
+
+
+Definition at line 63 of file constant\+Temperature\+Saturation.\+C.
+
+
+
+References constant\+Temperature\+::value\+P\+Sat().
+
+
+
+Referenced by constant\+Temperature\+::constant\+Temperature(), and constant\+Temperature\+::$\sim$constant\+Temperature().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{classFoam_1_1saturationModels_1_1constantTemperature_a7d5f6259360b96b89a000c84ef880614_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{classFoam_1_1saturationModels_1_1constantTemperature_a7d5f6259360b96b89a000c84ef880614_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1constantTemperature_a800a121f3086c2580a025d245a1b8178}\label{classFoam_1_1saturationModels_1_1constantTemperature_a800a121f3086c2580a025d245a1b8178}} 
+\index{Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}!value\+P\+Sat@{value\+P\+Sat}}
+\index{value\+P\+Sat@{value\+P\+Sat}!Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}}
+\subsubsection{\texorpdfstring{value\+P\+Sat()}{valuePSat()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+P\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_a20f0c2e04da2086bb7cbcdf3e2078e7f}{saturation\+Model}.
+
+
+
+Definition at line 71 of file constant\+Temperature\+Saturation.\+C.
+
+
+
+References p\+\_\+, and constant\+Temperature\+::value\+Ln\+P\+Sat().
+
+
+
+Referenced by constant\+Temperature\+::value\+T\+Sat(), and constant\+Temperature\+::$\sim$constant\+Temperature().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{classFoam_1_1saturationModels_1_1constantTemperature_a800a121f3086c2580a025d245a1b8178_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1constantTemperature_a800a121f3086c2580a025d245a1b8178_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1constantTemperature_ac2c267657ff259967a96210a8fcb3c3f}\label{classFoam_1_1saturationModels_1_1constantTemperature_ac2c267657ff259967a96210a8fcb3c3f}} 
+\index{Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}!value\+Ln\+P\+Sat@{value\+Ln\+P\+Sat}}
+\index{value\+Ln\+P\+Sat@{value\+Ln\+P\+Sat}!Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}}
+\subsubsection{\texorpdfstring{value\+Ln\+P\+Sat()}{valueLnPSat()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+Ln\+P\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_a9b04e4a2fa5b275d1d5637c464b55ab4}{saturation\+Model}.
+
+
+
+Definition at line 79 of file constant\+Temperature\+Saturation.\+C.
+
+
+
+References p\+\_\+, and constant\+Temperature\+::value\+P\+Sat\+Prime().
+
+
+
+Referenced by constant\+Temperature\+::value\+P\+Sat(), and constant\+Temperature\+::$\sim$constant\+Temperature().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=275pt]{classFoam_1_1saturationModels_1_1constantTemperature_ac2c267657ff259967a96210a8fcb3c3f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1constantTemperature_ac2c267657ff259967a96210a8fcb3c3f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1constantTemperature_acfe2ee8e32ce482cc86e523e7266bb1f}\label{classFoam_1_1saturationModels_1_1constantTemperature_acfe2ee8e32ce482cc86e523e7266bb1f}} 
+\index{Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}!value\+P\+Sat\+Prime@{value\+P\+Sat\+Prime}}
+\index{value\+P\+Sat\+Prime@{value\+P\+Sat\+Prime}!Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}}
+\subsubsection{\texorpdfstring{value\+P\+Sat\+Prime()}{valuePSatPrime()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+P\+Sat\+Prime (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_a2d5563aa609bea35032a40c7f766e48c}{saturation\+Model}.
+
+
+
+Definition at line 87 of file constant\+Temperature\+Saturation.\+C.
+
+
+
+Referenced by constant\+Temperature\+::value\+Ln\+P\+Sat(), and constant\+Temperature\+::$\sim$constant\+Temperature().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1constantTemperature_acfe2ee8e32ce482cc86e523e7266bb1f_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1constantTemperature_a80b4b3ccd6d90834eef458f1b5c95370}\label{classFoam_1_1saturationModels_1_1constantTemperature_a80b4b3ccd6d90834eef458f1b5c95370}} 
+\index{Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}!T\+Sat\+\_\+@{T\+Sat\+\_\+}}
+\index{T\+Sat\+\_\+@{T\+Sat\+\_\+}!Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}}
+\subsubsection{\texorpdfstring{T\+Sat\+\_\+}{TSat\_}}
+{\footnotesize\ttfamily scalar T\+Sat\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 53 of file constant\+Temperature\+Saturation.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1constantTemperature_a4c9ce31e482786bbeeed352570fd8d09}\label{classFoam_1_1saturationModels_1_1constantTemperature_a4c9ce31e482786bbeeed352570fd8d09}} 
+\index{Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}!p\+\_\+@{p\+\_\+}}
+\index{p\+\_\+@{p\+\_\+}!Foam\+::saturation\+Models\+::constant\+Temperature@{Foam\+::saturation\+Models\+::constant\+Temperature}}
+\subsubsection{\texorpdfstring{p\+\_\+}{p\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& p\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 56 of file constant\+Temperature\+Saturation.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/saturation\+Models/constant\+Temperature/\hyperlink{constantTemperatureSaturation_8H}{constant\+Temperature\+Saturation.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/saturation\+Models/constant\+Temperature/\hyperlink{constantTemperatureSaturation_8C}{constant\+Temperature\+Saturation.\+C}\end{DoxyCompactItemize}

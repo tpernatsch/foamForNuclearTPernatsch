@@ -1,0 +1,9 @@
+
+\begin{DoxyItemize}
+\item The master branch includes the most stable version of Ge\+N-\/\+Foam, but the develop branch include all the latest developments.
+\item Please notice that models for water boiling are still preliminary, incomplete, and in Beta testing. In particular, the models for C\+HF and post-\/\+C\+HF have not been verified yet. Use with care. For the moment the critical heat flux can only be imposed at a constant value. No models or lookup tables have been implemented yet for its prediction.
+\item The adjoint diffusion solver has been implemented but not tested.
+\item The discrete-\/ordinate (SN) solver is currently only for steady-\/state. Transient analyses can in principle be run, but no acceleration techniques have been implemented, which requires hundreds of iterations for each time step.
+\item The remove\+Baffles flag in the control\+Dict may not always work in parallel. To be tested.
+\item The detailed temperature profile in the fuel cannot be recomposed with {\itshape reconstruct\+Par}, as Open\+F\+O\+AM is not currently able to reconstruct Field\+Fields. Be careful when trying to restart from a recomposed case, as you will have lost all info on fuel temperatures. 
+\end{DoxyItemize}

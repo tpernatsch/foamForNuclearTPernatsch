@@ -1,0 +1,478 @@
+\hypertarget{pEqnf__2p_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqnf\+\_\+2p.H File Reference}
+\label{pEqnf__2p_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqnf\+\_\+2p.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqnf\+\_\+2p.\+H}}
+Include dependency graph for p\+Eqnf\+\_\+2p.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pEqnf__2p_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{pEqnf__2p_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_a2d64c3faba87d892901391795a8140c2}{alpha\+Rhof1by\+Dt} (\char`\"{}alpha\+Rhof1\char`\"{}, fvc\+::interpolate(max(\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1}, \hyperlink{refsAndControls__2p_8H_a39053abc52660ee0829d85d9a9704f32}{residual\+Alpha1}) $\ast$\hyperlink{UEqns__2p_8H_a80ad9333a5b4812b1033ab05efb3a65d}{rho1})/mesh\+\_\+.\+time().deltaT())
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_a8c8a7a840ca8aaf68650f5940b9b63e7}{alpha\+Rhof2by\+Dt} (\char`\"{}alpha\+Rhof2\char`\"{}, fvc\+::interpolate(max(\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2}, \hyperlink{refsAndControls__2p_8H_a960fdd6ecc9e71702c858667a416d298}{residual\+Alpha2}) $\ast$\hyperlink{UEqns__2p_8H_a2a5e0e37e61560baf7b55ce8b70e01c0}{rho2})/mesh\+\_\+.\+time().deltaT())
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_ad166e3b3df3df6495b5ad0367d2a6d03}{alpha\+Rhof10by\+Dt} (\char`\"{}alpha\+Rhof10\char`\"{}, fvc\+::interpolate(max(alpha1.\+old\+Time(), \hyperlink{refsAndControls__2p_8H_a39053abc52660ee0829d85d9a9704f32}{residual\+Alpha1}) $\ast$rho1.\+old\+Time())/mesh\+\_\+.\+time().deltaT())
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_a3ed52d50799081db64c7604d23cd5d15}{alpha\+Rhof20by\+Dt} (\char`\"{}alpha\+Rhof20\char`\"{}, fvc\+::interpolate(max(alpha2.\+old\+Time(), \hyperlink{refsAndControls__2p_8H_a960fdd6ecc9e71702c858667a416d298}{residual\+Alpha2}) $\ast$rho2.\+old\+Time())/mesh\+\_\+.\+time().deltaT())
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_a92926bf08983bca8c8d3bdade64d24c2}{Kdf12} (fvc\+::interpolate(\hyperlink{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}{Kd12}))
+\item 
+\hyperlink{pEqnf__2p_8H_a5ae53f39028b227fab81abc22e3286d6}{if} (!\hyperlink{refsAndControls__2p_8H_a1d4f14edd4b410f2e95c2b58e5e49210}{implicit\+Partial\+Elimination})
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_a2609adcc1d02fc916d8e7d77a9b6e4cc}{Af2} (fvc\+::interpolate(\hyperlink{solvePointKinetics_8H_af0b39a25157c5a983e067e9f3176f91f}{U\+Eqn2.\+A}())+\hyperlink{pEqnf__2p_8H_a8c8a7a840ca8aaf68650f5940b9b63e7}{alpha\+Rhof2by\+Dt})
+\item 
+\hyperlink{pEqnf__2p_8H_ab519c6d0ec326c4166a5238ad1a75281}{Kdby\+Af1\+Ptr} \hyperlink{pEqnf__2p_8H_a7bf1549d8945bd2c90fcdd2524bd2079}{reset} (new surface\+Scalar\+Field(\hyperlink{pEqnf__2p_8H_a92926bf08983bca8c8d3bdade64d24c2}{Kdf12}/Af1))
+\item 
+\hyperlink{pEqnf__2p_8H_a2ada986b644f6ca4d3739c7cd72db448}{Kdby\+Af2\+Ptr} \hyperlink{pEqnf__2p_8H_a5a0dd54c80692ad662a75f8203a47f15}{reset} (new surface\+Scalar\+Field(\hyperlink{pEqnf__2p_8H_a92926bf08983bca8c8d3bdade64d24c2}{Kdf12}/\hyperlink{pEqnf__2p_8H_a2609adcc1d02fc916d8e7d77a9b6e4cc}{Af2}))
+\item 
+\hyperlink{pEqnf__2p_8H_a45cd567de66687731018bd57ba4895b4}{r\+A\+Uf1\+Ptr} \hyperlink{pEqnf__2p_8H_a608e33c95cb391d714ea0d61f73c22d1}{reset} (new surface\+Scalar\+Field(1.\+0/(Af1+\hyperlink{pEqnf__2p_8H_a92926bf08983bca8c8d3bdade64d24c2}{Kdf12} $\ast$(1.\+0+Af1/\hyperlink{pEqnf__2p_8H_a2609adcc1d02fc916d8e7d77a9b6e4cc}{Af2}))))
+\item 
+\hyperlink{pEqnf__2p_8H_afd2f9cb3bfb4ff4a3ca384fedd285ec9}{r\+A\+Uf2\+Ptr} \hyperlink{pEqnf__2p_8H_ac7e3c444c6631a56dd742955ee4c3e2a}{reset} (new surface\+Scalar\+Field(1.\+0/(\hyperlink{pEqnf__2p_8H_a2609adcc1d02fc916d8e7d77a9b6e4cc}{Af2}+\hyperlink{pEqnf__2p_8H_a92926bf08983bca8c8d3bdade64d24c2}{Kdf12} $\ast$(1.\+0+\hyperlink{pEqnf__2p_8H_a2609adcc1d02fc916d8e7d77a9b6e4cc}{Af2}/Af1))))
+\item 
+surface\+Scalar\+Field \& \hyperlink{pEqnf__2p_8H_a17310029adb03eb9492c209804d89f41}{Kdby\+Af1} (\hyperlink{pEqnf__2p_8H_ab519c6d0ec326c4166a5238ad1a75281}{Kdby\+Af1\+Ptr}())
+\item 
+surface\+Scalar\+Field \& \hyperlink{pEqnf__2p_8H_ab7a4fc4ee3f50aa316a32f9fe8a69e55}{Kdby\+Af2} (\hyperlink{pEqnf__2p_8H_a2ada986b644f6ca4d3739c7cd72db448}{Kdby\+Af2\+Ptr}())
+\item 
+surface\+Scalar\+Field \& \hyperlink{pEqnf__2p_8H_afe937f556d00eb62aa6152533edebec5}{r\+A\+Uf1} (\hyperlink{pEqnf__2p_8H_a45cd567de66687731018bd57ba4895b4}{r\+A\+Uf1\+Ptr}())
+\item 
+surface\+Scalar\+Field \& \hyperlink{pEqnf__2p_8H_af4fa7f5a39d79ab8eb0a15cec0eb266a}{r\+A\+Uf2} (\hyperlink{pEqnf__2p_8H_afd2f9cb3bfb4ff4a3ca384fedd285ec9}{r\+A\+Uf2\+Ptr}())
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_aefc84bdeaa95a5fb10aa1d8c927a1dcd}{alphar\+A\+Uf1} (\hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1} $\ast$\hyperlink{pEqnf__2p_8H_afe937f556d00eb62aa6152533edebec5}{r\+A\+Uf1})
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_a6ec0d21d609168975080be8ab17fffec}{alphar\+A\+Uf2} (\hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2} $\ast$\hyperlink{pEqnf__2p_8H_af4fa7f5a39d79ab8eb0a15cec0eb266a}{r\+A\+Uf2})
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_acc1c5015cd091fa1405bfe2def838914}{alphar\+A\+Uf1\+Star} ((\hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1}+\hyperlink{pEqnf__2p_8H_ab7a4fc4ee3f50aa316a32f9fe8a69e55}{Kdby\+Af2} $\ast$(\hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1}+\hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2})) $\ast$\hyperlink{pEqnf__2p_8H_afe937f556d00eb62aa6152533edebec5}{r\+A\+Uf1})
+\item 
+surface\+Scalar\+Field \hyperlink{pEqnf__2p_8H_a0556af18bc3855bf335f1763fd2a0814}{alphar\+A\+Uf2\+Star} ((\hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2}+\hyperlink{pEqnf__2p_8H_a17310029adb03eb9492c209804d89f41}{Kdby\+Af1} $\ast$(\hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1}+\hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2})) $\ast$\hyperlink{pEqnf__2p_8H_af4fa7f5a39d79ab8eb0a15cec0eb266a}{r\+A\+Uf2})
+\item 
+bool \hyperlink{pEqnf__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}{converged\+P\+I\+SO} (false)
+\item 
+\hyperlink{pEqnf__2p_8H_a6e6ddb24845d3c5c3906e45d968e9448}{while} (\hyperlink{hEqn_8H_a3a2458f7f54158be848527a3fdedd5dd}{pimple\+\_\+.\+correct}(\hyperlink{pEqnf__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}{converged\+P\+I\+SO}))
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{pEqnf__2p_8H_a0544c3fe466e421738dae463968b70ba}{else}
+\item 
+auto\+Ptr$<$ surface\+Scalar\+Field $>$ \hyperlink{pEqnf__2p_8H_ab519c6d0ec326c4166a5238ad1a75281}{Kdby\+Af1\+Ptr}
+\item 
+auto\+Ptr$<$ surface\+Scalar\+Field $>$ \hyperlink{pEqnf__2p_8H_a2ada986b644f6ca4d3739c7cd72db448}{Kdby\+Af2\+Ptr}
+\item 
+auto\+Ptr$<$ surface\+Scalar\+Field $>$ \hyperlink{pEqnf__2p_8H_a45cd567de66687731018bd57ba4895b4}{r\+A\+Uf1\+Ptr}
+\item 
+auto\+Ptr$<$ surface\+Scalar\+Field $>$ \hyperlink{pEqnf__2p_8H_afd2f9cb3bfb4ff4a3ca384fedd285ec9}{r\+A\+Uf2\+Ptr}
+\item 
+auto\+Ptr$<$ surface\+Scalar\+Field $>$ \hyperlink{pEqnf__2p_8H_a9c2f51a5677c963fe409e991f6487325}{phi\+Su1\+Ptr}
+\item 
+auto\+Ptr$<$ surface\+Scalar\+Field $>$ \hyperlink{pEqnf__2p_8H_af80a3d86e3c14c6ac34eee295647f041}{phi\+Su2\+Ptr}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{pEqnf__2p_8H_a2d64c3faba87d892901391795a8140c2}\label{pEqnf__2p_8H_a2d64c3faba87d892901391795a8140c2}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!alpha\+Rhof1by\+Dt@{alpha\+Rhof1by\+Dt}}
+\index{alpha\+Rhof1by\+Dt@{alpha\+Rhof1by\+Dt}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alpha\+Rhof1by\+Dt()}{alphaRhof1byDt()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alpha\+Rhof1by\+Dt (\begin{DoxyParamCaption}\item[{\char`\"{}alpha\+Rhof1\char`\"{}}]{,  }\item[{fvc\+::interpolate(max(\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1}, \hyperlink{refsAndControls__2p_8H_a39053abc52660ee0829d85d9a9704f32}{residual\+Alpha1}) $\ast$\hyperlink{UEqns__2p_8H_a80ad9333a5b4812b1033ab05efb3a65d}{rho1})/mesh\+\_\+.\+time().deltaT()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{pEqnf__2p_8H_a2d64c3faba87d892901391795a8140c2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_a8c8a7a840ca8aaf68650f5940b9b63e7}\label{pEqnf__2p_8H_a8c8a7a840ca8aaf68650f5940b9b63e7}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!alpha\+Rhof2by\+Dt@{alpha\+Rhof2by\+Dt}}
+\index{alpha\+Rhof2by\+Dt@{alpha\+Rhof2by\+Dt}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alpha\+Rhof2by\+Dt()}{alphaRhof2byDt()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alpha\+Rhof2by\+Dt (\begin{DoxyParamCaption}\item[{\char`\"{}alpha\+Rhof2\char`\"{}}]{,  }\item[{fvc\+::interpolate(max(\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2}, \hyperlink{refsAndControls__2p_8H_a960fdd6ecc9e71702c858667a416d298}{residual\+Alpha2}) $\ast$\hyperlink{UEqns__2p_8H_a2a5e0e37e61560baf7b55ce8b70e01c0}{rho2})/mesh\+\_\+.\+time().deltaT()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{pEqnf__2p_8H_a8c8a7a840ca8aaf68650f5940b9b63e7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_ad166e3b3df3df6495b5ad0367d2a6d03}\label{pEqnf__2p_8H_ad166e3b3df3df6495b5ad0367d2a6d03}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!alpha\+Rhof10by\+Dt@{alpha\+Rhof10by\+Dt}}
+\index{alpha\+Rhof10by\+Dt@{alpha\+Rhof10by\+Dt}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alpha\+Rhof10by\+Dt()}{alphaRhof10byDt()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alpha\+Rhof10by\+Dt (\begin{DoxyParamCaption}\item[{\char`\"{}alpha\+Rhof10\char`\"{}}]{,  }\item[{fvc\+::interpolate(max(alpha1.\+old\+Time(), \hyperlink{refsAndControls__2p_8H_a39053abc52660ee0829d85d9a9704f32}{residual\+Alpha1}) $\ast$rho1.\+old\+Time())/mesh\+\_\+.\+time().deltaT()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{pEqnf__2p_8H_ad166e3b3df3df6495b5ad0367d2a6d03_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_a3ed52d50799081db64c7604d23cd5d15}\label{pEqnf__2p_8H_a3ed52d50799081db64c7604d23cd5d15}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!alpha\+Rhof20by\+Dt@{alpha\+Rhof20by\+Dt}}
+\index{alpha\+Rhof20by\+Dt@{alpha\+Rhof20by\+Dt}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alpha\+Rhof20by\+Dt()}{alphaRhof20byDt()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alpha\+Rhof20by\+Dt (\begin{DoxyParamCaption}\item[{\char`\"{}alpha\+Rhof20\char`\"{}}]{,  }\item[{fvc\+::interpolate(max(alpha2.\+old\+Time(), \hyperlink{refsAndControls__2p_8H_a960fdd6ecc9e71702c858667a416d298}{residual\+Alpha2}) $\ast$rho2.\+old\+Time())/mesh\+\_\+.\+time().deltaT()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{pEqnf__2p_8H_a3ed52d50799081db64c7604d23cd5d15_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_a92926bf08983bca8c8d3bdade64d24c2}\label{pEqnf__2p_8H_a92926bf08983bca8c8d3bdade64d24c2}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!Kdf12@{Kdf12}}
+\index{Kdf12@{Kdf12}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kdf12()}{Kdf12()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field Kdf12 (\begin{DoxyParamCaption}\item[{fvc\+::interpolate(\hyperlink{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}{Kd12})}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=187pt]{pEqnf__2p_8H_a92926bf08983bca8c8d3bdade64d24c2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_a5ae53f39028b227fab81abc22e3286d6}\label{pEqnf__2p_8H_a5ae53f39028b227fab81abc22e3286d6}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!if@{if}}
+\index{if@{if}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{!}]{implicit\+Partial\+Elimination }\end{DoxyParamCaption})}
+
+
+
+Definition at line 37 of file p\+Eqnf\+\_\+2p.\+H.
+
+
+
+References alphaf1(), alphaf2(), alphar\+A\+Uf1(), alphar\+A\+Uf2(), alpha\+Rhof10by\+Dt(), alpha\+Rhof1by\+Dt(), alpha\+Rhof20by\+Dt(), alpha\+Rhof2by\+Dt(), converged\+P\+I\+S\+O(), explicit\+Partial\+Elimination(), Kdf12(), moving\+Alphaf(), no\+Partial\+Elimination(), p\+\_\+, p\+\_\+rgh\+\_\+, p\+Eqn\+Comp1, p\+Eqn\+Comp2, p\+Eqn\+Incomp(), phi1(), phi2(), phi\+S1(), phi\+S2(), r\+A\+Uf(), r\+A\+Uf1(), r\+A\+Uf2(), rho\+\_\+, U\+Eqn1, and U\+Eqn2.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{pEqnf__2p_8H_a5ae53f39028b227fab81abc22e3286d6_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_a2609adcc1d02fc916d8e7d77a9b6e4cc}\label{pEqnf__2p_8H_a2609adcc1d02fc916d8e7d77a9b6e4cc}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!Af2@{Af2}}
+\index{Af2@{Af2}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Af2()}{Af2()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field Af2 (\begin{DoxyParamCaption}\item[{fvc\+::interpolate(\hyperlink{solvePointKinetics_8H_af0b39a25157c5a983e067e9f3176f91f}{U\+Eqn2.\+A}())+}]{alpha\+Rhof2by\+Dt }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{pEqnf__2p_8H_a7bf1549d8945bd2c90fcdd2524bd2079}\label{pEqnf__2p_8H_a7bf1549d8945bd2c90fcdd2524bd2079}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!reset@{reset}}
+\index{reset@{reset}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \hyperlink{pEqnf__2p_8H_ab519c6d0ec326c4166a5238ad1a75281}{Kdby\+Af1\+Ptr} reset (\begin{DoxyParamCaption}\item[{new }]{surface\+Scalar\+FieldKdf12/\+Af1 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{pEqnf__2p_8H_a5a0dd54c80692ad662a75f8203a47f15}\label{pEqnf__2p_8H_a5a0dd54c80692ad662a75f8203a47f15}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!reset@{reset}}
+\index{reset@{reset}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \hyperlink{pEqnf__2p_8H_a2ada986b644f6ca4d3739c7cd72db448}{Kdby\+Af2\+Ptr} reset (\begin{DoxyParamCaption}\item[{new }]{surface\+Scalar\+FieldKdf12/\+Af2 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{pEqnf__2p_8H_a608e33c95cb391d714ea0d61f73c22d1}\label{pEqnf__2p_8H_a608e33c95cb391d714ea0d61f73c22d1}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!reset@{reset}}
+\index{reset@{reset}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \hyperlink{pEqnf__2p_8H_a45cd567de66687731018bd57ba4895b4}{r\+A\+Uf1\+Ptr} reset (\begin{DoxyParamCaption}\item[{new }]{surface\+Scalar\+Field1.\+0/(\+Af1+\+Kdf12 $\ast$(1.\+0+\+Af1/\+Af2)) }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{pEqnf__2p_8H_ac7e3c444c6631a56dd742955ee4c3e2a}\label{pEqnf__2p_8H_ac7e3c444c6631a56dd742955ee4c3e2a}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!reset@{reset}}
+\index{reset@{reset}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \hyperlink{pEqnf__2p_8H_afd2f9cb3bfb4ff4a3ca384fedd285ec9}{r\+A\+Uf2\+Ptr} reset (\begin{DoxyParamCaption}\item[{new }]{surface\+Scalar\+Field1.\+0/(\+Af2+\+Kdf12 $\ast$(1.\+0+\+Af2/\+Af1)) }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{pEqnf__2p_8H_a17310029adb03eb9492c209804d89f41}\label{pEqnf__2p_8H_a17310029adb03eb9492c209804d89f41}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!Kdby\+Af1@{Kdby\+Af1}}
+\index{Kdby\+Af1@{Kdby\+Af1}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kdby\+Af1()}{KdbyAf1()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field\& Kdby\+Af1 (\begin{DoxyParamCaption}\item[{\hyperlink{pEqnf__2p_8H_ab519c6d0ec326c4166a5238ad1a75281}{Kdby\+Af1\+Ptr}()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{pEqnf__2p_8H_a17310029adb03eb9492c209804d89f41_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_ab7a4fc4ee3f50aa316a32f9fe8a69e55}\label{pEqnf__2p_8H_ab7a4fc4ee3f50aa316a32f9fe8a69e55}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!Kdby\+Af2@{Kdby\+Af2}}
+\index{Kdby\+Af2@{Kdby\+Af2}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kdby\+Af2()}{KdbyAf2()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field\& Kdby\+Af2 (\begin{DoxyParamCaption}\item[{\hyperlink{pEqnf__2p_8H_a2ada986b644f6ca4d3739c7cd72db448}{Kdby\+Af2\+Ptr}()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{pEqnf__2p_8H_ab7a4fc4ee3f50aa316a32f9fe8a69e55_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_afe937f556d00eb62aa6152533edebec5}\label{pEqnf__2p_8H_afe937f556d00eb62aa6152533edebec5}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!r\+A\+Uf1@{r\+A\+Uf1}}
+\index{r\+A\+Uf1@{r\+A\+Uf1}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{r\+A\+Uf1()}{rAUf1()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field\& r\+A\+Uf1 (\begin{DoxyParamCaption}\item[{\hyperlink{pEqnf__2p_8H_a45cd567de66687731018bd57ba4895b4}{r\+A\+Uf1\+Ptr}()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=197pt]{pEqnf__2p_8H_afe937f556d00eb62aa6152533edebec5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_af4fa7f5a39d79ab8eb0a15cec0eb266a}\label{pEqnf__2p_8H_af4fa7f5a39d79ab8eb0a15cec0eb266a}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!r\+A\+Uf2@{r\+A\+Uf2}}
+\index{r\+A\+Uf2@{r\+A\+Uf2}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{r\+A\+Uf2()}{rAUf2()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field\& r\+A\+Uf2 (\begin{DoxyParamCaption}\item[{\hyperlink{pEqnf__2p_8H_afd2f9cb3bfb4ff4a3ca384fedd285ec9}{r\+A\+Uf2\+Ptr}()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=197pt]{pEqnf__2p_8H_af4fa7f5a39d79ab8eb0a15cec0eb266a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_aefc84bdeaa95a5fb10aa1d8c927a1dcd}\label{pEqnf__2p_8H_aefc84bdeaa95a5fb10aa1d8c927a1dcd}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!alphar\+A\+Uf1@{alphar\+A\+Uf1}}
+\index{alphar\+A\+Uf1@{alphar\+A\+Uf1}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alphar\+A\+Uf1()}{alpharAUf1()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphar\+A\+Uf1 (\begin{DoxyParamCaption}\item[{\hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1} $\ast$}]{r\+A\+Uf1 }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{pEqnf__2p_8H_aefc84bdeaa95a5fb10aa1d8c927a1dcd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_a6ec0d21d609168975080be8ab17fffec}\label{pEqnf__2p_8H_a6ec0d21d609168975080be8ab17fffec}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!alphar\+A\+Uf2@{alphar\+A\+Uf2}}
+\index{alphar\+A\+Uf2@{alphar\+A\+Uf2}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alphar\+A\+Uf2()}{alpharAUf2()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphar\+A\+Uf2 (\begin{DoxyParamCaption}\item[{\hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2} $\ast$}]{r\+A\+Uf2 }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{pEqnf__2p_8H_a6ec0d21d609168975080be8ab17fffec_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_acc1c5015cd091fa1405bfe2def838914}\label{pEqnf__2p_8H_acc1c5015cd091fa1405bfe2def838914}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!alphar\+A\+Uf1\+Star@{alphar\+A\+Uf1\+Star}}
+\index{alphar\+A\+Uf1\+Star@{alphar\+A\+Uf1\+Star}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alphar\+A\+Uf1\+Star()}{alpharAUf1Star()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphar\+A\+Uf1\+Star (\begin{DoxyParamCaption}\item[{(\hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1}+\hyperlink{pEqnf__2p_8H_ab7a4fc4ee3f50aa316a32f9fe8a69e55}{Kdby\+Af2} $\ast$(\hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1}+\hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2})) $\ast$}]{r\+A\+Uf1 }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{pEqnf__2p_8H_acc1c5015cd091fa1405bfe2def838914_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_a0556af18bc3855bf335f1763fd2a0814}\label{pEqnf__2p_8H_a0556af18bc3855bf335f1763fd2a0814}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!alphar\+A\+Uf2\+Star@{alphar\+A\+Uf2\+Star}}
+\index{alphar\+A\+Uf2\+Star@{alphar\+A\+Uf2\+Star}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alphar\+A\+Uf2\+Star()}{alpharAUf2Star()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphar\+A\+Uf2\+Star (\begin{DoxyParamCaption}\item[{(\hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2}+\hyperlink{pEqnf__2p_8H_a17310029adb03eb9492c209804d89f41}{Kdby\+Af1} $\ast$(\hyperlink{refsAndControls__2p_8H_af5ff2b878e8d79c2bd7cf5385f55ea99}{alphaf1}+\hyperlink{refsAndControls__2p_8H_afc54ce6b2d45999d802074c7c4d86cc8}{alphaf2})) $\ast$}]{r\+A\+Uf2 }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{pEqnf__2p_8H_a0556af18bc3855bf335f1763fd2a0814_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}\label{pEqnf__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!converged\+P\+I\+SO@{converged\+P\+I\+SO}}
+\index{converged\+P\+I\+SO@{converged\+P\+I\+SO}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{converged\+P\+I\+S\+O()}{convergedPISO()}}
+{\footnotesize\ttfamily bool converged\+P\+I\+SO (\begin{DoxyParamCaption}\item[{false}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{pEqnf__2p_8H_a7378b3cca14609b2f41dab30069eb9c4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqnf__2p_8H_a6e6ddb24845d3c5c3906e45d968e9448}\label{pEqnf__2p_8H_a6e6ddb24845d3c5c3906e45d968e9448}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!while@{while}}
+\index{while@{while}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{while()}{while()}}
+{\footnotesize\ttfamily while (\begin{DoxyParamCaption}\item[{pimple\+\_\+.}]{correctconverged\+P\+I\+SO }\end{DoxyParamCaption})}
+
+
+
+Definition at line 218 of file p\+Eqnf\+\_\+2p.\+H.
+
+
+
+References alphaf1(), alphaf2(), alphar\+A\+Uf1\+Star(), alphar\+A\+Uf2\+Star(), alpha\+Rhof10by\+Dt(), alpha\+Rhof20by\+Dt(), Kdby\+Af1(), Kdby\+Af2(), p\+\_\+, p\+\_\+rgh\+\_\+, p\+Eqn\+Comp1, p\+Eqn\+Comp2, p\+Eqn\+Incomp(), phi1(), phi2(), phi\+S1(), phi\+S2(), phi\+Su1\+Ptr, phi\+Su2\+Ptr, r\+A\+Uf(), r\+A\+Uf1(), r\+A\+Uf2(), rho\+\_\+, U\+Eqn1, and U\+Eqn2.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{pEqnf__2p_8H_a6e6ddb24845d3c5c3906e45d968e9448_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{pEqnf__2p_8H_a0544c3fe466e421738dae463968b70ba}\label{pEqnf__2p_8H_a0544c3fe466e421738dae463968b70ba}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!else@{else}}
+\index{else@{else}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{else}{else}}
+{\footnotesize\ttfamily else}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+    
+    surfaceScalarField Af1(fvc::interpolate(\hyperlink{UEqns__2p_8H_ac3b68d7f14e859dbaf0e8c9b850c0288}{UEqn1}.A()) + \hyperlink{pEqnf__2p_8H_a2d64c3faba87d892901391795a8140c2}{alphaRhof1byDt})
+\end{DoxyCode}
+
+
+Definition at line 174 of file p\+Eqnf\+\_\+2p.\+H.
+
+\mbox{\Hypertarget{pEqnf__2p_8H_ab519c6d0ec326c4166a5238ad1a75281}\label{pEqnf__2p_8H_ab519c6d0ec326c4166a5238ad1a75281}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!Kdby\+Af1\+Ptr@{Kdby\+Af1\+Ptr}}
+\index{Kdby\+Af1\+Ptr@{Kdby\+Af1\+Ptr}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kdby\+Af1\+Ptr}{KdbyAf1Ptr}}
+{\footnotesize\ttfamily auto\+Ptr$<$surface\+Scalar\+Field$>$ Kdby\+Af1\+Ptr}
+
+
+
+Definition at line 181 of file p\+Eqnf\+\_\+2p.\+H.
+
+\mbox{\Hypertarget{pEqnf__2p_8H_a2ada986b644f6ca4d3739c7cd72db448}\label{pEqnf__2p_8H_a2ada986b644f6ca4d3739c7cd72db448}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!Kdby\+Af2\+Ptr@{Kdby\+Af2\+Ptr}}
+\index{Kdby\+Af2\+Ptr@{Kdby\+Af2\+Ptr}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kdby\+Af2\+Ptr}{KdbyAf2Ptr}}
+{\footnotesize\ttfamily auto\+Ptr$<$surface\+Scalar\+Field$>$ Kdby\+Af2\+Ptr}
+
+
+
+Definition at line 182 of file p\+Eqnf\+\_\+2p.\+H.
+
+\mbox{\Hypertarget{pEqnf__2p_8H_a45cd567de66687731018bd57ba4895b4}\label{pEqnf__2p_8H_a45cd567de66687731018bd57ba4895b4}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!r\+A\+Uf1\+Ptr@{r\+A\+Uf1\+Ptr}}
+\index{r\+A\+Uf1\+Ptr@{r\+A\+Uf1\+Ptr}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{r\+A\+Uf1\+Ptr}{rAUf1Ptr}}
+{\footnotesize\ttfamily auto\+Ptr$<$surface\+Scalar\+Field$>$ r\+A\+Uf1\+Ptr}
+
+
+
+Definition at line 183 of file p\+Eqnf\+\_\+2p.\+H.
+
+\mbox{\Hypertarget{pEqnf__2p_8H_afd2f9cb3bfb4ff4a3ca384fedd285ec9}\label{pEqnf__2p_8H_afd2f9cb3bfb4ff4a3ca384fedd285ec9}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!r\+A\+Uf2\+Ptr@{r\+A\+Uf2\+Ptr}}
+\index{r\+A\+Uf2\+Ptr@{r\+A\+Uf2\+Ptr}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{r\+A\+Uf2\+Ptr}{rAUf2Ptr}}
+{\footnotesize\ttfamily auto\+Ptr$<$surface\+Scalar\+Field$>$ r\+A\+Uf2\+Ptr}
+
+
+
+Definition at line 184 of file p\+Eqnf\+\_\+2p.\+H.
+
+\mbox{\Hypertarget{pEqnf__2p_8H_a9c2f51a5677c963fe409e991f6487325}\label{pEqnf__2p_8H_a9c2f51a5677c963fe409e991f6487325}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!phi\+Su1\+Ptr@{phi\+Su1\+Ptr}}
+\index{phi\+Su1\+Ptr@{phi\+Su1\+Ptr}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{phi\+Su1\+Ptr}{phiSu1Ptr}}
+{\footnotesize\ttfamily auto\+Ptr$<$surface\+Scalar\+Field$>$ phi\+Su1\+Ptr}
+
+
+
+Definition at line 185 of file p\+Eqnf\+\_\+2p.\+H.
+
+
+
+Referenced by while().
+
+\mbox{\Hypertarget{pEqnf__2p_8H_af80a3d86e3c14c6ac34eee295647f041}\label{pEqnf__2p_8H_af80a3d86e3c14c6ac34eee295647f041}} 
+\index{p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}!phi\+Su2\+Ptr@{phi\+Su2\+Ptr}}
+\index{phi\+Su2\+Ptr@{phi\+Su2\+Ptr}!p\+Eqnf\+\_\+2p.\+H@{p\+Eqnf\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{phi\+Su2\+Ptr}{phiSu2Ptr}}
+{\footnotesize\ttfamily auto\+Ptr$<$surface\+Scalar\+Field$>$ phi\+Su2\+Ptr}
+
+
+
+Definition at line 186 of file p\+Eqnf\+\_\+2p.\+H.
+
+
+
+Referenced by while().
+

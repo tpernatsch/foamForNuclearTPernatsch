@@ -1,0 +1,83 @@
+\hypertarget{namespaceFoam_1_1saturationModels}{}\section{Foam\+:\+:saturation\+Models Namespace Reference}
+\label{namespaceFoam_1_1saturationModels}\index{Foam\+::saturation\+Models@{Foam\+::saturation\+Models}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter}{Browning\+Potter}
+\begin{DoxyCompactList}\small\item\em Saturation model based on results by Browning and Potter, refer to \href{https://www.ne.anl.gov/eda/ANL-RE-95-2.pdf}{\tt https\+://www.\+ne.\+anl.\+gov/eda/\+A\+N\+L-\/\+R\+E-\/95-\/2.\+pdf}. The saturation pressure form is ln\+P\+Sat = A + B/\+T\+Sat + C$\ast$ln(T\+Sat), which is not invertible in T\+Sat. T\+Sat is inverted by approximateding ln(\+T\+Sat) by a second order polyinomial. \end{DoxyCompactList}\item 
+class \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature}{constant\+Temperature}
+\begin{DoxyCompactList}\small\item\em Constant saturation pressure and temperature. \end{DoxyCompactList}\item 
+class \hyperlink{classFoam_1_1saturationModels_1_1water}{water}
+\begin{DoxyCompactList}\small\item\em Saturation model for water in the 0.\+01-\/350 {\itshape C range based on an interpolation of N\+I\+ST data in the form Psat = A}(T-\/B)$^\wedge$C. The N\+I\+ST data can be found at\+: \href{https://www.nist.gov/system/files/documents/srd/NISTIR5078-Tab1.pdf}{\tt https\+://www.\+nist.\+gov/system/files/documents/srd/\+N\+I\+S\+T\+I\+R5078-\/\+Tab1.\+pdf}. \end{DoxyCompactList}\item 
+class \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE}{water\+T\+R\+A\+CE}
+\begin{DoxyCompactList}\small\item\em Saturation model for water in the 0.\+01-\/350 $\ast$C range based on T\+R\+A\+CE\+: \href{https://www.nrc.gov/docs/ML1200/ML120060218.pdf}{\tt https\+://www.\+nrc.\+gov/docs/\+M\+L1200/\+M\+L120060218.\+pdf}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespaceFoam_1_1saturationModels_a3811c12490cabc1f76da0e6e2205d4a1}{define\+Type\+Name\+And\+Debug} (\hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter}{Browning\+Potter}, 0)
+\item 
+\hyperlink{namespaceFoam_1_1saturationModels_af4c428227cb77a832cdecd8c807e03dd}{add\+To\+Run\+Time\+Selection\+Table} (\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}, \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter}{Browning\+Potter}, saturation\+Models)
+\item 
+\hyperlink{namespaceFoam_1_1saturationModels_a72bce82172fe9ce569a42ac7bff20ec1}{define\+Type\+Name\+And\+Debug} (\hyperlink{classFoam_1_1saturationModels_1_1constantTemperature}{constant\+Temperature}, 0)
+\item 
+\hyperlink{namespaceFoam_1_1saturationModels_a8e4123fbe8291637baf84f9e3971010c}{add\+To\+Run\+Time\+Selection\+Table} (\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}, \hyperlink{classFoam_1_1saturationModels_1_1constantTemperature}{constant\+Temperature}, saturation\+Models)
+\item 
+\hyperlink{namespaceFoam_1_1saturationModels_ae17645da709dc2e5c8cb049bc858a3ee}{define\+Type\+Name\+And\+Debug} (\hyperlink{classFoam_1_1saturationModels_1_1water}{water}, 0)
+\item 
+\hyperlink{namespaceFoam_1_1saturationModels_afcb497101cd25d4c30cc8695d2df2bab}{add\+To\+Run\+Time\+Selection\+Table} (\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}, \hyperlink{classFoam_1_1saturationModels_1_1water}{water}, saturation\+Models)
+\item 
+\hyperlink{namespaceFoam_1_1saturationModels_a387131a2a1f830d0c7500dd8eb77f5ad}{define\+Type\+Name\+And\+Debug} (\hyperlink{classFoam_1_1saturationModels_1_1waterTRACE}{water\+T\+R\+A\+CE}, 0)
+\item 
+\hyperlink{namespaceFoam_1_1saturationModels_af8c4d000d19a1a66e1e1a769e7620b66}{add\+To\+Run\+Time\+Selection\+Table} (\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}, \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE}{water\+T\+R\+A\+CE}, saturation\+Models)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{namespaceFoam_1_1saturationModels_a3811c12490cabc1f76da0e6e2205d4a1}\label{namespaceFoam_1_1saturationModels_a3811c12490cabc1f76da0e6e2205d4a1}} 
+\index{Foam\+::saturation\+Models@{Foam\+::saturation\+Models}!define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}}
+\index{define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}!Foam\+::saturation\+Models@{Foam\+::saturation\+Models}}
+\subsubsection{\texorpdfstring{define\+Type\+Name\+And\+Debug()}{defineTypeNameAndDebug()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily Foam\+::saturation\+Models\+::define\+Type\+Name\+And\+Debug (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter}{Browning\+Potter}}]{,  }\item[{0}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1saturationModels_af4c428227cb77a832cdecd8c807e03dd}\label{namespaceFoam_1_1saturationModels_af4c428227cb77a832cdecd8c807e03dd}} 
+\index{Foam\+::saturation\+Models@{Foam\+::saturation\+Models}!add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}}
+\index{add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}!Foam\+::saturation\+Models@{Foam\+::saturation\+Models}}
+\subsubsection{\texorpdfstring{add\+To\+Run\+Time\+Selection\+Table()}{addToRunTimeSelectionTable()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily Foam\+::saturation\+Models\+::add\+To\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}}]{,  }\item[{\hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter}{Browning\+Potter}}]{,  }\item[{saturation\+Models}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1saturationModels_a72bce82172fe9ce569a42ac7bff20ec1}\label{namespaceFoam_1_1saturationModels_a72bce82172fe9ce569a42ac7bff20ec1}} 
+\index{Foam\+::saturation\+Models@{Foam\+::saturation\+Models}!define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}}
+\index{define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}!Foam\+::saturation\+Models@{Foam\+::saturation\+Models}}
+\subsubsection{\texorpdfstring{define\+Type\+Name\+And\+Debug()}{defineTypeNameAndDebug()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily Foam\+::saturation\+Models\+::define\+Type\+Name\+And\+Debug (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1saturationModels_1_1constantTemperature}{constant\+Temperature}}]{,  }\item[{0}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1saturationModels_a8e4123fbe8291637baf84f9e3971010c}\label{namespaceFoam_1_1saturationModels_a8e4123fbe8291637baf84f9e3971010c}} 
+\index{Foam\+::saturation\+Models@{Foam\+::saturation\+Models}!add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}}
+\index{add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}!Foam\+::saturation\+Models@{Foam\+::saturation\+Models}}
+\subsubsection{\texorpdfstring{add\+To\+Run\+Time\+Selection\+Table()}{addToRunTimeSelectionTable()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily Foam\+::saturation\+Models\+::add\+To\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}}]{,  }\item[{\hyperlink{classFoam_1_1saturationModels_1_1constantTemperature}{constant\+Temperature}}]{,  }\item[{saturation\+Models}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1saturationModels_ae17645da709dc2e5c8cb049bc858a3ee}\label{namespaceFoam_1_1saturationModels_ae17645da709dc2e5c8cb049bc858a3ee}} 
+\index{Foam\+::saturation\+Models@{Foam\+::saturation\+Models}!define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}}
+\index{define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}!Foam\+::saturation\+Models@{Foam\+::saturation\+Models}}
+\subsubsection{\texorpdfstring{define\+Type\+Name\+And\+Debug()}{defineTypeNameAndDebug()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily Foam\+::saturation\+Models\+::define\+Type\+Name\+And\+Debug (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1saturationModels_1_1water}{water}}]{,  }\item[{0}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1saturationModels_afcb497101cd25d4c30cc8695d2df2bab}\label{namespaceFoam_1_1saturationModels_afcb497101cd25d4c30cc8695d2df2bab}} 
+\index{Foam\+::saturation\+Models@{Foam\+::saturation\+Models}!add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}}
+\index{add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}!Foam\+::saturation\+Models@{Foam\+::saturation\+Models}}
+\subsubsection{\texorpdfstring{add\+To\+Run\+Time\+Selection\+Table()}{addToRunTimeSelectionTable()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily Foam\+::saturation\+Models\+::add\+To\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}}]{,  }\item[{\hyperlink{classFoam_1_1saturationModels_1_1water}{water}}]{,  }\item[{saturation\+Models}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1saturationModels_a387131a2a1f830d0c7500dd8eb77f5ad}\label{namespaceFoam_1_1saturationModels_a387131a2a1f830d0c7500dd8eb77f5ad}} 
+\index{Foam\+::saturation\+Models@{Foam\+::saturation\+Models}!define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}}
+\index{define\+Type\+Name\+And\+Debug@{define\+Type\+Name\+And\+Debug}!Foam\+::saturation\+Models@{Foam\+::saturation\+Models}}
+\subsubsection{\texorpdfstring{define\+Type\+Name\+And\+Debug()}{defineTypeNameAndDebug()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily Foam\+::saturation\+Models\+::define\+Type\+Name\+And\+Debug (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1saturationModels_1_1waterTRACE}{water\+T\+R\+A\+CE}}]{,  }\item[{0}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{namespaceFoam_1_1saturationModels_af8c4d000d19a1a66e1e1a769e7620b66}\label{namespaceFoam_1_1saturationModels_af8c4d000d19a1a66e1e1a769e7620b66}} 
+\index{Foam\+::saturation\+Models@{Foam\+::saturation\+Models}!add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}}
+\index{add\+To\+Run\+Time\+Selection\+Table@{add\+To\+Run\+Time\+Selection\+Table}!Foam\+::saturation\+Models@{Foam\+::saturation\+Models}}
+\subsubsection{\texorpdfstring{add\+To\+Run\+Time\+Selection\+Table()}{addToRunTimeSelectionTable()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily Foam\+::saturation\+Models\+::add\+To\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1saturationModel}{saturation\+Model}}]{,  }\item[{\hyperlink{classFoam_1_1saturationModels_1_1waterTRACE}{water\+T\+R\+A\+CE}}]{,  }\item[{saturation\+Models}]{ }\end{DoxyParamCaption})}
+

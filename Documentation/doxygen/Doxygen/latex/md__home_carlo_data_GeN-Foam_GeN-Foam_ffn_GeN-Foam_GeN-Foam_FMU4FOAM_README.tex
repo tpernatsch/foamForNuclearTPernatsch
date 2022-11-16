@@ -1,0 +1,42 @@
+\begin{quote}
+A framework that enables the coupling of Open\+F\+O\+AM with F\+M\+Us or the distribution of Open\+F\+O\+AM as an F\+MU \end{quote}
+
+
+Accurate C\+FD simulations often require complex boundary conditions that may be depend on numerous other engineering disciplines. Currently, these boundary conditions would require the addition of new models to the open-\/source C\+FD framework Open\+F\+O\+AM which is error-\/prone and time-\/consuming. F\+MI standard offers a container (F\+M\+Us) to exchange multi-\/physics models that can be used to simulate these multi-\/physics. This library provides the possibility of coupled F\+M\+Us with Open\+F\+O\+AM or exporting Open\+F\+O\+AM as an F\+MU.
+
+\subsubsection*{Documentation}
+
+\href{https://DLR-RY.github.io/FMU4FOAM/}{\tt Documentation} hosted in github pages
+
+\subsubsection*{How to install?}
+
+Assumes that the \href{https://www.openfoam.com/download/release-history}{\tt Open\+F\+O\+AM version 2012} or higher and python v3.\+8+ is already installed
+
+
+\begin{DoxyEnumerate}
+\item Install {\ttfamily F\+M\+U4\+F\+O\+AM} package\+:
+\end{DoxyEnumerate}
+
+requires conan and pythonfmu 
+\begin{DoxyCode}
+pip install fmu4foam
+\end{DoxyCode}
+ \subsubsection*{Compile Open\+F\+O\+AM}
+
+
+\begin{DoxyCode}
+./build-ECI4FOAM.sh # init submodule
+./Allwmake
+\end{DoxyCode}
+
+
+more details are found in the \href{https://DLR-RY.github.io/FMU4FOAM/}{\tt documentation}
+
+\subsubsection*{run example}
+
+
+\begin{DoxyCode}
+cd examples/TempControlFlange/
+./Allrun
+\end{DoxyCode}
+ 

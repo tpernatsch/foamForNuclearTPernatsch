@@ -1,0 +1,27 @@
+
+
+ title\+: Fuel Truck permalink\+: doc\+\_\+fuel\+Truck.\+html keywords\+: Open\+F\+O\+AM sidebar\+: doc\+\_\+sidebar \subsection*{folder\+: doc }
+
+\subsection*{Fuel Truck}
+
+This example is a modified version of the Rolling\+Wheel\+Set\+Pulling from the Modelica standard library in the mechanics/multi\+Body module. As in the original model, the force is a function of time and pulls the fuel truck in the x-\/direction and after 3 seconds in the y-\/direction, resulting in a turning motion.
+
+\{\% include image.\+html file=\char`\"{}fuel\+Truck/\+Fuel\+Truck.\+png\char`\"{} alt=\char`\"{}\+Fuel\+Truck\char`\"{} caption=\char`\"{}\+Fuel\+Truck\char`\"{} \%\}
+
+The F\+MU requires the sloshing forces and torque vector, and as F\+MI 2.\+0 does not support fields, they are indexed by {\ttfamily f\+\_\+in\mbox{[}1-\/3\mbox{]}} and {\ttfamily t\+\_\+in\mbox{[}1-\/3\mbox{]}}. Open\+F\+O\+AM computes sloshing forces and torque with the position and the orientation vector (roll pitch yaw) represented by the variables {\ttfamily pos\+\_\+out\mbox{[}1-\/3\mbox{]}} and {\ttfamily R\+P\+Y\+\_\+out\mbox{[}1-\/3\mbox{]}}. Sloshing torque also needs the center of rotation that is already given with {\ttfamily pos\+\_\+out\mbox{[}1-\/3\mbox{]}}. The inputs and outputs in Open\+F\+O\+AM are in the world coordinate system.
+
+\{\% include image.\+html file=\char`\"{}fuel\+Truck/fuel\+Truck\+\_\+coupled.\+gif\char`\"{} alt=\char`\"{}results of the coupled simulation\char`\"{} caption=\char`\"{}results of the coupled simulation\char`\"{} \%\}
+
+\{\% include image.\+html file=\char`\"{}fuel\+Truck/fuel\+Truck\+\_\+uncoupled.\+gif\char`\"{} alt=\char`\"{}results of the uncoupled simulation\char`\"{} caption=\char`\"{}results of the uncoupled simulation\char`\"{} \%\}
+
+Comparison of the uncoupled simulation and the coupled simulation shows that the fuel truck in the uncoupled simulation moves slightly faster as the fuel mass of roughly 250 kg is not considered. This is underlined by plotting the position over time.
+
+\{\% include image.\+html file=\char`\"{}fuel\+Truck/position.\+png\char`\"{} alt=\char`\"{}position\char`\"{} caption=\char`\"{}position\char`\"{} \%\}
+
+As the inertia of the fluid is also neglected, the truck in the uncoupled simulation turns faster\+:
+
+\{\% include image.\+html file=\char`\"{}fuel\+Truck/orientation.\+png\char`\"{} alt=\char`\"{}orientation\char`\"{} caption=\char`\"{}orientation\char`\"{} \%\}
+
+The uncoupled simulation always predicts a sloshing force and torque of zero (see. Fuel\+Truck\+\_\+uncoupled.\+py) corresponding to a massless fluid.
+
+\{\% include image.\+html file=\char`\"{}fuel\+Truck/force.\+png\char`\"{} alt=\char`\"{}orientation\char`\"{} caption=\char`\"{}force\char`\"{} \%\} \{\% include image.\+html file=\char`\"{}fuel\+Truck/torque.\+png\char`\"{} alt=\char`\"{}orientation\char`\"{} caption=\char`\"{}torque\char`\"{} \%\} 

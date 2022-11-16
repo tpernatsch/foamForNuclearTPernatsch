@@ -1,0 +1,188 @@
+\hypertarget{classFoam_1_1suppressionFactorModel}{}\section{suppression\+Factor\+Model Class Reference}
+\label{classFoam_1_1suppressionFactorModel}\index{suppression\+Factor\+Model@{suppression\+Factor\+Model}}
+
+
+Author Stefan Radman (\href{mailto:sradman@protonmail.com}{\tt sradman@protonmail.\+com}; \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch})  
+
+
+
+
+Inheritance diagram for suppression\+Factor\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFoam_1_1suppressionFactorModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for suppression\+Factor\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFoam_1_1suppressionFactorModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1suppressionFactorModel_a5beedf629450f63e08950e2e9e3148a2}{Type\+Name} (\char`\"{}suppression\+Factor\+Model\char`\"{})
+\item 
+\hyperlink{classFoam_1_1suppressionFactorModel_a16c485e8d028d3bf9a27684f2aa2a5c4}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1suppressionFactorModel}{suppression\+Factor\+Model}, suppression\+Factor\+Models,(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg),(pair, dict, obj\+Reg))
+\item 
+\hyperlink{classFoam_1_1suppressionFactorModel_a3e1f6cc07fd21e09b54ad9a90926e52b}{suppression\+Factor\+Model} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1suppressionFactorModel_a528b1d2265798325a1d70ac0a032f273}{$\sim$suppression\+Factor\+Model} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1suppressionFactorModel_a139457cae4c5e04785e143fd8b9ed092}{value} (const label \&celli) const =0
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1suppressionFactorModel}{suppression\+Factor\+Model} $>$ \hyperlink{classFoam_1_1suppressionFactorModel_a266f96bbd1f69712811a6f63047782e4}{New} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \& \hyperlink{classFoam_1_1suppressionFactorModel_a587e19a1b4f4b498d2604d20c093a73b}{pair\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Author Stefan Radman (\href{mailto:sradman@protonmail.com}{\tt sradman@protonmail.\+com}; \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch}) 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/suppressionFactorModels/suppressionFactorModel.H}{\tt suppression\+Factor\+Model.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/suppressionFactorModels/suppressionFactorModel.C}{\tt suppression\+Factor\+Model.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/suppressionFactorModels/newSuppressionFactorModel.C}{\tt new\+Suppression\+Factor\+Model.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 60 of file suppression\+Factor\+Model.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1suppressionFactorModel_a3e1f6cc07fd21e09b54ad9a90926e52b}\label{classFoam_1_1suppressionFactorModel_a3e1f6cc07fd21e09b54ad9a90926e52b}} 
+\index{Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}!suppression\+Factor\+Model@{suppression\+Factor\+Model}}
+\index{suppression\+Factor\+Model@{suppression\+Factor\+Model}!Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}}
+\subsubsection{\texorpdfstring{suppression\+Factor\+Model()}{suppressionFactorModel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1suppressionFactorModel}{suppression\+Factor\+Model} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 38 of file suppression\+Factor\+Model.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1suppressionFactorModel_a528b1d2265798325a1d70ac0a032f273}\label{classFoam_1_1suppressionFactorModel_a528b1d2265798325a1d70ac0a032f273}} 
+\index{Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}!````~suppression\+Factor\+Model@{$\sim$suppression\+Factor\+Model}}
+\index{````~suppression\+Factor\+Model@{$\sim$suppression\+Factor\+Model}!Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}}
+\subsubsection{\texorpdfstring{$\sim$suppression\+Factor\+Model()}{~suppressionFactorModel()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1suppressionFactorModel}{suppression\+Factor\+Model} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 98 of file suppression\+Factor\+Model.\+H.
+
+
+
+References suppression\+Factor\+Model\+::\+New(), and suppression\+Factor\+Model\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=285pt]{classFoam_1_1suppressionFactorModel_a528b1d2265798325a1d70ac0a032f273_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1suppressionFactorModel_a5beedf629450f63e08950e2e9e3148a2}\label{classFoam_1_1suppressionFactorModel_a5beedf629450f63e08950e2e9e3148a2}} 
+\index{Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}suppression\+Factor\+Model\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1suppressionFactorModel_a16c485e8d028d3bf9a27684f2aa2a5c4}\label{classFoam_1_1suppressionFactorModel_a16c485e8d028d3bf9a27684f2aa2a5c4}} 
+\index{Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1suppressionFactorModel}{suppression\+Factor\+Model}}]{,  }\item[{suppression\+Factor\+Models}]{,  }\item[{(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)}]{,  }\item[{(pair, dict, obj\+Reg)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1suppressionFactorModel_a266f96bbd1f69712811a6f63047782e4}\label{classFoam_1_1suppressionFactorModel_a266f96bbd1f69712811a6f63047782e4}} 
+\index{Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}!New@{New}}
+\index{New@{New}!Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1suppressionFactorModel}{Foam\+::suppression\+Factor\+Model} $>$ New (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 26 of file new\+Suppression\+Factor\+Model.\+C.
+
+
+
+References F\+S\+Pair\+::fluid\+Name().
+
+
+
+Referenced by multi\+Regime\+Boiling\+::multi\+Regime\+Boiling(), and suppression\+Factor\+Model\+::$\sim$suppression\+Factor\+Model().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{classFoam_1_1suppressionFactorModel_a266f96bbd1f69712811a6f63047782e4_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=317pt]{classFoam_1_1suppressionFactorModel_a266f96bbd1f69712811a6f63047782e4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1suppressionFactorModel_a139457cae4c5e04785e143fd8b9ed092}\label{classFoam_1_1suppressionFactorModel_a139457cae4c5e04785e143fd8b9ed092}} 
+\index{Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}!value@{value}}
+\index{value@{value}!Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily virtual scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1suppressionFactorModels_1_1COBRA__TF_a2c1e1872d359910de4c35cf8f003871c}{C\+O\+B\+R\+A\+\_\+\+TF}, and \hyperlink{classFoam_1_1suppressionFactorModels_1_1Chen_a2c1e1872d359910de4c35cf8f003871c}{Chen}.
+
+
+
+Referenced by suppression\+Factor\+Model\+::$\sim$suppression\+Factor\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=285pt]{classFoam_1_1suppressionFactorModel_a139457cae4c5e04785e143fd8b9ed092_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1suppressionFactorModel_a587e19a1b4f4b498d2604d20c093a73b}\label{classFoam_1_1suppressionFactorModel_a587e19a1b4f4b498d2604d20c093a73b}} 
+\index{Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}!pair\+\_\+@{pair\+\_\+}}
+\index{pair\+\_\+@{pair\+\_\+}!Foam\+::suppression\+Factor\+Model@{Foam\+::suppression\+Factor\+Model}}
+\subsubsection{\texorpdfstring{pair\+\_\+}{pair\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair}\& pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 67 of file suppression\+Factor\+Model.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/suppression\+Factor\+Models/\hyperlink{suppressionFactorModel_8H}{suppression\+Factor\+Model.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/suppression\+Factor\+Models/\hyperlink{newSuppressionFactorModel_8C}{new\+Suppression\+Factor\+Model.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/suppression\+Factor\+Models/\hyperlink{suppressionFactorModel_8C}{suppression\+Factor\+Model.\+C}\end{DoxyCompactItemize}

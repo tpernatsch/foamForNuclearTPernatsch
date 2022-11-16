@@ -1,0 +1,115 @@
+\hypertarget{updateAlphaPhiAndInitControls__1p_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase/include/equations/p\+Eqn\+Routines/update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.H File Reference}
+\label{updateAlphaPhiAndInitControls__1p_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase/include/equations/p\+Eqn\+Routines/update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase/include/equations/p\+Eqn\+Routines/update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{updateAlphaPhiAndInitControls__1p_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+surface\+Scalar\+Field \hyperlink{updateAlphaPhiAndInitControls__1p_8H_af4804c4f6fe5c6e70b7d387bc1608640}{alphaf} (fvc\+::interpolate(\hyperlink{UEqn__1pl_8H_a7fe02434a19f3e00e927f32adcbb193b}{alpha}))
+\item 
+fluid\+\_\+ \hyperlink{updateAlphaPhiAndInitControls__1p_8H_ad9f7b6a8430600697bc27662b63bb184}{alpha\+Phi} ()
+\item 
+fluid\+\_\+ \hyperlink{updateAlphaPhiAndInitControls__1p_8H_adb16eab5a684ddb62e40a6ffdc2d646c}{alpha\+Rho\+Phi} ()
+\item 
+this \hyperlink{updateAlphaPhiAndInitControls__1p_8H_a416310135bef4da5398af349b57a0452}{correct\+Cont\+Err} ()
+\item 
+dimensioned\+Scalar \hyperlink{updateAlphaPhiAndInitControls__1p_8H_afeafc5a0630c75a1467e8fe46ac51701}{compressibility} (fvc\+::domain\+Integrate(\hyperlink{EEqns__2p_8H_a9d615e711281a88a96c648787c7dbd32}{fluid\+\_\+.\+thermo}().\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}()))
+\item 
+dimensioned\+Scalar \hyperlink{updateAlphaPhiAndInitControls__1p_8H_a2f6bedaa716405ff32064277215fce8f}{V\+Tot} (\char`\"{}\char`\"{}, dim\+Vol, g\+Sum(mesh\+\_\+.\+V()))
+\item 
+bool \hyperlink{updateAlphaPhiAndInitControls__1p_8H_afcf726a8b8f9493416742c719e5ad9a2}{compressible} (compressibility.\+value()/V\+Tot.\+value() $>$=1e-\/8)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{updateAlphaPhiAndInitControls__1p_8H_af4804c4f6fe5c6e70b7d387bc1608640}\label{updateAlphaPhiAndInitControls__1p_8H_af4804c4f6fe5c6e70b7d387bc1608640}} 
+\index{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}!alphaf@{alphaf}}
+\index{alphaf@{alphaf}!update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{alphaf()}{alphaf()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphaf (\begin{DoxyParamCaption}\item[{fvc\+::interpolate(\hyperlink{UEqn__1pl_8H_a7fe02434a19f3e00e927f32adcbb193b}{alpha})}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=198pt]{updateAlphaPhiAndInitControls__1p_8H_af4804c4f6fe5c6e70b7d387bc1608640_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{updateAlphaPhiAndInitControls__1p_8H_ad9f7b6a8430600697bc27662b63bb184}\label{updateAlphaPhiAndInitControls__1p_8H_ad9f7b6a8430600697bc27662b63bb184}} 
+\index{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}!alpha\+Phi@{alpha\+Phi}}
+\index{alpha\+Phi@{alpha\+Phi}!update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{alpha\+Phi()}{alphaPhi()}}
+{\footnotesize\ttfamily fluid\+\_\+ alpha\+Phi (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{updateAlphaPhiAndInitControls__1p_8H_adb16eab5a684ddb62e40a6ffdc2d646c}\label{updateAlphaPhiAndInitControls__1p_8H_adb16eab5a684ddb62e40a6ffdc2d646c}} 
+\index{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}!alpha\+Rho\+Phi@{alpha\+Rho\+Phi}}
+\index{alpha\+Rho\+Phi@{alpha\+Rho\+Phi}!update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{alpha\+Rho\+Phi()}{alphaRhoPhi()}}
+{\footnotesize\ttfamily fluid\+\_\+ alpha\+Rho\+Phi (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by T\+Bulk\+::write(), and mass\+Flow\+::write().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{updateAlphaPhiAndInitControls__1p_8H_adb16eab5a684ddb62e40a6ffdc2d646c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{updateAlphaPhiAndInitControls__1p_8H_a416310135bef4da5398af349b57a0452}\label{updateAlphaPhiAndInitControls__1p_8H_a416310135bef4da5398af349b57a0452}} 
+\index{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}!correct\+Cont\+Err@{correct\+Cont\+Err}}
+\index{correct\+Cont\+Err@{correct\+Cont\+Err}!update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{correct\+Cont\+Err()}{correctContErr()}}
+{\footnotesize\ttfamily this correct\+Cont\+Err (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by one\+Phase\+::correct\+Fluid\+Mechanics(), one\+Phase\+::one\+Phase(), one\+Phase\+Legacy\+::one\+Phase\+Legacy(), and while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{updateAlphaPhiAndInitControls__1p_8H_a416310135bef4da5398af349b57a0452_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{updateAlphaPhiAndInitControls__1p_8H_afeafc5a0630c75a1467e8fe46ac51701}\label{updateAlphaPhiAndInitControls__1p_8H_afeafc5a0630c75a1467e8fe46ac51701}} 
+\index{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}!compressibility@{compressibility}}
+\index{compressibility@{compressibility}!update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{compressibility()}{compressibility()}}
+{\footnotesize\ttfamily dimensioned\+Scalar compressibility (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{EEqns__2p_8H_a9d615e711281a88a96c648787c7dbd32}{fluid\+\_\+.\+thermo}().\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}())}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{updateAlphaPhiAndInitControls__1p_8H_afeafc5a0630c75a1467e8fe46ac51701_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{updateAlphaPhiAndInitControls__1p_8H_a2f6bedaa716405ff32064277215fce8f}\label{updateAlphaPhiAndInitControls__1p_8H_a2f6bedaa716405ff32064277215fce8f}} 
+\index{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}!V\+Tot@{V\+Tot}}
+\index{V\+Tot@{V\+Tot}!update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{V\+Tot()}{VTot()}}
+{\footnotesize\ttfamily dimensioned\+Scalar V\+Tot (\begin{DoxyParamCaption}\item[{\char`\"{}\char`\"{}}]{,  }\item[{dim\+Vol}]{,  }\item[{g\+Sum(mesh\+\_\+.\+V())}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{updateAlphaPhiAndInitControls__1p_8H_afcf726a8b8f9493416742c719e5ad9a2}\label{updateAlphaPhiAndInitControls__1p_8H_afcf726a8b8f9493416742c719e5ad9a2}} 
+\index{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}!compressible@{compressible}}
+\index{compressible@{compressible}!update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H@{update\+Alpha\+Phi\+And\+Init\+Controls\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{compressible()}{compressible()}}
+{\footnotesize\ttfamily bool compressible (\begin{DoxyParamCaption}\item[{compressibility.\+value()/V\+Tot.\+value() $>$=1e-\/}]{8 }\end{DoxyParamCaption})}
+

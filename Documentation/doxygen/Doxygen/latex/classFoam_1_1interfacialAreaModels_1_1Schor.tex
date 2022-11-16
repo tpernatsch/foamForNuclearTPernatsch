@@ -1,0 +1,297 @@
+\hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor}{}\section{Schor Class Reference}
+\label{classFoam_1_1interfacialAreaModels_1_1Schor}\index{Schor@{Schor}}
+
+
+Inheritance diagram for Schor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{classFoam_1_1interfacialAreaModels_1_1Schor__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Schor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{classFoam_1_1interfacialAreaModels_1_1Schor__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a9f8f590a1a84255b574315472439bfc3}{Type\+Name} (\char`\"{}Schor\char`\"{})
+\item 
+\hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_aacac17789a2ad42eb0c8c5a7fc0d38e1}{Schor} (const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a8d1336d4efb677d8a25c469b5376bcc3}{$\sim$\+Schor} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a2c1e1872d359910de4c35cf8f003871c}{value} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a2675e35060f71c22823e4a0b3c816dad}{vapour\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_ac5178eaceca14c37903e56d8a8bff07c}{D\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a10357e8c1e678a03659e6c29f2c6df11}{P\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a5729850f00382b69f3383767af2113dc}{P\+D\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a964d35f7a0122b4371643835f79989e6}{A\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_ac6b9a29799300aa157cd8e37b0eb3659}{P\+I\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a5a3e8ad8bfd8a6a6e360247a544f194b}{alpha1\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a02141f9077e75434711df7291b216696}{alpha2\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a87a2f9b83009433966ec99be39cfe860}{delta\+Alpha21\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_acae046e249a3d74d1ab3d0dfa7ab71e1}{alpha3\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a9174675049b3cd3ad34e63536342f619}{i\+A1\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a9e7731b181b3004e1514d4a74755989d}{i\+A2\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor_a9a5bb66a7e6b7f8a3ecffa23b651446b}{i\+A3\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 49 of file Schor\+Interfacial\+Area.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_aacac17789a2ad42eb0c8c5a7fc0d38e1}\label{classFoam_1_1interfacialAreaModels_1_1Schor_aacac17789a2ad42eb0c8c5a7fc0d38e1}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!Schor@{Schor}}
+\index{Schor@{Schor}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{Schor()}{Schor()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor}{Schor} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 43 of file Schor\+Interfacial\+Area.\+C.
+
+
+
+References F\+F\+Pair\+::fluid1(), F\+F\+Pair\+::fluid2(), fluid\+::is\+Gas(), fluid\+::is\+Liquid(), and Schor\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=264pt]{classFoam_1_1interfacialAreaModels_1_1Schor_aacac17789a2ad42eb0c8c5a7fc0d38e1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a8d1336d4efb677d8a25c469b5376bcc3}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a8d1336d4efb677d8a25c469b5376bcc3}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!````~Schor@{$\sim$\+Schor}}
+\index{````~Schor@{$\sim$\+Schor}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{$\sim$\+Schor()}{~Schor()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1interfacialAreaModels_1_1Schor}{Schor} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 109 of file Schor\+Interfacial\+Area.\+H.
+
+
+
+References Schor\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1interfacialAreaModels_1_1Schor_a8d1336d4efb677d8a25c469b5376bcc3_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a9f8f590a1a84255b574315472439bfc3}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a9f8f590a1a84255b574315472439bfc3}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}Schor\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a2c1e1872d359910de4c35cf8f003871c}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a2c1e1872d359910de4c35cf8f003871c}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!value@{value}}
+\index{value@{value}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Foam\+::scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1interfacialAreaModel_a139457cae4c5e04785e143fd8b9ed092}{interfacial\+Area\+Model}.
+
+
+
+Definition at line 106 of file Schor\+Interfacial\+Area.\+C.
+
+
+
+References alpha().
+
+
+
+Referenced by Schor\+::\+Schor(), and Schor\+::$\sim$\+Schor().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=196pt]{classFoam_1_1interfacialAreaModels_1_1Schor_a2c1e1872d359910de4c35cf8f003871c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1interfacialAreaModels_1_1Schor_a2c1e1872d359910de4c35cf8f003871c_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a2675e35060f71c22823e4a0b3c816dad}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a2675e35060f71c22823e4a0b3c816dad}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!vapour\+\_\+@{vapour\+\_\+}}
+\index{vapour\+\_\+@{vapour\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{vapour\+\_\+}{vapour\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& vapour\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 56 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_ac5178eaceca14c37903e56d8a8bff07c}\label{classFoam_1_1interfacialAreaModels_1_1Schor_ac5178eaceca14c37903e56d8a8bff07c}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!D\+\_\+@{D\+\_\+}}
+\index{D\+\_\+@{D\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{D\+\_\+}{D\_}}
+{\footnotesize\ttfamily const scalar D\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 59 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a10357e8c1e678a03659e6c29f2c6df11}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a10357e8c1e678a03659e6c29f2c6df11}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!P\+\_\+@{P\+\_\+}}
+\index{P\+\_\+@{P\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{P\+\_\+}{P\_}}
+{\footnotesize\ttfamily const scalar P\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 62 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a5729850f00382b69f3383767af2113dc}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a5729850f00382b69f3383767af2113dc}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!P\+D\+\_\+@{P\+D\+\_\+}}
+\index{P\+D\+\_\+@{P\+D\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{P\+D\+\_\+}{PD\_}}
+{\footnotesize\ttfamily const scalar P\+D\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 65 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a964d35f7a0122b4371643835f79989e6}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a964d35f7a0122b4371643835f79989e6}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!A\+\_\+@{A\+\_\+}}
+\index{A\+\_\+@{A\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{A\+\_\+}{A\_}}
+{\footnotesize\ttfamily const scalar A\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 68 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_ac6b9a29799300aa157cd8e37b0eb3659}\label{classFoam_1_1interfacialAreaModels_1_1Schor_ac6b9a29799300aa157cd8e37b0eb3659}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!P\+I\+\_\+@{P\+I\+\_\+}}
+\index{P\+I\+\_\+@{P\+I\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{P\+I\+\_\+}{PI\_}}
+{\footnotesize\ttfamily const scalar P\+I\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 71 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a5a3e8ad8bfd8a6a6e360247a544f194b}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a5a3e8ad8bfd8a6a6e360247a544f194b}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!alpha1\+\_\+@{alpha1\+\_\+}}
+\index{alpha1\+\_\+@{alpha1\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{alpha1\+\_\+}{alpha1\_}}
+{\footnotesize\ttfamily const scalar alpha1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 74 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a02141f9077e75434711df7291b216696}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a02141f9077e75434711df7291b216696}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!alpha2\+\_\+@{alpha2\+\_\+}}
+\index{alpha2\+\_\+@{alpha2\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{alpha2\+\_\+}{alpha2\_}}
+{\footnotesize\ttfamily const scalar alpha2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 77 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a87a2f9b83009433966ec99be39cfe860}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a87a2f9b83009433966ec99be39cfe860}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!delta\+Alpha21\+\_\+@{delta\+Alpha21\+\_\+}}
+\index{delta\+Alpha21\+\_\+@{delta\+Alpha21\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{delta\+Alpha21\+\_\+}{deltaAlpha21\_}}
+{\footnotesize\ttfamily const scalar delta\+Alpha21\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 80 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_acae046e249a3d74d1ab3d0dfa7ab71e1}\label{classFoam_1_1interfacialAreaModels_1_1Schor_acae046e249a3d74d1ab3d0dfa7ab71e1}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!alpha3\+\_\+@{alpha3\+\_\+}}
+\index{alpha3\+\_\+@{alpha3\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{alpha3\+\_\+}{alpha3\_}}
+{\footnotesize\ttfamily const scalar alpha3\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 83 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a9174675049b3cd3ad34e63536342f619}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a9174675049b3cd3ad34e63536342f619}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!i\+A1\+\_\+@{i\+A1\+\_\+}}
+\index{i\+A1\+\_\+@{i\+A1\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{i\+A1\+\_\+}{iA1\_}}
+{\footnotesize\ttfamily const scalar i\+A1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 86 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a9e7731b181b3004e1514d4a74755989d}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a9e7731b181b3004e1514d4a74755989d}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!i\+A2\+\_\+@{i\+A2\+\_\+}}
+\index{i\+A2\+\_\+@{i\+A2\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{i\+A2\+\_\+}{iA2\_}}
+{\footnotesize\ttfamily const scalar i\+A2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 89 of file Schor\+Interfacial\+Area.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1interfacialAreaModels_1_1Schor_a9a5bb66a7e6b7f8a3ecffa23b651446b}\label{classFoam_1_1interfacialAreaModels_1_1Schor_a9a5bb66a7e6b7f8a3ecffa23b651446b}} 
+\index{Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}!i\+A3\+\_\+@{i\+A3\+\_\+}}
+\index{i\+A3\+\_\+@{i\+A3\+\_\+}!Foam\+::interfacial\+Area\+Models\+::\+Schor@{Foam\+::interfacial\+Area\+Models\+::\+Schor}}
+\subsubsection{\texorpdfstring{i\+A3\+\_\+}{iA3\_}}
+{\footnotesize\ttfamily const scalar i\+A3\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 92 of file Schor\+Interfacial\+Area.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/interfacial\+Area\+Models/\+Schor/\hyperlink{SchorInterfacialArea_8H}{Schor\+Interfacial\+Area.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/interfacial\+Area\+Models/\+Schor/\hyperlink{SchorInterfacialArea_8C}{Schor\+Interfacial\+Area.\+C}\end{DoxyCompactItemize}

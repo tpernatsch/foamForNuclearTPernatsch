@@ -1,0 +1,356 @@
+\hypertarget{classFoam_1_1commDataLayer}{}\section{comm\+Data\+Layer Class Reference}
+\label{classFoam_1_1commDataLayer}\index{comm\+Data\+Layer@{comm\+Data\+Layer}}
+
+
+Database for registered\+Objects allows to store, update and get variables.  
+
+
+
+
+Inheritance diagram for comm\+Data\+Layer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{classFoam_1_1commDataLayer__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for comm\+Data\+Layer\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=169pt]{classFoam_1_1commDataLayer__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality} \{ \hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268ca9e70047869d00c5afd8c68af325e48d7}{in}, 
+\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268caaca14bf8f96bb2b357f12496b7f11579}{out}, 
+\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268cae7731519cb6c1281973399cbefa90833}{parameter}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1commDataLayer_a37b7986dba64ce7a09cad34a11554799}{Type\+Name} (\char`\"{}comm\+Data\+Layer\char`\"{})
+\item 
+\hyperlink{classFoam_1_1commDataLayer_a5cdbf4f07cb204d71683132436303e9e}{comm\+Data\+Layer} (const Time \&time)
+\item 
+object\+Registry \& \hyperlink{classFoam_1_1commDataLayer_aa20cb9559f64cda8e2ed7c334bc63d31}{get\+Registry} (\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{comm\+Data\+Layer\+::causality} causa)
+\item 
+const object\+Registry \& \hyperlink{classFoam_1_1commDataLayer_a57385c013402b5230f3bd52bc8f79614}{get\+Registry} (\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{comm\+Data\+Layer\+::causality} causa) const
+\item 
+void \hyperlink{classFoam_1_1commDataLayer_a4e51054ae140086903cbe3e1f7208c5f}{erase\+Obj} (word obj\+Name, \hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality} causa)
+\item 
+{\footnotesize template$<$class Type $>$ }\\void \hyperlink{classFoam_1_1commDataLayer_afd617704e268ece5ad93ce6bd286aeda}{store\+Obj} (const Type \&\hyperlink{EEqn__1pl_8H_ad0f94aa7ea43d4be0bae24e3a89aad0c}{T}, word obj\+Name, \hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality} causa)
+\item 
+{\footnotesize template$<$class Type $>$ }\\Type \& \hyperlink{classFoam_1_1commDataLayer_a6ebe4254f843b45792f7e070b44faab6}{get\+Obj} (word obj\+Name, \hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality} causa)
+\item 
+{\footnotesize template$<$class Type $>$ }\\const Type \& \hyperlink{classFoam_1_1commDataLayer_a63be53025e469bed9c2dd807ce4461af}{get\+Obj} (word obj\+Name, \hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality} causa) const
+\item 
+virtual bool \hyperlink{classFoam_1_1commDataLayer_ab51c6051806556654dc16796bf37619a}{write\+Data} (Ostream \&) const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classFoam_1_1commDataLayer}{comm\+Data\+Layer} \& \hyperlink{classFoam_1_1commDataLayer_afba2bff8d4fa91c093e6f93ee18272dd}{New} (const Time \&time)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Database for registered\+Objects allows to store, update and get variables. 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Usage}
+\hyperlink{classFoam_1_1commDataLayer}{comm\+Data\+Layer}\& data = comm\+Data\+Layer\+::\+New(time\+\_\+);
+\end{DoxyParagraph}
+get scalar called a \char`\"{}var\+\_\+a\char`\"{} from registry input scalar var\+\_\+a = data.\+get\+Obj$<$scalar$>$(\char`\"{}var\+\_\+a\char`\"{},comm\+Data\+Layer\+::causality\+::in);
+
+store scalar called a \char`\"{}var\+\_\+a\char`\"{} in registry input data.\+store\+Obj(scalar(0.\+0),\char`\"{}var\+\_\+a\char`\"{},comm\+Data\+Layer\+::causality\+::in);
+
+update vector\& var\+\_\+a = data.\+get\+Obj$<$vector$>$(\char`\"{}var\+\_\+a\char`\"{},comm\+Data\+Layer\+::causality\+::out); var\+\_\+a = 10;
+
+options for causality are\+: enum causality \{ in, out, parameter \};
+
+Author Henning Scheufler, D\+LR, all rights reserved.
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/commDataLayer.H}{\tt comm\+Data\+Layer.\+H} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 62 of file comm\+Data\+Layer.\+H.
+
+
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}\label{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!causality@{causality}}
+\index{causality@{causality}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{causality}{causality}}
+{\footnotesize\ttfamily enum \hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{in@{in}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!in@{in}}}\mbox{\Hypertarget{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268ca9e70047869d00c5afd8c68af325e48d7}\label{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268ca9e70047869d00c5afd8c68af325e48d7}} 
+in&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{out@{out}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!out@{out}}}\mbox{\Hypertarget{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268caaca14bf8f96bb2b357f12496b7f11579}\label{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268caaca14bf8f96bb2b357f12496b7f11579}} 
+out&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{parameter@{parameter}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!parameter@{parameter}}}\mbox{\Hypertarget{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268cae7731519cb6c1281973399cbefa90833}\label{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268cae7731519cb6c1281973399cbefa90833}} 
+parameter&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 71 of file comm\+Data\+Layer.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_a5cdbf4f07cb204d71683132436303e9e}\label{classFoam_1_1commDataLayer_a5cdbf4f07cb204d71683132436303e9e}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!comm\+Data\+Layer@{comm\+Data\+Layer}}
+\index{comm\+Data\+Layer@{comm\+Data\+Layer}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{comm\+Data\+Layer()}{commDataLayer()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1commDataLayer}{comm\+Data\+Layer} (\begin{DoxyParamCaption}\item[{const Time \&}]{time }\end{DoxyParamCaption})}
+
+
+
+Definition at line 22 of file comm\+Data\+Layer.\+C.
+
+
+
+Referenced by comm\+Data\+Layer\+::\+New().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{classFoam_1_1commDataLayer_a5cdbf4f07cb204d71683132436303e9e_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_a37b7986dba64ce7a09cad34a11554799}\label{classFoam_1_1commDataLayer_a37b7986dba64ce7a09cad34a11554799}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}comm\+Data\+Layer\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_afba2bff8d4fa91c093e6f93ee18272dd}\label{classFoam_1_1commDataLayer_afba2bff8d4fa91c093e6f93ee18272dd}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!New@{New}}
+\index{New@{New}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1commDataLayer}{Foam\+::comm\+Data\+Layer} \& New (\begin{DoxyParamCaption}\item[{const Time \&}]{time }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 75 of file comm\+Data\+Layer.\+C.
+
+
+
+References comm\+Data\+Layer\+::comm\+Data\+Layer().
+
+
+
+Referenced by F\+M\+U\+Controller\+::adjust\+Time\+Step(), pump\+::correct(), coupled\+Flow\+Rate\+Inlet\+Velocity\+Fv\+Patch\+Vector\+Field\+::coupled\+Flow\+Rate\+Inlet\+Velocity\+Fv\+Patch\+Vector\+Field(), coupled\+Flow\+Rate\+Outlet\+Velocity\+Fv\+Patch\+Vector\+Field\+::coupled\+Flow\+Rate\+Outlet\+Velocity\+Fv\+Patch\+Vector\+Field(), ext\+Patch\+::execute(), F\+M\+U\+Simulator\+::execute(), ext\+Function\+::execute(), ext\+Forces\+::execute(), F\+M\+U\+Controller\+::execute(), ext\+Sensor\+::execute(), F\+M\+U\+Controller\+::\+F\+M\+U\+Controller(), F\+M\+U\+Simulator\+::\+F\+M\+U\+Simulator(), pump\+::pump(), ext\+Patch\+::read(), coupled\+Translation\+Motion\+::read(), coupled\+Rotation\+Motion\+::read(), ext\+Function\+::read(), ext\+Forces\+::read(), ext\+Sensor\+::read(), coupled\+Acceleration\+Source\+::read(), coupled\+Translation\+Motion\+::transformation(), coupled\+Rotation\+Motion\+::transformation(), and coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::update\+Coeffs().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{classFoam_1_1commDataLayer_afba2bff8d4fa91c093e6f93ee18272dd_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classFoam_1_1commDataLayer_afba2bff8d4fa91c093e6f93ee18272dd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_aa20cb9559f64cda8e2ed7c334bc63d31}\label{classFoam_1_1commDataLayer_aa20cb9559f64cda8e2ed7c334bc63d31}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!get\+Registry@{get\+Registry}}
+\index{get\+Registry@{get\+Registry}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{get\+Registry()}{getRegistry()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Foam\+::object\+Registry \& get\+Registry (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{comm\+Data\+Layer\+::causality}}]{causa }\end{DoxyParamCaption})}
+
+
+
+Definition at line 93 of file comm\+Data\+Layer.\+C.
+
+
+
+References out().
+
+
+
+Referenced by comm\+Data\+Layer\+::erase\+Obj(), F\+M\+U\+Simulator\+::execute(), F\+M\+U\+Controller\+::execute(), F\+M\+U\+Controller\+::\+F\+M\+U\+Controller(), F\+M\+U\+Simulator\+::\+F\+M\+U\+Simulator(), comm\+Data\+Layer\+::get\+Obj(), and comm\+Data\+Layer\+::store\+Obj().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=213pt]{classFoam_1_1commDataLayer_aa20cb9559f64cda8e2ed7c334bc63d31_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1commDataLayer_aa20cb9559f64cda8e2ed7c334bc63d31_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_a57385c013402b5230f3bd52bc8f79614}\label{classFoam_1_1commDataLayer_a57385c013402b5230f3bd52bc8f79614}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!get\+Registry@{get\+Registry}}
+\index{get\+Registry@{get\+Registry}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{get\+Registry()}{getRegistry()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const Foam\+::object\+Registry \& get\+Registry (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{comm\+Data\+Layer\+::causality}}]{causa }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 116 of file comm\+Data\+Layer.\+C.
+
+
+
+References out().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=213pt]{classFoam_1_1commDataLayer_a57385c013402b5230f3bd52bc8f79614_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_a4e51054ae140086903cbe3e1f7208c5f}\label{classFoam_1_1commDataLayer_a4e51054ae140086903cbe3e1f7208c5f}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!erase\+Obj@{erase\+Obj}}
+\index{erase\+Obj@{erase\+Obj}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{erase\+Obj()}{eraseObj()}}
+{\footnotesize\ttfamily void erase\+Obj (\begin{DoxyParamCaption}\item[{word}]{obj\+Name,  }\item[{\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality}}]{causa }\end{DoxyParamCaption})}
+
+
+
+Definition at line 139 of file comm\+Data\+Layer.\+C.
+
+
+
+References comm\+Data\+Layer\+::get\+Registry().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{classFoam_1_1commDataLayer_a4e51054ae140086903cbe3e1f7208c5f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_afd617704e268ece5ad93ce6bd286aeda}\label{classFoam_1_1commDataLayer_afd617704e268ece5ad93ce6bd286aeda}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!store\+Obj@{store\+Obj}}
+\index{store\+Obj@{store\+Obj}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{store\+Obj()}{storeObj()}}
+{\footnotesize\ttfamily void store\+Obj (\begin{DoxyParamCaption}\item[{const Type \&}]{T,  }\item[{word}]{obj\+Name,  }\item[{\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality}}]{causa }\end{DoxyParamCaption})}
+
+
+
+Definition at line 16 of file comm\+Data\+Layer\+Templates.\+C.
+
+
+
+References comm\+Data\+Layer\+::get\+Registry(), and T().
+
+
+
+Referenced by coupled\+Flow\+Rate\+Inlet\+Velocity\+Fv\+Patch\+Vector\+Field\+::coupled\+Flow\+Rate\+Inlet\+Velocity\+Fv\+Patch\+Vector\+Field(), coupled\+Flow\+Rate\+Outlet\+Velocity\+Fv\+Patch\+Vector\+Field\+::coupled\+Flow\+Rate\+Outlet\+Velocity\+Fv\+Patch\+Vector\+Field(), coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field(), F\+M\+U\+Controller\+::\+F\+M\+U\+Controller(), pump\+::pump(), ext\+Patch\+::read(), coupled\+Translation\+Motion\+::read(), coupled\+Rotation\+Motion\+::read(), ext\+Function\+::read(), ext\+Forces\+::read(), and ext\+Sensor\+::read().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{classFoam_1_1commDataLayer_afd617704e268ece5ad93ce6bd286aeda_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classFoam_1_1commDataLayer_afd617704e268ece5ad93ce6bd286aeda_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_a6ebe4254f843b45792f7e070b44faab6}\label{classFoam_1_1commDataLayer_a6ebe4254f843b45792f7e070b44faab6}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!get\+Obj@{get\+Obj}}
+\index{get\+Obj@{get\+Obj}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{get\+Obj()}{getObj()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Type \& get\+Obj (\begin{DoxyParamCaption}\item[{word}]{obj\+Name,  }\item[{\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality}}]{causa }\end{DoxyParamCaption})}
+
+
+
+Definition at line 26 of file comm\+Data\+Layer\+Templates.\+C.
+
+
+
+References comm\+Data\+Layer\+::get\+Registry(), and registered\+Object$<$ Type $>$\+::ref().
+
+
+
+Referenced by F\+M\+U\+Controller\+::adjust\+Time\+Step(), pump\+::correct(), coupled\+Flow\+Rate\+Inlet\+Velocity\+Fv\+Patch\+Vector\+Field\+::coupled\+Flow\+Rate\+Inlet\+Velocity\+Fv\+Patch\+Vector\+Field(), coupled\+Flow\+Rate\+Outlet\+Velocity\+Fv\+Patch\+Vector\+Field\+::coupled\+Flow\+Rate\+Outlet\+Velocity\+Fv\+Patch\+Vector\+Field(), ext\+Patch\+::execute(), ext\+Function\+::execute(), ext\+Forces\+::execute(), F\+M\+U\+Controller\+::execute(), ext\+Sensor\+::execute(), coupled\+Translation\+Motion\+::transformation(), coupled\+Rotation\+Motion\+::transformation(), coupled\+Uniform\+External\+Value\+Fv\+Patch\+Field$<$ Type $>$\+::update\+Coeffs(), and coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::update\+Coeffs().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=297pt]{classFoam_1_1commDataLayer_a6ebe4254f843b45792f7e070b44faab6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classFoam_1_1commDataLayer_a6ebe4254f843b45792f7e070b44faab6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_a63be53025e469bed9c2dd807ce4461af}\label{classFoam_1_1commDataLayer_a63be53025e469bed9c2dd807ce4461af}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!get\+Obj@{get\+Obj}}
+\index{get\+Obj@{get\+Obj}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{get\+Obj()}{getObj()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const Type \& get\+Obj (\begin{DoxyParamCaption}\item[{word}]{obj\+Name,  }\item[{\hyperlink{classFoam_1_1commDataLayer_adf08957fc1cde455c7a03a53bf4d268c}{causality}}]{causa }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 35 of file comm\+Data\+Layer\+Templates.\+C.
+
+
+
+References comm\+Data\+Layer\+::get\+Registry(), and registered\+Object$<$ Type $>$\+::ref().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=297pt]{classFoam_1_1commDataLayer_a63be53025e469bed9c2dd807ce4461af_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1commDataLayer_ab51c6051806556654dc16796bf37619a}\label{classFoam_1_1commDataLayer_ab51c6051806556654dc16796bf37619a}} 
+\index{Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}!write\+Data@{write\+Data}}
+\index{write\+Data@{write\+Data}!Foam\+::comm\+Data\+Layer@{Foam\+::comm\+Data\+Layer}}
+\subsubsection{\texorpdfstring{write\+Data()}{writeData()}}
+{\footnotesize\ttfamily virtual bool write\+Data (\begin{DoxyParamCaption}\item[{Ostream \&}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 127 of file comm\+Data\+Layer.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/data\+Interface/\hyperlink{commDataLayer_8H}{comm\+Data\+Layer.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/data\+Interface/\hyperlink{commDataLayer_8C}{comm\+Data\+Layer.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/data\+Interface/\hyperlink{commDataLayerTemplates_8C}{comm\+Data\+Layer\+Templates.\+C}\end{DoxyCompactItemize}

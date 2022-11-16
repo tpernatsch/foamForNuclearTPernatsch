@@ -1,0 +1,266 @@
+\hypertarget{classFoam_1_1powerModels_1_1fixedTemperature}{}\section{fixed\+Temperature Class Reference}
+\label{classFoam_1_1powerModels_1_1fixedTemperature}\index{fixed\+Temperature@{fixed\+Temperature}}
+
+
+Inheritance diagram for fixed\+Temperature\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=172pt]{classFoam_1_1powerModels_1_1fixedTemperature__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for fixed\+Temperature\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=172pt]{classFoam_1_1powerModels_1_1fixedTemperature__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_abda100042135e9972ad74c9f9e2e9354}{Type\+Name} (\char`\"{}fixed\+Temperature\char`\"{})
+\item 
+\hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_a2b54096181326868569b551d6c9e2c74}{fixed\+Temperature} (\hyperlink{classFoam_1_1structure}{structure} \&\hyperlink{classFoam_1_1structure}{structure}, const dictionary \&dicts)
+\item 
+virtual \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_aed8d3119394c1add706ea2349e437b2b}{$\sim$fixed\+Temperature} ()
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_aa6ff3f73bb1486fb6a3948359a93537f}{correct} (const vol\+Scalar\+Field \&HT, const vol\+Scalar\+Field \&H)
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_a9f9875fb3a22007b3cb6ef9f59821c9c}{correctT} (vol\+Scalar\+Field \&\hyperlink{EEqn__1pl_8H_ad0f94aa7ea43d4be0bae24e3a89aad0c}{T}) const
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_a2497dfe95d3876d598347df587b0ccc7}{power\+Off} ()
+\item 
+void \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_abb2922ced3326cccb3cfdf6a3aff703b}{temperature\+Update} () const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_a97c6919892227364774ffd51f3fa625b}{T\+\_\+}
+\item 
+Ptr\+List$<$ Function1$<$ scalar $>$ $>$ \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_af04ec83129f2dbb32ddd3e46e6e6a778}{time\+Profile\+\_\+}
+\item 
+List$<$ scalar $>$ \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_a15480c8346d9202ae61b7a3d920ecfa7}{t0\+\_\+}
+\item 
+List$<$ bool $>$ \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature_aa7de418f5709d721311e6d40486f54b2}{time\+Dependent\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 52 of file fixed\+Temperature.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_a2b54096181326868569b551d6c9e2c74}\label{classFoam_1_1powerModels_1_1fixedTemperature_a2b54096181326868569b551d6c9e2c74}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!fixed\+Temperature@{fixed\+Temperature}}
+\index{fixed\+Temperature@{fixed\+Temperature}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{fixed\+Temperature()}{fixedTemperature()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1powerModels_1_1fixedTemperature}{fixed\+Temperature} (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1structure}{structure} \&}]{structure,  }\item[{const dictionary \&}]{dicts }\end{DoxyParamCaption})}
+
+
+
+Definition at line 43 of file fixed\+Temperature.\+C.
+
+
+
+References for\+All().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{classFoam_1_1powerModels_1_1fixedTemperature_a2b54096181326868569b551d6c9e2c74_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_aed8d3119394c1add706ea2349e437b2b}\label{classFoam_1_1powerModels_1_1fixedTemperature_aed8d3119394c1add706ea2349e437b2b}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!````~fixed\+Temperature@{$\sim$fixed\+Temperature}}
+\index{````~fixed\+Temperature@{$\sim$fixed\+Temperature}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{$\sim$fixed\+Temperature()}{~fixedTemperature()}}
+{\footnotesize\ttfamily $\sim$\hyperlink{classFoam_1_1powerModels_1_1fixedTemperature}{fixed\+Temperature} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 112 of file fixed\+Temperature.\+C.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_abda100042135e9972ad74c9f9e2e9354}\label{classFoam_1_1powerModels_1_1fixedTemperature_abda100042135e9972ad74c9f9e2e9354}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}fixed\+Temperature\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_aa6ff3f73bb1486fb6a3948359a93537f}\label{classFoam_1_1powerModels_1_1fixedTemperature_aa6ff3f73bb1486fb6a3948359a93537f}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!correct@{correct}}
+\index{correct@{correct}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily virtual void correct (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{HT,  }\item[{const vol\+Scalar\+Field \&}]{H }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1powerModel_a94e543602e416ccbc721750143e2cd73}{power\+Model}.
+
+
+
+Definition at line 96 of file fixed\+Temperature.\+H.
+
+
+
+References fixed\+Temperature\+::correct\+T(), fixed\+Temperature\+::power\+Off(), T(), and fixed\+Temperature\+::temperature\+Update().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=263pt]{classFoam_1_1powerModels_1_1fixedTemperature_aa6ff3f73bb1486fb6a3948359a93537f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_a9f9875fb3a22007b3cb6ef9f59821c9c}\label{classFoam_1_1powerModels_1_1fixedTemperature_a9f9875fb3a22007b3cb6ef9f59821c9c}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!correctT@{correctT}}
+\index{correctT@{correctT}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{correct\+T()}{correctT()}}
+{\footnotesize\ttfamily void correctT (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field \&}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1powerModel_a8ddbd4b794b55aa27a95e5cd8db62f25}{power\+Model}.
+
+
+
+Definition at line 142 of file fixed\+Temperature.\+C.
+
+
+
+References for\+All(), and i.
+
+
+
+Referenced by fixed\+Temperature\+::correct().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classFoam_1_1powerModels_1_1fixedTemperature_a9f9875fb3a22007b3cb6ef9f59821c9c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classFoam_1_1powerModels_1_1fixedTemperature_a9f9875fb3a22007b3cb6ef9f59821c9c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_a2497dfe95d3876d598347df587b0ccc7}\label{classFoam_1_1powerModels_1_1fixedTemperature_a2497dfe95d3876d598347df587b0ccc7}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!power\+Off@{power\+Off}}
+\index{power\+Off@{power\+Off}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{power\+Off()}{powerOff()}}
+{\footnotesize\ttfamily void power\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1powerModel_a92d1e5ca9cc82f5db7a01d66a3a913a7}{power\+Model}.
+
+
+
+Definition at line 152 of file fixed\+Temperature.\+C.
+
+
+
+Referenced by fixed\+Temperature\+::correct().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=219pt]{classFoam_1_1powerModels_1_1fixedTemperature_a2497dfe95d3876d598347df587b0ccc7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_abb2922ced3326cccb3cfdf6a3aff703b}\label{classFoam_1_1powerModels_1_1fixedTemperature_abb2922ced3326cccb3cfdf6a3aff703b}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!temperature\+Update@{temperature\+Update}}
+\index{temperature\+Update@{temperature\+Update}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{temperature\+Update()}{temperatureUpdate()}}
+{\footnotesize\ttfamily void temperature\+Update (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 118 of file fixed\+Temperature.\+C.
+
+
+
+References for\+All(), i, and t().
+
+
+
+Referenced by fixed\+Temperature\+::correct().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=255pt]{classFoam_1_1powerModels_1_1fixedTemperature_abb2922ced3326cccb3cfdf6a3aff703b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=263pt]{classFoam_1_1powerModels_1_1fixedTemperature_abb2922ced3326cccb3cfdf6a3aff703b_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_a97c6919892227364774ffd51f3fa625b}\label{classFoam_1_1powerModels_1_1fixedTemperature_a97c6919892227364774ffd51f3fa625b}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!T\+\_\+@{T\+\_\+}}
+\index{T\+\_\+@{T\+\_\+}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{T\+\_\+}{T\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field T\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 59 of file fixed\+Temperature.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_af04ec83129f2dbb32ddd3e46e6e6a778}\label{classFoam_1_1powerModels_1_1fixedTemperature_af04ec83129f2dbb32ddd3e46e6e6a778}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!time\+Profile\+\_\+@{time\+Profile\+\_\+}}
+\index{time\+Profile\+\_\+@{time\+Profile\+\_\+}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{time\+Profile\+\_\+}{timeProfile\_}}
+{\footnotesize\ttfamily Ptr\+List$<$Function1$<$scalar$>$ $>$ time\+Profile\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 63 of file fixed\+Temperature.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_a15480c8346d9202ae61b7a3d920ecfa7}\label{classFoam_1_1powerModels_1_1fixedTemperature_a15480c8346d9202ae61b7a3d920ecfa7}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!t0\+\_\+@{t0\+\_\+}}
+\index{t0\+\_\+@{t0\+\_\+}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{t0\+\_\+}{t0\_}}
+{\footnotesize\ttfamily List$<$scalar$>$ t0\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 66 of file fixed\+Temperature.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1fixedTemperature_aa7de418f5709d721311e6d40486f54b2}\label{classFoam_1_1powerModels_1_1fixedTemperature_aa7de418f5709d721311e6d40486f54b2}} 
+\index{Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}!time\+Dependent\+\_\+@{time\+Dependent\+\_\+}}
+\index{time\+Dependent\+\_\+@{time\+Dependent\+\_\+}!Foam\+::power\+Models\+::fixed\+Temperature@{Foam\+::power\+Models\+::fixed\+Temperature}}
+\subsubsection{\texorpdfstring{time\+Dependent\+\_\+}{timeDependent\_}}
+{\footnotesize\ttfamily List$<$bool$>$ time\+Dependent\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 69 of file fixed\+Temperature.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/power\+Models/fixed\+Temperature/\hyperlink{fixedTemperature_8H}{fixed\+Temperature.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/power\+Models/fixed\+Temperature/\hyperlink{fixedTemperature_8C}{fixed\+Temperature.\+C}\end{DoxyCompactItemize}

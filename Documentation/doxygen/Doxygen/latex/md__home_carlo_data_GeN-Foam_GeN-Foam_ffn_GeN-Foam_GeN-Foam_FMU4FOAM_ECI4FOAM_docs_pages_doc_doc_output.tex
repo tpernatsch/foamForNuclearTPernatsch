@@ -1,0 +1,61 @@
+
+
+ title\+: Output permalink\+: doc\+\_\+output.\+html keywords\+: Output sidebar\+: doc\+\_\+sidebar \subsection*{folder\+: doc }
+
+\subsection*{Usage}
+
+add following library to the control\+Dict
+
+
+\begin{DoxyCode}
+libs(externalComm)
+\end{DoxyCode}
+
+
+\subsection*{One Dimensional}
+
+\subsubsection*{ext\+Forces}
+
+
+\begin{DoxyCode}
+extForces
+\{
+    type extForces;
+    patches (".*");
+    CofR  (0 0 0);
+    forceName force;
+    momentName moment;
+\}
+\end{DoxyCode}
+
+
+\subsubsection*{ext\+Function}
+
+
+\begin{DoxyCode}
+extFunction
+\{
+    type extFunction;
+    function constant 0;
+    varName dTout;
+\}
+\end{DoxyCode}
+
+
+\subsubsection*{ext\+Patch}
+
+not implented
+
+\subsubsection*{ext\+Sensor}
+
+
+\begin{DoxyCode}
+extSensor
+\{
+    type extSensor;
+    sensorName Tout;
+    fieldName T;
+    sensorPosition (-0.01 0 0);
+\}
+\end{DoxyCode}
+ 

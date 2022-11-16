@@ -1,0 +1,253 @@
+\hypertarget{pEqn__2p_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqn\+\_\+2p.H File Reference}
+\label{pEqn__2p_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqn\+\_\+2p.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/p\+Eqn\+\_\+2p.\+H}}
+Include dependency graph for p\+Eqn\+\_\+2p.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pEqn__2p_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{pEqn__2p_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{pEqn__2p_8H_a5ae53f39028b227fab81abc22e3286d6}{if} (!\hyperlink{refsAndControls__2p_8H_a1d4f14edd4b410f2e95c2b58e5e49210}{implicit\+Partial\+Elimination})
+\item 
+vol\+Scalar\+Field \hyperlink{pEqn__2p_8H_adfef74740ec7f70886ed3f74e6dd35f6}{A2} (\hyperlink{solvePointKinetics_8H_af0b39a25157c5a983e067e9f3176f91f}{U\+Eqn2.\+A}()+max(\hyperlink{refsAndControls__2p_8H_a960fdd6ecc9e71702c858667a416d298}{residual\+Alpha2} -\/ \hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2}, 0.\+0) $\ast$\hyperlink{UEqns__2p_8H_a2a5e0e37e61560baf7b55ce8b70e01c0}{rho2}/mesh\+\_\+.\+time().deltaT())
+\item 
+vol\+Scalar\+Field \hyperlink{pEqn__2p_8H_a6b7c38ee9390c649d0a54588ccfb6d1b}{Kdby\+A1} (\hyperlink{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}{Kd12}/A1)
+\item 
+vol\+Scalar\+Field \hyperlink{pEqn__2p_8H_a3b3d5399abb38ee13b6d3d80644e8bfa}{Kdby\+A2} (\hyperlink{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}{Kd12}/\hyperlink{pEqn__2p_8H_adfef74740ec7f70886ed3f74e6dd35f6}{A2})
+\item 
+vol\+Scalar\+Field \hyperlink{pEqn__2p_8H_a69f7869c92c05533e05895da3a3a1ffc}{r\+A\+U1} (\char`\"{}r\+A\+U.\char`\"{}+fluid1\+\_\+.\+name(), 1.\+0/(A1+\hyperlink{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}{Kd12} $\ast$(1.\+0+A1/\hyperlink{pEqn__2p_8H_adfef74740ec7f70886ed3f74e6dd35f6}{A2})))
+\item 
+vol\+Scalar\+Field \hyperlink{pEqn__2p_8H_a92380f46444d6e0ea5bf66657c37f11b}{r\+A\+U2} (\char`\"{}r\+A\+U.\char`\"{}+fluid2\+\_\+.\+name(), 1.\+0/(\hyperlink{pEqn__2p_8H_adfef74740ec7f70886ed3f74e6dd35f6}{A2}+\hyperlink{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}{Kd12} $\ast$(1.\+0+\hyperlink{pEqn__2p_8H_adfef74740ec7f70886ed3f74e6dd35f6}{A2}/A1)))
+\item 
+surface\+Scalar\+Field \hyperlink{pEqn__2p_8H_ab2d59b34715585245f2be8e066a2d42d}{alphar\+A\+Uf1} (fvc\+::interpolate(\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1} $\ast$\hyperlink{pEqn__2p_8H_a69f7869c92c05533e05895da3a3a1ffc}{r\+A\+U1}))
+\item 
+surface\+Scalar\+Field \hyperlink{pEqn__2p_8H_a1610c910a810828f64e67284a1eccf9e}{alphar\+A\+Uf2} (fvc\+::interpolate(\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2} $\ast$\hyperlink{pEqn__2p_8H_a92380f46444d6e0ea5bf66657c37f11b}{r\+A\+U2}))
+\item 
+surface\+Scalar\+Field \hyperlink{pEqn__2p_8H_aaf8fbbaf2280de48f6f99e10fd565b16}{alphar\+A\+Uf1\+Star} (fvc\+::interpolate((\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1}+\hyperlink{pEqn__2p_8H_a3b3d5399abb38ee13b6d3d80644e8bfa}{Kdby\+A2} $\ast$(\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1}+\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2})) $\ast$\hyperlink{pEqn__2p_8H_a69f7869c92c05533e05895da3a3a1ffc}{r\+A\+U1}))
+\item 
+surface\+Scalar\+Field \hyperlink{pEqn__2p_8H_a8baa7e71ccbd107a37547e28d03f911a}{alphar\+A\+Uf2\+Star} (fvc\+::interpolate((\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2}+\hyperlink{pEqn__2p_8H_a6b7c38ee9390c649d0a54588ccfb6d1b}{Kdby\+A1} $\ast$(\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1}+\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2})) $\ast$\hyperlink{pEqn__2p_8H_a92380f46444d6e0ea5bf66657c37f11b}{r\+A\+U2}))
+\item 
+bool \hyperlink{pEqn__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}{converged\+P\+I\+SO} (false)
+\item 
+\hyperlink{pEqn__2p_8H_a6e6ddb24845d3c5c3906e45d968e9448}{while} (\hyperlink{hEqn_8H_a3a2458f7f54158be848527a3fdedd5dd}{pimple\+\_\+.\+correct}(\hyperlink{pEqnf__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}{converged\+P\+I\+SO}))
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{pEqn__2p_8H_a0544c3fe466e421738dae463968b70ba}{else}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{pEqn__2p_8H_a5ae53f39028b227fab81abc22e3286d6}\label{pEqn__2p_8H_a5ae53f39028b227fab81abc22e3286d6}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!if@{if}}
+\index{if@{if}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{!}]{implicit\+Partial\+Elimination }\end{DoxyParamCaption})}
+
+
+
+Definition at line 3 of file p\+Eqn\+\_\+2p.\+H.
+
+
+
+References alpha1(), alpha2(), alphaf1(), alphaf2(), alphar\+A\+Uf1(), alphar\+A\+Uf2(), converged\+P\+I\+S\+O(), explicit\+Partial\+Elimination(), Kd12(), moving\+Alphaf(), no\+Partial\+Elimination(), p\+\_\+, p\+\_\+rgh\+\_\+, p\+Eqn\+Comp1, p\+Eqn\+Comp2, p\+Eqn\+Incomp(), phi1(), phi2(), phi\+S1(), phi\+S2(), r\+A\+U1(), r\+A\+U2(), r\+A\+Uf(), residual\+Alpha1(), residual\+Alpha2(), rho1, rho2, rho\+\_\+, U, U1(), U2, U\+\_\+, U\+Eqn1, and U\+Eqn2.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{pEqn__2p_8H_a5ae53f39028b227fab81abc22e3286d6_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__2p_8H_adfef74740ec7f70886ed3f74e6dd35f6}\label{pEqn__2p_8H_adfef74740ec7f70886ed3f74e6dd35f6}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!A2@{A2}}
+\index{A2@{A2}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{A2()}{A2()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field A2 (\begin{DoxyParamCaption}\item[{U\+Eqn2.}]{A)+max(residual\+Alpha2 -\/ alpha2, 0.\+0) $\ast$rho2/mesh\+\_\+.\+time().\+delta\+T( }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{pEqn__2p_8H_a6b7c38ee9390c649d0a54588ccfb6d1b}\label{pEqn__2p_8H_a6b7c38ee9390c649d0a54588ccfb6d1b}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!Kdby\+A1@{Kdby\+A1}}
+\index{Kdby\+A1@{Kdby\+A1}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kdby\+A1()}{KdbyA1()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Kdby\+A1 (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}{Kd12}/}]{A1 }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{pEqn__2p_8H_a6b7c38ee9390c649d0a54588ccfb6d1b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__2p_8H_a3b3d5399abb38ee13b6d3d80644e8bfa}\label{pEqn__2p_8H_a3b3d5399abb38ee13b6d3d80644e8bfa}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!Kdby\+A2@{Kdby\+A2}}
+\index{Kdby\+A2@{Kdby\+A2}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{Kdby\+A2()}{KdbyA2()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Kdby\+A2 (\begin{DoxyParamCaption}\item[{\hyperlink{UEqns__2p_8H_a5bbf0de883575e238683e5a720a8e16e}{Kd12}/}]{A2 }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{pEqn__2p_8H_a3b3d5399abb38ee13b6d3d80644e8bfa_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__2p_8H_a69f7869c92c05533e05895da3a3a1ffc}\label{pEqn__2p_8H_a69f7869c92c05533e05895da3a3a1ffc}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!r\+A\+U1@{r\+A\+U1}}
+\index{r\+A\+U1@{r\+A\+U1}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{r\+A\+U1()}{rAU1()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field r\+A\+U1 (\begin{DoxyParamCaption}\item[{\char`\"{}r\+A\+U.\char`\"{}+fluid1\+\_\+.}]{name(),  }\item[{1.\+0/}]{A1+\+Kd12 $\ast$(1.\+0+\+A1/\+A2) }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{pEqn__2p_8H_a69f7869c92c05533e05895da3a3a1ffc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__2p_8H_a92380f46444d6e0ea5bf66657c37f11b}\label{pEqn__2p_8H_a92380f46444d6e0ea5bf66657c37f11b}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!r\+A\+U2@{r\+A\+U2}}
+\index{r\+A\+U2@{r\+A\+U2}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{r\+A\+U2()}{rAU2()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field r\+A\+U2 (\begin{DoxyParamCaption}\item[{\char`\"{}r\+A\+U.\char`\"{}+fluid2\+\_\+.}]{name(),  }\item[{1.\+0/}]{A2+\+Kd12 $\ast$(1.\+0+\+A2/\+A1) }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=184pt]{pEqn__2p_8H_a92380f46444d6e0ea5bf66657c37f11b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__2p_8H_ab2d59b34715585245f2be8e066a2d42d}\label{pEqn__2p_8H_ab2d59b34715585245f2be8e066a2d42d}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!alphar\+A\+Uf1@{alphar\+A\+Uf1}}
+\index{alphar\+A\+Uf1@{alphar\+A\+Uf1}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alphar\+A\+Uf1()}{alpharAUf1()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphar\+A\+Uf1 (\begin{DoxyParamCaption}\item[{fvc\+::interpolate(\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1} $\ast$\hyperlink{pEqn__2p_8H_a69f7869c92c05533e05895da3a3a1ffc}{r\+A\+U1})}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{pEqn__2p_8H_ab2d59b34715585245f2be8e066a2d42d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__2p_8H_a1610c910a810828f64e67284a1eccf9e}\label{pEqn__2p_8H_a1610c910a810828f64e67284a1eccf9e}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!alphar\+A\+Uf2@{alphar\+A\+Uf2}}
+\index{alphar\+A\+Uf2@{alphar\+A\+Uf2}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alphar\+A\+Uf2()}{alpharAUf2()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphar\+A\+Uf2 (\begin{DoxyParamCaption}\item[{fvc\+::interpolate(\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2} $\ast$\hyperlink{pEqn__2p_8H_a92380f46444d6e0ea5bf66657c37f11b}{r\+A\+U2})}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{pEqn__2p_8H_a1610c910a810828f64e67284a1eccf9e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__2p_8H_aaf8fbbaf2280de48f6f99e10fd565b16}\label{pEqn__2p_8H_aaf8fbbaf2280de48f6f99e10fd565b16}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!alphar\+A\+Uf1\+Star@{alphar\+A\+Uf1\+Star}}
+\index{alphar\+A\+Uf1\+Star@{alphar\+A\+Uf1\+Star}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alphar\+A\+Uf1\+Star()}{alpharAUf1Star()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphar\+A\+Uf1\+Star (\begin{DoxyParamCaption}\item[{fvc\+::interpolate((\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1}+\hyperlink{pEqn__2p_8H_a3b3d5399abb38ee13b6d3d80644e8bfa}{Kdby\+A2} $\ast$(\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1}+\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2})) $\ast$\hyperlink{pEqn__2p_8H_a69f7869c92c05533e05895da3a3a1ffc}{r\+A\+U1})}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{pEqn__2p_8H_a8baa7e71ccbd107a37547e28d03f911a}\label{pEqn__2p_8H_a8baa7e71ccbd107a37547e28d03f911a}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!alphar\+A\+Uf2\+Star@{alphar\+A\+Uf2\+Star}}
+\index{alphar\+A\+Uf2\+Star@{alphar\+A\+Uf2\+Star}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{alphar\+A\+Uf2\+Star()}{alpharAUf2Star()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphar\+A\+Uf2\+Star (\begin{DoxyParamCaption}\item[{fvc\+::interpolate((\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2}+\hyperlink{pEqn__2p_8H_a6b7c38ee9390c649d0a54588ccfb6d1b}{Kdby\+A1} $\ast$(\hyperlink{UEqns__2p_8H_ad67e06bee4c61d3ec617e035493b4722}{alpha1}+\hyperlink{UEqns__2p_8H_abe544d8197b804c4439afde6d860d5d7}{alpha2})) $\ast$\hyperlink{pEqn__2p_8H_a92380f46444d6e0ea5bf66657c37f11b}{r\+A\+U2})}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{pEqn__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}\label{pEqn__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!converged\+P\+I\+SO@{converged\+P\+I\+SO}}
+\index{converged\+P\+I\+SO@{converged\+P\+I\+SO}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{converged\+P\+I\+S\+O()}{convergedPISO()}}
+{\footnotesize\ttfamily bool converged\+P\+I\+SO (\begin{DoxyParamCaption}\item[{false}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{pEqn__2p_8H_a7378b3cca14609b2f41dab30069eb9c4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__2p_8H_a6e6ddb24845d3c5c3906e45d968e9448}\label{pEqn__2p_8H_a6e6ddb24845d3c5c3906e45d968e9448}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!while@{while}}
+\index{while@{while}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{while()}{while()}}
+{\footnotesize\ttfamily while (\begin{DoxyParamCaption}\item[{pimple\+\_\+.}]{correctconverged\+P\+I\+SO }\end{DoxyParamCaption})}
+
+
+
+Definition at line 266 of file p\+Eqn\+\_\+2p.\+H.
+
+
+
+References alphaf1(), alphaf2(), Kdby\+A1(), Kdby\+A2(), p\+\_\+, p\+\_\+rgh\+\_\+, p\+Eqn\+Comp1, p\+Eqn\+Comp2, p\+Eqn\+Incomp(), phi1(), phi2(), phi\+S1(), phi\+S2(), r\+A\+Uf(), rho\+\_\+, U1(), U2, U\+\_\+, U\+Eqn1, and U\+Eqn2.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{pEqn__2p_8H_a6e6ddb24845d3c5c3906e45d968e9448_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{pEqn__2p_8H_a0544c3fe466e421738dae463968b70ba}\label{pEqn__2p_8H_a0544c3fe466e421738dae463968b70ba}} 
+\index{p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}!else@{else}}
+\index{else@{else}!p\+Eqn\+\_\+2p.\+H@{p\+Eqn\+\_\+2p.\+H}}
+\subsubsection{\texorpdfstring{else}{else}}
+{\footnotesize\ttfamily else}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+    
+    volScalarField A1
+    (
+        \hyperlink{UEqns__2p_8H_ac3b68d7f14e859dbaf0e8c9b850c0288}{UEqn1}.A() 
+    +   max(\hyperlink{refsAndControls__2p_8H_a39053abc52660ee0829d85d9a9704f32}{residualAlpha1} - \hyperlink{alphaEqns__2p_8H_a9cf7e208292359f8f667534601eac83c}{alpha1}, 0.0)*\hyperlink{updatePP__rghRho__2p_8H_afa544c227ef35756c30d930109636746}{rho1}/mesh\_.time().deltaT()
+    )
+\end{DoxyCode}
+
+
+Definition at line 223 of file p\+Eqn\+\_\+2p.\+H.
+

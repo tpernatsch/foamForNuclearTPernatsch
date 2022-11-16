@@ -1,0 +1,107 @@
+
+
+ title\+: Input permalink\+: doc\+\_\+input.\+html keywords\+: Input sidebar\+: doc\+\_\+sidebar \subsection*{folder\+: doc }
+
+\subsection*{Usage}
+
+add following library to the control\+Dict
+
+
+\begin{DoxyCode}
+libs(externalComm)
+\end{DoxyCode}
+
+
+\subsection*{Boundary Conditions}
+
+add following entries to 0/$<$field name$>$
+
+\subsubsection*{flow\+Rate\+Inlet}
+
+
+\begin{DoxyCode}
+inlet
+\{
+    type coupledFlowRateInletVelocity;
+    mFlowInit    1e-8;
+    massFlowRate mdotin; // name of the input
+    uniform (0 0 0);
+\}
+\end{DoxyCode}
+
+
+\subsubsection*{flow\+Rate\+Outlet}
+
+
+\begin{DoxyCode}
+inlet
+\{
+    type coupledFlowRateOutletVelocity;
+    mFlowInit    1e-8;
+    massFlowRate mdotout; // name of the input
+    uniform (0 0 0);
+\}
+\end{DoxyCode}
+
+
+\subsubsection*{uniform\+Value}
+
+
+\begin{DoxyCode}
+inlet
+\{
+    type coupledUniformExternalValue;
+    inputName Tin;
+    value uniform 350;
+    initValue 293;
+\}
+\end{DoxyCode}
+
+
+\subsubsection*{wall\+Heat\+Flux}
+
+
+\begin{DoxyCode}
+walls
+\{
+    type            coupledWallHeatFluxTemperature;
+    kappaMethod     lookup;
+    kappa           DT;
+    mode            power;
+    QName           Qout;
+    flipQ           true;
+    Qinit           0;
+    value           uniform 298;
+\}
+\end{DoxyCode}
+
+
+\subsection*{fv\+Options}
+
+add following entries to constant/fv\+Options
+
+\subsubsection*{coupled\+Acceleration\+Source}
+
+
+\begin{DoxyCode}
+coupledAccelerationSource
+\{
+    // Mandatory entries (unmodifiable)
+    type             coupledAccelerationSource;
+
+    accelerationName acc;
+    omegaName omega;
+    dOmegaDTName dOmegaDT;
+
+    // Optional entries (unmodifiable)
+    U                U;
+
+\}
+\end{DoxyCode}
+
+
+\subsection*{mesh\+Motions}
+
+\subsubsection*{coupled\+Translation\+Motion}
+
+\subsubsection*{external\+Coupled\+Force}

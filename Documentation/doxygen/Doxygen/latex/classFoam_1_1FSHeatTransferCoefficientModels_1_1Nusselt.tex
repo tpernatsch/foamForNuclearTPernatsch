@@ -1,0 +1,205 @@
+\hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt}{}\section{Nusselt Class Reference}
+\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt}\index{Nusselt@{Nusselt}}
+
+
+Heat transfer coefficient for forced convective flows that is computed starting from the \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt}{Nusselt}, which is turn obtained via correlation in the form.  
+
+
+
+
+Inheritance diagram for Nusselt\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Nusselt\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_a560b7b6bb9ebe392d9d91aa9ce2ae98c}{Type\+Name} (\char`\"{}Nusselt\+Reynolds\+Prandtl\+Power\char`\"{})
+\item 
+\hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_ae66ec9cbf9ddee2181cf4fef512c7c0b}{Nusselt} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_adc44b85005e84c604806654d02d420a4}{$\sim$\+Nusselt} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_a2c1e1872d359910de4c35cf8f003871c}{value} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Heat transfer coefficient for forced convective flows that is computed starting from the \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt}{Nusselt}, which is turn obtained via correlation in the form. 
+
+\label{_Description}%
+ Nu = A\+\_\++\+B\+\_\+$\ast$(Re$^\wedge$\+C\+\_\+)$\ast$(Pr$^\wedge$\+D\+\_\+)
+
+with Re, Pr being the Reynolds (superficial in two-\/phase) and Prandlt of the fluid, and A, B, C, D selectable consts
+
+Author Stefan Radman (\href{mailto:sradman@pm.me}{\tt sradman@pm.\+me} / \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch})
+
+Dictionary entries example (mandatory) \begin{DoxyVerb}    const   4;
+    coeff   0.01;
+    expRe   0.8;
+    expPr   0.8;
+\end{DoxyVerb}
+
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Nusselt/NusseltFSHeatTransferCoefficient.H}{\tt Nusselt\+F\+S\+Heat\+Transfer\+Coefficient.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Nusselt/NusseltFSHeatTransferCoefficient.C}{\tt Nusselt\+F\+S\+Heat\+Transfer\+Coefficient.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+\label{_Description}%
+ Nu = A\+\_\++\+B\+\_\+$\ast$(Re$^\wedge$\+C\+\_\+)$\ast$(Pr$^\wedge$\+D\+\_\+)
+
+with Re, Pr being the Reynolds (superficial in two-\/phase) and Prandlt of the fluid, and A, B, C, D selectable consts
+
+Additional heat transfer coeff to take into account the wall resistance, such that
+
+1/H = (1/(Nu $\ast$ kappa / Dh)) + (1/\+H\+\_\+wall)
+
+Author Stefan Radman (\href{mailto:sradman@pm.me}{\tt sradman@pm.\+me} / \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch}) Thomas Guilbaud (\href{mailto:thomas.guilbaud@epfl.ch}{\tt thomas.\+guilbaud@epfl.\+ch})
+
+Dictionary entries example (mandatory) \begin{DoxyVerb}    const   4;
+    coeff   0.01;
+    expRe   0.8;
+    expPr   0.8;
+    addH    10000;
+\end{DoxyVerb}
+
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltAndWall/NusseltAndWallFSHeatTransferCoefficient.H}{\tt Nusselt\+And\+Wall\+F\+S\+Heat\+Transfer\+Coefficient.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltAndWall/NusseltAndWallFSHeatTransferCoefficient.C}{\tt Nusselt\+And\+Wall\+F\+S\+Heat\+Transfer\+Coefficient.\+C} 
+\end{DoxyItemize}\href{https://foam-for-nuclear.gitlab.io/builds/foam-for-nuclear/GeN-Foam/GeN-Foam/classes/neutronics/albedoSP3/albedoSP3FvPatchField.H}{\tt https\+://foam-\/for-\/nuclear.\+gitlab.\+io/builds/foam-\/for-\/nuclear/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/albedo\+S\+P3/albedo\+S\+P3\+Fv\+Patch\+Field.\+H}
+\end{DoxyParagraph}
+\label{_Description}%
+ Nu = A\+\_\++\+B\+\_\+$\ast$(Re$^\wedge$\+C\+\_\+)$\ast$(Pr$^\wedge$\+D\+\_\+)
+
+with Re, Pr being the Reynolds (superficial in two-\/phase) and Prandlt of the fluid, and A, B, C, D selectable consts
+
+Additional heat transfer coeff to take into account the wall resistance, such that
+
+1/H = (1/(Nu $\ast$ kappa / Dh)) + (1/\+H\+\_\+wall) + (1/ H\+\_\+from\+F\+MU)
+
+Author Stefan Radman (\href{mailto:sradman@pm.me}{\tt sradman@pm.\+me} / \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch}) Thomas Guilbaud (\href{mailto:thomas.guilbaud@epfl.ch}{\tt thomas.\+guilbaud@epfl.\+ch}) Carlo Fiorina for the F\+MU part
+
+Dictionary entries example (mandatory) \begin{DoxyVerb}    const   4;
+    coeff   0.01;
+    expRe   0.8;
+    expPr   0.8;
+    addH    10000;
+    HNameFromFMU   HCoupled; //This is the name given to the H in OpenFOAM
+\end{DoxyVerb}
+
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU/NusseltWallAndHfromFMUFSHeatTransferCoefficient.H}{\tt Nusselt\+Wall\+And\+Hfrom\+F\+M\+U\+F\+S\+Heat\+Transfer\+Coefficient.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU/NusseltWallAndHfromFMUFSHeatTransferCoefficient.C}{\tt Nusselt\+Wall\+And\+Hfrom\+F\+M\+U\+F\+S\+Heat\+Transfer\+Coefficient.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 65 of file Nusselt\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_ae66ec9cbf9ddee2181cf4fef512c7c0b}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_ae66ec9cbf9ddee2181cf4fef512c7c0b}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt}!Nusselt@{Nusselt}}
+\index{Nusselt@{Nusselt}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt}}
+\subsubsection{\texorpdfstring{Nusselt()}{Nusselt()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt}{Nusselt} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 43 of file Nusselt\+F\+S\+Heat\+Transfer\+Coefficient.\+C.
+
+
+
+References Nusselt\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=206pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_ae66ec9cbf9ddee2181cf4fef512c7c0b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_adc44b85005e84c604806654d02d420a4}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_adc44b85005e84c604806654d02d420a4}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt}!````~Nusselt@{$\sim$\+Nusselt}}
+\index{````~Nusselt@{$\sim$\+Nusselt}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt}}
+\subsubsection{\texorpdfstring{$\sim$\+Nusselt()}{~Nusselt()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt}{Nusselt} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 108 of file Nusselt\+F\+S\+Heat\+Transfer\+Coefficient.\+H.
+
+
+
+References Nusselt\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=212pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_adc44b85005e84c604806654d02d420a4_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_a560b7b6bb9ebe392d9d91aa9ce2ae98c}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_a560b7b6bb9ebe392d9d91aa9ce2ae98c}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}Nusselt\+Reynolds\+Prandtl\+Power\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_a2c1e1872d359910de4c35cf8f003871c}\label{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_a2c1e1872d359910de4c35cf8f003871c}} 
+\index{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt}!value@{value}}
+\index{value@{value}!Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt@{Foam\+::\+F\+S\+Heat\+Transfer\+Coefficient\+Models\+::\+Nusselt}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Foam\+::scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1FSHeatTransferCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}{F\+S\+Heat\+Transfer\+Coefficient\+Model}.
+
+
+
+Definition at line 70 of file Nusselt\+F\+S\+Heat\+Transfer\+Coefficient.\+C.
+
+
+
+Referenced by Nusselt\+::\+Nusselt(), and Nusselt\+::$\sim$\+Nusselt().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=212pt]{classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt_a2c1e1872d359910de4c35cf8f003871c_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/\+Nusselt/\hyperlink{NusseltFSHeatTransferCoefficient_8H}{Nusselt\+F\+S\+Heat\+Transfer\+Coefficient.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/\+Nusselt/\hyperlink{NusseltFSHeatTransferCoefficient_8C}{Nusselt\+F\+S\+Heat\+Transfer\+Coefficient.\+C}\end{DoxyCompactItemize}

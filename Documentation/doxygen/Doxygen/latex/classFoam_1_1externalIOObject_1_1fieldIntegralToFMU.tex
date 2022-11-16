@@ -1,0 +1,232 @@
+\hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}{}\section{field\+Integral\+To\+F\+MU Class Reference}
+\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}\index{field\+Integral\+To\+F\+MU@{field\+Integral\+To\+F\+MU}}
+
+
+Output an integral over a cell\+Zone to an F\+MU.  
+
+
+
+
+Inheritance diagram for field\+Integral\+To\+F\+MU\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=180pt]{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for field\+Integral\+To\+F\+MU\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=180pt]{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a9c994b9cbbf78cb445164eeebe688436}{Type\+Name} (\char`\"{}field\+Integral\+To\+F\+MU\char`\"{})
+\item 
+\hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a4a56d36783a26525a0ce5a705c728f4c}{field\+Integral\+To\+F\+MU} (const word \&\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name}, const Time \&run\+Time, const dictionary \&dict)
+\item 
+virtual \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_acf5f3a9ab019ce80b1a3a00df6e0aae7}{$\sim$field\+Integral\+To\+F\+MU} ()=default
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a89a155d23dd4ca6365631548620bab27}{read} (const dictionary \&)
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a304cfd64aa086af8de5829288d82c74d}{execute} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a47ddec9272d09313c6ea694bb2953155}{write} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a6595a412b57d560957ed200ea1db6143}{field\+Integral\+To\+F\+MU} (const \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}{field\+Integral\+To\+F\+MU} \&)=delete
+\item 
+void \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_ad4a2e436a6117acae5d91778db665dcf}{operator=} (const \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}{field\+Integral\+To\+F\+MU} \&)=delete
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+word \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a84505e826985ad10d53f4063d43128ea}{field\+Name\+\_\+}
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a23edeeeecebcef11921a33dd5d990570}{mesh\+\_\+}
+\item 
+word \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_ad2969f803f6aad7e5eec24269d9ae443}{cell\+Zone\+\_\+}
+\item 
+word \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a46bd1678875f6d9d0a01f3b93342b00a}{name\+F\+M\+U\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_af89e3827787d41b150d0943b9dcde75f}{field\+Ptr\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Output an integral over a cell\+Zone to an F\+MU. 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Usage}
+Minimal example by using {\ttfamily system/external\+Coupling\+Dict}\+: \begin{DoxyVerb}fieldIntegralToFMU
+{
+    type fieldIntegralToFMU;
+    nameFMU hxPowerOut;
+    fieldName heatFlux.structure;
+    region     fluidRegion;
+    cellZone hx;
+}  
+\end{DoxyVerb}
+
+\end{DoxyParagraph}
+where the entries mean\+: \tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{5}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Type } }&\PBS\centering \textbf{ {\bfseries  Req\textquotesingle{}d } }&\PBS\centering \textbf{ {\bfseries  Dflt}  }\\\cline{1-5}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Type } }&\PBS\centering \textbf{ {\bfseries  Req\textquotesingle{}d } }&\PBS\centering \textbf{ {\bfseries  Dflt}  }\\\cline{1-5}
+\endhead
+{\ttfamily type}  &Type name\+: \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}{field\+Integral\+To\+F\+MU}  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily name\+F\+MU}  &name of the output scalar  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily field\+Name}  &name of the measurement field  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily region}  &name of the region  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily cell\+Zone}  &position of the cell\+Zone  &word  &yes  &-\/  \\\cline{1-5}
+\end{longtabu}
+
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU/fieldIntegralToFMU.H}{\tt field\+Integral\+To\+F\+M\+U.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU/fieldIntegralToFMU.C}{\tt field\+Integral\+To\+F\+M\+U.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 114 of file field\+Integral\+To\+F\+M\+U.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a6595a412b57d560957ed200ea1db6143}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a6595a412b57d560957ed200ea1db6143}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!field\+Integral\+To\+F\+MU@{field\+Integral\+To\+F\+MU}}
+\index{field\+Integral\+To\+F\+MU@{field\+Integral\+To\+F\+MU}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{field\+Integral\+To\+F\+M\+U()}{fieldIntegralToFMU()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}{field\+Integral\+To\+F\+MU} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}{field\+Integral\+To\+F\+MU} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a4a56d36783a26525a0ce5a705c728f4c}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a4a56d36783a26525a0ce5a705c728f4c}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!field\+Integral\+To\+F\+MU@{field\+Integral\+To\+F\+MU}}
+\index{field\+Integral\+To\+F\+MU@{field\+Integral\+To\+F\+MU}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{field\+Integral\+To\+F\+M\+U()}{fieldIntegralToFMU()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}{field\+Integral\+To\+F\+MU} (\begin{DoxyParamCaption}\item[{const word \&}]{name,  }\item[{const Time \&}]{run\+Time,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_acf5f3a9ab019ce80b1a3a00df6e0aae7}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_acf5f3a9ab019ce80b1a3a00df6e0aae7}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!````~field\+Integral\+To\+F\+MU@{$\sim$field\+Integral\+To\+F\+MU}}
+\index{````~field\+Integral\+To\+F\+MU@{$\sim$field\+Integral\+To\+F\+MU}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{$\sim$field\+Integral\+To\+F\+M\+U()}{~fieldIntegralToFMU()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}{field\+Integral\+To\+F\+MU} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_ad4a2e436a6117acae5d91778db665dcf}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_ad4a2e436a6117acae5d91778db665dcf}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!operator=@{operator=}}
+\index{operator=@{operator=}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily void operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU}{field\+Integral\+To\+F\+MU} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a9c994b9cbbf78cb445164eeebe688436}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a9c994b9cbbf78cb445164eeebe688436}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}field\+Integral\+To\+F\+MU\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a89a155d23dd4ca6365631548620bab27}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a89a155d23dd4ca6365631548620bab27}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!read@{read}}
+\index{read@{read}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily virtual bool read (\begin{DoxyParamCaption}\item[{const dictionary \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a6ce0c64db98eb6144d363dbfc86104eb}{external\+I\+O\+Object}.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a304cfd64aa086af8de5829288d82c74d}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a304cfd64aa086af8de5829288d82c74d}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!execute@{execute}}
+\index{execute@{execute}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily virtual bool execute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a6a2fecba3df663a5e8d1c371795e3763}{external\+I\+O\+Object}.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a47ddec9272d09313c6ea694bb2953155}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a47ddec9272d09313c6ea694bb2953155}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!write@{write}}
+\index{write@{write}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily virtual bool write (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_afb09203164c30c34e8eca81ef0211745}{external\+I\+O\+Object}.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a84505e826985ad10d53f4063d43128ea}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a84505e826985ad10d53f4063d43128ea}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!field\+Name\+\_\+@{field\+Name\+\_\+}}
+\index{field\+Name\+\_\+@{field\+Name\+\_\+}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{field\+Name\+\_\+}{fieldName\_}}
+{\footnotesize\ttfamily word field\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 129 of file field\+Integral\+To\+F\+M\+U.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a23edeeeecebcef11921a33dd5d990570}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a23edeeeecebcef11921a33dd5d990570}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!mesh\+\_\+@{mesh\+\_\+}}
+\index{mesh\+\_\+@{mesh\+\_\+}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{mesh\+\_\+}{mesh\_}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 132 of file field\+Integral\+To\+F\+M\+U.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_ad2969f803f6aad7e5eec24269d9ae443}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_ad2969f803f6aad7e5eec24269d9ae443}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!cell\+Zone\+\_\+@{cell\+Zone\+\_\+}}
+\index{cell\+Zone\+\_\+@{cell\+Zone\+\_\+}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{cell\+Zone\+\_\+}{cellZone\_}}
+{\footnotesize\ttfamily word cell\+Zone\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 135 of file field\+Integral\+To\+F\+M\+U.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a46bd1678875f6d9d0a01f3b93342b00a}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a46bd1678875f6d9d0a01f3b93342b00a}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!name\+F\+M\+U\+\_\+@{name\+F\+M\+U\+\_\+}}
+\index{name\+F\+M\+U\+\_\+@{name\+F\+M\+U\+\_\+}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{name\+F\+M\+U\+\_\+}{nameFMU\_}}
+{\footnotesize\ttfamily word name\+F\+M\+U\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 138 of file field\+Integral\+To\+F\+M\+U.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_af89e3827787d41b150d0943b9dcde75f}\label{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_af89e3827787d41b150d0943b9dcde75f}} 
+\index{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}!field\+Ptr\+\_\+@{field\+Ptr\+\_\+}}
+\index{field\+Ptr\+\_\+@{field\+Ptr\+\_\+}!Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU@{Foam\+::external\+I\+O\+Object\+::field\+Integral\+To\+F\+MU}}
+\subsubsection{\texorpdfstring{field\+Ptr\+\_\+}{fieldPtr\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ field\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 141 of file field\+Integral\+To\+F\+M\+U.\+H.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/function\+Objects/field\+Integral\+To\+F\+M\+U/\hyperlink{fieldIntegralToFMU_8H}{field\+Integral\+To\+F\+M\+U.\+H}\end{DoxyCompactItemize}

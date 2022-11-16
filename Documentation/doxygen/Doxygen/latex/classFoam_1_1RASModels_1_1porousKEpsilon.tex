@@ -1,0 +1,639 @@
+\hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon}{}\section{porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$ Class Template Reference}
+\label{classFoam_1_1RASModels_1_1porousKEpsilon}\index{porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$@{porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$}}
+
+
+Same as standard Open\+F\+O\+AM. \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon}{porous\+K\+Epsilon} is provided as additional model. The only difference is that it forces k and epsilon to equilibrium values inside the porous zones. These equilibium values can be set in the porous\+Kepsion\+Properties sub-\/dictionary here below. k and epsilon are determined based on correlations for tubulent intensity (I) and lengh scale (L). Turbulent intensity correlation in the form turbulence\+Intensity\+Coeff$\ast$\+Reynolds$^\wedge$turbulence\+Intensity\+Exp, with Reynolds number calculated by the thermal-\/hydraulic class, according to the input data in phase\+Properties.  
+
+
+
+
+Inheritance diagram for porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=247pt]{classFoam_1_1RASModels_1_1porousKEpsilon__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1RASModels_1_1porousKEpsilon__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Basic\+Turbulence\+Model\+::alpha\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a06a66094f33d6817d19225445c5ea874}{alpha\+Field}
+\item 
+typedef Basic\+Turbulence\+Model\+::rho\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a1dda906cfc9022335f0782a632302cd8}{rho\+Field}
+\item 
+typedef Basic\+Turbulence\+Model\+::transport\+Model \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}{transport\+Model}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_ac827768d33ef0e235c513e13368fb982}{Type\+Name} (\char`\"{}porous\+K\+Epsilon\char`\"{})
+\item 
+\hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a0b18840a4ad8ad411da2f225c6b814cd}{porous\+K\+Epsilon} (const \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a06a66094f33d6817d19225445c5ea874}{alpha\+Field} \&\hyperlink{UEqn__1pl_8H_a7fe02434a19f3e00e927f32adcbb193b}{alpha}, const \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a1dda906cfc9022335f0782a632302cd8}{rho\+Field} \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, const vol\+Vector\+Field \&\hyperlink{UEqn__1pl_8H_abe23fa3afe09cc511569a7dca4160561}{U}, const surface\+Scalar\+Field \&\hyperlink{updateAlphaPhiAndInitControls__1p_8H_adb16eab5a684ddb62e40a6ffdc2d646c}{alpha\+Rho\+Phi}, const surface\+Scalar\+Field \&phi, const \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}{transport\+Model} \&transport, const word \&properties\+Name=turbulence\+Model\+::properties\+Name, const word \&type=type\+Name)
+\item 
+virtual \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_afd360d5ee4b08516124a1bc7d5411d90}{$\sim$porous\+K\+Epsilon} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_af816873151ddb0126e98bb2f914d8ed5}{read} ()
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a1faa4b448524c4de622637dc51aa4a30}{Dk\+Eff} () const
+\item 
+tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_aaeb98c07acb7524ea98bf458352bc85a}{Depsilon\+Eff} () const
+\item 
+virtual tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a2cc3daa68147a9052c2b37e9ac37eca4}{k} () const
+\item 
+virtual tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_ad79e047917669fbb490d351478651e20}{epsilon} () const
+\item 
+virtual tmp$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a384ad699f7960a8b9686b4a5fe7f3e1a}{omega} () const
+\item 
+virtual void \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1}{correct} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_aaffe89433f18f1ee4137486e19219448}{correct\+Nut} ()
+\item 
+virtual tmp$<$ fv\+Scalar\+Matrix $>$ \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_abd7aa1bd65c38f9773745c8d98a2fed0}{k\+Source} () const
+\item 
+virtual tmp$<$ fv\+Scalar\+Matrix $>$ \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a11abcc44df285cf748c77aa0a7cac6b8}{epsilon\+Source} () const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_aca8750ac64529f08a5e0ddbd69d538db}{Cmu\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a25ef984db7a92f8f2421ed817e616206}{C1\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a6ecae7b56fdac924dca1bf174f157f69}{C2\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_aed8039605824e63ab9ac285e15c70bb7}{C3\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a1c4d80e34d39e7ffccd625df6016b6f7}{sigmak\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a2f26c65464368e5619b31aa5d5392a19}{sigma\+Eps\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a2166e9ffd139700fb0f21c44414e3545}{k\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a027dddd791551bd248d0fcacb013dd68}{epsilon\+\_\+}
+\item 
+const word \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a833e83efda396d14fa3d66c52df80ee4}{fluid\+Name\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1structure}{structure} \& \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a036e5523c5ec733c6115d5f2b7446583}{structure\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \& \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a9b97bb673e337335c3a0b01549b3667f}{F\+S\+Pair\+\_\+}
+\item 
+dictionary \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a916a9ea5c0f43703f3d49c7e8113be8f}{porous\+K\+Epsilon\+Dict\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_abab8e904bd578faa6c7100b6c2e55b1a}{convergence\+Length\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a9909ff13f66ffb4fc152e52f6568d41f}{turbulence\+Intensity\+Coeff\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_af7773ce49f745897e279f657ac63804d}{turbulence\+Intensity\+Exp\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a49e0975310b1bba34b8505f1d8a5ae09}{turbulence\+Length\+Scale\+Coeff\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a3607312c86951e517e7608a5913ac67a}{equilibrium\+Epsilon\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_ae9fc13505ce5e750d335f39a27f71cc6}{equilibrium\+K\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a43caf8f31a49744c7b3199c855ed9a4b}{nut\+Stabilization\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a043bc965fc5a437fbcbdf7dcc16cbdae}{Dh\+Struct\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ vol\+Scalar\+Field $>$ \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a41c7c02bdee084f8ca2c25a56b70000d}{laminar\+Re\+Struct\+Ptr\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_ac54aba00eda376e47e9fbf9743ebe071}{Cmu3by4\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class Basic\+Turbulence\+Model$>$\newline
+class Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$}
+
+Same as standard Open\+F\+O\+AM. \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon}{porous\+K\+Epsilon} is provided as additional model. The only difference is that it forces k and epsilon to equilibrium values inside the porous zones. These equilibium values can be set in the porous\+Kepsion\+Properties sub-\/dictionary here below. k and epsilon are determined based on correlations for tubulent intensity (I) and lengh scale (L). Turbulent intensity correlation in the form turbulence\+Intensity\+Coeff$\ast$\+Reynolds$^\wedge$turbulence\+Intensity\+Exp, with Reynolds number calculated by the thermal-\/hydraulic class, according to the input data in phase\+Properties. 
+
+\label{_Description}%
+ Please notice that a porous medium simulation using the \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon}{porous\+K\+Epsilon} model entails the risk of an unstable solution. This is due to the fact that the turbulent viscosity will be that of the sub-\/scale structure, and thus not enough to stabilize a solution on the length scale of the coarse mesh. To address this problem, one can define the keyword Dh\+Struct in constant/fluid\+Region/phase\+Properties/drag\+Models.(name\+Of\+Phase).structure. (name\+Of\+Cell\+Zones). This keyword defines the hydraulic diameter of the whole porous structure. The code uses it to make sure the turbulent viscosity results in a laminar Reynolds number (defaulted to 500).
+
+\begin{DoxyParagraph}{Usage}
+The following sub-\/dictionary should be included in the turbulence\+Properties dictionary\+: \begin{DoxyVerb}porousKEpsilonProperties
+{
+    "zones of application"
+    {
+    
+        convergenceLength           0.5; // k and epsilon will exponentially 
+                     // converge to equilibrium according to this exponent
+        turbulenceIntensityCoeff    0.16; 
+        turbulenceIntensityExp      -0.125;
+        turbulenceLengthScaleCoeff  0.07;
+    }
+}
+\end{DoxyVerb}
+
+\end{DoxyParagraph}
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/turbulenceModels/porousKEpsilon/porousKEpsilon.H}{\tt porous\+K\+Epsilon.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/turbulenceModels/porousKEpsilon/porousKEpsilon.C}{\tt porous\+K\+Epsilon.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 97 of file porous\+K\+Epsilon.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a06a66094f33d6817d19225445c5ea874}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a06a66094f33d6817d19225445c5ea874}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!alpha\+Field@{alpha\+Field}}
+\index{alpha\+Field@{alpha\+Field}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{alpha\+Field}{alphaField}}
+{\footnotesize\ttfamily typedef Basic\+Turbulence\+Model\+::alpha\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a06a66094f33d6817d19225445c5ea874}{alpha\+Field}}
+
+
+
+Definition at line 178 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a1dda906cfc9022335f0782a632302cd8}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a1dda906cfc9022335f0782a632302cd8}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!rho\+Field@{rho\+Field}}
+\index{rho\+Field@{rho\+Field}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{rho\+Field}{rhoField}}
+{\footnotesize\ttfamily typedef Basic\+Turbulence\+Model\+::rho\+Field \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a1dda906cfc9022335f0782a632302cd8}{rho\+Field}}
+
+
+
+Definition at line 179 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}\label{classFoam_1_1RASModels_1_1porousKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!transport\+Model@{transport\+Model}}
+\index{transport\+Model@{transport\+Model}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{transport\+Model}{transportModel}}
+{\footnotesize\ttfamily typedef Basic\+Turbulence\+Model\+::transport\+Model \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}{transport\+Model}}
+
+
+
+Definition at line 180 of file porous\+K\+Epsilon.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a0b18840a4ad8ad411da2f225c6b814cd}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a0b18840a4ad8ad411da2f225c6b814cd}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!porous\+K\+Epsilon@{porous\+K\+Epsilon}}
+\index{porous\+K\+Epsilon@{porous\+K\+Epsilon}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{porous\+K\+Epsilon()}{porousKEpsilon()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon}{porous\+K\+Epsilon} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a06a66094f33d6817d19225445c5ea874}{alpha\+Field} \&}]{alpha,  }\item[{const \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_a1dda906cfc9022335f0782a632302cd8}{rho\+Field} \&}]{rho,  }\item[{const vol\+Vector\+Field \&}]{U,  }\item[{const surface\+Scalar\+Field \&}]{alpha\+Rho\+Phi,  }\item[{const surface\+Scalar\+Field \&}]{phi,  }\item[{const \hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon_ac0a5dc3c45a2d1c61a649bc435a1a48a}{transport\+Model} \&}]{transport,  }\item[{const word \&}]{properties\+Name = {\ttfamily turbulenceModel\+:\+:propertiesName},  }\item[{const word \&}]{type = {\ttfamily typeName} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 105 of file porous\+K\+Epsilon.\+C.
+
+
+
+References for\+All(), and i.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{classFoam_1_1RASModels_1_1porousKEpsilon_a0b18840a4ad8ad411da2f225c6b814cd_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_afd360d5ee4b08516124a1bc7d5411d90}\label{classFoam_1_1RASModels_1_1porousKEpsilon_afd360d5ee4b08516124a1bc7d5411d90}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!````~porous\+K\+Epsilon@{$\sim$porous\+K\+Epsilon}}
+\index{````~porous\+K\+Epsilon@{$\sim$porous\+K\+Epsilon}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{$\sim$porous\+K\+Epsilon()}{~porousKEpsilon()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1RASModels_1_1porousKEpsilon}{porous\+K\+Epsilon} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 204 of file porous\+K\+Epsilon.\+H.
+
+
+
+References porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::read().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{classFoam_1_1RASModels_1_1porousKEpsilon_afd360d5ee4b08516124a1bc7d5411d90_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_aaffe89433f18f1ee4137486e19219448}\label{classFoam_1_1RASModels_1_1porousKEpsilon_aaffe89433f18f1ee4137486e19219448}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!correct\+Nut@{correct\+Nut}}
+\index{correct\+Nut@{correct\+Nut}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{correct\+Nut()}{correctNut()}}
+{\footnotesize\ttfamily void correct\+Nut (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 41 of file porous\+K\+Epsilon.\+C.
+
+
+
+References rho\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_abd7aa1bd65c38f9773745c8d98a2fed0}\label{classFoam_1_1RASModels_1_1porousKEpsilon_abd7aa1bd65c38f9773745c8d98a2fed0}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!k\+Source@{k\+Source}}
+\index{k\+Source@{k\+Source}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{k\+Source()}{kSource()}}
+{\footnotesize\ttfamily tmp$<$ fv\+Scalar\+Matrix $>$ k\+Source (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 72 of file porous\+K\+Epsilon.\+C.
+
+
+
+References rho\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a11abcc44df285cf748c77aa0a7cac6b8}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a11abcc44df285cf748c77aa0a7cac6b8}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!epsilon\+Source@{epsilon\+Source}}
+\index{epsilon\+Source@{epsilon\+Source}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{epsilon\+Source()}{epsilonSource()}}
+{\footnotesize\ttfamily tmp$<$ fv\+Scalar\+Matrix $>$ epsilon\+Source (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 87 of file porous\+K\+Epsilon.\+C.
+
+
+
+References rho\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_ac827768d33ef0e235c513e13368fb982}\label{classFoam_1_1RASModels_1_1porousKEpsilon_ac827768d33ef0e235c513e13368fb982}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_af816873151ddb0126e98bb2f914d8ed5}\label{classFoam_1_1RASModels_1_1porousKEpsilon_af816873151ddb0126e98bb2f914d8ed5}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!read@{read}}
+\index{read@{read}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily bool read (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 482 of file porous\+K\+Epsilon.\+C.
+
+
+
+Referenced by porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::$\sim$porous\+K\+Epsilon().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{classFoam_1_1RASModels_1_1porousKEpsilon_af816873151ddb0126e98bb2f914d8ed5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a1faa4b448524c4de622637dc51aa4a30}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a1faa4b448524c4de622637dc51aa4a30}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!Dk\+Eff@{Dk\+Eff}}
+\index{Dk\+Eff@{Dk\+Eff}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Dk\+Eff()}{DkEff()}}
+{\footnotesize\ttfamily tmp$<$vol\+Scalar\+Field$>$ Dk\+Eff (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 214 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_aaeb98c07acb7524ea98bf458352bc85a}\label{classFoam_1_1RASModels_1_1porousKEpsilon_aaeb98c07acb7524ea98bf458352bc85a}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!Depsilon\+Eff@{Depsilon\+Eff}}
+\index{Depsilon\+Eff@{Depsilon\+Eff}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Depsilon\+Eff()}{DepsilonEff()}}
+{\footnotesize\ttfamily tmp$<$vol\+Scalar\+Field$>$ Depsilon\+Eff (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 227 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a2cc3daa68147a9052c2b37e9ac37eca4}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a2cc3daa68147a9052c2b37e9ac37eca4}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!k@{k}}
+\index{k@{k}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{k()}{k()}}
+{\footnotesize\ttfamily virtual tmp$<$vol\+Scalar\+Field$>$ k (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 240 of file porous\+K\+Epsilon.\+H.
+
+
+
+References porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::k\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_ad79e047917669fbb490d351478651e20}\label{classFoam_1_1RASModels_1_1porousKEpsilon_ad79e047917669fbb490d351478651e20}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!epsilon@{epsilon}}
+\index{epsilon@{epsilon}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{epsilon()}{epsilon()}}
+{\footnotesize\ttfamily virtual tmp$<$vol\+Scalar\+Field$>$ epsilon (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 246 of file porous\+K\+Epsilon.\+H.
+
+
+
+References porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::epsilon\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a384ad699f7960a8b9686b4a5fe7f3e1a}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a384ad699f7960a8b9686b4a5fe7f3e1a}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!omega@{omega}}
+\index{omega@{omega}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{omega()}{omega()}}
+{\footnotesize\ttfamily virtual tmp$<$vol\+Scalar\+Field$>$ omega (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 254 of file porous\+K\+Epsilon.\+H.
+
+
+
+References porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classFoam_1_1RASModels_1_1porousKEpsilon_a384ad699f7960a8b9686b4a5fe7f3e1a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!correct@{correct}}
+\index{correct@{correct}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 503 of file porous\+K\+Epsilon.\+C.
+
+
+
+References alpha(), correct(), rho, rho\+\_\+, solve, and U\+\_\+.
+
+
+
+Referenced by porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::omega().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=210pt]{classFoam_1_1RASModels_1_1porousKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classFoam_1_1RASModels_1_1porousKEpsilon_a3ae44b28050c3aa494c1d8e18cf618c1_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_aca8750ac64529f08a5e0ddbd69d538db}\label{classFoam_1_1RASModels_1_1porousKEpsilon_aca8750ac64529f08a5e0ddbd69d538db}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!Cmu\+\_\+@{Cmu\+\_\+}}
+\index{Cmu\+\_\+@{Cmu\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Cmu\+\_\+}{Cmu\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar Cmu\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 116 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a25ef984db7a92f8f2421ed817e616206}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a25ef984db7a92f8f2421ed817e616206}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!C1\+\_\+@{C1\+\_\+}}
+\index{C1\+\_\+@{C1\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{C1\+\_\+}{C1\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar C1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 117 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a6ecae7b56fdac924dca1bf174f157f69}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a6ecae7b56fdac924dca1bf174f157f69}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!C2\+\_\+@{C2\+\_\+}}
+\index{C2\+\_\+@{C2\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{C2\+\_\+}{C2\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar C2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 118 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_aed8039605824e63ab9ac285e15c70bb7}\label{classFoam_1_1RASModels_1_1porousKEpsilon_aed8039605824e63ab9ac285e15c70bb7}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!C3\+\_\+@{C3\+\_\+}}
+\index{C3\+\_\+@{C3\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{C3\+\_\+}{C3\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar C3\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 119 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a1c4d80e34d39e7ffccd625df6016b6f7}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a1c4d80e34d39e7ffccd625df6016b6f7}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!sigmak\+\_\+@{sigmak\+\_\+}}
+\index{sigmak\+\_\+@{sigmak\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{sigmak\+\_\+}{sigmak\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar sigmak\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 120 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a2f26c65464368e5619b31aa5d5392a19}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a2f26c65464368e5619b31aa5d5392a19}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!sigma\+Eps\+\_\+@{sigma\+Eps\+\_\+}}
+\index{sigma\+Eps\+\_\+@{sigma\+Eps\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{sigma\+Eps\+\_\+}{sigmaEps\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar sigma\+Eps\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 121 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a2166e9ffd139700fb0f21c44414e3545}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a2166e9ffd139700fb0f21c44414e3545}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!k\+\_\+@{k\+\_\+}}
+\index{k\+\_\+@{k\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{k\+\_\+}{k\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field k\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 125 of file porous\+K\+Epsilon.\+H.
+
+
+
+Referenced by porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::k().
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a027dddd791551bd248d0fcacb013dd68}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a027dddd791551bd248d0fcacb013dd68}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!epsilon\+\_\+@{epsilon\+\_\+}}
+\index{epsilon\+\_\+@{epsilon\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{epsilon\+\_\+}{epsilon\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field epsilon\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 126 of file porous\+K\+Epsilon.\+H.
+
+
+
+Referenced by porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::epsilon().
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a833e83efda396d14fa3d66c52df80ee4}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a833e83efda396d14fa3d66c52df80ee4}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!fluid\+Name\+\_\+@{fluid\+Name\+\_\+}}
+\index{fluid\+Name\+\_\+@{fluid\+Name\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{fluid\+Name\+\_\+}{fluidName\_}}
+{\footnotesize\ttfamily const word fluid\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 130 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a036e5523c5ec733c6115d5f2b7446583}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a036e5523c5ec733c6115d5f2b7446583}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!structure\+\_\+@{structure\+\_\+}}
+\index{structure\+\_\+@{structure\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{structure\+\_\+}{structure\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1structure}{structure}\& structure\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 133 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a9b97bb673e337335c3a0b01549b3667f}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a9b97bb673e337335c3a0b01549b3667f}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!F\+S\+Pair\+\_\+@{F\+S\+Pair\+\_\+}}
+\index{F\+S\+Pair\+\_\+@{F\+S\+Pair\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{F\+S\+Pair\+\_\+}{FSPair\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair}\& F\+S\+Pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 136 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a916a9ea5c0f43703f3d49c7e8113be8f}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a916a9ea5c0f43703f3d49c7e8113be8f}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!porous\+K\+Epsilon\+Dict\+\_\+@{porous\+K\+Epsilon\+Dict\+\_\+}}
+\index{porous\+K\+Epsilon\+Dict\+\_\+@{porous\+K\+Epsilon\+Dict\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{porous\+K\+Epsilon\+Dict\+\_\+}{porousKEpsilonDict\_}}
+{\footnotesize\ttfamily dictionary porous\+K\+Epsilon\+Dict\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 139 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_abab8e904bd578faa6c7100b6c2e55b1a}\label{classFoam_1_1RASModels_1_1porousKEpsilon_abab8e904bd578faa6c7100b6c2e55b1a}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!convergence\+Length\+\_\+@{convergence\+Length\+\_\+}}
+\index{convergence\+Length\+\_\+@{convergence\+Length\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{convergence\+Length\+\_\+}{convergenceLength\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field convergence\+Length\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 143 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a9909ff13f66ffb4fc152e52f6568d41f}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a9909ff13f66ffb4fc152e52f6568d41f}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!turbulence\+Intensity\+Coeff\+\_\+@{turbulence\+Intensity\+Coeff\+\_\+}}
+\index{turbulence\+Intensity\+Coeff\+\_\+@{turbulence\+Intensity\+Coeff\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{turbulence\+Intensity\+Coeff\+\_\+}{turbulenceIntensityCoeff\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field turbulence\+Intensity\+Coeff\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 146 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_af7773ce49f745897e279f657ac63804d}\label{classFoam_1_1RASModels_1_1porousKEpsilon_af7773ce49f745897e279f657ac63804d}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!turbulence\+Intensity\+Exp\+\_\+@{turbulence\+Intensity\+Exp\+\_\+}}
+\index{turbulence\+Intensity\+Exp\+\_\+@{turbulence\+Intensity\+Exp\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{turbulence\+Intensity\+Exp\+\_\+}{turbulenceIntensityExp\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field turbulence\+Intensity\+Exp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 149 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a49e0975310b1bba34b8505f1d8a5ae09}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a49e0975310b1bba34b8505f1d8a5ae09}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!turbulence\+Length\+Scale\+Coeff\+\_\+@{turbulence\+Length\+Scale\+Coeff\+\_\+}}
+\index{turbulence\+Length\+Scale\+Coeff\+\_\+@{turbulence\+Length\+Scale\+Coeff\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{turbulence\+Length\+Scale\+Coeff\+\_\+}{turbulenceLengthScaleCoeff\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field turbulence\+Length\+Scale\+Coeff\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 152 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a3607312c86951e517e7608a5913ac67a}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a3607312c86951e517e7608a5913ac67a}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!equilibrium\+Epsilon\+\_\+@{equilibrium\+Epsilon\+\_\+}}
+\index{equilibrium\+Epsilon\+\_\+@{equilibrium\+Epsilon\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{equilibrium\+Epsilon\+\_\+}{equilibriumEpsilon\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field equilibrium\+Epsilon\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 155 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_ae9fc13505ce5e750d335f39a27f71cc6}\label{classFoam_1_1RASModels_1_1porousKEpsilon_ae9fc13505ce5e750d335f39a27f71cc6}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!equilibrium\+K\+\_\+@{equilibrium\+K\+\_\+}}
+\index{equilibrium\+K\+\_\+@{equilibrium\+K\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{equilibrium\+K\+\_\+}{equilibriumK\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field equilibrium\+K\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 156 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a43caf8f31a49744c7b3199c855ed9a4b}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a43caf8f31a49744c7b3199c855ed9a4b}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!nut\+Stabilization\+\_\+@{nut\+Stabilization\+\_\+}}
+\index{nut\+Stabilization\+\_\+@{nut\+Stabilization\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{nut\+Stabilization\+\_\+}{nutStabilization\_}}
+{\footnotesize\ttfamily bool nut\+Stabilization\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 160 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a043bc965fc5a437fbcbdf7dcc16cbdae}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a043bc965fc5a437fbcbdf7dcc16cbdae}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!Dh\+Struct\+Ptr\+\_\+@{Dh\+Struct\+Ptr\+\_\+}}
+\index{Dh\+Struct\+Ptr\+\_\+@{Dh\+Struct\+Ptr\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Dh\+Struct\+Ptr\+\_\+}{DhStructPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ Dh\+Struct\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 161 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_a41c7c02bdee084f8ca2c25a56b70000d}\label{classFoam_1_1RASModels_1_1porousKEpsilon_a41c7c02bdee084f8ca2c25a56b70000d}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!laminar\+Re\+Struct\+Ptr\+\_\+@{laminar\+Re\+Struct\+Ptr\+\_\+}}
+\index{laminar\+Re\+Struct\+Ptr\+\_\+@{laminar\+Re\+Struct\+Ptr\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{laminar\+Re\+Struct\+Ptr\+\_\+}{laminarReStructPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$vol\+Scalar\+Field$>$ laminar\+Re\+Struct\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 162 of file porous\+K\+Epsilon.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1RASModels_1_1porousKEpsilon_ac54aba00eda376e47e9fbf9743ebe071}\label{classFoam_1_1RASModels_1_1porousKEpsilon_ac54aba00eda376e47e9fbf9743ebe071}} 
+\index{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}!Cmu3by4\+\_\+@{Cmu3by4\+\_\+}}
+\index{Cmu3by4\+\_\+@{Cmu3by4\+\_\+}!Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon@{Foam\+::\+R\+A\+S\+Models\+::porous\+K\+Epsilon}}
+\subsubsection{\texorpdfstring{Cmu3by4\+\_\+}{Cmu3by4\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar Cmu3by4\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 166 of file porous\+K\+Epsilon.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/turbulence\+Models/porous\+K\+Epsilon/\hyperlink{porousKEpsilon_8H}{porous\+K\+Epsilon.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/turbulence\+Models/porous\+K\+Epsilon/\hyperlink{porousKEpsilon_8C}{porous\+K\+Epsilon.\+C}\end{DoxyCompactItemize}

@@ -1,0 +1,58 @@
+\hypertarget{pointKineticsInfo_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/point\+Kinetics/include/point\+Kinetics\+Info.H File Reference}
+\label{pointKineticsInfo_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/point\+Kinetics/include/point\+Kinetics\+Info.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/point\+Kinetics/include/point\+Kinetics\+Info.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{pointKineticsInfo_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+Info$<$$<$ \char`\"{} total\+Power = \char`\"{}$<$$<$ power\+\_\+$<$$<$ \char`\"{} W\char`\"{}$<$$<$ endl;Info$<$$<$ \char`\"{} -\/$>$ \hyperlink{pointKineticsInfo_8H_afcf8aaa8ec9f9de46d31b8124a646d3a}{fission}
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{pointKineticsInfo_8H_afcf8aaa8ec9f9de46d31b8124a646d3a}\label{pointKineticsInfo_8H_afcf8aaa8ec9f9de46d31b8124a646d3a}} 
+\index{point\+Kinetics\+Info.\+H@{point\+Kinetics\+Info.\+H}!fission@{fission}}
+\index{fission@{fission}!point\+Kinetics\+Info.\+H@{point\+Kinetics\+Info.\+H}}
+\subsubsection{\texorpdfstring{fission}{fission}}
+{\footnotesize\ttfamily Info$<$$<$ \char`\"{} total\+Power = \char`\"{} $<$$<$ power\+\_\+ $<$$<$ \char`\"{} W\char`\"{} $<$$<$ endl;Info$<$$<$ \char`\"{} -\/$>$ fission}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \textcolor{stringliteral}{" << fissionPower\_ << "} W\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    -> decay   = \textcolor{stringliteral}{" << decayPower\_ << "} W\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    totalReactivity   = \textcolor{stringliteral}{" << (totalReactivity\_*1e5)<< "} pcm\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    -> extReactivity  = \textcolor{stringliteral}{" << (externalReactivity*1e5)<< "} pcm\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    -> Doppler (fast) = \textcolor{stringliteral}{" << (DopplerReactivity*1e5)<< "} pcm\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    -> TFuel          = \textcolor{stringliteral}{" << (TFuelReactivity*1e5) << "} pcm\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    -> TClad          = \textcolor{stringliteral}{" << (TCladReactivity*1e5) << "} pcm\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    -> TCool          = \textcolor{stringliteral}{" << (TCoolReactivity*1e5) << "} pcm\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    -> rhoCool        = \textcolor{stringliteral}{" << (rhoCoolReactivity*1e5) << "} pcm\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    -> \hyperlink{createCouplingFields_8H_aff59c849e5a7c616f1bc0bb46332f5a3}{TStruct}        = \textcolor{stringliteral}{" << (TStructReactivity*1e5) << "} pcm\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    -> driveline      = \textcolor{stringliteral}{" << (drivelineReactivity*1e5) << "} pcm\textcolor{stringliteral}{"<<endl;}
+\textcolor{stringliteral}{Info<< "}    -> Boron      = \textcolor{stringliteral}{" << (boronReactivity*1e5) << "} pcm\textcolor{stringliteral}{"<<endl;}
+\textcolor{stringliteral}{if(liquidFuel\_)}
+\textcolor{stringliteral}{\{}
+\textcolor{stringliteral}{    Info<< "}    Initial reactivity loss due to delayed neutron precursors movement = \textcolor{stringliteral}{"}
+\textcolor{stringliteral}{    << (precEquilibriumReactivity\_ *1e+5) << "} pcm\textcolor{stringliteral}{"<<endl;}
+\textcolor{stringliteral}{    Info<< "}    Estimated \hyperlink{setXSFields_8H_af87588a82c92b5a98302618c01213792}{Beta} including DNP recirculation = \textcolor{stringliteral}{"}
+\textcolor{stringliteral}{    << (liquidFuelBeta\_ *1e+5) << "} pcm\textcolor{stringliteral}{"<<endl;}
+\textcolor{stringliteral}{\}}
+\textcolor{stringliteral}{if (this->get<bool>("}GEM\textcolor{stringliteral}{"))}
+\textcolor{stringliteral}{    Info<< "}    -> GEM            = \textcolor{stringliteral}{" << (GEMReactivity*1e5) << "} pcm\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    TFuel = \textcolor{stringliteral}{" << TFuelValue << "} \hyperlink{EEqn__1pl_8H_a0bf7c6d3f8200774cfd62534a837b61d}{K}\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    TClad = \textcolor{stringliteral}{" << TCladValue << "} \hyperlink{EEqn__1pl_8H_a0bf7c6d3f8200774cfd62534a837b61d}{K}\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    TCool = \textcolor{stringliteral}{" << TCoolValue << "} \hyperlink{EEqn__1pl_8H_a0bf7c6d3f8200774cfd62534a837b61d}{K}\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    rhoCool = \textcolor{stringliteral}{" << rhoCoolValue << "} kg/m3\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    \hyperlink{createCouplingFields_8H_aff59c849e5a7c616f1bc0bb46332f5a3}{TStruct} = \textcolor{stringliteral}{" << TStructValue << "} \hyperlink{EEqn__1pl_8H_a0bf7c6d3f8200774cfd62534a837b61d}{K}\textcolor{stringliteral}{" << endl;}
+\textcolor{stringliteral}{Info<< "}    driveline (\hyperlink{EEqn__1p_8H_ad0f94aa7ea43d4be0bae24e3a89aad0c}{T}, exp) = \textcolor{stringliteral}{"}
+\textcolor{stringliteral}{    << TDrivelineValue << "} \hyperlink{EEqn__1pl_8H_a0bf7c6d3f8200774cfd62534a837b61d}{K}
+\end{DoxyCode}
+
+
+Definition at line 2 of file point\+Kinetics\+Info.\+H.
+

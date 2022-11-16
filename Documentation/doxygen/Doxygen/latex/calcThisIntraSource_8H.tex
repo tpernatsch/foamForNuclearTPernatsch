@@ -1,0 +1,60 @@
+\hypertarget{calcThisIntraSource_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/include/calc\+This\+Intra\+Source.H File Reference}
+\label{calcThisIntraSource_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/include/calc\+This\+Intra\+Source.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+S\+N/include/calc\+This\+Intra\+Source.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=251pt]{calcThisIntraSource_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{calcThisIntraSource_8H_a00c663d6c8793a0a0b80f33b128832df}{if} (xs\+\_\+.\+legendre\+Moments() $>$ 1)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{calcThisIntraSource_8H_a463b23fd70711e8db47c4b9d99308949}{intra\+Sources} \mbox{[}directionI\mbox{]} = flux\+\_\+\mbox{[}energyI\mbox{]} $\ast$ (\hyperlink{setXSFieldsSN_8H_aa603f5e77d24550aec5d6843a62d3707}{nu\+Sigma\+Eff}\mbox{[}energyI\mbox{]} $\ast$ \hyperlink{setXSFieldsSN_8H_ae99cb941c26b8d02c30336ffe9d73cd2}{chi\+Prompt}\mbox{[}energyI\mbox{]} $\ast$ (1 -\/ \hyperlink{setXSFieldsSN_8H_a3ad4facb2dd0406d605dcb63190ce6f1}{Beta\+Tot}) / keff\+\_\+ + \hyperlink{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602}{sigma\+From\+To\+Temp\+E\+J\+EI}\mbox{[}0\mbox{]}\mbox{[}energyI\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{calcThisIntraSource_8H_a00c663d6c8793a0a0b80f33b128832df}\label{calcThisIntraSource_8H_a00c663d6c8793a0a0b80f33b128832df}} 
+\index{calc\+This\+Intra\+Source.\+H@{calc\+This\+Intra\+Source.\+H}!if@{if}}
+\index{if@{if}!calc\+This\+Intra\+Source.\+H@{calc\+This\+Intra\+Source.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{xs\+\_\+.}]{legendre\+Moments(),  }\item[{1}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 4 of file calc\+This\+Intra\+Source.\+H.
+
+
+
+References for\+All(), intra\+Sources, nu\+Sigma\+Eff, and sigma\+From\+To\+Temp\+E\+J\+E\+I().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=268pt]{calcThisIntraSource_8H_a00c663d6c8793a0a0b80f33b128832df_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{calcThisIntraSource_8H_a463b23fd70711e8db47c4b9d99308949}\label{calcThisIntraSource_8H_a463b23fd70711e8db47c4b9d99308949}} 
+\index{calc\+This\+Intra\+Source.\+H@{calc\+This\+Intra\+Source.\+H}!intra\+Sources@{intra\+Sources}}
+\index{intra\+Sources@{intra\+Sources}!calc\+This\+Intra\+Source.\+H@{calc\+This\+Intra\+Source.\+H}}
+\subsubsection{\texorpdfstring{intra\+Sources}{intraSources}}
+{\footnotesize\ttfamily intra\+Sources\mbox{[}directionI\mbox{]} = flux\+\_\+\mbox{[}energyI\mbox{]} $\ast$ (\hyperlink{setXSFieldsSN_8H_aa603f5e77d24550aec5d6843a62d3707}{nu\+Sigma\+Eff}\mbox{[}energyI\mbox{]} $\ast$ \hyperlink{setXSFieldsSN_8H_ae99cb941c26b8d02c30336ffe9d73cd2}{chi\+Prompt}\mbox{[}energyI\mbox{]} $\ast$ (1 -\/ \hyperlink{setXSFieldsSN_8H_a3ad4facb2dd0406d605dcb63190ce6f1}{Beta\+Tot}) / keff\+\_\+ + \hyperlink{calcSourceSN_8H_a9d093d9e40336b520121d807c0f66602}{sigma\+From\+To\+Temp\+E\+J\+EI}\mbox{[}0\mbox{]}\mbox{[}energyI\mbox{]})}
+
+
+
+Definition at line 2 of file calc\+This\+Intra\+Source.\+H.
+
+
+
+Referenced by for\+All(), and if().
+

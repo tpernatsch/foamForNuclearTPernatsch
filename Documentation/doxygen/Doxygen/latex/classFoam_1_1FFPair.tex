@@ -1,0 +1,1216 @@
+\hypertarget{classFoam_1_1FFPair}{}\section{F\+F\+Pair Class Reference}
+\label{classFoam_1_1FFPair}\index{F\+F\+Pair@{F\+F\+Pair}}
+
+
+Inheritance diagram for F\+F\+Pair\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=147pt]{classFoam_1_1FFPair__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+F\+Pair\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=329pt]{classFoam_1_1FFPair__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1FFPair_a8c03a5e29d701d9556d8868e31b22f9a}{Type\+Name} (\char`\"{}F\+F\+Pair\char`\"{})
+\item 
+\hyperlink{classFoam_1_1FFPair_a96e5e09fe81bdd4bf544bb08e02fc4cb}{F\+F\+Pair} (\hyperlink{classFoam_1_1fluid}{fluid} \&\hyperlink{classFoam_1_1FFPair_a6676ebc5398ae4c515c27a6405cea62b}{fluid1}, \hyperlink{classFoam_1_1fluid}{fluid} \&\hyperlink{classFoam_1_1FFPair_aab793f84ac558a425b7bb6c8ca16176b}{fluid2}, const dictionary \&dict)
+\item 
+virtual \hyperlink{classFoam_1_1FFPair_ad44924f767442ceb103b5818d41610da}{$\sim$\+F\+F\+Pair} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1FFPair_a73ace448c639d2e1c943852abe89af7c}{write\+Data} (Ostream \&os) const
+\item 
+void \hyperlink{classFoam_1_1FFPair_ab3bae8a59a44782c488f44e6ad1b34d1}{add\+Virtual\+Mass\+Force} (fv\+Vector\+Matrix \&\hyperlink{UEqn__1pl_8H_afd1b8693a3c3032de396035e7045d467}{U\+Eqn}) const
+\item 
+void \hyperlink{classFoam_1_1FFPair_ac892bd86a9a69984720308f911ec306f}{correct} (const bool \&correct\+Fluid\+Dynamics, const bool \&correct\+Energy)
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1FFPair_a470f06cfb9b6ee887cd85d63de275607}{mesh} () const
+\item 
+const \hyperlink{classFoam_1_1customPimpleControl}{custom\+Pimple\+Control} \& \hyperlink{classFoam_1_1FFPair_a34a78e242f55cbd5157f017f58951205}{pimple} () const
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1FFPair_a6676ebc5398ae4c515c27a6405cea62b}{fluid1} () const
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1FFPair_aab793f84ac558a425b7bb6c8ca16176b}{fluid2} () const
+\item 
+word \hyperlink{classFoam_1_1FFPair_af027c18dbb04da1eb58783b66faa7f5b}{reversed\+Name} () const
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} $\ast$ \hyperlink{classFoam_1_1FFPair_a51af2e97564ecb788a3c58c34c21f356}{get\+Fluid\+Ptr} (const word \&name) const
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} $\ast$ \hyperlink{classFoam_1_1FFPair_a035b59dd5b6bddd26d57c53ecd89cf03}{get\+Other\+Fluid\+Ptr} (const word \&name) const
+\item 
+bool \hyperlink{classFoam_1_1FFPair_a01cfeb6abd47cb6594322646ef9e5d2b}{found\+Unordered\+Pair\+Sub\+Dict} (const dictionary \&dict) const
+\item 
+const dictionary \& \hyperlink{classFoam_1_1FFPair_aefb871e3bdf791a96a332aade3f41c46}{get\+Unordered\+Pair\+Sub\+Dict} (const dictionary \&dict) const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_abc4414405124181c96bee2bde03d4948}{alpha\+Dispersed} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_afd30d939fd44763d6cfe19c60aa5f133}{alpha\+Continuous} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_ad8295df5c389aaf2458d0e48e72a619a}{Dh\+Dispersed} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_abd8a1d4c657219350b0e700d711202a9}{Dh\+Continuous} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_a4bf5944b6352c22f56051b75039fbb9e}{rho\+Continuous} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_a3651282fe12075caa88e29d51a230994}{nu\+Continuous} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_abc219815dd5cb61f5c56c1f21b18b0ad}{Pr\+Continuous} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_a657f374be896f550786309f405afb0fc}{Re} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_accf8e1581e1247f394e800d7e10a6117}{mag\+Ur} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_ade6b59ce6adfda29326c86582f754097}{Kd} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_a24c20ea8c605cf1fbf531c72e46d729d}{Vm} () const
+\item 
+vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_a6a17b7325276be2c2fc8236f9cb33faa}{htc} (const word \&fluid\+Name)
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_ada4eeac83873d7c788ebc6debd03eaa1}{htc} (const word \&fluid\+Name) const
+\item 
+const fv\+Scalar\+Matrix \& \hyperlink{classFoam_1_1FFPair_a648cf9d2ac10af5edf764413c377d3f3}{he\+Source} (const word \&he\+Name) const
+\item 
+bool \hyperlink{classFoam_1_1FFPair_a734047908162ee80a71312f73aaf8193}{phase\+Change} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_abe53da7ab6885a0c606832841d7bb49f}{L} () const
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_a918f3d5a64d7cf4215c6429757e28486}{dmdt} () const
+\item 
+vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_a8615a86198b86e1fe02839ec37e58791}{iT} ()
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_a3a9f983828f0c3a7e72305f182a741f0}{iT} () const
+\item 
+vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_ab93f707da22a77ddd3f7f4ac35632294}{iA} ()
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FFPair_ae2c1c1e4f41f42a4dd77007cb706089c}{iA} () const
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Hash\+Table$<$ vol\+Scalar\+Field $\ast$, word, word\+::hash $>$ \hyperlink{classFoam_1_1FFPair_a0848121d1a9fe5a3d3471760ef9de2fe}{vol\+Scalar\+Field\+Ptr\+Table}
+\item 
+typedef Hash\+Table$<$ fv\+Scalar\+Matrix $\ast$, word, word\+::hash $>$ \hyperlink{classFoam_1_1FFPair_a47dacb23df9a151e6da0902f1726ef21}{fv\+Scalar\+Matrix\+Ptr\+Table}
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1FFPair_a23edeeeecebcef11921a33dd5d990570}{mesh\+\_\+}
+\item 
+const dictionary \& \hyperlink{classFoam_1_1FFPair_a892ddcb9cba6f50b0396cdb7bf1b4f6a}{dict\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1customPimpleControl}{custom\+Pimple\+Control} \& \hyperlink{classFoam_1_1FFPair_a06f54c6f34cf95f4f0b3d573a196e0c5}{pimple\+\_\+}
+\item 
+\hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1FFPair_a158d38ef55cbe9630af49fd955ee9ec4}{fluid1\+\_\+}
+\item 
+\hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1FFPair_afcd388bb44accdbfcf63b65301d6e760}{fluid2\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_a892915169074a37515b3c4c0a0574d09}{alpha\+Dispersed\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_a8cab57656d4ce1683515a4b346305b8e}{alpha\+Continuous\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_afc844ca02f252d8d17d331ec95948090}{Dh\+Dispersed\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_aa6c7920eb24aa171289eaa178a08fc82}{Dh\+Continuous\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_a8838b45dec96fa40f1e5c2b1fd70e992}{rho\+Continuous\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_aed6b755795695aaa1e1b951bb91e64a3}{nu\+Continuous\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_a77c868b6a02dcc20367195ca1ce867ff}{Pr\+Continuous\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_a2df164ac6d2520f15fd568fee117bf4c}{Re\+\_\+}
+\item 
+dimensioned\+Scalar \hyperlink{classFoam_1_1FFPair_acdbfe9f74a4cd0f0ed5c075bfacda710}{min\+Re\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_af53209c544b0364488260bf04f418372}{mag\+Ur\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1FFDragFactor}{F\+F\+Drag\+Factor} $>$ \hyperlink{classFoam_1_1FFPair_a4de7187addeb2b998f5759f56cb8cf88}{Kd\+Ptr\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_a51e41ffd2b3baf262309a2669155e99c}{Kd\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1virtualMass}{virtual\+Mass} $>$ \hyperlink{classFoam_1_1FFPair_a1227c8d238e0135cb8a5c76e95ce1bfb}{virtual\+Mass\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1FFHeatTransferCoefficientModel}{F\+F\+Heat\+Transfer\+Coefficient\+Model} $>$ \hyperlink{classFoam_1_1FFPair_a979ece87b5bb1a7c5eac17835ba09d8a}{htc1\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1FFHeatTransferCoefficientModel}{F\+F\+Heat\+Transfer\+Coefficient\+Model} $>$ \hyperlink{classFoam_1_1FFPair_a3229083e4ddb7541c50f509732defb95}{htc2\+Ptr\+\_\+}
+\item 
+\hyperlink{classFoam_1_1FFPair_a0848121d1a9fe5a3d3471760ef9de2fe}{vol\+Scalar\+Field\+Ptr\+Table} \hyperlink{classFoam_1_1FFPair_a1fbdcaf01d7a27bcb2ee93d15c3f8992}{htcs\+\_\+}
+\item 
+\hyperlink{classFoam_1_1FFPair_a47dacb23df9a151e6da0902f1726ef21}{fv\+Scalar\+Matrix\+Ptr\+Table} \hyperlink{classFoam_1_1FFPair_a1fb6dd21f501635afc552fde5a0fc7b3}{he\+Sources\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1dispersionModel}{dispersion\+Model} $>$ \hyperlink{classFoam_1_1FFPair_abed55520bd9864a4313dcef87b9d53b7}{dispersion1\+Ptr\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} $>$ \hyperlink{classFoam_1_1FFPair_a235b7644ad484d362d5da4f6f7f34c38}{phase\+Change\+Ptr\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_aef2a560f0ccb079deb0366ff4bb37a94}{i\+T\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1interfacialAreaModel}{interfacial\+Area\+Model} $>$ \hyperlink{classFoam_1_1FFPair_a0cb5a5d576eeb7c0e38641210cc6b746}{i\+A\+Ptr\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1FFPair_a1d034617c55b900bdb73542b21ca2bb1}{i\+A\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1FFPair_afb9a1b92dd096336989bbbea04ee183b}{first\+Time\+Step\+And\+Iter\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phasePairs/FFPair.H}{\tt F\+F\+Pair.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phasePairs/FFPair.C}{\tt F\+F\+Pair.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 63 of file F\+F\+Pair.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a0848121d1a9fe5a3d3471760ef9de2fe}\label{classFoam_1_1FFPair_a0848121d1a9fe5a3d3471760ef9de2fe}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!vol\+Scalar\+Field\+Ptr\+Table@{vol\+Scalar\+Field\+Ptr\+Table}}
+\index{vol\+Scalar\+Field\+Ptr\+Table@{vol\+Scalar\+Field\+Ptr\+Table}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{vol\+Scalar\+Field\+Ptr\+Table}{volScalarFieldPtrTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$vol\+Scalar\+Field$\ast$, word, word\+::hash$>$ \hyperlink{classFoam_1_1FFPair_a0848121d1a9fe5a3d3471760ef9de2fe}{vol\+Scalar\+Field\+Ptr\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 129 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a47dacb23df9a151e6da0902f1726ef21}\label{classFoam_1_1FFPair_a47dacb23df9a151e6da0902f1726ef21}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!fv\+Scalar\+Matrix\+Ptr\+Table@{fv\+Scalar\+Matrix\+Ptr\+Table}}
+\index{fv\+Scalar\+Matrix\+Ptr\+Table@{fv\+Scalar\+Matrix\+Ptr\+Table}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{fv\+Scalar\+Matrix\+Ptr\+Table}{fvScalarMatrixPtrTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$fv\+Scalar\+Matrix$\ast$, word, word\+::hash$>$ \hyperlink{classFoam_1_1FFPair_a47dacb23df9a151e6da0902f1726ef21}{fv\+Scalar\+Matrix\+Ptr\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 135 of file F\+F\+Pair.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a96e5e09fe81bdd4bf544bb08e02fc4cb}\label{classFoam_1_1FFPair_a96e5e09fe81bdd4bf544bb08e02fc4cb}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!F\+F\+Pair@{F\+F\+Pair}}
+\index{F\+F\+Pair@{F\+F\+Pair}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{F\+F\+Pair()}{FFPair()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1fluid}{fluid} \&}]{fluid1,  }\item[{\hyperlink{classFoam_1_1fluid}{fluid} \&}]{fluid2,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 33 of file F\+F\+Pair.\+C.
+
+
+
+References dispersion\+Model\+::\+New(), F\+F\+Heat\+Transfer\+Coefficient\+Model\+::\+New(), interfacial\+Area\+Model\+::\+New(), and phase\+Change\+Model\+::\+New().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=326pt]{classFoam_1_1FFPair_a96e5e09fe81bdd4bf544bb08e02fc4cb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_ad44924f767442ceb103b5818d41610da}\label{classFoam_1_1FFPair_ad44924f767442ceb103b5818d41610da}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!````~F\+F\+Pair@{$\sim$\+F\+F\+Pair}}
+\index{````~F\+F\+Pair@{$\sim$\+F\+F\+Pair}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{$\sim$\+F\+F\+Pair()}{~FFPair()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 173 of file F\+F\+Pair.\+H.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a8c03a5e29d701d9556d8868e31b22f9a}\label{classFoam_1_1FFPair_a8c03a5e29d701d9556d8868e31b22f9a}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}F\+F\+Pair\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a73ace448c639d2e1c943852abe89af7c}\label{classFoam_1_1FFPair_a73ace448c639d2e1c943852abe89af7c}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!write\+Data@{write\+Data}}
+\index{write\+Data@{write\+Data}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{write\+Data()}{writeData()}}
+{\footnotesize\ttfamily virtual bool write\+Data (\begin{DoxyParamCaption}\item[{Ostream \&}]{os }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 178 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::add\+Virtual\+Mass\+Force(), F\+F\+Pair\+::correct(), and U\+Eqn.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1FFPair_a73ace448c639d2e1c943852abe89af7c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_ab3bae8a59a44782c488f44e6ad1b34d1}\label{classFoam_1_1FFPair_ab3bae8a59a44782c488f44e6ad1b34d1}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!add\+Virtual\+Mass\+Force@{add\+Virtual\+Mass\+Force}}
+\index{add\+Virtual\+Mass\+Force@{add\+Virtual\+Mass\+Force}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{add\+Virtual\+Mass\+Force()}{addVirtualMassForce()}}
+{\footnotesize\ttfamily void add\+Virtual\+Mass\+Force (\begin{DoxyParamCaption}\item[{fv\+Vector\+Matrix \&}]{U\+Eqn }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 407 of file F\+F\+Pair.\+C.
+
+
+
+References F\+F\+Pair\+::correct().
+
+
+
+Referenced by F\+F\+Pair\+::write\+Data().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=272pt]{classFoam_1_1FFPair_ab3bae8a59a44782c488f44e6ad1b34d1_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=284pt]{classFoam_1_1FFPair_ab3bae8a59a44782c488f44e6ad1b34d1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_ac892bd86a9a69984720308f911ec306f}\label{classFoam_1_1FFPair_ac892bd86a9a69984720308f911ec306f}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!correct@{correct}}
+\index{correct@{correct}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}\item[{const bool \&}]{correct\+Fluid\+Dynamics,  }\item[{const bool \&}]{correct\+Energy }\end{DoxyParamCaption})}
+
+
+
+Definition at line 416 of file F\+F\+Pair.\+C.
+
+
+
+References c(), Cp1(), Cp2(), for\+All(), he2(), i, Foam\+::my\+Ops\+::relaxation\+Factor(), rho1, rho2, Foam\+::my\+Ops\+::store\+Prev\+Iter\+If\+Relax(), U1(), and U2.
+
+
+
+Referenced by F\+F\+Pair\+::add\+Virtual\+Mass\+Force(), and F\+F\+Pair\+::write\+Data().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{classFoam_1_1FFPair_ac892bd86a9a69984720308f911ec306f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1FFPair_ac892bd86a9a69984720308f911ec306f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a470f06cfb9b6ee887cd85d63de275607}\label{classFoam_1_1FFPair_a470f06cfb9b6ee887cd85d63de275607}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!mesh@{mesh}}
+\index{mesh@{mesh}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{mesh()}{mesh()}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 195 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::mesh\+\_\+.
+
+
+
+Referenced by forced\+Constant\+Phase\+Change\+::forced\+Constant\+Phase\+Change().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=308pt]{classFoam_1_1FFPair_a470f06cfb9b6ee887cd85d63de275607_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a34a78e242f55cbd5157f017f58951205}\label{classFoam_1_1FFPair_a34a78e242f55cbd5157f017f58951205}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!pimple@{pimple}}
+\index{pimple@{pimple}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{pimple()}{pimple()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1customPimpleControl}{custom\+Pimple\+Control}\& pimple (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 200 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::pimple\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a6676ebc5398ae4c515c27a6405cea62b}\label{classFoam_1_1FFPair_a6676ebc5398ae4c515c27a6405cea62b}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!fluid1@{fluid1}}
+\index{fluid1@{fluid1}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{fluid1()}{fluid1()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& fluid1 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 205 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::fluid1\+\_\+.
+
+
+
+Referenced by annular\+::annular(), Autruffe\+::\+Autruffe(), Bestion\+::\+Bestion(), Bestion\+T\+R\+A\+C\+E\+::\+Bestion\+T\+R\+A\+C\+E(), No\+Kazimi\+::\+No\+Kazimi(), Schor\+::\+Schor(), spherical\+::spherical(), and Wallis\+::\+Wallis().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{classFoam_1_1FFPair_a6676ebc5398ae4c515c27a6405cea62b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_aab793f84ac558a425b7bb6c8ca16176b}\label{classFoam_1_1FFPair_aab793f84ac558a425b7bb6c8ca16176b}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!fluid2@{fluid2}}
+\index{fluid2@{fluid2}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{fluid2()}{fluid2()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& fluid2 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 210 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::fluid2\+\_\+.
+
+
+
+Referenced by annular\+::annular(), Autruffe\+::\+Autruffe(), Bestion\+::\+Bestion(), Bestion\+T\+R\+A\+C\+E\+::\+Bestion\+T\+R\+A\+C\+E(), No\+Kazimi\+::\+No\+Kazimi(), Schor\+::\+Schor(), spherical\+::spherical(), and Wallis\+::\+Wallis().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{classFoam_1_1FFPair_aab793f84ac558a425b7bb6c8ca16176b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_af027c18dbb04da1eb58783b66faa7f5b}\label{classFoam_1_1FFPair_af027c18dbb04da1eb58783b66faa7f5b}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!reversed\+Name@{reversed\+Name}}
+\index{reversed\+Name@{reversed\+Name}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{reversed\+Name()}{reversedName()}}
+{\footnotesize\ttfamily word reversed\+Name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 215 of file F\+F\+Pair.\+H.
+
+
+
+References phase\+Base\+::name().
+
+
+
+Referenced by F\+F\+Pair\+::get\+Unordered\+Pair\+Sub\+Dict().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=322pt]{classFoam_1_1FFPair_af027c18dbb04da1eb58783b66faa7f5b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classFoam_1_1FFPair_af027c18dbb04da1eb58783b66faa7f5b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a51af2e97564ecb788a3c58c34c21f356}\label{classFoam_1_1FFPair_a51af2e97564ecb788a3c58c34c21f356}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!get\+Fluid\+Ptr@{get\+Fluid\+Ptr}}
+\index{get\+Fluid\+Ptr@{get\+Fluid\+Ptr}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{get\+Fluid\+Ptr()}{getFluidPtr()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}$\ast$ get\+Fluid\+Ptr (\begin{DoxyParamCaption}\item[{const word \&}]{name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 220 of file F\+F\+Pair.\+H.
+
+
+
+References phase\+Base\+::name().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{classFoam_1_1FFPair_a51af2e97564ecb788a3c58c34c21f356_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a035b59dd5b6bddd26d57c53ecd89cf03}\label{classFoam_1_1FFPair_a035b59dd5b6bddd26d57c53ecd89cf03}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!get\+Other\+Fluid\+Ptr@{get\+Other\+Fluid\+Ptr}}
+\index{get\+Other\+Fluid\+Ptr@{get\+Other\+Fluid\+Ptr}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{get\+Other\+Fluid\+Ptr()}{getOtherFluidPtr()}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}$\ast$ get\+Other\+Fluid\+Ptr (\begin{DoxyParamCaption}\item[{const word \&}]{name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 230 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::found\+Unordered\+Pair\+Sub\+Dict(), and phase\+Base\+::name().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classFoam_1_1FFPair_a035b59dd5b6bddd26d57c53ecd89cf03_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a01cfeb6abd47cb6594322646ef9e5d2b}\label{classFoam_1_1FFPair_a01cfeb6abd47cb6594322646ef9e5d2b}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!found\+Unordered\+Pair\+Sub\+Dict@{found\+Unordered\+Pair\+Sub\+Dict}}
+\index{found\+Unordered\+Pair\+Sub\+Dict@{found\+Unordered\+Pair\+Sub\+Dict}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{found\+Unordered\+Pair\+Sub\+Dict()}{foundUnorderedPairSubDict()}}
+{\footnotesize\ttfamily bool found\+Unordered\+Pair\+Sub\+Dict (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 241 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::get\+Unordered\+Pair\+Sub\+Dict().
+
+
+
+Referenced by F\+F\+Pair\+::get\+Other\+Fluid\+Ptr().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1FFPair_a01cfeb6abd47cb6594322646ef9e5d2b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{classFoam_1_1FFPair_a01cfeb6abd47cb6594322646ef9e5d2b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_aefb871e3bdf791a96a332aade3f41c46}\label{classFoam_1_1FFPair_aefb871e3bdf791a96a332aade3f41c46}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!get\+Unordered\+Pair\+Sub\+Dict@{get\+Unordered\+Pair\+Sub\+Dict}}
+\index{get\+Unordered\+Pair\+Sub\+Dict@{get\+Unordered\+Pair\+Sub\+Dict}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{get\+Unordered\+Pair\+Sub\+Dict()}{getUnorderedPairSubDict()}}
+{\footnotesize\ttfamily const dictionary\& get\+Unordered\+Pair\+Sub\+Dict (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 253 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::reversed\+Name().
+
+
+
+Referenced by F\+F\+Pair\+::found\+Unordered\+Pair\+Sub\+Dict().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=324pt]{classFoam_1_1FFPair_aefb871e3bdf791a96a332aade3f41c46_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1FFPair_aefb871e3bdf791a96a332aade3f41c46_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_abc4414405124181c96bee2bde03d4948}\label{classFoam_1_1FFPair_abc4414405124181c96bee2bde03d4948}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!alpha\+Dispersed@{alpha\+Dispersed}}
+\index{alpha\+Dispersed@{alpha\+Dispersed}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{alpha\+Dispersed()}{alphaDispersed()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& alpha\+Dispersed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 263 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::alpha\+Dispersed\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_afd30d939fd44763d6cfe19c60aa5f133}\label{classFoam_1_1FFPair_afd30d939fd44763d6cfe19c60aa5f133}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!alpha\+Continuous@{alpha\+Continuous}}
+\index{alpha\+Continuous@{alpha\+Continuous}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{alpha\+Continuous()}{alphaContinuous()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& alpha\+Continuous (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 268 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::alpha\+Continuous\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_ad8295df5c389aaf2458d0e48e72a619a}\label{classFoam_1_1FFPair_ad8295df5c389aaf2458d0e48e72a619a}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Dh\+Dispersed@{Dh\+Dispersed}}
+\index{Dh\+Dispersed@{Dh\+Dispersed}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Dh\+Dispersed()}{DhDispersed()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Dh\+Dispersed (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 273 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::\+Dh\+Dispersed\+\_\+.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::init\+Mixture\+Fields(), and Lahey\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::\+Lahey\+K\+Epsilon().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1FFPair_ad8295df5c389aaf2458d0e48e72a619a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_abd8a1d4c657219350b0e700d711202a9}\label{classFoam_1_1FFPair_abd8a1d4c657219350b0e700d711202a9}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Dh\+Continuous@{Dh\+Continuous}}
+\index{Dh\+Continuous@{Dh\+Continuous}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Dh\+Continuous()}{DhContinuous()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Dh\+Continuous (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 278 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::\+Dh\+Continuous\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a4bf5944b6352c22f56051b75039fbb9e}\label{classFoam_1_1FFPair_a4bf5944b6352c22f56051b75039fbb9e}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!rho\+Continuous@{rho\+Continuous}}
+\index{rho\+Continuous@{rho\+Continuous}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{rho\+Continuous()}{rhoContinuous()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& rho\+Continuous (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 283 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::rho\+Continuous\+\_\+.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::init\+Mixture\+Fields(), and Lahey\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::\+Lahey\+K\+Epsilon().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1FFPair_a4bf5944b6352c22f56051b75039fbb9e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a3651282fe12075caa88e29d51a230994}\label{classFoam_1_1FFPair_a3651282fe12075caa88e29d51a230994}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!nu\+Continuous@{nu\+Continuous}}
+\index{nu\+Continuous@{nu\+Continuous}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{nu\+Continuous()}{nuContinuous()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& nu\+Continuous (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 288 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::nu\+Continuous\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_abc219815dd5cb61f5c56c1f21b18b0ad}\label{classFoam_1_1FFPair_abc219815dd5cb61f5c56c1f21b18b0ad}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Pr\+Continuous@{Pr\+Continuous}}
+\index{Pr\+Continuous@{Pr\+Continuous}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Pr\+Continuous()}{PrContinuous()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Pr\+Continuous (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 293 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::\+Pr\+Continuous\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a657f374be896f550786309f405afb0fc}\label{classFoam_1_1FFPair_a657f374be896f550786309f405afb0fc}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Re@{Re}}
+\index{Re@{Re}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Re()}{Re()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Re (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 298 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::\+Re\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_accf8e1581e1247f394e800d7e10a6117}\label{classFoam_1_1FFPair_accf8e1581e1247f394e800d7e10a6117}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!mag\+Ur@{mag\+Ur}}
+\index{mag\+Ur@{mag\+Ur}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{mag\+Ur()}{magUr()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& mag\+Ur (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 303 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::mag\+Ur\+\_\+.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::init\+Mixture\+Fields(), and Lahey\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::\+Lahey\+K\+Epsilon().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=333pt]{classFoam_1_1FFPair_accf8e1581e1247f394e800d7e10a6117_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_ade6b59ce6adfda29326c86582f754097}\label{classFoam_1_1FFPair_ade6b59ce6adfda29326c86582f754097}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Kd@{Kd}}
+\index{Kd@{Kd}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Kd()}{Kd()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Kd (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 308 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::\+Kd\+\_\+.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::init\+Mixture\+Fields(), and Lahey\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::\+Lahey\+K\+Epsilon().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=316pt]{classFoam_1_1FFPair_ade6b59ce6adfda29326c86582f754097_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a24c20ea8c605cf1fbf531c72e46d729d}\label{classFoam_1_1FFPair_a24c20ea8c605cf1fbf531c72e46d729d}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Vm@{Vm}}
+\index{Vm@{Vm}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Vm()}{Vm()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Vm (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 314 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a6a17b7325276be2c2fc8236f9cb33faa}\label{classFoam_1_1FFPair_a6a17b7325276be2c2fc8236f9cb33faa}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!htc@{htc}}
+\index{htc@{htc}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{htc()}{htc()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& htc (\begin{DoxyParamCaption}\item[{const word \&}]{fluid\+Name }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 319 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_ada4eeac83873d7c788ebc6debd03eaa1}\label{classFoam_1_1FFPair_ada4eeac83873d7c788ebc6debd03eaa1}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!htc@{htc}}
+\index{htc@{htc}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{htc()}{htc()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& htc (\begin{DoxyParamCaption}\item[{const word \&}]{fluid\+Name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 324 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a648cf9d2ac10af5edf764413c377d3f3}\label{classFoam_1_1FFPair_a648cf9d2ac10af5edf764413c377d3f3}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!he\+Source@{he\+Source}}
+\index{he\+Source@{he\+Source}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{he\+Source()}{heSource()}}
+{\footnotesize\ttfamily const fv\+Scalar\+Matrix\& he\+Source (\begin{DoxyParamCaption}\item[{const word \&}]{he\+Name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 329 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a734047908162ee80a71312f73aaf8193}\label{classFoam_1_1FFPair_a734047908162ee80a71312f73aaf8193}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!phase\+Change@{phase\+Change}}
+\index{phase\+Change@{phase\+Change}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{phase\+Change()}{phaseChange()}}
+{\footnotesize\ttfamily bool phase\+Change (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 334 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_abe53da7ab6885a0c606832841d7bb49f}\label{classFoam_1_1FFPair_abe53da7ab6885a0c606832841d7bb49f}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!L@{L}}
+\index{L@{L}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{L()}{L()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& L (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 340 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a918f3d5a64d7cf4215c6429757e28486}\label{classFoam_1_1FFPair_a918f3d5a64d7cf4215c6429757e28486}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!dmdt@{dmdt}}
+\index{dmdt@{dmdt}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{dmdt()}{dmdt()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& dmdt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 345 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a8615a86198b86e1fe02839ec37e58791}\label{classFoam_1_1FFPair_a8615a86198b86e1fe02839ec37e58791}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!iT@{iT}}
+\index{iT@{iT}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{i\+T()}{iT()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& iT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 350 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::i\+T\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a3a9f983828f0c3a7e72305f182a741f0}\label{classFoam_1_1FFPair_a3a9f983828f0c3a7e72305f182a741f0}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!iT@{iT}}
+\index{iT@{iT}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{i\+T()}{iT()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& iT (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 355 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::i\+T\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_ab93f707da22a77ddd3f7f4ac35632294}\label{classFoam_1_1FFPair_ab93f707da22a77ddd3f7f4ac35632294}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!iA@{iA}}
+\index{iA@{iA}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{i\+A()}{iA()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily vol\+Scalar\+Field\& iA (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 360 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::i\+A\+\_\+.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_ae2c1c1e4f41f42a4dd77007cb706089c}\label{classFoam_1_1FFPair_ae2c1c1e4f41f42a4dd77007cb706089c}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!iA@{iA}}
+\index{iA@{iA}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{i\+A()}{iA()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& iA (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 365 of file F\+F\+Pair.\+H.
+
+
+
+References F\+F\+Pair\+::i\+A\+\_\+.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1FFPair_a23edeeeecebcef11921a33dd5d990570}\label{classFoam_1_1FFPair_a23edeeeecebcef11921a33dd5d990570}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!mesh\+\_\+@{mesh\+\_\+}}
+\index{mesh\+\_\+@{mesh\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{mesh\+\_\+}{mesh\_}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 69 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::mesh().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a892ddcb9cba6f50b0396cdb7bf1b4f6a}\label{classFoam_1_1FFPair_a892ddcb9cba6f50b0396cdb7bf1b4f6a}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!dict\+\_\+@{dict\+\_\+}}
+\index{dict\+\_\+@{dict\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{dict\+\_\+}{dict\_}}
+{\footnotesize\ttfamily const dictionary\& dict\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 72 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a06f54c6f34cf95f4f0b3d573a196e0c5}\label{classFoam_1_1FFPair_a06f54c6f34cf95f4f0b3d573a196e0c5}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!pimple\+\_\+@{pimple\+\_\+}}
+\index{pimple\+\_\+@{pimple\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{pimple\+\_\+}{pimple\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1customPimpleControl}{custom\+Pimple\+Control}\& pimple\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 75 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::pimple().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a158d38ef55cbe9630af49fd955ee9ec4}\label{classFoam_1_1FFPair_a158d38ef55cbe9630af49fd955ee9ec4}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!fluid1\+\_\+@{fluid1\+\_\+}}
+\index{fluid1\+\_\+@{fluid1\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{fluid1\+\_\+}{fluid1\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1fluid}{fluid}\& fluid1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 78 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::fluid1().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_afcd388bb44accdbfcf63b65301d6e760}\label{classFoam_1_1FFPair_afcd388bb44accdbfcf63b65301d6e760}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!fluid2\+\_\+@{fluid2\+\_\+}}
+\index{fluid2\+\_\+@{fluid2\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{fluid2\+\_\+}{fluid2\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1fluid}{fluid}\& fluid2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 81 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::fluid2().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a892915169074a37515b3c4c0a0574d09}\label{classFoam_1_1FFPair_a892915169074a37515b3c4c0a0574d09}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!alpha\+Dispersed\+\_\+@{alpha\+Dispersed\+\_\+}}
+\index{alpha\+Dispersed\+\_\+@{alpha\+Dispersed\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{alpha\+Dispersed\+\_\+}{alphaDispersed\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field alpha\+Dispersed\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 84 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::alpha\+Dispersed().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a8cab57656d4ce1683515a4b346305b8e}\label{classFoam_1_1FFPair_a8cab57656d4ce1683515a4b346305b8e}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!alpha\+Continuous\+\_\+@{alpha\+Continuous\+\_\+}}
+\index{alpha\+Continuous\+\_\+@{alpha\+Continuous\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{alpha\+Continuous\+\_\+}{alphaContinuous\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field alpha\+Continuous\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 87 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::alpha\+Continuous().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_afc844ca02f252d8d17d331ec95948090}\label{classFoam_1_1FFPair_afc844ca02f252d8d17d331ec95948090}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Dh\+Dispersed\+\_\+@{Dh\+Dispersed\+\_\+}}
+\index{Dh\+Dispersed\+\_\+@{Dh\+Dispersed\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Dh\+Dispersed\+\_\+}{DhDispersed\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Dh\+Dispersed\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 90 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::\+Dh\+Dispersed().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_aa6c7920eb24aa171289eaa178a08fc82}\label{classFoam_1_1FFPair_aa6c7920eb24aa171289eaa178a08fc82}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Dh\+Continuous\+\_\+@{Dh\+Continuous\+\_\+}}
+\index{Dh\+Continuous\+\_\+@{Dh\+Continuous\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Dh\+Continuous\+\_\+}{DhContinuous\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Dh\+Continuous\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 93 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::\+Dh\+Continuous().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a8838b45dec96fa40f1e5c2b1fd70e992}\label{classFoam_1_1FFPair_a8838b45dec96fa40f1e5c2b1fd70e992}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!rho\+Continuous\+\_\+@{rho\+Continuous\+\_\+}}
+\index{rho\+Continuous\+\_\+@{rho\+Continuous\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{rho\+Continuous\+\_\+}{rhoContinuous\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field rho\+Continuous\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 96 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::rho\+Continuous().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_aed6b755795695aaa1e1b951bb91e64a3}\label{classFoam_1_1FFPair_aed6b755795695aaa1e1b951bb91e64a3}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!nu\+Continuous\+\_\+@{nu\+Continuous\+\_\+}}
+\index{nu\+Continuous\+\_\+@{nu\+Continuous\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{nu\+Continuous\+\_\+}{nuContinuous\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field nu\+Continuous\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 99 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::nu\+Continuous().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a77c868b6a02dcc20367195ca1ce867ff}\label{classFoam_1_1FFPair_a77c868b6a02dcc20367195ca1ce867ff}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Pr\+Continuous\+\_\+@{Pr\+Continuous\+\_\+}}
+\index{Pr\+Continuous\+\_\+@{Pr\+Continuous\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Pr\+Continuous\+\_\+}{PrContinuous\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Pr\+Continuous\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 102 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::\+Pr\+Continuous().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a2df164ac6d2520f15fd568fee117bf4c}\label{classFoam_1_1FFPair_a2df164ac6d2520f15fd568fee117bf4c}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Re\+\_\+@{Re\+\_\+}}
+\index{Re\+\_\+@{Re\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Re\+\_\+}{Re\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Re\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 105 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::\+Re().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_acdbfe9f74a4cd0f0ed5c075bfacda710}\label{classFoam_1_1FFPair_acdbfe9f74a4cd0f0ed5c075bfacda710}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!min\+Re\+\_\+@{min\+Re\+\_\+}}
+\index{min\+Re\+\_\+@{min\+Re\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{min\+Re\+\_\+}{minRe\_}}
+{\footnotesize\ttfamily dimensioned\+Scalar min\+Re\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 108 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_af53209c544b0364488260bf04f418372}\label{classFoam_1_1FFPair_af53209c544b0364488260bf04f418372}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!mag\+Ur\+\_\+@{mag\+Ur\+\_\+}}
+\index{mag\+Ur\+\_\+@{mag\+Ur\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{mag\+Ur\+\_\+}{magUr\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field mag\+Ur\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 111 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::mag\+Ur().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a4de7187addeb2b998f5759f56cb8cf88}\label{classFoam_1_1FFPair_a4de7187addeb2b998f5759f56cb8cf88}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Kd\+Ptr\+\_\+@{Kd\+Ptr\+\_\+}}
+\index{Kd\+Ptr\+\_\+@{Kd\+Ptr\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Kd\+Ptr\+\_\+}{KdPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1FFDragFactor}{F\+F\+Drag\+Factor}$>$ Kd\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 114 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a51e41ffd2b3baf262309a2669155e99c}\label{classFoam_1_1FFPair_a51e41ffd2b3baf262309a2669155e99c}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!Kd\+\_\+@{Kd\+\_\+}}
+\index{Kd\+\_\+@{Kd\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{Kd\+\_\+}{Kd\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Kd\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 117 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::\+Kd().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a1227c8d238e0135cb8a5c76e95ce1bfb}\label{classFoam_1_1FFPair_a1227c8d238e0135cb8a5c76e95ce1bfb}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!virtual\+Mass\+Ptr\+\_\+@{virtual\+Mass\+Ptr\+\_\+}}
+\index{virtual\+Mass\+Ptr\+\_\+@{virtual\+Mass\+Ptr\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{virtual\+Mass\+Ptr\+\_\+}{virtualMassPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1virtualMass}{virtual\+Mass}$>$ virtual\+Mass\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 120 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a979ece87b5bb1a7c5eac17835ba09d8a}\label{classFoam_1_1FFPair_a979ece87b5bb1a7c5eac17835ba09d8a}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!htc1\+Ptr\+\_\+@{htc1\+Ptr\+\_\+}}
+\index{htc1\+Ptr\+\_\+@{htc1\+Ptr\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{htc1\+Ptr\+\_\+}{htc1Ptr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1FFHeatTransferCoefficientModel}{F\+F\+Heat\+Transfer\+Coefficient\+Model}$>$ htc1\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 123 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a3229083e4ddb7541c50f509732defb95}\label{classFoam_1_1FFPair_a3229083e4ddb7541c50f509732defb95}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!htc2\+Ptr\+\_\+@{htc2\+Ptr\+\_\+}}
+\index{htc2\+Ptr\+\_\+@{htc2\+Ptr\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{htc2\+Ptr\+\_\+}{htc2Ptr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1FFHeatTransferCoefficientModel}{F\+F\+Heat\+Transfer\+Coefficient\+Model}$>$ htc2\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 124 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a1fbdcaf01d7a27bcb2ee93d15c3f8992}\label{classFoam_1_1FFPair_a1fbdcaf01d7a27bcb2ee93d15c3f8992}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!htcs\+\_\+@{htcs\+\_\+}}
+\index{htcs\+\_\+@{htcs\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{htcs\+\_\+}{htcs\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FFPair_a0848121d1a9fe5a3d3471760ef9de2fe}{vol\+Scalar\+Field\+Ptr\+Table} htcs\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 130 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a1fb6dd21f501635afc552fde5a0fc7b3}\label{classFoam_1_1FFPair_a1fb6dd21f501635afc552fde5a0fc7b3}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!he\+Sources\+\_\+@{he\+Sources\+\_\+}}
+\index{he\+Sources\+\_\+@{he\+Sources\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{he\+Sources\+\_\+}{heSources\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FFPair_a47dacb23df9a151e6da0902f1726ef21}{fv\+Scalar\+Matrix\+Ptr\+Table} he\+Sources\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 136 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_abed55520bd9864a4313dcef87b9d53b7}\label{classFoam_1_1FFPair_abed55520bd9864a4313dcef87b9d53b7}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!dispersion1\+Ptr\+\_\+@{dispersion1\+Ptr\+\_\+}}
+\index{dispersion1\+Ptr\+\_\+@{dispersion1\+Ptr\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{dispersion1\+Ptr\+\_\+}{dispersion1Ptr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1dispersionModel}{dispersion\+Model}$>$ dispersion1\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 140 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a235b7644ad484d362d5da4f6f7f34c38}\label{classFoam_1_1FFPair_a235b7644ad484d362d5da4f6f7f34c38}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!phase\+Change\+Ptr\+\_\+@{phase\+Change\+Ptr\+\_\+}}
+\index{phase\+Change\+Ptr\+\_\+@{phase\+Change\+Ptr\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{phase\+Change\+Ptr\+\_\+}{phaseChangePtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model}$>$ phase\+Change\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 143 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_aef2a560f0ccb079deb0366ff4bb37a94}\label{classFoam_1_1FFPair_aef2a560f0ccb079deb0366ff4bb37a94}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!i\+T\+\_\+@{i\+T\+\_\+}}
+\index{i\+T\+\_\+@{i\+T\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{i\+T\+\_\+}{iT\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field i\+T\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 146 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::i\+T().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a0cb5a5d576eeb7c0e38641210cc6b746}\label{classFoam_1_1FFPair_a0cb5a5d576eeb7c0e38641210cc6b746}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!i\+A\+Ptr\+\_\+@{i\+A\+Ptr\+\_\+}}
+\index{i\+A\+Ptr\+\_\+@{i\+A\+Ptr\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{i\+A\+Ptr\+\_\+}{iAPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1interfacialAreaModel}{interfacial\+Area\+Model}$>$ i\+A\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 149 of file F\+F\+Pair.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_a1d034617c55b900bdb73542b21ca2bb1}\label{classFoam_1_1FFPair_a1d034617c55b900bdb73542b21ca2bb1}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!i\+A\+\_\+@{i\+A\+\_\+}}
+\index{i\+A\+\_\+@{i\+A\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{i\+A\+\_\+}{iA\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field i\+A\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 152 of file F\+F\+Pair.\+H.
+
+
+
+Referenced by F\+F\+Pair\+::i\+A().
+
+\mbox{\Hypertarget{classFoam_1_1FFPair_afb9a1b92dd096336989bbbea04ee183b}\label{classFoam_1_1FFPair_afb9a1b92dd096336989bbbea04ee183b}} 
+\index{Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}!first\+Time\+Step\+And\+Iter\+\_\+@{first\+Time\+Step\+And\+Iter\+\_\+}}
+\index{first\+Time\+Step\+And\+Iter\+\_\+@{first\+Time\+Step\+And\+Iter\+\_\+}!Foam\+::\+F\+F\+Pair@{Foam\+::\+F\+F\+Pair}}
+\subsubsection{\texorpdfstring{first\+Time\+Step\+And\+Iter\+\_\+}{firstTimeStepAndIter\_}}
+{\footnotesize\ttfamily bool first\+Time\+Step\+And\+Iter\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 157 of file F\+F\+Pair.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Pairs/\hyperlink{FFPair_8H}{F\+F\+Pair.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Pairs/\hyperlink{FFPair_8C}{F\+F\+Pair.\+C}\end{DoxyCompactItemize}

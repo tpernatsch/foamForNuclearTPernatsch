@@ -1,0 +1,232 @@
+\hypertarget{solveNeutronicsAdjoint_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/adjoint\+Diffusion/include/solve\+Neutronics\+Adjoint.H File Reference}
+\label{solveNeutronicsAdjoint_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/adjoint\+Diffusion/include/solve\+Neutronics\+Adjoint.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/adjoint\+Diffusion/include/solve\+Neutronics\+Adjoint.\+H}}
+Include dependency graph for solve\+Neutronics\+Adjoint.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{solveNeutronicsAdjoint_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{solveNeutronicsAdjoint_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{solveNeutronicsAdjoint_8H_a18e7df8b8040f0db71972c2623f7994d}{Info$<$$<$ \char`\"{}\+Solving neutronics\char`\"{}$<$$<$ endl ;xs\+\_\+.\+correct(\+T\+Fuel\+\_\+, T\+Clad\+\_\+, rho\+Cool\+\_\+, T\+Cool\+\_\+, disp\+\_\+);const dictionary \&neutron\+Transport=mesh\+\_\+.\+solution\+Dict().\+sub\+Dict(\char`\"{}neutron\+Transport\char`\"{});scalar neutron\+Iteration\+Residual=neutron\+Transport.\+lookup\+Or\+Default$<$ scalar $>$} (\char`\"{}neutron\+Iteration\+Residual\char`\"{}, 0.\+00001)
+\item 
+scalar \hyperlink{solveNeutronicsAdjoint_8H_ae5591870910ae075926ced03a5923185}{p\+Tot} (1.\+0)
+\item 
+\hyperlink{solveNeutronicsAdjoint_8H_a72f1858746fb864f8d04fe468bbd8465}{for\+All} (flux\+\_\+, energyI)
+\item 
+\hyperlink{solveNeutronicsAdjoint_8H_a8ccbcf3a22f674106ef4daebb7d1eb21}{if} (eigenvalue\+Neutronics\+\_\+ \&\&(mesh\+\_\+.\+time().time\+Index() -\/mesh\+\_\+.\+time().start\+Time\+Index())==1)
+\item 
+\hyperlink{fluxEqAdjoint_8H_a72f1858746fb864f8d04fe468bbd8465}{for\+All} (flux\+\_\+, energyI)
+\item 
+\hyperlink{precEqAdjoint_8H_a96d0351bc6016c4d07b9e688e5c1b865}{for\+All} (prec\+\_\+, precI)
+\item 
+adjoint\+Flux\+\_\+chi\+D\+\_\+ $\ast$ \hyperlink{initialize__adjointFlux__chiD_8H_aa51a88e769a92df082c3e73cd97391b9}{for\+All} (flux\+\_\+, energyI)
+\item 
+adjoint\+Prec\+\_\+beta\+\_\+ $\ast$ \hyperlink{initializeDelayedNeutroSourceAdjoint_8H_aa3899c89bc6049e9f369480880564780}{for\+All} (prec\+\_\+, precI)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{solveNeutronicsAdjoint_8H_aeeb27a033c3d21cdfe4cc47565bc21a2}{max\+Neutron\+Iterations}
+\item 
+int \hyperlink{solveNeutronicsAdjoint_8H_a5ea48e0170faff29dfdd3cbba330d51d}{neutro\+Iter} = 0
+\item 
+scalar \hyperlink{solveNeutronicsAdjoint_8H_a2a3baa00ecfd5a47c6f6ba475a66d2c6}{neutro\+Residual} = 0.\+0
+\item 
+\hyperlink{solveNeutronicsAdjoint_8H_a721c6ff80a6d3e4ad4ffa52a04c60085}{do}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{solveNeutronicsAdjoint_8H_a18e7df8b8040f0db71972c2623f7994d}\label{solveNeutronicsAdjoint_8H_a18e7df8b8040f0db71972c2623f7994d}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!Info$<$$<$ \char`\"{}\+Solving neutronics\char`\"{}$<$$<$ endl ;xs\+\_\+.\+correct(\+T\+Fuel\+\_\+, T\+Clad\+\_\+, rho\+Cool\+\_\+, T\+Cool\+\_\+, disp\+\_\+);const dictionary \&neutron\+Transport=mesh\+\_\+.\+solution\+Dict().\+sub\+Dict(\char`\"{}neutron\+Transport\char`\"{});scalar neutron\+Iteration\+Residual=neutron\+Transport.\+lookup\+Or\+Default$<$ scalar $>$@{Info$<$$<$ ""Solving neutronics""$<$$<$ endl ;xs\+\_\+.\+correct(\+T\+Fuel\+\_\+, T\+Clad\+\_\+, rho\+Cool\+\_\+, T\+Cool\+\_\+, disp\+\_\+);const dictionary \&neutron\+Transport=mesh\+\_\+.\+solution\+Dict().\+sub\+Dict(""neutron\+Transport"");scalar neutron\+Iteration\+Residual=neutron\+Transport.\+lookup\+Or\+Default$<$ scalar $>$}}
+\index{Info$<$$<$ \char`\"{}\+Solving neutronics\char`\"{}$<$$<$ endl ;xs\+\_\+.\+correct(\+T\+Fuel\+\_\+, T\+Clad\+\_\+, rho\+Cool\+\_\+, T\+Cool\+\_\+, disp\+\_\+);const dictionary \&neutron\+Transport=mesh\+\_\+.\+solution\+Dict().\+sub\+Dict(\char`\"{}neutron\+Transport\char`\"{});scalar neutron\+Iteration\+Residual=neutron\+Transport.\+lookup\+Or\+Default$<$ scalar $>$@{Info$<$$<$ ""Solving neutronics""$<$$<$ endl ;xs\+\_\+.\+correct(\+T\+Fuel\+\_\+, T\+Clad\+\_\+, rho\+Cool\+\_\+, T\+Cool\+\_\+, disp\+\_\+);const dictionary \&neutron\+Transport=mesh\+\_\+.\+solution\+Dict().\+sub\+Dict(""neutron\+Transport"");scalar neutron\+Iteration\+Residual=neutron\+Transport.\+lookup\+Or\+Default$<$ scalar $>$}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{Info$<$$<$ ""Solving neutronics""$<$$<$ endl ;xs\+\_\+.\+correct(\+T\+Fuel\+\_\+, T\+Clad\+\_\+, rho\+Cool\+\_\+, T\+Cool\+\_\+, disp\+\_\+);const dictionary \&neutron\+Transport=mesh\+\_\+.\+solution\+Dict().\+sub\+Dict(""neutron\+Transport"");scalar neutron\+Iteration\+Residual=neutron\+Transport.\+lookup\+Or\+Default$<$ scalar $>$()}{Info<< "Solving neutronics"<< endl ;xs\_.correct(TFuel\_, TClad\_, rhoCool\_, TCool\_, disp\_);const dictionary \&neutronTransport=mesh\_.solutionDict().subDict("neutronTransport");scalar neutronIterationResidual=neutronTransport.lookupOrDefault< scalar >()}}
+{\footnotesize\ttfamily Info$<$$<$ \char`\"{}Solving \hyperlink{main_2include_2createFields_8H_aba4910c7964b6a522b7f0b911f652e9d}{neutronics}\char`\"{}$<$$<$ endl ;\hyperlink{hEqn_8H_a3a2458f7f54158be848527a3fdedd5dd}{xs\+\_\+.\+correct}(T\+Fuel\+\_\+, T\+Clad\+\_\+, rho\+Cool\+\_\+, T\+Cool\+\_\+, disp\+\_\+);const dictionary \&\hyperlink{solveNeutronicsSP3_8H_ac82f3800c6fe7f00c65fbf04d3c1050d}{neutron\+Transport}=mesh\+\_\+.\+solution\+Dict().sub\+Dict(\char`\"{}neutron\+Transport\char`\"{});scalar \hyperlink{solveNeutronicsSP3_8H_a868e32a0d29170b5c556eabe69917730}{neutron\+Iteration\+Residual}=neutron\+Transport.\+lookup\+Or\+Default$<$ scalar $>$ (\begin{DoxyParamCaption}\item[{\char`\"{}neutron\+Iteration\+Residual\char`\"{}}]{,  }\item[{0.}]{00001 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveNeutronicsAdjoint_8H_ae5591870910ae075926ced03a5923185}\label{solveNeutronicsAdjoint_8H_ae5591870910ae075926ced03a5923185}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!p\+Tot@{p\+Tot}}
+\index{p\+Tot@{p\+Tot}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{p\+Tot()}{pTot()}}
+{\footnotesize\ttfamily scalar p\+Tot (\begin{DoxyParamCaption}\item[{1.}]{0 }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All(), if(), diffusion\+Neutronics\+::power(), adjoint\+Diffusion\+Neutronics\+::power(), S\+P3\+Neutronics\+::power(), and S\+N\+Neutronics\+::power().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=314pt]{solveNeutronicsAdjoint_8H_ae5591870910ae075926ced03a5923185_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{solveNeutronicsAdjoint_8H_a72f1858746fb864f8d04fe468bbd8465}\label{solveNeutronicsAdjoint_8H_a72f1858746fb864f8d04fe468bbd8465}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{flux\+\_\+}]{,  }\item[{energyI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 15 of file solve\+Neutronics\+Adjoint.\+H.
+
+
+
+References disc\+Factor.
+
+\mbox{\Hypertarget{solveNeutronicsAdjoint_8H_a8ccbcf3a22f674106ef4daebb7d1eb21}\label{solveNeutronicsAdjoint_8H_a8ccbcf3a22f674106ef4daebb7d1eb21}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!if@{if}}
+\index{if@{if}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{eigenvalue\+Neutronics\+\_\+ \&\&}]{mesh\+\_\+.\+time().\+time\+Index() -\/mesh\+\_\+.\+time().\+start\+Time\+Index() = {\ttfamily =1} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 19 of file solve\+Neutronics\+Adjoint.\+H.
+
+
+
+References p\+Tot().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{solveNeutronicsAdjoint_8H_a8ccbcf3a22f674106ef4daebb7d1eb21_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{fluxEqAdjoint_8H_a72f1858746fb864f8d04fe468bbd8465}\label{fluxEqAdjoint_8H_a72f1858746fb864f8d04fe468bbd8465}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{flux\+\_\+}]{,  }\item[{energyI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 3 of file flux\+Eq\+Adjoint.\+H.
+
+
+
+References Beta\+Tot, chi\+Prompt, D, disc\+Factor, init\+Res, neutro\+Eq\+List(), neutro\+Residual, and nu\+Sigma\+Eff.
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{fluxEqAdjoint_8H_a72f1858746fb864f8d04fe468bbd8465_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{precEqAdjoint_8H_a96d0351bc6016c4d07b9e688e5c1b865}\label{precEqAdjoint_8H_a96d0351bc6016c4d07b9e688e5c1b865}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{prec\+\_\+}]{,  }\item[{precI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 1 of file prec\+Eq\+Adjoint.\+H.
+
+
+
+References lambda, and prec\+Eq().
+
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{precEqAdjoint_8H_a96d0351bc6016c4d07b9e688e5c1b865_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{initialize__adjointFlux__chiD_8H_aa51a88e769a92df082c3e73cd97391b9}\label{initialize__adjointFlux__chiD_8H_aa51a88e769a92df082c3e73cd97391b9}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily adjoint\+Flux\+\_\+chi\+D\+\_\+$\ast$ for\+All (\begin{DoxyParamCaption}\item[{flux\+\_\+}]{,  }\item[{energyI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 4 of file initialize\+\_\+adjoint\+Flux\+\_\+chi\+D.\+H.
+
+
+
+References chi\+Delayed.
+
+\mbox{\Hypertarget{initializeDelayedNeutroSourceAdjoint_8H_aa3899c89bc6049e9f369480880564780}\label{initializeDelayedNeutroSourceAdjoint_8H_aa3899c89bc6049e9f369480880564780}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily adjoint\+Prec\+\_\+beta\+\_\+$\ast$ for\+All (\begin{DoxyParamCaption}\item[{prec\+\_\+}]{,  }\item[{precI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 3 of file initialize\+Delayed\+Neutro\+Source\+Adjoint.\+H.
+
+
+
+References Beta.
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{solveNeutronicsAdjoint_8H_aeeb27a033c3d21cdfe4cc47565bc21a2}\label{solveNeutronicsAdjoint_8H_aeeb27a033c3d21cdfe4cc47565bc21a2}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!max\+Neutron\+Iterations@{max\+Neutron\+Iterations}}
+\index{max\+Neutron\+Iterations@{max\+Neutron\+Iterations}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{max\+Neutron\+Iterations}{maxNeutronIterations}}
+{\footnotesize\ttfamily int max\+Neutron\+Iterations}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+    \hyperlink{solveNeutronics_8H_ac82f3800c6fe7f00c65fbf04d3c1050d}{neutronTransport}.lookupOrDefault<\textcolor{keywordtype}{int}>(\textcolor{stringliteral}{"maxNeutronIterations"}, 10)
+\end{DoxyCode}
+
+
+Definition at line 10 of file solve\+Neutronics\+Adjoint.\+H.
+
+\mbox{\Hypertarget{solveNeutronicsAdjoint_8H_a5ea48e0170faff29dfdd3cbba330d51d}\label{solveNeutronicsAdjoint_8H_a5ea48e0170faff29dfdd3cbba330d51d}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!neutro\+Iter@{neutro\+Iter}}
+\index{neutro\+Iter@{neutro\+Iter}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{neutro\+Iter}{neutroIter}}
+{\footnotesize\ttfamily neutro\+Iter = 0}
+
+
+
+Definition at line 31 of file solve\+Neutronics\+Adjoint.\+H.
+
+\mbox{\Hypertarget{solveNeutronicsAdjoint_8H_a2a3baa00ecfd5a47c6f6ba475a66d2c6}\label{solveNeutronicsAdjoint_8H_a2a3baa00ecfd5a47c6f6ba475a66d2c6}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!neutro\+Residual@{neutro\+Residual}}
+\index{neutro\+Residual@{neutro\+Residual}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{neutro\+Residual}{neutroResidual}}
+{\footnotesize\ttfamily scalar neutro\+Residual = 0.\+0}
+
+
+
+Definition at line 35 of file solve\+Neutronics\+Adjoint.\+H.
+
+\mbox{\Hypertarget{solveNeutronicsAdjoint_8H_a721c6ff80a6d3e4ad4ffa52a04c60085}\label{solveNeutronicsAdjoint_8H_a721c6ff80a6d3e4ad4ffa52a04c60085}} 
+\index{solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}!do@{do}}
+\index{do@{do}!solve\+Neutronics\+Adjoint.\+H@{solve\+Neutronics\+Adjoint.\+H}}
+\subsubsection{\texorpdfstring{do}{do}}
+{\footnotesize\ttfamily do}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+    Info << \textcolor{stringliteral}{"Neutron iteration no:  "} << \hyperlink{solveNeutronicsAdjoint_8H_a5ea48e0170faff29dfdd3cbba330d51d}{neutroIter} << nl << endl
+\end{DoxyCode}
+
+
+Definition at line 38 of file solve\+Neutronics\+Adjoint.\+H.
+

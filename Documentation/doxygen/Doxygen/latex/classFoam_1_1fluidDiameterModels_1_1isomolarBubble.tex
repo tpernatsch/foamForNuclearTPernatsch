@@ -1,0 +1,194 @@
+\hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble}{}\section{isomolar\+Bubble Class Reference}
+\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble}\index{isomolar\+Bubble@{isomolar\+Bubble}}
+
+
+Inheritance diagram for isomolar\+Bubble\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{classFoam_1_1fluidDiameterModels_1_1isomolarBubble__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for isomolar\+Bubble\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{classFoam_1_1fluidDiameterModels_1_1isomolarBubble__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_afac97fe3819250ae7968783fa5114c96}{Type\+Name} (\char`\"{}isomolar\+Bubble\char`\"{})
+\item 
+\hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_af7471925665a86607e5f6ef36bb9d05e}{isomolar\+Bubble} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ad026a26328b76c66722f369b50098aba}{$\sim$isomolar\+Bubble} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a2c1e1872d359910de4c35cf8f003871c}{value} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const scalar \hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ac19e6215bb97f9383195d7ff5abeca69}{d0\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ab15fca9c1fbb6c6e34a4b5899cb9646e}{p0\+\_\+}
+\item 
+const scalar \hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a032674446278a94719c4be7ef665caa2}{T0\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a4c9ce31e482786bbeeed352570fd8d09}{p\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ad77990330c1ea76d80703ca99150f7cc}{T\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 51 of file isomolar\+Bubble\+Fluid\+Diameter.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_af7471925665a86607e5f6ef36bb9d05e}\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_af7471925665a86607e5f6ef36bb9d05e}} 
+\index{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}!isomolar\+Bubble@{isomolar\+Bubble}}
+\index{isomolar\+Bubble@{isomolar\+Bubble}!Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}}
+\subsubsection{\texorpdfstring{isomolar\+Bubble()}{isomolarBubble()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble}{isomolar\+Bubble} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 43 of file isomolar\+Bubble\+Fluid\+Diameter.\+C.
+
+
+
+References isomolar\+Bubble\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_af7471925665a86607e5f6ef36bb9d05e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ad026a26328b76c66722f369b50098aba}\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ad026a26328b76c66722f369b50098aba}} 
+\index{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}!````~isomolar\+Bubble@{$\sim$isomolar\+Bubble}}
+\index{````~isomolar\+Bubble@{$\sim$isomolar\+Bubble}!Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}}
+\subsubsection{\texorpdfstring{$\sim$isomolar\+Bubble()}{~isomolarBubble()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1fluidDiameterModels_1_1isomolarBubble}{isomolar\+Bubble} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 81 of file isomolar\+Bubble\+Fluid\+Diameter.\+H.
+
+
+
+References isomolar\+Bubble\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ad026a26328b76c66722f369b50098aba_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_afac97fe3819250ae7968783fa5114c96}\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_afac97fe3819250ae7968783fa5114c96}} 
+\index{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}isomolar\+Bubble\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a2c1e1872d359910de4c35cf8f003871c}\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a2c1e1872d359910de4c35cf8f003871c}} 
+\index{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}!value@{value}}
+\index{value@{value}!Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Foam\+::scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1fluidDiameterModel_a139457cae4c5e04785e143fd8b9ed092}{fluid\+Diameter\+Model}.
+
+
+
+Definition at line 66 of file isomolar\+Bubble\+Fluid\+Diameter.\+C.
+
+
+
+References p\+\_\+.
+
+
+
+Referenced by isomolar\+Bubble\+::isomolar\+Bubble(), and isomolar\+Bubble\+::$\sim$isomolar\+Bubble().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a2c1e1872d359910de4c35cf8f003871c_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ac19e6215bb97f9383195d7ff5abeca69}\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ac19e6215bb97f9383195d7ff5abeca69}} 
+\index{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}!d0\+\_\+@{d0\+\_\+}}
+\index{d0\+\_\+@{d0\+\_\+}!Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}}
+\subsubsection{\texorpdfstring{d0\+\_\+}{d0\_}}
+{\footnotesize\ttfamily const scalar d0\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 58 of file isomolar\+Bubble\+Fluid\+Diameter.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ab15fca9c1fbb6c6e34a4b5899cb9646e}\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ab15fca9c1fbb6c6e34a4b5899cb9646e}} 
+\index{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}!p0\+\_\+@{p0\+\_\+}}
+\index{p0\+\_\+@{p0\+\_\+}!Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}}
+\subsubsection{\texorpdfstring{p0\+\_\+}{p0\_}}
+{\footnotesize\ttfamily const scalar p0\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 59 of file isomolar\+Bubble\+Fluid\+Diameter.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a032674446278a94719c4be7ef665caa2}\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a032674446278a94719c4be7ef665caa2}} 
+\index{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}!T0\+\_\+@{T0\+\_\+}}
+\index{T0\+\_\+@{T0\+\_\+}!Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}}
+\subsubsection{\texorpdfstring{T0\+\_\+}{T0\_}}
+{\footnotesize\ttfamily const scalar T0\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 60 of file isomolar\+Bubble\+Fluid\+Diameter.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a4c9ce31e482786bbeeed352570fd8d09}\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_a4c9ce31e482786bbeeed352570fd8d09}} 
+\index{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}!p\+\_\+@{p\+\_\+}}
+\index{p\+\_\+@{p\+\_\+}!Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}}
+\subsubsection{\texorpdfstring{p\+\_\+}{p\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& p\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 62 of file isomolar\+Bubble\+Fluid\+Diameter.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ad77990330c1ea76d80703ca99150f7cc}\label{classFoam_1_1fluidDiameterModels_1_1isomolarBubble_ad77990330c1ea76d80703ca99150f7cc}} 
+\index{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}!T\+\_\+@{T\+\_\+}}
+\index{T\+\_\+@{T\+\_\+}!Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble@{Foam\+::fluid\+Diameter\+Models\+::isomolar\+Bubble}}
+\subsubsection{\texorpdfstring{T\+\_\+}{T\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& T\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 64 of file isomolar\+Bubble\+Fluid\+Diameter.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/fluid\+Diameter\+Models/isomolar\+Bubble/\hyperlink{isomolarBubbleFluidDiameter_8H}{isomolar\+Bubble\+Fluid\+Diameter.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/fluid\+Diameter\+Models/isomolar\+Bubble/\hyperlink{isomolarBubbleFluidDiameter_8C}{isomolar\+Bubble\+Fluid\+Diameter.\+C}\end{DoxyCompactItemize}

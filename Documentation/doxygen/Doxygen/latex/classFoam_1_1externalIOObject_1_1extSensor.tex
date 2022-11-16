@@ -1,0 +1,200 @@
+\hypertarget{classFoam_1_1externalIOObject_1_1extSensor}{}\section{ext\+Sensor Class Reference}
+\label{classFoam_1_1externalIOObject_1_1extSensor}\index{ext\+Sensor@{ext\+Sensor}}
+
+
+auto a single probes data  
+
+
+
+
+Inheritance diagram for ext\+Sensor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=170pt]{classFoam_1_1externalIOObject_1_1extSensor__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for ext\+Sensor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=170pt]{classFoam_1_1externalIOObject_1_1extSensor__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1externalIOObject_1_1extSensor_a213d32de9f49e681830de628f3629fdb}{Type\+Name} (\char`\"{}ext\+Sensor\char`\"{})
+\item 
+\hyperlink{classFoam_1_1externalIOObject_1_1extSensor_aa89bb9d0a3974d9fe7c89817d37b3a95}{ext\+Sensor} (const word \&\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name}, const Time \&run\+Time, const dictionary \&dict)
+\item 
+\hyperlink{classFoam_1_1externalIOObject_1_1extSensor_a31df8113709cabbf0b5e4da941ba28c7}{ext\+Sensor} (const \hyperlink{classFoam_1_1externalIOObject_1_1extSensor}{ext\+Sensor} \&)=delete
+\item 
+void \hyperlink{classFoam_1_1externalIOObject_1_1extSensor_a3ca6b9f03d51ab933c34f48bb59b103e}{operator=} (const \hyperlink{classFoam_1_1externalIOObject_1_1extSensor}{ext\+Sensor} \&)=delete
+\item 
+virtual \hyperlink{classFoam_1_1externalIOObject_1_1extSensor_a08db7a2870ebbc20804812e3d85cb8f2}{$\sim$ext\+Sensor} ()=default
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1extSensor_afac0600fef97b05534a595ce00b272ed}{read} (const dictionary \&)
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1extSensor_ae006844a02161d12182ab372ca5c257b}{execute} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1extSensor_ae8f6374e29a250261b3979bbd6e5cb40}{write} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+auto a single probes data 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Usage}
+Minimal example by using {\ttfamily system/external\+Coupling\+Dict}\+: \begin{DoxyVerb}extSensor
+{
+    type extSensor;
+    sensorName Tout;
+    fieldName T;
+    sensorPosition (-0.01 0 0);
+}
+\end{DoxyVerb}
+
+\end{DoxyParagraph}
+where the entries mean\+: \tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{5}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Type } }&\PBS\centering \textbf{ {\bfseries  Req\textquotesingle{}d } }&\PBS\centering \textbf{ {\bfseries  Dflt}  }\\\cline{1-5}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Type } }&\PBS\centering \textbf{ {\bfseries  Req\textquotesingle{}d } }&\PBS\centering \textbf{ {\bfseries  Dflt}  }\\\cline{1-5}
+\endhead
+{\ttfamily type}  &Type name\+: \hyperlink{classFoam_1_1externalIOObject_1_1extFunction}{ext\+Function}  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily field\+Name}  &name of the measurement field  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily sensor\+Name}  &name of the sensor  &word  &yes  &-\/  \\\cline{1-5}
+{\ttfamily sensor\+Position}  &position of the sensor  &vector  &yes  &-\/  \\\cline{1-5}
+\end{longtabu}
+
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extSensor/extSensor.H}{\tt ext\+Sensor.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extSensor/extSensor.C}{\tt ext\+Sensor.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 94 of file ext\+Sensor.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1extSensor_aa89bb9d0a3974d9fe7c89817d37b3a95}\label{classFoam_1_1externalIOObject_1_1extSensor_aa89bb9d0a3974d9fe7c89817d37b3a95}} 
+\index{Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}!ext\+Sensor@{ext\+Sensor}}
+\index{ext\+Sensor@{ext\+Sensor}!Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}}
+\subsubsection{\texorpdfstring{ext\+Sensor()}{extSensor()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1externalIOObject_1_1extSensor}{ext\+Sensor} (\begin{DoxyParamCaption}\item[{const word \&}]{name,  }\item[{const Time \&}]{run\+Time,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 33 of file ext\+Sensor.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1extSensor_a31df8113709cabbf0b5e4da941ba28c7}\label{classFoam_1_1externalIOObject_1_1extSensor_a31df8113709cabbf0b5e4da941ba28c7}} 
+\index{Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}!ext\+Sensor@{ext\+Sensor}}
+\index{ext\+Sensor@{ext\+Sensor}!Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}}
+\subsubsection{\texorpdfstring{ext\+Sensor()}{extSensor()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1externalIOObject_1_1extSensor}{ext\+Sensor} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1externalIOObject_1_1extSensor}{ext\+Sensor} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1extSensor_a08db7a2870ebbc20804812e3d85cb8f2}\label{classFoam_1_1externalIOObject_1_1extSensor_a08db7a2870ebbc20804812e3d85cb8f2}} 
+\index{Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}!````~ext\+Sensor@{$\sim$ext\+Sensor}}
+\index{````~ext\+Sensor@{$\sim$ext\+Sensor}!Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}}
+\subsubsection{\texorpdfstring{$\sim$ext\+Sensor()}{~extSensor()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1externalIOObject_1_1extSensor}{ext\+Sensor} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1extSensor_a213d32de9f49e681830de628f3629fdb}\label{classFoam_1_1externalIOObject_1_1extSensor_a213d32de9f49e681830de628f3629fdb}} 
+\index{Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}ext\+Sensor\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1extSensor_a3ca6b9f03d51ab933c34f48bb59b103e}\label{classFoam_1_1externalIOObject_1_1extSensor_a3ca6b9f03d51ab933c34f48bb59b103e}} 
+\index{Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}!operator=@{operator=}}
+\index{operator=@{operator=}!Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily void operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1externalIOObject_1_1extSensor}{ext\+Sensor} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1extSensor_afac0600fef97b05534a595ce00b272ed}\label{classFoam_1_1externalIOObject_1_1extSensor_afac0600fef97b05534a595ce00b272ed}} 
+\index{Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}!read@{read}}
+\index{read@{read}!Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily bool read (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a6ce0c64db98eb6144d363dbfc86104eb}{external\+I\+O\+Object}.
+
+
+
+Definition at line 62 of file ext\+Sensor.\+C.
+
+
+
+References comm\+Data\+Layer\+::\+New(), out(), and comm\+Data\+Layer\+::store\+Obj().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=297pt]{classFoam_1_1externalIOObject_1_1extSensor_afac0600fef97b05534a595ce00b272ed_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1extSensor_ae006844a02161d12182ab372ca5c257b}\label{classFoam_1_1externalIOObject_1_1extSensor_ae006844a02161d12182ab372ca5c257b}} 
+\index{Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}!execute@{execute}}
+\index{execute@{execute}!Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}}
+\subsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily bool execute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a6a2fecba3df663a5e8d1c371795e3763}{external\+I\+O\+Object}.
+
+
+
+Definition at line 80 of file ext\+Sensor.\+C.
+
+
+
+References comm\+Data\+Layer\+::get\+Obj(), comm\+Data\+Layer\+::\+New(), out(), and reduce().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=313pt]{classFoam_1_1externalIOObject_1_1extSensor_ae006844a02161d12182ab372ca5c257b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1extSensor_ae8f6374e29a250261b3979bbd6e5cb40}\label{classFoam_1_1externalIOObject_1_1extSensor_ae8f6374e29a250261b3979bbd6e5cb40}} 
+\index{Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}!write@{write}}
+\index{write@{write}!Foam\+::external\+I\+O\+Object\+::ext\+Sensor@{Foam\+::external\+I\+O\+Object\+::ext\+Sensor}}
+\subsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily bool write (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_afb09203164c30c34e8eca81ef0211745}{external\+I\+O\+Object}.
+
+
+
+Definition at line 96 of file ext\+Sensor.\+C.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/external\+I\+O/output/ext\+Sensor/\hyperlink{extSensor_8H}{ext\+Sensor.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/external\+I\+O/output/ext\+Sensor/\hyperlink{extSensor_8C}{ext\+Sensor.\+C}\end{DoxyCompactItemize}

@@ -1,0 +1,232 @@
+\hypertarget{classFoam_1_1timeProfile}{}\section{time\+Profile Class Reference}
+\label{classFoam_1_1timeProfile}\index{time\+Profile@{time\+Profile}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1timeProfile_a5076b4ecf43c6e02c4c97cafe1243340}{time\+Profile} (const \hyperlink{classFoam_1_1timeProfile}{time\+Profile} \&)
+\item 
+void \hyperlink{classFoam_1_1timeProfile_a2909e2bb417056ae3bb3038213b5a509}{operator=} (const \hyperlink{classFoam_1_1timeProfile}{time\+Profile} \&)
+\item 
+\hyperlink{classFoam_1_1timeProfile_ac92fb8fde8b4ecb8eccc653894d361a6}{time\+Profile} (const dictionary \&dict)
+\item 
+\hyperlink{classFoam_1_1timeProfile_a7ac944da8a3372ee1800ecbc35d4dda2}{time\+Profile} (I\+Odictionary object, word time\+Profile\+Name)
+\item 
+virtual \hyperlink{classFoam_1_1timeProfile_a81645763c1def16d1eec37f26bb330c1}{$\sim$time\+Profile} ()
+\item 
+bool \hyperlink{classFoam_1_1timeProfile_a1153e3a77aa46ed8f7683e71c60f4584}{valid} ()
+\item 
+scalar \hyperlink{classFoam_1_1timeProfile_a18e8d053af1f216e0b4770d4e9104fc9}{value} (scalar time)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+dictionary \hyperlink{classFoam_1_1timeProfile_a5c644b0ad2ff77590a77fb0198c4a785}{dict\+\_\+}
+\item 
+word \hyperlink{classFoam_1_1timeProfile_addee41d6ac047acd59c85e776d4e6fb9}{type\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1timeProfile_ad3af15e21885db634f1c0a0aa207d674}{start\+Time\+\_\+}
+\item 
+auto\+Ptr$<$ Function1$<$ scalar $>$ $>$ \hyperlink{classFoam_1_1timeProfile_ae45cec85de6c65941ab18eff890a495e}{function\+Ptr\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\label{_Description}%
+ \begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/common/timeProfile/timeProfile.H}{\tt time\+Profile.\+H} 
+\end{DoxyItemize}Author of this file (and associated .C or included .H files) 
+\end{DoxyParagraph}
+
+
+Definition at line 54 of file time\+Profile.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1timeProfile_a5076b4ecf43c6e02c4c97cafe1243340}\label{classFoam_1_1timeProfile_a5076b4ecf43c6e02c4c97cafe1243340}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!time\+Profile@{time\+Profile}}
+\index{time\+Profile@{time\+Profile}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{time\+Profile()}{timeProfile()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1timeProfile}{time\+Profile} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1timeProfile}{time\+Profile} \&}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by time\+Profile\+::time\+Profile().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{classFoam_1_1timeProfile_a5076b4ecf43c6e02c4c97cafe1243340_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1timeProfile_ac92fb8fde8b4ecb8eccc653894d361a6}\label{classFoam_1_1timeProfile_ac92fb8fde8b4ecb8eccc653894d361a6}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!time\+Profile@{time\+Profile}}
+\index{time\+Profile@{time\+Profile}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{time\+Profile()}{timeProfile()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1timeProfile}{time\+Profile} (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 35 of file time\+Profile.\+C.
+
+
+
+References time\+Profile\+::time\+Profile().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{classFoam_1_1timeProfile_ac92fb8fde8b4ecb8eccc653894d361a6_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1timeProfile_a7ac944da8a3372ee1800ecbc35d4dda2}\label{classFoam_1_1timeProfile_a7ac944da8a3372ee1800ecbc35d4dda2}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!time\+Profile@{time\+Profile}}
+\index{time\+Profile@{time\+Profile}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{time\+Profile()}{timeProfile()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1timeProfile}{time\+Profile} (\begin{DoxyParamCaption}\item[{I\+Odictionary}]{object,  }\item[{word}]{time\+Profile\+Name }\end{DoxyParamCaption})}
+
+
+
+Definition at line 55 of file time\+Profile.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1timeProfile_a81645763c1def16d1eec37f26bb330c1}\label{classFoam_1_1timeProfile_a81645763c1def16d1eec37f26bb330c1}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!````~time\+Profile@{$\sim$time\+Profile}}
+\index{````~time\+Profile@{$\sim$time\+Profile}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{$\sim$time\+Profile()}{~timeProfile()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1timeProfile}{time\+Profile} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 90 of file time\+Profile.\+H.
+
+
+
+References time\+Profile\+::valid(), and time\+Profile\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=225pt]{classFoam_1_1timeProfile_a81645763c1def16d1eec37f26bb330c1_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1timeProfile_a2909e2bb417056ae3bb3038213b5a509}\label{classFoam_1_1timeProfile_a2909e2bb417056ae3bb3038213b5a509}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!operator=@{operator=}}
+\index{operator=@{operator=}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily void operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1timeProfile}{time\+Profile} \&}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1timeProfile_a1153e3a77aa46ed8f7683e71c60f4584}\label{classFoam_1_1timeProfile_a1153e3a77aa46ed8f7683e71c60f4584}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!valid@{valid}}
+\index{valid@{valid}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{valid()}{valid()}}
+{\footnotesize\ttfamily bool valid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 85 of file time\+Profile.\+C.
+
+
+
+References time\+Profile\+::function\+Ptr\+\_\+.
+
+
+
+Referenced by time\+Profile\+::$\sim$time\+Profile().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{classFoam_1_1timeProfile_a1153e3a77aa46ed8f7683e71c60f4584_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1timeProfile_a18e8d053af1f216e0b4770d4e9104fc9}\label{classFoam_1_1timeProfile_a18e8d053af1f216e0b4770d4e9104fc9}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!value@{value}}
+\index{value@{value}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily scalar value (\begin{DoxyParamCaption}\item[{scalar}]{time }\end{DoxyParamCaption})}
+
+
+
+Definition at line 90 of file time\+Profile.\+C.
+
+
+
+References time\+Profile\+::function\+Ptr\+\_\+, and time\+Profile\+::start\+Time\+\_\+.
+
+
+
+Referenced by time\+Profile\+::$\sim$time\+Profile().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=225pt]{classFoam_1_1timeProfile_a18e8d053af1f216e0b4770d4e9104fc9_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1timeProfile_a5c644b0ad2ff77590a77fb0198c4a785}\label{classFoam_1_1timeProfile_a5c644b0ad2ff77590a77fb0198c4a785}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!dict\+\_\+@{dict\+\_\+}}
+\index{dict\+\_\+@{dict\+\_\+}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{dict\+\_\+}{dict\_}}
+{\footnotesize\ttfamily dictionary dict\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 63 of file time\+Profile.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1timeProfile_addee41d6ac047acd59c85e776d4e6fb9}\label{classFoam_1_1timeProfile_addee41d6ac047acd59c85e776d4e6fb9}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!type\+\_\+@{type\+\_\+}}
+\index{type\+\_\+@{type\+\_\+}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{type\+\_\+}{type\_}}
+{\footnotesize\ttfamily word type\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 66 of file time\+Profile.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1timeProfile_ad3af15e21885db634f1c0a0aa207d674}\label{classFoam_1_1timeProfile_ad3af15e21885db634f1c0a0aa207d674}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!start\+Time\+\_\+@{start\+Time\+\_\+}}
+\index{start\+Time\+\_\+@{start\+Time\+\_\+}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{start\+Time\+\_\+}{startTime\_}}
+{\footnotesize\ttfamily scalar start\+Time\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 69 of file time\+Profile.\+H.
+
+
+
+Referenced by time\+Profile\+::value().
+
+\mbox{\Hypertarget{classFoam_1_1timeProfile_ae45cec85de6c65941ab18eff890a495e}\label{classFoam_1_1timeProfile_ae45cec85de6c65941ab18eff890a495e}} 
+\index{Foam\+::time\+Profile@{Foam\+::time\+Profile}!function\+Ptr\+\_\+@{function\+Ptr\+\_\+}}
+\index{function\+Ptr\+\_\+@{function\+Ptr\+\_\+}!Foam\+::time\+Profile@{Foam\+::time\+Profile}}
+\subsubsection{\texorpdfstring{function\+Ptr\+\_\+}{functionPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$Function1$<$scalar$>$ $>$ function\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 72 of file time\+Profile.\+H.
+
+
+
+Referenced by time\+Profile\+::valid(), and time\+Profile\+::value().
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/common/time\+Profile/\hyperlink{timeProfile_8H}{time\+Profile.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/common/time\+Profile/\hyperlink{timeProfile_8C}{time\+Profile.\+C}\end{DoxyCompactItemize}

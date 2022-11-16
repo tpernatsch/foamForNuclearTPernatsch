@@ -1,0 +1,37 @@
+\hypertarget{classFoam_1_1Kaiser88}{}\section{Kaiser88 Class Reference}
+\label{classFoam_1_1Kaiser88}\index{Kaiser88@{Kaiser88}}
+
+
+Model by Kaiser et al. for the multiplier, specifically for sodium two-\/phase flows\+:  
+
+
+
+
+\subsection{Detailed Description}
+Model by Kaiser et al. for the multiplier, specifically for sodium two-\/phase flows\+: 
+
+\label{_Description}%
+ phi2 = exp(2$\ast$( 1.\+48 -\/ 1.\+05$\ast$log(sqrt(\+X)) + 0.\+09$\ast$(log(sqrt(\+X)))$^\wedge$2 ))
+
+log is the natural logarithm and X2 is the well-\/known Lockhart-\/\+Martinelli parameter defined as\+:
+
+X2 = (mu\+\_\+\+I/mu\+\_\+O)$^\wedge$0.2 $\ast$ (flow\+Quality\+\_\+\+I/flow\+Quality\+\_\+O)$^\wedge$1.8 $\ast$ rho\+\_\+\+O/rho\+\_\+I
+
+Please note that X in use in phi2 is X = sqrt(\+X2).
+
+Kaiser, A., Huber, F., Bottoni, M., Dorr, B., 1988. "Contribution to sodium boiling heat transfer, pressure drop, and void distribution in multi-\/pin geometry". In\+: Proc. 13th Liquid Metal Boiling Working Group (L\+M\+B\+WG), pp. 71–98.
+
+Author Stefan Radman (\href{mailto:sradman@protonmail.com}{\tt sradman@protonmail.\+com} / \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/twoPhaseDragMultiplierModels/Kaiser88/Kaiser88TwoPhaseDragMultiplier.H}{\tt Kaiser88\+Two\+Phase\+Drag\+Multiplier.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/twoPhaseDragMultiplierModels/Kaiser88/Kaiser88.C}{\tt Kaiser88.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/two\+Phase\+Drag\+Multiplier\+Models/\+Kaiser88/\hyperlink{Kaiser88TwoPhaseDragMultiplier_8H}{Kaiser88\+Two\+Phase\+Drag\+Multiplier.\+H}\end{DoxyCompactItemize}

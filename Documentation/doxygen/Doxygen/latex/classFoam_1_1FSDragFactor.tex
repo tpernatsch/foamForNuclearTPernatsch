@@ -1,0 +1,341 @@
+\hypertarget{classFoam_1_1FSDragFactor}{}\section{F\+S\+Drag\+Factor Class Reference}
+\label{classFoam_1_1FSDragFactor}\index{F\+S\+Drag\+Factor@{F\+S\+Drag\+Factor}}
+
+
+Inheritance diagram for F\+S\+Drag\+Factor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=158pt]{classFoam_1_1FSDragFactor__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+S\+Drag\+Factor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=214pt]{classFoam_1_1FSDragFactor__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1FSDragFactor_a2148debdd7a4cef5a81c3cf9d35c3293}{Type\+Name} (\char`\"{}F\+S\+Drag\+Factor\char`\"{})
+\item 
+\hyperlink{classFoam_1_1FSDragFactor_a98ed8145d598adb08c51756802f20f94}{F\+S\+Drag\+Factor} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict)
+\item 
+virtual \hyperlink{classFoam_1_1FSDragFactor_aa76d1ca58f76881c8d570feddba7f6d5}{$\sim$\+F\+S\+Drag\+Factor} ()
+\item 
+void \hyperlink{classFoam_1_1FSDragFactor_ac2c6b6382e76264a9f851929b059e10b}{correct\+Field} (vol\+Tensor\+Field \&Kd) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef Hash\+Table$<$ auto\+Ptr$<$ \hyperlink{classFoam_1_1FSDragCoefficientModel}{F\+S\+Drag\+Coefficient\+Model} $>$, word, word\+::hash $>$ \hyperlink{classFoam_1_1FSDragFactor_a7760b746b5c75541218a8e6bcf18af90}{fd\+Table}
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \& \hyperlink{classFoam_1_1FSDragFactor_a587e19a1b4f4b498d2604d20c093a73b}{pair\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1FSDragFactor_a668e23f1aa896d53b68f6182e48f32d9}{cells\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1FSDragFactor_a3c15d115e70032590a4b702bb52bbac1}{isotropic\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FSDragFactor_a409c831ae1f6df5fd5fa026c96048b1a}{alphas\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FSDragFactor_afd4cda4547d99466a3857a0778af6e29}{alpha\+N\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FSDragFactor_ab78356ab728aa016ae26aa9ac0137ec4}{rho\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FSDragFactor_a9f354183d629b4422e533a56df9634a4}{Dh\+\_\+}
+\item 
+const vol\+Vector\+Field \& \hyperlink{classFoam_1_1FSDragFactor_a6dc21987d43bf648b90e643918b02353}{U\+\_\+}
+\item 
+const vol\+Scalar\+Field \& \hyperlink{classFoam_1_1FSDragFactor_a5d86facdeda69751165ac573c860e485}{mag\+U\+\_\+}
+\item 
+scalar\+Field \hyperlink{classFoam_1_1FSDragFactor_a44668fd761d7749d130a8c6ccd4e8f6b}{half\+Alpha\+Rho\+Mag\+U\+By\+Dh\+\_\+}
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1FSDragCoefficientModel}{F\+S\+Drag\+Coefficient\+Model} $>$ \hyperlink{classFoam_1_1FSDragFactor_ad58ffd69849069f90016981b041d7ab2}{fd\+Ptr\+\_\+}
+\item 
+\hyperlink{classFoam_1_1FSDragFactor_a7760b746b5c75541218a8e6bcf18af90}{fd\+Table} \hyperlink{classFoam_1_1FSDragFactor_aa70ab8b33719ff9cdab03dfaae24ece8}{fd\+Ptrs\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1FSDragFactor_aa315e4360176e0a73647496cd5a91790}{valid\+X\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1FSDragFactor_ae908ca79440b2a0b723a5bb2d0439529}{valid\+Y\+\_\+}
+\item 
+bool \hyperlink{classFoam_1_1FSDragFactor_a7b6a9411b294d4fb22a245d3d0f151f3}{valid\+Z\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragFactor.H}{\tt F\+S\+Drag\+Factor.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragFactor.C}{\tt F\+S\+Drag\+Factor.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 53 of file F\+S\+Drag\+Factor.\+H.
+
+
+
+\subsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a7760b746b5c75541218a8e6bcf18af90}\label{classFoam_1_1FSDragFactor_a7760b746b5c75541218a8e6bcf18af90}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!fd\+Table@{fd\+Table}}
+\index{fd\+Table@{fd\+Table}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{fd\+Table}{fdTable}}
+{\footnotesize\ttfamily typedef Hash\+Table$<$ auto\+Ptr$<$\hyperlink{classFoam_1_1FSDragCoefficientModel}{F\+S\+Drag\+Coefficient\+Model}$>$, word, word\+::hash $>$ \hyperlink{classFoam_1_1FSDragFactor_a7760b746b5c75541218a8e6bcf18af90}{fd\+Table}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 95 of file F\+S\+Drag\+Factor.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a98ed8145d598adb08c51756802f20f94}\label{classFoam_1_1FSDragFactor_a98ed8145d598adb08c51756802f20f94}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!F\+S\+Drag\+Factor@{F\+S\+Drag\+Factor}}
+\index{F\+S\+Drag\+Factor@{F\+S\+Drag\+Factor}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{F\+S\+Drag\+Factor()}{FSDragFactor()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FSDragFactor}{F\+S\+Drag\+Factor} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 40 of file F\+S\+Drag\+Factor.\+C.
+
+
+
+References for\+All(), i, and F\+S\+Drag\+Coefficient\+Model\+::\+New().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1FSDragFactor_a98ed8145d598adb08c51756802f20f94_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_aa76d1ca58f76881c8d570feddba7f6d5}\label{classFoam_1_1FSDragFactor_aa76d1ca58f76881c8d570feddba7f6d5}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!````~F\+S\+Drag\+Factor@{$\sim$\+F\+S\+Drag\+Factor}}
+\index{````~F\+S\+Drag\+Factor@{$\sim$\+F\+S\+Drag\+Factor}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{$\sim$\+F\+S\+Drag\+Factor()}{~FSDragFactor()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1FSDragFactor}{F\+S\+Drag\+Factor} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 116 of file F\+S\+Drag\+Factor.\+H.
+
+
+
+References F\+S\+Drag\+Factor\+::correct\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=268pt]{classFoam_1_1FSDragFactor_aa76d1ca58f76881c8d570feddba7f6d5_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a2148debdd7a4cef5a81c3cf9d35c3293}\label{classFoam_1_1FSDragFactor_a2148debdd7a4cef5a81c3cf9d35c3293}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}F\+S\+Drag\+Factor\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_ac2c6b6382e76264a9f851929b059e10b}\label{classFoam_1_1FSDragFactor_ac2c6b6382e76264a9f851929b059e10b}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!correct\+Field@{correct\+Field}}
+\index{correct\+Field@{correct\+Field}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{correct\+Field()}{correctField()}}
+{\footnotesize\ttfamily void correct\+Field (\begin{DoxyParamCaption}\item[{vol\+Tensor\+Field \&}]{Kd }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 159 of file F\+S\+Drag\+Factor.\+C.
+
+
+
+References for\+All(), i, and rho\+\_\+.
+
+
+
+Referenced by F\+S\+Pair\+::correct(), and F\+S\+Drag\+Factor\+::$\sim$\+F\+S\+Drag\+Factor().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classFoam_1_1FSDragFactor_ac2c6b6382e76264a9f851929b059e10b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=297pt]{classFoam_1_1FSDragFactor_ac2c6b6382e76264a9f851929b059e10b_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a587e19a1b4f4b498d2604d20c093a73b}\label{classFoam_1_1FSDragFactor_a587e19a1b4f4b498d2604d20c093a73b}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!pair\+\_\+@{pair\+\_\+}}
+\index{pair\+\_\+@{pair\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{pair\+\_\+}{pair\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair}\& pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 59 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a668e23f1aa896d53b68f6182e48f32d9}\label{classFoam_1_1FSDragFactor_a668e23f1aa896d53b68f6182e48f32d9}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!cells\+\_\+@{cells\+\_\+}}
+\index{cells\+\_\+@{cells\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{cells\+\_\+}{cells\_}}
+{\footnotesize\ttfamily label\+List cells\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 62 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a3c15d115e70032590a4b702bb52bbac1}\label{classFoam_1_1FSDragFactor_a3c15d115e70032590a4b702bb52bbac1}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!isotropic\+\_\+@{isotropic\+\_\+}}
+\index{isotropic\+\_\+@{isotropic\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{isotropic\+\_\+}{isotropic\_}}
+{\footnotesize\ttfamily bool isotropic\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 65 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a409c831ae1f6df5fd5fa026c96048b1a}\label{classFoam_1_1FSDragFactor_a409c831ae1f6df5fd5fa026c96048b1a}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!alphas\+\_\+@{alphas\+\_\+}}
+\index{alphas\+\_\+@{alphas\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{alphas\+\_\+}{alphas\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& alphas\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 68 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_afd4cda4547d99466a3857a0778af6e29}\label{classFoam_1_1FSDragFactor_afd4cda4547d99466a3857a0778af6e29}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!alpha\+N\+\_\+@{alpha\+N\+\_\+}}
+\index{alpha\+N\+\_\+@{alpha\+N\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{alpha\+N\+\_\+}{alphaN\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& alpha\+N\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 71 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_ab78356ab728aa016ae26aa9ac0137ec4}\label{classFoam_1_1FSDragFactor_ab78356ab728aa016ae26aa9ac0137ec4}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!rho\+\_\+@{rho\+\_\+}}
+\index{rho\+\_\+@{rho\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{rho\+\_\+}{rho\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& rho\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 74 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a9f354183d629b4422e533a56df9634a4}\label{classFoam_1_1FSDragFactor_a9f354183d629b4422e533a56df9634a4}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!Dh\+\_\+@{Dh\+\_\+}}
+\index{Dh\+\_\+@{Dh\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{Dh\+\_\+}{Dh\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& Dh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 77 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a6dc21987d43bf648b90e643918b02353}\label{classFoam_1_1FSDragFactor_a6dc21987d43bf648b90e643918b02353}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!U\+\_\+@{U\+\_\+}}
+\index{U\+\_\+@{U\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{U\+\_\+}{U\_}}
+{\footnotesize\ttfamily const vol\+Vector\+Field\& U\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 80 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a5d86facdeda69751165ac573c860e485}\label{classFoam_1_1FSDragFactor_a5d86facdeda69751165ac573c860e485}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!mag\+U\+\_\+@{mag\+U\+\_\+}}
+\index{mag\+U\+\_\+@{mag\+U\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{mag\+U\+\_\+}{magU\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& mag\+U\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 81 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a44668fd761d7749d130a8c6ccd4e8f6b}\label{classFoam_1_1FSDragFactor_a44668fd761d7749d130a8c6ccd4e8f6b}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!half\+Alpha\+Rho\+Mag\+U\+By\+Dh\+\_\+@{half\+Alpha\+Rho\+Mag\+U\+By\+Dh\+\_\+}}
+\index{half\+Alpha\+Rho\+Mag\+U\+By\+Dh\+\_\+@{half\+Alpha\+Rho\+Mag\+U\+By\+Dh\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{half\+Alpha\+Rho\+Mag\+U\+By\+Dh\+\_\+}{halfAlphaRhoMagUByDh\_}}
+{\footnotesize\ttfamily scalar\+Field half\+Alpha\+Rho\+Mag\+U\+By\+Dh\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 84 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_ad58ffd69849069f90016981b041d7ab2}\label{classFoam_1_1FSDragFactor_ad58ffd69849069f90016981b041d7ab2}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!fd\+Ptr\+\_\+@{fd\+Ptr\+\_\+}}
+\index{fd\+Ptr\+\_\+@{fd\+Ptr\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{fd\+Ptr\+\_\+}{fdPtr\_}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1FSDragCoefficientModel}{F\+S\+Drag\+Coefficient\+Model}$>$ fd\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 87 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_aa70ab8b33719ff9cdab03dfaae24ece8}\label{classFoam_1_1FSDragFactor_aa70ab8b33719ff9cdab03dfaae24ece8}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!fd\+Ptrs\+\_\+@{fd\+Ptrs\+\_\+}}
+\index{fd\+Ptrs\+\_\+@{fd\+Ptrs\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{fd\+Ptrs\+\_\+}{fdPtrs\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FSDragFactor_a7760b746b5c75541218a8e6bcf18af90}{fd\+Table} fd\+Ptrs\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 96 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_aa315e4360176e0a73647496cd5a91790}\label{classFoam_1_1FSDragFactor_aa315e4360176e0a73647496cd5a91790}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!valid\+X\+\_\+@{valid\+X\+\_\+}}
+\index{valid\+X\+\_\+@{valid\+X\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{valid\+X\+\_\+}{validX\_}}
+{\footnotesize\ttfamily bool valid\+X\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 99 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_ae908ca79440b2a0b723a5bb2d0439529}\label{classFoam_1_1FSDragFactor_ae908ca79440b2a0b723a5bb2d0439529}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!valid\+Y\+\_\+@{valid\+Y\+\_\+}}
+\index{valid\+Y\+\_\+@{valid\+Y\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{valid\+Y\+\_\+}{validY\_}}
+{\footnotesize\ttfamily bool valid\+Y\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 100 of file F\+S\+Drag\+Factor.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FSDragFactor_a7b6a9411b294d4fb22a245d3d0f151f3}\label{classFoam_1_1FSDragFactor_a7b6a9411b294d4fb22a245d3d0f151f3}} 
+\index{Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}!valid\+Z\+\_\+@{valid\+Z\+\_\+}}
+\index{valid\+Z\+\_\+@{valid\+Z\+\_\+}!Foam\+::\+F\+S\+Drag\+Factor@{Foam\+::\+F\+S\+Drag\+Factor}}
+\subsubsection{\texorpdfstring{valid\+Z\+\_\+}{validZ\_}}
+{\footnotesize\ttfamily bool valid\+Z\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 101 of file F\+S\+Drag\+Factor.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\hyperlink{FSDragFactor_8H}{F\+S\+Drag\+Factor.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\hyperlink{FSDragFactor_8C}{F\+S\+Drag\+Factor.\+C}\end{DoxyCompactItemize}

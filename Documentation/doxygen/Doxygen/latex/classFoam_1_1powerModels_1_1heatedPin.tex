@@ -1,0 +1,484 @@
+\hypertarget{classFoam_1_1powerModels_1_1heatedPin}{}\section{heated\+Pin Class Reference}
+\label{classFoam_1_1powerModels_1_1heatedPin}\index{heated\+Pin@{heated\+Pin}}
+
+
+Inheritance diagram for heated\+Pin\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=149pt]{classFoam_1_1powerModels_1_1heatedPin__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for heated\+Pin\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=270pt]{classFoam_1_1powerModels_1_1heatedPin__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1powerModels_1_1heatedPin_a687fb4863571a02ff1d34b73d8b7fd4d}{Type\+Name} (\char`\"{}heated\+Pin\char`\"{})
+\item 
+\hyperlink{classFoam_1_1powerModels_1_1heatedPin_a5df612853023ce36358872f98ac1fbe2}{heated\+Pin} (\hyperlink{classFoam_1_1structure}{structure} \&\hyperlink{classFoam_1_1structure}{structure}, const dictionary \&dicts)
+\item 
+virtual \hyperlink{classFoam_1_1powerModels_1_1heatedPin_af63b7fab9226364ac337978b3d57312f}{$\sim$heated\+Pin} ()
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a8fc8c05c610e629783c80688340f8db4}{set\+Interfacial\+Area} ()
+\item 
+void \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a156a2a794e9317591692be62c0a33299}{update\+Local\+Avg\+Global\+Min\+MaxT} (const label \&starti, const label \&endi, const scalar\+List \&r, const scalar \&dr, const scalar\+Field \&Trad, scalar \&Tav, scalar \&Tmin, scalar \&Tmax)
+\item 
+void \hyperlink{classFoam_1_1powerModels_1_1heatedPin_aebceb9d61655d7851a7ab3a7710164ea}{update\+Local\+Temperature\+Profile} (const label \&celli, const scalar \&ht, const scalar \&\hyperlink{createFieldRefs_8H_a52f2dcc529f3c146980b0ce8dc591698}{h})
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a08cf6ccfed7f616074be223f0d2379f3}{correct} (const vol\+Scalar\+Field \&HT, const vol\+Scalar\+Field \&H)
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a9f9875fb3a22007b3cb6ef9f59821c9c}{correctT} (vol\+Scalar\+Field \&\hyperlink{EEqn__1pl_8H_ad0f94aa7ea43d4be0bae24e3a89aad0c}{T}) const
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a2497dfe95d3876d598347df587b0ccc7}{power\+Off} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1IOFieldField}{I\+O\+Field\+Field}$<$ Field, scalar $>$ \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a22d48bd29c42258de0a8c6a599dafecd}{Trad\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1heatedPin_afcf025ab8119485c105d92f3ba72a4fd}{power\+Density\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1heatedPin_aa4f0782fdade074a9695a10f866cd356}{Ti\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1heatedPin_ac1a63c5a5148db2116ef7d7f4fb8e5e6}{To\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1heatedPin_ad263fa9ac406fedf63736c386232471c}{Tav\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1powerModels_1_1heatedPin_ab08b10458ae43fd63cb02768b015095b}{Tmax\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1powerModels_1_1heatedPin_ab81c0e4420b8d49b238517e5038f30f3}{Tmin\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_ab7f0900e368fb0af4fd3d27ce2b5030d}{mesh\+Size\+\_\+}
+\item 
+scalar\+List\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a884336479d8b085765a84acff7c77bf6}{r\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_aa131629bd73df99e2ae5d2b58b3dffd7}{ri\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a2e4ddd63c143410b9bc1ba4185583707}{ro\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_ab2cf2952c649aa40087edcc0bcd82b32}{dr\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a1d1145c4adf45e80a6561a9e0b89cfc7}{rho\+Cp\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_ad9cdb67a87b764873fc0bf374be5d7b6}{k\+\_\+}
+\item 
+bool\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a8d03cb3417a7ad31230b590f56d52b5e}{hollow\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a701d76c4cc33a9d530a0d2b7f21c206a}{cell\+To\+Region\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1powerModels_1_1heatedPin_ad7683f85f3785b9444544d92fcfc3e1d}{pi\+\_\+}
+\item 
+scalar\+List\+List \hyperlink{classFoam_1_1powerModels_1_1heatedPin_a753fe594accfbeba343f55dfdf274a0f}{d\+A\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 54 of file heated\+Pin.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a5df612853023ce36358872f98ac1fbe2}\label{classFoam_1_1powerModels_1_1heatedPin_a5df612853023ce36358872f98ac1fbe2}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!heated\+Pin@{heated\+Pin}}
+\index{heated\+Pin@{heated\+Pin}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{heated\+Pin()}{heatedPin()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1powerModels_1_1heatedPin}{heated\+Pin} (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1structure}{structure} \&}]{structure,  }\item[{const dictionary \&}]{dicts }\end{DoxyParamCaption})}
+
+
+
+Definition at line 44 of file heated\+Pin.\+C.
+
+
+
+References D, for\+All(), i, n(), reduce(), and set().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=222pt]{classFoam_1_1powerModels_1_1heatedPin_a5df612853023ce36358872f98ac1fbe2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_af63b7fab9226364ac337978b3d57312f}\label{classFoam_1_1powerModels_1_1heatedPin_af63b7fab9226364ac337978b3d57312f}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!````~heated\+Pin@{$\sim$heated\+Pin}}
+\index{````~heated\+Pin@{$\sim$heated\+Pin}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{$\sim$heated\+Pin()}{~heatedPin()}}
+{\footnotesize\ttfamily $\sim$\hyperlink{classFoam_1_1powerModels_1_1heatedPin}{heated\+Pin} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 367 of file heated\+Pin.\+C.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a687fb4863571a02ff1d34b73d8b7fd4d}\label{classFoam_1_1powerModels_1_1heatedPin_a687fb4863571a02ff1d34b73d8b7fd4d}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}heated\+Pin\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a8fc8c05c610e629783c80688340f8db4}\label{classFoam_1_1powerModels_1_1heatedPin_a8fc8c05c610e629783c80688340f8db4}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!set\+Interfacial\+Area@{set\+Interfacial\+Area}}
+\index{set\+Interfacial\+Area@{set\+Interfacial\+Area}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{set\+Interfacial\+Area()}{setInterfacialArea()}}
+{\footnotesize\ttfamily void set\+Interfacial\+Area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1powerModel_a8fc8c05c610e629783c80688340f8db4}{power\+Model}.
+
+
+
+Definition at line 373 of file heated\+Pin.\+C.
+
+
+
+References for\+All(), i, and heated\+Pin\+::update\+Local\+Avg\+Global\+Min\+Max\+T().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1powerModels_1_1heatedPin_a8fc8c05c610e629783c80688340f8db4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a156a2a794e9317591692be62c0a33299}\label{classFoam_1_1powerModels_1_1heatedPin_a156a2a794e9317591692be62c0a33299}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!update\+Local\+Avg\+Global\+Min\+MaxT@{update\+Local\+Avg\+Global\+Min\+MaxT}}
+\index{update\+Local\+Avg\+Global\+Min\+MaxT@{update\+Local\+Avg\+Global\+Min\+MaxT}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{update\+Local\+Avg\+Global\+Min\+Max\+T()}{updateLocalAvgGlobalMinMaxT()}}
+{\footnotesize\ttfamily void update\+Local\+Avg\+Global\+Min\+MaxT (\begin{DoxyParamCaption}\item[{const label \&}]{starti,  }\item[{const label \&}]{endi,  }\item[{const scalar\+List \&}]{r,  }\item[{const scalar \&}]{dr,  }\item[{const scalar\+Field \&}]{Trad,  }\item[{scalar \&}]{Tav,  }\item[{scalar \&}]{Tmin,  }\item[{scalar \&}]{Tmax }\end{DoxyParamCaption})}
+
+
+
+Definition at line 384 of file heated\+Pin.\+C.
+
+
+
+References T(), and heated\+Pin\+::update\+Local\+Temperature\+Profile().
+
+
+
+Referenced by heated\+Pin\+::set\+Interfacial\+Area().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1powerModels_1_1heatedPin_a156a2a794e9317591692be62c0a33299_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1powerModels_1_1heatedPin_a156a2a794e9317591692be62c0a33299_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_aebceb9d61655d7851a7ab3a7710164ea}\label{classFoam_1_1powerModels_1_1heatedPin_aebceb9d61655d7851a7ab3a7710164ea}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!update\+Local\+Temperature\+Profile@{update\+Local\+Temperature\+Profile}}
+\index{update\+Local\+Temperature\+Profile@{update\+Local\+Temperature\+Profile}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{update\+Local\+Temperature\+Profile()}{updateLocalTemperatureProfile()}}
+{\footnotesize\ttfamily void update\+Local\+Temperature\+Profile (\begin{DoxyParamCaption}\item[{const label \&}]{celli,  }\item[{const scalar \&}]{ht,  }\item[{const scalar \&}]{h }\end{DoxyParamCaption})}
+
+
+
+Definition at line 423 of file heated\+Pin.\+C.
+
+
+
+References B(), heated\+Pin\+::correct(), D, dt(), i, and solve.
+
+
+
+Referenced by heated\+Pin\+::update\+Local\+Avg\+Global\+Min\+Max\+T().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=315pt]{classFoam_1_1powerModels_1_1heatedPin_aebceb9d61655d7851a7ab3a7710164ea_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1powerModels_1_1heatedPin_aebceb9d61655d7851a7ab3a7710164ea_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a08cf6ccfed7f616074be223f0d2379f3}\label{classFoam_1_1powerModels_1_1heatedPin_a08cf6ccfed7f616074be223f0d2379f3}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!correct@{correct}}
+\index{correct@{correct}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{HT,  }\item[{const vol\+Scalar\+Field \&}]{H }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1powerModel_a94e543602e416ccbc721750143e2cd73}{power\+Model}.
+
+
+
+Definition at line 524 of file heated\+Pin.\+C.
+
+
+
+References for\+All(), i, reduce(), and set().
+
+
+
+Referenced by heated\+Pin\+::update\+Local\+Temperature\+Profile().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classFoam_1_1powerModels_1_1heatedPin_a08cf6ccfed7f616074be223f0d2379f3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=315pt]{classFoam_1_1powerModels_1_1heatedPin_a08cf6ccfed7f616074be223f0d2379f3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a9f9875fb3a22007b3cb6ef9f59821c9c}\label{classFoam_1_1powerModels_1_1heatedPin_a9f9875fb3a22007b3cb6ef9f59821c9c}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!correctT@{correctT}}
+\index{correctT@{correctT}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{correct\+T()}{correctT()}}
+{\footnotesize\ttfamily void correctT (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field \&}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1powerModel_a8ddbd4b794b55aa27a95e5cd8db62f25}{power\+Model}.
+
+
+
+Definition at line 566 of file heated\+Pin.\+C.
+
+
+
+References for\+All(), and i.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classFoam_1_1powerModels_1_1heatedPin_a9f9875fb3a22007b3cb6ef9f59821c9c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a2497dfe95d3876d598347df587b0ccc7}\label{classFoam_1_1powerModels_1_1heatedPin_a2497dfe95d3876d598347df587b0ccc7}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!power\+Off@{power\+Off}}
+\index{power\+Off@{power\+Off}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{power\+Off()}{powerOff()}}
+{\footnotesize\ttfamily void power\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1powerModel_a92d1e5ca9cc82f5db7a01d66a3a913a7}{power\+Model}.
+
+
+
+Definition at line 577 of file heated\+Pin.\+C.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a22d48bd29c42258de0a8c6a599dafecd}\label{classFoam_1_1powerModels_1_1heatedPin_a22d48bd29c42258de0a8c6a599dafecd}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!Trad\+\_\+@{Trad\+\_\+}}
+\index{Trad\+\_\+@{Trad\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{Trad\+\_\+}{Trad\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1IOFieldField}{I\+O\+Field\+Field}$<$Field, scalar$>$ Trad\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 63 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_afcf025ab8119485c105d92f3ba72a4fd}\label{classFoam_1_1powerModels_1_1heatedPin_afcf025ab8119485c105d92f3ba72a4fd}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!power\+Density\+\_\+@{power\+Density\+\_\+}}
+\index{power\+Density\+\_\+@{power\+Density\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{power\+Density\+\_\+}{powerDensity\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field power\+Density\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 66 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_aa4f0782fdade074a9695a10f866cd356}\label{classFoam_1_1powerModels_1_1heatedPin_aa4f0782fdade074a9695a10f866cd356}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!Ti\+\_\+@{Ti\+\_\+}}
+\index{Ti\+\_\+@{Ti\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{Ti\+\_\+}{Ti\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Ti\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 69 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_ac1a63c5a5148db2116ef7d7f4fb8e5e6}\label{classFoam_1_1powerModels_1_1heatedPin_ac1a63c5a5148db2116ef7d7f4fb8e5e6}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!To\+\_\+@{To\+\_\+}}
+\index{To\+\_\+@{To\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{To\+\_\+}{To\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field To\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 70 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_ad263fa9ac406fedf63736c386232471c}\label{classFoam_1_1powerModels_1_1heatedPin_ad263fa9ac406fedf63736c386232471c}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!Tav\+\_\+@{Tav\+\_\+}}
+\index{Tav\+\_\+@{Tav\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{Tav\+\_\+}{Tav\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Tav\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 73 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_ab08b10458ae43fd63cb02768b015095b}\label{classFoam_1_1powerModels_1_1heatedPin_ab08b10458ae43fd63cb02768b015095b}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!Tmax\+\_\+@{Tmax\+\_\+}}
+\index{Tmax\+\_\+@{Tmax\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{Tmax\+\_\+}{Tmax\_}}
+{\footnotesize\ttfamily scalar Tmax\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 77 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_ab81c0e4420b8d49b238517e5038f30f3}\label{classFoam_1_1powerModels_1_1heatedPin_ab81c0e4420b8d49b238517e5038f30f3}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!Tmin\+\_\+@{Tmin\+\_\+}}
+\index{Tmin\+\_\+@{Tmin\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{Tmin\+\_\+}{Tmin\_}}
+{\footnotesize\ttfamily scalar Tmin\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 78 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_ab7f0900e368fb0af4fd3d27ce2b5030d}\label{classFoam_1_1powerModels_1_1heatedPin_ab7f0900e368fb0af4fd3d27ce2b5030d}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!mesh\+Size\+\_\+@{mesh\+Size\+\_\+}}
+\index{mesh\+Size\+\_\+@{mesh\+Size\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{mesh\+Size\+\_\+}{meshSize\_}}
+{\footnotesize\ttfamily label\+List mesh\+Size\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 81 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a884336479d8b085765a84acff7c77bf6}\label{classFoam_1_1powerModels_1_1heatedPin_a884336479d8b085765a84acff7c77bf6}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!r\+\_\+@{r\+\_\+}}
+\index{r\+\_\+@{r\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{r\+\_\+}{r\_}}
+{\footnotesize\ttfamily scalar\+List\+List r\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 84 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_aa131629bd73df99e2ae5d2b58b3dffd7}\label{classFoam_1_1powerModels_1_1heatedPin_aa131629bd73df99e2ae5d2b58b3dffd7}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!ri\+\_\+@{ri\+\_\+}}
+\index{ri\+\_\+@{ri\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{ri\+\_\+}{ri\_}}
+{\footnotesize\ttfamily scalar\+List ri\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 87 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a2e4ddd63c143410b9bc1ba4185583707}\label{classFoam_1_1powerModels_1_1heatedPin_a2e4ddd63c143410b9bc1ba4185583707}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!ro\+\_\+@{ro\+\_\+}}
+\index{ro\+\_\+@{ro\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{ro\+\_\+}{ro\_}}
+{\footnotesize\ttfamily scalar\+List ro\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 90 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_ab2cf2952c649aa40087edcc0bcd82b32}\label{classFoam_1_1powerModels_1_1heatedPin_ab2cf2952c649aa40087edcc0bcd82b32}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!dr\+\_\+@{dr\+\_\+}}
+\index{dr\+\_\+@{dr\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{dr\+\_\+}{dr\_}}
+{\footnotesize\ttfamily scalar\+List dr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 93 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a1d1145c4adf45e80a6561a9e0b89cfc7}\label{classFoam_1_1powerModels_1_1heatedPin_a1d1145c4adf45e80a6561a9e0b89cfc7}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!rho\+Cp\+\_\+@{rho\+Cp\+\_\+}}
+\index{rho\+Cp\+\_\+@{rho\+Cp\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{rho\+Cp\+\_\+}{rhoCp\_}}
+{\footnotesize\ttfamily scalar\+List rho\+Cp\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 96 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_ad9cdb67a87b764873fc0bf374be5d7b6}\label{classFoam_1_1powerModels_1_1heatedPin_ad9cdb67a87b764873fc0bf374be5d7b6}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!k\+\_\+@{k\+\_\+}}
+\index{k\+\_\+@{k\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{k\+\_\+}{k\_}}
+{\footnotesize\ttfamily scalar\+List k\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 99 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a8d03cb3417a7ad31230b590f56d52b5e}\label{classFoam_1_1powerModels_1_1heatedPin_a8d03cb3417a7ad31230b590f56d52b5e}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!hollow\+\_\+@{hollow\+\_\+}}
+\index{hollow\+\_\+@{hollow\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{hollow\+\_\+}{hollow\_}}
+{\footnotesize\ttfamily bool\+List hollow\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 102 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a701d76c4cc33a9d530a0d2b7f21c206a}\label{classFoam_1_1powerModels_1_1heatedPin_a701d76c4cc33a9d530a0d2b7f21c206a}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!cell\+To\+Region\+\_\+@{cell\+To\+Region\+\_\+}}
+\index{cell\+To\+Region\+\_\+@{cell\+To\+Region\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{cell\+To\+Region\+\_\+}{cellToRegion\_}}
+{\footnotesize\ttfamily label\+List cell\+To\+Region\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 105 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_ad7683f85f3785b9444544d92fcfc3e1d}\label{classFoam_1_1powerModels_1_1heatedPin_ad7683f85f3785b9444544d92fcfc3e1d}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!pi\+\_\+@{pi\+\_\+}}
+\index{pi\+\_\+@{pi\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{pi\+\_\+}{pi\_}}
+{\footnotesize\ttfamily scalar pi\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 108 of file heated\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1heatedPin_a753fe594accfbeba343f55dfdf274a0f}\label{classFoam_1_1powerModels_1_1heatedPin_a753fe594accfbeba343f55dfdf274a0f}} 
+\index{Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}!d\+A\+\_\+@{d\+A\+\_\+}}
+\index{d\+A\+\_\+@{d\+A\+\_\+}!Foam\+::power\+Models\+::heated\+Pin@{Foam\+::power\+Models\+::heated\+Pin}}
+\subsubsection{\texorpdfstring{d\+A\+\_\+}{dA\_}}
+{\footnotesize\ttfamily scalar\+List\+List d\+A\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 111 of file heated\+Pin.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/power\+Models/heated\+Pin/\hyperlink{heatedPin_8H}{heated\+Pin.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/power\+Models/heated\+Pin/\hyperlink{heatedPin_8C}{heated\+Pin.\+C}\end{DoxyCompactItemize}

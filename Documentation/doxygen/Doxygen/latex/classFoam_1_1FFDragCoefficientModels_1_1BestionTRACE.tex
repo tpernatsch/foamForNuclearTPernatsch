@@ -1,0 +1,171 @@
+\hypertarget{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE}{}\section{Bestion\+T\+R\+A\+CE Class Reference}
+\label{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE}\index{Bestion\+T\+R\+A\+CE@{Bestion\+T\+R\+A\+CE}}
+
+
+\hyperlink{classFoam_1_1FFDragCoefficientModels_1_1Bestion}{Bestion} Model for interfacial friction implementation test. Distribution parameter set to zero as in T\+R\+A\+CE.  
+
+
+
+
+Inheritance diagram for Bestion\+T\+R\+A\+CE\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Bestion\+T\+R\+A\+CE\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=258pt]{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a4ced03994c178735d43c1e99b2471a06}{Type\+Name} (\char`\"{}Bestion\+T\+R\+A\+CE\char`\"{})
+\item 
+\hyperlink{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_ac3de2748f23c8d16f075fa1af39524ed}{Bestion\+T\+R\+A\+CE} (const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a78c8260e831c666ce09ec38e93538d54}{$\sim$\+Bestion\+T\+R\+A\+CE} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a2c1e1872d359910de4c35cf8f003871c}{value} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a2675e35060f71c22823e4a0b3c816dad}{vapour\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a908415555f3c334379400a3eb5759639}{liquid\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+\hyperlink{classFoam_1_1FFDragCoefficientModels_1_1Bestion}{Bestion} Model for interfacial friction implementation test. Distribution parameter set to zero as in T\+R\+A\+CE. 
+
+\label{_Description}%
+ Author Gauthier Lazare (\href{mailto:gauthier.lazare@epfl.ch}{\tt gauthier.\+lazare@epfl.\+ch})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FFDragCoefficientModels/BestionTRACE/BestionTRACEFFDragCoefficient.H}{\tt Bestion\+T\+R\+A\+C\+E\+F\+F\+Drag\+Coefficient.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FFDragCoefficientModels/BestionTRACE/BestionTRACE.C}{\tt Bestion\+T\+R\+A\+C\+E.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 56 of file Bestion\+T\+R\+A\+C\+E\+F\+F\+Drag\+Coefficient.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_ac3de2748f23c8d16f075fa1af39524ed}\label{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_ac3de2748f23c8d16f075fa1af39524ed}} 
+\index{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}!Bestion\+T\+R\+A\+CE@{Bestion\+T\+R\+A\+CE}}
+\index{Bestion\+T\+R\+A\+CE@{Bestion\+T\+R\+A\+CE}!Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{Bestion\+T\+R\+A\+C\+E()}{BestionTRACE()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE}{Bestion\+T\+R\+A\+CE} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 43 of file Bestion\+T\+R\+A\+C\+E\+F\+F\+Drag\+Coefficient.\+C.
+
+
+
+References fluid1(), F\+F\+Pair\+::fluid1(), F\+F\+Pair\+::fluid2(), and Bestion\+T\+R\+A\+C\+E\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_ac3de2748f23c8d16f075fa1af39524ed_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a78c8260e831c666ce09ec38e93538d54}\label{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a78c8260e831c666ce09ec38e93538d54}} 
+\index{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}!````~Bestion\+T\+R\+A\+CE@{$\sim$\+Bestion\+T\+R\+A\+CE}}
+\index{````~Bestion\+T\+R\+A\+CE@{$\sim$\+Bestion\+T\+R\+A\+CE}!Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{$\sim$\+Bestion\+T\+R\+A\+C\+E()}{~BestionTRACE()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE}{Bestion\+T\+R\+A\+CE} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 80 of file Bestion\+T\+R\+A\+C\+E\+F\+F\+Drag\+Coefficient.\+H.
+
+
+
+References Bestion\+T\+R\+A\+C\+E\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a78c8260e831c666ce09ec38e93538d54_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a4ced03994c178735d43c1e99b2471a06}\label{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a4ced03994c178735d43c1e99b2471a06}} 
+\index{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}Bestion\+T\+R\+A\+CE\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a2c1e1872d359910de4c35cf8f003871c}\label{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a2c1e1872d359910de4c35cf8f003871c}} 
+\index{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}!value@{value}}
+\index{value@{value}!Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Foam\+::scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1FFDragCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}{F\+F\+Drag\+Coefficient\+Model}.
+
+
+
+Definition at line 85 of file Bestion\+T\+R\+A\+C\+E\+F\+F\+Drag\+Coefficient.\+C.
+
+
+
+Referenced by Bestion\+T\+R\+A\+C\+E\+::\+Bestion\+T\+R\+A\+C\+E(), and Bestion\+T\+R\+A\+C\+E\+::$\sim$\+Bestion\+T\+R\+A\+C\+E().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a2c1e1872d359910de4c35cf8f003871c_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a2675e35060f71c22823e4a0b3c816dad}\label{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a2675e35060f71c22823e4a0b3c816dad}} 
+\index{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}!vapour\+\_\+@{vapour\+\_\+}}
+\index{vapour\+\_\+@{vapour\+\_\+}!Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{vapour\+\_\+}{vapour\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& vapour\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 62 of file Bestion\+T\+R\+A\+C\+E\+F\+F\+Drag\+Coefficient.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a908415555f3c334379400a3eb5759639}\label{classFoam_1_1FFDragCoefficientModels_1_1BestionTRACE_a908415555f3c334379400a3eb5759639}} 
+\index{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}!liquid\+\_\+@{liquid\+\_\+}}
+\index{liquid\+\_\+@{liquid\+\_\+}!Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE@{Foam\+::\+F\+F\+Drag\+Coefficient\+Models\+::\+Bestion\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{liquid\+\_\+}{liquid\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& liquid\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 63 of file Bestion\+T\+R\+A\+C\+E\+F\+F\+Drag\+Coefficient.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+F\+Drag\+Coefficient\+Models/\+Bestion\+T\+R\+A\+C\+E/\hyperlink{BestionTRACEFFDragCoefficient_8H}{Bestion\+T\+R\+A\+C\+E\+F\+F\+Drag\+Coefficient.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+F\+Drag\+Coefficient\+Models/\+Bestion\+T\+R\+A\+C\+E/\hyperlink{BestionTRACEFFDragCoefficient_8C}{Bestion\+T\+R\+A\+C\+E\+F\+F\+Drag\+Coefficient.\+C}\end{DoxyCompactItemize}

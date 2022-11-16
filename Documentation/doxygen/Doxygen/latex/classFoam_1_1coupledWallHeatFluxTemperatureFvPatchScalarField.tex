@@ -1,0 +1,505 @@
+\hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{}\section{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field Class Reference}
+\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}\index{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+
+
+This boundary condition applies a heat flux condition to temperature on an external wall in one of three modes\+:  
+
+
+
+
+Inheritance diagram for coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26d}{operation\+Mode} \{ \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26da46befc90c9e748af1fe47e0abbcad01f}{fixed\+Power}, 
+\hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26da8f0e9d6c6616a5db6a857a78aa481b7e}{fixed\+Heat\+Transfer\+Coeff}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a80d01831a76e8ffa9c94ea7fe4a0c3b6}{Type\+Name} (\char`\"{}coupled\+Wall\+Heat\+Flux\+Temperature\char`\"{})
+\item 
+\hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_ad4d00982c27a750370f43a0189d5f3a9}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (const fv\+Patch \&, const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&)
+\item 
+\hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a733a2a1f355ace3abbb290f43dc770fe}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (const fv\+Patch \&, const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&, const dictionary \&)
+\item 
+\hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a1dd7e77cae77f9b0aec5acb6b91fd699}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (const \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} \&, const fv\+Patch \&, const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&, const fv\+Patch\+Field\+Mapper \&)
+\item 
+\hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a5fefb851212ac7192b3913d38e65bc6b}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (const \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} \&)
+\item 
+virtual tmp$<$ fv\+Patch\+Scalar\+Field $>$ \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_abeb5f251f04d334f7f18704c9227d8aa}{clone} () const
+\item 
+\hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a09126a35fcc34a31572d50055ca6b416}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (const \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} \&, const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&)
+\item 
+virtual tmp$<$ fv\+Patch\+Scalar\+Field $>$ \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a617bc55e78cf53196df9217431e5aa96}{clone} (const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&iF) const
+\item 
+virtual bool \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a0de932061a01f71d2b747c01a4d1a467}{fixes\+Value} () const
+\item 
+virtual void \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a0ab0c43ce90d756c88dd81e3d0a9eef5}{auto\+Map} (const fv\+Patch\+Field\+Mapper \&)
+\item 
+virtual void \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a713277715ccc0a5ef466b0516d44731f}{rmap} (const fv\+Patch\+Scalar\+Field \&, const label\+List \&)
+\item 
+virtual void \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a7e24eafac629d3733181cd942d4c902f}{update\+Coeffs} ()
+\item 
+void \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a293fdfec8bdfbd5c3913ab4c9f3454ff}{write} (Ostream \&) const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const Enum$<$ \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26d}{operation\+Mode} $>$ \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a19c1c49fe71d72365dc6f6daae30b95b}{operation\+Mode\+Names}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This boundary condition applies a heat flux condition to temperature on an external wall in one of three modes\+: 
+
+\label{_Description}%
+
+\begin{DoxyItemize}
+\item fixed power\+: supply Q
+\item fixed heat flux\+: supply q
+\item fixed heat transfer coefficient\+: supply h and Ta
+\end{DoxyItemize}
+
+where\+: \tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{3}{|X[-1]}|}
+\hline
+$ Q $ &= &Power \mbox{[}W\mbox{]}  \\\cline{1-3}
+$ q $ &= &Heat flux \mbox{[}W/m$^\wedge$2\mbox{]}  \\\cline{1-3}
+$ h $ &= &Heat transfer coefficient \mbox{[}W/m$^\wedge$2/K\mbox{]}  \\\cline{1-3}
+$ Ta $ &= &Ambient temperature \mbox{[}K\mbox{]}  \\\cline{1-3}
+\end{longtabu}
+\begin{DoxyVerb}For heat transfer coefficient mode optional thin thermal layer resistances
+can be specified through thicknessLayers and kappaLayers entries.
+
+The thermal conductivity \c kappa can either be retrieved from various
+possible sources, as detailed in the class temperatureCoupledBase.
+
+The ambient temperature Ta is specified as a Foam::Function1 of time but
+uniform in space.
+\end{DoxyVerb}
+
+
+\begin{DoxyParagraph}{Usage}
+\tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Required } }&\PBS\centering \textbf{ {\bfseries  Default}  }\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Required } }&\PBS\centering \textbf{ {\bfseries  Default}  }\\\cline{1-4}
+\endhead
+{\ttfamily mode}  &\textquotesingle{}power\textquotesingle{}, \textquotesingle{}flux\textquotesingle{} or \textquotesingle{}coefficient\textquotesingle{}  &yes  &\\\cline{1-4}
+{\ttfamily Q}  &Power \mbox{[}W\mbox{]}  &for mode \textquotesingle{}power\textquotesingle{}  &\\\cline{1-4}
+{\ttfamily q}  &Heat flux \mbox{[}W/m$^\wedge$2\mbox{]}  &for mode \textquotesingle{}flux\textquotesingle{}  &\\\cline{1-4}
+{\ttfamily Q\+Name}  &input Name of the heatflux  &for mode \textquotesingle{}power\textquotesingle{}  &\\\cline{1-4}
+{\ttfamily h}  &Heat transfer coefficient \mbox{[}W/m$^\wedge$2/K\mbox{]}  &for mode \textquotesingle{}coefficient\textquotesingle{}  &\\\cline{1-4}
+{\ttfamily h\+Name\+\_\+}  &input Name of the coefficient  &for mode \textquotesingle{}coefficient\textquotesingle{}  &\\\cline{1-4}
+{\ttfamily Ta}  &Ambient temperature \mbox{[}K\mbox{]}  &for mode \textquotesingle{}coefficient\textquotesingle{}  &\\\cline{1-4}
+{\ttfamily Ta\+Name}  &input Name of the ambient temperature  &for mode \textquotesingle{}coefficient\textquotesingle{}  &\\\cline{1-4}
+{\ttfamily thickness\+Layers}  &Layer thicknesses \mbox{[}m\mbox{]}  &no  &\\\cline{1-4}
+{\ttfamily kappa\+Layers}  &Layer thermal conductivities \mbox{[}W/m/K\mbox{]}  &no  &\\\cline{1-4}
+{\ttfamily relaxation}  &Relaxation for the wall temperature  &no  &1  \\\cline{1-4}
+{\ttfamily emissivity}  &Surface emissivity for radiative flux to ambient  &no  &0  \\\cline{1-4}
+{\ttfamily qr}  &Name of the radiative field  &no  &none  \\\cline{1-4}
+{\ttfamily qr\+Relaxation}  &Relaxation factor for radiative field  &no  &1  \\\cline{1-4}
+{\ttfamily kappa\+Method}  &Inherited from temperature\+Coupled\+Base  &inherited  &\\\cline{1-4}
+{\ttfamily kappa}  &Inherited from temperature\+Coupled\+Base  &inherited  &\\\cline{1-4}
+\end{longtabu}
+\begin{DoxyVerb}Example of the boundary condition specification:
+\end{DoxyVerb}
+ \begin{DoxyVerb}    <patchName>
+    {
+        type            externalWallHeatFluxTemperature;
+
+        mode            coefficient;
+
+        Ta              constant 300.0;
+        h               constant 10.0;
+        thicknessLayers (0.1 0.2 0.3 0.4);
+        kappaLayers     (1 2 3 4);
+
+        kappaMethod     fluidThermo;
+
+        value           $internalField;
+    }\end{DoxyVerb}
+
+\end{DoxyParagraph}
+\begin{DoxyNote}{Note}
+Quantities that are considered \char`\"{}global\char`\"{} (eg, power, ambient temperature) can be specified as Function1 types. Quantities that may have local variations (eg, htc, heat-\/flux) can be specified as Patch\+Function1 types.
+\end{DoxyNote}
+\begin{DoxySeeAlso}{See also}
+Foam\+::temperature\+Coupled\+Base Foam\+::mixed\+Fv\+Patch\+Scalar\+Field
+\end{DoxySeeAlso}
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledWallHeatFluxTemperature/coupledWallHeatFluxTemperatureFvPatchScalarField.H}{\tt coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledWallHeatFluxTemperature/coupledWallHeatFluxTemperatureFvPatchScalarField.C}{\tt coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 216 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+H.
+
+
+
+\subsection{Member Enumeration Documentation}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26d}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26d}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!operation\+Mode@{operation\+Mode}}
+\index{operation\+Mode@{operation\+Mode}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{operation\+Mode}{operationMode}}
+{\footnotesize\ttfamily enum \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26d}{operation\+Mode}}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{fixed\+Power@{fixed\+Power}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!fixed\+Power@{fixed\+Power}}}\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26da46befc90c9e748af1fe47e0abbcad01f}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26da46befc90c9e748af1fe47e0abbcad01f}} 
+fixed\+Power&Heat power \mbox{[}W\mbox{]}. \\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{fixed\+Heat\+Transfer\+Coeff@{fixed\+Heat\+Transfer\+Coeff}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!fixed\+Heat\+Transfer\+Coeff@{fixed\+Heat\+Transfer\+Coeff}}}\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26da8f0e9d6c6616a5db6a857a78aa481b7e}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26da8f0e9d6c6616a5db6a857a78aa481b7e}} 
+fixed\+Heat\+Transfer\+Coeff&Heat transfer coefficient \mbox{[}W/m$^\wedge$2/K\mbox{]}. \\
+\hline
+
+\end{DoxyEnumFields}
+
+
+Definition at line 226 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_ad4d00982c27a750370f43a0189d5f3a9}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_ad4d00982c27a750370f43a0189d5f3a9}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\index{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field()}{coupledWallHeatFluxTemperatureFvPatchScalarField()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (\begin{DoxyParamCaption}\item[{const fv\+Patch \&}]{p,  }\item[{const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&}]{iF }\end{DoxyParamCaption})}
+
+
+
+Definition at line 39 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C.
+
+
+
+Referenced by coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::clone(), and coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_ad4d00982c27a750370f43a0189d5f3a9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a733a2a1f355ace3abbb290f43dc770fe}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a733a2a1f355ace3abbb290f43dc770fe}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\index{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field()}{coupledWallHeatFluxTemperatureFvPatchScalarField()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (\begin{DoxyParamCaption}\item[{const fv\+Patch \&}]{p,  }\item[{const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&}]{iF,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 66 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field(), and comm\+Data\+Layer\+::store\+Obj().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a733a2a1f355ace3abbb290f43dc770fe_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a1dd7e77cae77f9b0aec5acb6b91fd699}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a1dd7e77cae77f9b0aec5acb6b91fd699}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\index{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field()}{coupledWallHeatFluxTemperatureFvPatchScalarField()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} \&}]{rhs,  }\item[{const fv\+Patch \&}]{p,  }\item[{const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&}]{iF,  }\item[{const fv\+Patch\+Field\+Mapper \&}]{mapper }\end{DoxyParamCaption})}
+
+
+
+Definition at line 127 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a1dd7e77cae77f9b0aec5acb6b91fd699_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a5fefb851212ac7192b3913d38e65bc6b}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a5fefb851212ac7192b3913d38e65bc6b}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\index{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field()}{coupledWallHeatFluxTemperatureFvPatchScalarField()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} \&}]{rhs }\end{DoxyParamCaption})}
+
+
+
+Definition at line 151 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a5fefb851212ac7192b3913d38e65bc6b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a09126a35fcc34a31572d50055ca6b416}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a09126a35fcc34a31572d50055ca6b416}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\index{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field()}{coupledWallHeatFluxTemperatureFvPatchScalarField()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field} \&}]{rhs,  }\item[{const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&}]{iF }\end{DoxyParamCaption})}
+
+
+
+Definition at line 170 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::auto\+Map().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=334pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a09126a35fcc34a31572d50055ca6b416_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a80d01831a76e8ffa9c94ea7fe4a0c3b6}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a80d01831a76e8ffa9c94ea7fe4a0c3b6}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}coupled\+Wall\+Heat\+Flux\+Temperature\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_abeb5f251f04d334f7f18704c9227d8aa}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_abeb5f251f04d334f7f18704c9227d8aa}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!clone@{clone}}
+\index{clone@{clone}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{clone()}{clone()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual tmp$<$fv\+Patch\+Scalar\+Field$>$ clone (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 304 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+H.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_abeb5f251f04d334f7f18704c9227d8aa_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a617bc55e78cf53196df9217431e5aa96}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a617bc55e78cf53196df9217431e5aa96}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!clone@{clone}}
+\index{clone@{clone}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{clone()}{clone()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual tmp$<$fv\+Patch\+Scalar\+Field$>$ clone (\begin{DoxyParamCaption}\item[{const Dimensioned\+Field$<$ scalar, vol\+Mesh $>$ \&}]{iF }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 321 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+H.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=320pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a617bc55e78cf53196df9217431e5aa96_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a0de932061a01f71d2b747c01a4d1a467}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a0de932061a01f71d2b747c01a4d1a467}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!fixes\+Value@{fixes\+Value}}
+\index{fixes\+Value@{fixes\+Value}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{fixes\+Value()}{fixesValue()}}
+{\footnotesize\ttfamily virtual bool fixes\+Value (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 337 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+H.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::auto\+Map(), coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::rmap(), coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::update\+Coeffs(), and coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::write().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a0de932061a01f71d2b747c01a4d1a467_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a0ab0c43ce90d756c88dd81e3d0a9eef5}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a0ab0c43ce90d756c88dd81e3d0a9eef5}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!auto\+Map@{auto\+Map}}
+\index{auto\+Map@{auto\+Map}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{auto\+Map()}{autoMap()}}
+{\footnotesize\ttfamily void auto\+Map (\begin{DoxyParamCaption}\item[{const fv\+Patch\+Field\+Mapper \&}]{mapper }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 191 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::rmap().
+
+
+
+Referenced by coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field(), and coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::fixes\+Value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a0ab0c43ce90d756c88dd81e3d0a9eef5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=334pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a0ab0c43ce90d756c88dd81e3d0a9eef5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a713277715ccc0a5ef466b0516d44731f}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a713277715ccc0a5ef466b0516d44731f}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!rmap@{rmap}}
+\index{rmap@{rmap}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{rmap()}{rmap()}}
+{\footnotesize\ttfamily void rmap (\begin{DoxyParamCaption}\item[{const fv\+Patch\+Scalar\+Field \&}]{ptf,  }\item[{const label\+List \&}]{addr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 201 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C.
+
+
+
+Referenced by coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::auto\+Map(), and coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::fixes\+Value().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=306pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a713277715ccc0a5ef466b0516d44731f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a7e24eafac629d3733181cd942d4c902f}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a7e24eafac629d3733181cd942d4c902f}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!update\+Coeffs@{update\+Coeffs}}
+\index{update\+Coeffs@{update\+Coeffs}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{update\+Coeffs()}{updateCoeffs()}}
+{\footnotesize\ttfamily void update\+Coeffs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 211 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::fixed\+Heat\+Transfer\+Coeff, coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::fixed\+Power, for\+All(), comm\+Data\+Layer\+::get\+Obj(), i, kappa(), comm\+Data\+Layer\+::\+New(), and coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::write().
+
+
+
+Referenced by coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::fixes\+Value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=337pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a7e24eafac629d3733181cd942d4c902f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=253pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a7e24eafac629d3733181cd942d4c902f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a293fdfec8bdfbd5c3913ab4c9f3454ff}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a293fdfec8bdfbd5c3913ab4c9f3454ff}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!write@{write}}
+\index{write@{write}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily void write (\begin{DoxyParamCaption}\item[{Ostream \&}]{os }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 287 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C.
+
+
+
+References coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::fixed\+Heat\+Transfer\+Coeff, Foam\+::make\+Patch\+Type\+Field(), and coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::operation\+Mode\+Names.
+
+
+
+Referenced by coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::fixes\+Value(), and coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::update\+Coeffs().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=294pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a293fdfec8bdfbd5c3913ab4c9f3454ff_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a293fdfec8bdfbd5c3913ab4c9f3454ff_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a19c1c49fe71d72365dc6f6daae30b95b}\label{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a19c1c49fe71d72365dc6f6daae30b95b}} 
+\index{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}!operation\+Mode\+Names@{operation\+Mode\+Names}}
+\index{operation\+Mode\+Names@{operation\+Mode\+Names}!Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field@{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field}}
+\subsubsection{\texorpdfstring{operation\+Mode\+Names}{operationModeNames}}
+{\footnotesize\ttfamily const Foam\+::\+Enum$<$ \hyperlink{classFoam_1_1coupledWallHeatFluxTemperatureFvPatchScalarField_a9b481872591aae7acc301acf3cf5a26d}{Foam\+::coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::operation\+Mode} $>$ operation\+Mode\+Names\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 232 of file coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+H.
+
+
+
+Referenced by coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field\+::write().
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/external\+I\+O/input/\+B\+C/coupled\+Wall\+Heat\+Flux\+Temperature/\hyperlink{coupledWallHeatFluxTemperatureFvPatchScalarField_8H}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/external\+I\+O/input/\+B\+C/coupled\+Wall\+Heat\+Flux\+Temperature/\hyperlink{coupledWallHeatFluxTemperatureFvPatchScalarField_8C}{coupled\+Wall\+Heat\+Flux\+Temperature\+Fv\+Patch\+Scalar\+Field.\+C}\end{DoxyCompactItemize}

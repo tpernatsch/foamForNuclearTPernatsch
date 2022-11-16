@@ -1,0 +1,100 @@
+\hypertarget{updatePP__rghRho__1p_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase/include/equations/p\+Eqn\+Routines/update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.H File Reference}
+\label{updatePP__rghRho__1p_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase/include/equations/p\+Eqn\+Routines/update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase/include/equations/p\+Eqn\+Routines/update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{updatePP__rghRho__1p_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{updatePP__rghRho__1p_8H_a6b0b445e2474f6c91dff129b26b6c6db}{if} (p\+\_\+rgh\+\_\+.\+need\+Reference() and(pimple\+\_\+.\+corr\+P\+I\+SO()==pimple\+\_\+.\+n\+Corr\+P\+I\+SO() or \hyperlink{pEqnf__2p_8H_a7378b3cca14609b2f41dab30069eb9c4}{converged\+P\+I\+SO}))
+\item 
+\hyperlink{updatePP__rghRho__2p_8H_a320090d1a3c1675778a59e981765c77c}{p\+\_\+rgh\+\_\+} \hyperlink{updatePP__rghRho__1p_8H_aa4608e1453c1b6e1b0b95e6b8f1b6184}{correct\+Boundary\+Conditions} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{updatePP__rghRho__1p_8H_a0ab83dbbf86dba470a7696e1609d523c}{p\+\_\+} = max(\hyperlink{updatePP__rghRho__2p_8H_a320090d1a3c1675778a59e981765c77c}{p\+\_\+rgh\+\_\+} + \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}$\ast$gh\+\_\+, p\+Min\+\_\+)
+\item 
+\hyperlink{updatePP__rghRho__1p_8H_ab8ec92cc3ea8422c9349409bae98d2a0}{rho} = \hyperlink{EEqns__2p_8H_a9d615e711281a88a96c648787c7dbd32}{fluid\+\_\+.\+thermo}().\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}()$\ast$(\hyperlink{updatePP__rghRho__2p_8H_a320090d1a3c1675778a59e981765c77c}{p\+\_\+rgh\+\_\+} -\/ p\+\_\+rgh\+\_\+0)
+\item 
+\hyperlink{updatePP__rghRho__1p_8H_a320090d1a3c1675778a59e981765c77c}{p\+\_\+rgh\+\_\+} = \hyperlink{updatePP__rghRho__2p_8H_a0ab83dbbf86dba470a7696e1609d523c}{p\+\_\+} -\/ \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}$\ast$gh\+\_\+
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{updatePP__rghRho__1p_8H_a6b0b445e2474f6c91dff129b26b6c6db}\label{updatePP__rghRho__1p_8H_a6b0b445e2474f6c91dff129b26b6c6db}} 
+\index{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}!if@{if}}
+\index{if@{if}!update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{p\+\_\+rgh\+\_\+.}]{need\+Reference) and(pimple\+\_\+.\+corr\+P\+I\+S\+O()==pimple\+\_\+.\+n\+Corr\+P\+I\+S\+O() or converged\+P\+I\+SO }\end{DoxyParamCaption})}
+
+
+
+Definition at line 13 of file update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H.
+
+
+
+References compressibility(), compressible, p\+\_\+, and rho.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{updatePP__rghRho__1p_8H_a6b0b445e2474f6c91dff129b26b6c6db_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{updatePP__rghRho__1p_8H_aa4608e1453c1b6e1b0b95e6b8f1b6184}\label{updatePP__rghRho__1p_8H_aa4608e1453c1b6e1b0b95e6b8f1b6184}} 
+\index{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}!correct\+Boundary\+Conditions@{correct\+Boundary\+Conditions}}
+\index{correct\+Boundary\+Conditions@{correct\+Boundary\+Conditions}!update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{correct\+Boundary\+Conditions()}{correctBoundaryConditions()}}
+{\footnotesize\ttfamily \hyperlink{updatePP__rghRho__2p_8H_a320090d1a3c1675778a59e981765c77c}{p\+\_\+rgh\+\_\+} correct\+Boundary\+Conditions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{updatePP__rghRho__1p_8H_a0ab83dbbf86dba470a7696e1609d523c}\label{updatePP__rghRho__1p_8H_a0ab83dbbf86dba470a7696e1609d523c}} 
+\index{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}!p\+\_\+@{p\+\_\+}}
+\index{p\+\_\+@{p\+\_\+}!update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{p\+\_\+}{p\_}}
+{\footnotesize\ttfamily p\+\_\+ = max(\hyperlink{updatePP__rghRho__2p_8H_a320090d1a3c1675778a59e981765c77c}{p\+\_\+rgh\+\_\+} + \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}$\ast$gh\+\_\+, p\+Min\+\_\+)}
+
+
+
+Definition at line 4 of file update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H.
+
+
+
+Referenced by latent\+Heat\+Model\+::adjust(), phase\+Change\+Model\+::correct(), if(), thermal\+Hydraulics\+Model\+::thermal\+Hydraulics\+Model(), Groeneveld\+Stewart\+::value(), isothermal\+::value(), isomolar\+Bubble\+::value(), look\+Up\+Table\+C\+H\+F\+::value(), Cachard\+Vapour\+::value(), Shah\+::value(), No\+Kazimi\+::value(), Gorenflo\+::value(), Cachard\+Liquid\+::value(), constant\+Temperature\+::value\+Ln\+P\+Sat(), constant\+Temperature\+::value\+P\+Sat(), water\+T\+R\+A\+C\+E\+::value\+P\+Sat\+Prime(), Browning\+Potter\+::value\+T\+Sat(), water\+::value\+T\+Sat(), water\+T\+R\+A\+C\+E\+::value\+T\+Sat(), and while().
+
+\mbox{\Hypertarget{updatePP__rghRho__1p_8H_ab8ec92cc3ea8422c9349409bae98d2a0}\label{updatePP__rghRho__1p_8H_ab8ec92cc3ea8422c9349409bae98d2a0}} 
+\index{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}!rho@{rho}}
+\index{rho@{rho}!update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{rho}{rho}}
+{\footnotesize\ttfamily rho = \hyperlink{EEqns__2p_8H_a9d615e711281a88a96c648787c7dbd32}{fluid\+\_\+.\+thermo}().\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}()$\ast$(\hyperlink{updatePP__rghRho__2p_8H_a320090d1a3c1675778a59e981765c77c}{p\+\_\+rgh\+\_\+} -\/ p\+\_\+rgh\+\_\+0)}
+
+
+
+Definition at line 51 of file update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H.
+
+
+
+Referenced by coupled\+Acceleration\+Source\+::add\+Sup(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::bubble\+G(), porous\+K\+Epsilon2\+Phase\+Corrected$<$ Basic\+Turbulence\+Model $>$\+::correct(), porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct(), one\+Phase\+::correct\+Cont\+Err(), one\+Phase\+Legacy\+::correct\+Cont\+Err(), coupled\+Flow\+Rate\+Inlet\+Velocity\+Fv\+Patch\+Vector\+Field\+::coupled\+Flow\+Rate\+Inlet\+Velocity\+Fv\+Patch\+Vector\+Field(), coupled\+Flow\+Rate\+Outlet\+Velocity\+Fv\+Patch\+Vector\+Field\+::coupled\+Flow\+Rate\+Outlet\+Velocity\+Fv\+Patch\+Vector\+Field(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::\+Ct2(), if(), traction\+Displacement\+Fv\+Patch\+Vector\+Field\+::update\+Coeffs(), No\+Kazimi\+::value(), and while().
+
+\mbox{\Hypertarget{updatePP__rghRho__1p_8H_a320090d1a3c1675778a59e981765c77c}\label{updatePP__rghRho__1p_8H_a320090d1a3c1675778a59e981765c77c}} 
+\index{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}!p\+\_\+rgh\+\_\+@{p\+\_\+rgh\+\_\+}}
+\index{p\+\_\+rgh\+\_\+@{p\+\_\+rgh\+\_\+}!update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H@{update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{p\+\_\+rgh\+\_\+}{p\_rgh\_}}
+{\footnotesize\ttfamily p\+\_\+rgh\+\_\+ = \hyperlink{updatePP__rghRho__2p_8H_a0ab83dbbf86dba470a7696e1609d523c}{p\+\_\+} -\/ \hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}$\ast$gh\+\_\+}
+
+
+
+Definition at line 56 of file update\+P\+P\+\_\+rgh\+Rho\+\_\+1p.\+H.
+
+
+
+Referenced by if(), thermal\+Hydraulics\+Model\+::thermal\+Hydraulics\+Model(), and while().
+

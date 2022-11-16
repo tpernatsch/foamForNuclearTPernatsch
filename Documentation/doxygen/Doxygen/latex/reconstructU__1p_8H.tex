@@ -1,0 +1,68 @@
+\hypertarget{reconstructU__1p_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase/include/equations/p\+Eqn\+Routines/reconstruct\+U\+\_\+1p.H File Reference}
+\label{reconstructU__1p_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase/include/equations/p\+Eqn\+Routines/reconstruct\+U\+\_\+1p.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase/include/equations/p\+Eqn\+Routines/reconstruct\+U\+\_\+1p.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{reconstructU__1p_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{reconstructU__1p_8H_a774b870e54be2371df2cd786d08f1414}{if} (porous\+Interface\+Sharpness\+\_\+ !=0.\+0)
+\item 
+fluid\+\_\+ \hyperlink{reconstructU__1p_8H_ae790cd3d700b113f04f2b5847baa9df4}{correct\+Alpha\+Rho\+MagU} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{createFluidMesh_8H_a0544c3fe466e421738dae463968b70ba}{else} \hyperlink{reconstructU__1p_8H_a5da04da314c499b8394b22745f3e1148}{U} = fvc\+::reconstruct(fluid\+\_\+.\+phi())
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{reconstructU__1p_8H_a774b870e54be2371df2cd786d08f1414}\label{reconstructU__1p_8H_a774b870e54be2371df2cd786d08f1414}} 
+\index{reconstruct\+U\+\_\+1p.\+H@{reconstruct\+U\+\_\+1p.\+H}!if@{if}}
+\index{if@{if}!reconstruct\+U\+\_\+1p.\+H@{reconstruct\+U\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{porous\+Interface\+Sharpness\+\_\+ !}]{ = {\ttfamily 0.0} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 6 of file reconstruct\+U\+\_\+1p.\+H.
+
+
+
+References alpha(), and U.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{reconstructU__1p_8H_a774b870e54be2371df2cd786d08f1414_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{reconstructU__1p_8H_ae790cd3d700b113f04f2b5847baa9df4}\label{reconstructU__1p_8H_ae790cd3d700b113f04f2b5847baa9df4}} 
+\index{reconstruct\+U\+\_\+1p.\+H@{reconstruct\+U\+\_\+1p.\+H}!correct\+Alpha\+Rho\+MagU@{correct\+Alpha\+Rho\+MagU}}
+\index{correct\+Alpha\+Rho\+MagU@{correct\+Alpha\+Rho\+MagU}!reconstruct\+U\+\_\+1p.\+H@{reconstruct\+U\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{correct\+Alpha\+Rho\+Mag\+U()}{correctAlphaRhoMagU()}}
+{\footnotesize\ttfamily fluid2\+\_\+ correct\+Alpha\+Rho\+MagU (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{reconstructU__1p_8H_a5da04da314c499b8394b22745f3e1148}\label{reconstructU__1p_8H_a5da04da314c499b8394b22745f3e1148}} 
+\index{reconstruct\+U\+\_\+1p.\+H@{reconstruct\+U\+\_\+1p.\+H}!U@{U}}
+\index{U@{U}!reconstruct\+U\+\_\+1p.\+H@{reconstruct\+U\+\_\+1p.\+H}}
+\subsubsection{\texorpdfstring{U}{U}}
+{\footnotesize\ttfamily \hyperlink{createFluidMesh_8H_a0544c3fe466e421738dae463968b70ba}{else} U = fvc\+::reconstruct(fluid\+\_\+.\+phi())}
+
+
+
+Definition at line 22 of file reconstruct\+U\+\_\+1p.\+H.
+
+
+
+Referenced by F\+S\+Pair\+::correct(), if(), and while().
+

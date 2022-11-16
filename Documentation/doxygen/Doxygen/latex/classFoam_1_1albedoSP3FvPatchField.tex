@@ -1,0 +1,565 @@
+\hypertarget{classFoam_1_1albedoSP3FvPatchField}{}\section{albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$ Class Template Reference}
+\label{classFoam_1_1albedoSP3FvPatchField}\index{albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$@{albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$}}
+
+
+Albedo boundary condition for S\+P3 or diffusion calculations. Please note that the boundary condition needs to be set both for first and second moments in S\+P3.  
+
+
+
+
+Inheritance diagram for albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{classFoam_1_1albedoSP3FvPatchField__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=202pt]{classFoam_1_1albedoSP3FvPatchField__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1albedoSP3FvPatchField_a80236bacffc8629323b6e1d6366ecb82}{Type\+Name} (\char`\"{}albedo\+S\+P3\char`\"{})
+\item 
+\hyperlink{classFoam_1_1albedoSP3FvPatchField_a67f6c1e24d954013a2acaf06b6198ebb}{albedo\+S\+P3\+Fv\+Patch\+Field} (const fv\+Patch \&, const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&)
+\item 
+\hyperlink{classFoam_1_1albedoSP3FvPatchField_a003974e3ce4bf2a4e6943a04055a058b}{albedo\+S\+P3\+Fv\+Patch\+Field} (const fv\+Patch \&, const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&, const dictionary \&)
+\item 
+\hyperlink{classFoam_1_1albedoSP3FvPatchField_acd2c52e04588297ab4ce4ce7d14fcca2}{albedo\+S\+P3\+Fv\+Patch\+Field} (const \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field}$<$ Type $>$ \&, const fv\+Patch \&, const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&, const fv\+Patch\+Field\+Mapper \&)
+\item 
+\hyperlink{classFoam_1_1albedoSP3FvPatchField_acf8954606fc8580f8a51ef54d1e30e46}{albedo\+S\+P3\+Fv\+Patch\+Field} (const \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field}$<$ Type $>$ \&)
+\item 
+virtual tmp$<$ fv\+Patch\+Field$<$ Type $>$ $>$ \hyperlink{classFoam_1_1albedoSP3FvPatchField_a3b748d8418dd1e3ff70b8749bab69840}{clone} () const
+\item 
+\hyperlink{classFoam_1_1albedoSP3FvPatchField_ab62a11455223e3152d724f2acb552b77}{albedo\+S\+P3\+Fv\+Patch\+Field} (const \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field}$<$ Type $>$ \&, const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&)
+\item 
+virtual tmp$<$ fv\+Patch\+Field$<$ Type $>$ $>$ \hyperlink{classFoam_1_1albedoSP3FvPatchField_a6dfbb046cc414bcb0ee27a1646815537}{clone} (const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&iF) const
+\item 
+virtual Field$<$ Type $>$ \& \hyperlink{classFoam_1_1albedoSP3FvPatchField_abaf3d2e99be0e65d6df55f9437f928f0}{gradient} ()
+\item 
+virtual const Field$<$ Type $>$ \& \hyperlink{classFoam_1_1albedoSP3FvPatchField_a49573cbf08e58be88ae6f170d04d0d8e}{gradient} () const
+\item 
+virtual scalar \& \hyperlink{classFoam_1_1albedoSP3FvPatchField_a71bf9bd8eb5d1761ba2da1413a45471d}{gamma} ()
+\item 
+virtual const scalar \& \hyperlink{classFoam_1_1albedoSP3FvPatchField_a733aed5380906bc053ed1f4105cec3ce}{gamma} () const
+\item 
+virtual void \hyperlink{classFoam_1_1albedoSP3FvPatchField_a0ab0c43ce90d756c88dd81e3d0a9eef5}{auto\+Map} (const fv\+Patch\+Field\+Mapper \&)
+\item 
+virtual void \hyperlink{classFoam_1_1albedoSP3FvPatchField_abe233fd0f00c5f2012c2a8f57f20f5cb}{rmap} (const fv\+Patch\+Field$<$ Type $>$ \&, const label\+List \&)
+\item 
+virtual tmp$<$ Field$<$ Type $>$ $>$ \hyperlink{classFoam_1_1albedoSP3FvPatchField_a7e562a40ead1e8fc57abd192e1d66b79}{sn\+Grad} () const
+\item 
+virtual void \hyperlink{classFoam_1_1albedoSP3FvPatchField_a1a4ebfb8aa4dc581e54081a12bfbd0d3}{evaluate} (const Pstream\+::comms\+Types comms\+Type=Pstream\+::comms\+Types\+::blocking)
+\item 
+virtual tmp$<$ Field$<$ Type $>$ $>$ \hyperlink{classFoam_1_1albedoSP3FvPatchField_a2b42863403587b404576ca43b676433e}{value\+Internal\+Coeffs} (const tmp$<$ scalar\+Field $>$ \&) const
+\item 
+virtual tmp$<$ Field$<$ Type $>$ $>$ \hyperlink{classFoam_1_1albedoSP3FvPatchField_a91b17c5b11d5369441c2de805b957c68}{value\+Boundary\+Coeffs} (const tmp$<$ scalar\+Field $>$ \&) const
+\item 
+virtual tmp$<$ Field$<$ Type $>$ $>$ \hyperlink{classFoam_1_1albedoSP3FvPatchField_acfc2155b5e8a256253770a1f0b2a840b}{gradient\+Internal\+Coeffs} () const
+\item 
+virtual tmp$<$ Field$<$ Type $>$ $>$ \hyperlink{classFoam_1_1albedoSP3FvPatchField_aa96c9200cdd52d1806c6de044661f0f0}{gradient\+Boundary\+Coeffs} () const
+\item 
+virtual void \hyperlink{classFoam_1_1albedoSP3FvPatchField_a293fdfec8bdfbd5c3913ab4c9f3454ff}{write} (Ostream \&) const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class Type$>$\newline
+class Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$}
+
+Albedo boundary condition for S\+P3 or diffusion calculations. Please note that the boundary condition needs to be set both for first and second moments in S\+P3. 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Usage}
+\begin{DoxyVerb}<patchName>
+{
+    type            albedoSP3;
+    gamma           0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
+    diffCoeffName   Dalbedo;  //not to be changed
+    fluxStarAlbedo  fluxStarAlbedo; //not to be changed
+    forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 calculations)
+    value           uniform 1;
+}
+\end{DoxyVerb}
+
+\end{DoxyParagraph}
+Author of this file (and associated .C or included .H files) Carlo Fiorina $<$\href{mailto:carlo.fiorina@outlook.com}{\tt carlo.\+fiorina@outlook.\+com}; \href{mailto:carlo.fiorina@epfl.ch}{\tt carlo.\+fiorina@epfl.\+ch};$>$, E\+P\+FL (Switzerland)
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/neutronics/albedoSP3/albedoSP3FvPatchField.H}{\tt albedo\+S\+P3\+Fv\+Patch\+Field.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/neutronics/albedoSP3/albedoSP3FvPatchField.C}{\tt albedo\+S\+P3\+Fv\+Patch\+Field.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 70 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a67f6c1e24d954013a2acaf06b6198ebb}\label{classFoam_1_1albedoSP3FvPatchField_a67f6c1e24d954013a2acaf06b6198ebb}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}}
+\index{albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{albedo\+S\+P3\+Fv\+Patch\+Field()}{albedoSP3FvPatchField()}\hspace{0.1cm}{\footnotesize\ttfamily [1/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field} (\begin{DoxyParamCaption}\item[{const fv\+Patch \&}]{p,  }\item[{const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&}]{iF }\end{DoxyParamCaption})}
+
+
+
+Definition at line 36 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::albedo\+S\+P3\+Fv\+Patch\+Field(), and albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_a67f6c1e24d954013a2acaf06b6198ebb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a003974e3ce4bf2a4e6943a04055a058b}\label{classFoam_1_1albedoSP3FvPatchField_a003974e3ce4bf2a4e6943a04055a058b}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}}
+\index{albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{albedo\+S\+P3\+Fv\+Patch\+Field()}{albedoSP3FvPatchField()}\hspace{0.1cm}{\footnotesize\ttfamily [2/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field} (\begin{DoxyParamCaption}\item[{const fv\+Patch \&}]{p,  }\item[{const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&}]{iF,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 68 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::albedo\+S\+P3\+Fv\+Patch\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_a003974e3ce4bf2a4e6943a04055a058b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_acd2c52e04588297ab4ce4ce7d14fcca2}\label{classFoam_1_1albedoSP3FvPatchField_acd2c52e04588297ab4ce4ce7d14fcca2}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}}
+\index{albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{albedo\+S\+P3\+Fv\+Patch\+Field()}{albedoSP3FvPatchField()}\hspace{0.1cm}{\footnotesize\ttfamily [3/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field}$<$ Type $>$ \&}]{ptf,  }\item[{const fv\+Patch \&}]{p,  }\item[{const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&}]{iF,  }\item[{const fv\+Patch\+Field\+Mapper \&}]{mapper }\end{DoxyParamCaption})}
+
+
+
+Definition at line 51 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::albedo\+S\+P3\+Fv\+Patch\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_acd2c52e04588297ab4ce4ce7d14fcca2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_acf8954606fc8580f8a51ef54d1e30e46}\label{classFoam_1_1albedoSP3FvPatchField_acf8954606fc8580f8a51ef54d1e30e46}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}}
+\index{albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{albedo\+S\+P3\+Fv\+Patch\+Field()}{albedoSP3FvPatchField()}\hspace{0.1cm}{\footnotesize\ttfamily [4/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field}$<$ Type $>$ \&}]{ptf }\end{DoxyParamCaption})}
+
+
+
+Definition at line 86 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::albedo\+S\+P3\+Fv\+Patch\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_acf8954606fc8580f8a51ef54d1e30e46_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_ab62a11455223e3152d724f2acb552b77}\label{classFoam_1_1albedoSP3FvPatchField_ab62a11455223e3152d724f2acb552b77}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}}
+\index{albedo\+S\+P3\+Fv\+Patch\+Field@{albedo\+S\+P3\+Fv\+Patch\+Field}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{albedo\+S\+P3\+Fv\+Patch\+Field()}{albedoSP3FvPatchField()}\hspace{0.1cm}{\footnotesize\ttfamily [5/5]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1albedoSP3FvPatchField}{albedo\+S\+P3\+Fv\+Patch\+Field}$<$ Type $>$ \&}]{ptf,  }\item[{const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&}]{iF }\end{DoxyParamCaption})}
+
+
+
+Definition at line 100 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::auto\+Map().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{classFoam_1_1albedoSP3FvPatchField_ab62a11455223e3152d724f2acb552b77_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a80236bacffc8629323b6e1d6366ecb82}\label{classFoam_1_1albedoSP3FvPatchField_a80236bacffc8629323b6e1d6366ecb82}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}albedo\+S\+P3\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a3b748d8418dd1e3ff70b8749bab69840}\label{classFoam_1_1albedoSP3FvPatchField_a3b748d8418dd1e3ff70b8749bab69840}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!clone@{clone}}
+\index{clone@{clone}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{clone()}{clone()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual tmp$<$fv\+Patch\+Field$<$Type$>$ $>$ clone (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 132 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+H.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::albedo\+S\+P3\+Fv\+Patch\+Field().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{classFoam_1_1albedoSP3FvPatchField_a3b748d8418dd1e3ff70b8749bab69840_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a6dfbb046cc414bcb0ee27a1646815537}\label{classFoam_1_1albedoSP3FvPatchField_a6dfbb046cc414bcb0ee27a1646815537}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!clone@{clone}}
+\index{clone@{clone}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{clone()}{clone()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual tmp$<$fv\+Patch\+Field$<$Type$>$ $>$ clone (\begin{DoxyParamCaption}\item[{const Dimensioned\+Field$<$ Type, vol\+Mesh $>$ \&}]{iF }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 149 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_abaf3d2e99be0e65d6df55f9437f928f0}\label{classFoam_1_1albedoSP3FvPatchField_abaf3d2e99be0e65d6df55f9437f928f0}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!gradient@{gradient}}
+\index{gradient@{gradient}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{gradient()}{gradient()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual Field$<$Type$>$\& gradient (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 165 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a49573cbf08e58be88ae6f170d04d0d8e}\label{classFoam_1_1albedoSP3FvPatchField_a49573cbf08e58be88ae6f170d04d0d8e}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!gradient@{gradient}}
+\index{gradient@{gradient}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{gradient()}{gradient()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual const Field$<$Type$>$\& gradient (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 170 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a71bf9bd8eb5d1761ba2da1413a45471d}\label{classFoam_1_1albedoSP3FvPatchField_a71bf9bd8eb5d1761ba2da1413a45471d}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!gamma@{gamma}}
+\index{gamma@{gamma}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{gamma()}{gamma()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual scalar\& gamma (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 175 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a733aed5380906bc053ed1f4105cec3ce}\label{classFoam_1_1albedoSP3FvPatchField_a733aed5380906bc053ed1f4105cec3ce}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!gamma@{gamma}}
+\index{gamma@{gamma}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{gamma()}{gamma()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily virtual const scalar\& gamma (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 180 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+H.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::auto\+Map(), albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::evaluate(), albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gradient\+Boundary\+Coeffs(), albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gradient\+Internal\+Coeffs(), albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::rmap(), albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::sn\+Grad(), albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::value\+Boundary\+Coeffs(), albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::value\+Internal\+Coeffs(), and albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::write().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_a733aed5380906bc053ed1f4105cec3ce_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a0ab0c43ce90d756c88dd81e3d0a9eef5}\label{classFoam_1_1albedoSP3FvPatchField_a0ab0c43ce90d756c88dd81e3d0a9eef5}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!auto\+Map@{auto\+Map}}
+\index{auto\+Map@{auto\+Map}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{auto\+Map()}{autoMap()}}
+{\footnotesize\ttfamily void auto\+Map (\begin{DoxyParamCaption}\item[{const fv\+Patch\+Field\+Mapper \&}]{m }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 117 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::rmap().
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::albedo\+S\+P3\+Fv\+Patch\+Field(), and albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gamma().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classFoam_1_1albedoSP3FvPatchField_a0ab0c43ce90d756c88dd81e3d0a9eef5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{classFoam_1_1albedoSP3FvPatchField_a0ab0c43ce90d756c88dd81e3d0a9eef5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_abe233fd0f00c5f2012c2a8f57f20f5cb}\label{classFoam_1_1albedoSP3FvPatchField_abe233fd0f00c5f2012c2a8f57f20f5cb}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!rmap@{rmap}}
+\index{rmap@{rmap}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{rmap()}{rmap()}}
+{\footnotesize\ttfamily void rmap (\begin{DoxyParamCaption}\item[{const fv\+Patch\+Field$<$ Type $>$ \&}]{ptf,  }\item[{const label\+List \&}]{addr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 127 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::auto\+Map(), and albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gamma().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{classFoam_1_1albedoSP3FvPatchField_abe233fd0f00c5f2012c2a8f57f20f5cb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a7e562a40ead1e8fc57abd192e1d66b79}\label{classFoam_1_1albedoSP3FvPatchField_a7e562a40ead1e8fc57abd192e1d66b79}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!sn\+Grad@{sn\+Grad}}
+\index{sn\+Grad@{sn\+Grad}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{sn\+Grad()}{snGrad()}}
+{\footnotesize\ttfamily tmp$<$ Field$<$ Type $>$ $>$ sn\+Grad (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 301 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gamma().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=213pt]{classFoam_1_1albedoSP3FvPatchField_a7e562a40ead1e8fc57abd192e1d66b79_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a1a4ebfb8aa4dc581e54081a12bfbd0d3}\label{classFoam_1_1albedoSP3FvPatchField_a1a4ebfb8aa4dc581e54081a12bfbd0d3}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!evaluate@{evaluate}}
+\index{evaluate@{evaluate}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{evaluate()}{evaluate()}}
+{\footnotesize\ttfamily void evaluate (\begin{DoxyParamCaption}\item[{const Pstream\+::comms\+Types}]{comms\+Type = {\ttfamily Pstream\+:\+:commsTypes\+:\+:blocking} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 141 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::value\+Internal\+Coeffs().
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gamma().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=270pt]{classFoam_1_1albedoSP3FvPatchField_a1a4ebfb8aa4dc581e54081a12bfbd0d3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=218pt]{classFoam_1_1albedoSP3FvPatchField_a1a4ebfb8aa4dc581e54081a12bfbd0d3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a2b42863403587b404576ca43b676433e}\label{classFoam_1_1albedoSP3FvPatchField_a2b42863403587b404576ca43b676433e}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!value\+Internal\+Coeffs@{value\+Internal\+Coeffs}}
+\index{value\+Internal\+Coeffs@{value\+Internal\+Coeffs}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{value\+Internal\+Coeffs()}{valueInternalCoeffs()}}
+{\footnotesize\ttfamily tmp$<$ Field$<$ Type $>$ $>$ value\+Internal\+Coeffs (\begin{DoxyParamCaption}\item[{const tmp$<$ scalar\+Field $>$ \&}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 184 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::value\+Boundary\+Coeffs().
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::evaluate(), and albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gamma().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{classFoam_1_1albedoSP3FvPatchField_a2b42863403587b404576ca43b676433e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_a2b42863403587b404576ca43b676433e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a91b17c5b11d5369441c2de805b957c68}\label{classFoam_1_1albedoSP3FvPatchField_a91b17c5b11d5369441c2de805b957c68}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!value\+Boundary\+Coeffs@{value\+Boundary\+Coeffs}}
+\index{value\+Boundary\+Coeffs@{value\+Boundary\+Coeffs}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{value\+Boundary\+Coeffs()}{valueBoundaryCoeffs()}}
+{\footnotesize\ttfamily tmp$<$ Field$<$ Type $>$ $>$ value\+Boundary\+Coeffs (\begin{DoxyParamCaption}\item[{const tmp$<$ scalar\+Field $>$ \&}]{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 216 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gradient\+Internal\+Coeffs().
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gamma(), and albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::value\+Internal\+Coeffs().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=339pt]{classFoam_1_1albedoSP3FvPatchField_a91b17c5b11d5369441c2de805b957c68_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_a91b17c5b11d5369441c2de805b957c68_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_acfc2155b5e8a256253770a1f0b2a840b}\label{classFoam_1_1albedoSP3FvPatchField_acfc2155b5e8a256253770a1f0b2a840b}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!gradient\+Internal\+Coeffs@{gradient\+Internal\+Coeffs}}
+\index{gradient\+Internal\+Coeffs@{gradient\+Internal\+Coeffs}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{gradient\+Internal\+Coeffs()}{gradientInternalCoeffs()}}
+{\footnotesize\ttfamily tmp$<$ Field$<$ Type $>$ $>$ gradient\+Internal\+Coeffs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 248 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gradient\+Boundary\+Coeffs().
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gamma(), and albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::value\+Boundary\+Coeffs().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_acfc2155b5e8a256253770a1f0b2a840b_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_acfc2155b5e8a256253770a1f0b2a840b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_aa96c9200cdd52d1806c6de044661f0f0}\label{classFoam_1_1albedoSP3FvPatchField_aa96c9200cdd52d1806c6de044661f0f0}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!gradient\+Boundary\+Coeffs@{gradient\+Boundary\+Coeffs}}
+\index{gradient\+Boundary\+Coeffs@{gradient\+Boundary\+Coeffs}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{gradient\+Boundary\+Coeffs()}{gradientBoundaryCoeffs()}}
+{\footnotesize\ttfamily tmp$<$ Field$<$ Type $>$ $>$ gradient\+Boundary\+Coeffs (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 276 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gamma(), and albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gradient\+Internal\+Coeffs().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1albedoSP3FvPatchField_aa96c9200cdd52d1806c6de044661f0f0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1albedoSP3FvPatchField_a293fdfec8bdfbd5c3913ab4c9f3454ff}\label{classFoam_1_1albedoSP3FvPatchField_a293fdfec8bdfbd5c3913ab4c9f3454ff}} 
+\index{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}!write@{write}}
+\index{write@{write}!Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field@{Foam\+::albedo\+S\+P3\+Fv\+Patch\+Field}}
+\subsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily void write (\begin{DoxyParamCaption}\item[{Ostream \&}]{os }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 318 of file albedo\+S\+P3\+Fv\+Patch\+Field.\+C.
+
+
+
+References Foam\+::make\+Patch\+Fields(), and Foam\+::make\+Patch\+Type\+Field\+Typedefs().
+
+
+
+Referenced by albedo\+S\+P3\+Fv\+Patch\+Field$<$ Type $>$\+::gamma().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=294pt]{classFoam_1_1albedoSP3FvPatchField_a293fdfec8bdfbd5c3913ab4c9f3454ff_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{classFoam_1_1albedoSP3FvPatchField_a293fdfec8bdfbd5c3913ab4c9f3454ff_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/albedo\+S\+P3/\hyperlink{albedoSP3FvPatchField_8H}{albedo\+S\+P3\+Fv\+Patch\+Field.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/albedo\+S\+P3/\hyperlink{albedoSP3FvPatchField_8C}{albedo\+S\+P3\+Fv\+Patch\+Field.\+C}\end{DoxyCompactItemize}

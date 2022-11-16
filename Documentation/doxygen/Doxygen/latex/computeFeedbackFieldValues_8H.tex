@@ -1,0 +1,153 @@
+\hypertarget{computeFeedbackFieldValues_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/point\+Kinetics/include/compute\+Feedback\+Field\+Values.H File Reference}
+\label{computeFeedbackFieldValues_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/point\+Kinetics/include/compute\+Feedback\+Field\+Values.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/point\+Kinetics/include/compute\+Feedback\+Field\+Values.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{computeFeedbackFieldValues_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+vol\+Scalar\+Field \hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} (sqr(one\+Group\+Flux\+\_\+))
+\item 
+scalar \hyperlink{computeFeedbackFieldValues_8H_a8b30ce5e08b618230e12e55e87d8afce}{domain\+Integrated\+Flux\+Sqr\+Fuel} (fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$fuel\+Feedback\+Cell\+Field\+\_\+).value())
+\item 
+scalar \hyperlink{computeFeedbackFieldValues_8H_a1979050c3e525fccf63e4c49237c5823}{domain\+Integrated\+Flux\+Sqr\+Cool} (fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$cool\+Feedback\+Cell\+Field\+\_\+).value())
+\item 
+scalar \hyperlink{computeFeedbackFieldValues_8H_ac4077c55a765b52fa94f1ed80f0aa27f}{T\+Fuel\+Value} (fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Fuel\+\_\+ $\ast$fuel\+Feedback\+Cell\+Field\+\_\+).value()/\hyperlink{computeFeedbackFieldValues_8H_a8b30ce5e08b618230e12e55e87d8afce}{domain\+Integrated\+Flux\+Sqr\+Fuel})
+\item 
+scalar \hyperlink{computeFeedbackFieldValues_8H_a29801690652bbcb1415a8e90df6bc6fd}{T\+Clad\+Value} (fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Clad\+\_\+ $\ast$fuel\+Feedback\+Cell\+Field\+\_\+).value()/\hyperlink{computeFeedbackFieldValues_8H_a8b30ce5e08b618230e12e55e87d8afce}{domain\+Integrated\+Flux\+Sqr\+Fuel})
+\item 
+scalar \hyperlink{computeFeedbackFieldValues_8H_ad97890bb5f696e1ed4c20e854caf6e62}{T\+Cool\+Value} (fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Cool\+\_\+ $\ast$cool\+Feedback\+Cell\+Field\+\_\+).value()/\hyperlink{computeFeedbackFieldValues_8H_a1979050c3e525fccf63e4c49237c5823}{domain\+Integrated\+Flux\+Sqr\+Cool})
+\item 
+scalar \hyperlink{computeFeedbackFieldValues_8H_adfa280f8c80d99ac065a923d399c8324}{rho\+Cool\+Value} (fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$rho\+Cool\+\_\+ $\ast$cool\+Feedback\+Cell\+Field\+\_\+).value()/\hyperlink{computeFeedbackFieldValues_8H_a1979050c3e525fccf63e4c49237c5823}{domain\+Integrated\+Flux\+Sqr\+Cool})
+\item 
+scalar \hyperlink{computeFeedbackFieldValues_8H_a8baccdc34d49127c54a0a60ba9818c0c}{T\+Struct\+Value} (fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Struct\+\_\+ $\ast$struct\+Feedback\+Cell\+Field\+\_\+).value()/fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$struct\+Feedback\+Cell\+Field\+\_\+).value())
+\item 
+scalar \hyperlink{computeFeedbackFieldValues_8H_ae36e14f9b226d3a7c60b1a6245421b8e}{T\+Driveline\+Value} (fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Struct\+\_\+ $\ast$driveline\+Feedback\+Cell\+Field\+\_\+).value()/fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$driveline\+Feedback\+Cell\+Field\+\_\+).value())
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}\label{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}} 
+\index{compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}!one\+Group\+Flux\+Sqr@{one\+Group\+Flux\+Sqr}}
+\index{one\+Group\+Flux\+Sqr@{one\+Group\+Flux\+Sqr}!compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}}
+\subsubsection{\texorpdfstring{one\+Group\+Flux\+Sqr()}{oneGroupFluxSqr()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field one\+Group\+Flux\+Sqr (\begin{DoxyParamCaption}\item[{sqr(one\+Group\+Flux\+\_\+)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{computeFeedbackFieldValues_8H_a8b30ce5e08b618230e12e55e87d8afce}\label{computeFeedbackFieldValues_8H_a8b30ce5e08b618230e12e55e87d8afce}} 
+\index{compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}!domain\+Integrated\+Flux\+Sqr\+Fuel@{domain\+Integrated\+Flux\+Sqr\+Fuel}}
+\index{domain\+Integrated\+Flux\+Sqr\+Fuel@{domain\+Integrated\+Flux\+Sqr\+Fuel}!compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}}
+\subsubsection{\texorpdfstring{domain\+Integrated\+Flux\+Sqr\+Fuel()}{domainIntegratedFluxSqrFuel()}}
+{\footnotesize\ttfamily scalar domain\+Integrated\+Flux\+Sqr\+Fuel (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$fuel\+Feedback\+Cell\+Field\+\_\+).value()}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{computeFeedbackFieldValues_8H_a1979050c3e525fccf63e4c49237c5823}\label{computeFeedbackFieldValues_8H_a1979050c3e525fccf63e4c49237c5823}} 
+\index{compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}!domain\+Integrated\+Flux\+Sqr\+Cool@{domain\+Integrated\+Flux\+Sqr\+Cool}}
+\index{domain\+Integrated\+Flux\+Sqr\+Cool@{domain\+Integrated\+Flux\+Sqr\+Cool}!compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}}
+\subsubsection{\texorpdfstring{domain\+Integrated\+Flux\+Sqr\+Cool()}{domainIntegratedFluxSqrCool()}}
+{\footnotesize\ttfamily scalar domain\+Integrated\+Flux\+Sqr\+Cool (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$cool\+Feedback\+Cell\+Field\+\_\+).value()}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{computeFeedbackFieldValues_8H_ac4077c55a765b52fa94f1ed80f0aa27f}\label{computeFeedbackFieldValues_8H_ac4077c55a765b52fa94f1ed80f0aa27f}} 
+\index{compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}!T\+Fuel\+Value@{T\+Fuel\+Value}}
+\index{T\+Fuel\+Value@{T\+Fuel\+Value}!compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}}
+\subsubsection{\texorpdfstring{T\+Fuel\+Value()}{TFuelValue()}}
+{\footnotesize\ttfamily scalar T\+Fuel\+Value (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Fuel\+\_\+ $\ast$fuel\+Feedback\+Cell\+Field\+\_\+).value()/}]{domain\+Integrated\+Flux\+Sqr\+Fuel }\end{DoxyParamCaption})}
+
+
+
+Referenced by point\+Kinetic\+Neutronics\+::get\+Coupling\+Field\+Refs().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=328pt]{computeFeedbackFieldValues_8H_ac4077c55a765b52fa94f1ed80f0aa27f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{computeFeedbackFieldValues_8H_a29801690652bbcb1415a8e90df6bc6fd}\label{computeFeedbackFieldValues_8H_a29801690652bbcb1415a8e90df6bc6fd}} 
+\index{compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}!T\+Clad\+Value@{T\+Clad\+Value}}
+\index{T\+Clad\+Value@{T\+Clad\+Value}!compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}}
+\subsubsection{\texorpdfstring{T\+Clad\+Value()}{TCladValue()}}
+{\footnotesize\ttfamily scalar T\+Clad\+Value (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Clad\+\_\+ $\ast$fuel\+Feedback\+Cell\+Field\+\_\+).value()/}]{domain\+Integrated\+Flux\+Sqr\+Fuel }\end{DoxyParamCaption})}
+
+
+
+Referenced by point\+Kinetic\+Neutronics\+::get\+Coupling\+Field\+Refs().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{computeFeedbackFieldValues_8H_a29801690652bbcb1415a8e90df6bc6fd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{computeFeedbackFieldValues_8H_ad97890bb5f696e1ed4c20e854caf6e62}\label{computeFeedbackFieldValues_8H_ad97890bb5f696e1ed4c20e854caf6e62}} 
+\index{compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}!T\+Cool\+Value@{T\+Cool\+Value}}
+\index{T\+Cool\+Value@{T\+Cool\+Value}!compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}}
+\subsubsection{\texorpdfstring{T\+Cool\+Value()}{TCoolValue()}}
+{\footnotesize\ttfamily scalar T\+Cool\+Value (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Cool\+\_\+ $\ast$cool\+Feedback\+Cell\+Field\+\_\+).value()/}]{domain\+Integrated\+Flux\+Sqr\+Cool }\end{DoxyParamCaption})}
+
+
+
+Referenced by point\+Kinetic\+Neutronics\+::get\+Coupling\+Field\+Refs().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{computeFeedbackFieldValues_8H_ad97890bb5f696e1ed4c20e854caf6e62_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{computeFeedbackFieldValues_8H_adfa280f8c80d99ac065a923d399c8324}\label{computeFeedbackFieldValues_8H_adfa280f8c80d99ac065a923d399c8324}} 
+\index{compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}!rho\+Cool\+Value@{rho\+Cool\+Value}}
+\index{rho\+Cool\+Value@{rho\+Cool\+Value}!compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}}
+\subsubsection{\texorpdfstring{rho\+Cool\+Value()}{rhoCoolValue()}}
+{\footnotesize\ttfamily scalar rho\+Cool\+Value (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$rho\+Cool\+\_\+ $\ast$cool\+Feedback\+Cell\+Field\+\_\+).value()/}]{domain\+Integrated\+Flux\+Sqr\+Cool }\end{DoxyParamCaption})}
+
+
+
+Referenced by point\+Kinetic\+Neutronics\+::get\+Coupling\+Field\+Refs().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=337pt]{computeFeedbackFieldValues_8H_adfa280f8c80d99ac065a923d399c8324_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{computeFeedbackFieldValues_8H_a8baccdc34d49127c54a0a60ba9818c0c}\label{computeFeedbackFieldValues_8H_a8baccdc34d49127c54a0a60ba9818c0c}} 
+\index{compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}!T\+Struct\+Value@{T\+Struct\+Value}}
+\index{T\+Struct\+Value@{T\+Struct\+Value}!compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}}
+\subsubsection{\texorpdfstring{T\+Struct\+Value()}{TStructValue()}}
+{\footnotesize\ttfamily scalar T\+Struct\+Value (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Struct\+\_\+ $\ast$struct\+Feedback\+Cell\+Field\+\_\+).value()/fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$struct\+Feedback\+Cell\+Field\+\_\+).value()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by point\+Kinetic\+Neutronics\+::get\+Coupling\+Field\+Refs().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=336pt]{computeFeedbackFieldValues_8H_a8baccdc34d49127c54a0a60ba9818c0c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{computeFeedbackFieldValues_8H_ae36e14f9b226d3a7c60b1a6245421b8e}\label{computeFeedbackFieldValues_8H_ae36e14f9b226d3a7c60b1a6245421b8e}} 
+\index{compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}!T\+Driveline\+Value@{T\+Driveline\+Value}}
+\index{T\+Driveline\+Value@{T\+Driveline\+Value}!compute\+Feedback\+Field\+Values.\+H@{compute\+Feedback\+Field\+Values.\+H}}
+\subsubsection{\texorpdfstring{T\+Driveline\+Value()}{TDrivelineValue()}}
+{\footnotesize\ttfamily scalar T\+Driveline\+Value (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$T\+Struct\+\_\+ $\ast$driveline\+Feedback\+Cell\+Field\+\_\+).value()/fvc\+::domain\+Integrate(\hyperlink{computeFeedbackFieldValues_8H_a965ade2a15637edaf7126bb8e4c39330}{one\+Group\+Flux\+Sqr} $\ast$driveline\+Feedback\+Cell\+Field\+\_\+).value()}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by point\+Kinetic\+Neutronics\+::get\+Coupling\+Field\+Refs().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=348pt]{computeFeedbackFieldValues_8H_ae36e14f9b226d3a7c60b1a6245421b8e_icgraph}
+\end{center}
+\end{figure}

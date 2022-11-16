@@ -1,0 +1,200 @@
+\hypertarget{classFoam_1_1functionObjects_1_1FMUController}{}\section{F\+M\+U\+Controller Class Reference}
+\label{classFoam_1_1functionObjects_1_1FMUController}\index{F\+M\+U\+Controller@{F\+M\+U\+Controller}}
+
+
+connects to the F\+MU instance and is responsible for the communication  
+
+
+
+
+Inheritance diagram for F\+M\+U\+Controller\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=160pt]{classFoam_1_1functionObjects_1_1FMUController__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for F\+M\+U\+Controller\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=160pt]{classFoam_1_1functionObjects_1_1FMUController__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1functionObjects_1_1FMUController_a93e6bfd84ca0b0ccf9852bbff628d306}{Type\+Name} (\char`\"{}F\+M\+U\+Controller\char`\"{})
+\item 
+\hyperlink{classFoam_1_1functionObjects_1_1FMUController_ab54bd00b9477b72cc7db959c8c7f538d}{F\+M\+U\+Controller} (const word \&name, const Time \&run\+Time, const dictionary \&dict)
+\item 
+virtual \hyperlink{classFoam_1_1functionObjects_1_1FMUController_a292a154677f3f41b1c9f279c8e09a51b}{$\sim$\+F\+M\+U\+Controller} ()=default
+\item 
+virtual bool \hyperlink{classFoam_1_1functionObjects_1_1FMUController_a6ce0c64db98eb6144d363dbfc86104eb}{read} (const dictionary \&dict)
+\item 
+virtual bool \hyperlink{classFoam_1_1functionObjects_1_1FMUController_a8a88aad980720a56ff0ff3254f885bf9}{adjust\+Time\+Step} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1functionObjects_1_1FMUController_ae006844a02161d12182ab372ca5c257b}{execute} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1functionObjects_1_1FMUController_ae8f6374e29a250261b3979bbd6e5cb40}{write} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1functionObjects_1_1FMUController_af545ab12986d2fe462f1013c3bafb5f3}{end} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+connects to the F\+MU instance and is responsible for the communication 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Usage}
+add to system/control\+Dict.\+functions also the dictionary include the dictionary simulation\+Parameters at the top of system control\+Dict \#include \char`\"{}simulation\+Parameters\char`\"{}
+\end{DoxyParagraph}
+\begin{DoxyVerb}in system/controlDict.functions
+FMUController
+{
+    type            FMUController;
+    libs            (FMUController);
+    host            $host;
+    port            $port;
+}
+in system/simulationParameters (can be changed by the FMU)
+host            "127.0.0.1";
+port            8000;\end{DoxyVerb}
+
+
+\begin{DoxyNote}{Note}
+
+\end{DoxyNote}
+\begin{DoxySeeAlso}{See also}
+Foam\+::function\+Object Foam\+::function\+Objects\+::time\+Control
+\end{DoxySeeAlso}
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/FMU/FMUController.H}{\tt F\+M\+U\+Controller.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/FMU/FMUController.C}{\tt F\+M\+U\+Controller.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 78 of file F\+M\+U\+Controller.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1FMUController_ab54bd00b9477b72cc7db959c8c7f538d}\label{classFoam_1_1functionObjects_1_1FMUController_ab54bd00b9477b72cc7db959c8c7f538d}} 
+\index{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}!F\+M\+U\+Controller@{F\+M\+U\+Controller}}
+\index{F\+M\+U\+Controller@{F\+M\+U\+Controller}!Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}}
+\subsubsection{\texorpdfstring{F\+M\+U\+Controller()}{FMUController()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1functionObjects_1_1FMUController}{F\+M\+U\+Controller} (\begin{DoxyParamCaption}\item[{const word \&}]{name,  }\item[{const Time \&}]{run\+Time,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 68 of file F\+M\+U\+Controller.\+C.
+
+
+
+References comm\+Data\+Layer\+::get\+Registry(), comm\+Data\+Layer\+::\+New(), out(), and comm\+Data\+Layer\+::store\+Obj().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1functionObjects_1_1FMUController_ab54bd00b9477b72cc7db959c8c7f538d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1FMUController_a292a154677f3f41b1c9f279c8e09a51b}\label{classFoam_1_1functionObjects_1_1FMUController_a292a154677f3f41b1c9f279c8e09a51b}} 
+\index{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}!````~F\+M\+U\+Controller@{$\sim$\+F\+M\+U\+Controller}}
+\index{````~F\+M\+U\+Controller@{$\sim$\+F\+M\+U\+Controller}!Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}}
+\subsubsection{\texorpdfstring{$\sim$\+F\+M\+U\+Controller()}{~FMUController()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1functionObjects_1_1FMUController}{F\+M\+U\+Controller} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1FMUController_a93e6bfd84ca0b0ccf9852bbff628d306}\label{classFoam_1_1functionObjects_1_1FMUController_a93e6bfd84ca0b0ccf9852bbff628d306}} 
+\index{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}F\+M\+U\+Controller\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1FMUController_a6ce0c64db98eb6144d363dbfc86104eb}\label{classFoam_1_1functionObjects_1_1FMUController_a6ce0c64db98eb6144d363dbfc86104eb}} 
+\index{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}!read@{read}}
+\index{read@{read}!Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily bool read (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 126 of file F\+M\+U\+Controller.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1FMUController_a8a88aad980720a56ff0ff3254f885bf9}\label{classFoam_1_1functionObjects_1_1FMUController_a8a88aad980720a56ff0ff3254f885bf9}} 
+\index{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}!adjust\+Time\+Step@{adjust\+Time\+Step}}
+\index{adjust\+Time\+Step@{adjust\+Time\+Step}!Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}}
+\subsubsection{\texorpdfstring{adjust\+Time\+Step()}{adjustTimeStep()}}
+{\footnotesize\ttfamily bool adjust\+Time\+Step (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 134 of file F\+M\+U\+Controller.\+C.
+
+
+
+References comm\+Data\+Layer\+::get\+Obj(), and comm\+Data\+Layer\+::\+New().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{classFoam_1_1functionObjects_1_1FMUController_a8a88aad980720a56ff0ff3254f885bf9_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1FMUController_ae006844a02161d12182ab372ca5c257b}\label{classFoam_1_1functionObjects_1_1FMUController_ae006844a02161d12182ab372ca5c257b}} 
+\index{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}!execute@{execute}}
+\index{execute@{execute}!Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}}
+\subsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily bool execute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 170 of file F\+M\+U\+Controller.\+C.
+
+
+
+References comm\+Data\+Layer\+::get\+Obj(), comm\+Data\+Layer\+::get\+Registry(), comm\+Data\+Layer\+::\+New(), and out().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1functionObjects_1_1FMUController_ae006844a02161d12182ab372ca5c257b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1FMUController_ae8f6374e29a250261b3979bbd6e5cb40}\label{classFoam_1_1functionObjects_1_1FMUController_ae8f6374e29a250261b3979bbd6e5cb40}} 
+\index{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}!write@{write}}
+\index{write@{write}!Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}}
+\subsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily bool write (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 228 of file F\+M\+U\+Controller.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1FMUController_af545ab12986d2fe462f1013c3bafb5f3}\label{classFoam_1_1functionObjects_1_1FMUController_af545ab12986d2fe462f1013c3bafb5f3}} 
+\index{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}!end@{end}}
+\index{end@{end}!Foam\+::function\+Objects\+::\+F\+M\+U\+Controller@{Foam\+::function\+Objects\+::\+F\+M\+U\+Controller}}
+\subsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily bool end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 234 of file F\+M\+U\+Controller.\+C.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/src/\+O\+F\+\_\+\+F\+M\+U/\+F\+M\+U/\hyperlink{FMUController_8H}{F\+M\+U\+Controller.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/src/\+O\+F\+\_\+\+F\+M\+U/\+F\+M\+U/\hyperlink{FMUController_8C}{F\+M\+U\+Controller.\+C}\end{DoxyCompactItemize}

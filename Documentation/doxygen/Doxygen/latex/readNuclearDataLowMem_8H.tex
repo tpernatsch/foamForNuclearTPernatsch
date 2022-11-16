@@ -1,0 +1,779 @@
+\hypertarget{readNuclearDataLowMem_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+X\+S/\+X\+S\+Low\+Mem/include/read\+Nuclear\+Data\+Low\+Mem.H File Reference}
+\label{readNuclearDataLowMem_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+X\+S/\+X\+S\+Low\+Mem/include/read\+Nuclear\+Data\+Low\+Mem.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/\+X\+S/\+X\+S\+Low\+Mem/include/read\+Nuclear\+Data\+Low\+Mem.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=257pt]{readNuclearDataLowMem_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Info$<$$<$ \char`\"{}\textbackslash{}Reading nuclear data\textbackslash{}\char`\"{}$<$$<$ endl;Ptr\+List$<$ entry $>$ \hyperlink{readNuclearDataLowMem_8H_a2ff34dd7194bd524d2933785fbe98bcf}{entries\+Radial\+Exp} (nuclear\+Data\+Radial\+Exp\+\_\+.\+lookup(\char`\"{}zones\char`\"{}))
+\item 
+Ptr\+List$<$ entry $>$ \hyperlink{readNuclearDataLowMem_8H_a795fc32dd0463f6b0b02e228f1c96dd2}{entries\+Axial\+Exp} (nuclear\+Data\+Axial\+Exp\+\_\+.\+lookup(\char`\"{}zones\char`\"{}))
+\item 
+Ptr\+List$<$ entry $>$ \hyperlink{readNuclearDataLowMem_8H_a128f8eba1518fa54aad20b070fa561cc}{entries\+Fuel\+Temp} (nuclear\+Data\+Fuel\+Temp\+\_\+.\+lookup(\char`\"{}zones\char`\"{}))
+\item 
+Ptr\+List$<$ entry $>$ \hyperlink{readNuclearDataLowMem_8H_a85e4dec42ca9ccc7a9cb48f3c830dbc4}{entries\+Rho\+Cool} (nuclear\+Data\+Rho\+Cool\+\_\+.\+lookup(\char`\"{}zones\char`\"{}))
+\item 
+Ptr\+List$<$ entry $>$ \hyperlink{readNuclearDataLowMem_8H_aa62f43acbd1ed45559c9e5841cd95ea5}{entries\+T\+Cool} (nuclear\+Data\+T\+Cool\+\_\+.\+lookup(\char`\"{}zones\char`\"{}))
+\item 
+Ptr\+List$<$ entry $>$ \hyperlink{readNuclearDataLowMem_8H_a7100b54a6f8c2d3c497136e21bc12af5}{entries\+Clad\+Exp} (nuclear\+Data\+Clad\+Exp\+\_\+.\+lookup(\char`\"{}zones\char`\"{}))
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_ae1060a118e4267dea408a4086efa6572}{D\+Radial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a7df4fdff4b73ed38eede469ff0df38f4}{nu\+Sigma\+Eff\+Radial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a808729e10cae93aa2cad2f4406e26325}{sigma\+Pow\+Radial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_ac3eddb59ac5141fd0409196a9f65766a}{sigma\+Disapp\+Radial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{readNuclearDataLowMem_8H_a784cd7b5c041a0f0734e85f81e68caa3}{sigma\+From\+To\+Radial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a81cc11116f227693480b0fb15230836e}{D\+Axial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a8023ea049e0382517d5eadb06b9aba84}{nu\+Sigma\+Eff\+Axial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a48a08cc967cf6bde7bf51693cfa0c509}{sigma\+Pow\+Axial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_ad0a2d82c535bddd6a26430df9162b0a2}{sigma\+Disapp\+Axial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{readNuclearDataLowMem_8H_ae3b66677b938cea91100197a993c0be5}{sigma\+From\+To\+Axial\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a6978e2b2f5467a87966d45cbf0c4c639}{D\+Fuel\+Temp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a809ec1538e95a1b3138e0f7ac7abeb6c}{nu\+Sigma\+Eff\+Fuel\+Temp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a88e8c2024bcad8a75bc4741e435662d3}{sigma\+Pow\+Fuel\+Temp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a8570c829c55376df41f67a186ec91bf0}{sigma\+Disapp\+Fuel\+Temp\+List} (zone\+Number\+\_\+)
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{readNuclearDataLowMem_8H_a7a512ab1139eb59d9a462aff49587bd0}{sigma\+From\+To\+Fuel\+Temp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a80c69533a883cb75133bf44d1ab082fe}{D\+Rho\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_ace6a4873e7010cc1830544f8d535616b}{nu\+Sigma\+Eff\+Rho\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a33da238d86d5b52bcf74e78b450715f7}{sigma\+Pow\+Rho\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a09ecb37caeb3824fcc43759fba4ada33}{sigma\+Disapp\+Rho\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{readNuclearDataLowMem_8H_af0208ac90cc1c2153e8a9206cdb79457}{sigma\+From\+To\+Rho\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_afb5b5d357f9a51bcd4e5f519814f7c7d}{D\+T\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a56bd2aa6903ca24b2996478e3069acb4}{nu\+Sigma\+Eff\+T\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a9b4bf9eec4053cfd73f50b3166ee4238}{sigma\+Pow\+T\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a2c85d8518fcb8e2373c337b4a0b9f12b}{sigma\+Disapp\+T\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{readNuclearDataLowMem_8H_aec00aee42aa4bcc866c55a2bf28e718f}{sigma\+From\+To\+T\+Cool\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a0b20f5d5d3a7d538732a088700162f17}{D\+Clad\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a5fcf82349fabf302f7082bfe6b409805}{nu\+Sigma\+Eff\+Clad\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a7a20b2877f90d44db7ef821a29b92227}{sigma\+Pow\+Clad\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+Ptr\+List$<$ scalar\+Field $>$ \hyperlink{readNuclearDataLowMem_8H_a6535e9cb52020c71b8a387a09bbbd308}{sigma\+Disapp\+Clad\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+List$<$ Ptr\+List$<$ scalar\+Square\+Matrix $>$ $>$ \hyperlink{readNuclearDataLowMem_8H_a127596d2781e3b87e8eb3468b5e38c0d}{sigma\+From\+To\+Clad\+Exp\+List} (zone\+Number\+\_\+)
+\item 
+\hyperlink{readNuclearDataLowMem_8H_a1ba0a86d00d625275de858f1a01edb9f}{for\+All} (entries\+\_\+, zoneI)
+\item 
+\hyperlink{readNuclearDataLowMem_8H_a2428955ee674d42574e73d905589463a}{for\+All} (C\+Rentries\+\_\+, C\+RzoneI)
+\item 
+\hyperlink{readNuclearDataLowMem_8H_a18680aaf1d13afdaf2eedb40096566be}{for\+All} (nu\+Sigma\+Eff\+\_\+, energyI)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a2ff34dd7194bd524d2933785fbe98bcf}\label{readNuclearDataLowMem_8H_a2ff34dd7194bd524d2933785fbe98bcf}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!entries\+Radial\+Exp@{entries\+Radial\+Exp}}
+\index{entries\+Radial\+Exp@{entries\+Radial\+Exp}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{entries\+Radial\+Exp()}{entriesRadialExp()}}
+{\footnotesize\ttfamily Info$<$$<$ \char`\"{}\textbackslash{}n\+Reading nuclear \hyperlink{solvePointKinetics_8H_adb283ac99a91b10be7420fca0134b932}{data\textbackslash{}n}\char`\"{} $<$$<$ endl;Ptr\+List$<$entry$>$ entries\+Radial\+Exp (\begin{DoxyParamCaption}\item[{nuclear\+Data\+Radial\+Exp\+\_\+.}]{lookup\char`\"{}zones\char`\"{} }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{readNuclearDataLowMem_8H_a2ff34dd7194bd524d2933785fbe98bcf_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a795fc32dd0463f6b0b02e228f1c96dd2}\label{readNuclearDataLowMem_8H_a795fc32dd0463f6b0b02e228f1c96dd2}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!entries\+Axial\+Exp@{entries\+Axial\+Exp}}
+\index{entries\+Axial\+Exp@{entries\+Axial\+Exp}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{entries\+Axial\+Exp()}{entriesAxialExp()}}
+{\footnotesize\ttfamily Ptr\+List$<$entry$>$ entries\+Axial\+Exp (\begin{DoxyParamCaption}\item[{nuclear\+Data\+Axial\+Exp\+\_\+.}]{lookup\char`\"{}zones\char`\"{} }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{readNuclearDataLowMem_8H_a795fc32dd0463f6b0b02e228f1c96dd2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a128f8eba1518fa54aad20b070fa561cc}\label{readNuclearDataLowMem_8H_a128f8eba1518fa54aad20b070fa561cc}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!entries\+Fuel\+Temp@{entries\+Fuel\+Temp}}
+\index{entries\+Fuel\+Temp@{entries\+Fuel\+Temp}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{entries\+Fuel\+Temp()}{entriesFuelTemp()}}
+{\footnotesize\ttfamily Ptr\+List$<$entry$>$ entries\+Fuel\+Temp (\begin{DoxyParamCaption}\item[{nuclear\+Data\+Fuel\+Temp\+\_\+.}]{lookup\char`\"{}zones\char`\"{} }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=244pt]{readNuclearDataLowMem_8H_a128f8eba1518fa54aad20b070fa561cc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a85e4dec42ca9ccc7a9cb48f3c830dbc4}\label{readNuclearDataLowMem_8H_a85e4dec42ca9ccc7a9cb48f3c830dbc4}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!entries\+Rho\+Cool@{entries\+Rho\+Cool}}
+\index{entries\+Rho\+Cool@{entries\+Rho\+Cool}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{entries\+Rho\+Cool()}{entriesRhoCool()}}
+{\footnotesize\ttfamily Ptr\+List$<$entry$>$ entries\+Rho\+Cool (\begin{DoxyParamCaption}\item[{nuclear\+Data\+Rho\+Cool\+\_\+.}]{lookup\char`\"{}zones\char`\"{} }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{readNuclearDataLowMem_8H_a85e4dec42ca9ccc7a9cb48f3c830dbc4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_aa62f43acbd1ed45559c9e5841cd95ea5}\label{readNuclearDataLowMem_8H_aa62f43acbd1ed45559c9e5841cd95ea5}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!entries\+T\+Cool@{entries\+T\+Cool}}
+\index{entries\+T\+Cool@{entries\+T\+Cool}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{entries\+T\+Cool()}{entriesTCool()}}
+{\footnotesize\ttfamily Ptr\+List$<$entry$>$ entries\+T\+Cool (\begin{DoxyParamCaption}\item[{nuclear\+Data\+T\+Cool\+\_\+.}]{lookup\char`\"{}zones\char`\"{} }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{readNuclearDataLowMem_8H_aa62f43acbd1ed45559c9e5841cd95ea5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a7100b54a6f8c2d3c497136e21bc12af5}\label{readNuclearDataLowMem_8H_a7100b54a6f8c2d3c497136e21bc12af5}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!entries\+Clad\+Exp@{entries\+Clad\+Exp}}
+\index{entries\+Clad\+Exp@{entries\+Clad\+Exp}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{entries\+Clad\+Exp()}{entriesCladExp()}}
+{\footnotesize\ttfamily Ptr\+List$<$entry$>$ entries\+Clad\+Exp (\begin{DoxyParamCaption}\item[{nuclear\+Data\+Clad\+Exp\+\_\+.}]{lookup\char`\"{}zones\char`\"{} }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{readNuclearDataLowMem_8H_a7100b54a6f8c2d3c497136e21bc12af5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_ae1060a118e4267dea408a4086efa6572}\label{readNuclearDataLowMem_8H_ae1060a118e4267dea408a4086efa6572}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!D\+Radial\+Exp\+List@{D\+Radial\+Exp\+List}}
+\index{D\+Radial\+Exp\+List@{D\+Radial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{D\+Radial\+Exp\+List()}{DRadialExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ D\+Radial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=240pt]{readNuclearDataLowMem_8H_ae1060a118e4267dea408a4086efa6572_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a7df4fdff4b73ed38eede469ff0df38f4}\label{readNuclearDataLowMem_8H_a7df4fdff4b73ed38eede469ff0df38f4}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!nu\+Sigma\+Eff\+Radial\+Exp\+List@{nu\+Sigma\+Eff\+Radial\+Exp\+List}}
+\index{nu\+Sigma\+Eff\+Radial\+Exp\+List@{nu\+Sigma\+Eff\+Radial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{nu\+Sigma\+Eff\+Radial\+Exp\+List()}{nuSigmaEffRadialExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ nu\+Sigma\+Eff\+Radial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=283pt]{readNuclearDataLowMem_8H_a7df4fdff4b73ed38eede469ff0df38f4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a808729e10cae93aa2cad2f4406e26325}\label{readNuclearDataLowMem_8H_a808729e10cae93aa2cad2f4406e26325}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Pow\+Radial\+Exp\+List@{sigma\+Pow\+Radial\+Exp\+List}}
+\index{sigma\+Pow\+Radial\+Exp\+List@{sigma\+Pow\+Radial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Pow\+Radial\+Exp\+List()}{sigmaPowRadialExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Pow\+Radial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{readNuclearDataLowMem_8H_a808729e10cae93aa2cad2f4406e26325_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_ac3eddb59ac5141fd0409196a9f65766a}\label{readNuclearDataLowMem_8H_ac3eddb59ac5141fd0409196a9f65766a}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Disapp\+Radial\+Exp\+List@{sigma\+Disapp\+Radial\+Exp\+List}}
+\index{sigma\+Disapp\+Radial\+Exp\+List@{sigma\+Disapp\+Radial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Disapp\+Radial\+Exp\+List()}{sigmaDisappRadialExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Disapp\+Radial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=289pt]{readNuclearDataLowMem_8H_ac3eddb59ac5141fd0409196a9f65766a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a784cd7b5c041a0f0734e85f81e68caa3}\label{readNuclearDataLowMem_8H_a784cd7b5c041a0f0734e85f81e68caa3}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+From\+To\+Radial\+Exp\+List@{sigma\+From\+To\+Radial\+Exp\+List}}
+\index{sigma\+From\+To\+Radial\+Exp\+List@{sigma\+From\+To\+Radial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+From\+To\+Radial\+Exp\+List()}{sigmaFromToRadialExpList()}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ sigma\+From\+To\+Radial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=292pt]{readNuclearDataLowMem_8H_a784cd7b5c041a0f0734e85f81e68caa3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a81cc11116f227693480b0fb15230836e}\label{readNuclearDataLowMem_8H_a81cc11116f227693480b0fb15230836e}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!D\+Axial\+Exp\+List@{D\+Axial\+Exp\+List}}
+\index{D\+Axial\+Exp\+List@{D\+Axial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{D\+Axial\+Exp\+List()}{DAxialExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ D\+Axial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=234pt]{readNuclearDataLowMem_8H_a81cc11116f227693480b0fb15230836e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a8023ea049e0382517d5eadb06b9aba84}\label{readNuclearDataLowMem_8H_a8023ea049e0382517d5eadb06b9aba84}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!nu\+Sigma\+Eff\+Axial\+Exp\+List@{nu\+Sigma\+Eff\+Axial\+Exp\+List}}
+\index{nu\+Sigma\+Eff\+Axial\+Exp\+List@{nu\+Sigma\+Eff\+Axial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{nu\+Sigma\+Eff\+Axial\+Exp\+List()}{nuSigmaEffAxialExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ nu\+Sigma\+Eff\+Axial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=277pt]{readNuclearDataLowMem_8H_a8023ea049e0382517d5eadb06b9aba84_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a48a08cc967cf6bde7bf51693cfa0c509}\label{readNuclearDataLowMem_8H_a48a08cc967cf6bde7bf51693cfa0c509}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Pow\+Axial\+Exp\+List@{sigma\+Pow\+Axial\+Exp\+List}}
+\index{sigma\+Pow\+Axial\+Exp\+List@{sigma\+Pow\+Axial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Pow\+Axial\+Exp\+List()}{sigmaPowAxialExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Pow\+Axial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=272pt]{readNuclearDataLowMem_8H_a48a08cc967cf6bde7bf51693cfa0c509_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_ad0a2d82c535bddd6a26430df9162b0a2}\label{readNuclearDataLowMem_8H_ad0a2d82c535bddd6a26430df9162b0a2}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Disapp\+Axial\+Exp\+List@{sigma\+Disapp\+Axial\+Exp\+List}}
+\index{sigma\+Disapp\+Axial\+Exp\+List@{sigma\+Disapp\+Axial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Disapp\+Axial\+Exp\+List()}{sigmaDisappAxialExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Disapp\+Axial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=283pt]{readNuclearDataLowMem_8H_ad0a2d82c535bddd6a26430df9162b0a2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_ae3b66677b938cea91100197a993c0be5}\label{readNuclearDataLowMem_8H_ae3b66677b938cea91100197a993c0be5}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+From\+To\+Axial\+Exp\+List@{sigma\+From\+To\+Axial\+Exp\+List}}
+\index{sigma\+From\+To\+Axial\+Exp\+List@{sigma\+From\+To\+Axial\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+From\+To\+Axial\+Exp\+List()}{sigmaFromToAxialExpList()}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ sigma\+From\+To\+Axial\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{readNuclearDataLowMem_8H_ae3b66677b938cea91100197a993c0be5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a6978e2b2f5467a87966d45cbf0c4c639}\label{readNuclearDataLowMem_8H_a6978e2b2f5467a87966d45cbf0c4c639}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!D\+Fuel\+Temp\+List@{D\+Fuel\+Temp\+List}}
+\index{D\+Fuel\+Temp\+List@{D\+Fuel\+Temp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{D\+Fuel\+Temp\+List()}{DFuelTempList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ D\+Fuel\+Temp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=238pt]{readNuclearDataLowMem_8H_a6978e2b2f5467a87966d45cbf0c4c639_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a809ec1538e95a1b3138e0f7ac7abeb6c}\label{readNuclearDataLowMem_8H_a809ec1538e95a1b3138e0f7ac7abeb6c}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!nu\+Sigma\+Eff\+Fuel\+Temp\+List@{nu\+Sigma\+Eff\+Fuel\+Temp\+List}}
+\index{nu\+Sigma\+Eff\+Fuel\+Temp\+List@{nu\+Sigma\+Eff\+Fuel\+Temp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{nu\+Sigma\+Eff\+Fuel\+Temp\+List()}{nuSigmaEffFuelTempList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ nu\+Sigma\+Eff\+Fuel\+Temp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{readNuclearDataLowMem_8H_a809ec1538e95a1b3138e0f7ac7abeb6c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a88e8c2024bcad8a75bc4741e435662d3}\label{readNuclearDataLowMem_8H_a88e8c2024bcad8a75bc4741e435662d3}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Pow\+Fuel\+Temp\+List@{sigma\+Pow\+Fuel\+Temp\+List}}
+\index{sigma\+Pow\+Fuel\+Temp\+List@{sigma\+Pow\+Fuel\+Temp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Pow\+Fuel\+Temp\+List()}{sigmaPowFuelTempList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Pow\+Fuel\+Temp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=277pt]{readNuclearDataLowMem_8H_a88e8c2024bcad8a75bc4741e435662d3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a8570c829c55376df41f67a186ec91bf0}\label{readNuclearDataLowMem_8H_a8570c829c55376df41f67a186ec91bf0}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Disapp\+Fuel\+Temp\+List@{sigma\+Disapp\+Fuel\+Temp\+List}}
+\index{sigma\+Disapp\+Fuel\+Temp\+List@{sigma\+Disapp\+Fuel\+Temp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Disapp\+Fuel\+Temp\+List()}{sigmaDisappFuelTempList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Disapp\+Fuel\+Temp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=288pt]{readNuclearDataLowMem_8H_a8570c829c55376df41f67a186ec91bf0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a7a512ab1139eb59d9a462aff49587bd0}\label{readNuclearDataLowMem_8H_a7a512ab1139eb59d9a462aff49587bd0}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+From\+To\+Fuel\+Temp\+List@{sigma\+From\+To\+Fuel\+Temp\+List}}
+\index{sigma\+From\+To\+Fuel\+Temp\+List@{sigma\+From\+To\+Fuel\+Temp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+From\+To\+Fuel\+Temp\+List()}{sigmaFromToFuelTempList()}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ sigma\+From\+To\+Fuel\+Temp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=291pt]{readNuclearDataLowMem_8H_a7a512ab1139eb59d9a462aff49587bd0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a80c69533a883cb75133bf44d1ab082fe}\label{readNuclearDataLowMem_8H_a80c69533a883cb75133bf44d1ab082fe}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!D\+Rho\+Cool\+List@{D\+Rho\+Cool\+List}}
+\index{D\+Rho\+Cool\+List@{D\+Rho\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{D\+Rho\+Cool\+List()}{DRhoCoolList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ D\+Rho\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{readNuclearDataLowMem_8H_a80c69533a883cb75133bf44d1ab082fe_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_ace6a4873e7010cc1830544f8d535616b}\label{readNuclearDataLowMem_8H_ace6a4873e7010cc1830544f8d535616b}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!nu\+Sigma\+Eff\+Rho\+Cool\+List@{nu\+Sigma\+Eff\+Rho\+Cool\+List}}
+\index{nu\+Sigma\+Eff\+Rho\+Cool\+List@{nu\+Sigma\+Eff\+Rho\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{nu\+Sigma\+Eff\+Rho\+Cool\+List()}{nuSigmaEffRhoCoolList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ nu\+Sigma\+Eff\+Rho\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=277pt]{readNuclearDataLowMem_8H_ace6a4873e7010cc1830544f8d535616b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a33da238d86d5b52bcf74e78b450715f7}\label{readNuclearDataLowMem_8H_a33da238d86d5b52bcf74e78b450715f7}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Pow\+Rho\+Cool\+List@{sigma\+Pow\+Rho\+Cool\+List}}
+\index{sigma\+Pow\+Rho\+Cool\+List@{sigma\+Pow\+Rho\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Pow\+Rho\+Cool\+List()}{sigmaPowRhoCoolList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Pow\+Rho\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=271pt]{readNuclearDataLowMem_8H_a33da238d86d5b52bcf74e78b450715f7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a09ecb37caeb3824fcc43759fba4ada33}\label{readNuclearDataLowMem_8H_a09ecb37caeb3824fcc43759fba4ada33}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Disapp\+Rho\+Cool\+List@{sigma\+Disapp\+Rho\+Cool\+List}}
+\index{sigma\+Disapp\+Rho\+Cool\+List@{sigma\+Disapp\+Rho\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Disapp\+Rho\+Cool\+List()}{sigmaDisappRhoCoolList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Disapp\+Rho\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=283pt]{readNuclearDataLowMem_8H_a09ecb37caeb3824fcc43759fba4ada33_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_af0208ac90cc1c2153e8a9206cdb79457}\label{readNuclearDataLowMem_8H_af0208ac90cc1c2153e8a9206cdb79457}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+From\+To\+Rho\+Cool\+List@{sigma\+From\+To\+Rho\+Cool\+List}}
+\index{sigma\+From\+To\+Rho\+Cool\+List@{sigma\+From\+To\+Rho\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+From\+To\+Rho\+Cool\+List()}{sigmaFromToRhoCoolList()}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ sigma\+From\+To\+Rho\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=286pt]{readNuclearDataLowMem_8H_af0208ac90cc1c2153e8a9206cdb79457_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_afb5b5d357f9a51bcd4e5f519814f7c7d}\label{readNuclearDataLowMem_8H_afb5b5d357f9a51bcd4e5f519814f7c7d}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!D\+T\+Cool\+List@{D\+T\+Cool\+List}}
+\index{D\+T\+Cool\+List@{D\+T\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{D\+T\+Cool\+List()}{DTCoolList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ D\+T\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{readNuclearDataLowMem_8H_afb5b5d357f9a51bcd4e5f519814f7c7d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a56bd2aa6903ca24b2996478e3069acb4}\label{readNuclearDataLowMem_8H_a56bd2aa6903ca24b2996478e3069acb4}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!nu\+Sigma\+Eff\+T\+Cool\+List@{nu\+Sigma\+Eff\+T\+Cool\+List}}
+\index{nu\+Sigma\+Eff\+T\+Cool\+List@{nu\+Sigma\+Eff\+T\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{nu\+Sigma\+Eff\+T\+Cool\+List()}{nuSigmaEffTCoolList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ nu\+Sigma\+Eff\+T\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{readNuclearDataLowMem_8H_a56bd2aa6903ca24b2996478e3069acb4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a9b4bf9eec4053cfd73f50b3166ee4238}\label{readNuclearDataLowMem_8H_a9b4bf9eec4053cfd73f50b3166ee4238}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Pow\+T\+Cool\+List@{sigma\+Pow\+T\+Cool\+List}}
+\index{sigma\+Pow\+T\+Cool\+List@{sigma\+Pow\+T\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Pow\+T\+Cool\+List()}{sigmaPowTCoolList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Pow\+T\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=259pt]{readNuclearDataLowMem_8H_a9b4bf9eec4053cfd73f50b3166ee4238_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a2c85d8518fcb8e2373c337b4a0b9f12b}\label{readNuclearDataLowMem_8H_a2c85d8518fcb8e2373c337b4a0b9f12b}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Disapp\+T\+Cool\+List@{sigma\+Disapp\+T\+Cool\+List}}
+\index{sigma\+Disapp\+T\+Cool\+List@{sigma\+Disapp\+T\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Disapp\+T\+Cool\+List()}{sigmaDisappTCoolList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Disapp\+T\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=271pt]{readNuclearDataLowMem_8H_a2c85d8518fcb8e2373c337b4a0b9f12b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_aec00aee42aa4bcc866c55a2bf28e718f}\label{readNuclearDataLowMem_8H_aec00aee42aa4bcc866c55a2bf28e718f}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+From\+To\+T\+Cool\+List@{sigma\+From\+To\+T\+Cool\+List}}
+\index{sigma\+From\+To\+T\+Cool\+List@{sigma\+From\+To\+T\+Cool\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+From\+To\+T\+Cool\+List()}{sigmaFromToTCoolList()}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ sigma\+From\+To\+T\+Cool\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=274pt]{readNuclearDataLowMem_8H_aec00aee42aa4bcc866c55a2bf28e718f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a0b20f5d5d3a7d538732a088700162f17}\label{readNuclearDataLowMem_8H_a0b20f5d5d3a7d538732a088700162f17}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!D\+Clad\+Exp\+List@{D\+Clad\+Exp\+List}}
+\index{D\+Clad\+Exp\+List@{D\+Clad\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{D\+Clad\+Exp\+List()}{DCladExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ D\+Clad\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=232pt]{readNuclearDataLowMem_8H_a0b20f5d5d3a7d538732a088700162f17_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a5fcf82349fabf302f7082bfe6b409805}\label{readNuclearDataLowMem_8H_a5fcf82349fabf302f7082bfe6b409805}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!nu\+Sigma\+Eff\+Clad\+Exp\+List@{nu\+Sigma\+Eff\+Clad\+Exp\+List}}
+\index{nu\+Sigma\+Eff\+Clad\+Exp\+List@{nu\+Sigma\+Eff\+Clad\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{nu\+Sigma\+Eff\+Clad\+Exp\+List()}{nuSigmaEffCladExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ nu\+Sigma\+Eff\+Clad\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=276pt]{readNuclearDataLowMem_8H_a5fcf82349fabf302f7082bfe6b409805_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a7a20b2877f90d44db7ef821a29b92227}\label{readNuclearDataLowMem_8H_a7a20b2877f90d44db7ef821a29b92227}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Pow\+Clad\+Exp\+List@{sigma\+Pow\+Clad\+Exp\+List}}
+\index{sigma\+Pow\+Clad\+Exp\+List@{sigma\+Pow\+Clad\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Pow\+Clad\+Exp\+List()}{sigmaPowCladExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Pow\+Clad\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=271pt]{readNuclearDataLowMem_8H_a7a20b2877f90d44db7ef821a29b92227_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a6535e9cb52020c71b8a387a09bbbd308}\label{readNuclearDataLowMem_8H_a6535e9cb52020c71b8a387a09bbbd308}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+Disapp\+Clad\+Exp\+List@{sigma\+Disapp\+Clad\+Exp\+List}}
+\index{sigma\+Disapp\+Clad\+Exp\+List@{sigma\+Disapp\+Clad\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+Disapp\+Clad\+Exp\+List()}{sigmaDisappCladExpList()}}
+{\footnotesize\ttfamily Ptr\+List$<$scalar\+Field $>$ sigma\+Disapp\+Clad\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{readNuclearDataLowMem_8H_a6535e9cb52020c71b8a387a09bbbd308_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a127596d2781e3b87e8eb3468b5e38c0d}\label{readNuclearDataLowMem_8H_a127596d2781e3b87e8eb3468b5e38c0d}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!sigma\+From\+To\+Clad\+Exp\+List@{sigma\+From\+To\+Clad\+Exp\+List}}
+\index{sigma\+From\+To\+Clad\+Exp\+List@{sigma\+From\+To\+Clad\+Exp\+List}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{sigma\+From\+To\+Clad\+Exp\+List()}{sigmaFromToCladExpList()}}
+{\footnotesize\ttfamily List$<$Ptr\+List$<$scalar\+Square\+Matrix $>$ $>$ sigma\+From\+To\+Clad\+Exp\+List (\begin{DoxyParamCaption}\item[{zone\+Number\+\_\+}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by for\+All().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=285pt]{readNuclearDataLowMem_8H_a127596d2781e3b87e8eb3468b5e38c0d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a1ba0a86d00d625275de858f1a01edb9f}\label{readNuclearDataLowMem_8H_a1ba0a86d00d625275de858f1a01edb9f}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{entries\+\_\+}]{,  }\item[{zoneI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 50 of file read\+Nuclear\+Data\+Low\+Mem.\+H.
+
+
+
+References D\+Axial\+Exp\+List(), D\+Clad\+Exp\+List(), D\+Fuel\+Temp\+List(), D\+Radial\+Exp\+List(), D\+Rho\+Cool\+List(), D\+T\+Cool\+List(), entries\+Axial\+Exp(), entries\+Clad\+Exp(), entries\+Fuel\+Temp(), entries\+Radial\+Exp(), entries\+Rho\+Cool(), entries\+T\+Cool(), nu\+Sigma\+Eff\+Axial\+Exp\+List(), nu\+Sigma\+Eff\+Clad\+Exp\+List(), nu\+Sigma\+Eff\+Fuel\+Temp\+List(), nu\+Sigma\+Eff\+Radial\+Exp\+List(), nu\+Sigma\+Eff\+Rho\+Cool\+List(), nu\+Sigma\+Eff\+T\+Cool\+List(), sigma\+Disapp\+Axial\+Exp\+List(), sigma\+Disapp\+Clad\+Exp\+List(), sigma\+Disapp\+Fuel\+Temp\+List(), sigma\+Disapp\+Radial\+Exp\+List(), sigma\+Disapp\+Rho\+Cool\+List(), sigma\+Disapp\+T\+Cool\+List(), sigma\+From\+To\+Axial\+Exp\+List(), sigma\+From\+To\+Clad\+Exp\+List(), sigma\+From\+To\+Fuel\+Temp\+List(), sigma\+From\+To\+Radial\+Exp\+List(), sigma\+From\+To\+Rho\+Cool\+List(), sigma\+From\+To\+T\+Cool\+List(), sigma\+Pow\+Axial\+Exp\+List(), sigma\+Pow\+Clad\+Exp\+List(), sigma\+Pow\+Fuel\+Temp\+List(), sigma\+Pow\+Radial\+Exp\+List(), sigma\+Pow\+Rho\+Cool\+List(), and sigma\+Pow\+T\+Cool\+List().
+
+
+
+Referenced by for\+All().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{readNuclearDataLowMem_8H_a1ba0a86d00d625275de858f1a01edb9f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{readNuclearDataLowMem_8H_a1ba0a86d00d625275de858f1a01edb9f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a2428955ee674d42574e73d905589463a}\label{readNuclearDataLowMem_8H_a2428955ee674d42574e73d905589463a}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{C\+Rentries\+\_\+}]{,  }\item[{C\+RzoneI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 433 of file read\+Nuclear\+Data\+Low\+Mem.\+H.
+
+
+
+References centers\+S\+F(), C\+Rinitial\+Position\+\_\+, for\+All(), mesh, and reduce().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=217pt]{readNuclearDataLowMem_8H_a2428955ee674d42574e73d905589463a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{readNuclearDataLowMem_8H_a18680aaf1d13afdaf2eedb40096566be}\label{readNuclearDataLowMem_8H_a18680aaf1d13afdaf2eedb40096566be}} 
+\index{read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}!for\+All@{for\+All}}
+\index{for\+All@{for\+All}!read\+Nuclear\+Data\+Low\+Mem.\+H@{read\+Nuclear\+Data\+Low\+Mem.\+H}}
+\subsubsection{\texorpdfstring{for\+All()}{forAll()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily for\+All (\begin{DoxyParamCaption}\item[{nu\+Sigma\+Eff\+\_\+}]{,  }\item[{energyI}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 484 of file read\+Nuclear\+Data\+Low\+Mem.\+H.
+
+
+
+References for\+All().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{readNuclearDataLowMem_8H_a18680aaf1d13afdaf2eedb40096566be_cgraph}
+\end{center}
+\end{figure}

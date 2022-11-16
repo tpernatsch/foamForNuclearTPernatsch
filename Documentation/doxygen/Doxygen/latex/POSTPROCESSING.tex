@@ -1,0 +1,33 @@
+Postprocessing can be performed using para\+Foam, the standard post-\/processing tool used with Open\+F\+O\+AM. para\+Foam is launched using the command line\+:
+
+{\ttfamily para\+Foam -\/region (region name)}
+
+where the region name is fluid\+Region, neutro\+Region or thermal\+Mechanical\+Region (without the parenthesis!).
+
+Please notice that para\+Foam is essentially an extension of paraview and it requires having paraview installed. In the openfoam.\+com distribution, paraview is not distributed with Open\+F\+O\+AM, but need to be installed separately (see the \href{https://www.paraview.org/}{\tt Para\+View websote}). In Ubuntu, it is normally enough to type in the terminal\+:
+
+{\ttfamily sudo apt-\/get -\/y install paraview}
+
+In case of parallel calculations, one should first reconstruct each one of the three meshes using the command
+
+{\ttfamily recontruct\+Par -\/region (region name)}
+
+where the region name is once again fluid\+Region, neutro\+Region or thermal\+Mechanical\+Region.
+
+Beside para\+Foam, Ge\+N-\/\+Foam also creates, in the case folder (or in the processor folder for parallel simulations), the Ge\+N-\/\+Foam.\+dat file that summurizes few main quantity of interests\+: time(s), keff(-\/), power(\+W), flux0 (m-\/2s-\/1), T\+Fuel\+\_\+\+Max, T\+Fuel\+\_\+\+Avg T\+Fuel\+\_\+\+Min, T\+Cladding\+\_\+\+Max, T\+Cladding\+\_\+\+Avg, T\+Cladding\+\_\+\+Min.
+
+useful information is also stored in the log file. The log file can be created by adding the \textquotesingle{}$\vert$ tee log\+File\textquotesingle{} command to the launch command, i.\+e.\+:
+
+{\ttfamily Ge\+N-\/\+Foam $\vert$ tee log\+File}
+
+or
+
+{\ttfamily mpirun -\/np (number of processors) Ge\+N-\/\+Foam -\/parallel $\vert$ tee log\+File}
+
+Python can effectively be used to extract information from the log\+File (several examples available in the tutorials).
+
+In addition, Open\+F\+O\+AM allows to use \href{https://www.openfoam.com/documentation/guides/latest/doc/guide-function-objects.html}{\tt function objects} to extract specific information after the simulation. Also in this case it is essential to indicate which region you want the function object to be applied to, for instance\+:
+
+{\ttfamily post\+Process -\/func single\+Graph -\/region neutro\+Region}
+
+Function objects can also employed at run time via the {\itshape control\+Dict} (see for instance \href{https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/2D_FFTF/rootCase/system/controlDict}{\tt 2\+D\+\_\+\+F\+F\+TF}). 

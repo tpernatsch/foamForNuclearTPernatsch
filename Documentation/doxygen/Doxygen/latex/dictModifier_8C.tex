@@ -1,0 +1,228 @@
+\hypertarget{dictModifier_8C}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/application/tools/dict\+Modifier/dict\+Modifier.C File Reference}
+\label{dictModifier_8C}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/application/tools/dict\+Modifier/dict\+Modifier.\+C@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/application/tools/dict\+Modifier/dict\+Modifier.\+C}}
+
+
+Interrogate and manipulate dictionaries.  
+
+
+Include dependency graph for dict\+Modifier.\+C\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dictModifier_8C__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classdictAndKeyword}{dict\+And\+Keyword}
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+using \hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} = nlohmann\+::json
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{dictModifier_8C_aa773226ca79dd22cf5974ce8398b9ea1}{upgrade\+Scope} (word \&entry\+Name)
+\item 
+const dictionary \& \hyperlink{dictModifier_8C_a960086d4d3f2dc3bd01749c13410613a}{lookup\+Scoped\+Dict} (const dictionary \&dict, const word \&sub\+Dict\+Name)
+\item 
+void \hyperlink{dictModifier_8C_ab58a53abf2a9e01b11adc4443d9fe1f1}{modify\+From\+Json} (const word \&file\+And\+Key, const string \&new\+Value)
+\item 
+int \hyperlink{dictModifier_8C_a0ddf1224851353fc92bfbff6f499fa97}{main} (int argc, char $\ast$argv\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Interrogate and manipulate dictionaries. 
+
+{\bfseries Original source file} \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/application/tools/dictModifier/dictModifier.C}{\tt dict\+Modifier.\+C}
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Usage}
+{\bfseries foam\+Dictionary} \mbox{[}O\+P\+T\+I\+ON\mbox{]} dictionary
+\end{DoxyParagraph}
+
+\begin{DoxyItemize}
+\item \begin{DoxyParagraph}{-\/entry $<$name$>$}
+Selects an entry
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/keywords}
+Prints the keywords (of the selected entry or of the top level if no entry was selected
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/add $<$value$>$}
+Adds the entry (should not exist yet)
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/set $<$value$>$}
+Adds or replaces the entry
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/remove}
+Remove the selected entry
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/diff $<$dictionary$>$}
+Write differences with respect to the specified dictionary (or sub entry if -\/entry specified)
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/diff-\/etc $<$dictionary$>$}
+Write differences with respect to the specified dictionary (or sub entry if -\/entry specified)
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/expand}
+Read the specified dictionary file, expand the macros etc. and write the resulting dictionary to standard output.
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/includes}
+List the {\ttfamily \#include} and {\ttfamily \#sinclude} files to standard output
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/disable\+Function\+Entries}
+Do not expand macros or directives (\#include etc)
+\end{DoxyParagraph}
+
+\item \begin{DoxyParagraph}{-\/precision int}
+Set default write precision for I\+Ostreams
+\end{DoxyParagraph}
+Example usage\+:
+\item Change simulation to run for one timestep only\+: \begin{DoxyVerb}      foamDictionary system/controlDict -entry stopAt -set writeNow\end{DoxyVerb}
+
+\item Change solver\+: \begin{DoxyVerb}       foamDictionary system/fvSolution -entry solvers.p.solver -set PCG\end{DoxyVerb}
+
+\item Print bc type\+: \begin{DoxyVerb}       foamDictionary 0/U -entry boundaryField.movingWall.type\end{DoxyVerb}
+
+\item Change bc parameter\+: \begin{DoxyVerb}       foamDictionary 0/U -entry boundaryField.movingWall.value \
+         -set "uniform (2 0 0)"\end{DoxyVerb}
+
+\item Change whole bc type\+: \begin{DoxyVerb}      foamDictionary 0/U -entry boundaryField.movingWall \
+        -set "{type uniformFixedValue; uniformValue (2 0 0);}"\end{DoxyVerb}
+
+\item Write the differences with respect to a template dictionary\+: \begin{DoxyVerb}      foamDictionary 0/U -diff-etc templates/closedVolume/0/U\end{DoxyVerb}
+
+\item Write the differences in boundary\+Field with respect to a template dictionary\+: \begin{DoxyVerb}      foamDictionary 0/U -diff-etc templates/closedVolume/0/U \
+        -entry boundaryField\end{DoxyVerb}
+
+\item Change patch type\+: \begin{DoxyVerb}      foamDictionary constant/polyMesh/boundary \
+        -entry entry0.fixedWalls.type -set patch\end{DoxyVerb}
+ This uses special parsing of Lists which stores these in the dictionary with keyword \textquotesingle{}entry\+D\+DD\textquotesingle{} where D\+DD is the position in the dictionary (after ignoring the Foam\+File entry).
+\end{DoxyItemize}
+
+Notes\+:
+\begin{DoxyItemize}
+\item the use of \textquotesingle{}.\textquotesingle{} as the scoping symbol might conflict with e.\+g. file extensions (\textquotesingle{}.\textquotesingle{} is not really considered to be a valid word character). Instead use the \textquotesingle{}/\textquotesingle{} as a scoping character e.\+g. foam\+Dictionary system/snappy\+Hex\+Mesh\+Dict \textbackslash{} -\/entry /geometry/motor\+Bike.obj -\/remove 
+\end{DoxyItemize}
+
+\subsection{Typedef Documentation}
+\mbox{\Hypertarget{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}\label{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}} 
+\index{dict\+Modifier.\+C@{dict\+Modifier.\+C}!json@{json}}
+\index{json@{json}!dict\+Modifier.\+C@{dict\+Modifier.\+C}}
+\subsubsection{\texorpdfstring{json}{json}}
+{\footnotesize\ttfamily using \hyperlink{dictModifier_8C_ab701e3ac61a85b337ec5c1abaad6742d}{json} =  nlohmann\+::json}
+
+
+
+Definition at line 136 of file dict\+Modifier.\+C.
+
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{dictModifier_8C_aa773226ca79dd22cf5974ce8398b9ea1}\label{dictModifier_8C_aa773226ca79dd22cf5974ce8398b9ea1}} 
+\index{dict\+Modifier.\+C@{dict\+Modifier.\+C}!upgrade\+Scope@{upgrade\+Scope}}
+\index{upgrade\+Scope@{upgrade\+Scope}!dict\+Modifier.\+C@{dict\+Modifier.\+C}}
+\subsubsection{\texorpdfstring{upgrade\+Scope()}{upgradeScope()}}
+{\footnotesize\ttfamily bool upgrade\+Scope (\begin{DoxyParamCaption}\item[{word \&}]{entry\+Name }\end{DoxyParamCaption})}
+
+
+
+Definition at line 145 of file dict\+Modifier.\+C.
+
+
+
+Referenced by modify\+From\+Json().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=284pt]{dictModifier_8C_aa773226ca79dd22cf5974ce8398b9ea1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{dictModifier_8C_a960086d4d3f2dc3bd01749c13410613a}\label{dictModifier_8C_a960086d4d3f2dc3bd01749c13410613a}} 
+\index{dict\+Modifier.\+C@{dict\+Modifier.\+C}!lookup\+Scoped\+Dict@{lookup\+Scoped\+Dict}}
+\index{lookup\+Scoped\+Dict@{lookup\+Scoped\+Dict}!dict\+Modifier.\+C@{dict\+Modifier.\+C}}
+\subsubsection{\texorpdfstring{lookup\+Scoped\+Dict()}{lookupScopedDict()}}
+{\footnotesize\ttfamily const dictionary\& lookup\+Scoped\+Dict (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict,  }\item[{const word \&}]{sub\+Dict\+Name }\end{DoxyParamCaption})}
+
+
+
+Definition at line 214 of file dict\+Modifier.\+C.
+
+
+
+Referenced by dict\+And\+Keyword\+::key(), and modify\+From\+Json().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dictModifier_8C_a960086d4d3f2dc3bd01749c13410613a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{dictModifier_8C_ab58a53abf2a9e01b11adc4443d9fe1f1}\label{dictModifier_8C_ab58a53abf2a9e01b11adc4443d9fe1f1}} 
+\index{dict\+Modifier.\+C@{dict\+Modifier.\+C}!modify\+From\+Json@{modify\+From\+Json}}
+\index{modify\+From\+Json@{modify\+From\+Json}!dict\+Modifier.\+C@{dict\+Modifier.\+C}}
+\subsubsection{\texorpdfstring{modify\+From\+Json()}{modifyFromJson()}}
+{\footnotesize\ttfamily void modify\+From\+Json (\begin{DoxyParamCaption}\item[{const word \&}]{file\+And\+Key,  }\item[{const string \&}]{new\+Value }\end{DoxyParamCaption})}
+
+
+
+Definition at line 238 of file dict\+Modifier.\+C.
+
+
+
+References dict\+And\+Keyword\+::dict(), dict\+And\+Keyword\+::key(), lookup\+Scoped\+Dict(), Foam\+::my\+Ops\+::split(), and upgrade\+Scope().
+
+
+
+Referenced by main().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{dictModifier_8C_ab58a53abf2a9e01b11adc4443d9fe1f1_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{dictModifier_8C_ab58a53abf2a9e01b11adc4443d9fe1f1_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{dictModifier_8C_a0ddf1224851353fc92bfbff6f499fa97}\label{dictModifier_8C_a0ddf1224851353fc92bfbff6f499fa97}} 
+\index{dict\+Modifier.\+C@{dict\+Modifier.\+C}!main@{main}}
+\index{main@{main}!dict\+Modifier.\+C@{dict\+Modifier.\+C}}
+\subsubsection{\texorpdfstring{main()}{main()}}
+{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{int}]{argc,  }\item[{char $\ast$}]{argv\mbox{[}$\,$\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 302 of file dict\+Modifier.\+C.
+
+
+
+References i, and modify\+From\+Json().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{dictModifier_8C_a0ddf1224851353fc92bfbff6f499fa97_cgraph}
+\end{center}
+\end{figure}

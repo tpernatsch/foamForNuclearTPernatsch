@@ -1,0 +1,125 @@
+\hypertarget{pEqn__1pl_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase\+Legacy/include/equations/p\+Eqn\+\_\+1pl.H File Reference}
+\label{pEqn__1pl_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase\+Legacy/include/equations/p\+Eqn\+\_\+1pl.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/one\+Phase\+Legacy/include/equations/p\+Eqn\+\_\+1pl.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=263pt]{pEqn__1pl_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+dimensioned\+Scalar \hyperlink{pEqn__1pl_8H_a2f6bedaa716405ff32064277215fce8f}{V\+Tot} (\char`\"{}\char`\"{}, dim\+Vol, g\+Sum(mesh\+\_\+.\+V()))
+\item 
+surface\+Scalar\+Field \hyperlink{pEqn__1pl_8H_af4804c4f6fe5c6e70b7d387bc1608640}{alphaf} (fvc\+::interpolate(\hyperlink{UEqn__1pl_8H_a7fe02434a19f3e00e927f32adcbb193b}{alpha}))
+\item 
+dimensioned\+Scalar \hyperlink{pEqn__1pl_8H_a92d29d794ea6bef01bc070f3b13fbfe2}{compressibility} (fvc\+::domain\+Integrate(\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}))
+\item 
+vol\+Scalar\+Field \hyperlink{pEqn__1pl_8H_a1d030354982b1c54e43d7ea7904ccbe4}{r\+AU} (\char`\"{}r\+A\+U\+Darcy\char`\"{}, 1.\+0/U\+Eqn.\+A())
+\item 
+\hyperlink{pEqn__1pl_8H_a36f4eff30c7d1e67a145268782bd0108}{while} (\hyperlink{hEqn_8H_a3a2458f7f54158be848527a3fdedd5dd}{pimple\+\_\+.\+correct}())
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{pEqn__1pl_8H_ac9c58c3322099dbfedb9a92caa2d3393}{compressible} = (compressibility.\+value()/V\+Tot.\+value() $>$= 1e-\/10)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{pEqn__1pl_8H_a2f6bedaa716405ff32064277215fce8f}\label{pEqn__1pl_8H_a2f6bedaa716405ff32064277215fce8f}} 
+\index{p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}!V\+Tot@{V\+Tot}}
+\index{V\+Tot@{V\+Tot}!p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}}
+\subsubsection{\texorpdfstring{V\+Tot()}{VTot()}}
+{\footnotesize\ttfamily dimensioned\+Scalar V\+Tot (\begin{DoxyParamCaption}\item[{\char`\"{}\char`\"{}}]{,  }\item[{dim\+Vol}]{,  }\item[{g\+Sum(mesh\+\_\+.\+V())}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{pEqn__1pl_8H_af4804c4f6fe5c6e70b7d387bc1608640}\label{pEqn__1pl_8H_af4804c4f6fe5c6e70b7d387bc1608640}} 
+\index{p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}!alphaf@{alphaf}}
+\index{alphaf@{alphaf}!p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}}
+\subsubsection{\texorpdfstring{alphaf()}{alphaf()}}
+{\footnotesize\ttfamily surface\+Scalar\+Field alphaf (\begin{DoxyParamCaption}\item[{fvc\+::interpolate(\hyperlink{UEqn__1pl_8H_a7fe02434a19f3e00e927f32adcbb193b}{alpha})}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=198pt]{pEqn__1pl_8H_af4804c4f6fe5c6e70b7d387bc1608640_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__1pl_8H_a92d29d794ea6bef01bc070f3b13fbfe2}\label{pEqn__1pl_8H_a92d29d794ea6bef01bc070f3b13fbfe2}} 
+\index{p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}!compressibility@{compressibility}}
+\index{compressibility@{compressibility}!p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}}
+\subsubsection{\texorpdfstring{compressibility()}{compressibility()}}
+{\footnotesize\ttfamily dimensioned\+Scalar compressibility (\begin{DoxyParamCaption}\item[{fvc\+::domain\+Integrate(\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi})}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=237pt]{pEqn__1pl_8H_a92d29d794ea6bef01bc070f3b13fbfe2_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__1pl_8H_a1d030354982b1c54e43d7ea7904ccbe4}\label{pEqn__1pl_8H_a1d030354982b1c54e43d7ea7904ccbe4}} 
+\index{p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}!r\+AU@{r\+AU}}
+\index{r\+AU@{r\+AU}!p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}}
+\subsubsection{\texorpdfstring{r\+A\+U()}{rAU()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field r\+AU (\begin{DoxyParamCaption}\item[{\char`\"{}r\+A\+U\+Darcy\char`\"{}}]{,  }\item[{1.\+0/U\+Eqn.}]{A() }\end{DoxyParamCaption})}
+
+
+
+Referenced by while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=189pt]{pEqn__1pl_8H_a1d030354982b1c54e43d7ea7904ccbe4_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{pEqn__1pl_8H_a36f4eff30c7d1e67a145268782bd0108}\label{pEqn__1pl_8H_a36f4eff30c7d1e67a145268782bd0108}} 
+\index{p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}!while@{while}}
+\index{while@{while}!p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}}
+\subsubsection{\texorpdfstring{while()}{while()}}
+{\footnotesize\ttfamily while (\begin{DoxyParamCaption}\item[{pimple\+\_\+.}]{correct() }\end{DoxyParamCaption})}
+
+
+
+Definition at line 22 of file p\+Eqn\+\_\+1pl.\+H.
+
+
+
+References alpha(), alphaf(), compressibility(), compressible, cont\+Err(), correct\+Cont\+Err(), p\+\_\+, p\+\_\+rgh\+\_\+, p\+Eqn(), phi\+Darcy(), psi(), r\+A\+U(), solve, U, U\+Darcy(), and U\+Eqn.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=237pt]{pEqn__1pl_8H_a36f4eff30c7d1e67a145268782bd0108_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{pEqn__1pl_8H_ac9c58c3322099dbfedb9a92caa2d3393}\label{pEqn__1pl_8H_ac9c58c3322099dbfedb9a92caa2d3393}} 
+\index{p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}!compressible@{compressible}}
+\index{compressible@{compressible}!p\+Eqn\+\_\+1pl.\+H@{p\+Eqn\+\_\+1pl.\+H}}
+\subsubsection{\texorpdfstring{compressible}{compressible}}
+{\footnotesize\ttfamily bool compressible = (compressibility.\+value()/V\+Tot.\+value() $>$= 1e-\/10)}
+
+
+
+Definition at line 12 of file p\+Eqn\+\_\+1pl.\+H.
+
+
+
+Referenced by if(), and while().
+

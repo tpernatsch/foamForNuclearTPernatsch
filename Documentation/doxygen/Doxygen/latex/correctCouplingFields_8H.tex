@@ -1,0 +1,143 @@
+\hypertarget{correctCouplingFields_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/correct\+Coupling\+Fields.H File Reference}
+\label{correctCouplingFields_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/correct\+Coupling\+Fields.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/correct\+Coupling\+Fields.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{correctCouplingFields_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const scalar\+Field \& \hyperlink{correctCouplingFields_8H_ab89226dd0a6a743fc2e841f39b01cd22}{alphal} (\hyperlink{createCouplingFields_8H_a34b77427a2a1bf413f5cdae437e3d7ef}{liquid}-\/$>$primitive\+Field())
+\item 
+const scalar\+Field \& \hyperlink{correctCouplingFields_8H_a69c90584a99a3d20701883f62ad5ed8a}{rhol} (\hyperlink{createCouplingFields_8H_a34b77427a2a1bf413f5cdae437e3d7ef}{liquid}-\/$>$\hyperlink{EEqns__2p_8H_a9d615e711281a88a96c648787c7dbd32}{thermo}().\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}().primitive\+Field())
+\item 
+\hyperlink{correctCouplingFields_8H_acdd10c9ec8580fa9872a2acd0c6bd2e0}{if} (\hyperlink{createCouplingFields_8H_ae4c60b2c622bfb2cb70d8694152c0338}{vapour} !=nullptr)
+\item 
+\hyperlink{createCouplingFields_8H_acbd5edcbed05274fed4877890e2ebef8}{baffleless\+Rho\+Cool} \hyperlink{correctCouplingFields_8H_ae1e41489f871f707de2c08795e0cabe7}{primitive\+Field\+Ref} ()
+\item 
+\hyperlink{createCouplingFields_8H_a51d0a72cd31afeebdc70910e8fadefbd}{baffleless\+Alphat} \hyperlink{correctCouplingFields_8H_a661a2f5ea366683490e0277a4abf8c72}{correct\+Boundary\+Conditions} ()
+\item 
+\hyperlink{correctCouplingFields_8H_aa85f8ba1efcb84414a37eab4aba3fa6b}{if} (\hyperlink{createCouplingFields_8H_a48fe00c0cbc444fb8d8e43e0e5ce48bb}{phi\+F\+M\+N\+B\+Reg} !=nullptr)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{correctCouplingFields_8H_a0544c3fe466e421738dae463968b70ba}{else}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{correctCouplingFields_8H_ab89226dd0a6a743fc2e841f39b01cd22}\label{correctCouplingFields_8H_ab89226dd0a6a743fc2e841f39b01cd22}} 
+\index{correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}!alphal@{alphal}}
+\index{alphal@{alphal}!correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{alphal()}{alphal()}}
+{\footnotesize\ttfamily const scalar\+Field\& alphal (\begin{DoxyParamCaption}\item[{\hyperlink{createCouplingFields_8H_a34b77427a2a1bf413f5cdae437e3d7ef}{liquid}-\/$>$}]{primitive\+Field() }\end{DoxyParamCaption})}
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct(), and if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=296pt]{correctCouplingFields_8H_ab89226dd0a6a743fc2e841f39b01cd22_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{correctCouplingFields_8H_a69c90584a99a3d20701883f62ad5ed8a}\label{correctCouplingFields_8H_a69c90584a99a3d20701883f62ad5ed8a}} 
+\index{correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}!rhol@{rhol}}
+\index{rhol@{rhol}!correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{rhol()}{rhol()}}
+{\footnotesize\ttfamily const scalar\+Field\& rhol (\begin{DoxyParamCaption}\item[{\hyperlink{createCouplingFields_8H_a34b77427a2a1bf413f5cdae437e3d7ef}{liquid}-\/$>$}]{thermo).\+rho().\+primitive\+Field( }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=177pt]{correctCouplingFields_8H_a69c90584a99a3d20701883f62ad5ed8a_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{correctCouplingFields_8H_acdd10c9ec8580fa9872a2acd0c6bd2e0}\label{correctCouplingFields_8H_acdd10c9ec8580fa9872a2acd0c6bd2e0}} 
+\index{correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}!if@{if}}
+\index{if@{if}!correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{\hyperlink{createCouplingFields_8H_ae4c60b2c622bfb2cb70d8694152c0338}{vapour} !}]{ = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 4 of file correct\+Coupling\+Fields.\+H.
+
+
+
+References alphal(), baffleless\+Alpha(), baffleless\+Alphat(), baffleless\+Mu(), baffleless\+Rho\+Cool(), baffleless\+T\+Cool(), baffleless\+U(), liquid, rhol(), and vapour.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{correctCouplingFields_8H_acdd10c9ec8580fa9872a2acd0c6bd2e0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{correctCouplingFields_8H_ae1e41489f871f707de2c08795e0cabe7}\label{correctCouplingFields_8H_ae1e41489f871f707de2c08795e0cabe7}} 
+\index{correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}!primitive\+Field\+Ref@{primitive\+Field\+Ref}}
+\index{primitive\+Field\+Ref@{primitive\+Field\+Ref}!correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{primitive\+Field\+Ref()}{primitiveFieldRef()}}
+{\footnotesize\ttfamily \hyperlink{createCouplingFields_8H_ab24f0221414a25d346f3ec78bb700050}{baffleless\+T\+Struct} primitive\+Field\+Ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= 
+        \hyperlink{createCouplingFields_8H_a113830654a80b7f398863f96bf351e05}{liquid}->thermo().T().primitiveField()
+\end{DoxyCode}
+\mbox{\Hypertarget{correctCouplingFields_8H_a661a2f5ea366683490e0277a4abf8c72}\label{correctCouplingFields_8H_a661a2f5ea366683490e0277a4abf8c72}} 
+\index{correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}!correct\+Boundary\+Conditions@{correct\+Boundary\+Conditions}}
+\index{correct\+Boundary\+Conditions@{correct\+Boundary\+Conditions}!correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{correct\+Boundary\+Conditions()}{correctBoundaryConditions()}}
+{\footnotesize\ttfamily \hyperlink{createCouplingFields_8H_a51d0a72cd31afeebdc70910e8fadefbd}{baffleless\+Alphat} correct\+Boundary\+Conditions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{correctCouplingFields_8H_aa85f8ba1efcb84414a37eab4aba3fa6b}\label{correctCouplingFields_8H_aa85f8ba1efcb84414a37eab4aba3fa6b}} 
+\index{correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}!if@{if}}
+\index{if@{if}!correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{\hyperlink{createCouplingFields_8H_a48fe00c0cbc444fb8d8e43e0e5ce48bb}{phi\+F\+M\+N\+B\+Reg} !}]{ = {\ttfamily nullptr} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 84 of file correct\+Coupling\+Fields.\+H.
+
+
+
+References phi\+F\+M\+N\+B\+Reg, and phi\+F\+M\+Reg().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{correctCouplingFields_8H_aa85f8ba1efcb84414a37eab4aba3fa6b_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{correctCouplingFields_8H_a0544c3fe466e421738dae463968b70ba}\label{correctCouplingFields_8H_a0544c3fe466e421738dae463968b70ba}} 
+\index{correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}!else@{else}}
+\index{else@{else}!correct\+Coupling\+Fields.\+H@{correct\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{else}{else}}
+{\footnotesize\ttfamily else}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{
+    \hyperlink{createCouplingFields_8H_afc97dbe3594c6c5e83614b918a2c2ea5}{bafflelessAlpha}.primitiveFieldRef() = \hyperlink{correctCouplingFields_8H_ab89226dd0a6a743fc2e841f39b01cd22}{alphal}
+\end{DoxyCode}
+
+
+Definition at line 39 of file correct\+Coupling\+Fields.\+H.
+

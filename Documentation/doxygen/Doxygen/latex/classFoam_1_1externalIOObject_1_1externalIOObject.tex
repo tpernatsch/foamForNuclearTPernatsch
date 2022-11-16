@@ -1,0 +1,484 @@
+\hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject}{}\section{external\+I\+O\+Object Class Reference}
+\label{classFoam_1_1externalIOObject_1_1externalIOObject}\index{external\+I\+O\+Object@{external\+I\+O\+Object}}
+
+
+Inheritance diagram for external\+I\+O\+Object\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1externalIOObject_1_1externalIOObject__inherit__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual const word \& \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a116f50bec7e5649751b6478270a9ee5f}{type} () const =0
+\item 
+\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a272c7b6ce8c77c24fb0b9bf09de3e519}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject}{external\+I\+O\+Object}, dictionary,(const word \&\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name}, const Time \&run\+Time, const dictionary \&dict),(\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name}, run\+Time, dict))
+\item 
+auto\+Ptr$<$ \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject}{external\+I\+O\+Object} $>$ \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ad9d73d7c7a5f9f42d5d4554fd3445a75}{clone} () const
+\item 
+\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a634c9c39a496123d761ec4b0fec244ac}{external\+I\+O\+Object} (const word \&\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name}, const Time \&run\+Time, const dictionary \&dict)
+\item 
+virtual \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ae5b4904fdfe3e0cd0a91177e1f9b39e9}{$\sim$external\+I\+O\+Object} ()=default
+\item 
+const word \& \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name} () const
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a6ce0c64db98eb6144d363dbfc86104eb}{read} (const dictionary \&dict)
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a6a2fecba3df663a5e8d1c371795e3763}{execute} ()=0
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_aa34e71b0c0b54ff2bee2a9519ca85034}{execute} (const label sub\+Index)
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_afb09203164c30c34e8eca81ef0211745}{write} ()=0
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_af545ab12986d2fe462f1013c3bafb5f3}{end} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a8a88aad980720a56ff0ff3254f885bf9}{adjust\+Time\+Step} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a5f4d7c9d8b31ace78d9b759d521dc160}{files\+Modified} () const
+\item 
+virtual void \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a9c8cde0b192708d622d874f8cc2df66d}{update\+Mesh} (const map\+Poly\+Mesh \&mpm)
+\item 
+virtual void \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a66fa500d6452898eb1bb9342e534f6aa}{move\+Points} (const poly\+Mesh \&\hyperlink{createMeshesPostProcess_8H_a8bb1e58291d2d2b653e024a4f4bffe38}{mesh})
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject}{external\+I\+O\+Object} $>$ \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a24743919db93314770318639f3bea937}{New} (const word \&\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name}, const Time \&run\+Time, const dictionary \&dict)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ae81d3246bfc238875eaecb9aff755a2e}{log}
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static int \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ac3e1795766a80ec63b157951b4b9a7d4}{debug}
+\item 
+static word \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a10f9cf16844cb1df49120a672a6a731a}{output\+Prefix}
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+word \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ac3a973c5f3a4a245b475cf4fc6de864a}{scoped\+Name} (const word \&\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name}) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const word \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_afd780271a9c45061cfdc62f5c3fc9929}{name\+\_\+}
+\item 
+const Time \& \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a1372c16310f0a7cbeaf8b4c0cfc9363b}{time\+\_\+}
+\item 
+const dictionary \& \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_a892ddcb9cba6f50b0396cdb7bf1b4f6a}{dict\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 57 of file external\+I\+O\+Object.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a634c9c39a496123d761ec4b0fec244ac}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a634c9c39a496123d761ec4b0fec244ac}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!external\+I\+O\+Object@{external\+I\+O\+Object}}
+\index{external\+I\+O\+Object@{external\+I\+O\+Object}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{external\+I\+O\+Object()}{externalIOObject()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject}{external\+I\+O\+Object} (\begin{DoxyParamCaption}\item[{const word \&}]{name,  }\item[{const Time \&}]{run\+Time,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 40 of file external\+I\+O\+Object.\+C.
+
+
+
+References external\+I\+O\+Object\+::\+New().
+
+
+
+Referenced by external\+I\+O\+Object\+::clone(), and external\+I\+O\+Object\+::scoped\+Name().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{classFoam_1_1externalIOObject_1_1externalIOObject_a634c9c39a496123d761ec4b0fec244ac_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=280pt]{classFoam_1_1externalIOObject_1_1externalIOObject_a634c9c39a496123d761ec4b0fec244ac_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_ae5b4904fdfe3e0cd0a91177e1f9b39e9}\label{classFoam_1_1externalIOObject_1_1externalIOObject_ae5b4904fdfe3e0cd0a91177e1f9b39e9}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!````~external\+I\+O\+Object@{$\sim$external\+I\+O\+Object}}
+\index{````~external\+I\+O\+Object@{$\sim$external\+I\+O\+Object}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{$\sim$external\+I\+O\+Object()}{~externalIOObject()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject}{external\+I\+O\+Object} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=252pt]{classFoam_1_1externalIOObject_1_1externalIOObject_ae5b4904fdfe3e0cd0a91177e1f9b39e9_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_ac3a973c5f3a4a245b475cf4fc6de864a}\label{classFoam_1_1externalIOObject_1_1externalIOObject_ac3a973c5f3a4a245b475cf4fc6de864a}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!scoped\+Name@{scoped\+Name}}
+\index{scoped\+Name@{scoped\+Name}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{scoped\+Name()}{scopedName()}}
+{\footnotesize\ttfamily Foam\+::word scoped\+Name (\begin{DoxyParamCaption}\item[{const word \&}]{name }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 30 of file external\+I\+O\+Object.\+C.
+
+
+
+References external\+I\+O\+Object\+::external\+I\+O\+Object().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=280pt]{classFoam_1_1externalIOObject_1_1externalIOObject_ac3a973c5f3a4a245b475cf4fc6de864a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a116f50bec7e5649751b6478270a9ee5f}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a116f50bec7e5649751b6478270a9ee5f}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!type@{type}}
+\index{type@{type}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{type()}{type()}}
+{\footnotesize\ttfamily virtual const word\& type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a272c7b6ce8c77c24fb0b9bf09de3e519}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a272c7b6ce8c77c24fb0b9bf09de3e519}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject}{external\+I\+O\+Object}}]{,  }\item[{dictionary}]{,  }\item[{(const word \&\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name}, const Time \&run\+Time, const dictionary \&dict)}]{,  }\item[{(\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}{name}, run\+Time, dict)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_ad9d73d7c7a5f9f42d5d4554fd3445a75}\label{classFoam_1_1externalIOObject_1_1externalIOObject_ad9d73d7c7a5f9f42d5d4554fd3445a75}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!clone@{clone}}
+\index{clone@{clone}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{clone()}{clone()}}
+{\footnotesize\ttfamily auto\+Ptr$<$\hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject}{external\+I\+O\+Object}$>$ clone (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 109 of file external\+I\+O\+Object.\+H.
+
+
+
+References external\+I\+O\+Object\+::adjust\+Time\+Step(), external\+I\+O\+Object\+::end(), external\+I\+O\+Object\+::execute(), external\+I\+O\+Object\+::external\+I\+O\+Object(), external\+I\+O\+Object\+::files\+Modified(), mesh, external\+I\+O\+Object\+::move\+Points(), external\+I\+O\+Object\+::name(), external\+I\+O\+Object\+::\+New(), external\+I\+O\+Object\+::read(), external\+I\+O\+Object\+::update\+Mesh(), external\+I\+O\+Object\+::write(), and external\+I\+O\+Object\+::$\sim$external\+I\+O\+Object().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=325pt]{classFoam_1_1externalIOObject_1_1externalIOObject_ad9d73d7c7a5f9f42d5d4554fd3445a75_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a24743919db93314770318639f3bea937}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a24743919db93314770318639f3bea937}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!New@{New}}
+\index{New@{New}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1externalIOObject_1_1externalIOObject}{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object} $>$ New (\begin{DoxyParamCaption}\item[{const word \&}]{name,  }\item[{const Time \&}]{run\+Time,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 54 of file external\+I\+O\+Object.\+C.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone(), and external\+I\+O\+Object\+::external\+I\+O\+Object().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=319pt]{classFoam_1_1externalIOObject_1_1externalIOObject_a24743919db93314770318639f3bea937_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}\label{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!name@{name}}
+\index{name@{name}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{name()}{name()}}
+{\footnotesize\ttfamily const Foam\+::word \& name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 119 of file external\+I\+O\+Object.\+C.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=197pt]{classFoam_1_1externalIOObject_1_1externalIOObject_ade4113569ef0db70665fded275a5e38e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a6ce0c64db98eb6144d363dbfc86104eb}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a6ce0c64db98eb6144d363dbfc86104eb}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!read@{read}}
+\index{read@{read}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily bool read (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented in \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a89a155d23dd4ca6365631548620bab27}{field\+Integral\+To\+F\+MU}, \hyperlink{classFoam_1_1externalIOObject_1_1extSensor_afac0600fef97b05534a595ce00b272ed}{ext\+Sensor}, \hyperlink{classFoam_1_1externalIOObject_1_1extForces_afac0600fef97b05534a595ce00b272ed}{ext\+Forces}, \hyperlink{classFoam_1_1externalIOObject_1_1extFunction_afac0600fef97b05534a595ce00b272ed}{ext\+Function}, and \hyperlink{classFoam_1_1externalIOObject_1_1extPatch_afac0600fef97b05534a595ce00b272ed}{ext\+Patch}.
+
+
+
+Definition at line 125 of file external\+I\+O\+Object.\+C.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=191pt]{classFoam_1_1externalIOObject_1_1externalIOObject_a6ce0c64db98eb6144d363dbfc86104eb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a6a2fecba3df663a5e8d1c371795e3763}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a6a2fecba3df663a5e8d1c371795e3763}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!execute@{execute}}
+\index{execute@{execute}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{execute()}{execute()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily virtual bool execute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a304cfd64aa086af8de5829288d82c74d}{field\+Integral\+To\+F\+MU}, \hyperlink{classFoam_1_1externalIOObject_1_1extSensor_ae006844a02161d12182ab372ca5c257b}{ext\+Sensor}, \hyperlink{classFoam_1_1externalIOObject_1_1extForces_ae006844a02161d12182ab372ca5c257b}{ext\+Forces}, \hyperlink{classFoam_1_1externalIOObject_1_1extFunction_ae006844a02161d12182ab372ca5c257b}{ext\+Function}, and \hyperlink{classFoam_1_1externalIOObject_1_1extPatch_ae006844a02161d12182ab372ca5c257b}{ext\+Patch}.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{classFoam_1_1externalIOObject_1_1externalIOObject_a6a2fecba3df663a5e8d1c371795e3763_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_aa34e71b0c0b54ff2bee2a9519ca85034}\label{classFoam_1_1externalIOObject_1_1externalIOObject_aa34e71b0c0b54ff2bee2a9519ca85034}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!execute@{execute}}
+\index{execute@{execute}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{execute()}{execute()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily bool execute (\begin{DoxyParamCaption}\item[{const label}]{sub\+Index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 131 of file external\+I\+O\+Object.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_afb09203164c30c34e8eca81ef0211745}\label{classFoam_1_1externalIOObject_1_1externalIOObject_afb09203164c30c34e8eca81ef0211745}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!write@{write}}
+\index{write@{write}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily virtual bool write (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1externalIOObject_1_1fieldIntegralToFMU_a47ddec9272d09313c6ea694bb2953155}{field\+Integral\+To\+F\+MU}, \hyperlink{classFoam_1_1externalIOObject_1_1extSensor_ae8f6374e29a250261b3979bbd6e5cb40}{ext\+Sensor}, \hyperlink{classFoam_1_1externalIOObject_1_1extForces_ae8f6374e29a250261b3979bbd6e5cb40}{ext\+Forces}, \hyperlink{classFoam_1_1externalIOObject_1_1extFunction_ae8f6374e29a250261b3979bbd6e5cb40}{ext\+Function}, and \hyperlink{classFoam_1_1externalIOObject_1_1extPatch_ae8f6374e29a250261b3979bbd6e5cb40}{ext\+Patch}.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{classFoam_1_1externalIOObject_1_1externalIOObject_afb09203164c30c34e8eca81ef0211745_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_af545ab12986d2fe462f1013c3bafb5f3}\label{classFoam_1_1externalIOObject_1_1externalIOObject_af545ab12986d2fe462f1013c3bafb5f3}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!end@{end}}
+\index{end@{end}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily bool end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 137 of file external\+I\+O\+Object.\+C.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=188pt]{classFoam_1_1externalIOObject_1_1externalIOObject_af545ab12986d2fe462f1013c3bafb5f3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a8a88aad980720a56ff0ff3254f885bf9}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a8a88aad980720a56ff0ff3254f885bf9}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!adjust\+Time\+Step@{adjust\+Time\+Step}}
+\index{adjust\+Time\+Step@{adjust\+Time\+Step}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{adjust\+Time\+Step()}{adjustTimeStep()}}
+{\footnotesize\ttfamily bool adjust\+Time\+Step (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 143 of file external\+I\+O\+Object.\+C.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=241pt]{classFoam_1_1externalIOObject_1_1externalIOObject_a8a88aad980720a56ff0ff3254f885bf9_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a5f4d7c9d8b31ace78d9b759d521dc160}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a5f4d7c9d8b31ace78d9b759d521dc160}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!files\+Modified@{files\+Modified}}
+\index{files\+Modified@{files\+Modified}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{files\+Modified()}{filesModified()}}
+{\footnotesize\ttfamily bool files\+Modified (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 149 of file external\+I\+O\+Object.\+C.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=227pt]{classFoam_1_1externalIOObject_1_1externalIOObject_a5f4d7c9d8b31ace78d9b759d521dc160_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a9c8cde0b192708d622d874f8cc2df66d}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a9c8cde0b192708d622d874f8cc2df66d}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!update\+Mesh@{update\+Mesh}}
+\index{update\+Mesh@{update\+Mesh}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{update\+Mesh()}{updateMesh()}}
+{\footnotesize\ttfamily void update\+Mesh (\begin{DoxyParamCaption}\item[{const map\+Poly\+Mesh \&}]{mpm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 155 of file external\+I\+O\+Object.\+C.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classFoam_1_1externalIOObject_1_1externalIOObject_a9c8cde0b192708d622d874f8cc2df66d_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a66fa500d6452898eb1bb9342e534f6aa}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a66fa500d6452898eb1bb9342e534f6aa}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!move\+Points@{move\+Points}}
+\index{move\+Points@{move\+Points}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{move\+Points()}{movePoints()}}
+{\footnotesize\ttfamily void move\+Points (\begin{DoxyParamCaption}\item[{const poly\+Mesh \&}]{mesh }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 159 of file external\+I\+O\+Object.\+C.
+
+
+
+Referenced by external\+I\+O\+Object\+::clone().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=224pt]{classFoam_1_1externalIOObject_1_1externalIOObject_a66fa500d6452898eb1bb9342e534f6aa_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_afd780271a9c45061cfdc62f5c3fc9929}\label{classFoam_1_1externalIOObject_1_1externalIOObject_afd780271a9c45061cfdc62f5c3fc9929}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!name\+\_\+@{name\+\_\+}}
+\index{name\+\_\+@{name\+\_\+}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{name\+\_\+}{name\_}}
+{\footnotesize\ttfamily const word name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 64 of file external\+I\+O\+Object.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a1372c16310f0a7cbeaf8b4c0cfc9363b}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a1372c16310f0a7cbeaf8b4c0cfc9363b}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!time\+\_\+@{time\+\_\+}}
+\index{time\+\_\+@{time\+\_\+}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{time\+\_\+}{time\_}}
+{\footnotesize\ttfamily const Time\& time\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 66 of file external\+I\+O\+Object.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a892ddcb9cba6f50b0396cdb7bf1b4f6a}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a892ddcb9cba6f50b0396cdb7bf1b4f6a}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!dict\+\_\+@{dict\+\_\+}}
+\index{dict\+\_\+@{dict\+\_\+}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{dict\+\_\+}{dict\_}}
+{\footnotesize\ttfamily const dictionary\& dict\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 68 of file external\+I\+O\+Object.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_ac3e1795766a80ec63b157951b4b9a7d4}\label{classFoam_1_1externalIOObject_1_1externalIOObject_ac3e1795766a80ec63b157951b4b9a7d4}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!debug@{debug}}
+\index{debug@{debug}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{debug}{debug}}
+{\footnotesize\ttfamily int debug\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 85 of file external\+I\+O\+Object.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_a10f9cf16844cb1df49120a672a6a731a}\label{classFoam_1_1externalIOObject_1_1externalIOObject_a10f9cf16844cb1df49120a672a6a731a}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!output\+Prefix@{output\+Prefix}}
+\index{output\+Prefix@{output\+Prefix}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{output\+Prefix}{outputPrefix}}
+{\footnotesize\ttfamily word output\+Prefix\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 88 of file external\+I\+O\+Object.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1externalIOObject_1_1externalIOObject_ae81d3246bfc238875eaecb9aff755a2e}\label{classFoam_1_1externalIOObject_1_1externalIOObject_ae81d3246bfc238875eaecb9aff755a2e}} 
+\index{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}!log@{log}}
+\index{log@{log}!Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object@{Foam\+::external\+I\+O\+Object\+::external\+I\+O\+Object}}
+\subsubsection{\texorpdfstring{log}{log}}
+{\footnotesize\ttfamily bool log}
+
+
+
+Definition at line 91 of file external\+I\+O\+Object.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/external\+I\+O/\hyperlink{externalIOObject_8H}{external\+I\+O\+Object.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/external\+I\+O/\hyperlink{externalIOObject_8C}{external\+I\+O\+Object.\+C}\end{DoxyCompactItemize}

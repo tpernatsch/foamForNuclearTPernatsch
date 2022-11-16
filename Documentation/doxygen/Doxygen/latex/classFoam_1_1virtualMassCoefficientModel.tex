@@ -1,0 +1,245 @@
+\hypertarget{classFoam_1_1virtualMassCoefficientModel}{}\section{virtual\+Mass\+Coefficient\+Model Class Reference}
+\label{classFoam_1_1virtualMassCoefficientModel}\index{virtual\+Mass\+Coefficient\+Model@{virtual\+Mass\+Coefficient\+Model}}
+
+
+Class to handle fluid-\/fluid interfacial area.  
+
+
+
+
+Inheritance diagram for virtual\+Mass\+Coefficient\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{classFoam_1_1virtualMassCoefficientModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for virtual\+Mass\+Coefficient\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=282pt]{classFoam_1_1virtualMassCoefficientModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1virtualMassCoefficientModel_a985da6faf2cd0949386db45737b6121d}{Type\+Name} (\char`\"{}virtual\+Mass\+Coefficient\+Model\char`\"{})
+\item 
+\hyperlink{classFoam_1_1virtualMassCoefficientModel_ac2a5f5dbc6c3909a8b94d4eb20b3e886}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1virtualMassCoefficientModel}{virtual\+Mass\+Coefficient\+Model}, virtual\+Mass\+Coefficient\+Models,(const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg),(pair, dict, obj\+Reg))
+\item 
+\hyperlink{classFoam_1_1virtualMassCoefficientModel_a9cba82ef48369643a0bec036b6adfaec}{virtual\+Mass\+Coefficient\+Model} (const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1virtualMassCoefficientModel_a718108d6079aad2c9c771b71ef3532e0}{$\sim$virtual\+Mass\+Coefficient\+Model} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1virtualMassCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}{value} (const label \&celli) const =0
+\item 
+virtual void \hyperlink{classFoam_1_1virtualMassCoefficientModel_a5e91ff2b95e1d751006295c9b9becd35}{correct\+Field} (vol\+Scalar\+Field \&Vm) const
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1virtualMassCoefficientModel}{virtual\+Mass\+Coefficient\+Model} $>$ \hyperlink{classFoam_1_1virtualMassCoefficientModel_aefcea09c36590e0ae882b41fd51f0589}{New} (const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const fv\+Mesh \& \hyperlink{classFoam_1_1virtualMassCoefficientModel_a23edeeeecebcef11921a33dd5d990570}{mesh\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \& \hyperlink{classFoam_1_1virtualMassCoefficientModel_ad015e769561f394d7c717d4356dcded4}{pair\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1virtualMassCoefficientModel_a5e2d96f5c8eaf3d2ba2fd36db82b8e8b}{fluid1\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1fluid}{fluid} \& \hyperlink{classFoam_1_1virtualMassCoefficientModel_a10350fa01c5980453030c19e26a2253f}{fluid2\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to handle fluid-\/fluid interfacial area. 
+
+\label{_Description}%
+ Author Stefan Radman (\href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch} / \href{mailto:stefanradman92@gmail.com}{\tt stefanradman92@gmail.\+com})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/virtualMassModels/virtualMassCoefficientModels/virtualMassCoefficientModel.H}{\tt virtual\+Mass\+Coefficient\+Model.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/virtualMassModels/virtualMassCoefficientModels/virtualMassCoefficientModel.C}{\tt virtual\+Mass\+Coefficient\+Model.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/virtualMassModels/virtualMassCoefficientModels/newInterfacialAreaModel.C}{\tt new\+Interfacial\+Area\+Model.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 53 of file virtual\+Mass\+Coefficient\+Model.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_a9cba82ef48369643a0bec036b6adfaec}\label{classFoam_1_1virtualMassCoefficientModel_a9cba82ef48369643a0bec036b6adfaec}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!virtual\+Mass\+Coefficient\+Model@{virtual\+Mass\+Coefficient\+Model}}
+\index{virtual\+Mass\+Coefficient\+Model@{virtual\+Mass\+Coefficient\+Model}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{virtual\+Mass\+Coefficient\+Model()}{virtualMassCoefficientModel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1virtualMassCoefficientModel}{virtual\+Mass\+Coefficient\+Model} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 37 of file virtual\+Mass\+Coefficient\+Model.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_a718108d6079aad2c9c771b71ef3532e0}\label{classFoam_1_1virtualMassCoefficientModel_a718108d6079aad2c9c771b71ef3532e0}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!````~virtual\+Mass\+Coefficient\+Model@{$\sim$virtual\+Mass\+Coefficient\+Model}}
+\index{````~virtual\+Mass\+Coefficient\+Model@{$\sim$virtual\+Mass\+Coefficient\+Model}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{$\sim$virtual\+Mass\+Coefficient\+Model()}{~virtualMassCoefficientModel()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1virtualMassCoefficientModel}{virtual\+Mass\+Coefficient\+Model} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 97 of file virtual\+Mass\+Coefficient\+Model.\+H.
+
+
+
+References virtual\+Mass\+Coefficient\+Model\+::correct\+Field(), virtual\+Mass\+Coefficient\+Model\+::\+New(), and virtual\+Mass\+Coefficient\+Model\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{classFoam_1_1virtualMassCoefficientModel_a718108d6079aad2c9c771b71ef3532e0_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_a985da6faf2cd0949386db45737b6121d}\label{classFoam_1_1virtualMassCoefficientModel_a985da6faf2cd0949386db45737b6121d}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}virtual\+Mass\+Coefficient\+Model\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_ac2a5f5dbc6c3909a8b94d4eb20b3e886}\label{classFoam_1_1virtualMassCoefficientModel_ac2a5f5dbc6c3909a8b94d4eb20b3e886}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1virtualMassCoefficientModel}{virtual\+Mass\+Coefficient\+Model}}]{,  }\item[{virtual\+Mass\+Coefficient\+Models}]{,  }\item[{(const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)}]{,  }\item[{(pair, dict, obj\+Reg)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_aefcea09c36590e0ae882b41fd51f0589}\label{classFoam_1_1virtualMassCoefficientModel_aefcea09c36590e0ae882b41fd51f0589}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!New@{New}}
+\index{New@{New}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1virtualMassCoefficientModel}{Foam\+::virtual\+Mass\+Coefficient\+Model} $>$ New (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 26 of file new\+Virtual\+Mass\+Coefficient\+Model.\+C.
+
+
+
+Referenced by virtual\+Mass\+Coefficient\+Model\+::$\sim$virtual\+Mass\+Coefficient\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=299pt]{classFoam_1_1virtualMassCoefficientModel_aefcea09c36590e0ae882b41fd51f0589_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}\label{classFoam_1_1virtualMassCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!value@{value}}
+\index{value@{value}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily virtual scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Referenced by virtual\+Mass\+Coefficient\+Model\+::$\sim$virtual\+Mass\+Coefficient\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=302pt]{classFoam_1_1virtualMassCoefficientModel_a139457cae4c5e04785e143fd8b9ed092_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_a5e91ff2b95e1d751006295c9b9becd35}\label{classFoam_1_1virtualMassCoefficientModel_a5e91ff2b95e1d751006295c9b9becd35}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!correct\+Field@{correct\+Field}}
+\index{correct\+Field@{correct\+Field}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{correct\+Field()}{correctField()}}
+{\footnotesize\ttfamily void correct\+Field (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field \&}]{Vm }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 63 of file virtual\+Mass\+Coefficient\+Model.\+C.
+
+
+
+References for\+All(), and i.
+
+
+
+Referenced by virtual\+Mass\+Coefficient\+Model\+::$\sim$virtual\+Mass\+Coefficient\+Model().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=223pt]{classFoam_1_1virtualMassCoefficientModel_a5e91ff2b95e1d751006295c9b9becd35_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{classFoam_1_1virtualMassCoefficientModel_a5e91ff2b95e1d751006295c9b9becd35_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_a23edeeeecebcef11921a33dd5d990570}\label{classFoam_1_1virtualMassCoefficientModel_a23edeeeecebcef11921a33dd5d990570}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!mesh\+\_\+@{mesh\+\_\+}}
+\index{mesh\+\_\+@{mesh\+\_\+}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{mesh\+\_\+}{mesh\_}}
+{\footnotesize\ttfamily const fv\+Mesh\& mesh\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 59 of file virtual\+Mass\+Coefficient\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_ad015e769561f394d7c717d4356dcded4}\label{classFoam_1_1virtualMassCoefficientModel_ad015e769561f394d7c717d4356dcded4}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!pair\+\_\+@{pair\+\_\+}}
+\index{pair\+\_\+@{pair\+\_\+}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{pair\+\_\+}{pair\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair}\& pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 61 of file virtual\+Mass\+Coefficient\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_a5e2d96f5c8eaf3d2ba2fd36db82b8e8b}\label{classFoam_1_1virtualMassCoefficientModel_a5e2d96f5c8eaf3d2ba2fd36db82b8e8b}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!fluid1\+\_\+@{fluid1\+\_\+}}
+\index{fluid1\+\_\+@{fluid1\+\_\+}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{fluid1\+\_\+}{fluid1\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& fluid1\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 63 of file virtual\+Mass\+Coefficient\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1virtualMassCoefficientModel_a10350fa01c5980453030c19e26a2253f}\label{classFoam_1_1virtualMassCoefficientModel_a10350fa01c5980453030c19e26a2253f}} 
+\index{Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}!fluid2\+\_\+@{fluid2\+\_\+}}
+\index{fluid2\+\_\+@{fluid2\+\_\+}!Foam\+::virtual\+Mass\+Coefficient\+Model@{Foam\+::virtual\+Mass\+Coefficient\+Model}}
+\subsubsection{\texorpdfstring{fluid2\+\_\+}{fluid2\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1fluid}{fluid}\& fluid2\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 65 of file virtual\+Mass\+Coefficient\+Model.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/virtual\+Mass\+Models/virtual\+Mass\+Coefficient\+Models/\hyperlink{virtualMassCoefficientModel_8H}{virtual\+Mass\+Coefficient\+Model.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/virtual\+Mass\+Models/virtual\+Mass\+Coefficient\+Models/\hyperlink{newVirtualMassCoefficientModel_8C}{new\+Virtual\+Mass\+Coefficient\+Model.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/virtual\+Mass\+Models/virtual\+Mass\+Coefficient\+Models/\hyperlink{virtualMassCoefficientModel_8C}{virtual\+Mass\+Coefficient\+Model.\+C}\end{DoxyCompactItemize}

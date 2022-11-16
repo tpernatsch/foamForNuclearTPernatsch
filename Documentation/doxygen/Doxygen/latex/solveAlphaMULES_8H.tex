@@ -1,0 +1,188 @@
+\hypertarget{solveAlphaMULES_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/alpha\+Eqns\+Routines/solve\+Alpha\+M\+U\+L\+ES.H File Reference}
+\label{solveAlphaMULES_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/alpha\+Eqns\+Routines/solve\+Alpha\+M\+U\+L\+E\+S.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/alpha\+Eqns\+Routines/solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{solveAlphaMULES_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+const surface\+Scalar\+Field \& \hyperlink{solveAlphaMULES_8H_a56f7cc5336f24e776556c927f6a53a15}{phi1} (fluid1\+\_\+.\+phi())
+\item 
+const surface\+Scalar\+Field \& \hyperlink{solveAlphaMULES_8H_ae4c81f549c4d3c3eca025cef5736eae8}{phi2} (fluid2\+\_\+.\+phi())
+\item 
+word \hyperlink{solveAlphaMULES_8H_a1712c92d5830c224e39610db811264db}{phir\+Scheme} (\char`\"{}div(phir,\hyperlink{UEqn__1pl_8H_a7fe02434a19f3e00e927f32adcbb193b}{alpha})\char`\"{})
+\item 
+scalar \hyperlink{solveAlphaMULES_8H_afe2a2c222a7ebeed80fcc8464bdd2cd2}{min\+Alpha\+Sp} (alpha\+Dict.\+lookup\+Or\+Default$<$ scalar $>$(\char`\"{}min\+Alpha\+Sp\char`\"{}, 1e-\/6))
+\item 
+word \hyperlink{solveAlphaMULES_8H_a6b6b670db65a241e294cd39d06b05192}{solve\+Phase} (alpha\+Dict.\+lookup\+Or\+Default$<$ word $>$(\char`\"{}solve\+Phase\char`\"{}, \char`\"{}both\char`\"{}))
+\item 
+bool \hyperlink{solveAlphaMULES_8H_ac92bd5ad9d5fec94d631acbb380404e0}{adjust\+Sub\+Cycles} (alpha\+Dict.\+lookup\+Or\+Default$<$ bool $>$(\char`\"{}adjust\+Sub\+Cycles\char`\"{}, false))
+\item 
+label \hyperlink{solveAlphaMULES_8H_a290130a8990b5bd2767ef1f656325e56}{max\+Sub\+Cycles} (alpha\+Dict.\+lookup\+Or\+Default$<$ label $>$(\char`\"{}max\+Sub\+Cycles\char`\"{}, 50))
+\item 
+scalar \hyperlink{solveAlphaMULES_8H_a23fab721ca956091a1921746c4da0216}{alpha\+Max\+Co\+Num} ((\hyperlink{solveAlphaMULES_8H_ac92bd5ad9d5fec94d631acbb380404e0}{adjust\+Sub\+Cycles}) ? alpha\+Dict.\+get$<$ scalar $>$(\char`\"{}alpha\+Max\+Co\char`\"{}) \+:0.\+49)
+\item 
+label \hyperlink{solveAlphaMULES_8H_a789731aed114e29f0b40ddbefaf14c31}{n\+Sub\+Cycles} ((\hyperlink{solveAlphaMULES_8H_ac92bd5ad9d5fec94d631acbb380404e0}{adjust\+Sub\+Cycles} and both\+Phases\+Are\+Present\+\_\+) ? min(ceil((Co\+Num\+\_\++S\+M\+A\+LL)/\hyperlink{solveAlphaMULES_8H_a23fab721ca956091a1921746c4da0216}{alpha\+Max\+Co\+Num}), \hyperlink{solveAlphaMULES_8H_a290130a8990b5bd2767ef1f656325e56}{max\+Sub\+Cycles}) \+:alpha\+Dict.\+lookup\+Or\+Default$<$ label $>$(\char`\"{}n\+Sub\+Cycles\char`\"{}, 1))
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+auto \hyperlink{solveAlphaMULES_8H_ad9bc77589ca7ad7822f7ec27d377a8ce}{solve\+Alpha}
+\item 
+auto \hyperlink{solveAlphaMULES_8H_ac418babfa8e0a42a6b77aa6730f97efb}{solve\+Alphas}
+\item 
+auto \hyperlink{solveAlphaMULES_8H_a2de99cc2184e44282013f20748f72470}{solve}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{solveAlphaMULES_8H_a56f7cc5336f24e776556c927f6a53a15}\label{solveAlphaMULES_8H_a56f7cc5336f24e776556c927f6a53a15}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!phi1@{phi1}}
+\index{phi1@{phi1}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{phi1()}{phi1()}}
+{\footnotesize\ttfamily const surface\+Scalar\+Field\& phi1 (\begin{DoxyParamCaption}\item[{fluid1\+\_\+.}]{phi() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=190pt]{solveAlphaMULES_8H_a56f7cc5336f24e776556c927f6a53a15_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{solveAlphaMULES_8H_ae4c81f549c4d3c3eca025cef5736eae8}\label{solveAlphaMULES_8H_ae4c81f549c4d3c3eca025cef5736eae8}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!phi2@{phi2}}
+\index{phi2@{phi2}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{phi2()}{phi2()}}
+{\footnotesize\ttfamily const surface\+Scalar\+Field\& phi2 (\begin{DoxyParamCaption}\item[{fluid2\+\_\+.}]{phi() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), two\+Phase\+Drag\+Multiplier\+Model\+::value(), and while().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=302pt]{solveAlphaMULES_8H_ae4c81f549c4d3c3eca025cef5736eae8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{solveAlphaMULES_8H_a1712c92d5830c224e39610db811264db}\label{solveAlphaMULES_8H_a1712c92d5830c224e39610db811264db}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!phir\+Scheme@{phir\+Scheme}}
+\index{phir\+Scheme@{phir\+Scheme}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{phir\+Scheme()}{phirScheme()}}
+{\footnotesize\ttfamily word phir\+Scheme (\begin{DoxyParamCaption}\item[{\char`\"{}div(phir,\hyperlink{UEqn__1pl_8H_a7fe02434a19f3e00e927f32adcbb193b}{alpha})\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveAlphaMULES_8H_afe2a2c222a7ebeed80fcc8464bdd2cd2}\label{solveAlphaMULES_8H_afe2a2c222a7ebeed80fcc8464bdd2cd2}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!min\+Alpha\+Sp@{min\+Alpha\+Sp}}
+\index{min\+Alpha\+Sp@{min\+Alpha\+Sp}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{min\+Alpha\+Sp()}{minAlphaSp()}}
+{\footnotesize\ttfamily scalar min\+Alpha\+Sp (\begin{DoxyParamCaption}\item[{alpha\+Dict.\+lookup\+Or\+Default$<$ scalar $>$}]{\char`\"{}min\+Alpha\+Sp\char`\"{}, 1e-\/6 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveAlphaMULES_8H_a6b6b670db65a241e294cd39d06b05192}\label{solveAlphaMULES_8H_a6b6b670db65a241e294cd39d06b05192}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!solve\+Phase@{solve\+Phase}}
+\index{solve\+Phase@{solve\+Phase}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{solve\+Phase()}{solvePhase()}}
+{\footnotesize\ttfamily word solve\+Phase (\begin{DoxyParamCaption}\item[{alpha\+Dict.\+lookup\+Or\+Default$<$ word $>$}]{\char`\"{}solve\+Phase\char`\"{}, \char`\"{}both\char`\"{} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveAlphaMULES_8H_ac92bd5ad9d5fec94d631acbb380404e0}\label{solveAlphaMULES_8H_ac92bd5ad9d5fec94d631acbb380404e0}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!adjust\+Sub\+Cycles@{adjust\+Sub\+Cycles}}
+\index{adjust\+Sub\+Cycles@{adjust\+Sub\+Cycles}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{adjust\+Sub\+Cycles()}{adjustSubCycles()}}
+{\footnotesize\ttfamily bool adjust\+Sub\+Cycles (\begin{DoxyParamCaption}\item[{alpha\+Dict.\+lookup\+Or\+Default$<$ bool $>$}]{\char`\"{}adjust\+Sub\+Cycles\char`\"{}, false }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveAlphaMULES_8H_a290130a8990b5bd2767ef1f656325e56}\label{solveAlphaMULES_8H_a290130a8990b5bd2767ef1f656325e56}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!max\+Sub\+Cycles@{max\+Sub\+Cycles}}
+\index{max\+Sub\+Cycles@{max\+Sub\+Cycles}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{max\+Sub\+Cycles()}{maxSubCycles()}}
+{\footnotesize\ttfamily label max\+Sub\+Cycles (\begin{DoxyParamCaption}\item[{alpha\+Dict.\+lookup\+Or\+Default$<$ label $>$}]{\char`\"{}max\+Sub\+Cycles\char`\"{}, 50 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveAlphaMULES_8H_a23fab721ca956091a1921746c4da0216}\label{solveAlphaMULES_8H_a23fab721ca956091a1921746c4da0216}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!alpha\+Max\+Co\+Num@{alpha\+Max\+Co\+Num}}
+\index{alpha\+Max\+Co\+Num@{alpha\+Max\+Co\+Num}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{alpha\+Max\+Co\+Num()}{alphaMaxCoNum()}}
+{\footnotesize\ttfamily scalar alpha\+Max\+Co\+Num (\begin{DoxyParamCaption}\item[{(\hyperlink{solveAlphaMULES_8H_ac92bd5ad9d5fec94d631acbb380404e0}{adjust\+Sub\+Cycles}) ? alpha\+Dict.\+get$<$ scalar $>$(\char`\"{}alpha\+Max\+Co\char`\"{}) \+:0.}]{49 }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{solveAlphaMULES_8H_a789731aed114e29f0b40ddbefaf14c31}\label{solveAlphaMULES_8H_a789731aed114e29f0b40ddbefaf14c31}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!n\+Sub\+Cycles@{n\+Sub\+Cycles}}
+\index{n\+Sub\+Cycles@{n\+Sub\+Cycles}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{n\+Sub\+Cycles()}{nSubCycles()}}
+{\footnotesize\ttfamily label n\+Sub\+Cycles (\begin{DoxyParamCaption}\item[{(\hyperlink{solveAlphaMULES_8H_ac92bd5ad9d5fec94d631acbb380404e0}{adjust\+Sub\+Cycles} and both\+Phases\+Are\+Present\+\_\+) ? min(ceil((Co\+Num\+\_\++S\+M\+A\+LL)/\hyperlink{solveAlphaMULES_8H_a23fab721ca956091a1921746c4da0216}{alpha\+Max\+Co\+Num}), \hyperlink{solveAlphaMULES_8H_a290130a8990b5bd2767ef1f656325e56}{max\+Sub\+Cycles}) \+:alpha\+Dict.\+lookup\+Or\+Default$<$ label $>$(\char`\"{}n\+Sub\+Cycles\char`\"{}, 1)}]{ }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{solveAlphaMULES_8H_ad9bc77589ca7ad7822f7ec27d377a8ce}\label{solveAlphaMULES_8H_ad9bc77589ca7ad7822f7ec27d377a8ce}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!solve\+Alpha@{solve\+Alpha}}
+\index{solve\+Alpha@{solve\+Alpha}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{solve\+Alpha}{solveAlpha}}
+{\footnotesize\ttfamily auto solve\+Alpha}
+
+
+
+Definition at line 27 of file solve\+Alpha\+M\+U\+L\+E\+S.\+H.
+
+\mbox{\Hypertarget{solveAlphaMULES_8H_ac418babfa8e0a42a6b77aa6730f97efb}\label{solveAlphaMULES_8H_ac418babfa8e0a42a6b77aa6730f97efb}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!solve\+Alphas@{solve\+Alphas}}
+\index{solve\+Alphas@{solve\+Alphas}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{solve\+Alphas}{solveAlphas}}
+{\footnotesize\ttfamily auto solve\+Alphas}
+
+
+
+Definition at line 142 of file solve\+Alpha\+M\+U\+L\+E\+S.\+H.
+
+\mbox{\Hypertarget{solveAlphaMULES_8H_a2de99cc2184e44282013f20748f72470}\label{solveAlphaMULES_8H_a2de99cc2184e44282013f20748f72470}} 
+\index{solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}!solve@{solve}}
+\index{solve@{solve}!solve\+Alpha\+M\+U\+L\+E\+S.\+H@{solve\+Alpha\+M\+U\+L\+E\+S.\+H}}
+\subsubsection{\texorpdfstring{solve}{solve}}
+{\footnotesize\ttfamily \hyperlink{solveThermalMechanics_8H_ab3fed776777f504294b4e82fcf9429a2}{C\+R\+Disp\+Eqn} solve}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= [&](word \hyperlink{solveAlphaMULES_8H_a6b6b670db65a241e294cd39d06b05192}{solvePhase}, scalar rDeltaT)
+\{
+    \textcolor{keywordflow}{if} (\hyperlink{solveAlphaMULES_8H_a6b6b670db65a241e294cd39d06b05192}{solvePhase} == \textcolor{stringliteral}{"both"})
+    \{
+        \hyperlink{solveAlphaMULES_8H_ac418babfa8e0a42a6b77aa6730f97efb}{solveAlphas}(rDeltaT);
+    \}
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{solveAlphaMULES_8H_a6b6b670db65a241e294cd39d06b05192}{solvePhase} == fluid1\_.name())
+    \{
+        \hyperlink{solveAlphaMULES_8H_ad9bc77589ca7ad7822f7ec27d377a8ce}{solveAlpha}
+        (
+            fluid1\_,
+            fluid2\_,
+            rDeltaT
+        );
+    \}
+    \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (\hyperlink{solveAlphaMULES_8H_a6b6b670db65a241e294cd39d06b05192}{solvePhase} == fluid2\_.name())
+    \{
+        \hyperlink{solveAlphaMULES_8H_ad9bc77589ca7ad7822f7ec27d377a8ce}{solveAlpha}
+        (
+            fluid2\_,
+            fluid1\_,
+            rDeltaT
+        );
+    \}
+    \textcolor{keywordflow}{else}
+        FatalErrorInFunction 
+        << \textcolor{stringliteral}{"Phase named "} << \hyperlink{solveAlphaMULES_8H_a6b6b670db65a241e294cd39d06b05192}{solvePhase} << \textcolor{stringliteral}{" not found. Available phases "} 
+        << \textcolor{stringliteral}{"are "} << fluid1\_.name() << \textcolor{stringliteral}{" and "} << fluid2\_.name()
+        << exit(FatalError);
+\}
+\end{DoxyCode}
+
+
+Definition at line 378 of file solve\+Alpha\+M\+U\+L\+E\+S.\+H.
+
+
+
+Referenced by porous\+K\+Epsilon2\+Phase\+Corrected$<$ Basic\+Turbulence\+Model $>$\+::correct(), porous\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::correct(), for\+All(), heated\+Pin\+::update\+Local\+Temperature\+Profile(), nuclear\+Fuel\+Pin\+::update\+Local\+Temperature\+Profile(), nuclear\+Fuel\+Pin\+Test\+::update\+Local\+Temperature\+Profile(), and while().
+

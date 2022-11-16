@@ -1,0 +1,225 @@
+\hypertarget{classFoam_1_1subCooledBoilingFractionModel}{}\section{sub\+Cooled\+Boiling\+Fraction\+Model Class Reference}
+\label{classFoam_1_1subCooledBoilingFractionModel}\index{sub\+Cooled\+Boiling\+Fraction\+Model@{sub\+Cooled\+Boiling\+Fraction\+Model}}
+
+
+Model for the prediction of the sub-\/cooled bulk liquid temperature at which bubble detachment occurs (only for sub-\/cooled boiling)  
+
+
+
+
+Inheritance diagram for sub\+Cooled\+Boiling\+Fraction\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=216pt]{classFoam_1_1subCooledBoilingFractionModel__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for sub\+Cooled\+Boiling\+Fraction\+Model\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=288pt]{classFoam_1_1subCooledBoilingFractionModel__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1subCooledBoilingFractionModel_a830f2cb3e353de09ffa5a0aca9382d1e}{Type\+Name} (\char`\"{}sub\+Cooled\+Boiling\+Fraction\+Model\char`\"{})
+\item 
+\hyperlink{classFoam_1_1subCooledBoilingFractionModel_a0d6d7c37afe4e8a1f470efb331188d35}{declare\+Run\+Time\+Selection\+Table} (auto\+Ptr, \hyperlink{classFoam_1_1subCooledBoilingFractionModel}{sub\+Cooled\+Boiling\+Fraction\+Model}, sub\+Cooled\+Boiling\+Fraction\+Models,(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg),(pair, dict, obj\+Reg))
+\item 
+\hyperlink{classFoam_1_1subCooledBoilingFractionModel_abfad2060d2d89d8a0784c2f9f80eb4a3}{sub\+Cooled\+Boiling\+Fraction\+Model} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1subCooledBoilingFractionModel_a300a2344e027598cf37b582c9ee9eb3d}{$\sim$sub\+Cooled\+Boiling\+Fraction\+Model} ()
+\item 
+void \hyperlink{classFoam_1_1subCooledBoilingFractionModel_a6b59dcff79ac93a85c977dbd4c86dbad}{set\+Ptr} () const
+\item 
+virtual scalar \hyperlink{classFoam_1_1subCooledBoilingFractionModel_aeb3856baf67d5e0126b0949925840a51}{value} (const label \&celli, const scalar \&qi) const =0
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static auto\+Ptr$<$ \hyperlink{classFoam_1_1subCooledBoilingFractionModel}{sub\+Cooled\+Boiling\+Fraction\+Model} $>$ \hyperlink{classFoam_1_1subCooledBoilingFractionModel_a305ff3b42e0285ee3b072d30500afec0}{New} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \& \hyperlink{classFoam_1_1subCooledBoilingFractionModel_a587e19a1b4f4b498d2604d20c093a73b}{pair\+\_\+}
+\item 
+const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} $\ast$ \hyperlink{classFoam_1_1subCooledBoilingFractionModel_adca848d730733f4692fbd95dfea33c54}{F\+F\+Pair\+Ptr\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Model for the prediction of the sub-\/cooled bulk liquid temperature at which bubble detachment occurs (only for sub-\/cooled boiling) 
+
+\label{_Description}%
+ Author Stefan Radman (\href{mailto:sradman@pm.me}{\tt sradman@pm.\+me} / \href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch})
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/subCooledBoilingFractionModels/subCooledBoilingFractionModel.H}{\tt sub\+Cooled\+Boiling\+Fraction\+Model.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/subCooledBoilingFractionModels/subCooledBoilingFractionModel.C}{\tt sub\+Cooled\+Boiling\+Fraction\+Model.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/subCooledBoilingFractionModels/newsubCooledBoilingFractionModel.C}{\tt newsub\+Cooled\+Boiling\+Fraction\+Model.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 54 of file sub\+Cooled\+Boiling\+Fraction\+Model.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1subCooledBoilingFractionModel_abfad2060d2d89d8a0784c2f9f80eb4a3}\label{classFoam_1_1subCooledBoilingFractionModel_abfad2060d2d89d8a0784c2f9f80eb4a3}} 
+\index{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}!sub\+Cooled\+Boiling\+Fraction\+Model@{sub\+Cooled\+Boiling\+Fraction\+Model}}
+\index{sub\+Cooled\+Boiling\+Fraction\+Model@{sub\+Cooled\+Boiling\+Fraction\+Model}!Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}}
+\subsubsection{\texorpdfstring{sub\+Cooled\+Boiling\+Fraction\+Model()}{subCooledBoilingFractionModel()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1subCooledBoilingFractionModel}{sub\+Cooled\+Boiling\+Fraction\+Model} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 39 of file sub\+Cooled\+Boiling\+Fraction\+Model.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1subCooledBoilingFractionModel_a300a2344e027598cf37b582c9ee9eb3d}\label{classFoam_1_1subCooledBoilingFractionModel_a300a2344e027598cf37b582c9ee9eb3d}} 
+\index{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}!````~sub\+Cooled\+Boiling\+Fraction\+Model@{$\sim$sub\+Cooled\+Boiling\+Fraction\+Model}}
+\index{````~sub\+Cooled\+Boiling\+Fraction\+Model@{$\sim$sub\+Cooled\+Boiling\+Fraction\+Model}!Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}}
+\subsubsection{\texorpdfstring{$\sim$sub\+Cooled\+Boiling\+Fraction\+Model()}{~subCooledBoilingFractionModel()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1subCooledBoilingFractionModel}{sub\+Cooled\+Boiling\+Fraction\+Model} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 95 of file sub\+Cooled\+Boiling\+Fraction\+Model.\+H.
+
+
+
+References sub\+Cooled\+Boiling\+Fraction\+Model\+::\+New(), sub\+Cooled\+Boiling\+Fraction\+Model\+::set\+Ptr(), and sub\+Cooled\+Boiling\+Fraction\+Model\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{classFoam_1_1subCooledBoilingFractionModel_a300a2344e027598cf37b582c9ee9eb3d_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1subCooledBoilingFractionModel_a830f2cb3e353de09ffa5a0aca9382d1e}\label{classFoam_1_1subCooledBoilingFractionModel_a830f2cb3e353de09ffa5a0aca9382d1e}} 
+\index{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}sub\+Cooled\+Boiling\+Fraction\+Model\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1subCooledBoilingFractionModel_a0d6d7c37afe4e8a1f470efb331188d35}\label{classFoam_1_1subCooledBoilingFractionModel_a0d6d7c37afe4e8a1f470efb331188d35}} 
+\index{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}!declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}}
+\index{declare\+Run\+Time\+Selection\+Table@{declare\+Run\+Time\+Selection\+Table}!Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}}
+\subsubsection{\texorpdfstring{declare\+Run\+Time\+Selection\+Table()}{declareRunTimeSelectionTable()}}
+{\footnotesize\ttfamily declare\+Run\+Time\+Selection\+Table (\begin{DoxyParamCaption}\item[{auto\+Ptr}]{,  }\item[{\hyperlink{classFoam_1_1subCooledBoilingFractionModel}{sub\+Cooled\+Boiling\+Fraction\+Model}}]{,  }\item[{sub\+Cooled\+Boiling\+Fraction\+Models}]{,  }\item[{(const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)}]{,  }\item[{(pair, dict, obj\+Reg)}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1subCooledBoilingFractionModel_a305ff3b42e0285ee3b072d30500afec0}\label{classFoam_1_1subCooledBoilingFractionModel_a305ff3b42e0285ee3b072d30500afec0}} 
+\index{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}!New@{New}}
+\index{New@{New}!Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}}
+\subsubsection{\texorpdfstring{New()}{New()}}
+{\footnotesize\ttfamily Foam\+::auto\+Ptr$<$ \hyperlink{classFoam_1_1subCooledBoilingFractionModel}{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model} $>$ New (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Definition at line 26 of file new\+Sub\+Cooled\+Boiling\+Fraction\+Model.\+C.
+
+
+
+References F\+S\+Pair\+::fluid\+Name().
+
+
+
+Referenced by multi\+Regime\+Boiling\+::multi\+Regime\+Boiling(), multi\+Regime\+Boiling\+T\+R\+A\+C\+E\+::multi\+Regime\+Boiling\+T\+R\+A\+C\+E(), multi\+Regime\+Boiling\+T\+R\+A\+C\+E\+C\+H\+F\+::multi\+Regime\+Boiling\+T\+R\+A\+C\+E\+C\+H\+F(), and sub\+Cooled\+Boiling\+Fraction\+Model\+::$\sim$sub\+Cooled\+Boiling\+Fraction\+Model().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=281pt]{classFoam_1_1subCooledBoilingFractionModel_a305ff3b42e0285ee3b072d30500afec0_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{classFoam_1_1subCooledBoilingFractionModel_a305ff3b42e0285ee3b072d30500afec0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1subCooledBoilingFractionModel_a6b59dcff79ac93a85c977dbd4c86dbad}\label{classFoam_1_1subCooledBoilingFractionModel_a6b59dcff79ac93a85c977dbd4c86dbad}} 
+\index{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}!set\+Ptr@{set\+Ptr}}
+\index{set\+Ptr@{set\+Ptr}!Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}}
+\subsubsection{\texorpdfstring{set\+Ptr()}{setPtr()}}
+{\footnotesize\ttfamily void set\+Ptr (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Definition at line 63 of file sub\+Cooled\+Boiling\+Fraction\+Model.\+C.
+
+
+
+Referenced by sub\+Cooled\+Boiling\+Fraction\+Model\+::$\sim$sub\+Cooled\+Boiling\+Fraction\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{classFoam_1_1subCooledBoilingFractionModel_a6b59dcff79ac93a85c977dbd4c86dbad_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1subCooledBoilingFractionModel_aeb3856baf67d5e0126b0949925840a51}\label{classFoam_1_1subCooledBoilingFractionModel_aeb3856baf67d5e0126b0949925840a51}} 
+\index{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}!value@{value}}
+\index{value@{value}!Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily virtual scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli,  }\item[{const scalar \&}]{qi }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \hyperlink{classFoam_1_1subCooledBoilingFractionModels_1_1SahaZuber_ad96f3b55276450f13bc0f531801ae5dc}{Saha\+Zuber}, and \hyperlink{classFoam_1_1subCooledBoilingFractionModels_1_1constant_ad96f3b55276450f13bc0f531801ae5dc}{constant}.
+
+
+
+Referenced by sub\+Cooled\+Boiling\+Fraction\+Model\+::$\sim$sub\+Cooled\+Boiling\+Fraction\+Model().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=290pt]{classFoam_1_1subCooledBoilingFractionModel_aeb3856baf67d5e0126b0949925840a51_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1subCooledBoilingFractionModel_a587e19a1b4f4b498d2604d20c093a73b}\label{classFoam_1_1subCooledBoilingFractionModel_a587e19a1b4f4b498d2604d20c093a73b}} 
+\index{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}!pair\+\_\+@{pair\+\_\+}}
+\index{pair\+\_\+@{pair\+\_\+}!Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}}
+\subsubsection{\texorpdfstring{pair\+\_\+}{pair\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair}\& pair\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 61 of file sub\+Cooled\+Boiling\+Fraction\+Model.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1subCooledBoilingFractionModel_adca848d730733f4692fbd95dfea33c54}\label{classFoam_1_1subCooledBoilingFractionModel_adca848d730733f4692fbd95dfea33c54}} 
+\index{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}!F\+F\+Pair\+Ptr\+\_\+@{F\+F\+Pair\+Ptr\+\_\+}}
+\index{F\+F\+Pair\+Ptr\+\_\+@{F\+F\+Pair\+Ptr\+\_\+}!Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model@{Foam\+::sub\+Cooled\+Boiling\+Fraction\+Model}}
+\subsubsection{\texorpdfstring{F\+F\+Pair\+Ptr\+\_\+}{FFPairPtr\_}}
+{\footnotesize\ttfamily const \hyperlink{classFoam_1_1FFPair}{F\+F\+Pair}$\ast$ F\+F\+Pair\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [mutable]}, {\ttfamily [protected]}}
+
+
+
+Definition at line 64 of file sub\+Cooled\+Boiling\+Fraction\+Model.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/sub\+Cooled\+Boiling\+Fraction\+Models/\hyperlink{subCooledBoilingFractionModel_8H}{sub\+Cooled\+Boiling\+Fraction\+Model.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/sub\+Cooled\+Boiling\+Fraction\+Models/\hyperlink{newSubCooledBoilingFractionModel_8C}{new\+Sub\+Cooled\+Boiling\+Fraction\+Model.\+C}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/heat\+Transfer\+Models/\+F\+S\+Heat\+Transfer\+Coefficient\+Models/sub\+Models/sub\+Cooled\+Boiling\+Fraction\+Models/\hyperlink{subCooledBoilingFractionModel_8C}{sub\+Cooled\+Boiling\+Fraction\+Model.\+C}\end{DoxyCompactItemize}

@@ -1,0 +1,84 @@
+\hypertarget{createOutput_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/create\+Output.H File Reference}
+\label{createOutput_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/create\+Output.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/create\+Output.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{createOutput_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{createOutput_8H_a0a6dc0ff40e565f440e8595de3884b50}{write\+Output} (run\+Time.\+control\+Dict().lookup\+Or\+Default$<$ bool $>$(\char`\"{}write\+Dat\char`\"{}, true))
+\item 
+O\+Fstream \hyperlink{createOutput_8H_a0467985694a37c29b5874ecb748bf09e}{out} (run\+Time.\+path()+\char`\"{}/GeN-\/Foam.\+dat\char`\"{})
+\item 
+\hyperlink{createOutput_8H_a2a235d7037ae617247c7c665f0cfa568}{if} (\hyperlink{createOutput_8H_a0a6dc0ff40e565f440e8595de3884b50}{write\+Output})
+\item 
+const power\+Model $\ast$const \hyperlink{createOutput_8H_a0e5723cce35a4205ec9936e4350a809c}{pin\+IO} ((fluid\+Mesh.\+found\+Object$<$ vol\+Scalar\+Field $>$(\char`\"{}power\+Density.\+nuclear\+Fuel\+Pin\char`\"{})) ? fluid\+Mesh.\+lookup\+Class$<$ const power\+Model $>$()\mbox{[}\char`\"{}power\+Model\char`\"{}\mbox{]} \+:nullptr)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{createOutput_8H_a0a6dc0ff40e565f440e8595de3884b50}\label{createOutput_8H_a0a6dc0ff40e565f440e8595de3884b50}} 
+\index{create\+Output.\+H@{create\+Output.\+H}!write\+Output@{write\+Output}}
+\index{write\+Output@{write\+Output}!create\+Output.\+H@{create\+Output.\+H}}
+\subsubsection{\texorpdfstring{write\+Output()}{writeOutput()}}
+{\footnotesize\ttfamily bool write\+Output (\begin{DoxyParamCaption}\item[{run\+Time.}]{control\+Dict).\+lookup\+Or\+Default$<$ bool $>$(\char`\"{}write\+Dat\char`\"{}, true }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createOutput_8H_a0467985694a37c29b5874ecb748bf09e}\label{createOutput_8H_a0467985694a37c29b5874ecb748bf09e}} 
+\index{create\+Output.\+H@{create\+Output.\+H}!out@{out}}
+\index{out@{out}!create\+Output.\+H@{create\+Output.\+H}}
+\subsubsection{\texorpdfstring{out()}{out()}}
+{\footnotesize\ttfamily O\+Fstream out (\begin{DoxyParamCaption}\item[{run\+Time.\+path()+\char`\"{}/GeN-\/Foam.\+dat\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by ext\+Patch\+::execute(), F\+M\+U\+Simulator\+::execute(), ext\+Function\+::execute(), ext\+Forces\+::execute(), F\+M\+U\+Controller\+::execute(), ext\+Sensor\+::execute(), F\+M\+U\+Controller\+::\+F\+M\+U\+Controller(), comm\+Data\+Layer\+::get\+Registry(), if(), ext\+Patch\+::read(), ext\+Function\+::read(), ext\+Forces\+::read(), ext\+Sensor\+::read(), and T\+E\+S\+T\+\_\+\+C\+A\+S\+E().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{createOutput_8H_a0467985694a37c29b5874ecb748bf09e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createOutput_8H_a2a235d7037ae617247c7c665f0cfa568}\label{createOutput_8H_a2a235d7037ae617247c7c665f0cfa568}} 
+\index{create\+Output.\+H@{create\+Output.\+H}!if@{if}}
+\index{if@{if}!create\+Output.\+H@{create\+Output.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{\hyperlink{createOutput_8H_a0a6dc0ff40e565f440e8595de3884b50}{write\+Output}}]{ }\end{DoxyParamCaption})}
+
+
+
+Definition at line 5 of file create\+Output.\+H.
+
+
+
+References fluid\+Mesh(), for\+All(), neutronics, out(), and pin\+I\+O().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{createOutput_8H_a2a235d7037ae617247c7c665f0cfa568_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createOutput_8H_a0e5723cce35a4205ec9936e4350a809c}\label{createOutput_8H_a0e5723cce35a4205ec9936e4350a809c}} 
+\index{create\+Output.\+H@{create\+Output.\+H}!pin\+IO@{pin\+IO}}
+\index{pin\+IO@{pin\+IO}!create\+Output.\+H@{create\+Output.\+H}}
+\subsubsection{\texorpdfstring{pin\+I\+O()}{pinIO()}}
+{\footnotesize\ttfamily const power\+Model$\ast$ const pin\+IO (\begin{DoxyParamCaption}\item[{(fluid\+Mesh.\+found\+Object$<$ vol\+Scalar\+Field $>$(\char`\"{}power\+Density.\+nuclear\+Fuel\+Pin\char`\"{})) ? fluid\+Mesh.\+lookup\+Class$<$ const power\+Model $>$() \+:nullptr}]{\mbox{[}\char`\"{}power\+Model\char`\"{}\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{createOutput_8H_a0e5723cce35a4205ec9936e4350a809c_icgraph}
+\end{center}
+\end{figure}

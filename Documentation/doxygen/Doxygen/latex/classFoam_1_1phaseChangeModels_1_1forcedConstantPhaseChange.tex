@@ -1,0 +1,154 @@
+\hypertarget{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange}{}\section{forced\+Constant\+Phase\+Change Class Reference}
+\label{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange}\index{forced\+Constant\+Phase\+Change@{forced\+Constant\+Phase\+Change}}
+
+
+Phase change models that compute mass transfer based on interfacial heat fluxes. There are three possible modes that can be selected\+:  
+
+
+
+
+Inheritance diagram for forced\+Constant\+Phase\+Change\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=225pt]{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for forced\+Constant\+Phase\+Change\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=225pt]{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_ab9a26fca429f00ecd23f9154cdc2ed14}{Type\+Name} (\char`\"{}forced\+Constant\char`\"{})
+\item 
+\hyperlink{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_abf5a9f61afee679e24f54d9ebd565f05}{forced\+Constant\+Phase\+Change} (\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&\hyperlink{classFoam_1_1phaseChangeModel_a826deac453e9ba7c6fcda90d7b6b7709}{pair}, const dictionary \&dict)
+\item 
+virtual \hyperlink{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_a18e35b38065e78ad7e3414fb5c7092c0}{$\sim$forced\+Constant\+Phase\+Change} ()
+\item 
+virtual void \hyperlink{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_a26b9e463af1a7ec39a18891734bd0759}{correct\+Interfacial\+Dmdt} ()
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Phase change models that compute mass transfer based on interfacial heat fluxes. There are three possible modes that can be selected\+: 
+
+\label{_Description}%
+
+\begin{DoxyItemize}
+\item conduction\+Limited\+: dmdt\+\_\+ is computed so to conserve total energy transfer across interface if the interfacial heat fluxes do not balance out. It q1i and q2i are the respective heat fluxes form the bulk of phase 1/2 to the interface, then dmdt\+\_\+ = (q1i+q2i)/L with L being the latent heat. This is the approach found in T\+R\+A\+CE (check theory manual, \href{https://www.nrc.gov/docs/ML0710/ML071000097.pdf}{\tt https\+://www.\+nrc.\+gov/docs/\+M\+L0710/\+M\+L071000097.\+pdf}) but it is not suited if there is a massive difference in the volumetric heat capacity (J/\+K/m3) of the phases (such as in the case of sodium, due to the density difference of a factor $\sim$ 2000). It can be very unstable and not converge at all in such scenarios;
+\item two\+Phase\+Driven\+: evaporation is driven uniquely by liquid superheat and condensation is driven uniquely by vapor undercooling. There is no need to specify which phase is liquid and which is vapour in the phase\+Properties dict, as this information is contained in the latent heat L (positive if phase1 is liquid and 2 is vapour, negative otherwise);
+\item one\+Phase\+Driven\+: both evaporation and condensation are driven uniquely by one phase\textquotesingle{}s superheat or cooling. Implemented as a counterpart to two\+Phase\+Driven.
+\end{DoxyItemize}
+
+The latent heat is computed as a difference of the enthalpies of formation (specified in the thermo\+Physical\+Properties of each phase under the Hf keyword). Thus, the vapour phase is the phase with the highest enthalpy of formation. The latent heat can be adjusted as described in the T\+R\+A\+CE theory manual to avoid thermal-\/run-\/aways in particular scenarios. This feature can be enabled via the correct\+Latent\+Heat flag in the \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} sub\+Dict, but it is not recommended if dealing with phases with a low volumetric heat capacity, as described before (e.\+g. Sodium).
+
+Dict example
+
+\hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \{ type forced\+Constant; mode one\+Phase\+Driven; //-\/ conduction\+Limited;//two\+Phase\+Driven; driving\+Phase \char`\"{}phase\+Name\char`\"{}; //-\/ (required only for one\+Phase\+Driven) correct\+Latent\+Heat false; //-\/ defaults to false
+
+\hyperlink{classFoam_1_1saturationModel}{saturation\+Model} //-\/ Unrelated to the forced\+Constant model \{ type \char`\"{}\+Browning\+Potter\char`\"{}; \} \}
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/forcedConstant/forcedConstantPhaseChange.H}{\tt forced\+Constant\+Phase\+Change.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/forcedConstant/forcedConstantPhaseChange.C}{\tt forced\+Constant\+Phase\+Change.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 93 of file forced\+Constant\+Phase\+Change.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_abf5a9f61afee679e24f54d9ebd565f05}\label{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_abf5a9f61afee679e24f54d9ebd565f05}} 
+\index{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change@{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change}!forced\+Constant\+Phase\+Change@{forced\+Constant\+Phase\+Change}}
+\index{forced\+Constant\+Phase\+Change@{forced\+Constant\+Phase\+Change}!Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change@{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change}}
+\subsubsection{\texorpdfstring{forced\+Constant\+Phase\+Change()}{forcedConstantPhaseChange()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange}{forced\+Constant\+Phase\+Change} (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1FFPair}{F\+F\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 42 of file forced\+Constant\+Phase\+Change.\+C.
+
+
+
+References for\+All(), i, and F\+F\+Pair\+::mesh().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_abf5a9f61afee679e24f54d9ebd565f05_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_a18e35b38065e78ad7e3414fb5c7092c0}\label{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_a18e35b38065e78ad7e3414fb5c7092c0}} 
+\index{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change@{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change}!````~forced\+Constant\+Phase\+Change@{$\sim$forced\+Constant\+Phase\+Change}}
+\index{````~forced\+Constant\+Phase\+Change@{$\sim$forced\+Constant\+Phase\+Change}!Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change@{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change}}
+\subsubsection{\texorpdfstring{$\sim$forced\+Constant\+Phase\+Change()}{~forcedConstantPhaseChange()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange}{forced\+Constant\+Phase\+Change} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 111 of file forced\+Constant\+Phase\+Change.\+H.
+
+
+
+References forced\+Constant\+Phase\+Change\+::correct\+Interfacial\+Dmdt().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_a18e35b38065e78ad7e3414fb5c7092c0_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_ab9a26fca429f00ecd23f9154cdc2ed14}\label{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_ab9a26fca429f00ecd23f9154cdc2ed14}} 
+\index{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change@{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change@{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}forced\+Constant\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_a26b9e463af1a7ec39a18891734bd0759}\label{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_a26b9e463af1a7ec39a18891734bd0759}} 
+\index{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change@{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change}!correct\+Interfacial\+Dmdt@{correct\+Interfacial\+Dmdt}}
+\index{correct\+Interfacial\+Dmdt@{correct\+Interfacial\+Dmdt}!Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change@{Foam\+::phase\+Change\+Models\+::forced\+Constant\+Phase\+Change}}
+\subsubsection{\texorpdfstring{correct\+Interfacial\+Dmdt()}{correctInterfacialDmdt()}}
+{\footnotesize\ttfamily void correct\+Interfacial\+Dmdt (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1phaseChangeModel_a86dbc75d58cb99c2c3597abb0c7bb91c}{phase\+Change\+Model}.
+
+
+
+Definition at line 71 of file forced\+Constant\+Phase\+Change.\+C.
+
+
+
+Referenced by forced\+Constant\+Phase\+Change\+::$\sim$forced\+Constant\+Phase\+Change().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1phaseChangeModels_1_1forcedConstantPhaseChange_a26b9e463af1a7ec39a18891734bd0759_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/forced\+Constant/\hyperlink{forcedConstantPhaseChange_8H}{forced\+Constant\+Phase\+Change.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/forced\+Constant/\hyperlink{forcedConstantPhaseChange_8C}{forced\+Constant\+Phase\+Change.\+C}\end{DoxyCompactItemize}

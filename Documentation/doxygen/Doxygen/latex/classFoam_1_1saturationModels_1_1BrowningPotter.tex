@@ -1,0 +1,257 @@
+\hypertarget{classFoam_1_1saturationModels_1_1BrowningPotter}{}\section{Browning\+Potter Class Reference}
+\label{classFoam_1_1saturationModels_1_1BrowningPotter}\index{Browning\+Potter@{Browning\+Potter}}
+
+
+Saturation model based on results by Browning and Potter, refer to \href{https://www.ne.anl.gov/eda/ANL-RE-95-2.pdf}{\tt https\+://www.\+ne.\+anl.\+gov/eda/\+A\+N\+L-\/\+R\+E-\/95-\/2.\+pdf}. The saturation pressure form is ln\+P\+Sat = A + B/\+T\+Sat + C$\ast$ln(T\+Sat), which is not invertible in T\+Sat. T\+Sat is inverted by approximateding ln(\+T\+Sat) by a second order polyinomial.  
+
+
+
+
+Inheritance diagram for Browning\+Potter\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classFoam_1_1saturationModels_1_1BrowningPotter__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Browning\+Potter\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classFoam_1_1saturationModels_1_1BrowningPotter__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_a04b6cae5c5e6f7717ccf77536f344cf4}{Type\+Name} (\char`\"{}Browning\+Potter\char`\"{})
+\item 
+\hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_aa68c046ff0f8e8b975cc1ae9ce80a78c}{Browning\+Potter} (const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&pcm, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_a4e39142331f72b867f1264fad676776b}{$\sim$\+Browning\+Potter} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_a7d5f6259360b96b89a000c84ef880614}{value\+T\+Sat} (const label \&celli) const
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_a800a121f3086c2580a025d245a1b8178}{value\+P\+Sat} (const label \&celli) const
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_ac2c267657ff259967a96210a8fcb3c3f}{value\+Ln\+P\+Sat} (const label \&celli) const
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter_acfe2ee8e32ce482cc86e523e7266bb1f}{value\+P\+Sat\+Prime} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Saturation model based on results by Browning and Potter, refer to \href{https://www.ne.anl.gov/eda/ANL-RE-95-2.pdf}{\tt https\+://www.\+ne.\+anl.\+gov/eda/\+A\+N\+L-\/\+R\+E-\/95-\/2.\+pdf}. The saturation pressure form is ln\+P\+Sat = A + B/\+T\+Sat + C$\ast$ln(T\+Sat), which is not invertible in T\+Sat. T\+Sat is inverted by approximateding ln(\+T\+Sat) by a second order polyinomial. 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/saturationModels/BrowningPotter/BrowningPotterSaturation.H}{\tt Browning\+Potter\+Saturation.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/saturationModels/BrowningPotter/BrowningPotterSaturation.C}{\tt Browning\+Potter\+Saturation.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 49 of file Browning\+Potter\+Saturation.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1BrowningPotter_aa68c046ff0f8e8b975cc1ae9ce80a78c}\label{classFoam_1_1saturationModels_1_1BrowningPotter_aa68c046ff0f8e8b975cc1ae9ce80a78c}} 
+\index{Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}!Browning\+Potter@{Browning\+Potter}}
+\index{Browning\+Potter@{Browning\+Potter}!Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}}
+\subsubsection{\texorpdfstring{Browning\+Potter()}{BrowningPotter()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter}{Browning\+Potter} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&}]{pcm,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 44 of file Browning\+Potter\+Saturation.\+C.
+
+
+
+References Browning\+Potter\+::value\+P\+Sat().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{classFoam_1_1saturationModels_1_1BrowningPotter_aa68c046ff0f8e8b975cc1ae9ce80a78c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1BrowningPotter_a4e39142331f72b867f1264fad676776b}\label{classFoam_1_1saturationModels_1_1BrowningPotter_a4e39142331f72b867f1264fad676776b}} 
+\index{Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}!````~Browning\+Potter@{$\sim$\+Browning\+Potter}}
+\index{````~Browning\+Potter@{$\sim$\+Browning\+Potter}!Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}}
+\subsubsection{\texorpdfstring{$\sim$\+Browning\+Potter()}{~BrowningPotter()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1saturationModels_1_1BrowningPotter}{Browning\+Potter} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 74 of file Browning\+Potter\+Saturation.\+H.
+
+
+
+References Browning\+Potter\+::value\+Ln\+P\+Sat(), Browning\+Potter\+::value\+P\+Sat(), Browning\+Potter\+::value\+P\+Sat\+Prime(), and Browning\+Potter\+::value\+T\+Sat().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1BrowningPotter_a4e39142331f72b867f1264fad676776b_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1BrowningPotter_a04b6cae5c5e6f7717ccf77536f344cf4}\label{classFoam_1_1saturationModels_1_1BrowningPotter_a04b6cae5c5e6f7717ccf77536f344cf4}} 
+\index{Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}Browning\+Potter\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1BrowningPotter_a7d5f6259360b96b89a000c84ef880614}\label{classFoam_1_1saturationModels_1_1BrowningPotter_a7d5f6259360b96b89a000c84ef880614}} 
+\index{Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}!value\+T\+Sat@{value\+T\+Sat}}
+\index{value\+T\+Sat@{value\+T\+Sat}!Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}}
+\subsubsection{\texorpdfstring{value\+T\+Sat()}{valueTSat()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+T\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_aef8350cb17e8b8f92597160f1dd2a238}{saturation\+Model}.
+
+
+
+Definition at line 91 of file Browning\+Potter\+Saturation.\+C.
+
+
+
+References p\+\_\+.
+
+
+
+Referenced by Browning\+Potter\+::value\+Ln\+P\+Sat(), and Browning\+Potter\+::$\sim$\+Browning\+Potter().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1BrowningPotter_a7d5f6259360b96b89a000c84ef880614_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1BrowningPotter_a800a121f3086c2580a025d245a1b8178}\label{classFoam_1_1saturationModels_1_1BrowningPotter_a800a121f3086c2580a025d245a1b8178}} 
+\index{Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}!value\+P\+Sat@{value\+P\+Sat}}
+\index{value\+P\+Sat@{value\+P\+Sat}!Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}}
+\subsubsection{\texorpdfstring{value\+P\+Sat()}{valuePSat()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+P\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_a20f0c2e04da2086bb7cbcdf3e2078e7f}{saturation\+Model}.
+
+
+
+Definition at line 63 of file Browning\+Potter\+Saturation.\+C.
+
+
+
+References Browning\+Potter\+::value\+P\+Sat\+Prime().
+
+
+
+Referenced by Browning\+Potter\+::\+Browning\+Potter(), and Browning\+Potter\+::$\sim$\+Browning\+Potter().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=265pt]{classFoam_1_1saturationModels_1_1BrowningPotter_a800a121f3086c2580a025d245a1b8178_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=267pt]{classFoam_1_1saturationModels_1_1BrowningPotter_a800a121f3086c2580a025d245a1b8178_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1BrowningPotter_ac2c267657ff259967a96210a8fcb3c3f}\label{classFoam_1_1saturationModels_1_1BrowningPotter_ac2c267657ff259967a96210a8fcb3c3f}} 
+\index{Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}!value\+Ln\+P\+Sat@{value\+Ln\+P\+Sat}}
+\index{value\+Ln\+P\+Sat@{value\+Ln\+P\+Sat}!Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}}
+\subsubsection{\texorpdfstring{value\+Ln\+P\+Sat()}{valueLnPSat()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+Ln\+P\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_a9b04e4a2fa5b275d1d5637c464b55ab4}{saturation\+Model}.
+
+
+
+Definition at line 80 of file Browning\+Potter\+Saturation.\+C.
+
+
+
+References T(), and Browning\+Potter\+::value\+T\+Sat().
+
+
+
+Referenced by Browning\+Potter\+::value\+P\+Sat\+Prime(), and Browning\+Potter\+::$\sim$\+Browning\+Potter().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{classFoam_1_1saturationModels_1_1BrowningPotter_ac2c267657ff259967a96210a8fcb3c3f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1BrowningPotter_ac2c267657ff259967a96210a8fcb3c3f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1BrowningPotter_acfe2ee8e32ce482cc86e523e7266bb1f}\label{classFoam_1_1saturationModels_1_1BrowningPotter_acfe2ee8e32ce482cc86e523e7266bb1f}} 
+\index{Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}!value\+P\+Sat\+Prime@{value\+P\+Sat\+Prime}}
+\index{value\+P\+Sat\+Prime@{value\+P\+Sat\+Prime}!Foam\+::saturation\+Models\+::\+Browning\+Potter@{Foam\+::saturation\+Models\+::\+Browning\+Potter}}
+\subsubsection{\texorpdfstring{value\+P\+Sat\+Prime()}{valuePSatPrime()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+P\+Sat\+Prime (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_a2d5563aa609bea35032a40c7f766e48c}{saturation\+Model}.
+
+
+
+Definition at line 71 of file Browning\+Potter\+Saturation.\+C.
+
+
+
+References T(), and Browning\+Potter\+::value\+Ln\+P\+Sat().
+
+
+
+Referenced by Browning\+Potter\+::value\+P\+Sat(), and Browning\+Potter\+::$\sim$\+Browning\+Potter().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{classFoam_1_1saturationModels_1_1BrowningPotter_acfe2ee8e32ce482cc86e523e7266bb1f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1BrowningPotter_acfe2ee8e32ce482cc86e523e7266bb1f_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/saturation\+Models/\+Browning\+Potter/\hyperlink{BrowningPotterSaturation_8H}{Browning\+Potter\+Saturation.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/saturation\+Models/\+Browning\+Potter/\hyperlink{BrowningPotterSaturation_8C}{Browning\+Potter\+Saturation.\+C}\end{DoxyCompactItemize}

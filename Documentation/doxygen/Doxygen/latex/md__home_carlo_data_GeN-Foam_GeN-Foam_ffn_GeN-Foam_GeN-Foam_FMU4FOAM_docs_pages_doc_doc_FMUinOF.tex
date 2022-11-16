@@ -1,0 +1,136 @@
+
+
+ title\+: F\+M\+Us in Open\+F\+O\+AM permalink\+: doc\+\_\+\+F\+M\+Uin\+O\+F.\+html keywords\+: design sidebar\+: doc\+\_\+sidebar \subsection*{folder\+: doc }
+
+This libray offers the opportunity to connect Open\+F\+O\+AM with F\+M\+Us in two ways
+
+
+\begin{DoxyItemize}
+\item generate an F\+MU from an Open\+F\+O\+AM case
+\item run F\+M\+Us in Open\+F\+O\+AM
+\end{DoxyItemize}
+
+\subsection*{run F\+M\+Us within an Open\+F\+O\+AM solver}
+
+One of the biggest feature of Open\+F\+O\+AM is that it can be easily extended by linking new libraries to the solver at runtime. One example are {\itshape function\+Objects} that are loaded at runtime and have to be placed in the {\itshape system/control\+Dict} in the functions dictionary. To run F\+M\+Us in Open\+F\+O\+AM, the {\itshape F\+M\+U\+Simulator} needs to be copied into the {\itshape control\+Dict}\+:
+
+
+\begin{DoxyCode}
+libs(externalComm);
+
+functions
+\{
+    FMUSimulator
+    \{
+        type            FMUSimulator; \textcolor{comment}{// execute functionObjects FMUSimualtor}
+        libs            (pyFMUSim); \textcolor{comment}{// load "libpyFMUSim.so"}
+        pyClassName     controlledTemperature; \textcolor{comment}{// execute python class controlledTemperature}
+        pyFileName      controlledTemperature; \textcolor{comment}{// load file controlledTemperature.py}
+    \}
+\}
+\end{DoxyCode}
+
+
+With this entry, the Open\+F\+O\+A\+M-\/solver loads the library {\itshape py\+F\+M\+U\+S\+IM} -\/ short for {\itshape libpy\+F\+M\+U\+S\+I\+M.\+so} -\/ that specifies a new implementation of the function\+Object {\itshape F\+M\+U\+Simulator}. Under the hood {\itshape F\+M\+U\+Simulator} embeds a python interpreter that manages the F\+M\+Us. The embedded python interpreter simplifies the installation through {\itshape pip} or {\itshape conda} and the user can choose from multiple frameworks such as {\itshape pyfmi}, {\itshape fmpy} or {\itshape omsimulator}. Another huge advantage is that the user can connect multiple F\+M\+Us in python and test them before connecting them to Open\+F\+O\+AM. After sucessfully testing the F\+MU System, the {\itshape F\+M\+U\+Simulator} will call the class {\itshape py\+Class\+Name} in {\itshape py\+File\+Name} that is assumed to be located in the root of the Open\+F\+O\+AM case. The class looks as follows\+:
+
+
+\begin{DoxyCode}
+import FMU4FOAM
+from OMSimulator import OMSimulator
+
+
+class controlledTemperature(FMU4FOAM.FMUBase):
+
+    def \_\_init\_\_(self,endTime,filename):
+        super().\_\_init\_\_(endTime,filename)
+
+        self.oms = OMSimulator()
+        self.oms.setTempDirectory("./temp/")
+        self.oms.newModel("model")
+        self.oms.addSystem("model.root", self.oms.system\_wc)
+
+        # instantiate FMUs
+        self.oms.addSubModel("model.root.system1", "ControlledTemperatureCoupled.fmu")
+
+        # simulation settings
+        self.oms.setResultFile("model", "controlledTemperature.csv")
+        self.oms.setStopTime("model", endTime)
+        # self.oms.setFixedStepSize("model.root", 1e-7)
+
+        self.oms.instantiate("model")
+        self.oms.setReal("model.root.system1.Tin", 298)
+        self.oms.setReal("model.root.system1.dTin", 0)
+
+        self.oms.initialize("model")
+
+    def setVar(self, key: str, val: float) -> None:
+        return self.oms.setReal(key,val)
+
+    def getVar(self, key: str) -> float:
+        return self.oms.getReal(key)[0]
+
+    def stepUntil(self,t):
+        self.oms.setReal("model.root.system1.dTin", 0)
+        self.oms.stepUntil("model",t)
+
+    def \_\_del\_\_(self):
+        self.oms.terminate("model")
+        self.oms.delete("model")
+\end{DoxyCode}
+
+
+It consists of a constructor that initializes the simulation, a destructor that finalizes the simulation and a method that advances the F\+MU system in time called step\+Until. The data transfer between Open\+F\+O\+AM and the F\+M\+Us is handled by F\+M\+U\+Base with the method {\itshape from\+\_\+\+OF} and {\itshape to\+\_\+\+OF} and requires the definition of set\+Var and get\+Var\+:
+
+
+\begin{DoxyCode}
+class FMUBase(ABC):
+
+ ...
+
+@abstractmethod
+def setVar(key: str,val: float) -> None:
+    pass
+
+@abstractmethod
+def getVar(key: str) -> float:
+    pass
+
+def from\_OF(self,dumped\_input\_json : str):
+    ext\_inputs = json.loads(dumped\_input\_json)
+    for k in self.coupleData.from\_OF:
+        var = (k,ext\_inputs[k])
+        self.setValue(self.setVar,var)
+
+def to\_OF(self) -> str:
+    d = \{\}
+    for k in self.coupleData.to\_OF:
+        d[k] = self.getValue(self.getVar,k)
+    return str(json.dumps(d))
+\end{DoxyCode}
+
+
+It is possible to overload this function and replace it by custom solutions that fit the user\textquotesingle{}s needs but in most cases it should be sufficient to specify the F\+M\+U.\+json in the root of the Open\+F\+O\+AM case\+:
+
+
+\begin{DoxyCode}
+\{
+    "mapping": [["Tin","model.root.system1.Tin"],
+                ["dTin","model.root.system1.dTin"],
+                ["Qout","model.root.system1.Qout"]],
+    "from\_OF": \{"Tin":"REAL",
+                "dTin":"REAL"\},
+    "to\_OF":   \{"Qout":"REAL"\}
+\}
+\end{DoxyCode}
+
+
+The F\+M\+U.\+json has to have three entries\+:
+
+
+\begin{DoxyItemize}
+\item mapping \+: List of all Open\+F\+O\+AM variables -\/---$>$ F\+MU variables
+\item from\+\_\+\+OF \+: List of the variables and its types computed by Open\+F\+O\+AM
+\item to\+\_\+\+OF \+: List of the variables and its types computed by the F\+MU
+\end{DoxyItemize}
+
+N\+O\+TE\+: from\+\_\+\+OF and to\+\_\+\+OF the Open\+F\+O\+AM variable names need to be specified and the mapping assumes OF to F\+MU 

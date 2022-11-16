@@ -1,0 +1,77 @@
+\hypertarget{myMULES_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/alpha\+Eqns\+Routines/my\+M\+U\+L\+E\+S/my\+M\+U\+L\+ES.H File Reference}
+\label{myMULES_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/alpha\+Eqns\+Routines/my\+M\+U\+L\+E\+S/my\+M\+U\+L\+E\+S.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/solvers/two\+Phase/include/alpha\+Eqns\+Routines/my\+M\+U\+L\+E\+S/my\+M\+U\+L\+E\+S.\+H}}
+
+
+my\+M\+U\+L\+ES\+: Multidimensional universal limiter for explicit solution.  
+
+
+Include dependency graph for my\+M\+U\+L\+E\+S.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{myMULES_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{myMULES_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+ \hyperlink{namespaceFoam}{Foam}
+\item 
+ \hyperlink{namespaceFoam_1_1myMULES}{Foam\+::my\+M\+U\+L\+ES}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$class Rdelta\+T\+Type , class Rho\+Type , class Sp\+Type , class Su\+Type $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_a62d251545cddb4d8e55512c4a86dcabf}{explicit\+Solve} (const Rdelta\+T\+Type \&r\+DeltaT, const Rho\+Type \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, vol\+Scalar\+Field \&\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}, const surface\+Scalar\+Field \&phi\+Psi, const Sp\+Type \&Sp, const Su\+Type \&Su)
+\item 
+{\footnotesize template$<$class Rho\+Type $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_a1ce91b0273238f6ddf198f582a9fd806}{explicit\+Solve} (const Rho\+Type \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, vol\+Scalar\+Field \&\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}, const surface\+Scalar\+Field \&phi\+Psi)
+\item 
+{\footnotesize template$<$class Rho\+Type , class Sp\+Type , class Su\+Type $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_ad80f7a3f7f83c1be0a382eb457325995}{explicit\+Solve} (const Rho\+Type \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, vol\+Scalar\+Field \&\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}, const surface\+Scalar\+Field \&phi\+Psi, const Sp\+Type \&Sp, const Su\+Type \&Su)
+\item 
+{\footnotesize template$<$class Rho\+Type , class Psi\+Max\+Type , class Psi\+Min\+Type $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_a408d6816b699a04ddd3b290bebe08748}{explicit\+Solve} (const Rho\+Type \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, vol\+Scalar\+Field \&\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}, const surface\+Scalar\+Field \&phi\+BD, surface\+Scalar\+Field \&phi\+Psi, const Psi\+Max\+Type \&psi\+Max, const Psi\+Min\+Type \&psi\+Min)
+\item 
+{\footnotesize template$<$class Rho\+Type , class Sp\+Type , class Su\+Type , class Psi\+Max\+Type , class Psi\+Min\+Type $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_adcc09177637dadb5c0559fc394677707}{explicit\+Solve} (const Rho\+Type \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, vol\+Scalar\+Field \&\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}, const surface\+Scalar\+Field \&phi\+BD, surface\+Scalar\+Field \&phi\+Psi, const Sp\+Type \&Sp, const Su\+Type \&Su, const Psi\+Max\+Type \&psi\+Max, const Psi\+Min\+Type \&psi\+Min)
+\item 
+{\footnotesize template$<$class Rdelta\+T\+Type , class Rho\+Type , class Sp\+Type , class Su\+Type , class Psi\+Max\+Type , class Psi\+Min\+Type $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_a87e110eac112b2759f9381066e701513}{explicit\+Solve} (const Rdelta\+T\+Type \&r\+DeltaT, const Rho\+Type \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, vol\+Scalar\+Field \&\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}, const surface\+Scalar\+Field \&phi\+BD, surface\+Scalar\+Field \&phi\+Psi, const Sp\+Type \&Sp, const Su\+Type \&Su, const Psi\+Max\+Type \&psi\+Max, const Psi\+Min\+Type \&psi\+Min)
+\item 
+{\footnotesize template$<$class Rdelta\+T\+Type , class Rho\+Type , class Sp\+Type , class Su\+Type , class Psi\+Max\+Type , class Psi\+Min\+Type $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_a8db4bd63b51f07fbea4b4d8a129868ac}{limiter} (scalar\+Field \&all\+Lambda, const Rdelta\+T\+Type \&r\+DeltaT, const Rho\+Type \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, const vol\+Scalar\+Field \&\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}, const surface\+Scalar\+Field \&phi\+BD, const surface\+Scalar\+Field \&phi\+Corr, const Sp\+Type \&Sp, const Su\+Type \&Su, const Psi\+Max\+Type \&psi\+Max, const Psi\+Min\+Type \&psi\+Min)
+\item 
+{\footnotesize template$<$class Rdelta\+T\+Type , class Rho\+Type , class Sp\+Type , class Su\+Type , class Psi\+Max\+Type , class Psi\+Min\+Type $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_a71d1731d21977db75d5f9bf2e880775f}{limit} (const Rdelta\+T\+Type \&r\+DeltaT, const Rho\+Type \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, const vol\+Scalar\+Field \&\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}, const surface\+Scalar\+Field \&phi, surface\+Scalar\+Field \&phi\+Psi, const Sp\+Type \&Sp, const Su\+Type \&Su, const Psi\+Max\+Type \&psi\+Max, const Psi\+Min\+Type \&psi\+Min, const bool return\+Corr)
+\item 
+{\footnotesize template$<$class Rho\+Type , class Sp\+Type , class Su\+Type , class Psi\+Max\+Type , class Psi\+Min\+Type $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_a6a4ca7f89dcf27e552f89e4a73d5a57c}{limit} (const Rho\+Type \&\hyperlink{EEqn__1pl_8H_ac955f87ac2b79f02f420cae087fc52b1}{rho}, const vol\+Scalar\+Field \&\hyperlink{UEqn__1pl_8H_a165a34deec3ee505598e511a88831968}{psi}, const surface\+Scalar\+Field \&phi, surface\+Scalar\+Field \&phi\+Psi, const Sp\+Type \&Sp, const Su\+Type \&Su, const Psi\+Max\+Type \&psi\+Max, const Psi\+Min\+Type \&psi\+Min, const bool return\+Corr)
+\item 
+void \hyperlink{namespaceFoam_1_1myMULES_aaae3018ee0507861d4bc922ead356165}{limit\+Sum} (U\+Ptr\+List$<$ scalar\+Field $>$ \&phi\+Psi\+Corrs)
+\item 
+{\footnotesize template$<$class Surface\+Scalar\+Field\+List $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_a2a6599c8010c73aee2d272c630310a15}{limit\+Sum} (Surface\+Scalar\+Field\+List \&phi\+Psi\+Corrs)
+\item 
+void \hyperlink{namespaceFoam_1_1myMULES_a108da011c64c47c3247e56b83467ac34}{limit\+Sum} (const U\+Ptr\+List$<$ const scalar\+Field $>$ \&\hyperlink{alphaEqns__2p_8H_a2cbad8ea5beaa4a82b823322537d5a70}{alphas}, U\+Ptr\+List$<$ scalar\+Field $>$ \&phi\+Psi\+Corrs, const label\+Hash\+Set \&fixed)
+\item 
+{\footnotesize template$<$class Surface\+Scalar\+Field\+List $>$ }\\void \hyperlink{namespaceFoam_1_1myMULES_a25814ac88176fe3afac0fa3eb2a1f90c}{limit\+Sum} (const Surface\+Scalar\+Field\+List \&\hyperlink{alphaEqns__2p_8H_a2cbad8ea5beaa4a82b823322537d5a70}{alphas}, Surface\+Scalar\+Field\+List \&phi\+Psi\+Corrs, const label\+Hash\+Set \&fixed)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+my\+M\+U\+L\+ES\+: Multidimensional universal limiter for explicit solution. 
+
+{\bfseries Original source file} \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/solvers/twoPhase/include/alphaEqnsRoutines/myMULES/myMULES.H}{\tt my\+M\+U\+L\+E\+S.\+H}
+
+\label{_Description}%
+ Solve a convective-\/only transport equation using an explicit universal multi-\/dimensional limiter.
+
+Parameters are the variable to solve, the normal convective flux and the actual explicit flux of the variable which is also used to return limited flux used in the bounded-\/solution. This version is virtually indentical to the M\+U\+L\+ES present in Open\+F\+O\+A\+M6. The main difference consists in the option to provide a space-\/dependent limiter field, something which is absent in the v1812 Open\+F\+O\+AM version of M\+U\+L\+ES. Modified by Stefan Radman (\href{mailto:stefan.radman@epfl.ch}{\tt stefan.\+radman@epfl.\+ch}/stefanradman92.com)
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/solvers/twoPhase/include/alphaEqnsRoutines/myMULES/myMULES.H}{\tt my\+M\+U\+L\+E\+S.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/solvers/twoPhase/include/alphaEqnsRoutines/myMULES/myMULES.C}{\tt my\+M\+U\+L\+E\+S.\+C} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/solvers/twoPhase/include/alphaEqnsRoutines/myMULES/myMULESTemplates.C}{\tt my\+M\+U\+L\+E\+S\+Templates.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}

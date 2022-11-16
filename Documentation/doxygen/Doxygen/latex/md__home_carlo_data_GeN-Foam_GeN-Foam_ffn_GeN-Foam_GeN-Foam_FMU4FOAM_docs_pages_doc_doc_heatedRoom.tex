@@ -1,0 +1,25 @@
+
+
+ title\+: Heated Room permalink\+: doc\+\_\+heated\+Room.\+html keywords\+: Open\+F\+O\+AM sidebar\+: doc\+\_\+sidebar \subsection*{folder\+: doc }
+
+\subsection*{Heated room}
+
+In this example, a room which is heated by an H\+V\+AC system is considered. The F\+MU is used to set the massflow rate and temperature of the hot air blown into the room to raise the temperature.
+
+The schematic of the F\+MU is shown in the following figure.
+
+\{\% include image.\+html file=\char`\"{}heated\+Room/\+H\+V\+A\+C\+System.\+png\char`\"{} alt=\char`\"{}\+H\+V\+A\+C\+System\char`\"{} caption=\char`\"{}\+H\+V\+A\+C\+System\char`\"{} \%\}
+
+Here, air is sucked in at one corner of the room, is heated by convection in a heat exchanger and is then exhausted at another corner of the room. The F\+MU controles the Pump and Heater by taking the measured room temperature in the middle of the room and the inlet temperature as inputs and sets the pump speed and heating power according to a pre defined temperature ramp. The temperature increase is given by a linear function within the ramp block. One P\+ID regulator sets the control value for the pump using the measured temperature in the middle of the room. Another P\+ID regulator sets the control value of the heater power. The heated air is then expelled at the outlet patch by passing the temperature and the massflow rate to the Open\+Foam solver to solve for the temperature and flow field inside the room as shown in the following figure.
+
+\{\% include image.\+html file=\char`\"{}heated\+Room/heat\+Room.\+png\char`\"{} alt=\char`\"{}\+Temperature and flow field inside the room\char`\"{} caption=\char`\"{}\+Temperature and flow field inside the room\char`\"{} \%\}
+
+The temperature of the room taken at the middle of the room by a temperature probe along with the target temperature set by the ramp, are shown in the figure below.
+
+\{\% include image.\+html file=\char`\"{}heated\+Room/\+T.\+png\char`\"{} alt=\char`\"{}\+Temperature at temperature sensor\char`\"{} caption=\char`\"{}\+Temperature at temperature sensor\char`\"{} \%\}
+
+The heat flux and mass flow rate of the heater are depicted in the next two figures.
+
+\{\% include image.\+html file=\char`\"{}heated\+Room/heatflux.\+png\char`\"{} alt=\char`\"{}\+Heat flux\char`\"{} caption=\char`\"{}\+Heat flux\char`\"{} \%\}
+
+\{\% include image.\+html file=\char`\"{}heated\+Room/massflux.\+png\char`\"{} alt=\char`\"{}\+Mass flow rate\char`\"{} caption=\char`\"{}\+Mass flow rate\char`\"{} \%\} 

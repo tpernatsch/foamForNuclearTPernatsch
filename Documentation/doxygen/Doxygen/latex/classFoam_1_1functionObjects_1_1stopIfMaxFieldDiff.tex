@@ -1,0 +1,232 @@
+\hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}{}\section{stop\+If\+Max\+Field\+Diff Class Reference}
+\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}\index{stop\+If\+Max\+Field\+Diff@{stop\+If\+Max\+Field\+Diff}}
+
+
+Stops the simulation when max(field1-\/field2) $>$ 0 and prints out the simulation time. Both field1 and field2 must be vol\+Sclara\+Fields.  
+
+
+
+
+Inheritance diagram for stop\+If\+Max\+Field\+Diff\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=195pt]{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for stop\+If\+Max\+Field\+Diff\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=195pt]{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a464f2f2d2659b5761218a159c60770ee}{Type\+Name} (\char`\"{}stop\+If\+Max\+Field\+Diff\char`\"{})
+\item 
+\hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a5d69ef4b34047a2e58452874274cf6e4}{stop\+If\+Max\+Field\+Diff} (const word \&name, const Time \&run\+Time, const dictionary \&dict)
+\item 
+virtual \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a7807cf2760e56a3c3779d8ff139ef897}{$\sim$stop\+If\+Max\+Field\+Diff} ()=default
+\item 
+virtual bool \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_afac0600fef97b05534a595ce00b272ed}{read} (const dictionary \&)
+\item 
+virtual bool \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_ae006844a02161d12182ab372ca5c257b}{execute} ()
+\item 
+virtual bool \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_ae8f6374e29a250261b3979bbd6e5cb40}{write} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a9339f7600f7c1bb750f55d22cd160381}{stop\+If\+Max\+Field\+Diff} (const \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}{stop\+If\+Max\+Field\+Diff} \&)=delete
+\item 
+void \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_ae5128d9edf834d60ec8904096cde9261}{operator=} (const \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}{stop\+If\+Max\+Field\+Diff} \&)=delete
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+word \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_acb0f79711fb8fa411eb60ad488a7e0f1}{field1\+Name\+\_\+}
+\item 
+word \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a7562a744a11124653e3eacf0b293ce8b}{field2\+Name\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a640e57e34f7ff15738b26b557bca5458}{field1\+Ptr\+\_\+}
+\item 
+const vol\+Scalar\+Field $\ast$ \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a1ec19f0ee9cf9323c9e23527eb12e51c}{field2\+Ptr\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Stops the simulation when max(field1-\/field2) $>$ 0 and prints out the simulation time. Both field1 and field2 must be vol\+Sclara\+Fields. 
+
+\label{_Description}%
+ \begin{DoxyParagraph}{Usage}
+Example of function object specification\+: \begin{DoxyVerb}stopIfMaxFieldDiff1
+{
+    type                stopIfMaxFieldDiff;
+    libs                ("libfieldFunctionObjects.so");
+    ...
+    writeToFile             yes;
+    log                     yes;
+    field1                  fieldName;
+    field2                  fieldName;
+}
+\end{DoxyVerb}
+
+\end{DoxyParagraph}
+Where the entries comprise\+: \tabulinesep=1mm
+\begin{longtabu} spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Required } }&\PBS\centering \textbf{ {\bfseries  Default value}  }\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\rowcolor{\tableheadbgcolor}\PBS\centering \textbf{ {\bfseries  Property } }&\PBS\centering \textbf{ {\bfseries  Description } }&\PBS\centering \textbf{ {\bfseries  Required } }&\PBS\centering \textbf{ {\bfseries  Default value}  }\\\cline{1-4}
+\endhead
+{\ttfamily type}  &type name\+: \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}{stop\+If\+Max\+Field\+Diff}  &yes  &\\\cline{1-4}
+{\ttfamily write\+To\+File}  &write extents data to file  &no  &yes  \\\cline{1-4}
+{\ttfamily log}  &write extents data to standard output  &no  &yes  \\\cline{1-4}
+{\ttfamily field1}  &&yes   \\\cline{1-4}
+{\ttfamily field2}  &&yes  \\\cline{1-4}
+\end{longtabu}
+
+
+\begin{DoxyNote}{Note}
+For non-\/scalar fields, the magnitude of the field is employed and compared to the threshold value.
+\end{DoxyNote}
+\begin{DoxySeeAlso}{See also}
+Foam\+::function\+Objects\+::fv\+Mesh\+Function\+Object Foam\+::function\+Objects\+::write\+File
+\end{DoxySeeAlso}
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/functionObjects/stopIfMaxFieldDiff/stopIfMaxFieldDiff.H}{\tt stop\+If\+Max\+Field\+Diff.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/functionObjects/stopIfMaxFieldDiff/stopIfMaxFieldDiff.C}{\tt stop\+If\+Max\+Field\+Diff.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 118 of file stop\+If\+Max\+Field\+Diff.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a9339f7600f7c1bb750f55d22cd160381}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a9339f7600f7c1bb750f55d22cd160381}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!stop\+If\+Max\+Field\+Diff@{stop\+If\+Max\+Field\+Diff}}
+\index{stop\+If\+Max\+Field\+Diff@{stop\+If\+Max\+Field\+Diff}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{stop\+If\+Max\+Field\+Diff()}{stopIfMaxFieldDiff()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}{stop\+If\+Max\+Field\+Diff} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}{stop\+If\+Max\+Field\+Diff} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a5d69ef4b34047a2e58452874274cf6e4}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a5d69ef4b34047a2e58452874274cf6e4}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!stop\+If\+Max\+Field\+Diff@{stop\+If\+Max\+Field\+Diff}}
+\index{stop\+If\+Max\+Field\+Diff@{stop\+If\+Max\+Field\+Diff}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{stop\+If\+Max\+Field\+Diff()}{stopIfMaxFieldDiff()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}{stop\+If\+Max\+Field\+Diff} (\begin{DoxyParamCaption}\item[{const word \&}]{name,  }\item[{const Time \&}]{run\+Time,  }\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})}
+
+
+
+Definition at line 37 of file stop\+If\+Max\+Field\+Diff.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a7807cf2760e56a3c3779d8ff139ef897}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a7807cf2760e56a3c3779d8ff139ef897}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!````~stop\+If\+Max\+Field\+Diff@{$\sim$stop\+If\+Max\+Field\+Diff}}
+\index{````~stop\+If\+Max\+Field\+Diff@{$\sim$stop\+If\+Max\+Field\+Diff}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{$\sim$stop\+If\+Max\+Field\+Diff()}{~stopIfMaxFieldDiff()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}{stop\+If\+Max\+Field\+Diff} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}, {\ttfamily [default]}}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_ae5128d9edf834d60ec8904096cde9261}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_ae5128d9edf834d60ec8904096cde9261}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!operator=@{operator=}}
+\index{operator=@{operator=}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{operator=()}{operator=()}}
+{\footnotesize\ttfamily void operator= (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff}{stop\+If\+Max\+Field\+Diff} \&}]{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}, {\ttfamily [delete]}}
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a464f2f2d2659b5761218a159c60770ee}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a464f2f2d2659b5761218a159c60770ee}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}stop\+If\+Max\+Field\+Diff\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_afac0600fef97b05534a595ce00b272ed}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_afac0600fef97b05534a595ce00b272ed}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!read@{read}}
+\index{read@{read}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{read()}{read()}}
+{\footnotesize\ttfamily bool read (\begin{DoxyParamCaption}\item[{const dictionary \&}]{dict }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 53 of file stop\+If\+Max\+Field\+Diff.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_ae006844a02161d12182ab372ca5c257b}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_ae006844a02161d12182ab372ca5c257b}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!execute@{execute}}
+\index{execute@{execute}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily bool execute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 68 of file stop\+If\+Max\+Field\+Diff.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_ae8f6374e29a250261b3979bbd6e5cb40}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_ae8f6374e29a250261b3979bbd6e5cb40}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!write@{write}}
+\index{write@{write}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{write()}{write()}}
+{\footnotesize\ttfamily bool write (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 74 of file stop\+If\+Max\+Field\+Diff.\+C.
+
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_acb0f79711fb8fa411eb60ad488a7e0f1}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_acb0f79711fb8fa411eb60ad488a7e0f1}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!field1\+Name\+\_\+@{field1\+Name\+\_\+}}
+\index{field1\+Name\+\_\+@{field1\+Name\+\_\+}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{field1\+Name\+\_\+}{field1Name\_}}
+{\footnotesize\ttfamily word field1\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 129 of file stop\+If\+Max\+Field\+Diff.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a7562a744a11124653e3eacf0b293ce8b}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a7562a744a11124653e3eacf0b293ce8b}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!field2\+Name\+\_\+@{field2\+Name\+\_\+}}
+\index{field2\+Name\+\_\+@{field2\+Name\+\_\+}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{field2\+Name\+\_\+}{field2Name\_}}
+{\footnotesize\ttfamily word field2\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 130 of file stop\+If\+Max\+Field\+Diff.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a640e57e34f7ff15738b26b557bca5458}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a640e57e34f7ff15738b26b557bca5458}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!field1\+Ptr\+\_\+@{field1\+Ptr\+\_\+}}
+\index{field1\+Ptr\+\_\+@{field1\+Ptr\+\_\+}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{field1\+Ptr\+\_\+}{field1Ptr\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ field1\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 133 of file stop\+If\+Max\+Field\+Diff.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a1ec19f0ee9cf9323c9e23527eb12e51c}\label{classFoam_1_1functionObjects_1_1stopIfMaxFieldDiff_a1ec19f0ee9cf9323c9e23527eb12e51c}} 
+\index{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}!field2\+Ptr\+\_\+@{field2\+Ptr\+\_\+}}
+\index{field2\+Ptr\+\_\+@{field2\+Ptr\+\_\+}!Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff@{Foam\+::function\+Objects\+::stop\+If\+Max\+Field\+Diff}}
+\subsubsection{\texorpdfstring{field2\+Ptr\+\_\+}{field2Ptr\_}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field$\ast$ field2\+Ptr\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 134 of file stop\+If\+Max\+Field\+Diff.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/function\+Objects/stop\+If\+Max\+Field\+Diff/\hyperlink{stopIfMaxFieldDiff_8H}{stop\+If\+Max\+Field\+Diff.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/function\+Objects/stop\+If\+Max\+Field\+Diff/\hyperlink{stopIfMaxFieldDiff_8C}{stop\+If\+Max\+Field\+Diff.\+C}\end{DoxyCompactItemize}

@@ -1,0 +1,178 @@
+\hypertarget{createMeshInterpolators_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/create\+Mesh\+Interpolators.H File Reference}
+\label{createMeshInterpolators_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/create\+Mesh\+Interpolators.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/create\+Mesh\+Interpolators.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{createMeshInterpolators_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+point\+I\+O\+Field \hyperlink{createMeshInterpolators_8H_ae1e667a7209da7536e92efe526231ddb}{neutro\+Undeformed\+Points} (I\+Oobject(\char`\"{}neutro\+Undeformed\+Points\char`\"{}, neutro\+Mesh.\+time().time\+Name(), \hyperlink{createNeutroMesh_8H_a5b79902f9ab3ed1763fd3355f92d1cc2}{neutro\+Mesh}, I\+Oobject\+::\+R\+E\+A\+D\+\_\+\+I\+F\+\_\+\+P\+R\+E\+S\+E\+NT,((multiphysics.\+solve\+Thermo\+Mechanics()) ? I\+Oobject\+::\+A\+U\+T\+O\+\_\+\+W\+R\+I\+TE \+:I\+Oobject\+::\+N\+O\+\_\+\+W\+R\+I\+TE)), neutro\+Mesh.\+points())
+\item 
+\hyperlink{createMeshInterpolators_8H_a3f70f4b99cacc41df7364cd58518429d}{if} (run\+Time.\+time\+Output\+Value()!=0 \&\&fvc\+::domain\+Integrate(neutronics.\+disp()).value() !=vector\+::zero)
+\item 
+mesh\+To\+Mesh \hyperlink{createMeshInterpolators_8H_a18eefe0dd1b3b5186a867c32aa07dc10}{mech\+To\+Neutro} (\hyperlink{createThermoMechanicalMesh_8H_a56078b48cbec46f3c0f7ef522ad0483a}{mech\+Mesh}, \hyperlink{createNeutroMesh_8H_a5b79902f9ab3ed1763fd3355f92d1cc2}{neutro\+Mesh}, Foam\+::mesh\+To\+Mesh\+::interpolation\+Method(run\+Time.\+control\+Dict().lookup\+Or\+Default(\char`\"{}mech\+To\+Neutro\+\_\+interp\+Method\char`\"{}, 2)), Foam\+::mesh\+To\+Mesh\+::proc\+Map\+Method\+::pm\+A\+A\+BB, false)
+\item 
+mesh\+To\+Mesh \hyperlink{createMeshInterpolators_8H_afda02081b00dd9bbf0a215328f6833e0}{mech\+To\+Fluid} (\hyperlink{createThermoMechanicalMesh_8H_a56078b48cbec46f3c0f7ef522ad0483a}{mech\+Mesh}, \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, Foam\+::mesh\+To\+Mesh\+::interpolation\+Method(run\+Time.\+control\+Dict().lookup\+Or\+Default(\char`\"{}mech\+To\+Fluid\+\_\+interp\+Method\char`\"{}, 2)), Foam\+::mesh\+To\+Mesh\+::proc\+Map\+Method\+::pm\+A\+A\+BB, false)
+\item 
+mesh\+To\+Mesh \hyperlink{createMeshInterpolators_8H_aa7d8334dd5ea1819a83900ea05ace02f}{neutro\+To\+Fluid} (\hyperlink{createNeutroMesh_8H_a5b79902f9ab3ed1763fd3355f92d1cc2}{neutro\+Mesh}, \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, Foam\+::mesh\+To\+Mesh\+::interpolation\+Method(run\+Time.\+control\+Dict().lookup\+Or\+Default(\char`\"{}neutro\+To\+Fluid\+\_\+interp\+Method\char`\"{}, 2)), Foam\+::mesh\+To\+Mesh\+::proc\+Map\+Method\+::pm\+A\+A\+BB, false)
+\item 
+mesh\+To\+Mesh \hyperlink{createMeshInterpolators_8H_a7e07a16eee8c48d8fe1dbdd97238623e}{fluid\+To\+Neutro} (\hyperlink{createFluidMesh_8H_abc811848be202e7a888cde0339e0dd40}{fluid\+Mesh}, \hyperlink{createNeutroMesh_8H_a5b79902f9ab3ed1763fd3355f92d1cc2}{neutro\+Mesh}, Foam\+::mesh\+To\+Mesh\+::interpolation\+Method(run\+Time.\+control\+Dict().lookup\+Or\+Default(\char`\"{}fluid\+To\+Neutro\+\_\+interp\+Method\char`\"{}, 2)), Foam\+::mesh\+To\+Mesh\+::proc\+Map\+Method\+::pm\+A\+A\+BB, false)
+\item 
+\hyperlink{createMeshInterpolators_8H_a8863e5779b943e5f487e3538650608c0}{if} (run\+Time.\+time\+Output\+Value() !=0 \&\&fvc\+::domain\+Integrate(neutronics.\+disp()).value() !=vector\+::zero)
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+point\+Field \hyperlink{createMeshInterpolators_8H_a1d4d2520178d051611528a1ae20c18cd}{neutro\+Start\+Points} = neutro\+Mesh.\+points()
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{createMeshInterpolators_8H_ae1e667a7209da7536e92efe526231ddb}\label{createMeshInterpolators_8H_ae1e667a7209da7536e92efe526231ddb}} 
+\index{create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}!neutro\+Undeformed\+Points@{neutro\+Undeformed\+Points}}
+\index{neutro\+Undeformed\+Points@{neutro\+Undeformed\+Points}!create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}}
+\subsubsection{\texorpdfstring{neutro\+Undeformed\+Points()}{neutroUndeformedPoints()}}
+{\footnotesize\ttfamily point\+I\+O\+Field neutro\+Undeformed\+Points (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}neutro\+Undeformed\+Points\char`\"{}, neutro\+Mesh.\+time().time\+Name(), \hyperlink{createNeutroMesh_8H_a5b79902f9ab3ed1763fd3355f92d1cc2}{neutro\+Mesh}, I\+Oobject\+::\+R\+E\+A\+D\+\_\+\+I\+F\+\_\+\+P\+R\+E\+S\+E\+NT,((multiphysics.\+solve\+Thermo\+Mechanics()) ? I\+Oobject\+::\+A\+U\+T\+O\+\_\+\+W\+R\+I\+TE \+:I\+Oobject\+::\+N\+O\+\_\+\+W\+R\+I\+TE))}]{,  }\item[{neutro\+Mesh.}]{points() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=270pt]{createMeshInterpolators_8H_ae1e667a7209da7536e92efe526231ddb_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createMeshInterpolators_8H_a3f70f4b99cacc41df7364cd58518429d}\label{createMeshInterpolators_8H_a3f70f4b99cacc41df7364cd58518429d}} 
+\index{create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}!if@{if}}
+\index{if@{if}!create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{run\+Time.\+time\+Output\+Value()!}]{ = {\ttfamily 0~\&\&~fvc\+:\+:domainIntegrate(neutronics.disp()).value()~!=~vector\+:\+:zero} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 23 of file create\+Mesh\+Interpolators.\+H.
+
+
+
+References fluid\+Mesh(), fluid\+Mesh\+NB, fluid\+To\+Neutro(), mech\+Mesh(), mech\+To\+Fluid(), mech\+To\+Neutro(), neutro\+Mesh(), neutro\+To\+Fluid(), and neutro\+Undeformed\+Points().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=270pt]{createMeshInterpolators_8H_a3f70f4b99cacc41df7364cd58518429d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createMeshInterpolators_8H_a18eefe0dd1b3b5186a867c32aa07dc10}\label{createMeshInterpolators_8H_a18eefe0dd1b3b5186a867c32aa07dc10}} 
+\index{create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}!mech\+To\+Neutro@{mech\+To\+Neutro}}
+\index{mech\+To\+Neutro@{mech\+To\+Neutro}!create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}}
+\subsubsection{\texorpdfstring{mech\+To\+Neutro()}{mechToNeutro()}}
+{\footnotesize\ttfamily mesh\+To\+Mesh mech\+To\+Neutro (\begin{DoxyParamCaption}\item[{\hyperlink{createThermoMechanicalMesh_8H_a56078b48cbec46f3c0f7ef522ad0483a}{mech\+Mesh}}]{,  }\item[{\hyperlink{createNeutroMesh_8H_a5b79902f9ab3ed1763fd3355f92d1cc2}{neutro\+Mesh}}]{,  }\item[{Foam\+::mesh\+To\+Mesh\+::interpolation\+Method(run\+Time.\+control\+Dict().lookup\+Or\+Default(\char`\"{}mech\+To\+Neutro\+\_\+interp\+Method\char`\"{}, 2))}]{,  }\item[{Foam\+::mesh\+To\+Mesh\+::proc\+Map\+Method\+::pm\+A\+A\+BB}]{,  }\item[{false}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{createMeshInterpolators_8H_a18eefe0dd1b3b5186a867c32aa07dc10_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createMeshInterpolators_8H_afda02081b00dd9bbf0a215328f6833e0}\label{createMeshInterpolators_8H_afda02081b00dd9bbf0a215328f6833e0}} 
+\index{create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}!mech\+To\+Fluid@{mech\+To\+Fluid}}
+\index{mech\+To\+Fluid@{mech\+To\+Fluid}!create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}}
+\subsubsection{\texorpdfstring{mech\+To\+Fluid()}{mechToFluid()}}
+{\footnotesize\ttfamily mesh\+To\+Mesh mech\+To\+Fluid (\begin{DoxyParamCaption}\item[{\hyperlink{createThermoMechanicalMesh_8H_a56078b48cbec46f3c0f7ef522ad0483a}{mech\+Mesh}}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{Foam\+::mesh\+To\+Mesh\+::interpolation\+Method(run\+Time.\+control\+Dict().lookup\+Or\+Default(\char`\"{}mech\+To\+Fluid\+\_\+interp\+Method\char`\"{}, 2))}]{,  }\item[{Foam\+::mesh\+To\+Mesh\+::proc\+Map\+Method\+::pm\+A\+A\+BB}]{,  }\item[{false}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), and thermo\+Mechanics\+::$\sim$thermo\+Mechanics().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=314pt]{createMeshInterpolators_8H_afda02081b00dd9bbf0a215328f6833e0_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createMeshInterpolators_8H_aa7d8334dd5ea1819a83900ea05ace02f}\label{createMeshInterpolators_8H_aa7d8334dd5ea1819a83900ea05ace02f}} 
+\index{create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}!neutro\+To\+Fluid@{neutro\+To\+Fluid}}
+\index{neutro\+To\+Fluid@{neutro\+To\+Fluid}!create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}}
+\subsubsection{\texorpdfstring{neutro\+To\+Fluid()}{neutroToFluid()}}
+{\footnotesize\ttfamily mesh\+To\+Mesh neutro\+To\+Fluid (\begin{DoxyParamCaption}\item[{\hyperlink{createNeutroMesh_8H_a5b79902f9ab3ed1763fd3355f92d1cc2}{neutro\+Mesh}}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{Foam\+::mesh\+To\+Mesh\+::interpolation\+Method(run\+Time.\+control\+Dict().lookup\+Or\+Default(\char`\"{}neutro\+To\+Fluid\+\_\+interp\+Method\char`\"{}, 2))}]{,  }\item[{Foam\+::mesh\+To\+Mesh\+::proc\+Map\+Method\+::pm\+A\+A\+BB}]{,  }\item[{false}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), point\+Kinetic\+Neutronics\+::keff(), diffusion\+Neutronics\+::power(), adjoint\+Diffusion\+Neutronics\+::power(), S\+P3\+Neutronics\+::power(), S\+N\+Neutronics\+::power(), and neutronics\+::$\sim$neutronics().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{createMeshInterpolators_8H_aa7d8334dd5ea1819a83900ea05ace02f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createMeshInterpolators_8H_a7e07a16eee8c48d8fe1dbdd97238623e}\label{createMeshInterpolators_8H_a7e07a16eee8c48d8fe1dbdd97238623e}} 
+\index{create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}!fluid\+To\+Neutro@{fluid\+To\+Neutro}}
+\index{fluid\+To\+Neutro@{fluid\+To\+Neutro}!create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}}
+\subsubsection{\texorpdfstring{fluid\+To\+Neutro()}{fluidToNeutro()}}
+{\footnotesize\ttfamily mesh\+To\+Mesh fluid\+To\+Neutro (\begin{DoxyParamCaption}\item[{\hyperlink{createFluidMesh_8H_abc811848be202e7a888cde0339e0dd40}{fluid\+Mesh}}]{,  }\item[{\hyperlink{createNeutroMesh_8H_a5b79902f9ab3ed1763fd3355f92d1cc2}{neutro\+Mesh}}]{,  }\item[{Foam\+::mesh\+To\+Mesh\+::interpolation\+Method(run\+Time.\+control\+Dict().lookup\+Or\+Default(\char`\"{}fluid\+To\+Neutro\+\_\+interp\+Method\char`\"{}, 2))}]{,  }\item[{Foam\+::mesh\+To\+Mesh\+::proc\+Map\+Method\+::pm\+A\+A\+BB}]{,  }\item[{false}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=220pt]{createMeshInterpolators_8H_a7e07a16eee8c48d8fe1dbdd97238623e_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createMeshInterpolators_8H_a8863e5779b943e5f487e3538650608c0}\label{createMeshInterpolators_8H_a8863e5779b943e5f487e3538650608c0}} 
+\index{create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}!if@{if}}
+\index{if@{if}!create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{run\+Time.\+time\+Output\+Value() !}]{ = {\ttfamily 0~\&\&~fvc\+:\+:domainIntegrate(neutronics.disp()).value()~!=~vector\+:\+:zero} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 83 of file create\+Mesh\+Interpolators.\+H.
+
+
+
+References neutro\+Mesh(), and neutro\+Start\+Points.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=213pt]{createMeshInterpolators_8H_a8863e5779b943e5f487e3538650608c0_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{createMeshInterpolators_8H_a1d4d2520178d051611528a1ae20c18cd}\label{createMeshInterpolators_8H_a1d4d2520178d051611528a1ae20c18cd}} 
+\index{create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}!neutro\+Start\+Points@{neutro\+Start\+Points}}
+\index{neutro\+Start\+Points@{neutro\+Start\+Points}!create\+Mesh\+Interpolators.\+H@{create\+Mesh\+Interpolators.\+H}}
+\subsubsection{\texorpdfstring{neutro\+Start\+Points}{neutroStartPoints}}
+{\footnotesize\ttfamily point\+Field neutro\+Start\+Points = neutro\+Mesh.\+points()}
+
+
+
+Definition at line 4 of file create\+Mesh\+Interpolators.\+H.
+
+
+
+Referenced by if().
+

@@ -1,0 +1,496 @@
+\hypertarget{createCouplingFields_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/create\+Coupling\+Fields.H File Reference}
+\label{createCouplingFields_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/create\+Coupling\+Fields.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/main/include/create\+Coupling\+Fields.\+H}}
+Include dependency graph for create\+Coupling\+Fields.\+H\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=233pt]{createCouplingFields_8H__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{createCouplingFields_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Hash\+Table$<$ fluid $\ast$ $>$ \hyperlink{createCouplingFields_8H_aab7f3b688fc17e5b6440cb37ca0ea472}{fluids} (fluid\+Mesh.\+lookup\+Class$<$ fluid $>$())
+\item 
+int \hyperlink{createCouplingFields_8H_aefb70aedd21e8101464b43825a5eb8de}{n\+Fluids} (fluids.\+size())
+\item 
+fluid $\ast$ \hyperlink{createCouplingFields_8H_a34b77427a2a1bf413f5cdae437e3d7ef}{liquid} (nullptr)
+\item 
+fluid $\ast$ \hyperlink{createCouplingFields_8H_ae4c60b2c622bfb2cb70d8694152c0338}{vapour} (nullptr)
+\item 
+\hyperlink{createCouplingFields_8H_ac6ff4a23a9f1a45f8b64a2928a2a12c0}{if} (\hyperlink{createCouplingFields_8H_aefb70aedd21e8101464b43825a5eb8de}{n\+Fluids}==1)
+\item 
+fluid $\ast$const \hyperlink{createCouplingFields_8H_a25f7a0918d80e813426eef4229632ba7}{fluid1} (\hyperlink{createCouplingFields_8H_aab7f3b688fc17e5b6440cb37ca0ea472}{fluids}\mbox{[}fluids.\+toc()\mbox{[}1\mbox{]}\mbox{]})
+\item 
+\hyperlink{createCouplingFields_8H_af2200cc2fa50d4fe7f33e4a35d9e3c67}{if} (fluid0-\/$>$is\+Liquid() and \hyperlink{createCouplingFields_8H_a25f7a0918d80e813426eef4229632ba7}{fluid1}-\/$>$is\+Gas())
+\item 
+\hyperlink{createFluidMesh_8H_a0544c3fe466e421738dae463968b70ba}{else} \hyperlink{createCouplingFields_8H_a887e853cfccd45a56eb1c71dd59c7101}{if} (\hyperlink{createCouplingFields_8H_a25f7a0918d80e813426eef4229632ba7}{fluid1}-\/$>$is\+Liquid() and fluid0-\/$>$is\+Gas())
+\item 
+const vol\+Scalar\+Field \& \hyperlink{createCouplingFields_8H_aff59c849e5a7c616f1bc0bb46332f5a3}{T\+Struct} (($\ast$fluid\+Mesh.\+find\+Object$<$ vol\+Scalar\+Field $>$(\char`\"{}T.\+passive\+Structure\char`\"{})))
+\item 
+const vol\+Scalar\+Field \& \hyperlink{createCouplingFields_8H_a455928a9b9a6967eec66e04552cde9b2}{T\+Fuel\+Av} (($\ast$fluid\+Mesh.\+find\+Object$<$ vol\+Scalar\+Field $>$(\char`\"{}T.\+fuel\+Av\+For\+Neutronics\char`\"{})))
+\item 
+const vol\+Scalar\+Field \& \hyperlink{createCouplingFields_8H_a147e25b01d60335208bee4349bba2474}{T\+Clad\+Av} (($\ast$fluid\+Mesh.\+find\+Object$<$ vol\+Scalar\+Field $>$(\char`\"{}T.\+clad\+Av\+For\+Neutronics\char`\"{})))
+\item 
+vol\+Scalar\+Field \hyperlink{createCouplingFields_8H_a53efc3c92a79074d539e2ef4861a88ad}{baffleless\+T\+Cool} (I\+Oobject(\char`\"{}baffleless\+T\+Cool\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Temperature, 0.\+0), zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name)
+\item 
+vol\+Scalar\+Field \hyperlink{createCouplingFields_8H_abd5a67b58d70ace64497ec9cd47dadda}{baffleless\+T\+Fuel\+Av} (I\+Oobject(\char`\"{}baffleless\+T\+Fuel\+Av\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Temperature, 0.\+0), zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name)
+\item 
+vol\+Scalar\+Field \hyperlink{createCouplingFields_8H_ad22b56e591671f9c843bbf8f4e059bca}{baffleless\+T\+Clad\+Av} (I\+Oobject(\char`\"{}baffleless\+T\+Clad\+Av\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Temperature, 0.\+0), zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name)
+\item 
+vol\+Scalar\+Field \hyperlink{createCouplingFields_8H_ab24f0221414a25d346f3ec78bb700050}{baffleless\+T\+Struct} (I\+Oobject(\char`\"{}baffleless\+T\+Struct\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Temperature, 0.\+0), zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name)
+\item 
+vol\+Scalar\+Field \hyperlink{createCouplingFields_8H_afc97dbe3594c6c5e83614b918a2c2ea5}{baffleless\+Alpha} (I\+Oobject(\char`\"{}baffleless\+Alpha\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, dimensioned\+Scalar(\char`\"{}\char`\"{}, dimless, 0.\+0), zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name)
+\item 
+vol\+Scalar\+Field \hyperlink{createCouplingFields_8H_acbd5edcbed05274fed4877890e2ebef8}{baffleless\+Rho\+Cool} (I\+Oobject(\char`\"{}baffleless\+Rho\+Cool\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Density, S\+M\+A\+LL), zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name)
+\item 
+vol\+Scalar\+Field \hyperlink{createCouplingFields_8H_a51d0a72cd31afeebdc70910e8fadefbd}{baffleless\+Alphat} (I\+Oobject(\char`\"{}baffleless\+Alphat\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Area/dim\+Time $\ast$dim\+Density, 0.\+0), zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name)
+\item 
+vol\+Scalar\+Field \hyperlink{createCouplingFields_8H_a72174d79fe37f0b270d2dd5e28a10b5c}{baffleless\+Mu} (I\+Oobject(\char`\"{}baffleless\+Mu\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Pressure $\ast$dim\+Time, 0.\+0), zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name)
+\item 
+vol\+Vector\+Field \hyperlink{createCouplingFields_8H_a9ceb90c22509b7e3c11b8e5950d1bd02}{bafflelessU} (I\+Oobject(\char`\"{}bafflelessU\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}, dimensioned\+Vector(\char`\"{}\char`\"{}, dim\+Velocity, vector\+::zero), zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name)
+\item 
+const surface\+Scalar\+Field \& \hyperlink{createCouplingFields_8H_a75594cc07a0c438b421a97e497237e1b}{phi\+F\+M\+Reg} ((fluid\+Mesh.\+lookup\+Object$<$ surface\+Scalar\+Field $>$(\char`\"{}phi\char`\"{})))
+\item 
+\hyperlink{createCouplingFields_8H_a03e0fe7184a8bdd95c3d2cf5fa24bf4f}{if} (neutronics.\+type()==\char`\"{}point\+Kinetics\char`\"{})
+\item 
+\hyperlink{createCouplingFields_8H_ad1f8dc12b23c4060b489e1c40b027703}{if} (multiphysics.\+solve\+Neutronics() or multiphysics.\+solve\+Thermo\+Mechanics())
+\item 
+\hyperlink{createCouplingFields_8H_ab1cdc8cb62af85f724625303bbfd046f}{if} (multiphysics.\+solve\+Energy())
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{createCouplingFields_8H_a0544c3fe466e421738dae463968b70ba}{else}
+\item 
+\hyperlink{createCouplingFields_8H_a591ff58ed296dda46a8a5b8321dce5fb}{vapour} = \hyperlink{createCouplingFields_8H_a25f7a0918d80e813426eef4229632ba7}{fluid1}
+\item 
+void \hyperlink{createCouplingFields_8H_a113830654a80b7f398863f96bf351e05}{liquid}
+\item 
+vol\+Scalar\+Field $\ast$ \hyperlink{createCouplingFields_8H_af4e3c1de091ffc91c131e672df22b96b}{baffleless\+Power\+Density} = nullptr
+\item 
+vol\+Scalar\+Field $\ast$ \hyperlink{createCouplingFields_8H_afce01877cad53b14ac949c92809f7621}{baffleless\+Power\+Density\+To\+Liquid} = nullptr
+\item 
+surface\+Scalar\+Field $\ast$ \hyperlink{createCouplingFields_8H_a48fe00c0cbc444fb8d8e43e0e5ce48bb}{phi\+F\+M\+N\+B\+Reg} = nullptr
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{createCouplingFields_8H_aab7f3b688fc17e5b6440cb37ca0ea472}\label{createCouplingFields_8H_aab7f3b688fc17e5b6440cb37ca0ea472}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!fluids@{fluids}}
+\index{fluids@{fluids}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{fluids()}{fluids()}}
+{\footnotesize\ttfamily Hash\+Table$<$fluid$\ast$$>$ fluids (\begin{DoxyParamCaption}\item[{fluid\+Mesh.\+lookup\+Class$<$ fluid $>$}]{() }\end{DoxyParamCaption})}
+
+
+
+Referenced by if(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::init\+Mixture\+Fields(), Lahey\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::\+Lahey\+K\+Epsilon(), Nusselt\+Thermal\+Baffle1\+D\+Fv\+Patch\+Scalar\+Field\+::\+Nusselt\+Thermal\+Baffle1\+D\+Fv\+Patch\+Scalar\+Field(), T\+O\+N\+B\+Model\+::set\+Ptrs(), two\+Phase\+Drag\+Multiplier\+Model\+::two\+Phase\+Drag\+Multiplier\+Model(), C\+O\+B\+R\+A\+\_\+\+T\+F\+::value(), and Chen\+::value().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=335pt]{createCouplingFields_8H_aab7f3b688fc17e5b6440cb37ca0ea472_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_aefb70aedd21e8101464b43825a5eb8de}\label{createCouplingFields_8H_aefb70aedd21e8101464b43825a5eb8de}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!n\+Fluids@{n\+Fluids}}
+\index{n\+Fluids@{n\+Fluids}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{n\+Fluids()}{nFluids()}}
+{\footnotesize\ttfamily int n\+Fluids (\begin{DoxyParamCaption}\item[{fluids.}]{size() }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createCouplingFields_8H_a34b77427a2a1bf413f5cdae437e3d7ef}\label{createCouplingFields_8H_a34b77427a2a1bf413f5cdae437e3d7ef}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!liquid@{liquid}}
+\index{liquid@{liquid}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{liquid()}{liquid()}}
+{\footnotesize\ttfamily fluid$\ast$ liquid (\begin{DoxyParamCaption}\item[{nullptr}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createCouplingFields_8H_ae4c60b2c622bfb2cb70d8694152c0338}\label{createCouplingFields_8H_ae4c60b2c622bfb2cb70d8694152c0338}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!vapour@{vapour}}
+\index{vapour@{vapour}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{vapour()}{vapour()}}
+{\footnotesize\ttfamily fluid$\ast$ vapour (\begin{DoxyParamCaption}\item[{nullptr}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createCouplingFields_8H_ac6ff4a23a9f1a45f8b64a2928a2a12c0}\label{createCouplingFields_8H_ac6ff4a23a9f1a45f8b64a2928a2a12c0}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!if@{if}}
+\index{if@{if}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [1/6]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{\hyperlink{createCouplingFields_8H_aefb70aedd21e8101464b43825a5eb8de}{n\+Fluids}}]{ = {\ttfamily =~1} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 38 of file create\+Coupling\+Fields.\+H.
+
+
+
+References fluids(), and liquid.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{createCouplingFields_8H_ac6ff4a23a9f1a45f8b64a2928a2a12c0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_a25f7a0918d80e813426eef4229632ba7}\label{createCouplingFields_8H_a25f7a0918d80e813426eef4229632ba7}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!fluid1@{fluid1}}
+\index{fluid1@{fluid1}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{fluid1()}{fluid1()}}
+{\footnotesize\ttfamily fluid$\ast$ const fluid1 (\begin{DoxyParamCaption}\item[{\hyperlink{createCouplingFields_8H_aab7f3b688fc17e5b6440cb37ca0ea472}{fluids}\mbox{]}}]{\mbox{[}fluids.\+toc()\mbox{[}1\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Referenced by Autruffe\+::\+Autruffe(), Bestion\+::\+Bestion(), Bestion\+T\+R\+A\+C\+E\+::\+Bestion\+T\+R\+A\+C\+E(), if(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::init\+Mixture\+Fields(), Lahey\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::\+Lahey\+K\+Epsilon(), No\+Kazimi\+::\+No\+Kazimi(), and Wallis\+::\+Wallis().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=327pt]{createCouplingFields_8H_a25f7a0918d80e813426eef4229632ba7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_af2200cc2fa50d4fe7f33e4a35d9e3c67}\label{createCouplingFields_8H_af2200cc2fa50d4fe7f33e4a35d9e3c67}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!if@{if}}
+\index{if@{if}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [2/6]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{fluid0-\/$>$}]{is\+Liquid) and fluid1-\/$>$is\+Gas( }\end{DoxyParamCaption})}
+
+
+
+Definition at line 56 of file create\+Coupling\+Fields.\+H.
+
+
+
+References fluid1(), liquid, and vapour.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{createCouplingFields_8H_af2200cc2fa50d4fe7f33e4a35d9e3c67_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_a887e853cfccd45a56eb1c71dd59c7101}\label{createCouplingFields_8H_a887e853cfccd45a56eb1c71dd59c7101}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!if@{if}}
+\index{if@{if}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [3/6]}}
+{\footnotesize\ttfamily \hyperlink{createFluidMesh_8H_a0544c3fe466e421738dae463968b70ba}{else} if (\begin{DoxyParamCaption}\item[{\hyperlink{createCouplingFields_8H_a25f7a0918d80e813426eef4229632ba7}{fluid1}-\/$>$}]{is\+Liquid) and fluid0-\/$>$is\+Gas( }\end{DoxyParamCaption})}
+
+
+
+Definition at line 61 of file create\+Coupling\+Fields.\+H.
+
+
+
+References fluid1(), liquid, and vapour.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=185pt]{createCouplingFields_8H_a887e853cfccd45a56eb1c71dd59c7101_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_aff59c849e5a7c616f1bc0bb46332f5a3}\label{createCouplingFields_8H_aff59c849e5a7c616f1bc0bb46332f5a3}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!T\+Struct@{T\+Struct}}
+\index{T\+Struct@{T\+Struct}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{T\+Struct()}{TStruct()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& T\+Struct (\begin{DoxyParamCaption}\item[{($\ast$.$<$ $>$\char`\"{}.\char`\"{}}]{passive\+Structure }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createCouplingFields_8H_a455928a9b9a6967eec66e04552cde9b2}\label{createCouplingFields_8H_a455928a9b9a6967eec66e04552cde9b2}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!T\+Fuel\+Av@{T\+Fuel\+Av}}
+\index{T\+Fuel\+Av@{T\+Fuel\+Av}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{T\+Fuel\+Av()}{TFuelAv()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& T\+Fuel\+Av (\begin{DoxyParamCaption}\item[{($\ast$.$<$ $>$\char`\"{}.\char`\"{}}]{fuel\+Av\+For\+Neutronics }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createCouplingFields_8H_a147e25b01d60335208bee4349bba2474}\label{createCouplingFields_8H_a147e25b01d60335208bee4349bba2474}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!T\+Clad\+Av@{T\+Clad\+Av}}
+\index{T\+Clad\+Av@{T\+Clad\+Av}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{T\+Clad\+Av()}{TCladAv()}}
+{\footnotesize\ttfamily const vol\+Scalar\+Field\& T\+Clad\+Av (\begin{DoxyParamCaption}\item[{($\ast$.$<$ $>$\char`\"{}.\char`\"{}}]{clad\+Av\+For\+Neutronics }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createCouplingFields_8H_a53efc3c92a79074d539e2ef4861a88ad}\label{createCouplingFields_8H_a53efc3c92a79074d539e2ef4861a88ad}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+T\+Cool@{baffleless\+T\+Cool}}
+\index{baffleless\+T\+Cool@{baffleless\+T\+Cool}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+T\+Cool()}{bafflelessTCool()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field baffleless\+T\+Cool (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}baffleless\+T\+Cool\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB})}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Temperature, 0.\+0)}]{,  }\item[{zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=230pt]{createCouplingFields_8H_a53efc3c92a79074d539e2ef4861a88ad_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_abd5a67b58d70ace64497ec9cd47dadda}\label{createCouplingFields_8H_abd5a67b58d70ace64497ec9cd47dadda}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+T\+Fuel\+Av@{baffleless\+T\+Fuel\+Av}}
+\index{baffleless\+T\+Fuel\+Av@{baffleless\+T\+Fuel\+Av}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+T\+Fuel\+Av()}{bafflelessTFuelAv()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field baffleless\+T\+Fuel\+Av (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}baffleless\+T\+Fuel\+Av\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB})}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Temperature, 0.\+0)}]{,  }\item[{zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createCouplingFields_8H_ad22b56e591671f9c843bbf8f4e059bca}\label{createCouplingFields_8H_ad22b56e591671f9c843bbf8f4e059bca}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+T\+Clad\+Av@{baffleless\+T\+Clad\+Av}}
+\index{baffleless\+T\+Clad\+Av@{baffleless\+T\+Clad\+Av}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+T\+Clad\+Av()}{bafflelessTCladAv()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field baffleless\+T\+Clad\+Av (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}baffleless\+T\+Clad\+Av\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB})}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Temperature, 0.\+0)}]{,  }\item[{zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createCouplingFields_8H_ab24f0221414a25d346f3ec78bb700050}\label{createCouplingFields_8H_ab24f0221414a25d346f3ec78bb700050}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+T\+Struct@{baffleless\+T\+Struct}}
+\index{baffleless\+T\+Struct@{baffleless\+T\+Struct}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+T\+Struct()}{bafflelessTStruct()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field baffleless\+T\+Struct (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}baffleless\+T\+Struct\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB})}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Temperature, 0.\+0)}]{,  }\item[{zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{createCouplingFields_8H_afc97dbe3594c6c5e83614b918a2c2ea5}\label{createCouplingFields_8H_afc97dbe3594c6c5e83614b918a2c2ea5}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+Alpha@{baffleless\+Alpha}}
+\index{baffleless\+Alpha@{baffleless\+Alpha}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+Alpha()}{bafflelessAlpha()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field baffleless\+Alpha (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}baffleless\+Alpha\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB})}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{dimensioned\+Scalar(\char`\"{}\char`\"{}, dimless, 0.\+0)}]{,  }\item[{zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{createCouplingFields_8H_afc97dbe3594c6c5e83614b918a2c2ea5_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_acbd5edcbed05274fed4877890e2ebef8}\label{createCouplingFields_8H_acbd5edcbed05274fed4877890e2ebef8}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+Rho\+Cool@{baffleless\+Rho\+Cool}}
+\index{baffleless\+Rho\+Cool@{baffleless\+Rho\+Cool}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+Rho\+Cool()}{bafflelessRhoCool()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field baffleless\+Rho\+Cool (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}baffleless\+Rho\+Cool\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB})}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Density, S\+M\+A\+LL)}]{,  }\item[{zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{createCouplingFields_8H_acbd5edcbed05274fed4877890e2ebef8_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_a51d0a72cd31afeebdc70910e8fadefbd}\label{createCouplingFields_8H_a51d0a72cd31afeebdc70910e8fadefbd}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+Alphat@{baffleless\+Alphat}}
+\index{baffleless\+Alphat@{baffleless\+Alphat}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+Alphat()}{bafflelessAlphat()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field baffleless\+Alphat (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}baffleless\+Alphat\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB})}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Area/dim\+Time $\ast$dim\+Density, 0.\+0)}]{,  }\item[{zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=231pt]{createCouplingFields_8H_a51d0a72cd31afeebdc70910e8fadefbd_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_a72174d79fe37f0b270d2dd5e28a10b5c}\label{createCouplingFields_8H_a72174d79fe37f0b270d2dd5e28a10b5c}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+Mu@{baffleless\+Mu}}
+\index{baffleless\+Mu@{baffleless\+Mu}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+Mu()}{bafflelessMu()}}
+{\footnotesize\ttfamily vol\+Scalar\+Field baffleless\+Mu (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}baffleless\+Mu\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB})}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{dimensioned\+Scalar(\char`\"{}\char`\"{}, dim\+Pressure $\ast$dim\+Time, 0.\+0)}]{,  }\item[{zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=217pt]{createCouplingFields_8H_a72174d79fe37f0b270d2dd5e28a10b5c_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_a9ceb90c22509b7e3c11b8e5950d1bd02}\label{createCouplingFields_8H_a9ceb90c22509b7e3c11b8e5950d1bd02}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!bafflelessU@{bafflelessU}}
+\index{bafflelessU@{bafflelessU}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+U()}{bafflelessU()}}
+{\footnotesize\ttfamily vol\+Vector\+Field bafflelessU (\begin{DoxyParamCaption}\item[{I\+Oobject(\char`\"{}bafflelessU\char`\"{}, run\+Time.\+time\+Name(), \hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB})}]{,  }\item[{\hyperlink{createFluidMesh_8H_a19096e6b5a147939b336269d09a08e3c}{fluid\+Mesh\+NB}}]{,  }\item[{dimensioned\+Vector(\char`\"{}\char`\"{}, dim\+Velocity, vector\+::zero)}]{,  }\item[{zero\+Gradient\+Fv\+Patch\+Scalar\+Field\+::type\+Name}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=211pt]{createCouplingFields_8H_a9ceb90c22509b7e3c11b8e5950d1bd02_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_a75594cc07a0c438b421a97e497237e1b}\label{createCouplingFields_8H_a75594cc07a0c438b421a97e497237e1b}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!phi\+F\+M\+Reg@{phi\+F\+M\+Reg}}
+\index{phi\+F\+M\+Reg@{phi\+F\+M\+Reg}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{phi\+F\+M\+Reg()}{phiFMReg()}}
+{\footnotesize\ttfamily const surface\+Scalar\+Field\& phi\+F\+M\+Reg (\begin{DoxyParamCaption}\item[{(fluid\+Mesh.\+lookup\+Object$<$ surface\+Scalar\+Field $>$(\char`\"{}phi\char`\"{}))}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by if().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{createCouplingFields_8H_a75594cc07a0c438b421a97e497237e1b_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_a03e0fe7184a8bdd95c3d2cf5fa24bf4f}\label{createCouplingFields_8H_a03e0fe7184a8bdd95c3d2cf5fa24bf4f}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!if@{if}}
+\index{if@{if}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [4/6]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{neutronics.}]{type() = {\ttfamily =~\char`\"{}pointKinetics\char`\"{}} }\end{DoxyParamCaption})}
+
+
+
+Definition at line 268 of file create\+Coupling\+Fields.\+H.
+
+
+
+References fluid\+Mesh(), fluid\+Mesh\+NB, neutronics, and phi\+F\+M\+Reg().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=207pt]{createCouplingFields_8H_a03e0fe7184a8bdd95c3d2cf5fa24bf4f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{createCouplingFields_8H_ad1f8dc12b23c4060b489e1c40b027703}\label{createCouplingFields_8H_ad1f8dc12b23c4060b489e1c40b027703}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!if@{if}}
+\index{if@{if}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [5/6]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{multiphysics.}]{solve\+Neutronics) or multiphysics.\+solve\+Thermo\+Mechanics( }\end{DoxyParamCaption})}
+
+
+
+Definition at line 330 of file create\+Coupling\+Fields.\+H.
+
+\mbox{\Hypertarget{createCouplingFields_8H_ab1cdc8cb62af85f724625303bbfd046f}\label{createCouplingFields_8H_ab1cdc8cb62af85f724625303bbfd046f}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!if@{if}}
+\index{if@{if}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{if()}{if()}\hspace{0.1cm}{\footnotesize\ttfamily [6/6]}}
+{\footnotesize\ttfamily if (\begin{DoxyParamCaption}\item[{multiphysics.}]{solve\+Energy() }\end{DoxyParamCaption})}
+
+
+
+Definition at line 343 of file create\+Coupling\+Fields.\+H.
+
+
+
+References fluid\+Mesh\+NB, fluid\+To\+Neutro(), mech\+To\+Fluid(), multiphysics(), neutro\+Mesh(), neutronics, neutro\+To\+Fluid(), thermal\+Hydraulics, and thermo\+Mechanics.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{createCouplingFields_8H_ab1cdc8cb62af85f724625303bbfd046f_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{createCouplingFields_8H_a0544c3fe466e421738dae463968b70ba}\label{createCouplingFields_8H_a0544c3fe466e421738dae463968b70ba}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!else@{else}}
+\index{else@{else}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{else}{else}}
+{\footnotesize\ttfamily else}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+\{   
+    \textcolor{keywordflow}{if} (\hyperlink{main_2include_2createFields_8H_a708d6ddaa0b1e74427ecbd4938c5be4f}{multiphysics}.liquidFuel())
+    \{
+        Info << \textcolor{stringliteral}{"WARNING: "} << endl
+        << \textcolor{stringliteral}{"In two-phase simulations with liquid fuel, all the "}  << endl
+        << \textcolor{stringliteral}{"powerDensity in neutronics goes to anything that is "}  << endl
+        << \textcolor{stringliteral}{"liquid. You are supposed to have one liquid and one gas"}  << endl
+        << \textcolor{stringliteral}{"otherwise, power will be counted twice"} << endl; 
+    \}
+    
+    fluid* \textcolor{keyword}{const} fluid0(\hyperlink{createCouplingFields_8H_aab7f3b688fc17e5b6440cb37ca0ea472}{fluids}[\hyperlink{createCouplingFields_8H_aab7f3b688fc17e5b6440cb37ca0ea472}{fluids}.toc()[0]])
+\end{DoxyCode}
+
+
+Definition at line 43 of file create\+Coupling\+Fields.\+H.
+
+\mbox{\Hypertarget{createCouplingFields_8H_a591ff58ed296dda46a8a5b8321dce5fb}\label{createCouplingFields_8H_a591ff58ed296dda46a8a5b8321dce5fb}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!vapour@{vapour}}
+\index{vapour@{vapour}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{vapour}{vapour}}
+{\footnotesize\ttfamily void vapour = \hyperlink{createCouplingFields_8H_a25f7a0918d80e813426eef4229632ba7}{fluid1}}
+
+
+
+Definition at line 71 of file create\+Coupling\+Fields.\+H.
+
+
+
+Referenced by if().
+
+\mbox{\Hypertarget{createCouplingFields_8H_a113830654a80b7f398863f96bf351e05}\label{createCouplingFields_8H_a113830654a80b7f398863f96bf351e05}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!liquid@{liquid}}
+\index{liquid@{liquid}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{liquid}{liquid}}
+{\footnotesize\ttfamily void liquid}
+
+
+
+Definition at line 79 of file create\+Coupling\+Fields.\+H.
+
+
+
+Referenced by mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::bubble\+G(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::\+Ct2(), if(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::init\+Mixture\+Fields(), fluid\+::is\+Liquid(), Lahey\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::\+Lahey\+K\+Epsilon(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::mix(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::mix\+Flux(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::mix\+U(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::rhog\+Eff(), mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::rhol\+Eff(), and mixture\+K\+Epsilon$<$ Basic\+Turbulence\+Model $>$\+::rhom().
+
+\mbox{\Hypertarget{createCouplingFields_8H_af4e3c1de091ffc91c131e672df22b96b}\label{createCouplingFields_8H_af4e3c1de091ffc91c131e672df22b96b}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+Power\+Density@{baffleless\+Power\+Density}}
+\index{baffleless\+Power\+Density@{baffleless\+Power\+Density}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+Power\+Density}{bafflelessPowerDensity}}
+{\footnotesize\ttfamily vol\+Scalar\+Field$\ast$ baffleless\+Power\+Density = nullptr}
+
+
+
+Definition at line 248 of file create\+Coupling\+Fields.\+H.
+
+\mbox{\Hypertarget{createCouplingFields_8H_afce01877cad53b14ac949c92809f7621}\label{createCouplingFields_8H_afce01877cad53b14ac949c92809f7621}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!baffleless\+Power\+Density\+To\+Liquid@{baffleless\+Power\+Density\+To\+Liquid}}
+\index{baffleless\+Power\+Density\+To\+Liquid@{baffleless\+Power\+Density\+To\+Liquid}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{baffleless\+Power\+Density\+To\+Liquid}{bafflelessPowerDensityToLiquid}}
+{\footnotesize\ttfamily vol\+Scalar\+Field$\ast$ baffleless\+Power\+Density\+To\+Liquid = nullptr}
+
+
+
+Definition at line 249 of file create\+Coupling\+Fields.\+H.
+
+\mbox{\Hypertarget{createCouplingFields_8H_a48fe00c0cbc444fb8d8e43e0e5ce48bb}\label{createCouplingFields_8H_a48fe00c0cbc444fb8d8e43e0e5ce48bb}} 
+\index{create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}!phi\+F\+M\+N\+B\+Reg@{phi\+F\+M\+N\+B\+Reg}}
+\index{phi\+F\+M\+N\+B\+Reg@{phi\+F\+M\+N\+B\+Reg}!create\+Coupling\+Fields.\+H@{create\+Coupling\+Fields.\+H}}
+\subsubsection{\texorpdfstring{phi\+F\+M\+N\+B\+Reg}{phiFMNBReg}}
+{\footnotesize\ttfamily surface\+Scalar\+Field$\ast$ phi\+F\+M\+N\+B\+Reg = nullptr}
+
+
+
+Definition at line 262 of file create\+Coupling\+Fields.\+H.
+
+
+
+Referenced by if().
+

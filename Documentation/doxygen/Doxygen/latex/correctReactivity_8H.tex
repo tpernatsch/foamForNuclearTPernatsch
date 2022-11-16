@@ -1,0 +1,272 @@
+\hypertarget{correctReactivity_8H}{}\section{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/point\+Kinetics/include/correct\+Reactivity.H File Reference}
+\label{correctReactivity_8H}\index{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/point\+Kinetics/include/correct\+Reactivity.\+H@{/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/neutronics/point\+Kinetics/include/correct\+Reactivity.\+H}}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{correctReactivity_8H__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+scalar \hyperlink{correctReactivity_8H_ab559d19b9ac97ee32950424bbbbf953a}{driveline\+Exp\+Value} (coeff\+Driveline\+Exp\+\_\+ $\ast$(\hyperlink{computeFeedbackFieldValues_8H_ae36e14f9b226d3a7c60b1a6245421b8e}{T\+Driveline\+Value} -\/ T\+Driveline\+Ref\+\_\+))
+\item 
+scalar \hyperlink{correctReactivity_8H_a4123ba5c14b80bace1311b38609d90c7}{driveline\+Reactivity} (calc\+Driveline\+Reactivity(\hyperlink{correctReactivity_8H_ab559d19b9ac97ee32950424bbbbf953a}{driveline\+Exp\+Value}))
+\item 
+Pair$<$ scalar $>$ \hyperlink{correctReactivity_8H_a5274d9783025ab8f58762e4ea8eb3f0a}{G\+E\+M\+Level\+And\+Reactivity} (calc\+G\+E\+M\+Level\+And\+Reactivity())
+\item 
+scalar \hyperlink{correctReactivity_8H_af8450c43f5e415272c793ab10394de3d}{G\+E\+M\+Sodium\+Level} (G\+E\+M\+Level\+And\+Reactivity.\+first())
+\item 
+scalar \hyperlink{correctReactivity_8H_a0231f7ecfd7d54d20d29bb0703abe776}{G\+E\+M\+Reactivity} (G\+E\+M\+Level\+And\+Reactivity.\+second())
+\item 
+scalar \hyperlink{correctReactivity_8H_af8e30ff2e3fe21800ba55c8d7534a828}{t} (mesh\+\_\+.\+time().time\+Output\+Value())
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+scalar \hyperlink{correctReactivity_8H_a97ec3a97197bf7af2871ff8259a115cb}{Doppler\+Reactivity}
+\item 
+scalar \hyperlink{correctReactivity_8H_ac279a1e670b326f29df719fce851db8b}{T\+Fuel\+Reactivity}
+\item 
+scalar \hyperlink{correctReactivity_8H_a7383c4c5d0651354b624fec6754739a7}{T\+Clad\+Reactivity}
+\item 
+scalar \hyperlink{correctReactivity_8H_a2f8900e0caab4a682522f17af1ec8c1d}{T\+Cool\+Reactivity}
+\item 
+scalar \hyperlink{correctReactivity_8H_ad58b239c992acdaf252773123854e721}{rho\+Cool\+Reactivity}
+\item 
+scalar \hyperlink{correctReactivity_8H_ac012a5ef75a40fa44a9cf33c92481b1a}{T\+Struct\+Reactivity}
+\item 
+void \hyperlink{correctReactivity_8H_ada688315955c2733c6208ecefdd38475}{G\+E\+M\+Sodium\+Level}
+\item 
+scalar \hyperlink{correctReactivity_8H_a49d2206965ac3f071748e09ceea41464}{external\+Reactivity} = external\+Reactivity\+Time\+Profile\+\_\+.\+value(\hyperlink{correctReactivity_8H_af8e30ff2e3fe21800ba55c8d7534a828}{t})
+\item 
+scalar \hyperlink{correctReactivity_8H_a504c6e003816d4907d35ee2d84317aaa}{boron\+Reactivity} = boron\+Reactivity\+Time\+Profile\+\_\+.\+value(\hyperlink{correctReactivity_8H_af8e30ff2e3fe21800ba55c8d7534a828}{t})
+\item 
+\hyperlink{correctReactivity_8H_a7bbab844c16aceff17e70128b5c0e13e}{total\+Reactivity\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{correctReactivity_8H_ab559d19b9ac97ee32950424bbbbf953a}\label{correctReactivity_8H_ab559d19b9ac97ee32950424bbbbf953a}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!driveline\+Exp\+Value@{driveline\+Exp\+Value}}
+\index{driveline\+Exp\+Value@{driveline\+Exp\+Value}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{driveline\+Exp\+Value()}{drivelineExpValue()}}
+{\footnotesize\ttfamily scalar driveline\+Exp\+Value (\begin{DoxyParamCaption}\item[{coeff\+Driveline\+Exp\+\_\+ $\ast$}]{T\+Driveline\+Value -\/ T\+Driveline\+Ref\+\_\+ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{correctReactivity_8H_a4123ba5c14b80bace1311b38609d90c7}\label{correctReactivity_8H_a4123ba5c14b80bace1311b38609d90c7}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!driveline\+Reactivity@{driveline\+Reactivity}}
+\index{driveline\+Reactivity@{driveline\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{driveline\+Reactivity()}{drivelineReactivity()}}
+{\footnotesize\ttfamily scalar driveline\+Reactivity (\begin{DoxyParamCaption}\item[{calc\+Driveline\+Reactivity(\hyperlink{correctReactivity_8H_ab559d19b9ac97ee32950424bbbbf953a}{driveline\+Exp\+Value})}]{ }\end{DoxyParamCaption})}
+
+
+
+Referenced by point\+Kinetic\+Neutronics\+::calc\+Driveline\+Reactivity().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{correctReactivity_8H_a4123ba5c14b80bace1311b38609d90c7_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{correctReactivity_8H_a5274d9783025ab8f58762e4ea8eb3f0a}\label{correctReactivity_8H_a5274d9783025ab8f58762e4ea8eb3f0a}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!G\+E\+M\+Level\+And\+Reactivity@{G\+E\+M\+Level\+And\+Reactivity}}
+\index{G\+E\+M\+Level\+And\+Reactivity@{G\+E\+M\+Level\+And\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{G\+E\+M\+Level\+And\+Reactivity()}{GEMLevelAndReactivity()}}
+{\footnotesize\ttfamily Pair$<$scalar$>$ G\+E\+M\+Level\+And\+Reactivity (\begin{DoxyParamCaption}\item[{calc\+G\+E\+M\+Level\+And\+Reactivity()}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{correctReactivity_8H_af8450c43f5e415272c793ab10394de3d}\label{correctReactivity_8H_af8450c43f5e415272c793ab10394de3d}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!G\+E\+M\+Sodium\+Level@{G\+E\+M\+Sodium\+Level}}
+\index{G\+E\+M\+Sodium\+Level@{G\+E\+M\+Sodium\+Level}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{G\+E\+M\+Sodium\+Level()}{GEMSodiumLevel()}}
+{\footnotesize\ttfamily scalar G\+E\+M\+Sodium\+Level (\begin{DoxyParamCaption}\item[{G\+E\+M\+Level\+And\+Reactivity.}]{first() }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{correctReactivity_8H_a0231f7ecfd7d54d20d29bb0703abe776}\label{correctReactivity_8H_a0231f7ecfd7d54d20d29bb0703abe776}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!G\+E\+M\+Reactivity@{G\+E\+M\+Reactivity}}
+\index{G\+E\+M\+Reactivity@{G\+E\+M\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{G\+E\+M\+Reactivity()}{GEMReactivity()}}
+{\footnotesize\ttfamily scalar G\+E\+M\+Reactivity (\begin{DoxyParamCaption}\item[{G\+E\+M\+Level\+And\+Reactivity.}]{second() }\end{DoxyParamCaption})}
+
+
+
+Referenced by point\+Kinetic\+Neutronics\+::calc\+G\+E\+M\+Level\+And\+Reactivity(), and point\+Kinetic\+Neutronics\+::point\+Kinetic\+Neutronics().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=347pt]{correctReactivity_8H_a0231f7ecfd7d54d20d29bb0703abe776_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{correctReactivity_8H_af8e30ff2e3fe21800ba55c8d7534a828}\label{correctReactivity_8H_af8e30ff2e3fe21800ba55c8d7534a828}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!t@{t}}
+\index{t@{t}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{t()}{t()}}
+{\footnotesize\ttfamily scalar t (\begin{DoxyParamCaption}\item[{mesh\+\_\+.}]{time).\+time\+Output\+Value( }\end{DoxyParamCaption})}
+
+
+
+Referenced by pump\+::correct(), if(), point\+Kinetic\+Neutronics\+::point\+Kinetic\+Neutronics(), timer\+::power\+Off\+Criterion(), fixed\+Power\+::power\+Update(), py\+F\+M\+U\+Sim\+::step\+Until(), fixed\+Temperature\+::temperature\+Update(), coupled\+Translation\+Motion\+::transformation(), coupled\+Rotation\+Motion\+::transformation(), velocity\+Rundown\+Fv\+Patch\+Vector\+Field\+::update\+Coeffs(), time\+Field\+Table\+Fv\+Patch\+Scalar\+Field\+::update\+Field(), velocity\+Rundown\+Fv\+Patch\+Vector\+Field\+::velocity\+Rundown\+Fv\+Patch\+Vector\+Field(), and patch\+Scalar\+Field\+Value\+::write().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{correctReactivity_8H_af8e30ff2e3fe21800ba55c8d7534a828_icgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{correctReactivity_8H_a97ec3a97197bf7af2871ff8259a115cb}\label{correctReactivity_8H_a97ec3a97197bf7af2871ff8259a115cb}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!Doppler\+Reactivity@{Doppler\+Reactivity}}
+\index{Doppler\+Reactivity@{Doppler\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{Doppler\+Reactivity}{DopplerReactivity}}
+{\footnotesize\ttfamily scalar Doppler\+Reactivity}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+    -coeffFastDoppler\_*
+    Foam::log(max(\hyperlink{computeFeedbackFieldValues_8H_ac4077c55a765b52fa94f1ed80f0aa27f}{TFuelValue}, SMALL)/max(TFuelRef\_, SMALL))
+\end{DoxyCode}
+
+
+Definition at line 1 of file correct\+Reactivity.\+H.
+
+\mbox{\Hypertarget{correctReactivity_8H_ac279a1e670b326f29df719fce851db8b}\label{correctReactivity_8H_ac279a1e670b326f29df719fce851db8b}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!T\+Fuel\+Reactivity@{T\+Fuel\+Reactivity}}
+\index{T\+Fuel\+Reactivity@{T\+Fuel\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{T\+Fuel\+Reactivity}{TFuelReactivity}}
+{\footnotesize\ttfamily scalar T\+Fuel\+Reactivity}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+    coeffTFuel\_*(\hyperlink{computeFeedbackFieldValues_8H_ac4077c55a765b52fa94f1ed80f0aa27f}{TFuelValue} - TFuelRef\_)
+\end{DoxyCode}
+
+
+Definition at line 5 of file correct\+Reactivity.\+H.
+
+\mbox{\Hypertarget{correctReactivity_8H_a7383c4c5d0651354b624fec6754739a7}\label{correctReactivity_8H_a7383c4c5d0651354b624fec6754739a7}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!T\+Clad\+Reactivity@{T\+Clad\+Reactivity}}
+\index{T\+Clad\+Reactivity@{T\+Clad\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{T\+Clad\+Reactivity}{TCladReactivity}}
+{\footnotesize\ttfamily scalar T\+Clad\+Reactivity}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+    coeffTClad\_*(\hyperlink{computeFeedbackFieldValues_8H_a29801690652bbcb1415a8e90df6bc6fd}{TCladValue} - TCladRef\_)
+\end{DoxyCode}
+
+
+Definition at line 8 of file correct\+Reactivity.\+H.
+
+\mbox{\Hypertarget{correctReactivity_8H_a2f8900e0caab4a682522f17af1ec8c1d}\label{correctReactivity_8H_a2f8900e0caab4a682522f17af1ec8c1d}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!T\+Cool\+Reactivity@{T\+Cool\+Reactivity}}
+\index{T\+Cool\+Reactivity@{T\+Cool\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{T\+Cool\+Reactivity}{TCoolReactivity}}
+{\footnotesize\ttfamily scalar T\+Cool\+Reactivity}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+    coeffTCool\_*(\hyperlink{computeFeedbackFieldValues_8H_ad97890bb5f696e1ed4c20e854caf6e62}{TCoolValue} - TCoolRef\_)
+\end{DoxyCode}
+
+
+Definition at line 11 of file correct\+Reactivity.\+H.
+
+\mbox{\Hypertarget{correctReactivity_8H_ad58b239c992acdaf252773123854e721}\label{correctReactivity_8H_ad58b239c992acdaf252773123854e721}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!rho\+Cool\+Reactivity@{rho\+Cool\+Reactivity}}
+\index{rho\+Cool\+Reactivity@{rho\+Cool\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{rho\+Cool\+Reactivity}{rhoCoolReactivity}}
+{\footnotesize\ttfamily scalar rho\+Cool\+Reactivity}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+    coeffRhoCool\_*(\hyperlink{computeFeedbackFieldValues_8H_adfa280f8c80d99ac065a923d399c8324}{rhoCoolValue} - rhoCoolRef\_)
+\end{DoxyCode}
+
+
+Definition at line 14 of file correct\+Reactivity.\+H.
+
+\mbox{\Hypertarget{correctReactivity_8H_ac012a5ef75a40fa44a9cf33c92481b1a}\label{correctReactivity_8H_ac012a5ef75a40fa44a9cf33c92481b1a}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!T\+Struct\+Reactivity@{T\+Struct\+Reactivity}}
+\index{T\+Struct\+Reactivity@{T\+Struct\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{T\+Struct\+Reactivity}{TStructReactivity}}
+{\footnotesize\ttfamily scalar T\+Struct\+Reactivity}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+    coeffTStruct\_*(\hyperlink{computeFeedbackFieldValues_8H_a8baccdc34d49127c54a0a60ba9818c0c}{TStructValue} - TStructRef\_)
+\end{DoxyCode}
+
+
+Definition at line 17 of file correct\+Reactivity.\+H.
+
+\mbox{\Hypertarget{correctReactivity_8H_ada688315955c2733c6208ecefdd38475}\label{correctReactivity_8H_ada688315955c2733c6208ecefdd38475}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!G\+E\+M\+Sodium\+Level@{G\+E\+M\+Sodium\+Level}}
+\index{G\+E\+M\+Sodium\+Level@{G\+E\+M\+Sodium\+Level}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{G\+E\+M\+Sodium\+Level}{GEMSodiumLevel}}
+{\footnotesize\ttfamily void G\+E\+M\+Sodium\+Level}
+
+
+
+Definition at line 30 of file correct\+Reactivity.\+H.
+
+
+
+Referenced by point\+Kinetic\+Neutronics\+::calc\+G\+E\+M\+Level\+And\+Reactivity().
+
+\mbox{\Hypertarget{correctReactivity_8H_a49d2206965ac3f071748e09ceea41464}\label{correctReactivity_8H_a49d2206965ac3f071748e09ceea41464}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!external\+Reactivity@{external\+Reactivity}}
+\index{external\+Reactivity@{external\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{external\+Reactivity}{externalReactivity}}
+{\footnotesize\ttfamily scalar external\+Reactivity = external\+Reactivity\+Time\+Profile\+\_\+.\+value(\hyperlink{correctReactivity_8H_af8e30ff2e3fe21800ba55c8d7534a828}{t})}
+
+
+
+Definition at line 36 of file correct\+Reactivity.\+H.
+
+\mbox{\Hypertarget{correctReactivity_8H_a504c6e003816d4907d35ee2d84317aaa}\label{correctReactivity_8H_a504c6e003816d4907d35ee2d84317aaa}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!boron\+Reactivity@{boron\+Reactivity}}
+\index{boron\+Reactivity@{boron\+Reactivity}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{boron\+Reactivity}{boronReactivity}}
+{\footnotesize\ttfamily scalar boron\+Reactivity = boron\+Reactivity\+Time\+Profile\+\_\+.\+value(\hyperlink{correctReactivity_8H_af8e30ff2e3fe21800ba55c8d7534a828}{t})}
+
+
+
+Definition at line 41 of file correct\+Reactivity.\+H.
+
+\mbox{\Hypertarget{correctReactivity_8H_a7bbab844c16aceff17e70128b5c0e13e}\label{correctReactivity_8H_a7bbab844c16aceff17e70128b5c0e13e}} 
+\index{correct\+Reactivity.\+H@{correct\+Reactivity.\+H}!total\+Reactivity\+\_\+@{total\+Reactivity\+\_\+}}
+\index{total\+Reactivity\+\_\+@{total\+Reactivity\+\_\+}!correct\+Reactivity.\+H@{correct\+Reactivity.\+H}}
+\subsubsection{\texorpdfstring{total\+Reactivity\+\_\+}{totalReactivity\_}}
+{\footnotesize\ttfamily total\+Reactivity\+\_\+}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+=
+        precEquilibriumReactivity\_
+    +   \hyperlink{correctReactivity_8H_a49d2206965ac3f071748e09ceea41464}{externalReactivity}
+    +   \hyperlink{correctReactivity_8H_a97ec3a97197bf7af2871ff8259a115cb}{DopplerReactivity}
+    +   \hyperlink{correctReactivity_8H_ac279a1e670b326f29df719fce851db8b}{TFuelReactivity}
+    +   \hyperlink{correctReactivity_8H_a7383c4c5d0651354b624fec6754739a7}{TCladReactivity}
+    +   \hyperlink{correctReactivity_8H_a2f8900e0caab4a682522f17af1ec8c1d}{TCoolReactivity}
+    +   \hyperlink{correctReactivity_8H_ad58b239c992acdaf252773123854e721}{rhoCoolReactivity}
+    +   \hyperlink{correctReactivity_8H_ac012a5ef75a40fa44a9cf33c92481b1a}{TStructReactivity}
+    +   \hyperlink{correctReactivity_8H_a4123ba5c14b80bace1311b38609d90c7}{drivelineReactivity}
+    +   \hyperlink{correctReactivity_8H_a0231f7ecfd7d54d20d29bb0703abe776}{GEMReactivity}
+    +   \hyperlink{correctReactivity_8H_a504c6e003816d4907d35ee2d84317aaa}{boronReactivity}
+\end{DoxyCode}
+
+
+Definition at line 52 of file correct\+Reactivity.\+H.
+

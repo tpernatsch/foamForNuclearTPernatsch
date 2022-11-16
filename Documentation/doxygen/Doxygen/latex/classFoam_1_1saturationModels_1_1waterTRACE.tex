@@ -1,0 +1,261 @@
+\hypertarget{classFoam_1_1saturationModels_1_1waterTRACE}{}\section{water\+T\+R\+A\+CE Class Reference}
+\label{classFoam_1_1saturationModels_1_1waterTRACE}\index{water\+T\+R\+A\+CE@{water\+T\+R\+A\+CE}}
+
+
+Saturation model for water in the 0.\+01-\/350 $\ast$C range based on T\+R\+A\+CE\+: \href{https://www.nrc.gov/docs/ML1200/ML120060218.pdf}{\tt https\+://www.\+nrc.\+gov/docs/\+M\+L1200/\+M\+L120060218.\+pdf}.  
+
+
+
+
+Inheritance diagram for water\+T\+R\+A\+CE\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classFoam_1_1saturationModels_1_1waterTRACE__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for water\+T\+R\+A\+CE\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=166pt]{classFoam_1_1saturationModels_1_1waterTRACE__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_a8b11b793c22d24df7aefd6e7a5dbf05b}{Type\+Name} (\char`\"{}water\+T\+R\+A\+CE\char`\"{})
+\item 
+\hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_a4c5fc9a21939293271547086c6f79743}{water\+T\+R\+A\+CE} (const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&pcm, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_abe3a28381d0b80d8f529ac0f73d5dc7f}{$\sim$water\+T\+R\+A\+CE} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_a7d5f6259360b96b89a000c84ef880614}{value\+T\+Sat} (const label \&celli) const
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_a800a121f3086c2580a025d245a1b8178}{value\+P\+Sat} (const label \&celli) const
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_ac2c267657ff259967a96210a8fcb3c3f}{value\+Ln\+P\+Sat} (const label \&celli) const
+\item 
+virtual scalar \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE_acfe2ee8e32ce482cc86e523e7266bb1f}{value\+P\+Sat\+Prime} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Saturation model for water in the 0.\+01-\/350 $\ast$C range based on T\+R\+A\+CE\+: \href{https://www.nrc.gov/docs/ML1200/ML120060218.pdf}{\tt https\+://www.\+nrc.\+gov/docs/\+M\+L1200/\+M\+L120060218.\+pdf}. 
+
+\label{_Description}%
+ Author \begin{DoxyVerb}Gauthier Lazare, Carlo Fiorina
+\end{DoxyVerb}
+
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/saturationModels/waterTRACE/waterTRACESaturation.H}{\tt water\+T\+R\+A\+C\+E\+Saturation.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/phaseChangeModels/saturationModels/waterTRACE/waterTRACESaturation.C}{\tt water\+T\+R\+A\+C\+E\+Saturation.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 51 of file water\+T\+R\+A\+C\+E\+Saturation.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1waterTRACE_a4c5fc9a21939293271547086c6f79743}\label{classFoam_1_1saturationModels_1_1waterTRACE_a4c5fc9a21939293271547086c6f79743}} 
+\index{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}!water\+T\+R\+A\+CE@{water\+T\+R\+A\+CE}}
+\index{water\+T\+R\+A\+CE@{water\+T\+R\+A\+CE}!Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{water\+T\+R\+A\+C\+E()}{waterTRACE()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1saturationModels_1_1waterTRACE}{water\+T\+R\+A\+CE} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1phaseChangeModel}{phase\+Change\+Model} \&}]{pcm,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 44 of file water\+T\+R\+A\+C\+E\+Saturation.\+C.
+
+
+
+References water\+T\+R\+A\+C\+E\+::value\+P\+Sat().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=253pt]{classFoam_1_1saturationModels_1_1waterTRACE_a4c5fc9a21939293271547086c6f79743_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1waterTRACE_abe3a28381d0b80d8f529ac0f73d5dc7f}\label{classFoam_1_1saturationModels_1_1waterTRACE_abe3a28381d0b80d8f529ac0f73d5dc7f}} 
+\index{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}!````~water\+T\+R\+A\+CE@{$\sim$water\+T\+R\+A\+CE}}
+\index{````~water\+T\+R\+A\+CE@{$\sim$water\+T\+R\+A\+CE}!Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{$\sim$water\+T\+R\+A\+C\+E()}{~waterTRACE()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1saturationModels_1_1waterTRACE}{water\+T\+R\+A\+CE} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 85 of file water\+T\+R\+A\+C\+E\+Saturation.\+H.
+
+
+
+References water\+T\+R\+A\+C\+E\+::value\+Ln\+P\+Sat(), water\+T\+R\+A\+C\+E\+::value\+P\+Sat(), water\+T\+R\+A\+C\+E\+::value\+P\+Sat\+Prime(), and water\+T\+R\+A\+C\+E\+::value\+T\+Sat().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1waterTRACE_abe3a28381d0b80d8f529ac0f73d5dc7f_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1waterTRACE_a8b11b793c22d24df7aefd6e7a5dbf05b}\label{classFoam_1_1saturationModels_1_1waterTRACE_a8b11b793c22d24df7aefd6e7a5dbf05b}} 
+\index{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}water\+T\+R\+A\+CE\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1waterTRACE_a7d5f6259360b96b89a000c84ef880614}\label{classFoam_1_1saturationModels_1_1waterTRACE_a7d5f6259360b96b89a000c84ef880614}} 
+\index{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}!value\+T\+Sat@{value\+T\+Sat}}
+\index{value\+T\+Sat@{value\+T\+Sat}!Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{value\+T\+Sat()}{valueTSat()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+T\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_aef8350cb17e8b8f92597160f1dd2a238}{saturation\+Model}.
+
+
+
+Definition at line 181 of file water\+T\+R\+A\+C\+E\+Saturation.\+C.
+
+
+
+References p\+\_\+.
+
+
+
+Referenced by water\+T\+R\+A\+C\+E\+::value\+Ln\+P\+Sat(), and water\+T\+R\+A\+C\+E\+::$\sim$water\+T\+R\+A\+C\+E().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1waterTRACE_a7d5f6259360b96b89a000c84ef880614_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1waterTRACE_a800a121f3086c2580a025d245a1b8178}\label{classFoam_1_1saturationModels_1_1waterTRACE_a800a121f3086c2580a025d245a1b8178}} 
+\index{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}!value\+P\+Sat@{value\+P\+Sat}}
+\index{value\+P\+Sat@{value\+P\+Sat}!Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{value\+P\+Sat()}{valuePSat()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+P\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_a20f0c2e04da2086bb7cbcdf3e2078e7f}{saturation\+Model}.
+
+
+
+Definition at line 72 of file water\+T\+R\+A\+C\+E\+Saturation.\+C.
+
+
+
+References T(), and water\+T\+R\+A\+C\+E\+::value\+P\+Sat\+Prime().
+
+
+
+Referenced by water\+T\+R\+A\+C\+E\+::water\+T\+R\+A\+C\+E(), and water\+T\+R\+A\+C\+E\+::$\sim$water\+T\+R\+A\+C\+E().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{classFoam_1_1saturationModels_1_1waterTRACE_a800a121f3086c2580a025d245a1b8178_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=259pt]{classFoam_1_1saturationModels_1_1waterTRACE_a800a121f3086c2580a025d245a1b8178_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1waterTRACE_ac2c267657ff259967a96210a8fcb3c3f}\label{classFoam_1_1saturationModels_1_1waterTRACE_ac2c267657ff259967a96210a8fcb3c3f}} 
+\index{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}!value\+Ln\+P\+Sat@{value\+Ln\+P\+Sat}}
+\index{value\+Ln\+P\+Sat@{value\+Ln\+P\+Sat}!Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{value\+Ln\+P\+Sat()}{valueLnPSat()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+Ln\+P\+Sat (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_a9b04e4a2fa5b275d1d5637c464b55ab4}{saturation\+Model}.
+
+
+
+Definition at line 173 of file water\+T\+R\+A\+C\+E\+Saturation.\+C.
+
+
+
+References water\+T\+R\+A\+C\+E\+::value\+T\+Sat().
+
+
+
+Referenced by water\+T\+R\+A\+C\+E\+::value\+P\+Sat\+Prime(), and water\+T\+R\+A\+C\+E\+::$\sim$water\+T\+R\+A\+C\+E().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=249pt]{classFoam_1_1saturationModels_1_1waterTRACE_ac2c267657ff259967a96210a8fcb3c3f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1waterTRACE_ac2c267657ff259967a96210a8fcb3c3f_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1saturationModels_1_1waterTRACE_acfe2ee8e32ce482cc86e523e7266bb1f}\label{classFoam_1_1saturationModels_1_1waterTRACE_acfe2ee8e32ce482cc86e523e7266bb1f}} 
+\index{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}!value\+P\+Sat\+Prime@{value\+P\+Sat\+Prime}}
+\index{value\+P\+Sat\+Prime@{value\+P\+Sat\+Prime}!Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE@{Foam\+::saturation\+Models\+::water\+T\+R\+A\+CE}}
+\subsubsection{\texorpdfstring{value\+P\+Sat\+Prime()}{valuePSatPrime()}}
+{\footnotesize\ttfamily Foam\+::scalar value\+P\+Sat\+Prime (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1saturationModel_a2d5563aa609bea35032a40c7f766e48c}{saturation\+Model}.
+
+
+
+Definition at line 125 of file water\+T\+R\+A\+C\+E\+Saturation.\+C.
+
+
+
+References p\+\_\+, T(), and water\+T\+R\+A\+C\+E\+::value\+Ln\+P\+Sat().
+
+
+
+Referenced by water\+T\+R\+A\+C\+E\+::value\+P\+Sat(), and water\+T\+R\+A\+C\+E\+::$\sim$water\+T\+R\+A\+C\+E().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=275pt]{classFoam_1_1saturationModels_1_1waterTRACE_acfe2ee8e32ce482cc86e523e7266bb1f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1saturationModels_1_1waterTRACE_acfe2ee8e32ce482cc86e523e7266bb1f_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/saturation\+Models/water\+T\+R\+A\+C\+E/\hyperlink{waterTRACESaturation_8H}{water\+T\+R\+A\+C\+E\+Saturation.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/phase\+Change\+Models/saturation\+Models/water\+T\+R\+A\+C\+E/\hyperlink{waterTRACESaturation_8C}{water\+T\+R\+A\+C\+E\+Saturation.\+C}\end{DoxyCompactItemize}

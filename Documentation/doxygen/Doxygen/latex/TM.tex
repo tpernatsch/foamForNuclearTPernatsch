@@ -1,0 +1,22 @@
+\subsection*{Introduction}
+
+The thermal-\/mechanics solver of Ge\+N-\/\+Foam is a simple linear elasticity solver that can be used to evaluate thermal deformations in a core. Temperatures are projected from the thermal-\/hydraulic solver (temperatures of fuels and structures) and the deformation field is used to deform the mesh for neutronics and thermal-\/hydraulics. In particular, the radial deformation of structures and the axial deformation of fuel are employed. to deform the neutronics mesh.
+
+\subsection*{Various properties}
+
+ {\bfseries The {\itshape thermo\+Mechanical\+Properties} dictionary}
+
+The {\itshape thermo\+Mechanical\+Properties} dictionary can be found under {\itshape constant/thermo\+Mechanical\+Region} and allow to define the thermo-\/mechanical properties of structures, subdivided according to the cell\+Zones of the thermo\+Mechanical\+Region mesh. ~\newline
+~\newline
+One can find a detailed, commented example in the tutorial \href{https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/thermoMechanicalRegion/thermoMechanicalProperties}{\tt 3\+D\+\_\+\+Small\+E\+S\+FR}.  ~\newline
+
+
+\subsection*{Initial and boundary conditions}
+
+Besides the standard ones available in Open\+F\+O\+AM, Ge\+N-\/\+Foam includes a {\itshape traction\+Displacement} boundary condition that allows to set a pressure or a traction on a boundary. Work is ongoing to adapt to Ge\+N-\/\+Foam the contact boundary condition of the O\+F\+F\+B\+E\+AT fuel behavior solver \cite{SCOLARO2020110416}.
+
+\subsection*{Discretization and solution}
+
+Details for discretization and solution of equations are handled in a standard Open\+F\+O\+AM way, i.\+e., through the {\itshape fv\+Solution} and {\itshape fv\+Schemes} dictionaries in {\itshape constant/thermo\+Mechanical\+Region}.
+
+© All rights reserved. E\+C\+O\+LE P\+O\+L\+Y\+T\+E\+C\+H\+N\+I\+Q\+UE F\+E\+D\+E\+R\+A\+LE DE L\+A\+U\+S\+A\+N\+NE, Switzerland, 2021 

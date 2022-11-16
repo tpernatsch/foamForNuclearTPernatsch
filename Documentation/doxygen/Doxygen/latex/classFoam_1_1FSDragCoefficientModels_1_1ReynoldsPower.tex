@@ -1,0 +1,141 @@
+\hypertarget{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower}{}\section{Reynolds\+Power Class Reference}
+\label{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower}\index{Reynolds\+Power@{Reynolds\+Power}}
+
+
+Drag coefficient in the form fd = coeff$\ast$\+Re$^\wedge$exp with Kd = 0.\+5$\ast$fd$\ast$alpha$\ast$rho$\ast$mag\+U/\+Dh.  
+
+
+
+
+Inheritance diagram for Reynolds\+Power\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for Reynolds\+Power\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=204pt]{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_abd7a3ccb0d560ee9adbf6241ffb5f37a}{Type\+Name} (\char`\"{}Reynolds\+Power\char`\"{})
+\item 
+\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a8ebd8e7db76f7d2ea0aa0f218f30a959}{Reynolds\+Power} (const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&pair, const dictionary \&dict, const object\+Registry \&obj\+Reg)
+\item 
+virtual \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a574f2ec69d6f2f9aef4d0d4e81fac2a9}{$\sim$\+Reynolds\+Power} ()
+\item 
+virtual scalar \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a2c1e1872d359910de4c35cf8f003871c}{value} (const label \&celli) const
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Drag coefficient in the form fd = coeff$\ast$\+Re$^\wedge$exp with Kd = 0.\+5$\ast$fd$\ast$alpha$\ast$rho$\ast$mag\+U/\+Dh. 
+
+\label{_Description}%
+ Dictionary entries (mandatory) coeff 0.\+316; exp -\/0.\+25;
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragCoefficientModels/ReynoldsPower/ReynoldsPowerFSDragCoefficient.H}{\tt Reynolds\+Power\+F\+S\+Drag\+Coefficient.\+H} 
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/physicsModels/dragModels/FSDragCoefficientModels/ReynoldsPower/ReynoldsPower.C}{\tt Reynolds\+Power.\+C} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 57 of file Reynolds\+Power\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a8ebd8e7db76f7d2ea0aa0f218f30a959}\label{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a8ebd8e7db76f7d2ea0aa0f218f30a959}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power}!Reynolds\+Power@{Reynolds\+Power}}
+\index{Reynolds\+Power@{Reynolds\+Power}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power}}
+\subsubsection{\texorpdfstring{Reynolds\+Power()}{ReynoldsPower()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower}{Reynolds\+Power} (\begin{DoxyParamCaption}\item[{const \hyperlink{classFoam_1_1FSPair}{F\+S\+Pair} \&}]{pair,  }\item[{const dictionary \&}]{dict,  }\item[{const object\+Registry \&}]{obj\+Reg }\end{DoxyParamCaption})}
+
+
+
+Definition at line 43 of file Reynolds\+Power\+F\+S\+Drag\+Coefficient.\+C.
+
+
+
+References Reynolds\+Power\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a8ebd8e7db76f7d2ea0aa0f218f30a959_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a574f2ec69d6f2f9aef4d0d4e81fac2a9}\label{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a574f2ec69d6f2f9aef4d0d4e81fac2a9}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power}!````~Reynolds\+Power@{$\sim$\+Reynolds\+Power}}
+\index{````~Reynolds\+Power@{$\sim$\+Reynolds\+Power}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power}}
+\subsubsection{\texorpdfstring{$\sim$\+Reynolds\+Power()}{~ReynoldsPower()}}
+{\footnotesize\ttfamily virtual $\sim$\hyperlink{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower}{Reynolds\+Power} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 82 of file Reynolds\+Power\+F\+S\+Drag\+Coefficient.\+H.
+
+
+
+References Reynolds\+Power\+::value().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a574f2ec69d6f2f9aef4d0d4e81fac2a9_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_abd7a3ccb0d560ee9adbf6241ffb5f37a}\label{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_abd7a3ccb0d560ee9adbf6241ffb5f37a}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}Reynolds\+Power\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a2c1e1872d359910de4c35cf8f003871c}\label{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a2c1e1872d359910de4c35cf8f003871c}} 
+\index{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power}!value@{value}}
+\index{value@{value}!Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power@{Foam\+::\+F\+S\+Drag\+Coefficient\+Models\+::\+Reynolds\+Power}}
+\subsubsection{\texorpdfstring{value()}{value()}}
+{\footnotesize\ttfamily Foam\+::scalar value (\begin{DoxyParamCaption}\item[{const label \&}]{celli }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1FSDragCoefficientModel_a139457cae4c5e04785e143fd8b9ed092}{F\+S\+Drag\+Coefficient\+Model}.
+
+
+
+Definition at line 63 of file Reynolds\+Power\+F\+S\+Drag\+Coefficient.\+C.
+
+
+
+Referenced by Reynolds\+Power\+::\+Reynolds\+Power(), and Reynolds\+Power\+::$\sim$\+Reynolds\+Power().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=248pt]{classFoam_1_1FSDragCoefficientModels_1_1ReynoldsPower_a2c1e1872d359910de4c35cf8f003871c_icgraph}
+\end{center}
+\end{figure}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+S\+Drag\+Coefficient\+Models/\+Reynolds\+Power/\hyperlink{ReynoldsPowerFSDragCoefficient_8H}{Reynolds\+Power\+F\+S\+Drag\+Coefficient.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/physics\+Models/drag\+Models/\+F\+S\+Drag\+Coefficient\+Models/\+Reynolds\+Power/\hyperlink{ReynoldsPowerFSDragCoefficient_8C}{Reynolds\+Power\+F\+S\+Drag\+Coefficient.\+C}\end{DoxyCompactItemize}

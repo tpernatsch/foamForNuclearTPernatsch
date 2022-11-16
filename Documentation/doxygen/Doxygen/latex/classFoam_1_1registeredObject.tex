@@ -1,0 +1,174 @@
+\hypertarget{classFoam_1_1registeredObject}{}\section{registered\+Object$<$ Type $>$ Class Template Reference}
+\label{classFoam_1_1registeredObject}\index{registered\+Object$<$ Type $>$@{registered\+Object$<$ Type $>$}}
+
+
+Provides a name to simple objects such word scalar tensor or List and stores it in the registry.  
+
+
+
+
+Inheritance diagram for registered\+Object$<$ Type $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classFoam_1_1registeredObject__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for registered\+Object$<$ Type $>$\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classFoam_1_1registeredObject__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1registeredObject_a64d67ffcb17ffd66d57e0430b6ebb7f3}{Type\+Name} (\char`\"{}registered\+Object\char`\"{})
+\item 
+\hyperlink{classFoam_1_1registeredObject_ac8af0c08d8721e8a44d4368844932347}{registered\+Object} (const Type \&obj, const word \hyperlink{classFoam_1_1registeredObject_acc80e00a8ac919288fb55bd14cc88bf6}{name}, const object\+Registry \&db)
+\item 
+\hyperlink{classFoam_1_1registeredObject_aaf93bd133c6f468a9ebbacfa24355a95}{registered\+Object} (Tuple2$<$ word, Type $>$ obj, const object\+Registry \&db)
+\item 
+virtual bool \hyperlink{classFoam_1_1registeredObject_a73ace448c639d2e1c943852abe89af7c}{write\+Data} (Ostream \&os) const
+\item 
+const word \& \hyperlink{classFoam_1_1registeredObject_acc80e00a8ac919288fb55bd14cc88bf6}{name} () const
+\item 
+Type \& \hyperlink{classFoam_1_1registeredObject_a2ace243eaf95cf6ca9fdb7f2e0eafbdc}{ref} ()
+\item 
+const Type \& \hyperlink{classFoam_1_1registeredObject_a5a320c5c07f7a359e77bbcd5553b2de7}{ref} () const
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class Type$>$\newline
+class Foam\+::registered\+Object$<$ Type $>$}
+
+Provides a name to simple objects such word scalar tensor or List and stores it in the registry. 
+
+\label{_Description}%
+ Author Henning Scheufler, D\+LR, all rights reserved.
+
+\begin{DoxyParagraph}{Source files}
+
+\begin{DoxyItemize}
+\item \href{../../../home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/registeredObject.H}{\tt registered\+Object.\+H} 
+\end{DoxyItemize}
+\end{DoxyParagraph}
+
+
+Definition at line 44 of file registered\+Object.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1registeredObject_ac8af0c08d8721e8a44d4368844932347}\label{classFoam_1_1registeredObject_ac8af0c08d8721e8a44d4368844932347}} 
+\index{Foam\+::registered\+Object@{Foam\+::registered\+Object}!registered\+Object@{registered\+Object}}
+\index{registered\+Object@{registered\+Object}!Foam\+::registered\+Object@{Foam\+::registered\+Object}}
+\subsubsection{\texorpdfstring{registered\+Object()}{registeredObject()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1registeredObject}{registered\+Object} (\begin{DoxyParamCaption}\item[{const Type \&}]{obj,  }\item[{const word}]{name,  }\item[{const object\+Registry \&}]{db }\end{DoxyParamCaption})}
+
+
+
+Definition at line 18 of file registered\+Object.\+C.
+
+\mbox{\Hypertarget{classFoam_1_1registeredObject_aaf93bd133c6f468a9ebbacfa24355a95}\label{classFoam_1_1registeredObject_aaf93bd133c6f468a9ebbacfa24355a95}} 
+\index{Foam\+::registered\+Object@{Foam\+::registered\+Object}!registered\+Object@{registered\+Object}}
+\index{registered\+Object@{registered\+Object}!Foam\+::registered\+Object@{Foam\+::registered\+Object}}
+\subsubsection{\texorpdfstring{registered\+Object()}{registeredObject()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1registeredObject}{registered\+Object} (\begin{DoxyParamCaption}\item[{Tuple2$<$ word, Type $>$}]{obj,  }\item[{const object\+Registry \&}]{db }\end{DoxyParamCaption})}
+
+
+
+Definition at line 44 of file registered\+Object.\+C.
+
+
+
+References Foam\+::define\+Template\+Type\+Name\+With\+Name().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=340pt]{classFoam_1_1registeredObject_aaf93bd133c6f468a9ebbacfa24355a95_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1registeredObject_a64d67ffcb17ffd66d57e0430b6ebb7f3}\label{classFoam_1_1registeredObject_a64d67ffcb17ffd66d57e0430b6ebb7f3}} 
+\index{Foam\+::registered\+Object@{Foam\+::registered\+Object}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::registered\+Object@{Foam\+::registered\+Object}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}registered\+Object$<$ Type $>$\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1registeredObject_a73ace448c639d2e1c943852abe89af7c}\label{classFoam_1_1registeredObject_a73ace448c639d2e1c943852abe89af7c}} 
+\index{Foam\+::registered\+Object@{Foam\+::registered\+Object}!write\+Data@{write\+Data}}
+\index{write\+Data@{write\+Data}!Foam\+::registered\+Object@{Foam\+::registered\+Object}}
+\subsubsection{\texorpdfstring{write\+Data()}{writeData()}}
+{\footnotesize\ttfamily virtual bool write\+Data (\begin{DoxyParamCaption}\item[{Ostream \&}]{os }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Definition at line 78 of file registered\+Object.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1registeredObject_acc80e00a8ac919288fb55bd14cc88bf6}\label{classFoam_1_1registeredObject_acc80e00a8ac919288fb55bd14cc88bf6}} 
+\index{Foam\+::registered\+Object@{Foam\+::registered\+Object}!name@{name}}
+\index{name@{name}!Foam\+::registered\+Object@{Foam\+::registered\+Object}}
+\subsubsection{\texorpdfstring{name()}{name()}}
+{\footnotesize\ttfamily const word\& name (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 85 of file registered\+Object.\+H.
+
+
+
+Referenced by Foam\+::add\+\_\+to\+\_\+json(), Foam\+::from\+\_\+json(), and Foam\+::to\+\_\+json().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1registeredObject_acc80e00a8ac919288fb55bd14cc88bf6_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1registeredObject_a2ace243eaf95cf6ca9fdb7f2e0eafbdc}\label{classFoam_1_1registeredObject_a2ace243eaf95cf6ca9fdb7f2e0eafbdc}} 
+\index{Foam\+::registered\+Object@{Foam\+::registered\+Object}!ref@{ref}}
+\index{ref@{ref}!Foam\+::registered\+Object@{Foam\+::registered\+Object}}
+\subsubsection{\texorpdfstring{ref()}{ref()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Type\& ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 96 of file registered\+Object.\+H.
+
+
+
+Referenced by Foam\+::add\+\_\+to\+\_\+json(), Foam\+::from\+\_\+json(), comm\+Data\+Layer\+::get\+Obj(), and Foam\+::to\+\_\+json().
+
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1registeredObject_a2ace243eaf95cf6ca9fdb7f2e0eafbdc_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1registeredObject_a5a320c5c07f7a359e77bbcd5553b2de7}\label{classFoam_1_1registeredObject_a5a320c5c07f7a359e77bbcd5553b2de7}} 
+\index{Foam\+::registered\+Object@{Foam\+::registered\+Object}!ref@{ref}}
+\index{ref@{ref}!Foam\+::registered\+Object@{Foam\+::registered\+Object}}
+\subsubsection{\texorpdfstring{ref()}{ref()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily const Type\& ref (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Definition at line 102 of file registered\+Object.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/data\+Interface/\hyperlink{registeredObject_8H}{registered\+Object.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/\+F\+M\+U4\+F\+O\+A\+M/\+E\+C\+I4\+F\+O\+A\+M/src/external\+Comm/data\+Interface/\hyperlink{registeredObject_8C}{registered\+Object.\+C}\end{DoxyCompactItemize}

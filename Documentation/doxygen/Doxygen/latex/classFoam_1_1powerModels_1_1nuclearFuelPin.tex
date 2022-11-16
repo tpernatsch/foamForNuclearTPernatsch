@@ -1,0 +1,684 @@
+\hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin}{}\section{nuclear\+Fuel\+Pin Class Reference}
+\label{classFoam_1_1powerModels_1_1nuclearFuelPin}\index{nuclear\+Fuel\+Pin@{nuclear\+Fuel\+Pin}}
+
+
+Inheritance diagram for nuclear\+Fuel\+Pin\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=161pt]{classFoam_1_1powerModels_1_1nuclearFuelPin__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for nuclear\+Fuel\+Pin\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=270pt]{classFoam_1_1powerModels_1_1nuclearFuelPin__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_aa9b60de7cb506f0fa9f113d83b57eb95}{Type\+Name} (\char`\"{}nuclear\+Fuel\+Pin\char`\"{})
+\item 
+\hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a00a0807b8131c3860dc8ac801e00dc68}{nuclear\+Fuel\+Pin} (\hyperlink{classFoam_1_1structure}{structure} \&\hyperlink{classFoam_1_1structure}{structure}, const dictionary \&dicts)
+\item 
+virtual \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a19e056f77dfc563497575fbc7609cf88}{$\sim$nuclear\+Fuel\+Pin} ()
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a8fc8c05c610e629783c80688340f8db4}{set\+Interfacial\+Area} ()
+\item 
+void \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a156a2a794e9317591692be62c0a33299}{update\+Local\+Avg\+Global\+Min\+MaxT} (const label \&starti, const label \&endi, const scalar\+List \&r, const scalar \&dr, const scalar\+Field \&Trad, scalar \&Tav, scalar \&Tmin, scalar \&Tmax)
+\item 
+void \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_aebceb9d61655d7851a7ab3a7710164ea}{update\+Local\+Temperature\+Profile} (const label \&celli, const scalar \&ht, const scalar \&\hyperlink{createFieldRefs_8H_a52f2dcc529f3c146980b0ce8dc591698}{h})
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a08cf6ccfed7f616074be223f0d2379f3}{correct} (const vol\+Scalar\+Field \&HT, const vol\+Scalar\+Field \&H)
+\item 
+virtual void \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a9f9875fb3a22007b3cb6ef9f59821c9c}{correctT} (vol\+Scalar\+Field \&\hyperlink{EEqn__1pl_8H_ad0f94aa7ea43d4be0bae24e3a89aad0c}{T}) const
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classFoam_1_1IOFieldField}{I\+O\+Field\+Field}$<$ Field, scalar $>$ \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a22d48bd29c42258de0a8c6a599dafecd}{Trad\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ae5113713ca510bd2c780a3a42d570b68}{Tfi\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_aafbf0ec9a477530a70c839a32695007c}{Tfo\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ae311ccceb3b1ab13497cfad4120f30ba}{Tci\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a284ecf0fcaa736dfb6c22cb4f2e432f8}{Tco\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ae27e97dd26523cd7de88fb4d2d8970d2}{Tfav\+\_\+}
+\item 
+vol\+Scalar\+Field \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a7f0f167e5eca86beb5241b243ba9b5ec}{Tcav\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a41838f208df78067c90a2b0af6b20e5f}{Tfmax\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ac11ce3c46014e65515c96993a4039cf2}{Tfmin\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_abfeb31e2295099d7d3ce3d07d53907d4}{Tcmax\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ac0e454e9e139c138d711fba06744779b}{Tcmin\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a9a9fb1406beb9bc51f2e2ccc35e6fd27}{fraction\+Of\+Power\+From\+Neutronics\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a7adeb17cd9325c9ab59764e067b2c335}{fuel\+Mesh\+Size\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_afa0b03f75735831b28e2ee5b9d607ccf}{clad\+Mesh\+Size\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ab7f0900e368fb0af4fd3d27ce2b5030d}{mesh\+Size\+\_\+}
+\item 
+scalar\+List\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a884336479d8b085765a84acff7c77bf6}{r\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a0a3e665ddfe3739d5b7037690386e755}{rfi\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a8783bb43dc268fab4f09eb8050cc4b1a}{rfo\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a7181ab94907bf6b2d357ce347d1819ff}{rci\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ab503619ef6b395e8f05204c30254ddea}{rco\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_adacd93d4f039244e968dcf8c1fa0741c}{drf\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ad3ebf29e814b6e2ebb875504a93d7add}{drc\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ad9bcdeab79a4fa0e51283e3f51f2df29}{drg\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ad1e56392c7c5e7796cc5b4b2a800a087}{rho\+Cpf\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a3b5a9238e52ec88a872738f46495452b}{rho\+Cpc\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a36331281d4ae311882454c32f9fc98e0}{kf\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a7492f68348c75e13c237992532208473}{kc\+\_\+}
+\item 
+scalar\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a6994d4ac8a4864930ae75b33c5a7174c}{gap\+H\+\_\+}
+\item 
+bool\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ac260b380fd569db13446e902fc0bf672}{hollow\+Fuel\+\_\+}
+\item 
+label\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a701d76c4cc33a9d530a0d2b7f21c206a}{cell\+To\+Region\+\_\+}
+\item 
+word\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a639c2bc843a6948636eb5bf034616e53}{region\+Index\+To\+Region\+Name\+\_\+}
+\item 
+word\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_aaee8da85bb053cffaafc054adea8673e}{region\+Names\+\_\+}
+\item 
+scalar \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_ad7683f85f3785b9444544d92fcfc3e1d}{pi\+\_\+}
+\item 
+scalar\+List\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a753fe594accfbeba343f55dfdf274a0f}{d\+A\+\_\+}
+\item 
+Hash\+Table$<$ auto\+Ptr$<$ Function1$<$ scalar $>$ $>$, word, word\+::hash $>$ \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_af3e43259f1e5ea73a5bb89f36d6cf584}{gap\+H\+Power\+Density\+Table\+\_\+}
+\item 
+bool\+List \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin_a09a38dead56d361b78f3134ba95438a0}{use\+Gap\+H\+Power\+Density\+Table\+\_\+}
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 56 of file nuclear\+Fuel\+Pin.\+H.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a00a0807b8131c3860dc8ac801e00dc68}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a00a0807b8131c3860dc8ac801e00dc68}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!nuclear\+Fuel\+Pin@{nuclear\+Fuel\+Pin}}
+\index{nuclear\+Fuel\+Pin@{nuclear\+Fuel\+Pin}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{nuclear\+Fuel\+Pin()}{nuclearFuelPin()}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin}{nuclear\+Fuel\+Pin} (\begin{DoxyParamCaption}\item[{\hyperlink{classFoam_1_1structure}{structure} \&}]{structure,  }\item[{const dictionary \&}]{dicts }\end{DoxyParamCaption})}
+
+
+
+Definition at line 44 of file nuclear\+Fuel\+Pin.\+C.
+
+
+
+References for\+All(), i, n(), structure\+::power\+Density\+Neutronics(), reduce(), set(), structure\+::\+T\+Clad\+Av(), and structure\+::\+T\+Fuel\+Av().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=349pt]{classFoam_1_1powerModels_1_1nuclearFuelPin_a00a0807b8131c3860dc8ac801e00dc68_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a19e056f77dfc563497575fbc7609cf88}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a19e056f77dfc563497575fbc7609cf88}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!````~nuclear\+Fuel\+Pin@{$\sim$nuclear\+Fuel\+Pin}}
+\index{````~nuclear\+Fuel\+Pin@{$\sim$nuclear\+Fuel\+Pin}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{$\sim$nuclear\+Fuel\+Pin()}{~nuclearFuelPin()}}
+{\footnotesize\ttfamily $\sim$\hyperlink{classFoam_1_1powerModels_1_1nuclearFuelPin}{nuclear\+Fuel\+Pin} (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Definition at line 606 of file nuclear\+Fuel\+Pin.\+C.
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_aa9b60de7cb506f0fa9f113d83b57eb95}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_aa9b60de7cb506f0fa9f113d83b57eb95}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Type\+Name@{Type\+Name}}
+\index{Type\+Name@{Type\+Name}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Type\+Name()}{TypeName()}}
+{\footnotesize\ttfamily Type\+Name (\begin{DoxyParamCaption}\item[{\char`\"{}nuclear\+Fuel\+Pin\char`\"{}}]{ }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a8fc8c05c610e629783c80688340f8db4}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a8fc8c05c610e629783c80688340f8db4}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!set\+Interfacial\+Area@{set\+Interfacial\+Area}}
+\index{set\+Interfacial\+Area@{set\+Interfacial\+Area}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{set\+Interfacial\+Area()}{setInterfacialArea()}}
+{\footnotesize\ttfamily void set\+Interfacial\+Area (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Reimplemented from \hyperlink{classFoam_1_1powerModel_a8fc8c05c610e629783c80688340f8db4}{power\+Model}.
+
+
+
+Definition at line 612 of file nuclear\+Fuel\+Pin.\+C.
+
+
+
+References for\+All(), i, and nuclear\+Fuel\+Pin\+::update\+Local\+Avg\+Global\+Min\+Max\+T().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1powerModels_1_1nuclearFuelPin_a8fc8c05c610e629783c80688340f8db4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a156a2a794e9317591692be62c0a33299}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a156a2a794e9317591692be62c0a33299}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!update\+Local\+Avg\+Global\+Min\+MaxT@{update\+Local\+Avg\+Global\+Min\+MaxT}}
+\index{update\+Local\+Avg\+Global\+Min\+MaxT@{update\+Local\+Avg\+Global\+Min\+MaxT}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{update\+Local\+Avg\+Global\+Min\+Max\+T()}{updateLocalAvgGlobalMinMaxT()}}
+{\footnotesize\ttfamily void update\+Local\+Avg\+Global\+Min\+MaxT (\begin{DoxyParamCaption}\item[{const label \&}]{starti,  }\item[{const label \&}]{endi,  }\item[{const scalar\+List \&}]{r,  }\item[{const scalar \&}]{dr,  }\item[{const scalar\+Field \&}]{Trad,  }\item[{scalar \&}]{Tav,  }\item[{scalar \&}]{Tmin,  }\item[{scalar \&}]{Tmax }\end{DoxyParamCaption})}
+
+
+
+Definition at line 623 of file nuclear\+Fuel\+Pin.\+C.
+
+
+
+References T(), and nuclear\+Fuel\+Pin\+::update\+Local\+Temperature\+Profile().
+
+
+
+Referenced by nuclear\+Fuel\+Pin\+::set\+Interfacial\+Area().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1powerModels_1_1nuclearFuelPin_a156a2a794e9317591692be62c0a33299_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1powerModels_1_1nuclearFuelPin_a156a2a794e9317591692be62c0a33299_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_aebceb9d61655d7851a7ab3a7710164ea}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_aebceb9d61655d7851a7ab3a7710164ea}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!update\+Local\+Temperature\+Profile@{update\+Local\+Temperature\+Profile}}
+\index{update\+Local\+Temperature\+Profile@{update\+Local\+Temperature\+Profile}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{update\+Local\+Temperature\+Profile()}{updateLocalTemperatureProfile()}}
+{\footnotesize\ttfamily void update\+Local\+Temperature\+Profile (\begin{DoxyParamCaption}\item[{const label \&}]{celli,  }\item[{const scalar \&}]{ht,  }\item[{const scalar \&}]{h }\end{DoxyParamCaption})}
+
+
+
+Definition at line 662 of file nuclear\+Fuel\+Pin.\+C.
+
+
+
+References B(), nuclear\+Fuel\+Pin\+::correct(), D, dt(), i, solve, structure\+::\+T\+Clad\+Av(), and structure\+::\+T\+Fuel\+Av().
+
+
+
+Referenced by nuclear\+Fuel\+Pin\+::update\+Local\+Avg\+Global\+Min\+Max\+T().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1powerModels_1_1nuclearFuelPin_aebceb9d61655d7851a7ab3a7710164ea_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classFoam_1_1powerModels_1_1nuclearFuelPin_aebceb9d61655d7851a7ab3a7710164ea_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a08cf6ccfed7f616074be223f0d2379f3}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a08cf6ccfed7f616074be223f0d2379f3}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!correct@{correct}}
+\index{correct@{correct}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{correct()}{correct()}}
+{\footnotesize\ttfamily void correct (\begin{DoxyParamCaption}\item[{const vol\+Scalar\+Field \&}]{HT,  }\item[{const vol\+Scalar\+Field \&}]{H }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1powerModel_a94e543602e416ccbc721750143e2cd73}{power\+Model}.
+
+
+
+Definition at line 868 of file nuclear\+Fuel\+Pin.\+C.
+
+
+
+References for\+All(), i, reduce(), and set().
+
+
+
+Referenced by nuclear\+Fuel\+Pin\+::update\+Local\+Temperature\+Profile().
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=209pt]{classFoam_1_1powerModels_1_1nuclearFuelPin_a08cf6ccfed7f616074be223f0d2379f3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=315pt]{classFoam_1_1powerModels_1_1nuclearFuelPin_a08cf6ccfed7f616074be223f0d2379f3_icgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a9f9875fb3a22007b3cb6ef9f59821c9c}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a9f9875fb3a22007b3cb6ef9f59821c9c}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!correctT@{correctT}}
+\index{correctT@{correctT}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{correct\+T()}{correctT()}}
+{\footnotesize\ttfamily void correctT (\begin{DoxyParamCaption}\item[{vol\+Scalar\+Field \&}]{T }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Implements \hyperlink{classFoam_1_1powerModel_a8ddbd4b794b55aa27a95e5cd8db62f25}{power\+Model}.
+
+
+
+Definition at line 922 of file nuclear\+Fuel\+Pin.\+C.
+
+
+
+References for\+All(), and i.
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classFoam_1_1powerModels_1_1nuclearFuelPin_a9f9875fb3a22007b3cb6ef9f59821c9c_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a22d48bd29c42258de0a8c6a599dafecd}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a22d48bd29c42258de0a8c6a599dafecd}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Trad\+\_\+@{Trad\+\_\+}}
+\index{Trad\+\_\+@{Trad\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Trad\+\_\+}{Trad\_}}
+{\footnotesize\ttfamily \hyperlink{classFoam_1_1IOFieldField}{I\+O\+Field\+Field}$<$Field, scalar$>$ Trad\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 65 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ae5113713ca510bd2c780a3a42d570b68}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ae5113713ca510bd2c780a3a42d570b68}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tfi\+\_\+@{Tfi\+\_\+}}
+\index{Tfi\+\_\+@{Tfi\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tfi\+\_\+}{Tfi\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Tfi\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 69 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_aafbf0ec9a477530a70c839a32695007c}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_aafbf0ec9a477530a70c839a32695007c}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tfo\+\_\+@{Tfo\+\_\+}}
+\index{Tfo\+\_\+@{Tfo\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tfo\+\_\+}{Tfo\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Tfo\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 70 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ae311ccceb3b1ab13497cfad4120f30ba}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ae311ccceb3b1ab13497cfad4120f30ba}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tci\+\_\+@{Tci\+\_\+}}
+\index{Tci\+\_\+@{Tci\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tci\+\_\+}{Tci\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Tci\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 71 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a284ecf0fcaa736dfb6c22cb4f2e432f8}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a284ecf0fcaa736dfb6c22cb4f2e432f8}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tco\+\_\+@{Tco\+\_\+}}
+\index{Tco\+\_\+@{Tco\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tco\+\_\+}{Tco\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Tco\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 72 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ae27e97dd26523cd7de88fb4d2d8970d2}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ae27e97dd26523cd7de88fb4d2d8970d2}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tfav\+\_\+@{Tfav\+\_\+}}
+\index{Tfav\+\_\+@{Tfav\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tfav\+\_\+}{Tfav\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Tfav\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 75 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a7f0f167e5eca86beb5241b243ba9b5ec}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a7f0f167e5eca86beb5241b243ba9b5ec}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tcav\+\_\+@{Tcav\+\_\+}}
+\index{Tcav\+\_\+@{Tcav\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tcav\+\_\+}{Tcav\_}}
+{\footnotesize\ttfamily vol\+Scalar\+Field Tcav\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 76 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a41838f208df78067c90a2b0af6b20e5f}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a41838f208df78067c90a2b0af6b20e5f}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tfmax\+\_\+@{Tfmax\+\_\+}}
+\index{Tfmax\+\_\+@{Tfmax\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tfmax\+\_\+}{Tfmax\_}}
+{\footnotesize\ttfamily scalar Tfmax\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 80 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ac11ce3c46014e65515c96993a4039cf2}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ac11ce3c46014e65515c96993a4039cf2}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tfmin\+\_\+@{Tfmin\+\_\+}}
+\index{Tfmin\+\_\+@{Tfmin\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tfmin\+\_\+}{Tfmin\_}}
+{\footnotesize\ttfamily scalar Tfmin\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 81 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_abfeb31e2295099d7d3ce3d07d53907d4}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_abfeb31e2295099d7d3ce3d07d53907d4}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tcmax\+\_\+@{Tcmax\+\_\+}}
+\index{Tcmax\+\_\+@{Tcmax\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tcmax\+\_\+}{Tcmax\_}}
+{\footnotesize\ttfamily scalar Tcmax\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 82 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ac0e454e9e139c138d711fba06744779b}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ac0e454e9e139c138d711fba06744779b}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!Tcmin\+\_\+@{Tcmin\+\_\+}}
+\index{Tcmin\+\_\+@{Tcmin\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{Tcmin\+\_\+}{Tcmin\_}}
+{\footnotesize\ttfamily scalar Tcmin\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 83 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a9a9fb1406beb9bc51f2e2ccc35e6fd27}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a9a9fb1406beb9bc51f2e2ccc35e6fd27}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!fraction\+Of\+Power\+From\+Neutronics\+\_\+@{fraction\+Of\+Power\+From\+Neutronics\+\_\+}}
+\index{fraction\+Of\+Power\+From\+Neutronics\+\_\+@{fraction\+Of\+Power\+From\+Neutronics\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{fraction\+Of\+Power\+From\+Neutronics\+\_\+}{fractionOfPowerFromNeutronics\_}}
+{\footnotesize\ttfamily scalar\+List fraction\+Of\+Power\+From\+Neutronics\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 88 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a7adeb17cd9325c9ab59764e067b2c335}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a7adeb17cd9325c9ab59764e067b2c335}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!fuel\+Mesh\+Size\+\_\+@{fuel\+Mesh\+Size\+\_\+}}
+\index{fuel\+Mesh\+Size\+\_\+@{fuel\+Mesh\+Size\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{fuel\+Mesh\+Size\+\_\+}{fuelMeshSize\_}}
+{\footnotesize\ttfamily label\+List fuel\+Mesh\+Size\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 91 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_afa0b03f75735831b28e2ee5b9d607ccf}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_afa0b03f75735831b28e2ee5b9d607ccf}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!clad\+Mesh\+Size\+\_\+@{clad\+Mesh\+Size\+\_\+}}
+\index{clad\+Mesh\+Size\+\_\+@{clad\+Mesh\+Size\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{clad\+Mesh\+Size\+\_\+}{cladMeshSize\_}}
+{\footnotesize\ttfamily label\+List clad\+Mesh\+Size\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 94 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ab7f0900e368fb0af4fd3d27ce2b5030d}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ab7f0900e368fb0af4fd3d27ce2b5030d}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!mesh\+Size\+\_\+@{mesh\+Size\+\_\+}}
+\index{mesh\+Size\+\_\+@{mesh\+Size\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{mesh\+Size\+\_\+}{meshSize\_}}
+{\footnotesize\ttfamily label\+List mesh\+Size\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 97 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a884336479d8b085765a84acff7c77bf6}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a884336479d8b085765a84acff7c77bf6}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!r\+\_\+@{r\+\_\+}}
+\index{r\+\_\+@{r\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{r\+\_\+}{r\_}}
+{\footnotesize\ttfamily scalar\+List\+List r\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 100 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a0a3e665ddfe3739d5b7037690386e755}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a0a3e665ddfe3739d5b7037690386e755}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!rfi\+\_\+@{rfi\+\_\+}}
+\index{rfi\+\_\+@{rfi\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{rfi\+\_\+}{rfi\_}}
+{\footnotesize\ttfamily scalar\+List rfi\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 103 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a8783bb43dc268fab4f09eb8050cc4b1a}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a8783bb43dc268fab4f09eb8050cc4b1a}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!rfo\+\_\+@{rfo\+\_\+}}
+\index{rfo\+\_\+@{rfo\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{rfo\+\_\+}{rfo\_}}
+{\footnotesize\ttfamily scalar\+List rfo\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 106 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a7181ab94907bf6b2d357ce347d1819ff}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a7181ab94907bf6b2d357ce347d1819ff}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!rci\+\_\+@{rci\+\_\+}}
+\index{rci\+\_\+@{rci\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{rci\+\_\+}{rci\_}}
+{\footnotesize\ttfamily scalar\+List rci\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 109 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ab503619ef6b395e8f05204c30254ddea}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ab503619ef6b395e8f05204c30254ddea}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!rco\+\_\+@{rco\+\_\+}}
+\index{rco\+\_\+@{rco\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{rco\+\_\+}{rco\_}}
+{\footnotesize\ttfamily scalar\+List rco\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 112 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_adacd93d4f039244e968dcf8c1fa0741c}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_adacd93d4f039244e968dcf8c1fa0741c}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!drf\+\_\+@{drf\+\_\+}}
+\index{drf\+\_\+@{drf\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{drf\+\_\+}{drf\_}}
+{\footnotesize\ttfamily scalar\+List drf\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 115 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ad3ebf29e814b6e2ebb875504a93d7add}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ad3ebf29e814b6e2ebb875504a93d7add}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!drc\+\_\+@{drc\+\_\+}}
+\index{drc\+\_\+@{drc\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{drc\+\_\+}{drc\_}}
+{\footnotesize\ttfamily scalar\+List drc\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 118 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ad9bcdeab79a4fa0e51283e3f51f2df29}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ad9bcdeab79a4fa0e51283e3f51f2df29}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!drg\+\_\+@{drg\+\_\+}}
+\index{drg\+\_\+@{drg\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{drg\+\_\+}{drg\_}}
+{\footnotesize\ttfamily scalar\+List drg\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 121 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ad1e56392c7c5e7796cc5b4b2a800a087}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ad1e56392c7c5e7796cc5b4b2a800a087}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!rho\+Cpf\+\_\+@{rho\+Cpf\+\_\+}}
+\index{rho\+Cpf\+\_\+@{rho\+Cpf\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{rho\+Cpf\+\_\+}{rhoCpf\_}}
+{\footnotesize\ttfamily scalar\+List rho\+Cpf\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 124 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a3b5a9238e52ec88a872738f46495452b}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a3b5a9238e52ec88a872738f46495452b}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!rho\+Cpc\+\_\+@{rho\+Cpc\+\_\+}}
+\index{rho\+Cpc\+\_\+@{rho\+Cpc\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{rho\+Cpc\+\_\+}{rhoCpc\_}}
+{\footnotesize\ttfamily scalar\+List rho\+Cpc\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 127 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a36331281d4ae311882454c32f9fc98e0}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a36331281d4ae311882454c32f9fc98e0}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!kf\+\_\+@{kf\+\_\+}}
+\index{kf\+\_\+@{kf\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{kf\+\_\+}{kf\_}}
+{\footnotesize\ttfamily scalar\+List kf\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 130 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a7492f68348c75e13c237992532208473}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a7492f68348c75e13c237992532208473}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!kc\+\_\+@{kc\+\_\+}}
+\index{kc\+\_\+@{kc\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{kc\+\_\+}{kc\_}}
+{\footnotesize\ttfamily scalar\+List kc\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 133 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a6994d4ac8a4864930ae75b33c5a7174c}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a6994d4ac8a4864930ae75b33c5a7174c}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!gap\+H\+\_\+@{gap\+H\+\_\+}}
+\index{gap\+H\+\_\+@{gap\+H\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{gap\+H\+\_\+}{gapH\_}}
+{\footnotesize\ttfamily scalar\+List gap\+H\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 136 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ac260b380fd569db13446e902fc0bf672}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ac260b380fd569db13446e902fc0bf672}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!hollow\+Fuel\+\_\+@{hollow\+Fuel\+\_\+}}
+\index{hollow\+Fuel\+\_\+@{hollow\+Fuel\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{hollow\+Fuel\+\_\+}{hollowFuel\_}}
+{\footnotesize\ttfamily bool\+List hollow\+Fuel\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 139 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a701d76c4cc33a9d530a0d2b7f21c206a}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a701d76c4cc33a9d530a0d2b7f21c206a}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!cell\+To\+Region\+\_\+@{cell\+To\+Region\+\_\+}}
+\index{cell\+To\+Region\+\_\+@{cell\+To\+Region\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{cell\+To\+Region\+\_\+}{cellToRegion\_}}
+{\footnotesize\ttfamily label\+List cell\+To\+Region\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 142 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a639c2bc843a6948636eb5bf034616e53}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a639c2bc843a6948636eb5bf034616e53}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!region\+Index\+To\+Region\+Name\+\_\+@{region\+Index\+To\+Region\+Name\+\_\+}}
+\index{region\+Index\+To\+Region\+Name\+\_\+@{region\+Index\+To\+Region\+Name\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{region\+Index\+To\+Region\+Name\+\_\+}{regionIndexToRegionName\_}}
+{\footnotesize\ttfamily word\+List region\+Index\+To\+Region\+Name\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 145 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_aaee8da85bb053cffaafc054adea8673e}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_aaee8da85bb053cffaafc054adea8673e}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!region\+Names\+\_\+@{region\+Names\+\_\+}}
+\index{region\+Names\+\_\+@{region\+Names\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{region\+Names\+\_\+}{regionNames\_}}
+{\footnotesize\ttfamily word\+List region\+Names\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 148 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_ad7683f85f3785b9444544d92fcfc3e1d}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_ad7683f85f3785b9444544d92fcfc3e1d}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!pi\+\_\+@{pi\+\_\+}}
+\index{pi\+\_\+@{pi\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{pi\+\_\+}{pi\_}}
+{\footnotesize\ttfamily scalar pi\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 151 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a753fe594accfbeba343f55dfdf274a0f}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a753fe594accfbeba343f55dfdf274a0f}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!d\+A\+\_\+@{d\+A\+\_\+}}
+\index{d\+A\+\_\+@{d\+A\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{d\+A\+\_\+}{dA\_}}
+{\footnotesize\ttfamily scalar\+List\+List d\+A\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 154 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_af3e43259f1e5ea73a5bb89f36d6cf584}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_af3e43259f1e5ea73a5bb89f36d6cf584}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!gap\+H\+Power\+Density\+Table\+\_\+@{gap\+H\+Power\+Density\+Table\+\_\+}}
+\index{gap\+H\+Power\+Density\+Table\+\_\+@{gap\+H\+Power\+Density\+Table\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{gap\+H\+Power\+Density\+Table\+\_\+}{gapHPowerDensityTable\_}}
+{\footnotesize\ttfamily Hash\+Table$<$auto\+Ptr$<$Function1$<$scalar$>$ $>$, word, word\+::hash$>$ gap\+H\+Power\+Density\+Table\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 159 of file nuclear\+Fuel\+Pin.\+H.
+
+\mbox{\Hypertarget{classFoam_1_1powerModels_1_1nuclearFuelPin_a09a38dead56d361b78f3134ba95438a0}\label{classFoam_1_1powerModels_1_1nuclearFuelPin_a09a38dead56d361b78f3134ba95438a0}} 
+\index{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}!use\+Gap\+H\+Power\+Density\+Table\+\_\+@{use\+Gap\+H\+Power\+Density\+Table\+\_\+}}
+\index{use\+Gap\+H\+Power\+Density\+Table\+\_\+@{use\+Gap\+H\+Power\+Density\+Table\+\_\+}!Foam\+::power\+Models\+::nuclear\+Fuel\+Pin@{Foam\+::power\+Models\+::nuclear\+Fuel\+Pin}}
+\subsubsection{\texorpdfstring{use\+Gap\+H\+Power\+Density\+Table\+\_\+}{useGapHPowerDensityTable\_}}
+{\footnotesize\ttfamily bool\+List use\+Gap\+H\+Power\+Density\+Table\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line 162 of file nuclear\+Fuel\+Pin.\+H.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/power\+Models/nuclear\+Fuel\+Pin/\hyperlink{nuclearFuelPin_8H}{nuclear\+Fuel\+Pin.\+H}\item 
+/home/carlo/data/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam\+\_\+ffn/\+Ge\+N-\/\+Foam/\+Ge\+N-\/\+Foam/classes/thermal\+Hydraulics/src/phase\+Models/structure\+Models/power\+Models/nuclear\+Fuel\+Pin/\hyperlink{nuclearFuelPin_8C}{nuclear\+Fuel\+Pin.\+C}\end{DoxyCompactItemize}
