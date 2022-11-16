@@ -1226,6 +1226,20 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>const volScalarField &amp;</type>
+      <name>secondaryPowerVolumeFraction</name>
+      <anchorfile>setXSFields_8H.html</anchorfile>
+      <anchor>a8a174336055259a9d6e186e9ceb2f629</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const volScalarField &amp;</type>
+      <name>fractionToSecondaryPower</name>
+      <anchorfile>setXSFields_8H.html</anchorfile>
+      <anchor>a333f327f48d6300db4dcab219afd7d02</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>const PtrList&lt; volScalarField &gt; &amp;</type>
       <name>discFactor</name>
       <anchorfile>setXSFields_8H.html</anchorfile>
@@ -2145,6 +2159,20 @@
       <name>fuelFraction</name>
       <anchorfile>setXSFieldsSN_8H.html</anchorfile>
       <anchor>a470c39405a89f3faff1aaaec7855c71f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const volScalarField &amp;</type>
+      <name>secondaryPowerVolumeFraction</name>
+      <anchorfile>setXSFieldsSN_8H.html</anchorfile>
+      <anchor>a8a174336055259a9d6e186e9ceb2f629</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const volScalarField &amp;</type>
+      <name>fractionToSecondaryPower</name>
+      <anchorfile>setXSFieldsSN_8H.html</anchorfile>
+      <anchor>a333f327f48d6300db4dcab219afd7d02</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -3891,13 +3919,6 @@
       <arglist>(FSPair_.htc())</arglist>
     </member>
     <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>EEqn__1p_8H.html</anchorfile>
-      <anchor>a7f4fb166126a395ab5653f96f49d3303</anchor>
-      <arglist>(fluid_.powerDensityPtr().valid())</arglist>
-    </member>
-    <member kind="function">
       <type>T</type>
       <name>storePrevIter</name>
       <anchorfile>EEqn__1p_8H.html</anchorfile>
@@ -4519,13 +4540,6 @@
       <anchorfile>EEqn__1pl_8H.html</anchorfile>
       <anchor>a915238d7f4f887ccb30334405f32ec94</anchor>
       <arglist>(Hs *T, Hs)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>EEqn__1pl_8H.html</anchorfile>
-      <anchor>a7f4fb166126a395ab5653f96f49d3303</anchor>
-      <arglist>(fluid_.powerDensityPtr().valid())</arglist>
     </member>
     <member kind="function">
       <type>EEqn</type>
@@ -5338,15 +5352,15 @@
       <type></type>
       <name>if</name>
       <anchorfile>EEqns__2p_8H.html</anchorfile>
-      <anchor>a8a1fb31a59a120e0692898a3f3c30ec1</anchor>
-      <arglist>(fluid1_.powerDensityPtr().valid())</arglist>
+      <anchor>afbb4efa5fb441aa35a26fefc571e5f78</anchor>
+      <arglist>(fluid1_.isLiquid())</arglist>
     </member>
     <member kind="function">
       <type></type>
       <name>if</name>
       <anchorfile>EEqns__2p_8H.html</anchorfile>
-      <anchor>a181a5bec74245b9bb4445fa35e10a454</anchor>
-      <arglist>(fluid2_.powerDensityPtr().valid())</arglist>
+      <anchor>a9fbb44a037f6db834ade28d6a2737228</anchor>
+      <arglist>(fluid2_.isLiquid())</arglist>
     </member>
     <member kind="function">
       <type></type>
@@ -7200,6 +7214,67 @@
     <includes id="powerModel_8H" name="powerModel.H" local="yes" imported="no">powerModel.H</includes>
     <includes id="IOFieldFields_8H" name="IOFieldFields.H" local="yes" imported="no">IOFieldFields.H</includes>
     <class kind="class">Foam::powerModels::nuclearFuelPin</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::powerModels</namespace>
+  </compound>
+  <compound kind="file">
+    <name>nuclearFuelPinTest.C</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelPinTest/</path>
+    <filename>nuclearFuelPinTest_8C</filename>
+    <includes id="nuclearFuelPinTest_8H" name="nuclearFuelPinTest.H" local="yes" imported="no">nuclearFuelPinTest.H</includes>
+    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::powerModels</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1powerModels.html</anchorfile>
+      <anchor>ac1ee6cb0c6a9f89f8bd3cc744851b150</anchor>
+      <arglist>(nuclearFuelPinTest, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1powerModels.html</anchorfile>
+      <anchor>a9fe465253b2034cf920ff75dea352b70</anchor>
+      <arglist>(powerModel, nuclearFuelPinTest, powerModels)</arglist>
+    </member>
+    <member kind="variable">
+      <type>I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the D matrices in updateLocalTemperatureProfile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant</type>
+      <name>cp</name>
+      <anchorfile>nuclearFuelPinTest_8C.html</anchorfile>
+      <anchor>ae5fc70d73cd9d6fbeb7bf5456b34ef16</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the D matrices in updateLocalTemperatureProfile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant rho and spatially constant k For</type>
+      <name>simplicity</name>
+      <anchorfile>nuclearFuelPinTest_8C.html</anchorfile>
+      <anchor>ab5364626cf5774043302fd6c7196a05f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the D matrices in updateLocalTemperatureProfile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant rho and spatially constant k For let us not consider a pin right</type>
+      <name>now</name>
+      <anchorfile>nuclearFuelPinTest_8C.html</anchorfile>
+      <anchor>a09404a3c5e8ea04b3e44ae4cb130f396</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>I added this section in the hope that it might spare quite some time to anyone who will unfortunately have to deal with this code after me It shows how the D matrices in updateLocalTemperatureProfile are built Let us start with the heat diffusion equation in cylindrical coordinates with temporally constant rho and spatially constant k For let us not consider a pin right just a regular uniform hollow</type>
+      <name>cylinder</name>
+      <anchorfile>nuclearFuelPinTest_8C.html</anchorfile>
+      <anchor>aa5e8becd7f504abaf6e34b6dcd491e94</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>nuclearFuelPinTest.H</name>
+    <path>/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelPinTest/</path>
+    <filename>nuclearFuelPinTest_8H</filename>
+    <includes id="powerModel_8H" name="powerModel.H" local="yes" imported="no">powerModel.H</includes>
+    <includes id="IOFieldFields_8H" name="IOFieldFields.H" local="yes" imported="no">IOFieldFields.H</includes>
+    <class kind="class">Foam::powerModels::nuclearFuelPinTest</class>
     <namespace>Foam</namespace>
     <namespace>Foam::powerModels</namespace>
   </compound>
@@ -13067,32 +13142,18 @@
       <arglist>((*fluidMesh.findObject&lt; volScalarField &gt;(&quot;T.passiveStructure&quot;)))</arglist>
     </member>
     <member kind="function">
-      <type>const bool</type>
-      <name>nuclearFuelPin</name>
-      <anchorfile>createCouplingFields_8H.html</anchorfile>
-      <anchor>a8c06a214b81116d38c4256547678807c</anchor>
-      <arglist>((fluidMesh.foundObject&lt; volScalarField &gt;(&quot;powerDensity.nuclearFuelPin&quot;)))</arglist>
-    </member>
-    <member kind="function">
-      <type>volScalarField *const</type>
+      <type>const volScalarField &amp;</type>
       <name>TFuelAv</name>
       <anchorfile>createCouplingFields_8H.html</anchorfile>
-      <anchor>ad085e6784724a98f9e5ca302174f1e38</anchor>
-      <arglist>((nuclearFuelPin) ? fluidMesh.findObject&lt; volScalarField &gt;(&quot;Tfav.nuclearFuelPin&quot;) :new volScalarField(IOobject(&quot;nullTFuelAv0&quot;, fluidMesh.time().timeName(), fluidMesh.time()), fluidMesh, dimensionedScalar(&quot;&quot;, dimTemperature, 0.0), zeroGradientFvPatchScalarField::typeName))</arglist>
+      <anchor>a455928a9b9a6967eec66e04552cde9b2</anchor>
+      <arglist>((*fluidMesh.findObject&lt; volScalarField &gt;(&quot;T.fuelAvForNeutronics&quot;)))</arglist>
     </member>
     <member kind="function">
-      <type>volScalarField *const</type>
+      <type>const volScalarField &amp;</type>
       <name>TCladAv</name>
       <anchorfile>createCouplingFields_8H.html</anchorfile>
-      <anchor>acf0ee45f745ae4e64373e86deed26887</anchor>
-      <arglist>((nuclearFuelPin) ? fluidMesh.findObject&lt; volScalarField &gt;(&quot;Tcav.nuclearFuelPin&quot;) :new volScalarField(IOobject(&quot;nullTCladAv0&quot;, fluidMesh.time().timeName(), fluidMesh.time()), fluidMesh, dimensionedScalar(&quot;&quot;, dimTemperature, 0.0), zeroGradientFvPatchScalarField::typeName))</arglist>
-    </member>
-    <member kind="function">
-      <type>volScalarField *const</type>
-      <name>powerDensity</name>
-      <anchorfile>createCouplingFields_8H.html</anchorfile>
-      <anchor>aded31943ab469f43da97a2a92958cfe3</anchor>
-      <arglist>((multiphysics.liquidFuel()) ? &amp;(liquid-&gt;powerDensity()) :((nuclearFuelPin) ? fluidMesh.findObject&lt; volScalarField &gt;(&quot;powerDensity.nuclearFuelPin&quot;) :new volScalarField(IOobject(&quot;powerDensity.nuclearFuelPin&quot;, fluidMesh.time().timeName(), liquid-&gt;db(), IOobject::READ_IF_PRESENT,((multiphysics.solveEnergy() or multiphysics.solveNeutronics()) ? IOobject::AUTO_WRITE :IOobject::NO_WRITE)), fluidMesh, dimensionedScalar(&quot;&quot;, dimless, 0.0), zeroGradientFvPatchScalarField::typeName)))</arglist>
+      <anchor>a147e25b01d60335208bee4349bba2474</anchor>
+      <arglist>((*fluidMesh.findObject&lt; volScalarField &gt;(&quot;T.cladAvForNeutronics&quot;)))</arglist>
     </member>
     <member kind="function">
       <type>volScalarField</type>
@@ -13182,8 +13243,8 @@
       <type></type>
       <name>if</name>
       <anchorfile>createCouplingFields_8H.html</anchorfile>
-      <anchor>a2c543fd5985db39d60dc835f22b422c2</anchor>
-      <arglist>(multiphysics.solveNeutronics())</arglist>
+      <anchor>ab1cdc8cb62af85f724625303bbfd046f</anchor>
+      <arglist>(multiphysics.solveEnergy())</arglist>
     </member>
     <member kind="variable">
       <type></type>
@@ -13207,38 +13268,17 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>void</type>
-      <name>TStruct</name>
-      <anchorfile>createCouplingFields_8H.html</anchorfile>
-      <anchor>a55de078f9bde412bc08256d7e3cee9e6</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>void</type>
-      <name>TFuelAv</name>
-      <anchorfile>createCouplingFields_8H.html</anchorfile>
-      <anchor>ad7e427091dfac3392e65f93e6cd301b5</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>void</type>
-      <name>TCladAv</name>
-      <anchorfile>createCouplingFields_8H.html</anchorfile>
-      <anchor>adaa2bf4d91715039216e88ed75062ae1</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>void</type>
-      <name>powerDensity</name>
-      <anchorfile>createCouplingFields_8H.html</anchorfile>
-      <anchor>ad0d7148c82d140b6bbba036f0a556453</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
       <type>volScalarField *</type>
       <name>bafflelessPowerDensity</name>
       <anchorfile>createCouplingFields_8H.html</anchorfile>
       <anchor>af4e3c1de091ffc91c131e672df22b96b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volScalarField *</type>
+      <name>bafflelessPowerDensityToLiquid</name>
+      <anchorfile>createCouplingFields_8H.html</anchorfile>
+      <anchor>afce01877cad53b14ac949c92809f7621</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -13426,8 +13466,8 @@
       <type>const powerModel *const</type>
       <name>pinIO</name>
       <anchorfile>createOutput_8H.html</anchorfile>
-      <anchor>a00fa48fbb874a618aca25466704c02cf</anchor>
-      <arglist>((nuclearFuelPin) ? fluidMesh.lookupClass&lt; const powerModel &gt;()[&quot;powerModel&quot;] :nullptr)</arglist>
+      <anchor>a0e5723cce35a4205ec9936e4350a809c</anchor>
+      <arglist>((fluidMesh.foundObject&lt; volScalarField &gt;(&quot;powerDensity.nuclearFuelPin&quot;)) ? fluidMesh.lookupClass&lt; const powerModel &gt;()[&quot;powerModel&quot;] :nullptr)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -17986,8 +18026,8 @@
       <type></type>
       <name>fixedPower</name>
       <anchorfile>classFoam_1_1powerModels_1_1fixedPower.html</anchorfile>
-      <anchor>a2ea807779ae5dcaec5a329bde8c21b2e</anchor>
-      <arglist>(const structure &amp;structure, const dictionary &amp;dicts)</arglist>
+      <anchor>a4869187ce11652768a144d653f05ac8b</anchor>
+      <arglist>(structure &amp;structure, const dictionary &amp;dicts)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
@@ -18086,8 +18126,8 @@
       <type></type>
       <name>fixedTemperature</name>
       <anchorfile>classFoam_1_1powerModels_1_1fixedTemperature.html</anchorfile>
-      <anchor>a82c5e8cfa0f8d22a0f1f31a26c09cd46</anchor>
-      <arglist>(const structure &amp;structure, const dictionary &amp;dicts)</arglist>
+      <anchor>a2b54096181326868569b551d6c9e2c74</anchor>
+      <arglist>(structure &amp;structure, const dictionary &amp;dicts)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
@@ -18172,8 +18212,8 @@
       <type></type>
       <name>fixedTemperatureFMU</name>
       <anchorfile>classFoam_1_1powerModels_1_1fixedTemperatureFMU.html</anchorfile>
-      <anchor>a882647bb50e1b952c1065233e1e5334f</anchor>
-      <arglist>(const structure &amp;structure, const dictionary &amp;dicts)</arglist>
+      <anchor>ae3dcea8d723281650685d92321b31271</anchor>
+      <arglist>(structure &amp;structure, const dictionary &amp;dicts)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
@@ -18340,8 +18380,8 @@
       <type></type>
       <name>fluid</name>
       <anchorfile>classFoam_1_1fluid.html</anchorfile>
-      <anchor>a207540767c95286849460ee4a03742ab</anchor>
-      <arglist>(const dictionary &amp;dict, const fvMesh &amp;mesh, const word &amp;phaseName, bool readIfPresentAndWrite=true)</arglist>
+      <anchor>a74a7690dc5d0c7f348b26312c2135798</anchor>
+      <arglist>(const dictionary &amp;dict, const fvMesh &amp;mesh, const word &amp;phaseName, volScalarField &amp;powerDensityNeutronicsToLiquid, bool readIfPresentAndWrite=true)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
@@ -18677,20 +18717,6 @@
       <name>Pr</name>
       <anchorfile>classFoam_1_1fluid.html</anchorfile>
       <anchor>ae41df8adbf6baad015bb4e270a67a9e3</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>const autoPtr&lt; volScalarField &gt;</type>
-      <name>powerDensityPtr</name>
-      <anchorfile>classFoam_1_1fluid.html</anchorfile>
-      <anchor>a87c35b27707e98be4adec569f85c6f7e</anchor>
-      <arglist>() const</arglist>
-    </member>
-    <member kind="function">
-      <type>autoPtr&lt; volScalarField &gt; &amp;</type>
-      <name>powerDensityPtr</name>
-      <anchorfile>classFoam_1_1fluid.html</anchorfile>
-      <anchor>ae14a05cf5dd8c1653b9e1c966e19e3be</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -20070,8 +20096,8 @@
       <type></type>
       <name>heatedPin</name>
       <anchorfile>classFoam_1_1powerModels_1_1heatedPin.html</anchorfile>
-      <anchor>a1c14391d0299d3cf1ef3cb984ba29b0f</anchor>
-      <arglist>(const structure &amp;structure, const dictionary &amp;dicts)</arglist>
+      <anchor>a5df612853023ce36358872f98ac1fbe2</anchor>
+      <arglist>(structure &amp;structure, const dictionary &amp;dicts)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
@@ -21485,10 +21511,6 @@
     <filename>classFoam_1_1LockhartMartinelli.html</filename>
   </compound>
   <compound kind="class">
-    <name>Foam::CHFModel::lookUpTableCHF</name>
-    <filename>classFoam_1_1CHFModel_1_1lookUpTableCHF.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::criticalHeatFluxModels::lookUpTableCHF</name>
     <filename>classFoam_1_1criticalHeatFluxModels_1_1lookUpTableCHF.html</filename>
     <base>Foam::CHFModel</base>
@@ -21569,6 +21591,10 @@
       <anchor>a5e620c7dc0eee9db009e480d508a2814</anchor>
       <arglist></arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::CHFModel::lookUpTableCHF</name>
+    <filename>classFoam_1_1CHFModel_1_1lookUpTableCHF.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::twoPhaseDragMultiplierModels::LottesFlinn</name>
@@ -22735,6 +22761,13 @@
       <arglist>() const</arglist>
     </member>
     <member kind="function">
+      <type>const volScalarField &amp;</type>
+      <name>secondaryPowerDenisty</name>
+      <anchorfile>classFoam_1_1neutronics.html</anchorfile>
+      <anchor>afd9ca56a197532a65edb7561bb572917</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
       <type>const volVectorField &amp;</type>
       <name>disp</name>
       <anchorfile>classFoam_1_1neutronics.html</anchorfile>
@@ -22826,6 +22859,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>secondaryPowerDenisty_</name>
+      <anchorfile>classFoam_1_1neutronics.html</anchorfile>
+      <anchor>abb62ce70a64cdeb5bdde9b454a6e018e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>volVectorField</type>
       <name>disp_</name>
       <anchorfile>classFoam_1_1neutronics.html</anchorfile>
@@ -22909,6 +22949,39 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::FFHeatTransferCoefficientModels::NoKazimi</name>
+    <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</filename>
+    <base>Foam::FFHeatTransferCoefficientModel</base>
+    <member kind="function">
+      <type></type>
+      <name>TypeName</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>ae70ed6cb89c054e743d136113d5e4e41</anchor>
+      <arglist>(&quot;NoKazimi&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>NoKazimi</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>ae108db9c96c6b2362c958ffd1eedc839</anchor>
+      <arglist>(const FFPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~NoKazimi</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>a4c9b55ab582b0efe308a25a3d4e1b15d</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual scalar</type>
+      <name>value</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
+      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
+      <arglist>(const label &amp;celli) const</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>Foam::FFDragCoefficientModels::NoKazimi</name>
     <filename>classFoam_1_1FFDragCoefficientModels_1_1NoKazimi.html</filename>
     <base>Foam::FFDragCoefficientModel</base>
@@ -22953,39 +23026,6 @@
       <anchorfile>classFoam_1_1FFDragCoefficientModels_1_1NoKazimi.html</anchorfile>
       <anchor>a470f484be0b7ecd159b0971e3023a490</anchor>
       <arglist></arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::FFHeatTransferCoefficientModels::NoKazimi</name>
-    <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</filename>
-    <base>Foam::FFHeatTransferCoefficientModel</base>
-    <member kind="function">
-      <type></type>
-      <name>TypeName</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>ae70ed6cb89c054e743d136113d5e4e41</anchor>
-      <arglist>(&quot;NoKazimi&quot;)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>NoKazimi</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>ae108db9c96c6b2362c958ffd1eedc839</anchor>
-      <arglist>(const FFPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>~NoKazimi</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>a4c9b55ab582b0efe308a25a3d4e1b15d</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual scalar</type>
-      <name>value</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1NoKazimi.html</anchorfile>
-      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
-      <arglist>(const label &amp;celli) const</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -23057,10 +23097,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::thermoSubstructures::nuclearFuelPin</name>
-    <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPin.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::powerModels::nuclearFuelPin</name>
     <filename>classFoam_1_1powerModels_1_1nuclearFuelPin.html</filename>
     <base>Foam::powerModel</base>
@@ -23075,8 +23111,8 @@
       <type></type>
       <name>nuclearFuelPin</name>
       <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPin.html</anchorfile>
-      <anchor>a3fb284ed0dda8e55ddd7a762fe620a80</anchor>
-      <arglist>(const structure &amp;structure, const dictionary &amp;dicts)</arglist>
+      <anchor>a00a0807b8131c3860dc8ac801e00dc68</anchor>
+      <arglist>(structure &amp;structure, const dictionary &amp;dicts)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
@@ -23125,13 +23161,6 @@
       <name>Trad_</name>
       <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPin.html</anchorfile>
       <anchor>a22d48bd29c42258de0a8c6a599dafecd</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable" protection="protected">
-      <type>volScalarField</type>
-      <name>powerDensity_</name>
-      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPin.html</anchorfile>
-      <anchor>afcf025ab8119485c105d92f3ba72a4fd</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -23202,6 +23231,13 @@
       <name>Tcmin_</name>
       <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPin.html</anchorfile>
       <anchor>ac0e454e9e139c138d711fba06744779b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>fractionOfPowerFromNeutronics_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPin.html</anchorfile>
+      <anchor>a9a9fb1406beb9bc51f2e2ccc35e6fd27</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -23374,37 +23410,325 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::FFHeatTransferCoefficientModels::Nusselt</name>
-    <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</filename>
-    <base>Foam::FFHeatTransferCoefficientModel</base>
+    <name>Foam::thermoSubstructures::nuclearFuelPin</name>
+    <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPin.html</filename>
+  </compound>
+  <compound kind="class">
+    <name>Foam::powerModels::nuclearFuelPinTest</name>
+    <filename>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</filename>
+    <base>Foam::powerModel</base>
     <member kind="function">
       <type></type>
       <name>TypeName</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>a560b7b6bb9ebe392d9d91aa9ce2ae98c</anchor>
-      <arglist>(&quot;NusseltReynoldsPrandtlPower&quot;)</arglist>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a2cd2517e4a832c5f3cffe7ff0b706f71</anchor>
+      <arglist>(&quot;nuclearFuelPinTest&quot;)</arglist>
     </member>
     <member kind="function">
       <type></type>
-      <name>Nusselt</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>a809259339657615ee1b1342055870824</anchor>
-      <arglist>(const FFPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
+      <name>nuclearFuelPinTest</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a0fceab77e99080514ba347aa8a16fb11</anchor>
+      <arglist>(structure &amp;structure, const dictionary &amp;dicts)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
-      <name>~Nusselt</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>adc44b85005e84c604806654d02d420a4</anchor>
+      <name>~nuclearFuelPinTest</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a969c938ab87b40a8875befeafb786839</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function" virtualness="virtual">
-      <type>virtual scalar</type>
-      <name>value</name>
-      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
-      <arglist>(const label &amp;celli) const</arglist>
+      <type>virtual void</type>
+      <name>setInterfacialArea</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a8fc8c05c610e629783c80688340f8db4</anchor>
+      <arglist>()</arglist>
     </member>
+    <member kind="function">
+      <type>void</type>
+      <name>updateLocalAvgGlobalMinMaxT</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a156a2a794e9317591692be62c0a33299</anchor>
+      <arglist>(const label &amp;starti, const label &amp;endi, const scalarList &amp;r, const scalar &amp;dr, const scalarField &amp;Trad, scalar &amp;Tav, scalar &amp;Tmin, scalar &amp;Tmax)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>updateLocalTemperatureProfile</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>aebceb9d61655d7851a7ab3a7710164ea</anchor>
+      <arglist>(const label &amp;celli, const scalar &amp;ht, const scalar &amp;h)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual void</type>
+      <name>correct</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a08cf6ccfed7f616074be223f0d2379f3</anchor>
+      <arglist>(const volScalarField &amp;HT, const volScalarField &amp;H)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual void</type>
+      <name>correctT</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a9f9875fb3a22007b3cb6ef9f59821c9c</anchor>
+      <arglist>(volScalarField &amp;T) const</arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>IOFieldField&lt; Field, scalar &gt;</type>
+      <name>Trad_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a22d48bd29c42258de0a8c6a599dafecd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>Tfi_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ae5113713ca510bd2c780a3a42d570b68</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>Tfo_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>aafbf0ec9a477530a70c839a32695007c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>Tci_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ae311ccceb3b1ab13497cfad4120f30ba</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>Tco_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a284ecf0fcaa736dfb6c22cb4f2e432f8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>Tfav_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ae27e97dd26523cd7de88fb4d2d8970d2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>Tcav_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a7f0f167e5eca86beb5241b243ba9b5ec</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>Tfmax_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a41838f208df78067c90a2b0af6b20e5f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>Tfmin_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ac11ce3c46014e65515c96993a4039cf2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>Tcmax_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>abfeb31e2295099d7d3ce3d07d53907d4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>Tcmin_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ac0e454e9e139c138d711fba06744779b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>fractionOfPowerFromNeutronics_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a9a9fb1406beb9bc51f2e2ccc35e6fd27</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>labelList</type>
+      <name>fuelMeshSize_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a7adeb17cd9325c9ab59764e067b2c335</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>labelList</type>
+      <name>cladMeshSize_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>afa0b03f75735831b28e2ee5b9d607ccf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>labelList</type>
+      <name>meshSize_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ab7f0900e368fb0af4fd3d27ce2b5030d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarListList</type>
+      <name>r_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a884336479d8b085765a84acff7c77bf6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>rfi_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a0a3e665ddfe3739d5b7037690386e755</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>rfo_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a8783bb43dc268fab4f09eb8050cc4b1a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>rci_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a7181ab94907bf6b2d357ce347d1819ff</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>rco_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ab503619ef6b395e8f05204c30254ddea</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>drf_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>adacd93d4f039244e968dcf8c1fa0741c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>drc_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ad3ebf29e814b6e2ebb875504a93d7add</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>drg_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ad9bcdeab79a4fa0e51283e3f51f2df29</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>rhoCpf_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ad1e56392c7c5e7796cc5b4b2a800a087</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>rhoCpc_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a3b5a9238e52ec88a872738f46495452b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>kf_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a36331281d4ae311882454c32f9fc98e0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>kc_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a7492f68348c75e13c237992532208473</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>gapH_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a6994d4ac8a4864930ae75b33c5a7174c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>boolList</type>
+      <name>hollowFuel_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ac260b380fd569db13446e902fc0bf672</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>labelList</type>
+      <name>cellToRegion_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a701d76c4cc33a9d530a0d2b7f21c206a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>wordList</type>
+      <name>regionIndexToRegionName_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a639c2bc843a6948636eb5bf034616e53</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>wordList</type>
+      <name>regionNames_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>aaee8da85bb053cffaafc054adea8673e</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>pi_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>ad7683f85f3785b9444544d92fcfc3e1d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarListList</type>
+      <name>dA_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a753fe594accfbeba343f55dfdf274a0f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>HashTable&lt; autoPtr&lt; Function1&lt; scalar &gt; &gt;, word, word::hash &gt;</type>
+      <name>gapHPowerDensityTable_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>af3e43259f1e5ea73a5bb89f36d6cf584</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>boolList</type>
+      <name>useGapHPowerDensityTable_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</anchorfile>
+      <anchor>a09a38dead56d361b78f3134ba95438a0</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::thermoSubstructures::nuclearFuelPinTest</name>
+    <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPinTest.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::FSHeatTransferCoefficientModels::Nusselt</name>
@@ -23435,6 +23759,39 @@
       <type>virtual scalar</type>
       <name>value</name>
       <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
+      <arglist>(const label &amp;celli) const</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::FFHeatTransferCoefficientModels::Nusselt</name>
+    <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</filename>
+    <base>Foam::FFHeatTransferCoefficientModel</base>
+    <member kind="function">
+      <type></type>
+      <name>TypeName</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>a560b7b6bb9ebe392d9d91aa9ce2ae98c</anchor>
+      <arglist>(&quot;NusseltReynoldsPrandtlPower&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>Nusselt</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>a809259339657615ee1b1342055870824</anchor>
+      <arglist>(const FFPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~Nusselt</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>adc44b85005e84c604806654d02d420a4</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual scalar</type>
+      <name>value</name>
+      <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
       <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
       <arglist>(const label &amp;celli) const</arglist>
     </member>
@@ -23731,6 +24088,10 @@
     <filename>classFoam_1_1regimeMapModel_1_1oneParameter.html</filename>
   </compound>
   <compound kind="class">
+    <name>Foam::onePhase</name>
+    <filename>classFoam_1_1onePhase.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::thermalHydraulicsModels::onePhase</name>
     <filename>classFoam_1_1thermalHydraulicsModels_1_1onePhase.html</filename>
     <base>Foam::thermalHydraulicsModel</base>
@@ -23811,14 +24172,6 @@
       <anchor>a416eeefe4b59f1124821c6b6ecfb5a7e</anchor>
       <arglist>()</arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::onePhase</name>
-    <filename>classFoam_1_1onePhase.html</filename>
-  </compound>
-  <compound kind="class">
-    <name>Foam::onePhaseLegacy</name>
-    <filename>classFoam_1_1onePhaseLegacy.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::thermalHydraulicsModels::onePhaseLegacy</name>
@@ -23904,6 +24257,10 @@
       <anchor>a964e3a45d8bf0c9f774166d07466fe4c</anchor>
       <arglist></arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::onePhaseLegacy</name>
+    <filename>classFoam_1_1onePhaseLegacy.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::functionObjects::patchScalarFieldValue</name>
@@ -24385,10 +24742,6 @@
     <templarg></templarg>
   </compound>
   <compound kind="class">
-    <name>Foam::pipeFilm</name>
-    <filename>classFoam_1_1pipeFilm.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::fluidDiameterModels::pipeFilm</name>
     <filename>classFoam_1_1fluidDiameterModels_1_1pipeFilm.html</filename>
     <base>Foam::fluidDiameterModel</base>
@@ -24427,6 +24780,10 @@
       <anchor>ad2692e89af38be9306bf3194c54434bf</anchor>
       <arglist></arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::pipeFilm</name>
+    <filename>classFoam_1_1pipeFilm.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::pointKineticNeutronics</name>
@@ -24822,6 +25179,13 @@
       <name>powerDensityOrig_</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
       <anchor>a23f8a8cd25603cf78f5f402fd280d001</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>const volScalarField *</type>
+      <name>powerDensityToLiquidOrig_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a9b77e265604bf6b6a5cab596d74ec422</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -25675,15 +26039,15 @@
       <type></type>
       <name>declareRunTimeSelectionTable</name>
       <anchorfile>classFoam_1_1powerModel.html</anchorfile>
-      <anchor>a2efcb1047f393d31aea185a9a7523a5c</anchor>
-      <arglist>(autoPtr, powerModel, powerModels,(const structure &amp;structure, const dictionary &amp;dicts),(structure, dicts))</arglist>
+      <anchor>a8255178420aa8e11d003671d4a2637b3</anchor>
+      <arglist>(autoPtr, powerModel, powerModels,(structure &amp;structure, const dictionary &amp;dicts),(structure, dicts))</arglist>
     </member>
     <member kind="function">
       <type></type>
       <name>powerModel</name>
       <anchorfile>classFoam_1_1powerModel.html</anchorfile>
-      <anchor>a13317246e9614d42e74dc675214b7a8c</anchor>
-      <arglist>(const structure &amp;structure, const dictionary &amp;dicts)</arglist>
+      <anchor>a520f94004c06f33d7e1de07bc3fbb55a</anchor>
+      <arglist>(structure &amp;structure, const dictionary &amp;dicts)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
@@ -25741,18 +26105,25 @@
       <anchor>ae8f5b544e0f8476f028acef828b4dcb2</anchor>
       <arglist>() const</arglist>
     </member>
+    <member kind="function">
+      <type>structure &amp;</type>
+      <name>structureRef</name>
+      <anchorfile>classFoam_1_1powerModel.html</anchorfile>
+      <anchor>aa5041e12a8edbcdfa4effcbd1b793cfb</anchor>
+      <arglist>()</arglist>
+    </member>
     <member kind="function" static="yes">
       <type>static autoPtr&lt; powerModel &gt;</type>
       <name>New</name>
       <anchorfile>classFoam_1_1powerModel.html</anchorfile>
-      <anchor>afab0e07e1f9ac7173c1279d8ec5ac07c</anchor>
-      <arglist>(const structure &amp;structure, const dictionary &amp;dicts)</arglist>
+      <anchor>a44b6d57c85ab4b60ffa72ebd8923f14e</anchor>
+      <arglist>(structure &amp;structure, const dictionary &amp;dicts)</arglist>
     </member>
     <member kind="variable" protection="protected">
-      <type>const structure &amp;</type>
+      <type>structure &amp;</type>
       <name>structure_</name>
       <anchorfile>classFoam_1_1powerModel.html</anchorfile>
-      <anchor>a036e5523c5ec733c6115d5f2b7446583</anchor>
+      <anchor>a1969dfe3e1cb5780f79aa7ea41833dd2</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -26362,10 +26733,6 @@
     <filename>classFoam_1_1regimeMapModel_1_1regimeBoundary2D.html</filename>
   </compound>
   <compound kind="class">
-    <name>Foam::regimeMapModel::twoParameters::regimeDomain2D</name>
-    <filename>classFoam_1_1regimeMapModel_1_1twoParameters_1_1regimeDomain2D.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::regimeMapModels::regimeDomain2D</name>
     <filename>classFoam_1_1regimeMapModels_1_1regimeDomain2D.html</filename>
     <member kind="function">
@@ -26459,6 +26826,10 @@
       <anchor>ab5239a34265cf47952c67ced24f1a875</anchor>
       <arglist>() const</arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::regimeMapModel::twoParameters::regimeDomain2D</name>
+    <filename>classFoam_1_1regimeMapModel_1_1twoParameters_1_1regimeDomain2D.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::regimeMapModel</name>
@@ -27977,8 +28348,8 @@
       <type></type>
       <name>structure</name>
       <anchorfile>classFoam_1_1structure.html</anchorfile>
-      <anchor>a274bf72e3a31f8289acdf2397e468c47</anchor>
-      <arglist>(const dictionary &amp;dict, const fvMesh &amp;mesh)</arglist>
+      <anchor>ac725130cc4964290bf27d822d4159f5b</anchor>
+      <arglist>(const dictionary &amp;dict, const fvMesh &amp;mesh, volScalarField &amp;powerDensityNeutronics)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual</type>
@@ -28114,6 +28485,13 @@
       <arglist>() const</arglist>
     </member>
     <member kind="function">
+      <type>volScalarField &amp;</type>
+      <name>powerDensityNeutronics</name>
+      <anchorfile>classFoam_1_1structure.html</anchorfile>
+      <anchor>a2eb0a266a288909b3480c78cc83348ed</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <type>const volScalarField &amp;</type>
       <name>Dh</name>
       <anchorfile>classFoam_1_1structure.html</anchorfile>
@@ -28154,6 +28532,20 @@
       <anchorfile>classFoam_1_1structure.html</anchorfile>
       <anchor>aee77d3c69364c93087597bb03ca5093b</anchor>
       <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>volScalarField &amp;</type>
+      <name>TFuelAv</name>
+      <anchorfile>classFoam_1_1structure.html</anchorfile>
+      <anchor>a814968a5ac76932267a7dfbb719addb1</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>volScalarField &amp;</type>
+      <name>TCladAv</name>
+      <anchorfile>classFoam_1_1structure.html</anchorfile>
+      <anchor>abe4bfe7372120f3a230fe28d058efdf5</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>const volScalarField &amp;</type>
@@ -28282,6 +28674,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>volScalarField &amp;</type>
+      <name>powerDensityNeutronics_</name>
+      <anchorfile>classFoam_1_1structure.html</anchorfile>
+      <anchor>a70eafb5d670fefbe4115321567671063</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>volScalarField</type>
       <name>Dh_</name>
       <anchorfile>classFoam_1_1structure.html</anchorfile>
@@ -28363,6 +28762,20 @@
       <name>Tpas_</name>
       <anchorfile>classFoam_1_1structure.html</anchorfile>
       <anchor>a73c71b4d8cf465b7169f1a6ab38eb98f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>TFuelAv_</name>
+      <anchorfile>classFoam_1_1structure.html</anchorfile>
+      <anchor>a2559cca0fa27c0e3e477299c9e8fee23</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>TCladAv_</name>
+      <anchorfile>classFoam_1_1structure.html</anchorfile>
+      <anchor>a2c1ab8d88c56439bff862edf333e7920</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -28831,6 +29244,20 @@
       <anchor>ab7fb1b1e9efe81e14efcf12e414b705f</anchor>
       <arglist>()</arglist>
     </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual void</type>
+      <name>getCouplingFieldRefs</name>
+      <anchorfile>classFoam_1_1thermalHydraulicsModel.html</anchorfile>
+      <anchor>a3cd2c2ad44390a376cea32f8fb630346</anchor>
+      <arglist>(const objectRegistry &amp;src, const meshToMesh &amp;fluidToNeutro)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual void</type>
+      <name>interpolateCouplingFields</name>
+      <anchorfile>classFoam_1_1thermalHydraulicsModel.html</anchorfile>
+      <anchor>abb6dc71d53bb10bf7e411d63d9aa6558</anchor>
+      <arglist>(const meshToMesh &amp;fluidToNeutro, label liquidFuel)</arglist>
+    </member>
     <member kind="function" virtualness="pure">
       <type>virtual void</type>
       <name>correct</name>
@@ -29067,6 +29494,34 @@
       <name>porousInterfaceSharpness_</name>
       <anchorfile>classFoam_1_1thermalHydraulicsModel.html</anchorfile>
       <anchor>a5b1d22b8b39b2be6860d7e75d00190b2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>const volScalarField *</type>
+      <name>powerDensityOrig_</name>
+      <anchorfile>classFoam_1_1thermalHydraulicsModel.html</anchorfile>
+      <anchor>a23f8a8cd25603cf78f5f402fd280d001</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>const volScalarField *</type>
+      <name>secondaryPowerDenistyOrig_</name>
+      <anchorfile>classFoam_1_1thermalHydraulicsModel.html</anchorfile>
+      <anchor>ac33644113ac3b2e5e9d5bdff791f7a0c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>powerDensityNeutronics_</name>
+      <anchorfile>classFoam_1_1thermalHydraulicsModel.html</anchorfile>
+      <anchor>ad596330a3a089673ef489c991dba8d30</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>powerDensityNeutronicsToLiquid_</name>
+      <anchorfile>classFoam_1_1thermalHydraulicsModel.html</anchorfile>
+      <anchor>a2d2d2a1eceb33ae3d23c1231cf598f40</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -29727,10 +30182,6 @@
     <class kind="class">Foam::regimeMapModel::twoParameters::regimeDomain2D</class>
   </compound>
   <compound kind="class">
-    <name>Foam::twoPhase</name>
-    <filename>classFoam_1_1twoPhase.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::thermalHydraulicsModels::twoPhase</name>
     <filename>classFoam_1_1thermalHydraulicsModels_1_1twoPhase.html</filename>
     <base>Foam::thermalHydraulicsModel</base>
@@ -29886,6 +30337,10 @@
       <anchor>af02a4f231a65729467fc0f13e2ffe155</anchor>
       <arglist></arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::twoPhase</name>
+    <filename>classFoam_1_1twoPhase.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::twoPhaseDragFactor</name>
@@ -30728,6 +31183,20 @@
       <arglist>() const</arglist>
     </member>
     <member kind="function">
+      <type>const volScalarField</type>
+      <name>secondaryPowerVolumeFraction</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>a52899ae5805771cf443d9a7e6ba81dc5</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>const volScalarField</type>
+      <name>fractionToSecondaryPower</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>aa8387c8a487d8285a32ef61af121e35e</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
       <type>const PtrList&lt; volScalarField &gt;</type>
       <name>discFactor</name>
       <anchorfile>classFoam_1_1XS.html</anchorfile>
@@ -30945,6 +31414,20 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>secondaryPowerVolumeFraction_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>aa28c5a5068196250beec05e9965ff0eb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>fractionToSecondaryPower_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>a76bb21d48d91e623afe804402160c87a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>PtrList&lt; volScalarField &gt;</type>
       <name>discFactor_</name>
       <anchorfile>classFoam_1_1XS.html</anchorfile>
@@ -30977,6 +31460,20 @@
       <name>fuelFractionList_</name>
       <anchorfile>classFoam_1_1XS.html</anchorfile>
       <anchor>a0eed7ae40daff8d8f928a816c03238dc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalar &gt;</type>
+      <name>secondaryPowerVolumeFractionList_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>a9866d718d7ff6dd34cb5932a6d7a20f4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalar &gt;</type>
+      <name>fractionToSecondaryPowerList_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>af5b51be2f020a92e77d75e81656cb523</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -31593,6 +32090,20 @@
       <arglist>() const</arglist>
     </member>
     <member kind="function">
+      <type>const volScalarField</type>
+      <name>secondaryPowerVolumeFraction</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>a52899ae5805771cf443d9a7e6ba81dc5</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
+      <type>const volScalarField</type>
+      <name>fractionToSecondaryPower</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>aa8387c8a487d8285a32ef61af121e35e</anchor>
+      <arglist>() const</arglist>
+    </member>
+    <member kind="function">
       <type>const PtrList&lt; volScalarField &gt;</type>
       <name>discFactor</name>
       <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
@@ -31810,6 +32321,20 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>secondaryPowerVolumeFraction_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>aa28c5a5068196250beec05e9965ff0eb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>fractionToSecondaryPower_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>a76bb21d48d91e623afe804402160c87a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>PtrList&lt; volScalarField &gt;</type>
       <name>discFactor_</name>
       <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
@@ -31849,6 +32374,20 @@
       <name>fuelFractionList_</name>
       <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
       <anchor>a0eed7ae40daff8d8f928a816c03238dc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalar &gt;</type>
+      <name>secondaryPowerVolumeFractionList_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>a9866d718d7ff6dd34cb5932a6d7a20f4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalar &gt;</type>
+      <name>fractionToSecondaryPowerList_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>af5b51be2f020a92e77d75e81656cb523</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -34840,6 +35379,7 @@
     <class kind="class">Foam::powerModels::fixedTemperatureFMU</class>
     <class kind="class">Foam::powerModels::heatedPin</class>
     <class kind="class">Foam::powerModels::nuclearFuelPin</class>
+    <class kind="class">Foam::powerModels::nuclearFuelPinTest</class>
     <member kind="function">
       <type></type>
       <name>defineTypeNameAndDebug</name>
@@ -34895,6 +35435,20 @@
       <anchorfile>namespaceFoam_1_1powerModels.html</anchorfile>
       <anchor>af21d10fadf0788ab3bcbc738f2676c67</anchor>
       <arglist>(powerModel, nuclearFuelPin, powerModels)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1powerModels.html</anchorfile>
+      <anchor>ac1ee6cb0c6a9f89f8bd3cc744851b150</anchor>
+      <arglist>(nuclearFuelPinTest, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1powerModels.html</anchorfile>
+      <anchor>a9fe465253b2034cf920ff75dea352b70</anchor>
+      <arglist>(powerModel, nuclearFuelPinTest, powerModels)</arglist>
     </member>
   </compound>
   <compound kind="namespace">
@@ -35286,6 +35840,7 @@
     <filename>namespaceFoam_1_1thermoSubstructures.html</filename>
     <class kind="class">Foam::thermoSubstructures::heatedPin</class>
     <class kind="class">Foam::thermoSubstructures::nuclearFuelPin</class>
+    <class kind="class">Foam::thermoSubstructures::nuclearFuelPinTest</class>
   </compound>
   <compound kind="namespace">
     <name>Foam::TONBModels</name>

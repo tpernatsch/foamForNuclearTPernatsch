@@ -380,7 +380,7 @@ pages:
 
   script:
   - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update && apt-get -y install doxygen graphviz texlive-bibtex-extra
+  - apt-get update && apt-get -y install doxygen=1.8.13-10 graphviz texlive-bibtex-extra
   - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
   - mv Documentation/doxygen/Doxygen/html/ public/
 
@@ -389,7 +389,7 @@ pages:
       - public
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
+  #  - if: $CI_COMMIT_BRANCH == "develop"
 
 
 #==============================================================================*

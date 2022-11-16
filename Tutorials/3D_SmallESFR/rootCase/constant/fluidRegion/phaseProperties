@@ -48,7 +48,7 @@ structureProperties
         
     }
 
-    "innerCore:outerCore"
+    "innerCore"
     {
         volumeFraction      0.718520968;
         Dh                  0.00365;
@@ -56,6 +56,49 @@ structureProperties
         powerModel // power production model for the sub-scale structure
         {
             type                nuclearFuelPin;
+            
+            // The volumetricArea keyword is now deprecated for the
+            // nuclearFuelPin and heatedPin powerModels, as it can be shown
+            // that by averaging a cylindrical pin (or a bundle of pins) over
+            // a volume of any shape, the interfacialArea and volumeFraction
+            // of the resulting porous pin structure are not independent, yet
+            // are tied by volumetricArea = 2*volumeFraction/outerPinRadius
+            // volumetricArea      267.855;
+            powerDensity        0;  //- fields on disk have priority, if they
+                                    //  are not found, this value is used
+            fuelInnerRadius     0.0012;
+            fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     0.005365;
+            fuelMeshSize        30;
+            cladMeshSize        5;
+            fuelRho             10480;
+            fuelCp              250;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               668;
+            cladT               668;
+        }
+
+        passiveProperties // these are the properties of the metallic wrappers
+        {
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
+        }
+    }
+
+    "outerCore"
+    {
+        volumeFraction      0.718520968;
+        Dh                  0.00365;
+
+        powerModel // power production model for the sub-scale structure
+        {
+            type                nuclearFuelPinTest;
             
             // The volumetricArea keyword is now deprecated for the
             // nuclearFuelPin and heatedPin powerModels, as it can be shown
