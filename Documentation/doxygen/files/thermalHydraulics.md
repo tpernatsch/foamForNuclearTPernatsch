@@ -276,6 +276,8 @@ For the power generated in the fluid itself:
 If neutronics if activated, the neutronic sub-solver will overwrite everything with the power it calculates. For eigenvalue calculations, this power is set in the *pTarget* keyword in the *reactorState* dictionary. For transients, the power is a result of calculations. There is one important exception to this behavior: the point kinetics solver will only rescale the power density that it finds in *neutroRegion*, or, if it does not find it, the one that it finds in *fluidRegion*. The rescaled power density will be written to both *neutroRegion* and *fluidRegion*. For point kinetics, the *pTarget* keyword in *reactorState* is not used by the solver itslef. However, to correctly plot point kinetics results, pTarget must be consistent with the mentioned power densities.
 NB: The power density defined in *powerDensity.nuclearFuelPin* for pin-based reactors refers to the power density inside the fuel matrix.
 NB2: The *fuelFraction* in *nuclearData* is used to translate the volume-average power density that is normally calculated by neutronics solvers into the fuel-averaged power density used by the thermal-hydraulic sub-solver. 
+<p>
+N.B.: In two-phase simulations with liquid fuel, the powerDensity in neutronics goes to anything that is liquid in thermal-hydraulics. You are supposed to have one liquid and one gas. Otherwise, power will be counted twice.
 </div>
 
 ## Discretization and solution
@@ -283,3 +285,4 @@ NB2: The *fuelFraction* in *nuclearData* is used to translate the volume-average
 Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/fluidRegion*. 
 
 © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021
+
