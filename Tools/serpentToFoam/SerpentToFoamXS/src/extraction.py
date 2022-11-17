@@ -226,29 +226,29 @@ def crossSections(
                 elif (line[0] == "MACRO_NG"):
                     numberOfEnergyGroups = int(line[4])
                 elif (line[0] == "INF_INVV"):
-                    INF_INVV[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_INVV[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "INF_DIFFCOEF"):
                     INF_DIFFCOEF[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "INF_NSF"):
-                    INF_NSF[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_NSF[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "INF_FISS"):
-                    INF_FISS[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_FISS[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "FISSE"):
                     FISSE_temp = float(line[6])/j # Conversion from MeV to J
                 elif (line[0] == "INF_SP0"):
-                    INF_SP0[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_SP0[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "INF_SP1"):
-                    INF_SP1[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_SP1[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "INF_SP2"):
-                    INF_SP2[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_SP2[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "INF_SP3"):
-                    INF_SP3[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_SP3[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "INF_SP4"):
-                    INF_SP4[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_SP4[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "INF_SP5"):
-                    INF_SP5[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_SP5[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
                 elif (line[0] == "INF_TOT"):
-                    INF_TOT[serpentUniverseList[-1]] = [float(v)/m for v in line[6:-2:2]] # Conversion from cm to m
+                    INF_TOT[serpentUniverseList[-1]] = [float(v)*m for v in line[6:-2:2]] # Conversion from cm to m
 
                 elif (line[0] == "INF_CHIP"):
                     INF_CHIP[serpentUniverseList[-1]] = [float(v) for v in line[6:-2:2]]
