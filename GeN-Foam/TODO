@@ -1,0 +1,9 @@
+
+In liquid fuel, TavFuel for neutronics will be taken fro liquid
+
+Need to update
+T.fuelAvForNeutronics
+T.cladAvForNeutronics
+
+
+If I add graphite, I need to make sure the info on average temperature is passed correctly
