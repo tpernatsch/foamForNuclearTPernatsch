@@ -87,7 +87,7 @@ protected:
 
     //- Heat resitances between nodes (including first and last 
     //  "half" resitances)
-    scalarListList dR_;
+    scalarListList R_;
 
     //- Volumetric heat capacity for each node
     scalarListList rhoCp_;

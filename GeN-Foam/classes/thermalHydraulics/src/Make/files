@@ -17,6 +17,7 @@ phaseModels/structureModels/powerModels/fixedTemperature/fixedTemperature.C
 phaseModels/structureModels/powerModels/fixedTemperatureFMU/fixedTemperatureFMU.C
 phaseModels/structureModels/powerModels/nuclearFuelPin/nuclearFuelPin.C
 phaseModels/structureModels/powerModels/nuclearFuelPinTest/nuclearFuelPinTest.C
+phaseModels/structureModels/powerModels/lumpedNuclearStructure/lumpedNuclearStructure.C
 phaseModels/structureModels/powerModels/heatedPin/heatedPin.C
 
 phaseModels/structureModels/powerOffCriterionModels/powerOffCriterionModel.C
