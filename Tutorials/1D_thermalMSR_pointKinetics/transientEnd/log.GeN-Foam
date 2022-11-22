@@ -1,0 +1,38 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2206                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : _76d719d1-20220624 OPENFOAM=2206 version=2206
+Arch   : "LSB;label=32;scalar=64"
+Exec   : GeN-Foam -case transientEnd
+Date   : Nov 22 2022
+Time   : 10:32:40
+Host   : carlo-Precision-Tower-7910
+PID    : 11757
+I/O    : uncollated
+Case   : /home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Tutorials/1D_thermalMSR_pointKinetics/transientEnd
+nProcs : 1
+trapFpe: Floating point exception trapping enabled (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 5, maxFileModificationPolls 20)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+
+PIMPLE: Operating solver in PISO mode
+
+Selecting thermalHydraulicsModel of type: onePhase
+
+
+--> FOAM FATAL ERROR: (openfoam-2206)
+cannot find file "/home/carlo/data/GeN-Foam/GeN-Foam_ffn/GeN-Foam/Tutorials/1D_thermalMSR_pointKinetics/transientEnd/400/fluidRegion/p_rgh"
+
+    From virtual Foam::autoPtr<Foam::ISstream> Foam::fileOperations::uncollatedFileOperation::readStream(Foam::regIOobject&, const Foam::fileName&, const Foam::word&, bool) const
+    in file global/fileOperations/uncollatedFileOperation/uncollatedFileOperation.C at line 540.
+
+FOAM exiting
+

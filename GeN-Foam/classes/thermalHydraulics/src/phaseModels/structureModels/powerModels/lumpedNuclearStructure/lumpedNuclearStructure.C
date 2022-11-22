@@ -102,11 +102,11 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
     nodesNumber_(0),
     nodeFuel_(0),
     nodeClad_(0),
-    R_(0),
+    Hs_(0),
     rhoCp_(0),
     volFraction_(0),
     qFraction_(0),
-    cellToRegion_(0),
+    cellToRegion_(mesh_.cells().size(), 0),
     regionIndexToRegionName_(0)
 {   
     this->setInterfacialArea();
@@ -119,12 +119,10 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
     );
 
     scalarList T0(0);
-
     forAll(this->toc(), regioni)
     {
         word region(this->toc()[regioni]);
-        const dictionary& dict(this->subDict(region));
-        
+        const dictionary& dict(this->subDict(region));       
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (
@@ -139,12 +137,15 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         //- Add to regionIndexToRegionName_ mapping
         regionIndexToRegionName_.append(region);
 
+        //- Add to regionIndexToRegionName_ mapping
+        regionIndexToRegionName_.append(region);
+
         //- Read region dict entries
         scalar fractionOfPowerFromNeutronics(dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics",1.0));
         label nodesNumber(dict.get<label>("nodesNumber"));
         label nodeFuel(dict.get<label>("nodeFuel"));
         label nodeClad(dict.get<label>("nodeClad"));
-        scalarList R(dict.get<scalarList>("heatReistances"));
+        scalarList Hs(dict.get<scalarList>("heatConductances"));
         scalarList rhoCp(dict.get<scalarList>("rhoCp"));
         scalarList volFraction(dict.get<scalarList>("volumeFractions"));
         scalarList qFraction(dict.get<scalarList>("powerFractions"));
@@ -159,7 +160,7 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         nodesNumber_.append(nodesNumber),
         nodeFuel_.append(nodeFuel),
         nodeClad_.append(nodeClad),
-        R_.append(R);
+        Hs_.append(Hs);
         rhoCp_.append(rhoCp);
         volFraction_.append(volFraction);
         qFraction_.append(qFraction);
@@ -221,7 +222,6 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     const scalar& HSumi
 )
 {
- 
     //-
     scalarField& T(T_[celli]);
 
@@ -232,7 +232,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     const label& nodesNumber(nodesNumber_[regioni]);
     const label& nodeFuel(nodeFuel_[regioni]);
     const label& nodeClad(nodeClad_[regioni]);
-    const scalarList& R(R_[regioni]);
+    const scalarList& Hs(Hs_[regioni]);
     const scalarList& rhoCp(rhoCp_[regioni]);
     const scalarList& volFraction(volFraction_[regioni]);
     const scalarList& qFraction(qFraction_[regioni]);
@@ -245,51 +245,74 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     const scalar& qRef(structure_.powerDensityNeutronics()[celli]);
     scalar q = qRef * fractionOfPowerFromNeutronics;
 
-    //- Init matrix, source
-    SquareMatrix<scalar> M(nodesNumber, nodesNumber, Foam::zero());
-    List<scalar> S(nodesNumber, 0.0);
-
     //- Recurrent quantities
     scalar dt(mesh_.time().deltaT().value());
 
-    //- Construct matrix, source
+    if(nodesNumber>1)
     {
-        //- Set "zeroGradient" BC at innermost node
+        //- Init matrix, source
+        SquareMatrix<scalar> M(nodesNumber, nodesNumber, Foam::zero());
+        List<scalar> S(nodesNumber, 0.0);
+
+        //- Construct matrix, source
         {
-            M[0][1] =   R[1];
-            M[0][0] =   volFraction[0] * rhoCp[0] / dt + R[1];
-            S[0] =      q * qFraction[0] + TOld[0] * volFraction[0] * rhoCp[0] / dt;
+            //- Set "zeroGradient" BC at innermost node
+            {
+                M[0][1] =   -Hs[1];
+                M[0][0] =   volFraction[0] * rhoCp[0] / dt + Hs[1];
+                S[0] =      q * qFraction[0] + TOld[0] * volFraction[0] * rhoCp[0] / dt;
+            }
+
+            //- Bulk
+            for (int i = 1; i < nodesNumber-1; i++)
+            {
+                M[i][i+1] =     -Hs[i+1];
+                M[i][i-1] =     -Hs[i-1];
+                M[i][i] =       volFraction[i] * rhoCp[i] / dt - Hs[i+1] + Hs[i-1];
+                S[i] =          q * qFraction[i] + TOld[i] * volFraction[i] * rhoCp[i] / dt;
+            }
+
+            //- Outer surface, convective BC with fluid(s) wetting the pin
+            {
+                label i(nodesNumber-1);
+                M[i][i-1] =     -Hs[i-1];
+                M[i][i] =       volFraction[i] * rhoCp[i] / dt + HSumi * iA  + Hs[i+1];
+                S[i] =          q * qFraction[i] 
+                                + TOld[i] * volFraction[i] * rhoCp[i] / dt 
+                                + Hs[i+1] * HTSumi / HSumi  
+                                + HTSumi * iA;        
+            }
         }
 
-        //- Bulk
-        for (int i = 1; i < nodesNumber-1; i++)
-        {
-            M[i][i+1] =     R[i+1];
-            M[i][i-1] =     -R[i-1];
-            M[i][i] =       volFraction[i] * rhoCp[i] / dt + R[i+1] - R[i-1];
-            S[i] =          q * qFraction[i] + TOld[i] * volFraction[i] * rhoCp[i] / dt;
-        }
-
-        //- Outer surface, convective BC with fluid(s) wetting the pin
-        {
-            label i(nodesNumber-1);
-            M[i][i-1] =     -R[i-1];
-            M[i][i] =       volFraction[i] * rhoCp[i] / dt + HSumi * iA  - R[i-1];
-            S[i] =          q * qFraction[i] + TOld[i] * volFraction[i] * rhoCp[i] / dt + R[i+1] + HTSumi * iA;        
-        }
+        //- Solve linear system
+        solve(T, M, S);
+    }
+    else
+    {
+        scalar M(volFraction[0] * rhoCp[0] / dt + HSumi * iA  + Hs[1]);
+        scalar S
+                (
+                    q * qFraction[0] 
+                    + TOld[0] * volFraction[0] * rhoCp[0] / dt 
+                    + Hs[1] * (HTSumi / max(HSumi,SMALL))  
+                    + HTSumi * iA
+                );
+        T = S/M;
     }
 
-    //- Solve linear system
-    solve(T, M, S);
-
     //- Set fields (max and outer)
-    Tmax_[celli] = T[0] + q * qFraction[0] / R[0];
-    Tsurface_[celli] = T[nodesNumber-1] - q * qFraction[nodesNumber-1] / R[nodesNumber] ;
+    Tmax_[celli] = T[0] + q * qFraction[0] / Hs[0];
+    Tsurface_[celli] = T[nodesNumber-1] - q * qFraction[nodesNumber-1] / Hs[nodesNumber] ;
+
+Info << "T " << T << endl;    
+Info << "Tmax_[celli] " << Tmax_[celli] << endl;
+Info << "Tsurface_[celli] " << Tsurface_[celli] << endl;
+Info << "HTSumi / max(HSumi,SMALL)" << HTSumi / max(HSumi,SMALL) << endl ;
+Info << "HSumi " << HSumi << endl;
 
     // Update average fuel and clad temp used for coupling
     this->structureRef().TFuelAv()[celli] = T[nodeFuel_[regioni]];
     this->structureRef().TCladAv()[celli] = T[nodeClad_[regioni]];
-
 }
 
 
@@ -311,7 +334,7 @@ void Foam::powerModels::lumpedNuclearStructure::correct
 
 void Foam::powerModels::lumpedNuclearStructure::correctT(volScalarField& T) const
 {
-    //- Set T to pin surface temperature, i.e. Tco_
+    //- Set T to  surface temperature
     forAll(cellList_, i)
     {
         label celli(cellList_[i]);

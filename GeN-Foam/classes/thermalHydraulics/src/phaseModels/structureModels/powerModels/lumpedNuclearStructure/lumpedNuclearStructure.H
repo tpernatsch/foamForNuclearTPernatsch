@@ -85,9 +85,9 @@ protected:
     //- Node representing clad (or other structure) for coupling purposes
     labelList nodeClad_;
 
-    //- Heat resitances between nodes (including first and last 
+    //- Heat conductances between nodes (including first and last 
     //  "half" resitances)
-    scalarListList R_;
+    scalarListList Hs_;
 
     //- Volumetric heat capacity for each node
     scalarListList rhoCp_;
