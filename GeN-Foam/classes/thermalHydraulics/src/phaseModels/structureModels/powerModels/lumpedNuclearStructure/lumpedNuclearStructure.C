@@ -267,20 +267,21 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
             for (int i = 1; i < nodesNumber-1; i++)
             {
                 M[i][i+1] =     -Hs[i+1];
-                M[i][i-1] =     -Hs[i-1];
-                M[i][i] =       volFraction[i] * rhoCp[i] / dt - Hs[i+1] + Hs[i-1];
+                M[i][i-1] =     -Hs[i];
+                M[i][i] =       volFraction[i] * rhoCp[i] / dt + Hs[i+1] + Hs[i];
                 S[i] =          q * qFraction[i] + TOld[i] * volFraction[i] * rhoCp[i] / dt;
             }
 
             //- Outer surface, convective BC with fluid(s) wetting the pin
             {
                 label i(nodesNumber-1);
-                M[i][i-1] =     -Hs[i-1];
-                M[i][i] =       volFraction[i] * rhoCp[i] / dt + HSumi * iA  + Hs[i+1];
+                scalar Tcool(HTSumi / max(HSumi,SMALL));
+                scalar HtoCool(Hs[i+1]*(HSumi*iA)/(Hs[i+1]+(HSumi*iA))); //total H from last node to coolant
+                M[i][i-1] =     -Hs[i];
+                M[i][i] =       volFraction[i] * rhoCp[i] / dt + Hs[i] + HtoCool;
                 S[i] =          q * qFraction[i] 
                                 + TOld[i] * volFraction[i] * rhoCp[i] / dt 
-                                + Hs[i+1] * HTSumi / HSumi  
-                                + HTSumi * iA;        
+                                + HtoCool * Tcool;       
             }
         }
 
@@ -289,13 +290,14 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     }
     else
     {
-        scalar M(volFraction[0] * rhoCp[0] / dt + HSumi * iA  + Hs[1]);
+        scalar Tcool(HTSumi / max(HSumi,SMALL));
+        scalar HtoCool(Hs[1]*(HSumi*iA)/(Hs[1]+(HSumi*iA))); //total H from last node to coolant
+        scalar M(volFraction[0] * rhoCp[0] / dt + HtoCool);
         scalar S
                 (
                     q * qFraction[0] 
                     + TOld[0] * volFraction[0] * rhoCp[0] / dt 
-                    + Hs[1] * (HTSumi / max(HSumi,SMALL))  
-                    + HTSumi * iA
+                    + HtoCool * Tcool
                 );
         T = S/M;
     }

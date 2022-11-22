@@ -39,31 +39,8 @@ structureProperties
     {
         volumeFraction      0.7;
         Dh                  0.01;
-        /*
-        powerModel
-        {
-            type                nuclearFuelPin;
-            volumetricArea      300;
-            powerDensity        0;
-            fuelInnerRadius     0.0012;
-            fuelOuterRadius     0.004715;
-            cladInnerRadius     0.004865;
-            cladOuterRadius     0.005365;
-            fuelMeshSize        16;
-            cladMeshSize        4;
-            fuelRho             10480;
-            fuelCp              250;
-            cladRho             7500;
-            cladCp              500;
-            gapH                3000;
-            fuelK               3;
-            cladK               20;
-            fuelT               600;
-            cladT               600;
-        }
-        */
-        
-        powerModel
+   
+        powerModel //2cm of heated graphite
         {
             type                lumpedNuclearStructure;
             volumetricArea      160;
@@ -71,12 +48,30 @@ structureProperties
             nodesNumber         1;
             nodeFuel            0;
             nodeClad            0;
-            heatConductances      (450000 225000);
-            rhoCp               (53576.92);
+            heatConductances    (450000 225000);
+            rhoCp               (5357692);
             volumeFractions     (1);
             powerFractions      (1);
             T0                  900;
         }
+    
+/* 
+        //2cm of heated graphite + 0.5cm of non-heated graphite
+        powerModel 
+        {
+            type                lumpedNuclearStructure;
+            volumetricArea      160;
+            powerDensity        6.6e6;
+            nodesNumber         2;
+            nodeFuel            0;
+            nodeClad            1;
+            heatConductances    (450000 225000 225000);
+            rhoCp               (5357692 5357692);
+            volumeFractions     (0.8 0.2);
+            powerFractions      (1 0);
+            T0                  900;
+        }
+*/
     }
 
     "hx"
