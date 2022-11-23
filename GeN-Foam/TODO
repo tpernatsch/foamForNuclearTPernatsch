@@ -10,3 +10,8 @@ If I add graphite, I need to make sure the info on average temperature is passed
 
 
 In pk, add possibility to add secondary power
+
+
+    //- Add additional sources deposited directly in the fluids, if any
+    EEqn -= fluid_.powerDensity();
+    This should be mutiplied by alpha!

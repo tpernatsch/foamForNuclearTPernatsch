@@ -247,6 +247,8 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
 
     //- Recurrent quantities
     scalar dt(mesh_.time().deltaT().value());
+    scalar Tcool(HTSumi / max(HSumi,SMALL));
+    scalar Hcool(HSumi*iA/this->alpha_[celli]);
 
     if(nodesNumber>1)
     {
@@ -260,23 +262,25 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
             {
                 M[0][1] =   -Hs[1];
                 M[0][0] =   volFraction[0] * rhoCp[0] / dt + Hs[1];
-                S[0] =      q * qFraction[0] + TOld[0] * volFraction[0] * rhoCp[0] / dt;
+                S[0] =      q * qFraction[0]  + TOld[0] * volFraction[0] * rhoCp[0] / dt;
             }
 
-            //- Bulk
-            for (int i = 1; i < nodesNumber-1; i++)
+            // Bulk
+            if(nodesNumber>2)
             {
-                M[i][i+1] =     -Hs[i+1];
-                M[i][i-1] =     -Hs[i];
-                M[i][i] =       volFraction[i] * rhoCp[i] / dt + Hs[i+1] + Hs[i];
-                S[i] =          q * qFraction[i] + TOld[i] * volFraction[i] * rhoCp[i] / dt;
+                for (int i = 1; i < nodesNumber-1; i++)
+                {
+                    M[i][i+1] =     -Hs[i+1];
+                    M[i][i-1] =     -Hs[i];
+                    M[i][i] =       volFraction[i] * rhoCp[i] / dt + Hs[i+1] + Hs[i];
+                    S[i] =          q * qFraction[i] + TOld[i] * volFraction[i] * rhoCp[i] / dt;
+                }
             }
 
             //- Outer surface, convective BC with fluid(s) wetting the pin
             {
                 label i(nodesNumber-1);
-                scalar Tcool(HTSumi / max(HSumi,SMALL));
-                scalar HtoCool(Hs[i+1]*(HSumi*iA)/(Hs[i+1]+(HSumi*iA))); //total H from last node to coolant
+                scalar HtoCool(Hs[i+1]*Hcool/(Hs[i+1]+Hcool)); //total H from last node to coolant
                 M[i][i-1] =     -Hs[i];
                 M[i][i] =       volFraction[i] * rhoCp[i] / dt + Hs[i] + HtoCool;
                 S[i] =          q * qFraction[i] 
@@ -290,8 +294,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     }
     else
     {
-        scalar Tcool(HTSumi / max(HSumi,SMALL));
-        scalar HtoCool(Hs[1]*(HSumi*iA)/(Hs[1]+(HSumi*iA))); //total H from last node to coolant
+        scalar HtoCool(Hs[1]*Hcool/(Hs[1]+Hcool)); //total H from last node to coolant
         scalar M(volFraction[0] * rhoCp[0] / dt + HtoCool);
         scalar S
                 (
@@ -304,13 +307,15 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
 
     //- Set fields (max and outer)
     Tmax_[celli] = T[0] + q * qFraction[0] / Hs[0];
-    Tsurface_[celli] = T[nodesNumber-1] - q * qFraction[nodesNumber-1] / Hs[nodesNumber] ;
+    Tsurface_[celli] = (Hs[nodesNumber] * T[nodesNumber-1] + Hcool * Tcool ) 
+                        / (Hs[nodesNumber] + Hcool);
 
-Info << "T " << T << endl;    
-Info << "Tmax_[celli] " << Tmax_[celli] << endl;
-Info << "Tsurface_[celli] " << Tsurface_[celli] << endl;
-Info << "HTSumi / max(HSumi,SMALL)" << HTSumi / max(HSumi,SMALL) << endl ;
-Info << "HSumi " << HSumi << endl;
+    /*
+    Info << "T " << T << endl;    
+    Info << "Tmax_[celli] " << Tmax_[celli] << endl;
+    Info << "Tsurface_[celli] " << Tsurface_[celli] << endl;
+    Info << "Tcool " << Tcool << endl;   
+    */
 
     // Update average fuel and clad temp used for coupling
     this->structureRef().TFuelAv()[celli] = T[nodeFuel_[regioni]];

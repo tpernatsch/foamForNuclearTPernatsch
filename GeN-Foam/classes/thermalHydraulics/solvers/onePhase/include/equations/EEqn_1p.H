@@ -74,7 +74,7 @@
     EEqn -= structure_.linearizedSemiImplicitHeatSource(fluid_, Hs)();
 
     //- Add additional sources deposited directly in the fluids, if any
-    EEqn -= fluid_.powerDensity();
+    EEqn -= alpha * fluid_.powerDensity();
 
     //- Cache before solution
     T.storePrevIter();

@@ -14,27 +14,27 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-simulationType RAS;     // laminar;//
+simulationType laminar;     // laminar;//
 
 RAS
 {
-    RASModel        porousKEpsilon;//laminar;//kEpsilon;//;
+    RASModel        laminar;//porousKEpsilon;//laminar;//kEpsilon;//;
 
     turbulence      true;
 
     printCoeffs     true;
 }
-
+/*
 porousKEpsilonProperties
 {
         "hx:core"
         {
-                convergenceLength           0.5;
-        turbulenceIntensityCoeff    0.16;
-        turbulenceIntensityExp      -0.125;
-        turbulenceLengthScaleCoeff  0.07;
+            convergenceLength           0.5;
+            turbulenceIntensityCoeff    0.16;
+            turbulenceIntensityExp      -0.125;
+            turbulenceLengthScaleCoeff  0.07;
         }
 }
-
+*/
 
 // ************************************************************************* //

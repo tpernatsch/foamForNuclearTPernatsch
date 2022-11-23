@@ -1,0 +1,37 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.1                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      multiply;
+}
+
+
+type    multiply;
+         libs    ( "libfieldFunctionObjects.so" ); //(fieldFunctionObjects);
+         // Mandatory (inherited) entry (runtime modifiable)
+         fields  (p T);
+         // Optional (inherited) entries
+        result IVfluxAdjointFlux0;
+        writeFields     false;
+        scalingFactor   1.0;
+        writePrecision  8;
+        writeToFile     true;
+        useUserTime     true;
+        region          fluidRegion;
+        enabled         true;
+        log             true;
+        timeStart       0;
+        timeEnd         1000;
+        executeControl  onEnd;
+        executeInterval none;
+        writeControl    onEnd;
+       // writeInterval   ;
+     
