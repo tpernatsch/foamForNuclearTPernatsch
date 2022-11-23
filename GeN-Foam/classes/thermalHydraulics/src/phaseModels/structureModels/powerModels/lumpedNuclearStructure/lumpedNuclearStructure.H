@@ -25,10 +25,81 @@ Class
     Foam::thermoSubstructures::lumpedNuclearStructure
 
 Description
-    Model for representing a lumped nuclear-heated structure characterized
-    by a heat resistance from surface to average, and a heat resitance from
-    average to max
-    .
+    Model for representing a lumped-parameter structure characterized
+    by a user selectable number of nodes.
+
+    Tmax            T[0]           T[1]          T[n-1]         Tsurface      
+      | --- H[0] --- | --- H[1] --- | --- H[2] --- |  --- H[n] --- |  
+
+    Note that only T[] are state variables while Tmax and Tsurface can
+    be found after matrix solution.
+    Note also that one needs n+1 conductances when solvinf for n nodes
+    The equation in the class can be obtained starting from a simple
+    energy balance for the ith node:
+    V_i*rho_i*cp_i * dT/dt = 
+    V_i*Q_i + H[i](T_(i-1) - T_i) - H[i+1](T_(i) - T_(i+1)
+    and dividing all terms by the volume of the structure.
+    This means that the heat conductances  should be calculated as 
+    the power flowing between two nodes divided by the diffence in 
+    temperatures at steadystate, abd divided by the volume of the 
+    structure. 
+    Zero-gradient BCs are used at the inner boundary and convective
+    BCs are used at the external boundary (in contact with the coolant)
+
+Use 
+    The following sub-dictionary should be included as a powerModel 
+    in phaseProperties.
+
+    For one node:
+    powerModel 
+    {
+        type                lumpedNuclearStructure;
+        volumetricArea      40;
+        powerDensity        5e6; // Power density smeared over the entire
+                                 // structure
+        nodesNumber         1; // Number of nodes
+        nodeFuel            0; // Define which node temperature is used
+                               // to paramtrize XS according to 
+                               // nuclearDataFuelTemp
+        nodeClad            0; // Define which node temperature is used
+                               // to paramtrize XS according to 
+                               // nuclearDataCladExp. Of course, it does 
+                               // not have to represent a cladding. It
+                               // could be used to paramtrize over the
+                               // graphite temperature in PBRs
+        heatConductances    (450000 225000); // Heat conductances from
+                                             // average to max, 
+                                             // and average to surface.
+                                             // Note that heat conductances (W/K) 
+                                             // must be divided by the volume
+                                             // of the entire structure.
+                                             // There must be one more conductance 
+                                             // than the number of nodes 
+                                             // (see explanation in class)
+        rhoCp               (53576.92); // for each node
+        volumeFractions     (1); // Frction of the volume of the structure 
+                                 // occupied by each node 
+        powerFractions      (1); // Fraction of total power in the strucure
+                                 // that goes to each node
+        T0                  900; // Initial temperature, if no found in
+                                 // the time folder
+    }
+    
+    For 3 nodes
+    powerModel 
+    {
+        type                lumpedNuclearStructure;
+        volumetricArea      40;
+        powerDensity        5e6;
+        nodesNumber         3;
+        nodeFuel            0;
+        nodeClad            1;
+        heatConductances    (600000 240000 600000 1200000);
+        rhoCp               (53576.92 53576.92 53576.92);
+        volumeFractions     (0.75 0.125 0.125);
+        powerFractions      (1 0 0);
+        T0                  900;
+    }
 
 Authors
     Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)

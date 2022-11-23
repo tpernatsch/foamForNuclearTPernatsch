@@ -145,6 +145,7 @@ One can find detailed, commented examples in the tutorials
 	<LI> Fixed (possibly time-dependent) temperature (see *fixedTemperature.H* and the tutorial *1D_CHF/imposedTemperature*)
 	<LI> Heated pin, typically used for electrically heated pins (see *heatedPin.H* and the tutorial *2D_KNS37-L22*)
 	<LI> Nuclear fuel pin (see *nuclearFuelPin.H* and the tutorials *3D_SmallESFR* and *2D_FFTF*)
+	<LI> Lumped-parameter nuclear structure (see *lumpedNuclearStructure.H*) and the tutorial *1D_thermalMSR_pointKinetics*
 	</UL>
 <LI> A heat exchanger model that is used to model the heat transfer between two disconnected regions, for instance representing the primary and secondary circuit (see *heatExchanger.H* and the tutorials *1D_HX* and *2D_FFTF*)
 <LI> A pump model used to set a (possibly time-dependent) momentum source (see *pump.H* and tutorials *2D_FFTF* and *2D_MSFR*).

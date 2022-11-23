@@ -2,7 +2,7 @@
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
+tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
 #tutorials=" 3D_SmallESFR " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
 rm regressionResults
 touch regressionResults
@@ -189,6 +189,39 @@ do
         # check that power at the end of transient is ~6.14e+08
         power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
         printf "power is $power . It should be ~6.13794e+08 \n" >> ../$resFile
+        cd ..
+        ;;
+
+    "1D_thermalMSR_pointKinetics")
+        printf "Running tutorial $tutorialName...\n"
+        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
+        cd $tutorialName
+        ./Allrun
+        printf "Done running tutorial $tutorialName...\n"
+
+        # check it ran
+        endStringSS=$(tail -3 ./steadyState/log.GeN-Foam | grep End)
+        if [ "$endStringSS" = "End" ]; then
+            printf "Steady state of $tutorialName has converged \n"  >> ../$resFile
+        else
+            printf "Steady state of $tutorialName has NOT converged \n"  >> ../$resFile
+        fi
+        endStringT=$(tail -3 ./transient/log.GeN-Foam | grep End)
+        if [ "$endStringT" = "End" ]; then
+            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
+        else
+            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
+        fi
+        endStringT=$(tail -3 ./transientEnd/log.GeN-Foam | grep End)
+        if [ "$endStringT" = "End" ]; then
+            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
+        else
+            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
+        fi
+
+        # check that power at the end of transient is ~6.14e+08
+        power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        printf "power is $power . It should be ~4.15258e+08 \n" >> ../$resFile
         cd ..
         ;;
 

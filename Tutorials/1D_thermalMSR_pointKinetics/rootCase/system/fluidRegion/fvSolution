@@ -35,7 +35,7 @@ solvers
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-6;
+        tolerance       1e-5;
         relTol          0;
         minIter         1;
     }
@@ -44,7 +44,7 @@ solvers
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-6;
+        tolerance       1e-5;
         relTol          0;
         minIter         1;
     }
@@ -53,8 +53,8 @@ solvers
     {
         solver          PBiCGStab;
         preconditioner  diagonal;
-        tolerance       1e-06;
-        relTol          0.001;
+        tolerance       1e-05;
+        relTol          0.1;
     }
 
     //- "Solver" dictionary of the phase fraction equations. The employed
