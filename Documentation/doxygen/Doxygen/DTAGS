@@ -21204,10 +21204,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::thermoMechanics::linearElasticThermoMechanics</name>
-    <filename>classFoam_1_1thermoMechanics_1_1linearElasticThermoMechanics.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::linearElasticThermoMechanics</name>
     <filename>classFoam_1_1linearElasticThermoMechanics.html</filename>
     <base>Foam::thermoMechanics</base>
@@ -21507,6 +21503,10 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::thermoMechanics::linearElasticThermoMechanics</name>
+    <filename>classFoam_1_1thermoMechanics_1_1linearElasticThermoMechanics.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::twoPhaseDragMultiplierModels::LockhartMartinelli</name>
     <filename>classFoam_1_1twoPhaseDragMultiplierModels_1_1LockhartMartinelli.html</filename>
     <base>Foam::twoPhaseDragMultiplierModel</base>
@@ -21630,10 +21630,6 @@
     <filename>classFoam_1_1CHFModel_1_1lookUpTableCHF.html</filename>
   </compound>
   <compound kind="class">
-    <name>Foam::LottesFlinn</name>
-    <filename>classFoam_1_1LottesFlinn.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::twoPhaseDragMultiplierModels::LottesFlinn</name>
     <filename>classFoam_1_1twoPhaseDragMultiplierModels_1_1LottesFlinn.html</filename>
     <base>Foam::twoPhaseDragMultiplierModel</base>
@@ -21667,8 +21663,8 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::LottesFlinnNguyen</name>
-    <filename>classFoam_1_1LottesFlinnNguyen.html</filename>
+    <name>Foam::LottesFlinn</name>
+    <filename>classFoam_1_1LottesFlinn.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::twoPhaseDragMultiplierModels::LottesFlinnNguyen</name>
@@ -21704,8 +21700,8 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::thermoSubstructures::lumpedNuclearStructure</name>
-    <filename>classFoam_1_1thermoSubstructures_1_1lumpedNuclearStructure.html</filename>
+    <name>Foam::LottesFlinnNguyen</name>
+    <filename>classFoam_1_1LottesFlinnNguyen.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::powerModels::lumpedNuclearStructure</name>
@@ -21844,6 +21840,10 @@
       <anchor>a639c2bc843a6948636eb5bf034616e53</anchor>
       <arglist></arglist>
     </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::thermoSubstructures::lumpedNuclearStructure</name>
+    <filename>classFoam_1_1thermoSubstructures_1_1lumpedNuclearStructure.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::functionObjects::massFlow</name>
@@ -23589,6 +23589,10 @@
     <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPin.html</filename>
   </compound>
   <compound kind="class">
+    <name>Foam::thermoSubstructures::nuclearFuelPinTest</name>
+    <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPinTest.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::powerModels::nuclearFuelPinTest</name>
     <filename>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</filename>
     <base>Foam::powerModel</base>
@@ -23900,10 +23904,6 @@
       <anchor>a09a38dead56d361b78f3134ba95438a0</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::thermoSubstructures::nuclearFuelPinTest</name>
-    <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPinTest.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::FSHeatTransferCoefficientModels::Nusselt</name>
@@ -24345,10 +24345,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::onePhase</name>
-    <filename>classFoam_1_1onePhase.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::thermalHydraulicsModels::onePhaseLegacy</name>
     <filename>classFoam_1_1thermalHydraulicsModels_1_1onePhaseLegacy.html</filename>
     <base>Foam::thermalHydraulicsModel</base>
@@ -24432,10 +24428,6 @@
       <anchor>a964e3a45d8bf0c9f774166d07466fe4c</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::onePhaseLegacy</name>
-    <filename>classFoam_1_1onePhaseLegacy.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::functionObjects::patchScalarFieldValue</name>
@@ -30357,10 +30349,6 @@
     <class kind="class">Foam::regimeMapModel::twoParameters::regimeDomain2D</class>
   </compound>
   <compound kind="class">
-    <name>Foam::twoPhase</name>
-    <filename>classFoam_1_1twoPhase.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::thermalHydraulicsModels::twoPhase</name>
     <filename>classFoam_1_1thermalHydraulicsModels_1_1twoPhase.html</filename>
     <base>Foam::thermalHydraulicsModel</base>
@@ -33220,8 +33208,6 @@
     <class kind="class">Foam::LottesFlinnNguyen</class>
     <class kind="class">Foam::multiphysicsControl</class>
     <class kind="class">Foam::neutronics</class>
-    <class kind="class">Foam::onePhase</class>
-    <class kind="class">Foam::onePhaseLegacy</class>
     <class kind="class">Foam::phaseBase</class>
     <class kind="class">Foam::phaseChangeModel</class>
     <class kind="class">Foam::PhaseCompressibleTurbulenceModel</class>
@@ -33249,7 +33235,6 @@
     <class kind="class">Foam::TLFModel</class>
     <class kind="class">Foam::TONBModel</class>
     <class kind="class">Foam::tractionDisplacementFvPatchVectorField</class>
-    <class kind="class">Foam::twoPhase</class>
     <class kind="class">Foam::twoPhaseDragFactor</class>
     <class kind="class">Foam::twoPhaseDragMultiplierModel</class>
     <class kind="class">Foam::velocityRundownFvPatchVectorField</class>

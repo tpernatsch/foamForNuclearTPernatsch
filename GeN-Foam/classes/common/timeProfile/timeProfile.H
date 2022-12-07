@@ -40,8 +40,8 @@ Class
 
 Description
     Base class for time profile functions
-    
-    Author of this file (and associated .C or included .H files)
+
+    Author of this file (and associated .C or included .H files): 
     Thomas Guilbaud <thomas.guilbaud@epfl.ch;>, EPFL/Transmutex SA (Swizerland)
 
 SourceFiles
