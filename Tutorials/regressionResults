@@ -22,6 +22,12 @@ Transient of 1D_MSR_pointKinetics has converged
 Transient of 1D_MSR_pointKinetics has converged 
 power is 6.13778e+08  . It should be ~6.13794e+08 
 
+ ##### 1D_thermalMSR_pointKinetics  ###### 
+Steady state of 1D_thermalMSR_pointKinetics has converged 
+Transient of 1D_thermalMSR_pointKinetics has converged 
+Transient of 1D_thermalMSR_pointKinetics has converged 
+power is 4.15258e+08  . It should be ~4.15258e+08 
+
  ##### 3D_SmallESFR  ###### 
 Steady state of 3D_SmallESFR has converged 
 Transient of 3D_SmallESFR has converged 
@@ -47,8 +53,8 @@ Energy steady state of 2D_MSFR has converged
 Thernal-hydraulic steady state of 2D_MSFR has converged 
 Transient of 2D_MSFR has converged 
 Done running tutorial 2D_MSFR...
-keff is 0.960282 . It should be ~0.960283  
-power is 2.00015e+07 . It should be ~2e+07  
+keff is 0.960287 . It should be ~0.960283  
+power is 2e+07 . It should be ~2e+07  
 
  ##### 2D_onePhaseAndPointKineticsCoupling  ###### 
 Steady state of 2D_onePhaseAndPointKineticsCoupling has converged 
