@@ -44,7 +44,7 @@ Group
 Description
     Run-time selectable point-kinetic based neutronics solver
 
-    Author of this file (and associated .C or included .H files)
+    Author of this file (and associated .C or included .H files): 
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)

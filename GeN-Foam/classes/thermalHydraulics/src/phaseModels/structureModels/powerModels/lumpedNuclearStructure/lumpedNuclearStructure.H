@@ -1,36 +1,50 @@
 /*---------------------------------------------------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
-     \\/     M anipulation  |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+|                                                                             |
+|    Built on OpenFOAM v2112                                                  |
+|    Copyright (C) 2011 - 2021 OpenFOAM Foundation (www.openfoam.com)         |
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is part of GeN-Foam.
 
-    OpenFOAM is free software: you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    GeN-Foam is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
 
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    GeN-Foam is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
+
+    This offering is not approved or endorsed by the OpenFOAM Foundation nor
+    OpenCFD Limited, producer and distributor of the OpenFOAM(R)software via
+    www.openfoam.com, and owner of the OPENFOAM(R) and OpenCFD(R) trademarks.
+
+    This particular snippet of code is developed according to the developer's
+    knowledge and experience in OpenFOAM. The users should be aware that
+    there is a chance of bugs in the code, though we've thoroughly test it.
+    The source code may not be in the OpenFOAM coding style, and it might not
+    be making use of inheritance of classes to full extent.
 
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::thermoSubstructures::lumpedNuclearStructure
+    Foam::powerModels::lumpedNuclearStructure
 
 Description
     Model for representing a lumped-parameter structure characterized
     by a user selectable number of nodes.
-
+    \verbatim
     Tmax            T[0]           T[1]          T[n-1]         Tsurface      
       | --- H[0] --- | --- H[1] --- | --- H[2] --- |  --- H[n] --- |  
-
+    \endverbatim
     Note that only T[] are state variables while Tmax and Tsurface can
     be found after matrix solution.
     Note also that one needs n+1 conductances when solvinf for n nodes
@@ -46,11 +60,12 @@ Description
     Zero-gradient BCs are used at the inner boundary and convective
     BCs are used at the external boundary (in contact with the coolant)
 
-Use 
+Usage 
     The following sub-dictionary should be included as a powerModel 
     in phaseProperties.
 
-    For one node:
+    Example for one node:
+    \verbatim
     powerModel 
     {
         type                lumpedNuclearStructure;
@@ -84,8 +99,10 @@ Use
         T0                  900; // Initial temperature, if no found in
                                  // the time folder
     }
-    
-    For 3 nodes
+    \endverbatim
+
+    Example for 3 nodes:
+    \verbatim
     powerModel 
     {
         type                lumpedNuclearStructure;
@@ -100,8 +117,9 @@ Use
         powerFractions      (1 0 0);
         T0                  900;
     }
+    \endverbatim
 
-Authors
+    Authors: 
     Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
     
 SourceFiles

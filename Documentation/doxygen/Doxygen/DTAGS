@@ -14523,10 +14523,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::byZone</name>
-    <filename>classFoam_1_1byZone.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::FSHeatTransferCoefficientModels::CachardLiquid</name>
     <filename>classFoam_1_1FSHeatTransferCoefficientModels_1_1CachardLiquid.html</filename>
     <base>Foam::FSHeatTransferCoefficientModel</base>
@@ -18008,10 +18004,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::powerOffControlModels::fieldValue</name>
-    <filename>classFoam_1_1powerOffControlModels_1_1fieldValue.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::latentHeatModels::FinkLeibowitz</name>
     <filename>classFoam_1_1latentHeatModels_1_1FinkLeibowitz.html</filename>
     <base>Foam::latentHeatModel</base>
@@ -18141,10 +18133,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::structures::fixedPower</name>
-    <filename>classFoam_1_1structures_1_1fixedPower.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::powerModels::fixedTemperature</name>
     <filename>classFoam_1_1powerModels_1_1fixedTemperature.html</filename>
     <base>Foam::powerModel</base>
@@ -18227,10 +18215,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::structures::fixedTemperature</name>
-    <filename>classFoam_1_1structures_1_1fixedTemperature.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::powerModels::fixedTemperatureFMU</name>
     <filename>classFoam_1_1powerModels_1_1fixedTemperatureFMU.html</filename>
     <base>Foam::powerModel</base>
@@ -18297,10 +18281,6 @@
       <anchor>a3f2d941afd3e595db25708d37f942090</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::structures::fixedTemperatureFMU</name>
-    <filename>classFoam_1_1structures_1_1fixedTemperatureFMU.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::flowEnhancementFactorModel</name>
@@ -20309,10 +20289,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::thermoSubstructures::heatedPin</name>
-    <filename>classFoam_1_1thermoSubstructures_1_1heatedPin.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::heatExchanger</name>
     <filename>classFoam_1_1heatExchanger.html</filename>
     <member kind="function">
@@ -21840,10 +21816,6 @@
       <anchor>a639c2bc843a6948636eb5bf034616e53</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::thermoSubstructures::lumpedNuclearStructure</name>
-    <filename>classFoam_1_1thermoSubstructures_1_1lumpedNuclearStructure.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::functionObjects::massFlow</name>
@@ -23585,14 +23557,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::thermoSubstructures::nuclearFuelPin</name>
-    <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPin.html</filename>
-  </compound>
-  <compound kind="class">
-    <name>Foam::thermoSubstructures::nuclearFuelPinTest</name>
-    <filename>classFoam_1_1thermoSubstructures_1_1nuclearFuelPinTest.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::powerModels::nuclearFuelPinTest</name>
     <filename>classFoam_1_1powerModels_1_1nuclearFuelPinTest.html</filename>
     <base>Foam::powerModel</base>
@@ -23906,39 +23870,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::FSHeatTransferCoefficientModels::Nusselt</name>
-    <filename>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</filename>
-    <base>Foam::FSHeatTransferCoefficientModel</base>
-    <member kind="function">
-      <type></type>
-      <name>TypeName</name>
-      <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>a560b7b6bb9ebe392d9d91aa9ce2ae98c</anchor>
-      <arglist>(&quot;NusseltReynoldsPrandtlPower&quot;)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>Nusselt</name>
-      <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>ae66ec9cbf9ddee2181cf4fef512c7c0b</anchor>
-      <arglist>(const FSPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>~Nusselt</name>
-      <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>adc44b85005e84c604806654d02d420a4</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual scalar</type>
-      <name>value</name>
-      <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
-      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
-      <arglist>(const label &amp;celli) const</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
     <name>Foam::FFHeatTransferCoefficientModels::Nusselt</name>
     <filename>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</filename>
     <base>Foam::FFHeatTransferCoefficientModel</base>
@@ -23967,6 +23898,39 @@
       <type>virtual scalar</type>
       <name>value</name>
       <anchorfile>classFoam_1_1FFHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
+      <arglist>(const label &amp;celli) const</arglist>
+    </member>
+  </compound>
+  <compound kind="class">
+    <name>Foam::FSHeatTransferCoefficientModels::Nusselt</name>
+    <filename>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</filename>
+    <base>Foam::FSHeatTransferCoefficientModel</base>
+    <member kind="function">
+      <type></type>
+      <name>TypeName</name>
+      <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>a560b7b6bb9ebe392d9d91aa9ce2ae98c</anchor>
+      <arglist>(&quot;NusseltReynoldsPrandtlPower&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>Nusselt</name>
+      <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>ae66ec9cbf9ddee2181cf4fef512c7c0b</anchor>
+      <arglist>(const FSPair &amp;pair, const dictionary &amp;dict, const objectRegistry &amp;objReg)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~Nusselt</name>
+      <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
+      <anchor>adc44b85005e84c604806654d02d420a4</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual scalar</type>
+      <name>value</name>
+      <anchorfile>classFoam_1_1FSHeatTransferCoefficientModels_1_1Nusselt.html</anchorfile>
       <anchor>a2c1e1872d359910de4c35cf8f003871c</anchor>
       <arglist>(const label &amp;celli) const</arglist>
     </member>
@@ -26752,6 +26716,10 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::regimeMapModel::regimeBoundary2D</name>
+    <filename>classFoam_1_1regimeMapModel_1_1regimeBoundary2D.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::regimeMapModels::regimeBoundary2D</name>
     <filename>classFoam_1_1regimeMapModels_1_1regimeBoundary2D.html</filename>
     <member kind="function">
@@ -26894,10 +26862,6 @@
       <anchor>a250a9e4d16cf87bb331808ffb10f62f3</anchor>
       <arglist>(const regimeBoundary2D &amp;rhs) const</arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::regimeMapModel::regimeBoundary2D</name>
-    <filename>classFoam_1_1regimeMapModel_1_1regimeBoundary2D.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::regimeMapModels::regimeDomain2D</name>
@@ -30012,10 +29976,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>Foam::powerOffControlModels::timer</name>
-    <filename>classFoam_1_1powerOffControlModels_1_1timer.html</filename>
-  </compound>
-  <compound kind="class">
     <name>Foam::TLFModel</name>
     <filename>classFoam_1_1TLFModel.html</filename>
     <class kind="class">Foam::TLFModel::GroeneveldStewartTLF</class>
@@ -31000,6 +30960,10 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::WallisFilm</name>
+    <filename>classFoam_1_1WallisFilm.html</filename>
+  </compound>
+  <compound kind="class">
     <name>Foam::fluidDiameterModels::WallisFilm</name>
     <filename>classFoam_1_1fluidDiameterModels_1_1WallisFilm.html</filename>
     <base>Foam::fluidDiameterModel</base>
@@ -31038,10 +31002,6 @@
       <anchor>ad2692e89af38be9306bf3194c54434bf</anchor>
       <arglist></arglist>
     </member>
-  </compound>
-  <compound kind="class">
-    <name>Foam::WallisFilm</name>
-    <filename>classFoam_1_1WallisFilm.html</filename>
   </compound>
   <compound kind="class">
     <name>Foam::saturationModels::water</name>
@@ -33143,7 +33103,6 @@
     <namespace>Foam::myOps</namespace>
     <namespace>Foam::phaseChangeModels</namespace>
     <namespace>Foam::powerModels</namespace>
-    <namespace>Foam::powerOffControlModels</namespace>
     <namespace>Foam::powerOffCriterionModels</namespace>
     <namespace>Foam::RASModels</namespace>
     <namespace>Foam::RBD</namespace>
@@ -33151,18 +33110,15 @@
     <namespace>Foam::saturationModels</namespace>
     <namespace>Foam::solidBodyMotionFunctions</namespace>
     <namespace>Foam::structureModels</namespace>
-    <namespace>Foam::structures</namespace>
     <namespace>Foam::subCooledBoilingFractionModels</namespace>
     <namespace>Foam::suppressionFactorModels</namespace>
     <namespace>Foam::thermalHydraulicsModels</namespace>
-    <namespace>Foam::thermoSubstructures</namespace>
     <namespace>Foam::TONBModels</namespace>
     <namespace>Foam::twoPhaseDragMultiplierModels</namespace>
     <class kind="class">Foam::adjointDiffusionNeutronics</class>
     <class kind="class">Foam::albedoSP3FvPatchField</class>
     <class kind="class">Foam::byRegime</class>
     <class kind="class">Foam::byRegimeModel</class>
-    <class kind="class">Foam::byZone</class>
     <class kind="class">Foam::ChenKalish</class>
     <class kind="class">Foam::CHFModel</class>
     <class kind="class">Foam::commDataLayer</class>
@@ -35627,12 +35583,6 @@
     </member>
   </compound>
   <compound kind="namespace">
-    <name>Foam::powerOffControlModels</name>
-    <filename>namespaceFoam_1_1powerOffControlModels.html</filename>
-    <class kind="class">Foam::powerOffControlModels::fieldValue</class>
-    <class kind="class">Foam::powerOffControlModels::timer</class>
-  </compound>
-  <compound kind="namespace">
     <name>Foam::powerOffCriterionModels</name>
     <filename>namespaceFoam_1_1powerOffCriterionModels.html</filename>
     <class kind="class">Foam::powerOffCriterionModels::fieldValue</class>
@@ -35887,13 +35837,6 @@
     </member>
   </compound>
   <compound kind="namespace">
-    <name>Foam::structures</name>
-    <filename>namespaceFoam_1_1structures.html</filename>
-    <class kind="class">Foam::structures::fixedPower</class>
-    <class kind="class">Foam::structures::fixedTemperature</class>
-    <class kind="class">Foam::structures::fixedTemperatureFMU</class>
-  </compound>
-  <compound kind="namespace">
     <name>Foam::subCooledBoilingFractionModels</name>
     <filename>namespaceFoam_1_1subCooledBoilingFractionModels.html</filename>
     <class kind="class">Foam::subCooledBoilingFractionModels::constant</class>
@@ -36009,14 +35952,6 @@
       <anchor>adc087b6eeecc67c9cbf276536db316da</anchor>
       <arglist>(thermalHydraulicsModel, twoPhase, thermalHydraulicsModels)</arglist>
     </member>
-  </compound>
-  <compound kind="namespace">
-    <name>Foam::thermoSubstructures</name>
-    <filename>namespaceFoam_1_1thermoSubstructures.html</filename>
-    <class kind="class">Foam::thermoSubstructures::heatedPin</class>
-    <class kind="class">Foam::thermoSubstructures::lumpedNuclearStructure</class>
-    <class kind="class">Foam::thermoSubstructures::nuclearFuelPin</class>
-    <class kind="class">Foam::thermoSubstructures::nuclearFuelPinTest</class>
   </compound>
   <compound kind="namespace">
     <name>Foam::TONBModels</name>
