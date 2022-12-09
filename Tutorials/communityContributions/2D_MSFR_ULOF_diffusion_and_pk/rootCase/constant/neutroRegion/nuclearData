@@ -1,24 +1,18 @@
-
-/*
- crossSection dictionary
- Generatd by serpentToFoamXS 
- 25-Jul-2018
- From SERPENT results file: msfr_n_res
-*/
-
-/*
-physical delayed neutron fraction and spectrum
-*/
-
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    constant;
     object      msfr_n_res;
 }
-
 fastNeutrons            true; // if true interpolates cross section with logarithmic temp for fuel (otherwise, square root)
 
 adjustDiscFactors       false;
@@ -54,7 +48,6 @@ absoluteDrivelineExpansionCoeff 0;
 controlRodReactivityMap ( ( 0.1 -0.01 ) ( 0 0 ) ( -0.1 0.01 ) );
 
 initPrecursorsLiquidFuel true;
-
 
  energyGroups 6 ; 
 
