@@ -1,9 +1,10 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
-|    \\/     M anipulation  |                                                 |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -19,9 +20,6 @@ FoamFile
 // faces.
 internalFacesOnly true;
 
-
-
-
 // Baffles to create.
 baffles
 {
@@ -30,7 +28,6 @@ baffles
         //- Use predefined faceZone to select faces and orientation.
         type        faceZone;
         zoneName    walls;
-
 
         //- Optional flip
         //flip        false;
@@ -48,7 +45,6 @@ baffles
                 samplePatch     baffle1;
                 offsetMode      uniform;
                 offset          (0 0 0);
-
 
                 patchFields
                 {
@@ -88,6 +84,5 @@ baffles
         }
     }
 }
-
 
 // ************************************************************************* //

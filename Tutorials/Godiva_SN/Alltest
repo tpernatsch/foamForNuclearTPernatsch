@@ -10,8 +10,8 @@ touch $resFile
 
 # --- Run the simulation
 echo -e "Run tutorial Godiva_SN ...\n" | tee -a $resFile
-foamDictionary system/controlDict -entry endTime -set 3
-foamDictionary system/controlDict -entry writeInterval -set 3
+# foamDictionary system/controlDict -entry endTime -set 3
+# foamDictionary system/controlDict -entry writeInterval -set 3
 ./Allrun_parallel >> log.simulation
 echo -e "Done running tutorial Godiva_SN ...\n" | tee -a $resFile
 
