@@ -26,6 +26,14 @@ if (!multiphysics.finalIter())
 {
     if (solveE) 
     {
+        if (solveN)//update power denisty only if neutronics is solved for
+        {
+            thermalHydraulics.interpolateCouplingFields
+            (
+                fluidToNeutro,
+                multiphysics.liquidFuel()
+            );
+        }
         thermalHydraulics.correctEnergy(EResidual);
         if (!solveN and !solveTM)
             Info << endl;
@@ -49,11 +57,24 @@ else if (solveE or solveN or solveTM)
 
         if (solveE)
         {
+            if (solveN)//update power denisty only if neutronics is solved for
+            {
+                thermalHydraulics.interpolateCouplingFields
+                (
+                    fluidToNeutro,
+                    multiphysics.liquidFuel()
+                );
+            }
             thermalHydraulics.correctEnergy(couplingResidual);
             if (!solveN and !solveTM)
                 Info << endl;
         }
-        if (solveTM or solveN)
+        // correctCouplingFields.H is needed only beacuse of the speacial treatment of the 
+        // thermalHydraulic mesh, where we go through a set of fields on a "phantom" mesh 
+        // without baffles that is needed to facilitate the mapping.
+        // If it was not for that, interpolateCouplingFields of neutronics and thermalMechanics
+        // could be change to directly search for coupling fields directly in thermalHydraulics
+        if (solveTM or solveN) 
         {
             #include "correctCouplingFields.H"
         }
@@ -66,18 +87,7 @@ else if (solveE or solveN or solveTM)
         if (solveN)
         {
             neutronics.interpolateCouplingFields(neutroToFluid);
-            neutronics.correct
-            (
-                couplingResidual,
-                couplingIter
-            );
-            (*powerDensity) *= 0.0;
-            fluidToNeutro.mapTgtToSrc
-            (
-                neutronics.powerDensity(), 
-                plusEqOp<scalar>(), 
-                powerDensity->primitiveFieldRef()
-            );
+            neutronics.correct(couplingResidual,couplingIter);
         }
         couplingIter++;
         Info << endl;

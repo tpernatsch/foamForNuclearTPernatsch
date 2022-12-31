@@ -1,22 +1,36 @@
 /*---------------------------------------------------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
-     \\/     M anipulation  |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+|                                                                             |
+|    Built on OpenFOAM v2212                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is part of GeN-Foam.
 
-    OpenFOAM is free software: you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    GeN-Foam is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
 
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    GeN-Foam is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
+
+    This offering is not approved or endorsed by the OpenFOAM Foundation nor
+    OpenCFD Limited, producer and distributor of the OpenFOAM(R)software via
+    www.openfoam.com, and owner of the OPENFOAM(R) and OpenCFD(R) trademarks.
+
+    This particular snippet of code is developed according to the developer's
+    knowledge and experience in OpenFOAM. The users should be aware that
+    there is a chance of bugs in the code, though we've thoroughly test it.
+    The source code may not be in the OpenFOAM coding style, and it might not
+    be making use of inheritance of classes to full extent.
 
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
@@ -42,8 +56,7 @@ Description
     the regions are effectively cellZones, and the cellFields_ is
     thus a dicts of scalarFields representing where each cellZone exists.
 
-
-Author 
+    Author:  
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -143,6 +156,9 @@ protected:
     //- All cells in which the structure exists ()
     labelList cells_;
 
+    //- Ref to powerDensity from neutronics (projected on fluid mesh)
+    volScalarField& powerDensityNeutronics_;
+
     //- Hydraulic diameter
     volScalarField Dh_;
 
@@ -184,6 +200,12 @@ protected:
     //- Surface temperature of the passive region
     volScalarField Tpas_;
 
+    //- Temperature of the fuel (for coupling purposes)
+    volScalarField TFuelAv_;
+
+    //- Temperature of the cladding (for coupling purposes)
+    volScalarField TCladAv_;
+
     //- Interfacial area of the passive region
     volScalarField iApas_;
 
@@ -218,7 +240,8 @@ public:
         structure
         (
             const dictionary& dict,
-            const fvMesh& mesh
+            const fvMesh& mesh,
+            volScalarField& powerDensityNeutronics
         );
 
         //- Destructor
@@ -325,6 +348,11 @@ public:
                 return tortuosityPtr_();
             }
 
+            volScalarField& powerDensityNeutronics()
+            {
+                return powerDensityNeutronics_;
+            }
+
             const volScalarField& Dh() const
             {
                 return Dh_;
@@ -353,6 +381,16 @@ public:
             const volScalarField& Tpas() const
             {
                 return Tpas_;
+            }
+
+            volScalarField& TFuelAv()
+            {
+                return TFuelAv_;
+            }
+
+            volScalarField& TCladAv()
+            {
+                return TCladAv_;
             }
 
             const volScalarField& Twall() const
@@ -412,18 +450,22 @@ void structure::setRegionField
     );
 
     //- field is a reference to a field that already exists. If it was
-    //  created with a READ_IF_PRESENT or MUST_READ option, it is not a bad
-    //  idea to spatially limit the field only over the cells overwhich it
-    //  should be defined, just in case
+    //  created with a READ_IF_PRESENT or MUST_READ option, do nothing
     if 
     (
-        (
+        ((
             field.readOpt() == IOobject::MUST_READ
         or  field.readOpt() == IOobject::READ_IF_PRESENT
         )
-    and fieldHeader.typeHeaderOk<fieldType>(true)
+        and fieldHeader.typeHeaderOk<fieldType>(true))
     )
     {
+        // DO NOTHING
+        /*
+        //  This part used to spatially limit the field only over the cells 
+        //  overwhich it should be defined.
+        //  Removed. This creates problems to setting powerDenistyNeutronics
+        //  since each powerModel will set it to zero outside its cells 
         scalarField cellField(mesh_.cells().size(), 0);
         forAll(dicts.toc(), i)
         {
@@ -435,6 +477,7 @@ void structure::setRegionField
             }
         }
         field.primitiveFieldRef() *= cellField;
+        */
     }
     //- Otherwise, read the value the field should have on a 
     //  region-by-region basis

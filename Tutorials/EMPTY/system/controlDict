@@ -1,70 +1,70 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  6
-     \\/     M anipulation  |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "system";
     object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     GeN-Foam;
+application             GeN-Foam;
 
-startFrom       startTime;
+startFrom               startTime;
 
-startTime       0;
+startTime               0;
 
-stopAt          endTime;
+stopAt                  endTime;
 
-endTime         1;
+endTime                 1;
 
-deltaT          1;
+deltaT                  1;
 
-writeControl    timeStep;
+writeControl            timeStep;
 
-writeInterval   1;
+writeInterval           1;
 
-purgeWrite      0;
+purgeWrite              0;
 
-writeFormat     ascii;
+writeFormat             ascii;
 
-writePrecision  6;
+writePrecision          6;
 
-writeCompression off;
+writeCompression        off;
 
-timeFormat      general;
+timeFormat              general;
 
-timePrecision   6;
+timePrecision           6;
 
-runTimeModifiable true;
+runTimeModifiable       true;
 
 //- Physics to Solve
 
-solveFluidMechanics false;
+solveFluidMechanics     false;
 
-solveEnergy     false;
+solveEnergy             false;
 
-solveNeutronics false;
+solveNeutronics         false;
 
-solveThermalMechanics false;
+solveThermalMechanics   false;
 
 //- Global options
 
-liquidFuel false;
+liquidFuel              false;
 
 //- Time step control options
 
-adjustTimeStep      false;
+adjustTimeStep          false;
 
-maxDeltaT           1;
+maxDeltaT               1;
 
-maxCo               1;
+maxCo                   1;
 
 // ************************************************************************* //

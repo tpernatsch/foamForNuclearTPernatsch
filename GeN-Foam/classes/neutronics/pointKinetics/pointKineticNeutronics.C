@@ -1,26 +1,39 @@
 /*---------------------------------------------------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright held by original author
-     \\/     M anipulation  |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+|                                                                             |
+|    Built on OpenFOAM v2212                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is part of GeN-Foam.
 
-    OpenFOAM is free software; you can redistribute it and/or modify it
+    GeN-Foam is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the
     Free Software Foundation; either version 2 of the License, or (at your
     option) any later version.
 
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    GeN-Foam is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
 
+    This offering is not approved or endorsed by the OpenFOAM Foundation nor
+    OpenCFD Limited, producer and distributor of the OpenFOAM(R)software via
+    www.openfoam.com, and owner of the OPENFOAM(R) and OpenCFD(R) trademarks.
+
+    This particular snippet of code is developed according to the developer's
+    knowledge and experience in OpenFOAM. The users should be aware that
+    there is a chance of bugs in the code, though we've thoroughly test it.
+    The source code may not be in the OpenFOAM coding style, and it might not
+    be making use of inheritance of classes to full extent.
+
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM; if not, write to the Free Software Foundation,
-    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
 
@@ -63,38 +76,20 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             IOobject::NO_WRITE
         )
     ),
-    power_
-    (
-        reactorState_.get<scalar>
-        (
-            "pTarget"
-        )
-    ),
+    power_(reactorState_.get<scalar>("pTarget")),
     fissionPower_(power_),
     decayPower_(0.0),
     decayPowerPtr_(nullptr),
     decayPowerStartTime_(0.0),
-    externalReactivity_
+    externalReactivityTimeProfile_
     (
-        reactorState_.lookupOrDefault<scalar>
-        (
-            "externalReactivity",
-            0.0
-        )
+        nuclearData_,
+        "externalReactivityTimeProfile"
     ),
     precEquilibriumReactivity_(0.0),
     liquidFuelBeta_(0.0),
-    totalReactivity_
-    (
-        externalReactivity_
-    ),
-    promptGenerationTime_
-    (
-        nuclearData_.get<scalar>
-        (
-            "promptGenerationTime"
-        )
-    ),
+    totalReactivity_(0.0),
+    promptGenerationTime_(nuclearData_.get<scalar>("promptGenerationTime")),
     beta_(0.0),
     betas_
     (
@@ -108,7 +103,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         reactorState_.lookupOrDefault<scalarList>
         (
-            "initialPrecursorPowers",
+            "precursorPowers",
             scalarList(betas_.size(), 0.0)
         )
     ),
@@ -155,7 +150,11 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         nuclearData_.get<scalar>("absoluteDrivelineExpansionCoeff")
     ),
-    boronReactivityPtr_(nullptr),
+    boronReactivityTimeProfile_
+    (
+        nuclearData_,
+        "boronReactivityTimeProfile"
+    ),
     TFuel_
     (
         IOobject
@@ -231,7 +230,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     alphatPtr_(nullptr),
     muPtr_(nullptr),
     phiPtr_(nullptr),
-    diffCoeffPrecPtr_(nullptr),  
+    diffCoeffPrecPtr_(nullptr),
     Dalbedo_
     (
         IOobject
@@ -259,7 +258,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         mesh,
         dimensionedScalar("", dimless/dimArea/dimTime, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    ),     
+    ),
     oneGroupFlux_
     (
         IOobject
@@ -297,7 +296,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             IOobject::NO_WRITE
         ),
         initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_)
-    ),        
+    ),
     domainIntegratedInitOneGroupFluxN_(fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value()),
     energyGroups_(0),
     fluxes_(0),
@@ -414,7 +413,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         (
             decayPowerDict.get<word>("type")
         );
-        decayPowerPtr_.reset        
+        decayPowerPtr_.reset
         (
             Function1<scalar>::New
             (
@@ -423,36 +422,12 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
                 type
             )
         );
-        decayPowerStartTime_ = 
+        decayPowerStartTime_ =
             decayPowerDict.lookupOrDefault<scalar>("startTime", 0.0);
         const scalar& t(mesh_.time().timeOutputValue());
         decayPower_ = decayPowerPtr_->value(t-decayPowerStartTime_);
         fissionPower_ = power_ - decayPower_;
         fissionPowerOld_ = fissionPower_;
-
-    }
-
-    //- Check Boron reactivity
-    word boronReactivityDictName("boronReactivityTimeProfile");
-    if (nuclearData_.found(boronReactivityDictName))
-    {
-        const dictionary& boronReactivityDict
-        (
-            nuclearData_.subDict(boronReactivityDictName)
-        );
-        word type
-        (
-            boronReactivityDict.get<word>("type")
-        );
-        boronReactivityPtr_.reset        
-        (
-            Function1<scalar>::New
-            (
-                type,
-                boronReactivityDict,
-                type
-            )
-        );
 
     }
 
@@ -624,7 +599,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     if (fluxes_.size() == 0)
     {
         //- One group flux is init from this dict ONLY IF no existing flux
-        //  files are already present (otherwise it is just reconstructed 
+        //  files are already present (otherwise it is just reconstructed
         //  from the sum of those)
         if (nuclearData_.found("initialOneGroupFluxByZone"))
         {
@@ -664,7 +639,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             setInitOneGroupFlux();
         }
 
-        energyGroups_ = 
+        energyGroups_ =
             nuclearData_.lookupOrDefault<scalar>("energyGroups", 1);
 
         for (int i = 0; i < energyGroups_; i++)
@@ -710,7 +685,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     //  changes in the oneGroupFlux
     setInitOneGroupFlux();
 
-    //- Read real precursors if present, they only get re-scaled by 
+    //- Read real precursors if present, they only get re-scaled by
     //  pointKinetic results
     label i = 0;
     while (true)
@@ -788,37 +763,24 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
                     //chenge the precursors units to power for PK calculations
                     defaultPrec_ //* dimensionedScalar("", dimPower, 1.0)
                 )
-            );         
-            precPKStar_[precI].dimensions().reset(defaultPrec_.dimensions()*dimPower);  
+            );
+            precPKStar_[precI].dimensions().reset(defaultPrec_.dimensions()*dimPower);
         }
         else
         {
             precPK_.set(precI, nullptr);
             precPKStar_.set(precI, nullptr);
-        }    
+        }
 
     }
 
     //- Set precursorPowers so that, if they are not found in reactorState, the
-    //  system starts from a steady-state. Given that precursorPowers are
-    //  written in reactorState, which cannot keep track of time by itself,
-    //  the precursorPowers are written under the precursorPowers keywords
-    //  but read from the initialPrecursorPowers keyword. This avoids
-    //  situations where, if they were both written/read from the same key,
-    //  re-starting a simulation from the same time-step could lead to 
-    //  different results (e.g. the first time you run it, no precursors are
-    //  read and a steady state it assumed. You run it until a new state, not
-    //  necessarily steady. The next time you re-start, you'd restart from
-    //  that non-steady state). It is up to the user to joggle the keywords
-    //  for now until a more intelligent system is put in place
-    if 
-    (
-        !reactorState_.found("initialPrecursorPowers")
-    )
+    //  system starts from a steady-state.
+    if (!reactorState_.found("precursorPowers"))
     {
         for (int i = 0; i < delayedGroups_; i++)
         {
-            precursorPowers_[i] = 
+            precursorPowers_[i] =
                 (betas_[i]*fissionPower_)/(lambdas_[i]*promptGenerationTime_);
         }
     }
@@ -832,22 +794,22 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     //-
     setFeedbackCellField
     (
-        fuelFeedbackCellField_, 
+        fuelFeedbackCellField_,
         "fuelFeedbackZones"
     );
     setFeedbackCellField
     (
-        coolFeedbackCellField_, 
+        coolFeedbackCellField_,
         "coolFeedbackZones"
     );
     setFeedbackCellField
     (
-        structFeedbackCellField_, 
+        structFeedbackCellField_,
         "structFeedbackZones"
     );
     setFeedbackCellField
     (
-        drivelineFeedbackCellField_, 
+        drivelineFeedbackCellField_,
         "drivelineFeedbackZones"
     );
 
@@ -858,8 +820,8 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     if (GEMReactivity)
     {
         GEMSodiumLevelRef_ = nuclearData_.get<scalar>("GEMSodiumLevelRef");
-        
-        //- Check that GEMReactivityMap is indexed by descending sodium level 
+
+        //- Check that GEMReactivityMap is indexed by descending sodium level
         //  values
         for (int i = 0; i < GEMReactivityMap_.size()-1; i++)
         {
@@ -890,15 +852,15 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
 void Foam::pointKineticNeutronics::setInitOneGroupFlux()
 {
     initOneGroupFlux_ = oneGroupFlux_;
-    initOneGroupFluxN_ = 
+    initOneGroupFluxN_ =
         initOneGroupFlux_/fvc::domainIntegrate(initOneGroupFlux_);
-    domainIntegratedInitOneGroupFluxN_ = 
+    domainIntegratedInitOneGroupFluxN_ =
         fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value();
 }
 
 void Foam::pointKineticNeutronics::setFeedbackCellField
 (
-    volScalarField& feedbackCellField, 
+    volScalarField& feedbackCellField,
     const word& keyword
 )
 {
@@ -951,10 +913,10 @@ Foam::scalar Foam::pointKineticNeutronics::calcDrivelineReactivity
                 const scalar& x0(p0.first());
                 const scalar& x1(p1.first());
                 const scalar& y0(p0.second());
-                const scalar& y1(p1.second()); 
-                if 
+                const scalar& y1(p1.second());
+                if
                 (
-                    drivelineExpansion <= x0 
+                    drivelineExpansion <= x0
                 and drivelineExpansion > x1
                 )
                 {
@@ -975,8 +937,8 @@ Foam::scalar Foam::pointKineticNeutronics::calcDrivelineReactivity
                 const scalar& x0(p0.first());
                 const scalar& x1(p1.first());
                 const scalar& y0(p0.second());
-                const scalar& y1(p1.second()); 
-                if 
+                const scalar& y1(p1.second());
+                if
                 (
                     drivelineExpansion > x0
                 and drivelineExpansion <= x1
@@ -993,7 +955,7 @@ Foam::scalar Foam::pointKineticNeutronics::calcDrivelineReactivity
     return drivelineReactivity;
 }
 
-Foam::Pair<Foam::scalar> 
+Foam::Pair<Foam::scalar>
 Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
 {
     scalar GEMSodiumLevel(0);
@@ -1009,10 +971,10 @@ Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
         reduce(intPhiFrac, sumOp<scalar>());
         intPhiFrac /= intPhiRef_;
 
-        //- Specific FFTF relationship between flow fraction and GEM sodium 
+        //- Specific FFTF relationship between flow fraction and GEM sodium
         //  level
-        GEMSodiumLevel = 
-            (265.0-539504/(2440.13+sqr(intPhiFrac*100)))/100 
+        GEMSodiumLevel =
+            (265.0-539504/(2440.13+sqr(intPhiFrac*100)))/100
         -   GEMSodiumLevelRef_;
 
         label N(GEMReactivityMap_.size()-1);
@@ -1032,9 +994,9 @@ Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
                 {
                     Pair<scalar> X0(GEMReactivityMap_[i]);
                     Pair<scalar> X1(GEMReactivityMap_[i+1]);
-                    if 
+                    if
                     (
-                        GEMSodiumLevel <= X0.first() 
+                        GEMSodiumLevel <= X0.first()
                     and GEMSodiumLevel > X1.first()
                     )
                     {
@@ -1042,7 +1004,7 @@ Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
                         (
                             (X1.second()-X0.second())/(X1.first()-X0.first())
                         );
-                        GEMReactivity = 
+                        GEMReactivity =
                             m*(GEMSodiumLevel-X0.first()) + X0.second();
                         break;
                     }
@@ -1050,7 +1012,7 @@ Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
             }
         }
     }
-    
+
     return Pair<scalar>(GEMSodiumLevel, GEMReactivity);
 }
 
@@ -1061,47 +1023,120 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
 )
 {
     //- Field names must reflect those defined in createCouplingFields.H
-    TFuelOrig_ = 
+    TFuelOrig_ =
         src.findObject<volScalarField>("bafflelessTFuelAv");
-    TCladOrig_ = 
+    TCladOrig_ =
         src.findObject<volScalarField>("bafflelessTCladAv");
-    TCoolOrig_ = 
+    TCoolOrig_ =
         src.findObject<volScalarField>("bafflelessTCool");
-    rhoCoolOrig_ = 
+    rhoCoolOrig_ =
         src.findObject<volScalarField>("bafflelessRhoCool");
-    TStructOrig_ = 
+    TStructOrig_ =
         src.findObject<volScalarField>("bafflelessTStruct");
-    
-    //- Project thermalHydraulic powerDensity onto the neutronic one to
-    //  initialize it if the latter does not exist
-    IOobject powerDensityHeader
-    (
-        "powerDensity",
-        mesh_.time().timeName(),
-        mesh_.time(),
-        IOobject::NO_READ
-    );
 
-    if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
+    //- Project thermalHydraulic powerDensities onto the neutronic ones to
+    //  initialize them if the latters do not exist.
+    //  Mirroring what happens in thermalHydraulics.interpolateCouplingFields:
+    //  - if(liquidFuel), map powerDensityNeutronicsToLiquid_ to powerDensity_ 
+    //    and powerDensityNeutronics_ to secondaryPowerDenisty_
+    //  - else, map powerDensityNeutronics_ to powerDensity_ and 
+    //    powerDensityNeutronicsToLiquid_ to secondaryPowerDenisty_
+    if(liquidFuel_)
     {
-        powerDensityOrig_ = 
-            src.findObject<volScalarField>("bafflelessPowerDensity");
-        neutroToFluid.mapTgtToSrc
-            (
-                *powerDensityOrig_, 
-                plusEqOp<scalar>(), 
-                powerDensity_
-            );
-        powerDensity_.correctBoundaryConditions(); 
+        IOobject powerDensityHeader
+        (
+            "powerDensity",
+            mesh_.time().timeName(),
+            mesh_.time(),
+            IOobject::NO_READ
+        );
+
+        if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
+        {
+            powerDensityToLiquidOrig_ =
+                src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
+            neutroToFluid.mapTgtToSrc
+                (
+                    *powerDensityToLiquidOrig_,
+                    plusEqOp<scalar>(),
+                    powerDensity_
+                );
+            powerDensity_.correctBoundaryConditions();
+        }
+
+        IOobject secondaryPowerDensityHeader
+        (
+            "secondaryPowerDensity",
+            mesh_.time().timeName(),
+            mesh_.time(),
+            IOobject::NO_READ
+        );
+
+        if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
+        {
+            powerDensityOrig_ =
+                src.findObject<volScalarField>("bafflelessPowerDensity");
+            neutroToFluid.mapTgtToSrc
+                (
+                    *powerDensityOrig_,
+                    plusEqOp<scalar>(),
+                    secondaryPowerDenisty_
+                );
+            secondaryPowerDenisty_.correctBoundaryConditions();
+        }
     }
-    
+    else
+    {
+        IOobject powerDensityHeader
+        (
+            "powerDensity",
+            mesh_.time().timeName(),
+            mesh_.time(),
+            IOobject::NO_READ
+        );
+
+        if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
+        {
+            powerDensityOrig_ =
+                src.findObject<volScalarField>("bafflelessPowerDensity");
+            neutroToFluid.mapTgtToSrc
+                (
+                    *powerDensityOrig_,
+                    plusEqOp<scalar>(),
+                    powerDensity_
+                );
+            powerDensity_.correctBoundaryConditions();
+        }
+
+        IOobject secondaryPowerDensityHeader
+        (
+            "secondaryPowerDensity",
+            mesh_.time().timeName(),
+            mesh_.time(),
+            IOobject::NO_READ
+        );
+
+        if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
+        {
+            powerDensityToLiquidOrig_ =
+                src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
+            neutroToFluid.mapTgtToSrc
+                (
+                    *powerDensityToLiquidOrig_,
+                    plusEqOp<scalar>(),
+                    secondaryPowerDenisty_
+                );
+            secondaryPowerDenisty_.correctBoundaryConditions();
+        }
+    }
+
     if (liquidFuel_)
     {
-        UOrig_ = 
+        UOrig_ =
             src.findObject<volVectorField>("bafflelessU");
-        alphaOrig_ = 
+        alphaOrig_ =
             src.findObject<volScalarField>("bafflelessAlpha");
-        alphatOrig_ = 
+        alphatOrig_ =
             src.findObject<volScalarField>("bafflelessAlphat");
         muOrig_ =
             src.findObject<volScalarField>("bafflelessMu");
@@ -1117,7 +1152,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     //- If doing GEM modelling
     if (this->get<bool>("GEM"))
     {
-        phiOrig_ = 
+        phiOrig_ =
             src.findObject<surfaceScalarField>("phi");
         const labelList& faces
         (
@@ -1145,34 +1180,52 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     //  the feedback parameters. If they are found in the dictionary, use
     //  those, otherwise compute them from the coupling fields (thus
     //  assuming that the simulation starts from a steady state)
-    
+
     this->interpolateCouplingFields(neutroToFluid);
 
     #include "computeFeedbackFieldValues.H"
 
     //- TFuelRef limited as it appears in a fraction denominator if doing
     //  fastNeutrons (for the Doppler coeff)
-    TFuelRef_ = 
+    TFuelRef_ =
         max
         (
-            nuclearData_.lookupOrDefault<scalar>("TFuelRef", TFuelValue),
+            reactorState_.lookupOrDefault<scalar>("TFuelRef", TFuelValue),
             SMALL
         );
-    
+
     TCladRef_ =
-        nuclearData_.lookupOrDefault<scalar>("TCladRef", TCladValue);
+        reactorState_.lookupOrDefault<scalar>("TCladRef", TCladValue);
 
     TCoolRef_ =
-        nuclearData_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
+        reactorState_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
 
     rhoCoolRef_ =
-        nuclearData_.lookupOrDefault<scalar>("rhoCoolRef", rhoCoolValue);
+        reactorState_.lookupOrDefault<scalar>("rhoCoolRef", rhoCoolValue);
 
     TStructRef_ =
-        nuclearData_.lookupOrDefault<scalar>("TStructRef", TStructValue);
+        reactorState_.lookupOrDefault<scalar>("TStructRef", TStructValue);
 
     TDrivelineRef_ =
-        nuclearData_.lookupOrDefault<scalar>("TDrivelineRef", TDrivelineValue);
+        reactorState_.lookupOrDefault<scalar>("TDrivelineRef", TDrivelineValue);
+
+    //- Since a T*Ref_ are scalars, the value inside the dictionary is not
+    //  updated at runTime automatically. The line below resets the SCALAR IN
+    //  THE DICTIONARY at runTime so that the dictionary is written with the
+    //  updated value.
+    reactorState_.set("TFuelRef", TFuelRef_);
+    reactorState_.set("TCladRef", TCladRef_);
+    reactorState_.set("TCoolRef", TCoolRef_);
+    reactorState_.set("rhoCoolRef", rhoCoolRef_);
+    reactorState_.set("TStructRef", TStructRef_);
+    reactorState_.set("TDrivelineRef", TDrivelineRef_);
+    reactorState_.regIOobject::writeObject
+    (
+        IOstream::ASCII,
+        // IOstream::currentVersion,
+        // reactorState_.time().writeCompression(),
+        true
+    );
 
     #include "correctReactivity.H"
 
@@ -1196,14 +1249,14 @@ void Foam::pointKineticNeutronics::interpolateCouplingFields
         neutroToFluid.mapTgtToSrc(*UOrig_, plusEqOp<vector>(), UPtr_());
         neutroToFluid.mapTgtToSrc
         (
-            *alphaOrig_, 
-            plusEqOp<scalar>(), 
+            *alphaOrig_,
+            plusEqOp<scalar>(),
             alphaPtr_()
         );
         neutroToFluid.mapTgtToSrc
         (
-            *alphatOrig_, 
-            plusEqOp<scalar>(), 
+            *alphatOrig_,
+            plusEqOp<scalar>(),
             alphatPtr_()
         );
         neutroToFluid.mapTgtToSrc(*muOrig_, plusEqOp<scalar>(), muPtr_());
@@ -1211,14 +1264,14 @@ void Foam::pointKineticNeutronics::interpolateCouplingFields
         volScalarField diffCoeffOrig
         (
             (
-                *alphatOrig_ 
+                *alphatOrig_
             +   *muOrig_/ScNo_
             )/(*rhoCoolOrig_)
-        ); 
+        );
         neutroToFluid.mapTgtToSrc
         (
-            diffCoeffOrig, 
-            plusEqOp<scalar>(), 
+            diffCoeffOrig,
+            plusEqOp<scalar>(),
             diffCoeffPrecPtr_()
         );
 
@@ -1227,7 +1280,7 @@ void Foam::pointKineticNeutronics::interpolateCouplingFields
         alphatPtr_().correctBoundaryConditions();
         diffCoeffPrecPtr_().correctBoundaryConditions();
     }
-    
+
 
     TFuel_.correctBoundaryConditions();
     TClad_.correctBoundaryConditions();
@@ -1240,7 +1293,7 @@ void Foam::pointKineticNeutronics::correct
 (
     scalar& residual,
     label couplingIter
-) 
+)
 {
     if(!liquidFuel_)
     {
@@ -1249,7 +1302,7 @@ void Foam::pointKineticNeutronics::correct
     {
         #include "solvePointKineticsLiquidFuel.H"
     }
-    
+
 }
 
 // ************************************************************************* //

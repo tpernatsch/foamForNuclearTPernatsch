@@ -42,7 +42,7 @@ setTransient()
     runCloneCase $1 $2
 
     printf "Setting transient case\n"
-    
+
     foamDictionary $1/system/controlDict -entry startFrom -set startTime
     foamDictionary $1/system/controlDict -entry startTime -set $endTimeSS
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeT
@@ -69,9 +69,7 @@ do
     case "$caseName" in
     "steadyState")
         setSteadyState $caseName rootCase
-        decomposePar -case $caseName -region fluidRegion
-        decomposePar -case $caseName -region thermoMechanicalRegion
-        decomposePar -case $caseName -region neutroRegion
+        decomposePar -case $caseName -allRegions
         ;;
     "transient")
         setTransient $caseName steadyState
@@ -94,9 +92,7 @@ do
 
     case "$caseName" in
         "transient")
-        reconstructPar -case $caseName -region fluidRegion
-        reconstructPar -case $caseName -region thermoMechanicalRegion
-        reconstructPar -case $caseName -region neutroRegion
+        reconstructPar -case $caseName -allRegions
         ;;
     esac
 

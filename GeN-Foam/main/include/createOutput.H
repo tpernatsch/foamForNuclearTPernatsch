@@ -29,6 +29,6 @@ if (writeOutput)
 //- Initialize ptr to nuclearFuelPin, if any
 const powerModel* const pinIO
 (
-    (nuclearFuelPin) ?
+    (fluidMesh.foundObject<volScalarField>("powerDensity.nuclearFuelPin")) ?
     fluidMesh.lookupClass<const powerModel>()["powerModel"] : nullptr
 );

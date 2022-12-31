@@ -2,13 +2,13 @@
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
-#tutorials="1D_PSBT_SC  1D_CHF" #Godiva_SN
+tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
+#tutorials=" 3D_SmallESFR " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
 rm regressionResults
 touch regressionResults
 resFile="./regressionResults"
 
-# run all tutorials and check for clean finish 
+# run all tutorials and check for clean finish
 for tutorialName in $tutorials
 do
 
@@ -35,7 +35,7 @@ do
         fi
 
         # check that keff for esfr steady State is ~0.9370011
-        keff=$(foamDictionary ./steadyState/processor0/constant/neutroRegion/reactorState -entry keff -value)
+        keff=$(foamDictionary ./steadyState/processor0/200/uniform/reactorState -entry keff -value)
         printf "keff is $keff . It should be ~0.936827  \n" >> ../$resFile
 
         # check that power in esfr transient is ~8e08
@@ -60,7 +60,7 @@ do
             printf "$tutorialName/onePhase has NOT converged \n"  >> ../../$resFile
         fi
         cd ../..
- 
+
         # run two-phase
         cd $tutorialName/onePhase
         ./Allrun
@@ -73,7 +73,7 @@ do
         else
             printf "$tutorialName/twoPhase has NOT converged \n"  >> ../../$resFile
         fi
-        cd ../..       
+        cd ../..
         ;;
 
     "1D_CHF")
@@ -97,7 +97,7 @@ do
         printf "Temperature of the structure at the top of the channel at 90 seconds is: $TwallTop . It should be 2625.18 \n"  >> ../../$resFile
 
         cd ../..
- 
+
         # run two-phase
         cd $tutorialName/imposedTemperature
         ./Allrun
@@ -114,7 +114,7 @@ do
         input="./40/fluidRegion/heatFlux.structure"
         QwallTop=$(head -40 "$input" | tail -1  )
         printf "heat flux of the structure at the top of the channel at 40 seconds is: $QwallTop . It should be 33423.1 \n"  >> ../../$resFile
-        cd ../..       
+        cd ../..
         ;;
 
     "1D_boiling")
@@ -132,7 +132,7 @@ do
             printf "$tutorialName has NOT converged \n"  >> ../$resFile
         fi
         cd ..
-        
+
         ;;
 
     "1D_PSBT_SC")
@@ -156,7 +156,7 @@ do
         printf "time,  alpha.vapour at the end of the channel is: $averageAt . It should be 0.133727 \n" >> ../$resFile
 
         cd ..
-        
+
         ;;
 
     "1D_MSR_pointKinetics")
@@ -192,6 +192,39 @@ do
         cd ..
         ;;
 
+    "1D_thermalMSR_pointKinetics")
+        printf "Running tutorial $tutorialName...\n"
+        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
+        cd $tutorialName
+        ./Allrun
+        printf "Done running tutorial $tutorialName...\n"
+
+        # check it ran
+        endStringSS=$(tail -3 ./steadyState/log.GeN-Foam | grep End)
+        if [ "$endStringSS" = "End" ]; then
+            printf "Steady state of $tutorialName has converged \n"  >> ../$resFile
+        else
+            printf "Steady state of $tutorialName has NOT converged \n"  >> ../$resFile
+        fi
+        endStringT=$(tail -3 ./transient/log.GeN-Foam | grep End)
+        if [ "$endStringT" = "End" ]; then
+            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
+        else
+            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
+        fi
+        endStringT=$(tail -3 ./transientEnd/log.GeN-Foam | grep End)
+        if [ "$endStringT" = "End" ]; then
+            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
+        else
+            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
+        fi
+
+        # check that power at the end of transient is ~6.14e+08
+        power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        printf "power is $power . It should be ~4.15258e+08 \n" >> ../$resFile
+        cd ..
+        ;;
+
     "2D_cavityBoussinesq")
         printf "Running tutorial $tutorialName...\n"
         printf "\n ##### $tutorialName  ###### \n"  >> $resFile
@@ -207,7 +240,7 @@ do
             printf "$tutorialName has NOT converged \n"  >> ../$resFile
         fi
         cd ..
-        
+
         ;;
 
     "2D_FFTF")
@@ -229,7 +262,7 @@ do
         else
             printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
         fi
-        
+
         printf "Done running tutorial $tutorialName...\n"
 
         # check that reactivities are correct
@@ -276,11 +309,11 @@ do
         else
             printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
         fi
-        
+
         printf "Done running tutorial $tutorialName...\n"  >> ../$resFile
 
         # check that keff for MSFR steady State is ~0.958765
-        keff=$(foamDictionary ./steadyStateEN/constant/neutroRegion/reactorState -entry keff -value)
+        keff=$(foamDictionary ./steadyStateEN/165/uniform/reactorState -entry keff -value)
         printf "keff is $keff . It should be ~0.960283  \n" >> ../$resFile
 
         # check that power in MSFR transient is ~2e07
@@ -304,7 +337,7 @@ do
             printf "Steady state of $tutorialName has NOT converged \n"  >> ../$resFile
         fi
         endStringSTNoDriveLine=$(tail -3 ./transientNoDriveline/log.GeN-Foam | grep End)
-        if [ "$endStringSSTH" = "End" ]; then
+        if [ "$endStringSTNoDriveLine" = "End" ]; then
             printf "Transient (no driveline) of $tutorialName has converged \n"  >> ../$resFile
         else
             printf "Transient (no driveline) state of $tutorialName has NOT converged \n"  >> ../$resFile
@@ -317,7 +350,7 @@ do
         fi
 
         cd ..
-        
+
         ;;
 
     "2D_voidMotionNoPhaseChange")
@@ -336,7 +369,7 @@ do
         fi
 
         cd ..
-        
+
         ;;
 
     "2D_KNS37-L22")
@@ -353,7 +386,7 @@ do
         else
             printf "$tutorialName has NOT converged \n"  >> ../$resFile
         fi
-        
+
         # check that results are correct
         input="./postProcessing/fluidRegion/averageValues/-2/volFieldValue.dat"
         averageAt=$(head -9424 "$input" | tail -1  )
@@ -377,13 +410,13 @@ do
         else
             printf "$tutorialName has NOT converged \n"  >> ../$resFile
         fi
-               
+
         # check that keff for esfr steady State is ~0.980106
-        keff=$(foamDictionary ./processor0/constant/neutroRegion/reactorState -entry keff -value)
+        keff=$(foamDictionary ./20/uniform/reactorState -entry keff -value)
         printf "keff is $keff . It should be 0.980106  \n" >> ../$resFile
 
         cd ..
-        
+
         ;;
     esac
 

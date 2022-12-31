@@ -1,40 +1,56 @@
 /*---------------------------------------------------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright held by original author
-     \\/     M anipulation  |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+|                                                                             |
+|    Built on OpenFOAM v2212                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is part of GeN-Foam.
 
-    OpenFOAM is free software; you can redistribute it and/or modify it
+    GeN-Foam is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the
     Free Software Foundation; either version 2 of the License, or (at your
     option) any later version.
 
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    GeN-Foam is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
 
+    This offering is not approved or endorsed by the OpenFOAM Foundation nor
+    OpenCFD Limited, producer and distributor of the OpenFOAM(R)software via
+    www.openfoam.com, and owner of the OPENFOAM(R) and OpenCFD(R) trademarks.
+
+    This particular snippet of code is developed according to the developer's
+    knowledge and experience in OpenFOAM. The users should be aware that
+    there is a chance of bugs in the code, though we've thoroughly test it.
+    The source code may not be in the OpenFOAM coding style, and it might not
+    be making use of inheritance of classes to full extent.
+
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM; if not, write to the Free Software Foundation,
-    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::neutronics::pointKineticNeutronics
+    Foam::pointKineticNeutronics
+
+Group
+    none
 
 Description
     Run-time selectable point-kinetic based neutronics solver
 
+    Author of this file (and associated .C or included .H files): 
+    Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
+    Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
+
 SourceFiles
     pointKineticNeutronics.C
-
-Author of this file (and associated .C or included .H files)
-    Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
-
 
 \*---------------------------------------------------------------------------*/
 
@@ -43,6 +59,8 @@ Author of this file (and associated .C or included .H files)
 
 #include "neutronics.H"
 #include "Function1.H"
+#include "interpolationTable.H"
+#include "timeProfile.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -79,7 +97,7 @@ protected:
     scalar decayPowerStartTime_;
 
     //- Due to whatever the user might please
-    scalar externalReactivity_;
+    timeProfile externalReactivityTimeProfile_;
 
     //- Used to set an initial steady state for liquid fuel
     scalar precEquilibriumReactivity_;
@@ -92,7 +110,7 @@ protected:
 
     //-
     scalar promptGenerationTime_;
-    
+
     //- Total effective delayed neutron fraction
     scalar beta_;
 
@@ -118,7 +136,7 @@ protected:
     scalarList precursorPowersOld_;
 
     // default precursor field. Only used for liquid fuel
-    volScalarField defaultPrec_;    
+    volScalarField defaultPrec_;
 
     //- Feedback coefficients in 1/K (i.e. 1e5 pcm/K)
     scalar coeffTFuel_;
@@ -131,7 +149,7 @@ protected:
     scalar coeffDrivelineExp_;
 
     //- Optional Boron reactivity curve
-    autoPtr<Function1<scalar>> boronReactivityPtr_;    
+    timeProfile boronReactivityTimeProfile_;
 
     //- Reference integral values for feedbacks
     scalar TFuelRef_;
@@ -148,6 +166,7 @@ protected:
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructOrig_;
     const volScalarField* powerDensityOrig_;
+    const volScalarField* powerDensityToLiquidOrig_;
 
     //- These have no use for now, will be needed by the liquidFuel version
     const volVectorField* UOrig_;
@@ -163,13 +182,13 @@ protected:
     volScalarField TStruct_; //- This is also used to compute TDriveline
 
     //- Also mapped, but these are autoPtr as these field are not needed at all
-    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
+    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
     //  these fields if they are actually needed
     autoPtr<volVectorField> UPtr_;
     autoPtr<volScalarField> alphaPtr_;
     autoPtr<volScalarField> alphatPtr_;
     autoPtr<volScalarField> muPtr_;
-    
+
     //- Fields derived from mapped fields
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
@@ -179,7 +198,7 @@ protected:
     volScalarField Dalbedo_;
     volScalarField fluxStarAlbedo_;
 
-    //- 
+    //-
     volScalarField oneGroupFlux_;
 
     //- Initial flux
@@ -201,16 +220,15 @@ protected:
     //- Delayed-group-wise precursor concentrations
     PtrList<volScalarField> precursors_;
 
-    //- Delayed-group-wise precursor concentrations resulting from point 
-    //  kinetics calculations with liquid fuel. This second set of fields is 
+    //- Delayed-group-wise precursor concentrations resulting from point
+    //  kinetics calculations with liquid fuel. This second set of fields is
     //  necessary because the unit for precursors in point kinetics is power,
     //   instead of 1/m3
     PtrList<volScalarField> precPK_;//reconstructed based on porosity
     PtrList<volScalarField> precPKStar_;//solved for
 
-
-    //- If true, fuel temperature feedback (Doppler) computed as 
-    //  deltaReactivity = -coeffFastDoppler*ln(TFuel/TFuelRef) with 
+    //- If true, fuel temperature feedback (Doppler) computed as
+    //  deltaReactivity = -coeffFastDoppler*ln(TFuel/TFuelRef) with
     //  coeffFastDoppler being the Doppler constant. If false, Doppler feedback
     //  computed as deltaReactivity = coeffTFuel*(TFuel-TFuelRef)
     bool fastNeutrons_;
@@ -223,7 +241,7 @@ protected:
     //  Indeed, the spatial extent of these marker fields should reflect
     //  the spatial extent of the domain that was perturbed in neutronics
     //  calculations to compute feedback coefficients
-    
+
     //- For TFuel and TCladding
     volScalarField fuelFeedbackCellField_;
 
@@ -236,7 +254,7 @@ protected:
     //- For the control rod driveline
     volScalarField drivelineFeedbackCellField_;
 
-    //- Pairs of control rod insertion value (in m w.r.t. a reference) vs 
+    //- Pairs of control rod insertion value (in m w.r.t. a reference) vs
     // reactivity in absolute units (i.e. 1e5 pcm)
     List<Pair<scalar>> controlRodReactivityMap_;
 
@@ -267,8 +285,8 @@ protected:
     //- Surface areas of the phiFaces_ (I cannot access fvMesh from polyMesh,
     //  which is the only mesh-related object I can access from the mapping,
     //  thus magSf needs to be computed by calling the faceArea() method
-    //  of polyMesh. To avoid that, I calculated the areas only once and 
-    //  store them in pgiMagSf_) 
+    //  of polyMesh. To avoid that, I calculated the areas only once and
+    //  store them in pgiMagSf_)
     scalarList phiMagSf_;
 
 private:
@@ -307,7 +325,7 @@ public:
         //- Used to set the *FeedbackCellField fields
         void setFeedbackCellField
         (
-            volScalarField& feedbackCellField, 
+            volScalarField& feedbackCellField,
             const word& keyword
         );
 
@@ -325,7 +343,7 @@ public:
         (
             const objectRegistry& src,
             const meshToMesh& neutroToFluid
-        );   
+        );
 
         //- Update local (i.e. on local neutronicMesh) instances of the Orig_
         //  fields defined on the (baffleless) thermalHydraulic mesh
@@ -338,7 +356,7 @@ public:
         virtual void correct
         (
             scalar& residual,
-            label couplingIter  
+            label couplingIter
         );
 
         //- To split strings. The file where I got this function originally
@@ -347,7 +365,7 @@ public:
         //  just a helper function such as this one, is tremendously
         //  un-elegant. I don't want the code structure to be spaghetti, so
         //  I am re-implementing the function here
-        
+
         //- The deliminter is a char, so it must be provided in single-
         //  quotation marks. Type can be either word or string
         template<class Type>

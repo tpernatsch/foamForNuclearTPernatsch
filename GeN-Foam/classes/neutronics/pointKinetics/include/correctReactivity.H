@@ -1,20 +1,20 @@
-scalar DopplerReactivity = 
+scalar DopplerReactivity =
     -coeffFastDoppler_*
     Foam::log(max(TFuelValue, SMALL)/max(TFuelRef_, SMALL));
 
-scalar TFuelReactivity = 
+scalar TFuelReactivity =
     coeffTFuel_*(TFuelValue - TFuelRef_);
 
-scalar TCladReactivity = 
+scalar TCladReactivity =
     coeffTClad_*(TCladValue - TCladRef_);
 
-scalar TCoolReactivity = 
+scalar TCoolReactivity =
     coeffTCool_*(TCoolValue - TCoolRef_);
 
-scalar rhoCoolReactivity = 
+scalar rhoCoolReactivity =
     coeffRhoCool_*(rhoCoolValue - rhoCoolRef_);
 
-scalar TStructReactivity = 
+scalar TStructReactivity =
     coeffTStruct_*(TStructValue - TStructRef_);
 
 scalar drivelineExpValue
@@ -29,19 +29,25 @@ scalar GEMReactivity(GEMLevelAndReactivity.second());
 
 (void) GEMSodiumLevel;
 
-scalar boronReactivity = 0.0;
-if(boronReactivityPtr_.valid())
-{
-    boronReactivity =
-        boronReactivityPtr_->value
-        (
-            mesh_.time().timeOutputValue()
-        );
-}
+//- External reactivity
+scalar t(mesh_.time().timeOutputValue());
+scalar externalReactivity = externalReactivityTimeProfile_.value(t);
+
+//- Boron reactivity
+scalar boronReactivity = boronReactivityTimeProfile_.value(t);
+// scalar boronReactivity = 0.0;
+// if(boronReactivityPtr_.valid())
+// {
+//     boronReactivity =
+//         boronReactivityPtr_->value
+//         (
+//             mesh_.time().timeOutputValue()
+//         );
+// }
 
 totalReactivity_ =
-        precEquilibriumReactivity_ 
-    +   externalReactivity_ 
+        precEquilibriumReactivity_
+    +   externalReactivity
     +   DopplerReactivity
     +   TFuelReactivity
     +   TCladReactivity
@@ -51,4 +57,3 @@ totalReactivity_ =
     +   drivelineReactivity
     +   GEMReactivity
     +   boronReactivity;
-    

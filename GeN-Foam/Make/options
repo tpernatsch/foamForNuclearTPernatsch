@@ -4,6 +4,7 @@ EXE_INC = \
     -I./main/include \
     -I./classes/thermalHydraulics/src/lnInclude \
     -I./classes/thermalHydraulics/solvers/lnInclude \
+    -I./classes/common/timeProfile \
     -I./classes/neutronics \
     -I./classes/neutronics/albedoSP3 \
     -I./classes/neutronics/include \

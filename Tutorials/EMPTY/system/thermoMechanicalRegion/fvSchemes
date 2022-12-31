@@ -1,16 +1,16 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
-|    \\/     M anipulation  |                                                 |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "system";
     object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -28,8 +28,8 @@ ddtSchemes
 gradSchemes
 {
     default         leastSquares;
-    grad(Disp)         leastSquares;
-    grad(Tmech)         leastSquares;
+    grad(Disp)      leastSquares;
+    grad(Tmech)     leastSquares;
 }
 
 divSchemes
@@ -38,12 +38,12 @@ divSchemes
     default         Gauss linear;
     div(sigmaD)     Gauss linear;
     div(fuelDisp)   Gauss upwind;
-    div(CRDisp)   Gauss upwind;
+    div(CRDisp)     Gauss upwind;
 }
 
 laplacianSchemes
 {
-    default        none;
+    default         none;
     laplacian(DD,D) Gauss linear corrected;
     laplacian(DT,T) Gauss linear corrected;
 }
@@ -61,9 +61,8 @@ snGradSchemes
 fluxRequired
 {
     default         no;
-    Disp               no;
-    Tmech               no;
+    Disp            no;
+    Tmech           no;
 }
-
 
 // ************************************************************************* //

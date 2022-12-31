@@ -14,7 +14,7 @@ if (decayPowerPtr_.valid())
 //- Update fissionPower_ and precursorPowers_ via actual pointKinetics model
 
 //- Update old time step values if time step has changed
-if(timeIndex_ != mesh_.time().timeIndex())
+if (timeIndex_ != mesh_.time().timeIndex())
 {
     timeIndex_ = mesh_.time().timeIndex();
     powerOld_ = power_;
@@ -32,7 +32,7 @@ SquareMatrix<scalar> A(n, 0.0);
 List<scalar> B(n, 0.0);
 List<scalar> x(n, 0.0);
 
-//- First line of matrix has the coefficients of the discretized power 
+//- First line of matrix has the coefficients of the discretized power
 //  differential equation, the first element of the solution vector is the
 //  power
 A[0][0] = 1.0/dt-(totalReactivity_-beta_)/promptGenerationTime_;
@@ -76,6 +76,8 @@ oneGroupFlux_.correctBoundaryConditions();
 scalar powerDensityScaleFactor = power_/powerOld_;
 powerDensity_ *= powerDensityScaleFactor;
 powerDensity_.correctBoundaryConditions();
+secondaryPowerDenisty_ *= powerDensityScaleFactor;
+secondaryPowerDenisty_.correctBoundaryConditions();
 
 //- Only possible to re-scale precursors if they were initially present,
 //  so I'm using a forAllIter rather than a for, as delayedGroups_ is not
@@ -99,14 +101,8 @@ forAllIter
 //- Write precursorPowers to reactorState
 if (TFuel_.mesh().time().write())
 {
+    reactorState_.set("pTarget", power_);
     reactorState_.set("precursorPowers", precursorPowers_);
-    reactorState_.regIOobject::writeObject
-    (
-        IOstream::ASCII,
-        //IOstream::currentVersion,
-        //reactorState_.time().writeCompression(),
-        true
-    );
 }
 
 Info << endl << "pointKinetics: " << endl;

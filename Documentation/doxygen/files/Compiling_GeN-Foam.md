@@ -9,3 +9,5 @@ GeN-Foam is built as a standard OpenFOAM solver, based on the www.openfoam.com d
 `./Allwmake`
 
 from the GeN-Foam source code folder. 
+
+Please notice that a new version of OpenFOAM is released by ESI/OpenCFD twice a year. It may take a few weeks for the developers to update GeN-Foam to a new OpenFOAM release.

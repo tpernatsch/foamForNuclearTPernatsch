@@ -1,3 +1,9 @@
+// Unfortunately, meshToMesh projection can have problems in the presence of baffles.
+// As a workaround, we allow (via the keyword "removeBaffles") the creation of a 
+// second thermalHydraulic mesh (fluidRegionNB) without baffles and over which
+// the original fields are copied cell by cell. If present, fluidRegionNB will have
+// its own set of fields, distinguished by the "NB" (No Baffle) expression in the name
+
 const word fluidRegionName("fluidRegion");
 Foam::fvMesh fluidMesh
 (

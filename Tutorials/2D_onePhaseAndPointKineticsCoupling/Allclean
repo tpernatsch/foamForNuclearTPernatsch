@@ -2,4 +2,5 @@
 rm -r steady*
 rm -r transient*
 rm *.log
-
+rm log.*
+rm *.out

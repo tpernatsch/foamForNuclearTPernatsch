@@ -1,26 +1,39 @@
 /*---------------------------------------------------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     |
-    \\  /    A nd           | Copyright held by original author
-     \\/     M anipulation  |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+|                                                                             |
+|    Built on OpenFOAM v2212                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is part of GeN-Foam.
 
-    OpenFOAM is free software; you can redistribute it and/or modify it
+    GeN-Foam is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the
     Free Software Foundation; either version 2 of the License, or (at your
     option) any later version.
 
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    GeN-Foam is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
 
+    This offering is not approved or endorsed by the OpenFOAM Foundation nor
+    OpenCFD Limited, producer and distributor of the OpenFOAM(R)software via
+    www.openfoam.com, and owner of the OPENFOAM(R) and OpenCFD(R) trademarks.
+
+    This particular snippet of code is developed according to the developer's
+    knowledge and experience in OpenFOAM. The users should be aware that
+    there is a chance of bugs in the code, though we've thoroughly test it.
+    The source code may not be in the OpenFOAM coding style, and it might not
+    be making use of inheritance of classes to full extent.
+
     You should have received a copy of the GNU General Public License
-    along with OpenFOAM; if not, write to the Free Software Foundation,
-    Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
 
@@ -63,10 +76,11 @@ Foam::neutronics::neutronics
         IOobject
         (
             "reactorState",
-            mesh_.time().constant(),
-            mesh_,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
+            mesh_.time().timeName(),
+            "uniform",
+            mesh_.time(),
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
         )
     ),
     keff_(reactorState_.lookupOrDefault("keff",1.0)),
@@ -76,6 +90,20 @@ Foam::neutronics::neutronics
         IOobject
         (
             "powerDensity",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower/dimVol, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    secondaryPowerDenisty_
+    (
+        IOobject
+        (
+            "secondaryPowerDenisty",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,
@@ -162,24 +190,24 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
 
 void Foam::neutronics::deformMesh
 (
-    const meshToMesh& TMToNeutro, 
+    const meshToMesh& TMToNeutro,
     const volVectorField& dispOrig
 )
 {
-    const volPointInterpolation& neutroMeshPointInterpolation = 
+    const volPointInterpolation& neutroMeshPointInterpolation =
         volPointInterpolation::New(mesh_);
 
-    tmp<pointVectorField> neutroPointsDisplacementOld = 
+    tmp<pointVectorField> neutroPointsDisplacementOld =
         neutroMeshPointInterpolation.interpolate(disp_);
 
     disp_ *= 0.0;
     TMToNeutro.mapSrcToTgt(dispOrig, plusEqOp<vector>(), disp_);
     disp_.correctBoundaryConditions();
 
-    tmp<pointVectorField> neutroPointsDisplacement = 
+    tmp<pointVectorField> neutroPointsDisplacement =
         neutroMeshPointInterpolation.interpolate(disp_);
 
-    tmp<pointField> displacedPoints = 
+    tmp<pointField> displacedPoints =
         mesh_.points()
     +   neutroPointsDisplacement->internalField()
     -   neutroPointsDisplacementOld->internalField();

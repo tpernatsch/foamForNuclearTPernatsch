@@ -7,7 +7,7 @@ const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransp
 //const bool integralPredictor = neutronTransport.lookupOrDefault("integralPredictor", false);
 //const bool implicitPredictor = neutronTransport.lookupOrDefault("implicitPredictor", false);
 //const bool aitkenAcceleration = neutronTransport.lookupOrDefault("aitkenAcceleration", false);
-const bool aitkenAccelerationEigenvalue = 
+const bool aitkenAccelerationEigenvalue =
     neutronTransport.lookupOrDefault("aitkenAccelerationEigenvalue", false);
 
 scalar neutronIterationResidual =
@@ -17,7 +17,7 @@ int maxNeutronIterations =
     neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
 scalar innToOutTolerance =
-    neutronTransport.lookupOrDefault<scalar>("innToOutTolerance", 0.01);    
+    neutronTransport.lookupOrDefault<scalar>("innToOutTolerance", 0.01);
 
 int maxInnerIter =
     neutronTransport.lookupOrDefault<int>("maxInnerIter", 3);
@@ -31,11 +31,11 @@ int maxInnerIter =
 if(aitkenAccelerationEigenvalue)
 {
     #include "aitkenAccelerationEigenvalue.H"
-}   
+}
 
 
 #include "updateScalarFluxes.H"
-scalar pTot(power()); 
+scalar pTot(power());
 #include "initializeNeutroSource.H"
 #include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
@@ -53,12 +53,12 @@ if(!eigenvalueNeutronics_ && couplingIter == 0)
     {
         #include "integralPredictor.H"
     }
-    if(implicitPredictor)   
+    if(implicitPredictor)
     {
         #include "implicitPredictor.H"
     }
 
-}   
+}
 */
 
 int neutroIter = 0;
@@ -77,11 +77,11 @@ do
     //#include "initializeNeutroSource.H"
     //#include "precEq.H"
     //#include "initializeDelayedNeutroSource.H"
-   
+
     neutroIter++;
 
-    Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: " 
-    << neutroIter << "): " << neutroResidual << endl << " after Aitken no: " << aitkenIterNo_ << endl;     
+    Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: "
+    << neutroIter << "): " << neutroResidual << endl << " after Aitken no: " << aitkenIterNo_ << endl;
 
 }while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
 
@@ -95,9 +95,12 @@ forAll(flux_,energyI)
 
 pTot = power();
 
-Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl; 
+Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl;
 
-powerDensity_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
+//- Determine power densities
+secondaryPowerDenisty_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
+powerDensity_ /= max(fuelFraction, SMALL) * (1.0 - fractionToSecondaryPower);
+
 
 
 if (eigenvalueNeutronics_)
@@ -112,13 +115,13 @@ if (eigenvalueNeutronics_)
     // Since a keff_ is a scalar, the value inside the dictionary is not updated at runTime automatically.
     // The line below resets the SCALAR IN THE DICTIONARY at runTime so that the dictionary is written with the updated value.
     reactorState_.set("keff", keff_);
-    reactorState_.regIOobject::writeObject
-    (
-        IOstream::ASCII,
-        IOstream::currentVersion,
-        reactorState_.time().writeCompression(),
-        true
-    );
+    // reactorState_.regIOobject::writeObject
+    // (
+    //     IOstream::ASCII,
+    //     IOstream::currentVersion,
+    //     reactorState_.time().writeCompression(),
+    //     true
+    // );
 
     #include "normFluxesSN.H"
 
@@ -127,7 +130,3 @@ if (eigenvalueNeutronics_)
 
 
 residual = max(residual,neutroResidual);
-
-
-
-

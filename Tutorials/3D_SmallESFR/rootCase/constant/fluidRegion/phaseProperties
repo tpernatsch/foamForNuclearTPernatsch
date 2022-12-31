@@ -1,16 +1,16 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Version:  6
-     \\/     M anipulation  |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "constant";
     object      phaseProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -48,7 +48,7 @@ structureProperties
         
     }
 
-    "innerCore:outerCore"
+    "innerCore"
     {
         volumeFraction      0.718520968;
         Dh                  0.00365;
@@ -56,6 +56,49 @@ structureProperties
         powerModel // power production model for the sub-scale structure
         {
             type                nuclearFuelPin;
+            
+            // The volumetricArea keyword is now deprecated for the
+            // nuclearFuelPin and heatedPin powerModels, as it can be shown
+            // that by averaging a cylindrical pin (or a bundle of pins) over
+            // a volume of any shape, the interfacialArea and volumeFraction
+            // of the resulting porous pin structure are not independent, yet
+            // are tied by volumetricArea = 2*volumeFraction/outerPinRadius
+            // volumetricArea      267.855;
+            powerDensity        0;  //- fields on disk have priority, if they
+                                    //  are not found, this value is used
+            fuelInnerRadius     0.0012;
+            fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     0.005365;
+            fuelMeshSize        30;
+            cladMeshSize        5;
+            fuelRho             10480;
+            fuelCp              250;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               668;
+            cladT               668;
+        }
+
+        passiveProperties // these are the properties of the metallic wrappers
+        {
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
+        }
+    }
+
+    "outerCore"
+    {
+        volumeFraction      0.718520968;
+        Dh                  0.00365;
+
+        powerModel // power production model for the sub-scale structure
+        {
+            type                nuclearFuelPinTest;
             
             // The volumetricArea keyword is now deprecated for the
             // nuclearFuelPin and heatedPin powerModels, as it can be shown
@@ -109,8 +152,7 @@ structureProperties
     "lowest" regime is extended to -inf and the upper bound of the "upmost"
     regime is extended to +inf
 
-    The twoParameter type is a 2-D regime map, tutorials will be eventually 
-    added on it.
+    The twoParameter type is a 2-D regime map.
 
     To use a regimeMap in a model, select the "byRegime" type for said model.
     All physicsModels support it. The name of the regime map to be used

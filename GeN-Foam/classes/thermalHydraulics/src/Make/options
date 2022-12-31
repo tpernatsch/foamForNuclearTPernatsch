@@ -1,4 +1,5 @@
 EXE_INC = \
+    -g \
     -I./.. \
     -I./include \
     -I./include/IOFieldField \
@@ -11,13 +12,17 @@ EXE_INC = \
     -I./phaseModels/structureModels/powerModels/fixedPower \
     -I./phaseModels/structureModels/powerModels/fixedTemperature \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPin \
+    -I./phaseModels/structureModels/powerModels/nuclearFuelPinTest \
+    -I./phaseModels/structureModels/powerModels/lumpedNuclearStructure \
     -I./phaseModels/structureModels/powerModels/heatedPin \
     -I./phaseModels/structureModels/powerOffCriterionModels/ \
     -I./phaseModels/structureModels/powerOffCriterionModels/fieldValue \
     -I./phaseModels/structureModels/powerOffCriterionModels/timer \
+    -I./phaseModels/structureModels/pump \
     -I./physicsModels/phasePairs \
     -I./physicsModels/turbulenceModels \
     -I./physicsModels/turbulenceModels/porousKEpsilon \
+    -I./physicsModels/turbulenceModels/porousKEpsilon2PhaseCorrected \
     -I./physicsModels/turbulenceModels/LaheyKEpsilon \
     -I./physicsModels/turbulenceModels/mixtureKEpsilon \
     -I./physicsModels/regimeMapModels \
@@ -69,21 +74,22 @@ EXE_INC = \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/subCooledBoilingFractionModels/SahaZuber \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Gorenflo \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Nusselt \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltAndWall \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/Shah \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/superpositionNucleateBoiling \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/superpositionNucleateBoiling \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoiling \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingTRACE \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingVapourTRACE \
     -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/multiRegimeBoilingTRACECHF \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/constantCHF \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/criticalHeatFluxModels/lookUpTableCHF \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/CHFModels/LeidenFrostTemperatureModels/GroeneveldStewart \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels/CachardLiquid \
-    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/postCHFModels/CachardVapour \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/constantCHF \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/criticalHeatFluxModels/lookUpTableCHF \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/LeidenFrostTemperatureModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/CHFModels/LeidenFrostTemperatureModels/GroeneveldStewart \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels/CachardLiquid \
+    -I./physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/subModels/postCHFModels/CachardVapour \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/Nusselt \
     -I./physicsModels/heatTransferModels/FFHeatTransferCoefficientModels/NoKazimi \
@@ -133,6 +139,7 @@ EXE_INC = \
     -I$(LIB_SRC)/sampling/lnInclude
 
 LIB_LIBS = \
+    -L$(FOAM_USER_LIBBIN) \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \
@@ -142,4 +149,4 @@ LIB_LIBS = \
     -lfiniteVolume \
     -lfvOptions \
     -lmeshTools \
-    -lsampling
+    -lsampling 

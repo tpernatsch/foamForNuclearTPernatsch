@@ -33,8 +33,9 @@ forAll(nuSigmaEff_,energyI)
                 BetaTot_[cellIglobal] = BetaTotList_[zone];
 
                 fuelFraction_[cellIglobal] = fuelFractionList_[zone];
+                secondaryPowerVolumeFraction_[cellIglobal] = secondaryPowerVolumeFractionList_[zone];
+                fractionToSecondaryPower_[cellIglobal] = fractionToSecondaryPowerList_[zone];
 
-                
             }
         }
     }
@@ -43,6 +44,8 @@ forAll(nuSigmaEff_,energyI)
     chiDelayed_[energyI].correctBoundaryConditions();
     BetaTot_.correctBoundaryConditions();
     fuelFraction_.correctBoundaryConditions();
+    secondaryPowerVolumeFraction_.correctBoundaryConditions();
+    fractionToSecondaryPower_.correctBoundaryConditions();
 }
  
 //- Check that XSs have been specified for all regions

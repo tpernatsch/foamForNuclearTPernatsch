@@ -10,7 +10,7 @@ scalar neutronIterationResidual =
 int maxNeutronIterations =
     neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
-scalar pTot(1.0); 
+scalar pTot(1.0);
 
 forAll(flux_,energyI)
 {
@@ -42,11 +42,11 @@ do
     #include "precEqAdjoint.H"
     #include "initialize_adjointFlux_chiD.H"
     #include "initializeDelayedNeutroSourceAdjoint.H"
-   
+
     neutroIter++;
 
-    Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: " 
-    << neutroIter << "): " << neutroResidual << endl;     
+    Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: "
+    << neutroIter << "): " << neutroResidual << endl;
 
 }while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
 
@@ -60,9 +60,12 @@ pTot = power();
 
 Info << "power: " << pTot << endl;
 
-Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl; 
+Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl;
 
-powerDensity_ /= max(fuelFraction,SMALL) ; //determine vol power IN the fuel
+//- Determine power densities
+secondaryPowerDenisty_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
+powerDensity_ /= max(fuelFraction, SMALL) * (1.0 - fractionToSecondaryPower);
+
 
 
 if (eigenvalueNeutronics_)
@@ -77,13 +80,13 @@ if (eigenvalueNeutronics_)
     // Since a keff_ is a scalar, the value inside the dictionary is not updated at runTime automatically.
     // The line below resets the SCALAR IN THE DICTIONARY at runTime so that the dictionary is written with the updated value.
     reactorState_.set("keff", keff_);
-    reactorState_.regIOobject::writeObject
-    (
-        IOstream::ASCII,
-        IOstream::currentVersion,
-        reactorState_.time().writeCompression(),
-        true
-    );
+    // reactorState_.regIOobject::writeObject
+    // (
+    //     IOstream::ASCII,
+    //     IOstream::currentVersion,
+    //     reactorState_.time().writeCompression(),
+    //     true
+    // );
 
     #include "normFluxes.H"
     xs_.adjustDiscFactors(fluxStar_);
@@ -100,4 +103,3 @@ forAll(flux_,energyI)
 #include "initializeNeutroSourceAdjoint.H"
 #include "initialize_adjointFlux_chiD.H"
 #include "initializeDelayedNeutroSourceAdjoint.H"
-

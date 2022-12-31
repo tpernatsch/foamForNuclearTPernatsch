@@ -160,11 +160,41 @@ Foam::XS::XS
         dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 1.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    secondaryPowerVolumeFraction_
+    (
+        IOobject
+        (
+            "secondaryPowerVolumeFraction",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 1.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    fractionToSecondaryPower_
+    (
+        IOobject
+        (
+            "fractionToSecondaryPower",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     discFactor_(energyGroups_),
     ScNo_(nuclearData_.lookupOrDefault("ScNo",1.0)),
     entries_(nuclearData_.lookup("zones")),
     zoneNumber_(entries_.size()),    
     fuelFractionList_(zoneNumber_),
+    secondaryPowerVolumeFractionList_(zoneNumber_),
+    fractionToSecondaryPowerList_(zoneNumber_),
     dfAdjustList_(zoneNumber_),
     discFactorList_(zoneNumber_),
     integralFluxList_(zoneNumber_),

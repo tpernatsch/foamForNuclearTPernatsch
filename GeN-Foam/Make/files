@@ -1,3 +1,5 @@
+classes/common/timeProfile/timeProfile.C
+
 classes/neutronics/neutronics.C
 classes/neutronics/XS/XS/XS.C
 classes/neutronics/XS/XSLowMem/XSLowMem.C

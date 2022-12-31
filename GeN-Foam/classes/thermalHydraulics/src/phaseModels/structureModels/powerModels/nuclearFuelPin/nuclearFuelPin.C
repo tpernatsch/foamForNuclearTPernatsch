@@ -1,22 +1,36 @@
 /*---------------------------------------------------------------------------*\
-  =========                 |
-  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
-   \\    /   O peration     | Website:  https://openfoam.org
-    \\  /    A nd           | Copyright (C) 2011-2018 OpenFOAM Foundation
-     \\/     M anipulation  |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+|                                                                             |
+|    Built on OpenFOAM v2212                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
-    This file is part of OpenFOAM.
+    This file is part of GeN-Foam.
 
-    OpenFOAM is free software: you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+    GeN-Foam is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
 
-    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    GeN-Foam is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
+
+    This offering is not approved or endorsed by the OpenFOAM Foundation nor
+    OpenCFD Limited, producer and distributor of the OpenFOAM(R)software via
+    www.openfoam.com, and owner of the OPENFOAM(R) and OpenCFD(R) trademarks.
+
+    This particular snippet of code is developed according to the developer's
+    knowledge and experience in OpenFOAM. The users should be aware that
+    there is a chance of bugs in the code, though we've thoroughly test it.
+    The source code may not be in the OpenFOAM coding style, and it might not
+    be making use of inheritance of classes to full extent.
 
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
@@ -49,7 +63,7 @@ namespace powerModels
 
 Foam::powerModels::nuclearFuelPin::nuclearFuelPin
 (
-    const structure& structureRef,
+    structure& structureRef,
     const dictionary& dicts
 )
 :
@@ -69,20 +83,6 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
             IOobject::AUTO_WRITE
         ),
         mesh_.cells().size()
-    ),
-    powerDensity_
-    (
-        IOobject
-        (
-            "powerDensity."+typeName,
-            mesh_.time().timeName(),
-            mesh_,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh_,
-        dimensionedScalar("powerDensity", dimPower/dimVol, 0.0),
-        zeroGradientFvPatchScalarField::typeName
     ),
     Tfi_
     (
@@ -172,6 +172,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     Tfmin_(1e69),
     Tcmax_(0),
     Tcmin_(1e69),
+    fractionOfPowerFromNeutronics_(0),
     fuelMeshSize_(0),//this->get<label>("fuelMeshSize")),
     cladMeshSize_(0),//this->get<label>("cladMeshSize")),
     meshSize_(0),
@@ -196,7 +197,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     gapHPowerDensityTable_(0),
     useGapHPowerDensityTable_(0)
 {   
-    structure_.setRegionField(*this, powerDensity_, "powerDensity");
+    structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensity");
 
     bool foundBoundaryTemperatures
     (
@@ -235,6 +236,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         regionIndexToRegionName_.append(region);
 
         //- Read region dict entries
+        scalar fractionOfPowerFromNeutronics(dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics",1.0));        
         scalar rfi(dict.get<scalar>("fuelInnerRadius"));
         scalar rfo(dict.get<scalar>("fuelOuterRadius"));
         scalar rci(dict.get<scalar>("cladInnerRadius"));
@@ -330,6 +332,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         );
 
         //- Fill in lists for this region
+        fractionOfPowerFromNeutronics_.append(fractionOfPowerFromNeutronics), 
         fuelMeshSize_.append(fuelMeshSize);
         cladMeshSize_.append(cladMeshSize);
         meshSize_.append(meshSize);
@@ -465,10 +468,11 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                 scalar rfo(rfo_[regioni]);
                 scalar rci(rci_[regioni]);
                 scalar rco(rco_[regioni]);
+                scalar fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
                 bool hollowFuel(hollowFuel_[regioni]);
 
                 Trad_.set(celli, new Field<scalar>(meshSize_[regioni], 0));
-                scalar q = powerDensity_[celli];
+                scalar q = structure_.powerDensityNeutronics()[celli] * fractionOfPowerFromNeutronics;
                 scalar tfi = Tfi_[celli];
                 scalar tfo = Tfo_[celli];
                 scalar tci = Tci_[celli];
@@ -577,6 +581,10 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
             Tcmax_
         );
 
+        // Update average fuel and clad temp used for coupling
+        this->structureRef().TFuelAv()[celli] = Tfav_[celli];
+        this->structureRef().TCladAv()[celli] = Tcav_[celli];
+
         //- This is for updating the global averages, not the local cell ones!
         const scalar& dV(V[celli]);
         totV += dV;
@@ -678,6 +686,7 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     const scalar& HSumi
 )
 {
+ 
     //-
     scalarField& Trad(Trad_[celli]);
 
@@ -694,9 +703,13 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
     const scalar& kc(kc_[regioni]);
     const scalar& rfo(rfo_[regioni]);
     const scalar& rci(rci_[regioni]);
+    const scalar& fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
     
     const scalarField& TOld = Trad_.oldTime()[celli];
-    const scalar& q(powerDensity_[celli]);
+
+    //- Update power density
+    const scalar& qRef(structure_.powerDensityNeutronics()[celli]);
+    scalar q = qRef * fractionOfPowerFromNeutronics;
 
     scalar gapH
     (
@@ -838,6 +851,10 @@ Foam::powerModels::nuclearFuelPin::updateLocalTemperatureProfile
         Tcmin_,
         Tcmax_
     );
+
+    // Update average fuel and clad temp used for coupling
+    this->structureRef().TFuelAv()[celli] = Tfav_[celli];
+    this->structureRef().TCladAv()[celli] = Tcav_[celli];
 
     /*
     //- Check energy conservation via linear power comparison (analytic

@@ -193,14 +193,15 @@
     E1Eqn -= structure_.linearizedSemiImplicitHeatSource(fluid1_, H1s)();
     E2Eqn -= structure_.linearizedSemiImplicitHeatSource(fluid2_, H2s)();
 
-    //- Add additional sources deposited directly in the fluids, if any
-    if (fluid1_.powerDensityPtr().valid())
+    //- Add additional sources deposited directly in the fluids, only if
+    //  they are liquid
+    if (fluid1_.isLiquid())
     {
-        E1Eqn -= fluid1_.powerDensity();
+        E1Eqn -= alpha1 * fluid1_.powerDensity();
     }
-    if (fluid2_.powerDensityPtr().valid())
+    if (fluid2_.isLiquid())
     {
-        E2Eqn -= fluid2_.powerDensity();
+        E2Eqn -= alpha2 * fluid2_.powerDensity();
     }
 
     //- Add stabilization sources so that the temperatures will tend to their

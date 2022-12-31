@@ -1,9 +1,10 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2.2.1                                 |
-|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
-|    \\/     M anipulation  |                                                 |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -31,32 +32,34 @@ solvers
         nCellsInCoarsestLevel 50;
         agglomerator    faceAreaPair;
         mergeLevels     1;
-	processorAgglomerator masterCoarsest; 
+	processorAgglomerator masterCoarsest;
 */
     }
+
     "fuelDisp"
     {
-
         solver          PBiCG;
         preconditioner  DILU;
         tolerance       1e-6;
         relTol          0.001;
     }
+
     "CRDisp"
     {
-
         solver          PBiCG;
         preconditioner  DILU;
         tolerance       1e-6;
         relTol          0.001;
     }
 }
+
 stressAnalysis
 {
     compactNormalStress yes;
-    nCorrectors     3;
-    D               1e-06;
+    nCorrectors         3;
+    D                   1e-06;
 }
+
 relaxationFactors
 {
     fields
@@ -64,4 +67,5 @@ relaxationFactors
 	   disp 0.99;
     }
 }
+
 // ************************************************************************* //
