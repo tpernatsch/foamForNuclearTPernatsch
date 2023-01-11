@@ -93,8 +93,7 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
         mesh_,
         dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    ),
-    temperatureNameFromFMU_("temperatureCoupled")
+    )
 {
     this->setInterfacialArea();
     structure_.setRegionField(*this, T_, "T");
@@ -109,7 +108,8 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
         word temperatureKeyFromFMU("temperatureNameFromFMU");
         if (dict.found(temperatureKeyFromFMU))
         {
-            temperatureNameFromFMU_ = dict.get<word>(temperatureKeyFromFMU);
+            const word temperatureNameFromFMU = dict.get<word>(temperatureKeyFromFMU);
+
             // Communicating with the FMU
             const Time& runTime = this->db().time();
             commDataLayer& data = commDataLayer::New(runTime); 
@@ -117,13 +117,12 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
             // in the dictionary      
             data.storeObj(
                 dict.get<scalar>("T"),
-                temperatureNameFromFMU_,
+                temperatureNameFromFMU,
                 commDataLayer::causality::in
-                );
+            );
             Info << "Using FMUs for the temperature in " << dict.dictName() << endl;
         }
     }
-
 }
 
 
@@ -139,14 +138,19 @@ void Foam::powerModels::fixedTemperatureFMU::temperatureUpdate() const
 {
     forAll(this->toc(), regioni)
     {
+        word region(this->toc()[regioni]);
+        const dictionary& dict(this->subDict(region));
+        
+        word temperatureKeyFromFMU("temperatureNameFromFMU");
+        const word temperatureNameFromFMU = dict.get<word>(temperatureKeyFromFMU);
+
         // Communicating with the FMU
         const Time& runTime = this->db().time();
         commDataLayer& data = commDataLayer::New(runTime);
         const scalar temperatureFromFMU =
-            data.getObj<scalar>(temperatureNameFromFMU_,commDataLayer::causality::in);
+            data.getObj<scalar>(temperatureNameFromFMU,commDataLayer::causality::in);
         
         //- Setup cellToRegion_ mapping
-        word region(this->toc()[regioni]);
         const labelList& regionCells
         (
             structure_.cellLists()[region]
@@ -156,8 +160,7 @@ void Foam::powerModels::fixedTemperatureFMU::temperatureUpdate() const
         {
             label celli(regionCells[i]);
             T_[celli] =  temperatureFromFMU;
-        }          
-
+        }
     }
 }
 
