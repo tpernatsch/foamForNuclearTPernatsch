@@ -26,6 +26,9 @@ GeN-Foam/*.includes
 # Sublime Text 3 files
 GeN-Foam/*.sublime*
 
+# VSCode setup folder
+.vscode
+
 # All compilation files
 **/linux64*
 **/lnInclude*
