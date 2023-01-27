@@ -87,9 +87,6 @@ protected :
     //- Surface temperature
     mutable volScalarField T_;
 
-    //- Name of temperature from FMU
-    word temperatureNameFromFMU_;
-
 public:
 
     //- Runtime type information

@@ -12,6 +12,7 @@
 	* [Thermal-hydraulics](@ref TH)
 	* [Thermal-mechanics](@ref TM)
 	* [Coupling and time stepping](@ref COUPLING)
+	* [FMU](@ref FMU)
 
 
 * [Tutorials](@ref TUTORIALS)
