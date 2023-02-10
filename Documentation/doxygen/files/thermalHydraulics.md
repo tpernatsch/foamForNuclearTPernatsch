@@ -60,7 +60,8 @@ One can find detailed, commented examples in the tutorials
 	<LI> Modified Engel (see *modifiedEngelFSDragCoefficient.H*)
 	<LI> No Kazimi (see *NoKazimiFSDragCoefficient.H*)
 	<LI> Rehme (see *RehmeFSDragCoefficient.H*)
-	<LI> Drag coefficient as a A*Re^B (see *ReynoldsPowerFSDragCoefficient.H*)
+	<LI> Drag coefficient as a A*Re^B+C (see *ReynoldsPowerFSDragCoefficient.H*)
+	<LI> Drag coefficient as a (A*log10(Re)+B)^C (see *ColebrookFSDragCoefficient.H*)
 	</UL>	
 <LI> Two-phase drag multipliers	(see *twoPhaseDragMultiplierModel.H*)
 	<UL>
