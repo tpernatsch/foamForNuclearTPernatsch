@@ -52,8 +52,8 @@ DNeutroRad.replace(2,DNeutroRad.component(2)*(1-axialOrientation_[2]));
 DNeutroRad.correctBoundaryConditions();
 DNeutroAx.correctBoundaryConditions();
 
-volScalarField radExp = fvc::div(DNeutroRad)/2.0;
-volScalarField axExp = fvc::grad(DNeutroAx)& axialOrientation_;
+volScalarField radExp(fvc::div(DNeutroRad)/2.0);
+volScalarField axExp(fvc::grad(DNeutroAx)& axialOrientation_);
 
 radExp.correctBoundaryConditions();
 axExp.correctBoundaryConditions();

@@ -26,8 +26,8 @@ if (!implicitPartialElimination)
 
     //- Fields required either way, whether doing explicit Partial Elimination
     //  or not
-    volScalarField rAUKd1 = rAU1*Kd12;
-    volScalarField rAUKd2 = rAU2*Kd12;
+    volScalarField rAUKd1(rAU1*Kd12);
+    volScalarField rAUKd2(rAU2*Kd12);
     surfaceScalarField rAUKdf1(fvc::interpolate(rAUKd1));
     surfaceScalarField rAUKdf2(fvc::interpolate(rAUKd2));
 
@@ -173,12 +173,16 @@ if (!implicitPartialElimination)
                 }
                 else
                 {
-                    volVectorField Us1 = 
+                    volVectorField Us1
+                    ( 
                         HbyA1 
-                    +   fvc::reconstruct(alpharAUf1*mSfGradp + phiSbyA1);
-                    volVectorField Us2 = 
+                    +   fvc::reconstruct(alpharAUf1*mSfGradp + phiSbyA1)
+                    );
+                    volVectorField Us2
+                    ( 
                         HbyA2 
-                    +   fvc::reconstruct(alpharAUf2*mSfGradp + phiSbyA2);
+                    +   fvc::reconstruct(alpharAUf2*mSfGradp + phiSbyA2)
+                    );
 
                     if (explicitPartialElimination)
                     {

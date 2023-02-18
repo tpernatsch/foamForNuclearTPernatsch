@@ -47,7 +47,7 @@ License
 
 //- From forward declarations
 #include "structure.H"
-#include "commDataLayer.H"
+//#include "commDataLayer.H"
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam

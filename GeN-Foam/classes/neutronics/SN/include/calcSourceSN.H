@@ -16,7 +16,7 @@ forAll(sigmaFromToTempEJEI,momentL)
 // Calc intra-group source
 PtrList<volScalarField> intraSources(discreteDirections_);
 
-volScalarField isotropicIntraSource = flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToTempEJEI[0][energyI]);
+volScalarField isotropicIntraSource(flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ + sigmaFromToTempEJEI[0][energyI]));
 //isotropicIntraSource = flux_[energyI] * (nuSigmaEff[energyI] * chiPrompt[energyI] * (1 - BetaTot) / keff_ );
 
 
@@ -28,7 +28,7 @@ forAll(angularFlux_[energyI], directionI)
 
 if (xs_.legendreMoments() > 1)
 {   
-    volScalarField intraSourceScatteringCoeff = nuSigmaEff[energyI]*0.0; 
+    volScalarField intraSourceScatteringCoeff(nuSigmaEff[energyI]*0.0); 
     forAll(angularFlux_[energyI], directionI)
     {
         forAll(angularFlux_[energyI], directionJ)
@@ -47,7 +47,7 @@ if (xs_.legendreMoments() > 1)
 // Calc extra-group source
 PtrList<volScalarField> extraSources(discreteDirections_);
 
-volScalarField isotropicExtraSource = isotropicIntraSource * 0.0;
+volScalarField isotropicExtraSource(isotropicIntraSource * 0.0);
 
 
 forAll(flux_, energyJ)
@@ -68,7 +68,7 @@ forAll(angularFlux_[energyI], directionI)
 
 if (xs_.legendreMoments() > 1)
 {
-    volScalarField extraSourceScatteringCoeff = nuSigmaEff[energyI]*0.0; 
+    volScalarField extraSourceScatteringCoeff(nuSigmaEff[energyI]*0.0); 
     forAll(flux_, energyJ)
     {
         if (energyJ != energyI && xs_.sigmaFromToYesNo()[energyJ][energyI])
