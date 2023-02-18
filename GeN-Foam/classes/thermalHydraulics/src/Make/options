@@ -1,5 +1,4 @@
 EXE_INC = \
-    -g \
     -I./.. \
     -I./include \
     -I./include/IOFieldField \
@@ -37,6 +36,7 @@ EXE_INC = \
     -I./physicsModels/dragModels/FSDragCoefficientModels \
     -I./physicsModels/dragModels/FSDragCoefficientModels/BaxiDalleDonne \
     -I./physicsModels/dragModels/FSDragCoefficientModels/Churchill \
+    -I./physicsModels/dragModels/FSDragCoefficientModels/Colebrook \
     -I./physicsModels/dragModels/FSDragCoefficientModels/Engel \
     -I./physicsModels/dragModels/FSDragCoefficientModels/modifiedEngel \
     -I./physicsModels/dragModels/FSDragCoefficientModels/NoKazimi \
@@ -149,4 +149,4 @@ LIB_LIBS = \
     -lfiniteVolume \
     -lfvOptions \
     -lmeshTools \
-    -lsampling 
+    -lsampling

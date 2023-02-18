@@ -1,4 +1,3 @@
-
 # Thermal-hydraulics {#TH}
 
 ## Introduction
@@ -60,7 +59,8 @@ One can find detailed, commented examples in the tutorials
 	<LI> Modified Engel (see *modifiedEngelFSDragCoefficient.H*)
 	<LI> No Kazimi (see *NoKazimiFSDragCoefficient.H*)
 	<LI> Rehme (see *RehmeFSDragCoefficient.H*)
-	<LI> Drag coefficient as a A*Re^B (see *ReynoldsPowerFSDragCoefficient.H*)
+	<LI> Drag coefficient as a A*Re^B+C (see *ReynoldsPowerFSDragCoefficient.H*)
+	<LI> Drag coefficient as a (A*log10(Re)+B)^C (see *ColebrookFSDragCoefficient.H*)
 	</UL>	
 <LI> Two-phase drag multipliers	(see *twoPhaseDragMultiplierModel.H*)
 	<UL>
@@ -274,12 +274,39 @@ For the power generated in the fluid itself:
 <LI> The thermal-hydraulics solver will normally use the *powerDensity* field that it finds in the 0 (or *startTime*) folder.
 <LI> One can override this behavior by using the *initialPowerDensity* keyword in the *phaseProperties* (see [1D_MSR_pointKinetics](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_MSR_pointKinetics/rootCase/constant/fluidRegion/phaseProperties)) for an example. Also in this case the field in the 0 (or *startTime*) folder, this will take priority.
 </UL>
-If neutronics if activated, the neutronic sub-solver will overwrite everything with the power it calculates. For eigenvalue calculations, this power is set in the *pTarget* keyword in the *reactorState* dictionary. For transients, the power is a result of calculations. There is one important exception to this behavior: the point kinetics solver will only rescale the power density that it finds in *neutroRegion*, or, if it does not find it, the one that it finds in *fluidRegion*. The rescaled power density will be written to both *neutroRegion* and *fluidRegion*. For point kinetics, the *pTarget* keyword in *reactorState* is not used by the solver itslef. However, to correctly plot point kinetics results, pTarget must be consistent with the mentioned power densities.
-NB: The power density defined in *powerDensity.nuclearFuelPin* for pin-based reactors refers to the power density inside the fuel matrix.
-NB2: The *fuelFraction* in *nuclearData* is used to translate the volume-average power density that is normally calculated by neutronics solvers into the fuel-averaged power density used by the thermal-hydraulic sub-solver. 
+If neutronics if activated, the neutronic sub-solver will overwrite everything with the power it calculates. For eigenvalue calculations, this power is set in the *pTarget* keyword in the *reactorState* dictionary. For transients, the power is a result of calculations. There is one important exception to this behavior: the point kinetics solver will only rescale the power densities (see below about why plural) that it finds in *neutroRegion*, or, if it does not find it, the one(s) that it finds in *fluidRegion*. The rescaled power density will be written to both *neutroRegion* and *fluidRegion*. For point kinetics, the *pTarget* keyword in *reactorState* is not used by the solver itslef. However, to correctly plot point kinetics results, pTarget must be consistent with the mentioned power densities.
 <p>
-N.B.: In two-phase simulations with liquid fuel, the powerDensity in neutronics goes to anything that is liquid in thermal-hydraulics. You are supposed to have one liquid and one gas. Otherwise, power will be counted twice.
+NB: In two-phase simulations with liquid fuel, the powerDensity in neutronics goes to anything that is liquid in thermal-hydraulics. You are supposed to have one liquid and one gas. Otherwise, power will be counted twice.
 </div>
+
+<br>
+
+<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<b>Power densities and secondary power densities, and liquid fuel</b>
+
+The spatial neutronics solvers always create a *powerDensity* and a *secondaryPowerDensity* fields. By default, *secondaryPowerDensity* is set to zero and the *fuelFraction* keyword in *nuclearData* is used to translate the volume-average power density that is normally calculated by multiplying cross-sections and fluxes into the fuel-averaged power density that is needed by the thermal-hydraulic sub-solver
+<br><br> However, a *secondaryPowerDensity* might sometimes be needed. It might be used to provide some power to the coolant in a solid-fuel reactor and, more important, to provide some power to the graphite in a liquid-fuel reactor. In order to calculate a *secondaryPowerDensity*, GeN-Foam needs to know how much of the total power goes into the *secondaryPowerDensity*, and what is the volume fraction of the secondary power-producing structure or liquid. This can be done by using the *fractionToSecondaryPower* and *secondaryPowerVolumeFraction* keywords in each cellZone in nuclearData (the same place as *fuelFraction*). If these keywords are present, GeN-Foam will calculate power densities as follows:
+<UL>
+<LI> secondaryPowerDenisty_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
+<LI> powerDensity_ /= max(fuelFraction, SMALL) * (1.0 - fractionToSecondaryPower);
+</UL>
+When the *liquidFuel* flag is set to false, the thermal-hydraulic sub-solver will:
+<UL>
+<LI> take the *powerDensity* field from neutronics and project it to its own *powerDensityNeutronics* field;
+<LI> take the *secondaryPowerDensity* field from neutronics and project it to its own *powerDensityNeutronicsToLiquid* field.
+</UL>
+When the *liquidFuel* flag is set to true, the thermal-hydraulic sub-solver will:
+<UL>
+<LI> take the *powerDensity* field from neutronics and project it to its own *powerDensityNeutronicsToLiquid* field;
+<LI> take the *secondaryPowerDensity* field from neutronics and project it to its own *powerDensityNeutronics* field.
+</UL>
+When point kinetics is used, the solver will simply rescale the *powerDensity* and *secondaryPowerDensity* it finds, and the thermal-hydraulic solver will take them depending on the *liquidFuel* flag as described above. The only exception is when *liquidFuel* is true and the *initialPowerDensity* keyword is used. In this case, *initialPowerDensity* will take priority and this is the value that GeN-Foam will rescale and print to the powerDensityToLqiuid
+
+
+NB1: The power densities in the thermal-hydraulic sub-solver are ALWAYS the physical ones: for instance, when the *nuclearFuelPin* model is used for pin-based reactors, *powerDensity* refers to the power density inside the fuel matrix. For liquid fuel, the *powerDensity* is the power density in the liquid. They are not the power densities smeared over the whole volume.
+
+</div>
+
 
 ## Discretization and solution
 

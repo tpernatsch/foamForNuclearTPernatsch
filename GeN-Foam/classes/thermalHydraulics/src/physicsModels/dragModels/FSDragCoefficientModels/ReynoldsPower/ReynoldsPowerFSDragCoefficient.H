@@ -39,7 +39,7 @@ Class
     Foam::FSDragCoefficientModels::ReynoldsPower
 
 Description
-    Drag coefficient in the form fd = coeff*Re^exp with 
+    Drag coefficient in the form fd = coeff*Re^exp + const with 
     Kd = 0.5*fd*alpha*rho*magU/Dh
 
     Example of mandatory dictionary entries (with this coefficients, this 
@@ -50,7 +50,7 @@ Description
     \endverbatim
 
 SourceFiles
-    ReynoldsPower.C
+    ReynoldsPowerFSDragCoefficient.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -83,6 +83,8 @@ private:
     scalar coeff_;
 
     scalar exp_;
+
+    scalar const_;
 
 public:
 

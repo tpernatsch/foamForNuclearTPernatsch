@@ -5,7 +5,7 @@ if (xs_.legendreMoments() > 1)
 {
     forAll(angularFlux_[energyI], directionJ)
     {
-        volScalarField intraSourceScatteringCoeff = nuSigmaEff[energyI]*0.0; 
+        volScalarField intraSourceScatteringCoeff(nuSigmaEff[energyI]*0.0); 
         for(int momentL = 1; momentL < xs_.legendreMoments(); momentL++)
         {
                 scalar scatteringCoeff = legendreMatrices_[momentL][directionJ][directionI] * (2.0 * momentL + 1.0);

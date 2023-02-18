@@ -7,10 +7,13 @@ forAll(flux_,energyI)
     #include "calcScatteringSourceAdjoint.H"
     adjointFlux_chiP_ -= chiPrompt[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_);
 
-    fvMatrix<scalar> neutroEq  = neutroEqList[energyI]
+    fvMatrix<scalar> neutroEq
+    (
+      neutroEqList[energyI]
       - adjointFlux_chiP_*(1.0-BetaTot)*nuSigmaEff[energyI]/keff_
       - 1/keff_*nuSigmaEff[energyI]*adjointPrec_beta_
-      - scatteringSourceExtra_ ;
+      - scatteringSourceExtra_ 
+    );
 
 
     scalar initRes = neutroEq.solve().max().initialResidual();

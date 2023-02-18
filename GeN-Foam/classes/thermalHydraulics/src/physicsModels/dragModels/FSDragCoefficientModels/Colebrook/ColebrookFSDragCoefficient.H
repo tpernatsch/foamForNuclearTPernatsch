@@ -35,59 +35,92 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
+Class
+    Foam::FSDragCoefficientModels::Colebrook
+
+Description
+    Drag coefficient in the form fd = (coeff*log10(Re) + const)^exp with 
+    Kd = 0.5*fd*alpha*rho*magU/Dh
+
+    Example of mandatory dictionary entries (with this coefficients, this 
+    is the Filonenko correlation):
+    \verbatim
+    coeff   1.82;
+    const   -1.64;
+    exp     2.0;
+    \endverbatim
+
+    Author: 
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+
+SourceFiles
+    ColebrookFSDragCoefficient.C
+
 \*---------------------------------------------------------------------------*/
 
-#include "FSPair.H"
-#include "ReynoldsPowerFSDragCoefficient.H"
-#include "addToRunTimeSelectionTable.H"
+#ifndef Colebrook_H
+#define Colebrook_H
 
-// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
+#include "FSDragCoefficientModel.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
+
+//- Forward declarations
+class FSPair;
+
 namespace FSDragCoefficientModels
 {
-    defineTypeNameAndDebug(ReynoldsPower, 0);
-    addToRunTimeSelectionTable
-    (
-        FSDragCoefficientModel, 
-        ReynoldsPower, 
-        FSDragCoefficientModels
-    );
-}
-}
 
+/*---------------------------------------------------------------------------*\
+                           Class Colebrook Declaration
+\*---------------------------------------------------------------------------*/
 
-// * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
-
-Foam::FSDragCoefficientModels::ReynoldsPower::ReynoldsPower
-(
-    const FSPair& pair,
-    const dictionary& dict,
-    const objectRegistry& objReg
-)
+class Colebrook
 :
-    FSDragCoefficientModel
-    (
-        pair,
-        dict,
-        objReg
-    ),
-    coeff_(dict.get<scalar>("coeff")),
-    exp_(dict.get<scalar>("exp")),
-    const_(dict.lookupOrDefault<scalar>("const", 0.0))
-{}
-
-
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-Foam::scalar Foam::FSDragCoefficientModels::ReynoldsPower::value
-(
-    const label& celli
-) const
+    public FSDragCoefficientModel
 {
-    const scalar& Rei(Re(celli));
-    return coeff_*pow(Rei, exp_) + const_;
-}
+private:
+
+    scalar coeff_;
+
+    scalar const_;
+
+    scalar exp_;
+
+public:
+
+    TypeName("Colebrook");
+
+    //- Constructors
+
+        //- Construct for a fluid-structure pair
+        Colebrook
+        (
+            const FSPair& pair,
+            const dictionary& dict,
+            const objectRegistry& objReg
+        );
+
+        //- Destructor
+        virtual ~Colebrook(){}
+
+
+    //- Member Functions
+
+        //- Drag coefficient
+        virtual scalar value(const label& celli) const;
+};
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace FSDragCoefficientModels
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
 
 // ************************************************************************* //

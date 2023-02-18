@@ -38,7 +38,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
-#include "ReynoldsPowerFSDragCoefficient.H"
+#include "ColebrookFSDragCoefficient.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -47,11 +47,11 @@ namespace Foam
 {
 namespace FSDragCoefficientModels
 {
-    defineTypeNameAndDebug(ReynoldsPower, 0);
+    defineTypeNameAndDebug(Colebrook, 0);
     addToRunTimeSelectionTable
     (
         FSDragCoefficientModel, 
-        ReynoldsPower, 
+        Colebrook, 
         FSDragCoefficientModels
     );
 }
@@ -60,7 +60,7 @@ namespace FSDragCoefficientModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::FSDragCoefficientModels::ReynoldsPower::ReynoldsPower
+Foam::FSDragCoefficientModels::Colebrook::Colebrook
 (
     const FSPair& pair,
     const dictionary& dict,
@@ -74,20 +74,22 @@ Foam::FSDragCoefficientModels::ReynoldsPower::ReynoldsPower
         objReg
     ),
     coeff_(dict.get<scalar>("coeff")),
-    exp_(dict.get<scalar>("exp")),
-    const_(dict.lookupOrDefault<scalar>("const", 0.0))
+    const_(dict.get<scalar>("const")),
+    exp_(dict.get<scalar>("exp"))
 {}
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar Foam::FSDragCoefficientModels::ReynoldsPower::value
+Foam::scalar Foam::FSDragCoefficientModels::Colebrook::value
 (
     const label& celli
 ) const
 {
     const scalar& Rei(Re(celli));
-    return coeff_*pow(Rei, exp_) + const_;
+    return(
+        pow(coeff_ * log10(Rei) + const_, exp_)
+    );
 }
 
 // ************************************************************************* //

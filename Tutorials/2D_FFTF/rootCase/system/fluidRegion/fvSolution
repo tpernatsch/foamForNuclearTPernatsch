@@ -69,7 +69,7 @@ PIMPLE
         h
         {
             tolerance       1e-06;
-            relTol          0;
+            relTol          0.01;
         }
         k
         {
@@ -83,16 +83,16 @@ relaxationFactors
 {
     equations
     {
-        h               0.8;
-        hFinal          0.8;
+        h               0.5;
+        hFinal          0.5;
 
-        U               0.8;
-        UFinal          0.8;
-        p_rgh           0.8;
-        p_rghFinal      0.8;
+        U               0.5;
+        UFinal          0.5;
+        p_rgh           0.5;
+        p_rghFinal      0.5;
 
-        "epsilon.*"     0.8;
-        "k.*"           0.8;
+        "epsilon.*"     0.6;
+        "k.*"           0.6;
     }
     fields
     {

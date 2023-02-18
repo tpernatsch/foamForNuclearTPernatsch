@@ -13,12 +13,15 @@ forAll(flux_,energyI)
 
     #include "calcScatteringSource.H"
 
-    fvMatrix<scalar> neutroEq  = neutroEqList[energyI]
+    fvMatrix<scalar> neutroEq
+    (
+      neutroEqList[energyI]
       - neutroSource_*(1.0-BetaTot)*chiPrompt[energyI]/keff_
       - delayedNeutroSource_*chiDelayed[energyI]
       - scatteringSourceExtra_
-      - (sigmaDisapp[energyI]*(fluxStar2_[energyI]/discFactor[energyI])*2.0) ;
-      - fvc::ddt((1-eigenvalueNeutronics_)*IV[energyI]/discFactor[energyI],fluxStar2_[energyI])*2.0 ;
+      - (sigmaDisapp[energyI]*(fluxStar2_[energyI]/discFactor[energyI])*2.0) 
+      - fvc::ddt((1-eigenvalueNeutronics_)*IV[energyI]/discFactor[energyI],fluxStar2_[energyI])*2.0 
+    );
 
     scalar initRes = neutroEq.solve().max().initialResidual();
     neutroResidual = max(neutroResidual,initRes);

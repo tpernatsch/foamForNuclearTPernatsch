@@ -24,7 +24,7 @@ auto solveAlpha = [&]
     scalar rDeltaT
 )
 {
-    surfaceScalarField alphaPhic = 
+    surfaceScalarField alphaPhic 
     (
         fvc::flux(phi_, solveFluid, "div(phi,alpha)")
     +   fvc::flux
@@ -136,7 +136,7 @@ auto solveAlphas = [&](scalar rDeltaT)
     //  equivalent to writing 
     //  fvc::flux(fluid1_.phi(), alpha1, "div(phi,alpha)"), but written 
     //  this way it enhances numerical stability
-    surfaceScalarField alphaPhic1 = 
+    surfaceScalarField alphaPhic1 
     (
         fvc::flux(phi_, alpha1, "div(phi,alpha)")
     +   fvc::flux
@@ -218,7 +218,7 @@ auto solveAlphas = [&](scalar rDeltaT)
     
     //- Do the same exact things that have been done above, yet do it for
     //  fluid 2
-    surfaceScalarField alphaPhic2 =
+    surfaceScalarField alphaPhic2
     (
         fvc::flux(phi_, alpha2, "div(phi,alpha)")
     +   fvc::flux
