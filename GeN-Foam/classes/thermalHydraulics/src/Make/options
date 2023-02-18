@@ -1,6 +1,4 @@
 EXE_INC = \
-    -fsanitize=undefined \
-    -g \
     -I./.. \
     -I./include \
     -I./include/IOFieldField \
@@ -141,7 +139,6 @@ EXE_INC = \
     -I$(LIB_SRC)/sampling/lnInclude
 
 LIB_LIBS = \
-    -fsanitize=undefined \
     -L$(FOAM_USER_LIBBIN) \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \

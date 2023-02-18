@@ -267,22 +267,21 @@ do
 
         # check that reactivities are correct
         reactivityDoppler=$(grep -e "-> Doppler" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityDoppler is $reactivityDoppler . It should be 237.1212  \n" >> ../$resFile
+        printf "reactivityDoppler is $reactivityDoppler . It should be 237.0728  \n" >> ../$resFile
         reactivityClad=$(grep -e "-> TClad" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityClad is $reactivityClad . It should be 0.8156143    \n" >> ../$resFile
+        printf "reactivityClad is $reactivityClad . It should be 0.8198844    \n" >> ../$resFile
         reactivityDensity=$(grep -e "-> rhoCool" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityDensity is $reactivityDensity . It should be -2.789199   \n" >> ../$resFile
+        printf "reactivityDensity is $reactivityDensity . It should be -2.525069    \n" >> ../$resFile
         reactivityStructures=$(grep -e "-> TStruct" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityStructures is $reactivityStructures . It should be -1.10996   \n" >> ../$resFile
+        printf "reactivityStructures is $reactivityStructures . It should be -1.017622    \n" >> ../$resFile
         reactivityDriveline=$(grep -e "-> driveline" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityDriveline is $reactivityDriveline . It should be -8.96642  \n" >> ../$resFile
+        printf "reactivityDriveline is $reactivityDriveline . It should be -8.631667  \n" >> ../$resFile
         reactivityGEM=$(grep -e "-> GEM" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "reactivityGEM is $reactivityGEM . It should be -464.8488  \n" >> ../$resFile
+        printf "reactivityGEM is $reactivityGEM . It should be -464.8497  \n" >> ../$resFile
         totalPower=$(grep -e "totalPower" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-        printf "totalPower is $totalPower . It should be 29388.48 \n" >> ../$resFile
+        printf "totalPower is $totalPower . It should be 29490.49  \n" >> ../$resFile
         cd ..
         ;;
-
 
     "2D_MSFR")
         printf "Running tutorial $tutorialName...\n"
