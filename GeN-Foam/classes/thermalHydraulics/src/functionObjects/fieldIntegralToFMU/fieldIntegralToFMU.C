@@ -36,14 +36,14 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 \*---------------------------------------------------------------------------*/
-
-#if __has_include("commDataLayer.H") 
-#include "commDataLayer.H"
-#define isCommDataLayerIncluded
+#if defined __has_include
+#  if __has_include(<commDataLayer.H>) 
+#    include <commDataLayer.H>
+#    define isCommDataLayerIncluded
+#  endif
 #endif
 
 #ifdef isCommDataLayerIncluded
-
 
 #include "fieldIntegralToFMU.H"
 #include "addToRunTimeSelectionTable.H"
