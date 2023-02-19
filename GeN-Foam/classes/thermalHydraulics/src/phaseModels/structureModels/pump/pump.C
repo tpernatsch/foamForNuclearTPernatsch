@@ -37,10 +37,11 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-
-#if __has_include("commDataLayer.H") 
-#include "commDataLayer.H"
-#define isCommDataLayerIncluded
+#if defined __has_include
+#  if __has_include(<commDataLayer.H>) 
+#    include <commDataLayer.H>
+#    define isCommDataLayerIncluded
+#  endif
 #endif
 
 #include "pump.H"
