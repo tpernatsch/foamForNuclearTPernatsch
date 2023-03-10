@@ -189,7 +189,7 @@ protected:
     labelList nodeMatrix_;
 
     //- Thermal conductivity for matrix node (only one matrix structure)
-    scalarList k_;
+    scalarList thermalConductivity_;
 
     //- Heat conductances between nodes (including first and last 
     //  "half" resitances)
