@@ -1,0 +1,41 @@
+First of all, you have to install an old version of conan. Nothing works with 2.x
+pip install oftest conan==1.58.0
+
+Now clone the repository
+git clone https://github.com/DLR-RY/FMU4FOAM.git
+
+The, before running build-ECI4FOAM.sh, remove Allwmake and cd .. from build-ECI4FOAM.sh. 
+The reason is that the Allwmake will fail because of a couple of files that do not
+compile on new OF versions.
+
+Now run build-ECI4FOAM.sh
+
+Remove:
+$(inputBC)/coupledWallHeatFluxTemperature/coupledWallHeatFluxTemperatureFvPatchScalarField.C
+and
+$(output)/extForces/extForces.C
+from
+~/data/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/Make/files
+
+Enter the ECI4FOAM and finally do the Allwmake
+
+Get to the root folder of FMU4FOAM
+cd ..
+
+Do the
+./Allwmake
+
+Finally:
+pip install fmu4foam
+pip install OMSimulator
+pip install pythonfmu
+
+To test:
+cd examples/heatedRoom
+
+./Allrun
+
+
+
+
+
