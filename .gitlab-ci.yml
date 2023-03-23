@@ -390,7 +390,7 @@ pages:
       - public
 
   rules:
-  #  - if: $CI_COMMIT_BRANCH == "develop"
+      - if: $CI_COMMIT_BRANCH == "develop"
 
 
 #==============================================================================*

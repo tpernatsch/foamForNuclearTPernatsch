@@ -2,8 +2,8 @@
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
-#tutorials=" 2D_FFTF " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
+#tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN 3D_gFHR"
+tutorials=" 3D_gFHR " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
 rm regressionResults
 touch regressionResults
 resFile="./regressionResults"
@@ -410,13 +410,43 @@ do
             printf "$tutorialName has NOT converged \n"  >> ../$resFile
         fi
 
-        # check that keff for esfr steady State is ~0.980106
+        # check that keff is ~0.980106
         keff=$(foamDictionary ./20/uniform/reactorState -entry keff -value)
         printf "keff is $keff . It should be 0.980106  \n" >> ../$resFile
 
         cd ..
 
         ;;
+        
+    "3D_gFHR")
+        printf "Running tutorial $tutorialName...\n"
+        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
+        cd $tutorialName
+        ./Allrun
+        printf "Done running tutorial $tutorialName...\n"
+
+        # check it ran
+        endStringNSSP=$(tail -3 ./steadyStateNSSP/log.GeN-Foam | grep End)
+        if [ "$endStringNSSP" = "End" ]; then
+            printf "Steady state of $tutorialName with nuclearSteadyStatePebble has converged \n"  >> ../$resFile
+        else
+            printf "Steady state of $tutorialName with nuclearSteadyStatePebble has NOT converged \n"  >> ../$resFile
+        fi
+        endStringLPS=$(tail -3 ./steadyStateLPS/log.GeN-Foam | grep End)
+        if [ "$endStringLPS" = "End" ]; then
+            printf "Steady state  of $tutorialName with lumpedParameterStructure has converged \n"  >> ../$resFile
+        else
+            printf "Steady state of $tutorialName with lumpedParameterStructure has NOT converged \n"  >> ../$resFile
+        fi
+
+        # check that max temperatures in the triso is correct
+        maxT=$(grep "T.nuclearSteadyStatePebble.Tfmax" ./steadyStateNSSP/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        printf "Max temperatures (avg min max) in trisos are \n $maxT . They should be ~ \n 981.808 \n 900.664 \n 1062.87 ">> ../$resFile
+
+        cd ..
+
+        ;;
+        
     esac
 
 
