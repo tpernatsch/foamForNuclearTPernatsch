@@ -1,3 +1,4 @@
+//- Temperature and density feedbacks
 scalar DopplerReactivity =
     -coeffFastDoppler_*
     Foam::log(max(TFuelValue, SMALL)/max(TFuelRef_, SMALL));
@@ -17,12 +18,14 @@ scalar rhoCoolReactivity =
 scalar TStructReactivity =
     coeffTStruct_*(TStructValue - TStructRef_);
 
+//- Driveline reactivity
 scalar drivelineExpValue
 (
     coeffDrivelineExp_*(TDrivelineValue - TDrivelineRef_)
 );
 scalar drivelineReactivity(calcDrivelineReactivity(drivelineExpValue));
 
+//- GEM reactivity
 Pair<scalar> GEMLevelAndReactivity(calcGEMLevelAndReactivity());
 scalar GEMSodiumLevel(GEMLevelAndReactivity.first());
 scalar GEMReactivity(GEMLevelAndReactivity.second());
@@ -35,16 +38,8 @@ scalar externalReactivity = externalReactivityTimeProfile_.value(t);
 
 //- Boron reactivity
 scalar boronReactivity = boronReactivityTimeProfile_.value(t);
-// scalar boronReactivity = 0.0;
-// if(boronReactivityPtr_.valid())
-// {
-//     boronReactivity =
-//         boronReactivityPtr_->value
-//         (
-//             mesh_.time().timeOutputValue()
-//         );
-// }
 
+//- Update total reactivity
 totalReactivity_ =
         precEquilibriumReactivity_
     +   externalReactivity
