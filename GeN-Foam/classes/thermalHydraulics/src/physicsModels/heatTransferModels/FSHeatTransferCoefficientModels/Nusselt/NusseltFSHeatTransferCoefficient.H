@@ -43,10 +43,10 @@ Description
     starting from the Nusselt, which is turn obtained via correlation in the
     form 
 
-    Nu = A_+B_*(Re^C_)*(Pr^D_)
+    Nu = A_+B_*(Re^C_)*(Pr^D_)*((Tw/Tb)^E_)
 
-    with Re, Pr being the Reynolds (superficial in two-phase) and Prandlt
-    of the fluid, and A, B, C, D selectable consts
+    with Re, Pr being the Reynolds (superficial in two-phase) and Prandtl
+    of the fluid, and A, B, C, D, E selectable consts.
 
     Example of mandatory dictionary entries:
     \verbatim
@@ -56,8 +56,21 @@ Description
         expPr   0.8;
     \endverbatim
 
+    Example using wall/fluid temperature ratio from:
+    Walton 1992, (10) Wolf-McCarthy II
+    Nu = 0.023 * Re^0.8 * Pr^0.4 * (Tw/Tb)^(-0.3)
+    with Re = [7800; 1.55e6] and Tw/Tb = [1.5; 2.8]
+    \verbatim
+        const   0;
+        coeff   0.023;
+        expRe   0.8;
+        expPr   0.4;
+        expTc   -0.3;
+    \endverbatim
+
     Authors:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 SourceFiles
     NusseltFSHeatTransferCoefficient.C
@@ -99,11 +112,18 @@ private:
     //- Ref to characteristic dimension of pair
     const volScalarField& Dh_;
 
-    //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)
+    //- Ref to structure wall temperature
+    const volScalarField& Twall_;
+ 
+    //- Ref to fluid temperature
+    const volScalarField& Tfluid_;
+
+    //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)*(Twall/Tfluid)^(E_)
     const scalar A_;
     const scalar B_;
     const scalar C_;
     const scalar D_;
+    const scalar E_;
 
     //- If C_ == D_, no need to do pow(Re, C_)*pow(Pr, D_), you can just do
     //  pow(Re*Pr, C_) which is faster. Re*Pr = Pe (Peclet)
