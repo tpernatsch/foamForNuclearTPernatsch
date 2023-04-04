@@ -36,6 +36,27 @@ scalar GEMReactivity(GEMLevelAndReactivity.second());
 scalar t(mesh_.time().timeOutputValue());
 scalar externalReactivity = externalReactivityTimeProfile_.value(t);
 
+//- FMU
+scalar externalReactivityFromFMU(0.0);
+#ifdef isCommDataLayerIncluded
+
+word externalReactivityKeyFromFMU("externalReactivityNameFromFMU");
+if (nuclearData_.found(externalReactivityKeyFromFMU))
+{
+    const word externalReactivityNameFromFMU = nuclearData_.get<word>(externalReactivityKeyFromFMU);
+
+    // Communicating with the FMU
+    const Time& runTime = this->db().time();
+    commDataLayer& data = commDataLayer::New(runTime);
+    externalReactivityFromFMU = data.getObj<scalar>(
+        externalReactivityNameFromFMU,
+        commDataLayer::causality::in
+    );
+}
+
+#endif // isCommDataLayerIncluded
+
+
 //- Boron reactivity
 scalar boronReactivity = boronReactivityTimeProfile_.value(t);
 
@@ -43,6 +64,7 @@ scalar boronReactivity = boronReactivityTimeProfile_.value(t);
 totalReactivity_ =
         precEquilibriumReactivity_
     +   externalReactivity
+    +   externalReactivityFromFMU
     +   DopplerReactivity
     +   TFuelReactivity
     +   TCladReactivity
