@@ -57,3 +57,4 @@ Tutorials/**/steadyState*
 Tutorials/**/transient*
 Tutorials/**/GeN-Foam.dat
 Tutorials/**/log.*
+!**/2D_*

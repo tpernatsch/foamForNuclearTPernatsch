@@ -110,7 +110,6 @@ Foam::externalIOObject::fieldIntegralToFMU::fieldIntegralToFMU
 
 bool Foam::externalIOObject::fieldIntegralToFMU::read(const dictionary& dict)
 {
-
     commDataLayer& data = commDataLayer::New(time_);
 
     data.storeObj(0.0,nameFMU_,commDataLayer::causality::out);
@@ -122,15 +121,20 @@ bool Foam::externalIOObject::fieldIntegralToFMU::execute()
 {
     commDataLayer& data = commDataLayer::New(time_);
     
-    scalar& result = data.getObj<scalar>(nameFMU_,commDataLayer::causality::out);
+    scalar& result = data.getObj<scalar>(
+        nameFMU_, 
+        commDataLayer::causality::out
+    );
 
-    const volScalarField& field = mesh_.lookupObject<volScalarField>(fieldName_);
+    const volScalarField& field = mesh_.lookupObject<volScalarField>(
+        fieldName_
+    );
 
     label cellZoneID = mesh_.cellZones().findZoneID(cellZone_);
     const cellZone& tgtCellZone = mesh_.cellZones()[cellZoneID];
 
-    scalarField fieldZone(field,tgtCellZone);
-    scalarField  volZone(mesh_.V(),tgtCellZone);
+    scalarField fieldZone(field, tgtCellZone);
+    scalarField volZone(mesh_.V(), tgtCellZone);
 
     result = gSum(fieldZone * volZone);
 

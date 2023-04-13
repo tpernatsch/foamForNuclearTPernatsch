@@ -100,7 +100,7 @@ class fieldIntegralToFMU
     // public fvMeshFunctionObject  //This would also work
     // but one would have to put the functionObject in
     // the controlDict instead of the externalCouplingDict
-    // which goes agaist the logif of FMU4FOAM  
+    // which goes against the logic of FMU4FOAM  
 {
 public: 
 

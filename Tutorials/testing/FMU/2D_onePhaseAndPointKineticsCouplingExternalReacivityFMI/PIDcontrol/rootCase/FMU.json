@@ -1,0 +1,12 @@
+{
+    "mapping": [
+        ["gfExtReact", "externalReactivity"],
+        ["gfPower", "power"]
+    ],
+    "from_OF": {
+        "gfPower": "REAL"
+    },
+    "to_OF": {
+        "gfExtReact": "REAL"
+    }
+}
