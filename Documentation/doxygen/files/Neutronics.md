@@ -99,7 +99,7 @@ In addition to the standard OpenFOAM BC, an albedo boundary condition (see *albe
 
 ```
 	type            albedoSP3;
-	gamma		0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
+	gamma			0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
 	diffCoeffName	Dalbedo;  //not to be changed
 	fluxStarAlbedo  fluxStarAlbedo; //not to be changed
 	forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 calculations)

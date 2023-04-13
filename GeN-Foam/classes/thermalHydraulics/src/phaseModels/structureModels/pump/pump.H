@@ -46,6 +46,34 @@ Description
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com), 
     Carlo Fiorina for the FMU part
 
+Usage
+    Example of mandatory dictionary entries:
+    \verbatim
+        volumeFraction      0.5;
+        Dh                  1;
+        momentumSource      (0 0 1000);
+    \endverbatim
+
+    Example of time dependant momentum source scaling entries:
+    \verbatim
+        momentumSourceTimeProfile
+        {
+            type        table;
+            startTime   100;
+            table       table
+            (
+                //- <Time>  <Momentum source scaling factor> 
+                (   0       1   )
+                (   1       0.1 )
+            );
+        }
+    \endverbatim
+
+    Example of entries for scaling source coming from FMUs:
+    \verbatim
+        pumpMultiplierNameFromFMU   momentumSourceCoupled;
+    \endverbatim
+
 SourceFiles
     pump.C
 

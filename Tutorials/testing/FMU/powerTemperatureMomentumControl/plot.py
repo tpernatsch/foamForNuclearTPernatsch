@@ -38,6 +38,7 @@ data = pd.read_csv("momentumSourceTest.csv")
 
 time = data["time"]
 momentumSource = data["model.root.system1.momentumModelica"]
+# desiredMomentumSource = data['model.root.system1.ramp.y']
 power = data["model.root.system1.power"]
 # desiredPower = data["model.root.system1.pi.SP"]
 
@@ -51,6 +52,7 @@ power = data["model.root.system1.power"]
 # plt.plot(time, desiredPowerScaled, '--', label='normalized desired power')
 #plt.plot(time, momentumSourceScaled, label='normalized momentumSource variation')
 plt.plot(timesLog, mFlowRatesScaled, label='normalized momentumSource variation')
+# plt.plot(time, desiredMomentumSource, label='normalized momentumSource variation')
 
 plt.xlabel("Time [s]")
 plt.ylabel("Normalized variation")

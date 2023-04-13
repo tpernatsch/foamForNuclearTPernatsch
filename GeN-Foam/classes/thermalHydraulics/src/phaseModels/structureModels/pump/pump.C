@@ -48,7 +48,7 @@ License
 
 //- From forward declarations
 #include "structure.H"
-//#include "commDataLayer.H"
+
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
@@ -124,7 +124,7 @@ Foam::pump::pump
             scalar(1.0),
             pumpMultiplierNameFromFMU_,
             commDataLayer::causality::in
-            );
+        );
         fromFMU_ = true;
 
         Info << "Using FMUs for the pump in " << dict.dictName() << endl;
@@ -163,7 +163,6 @@ void Foam::pump::correct
             data.getObj<scalar>(pumpMultiplierNameFromFMU_,commDataLayer::causality::in);
         //update the vector field by adjusting the magnitude
         pumpValue = pumpValue_ * pumpMultiplierFromFMU;
-      
     }
     #endif
     forAll(cellList_, i)

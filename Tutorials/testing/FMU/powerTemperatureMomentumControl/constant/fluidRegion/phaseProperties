@@ -62,8 +62,8 @@ structureProperties
 
         momentumSource     (0 0 12900);
         pumpMultiplierNameFromFMU   momentumSourceCoupled;
-        pumpDirection      (0 0 1);
-        momentumSourceInit   12900;
+        // pumpDirection      (0 0 1);
+        // momentumSourceInit   12900;
         
 
       /*  momentumSourceTimeProfile
