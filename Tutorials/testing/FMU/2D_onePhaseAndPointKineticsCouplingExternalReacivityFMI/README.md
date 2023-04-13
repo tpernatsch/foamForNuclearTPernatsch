@@ -10,7 +10,7 @@ It uses the point-kinetics sub-solver with an additional reactivity
 contribution comming from an FMU.
 
 To link an FMU with a reactivity control, it is required to add the 
-following line in [nuclearData](rootCase/constant/neutroRegion/nuclearData).
+following line in [nuclearData](PIDcontrol/rootCase/constant/neutroRegion/nuclearData).
 
 ```
 externalReactivityNameFromFMU   gfExtReact;
