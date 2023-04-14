@@ -46,22 +46,22 @@ Usage
     \verbatim
     fieldIntegralToFMU
     {
-        type fieldIntegralToFMU;
-        nameFMU hxPowerOut;
-        fieldName heatFlux.structure;
-        region     fluidRegion;
-        cellZone hx;
+        type        fieldIntegralToFMU;
+        nameFMU     hxPowerOut;
+        fieldName   heatFlux.structure;
+        region      fluidRegion;
+        cellZone    hx;
     }  
     \endverbatim
 
     where the entries mean:
     \table
-      Property     | Description                   | Type | Req'd | Dflt
-      type         | Type name: fieldIntegralToFMU       | word |  yes  | -
-      nameFMU     | name of the output scalar    | word |  yes  | -
-      fieldName     | name of the measurement field | word |  yes  | -
-      region      | name of the region         | word |  yes  | -
-      cellZone      | position of the cellZone        | word |  yes  | -
+      Property  | Description                   | Type | Req'd | Dflt
+      type      | Type name: fieldIntegralToFMU | word |  yes  | -
+      nameFMU   | name of the output scalar     | word |  yes  | -
+      fieldName | name of the measurement field | word |  yes  | -
+      region    | name of the region            | word |  yes  | -
+      cellZone  | position of the cellZone      | word |  yes  | -
     \endtable
 
 SourceFiles
@@ -100,7 +100,7 @@ class fieldIntegralToFMU
     // public fvMeshFunctionObject  //This would also work
     // but one would have to put the functionObject in
     // the controlDict instead of the externalCouplingDict
-    // which goes agaist the logif of FMU4FOAM  
+    // which goes against the logic of FMU4FOAM  
 {
 public: 
 

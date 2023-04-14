@@ -37,10 +37,21 @@ License
 
 \*---------------------------------------------------------------------------*/
 
+#if defined __has_include
+#  if __has_include(<commDataLayer.H>) 
+#    include <commDataLayer.H>
+#    define isCommDataLayerIncluded
+#  endif
+#endif
+
 #include "pointKineticNeutronics.H"
 #include "zeroGradientFvPatchFields.H"
 #include "addToRunTimeSelectionTable.H"
 #include "coordinateSystem.H"
+
+#ifdef isCommDataLayerIncluded
+#include "commDataLayer.H"
+#endif
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -835,6 +846,38 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             }
         }
     }
+
+    //- FMU communication
+    #ifdef isCommDataLayerIncluded
+
+    //- Set external reactivity control
+    word externalReactivityKeyFromFMU("externalReactivityNameFromFMU");
+    if (nuclearData_.found(externalReactivityKeyFromFMU))
+    {
+        const word externalReactivityNameFromFMU = nuclearData_.get<word>(
+            externalReactivityKeyFromFMU
+        );
+
+        Info << "GeN-Foam FMI input name: " << externalReactivityNameFromFMU 
+            << endl;
+
+        // Communicating with the FMU
+        const Time& runTime = this->db().time();
+        commDataLayer& data = commDataLayer::New(runTime); 
+        // Store in data layer and set its initial value to the T 
+        // in the dictionary
+        data.storeObj(
+            0.0, // dict.get<scalar>("initialValue"),
+            externalReactivityNameFromFMU,
+            commDataLayer::causality::in
+        );
+        Info << "Using FMUs for the external reactivity of the point-kinetics "
+            << "sub-solver." 
+            << endl;
+    }
+
+    #endif // isCommDataLayerIncluded
+
 
     //- Some notes on modelling choices, for clarity
     Info<< "The pointKinetics neutronics model currently computes average "

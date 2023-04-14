@@ -1,7 +1,8 @@
 
- ##### 3D_gFHR  ###### 
+##### 3D_gFHR  ###### 
 Steady state of 3D_gFHR with nuclearSteadyStatePebble has converged 
 Steady state  of 3D_gFHR with lumpedParameterStructure has converged 
 Max temperatures in trisos are is 981.808 
 900.664 
 1062.87  . They should be ~ 981.808 900.664 1062.87 
+

@@ -100,7 +100,6 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
     this->setInterfacialArea();
     structure_.setRegionField(*this, T_, "T");
 
-
     forAll(this->toc(), regioni)
     {
         word region(this->toc()[regioni]);
@@ -115,10 +114,17 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
             // Communicating with the FMU
             const Time& runTime = this->db().time();
             commDataLayer& data = commDataLayer::New(runTime); 
+
+            //- Compute the average value of the temperature field
+            label cellZoneID = mesh_.cellZones().findZoneID(region);
+            const cellZone& tgtCellZone = mesh_.cellZones()[cellZoneID];
+            scalarField fieldZone(T_, tgtCellZone);
+            scalar Tavg = gAverage(fieldZone);
+
             // Store in data layer and set its initial value to the T 
-            // in the dictionary      
+            // in the dictionary 
             data.storeObj(
-                dict.get<scalar>("T"),
+                Tavg, // dict.get<scalar>("T"),
                 temperatureNameFromFMU,
                 commDataLayer::causality::in
             );

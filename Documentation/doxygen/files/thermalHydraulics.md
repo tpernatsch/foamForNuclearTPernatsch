@@ -85,7 +85,7 @@ One can find detailed, commented examples in the tutorials
 	</UL>	
 <LI> Fluid-structure heat-tranfer models (see FSHeatTransferCoefficientModel.H)
 	<UL>
-	<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_) (see *NusseltFSHeatTransferCoefficient.H*)
+	<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_)*((Tw/Tb)^E_) (see *NusseltFSHeatTransferCoefficient.H*)
 	<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_), plus and additional heat transfer coefficient to take into account the resistance of a wall, such that  H = Nu * kappa / Dh + H_wall (see *NusseltAndWallFSHeatTransferCoefficient.H*)
 	<LI>  Shah (see *ShahFSHeatTransferCoefficient.H*)
 	<LI>  Gorenflo (see *GorenfloFSHeatTransferCoefficient.H*)

@@ -42,7 +42,67 @@ Group
     none
 
 Description
-    Run-time selectable point-kinetic based neutronics solver
+    Run-time selectable point-kinetic based neutronics solver. It includes 
+    options to for a time dependent external reactivity, and an external 
+    reactivity input coming from an FMU.
+
+    Example of mandatory dictionary entries:
+    \verbatim
+        fastNeutrons    true;
+        promptGenerationTime 1e-06; // [s]
+        Beta
+        ( 
+            7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05 
+        );
+        lambda // [1/s]
+        (
+            0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817 
+        );
+        feedbackCoeffFastDoppler    0; // [-]
+        feedbackCoeffTFuel          0; // [1/K]
+        feedbackCoeffTClad          0; // [1/K]
+        feedbackCoeffTCool          0; // [1/K]
+        feedbackCoeffRhoCool        0; // [1/(kg/m3)]
+        feedbackCoeffTStruct        0; // [1/K]
+        absoluteDrivelineExpansionCoeff 0.0; // [m/K]
+        controlRodReactivityMap 
+        ( 
+            ( 0.1   -0.01   ) 
+            ( 0     0       ) 
+            ( -0.1  0.01    ) 
+        );
+    \endverbatim
+
+    Example of time dependant source entries:
+    \verbatim
+        //- Optional time dependant external reactivity time profile
+        externalReactivityTimeProfile
+        {
+            type        table;
+            startTime   100;
+            table       table
+            (
+                (   0   0)
+                (   1   0.0005767131    ) //- i.e. 57.67131 pcm
+            );
+        }
+
+        //- Optional time dependant boron reactivity time profile
+        boronReactivityTimeProfile
+        {
+            type        table;
+            table       table
+            (
+                (   100   0   )
+                (   101   1e-5   )
+            );
+        }
+    \endverbatim
+
+    Optional external reactivity input from FMU
+    \verbatim
+        externalReactivityNameFromFMU   gfExtReact;
+    \endverbatim
 
     Author of this file (and associated .C or included .H files): 
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>

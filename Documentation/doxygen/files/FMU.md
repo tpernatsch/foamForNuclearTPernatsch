@@ -6,7 +6,7 @@ GeN-Foam provides several interface points to communicate with [Functional Mock-
 ## Compiling
 
 To use the FMI coupling interface in GeN-Foam, the user have to install the [FMU4FOAM](https://github.com/DLR-RY/FMU4FOAM) project developed by the DLR using the following commands:
-```
+```bash
 cd GeN-Foam
 git clone https://github.com/DLR-RY/FMU4FOAM.git
 cd FMU4FOAM/
@@ -16,8 +16,80 @@ cd FMU4FOAM/
 Then the GeN-Foam project can be build as usual.
 
 
+## Features
+
+In this section, a list of FMI inputs/outputs in GeN-Foam is provided with a link to each class.
+
+### Inputs from FMUs
+
+| Feature | Location |
+|:--------|:---------|
+| Momentum source | [GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/pump](GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/pump) |
+| Fix-temperature structure | [GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperatureFMU](GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperatureFMU) |
+| External reactivity in the point-kinetics solver | [GeN-Foam/classes/neutronics/pointKineticsfixedTemperatureFMU](GeN-Foam/classes/neutronics/pointKinetics) |
+| Additional heat transfer coefficient in serie | [GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU](GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU) |
+
+
+### Outputs to FMUs:
+
+| Feature | Location |
+|:--------|:---------|
+| External sensor | FMU4FOAM |
+| Field integral over a cellZone | [GeN-Foam/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU](GeN-Foam/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU) |
+
+
 ## Potential Issues
 
-Make sure that: 
-- `-I./../../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude` has been added to `EXE_INC` in [GeN-Foam/classes/thermalHydraulics/src/Make/options](GeN-Foam/classes/thermalHydraulics/src/Make/options).
-- `-lexternalComm` has been added to `LIB_LIBS` in [GeN-Foam/classes/thermalHydraulics/src/Make/options](GeN-Foam/classes/thermalHydraulics/src/Make/options).
+Make sure that `-I./*/FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude` and `-lexternalComm` have been uncommented in:
+- [GeN-Foam/Make/options](GeN-Foam/Make/options)
+- [GeN-Foam/classes/thermalHydraulics/src/Make/options](GeN-Foam/classes/thermalHydraulics/src/Make/options)
+
+
+# How to install FMU4FOAM with the latest OpenFOAM versions
+
+First of all, you have to install an old version of **conan**. Nothing works with 2.x
+```
+pip install oftest conan==1.58.0
+```
+
+Now clone the repository:
+```bash
+git clone https://github.com/DLR-RY/FMU4FOAM.git
+```
+
+Before running `build-ECI4FOAM.sh`, remove `Allwmake` and `cd ..` from `build-ECI4FOAM.sh` at the end of the script. 
+The reason is that the `Allwmake` will fail because of a couple of files that do not compile on new OF versions.
+
+Now run: 
+```bash
+./build-ECI4FOAM.sh
+```
+
+Remove:
+`$(inputBC)/coupledWallHeatFluxTemperature/coupledWallHeatFluxTemperatureFvPatchScalarField.C`
+and
+`$(output)/extForces/extForces.C`
+from
+`FMU4FOAM/ECI4FOAM/src/externalComm/Make/files`
+
+Enter the `ECI4FOAM` and finally do the `Allwmake`
+
+Get to the root folder of FMU4FOAM
+```bash
+cd ..
+```
+
+Run `./Allwmake`
+
+Finally:
+```bash
+pip install fmu4foam
+pip install OMSimulator
+pip install pythonfmu
+```
+
+To test:
+```bash
+cd examples/heatedRoom
+./Allrun
+```
