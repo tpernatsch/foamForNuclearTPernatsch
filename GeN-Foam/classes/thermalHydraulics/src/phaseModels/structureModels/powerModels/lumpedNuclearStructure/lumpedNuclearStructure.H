@@ -40,22 +40,24 @@ Class
 
 Description
     Model for representing a lumped-parameter structure characterized
-    by a user selectable number of nodes.
+    by a user selectable number of nodes (indicated below as T[]).
     \verbatim
     Tmax            T[0]           T[1]          T[n-1]         Tsurface      
       | --- H[0] --- | --- H[1] --- | --- H[2] --- |  --- H[n] --- |  
     \endverbatim
     Note that only T[] are state variables while Tmax and Tsurface can
     be found after matrix solution.
-    Note also that one needs n+1 conductances when solvinf for n nodes
+    Note also that one needs n+1 conductances when solving for n nodes
     The equation in the class can be obtained starting from a simple
     energy balance for the ith node:
+    \verbatim
     V_i*rho_i*cp_i * dT/dt = 
     V_i*Q_i + H[i](T_(i-1) - T_i) - H[i+1](T_(i) - T_(i+1)
+    \endverbatim
     and dividing all terms by the volume of the structure.
     This means that the heat conductances  should be calculated as 
     the power flowing between two nodes divided by the diffence in 
-    temperatures at steadystate, abd divided by the volume of the 
+    temperatures at steady state, and divided by the volume of the 
     structure. 
     Zero-gradient BCs are used at the inner boundary and convective
     BCs are used at the external boundary (in contact with the coolant)
