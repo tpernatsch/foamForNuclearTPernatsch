@@ -381,7 +381,7 @@ pages:
 
   script:
   - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update && apt-get -y install doxygen graphviz texlive-bibtex-extra 
+  - apt-get update && apt-get -y install doxygen graphviz texlive-bibtex-extra texlive-latex-extra perl
   - cd Documentation/doxygen/Doxygen && doxygen -u && doxygen && cd ../../../
   - mv Documentation/doxygen/Doxygen/html/ public/
 
