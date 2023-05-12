@@ -376,15 +376,13 @@ image: ubuntu
 #                                    Deploy
 #==============================================================================*
 
-stages:
-  - deploy
-
 pages:
   stage: deploy
+
   script:
   - export DEBIAN_FRONTEND=noninteractive
-  - apt-get update && apt-get -y install doxygen=1.9.1-2ubuntu2 graphviz texlive-bibtex-extra texlive-latex-extra perl
-  - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
+  - apt-get update && apt-get -y install doxygen graphviz texlive-bibtex-extra 
+  - cd Documentation/doxygen/Doxygen && doxygen -u && doxygen && cd ../../../
   - mv Documentation/doxygen/Doxygen/html/ public/
 
   artifacts:
@@ -392,7 +390,9 @@ pages:
       - public
 
   rules:
-      - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+
 
 
 
