@@ -10,7 +10,7 @@
 #==============================================================================*
 
 #image: ubuntu # opencfd/openfoam-dev
-image: ubuntu:22.04
+image: ubuntu
 
 #stages:
 #  - build
@@ -376,9 +376,11 @@ image: ubuntu:22.04
 #                                    Deploy
 #==============================================================================*
 
+stages:
+  - deploy
+
 pages:
   stage: deploy
-
   script:
   - export DEBIAN_FRONTEND=noninteractive
   - apt-get update && apt-get -y install doxygen=1.9.1-2ubuntu2 graphviz texlive-bibtex-extra texlive-latex-extra perl
@@ -391,6 +393,7 @@ pages:
 
   rules:
       - if: $CI_COMMIT_BRANCH == "develop"
+
 
 
 #==============================================================================*
