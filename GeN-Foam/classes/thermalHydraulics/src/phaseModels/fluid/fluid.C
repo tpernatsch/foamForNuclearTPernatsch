@@ -613,40 +613,43 @@ Foam::fluid::~fluid()
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::fluid::initTwoPhaseFields()
+void Foam::fluid::initTwoPhaseFields() const
 {
     phaseChangeSignPtr_.reset
     (
         new scalarField(mesh_.C().size(), int(0))
     );
     
-    flowQualityPtr_.reset
-    (
-        new volScalarField
+    if(!flowQualityPtr_.valid())
+    {
+        flowQualityPtr_.reset
         (
-            IOobject
+            new volScalarField
             (
-                IOobject::groupName("flowQuality", this->name()),
-                mesh_.time().timeName(),
-                mesh_,
-                IOobject::NO_READ,
+                IOobject
                 (
+                    IOobject::groupName("flowQuality", this->name()),
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::NO_READ,
                     (
-                        mesh_.time().controlDict().lookupOrDefault<bool>
                         (
-                            "writeAllFields", 
-                            false
-                        )
-                    ) ?
-                    IOobject::AUTO_WRITE :
-                    IOobject::NO_WRITE
-                )
-            ),
-            mesh_,
-            dimensionedScalar("", dimless, 0),
-            zeroGradientFvPatchScalarField::typeName
-        )
-    );
+                            mesh_.time().controlDict().lookupOrDefault<bool>
+                            (
+                                "writeAllFields", 
+                                false
+                            )
+                        ) ?
+                        IOobject::AUTO_WRITE :
+                        IOobject::NO_WRITE
+                    )
+                ),
+                mesh_,
+                dimensionedScalar("", dimless, 0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+    }
     
     XLMPtr_.reset
     (
