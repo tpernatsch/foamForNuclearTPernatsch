@@ -129,6 +129,7 @@ EXE_INC = \
     -I./functionObjects/pressureDrop \
     -I./functionObjects/stopIfMaxFieldDiff \
     -I./functionObjects/patchScalarFieldValue \
+    -I./../../common/InterpolateTable \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/transportModels/incompressible/transportModel \

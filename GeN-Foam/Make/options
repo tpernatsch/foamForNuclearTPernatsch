@@ -5,6 +5,7 @@ EXE_INC = \
     -I./classes/thermalHydraulics/src/lnInclude \
     -I./classes/thermalHydraulics/solvers/lnInclude \
     -I./classes/common/timeProfile \
+    -I./classes/common/InterpolateTable \
     -I./classes/neutronics \
     -I./classes/neutronics/albedoSP3 \
     -I./classes/neutronics/include \

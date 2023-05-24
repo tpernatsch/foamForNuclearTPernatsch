@@ -28,7 +28,12 @@ Description
     Compute the Critical Heat Flux with a Look Up Table.
 
 Author
-    Yuhang Niu (niu.yuhang@epfl.ch)
+    - Yuhang Niu (niu.yuhang@epfl.ch)
+    - A. Scolaro - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
+    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems 
+    Behaviour)
+    - C. Fiorina - Texas A&M University (TAMU)
+
 
 SourceFiles
     lookUpTableCHF.C
@@ -41,6 +46,10 @@ SourceFiles
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #include "CHFModel.H"
+#include "InterpolateTables.H"
+#include "InterpolateTable.H"
+#include "scalarFieldFieldINew.H"
+#include "PtrListScalarFieldFieldINew.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -92,6 +101,30 @@ protected:
     // -pitch-to-diameter ratio
     scalar PitchToDiameter_;
 
+    //- Tabulated pressure values (direction z)
+    scalarField pressureValues_;
+    
+    //- Tabulated mass flow rate values (direction x)
+    scalarField massFlowRateValues_;
+    
+    //- Tabulated quality values (direction y)
+    scalarField qualityValues_;
+    
+    //- Tabulated ptrList of 2D tables (i.e. raw data for the 3D interpolation
+    // table)
+    PtrList<FieldField<Field, scalar>> data_;
+
+    //- Pressure interpolation method
+    interpolateTableBase::interpolationMethod pMethod;
+    
+    //- Mass flow rate interpolation method
+    interpolateTableBase::interpolationMethod gMethod_;
+    
+    //- Quality interpolation method
+    interpolateTableBase::interpolationMethod xeMethod_;
+    
+    //- 3D Interpolation table (pressure as the main direction)
+    scalarFieldFieldInterpolateTable pTable_;
 
 
     

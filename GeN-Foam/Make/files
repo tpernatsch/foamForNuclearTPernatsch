@@ -17,6 +17,8 @@ classes/thermoMechanics/tractionDisplacement/tractionDisplacementFvPatchVectorFi
 
 classes/multiphysicsControl/multiphysicsControl.C
 
+classes/common/InterpolateTable/InterpolateTables.C
+
 include/mergeOrSplitBaffles.C
 
 main/GeN-Foam.C
