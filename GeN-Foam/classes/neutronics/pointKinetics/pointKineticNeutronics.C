@@ -97,6 +97,62 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         nuclearData_,
         "externalReactivityTimeProfile"
     ),
+    externalSource_
+    (
+        IOobject
+        (
+            "externalSource",
+            mesh.time().constant(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::NO_WRITE
+        )
+    ),
+    isExternalSource_
+    (
+        externalSource_.lookupOrDefault<bool>("isExternalSource", false)
+    ),
+    externalSourceMode_
+    (
+        externalSource_.lookupOrDefault<word>("externalSourceMode", "")
+    ),
+    subcriticalIndex_
+    (
+        reactorState_.lookupOrDefault<scalar>("subcriticalIndex", 0.0)
+    ),
+    ksrc_
+    (
+        reactorState_.lookupOrDefault<scalar>("ksrc", 1.0)
+    ),
+    nuFission_
+    (
+        nuclearData_.lookupOrDefault<scalar>("nuFission", 0.0)
+    ),
+    energyPerFission_
+    (
+        nuclearData_.lookupOrDefault<scalar>("energyPerFission", 0.0)
+    ),
+    intrinsicGain_(0.0),
+    externalSourceModulationTimeProfile_
+    (
+        externalSource_,
+        "externalSourceModulationTimeProfile"
+    ),
+    externalSourceModulation_(1.0),
+    externalSourcePower_(0.0),
+    externalSourcePowerOld_(0.0),
+    externalSourcePowerRef_(0.0),
+    externalSourceBeamPower_(0.0),
+    externalSourceBeamIntensity_(0.0),
+    powerTarget_(reactorState_.get<scalar>("pTarget")),
+    modulationFactor_
+    (
+        externalSource_.lookupOrDefault<scalar>("modulationFactor", 0.0)
+    ),
+    powerModulationDelay_
+    (
+        externalSource_.lookupOrDefault<scalar>("powerModulationDelay", 0.0)
+    ),
     precEquilibriumReactivity_(0.0),
     liquidFuelBeta_(0.0),
     totalReactivity_(0.0),
@@ -796,6 +852,74 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         }
     }
 
+    //- Set variables from externalSource file
+    if (isExternalSource_)
+    {
+        nuSource_ = externalSource_.lookupOrDefault<scalar>("nuSource", 0.0);
+
+        beamEnergy_ = externalSource_.lookupOrDefault<scalar>("beamEnergy", 0.0);
+
+        //- Check external source mode key word
+        std::vector<word> externalSourceModeCases({
+            "transient", "powerMonitoring"
+        });
+        if (
+            std::find(externalSourceModeCases.begin(), externalSourceModeCases.end(), externalSourceMode_)
+            == externalSourceModeCases.end()
+        ) {
+            FatalErrorInFunction
+                << externalSourceMode_ << " is not an allowed key word. "
+                << "Please use for externalSourceMode:\n"
+                << "  transient       : user modulation of the source\n"
+                << "  powerMonitoring : source power modulation to keep subcritical power constant"
+                << exit(FatalError);
+        }
+
+        if (externalSourceMode_ == "powerMonitoring")
+        {
+            powerRecordPtr_.clear();
+        }
+
+        //- Intrinsic gain computation
+        if (nuFission_ > 0 && beamEnergy_ > 0)
+        {
+            intrinsicGain_ = energyPerFission_*nuSource_ / (nuFission_*beamEnergy_);
+        }
+        else if (nuFission_ < 0 || beamEnergy_ < 0 || energyPerFission_ < 0 || nuSource_ < 0)
+        {
+            FatalErrorInFunction
+                << "nuFission, beamEnergy, energyPerFission and nuSource must be positive !"
+                << exit(FatalError);
+        }
+
+        //- Subcriticality factors computation
+        const bool isKsrcDefined = reactorState_.found("ksrc");
+        const bool isSubcriticalIndexDefined = reactorState_.found("subcriticalIndex");
+        if (!isKsrcDefined && isSubcriticalIndexDefined)
+        {
+            ksrc_ = 1. / (subcriticalIndex_ + 1.);
+        }
+        else if (isKsrcDefined && !isSubcriticalIndexDefined)
+        {
+            subcriticalIndex_ = (1. - ksrc_) / ksrc_;
+        }
+
+        //- External source power computation for steady-state configuration
+        if (subcriticalIndex_ != 0)
+        {
+            externalSourcePowerRef_ = subcriticalIndex_ * fissionPower_;
+            externalSourcePower_ = externalSourcePowerRef_;
+
+            //- Beam parameters
+            setBeamParameters();
+
+            Info << "Beam initial parameters\n"
+            << "    " << externalSourceBeamPower_ << " W\n"
+            << "    " << externalSourceBeamIntensity_*1.602176634e-19 << " A"
+            << endl;
+        }
+    }
+
     //- Compute total effective delayed neutron fraction
     forAll(betas_, i)
     {
@@ -864,8 +988,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         // Communicating with the FMU
         const Time& runTime = this->db().time();
         commDataLayer& data = commDataLayer::New(runTime); 
-        // Store in data layer and set its initial value to the T 
-        // in the dictionary
+        // Store in data layer and set its initial value to 0
         data.storeObj(
             0.0, // dict.get<scalar>("initialValue"),
             externalReactivityNameFromFMU,
@@ -876,8 +999,35 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             << endl;
     }
 
-    #endif // isCommDataLayerIncluded
+    //- Set external source control from FMU
+    if (isExternalSource_)
+    {
+        word externalSourceModKeyFromFMU("externalSourceModulationNameFromFMU");
+        if (externalSource_.found(externalSourceModKeyFromFMU))
+        {
+            const word externalSourceModNameFromFMU = externalSource_.get<word>(
+                externalSourceModKeyFromFMU
+            );
 
+            Info << "GeN-Foam FMI input name: " << externalSourceModNameFromFMU 
+                << endl;
+
+            // Communicating with the FMU
+            const Time& runTime = this->db().time();
+            commDataLayer& data = commDataLayer::New(runTime); 
+            // Store in data layer and set its initial value to 1.0
+            data.storeObj(
+                1.0, // dict.get<scalar>("initialValue"),
+                externalSourceModNameFromFMU,
+                commDataLayer::causality::in
+            );
+            Info << "Using FMUs for the external source modulation of the point-kinetics "
+                << "sub-solver." 
+                << endl;
+        }
+    }
+
+    #endif // isCommDataLayerIncluded
 
     //- Some notes on modelling choices, for clarity
     Info<< "The pointKinetics neutronics model currently computes average "
@@ -930,6 +1080,15 @@ void Foam::pointKineticNeutronics::setFeedbackCellField
                 feedbackCellField[celli] = 1.0;
             }
         }
+    }
+}
+
+void Foam::pointKineticNeutronics::setBeamParameters()
+{
+    if (intrinsicGain_ > 0)
+    {
+        externalSourceBeamPower_ = externalSourcePower_/intrinsicGain_;
+        externalSourceBeamIntensity_ = externalSourceBeamPower_/beamEnergy_;
     }
 }
 

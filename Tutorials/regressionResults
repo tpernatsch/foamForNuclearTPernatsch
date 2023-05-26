@@ -40,13 +40,13 @@ power is 7.999454e+08 . It should be ~8e+08
  ##### 2D_FFTF  ###### 
 Energy steady state of 2D_FFTF has converged 
 Transient of 2D_FFTF has converged 
-reactivityDoppler is 237.049  . It should be 237.0728  
-reactivityClad is 0.8180091  . It should be 0.8198844    
-reactivityDensity is -2.518649  . It should be -2.525069    
-reactivityStructures is -1.027231  . It should be -1.017622    
-reactivityDriveline is -8.622036  . It should be -8.631667  
-reactivityGEM is -464.8496  . It should be -464.8497  
-totalPower is 29493.69  . It should be 29490.49  
+reactivityDoppler is 237.0684  . It should be 237.0728  
+reactivityClad is 0.8196306  . It should be 0.8198844    
+reactivityDensity is -2.525334  . It should be -2.525069    
+reactivityStructures is -1.018541  . It should be -1.017622    
+reactivityDriveline is -8.636095  . It should be -8.631667  
+reactivityGEM is -464.8497  . It should be -464.8497  
+totalPower is 29492.56  . It should be 29490.49  
 
  ##### 2D_MSFR  ###### 
 Energy steady state of 2D_MSFR has converged 
@@ -66,7 +66,7 @@ Transient (with driveline) of 2D_onePhaseAndPointKineticsCoupling has converged
 
  ##### 2D_KNS37-L22  ###### 
 2D_KNS37-L22 has converged 
-time, average alpha.vapour and aveage T.structure when alpha is approximately max are: 12.52914919555637	1.686322e-01	8.266798e+02 . They should be 12.56424533593758    1.577348e-01    8.210752e+02 
+time, average alpha.vapour and aveage T.structure when alpha is approximately max are: 12.498097238593784	1.843242e-01	8.335506e+02 . They should be 12.56424533593758    1.577348e-01    8.210752e+02 
 
  ##### Godiva_SN  ###### 
 Godiva_SN has converged 
