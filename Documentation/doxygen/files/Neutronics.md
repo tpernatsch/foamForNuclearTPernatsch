@@ -60,6 +60,7 @@ The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It con
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/nuclearData) (for diffusion or SP3),
 [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/Godiva_SN/constant/neutroRegion/nuclearData) (for discrete ordinates) and 
 [2D_onePhaseAndPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData) (for point kinetics).
+[2D_onePhaseAndSubcriticalPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource) (for subcritical point kinetics).
 
 N.B.: cross sections must be expressed according to the International System of Units (so m, not cm).
 
@@ -127,8 +128,18 @@ A correct evaluation of the reactivity worth of delayed neutron precursors in MS
 
 ## Discretization and solution
 
-Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/neutroRegion*. 
+Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/neutroRegion*.
 
+
+## Subcritical point-kinetics
+
+To use the subcritical point-kinetics, the user has to add the *constant/neutroRegion/externalSource*. The file contains a flag to activate the external neutron source (*isExternalSource*).
+
+Several parameters related to a spallation source are included such as the energy per source particle in J/source particle and the neutron yield of the reaction in neutrons/source particle*
+
+An external source modulation time table is provided to manually modulate the source strength.
+
+In the case of an FMI coupling, it is possible to use the *externalSourceModulationNameFromFMU* entry to change the external source modulation through an FMI. To use it, the mode must be *transient*.
 
 
 © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021

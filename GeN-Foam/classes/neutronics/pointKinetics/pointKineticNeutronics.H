@@ -105,11 +105,36 @@ Description
         externalReactivityNameFromFMU   gfExtReact;
     \endverbatim
 
-    Optional external source input from FMU in externalSource file.
-    The externalSourceMode must be set to transient. The default initial value
-    is 1.
+    Optional external neutron source file "externalSource"
     \verbatim
-        externalSourceModulationNameFromFMU     gfExtSrcMod;
+        //- If true, add the external source to the point-kinetics equations
+        isExternalSource    true;
+
+        //- External source mode
+        externalSourceMode  transient; // powerMonitoring // transient
+
+        //- Beam energy per source particle
+        beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
+
+        //- Neutron yield of the spallation of proton on heavy metal 
+        nuSource            15.5; // [neutron/proton]
+
+        //- Optional external source input from FMU in externalSource file.
+        //  The externalSourceMode must be set to transient. The default initial value
+        // is 1.
+        // externalSourceModulationNameFromFMU     gfExternalSourceMod;
+
+        //- External modulation time profile (time, modulation factor)
+        externalSourceModulationTimeProfile
+        {
+            type        table;
+            startTime   150;
+            table       table
+            (
+                (0      1)
+                (20     2)
+            );
+        }
     \endverbatim
 
     Author of this file (and associated .C or included .H files): 
