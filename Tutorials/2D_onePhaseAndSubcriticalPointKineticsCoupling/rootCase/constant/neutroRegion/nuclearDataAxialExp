@@ -1,0 +1,35 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|   Cross-section dictionary                                                  |
+|   Generated for GeN-Foam by SerpentToFoamXS Version 1.0 - 25/03/2022        |
+|   Date: 25/03/2022                                                          |
+|   From SERPENT results file: 2D_ADS_SVBR100_Core_Critical_endfb7_res.m      |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant/neutroRegion";
+    object      nuclearDataAxialExp;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Effective delayed neutron fraction, prompt neutron spectrum
+
+expansionFromNominal      5.0e-02;
+
+
+//- Parameters relevant only for Diffusion Neutronics
+
+precGroups                6; // from FWD_ANA_BETA_ZERO
+
+energyGroups              2; // from MACRO_NG
+
+
+//- Foam zones from Serpent universes
+
+zones
+();
+
+
+// ************************************************************************* //

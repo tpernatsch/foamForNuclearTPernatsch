@@ -1,0 +1,4 @@
+#!/bin/sh
+rm -r steady*
+rm -r transient*
+rm *.log log.* *.out
