@@ -1,3 +1,4 @@
+Regression test of 01-06-2023
 
  ##### 1D_HX  ###### 
 1D_HX/onePhase has converged 
@@ -40,13 +41,13 @@ power is 7.999454e+08 . It should be ~8e+08
  ##### 2D_FFTF  ###### 
 Energy steady state of 2D_FFTF has converged 
 Transient of 2D_FFTF has converged 
-reactivityDoppler is 237.0684  . It should be 237.0728  
-reactivityClad is 0.8196306  . It should be 0.8198844    
-reactivityDensity is -2.525334  . It should be -2.525069    
-reactivityStructures is -1.018541  . It should be -1.017622    
-reactivityDriveline is -8.636095  . It should be -8.631667  
+reactivityDoppler is 237.0728  . It should be 237.0728  
+reactivityClad is 0.8198844  . It should be 0.8198844    
+reactivityDensity is -2.525069  . It should be -2.525069    
+reactivityStructures is -1.017622  . It should be -1.017622    
+reactivityDriveline is -8.631667  . It should be -8.631667  
 reactivityGEM is -464.8497  . It should be -464.8497  
-totalPower is 29492.56  . It should be 29490.49  
+totalPower is 29490.49  . It should be 29490.49  
 
  ##### 2D_MSFR  ###### 
 Energy steady state of 2D_MSFR has converged 
