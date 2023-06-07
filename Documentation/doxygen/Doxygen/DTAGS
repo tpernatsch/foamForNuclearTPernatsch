@@ -1582,6 +1582,7 @@
     <filename>solvePointKineticsLiquidFuel_8H.html</filename>
     <includes id="computeFeedbackFieldValues_8H" name="computeFeedbackFieldValues.H" local="yes" imported="no">computeFeedbackFieldValues.H</includes>
     <includes id="correctReactivity_8H" name="correctReactivity.H" local="yes" imported="no">correctReactivity.H</includes>
+    <includes id="pointKineticsInfo_8H" name="pointKineticsInfo.H" local="yes" imported="no">pointKineticsInfo.H</includes>
     <member kind="function">
       <type></type>
       <name>if</name>
@@ -1618,6 +1619,20 @@
       <arglist>(initialize)</arglist>
     </member>
     <member kind="function">
+      <type>liquidFuelBeta_ *</type>
+      <name>forAll</name>
+      <anchorfile>solvePointKineticsLiquidFuel_8H.html</anchorfile>
+      <anchor>a122b89469d514588e2714192d2c0dbc3</anchor>
+      <arglist>(precPKStar_, precI)</arglist>
+    </member>
+    <member kind="function">
+      <type>Info&lt;&lt; &quot;Beta[pcm] = &quot;&lt;&lt; beta_ *1e+5&lt;&lt; nl&lt;&lt; endl;Info&lt;&lt; &quot;liquidFuelBeta[pcm] = &quot;&lt;&lt; liquidFuelBeta_ *1e+5&lt;&lt; nl&lt;&lt; endl;Info&lt;&lt; &quot;precEquilibriumReactivity[pcm] = &quot;&lt;&lt; precEquilibriumReactivity_ *1e+5&lt;&lt; nl&lt;&lt; endl;do{ Info&lt;&lt; &quot;Neutron iteration no: &quot;&lt;&lt; neutroIter&lt;&lt; nl&lt;&lt; endl;neutroResidual=0.0;forAll(precPK_, precI) { fvMatrix&lt; scalar &gt;</type>
+      <name>precEq</name>
+      <anchorfile>solvePointKineticsLiquidFuel_8H.html</anchorfile>
+      <anchor>a5e2f3a5010ddcd840f3790e3d76842d6</anchor>
+      <arglist>(fvm::ddt(alphaPtr_(), precPKStar_[precI])+fvm::Sp(dimensionedScalar(&quot;&quot;, dimless/dimTime, lambdas_[precI]) *alphaPtr_(), precPKStar_[precI]) - initOneGroupFluxN_ *dimensionedScalar(&quot;&quot;, dimPower, power_) *betas_[precI]/dimensionedScalar(&quot;&quot;, dimTime, promptGenerationTime_)+fvm::div(phiPtr_(), precPKStar_[precI], &quot;div(phi_,precStar_)&quot;) - fvm::laplacian(diffCoeffPrecPtr_(), precPKStar_[precI]))</arglist>
+    </member>
+    <member kind="function">
       <type>precPK_[precI]</type>
       <name>correctBoundaryConditions</name>
       <anchorfile>solvePointKineticsLiquidFuel_8H.html</anchorfile>
@@ -1628,15 +1643,8 @@
       <type>weightedPrec</type>
       <name>set</name>
       <anchorfile>solvePointKineticsLiquidFuel_8H.html</anchorfile>
-      <anchor>a1dc50d0b145f1dc77724833e766585af</anchor>
-      <arglist>(precI, new scalar(fvc::domainIntegrate( initOneGroupFluxN_ *precPK_[precI]).value()/domainIntegratedInitOneGroupFluxN_))</arglist>
-    </member>
-    <member kind="function">
-      <type>Info&lt;&lt; &quot;precEquilibriumReactivity[pcm] = &quot;&lt;&lt; precEquilibriumReactivity_ *1e+5&lt;&lt; nl&lt;&lt; endl;} */liquidFuelBeta_ *=0.0;forAll(precPKStar_, precI){ precPK_[precI]=precPKStar_[precI] *alphaPtr_();precPK_[precI].correctBoundaryConditions();weightedPrec.set(precI, new scalar(fvc::domainIntegrate(initOneGroupFluxN_ *precPK_[precI]).value()/domainIntegratedInitOneGroupFluxN_));liquidFuelBeta_+=weightedPrec[precI] *lambdas_[precI] *promptGenerationTime_/powerOld_;}if(initialize){ precEquilibriumReactivity_=0.0;precEquilibriumReactivity_+=beta_;precEquilibriumReactivity_ -=liquidFuelBeta_;#include &quot;correctReactivity.H&quot;}Info&lt;&lt; &quot;Beta[pcm] = &quot;&lt;&lt; beta_ *1e+5&lt;&lt; nl&lt;&lt; endl;Info&lt;&lt; &quot;liquidFuelBeta[pcm] = &quot;&lt;&lt; liquidFuelBeta_ *1e+5&lt;&lt; nl&lt;&lt; endl;Info&lt;&lt; &quot;precEquilibriumReactivity[pcm] = &quot;&lt;&lt; precEquilibriumReactivity_ *1e+5&lt;&lt; nl&lt;&lt; endl;do{ Info&lt;&lt; &quot;Neutron iteration no: &quot;&lt;&lt; neutroIter&lt;&lt; nl&lt;&lt; endl;neutroResidual=0.0;forAll(precPK_, precI) { fvMatrix&lt; scalar &gt;</type>
-      <name>precEq</name>
-      <anchorfile>solvePointKineticsLiquidFuel_8H.html</anchorfile>
-      <anchor>afcedf158c3d1ddecf3552a2484b0263e</anchor>
-      <arglist>(fvm::ddt(alphaPtr_(), precPKStar_[precI])+fvm::Sp(dimensionedScalar(&quot;&quot;, dimless/dimTime, lambdas_[precI]) *alphaPtr_(), precPKStar_[precI]) - initOneGroupFluxN_ *dimensionedScalar(&quot;&quot;, dimPower, power_) *betas_[precI]/dimensionedScalar(&quot;&quot;, dimTime, promptGenerationTime_)+fvm::div(phiPtr_(), precPKStar_[precI], &quot;div(phi_,precStar_)&quot;) - fvm::laplacian(diffCoeffPrecPtr_(), precPKStar_[precI]))</arglist>
+      <anchor>ad5aac0954594169676a922d4bd3dbf07</anchor>
+      <arglist>(precI, new scalar(fvc::domainIntegrate(initOneGroupFluxN_ *precPK_[precI]).value()/domainIntegratedInitOneGroupFluxN_))</arglist>
     </member>
     <member kind="function">
       <type></type>
@@ -1688,25 +1696,18 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type></type>
-      <name>precPK_</name>
-      <anchorfile>solvePointKineticsLiquidFuel_8H.html</anchorfile>
-      <anchor>aa5de1d5a67ff3d3a3ce2f67391e46cdc</anchor>
-      <arglist>[precI]</arglist>
-    </member>
-    <member kind="variable">
-      <type></type>
-      <name>precEquilibriumReactivity_</name>
-      <anchorfile>solvePointKineticsLiquidFuel_8H.html</anchorfile>
-      <anchor>a6abca74565817c1950fdb97f84679860</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
       <type>scalar</type>
       <name>initRes</name>
       <anchorfile>solvePointKineticsLiquidFuel_8H.html</anchorfile>
       <anchor>a4fd4e24ea0e4f3d5910106b6f78d94f5</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>precPK_</name>
+      <anchorfile>solvePointKineticsLiquidFuel_8H.html</anchorfile>
+      <anchor>a4fbb9f930fffeb8b5c6f88d6d76407f8</anchor>
+      <arglist>[precI]</arglist>
     </member>
     <member kind="variable">
       <type>scalar</type>
@@ -6961,8 +6962,6 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/heatExchanger/</path>
     <filename>heatExchanger_8C.html</filename>
     <includes id="heatExchanger_8H" name="heatExchanger.H" local="yes" imported="no">heatExchanger.H</includes>
-    <includes id="fluid_8H" name="fluid.H" local="yes" imported="no">fluid.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
     <namespace>Foam</namespace>
     <member kind="function">
       <type></type>
@@ -6984,7 +6983,6 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedPower/</path>
     <filename>fixedPower_8C.html</filename>
     <includes id="fixedPower_8H" name="fixedPower.H" local="yes" imported="no">fixedPower.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
     <namespace>Foam</namespace>
     <namespace>Foam::powerModels</namespace>
     <member kind="function">
@@ -7016,7 +7014,6 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperature/</path>
     <filename>fixedTemperature_8C.html</filename>
     <includes id="fixedTemperature_8H" name="fixedTemperature.H" local="yes" imported="no">fixedTemperature.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
     <namespace>Foam</namespace>
     <namespace>Foam::powerModels</namespace>
     <member kind="function">
@@ -7062,7 +7059,6 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/heatedPin/</path>
     <filename>heatedPin_8C.html</filename>
     <includes id="heatedPin_8H" name="heatedPin.H" local="yes" imported="no">heatedPin.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
     <namespace>Foam</namespace>
     <namespace>Foam::powerModels</namespace>
     <member kind="function">
@@ -7095,7 +7091,6 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/lumpedNuclearStructure/</path>
     <filename>lumpedNuclearStructure_8C.html</filename>
     <includes id="lumpedNuclearStructure_8H" name="lumpedNuclearStructure.H" local="yes" imported="no">lumpedNuclearStructure.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
     <namespace>Foam</namespace>
     <namespace>Foam::powerModels</namespace>
     <member kind="function">
@@ -7128,14 +7123,12 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/</path>
     <filename>newPowerModel_8C.html</filename>
     <includes id="powerModel_8H" name="powerModel.H" local="yes" imported="no">powerModel.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
   </compound>
   <compound kind="file">
     <name>nuclearFuelPin.C</name>
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelPin/</path>
     <filename>nuclearFuelPin_8C.html</filename>
     <includes id="nuclearFuelPin_8H" name="nuclearFuelPin.H" local="yes" imported="no">nuclearFuelPin.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
     <namespace>Foam</namespace>
     <namespace>Foam::powerModels</namespace>
     <member kind="function">
@@ -7196,7 +7189,6 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelPinTest/</path>
     <filename>nuclearFuelPinTest_8C.html</filename>
     <includes id="nuclearFuelPinTest_8H" name="nuclearFuelPinTest.H" local="yes" imported="no">nuclearFuelPinTest.H</includes>
-    <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
     <namespace>Foam</namespace>
     <namespace>Foam::powerModels</namespace>
     <member kind="function">
@@ -7437,8 +7429,6 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/</path>
     <filename>structure_8C.html</filename>
     <includes id="structure_8H" name="structure.H" local="yes" imported="no">structure.H</includes>
-    <includes id="fluid_8H" name="fluid.H" local="yes" imported="no">fluid.H</includes>
-    <includes id="myOps_8H" name="myOps.H" local="yes" imported="no">myOps.H</includes>
     <namespace>Foam</namespace>
     <member kind="function">
       <type></type>
