@@ -58,4 +58,5 @@ Tutorials/**/transient*
 Tutorials/**/GeN-Foam.dat
 Tutorials/**/log.*
 Tutorials/**/*.out
+Tutorials/**/__pycache__
 !**/2D_*
