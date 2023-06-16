@@ -1,4 +1,3 @@
 #!/bin/sh
-rm -r steady*
-rm -r transient*
-rm *.log log.* *.out
+rm -rf steady*  transient*
+rm -rf *.log log.* *.out *.png

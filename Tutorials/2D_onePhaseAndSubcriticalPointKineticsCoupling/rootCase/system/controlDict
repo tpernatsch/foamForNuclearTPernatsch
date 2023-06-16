@@ -17,9 +17,7 @@ FoamFile
 
 application         GeN-Foam;
 
-startFrom           startTime;
-
-startTime           0;
+startFrom           latestTime;
 
 stopAt              endTime;
 

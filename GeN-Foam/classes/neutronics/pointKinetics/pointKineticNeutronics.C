@@ -108,10 +108,6 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             IOobject::NO_WRITE
         )
     ),
-    isExternalSource_
-    (
-        externalSource_.lookupOrDefault<bool>("isExternalSource", false)
-    ),
     externalSourceMode_
     (
         externalSource_.lookupOrDefault<word>("externalSourceMode", "")
@@ -853,7 +849,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     }
 
     //- Set variables from externalSource file
-    if (isExternalSource_)
+    if (externalSourceNeutronics_)
     {
         nuSource_ = externalSource_.lookupOrDefault<scalar>("nuSource", 0.0);
 
@@ -1000,7 +996,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     }
 
     //- Set external source control from FMU
-    if (isExternalSource_)
+    if (externalSourceNeutronics_)
     {
         word externalSourceModKeyFromFMU("externalSourceModulationNameFromFMU");
         if (externalSource_.found(externalSourceModKeyFromFMU))

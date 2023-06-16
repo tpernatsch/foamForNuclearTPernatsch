@@ -6,7 +6,7 @@
 const scalar timeOutput(mesh_.time().timeOutputValue());
 
 //- Update external source power
-if (isExternalSource_)
+if (externalSourceNeutronics_)
 {
     if (externalSourceMode_ == "transient")
     {

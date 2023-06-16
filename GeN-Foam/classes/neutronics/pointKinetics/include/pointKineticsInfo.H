@@ -12,7 +12,7 @@ Info<< "    -> rhoCool        = " << (rhoCoolReactivity*1e5) << " pcm" << endl;
 Info<< "    -> TStruct        = " << (TStructReactivity*1e5) << " pcm" << endl;
 Info<< "    -> driveline      = " << (drivelineReactivity*1e5) << " pcm"<<endl;
 Info<< "    -> Boron          = " << (boronReactivity*1e5) << " pcm"<<endl;
-if (isExternalSource_)
+if (externalSourceNeutronics_)
 {
     Info<< "    -> subcriticalIdx = " << (subcriticalIndex_*1e5) << " pcm"<<endl;
     Info<< "    extSrcPower         = " << externalSourcePower_ << " W" << endl;

@@ -1,6 +1,4 @@
 #!/bin/bash
-# Tutorial prepared based on the PhD work of Peter German (Texas A&M, peter.german@tamu.edu)
-# 2022/04/05  Thomas Guilbaud, EPFL/Transmutex SA : Modified version
 
 # ---> Run from this directory
 cd ${0%/*} || exit 1
@@ -9,108 +7,27 @@ cd ${0%/*} || exit 1
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
 ################################################################################
-# ---> Help function incase the user don't know the program
-function Help() {
-    echo "Shellscript to run GeN-Foam Subcritical Point-Kinetics"
-    echo
-    echo "Usage: ./Allrun [args] # Single core"
-    echo "      -h              Helper"
-    echo "      -j [nCores]     Parallel calculation using mpi"
-    echo "      -c              Run Allclean script"
-    echo "      -p              Activate the Gnuplot live plotting tool"
-    echo "      -b              Run blockMesh.sh"
-    echo "      -t              Run only transient and keep steady-state untouch"
-    echo "                      Make sure that the modified parameters are well"
-    echo "                      copied in the steady-state folder."
-}
-################################################################################
 
-# ---> Default variables
-nCores=1
-isTransientOnly=1
-
-# ---> Read user arguments
-while getopts ":hcbptj:" option; do
-    case $option in
-        h) # Helper
-            Help
-            exit
-            ;;
-        j) # Parallel
-            nCores=$OPTARG
-            echo "Parallel calculation with $nCores cores"
-            ;;
-        c) # Clean folder
-            isClean=0
-            echo "Folder is cleaned"
-            ;;
-        p) # Gnuplot realtime
-            isPlot=0
-            echo "Gnuplot activated"
-            ;;
-        t) # Transient cases
-            isTransientOnly=0
-            echo "Run only transient"
-            ;;
-        b) # BlockMesh
-            cd rootCase
-            ./blockMesh.sh
-            cd ..
-            echo "Run blockMesh.sh in rootCase"
-            ;;
-        \?) # Invalid option
-            echo "Error: Invalid option"
-            exit
-            ;;
-    esac
-done
-
-if [ $nCores -eq 1 ]; then
-    echo "Single core calculation"
-fi
-if [ $isTransientOnly -eq 0 ]; then
-    if [ $isClean -eq 0 ]; then
-        rm -r transient*
-    fi
-    cases="transient"
-else
-    if [ $isClean -eq 0 ]; then
-        ./Allclean
-    fi
-    cases="steadyState transient"
-fi
-################################################################################
-
-# ---> Main program solver
-exe="GeN-Foam"
+cases="steadyState transientRampReactivity"
 
 # ---> Times
 endTimeSteadyState=150
 endTimeTransient=$(($endTimeSteadyState + 100))
 
-runCloneCase() {
-    echo "Cloning $1 to case $2 ..."
-    cp -r $1 $2
-    if [ $isTransientOnly -eq 0 ]; then
-        cp rootCase/constant/neutroRegion/* $2/constant/neutroRegion
-    fi
-    echo "$1 cloned!\n"
-}
-
 setSteadyState() {
-    runCloneCase $1 $2
+    cp -r $1 $2
     echo "Setting steady-state ..."
     foamDictionary $2/system/controlDict -entry endTime -set $endTimeSteadyState
     foamDictionary $2/system/controlDict -entry writeInterval -set $endTimeSteadyState
 }
 
-setTransientUnprotectedReactivityInsertion() {
-    runCloneCase $1 $2
-    echo "Setting transient case..."
+setTransient() {
+    cp -r $1 $2
+    echo "Setting $2 case..."
     foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
     foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set true
     foamDictionary $2/constant/neutroRegion/nuclearData -entry externalReactivityTimeProfile.startTime -set $endTimeSteadyState
-    foamDictionary $2/system/controlDict -entry startTime -set $endTimeSteadyState
     foamDictionary $2/system/controlDict -entry endTime -set $endTimeTransient
     foamDictionary $2/system/controlDict -entry deltaT -set 1e-7
     foamDictionary $2/system/controlDict -entry writeControl -set adjustableRunTime
@@ -124,53 +41,31 @@ for caseName in $cases; do
     case "$caseName" in
         "steadyState")
             setSteadyState rootCase $caseName
-            if [ $nCores -gt 1 ]; then
-                decomposePar -case $caseName -allRegions
-            fi
             ;;
-        "transient")
-            setTransientUnprotectedReactivityInsertion steadyState $caseName
+        "transientRampReactivity")
+            setTransient steadyState $caseName
             ;;
     esac
 
     # ---> Start gnuplot if it exist
     if command -v gnuplot &> /dev/null; then
-        if [ $isPlot ]; then
-            case "$caseName" in
-                "steadyState")
-                    gnuplot -e "log='$caseName/log.$exe'" plottingTools/residuals - &> /dev/null &
-                    ;;
-                "transient")
-                    # gnuplot -e "log='$caseName/log.$exe'" plottingTools/residualsAndPhysics - &> /dev/null &
-                    gnuplot -e "log='$caseName/log.$exe'" plottingTools/physicsParameters - &> /dev/null &
-                    # gnuplot -e "log='$caseName/log.$exe'" plottingTools/powerPlot.r - &> /dev/null &
-                    ;;
-            esac
-        fi
+        case "$caseName" in
+            "steadyState")
+                gnuplot -e "log='$caseName/log.GeN-Foam'" plottingTools/residuals - &> /dev/null &
+                ;;
+            "transientRampReactivity")
+                # gnuplot -e "log='$caseName/log.GeN-Foam'" plottingTools/residualsAndPhysics - &> /dev/null &
+                gnuplot -e "log='$caseName/log.GeN-Foam'" plottingTools/physicsParameters - &> /dev/null &
+                # gnuplot -e "log='$caseName/log.GeN-Foam'" plottingTools/powerPlot.r - &> /dev/null &
+                ;;
+        esac
     else
         echo "gnuplot could not be found"
     fi
 
     # ---> Run code
-    echo "Running $exe on $caseName"
-    if [ $nCores -gt 1 ]; then
-        time mpirun -np $nCores $exe -parallel -case $caseName | tee "$caseName/log.GeN-Foam" | grep "Time = "
-    else
-        time $exe -case $caseName 2>&1 | tee "$caseName/log.$exe" | grep "Time = "
-    fi
+    GeN-Foam -case $caseName 2>&1 | tee "$caseName/log.GeN-Foam"
 
     # ---> Kill gnuplot if it was started
     pkill -x gnuplot &> /dev/null &
-
-    # ---> Merging
-    if [ $nCores -gt 1 ]; then
-        case "$caseName" in
-            "transient")
-                reconstructPar -case $caseName -allRegions
-                ;;
-        esac
-    fi
-
-    # ---> Data extraction
-    ./parseFoam.sh $caseName/log.GeN-Foam
 done

@@ -195,9 +195,6 @@ protected:
     //- External source file
     IOdictionary externalSource_;
 
-    //- Flag to activate the external source (subcritical PK) mode
-    bool isExternalSource_;
-
     //- External source mode
     //  - transient: user input power variation by modulation
     //  - powerMonitoring: adapt source power to keep subcritical power constant

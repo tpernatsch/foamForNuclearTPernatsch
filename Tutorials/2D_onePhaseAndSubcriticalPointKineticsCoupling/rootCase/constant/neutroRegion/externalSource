@@ -15,8 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//- If true, add the external source to the point-kinetics equations
-isExternalSource    true;
+//- Parameters only relevant to the point-kinetics
 
 //- External source mode
 externalSourceMode  transient; // powerMonitoring // transient
