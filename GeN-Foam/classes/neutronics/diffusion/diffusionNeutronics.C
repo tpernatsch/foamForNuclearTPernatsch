@@ -84,6 +84,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
     ),
     flux_(xs_.energyGroups()),
     fluxStar_(xs_.energyGroups()),
+    externalSourceFlux_(xs_.energyGroups()),
     prec_(xs_.precGroups()),
     precStar_(xs_.precGroups()),
     fluxStarAlbedo_
@@ -111,6 +112,20 @@ Foam::diffusionNeutronics::diffusionNeutronics
             IOobject::AUTO_WRITE
         ),
         mesh
+    ),
+    defaultExternalSourceFlux_
+    (
+        IOobject
+        (
+            "defaultExternalSourceFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimVol/dimTime, 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),
     defaultPrec_
     (
@@ -276,9 +291,9 @@ void Foam::diffusionNeutronics::interpolateCouplingFields
 
 void Foam::diffusionNeutronics::correct
 (
-    scalar& residual, 
+    scalar& residual,
     label couplingIter
-) 
+)
 {
     #include "solveNeutronics.H"
 }

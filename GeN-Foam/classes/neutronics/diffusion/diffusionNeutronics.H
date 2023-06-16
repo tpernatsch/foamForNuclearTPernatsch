@@ -54,6 +54,7 @@ Description
 
     Author of this file (and associated .C or included .H files): 
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
+    Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL (Switzerland)
 
 SourceFiles
     diffusionNeutronics.C
@@ -88,10 +89,12 @@ protected:
     volScalarField Dalbedo_;
     PtrList<volScalarField> flux_;
     PtrList<volScalarField> fluxStar_;
+    PtrList<volScalarField> externalSourceFlux_;
     PtrList<volScalarField> prec_; // prec per total volume
     PtrList<volScalarField> precStar_; // prec per volume salt
     volScalarField fluxStarAlbedo_;
     volScalarField defaultFlux_;
+    volScalarField defaultExternalSourceFlux_;
     volScalarField defaultPrec_;
 
     //- Derived fields
@@ -106,7 +109,7 @@ protected:
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
     const volVectorField* UOrig_;
-    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s) 
+    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s)
     const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
     const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
 
@@ -117,7 +120,7 @@ protected:
     volScalarField rhoCool_;
     
     //- Also mapped, but these are autoPtr as these field are not needed at all
-    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
+    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
     //  these fields if they are actually needed
     autoPtr<volVectorField> UPtr_;
     autoPtr<volScalarField> alphaPtr_;

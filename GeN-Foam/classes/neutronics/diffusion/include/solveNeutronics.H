@@ -42,7 +42,7 @@ if
 #include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
 
-if(!eigenvalueNeutronics_ && couplingIter == 0)
+if(!eigenvalueNeutronics_ && couplingIter == 0 && !externalSourceNeutronics_)
 {
 
     if(integralPredictor)
@@ -82,11 +82,12 @@ do
         //<< " after Aitken no: " << aitkenIterNo << endl;
 }
 while
-    (
+(
         (neutroResidual > neutronIterationResidual)
     &&  (neutroIter < maxNeutronIterations)
     && !eigenvalueNeutronics_
-    );
+    && !externalSourceNeutronics_
+);
 
 powerDensity_*=0.0;
 forAll(flux_,energyI)
@@ -121,13 +122,6 @@ if (eigenvalueNeutronics_)
     //  THE DICTIONARY at runTime so that the dictionary is written with the
     //  updated value.
     reactorState_.set("keff", keff_);
-    // reactorState_.regIOobject::writeObject
-    // (
-    //     IOstream::ASCII,
-    //     IOstream::currentVersion,
-    //     reactorState_.time().writeCompression(),
-    //     true
-    // );
 
     #include "normFluxes.H"
     xs_.adjustDiscFactors(fluxStar_);
