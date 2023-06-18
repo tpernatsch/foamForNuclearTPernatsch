@@ -40,9 +40,11 @@ isConverge transientRampReactivity  "Transient ramp reactivity"
 extract()
 {
     value=$(
-        grep -e "$1" ./$2/log.GeN-Foam |
-        tail -1 |
-        egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?." 
+        awk '{ print $1+0 }' <<<$(
+            grep -e "$1" ./$2/log.GeN-Foam |
+            tail -1 |
+            egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?." 
+        )
     )
     echo $value
 }
@@ -50,8 +52,13 @@ extract()
 totalPowerRampSource=$(extract "totalPower" transientRampSource)
 totalPowerRampReactivity=$(extract "totalPower" transientRampReactivity)
 
-expectedTotalPowerRampSource=1.99634e+07
-expectedTotalPowerRampReactivity=1.99271e+07
+# Expected values at transient time = 100 s
+expectedTotalPowerRampSource=19963400
+expectedTotalPowerRampReactivity=19927100
+
+# Theoretical values at transient time -> +inf
+theoreticalTotalPowerRampSource=20000000
+theoreticalTotalPowerRampReactivity=20000000
 
 
 # --- Check results are correct
@@ -60,8 +67,15 @@ isInRange()
     ref=$1
     value=$2
     error=$3
-    inRange=$(echo "print(0 if abs($ref-$value)/$ref <= $error else 1)" | python3)
-    echo $inRange
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
 }
 
 error=0.001
@@ -70,16 +84,16 @@ if  [ $(isInRange $expectedTotalPowerRampSource     $totalPowerRampSource       
     [ $(isInRange $expectedTotalPowerRampReactivity $totalPowerRampReactivity   $error) -eq 0 ]
 then
     echo "Perfect match:" | tee -a $resFile
-    echo "|                              | Simulated | Expected |" | tee -a $resFile
-    echo "|:-----------------------------|:---------:|:--------:|" | tee -a $resFile
-    echo "| Total power ramp Source      | $totalPowerRampSource | $expectedTotalPowerRampSource |" | tee -a $resFile
-    echo "| Total power ramp Reactivity  | $totalPowerRampReactivity | $expectedTotalPowerRampReactivity |" | tee -a $resFile
+    echo "|                             | Simulated | Expected | Theory |" | tee -a $resFile
+    echo "|:----------------------------|:---------:|:--------:|:------:|" | tee -a $resFile
+    echo "| Total power ramp Source     | $totalPowerRampSource | $expectedTotalPowerRampSource | $theoreticalTotalPowerRampSource |" | tee -a $resFile
+    echo "| Total power ramp Reactivity | $totalPowerRampReactivity | $expectedTotalPowerRampReactivity | $theoreticalTotalPowerRampReactivity |" | tee -a $resFile
 else
     echo "Divergent results:" | tee -a $resFile
-    echo "|                              | Simulated | Expected |" | tee -a $resFile
-    echo "|:-----------------------------|:---------:|:--------:|" | tee -a $resFile
-    echo "| Total power ramp Source      | $totalPowerRampSource | $expectedTotalPowerRampSource |" | tee -a $resFile
-    echo "| Total power ramp Reactivity  | $totalPowerRampReactivity | $expectedTotalPowerRampReactivity |" | tee -a $resFile
+    echo "|                             | Simulated | Expected | Theory |" | tee -a $resFile
+    echo "|:----------------------------|:---------:|:--------:|:------:|" | tee -a $resFile
+    echo "| Total power ramp Source     | $totalPowerRampSource | $expectedTotalPowerRampSource | $theoreticalTotalPowerRampSource |" | tee -a $resFile
+    echo "| Total power ramp Reactivity | $totalPowerRampReactivity | $expectedTotalPowerRampReactivity | $theoreticalTotalPowerRampReactivity |" | tee -a $resFile
     exit 1
 fi
 

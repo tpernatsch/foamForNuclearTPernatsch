@@ -5,7 +5,7 @@ cd ${0%/*} || exit 1
 
 # --- Initialize the output file
 resFile=test.out
-rm $resFile
+rm -rf $resFile
 touch $resFile
 
 # --- Run the simulation
@@ -41,20 +41,22 @@ isInRange()
     fi
 }
 
-keff=$(foamDictionary ./3/uniform/reactorState -entry keff -value)
-expectedAt=0.971135
+keff=$(foamDictionary ./20/uniform/reactorState -entry keff -value)
+expectedAt=0.980106
 
 # --- Check that results are correct
 error=0.001
 echo "keff with $error relative error" | tee -a $resFile
 if [ $(isInRange $expectedAt $keff $error) -eq 0 ]; then
     echo "Perfect match:" | tee -a $resFile
-    echo "    Expected  : $expectedAt" | tee -a $resFile
-    echo "    Simulated : $keff" | tee -a $resFile
+    echo "|      | Simulated | Expected |" | tee -a $resFile
+    echo "|:-----|:---------:|:--------:|" | tee -a $resFile
+    echo "| keff | $keff | $expectedAt |" | tee -a $resFile
 else
     echo "Divergent results:" | tee -a $resFile
-    echo "    Expected  : $expectedAt" | tee -a $resFile
-    echo "    Simulated : $keff" | tee -a $resFile
+    echo "|      | Simulated | Expected |" | tee -a $resFile
+    echo "|:-----|:---------:|:--------:|" | tee -a $resFile
+    echo "| keff | $keff | $expectedAt |" | tee -a $resFile
     exit 1
 fi
 

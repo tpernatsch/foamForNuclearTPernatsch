@@ -5,7 +5,7 @@ cd ${0%/*} || exit 1
 
 # --- Initialize the output file
 resFile=test.out
-rm $resFile
+rm -rf $resFile
 touch $resFile
 
 # --- Run the simulation
@@ -31,12 +31,14 @@ expectedAt=2625.18
 echo "Structure temperature at the top of the channel at 90 seconds" | tee -a $resFile
 if [ $TwallTop = $expectedAt ]; then
     echo "Perfect match:" | tee -a $resFile
-    echo "    Expected  : $expectedAt" | tee -a $resFile
-    echo "    Simulated : $TwallTop"  | tee -a $resFile
+    echo "|          | Simulated | Expected |" | tee -a $resFile
+    echo "|:---------|:---------:|:--------:|" | tee -a $resFile
+    echo "| TwallTop | $TwallTop | $expectedAt |" | tee -a $resFile
 else
     echo "Divergent results:" | tee -a $resFile
-    echo "    Expected  : $expectedAt" | tee -a $resFile
-    echo "    Simulated : $TwallTop"  | tee -a $resFile
+    echo "|          | Simulated | Expected |" | tee -a $resFile
+    echo "|:---------|:---------:|:--------:|" | tee -a $resFile
+    echo "| TwallTop | $TwallTop | $expectedAt |" | tee -a $resFile
     exit 1
 fi
 
