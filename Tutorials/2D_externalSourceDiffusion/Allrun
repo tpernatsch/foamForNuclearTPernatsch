@@ -1,0 +1,35 @@
+#!/bin/sh
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+
+# Usefull functions
+copyFolder() {
+    target=$1
+    destination=$2
+
+    rm -rf $destination
+    cp -r $target $destination
+}
+
+runGeNFoam() {
+    simCase=$1
+
+    GeN-Foam -case $simCase | 
+        tee $simCase/log.GeN-Foam | 
+        grep -E "Time =|deltaT|power:|keff" 
+}
+
+
+# Steady-state with the external neutron source
+copyFolder rootCase steadyState
+
+# foamDictionary steadyState/system/controlDict -entry endTime -set $(($timeEigenvalue + $timeSource))
+# foamDictionary steadyState/system/controlDict -entry writeInterval -set $timeSource
+# foamDictionary steadyState/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+# foamDictionary steadyState/constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set true
+
+runGeNFoam steadyState
