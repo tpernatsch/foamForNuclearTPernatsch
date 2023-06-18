@@ -41,6 +41,20 @@ Class
 Description
     Subclass for diffusion neutronics.
 
+    In the neutronicsProperties file, for keff calculation in a critical 
+    reactor:
+    \verbatim
+        model                       diffusionNeutronics;
+        eigenvalueNeutronics        true;
+    \endverbatim
+
+    For an subcritical reactor driven by an external neutron source: 
+    \verbatim
+        model                       diffusionNeutronics;
+        eigenvalueNeutronics        false;
+        externalSourceNeutronics    true;   
+    \endverbatim
+
     Reference publications
 
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
@@ -54,7 +68,7 @@ Description
 
     Author of this file (and associated .C or included .H files): 
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
-    Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL (Switzerland)
+    Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 
 SourceFiles
     diffusionNeutronics.C

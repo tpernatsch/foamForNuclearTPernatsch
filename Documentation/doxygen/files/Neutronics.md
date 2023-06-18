@@ -43,6 +43,7 @@ The *neutronicsProperties* dictionary is found under *constant/neutroRegion/* an
 <LI>  *model*  is used to define what type of simulation needs to be performed. It can be *pointKinetics*, *diffusionNeutronics*, *SP3Neutronics*, **SNNeutronics, *adjointDiffusion*. *adjointDiffusion* has been developed only as an eigenvalue solver. The others can be used for transient calculations. However, the SN transient solver has not been tested. In addition, it is currently not accelrated, thus extremely slow (it can require
 hundreds of iterations per time step).
 <LI>  *eigenvalueNeutronics* should be set to *true* for eigenvalue calculations, false for transients.
+<LI>  *externalSourceNeutronics* should be set to *true* for external neutron source calculations. The *eigenvalueNeutronics* variable should be put to false and the *keff* = 1.
 </UL>
 One can find detailed, commented examples in most tutorials. See for instance 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/neutronicsProperties) (single phase).
