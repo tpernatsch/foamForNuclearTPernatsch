@@ -35,7 +35,7 @@ power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9
 expectedAt=6.13794e+08
 
 # --- Check that results are correct
-echo "Power" | tee -a $resFile
+echo "Power at the end of transient" | tee -a $resFile
 if [ $power = $expectedAt ]; then
     echo "Perfect match:" | tee -a $resFile
     echo "|       | Simulated | Expected |" | tee -a $resFile
