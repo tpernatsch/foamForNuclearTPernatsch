@@ -34,6 +34,7 @@ GeN-Foam/*.sublime*
 **/lnInclude*
 *.o
 *.dep
+**/__pycache__
 
 # Doxygen files
 Documentation/doxygen/Doxygen/html/**
@@ -58,5 +59,8 @@ Tutorials/**/transient*
 Tutorials/**/GeN-Foam.dat
 Tutorials/**/log.*
 Tutorials/**/*.out
-Tutorials/**/__pycache__
 !**/2D_*
+!**/defaultFlux2
+
+# Tools
+Tools/**/build
