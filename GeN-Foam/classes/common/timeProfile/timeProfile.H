@@ -52,16 +52,7 @@ SourceFiles
 #ifndef timeProfile_H
 #define timeProfile_H
 
-#include "volFields.H"
-#include "rhoThermo.H"
-#include "fvMatrices.H"
-#include "autoPtr.H"
-#include "runTimeSelectionTables.H"
-#include "coordinateSystem.H"
 #include "fvCFD.H"
-#include "turbulentFluidThermoModel.H"
-#include "volPointInterpolation.H"
-#include "meshToMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
