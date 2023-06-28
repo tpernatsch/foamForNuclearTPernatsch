@@ -62,7 +62,7 @@ isInRange()
 }
 
 error=0.001
-echo "Reactivity contributions with $error relative error" | tee -a $resFile
+echo "keff and power test with $error relative error" | tee -a $resFile
 if  [ $(isInRange $expectedKeff       $keff       $error) -eq 0 ] &&
     [ $(isInRange $expectedTotalPower $totalPower $error) -eq 0 ]
 then

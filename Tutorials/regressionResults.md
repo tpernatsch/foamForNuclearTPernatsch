@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 18-Jun-2023 - 15:09:20  
+Regression test of 26-Jun-2023 - 08:29:33  
 Tutorials successfully completed: 19/19  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ Transient has converged
 
 Transient end has converged 
 
-Power
+Power at the end of transient
 Perfect match:
 |       | Simulated | Expected |
 |:------|:---------:|:--------:|
