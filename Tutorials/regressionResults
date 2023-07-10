@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 18-Jun-2023 - 11:14:17
+Regression test of 10-Jul-2023 - 12:21:29
 
 ## 1D_HX ##
 1D_HX onePhase has converged 
@@ -82,13 +82,13 @@ Energy steady state of 2D_FFTF has converged
 
 Transient of 2D_FFTF has converged 
 
-reactivityDoppler is 237.073 . It should be 237.0728  
-reactivityClad is 0.819884 . It should be 0.8198844    
-reactivityDensity is -2.52507 . It should be -2.525069    
-reactivityStructures is -1.01762 . It should be -1.017622    
-reactivityDriveline is -8.63167 . It should be -8.631667  
+reactivityDoppler is 237.049 . It should be 237.0728  
+reactivityClad is 0.818009 . It should be 0.8198844    
+reactivityDensity is -2.51865 . It should be -2.525069    
+reactivityStructures is -1.02723 . It should be -1.017622    
+reactivityDriveline is -8.62204 . It should be -8.631667  
 reactivityGEM is -464.85 . It should be -464.8497  
-totalPower is 29490.5 . It should be 29490.49  
+totalPower is 29493.7 . It should be 29490.49  
 
 ## 2D_MSFR ##
 Done running tutorial 2D_MSFR...
@@ -134,6 +134,7 @@ Perfect match:
 
 --------------------------------------------------------------------------------
 
+
 ## 2D_voidMotionNoPhaseChange ##
 2D_voidMotionNoPhaseChange has converged 
 
@@ -141,7 +142,7 @@ Perfect match:
 ## 2D_KNS37-L22 ##
 2D_KNS37-L22 has converged 
 
-time, average alpha.vapour and average T.structure when alpha is approximately max are: 12.498097238593784	1.843242e-01	8.335506e+02 . They should be 12.56424533593758    1.577348e-01    8.210752e+02 
+time, average alpha.vapour and average T.structure when alpha is approximately max are: 12.52914919555637	1.686322e-01	8.266798e+02 . They should be 12.56424533593758    1.577348e-01    8.210752e+02 
 
 ## Godiva_SN ##
 Godiva_SN has converged 

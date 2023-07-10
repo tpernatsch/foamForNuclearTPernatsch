@@ -1,6 +1,6 @@
 # GeN-Foam README file {#README}
 
-GeN-Foam is a multi-physics solver for reactor analysis based on OpenFOAM (ESI/OpenCFD distribution from [www.openfoam.com](https://www.openfoam.com), currently v2212). It can solve (coupled or alternatively) for:
+GeN-Foam is a multi-physics solver for reactor analysis based on OpenFOAM (ESI/OpenCFD distribution from [www.openfoam.com](https://www.openfoam.com), currently v2306). It can solve (coupled or alternatively) for:
 
 - neutronics, with models for point kinetics, diffusion (transient and eigenvalue), adjoint diffusion (only eigenvalue), SP3 (transient and eigenvalue), discrete ordinates (only eigenvalue);
 - one-phase thermal-hydraulics, according to both RANS-CFD and porous-medium coarse-mesh approaches (the two approaches can be combined in the same mesh);
