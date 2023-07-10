@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -41,6 +41,20 @@ Class
 Description
     Subclass for diffusion neutronics.
 
+    In the neutronicsProperties file, for keff calculation in a critical 
+    reactor:
+    \verbatim
+        model                       diffusionNeutronics;
+        eigenvalueNeutronics        true;
+    \endverbatim
+
+    For an subcritical reactor driven by an external neutron source: 
+    \verbatim
+        model                       diffusionNeutronics;
+        eigenvalueNeutronics        false;
+        externalSourceNeutronics    true;   
+    \endverbatim
+
     Reference publications
 
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
@@ -54,6 +68,7 @@ Description
 
     Author of this file (and associated .C or included .H files): 
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
+    Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 
 SourceFiles
     diffusionNeutronics.C
@@ -88,10 +103,12 @@ protected:
     volScalarField Dalbedo_;
     PtrList<volScalarField> flux_;
     PtrList<volScalarField> fluxStar_;
+    PtrList<volScalarField> externalSourceFlux_;
     PtrList<volScalarField> prec_; // prec per total volume
     PtrList<volScalarField> precStar_; // prec per volume salt
     volScalarField fluxStarAlbedo_;
     volScalarField defaultFlux_;
+    volScalarField defaultExternalSourceFlux_;
     volScalarField defaultPrec_;
 
     //- Derived fields
@@ -106,7 +123,7 @@ protected:
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
     const volVectorField* UOrig_;
-    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s) 
+    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s)
     const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
     const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
 
@@ -117,7 +134,7 @@ protected:
     volScalarField rhoCool_;
     
     //- Also mapped, but these are autoPtr as these field are not needed at all
-    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
+    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
     //  these fields if they are actually needed
     autoPtr<volVectorField> UPtr_;
     autoPtr<volScalarField> alphaPtr_;

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -84,6 +84,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
     ),
     flux_(xs_.energyGroups()),
     fluxStar_(xs_.energyGroups()),
+    externalSourceFlux_(xs_.energyGroups()),
     prec_(xs_.precGroups()),
     precStar_(xs_.precGroups()),
     fluxStarAlbedo_
@@ -111,6 +112,20 @@ Foam::diffusionNeutronics::diffusionNeutronics
             IOobject::AUTO_WRITE
         ),
         mesh
+    ),
+    defaultExternalSourceFlux_
+    (
+        IOobject
+        (
+            "defaultExternalSourceFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimVol/dimTime, 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),
     defaultPrec_
     (
@@ -276,9 +291,9 @@ void Foam::diffusionNeutronics::interpolateCouplingFields
 
 void Foam::diffusionNeutronics::correct
 (
-    scalar& residual, 
+    scalar& residual,
     label couplingIter
-) 
+)
 {
     #include "solveNeutronics.H"
 }

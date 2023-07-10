@@ -34,6 +34,7 @@ GeN-Foam/*.sublime*
 **/lnInclude*
 *.o
 *.dep
+**/__pycache__
 
 # Doxygen files
 Documentation/doxygen/Doxygen/html/**
@@ -41,3 +42,25 @@ Documentation/doxygen/Doxygen/html/**
 # FMU installation
 GeN-Foam/FMU4FOAM
 
+# Tutorials
+Tutorials/*/**/*1*
+Tutorials/*/**/*2*
+Tutorials/*/**/*3*
+Tutorials/*/**/*4*
+Tutorials/*/**/*5*
+Tutorials/*/**/*6*
+Tutorials/*/**/*7*
+Tutorials/*/**/*8*
+Tutorials/*/**/*9*
+Tutorials/**/postProcessing*
+Tutorials/**/processor*
+Tutorials/**/steadyState*
+Tutorials/**/transient*
+Tutorials/**/GeN-Foam.dat
+Tutorials/**/log.*
+Tutorials/**/*.out
+!**/2D_*
+!**/defaultFlux2
+
+# Tools
+Tools/**/build

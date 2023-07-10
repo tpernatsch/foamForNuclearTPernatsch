@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -77,10 +77,13 @@ Foam::FSHeatTransferCoefficientModels::Nusselt::Nusselt
     kappa_(pair.fluidRef().kappa()),
     Pr_(pair.fluidRef().Pr()),
     Dh_(pair.fluidRef().Dh()),
+    Twall_(pair.structureRef().Twall()),
+    Tfluid_(pair.fluidRef().thermo().T()),
     A_(dict.get<scalar>("const")),
     B_(dict.get<scalar>("coeff")),
     C_(dict.get<scalar>("expRe")),
     D_(dict.get<scalar>("expPr")),
+    E_(dict.lookupOrDefault<scalar>("expTc", 0.0)),
     usePeclet_(C_ == D_)
 {}
 
@@ -96,19 +99,27 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Nusselt::value
     //  Optimizations (RVOs, C++ performance stuff)
     if (B_ != 0)
     {
+        //- Compute wall/fluid temperature ratio if asked and if structure 
+        //  exists
+        scalar Tratio(1.0);
+        if (E_ != 0.0 && Twall_[celli] > 0.0)
+        {
+            Tratio = pow(Twall_[celli]/Tfluid_[celli], E_);
+        }
+
         if (usePeclet_)
             return
                 scalar
                 ( 
                     (kappa_[celli]/Dh_[celli])*
-                    (A_ + B_*pow(Re_[celli]*Pr_[celli], C_))
+                    (A_ + B_*pow(Re_[celli]*Pr_[celli], C_)*Tratio)
                 );
         else
             return 
                 scalar
                 (
                     (kappa_[celli]/Dh_[celli])*
-                    (A_ + B_*pow(Re_[celli], C_)*pow(Pr_[celli], D_))
+                    (A_ + B_*pow(Re_[celli], C_)*pow(Pr_[celli], D_)*Tratio)
                 );
     }
     else

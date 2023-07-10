@@ -10,7 +10,7 @@
 #==============================================================================*
 
 #image: ubuntu # opencfd/openfoam-dev
-image: ubuntu:18.04
+image: ubuntu
 
 #stages:
 #  - build
@@ -382,7 +382,7 @@ pages:
   script:
   - export DEBIAN_FRONTEND=noninteractive
   - apt-get update && apt-get -y install doxygen graphviz texlive-bibtex-extra 
-  - cd Documentation/doxygen/Doxygen && doxygen -u && doxygen && cd ../../../
+  - cd Documentation/doxygen/Doxygen  && doxygen && cd ../../../
   - mv Documentation/doxygen/Doxygen/html/ public/
 
   artifacts:
@@ -390,7 +390,6 @@ pages:
       - public
 
   rules:
-  #  - if: $CI_COMMIT_BRANCH == "develop"
-
+    - if: $CI_COMMIT_BRANCH == "develop"
 
 #==============================================================================*

@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+
+# --- Run the simulation
+echo -e "Run tutorial 2D_onePhaseAndSubcriticalPointKineticsCoupling rampSource ...\n" | tee -a $resFile
+./Allrun_rampSource >> log.simulationRampSource
+echo -e "Run tutorial 2D_onePhaseAndSubcriticalPointKineticsCoupling rampReactivity ...\n" | tee -a $resFile
+./Allrun_rampReactivity >> log.simulationRampReactivity
+echo -e "Done running tutorial 2D_onePhaseAndSubcriticalPointKineticsCoupling ...\n" | tee -a $resFile
+
+
+# --- Check finish simulation without error
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" | tee -a $resFile
+    else
+        echo -e "$name has NOT converged \n" | tee -a $resFile
+        exit 1
+    fi
+}
+
+isConverge steadyState              "Steady-State"
+isConverge transientRampSource      "Transient ramp source"
+isConverge transientRampReactivity  "Transient ramp reactivity"
+
+
+# --- Recover the results
+extract()
+{
+    value=$(
+        awk '{ print $1+0 }' <<<$(
+            grep -e "$1" ./$2/log.GeN-Foam |
+            tail -1 |
+            egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?." 
+        )
+    )
+    echo $value
+}
+
+totalPowerRampSource=$(extract "totalPower" transientRampSource)
+totalPowerRampReactivity=$(extract "totalPower" transientRampReactivity)
+
+# Expected values at transient time = 100 s
+expectedTotalPowerRampSource=19963400
+expectedTotalPowerRampReactivity=19927100
+
+# Theoretical values at transient time -> +inf
+theoreticalTotalPowerRampSource=20000000
+theoreticalTotalPowerRampReactivity=20000000
+
+
+# --- Check results are correct
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+error=0.001
+echo -e "Final powers with $error relative error\n" | tee -a $resFile
+if  [ $(isInRange $expectedTotalPowerRampSource     $totalPowerRampSource       $error) -eq 0 ] &&
+    [ $(isInRange $expectedTotalPowerRampReactivity $totalPowerRampReactivity   $error) -eq 0 ]
+then
+    echo "Perfect match:" | tee -a $resFile
+    echo "|                             | Simulated | Expected | Theory |" | tee -a $resFile
+    echo "|:----------------------------|:---------:|:--------:|:------:|" | tee -a $resFile
+    echo "| Total power ramp Source     | $totalPowerRampSource | $expectedTotalPowerRampSource | $theoreticalTotalPowerRampSource |" | tee -a $resFile
+    echo "| Total power ramp Reactivity | $totalPowerRampReactivity | $expectedTotalPowerRampReactivity | $theoreticalTotalPowerRampReactivity |" | tee -a $resFile
+else
+    echo "Divergent results:" | tee -a $resFile
+    echo "|                             | Simulated | Expected | Theory |" | tee -a $resFile
+    echo "|:----------------------------|:---------:|:--------:|:------:|" | tee -a $resFile
+    echo "| Total power ramp Source     | $totalPowerRampSource | $expectedTotalPowerRampSource | $theoreticalTotalPowerRampSource |" | tee -a $resFile
+    echo "| Total power ramp Reactivity | $totalPowerRampReactivity | $expectedTotalPowerRampReactivity | $theoreticalTotalPowerRampReactivity |" | tee -a $resFile
+    exit 1
+fi
+
+
+# --- Exit successfully
+exit 0

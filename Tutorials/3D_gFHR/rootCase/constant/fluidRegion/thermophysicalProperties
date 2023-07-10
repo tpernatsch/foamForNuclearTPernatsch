@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;
+    mixture         pureMixture;
+    transport       polynomial;
+    thermo          hPolynomial;
+    equationOfState icoPolynomial;
+    specie          specie;
+    energy          sensibleEnthalpy;
+}
+
+pRef            100000;
+
+mixture
+{
+    specie
+    {
+        molWeight               33.0; // https://www.osti.gov/servlets/purl/1841023
+    }
+    equationOfState
+    {
+        rhoCoeffs<8>           (2413.03 -0.4884 0 0 0 0 0 0); // Molten salts database for energy applications R. Serrano-López
+    }
+    thermodynamics
+    {
+        CpCoeffs<8>            (2265.75 0 0 0 0 0 0 0); // Molten salts database for energy applications R. Serrano-López
+        Hf                      0;
+        Sf                      0;
+    }
+    transport
+    {
+        muCoeffs<8>             (0.001 0 0 0 0 0 0 0); // fitted (R=1, T=800-1000K), Molten salts database for energy applications R. Serrano-López
+        kappaCoeffs<8>          (1.1 0 0 0 0 0 0 0); // Molten salts database for energy applications R. Serrano-López
+    }
+}
+
+
+// ************************************************************************* //

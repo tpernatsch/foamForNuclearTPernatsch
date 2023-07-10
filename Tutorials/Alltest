@@ -1,0 +1,86 @@
+#!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+clear
+
+#------------------------------------------------------------------------------
+
+# Select tutorials in the test suite
+tutorials="1D_HX/onePhase 1D_HX/twoPhase 1D_PSBT_SC 1D_boiling 1D_CHF/imposedPower 1D_CHF/imposedTemperature 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 2D_cavityBoussinesq 2D_externalSourceDiffusion 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_onePhaseAndSubcriticalPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 2D_FFTF 3D_SmallESFR 3D_gFHR Godiva_SN"
+
+#------------------------------------------------------------------------------
+
+# Declare badges
+badgeSuccess="https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square"
+badgePending="https://img.shields.io/badge/regressionTest-pending-grey.svg?style=flat-square"
+badgeFailed="https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square"
+
+# Current folder path
+rootPath=$(pwd)
+
+# Name of the result file in Markdown
+resFile="./regressionResults.md"
+
+# Counting variables
+nbTutoSuccess=0
+nbTutoTotal=0
+
+#------------------------------------------------------------------------------
+
+# Clear or create new results file
+echo "# GeN-Foam regression test suite\n" > $resFile
+echo "Regression test of `date +"%d-%b-%Y - %H:%M:%S"`  " >> $resFile
+echo "Tutorials successfully completed: 0/0  [![regressionTest]($badgePending)]()  " >> $resFile
+
+
+# Run all tutorials and check for clean finish
+for tutorialName in $tutorials
+do
+    echo "Running tutorial $tutorialName...\n"
+
+    # Header in markdown
+    echo "\n--------------------------------------------------------------------------------\n" >> $resFile
+    echo "## $tutorialName\n" >> $resFile
+
+    # Run the tutorial
+    cd $tutorialName
+    ./Allclean
+    ./Alltest
+    result=$? # Get the exit code from Alltest (0: success; 1: failed)
+    cd $rootPath
+
+    # Extract results
+    cat $tutorialName/test.out >> $resFile
+
+    # Update number of successful tutotial run
+    oldScore="$nbTutoSuccess/$nbTutoTotal"
+    if [ $result -eq 0 ]
+    then
+        nbTutoSuccess=$(expr $nbTutoSuccess + 1)
+    fi
+    nbTutoTotal=$(expr $nbTutoTotal + 1)
+
+    # Update the regression test score
+    sed -i "s|$oldScore|$nbTutoSuccess/$nbTutoTotal|" $resFile
+
+done
+
+
+# Update the badge
+if [ $nbTutoSuccess -eq $nbTutoTotal ]
+then
+    sed -i "s,$badgePending,$badgeSuccess," $resFile
+else
+    sed -i "s,$badgePending,$badgeFailed," $resFile
+fi
+
+#------------------------------------------------------------------------------

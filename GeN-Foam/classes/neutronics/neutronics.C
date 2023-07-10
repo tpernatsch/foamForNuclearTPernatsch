@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -132,12 +132,18 @@ Foam::neutronics::neutronics
     (
         IOdictionary::lookupOrDefault("eigenvalueNeutronics", false)
     ),
+    externalSourceNeutronics_
+    (
+        IOdictionary::lookupOrDefault("externalSourceNeutronics", false)
+    ),
     liquidFuel_
     (
         mesh.time().controlDict().lookupOrDefault("liquidFuel", false)
     )
 {
     Info << "Initial keff = " << keff_ << endl;
+    Info << "Is eigenvalue calc : " << eigenvalueNeutronics_ << endl;
+    Info << "Is external source calc : " << externalSourceNeutronics_ << endl;
 }
 
 // * * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * //

@@ -22,3 +22,10 @@ provided to run the tutorial using multiple cores.
 
 - in complex cases, an `Allclean` script is provided to clean up a case after
 running it and before another simulation
+
+
+## Regression test suite
+
+It is highly recommended to run the `Alltest` or `regressionTest` scripts when developing to make that GeN-Foam behave as expected. This script runs all the tutorials contained in this folder, except `testing` and `toBeUpdated`. It is an extensive process that might require a day of calculation depending on the hardware. 
+
+The results of the test are summarized in the [regressionResults.md](regressionResults.md) file.

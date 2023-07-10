@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# ---> Run from this directory
+cd ${0%/*} || exit 1
+
+# ---> Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+################################################################################
+
+cases="steadyState transientRampReactivity"
+
+# ---> Times
+endTimeSteadyState=150
+endTimeTransient=$(($endTimeSteadyState + 100))
+
+setSteadyState() {
+    cp -r $1 $2
+    echo "Setting steady-state ..."
+    foamDictionary $2/system/controlDict -entry endTime -set $endTimeSteadyState
+    foamDictionary $2/system/controlDict -entry writeInterval -set $endTimeSteadyState
+}
+
+setTransient() {
+    cp -r $1 $2
+    echo "Setting $2 case..."
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set true
+    foamDictionary $2/constant/neutroRegion/nuclearData -entry externalReactivityTimeProfile.startTime -set $endTimeSteadyState
+    foamDictionary $2/system/controlDict -entry endTime -set $endTimeTransient
+    foamDictionary $2/system/controlDict -entry deltaT -set 1e-7
+    foamDictionary $2/system/controlDict -entry writeControl -set adjustableRunTime
+    foamDictionary $2/system/controlDict -entry writeInterval -set 10
+}
+
+################################################################################
+# ---> Simulation cases
+for caseName in $cases; do
+    # ---> Setup case
+    case "$caseName" in
+        "steadyState")
+            setSteadyState rootCase $caseName
+            ;;
+        "transientRampReactivity")
+            setTransient steadyState $caseName
+            ;;
+    esac
+
+    # ---> Start gnuplot if it exist
+    if command -v gnuplot &> /dev/null; then
+        case "$caseName" in
+            "steadyState")
+                gnuplot -e "log='$caseName/log.GeN-Foam'" plottingTools/residuals - &> /dev/null &
+                ;;
+            "transientRampReactivity")
+                # gnuplot -e "log='$caseName/log.GeN-Foam'" plottingTools/residualsAndPhysics - &> /dev/null &
+                gnuplot -e "log='$caseName/log.GeN-Foam'" plottingTools/physicsParameters - &> /dev/null &
+                # gnuplot -e "log='$caseName/log.GeN-Foam'" plottingTools/powerPlot.r - &> /dev/null &
+                ;;
+        esac
+    else
+        echo "gnuplot could not be found"
+    fi
+
+    # ---> Run code
+    GeN-Foam -case $caseName 2>&1 | tee "$caseName/log.GeN-Foam"
+
+    # ---> Kill gnuplot if it was started
+    pkill -x gnuplot &> /dev/null &
+done

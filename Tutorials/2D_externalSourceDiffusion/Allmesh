@@ -1,0 +1,17 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+
+# Remove log files
+rm -rf log.blockMesh log.checkMesh
+
+# Generate the meshes
+runApplication blockMesh -case rootCase -region neutroRegion
+blockMesh -case rootCase -region fluidRegion
+blockMesh -case rootCase -region thermoMechanicalRegion
+
+# Check the neutronics mesh
+runApplication checkMesh -case rootCase -region neutroRegion

@@ -46,57 +46,32 @@
 #------------------------------------------------------------------------------
 
 # state:  0=normal, 1=brief, 2=details
-# indent: whitespace content prior to the opening "//-"
+
 BEGIN {
     state = 0
-    indent = ""
 }
 
-/^\s*\/\/-/ {
-    if (state == 0)
-    {
-        # Changed from normal to brief (start of comment block)
-        ## indent = substr($0, 1, index($0, "/")-1)
-        indent = $0
-        sub(/\S.*/, "", indent)
-        printf indent "/*!\n"
-        printf indent " * \\brief "
-        sub(/^\s*\/\/-\s*/, "")
-        state = 1
-    }
-    else
-    {
-        # Within brief: replace leading space with proper indent amount
-        printf indent
-        sub(/^\s*\/\/-\s*/, " * ")
-    }
-
+/^ *\/\/-/ {
+    state = 1
+    sub(/\/\/-/, "//!")
     print
     next
 }
 
-
-/^\s*\/\// {
+/^ *\/\// {
+    # Start comment block
     if (state == 1)
     {
-        # Change from brief to details. Extra line to start new paragraph.
-        printf indent " *\n"
+        printf "/*! "
         state = 2
     }
 
+    # Inside comment block
     if (state == 2)
     {
-        # Within details
-        printf indent
-
-        # '//' with 4 spaces or more - assume indent is intentional
-        if (match($0, /^\s*\/\/(    )+/))
+        if (!sub(/^ *\/\/  /, ""))
         {
-            sub(/^\s*\/\/\s/, " *")
-        }
-        else
-        {
-            sub(/^\s*\/\/\s*/, " * ")
+            sub(/^ *\/\//, "")
         }
     }
 
@@ -104,14 +79,13 @@ BEGIN {
     next
 }
 
-
 {
-    # End comment filtering
-    if (state)
+    # End comment block
+    if (state == 2)
     {
-        printf indent " */\n"
-        state = 0
+        printf "*/ "
     }
+    state = 0
     print
     next
 }

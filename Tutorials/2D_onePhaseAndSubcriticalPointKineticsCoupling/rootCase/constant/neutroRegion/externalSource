@@ -1,0 +1,49 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+;
+    class       dictionary;
+;
+    object      externalSource;
+;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Parameters only relevant to the point-kinetics
+
+//- External source mode
+externalSourceMode  transient; // powerMonitoring // transient
+
+//- Beam energy per source particle
+beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
+
+//- Neutron yield of the spallation of proton on heavy metal 
+nuSource            15.5; // [neutron/proton]
+
+//- External source modulation FMI (not mandatory but is an improvement of 
+//  power monitoring). Need to be in "externalSourceMode transient".
+// externalSourceModulationNameFromFMU     gfExternalSourceMod;
+
+//- External modulation time profile (time, modulation factor)
+externalSourceModulationTimeProfile
+{
+    type        table;
+    startTime   1500000000;
+    table       table
+    (
+        (0      1)
+        (20     2)
+    );
+}
+
+
+// ************************************************************************* //

@@ -5,7 +5,7 @@ cd ${0%/*} || exit 1
 
 # --- Initialize the output file
 resFile=test.out
-rm $resFile
+rm -rf $resFile
 touch $resFile
 
 # --- Run the simulation

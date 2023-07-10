@@ -2,6 +2,67 @@
 #include "computeFeedbackFieldValues.H"
 #include "correctReactivity.H"
 
+//- Get current simulation time
+const scalar timeOutput(mesh_.time().timeOutputValue());
+
+//- Update external source power
+if (externalSourceNeutronics_)
+{
+    if (externalSourceMode_ == "transient")
+    {
+        if (externalSourceModulationTimeProfile_.valid())
+        {
+            externalSourceModulation_ =
+                externalSourceModulationTimeProfile_.value(timeOutput);
+        }
+
+        //- FMU
+        #ifdef isCommDataLayerIncluded
+
+        word externalSourceModKeyFromFMU("externalSourceModulationNameFromFMU");
+        if (
+            externalSource_.found(externalSourceModKeyFromFMU)
+            && !externalSourceModulationTimeProfile_.valid()
+        ) {
+            const word externalSourceModNameFromFMU = externalSource_.get<word>(
+                externalSourceModKeyFromFMU
+            );
+
+            // Communicating with the FMU
+            const Time& runTime = this->db().time();
+            commDataLayer& data = commDataLayer::New(runTime);
+            externalSourceModulation_ = data.getObj<scalar>(
+                externalSourceModNameFromFMU,
+                commDataLayer::causality::in
+            );
+        }
+
+        #endif // isCommDataLayerIncluded
+    }
+    else if (externalSourceMode_ == "powerMonitoring")
+    {
+        powerRecordPtr_.append(Foam::Tuple2<scalar, scalar>(t, power_));
+
+        scalar powerDelayed(Foam::interpolationTable<scalar>::interpolateValue(
+            powerRecordPtr_,
+            timeOutput - powerModulationDelay_
+        ));
+
+        externalSourceModulation_ = externalSourceModulation_ * (
+            1. + modulationFactor_ * (powerTarget_ - powerDelayed)/powerTarget_ * mesh_.time().deltaT().value()
+        );
+    }
+
+    //- Update source strength
+    externalSourcePower_ = externalSourcePowerRef_ * externalSourceModulation_;
+
+    setBeamParameters();
+}
+else
+{
+    externalSourcePower_ = 0.0;
+}
+
 //- Update decayPower_, if available
 if (decayPowerPtr_.valid())
 {
@@ -23,8 +84,9 @@ if (timeIndex_ != mesh_.time().timeIndex())
     {
         precursorPowersOld_[i] = precursorPowers_[i];
     }
+    externalSourcePowerOld_ = externalSourcePower_;
 }
-label n(delayedGroups_+1);
+label n(delayedGroups_+1+1); // +1 for fissionPower; +1 for external source
 scalar dt(mesh_.time().deltaT().value());
 
 //- Coefficient matrix, source, solution field
@@ -34,16 +96,20 @@ List<scalar> x(n, 0.0);
 
 //- First line of matrix has the coefficients of the discretized power
 //  differential equation, the first element of the solution vector is the
-//  power
-A[0][0] = 1.0/dt-(totalReactivity_-beta_)/promptGenerationTime_;
-for (int i = 1; i < n; i++)
+//  power, the last element is the external source power
+A[0][0] = 1.0/dt-(totalReactivity_-subcriticalIndex_-beta_)/promptGenerationTime_;
+for (int i = 1; i < n-1; i++)
 {
     A[0][i] = -lambdas_[i-1];
     B[0] = fissionPowerOld_/dt;
 }
+//- External Source
+A[0][n-1] = -1/promptGenerationTime_;
+A[n-1][n-1] = 1.0/dt;
+B[n-1] = externalSourcePowerOld_/dt;
 
 //- Rest of the matrix for the precursor coefficients
-for (int i = 1; i < n; i++)
+for (int i = 1; i < n-1; i++)
 {
     A[i][0] = -betas_[i-1]/promptGenerationTime_;
     A[i][i] = 1.0/dt + lambdas_[i-1];
@@ -53,7 +119,7 @@ for (int i = 1; i < n; i++)
 //- Solve
 solve(x, A, B);
 fissionPower_ = x[0];
-for (int i=1; i<n; i++)
+for (int i=1; i<n-1; i++)
 {
     precursorPowers_[i-1] = x[i];
 }
