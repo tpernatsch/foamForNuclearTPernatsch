@@ -1,23 +1,19 @@
 import os
 
-folder = "/home/faculty/c/carlo.fiorina/data/GeN-Foam"
+folder = "/home/faculty/c/carlo.fiorina/data/GeN-Foam/"
 
-# Use os.walk to iterate over all the files in the folder and its subfolders
 for root, dirs, files in os.walk(folder):
     for filename in files:
-        # Construct the full path to the file
         filepath = os.path.join(root, filename)
 
-        # Open the file in read mode
-        with open(filepath, "r") as file:
-            # Read the contents of the file
-            file_contents = file.read()
+        try:
+            with open(filepath, "r") as file:
+                file_contents = file.read()
 
-        # Replace the old string with the new string
-        file_contents = file_contents.replace("Built on OpenFOAM v2212", "Built on OpenFOAM v2306")
+            file_contents = file_contents.replace("Built on OpenFOAM v2306", "Built on OpenFOAM v2306")
 
-        # Open the file in write mode
-        with open(filepath, "w") as file:
-            # Write the updated contents to the file
-            file.write(file_contents)
+            with open(filepath, "w") as file:
+                file.write(file_contents)
 
+        except UnicodeDecodeError:
+            print(f'Skipped file {filepath} due to UnicodeDecodeError')
