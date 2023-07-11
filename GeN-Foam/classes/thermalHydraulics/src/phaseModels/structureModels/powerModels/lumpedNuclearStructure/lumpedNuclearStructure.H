@@ -85,7 +85,7 @@ Usage
         nodeMatrix          0; // optional: Define which node temperature 
                                // is used to perform a thermal diffusion
                                // in the matrix
-        k                   10; // optional: Thermal conductivity in the 
+        kappaMatrix         10; // optional: Thermal conductivity in the 
                                 // matrix to compute the thermal diffusion.
                                 // When set to 0, the thermal diffusion is 
                                 // not computed.
@@ -119,7 +119,7 @@ Usage
         nodeFuel            0;
         nodeClad            1;
         nodeMatrix          2;
-        k                   12;
+        kappaMatrix         12;
         heatConductances    (600000 240000 600000 1200000);
         rhoCp               (53576.92 53576.92 53576.92);
         volumeFractions     (0.75 0.125 0.125);
@@ -168,8 +168,11 @@ protected:
 
     //- Fields representing max, matrix and surface temperatures
     volScalarField Tmax_;
-    autoPtr<volScalarField> TmatrixPtr_;
+    volScalarField Tmatrix_;
     volScalarField Tsurface_;
+
+    //- Field representing the laplacian of the matrix temperature
+    volScalarField laplacianTmatrix_;
 
     //- Fraction of power from neutronics that goes to this powerModel
     //  This takes into account for instance cases where some of the 
@@ -188,8 +191,9 @@ protected:
     //- Node representing matrix for heat diffusion
     labelList nodeMatrix_;
 
-    //- Thermal conductivity for matrix node (only one matrix structure)
-    scalarList thermalConductivity_;
+    //- Thermal conductivity for matrix node (only one matrix structure) in 
+    //  W/m/K
+    scalarList kappaMatrix_;
 
     //- Heat conductances between nodes (including first and last 
     //  "half" resitances)
@@ -256,15 +260,15 @@ public:
 
         //- Const access
 
-            const autoPtr<volScalarField>& TmatrixPtr() const
-            {
-                return TmatrixPtr_;
-            }
+            // const autoPtr<volScalarField>& TmatrixPtr() const
+            // {
+            //     return TmatrixPtr_;
+            // }
 
-            const volScalarField& Tmatrix() const
-            {
-                return TmatrixPtr_();
-            }
+            // const volScalarField& Tmatrix() const
+            // {
+            //     return TmatrixPtr_();
+            // }
 };
 
 
