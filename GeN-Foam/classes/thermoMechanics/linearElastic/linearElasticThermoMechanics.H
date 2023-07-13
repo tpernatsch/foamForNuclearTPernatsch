@@ -118,7 +118,12 @@ protected:
         volScalarField gapWidth;
 
         //- Mapped field
+        volScalarField TStructFromTH_;
         volScalarField powerDensityNeutronics_;
+
+        //- Derived from mapped field
+        // Used to check where the TH is mapping TStructFromTH_
+        volScalarField isPorous_;
 
         //- Ptrs to coupling fields
         const volScalarField* TFuelOrig_;

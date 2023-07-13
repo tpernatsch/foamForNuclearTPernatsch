@@ -44,6 +44,30 @@ Author (for the modification of soliddisp_lacementFoam)
 
 \*---------------------------------------------------------------------------*/
 
+
+
+forAll(isPorous_, celli)
+{
+    isPorous_[celli] = TStructFromTH_[celli] / max(TStructFromTH_[celli],SMALL);
+}
+dimensionedScalar rescale("rescale", dimensionSet(1, -1, -3 , -1, 0), 1.0);
+volScalarField scaledIsPorous(isPorous_*rescale);
+volScalarField rhoC(rho_*C_);
+fvScalarMatrix TEqn
+(
+    (1.0-isPorous_) *
+    (
+        fvm::ddt(rhoC,TStruct_)
+        + fvm::laplacian(rhoK_, TStruct_)
+        //- powerDensityNeutronics_
+    )
+    ==
+      fvm::Sp(scaledIsPorous,TStruct_)
+    - TStructFromTH_ * scaledIsPorous
+);
+TEqn.solve();
+
+
 int iCorr = 0;
 scalar initialResidual = 0;
 

@@ -422,6 +422,20 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         dimensionedScalar("gapWidth", dimensionSet(0,1,0,0,0,0,0), 0.0),
         calculatedFvPatchField<scalar>::typeName
     ),
+    TStructFromTH_
+    (
+        IOobject
+        (
+            "TStructFromTH",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     powerDensityNeutronics_
     (
         IOobject
@@ -434,6 +448,20 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         ),
         mesh_,
         dimensionedScalar("", dimPower/dimVol, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    isPorous_ //assume it is not (=0)
+    (
+        IOobject
+        (
+            "isPorous",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimless, 0.0), 
         zeroGradientFvPatchScalarField::typeName
     ),
     TFuelOrig_(nullptr),
@@ -462,6 +490,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         )
     )
 {
+
     TStruct_ = TStructRef_;
     TStruct_.correctBoundaryConditions();
 
@@ -640,8 +669,8 @@ void Foam::linearElasticThermoMechanics::interpolateCouplingFields
 {
     mechToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
     TFuel_.correctBoundaryConditions();
-    mechToFluid.mapTgtToSrc(*TStructOrig_, plusEqOp<scalar>(), TStruct_);
-    TStruct_.correctBoundaryConditions();
+    mechToFluid.mapTgtToSrc(*TStructOrig_, plusEqOp<scalar>(), TStructFromTH_);
+    TStructFromTH_.correctBoundaryConditions();
 
     mechToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
     powerDensityNeutronics_.correctBoundaryConditions();
