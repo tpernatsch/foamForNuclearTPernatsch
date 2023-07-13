@@ -200,6 +200,7 @@ boundary
     }
 );
 
+// Comment if you want to have internal boundaries between the 3 regions
 mergePatchPairs
 (
     (right_THN left_N)
