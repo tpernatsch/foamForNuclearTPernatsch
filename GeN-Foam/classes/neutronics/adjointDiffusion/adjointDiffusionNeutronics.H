@@ -98,20 +98,22 @@ protected:
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
     const volScalarField* TFuelOrig_;
-    const volScalarField* TFuelOrigMech_;
     const volScalarField* TCladOrig_;
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
+    const volScalarField* TStructMechOrig_;
     const volVectorField* UOrig_;
     const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s) 
     const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
     const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
 
-    //- Mapped fields
+    //- Mapped fields from TH
     volScalarField TFuel_;
     volScalarField TClad_;
     volScalarField TCool_;
     volScalarField rhoCool_;
+    //- Mapped fields from TM
+    volScalarField TStructMech_;
     
     //- Also mapped, but these are autoPtr as these field are not needed at all
     //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 

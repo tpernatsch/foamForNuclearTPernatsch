@@ -225,10 +225,13 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     TStructRef_(0.0),
     TDrivelineRef_(0.0),
     TFuelOrig_(nullptr),
-    TFuelOrigMech_(nullptr),
     TCladOrig_(nullptr),
     TCoolOrig_(nullptr),
     rhoCoolOrig_(nullptr),
+    TStructOrig_(nullptr),
+    TStructMechOrig_(nullptr),
+    powerDensityOrig_(nullptr),
+    powerDensityToLiquidOrig_(nullptr),
     UOrig_(nullptr),
     alphaOrig_(nullptr),
     alphatOrig_(nullptr),
@@ -301,6 +304,20 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         ),
         mesh,
         dimensionedScalar("", dimTemperature, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TStructMech_
+    (
+        IOobject
+        (
+            "TStructMech",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     UPtr_(nullptr),
@@ -1392,14 +1409,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     }
 
     //- Get T from TM solver
-    // This can be a bit confusing: we need to paramtrize XS based on this
-    // temperature, but XS can only be paramterized based on 
-    // TFuel_, TClad_, rhoCool_, TCool_, disp_
-    // I am using TFuel and this os purely arbitrary. It could have been any
-    // of the other temperatures. However, this means that one will have to
-    // provide a nuclearDataFuelTemp file to parametrize the XS from a solid
-    // structure
-    TFuelOrigMech_ = 
+    TStructMechOrig_ = 
         srcTM.findObject<volScalarField>("TStruct");
 
     //- The rest of this function is for initializing the reference values of
@@ -1508,15 +1518,9 @@ void Foam::pointKineticNeutronics::interpolateCouplingFields
         diffCoeffPrecPtr_().correctBoundaryConditions();
     }
 
+
     //- Interpolate T from TM solver
-    // This can be a bit confusing: we need to paramtrize XS based on this
-    // temperature, but XS can only be paramterized based on 
-    // TFuel_, TClad_, rhoCool_, TCool_, disp_
-    // I am using TFuel and this os purely arbitrary. It could have been any
-    // of the other temperatures. However, this means that one will have to
-    // provide a nuclearDataFuelTemp file to parametrize the XS from a solid
-    // structure
-    neutroToMech.mapTgtToSrc(*TFuelOrigMech_, plusEqOp<scalar>(), TFuel_);
+    neutroToMech.mapTgtToSrc(*TStructMechOrig_, plusEqOp<scalar>(), TStructMech_);
 
     TFuel_.correctBoundaryConditions();
     TClad_.correctBoundaryConditions();

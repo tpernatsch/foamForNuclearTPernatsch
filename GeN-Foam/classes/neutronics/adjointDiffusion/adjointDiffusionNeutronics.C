@@ -196,10 +196,10 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
         zeroGradientFvPatchScalarField::typeName
     ),
     TFuelOrig_(nullptr),
-    TFuelOrigMech_(nullptr),
     TCladOrig_(nullptr),
     TCoolOrig_(nullptr),
     rhoCoolOrig_(nullptr),
+    TStructMechOrig_(nullptr),
     UOrig_(nullptr),
     alphaOrig_(nullptr),
     alphatOrig_(nullptr),
@@ -258,6 +258,20 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
         ),
         mesh,
         dimensionedScalar("", dimTemperature, SMALL),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TStructMech_
+    (
+        IOobject
+        (
+            "TStructMech",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
     )
 {

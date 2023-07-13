@@ -315,11 +315,11 @@ protected:
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
     const volScalarField* TFuelOrig_;
-    const volScalarField* TFuelOrigMech_;
     const volScalarField* TCladOrig_;
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructOrig_;
+    const volScalarField* TStructMechOrig_;
     const volScalarField* powerDensityOrig_;
     const volScalarField* powerDensityToLiquidOrig_;
     const volVectorField* UOrig_;
@@ -327,12 +327,15 @@ protected:
     const volScalarField* alphatOrig_;
     const volScalarField* muOrig_;
 
-    //- Mapped fields
+    //- Mapped fields from TH
     volScalarField TFuel_;
     volScalarField TClad_;
     volScalarField TCool_;
     volScalarField rhoCool_;
     volScalarField TStruct_; //- This is also used to compute TDriveline
+    //- Mapped fields from TM
+    volScalarField TStructMech_;
+
 
     //- Also mapped, but these are autoPtr as these field are not needed at all
     //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
