@@ -27,7 +27,16 @@ boundaryField
         traction        uniform ( 0 0 0 );
         pressure        uniform 0;
         value           uniform (0 0 0);
-    }  
+    }
+    right_alone
+    {
+        type            fixedValue;
+        value           uniform (0 0 0);
+    }    
+    frontAndBack
+    {
+        type            empty;
+    }
 
 }
 // ************************************************************************* //

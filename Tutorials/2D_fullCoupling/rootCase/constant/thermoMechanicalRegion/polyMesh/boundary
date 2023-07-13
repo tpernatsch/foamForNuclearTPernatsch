@@ -16,92 +16,64 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-13
+9
 (
     inlet_THN
     {
         type            patch;
         nFaces          6;
-        startFace       774;
+        startFace       822;
     }
     outlet_THN
     {
         type            patch;
         nFaces          6;
-        startFace       780;
+        startFace       828;
     }
     left_THN
     {
         type            wall;
         inGroups        1(wall);
         nFaces          24;
-        startFace       786;
-    }
-    right_THN
-    {
-        type            wall;
-        inGroups        1(wall);
-        nFaces          24;
-        startFace       810;
+        startFace       834;
     }
     inlet_N
     {
         type            patch;
         nFaces          6;
-        startFace       834;
+        startFace       858;
     }
     outlet_N
     {
         type            patch;
         nFaces          6;
-        startFace       840;
-    }
-    left_N
-    {
-        type            wall;
-        inGroups        1(wall);
-        nFaces          24;
-        startFace       846;
-    }
-    right_N
-    {
-        type            wall;
-        inGroups        1(wall);
-        nFaces          24;
-        startFace       870;
+        startFace       864;
     }
     inlet_alone
     {
         type            patch;
         nFaces          6;
-        startFace       894;
+        startFace       870;
     }
     outlet_alone
     {
         type            patch;
         nFaces          6;
-        startFace       900;
-    }
-    left_alone
-    {
-        type            wall;
-        inGroups        1(wall);
-        nFaces          24;
-        startFace       906;
+        startFace       876;
     }
     right_alone
     {
         type            wall;
         inGroups        1(wall);
         nFaces          24;
-        startFace       930;
+        startFace       882;
     }
     frontAndBack
     {
         type            empty;
         inGroups        1(empty);
         nFaces          864;
-        startFace       954;
+        startFace       906;
     }
 )
 

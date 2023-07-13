@@ -10,40 +10,12 @@ FoamFile
     version     2.0;
     format      ascii;
     arch        "LSB;label=32;scalar=64";
-    class       polyBoundaryMesh;
-    location    "constant/fluidRegion/polyMesh";
-    object      boundary;
+    class       regIOobject;
+    location    "constant/thermoMechanicalRegion/polyMesh";
+    object      pointZones;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-4
-(
-    inlet
-    {
-        type            patch;
-        nFaces          6;
-        startFace       258;
-    }
-    outlet
-    {
-        type            patch;
-        nFaces          6;
-        startFace       264;
-    }
-    fixedWalls
-    {
-        type            wall;
-        inGroups        1(wall);
-        nFaces          48;
-        startFace       270;
-    }
-    frontAndBack
-    {
-        type            empty;
-        inGroups        1(empty);
-        nFaces          288;
-        startFace       318;
-    }
-)
+0()
 
 // ************************************************************************* //

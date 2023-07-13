@@ -79,7 +79,7 @@ boundary
             (4 5 6 7)
         );
     }
-    left_THN
+    right_THN
     {
         type wall;
         faces
@@ -87,14 +87,15 @@ boundary
             (1 2 6 5)
         );
     }
-    right_THN
+    left_THN
     {
         type wall;
         faces
         (
             (3 0 4 7)
         );
-    }/*
+    }
+    /*
     frontAndBack
     {
         type empty;
@@ -121,7 +122,7 @@ boundary
             (12 13 14 15)
         );
     }
-    left_N
+    right_N
     {
         type wall;
         faces
@@ -129,7 +130,7 @@ boundary
             (9 10 14 13)
         );
     }
-    right_N
+    left_N
     {
         type wall;
         faces
@@ -165,7 +166,7 @@ boundary
             (20 21 22 23)
         );
     }
-    left_alone
+    right_alone
     {
         type wall;
         faces
@@ -173,7 +174,7 @@ boundary
             (17 18 22 21)
         );
     }
-    right_alone
+    left_alone
     {
         type wall;
         faces
@@ -198,3 +199,12 @@ boundary
         );
     }
 );
+
+mergePatchPairs
+(
+    (right_THN left_N)
+    (right_N left_alone)
+);
+
+
+

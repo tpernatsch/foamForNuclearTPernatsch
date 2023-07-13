@@ -49,7 +49,7 @@ solveEnergy     true;
 
 solveNeutronics true;
 
-solveThermalMechanics false;
+solveThermalMechanics true;
 
 removeFluidBaffles true;
 

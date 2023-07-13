@@ -24,8 +24,26 @@ boundaryField
     ".*"
     {
        type            zeroGradient;
+    }
+    "inlet_THN"
+    {
+       type	      fixedValue;
+       value          uniform 0.0;
+    } 
+    "inlet_N"
+    {
+       type	      fixedValue;
+       value          uniform 0.0;
+    } 
+    "inlet_alone"
+    {
+       type	      fixedValue;
+       value          uniform 0.0;
     }  
-
+    frontAndBack
+    {
+        type            empty;
+    }
 }
 
 // ************************************************************************* //
