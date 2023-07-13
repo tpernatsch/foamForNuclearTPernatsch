@@ -1,0 +1,108 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2306                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "constant/thermoMechanicalRegion/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+13
+(
+    inlet_THN
+    {
+        type            patch;
+        nFaces          6;
+        startFace       774;
+    }
+    outlet_THN
+    {
+        type            patch;
+        nFaces          6;
+        startFace       780;
+    }
+    left_THN
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          24;
+        startFace       786;
+    }
+    right_THN
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          24;
+        startFace       810;
+    }
+    inlet_N
+    {
+        type            patch;
+        nFaces          6;
+        startFace       834;
+    }
+    outlet_N
+    {
+        type            patch;
+        nFaces          6;
+        startFace       840;
+    }
+    left_N
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          24;
+        startFace       846;
+    }
+    right_N
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          24;
+        startFace       870;
+    }
+    inlet_alone
+    {
+        type            patch;
+        nFaces          6;
+        startFace       894;
+    }
+    outlet_alone
+    {
+        type            patch;
+        nFaces          6;
+        startFace       900;
+    }
+    left_alone
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          24;
+        startFace       906;
+    }
+    right_alone
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          24;
+        startFace       930;
+    }
+    frontAndBack
+    {
+        type            empty;
+        inGroups        1(empty);
+        nFaces          864;
+        startFace       954;
+    }
+)
+
+// ************************************************************************* //
