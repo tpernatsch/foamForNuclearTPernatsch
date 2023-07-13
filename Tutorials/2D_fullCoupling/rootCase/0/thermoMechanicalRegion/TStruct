@@ -10,59 +10,30 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       dictionary;
-    object      fvSchemes;
+    class       volScalarField;
+    object      TStruct;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-d2dt2Schemes
-{
-    default         steadyState;//Euler;//
-}
+dimensions      [0 0 0 1 0 0 0];
 
-ddtSchemes
-{
-    default         Euler;
-}
+internalField           uniform 300;
 
-gradSchemes
+boundaryField
 {
-    default         leastSquares;
-    grad(Disp)         leastSquares;
-    grad(Tmech)         leastSquares;
-}
-
-divSchemes
-{
-    //default         Gauss linear;
-    default         Gauss linear;
-    div(sigmaD)     Gauss linear;
-    div(fuelDisp)   Gauss upwind;
-    div(CRDisp)   Gauss upwind;
-}
-
-laplacianSchemes
-{
-    default        Gauss linear corrected;
-    laplacian(DD,D) Gauss linear corrected;
-    laplacian(DT,T) Gauss linear corrected;
-}
-
-interpolationSchemes
-{
-    default         linear;
-}
-
-snGradSchemes
-{
-    default         none;
-}
-
-fluxRequired
-{
-    default         no;
-    Disp               no;
-    Tmech               no;
+    ".*"
+    {
+        type            zeroGradient;
+    }
+    right_alone
+    {
+        type            fixedValue;
+        value           uniform 300;
+    }    
+    frontAndBack
+    {
+        type            empty;
+    }
 }
 
 // ************************************************************************* //

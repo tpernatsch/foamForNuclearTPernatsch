@@ -22,7 +22,7 @@ model 		linearElasticThermoMechanics;//only model available now
 planeStress     no;
 linkedFuel      false; // true if there is contact between fuel and cladding (expansion driven by cladding)
 fuelOrientation   (0 0 1); 
-TStructRef		600; //ref temperature for structures
+TStructRef		300; //ref temperature for structures
 
 zones
 (
@@ -32,8 +32,8 @@ zones
         rho             1000; //density
         E               1e9;  // Young modulus
         nu              0.3; // Poisson ratio
-        C               200; // not used
-        k               5; // not used
+        C               20; // not used
+        k               5000; // not used
         alpha               1.8e-5; // linear expansion coeff (1/K)
         // for fuel (only if there is fuel)
         TFuelRef           600;
@@ -45,8 +45,8 @@ zones
         rho             1000; //density
         E               1e9;  // Young modulus
         nu              0.3; // Poisson ratio
-        C               200; // not used
-        k               5; // not used
+        C               20; // not used
+        k               5000; // not used
         alpha               1.8e-5; // linear expansion coeff (1/K)
     }
 
@@ -55,8 +55,8 @@ zones
         rho             1000; //density
         E               1e9;  // Young modulus
         nu              0.3; // Poisson ratio
-        C               200; // not used
-        k               5; // not used
+        C               20; // not used
+        k               5000; // not used
         alpha               1.8e-5; // linear expansion coeff (1/K)
     }
         

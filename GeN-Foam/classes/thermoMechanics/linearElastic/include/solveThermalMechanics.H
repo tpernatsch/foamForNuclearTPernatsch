@@ -39,13 +39,15 @@ Reference publication (for the modification of soliddisp_lacementFoam)
     "GeN-Foam: a novel OpenFOAM® based mu_lti-physics solver for 2D/3D transient
     analysis of nuclear reactors", Nuclear Engineering and Design, 2015
 
-Author (for the modification of soliddisp_lacementFoam)
+Author (for the modification of soliddisplacementFoam)
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
 
 \*---------------------------------------------------------------------------*/
 
 
-
+// This is as usgly as it gets, but it works
+// I am forcing TStruct to TStructFromTH_ where there is info coming from the
+// thermal-hydraulics, while I solve the rest with heat diffusion
 forAll(isPorous_, celli)
 {
     isPorous_[celli] = TStructFromTH_[celli] / max(TStructFromTH_[celli],SMALL);
@@ -58,8 +60,8 @@ fvScalarMatrix TEqn
     (1.0-isPorous_) *
     (
         fvm::ddt(rhoC,TStruct_)
-        + fvm::laplacian(rhoK_, TStruct_)
-        //- powerDensityNeutronics_
+        - fvm::laplacian(rhoK_, TStruct_)
+        - powerDensityNeutronics_
     )
     ==
       fvm::Sp(scaledIsPorous,TStruct_)

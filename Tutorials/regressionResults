@@ -1,47 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 13-Jul-2023 - 14:30:59
-
-## 1D_HX ##
-1D_HX onePhase has converged 
-
-1D_HX twoPhase has converged 
-
-
-## 1D_PSBT_SC ##
-1D_PSBT_SC has converged 
-
-time,  alpha.vapour at the end of the channel is: 0.133727 . It should be 0.133727 
-
-## 1D_boiling ##
-1D_boiling has converged 
-
-
-## 1D_CHF ##
-1D_CHF imposedPower has converged 
-
-Temperature of the structure at the top of the channel at 90 seconds is: 2625.18 . It should be 2625.18 
-1D_CHF imposedTemperature has converged 
-
-heat flux of the structure at the top of the channel at 40 seconds is: 33423.1 . It should be 33423.1 
-
-## 1D_MSR_pointKinetics ##
-Steady state of 1D_MSR_pointKinetics has converged 
-
-Transient of 1D_MSR_pointKinetics has converged 
-
-Transient end of 1D_MSR_pointKinetics has converged 
-
-power is 613794000 . It should be ~6.13794e+08 
-
-## 1D_thermalMSR_pointKinetics ##
-Steady state of 1D_thermalMSR_pointKinetics has converged 
-
-Transient of 1D_thermalMSR_pointKinetics has converged 
-
-Transient end of 1D_thermalMSR_pointKinetics has converged 
-
-power is 415258000 . It should be ~4.15258e+08 
+Regression test of 13-Jul-2023 - 17:14:38
 
 ## 3D_SmallESFR ##
 Steady state of 3D_SmallESFR has converged 
@@ -49,45 +8,4 @@ Steady state of 3D_SmallESFR has converged
 Transient of 3D_SmallESFR has converged 
 
 keff is 0.936873 . It should be ~0.936827  
-power is 799945400 . It should be ~8e+08  
-
-## 2D_cavityBoussinesq ##
-2D_cavityBoussinesq has converged 
-
-
-## 2D_externalSourceDiffusion ##
-Run tutorial 2D_externalSourceDiffusion ...
-
-Done running tutorial 2D_externalSourceDiffusion ...
-
-Steady-state has converged 
-
-The relation S/(1-keff) = S + nuSigmaF*phi has been verified
-
-Test power and fluxes  
-Perfect match:
-|             | Simulated | Expected |
-|:------------|:---------:|:--------:|
-| Total power | 53214.1 | 53214.1 |
-| Flux 0      | 23260.8 | 23260.8 |
-| Flux 1      | 29953.3 | 29953.3 |
-| Source 0    | 3346.27 | 3346.27 |
-| Source 1    | 3346.27 | 3346.27 |
-
---------------------------------------------------------------------------------
-
-
-## 2D_FFTF ##
-Energy steady state of 2D_FFTF has converged 
-
-Transient of 2D_FFTF has converged 
-
-reactivityDoppler is 237.049 . It should be 237.0728  
-reactivityClad is 0.818009 . It should be 0.8198844    
-reactivityDensity is -2.51865 . It should be -2.525069    
-reactivityStructures is -1.02723 . It should be -1.017622    
-reactivityDriveline is -8.62204 . It should be -8.631667  
-reactivityGEM is -464.85 . It should be -464.8497  
-totalPower is 29493.7 . It should be 29490.49  
-
-## 2D_MSFR ##
+power is 799892100 . It should be ~8e+08  
