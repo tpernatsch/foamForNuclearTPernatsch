@@ -422,6 +422,23 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         dimensionedScalar("gapWidth", dimensionSet(0,1,0,0,0,0,0), 0.0),
         calculatedFvPatchField<scalar>::typeName
     ),
+    powerDensityNeutronics_
+    (
+        IOobject
+        (
+            "powerDensityNeutronics",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower/dimVol, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TFuelOrig_(nullptr),
+    TStructOrig_(nullptr),
+    powerDensityOrig_(nullptr),
     nCorr_
     (
         mesh.solutionDict().subDict("stressAnalysis").lookupOrDefault<int>
@@ -597,31 +614,38 @@ Foam::linearElasticThermoMechanics::~linearElasticThermoMechanics()
 
 void Foam::linearElasticThermoMechanics::getCouplingFieldRefs
 (
-    const objectRegistry& src,
-    const meshToMesh& mechToFluid
+    const objectRegistry& srcTH,
+    const objectRegistry& srcN
 )
 {
     //- Field names must reflect those defined in createCouplingFields.H
     TFuelOrig_ = 
         (linkedFuel_) ?
-        src.findObject<volScalarField>("bafflelessTCladAv") :
-        src.findObject<volScalarField>("bafflelessTFuelAv");
+        srcTH.findObject<volScalarField>("bafflelessTCladAv") :
+        srcTH.findObject<volScalarField>("bafflelessTFuelAv");
     TStructOrig_ = 
-        src.findObject<volScalarField>("bafflelessTStruct");
-    
+        srcTH.findObject<volScalarField>("bafflelessTStruct");
+    powerDensityOrig_ = 
+        srcN.findObject<volScalarField>("powerDensity");
     //- Initialize mapped fields
-    this->interpolateCouplingFields(mechToFluid);
+    //this->interpolateCouplingFields(mechToFluid);
 }
 
 void Foam::linearElasticThermoMechanics::interpolateCouplingFields
 (
-    const meshToMesh& mechToFluid
+    const meshToMesh& mechToFluid,
+    const meshToMesh& mechToNeutro
+
 )
 {
     mechToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
     TFuel_.correctBoundaryConditions();
     mechToFluid.mapTgtToSrc(*TStructOrig_, plusEqOp<scalar>(), TStruct_);
     TStruct_.correctBoundaryConditions();
+
+    mechToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
+    powerDensityNeutronics_.correctBoundaryConditions();
+    
 }
 
 void Foam::linearElasticThermoMechanics::correct(scalar& residual) 

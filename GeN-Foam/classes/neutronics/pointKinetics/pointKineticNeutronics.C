@@ -218,6 +218,21 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         nuclearData_,
         "boronReactivityTimeProfile"
     ),
+    TFuelRef_(0.0),
+    TCladRef_(0.0),
+    TCoolRef_(0.0),
+    rhoCoolRef_(0.0),
+    TStructRef_(0.0),
+    TDrivelineRef_(0.0),
+    TFuelOrig_(nullptr),
+    TFuelOrigMech_(nullptr),
+    TCladOrig_(nullptr),
+    TCoolOrig_(nullptr),
+    rhoCoolOrig_(nullptr),
+    UOrig_(nullptr),
+    alphaOrig_(nullptr),
+    alphatOrig_(nullptr),
+    muOrig_(nullptr),
     TFuel_
     (
         IOobject
@@ -1216,21 +1231,23 @@ Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
 
 void Foam::pointKineticNeutronics::getCouplingFieldRefs
 (
-    const objectRegistry& src,
-    const meshToMesh& neutroToFluid
+    const objectRegistry& srcTH,
+    const meshToMesh& neutroToFluid,
+    const objectRegistry& srcTM,
+    const meshToMesh& neutroToMech
 )
 {
     //- Field names must reflect those defined in createCouplingFields.H
     TFuelOrig_ =
-        src.findObject<volScalarField>("bafflelessTFuelAv");
+        srcTH.findObject<volScalarField>("bafflelessTFuelAv");
     TCladOrig_ =
-        src.findObject<volScalarField>("bafflelessTCladAv");
+        srcTH.findObject<volScalarField>("bafflelessTCladAv");
     TCoolOrig_ =
-        src.findObject<volScalarField>("bafflelessTCool");
+        srcTH.findObject<volScalarField>("bafflelessTCool");
     rhoCoolOrig_ =
-        src.findObject<volScalarField>("bafflelessRhoCool");
+        srcTH.findObject<volScalarField>("bafflelessRhoCool");
     TStructOrig_ =
-        src.findObject<volScalarField>("bafflelessTStruct");
+        srcTH.findObject<volScalarField>("bafflelessTStruct");
 
     //- Project thermalHydraulic powerDensities onto the neutronic ones to
     //  initialize them if the latters do not exist.
@@ -1252,7 +1269,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
         {
             powerDensityToLiquidOrig_ =
-                src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
+                srcTH.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
             neutroToFluid.mapTgtToSrc
                 (
                     *powerDensityToLiquidOrig_,
@@ -1273,7 +1290,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
         {
             powerDensityOrig_ =
-                src.findObject<volScalarField>("bafflelessPowerDensity");
+                srcTH.findObject<volScalarField>("bafflelessPowerDensity");
             neutroToFluid.mapTgtToSrc
                 (
                     *powerDensityOrig_,
@@ -1296,7 +1313,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
         {
             powerDensityOrig_ =
-                src.findObject<volScalarField>("bafflelessPowerDensity");
+                srcTH.findObject<volScalarField>("bafflelessPowerDensity");
             neutroToFluid.mapTgtToSrc
                 (
                     *powerDensityOrig_,
@@ -1317,7 +1334,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
         {
             powerDensityToLiquidOrig_ =
-                src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
+                srcTH.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
             neutroToFluid.mapTgtToSrc
                 (
                     *powerDensityToLiquidOrig_,
@@ -1331,13 +1348,13 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     if (liquidFuel_)
     {
         UOrig_ =
-            src.findObject<volVectorField>("bafflelessU");
+            srcTH.findObject<volVectorField>("bafflelessU");
         alphaOrig_ =
-            src.findObject<volScalarField>("bafflelessAlpha");
+            srcTH.findObject<volScalarField>("bafflelessAlpha");
         alphatOrig_ =
-            src.findObject<volScalarField>("bafflelessAlphat");
+            srcTH.findObject<volScalarField>("bafflelessAlphat");
         muOrig_ =
-            src.findObject<volScalarField>("bafflelessMu");
+            srcTH.findObject<volScalarField>("bafflelessMu");
     }
     else
     {
@@ -1351,7 +1368,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     if (this->get<bool>("GEM"))
     {
         phiOrig_ =
-            src.findObject<surfaceScalarField>("phi");
+            srcTH.findObject<surfaceScalarField>("phi");
         const labelList& faces
         (
             neutroToFluid.tgtRegion().faceZones()
@@ -1374,12 +1391,23 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         phiOrig_ = nullptr;
     }
 
+    //- Get T from TM solver
+    // This can be a bit confusing: we need to paramtrize XS based on this
+    // temperature, but XS can only be paramterized based on 
+    // TFuel_, TClad_, rhoCool_, TCool_, disp_
+    // I am using TFuel and this os purely arbitrary. It could have been any
+    // of the other temperatures. However, this means that one will have to
+    // provide a nuclearDataFuelTemp file to parametrize the XS from a solid
+    // structure
+    TFuelOrigMech_ = 
+        srcTM.findObject<volScalarField>("TStruct");
+
     //- The rest of this function is for initializing the reference values of
     //  the feedback parameters. If they are found in the dictionary, use
     //  those, otherwise compute them from the coupling fields (thus
     //  assuming that the simulation starts from a steady state)
 
-    this->interpolateCouplingFields(neutroToFluid);
+    this->interpolateCouplingFields(neutroToFluid,neutroToMech);
 
     #include "computeFeedbackFieldValues.H"
 
@@ -1433,7 +1461,8 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
 
 void Foam::pointKineticNeutronics::interpolateCouplingFields
 (
-    const meshToMesh& neutroToFluid
+    const meshToMesh& neutroToFluid,
+    const meshToMesh& neutroToMech
 )
 {
     neutroToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
@@ -1479,6 +1508,15 @@ void Foam::pointKineticNeutronics::interpolateCouplingFields
         diffCoeffPrecPtr_().correctBoundaryConditions();
     }
 
+    //- Interpolate T from TM solver
+    // This can be a bit confusing: we need to paramtrize XS based on this
+    // temperature, but XS can only be paramterized based on 
+    // TFuel_, TClad_, rhoCool_, TCool_, disp_
+    // I am using TFuel and this os purely arbitrary. It could have been any
+    // of the other temperatures. However, this means that one will have to
+    // provide a nuclearDataFuelTemp file to parametrize the XS from a solid
+    // structure
+    neutroToMech.mapTgtToSrc(*TFuelOrigMech_, plusEqOp<scalar>(), TFuel_);
 
     TFuel_.correctBoundaryConditions();
     TClad_.correctBoundaryConditions();

@@ -175,7 +175,7 @@ public:
         //- Deform mesh
         virtual void deformMesh
         (
-            const meshToMesh& TMToNeutro,
+            const meshToMesh& mechToNeutro,
             const volVectorField& dispOrig
         ); 
 
@@ -197,11 +197,13 @@ public:
         //  fluidMeshNB for the current state of GeN-Foam)
         virtual void getCouplingFieldRefs
         (
-            const objectRegistry& src,
-            const meshToMesh& neutroToFluid
+            const objectRegistry& srcTH,
+            const meshToMesh& neutroToFluid,
+            const objectRegistry& srcTM,
+            const meshToMesh& neutroToMech
         ) = 0;
 
-        //- The ond getFields, yet operates on the local refs without having
+        //- The old getFields, yet operates on the local refs without having
         //  the need for all the fields to be passed. This effectively bypasses
         //  the old limitation of getFields, i.e. if someone wanted to
         //  implement a new neutronics model that requires more fields for the
@@ -212,7 +214,8 @@ public:
         //  with new classes implementations
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& neutroToFluid
+            const meshToMesh& neutroToFluid,
+            const meshToMesh& neutroToMech
         ) = 0;
 
         //- Correct/update the properties

@@ -110,6 +110,7 @@ protected:
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
     const volScalarField* TFuelOrig_;
+    const volScalarField* TFuelOrigMech_;
     const volScalarField* TCladOrig_;
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
@@ -209,13 +210,16 @@ public:
 
         virtual void getCouplingFieldRefs
         (
-            const objectRegistry& src,
-            const meshToMesh& neutroToFluid
+            const objectRegistry& srcTH,
+            const meshToMesh& neutroToFluid,
+            const objectRegistry& srcTM,
+            const meshToMesh& neutroToMech
         );   
 
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& neutroToFluid
+            const meshToMesh& neutroToFluid,
+            const meshToMesh& neutroToMech
         );
 
         //- Correct/update the properties

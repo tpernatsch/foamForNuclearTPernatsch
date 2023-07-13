@@ -315,14 +315,13 @@ protected:
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
     const volScalarField* TFuelOrig_;
+    const volScalarField* TFuelOrigMech_;
     const volScalarField* TCladOrig_;
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructOrig_;
     const volScalarField* powerDensityOrig_;
     const volScalarField* powerDensityToLiquidOrig_;
-
-    //- These have no use for now, will be needed by the liquidFuel version
     const volVectorField* UOrig_;
     const volScalarField* alphaOrig_;
     const volScalarField* alphatOrig_;
@@ -498,15 +497,18 @@ public:
         //  solver main)
         virtual void getCouplingFieldRefs
         (
-            const objectRegistry& src,
-            const meshToMesh& neutroToFluid
+            const objectRegistry& srcTH,
+            const meshToMesh& neutroToFluid,
+            const objectRegistry& srcTM,
+            const meshToMesh& neutroToMech
         );
 
         //- Update local (i.e. on local neutronicMesh) instances of the Orig_
         //  fields defined on the (baffleless) thermalHydraulic mesh
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& neutroToFluid
+            const meshToMesh& neutroToFluid,
+            const meshToMesh& neutroToMech
         );
 
         //- Solve pointKinetics

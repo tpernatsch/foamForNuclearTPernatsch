@@ -117,9 +117,13 @@ protected:
         volScalarField TFuel_;
         volScalarField gapWidth;
 
+        //- Mapped field
+        volScalarField powerDensityNeutronics_;
+
         //- Ptrs to coupling fields
         const volScalarField* TFuelOrig_;
         const volScalarField* TStructOrig_;
+        const volScalarField* powerDensityOrig_;
 
         //- Control
         int nCorr_;
@@ -162,8 +166,8 @@ public:
         //  fluidMeshNB for the current state of GeN-Foam)
         virtual void getCouplingFieldRefs
         (
-            const objectRegistry& src,
-            const meshToMesh& mechToFluid
+            const objectRegistry& srcTH,
+            const objectRegistry& srcN
         );
 
         //- The old getFields, yet operates on the local refs without having
@@ -174,7 +178,8 @@ public:
         //  in ALL of the other thermoMechanical models too
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& mechToFluid
+            const meshToMesh& mechToFluid,
+            const meshToMesh& mechToNeutro
         );
 
         //- Correct/update the properties

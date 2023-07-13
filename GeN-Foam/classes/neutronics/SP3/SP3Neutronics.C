@@ -193,6 +193,15 @@ Foam::SP3Neutronics::SP3Neutronics
         dimensionedScalar("", dimensionSet(0,-3,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    TFuelOrig_(nullptr),
+    TFuelOrigMech_(nullptr),
+    TCladOrig_(nullptr),
+    TCoolOrig_(nullptr),
+    rhoCoolOrig_(nullptr),
+    UOrig_(nullptr),
+    alphaOrig_(nullptr),
+    alphatOrig_(nullptr),
+    muOrig_(nullptr),
     TFuel_
     (
         IOobject
@@ -264,8 +273,10 @@ Foam::SP3Neutronics::~SP3Neutronics()
 
 void Foam::SP3Neutronics::getCouplingFieldRefs
 (
-    const objectRegistry& src,
-    const meshToMesh& neutroToFluid
+    const objectRegistry& srcTH,
+    const meshToMesh& neutroToFluid,
+    const objectRegistry& srcTM,
+    const meshToMesh& neutroToMech
 )
 {
     #include "defaultGetCouplingFieldRefs.H"
@@ -273,7 +284,8 @@ void Foam::SP3Neutronics::getCouplingFieldRefs
 
 void Foam::SP3Neutronics::interpolateCouplingFields
 (
-    const meshToMesh& neutroToFluid
+    const meshToMesh& neutroToFluid,
+    const meshToMesh& neutroToMech
 )
 {
     #include "defaultInterpolateCouplingFields.H"
