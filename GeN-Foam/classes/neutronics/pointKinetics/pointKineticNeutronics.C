@@ -209,6 +209,10 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         nuclearData_.get<scalar>("feedbackCoeffTStruct")
     ),
+    coeffTStructMech_
+    (
+        nuclearData_.get<scalar>("feedbackCoeffTStructMech")
+    ),
     coeffDrivelineExp_
     (
         nuclearData_.get<scalar>("absoluteDrivelineExpansionCoeff")
@@ -223,6 +227,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     TCoolRef_(0.0),
     rhoCoolRef_(0.0),
     TStructRef_(0.0),
+    TStructMechRef_(0.0),
     TDrivelineRef_(0.0),
     TFuelOrig_(nullptr),
     TCladOrig_(nullptr),
@@ -439,6 +444,19 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         IOobject
         (
             "pointKinetics.structFeedbackCellField",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless, 0)
+    ),
+    structMechFeedbackCellField_
+    (
+        IOobject
+        (
+            "pointKinetics.structMechFeedbackCellField",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -972,6 +990,11 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     );
     setFeedbackCellField
     (
+        structMechFeedbackCellField_,
+        "structMechFeedbackZones"
+    );
+    setFeedbackCellField
+    (
         drivelineFeedbackCellField_,
         "drivelineFeedbackZones"
     );
@@ -1442,6 +1465,9 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     TStructRef_ =
         reactorState_.lookupOrDefault<scalar>("TStructRef", TStructValue);
 
+    TStructMechRef_ =
+        reactorState_.lookupOrDefault<scalar>("TStructMechRef", TStructMechValue);
+
     TDrivelineRef_ =
         reactorState_.lookupOrDefault<scalar>("TDrivelineRef", TDrivelineValue);
 
@@ -1454,6 +1480,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     reactorState_.set("TCoolRef", TCoolRef_);
     reactorState_.set("rhoCoolRef", rhoCoolRef_);
     reactorState_.set("TStructRef", TStructRef_);
+    reactorState_.set("TStructMechRef", TStructMechRef_);
     reactorState_.set("TDrivelineRef", TDrivelineRef_);
     reactorState_.regIOobject::writeObject
     (

@@ -64,6 +64,7 @@ Description
         feedbackCoeffTCool          0; // [1/K]
         feedbackCoeffRhoCool        0; // [1/(kg/m3)]
         feedbackCoeffTStruct        0; // [1/K]
+        feedbackCoeffTStructMech    0; // [1/K]
         absoluteDrivelineExpansionCoeff 0.0; // [m/K]
         controlRodReactivityMap 
         ( 
@@ -298,6 +299,7 @@ protected:
     scalar coeffTCool_;
     scalar coeffRhoCool_;
     scalar coeffTStruct_;
+    scalar coeffTStructMech_;
 
     //- Absolute driveline expansion coefficient in m/K
     scalar coeffDrivelineExp_;
@@ -311,6 +313,7 @@ protected:
     scalar TCoolRef_;
     scalar rhoCoolRef_;
     scalar TStructRef_;
+    scalar TStructMechRef_;
     scalar TDrivelineRef_;
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
@@ -335,7 +338,6 @@ protected:
     volScalarField TStruct_; //- This is also used to compute TDriveline
     //- Mapped fields from TM
     volScalarField TStructMech_;
-
 
     //- Also mapped, but these are autoPtr as these field are not needed at all
     //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
@@ -406,6 +408,9 @@ protected:
 
     //- For TStructures
     volScalarField structFeedbackCellField_;
+
+    //- For TStructures from TM
+    volScalarField structMechFeedbackCellField_;
 
     //- For the control rod driveline
     volScalarField drivelineFeedbackCellField_;

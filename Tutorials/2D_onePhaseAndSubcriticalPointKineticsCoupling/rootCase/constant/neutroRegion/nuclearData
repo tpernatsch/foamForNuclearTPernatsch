@@ -69,6 +69,8 @@ feedbackCoeffRhoCool      0; // [1/K]
 
 feedbackCoeffTStruct      0; // [1/K]
 
+feedbackCoeffTStructMech 0;
+
 absoluteDrivelineExpansionCoeff 0;
 
 //- Represents the reactivity instertion ramp in this case

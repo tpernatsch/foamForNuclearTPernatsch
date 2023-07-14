@@ -53,6 +53,14 @@ scalar TStructValue
     ).value()/
     fvc::domainIntegrate(oneGroupFluxSqr*structFeedbackCellField_).value()
 );
+scalar TStructMechValue
+(
+    fvc::domainIntegrate
+    (
+        oneGroupFluxSqr*TStructMech_*structMechFeedbackCellField_
+    ).value()/
+    fvc::domainIntegrate(oneGroupFluxSqr*structMechFeedbackCellField_).value()
+);
 scalar TDrivelineValue
 (
     fvc::domainIntegrate
