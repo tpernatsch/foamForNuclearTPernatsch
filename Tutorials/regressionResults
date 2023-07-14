@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 13-Jul-2023 - 17:14:38
+Regression test of 14-Jul-2023 - 11:37:58
 
 ## 3D_SmallESFR ##
 Steady state of 3D_SmallESFR has converged 
@@ -8,4 +8,4 @@ Steady state of 3D_SmallESFR has converged
 Transient of 3D_SmallESFR has converged 
 
 keff is 0.936873 . It should be ~0.936827  
-power is 799892100 . It should be ~8e+08  
+power is 799894700 . It should be ~8e+08  

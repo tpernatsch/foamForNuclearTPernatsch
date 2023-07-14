@@ -168,7 +168,8 @@ forAll(nuSigmaEff_,energyI)
                     )
                   + cladExpDList_[zone][energyI]*(Tclad[cellIglobal] - TcladRef_)
                   + axialExpDList_[zone][energyI]*(axExp_[cellIglobal])
-                  + radialExpDList_[zone][energyI]*(radExp_[cellIglobal]);
+                  + radialExpDList_[zone][energyI]*(radExp_[cellIglobal])
+                  + mechTempDList_[zone][energyI]*(TStructMech[cellIglobal] - TStructMechRef_);
 
                     nuSigmaEff_[energyI][cellIglobal]
                  += rhoCoolNuSigmaEffList_[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
@@ -180,7 +181,8 @@ forAll(nuSigmaEff_,energyI)
                     )
                   + cladExpNuSigmaEffList_[zone][energyI]*(Tclad[cellIglobal] - TcladRef_)
                   + axialExpNuSigmaEffList_[zone][energyI]*(axExp_[cellIglobal])
-                  + radialExpNuSigmaEffList_[zone][energyI]*(radExp_[cellIglobal]);
+                  + radialExpNuSigmaEffList_[zone][energyI]*(radExp_[cellIglobal])
+                  + mechTempNuSigmaEffList_[zone][energyI]*(TStructMech[cellIglobal] - TStructMechRef_);
 
                     sigmaPow_[energyI][cellIglobal]
                  += rhoCoolSigmaPowList_[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
@@ -192,7 +194,8 @@ forAll(nuSigmaEff_,energyI)
                     )
                   + cladExpSigmaPowList_[zone][energyI]*(Tclad[cellIglobal] - TcladRef_)
                   + axialExpSigmaPowList_[zone][energyI]*(axExp_[cellIglobal])
-                  + radialExpSigmaPowList_[zone][energyI]*(radExp_[cellIglobal]);
+                  + radialExpSigmaPowList_[zone][energyI]*(radExp_[cellIglobal])
+                  + mechTempSigmaPowList_[zone][energyI]*(TStructMech[cellIglobal] - TStructMechRef_);
 
                     sigmaDisapp_[energyI][cellIglobal]
                  += rhoCoolSigmaDisappList_[zone][energyI]*(rhoCool[cellIglobal] - rhoCoolRef_)
@@ -204,7 +207,8 @@ forAll(nuSigmaEff_,energyI)
                     )
                   + cladExpSigmaDisappList_[zone][energyI]*(Tclad[cellIglobal] - TcladRef_)
                   + axialExpSigmaDisappList_[zone][energyI]*(axExp_[cellIglobal])
-                  + radialExpSigmaDisappList_[zone][energyI]*(radExp_[cellIglobal]);
+                  + radialExpSigmaDisappList_[zone][energyI]*(radExp_[cellIglobal])
+                  + mechTempSigmaDisappList_[zone][energyI]*(TStructMech[cellIglobal] - TStructMechRef_);
 
                 }
 

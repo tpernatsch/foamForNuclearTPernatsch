@@ -13,8 +13,8 @@ cd ${0%/*} || exit 1    # Run from this directory
 clear
 
 # Select tutorials in the test suite
-tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_externalSourceDiffusion 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_onePhaseAndSubcriticalPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN 3D_gFHR"
-# tutorials="3D_SmallESFR " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
+# tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_externalSourceDiffusion 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_onePhaseAndSubcriticalPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN 3D_gFHR"
+tutorials="3D_SmallESFR " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
 
 # Name of the result file in Markdown
 resFile="./regressionResults"

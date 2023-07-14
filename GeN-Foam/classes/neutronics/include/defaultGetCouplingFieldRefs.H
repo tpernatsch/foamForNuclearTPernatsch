@@ -34,4 +34,4 @@ TStructMechOrig_ =
 this->interpolateCouplingFields(neutroToFluid,neutroToMech);
 
 //- Initialize XS correctly
-xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_);
+xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_);

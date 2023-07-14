@@ -17,8 +17,9 @@ FoamFile
 
 model 		linearElasticThermoMechanics;//only model available now
 
-// constants needed to calculate deformation of fuel, control rods AND structure (1D expansion for fuel and CR, displacement-based solver for structures)
+solveDisplacement   true; // Optional keyword. Default is true
 
+// constants needed to calculate deformation of fuel, control rods AND structure (1D expansion for fuel and CR, displacement-based solver for structures)
 planeStress     no;
 linkedFuel      false; // true if there is contact between fuel and cladding (expansion driven by cladding)
 fuelOrientation   (0 0 1); 
@@ -32,32 +33,30 @@ zones
         rho             1000; //density
         E               1e9;  // Young modulus
         nu              0.3; // Poisson ratio
-        C               20; // not used
-        k               5000; // not used
-        alpha               1.8e-5; // linear expansion coeff (1/K)
+        C               20; // cp
+        k               5000; // conductivity
+        alpha           1.8e-5; // linear expansion coeff (1/K)
         // for fuel (only if there is fuel)
-        TFuelRef           600;
-        alphaFuel           1.1e-5;//0.0;//
+        TFuelRef        600;
+        alphaFuel       1.1e-5;//0.0;//
     }
-        
     N
     {
         rho             1000; //density
         E               1e9;  // Young modulus
         nu              0.3; // Poisson ratio
-        C               20; // not used
-        k               5000; // not used
-        alpha               1.8e-5; // linear expansion coeff (1/K)
+        C               20; // cp
+        k               5000; // conductivity
+        alpha           1.8e-5; // linear expansion coeff (1/K)
     }
-
     alone
     {
         rho             1000; //density
         E               1e9;  // Young modulus
         nu              0.3; // Poisson ratio
-        C               20; // not used
-        k               5000; // not used
-        alpha               1.8e-5; // linear expansion coeff (1/K)
+        C               20; // cp
+        k               5000; // conductivity
+        alpha           1.8e-5; // linear expansion coeff (1/K)
     }
         
 );

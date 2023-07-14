@@ -67,6 +67,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
 )
 :
     thermoMechanics(mesh),
+    solveDisplacement_(this->lookupOrDefault("solveDisplacement",true)),
     planeStress_(this->lookup("planeStress")),
     linkedFuel_(this->lookup("linkedFuel")),
     fuelOrientation_(this->lookup("fuelOrientation")),

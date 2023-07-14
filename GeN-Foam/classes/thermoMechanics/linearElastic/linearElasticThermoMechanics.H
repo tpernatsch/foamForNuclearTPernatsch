@@ -83,6 +83,7 @@ protected:
     // Protected data
 
         //- Properties
+        Switch solveDisplacement_;
         Switch planeStress_;
         Switch linkedFuel_;
         vector fuelOrientation_;
