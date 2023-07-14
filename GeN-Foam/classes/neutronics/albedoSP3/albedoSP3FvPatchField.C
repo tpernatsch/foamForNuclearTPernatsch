@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -152,8 +152,8 @@ void albedoSP3FvPatchField<Type>::rmap
 {
     fvPatchField<Type>::rmap(ptf, addr);
 
-    const albedoSP3FvPatchField<Type>& fgptf =
-        refCast<const albedoSP3FvPatchField<Type> >(ptf);
+    // const albedoSP3FvPatchField<Type>& fgptf =
+    //     refCast<const albedoSP3FvPatchField<Type> >(ptf);
 
 }
 
@@ -213,11 +213,11 @@ tmp<Field<Type> > albedoSP3FvPatchField<Type>::valueInternalCoeffs
         (
             diffCoeffName_
         );
-    const Field<scalar>& fluxStarAlbedo =
-        this->patch().template lookupPatchField<volScalarField, scalar>
-        (
-            fluxStarAlbedo_
-        );
+    // const Field<scalar>& fluxStarAlbedo =
+    //     this->patch().template lookupPatchField<volScalarField, scalar>
+    //     (
+    //         fluxStarAlbedo_
+    //     );
 
     if(forSecondMoment_)
     {
@@ -273,11 +273,11 @@ gradientInternalCoeffs() const
         (
             diffCoeffName_
         );
-    const Field<scalar>& fluxStarAlbedo =
-        this->patch().template lookupPatchField<volScalarField, scalar>
-        (
-            fluxStarAlbedo_
-        );
+    // const Field<scalar>& fluxStarAlbedo =
+    //     this->patch().template lookupPatchField<volScalarField, scalar>
+    //     (
+    //         fluxStarAlbedo_
+    //     );
 
     if(forSecondMoment_)
     {
@@ -326,11 +326,11 @@ tmp<Field<Type> > albedoSP3FvPatchField<Type>::snGrad() const
         (
             diffCoeffName_
         ); 
-    const Field<scalar>& fluxStarAlbedo =
-        this->patch().template lookupPatchField<volScalarField, scalar>
-        (
-            fluxStarAlbedo_
-        );
+    // const Field<scalar>& fluxStarAlbedo =
+    //     this->patch().template lookupPatchField<volScalarField, scalar>
+    //     (
+    //         fluxStarAlbedo_
+    //     );
 
     return (- (this->patchInternalField()*gamma_/diffCoeff));
 }

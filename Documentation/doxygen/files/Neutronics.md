@@ -43,6 +43,7 @@ The *neutronicsProperties* dictionary is found under *constant/neutroRegion/* an
 <LI>  *model*  is used to define what type of simulation needs to be performed. It can be *pointKinetics*, *diffusionNeutronics*, *SP3Neutronics*, **SNNeutronics, *adjointDiffusion*. *adjointDiffusion* has been developed only as an eigenvalue solver. The others can be used for transient calculations. However, the SN transient solver has not been tested. In addition, it is currently not accelrated, thus extremely slow (it can require
 hundreds of iterations per time step).
 <LI>  *eigenvalueNeutronics* should be set to *true* for eigenvalue calculations, false for transients.
+<LI>  *externalSourceNeutronics* should be set to *true* for external neutron source calculations. The *eigenvalueNeutronics* variable should be put to false and the *keff* = 1.
 </UL>
 One can find detailed, commented examples in most tutorials. See for instance 
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/neutronicsProperties) (single phase).
@@ -60,6 +61,7 @@ The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It con
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/nuclearData) (for diffusion or SP3),
 [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/Godiva_SN/constant/neutroRegion/nuclearData) (for discrete ordinates) and 
 [2D_onePhaseAndPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData) (for point kinetics).
+[2D_onePhaseAndSubcriticalPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource) (for subcritical point kinetics).
 
 N.B.: cross sections must be expressed according to the International System of Units (so m, not cm).
 
@@ -99,7 +101,7 @@ In addition to the standard OpenFOAM BC, an albedo boundary condition (see *albe
 
 ```
 	type            albedoSP3;
-	gamma		0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
+	gamma			0.5; // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
 	diffCoeffName	Dalbedo;  //not to be changed
 	fluxStarAlbedo  fluxStarAlbedo; //not to be changed
 	forSecondMoment false;  //true in case it is a condition for a second moment flux (for SP3 calculations)
@@ -127,8 +129,18 @@ A correct evaluation of the reactivity worth of delayed neutron precursors in MS
 
 ## Discretization and solution
 
-Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/neutroRegion*. 
+Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/neutroRegion*.
 
+
+## Subcritical point-kinetics
+
+To use the subcritical point-kinetics, the user has to add the *constant/neutroRegion/externalSource*. The file contains a flag to activate the external neutron source (*isExternalSource*).
+
+Several parameters related to a spallation source are included such as the energy per source particle in J/source particle and the neutron yield of the reaction in neutrons/source particle*
+
+An external source modulation time table is provided to manually modulate the source strength.
+
+In the case of an FMI coupling, it is possible to use the *externalSourceModulationNameFromFMU* entry to change the external source modulation through an FMI. To use it, the mode must be *transient*.
 
 
 © All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021

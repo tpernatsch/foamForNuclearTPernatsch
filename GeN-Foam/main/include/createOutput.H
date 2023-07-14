@@ -21,8 +21,8 @@ if (writeOutput)
     }
     out << "TFuel_Max;Avg;Min;";
     out << "TCladding_Max;Avg;Min;";
-    out << "TCoolant_Max;Avg;Min(K)";
-    out << endl << endl;
+    out << "TCoolant_Max;Avg;Min(K);";
+    out << endl;
     
 }
 

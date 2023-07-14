@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,148 @@ Group
     none
 
 Description
-    Run-time selectable point-kinetic based neutronics solver
+    Run-time selectable point-kinetic based neutronics solver. It includes 
+    options to for a time dependent external reactivity, and an external 
+    reactivity input coming from an FMU.
+
+    The module solves the following point-kinetics equations: 
+
+    \f[
+        \frac{dP}{dt} = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P 
+            + \sum_{i=1}^N \lambda_i C_i + \frac{S}{\Lambda} \\
+        \frac{dC_i}{dt} = \frac{\beta_i}{\Lambda} P 
+            - \lambda_i C_i \quad \forall i \in [1; N]
+    \f]
+
+    where:
+    - \f$ P \f$: Core power
+    - \f$ C_i \f$: Precursor power
+    - \f$ S \f$: Optional external source power
+    - \f$ \beta_{tot} \f$: Total fraction of precursors
+    - \f$ \beta_i \f$: Fraction of precursor group \f$ i \f$
+    - \f$ \lambda_i \f$: Decay constant of the precursor group \f$ i \f$
+    - \f$ \Lambda \f$: Prompt generation lifetime
+    - \f$ \zeta \f$: Optional subcritical index
+    - \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
+
+    \f[
+        \rho_{tot} = -\alpha_D \ln\left( \frac{T_{fuel}}{T_{fuel}^{ref}} \right)
+            + \alpha_{fuel} (T_{fuel} - T_{fuel}^{ref})
+            + \alpha_{clad} (T_{clad} - T_{clad}^{ref})
+            + \alpha_{cool}^{T} (T_{cool} - T_{cool}^{ref})
+            + \alpha_{cool}^{\rho} (\rho_{cool} - \rho_{cool}^{ref})
+            + \alpha_{struct} (T_{struct} - T_{struct}^{ref})
+            + \rho_{driveline}
+            + \rho_{GEM}
+            + \rho_{boron}
+            + \rho_{ext}
+            + \rho_{ext}^{FMU}
+    \f]
+
+    - \f$ \alpha_D \f$ is the fast Doppler feedback coefficient
+    - \f$ \alpha_{fuel} \f$ is the fuel axial expansion feedback coefficient
+    - \f$ \alpha_{clad} \f$ is the cladding temperature feedback coefficient
+    - \f$ \alpha_{cool}^{T} \f$ is the coolant temperature feedback coefficient
+    - \f$ \alpha_{cool}^{\rho} \f$ is the coolant density coefficient
+    - \f$ \alpha_{struct} \f$ is the core radial expansion feedback coefficient
+    - \f$ \rho_{driveline} \f$ is the control rod driveline expansion reactivity 
+        contribution
+    - \f$ \rho_{driveline} \f$ is the boron concentration reactivity 
+        contribution
+    - \f$ \rho_{ext} \f$ is the external reactivity contribution
+    - \f$ \rho_{ext}^{FMU} \f$ is the external reactivity contribution from an 
+        FMU
+
+    Example of mandatory dictionary entries:
+    \verbatim
+        fastNeutrons    true;
+        promptGenerationTime 1e-06; // [s]
+        Beta
+        ( 
+            7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05 
+        );
+        lambda // [1/s]
+        (
+            0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817 
+        );
+        feedbackCoeffFastDoppler    0; // [-]
+        feedbackCoeffTFuel          0; // [1/K]
+        feedbackCoeffTClad          0; // [1/K]
+        feedbackCoeffTCool          0; // [1/K]
+        feedbackCoeffRhoCool        0; // [1/(kg/m3)]
+        feedbackCoeffTStruct        0; // [1/K]
+        absoluteDrivelineExpansionCoeff 0.0; // [m/K]
+        controlRodReactivityMap 
+        ( 
+            ( 0.1   -0.01   ) 
+            ( 0     0       ) 
+            ( -0.1  0.01    ) 
+        );
+    \endverbatim
+
+    Example of time dependant source entries:
+    \verbatim
+        //- Optional time dependant external reactivity time profile
+        externalReactivityTimeProfile
+        {
+            type        table;
+            startTime   100;
+            table       table
+            (
+                (   0   0)
+                (   1   0.0005767131    ) //- i.e. 57.67131 pcm
+            );
+        }
+
+        //- Optional time dependant boron reactivity time profile
+        boronReactivityTimeProfile
+        {
+            type        table;
+            table       table
+            (
+                (   100   0   )
+                (   101   1e-5   )
+            );
+        }
+    \endverbatim
+
+    Optional external reactivity input from FMU in nuclearData file.
+    The default initial value is 0.
+    \verbatim
+        externalReactivityNameFromFMU   gfExtReact;
+    \endverbatim
+
+    Optional external neutron source file "externalSource"
+    \verbatim
+        //- If true, add the external source to the point-kinetics equations
+        isExternalSource    true;
+
+        //- External source mode
+        externalSourceMode  transient; // powerMonitoring // transient
+
+        //- Beam energy per source particle
+        beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
+
+        //- Neutron yield of the spallation of proton on heavy metal 
+        nuSource            15.5; // [neutron/proton]
+
+        //- Optional external source input from FMU in externalSource file.
+        //  The externalSourceMode must be set to transient. The default initial value
+        // is 1.
+        // externalSourceModulationNameFromFMU     gfExternalSourceMod;
+
+        //- External modulation time profile (time, modulation factor)
+        externalSourceModulationTimeProfile
+        {
+            type        table;
+            startTime   150;
+            table       table
+            (
+                (0      1)
+                (20     2)
+            );
+        }
+    \endverbatim
 
     Author of this file (and associated .C or included .H files): 
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
@@ -98,6 +239,67 @@ protected:
 
     //- Due to whatever the user might please
     timeProfile externalReactivityTimeProfile_;
+
+    //- External source file
+    IOdictionary externalSource_;
+
+    //- External source mode
+    //  - transient: user input power variation by modulation
+    //  - powerMonitoring: adapt source power to keep subcritical power constant
+    string externalSourceMode_;
+
+    //- Anti-reactivity due to the subcritical configuration of the core. Also
+    //  Noted as zeta
+    scalar subcriticalIndex_;
+
+    //- ksrc of the system. Allows to compute the subcritical-index in case it
+    //  is not provided
+    scalar ksrc_;
+
+    //- Avg number of neutrons generated by fission
+    scalar nuFission_;
+    //- Avg number of neutrons generated by high energy reaction (e.g. spallation)
+    scalar nuSource_;
+    //- Avg energy released per fission
+    scalar energyPerFission_;
+    //- Energy of the particle beam in case external source from particle
+    //  accelerator
+    scalar beamEnergy_;
+
+    // G_0 = energyPerFission*nuSource/(nuFission*beamEnergy)
+    scalar intrinsicGain_;
+
+    //- Source modulation time profile
+    timeProfile externalSourceModulationTimeProfile_;
+
+    //- Source modulation value set by externalSourceModulationTimeProfile_ (m_I)
+    scalar externalSourceModulation_;
+
+    //- External source power (S)
+    scalar externalSourcePower_;
+    scalar externalSourcePowerOld_;
+    scalar externalSourcePowerRef_;
+
+    //- External source beam power (P_src)
+    scalar externalSourceBeamPower_;
+
+    //- External source beam intensity (I_src)
+    scalar externalSourceBeamIntensity_;
+
+    //- Power to target during subcritical powerMonitoring mode using the
+    //  modulation of the external source
+    scalar powerTarget_;
+
+    //- Record of the subcritical power in case of the powerMonitoring mode.
+    List<Tuple2<scalar, scalar>> powerRecordPtr_;
+
+    //- Modulation factor to change the efficienty of the source power
+    //  modulation (k_m)
+    scalar modulationFactor_;
+
+    //- Delay between the power of the subcritical system and the external
+    //  source modulation
+    scalar powerModulationDelay_;
 
     //- Used to set an initial steady state for liquid fuel
     scalar precEquilibriumReactivity_;
@@ -328,6 +530,9 @@ public:
             volScalarField& feedbackCellField,
             const word& keyword
         );
+
+        //- Set beam parameter from the external source power S
+        void setBeamParameters();
 
         //- Compute driveline expansion reactivity from controlRod reactivity
         //  map given the absolute driveline expansion in meters

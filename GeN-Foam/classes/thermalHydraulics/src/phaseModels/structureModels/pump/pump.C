@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -48,7 +48,7 @@ License
 
 //- From forward declarations
 #include "structure.H"
-//#include "commDataLayer.H"
+
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
@@ -124,7 +124,7 @@ Foam::pump::pump
             scalar(1.0),
             pumpMultiplierNameFromFMU_,
             commDataLayer::causality::in
-            );
+        );
         fromFMU_ = true;
 
         Info << "Using FMUs for the pump in " << dict.dictName() << endl;
@@ -163,7 +163,6 @@ void Foam::pump::correct
             data.getObj<scalar>(pumpMultiplierNameFromFMU_,commDataLayer::causality::in);
         //update the vector field by adjusting the magnitude
         pumpValue = pumpValue_ * pumpMultiplierFromFMU;
-      
     }
     #endif
     forAll(cellList_, i)

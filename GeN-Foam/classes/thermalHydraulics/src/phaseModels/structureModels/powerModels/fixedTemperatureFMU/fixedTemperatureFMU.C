@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -100,7 +100,6 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
     this->setInterfacialArea();
     structure_.setRegionField(*this, T_, "T");
 
-
     forAll(this->toc(), regioni)
     {
         word region(this->toc()[regioni]);
@@ -115,10 +114,17 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
             // Communicating with the FMU
             const Time& runTime = this->db().time();
             commDataLayer& data = commDataLayer::New(runTime); 
+
+            //- Compute the average value of the temperature field
+            label cellZoneID = mesh_.cellZones().findZoneID(region);
+            const cellZone& tgtCellZone = mesh_.cellZones()[cellZoneID];
+            scalarField fieldZone(T_, tgtCellZone);
+            scalar Tavg = gAverage(fieldZone);
+
             // Store in data layer and set its initial value to the T 
-            // in the dictionary      
+            // in the dictionary 
             data.storeObj(
-                dict.get<scalar>("T"),
+                Tavg, // dict.get<scalar>("T"),
                 temperatureNameFromFMU,
                 commDataLayer::causality::in
             );

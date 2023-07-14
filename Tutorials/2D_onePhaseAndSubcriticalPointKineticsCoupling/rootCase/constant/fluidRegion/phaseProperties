@@ -1,0 +1,127 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// ------------------------------------------------------------------------- //
+// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+thermalHydraulicsType   "onePhase";
+
+// ------------------------------------------------------------------------- //
+// --- STRUCTURES PROPERTIES ----------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+structureProperties
+{
+    "zone0"
+    {
+        // volumeFraction          0.72; // from doc // volume fraction of the strucrture
+        // Dh                      0.004996; // m
+        volumeFraction      0.5;
+        Dh                  0.01; // m
+
+        powerModel
+        {
+            type                nuclearFuelPin;
+            volumetricArea      300;
+            powerDensity        0; // W/m³ <- 140e6
+            cladOuterRadius     0.0060; // m
+            cladInnerRadius     0.0056; // m
+            fuelOuterRadius     0.0055; // m
+            fuelInnerRadius     0.0014; // m
+            fuelMeshSize        16;
+            cladMeshSize        4;
+            fuelRho             10480; // kg/m³
+            fuelCp              250; // J/kg/K
+            cladRho             7870;  // kg/m³
+            cladCp              620; // J/kg/K // 500
+            gapH                3000;
+            fuelK               3;  // W/m/K
+            cladK               25; // W/m/K // 20
+            fuelT               1064.38; // K mean, max: 1228.36 K (approximations)
+            cladT               709.33; // K mean, max: 782.09 K (approximations)
+        }
+
+        passiveProperties
+        {
+            volumetricArea      2;
+            rho                 7870; // kg/m³
+            Cp                  620; // J/kg/K
+            T                   709.33; // K
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME MAP MODEL ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+regimeMapModel
+{
+    type                none;
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+physicsModels
+{
+    dragModels
+    {
+        "zone0"
+        {
+            // Blasius correlation
+            // fd = coeff * Re^exp
+            type    ReynoldsPower;
+            coeff   0.316;
+            exp     -0.25;
+        }
+    }
+
+    heatTransferModels
+    {
+        "zone0"
+        {
+            // Correlation taken from: Heat transfer to liquid metal: Review of
+            // data and correlations for tube bundles, Konstantin Mikityuk,
+            // Nuclear Engineering and Design 239 (2009) 680-687
+            // Nu = const + coeff * Re^expRe * Pr^expPr
+            // Range of validity:
+            //      x : [1.1; 1.95]  // pitch-to-diameter
+            //      Pe: [30; 5000]
+            // pitch-to-diameter ratio at 1.133333
+            type    NusseltReynoldsPrandtlPower;
+            const   4.670618;
+        	coeff   0.018682;
+        	expRe   0.770000;
+        	expPr   0.770000;
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- MISCELLANEA --------------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+pMin                    10000;
+
+pRefCell                0;
+
+pRefValue               100000;
+
+// ************************************************************************* //

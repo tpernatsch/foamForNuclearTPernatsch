@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -46,7 +46,7 @@ Description
     Nu = A_+B_*(Re^C_)*(Pr^D_)*((Tw/Tb)^E_)
 
     with Re, Pr being the Reynolds (superficial in two-phase) and Prandtl
-    of the fluid, and A, B, C, D, E selectable consts
+    of the fluid, and A, B, C, D, E selectable consts.
 
     Example of mandatory dictionary entries:
     \verbatim
@@ -54,6 +54,18 @@ Description
         coeff   0.01;
         expRe   0.8;
         expPr   0.8;
+    \endverbatim
+
+    Example using wall/fluid temperature ratio from:
+    Walton 1992, (10) Wolf-McCarthy II
+    Nu = 0.023 * Re^0.8 * Pr^0.4 * (Tw/Tb)^(-0.3)
+    with Re = [7800; 1.55e6] and Tw/Tb = [1.5; 2.8]
+    \verbatim
+        const   0;
+        coeff   0.023;
+        expRe   0.8;
+        expPr   0.4;
+        expTc   -0.3;
     \endverbatim
 
     Authors:

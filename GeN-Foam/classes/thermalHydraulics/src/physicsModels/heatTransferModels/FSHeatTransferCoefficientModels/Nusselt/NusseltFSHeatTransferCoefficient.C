@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -99,6 +99,8 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Nusselt::value
     //  Optimizations (RVOs, C++ performance stuff)
     if (B_ != 0)
     {
+        //- Compute wall/fluid temperature ratio if asked and if structure 
+        //  exists
         scalar Tratio(1.0);
         if (E_ != 0.0 && Twall_[celli] > 0.0)
         {

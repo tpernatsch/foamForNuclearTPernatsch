@@ -124,22 +124,42 @@ forAll(flux_,fluxI)
 
 forAll(fluxStar_,fluxI)
 {
-        fluxStar_.set
+    fluxStar_.set
+    (
+        fluxI,
+        new volScalarField
         (
-            fluxI,
-            new volScalarField
+            IOobject
             (
-                IOobject
-                (
-                    "fluxStar"+Foam::name(fluxI),
-                    mesh_.time().timeName(),
-                    mesh_,
-                    IOobject::READ_IF_PRESENT,
-                    IOobject::AUTO_WRITE
-                ),
-                defaultFlux_
-            )
-        );
+                "fluxStar"+Foam::name(fluxI),
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::READ_IF_PRESENT,
+                IOobject::AUTO_WRITE
+            ),
+            defaultFlux_
+        )
+    );
+}
+
+forAll(externalSourceFlux_,externalSourceFluxI)
+{
+    externalSourceFlux_.set
+    (
+        externalSourceFluxI,
+        new volScalarField
+        (
+            IOobject
+            (
+                "externalSourceFlux"+Foam::name(externalSourceFluxI),
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::READ_IF_PRESENT,
+                IOobject::AUTO_WRITE
+            ),
+            defaultExternalSourceFlux_
+        )
+    );
 }
 
 oneGroupFlux_ *= 0.0;

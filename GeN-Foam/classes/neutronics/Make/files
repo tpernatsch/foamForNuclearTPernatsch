@@ -1,0 +1,12 @@
+neutronics.C
+XS/XS/XS.C
+XS/XSLowMem/XSLowMem.C
+diffusion/diffusionNeutronics.C
+SP3/SP3Neutronics.C
+SN/include/legendrePoly.C
+SN/SNNeutronics.C
+adjointDiffusion/adjointDiffusionNeutronics.C
+albedoSP3/albedoSP3FvPatchField.C
+pointKinetics/pointKineticNeutronics.C
+
+LIB = $(FOAM_USER_LIBBIN)/libNeutronicsSolvers

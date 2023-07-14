@@ -4,6 +4,22 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 clear
 
+echo "Allwmake GeN-Foam"
+
+# Make common functions
+wmake $1 libso ./classes/common
+
+# Make thermal-hydraulics
 wmake $1 libso ./classes/thermalHydraulics/src
 wmake $1 libso ./classes/thermalHydraulics/solvers
-wmake $1 
+
+# Make neutronics
+wmake $1 libso ./classes/neutronics
+
+# Make thermal-mechanics
+wmake $1 libso ./classes/thermoMechanics
+
+# Make GeN-Foam
+wmake $1
+
+echo "Make GeN-Foam completed"

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -44,7 +44,7 @@ Description
     Reference publications:
 
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    "GeN-Foam: a novel OpenFOAMï¿½ based multi-physics solver for 2D/3D transient
     analysis of nuclear reactors", Nuclear Engineering and Design, submitted
 
     Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
@@ -63,7 +63,7 @@ SourceFiles
 #define linearElasticThermoMechanics_H
 
 #include "thermoMechanics.H"
-#include "XS.H"
+// #include "XS.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

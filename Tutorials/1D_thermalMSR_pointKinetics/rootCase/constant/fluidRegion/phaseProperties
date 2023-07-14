@@ -90,7 +90,7 @@ structureProperties
             nodeClad            1;
             heatConductances    (600000          200000              600000);
             // calculated as    - H0 = (6*k/R1/Rtot) with R1=1.5cm and Rtot=2cm
-            //                  - H1 = (H_11*H_12)/(H_11*H_22) with:
+            //                  - H1 = (H_11*H_12)/(H_11+H_12) with:
             //                      H_11 = 3*k/R1/Rtot
             //                      H_12 = k / R2 / Rtot with R2=0.5cm
             //                  - H2 = k / R2 / Rtot 

@@ -85,7 +85,7 @@ One can find detailed, commented examples in the tutorials
 	</UL>	
 <LI> Fluid-structure heat-tranfer models (see FSHeatTransferCoefficientModel.H)
 	<UL>
-	<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_) (see *NusseltFSHeatTransferCoefficient.H*)
+	<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_)*((Tw/Tb)^E_) (see *NusseltFSHeatTransferCoefficient.H*)
 	<LI>  Nusselt number correlation in the form Nu = A_+B_*(Re^C_)*(Pr^D_), plus and additional heat transfer coefficient to take into account the resistance of a wall, such that  H = Nu * kappa / Dh + H_wall (see *NusseltAndWallFSHeatTransferCoefficient.H*)
 	<LI>  Shah (see *ShahFSHeatTransferCoefficient.H*)
 	<LI>  Gorenflo (see *GorenfloFSHeatTransferCoefficient.H*)
@@ -146,6 +146,7 @@ One can find detailed, commented examples in the tutorials
 	<LI> Heated pin, typically used for electrically heated pins (see *heatedPin.H* and the tutorial *2D_KNS37-L22*)
 	<LI> Nuclear fuel pin (see *nuclearFuelPin.H* and the tutorials *3D_SmallESFR* and *2D_FFTF*)
 	<LI> Lumped-parameter nuclear structure (see *lumpedNuclearStructure.H*) and the tutorial *1D_thermalMSR_pointKinetics*
+	<LI> Steady-state model purpose made for pebble bed reactors (see *nuclearSteadyStatePebble.H*) and the tutorial *3D_gFHR*
 	</UL>
 <LI> A heat exchanger model that is used to model the heat transfer between two disconnected regions, for instance representing the primary and secondary circuit (see *heatExchanger.H* and the tutorials *1D_HX* and *2D_FFTF*)
 <LI> A pump model used to set a (possibly time-dependent) momentum source (see *pump.H* and tutorials *2D_FFTF* and *2D_MSFR*).
