@@ -11,50 +11,17 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      nuclearData;
+    object      esfr_core__res;
 }
-fastNeutrons            false; 	//- If true, interpolates cross section with 
-								//  logarithmic temp for fuel (otherwise, 
-								//  square root)
+energyGroups 1 ; 
 
-adjustDiscFactors       false;
+precGroups 8 ; 
 
-useGivenDiscFactors     false;
+TStructMechRef 8.600000e+02 ; // coolant temperature at which the nominal XSs in nuclearData have been obtained
 
-energyGroups 1;
+TStructMechPerturbed 5.000000e+02 ; // coolant temperature at which the the perturbed XSs below have been obtained
 
-promptGenerationTime 	1e-6;
-
-precGroups 6; 
-
-Beta
-(
-    7.2315e-05
-    0.000609661
-    0.000471181
-    0.00118907
-    0.000445487
-    9.58515e-05
-);
-
-lambda
-(
-    0.0125371
-    0.0300828
-    0.109879
-    0.325484
-    1.3036
-    9.51817
-);
-
-feedbackCoeffTFuel 0;
-feedbackCoeffTStruct 0;
-feedbackCoeffTStructMech 0;
-feedbackCoeffTCool 0;
-feedbackCoeffTClad 0;
-feedbackCoeffRhoCool 0;
-feedbackCoeffFastDoppler 0;
-absoluteDrivelineExpansionCoeff 0;
-
+// Perturbed XSs. You can also leave the sub-dict empty. No parametrization will be done
 zones
-();
+(
+); 

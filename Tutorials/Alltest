@@ -15,7 +15,7 @@ clear
 #------------------------------------------------------------------------------
 
 # Select tutorials in the test suite
-tutorials="1D_HX/onePhase 1D_HX/twoPhase 1D_PSBT_SC 1D_boiling 1D_CHF/imposedPower 1D_CHF/imposedTemperature 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 2D_cavityBoussinesq 2D_externalSourceDiffusion 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_onePhaseAndSubcriticalPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 2D_FFTF 3D_SmallESFR 3D_gFHR Godiva_SN"
+tutorials="1D_HX/onePhase 1D_HX/twoPhase 1D_PSBT_SC 1D_boiling 1D_CHF/imposedPower 1D_CHF/imposedTemperature 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 2D_cavityBoussinesq 2D_externalSourceDiffusion 2D_fullCoupling 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_onePhaseAndSubcriticalPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 2D_FFTF 3D_SmallESFR 3D_gFHR Godiva_SN"
 
 #------------------------------------------------------------------------------
 

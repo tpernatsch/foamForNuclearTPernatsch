@@ -9,9 +9,9 @@ rm -rf $resFile
 touch $resFile
 
 # --- Run the simulation
-echo -e "Run tutorial 2D_onePhaseAndPointKineticsCoupling ...\n" | tee -a $resFile
+echo -e "Run tutorial 2D_fullCoupling ...\n" | tee -a $resFile
 ./Allrun >> log.simulation
-echo -e "Done running tutorial 2D_onePhaseAndPointKineticsCoupling ...\n" | tee -a $resFile
+echo -e "Done running tutorial 2D_fullCoupling ...\n" | tee -a $resFile
 
 # --- Check it ran
 isConverge()
@@ -29,8 +29,6 @@ isConverge()
 
 isConverge steadyState            "Steady State"
 isConverge transientNoDriveline   "Transient (no driveline)"
-isConverge transientWithDriveline "Transient (with driveline)"
-isConverge transientWithBoron     "Transient (with boron)"
 
 # --- Exit successfully
 exit 0

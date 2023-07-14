@@ -65,6 +65,8 @@ feedbackCoeffFastDoppler    5.0E-03;
 //- Representative of structure radial expansion
 feedbackCoeffTStruct        -1.0E-05;
 
+feedbackCoeffTStructMech        0.0;
+
 fuelFeedbackZones
 (
     "DRI_IFU"

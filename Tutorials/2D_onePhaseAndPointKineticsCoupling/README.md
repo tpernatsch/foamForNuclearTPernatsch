@@ -78,163 +78,204 @@ reactivity approaches 0 as the fuel slowly heats up.
     a steady state is assumed).
 
 -   constant/neutroRegion/nuclearData. The pointKinetics-related keywords that
-    can be specified are
-    /*
-        //- Self explanatory
-        promptGenerationTime 1e-06;
+    can be specified are:
 
-        //- Delayed neutron fraction by group. The number of groups is deduced
-        //  by the length of this list
-        Beta
-        (
-            7.2315e-05
-            0.000609661
-            0.000471181
-            0.00118907
-            0.000445487
-            9.58515e-05
-        );
+    //- Self explanatory, REQUIRED
+    promptGenerationTime 1e-06;
 
-        //- Delayed neutron decay constants by group. The number of groups is
-        //  deduced by the length of this list and should be consistend with
-        //  Beta
-        lambda
-        (
-            0.0125371
-            0.0300828
-            0.109879
-            0.325484
-            1.3036
-            9.51817
-        );
+    //- Delayed neutron fraction by group. The number of groups is deduced
+    //  by the length of this list, REQUIRED
+    Beta
+    (
+        7.2315e-05
+        0.000609661
+        0.000471181
+        0.00118907
+        0.000445487
+        9.58515e-05
+    );
 
-        //- If true, an additional logarithmic feedback of fuel temperature is
-        //  added to the total reactivity
-        fastNeutrons    false;
+    //- Delayed neutron decay constants by group. The number of groups is
+    //  deduced by the length of this list and should be consistent with
+    //  Beta, REQUIRED
+    lambda
+    (
+        0.0125371
+        0.0300828
+        0.109879
+        0.325484
+        1.3036
+        9.51817
+    );
 
-        //- Doppler coefficient for the logarithmic fuel temperature feedback.
-        //  Used only if fastNeutrons is true
-        feedbackCoeffFastDoppler 0;
+    //- If true, an additional logarithmic feedback of fuel temperature is
+    //  added to the total reactivity, NOT REQUIRED, defaults to false
+    fastNeutrons    false;
 
-        //- Reactivity contribution in the form
-        //  feedbackCoeffTFuel*(TFuel-TFuelRef))
-        feedbackCoeffTFuel -3e-06;
+    //- Doppler coefficient for the logarithmic fuel temperature feedback.
+    //  Used only if fastNeutrons is true. ONLY REQUIRED if fastNeutrons is true
+    feedbackCoeffFastDoppler 0;
 
-        //- Reactivity contribution in the form
-        //  feedbackCoeffTClad*(TClad-TCladRef))
-        feedbackCoeffTClad 0;
+    //- Reactivity contribution in the form
+    //  feedbackCoeffTFuel*(TFuel-TFuelRef)). REQUIRED
+    feedbackCoeffTFuel -3e-06;
 
-        //- Reactivity contribution in the form
-        //  feedbackCoeffTCool*(TCool-TCoolRef))
-        feedbackCoeffTCool 0;
+    //- Reactivity contribution in the form
+    //  feedbackCoeffTClad*(TClad-TCladRef)). REQUIRED
+    feedbackCoeffTClad 0;
 
-        //- Reactivity contribution in the form
-        //  feedbackCoeffRhoCool*(RhoCool-RhoCoolRef))
-        feedbackCoeffRhoCool 0;
+    //- Reactivity contribution in the form
+    //  feedbackCoeffTCool*(TCool-TCoolRef)). REQUIRED
+    feedbackCoeffTCool 0;
 
-        //- Reactivity contribution in the form
-        //  feedbackCoeffTStruct*(TStruct-TStructRef))
-        feedbackCoeffTStruct 0;
+    //- Reactivity contribution in the form
+    //  feedbackCoeffRhoCool*(RhoCool-RhoCoolRef)). REQUIRED
+    feedbackCoeffRhoCool 0;
 
-        //- Used to compute drivelineExpansion as
-        //  (TDriveline-TDrivelineRef)*absoluteDrivelineExpansionCoeff
-        //  Dimensionally, it is m/K
-        absoluteDrivelineExpansionCoeff 8e-05;
+    //- Reactivity contribution in the form
+    //  feedbackCoeffTStruct*(TStruct-TStructRef)). REQUIRED
+    feedbackCoeffTStruct 0;
 
-        //- Used to related drivelineExpansion to reactivity contribution
-        //  Values of the expansion that are in between two map points
-        //  result in a reactivity contribution that is computed via
-        //  linear interpolation from the two. Any number of points can be
-        //  provided. The points can be provided either in ascending or
-        //  descending order of the first number (i.e. the expansion).
-        controlRodReactivityMap
-        (
-            ( 0.1 -0.01 ) //- Pair in the form ( expans(m) reacitivity(-) )
-            ( 0 0 )
-            ( -0.1 0.01 )
-        );
+    //- Reactivity contribution in the form
+    //  feedbackCoeffTStructMech*(TStructMech-TStructMechRef)). REQUIRED
+    //  TStructMech is the temperature that comes from the TM solver
+    //  This is normally usefult only in heterogeneous simulations
+    //  where part of the core is simulated as a solid by the TM region
+    feedbackCoeffTStructMech 0;
 
-        //- Used to specify a reference fuel temperature for the computation
-        //  of the TFuel and FastDoppler reactivity contributions. If not
-        //  provided, the initial time-step flux-averaged fuel temperature is
-        //  used, effectively starting from a steady state. The average is
-        //  performed in the cellZones specified by fuelFeedbackZones
-        //  TFuelRef    0;
+    //- Used to compute drivelineExpansion as
+    //  (TDriveline-TDrivelineRef)*absoluteDrivelineExpansionCoeff
+    //  Dimensionally, it is m/K. REQUIRED
+    absoluteDrivelineExpansionCoeff 8e-05;
 
-        //- Used to specify a reference cladding temperature for the
-        //  computation of the TClad reactivity contribution. If not
-        //  provided, the initial time-step flux-averaged cladding temperature
-        //  is used, effectively starting from a steady state. The average is
-        //  performed in the cellZones specified by fuelFeedbackZones
-        //  TCladRef    0;
+    //- Used to related drivelineExpansion to reactivity contribution
+    //  Values of the expansion that are in between two map points
+    //  result in a reactivity contribution that is computed via
+    //  linear interpolation from the two. Any number of points can be
+    //  provided. The points can be provided either in ascending or
+    //  descending order of the first number (i.e. the expansion).
+    //  NOT REQUIRED, defaults to an empty reactivity map
+    controlRodReactivityMap
+    (
+        ( 0.1 -0.01 ) //- Pair in the form ( expans(m) reacitivity(-) )
+        ( 0 0 )
+        ( -0.1 0.01 )
+    );
 
-        //- Used to specify a reference coolant temperature for the
-        //  computation of the TCool reactivity contribution. If not
-        //  provided, the initial time-step flux-averaged coolant temperature
-        //  is used, effectively starting from a steady state. The average is
-        //  performed in the cellZones specified by coolFeedbackZones
-        //  TCoolRef    0;
+    //- Used to specify a reference fuel temperature for the computation
+    //  of the TFuel and FastDoppler reactivity contributions. If not
+    //  provided, the initial time-step flux-averaged fuel temperature is
+    //  used, effectively starting from a steady state. The average is
+    //  performed in the cellZones specified by fuelFeedbackZones. NOT
+    //  REQUIRED, defaults to computed value as described above
+    //  TFuelRef    0;
 
-        //- Used to specify a reference coolant density for the
-        //  computation of the rhoCool reactivity contribution. If not
-        //  provided, the initial time-step flux-averaged coolant density
-        //  is used, effectively starting from a steady state. The average is
-        //  performed in the cellZones specified by coolFeedbackZones
-        //  rhoCoolRef    0;
+    //- Used to specify a reference cladding temperature for the
+    //  computation of the TClad reactivity contribution. If not
+    //  provided, the initial time-step flux-averaged cladding temperature
+    //  is used, effectively starting from a steady state. The average is
+    //  performed in the cellZones specified by fuelFeedbackZones. NOT
+    //  REQUIRED, defaults to computed value as described above
+    //  TCladRef    0;
 
-        //- Used to specify a reference structure temperature for the
-        //  computation of the TStruct reactivity contribution.
-        //  If not provided, the initial time-step flux-averaged structure
-        //  temperature is used, effectively starting from a steady state. The
-        //  average is performed in the cellZones specified by
-        //  structFeedbackZones
-        //  TStructRef    0;
+    //- Used to specify a reference coolant temperature for the
+    //  computation of the TCool reactivity contribution. If not
+    //  provided, the initial time-step flux-averaged coolant temperature
+    //  is used, effectively starting from a steady state. The average is
+    //  performed in the cellZones specified by coolFeedbackZones. NOT
+    //  REQUIRED, defaults to computed value as described above
+    //  TCoolRef    0;
 
-        //- Used to specify a reference driveline temperature for the
-        //  computation of the driveline expansion reactivity contribution.
-        //  If not provided, the initial time-step flux-averaged structure
-        //  temperature is used, effectively starting from a steady state.The
-        //  average is performed in the cellZones specified by
-        //  drivelineFeedbackZones. Please note that the structure temperature
-        //  is used as representative of the driveline in said zones
-        //  TDrivelineRef    0;
+    //- Used to specify a reference coolant density for the
+    //  computation of the rhoCool reactivity contribution. If not
+    //  provided, the initial time-step flux-averaged coolant density
+    //  is used, effectively starting from a steady state. The average is
+    //  performed in the cellZones specified by coolFeedbackZones. NOT
+    //  REQUIRED, defaults to computed value as described above
+    //  rhoCoolRef    0;
 
-        //- List of cellZones over which the flux-averaging of the fuel, clad
-        //  temperature is performed to compute TFuel, TClad. If not provided,
-        //  this defaults to the enitre mesh
-        fuelFeedbackZones
-        (
-            "innerCore"
-            "outerCore"
-            ...
-        );
+    //- Used to specify a reference structure temperature for the
+    //  computation of the TStruct reactivity contribution.
+    //  If not provided, the initial time-step flux-averaged structure
+    //  temperature is used, effectively starting from a steady state. The
+    //  average is performed in the cellZones specified by
+    //  structFeedbackZones. NOT REQUIRED, defaults to computed value as
+    //  described above
+    //  TStructRef    0;
 
-        //- List of cellZones over which the flux-averaging of the coolant
-        //  temperature and density are performed to compute TCool, rhoCool.
-        //  If not provided, this defaults to the enitre mesh
-        coolFeedbackZones
-        (
-            "innerCore"
-            "outerCore"
-            ...
-        );
+    //- Used to specify a reference structure temperature for the
+    //  computation of the TStructMech reactivity contribution.
+    //  If not provided, the initial time-step flux-averaged structure
+    //  temperature is used, effectively starting from a steady state. The
+    //  average is performed in the cellZones specified by
+    //  structMechFeedbackZones. NOT REQUIRED, defaults to computed value as
+    //  described above
+    //  TStructMechRef    0;
 
-        //- List of cellZones over which the flux-averaging of the structure
-        //  temperature is performed to compute TStruct. If not provided, this
-        //  defaults to the enitre mesh
-        structFeedbackZones
-        (
-            "diagrid"
-            ...
-        );
+    //- Used to specify a reference driveline temperature for the
+    //  computation of the driveline expansion reactivity contribution.
+    //  If not provided, the initial time-step flux-averaged structure
+    //  temperature is used, effectively starting from a steady state.The
+    //  average is performed in the cellZones specified by
+    //  drivelineFeedbackZones. Please note that the structure temperature
+    //  is used as representative of the driveline in said zones. NOT
+    //  REQUIRED, defaults to computed value as described above
+    //  TDrivelineRef    0;
 
-        //- List of cellZones over which the flux-averaging of the structure
-        //  temperature is performed to compute TDriveline. If not provided,
-        //  this defaults to the enitre mesh
-        fuelFeedbackZones
-        (
-            "skirt"
-            "driveline"
-            ...
-        );
-    */
+    //- List of cellZones over which the flux-averaging of the fuel, clad
+    //  temperature is performed to compute TFuel, TClad. NOT REQUIRED,
+    //  defaults to the enitre mesh
+    fuelFeedbackZones
+    (
+        "innerCore"
+        "outerCore"
+        ...
+    );
+
+    //- List of cellZones over which the flux-averaging of the coolant
+    //  temperature and density are performed to compute TCool, rhoCool.
+    //  NOT REQUIRED, defaults to the enitre mesh
+    coolFeedbackZones
+    (
+        "innerCore"
+        "outerCore"
+        ...
+    );
+
+    //- List of cellZones over which the flux-averaging of the structure
+    //  temperature is performed to compute TStruct. NOT REQUIRED,
+    //  defaults to the enitre mesh
+    structFeedbackZones
+    (
+        "diagrid"
+        ...
+    );
+
+    //- List of cellZones over which the flux-averaging of the structure
+    //  temperature is performed to compute TStructMech. NOT REQUIRED,
+    //  defaults to the enitre mesh
+    structMechFeedbackZones
+    (
+        "diagrid"
+        ...
+    );
+
+    //- List of cellZones over which the flux-averaging of the structure
+    //  temperature is performed to compute TDriveline. NOT REQUIRED,
+    //  defaults to the enitre mesh
+    fuelFeedbackZones
+    (
+        "skirt"
+        "driveline"
+        ...
+    );
+
+    //- Overwrite oneGroupFlux with a cellZone by cellZone value.
+    //  It works only if fluxes are not found in the folder, otherwise
+    //  they take priority. NOT REQUIRED,
+    initialOneGroupFluxByZone
+    {
+        "core"      1.0;
+    }
+
+
