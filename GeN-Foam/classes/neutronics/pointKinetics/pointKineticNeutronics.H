@@ -59,9 +59,11 @@ Description
     - \f$ P \f$: Core power
     - \f$ C_i \f$: Precursor power
     - \f$ S \f$: Optional external source power
-    - \f$ \beta_{tot} \f$: Total fraction of precursors
-    - \f$ \beta_i \f$: Fraction of precursor group \f$ i \f$
-    - \f$ \lambda_i \f$: Decay constant of the precursor group \f$ i \f$
+    - \f$ \beta_{tot} \f$: Total delayed neutron fraction
+    - \f$ \beta_i \f$: Delayed neutron fraction for the ith delayed neutron 
+        precursor group
+    - \f$ \lambda_i \f$: Decay constant for the ith delayed neutron precursor
+        group
     - \f$ \Lambda \f$: Prompt generation lifetime
     - \f$ \zeta \f$: Optional subcritical index
     - \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
