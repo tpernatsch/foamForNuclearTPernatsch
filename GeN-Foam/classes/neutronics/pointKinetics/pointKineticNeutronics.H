@@ -46,6 +46,56 @@ Description
     options to for a time dependent external reactivity, and an external 
     reactivity input coming from an FMU.
 
+    The module solves the following point-kinetics equations: 
+
+    \f[
+        \frac{dP}{dt} = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P 
+            + \sum_{i=1}^N \lambda_i C_i + \frac{S}{\Lambda} \\
+        \frac{dC_i}{dt} = \frac{\beta_i}{\Lambda} P 
+            - \lambda_i C_i \quad \forall i \in [1; N]
+    \f]
+
+    where:
+    - \f$ P \f$: Core power
+    - \f$ C_i \f$: Precursor power
+    - \f$ S \f$: Optional external source power
+    - \f$ \beta_{tot} \f$: Total delayed neutron fraction
+    - \f$ \beta_i \f$: Delayed neutron fraction for the ith delayed neutron 
+        precursor group
+    - \f$ \lambda_i \f$: Decay constant for the ith delayed neutron precursor
+        group
+    - \f$ \Lambda \f$: Prompt generation lifetime
+    - \f$ \zeta \f$: Optional subcritical index
+    - \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
+
+    \f[
+        \rho_{tot} = -\alpha_D \ln\left( \frac{T_{fuel}}{T_{fuel}^{ref}} \right)
+            + \alpha_{fuel} (T_{fuel} - T_{fuel}^{ref})
+            + \alpha_{clad} (T_{clad} - T_{clad}^{ref})
+            + \alpha_{cool}^{T} (T_{cool} - T_{cool}^{ref})
+            + \alpha_{cool}^{\rho} (\rho_{cool} - \rho_{cool}^{ref})
+            + \alpha_{struct} (T_{struct} - T_{struct}^{ref})
+            + \rho_{driveline}
+            + \rho_{GEM}
+            + \rho_{boron}
+            + \rho_{ext}
+            + \rho_{ext}^{FMU}
+    \f]
+
+    - \f$ \alpha_D \f$ is the fast Doppler feedback coefficient
+    - \f$ \alpha_{fuel} \f$ is the fuel axial expansion feedback coefficient
+    - \f$ \alpha_{clad} \f$ is the cladding temperature feedback coefficient
+    - \f$ \alpha_{cool}^{T} \f$ is the coolant temperature feedback coefficient
+    - \f$ \alpha_{cool}^{\rho} \f$ is the coolant density coefficient
+    - \f$ \alpha_{struct} \f$ is the core radial expansion feedback coefficient
+    - \f$ \rho_{driveline} \f$ is the control rod driveline expansion reactivity 
+        contribution
+    - \f$ \rho_{driveline} \f$ is the boron concentration reactivity 
+        contribution
+    - \f$ \rho_{ext} \f$ is the external reactivity contribution
+    - \f$ \rho_{ext}^{FMU} \f$ is the external reactivity contribution from an 
+        FMU
+
     Example of mandatory dictionary entries:
     \verbatim
         fastNeutrons    true;

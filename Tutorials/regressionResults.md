@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 26-Jun-2023 - 08:29:33  
+Regression test of 14-Jul-2023 - 04:40:05  
 Tutorials successfully completed: 19/19  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------
@@ -284,12 +284,12 @@ Steady state has converged
 
 Transient has converged 
 
-Reactivity contributions with 0.001 relative error
+keff and power test with 0.001 relative error
 Perfect match:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
-| keff        | 0.936873 | 0.936827
-| Total power | 799945400 | 800000000 
+| keff        | 0.936873 | 0.936827 |
+| Total power | 799945400 | 800000000 |
 
 --------------------------------------------------------------------------------
 

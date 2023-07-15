@@ -106,7 +106,6 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Nusselt::value
         {
             Tratio = pow(Twall_[celli]/Tfluid_[celli], E_);
         }
-
         if (usePeclet_)
             return
                 scalar
