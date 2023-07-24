@@ -74,7 +74,8 @@ Description
             + \alpha_{clad} (T_{clad} - T_{clad}^{ref})
             + \alpha_{cool}^{T} (T_{cool} - T_{cool}^{ref})
             + \alpha_{cool}^{\rho} (\rho_{cool} - \rho_{cool}^{ref})
-            + \alpha_{struct} (T_{struct} - T_{struct}^{ref})
+            + \alpha_{struct} (T_{struct} - T_{struct}^{ref}) \\
+            + \alpha_{struct}^{mech} (T_{struct}^{mech} - T_{struct}^{mech,ref})
             + \rho_{driveline}
             + \rho_{GEM}
             + \rho_{boron}
@@ -88,10 +89,11 @@ Description
     - \f$ \alpha_{cool}^{T} \f$ is the coolant temperature feedback coefficient
     - \f$ \alpha_{cool}^{\rho} \f$ is the coolant density coefficient
     - \f$ \alpha_{struct} \f$ is the core radial expansion feedback coefficient
+    - \f$ \alpha_{struct}^{mech} \f$ is the core expansion feedback coefficient 
+        from the mechanical mesh
     - \f$ \rho_{driveline} \f$ is the control rod driveline expansion reactivity 
         contribution
-    - \f$ \rho_{driveline} \f$ is the boron concentration reactivity 
-        contribution
+    - \f$ \rho_{boron} \f$ is the boron concentration reactivity contribution
     - \f$ \rho_{ext} \f$ is the external reactivity contribution
     - \f$ \rho_{ext}^{FMU} \f$ is the external reactivity contribution from an 
         FMU

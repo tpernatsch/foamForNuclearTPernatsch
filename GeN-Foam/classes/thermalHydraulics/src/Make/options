@@ -121,6 +121,7 @@ EXE_INC = \
     -I./physicsModels/templatedModels/byRegime \
     -I./physicsModels/templatedModels/BasePairModels \
     -I./customPimpleControl \
+    -I./boundaryConditions/blackBodyRadiation \
     -I./boundaryConditions/velocityRundown \
     -I./boundaryConditions/timeFieldTable \
     -I./functionObjects/fieldDiffExtents \

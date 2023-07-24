@@ -163,6 +163,7 @@ physicsModels/templatedModels/byRegime/byRegimeModels.C
 
 customPimpleControl/customPimpleControl.C
 
+boundaryConditions/blackBodyRadiation/blackBodyRadiationFvPatchScalarField.C
 boundaryConditions/NusseltThermalBaffle1D/NusseltThermalBaffle1DFvPatchScalarField.C
 boundaryConditions/velocityRundown/velocityRundownFvPatchVectorField.C
 boundaryConditions/timeFieldTable/timeFieldTableFvPatchScalarField.C
