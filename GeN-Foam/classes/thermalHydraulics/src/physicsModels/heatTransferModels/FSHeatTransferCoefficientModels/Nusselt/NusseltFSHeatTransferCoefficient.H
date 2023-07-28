@@ -43,10 +43,18 @@ Description
     starting from the Nusselt, which is turn obtained via correlation in the
     form 
 
-    Nu = A_+B_*(Re^C_)*(Pr^D_)*((Tw/Tb)^E_)
+    \f[
+        Nu = A + B \times Re^C Pr^D \left( \frac{T_w}{T_b} \right)^E
+    \f]
 
-    with Re, Pr being the Reynolds (superficial in two-phase) and Prandtl
-    of the fluid, and A, B, C, D, E selectable consts.
+    where:
+    \vartable
+        Re            | Reynolds number (superficial in two-phase) of the fluid
+        Pr            | Prandtl number of the fluid
+        T_w           | Wall temperature
+        T_b           | Bulk temperature
+        A, B, C, D, E | Selectable constants
+    \endtable
 
     Example of mandatory dictionary entries:
     \verbatim
@@ -58,8 +66,8 @@ Description
 
     Example using wall/fluid temperature ratio from:
     Walton 1992, (10) Wolf-McCarthy II
-    Nu = 0.023 * Re^0.8 * Pr^0.4 * (Tw/Tb)^(-0.3)
-    with Re = [7800; 1.55e6] and Tw/Tb = [1.5; 2.8]
+    \f$ Nu = 0.023 Re^{0.8} Pr^{0.4} \left( \frac{T_w}{T_b} \right)^{-0.3} \f$
+    with Re = [7800; 1.55e6] and \f$ T_w/T_b \f$ = [1.5; 2.8]
     \verbatim
         const   0;
         coeff   0.023;

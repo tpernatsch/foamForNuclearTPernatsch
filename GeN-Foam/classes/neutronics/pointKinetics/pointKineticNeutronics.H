@@ -55,19 +55,7 @@ Description
             - \lambda_i C_i \quad \forall i \in [1; N]
     \f]
 
-    where:
-    - \f$ P \f$: Core power
-    - \f$ C_i \f$: Precursor power
-    - \f$ S \f$: Optional external source power
-    - \f$ \beta_{tot} \f$: Total delayed neutron fraction
-    - \f$ \beta_i \f$: Delayed neutron fraction for the ith delayed neutron 
-        precursor group
-    - \f$ \lambda_i \f$: Decay constant for the ith delayed neutron precursor
-        group
-    - \f$ \Lambda \f$: Prompt generation lifetime
-    - \f$ \zeta \f$: Optional subcritical index
-    - \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
-
+    \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
     \f[
         \rho_{tot} = -\alpha_D \ln\left( \frac{T_{fuel}}{T_{fuel}^{ref}} \right)
             + \alpha_{fuel} (T_{fuel} - T_{fuel}^{ref})
@@ -83,20 +71,28 @@ Description
             + \rho_{ext}^{FMU}
     \f]
 
-    - \f$ \alpha_D \f$ is the fast Doppler feedback coefficient
-    - \f$ \alpha_{fuel} \f$ is the fuel axial expansion feedback coefficient
-    - \f$ \alpha_{clad} \f$ is the cladding temperature feedback coefficient
-    - \f$ \alpha_{cool}^{T} \f$ is the coolant temperature feedback coefficient
-    - \f$ \alpha_{cool}^{\rho} \f$ is the coolant density coefficient
-    - \f$ \alpha_{struct} \f$ is the core radial expansion feedback coefficient
-    - \f$ \alpha_{struct}^{mech} \f$ is the core expansion feedback coefficient 
-        from the mechanical mesh
-    - \f$ \rho_{driveline} \f$ is the control rod driveline expansion reactivity 
-        contribution
-    - \f$ \rho_{boron} \f$ is the boron concentration reactivity contribution
-    - \f$ \rho_{ext} \f$ is the external reactivity contribution
-    - \f$ \rho_{ext}^{FMU} \f$ is the external reactivity contribution from an 
-        FMU
+    where:
+    \vartable
+      P           | Core power
+      C_i         | Precursor power
+      S           | Optional external source power
+      \beta_{tot} | Total delayed neutron fraction
+      \beta_i     | Delayed neutron fraction for the ith delayed neutron precursor group
+      \lambda_i   | Decay constant for the ith delayed neutron precursor group
+      \Lambda     | Prompt generation lifetime
+      \zeta       | Optional subcritical index
+      \alpha_D             | Fast Doppler feedback coefficient
+      \alpha_{fuel}        | Fuel axial expansion feedback coefficient
+      \alpha_{clad}        | Cladding temperature feedback coefficient
+      \alpha_{cool}^{T}    | Coolant temperature feedback coefficient
+      \alpha_{cool}^{\rho} | Coolant density coefficient
+      \alpha_{struct}      | Core radial expansion feedback coefficient
+      \alpha_{struct}^{mech} | Core expansion feedback coefficient from the mechanical mesh
+      \rho_{driveline}     | Control rod driveline expansion reactivity contribution
+      \rho_{driveline}     | Boron concentration reactivity contribution
+      \rho_{ext}           | External reactivity contribution
+      \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
+    \endtable
 
     Example of mandatory dictionary entries:
     \verbatim
@@ -173,9 +169,9 @@ Description
         nuSource            15.5; // [neutron/proton]
 
         //- Optional external source input from FMU in externalSource file.
-        //  The externalSourceMode must be set to transient. The default initial value
-        // is 1.
-        // externalSourceModulationNameFromFMU     gfExternalSourceMod;
+        //- The externalSourceMode must be set to transient. The default initial value
+        //-is 1.
+        externalSourceModulationNameFromFMU     gfExternalSourceMod;
 
         //- External modulation time profile (time, modulation factor)
         externalSourceModulationTimeProfile

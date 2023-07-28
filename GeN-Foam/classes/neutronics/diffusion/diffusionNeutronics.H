@@ -68,32 +68,27 @@ Description
     \f]
 
     where:
-    - \f$ \phi_g \f$ is the neutron flux for the gth energy group
-    - \f$ C_k \f$ is the concentration of the kth delayed neutron precursor
-        group
-    - \f$ D_g \f$ is the neutron diffusion coefficient for the gth energy group
-    - \f$ \chi_{p,g} \f$ is the prompt neutron yield for the gth energy group
-    - \f$ \chi_{d,g} \f$ is the delayed neutron yield for the ith energy group
-    - \f$ k_{eff} \f$ is the effective multiplication factor
-    - \f$ \beta_{tot} \f$ is the total delayed neutron fraction
-    - \f$ \beta_k \f$ is the delayed neutron fraction for the kth delayed 
-        neutron precursor group
-    - \f$ \nu \f$ is the average number of neutrons per fission
-    - \f$ \Sigma_{f,g} \f$ is the fission cross section for the gth energy group
-    - \f$ \Sigma_{r,g} \f$ is the removal (disappearance) cross section for the 
-        gth energy group
-    - \f$ \Sigma_{h \rightarrow g} \f$ is the group-transfer cross section from 
-        the hth to the gth energy group
-    - \f$ S_{n,g} \f$ is the fission neutron source from neutron energy groups
-        others than the gth
-    - \f$ S_d \f$ is the delayed neutron source
-    - \f$ S_{s,g}  \f$ is the scattering neutron source from neutron energy 
-        groups others than the gth
-    - \f$ S_g \f$ is the external neutron source for the gth energy group
-    - \f$ \boldsymbol{u} \f$ is the fuel velocity
-    - \f$v_g \f$ is the average neutron velocity for the ith energy group
-    - \f$ \lambda_k \f$ is the decay constant for the kth delayed neutron 
-        precursor group
+    \vartable
+      \phi_g         | Neutron flux for the gth energy group
+      C_k            | Concentration of the kth delayed neutron precursor group
+      D_g            | Neutron diffusion coefficient for the gth energy group
+      \chi_{p,g}     | Prompt neutron yield for the gth energy group
+      \chi_{d,g}     | Delayed neutron yield for the ith energy group
+      k_{eff}        | Effective multiplication factor
+      \beta_{tot}    | Total delayed neutron fraction
+      \beta_k        | Delayed neutron fraction for the kth delayed neutron precursor group
+      \nu            | Average number of neutrons per fission
+      \Sigma_{f,g}   | Fission cross section for the gth energy group
+      \Sigma_{r,g}   | Removal (disappearance) cross section for the gth energy group
+      \Sigma_{h \rightarrow g} | Group-transfer cross section from the hth to the gth energy group
+      S_{n,g}        | Fission neutron source from neutron energy groups others than the gth
+      S_d            | Delayed neutron source
+      S_{s,g}        | Scattering neutron source from neutron energy groups others than the gth
+      S_g            | External neutron source for the gth energy group
+      \boldsymbol{u} | Fuel velocity
+      v_g            | Average neutron velocity for the ith energy group
+      \lambda_k      | Decay constant for the kth delayed neutron precursor group
+    \endvartable
 
 
     In the neutronicsProperties file, for keff calculation in a critical 
