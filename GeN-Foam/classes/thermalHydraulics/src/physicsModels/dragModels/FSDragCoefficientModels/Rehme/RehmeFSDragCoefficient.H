@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -41,26 +41,43 @@ Class
 Description
     Rheme correlation for pressure drop
 
-    @ARTICLE{Rehme197315,
-    author={Rehme, Klaus},
-    title={PRESSURE DROP CORRELATIONS FOR FUEL ELEMENT SPACERS.},
-    journal={Nuclear Technology},
-    year={1973},
-    volume={17},
-    number={1},
-    pages={15-23},
-    doi={10.13182/NT73-A31250},
-    }
+    \f[
+        P_t = D_p + 1.0444 D_w \\
+        P_{w,pin} = N_p \pi (D_p + D_w) \\
+        B = \sqrt{\frac{P_t}{D_p}} 
+            + \left(
+                7.6 \frac{D_p+D_w}{L_w} \left( \frac{P_t}{D_p} \right)^2
+            \right)^{2.16} \\
+        \\
+        A = \frac{P_{w,pin}}{P_{w,pin} + P_{w,wrap}} \\
+        B_1 = 64 \sqrt{B} \\
+        B_2 = 0.0816 B^{0.9335} \\
+        \\
+        f_d = A \left( \frac{B_1}{Re} + \frac{B_2}{Re^{0.133}} \right)
+    \f]
+
+    where
+    \vartable
+        N_p        | Number of pins
+        D_p        | Pin diameter
+        D_w        | Wire diameter
+        L_w        | Wire lead length (i.e pitch of the wrapper wire)
+        P_{w,pin}  | Wetted pin perimeter
+        P_{w,wrap} | Wetted wrapper perimeter
+    \endtable
 
     Example of mandatory dictionary entries:
     \verbatim
     numberOfPins        37;
     pinDiameter         0.006000;
-    pinPitch            0.007600;
     wireDiameter        0.0016;
     wireLeadLen         0.1;        //- I.e. pitch of the wrapper wire
     wetWrapPerimeter    0.175237;   //- Wetted wrapper perimeter (wrapper only)
     \endverbatim
+
+    Reference publications:
+    Klaus Rehme, "PRESSURE DROP CORRELATIONS FOR FUEL ELEMENT SPACERS", Nuclear 
+    Technology, 1973, Vol. 17, 1, pages 15-23, DOI:10.13182/NT73-A31250.
 
     Author: 
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)

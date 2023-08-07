@@ -45,6 +45,8 @@ feedbackCoeffRhoCool        0;
 
 feedbackCoeffTStruct        0;
 
+feedbackCoeffTStructMech 0;
+
 absoluteDrivelineExpansionCoeff 0.0; // 8e-05;
 
 controlRodReactivityMap 

@@ -1,0 +1,130 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2306                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "0/fluidRegionNB/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+16
+(
+    vesselWall
+    {
+        type            patch;
+        nFaces          324;
+        startFace       36297;
+    }
+    vesselFront
+    {
+        type            patch;
+        inGroups        1(wedge);
+        nFaces          14328;
+        startFace       36621;
+    }
+    vesselBack
+    {
+        type            patch;
+        inGroups        1(wedge);
+        nFaces          14328;
+        startFace       50949;
+    }
+    outVesselFrontAndBack
+    {
+        type            patch;
+        nFaces          4120;
+        startFace       65277;
+    }
+    outVesselWall
+    {
+        type            patch;
+        inGroups        1(wall);
+        nFaces          490;
+        startFace       69397;
+    }
+    secLoopFrontAndBack
+    {
+        type            patch;
+        nFaces          4300;
+        startFace       69887;
+    }
+    hotLegSecondaryOutlet
+    {
+        type            patch;
+        nFaces          5;
+        startFace       74187;
+    }
+    coldLegSecondaryInlet
+    {
+        type            patch;
+        nFaces          10;
+        startFace       74192;
+    }
+    secLoopWall
+    {
+        type            patch;
+        inGroups        1(wall);
+        nFaces          525;
+        startFace       74202;
+    }
+    baffle1_master
+    {
+        type            patch;
+        inGroups        2(wall baffle1);
+        nFaces          0;
+        startFace       74727;
+    }
+    baffle1_slave
+    {
+        type            patch;
+        inGroups        2(wall baffle1);
+        nFaces          0;
+        startFace       74727;
+    }
+    baffle2_master
+    {
+        type            patch;
+        inGroups        2(wall baffle2);
+        nFaces          0;
+        startFace       74727;
+    }
+    baffle2_slave
+    {
+        type            patch;
+        inGroups        2(wall baffle2);
+        nFaces          0;
+        startFace       74727;
+    }
+    baffle3
+    {
+        type            patch;
+        inGroups        3(wall mappedPatch baffleFaces);
+        nFaces          0;
+        startFace       74727;
+    }
+    baffle4
+    {
+        type            patch;
+        inGroups        3(wall mappedPatch baffleFaces);
+        nFaces          0;
+        startFace       74727;
+    }
+    vesselValve
+    {
+        type            patch;
+        inGroups        1(wall);
+        nFaces          5;
+        startFace       74727;
+    }
+)
+
+// ************************************************************************* //

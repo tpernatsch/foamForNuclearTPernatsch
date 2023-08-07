@@ -6,7 +6,7 @@ PtrList<entry> entriesFuelTemp(nuclearDataFuelTemp_.lookup("zones"));
 PtrList<entry> entriesRhoCool(nuclearDataRhoCool_.lookup("zones"));
 PtrList<entry> entriesTCool(nuclearDataTCool_.lookup("zones"));
 PtrList<entry> entriesCladExp(nuclearDataCladExp_.lookup("zones"));
-
+PtrList<entry> entriesTStructMech(nuclearDataMechTemp_.lookup("zones"));
 
 //Nuclear data affected by feedbacks
 //RadExp
@@ -45,6 +45,12 @@ PtrList<scalarField > nuSigmaEffCladExpList(zoneNumber_);
 PtrList<scalarField > sigmaPowCladExpList(zoneNumber_);
 PtrList<scalarField > sigmaDisappCladExpList(zoneNumber_);
 List<PtrList<scalarSquareMatrix > > sigmaFromToCladExpList(zoneNumber_);    //scattering matrix
+//TStructMech
+PtrList<scalarField > DTStructMechList(zoneNumber_);
+PtrList<scalarField > nuSigmaEffTStructMechList(zoneNumber_);
+PtrList<scalarField > sigmaPowTStructMechList(zoneNumber_);
+PtrList<scalarField > sigmaDisappTStructMechList(zoneNumber_);
+List<PtrList<scalarSquareMatrix > > sigmaFromToTStructMechList(zoneNumber_);    //scattering matrix
 
 //Fill the data
 forAll(entries_,zoneI)
@@ -299,6 +305,42 @@ forAll(entries_,zoneI)
         sigmaFromToCladExpList[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
       }
     }
+    //TStructMech
+    read = false;
+    perturbedEntry = 0;
+    forAll(entriesTStructMech,entryI)
+    {
+      if(entriesTStructMech[entryI].keyword() == name)
+      {
+        read = true;
+        perturbedEntry = entryI;
+      }
+    }
+    if(read)
+    {
+      dictionary& dictTStructMech = entriesTStructMech[perturbedEntry].dict();
+      DTStructMechList.set(zoneI,new scalarField("D",dictTStructMech,energyGroups_));
+      nuSigmaEffTStructMechList.set(zoneI,new scalarField("nuSigmaEff",dictTStructMech,energyGroups_));
+      sigmaPowTStructMechList.set(zoneI,new scalarField("sigmaPow",dictTStructMech,energyGroups_));
+      sigmaDisappTStructMechList.set(zoneI,new scalarField("sigmaDisapp",dictTStructMech,energyGroups_));
+      sigmaFromToTStructMechList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToTStructMechList[zoneI],momentI)
+      {
+        sigmaFromToTStructMechList[zoneI].set(momentI,new scalarSquareMatrix(dictTStructMech.lookup("scatteringMatrix"+std::string("P")+Foam::name(momentI))));
+      }
+    }
+    else
+    {
+      DTStructMechList.set(zoneI,new scalarField(DList_[zoneI]));
+      nuSigmaEffTStructMechList.set(zoneI,new scalarField(nuSigmaEffList_[zoneI]));
+      sigmaPowTStructMechList.set(zoneI,new scalarField(sigmaPowList_[zoneI]));
+      sigmaDisappTStructMechList.set(zoneI,new scalarField(sigmaDisappList_[zoneI]));
+      sigmaFromToTStructMechList[zoneI].setSize(legendreMoments_);
+      forAll(sigmaFromToTStructMechList[zoneI],momentI)
+      {
+        sigmaFromToTStructMechList[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      }
+    }
 
     //Feedbacks Coefficients
     if(fastNeutrons_)
@@ -425,6 +467,24 @@ forAll(entries_,zoneI)
           for(label energyI=0; energyI<energyGroups_ ; energyI++)
           {
               cladExpSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToCladExpList[zoneI][momentI][energyJ][energyI])/deltaTClad;
+          }
+      }
+    }
+
+    scalar deltaTStructMech(TStructMechRef_ - TStructMechPerturbed_);
+    mechTempDList_.set(zoneI,new scalarField((DList_[zoneI]-DTStructMechList[zoneI])/deltaTStructMech));
+    mechTempNuSigmaEffList_.set(zoneI,new scalarField((nuSigmaEffList_[zoneI]-nuSigmaEffTStructMechList[zoneI])/deltaTStructMech));
+    mechTempSigmaPowList_.set(zoneI,new scalarField((sigmaPowList_[zoneI]-sigmaPowTStructMechList[zoneI])/deltaTStructMech));
+    mechTempSigmaDisappList_.set(zoneI,new scalarField((sigmaDisappList_[zoneI]-sigmaDisappTStructMechList[zoneI])/deltaTStructMech));
+    mechTempSigmaFromToList_[zoneI].setSize(legendreMoments_);
+    forAll(mechTempSigmaFromToList_[zoneI],momentI)
+    {
+      mechTempSigmaFromToList_[zoneI].set(momentI,new scalarSquareMatrix(sigmaFromToList_[zoneI][momentI]));
+      for(label energyJ=0; energyJ<energyGroups_ ; energyJ++)
+      {
+          for(label energyI=0; energyI<energyGroups_ ; energyI++)
+          {
+              mechTempSigmaFromToList_[zoneI][momentI][energyJ][energyI] = (sigmaFromToList_[zoneI][momentI][energyJ][energyI]-sigmaFromToTStructMechList[zoneI][momentI][energyJ][energyI])/deltaTStructMech;
           }
       }
     }

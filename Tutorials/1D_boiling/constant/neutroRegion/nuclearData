@@ -49,6 +49,7 @@ lambda
 
 feedbackCoeffTFuel 0;
 feedbackCoeffTStruct 0;
+feedbackCoeffTStructMech 0;
 feedbackCoeffTCool 0;
 feedbackCoeffTClad 0;
 feedbackCoeffRhoCool 0;

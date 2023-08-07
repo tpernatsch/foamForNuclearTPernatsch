@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -83,6 +83,7 @@ protected:
     // Protected data
 
         //- Properties
+        Switch solveDisplacement_;
         Switch planeStress_;
         Switch linkedFuel_;
         vector fuelOrientation_;
@@ -117,9 +118,18 @@ protected:
         volScalarField TFuel_;
         volScalarField gapWidth;
 
+        //- Mapped field
+        volScalarField TStructFromTH_;
+        volScalarField powerDensityNeutronics_;
+
+        //- Derived from mapped field
+        // Used to check where the TH is mapping TStructFromTH_
+        volScalarField isPorous_;
+
         //- Ptrs to coupling fields
         const volScalarField* TFuelOrig_;
         const volScalarField* TStructOrig_;
+        const volScalarField* powerDensityOrig_;
 
         //- Control
         int nCorr_;
@@ -162,8 +172,8 @@ public:
         //  fluidMeshNB for the current state of GeN-Foam)
         virtual void getCouplingFieldRefs
         (
-            const objectRegistry& src,
-            const meshToMesh& mechToFluid
+            const objectRegistry& srcTH,
+            const objectRegistry& srcN
         );
 
         //- The old getFields, yet operates on the local refs without having
@@ -174,7 +184,8 @@ public:
         //  in ALL of the other thermoMechanical models too
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& mechToFluid
+            const meshToMesh& mechToFluid,
+            const meshToMesh& mechToNeutro
         );
 
         //- Correct/update the properties

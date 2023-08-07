@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -209,6 +209,10 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         nuclearData_.get<scalar>("feedbackCoeffTStruct")
     ),
+    coeffTStructMech_
+    (
+        nuclearData_.get<scalar>("feedbackCoeffTStructMech")
+    ),
     coeffDrivelineExp_
     (
         nuclearData_.get<scalar>("absoluteDrivelineExpansionCoeff")
@@ -218,6 +222,25 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         nuclearData_,
         "boronReactivityTimeProfile"
     ),
+    TFuelRef_(0.0),
+    TCladRef_(0.0),
+    TCoolRef_(0.0),
+    rhoCoolRef_(0.0),
+    TStructRef_(0.0),
+    TStructMechRef_(0.0),
+    TDrivelineRef_(0.0),
+    TFuelOrig_(nullptr),
+    TCladOrig_(nullptr),
+    TCoolOrig_(nullptr),
+    rhoCoolOrig_(nullptr),
+    TStructOrig_(nullptr),
+    TStructMechOrig_(nullptr),
+    powerDensityOrig_(nullptr),
+    powerDensityToLiquidOrig_(nullptr),
+    UOrig_(nullptr),
+    alphaOrig_(nullptr),
+    alphatOrig_(nullptr),
+    muOrig_(nullptr),
     TFuel_
     (
         IOobject
@@ -286,6 +309,20 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         ),
         mesh,
         dimensionedScalar("", dimTemperature, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TStructMech_
+    (
+        IOobject
+        (
+            "TStructMech",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     UPtr_(nullptr),
@@ -407,6 +444,19 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         IOobject
         (
             "pointKinetics.structFeedbackCellField",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless, 0)
+    ),
+    structMechFeedbackCellField_
+    (
+        IOobject
+        (
+            "pointKinetics.structMechFeedbackCellField",
             mesh.time().timeName(),
             mesh,
             IOobject::NO_READ,
@@ -940,6 +990,11 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     );
     setFeedbackCellField
     (
+        structMechFeedbackCellField_,
+        "structMechFeedbackZones"
+    );
+    setFeedbackCellField
+    (
         drivelineFeedbackCellField_,
         "drivelineFeedbackZones"
     );
@@ -1216,21 +1271,23 @@ Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
 
 void Foam::pointKineticNeutronics::getCouplingFieldRefs
 (
-    const objectRegistry& src,
-    const meshToMesh& neutroToFluid
+    const objectRegistry& srcTH,
+    const meshToMesh& neutroToFluid,
+    const objectRegistry& srcTM,
+    const meshToMesh& neutroToMech
 )
 {
     //- Field names must reflect those defined in createCouplingFields.H
     TFuelOrig_ =
-        src.findObject<volScalarField>("bafflelessTFuelAv");
+        srcTH.findObject<volScalarField>("bafflelessTFuelAv");
     TCladOrig_ =
-        src.findObject<volScalarField>("bafflelessTCladAv");
+        srcTH.findObject<volScalarField>("bafflelessTCladAv");
     TCoolOrig_ =
-        src.findObject<volScalarField>("bafflelessTCool");
+        srcTH.findObject<volScalarField>("bafflelessTCool");
     rhoCoolOrig_ =
-        src.findObject<volScalarField>("bafflelessRhoCool");
+        srcTH.findObject<volScalarField>("bafflelessRhoCool");
     TStructOrig_ =
-        src.findObject<volScalarField>("bafflelessTStruct");
+        srcTH.findObject<volScalarField>("bafflelessTStruct");
 
     //- Project thermalHydraulic powerDensities onto the neutronic ones to
     //  initialize them if the latters do not exist.
@@ -1252,7 +1309,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
         {
             powerDensityToLiquidOrig_ =
-                src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
+                srcTH.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
             neutroToFluid.mapTgtToSrc
                 (
                     *powerDensityToLiquidOrig_,
@@ -1273,7 +1330,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
         {
             powerDensityOrig_ =
-                src.findObject<volScalarField>("bafflelessPowerDensity");
+                srcTH.findObject<volScalarField>("bafflelessPowerDensity");
             neutroToFluid.mapTgtToSrc
                 (
                     *powerDensityOrig_,
@@ -1296,7 +1353,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
         {
             powerDensityOrig_ =
-                src.findObject<volScalarField>("bafflelessPowerDensity");
+                srcTH.findObject<volScalarField>("bafflelessPowerDensity");
             neutroToFluid.mapTgtToSrc
                 (
                     *powerDensityOrig_,
@@ -1317,7 +1374,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
         {
             powerDensityToLiquidOrig_ =
-                src.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
+                srcTH.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
             neutroToFluid.mapTgtToSrc
                 (
                     *powerDensityToLiquidOrig_,
@@ -1331,13 +1388,13 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     if (liquidFuel_)
     {
         UOrig_ =
-            src.findObject<volVectorField>("bafflelessU");
+            srcTH.findObject<volVectorField>("bafflelessU");
         alphaOrig_ =
-            src.findObject<volScalarField>("bafflelessAlpha");
+            srcTH.findObject<volScalarField>("bafflelessAlpha");
         alphatOrig_ =
-            src.findObject<volScalarField>("bafflelessAlphat");
+            srcTH.findObject<volScalarField>("bafflelessAlphat");
         muOrig_ =
-            src.findObject<volScalarField>("bafflelessMu");
+            srcTH.findObject<volScalarField>("bafflelessMu");
     }
     else
     {
@@ -1351,7 +1408,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     if (this->get<bool>("GEM"))
     {
         phiOrig_ =
-            src.findObject<surfaceScalarField>("phi");
+            srcTH.findObject<surfaceScalarField>("phi");
         const labelList& faces
         (
             neutroToFluid.tgtRegion().faceZones()
@@ -1374,12 +1431,16 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
         phiOrig_ = nullptr;
     }
 
+    //- Get T from TM solver
+    TStructMechOrig_ = 
+        srcTM.findObject<volScalarField>("TStruct");
+
     //- The rest of this function is for initializing the reference values of
     //  the feedback parameters. If they are found in the dictionary, use
     //  those, otherwise compute them from the coupling fields (thus
     //  assuming that the simulation starts from a steady state)
 
-    this->interpolateCouplingFields(neutroToFluid);
+    this->interpolateCouplingFields(neutroToFluid,neutroToMech);
 
     #include "computeFeedbackFieldValues.H"
 
@@ -1404,6 +1465,9 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     TStructRef_ =
         reactorState_.lookupOrDefault<scalar>("TStructRef", TStructValue);
 
+    TStructMechRef_ =
+        reactorState_.lookupOrDefault<scalar>("TStructMechRef", TStructMechValue);
+
     TDrivelineRef_ =
         reactorState_.lookupOrDefault<scalar>("TDrivelineRef", TDrivelineValue);
 
@@ -1416,6 +1480,7 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
     reactorState_.set("TCoolRef", TCoolRef_);
     reactorState_.set("rhoCoolRef", rhoCoolRef_);
     reactorState_.set("TStructRef", TStructRef_);
+    reactorState_.set("TStructMechRef", TStructMechRef_);
     reactorState_.set("TDrivelineRef", TDrivelineRef_);
     reactorState_.regIOobject::writeObject
     (
@@ -1433,7 +1498,8 @@ void Foam::pointKineticNeutronics::getCouplingFieldRefs
 
 void Foam::pointKineticNeutronics::interpolateCouplingFields
 (
-    const meshToMesh& neutroToFluid
+    const meshToMesh& neutroToFluid,
+    const meshToMesh& neutroToMech
 )
 {
     neutroToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
@@ -1479,6 +1545,9 @@ void Foam::pointKineticNeutronics::interpolateCouplingFields
         diffCoeffPrecPtr_().correctBoundaryConditions();
     }
 
+
+    //- Interpolate T from TM solver
+    neutroToMech.mapTgtToSrc(*TStructMechOrig_, plusEqOp<scalar>(), TStructMech_);
 
     TFuel_.correctBoundaryConditions();
     TClad_.correctBoundaryConditions();

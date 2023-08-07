@@ -319,7 +319,9 @@ if (multiphysics.solveNeutronics())
     neutronics.getCouplingFieldRefs
     (
         fluidMeshNB,
-        neutroToFluid
+        neutroToFluid,
+        mechMesh,
+        neutroToMech
     );
 }
 if (multiphysics.solveThermoMechanics())
@@ -327,6 +329,6 @@ if (multiphysics.solveThermoMechanics())
     thermoMechanics.getCouplingFieldRefs
     (
         fluidMeshNB,
-        mechToFluid
+        neutroMesh
     );
 }

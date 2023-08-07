@@ -1,6 +1,6 @@
 Info << "Solving neutronics" << endl ;
 
-xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_);
+xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_);
 #include "setXSFieldsSN.H"
 
 const dictionary& neutronTransport = mesh_.solutionDict().subDict("neutronTransport");

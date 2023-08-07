@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -155,6 +155,15 @@ Foam::SNNeutronics::SNNeutronics
         dimensionedScalar("", dimensionSet(0,-3,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    TFuelOrig_(nullptr),
+    TCladOrig_(nullptr),
+    TCoolOrig_(nullptr),
+    rhoCoolOrig_(nullptr),
+    TStructMechOrig_(nullptr),
+    UOrig_(nullptr),
+    alphaOrig_(nullptr),
+    alphatOrig_(nullptr),
+    muOrig_(nullptr),
     TFuel_
     (
         IOobject
@@ -211,6 +220,20 @@ Foam::SNNeutronics::SNNeutronics
         dimensionedScalar("", dimTemperature, SMALL),
         zeroGradientFvPatchScalarField::typeName
     ),
+    TStructMech_
+    (
+        IOobject
+        (
+            "TStructMech",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     keff0_(0.0),
     keff1_(0.0),
     keff2_(0.0),
@@ -233,8 +256,10 @@ Foam::SNNeutronics::~SNNeutronics()
 
 void Foam::SNNeutronics::getCouplingFieldRefs
 (
-    const objectRegistry& src,
-    const meshToMesh& neutroToFluid
+    const objectRegistry& srcTH,
+    const meshToMesh& neutroToFluid,
+    const objectRegistry& srcTM,
+    const meshToMesh& neutroToMech
 )
 {
     #include "defaultGetCouplingFieldRefs.H"
@@ -242,7 +267,8 @@ void Foam::SNNeutronics::getCouplingFieldRefs
 
 void Foam::SNNeutronics::interpolateCouplingFields
 (
-    const meshToMesh& neutroToFluid
+    const meshToMesh& neutroToFluid,
+    const meshToMesh& neutroToMech
 )
 {
     #include "defaultInterpolateCouplingFields.H"

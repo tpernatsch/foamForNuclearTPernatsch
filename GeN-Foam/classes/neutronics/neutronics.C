@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -196,7 +196,7 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
 
 void Foam::neutronics::deformMesh
 (
-    const meshToMesh& TMToNeutro,
+    const meshToMesh& mechToNeutro,
     const volVectorField& dispOrig
 )
 {
@@ -207,7 +207,7 @@ void Foam::neutronics::deformMesh
         neutroMeshPointInterpolation.interpolate(disp_);
 
     disp_ *= 0.0;
-    TMToNeutro.mapSrcToTgt(dispOrig, plusEqOp<vector>(), disp_);
+    mechToNeutro.mapSrcToTgt(dispOrig, plusEqOp<vector>(), disp_);
     disp_.correctBoundaryConditions();
 
     tmp<pointVectorField> neutroPointsDisplacement =

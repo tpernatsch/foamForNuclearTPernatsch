@@ -18,6 +18,9 @@ scalar rhoCoolReactivity =
 scalar TStructReactivity =
     coeffTStruct_*(TStructValue - TStructRef_);
 
+scalar TStructMechReactivity =
+    coeffTStructMech_*(TStructMechValue - TStructMechRef_);
+
 //- Driveline reactivity
 scalar drivelineExpValue
 (
@@ -71,6 +74,7 @@ totalReactivity_ =
     +   TCoolReactivity
     +   rhoCoolReactivity
     +   TStructReactivity
+    +   TStructMechReactivity
     +   drivelineReactivity
     +   GEMReactivity
     +   boronReactivity;

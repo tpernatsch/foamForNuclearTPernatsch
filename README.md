@@ -1,6 +1,6 @@
 # GeN-Foam README file {#README}
 
-GeN-Foam is a multi-physics solver for reactor analysis based on OpenFOAM (ESI/OpenCFD distribution from [www.openfoam.com](https://www.openfoam.com), currently v2212). It can solve (coupled or alternatively) for:
+GeN-Foam is a multi-physics solver for reactor analysis based on OpenFOAM (ESI/OpenCFD distribution from [www.openfoam.com](https://www.openfoam.com), currently v2306). It can solve (coupled or alternatively) for:
 
 - neutronics, with models for point kinetics, diffusion (transient and eigenvalue), adjoint diffusion (only eigenvalue), SP3 (transient and eigenvalue), discrete ordinates (only eigenvalue);
 - one-phase thermal-hydraulics, according to both RANS-CFD and porous-medium coarse-mesh approaches (the two approaches can be combined in the same mesh);
@@ -17,7 +17,4 @@ Please notice that a new version of OpenFOAM is released by ESI/OpenCFD twice a 
 
 N.B.: GeN-Foam is a flexible tool that allows the modeling of irregular geometries and particularly complex phenomena. However, it requires a good familiarity with Linux and OpenFOAM, as well as a solid background in multi-physics nuclear applications. Familiarity with CFD methods is strongly recommended. In addition, a good familiarity with C++ and the OpenFOAM API will be important to unlock the full potential of the code. The OpenFOAM API and the class-based structure of GeN-Foam allow an experienced user to quickly and safely add solvers, models, and equations, thus tailoring the code to their needs.
 
-© All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE (EPFL), Switzerland, 2021
-- Main author of the code: Carlo Fiorina
-- Main author of the thermal-hydraulics class and the point-kinetics solver: Stefan Radman
-- Other contributions are individually acknowledged in the header files
+© Contributions are individually acknowledged in the header files
