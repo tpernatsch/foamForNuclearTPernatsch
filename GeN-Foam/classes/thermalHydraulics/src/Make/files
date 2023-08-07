@@ -175,5 +175,7 @@ functionObjects/stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
 functionObjects/patchScalarFieldValue/patchScalarFieldValue.C
 functionObjects/fieldIntegralToFMU/fieldIntegralToFMU.C
 
+thermophysicalProperties/H2/H2.C
+
 
 LIB = $(FOAM_USER_LIBBIN)/libFFSSrc2

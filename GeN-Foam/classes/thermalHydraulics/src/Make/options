@@ -120,6 +120,7 @@ EXE_INC = \
     -I./physicsModels/templatedModels/constant \
     -I./physicsModels/templatedModels/byRegime \
     -I./physicsModels/templatedModels/BasePairModels \
+    -I./thermophysicalProperties/H2 \
     -I./customPimpleControl \
     -I./boundaryConditions/velocityRundown \
     -I./boundaryConditions/timeFieldTable \
@@ -131,6 +132,7 @@ EXE_INC = \
     -I./functionObjects/patchScalarFieldValue \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
     -I$(LIB_SRC)/transportModels/incompressible/transportModel \
     -I$(LIB_SRC)/TurbulenceModels/compressible/lnInclude \
     -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
