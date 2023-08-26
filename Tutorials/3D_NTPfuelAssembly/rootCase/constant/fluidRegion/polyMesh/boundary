@@ -1,0 +1,100 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       polyBoundaryMesh;
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+9
+(
+    inlet
+    {
+        type            patch;
+        nFaces          42;
+        startFace       4056;
+    }
+    outlet
+    {
+        type            patch;
+        nFaces          42;
+        startFace       4098;
+    }
+    defaultFaces
+    {
+        type            patch;
+        nFaces          810;
+        startFace       4140;
+    }
+    baffle_master
+    {
+        type            mappedWall;
+        inGroups        3(wall mappedPatch baffle);
+        nFaces          150;
+        startFace       4950;
+        sampleMode      nearestPatchFace;
+        sampleRegion    fluid;
+        samplePatch     baffle_slave;
+    }
+    baffle_slave
+    {
+        type            mappedWall;
+        inGroups        3(wall mappedPatch baffle);
+        nFaces          150;
+        startFace       5100;
+        sampleMode      nearestPatchFace;
+        sampleRegion    fluid;
+        samplePatch     baffle_master;
+    }
+    inletFuelElement
+    {
+        type            cyclic;
+        inGroups        2(cyclic inletFuelElement);
+        nFaces          36;
+        startFace       5250;
+        matchTolerance  0.0001;
+        transform       coincidentFullMatch;
+        neighbourPatch  inletFuelElement_slave;
+    }
+    inletFuelElement_slave
+    {
+        type            cyclic;
+        inGroups        2(cyclic inletFuelElement);
+        nFaces          36;
+        startFace       5286;
+        matchTolerance  0.0001;
+        transform       coincidentFullMatch;
+        neighbourPatch  inletFuelElement;
+    }
+    outletFuelElement
+    {
+        type            cyclic;
+        inGroups        2(cyclic outletFuelElement);
+        nFaces          36;
+        startFace       5322;
+        matchTolerance  0.0001;
+        transform       coincidentFullMatch;
+        neighbourPatch  outletFuelElement_slave;
+    }
+    outletFuelElement_slave
+    {
+        type            cyclic;
+        inGroups        2(cyclic outletFuelElement);
+        nFaces          36;
+        startFace       5358;
+        matchTolerance  0.0001;
+        transform       coincidentFullMatch;
+        neighbourPatch  outletFuelElement;
+    }
+)
+
+// ************************************************************************* //

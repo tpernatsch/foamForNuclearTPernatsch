@@ -1,0 +1,20 @@
+if (!exists("log")) log='log.GeN-Foam'
+if (!exists("fluid1")) fluid1='liquid'
+if (!exists("fluid2")) fluid2='vapour'
+
+set title log
+set logscale y
+set yrange [*:1]
+set ylabel 'Residual (-)'
+set xlabel 'Iteration (-)'
+plot x notitle with line linecolor rgb"#ffffff",\
+"< cat ". log ." | grep 'Solving for p_rgh' | cut -d' ' -f9 | tr -d ','" title 'p-rgh' with lines,\
+"< cat ". log ." | grep 'Solving for h,' | cut -d' ' -f9 | tr -d ','" title 'h' with lines,\
+"< cat ". log ." | grep 'Solving for epsilon,' | cut -d' ' -f9 | tr -d ','" title 'epsilon' with lines,\
+"< cat ". log ." | grep 'Solving for k,' | cut -d' ' -f9 | tr -d ','" title 'k' with lines,\
+"< cat ". log ." | grep 'Final neutroResidual' | cut -d' ' -f8 | tr -d ','" title 'fluxes' with lines
+# "< cat ". log ." | grep 'Solving for dispx' | cut -d' ' -f9 | tr -d ','" title 'dispx' with lines,\
+# "< cat ". log ." | grep 'Solving for dispy' | cut -d' ' -f9 | tr -d ','" title 'dispy' with lines,\
+# "< cat ". log ." | grep 'Solving for dispz' | cut -d' ' -f9 | tr -d ','" title 'dispz' with lines
+pause 10
+reread
