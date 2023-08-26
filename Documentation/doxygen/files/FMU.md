@@ -5,7 +5,7 @@ GeN-Foam provides several interface points to communicate with [Functional Mock-
 
 ## Compiling
 
-To use the FMI coupling interface in GeN-Foam, the user have to install the [FMU4FOAM](https://github.com/DLR-RY/FMU4FOAM) project developed by the DLR using the following commands:
+To use the FMI coupling interface in GeN-Foam, the user has to install the [FMU4FOAM](https://github.com/DLR-RY/FMU4FOAM) project developed by the DLR using the following commands:
 ```bash
 cd GeN-Foam
 git clone https://github.com/DLR-RY/FMU4FOAM.git
@@ -13,7 +13,7 @@ cd FMU4FOAM/
 ./build-ECI4FOAM.sh && ./Allwmake
 ```
 
-Then the GeN-Foam project can be build as usual.
+Then the GeN-Foam project can be built as usual.
 
 
 ## Features
@@ -42,8 +42,9 @@ In this section, a list of FMI inputs/outputs in GeN-Foam is provided with a lin
 ## Potential Issues
 
 Make sure that `-I./*/FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude` and `-lexternalComm` have been uncommented in:
-- [GeN-Foam/Make/options](GeN-Foam/Make/options)
+- [GeN-Foam/classes/neutronics/Make/options](GeN-Foam/classes/neutronics/Make/options)
 - [GeN-Foam/classes/thermalHydraulics/src/Make/options](GeN-Foam/classes/thermalHydraulics/src/Make/options)
+- [GeN-Foam/Make/options](GeN-Foam/Make/options)
 
 
 # How to install FMU4FOAM with the latest OpenFOAM versions
@@ -66,27 +67,23 @@ Now run:
 ./build-ECI4FOAM.sh
 ```
 
-Remove:
-`$(inputBC)/coupledWallHeatFluxTemperature/coupledWallHeatFluxTemperatureFvPatchScalarField.C`
-and
-`$(output)/extForces/extForces.C`
-from
-`FMU4FOAM/ECI4FOAM/src/externalComm/Make/files`
+In `FMU4FOAM/ECI4FOAM/src/externalComm/Make/files`, remove:
+- `$(inputBC)/coupledWallHeatFluxTemperature/coupledWallHeatFluxTemperatureFvPatchScalarField.C`
+- `$(output)/extForces/extForces.C`
 
-Enter the `ECI4FOAM` and finally do the `Allwmake`
 
-Get to the root folder of FMU4FOAM
+Then run the `Allwmake` in `ECI4FOAM` and in the `FMU4FOAM` root folder:
 ```bash
+cd ECI4FOAM
+./Allwmake
+# Get to the root folder of FMU4FOAM
 cd ..
+./Allwmake
 ```
 
-Run `./Allwmake`
-
-Finally:
+Finally, install the Python packages for FMUs:
 ```bash
-pip install fmu4foam
-pip install OMSimulator
-pip install pythonfmu
+pip install fmu4foam OMSimulator pythonfmu
 ```
 
 To test:
