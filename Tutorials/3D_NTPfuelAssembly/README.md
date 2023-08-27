@@ -43,9 +43,9 @@ In comparison, the [RS-25 rocket engine](https://en.wikipedia.org/wiki/RS-25) of
 
 A KIWI-B-4E fuel assembly is composed of a central hexagonal unloaded fuel element surrounded by 6 hexagonal fuel elements (see Fig. 2).
 
-<div style="text-align: justify;">
-    <img src="images/FuelAssembly1965SurveyDesignKiwiB4E.png" alt="FuelAssembly" style="max-height: 300px"/>  
-    <img src="images/FuelAssemblyMesh.png" alt="FuelAssemblyMesh" style="max-height: 300px"/>
+<div style="display: flex; flex-direction: row; height: 300;">
+    <img src="images/FuelAssembly1965SurveyDesignKiwiB4E.png" alt="FuelAssembly" style="height: 100%"/>
+    <img src="images/FuelAssemblyMesh.png" alt="FuelAssemblyMesh" style="height: 100%"/>
 </div>
 
 *Fig 2: Fuel assembly scheme from 1965 design survey of KIWI-B-4E (<a href="#ref1">Zeigner, 1965</a>) and mesh used in GeN-Foam.*
