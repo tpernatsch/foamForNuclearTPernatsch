@@ -212,7 +212,7 @@ do
         reactivityDoppler=$(extract "-> Doppler" transient)
         reactivityClad=$(extract "-> TClad" transient)
         reactivityDensity=$(extract "-> rhoCool" transient)
-        reactivityStructures=$(extract "-> TStruct" transient)
+        reactivityStructures=$(extract "-> TStruct  " transient)
         reactivityDriveline=$(extract "-> driveline" transient)
         reactivityGEM=$(extract "-> GEM" transient)
         totalPower=$(extract "totalPower" transient)

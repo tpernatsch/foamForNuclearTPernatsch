@@ -1,45 +1,7 @@
 # GeN-Foam regression test suite
 
-Regression test of 14-Jul-2023 - 04:40:05  
-Tutorials successfully completed: 19/19  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
-
---------------------------------------------------------------------------------
-
-## 1D_HX/onePhase
-
-Run tutorial 1D_HX onePhase ...
-
-Done running tutorial 1D_HX onePhase ...
-
-1D_HX onePhase has converged 
-
-
---------------------------------------------------------------------------------
-
-## 1D_HX/twoPhase
-
-Run tutorial 1D_HX twoPhase ...
-
-Done running tutorial 1D_HX twoPhase ...
-
-1D_HX twoPhase has converged 
-
-
---------------------------------------------------------------------------------
-
-## 1D_PSBT_SC
-
-Run tutorial 1D_PSBT_SC ...
-
-Done running tutorial 1D_PSBT_SC ...
-
-1D_PSBT_SC has converged 
-
-alpha.vapour at the end of the channel
-Perfect match:
-|              | Simulated | Expected |
-|:-------------|:---------:|:--------:|
-| alpha vapour | 0.133727 | 0.133727 |
+Regression test of 26-August-2023 - 16:59:23  
+Tutorials successfully completed: 21/21  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------
 
@@ -86,6 +48,28 @@ Perfect match:
 
 --------------------------------------------------------------------------------
 
+## 1D_HX/onePhase
+
+Run tutorial 1D_HX onePhase ...
+
+Done running tutorial 1D_HX onePhase ...
+
+1D_HX onePhase has converged 
+
+
+--------------------------------------------------------------------------------
+
+## 1D_HX/twoPhase
+
+Run tutorial 1D_HX twoPhase ...
+
+Done running tutorial 1D_HX twoPhase ...
+
+1D_HX twoPhase has converged 
+
+
+--------------------------------------------------------------------------------
+
 ## 1D_MSR_pointKinetics
 
 Run tutorial 1D_MSR_pointKinetics ...
@@ -103,6 +87,22 @@ Perfect match:
 |       | Simulated | Expected |
 |:------|:---------:|:--------:|
 | Power | 6.13794e+08  | 6.13794e+08 |
+
+--------------------------------------------------------------------------------
+
+## 1D_PSBT_SC
+
+Run tutorial 1D_PSBT_SC ...
+
+Done running tutorial 1D_PSBT_SC ...
+
+1D_PSBT_SC has converged 
+
+alpha.vapour at the end of the channel
+Perfect match:
+|              | Simulated | Expected |
+|:-------------|:---------:|:--------:|
+| alpha vapour | 0.133727 | 0.133727 |
 
 --------------------------------------------------------------------------------
 
@@ -156,6 +156,61 @@ Perfect match:
 | Flux 1      | 29953.3 | 29953.3 |
 | Source 0    | 3346.27 | 3346.27 |
 | Source 1    | 3346.27 | 3346.27 |
+
+--------------------------------------------------------------------------------
+
+## 2D_FFTF
+
+Run tutorial 2D_FFTF ...
+
+Done running tutorial 2D_FFTF ...
+
+Energy steady state has converged 
+
+Transient has converged 
+
+Reactivity contributions with 0.01 relative error
+Perfect match:
+|             | Simulated | Expected |
+|:------------|:---------:|:--------:|
+| Doppler     | 237.049 | 237.0728 |
+| Cladding    | 0.8180091 | 0.8198844 |
+| Density     | -2.518649 | -2.525069 |
+| Structures  | -1.027231 | -1.017622 |
+| Driveline   | -8.622036 | -8.631667 |
+| GEM         | -464.8496 | -464.8497 |
+| Total power | 29493.69 | 29490.49 |
+
+--------------------------------------------------------------------------------
+
+## 2D_fullCoupling
+
+Run tutorial 2D_fullCoupling ...
+
+Done running tutorial 2D_fullCoupling ...
+
+Steady State has converged 
+
+Transient (no driveline) has converged 
+
+
+--------------------------------------------------------------------------------
+
+## 2D_KNS37-L22
+
+Run tutorial 2D_KNS37-L22 ...
+
+Done running tutorial 2D_KNS37-L22 ...
+
+2D_KNS37-L22 has converged 
+
+Test with 0.2 relative error
+Perfect match:
+|                   | Simulated | Expected |
+|:------------------|:---------:|:--------:|
+| Time              | 12.5291 | 12.56424533593758 |
+| alpha.vapour      | 0.168632 | 0.1577348 |
+| T.activeStructure | 826.68 | 821.0752 |
 
 --------------------------------------------------------------------------------
 
@@ -232,45 +287,48 @@ Done running tutorial 2D_voidMotionNoPhaseChange ...
 
 --------------------------------------------------------------------------------
 
-## 2D_KNS37-L22
+## 3D_gFHR
 
-Run tutorial 2D_KNS37-L22 ...
+Run tutorial 3D_gFHR ...
 
-Done running tutorial 2D_KNS37-L22 ...
+Done running tutorial 3D_gFHR ...
 
-2D_KNS37-L22 has converged 
+Steady state NSSP has converged 
 
-Test with 0.2 relative error
+Steady state LPS has converged 
+
+Max temperatures (avg min max) in trisos
 Perfect match:
-|                   | Simulated | Expected |
-|:------------------|:---------:|:--------:|
-| Time              | 12.4981 | 12.56424533593758 |
-| alpha.vapour      | 0.184324 | 0.1577348 |
-| T.activeStructure | 833.551 | 821.0752 |
+|           | Simulated | Expected |
+|:----------|:---------:|:--------:|
+| Tfmax avg | 981.812 | 981.808 |
+| Tfmax min | 900.664 | 900.664 |
+| Tfmax max | 1062.96 | 1062.87 |
 
 --------------------------------------------------------------------------------
 
-## 2D_FFTF
+## 3D_NTPfuelAssembly
 
-Run tutorial 2D_FFTF ...
+Run tutorial 3D_NTPfuelAssembly ...
 
-Done running tutorial 2D_FFTF ...
+Done running tutorial 3D_NTPfuelAssembly ...
 
-Energy steady state has converged 
+Steady state neutronics & thermal-hydraulics has converged 
 
-Transient has converged 
+Simulation & reference comparison
+  -> 0.1 % maximum relative error for (keff, power neutro & fluid)
+  -> 5 % maximum relative error for (mass flow, Tout)
 
-Reactivity contributions with 0.001 relative error
-Perfect match:
-|             | Simulated | Expected |
-|:------------|:---------:|:--------:|
-| Doppler     | 237.0728 | 237.0728 |
-| Cladding    | 0.8198844 | 0.8198844 |
-| Density     | -2.525069 | -2.525069 |
-| Structures  | -1.017622 | -1.017622 |
-| Driveline   | -8.631667 | -8.631667 |
-| GEM         | -464.8497 | -464.8497 |
-| Total power | 29490.49 | 29490.49 |
+|                         | Simulated | Expected  | Error [%] |
+|:------------------------|:---------:|:---------:|:---------:|
+| keff                    | 1.3052395 | 1.3052479 |    .00064 | # Passed
+| Total power neutro [MW] |   936.999 |       937 |    .00010 | # Passed
+| Total power fluid  [MW] |   937.001 |       937 |   -.00010 | # Passed
+| Total mass flow  [kg/s] | 30.6472250 |      31.0 |      1.13 | # Passed
+| Outlet temperature  [K] |  1924.971 |      1972 |      2.38 | # Passed
+
+All test passed
+
 
 --------------------------------------------------------------------------------
 
@@ -289,27 +347,7 @@ Perfect match:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
 | keff        | 0.936873 | 0.936827 |
-| Total power | 799945400 | 800000000 |
-
---------------------------------------------------------------------------------
-
-## 3D_gFHR
-
-Run tutorial 3D_gFHR ...
-
-Done running tutorial 3D_gFHR ...
-
-Steady state NSSP has converged 
-
-Steady state LPS has converged 
-
-Max temperatures (avg min max) in trisos
-Perfect match:
-|           | Simulated | Expected |
-|:----------|:---------:|:--------:|
-| Tfmax avg | 981.812 | 981.808 |
-| Tfmax min | 900.664 | 900.664 |
-| Tfmax max | 1062.96 | 1062.87 |
+| Total power | 799894700 | 800000000 |
 
 --------------------------------------------------------------------------------
 

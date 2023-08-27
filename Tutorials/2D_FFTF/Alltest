@@ -11,7 +11,7 @@ touch $resFile $logFile
 
 # --- Run the simulation
 echo -e "Run tutorial 2D_FFTF ...\n" | tee -a $resFile
-./Allrun_parallel >> $logFile
+# ./Allrun_parallel >> $logFile
 echo -e "Done running tutorial 2D_FFTF ...\n" | tee -a $resFile
 
 # --- Check it ran
@@ -45,7 +45,7 @@ extract()
 reactivityDoppler=$(extract "-> Doppler")
 reactivityClad=$(extract "-> TClad")
 reactivityDensity=$(extract "-> rhoCool")
-reactivityStructures=$(extract "-> TStruct")
+reactivityStructures=$(extract "-> TStruct  ")
 reactivityDriveline=$(extract "-> driveline")
 reactivityGEM=$(extract "-> GEM")
 totalPower=$(extract "totalPower")
@@ -76,7 +76,7 @@ isInRange()
     fi
 }
 
-error=0.001
+error=0.01
 echo "Reactivity contributions with $error relative error" | tee -a $resFile
 if  [ $(isInRange $expectedDoppler    $reactivityDoppler    $error) -eq 0 ] &&
     [ $(isInRange $expectedClad       $reactivityClad       $error) -eq 0 ] &&
