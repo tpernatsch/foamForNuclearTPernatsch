@@ -1,20 +1,20 @@
 # NTP KIWI-B-4E Fuel Assembly
 
-Author: Thomas Guilbaud
+Author: Thomas Guilbaud, EPFL ([thomas.guilbaud@epfl.ch](mailto:thomas.guilbaud@epfl.ch))
 
 This tutorial simulates the coupled neutronics and thermal-hydraulics of a hydrogen-cooled fuel assembly of the KIWI-B-4E NTP reactor. 
 
 
 ## Introduction
 
-A Nuclear Thermal Propulsion (NTP) reactor is a space propulsion engine that uses the energy of a nuclear reactor to heat and expand a lightweight propellant gas. During the 1960s, the USA dedicated an extensive research program called NERVA (Nuclear Engine for Rocket Vehicle Application) to develop NTPs for interplanetary missions following the Apollo program. Several prototypes have been ground-tested such as the KIWI-B-4E reactor. It was the first prototype to succeed in a restart at full power in 1964 (<a href="#ref2">Finseth, 1991</a>).
+A Nuclear Thermal Propulsion (NTP) reactor is a space propulsion engine that uses the energy of a nuclear reactor to heat and expand a lightweight propellant gas. During the 1960s, the USA dedicated an extensive research program called NERVA (Nuclear Engine for Rocket Vehicle Application) to develop NTPs for interplanetary missions following the Apollo program. Several prototypes have been ground-tested such as the KIWI-B-4E reactor. It was the first prototype to succeed in a restart at full power in 1964 ([Finseth, 1991](#3-j-l-finseth-overview-of-rover-engine-tests-final-report-national-aeronautics-and-space-administration-nasa-cr-184270-february-1991)).
 
 <img src="images/Reactor1965SurveyDesignKiwiB4E.png" alt="Reactor" width="450"/>
 
-*Fig 1: KIWI-B-4E reactor scheme from Ref. (<a href="#ref1">Zeigner, 1965</a>). Dimensions are in inches.*
+*Fig 1: KIWI-B-4E reactor scheme from Ref. ([Zeigner, 1965](#2-v-l-zeigner-survey-description-of-the-design-and-testing-of-kiwi-b-4e-301-propulsion-reactor-los-alamos-scientific-laboratory-report-la-3311-ms-may-1965)). Dimensions are in inches.*
 
 
-In rocketry, it is important to maximize the thrust and the efficiency of the engine to move a payload per mass of propellant that can be quantified by the specific impulse $I_{sp}$. The thrust $F$ and $I_{sp}$ are related to the exhaust velocity of the nozzle $v_2$, which is dependent on the nozzle chamber temperature and molar mass of the propellant (<a href="#ref4">Sutton et al., 2010</a>).
+In rocketry, it is important to maximize the thrust and the efficiency of the engine to move a payload per mass of propellant that can be quantified by the specific impulse $I_{sp}$. The thrust $F$ and $I_{sp}$ are related to the exhaust velocity of the nozzle $v_2$, which is dependent on the nozzle chamber temperature and molar mass of the propellant ([Sutton et al., 2010](#5-g-sutton-o-biblarz-rocket-propulsion-elements-eighth-edition-hoboken-new-jersey-john-wiley--sons-inc-2010-isbn-978-0-470-08024-5)).
 
 $$
     v_2 \approx \sqrt{
@@ -44,20 +44,19 @@ In comparison, the [RS-25 rocket engine](https://en.wikipedia.org/wiki/RS-25) of
 A KIWI-B-4E fuel assembly is composed of a central hexagonal unloaded fuel element surrounded by 6 hexagonal fuel elements (see Fig. 2).
 
 <img src="images/FuelAssembly1965SurveyDesignKiwiB4E.png" alt="FuelAssembly" width="450"/>
-
 <img src="images/FuelAssemblyMesh.png" alt="FuelAssemblyMesh" height="300"/>
 
-*Fig 2: Fuel assembly scheme from 1965 design survey of KIWI-B-4E (<a href="#ref1">Zeigner, 1965</a>) and mesh used in GeN-Foam.*
+*Fig 2: Fuel assembly scheme from 1965 design survey of KIWI-B-4E ([Zeigner, 1965](#2-v-l-zeigner-survey-description-of-the-design-and-testing-of-kiwi-b-4e-301-propulsion-reactor-los-alamos-scientific-laboratory-report-la-3311-ms-may-1965)) and mesh used in GeN-Foam.*
 
-Each fuel element has 19 propellant channels (see Fig. 3). The fuel is composed of highly enriched uranium $UC_2$ in a graphite matrix (<a href="#ref1">Zeigner, 1965</a>, <a href="#ref2">Finseth, 1991</a>).
+Each fuel element has 19 propellant channels (see Fig. 3). The fuel is composed of highly enriched uranium $UC_2$ in a graphite matrix ([Zeigner, 1965](#2-v-l-zeigner-survey-description-of-the-design-and-testing-of-kiwi-b-4e-301-propulsion-reactor-los-alamos-scientific-laboratory-report-la-3311-ms-may-1965), [Finseth, 1991](#3-j-l-finseth-overview-of-rover-engine-tests-final-report-national-aeronautics-and-space-administration-nasa-cr-184270-february-1991)).
 
 <img src="images/FuelElement1965SurveyDesignKiwiB4E.png" alt="FuelElement" width="450"/>
 
-*Fig 3: Fuel assembly scheme from 1965 design survey of KIWI-B-4E (<a href="#ref1">Zeigner, 1965</a>).*
+*Fig 3: Fuel assembly scheme from 1965 design survey of KIWI-B-4E ([Zeigner, 1965](#2-v-l-zeigner-survey-description-of-the-design-and-testing-of-kiwi-b-4e-301-propulsion-reactor-los-alamos-scientific-laboratory-report-la-3311-ms-may-1965)).*
 
 In the present model, a thermal baffle separates the central unloaded element from the fuel elements. All the elements are modeled using a porous medium.
 
-The fuel assembly power is assumed to be 1/250 of the total full power of the KIWI-B-4E. This factor 250 is the number of fuel elements (1500) divided by the number of fuel elements per fuel assembly (6) (<a href="#ref2">Finseth, 1991</a>).
+The fuel assembly power is assumed to be 1/250 of the total full power of the KIWI-B-4E. This factor 250 is the number of fuel elements (1500) divided by the number of fuel elements per fuel assembly (6) ([Finseth, 1991](#3-j-l-finseth-overview-of-rover-engine-tests-final-report-national-aeronautics-and-space-administration-nasa-cr-184270-february-1991)).
 
 
 ### Numerical models
@@ -66,30 +65,31 @@ This model uses the coupled neutronics **diffusion** sub-solver and the thermal-
 
 The thermophysical properties model of $H_2$, implemented in OpenFOAM format, is used to model the coolant. During operation, the hydrogen is in a supercritical state. It is also possible to use the `PengRobinsonGas` or the `PerfectGas` equation of states from OpenFOAM, which gives comparable results.
 
-The multi-group XSs (MGXS) were generated using a core model of KIWI-B-4E in OpenMC (<a href="#ref5">Romano, 2015</a>). An average XS set was calculated on the entire core for the `fuelElement` zone, with a filter for the XS set of `centralUnloadedFuelElement`. Perturbed MGXS are provided for fuel temperature and coolant density.
+The multi-group XSs (MGXS) were generated using a core model of KIWI-B-4E in OpenMC ([Romano, 2015](#6-paul-k-romano-et-al-openmc-a-state-of-the-art-monte-carlo-code-for-research-and-development-in-ann-nucl-energy-82-2015-pp-90–97)). An average XS set was calculated on the entire core for the `fuelElement` zone, with a filter for the XS set of `centralUnloadedFuelElement`. Perturbed MGXS are provided for fuel temperature and coolant density.
 
 ### Correlations
 
 The friction factor and heat transfer coefficient for the fuel element are computed using the following equations:
 
-- From Ref. (<a href="#ref6">Taler, 2016</a>), $Re \in [3e3; 1e7]$: 
+- From Ref. ([Taler, 2016](#7-dawid-taler-determining-velocity-and-friction-factor-for-turbulent-flow-in-smooth-tubes-international-journal-of-sciences-105-2016-pp-109-122)), $Re \in [3e3; 1e7]$: 
     $f = (1.2776 log(Re)-0.406)^{-2.246}$
 
-- From Ref. (<a href="#ref3">Walton, 1992</a>), N°10 Wolf-McCarthy II, $T_w/T_b \in [1.5; 2.8]$, $Re \in [7800; 1.55e6]$: 
+- From Ref. ([Walton, 1992](#4-james-t-walton-program-elm-a-tool-for-rapid-thermal-hydraulic-analysis-of-solid-core-nuclear-rocket-fuel-elements-lewis-research-center-nasa-tm-105867-november-1992)), N°10 Wolf-McCarthy II, $T_w/T_b \in [1.5; 2.8]$, $Re \in [7800; 1.55e6]$: 
     $Nu = 0.023 Re^{0.8} Pr^{0.4} (T_w/T_b)^{-0.3}$
 
 
 ## How to run
 
 If no `polyMesh` folders are provided, compute the mesh from the `.unv` files using:
-```bash
+
+```shell
 # If mesh/*.unv are available
 ./Allmesh
 ```
 
 Then clean and run:
 
-```bash
+```shell
 ./Allclean
 ./Allrun
 # or
@@ -100,13 +100,13 @@ Then clean and run:
 
 The results can be extracted using the following script:
 
-```bash
+```shell
 ./Allpostprocess steadyState 20
 ```
 
 To plot the results:
 
-```bash
+```shell
 python3 AllplotAxialDistribution.py steadyState/postProcessing/sampleNeutroDict/neutroRegion/20/NeutroAxial_TCool_TFuel_flux0_flux1_oneGroupFlux_powerDensity_rhoCool.xy
 
 python3 AllplotAxialDistribution.py steadyState/postProcessing/sampleFluidDict/neutroRegion/20/FluidAxial_T_Tmatrix.lumpedNuclearStructure_Tmax.lumpedNuclearStructure_Tsurface.lumpedNuclearStructure_magU_p_powerDensityNeutronics.xy
@@ -114,7 +114,7 @@ python3 AllplotAxialDistribution.py steadyState/postProcessing/sampleFluidDict/n
 
 To print the main parameters of the system:
 
-```bash
+```shell
 python3 analysis.py steadyState/log.GeN-Foam
 ```
 
@@ -123,7 +123,7 @@ python3 analysis.py steadyState/log.GeN-Foam
 
 ### Main parameters in steady-state
 
-This table has been generated using the [`analysis.py`](./analysis.py) script. The reference values are taken from Refs. (<a href="#ref0">Elder, 1964</a>), (<a href="#ref1">Zeigner, 1965</a>), and (<a href="#ref2">Finseth, 1991</a>).
+This table has been generated using the [`analysis.py`](./analysis.py) script. The reference values are taken from Refs. ([Elder, 1964](#1-m-elder-preliminary-report-kiwi-b-4e-301-los-alamos-scientific-laboratory-report-la-3185-ms-october-1964)), ([Zeigner, 1965](#2-v-l-zeigner-survey-description-of-the-design-and-testing-of-kiwi-b-4e-301-propulsion-reactor-los-alamos-scientific-laboratory-report-la-3311-ms-may-1965)), and ([Finseth, 1991](#3-j-l-finseth-overview-of-rover-engine-tests-final-report-national-aeronautics-and-space-administration-nasa-cr-184270-february-1991)).
 
 |                             | Unit | Ref.  | GeN-Foam | Error [%] |
 |:----------------------------|:----:|:-----:|:--------:|:---------:|
@@ -145,7 +145,7 @@ The following graphs have been generated using the [`AllplotAxialDistribution.py
 
 <img src="images/fuelElementAxialDistribution.png" alt="powerDistribution" width="450"/>
 
-*Fig 4: Axial distribution summary in a KIWI-B-4E fuel element, including temperatures, velocity, pressure, power density, and experimental data from Ref. (<a href="#ref0">Elder, 1964</a>) at t=20400s.*
+*Fig 4: Axial distribution summary in a KIWI-B-4E fuel element, including temperatures, velocity, pressure, power density, and experimental data from Ref. ([Elder, 1964](#1-m-elder-preliminary-report-kiwi-b-4e-301-los-alamos-scientific-laboratory-report-la-3185-ms-october-1964)) at t=20400s.*
 
 
 <img src="images/axialPowerDistribution.png" alt="powerDistribution" width="450"/>
@@ -181,33 +181,24 @@ The following graphs have been generated using the [`AllplotAxialDistribution.py
 ### Observations
 
 - The model is sensitive to the equation of state, the friction and the heat transfer models
-- The Isp and the thrust are in the range of standard NTP performances of the NERVA program (~ 800 s, ~230 kN (<a href="#ref2">Finseth, 1991</a>))
+- The Isp and the thrust are in the range of standard NTP performances of the NERVA program (~ 800 s, ~230 kN ([Finseth, 1991](#3-j-l-finseth-overview-of-rover-engine-tests-final-report-national-aeronautics-and-space-administration-nasa-cr-184270-february-1991)))
 - The core power density peaks below the core mid-plane, close to the upper core inlet plenum
 - When increasing the Courant number above 1, the outlet mass flowrate is significantly different from the outlet
 
 
 ## References
 
-<ol>
-    <li id="ref0">
-        M. Elder. "Preliminary Report KIWI-B-4E-301," Los Alamos Scientific Laboratory report LA-3185-MS, October 1964.
-    </li>
-    <li id="ref1">
-        V. L. Zeigner. "Survey Description of the Design and Testing of KIWI-B-4E-301 Propulsion Reactor," Los Alamos Scientific Laboratory report LA-3311-MS, May 1965.
-    </li>
-    <li id="ref2">
-        J. L. Finseth. "Overview of ROVER engine tests final report," National Aeronautics and Space Administration, NASA-CR-184270, February 1991.
-    </li>
-    <li id="ref3">
-        James T. Walton. "Program ELM: A Tool for Rapid Thermal-Hydraulic Analysis of Solid-Core Nuclear Rocket Fuel Elements," Lewis Research Center, NASA-TM-105867, November 1992.
-    </li>
-    <li id="ref4">
-        G. Sutton, O. Biblarz. "Rocket Propulsion Elements," Eighth Edition. Hoboken, New Jersey: John Wiley & Sons, Inc, 2010. isbn: 978-0-470-08024-5.
-    </li>
-    <li id="ref5">
-        Paul K. Romano et al. "OpenMC: A State-of-the-Art Monte Carlo Code for Research and Development". In: Ann. Nucl. Energy 82 (2015), pp. 90–97.
-    </li>
-    <li id="ref6">
-        Dawid Taler. "Determining velocity and friction factor for turbulent flow in smooth tubes," International Journal of Sciences, 105, (2016), pp. 109-122.
-    </li>
-</ol>
+#### [1] M. Elder. "Preliminary Report KIWI-B-4E-301," Los Alamos Scientific Laboratory report LA-3185-MS, October 1964.
+
+#### [2] V. L. Zeigner. "Survey Description of the Design and Testing of KIWI-B-4E-301 Propulsion Reactor," Los Alamos Scientific Laboratory report LA-3311-MS, May 1965.
+
+
+#### [3] J. L. Finseth. "Overview of ROVER engine tests final report," National Aeronautics and Space Administration, NASA-CR-184270, February 1991.
+
+#### [4] James T. Walton. "Program ELM: A Tool for Rapid Thermal-Hydraulic Analysis of Solid-Core Nuclear Rocket Fuel Elements," Lewis Research Center, NASA-TM-105867, November 1992.
+
+#### [5] G. Sutton, O. Biblarz. "Rocket Propulsion Elements," Eighth Edition. Hoboken, New Jersey: John Wiley & Sons, Inc, 2010. isbn: 978-0-470-08024-5.
+
+#### [6] Paul K. Romano et al. "OpenMC: A State-of-the-Art Monte Carlo Code for Research and Development". In: Ann. Nucl. Energy 82 (2015), pp. 90–97.
+
+#### [7] Dawid Taler. "Determining velocity and friction factor for turbulent flow in smooth tubes," International Journal of Sciences, 105, (2016), pp. 109-122.
