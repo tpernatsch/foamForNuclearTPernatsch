@@ -22,7 +22,7 @@ precGroups      6;
 
 TfuelRef		2222; // K
 
-TfuelPerturbed 	1777.6; // K
+TfuelPerturbed 	2444.2; // K
 
 //- Diffusion data
 zones

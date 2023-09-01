@@ -159,7 +159,7 @@ echo "  -> $error2 % maximum relative error for (mass flow, Tout)" | tee -a $res
 echo | tee -a $resFile
 echo   "|                         | Simulated | Expected  | Error [%] |" | tee -a $resFile
 echo   "|:------------------------|:---------:|:---------:|:---------:|" | tee -a $resFile
-testAndPrintLine "keff"                    $keff             1.3052479 $error1 5
+testAndPrintLine "keff"                    $keff             1.3194342 $error1 5
 testAndPrintLine "Total power neutro [MW]" $totalPowerNeutro 937       $error1 5 # 937e6 * 6/1500 = total power / nb assemblies
 testAndPrintLine "Total power fluid  [MW]" $totalPowerFluid  937       $error1 5
 testAndPrintLine "Total mass flow  [kg/s]" $massFlowrate     31.0      $error2 2
@@ -180,5 +180,6 @@ echo | tee -a $resFile
 
 # --- Exit success: 0; or fail: 1
 exit $isTestFail
+
 
 #==============================================================================*
