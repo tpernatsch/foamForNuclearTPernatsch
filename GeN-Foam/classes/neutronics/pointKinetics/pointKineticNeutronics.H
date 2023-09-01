@@ -43,7 +43,7 @@ Group
 
 Description
     Run-time selectable point-kinetic based neutronics solver. It includes 
-    options to for a time dependent external reactivity, and an external 
+    options for a time dependent external reactivity, and an external 
     reactivity input coming from an FMU.
 
     The module solves the following point-kinetics equations: 
@@ -57,12 +57,16 @@ Description
 
     \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
     \f[
-        \rho_{tot} = -\alpha_D \ln\left( \frac{T_{fuel}}{T_{fuel}^{ref}} \right)
+        \rho_{tot} = 
+            \begin{cases}
+                \text{fast}    & -\alpha_D \ln\left( \frac{T_{fuel}}{T_{fuel}^{ref}} \right) \\
+                \text{thermal} &  \alpha_D \left( \sqrt{T_{fuel}} - \sqrt{T_{fuel}^{ref}} \right)
+            \end{cases}
             + \alpha_{fuel} (T_{fuel} - T_{fuel}^{ref})
             + \alpha_{clad} (T_{clad} - T_{clad}^{ref})
             + \alpha_{cool}^{T} (T_{cool} - T_{cool}^{ref})
-            + \alpha_{cool}^{\rho} (\rho_{cool} - \rho_{cool}^{ref})
-            + \alpha_{struct} (T_{struct} - T_{struct}^{ref}) \\
+            + \alpha_{cool}^{\rho} (\rho_{cool} - \rho_{cool}^{ref}) \\
+            + \alpha_{struct} (T_{struct} - T_{struct}^{ref})
             + \alpha_{struct}^{mech} (T_{struct}^{mech} - T_{struct}^{mech,ref})
             + \rho_{driveline}
             + \rho_{GEM}
@@ -81,7 +85,8 @@ Description
       \lambda_i   | Decay constant for the ith delayed neutron precursor group
       \Lambda     | Prompt generation lifetime
       \zeta       | Optional subcritical index
-      \alpha_D             | Fast Doppler feedback coefficient
+      S           | Optional external neutron source power
+      \alpha_D             | Doppler feedback coefficient
       \alpha_{fuel}        | Fuel axial expansion feedback coefficient
       \alpha_{clad}        | Cladding temperature feedback coefficient
       \alpha_{cool}^{T}    | Coolant temperature feedback coefficient
@@ -89,7 +94,7 @@ Description
       \alpha_{struct}      | Core radial expansion feedback coefficient
       \alpha_{struct}^{mech} | Core expansion feedback coefficient from the mechanical mesh
       \rho_{driveline}     | Control rod driveline expansion reactivity contribution
-      \rho_{driveline}     | Boron concentration reactivity contribution
+      \rho_{boron}         | Boron concentration reactivity contribution
       \rho_{ext}           | External reactivity contribution
       \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
     \endtable
@@ -187,8 +192,8 @@ Description
     \endverbatim
 
     Author of this file (and associated .C or included .H files): 
-    Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
+    Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>;
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 
 SourceFiles

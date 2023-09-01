@@ -409,9 +409,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     ),
     coeffFastDoppler_
     (
-        (fastNeutrons_) ?
-        nuclearData_.get<scalar>("feedbackCoeffFastDoppler") :
-        0.0
+        //(fastNeutrons_) ?
+        nuclearData_.get<scalar>("feedbackCoeffFastDoppler") //:
+        //0.0
     ),
     fuelFeedbackCellField_
     (

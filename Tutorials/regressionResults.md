@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 26-August-2023 - 16:59:23  
+Regression test of 31-August-2023 - 15:26:50  
 Tutorials successfully completed: 21/21  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------
@@ -321,11 +321,11 @@ Simulation & reference comparison
 
 |                         | Simulated | Expected  | Error [%] |
 |:------------------------|:---------:|:---------:|:---------:|
-| keff                    | 1.3052395 | 1.3052479 |    .00064 | # Passed
-| Total power neutro [MW] |   936.999 |       937 |    .00010 | # Passed
-| Total power fluid  [MW] |   937.001 |       937 |   -.00010 | # Passed
-| Total mass flow  [kg/s] | 30.6472250 |      31.0 |      1.13 | # Passed
-| Outlet temperature  [K] |  1924.971 |      1972 |      2.38 | # Passed
+| keff                    | 1.3052507 | 1.3052479 |   -.00021 | # Passed
+| Total power neutro [MW] |   937.000 |       937 |         0 | # Passed
+| Total power fluid  [MW] |   936.997 |       937 |    .00032 | # Passed
+| Total mass flow  [kg/s] | 30.65801000 |      31.0 |      1.10 | # Passed
+| Outlet temperature  [K] | 1930.6144 |      1972 |      2.09 | # Passed
 
 All test passed
 
