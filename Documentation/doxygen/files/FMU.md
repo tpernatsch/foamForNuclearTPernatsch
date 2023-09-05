@@ -59,18 +59,10 @@ Now clone the repository:
 git clone https://github.com/DLR-RY/FMU4FOAM.git
 ```
 
-Before running `build-ECI4FOAM.sh`, remove `Allwmake` and `cd ..` from `build-ECI4FOAM.sh` at the end of the script. 
-The reason is that the `Allwmake` will fail because of a couple of files that do not compile on new OF versions.
-
 Now run: 
 ```bash
 ./build-ECI4FOAM.sh
 ```
-
-In `FMU4FOAM/ECI4FOAM/src/externalComm/Make/files`, remove:
-- `$(inputBC)/coupledWallHeatFluxTemperature/coupledWallHeatFluxTemperatureFvPatchScalarField.C`
-- `$(output)/extForces/extForces.C`
-
 
 Then run the `Allwmake` in `ECI4FOAM` and in the `FMU4FOAM` root folder:
 ```bash
