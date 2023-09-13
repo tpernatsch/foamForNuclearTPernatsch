@@ -42,6 +42,60 @@ Description
     Base class to represent a FSDragFactor with basing name access
     functionality.
 
+
+Usage 
+    The following sub-dictionary should be included as a powerModel 
+    in phaseProperties.
+
+    Example for isotropic:
+    \verbatim
+    physicsModels
+    {
+        dragModels
+        {
+            [nameOfCellZone]
+            {
+            type    ReynoldsPower;
+            coeff   1.84; //
+            exp     -0.2; 
+            }
+        }
+    }
+
+    \endverbatim
+
+    Example for anisotropic:
+    \verbatim
+    physicsModels
+    {
+        dragModels
+        {
+            [nameOfCellZone]
+            {
+                localX
+                {
+                    type    ReynoldsPower;
+                    coeff   1.84; //
+                    exp     -0.2; 
+                }
+                localY
+                {
+                    type    ReynoldsPower;
+                    coeff   1.84; //
+                    exp     -0.2; 
+                }
+                localZ
+                {
+                    type    ReynoldsPower;
+                    coeff   0.184; //
+                    exp     -0.2; 
+                }           
+
+            }
+        }
+    }
+    \endverbatim
+
     Author: 
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 

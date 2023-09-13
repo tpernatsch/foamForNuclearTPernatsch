@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 14-Jul-2023 - 15:06:07
+Regression test of 13-Sep-2023 - 08:37:17
 
 ## 1D_HX ##
 1D_HX onePhase has converged 
@@ -85,7 +85,7 @@ Transient of 2D_FFTF has converged
 reactivityDoppler is 237.049 . It should be 237.0728  
 reactivityClad is 0.818009 . It should be 0.8198844    
 reactivityDensity is -2.51865 . It should be -2.525069    
-reactivityStructures is 0 . It should be -1.017622    
+reactivityStructures is -1.02723 . It should be -1.017622    
 reactivityDriveline is -8.62204 . It should be -8.631667  
 reactivityGEM is -464.85 . It should be -464.8497  
 totalPower is 29493.7 . It should be 29490.49  
