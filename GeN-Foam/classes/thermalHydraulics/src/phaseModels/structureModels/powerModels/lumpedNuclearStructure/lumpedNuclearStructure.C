@@ -306,7 +306,8 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     scalar dt(mesh_.time().deltaT().value());
     scalar Tcool(HTSumi / max(HSumi,SMALL));
     scalar Hcool(HSumi*iA/this->alpha_[celli]);
-    scalar diffusion(0.);
+
+    scalar diffusion(0.0);
 
     if(nodesNumber>1)
     {
@@ -318,6 +319,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
         {
             //- Set "zeroGradient" BC at innermost node
             {
+                diffusion *= 0.0;
                 if (nodeMatrix == 0 && kappaMatrix != 0)
                 {
                     diffusion = kappaMatrix * laplacianTmatrix_[celli];
@@ -327,6 +329,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
                 S[0] =      diffusion
                             + q * qFraction[0] 
                             + TOld[0] * volFraction[0] * rhoCp[0] / dt;
+
             }
 
             //- Bulk
@@ -334,6 +337,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
             {
                 for (int i = 1; i < nodesNumber-1; i++)
                 {
+                    diffusion *= 0.0;
                     if (nodeMatrix == i && kappaMatrix != 0) // TmatrixPtr_.valid()) 
                     {
                         // volScalarField laplacian(fvc::laplacian(TmatrixPtr_()));
@@ -352,7 +356,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
             //- Outer surface, convective BC with fluid(s) wetting the pin
             {
                 label i(nodesNumber-1);
-
+                diffusion *= 0.0;
                 if (nodeMatrix == i && kappaMatrix != 0)
                 {
                     // volScalarField laplacian(fvc::laplacian(TmatrixPtr_()));
@@ -366,7 +370,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
                 S[i] =          diffusion
                                 + q * qFraction[i] 
                                 + TOld[i] * volFraction[i] * rhoCp[i] / dt 
-                                + HtoCool * Tcool;       
+                                + HtoCool * Tcool;      
             }
         }
 
@@ -375,6 +379,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     }
     else
     {
+        diffusion *= 0.0;
         if (nodeMatrix == 0 && kappaMatrix != 0)
         {
             diffusion = kappaMatrix * laplacianTmatrix_[celli];
