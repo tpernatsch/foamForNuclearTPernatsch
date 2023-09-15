@@ -1,4 +1,3 @@
-
 * [Introduction to GeN-Foam - README file](@ref README)
 	* [Compiling GeN-Foam](@ref COMPILE)
 	* [Preprocessing](@ref PREPROCESSING)
@@ -21,6 +20,8 @@
 * [Important notes](@ref NOTES)
 
 * [Recent changes in the case folder](@ref CHANGES)
+
+* [Get help: the foam for nuclear forum](https://foam-for-nuclear.org/phpBB/)
 
 N.B.: While the documentation reported on this page is preliminary but mostly finished, several classes have been
      created in the last 8 years that still lack proper documentation in the header files. We are working on it...
