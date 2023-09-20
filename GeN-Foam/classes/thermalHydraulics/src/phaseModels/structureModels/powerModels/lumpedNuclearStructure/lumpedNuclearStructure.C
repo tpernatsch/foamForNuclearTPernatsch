@@ -428,6 +428,7 @@ void Foam::powerModels::lumpedNuclearStructure::correct
 {
     //- Compute the laplacian of Tmatrix
     laplacianTmatrix_ = fvc::laplacian(Tmatrix_);
+    Tmatrix_.correctBoundaryConditions();
 
     //- Update temperatures cell-by-cell
     forAll(this->cellList_, i)
