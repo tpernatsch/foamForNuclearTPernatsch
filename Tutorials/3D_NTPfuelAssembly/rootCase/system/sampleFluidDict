@@ -1,0 +1,42 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+
+
+type                sets;
+
+libs                ( "libsampling.so" );
+
+interpolationScheme cell; // cellPatchConstrained; // pointMVC; // cellPoint; // cellPointFace; // 
+
+setFormat           raw;
+
+sets
+(
+    FluidAxial
+    {
+        type    uniform;
+        axis    z;
+        start   (0 0.02 -0.01);
+        end     (0 0.02 1.52);
+        nPoints 1000;
+    }
+);
+
+fields
+(
+    T
+    Tsurface.lumpedNuclearStructure
+    Tmatrix.lumpedNuclearStructure
+    Tmax.lumpedNuclearStructure
+    p
+    powerDensityNeutronics
+    magU
+);
+
+//***************************************************************************//

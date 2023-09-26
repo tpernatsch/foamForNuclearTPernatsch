@@ -161,8 +161,8 @@ public:
         //  fluidMeshNB for the current state of GeN-Foam)
         virtual void getCouplingFieldRefs
         (
-            const objectRegistry& src,
-            const meshToMesh& mechToFluid
+            const objectRegistry& srcTH,
+            const objectRegistry& srcN
         ) = 0;
 
         //- The old getFields, yet operates on the local refs without having
@@ -173,7 +173,8 @@ public:
         //  in ALL of the other thermoMechanical models too
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& mechToFluid
+            const meshToMesh& mechToFluid,
+            const meshToMesh& mechToNeutro
         ) = 0;
 
         //- Correct/update the properties

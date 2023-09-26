@@ -88,6 +88,7 @@ protected:
             IOdictionary nuclearDataRhoCool_;
             IOdictionary nuclearDataTCool_;
             IOdictionary nuclearDataCladExp_;
+            IOdictionary nuclearDataMechTemp_;
 
             label energyGroups_;
             label precGroups_;
@@ -196,6 +197,14 @@ protected:
             PtrList<scalarField > cladExpSigmaPowList_;
             PtrList<scalarField > cladExpSigmaDisappList_;
             List<PtrList<scalarSquareMatrix > > cladExpSigmaFromToList_;
+            // Coefficient associated with temperature calculated by TM 
+            scalar TStructMechRef_;
+            scalar TStructMechPerturbed_;
+            PtrList<scalarField > mechTempDList_;
+            PtrList<scalarField > mechTempNuSigmaEffList_;
+            PtrList<scalarField > mechTempSigmaPowList_;
+            PtrList<scalarField > mechTempSigmaDisappList_;
+            List<PtrList<scalarSquareMatrix > > mechTempSigmaFromToList_;
 
         //For control rods
             IOdictionary CRmove_;
@@ -330,7 +339,8 @@ public:
             const volScalarField& Tclad, 
             const volScalarField& rhoCool, 
             const volScalarField& TCool,
-            const volVectorField& Disp             
+            const volVectorField& Disp,
+            const volScalarField& TStructMech             
         );
 
         void init();

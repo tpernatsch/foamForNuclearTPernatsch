@@ -1,0 +1,63 @@
+#!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+endTimeSSN=1
+endTimeSSTH=20
+
+# Clean the case
+rm -rf steadyStateN steadyStateTH
+
+
+#==============================================================================*
+# Neutronics steady-state
+#==============================================================================*
+
+cp -r rootCase steadyStateN
+
+decomposePar -case steadyStateN -allRegions
+
+# Set simulation variables
+foamDictionary steadyStateN/system/controlDict -entry endTime -set $endTimeSSN
+foamDictionary steadyStateN/system/controlDict -entry deltaT -set 1e-6
+foamDictionary steadyStateN/system/controlDict -entry solveFluidMechanics -set false
+foamDictionary steadyStateN/system/controlDict -entry solveEnergy -set false
+
+# Run neutronics steady-state
+mpirun -np 2 GeN-Foam -case steadyStateN -parallel |
+    tee "steadyStateN/log.GeN-Foam" |
+    grep --color=auto -e "Time = \|deltaT ="
+
+
+#==============================================================================*
+# Thermal-hydraulics steady-state
+#==============================================================================*
+
+cp -r steadyStateN steadyStateTH
+
+# Set simulation variables
+foamDictionary steadyStateTH/system/controlDict -entry endTime -set $endTimeSSTH
+foamDictionary steadyStateTH/system/controlDict -entry deltaT -set 2e-5 # 1e-5
+foamDictionary steadyStateTH/system/controlDict -entry adjustTimeStep -set true # false
+foamDictionary steadyStateTH/system/controlDict -entry solveFluidMechanics -set true
+foamDictionary steadyStateTH/system/controlDict -entry solveEnergy -set true
+
+# Run thermal-hydraulics steady-state
+mpirun -np 2 GeN-Foam -case steadyStateTH -parallel |
+    tee "steadyStateTH/log.GeN-Foam" |
+    grep --color=auto -e "Time = \|deltaT ="
+
+#==============================================================================*

@@ -12,6 +12,7 @@ EXE_INC = \
     -I./phaseModels/structureModels/powerModels/fixedPower \
     -I./phaseModels/structureModels/powerModels/fixedTemperature \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPin \
+    -I./phaseModels/structureModels/powerModels/nuclearSteadyStatePebble \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPinTest \
     -I./phaseModels/structureModels/powerModels/lumpedNuclearStructure \
     -I./phaseModels/structureModels/powerModels/heatedPin \
@@ -120,7 +121,9 @@ EXE_INC = \
     -I./physicsModels/templatedModels/constant \
     -I./physicsModels/templatedModels/byRegime \
     -I./physicsModels/templatedModels/BasePairModels \
+    -I./thermophysicalProperties/H2 \
     -I./customPimpleControl \
+    -I./boundaryConditions/blackBodyRadiation \
     -I./boundaryConditions/velocityRundown \
     -I./boundaryConditions/timeFieldTable \
     -I./functionObjects/fieldDiffExtents \
@@ -132,13 +135,15 @@ EXE_INC = \
     -I./../../common/InterpolateTable \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
     -I$(LIB_SRC)/transportModels/incompressible/transportModel \
     -I$(LIB_SRC)/TurbulenceModels/compressible/lnInclude \
     -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
     -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
-    -I$(LIB_SRC)/sampling/lnInclude
+    -I$(LIB_SRC)/sampling/lnInclude \
+    # -I./../../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
 
 LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) \
@@ -151,4 +156,5 @@ LIB_LIBS = \
     -lfiniteVolume \
     -lfvOptions \
     -lmeshTools \
-    -lsampling
+    -lsampling \
+    # -lexternalComm

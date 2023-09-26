@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -101,16 +101,19 @@ protected:
     const volScalarField* TCladOrig_;
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
+    const volScalarField* TStructMechOrig_;
     const volVectorField* UOrig_;
     const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s) 
     const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
     const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
 
-    //- Mapped fields
+    //- Mapped fields from TH
     volScalarField TFuel_;
     volScalarField TClad_;
     volScalarField TCool_;
     volScalarField rhoCool_;
+    //- Mapped fields from TM
+    volScalarField TStructMech_;
     
     //- Also mapped, but these are autoPtr as these field are not needed at all
     //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
@@ -190,13 +193,16 @@ public:
 
         virtual void getCouplingFieldRefs
         (
-            const objectRegistry& src,
-            const meshToMesh& neutroToFluid
+            const objectRegistry& srcTH,
+            const meshToMesh& neutroToFluid,
+            const objectRegistry& srcTM,
+            const meshToMesh& neutroToMech
         );   
 
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& neutroToFluid
+            const meshToMesh& neutroToFluid,
+            const meshToMesh& neutroToMech
         );
 
         //- Correct/update the properties

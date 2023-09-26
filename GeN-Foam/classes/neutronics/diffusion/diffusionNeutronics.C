@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -84,6 +84,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
     ),
     flux_(xs_.energyGroups()),
     fluxStar_(xs_.energyGroups()),
+    externalSourceFlux_(xs_.energyGroups()),
     prec_(xs_.precGroups()),
     precStar_(xs_.precGroups()),
     fluxStarAlbedo_
@@ -111,6 +112,20 @@ Foam::diffusionNeutronics::diffusionNeutronics
             IOobject::AUTO_WRITE
         ),
         mesh
+    ),
+    defaultExternalSourceFlux_
+    (
+        IOobject
+        (
+            "defaultExternalSourceFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimVol/dimTime, 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),
     defaultPrec_
     (
@@ -184,6 +199,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
     TCladOrig_(nullptr),
     TCoolOrig_(nullptr),
     rhoCoolOrig_(nullptr),
+    TStructMechOrig_(nullptr),
     UOrig_(nullptr),
     alphaOrig_(nullptr),
     alphatOrig_(nullptr),
@@ -243,6 +259,20 @@ Foam::diffusionNeutronics::diffusionNeutronics
         mesh,
         dimensionedScalar("", dimTemperature, SMALL),
         zeroGradientFvPatchScalarField::typeName
+    ),
+    TStructMech_
+    (
+        IOobject
+        (
+            "TStructMech",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
+        zeroGradientFvPatchScalarField::typeName
     )
 {
     #include "createNeutronicsFields.H"
@@ -259,8 +289,10 @@ Foam::diffusionNeutronics::~diffusionNeutronics()
 
 void Foam::diffusionNeutronics::getCouplingFieldRefs
 (
-    const objectRegistry& src,
-    const meshToMesh& neutroToFluid
+    const objectRegistry& srcTH,
+    const meshToMesh& neutroToFluid,
+    const objectRegistry& srcTM,
+    const meshToMesh& neutroToMech
 )
 {
     #include "defaultGetCouplingFieldRefs.H"
@@ -268,7 +300,8 @@ void Foam::diffusionNeutronics::getCouplingFieldRefs
 
 void Foam::diffusionNeutronics::interpolateCouplingFields
 (
-    const meshToMesh& neutroToFluid
+    const meshToMesh& neutroToFluid,
+    const meshToMesh& neutroToMech
 )
 {
     #include "defaultInterpolateCouplingFields.H"
@@ -276,9 +309,9 @@ void Foam::diffusionNeutronics::interpolateCouplingFields
 
 void Foam::diffusionNeutronics::correct
 (
-    scalar& residual, 
+    scalar& residual,
     label couplingIter
-) 
+)
 {
     #include "solveNeutronics.H"
 }

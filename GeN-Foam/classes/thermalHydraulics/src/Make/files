@@ -17,6 +17,7 @@ phaseModels/structureModels/powerModels/fixedTemperature/fixedTemperature.C
 phaseModels/structureModels/powerModels/fixedTemperatureFMU/fixedTemperatureFMU.C
 phaseModels/structureModels/powerModels/nuclearFuelPin/nuclearFuelPin.C
 phaseModels/structureModels/powerModels/nuclearFuelPinTest/nuclearFuelPinTest.C
+phaseModels/structureModels/powerModels/nuclearSteadyStatePebble/nuclearSteadyStatePebble.C
 phaseModels/structureModels/powerModels/lumpedNuclearStructure/lumpedNuclearStructure.C
 phaseModels/structureModels/powerModels/heatedPin/heatedPin.C
 
@@ -162,6 +163,7 @@ physicsModels/templatedModels/byRegime/byRegimeModels.C
 
 customPimpleControl/customPimpleControl.C
 
+boundaryConditions/blackBodyRadiation/blackBodyRadiationFvPatchScalarField.C
 boundaryConditions/NusseltThermalBaffle1D/NusseltThermalBaffle1DFvPatchScalarField.C
 boundaryConditions/velocityRundown/velocityRundownFvPatchVectorField.C
 boundaryConditions/timeFieldTable/timeFieldTableFvPatchScalarField.C
@@ -173,6 +175,8 @@ functionObjects/pressureDrop/pressureDrop.C
 functionObjects/stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
 functionObjects/patchScalarFieldValue/patchScalarFieldValue.C
 functionObjects/fieldIntegralToFMU/fieldIntegralToFMU.C
+
+thermophysicalProperties/H2/H2.C
 
 
 LIB = $(FOAM_USER_LIBBIN)/libFFSSrc2

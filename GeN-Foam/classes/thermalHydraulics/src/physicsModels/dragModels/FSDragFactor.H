@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -41,6 +41,60 @@ Class
 Description
     Base class to represent a FSDragFactor with basing name access
     functionality.
+
+
+Usage 
+    The following sub-dictionary should be included as a powerModel 
+    in phaseProperties.
+
+    Example for isotropic:
+    \verbatim
+    physicsModels
+    {
+        dragModels
+        {
+            [nameOfCellZone]
+            {
+            type    ReynoldsPower;
+            coeff   1.84; //
+            exp     -0.2; 
+            }
+        }
+    }
+
+    \endverbatim
+
+    Example for anisotropic:
+    \verbatim
+    physicsModels
+    {
+        dragModels
+        {
+            [nameOfCellZone]
+            {
+                localX
+                {
+                    type    ReynoldsPower;
+                    coeff   1.84; //
+                    exp     -0.2; 
+                }
+                localY
+                {
+                    type    ReynoldsPower;
+                    coeff   1.84; //
+                    exp     -0.2; 
+                }
+                localZ
+                {
+                    type    ReynoldsPower;
+                    coeff   0.184; //
+                    exp     -0.2; 
+                }           
+
+            }
+        }
+    }
+    \endverbatim
 
     Author: 
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)

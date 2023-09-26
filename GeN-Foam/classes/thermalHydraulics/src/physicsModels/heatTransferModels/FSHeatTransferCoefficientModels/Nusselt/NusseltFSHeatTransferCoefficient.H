@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -43,10 +43,18 @@ Description
     starting from the Nusselt, which is turn obtained via correlation in the
     form 
 
-    Nu = A_+B_*(Re^C_)*(Pr^D_)
+    \f[
+        Nu = A + B \times Re^C Pr^D \left( \frac{T_w}{T_b} \right)^E
+    \f]
 
-    with Re, Pr being the Reynolds (superficial in two-phase) and Prandlt
-    of the fluid, and A, B, C, D selectable consts
+    where:
+    \vartable
+        Re            | Reynolds number (superficial in two-phase) of the fluid
+        Pr            | Prandtl number of the fluid
+        T_w           | Wall temperature
+        T_b           | Bulk temperature
+        A, B, C, D, E | Selectable constants
+    \endtable
 
     Example of mandatory dictionary entries:
     \verbatim
@@ -56,8 +64,21 @@ Description
         expPr   0.8;
     \endverbatim
 
+    Example using wall/fluid temperature ratio from:
+    Walton 1992, (10) Wolf-McCarthy II
+    \f$ Nu = 0.023 Re^{0.8} Pr^{0.4} \left( \frac{T_w}{T_b} \right)^{-0.3} \f$
+    with Re = [7800; 1.55e6] and \f$ T_w/T_b \f$ = [1.5; 2.8]
+    \verbatim
+        const   0;
+        coeff   0.023;
+        expRe   0.8;
+        expPr   0.4;
+        expTc   -0.3;
+    \endverbatim
+
     Authors:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 SourceFiles
     NusseltFSHeatTransferCoefficient.C
@@ -99,11 +120,18 @@ private:
     //- Ref to characteristic dimension of pair
     const volScalarField& Dh_;
 
-    //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)
+    //- Ref to structure wall temperature
+    const volScalarField& Twall_;
+ 
+    //- Ref to fluid temperature
+    const volScalarField& Tfluid_;
+
+    //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)*(Twall/Tfluid)^(E_)
     const scalar A_;
     const scalar B_;
     const scalar C_;
     const scalar D_;
+    const scalar E_;
 
     //- If C_ == D_, no need to do pow(Re, C_)*pow(Pr, D_), you can just do
     //  pow(Re*Pr, C_) which is faster. Re*Pr = Pe (Peclet)

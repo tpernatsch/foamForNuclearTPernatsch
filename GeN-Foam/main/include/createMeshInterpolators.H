@@ -41,6 +41,18 @@ meshToMesh mechToNeutro
     false
 );
 
+meshToMesh neutroToMech
+(
+    neutroMesh,
+    mechMesh,
+    Foam::meshToMesh::interpolationMethod
+    (
+        runTime.controlDict().lookupOrDefault("neutroToMech_interpMethod", 2)
+    ),
+    Foam::meshToMesh::procMapMethod::pmAABB,
+    false
+);
+
 meshToMesh mechToFluid
 (
     mechMesh,

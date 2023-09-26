@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# ---> Run from this directory
+cd ${0%/*} || exit 1
+
+# ---> Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# Duplicate the blockMeshDict
+cp rootCase/system/blockMeshDict rootCase/system/fluidRegion
+cp rootCase/system/blockMeshDict rootCase/system/neutroRegion
+cp rootCase/system/blockMeshDict rootCase/system/thermoMechanicalRegion
+
+# Mesh all regions
+blockMesh -case rootCase -region fluidRegion
+blockMesh -case rootCase -region neutroRegion
+blockMesh -case rootCase -region thermoMechanicalRegion

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -42,11 +42,158 @@ Group
     none
 
 Description
-    Run-time selectable point-kinetic based neutronics solver
+    Run-time selectable point-kinetic based neutronics solver. It includes 
+    options for a time dependent external reactivity, and an external 
+    reactivity input coming from an FMU.
+
+    The module solves the following point-kinetics equations: 
+
+    \f[
+        \frac{dP}{dt} = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P 
+            + \sum_{i=1}^N \lambda_i C_i + \frac{S}{\Lambda} \\
+        \frac{dC_i}{dt} = \frac{\beta_i}{\Lambda} P 
+            - \lambda_i C_i \quad \forall i \in [1; N]
+    \f]
+
+    \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
+    \f[
+        \rho_{tot} = 
+            \begin{cases}
+                \text{fast}    & -\alpha_D \ln\left( \frac{T_{fuel}}{T_{fuel}^{ref}} \right) \\
+                \text{thermal} &  \alpha_D \left( \sqrt{T_{fuel}} - \sqrt{T_{fuel}^{ref}} \right)
+            \end{cases}
+            + \alpha_{fuel} (T_{fuel} - T_{fuel}^{ref})
+            + \alpha_{clad} (T_{clad} - T_{clad}^{ref})
+            + \alpha_{cool}^{T} (T_{cool} - T_{cool}^{ref})
+            + \alpha_{cool}^{\rho} (\rho_{cool} - \rho_{cool}^{ref}) \\
+            + \alpha_{struct} (T_{struct} - T_{struct}^{ref})
+            + \alpha_{struct}^{mech} (T_{struct}^{mech} - T_{struct}^{mech,ref})
+            + \rho_{driveline}
+            + \rho_{GEM}
+            + \rho_{boron}
+            + \rho_{ext}
+            + \rho_{ext}^{FMU}
+    \f]
+
+    where:
+    \vartable
+      P           | Core power
+      C_i         | Precursor power
+      S           | Optional external source power
+      \beta_{tot} | Total delayed neutron fraction
+      \beta_i     | Delayed neutron fraction for the ith delayed neutron precursor group
+      \lambda_i   | Decay constant for the ith delayed neutron precursor group
+      \Lambda     | Prompt generation lifetime
+      \zeta       | Optional subcritical index
+      S           | Optional external neutron source power
+      \alpha_D             | Doppler feedback coefficient
+      \alpha_{fuel}        | Fuel axial expansion feedback coefficient
+      \alpha_{clad}        | Cladding temperature feedback coefficient
+      \alpha_{cool}^{T}    | Coolant temperature feedback coefficient
+      \alpha_{cool}^{\rho} | Coolant density coefficient
+      \alpha_{struct}      | Core radial expansion feedback coefficient
+      \alpha_{struct}^{mech} | Core expansion feedback coefficient from the mechanical mesh
+      \rho_{driveline}     | Control rod driveline expansion reactivity contribution
+      \rho_{boron}         | Boron concentration reactivity contribution
+      \rho_{ext}           | External reactivity contribution
+      \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
+    \endtable
+
+    Example of mandatory dictionary entries:
+    \verbatim
+        fastNeutrons    true;
+        promptGenerationTime 1e-06; // [s]
+        Beta
+        ( 
+            7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05 
+        );
+        lambda // [1/s]
+        (
+            0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817 
+        );
+        feedbackCoeffFastDoppler    0; // [-]
+        feedbackCoeffTFuel          0; // [1/K]
+        feedbackCoeffTClad          0; // [1/K]
+        feedbackCoeffTCool          0; // [1/K]
+        feedbackCoeffRhoCool        0; // [1/(kg/m3)]
+        feedbackCoeffTStruct        0; // [1/K]
+        feedbackCoeffTStructMech    0; // [1/K]
+        absoluteDrivelineExpansionCoeff 0.0; // [m/K]
+        controlRodReactivityMap 
+        ( 
+            ( 0.1   -0.01   ) 
+            ( 0     0       ) 
+            ( -0.1  0.01    ) 
+        );
+    \endverbatim
+
+    Example of time dependant source entries:
+    \verbatim
+        //- Optional time dependant external reactivity time profile
+        externalReactivityTimeProfile
+        {
+            type        table;
+            startTime   100;
+            table       table
+            (
+                (   0   0)
+                (   1   0.0005767131    ) //- i.e. 57.67131 pcm
+            );
+        }
+
+        //- Optional time dependant boron reactivity time profile
+        boronReactivityTimeProfile
+        {
+            type        table;
+            table       table
+            (
+                (   100   0   )
+                (   101   1e-5   )
+            );
+        }
+    \endverbatim
+
+    Optional external reactivity input from FMU in nuclearData file.
+    The default initial value is 0.
+    \verbatim
+        externalReactivityNameFromFMU   gfExtReact;
+    \endverbatim
+
+    Optional external neutron source file "externalSource"
+    \verbatim
+        //- If true, add the external source to the point-kinetics equations
+        isExternalSource    true;
+
+        //- External source mode
+        externalSourceMode  transient; // powerMonitoring // transient
+
+        //- Beam energy per source particle
+        beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
+
+        //- Neutron yield of the spallation of proton on heavy metal 
+        nuSource            15.5; // [neutron/proton]
+
+        //- Optional external source input from FMU in externalSource file.
+        //- The externalSourceMode must be set to transient. The default initial value
+        //-is 1.
+        externalSourceModulationNameFromFMU     gfExternalSourceMod;
+
+        //- External modulation time profile (time, modulation factor)
+        externalSourceModulationTimeProfile
+        {
+            type        table;
+            startTime   150;
+            table       table
+            (
+                (0      1)
+                (20     2)
+            );
+        }
+    \endverbatim
 
     Author of this file (and associated .C or included .H files): 
-    Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
+    Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>;
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 
 SourceFiles
@@ -99,6 +246,67 @@ protected:
     //- Due to whatever the user might please
     timeProfile externalReactivityTimeProfile_;
 
+    //- External source file
+    IOdictionary externalSource_;
+
+    //- External source mode
+    //  - transient: user input power variation by modulation
+    //  - powerMonitoring: adapt source power to keep subcritical power constant
+    string externalSourceMode_;
+
+    //- Anti-reactivity due to the subcritical configuration of the core. Also
+    //  Noted as zeta
+    scalar subcriticalIndex_;
+
+    //- ksrc of the system. Allows to compute the subcritical-index in case it
+    //  is not provided
+    scalar ksrc_;
+
+    //- Avg number of neutrons generated by fission
+    scalar nuFission_;
+    //- Avg number of neutrons generated by high energy reaction (e.g. spallation)
+    scalar nuSource_;
+    //- Avg energy released per fission
+    scalar energyPerFission_;
+    //- Energy of the particle beam in case external source from particle
+    //  accelerator
+    scalar beamEnergy_;
+
+    // G_0 = energyPerFission*nuSource/(nuFission*beamEnergy)
+    scalar intrinsicGain_;
+
+    //- Source modulation time profile
+    timeProfile externalSourceModulationTimeProfile_;
+
+    //- Source modulation value set by externalSourceModulationTimeProfile_ (m_I)
+    scalar externalSourceModulation_;
+
+    //- External source power (S)
+    scalar externalSourcePower_;
+    scalar externalSourcePowerOld_;
+    scalar externalSourcePowerRef_;
+
+    //- External source beam power (P_src)
+    scalar externalSourceBeamPower_;
+
+    //- External source beam intensity (I_src)
+    scalar externalSourceBeamIntensity_;
+
+    //- Power to target during subcritical powerMonitoring mode using the
+    //  modulation of the external source
+    scalar powerTarget_;
+
+    //- Record of the subcritical power in case of the powerMonitoring mode.
+    List<Tuple2<scalar, scalar>> powerRecordPtr_;
+
+    //- Modulation factor to change the efficienty of the source power
+    //  modulation (k_m)
+    scalar modulationFactor_;
+
+    //- Delay between the power of the subcritical system and the external
+    //  source modulation
+    scalar powerModulationDelay_;
+
     //- Used to set an initial steady state for liquid fuel
     scalar precEquilibriumReactivity_;
 
@@ -144,6 +352,7 @@ protected:
     scalar coeffTCool_;
     scalar coeffRhoCool_;
     scalar coeffTStruct_;
+    scalar coeffTStructMech_;
 
     //- Absolute driveline expansion coefficient in m/K
     scalar coeffDrivelineExp_;
@@ -157,6 +366,7 @@ protected:
     scalar TCoolRef_;
     scalar rhoCoolRef_;
     scalar TStructRef_;
+    scalar TStructMechRef_;
     scalar TDrivelineRef_;
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
@@ -165,21 +375,22 @@ protected:
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructOrig_;
+    const volScalarField* TStructMechOrig_;
     const volScalarField* powerDensityOrig_;
     const volScalarField* powerDensityToLiquidOrig_;
-
-    //- These have no use for now, will be needed by the liquidFuel version
     const volVectorField* UOrig_;
     const volScalarField* alphaOrig_;
     const volScalarField* alphatOrig_;
     const volScalarField* muOrig_;
 
-    //- Mapped fields
+    //- Mapped fields from TH
     volScalarField TFuel_;
     volScalarField TClad_;
     volScalarField TCool_;
     volScalarField rhoCool_;
     volScalarField TStruct_; //- This is also used to compute TDriveline
+    //- Mapped fields from TM
+    volScalarField TStructMech_;
 
     //- Also mapped, but these are autoPtr as these field are not needed at all
     //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
@@ -250,6 +461,9 @@ protected:
 
     //- For TStructures
     volScalarField structFeedbackCellField_;
+
+    //- For TStructures from TM
+    volScalarField structMechFeedbackCellField_;
 
     //- For the control rod driveline
     volScalarField drivelineFeedbackCellField_;
@@ -329,6 +543,9 @@ public:
             const word& keyword
         );
 
+        //- Set beam parameter from the external source power S
+        void setBeamParameters();
+
         //- Compute driveline expansion reactivity from controlRod reactivity
         //  map given the absolute driveline expansion in meters
         scalar calcDrivelineReactivity(const scalar& drivelineExpansion);
@@ -341,15 +558,18 @@ public:
         //  solver main)
         virtual void getCouplingFieldRefs
         (
-            const objectRegistry& src,
-            const meshToMesh& neutroToFluid
+            const objectRegistry& srcTH,
+            const meshToMesh& neutroToFluid,
+            const objectRegistry& srcTM,
+            const meshToMesh& neutroToMech
         );
 
         //- Update local (i.e. on local neutronicMesh) instances of the Orig_
         //  fields defined on the (baffleless) thermalHydraulic mesh
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& neutroToFluid
+            const meshToMesh& neutroToFluid,
+            const meshToMesh& neutroToMech
         );
 
         //- Solve pointKinetics

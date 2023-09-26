@@ -1,13 +1,14 @@
 # Serpent to Foam XS
 
-Author: Thomas Guilbaud, EPFL/Transmutex SA  
-Last update: 13/09/2022  
+Author: Thomas Guilbaud, EPFL/Transmutex SA, 13/09/2022
 
 ---
 
 This application aims to post-process the output file from the Monte Carlo code
 Serpent2 to OpenFOAM/GeN-Foam. It has been greatly inspired by the Octave
 script.
+
+Tested with Python3.8.
 
 ## Build
 
@@ -23,13 +24,13 @@ The executable file is generated in `build/bin`.
 
 Run:
 ``` bash
-python SerpentToFoamXS.py
+python3 SerpentToFoamXS.py
 # or
 ./SerpentToFoamXS
 ```
 Or if the user has already an input file:
 ``` bash
-python SerpentToFoamXS.py path/to/userInputFile
+python3 SerpentToFoamXS.py path/to/userInputFile
 # or
 ./SerpentToFoamXS path/to/userInputFile
 # or
@@ -40,16 +41,19 @@ python SerpentToFoamXS.py path/to/userInputFile
 (`serpentFile_res.m`) must be given using an absolute path only in the
 `userInputFile`.
 
+The user can generate a default `userInputFile.in` by direclty clicking on 
+"Save".
 The user can edit the `userInputFile` using the GUI view and then click `Save`
 to keep a copy of the input. A copy is always made when the user press
 `Extract` (The name of the saved user input file will never be changed, which
 will erase the previous user input file).
 
+
 ### Bash
 
 Simply execute the previous command using `-b` or `--bash`:
 ``` bash
-python SerpentToFoamXS.py --bash path/to/userInputFile
+python3 SerpentToFoamXS.py --bash path/to/userInputFile
 # or
 ./SerpentToFoamXS --bash path/to/userInputFile
 # or
@@ -58,13 +62,14 @@ python SerpentToFoamXS.py --bash path/to/userInputFile
 
 To extract all the `nuclearData` files, add `-a` or `--all`:
 ``` bash
-python SerpentToFoamXS.py --bash --all path/to/userInputFile
+python3 SerpentToFoamXS.py --bash --all path/to/userInputFile
 # or
 ./SerpentToFoamXS --bash --all path/to/userInputFile
 # or
 ./SerpentToFoamXS --bash --all path/to/userInputFile path/to/serpentFile_res.m
 ```
 This parameter only works in bash mode.
+
 
 --------------------------------------------------------------------------------
 

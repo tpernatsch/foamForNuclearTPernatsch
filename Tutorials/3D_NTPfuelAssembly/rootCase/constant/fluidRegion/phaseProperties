@@ -1,0 +1,148 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// ------------------------------------------------------------------------- //
+// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+thermalHydraulicsType    "onePhase";
+
+// ------------------------------------------------------------------------- //
+// --- STRUCTURES PROPERTIES ----------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+structureProperties
+{
+    fuelElement
+    {
+        volumeFraction      0.696911;
+        Dh                  0.00254;
+        localDhAnisotropy   (0 0 1);
+
+        powerModel
+        {
+            type                lumpedNuclearStructure;
+            volumetricArea      477.305494; // m2/m3
+            powerDensity        0; // Computed by the neutronic solver
+            nodesNumber         1;
+            nodeFuel            0;
+            nodeClad            1;
+            nodeMatrix          0;
+            kappaMatrix         1000; // W/m/K
+            heatConductances    (2.451162e+07 1.149520e+07); // W/m3/K
+            rhoCp               (3671370); // J/m3/K
+            volumeFractions     (1);
+            powerFractions      (1);
+            T0                  83.3; // K
+        }
+    }
+
+    centralUnloadedFuelElement
+    {
+        // V. ZEIGNER, “Survey Description of the Design and Testing of 
+        // Kiwi-B-4E-301 Propulsion Reactor,” Tech. Rep. LA-3311-MS, Los Alamos 
+        // Scientific Laboratory (7 1965).
+        // "This support rod passed through the cluster plate and the center of
+        // the central element, terminating in a button at the core exit end of
+        // the rod. The button acted through a perforated molybdenum cone, 
+        // pyrographite insulation, and a graphite support block to support the 
+        // fuel elements and central element against the core pressure drop."
+        volumeFraction      0.99;
+        Dh                  9.5758e-5;
+        localDhAnisotropy   (0 0 1);
+
+        passiveProperties
+        {
+            volumetricArea  94.707459;
+            rho             8190;
+            Cp              500;
+            T               83.3; // K
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME MAP MODEL ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+regimeMapModel
+{
+    type    none;
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+physicsModels
+{
+    dragModels
+    {
+        fuelElement
+        {
+            // Determining velocity and friction factor for turbulent flow in smooth
+            // tubes, Dawid Taler, International journal of sciences, 105, (2016), 109-122;
+            // Re in [3e3; 1e7]
+            type    Colebrook;
+            coeff   1.2776;
+            const   -0.406;
+            exp     -2.246;
+        }
+        centralUnloadedFuelElement
+        {
+            type    ReynoldsPower;
+            coeff   0.0625;
+            exp     -0.32;
+        }
+    }
+
+    heatTransferModels
+    {
+        "fuelElement:centralUnloadedFuelElement"
+        {
+            // Program ELM: A Tool for Rapid Thermal-Hydraulic Analysis of 
+            // Solid-Core Nuclear Rocket Fuel Elements, James T. Walton, 
+            // Lewis Research Center, NASA-TM-105867, Nov 1992. 
+            // Equation in section (10) Wolf-McCarthy II.
+            // This is the earlier of the two correlations developed by these 
+            // researchers based on experimental data for a hydrogen flow in 
+            // a electrically heated stainless steel tube (ref.38). The 
+            // correlation, shown below, was developed over a range ofReynolds 
+            // numbers from 7800 to 1.55e6 and a range of Tw/Tb from 1.5
+            // to 2.8.
+            // Nu = 0.023 * Re^0.8 * Pr^0.4 * (Tw/Tb)^(-0.3)
+            type    NusseltReynoldsPrandtlPower;
+            const   0;
+            coeff   0.023;
+            expRe   0.8;
+            expPr   0.4;
+            expTc   -0.3;
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- MISCELLANEA --------------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+pMin        1e4;
+
+pRefCell    0;
+
+pRefValue   1e5;
+
+// ************************************************************************* //

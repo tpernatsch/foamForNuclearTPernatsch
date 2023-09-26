@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
+|    Built on OpenFOAM v2306                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -45,6 +45,34 @@ Description
     Authors: 
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com), 
     Carlo Fiorina for the FMU part
+
+Usage
+    Example of mandatory dictionary entries:
+    \verbatim
+        volumeFraction      0.5;
+        Dh                  1;
+        momentumSource      (0 0 1000);
+    \endverbatim
+
+    Example of time dependant momentum source scaling entries:
+    \verbatim
+        momentumSourceTimeProfile
+        {
+            type        table;
+            startTime   100;
+            table       table
+            (
+                //- <Time>  <Momentum source scaling factor> 
+                (   0       1   )
+                (   1       0.1 )
+            );
+        }
+    \endverbatim
+
+    Example of entries for scaling source coming from FMUs:
+    \verbatim
+        pumpMultiplierNameFromFMU   momentumSourceCoupled;
+    \endverbatim
 
 SourceFiles
     pump.C

@@ -1,0 +1,58 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      nuclearData;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+model 		linearElasticThermoMechanics;	// only model available now
+
+// constants needed to calculate deformation of fuel, control rods AND structure
+// (1D expansion for fuel and CR, displacement-based solver for structures)
+
+planeStress     	no;
+
+linkedFuel      	false; 		// true if there is contact between fuel and
+								// cladding (expansion driven by cladding)
+fuelOrientation   	(0 0 1);
+
+TStructRef			300; 		// ref temperature for structures
+
+zones
+(
+    fuelElement
+    {
+        // for structures
+        rho             1400; // Density
+        E               602.837782e9;  // Young modulus
+        nu              0.1; // Poisson ratio
+        // C               200; // not used
+        // k               5; // not used
+        alpha           0; // 4.824e-6; // linear expansion coeff (1/K)
+        // for fuel (only if there is fuel)
+        TFuelRef        300;
+        alphaFuel       4.824e-6;
+    }
+
+    centralUnloadedFuelElement
+    {
+        rho             1000; //density
+        E               1e9;  // Young modulus
+        nu              0.3; // Poisson ratio
+        // C               200; // not used
+        // k               5; // not used
+        alpha           1.8e-5; // linear expansion coeff (1/K)
+    }
+);
+
+// ************************************************************************* //

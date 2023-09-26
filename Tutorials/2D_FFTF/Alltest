@@ -6,7 +6,7 @@ cd ${0%/*} || exit 1
 # --- Initialize the output file
 resFile=test.out
 logFile=log.simulation
-rm $resFile $logFile
+rm -rf $resFile $logFile
 touch $resFile $logFile
 
 # --- Run the simulation
@@ -45,21 +45,21 @@ extract()
 reactivityDoppler=$(extract "-> Doppler")
 reactivityClad=$(extract "-> TClad")
 reactivityDensity=$(extract "-> rhoCool")
-reactivityStructures=$(extract "-> TStruct")
+reactivityStructures=$(extract "-> TStruct  ")
 reactivityDriveline=$(extract "-> driveline")
 reactivityGEM=$(extract "-> GEM")
 totalPower=$(extract "totalPower")
 
-expectedDoppler=237.1212
-expectedClad=0.8156143
-expectedDensity="-2.789199"
-expectedStructures="-1.10996"
-expectedDriveline="-8.96642"
-expectedGEM="-464.8488"
-expectedTotalPower=29388.48
+expectedDoppler=237.0728
+expectedClad=0.8198844
+expectedDensity="-2.525069"
+expectedStructures="-1.017622"
+expectedDriveline="-8.631667"
+expectedGEM="-464.8497"
+expectedTotalPower=29490.49
 
 
-# --- Check that results are correct
+# --- Check results are correct
 isInRange()
 {
     ref=$1
@@ -87,24 +87,26 @@ if  [ $(isInRange $expectedDoppler    $reactivityDoppler    $error) -eq 0 ] &&
     [ $(isInRange $expectedTotalPower $totalPower           $error) -eq 0 ]
 then
     echo "Perfect match:" | tee -a $resFile
-    echo "                  | Simulated | Expected" | tee -a $resFile
-    echo "     Doppler      | $reactivityDoppler | $expectedDoppler" | tee -a $resFile
-    echo "     Cladding     | $reactivityClad | $expectedClad" | tee -a $resFile
-    echo "     Density      | $reactivityDensity | $expectedDensity" | tee -a $resFile
-    echo "     Structures   | $reactivityStructures | $expectedStructures" | tee -a $resFile
-    echo "     Driveline    | $reactivityDriveline | $expectedDriveline" | tee -a $resFile
-    echo "     GEM          | $reactivityGEM | $expectedGEM" | tee -a $resFile
-    echo "     Total power  | $totalPower | $expectedTotalPower " | tee -a $resFile
+    echo "|             | Simulated | Expected |" | tee -a $resFile
+    echo "|:------------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Doppler     | $reactivityDoppler | $expectedDoppler |" | tee -a $resFile
+    echo "| Cladding    | $reactivityClad | $expectedClad |" | tee -a $resFile
+    echo "| Density     | $reactivityDensity | $expectedDensity |" | tee -a $resFile
+    echo "| Structures  | $reactivityStructures | $expectedStructures |" | tee -a $resFile
+    echo "| Driveline   | $reactivityDriveline | $expectedDriveline |" | tee -a $resFile
+    echo "| GEM         | $reactivityGEM | $expectedGEM |" | tee -a $resFile
+    echo "| Total power | $totalPower | $expectedTotalPower |" | tee -a $resFile
 else
     echo "Divergent results:" | tee -a $resFile
-    echo "                  | Simulated | Expected" | tee -a $resFile
-    echo "     Doppler      | $reactivityDoppler | $expectedDoppler" | tee -a $resFile
-    echo "     Cladding     | $reactivityClad | $expectedClad" | tee -a $resFile
-    echo "     Density      | $reactivityDensity | $expectedDensity" | tee -a $resFile
-    echo "     Structures   | $reactivityStructures | $expectedStructures" | tee -a $resFile
-    echo "     Driveline    | $reactivityDriveline | $expectedDriveline" | tee -a $resFile
-    echo "     GEM          | $reactivityGEM | $expectedGEM" | tee -a $resFile
-    echo "     Total power  | $totalPower | $expectedTotalPower " | tee -a $resFile
+    echo "|             | Simulated | Expected |" | tee -a $resFile
+    echo "|:------------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Doppler     | $reactivityDoppler | $expectedDoppler |" | tee -a $resFile
+    echo "| Cladding    | $reactivityClad | $expectedClad |" | tee -a $resFile
+    echo "| Density     | $reactivityDensity | $expectedDensity |" | tee -a $resFile
+    echo "| Structures  | $reactivityStructures | $expectedStructures |" | tee -a $resFile
+    echo "| Driveline   | $reactivityDriveline | $expectedDriveline |" | tee -a $resFile
+    echo "| GEM         | $reactivityGEM | $expectedGEM |" | tee -a $resFile
+    echo "| Total power | $totalPower | $expectedTotalPower |" | tee -a $resFile
     exit 1
 fi
 

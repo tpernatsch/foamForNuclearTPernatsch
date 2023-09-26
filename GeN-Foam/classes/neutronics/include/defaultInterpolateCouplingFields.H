@@ -39,7 +39,12 @@ if (liquidFuel_)
     diffCoeffPrecPtr_().correctBoundaryConditions();
 }
 
+//- Interpolate T from TM solver
+neutroToMech.mapTgtToSrc(*TStructMechOrig_, plusEqOp<scalar>(), TStructMech_);
+
 TFuel_.correctBoundaryConditions();
 TClad_.correctBoundaryConditions();
 TCool_.correctBoundaryConditions();
 rhoCool_.correctBoundaryConditions();
+
+

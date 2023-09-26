@@ -1,99 +1,115 @@
-#!/bin/sh
+#!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
-tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN"
-#tutorials=" 2D_FFTF " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
-rm regressionResults
-touch regressionResults
-resFile="./regressionResults"
 
-# run all tutorials and check for clean finish
+# Select tutorials in the test suite
+tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_externalSourceDiffusion 2D_FFTF 2D_fullCoupling 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_onePhaseAndSubcriticalPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN 3D_gFHR"
+# tutorials="3D_SmallESFR " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
+
+# Name of the result file in Markdown
+resFile="./regressionResults"
+rootPath=$(pwd)
+
+# Clear or create new results file
+echo -e "# GeN-Foam regression test suite\n" > $resFile
+echo "Regression test of `date +"%d-%b-%Y - %H:%M:%S"`" >> $resFile
+
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" | tee -a $rootPath/$resFile
+    else
+        echo -e "$name has NOT converged \n" | tee -a $rootPath/$resFile
+    fi
+}
+
+# --- Recover the results
+extract()
+{
+    value=$(
+        awk '{ print $1+0 }' <<<$(
+            grep -e "$1" ./$2/log.GeN-Foam |
+            tail -1 |
+            egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?."
+        )
+    )
+    echo $value
+}
+
+# Run all tutorials and check for clean finish
 for tutorialName in $tutorials
 do
+    if [ -d $tutorialName ]
+    then
+        printf "Running tutorial $tutorialName...\n"
+        printf "\n## $tutorialName ##\n" >> $resFile
+    fi
 
     case "$tutorialName" in
     "3D_SmallESFR")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun_parallel
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endStringSS=$(tail -3 ./steadyState/log.GeN-Foam | grep End)
-        if [ "$endStringSS" = "End" ]; then
-            printf "Steady state of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Steady state of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringT=$(tail -3 ./transient/log.GeN-Foam | grep End)
-        if [ "$endStringT" = "End" ]; then
-            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
+        isConverge steadyState  "Steady state of $tutorialName"
+        isConverge transient    "Transient of $tutorialName"
 
         # check that keff for esfr steady State is ~0.9370011
         keff=$(foamDictionary ./steadyState/processor0/200/uniform/reactorState -entry keff -value)
         printf "keff is $keff . It should be ~0.936827  \n" >> ../$resFile
 
         # check that power in esfr transient is ~8e08
-        power=$(grep power ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        power=$(extract power transient)
         printf "power is $power . It should be ~8e+08  \n" >> ../$resFile
         cd ..
         ;;
 
     "1D_HX")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         # run one-phase
         cd $tutorialName/onePhase
         ./Allrun
         printf "Done running tutorial $tutorialName/onePhase...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName/onePhase has converged \n"  >> ../../$resFile
-        else
-            printf "$tutorialName/onePhase has NOT converged \n"  >> ../../$resFile
-        fi
+        isConverge . "$tutorialName onePhase"
         cd ../..
 
         # run two-phase
-        cd $tutorialName/onePhase
+        cd $tutorialName/twoPhase
         ./Allrun
         printf "Done running tutorial $tutorialName/twoPhase...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName/twoPhase has converged \n"  >> ../../$resFile
-        else
-            printf "$tutorialName/twoPhase has NOT converged \n"  >> ../../$resFile
-        fi
+        isConverge . "$tutorialName twoPhase"
         cd ../..
         ;;
 
     "1D_CHF")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         # run one-phase
         cd $tutorialName/imposedPower
         ./Allrun
         printf "Done running tutorial $tutorialName/imposedPower...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName/imposedPower has converged \n"  >> ../../$resFile
-        else
-            printf "$tutorialName/imposedPower has NOT converged \n"  >> ../../$resFile
-        fi
+        isConverge . "$tutorialName imposedPower"
+        
         # check that results are correct
         input="./90/fluidRegion/T.fixedPower"
-        TwallTop=$(head -40 "$input" | tail -1  )
+        TwallTop=$(head -40 "$input" | tail -1)
         printf "Temperature of the structure at the top of the channel at 90 seconds is: $TwallTop . It should be 2625.18 \n"  >> ../../$resFile
 
         cd ../..
@@ -104,324 +120,244 @@ do
         printf "Done running tutorial $tutorialName/imposedTemperature...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName/imposedTemperature has converged \n"  >> ../../$resFile
-        else
-            printf "$tutorialName/imposedTemperature has NOT converged \n"  >> ../../$resFile
-        fi
+        isConverge . "$tutorialName imposedTemperature"
+        
         # check that results are correct
         input="./40/fluidRegion/heatFlux.structure"
-        QwallTop=$(head -40 "$input" | tail -1  )
+        QwallTop=$(head -40 "$input" | tail -1)
         printf "heat flux of the structure at the top of the channel at 40 seconds is: $QwallTop . It should be 33423.1 \n"  >> ../../$resFile
         cd ../..
         ;;
 
     "1D_boiling")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "$tutorialName has NOT converged \n"  >> ../$resFile
-        fi
+        isConverge . $tutorialName
+        
         cd ..
-
         ;;
 
     "1D_PSBT_SC")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "$tutorialName has NOT converged \n"  >> ../$resFile
-        fi
+        isConverge . $tutorialName
 
         # check that results are correct
         input="./0.6/fluidRegion/alpha.vapour"
-        averageAt=$(head -98 "$input" | tail -1  )
+        averageAt=$(head -98 "$input" | tail -1)
         printf "time,  alpha.vapour at the end of the channel is: $averageAt . It should be 0.133727 \n" >> ../$resFile
 
         cd ..
-
         ;;
 
     "1D_MSR_pointKinetics")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endStringSS=$(tail -3 ./steadyState/log.GeN-Foam | grep End)
-        if [ "$endStringSS" = "End" ]; then
-            printf "Steady state of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Steady state of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringT=$(tail -3 ./transient/log.GeN-Foam | grep End)
-        if [ "$endStringT" = "End" ]; then
-            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringT=$(tail -3 ./transientEnd/log.GeN-Foam | grep End)
-        if [ "$endStringT" = "End" ]; then
-            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
+        isConverge steadyState  "Steady state of $tutorialName"
+        isConverge transient    "Transient of $tutorialName"
+        isConverge transientEnd "Transient end of $tutorialName"
 
         # check that power at the end of transient is ~6.14e+08
-        power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        power=$(extract totalPower transient)
         printf "power is $power . It should be ~6.13794e+08 \n" >> ../$resFile
         cd ..
         ;;
 
     "1D_thermalMSR_pointKinetics")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endStringSS=$(tail -3 ./steadyState/log.GeN-Foam | grep End)
-        if [ "$endStringSS" = "End" ]; then
-            printf "Steady state of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Steady state of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringT=$(tail -3 ./transient/log.GeN-Foam | grep End)
-        if [ "$endStringT" = "End" ]; then
-            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringT=$(tail -3 ./transientEnd/log.GeN-Foam | grep End)
-        if [ "$endStringT" = "End" ]; then
-            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
+        isConverge steadyState  "Steady state of $tutorialName"
+        isConverge transient    "Transient of $tutorialName"
+        isConverge transientEnd "Transient end of $tutorialName"
 
         # check that power at the end of transient is ~6.14e+08
-        power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        power=$(extract totalPower transient)
         printf "power is $power . It should be ~4.15258e+08 \n" >> ../$resFile
         cd ..
         ;;
 
     "2D_cavityBoussinesq")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "$tutorialName has NOT converged \n"  >> ../$resFile
-        fi
+        isConverge . $tutorialName
+        
         cd ..
-
         ;;
 
     "2D_FFTF")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun_parallel
-
-        # check it ran
-        endStringSS=$(tail -3 ./steadyState/log.GeN-Foam | grep End)
-        if [ "$endStringSS" = "End" ]; then
-            printf "Energy steady state of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Energy steady state of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringT=$(tail -3 ./transient/log.GeN-Foam | grep End)
-        if [ "$endStringT" = "End" ]; then
-            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-
         printf "Done running tutorial $tutorialName...\n"
 
+        # check it ran
+        isConverge steadyState  "Energy steady state of $tutorialName"
+        isConverge transient    "Transient of $tutorialName"
+
         # check that reactivities are correct
-        reactivityDoppler=$(grep -e "-> Doppler" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        reactivityDoppler=$(extract "-> Doppler" transient)
+        reactivityClad=$(extract "-> TClad" transient)
+        reactivityDensity=$(extract "-> rhoCool" transient)
+        reactivityStructures=$(extract "-> TStruct  " transient)
+        reactivityDriveline=$(extract "-> driveline" transient)
+        reactivityGEM=$(extract "-> GEM" transient)
+        totalPower=$(extract "totalPower" transient)
         printf "reactivityDoppler is $reactivityDoppler . It should be 237.0728  \n" >> ../$resFile
-        reactivityClad=$(grep -e "-> TClad" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
         printf "reactivityClad is $reactivityClad . It should be 0.8198844    \n" >> ../$resFile
-        reactivityDensity=$(grep -e "-> rhoCool" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
         printf "reactivityDensity is $reactivityDensity . It should be -2.525069    \n" >> ../$resFile
-        reactivityStructures=$(grep -e "-> TStruct" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
         printf "reactivityStructures is $reactivityStructures . It should be -1.017622    \n" >> ../$resFile
-        reactivityDriveline=$(grep -e "-> driveline" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        # reactivityDriveline=$(grep -e "-> driveline" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
         printf "reactivityDriveline is $reactivityDriveline . It should be -8.631667  \n" >> ../$resFile
-        reactivityGEM=$(grep -e "-> GEM" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
         printf "reactivityGEM is $reactivityGEM . It should be -464.8497  \n" >> ../$resFile
-        totalPower=$(grep -e "totalPower" ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
         printf "totalPower is $totalPower . It should be 29490.49  \n" >> ../$resFile
         cd ..
         ;;
 
-    "2D_MSFR")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
+    "2D_fullCoupling")
         cd $tutorialName
         ./Allrun
+        printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endStringSSEN=$(tail -3 ./steadyStateEN/log.GeN-Foam | grep End)
-        if [ "$endStringSSEN" = "End" ]; then
-            printf "Energy steady state of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Energy steady state of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringSSTH=$(tail -3 ./steadyStateTH/log.GeN-Foam | grep End)
-        if [ "$endStringSSTH" = "End" ]; then
-            printf "Thernal-hydraulic steady state of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Thernal-hydraulic steady state of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringT=$(tail -3 ./transient/log.GeN-Foam | grep End)
-        if [ "$endStringT" = "End" ]; then
-            printf "Transient of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Transient of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
+        isConverge steadyState            "Steady State of $tutorialName"
+        isConverge transientNoDriveline   "Transient (no driveline) of $tutorialName"
+        cd ..
+        ;;
 
+    "2D_MSFR")
+        cd $tutorialName
+        ./Allrun
         printf "Done running tutorial $tutorialName...\n"  >> ../$resFile
+
+        # check it ran
+        isConverge steadyStateEN "Energy steady state of $tutorialName"
+        isConverge steadyStateTH "Thermal-hydraulic steady state of $tutorialName"
+        isConverge transient "Transient of $tutorialName"
 
         # check that keff for MSFR steady State is ~0.958765
         keff=$(foamDictionary ./steadyStateEN/165/uniform/reactorState -entry keff -value)
         printf "keff is $keff . It should be ~0.960283  \n" >> ../$resFile
 
         # check that power in MSFR transient is ~2e07
-        power=$(grep power ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
+        power=$(extract power transient)
         printf "power is $power . It should be ~2e+07  \n" >> ../$resFile
         cd ..
         ;;
 
     "2D_onePhaseAndPointKineticsCoupling")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endStringSS=$(tail -3 ./steadyState/log.GeN-Foam | grep End)
-        if [ "$endStringSS" = "End" ]; then
-            printf "Steady state of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Steady state of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringSTNoDriveLine=$(tail -3 ./transientNoDriveline/log.GeN-Foam | grep End)
-        if [ "$endStringSTNoDriveLine" = "End" ]; then
-            printf "Transient (no driveline) of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Transient (no driveline) state of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-        endStringT=$(tail -3 ./transientWithDriveline/log.GeN-Foam | grep End)
-        if [ "$endStringT" = "End" ]; then
-            printf "Transient (with driveline) of $tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "Transient (with driveline) of $tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-
+        isConverge steadyState            "Steady State of $tutorialName"
+        isConverge transientNoDriveline   "Transient (no driveline) of $tutorialName"
+        isConverge transientWithDriveline "Transient (with driveline) of $tutorialName"
+        isConverge transientWithBoron     "Transient (with boron) of $tutorialName"
         cd ..
+        ;;
 
+    "2D_onePhaseAndSubcriticalPointKineticsCoupling")
+        cd $tutorialName
+        ./Alltest 
+        cd ..
+        # Extract results
+        cat $tutorialName/test.out >> $resFile
+        echo -e "\n--------------------------------------------------------------------------------\n" >> $resFile
+        ;;
+
+    "2D_externalSourceDiffusion")
+        cd $tutorialName
+        ./Alltest 
+        cd ..
+        # Extract results
+        cat $tutorialName/test.out >> $resFile
+        echo -e "\n--------------------------------------------------------------------------------\n" >> $resFile
         ;;
 
     "2D_voidMotionNoPhaseChange")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "$tutorialName has NOT converged \n"  >> ../$resFile
-        fi
-
+        isConverge . $tutorialName
         cd ..
-
         ;;
 
     "2D_KNS37-L22")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "$tutorialName has NOT converged \n"  >> ../$resFile
-        fi
+        isConverge . $tutorialName
 
         # check that results are correct
         input="./postProcessing/fluidRegion/averageValues/-2/volFieldValue.dat"
-        averageAt=$(head -9424 "$input" | tail -1  )
-        printf "time, average alpha.vapour and aveage T.structure when alpha is approximately max are: $averageAt . They should be 12.56424533593758    1.577348e-01    8.210752e+02 \n" >> ../$resFile
+        averageAt=$(head -9424 "$input" | tail -1)
+        printf "time, average alpha.vapour and average T.structure when alpha is approximately max are: $averageAt . They should be 12.56424533593758    1.577348e-01    8.210752e+02 \n" >> ../$resFile
 
         cd ..
-
         ;;
 
     "Godiva_SN")
-        printf "Running tutorial $tutorialName...\n"
-        printf "\n ##### $tutorialName  ###### \n"  >> $resFile
         cd $tutorialName
         ./Allrun_parallel
         printf "Done running tutorial $tutorialName...\n"
 
         # check it ran
-        endString=$(tail -3 ./log.GeN-Foam | grep End)
-        if [ "$endString" = "End" ]; then
-            printf "$tutorialName has converged \n"  >> ../$resFile
-        else
-            printf "$tutorialName has NOT converged \n"  >> ../$resFile
-        fi
+        isConverge . $tutorialName
 
-        # check that keff for esfr steady State is ~0.980106
+        # check that keff is ~0.980106
         keff=$(foamDictionary ./20/uniform/reactorState -entry keff -value)
         printf "keff is $keff . It should be 0.980106  \n" >> ../$resFile
 
         cd ..
-
         ;;
+        
+    "3D_gFHR")
+        cd $tutorialName
+        ./Allrun
+        printf "Done running tutorial $tutorialName...\n"
+
+        # check it ran
+        isConverge steadyStateNSSP "Steady state of $tutorialName with nuclearSteadyStatePebble"
+        isConverge steadyStateLPS  "Steady state of $tutorialName with lumpedParameterStructure"
+        
+        # check that max temperatures in the triso is correct
+        Tfmax=$(extract "T.nuclearSteadyStatePebble.Tfmax" steadyStateNSSP)
+        
+        TfmaxAvg=$(echo "$Tfmax" | cut -d " " -f1)
+        TfmaxMin=$(echo "$Tfmax" | cut -d " " -f2)
+        TfmaxMax=$(echo "$Tfmax" | cut -d " " -f3)
+
+        echo "|           | Simulated | Expected |" >> ../$resFile
+        echo "|:----------|:---------:|:--------:|" >> ../$resFile
+        echo "| Tfmax avg | $TfmaxAvg |  981.808 |" >> ../$resFile
+        echo "| Tfmax min | $TfmaxMin |  900.664 |" >> ../$resFile
+        echo "| Tfmax max | $TfmaxMax | 1062.87  |" >> ../$resFile
+
+        cd ..
+        ;;
+        
     esac
 
-
 done
-
 
 # clean all
 

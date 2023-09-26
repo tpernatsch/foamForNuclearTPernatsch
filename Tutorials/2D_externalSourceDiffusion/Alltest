@@ -1,0 +1,100 @@
+#!/bin/bash
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+# --- Run the simulation
+echo -e "Run tutorial 2D_externalSourceDiffusion ...\n" | tee -a $resFile
+foamDictionary rootCase/0/neutroRegion/defaultFlux  -entry boundaryField.walls.type -set zeroGradient
+foamDictionary rootCase/0/neutroRegion/defaultFlux2 -entry boundaryField.walls.type -set zeroGradient
+./Allrun >> log.simulation
+echo -e "Done running tutorial 2D_externalSourceDiffusion ...\n" | tee -a $resFile
+
+# --- Check it ran
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" | tee -a $resFile
+    else
+        echo -e "$name has NOT converged \n" | tee -a $resFile
+        exit 1
+    fi
+}
+
+isConverge steadyState "Steady-state"
+
+
+# --- Recover the results
+extract()
+{
+    value=$(
+        awk '{ print $1+0 }' <<<$(
+            grep "$1" ./$2/log.GeN-Foam |
+            tail -1 |
+            egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?."
+        )
+    )
+    echo $value
+}
+
+totalPower=$(extract power steadyState)
+flux0=$(extract "volIntegrate(zone0) of flux0" steadyState | cut -d' ' -f3)
+flux1=$(extract "volIntegrate(zone0) of flux1" steadyState | cut -d' ' -f3)
+S0=$(extract "volIntegrate(zone0) of externalSourceFlux0" steadyState | cut -d' ' -f3)
+S1=$(extract "volIntegrate(zone0) of externalSourceFlux1" steadyState | cut -d' ' -f3)
+
+expectedTotalPower=53214.1
+expectedIntegratedFlux0=23260.8
+expectedIntegratedFlux1=29953.3
+expectedIntegratedS0=3346.27
+expectedIntegratedS1=3346.27
+
+python3 analysis.py steadyState/100 >/dev/null 2>&1
+analyticalComparison=$?
+
+if [ $analyticalComparison -eq 0 ]
+then
+    echo -e "The relation S/(1-keff) = S + nuSigmaF*phi has been verified\n" | tee -a $resFile
+else
+    echo -e "The relation S/(1-keff) = S + nuSigmaF*phi has NOT been verified\n" | tee -a $resFile
+    exit 1
+fi
+
+echo "Test power and fluxes  " | tee -a $resFile
+if  [ $expectedTotalPower = $totalPower ] &&
+    [ $expectedIntegratedFlux0 = $flux0 ] &&
+    [ $expectedIntegratedFlux1 = $flux1 ] &&
+    [ $expectedIntegratedS0 = $S0 ] &&
+    [ $expectedIntegratedS1 = $S1 ]
+then
+    echo "Perfect match:" | tee -a $resFile
+    echo "|             | Simulated | Expected |" | tee -a $resFile
+    echo "|:------------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Total power | $totalPower | $expectedTotalPower |" | tee -a $resFile
+    echo "| Flux 0      | $flux0 | $expectedIntegratedFlux0 |" | tee -a $resFile
+    echo "| Flux 1      | $flux1 | $expectedIntegratedFlux1 |" | tee -a $resFile
+    echo "| Source 0    | $S0 | $expectedIntegratedS0 |" | tee -a $resFile
+    echo "| Source 1    | $S1 | $expectedIntegratedS1 |" | tee -a $resFile
+else
+    echo "Divergent results:" | tee -a $resFile
+    echo "|             | Simulated | Expected |" | tee -a $resFile
+    echo "|:------------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Total power | $totalPower | $expectedTotalPower |" | tee -a $resFile
+    echo "| Flux 0      | $flux0 | $expectedIntegratedFlux0 |" | tee -a $resFile
+    echo "| Flux 1      | $flux1 | $expectedIntegratedFlux1 |" | tee -a $resFile
+    echo "| Source 0    | $S0 | $expectedIntegratedS0 |" | tee -a $resFile
+    echo "| Source 1    | $S1 | $expectedIntegratedS1 |" | tee -a $resFile
+    exit 1
+fi
+
+
+# --- Exit successfully
+exit 0
