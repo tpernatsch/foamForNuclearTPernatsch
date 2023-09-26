@@ -132,7 +132,7 @@ EXE_INC = \
     -I./functionObjects/pressureDrop \
     -I./functionObjects/stopIfMaxFieldDiff \
     -I./functionObjects/patchScalarFieldValue \
-    -I./../../common/InterpolateTable \
+    -I./../../common/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
@@ -145,8 +145,8 @@ EXE_INC = \
     -I$(LIB_SRC)/sampling/lnInclude \
     # -I./../../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
 
-LIB_LIBS = \
-    -L$(FOAM_USER_LIBBIN) \
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) -lCommonMultiPhysics \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \

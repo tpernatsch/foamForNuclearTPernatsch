@@ -7,3 +7,5 @@ wclean libso ./classes/thermalHydraulics/solvers
 wclean libso ./classes/neutronics
 wclean libso ./classes/thermoMechanics
 wclean
+
+wclean tests/hydrogenThermophysicalProperties

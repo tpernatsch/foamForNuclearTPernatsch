@@ -35,7 +35,7 @@ EXE_INC = \
     # -I./../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
 
 EXE_LIBS = \
-    -L$(FOAM_USER_LIBBIN) -libCommonMultiPhysics \
+    -L$(FOAM_USER_LIBBIN) -lCommonMultiPhysics \
     -lmeshTools \
     -lfiniteVolume \
     -lfvOptions \
