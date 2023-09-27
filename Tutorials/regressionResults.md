@@ -1,7 +1,7 @@
 # GeN-Foam regression test suite
 
-Regression test of 31-August-2023 - 15:26:50  
-Tutorials successfully completed: 21/21  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
+Regression test of 26-sept.-2023 - 11:31:37  
+Tutorials successfully completed: 21/23  [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------
 
@@ -24,11 +24,11 @@ Done running tutorial 1D_CHF imposedPower ...
 
 1D_CHF imposedPower has converged 
 
-Structure temperature at the top of the channel at 90 seconds
-Perfect match:
+Structure temperature at the top of the channel at 90 seconds  
+Divergent results:
 |          | Simulated | Expected |
 |:---------|:---------:|:--------:|
-| TwallTop | 2625.18 | 2625.18 |
+| TwallTop | 2618.65 | 2625.18 |
 
 --------------------------------------------------------------------------------
 
@@ -40,11 +40,11 @@ Done running tutorial 1D_CHF imposedTemperature ...
 
 1D_CHF imposedTemperature has converged 
 
-Heat flux of the structure at the top of the channel at 40 seconds
-Perfect match:
+Heat flux of the structure at the top of the channel at 40 seconds  
+Divergent results:
 |           | Simulated | Expected |
 |:----------|:---------:|:--------:|
-| Qwall Top | 33423.1 | 33423.1 |
+| Qwall Top | 33427.4 | 33423.1 |
 
 --------------------------------------------------------------------------------
 
@@ -90,7 +90,7 @@ Perfect match:
 
 --------------------------------------------------------------------------------
 
-## 1D_PSBT_SC
+## 1D_PSBT_SC/Phase_Ex1_12223
 
 Run tutorial 1D_PSBT_SC ...
 
@@ -103,6 +103,40 @@ Perfect match:
 |              | Simulated | Expected |
 |:-------------|:---------:|:--------:|
 | alpha vapour | 0.133727 | 0.133727 |
+
+--------------------------------------------------------------------------------
+
+## 1D_PSBT_SC/PhaseII_Ex1_01_5215
+
+Run tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 ...
+
+Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 
+
+PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 has converged 
+
+alpha.vapour at the end of the channel
+Perfect match:
+|                       | Simulated | Expected |
+|:----------------------|:---------:|:--------:|
+| Max alpha vapour      | 0.123835 | 0.123835 |
+| T at max alpha vapour | 620.178 | 620.178 |
+
+--------------------------------------------------------------------------------
+
+## 1D_PSBT_SC/PhaseII_Ex2_04_6770
+
+Run tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 ...
+
+Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 
+
+PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 has converged 
+
+alpha.vapour at the end of the channel
+Perfect match:
+|                       | Simulated | Expected |
+|:----------------------|:---------:|:--------:|
+| Max alpha vapour      | 0.319074 | 0.319074 |
+| T at max alpha vapour | 625.826 | 625.826 |
 
 --------------------------------------------------------------------------------
 
@@ -321,11 +355,11 @@ Simulation & reference comparison
 
 |                         | Simulated | Expected  | Error [%] |
 |:------------------------|:---------:|:---------:|:---------:|
-| keff                    | 1.3052507 | 1.3052479 |   -.00021 | # Passed
+| keff                    | 1.3194369 | 1.3194342 |   -.00020 | # Passed
 | Total power neutro [MW] |   937.000 |       937 |         0 | # Passed
-| Total power fluid  [MW] |   936.997 |       937 |    .00032 | # Passed
-| Total mass flow  [kg/s] | 30.65801000 |      31.0 |      1.10 | # Passed
-| Outlet temperature  [K] | 1930.6144 |      1972 |      2.09 | # Passed
+| Total power fluid  [MW] |   937.001 |       937 |   -.00010 | # Passed
+| Total mass flow  [kg/s] | 30.54932250 |      31.0 |      1.45 | # Passed
+| Outlet temperature  [K] | 1929.9811 |      1972 |      2.13 | # Passed
 
 All test passed
 

@@ -19,7 +19,10 @@ tutorials="
     1D_HX/onePhase
     1D_HX/twoPhase
     1D_MSR_pointKinetics
-    1D_PSBT_SC
+    1D_PSBT_SC/Phase_Ex1_12223
+    1D_PSBT_SC/PhaseII_Ex1_01_5215
+    1D_PSBT_SC/PhaseII_Ex2_04_6770
+    1D_PSBT_SC/PhaseII_Ex3_11-0312_power_increase
     1D_thermalMSR_pointKinetics
     2D_cavityBoussinesq
     2D_externalSourceDiffusion
@@ -41,197 +44,216 @@ tutorials="
     toBeUpdated/2D_RegressionESFR
 " 
 
-# run all tutorials and check for clean finish 
+# Clean all the tutorials
 for tutorialName in $tutorials
 do
+    printf "Cleaning tutorial $tutorialName ... "
+    path=$(pwd)
+    cd $tutorialName
 
-    case "$tutorialName" in
-    "3D_SmallESFR")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
+    if [ -f Allclean ]
+    then
         ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "1D_boiling")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "1D_PSBT_SC")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "1D_MSR_pointKinetics")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "1D_thermalMSR_pointKinetics")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "1D_HX/onePhase")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ../..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "1D_HX/twoPhase")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ../..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "1D_CHF/imposedPower")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ../..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "1D_CHF/imposedTemperature")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ../..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "2D_MSFR")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "2D_FFTF")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;        
-    "2D_cavityBoussinesq")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "2D_externalSourceDiffusion")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-     "2D_fullCoupling")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "2D_onePhaseAndPointKineticsCoupling")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "2D_onePhaseAndSubcriticalPointKineticsCoupling")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "2D_voidMotionNoPhaseChange")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;   
-    "2D_KNS37-L22")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "Godiva_SN")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "3D_gFHR")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "3D_NTPfuelAssembly")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "testing/2D_MSFR_ULOF_diffusion_and_pk")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        ./Allclean
-        cd ../..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "testing/FMU/2D_onePhaseAndPointKineticsCouplingExternalReacivityFMI/comparisonFMU")
-        printf "Cleaning tutorial $tutorialName...\n"
-        path=$(pwd)
-        cd $tutorialName
-        ./Allclean
-        cd $path
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "testing/FMU/2D_onePhaseAndPointKineticsCouplingExternalReacivityFMI/PIDcontrol")
-        printf "Cleaning tutorial $tutorialName...\n"
-        path=$(pwd)
-        cd $tutorialName
-        ./Allclean
-        cd $path
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "testing/FMU/powerTemperatureMomentumControl")
-        printf "Cleaning tutorial $tutorialName...\n"
-        path=$(pwd)
-        cd $tutorialName
-        ./Allclean
-        cd $path
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;
-    "toBeUpdated/2D_RegressionESFR")
-        printf "Cleaning tutorial $tutorialName...\n"
-        cd $tutorialName
-        python3 Allclean.py
-        cd ../..
-        printf "Done cleaning tutorial $tutorialName...\n"
-        ;;           
-    esac
+        printf "\033[0;32mdone\033[0m\n"
+    else
+        if [ -f Allclean.py ]
+        then
+            python3 Allclean.py
+            printf "\033[0;32mdone\033[0m\n"
+        else
+            printf "\033[0;31merror (no cleaning script)\033[0m\n"
+        fi
+    fi
+
+    cd $path
+
+    # case "$tutorialName" in
+    # "3D_SmallESFR")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "1D_boiling")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "1D_PSBT_SC")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "1D_MSR_pointKinetics")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "1D_thermalMSR_pointKinetics")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "1D_HX/onePhase")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ../..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "1D_HX/twoPhase")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ../..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "1D_CHF/imposedPower")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ../..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "1D_CHF/imposedTemperature")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ../..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "2D_MSFR")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "2D_FFTF")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;        
+    # "2D_cavityBoussinesq")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "2D_externalSourceDiffusion")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    #  "2D_fullCoupling")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "2D_onePhaseAndPointKineticsCoupling")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "2D_onePhaseAndSubcriticalPointKineticsCoupling")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "2D_voidMotionNoPhaseChange")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;   
+    # "2D_KNS37-L22")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "Godiva_SN")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "3D_gFHR")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "3D_NTPfuelAssembly")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "testing/2D_MSFR_ULOF_diffusion_and_pk")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd ../..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "testing/FMU/2D_onePhaseAndPointKineticsCouplingExternalReacivityFMI/comparisonFMU")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     path=$(pwd)
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd $path
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "testing/FMU/2D_onePhaseAndPointKineticsCouplingExternalReacivityFMI/PIDcontrol")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     path=$(pwd)
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd $path
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "testing/FMU/powerTemperatureMomentumControl")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     path=$(pwd)
+    #     cd $tutorialName
+    #     ./Allclean
+    #     cd $path
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;
+    # "toBeUpdated/2D_RegressionESFR")
+    #     printf "Cleaning tutorial $tutorialName...\n"
+    #     cd $tutorialName
+    #     python3 Allclean.py
+    #     cd ../..
+    #     printf "Done cleaning tutorial $tutorialName...\n"
+    #     ;;           
+    # esac
 
 done
 
