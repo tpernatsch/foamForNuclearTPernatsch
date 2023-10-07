@@ -39,6 +39,8 @@ feedbackCoeffRhoCool 0;
 
 feedbackCoeffTStruct 0;
 
+feedbackCoeffTStructMech 0;
+
 absoluteDrivelineExpansionCoeff 8e-05;
 
 controlRodReactivityMap ( ( 0.1 -0.01 ) ( 0 0 ) ( -0.1 0.01 ) );
@@ -169,6 +171,13 @@ zones
     //  feedbackCoeffTStruct*(TStruct-TStructRef)). REQUIRED
     feedbackCoeffTStruct 0;
 
+    //- Reactivity contribution in the form
+    //  feedbackCoeffTStructMech*(TStructMech-TStructMechRef)). REQUIRED
+    //  TStructMech is the temperature that comes from the TM solver
+    //  This is normally usefult only in heterogeneous simulations
+    //  where part of the core is simulated as a solid by the TM region
+    feedbackCoeffTStructMech 0;
+
     //- Used to compute drivelineExpansion as
     //  (TDriveline-TDrivelineRef)*absoluteDrivelineExpansionCoeff
     //  Dimensionally, it is m/K. REQUIRED
@@ -229,6 +238,15 @@ zones
     //  described above
     //  TStructRef    0;
 
+    //- Used to specify a reference structure temperature for the
+    //  computation of the TStructMech reactivity contribution.
+    //  If not provided, the initial time-step flux-averaged structure
+    //  temperature is used, effectively starting from a steady state. The
+    //  average is performed in the cellZones specified by
+    //  structMechFeedbackZones. NOT REQUIRED, defaults to computed value as
+    //  described above
+    //  TStructMechRef    0;
+
     //- Used to specify a reference driveline temperature for the
     //  computation of the driveline expansion reactivity contribution.
     //  If not provided, the initial time-step flux-averaged structure
@@ -263,6 +281,15 @@ zones
     //  temperature is performed to compute TStruct. NOT REQUIRED,
     //  defaults to the enitre mesh
     structFeedbackZones
+    (
+        "diagrid"
+        ...
+    );
+
+    //- List of cellZones over which the flux-averaging of the structure
+    //  temperature is performed to compute TStructMech. NOT REQUIRED,
+    //  defaults to the enitre mesh
+    structMechFeedbackZones
     (
         "diagrid"
         ...

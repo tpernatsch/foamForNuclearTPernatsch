@@ -34,15 +34,19 @@ License
 
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
-
 Class
-    Foam::criticalHeatFluxModels::lookUpTableCHF
+    Foam::CHFModel::lookUpTableCHF
     
 Description
     Compute the Critical Heat Flux with a Look Up Table.
 
-    Author: 
-    Gauthier Lazare (gauthier.lazare@gmail.com)
+Author
+    - Yuhang Niu (niu.yuhang@epfl.ch)
+    - A. Scolaro - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
+    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems 
+    Behaviour)
+    - C. Fiorina - Texas A&M University (TAMU)
+
 
 SourceFiles
     lookUpTableCHF.C
@@ -55,11 +59,18 @@ SourceFiles
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #include "CHFModel.H"
+#include "InterpolateTables.H"
+#include "InterpolateTable.H"
+#include "scalarFieldFieldINew.H"
+#include "PtrListScalarFieldFieldINew.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
+
+class FFPair;
+
 namespace criticalHeatFluxModels
 {
 
@@ -74,7 +85,7 @@ class lookUpTableCHF
 protected:
 
     //- Ref to flow quality
-    const volScalarField& quality_;
+    const volScalarField& mass_flow_quality_;
 
     //- Ref to pressure 
     const volScalarField& p_;
@@ -94,7 +105,42 @@ protected:
     //- Ref to alpha normalized liquid 
     const volScalarField& normalizedL_;
 
+    //- Ptr to FFPair (breaking encapsulation as usual)
+    mutable const FFPair* FFPairPtr_;
 
+    //- Ref to Hydraulic diameter
+    const volScalarField& Dh_;
+
+    // -pitch-to-diameter ratio
+    scalar PitchToDiameter_;
+
+    //- Tabulated pressure values (direction z)
+    scalarField pressureValues_;
+    
+    //- Tabulated mass flow rate values (direction x)
+    scalarField massFlowRateValues_;
+    
+    //- Tabulated quality values (direction y)
+    scalarField qualityValues_;
+    
+    //- Tabulated ptrList of 2D tables (i.e. raw data for the 3D interpolation
+    // table)
+    PtrList<FieldField<Field, scalar>> data_;
+
+    //- Pressure interpolation method
+    interpolateTableBase::interpolationMethod pMethod;
+    
+    //- Mass flow rate interpolation method
+    interpolateTableBase::interpolationMethod gMethod_;
+    
+    //- Quality interpolation method
+    interpolateTableBase::interpolationMethod xeMethod_;
+    
+    //- 3D Interpolation table (pressure as the main direction)
+    scalarFieldFieldInterpolateTable pTable_;
+
+
+    
 public:
 
     //- Runtime type information
@@ -119,6 +165,7 @@ public:
         (
             const label& celli
         ) const;
+
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

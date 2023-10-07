@@ -113,16 +113,19 @@ protected:
     const volScalarField* TCladOrig_;
     const volScalarField* TCoolOrig_;
     const volScalarField* rhoCoolOrig_;
+    const volScalarField* TStructMechOrig_;
     const volVectorField* UOrig_;
     const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s) 
     const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
     const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
 
-    //- Mapped fields
+    //- Mapped fields from TH
     volScalarField TFuel_;
     volScalarField TClad_;
     volScalarField TCool_;
     volScalarField rhoCool_;
+    //- Mapped fields from TM
+    volScalarField TStructMech_;
 
     //- For Aitken eigenvalue
     scalar keff0_;
@@ -209,13 +212,16 @@ public:
 
         virtual void getCouplingFieldRefs
         (
-            const objectRegistry& src,
-            const meshToMesh& neutroToFluid
+            const objectRegistry& srcTH,
+            const meshToMesh& neutroToFluid,
+            const objectRegistry& srcTM,
+            const meshToMesh& neutroToMech
         );   
 
         virtual void interpolateCouplingFields
         (
-            const meshToMesh& neutroToFluid
+            const meshToMesh& neutroToFluid,
+            const meshToMesh& neutroToMech
         );
 
         //- Correct/update the properties

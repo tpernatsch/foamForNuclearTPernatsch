@@ -13,4 +13,4 @@ Please notice that a new version of OpenFOAM is released by ESI/OpenCFD twice a 
 
 ## Compiling GeN-Foam for FMU coupling
 
-Compiling GeN-Foam for FMU coupling is explained in this [page](@ref FMU).
+Compiling GeN-Foam for FMU coupling is explained on this [page](@ref FMU).

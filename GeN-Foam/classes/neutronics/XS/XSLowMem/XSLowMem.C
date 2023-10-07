@@ -119,6 +119,17 @@ Foam::XSLowMem::XSLowMem
             IOobject::NO_WRITE
         )
     ),
+    nuclearDataMechTemp_
+    (
+        IOobject
+        (
+            "nuclearDataMechTemp",
+            mesh.time().constant(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    ),
     energyGroups_(nuclearData_.lookupOrDefault("energyGroups",1)),
     precGroups_(nuclearData_.lookupOrDefault("precGroups",1)),
     legendreMoments_(1+nuclearData_.lookupOrDefault("legendreMoments",0)),
@@ -311,6 +322,13 @@ Foam::XSLowMem::XSLowMem
     cladExpSigmaPowList_(zoneNumber_),
     cladExpSigmaDisappList_(zoneNumber_),
     cladExpSigmaFromToList_(zoneNumber_),
+    TStructMechRef_(nuclearDataMechTemp_.lookupOrDefault("TStructMechRef",900.0)),
+    TStructMechPerturbed_(nuclearDataMechTemp_.lookupOrDefault("TStructMechPerturbed",1200.0)),
+    mechTempDList_(zoneNumber_),
+    mechTempNuSigmaEffList_(zoneNumber_),
+    mechTempSigmaPowList_(zoneNumber_),
+    mechTempSigmaDisappList_(zoneNumber_),
+    mechTempSigmaFromToList_(zoneNumber_),
     CRmove_
     (
         IOobject
@@ -353,7 +371,8 @@ void Foam::XSLowMem::correct
     const volScalarField& Tclad, 
     const volScalarField& rhoCool, 
     const volScalarField& TCool,
-    const volVectorField& Disp
+    const volVectorField& Disp,
+    const volScalarField& TStructMech
 )
 {
     #include "setNeutronicsVariablesLowMem.H"
@@ -382,7 +401,8 @@ Foam::tmp< Foam::volScalarField > Foam::XSLowMem::sigmaFromTo
     const volScalarField& Tclad, 
     const volScalarField& rhoCool, 
     const volScalarField& TCool,
-    const volVectorField& Disp  
+    const volVectorField& Disp,
+    const volScalarField& TStructMech  
 ) 
 {
     tmp<volScalarField > tsigmaFromTo
@@ -443,7 +463,8 @@ Foam::tmp< Foam::volScalarField > Foam::XSLowMem::sigmaFromTo
                     )
                   + cladExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(Tclad[cellIglobal] - TcladRef_)
                   + axialExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(axExp_[cellIglobal])
-                  + radialExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(radExp_[cellIglobal]);
+                  + radialExpSigmaFromToList_[zone][momentI][energyJ][energyI]*(radExp_[cellIglobal])
+                  + mechTempSigmaFromToList_[zone][momentI][energyJ][energyI]*(TStructMech[cellIglobal] - TStructMechRef_);
             }
         }
     }

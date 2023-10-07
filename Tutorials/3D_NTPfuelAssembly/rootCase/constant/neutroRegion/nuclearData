@@ -1,0 +1,186 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+	version     2.0;
+	format      ascii;
+	class       dictionary;
+	location    "constant/neutroRegion";
+	object      nuclearData;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+energyGroups	2; // [0.000000e+00, 6.250000e-01, 2.000000e+07] eV
+
+precGroups      6;
+
+//- Point Kinetics data
+fastNeutrons            false;
+
+promptGenerationTime	3.647935e-05; // [s] (7.249197e-08)
+
+Beta
+(
+	2.280948e-04  // (2.170406e-07)
+	1.177753e-03  // (1.120488e-06)
+	1.124613e-03  // (1.069825e-06)
+	2.522364e-03  // (2.399064e-06)
+	1.035069e-03  // (9.840334e-07)
+	4.335548e-04  // (4.121927e-07)
+);
+// Beta tot = 652.145 pcm
+
+lambda
+(
+	1.333617e-02  // (1.268076e-05)
+	3.273769e-02  // (3.111919e-05)
+	1.207829e-01  // (1.147850e-04)
+	3.028111e-01  // (2.876624e-04)
+	8.496249e-01  // (8.063770e-04)
+	2.853453e+00  // (2.708403e-03)
+);
+
+feedbackCoeffFastDoppler    0;
+
+//- Representative of fuel axial expansion
+feedbackCoeffTFuel          0; // [1/K]
+
+//- Representative of in-assembly structure density change
+//  (i.e. cladding AND wrapper wire)
+feedbackCoeffTClad          0; // [1/K]
+
+feedbackCoeffTCool          0; // [1/K]
+
+feedbackCoeffRhoCool        0; // [1/(kg/m3)]
+
+//- Representative of structure radial expansion
+feedbackCoeffTStruct        0; // [1/K]
+
+absoluteDrivelineExpansionCoeff 0; // [m/K]
+
+//- Represents the reactivity instertion ramp in this case
+externalReactivityTimeProfile
+{
+    type        table;
+
+    startTime   10000000;
+
+    table       table
+    (
+        (   0       0         )
+        (   0.01    -2000e-5  )
+    );
+}
+
+
+fuelFeedbackZones
+(
+	fuelElement
+);
+
+coolantFeedbackZones
+(
+	fuelElement
+	centralUnloadedFuelElement
+);
+
+structuresFeedbackZones
+(
+	fuelElement
+	centralUnloadedFuelElement
+);
+
+drivelineFeedbackZones ();
+
+
+//- Diffusion data
+zones
+(
+	fuelElement  // OpenMC: cCore
+	{
+		fuelFraction       6.721789e-01;
+		IV                 nonuniform List<scalar> 2 (3.801959e-06 1.544042e-04);
+		D                  nonuniform List<scalar> 2 (1.370202e-02 8.083220e-03);
+		nuSigmaEff         nonuniform List<scalar> 2 (6.719995e-01 1.497462e+01);
+		sigmaPow           nonuniform List<scalar> 2 (8.512700e-12 1.904289e-10);
+		scatteringMatrixP0 2 2 (
+			(2.763718e+01 1.556756e-01)
+			(1.986367e+00 3.743990e+01)
+		);
+		scatteringMatrixP1 2 2 (
+			(3.970440e+00 1.217209e-02)
+			(-9.049981e-02 5.079844e+00)
+		);
+		scatteringMatrixP2 2 2 (
+			(1.248987e+00 -7.738878e-03)
+			(-5.076043e-02 1.392248e+00)
+		);
+		scatteringMatrixP3 2 2 (
+			(1.257108e-01 -8.358852e-03)
+			(-2.717989e-02 4.549267e-01)
+		);
+		scatteringMatrixP4 2 2 (
+			(-8.218075e-02 -3.575865e-03)
+			(-2.178407e-02 1.158498e-01)
+		);
+		scatteringMatrixP5 2 2 (
+			(5.368688e-03 -9.767777e-04)
+			(-1.895378e-02 5.086316e-02)
+		);
+		sigmaDisapp        nonuniform List<scalar> 2 (6.590576e-01 9.497068e+00);
+		chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+		chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+		Beta               nonuniform List<scalar> 6 (2.280948e-04 1.177753e-03 1.124613e-03 2.522364e-03 1.035069e-03 4.335548e-04);
+		lambda             nonuniform List<scalar> 6 (1.333617e-02 3.273769e-02 1.207829e-01 3.028111e-01 8.496249e-01 2.853453e+00);
+		discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+		integralFlux       nonuniform List<scalar> 2 (1.873443e-01 6.725598e-01);
+	}
+
+	centralUnloadedFuelElement  // OpenMC: uCentralUnloadedFuelElement
+	{
+		fuelFraction       0.000000e+00;
+		IV                 nonuniform List<scalar> 2 (4.075837e-06 1.642812e-04);
+		D                  nonuniform List<scalar> 2 (1.046311e-02 6.473535e-03);
+		nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+		sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+		scatteringMatrixP0 2 2 (
+			(4.706556e+01 6.161825e-01)
+			(1.535265e+00 7.465769e+01)
+		);
+		scatteringMatrixP1 2 2 (
+			(1.601199e+01 1.664947e-01)
+			(4.686487e-01 1.910368e+01)
+		);
+		scatteringMatrixP2 2 2 (
+			(6.301894e+00 -3.670202e-02)
+			(1.516770e-01 6.247987e+00)
+		);
+		scatteringMatrixP3 2 2 (
+			(3.546508e-01 -5.203250e-02)
+			(3.432730e-03 2.132733e+00)
+		);
+		scatteringMatrixP4 2 2 (
+			(-6.893608e-01 -2.259221e-02)
+			(-4.739710e-02 5.099069e-01)
+		);
+		scatteringMatrixP5 2 2 (
+			(-2.365090e-02 -5.475458e-03)
+			(-5.633761e-02 1.960847e-01)
+		);
+		sigmaDisapp        nonuniform List<scalar> 2 (8.158188e-01 2.523562e+00);
+		chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+		chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+		Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+		lambda             nonuniform List<scalar> 6 (1.333617e-02 3.273769e-02 1.207829e-01 3.028111e-01 8.496249e-01 2.853453e+00);
+		discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+		integralFlux       nonuniform List<scalar> 2 (3.430214e-02 9.420679e-02);
+	}
+);
+
+// ************************************************************************* //

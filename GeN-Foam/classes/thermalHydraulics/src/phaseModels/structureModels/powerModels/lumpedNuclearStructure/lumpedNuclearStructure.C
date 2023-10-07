@@ -41,6 +41,7 @@ License
 #include "structure.H"
 #include "addToRunTimeSelectionTable.H"
 #include "SquareMatrix.H"
+#include "fvCFD.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -98,6 +99,20 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    Tmatrix_
+    (
+        IOobject
+        (
+            "Tmatrix."+typeName,
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimTemperature, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     Tsurface_
     (
         IOobject
@@ -112,10 +127,26 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    laplacianTmatrix_
+    (
+        IOobject
+        (
+            "laplacianTmatrix."+typeName,
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimTemperature/dimArea, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     fractionOfPowerFromNeutronics_(0),
     nodesNumber_(0),
     nodeFuel_(0),
     nodeClad_(0),
+    nodeMatrix_(0),
+    kappaMatrix_(0),
     Hs_(0),
     rhoCp_(0),
     volFraction_(0),
@@ -159,6 +190,8 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         label nodesNumber(dict.get<label>("nodesNumber"));
         label nodeFuel(dict.get<label>("nodeFuel"));
         label nodeClad(dict.get<label>("nodeClad"));
+        label nodeMatrix(dict.lookupOrDefault<label>("nodeMatrix", 0));
+        scalar kappaMatrix(dict.lookupOrDefault<scalar>("kappaMatrix", 0.0));
         scalarList Hs(dict.get<scalarList>("heatConductances"));
         scalarList rhoCp(dict.get<scalarList>("rhoCp"));
         scalarList volFraction(dict.get<scalarList>("volumeFractions"));
@@ -170,10 +203,12 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         }
 
         //- Fill in lists for this region
-        fractionOfPowerFromNeutronics_.append(fractionOfPowerFromNeutronics), 
-        nodesNumber_.append(nodesNumber),
-        nodeFuel_.append(nodeFuel),
-        nodeClad_.append(nodeClad),
+        fractionOfPowerFromNeutronics_.append(fractionOfPowerFromNeutronics);
+        nodesNumber_.append(nodesNumber);
+        nodeFuel_.append(nodeFuel);
+        nodeClad_.append(nodeClad);
+        nodeMatrix_.append(nodeMatrix);
+        kappaMatrix_.append(kappaMatrix);
         Hs_.append(Hs);
         rhoCp_.append(rhoCp);
         volFraction_.append(volFraction);
@@ -214,9 +249,15 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         label regioni(cellToRegion_[celli]);
         const scalarField& T(T_[celli]);
 
-        // Update average fuel and clad temp used for coupling
+        //- Update average fuel and clad temp used for coupling
         this->structureRef().TFuelAv()[celli] = T[nodeFuel_[regioni]];
         this->structureRef().TCladAv()[celli] = T[nodeClad_[regioni]];
+
+        //- Update matrix temperature
+        if (kappaMatrix_[regioni] != 0)
+        {
+            Tmatrix_[celli] = T[nodeMatrix_[regioni]];
+        }
     }
 }
 
@@ -241,11 +282,13 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
 
     //- Read region values
     const label& regioni(cellToRegion_[celli]);
-    const word& region(regionIndexToRegionName_[regioni]);
+    //const word& region(regionIndexToRegionName_[regioni]);
     const scalar& fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
     const label& nodesNumber(nodesNumber_[regioni]);
     const label& nodeFuel(nodeFuel_[regioni]);
     const label& nodeClad(nodeClad_[regioni]);
+    const label& nodeMatrix(nodeMatrix_[regioni]);
+    const scalar& kappaMatrix(kappaMatrix_[regioni]);
     const scalarList& Hs(Hs_[regioni]);
     const scalarList& rhoCp(rhoCp_[regioni]);
     const scalarList& volFraction(volFraction_[regioni]);
@@ -264,6 +307,8 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     scalar Tcool(HTSumi / max(HSumi,SMALL));
     scalar Hcool(HSumi*iA/this->alpha_[celli]);
 
+    scalar diffusion(0.0);
+
     if(nodesNumber>1)
     {
         //- Init matrix, source
@@ -274,32 +319,58 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
         {
             //- Set "zeroGradient" BC at innermost node
             {
+                diffusion *= 0.0;
+                if (nodeMatrix == 0 && kappaMatrix != 0)
+                {
+                    diffusion = kappaMatrix * laplacianTmatrix_[celli];
+                }
                 M[0][1] =   -Hs[1];
                 M[0][0] =   volFraction[0] * rhoCp[0] / dt + Hs[1];
-                S[0] =      q * qFraction[0]  + TOld[0] * volFraction[0] * rhoCp[0] / dt;
+                S[0] =      diffusion
+                            + q * qFraction[0] 
+                            + TOld[0] * volFraction[0] * rhoCp[0] / dt;
+
             }
 
-            // Bulk
+            //- Bulk
             if(nodesNumber>2)
             {
                 for (int i = 1; i < nodesNumber-1; i++)
                 {
+                    diffusion *= 0.0;
+                    if (nodeMatrix == i && kappaMatrix != 0) // TmatrixPtr_.valid()) 
+                    {
+                        // volScalarField laplacian(fvc::laplacian(TmatrixPtr_()));
+                        // diffusion = kappaMatrix * laplacian[celli];
+                        diffusion = kappaMatrix * laplacianTmatrix_[celli];
+                    }
                     M[i][i+1] =     -Hs[i+1];
                     M[i][i-1] =     -Hs[i];
                     M[i][i] =       volFraction[i] * rhoCp[i] / dt + Hs[i+1] + Hs[i];
-                    S[i] =          q * qFraction[i] + TOld[i] * volFraction[i] * rhoCp[i] / dt;
+                    S[i] =          diffusion
+                                    + q * qFraction[i] 
+                                    + TOld[i] * volFraction[i] * rhoCp[i] / dt;
                 }
             }
 
             //- Outer surface, convective BC with fluid(s) wetting the pin
             {
                 label i(nodesNumber-1);
+                diffusion *= 0.0;
+                if (nodeMatrix == i && kappaMatrix != 0)
+                {
+                    // volScalarField laplacian(fvc::laplacian(TmatrixPtr_()));
+                    // diffusion = kappaMatrix * laplacian[celli];
+                    diffusion = kappaMatrix * laplacianTmatrix_[celli];
+                }
+
                 scalar HtoCool(Hs[i+1]*Hcool/(Hs[i+1]+Hcool)); //total H from last node to coolant
                 M[i][i-1] =     -Hs[i];
                 M[i][i] =       volFraction[i] * rhoCp[i] / dt + Hs[i] + HtoCool;
-                S[i] =          q * qFraction[i] 
+                S[i] =          diffusion
+                                + q * qFraction[i] 
                                 + TOld[i] * volFraction[i] * rhoCp[i] / dt 
-                                + HtoCool * Tcool;       
+                                + HtoCool * Tcool;      
             }
         }
 
@@ -308,11 +379,17 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     }
     else
     {
+        diffusion *= 0.0;
+        if (nodeMatrix == 0 && kappaMatrix != 0)
+        {
+            diffusion = kappaMatrix * laplacianTmatrix_[celli];
+        }
         scalar HtoCool(Hs[1]*Hcool/(Hs[1]+Hcool)); //total H from last node to coolant
         scalar M(volFraction[0] * rhoCp[0] / dt + HtoCool);
         scalar S
                 (
-                    q * qFraction[0] 
+                    diffusion
+                    + q * qFraction[0]
                     + TOld[0] * volFraction[0] * rhoCp[0] / dt 
                     + HtoCool * Tcool
                 );
@@ -331,9 +408,15 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     Info << "Tcool " << Tcool << endl;   
     */
 
-    // Update average fuel and clad temp used for coupling
-    this->structureRef().TFuelAv()[celli] = T[nodeFuel_[regioni]];
-    this->structureRef().TCladAv()[celli] = T[nodeClad_[regioni]];
+    //- Update average fuel and clad temp used for coupling
+    this->structureRef().TFuelAv()[celli] = T[nodeFuel];
+    this->structureRef().TCladAv()[celli] = T[nodeClad];
+
+    //- Update matrix temperature
+    if (kappaMatrix != 0)
+    {
+        Tmatrix_[celli] = T[nodeMatrix];
+    }
 }
 
 
@@ -343,19 +426,22 @@ void Foam::powerModels::lumpedNuclearStructure::correct
     const volScalarField& HSum    // == SUM_j [htc_j*frac_j]
 )
 {
-    
+    //- Compute the laplacian of Tmatrix
+    laplacianTmatrix_ = fvc::laplacian(Tmatrix_);
+    Tmatrix_.correctBoundaryConditions();
+
     //- Update temperatures cell-by-cell
     forAll(this->cellList_, i)
     {
         label celli(this->cellList_[i]);
         updateLocalTemperatureProfile(celli, HTSum[celli], HSum[celli]);
-    }
-
+    }    
 }
+
 
 void Foam::powerModels::lumpedNuclearStructure::correctT(volScalarField& T) const
 {
-    //- Set T to  surface temperature
+    //- Set T to surface temperature
     forAll(cellList_, i)
     {
         label celli(cellList_[i]);

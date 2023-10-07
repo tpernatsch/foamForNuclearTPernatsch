@@ -150,11 +150,33 @@ void Foam::powerModels::fixedTemperature::temperatureUpdate() const
         if(timeDependent_[regioni])
         {
             scalar t(mesh_.time().timeOutputValue()-t0_[regioni]);
-            scalar timeDependentTemperature(timeProfile_[regioni].value(t));
+            scalar timeDependentTemperature(timeProfile_[regioni].value(t));            
+
+            // The following assumes that each coefficient in the timeProfile_ 
+            // array represents a scaling factor relative to the initial  
+            // temperature value. For instance, a coefficient of 1 at position  
+            // 'i' implies that the temperature at time step 'i' is equal to the 
+            // initial value.
+
+            // The T at each cell and at time t is calculated using:
+            //        T(t - deltat) = 
+            //                 initialT * timeCoefficient(t - deltat)
+            //
+            //        T(t) = initialT * timeCoefficient(t)
+
+            // Using the previous relations, we can eliminate the initial
+            // temperature value and derive the updated temperature.
+
+            const volScalarField& TemperatureOld = T_.oldTime();
+            scalar tOld(mesh_.time().timeOutputValue()-t0_[regioni] -
+                mesh_.time().deltaT().value());
+            scalar timeDependentTemperatureOld(timeProfile_[regioni].value(tOld));
+
             forAll(regionCells, i)
             {
                 label celli(regionCells[i]);
-                T_[celli] =  timeDependentTemperature;
+                T_[celli] =  timeDependentTemperature * (
+                    TemperatureOld[celli]/timeDependentTemperatureOld);
             }          
         }
     }

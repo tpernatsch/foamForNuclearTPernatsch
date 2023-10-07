@@ -138,13 +138,13 @@ private :
     //- A field that represents the sign of phase change in each cell, i.e.
     //  1 if the phase is appearning, -1 if disappearing, 0 else. This field
     //  is currently only used by the nucleateBoiling heatTransfer model
-    autoPtr<scalarField> phaseChangeSignPtr_; 
+    mutable autoPtr<scalarField> phaseChangeSignPtr_; 
 
     //- Flow quality of the phase. While these are not intrinsic
     //  properties to the fluid itself (they depend on the properties of the
     //  other fluid too), their are placed here for programming convenience.
     //  Handled by an autoPtr as it is non-trivial only in two-phase scenarios
-    autoPtr<volScalarField> flowQualityPtr_;
+    mutable autoPtr<volScalarField> flowQualityPtr_;
 
     //- Place-holder for the Lockhart-Martinelli parameter. Logically, just as
     //  flow quality, it should belong to FFPair. However, if I place it there
@@ -154,7 +154,7 @@ private :
     //  directly, so by placing it here, I avoid a lot of issues. I generally
     //  favour coding simplicity over philosophical consistency.
     //  Handled by an autoPtr as it is useless for the onePhase solver
-    autoPtr<volScalarField> XLMPtr_;
+    mutable autoPtr<volScalarField> XLMPtr_;
 
     //- Minimum allowable value of the Lockhart-Martinelli parameter
     scalar minXLM_;
@@ -205,7 +205,7 @@ private :
     //- Marker field that is 1 where the phase is dispersed, 0 where it is 
     //  continuous, and between 0 and 1 in interpolation regimes.
     //  Handled by an autoPtr as it is non-trivial only in two-phase scenarios
-    autoPtr<scalarField> dispersionPtr_;
+    mutable autoPtr<scalarField> dispersionPtr_;
 
     //- Turbulence model
     autoPtr<phaseCompressibleTurbulenceModel> turbulence_;
@@ -245,7 +245,7 @@ public:
 
         //- Set all the autoPtr to the fields required for two-phase 
         //  simulations
-        void initTwoPhaseFields();
+        void initTwoPhaseFields() const;
 
         //- Initialize alphaPhi and alphaRhoPhi, to be called as a separate
         //  function in the solver main after adequate phase fraction
@@ -397,6 +397,11 @@ public:
 
             const volScalarField& flowQuality() const
             {
+                if(!flowQualityPtr_.valid())
+                {
+                    initTwoPhaseFields();
+                }
+
                 return flowQualityPtr_();
             }
 

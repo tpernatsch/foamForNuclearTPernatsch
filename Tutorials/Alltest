@@ -15,7 +15,31 @@ clear
 #------------------------------------------------------------------------------
 
 # Select tutorials in the test suite
-tutorials="1D_HX/onePhase 1D_HX/twoPhase 1D_PSBT_SC 1D_boiling 1D_CHF/imposedPower 1D_CHF/imposedTemperature 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 2D_cavityBoussinesq 2D_externalSourceDiffusion 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_onePhaseAndSubcriticalPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 2D_FFTF 3D_SmallESFR 3D_gFHR Godiva_SN"
+tutorials="
+    1D_boiling
+    1D_CHF/imposedPower
+    1D_CHF/imposedTemperature
+    1D_HX/onePhase
+    1D_HX/twoPhase
+    1D_MSR_pointKinetics
+    1D_PSBT_SC/Phase_Ex1_12223
+    1D_PSBT_SC/PhaseII_Ex1_01_5215
+    1D_PSBT_SC/PhaseII_Ex2_04_6770
+    1D_thermalMSR_pointKinetics
+    2D_cavityBoussinesq
+    2D_externalSourceDiffusion
+    2D_FFTF
+    2D_fullCoupling
+    2D_KNS37-L22
+    2D_MSFR
+    2D_onePhaseAndPointKineticsCoupling
+    2D_onePhaseAndSubcriticalPointKineticsCoupling
+    2D_voidMotionNoPhaseChange
+    3D_gFHR
+    3D_NTPfuelAssembly
+    3D_SmallESFR
+    Godiva_SN
+"
 
 #------------------------------------------------------------------------------
 
@@ -45,7 +69,7 @@ echo "Tutorials successfully completed: 0/0  [![regressionTest]($badgePending)](
 # Run all tutorials and check for clean finish
 for tutorialName in $tutorials
 do
-    echo "Running tutorial $tutorialName...\n"
+    echo "Running tutorial $tutorialName ...\n"
 
     # Header in markdown
     echo "\n--------------------------------------------------------------------------------\n" >> $resFile
@@ -81,6 +105,9 @@ then
     sed -i "s,$badgePending,$badgeSuccess," $resFile
 else
     sed -i "s,$badgePending,$badgeFailed," $resFile
+    exit 1
 fi
+
+exit 0
 
 #------------------------------------------------------------------------------

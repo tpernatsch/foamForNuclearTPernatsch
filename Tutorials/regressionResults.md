@@ -1,7 +1,50 @@
 # GeN-Foam regression test suite
 
-Regression test of 26-Jun-2023 - 08:29:33  
-Tutorials successfully completed: 19/19  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
+Regression test of 06-Oct-2023 - 15:51:53  
+Tutorials successfully completed: 21/23  [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]()  
+
+--------------------------------------------------------------------------------
+
+## 1D_boiling
+
+Run tutorial 1D_boiling ...
+
+Done running tutorial 1D_boiling ...
+
+1D_boiling has converged 
+
+
+--------------------------------------------------------------------------------
+
+## 1D_CHF/imposedPower
+
+Run tutorial 1D_CHF imposedPower ...
+
+Done running tutorial 1D_CHF imposedPower ...
+
+1D_CHF imposedPower has converged 
+
+Structure temperature at the top of the channel at 90 seconds
+Divergent results:
+|          | Simulated | Expected |
+|:---------|:---------:|:--------:|
+| TwallTop | 2618.65 | 2625.18 |
+
+--------------------------------------------------------------------------------
+
+## 1D_CHF/imposedTemperature
+
+Run tutorial 1D_CHF imposedTemperature ...
+
+Done running tutorial 1D_CHF imposedTemperature ...
+
+1D_CHF imposedTemperature has converged 
+
+Heat flux of the structure at the top of the channel at 40 seconds
+Divergent results:
+|           | Simulated | Expected |
+|:----------|:---------:|:--------:|
+| Qwall Top | 33427.4 | 33423.1 |
 
 --------------------------------------------------------------------------------
 
@@ -27,65 +70,6 @@ Done running tutorial 1D_HX twoPhase ...
 
 --------------------------------------------------------------------------------
 
-## 1D_PSBT_SC
-
-Run tutorial 1D_PSBT_SC ...
-
-Done running tutorial 1D_PSBT_SC ...
-
-1D_PSBT_SC has converged 
-
-alpha.vapour at the end of the channel
-Perfect match:
-|              | Simulated | Expected |
-|:-------------|:---------:|:--------:|
-| alpha vapour | 0.133727 | 0.133727 |
-
---------------------------------------------------------------------------------
-
-## 1D_boiling
-
-Run tutorial 1D_boiling ...
-
-Done running tutorial 1D_boiling ...
-
-1D_boiling has converged 
-
-
---------------------------------------------------------------------------------
-
-## 1D_CHF/imposedPower
-
-Run tutorial 1D_CHF imposedPower ...
-
-Done running tutorial 1D_CHF imposedPower ...
-
-1D_CHF imposedPower has converged 
-
-Structure temperature at the top of the channel at 90 seconds
-Perfect match:
-|          | Simulated | Expected |
-|:---------|:---------:|:--------:|
-| TwallTop | 2625.18 | 2625.18 |
-
---------------------------------------------------------------------------------
-
-## 1D_CHF/imposedTemperature
-
-Run tutorial 1D_CHF imposedTemperature ...
-
-Done running tutorial 1D_CHF imposedTemperature ...
-
-1D_CHF imposedTemperature has converged 
-
-Heat flux of the structure at the top of the channel at 40 seconds
-Perfect match:
-|           | Simulated | Expected |
-|:----------|:---------:|:--------:|
-| Qwall Top | 33423.1 | 33423.1 |
-
---------------------------------------------------------------------------------
-
 ## 1D_MSR_pointKinetics
 
 Run tutorial 1D_MSR_pointKinetics ...
@@ -103,6 +87,56 @@ Perfect match:
 |       | Simulated | Expected |
 |:------|:---------:|:--------:|
 | Power | 6.13794e+08  | 6.13794e+08 |
+
+--------------------------------------------------------------------------------
+
+## 1D_PSBT_SC/Phase_Ex1_12223
+
+Run tutorial 1D_PSBT_SC ...
+
+Done running tutorial 1D_PSBT_SC ...
+
+1D_PSBT_SC has converged 
+
+alpha.vapour at the end of the channel
+Perfect match:
+|              | Simulated | Expected |
+|:-------------|:---------:|:--------:|
+| alpha vapour | 0.133727 | 0.133727 |
+
+--------------------------------------------------------------------------------
+
+## 1D_PSBT_SC/PhaseII_Ex1_01_5215
+
+Run tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 ...
+
+Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 
+
+PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 has converged 
+
+alpha.vapour at the end of the channel
+Perfect match:
+|                       | Simulated | Expected |
+|:----------------------|:---------:|:--------:|
+| Max alpha vapour      | 0.123835 | 0.123835 |
+| T at max alpha vapour | 620.178 | 620.178 |
+
+--------------------------------------------------------------------------------
+
+## 1D_PSBT_SC/PhaseII_Ex2_04_6770
+
+Run tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 ...
+
+Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 
+
+PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 has converged 
+
+alpha.vapour at the end of the channel
+Perfect match:
+|                       | Simulated | Expected |
+|:----------------------|:---------:|:--------:|
+| Max alpha vapour      | 0.319074 | 0.319074 |
+| T at max alpha vapour | 625.826 | 625.826 |
 
 --------------------------------------------------------------------------------
 
@@ -156,6 +190,61 @@ Perfect match:
 | Flux 1      | 29953.3 | 29953.3 |
 | Source 0    | 3346.27 | 3346.27 |
 | Source 1    | 3346.27 | 3346.27 |
+
+--------------------------------------------------------------------------------
+
+## 2D_FFTF
+
+Run tutorial 2D_FFTF ...
+
+Done running tutorial 2D_FFTF ...
+
+Energy steady state has converged 
+
+Transient has converged 
+
+Reactivity contributions with 0.01 relative error
+Perfect match:
+|             | Simulated | Expected |
+|:------------|:---------:|:--------:|
+| Doppler     | 237.049 | 237.0728 |
+| Cladding    | 0.8180091 | 0.8198844 |
+| Density     | -2.518649 | -2.525069 |
+| Structures  | -1.027231 | -1.017622 |
+| Driveline   | -8.622036 | -8.631667 |
+| GEM         | -464.8496 | -464.8497 |
+| Total power | 29493.69 | 29490.49 |
+
+--------------------------------------------------------------------------------
+
+## 2D_fullCoupling
+
+Run tutorial 2D_fullCoupling ...
+
+Done running tutorial 2D_fullCoupling ...
+
+Steady State has converged 
+
+Transient (no driveline) has converged 
+
+
+--------------------------------------------------------------------------------
+
+## 2D_KNS37-L22
+
+Run tutorial 2D_KNS37-L22 ...
+
+Done running tutorial 2D_KNS37-L22 ...
+
+2D_KNS37-L22 has converged 
+
+Test with 0.2 relative error
+Perfect match:
+|                   | Simulated | Expected |
+|:------------------|:---------:|:--------:|
+| Time              | 12.5291 | 12.56424533593758 |
+| alpha.vapour      | 0.168632 | 0.1577348 |
+| T.activeStructure | 826.68 | 821.0752 |
 
 --------------------------------------------------------------------------------
 
@@ -232,67 +321,6 @@ Done running tutorial 2D_voidMotionNoPhaseChange ...
 
 --------------------------------------------------------------------------------
 
-## 2D_KNS37-L22
-
-Run tutorial 2D_KNS37-L22 ...
-
-Done running tutorial 2D_KNS37-L22 ...
-
-2D_KNS37-L22 has converged 
-
-Test with 0.2 relative error
-Perfect match:
-|                   | Simulated | Expected |
-|:------------------|:---------:|:--------:|
-| Time              | 12.4981 | 12.56424533593758 |
-| alpha.vapour      | 0.184324 | 0.1577348 |
-| T.activeStructure | 833.551 | 821.0752 |
-
---------------------------------------------------------------------------------
-
-## 2D_FFTF
-
-Run tutorial 2D_FFTF ...
-
-Done running tutorial 2D_FFTF ...
-
-Energy steady state has converged 
-
-Transient has converged 
-
-Reactivity contributions with 0.001 relative error
-Perfect match:
-|             | Simulated | Expected |
-|:------------|:---------:|:--------:|
-| Doppler     | 237.0728 | 237.0728 |
-| Cladding    | 0.8198844 | 0.8198844 |
-| Density     | -2.525069 | -2.525069 |
-| Structures  | -1.017622 | -1.017622 |
-| Driveline   | -8.631667 | -8.631667 |
-| GEM         | -464.8497 | -464.8497 |
-| Total power | 29490.49 | 29490.49 |
-
---------------------------------------------------------------------------------
-
-## 3D_SmallESFR
-
-Run tutorial 3D_SmallMSFR ...
-
-Done running tutorial 3D_SmallMSFR ...
-
-Steady state has converged 
-
-Transient has converged 
-
-Reactivity contributions with 0.001 relative error
-Perfect match:
-|             | Simulated | Expected |
-|:------------|:---------:|:--------:|
-| keff        | 0.936873 | 0.936827
-| Total power | 799945400 | 800000000 
-
---------------------------------------------------------------------------------
-
 ## 3D_gFHR
 
 Run tutorial 3D_gFHR ...
@@ -310,6 +338,50 @@ Perfect match:
 | Tfmax avg | 981.812 | 981.808 |
 | Tfmax min | 900.664 | 900.664 |
 | Tfmax max | 1062.96 | 1062.87 |
+
+--------------------------------------------------------------------------------
+
+## 3D_NTPfuelAssembly
+
+Run tutorial 3D_NTPfuelAssembly ...
+
+Done running tutorial 3D_NTPfuelAssembly ...
+
+Steady state neutronics & thermal-hydraulics has converged 
+
+Simulation & reference comparison
+  -> 0.1 % maximum relative error for (keff, power neutro & fluid)
+  -> 5 % maximum relative error for (mass flow, Tout)
+
+|                         | Simulated | Expected  | Error [%] |
+|:------------------------|:---------:|:---------:|:---------:|
+| keff                    | 1.3194369 | 1.3194342 |   -.00020 | # Passed
+| Total power neutro [MW] |   937.000 |       937 |         0 | # Passed
+| Total power fluid  [MW] |   937.001 |       937 |   -.00010 | # Passed
+| Total mass flow  [kg/s] | 30.54932250 |      31.0 |      1.45 | # Passed
+| Outlet temperature  [K] | 1929.9811 |      1972 |      2.13 | # Passed
+
+All test passed
+
+
+--------------------------------------------------------------------------------
+
+## 3D_SmallESFR
+
+Run tutorial 3D_SmallMSFR ...
+
+Done running tutorial 3D_SmallMSFR ...
+
+Steady state has converged 
+
+Transient has converged 
+
+keff and power test with 0.001 relative error
+Perfect match:
+|             | Simulated | Expected |
+|:------------|:---------:|:--------:|
+| keff        | 0.936873 | 0.936827 |
+| Total power | 799894700 | 800000000 |
 
 --------------------------------------------------------------------------------
 

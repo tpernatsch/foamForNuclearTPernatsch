@@ -1,0 +1,57 @@
+#!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+# Script to post process the results
+# - Axial sampling in fluid and neutronics regions
+# - Analysis of the main reactor parameters
+
+# Author: Thomas Guilbaud, EPFL, 13/08/2023
+
+#==============================================================================*
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#==============================================================================*
+# Test entry
+if [ $# -ne 2 ]
+then
+    echo
+    echo "  Usage: $0 folderName timeStep"
+    echo
+    exit 1
+fi
+
+#==============================================================================*
+# Extract folder name
+folder=$1
+timeStep=$2
+echo "Process folder $folder at time $timeStep"
+
+# Extract the fields from sample dict specifications
+postProcess -case $folder -region fluidRegion -time $timeStep -func sampleFluidDict
+postProcess -case $folder -region neutroRegion -time $timeStep -func sampleNeutroDict
+
+# Shortcut
+pathF="$folder/postProcessing/sampleFluidDict/fluidRegion/$timeStep"
+pathN="$folder/postProcessing/sampleNeutroDict/neutroRegion/$timeStep"
+
+#==============================================================================*
+# Generate graphs
+
+python3 AllplotAxialDistribution.py \
+    $pathN/NeutroAxial_TCool_TFuel_flux0_flux1_oneGroupFlux_powerDensity_rhoCool.xy \
+    $pathF/FluidAxial_T_Tmatrix.lumpedNuclearStructure_Tmax.lumpedNuclearStructure_Tsurface.lumpedNuclearStructure_magU_p_powerDensityNeutronics.xy
+
+python3 analysis.py $folder/log.GeN-Foam
+
+#==============================================================================*

@@ -39,8 +39,17 @@ Class
     Foam::FSDragCoefficientModels::ReynoldsPower
 
 Description
-    Drag coefficient in the form fd = coeff*Re^exp + const with 
-    Kd = 0.5*fd*alpha*rho*magU/Dh
+    Drag coefficient in the form 
+    \f[
+        f_d = A + B \times Re^C \\
+	K_d = 0.5 f_d \frac{\alpha \rho |U|}{D_h}
+    \f]
+
+    where:
+    \vartable
+        Re      | Reynolds number (superficial in two-phase) of the fluid
+	A, B, C | Selectable constants
+    \endtable
 
     Example of mandatory dictionary entries (with this coefficients, this 
     is the Blasius correlation):

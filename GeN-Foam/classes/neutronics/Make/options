@@ -32,10 +32,10 @@ EXE_INC = \
     -I$(LIB_SRC)/ODE/lnInclude \
     -I$(LIB_SRC)/parallel/reconstruct/reconstruct/lnInclude \
     -I$(LIB_SRC)/dynamicMesh/lnInclude \
-    # -I./../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
+    # -I./../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
 
 EXE_LIBS = \
-    -L$(FOAM_USER_LIBBIN) -libCommonMultiPhysics \
+    -L$(FOAM_USER_LIBBIN) -lCommonMultiPhysics \
     -lmeshTools \
     -lfiniteVolume \
     -lfvOptions \

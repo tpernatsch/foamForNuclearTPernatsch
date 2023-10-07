@@ -237,14 +237,41 @@ void Foam::powerModels::fixedPower::powerUpdate()
         (
             structure_.cellLists()[region]
         );
+
         if(timeDependent_[regioni])
         {
             scalar t(mesh_.time().timeOutputValue()-t0_[regioni]);
             scalar timeDependentPowerDensity(timeProfile_[regioni].value(t));
+
+            // The following assumes that each coefficient in the timeProfile_ 
+            // array represents a scaling factor relative to the initial power 
+            // density value. For instance, a coefficient of 1 at position 'i' 
+            // implies that the power at time step 'i' is equal to the initial
+            // value.
+
+            // The power density at each cell and at time t is calculated using:
+            //        powerDensity(t - deltat) = 
+            //                 initialPowerDensity * timeCoefficient(t - deltat)
+            //
+            //        powerDensity(t) = initialPowerDensity * timeCoefficient(t)
+
+            // Using the previous relations, we can eliminate the initial
+            // power value and derive the updated power density.
+            
+            const volScalarField& powerDensityOld = powerDensity_.oldTime();
+            
+            scalar tOld(mesh_.time().timeOutputValue()-t0_[regioni] -
+                mesh_.time().deltaT().value());
+            
+            scalar timeDependentPowerDensityOld(
+                timeProfile_[regioni].value(tOld));
+
             forAll(regionCells, i)
             {
                 label celli(regionCells[i]);
-                powerDensity_[celli] =  timeDependentPowerDensity;
+                
+                powerDensity_[celli] =  timeDependentPowerDensity * (
+                    powerDensityOld[celli]/timeDependentPowerDensityOld);
             }          
         }
     }

@@ -38,8 +38,10 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "FSPair.H"
+#include "FFPair.H"
 #include "lookUpTableCHF.H"
 #include "addToRunTimeSelectionTable.H"
+#include "interpolation2DTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -72,13 +74,30 @@ Foam::criticalHeatFluxModels::lookUpTableCHF::lookUpTableCHF
         dict,
         objReg
     ),
-    quality_(pair.fluidRef().flowQuality()),
+    mass_flow_quality_(pair.fluidRef().flowQuality()),
     p_(pair.mesh().lookupObject<volScalarField>("p")),
     rhoL_(pair.mesh().lookupObject<volScalarField>("thermo:rho.liquid")),
     rhoV_(pair.mesh().lookupObject<volScalarField>("thermo:rho.vapour")),
     uL_(pair.fluidRef().magU()),
     uV_(pair.mesh().lookupObject<volScalarField>("magU.vapour")),
-    normalizedL_(pair.fluidRef().normalized())
+    normalizedL_(pair.fluidRef().normalized()),
+    FFPairPtr_(nullptr),
+    Dh_(pair.structureRef().Dh()),
+    PitchToDiameter_(dict.get<scalar>("PitchToDiameter")),
+    pressureValues_(dict.lookup("pressureValues")),
+    massFlowRateValues_(dict.lookup("massFlowRateValues")),
+    qualityValues_(dict.lookup("qualityValues")),
+    data_(PtrList<FieldField<Field, scalar>>(dict.lookup("data"), PtrListScalarFieldFieldINew())),
+    pMethod(interpolateTableBase::interpolationMethodNames_[
+        dict.lookupOrDefault<word>("pressureInterpolationMethod", "linear")
+    ]),
+    gMethod_(interpolateTableBase::interpolationMethodNames_[
+        dict.lookupOrDefault<word>("massFlowRateInterpolationMethod", "linear")
+    ]),
+    xeMethod_(interpolateTableBase::interpolationMethodNames_[
+        dict.lookupOrDefault<word>("qualityInterpolationMethod", "linear")
+    ]),
+    pTable_(pressureValues_, data_, pMethod)
 {}
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
@@ -88,23 +107,80 @@ Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
     const label& celli
 ) const
 {
-    const scalar& xi(quality_[celli]);
+
+    // - Pointers breaking encapsulation - needed
+    if (FFPairPtr_ == nullptr)
+    {
+        HashTable<const FFPair*> FFPairs(pair_.mesh().lookupClass<FFPair>());
+        FFPairPtr_ = FFPairs[FFPairs.toc()[0]];
+    }
+
+    // ---------------------------------- //
+    //--- Refs --//
+    const scalar& xi(mass_flow_quality_[celli]);
     const scalar& pi(p_[celli]);
     const scalar& rhoLi(rhoL_[celli]);
     const scalar& rhoVi(rhoV_[celli]);
     const scalar& uLi(uL_[celli]);
     const scalar& uVi(uV_[celli]);
     const scalar& aLi(normalizedL_[celli]);
+    const scalar& Dhi(Dh_[celli]);
 
-
+    // Note that in this case, the fluid1 and fluid2 must be liquid and vapor, respectively.
+    const fluid& fluid1(FFPairPtr_->fluid1());
+    const fluid& fluid2(FFPairPtr_->fluid2());
+    // Calculate the saturated variables field.
+    const volScalarField& Tsat(FFPairPtr_->iT());
+    volScalarField hLsat(fluid1.thermo().he(p_, Tsat));
+    // Calculate the latent heat in this cell
+    const scalar Li(mag(FFPairPtr_->L()[celli]));
+    // Calculate the liquid and vapor saturated enthalpy in this cell.
+    scalar hLsati(hLsat[celli]);
+    scalar hVsati(hLsat[celli] + Li);   
+    // Calculate the mass flow rate in this cell
     scalar massFlowi(rhoLi*uLi*aLi+rhoVi*uVi*(1-aLi));
+    // Calculate the liquid and vapor enthalpy in this cell.
+    scalar hLi(fluid1.thermo().he()[celli]);
+    scalar hVi(fluid2.thermo().he()[celli]);
+    // Calculate the mixture enthalpy in this cell.
+    // Since the enthalpy of vapour phase is always similar to saturated properties, we assume the enthalpy of vapour phase equal to saturated property.
+//    scalar hMixi(xi*hLi+(1.0-xi)*hVi);
+    scalar hMixi(xi*hLi+(1.0-xi)*hVsati);
+    // Calculate the equilibrium quality in this cell
+    scalar EquilibriumQualityi((hMixi-hLsati)/Li);
 
-    // Temporary Gauthier 
+    //convert pressure to KPa, which is used in CHF look-up table
+    scalar pk(pi/1000.0); 
 
+    // Interpolate 3D table with pressure
+    FieldField<Field, scalar> pData(pTable_(pk));
 
+    // Create 2D table (x is massFlowRate, y is quality)    
+    scalarFieldInterpolateTable gTable(massFlowRateValues_, pData, gMethod_);
 
+    // Interpolate 2D table with mass flow rate
+    scalarField gData(gTable(massFlowi));
 
-    return 0;
+    // Create 1D table (main coordinate is quality)    
+    scalarInterpolateTable xeTable(qualityValues_, gData, xeMethod_);
+
+    // Interpolate 1D table and get final value of critical heat flux.
+    // Then convert kW/m2 ----> W/m2
+    scalar QCHF(xeTable(EquilibriumQualityi)*1e3);
+
+    // Implement the correction
+    // K1 for large diameter
+    // K2 for rod bundle geometries
+    if (PitchToDiameter_ != 1.0)
+    {
+      scalar K2((2.0*PitchToDiameter_ - 1.5)*exp(-pow(abs(EquilibriumQualityi),3.0)/2.0));
+      QCHF = QCHF * K2;
+    }
+    else 
+    {
+      scalar K1(max(0.6,sqrt(0.008/Dhi)));
+      QCHF = QCHF * K1;
+    }
+     
+    return QCHF;
 }
-
-// ************************************************************************* //

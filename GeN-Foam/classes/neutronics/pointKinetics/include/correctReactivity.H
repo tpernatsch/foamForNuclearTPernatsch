@@ -1,7 +1,15 @@
 //- Temperature and density feedbacks
-scalar DopplerReactivity =
-    -coeffFastDoppler_*
-    Foam::log(max(TFuelValue, SMALL)/max(TFuelRef_, SMALL));
+
+scalar DopplerReactivity = 0.0;
+if (fastNeutrons_)
+{
+    DopplerReactivity = -coeffFastDoppler_*
+        Foam::log(max(TFuelValue, SMALL) / max(TFuelRef_, SMALL));
+} 
+else // For thermal spectrum
+{
+    DopplerReactivity = coeffFastDoppler_* (sqrt(TFuelValue) - sqrt(TFuelRef_));
+}
 
 scalar TFuelReactivity =
     coeffTFuel_*(TFuelValue - TFuelRef_);
@@ -17,6 +25,9 @@ scalar rhoCoolReactivity =
 
 scalar TStructReactivity =
     coeffTStruct_*(TStructValue - TStructRef_);
+
+scalar TStructMechReactivity =
+    coeffTStructMech_*(TStructMechValue - TStructMechRef_);
 
 //- Driveline reactivity
 scalar drivelineExpValue
@@ -71,6 +82,7 @@ totalReactivity_ =
     +   TCoolReactivity
     +   rhoCoolReactivity
     +   TStructReactivity
+    +   TStructMechReactivity
     +   drivelineReactivity
     +   GEMReactivity
     +   boronReactivity;

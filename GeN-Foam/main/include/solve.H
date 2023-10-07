@@ -80,13 +80,13 @@ else if (solveE or solveN or solveTM)
         }
         if (solveTM)
         {
-            thermoMechanics.interpolateCouplingFields(mechToFluid);
+            thermoMechanics.interpolateCouplingFields(mechToFluid,mechToNeutro);
             thermoMechanics.correct(couplingResidual);
             neutronics.deformMesh(mechToNeutro,thermoMechanics.meshDisp()); 
         }       
         if (solveN)
         {
-            neutronics.interpolateCouplingFields(neutroToFluid);
+            neutronics.interpolateCouplingFields(neutroToFluid,neutroToMech);
             neutronics.correct(couplingResidual,couplingIter);
         }
         couplingIter++;

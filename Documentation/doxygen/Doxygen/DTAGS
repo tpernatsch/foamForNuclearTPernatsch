@@ -317,9 +317,9 @@
     <includes id="normFluxes_8H" name="normFluxes.H" local="yes" imported="no">normFluxes.H</includes>
     <member kind="function">
       <type></type>
-      <name>Info&lt;&lt; &quot;Solving neutronics&quot;&lt;&lt; endl ;xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_);const dictionary &amp;neutronTransport=mesh_.solutionDict().subDict(&quot;neutronTransport&quot;);scalar neutronIterationResidual=neutronTransport.lookupOrDefault&lt; scalar &gt;</name>
+      <name>Info&lt;&lt; &quot;Solving neutronics&quot;&lt;&lt; endl ;xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_);const dictionary &amp;neutronTransport=mesh_.solutionDict().subDict(&quot;neutronTransport&quot;);scalar neutronIterationResidual=neutronTransport.lookupOrDefault&lt; scalar &gt;</name>
       <anchorfile>solveNeutronicsAdjoint_8H.html</anchorfile>
-      <anchor>a18e7df8b8040f0db71972c2623f7994d</anchor>
+      <anchor>ab4e692f2a020becac2e70649370668db</anchor>
       <arglist>(&quot;neutronIterationResidual&quot;, 0.00001)</arglist>
     </member>
     <member kind="function">
@@ -518,6 +518,13 @@
       <anchorfile>createNeutronicsFields_8H.html</anchorfile>
       <anchor>a9c5a57d899c92013983bd8d1fa4462c8</anchor>
       <arglist>(fluxStar_, fluxI)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>forAll</name>
+      <anchorfile>createNeutronicsFields_8H.html</anchorfile>
+      <anchor>abde9481f24fad66f5032f914f724a3be</anchor>
+      <arglist>(externalSourceFlux_, externalSourceFluxI)</arglist>
     </member>
     <member kind="function">
       <type>oneGroupFlux_ *</type>
@@ -800,8 +807,8 @@
       <type>xs_</type>
       <name>correct</name>
       <anchorfile>solveNeutronics_8H.html</anchorfile>
-      <anchor>a12046a30b04bbfb1f05948a712e65123</anchor>
-      <arglist>(TFuel_, TClad_, rhoCool_, TCool_, disp_)</arglist>
+      <anchor>a9ead124106324ca6312df93f0613eac1</anchor>
+      <arglist>(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_)</arglist>
     </member>
     <member kind="function">
       <type>scalar</type>
@@ -828,8 +835,8 @@
       <type></type>
       <name>if</name>
       <anchorfile>solveNeutronics_8H.html</anchorfile>
-      <anchor>aa45d1c9649b2f6055780946f5005174e</anchor>
-      <arglist>(!eigenvalueNeutronics_ &amp;&amp;couplingIter==0)</arglist>
+      <anchor>a93af120aadc5c094bf0227621fe00764</anchor>
+      <arglist>(!eigenvalueNeutronics_ &amp;&amp;couplingIter==0 &amp;&amp;!externalSourceNeutronics_)</arglist>
     </member>
     <member kind="variable">
       <type>const dictionary &amp;</type>
@@ -943,15 +950,15 @@
       <type>this</type>
       <name>interpolateCouplingFields</name>
       <anchorfile>defaultGetCouplingFieldRefs_8H.html</anchorfile>
-      <anchor>a947a51eaaec75041c92165e65871f607</anchor>
-      <arglist>(neutroToFluid)</arglist>
+      <anchor>a835469e71299deed6bc3d40dfb4d9901</anchor>
+      <arglist>(neutroToFluid, neutroToMech)</arglist>
     </member>
     <member kind="function">
       <type>xs_</type>
       <name>correct</name>
       <anchorfile>defaultGetCouplingFieldRefs_8H.html</anchorfile>
-      <anchor>a12046a30b04bbfb1f05948a712e65123</anchor>
-      <arglist>(TFuel_, TClad_, rhoCool_, TCool_, disp_)</arglist>
+      <anchor>a9ead124106324ca6312df93f0613eac1</anchor>
+      <arglist>(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_)</arglist>
     </member>
     <member kind="variable">
       <type></type>
@@ -1009,6 +1016,13 @@
       <anchor>ace5c6d916116c439b30ff3c9311eac1e</anchor>
       <arglist></arglist>
     </member>
+    <member kind="variable">
+      <type></type>
+      <name>TStructMechOrig_</name>
+      <anchorfile>defaultGetCouplingFieldRefs_8H.html</anchorfile>
+      <anchor>adc45bf9babc94b70bd0b27d63837f53e</anchor>
+      <arglist></arglist>
+    </member>
   </compound>
   <compound kind="file">
     <name>defaultInterpolateCouplingFields.H</name>
@@ -1048,6 +1062,13 @@
       <anchorfile>defaultInterpolateCouplingFields_8H.html</anchorfile>
       <anchor>af8bc169eba905485123c31c252bf9b5c</anchor>
       <arglist>(liquidFuel_)</arglist>
+    </member>
+    <member kind="function">
+      <type>neutroToMech mapTgtToSrc *</type>
+      <name>TStructMechOrig_</name>
+      <anchorfile>defaultInterpolateCouplingFields_8H.html</anchorfile>
+      <anchor>ac7be4ba1afa60722cfacaffe5e06dc77</anchor>
+      <arglist>(), TStructMech_</arglist>
     </member>
     <member kind="function">
       <type>TFuel_</type>
@@ -1300,6 +1321,13 @@
     </member>
     <member kind="function">
       <type>scalar</type>
+      <name>TStructMechValue</name>
+      <anchorfile>computeFeedbackFieldValues_8H.html</anchorfile>
+      <anchor>af8b2d6c27b033e9619f5d92bb1013535</anchor>
+      <arglist>(fvc::domainIntegrate(oneGroupFluxSqr *TStructMech_ *structMechFeedbackCellField_).value()/fvc::domainIntegrate(oneGroupFluxSqr *structMechFeedbackCellField_).value())</arglist>
+    </member>
+    <member kind="function">
+      <type>scalar</type>
       <name>TDrivelineValue</name>
       <anchorfile>computeFeedbackFieldValues_8H.html</anchorfile>
       <anchor>ae36e14f9b226d3a7c60b1a6245421b8e</anchor>
@@ -1402,6 +1430,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
+      <type>scalar</type>
+      <name>TStructMechReactivity</name>
+      <anchorfile>correctReactivity_8H.html</anchorfile>
+      <anchor>a754d9f5d51cba4429ec246bb4cae4338</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
       <type>void</type>
       <name>GEMSodiumLevel</name>
       <anchorfile>correctReactivity_8H.html</anchorfile>
@@ -1450,6 +1485,20 @@
     <includes id="correctReactivity_8H" name="correctReactivity.H" local="yes" imported="no">correctReactivity.H</includes>
     <includes id="pointKineticsInfo_8H" name="pointKineticsInfo.H" local="yes" imported="no">pointKineticsInfo.H</includes>
     <member kind="function">
+      <type>const scalar</type>
+      <name>timeOutput</name>
+      <anchorfile>solvePointKinetics_8H.html</anchorfile>
+      <anchor>aeffb752afd018eed9cba6022b39f38f9</anchor>
+      <arglist>(mesh_.time().timeOutputValue())</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>solvePointKinetics_8H.html</anchorfile>
+      <anchor>a5336b1adf20b5b3544e641cfcbbce525</anchor>
+      <arglist>(externalSourceNeutronics_)</arglist>
+    </member>
+    <member kind="function">
       <type></type>
       <name>if</name>
       <anchorfile>solvePointKinetics_8H.html</anchorfile>
@@ -1467,8 +1516,8 @@
       <type>label</type>
       <name>n</name>
       <anchorfile>solvePointKinetics_8H.html</anchorfile>
-      <anchor>adb283ac99a91b10be7420fca0134b932</anchor>
-      <arglist>(delayedGroups_+1)</arglist>
+      <anchor>afb05ee311f845ad38e7649bdb877ce7d</anchor>
+      <arglist>(delayedGroups_+1+1)</arglist>
     </member>
     <member kind="function">
       <type>scalar</type>
@@ -1502,8 +1551,8 @@
       <type></type>
       <name>for</name>
       <anchorfile>solvePointKinetics_8H.html</anchorfile>
-      <anchor>ad699e831cc783494c5d29badc57dda3e</anchor>
-      <arglist>(int i=1;i&lt; n;i++)</arglist>
+      <anchor>a63f27e7fb8b156190e5edf4513c6da30</anchor>
+      <arglist>(int i=1;i&lt; n-1;i++)</arglist>
     </member>
     <member kind="function">
       <type></type>
@@ -1535,10 +1584,24 @@
     </member>
     <member kind="variable">
       <type></type>
+      <name>else</name>
+      <anchorfile>solvePointKinetics_8H.html</anchorfile>
+      <anchor>a0544c3fe466e421738dae463968b70ba</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
       <name>A</name>
       <anchorfile>solvePointKinetics_8H.html</anchorfile>
-      <anchor>a638ec4f05f04e32dcb695d052d441f80</anchor>
+      <anchor>a121e5ccc53c0511a154db04040d5e92a</anchor>
       <arglist>[0][0]</arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>B</name>
+      <anchorfile>solvePointKinetics_8H.html</anchorfile>
+      <anchor>a0b50721ced2da9523586aa32cc8ea062</anchor>
+      <arglist>[n-1]</arglist>
     </member>
     <member kind="variable">
       <type></type>
@@ -2167,9 +2230,9 @@
     <includes id="fluxEqSN_8H" name="fluxEqSN.H" local="yes" imported="no">fluxEqSN.H</includes>
     <member kind="function">
       <type></type>
-      <name>Info&lt;&lt; &quot;Solving neutronics&quot;&lt;&lt; endl ;xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_);const dictionary &amp;neutronTransport=mesh_.solutionDict().subDict(&quot;neutronTransport&quot;);const bool aitkenAccelerationEigenvalue=neutronTransport.lookupOrDefault(&quot;aitkenAccelerationEigenvalue&quot;, false);scalar neutronIterationResidual=neutronTransport.lookupOrDefault&lt; scalar &gt;</name>
+      <name>Info&lt;&lt; &quot;Solving neutronics&quot;&lt;&lt; endl ;xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_);const dictionary &amp;neutronTransport=mesh_.solutionDict().subDict(&quot;neutronTransport&quot;);const bool aitkenAccelerationEigenvalue=neutronTransport.lookupOrDefault(&quot;aitkenAccelerationEigenvalue&quot;, false);scalar neutronIterationResidual=neutronTransport.lookupOrDefault&lt; scalar &gt;</name>
       <anchorfile>solveNeutronicsSN_8H.html</anchorfile>
-      <anchor>ab770c6b13e8fcf4469e939224713214a</anchor>
+      <anchor>ac1370a3f718f40842dbe466d96e684b7</anchor>
       <arglist>(&quot;neutronIterationResidual&quot;, 0.00001)</arglist>
     </member>
     <member kind="function">
@@ -2662,8 +2725,8 @@
       <type>xs_</type>
       <name>correct</name>
       <anchorfile>solveNeutronicsSP3_8H.html</anchorfile>
-      <anchor>a12046a30b04bbfb1f05948a712e65123</anchor>
-      <arglist>(TFuel_, TClad_, rhoCool_, TCool_, disp_)</arglist>
+      <anchor>a9ead124106324ca6312df93f0613eac1</anchor>
+      <arglist>(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_)</arglist>
     </member>
     <member kind="function">
       <type>List&lt; scalar &gt;</type>
@@ -2897,6 +2960,13 @@
       <arglist>(nuclearDataCladExp_.lookup(&quot;zones&quot;))</arglist>
     </member>
     <member kind="function">
+      <type>PtrList&lt; entry &gt;</type>
+      <name>entriesTStructMech</name>
+      <anchorfile>readNuclearData_8H.html</anchorfile>
+      <anchor>a5a1e41073fe0f48c39b2e4429b5a57ec</anchor>
+      <arglist>(nuclearDataMechTemp_.lookup(&quot;zones&quot;))</arglist>
+    </member>
+    <member kind="function">
       <type>PtrList&lt; scalarField &gt;</type>
       <name>DRadialExpList</name>
       <anchorfile>readNuclearData_8H.html</anchorfile>
@@ -3104,6 +3174,41 @@
       <name>sigmaFromToCladExpList</name>
       <anchorfile>readNuclearData_8H.html</anchorfile>
       <anchor>a127596d2781e3b87e8eb3468b5e38c0d</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>DTStructMechList</name>
+      <anchorfile>readNuclearData_8H.html</anchorfile>
+      <anchor>a311475417f463c23407cad212bc18648</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>nuSigmaEffTStructMechList</name>
+      <anchorfile>readNuclearData_8H.html</anchorfile>
+      <anchor>afe08d3e8c16c1353f1d514d1d0e5e13b</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>sigmaPowTStructMechList</name>
+      <anchorfile>readNuclearData_8H.html</anchorfile>
+      <anchor>a8c9e01d086365116d6ee9b6e02ca21b9</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>sigmaDisappTStructMechList</name>
+      <anchorfile>readNuclearData_8H.html</anchorfile>
+      <anchor>a69bc3b958852721975144f31e330f1a9</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>List&lt; PtrList&lt; scalarSquareMatrix &gt; &gt;</type>
+      <name>sigmaFromToTStructMechList</name>
+      <anchorfile>readNuclearData_8H.html</anchorfile>
+      <anchor>a700cf58f14f5c7ac457e12e36e403713</anchor>
       <arglist>(zoneNumber_)</arglist>
     </member>
     <member kind="function">
@@ -3353,6 +3458,13 @@
       <arglist>(nuclearDataCladExp_.lookup(&quot;zones&quot;))</arglist>
     </member>
     <member kind="function">
+      <type>PtrList&lt; entry &gt;</type>
+      <name>entriesTStructMech</name>
+      <anchorfile>readNuclearDataLowMem_8H.html</anchorfile>
+      <anchor>a5a1e41073fe0f48c39b2e4429b5a57ec</anchor>
+      <arglist>(nuclearDataMechTemp_.lookup(&quot;zones&quot;))</arglist>
+    </member>
+    <member kind="function">
       <type>PtrList&lt; scalarField &gt;</type>
       <name>DRadialExpList</name>
       <anchorfile>readNuclearDataLowMem_8H.html</anchorfile>
@@ -3560,6 +3672,41 @@
       <name>sigmaFromToCladExpList</name>
       <anchorfile>readNuclearDataLowMem_8H.html</anchorfile>
       <anchor>a127596d2781e3b87e8eb3468b5e38c0d</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>DTStructMechList</name>
+      <anchorfile>readNuclearDataLowMem_8H.html</anchorfile>
+      <anchor>a311475417f463c23407cad212bc18648</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>nuSigmaEffTStructMechList</name>
+      <anchorfile>readNuclearDataLowMem_8H.html</anchorfile>
+      <anchor>afe08d3e8c16c1353f1d514d1d0e5e13b</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>sigmaPowTStructMechList</name>
+      <anchorfile>readNuclearDataLowMem_8H.html</anchorfile>
+      <anchor>a8c9e01d086365116d6ee9b6e02ca21b9</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>sigmaDisappTStructMechList</name>
+      <anchorfile>readNuclearDataLowMem_8H.html</anchorfile>
+      <anchor>a69bc3b958852721975144f31e330f1a9</anchor>
+      <arglist>(zoneNumber_)</arglist>
+    </member>
+    <member kind="function">
+      <type>List&lt; PtrList&lt; scalarSquareMatrix &gt; &gt;</type>
+      <name>sigmaFromToTStructMechList</name>
+      <anchorfile>readNuclearDataLowMem_8H.html</anchorfile>
+      <anchor>a700cf58f14f5c7ac457e12e36e403713</anchor>
       <arglist>(zoneNumber_)</arglist>
     </member>
     <member kind="function">
@@ -5074,7 +5221,7 @@
       <type>auto</type>
       <name>solve</name>
       <anchorfile>solveAlphaMULES_8H.html</anchorfile>
-      <anchor>a2de99cc2184e44282013f20748f72470</anchor>
+      <anchor>a3a9ae8c3b41c38dc9443c680b50456b7</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -11210,101 +11357,59 @@
     <filename>solveThermalMechanics_8H.html</filename>
     <includes id="calculateStress_8H" name="calculateStress.H" local="yes" imported="no">calculateStress.H</includes>
     <member kind="function">
-      <type>DEqn</type>
-      <name>relax</name>
+      <type></type>
+      <name>forAll</name>
       <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a8bbd3f9bba905d34cf81ee535892fd40</anchor>
-      <arglist>()</arglist>
+      <anchor>a4d1375e9443253139f33965e720cdb09</anchor>
+      <arglist>(isPorous_, celli)</arglist>
+    </member>
+    <member kind="function">
+      <type>dimensionedScalar</type>
+      <name>rescale</name>
+      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
+      <anchor>a131aa2bfb2b64b5e1eb133c552af0edd</anchor>
+      <arglist>(&quot;rescale&quot;, dimensionSet(1, -1, -3, -1, 0), 1.0)</arglist>
+    </member>
+    <member kind="function">
+      <type>volScalarField</type>
+      <name>scaledIsPorous</name>
+      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
+      <anchor>a23fc3d97e76a53aa3c36a10c3643fc83</anchor>
+      <arglist>(isPorous_ *rescale)</arglist>
+    </member>
+    <member kind="function">
+      <type>volScalarField</type>
+      <name>rhoC</name>
+      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
+      <anchor>a4de5d1351fc64c8699cefb0d2e056861</anchor>
+      <arglist>(rho_ *C_)</arglist>
+    </member>
+    <member kind="function">
+      <type>fvScalarMatrix</type>
+      <name>TEqn</name>
+      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
+      <anchor>af6f596bbb6d99c1893f2c0d1a11b1218</anchor>
+      <arglist>((1.0-isPorous_) *(fvm::ddt(rhoC, TStruct_) - fvm::laplacian(rhoK_, TStruct_) - powerDensityNeutronics_)==fvm::Sp(scaledIsPorous, TStruct_) - TStructFromTH_ *scaledIsPorous)</arglist>
     </member>
     <member kind="function">
       <type></type>
       <name>if</name>
       <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>aca9bab5c6f845be03960bed25c147860</anchor>
-      <arglist>(!compactNormalStress_)</arglist>
+      <anchor>aa53bf3f39532a8f09f5bdb50c3b218fb</anchor>
+      <arglist>(solveDisplacement_)</arglist>
     </member>
     <member kind="function">
-      <type></type>
-      <name>if</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>aa5d843a3ec43e1d5a2d7b5ec54bf5358</anchor>
-      <arglist>(compactNormalStress_)</arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>while</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a8e2a38ab7b96b1ab4bc1acd108b4d210</anchor>
-      <arglist>(initialResidual &gt; convergenceTolerance_ &amp;&amp;++iCorr&lt; nCorr_)</arglist>
-    </member>
-    <member kind="function">
-      <type>fvScalarMatrix</type>
-      <name>fuelDispEqn</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a5724fb0694bc8681990fcf8b630422a9</anchor>
-      <arglist>(fvm::div(faceArea, fuelDisp_, &quot;div(fuelDisp)&quot;)==alphaFuel_ *(TFuel_-TFuelRef_))</arglist>
-    </member>
-    <member kind="function">
-      <type>surfaceScalarField</type>
-      <name>faceAreaCR</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a7cc290997196119e17e0418411636b9b</anchor>
-      <arglist>(CROrientation &amp;mesh_.Sf())</arglist>
-    </member>
-    <member kind="function">
-      <type>fvScalarMatrix</type>
-      <name>CRDispEqn</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>ab3fed776777f504294b4e82fcf9429a2</anchor>
-      <arglist>(fvm::div(faceAreaCR, CRDisp_, &quot;div(CRDisp)&quot;)==-alphaCR_ *(TStruct_-TCRRef_))</arglist>
-    </member>
-    <member kind="function">
-      <type>fuelDispEqn</type>
-      <name>solve</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>aa964fc207391ff27f48ffb9afd3c6796</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>meshDisp_</type>
+      <type>disp_</type>
       <name>correctBoundaryConditions</name>
       <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a94d67528de1b1e738808739ac39504fb</anchor>
+      <anchor>a633553cddf990700d61f1b82226946d1</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="variable">
-      <type>int</type>
-      <name>iCorr</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a66beb072a909561a6fa57649e5cf7b28</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type>scalar</type>
+      <type></type>
       <name>initialResidual</name>
       <anchorfile>solveThermalMechanics_8H.html</anchorfile>
       <anchor>a008e5b0fbb46e38b919eee40fe082ac9</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type></type>
-      <name>do</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a721c6ff80a6d3e4ad4ffa52a04c60085</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type></type>
-      <name>sigmaD_</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a83f19ce533dce119e4411f018a10da40</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type></type>
-      <name>else</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a0544c3fe466e421738dae463968b70ba</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable">
@@ -11315,24 +11420,10 @@
       <arglist></arglist>
     </member>
     <member kind="variable">
-      <type>vector</type>
-      <name>CROrientation</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a5ba47414239eb65771c23463f65c2d58</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
       <type></type>
-      <name>fuelDispVector_</name>
+      <name>else</name>
       <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>a43772385b4a817218a5ea116f1489b18</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="variable">
-      <type></type>
-      <name>meshDisp_</name>
-      <anchorfile>solveThermalMechanics_8H.html</anchorfile>
-      <anchor>abcde090437b74f65272fbf4ea9d22e2c</anchor>
+      <anchor>a0544c3fe466e421738dae463968b70ba</anchor>
       <arglist></arglist>
     </member>
   </compound>
@@ -11363,7 +11454,6 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/GeN-Foam/classes/thermoMechanics/linearElastic/</path>
     <filename>linearElasticThermoMechanics_8H.html</filename>
     <includes id="thermoMechanics_8H" name="thermoMechanics.H" local="yes" imported="no">thermoMechanics.H</includes>
-    <includes id="XS_8H" name="XS.H" local="yes" imported="no">XS.H</includes>
     <class kind="class">Foam::linearElasticThermoMechanics</class>
     <namespace>Foam</namespace>
   </compound>
@@ -13438,6 +13528,13 @@
     </member>
     <member kind="function">
       <type>meshToMesh</type>
+      <name>neutroToMech</name>
+      <anchorfile>createMeshInterpolators_8H.html</anchorfile>
+      <anchor>a6270f5377734e7088046ba64bd3668b1</anchor>
+      <arglist>(neutroMesh, mechMesh, Foam::meshToMesh::interpolationMethod(runTime.controlDict().lookupOrDefault(&quot;neutroToMech_interpMethod&quot;, 2)), Foam::meshToMesh::procMapMethod::pmAABB, false)</arglist>
+    </member>
+    <member kind="function">
+      <type>meshToMesh</type>
       <name>mechToFluid</name>
       <anchorfile>createMeshInterpolators_8H.html</anchorfile>
       <anchor>afda02081b00dd9bbf0a215328f6833e0</anchor>
@@ -13708,15 +13805,15 @@
       <type>virtual void</type>
       <name>getCouplingFieldRefs</name>
       <anchorfile>classFoam_1_1adjointDiffusionNeutronics.html</anchorfile>
-      <anchor>a92e79ddc2a3b75672fd0abdb39c642a5</anchor>
-      <arglist>(const objectRegistry &amp;src, const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>aed0e48a5e6628fbcbd51c1cc03acf4f4</anchor>
+      <arglist>(const objectRegistry &amp;srcTH, const meshToMesh &amp;neutroToFluid, const objectRegistry &amp;srcTM, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
       <name>interpolateCouplingFields</name>
       <anchorfile>classFoam_1_1adjointDiffusionNeutronics.html</anchorfile>
-      <anchor>a8b317ca01efa1efb32264be43472ec10</anchor>
-      <arglist>(const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>ae8ba6b9c6520898b7a0113edf2b991ce</anchor>
+      <arglist>(const meshToMesh &amp;neutroToFluid, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
@@ -13859,6 +13956,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>const volScalarField *</type>
+      <name>TStructMechOrig_</name>
+      <anchorfile>classFoam_1_1adjointDiffusionNeutronics.html</anchorfile>
+      <anchor>adbbfe2f9d077e542420b0efd09ab9499</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>const volVectorField *</type>
       <name>UOrig_</name>
       <anchorfile>classFoam_1_1adjointDiffusionNeutronics.html</anchorfile>
@@ -13912,6 +14016,13 @@
       <name>rhoCool_</name>
       <anchorfile>classFoam_1_1adjointDiffusionNeutronics.html</anchorfile>
       <anchor>af82ea76dc249b3661c882a65cba78a2c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>TStructMech_</name>
+      <anchorfile>classFoam_1_1adjointDiffusionNeutronics.html</anchorfile>
+      <anchor>a6a16709444be7aa64b6b9d3ab7aae261</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -16186,15 +16297,15 @@
       <type>virtual void</type>
       <name>getCouplingFieldRefs</name>
       <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
-      <anchor>a92e79ddc2a3b75672fd0abdb39c642a5</anchor>
-      <arglist>(const objectRegistry &amp;src, const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>aed0e48a5e6628fbcbd51c1cc03acf4f4</anchor>
+      <arglist>(const objectRegistry &amp;srcTH, const meshToMesh &amp;neutroToFluid, const objectRegistry &amp;srcTM, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
       <name>interpolateCouplingFields</name>
       <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
-      <anchor>a8b317ca01efa1efb32264be43472ec10</anchor>
-      <arglist>(const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>ae8ba6b9c6520898b7a0113edf2b991ce</anchor>
+      <arglist>(const meshToMesh &amp;neutroToFluid, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
@@ -16233,6 +16344,13 @@
     </member>
     <member kind="variable" protection="protected">
       <type>PtrList&lt; volScalarField &gt;</type>
+      <name>externalSourceFlux_</name>
+      <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
+      <anchor>a49ef44a457a95e891f11b56989945216</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; volScalarField &gt;</type>
       <name>prec_</name>
       <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
       <anchor>a736f28d690625a0f42809a45e9b99116</anchor>
@@ -16257,6 +16375,13 @@
       <name>defaultFlux_</name>
       <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
       <anchor>a0e57f3e6c5cec9d5d7824e9e742cf102</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>defaultExternalSourceFlux_</name>
+      <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
+      <anchor>a21cbd6d4ceb54419c55d3452315874a4</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -16323,6 +16448,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>const volScalarField *</type>
+      <name>TStructMechOrig_</name>
+      <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
+      <anchor>adbbfe2f9d077e542420b0efd09ab9499</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>const volVectorField *</type>
       <name>UOrig_</name>
       <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
@@ -16376,6 +16508,13 @@
       <name>rhoCool_</name>
       <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
       <anchor>af82ea76dc249b3661c882a65cba78a2c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>TStructMech_</name>
+      <anchorfile>classFoam_1_1diffusionNeutronics.html</anchorfile>
+      <anchor>a6a16709444be7aa64b6b9d3ab7aae261</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -21202,15 +21341,15 @@
       <type>virtual void</type>
       <name>getCouplingFieldRefs</name>
       <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
-      <anchor>a470d6f1cfb49a0322b82c59c96907ac7</anchor>
-      <arglist>(const objectRegistry &amp;src, const meshToMesh &amp;mechToFluid)</arglist>
+      <anchor>a80cf6646c0377c7516797e5503dd9582</anchor>
+      <arglist>(const objectRegistry &amp;srcTH, const objectRegistry &amp;srcN)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
       <name>interpolateCouplingFields</name>
       <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
-      <anchor>a6006aa479bd9c56aa7c8167abd470438</anchor>
-      <arglist>(const meshToMesh &amp;mechToFluid)</arglist>
+      <anchor>a5fddc7c29f829e710673bc97735b1aa3</anchor>
+      <arglist>(const meshToMesh &amp;mechToFluid, const meshToMesh &amp;mechToNeutro)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
@@ -21218,6 +21357,13 @@
       <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
       <anchor>af3c8644e9f66fdb995b17eea610e073f</anchor>
       <arglist>(scalar &amp;residual)</arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>Switch</type>
+      <name>solveDisplacement_</name>
+      <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
+      <anchor>ab7ed0580444ac55f2305c4118b81cb3c</anchor>
+      <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
       <type>Switch</type>
@@ -21437,6 +21583,27 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>TStructFromTH_</name>
+      <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
+      <anchor>a0379bd5d1c6baffb25d195d2d0820b6d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>powerDensityNeutronics_</name>
+      <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
+      <anchor>ad596330a3a089673ef489c991dba8d30</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>isPorous_</name>
+      <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
+      <anchor>ac2d094357915ff0af8b78215a57a1bda</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>const volScalarField *</type>
       <name>TFuelOrig_</name>
       <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
@@ -21448,6 +21615,13 @@
       <name>TStructOrig_</name>
       <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
       <anchor>abbefccb2078842b86f95dccaa27cc5fb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>const volScalarField *</type>
+      <name>powerDensityOrig_</name>
+      <anchorfile>classFoam_1_1linearElasticThermoMechanics.html</anchorfile>
+      <anchor>a23f8a8cd25603cf78f5f402fd280d001</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -22808,8 +22982,8 @@
       <type>virtual void</type>
       <name>deformMesh</name>
       <anchorfile>classFoam_1_1neutronics.html</anchorfile>
-      <anchor>ab392825141319a02091d21ab85b09c2e</anchor>
-      <arglist>(const meshToMesh &amp;TMToNeutro, const volVectorField &amp;dispOrig)</arglist>
+      <anchor>a60caf99b40b19e19dcdc23def99965cd</anchor>
+      <arglist>(const meshToMesh &amp;mechToNeutro, const volVectorField &amp;dispOrig)</arglist>
     </member>
     <member kind="function" virtualness="pure">
       <type>virtual const PtrList&lt; volScalarField &gt;</type>
@@ -22843,15 +23017,15 @@
       <type>virtual void</type>
       <name>getCouplingFieldRefs</name>
       <anchorfile>classFoam_1_1neutronics.html</anchorfile>
-      <anchor>a9986a08f7046b9aa2576e3d91dbd4371</anchor>
-      <arglist>(const objectRegistry &amp;src, const meshToMesh &amp;neutroToFluid)=0</arglist>
+      <anchor>acae9a4e7b74675347394686ed001baf5</anchor>
+      <arglist>(const objectRegistry &amp;srcTH, const meshToMesh &amp;neutroToFluid, const objectRegistry &amp;srcTM, const meshToMesh &amp;neutroToMech)=0</arglist>
     </member>
     <member kind="function" virtualness="pure">
       <type>virtual void</type>
       <name>interpolateCouplingFields</name>
       <anchorfile>classFoam_1_1neutronics.html</anchorfile>
-      <anchor>a61337211ba3e4087e68080e29e772bf0</anchor>
-      <arglist>(const meshToMesh &amp;neutroToFluid)=0</arglist>
+      <anchor>a5a17d0d19e1257fd80f1f6c94a664cc3</anchor>
+      <arglist>(const meshToMesh &amp;neutroToFluid, const meshToMesh &amp;neutroToMech)=0</arglist>
     </member>
     <member kind="function" virtualness="pure">
       <type>virtual void</type>
@@ -23005,6 +23179,13 @@
       <name>eigenvalueNeutronics_</name>
       <anchorfile>classFoam_1_1neutronics.html</anchorfile>
       <anchor>a0181af00bffa6ebf0aa1b27683038f7a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>bool</type>
+      <name>externalSourceNeutronics_</name>
+      <anchorfile>classFoam_1_1neutronics.html</anchorfile>
+      <anchor>a4d2ca00fc435ef2e27144c412d72a8a4</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -25382,6 +25563,13 @@
       <arglist>(volScalarField &amp;feedbackCellField, const word &amp;keyword)</arglist>
     </member>
     <member kind="function">
+      <type>void</type>
+      <name>setBeamParameters</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>ad6799396aadc2baccb0aea2dd6335927</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
       <type>scalar</type>
       <name>calcDrivelineReactivity</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
@@ -25399,15 +25587,15 @@
       <type>virtual void</type>
       <name>getCouplingFieldRefs</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
-      <anchor>a92e79ddc2a3b75672fd0abdb39c642a5</anchor>
-      <arglist>(const objectRegistry &amp;src, const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>aed0e48a5e6628fbcbd51c1cc03acf4f4</anchor>
+      <arglist>(const objectRegistry &amp;srcTH, const meshToMesh &amp;neutroToFluid, const objectRegistry &amp;srcTM, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
       <name>interpolateCouplingFields</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
-      <anchor>a8b317ca01efa1efb32264be43472ec10</anchor>
-      <arglist>(const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>ae8ba6b9c6520898b7a0113edf2b991ce</anchor>
+      <arglist>(const meshToMesh &amp;neutroToFluid, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
@@ -25498,6 +25686,146 @@
       <name>externalReactivityTimeProfile_</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
       <anchor>a1a6be493a1ebefcad92a0dbce9d06acd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>IOdictionary</type>
+      <name>externalSource_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>afadbc15bab7a19fa9e46ccbe32324e05</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>string</type>
+      <name>externalSourceMode_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a088f0c288cba5cecac42617b3aea723f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>subcriticalIndex_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a7db1c0208494418f50e2270de4048b80</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>ksrc_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>ab98333c8d93da238d4e80f4bfddf80dd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>nuFission_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a6513161c9c40b2ea75acf13defae43ca</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>nuSource_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a50f2d52858b11ca05007b9dc5315b612</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>energyPerFission_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>aa106c7d572b5c7d94bd8ef8a6440aa9c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>beamEnergy_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a2622666766a992e19382504457097f7f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>intrinsicGain_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a527dfa12008d9fa0cbb0a3ad86092ead</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>timeProfile</type>
+      <name>externalSourceModulationTimeProfile_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>aefd93c0aa5065af5a88e7cb4a8f4fa5b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>externalSourceModulation_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a28533948898494331b445ba9bae57ee0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>externalSourcePower_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a9522f98dd056aaeb3b3c8ffa7f7bc61f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>externalSourcePowerOld_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>aa8c7537abd04b7f4e1711b32e485f1b4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>externalSourcePowerRef_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>ae345b715de8f79b488878b54bc4630fb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>externalSourceBeamPower_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a7b7bdab7ac6b26ad79c628c7675947b9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>externalSourceBeamIntensity_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>afdf8e4f8c1b14c6750caceef306fccfd</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>powerTarget_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>aac1c5b6fdecb97f414739cd434276ed8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>List&lt; Tuple2&lt; scalar, scalar &gt; &gt;</type>
+      <name>powerRecordPtr_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a370b7211c04e0ce0f72d9a62465969cc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>modulationFactor_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>ae0b48eb48898dfc7aea37e028a509073</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>powerModulationDelay_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a1e028c58055c5341a7a7b1710af138a4</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -25635,6 +25963,13 @@
     </member>
     <member kind="variable" protection="protected">
       <type>scalar</type>
+      <name>coeffTStructMech_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a4457cf2238f75edeef74d56b7cf350fc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
       <name>coeffDrivelineExp_</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
       <anchor>ab09baf31508e314218a09f358f9e4851</anchor>
@@ -25684,6 +26019,13 @@
     </member>
     <member kind="variable" protection="protected">
       <type>scalar</type>
+      <name>TStructMechRef_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>acba947da446ef29b240a0e0803abb5c1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
       <name>TDrivelineRef_</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
       <anchor>ab1b032ce2a0051f2e5cd2197735963ba</anchor>
@@ -25722,6 +26064,13 @@
       <name>TStructOrig_</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
       <anchor>abbefccb2078842b86f95dccaa27cc5fb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>const volScalarField *</type>
+      <name>TStructMechOrig_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>adbbfe2f9d077e542420b0efd09ab9499</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -25799,6 +26148,13 @@
       <name>TStruct_</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
       <anchor>a3c79fc0d393e1803e82cb5709982dec4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>TStructMech_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>a6a16709444be7aa64b6b9d3ab7aae261</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -25953,6 +26309,13 @@
       <name>structFeedbackCellField_</name>
       <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
       <anchor>af5543e61067b56e032049668096eccf9</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>structMechFeedbackCellField_</name>
+      <anchorfile>classFoam_1_1pointKineticNeutronics.html</anchorfile>
+      <anchor>af21c4f90d0e1856485ae37f9969e5532</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -28073,15 +28436,15 @@
       <type>virtual void</type>
       <name>getCouplingFieldRefs</name>
       <anchorfile>classFoam_1_1SNNeutronics.html</anchorfile>
-      <anchor>a92e79ddc2a3b75672fd0abdb39c642a5</anchor>
-      <arglist>(const objectRegistry &amp;src, const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>aed0e48a5e6628fbcbd51c1cc03acf4f4</anchor>
+      <arglist>(const objectRegistry &amp;srcTH, const meshToMesh &amp;neutroToFluid, const objectRegistry &amp;srcTM, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
       <name>interpolateCouplingFields</name>
       <anchorfile>classFoam_1_1SNNeutronics.html</anchorfile>
-      <anchor>a8b317ca01efa1efb32264be43472ec10</anchor>
-      <arglist>(const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>ae8ba6b9c6520898b7a0113edf2b991ce</anchor>
+      <arglist>(const meshToMesh &amp;neutroToFluid, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
@@ -28245,6 +28608,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>const volScalarField *</type>
+      <name>TStructMechOrig_</name>
+      <anchorfile>classFoam_1_1SNNeutronics.html</anchorfile>
+      <anchor>adbbfe2f9d077e542420b0efd09ab9499</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>const volVectorField *</type>
       <name>UOrig_</name>
       <anchorfile>classFoam_1_1SNNeutronics.html</anchorfile>
@@ -28298,6 +28668,13 @@
       <name>rhoCool_</name>
       <anchorfile>classFoam_1_1SNNeutronics.html</anchorfile>
       <anchor>af82ea76dc249b3661c882a65cba78a2c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>TStructMech_</name>
+      <anchorfile>classFoam_1_1SNNeutronics.html</anchorfile>
+      <anchor>a6a16709444be7aa64b6b9d3ab7aae261</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -28481,15 +28858,15 @@
       <type>virtual void</type>
       <name>getCouplingFieldRefs</name>
       <anchorfile>classFoam_1_1SP3Neutronics.html</anchorfile>
-      <anchor>a92e79ddc2a3b75672fd0abdb39c642a5</anchor>
-      <arglist>(const objectRegistry &amp;src, const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>aed0e48a5e6628fbcbd51c1cc03acf4f4</anchor>
+      <arglist>(const objectRegistry &amp;srcTH, const meshToMesh &amp;neutroToFluid, const objectRegistry &amp;srcTM, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
       <name>interpolateCouplingFields</name>
       <anchorfile>classFoam_1_1SP3Neutronics.html</anchorfile>
-      <anchor>a8b317ca01efa1efb32264be43472ec10</anchor>
-      <arglist>(const meshToMesh &amp;neutroToFluid)</arglist>
+      <anchor>ae8ba6b9c6520898b7a0113edf2b991ce</anchor>
+      <arglist>(const meshToMesh &amp;neutroToFluid, const meshToMesh &amp;neutroToMech)</arglist>
     </member>
     <member kind="function" virtualness="virtual">
       <type>virtual void</type>
@@ -28632,6 +29009,13 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>const volScalarField *</type>
+      <name>TStructMechOrig_</name>
+      <anchorfile>classFoam_1_1SP3Neutronics.html</anchorfile>
+      <anchor>adbbfe2f9d077e542420b0efd09ab9499</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>const volVectorField *</type>
       <name>UOrig_</name>
       <anchorfile>classFoam_1_1SP3Neutronics.html</anchorfile>
@@ -28685,6 +29069,13 @@
       <name>rhoCool_</name>
       <anchorfile>classFoam_1_1SP3Neutronics.html</anchorfile>
       <anchor>af82ea76dc249b3661c882a65cba78a2c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>TStructMech_</name>
+      <anchorfile>classFoam_1_1SP3Neutronics.html</anchorfile>
+      <anchor>a6a16709444be7aa64b6b9d3ab7aae261</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -30095,15 +30486,15 @@
       <type>virtual void</type>
       <name>getCouplingFieldRefs</name>
       <anchorfile>classFoam_1_1thermoMechanics.html</anchorfile>
-      <anchor>a851c93a72329c6a1da7a1a6347352c28</anchor>
-      <arglist>(const objectRegistry &amp;src, const meshToMesh &amp;mechToFluid)=0</arglist>
+      <anchor>ae81c1d60259d33fc0232c5a86125360c</anchor>
+      <arglist>(const objectRegistry &amp;srcTH, const objectRegistry &amp;srcN)=0</arglist>
     </member>
     <member kind="function" virtualness="pure">
       <type>virtual void</type>
       <name>interpolateCouplingFields</name>
       <anchorfile>classFoam_1_1thermoMechanics.html</anchorfile>
-      <anchor>a8329d740aca8e3231de641c6573064fc</anchor>
-      <arglist>(const meshToMesh &amp;mechToFluid)=0</arglist>
+      <anchor>a17d557c1b8652981e043eeed4ee96df9</anchor>
+      <arglist>(const meshToMesh &amp;mechToFluid, const meshToMesh &amp;mechToNeutro)=0</arglist>
     </member>
     <member kind="function" virtualness="pure">
       <type>virtual void</type>
@@ -31758,8 +32149,8 @@
       <type>void</type>
       <name>correct</name>
       <anchorfile>classFoam_1_1XS.html</anchorfile>
-      <anchor>adea4123ce2829dffe4bcf6104a52e8a7</anchor>
-      <arglist>(const volScalarField &amp;Tfuel, const volScalarField &amp;Tclad, const volScalarField &amp;rhoCool, const volScalarField &amp;TCool, const volVectorField &amp;Disp)</arglist>
+      <anchor>a0ba3c17dd1262a1dccf4a9a235695657</anchor>
+      <arglist>(const volScalarField &amp;Tfuel, const volScalarField &amp;Tclad, const volScalarField &amp;rhoCool, const volScalarField &amp;TCool, const volVectorField &amp;Disp, const volScalarField &amp;TStructMech)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -31836,6 +32227,13 @@
       <name>nuclearDataCladExp_</name>
       <anchorfile>classFoam_1_1XS.html</anchorfile>
       <anchor>afa518738c6f456b2cec2aaa1ad8ddf43</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>IOdictionary</type>
+      <name>nuclearDataMechTemp_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>ac80d78705394e60a39ad95e9f9349a96</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -32427,6 +32825,55 @@
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>TStructMechRef_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>acba947da446ef29b240a0e0803abb5c1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>TStructMechPerturbed_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>a247b07deb53c430c71b37343f6a222b8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>mechTempDList_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>ae08dd60a0076ea5fc2589f98405811ab</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>mechTempNuSigmaEffList_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>a88f472f22fb6571a69571a7dbd8b16b6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>mechTempSigmaPowList_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>a2f92c8928c49309b36757a01131bdf0c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>mechTempSigmaDisappList_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>a0f77cf4dbd740b4139c77cdfd7a54360</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>List&lt; PtrList&lt; scalarSquareMatrix &gt; &gt;</type>
+      <name>mechTempSigmaFromToList_</name>
+      <anchorfile>classFoam_1_1XS.html</anchorfile>
+      <anchor>a0bd811ed8c4ce2811d79687c240182cf</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
       <type>IOdictionary</type>
       <name>CRmove_</name>
       <anchorfile>classFoam_1_1XS.html</anchorfile>
@@ -32574,8 +33021,8 @@
       <type>Foam::tmp&lt; Foam::volScalarField &gt;</type>
       <name>sigmaFromTo</name>
       <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
-      <anchor>a5e92a118fd121e563136851e42857d63</anchor>
-      <arglist>(label momentI, label energyI, label energyJ, const volScalarField &amp;Tfuel, const volScalarField &amp;Tclad, const volScalarField &amp;rhoCool, const volScalarField &amp;TCool, const volVectorField &amp;Disp)</arglist>
+      <anchor>a8e0bda64d4274e09b6cae071a016d308</anchor>
+      <arglist>(label momentI, label energyI, label energyJ, const volScalarField &amp;Tfuel, const volScalarField &amp;Tclad, const volScalarField &amp;rhoCool, const volScalarField &amp;TCool, const volVectorField &amp;Disp, const volScalarField &amp;TStructMech)</arglist>
     </member>
     <member kind="function">
       <type>const PtrList&lt; volScalarField &gt;</type>
@@ -32672,8 +33119,8 @@
       <type>void</type>
       <name>correct</name>
       <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
-      <anchor>adea4123ce2829dffe4bcf6104a52e8a7</anchor>
-      <arglist>(const volScalarField &amp;Tfuel, const volScalarField &amp;Tclad, const volScalarField &amp;rhoCool, const volScalarField &amp;TCool, const volVectorField &amp;Disp)</arglist>
+      <anchor>a0ba3c17dd1262a1dccf4a9a235695657</anchor>
+      <arglist>(const volScalarField &amp;Tfuel, const volScalarField &amp;Tclad, const volScalarField &amp;rhoCool, const volScalarField &amp;TCool, const volVectorField &amp;Disp, const volScalarField &amp;TStructMech)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -32750,6 +33197,13 @@
       <name>nuclearDataCladExp_</name>
       <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
       <anchor>afa518738c6f456b2cec2aaa1ad8ddf43</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>IOdictionary</type>
+      <name>nuclearDataMechTemp_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>ac80d78705394e60a39ad95e9f9349a96</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">
@@ -33366,6 +33820,55 @@
       <name>cladExpSigmaFromToList_</name>
       <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
       <anchor>ae08aea5cb35d13155b6500359220a610</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>TStructMechRef_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>acba947da446ef29b240a0e0803abb5c1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalar</type>
+      <name>TStructMechPerturbed_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>a247b07deb53c430c71b37343f6a222b8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>mechTempDList_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>ae08dd60a0076ea5fc2589f98405811ab</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>mechTempNuSigmaEffList_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>a88f472f22fb6571a69571a7dbd8b16b6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>mechTempSigmaPowList_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>a2f92c8928c49309b36757a01131bdf0c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>PtrList&lt; scalarField &gt;</type>
+      <name>mechTempSigmaDisappList_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>a0f77cf4dbd740b4139c77cdfd7a54360</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>List&lt; PtrList&lt; scalarSquareMatrix &gt; &gt;</type>
+      <name>mechTempSigmaFromToList_</name>
+      <anchorfile>classFoam_1_1XSLowMem.html</anchorfile>
+      <anchor>a0bd811ed8c4ce2811d79687c240182cf</anchor>
       <arglist></arglist>
     </member>
     <member kind="variable" protection="protected">

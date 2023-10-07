@@ -39,9 +39,18 @@ Class
     Foam::FSDragCoefficientModels::Colebrook
 
 Description
-    Drag coefficient in the form fd = (coeff*log10(Re) + const)^exp with 
-    Kd = 0.5*fd*alpha*rho*magU/Dh
-
+    Drag coefficient in the form 
+    \f[
+        f_d = ( A \log_{10}(Re) + B )^C \\
+	K_d = 0.5 f_d \frac{\alpha \rho |U|}{D_h}
+    \f]
+    
+    \vartable
+        Re      | Reynolds number (superficial in two-phase) of the fluid
+	A, B, C | Selectable constants
+    \endtable
+    
+    
     Example of mandatory dictionary entries (with this coefficients, this 
     is the Filonenko correlation):
     \verbatim

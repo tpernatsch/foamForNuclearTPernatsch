@@ -1,3 +1,5 @@
+InterpolateTable/InterpolateTables.C
+
 timeProfile/timeProfile.C
 
 LIB = $(FOAM_USER_LIBBIN)/libCommonMultiPhysics

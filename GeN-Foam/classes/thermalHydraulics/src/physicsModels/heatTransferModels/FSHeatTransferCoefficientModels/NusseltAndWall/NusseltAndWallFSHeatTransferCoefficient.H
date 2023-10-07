@@ -43,15 +43,23 @@ Description
     starting from the Nusselt, which is turn obtained via correlation in the
     form
 
-    Nu = A_+B_*(Re^C_)*(Pr^D_)
+    \f[
+        Nu = A + B \times Re^C Pr^D
+    \f]
 
-    with Re, Pr being the Reynolds (superficial in two-phase) and Prandlt
-    of the fluid, and A, B, C, D selectable consts
+    where:
+    \vartable
+        Re         | Reynolds number (superficial in two-phase) of the fluid
+        Pr         | Prandtl number of the fluid
+        A, B, C, D | Selectable constants
+    \endtable
 
     Additional heat transfer coeff to take into account the wall resistance,
     such that
 
-    1/H = (1/(Nu * kappa / Dh)) + (1/H_wall)
+    \f[
+        \frac{1}{H} = \frac{1}{\frac{Nu \kappa}{D_h}} + \frac{1}{H_{wall}}
+    \f]
 
     Example of mandatory dictionary entries:
     \verbatim

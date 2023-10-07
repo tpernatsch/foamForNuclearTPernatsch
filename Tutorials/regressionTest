@@ -13,8 +13,8 @@ cd ${0%/*} || exit 1    # Run from this directory
 clear
 
 # Select tutorials in the test suite
-tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_externalSourceDiffusion 2D_FFTF 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_onePhaseAndSubcriticalPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN 3D_gFHR"
-# tutorials=" 3D_gFHR " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
+tutorials="1D_HX 1D_PSBT_SC 1D_boiling 1D_CHF 1D_MSR_pointKinetics 1D_thermalMSR_pointKinetics 3D_SmallESFR 2D_cavityBoussinesq 2D_externalSourceDiffusion 2D_FFTF 2D_fullCoupling 2D_MSFR 2D_onePhaseAndPointKineticsCoupling 2D_onePhaseAndSubcriticalPointKineticsCoupling 2D_voidMotionNoPhaseChange 2D_KNS37-L22 Godiva_SN 3D_gFHR"
+# tutorials="3D_SmallESFR " #2D_FFTF  3D_SmallESFR 1D_HX 1D_PSBT_SC 1D_boiling 2D_onePhaseAndPointKineticsCoupling 2D_KNS37
 
 # Name of the result file in Markdown
 resFile="./regressionResults"
@@ -141,19 +141,54 @@ do
         ;;
 
     "1D_PSBT_SC")
-        cd $tutorialName
+        # Run Phase I Ex 1
+        cd $tutorialName/Phase_Ex1_12223
         ./Allrun
-        printf "Done running tutorial $tutorialName...\n"
+        printf "Done running tutorial $tutorialName Phase_Ex1_12223 ...\n"
 
         # check it ran
-        isConverge . $tutorialName
+        isConverge . "$tutorialName Phase_Ex1_12223"
 
         # check that results are correct
         input="./0.6/fluidRegion/alpha.vapour"
         averageAt=$(head -98 "$input" | tail -1)
         printf "time,  alpha.vapour at the end of the channel is: $averageAt . It should be 0.133727 \n" >> ../$resFile
 
-        cd ..
+        cd ../..
+
+
+        # Run phase II Ex 1
+        cd $tutorialName/PhaseII_Ex1_01_5215
+        ./Allrun
+        printf "Done running tutorial $tutorialName PhaseII_Ex1_01_5215 ...\n"
+
+        # check it ran
+        isConverge . "$tutorialName PhaseII_Ex1_01_5215"
+
+        # check that results are correct
+        maxAlphaVap=$(head -418 "./5/fluidRegion/alpha.vapour" | tail -1)
+        TatMaxAlphaVap=$(head -418 "./5/fluidRegion/T.fixedPower" | tail -1)
+        printf "time,  alpha.vapour at the end of the channel is: $maxAlphaVap . It should be 0.123835 \n" >> ../$resFile
+        printf "time,  T.fixedPower at the end of the channel is: $TatMaxAlphaVap . It should be 620.178 \n" >> ../$resFile
+
+        cd ../..
+
+
+        # Run Phase II Ex 2
+        cd $tutorialName/PhaseII_Ex2_04_6770
+        ./Allrun
+        printf "Done running tutorial $tutorialName PhaseII_Ex2_04_6770 ...\n"
+
+        # check it ran
+        isConverge . "$tutorialName PhaseII_Ex2_04_6770"
+
+        # check that results are correct
+        maxAlphaVap=$(head -307 "./20/fluidRegion/alpha.vapour" | tail -1)
+        TatMaxAlphaVap=$(head -307 "./20/fluidRegion/T.fixedPower" | tail -1)
+        printf "time,  alpha.vapour at the end of the channel is: $averageAt . It should be 0.319074 \n" >> ../$resFile
+        printf "time,  T.fixedPower at the end of the channel is: $TatMaxAlphaVap . It should be 625.826 \n" >> ../$resFile
+
+        cd ../..
         ;;
 
     "1D_MSR_pointKinetics")
@@ -212,7 +247,7 @@ do
         reactivityDoppler=$(extract "-> Doppler" transient)
         reactivityClad=$(extract "-> TClad" transient)
         reactivityDensity=$(extract "-> rhoCool" transient)
-        reactivityStructures=$(extract "-> TStruct" transient)
+        reactivityStructures=$(extract "-> TStruct  " transient)
         reactivityDriveline=$(extract "-> driveline" transient)
         reactivityGEM=$(extract "-> GEM" transient)
         totalPower=$(extract "totalPower" transient)
@@ -224,6 +259,17 @@ do
         printf "reactivityDriveline is $reactivityDriveline . It should be -8.631667  \n" >> ../$resFile
         printf "reactivityGEM is $reactivityGEM . It should be -464.8497  \n" >> ../$resFile
         printf "totalPower is $totalPower . It should be 29490.49  \n" >> ../$resFile
+        cd ..
+        ;;
+
+    "2D_fullCoupling")
+        cd $tutorialName
+        ./Allrun
+        printf "Done running tutorial $tutorialName...\n"
+
+        # check it ran
+        isConverge steadyState            "Steady State of $tutorialName"
+        isConverge transientNoDriveline   "Transient (no driveline) of $tutorialName"
         cd ..
         ;;
 

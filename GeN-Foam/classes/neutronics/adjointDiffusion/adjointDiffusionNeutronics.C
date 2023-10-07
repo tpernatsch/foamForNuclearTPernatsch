@@ -195,6 +195,15 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
         dimensionedScalar("", dimensionSet(0,-2,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    TFuelOrig_(nullptr),
+    TCladOrig_(nullptr),
+    TCoolOrig_(nullptr),
+    rhoCoolOrig_(nullptr),
+    TStructMechOrig_(nullptr),
+    UOrig_(nullptr),
+    alphaOrig_(nullptr),
+    alphatOrig_(nullptr),
+    muOrig_(nullptr),
     TFuel_
     (
         IOobject
@@ -250,6 +259,20 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
         mesh,
         dimensionedScalar("", dimTemperature, SMALL),
         zeroGradientFvPatchScalarField::typeName
+    ),
+    TStructMech_
+    (
+        IOobject
+        (
+            "TStructMech",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
+        zeroGradientFvPatchScalarField::typeName
     )
 {
     #include "createNeutronicsFieldsAdjoint.H"
@@ -266,8 +289,10 @@ Foam::adjointDiffusionNeutronics::~adjointDiffusionNeutronics()
 
 void Foam::adjointDiffusionNeutronics::getCouplingFieldRefs
 (
-    const objectRegistry& src,
-    const meshToMesh& neutroToFluid
+    const objectRegistry& srcTH,
+    const meshToMesh& neutroToFluid,
+    const objectRegistry& srcTM,
+    const meshToMesh& neutroToMech
 )
 {
     #include "defaultGetCouplingFieldRefs.H"
@@ -275,7 +300,8 @@ void Foam::adjointDiffusionNeutronics::getCouplingFieldRefs
 
 void Foam::adjointDiffusionNeutronics::interpolateCouplingFields
 (
-    const meshToMesh& neutroToFluid
+    const meshToMesh& neutroToFluid,
+    const meshToMesh& neutroToMech
 )
 {
     #include "defaultInterpolateCouplingFields.H"

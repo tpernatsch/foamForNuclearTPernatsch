@@ -196,7 +196,7 @@ Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
 
 void Foam::neutronics::deformMesh
 (
-    const meshToMesh& TMToNeutro,
+    const meshToMesh& mechToNeutro,
     const volVectorField& dispOrig
 )
 {
@@ -207,7 +207,7 @@ void Foam::neutronics::deformMesh
         neutroMeshPointInterpolation.interpolate(disp_);
 
     disp_ *= 0.0;
-    TMToNeutro.mapSrcToTgt(dispOrig, plusEqOp<vector>(), disp_);
+    mechToNeutro.mapSrcToTgt(dispOrig, plusEqOp<vector>(), disp_);
     disp_.correctBoundaryConditions();
 
     tmp<pointVectorField> neutroPointsDisplacement =

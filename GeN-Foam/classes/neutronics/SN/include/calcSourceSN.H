@@ -7,7 +7,7 @@ forAll(sigmaFromToTempEJEI,momentL)
         sigmaFromToTempEJEI[momentL].set
         (
             energyJ,
-            new volScalarField(xs_.sigmaFromTo(momentL,energyJ,energyI,TFuel_,TClad_,rhoCool_,TCool_,disp_))
+            new volScalarField(xs_.sigmaFromTo(momentL,energyJ,energyI,TFuel_,TClad_,rhoCool_,TCool_,disp_,TStructMech_))
         );
     }
 

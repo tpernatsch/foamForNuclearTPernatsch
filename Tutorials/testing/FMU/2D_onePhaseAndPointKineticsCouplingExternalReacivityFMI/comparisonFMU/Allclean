@@ -1,9 +1,4 @@
 #!/bin/sh
-rm -r steady*
-rm -r transient*
-rm *.log
-rm log.*
-rm *.out
-rm rootCase*/*.libs
-rm rootCase*/*.log
-rm rootCase*/*.makefile
+rm -rf steady* transient*
+rm -rf *.log log.* *.out 
+rm -rf rootCase*/*.libs rootCase*/*.log rootCase*/*.makefile
