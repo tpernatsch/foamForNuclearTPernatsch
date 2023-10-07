@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 26-sept.-2023 - 11:31:37  
+Regression test of 06-Oct-2023 - 15:51:53  
 Tutorials successfully completed: 21/23  [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ Done running tutorial 1D_CHF imposedPower ...
 
 1D_CHF imposedPower has converged 
 
-Structure temperature at the top of the channel at 90 seconds  
+Structure temperature at the top of the channel at 90 seconds
 Divergent results:
 |          | Simulated | Expected |
 |:---------|:---------:|:--------:|
@@ -40,7 +40,7 @@ Done running tutorial 1D_CHF imposedTemperature ...
 
 1D_CHF imposedTemperature has converged 
 
-Heat flux of the structure at the top of the channel at 40 seconds  
+Heat flux of the structure at the top of the channel at 40 seconds
 Divergent results:
 |           | Simulated | Expected |
 |:----------|:---------:|:--------:|
