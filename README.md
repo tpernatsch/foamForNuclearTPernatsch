@@ -45,7 +45,7 @@ A forum to get support from the developers and the community is available at the
 
 <p align="center" style="text-align:center;">
 
-  <img src="./Documentation/media/assmblyWindows.gif" width="300" style="display:inline-block;">
+  <img src="./Documentation/media/assmblyWindows.png" width="300" style="display:inline-block;">
   <img src="./Documentation/media/coreFlowering.png" width="300" style="display:inline-block;">
 
   <br>
