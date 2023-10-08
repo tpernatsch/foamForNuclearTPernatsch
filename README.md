@@ -75,7 +75,7 @@ A forum to get support from the developers and the community is available at the
 
 <p align="center" style="text-align:center;">
 
-  <img src="./Documentation/media/FFTF.png" width="1000" style="display:inline-block;">
+  <img src="./Documentation/media/FFTF.png" width="800" style="display:inline-block;">
 
 
   <br>
