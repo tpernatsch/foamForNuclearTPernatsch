@@ -10,6 +10,7 @@ EXE_INC = \
     -I./phaseModels/structureModels/powerModels \
     -I./phaseModels/structureModels/powerModels/fixedPower \
     -I./phaseModels/structureModels/powerModels/fixedTemperature \
+    -I./phaseModels/structureModels/powerModels/nuclearFuelFMU \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPin \
     -I./phaseModels/structureModels/powerModels/nuclearSteadyStatePebble \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPinTest \
@@ -131,6 +132,7 @@ EXE_INC = \
     -I./functionObjects/pressureDrop \
     -I./functionObjects/stopIfMaxFieldDiff \
     -I./functionObjects/patchScalarFieldValue \
+    -I./../../common/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
@@ -143,8 +145,8 @@ EXE_INC = \
     -I$(LIB_SRC)/sampling/lnInclude \
     # -I./../../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
 
-LIB_LIBS = \
-    -L$(FOAM_USER_LIBBIN) \
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) -lCommonMultiPhysics \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \

@@ -26,17 +26,24 @@ In this section, a list of FMI inputs/outputs in GeN-Foam is provided with a lin
 |:--------|:---------|
 | Momentum source | [GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/pump](GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/pump) |
 | Fix-temperature structure | [GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperatureFMU](GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperatureFMU) |
+| Additional heat transfer coefficient in serie | [GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU](GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU) |
 | External reactivity in the point-kinetics solver | [GeN-Foam/classes/neutronics/pointKinetics](GeN-Foam/classes/neutronics/pointKinetics) |
 | External neutron source modulation in the point-kinetics solver | [GeN-Foam/classes/neutronics/pointKinetics](GeN-Foam/classes/neutronics/pointKinetics) |
-| Additional heat transfer coefficient in serie | [GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU](GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU) |
 
 
-### Outputs to FMUs:
+### Outputs to FMUs
 
 | Feature | Location |
 |:--------|:---------|
 | External sensor | FMU4FOAM |
 | Field integral over a cellZone | [GeN-Foam/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU](GeN-Foam/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU) |
+
+
+### Inputs and outputs from/to an FMU
+
+| Feature | Location |
+|:--------|:---------|
+| Nuclear fuel structure based on an FMU | [GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU](GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU) |
 
 
 ## Potential Issues
