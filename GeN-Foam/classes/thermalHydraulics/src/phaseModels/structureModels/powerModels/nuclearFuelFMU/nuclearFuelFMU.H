@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2212                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2306                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2023 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -43,20 +43,22 @@ Description
     model relies on the exchange of 3 axially sampled information:
     - Surface temperature of the cladding (GeN-Foam FMI output)
     - Power density in the fuel (GeN-Foam FMI output)
-    - Surface power between the structure and the fluid (GeN-Foam FMI input)
+    - Heat flux between the structure and the fluid (GeN-Foam FMI input)
 
-    It is possible to uniformly sample between 1 and N points along a L lines by
-    providing x, y, zmin and zmax coordinates. These samples are extracted in 
+    The axial sampling can be shared with the FMUs.
+
+    It is possible to sample between 1 and N points along a lines by
+    providing x, y, and z coordinates. These samples are extracted in 
     the mesh via the Tsurface.nuclearFuelFMU and powerDensityNeutronics fields.
 
     GeN-Foam receives from the FMU the surface power uniformly sampled at the 
     boundary between the structure (e.g cladding) and the fluid. Then it is 
     possible to reconstruct the Tsurface.nuclearFuelFMU field by interpolating 
-    these samples. The interpolation between the surface power samples is 
+    these samples. The interpolation between the heat flux samples is 
     performed using the Radial Basis Function interpolation algorithm 
     (https://en.wikipedia.org/wiki/Radial_basis_function_interpolation). In case 
-    the model contains a single pin, it is possible to set a uniform XY surface 
-    power distribution by setting the epsilon parameter to (0 0 nz).
+    the model contains a single pin, it is possible to set a uniform XY heat
+    flux distribution by setting the epsilon parameter to (0 0 nz).
 
     An interesting property of this powerModel is that the external fuel models 
     can be in 1 or N FMUs, and coupled to 1 or M powerModels.
@@ -66,12 +68,23 @@ Usage
     // Example for a 3 fuel pin model
     powerModel
     {
-        type            nuclearFuelFMU;
-        volumetricArea  ${{2.0*$volFrac / $r}}; // 2.0 * volumeFrac / rCladOuter
+        type                        nuclearFuelFMU;
+        volumetricArea              ${{2.0*$volFrac / $r}}; // 2.0 * volumeFrac / rCladOuter
+        
         // Sampling position, in this case 3 sampling lines
-        xPos            (0.34   0.50   0.66);
-        yPos            (0.05   0.05   0.05);
-        epsilon         (10 0 100); // Used for Radial Basis Functions interpolation
+        xPos                        (0.34   0.50   0.66);
+        yPos                        (0.05   0.05   0.05);
+        axialPowerInterpolationMethod   linear;
+        axialLocationsNameToFMU     gfAxialLocations;
+        axialLocations
+        (
+            0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4
+        );
+        
+        // Radial Basis Function interpolation for heat flux reconstruction
+        radialBasisFunctionMethod   gaussian; // gaussian or polyharmonicSpline
+        epsilon                     (10 0 100); // Used only for Gaussian Radial Basis Functions interpolation
+        
         // FMI ports
         avgPowerDensityNameToFMU
         (
@@ -79,19 +92,19 @@ Usage
         );
         axialProfilePowerDensityNameToFMU
         (
-            gfAxialProfilePowerDensity0 gfAxialProfilePowerDensity1 gfAxialProfilePowerDensity2
+            gfAxialProfPwrDens0 gfAxialProfPwrDens1 gfAxialProfPwrDens2
         );
         TstructNameToFMU
         (
             gfTstruct0 gfTstruct1 gfTstruct2
         );
-        surfacePowerNameFromFMU
+        heatFluxNameFromFMU
         (
             gfSurfacePower0 gfSurfacePower1 gfSurfacePower2
         );
         initPowerDensity        100e6;
         initTstruct             600;
-        initSurfacePower        1e5;
+        initHeatFlux        1e5;
     }
     \endverbatim
 
@@ -153,8 +166,11 @@ protected:
     //- Axial location interpolation method
     List<interpolateTableBase::interpolationMethod> zMethod_;
 
+    //- Radial basis function method name (polyharmonicSpline, gaussian)
+    List<word> radialBasisFunctionMethod_;
+
     //- Shape parameter for the radial basis function. List of 3 values, one per
-    //  direction 
+    //  direction. Only used by gaussian
     scalarListList epsilon_;
 
     //- List that maps the region index to the region name
@@ -162,6 +178,9 @@ protected:
     
     //- List that maps from cell index to region index
     labelList cellToRegion_;
+
+    //- Inverse matrix of the Radial Basis Function operator
+    SquareMatrix<scalar> invRBFmatrix_;
     
 public:
 
@@ -204,18 +223,18 @@ private:
 
         //- Weight calculation for the Radial Basis Function interpolation
         //  https://en.wikipedia.org/wiki/Radial_basis_function_interpolation
-        scalarList solveRadialBasisFunction
+        scalarList solveGaussianRadialBasisFunction
         (
             const scalarList xList,
             const scalarList yList,
             const scalarList zList,
             const scalarList vList,
             const scalarList eps
-        ) const;
+        );
 
         //- Compute the interpolation value based on the Radial Basis Function
         //  https://en.wikipedia.org/wiki/Radial_basis_function_interpolation
-        scalar radialBasisFucntion
+        scalar gaussianRadialBasisFunction
         (
             const scalarList w,
             const scalarList xList,
@@ -225,6 +244,66 @@ private:
             const scalar y,
             const scalar z,
             const scalarList eps
+        ) const;
+
+        scalarList solvePolyharmonicSpline
+        (
+            const scalarList xList,
+            const scalarList yList,
+            const scalarList zList,
+            const scalarList vList
+        );
+
+        scalar polyharmonicSpline
+        (
+            const scalarList w,
+            const scalarList xList,
+            const scalarList yList,
+            const scalarList zList,
+            const scalar x,
+            const scalar y,
+            const scalar z
+        ) const;
+
+        scalarList solvePolyharmonicSplineDerivative
+        (
+            const scalarList xList,
+            const scalarList yList,
+            const scalarList zList,
+            const scalarList vList,
+            const scalarList dvxList,
+            const scalarList dvyList
+        ) const;
+
+        scalar polyharmonicSplineDerivative
+        (
+            const scalarList w,
+            const scalarList xList,
+            const scalarList yList,
+            const scalarList zList,
+            const scalar x,
+            const scalar y,
+            const scalar z
+        ) const;
+
+        scalarList solvePolyharmonicSplineIntegral
+        (
+            const scalarList xList,
+            const scalarList yList,
+            const scalarList zList,
+            const scalarList vList,
+            const word region
+        ) const;
+
+        scalar polyharmonicSplineIntegral
+        (
+            const scalarList w,
+            const scalarList xList,
+            const scalarList yList,
+            const scalarList zList,
+            const scalar x,
+            const scalar y,
+            const scalar z
         ) const;
 
         //- Stringify a list
