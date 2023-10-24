@@ -102,8 +102,70 @@ Usage
         (
             gfSurfacePower0 gfSurfacePower1 gfSurfacePower2
         );
-        initPowerDensity        100e6;
-        initTstruct             600;
+        initPowerDensity    100e6;
+        initTstruct         600;
+        initHeatFlux        1e5;
+    }
+    \endverbatim
+
+
+    \verbatim
+    // Example for a 7 fuel pin model in a lattice using the polyharmonic spline 
+    // interpolation method
+    powerModel
+    {
+        type                        nuclearFuelFMU;
+        volumetricArea              ${{2.0*$volFrac / $r}}; // 2.0 * volumeFrac / rCladOuter
+        
+        // Sampling position, in this case 3 sampling lines
+        xyPosLattice
+        {
+            origin          (0 0);
+            type            hexagonal; // square; // hexagonal;
+            nElements       (3 3);
+            pitch           0.5;
+            rotationAngle   0;
+            lattice // 7 pins
+            (
+                e F F
+                 F F F
+                  F F e
+            );
+        }
+        axialPowerInterpolationMethod   linear;
+        axialLocationsNameToFMU     gfAxialLocations;
+        axialLocations
+        (
+            0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4
+        );
+        
+        // Radial Basis Function interpolation for heat flux reconstruction
+        radialBasisFunctionMethod   polyharmonicSpline;
+
+        // FMI ports
+        avgPowerDensityNameToFMU
+        (
+            gfPowerDensity0 gfPowerDensity1 gfPowerDensity2 gfPowerDensity3
+            gfPowerDensity4 gfPowerDensity5 gfPowerDensity6
+        );
+        axialProfilePowerDensityNameToFMU
+        (
+            gfAxialProfPwrDens0 gfAxialProfPwrDens1 gfAxialProfPwrDens2
+            gfAxialProfPwrDens3 gfAxialProfPwrDens4 gfAxialProfPwrDens5
+            gfAxialProfPwrDens6
+        );
+        TstructNameToFMU
+        (
+            gfTstruct0 gfTstruct1 gfTstruct2 gfTstruct3 gfTstruct4 gfTstruct5
+            gfTstruct6
+        );
+        heatFluxNameFromFMU
+        (
+            gfSurfacePower0 gfSurfacePower1 gfSurfacePower2 gfSurfacePower3
+            gfSurfacePower4 gfSurfacePower5 gfSurfacePower6
+        );
+        initPowerDensity    100e6;
+        initTstruct         600;
         initHeatFlux        1e5;
     }
     \endverbatim
@@ -121,7 +183,6 @@ SourceFiles
 
 #include "powerModel.H"
 #include "IOFieldFields.H"
-#include "Function1.H"
 #include "InterpolateTables.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -220,94 +281,6 @@ public:
 private:
 
     // Private Member Functions
-
-        //- Weight calculation for the Radial Basis Function interpolation
-        //  https://en.wikipedia.org/wiki/Radial_basis_function_interpolation
-        scalarList solveGaussianRadialBasisFunction
-        (
-            const scalarList xList,
-            const scalarList yList,
-            const scalarList zList,
-            const scalarList vList,
-            const scalarList eps
-        );
-
-        //- Compute the interpolation value based on the Radial Basis Function
-        //  https://en.wikipedia.org/wiki/Radial_basis_function_interpolation
-        scalar gaussianRadialBasisFunction
-        (
-            const scalarList w,
-            const scalarList xList,
-            const scalarList yList,
-            const scalarList zList,
-            const scalar x,
-            const scalar y,
-            const scalar z,
-            const scalarList eps
-        ) const;
-
-        scalarList solvePolyharmonicSpline
-        (
-            const scalarList xList,
-            const scalarList yList,
-            const scalarList zList,
-            const scalarList vList
-        );
-
-        scalar polyharmonicSpline
-        (
-            const scalarList w,
-            const scalarList xList,
-            const scalarList yList,
-            const scalarList zList,
-            const scalar x,
-            const scalar y,
-            const scalar z
-        ) const;
-
-        scalarList solvePolyharmonicSplineDerivative
-        (
-            const scalarList xList,
-            const scalarList yList,
-            const scalarList zList,
-            const scalarList vList,
-            const scalarList dvxList,
-            const scalarList dvyList
-        ) const;
-
-        scalar polyharmonicSplineDerivative
-        (
-            const scalarList w,
-            const scalarList xList,
-            const scalarList yList,
-            const scalarList zList,
-            const scalar x,
-            const scalar y,
-            const scalar z
-        ) const;
-
-        scalarList solvePolyharmonicSplineIntegral
-        (
-            const scalarList xList,
-            const scalarList yList,
-            const scalarList zList,
-            const scalarList vList,
-            const word region
-        ) const;
-
-        scalar polyharmonicSplineIntegral
-        (
-            const scalarList w,
-            const scalarList xList,
-            const scalarList yList,
-            const scalarList zList,
-            const scalar x,
-            const scalar y,
-            const scalar z
-        ) const;
-
-        //- Stringify a list
-        word stringify(const scalarList list) const;
 
         //- Compute a recommended RBF epsilon parameter to avoid peaks in the 
         //  RBF interpolation

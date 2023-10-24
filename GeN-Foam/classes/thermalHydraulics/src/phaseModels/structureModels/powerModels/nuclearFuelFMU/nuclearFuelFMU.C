@@ -52,6 +52,9 @@ License
 #include "SquareMatrix.H"
 #include "LUscalarMatrix.H"
 #include "commDataLayer.H"
+#include "latticeMap.H"
+#include "listConversion.H"
+#include "radialBasisFunctionInterpolation.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -157,10 +160,37 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
         (
             dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics", 1.0)
         );
-        const scalarList xPos(dict.get<scalarList>("xPos"));
-        const scalarList yPos(dict.get<scalarList>("yPos"));
+        scalarList xPos(0);
+        scalarList yPos(0);
         const scalarField axialLoc(dict.get<scalarField>("axialLocations"));
         const word radialBasisFunctionMethod(dict.get<word>("radialBasisFunctionMethod"));
+
+        if (dict.found("xPos") && dict.found("yPos"))
+        {
+            Info<< "nuclearFuelFMU uses XY posisions from xPos and yPos in region " 
+                << region << " (list mode)"
+                << endl;
+
+            xPos = dict.get<scalarList>("xPos");
+            yPos = dict.get<scalarList>("yPos");
+        }
+        else if (dict.found("xyPosLattice"))
+        {
+            Info<< "nuclearFuelFMU uses XY posisions from xyPosLattice in region " 
+                << region << " (lattice mode)"
+                << endl;
+
+            const latticeMap& latticeMap(dict.subDict("xyPosLattice"));
+            xPos = latticeMap.getXpositions();
+            yPos = latticeMap.getYpositions();
+        }
+        else
+        {
+            FatalErrorInFunction
+                << "None of xPos/yPos or xyPosLattice have been provided in region " << region
+                << ". It is mandatory to add XY-locations samples."
+                << exit(FatalError);
+        }
 
         // Check lengths
         const label nx(xPos.size());
@@ -218,35 +248,35 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
             if (nx != avgPowerDensityNameToFMU.size())
             {
                 FatalErrorInFunction
-                    << "xPos and avgPowerDensityNameToFMU lengths are "
+                    << "xPos and avgPowerDensityNameToFMU list lengths are "
                     << "different in region " << region
                     << exit(FatalError);
             }
             if (nx != axialProfilePowerDensityNameToFMU.size())
             {
                 FatalErrorInFunction
-                    << "xPos and axialProfilePowerDensityNameToFMU lengths are "
+                    << "xPos and axialProfilePowerDensityNameToFMU list lengths are "
                     << "different in region " << region
                     << exit(FatalError);
             }
             if (nx != TstructNameToFMU.size())
             {
                 FatalErrorInFunction
-                    << "xPos and TstructNameToFMU lengths are different in "
+                    << "xPos and TstructNameToFMU list lengths are different in "
                     << "region " << region
                     << exit(FatalError);
             }
             if (nx != heatFluxNameFromFMU.size())
             {
                 FatalErrorInFunction
-                    << "xPos and heatFluxNameFromFMU lengths are different "
+                    << "xPos and heatFluxNameFromFMU list lengths are different "
                     << "in region " << region
                     << exit(FatalError);
             }
         }
 
         // Axial location
-        word axialLocStringified(stringify(axialLoc));
+        word axialLocStringified(Foam::listConversion::stringify<scalar>(axialLoc));
         data.storeObj
         (
             axialLocStringified,
@@ -363,8 +393,8 @@ void Foam::powerModels::nuclearFuelFMU::correct
 
                 // label cellNumber = mesh_.findCell(point(xPos, yPos, axialLoc[locI]));
                 
-                // gradxPowerDensity.append(gradPowerDensity[cellNumber].x());
-                // gradyPowerDensity.append(gradPowerDensity[cellNumber].y());
+                // gradxPowerDensity.append(0.217334 / 114.0869 * gradPowerDensity[cellNumber].x());
+                // gradyPowerDensity.append(0.217334 / 114.0869 * gradPowerDensity[cellNumber].y());
             }
 
             // Extract heat flux
@@ -404,8 +434,8 @@ void Foam::powerModels::nuclearFuelFMU::correct
             else
             {
                 FatalErrorInFunction
-                    << "No heat flux list provided in region " << region
-                    << " by FMU"
+                    << "No heat flux list provided in region " << region 
+                    << " for FMI port " << heatFluxNameFromFMU[nameI]
                     << exit(FatalError);
             }
         }
@@ -414,16 +444,16 @@ void Foam::powerModels::nuclearFuelFMU::correct
         scalarList w(0); 
         if (radialBasisFunctionMethod_[regioni] == "polyharmonicSpline")
         {
-            w = solvePolyharmonicSpline
+            w = Foam::radialBasisFunctionInterpolation::solvePolyharmonicSpline
             (
-                xPosList, yPosList, zPosList, heatFluxList
+                xPosList, yPosList, zPosList, heatFluxList, invRBFmatrix_
             );
         }
         else if (radialBasisFunctionMethod_[regioni] == "gaussian")
         {
-            w = solveGaussianRadialBasisFunction
+            w = Foam::radialBasisFunctionInterpolation::solveGaussianRadialBasisFunction
             (
-                xPosList, yPosList, zPosList, heatFluxList, epsilon_[regioni]
+                xPosList, yPosList, zPosList, heatFluxList, epsilon_[regioni], invRBFmatrix_
             );
         }
         else
@@ -441,9 +471,10 @@ void Foam::powerModels::nuclearFuelFMU::correct
         );
         */
         /*
+        const labelList& regionCells(structure_.cellLists()[region]);
         const scalarList w = solvePolyharmonicSplineIntegral
         (
-            xPosList, yPosList, zPosList, heatFluxList, region
+            xPosList, yPosList, zPosList, heatFluxList, 300e6 / 114.08690675627066, regionCells, mesh_
         );
         */
 
@@ -491,7 +522,7 @@ void Foam::powerModels::nuclearFuelFMU::correct
             scalar heatFlux(0); 
             if (radialBasisFunctionMethod_[regioni] == "polyharmonicSpline")
             {
-                heatFlux = polyharmonicSpline
+                heatFlux = Foam::radialBasisFunctionInterpolation::polyharmonicSpline
                 (
                     w, 
                     xPosList, yPosList, zPosList, 
@@ -500,7 +531,7 @@ void Foam::powerModels::nuclearFuelFMU::correct
             }
             else if (radialBasisFunctionMethod_[regioni] == "gaussian")
             {
-                heatFlux = gaussianRadialBasisFunction
+                heatFlux = Foam::radialBasisFunctionInterpolation::gaussianRadialBasisFunction
                 (
                     w, 
                     xPosList, yPosList, zPosList, 
@@ -531,7 +562,7 @@ void Foam::powerModels::nuclearFuelFMU::correct
 
         // Update axial locations if necessary
         const word axialLocNameToFMU(dict.get<word>("axialLocationsNameToFMU"));
-        word axialLocToFMUtemp(stringify(axialLoc));
+        word axialLocToFMUtemp(Foam::listConversion::stringify<scalar>(axialLoc));
         word& axialLocToFMU = data.getObj<word>
         (
             axialLocNameToFMU, 
@@ -596,7 +627,8 @@ void Foam::powerModels::nuclearFuelFMU::correct
                     axialProfilePowerDensityToFMUtemp += "1.0 ";
                 }
                 WarningIn("Foam::nuclearFuelFMU::correct()") << nl
-                    << "    Set normalized power density axial profile to 1.0." << nl
+                    << "    Set normalized power density axial profile to 1.0 in " 
+                    << avgPowerDensityNameToFMU[nameI] << "." << nl
                     << "    The integral of the power density is 0.0." << nl
                     << endl;
             }
@@ -643,433 +675,6 @@ void Foam::powerModels::nuclearFuelFMU::correctT(volScalarField& T) const
 
 // * * * * * * * * * * * * * * Private Data Members * * * * * * * * * * * * * //
 
-Foam::scalarList Foam::powerModels::nuclearFuelFMU::solveGaussianRadialBasisFunction
-(
-    const scalarList xList,
-    const scalarList yList,
-    const scalarList zList,
-    const scalarList vList,
-    const scalarList eps
-)
-{
-    Info << "Use Gaussian radial basis function" << endl;
-    
-    const label nx(xList.size());
-
-    scalarList w(nx, 0.0);
-
-    if (invRBFmatrix_.m() != nx)
-    {
-        invRBFmatrix_.resize(nx);
-
-        SquareMatrix<scalar> A(nx, 0.0);
-
-        forAll(xList, i)
-        {
-            forAll(xList, j)
-            {
-                A[i][j] = exp(
-                    -eps[0] * sqr(xList[i]-xList[j]) 
-                    -eps[1] * sqr(yList[i]-yList[j])
-                    -eps[2] * sqr(zList[i]-zList[j])
-                );
-            }
-        }
-
-        LUscalarMatrix Atemp(A);
-
-        Info<< "Inverse RBF matrix" << endl;
-        Atemp.inv(invRBFmatrix_);
-
-        // solve(w, A, vList);
-    }
-
-    w = invRBFmatrix_ * vList;
-
-    return(w);
-}
-
-
-Foam::scalar Foam::powerModels::nuclearFuelFMU::gaussianRadialBasisFunction
-(
-    const scalarList w,
-    const scalarList xList,
-    const scalarList yList,
-    const scalarList zList,
-    const scalar x,
-    const scalar y,
-    const scalar z,
-    const scalarList eps
-) const
-{
-    scalar res(0);
-    forAll(w, i)
-    {
-        res += w[i] * exp(
-            -eps[0] * sqr(x-xList[i])
-            -eps[1] * sqr(y-yList[i]) 
-            -eps[2] * sqr(z-zList[i])
-        );
-    }
-    return(res);
-}
-
-
-Foam::scalarList Foam::powerModels::nuclearFuelFMU::solvePolyharmonicSpline
-(
-    const scalarList xList,
-    const scalarList yList,
-    const scalarList zList,
-    const scalarList vList
-)
-{
-    Info << "Use polyharmonic spline RBF" << endl;
-    const label nx(xList.size());
-    scalarList w(nx+4, 0.0);
-
-    if (invRBFmatrix_.m() != nx+4)
-    {
-        invRBFmatrix_.resize(nx+4);
-
-        SquareMatrix<scalar> A(nx+4, 0.0);
-
-        forAll(xList, i)
-        {
-            forAll(xList, j)
-            {
-                if (i != j)
-                {
-                    const scalar r(sqrt(
-                        sqr(xList[i]-xList[j]) 
-                        + sqr(yList[i]-yList[j])
-                        + sqr(zList[i]-zList[j])
-                    ));
-                    A[i][j] = sqr(r) * log(r);
-                }
-                else
-                {
-                    A[i][j] = 0;
-                }
-            }
-            // Polynomial correction
-            A[i][nx] = 1;
-            A[i][nx+1] = xList[i];
-            A[i][nx+2] = yList[i];
-            A[i][nx+3] = zList[i];
-            A[nx][i] = 1;
-            A[nx+1][i] = xList[i];
-            A[nx+2][i] = yList[i];
-            A[nx+3][i] = zList[i];
-        }
-
-        // Inverse the matrix once and store it for later iterations
-        LUscalarMatrix Atemp(A);
-
-        Info<< "Inverse RBF PHS matrix" << endl;
-        Atemp.inv(invRBFmatrix_);
-
-        // solve(w, A, vListTemp);
-    }
-
-    scalarList vListTemp(vList);
-    for (int i = 0; i < 4; i++)
-    {
-        vListTemp.append(0);
-    }
-
-    w = invRBFmatrix_ * vListTemp;
-
-    return(w);
-}
-
-
-Foam::scalar Foam::powerModels::nuclearFuelFMU::polyharmonicSpline
-(
-    const scalarList w,
-    const scalarList xList,
-    const scalarList yList,
-    const scalarList zList,
-    const scalar x,
-    const scalar y,
-    const scalar z
-) const
-{
-    const label nx(xList.size());
-    scalar res(0);
-    forAll(xList, i)
-    {
-        const scalar r(sqrt(
-            sqr(x-xList[i]) 
-            + sqr(y-yList[i])
-            + sqr(z-zList[i])
-        ));
-        res += w[i] * sqr(r) * log(r);
-    }
-    res += w[nx] + w[nx+1]*x + w[nx+2]*y + w[nx+3]*z;
-    return(res);
-}
-
-
-Foam::scalarList Foam::powerModels::nuclearFuelFMU::solvePolyharmonicSplineDerivative
-(
-    const scalarList xList,
-    const scalarList yList,
-    const scalarList zList,
-    const scalarList vList,
-    const scalarList dvxList,
-    const scalarList dvyList
-) const
-{
-    const label nx(xList.size());
-    SquareMatrix<scalar> A(3*nx+4, 0.0);
-    scalarList w(3*nx+4, 0.0);
-
-    /*
-    Info<< "Size: " << nl
-        << "xList : " << xList.size() << nl
-        << "yList : " << yList.size() << nl
-        << "zList : " << zList.size() << nl
-        << "vList : " << vList.size() << nl
-        << "dvxList : " << dvxList.size() << nl
-        << "dvyList : " << dvyList.size() << nl
-        << endl;
-    */
-
-    forAll(xList, i)
-    {
-        const scalar xi(xList[i]);
-        const scalar yi(yList[i]);
-        const scalar zi(zList[i]);
-        forAll(xList, j)
-        {
-            const scalar xj(xList[j]);
-            const scalar yj(yList[j]);
-            const scalar dx(xi-xj);
-            const scalar dy(yi-yj);
-            const scalar r(sqrt(
-                sqr(dx) + sqr(dy) + sqr(zi-zList[j])
-            ));
-            const scalar rd(sqrt(0*sqr(dx) + sqr(dy)));
-            const scalar phir(sqr(r) * log(r));
-            if (r > 0)
-            {
-
-                // wi with fi (A)
-                A[i][j] = phir;
-                // vix with fi (C)
-                A[i][nx+j] = dx * phir;
-                // viy with fi (H)
-                A[i][2*nx+j] = dy * phir;
-            }
-            if (rd > 0)
-            {
-                const scalar dphix((2.0 * dx * log(rd) + dx)*0);
-                const scalar dphiy(2.0 * dy * log(rd) + dy);
-                // wi with df/dx (D)
-                A[nx+i][j] = dphix;
-                // vix with df/dx (E)
-                A[nx+i][nx+j] = phir + dx * dphix;
-                // viy with df/dx (F)
-                A[nx+i][2*nx+j] = dy * dphix;
-                
-                // wi with df/dy (I)
-                A[2*nx+i][j] = dphiy;
-                // vix with df/dy (K)
-                A[2*nx+i][nx+j] = dx * dphiy * 0;
-                // viy with df/dy (J)
-                A[2*nx+i][2*nx+j] = phir + dy * dphiy;
-            }
-        }
-        // Polynomial correction (B)
-        A[i][3*nx] = 1;
-        A[i][3*nx+1] = xi;
-        A[i][3*nx+2] = yi;
-        A[i][3*nx+3] = zi;
-        A[3*nx][i] = 1;
-        A[3*nx+1][i] = xi;
-        A[3*nx+2][i] = yi;
-        A[3*nx+3][i] = zi;
-
-        // Polynome for df/dx (G)
-        A[nx+i][3*nx+1] = 1;
-        // Polynome for df/dy (L)
-        A[2*nx+i][3*nx+2] = 1;
-    }
-
-    scalarList vListTemp(vList);
-    forAll(dvxList, i)
-    {
-        vListTemp.append(dvxList[i] / 114.0869 * 0.217334 * 0);
-    }
-    forAll(dvyList, i)
-    {
-        vListTemp.append(dvyList[i] / 114.0869 * 0.217334);
-    }
-    for (int i = 0; i < 4; i++)
-    {
-        vListTemp.append(0);
-    }
-
-    solve(w, A, vListTemp);
-
-    return(w);
-}
-
-
-Foam::scalar Foam::powerModels::nuclearFuelFMU::polyharmonicSplineDerivative
-(
-    const scalarList w,
-    const scalarList xList,
-    const scalarList yList,
-    const scalarList zList,
-    const scalar x,
-    const scalar y,
-    const scalar z
-) const
-{
-    const label nx(xList.size());
-    scalar res(0);
-    forAll(xList, i)
-    {
-        const scalar r(sqrt(
-            sqr(x-xList[i]) 
-            + sqr(y-yList[i])
-            + sqr(z-zList[i])
-        ));
-        if (r > 0)
-        {
-            res += (
-                w[i] + w[i+nx] * (x-xList[i]) + w[i+2*nx] * (y-yList[i])
-            ) * sqr(r) * log(r);
-        }
-    }
-    res += w[3*nx] + w[3*nx+1]*x + w[3*nx+2]*y + w[3*nx+3]*z;
-    return(res > 0 ? res : 0);
-}
-
-
-Foam::scalarList Foam::powerModels::nuclearFuelFMU::solvePolyharmonicSplineIntegral
-(
-    const scalarList xList,
-    const scalarList yList,
-    const scalarList zList,
-    const scalarList vList,
-    const word region
-) const
-{
-    const label nx(xList.size());
-    SquareMatrix<scalar> A(nx+1, 0.0);
-    scalarList w(nx+1, 0.0);
-
-    const labelList& regionCells(structure_.cellLists()[region]);
-    const scalarList& V(mesh_.V());
-
-    forAll(xList, i)
-    {
-        forAll(xList, j)
-        {
-            if (i != j)
-            {
-                const scalar r(sqrt(
-                    sqr(xList[i]-xList[j]) 
-                    + sqr(yList[i]-yList[j])
-                    + sqr(zList[i]-zList[j])
-                ));
-                A[i][j] = sqr(r) * log(r);
-            }
-            else
-            {
-                A[i][j] = 0;
-            }
-        }
-        // Polynomial correction
-        A[i][nx] = 1;
-        // A[i][nx+1] = xList[i];
-        // A[i][nx+2] = yList[i];
-        // A[i][nx+3] = zList[i];
-        // A[i][nx+1] = zList[i];
-        // A[nx][i] = 1;
-        // A[nx+1][i] = xList[i];
-        // A[nx+2][i] = yList[i];
-        // A[nx+3][i] = zList[i];
-        // A[nx+1][i] = zList[i];
-
-        scalar totalVolume(0), totalPhi(0);
-        forAll(regionCells, celli)
-        {
-            const scalar xCell(mesh_.C().internalField()[celli].x());
-            const scalar yCell(mesh_.C().internalField()[celli].y());
-            const scalar zCell(mesh_.C().internalField()[celli].z());
-            const scalar xPos(xCell-xList[i]);
-            const scalar yPos(yCell-yList[i]);
-            const scalar zPos(zCell-zList[i]);
-            label cellNumber = mesh_.findCell(point(xPos, yPos, zPos));
-            // totalPower += //alpha_[celli]
-            //     /***/ fractionOfPowerFromNeutronics_[regioni]
-            //     * structure_.powerDensityNeutronics()[celli]
-            //     * V[celli];
-            totalVolume += V[celli];
-            const scalar rsqr(sqr(xPos)+sqr(yPos)+sqr(zPos));
-            totalPhi += (rsqr * log(sqrt(rsqr))) * V[cellNumber];
-        }
-
-        // Info<< totalPhi << " " << totalVolume << endl;
-
-        A[nx][i] = totalPhi;
-        A[nx][nx] = totalVolume;
-    }
-
-    scalarList vListTemp(vList);
-    vListTemp.append(300e6 / 114.08690675627066);
-    // vListTemp.append(0);
-
-    solve(w, A, vListTemp);
-
-    return(w);
-}
-
-
-Foam::scalar Foam::powerModels::nuclearFuelFMU::polyharmonicSplineIntegral
-(
-    const scalarList w,
-    const scalarList xList,
-    const scalarList yList,
-    const scalarList zList,
-    const scalar x,
-    const scalar y,
-    const scalar z
-) const
-{
-    const label nx(xList.size());
-    scalar res(0);
-    forAll(xList, i)
-    {
-        const scalar r(sqrt(
-            sqr(x-xList[i]) 
-            + sqr(y-yList[i])
-            + sqr(z-zList[i])
-        ));
-        res += w[i] * sqr(r) * log(r);
-    }
-    res += w[nx];
-    return(res);
-}
-
-
-Foam::word Foam::powerModels::nuclearFuelFMU::stringify
-(
-    const scalarList list
-) const
-{
-    word wordTemp;
-    forAll(list, i)
-    {
-        wordTemp += std::to_string(list[i]) + " ";
-    }
-    return(wordTemp);
-}
-
-
 Foam::scalar Foam::powerModels::nuclearFuelFMU::computeEspilonForRBF
 (
     const scalarList list
@@ -1096,6 +701,7 @@ Foam::scalar Foam::powerModels::nuclearFuelFMU::computeEspilonForRBF
     }
     return(4.0 * log(1/0.97) / sqr(average / (list.size()-1)));
 }
+
 
 #endif
 
