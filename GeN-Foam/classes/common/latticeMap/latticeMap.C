@@ -41,11 +41,6 @@ License
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
-// namespace Foam
-// {
-//     defineTypeNameAndDebug(neutronics, 0);
-//     defineRunTimeSelectionTable(neutronics, dictionary);
-// }
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
@@ -111,27 +106,8 @@ Foam::latticeMap::latticeMap
             }
         }
     }
-
-    Info<< xPos_ << endl;
-    Info<< yPos_ << endl;
 }
 
-Foam::latticeMap::latticeMap
-(
-    IOdictionary object,
-    word latticeMapName
-)
-// :
-//     dict_
-//     type_
-//     origin_
-//     pitch_
-//     nElements_
-//     lattice_
-    // startTime_(0.0),
-    // functionPtr_(nullptr)
-{
-}
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 

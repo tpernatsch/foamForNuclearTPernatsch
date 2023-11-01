@@ -42,13 +42,14 @@ Description
     Base class for lattices.
 
 Usage
+    Exemple for an hexagonal lattice 
     \verbatim
     xyPosLattice
     {
         origin      (0 0);
         nElements   (5 5);
         pitch       0.6;
-        type        hexagonal; // square; // hexagonal;
+        type        hexagonal;
         lattice
         (   
             e e F F F      //   y -->
@@ -60,9 +61,38 @@ Usage
     }
     \endverbatim
 
+    Exemple for a square lattice 
+    \verbatim
+    xyPosLattice
+    {
+        origin      (0 0);
+        nElements   (15 15);
+        pitch       0.12;
+        type        square;
+        lattice
+        (   
+            e e e e e F F F F F e e e e e  //   y -->
+            e e e F F F F F F F F F e e e  // x
+            e e F F F F F F F F F F F e e  // |
+            e F F F F F F F F F F F F F e  // V
+            e F F F F F F F F F F F F F e
+            F F F F F F F F F F F F F F F
+            F F F F F F F F F F F F F F F
+            F F F F F F F F F F F F F F F
+            F F F F F F F F F F F F F F F
+            F F F F F F F F F F F F F F F
+            e F F F F F F F F F F F F F e
+            e F F F F F F F F F F F F F e
+            e e F F F F F F F F F F F e e
+            e e e F F F F F F F F F e e e
+            e e e e e F F F F F e e e e e
+        );
+    }
+    \endverbatim
+
 \mainauthor 
     Thomas Guilbaud (thomas.guilbaud@epfl.ch)
-    
+
 SourceFiles
     latticeMap.C
 
@@ -87,40 +117,37 @@ class latticeMap
 
 protected:
 
-    //- Dictionary name
-    // word dictName_;
-
-    //- Dictionary
+    //- Lattice dictionary
     dictionary dict_;
 
-    //-
+    //- Lattice type, square or hexagonal
     word type_;
 
-    //- 
+    //- X position of the lattice center
     scalar originX_;
 
-    //- 
+    //- Y position of the lattice center
     scalar originY_;
     
-    //- 
+    //- FMU pitch distance
     scalar pitch_;
 
-    //-
+    //- Rotation angle of the lattice, default 0 rad
     scalar rotationAngle_;
     
-    //- 
+    //- Number of elements in the lattice on the X axis
     label nx_;
 
-    //-
+    //- Number of elements in the lattice on the Y axis
     label ny_;
 
-    //-
+    //- Lattice map in MCNP/Serpent format
     wordList lattice_;
 
-    //-
+    //- X-position list for all non-empty elements in the lattice map
     scalarList xPos_;
 
-    //-
+    //- Y-position list for all non-empty elements in the lattice map
     scalarList yPos_;
 
 
@@ -136,8 +163,6 @@ public:
         //- Constructor from dictionary
         latticeMap(const dictionary& dict);
 
-        //- Constructor from IOobject and subDictname
-        latticeMap(IOdictionary object, word latticeMapName);
 
     //- Destructor
         virtual ~latticeMap(){}
@@ -145,10 +170,10 @@ public:
 
     //- Member functions
 
-        //-
+        //- Get the X position list
         scalarList getXpositions() const;
 
-        //-
+        //- Get the Y position list
         scalarList getYpositions() const;
 };
 
