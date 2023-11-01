@@ -141,7 +141,8 @@ scalarList solvePolyharmonicSplineIntegral
     const scalarList vList,
     const scalar totalIntegral,
     const labelList& regionCells,
-    const fvMesh& mesh
+    const fvMesh& mesh,
+    SquareMatrix<scalar>& invRBFmatrix
 );
 
 //- Experimental RBF imposing an integral under the interpolation field
@@ -154,6 +155,29 @@ scalar polyharmonicSplineIntegral
     const scalar x,
     const scalar y,
     const scalar z
+);
+
+
+//- Solve Kriging matrix
+void solveKriging
+(
+    const scalarList xList,
+    const scalarList yList,
+    const scalarList zList,
+    SquareMatrix<scalar>& invRBFmatrix
+);
+
+//- Kriging
+scalar kriging
+(
+    const scalarList xList,
+    const scalarList yList,
+    const scalarList zList,
+    const scalarList vList,
+    const scalar x,
+    const scalar y,
+    const scalar z,
+    SquareMatrix<scalar>& invRBFmatrix
 );
 
 

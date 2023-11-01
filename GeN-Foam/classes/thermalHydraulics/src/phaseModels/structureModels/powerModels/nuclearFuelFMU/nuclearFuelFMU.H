@@ -82,7 +82,7 @@ Usage
         );
         
         // Radial Basis Function interpolation for heat flux reconstruction
-        radialBasisFunctionMethod   gaussian; // gaussian or polyharmonicSpline
+        radialBasisFunctionMethod   gaussian; // gaussian or polyharmonicSpline or kriging
         epsilon                     (10 0 100); // Used only for Gaussian Radial Basis Functions interpolation
         
         // FMI ports
@@ -98,7 +98,7 @@ Usage
         (
             gfTstruct0 gfTstruct1 gfTstruct2
         );
-        heatFluxNameFromFMU
+        heatFluxNameFromFMU // or rhoCpdTdtNameFromFMU
         (
             gfSurfacePower0 gfSurfacePower1 gfSurfacePower2
         );
@@ -159,7 +159,7 @@ Usage
             gfTstruct0 gfTstruct1 gfTstruct2 gfTstruct3 gfTstruct4 gfTstruct5
             gfTstruct6
         );
-        heatFluxNameFromFMU
+        heatFluxNameFromFMU // or rhoCpdTdtNameFromFMU
         (
             gfSurfacePower0 gfSurfacePower1 gfSurfacePower2 gfSurfacePower3
             gfSurfacePower4 gfSurfacePower5 gfSurfacePower6
@@ -169,6 +169,30 @@ Usage
         initHeatFlux        1e5;
     }
     \endverbatim
+
+    where the entries mean:
+    \table
+        Property     | Description                        | Type | Req'd | Dflt
+        type            | Type name: nuclearFuelFMU       | word |  yes  | -
+        volumetricArea  | Volumetric area of the porous medium | scalar | yes | -
+        xPos            | List of X positions of the sampling lines | scalarList | conditional | -
+        yPos            | List of Y positions of the sampling lines | scalarList | conditional | -
+        xyPosLattice    | XY lattice map dictionnary | dict | conditional | -
+        axialPowerInterpolationMethod | Interpolation method for LHGR | word | no | linear
+        axialLocationsNameToFMU | FMI port name of axial location list | word | yes | - 
+        axialLocations  | Axial position list | scalarList | yes | -
+        radialBasisFunctionMethod | Radial Basis Function method name (gaussian, polyharmonicSpline, kriging) | word | yes | -
+        epsilon         | Epsilon shaping factor for the Gaussian RBF | scalarList | conditional | -
+        avgPowerDensityNameToFMU | List of FMI port names for LHGR output | wordList | yes | -
+        axialProfilePowerDensityNameToFMU | List of FMI port names for power denisty normalized distribution output | wordList | yes | -
+        TstructNameToFMU | List of FMI port names for Tstructure output | wordList | yes | -
+        heatFluxNameFromFMU | List of FMI port names for heat flux input | wordList | conditional | -
+        rhoCpdTdtNameFromFMU | List of FMI port names for rhoCpdTdt input | wordList | conditional | -
+        initPowerDensity | Initial power density | scalar | yes | -
+        initTstruct     | Initial structure temperature | scalar | yes | -
+        initHeatFlux    | Initial heat flux | scalar | conditional | -
+        initRhoCpdTdt   | Initial rho*Cp*dT/dt | scalar | conditional | -
+    \endtable
 
 \mainauthor 
     Thomas Guilbaud (thomas.guilbaud@epfl.ch)
@@ -209,6 +233,9 @@ protected:
 
     //- Fields representing the average surface temperature of the structure
     volScalarField Tsurface_;
+
+    //- Heat flux FMI input flag
+    bool isHeatFluxInput_;
 
     //- Fraction of power from neutronics that goes to this powerModel
     //  This takes into account for instance cases where some of the 
@@ -273,6 +300,19 @@ public:
             const volScalarField& HT,
             const volScalarField& H
         );
+
+        //- Correct Tsurface field using the heat flux inputs from FMUs
+        //  The heat flux is interpolated
+        void correctHeatFluxInputsFromFMUs
+        (
+            const volScalarField& HT,
+            const volScalarField& H,
+            label regioni
+        );
+
+        //- Sample Tsurface and power density over lines and transfer data to 
+        //  the FMUs
+        void correctInputsForFMUs(label regioni) const;
 
         //- Return surface temperature (i.e. outer cladding temperature)
         virtual void correctT(volScalarField& T) const;

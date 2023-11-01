@@ -348,75 +348,91 @@ scalarList solvePolyharmonicSplineIntegral
     const scalarList vList,
     const scalar totalIntegral,
     const labelList& regionCells,
-    const fvMesh&  mesh
+    const fvMesh& mesh,
+    SquareMatrix<scalar>& invRBFmatrix
 )
 {
     const label nx(xList.size());
-    SquareMatrix<scalar> A(nx+1, 0.0);
+
     scalarList w(nx+1, 0.0);
 
-    // const labelList& regionCells(structure_.cellLists()[region]);
-    const scalarList& V(mesh.V());
-
-    forAll(xList, i)
+    if (invRBFmatrix.m() != nx+1)
     {
-        forAll(xList, j)
+        invRBFmatrix.resize(nx+1);
+
+        SquareMatrix<scalar> A(nx+1, 0.0);
+
+        // const labelList& regionCells(structure_.cellLists()[region]);
+        const scalarList& V(mesh.V());
+
+        forAll(xList, i)
         {
-            if (i != j)
+            forAll(xList, j)
             {
-                const scalar r(sqrt(
-                    sqr(xList[i]-xList[j]) 
-                    + sqr(yList[i]-yList[j])
-                    + sqr(zList[i]-zList[j])
-                ));
-                A[i][j] = sqr(r) * log(r);
+                if (i != j)
+                {
+                    const scalar r(sqrt(
+                        sqr(xList[i]-xList[j]) 
+                        + sqr(yList[i]-yList[j])
+                        + sqr(zList[i]-zList[j])
+                    ));
+                    A[i][j] = sqr(r) * log(r);
+                }
+                else
+                {
+                    A[i][j] = 0;
+                }
             }
-            else
+            // Polynomial correction
+            A[i][nx] = 1;
+            // A[i][nx+1] = xList[i];
+            // A[i][nx+2] = yList[i];
+            // A[i][nx+3] = zList[i];
+            // A[i][nx+1] = zList[i];
+            // A[nx][i] = 1;
+            // A[nx+1][i] = xList[i];
+            // A[nx+2][i] = yList[i];
+            // A[nx+3][i] = zList[i];
+            // A[nx+1][i] = zList[i];
+
+            scalar totalVolume(0), totalPhi(0);
+            forAll(regionCells, celli)
             {
-                A[i][j] = 0;
+                const scalar xCell(mesh.C().internalField()[celli].x());
+                const scalar yCell(mesh.C().internalField()[celli].y());
+                const scalar zCell(mesh.C().internalField()[celli].z());
+                const scalar xPos(xCell-xList[i]);
+                const scalar yPos(yCell-yList[i]);
+                const scalar zPos(zCell-zList[i]);
+                // label cellNumber = mesh.findCell(point(xPos, yPos, zPos));
+                // totalPower += //alpha_[celli]
+                //     /***/ fractionOfPowerFromNeutronics_[regioni]
+                //     * structure_.powerDensityNeutronics()[celli]
+                //     * V[celli];
+                totalVolume += V[celli];
+                const scalar rsqr(sqr(xPos)+sqr(yPos)+sqr(zPos));
+                // totalPhi += (rsqr * log(sqrt(rsqr))) * V[cellNumber];
+                totalPhi += (rsqr * log(sqrt(rsqr))) * V[celli];
             }
-        }
-        // Polynomial correction
-        A[i][nx] = 1;
-        // A[i][nx+1] = xList[i];
-        // A[i][nx+2] = yList[i];
-        // A[i][nx+3] = zList[i];
-        // A[i][nx+1] = zList[i];
-        // A[nx][i] = 1;
-        // A[nx+1][i] = xList[i];
-        // A[nx+2][i] = yList[i];
-        // A[nx+3][i] = zList[i];
-        // A[nx+1][i] = zList[i];
 
-        scalar totalVolume(0), totalPhi(0);
-        forAll(regionCells, celli)
-        {
-            const scalar xCell(mesh.C().internalField()[celli].x());
-            const scalar yCell(mesh.C().internalField()[celli].y());
-            const scalar zCell(mesh.C().internalField()[celli].z());
-            const scalar xPos(xCell-xList[i]);
-            const scalar yPos(yCell-yList[i]);
-            const scalar zPos(zCell-zList[i]);
-            label cellNumber = mesh.findCell(point(xPos, yPos, zPos));
-            // totalPower += //alpha_[celli]
-            //     /***/ fractionOfPowerFromNeutronics_[regioni]
-            //     * structure_.powerDensityNeutronics()[celli]
-            //     * V[celli];
-            totalVolume += V[celli];
-            const scalar rsqr(sqr(xPos)+sqr(yPos)+sqr(zPos));
-            totalPhi += (rsqr * log(sqrt(rsqr))) * V[cellNumber];
+            // Info<< totalPhi << " " << totalVolume << endl;
+
+            A[nx][i] = totalPhi;
+            A[nx][nx] = totalVolume;
         }
 
-        // Info<< totalPhi << " " << totalVolume << endl;
+        // solve(w, A, vListTemp);
 
-        A[nx][i] = totalPhi;
-        A[nx][nx] = totalVolume;
+        // Inverse the matrix once and store it for later iterations
+        LUscalarMatrix Atemp(A);
+
+        Atemp.inv(invRBFmatrix);
     }
 
     scalarList vListTemp(vList);
     vListTemp.append(totalIntegral);
 
-    solve(w, A, vListTemp);
+    w = invRBFmatrix * vListTemp;
 
     return(w);
 }
@@ -445,6 +461,88 @@ scalar polyharmonicSplineIntegral
         res += w[i] * sqr(r) * log(r);
     }
     res += w[nx];
+    return(res);
+}
+
+
+
+void solveKriging
+(
+    const scalarList xList,
+    const scalarList yList,
+    const scalarList zList,
+    SquareMatrix<scalar>& invRBFmatrix
+)
+{
+    const label nx(xList.size());
+
+    if (invRBFmatrix.m() != nx+1)
+    {
+        invRBFmatrix.resize(nx+1);
+
+        SquareMatrix<scalar> A(nx+1, 0.0);
+
+        const scalar a(0.1), b(7.5), c(2.5);
+
+        forAll(xList, i)
+        {
+            forAll(xList, j)
+            {
+                const scalar distance(sqrt
+                (
+                    sqr(xList[i]-xList[j]) + 
+                    sqr(yList[i]-yList[j]) + 
+                    sqr(zList[i]-zList[j])
+                ));
+                A[i][j] = c + b*(1.5*distance/a - 0.5*pow(distance/a, 3.0));
+            }
+            A[i][nx] = 1.0;
+            A[nx][i] = 1.0;
+        }
+
+        LUscalarMatrix Atemp(A);
+
+        Atemp.inv(invRBFmatrix);
+    }
+}
+
+
+scalar kriging
+(
+    const scalarList xList,
+    const scalarList yList,
+    const scalarList zList,
+    const scalarList vList,
+    const scalar x,
+    const scalar y,
+    const scalar z,
+    SquareMatrix<scalar>& invRBFmatrix
+)
+{
+    const label nx(xList.size());
+
+    const scalar a(0.1), b(7.5), c(2.5);
+    scalarList xVariogram(nx+1);
+    forAll(xList, i)
+    {
+        const scalar distance(sqrt
+        (
+            sqr(xList[i]-x) + 
+            sqr(yList[i]-y) + 
+            sqr(zList[i]-z)
+        ));
+        xVariogram[i] = c + b*(1.5*distance/a - 0.5*pow(distance/a, 3.0));
+    }
+    xVariogram[nx] = 1.0;
+
+    const scalarList w(invRBFmatrix * xVariogram);
+
+    scalar res(0);
+    forAll(vList, i)
+    {
+        res += w[i] * vList[i];
+    }
+
     return(res);
 }
 
