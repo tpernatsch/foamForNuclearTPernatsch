@@ -623,12 +623,11 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
             (
                 fractionOfPowerFromNeutronics_[regioni]
                     * structure_.powerDensityNeutronics()[celli]
-                    * alpha_[celli]
             );
             const scalar rhoCpdTdt(interpolatedValue);
 
             // Issue with volumes ?
-            heatFlux = (powerDensity - rhoCpdTdt) / iA_[celli];
+            heatFlux = alpha_[celli] * (powerDensity - rhoCpdTdt) / iA_[celli];
         }
 
         totalPowerFromHeatFlux += heatFlux * iA_[celli] * V[celli] / alpha_[celli];
