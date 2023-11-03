@@ -255,6 +255,13 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
             initRhoCpdTdtFromDict = dict.get<scalar>("initRhoCpdTdt");
         }
 
+        // Initialize structure temperature
+        forAll(regionCells, i)
+        {
+            const label celli(regionCells[i]);
+            Tsurface_[celli] = initTemperatureFromDict;
+        }
+
         // Check lengths of FMI port lists
         {
             const label nx(xPos.size());
@@ -400,7 +407,7 @@ void Foam::powerModels::nuclearFuelFMU::correct
         // Update surface temperature from FMU using heat flux from FMUs
         correctHeatFluxInputsFromFMUs(HTSum, HSum, regioni);
 
-        // Update surface temperature and power density sample lines for FMU
+        // Update surface temperature and power density sample lines for FMUs
         correctInputsForFMUs(regioni);
     }
 }
@@ -539,7 +546,7 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
             << exit(FatalError);
     }
 
-    scalar totalPowerFromHeatFlux(0);
+    scalar totalPowerFromHeatFlux(0), totalPowerEnthalpy(0), totalPowerNeutronics(0);
 
     // Update all Tsurface cells in the region using heat flux interpolated 
     forAll(regionCells, i)
@@ -628,6 +635,9 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
 
             // Issue with volumes ?
             heatFlux = alpha_[celli] * (powerDensity - rhoCpdTdt) / iA_[celli];
+            
+            totalPowerEnthalpy += rhoCpdTdt * V[celli];
+            totalPowerNeutronics += powerDensity * V[celli];
         }
 
         totalPowerFromHeatFlux += heatFlux * iA_[celli] * V[celli] / alpha_[celli];
@@ -636,8 +646,10 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         Tsurface_[celli] = Tcool + heatFlux / HSumi;
     }
 
-    Info<< "Integrated heat flux in cellZone " << region << " = " 
-        << totalPowerFromHeatFlux << " W"
+    Info<< "Integrated power in cellZone " << region << ": heat flux = " 
+        << totalPowerFromHeatFlux << " W; rhoCpdTdt = "
+        << totalPowerEnthalpy << " W; neutronics = "
+        << totalPowerNeutronics << " W"
         << endl;
 }
 
