@@ -646,11 +646,11 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         Tsurface_[celli] = Tcool + heatFlux / HSumi;
     }
 
-    Info<< "Integrated power in cellZone " << region << ": heat flux = " 
-        << totalPowerFromHeatFlux << " W; rhoCpdTdt = "
-        << totalPowerEnthalpy << " W; neutronics = "
-        << totalPowerNeutronics << " W"
-        << endl;
+    // Info<< "Integrated power in cellZone " << region << ":" << nl 
+    //     << "    heat flux  = " << totalPowerFromHeatFlux << " W" << nl
+    //     << "    rhoCpdTdt  = " << totalPowerEnthalpy << " W" << nl
+    //     << "    neutronics = " << totalPowerNeutronics << " W"
+    //     << endl;
 }
 
 void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni) const
@@ -716,6 +716,7 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni) cons
         // Rescale data
         scalarInterpolateTable zTable(axialLoc, profileData, zMethod_[regioni]);
         const scalar linPowerIntegral(zTable.integral(1));
+        const scalar zLength(axialLoc[axialLoc.size()-1] - axialLoc[0]);
 
         if (linPowerIntegral > 0.0)
         {
@@ -723,7 +724,7 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni) cons
             {
                 axialProfilePowerDensityToFMUtemp += std::to_string
                 (
-                    profileData[sampleI] / linPowerIntegral
+                    profileData[sampleI] * zLength / linPowerIntegral
                 )+" ";
             }
         }
@@ -757,8 +758,6 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni) cons
             axialProfilePowerDensityNameToFMU[nameI], 
             commDataLayer::causality::out
         );
-
-        const scalar zLength(axialLoc[axialLoc.size()-1] - axialLoc[0]);
 
         // Update the values in FMI to FMUs
         TstructToFMU = TstructToFMUtemp;
