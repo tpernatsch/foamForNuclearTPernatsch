@@ -43,24 +43,29 @@ A forum to get support from the developers and the community is available at the
 
 ## Gallery
 
+*Modeling of the European Sodium Fast Reactor: Boiling in a windowed assembly and core flowering*
+
 <p align="center" style="text-align:center;">
 
   <img src="./Documentation/media/assmblyWindows.png" width="200" style="display:inline-block;">
   <img src="./Documentation/media/coreFlowering.png" width="300" style="display:inline-block;">
 
   <br>
-  <figcaption style="margin-top:12px;">Modeling of the European Sodium Fast Reactor: Boiling in a windowed assembly and core flowering</figcaption>
 
 </p>
+
+*Full plant modeling of the ALFRED Lead Fast Reactor using the FMI interface and Modelica*
 
 <p align="center" style="text-align:center;">
 
   <img src="./Documentation/media/LFRfull.png" width="1000" style="display:inline-block;">
 
   <br>
-  <figcaption style="margin-top:12px;">Full plant modeling of the ALFRED Lead Fast Reactor using the FMI interface and Modelica</figcaption>
+
 
 </p>
+
+*Modeling of Molten Salt Reactors: the MSRE and the MSFR*
 
 <p align="center" style="text-align:center;">
 
@@ -69,9 +74,11 @@ A forum to get support from the developers and the community is available at the
   <img src="./Documentation/media/precTot3Dside.png" width="100" style="display:inline-block;">
 
   <br>
-  <figcaption style="margin-top:12px;">Modeling of Molten Salt Reactors: the MSRE and the MSFR</figcaption>
+
 
 </p>
+
+*Modeling of FFTF: 2-D primary circuit thermal-hydraulics and core fluxes*
 
 <p align="center" style="text-align:center;">
 
@@ -79,6 +86,4 @@ A forum to get support from the developers and the community is available at the
 
 
   <br>
-  <figcaption style="margin-top:12px;">Modeling of FFTF: 2-D primary circuit thermal-hydraulics and core fluxes</figcaption>
-
 </p>
