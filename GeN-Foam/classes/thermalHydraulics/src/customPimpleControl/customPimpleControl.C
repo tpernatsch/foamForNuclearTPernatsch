@@ -82,7 +82,7 @@ bool Foam::customPimpleControl::criteriaSatisfied()
     bool achieved = true;
     bool checked = false;    // safety that some checks were indeed performed
 
-    const dictionary& solverDict = mesh_.solverPerformanceDict();
+    const dictionary& solverDict = mesh_.data().solverPerformanceDict();
     forAllConstIters(solverDict, iter)
     {
         const entry& solverPerfDictEntry = *iter;
@@ -292,7 +292,7 @@ bool Foam::customPimpleControl::loop()
         corr_ = 0;
         nCorrPISOInPrevPrevPIMPLE_ = 0;
         stopLoop_ = false;
-        mesh_.data::remove("finalIteration");
+        mesh_.data().setFinalIteration(false);
         return false;
     }
 
@@ -308,7 +308,7 @@ bool Foam::customPimpleControl::loop()
                 Info<< algorithmName_ << ": loop interrupted due to poor "
                     << "first PISO initialResidual convergence" << endl;
 
-            mesh_.data::remove("finalIteration");
+            mesh_.data().setFinalIteration(false);
             corr_ = 0;
             nCorrPISOInPrevPrevPIMPLE_ = 0;
             stopLoop_ = false;
@@ -321,7 +321,7 @@ bool Foam::customPimpleControl::loop()
             Info<< algorithmName_ << ": iteration " << corr_ << endl;
             storePrevIterFields();
 
-            mesh_.data::add("finalIteration", true);
+            mesh_.data().setFinalIteration(true);
             converged_ = true;
         }
     }
@@ -329,7 +329,7 @@ bool Foam::customPimpleControl::loop()
     {
         if (finalIter())
         {
-            mesh_.data::add("finalIteration", true);
+            mesh_.data().setFinalIteration(true);
         }
 
         if (corr_ <= nCorrPIMPLE_)
