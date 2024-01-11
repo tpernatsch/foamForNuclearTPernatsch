@@ -150,7 +150,7 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
                          .subDict("mixture")
                          .subDict("equationOfState");
 
-    beta_.set
+    beta_.reset
     (
         new dimensionedScalar
         (
@@ -160,7 +160,7 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         )
     );
 
-    Tref_.set
+    Tref_.reset
     (
         new dimensionedScalar
         (
@@ -217,7 +217,7 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     initialFluidMass_ = fvc::domainIntegrate(fluid_.thermo().rho()*fluid_);
 
     //- Setting up the initial Darcy velocity and flux
-    UDarcy_.set
+    UDarcy_.reset
     (
         new volVectorField
         (
@@ -270,7 +270,7 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     }
     UDarcy_().write();
 
-    phiDarcy_.set
+    phiDarcy_.reset
     (
         new surfaceScalarField
         (

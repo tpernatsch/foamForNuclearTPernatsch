@@ -45,32 +45,21 @@ namespace myOps
 {
     bool relax(const fvMesh& mesh, word name)
     {
-        bool finalIter
-        (
-            mesh.data::template getOrDefault<bool>
-            (
-                "finalIteration",
-                false
-            ) 
-        );
-        if (finalIter)
+        if (mesh.data().isFinalIteration())
+        {
             name += "Final";
+        }
+
 
         return mesh.relaxField(name);
     }
 
     scalar relaxationFactor(const fvMesh& mesh, word name)
     {
-        bool finalIter
-        (
-            mesh.data::template getOrDefault<bool>
-            (
-                "finalIteration",
-                false
-            ) 
-        );
-        if (finalIter)
+        if (mesh.data().isFinalIteration())
+        {
             name += "Final";
+        }
 
         return 
             (mesh.relaxField(name)) ?

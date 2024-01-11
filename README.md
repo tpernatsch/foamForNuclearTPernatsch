@@ -37,7 +37,53 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 
 A forum to get support from the developers and the community is available at the following link: [Forum](https://foam-for-nuclear.org/phpBB/)
 
-
-
+## Copyright
 
 © Contributions are individually acknowledged in the header files
+
+## Gallery
+
+*Modeling of the European Sodium Fast Reactor: Boiling in a windowed assembly and core flowering*
+
+<p align="center" style="text-align:center;">
+
+  <img src="./Documentation/media/assmblyWindows.png" width="200" style="display:inline-block;">
+  <img src="./Documentation/media/coreFlowering.png" width="300" style="display:inline-block;">
+
+  <br>
+
+</p>
+
+*Full plant modeling of the ALFRED Lead Fast Reactor using the FMI interface and Modelica*
+
+<p align="center" style="text-align:center;">
+
+  <img src="./Documentation/media/LFRfull.png" width="1000" style="display:inline-block;">
+
+  <br>
+
+
+</p>
+
+*Modeling of Molten Salt Reactors: the MSRE and the MSFR*
+
+<p align="center" style="text-align:center;">
+
+  <img src="./Documentation/media/MSRE.png" width="300" style="display:inline-block;">
+  <img src="./Documentation/media/precTot3D.png" width="300" style="display:inline-block;">
+  <img src="./Documentation/media/precTot3Dside.png" width="100" style="display:inline-block;">
+
+  <br>
+
+
+</p>
+
+*Modeling of FFTF: 2-D primary circuit thermal-hydraulics and core fluxes*
+
+<p align="center" style="text-align:center;">
+
+  <img src="./Documentation/media/FFTF.png" width="800" style="display:inline-block;">
+
+
+  <br>
+</p>
