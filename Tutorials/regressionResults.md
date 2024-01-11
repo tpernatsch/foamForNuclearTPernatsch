@@ -1,7 +1,7 @@
 # GeN-Foam regression test suite
 
-Regression test of 06-Oct-2023 - 15:51:53  
-Tutorials successfully completed: 21/23  [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]()  
+Regression test of 10-Jan-2024 - 09:06:27  
+Tutorials successfully completed: 20/23  [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------
 
@@ -83,10 +83,10 @@ Transient has converged
 Transient end has converged 
 
 Power at the end of transient
-Perfect match:
+Divergent results:
 |       | Simulated | Expected |
 |:------|:---------:|:--------:|
-| Power | 6.13794e+08  | 6.13794e+08 |
+| Power | 6.13787e+08  | 6.13794e+08 |
 
 --------------------------------------------------------------------------------
 
