@@ -1,0 +1,7 @@
+InterpolateTable/InterpolateTables.C
+
+timeProfile/timeProfile.C
+
+mergeOrSplitBaffles/mergeOrSplitBaffles.C
+
+LIB = $(FOAM_USER_LIBBIN)/libCommon
