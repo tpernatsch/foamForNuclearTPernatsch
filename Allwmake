@@ -10,20 +10,20 @@ clear
 echo "Allwmake GeN-Foam"
 
 # Make common functions
-wmake $1 libso ./src/classes/common
+wmake $1 ./src/classes/common
 
 # Make thermal-hydraulics
-wmake $1 libso ./src/classes/thermalHydraulics/src
-wmake $1 libso ./src/classes/thermalHydraulics/solvers
+wmake $1 ./src/classes/thermalHydraulics/src
+wmake $1 ./src/classes/thermalHydraulics/solvers
 
 # Make neutronics
-wmake $1 libso ./src/classes/neutronics
+wmake $1 ./src/classes/neutronics
 
 # Make thermal-mechanics
-wmake $1 libso ./src/classes/thermoMechanics
+wmake $1 ./src/classes/thermoMechanics
 
 # Make multiphysics control (depends on thermal-hydraulics)
-wmake $1 libso ./src/classes/multiphysicsControl
+wmake $1 ./src/classes/multiphysicsControl
 
 # Make GeN-Foam
 wmake $1 ./GeN-Foam

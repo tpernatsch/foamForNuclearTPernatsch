@@ -145,7 +145,7 @@ EXE_INC = \
     -I$(LIB_SRC)/sampling/lnInclude \
     # -I./../../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
 
-EXE_LIBS = \
+LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lCommonMultiPhysics \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
