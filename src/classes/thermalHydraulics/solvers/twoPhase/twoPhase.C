@@ -362,7 +362,7 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     and fluid2Header.typeHeaderOk<volScalarField>(true)
     )
     {
-        fluid1_.volScalarField::operator=(geometricOneField()-fluid2_);
+        fluid1_.volScalarField::operator=(geometricOneField()-structure_-fluid2_);
     }
     if 
     (
@@ -370,7 +370,7 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     and fluid1Header.typeHeaderOk<volScalarField>(true)
     )
     {
-        fluid2_.volScalarField::operator=(geometricOneField()-fluid1_);
+        fluid2_.volScalarField::operator=(geometricOneField()-structure_-fluid1_);
     }
 
     //- Normalize phase fraction fields, structure is left unchanged
