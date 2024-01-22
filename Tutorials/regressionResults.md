@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 17-Jan-2024 - 17:39:28  
+Regression test of 19-Jan-2024 - 11:27:25  
 Tutorials successfully completed: 20/23  [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------

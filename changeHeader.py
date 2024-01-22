@@ -10,7 +10,7 @@ for root, dirs, files in os.walk(folder):
             with open(filepath, "r") as file:
                 file_contents = file.read()
 
-            file_contents = file_contents.replace("Built on OpenFOAM v2306", "Built on OpenFOAM v2306")
+            file_contents = file_contents.replace("Built on OpenFOAM v2312", "Built on OpenFOAM v2312")
 
             with open(filepath, "w") as file:
                 file.write(file_contents)
