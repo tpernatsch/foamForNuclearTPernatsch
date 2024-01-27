@@ -1,0 +1,41 @@
+#!/bin/sh
+#==============================================================================*
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+clear
+
+#==============================================================================*
+
+echo "Allwmake GeN-Foam"
+
+# Make common functions
+wmake $1 ./src/classes/common
+
+# Make thermal-hydraulics
+wmake $1 ./src/classes/thermalHydraulics/src
+wmake $1 ./src/classes/thermalHydraulics/solvers
+
+# Make neutronics
+wmake $1 ./src/classes/neutronics
+
+# Make thermal-mechanics
+wmake $1 ./src/classes/thermoMechanics
+
+# Make multiphysics control (depends on thermal-hydraulics)
+wmake $1 ./src/classes/multiphysicsControl
+
+# Make GeN-Foam
+wmake $1 ./GeN-Foam
+
+echo "Make GeN-Foam completed\n"
+
+#==============================================================================*
+
+echo "Make tests"
+
+wmake $1 ./tests/hydrogenThermophysicalProperties
+
+echo "Make tests completed\n"
+
+#==============================================================================*
