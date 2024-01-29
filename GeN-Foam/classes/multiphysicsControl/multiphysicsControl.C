@@ -39,6 +39,17 @@ License
 
 #include "multiphysicsControl.H"
 
+#if defined __has_include
+#  if __has_include(<commDataLayer.H>) 
+#    include <commDataLayer.H>
+#    define isCommDataLayerIncluded
+#  endif
+#endif
+
+#ifdef isCommDataLayerIncluded
+#include "commDataLayer.H"
+#endif
+
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
@@ -50,7 +61,7 @@ namespace Foam
 
 Foam::multiphysicsControl::multiphysicsControl
 (
-    const Time& runTime,
+    Time& runTime,
     fvMesh& THMesh,
     fvMesh& NMesh,
     fvMesh& TMMesh
@@ -59,9 +70,10 @@ Foam::multiphysicsControl::multiphysicsControl
     customPimpleControl
     (
         THMesh,
+        runTime,
         "PIMPLE"
     ),
-    runTime_(runTime),
+    // runTime_(runTime),
     thermalHydraulicMesh_(THMesh),
     neutronicMesh_(NMesh),
     thermoMechanicMesh_(TMMesh),
@@ -87,6 +99,16 @@ Foam::multiphysicsControl::multiphysicsControl
         runTime.controlDict().lookupOrDefault<bool>("liquidFuel", false)
     )
 {
+    #ifdef isCommDataLayerIncluded
+    commDataLayer& data = commDataLayer::New(runTime_);
+    data.storeObj
+    (
+        1.0,
+        "isEnergyNeutronicsThermMechCorrectorConverged",
+        commDataLayer::causality::out
+    );
+    #endif
+
     read();
 }
 
@@ -100,6 +122,50 @@ bool Foam::multiphysicsControl::loop()
  
     ++corr_;
  
+    // Extract label index of FMUController type functionObject, 
+    // functionObjects are created by runTime.run()
+    // Add if in first iteration, first time index
+    #ifdef isCommDataLayerIncluded
+    label FMUControllerLabel(-1);
+    forAll(runTime_.functionObjects(), labelI)
+    {
+        if (runTime_.functionObjects()[labelI].type() == "FMUController")
+        {
+            FMUControllerLabel = labelI;
+            break; // FMUController is unique
+        }
+    }
+
+    // FMI check implicit step // only if multiphysics loop completed
+    /*if (
+        FMUControllerLabel != -1 
+        && !converged_
+    ) // && completed)
+    {
+        runTime_.functionObjects()[FMUControllerLabel].execute();
+
+        commDataLayer& data = commDataLayer::New(runTime_);
+
+        label isNewStep = data.getObj<label>("new_step", commDataLayer::causality::in);
+        
+        // nCorrPIMPLE_ = corr_+2;
+        if (isNewStep == 1)
+        {
+            // converged_ = true;
+            nCorrPIMPLE_ = corr_;
+        }
+        else
+        {
+            converged_ = false;
+            nCorrPIMPLE_ = corr_+2;
+        }
+
+        Info<< "Multiphysics loop newStep: " << isNewStep << " corr=" << corr_
+            << endl;
+    }*/
+    #endif
+
+
     setFirstIterFlag();
  
     if (corr_ == nCorrPIMPLE_ + 1)
@@ -112,6 +178,24 @@ bool Foam::multiphysicsControl::loop()
  
         corr_ = 0;
         mesh_.data::remove("finalIteration");
+
+        #ifdef isCommDataLayerIncluded
+        // FMI check implicit step
+        if (FMUControllerLabel != -1)
+        {
+            runTime_.functionObjects()[FMUControllerLabel].execute();
+
+            commDataLayer& data = commDataLayer::New(runTime_);
+
+            label isNewStep = data.getObj<label>("new_step", commDataLayer::causality::in);
+            
+            Info<< "Multiphysics loop newStep last iter: " << isNewStep 
+                << endl;
+
+            return(isNewStep != 1);
+        }
+        #endif
+
         return false;
     }
  
@@ -157,14 +241,91 @@ bool Foam::multiphysicsControl::loop()
             completed = false;
         }
     }
- 
+
+    
+    #ifdef isCommDataLayerIncluded
+    // FMI check implicit step // only if multiphysics loop completed
+    if (FMUControllerLabel != -1 && completed)
+    {
+        runTime_.functionObjects()[FMUControllerLabel].execute();
+
+        commDataLayer& data = commDataLayer::New(runTime_);
+
+        label isNewStep = data.getObj<label>("new_step", commDataLayer::causality::in);
+        
+        Info<< "Multiphysics loop newStep: " << isNewStep 
+            << endl;
+
+        return(isNewStep != 1);
+    }
+    #endif
+    
+
     return !completed;
 }
+
+
+bool Foam::multiphysicsControl::loopEnergyNeutronicsThermomechanics
+(
+    scalar couplingResidual,
+    scalar couplingIter
+)
+{
+    bool isConverged = true;
+    if (
+        couplingResidual > timeStepResidual()
+        && couplingIter < maxTimeStepIterations() 
+        && tightlyCoupled()
+    ) {
+        isConverged = false;
+    }
+
+    Info<< "Is E-N-TM converged: " << isConverged 
+        << " (isEnergyNeutroThemMechFMICorrection_: " << isEnergyNeutroThemMechFMICorrection_ << ")" 
+        << endl;
+
+    // FMI loop correction
+    #ifdef isCommDataLayerIncluded
+    if (isEnergyNeutroThemMechFMICorrection_) // && !(couplingIter == 1 && isConverged))
+    {
+        commDataLayer& data = commDataLayer::New(runTime_);
+        scalar& isConvergedFMI = data.getObj<scalar>
+        (
+            "isEnergyNeutronicsThermMechCorrectorConverged", 
+            commDataLayer::causality::out
+        );
+        isConvergedFMI = isConverged ? 1.0 : 0.0;
+        // Need to execute the functionObj FMUController to send the info back to 
+        // the main script 
+        label FMUControllerLabel(-1);
+        forAll(runTime_.functionObjects(), labelI)
+        {
+            if (runTime_.functionObjects()[labelI].type() == "FMUController")
+            {
+                FMUControllerLabel = labelI;
+                break; // FMUController is unique
+            }
+        }
+        if (FMUControllerLabel != -1)
+        {
+            runTime_.functionObjects()[FMUControllerLabel].execute();
+        }
+    }
+    #endif
+
+    return(!isConverged);
+}
+
 
 bool Foam::multiphysicsControl::read()
 {
     customPimpleControl::read();
     nCorrPIMPLE_ = topLevelDict_.get<label>("nOuterCorrectors");
+    isEnergyNeutroThemMechFMICorrection_ = 
+        topLevelDict_.lookupOrDefault<bool>
+        (
+            "fmiCoupledCorrector", false
+        );
     solveFlow_ = 
         runTime_.controlDict().lookupOrDefault<bool>
         (

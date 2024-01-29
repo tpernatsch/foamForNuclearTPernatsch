@@ -646,11 +646,11 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         Tsurface_[celli] = Tcool + heatFlux / HSumi;
     }
 
-    // Info<< "Integrated power in cellZone " << region << ":" << nl 
-    //     << "    heat flux  = " << totalPowerFromHeatFlux << " W" << nl
-    //     << "    rhoCpdTdt  = " << totalPowerEnthalpy << " W" << nl
-    //     << "    neutronics = " << totalPowerNeutronics << " W"
-    //     << endl;
+    Info<< "Integrated power in cellZone " << region << ":" << nl 
+        << "    heat flux  = " << totalPowerFromHeatFlux << " W" << nl
+        << "    rhoCpdTdt  = " << totalPowerEnthalpy << " W" << nl
+        << "    neutronics = " << totalPowerNeutronics << " W"
+        << endl;
 }
 
 void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni) const

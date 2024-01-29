@@ -125,24 +125,13 @@ int main(int argc, char *argv[])
 
     while (runTime.run())
     {
-        // Extract label index of FMUController type functionObject, 
-        // functionObjects are created by runTime.run()
-        label FMUSimulatorLabel(-1);
-        forAll(runTime.functionObjects(), labelI)
-        {
-            if (runTime.functionObjects()[labelI].type() == "FMUController")
-            {
-                FMUSimulatorLabel = labelI;
-                break;
-            }
-        }
-
         runTime++;
 
         #include "setDeltaT.H"
         
         Info << "Time = " << runTime.timeName() << nl << endl;
 
+        /*
         #ifdef isCommDataLayerIncluded
         commDataLayer& data = commDataLayer::New(runTime);
 
@@ -150,15 +139,17 @@ int main(int argc, char *argv[])
             ? data.getObj<label>("new_step", commDataLayer::causality::in)
             : 1;
 
-        do // FMI loop
+        do // FMI loop, move everything in multiphysics.loop() (first step)
         {
         #endif
+        */
 
         while (multiphysics.loop())
         {
             #include "solve.H"
         }
         
+        /*
         #ifdef isCommDataLayerIncluded
             if (isNewStep != 1 && FMUSimulatorLabel != -1)
             {
@@ -169,6 +160,7 @@ int main(int argc, char *argv[])
         } 
         while (isNewStep != 1 && FMUSimulatorLabel != -1);
         #endif
+        */
 
         runTime.write();
 

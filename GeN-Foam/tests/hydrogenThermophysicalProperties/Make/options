@@ -1,7 +1,10 @@
 EXE_INC = \
+    -I./../../classes/common/lnInclude \
     -I./../../classes/thermalHydraulics/src/lnInclude \
-    -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude
+    # -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude
 
 EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) -lCommonMultiPhysics \
     -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
-    -lspecie
+    -lspecie \
+    # -lexternalComm

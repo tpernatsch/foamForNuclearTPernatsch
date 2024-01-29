@@ -69,7 +69,11 @@ Foam::H2::H2()
     ),
     W_H_(1.007647), // kg/kmol
     R_(8.314472e3), // J/kmol/K
-    // Arbitrary values
+    n_(0.4986 + 1.1735*omega() + 0.4754*sqr(omega())),
+    alpha0_(0.42748*sqr(R_*Tc()) / Pc()),
+    b_(0.08664*R_*Tc() / Pc()),
+    c_(R_*Tc() / (Pc() + alpha0_ / (Vc() * (Vc()+b_))) + b_ - Vc()),
+    // Arbitrary values not used in the code
     rho_(98.343885, 0.30542, 647.13, 0.081),
     pv_(73.649, -7258.2, -7.3037, 4.1653e-06, 2),
     hl_(647.13, 2889425.47876769, 0.3199, -0.212, 0.25795, 0),

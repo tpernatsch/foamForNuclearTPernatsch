@@ -132,11 +132,23 @@ class H2
 {
     // Private data
 
-        //- Atomic hydrogen weight [kg/kmol] 
+        //- Hydrogen atomic weight [kg/kmol] 
         scalar W_H_;
 
         //- Perfect gas constant
         scalar R_;
+
+        //- 
+        scalar n_;
+
+        //-
+        scalar alpha0_;
+
+        //-
+        scalar b_;
+
+        //-
+        scalar c_;
 
 
         //- Useless but needed because liquidProperties is over constrainded

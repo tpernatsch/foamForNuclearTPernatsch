@@ -81,6 +81,17 @@ Usage
 
 #include "pimpleControl.H"
 
+#if defined __has_include
+#  if __has_include(<commDataLayer.H>) 
+#    include <commDataLayer.H>
+#    define isCommDataLayerIncluded
+#  endif
+#endif
+
+#ifdef isCommDataLayerIncluded
+#include "commDataLayer.H"
+#endif
+
 //- Declare that customPimpleControl will be used
 #define customPimple_CONTROL
 
@@ -110,6 +121,9 @@ protected:
 
     // Protected data
 
+        //- Ref to runTime (used for FMI and functionObject execution)
+        Time& runTime_;
+
         // Solution controls
 
             //- Minimum amount of PIMPLE iterations to be performed
@@ -122,6 +136,9 @@ protected:
             //  novel optional residualControl for pressure based on 
             //  first PISO initial residuals
             bool corrPISOUntilConvergence_;
+
+            //- Flag to activate the PIMPLE FMI loop correction
+            bool isFMIcoupledCorrection_;
 
             //-
             int nCorrPISOInPrevPIMPLE_;
@@ -183,6 +200,7 @@ public:
         customPimpleControl
         (
             fvMesh& mesh,
+            Time& runtime,
             const word& dictName = "PIMPLE",
             const bool verbose = true
         );
