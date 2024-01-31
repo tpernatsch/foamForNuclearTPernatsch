@@ -73,7 +73,7 @@ Description
 #include "fvCFD.H"
 #include "fvOptions.H"
 #include "SquareMatrix.H"
-#include "fvMatrixExt.H"
+//#include "fvMatrixExt.H"
 #include "meshToMesh.H"
 #include "regionProperties.H"
 #include "mergeOrSplitBaffles.H"
