@@ -1,14 +1,14 @@
 
 EXE_INC = \
-    -I./main \
-    -I./main/include \
-    -I./classes/common/lnInclude \
-    -I./classes/thermalHydraulics/src/lnInclude \
-    -I./classes/thermalHydraulics/solvers/lnInclude \
-    -I./classes/neutronics/lnInclude \
-    -I./classes/thermoMechanics/lnInclude \
-    -I./classes/multiphysicsControl \
+    -I. \
     -I./include \
+    -I../src/classes/common/lnInclude \
+    -I../src/classes/thermalHydraulics/src/lnInclude \
+    -I../src/classes/thermalHydraulics/solvers/lnInclude \
+    -I../src/classes/neutronics/lnInclude \
+    -I../src/classes/thermoMechanics/lnInclude \
+    -I../src/classes/multiphysicsControl/lnInclude \
+    -I../src/include \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
@@ -24,10 +24,12 @@ EXE_INC = \
     -I$(LIB_SRC)/ODE/lnInclude \
     -I$(LIB_SRC)/parallel/reconstruct/reconstruct/lnInclude \
     -I$(LIB_SRC)/dynamicMesh/lnInclude \
-    # -I./FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
+    -I/home/thomas-guilbaud/Software/OFFBEAT-develop-FMI/offbeat/offbeatLib/FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
+    # -I./../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
 
 EXE_LIBS = \
-    -L$(FOAM_USER_LIBBIN) -lCommonMultiPhysics \
+    -L$(FOAM_USER_LIBBIN) -lCommon \
+    -L$(FOAM_USER_LIBBIN) -lMultiphysicsControl \
     -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
     -L$(FOAM_USER_LIBBIN) -lFFSSolvers2 \
     -L$(FOAM_USER_LIBBIN) -lNeutronicsSolvers \
@@ -49,4 +51,4 @@ EXE_LIBS = \
     -lgenericPatchFields \
     -lreconstruct \
     -ldynamicMesh \
-    # -lexternalComm
+    -lexternalComm

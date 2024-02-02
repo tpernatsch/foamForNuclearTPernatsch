@@ -5,7 +5,7 @@ GeN-Foam is a multi-physics solver for reactor analysis. It can solve (coupled o
 - neutronics, with models for point kinetics, diffusion (transient and eigenvalue), adjoint diffusion (only eigenvalue), SP3 (transient and eigenvalue), discrete ordinates (only eigenvalue);
 - one-phase thermal-hydraulics, according to both RANS-CFD and porous-medium coarse-mesh approaches (the two approaches can be combined in the same mesh);
 - two-phase porous-medium thermal-hydraulics, according to an Euler-Euler model, with models and correlations available for sodium and water;
-- temperatures in sub-scale solid structures in porous-medium regions, based on user selectable models including 1-D fuel, fixed temperature, fixed power, fuel pebbles, heated rods, as well as a generic lumped-parameters model based on the concept of electric equivalence;
+- temperatures in sub-scale solid structures in porous-medium regions, based on user-selectable models including 1-D fuel, fixed temperature, fixed power, fuel pebbles, heated rods, as well as a generic lumped-parameters model based on the concept of electric equivalence;
 - thermal-mechanics based on linear thermo-elasticity, which can be used to evaluate deformations and temperatures in solid structures. Deformations can be used to modify the meshes for thermal-hydraulics and neutronics.
 
 It should be mentioned that GeN-Foam was mainly designed for coarse-mesh analyses of a reactor core (with porous medium approach and sub-scale representation of fuel). However, pin-by-pin and other heterogeneous models can be obtained by connecting the thermal-mechanics and thermal-hydraulics regions using coupled boundary conditions. 
@@ -35,9 +35,55 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 
 ## Forum
 
-A forum to get support from the developers and the community is available at the following link : [Forum](https://foam-for-nuclear.org/phpBB/)
+A forum to get support from the developers and the community is available at the following link: [Forum](https://foam-for-nuclear.org/phpBB/)
 
-
-
+## Copyright
 
 © Contributions are individually acknowledged in the header files
+
+## Gallery
+
+*Modeling of the European Sodium Fast Reactor: Boiling in a windowed assembly and core flowering*
+
+<p align="center" style="text-align:center;">
+
+  <img src="./Documentation/media/assmblyWindows.png" width="200" style="display:inline-block;">
+  <img src="./Documentation/media/coreFlowering.png" width="300" style="display:inline-block;">
+
+  <br>
+
+</p>
+
+*Full plant modeling of the ALFRED Lead Fast Reactor using the FMI interface and Modelica*
+
+<p align="center" style="text-align:center;">
+
+  <img src="./Documentation/media/LFRfull.png" width="1000" style="display:inline-block;">
+
+  <br>
+
+
+</p>
+
+*Modeling of Molten Salt Reactors: the MSRE and the MSFR*
+
+<p align="center" style="text-align:center;">
+
+  <img src="./Documentation/media/MSRE.png" width="300" style="display:inline-block;">
+  <img src="./Documentation/media/precTot3D.png" width="300" style="display:inline-block;">
+  <img src="./Documentation/media/precTot3Dside.png" width="100" style="display:inline-block;">
+
+  <br>
+
+
+</p>
+
+*Modeling of FFTF: 2-D primary circuit thermal-hydraulics and core fluxes*
+
+<p align="center" style="text-align:center;">
+
+  <img src="./Documentation/media/FFTF.png" width="800" style="display:inline-block;">
+
+
+  <br>
+</p>

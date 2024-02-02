@@ -45,17 +45,17 @@ beta = [7.2315e-05, 0.000609661, 0.000471181, 0.00118907, 0.000445487, 9.58515e-
 #=============================================================================*
 # Extract results
 
-filename = "steadyState/100/uniform/functionObjects/functionObjectProperties"
+filename = sys.argv[1]+"/uniform/functionObjects/functionObjectProperties"
 
 # Flux integrated over the mesh (neutrons.m/s)
-flux0 = extractFromFunctionObjs(filename, "volIntegrate(zone0,flux0)")
-flux1 = extractFromFunctionObjs(filename, "volIntegrate(zone0,flux1)")
 flux = [
     extractFromFunctionObjs(filename, f"volIntegrate(zone0,flux{i})") for i in range(2)
 ]
 
 # Source integrated over the mesh (neutrons/s)
-S = extractFromFunctionObjs(filename, "volIntegrate(zone0,externalSourceFlux0)")
+S = [
+    extractFromFunctionObjs(filename, f"volIntegrate(zone0,externalSourceFlux{i})") for i in range(2)
+]
 
 # Computed data
 betat = sum(beta)
@@ -68,8 +68,8 @@ nuSigmaFfluxt = sum(
 )
 
 # Steady-state equations for an infinite medium
-eq0 = chi[0]*nuSigmaFfluxt - SigmaDisp[0]*flux[0] + SigmaS[1][0]*flux[1] + S
-eq1 = chi[1]*nuSigmaFfluxt - SigmaDisp[1]*flux[1] + SigmaS[0][1]*flux[0] + S
+eq0 = chi[0]*nuSigmaFfluxt - SigmaDisp[0]*flux[0] + SigmaS[1][0]*flux[1] + S[0]
+eq1 = chi[1]*nuSigmaFfluxt - SigmaDisp[1]*flux[1] + SigmaS[0][1]*flux[0] + S[1]
 
 
 #=============================================================================*
@@ -81,12 +81,12 @@ print(f"Flux eq 1 = {eq1} must be close to 0")
 NprodFiss = chi[0]*nuSigmaFfluxt + chi[1]*nuSigmaFfluxt
 NprodScatt = SigmaS[1][0]*flux[1] + SigmaS[0][1]*flux[0]
 Nabs = SigmaDisp[0]*flux[0] + SigmaDisp[1]*flux[1]
-Nsrc = 2*S
+Nsrc = sum(S)
 Nprod = NprodFiss+NprodScatt
 
 # Equations from [1], ksrc and keff must be equivalent
 ksrc = NprodFiss / (NprodFiss + Nsrc)
-keff = (NprodFiss) / (Nabs-NprodScatt)
+keff = NprodFiss / (Nabs - NprodScatt)
 
 # Match the keff only if eigenvalueNeutronics at true and externalSourceNeutronics at false
 # According to [1], keff and ksrc must close in external source mode.

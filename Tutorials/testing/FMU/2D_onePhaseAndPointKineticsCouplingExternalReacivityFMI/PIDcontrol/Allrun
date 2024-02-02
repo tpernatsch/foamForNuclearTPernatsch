@@ -41,7 +41,7 @@ fi
 # Run Transient
 
 echo "Remove transient and duplicate steadyState case as transient"
-rm -r transient
+rm -rf transient
 cp -r steadyState transient
 cp rootCase/ExternalReactivityController* transient/
 cd transient

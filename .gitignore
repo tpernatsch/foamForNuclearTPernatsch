@@ -40,7 +40,7 @@ GeN-Foam/*.sublime*
 Documentation/doxygen/Doxygen/html/**
 
 # FMU installation
-GeN-Foam/FMU4FOAM
+src/FMU4FOAM
 
 # Tutorials
 Tutorials/*/**/*1*

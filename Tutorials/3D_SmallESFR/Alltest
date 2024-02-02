@@ -31,6 +31,7 @@ isConverge steadyState "Steady state"
 isConverge transient   "Transient"
 
 # --- Recover the results
+export LC_NUMERIC="en_US.UTF-8"
 keff=$(foamDictionary ./steadyState/processor0/200/uniform/reactorState -entry keff -value)
 totalPower=$(
     awk '{ print $1+0 }' <<<$(

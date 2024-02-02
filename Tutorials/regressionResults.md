@@ -1,7 +1,7 @@
 # GeN-Foam regression test suite
 
-Regression test of 31-August-2023 - 15:26:50  
-Tutorials successfully completed: 21/21  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
+Regression test of 31-janv.-2024 - 13:51:28  
+Tutorials successfully completed: 23/23  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ Structure temperature at the top of the channel at 90 seconds
 Perfect match:
 |          | Simulated | Expected |
 |:---------|:---------:|:--------:|
-| TwallTop | 2625.18 | 2625.18 |
+| TwallTop | 2618.65 | 2625.18 |
 
 --------------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ Heat flux of the structure at the top of the channel at 40 seconds
 Perfect match:
 |           | Simulated | Expected |
 |:----------|:---------:|:--------:|
-| Qwall Top | 33423.1 | 33423.1 |
+| Qwall Top | 33427.4 | 33423.1 |
 
 --------------------------------------------------------------------------------
 
@@ -86,11 +86,11 @@ Power at the end of transient
 Perfect match:
 |       | Simulated | Expected |
 |:------|:---------:|:--------:|
-| Power | 6.13794e+08  | 6.13794e+08 |
+| Power | 6.13787e+08  | 6.13794e+08 |
 
 --------------------------------------------------------------------------------
 
-## 1D_PSBT_SC
+## 1D_PSBT_SC/Phase_Ex1_12223
 
 Run tutorial 1D_PSBT_SC ...
 
@@ -103,6 +103,40 @@ Perfect match:
 |              | Simulated | Expected |
 |:-------------|:---------:|:--------:|
 | alpha vapour | 0.133727 | 0.133727 |
+
+--------------------------------------------------------------------------------
+
+## 1D_PSBT_SC/PhaseII_Ex1_01_5215
+
+Run tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 ...
+
+Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 
+
+PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 has converged 
+
+alpha.vapour at the end of the channel
+Perfect match:
+|                       | Simulated | Expected |
+|:----------------------|:---------:|:--------:|
+| Max alpha vapour      | 0.123835 | 0.123835 |
+| T at max alpha vapour | 620.178 | 620.178 |
+
+--------------------------------------------------------------------------------
+
+## 1D_PSBT_SC/PhaseII_Ex2_04_6770
+
+Run tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 ...
+
+Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 
+
+PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 has converged 
+
+alpha.vapour at the end of the channel
+Perfect match:
+|                       | Simulated | Expected |
+|:----------------------|:---------:|:--------:|
+| Max alpha vapour      | 0.319074 | 0.319074 |
+| T at max alpha vapour | 625.826 | 625.826 |
 
 --------------------------------------------------------------------------------
 
@@ -151,11 +185,11 @@ Test power and fluxes
 Perfect match:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
-| Total power | 53214.1 | 53214.1 |
-| Flux 0      | 23260.8 | 23260.8 |
-| Flux 1      | 29953.3 | 29953.3 |
-| Source 0    | 3346.27 | 3346.27 |
-| Source 1    | 3346.27 | 3346.27 |
+| Total power | 53214 | 53214 |
+| Flux 0      | 23260 | 23260 |
+| Flux 1      | 29953 | 29953 |
+| Source 0    | 3346 | 3346 |
+| Source 1    | 3346 | 3346 |
 
 --------------------------------------------------------------------------------
 
@@ -208,9 +242,9 @@ Test with 0.2 relative error
 Perfect match:
 |                   | Simulated | Expected |
 |:------------------|:---------:|:--------:|
-| Time              | 12.5291 | 12.56424533593758 |
-| alpha.vapour      | 0.168632 | 0.1577348 |
-| T.activeStructure | 826.68 | 821.0752 |
+| Time              | 12.52914919555637 | 12.56424533593758 |
+| alpha.vapour      | 0.1686322 | 0.1577348 |
+| T.activeStructure | 826.6798 | 821.0752 |
 
 --------------------------------------------------------------------------------
 
@@ -271,8 +305,8 @@ Final powers with 0.001 relative error
 Perfect match:
 |                             | Simulated | Expected | Theory |
 |:----------------------------|:---------:|:--------:|:------:|
-| Total power ramp Source     | 19963400 | 19963400 | 20000000 |
-| Total power ramp Reactivity | 19927100 | 19927100 | 20000000 |
+| Total power ramp Source     | 19963400  | 19963400 | 20000000 |
+| Total power ramp Reactivity | 19927100  | 19927100 | 20000000 |
 
 --------------------------------------------------------------------------------
 
@@ -321,11 +355,11 @@ Simulation & reference comparison
 
 |                         | Simulated | Expected  | Error [%] |
 |:------------------------|:---------:|:---------:|:---------:|
-| keff                    | 1.3052507 | 1.3052479 |   -.00021 | # Passed
+| keff                    | 1.3194369 | 1.3194342 |   -.00020 | # Passed
 | Total power neutro [MW] |   937.000 |       937 |         0 | # Passed
-| Total power fluid  [MW] |   936.997 |       937 |    .00032 | # Passed
-| Total mass flow  [kg/s] | 30.65801000 |      31.0 |      1.10 | # Passed
-| Outlet temperature  [K] | 1930.6144 |      1972 |      2.09 | # Passed
+| Total power fluid  [MW] |   937.001 |       937 |   -.00010 | # Passed
+| Total mass flow  [kg/s] | 30.54932000 |      31.0 |      1.45 | # Passed
+| Outlet temperature  [K] |  1929.981 |      1972 |      2.13 | # Passed
 
 All test passed
 
@@ -347,7 +381,7 @@ Perfect match:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
 | keff        | 0.936873 | 0.936827 |
-| Total power | 799894700 | 800000000 |
+| Total power | 7.998947e+08 | 800000000 |
 
 --------------------------------------------------------------------------------
 

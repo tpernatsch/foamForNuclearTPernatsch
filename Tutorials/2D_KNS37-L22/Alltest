@@ -23,11 +23,12 @@ else
 fi
 
 # --- Recover the results
+export LC_NUMERIC="en_US.UTF-8"
 input="./postProcessing/fluidRegion/averageValues/-2/volFieldValue.dat"
 average=$(head -9424 "$input" | tail -1 | xargs)
-averageTimeAt=$(echo $average | awk '{ print $1+0 }')
-averageAlphaVapourAt=$(echo $average | awk '{ print $2+0 }')
-averageTemperatureAt=$(echo $average | awk '{ print $3+0 }')
+averageTimeAt=$(echo $average | cut -d' ' -f1)
+averageAlphaVapourAt=$(printf "%f" $(echo $average | cut -d' ' -f2))
+averageTemperatureAt=$(printf "%f" $(echo $average | cut -d' ' -f3))
 
 expectedTimeAt="12.56424533593758"
 expectedAlphaVapourAt="0.1577348"

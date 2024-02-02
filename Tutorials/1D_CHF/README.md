@@ -1,14 +1,14 @@
 # 1D CHF
 
-This tutorial provides 2 examples of of 1-D channels with boiling water and
+This tutorial provides 2 examples of 1-D channels with boiling water and
 achievement of critical heat flux conditions, both in the case of imposed power
 and in the case of imposed temperature.
 
-In the case with imposed power, the power is gradually increased and subsequently
+In the case of imposed power, the power is gradually increased and subsequently
 decreased in order to reproduce the well-known hysteresis caused by the
 boiling crisis.
 
-In the case with imposed temperature, the temperature is only increased with
+In the case of imposed temperature, the temperature is only increased with
 time. It shows that with imposed temperature we pass through the Leidenfrost
 temperature.
 
