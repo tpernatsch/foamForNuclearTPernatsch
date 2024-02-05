@@ -144,10 +144,8 @@ EXE_INC = \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
-    -I/home/thomas-guilbaud/Software/OFFBEAT-develop-FMI/offbeat/offbeatLib/FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
-    # -I./../../FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude \
 
-EXE_LIBS = \
+LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lCommon \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
@@ -159,4 +157,8 @@ EXE_LIBS = \
     -lfvOptions \
     -lmeshTools \
     -lsampling \
-    -lexternalComm
+
+ifneq (,$(findstring FMU4FOAM,$(LIB_FMU4FOAM)))
+    EXE_INC += -I$(LIB_FMU4FOAM)/ECI4FOAM/src/externalComm/lnInclude
+    LIB_LIBS += -lexternalComm
+endif

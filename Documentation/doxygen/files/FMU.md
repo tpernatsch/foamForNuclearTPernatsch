@@ -9,7 +9,7 @@ GeN-Foam provides several interface points to communicate with [Functional Mock-
 To use the FMI coupling interface in GeN-Foam, the user has to install the [FMU4FOAM](https://github.com/DLR-RY/FMU4FOAM) project developed by the DLR using the following commands:
 
 First of all, you have to install an old version of **conan**. Nothing works with 2.x
-```
+```bash
 pip install oftest conan==1.58.0
 ```
 
@@ -45,7 +45,12 @@ cd examples/heatedRoom
 ./Allrun
 ```
 
-To include into GeN-Foam you have to uncomment the commented lines in GeN-Foam/Make/options. Then the GeN-Foam project can be built as usual.
+To include into GeN-Foam you have to export the `LIB_FMU4FOAM` environment variable such as:
+```bash
+# In your .bashrc, must end with "FMU4FOAM"
+export LIB_FMU4FOAM="/home/.../path/to/FMU4FOAM"
+```
+Then the GeN-Foam project can be built as usual.
 
 
 ## Features
@@ -76,14 +81,3 @@ In this section, a list of FMI inputs/outputs in GeN-Foam is provided with a lin
 | Feature | Location |
 |:--------|:---------|
 | Nuclear fuel structure based on an FMU | [GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU](GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU) |
-
-
-## Potential Issues
-
-Make sure that `-I./*/FMU4FOAM/ECI4FOAM/src/externalComm/lnInclude` and `-lexternalComm` have been uncommented in:
-- [GeN-Foam/classes/neutronics/Make/options](GeN-Foam/classes/neutronics/Make/options)
-- [GeN-Foam/classes/thermalHydraulics/src/Make/options](GeN-Foam/classes/thermalHydraulics/src/Make/options)
-- [GeN-Foam/Make/options](GeN-Foam/Make/options)
-
-
-
