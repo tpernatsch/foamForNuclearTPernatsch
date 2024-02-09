@@ -77,6 +77,7 @@ SourceFiles
 #include "turbulentFluidThermoModel.H"
 #include "volPointInterpolation.H"
 #include "meshToMesh.H"
+#include "timeProfile.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -127,6 +128,12 @@ protected:
 
     //- Liquid fuel (e.g. true for MSRs)
     const bool liquidFuel_;
+
+    //- External source file
+    IOdictionary externalSource_;
+
+    //- Source modulation time profile
+    timeProfile externalSourceModulationTimeProfile_;
 
 private:
 

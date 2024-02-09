@@ -10,6 +10,7 @@ EXE_INC = \
     -I./twoPhase \
     -I./twoPhase/include/pEqnRoutines \
     -I./twoPhase/include/alphaEqnRoutines \
+    -I./../../common/lnInclude \
     -I./../src/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
@@ -23,6 +24,7 @@ EXE_INC = \
     -I$(LIB_SRC)/meshTools/lnInclude \
 
 LIB_LIBS = \
+    -L$(FOAM_USER_LIBBIN) -lCommon \
     -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \

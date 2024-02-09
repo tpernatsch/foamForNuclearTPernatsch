@@ -1,7 +1,7 @@
 # GeN-Foam regression test suite
 
-Regression test of 31-janv.-2024 - 13:51:28  
-Tutorials successfully completed: 23/23  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
+Regression test of 08-févr.-2024 - 18:14:36  
+Tutorials successfully completed: 22/22  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
 
 --------------------------------------------------------------------------------
 
@@ -185,11 +185,11 @@ Test power and fluxes
 Perfect match:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
-| Total power | 53214 | 53214 |
-| Flux 0      | 23260 | 23260 |
-| Flux 1      | 29953 | 29953 |
-| Source 0    | 3346 | 3346 |
-| Source 1    | 3346 | 3346 |
+| Total power | 53214.3 | 53214.3 |
+| Flux 0      | 23260.9 | 23260.9 |
+| Flux 1      | 29953.4 | 29953.4 |
+| Source 0    | 3346.28 | 3346.28 |
+| Source 1    | 3346.28 | 3346.28 |
 
 --------------------------------------------------------------------------------
 
@@ -243,8 +243,8 @@ Perfect match:
 |                   | Simulated | Expected |
 |:------------------|:---------:|:--------:|
 | Time              | 12.52914919555637 | 12.56424533593758 |
-| alpha.vapour      | 0.1686322 | 0.1577348 |
-| T.activeStructure | 826.6798 | 821.0752 |
+| alpha.vapour      | 0.168632 | 0.1577348 |
+| T.activeStructure | 826.679800 | 821.0752 |
 
 --------------------------------------------------------------------------------
 
@@ -305,8 +305,8 @@ Final powers with 0.001 relative error
 Perfect match:
 |                             | Simulated | Expected | Theory |
 |:----------------------------|:---------:|:--------:|:------:|
-| Total power ramp Source     | 19963400  | 19963400 | 20000000 |
-| Total power ramp Reactivity | 19927100  | 19927100 | 20000000 |
+| Total power ramp Source     | 19963400.000000 | 19963400 | 20000000 |
+| Total power ramp Reactivity | 19927100.000000 | 19927100 | 20000000 |
 
 --------------------------------------------------------------------------------
 
@@ -381,7 +381,7 @@ Perfect match:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
 | keff        | 0.936873 | 0.936827 |
-| Total power | 7.998947e+08 | 800000000 |
+| Total power | 799894700 | 800000000 |
 
 --------------------------------------------------------------------------------
 

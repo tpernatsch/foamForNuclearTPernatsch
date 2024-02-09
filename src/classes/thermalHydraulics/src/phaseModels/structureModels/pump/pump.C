@@ -37,13 +37,6 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
-#    include <commDataLayer.H>
-#    define isCommDataLayerIncluded
-#  endif
-#endif
-
 #include "pump.H"
 
 //- From forward declarations
@@ -80,64 +73,25 @@ Foam::pump::pump
     mesh_(mesh),
     cellList_(cellList),
     pumpValue_(this->get<vector>("momentumSource")),
-    timeProfilePtr_(nullptr),
-    t0_(0.0),
-    timeProfile_(false),
-    pumpMultiplierNameFromFMU_("momentumSourceCoupled"),
-    fromFMU_(false)
-{
-    Info << "Creating pump in " << dict.dictName() << endl;
-
-    word timeProfileDictName("momentumSourceTimeProfile");
-    word pumpMultiplierKeyFromFMU("pumpMultiplierNameFromFMU");
-
-    if (this->found(timeProfileDictName))
-    {
-        const dictionary& timeProfileDict(dict.subDict(timeProfileDictName));
-        word type
+    momentumSourceTimeProfile_
+    (
+        IOdictionary
         (
-            timeProfileDict.get<word>("type")
-        );
-        timeProfilePtr_.reset        
-        (
-            Function1<scalar>::New
+            IOobject
             (
-                type,
-                timeProfileDict,
-                type
-            )
-        );
-        timeProfile_ = true;
-        t0_ = timeProfileDict.lookupOrDefault("startTime", 0.0);
-
-        Info << "Using a time profile for the pump in " << dict.dictName() << endl;
-    }
-    #ifdef isCommDataLayerIncluded
-    if (this->found(pumpMultiplierKeyFromFMU))
-    {
-        pumpMultiplierNameFromFMU_ = this->get<word>(pumpMultiplierKeyFromFMU);
-        // Communicating with the FMU
-        const Time& runTime = this->db().time();
-        commDataLayer& data = commDataLayer::New(runTime); 
-        // Store in data layer and set its initial value to 1       
-        data.storeObj(
-            scalar(1.0),
-            pumpMultiplierNameFromFMU_,
-            commDataLayer::causality::in
-        );
-        fromFMU_ = true;
-
-        Info << "Using FMUs for the pump in " << dict.dictName() << endl;
-    }
-
-    if(timeProfile_ && fromFMU_)
-    {
-        Info << "WARNING: Both time profile and FMU coupling provided for the pump in " 
-        << dict.dictName() << endl
-        << "GeN-Foam will use the FMU" << endl;
-    }
-    #endif
-
+                typeName,
+                mesh.time().timeName(),
+                mesh,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            dict
+        ),
+        "momentumSourceTimeProfile",
+        mesh.time()
+    )
+{
+    Info<< "Creating pump in " << dict.dictName() << endl;
 }
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
@@ -149,22 +103,13 @@ void Foam::pump::correct
 {
     vector pumpValue(pumpValue_);
 
-    if (timeProfile_)
+    if (momentumSourceTimeProfile_.valid())
     {
-        scalar t(mesh_.time().timeOutputValue()-t0_);
-        pumpValue = pumpValue_ * timeProfilePtr_->value(t);
+        scalar t(mesh_.time().timeOutputValue());
+        pumpValue = pumpValue_ * momentumSourceTimeProfile_.value(t);
     }
-    #ifdef isCommDataLayerIncluded
-    if (fromFMU_)
-    {
-        const Time& runTime = this->db().time();
-        commDataLayer& data = commDataLayer::New(runTime);
-        const scalar pumpMultiplierFromFMU =
-            data.getObj<scalar>(pumpMultiplierNameFromFMU_,commDataLayer::causality::in);
-        //update the vector field by adjusting the magnitude
-        pumpValue = pumpValue_ * pumpMultiplierFromFMU;
-    }
-    #endif
+
+    // Update all cells of pump cellZone
     forAll(cellList_, i)
     {
         const label& celli(cellList_[i]);

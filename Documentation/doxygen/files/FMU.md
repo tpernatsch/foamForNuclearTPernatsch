@@ -61,11 +61,15 @@ In this section, a list of FMI inputs/outputs in GeN-Foam is provided with a lin
 
 | Feature | Location |
 |:--------|:---------|
-| Momentum source | [GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/pump](GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/pump) |
-| Fix-temperature structure | [GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperatureFMU](GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperatureFMU) |
-| Additional heat transfer coefficient in serie | [GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU](GeN-Foam/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU) |
-| External reactivity in the point-kinetics solver | [GeN-Foam/classes/neutronics/pointKinetics](GeN-Foam/classes/neutronics/pointKinetics) |
-| External neutron source modulation in the point-kinetics solver | [GeN-Foam/classes/neutronics/pointKinetics](GeN-Foam/classes/neutronics/pointKinetics) |
+| Momentum source | [src/classes/thermalHydraulics/src/phaseModels/structureModels/pump](src/classes/thermalHydraulics/src/phaseModels/structureModels/pump) |
+| Fix-temperature structure | [src/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperature](src/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperature) |
+| Fix-power structure | [src/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedPower](src/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedPower) |
+| Additional heat transfer coefficient in serie | [src/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU](src/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU) |
+| External reactivity in the point-kinetics solver | [src/classes/neutronics/pointKinetics](src/classes/neutronics/pointKinetics) |
+| External neutron source modulation in the point-kinetics solver | [src/classes/neutronics/pointKinetics](src/classes/neutronics/pointKinetics) |
+| Boron reactivity in the point-kinetics solver | [src/classes/neutronics/pointKinetics](src/classes/neutronics/pointKinetics) |
+| Decay power in the point-kinetics solver | [src/classes/neutronics/pointKinetics](src/classes/neutronics/pointKinetics) |
+| Time profile object | [src/classes/common/timeProfile](src/classes/common/timeProfile) |
 
 
 ### Outputs to FMUs
@@ -73,11 +77,16 @@ In this section, a list of FMI inputs/outputs in GeN-Foam is provided with a lin
 | Feature | Location |
 |:--------|:---------|
 | External sensor | FMU4FOAM |
-| Field integral over a cellZone | [GeN-Foam/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU](GeN-Foam/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU) |
+| Field integral over a cellZone | [src/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU](src/classes/thermalHydraulics/src/functionObjects/fieldIntegralToFMU) |
 
 
 ### Inputs and outputs from/to an FMU
 
 | Feature | Location |
 |:--------|:---------|
-| Nuclear fuel structure based on an FMU | [GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU](GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU) |
+| Nuclear fuel structure based on an FMU | [src/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU](src/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU) |
+
+
+## Tips
+
+If your simulation crash because of unexpected error from externlComm json. Make sure that you have provided all the FMI ports in both codes with the correct spelling.

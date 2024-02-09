@@ -37,7 +37,18 @@ License
 
 \*---------------------------------------------------------------------------*/
 
+#if defined __has_include
+#  if __has_include(<commDataLayer.H>) 
+#    include <commDataLayer.H>
+#    define isCommDataLayerIncluded
+#  endif
+#endif
+
 #include "timeProfile.H"
+
+#ifdef isCommDataLayerIncluded
+#include "commDataLayer.H"
+#endif
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -54,41 +65,19 @@ License
 
 Foam::timeProfile::timeProfile
 (
-    const dictionary& dict
+    const dictionary& dict,
+    const Time& runTime
 )
 :
     dict_(dict),
+    runTime_(runTime),
     type_(dict_.get<word>("type")),
-    startTime_(dict_.lookupOrDefault<scalar>("startTime", 0.0))
+    startTime_(dict_.lookupOrDefault<scalar>("startTime", 0.0)),
+    functionPtr_(nullptr),
+    isfmiPortSet_(false)
 {
-    functionPtr_.reset
-    (
-        Function1<scalar>::New
-        (
-            type_,
-            dict_,
-            type_
-        )
-    );
-}
-
-Foam::timeProfile::timeProfile
-(
-    IOdictionary object,
-    word timeProfileName
-)
-:
-    startTime_(0.0),
-    functionPtr_(nullptr)
-{
-    if (object.found(timeProfileName))
+    if (type_ != "fmi")
     {
-        dict_ = object.subDict(timeProfileName);
-
-        type_ = dict_.get<word>("type");
-
-        startTime_ = dict_.lookupOrDefault<scalar>("startTime", 0.0);
-
         functionPtr_.reset
         (
             Function1<scalar>::New
@@ -99,17 +88,114 @@ Foam::timeProfile::timeProfile
             )
         );
     }
+    else
+    {
+        initializeFMI();
+    }
+}
+
+Foam::timeProfile::timeProfile
+(
+    IOdictionary object,
+    word timeProfileName,
+    const Time& runTime
+)
+:
+    runTime_(runTime),
+    startTime_(0.0),
+    functionPtr_(nullptr),
+    isfmiPortSet_(false)
+{
+    if (object.found(timeProfileName))
+    {
+        dict_ = object.subDict(timeProfileName);
+        
+        type_ = dict_.get<word>("type");
+
+        startTime_ = dict_.lookupOrDefault<scalar>("startTime", 0.0);
+
+        if (type_ != "fmi")
+        {
+            functionPtr_.reset
+            (
+                Function1<scalar>::New
+                (
+                    type_,
+                    dict_,
+                    type_
+                )
+            );
+        }
+        else
+        {
+            initializeFMI();
+        }
+    }
 }
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-bool Foam::timeProfile::valid()
+void Foam::timeProfile::initializeFMI()
 {
+#ifdef isCommDataLayerIncluded
+
+    word keyFromFMU("nameFromFMU");
+    if (dict_.found(keyFromFMU))
+    {
+        nameFromFMU_ = dict_.get<word>(keyFromFMU);
+
+        Info<< dict_.dictName()
+            << " FMI input name: " << nameFromFMU_ 
+            << endl;
+
+        // Communicating with the FMU
+        commDataLayer& data = commDataLayer::New(runTime_); 
+        // Store in data layer and set its initial value to 0 or user defined
+        data.storeObj(
+            dict_.lookupOrDefault<scalar>("initialValue", 0.0),
+            nameFromFMU_,
+            commDataLayer::causality::in
+        );
+
+        isfmiPortSet_ = true;
+    }
+
+#else // !isCommDataLayerIncluded
+
+    FatalErrorInFunction
+        << "FMI mode selected but FMI lib not built or linked to GeN-Foam."
+        << exit(FatalError);
+
+#endif // isCommDataLayerIncluded
+}
+
+bool Foam::timeProfile::valid() const
+{
+    if (isfmiPortSet_)
+    {
+        return(true);
+    }
+    if (!functionPtr_) // If functionPtr_ is not defined return false
+    {
+        return(false);
+    }
     return(functionPtr_.valid());
 }
 
-scalar Foam::timeProfile::value(scalar time)
+scalar Foam::timeProfile::value(scalar time) const
 {
+#ifdef isCommDataLayerIncluded
+    if (isfmiPortSet_)
+    {
+        commDataLayer& data = commDataLayer::New(runTime_);
+        scalar value = data.getObj<scalar>(
+            nameFromFMU_,
+            commDataLayer::causality::in
+        );
+        return(value);
+    }
+#endif // isCommDataLayerIncluded
+
     return
     (
         functionPtr_.valid()

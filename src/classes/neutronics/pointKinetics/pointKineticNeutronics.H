@@ -72,7 +72,6 @@ Description
             + \rho_{GEM}
             + \rho_{boron}
             + \rho_{ext}
-            + \rho_{ext}^{FMU}
     \f]
 
     where:
@@ -96,7 +95,6 @@ Description
       \rho_{driveline}     | Control rod driveline expansion reactivity contribution
       \rho_{boron}         | Boron concentration reactivity contribution
       \rho_{ext}           | External reactivity contribution
-      \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
     \endtable
 
     Example of mandatory dictionary entries:
@@ -139,6 +137,11 @@ Description
                 (   0   0)
                 (   1   0.0005767131    ) //- i.e. 57.67131 pcm
             );
+
+            //- Or using the FMI
+            // type            fmi;
+            // nameFromFMU     gfExtReact;
+            // initialValue    0.0;
         }
 
         //- Optional time dependant boron reactivity time profile
@@ -150,13 +153,12 @@ Description
                 (   100   0   )
                 (   101   1e-5   )
             );
-        }
-    \endverbatim
 
-    Optional external reactivity input from FMU in nuclearData file.
-    The default initial value is 0.
-    \verbatim
-        externalReactivityNameFromFMU   gfExtReact;
+            //- Or using the FMI
+            // type            fmi;
+            // nameFromFMU     gfBoronReactivity;
+            // initialValue    0.0;
+        }
     \endverbatim
 
     Optional external neutron source file "externalSource"
@@ -173,11 +175,6 @@ Description
         //- Neutron yield of the spallation of proton on heavy metal 
         nuSource            15.5; // [neutron/proton]
 
-        //- Optional external source input from FMU in externalSource file.
-        //- The externalSourceMode must be set to transient. The default initial value
-        //-is 1.
-        externalSourceModulationNameFromFMU     gfExternalSourceMod;
-
         //- External modulation time profile (time, modulation factor)
         externalSourceModulationTimeProfile
         {
@@ -188,6 +185,11 @@ Description
                 (0      1)
                 (20     2)
             );
+
+            //- Or using the FMI
+            // type            fmi;
+            // nameFromFMU     gfExternalSourceMod;
+            // initialValue    1.0;
         }
     \endverbatim
 
@@ -205,7 +207,6 @@ SourceFiles
 #define pointKineticNeutronics_H
 
 #include "neutronics.H"
-#include "Function1.H"
 #include "interpolationTable.H"
 #include "timeProfile.H"
 
@@ -237,17 +238,15 @@ protected:
     scalar decayPower_;
 
     //- Optional decay power
-    autoPtr<Function1<scalar>> decayPowerPtr_;
+    // autoPtr<Function1<scalar>> decayPowerPtr_;
+    timeProfile decayPowerTimeProfile_;
 
     //- Time offset for the calcuation of the decayPower based on the
     //  provided Function1, if any
-    scalar decayPowerStartTime_;
+    // scalar decayPowerStartTime_;
 
     //- Due to whatever the user might please
     timeProfile externalReactivityTimeProfile_;
-
-    //- External source file
-    IOdictionary externalSource_;
 
     //- External source mode
     //  - transient: user input power variation by modulation
@@ -274,9 +273,6 @@ protected:
 
     // G_0 = energyPerFission*nuSource/(nuFission*beamEnergy)
     scalar intrinsicGain_;
-
-    //- Source modulation time profile
-    timeProfile externalSourceModulationTimeProfile_;
 
     //- Source modulation value set by externalSourceModulationTimeProfile_ (m_I)
     scalar externalSourceModulation_;

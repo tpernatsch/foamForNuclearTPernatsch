@@ -57,20 +57,12 @@ controlRodReactivityMap
 );
 
 //- Evolution of the external reactivity
-/*
 externalReactivityTimeProfile
 {
-    type        table;
-    startTime   100;
-    table       table
-    (
-        (   0   0)
-        (   1   0.0005767131    ) //- i.e. 57.67131 pcm, == 0.2*Beta
-    );
+    type            fmi;
+    nameFromFMU     gfExtReact;
+    initialValue    0.0;
 }
-*/
-
-externalReactivityNameFromFMU   gfExtReact;
 
 
 //- Relevant only for diffusionNeutronics

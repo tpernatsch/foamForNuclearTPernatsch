@@ -34,7 +34,7 @@ In the [comparisonFMU](comparisonFMU) folder, first clean the folder:
 ```
 
 Then run the following to simulate the case with and without the FMU:
-```
+```bash
 ./Allrun
 ```
 
@@ -58,7 +58,7 @@ In the [PIDcontrol](PIDcontrol) folder, first clean the folder:
 ```
 
 Then run the following to simulate the case with FMU PID controller:
-```
+```bash
 ./Allrun
 ```
 
