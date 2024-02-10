@@ -306,6 +306,8 @@ When point kinetics is used, the solver will simply rescale the *powerDensity* a
 
 NB1: The power densities in the thermal-hydraulic sub-solver are ALWAYS the physical ones: for instance, when the *nuclearFuelPin* model is used for pin-based reactors, *powerDensity* refers to the power density inside the fuel matrix. For liquid fuel, the *powerDensity* is the power density in the liquid. They are not the power densities smeared over the whole volume.
 
+NB2: If you calculate the powerDensity using Serpent, you have to divide it by the fuel fractio before feeding it to GeN-Foam (see [Neutronics](@ref NEUTRONICS), in the introduction, NB2)
+
 </div>
 
 
