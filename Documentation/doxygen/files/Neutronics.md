@@ -143,6 +143,3 @@ Several parameters related to a spallation source are included such as the energ
 An external source modulation timetable is provided to manually modulate the source strength.
 
 In the case of an FMI coupling, it is possible to use the *externalSourceModulationNameFromFMU* entry to change the external source modulation through an FMI. To use it, the mode must be *transient*.
-
-
-© All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021

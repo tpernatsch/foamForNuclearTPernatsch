@@ -314,6 +314,3 @@ NB2: If you calculate the powerDensity using Serpent, you have to divide it by t
 ## Discretization and solution
 
 Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/fluidRegion*. 
-
-© All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021
-
