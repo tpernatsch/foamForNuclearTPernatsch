@@ -23,8 +23,9 @@ A commented reactorState can be found in
 
 NB: Please note that in parallel calculations, the updated *reactorState* can be found in *processor0/constant/neutroRegion/*.
 
-NB2: the powerDensity file written to disk is the power density calculated by neutronics (sigmaPowers multiplied by fluxes), DIVIDED by the fuelFractions indicated in nuclearData. This means that it provide the power denisty IN the fuel, not spread over the cross-section homegeneization region. For instance, if you have an assembly with its own one-group cross section set and you specify that the fuel fraction is 0.3, powerDensity will be equal to $$ flux \cdot sigmaPower \cdot / fuelFraction $$ 
 </div>
+
+IMPORTANT: The powerDensity file written to disk is the power density calculated by neutronics (sigmaPowers multiplied by fluxes), DIVIDED by the fuelFractions indicated in nuclearData. This means that it provide the power denisty IN the fuel, not spread over the cross-section homegeneization region. For instance, if you have an assembly with its own one-group cross section set and you specify that the fuel fraction is 0.3, powerDensity will be equal to $$ flux \cdot sigmaPower \cdot / fuelFraction $$ 
 
 ## Models
 
