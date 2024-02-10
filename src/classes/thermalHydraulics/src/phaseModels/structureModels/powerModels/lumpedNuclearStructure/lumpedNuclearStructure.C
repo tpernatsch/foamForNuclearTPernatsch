@@ -147,6 +147,20 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
     nodeClad_(0),
     nodeMatrix_(0),
     kappaMatrix_(0),
+    kappaMatrixField_
+    (
+        IOobject
+        (
+            "kappaMatrixField."+typeName,
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::NO_WRITE
+        ),
+        mesh_,
+        dimensionedScalar("", dimPower/dimTemperature/dimLength, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),    
     Hs_(0),
     rhoCp_(0),
     volFraction_(0),
@@ -257,6 +271,7 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         if (kappaMatrix_[regioni] != 0)
         {
             Tmatrix_[celli] = T[nodeMatrix_[regioni]];
+            kappaMatrixField_[celli] = kappaMatrix_[regioni];
         }
     }
 }

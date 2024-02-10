@@ -199,6 +199,7 @@ protected:
     //- Thermal conductivity for matrix node (only one matrix structure) in 
     //  W/m/K
     scalarList kappaMatrix_;
+    volScalarField kappaMatrixField_;
 
     //- Heat conductances between nodes (including first and last 
     //  "half" resitances)
