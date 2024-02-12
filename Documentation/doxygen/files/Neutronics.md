@@ -22,7 +22,10 @@ A commented reactorState can be found in
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/neutroRegion/reactorState). 
 
 NB: Please note that in parallel calculations, the updated *reactorState* can be found in *processor0/constant/neutroRegion/*.
+
 </div>
+
+IMPORTANT: The powerDensity file written to disk is the power density calculated by neutronics (sigmaPowers multiplied by fluxes), DIVIDED by the fuelFractions indicated in nuclearData. This means that it provide the power denisty IN the fuel, not spread over the cross-section homegeneization region. For instance, if you have an assembly with its own one-group cross section set and you specify that the fuel fraction is 0.3, powerDensity will be equal to $$ flux \cdot sigmaPower \cdot / fuelFraction $$ 
 
 ## Models
 
@@ -141,6 +144,3 @@ Several parameters related to a spallation source are included such as the energ
 An external source modulation timetable is provided to manually modulate the source strength.
 
 In the case of an FMI coupling, it is possible to use the *externalSourceModulationNameFromFMU* entry to change the external source modulation through an FMI. To use it, the mode must be *transient*.
-
-
-© All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021
