@@ -227,9 +227,14 @@ class nuclearFuelFMU
 {
 protected:
 
-    //- Average fuel and cladding temperatures
-    // volScalarField Tfav_;
-    // volScalarField Tcav_;
+    //- Dictionary from which FMI variables are written
+    IOdictionary fmiState_;
+
+    //- Average fuel temperature field for coupling
+    volScalarField Tfav_;
+
+    //- Average cladding temperature field for coupling
+    volScalarField Tcav_;
 
     //- Fields representing the average surface temperature of the structure
     volScalarField Tsurface_;
@@ -241,6 +246,9 @@ protected:
     //  This takes into account for instance cases where some of the 
     //  heating goes to the moderator
     scalarList fractionOfPowerFromNeutronics_;
+
+    //- If true, update avg Tfuel and avg Tclad fields for neutronics coupling
+    List<bool> isFuelTemperatureFieldFromFMU_;
 
     //- X-position of sampling lines
     scalarListList xPos_;
@@ -312,11 +320,13 @@ public:
 
         //- Sample Tsurface and power density over lines and transfer data to 
         //  the FMUs
-        void correctInputsForFMUs(label regioni) const;
+        void correctInputsForFMUs(label regioni);
 
         //- Return surface temperature (i.e. outer cladding temperature)
         virtual void correctT(volScalarField& T) const;
 
+        //-
+        // virtual bool writeData(Ostream& os) const;
 
 private:
 
