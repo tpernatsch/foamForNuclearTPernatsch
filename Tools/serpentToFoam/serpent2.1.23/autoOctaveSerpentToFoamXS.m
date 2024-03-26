@@ -1,54 +1,81 @@
+
+% /*--------------------------------*- C++ -*----------------------------------*\
+% |       ______          _   __           ______                               |
+% |      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+% |     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+% |    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+% |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+% |    Copyright (C) 2015 - 2024 EPFL                                           |
+% \*---------------------------------------------------------------------------*/
+%
+% @brief MGXS conversion script from Serpent to GeN-Foam.
+% @author: 05/03/2013 Carlo Fiorina, EPFL
+%          15/03/2024 Thomas Guilbaud, EPFL/Transmutex SA
+%
+
 clear all
 clc
 
+fprintf("\nSerpentToFoamXS - Version 15/03/2024\n\n");
+fprintf("This script converts a SERPENT(2) output to the crossSections dictionary for GeN-Foam\n\n");
+fprintf("Usage:\n");
+fprintf("    octave autoOctaveSerpentToFoamXS.m\n");
+fprintf("    octave autoOctaveSerpentToFoamXS.m universesToIncludeForNominal.m\n\n");
+fprintf("WARNING: use Octave!\n\n");
 
-fprintf(" \n serpentToFoamXS - Version 5/3/2013\n\nThis script converts a SERPENT(2) output to the crossSections dictionary for neutronDiffusionFoam\n\nWARNING: use Octave!\n\n");
-
+% Unit conversion from Serpent to OpenFOAM
 mev2j = 1.602176487e-13;
-
 cm2m = 0.01;
 
-%caricare il file
 
-eval("universesToInclude");
+% Read user input file
+%   Default
+inputFilename = "universesToInclude";
 
-%rad = input("\nSerpent case name\ne.g.: msfr_run_1\n", "s");
+%   From command arguments
+args = argv();
+if (size(args) >= 1)
+	inputFilename = args{1}(1:end-2); % Remove .m at the end
+end
+fprintf("User input file: %s.m\n\n", inputFilename);
+eval(inputFilename);
 
-resfilestr = strcat(rad,"_res");
+
+% Check user input file exists
+resfilestr = strcat(rad, "_res");
 if exist(resfilestr)
-        fprintf("\nreading %s.m\n",resfilestr);
-        eval(resfilestr)
+	fprintf("Reading %s.m from Serpent.\n\n", resfilestr);
+	eval(resfilestr)
 else
-        fprintf("\nThe file %s.m does not exists.\n\nSTOP\n",resfilestr);
-        break
+	fprintf("The file %s.m does not exists.\n\n", resfilestr);
+	fprintf("Avoid numbers at the beginning  of the filename.\n\nSTOP\n", resfilestr);
+	exit
 end
 
-%coreState = input("\n Core state you want the xs to be prepared for:\n N for nominal, \n R for radially expanded, \n A for axially expanded, \n T for Doppler broadened, \n C for expanded coolant,\n CT for coolant temperature, \n CL for expanded cladding  \n", "s");
 
-
-%creare il file crossSections
-if (strcmp("N",coreState))
+% Create crossSections file
+if (strcmp("N", coreState))
 	globalfilestr = strcat("nuclearData");
-elseif (strcmp("R",coreState))
+elseif (strcmp("R", coreState))
 	globalfilestr = strcat("nuclearDataRadialExp");
-elseif (strcmp("A",coreState))
+elseif (strcmp("A", coreState))
 	globalfilestr = strcat("nuclearDataAxialExp");
-elseif (strcmp("T",coreState))
+elseif (strcmp("T", coreState))
 	globalfilestr = strcat("nuclearDataFuelTemp");
-elseif (strcmp("C",coreState))
+elseif (strcmp("C", coreState))
 	globalfilestr = strcat("nuclearDataRhoCool");
-elseif (strcmp("CL",coreState))
+elseif (strcmp("CL", coreState))
 	globalfilestr = strcat("nuclearDataCladExp");
-elseif (strcmp("CT",coreState))
+elseif (strcmp("CT", coreState))
 	globalfilestr = strcat("nuclearDataTCool");
 end
 
 if exist(globalfilestr)
-        yesno = input("\nWarning: the file will be overwritten \nShould I continue? (yes/no)\n", "s");
-        if ((strcmp("yes",yesno)==0))
-                fprintf("\nSTOP (no file modified).\n");
-                break
-        end
+	yesno = input("Warning: the file will be overwritten \nShould I continue? (yes/no) ", "s");
+	if (strcmp("yes", yesno) == 0 && strcmp("y", yesno) == 0)
+		fprintf("STOP (no file modified).\n\n");
+		exit
+	end
 end
 
 
@@ -56,301 +83,358 @@ end
 %fprintf("\nTreatment of delayed neutron:\nDo you want to use the physical fractions and the real spectrum or the effective fractions and the prompt neutron spectrum?\n");
 %zeroeff = input("\n zero for physical fractions, eff for energy corrected fractions\n", "s");
 
-fprintf("\nOpening file %s\n",globalfilestr);
-fid=fopen(globalfilestr,"w");
+fprintf("\nOpening file %s for GeN-Foam\n\n", globalfilestr);
+fid = fopen(globalfilestr, "w");
 
-fprintf(fid,"\n/*\n crossSection dictionary\n Generatd by serpentToFoamXS \n %s\n From SERPENT results file: %s\n*/\n",date,resfilestr);
 
-if (strcmp("zero",zeroeff))
-        fprintf(fid,"\n/*\nphysical delayed neutron fraction and spectrum\n*/\n");
+% Print Banner
+fprintf(fid, "/*--------------------------------*- C++ -*----------------------------------*\\\n");
+fprintf(fid, "|       ______          _   __           ______                               |\n");
+fprintf(fid, "|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |\n");
+fprintf(fid, "|     / / __   / _ \\  /  |/ /  ______  / /_     / __ \\ / __ `/  / __ `__ \\    |\n");
+fprintf(fid, "|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |\n");
+fprintf(fid, "|    \\____/   \\___/ /_/ |_/          /_/       \\____/ \\__,_/  /_/ /_/ /_/     |\n");
+fprintf(fid, "|    Copyright (C) 2015 - 2024 EPFL                                           |\n");
+fprintf(fid, "|    Generated by serpentToFoamXS the %s                             |\n", date);
+fprintf(fid, "|    From Serpent output file: %s |\n", resfilestr);
+fprintf(fid, "\\*---------------------------------------------------------------------------*/\n");
+fprintf(fid, "FoamFile\n");
+fprintf(fid, "{\n");
+fprintf(fid, "    version     2.0;\n");
+fprintf(fid, "    format      ascii;\n");
+fprintf(fid, "    class       dictionary;\n");
+fprintf(fid, "    location    constant;\n");
+fprintf(fid, "    object      %s;\n", globalfilestr);
+fprintf(fid, "}\n");
+fprintf(fid, "// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n\n")
+
+if (strcmp("zero", zeroeff))
+	fprintf(fid, "// Physical delayed neutron fraction and spectrum\n\n");
 end
 
 if (strcmp("eff",zeroeff))
-        fprintf(fid,"\n/*\neffective delayed neutron fraction, prompt neutron spectrum\n*/\n");
+	fprintf(fid, "// Effective delayed neutron fraction, prompt neutron spectrum\n\n");
 end
 
 
-fprintf(fid,"\nFoamFile\n{\n    version     2.0;\n    format      ascii;\n    class       dictionary;\n    location    constant;\n    object      %s;\n}\n",resfilestr);
-
-%numero gruppi
+% Energy groups
 ng = MACRO_NG(idx);
-fprintf("\nNumber of energy groups: %i\n", ng);
+fprintf("Number of energy groups: %i\n\n", ng);
+fprintf(fid, "energyGroups %i;\n", ng);
 
-%numero ritardati
+fprintf(fid, "// Energy groups [MeV]:");
+for i = 1 : ng
+	fprintf(fid, " %.6e", MACRO_E(i));
+end
+fprintf(fid, "\n\n");
+
+
+% Delayed neutron groups
 %nd = PRECURSOR_GROUPS(idx);
-nd = length (FWD_ANA_BETA_ZERO(1,:))/2 -1;
-fprintf("\nNumber of delayed neutron precursor group: %i\n", nd);
+nd = length (FWD_ANA_BETA_ZERO(1, :))/2 -1;
+fprintf("Number of delayed neutron precursor group: %i\n\n", nd);
+fprintf(fid, "precGroups   %i;\n\n", nd);
 
+% Add keff evaluation from Serpent
+fprintf(fid, "// keff analog     = %.6f +/- %.6f (ANA_KEFF)\n", ANA_KEFF(1, 1), ANA_KEFF(1, 2));
+fprintf(fid, "// keff implicit   = %.6f +/- %.6f (IMP_KEFF)\n", IMP_KEFF(1, 1), IMP_KEFF(1, 2));
+fprintf(fid, "// keff colision   = %.6f +/- %.6f (COL_KEFF)\n", COL_KEFF(1, 1), COL_KEFF(1, 2));
+fprintf(fid, "// keff absorption = %.6f +/- %.6f (ABS_KEFF)\n", ABS_KEFF(1, 1), ABS_KEFF(1, 2));
+fprintf(fid, "// kinf absorption = %.6f +/- %.6f (ABS_KINF)\n\n", ABS_KINF(1, 1), ABS_KINF(1, 2));
 
-
-fprintf(fid,"\n energyGroups %i ; \n",ng);
-fprintf(fid,"\n precGroups %i ; \n",nd);
-
-if (strcmp("N",coreState))
-	%pTarget = input("\n Target power for eigenvalue calculations:\n");
-	%keff = input("\n keff:\n");
-	fprintf(fid,"\n pTarget %.6e ; \n",pTarget);
-	fprintf(fid,"\n keff %.6e ; \n \n",keff);
+if (strcmp("N", coreState))
+	fprintf(fid, "// keff    %.6e; // In 0/uniform/reactorState\n\n", keff);
+	fprintf(fid, "// pTarget %.6e; // In 0/uniform/reactorState\n\n", pTarget);
 end
-if (strcmp("R",coreState))
-	%expansionFromNominalR = input("\n Relative radial expansion compared to nominal:\n");
-	fprintf(fid,"\n expansionFromNominal %.6e ; \n",expansionFromNominalR);
-	%radialOrientationX = input("\n Orientation of radial direction, x component:\n");
-	%radialOrientationY = input("\n Orientation of radial direction, y component:\n");
-	%radialOrientationZ = input("\n Orientation of radial direction, z component:\n");
-	fprintf(fid,"\n radialOrientation %i %i %i ; \n",radialOrientationX,radialOrientationY,radialOrientationZ);
-	%AxialOrientationX = input("\n Orientation of Axial direction, x component:\n");
-	%AxialOrientationY = input("\n Orientation of Axial direction, y component:\n");
-	%AxialOrientationZ = input("\n Orientation of Axial direction, z component:\n");
-	fprintf(fid,"\n axialOrientation %i %i %i ; \n",AxialOrientationX,AxialOrientationY,AxialOrientationZ);
+if (strcmp("R",  coreState))
+	fprintf(fid, "expansionFromNominal %.6e;\n\n", expansionFromNominalR);
+	fprintf(fid, "radialOrientation    (%i %i %i);\n\n", radialOrientationX, radialOrientationY, radialOrientationZ);
+	fprintf(fid, "axialOrientation     (%i %i %i);\n\n", AxialOrientationX, AxialOrientationY, AxialOrientationZ);
 
 end
-if (strcmp("A",coreState))
-	%expansionFromNominalA = input("\n Relative axial expansion compared to nominal:\n");
-	fprintf(fid,"\n expansionFromNominal %.6e ; \n",expansionFromNominalA);
+if (strcmp("A", coreState))
+	fprintf(fid, "expansionFromNominal %.6e;\n\n", expansionFromNominalA);
 end
 
 % Data specific different perturbed states
-if (strcmp("T",coreState))
-	%TfuelRef = input("\n TfuelRef:\n");
-	fprintf(fid," TfuelRef %.6e ; \n",TfuelRef);
-	%TfuelPerturbed = input("\n TfuelPerturbed:\n");
-	fprintf(fid," TfuelPerturbed %.6e ; \n",TfuelPerturbed);
+if (strcmp("T", coreState))
+	fprintf(fid, "TfuelRef        %.6e;\n\n", TfuelRef);
+	fprintf(fid, "TfuelPerturbed  %.6e;\n\n", TfuelPerturbed);
 end
-if (strcmp("C",coreState))
-	%rhoCoolRef = input("rhoCoolRef:\n");
-	fprintf(fid," rhoCoolRef %.6e ; \n",rhoCoolRef);
-	%rhoCoolPerturbed = input("\n rhoCoolPerturbed:\n");
-	fprintf(fid," rhoCoolPerturbed %.6e ; \n",rhoCoolPerturbed);
+if (strcmp("C", coreState))
+	fprintf(fid, "rhoCoolRef       %.6e;\n\n", rhoCoolRef);
+	fprintf(fid, "rhoCoolPerturbed %.6e;\n\n", rhoCoolPerturbed);
 end
-if (strcmp("CT",coreState))
-	%TCoolRef = input("TCoolRef:\n");
-	fprintf(fid," TCoolRef %.6e ; \n",TCoolRef);
-	%TCoolPerturbed = input("\n TCoolPerturbed:\n");
-	fprintf(fid," TCoolPerturbed %.6e ; \n",TCoolPerturbed);
+if (strcmp("CT", coreState))
+	fprintf(fid, "TCoolRef        %.6e;\n\n", TCoolRef);
+	fprintf(fid, "TCoolPerturbed  %.6e;\n\n", TCoolPerturbed);
 end
-if (strcmp("CL",coreState))
-	%Tcladref = input("Tcladref:\n");
-	fprintf(fid," Tcladref %.6e ; \n",Tcladref);
-	%TcladPerturbed = input("\n TcladPerturbed:\n");
-	fprintf(fid," TcladPerturbed %.6e ; \n",TcladPerturbed);
+if (strcmp("CL", coreState))
+	fprintf(fid, "Tcladref        %.6e;\n\n", Tcladref);
+	fprintf(fid, "TcladPerturbed  %.6e;\n\n", TcladPerturbed);
 end
-%loop over materials
-fprintf(fid,"zones \n ( \n");
 
 
-NumberOfUniverses = size(GC_UNIVERSE_NAME,1)
+% Loop over materials
+fprintf(fid, "\nzones\n(\n");
 
+NumberOfUniverses = size(GC_UNIVERSE_NAME, 1)
 
-
-for(k=1:size(SERPENT_NAME,1))
+for k = 1 : size(SERPENT_NAME, 1)
 	universeFound = false;
-	for i = 1:NumberOfUniverses
-		
-		if(strncmp(strcat(SERPENT_NAME(k,:)),strcat(GC_UNIVERSE_NAME(i,:)),size(SERPENT_NAME,2)))
-			idx=i;
+	for i = 1 : NumberOfUniverses
+		if (strncmp(
+			strcat(SERPENT_NAME(k, :)),
+			strcat(GC_UNIVERSE_NAME(i, :)),
+			size(SERPENT_NAME, 2)
+		))
+			idx = i;
 			universeFound = true;
 		end
 	end
-	if (universeFound == false)
-		fprintf("\n Warning: universe not found\n");
+	if (!universeFound)
+		fprintf("\n Warning: universe %s not found\n", SERPENT_NAME(k, :));
 		break
 	else
-		fprintf(fid,"%s \n{ \n",OF_NAME(k,:));
+		fprintf(fid, "\t%s  // From Serpent Universe %s \n", strcat(OF_NAME(k, :)), strcat(SERPENT_NAME(k, :)));
+		fprintf(fid, "\t{\n");
 
 		if (strcmp("N",coreState))
-			fprintf(fid," fuelFraction %.6e ; \n",fuelFraction(k));
+			fprintf(fid, "\t\tfuelFraction %.6e;\n", fuelFraction(k));
 		end
 
-		% 1 su V
-		fprintf(fid," IV nonuniform List<scalar> %i (",ng);
-
-		IV = zeros(ng,1);
-		for i = 1:ng
-				%IV(i) = RECIPVEL(idx,(i*2)+1);
-				IV(i) = INF_INVV(idx,(i*2)-1);
-
-				fprintf(fid,"%.6e ",IV(i)/cm2m);
+		% 1 over V
+		fprintf(fid, "\t\tIV           nonuniform List<scalar> %i ( ", ng);
+		IV = zeros(ng, 1);
+		for i = 1 : ng
+			%IV(i) = RECIPVEL(idx, (i*2)+1);
+			IV(i) = INF_INVV(idx, (i*2)-1);
+			fprintf(fid, "%.6e ", IV(i)/cm2m);
 		end
-		fprintf(fid," );");
+		fprintf(fid, ");\n");
 
-		%coeff diffusione
-		fprintf(fid,"\n D nonuniform List<scalar> %i (",ng);
 
-		D = zeros(ng,1);
-		for i = 1:ng
-				D(i) = INF_DIFFCOEF(idx,(i*2)-1);
-				fprintf(fid,"%.6e ",D(i)*cm2m);
+		% Diffiusion Coefficient
+		fprintf(fid, "\t\tD            nonuniform List<scalar> %i ( ", ng);
+		D = zeros(ng, 1);
+		for i = 1 : ng
+			D(i) = INF_DIFFCOEF(idx, 2*i-1);
+			fprintf(fid, "%.6e ", D(i)*cm2m);
 		end
-		fprintf(fid," );");
+		fprintf(fid, ");\n");
 
-		%nuSigmaEff
-		fprintf(fid,"\n nuSigmaEff nonuniform List<scalar> %i (",ng);
 
-		A = zeros(ng,1);
-		for i = 1:ng
-				A(i) = INF_NSF(idx,(i*2)-1);
-				fprintf(fid,"%.6e ",A(i)/cm2m);
+		% nuSigmaEff
+		fprintf(fid, "\t\tnuSigmaEff   nonuniform List<scalar> %i ( ", ng);
+		A = zeros(ng, 1);
+		for i = 1 : ng
+			A(i) = INF_NSF(idx, 2*i-1);
+			fprintf(fid, "%.6e ", A(i)/cm2m);
 		end
-		fprintf(fid," );");
+		fprintf(fid, ");\n");
 
-		%sigmaPow
-		fprintf(fid,"\n sigmaPow nonuniform List<scalar> %i (",ng);
 
-		A = zeros(ng,1);
-		for i = 1:ng
-				A(i) = INF_FISS(idx,(i*2)-1) * FISSE(idx,1);
-				fprintf(fid,"%.6e ",A(i)/cm2m*mev2j);
+		% SigmaPow
+		fprintf(fid, "\t\tsigmaPow     nonuniform List<scalar> %i ( ", ng);
+		A = zeros(ng, 1);
+		for i = 1 : ng
+			A(i) = INF_FISS(idx, 2*i-1) * FISSE(idx, 1);
+			fprintf(fid, "%.6e ", mev2j * A(i)/cm2m);
 		end
-		fprintf(fid," );");
+		fprintf(fid, ");\n");
 
-		%scattering matrix
-		fprintf(fid,"\n scatteringMatrixP0  %i  %i ( \n",ng,ng);
-		MS = zeros(ng,ng);
-		for i = 1:ng
-				fprintf(fid," (");
-				for j = 1:ng
-						MS(i,j) = INF_SP0(idx,2*(i-1)*ng+2*j-1);
-						fprintf(fid," %.6e ",MS(i,j)/cm2m);
-				end
-				fprintf(fid,")\n ");
+
+		% Scattering matrix
+		fprintf(fid, "\t\tscatteringMatrixP0  %i  %i (\n", ng, ng);
+		MS = zeros(ng, ng);
+		for i = 1 : ng
+			fprintf(fid, "\t\t\t( ");
+			for j = 1 : ng
+				MS(i, j) = INF_SP0(idx, 2*(i-1)*ng + 2*j-1);
+				fprintf(fid, "%.6e ", MS(i, j)/cm2m);
+			end
+			fprintf(fid, ")\n");
 		end
-		fprintf(fid,");");
-		fprintf(fid,"\n scatteringMatrixP1  %i  %i ( \n",ng,ng);
-		MS1 = zeros(ng,ng);
-		for i = 1:ng
-				fprintf(fid," (");
-				for j = 1:ng
-						MS1(i,j) = INF_SP1(idx,2*(i-1)*ng+2*j-1);
-						fprintf(fid," %.6e ",MS1(i,j)/cm2m);
-				end
-				fprintf(fid,")\n ");
+		fprintf(fid, "\t\t);\n");
+
+		fprintf(fid, "\t\tscatteringMatrixP1  %i  %i (\n", ng, ng);
+		MS1 = zeros(ng, ng);
+		for i = 1 : ng
+			fprintf(fid, "\t\t\t(");
+			for j = 1 : ng
+				MS1(i, j) = INF_SP1(idx, 2*(i-1)*ng + 2*j-1);
+				fprintf(fid, "%.6e ", MS1(i, j)/cm2m);
+			end
+			fprintf(fid, ")\n");
 		end
-		fprintf(fid,");");
-		fprintf(fid,"\n scatteringMatrixP2  %i  %i ( \n",ng,ng);
-		MS2 = zeros(ng,ng);
-		for i = 1:ng
-				fprintf(fid," (");
-				for j = 1:ng
-						MS2(i,j) = INF_SP2(idx,2*(i-1)*ng+2*j-1);
-						fprintf(fid," %.6e ",MS2(i,j)/cm2m);
-				end
-				fprintf(fid,")\n ");
+		fprintf(fid, "\t\t);\n");
+
+		fprintf(fid, "\t\tscatteringMatrixP2  %i  %i (\n", ng, ng);
+		MS2 = zeros(ng, ng);
+		for i = 1 : ng
+			fprintf(fid, "\t\t\t( ");
+			for j = 1 : ng
+				MS2(i, j) = INF_SP2(idx, 2*(i-1)*ng + 2*j-1);
+				fprintf(fid, "%.6e ", MS2(i, j)/cm2m);
+			end
+			fprintf(fid, ")\n");
 		end
-		fprintf(fid,");");
-		fprintf(fid,"\n scatteringMatrixP3  %i  %i ( \n",ng,ng);
-		MS3 = zeros(ng,ng);
-		for i = 1:ng
-				fprintf(fid," (");
-				for j = 1:ng
-						MS3(i,j) = INF_SP3(idx,2*(i-1)*ng+2*j-1);
-						fprintf(fid," %.6e ",MS3(i,j)/cm2m);
-				end
-				fprintf(fid,")\n ");
+		fprintf(fid, "\t\t);\n");
+
+		fprintf(fid, "\t\tscatteringMatrixP3  %i  %i (\n", ng, ng);
+		MS3 = zeros(ng, ng);
+		for i = 1 : ng
+			fprintf(fid, "\t\t\t( ");
+			for j = 1 : ng
+				MS3(i, j) = INF_SP3(idx, 2*(i-1)*ng + 2*j-1);
+				fprintf(fid, "%.6e ", MS3(i, j)/cm2m);
+			end
+			fprintf(fid, ")\n");
 		end
-		fprintf(fid,");");
-		fprintf(fid,"\n scatteringMatrixP4  %i  %i ( \n",ng,ng);
-		MS4 = zeros(ng,ng);
-		for i = 1:ng
-				fprintf(fid," (");
-				for j = 1:ng
-						MS4(i,j) = INF_SP4(idx,2*(i-1)*ng+2*j-1);
-						fprintf(fid," %.6e ",MS4(i,j)/cm2m);
-				end
-				fprintf(fid,")\n ");
+		fprintf(fid, "\t\t);\n");
+
+		fprintf(fid, "\t\tscatteringMatrixP4  %i  %i (\n", ng, ng);
+		MS4 = zeros(ng, ng);
+		for i = 1 : ng
+			fprintf(fid, "\t\t\t(");
+			for j = 1 : ng
+				MS4(i, j) = INF_SP4(idx, 2*(i-1)*ng + 2*j-1);
+				fprintf(fid, "%.6e ", MS4(i, j)/cm2m);
+			end
+			fprintf(fid, ")\n");
 		end
-		fprintf(fid,");");
-		fprintf(fid,"\n scatteringMatrixP5  %i  %i ( \n",ng,ng);
-		MS5 = zeros(ng,ng);
-		for i = 1:ng
-				fprintf(fid," (");
-				for j = 1:ng
-						MS5(i,j) = INF_SP5(idx,2*(i-1)*ng+2*j-1);
-						fprintf(fid," %.6e ",MS5(i,j)/cm2m);
-				end
-				fprintf(fid,")\n ");
+		fprintf(fid, "\t\t);\n");
+
+		fprintf(fid, "\t\tscatteringMatrixP5  %i  %i (\n", ng, ng);
+		MS5 = zeros(ng, ng);
+		for i = 1 : ng
+			fprintf(fid, "\t\t\t(");
+			for j = 1 : ng
+				MS5(i, j) = INF_SP5(idx, 2*(i-1)*ng + 2*j-1);
+				fprintf(fid, "%.6e ", MS5(i, j)/cm2m);
+			end
+			fprintf(fid, ")\n");
 		end
-		fprintf(fid,");");
+		fprintf(fid, "\t\t);\n");
 
-		% sigma disappearence (abs+ capture + group transfer below)
-		fprintf(fid,"\n sigmaDisapp nonuniform List<scalar> %i (",ng);
 
-		DISAPP = zeros(ng,1);
-		for i = 1:ng
-				DISAPP(i) = INF_TOT(idx,(i*2)-1) - MS(i,i);
-				fprintf(fid,"%.6e ",DISAPP(i)/cm2m);
+		% Sigma disappearence (abs + capture + group transfer below)
+		fprintf(fid, "\t\tsigmaDisapp  nonuniform List<scalar> %i ( ", ng);
+
+		DISAPP = zeros(ng, 1);
+		for i = 1 : ng
+			DISAPP(i) = INF_TOT(idx, 2*i-1) - MS(i, i);
+			fprintf(fid, "%.6e ", DISAPP(i)/cm2m);
 		end
-		fprintf(fid," );");
+		fprintf(fid, ");\n");
 
-		%spettro neutroni pronti
-		fprintf(fid,"\n chiPrompt nonuniform List<scalar> %i (",ng);
-		XP = zeros(ng,1);
-		for i = 1:ng
-				XP(i) = INF_CHIP(idx,(i*2)-1);
-				fprintf(fid,"%.6e ",XP(i));
+
+		% Prompt Neutron Spectrum
+		fprintf(fid, "\t\tchiPrompt    nonuniform List<scalar> %i ( ", ng);
+		XP = zeros(ng, 1);
+		for i = 1 : ng
+			XP(i) = INF_CHIP(idx, 2*i-1);
+			fprintf(fid, "%.6e ", XP(i));
 		end
-		fprintf(fid," );");
-
-		%spettro neutroni ritardati
-		fprintf(fid,"\n chiDelayed nonuniform List<scalar> %i (",ng);
-		XD = zeros(ng,1);
-		for i = 1:ng
-				XD(i) = INF_CHID(idx,(i*2)-1);
-				if (strcmp("eff",zeroeff))
-						fprintf(fid,"%.6e ",XP(i));
-				else
-						fprintf(fid,"%.6e ",XD(i));
-				end
+		fprintf(fid, ");\n");
+		fprintf(fid, "\t\t// chiPromptError nonuniform List<scalar> %i ( ", ng);
+		for i = 1 : ng
+			fprintf(fid, "%.6e ", INF_CHIP(idx, 2*i));
 		end
-		fprintf(fid," );");
+		fprintf(fid, ");\n");
 
-		%beta
-		fprintf(fid,"\n Beta nonuniform List<scalar> %i (",nd);
-		BZ = zeros(nd,1);
-		BE = zeros(nd,1);
-		for i = 1:nd
-				BZ(i) = FWD_ANA_BETA_ZERO(idx,(i*2)+1);
-				BE(i) = ADJ_IFP_IMP_BETA_EFF(idx,(i*2)+1);
-				if (strcmp("eff",zeroeff))
-						fprintf(fid,"%.6e ",BE(i));
-				else
-						fprintf(fid,"%.6e ",BZ(i));
-				end
+
+		% Delayed Neutron Spectrum
+		fprintf(fid, "\t\tchiDelayed   nonuniform List<scalar> %i ( ", ng);
+		XD = zeros(ng, 1);
+		for i = 1 : ng
+			XD(i) = INF_CHID(idx, 2*i-1);
+			if (strcmp("eff", zeroeff))
+				fprintf(fid, "%.6e ", XP(i));
+			else
+				fprintf(fid, "%.6e ", XD(i));
+			end
 		end
-		fprintf(fid," );");
-
-		%lambda
-		fprintf(fid,"\n lambda nonuniform List<scalar> %i (",nd);
-		LAM = zeros(nd,1);
-		for i = 1:nd
-				LAM(i) = FWD_ANA_LAMBDA(idx,(i*2)+1);
-				fprintf(fid,"%.6e ",LAM(i));
+		fprintf(fid, ");\n");
+		fprintf(fid, "\t\t// chiDelayedError nonuniform List<scalar> %i ( ", ng);
+		for i = 1 : ng
+			if (strcmp("eff", zeroeff))
+				fprintf(fid, "%.6e ", INF_CHIP(idx, 2*i));
+			else
+				fprintf(fid, "%.6e ", INF_CHID(idx, 2*i));
+			end
 		end
-		fprintf(fid," );");
+		fprintf(fid, ");\n");
 
-		%discontinuity factors
-		fprintf(fid,"\n discFactor nonuniform List<scalar> %i (",ng);
-		for i = 1:ng
 
-				fprintf(fid,"1 ");
+		% Delayed Neutron Fraction
+		fprintf(fid, "\t\tBeta         nonuniform List<scalar> %i ( ", nd);
+		BZ = zeros(nd, 1);
+		BE = zeros(nd, 1);
+		for i = 1 : nd
+			BZ(i) = FWD_ANA_BETA_ZERO(idx, 2*i+1);
+			BE(i) = ADJ_IFP_IMP_BETA_EFF(idx, 2*i+1);
+			if (strcmp("eff", zeroeff))
+				fprintf(fid, "%.6e ", BE(i));
+			else
+				fprintf(fid, "%.6e ", BZ(i));
+			end
 		end
-		fprintf(fid," );");
-
-
-
-		%integral fluxes
-		fprintf(fid,"\n integralFlux nonuniform List<scalar> %i (",ng);
-		for i = 1:ng
-				integralFlux(i) = INF_FLX(idx,(i*2)-1)/INF_FLX(1,(i*2)-1);
-				fprintf(fid,"%.6e ",integralFlux(i));
+		fprintf(fid, ");\n");
+		fprintf(fid, "\t\t// BetaError   nonuniform List<scalar> %i ( ", nd);
+		for i = 1 : nd
+			if (strcmp("eff", zeroeff))
+				fprintf(fid, "%.6e ", FWD_ANA_BETA_ZERO(idx, 2*i+2));
+			else
+				fprintf(fid, "%.6e ", ADJ_IFP_IMP_BETA_EFF(idx, 2*i+2));
+			end
 		end
-		fprintf(fid," );");
-		fprintf(fid,"\n } \n");
+		fprintf(fid, ");\n");
 
 
+		% Decay constants
+		fprintf(fid, "\t\tlambda       nonuniform List<scalar> %i ( ", nd);
+		LAM = zeros(nd, 1);
+		for i = 1 : nd
+			LAM(i) = FWD_ANA_LAMBDA(idx, 2*i+1);
+			fprintf(fid, "%.6e ", LAM(i));
+		end
+		fprintf(fid, ");\n");
+		fprintf(fid, "\t\t// lambdaError nonuniform List<scalar> %i ( ", nd);
+		for i = 1 : nd
+			fprintf(fid, "%.6e ", FWD_ANA_LAMBDA(2*i+2));
+		end
+		fprintf(fid, ");\n");
+
+
+		% Discontinuity Factors
+		fprintf(fid, "\t\tdiscFactor   nonuniform List<scalar> %i ( ", ng);
+		for i = 1 : ng
+			fprintf(fid, "1 ");
+		end
+		fprintf(fid, ");\n");
+
+
+		% Integral Fluxes
+		fprintf(fid, "\t\tintegralFlux nonuniform List<scalar> %i ( ", ng);
+		for i = 1 : ng
+			integralFlux(i) = INF_FLX(idx, 2*i-1)/INF_FLX(1, 2*i-1);
+			fprintf(fid, "%.6e ", integralFlux(i));
+		end
+		fprintf(fid, ");\n");
+
+		% End of Universe
+		fprintf(fid, "\t}\n\n");
 	end
 end
 
-fprintf(fid,"\n ); \n");
-fprintf("\nSaving file %s\n",globalfilestr);
+% End of file
+fprintf(fid, ");\n\n");
+fprintf(fid, "// ************************************************************************* //\n");
+
+fprintf("\nSaving file %s\n\n", globalfilestr);
 fclose(fid);
+
+fprintf("End\n");
+
+% *************************************************************************
