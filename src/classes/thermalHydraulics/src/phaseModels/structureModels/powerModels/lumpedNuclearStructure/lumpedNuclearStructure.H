@@ -52,13 +52,16 @@ Description
     energy balance for the ith node:
     \verbatim
     V_i*rho_i*cp_i * dT/dt = 
-    V_i*Q_i + H[i](T_(i-1) - T_i) - H[i+1](T_(i) - T_(i+1)
+    V*Q*qf + H[i](T_(i-1) - T_i) - H[i+1](T_(i) - T_(i+1)
     \endverbatim
-    and dividing all terms by the volume of the structure.
+    and dividing all terms by the volume of the structure. 
     This means that the heat conductances  should be calculated as 
     the power flowing between two nodes divided by the diffence in 
     temperatures at steadystate, abd divided by the volume of the 
     structure. 
+    Note that Q is the power density from neutronincs, which is 
+    assumed to spead over all structure. The power fraction qf 
+    can be used to concentrate this power over certain nodes.
     Zero-gradient BCs are used at the inner boundary and convective
     BCs are used at the external boundary (in contact with the coolant)
 
@@ -196,6 +199,7 @@ protected:
     //- Thermal conductivity for matrix node (only one matrix structure) in 
     //  W/m/K
     scalarList kappaMatrix_;
+    volScalarField kappaMatrixField_;
 
     //- Heat conductances between nodes (including first and last 
     //  "half" resitances)

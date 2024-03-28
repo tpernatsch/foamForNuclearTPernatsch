@@ -530,7 +530,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::rmap
     }*/
 }
 
-//- Some super-weird shit going on here... I had to override the evaluate
+//- Something super-weird  going on here... I had to override the evaluate
 //  method of mixedFvPatchScalarField in order to limit the deltaCoeffs 
 //  as I was occasionally getting floating point exceptions here in MPI
 //  for very, very funky decomposed domains (e.g., random decomposition
@@ -569,226 +569,229 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    // Since we're inside initEvaluate/evaluate there might be processor
-    // comms underway. Change the tag we use.
-    int oldTag = UPstream::msgType();
-    UPstream::msgType() = oldTag+1;
 
-    setPtrs();
-
-    if (this->owner())
+    if(this->internalField().mesh().time().timeIndex()>this->internalField().mesh().time().startTimeIndex() )
     {
-        const label patchi = patch().index();
-        const label nbrPatchi = samplePolyPatch().index();
+        // Since we're inside initEvaluate/evaluate there might be processor
+        // comms underway. Change the tag we use.
+        int oldTag = UPstream::msgType();
+        UPstream::msgType() = oldTag+1;
 
-        if (twoPhaseOwner_)
+        setPtrs();
+        
+        if (this->owner())
         {
-            const label otherFluidPatchi = 
-                otherFluidPatchFieldPtr_->patch().index();
-            const label otherFluidNbrPatchi = 
-                otherFluidNbrPatchFieldPtr_->patch().index();
+            const label patchi = patch().index();
+            const label nbrPatchi = samplePolyPatch().index();
 
-            //- Cache fluid thermal conducitivities (molecular ones, not
-            //  effective ones as turbulence is supposed to be captured by the
-            //  Nusselt correlation)
-            
-            
-            //- Calculate heat transfer coefficients
-            scalarField hf
-            (
-                calcH
-                (
-                    *pairPtr_, 
-                    *this
-                )()
-            );
-            scalarField nbrHf
-            (
-                calcH
-                (
-                    *pairPtr_, 
-                    *nbrPatchFieldPtr_
-                )()
-            );
-            scalarField otherFluidHf
-            (
-                calcH
-                (
-                    *otherPairPtr_, 
-                    *otherFluidPatchFieldPtr_
-                )()
-            );
-            scalarField otherFluidNbrHf
-            (
-                calcH
-                (
-                    *otherPairPtr_, 
-                    *otherFluidNbrPatchFieldPtr_
-                )()
-            );
+            if (twoPhaseOwner_)
+            {
+                const label otherFluidPatchi = 
+                    otherFluidPatchFieldPtr_->patch().index();
+                const label otherFluidNbrPatchi = 
+                    otherFluidNbrPatchFieldPtr_->patch().index();
 
-            //- Internal field temperatures
-            scalarField Ti
-            (
-                this->patchInternalField()()
-            );
-            scalarField nbrTi
-            (
-                nbrPatchFieldPtr_->patchInternalField()()
-            );
-            scalarField otherFluidTi
-            (
-                otherFluidPatchFieldPtr_->patchInternalField()()
-            );
-            scalarField otherFluidNbrTi
-            (
-                otherFluidNbrPatchFieldPtr_->patchInternalField()()
-            );
+                //- Cache fluid thermal conducitivities (molecular ones, not
+                //  effective ones as turbulence is supposed to be captured by the
+                //  Nusselt correlation)
+                
+                
+                //- Calculate heat transfer coefficients
+                scalarField hf
+                (
+                    calcH
+                    (
+                        *pairPtr_, 
+                        *this
+                    )()
+                );
+                scalarField nbrHf
+                (
+                    calcH
+                    (
+                        *pairPtr_, 
+                        *nbrPatchFieldPtr_
+                    )()
+                );
+                scalarField otherFluidHf
+                (
+                    calcH
+                    (
+                        *otherPairPtr_, 
+                        *otherFluidPatchFieldPtr_
+                    )()
+                );
+                scalarField otherFluidNbrHf
+                (
+                    calcH
+                    (
+                        *otherPairPtr_, 
+                        *otherFluidNbrPatchFieldPtr_
+                    )()
+                );
 
-            //- Effective turbulent thermal conductivities used only to adjust
-            //  the gradient to account for the fact that this BC "sees" a
-            //  cell-center - face-center heat transfer coefficient of hf
-            //  (and the calculated variants), while the rest of the code 
-            //  "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
-            //  with k being the effective fluid thermal conductivity on the
-            //  patch
-            scalarField kfEff(fluidPtr_->turbulence().kappaEff(patchi));
-            scalarField nbrKfEff(fluidPtr_->turbulence().kappaEff(nbrPatchi));
-            scalarField otherFluidKfEff
-            (
-                otherFluidPtr_->turbulence().kappaEff(otherFluidPatchi)()
-            );
-            scalarField otherFluidNbrKfEff
-            (
-                otherFluidPtr_->turbulence().kappaEff(otherFluidNbrPatchi)()
-            );
-            
-            //- These calls are necessary to sync fields on nbr sides if the
-            //  nbr patch does not belong to the same processor as the owner 
-            //  (only relevant in MPI)
-            mappedPatchBase::map().distribute(nbrKfEff);
-            mappedPatchBase::map().distribute(otherFluidNbrKfEff);
-            mappedPatchBase::map().distribute(nbrTi);
-            mappedPatchBase::map().distribute(otherFluidNbrTi);
-            mappedPatchBase::map().distribute(nbrHf);
-            mappedPatchBase::map().distribute(otherFluidNbrHf);
+                //- Internal field temperatures
+                scalarField Ti
+                (
+                    this->patchInternalField()()
+                );
+                scalarField nbrTi
+                (
+                    nbrPatchFieldPtr_->patchInternalField()()
+                );
+                scalarField otherFluidTi
+                (
+                    otherFluidPatchFieldPtr_->patchInternalField()()
+                );
+                scalarField otherFluidNbrTi
+                (
+                    otherFluidNbrPatchFieldPtr_->patchInternalField()()
+                );
 
-            //- Set mixedFvPatchScalarField quantities required for BC update
-            //  As this runs only on the owner, I update the nbr values as well
-            //  so to have a truly implicit update
-            scalarField hm(hf+otherFluidHf);
-            scalarField nbrHm(nbrHf+otherFluidNbrHf);
-            scalarField A(1.0+hm/hw_);
-            scalarField B((hf*Ti+otherFluidHf*otherFluidTi)/hw_);
-            scalarField nbrA(1.0+nbrHf/hw_);
-            scalarField nbrB
-            (
-                (nbrHf*nbrTi+otherFluidNbrHf*otherFluidNbrTi)/hw_
-            );
-            scalarField oneByAnbrAminOne(max(A*nbrA-1.0, 1e-69));
-            scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne); //- New T wall
-            scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne); //- New nbr T wall
-            
-            //this->valueFraction() = 0;
-            //this->refValue() = 0;
-            this->refGrad() = (hf/kfEff)*(Tw-Ti);
-            //nbrPatchFieldPtr_->valueFraction() = 0;
-            //nbrPatchFieldPtr_->refValue() = 0;
-            nbrPatchFieldPtr_->refGrad() = (nbrHf/nbrKfEff)*(nbrTw-nbrTi);
-            //otherFluidPatchFieldPtr_->valueFraction() = 0;
-            //otherFluidPatchFieldPtr_->refValue() = 0;
-            otherFluidPatchFieldPtr_->refGrad() = 
-                (otherFluidHf/otherFluidKfEff)*(Tw-otherFluidTi);
-            //otherFluidNbrPatchFieldPtr_->valueFraction() = 0;
-            //otherFluidNbrPatchFieldPtr_->refValue() = 0;
-            otherFluidNbrPatchFieldPtr_->refGrad() = 
-                (otherFluidNbrHf/otherFluidNbrKfEff)*(nbrTw-otherFluidNbrTi);
+                //- Effective turbulent thermal conductivities used only to adjust
+                //  the gradient to account for the fact that this BC "sees" a
+                //  cell-center - face-center heat transfer coefficient of hf
+                //  (and the calculated variants), while the rest of the code 
+                //  "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
+                //  with k being the effective fluid thermal conductivity on the
+                //  patch
+                scalarField kfEff(fluidPtr_->turbulence().kappaEff(patchi));
+                scalarField nbrKfEff(fluidPtr_->turbulence().kappaEff(nbrPatchi));
+                scalarField otherFluidKfEff
+                (
+                    otherFluidPtr_->turbulence().kappaEff(otherFluidPatchi)()
+                );
+                scalarField otherFluidNbrKfEff
+                (
+                    otherFluidPtr_->turbulence().kappaEff(otherFluidNbrPatchi)()
+                );
+                
+                //- These calls are necessary to sync fields on nbr sides if the
+                //  nbr patch does not belong to the same processor as the owner 
+                //  (only relevant in MPI)
+                mappedPatchBase::map().distribute(nbrKfEff);
+                mappedPatchBase::map().distribute(otherFluidNbrKfEff);
+                mappedPatchBase::map().distribute(nbrTi);
+                mappedPatchBase::map().distribute(otherFluidNbrTi);
+                mappedPatchBase::map().distribute(nbrHf);
+                mappedPatchBase::map().distribute(otherFluidNbrHf);
+
+                //- Set mixedFvPatchScalarField quantities required for BC update
+                //  As this runs only on the owner, I update the nbr values as well
+                //  so to have a truly implicit update
+                scalarField hm(hf+otherFluidHf);
+                scalarField nbrHm(nbrHf+otherFluidNbrHf);
+                scalarField A(1.0+hm/hw_);
+                scalarField B((hf*Ti+otherFluidHf*otherFluidTi)/hw_);
+                scalarField nbrA(1.0+nbrHf/hw_);
+                scalarField nbrB
+                (
+                    (nbrHf*nbrTi+otherFluidNbrHf*otherFluidNbrTi)/hw_
+                );
+                scalarField oneByAnbrAminOne(max(A*nbrA-1.0, 1e-69));
+                scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne); //- New T wall
+                scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne); //- New nbr T wall
+                
+                //this->valueFraction() = 0;
+                //this->refValue() = 0;
+                this->refGrad() = (hf/kfEff)*(Tw-Ti);
+                //nbrPatchFieldPtr_->valueFraction() = 0;
+                //nbrPatchFieldPtr_->refValue() = 0;
+                nbrPatchFieldPtr_->refGrad() = (nbrHf/nbrKfEff)*(nbrTw-nbrTi);
+                //otherFluidPatchFieldPtr_->valueFraction() = 0;
+                //otherFluidPatchFieldPtr_->refValue() = 0;
+                otherFluidPatchFieldPtr_->refGrad() = 
+                    (otherFluidHf/otherFluidKfEff)*(Tw-otherFluidTi);
+                //otherFluidNbrPatchFieldPtr_->valueFraction() = 0;
+                //otherFluidNbrPatchFieldPtr_->refValue() = 0;
+                otherFluidNbrPatchFieldPtr_->refGrad() = 
+                    (otherFluidNbrHf/otherFluidNbrKfEff)*(nbrTw-otherFluidNbrTi);
+            }
+            else if (!twoPhase_)
+            {
+                //- Cache thermal conductivities
+                scalarField kf(fluidPtr_->turbulence().kappaEff(patchi));
+                scalarField nbrKf(fluidPtr_->turbulence().kappaEff(nbrPatchi));
+                
+                //- Calculate heat transfer coefficients
+                scalarField hf
+                (
+                    calcH
+                    (
+                        *pairPtr_, 
+                        *this
+                    )()
+                );
+                scalarField nbrHf
+                (
+                    calcH
+                    (
+                        *pairPtr_, 
+                        *nbrPatchFieldPtr_
+                    )()
+                );
+
+                //- Effective turbulent thermal conductivities used only to adjust
+                //  the gradient to account for the fact that this BC "sees" a
+                //  cell-center - face-center heat transfer coefficient of hf
+                //  (and the calculated variants), while the rest of the code 
+                //  "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
+                //  with k being the effective fluid thermal conductivity on the
+                //  patch
+                scalarField kfEff(fluidPtr_->turbulence().kappaEff(patchi));
+                scalarField nbrKfEff(fluidPtr_->turbulence().kappaEff(nbrPatchi));
+
+                //- Internal temperature fields
+                scalarField Ti(patchInternalField()());
+                scalarField nbrTi(nbrPatchFieldPtr_->patchInternalField()());
+                
+                //- Distribute nbr quantities to avoid BS in MPI
+                mappedPatchBase::map().distribute(nbrKfEff);
+                mappedPatchBase::map().distribute(nbrTi);
+                mappedPatchBase::map().distribute(nbrHf);
+
+                //- Set mixedFvPatchScalarField quantities required for BC update
+                //  As this runs only on the owner, I update the nbr values as well
+                //  so to have a truly implicit update
+                scalarField A(1.0+hf/hw_);
+                scalarField B((hf/hw_)*Ti);
+                scalarField nbrA(1.0+nbrHf/hw_);
+                scalarField nbrB((nbrHf/hw_)*nbrTi);
+                scalarField oneByAnbrAminOne(max(A*nbrA-1.0, 1e-69));
+                scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne);
+                scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne);
+
+                //this->valueFraction() = 0;
+                //this->refValue() = 0;
+                this->refGrad() = (hf/kfEff)*(Tw-Ti);
+                //nbrPatchFieldPtr_->valueFraction() = 0;
+                //nbrPatchFieldPtr_->refValue() = 0;
+                nbrPatchFieldPtr_->refGrad() = (nbrHf/nbrKfEff)*(nbrTw-nbrTi);
+            }
         }
-        else if (!twoPhase_)
+
+        if (debug)
         {
-            //- Cache thermal conductivities
-            scalarField kf(fluidPtr_->turbulence().kappaEff(patchi));
-            scalarField nbrKf(fluidPtr_->turbulence().kappaEff(nbrPatchi));
-            
-            //- Calculate heat transfer coefficients
-            scalarField hf
-            (
-                calcH
-                (
-                    *pairPtr_, 
-                    *this
-                )()
-            );
-            scalarField nbrHf
-            (
-                calcH
-                (
-                    *pairPtr_, 
-                    *nbrPatchFieldPtr_
-                )()
-            );
-
-            //- Effective turbulent thermal conductivities used only to adjust
-            //  the gradient to account for the fact that this BC "sees" a
-            //  cell-center - face-center heat transfer coefficient of hf
-            //  (and the calculated variants), while the rest of the code 
-            //  "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
-            //  with k being the effective fluid thermal conductivity on the
-            //  patch
-            scalarField kfEff(fluidPtr_->turbulence().kappaEff(patchi));
-            scalarField nbrKfEff(fluidPtr_->turbulence().kappaEff(nbrPatchi));
-
-            //- Internal temperature fields
-            scalarField Ti(patchInternalField()());
-            scalarField nbrTi(nbrPatchFieldPtr_->patchInternalField()());
-            
-            //- Distribute nbr quantities to avoid BS in MPI
-            mappedPatchBase::map().distribute(nbrKfEff);
-            mappedPatchBase::map().distribute(nbrTi);
-            mappedPatchBase::map().distribute(nbrHf);
-
-            //- Set mixedFvPatchScalarField quantities required for BC update
-            //  As this runs only on the owner, I update the nbr values as well
-            //  so to have a truly implicit update
-            scalarField A(1.0+hf/hw_);
-            scalarField B((hf/hw_)*Ti);
-            scalarField nbrA(1.0+nbrHf/hw_);
-            scalarField nbrB((nbrHf/hw_)*nbrTi);
-            scalarField oneByAnbrAminOne(max(A*nbrA-1.0, 1e-69));
-            scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne);
-            scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne);
-
-            //this->valueFraction() = 0;
-            //this->refValue() = 0;
-            this->refGrad() = (hf/kfEff)*(Tw-Ti);
-            //nbrPatchFieldPtr_->valueFraction() = 0;
-            //nbrPatchFieldPtr_->refValue() = 0;
-            nbrPatchFieldPtr_->refGrad() = (nbrHf/nbrKfEff)*(nbrTw-nbrTi);
+            const phaseCompressibleTurbulenceModel& turbModel = 
+                fluidPtr_->turbulence();
+            scalarField kf(turbModel.kappaEff(patch().index()));
+            scalar Q = gAverage(kf*snGrad());
+                Pout<< patch().boundaryMesh().mesh().name() << ':'
+                    << patch().name() << ':'
+                    << this->internalField().name() << " <- "
+                    << patch().boundaryMesh()[samplePolyPatch().index()].name() 
+                    << ':' << this->internalField().name() << " :"
+                    << " heat[W]:" << Q
+                    << " walltemperature "
+                    << " min:" << gMin(*this)
+                    << " max:" << gMax(*this)
+                    << " avg:" << gAverage(*this)
+                    << endl;
         }
+
+        // Restore tag
+        UPstream::msgType() = oldTag;
     }
-
-    if (debug)
-    {
-        const phaseCompressibleTurbulenceModel& turbModel = 
-            fluidPtr_->turbulence();
-        scalarField kf(turbModel.kappaEff(patch().index()));
-        scalar Q = gAverage(kf*snGrad());
-            Pout<< patch().boundaryMesh().mesh().name() << ':'
-                << patch().name() << ':'
-                << this->internalField().name() << " <- "
-                << patch().boundaryMesh()[samplePolyPatch().index()].name() 
-                << ':' << this->internalField().name() << " :"
-                << " heat[W]:" << Q
-                << " walltemperature "
-                << " min:" << gMin(*this)
-                << " max:" << gMax(*this)
-                << " avg:" << gAverage(*this)
-                << endl;
-    }
-
-    // Restore tag
-    UPstream::msgType() = oldTag;
-
     mixedFvPatchScalarField::updateCoeffs();
 }
 

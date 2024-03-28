@@ -25,5 +25,3 @@ Besides the standard ones available in OpenFOAM, GeN-Foam includes a *tractionDi
 ## Discretization and solution
 
 Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/thermoMechanicalRegion*. 
-
-© All rights reserved. ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE, Switzerland, 2021
