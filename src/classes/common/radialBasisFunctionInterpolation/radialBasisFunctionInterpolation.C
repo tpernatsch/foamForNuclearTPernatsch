@@ -152,15 +152,15 @@ scalarList solvePolyharmonicSpline
                 }
                 else
                 {
-                    A[i][j] = 0;
+                    A[i][j] = 0.0;
                 }
             }
             // Polynomial correction
-            A[i][nx] = 1;
+            A[i][nx] = 1.0;
             A[i][nx+1] = xList[i];
             A[i][nx+2] = yList[i];
             A[i][nx+3] = zList[i];
-            A[nx][i] = 1;
+            A[nx][i] = 1.0;
             A[nx+1][i] = xList[i];
             A[nx+2][i] = yList[i];
             A[nx+3][i] = zList[i];

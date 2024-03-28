@@ -111,7 +111,7 @@ Usage
 
     \verbatim
     // Example for a 7 fuel pin model in a lattice using the polyharmonic spline 
-    // interpolation method
+    // interpolation method, fuel length is smaller than total sampling length
     powerModel
     {
         type                        nuclearFuelFMU;
@@ -138,6 +138,9 @@ Usage
         (
             0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4
         );
+        // Optional fuel length incase the axial location is bigger than the
+        // fuel, usually the case when simulating cladding longer than fuel
+        fuelLength  0.8;
         
         // Radial Basis Function interpolation for heat flux reconstruction
         radialBasisFunctionMethod   polyharmonicSpline;
@@ -164,6 +167,17 @@ Usage
             gfSurfacePower0 gfSurfacePower1 gfSurfacePower2 gfSurfacePower3
             gfSurfacePower4 gfSurfacePower5 gfSurfacePower6
         );
+        // Optional fuel and cladding axial samples
+        TFuelNameFromFMU
+        (
+            gfTFuel0 gfTFuel1 gfTFuel2 gfTFuel3
+            gfTFuel4 gfTFuel5 gfTFuel6
+        );
+        TCladNameFromFMU
+        (
+            gfTCladding0 gfTCladding1 gfTCladding2 gfTCladding3
+            gfTCladding4 gfTCladding5 gfTCladding6
+        );
         initPowerDensity    100e6;
         initTstruct         600;
         initHeatFlux        1e5;
@@ -188,6 +202,8 @@ Usage
         TstructNameToFMU | List of FMI port names for Tstructure output | wordList | yes | -
         heatFluxNameFromFMU | List of FMI port names for heat flux input | wordList | conditional | -
         rhoCpdTdtNameFromFMU | List of FMI port names for rhoCpdTdt input | wordList | conditional | -
+        TFuelNameFromFMU | List of FMI port names for fuel temperature input | wordList | no | -
+        TCladNameFromFMU | List of FMI port names for cladding temperature input | wordList | no | -
         initPowerDensity | Initial power density | scalar | yes | -
         initTstruct     | Initial structure temperature | scalar | yes | -
         initHeatFlux    | Initial heat flux | scalar | conditional | -
@@ -240,14 +256,14 @@ protected:
     volScalarField Tsurface_;
 
     //- Heat flux FMI input flag
-    bool isHeatFluxInput_;
+    List<bool> isHeatFluxInput_;
 
     //- Fraction of power from neutronics that goes to this powerModel
     //  This takes into account for instance cases where some of the 
     //  heating goes to the moderator
     scalarList fractionOfPowerFromNeutronics_;
 
-    //- If true, update avg Tfuel and avg Tclad fields for neutronics coupling
+    //- If true, update avg TFuel and avg TClad fields for neutronics coupling
     List<bool> isFuelTemperatureFieldFromFMU_;
 
     //- X-position of sampling lines
@@ -258,6 +274,9 @@ protected:
 
     //- Axial location
     List<scalarField> axialLoc_;
+
+    //- Optional fuel length used for average power density
+    List<scalar> fuelLength_;
 
     //- Axial location interpolation method
     List<interpolateTableBase::interpolationMethod> zMethod_;
@@ -324,9 +343,6 @@ public:
 
         //- Return surface temperature (i.e. outer cladding temperature)
         virtual void correctT(volScalarField& T) const;
-
-        //-
-        // virtual bool writeData(Ostream& os) const;
 
 private:
 

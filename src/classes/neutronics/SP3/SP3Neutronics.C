@@ -251,8 +251,8 @@ Foam::SP3Neutronics::SP3Neutronics
             "rhoCool",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
         ),
         mesh,
         dimensionedScalar("", dimTemperature, SMALL),
