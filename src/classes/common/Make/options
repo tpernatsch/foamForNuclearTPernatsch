@@ -17,7 +17,7 @@ LIB_LIBS = \
     -lreconstruct \
     -lfvOptions
 
-ifneq (,$(findstring FMU4FOAM,$(LIB_FMU4FOAM)))
-    EXE_INC += -I$(LIB_FMU4FOAM)/ECI4FOAM/src/externalComm/lnInclude
+ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))
+    EXE_INC += -I$(LIB_ECI4FOAM)/src/externalComm/lnInclude
     LIB_LIBS += -L$(FOAM_USER_LIBBIN) -lexternalComm
 endif
