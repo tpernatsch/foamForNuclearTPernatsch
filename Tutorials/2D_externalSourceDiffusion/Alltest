@@ -10,9 +10,7 @@ touch $resFile
 
 # --- Run the simulation
 echo -e "Run tutorial 2D_externalSourceDiffusion ...\n" | tee -a $resFile
-foamDictionary rootCase/0/neutroRegion/defaultFlux  -entry boundaryField.walls.type -set zeroGradient
-foamDictionary rootCase/0/neutroRegion/defaultFlux2 -entry boundaryField.walls.type -set zeroGradient
-# ./Allrun >> log.simulation
+./Allrun 1 >> log.simulation
 echo -e "Done running tutorial 2D_externalSourceDiffusion ...\n" | tee -a $resFile
 
 # --- Check it ran

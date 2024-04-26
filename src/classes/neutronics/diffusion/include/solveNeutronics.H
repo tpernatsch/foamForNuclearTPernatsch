@@ -42,7 +42,7 @@ if
 #include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
 
-if(!eigenvalueNeutronics_ && couplingIter == 0) //&& !externalSourceNeutronics_)
+if(!eigenvalueNeutronics_ && couplingIter == 0) // && !externalSourceNeutronics_)
 {
 
     if(integralPredictor)

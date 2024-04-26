@@ -110,6 +110,7 @@ print(f"S+nuSigmaF*flux = {Ntot}")
 
 relErr = abs(Ntot-NsrcMult)/((Ntot+NsrcMult)/2)
 print(f"Relative error = {relErr}")
+print(f"Difference = {NsrcMult - Ntot}")
 
 if (relErr > 1e-6):
     sys.exit(1)

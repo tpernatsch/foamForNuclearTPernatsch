@@ -5,6 +5,8 @@ cd ${0%/*} || exit 1    # Run from this directory
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
+isTest=$1
+
 
 # Usefull functions
 copyFolder() {
@@ -26,6 +28,13 @@ runGeNFoam() {
 
 # Steady-state with the external neutron source
 copyFolder rootCase steadyState
+
+if [ $isTest -eq 1 ]
+then
+    foamDictionary steadyState/0/neutroRegion/defaultExternalSourceFlux  -entry boundaryField.walls.type -set zeroGradient
+    foamDictionary steadyState/0/neutroRegion/defaultFlux  -entry boundaryField.walls.type -set zeroGradient
+    foamDictionary steadyState/0/neutroRegion/defaultFlux2 -entry boundaryField.walls.type -set zeroGradient
+fi
 
 # foamDictionary steadyState/system/controlDict -entry endTime -set $(($timeEigenvalue + $timeSource))
 # foamDictionary steadyState/system/controlDict -entry writeInterval -set $timeSource

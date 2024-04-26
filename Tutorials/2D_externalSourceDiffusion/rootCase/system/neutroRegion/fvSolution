@@ -45,13 +45,13 @@ neutronTransport
 {
     //- Integral neutron balance made at each time step to predict fluxes at 
     //  next step (can be unstable)
-    integralPredictor           true; 
+    integralPredictor           false; 
     
     implicitPredictor           false;
     
     ROMAcceleration             false;
     
-    aitkenAcceleration          true;
+    aitkenAcceleration          false;
 
     //- Required accuracy for the coupling of different energy groups
     neutronIterationResidual    0.000001; 

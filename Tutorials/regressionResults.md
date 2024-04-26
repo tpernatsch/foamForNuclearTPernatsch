@@ -1,7 +1,35 @@
 # GeN-Foam regression test suite
 
-Regression test of 09-Feb-2024 - 21:57:56  
-Tutorials successfully completed: 20/23  [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]()  
+Regression test of 25-avril-2024 - 16:33:36  
+Tutorials successfully completed: 22/23  [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]()  
+
+## Summary
+
+| Tutorial | Status | Time | Memory usage [Gb] |
+|:---------|:------:|:-:|:-:|
+| 1D_boiling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 2:47.02 | .083 |
+| 1D_CHF/imposedPower | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 25:50.65 | .083 |
+| 1D_CHF/imposedTemperature | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 4:38.41 | .083 |
+| 1D_HX/onePhase | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:11.34 | .090 |
+| 1D_HX/twoPhase | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:32.96 | .092 |
+| 1D_MSR_pointKinetics | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 2:45.04 | .091 |
+| 1D_PSBT_SC/Phase_Ex1_12223 | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:14.90 | .084 |
+| 1D_PSBT_SC/PhaseII_Ex1_01_5215 | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 2:10.48 | .092 |
+| 1D_PSBT_SC/PhaseII_Ex2_04_6770 | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:32:38 | .088 |
+| 1D_thermalMSR_pointKinetics | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:19.75 | .090 |
+| 2D_cavityBoussinesq | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:58.03 | .085 |
+| 2D_externalSourceDiffusion | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:16.68 | .090 |
+| 2D_FFTF | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 5:23:56 | .277 |
+| 2D_fullCoupling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:15.13 | .085 |
+| 2D_KNS37-L22 | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 30:59.86 | .095 |
+| 2D_MSFR | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 13:49.36 | .200 |
+| 2D_onePhaseAndPointKineticsCoupling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:48.98 | .088 |
+| 2D_onePhaseAndSubcriticalPointKineticsCoupling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:32.33 | .087 |
+| 2D_voidMotionNoPhaseChange | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:56.78 | .088 |
+| 3D_gFHR | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 17:17.92 | .894 |
+| 3D_NTPfuelAssembly | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 2:03:58 | .101 |
+| 3D_SmallESFR | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 3:16.93 | .138 |
+| Godiva_SN | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:10:15 | 1.061 |
 
 --------------------------------------------------------------------------------
 
@@ -24,7 +52,7 @@ Done running tutorial 1D_CHF imposedPower ...
 
 1D_CHF imposedPower has converged 
 
-Structure temperature at the top of the channel at 90 seconds
+Structure temperature at the top of the channel at 90 seconds with 0.01 relative error
 Perfect match:
 |          | Simulated | Expected |
 |:---------|:---------:|:--------:|
@@ -40,7 +68,7 @@ Done running tutorial 1D_CHF imposedTemperature ...
 
 1D_CHF imposedTemperature has converged 
 
-Heat flux of the structure at the top of the channel at 40 seconds
+Heat flux of the structure at the top of the channel at 40 seconds with 0.01 relative error
 Perfect match:
 |           | Simulated | Expected |
 |:----------|:---------:|:--------:|
@@ -82,11 +110,11 @@ Transient has converged
 
 Transient end has converged 
 
-Power at the end of transient
+Power at the end of transient with 0.01 relative error
 Perfect match:
 |       | Simulated | Expected |
 |:------|:---------:|:--------:|
-| Power | 6.13787e+08  | 6.13794e+08 |
+| Power | 613787000 | 613794000 |
 
 --------------------------------------------------------------------------------
 
