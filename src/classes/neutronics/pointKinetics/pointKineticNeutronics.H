@@ -75,123 +75,124 @@ Description
             + \rho_{ext}^{FMU}
     \f]
 
-    where:
-    \vartable
-      P           | Core power
-      C_i         | Precursor power
-      S           | Optional external source power
-      \beta_{tot} | Total delayed neutron fraction
-      \beta_i     | Delayed neutron fraction for the ith delayed neutron precursor group
-      \lambda_i   | Decay constant for the ith delayed neutron precursor group
-      \Lambda     | Prompt generation lifetime
-      \zeta       | Optional subcritical index
-      S           | Optional external neutron source power
-      \alpha_D             | Doppler feedback coefficient
-      \alpha_{fuel}        | Fuel axial expansion feedback coefficient
-      \alpha_{clad}        | Cladding temperature feedback coefficient
-      \alpha_{cool}^{T}    | Coolant temperature feedback coefficient
-      \alpha_{cool}^{\rho} | Coolant density coefficient
-      \alpha_{struct}      | Core radial expansion feedback coefficient
-      \alpha_{struct}^{mech} | Core expansion feedback coefficient from the mechanical mesh
-      \rho_{driveline}     | Control rod driveline expansion reactivity contribution
-      \rho_{boron}         | Boron concentration reactivity contribution
-      \rho_{ext}           | External reactivity contribution
-      \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
-    \endtable
+where:
 
-    Example of mandatory dictionary entries:
-    \verbatim
-        fastNeutrons    true;
-        promptGenerationTime 1e-06; // [s]
-        Beta
-        ( 
-            7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05 
-        );
-        lambda // [1/s]
+\vartable
+    P           | Core power
+    C_i         | Precursor power
+    S           | Optional external source power
+    \beta_{tot} | Total delayed neutron fraction
+    \beta_i     | Delayed neutron fraction for the ith delayed neutron precursor group
+    \lambda_i   | Decay constant for the ith delayed neutron precursor group
+    \Lambda     | Prompt generation lifetime
+    \zeta       | Optional subcritical index
+    S           | Optional external neutron source power
+    \alpha_D             | Doppler feedback coefficient
+    \alpha_{fuel}        | Fuel axial expansion feedback coefficient
+    \alpha_{clad}        | Cladding temperature feedback coefficient
+    \alpha_{cool}^{T}    | Coolant temperature feedback coefficient
+    \alpha_{cool}^{\rho} | Coolant density coefficient
+    \alpha_{struct}      | Core radial expansion feedback coefficient
+    \alpha_{struct}^{mech} | Core expansion feedback coefficient from the mechanical mesh
+    \rho_{driveline}     | Control rod driveline expansion reactivity contribution
+    \rho_{boron}         | Boron concentration reactivity contribution
+    \rho_{ext}           | External reactivity contribution
+    \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
+\endtable
+
+Example of mandatory dictionary entries:
+\verbatim
+    fastNeutrons    true;
+    promptGenerationTime 1e-06; // [s]
+    Beta
+    ( 
+        7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05 
+    );
+    lambda // [1/s]
+    (
+        0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817 
+    );
+    feedbackCoeffFastDoppler    0; // [-]
+    feedbackCoeffTFuel          0; // [1/K]
+    feedbackCoeffTClad          0; // [1/K]
+    feedbackCoeffTCool          0; // [1/K]
+    feedbackCoeffRhoCool        0; // [1/(kg/m3)]
+    feedbackCoeffTStruct        0; // [1/K]
+    feedbackCoeffTStructMech    0; // [1/K]
+    absoluteDrivelineExpansionCoeff 0.0; // [m/K]
+    controlRodReactivityMap 
+    ( 
+        ( 0.1   -0.01   ) 
+        ( 0     0       ) 
+        ( -0.1  0.01    ) 
+    );
+\endverbatim
+
+Example of time dependant source entries:
+\verbatim
+    //- Optional time dependant external reactivity time profile
+    externalReactivityTimeProfile
+    {
+        type        table;
+        startTime   100;
+        table       table
         (
-            0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817 
+            (   0   0)
+            (   1   0.0005767131    ) //- i.e. 57.67131 pcm
         );
-        feedbackCoeffFastDoppler    0; // [-]
-        feedbackCoeffTFuel          0; // [1/K]
-        feedbackCoeffTClad          0; // [1/K]
-        feedbackCoeffTCool          0; // [1/K]
-        feedbackCoeffRhoCool        0; // [1/(kg/m3)]
-        feedbackCoeffTStruct        0; // [1/K]
-        feedbackCoeffTStructMech    0; // [1/K]
-        absoluteDrivelineExpansionCoeff 0.0; // [m/K]
-        controlRodReactivityMap 
-        ( 
-            ( 0.1   -0.01   ) 
-            ( 0     0       ) 
-            ( -0.1  0.01    ) 
+    }
+
+    //- Optional time dependant boron reactivity time profile
+    boronReactivityTimeProfile
+    {
+        type        table;
+        table       table
+        (
+            (   100   0   )
+            (   101   1e-5   )
         );
-    \endverbatim
+    }
+\endverbatim
 
-    Example of time dependant source entries:
-    \verbatim
-        //- Optional time dependant external reactivity time profile
-        externalReactivityTimeProfile
-        {
-            type        table;
-            startTime   100;
-            table       table
-            (
-                (   0   0)
-                (   1   0.0005767131    ) //- i.e. 57.67131 pcm
-            );
-        }
+Optional external reactivity input from FMU in nuclearData file.
+The default initial value is 0.
+\verbatim
+    externalReactivityNameFromFMU   gfExtReact;
+\endverbatim
 
-        //- Optional time dependant boron reactivity time profile
-        boronReactivityTimeProfile
-        {
-            type        table;
-            table       table
-            (
-                (   100   0   )
-                (   101   1e-5   )
-            );
-        }
-    \endverbatim
+Optional external neutron source file "externalSource"
+\verbatim
+    //- If true, add the external source to the point-kinetics equations
+    isExternalSource    true;
 
-    Optional external reactivity input from FMU in nuclearData file.
-    The default initial value is 0.
-    \verbatim
-        externalReactivityNameFromFMU   gfExtReact;
-    \endverbatim
+    //- External source mode
+    externalSourceMode  transient; // powerMonitoring // transient
 
-    Optional external neutron source file "externalSource"
-    \verbatim
-        //- If true, add the external source to the point-kinetics equations
-        isExternalSource    true;
+    //- Beam energy per source particle
+    beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
 
-        //- External source mode
-        externalSourceMode  transient; // powerMonitoring // transient
+    //- Neutron yield of the spallation of proton on heavy metal 
+    nuSource            15.5; // [neutron/proton]
 
-        //- Beam energy per source particle
-        beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
+    //- Optional external source input from FMU in externalSource file.
+    //- The externalSourceMode must be set to transient. The default initial value
+    //-is 1.
+    externalSourceModulationNameFromFMU     gfExternalSourceMod;
 
-        //- Neutron yield of the spallation of proton on heavy metal 
-        nuSource            15.5; // [neutron/proton]
+    //- External modulation time profile (time, modulation factor)
+    externalSourceModulationTimeProfile
+    {
+        type        table;
+        startTime   150;
+        table       table
+        (
+            (0      1)
+            (20     2)
+        );
+    }
+\endverbatim
 
-        //- Optional external source input from FMU in externalSource file.
-        //- The externalSourceMode must be set to transient. The default initial value
-        //-is 1.
-        externalSourceModulationNameFromFMU     gfExternalSourceMod;
-
-        //- External modulation time profile (time, modulation factor)
-        externalSourceModulationTimeProfile
-        {
-            type        table;
-            startTime   150;
-            table       table
-            (
-                (0      1)
-                (20     2)
-            );
-        }
-    \endverbatim
-
-    Author of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files): 
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>;
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)

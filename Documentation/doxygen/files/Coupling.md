@@ -8,7 +8,7 @@
 GeN-Foam has been developed for the steady-state and transient analysis of reactors featuring pin-type, plate-type, or liquid fuel (viz., Molten Salt Reactors). It includes sub-solvers for neutronics, single- and two-phase thermal-hydraulics, and thermal-mechanics, with the choice of the physics to solve that can be made at runtime. Three different meshes are employed for neutronics, thermal-hydraulics, and thermal-mechanics. The selection of the physics to solve is done in *system/controlDict*
 
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The *controlDict* dictionary</b>
 
 The *controlDict* is an extended version of the one that is normally used in other OpenFOAM solvers. Compared to a standard OpenFOAM controlDict, it includes several keywords that allow one to select:
@@ -75,7 +75,7 @@ The coupling between physics is obtained via fixed-point iterations and the time
 
 The parameters for the coupling are set in *system/fvSolution*.
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The general *fvSolution* dictionary</b>
 
 The general *fvSolution* dictionary is found under */system/*  and allows to specify parameters related to the coupling among physics, and in particular: the type of coupling (implicit or explicit); and the parameters that affect the tightness of the implicit coupling.

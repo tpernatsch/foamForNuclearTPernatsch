@@ -1,5 +1,6 @@
 EXE_INC = \
     -I./InterpolateTable \
+    -I./radialBasisFunctionInterpolation \
     -I./timeProfile \
     -I./mergeOrSplitBaffles \
     -I$(LIB_SRC)/meshTools/lnInclude \

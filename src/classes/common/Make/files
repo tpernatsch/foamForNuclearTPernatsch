@@ -2,6 +2,8 @@ InterpolateTable/InterpolateTables.C
 
 timeProfile/timeProfile.C
 
+radialBasisFunctionInterpolation/radialBasisFunctionInterpolation.C
+
 mergeOrSplitBaffles/mergeOrSplitBaffles.C
 
 LIB = $(FOAM_USER_LIBBIN)/libCommon

@@ -1,17 +1,16 @@
 // Nuclear data fields
 Info<< "Creating nuclear data fields\n" << endl;
 
-
-forAll(IV_, i)
+forAll(IV_, energyI)
 {
     IV_.set
     (
-        i,
+        energyI,
         new volScalarField
         (
             IOobject
             (
-                "IV"+Foam::name(i),
+                "IV"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
@@ -24,19 +23,19 @@ forAll(IV_, i)
     );
 }
 
-forAll(D_, i)
+forAll(D_, energyI)
 {
     D_.set
     (
-        i,
+        energyI,
         new volScalarField
         (
             IOobject
             (
-                "D"+Foam::name(i),
+                "D"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
-                IOobject::NO_READ,//IOobject::READ_IF_PRESENT,
+                IOobject::NO_READ,
                 IOobject::NO_WRITE
             ),
             mesh_,
@@ -46,16 +45,16 @@ forAll(D_, i)
     );
 }
 
-forAll(nuSigmaEff_, i)
+forAll(nuSigmaEff_, energyI)
 {
     nuSigmaEff_.set
     (
-        i,
+        energyI,
         new volScalarField
         (
             IOobject
             (
-                "nuSigmaEff"+Foam::name(i),
+                "nuSigmaEff"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
@@ -68,16 +67,16 @@ forAll(nuSigmaEff_, i)
     );
 }
 
-forAll(sigmaPow_, i)
+forAll(sigmaPow_, energyI)
 {
     sigmaPow_.set
     (
-        i,
+        energyI,
         new volScalarField
         (
             IOobject
             (
-                "sigmaPow"+Foam::name(i),
+                "sigmaPow"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
@@ -90,16 +89,16 @@ forAll(sigmaPow_, i)
     );
 }
 
-forAll(sigmaDisapp_, i)
+forAll(sigmaDisapp_, energyI)
 {
     sigmaDisapp_.set
     (
-        i,
+        energyI,
         new volScalarField
         (
             IOobject
             (
-                "sigmaDisapp"+Foam::name(i),
+                "sigmaDisapp"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
@@ -112,47 +111,49 @@ forAll(sigmaDisapp_, i)
     );
 }
 
-forAll(sigmaFromTo_,momentI)
+if (!isLowMemory_)
 {
-    sigmaFromTo_[momentI].resize(energyGroups_);
-    forAll(sigmaFromTo_[momentI],energyJ)
+    forAll(sigmaFromTo_, momentI)
     {
-        sigmaFromTo_[momentI][energyJ].resize(energyGroups_); 
-        forAll(sigmaFromTo_[momentI][energyJ],energyI)
+        sigmaFromTo_[momentI].resize(energyGroups_);
+        forAll(sigmaFromTo_[momentI], energyJ)
         {
-            sigmaFromTo_[momentI][energyJ].set
-            (
-                energyI,
-                new volScalarField
+            sigmaFromTo_[momentI][energyJ].resize(energyGroups_); 
+            forAll(sigmaFromTo_[momentI][energyJ], energyI)
+            {
+                sigmaFromTo_[momentI][energyJ].set
                 (
-                    IOobject
+                    energyI,
+                    new volScalarField
                     (
-                        "sigmaFromToP"+Foam::name(momentI)+"_"+Foam::name(energyJ)+Foam::name(energyI),
-                        mesh_.time().timeName(),
+                        IOobject
+                        (
+                            "sigmaFromToP"+Foam::name(momentI)+"_"+Foam::name(energyJ)+Foam::name(energyI),
+                            mesh_.time().timeName(),
+                            mesh_,
+                            IOobject::NO_READ,
+                            IOobject::NO_WRITE
+                        ),
                         mesh_,
-                        IOobject::NO_READ,
-                        IOobject::NO_WRITE
-                    ),
-                    mesh_,
-                    dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
-                    zeroGradientFvPatchScalarField::typeName
-                )
-            );
-        }
-
-    }   
+                        dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
+                        zeroGradientFvPatchScalarField::typeName
+                    )
+                );
+            }
+        } 
+    }
 }
 
-forAll(chiPrompt_, i)
+forAll(chiPrompt_, energyI)
 {
     chiPrompt_.set
     (
-        i,
+        energyI,
         new volScalarField
         (
             IOobject
             (
-                "chiPrompt"+Foam::name(i),
+                "chiPrompt"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
@@ -165,16 +166,16 @@ forAll(chiPrompt_, i)
     );
 }
 
-forAll(chiDelayed_, i)
+forAll(chiDelayed_, energyI)
 {
     chiDelayed_.set
     (
-        i,
+        energyI,
         new volScalarField
         (
             IOobject
             (
-                "chiDelayed"+Foam::name(i),
+                "chiDelayed"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
@@ -187,16 +188,16 @@ forAll(chiDelayed_, i)
     );
 }
 
-forAll(Beta_, i)
+forAll(Beta_, precI)
 {
     Beta_.set
     (
-        i,
+        precI,
         new volScalarField
         (
             IOobject
             (
-                "Beta"+Foam::name(i),
+                "Beta"+Foam::name(precI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
@@ -209,16 +210,16 @@ forAll(Beta_, i)
     );
 }
 
-forAll(lambda_, i)
+forAll(lambda_, precI)
 {
     lambda_.set
     (
-        i,
+        precI,
         new volScalarField
         (
             IOobject
             (
-                "lambda"+Foam::name(i),
+                "lambda"+Foam::name(precI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
@@ -231,7 +232,7 @@ forAll(lambda_, i)
     );
 }
 
-forAll(discFactor_,energyI)
+forAll(discFactor_, energyI)
 {
     discFactor_.set
     (

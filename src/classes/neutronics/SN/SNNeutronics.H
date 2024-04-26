@@ -39,22 +39,75 @@ Class
     Foam::SNNeutronics
 
 Description
-    Subclass for diffusion neutronics.
+    Subclass for SN neutronics (Discrete Ordinate).
 
-    Reference publications
+\f[
+    \frac{1}{v_i} \frac{d \Omega_j \cdot \phi_{i,j}}{dt} 
+        + \nabla \cdot (\Omega_j \cdot \phi_{i,j})
+        + \Sigma_{t,i} \phi_{i,j}
+    = S_{i,j}^I + S_{i,j}^A + S_i^D
+        \quad \quad \forall i \wedge j \in [1; G] \times [1; M] \\
 
-    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design, submitted
+    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) = 
+        \frac{\beta_k}{k_{eff}} \sum_{i'=1}^G \nu \Sigma_{f,i'} \phi_{i'}
+        - \lambda_k C_k 
+        \quad \forall k \in [1; N]
+\f]
 
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
+with the external source:
+\f[
+    S_{i,j}^I = \sum_{i'=1}^G \sum_{j'=1}^M \omega_{j'} \phi_{i',j'} \left(
+        \frac{1}{k_{eff}} \nu \Sigma_{f,i'} \chi_{p,i} + \Sigma_{s,i' \rightarrow i}
+    \right) \\
+
+    S_{i,j}^A = \sum_{i'=1}^G \sum_{j'=1}^M \omega_{j'} \phi_{i',j'} \Sigma_{s,i' \rightarrow i} \left( 
+        \sum_{l=1}^p s_{i' \rightarrow i}^l \frac{2l+1}{2} P_l (\Omega_j \cdot \Omega_{j'})    
+    \right) \\
+
+    S_i^D = \chi_{d,i} \sum_k \lambda_k C_k
+\f]
+
+The anisotropic scattering terms are considered adopting a pth order Legendre
+polynomial expansion of the scattering cosine \f$ (\Omega_j \cdot \Omega_{j'}) \f$
+
+\vartable
+    \phi_{i,j}              | Neutron flux if the energy group i and direction j
+    C_k                     | Precursor k
+    S_{i,j}^I               | Isotropic source term
+    S_{i,j}^A               | Anisotropic source term
+    S_i^D                   | Delayed neutron source term
+    \Sigma_{t,i}            | Total cross-section of the energy group i
+    \nu \Sigma_{f,i'}       | Fission neutron production cross-sections of the energy group i'
+    \Sigma_{s,i' \rightarrow i} | Scattering cross-section from energy i' to energy i
+    k_{eff}                 | Multiplication factor
+    \chi_{p,i}              | Prompt emission neutrons emitted in the energy group i
+    \chi_{d,i}              | Delayed emission neutrons emitted in the energy group i
+    \lambda_k               | Decay constant of the precursor group k
+    \beta_k        | Delayed neutron fraction for the kth delayed neutron precursor group
+    \omega_{j'}             | Normalized quadrature weight associated to the direction \f$ \Omega_{j'} \f$
+    s_{i \rightarrow i'}^l  | lth Legendre coefficient of the scattering cross-section \f$ \Sigma_{s,i \rightarrow i'} \f$
+    P_l                     | lth Legendre polynomial
+    \boldsymbol{u}          | Fuel velocity
+    v_i                     | Average neutron velocity of the energy group i
+    \Omega_j                | Unit vector of the angular direction j
+\endvartable
+
+<b>Reference publications</b>
+
+<ol type="1">
+    <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+    GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294, 
+    2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
+
+    <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam multi-physics
     solver to the European Sodium Fast Reactor and verification against available codes",
     Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+</ol>
 
-    Author of this file (and associated .C or included .H files):
-    Derived by Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;> 
-    (EPFL, Switzerland)
-    from the work of Manuele Aufiero, "D EVELOPMENT OF ADVANCED SIMULATION TOOLS FOR
+\mainauthor of this file (and associated .C or included .H files):
+    Derived by Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;> (EPFL, Switzerland)
+    from the work of Manuele Aufiero, "DEVELOPMENT OF ADVANCED SIMULATION TOOLS FOR
     CIRCULATING - FUEL NUCLEAR REACTORS", PhD Dissertation, Politecnico Di Milano
 
 SourceFiles
@@ -66,7 +119,8 @@ SourceFiles
 #define SNNeutronics_H
 
 #include "neutronics.H"
-#include "XSLowMem.H"
+// #include "XSLowMem.H"
+#include "XS.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -84,7 +138,8 @@ class SNNeutronics
 protected:
 
     // Cross sections
-    XSLowMem xs_;
+    // XSLowMem xs_;
+    XS xs_;
 
     //quadrature Set
     IOdictionary quadratureSet_;
@@ -115,9 +170,12 @@ protected:
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructMechOrig_;
     const volVectorField* UOrig_;
-    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s) 
-    const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
-    const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
+    //- Total volume fraction of fluid(s) 
+    const volScalarField* alphaOrig_;
+    //- Thermal diffusivity in kg/m/s
+    const volScalarField* alphatOrig_;
+    //- Molecular viscosity in kg/m/s (== Pa*s)
+    const volScalarField* muOrig_;
 
     //- Mapped fields from TH
     volScalarField TFuel_;
@@ -135,8 +193,8 @@ protected:
     int aitkenIterNo_;
     
     //- Also mapped, but these are autoPtr as these field are not needed at all
-    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
-    //  these fields if they are actually needed
+    //- unless doing liquidFuel. Thus, avoid wasting memory by only setting 
+    //- these fields if they are actually needed
     autoPtr<volVectorField> UPtr_;
     autoPtr<volScalarField> alphaPtr_;
     autoPtr<volScalarField> alphatPtr_;

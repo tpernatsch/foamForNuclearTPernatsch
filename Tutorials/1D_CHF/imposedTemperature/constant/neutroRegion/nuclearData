@@ -11,19 +11,27 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      esfr_core__res;
+    object      nuclearData;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 fastNeutrons            true; // if true interpolates cross section with logarithmic temp for fuel (otherwise, square root)
 
 adjustDiscFactors       false;
 
 useGivenDiscFactors     false;
 
-energyGroups 1 ;
+energyGroups    1;
 
-precGroups 1 ; 
+precGroups      1;
 
-zones
- (
+states
+(
+    reference // Mandatory state
+    {
+        zones
+        ();
+    }
+);
 
- );
+// ************************************************************************* //

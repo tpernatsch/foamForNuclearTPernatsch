@@ -53,30 +53,37 @@ energyGroups    2;
 
 precGroups      6;
 
-zones
+
+states
 (
-	zone0
-	{
-		fuelFraction    1;
-		sigmaDisapp     nonuniform List<scalar> 2(5 4);
-		nuSigmaEff      nonuniform List<scalar> 2(1 3);
-		sigmaPow        nonuniform List<scalar> 2{1};
-		scatteringMatrixP0 2 2 ( ( 10 5 ) ( 0 10 ) );
-		discFactor      nonuniform List<scalar> 2{1};
-		chiPrompt       nonuniform List<scalar> 2(1 0);
-		chiDelayed      nonuniform List<scalar> 2{0.5};
-		IV              nonuniform List<scalar> 2(7.1e-08 0.0045);
-		D               nonuniform List<scalar> 2(0.1 0.04);
-		integralFlux    nonuniform List<scalar> 2{1};
-		lambda          nonuniform List<scalar> 6
+    reference // Mandatory state
+    {
+        zones
 		(
-            0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817
-        );
-		Beta            nonuniform List<scalar> 6
-		(
-            7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05
-        );
-	}
+			zone0
+			{
+				fuelFraction    1;
+				sigmaDisapp     nonuniform List<scalar> 2(5 4);
+				nuSigmaEff      nonuniform List<scalar> 2(1 3);
+				sigmaPow        nonuniform List<scalar> 2{1};
+				scatteringMatrixP0 2 2 ( ( 10 5 ) ( 0 10 ) );
+				discFactor      nonuniform List<scalar> 2{1};
+				chiPrompt       nonuniform List<scalar> 2(1 0);
+				chiDelayed      nonuniform List<scalar> 2{0.5};
+				IV              nonuniform List<scalar> 2(7.1e-08 0.0045);
+				D               nonuniform List<scalar> 2(0.1 0.04);
+				integralFlux    nonuniform List<scalar> 2{1};
+				lambda          nonuniform List<scalar> 6
+				(
+					0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817
+				);
+				Beta            nonuniform List<scalar> 6
+				(
+					7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05
+				);
+			}
+		);
+    }
 );
 
 // ************************************************************************* //

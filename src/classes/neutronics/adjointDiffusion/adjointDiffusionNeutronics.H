@@ -41,7 +41,7 @@ Class
 Description
     Derived class for adjointDiffusion neutronics.
 
-    Author of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files): 
     Equations: Jun Shi <junshi@berkeley.edu>
     Coding: Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Swizerland)
 

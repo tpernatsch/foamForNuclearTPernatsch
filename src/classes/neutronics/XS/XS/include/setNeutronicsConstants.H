@@ -1,23 +1,26 @@
 // This file sets constant values, that is, values that are not affected
 // by feedbacks or at least are assumed to not change with time during
 // the simulation.
- 
-forAll(nuSigmaEff_,energyI)
+
+Info<< "Set constant XS (1/V, chiPrompt, chiDelayed, betaTot)" << endl;
+
+forAll(nuSigmaEff_, energyI)
 {
-    forAll(entries_, zoneI)
+    Info<< "  Energy group " << energyI << endl;
+
+    forAll(referenceZones_, zoneI)
     {
         label zone = zoneI;
-
-        const word& name = entries_[zoneI].keyword();
-
-        Info << "Mesh zone: " << name  << endl;
-
+        const word& name = referenceZones_[zoneI].keyword();
         label zoneId = mesh_.cellZones().findZoneID(name);
 
-        if(zoneId == -1)
+        Info<< "    Mesh zone: " << name << endl;
+
+        if (zoneId == -1)
         {
-            Info << "Warning: mesh zone: " << name << " does not exists" << endl;
-            Info << "Ignore this warning if it is a completely withdrawn control rod" << endl;
+            Info<< "Warning: mesh zone: " << name << " does not exists" << nl
+                << "Ignore this warning if it is a completely withdrawn control rod"
+                << endl;
         }
         else
         {
@@ -26,7 +29,7 @@ forAll(nuSigmaEff_,energyI)
                 label cellIglobal = mesh_.cellZones()[zoneId][cellIlocal];
                 zone = zoneI;
 
-                //constant
+                // Constant
                 IV_[energyI][cellIglobal] = IVList_[zone][energyI];
                 chiPrompt_[energyI][cellIglobal] = chiPromptList_[zone][energyI];
                 chiDelayed_[energyI][cellIglobal] = chiDelayedList_[zone][energyI];
@@ -35,10 +38,11 @@ forAll(nuSigmaEff_,energyI)
                 fuelFraction_[cellIglobal] = fuelFractionList_[zone];
                 secondaryPowerVolumeFraction_[cellIglobal] = secondaryPowerVolumeFractionList_[zone];
                 fractionToSecondaryPower_[cellIglobal] = fractionToSecondaryPowerList_[zone];
-
             }
         }
     }
+
+    // Correct boundary conditions
     IV_[energyI].correctBoundaryConditions();
     chiPrompt_[energyI].correctBoundaryConditions();
     chiDelayed_[energyI].correctBoundaryConditions();
@@ -48,16 +52,15 @@ forAll(nuSigmaEff_,energyI)
     fractionToSecondaryPower_.correctBoundaryConditions();
 }
  
-//- Check that XSs have been specified for all regions
+// Check that XSs have been specified for all regions
 {
-    forAll(mesh_.cellZones().names(), i)
+    forAll(mesh_.cellZones().names(), cellZoneI)
     {
         bool zoneInEntries(false);
-        word zoneName(mesh_.cellZones().names()[i]);
-        forAll(entries_, j)
+        word zoneName(mesh_.cellZones().names()[cellZoneI]);
+        forAll(referenceZones_, zoneI)
         {
-            word entryName(entries_[j].keyword());
-            if (zoneName == entryName)
+            if (zoneName == referenceZones_[zoneI].keyword())
             {
                 zoneInEntries = true;
                 break;

@@ -41,17 +41,20 @@ Class
 Description
     Subclass for SP3 neutronics. 
 
-Reference publications
+<b>Reference publications</b>
 
-    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design, submitted
+<ol type="1">
+    <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+    GeN-Foam: a novel OpenFOAMÂ® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294, 
+    2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
 
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
+    <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam multi-physics
     solver to the European Sodium Fast Reactor and verification against available codes",
     Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+</ol>
 
-    Author of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files): 
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 SourceFiles
@@ -108,9 +111,12 @@ protected:
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructMechOrig_;
     const volVectorField* UOrig_;
-    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s) 
-    const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
-    const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
+    //- Total volume fraction of fluid(s) 
+    const volScalarField* alphaOrig_;
+    //- Thermal diffusivity in kg/m/s
+    const volScalarField* alphatOrig_;
+    //- Molecular viscosity in kg/m/s (== Pa*s)
+    const volScalarField* muOrig_;
 
     //- Mapped fields from TH
     volScalarField TFuel_;
@@ -121,8 +127,8 @@ protected:
     volScalarField TStructMech_;
     
     //- Also mapped, but these are autoPtr as these field are not needed at all
-    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
-    //  these fields if they are actually needed
+    //- unless doing liquidFuel. Thus, avoid wasting memory by only setting 
+    //- these fields if they are actually needed
     autoPtr<volVectorField> UPtr_;
     autoPtr<volScalarField> alphaPtr_;
     autoPtr<volScalarField> alphatPtr_;

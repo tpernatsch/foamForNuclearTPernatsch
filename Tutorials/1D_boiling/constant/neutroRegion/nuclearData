@@ -13,6 +13,8 @@ FoamFile
     class       dictionary;
     object      nuclearData;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 fastNeutrons            false; 	//- If true, interpolates cross section with 
 								//  logarithmic temp for fuel (otherwise, 
 								//  square root)
@@ -56,5 +58,13 @@ feedbackCoeffRhoCool 0;
 feedbackCoeffFastDoppler 0;
 absoluteDrivelineExpansionCoeff 0;
 
-zones
-();
+states
+(
+    reference // Mandatory state
+    {
+        zones
+        ();
+    }
+);
+
+// ************************************************************************* //

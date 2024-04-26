@@ -10,7 +10,7 @@ With regards to the modeling of the sub-scale structures, GeN-Foam allows modeli
 
 All thermal-hydraulics functionalities are handled by the class *thermalHydraulicsModel.H*, the derived classes for the various sub-solvers (see below), and a thermal-hydraulic library that can be found under */GeN-Foam/classes/thermalHydraulics/src*.
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The porous-medium approach in GeN-Foam</b>
 
 GeN-Foam was born for safety analyses and, to reduce computational footprint, its base approach is to model for instance the core as a porous medium. In a porous-medium approach, the fuel and other structures (e.g., the assembly wrappers) are modeled using sub-scale models. This means that, in each cell, we have the fluid and one or two lumped models for the sub-scale structures. The simplest structures in GeN-Foam are the passive structures. These passive structures are simply modeled as a heat capacity and they can be used for instance to model assembly wrappers or reflector structures. In essence, the fluid will interact cell-by-cell with these passive structures: they will take energy from the fluid if the temperature of the fluid is higher than that of the surface of the structure, and vice versa. A more complex example of sub-scale structure is given by the powerModels. An example of a power model is the nuclearFuelPin, which can be used to model a standard pin-type fuel. This power model is capable of getting the power density from neutronics, solving a 1-D model for heat transfer in the fuel, and giving back to the fluid the temperature at the surface of the cladding. The fluid will then be capable of calculating the heat transfer with the fuel based on the cladding surface temperature and the Nusselt number. Each cellZone can host one passive structure and one powerModel.
@@ -29,7 +29,7 @@ For the user, the derived classes translate into runtime selectable models. The 
 ## Porous-medium properties
 
 The various parameters to be used in a porous-medium simulation can be set using the *phaseProperties* dictionary. 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The *phaseProperties* dictionary</b>
 
 The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is a large dictionary that can be used to: choose the sub-solver to be used (one-phase, legacy one-phase or two-phase); set various properties of the phases (besides basic thermo-physical properties defined in the *thermophysicalProperties* dictionary); set the properties of the sub-scale structures (fuel pins, heat exchangers, etc) in the porous zones, including the possibility to assign a *powerModel* for power production (e.g., nuclear fuel, or constant power) and the *passiveProperties* of another sub-structure that interacts thermally with the fluid (for instance the wrappers in sodium fast reactors). In addition, models are available to model pumps and heat exchangers. The name of the porous zones must coincide with that of the cellZones of the fluidRegion mesh.  
@@ -215,14 +215,14 @@ N.B.2: The thermal-hydraulic class can make use of a local coordinate system, wh
 
 ## Physical properties
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The *g* dictionary</b>
 
 The *g* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows specifying the gravitational acceleration.
 </div>
 <br>
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The *thermophysicalProperties* dictionary</b>
 
 The *thermophysicalProperties* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows defining the thermo-physical properties of the coolant. When performing two-phase flow analyses, two dictionaries must be employed named*thermophysicalProperties.(name of fluid)*. The name of the two fluids is defined in the *phaseProperties* dictionary.
@@ -236,7 +236,7 @@ The *thermophysicalProperties* dictionary can be found under *constant/fluidRegi
 
 ## Turbulence properties
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The *turbulenceProperties* dictionary</b>
 
 The *turbulenceProperties* dictionary can be found under *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows defining the turbulence model to be used. 
@@ -262,7 +262,7 @@ One thing that instead specific to GeN-Foam (except for the one-phase legacy sub
 OpenFOAM provides most of the boundary conditions one may need for thermal-hydraulics models. In addition, a few boundary conditions have been included in GeN-Foam and can be found in *GeN-Foam/classes/thermalHydraulics/src/boundaryConditions*. Information on the use of each boundary condition can be found in the header files (.H). 
 
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>Setting the initial power</b>
 
 There are several ways to set the power in GeN-Foam. For the power generated in subscale structures:
@@ -282,7 +282,7 @@ NB: In two-phase simulations with liquid fuel, the powerDensity in neutronics go
 
 <br>
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>Power densities and secondary power densities, and liquid fuel</b>
 
 The spatial neutronics solvers always create a *powerDensity* and *secondaryPowerDensity* fields. By default, *secondaryPowerDensity* is set to zero and the *fuelFraction* keyword in *nuclearData* is used to translate the volume-average power density that is normally calculated by multiplying cross-sections and fluxes into the fuel-averaged power density that is needed by the thermal-hydraulic sub-solver

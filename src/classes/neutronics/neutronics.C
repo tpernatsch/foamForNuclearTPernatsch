@@ -141,9 +141,10 @@ Foam::neutronics::neutronics
         mesh.time().controlDict().lookupOrDefault("liquidFuel", false)
     )
 {
-    Info << "Initial keff = " << keff_ << endl;
-    Info << "Is eigenvalue calc : " << eigenvalueNeutronics_ << endl;
-    Info << "Is external source calc : " << externalSourceNeutronics_ << endl;
+    Info<< "Initial keff = " << keff_ << nl
+        << "Is eigenvalue calc : " << eigenvalueNeutronics_ << nl
+        << "Is external source calc : " << externalSourceNeutronics_
+        << endl;
 }
 
 // * * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * //

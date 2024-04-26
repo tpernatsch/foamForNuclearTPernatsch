@@ -1,6 +1,6 @@
 # User manual {#USERMAN}
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2bfbb; color:#05134a'>
+<div class="border-box">
 <b>Important note on how to use this manual</b>
 
 This short user manual is meant to provide the user with enough information to understand the logic and various options of GeN-Foam. However, consistent with the Doxygen philosophy, and with the objective of minimizing inconsistencies between documentation and source code, detailed usage information of non-trivial sub-solvers, behavioral models, etc., are (or will be) included directly in the header (.H) file of the corresponding classes. This manual provides links to most of these header files. As an alternative, one can search them by using the search function at the top right of the page. The links provided in the documentation will bring you to the Doxygen page of the corresponding header file. On this page, one can find the mentioned usage information under the section *Classes*. It may happen that the header file was not appropriately formatted for Doxygen at the time of its creation, in which case one may have to directly look at the .H file to find the usage information (work in progress to avoid that).
@@ -24,7 +24,7 @@ Here below are a couple of essential points that make GeN-Foam different than mo
 
 GeN-Foam employs a  multi-region approach to model different physics using different meshes. This implies that the *0*, *constant* and *system* folders of each case contain multiple folders, one for each physics. In particular, the regions *fluidRegion*, *neutroRegion* and *thermoMechanicalRegion* are employed in GeN-Foam for thermal-hydraulics, neutronics and thermal-mechanics. There is no requirement for the three meshes to occupy the same region of space. Consistent mapping of fields is performed and a reference value is given to a field if no correspondence is found in the mesh where its value is being projected from.
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The meshes</b>
 
 A dummy mesh must always be present in all physics (region) directories, even if not solved for. The EMPTY case is already provided with minimal dummy meshes and consistent fields in the “0” folder. Be careful! In the case of parallel calculations, all your meshes will have to have a number of cells equal or higher than the number of domains you are decomposing your geometry into. In case you need more cells than what is available in the EMPTY case, you can run a `refineMesh`.
