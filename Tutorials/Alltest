@@ -65,6 +65,13 @@ echo "# GeN-Foam regression test suite\n" > $resFile
 echo "Regression test of `date +"%d-%b-%Y - %H:%M:%S"`  " >> $resFile
 echo "Tutorials successfully completed: 0/0  [![regressionTest]($badgePending)]()  " >> $resFile
 
+summaryTable="## Summary\n\n| Tutorial | Status | Time | Memory usage [Gb] |\n|:---------|:------:|:----:|:-----------------:|"
+
+echo "\n$summaryTable" >> $resFile
+for tutorialName in $tutorials
+do
+    echo "| $tutorialName | [![regressionTest]($badgePending)]() |" >> $resFile
+done
 
 # Run all tutorials and check for clean finish
 for tutorialName in $tutorials
@@ -75,21 +82,28 @@ do
     echo "\n--------------------------------------------------------------------------------\n" >> $resFile
     echo "## $tutorialName\n" >> $resFile
 
-    # Run the tutorial
+    # Run the tutorial with time/memory consumption info
     cd $tutorialName
     ./Allclean
-    ./Alltest
+    /usr/bin/time -v -o $rootPath/log.time ./Alltest
     result=$? # Get the exit code from Alltest (0: success; 1: failed)
     cd $rootPath
 
     # Extract results
     cat $tutorialName/test.out >> $resFile
 
+    memoryUsage=$(grep "Maximum resident set size (kbytes):" $rootPath/log.time | cut -f6 -d' ')
+    memoryUsageGb=$(echo "scale=3; $memoryUsage / (1024 * 1024)" | bc)
+    timeUsage=$(grep "Elapsed (wall clock) time (h:mm:ss or m:ss):" $rootPath/log.time | cut -f8 -d' ')
+
     # Update number of successful tutotial run
     oldScore="$nbTutoSuccess/$nbTutoTotal"
     if [ $result -eq 0 ]
     then
         nbTutoSuccess=$(expr $nbTutoSuccess + 1)
+        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[regressionTest\]($badgeSuccess)\]() | $timeUsage | $memoryUsageGb |," $resFile
+    else
+        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[regressionTest\]($badgeFailed)\]() | $timeUsage | $memoryUsageGb |," $resFile
     fi
     nbTutoTotal=$(expr $nbTutoTotal + 1)
 

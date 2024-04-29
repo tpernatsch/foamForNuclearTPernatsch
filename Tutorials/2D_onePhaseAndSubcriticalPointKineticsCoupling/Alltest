@@ -39,14 +39,14 @@ isConverge transientRampReactivity  "Transient ramp reactivity"
 # --- Recover the results
 extract()
 {
+    export LC_NUMERIC="en_US.UTF-8"
     value=$(
-        awk '{ print $1+0 }' <<<$(
-            grep -e "$1" ./$2/log.GeN-Foam |
-            tail -1 |
-            egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?." 
-        )
+        grep -e "$1" ./$2/log.GeN-Foam |
+        tail -1 |
+        egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?." |
+        cut -d' ' -f1
     )
-    echo $value
+    printf "%f" "$value"
 }
 
 totalPowerRampSource=$(extract "totalPower" transientRampSource)

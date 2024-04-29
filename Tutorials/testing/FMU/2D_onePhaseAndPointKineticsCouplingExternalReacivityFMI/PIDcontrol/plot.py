@@ -118,6 +118,7 @@ for filename, linestyle in zip(sys.argv[1:], linestyles):
     # Plot
     records["powers"].plot(times)
     records["totRhos"].plot(times)
+    records["extRhos"].plot(times)
     records["extRhoFMUs"].plot(times)
     records["fuelRhos"].plot(times)
     records["TFuels"].plot(times)
@@ -149,7 +150,7 @@ extRhoFMUs = listModifier(data['pid.y'], scale=1e5)
 axPower.plot(time, powerRamp, label='Command')
 
 axPower.set_xlim(0)
-axPower.set_ylim((9.8e6, 11.3e6))
+# axPower.set_ylim((9.8e6, 11.3e6))
 
 # axReactivity.plot(time, extRhoFMUs, label="PID output")
 

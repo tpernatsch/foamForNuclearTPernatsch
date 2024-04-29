@@ -10,7 +10,7 @@ forAll(flux_,energyI)
     Dalbedo_ = D[energyI];
     fluxStarAlbedo_ *= 0.0;
     #include "calcScatteringSource.H"
-    neutroSource_ -= nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_) * (1-externalSourceNeutronics_);
+    neutroSource_ -= nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_); // * (1-externalSourceNeutronics_);
 
     fvMatrix<scalar> neutroEq
     (
@@ -30,6 +30,6 @@ forAll(flux_,energyI)
 
     flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
     flux_[energyI].correctBoundaryConditions();
-    neutroSource_ += nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_) * (1-externalSourceNeutronics_);
+    neutroSource_ += nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_); // * (1-externalSourceNeutronics_);
 
 }

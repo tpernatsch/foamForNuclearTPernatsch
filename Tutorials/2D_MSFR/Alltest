@@ -62,10 +62,10 @@ isInRange()
     fi
 }
 
-error=0.0001
-echo "Test keff and power  " | tee -a $resFile
-if  [ $(isInRange $expectedKeff         $keff       $error) ] &&
-    [ $(isInRange $expectedTotalPower   $totalPower $error) ]
+error=0.00001
+echo "Test keff and power with $error relative error  " | tee -a $resFile
+if  [ $(isInRange $expectedKeff         $keff       $error) -eq 0 ] &&
+    [ $(isInRange $expectedTotalPower   $totalPower $error) -eq 0 ]
 then
     echo "Perfect match:" | tee -a $resFile
     echo "|             | Simulated | Expected |" | tee -a $resFile

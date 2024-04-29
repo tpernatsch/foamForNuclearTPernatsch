@@ -59,6 +59,8 @@ bool Foam::customPimpleControl::read()
         pimpleDict.lookupOrDefault("minNOuterCorrectors", 1);
     corrPISOUntilConvergence_ = 
         pimpleDict.lookupOrDefault("correctUntilConvergence", false);
+    isFMIcoupledCorrection_ = 
+        pimpleDict.lookupOrDefault("fmiCoupledCorrector", false);
 
     return true;
 }
@@ -248,17 +250,29 @@ Foam::Pair<Foam::scalar> Foam::customPimpleControl::firstPISOPrevPIMPLEResidual
 Foam::customPimpleControl::customPimpleControl
 (
     fvMesh& mesh,
+    Time& runTime,
     const word& dictName,
     const bool verbose
 )
 :
     pimpleControl(mesh, dictName, verbose),
+    runTime_(runTime),
     minNCorrPIMPLE_(1),
     corrPISOUntilConvergence_(false),
     nCorrPISOInPrevPIMPLE_(0),
     nCorrPISOInPrevPrevPIMPLE_(0),
     stopLoop_(false)
 {
+    #ifdef isCommDataLayerIncluded
+    commDataLayer& data = commDataLayer::New(runTime_);
+    data.storeObj
+    (
+        1.0,
+        "isPressureCorrectorConverged",
+        commDataLayer::causality::out
+    );
+    #endif
+
     read();
 }
 

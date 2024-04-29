@@ -68,7 +68,7 @@ isInRange()
 }
 
 error=0.001
-echo "Max temperatures (avg min max) in trisos" | tee -a $resFile
+echo "Max temperatures (avg min max) in trisos  " | tee -a $resFile
 if  [ $(isInRange $TfmaxAvg $expectedTfmaxAvg $error) -eq 0 ] &&
     [ $(isInRange $TfmaxMin $expectedTfmaxMin $error) -eq 0 ] &&
     [ $(isInRange $TfmaxMax $expectedTfmaxMax $error) -eq 0 ]

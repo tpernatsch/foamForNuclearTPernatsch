@@ -146,7 +146,7 @@ forAll(states_, stateI)
         // Look for the zone index in the reference zone list
         // The perturbed state zones list may have different length compared to
         // the reference zones list
-        label zoneRefI(zoneI);
+        label zoneRefI(-1);
         forAll(referenceZones_, zoneII)
         {
             if (referenceZones_[zoneII].keyword() == nameZone)
@@ -156,7 +156,18 @@ forAll(states_, stateI)
             }
         }
 
-        Info<< "   zone name: " << nameZone << endl;
+        if (zoneRefI == -1)
+        {
+            Warning << nl
+                << "Zone name " << nameZone << " not found in reference state." << nl
+                << "No perturbation will be applied for this zone." << nl
+                << "Include this zone name in the 'reference' state or remove it" << nl
+                << "from " << nameState << " state to remove this message" << nl
+                << endl;
+            continue;
+        }
+
+        Info<< "    zone name: " << nameZone << endl;
 
         const scalarField DList("D", dict, energyGroups_);
         const scalarField nuSigmaEffList("nuSigmaEff", dict, energyGroups_);
@@ -234,7 +245,8 @@ forAll(CRentries_, CRzoneI)
 
     if (FOLLOWERzoneId == -1)
     {
-        Info<< "Control rod with follower: " << CRFollowerName_[CRzoneI]
+        Warning
+            << "Control rod with follower: " << CRFollowerName_[CRzoneI]
             << " does not exists"
             << endl;
     }

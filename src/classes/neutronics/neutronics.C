@@ -139,6 +139,23 @@ Foam::neutronics::neutronics
     liquidFuel_
     (
         mesh.time().controlDict().lookupOrDefault("liquidFuel", false)
+    ),
+    externalSource_
+    (
+        IOobject
+        (
+            "externalSource",
+            mesh.time().constant(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::NO_WRITE
+        )
+    ),
+    externalSourceModulationTimeProfile_
+    (
+        externalSource_,
+        "externalSourceModulationTimeProfile",
+        mesh.time()
     )
 {
     Info<< "Initial keff = " << keff_ << nl

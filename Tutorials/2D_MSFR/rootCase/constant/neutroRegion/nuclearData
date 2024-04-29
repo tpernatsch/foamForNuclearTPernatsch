@@ -36,6 +36,7 @@ states
     reference
     {
         Tfuel   900;
+        rhoCool 4125;
 
         zones
         (

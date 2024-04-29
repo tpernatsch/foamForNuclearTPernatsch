@@ -14,9 +14,12 @@ if (solveFM or solveE)
 }
 
 //- Solve fluid-mechanics
-if (solveFM) 
+if (solveFM) // add isNewStep != 1 && FMUSimulatorLabel != -1 ?
 {
+    // do { // to test, need a pressure corection (p,FMI,p,FMI,p,FMI,v,p,FMi,...)
     thermalHydraulics.correctFluidMechanics(FMResidual);
+    // }
+    // while(isNewStep != 1 && FMUSimulatorLabel != -1);
     if (!solveE and !solveN and !solveTM)
         Info << endl;
 }
@@ -26,7 +29,7 @@ if (!multiphysics.finalIter())
 {
     if (solveE) 
     {
-        if (solveN)//update power denisty only if neutronics is solved for
+        if (solveN) // update power density only if neutronics is solved for
         {
             thermalHydraulics.interpolateCouplingFields
             (
@@ -43,9 +46,13 @@ if (!multiphysics.finalIter())
 //- Solve energy-neutronics-thermomechanics coupling on last outer iteration
 else if (solveE or solveN or solveTM)
 {
-    scalar couplingResidual = 0.0;
+    scalar couplingResidual = 1e39; // 0.0;
     label couplingIter = 0;
-    do
+    while
+    (
+        multiphysics.loopEnergyNeutronicsThermomechanics(couplingResidual, couplingIter)
+    )
+    // do
     {
         Info << "Coupling iteration " << couplingIter << endl;
      
@@ -57,7 +64,7 @@ else if (solveE or solveN or solveTM)
 
         if (solveE)
         {
-            if (solveN)//update power denisty only if neutronics is solved for
+            if (solveN) // update power density only if neutronics is solved for
             {
                 thermalHydraulics.interpolateCouplingFields
                 (
@@ -92,10 +99,16 @@ else if (solveE or solveN or solveTM)
         couplingIter++;
         Info << endl;
     }   
-    while
+    /*while
+    (
+        multiphysics.loopEnergyNeutronicsThermomechanics(couplingResidual, couplingIter)
+    );*/
+    /*
         ( 
             (couplingResidual > multiphysics.timeStepResidual())
         &&  (couplingIter < multiphysics.maxTimeStepIterations()) 
         &&  (multiphysics.tightlyCoupled())
+        // add FMI loop here
         );
+    */
 }

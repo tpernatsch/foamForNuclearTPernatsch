@@ -86,6 +86,17 @@ Description
 #include "neutronics.H"
 #include "thermoMechanics.H"
 
+#if defined __has_include
+#  if __has_include(<commDataLayer.H>) 
+#    include <commDataLayer.H>
+#    define isCommDataLayerIncluded
+#  endif
+#endif
+
+#ifdef isCommDataLayerIncluded
+#include "commDataLayer.H"
+#endif
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -110,6 +121,8 @@ int main(int argc, char *argv[])
 
     #include "setDeltaT.H"
 
+    
+
     while (runTime.run())
     {
         runTime++;
@@ -118,18 +131,45 @@ int main(int argc, char *argv[])
         
         Info << "Time = " << runTime.timeName() << nl << endl;
 
+        /*
+        #ifdef isCommDataLayerIncluded
+        commDataLayer& data = commDataLayer::New(runTime);
+
+        label isNewStep = FMUSimulatorLabel != -1
+            ? data.getObj<label>("new_step", commDataLayer::causality::in)
+            : 1;
+
+        do // FMI loop, move everything in multiphysics.loop() (first step)
+        {
+        #endif
+        */
+
         while (multiphysics.loop())
         {
             #include "solve.H"
         }
+        
+        /*
+        #ifdef isCommDataLayerIncluded
+            if (isNewStep != 1 && FMUSimulatorLabel != -1)
+            {
+                runTime.functionObjects()[FMUSimulatorLabel].execute();
+
+                isNewStep = data.getObj<label>("new_step", commDataLayer::causality::in);
+            }
+        } 
+        while (isNewStep != 1 && FMUSimulatorLabel != -1);
+        #endif
+        */
 
         runTime.write();
 
         #include "writeOutput.H"
 
-        Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-        << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-        << nl << endl;
+        // Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+        // << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+        // << nl << endl;
+        runTime.printExecutionTime(Info);
     }
 
     Info<< "End\n" << endl;

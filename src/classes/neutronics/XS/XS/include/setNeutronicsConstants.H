@@ -2,7 +2,8 @@
 // by feedbacks or at least are assumed to not change with time during
 // the simulation.
 
-Info<< "Set constant XS (1/V, chiPrompt, chiDelayed, betaTot)" << endl;
+Info<< "Set constant nuclear data (1/V, chiPrompt, chiDelayed, betaTot)"
+    << endl;
 
 forAll(nuSigmaEff_, energyI)
 {
@@ -18,7 +19,8 @@ forAll(nuSigmaEff_, energyI)
 
         if (zoneId == -1)
         {
-            Info<< "Warning: mesh zone: " << name << " does not exists" << nl
+            Warning
+                << "mesh zone: " << name << " does not exists" << nl
                 << "Ignore this warning if it is a completely withdrawn control rod"
                 << endl;
         }

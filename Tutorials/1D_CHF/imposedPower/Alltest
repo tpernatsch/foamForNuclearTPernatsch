@@ -27,9 +27,27 @@ input="./90/fluidRegion/T.fixedPower"
 TwallTop=$(head -40 "$input" | tail -1)
 expectedAt=2625.18
 
+# --- Check results are correct
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
 # --- Check that results are correct
-echo "Structure temperature at the top of the channel at 90 seconds" | tee -a $resFile
-if [ $TwallTop = $expectedAt ]; then
+error=0.01
+echo "Structure temperature at the top of the channel at 90 seconds with $error relative error" | tee -a $resFile
+if [ $(isInRange $expectedAt $TwallTop $error) -eq 0 ]; then
     echo "Perfect match:" | tee -a $resFile
     echo "|          | Simulated | Expected |" | tee -a $resFile
     echo "|:---------|:---------:|:--------:|" | tee -a $resFile

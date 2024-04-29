@@ -35,6 +35,7 @@ echo "Make GeN-Foam completed\n"
 echo "Make tests"
 
 wmake $1 ./tests/hydrogenThermophysicalProperties
+wmake $1 ./tests/radialBasisFunctions
 
 echo "Make tests completed\n"
 

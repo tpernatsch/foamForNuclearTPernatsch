@@ -1,9 +1,15 @@
 EXE_INC = \
+    -I../../src/classes/common/lnInclude \
     -I../../src/classes/thermalHydraulics/src/lnInclude \
-    -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude
+    -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lCommon \
     -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
     -lspecie \
-    -lfvOptions
+    -lfvOptions \
+
+ifneq (,$(findstring FMU4FOAM,$(LIB_FMU4FOAM)))
+    EXE_INC += -I$(LIB_FMU4FOAM)/ECI4FOAM/src/externalComm/lnInclude
+    EXE_LIBS += -lexternalComm
+endif

@@ -23,10 +23,12 @@ omc FMUGen.mos
 ./Allclean
 
 runApplication GeN-Foam
+# or
+GeN-Foam | tee log.GeN-Foam | grep "Time ="
 ```
 
 
-## Results vizualisation
+## Results visualization
 
 ```bash
 python3 plot.py log.GeN-Foam

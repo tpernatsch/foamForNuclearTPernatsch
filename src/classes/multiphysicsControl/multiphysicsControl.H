@@ -71,7 +71,7 @@ class multiphysicsControl
 protected :
 
     //- Ref to runTime
-    const Time& runTime_;
+    // Time& runTime_; // remove the const to be able to execute functionObjects
 
     //- Ref to thermalHydraulics mesh
     fvMesh& thermalHydraulicMesh_;
@@ -103,6 +103,9 @@ protected :
     //- liquidFuel flag (true e.g. for MSRs)
     bool liquidFuel_;
 
+    //-
+    bool isEnergyNeutroThemMechFMICorrection_;
+
 public:
 
     TypeName("multiphysicsControl");
@@ -111,7 +114,7 @@ public:
 
         multiphysicsControl
         (
-            const Time& runTime,
+            Time& runTime,
             fvMesh& THMesh,
             fvMesh& NMesh,
             fvMesh& TMMesh
@@ -127,9 +130,16 @@ public:
         //  in fluidRegion
         virtual bool read();
 
-        //- Ovveride PIMPLE loop function to modify some Infos (really, 
+        //- Overide PIMPLE loop function to modify some Infos (really, 
         //  Stefan?)
         virtual bool loop();
+
+        //- Loop for energy-neutronics-thermomechanics coupling
+        bool loopEnergyNeutronicsThermomechanics
+        (
+            scalar couplingResidual, 
+            scalar couplingIter
+        );
 
         //- Access
 

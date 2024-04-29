@@ -3,59 +3,100 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sys
 
-
+# Usage
 if (len(sys.argv) < 2):
-    print("Usage: python plot.py log.GeN-Foam")
+    print(f"Usage: python3 {sys.argv[0]} log.GeN-Foam")
     sys.exit(1)
 
+filnames = sys.argv[1:]
 
-for filename in sys.argv[1:]:
+
+def normalizedList(l: list) -> list:
+    first = l[0]
+    return(
+        [(e-first)/first for e in l]
+    )
+
+data = pd.read_csv("momentumSourceTest.csv")
+
+timeModelica = data["time"]
+momentumSourceModelica = data["model.root.system1.momentumModelica"]
+powerModelica = data["model.root.system1.power"]
+
+# desiredMomentumSource = data['model.root.system1.ramp.y']
+# desiredPower = data["model.root.system1.pi.SP"]
+# desiredPowerScaled = data["model.root.system1.pi.SPs"]
+# powerScaled = data["model.root.system1.pi.PVs"]
+# momentumSourceScaled = data["model.root.system1.pi.CSs"]
+
+
+
+# plt.plot(time, powerScaled, label='normalized power variation')
+# plt.plot(time, desiredPowerScaled, '--', label='normalized desired power')
+fig, (axMomentum, axPower, axTemperature) = plt.subplots(nrows=3, figsize=(8, 6))
+
+linestyles = ['-', '--', '-.', ':']
+
+for filename, ls in zip(filnames, linestyles):
+    timesLog, mFlowRates, TBulkCoreInlets, TBulkCoreOutlets, totalPowers = [], [], [], [], []
+
     with open(filename, "r") as file:
-        timesLog, mFlowRates = [], []
-        time = 0
-        
+        print(f"Analyze {filename} ...")
+
         for line in file.readlines():
             if "Time =" in line and not "ExecutionTime" in line:
                 time = float(line.split()[2])
+            if "totalPower = " in line:
+                totalPower = float(line.split()[2])
+            if "faceZone TcoreInlet TBulk" in line:
+                TBulkCoreInlet = float(line.split()[4])
+            if "faceZone TcoreOutlet TBulk" in line:
+                TBulkCoreOutlet = float(line.split()[4])
             if "faceZone massFlowSurface_z1 massFlow" in line:
                 mFlowRate = float(line.split()[4])
                 
                 mFlowRates.append(mFlowRate)
+                TBulkCoreInlets.append(TBulkCoreInlet)
+                TBulkCoreOutlets.append(TBulkCoreOutlet)
+                totalPowers.append(totalPower)
                 timesLog.append(time)
             
         for i in range(len(timesLog)):
             timesLog[i] = timesLog[i] - timesLog[0]
 
+        del totalPowers[0]
         del mFlowRates[0]
+        del TBulkCoreInlets[0]
+        del TBulkCoreOutlets[0]
         del timesLog[0]
 
 
-mFlowRates = np.array(mFlowRates)
-mFlowRatesScaled = (mFlowRates - mFlowRates[0])/mFlowRates[0]
+    mFlowRatesScaled = normalizedList(mFlowRates)
+    totalPowersScaled = normalizedList(totalPowers)
 
 
-data = pd.read_csv("momentumSourceTest.csv")
+    # axMomentum.plot(timeModelica, momentumSourceModelica, label='Modelica')
+    axMomentum.plot(timesLog, mFlowRatesScaled,  ls=ls, label='GeN-Foam')
+    # plt.plot(time, desiredMomentumSource, label='normalized momentumSource variation')
 
-time = data["time"]
-momentumSource = data["model.root.system1.momentumModelica"]
-# desiredMomentumSource = data['model.root.system1.ramp.y']
-power = data["model.root.system1.power"]
-# desiredPower = data["model.root.system1.pi.SP"]
+    axMomentum.set_xlabel("Time [s]")
+    axMomentum.set_ylabel("Normalized variation\nmomentum source")
+    axMomentum.legend()
 
-# desiredPowerScaled = data["model.root.system1.pi.SPs"]
-# powerScaled = data["model.root.system1.pi.PVs"]
+    # axPower.plot(timeModelica, powerModelica, label="Modelica")
+    axPower.plot(timesLog, totalPowersScaled, ls=ls, label="GeN-Foam")
+    
+    axPower.set_xlabel("Time [s]")
+    axPower.set_ylabel("Normalized variation\nmomentum source")
+    axPower.legend()
 
-# momentumSourceScaled = data["model.root.system1.pi.CSs"]
+    axTemperature.plot(timesLog, TBulkCoreInlets, ls=ls, label="GeN-Foam inlet")
+    axTemperature.plot(timesLog, TBulkCoreOutlets, ls=ls, label="GeN-Foam outlet")
+    
+    axTemperature.set_xlabel("Time [s]")
+    axTemperature.set_ylabel("Temperature [K]")
+    axTemperature.legend()
 
-
-# plt.plot(time, powerScaled, label='normalized power variation')
-# plt.plot(time, desiredPowerScaled, '--', label='normalized desired power')
-#plt.plot(time, momentumSourceScaled, label='normalized momentumSource variation')
-plt.plot(timesLog, mFlowRatesScaled, label='normalized momentumSource variation')
-# plt.plot(time, desiredMomentumSource, label='normalized momentumSource variation')
-
-plt.xlabel("Time [s]")
-plt.ylabel("Normalized variation")
-plt.legend()
+fig.tight_layout()
 
 plt.show()

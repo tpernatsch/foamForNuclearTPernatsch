@@ -13,7 +13,7 @@ FoamFile
     class       dictionary;
     object      nuclearData;
 }
-/ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 energyGroups    24;
 

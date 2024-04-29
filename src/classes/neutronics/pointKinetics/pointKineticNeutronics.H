@@ -72,7 +72,6 @@ Description
             + \rho_{GEM}
             + \rho_{boron}
             + \rho_{ext}
-            + \rho_{ext}^{FMU}
     \f]
 
 where:
@@ -206,7 +205,6 @@ SourceFiles
 #define pointKineticNeutronics_H
 
 #include "neutronics.H"
-#include "Function1.H"
 #include "interpolationTable.H"
 #include "timeProfile.H"
 
@@ -238,17 +236,15 @@ protected:
     scalar decayPower_;
 
     //- Optional decay power
-    autoPtr<Function1<scalar>> decayPowerPtr_;
+    // autoPtr<Function1<scalar>> decayPowerPtr_;
+    timeProfile decayPowerTimeProfile_;
 
     //- Time offset for the calcuation of the decayPower based on the
     //  provided Function1, if any
-    scalar decayPowerStartTime_;
+    // scalar decayPowerStartTime_;
 
     //- Due to whatever the user might please
     timeProfile externalReactivityTimeProfile_;
-
-    //- External source file
-    IOdictionary externalSource_;
 
     //- External source mode
     //  - transient: user input power variation by modulation
@@ -275,9 +271,6 @@ protected:
 
     // G_0 = energyPerFission*nuSource/(nuFission*beamEnergy)
     scalar intrinsicGain_;
-
-    //- Source modulation time profile
-    timeProfile externalSourceModulationTimeProfile_;
 
     //- Source modulation value set by externalSourceModulationTimeProfile_ (m_I)
     scalar externalSourceModulation_;

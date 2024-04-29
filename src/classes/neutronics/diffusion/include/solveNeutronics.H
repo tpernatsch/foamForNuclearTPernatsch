@@ -42,7 +42,7 @@ if
 #include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
 
-if(!eigenvalueNeutronics_ && couplingIter == 0 && !externalSourceNeutronics_)
+if(!eigenvalueNeutronics_ && couplingIter == 0) // && !externalSourceNeutronics_)
 {
 
     if(integralPredictor)
@@ -86,7 +86,7 @@ while
         (neutroResidual > neutronIterationResidual)
     &&  (neutroIter < maxNeutronIterations)
     && !eigenvalueNeutronics_
-    && !externalSourceNeutronics_
+    // && !externalSourceNeutronics_
 );
 
 powerDensity_*=0.0;
@@ -125,6 +125,12 @@ if (eigenvalueNeutronics_)
 
     #include "normFluxes.H"
     xs_.adjustDiscFactors(fluxStar_);
+}
+
+if (externalSourceNeutronics_)
+{
+    //- Output the integrated power in reactor state
+    reactorState_.set("pTarget", pTot);
 }
 
 residual = max(residual,neutroResidual);

@@ -51,7 +51,7 @@ TatMaxAlphaVap=$(head -307 "./20/fluidRegion/T.fixedPower" | tail -1)
 refT=625.826
 
 # --- Check that results are correct
-echo "alpha.vapour at the end of the channel" | tee -a $resFile
+echo "alpha.vapour at the end of the channel  " | tee -a $resFile
 if [ $maxAlphaVap = $refAlphaVap ] && [ $TatMaxAlphaVap = $refT ]; then
     echo "Perfect match:" | tee -a $resFile
     echo "|                       | Simulated | Expected |" | tee -a $resFile

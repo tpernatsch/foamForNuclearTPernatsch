@@ -444,6 +444,9 @@ public:
         {
             return sigmaFromTo_;
         }
+
+        //- Create sigmaFromTo field on the fly to avoid storing all of them in
+        //- memory (N_moment * N_energy * N_energy)
         Foam::tmp<Foam::volScalarField> sigmaFromTo
         (
             label momentI, 
@@ -456,6 +459,7 @@ public:
             const volVectorField& Disp,
             const volScalarField& TStructMech    
         );
+        
         const PtrList<volScalarField> chiPrompt() const
         {
             return chiPrompt_;

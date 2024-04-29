@@ -105,7 +105,7 @@ states
 	reference
 	{
         rhoCool     0.917; // kg/m3
-        TfuelRef    2222; // K
+        Tfuel       2222; // K
         // axExp       0;
 
 		zones
@@ -278,6 +278,7 @@ states
                 integralFlux       nonuniform List<scalar> 2 (3.413868e-02 9.415320e-02);
             }
 
+            /*
             coreSupport  // OpenMC: 
             {
                 fuelFraction       0.000000e+00;
@@ -317,13 +318,13 @@ states
                 discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
                 integralFlux       nonuniform List<scalar> 2 (2.019423e-03 3.064419e-03);
             }
+            */
         );
     }
 
     TfuelPerturb
     {
-
-        TfuelPerturbed 	2444.2; // K
+        Tfuel 	    2444.2; // K
 
         zones
         (

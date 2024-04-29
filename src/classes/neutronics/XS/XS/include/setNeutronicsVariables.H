@@ -6,13 +6,14 @@ forAll(CRentries_, CRzoneI)
 
     if (FOLLOWERzoneId == -1)
     {
-        Info<< "Control rod with follower: " << CRFollowerName_[CRzoneI]
+        Warning
+            << "Control rod with follower: " << CRFollowerName_[CRzoneI]
             << " does not exists"
             << endl;
     }
 
-    scalar cellHeight = -100.0 ;
-    scalar maxFollowerHeight = cellHeight ;
+    scalar cellHeight(-100.0);
+    scalar maxFollowerHeight(cellHeight);
 
     volScalarField centersVSF(mesh_.C() & vector(0, 0, 1));
 
@@ -76,7 +77,7 @@ sqrtT_ = pow(Tfuel, 0.5);
 
 forAll(nuSigmaEff_, energyI)
 {
-    bool isParametrize = true;
+    bool isParametrize(true);
     forAll(doNotParametrize_, groupI)
     {
         if (energyI == doNotParametrize_[groupI])
@@ -96,7 +97,8 @@ forAll(nuSigmaEff_, energyI)
 
         if (zoneId == -1)
         {
-            Info<< "WARNING! Mesh zone " << name << " does not exists" << nl
+            Warning
+                << "Mesh zone " << name << " does not exists" << nl
                 << "Ignore this warning if it is a completely withdrawn control rod"
                 << endl;
 

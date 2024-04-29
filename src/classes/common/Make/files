@@ -1,8 +1,12 @@
 InterpolateTable/InterpolateTables.C
 
-timeProfile/timeProfile.C
+latticeMap/latticeMap.C
+
+listOperation/listConversion.C
 
 radialBasisFunctionInterpolation/radialBasisFunctionInterpolation.C
+
+timeProfile/timeProfile.C
 
 mergeOrSplitBaffles/mergeOrSplitBaffles.C
 

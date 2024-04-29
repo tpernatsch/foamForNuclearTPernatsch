@@ -48,10 +48,19 @@ structureProperties
 
         powerModel
         {
-            type            fixedTemperatureFMU;
-            temperatureNameFromFMU  temperatureCoupled;
+            // type            fixedTemperatureFMU;
+            // temperatureNameFromFMU  temperatureCoupled;
+            // volumetricArea  450;
+            // T               850;
+
+            type            fixedTemperature;
             volumetricArea  450;
-            T               850;
+            temperatureTimeProfile
+            {
+                type            fmi;
+                nameFromFMU     temperatureCoupled;
+                initialValue    850;
+            }
         }
     }
 
@@ -61,12 +70,19 @@ structureProperties
         Dh                  1;
 
         momentumSource     (0 0 12900);
-        pumpMultiplierNameFromFMU   momentumSourceCoupled;
+        // pumpMultiplierNameFromFMU   momentumSourceCoupled; // deprecated
         // pumpDirection      (0 0 1);
         // momentumSourceInit   12900;
-        
 
-      /*  momentumSourceTimeProfile
+        momentumSourceTimeProfile
+        {
+            type            fmi;
+            nameFromFMU     momentumSourceCoupled;
+            initialValue    1.0;
+        }
+        
+        /*
+        momentumSourceTimeProfile
         {
             type                            table;
 

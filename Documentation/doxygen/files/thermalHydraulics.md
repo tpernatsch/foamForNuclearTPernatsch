@@ -144,6 +144,7 @@ One can find detailed, commented examples in the tutorials
 	<LI> Fixed (possibly time-dependent) power (see *fixedPower.H* and the tutorial *1D_CHF/imposedPower*)
 	<LI> Fixed (possibly time-dependent) temperature (see *fixedTemperature.H* and the tutorial *1D_CHF/imposedTemperature*)
 	<LI> Heated pin, typically used for electrically heated pins (see *heatedPin.H* and the tutorial *2D_KNS37-L22*)
+	<LI> Nuclear fuel from FMU(s) (see *nuclearFuelFMU.H*)
 	<LI> Nuclear fuel pin (see *nuclearFuelPin.H* and the tutorials *3D_SmallESFR* and *2D_FFTF*)
 	<LI> Lumped-parameter nuclear structure (see *lumpedNuclearStructure.H*) and the tutorial *1D_thermalMSR_pointKinetics*
 	<LI> Steady-state model purpose made for pebble bed reactors (see *nuclearSteadyStatePebble.H*) and the tutorial *3D_gFHR*
