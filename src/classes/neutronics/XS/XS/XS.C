@@ -322,6 +322,11 @@ Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
     const volScalarField& TStructMech  
 ) 
 {
+    if (!isLowMemory_)
+    {
+        return(sigmaFromTo_[momentI][energyJ][energyI]);
+    }
+
     tmp<volScalarField> tsigmaFromTo
     (
         new volScalarField

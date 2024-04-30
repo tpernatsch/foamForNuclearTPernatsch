@@ -60,8 +60,8 @@ Description
 
 The basis function form used is linear
 \f[
-    \phi(r_i) = | r | \quad \quad
-    r = \| \textbf{x} - \textbf{c}_i \|
+    \phi(\| \textbf{x} - \textbf{c}_i \|) = \| \textbf{x} - \textbf{c}_i \| \quad
+    (\phi(r) = | r |)
 \f]
 
 The weights \f$ w_i \f$ and \f$ v_j \f$ are determined such that the function
