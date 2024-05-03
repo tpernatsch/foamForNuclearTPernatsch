@@ -36,6 +36,7 @@ LIB_LIBS = \
     -lfvOptions \
     -lsampling \
     -lsurfMesh \
+    -lthermoTools \
     -lmeshTools \
 
 ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))
