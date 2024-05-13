@@ -1,35 +1,35 @@
 # GeN-Foam regression test suite
 
-Regression test of 25-avril-2024 - 16:33:36  
-Tutorials successfully completed: 23/23  [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]()  
+Regression test of 12-May-2024 - 13:14:11  
+Tutorials successfully completed: 20/23  [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]()  
 
 ## Summary
 
 | Tutorial | Status | Time | Memory usage [Gb] |
 |:---------|:------:|:-:|:-:|
-| 1D_boiling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 2:47.02 | .083 |
-| 1D_CHF/imposedPower | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 25:50.65 | .083 |
-| 1D_CHF/imposedTemperature | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 4:38.41 | .083 |
-| 1D_HX/onePhase | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:11.34 | .090 |
-| 1D_HX/twoPhase | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:32.96 | .092 |
-| 1D_MSR_pointKinetics | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 2:45.04 | .091 |
-| 1D_PSBT_SC/Phase_Ex1_12223 | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:14.90 | .084 |
-| 1D_PSBT_SC/PhaseII_Ex1_01_5215 | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 2:10.48 | .092 |
-| 1D_PSBT_SC/PhaseII_Ex2_04_6770 | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:32:38 | .088 |
-| 1D_thermalMSR_pointKinetics | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:19.75 | .090 |
-| 2D_cavityBoussinesq | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:58.03 | .085 |
-| 2D_externalSourceDiffusion | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:16.68 | .090 |
-| 2D_FFTF | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 5:23:56 | .277 |
-| 2D_fullCoupling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:15.13 | .085 |
-| 2D_KNS37-L22 | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 30:59.86 | .095 |
-| 2D_MSFR | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 13:49.36 | .200 |
-| 2D_onePhaseAndPointKineticsCoupling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:48.98 | .088 |
-| 2D_onePhaseAndSubcriticalPointKineticsCoupling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:32.33 | .087 |
-| 2D_voidMotionNoPhaseChange | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:56.78 | .088 |
-| 3D_gFHR | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 17:17.92 | .894 |
-| 3D_NTPfuelAssembly | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 2:03:58 | .101 |
-| 3D_SmallESFR | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 3:16.93 | .138 |
-| Godiva_SN | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:10:15 | 1.061 |
+| 1D_boiling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 1:26.40 | .138 |
+| 1D_CHF/imposedPower | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 14:08.26 | .137 |
+| 1D_CHF/imposedTemperature | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 2:02.15 | .137 |
+| 1D_HX/onePhase | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:04.57 | .152 |
+| 1D_HX/twoPhase | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:44.64 | .154 |
+| 1D_MSR_pointKinetics | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:55.87 | .145 |
+| 1D_PSBT_SC/Phase_Ex1_12223 | [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]() | 0:07.12 | .138 |
+| 1D_PSBT_SC/PhaseII_Ex1_01_5215 | [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]() | 0:57.09 | .147 |
+| 1D_PSBT_SC/PhaseII_Ex2_04_6770 | [![regressionTest](https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square)]() | 45:29.88 | .143 |
+| 1D_thermalMSR_pointKinetics | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:31.48 | .144 |
+| 2D_cavityBoussinesq | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:23.09 | .139 |
+| 2D_externalSourceDiffusion | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:08.61 | .152 |
+| 2D_FFTF | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 4:13:04 | .193 |
+| 2D_fullCoupling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:06.72 | .139 |
+| 2D_KNS37-L22 | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 15:33.98 | .157 |
+| 2D_MSFR | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 7:13.61 | .263 |
+| 2D_onePhaseAndPointKineticsCoupling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:24.82 | .142 |
+| 2D_onePhaseAndSubcriticalPointKineticsCoupling | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:40.70 | .141 |
+| 2D_voidMotionNoPhaseChange | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 0:24.94 | .143 |
+| 3D_gFHR | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 9:17.74 | .957 |
+| 3D_NTPfuelAssembly | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 55:18.01 | .163 |
+| 3D_SmallESFR | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 3:42.00 | .200 |
+| Godiva_SN | [![regressionTest](https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square)]() | 58:36.24 | 1.126 |
 
 --------------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ Structure temperature at the top of the channel at 90 seconds with 0.01 relative
 Perfect match:
 |          | Simulated | Expected |
 |:---------|:---------:|:--------:|
-| TwallTop | 2618.65 | 2625.18 |
+| TwallTop | 2617.31 | 2625.18 |
 
 --------------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ Heat flux of the structure at the top of the channel at 40 seconds with 0.01 rel
 Perfect match:
 |           | Simulated | Expected |
 |:----------|:---------:|:--------:|
-| Qwall Top | 33427.4 | 33423.1 |
+| Qwall Top | 33429.8 | 33423.1 |
 
 --------------------------------------------------------------------------------
 
@@ -127,10 +127,10 @@ Done running tutorial 1D_PSBT_SC ...
 1D_PSBT_SC has converged 
 
 alpha.vapour at the end of the channel
-Perfect match:
+Divergent results:
 |              | Simulated | Expected |
 |:-------------|:---------:|:--------:|
-| alpha vapour | 0.133727 | 0.133727 |
+| alpha vapour | 0.131886 | 0.133727 |
 
 --------------------------------------------------------------------------------
 
@@ -143,11 +143,11 @@ Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215
 PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 has converged 
 
 alpha.vapour at the end of the channel
-Perfect match:
+Divergent results:
 |                       | Simulated | Expected |
 |:----------------------|:---------:|:--------:|
-| Max alpha vapour      | 0.123835 | 0.123835 |
-| T at max alpha vapour | 620.178 | 620.178 |
+| Max      alpha vapour | 0.123641 | 0.123835 |
+| T at max alpha vapour | 620.18 | 620.178 |
 
 --------------------------------------------------------------------------------
 
@@ -160,11 +160,11 @@ Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770
 PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 has converged 
 
 alpha.vapour at the end of the channel
-Perfect match:
+Divergent results:
 |                       | Simulated | Expected |
 |:----------------------|:---------:|:--------:|
-| Max alpha vapour      | 0.319074 | 0.319074 |
-| T at max alpha vapour | 625.826 | 625.826 |
+| Max      alpha vapour | 0.318288 | 0.319074 |
+| T at max alpha vapour | 625.825 | 625.826 |
 
 --------------------------------------------------------------------------------
 
@@ -270,9 +270,9 @@ Test with 0.2 relative error
 Perfect match:
 |                   | Simulated | Expected |
 |:------------------|:---------:|:--------:|
-| Time              | 12.52914919555637 | 12.56424533593758 |
-| alpha.vapour      | 0.168632 | 0.1577348 |
-| T.activeStructure | 826.679800 | 821.0752 |
+| Time              | 12.514947614132915 | 12.56424533593758 |
+| alpha.vapour      | 0.178709 | 0.1577348 |
+| T.activeStructure | 830.267300 | 821.0752 |
 
 --------------------------------------------------------------------------------
 

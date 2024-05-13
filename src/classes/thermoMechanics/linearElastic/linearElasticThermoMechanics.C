@@ -169,7 +169,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             IOobject::NO_WRITE
         ),
         mesh,
-        dimensionedScalar("0", dimensionSet(1, 1, -3 , -1, 0), 0.0),
+        dimensionedScalar("0", dimensionSet(1, 1, -3 , -1, 0), 1.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     alpha_

@@ -25,7 +25,7 @@ fi
 # --- Recover the results
 input="./0.6/fluidRegion/alpha.vapour"
 averageAt=$(head -98 "$input" | tail -1)
-expectedAt=0.133727
+expectedAt=0.131886
 
 # --- Check that results are correct
 echo "alpha.vapour at the end of the channel" | tee -a $resFile

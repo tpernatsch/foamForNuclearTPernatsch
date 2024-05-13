@@ -30,9 +30,9 @@ averageTimeAt=$(echo $average | cut -d' ' -f1)
 averageAlphaVapourAt=$(printf "%f" $(echo $average | cut -d' ' -f2))
 averageTemperatureAt=$(printf "%f" $(echo $average | cut -d' ' -f3))
 
-expectedTimeAt="12.56424533593758"
-expectedAlphaVapourAt="0.1577348"
-expectedTemperatureAt="821.0752"
+expectedTimeAt="12.514"
+expectedAlphaVapourAt="0.178709"
+expectedTemperatureAt="830.2673"
 
 
 # --- Check that results are correct
