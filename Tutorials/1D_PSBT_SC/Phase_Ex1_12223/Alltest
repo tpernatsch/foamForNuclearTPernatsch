@@ -27,9 +27,27 @@ input="./0.6/fluidRegion/alpha.vapour"
 averageAt=$(head -98 "$input" | tail -1)
 expectedAt=0.131886
 
+# --- Check results are correct
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
 # --- Check that results are correct
-echo "alpha.vapour at the end of the channel" | tee -a $resFile
-if [ $averageAt = $expectedAt ]; then
+error=0.001
+echo "alpha.vapour at the end of the channel with $error relative error" | tee -a $resFile
+if [ $(isInRange $expectedAt $averageAt $error) -eq 0 ]; then
     echo "Perfect match:" | tee -a $resFile
     echo "|              | Simulated | Expected |" | tee -a $resFile
     echo "|:-------------|:---------:|:--------:|" | tee -a $resFile

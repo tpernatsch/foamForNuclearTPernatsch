@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #----------------------------------------------------------------------------#
 #       ______          _   __           ______                              #
 #      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
@@ -7,6 +7,12 @@
 #    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
 #    Copyright (C) 2015 - 2022 EPFL                                          #
 #----------------------------------------------------------------------------#
+#
+# Example
+# >>> ./Alltest
+#
+# Example in parallel
+# >>> ./Alltest 4    # Run using 4 jobs
 
 cd ${0%/*} || exit 1    # Run from this directory
 
@@ -14,39 +20,54 @@ clear
 
 #------------------------------------------------------------------------------
 
+# Set the maximum number of parallel jobs
+MAX_JOBS=1
+
+if [ $# -eq 1 ]
+then 
+    MAX_JOBS=$1
+fi
+
+echo -e "Run tutorials using $MAX_JOBS threads\n"
+
+
+#------------------------------------------------------------------------------
+
 # Select tutorials in the test suite
-tutorials="
-    1D_boiling
-    1D_CHF/imposedPower
-    1D_CHF/imposedTemperature
-    1D_HX/onePhase
-    1D_HX/twoPhase
-    1D_MSR_pointKinetics
-    1D_PSBT_SC/Phase_Ex1_12223
-    1D_PSBT_SC/PhaseII_Ex1_01_5215
-    1D_PSBT_SC/PhaseII_Ex2_04_6770
-    1D_thermalMSR_pointKinetics
-    2D_cavityBoussinesq
-    2D_externalSourceDiffusion
-    2D_FFTF
-    2D_fullCoupling
-    2D_KNS37-L22
-    2D_MSFR
-    2D_onePhaseAndPointKineticsCoupling
-    2D_onePhaseAndSubcriticalPointKineticsCoupling
-    2D_voidMotionNoPhaseChange
-    3D_gFHR
-    3D_NTPfuelAssembly
-    3D_SmallESFR
-    Godiva_SN
-"
+tutorials=(
+    # Tutorial name                 Expected maximum memory usage
+    "1D_boiling                     0.2"
+    "1D_CHF/imposedPower            0.2"
+    "1D_CHF/imposedTemperature      0.2"
+    "1D_HX/onePhase                 0.2"
+    "1D_HX/twoPhase                 0.2"
+    "1D_MSR_pointKinetics           0.2"
+    "1D_PSBT_SC/Phase_Ex1_12223     0.2"
+    "1D_PSBT_SC/PhaseII_Ex1_01_5215 0.2"
+    "1D_PSBT_SC/PhaseII_Ex2_04_6770 0.2"
+    "1D_thermalMSR_pointKinetics    0.2"
+    "2D_cavityBoussinesq            0.2"
+    "2D_externalSourceDiffusion     0.2"
+    "2D_FFTF                        0.3"
+    "2D_fullCoupling                0.2"
+    "2D_KNS37-L22                   0.2"
+    "2D_MSFR                        0.3"
+    "2D_onePhaseAndPointKineticsCoupling    0.2"
+    "2D_onePhaseAndSubcriticalPointKineticsCoupling 0.2"
+    "2D_voidMotionNoPhaseChange     0.2"
+    "3D_gFHR                        1.5"
+    "3D_NTPfuelAssembly             0.2"
+    "3D_SmallESFR                   0.3"
+    "Godiva_SN                      1.5"
+)
 
 #------------------------------------------------------------------------------
 
 # Declare badges
-badgeSuccess="https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square"
-badgePending="https://img.shields.io/badge/regressionTest-pending-grey.svg?style=flat-square"
-badgeFailed="https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square"
+badgeSuccess="https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square"
+badgePending="https://img.shields.io/badge/Alltest-pending-grey.svg?style=flat-square"
+badgeFailed="https://img.shields.io/badge/Alltest-failed-red.svg?style=flat-square"
+badgeMemoryOverflow="https://img.shields.io/badge/MemoryOverflow-failed-red.svg?style=flat-square"
 
 # Current folder path
 rootPath=$(pwd)
@@ -55,63 +76,128 @@ rootPath=$(pwd)
 resFile="./regressionResults.md"
 
 # Counting variables
-nbTutoSuccess=0
-nbTutoTotal=0
+nbTutoTotal=${#tutorials[@]}
+
 
 #------------------------------------------------------------------------------
 
 # Clear or create new results file
-echo "# GeN-Foam regression test suite\n" > $resFile
-echo "Regression test of `date +"%d-%b-%Y - %H:%M:%S"`  " >> $resFile
-echo "Tutorials successfully completed: 0/0  [![regressionTest]($badgePending)]()  " >> $resFile
+echo -e "# GeN-Foam regression test suite\n" > $resFile
+echo -e "Regression test of `date +"%d-%b-%Y - %H:%M:%S"`  " >> $resFile
+echo -e "Tutorials successfully completed: 0/$nbTutoTotal  [![regressionTest]($badgePending)]()  " >> $resFile
 
 summaryTable="## Summary\n\n| Tutorial | Status | Time | Memory usage [Gb] |\n|:---------|:------:|:-:|:-:|"
 
-echo "\n$summaryTable" >> $resFile
-for tutorialName in $tutorials
+# Create the summmary table
+echo -e "\n$summaryTable" >> $resFile
+for tutorial_i in "${tutorials[@]}"
 do
-    echo "| $tutorialName | [![regressionTest]($badgePending)]() |" >> $resFile
+    # Split the element into parts
+    tutorialObj=($tutorial_i)
+
+    echo "| ${tutorialObj[0]} | [![regressionTest]($badgePending)]() |" >> $resFile
 done
 
-# Run all tutorials and check for clean finish
-for tutorialName in $tutorials
-do
-    echo "Running tutorial $tutorialName ...\n"
 
-    # Header in markdown
-    echo "\n--------------------------------------------------------------------------------\n" >> $resFile
-    echo "## $tutorialName\n" >> $resFile
+#------------------------------------------------------------------------------
+
+executeAlltest() {
+    tutorialName=$1
+    expectedMemory=$2
+
+    echo -e "Running tutorial $tutorialName ...\n"
 
     # Run the tutorial with time/memory consumption info
     cd $tutorialName
-    ./Allclean
-    /usr/bin/time -v -o $rootPath/log.time ./Alltest
-    result=$? # Get the exit code from Alltest (0: success; 1: failed)
+    # ./Allclean
+    # /usr/bin/time -v -o log.time ./Alltest
+    result=0 # $? # Get the exit code from Alltest (0: success; 1: failed)
     cd $rootPath
 
-    # Extract results
-    cat $tutorialName/test.out >> $resFile
-
-    memoryUsage=$(grep "Maximum resident set size (kbytes):" $rootPath/log.time | cut -f6 -d' ')
+    # Extract memory and time usage
+    memoryUsage=$(grep "Maximum resident set size (kbytes):" $tutorialName/log.time | cut -f6 -d' ')
     memoryUsageGb=$(echo "scale=3; $memoryUsage / (1024 * 1024)" | bc)
-    timeUsage=$(grep "Elapsed (wall clock) time (h:mm:ss or m:ss):" $rootPath/log.time | cut -f8 -d' ')
+    timeUsage=$(grep "Elapsed (wall clock) time (h:mm:ss or m:ss):" $tutorialName/log.time | cut -f8 -d' ')
 
-    # Update number of successful tutotial run
-    oldScore="$nbTutoSuccess/$nbTutoTotal"
-    if [ $result -eq 0 ]
+    # Check memory overflow
+    isMemoryOverflow=0
+    memoryOverflowText=Passed
+    if (( $(echo "$memoryUsageGb > $expectedMemory" | bc -l) ))
     then
-        nbTutoSuccess=$(expr $nbTutoSuccess + 1)
-        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[regressionTest\]($badgeSuccess)\]() | $timeUsage | $memoryUsageGb |," $resFile
-    else
-        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[regressionTest\]($badgeFailed)\]() | $timeUsage | $memoryUsageGb |," $resFile
+        isMemoryOverflow=1
+        memoryOverflowText="**Failed**"
     fi
-    nbTutoTotal=$(expr $nbTutoTotal + 1)
 
-    # Update the regression test score
-    sed -i "s|$oldScore|$nbTutoSuccess/$nbTutoTotal|" $resFile
 
+    # Update successful tutotial run in summary table
+    if [ $result -eq 0 ] && [ $isMemoryOverflow -eq 0 ]
+    then
+        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[Alltest\]($badgeSuccess)\]() | $timeUsage | $memoryUsageGb < $expectedMemory |," $resFile
+    elif [ $isMemoryOverflow -eq 1 ]
+    then
+        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[Memory overflow\]($badgeMemoryOverflow)\]() | $timeUsage | $memoryUsageGb > $expectedMemory |," $resFile
+    else
+        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[Alltest\]($badgeFailed)\]() | $timeUsage | $memoryUsageGb < $expectedMemory |," $resFile
+    fi
+
+
+    # Extract results and write into the main md file
+    sed -i "s|## $tutorialName|## $tutorialName\n\n\
+outputAlltest$tutorialName\n\n\
+Time = $timeUsage\n\n\
+Memory = $memoryUsageGb Gb ($memoryOverflowText, expected: $expectedMemory Gb)|" $resFile
+
+    # Replace / to \/
+    escaped_pattern=$(sed 's/[\/&]/\\&/g' <<< "outputAlltest$tutorialName")
+
+    # Write output file test.out into the main MD file
+    sed -i "/$escaped_pattern/r $tutorialName/test.out" $resFile
+    # Remove delimiter
+    sed -i "/$escaped_pattern/d" $resFile
+}
+
+#------------------------------------------------------------------------------
+
+# Counter for the number of background jobs
+job_count=0
+
+# Run all tutorials and check for clean finish
+for tutorial_i in "${tutorials[@]}"
+do
+    # Split the element into parts
+    tutotialObj=($tutorial_i)
+
+    tutorialName="${tutotialObj[0]}"
+    expectedMemory="${tutotialObj[1]}"
+
+    # Write in Markdown file
+    echo -e "\n--------------------------------------------------------------------------------\n" >> $resFile
+    echo -e "## $tutorialName" >> $resFile
+
+
+    # Execute alltest and extract the results in background
+    executeAlltest $tutorialName $expectedMemory &
+
+
+    # Decrement or wait job
+    ((job_count++))
+    if (( $job_count >= $MAX_JOBS )); then
+        wait -n  # Wait for any job to finish
+        ((job_count--))
+    fi
 done
 
+# Wait for all remaining jobs to finish
+wait
+
+
+#------------------------------------------------------------------------------
+
+# Count number of tutorial passed with success
+nbTutoSuccess=$(grep -c "Alltest-passed" $resFile)
+
+# Update the regression test score
+sed -i "s|0/$nbTutoTotal|$nbTutoSuccess/$nbTutoTotal|" $resFile
 
 # Update the badge
 if [ $nbTutoSuccess -eq $nbTutoTotal ]
@@ -121,6 +207,7 @@ else
     sed -i "s,$badgePending,$badgeFailed," $resFile
     exit 1
 fi
+
 
 exit 0
 

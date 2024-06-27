@@ -1,0 +1,3 @@
+[submodule "FMU4FOAM"]
+	path = FMU4FOAM
+	url = https://gitlab.com/foam-for-nuclear/FMU4FOAM.git
