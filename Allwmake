@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #==============================================================================*
 
 cd ${0%/*} || exit 1    # Run from this directory
@@ -7,26 +7,148 @@ clear
 
 #==============================================================================*
 
+# Function to display help
+usage() {
+    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--help]"
+    exit 1
+}
+
+# Default values
+num_jobs=1
+fmi_flag=false
+
+# Parse options using getopt
+PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,help -- "$@")
+if [ $? -ne 0 ]; then
+    usage
+fi
+
+# Rearrange the positional parameters based on the parsed options
+eval set -- "$PARSED_OPTIONS"
+
+# Process the options
+while true; do
+    case "$1" in
+        -j | --jobs)
+            num_jobs="$2"
+            shift 2
+            ;;
+        --fmi)
+            fmi_flag=true
+            shift
+            ;;
+        --help)
+            usage
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+# Script logic
+echo "Number of jobs: $num_jobs"
+echo "FMI flag: $fmi_flag"
+
+# Build with FMI option
+if [ $fmi_flag = 'true' ]
+then
+    git submodule update --init --recursive
+
+    cd FMU4FOAM
+
+    # Build paths
+    pathLibFMU4FOAM=$(pwd)
+    pathLibECI4FOAM=$pathLibFMU4FOAM/ECI4FOAM
+
+    # LIB_ECI4FOAM not found -> build and add env var
+    if [[ -z "$LIB_ECI4FOAM" ]] || [ $pathLibECI4FOAM != $LIB_ECI4FOAM ]
+    then
+        echo "Build ECI4FOAM"
+        ./build-ECI4FOAM.sh -j$num_jobs
+    fi
+
+    # if [[ -z "$LIB_ECI4FOAM" ]]
+    # then
+    #     echo -e "## ECI4FOAM\nexport LIB_ECI4FOAM=$pathLibECI4FOAM" >> $HOME/.bashrc
+    # fi
+
+    # LIB_ECI4FOAM found but incorrect path -> build from another project
+    # if [[ ! -z "$LIB_ECI4FOAM" ]] && [ $pathLibECI4FOAM != $LIB_ECI4FOAM ]
+    # then
+    #     sed -i "/LIB_ECI4FOAM=/c\\export LIB_ECI4FOAM=$pathLibECI4FOAM" $HOME/.bashrc
+    # fi
+
+    # Force export of LIB path
+    export LIB_ECI4FOAM=$pathLibECI4FOAM
+
+    # Build FMU4FOAM only if found LIB_ECI4FOAM env var
+    if [[ ! -z "$LIB_ECI4FOAM" ]]
+    then
+        # LIB_FMU4FOAM not found -> build and add env var
+        if [[ -z "$LIB_FMU4FOAM" ]] || [ $pathLibFMU4FOAM != $LIB_FMU4FOAM ]
+        then
+            echo "Build FMU4FOAM"
+            ./Allwmake -j$num_jobs
+        fi
+
+        # if [[ -z "$LIB_FMU4FOAM" ]]
+        # then
+        #     echo 'Add'
+        #     echo -e "## FMU4FOAM\nexport LIB_FMU4FOAM=$pathLibFMU4FOAM" >> $HOME/.bashrc
+        # fi
+
+        # LIB_FMU4FOAM found but incorrect path -> build from another project
+        # if [[ ! -z "$LIB_FMU4FOAM" ]] && [ $pathLibFMU4FOAM != $LIB_FMU4FOAM ]
+        # then
+        #     sed -i "/LIB_FMU4FOAM=/c\\export LIB_FMU4FOAM=$pathLibFMU4FOAM" $HOME/.bashrc
+        # fi
+
+        # Force export of LIB path
+        export LIB_FMU4FOAM=$pathLibFMU4FOAM
+    fi
+
+    cd ..
+
+    echo -e '\nIf you build ECI4FOAM or FMU4FOAM for FMI coupled simulation.'
+    echo -e 'It is recommanded to add the following lines to your ~/.bashrc\n'
+    echo -e "## ECI4FOAM\nexport LIB_ECI4FOAM=$pathLibECI4FOAM"
+    echo -e "## FMU4FOAM\nexport LIB_FMU4FOAM=$pathLibFMU4FOAM\n"
+    
+
+else
+    # Remove the environment variable only in this script, does not affect the 
+    # same variables in the .bashrc
+    unset LIB_ECI4FOAM
+    unset LIB_FMU4FOAM
+fi
+
+#==============================================================================*
+
 echo "Allwmake GeN-Foam"
 
 # Make common functions
-wmake $1 ./src/classes/common
+wmake -j$num_jobs ./src/classes/common
 
 # Make thermal-hydraulics
-wmake $1 ./src/classes/thermalHydraulics/src
-wmake $1 ./src/classes/thermalHydraulics/solvers
+wmake -j$num_jobs ./src/classes/thermalHydraulics/src
+wmake -j$num_jobs ./src/classes/thermalHydraulics/solvers
 
 # Make neutronics
-wmake $1 ./src/classes/neutronics
+wmake -j$num_jobs ./src/classes/neutronics
 
 # Make thermal-mechanics
-wmake $1 ./src/classes/thermoMechanics
+wmake -j$num_jobs ./src/classes/thermoMechanics
 
 # Make multiphysics control (depends on thermal-hydraulics)
-wmake $1 ./src/classes/multiphysicsControl
+wmake -j$num_jobs ./src/classes/multiphysicsControl
 
 # Make GeN-Foam
-wmake $1 ./GeN-Foam
+wmake -j$num_jobs ./GeN-Foam
 
 echo "Make GeN-Foam completed\n"
 
@@ -34,8 +156,17 @@ echo "Make GeN-Foam completed\n"
 
 echo "Make tests"
 
-wmake $1 ./tests/hydrogenThermophysicalProperties
+wmake -j$num_jobs ./tests/hydrogenThermophysicalProperties
 
 echo "Make tests completed\n"
+
+
+if [ $fmi_flag = 'true' ]
+then
+    echo -e '\nIf you build ECI4FOAM or FMU4FOAM for FMI coupled simulation.'
+    echo -e 'It is recommanded to add the following lines to your ~/.bashrc\n'
+    echo -e "## ECI4FOAM\nexport LIB_ECI4FOAM=$pathLibECI4FOAM"
+    echo -e "## FMU4FOAM\nexport LIB_FMU4FOAM=$pathLibFMU4FOAM"
+fi
 
 #==============================================================================*

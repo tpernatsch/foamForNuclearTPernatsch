@@ -118,7 +118,7 @@ protected :
     //- Optional table to describe any possible dependence of the temperature
     //  on time
     // PtrList<Function1<scalar>> timeProfile_;
-    PtrList<timeProfile> timeProfile_;
+    mutable PtrList<timeProfile> timeProfile_;
 
     //- Optional offset time
     // List<scalar> t0_;

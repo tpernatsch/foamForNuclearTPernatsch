@@ -105,6 +105,15 @@ protected:
     //- Time offset
     scalar startTime_;
 
+    //-
+    scalar oldTime_;
+
+    //-
+    scalar currentValue_;
+
+    //-
+    scalar oldValue_;
+
     //- Function pointer
     autoPtr<Function1<scalar>> functionPtr_;
 
@@ -146,7 +155,7 @@ public:
         bool valid() const;
 
         //- Get the value at a given time minus the start time offset.
-        scalar value(scalar time) const;
+        scalar value(scalar time);
 };
 
 
