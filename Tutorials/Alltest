@@ -68,9 +68,9 @@ then
     echo "Testing tutorials using FMUs"
 
     tutorials+=(
-        "FMU/powerTemperatureMomentumControl 0.2"
-        "FMU/2D_onePhaseAndPointKineticsCouplingExternalReacivityFMI/comparisonFMU 0.3"
-        "FMU/2D_onePhaseAndPointKineticsCouplingExternalReacivityFMI/PIDcontrol 0.3"
+        "FMU/powerTemperatureMomentumControl    0.2"
+        "FMU/2D_PKCoupleFMI/comparisonFMU       0.3"
+        "FMU/2D_PKCoupleFMI/PIDcontrol          0.3"
     )
 fi
 
@@ -99,7 +99,7 @@ echo -e "# GeN-Foam regression test suite\n" > $resFile
 echo -e "Regression test of `date +"%d-%b-%Y - %H:%M:%S"`  " >> $resFile
 echo -e "Tutorials successfully completed: 0/$nbTutoTotal  [![regressionTest]($badgePending)]()  " >> $resFile
 
-summaryTable="## Summary\n\n| Tutorial | Status | Time | Memory usage [Gb] |\n|:---------|:------:|:-:|:-:|"
+summaryTable="## Summary\n\n| Tutorial | Status | Time | GeN-Foam memory usage [Gb] |\n|:---------|:------:|:-:|:-:|"
 
 # Create the summmary table
 echo -e "\n$summaryTable" >> $resFile
@@ -152,13 +152,24 @@ getMemoryUsage() {
         then
             cmd=$(ps -o cmd= -p $child_pid)
             nCore=1
-            if [[ $(echo "$cmd" | grep -c "mpirun -np") -eq 1 ]]
+            if [[ $(echo "$cmd" | grep -c -F "mpirun -np") -eq 1 ]]
             then
-                nCore=$(echo "$cmd" | cut  -d' ' -f3)
+                nCore=$(echo "$cmd" | cut -d' ' -f3)
             fi
-            # echo $child_pid $cmd $rss $nCore $(($rss / $nCore))
-            total=$(($total + $rss + $(($(getMemoryUsage $child_pid) / $nCore))))
-            # getMemoryUsage $child_pid
+
+            if [[ $(echo "$cmd" | grep -c -F "gnuplot") -eq 1 ]]
+            then
+                # kill gnuplot because it is anoying and it consumes too much memory
+                kill $child_pid
+            fi
+
+            # Add only GeN-Foam
+            if [[ $(echo "$cmd" | grep -c -F "GeN-Foam") -eq 1 && $(echo "$cmd" | grep -c -F "log.GeN-Foam") -eq 0 ]]
+            then
+                total=$(($total + $rss))
+            fi
+
+            total=$(($total + $(($(getMemoryUsage $child_pid) / $nCore))))
         fi
     done
 

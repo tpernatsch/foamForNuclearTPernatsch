@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
+|    Built on OpenFOAM v2406                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
 -------------------------------------------------------------------------------
 License
@@ -496,31 +496,9 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     }
 
     //- Check if decay power provided
-    // word decayPowerDictName("decayPowerTimeProfile");
-    // if (reactorState_.found(decayPowerDictName))
     if (decayPowerTimeProfile_.valid())
     {
-        // const dictionary& decayPowerDict
-        // (
-        //     reactorState_.subDict(decayPowerDictName)
-        // );
-        // word type
-        // (
-        //     decayPowerDict.get<word>("type")
-        // );
-        // decayPowerPtr_.reset
-        // (
-        //     Function1<scalar>::New
-        //     (
-        //         type,
-        //         decayPowerDict,
-        //         type
-        //     )
-        // );
-        // decayPowerStartTime_ =
-        //     decayPowerDict.lookupOrDefault<scalar>("startTime", 0.0);
         const scalar& t(mesh_.time().timeOutputValue());
-        // decayPower_ = decayPowerPtr_->value(t-decayPowerStartTime_);
         decayPower_ = decayPowerTimeProfile_.value(t);
         fissionPower_ = power_ - decayPower_;
         fissionPowerOld_ = fissionPower_;

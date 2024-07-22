@@ -150,7 +150,7 @@ wmake -j$num_jobs ./src/classes/multiphysicsControl
 # Make GeN-Foam
 wmake -j$num_jobs ./GeN-Foam
 
-echo "Make GeN-Foam completed\n"
+echo -e "Make GeN-Foam completed\n"
 
 #==============================================================================*
 
@@ -158,7 +158,7 @@ echo "Make tests"
 
 wmake -j$num_jobs ./tests/hydrogenThermophysicalProperties
 
-echo "Make tests completed\n"
+echo -e "Make tests completed\n"
 
 
 if [ $fmi_flag = 'true' ]
