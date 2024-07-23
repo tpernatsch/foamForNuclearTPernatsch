@@ -7,7 +7,7 @@
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
 |    Built on OpenFOAM v2406                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2023 OpenCFD Ltd.         |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.

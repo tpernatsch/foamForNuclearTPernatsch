@@ -20,6 +20,9 @@ verbose: int = 1
 old_version: str = 'v2312'
 new_version: str = 'v2406'
 
+old_copyright: str = 'Copyright 2011-2016 OpenFOAM Foundation, 2017-2023 OpenCFD Ltd.'
+new_copyright: str = 'Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.'
+
 
 #===============================================================================*
 
@@ -44,7 +47,7 @@ for root, dirs, files in os.walk(folder):
         filepath = os.path.join(root, filename)
 
         # Exclude current script and FMU4FOAM package
-        if (filename == script_name or 'FMU4FOAM' in filepath):
+        if (filename in script_name or 'FMU4FOAM' in filepath):
             continue
 
         try:
@@ -56,6 +59,7 @@ for root, dirs, files in os.walk(folder):
                 f"Built on OpenFOAM {old_version}",
                 f"Built on OpenFOAM {new_version}"
             )
+            file_contents = file_contents.replace(old_copyright, new_copyright)
 
             # Fill stats
             for version in versions:
