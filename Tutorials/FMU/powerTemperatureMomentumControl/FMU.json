@@ -1,0 +1,24 @@
+{
+    "mapping": [
+        ["gfTsensor", "model.root.system1.modTin"],
+        ["gfPowerOut", "model.root.system1.modPowerIn"],
+        ["gfMomentumSourceIn1", "model.root.system1.modMomentumSourceOut1"],
+        ["gfMomentumSourceIn2", "model.root.system1.modMomentumSourceOut2"],
+        ["gfTemperatureIn", "model.root.system1.modTemperatureOut"],
+        ["gfPowerIn", "model.root.system1.modPowerOut"],
+        ["gfHin1", "model.root.system1.modHout1"],
+        ["gfHin2", "model.root.system1.modHout2"]
+    ],
+    "from_OF": {
+        "gfTsensor": "REAL",
+        "gfPowerOut": "REAL"
+    },
+    "to_OF": {
+        "gfMomentumSourceIn1": "REAL",
+        "gfMomentumSourceIn2": "REAL",
+        "gfTemperatureIn": "REAL",
+        "gfPowerIn": "REAL",
+        "gfHin1": "REAL",
+        "gfHin2": "REAL"
+    }
+}

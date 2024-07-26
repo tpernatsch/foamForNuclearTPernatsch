@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -132,11 +132,23 @@ class H2
 {
     // Private data
 
-        //- Atomic hydrogen weight [kg/kmol] 
+        //- Hydrogen atomic weight [kg/kmol] 
         scalar W_H_;
 
         //- Perfect gas constant
         scalar R_;
+
+        //- 
+        scalar n_;
+
+        //-
+        scalar alpha0_;
+
+        //-
+        scalar b_;
+
+        //-
+        scalar c_;
 
 
         //- Useless but needed because liquidProperties is over constrainded

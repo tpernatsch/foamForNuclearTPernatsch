@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -45,6 +45,43 @@ Authors:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
     Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
+Usage
+    \verbatim
+        powerModel
+        {
+            type            fixedTemperature;
+            volumeFraction  0.09;
+            volumetricArea  121;
+            powerDensity    1e9;
+            T               617;
+            Cp              500;
+            rho             7700;
+            temperatureTimeProfile // Optional
+            {
+                type        table;
+                startTime   0;
+                table       table
+                (
+                    (   0   617   )
+                    (  10   717   )
+                );
+            }
+        }
+
+        // Using FMI input
+        powerModel
+        {
+            type            fixedTemperature;
+            volumetricArea  450;
+            temperatureTimeProfile
+            {
+                type            fmi;
+                nameFromFMU     temperatureCoupled;
+                initialValue    850;
+            }
+        }
+    \endvarbatim
+
 SourceFiles
     fixedTemperature.C
 
@@ -54,7 +91,8 @@ SourceFiles
 #define fixedTemperature_H
 
 #include "powerModel.H"
-#include "Function1.H"
+#include "timeProfile.H"
+// #include "Function1.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -79,10 +117,11 @@ protected :
 
     //- Optional table to describe any possible dependence of the temperature
     //  on time
-    PtrList<Function1<scalar>> timeProfile_;
+    // PtrList<Function1<scalar>> timeProfile_;
+    mutable PtrList<timeProfile> timeProfile_;
 
     //- Optional offset time
-    List<scalar> t0_;
+    // List<scalar> t0_;
 
     //- True if a timeProfilePtr_ exists
     List<bool> timeDependent_;

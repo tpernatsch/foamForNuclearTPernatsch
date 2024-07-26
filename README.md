@@ -15,7 +15,7 @@ N.B.: GeN-Foam is a flexible tool that allows the modeling of irregular geometri
 
 ## OpenFOAM version
 
-The current version of GeN-Foam is based on OpenFOAM, ESI/OpenCFD distribution, currently v2312, available at [www.openfoam.com](https://www.openfoam.com).
+The current version of GeN-Foam is based on OpenFOAM, ESI/OpenCFD distribution, currently v2406, available at [www.openfoam.com](https://www.openfoam.com).
 
 Please notice that a new version of OpenFOAM is released by ESI/OpenCFD twice a year. It may take a few weeks for the developers to update GeN-Foam to a new OpenFOAM release.
 
@@ -45,45 +45,34 @@ A forum to get support from the developers and the community is available at the
 
 *Modeling of the European Sodium Fast Reactor: Boiling in a windowed assembly and core flowering*
 
-<p align="center" style="text-align:center;">
+<div style="text-align:center;">
+  <img src="./Documentation/media/assmblyWindows.png" width="200">
+  <img src="./Documentation/media/coreFlowering.png" width="300">
+</div>
+<br>
 
-  <img src="./Documentation/media/assmblyWindows.png" width="200" style="display:inline-block;">
-  <img src="./Documentation/media/coreFlowering.png" width="300" style="display:inline-block;">
-
-  <br>
-
-</p>
 
 *Full plant modeling of the ALFRED Lead Fast Reactor using the FMI interface and Modelica*
 
-<p align="center" style="text-align:center;">
+<div style="text-align:center;">
+  <img src="./Documentation/media/LFRfull.png" width="1000">
+</div>
+<br>
 
-  <img src="./Documentation/media/LFRfull.png" width="1000" style="display:inline-block;">
-
-  <br>
-
-
-</p>
 
 *Modeling of Molten Salt Reactors: the MSRE and the MSFR*
 
-<p align="center" style="text-align:center;">
+<div style="text-align:center;">
+  <img src="./Documentation/media/MSRE.png" width="300">
+  <img src="./Documentation/media/precTot3D.png" width="300">
+  <img src="./Documentation/media/precTot3Dside.png" width="100">
+</div>
+<br>
 
-  <img src="./Documentation/media/MSRE.png" width="300" style="display:inline-block;">
-  <img src="./Documentation/media/precTot3D.png" width="300" style="display:inline-block;">
-  <img src="./Documentation/media/precTot3Dside.png" width="100" style="display:inline-block;">
-
-  <br>
-
-
-</p>
 
 *Modeling of FFTF: 2-D primary circuit thermal-hydraulics and core fluxes*
 
-<p align="center" style="text-align:center;">
-
-  <img src="./Documentation/media/FFTF.png" width="800" style="display:inline-block;">
-
-
-  <br>
-</p>
+<div style="text-align:center;">
+  <img src="./Documentation/media/FFTF.png" width="800">
+</div>
+<br>

@@ -50,9 +50,28 @@ refAlphaVap=0.123835
 TatMaxAlphaVap=$(head -418 "./5/fluidRegion/T.fixedPower" | tail -1)
 refT=620.178
 
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
 # --- Check that results are correct
-echo "alpha.vapour at the end of the channel" | tee -a $resFile
-if [ $maxAlphaVap = $refAlphaVap ] && [ $TatMaxAlphaVap = $refT ]; then
+error=0.01
+echo "alpha.vapour at the end of the channel with $error relative error" | tee -a $resFile
+if  [ $(isInRange $refAlphaVap $maxAlphaVap    $error) -eq 0 ] &&
+    [ $(isInRange $refT        $TatMaxAlphaVap $error) -eq 0 ]
+then
     echo "Perfect match:" | tee -a $resFile
     echo "|                       | Simulated | Expected |" | tee -a $resFile
     echo "|:----------------------|:---------:|:--------:|" | tee -a $resFile

@@ -12,6 +12,8 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 #------------------------------------------------------------------------------
 
+rm -f log.time
+
 tutorials="
     1D_boiling
     1D_CHF/imposedPower
@@ -37,10 +39,10 @@ tutorials="
     3D_NTPfuelAssembly
     3D_SmallESFR
     Godiva_SN
+    FMU/2D_PKCoupleFMI/comparisonFMU
+    FMU/2D_PKCoupleFMI/PIDcontrol
+    FMU/powerTemperatureMomentumControl
     testing/2D_MSFR_ULOF_diffusion_and_pk
-    testing/FMU/2D_onePhaseAndPointKineticsCouplingExternalReacivityFMI/comparisonFMU
-    testing/FMU/2D_onePhaseAndPointKineticsCouplingExternalReacivityFMI/PIDcontrol
-    testing/FMU/powerTemperatureMomentumControl
     toBeUpdated/2D_RegressionESFR
 " 
 

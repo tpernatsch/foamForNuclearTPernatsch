@@ -18,7 +18,8 @@ FoamFile
 //- keff must be set to 1 in external neutron source mode
 keff            1;
 
-//- Normalization power during eigenvalue calculation
+//- Normalization power during eigenvalue calculation, not used in source mode
+//  because the output power is driven by the external neutron source.
 pTarget         1e8;
 
 // ************************************************************************* //

@@ -2,77 +2,77 @@
 <tagfile doxygen_version="1.9.1">
   <compound kind="file">
     <name>Compiling_GeN-Foam.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Compiling__GeN-Foam_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Coupling.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Coupling_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>FMU.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>FMU_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Important_notes.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Important__notes_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Main_page.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Main__page_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Neutronics.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Neutronics_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Post_processing.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Post__processing_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Pre_processing.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Pre__processing_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Recent_changes.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Recent__changes_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Running_GeN-Foam.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Running__GeN-Foam_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>thermalHydraulics.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>thermalHydraulics_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>thermoMechanics.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>thermoMechanics_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Tips_and_tricks.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Tips__and__tricks_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>Tutorials.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>Tutorials_8md.html</filename>
   </compound>
   <compound kind="file">
     <name>User_manual.md</name>
-    <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/Documentation/doxygen/files/</path>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/Documentation/doxygen/files/</path>
     <filename>User__manual_8md.html</filename>
   </compound>
   <compound kind="file">
@@ -935,6 +935,2863 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/src/classes/common/timeProfile/</path>
     <filename>timeProfile_8H.html</filename>
     <class kind="class">Foam::timeProfile</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>createFieldRefs.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H.html</filename>
+    <member kind="variable">
+      <type>const volScalarField &amp;</type>
+      <name>rho</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H.html</anchorfile>
+      <anchor>ab0dbbec1098ac891d59576a9a35812eb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volScalarField &amp;</type>
+      <name>h</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H.html</anchorfile>
+      <anchor>a52f2dcc529f3c146980b0ce8dc591698</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const volScalarField &amp;</type>
+      <name>betav</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H.html</anchorfile>
+      <anchor>aebbcdc244775dedabbbc0e1217e45cc0</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>createFieldRefs.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H.html</filename>
+    <member kind="variable">
+      <type>const volScalarField &amp;</type>
+      <name>rho</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H.html</anchorfile>
+      <anchor>ab0dbbec1098ac891d59576a9a35812eb</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>volScalarField &amp;</type>
+      <name>h</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H.html</anchorfile>
+      <anchor>a52f2dcc529f3c146980b0ce8dc591698</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>const volScalarField &amp;</type>
+      <name>betav</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H.html</anchorfile>
+      <anchor>aebbcdc244775dedabbbc0e1217e45cc0</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>createFields.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</filename>
+    <member kind="function">
+      <type>Info&lt;&lt; &quot;Reading thermophysical properties\n&quot;&lt;&lt; endl;autoPtr&lt; solidThermo &gt;</type>
+      <name>pThermo</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>add12555826200b51edddb1a224af2dea</anchor>
+      <arglist>(solidThermo::New(mesh))</arglist>
+    </member>
+    <member kind="function">
+      <type>thermo</type>
+      <name>correct</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a3a2458f7f54158be848527a3fdedd5dd</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a95ef98f6be3b8b09a3eca31669e176dd</anchor>
+      <arglist>(!thermo.isotropic())</arglist>
+    </member>
+    <member kind="function">
+      <type>IOobject</type>
+      <name>betavSolidIO</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a877a44e22347ac328808bb808bb92e15</anchor>
+      <arglist>(&quot;betavSolid&quot;, runTime.timeName(), mesh, IOobject::MUST_READ, IOobject::AUTO_WRITE)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>aed0d4cdbdd7de65c18a52de38e5826f2</anchor>
+      <arglist>(betavSolidIO.typeHeaderOk&lt; volScalarField &gt;(true))</arglist>
+    </member>
+    <member kind="variable">
+      <type>solidThermo &amp;</type>
+      <name>thermo</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a00c34cbdcebe1fe82435a64ddee22a3b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>tmp&lt; volScalarField &gt;</type>
+      <name>trho</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a1900a6d4ca2a9f556fdda6733816e355</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>autoPtr&lt; coordinateSystem &gt;</type>
+      <name>coordinatesPtr</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>ab2c854728ba05db2aadca4cfcd25084b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>autoPtr&lt; volSymmTensorField &gt;</type>
+      <name>taniAlpha</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a5702c5e6ab8ba57a6963000e28d63759</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>autoPtr&lt; volScalarField &gt;</type>
+      <name>betavPtr</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a844785a2088bf2e5befbb423d1e57112</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>else</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a0544c3fe466e421738dae463968b70ba</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>createFields.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</filename>
+    <member kind="function">
+      <type>Info&lt;&lt; &quot;Reading thermophysical properties\n&quot;&lt;&lt; endl;autoPtr&lt; solidThermo &gt;</type>
+      <name>pThermo</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>add12555826200b51edddb1a224af2dea</anchor>
+      <arglist>(solidThermo::New(mesh))</arglist>
+    </member>
+    <member kind="function">
+      <type>thermo</type>
+      <name>correct</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a3a2458f7f54158be848527a3fdedd5dd</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a95ef98f6be3b8b09a3eca31669e176dd</anchor>
+      <arglist>(!thermo.isotropic())</arglist>
+    </member>
+    <member kind="function">
+      <type>IOobject</type>
+      <name>betavSolidIO</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a877a44e22347ac328808bb808bb92e15</anchor>
+      <arglist>(&quot;betavSolid&quot;, runTime.timeName(), mesh, IOobject::MUST_READ, IOobject::AUTO_WRITE)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>aed0d4cdbdd7de65c18a52de38e5826f2</anchor>
+      <arglist>(betavSolidIO.typeHeaderOk&lt; volScalarField &gt;(true))</arglist>
+    </member>
+    <member kind="variable">
+      <type>solidThermo &amp;</type>
+      <name>thermo</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>aa2bae82a72947575ef82efd357b29520</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>tmp&lt; volScalarField &gt;</type>
+      <name>trho</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a1900a6d4ca2a9f556fdda6733816e355</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>autoPtr&lt; coordinateSystem &gt;</type>
+      <name>coordinatesPtr</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>ab2c854728ba05db2aadca4cfcd25084b</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>autoPtr&lt; volSymmTensorField &gt;</type>
+      <name>taniAlpha</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a5702c5e6ab8ba57a6963000e28d63759</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>autoPtr&lt; volScalarField &gt;</type>
+      <name>betavPtr</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a844785a2088bf2e5befbb423d1e57112</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>else</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H.html</anchorfile>
+      <anchor>a0544c3fe466e421738dae463968b70ba</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>createFields.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/main/include/</path>
+    <filename>main_2include_2createFields_8H.html</filename>
+    <member kind="function">
+      <type>fv::options &amp;</type>
+      <name>fluidFvOptions</name>
+      <anchorfile>main_2include_2createFields_8H.html</anchorfile>
+      <anchor>aba5acc97448d55d054e24c1c613b2bb8</anchor>
+      <arglist>(fv::options::New(fluidMesh))</arglist>
+    </member>
+    <member kind="function">
+      <type>multiphysicsControl</type>
+      <name>multiphysics</name>
+      <anchorfile>main_2include_2createFields_8H.html</anchorfile>
+      <anchor>a708d6ddaa0b1e74427ecbd4938c5be4f</anchor>
+      <arglist>(runTime, fluidMesh, neutroMesh, mechMesh)</arglist>
+    </member>
+    <member kind="function">
+      <type>autoPtr&lt; thermalHydraulicsModel &gt;</type>
+      <name>pthermalHydraulics</name>
+      <anchorfile>main_2include_2createFields_8H.html</anchorfile>
+      <anchor>a6e7c411942456be713e28f4a4f0341ea</anchor>
+      <arglist>(thermalHydraulicsModel::New(runTime, fluidMesh, multiphysics, fluidFvOptions))</arglist>
+    </member>
+    <member kind="function">
+      <type>autoPtr&lt; neutronics &gt;</type>
+      <name>pneutronics</name>
+      <anchorfile>main_2include_2createFields_8H.html</anchorfile>
+      <anchor>ac65a05feee810b5dd7ed790403f2fe3f</anchor>
+      <arglist>(neutronics::New(neutroMesh))</arglist>
+    </member>
+    <member kind="function">
+      <type>autoPtr&lt; thermoMechanics &gt;</type>
+      <name>pthermoMechanics</name>
+      <anchorfile>main_2include_2createFields_8H.html</anchorfile>
+      <anchor>ab036d44009bea51e0c6e6dbb1e6778b1</anchor>
+      <arglist>(thermoMechanics::New(mechMesh))</arglist>
+    </member>
+    <member kind="variable">
+      <type>thermalHydraulicsModel &amp;</type>
+      <name>thermalHydraulics</name>
+      <anchorfile>main_2include_2createFields_8H.html</anchorfile>
+      <anchor>ac5163bc9adc05d414b16080fc7a6b4ad</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>neutronics &amp;</type>
+      <name>neutronics</name>
+      <anchorfile>main_2include_2createFields_8H.html</anchorfile>
+      <anchor>aba4910c7964b6a522b7f0b911f652e9d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>thermoMechanics &amp;</type>
+      <name>thermoMechanics</name>
+      <anchorfile>main_2include_2createFields_8H.html</anchorfile>
+      <anchor>a8a41bcd60d3796f489966759c96cfa7c</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>createTimeControls.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H.html</filename>
+    <member kind="variable">
+      <type>bool</type>
+      <name>adjustTimeStep</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H.html</anchorfile>
+      <anchor>ad3a700e1652b37d5382eaeda5cbf3824</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>scalar</type>
+      <name>maxDi</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H.html</anchorfile>
+      <anchor>ae61c09755fb5d20a517859f226f5e805</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>scalar</type>
+      <name>maxDeltaT</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H.html</anchorfile>
+      <anchor>a7f6739b865c2d5e693900f678f68117a</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>createTimeControls.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H.html</filename>
+    <member kind="variable">
+      <type>bool</type>
+      <name>adjustTimeStep</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H.html</anchorfile>
+      <anchor>ad3a700e1652b37d5382eaeda5cbf3824</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>scalar</type>
+      <name>maxDi</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H.html</anchorfile>
+      <anchor>ae61c09755fb5d20a517859f226f5e805</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>scalar</type>
+      <name>maxDeltaT</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H.html</anchorfile>
+      <anchor>a7f6739b865c2d5e693900f678f68117a</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>hEqn.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>a72b6fae34a9afa7231dcd3eb989a5027</anchor>
+      <arglist>(mesh.changing())</arglist>
+    </member>
+    <member kind="function">
+      <type>hEqn</type>
+      <name>relax</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>ada060d6619956dc9185abaefdb79b7d0</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>fvOptions</type>
+      <name>constrain</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>a690291494cdd58cd590191bf0cfae129</anchor>
+      <arglist>(hEqn)</arglist>
+    </member>
+    <member kind="function">
+      <type>hEqn</type>
+      <name>solve</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>ac393846f32fcfca6facb8d23d493a8c5</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>fvOptions</type>
+      <name>correct</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>a404b38349568ce6e5dc15af2bd8b77e9</anchor>
+      <arglist>(h)</arglist>
+    </member>
+    <member kind="function">
+      <type>thermo</type>
+      <name>correct</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>a3a2458f7f54158be848527a3fdedd5dd</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>hEqn.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>a72b6fae34a9afa7231dcd3eb989a5027</anchor>
+      <arglist>(mesh.changing())</arglist>
+    </member>
+    <member kind="function">
+      <type>hEqn</type>
+      <name>relax</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>ae9cae8cc742ef3065937bfd98e08d6bd</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>fvOptions</type>
+      <name>constrain</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>a690291494cdd58cd590191bf0cfae129</anchor>
+      <arglist>(hEqn)</arglist>
+    </member>
+    <member kind="function">
+      <type>hEqn</type>
+      <name>solve</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>ac393846f32fcfca6facb8d23d493a8c5</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>fvOptions</type>
+      <name>correct</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>a404b38349568ce6e5dc15af2bd8b77e9</anchor>
+      <arglist>(h)</arglist>
+    </member>
+    <member kind="function">
+      <type>thermo</type>
+      <name>correct</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H.html</anchorfile>
+      <anchor>a3a2458f7f54158be848527a3fdedd5dd</anchor>
+      <arglist>()</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>readTimeControls.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H.html</filename>
+    <member kind="variable">
+      <type></type>
+      <name>adjustTimeStep</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H.html</anchorfile>
+      <anchor>aed3f9b837a567b5ce04f1f23ad13e2a2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>maxDi</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H.html</anchorfile>
+      <anchor>aa0b18cda8f98c1601aa30ea0f3ffe501</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>maxDeltaT</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H.html</anchorfile>
+      <anchor>abbfba7a2061301dd658470d7811331c8</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>readTimeControls.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H.html</filename>
+    <member kind="variable">
+      <type></type>
+      <name>adjustTimeStep</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H.html</anchorfile>
+      <anchor>aed3f9b837a567b5ce04f1f23ad13e2a2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>maxDi</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H.html</anchorfile>
+      <anchor>aa0b18cda8f98c1601aa30ea0f3ffe501</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type></type>
+      <name>maxDeltaT</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H.html</anchorfile>
+      <anchor>abbfba7a2061301dd658470d7811331c8</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>setDeltaT.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setDeltaT_8H.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setDeltaT_8H.html</anchorfile>
+      <anchor>ae64d60def649600fb9f624abf0393592</anchor>
+      <arglist>(adjustTimeStep)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>setDeltaT.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setDeltaT_8H.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setDeltaT_8H.html</anchorfile>
+      <anchor>ae64d60def649600fb9f624abf0393592</anchor>
+      <arglist>(adjustTimeStep)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>setDeltaT.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/main/include/</path>
+    <filename>main_2include_2setDeltaT_8H.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>FIRSTDELTAT</name>
+      <anchorfile>main_2include_2setDeltaT_8H.html</anchorfile>
+      <anchor>aba5663615dc5e71282e00a6a6cee9407</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>adjustTimeStep</name>
+      <anchorfile>main_2include_2setDeltaT_8H.html</anchorfile>
+      <anchor>af3d9603ccf803ea89289206f9f81bdf0</anchor>
+      <arglist>(runTime.controlDict().lookupOrDefault(&quot;adjustTimeStep&quot;, false))</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>main_2include_2setDeltaT_8H.html</anchorfile>
+      <anchor>a206bba91de90ece418ff895233b8a3ea</anchor>
+      <arglist>(multiphysics.solveFluidMechanics() or multiphysics.solveEnergy())</arglist>
+    </member>
+    <member kind="function">
+      <type>scalar</type>
+      <name>pTotOld</name>
+      <anchorfile>main_2include_2setDeltaT_8H.html</anchorfile>
+      <anchor>a4b9534ee683fa7fe18d7a5ed0eaaee4a</anchor>
+      <arglist>(neutronics.power())</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>main_2include_2setDeltaT_8H.html</anchorfile>
+      <anchor>ae64d60def649600fb9f624abf0393592</anchor>
+      <arglist>(adjustTimeStep)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>setInitialDeltaT.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setInitialDeltaT_8H.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setInitialDeltaT_8H.html</anchorfile>
+      <anchor>ae64d60def649600fb9f624abf0393592</anchor>
+      <arglist>(adjustTimeStep)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>setInitialDeltaT.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setInitialDeltaT_8H.html</filename>
+    <member kind="function">
+      <type></type>
+      <name>if</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setInitialDeltaT_8H.html</anchorfile>
+      <anchor>ae64d60def649600fb9f624abf0393592</anchor>
+      <arglist>(adjustTimeStep)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>solidDiffNo.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidDiffNo_8H.html</filename>
+    <member kind="variable">
+      <type>scalar</type>
+      <name>DiNum</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidDiffNo_8H.html</anchorfile>
+      <anchor>aaac85a8f48f5ae1267497cc30820ec6a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>scalar</type>
+      <name>meanDiNum</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidDiffNo_8H.html</anchorfile>
+      <anchor>a511242fc6a2009262c39ae7fdf45bc93</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>solidDiffNo.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidDiffNo_8H.html</filename>
+    <member kind="variable">
+      <type>scalar</type>
+      <name>DiNum</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidDiffNo_8H.html</anchorfile>
+      <anchor>aaac85a8f48f5ae1267497cc30820ec6a</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable">
+      <type>scalar</type>
+      <name>meanDiNum</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidDiffNo_8H.html</anchorfile>
+      <anchor>a511242fc6a2009262c39ae7fdf45bc93</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>solidFoamAdjustTime.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidFoamAdjustTime_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H" name="createFields.H" local="yes" imported="no">createFields.H</includes>
+    <includes id="classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H" name="createFieldRefs.H" local="yes" imported="no">createFieldRefs.H</includes>
+    <includes id="classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H" name="createTimeControls.H" local="yes" imported="no">createTimeControls.H</includes>
+    <includes id="classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidDiffNo_8H" name="solidDiffNo.H" local="yes" imported="no">solidDiffNo.H</includes>
+    <includes id="classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setInitialDeltaT_8H" name="setInitialDeltaT.H" local="yes" imported="no">setInitialDeltaT.H</includes>
+    <includes id="classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H" name="readTimeControls.H" local="yes" imported="no">readTimeControls.H</includes>
+    <includes id="classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setDeltaT_8H" name="setDeltaT.H" local="yes" imported="no">setDeltaT.H</includes>
+    <includes id="classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H" name="hEqn.H" local="yes" imported="no">hEqn.H</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>NO_CONTROL</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidFoamAdjustTime_8C.html</anchorfile>
+      <anchor>a8ceea990ae1560f66059e9c4b230be5f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidFoamAdjustTime_8C.html</anchorfile>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
+      <arglist>(int argc, char *argv[])</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>solidFoamAdjustTime.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/solver/solidFoamAdjustTime/</path>
+    <filename>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidFoamAdjustTime_8C.html</filename>
+    <includes id="FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFields_8H" name="createFields.H" local="yes" imported="no">createFields.H</includes>
+    <includes id="FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createFieldRefs_8H" name="createFieldRefs.H" local="yes" imported="no">createFieldRefs.H</includes>
+    <includes id="FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2createTimeControls_8H" name="createTimeControls.H" local="yes" imported="no">createTimeControls.H</includes>
+    <includes id="FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidDiffNo_8H" name="solidDiffNo.H" local="yes" imported="no">solidDiffNo.H</includes>
+    <includes id="FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setInitialDeltaT_8H" name="setInitialDeltaT.H" local="yes" imported="no">setInitialDeltaT.H</includes>
+    <includes id="FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2readTimeControls_8H" name="readTimeControls.H" local="yes" imported="no">readTimeControls.H</includes>
+    <includes id="FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2setDeltaT_8H" name="setDeltaT.H" local="yes" imported="no">setDeltaT.H</includes>
+    <includes id="FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2hEqn_8H" name="hEqn.H" local="yes" imported="no">hEqn.H</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>NO_CONTROL</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidFoamAdjustTime_8C.html</anchorfile>
+      <anchor>a8ceea990ae1560f66059e9c4b230be5f</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>FMU4FOAM_2application_2solver_2solidFoamAdjustTime_2solidFoamAdjustTime_8C.html</anchorfile>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
+      <arglist>(int argc, char *argv[])</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>dictModifier.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/application/tools/dictModifier/</path>
+    <filename>classes_2FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</filename>
+    <class kind="class">dictAndKeyword</class>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>upgradeScope</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>aa773226ca79dd22cf5974ce8398b9ea1</anchor>
+      <arglist>(word &amp;entryName)</arglist>
+    </member>
+    <member kind="function">
+      <type>const dictionary &amp;</type>
+      <name>lookupScopedDict</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>a960086d4d3f2dc3bd01749c13410613a</anchor>
+      <arglist>(const dictionary &amp;dict, const word &amp;subDictName)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>modifyFromJson</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>ab58a53abf2a9e01b11adc4443d9fe1f1</anchor>
+      <arglist>(const word &amp;fileAndKey, const string &amp;newValue)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>classes_2FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
+      <arglist>(int argc, char *argv[])</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>dictModifier.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/application/tools/dictModifier/</path>
+    <filename>FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</filename>
+    <class kind="class">dictAndKeyword</class>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>bool</type>
+      <name>upgradeScope</name>
+      <anchorfile>FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>aa773226ca79dd22cf5974ce8398b9ea1</anchor>
+      <arglist>(word &amp;entryName)</arglist>
+    </member>
+    <member kind="function">
+      <type>const dictionary &amp;</type>
+      <name>lookupScopedDict</name>
+      <anchorfile>FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>a960086d4d3f2dc3bd01749c13410613a</anchor>
+      <arglist>(const dictionary &amp;dict, const word &amp;subDictName)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>modifyFromJson</name>
+      <anchorfile>FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>ab58a53abf2a9e01b11adc4443d9fe1f1</anchor>
+      <arglist>(const word &amp;fileAndKey, const string &amp;newValue)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>FMU4FOAM_2application_2tools_2dictModifier_2dictModifier_8C.html</anchorfile>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
+      <arglist>(int argc, char *argv[])</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>404.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/</path>
+    <filename>classes_2FMU4FOAM_2docs_2404_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>404.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2404_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>404.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/</path>
+    <filename>FMU4FOAM_2docs_2404_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>404.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2404_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>index.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/</path>
+    <filename>classes_2FMU4FOAM_2docs_2index_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>index.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2index_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>index.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/</path>
+    <filename>FMU4FOAM_2docs_2index_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>index.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2index_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_architecture.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__architecture_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_architecture.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__architecture_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_FMUinOF.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__FMUinOF_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_FMUinOF.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__FMUinOF_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_fuelTruck.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__fuelTruck_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_fuelTruck.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__fuelTruck_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_heatedRoom.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__heatedRoom_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_heatedRoom.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__heatedRoom_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_inputOutput.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__inputOutput_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_inputOutput.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__inputOutput_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_installation.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__installation_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_installation.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__installation_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_installation.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__installation_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_installation.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__installation_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_introduction.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__introduction_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_introduction.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__introduction_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_introduction.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__introduction_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_introduction.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__introduction_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_OfasFMU.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__OfasFMU_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_OfasFMU.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__OfasFMU_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_OpenFOAM.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__OpenFOAM_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_OpenFOAM.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__OpenFOAM_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_OpenFOAM.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__OpenFOAM_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_OpenFOAM.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__OpenFOAM_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_release_notes_01.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__release__notes__01_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_release_notes_01.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__release__notes__01_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_release_notes_01.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__release__notes__01_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_release_notes_01.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__release__notes__01_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_TempControlFlange.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2docs_2pages_2doc_2doc__TempControlFlange_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_TempControlFlange.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2docs_2pages_2doc_2doc__TempControlFlange_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>test-dataLayer.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/application/test/test-dataLayer/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-dataLayer_2test-dataLayer_8C.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>CATCH_CONFIG_MAIN</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-dataLayer_2test-dataLayer_8C.html</anchorfile>
+      <anchor>a656eb5868e824d59f489f910db438420</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>TEST_CASE</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-dataLayer_2test-dataLayer_8C.html</anchorfile>
+      <anchor>a04fe960a1bfc62facc1ca6a715313974</anchor>
+      <arglist>(&quot;commDataLayer store and erase multiple registries&quot;, &quot;[commDataLayer]&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>TEST_CASE</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-dataLayer_2test-dataLayer_8C.html</anchorfile>
+      <anchor>a7d27b436db25626a4ed1ef67acf029cb</anchor>
+      <arglist>(&quot;commDataLayer store, get and mod&quot;, &quot;[commDataLayer]&quot;)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>test-dataLayer.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/application/test/test-dataLayer/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2application_2test_2test-dataLayer_2test-dataLayer_8C.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>CATCH_CONFIG_MAIN</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2application_2test_2test-dataLayer_2test-dataLayer_8C.html</anchorfile>
+      <anchor>a656eb5868e824d59f489f910db438420</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>TEST_CASE</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2application_2test_2test-dataLayer_2test-dataLayer_8C.html</anchorfile>
+      <anchor>a04fe960a1bfc62facc1ca6a715313974</anchor>
+      <arglist>(&quot;commDataLayer store and erase multiple registries&quot;, &quot;[commDataLayer]&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>TEST_CASE</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2application_2test_2test-dataLayer_2test-dataLayer_8C.html</anchorfile>
+      <anchor>a7d27b436db25626a4ed1ef67acf029cb</anchor>
+      <arglist>(&quot;commDataLayer store, get and mod&quot;, &quot;[commDataLayer]&quot;)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>test-json.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/application/test/test-json/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-json_2test-json_8C.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>CATCH_CONFIG_MAIN</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-json_2test-json_8C.html</anchorfile>
+      <anchor>a656eb5868e824d59f489f910db438420</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-json_2test-json_8C.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>TEST_CASE</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-json_2test-json_8C.html</anchorfile>
+      <anchor>ab2f8fb9c959d00269e29b0408d792fc0</anchor>
+      <arglist>(&quot;test json&quot;, &quot;[json]&quot;)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>test-json.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/application/test/test-json/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2application_2test_2test-json_2test-json_8C.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>CATCH_CONFIG_MAIN</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2application_2test_2test-json_2test-json_8C.html</anchorfile>
+      <anchor>a656eb5868e824d59f489f910db438420</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2application_2test_2test-json_2test-json_8C.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>TEST_CASE</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2application_2test_2test-json_2test-json_8C.html</anchorfile>
+      <anchor>ab2f8fb9c959d00269e29b0408d792fc0</anchor>
+      <arglist>(&quot;test json&quot;, &quot;[json]&quot;)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>test-pythonNumpy.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/application/test/test-pythonNumpy/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-pythonNumpy_2test-pythonNumpy_8C.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-pythonNumpy_2test-pythonNumpy_8C.html</anchorfile>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
+      <arglist>(int argc, char *argv[])</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>test-pythonNumpy.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/application/test/test-pythonNumpy/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2application_2test_2test-pythonNumpy_2test-pythonNumpy_8C.html</filename>
+    <member kind="function">
+      <type>int</type>
+      <name>main</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2application_2test_2test-pythonNumpy_2test-pythonNumpy_8C.html</anchorfile>
+      <anchor>a0ddf1224851353fc92bfbff6f499fa97</anchor>
+      <arglist>(int argc, char *argv[])</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>test-zmq.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/application/test/test-zmq/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-zmq_2test-zmq_8C.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>CATCH_CONFIG_MAIN</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-zmq_2test-zmq_8C.html</anchorfile>
+      <anchor>a656eb5868e824d59f489f910db438420</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>TEST_CASE</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2application_2test_2test-zmq_2test-zmq_8C.html</anchorfile>
+      <anchor>afbea955171fde8158b661579fa85664e</anchor>
+      <arglist>(&quot;test zmq&quot;, &quot;[zmq]&quot;)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>test-zmq.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/application/test/test-zmq/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2application_2test_2test-zmq_2test-zmq_8C.html</filename>
+    <member kind="define">
+      <type>#define</type>
+      <name>CATCH_CONFIG_MAIN</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2application_2test_2test-zmq_2test-zmq_8C.html</anchorfile>
+      <anchor>a656eb5868e824d59f489f910db438420</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>TEST_CASE</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2application_2test_2test-zmq_2test-zmq_8C.html</anchorfile>
+      <anchor>afbea955171fde8158b661579fa85664e</anchor>
+      <arglist>(&quot;test zmq&quot;, &quot;[zmq]&quot;)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>CHANGELOG.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2CHANGELOG_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>CHANGELOG.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2CHANGELOG_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_externalComm.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__externalComm_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_externalComm.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__externalComm_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_input.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__input_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_input.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__input_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_output.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__output_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_output.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__output_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_python_wrapper.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__python__wrapper_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>doc_python_wrapper.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/docs/pages/doc/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2docs_2pages_2doc_2doc__python__wrapper_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>pyInterp.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/embeddingPython/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2embeddingPython_2pyInterp_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2embeddingPython_2pyInterp_8H" name="pyInterp.H" local="yes" imported="no">pyInterp.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a878afec4da8e2c5f0516db7b299f455b</anchor>
+      <arglist>(pyInterp, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>pyInterp.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/embeddingPython/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2embeddingPython_2pyInterp_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2embeddingPython_2pyInterp_8H" name="pyInterp.H" local="yes" imported="no">pyInterp.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a878afec4da8e2c5f0516db7b299f455b</anchor>
+      <arglist>(pyInterp, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>pyInterp.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/embeddingPython/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2embeddingPython_2pyInterp_8H.html</filename>
+    <class kind="class">Foam::pyInterp</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>pyInterp.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/embeddingPython/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2embeddingPython_2pyInterp_8H.html</filename>
+    <class kind="class">Foam::pyInterp</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>commDataLayer.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayer_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayer_8H" name="commDataLayer.H" local="yes" imported="no">commDataLayer.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aca9cc00d4a199ce31d3d17616269e2c3</anchor>
+      <arglist>(commDataLayer, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>commDataLayer.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayer_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayer_8H" name="commDataLayer.H" local="yes" imported="no">commDataLayer.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aca9cc00d4a199ce31d3d17616269e2c3</anchor>
+      <arglist>(commDataLayer, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>commDataLayer.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayer_8H.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2registeredObject_8H" name="registeredObject.H" local="yes" imported="no">registeredObject.H</includes>
+    <class kind="class">Foam::commDataLayer</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>commDataLayer.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayer_8H.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2registeredObject_8H" name="registeredObject.H" local="yes" imported="no">registeredObject.H</includes>
+    <class kind="class">Foam::commDataLayer</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>commDataLayerTemplates.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayerTemplates_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayer_8H" name="commDataLayer.H" local="yes" imported="no">commDataLayer.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>commDataLayerTemplates.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayerTemplates_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2commDataLayer_8H" name="commDataLayer.H" local="yes" imported="no">commDataLayer.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>registeredObject.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2registeredObject_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2registeredObject_8H" name="registeredObject.H" local="yes" imported="no">registeredObject.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a9353e3a18e3381744aab6a8265071998</anchor>
+      <arglist>(registeredObject&lt; bool &gt;,&quot;regBool&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a8ba66ce3d655a948f672e195bc8e4549</anchor>
+      <arglist>(registeredObject&lt; word &gt;,&quot;regWord&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>afe2be2720859468d472528e2d09952e8</anchor>
+      <arglist>(registeredObject&lt; label &gt;,&quot;regLabel&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>af1997ea32469ab0abf8a72875486cf2e</anchor>
+      <arglist>(registeredObject&lt; scalar &gt;,&quot;regScalar&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ad672368f1a28b0d1690b90639b77fe7c</anchor>
+      <arglist>(registeredObject&lt; vector &gt;,&quot;regVector&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ae8ea36464237293e9fe0af3ff5d26405</anchor>
+      <arglist>(registeredObject&lt; symmTensor &gt;,&quot;regSymmTensor&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ad8bb3f2934e5de70642fb4b46df73bf2</anchor>
+      <arglist>(registeredObject&lt; sphericalTensor &gt;,&quot;regSphericalTensor&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ae0bcc17bff0ed10937f7383b21dcf4f5</anchor>
+      <arglist>(registeredObject&lt; tensor &gt;,&quot;regTensor&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a231307ebb7afc6f5a43c31b88a54110d</anchor>
+      <arglist>(registeredObject&lt; Field&lt; scalar &gt;&gt;,&quot;regScalarField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>adf0a8f916e5c2e4ea80e028b8ad2dbd7</anchor>
+      <arglist>(registeredObject&lt; Field&lt; vector &gt;&gt;,&quot;regVectorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aadd4c318728658dadcf44b27c5392379</anchor>
+      <arglist>(registeredObject&lt; Field&lt; symmTensor &gt;&gt;,&quot;regSymmTensorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a4d16534adbe528d5448abbebe6df24d1</anchor>
+      <arglist>(registeredObject&lt; Field&lt; sphericalTensor &gt;&gt;,&quot;regSphericalTensorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a553383ed8b6ae56a2f45e703abbf098b</anchor>
+      <arglist>(registeredObject&lt; Field&lt; tensor &gt;&gt;,&quot;regTensorField&quot;)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>registeredObject.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2registeredObject_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2registeredObject_8H" name="registeredObject.H" local="yes" imported="no">registeredObject.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a9353e3a18e3381744aab6a8265071998</anchor>
+      <arglist>(registeredObject&lt; bool &gt;,&quot;regBool&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a8ba66ce3d655a948f672e195bc8e4549</anchor>
+      <arglist>(registeredObject&lt; word &gt;,&quot;regWord&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>afe2be2720859468d472528e2d09952e8</anchor>
+      <arglist>(registeredObject&lt; label &gt;,&quot;regLabel&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>af1997ea32469ab0abf8a72875486cf2e</anchor>
+      <arglist>(registeredObject&lt; scalar &gt;,&quot;regScalar&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ad672368f1a28b0d1690b90639b77fe7c</anchor>
+      <arglist>(registeredObject&lt; vector &gt;,&quot;regVector&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ae8ea36464237293e9fe0af3ff5d26405</anchor>
+      <arglist>(registeredObject&lt; symmTensor &gt;,&quot;regSymmTensor&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ad8bb3f2934e5de70642fb4b46df73bf2</anchor>
+      <arglist>(registeredObject&lt; sphericalTensor &gt;,&quot;regSphericalTensor&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ae0bcc17bff0ed10937f7383b21dcf4f5</anchor>
+      <arglist>(registeredObject&lt; tensor &gt;,&quot;regTensor&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a231307ebb7afc6f5a43c31b88a54110d</anchor>
+      <arglist>(registeredObject&lt; Field&lt; scalar &gt;&gt;,&quot;regScalarField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>adf0a8f916e5c2e4ea80e028b8ad2dbd7</anchor>
+      <arglist>(registeredObject&lt; Field&lt; vector &gt;&gt;,&quot;regVectorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aadd4c318728658dadcf44b27c5392379</anchor>
+      <arglist>(registeredObject&lt; Field&lt; symmTensor &gt;&gt;,&quot;regSymmTensorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a4d16534adbe528d5448abbebe6df24d1</anchor>
+      <arglist>(registeredObject&lt; Field&lt; sphericalTensor &gt;&gt;,&quot;regSphericalTensorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a553383ed8b6ae56a2f45e703abbf098b</anchor>
+      <arglist>(registeredObject&lt; Field&lt; tensor &gt;&gt;,&quot;regTensorField&quot;)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>registeredObject.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2registeredObject_8H.html</filename>
+    <class kind="class">Foam::registeredObject</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>registeredObject.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/dataInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2dataInterface_2registeredObject_8H.html</filename>
+    <class kind="class">Foam::registeredObject</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>externalIOObject.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObject_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObject_8H" name="externalIOObject.H" local="yes" imported="no">externalIOObject.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineDebugSwitchWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aa4d43f00087ae6f16348c5cfdd667b94</anchor>
+      <arglist>(externalIOObject::externalIOObject, &quot;externalIOObject&quot;, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a0bb59941e5163421febc20b300bb8ddb</anchor>
+      <arglist>(externalIOObject::externalIOObject, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>externalIOObject.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObject_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObject_8H" name="externalIOObject.H" local="yes" imported="no">externalIOObject.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineDebugSwitchWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aa4d43f00087ae6f16348c5cfdd667b94</anchor>
+      <arglist>(externalIOObject::externalIOObject, &quot;externalIOObject&quot;, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a0bb59941e5163421febc20b300bb8ddb</anchor>
+      <arglist>(externalIOObject::externalIOObject, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>externalIOObject.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObject_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::externalIOObject</class>
+    <namespace>Foam::externalIOObjects</namespace>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>externalIOObject.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObject_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::externalIOObject</class>
+    <namespace>Foam::externalIOObjects</namespace>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>externalIOObjectList.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObjectList_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObjectList_8H" name="externalIOObjectList.H" local="yes" imported="no">externalIOObjectList.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>externalIOObjectList.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObjectList_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObjectList_8H" name="externalIOObjectList.H" local="yes" imported="no">externalIOObjectList.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>externalIOObjectList.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObjectList_8H.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObject_8H" name="externalIOObject.H" local="yes" imported="no">externalIOObject.H</includes>
+    <class kind="class">Foam::externalIOObjectList</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>externalIOObjectList.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObjectList_8H.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2externalIOObject_8H" name="externalIOObject.H" local="yes" imported="no">externalIOObject.H</includes>
+    <class kind="class">Foam::externalIOObjectList</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledFlowRateInletVelocityFvPatchVectorField.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledFlowRateInletVelocity/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateInletVeloc812cb586fb6202b3bc223b06450227c9.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateInletVeloc76564074cfedc49ca7a7c262d1ea841b" name="coupledFlowRateInletVelocityFvPatchVectorField.H" local="yes" imported="no">coupledFlowRateInletVelocityFvPatchVectorField.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeField</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>af07f405ab587318d50c87eb35f2faf57</anchor>
+      <arglist>(fvPatchVectorField, coupledFlowRateInletVelocityFvPatchVectorField)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledFlowRateInletVelocityFvPatchVectorField.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledFlowRateInletVelocity/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateInletVelocity_2coupae9c5bf5ba242c19533535c8c650458d.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateInletVelocity_2coup4b78dddef8e66358172194ac1a495091" name="coupledFlowRateInletVelocityFvPatchVectorField.H" local="yes" imported="no">coupledFlowRateInletVelocityFvPatchVectorField.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeField</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>af07f405ab587318d50c87eb35f2faf57</anchor>
+      <arglist>(fvPatchVectorField, coupledFlowRateInletVelocityFvPatchVectorField)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledFlowRateInletVelocityFvPatchVectorField.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledFlowRateInletVelocity/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateInletVeloc76564074cfedc49ca7a7c262d1ea841b.html</filename>
+    <class kind="class">Foam::coupledFlowRateInletVelocityFvPatchVectorField</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledFlowRateInletVelocityFvPatchVectorField.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledFlowRateInletVelocity/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateInletVelocity_2coup4b78dddef8e66358172194ac1a495091.html</filename>
+    <class kind="class">Foam::coupledFlowRateInletVelocityFvPatchVectorField</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledFlowRateOutletVelocityFvPatchVectorField.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledFlowRateOutletVelocity/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateOutletVelo13d041edf80aa0342da6a6a4984659fc.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateOutletVelo3feda6c0461823eefd795666b62df2ec" name="coupledFlowRateOutletVelocityFvPatchVectorField.H" local="yes" imported="no">coupledFlowRateOutletVelocityFvPatchVectorField.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeField</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a596f1358d46443534bf57ce6d62aef5a</anchor>
+      <arglist>(fvPatchVectorField, coupledFlowRateOutletVelocityFvPatchVectorField)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledFlowRateOutletVelocityFvPatchVectorField.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledFlowRateOutletVelocity/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateOutletVelocity_2coua90dac7657d5202f9c8c0ce12f687951.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateOutletVelocity_2cou4c8831ee972ae61ca4a60416ffb0c716" name="coupledFlowRateOutletVelocityFvPatchVectorField.H" local="yes" imported="no">coupledFlowRateOutletVelocityFvPatchVectorField.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeField</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a596f1358d46443534bf57ce6d62aef5a</anchor>
+      <arglist>(fvPatchVectorField, coupledFlowRateOutletVelocityFvPatchVectorField)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledFlowRateOutletVelocityFvPatchVectorField.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledFlowRateOutletVelocity/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateOutletVelo3feda6c0461823eefd795666b62df2ec.html</filename>
+    <class kind="class">Foam::coupledFlowRateOutletVelocityFvPatchVectorField</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledFlowRateOutletVelocityFvPatchVectorField.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledFlowRateOutletVelocity/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledFlowRateOutletVelocity_2cou4c8831ee972ae61ca4a60416ffb0c716.html</filename>
+    <class kind="class">Foam::coupledFlowRateOutletVelocityFvPatchVectorField</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchField.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalVal7d0c5940a00133b62529969cca037dce.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalVal50acf84bc6c03b75db1b0c10a0aa43dc" name="coupledUniformExternalValueFvPatchField.H" local="yes" imported="no">coupledUniformExternalValueFvPatchField.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchField.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalValue_2coupl5418386803cf2b7ecd01f2b6406f1625.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalValue_2coupla1aeeb9b6e7f59403cbe44a547693552" name="coupledUniformExternalValueFvPatchField.H" local="yes" imported="no">coupledUniformExternalValueFvPatchField.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchField.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalVal50acf84bc6c03b75db1b0c10a0aa43dc.html</filename>
+    <class kind="class">Foam::coupledUniformExternalValueFvPatchField</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchField.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalValue_2coupla1aeeb9b6e7f59403cbe44a547693552.html</filename>
+    <class kind="class">Foam::coupledUniformExternalValueFvPatchField</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchFields.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalVal34a853800697669ef3e6c781669c4a74.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalVale058821bf8df15f4a7f37d49783696e2" name="coupledUniformExternalValueFvPatchFields.H" local="yes" imported="no">coupledUniformExternalValueFvPatchFields.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchFields</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aa2d564e4146f42d26717b0a615da47e3</anchor>
+      <arglist>(coupledUniformExternalValue)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchFields.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalValue_2coupl5694f1c3bd8ea3db7868ea1bc33324a1.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalValue_2coupla0f60dd5071c576c02a3dddd47be4fc5" name="coupledUniformExternalValueFvPatchFields.H" local="yes" imported="no">coupledUniformExternalValueFvPatchFields.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchFields</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aa2d564e4146f42d26717b0a615da47e3</anchor>
+      <arglist>(coupledUniformExternalValue)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchFields.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalVale058821bf8df15f4a7f37d49783696e2.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalVal50acf84bc6c03b75db1b0c10a0aa43dc" name="coupledUniformExternalValueFvPatchField.H" local="yes" imported="no">coupledUniformExternalValueFvPatchField.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeFieldTypedefs</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ab522a4d5b5941b0fefa331dab1a68f12</anchor>
+      <arglist>(coupledUniformExternalValue)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchFields.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalValue_2coupla0f60dd5071c576c02a3dddd47be4fc5.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalValue_2coupla1aeeb9b6e7f59403cbe44a547693552" name="coupledUniformExternalValueFvPatchField.H" local="yes" imported="no">coupledUniformExternalValueFvPatchField.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeFieldTypedefs</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ab522a4d5b5941b0fefa331dab1a68f12</anchor>
+      <arglist>(coupledUniformExternalValue)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchFieldsFwd.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalVald8e264631dccc3b69627eec861a62aac.html</filename>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeFieldTypedefs</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ac2487677eab704ff2c018f31e1bc3740</anchor>
+      <arglist>(uniform)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledUniformExternalValueFvPatchFieldsFwd.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledUniformExternalValue/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledUniformExternalValue_2coupl31fd0e4ad662dbb5427759808789febd.html</filename>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeFieldTypedefs</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ac2487677eab704ff2c018f31e1bc3740</anchor>
+      <arglist>(uniform)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledWallHeatFluxTemperatureFvPatchScalarField.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledWallHeatFluxTemperature/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledWallHeatFluxTemper11b21fda43d25bb921e3698db0c9caf4.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledWallHeatFluxTemper5688f3fe8e0ba75c377b6965d95955bb" name="coupledWallHeatFluxTemperatureFvPatchScalarField.H" local="yes" imported="no">coupledWallHeatFluxTemperatureFvPatchScalarField.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeField</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a9ce4c02b25488783b8b2bacd6d164828</anchor>
+      <arglist>(fvPatchScalarField, coupledWallHeatFluxTemperatureFvPatchScalarField)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledWallHeatFluxTemperatureFvPatchScalarField.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledWallHeatFluxTemperature/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledWallHeatFluxTemperature_2coff906b8ea89ee2d0007416550e17499f.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledWallHeatFluxTemperature_2co85f87ef6c6124e62db76b5d9b7e6fc58" name="coupledWallHeatFluxTemperatureFvPatchScalarField.H" local="yes" imported="no">coupledWallHeatFluxTemperatureFvPatchScalarField.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeField</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a9ce4c02b25488783b8b2bacd6d164828</anchor>
+      <arglist>(fvPatchScalarField, coupledWallHeatFluxTemperatureFvPatchScalarField)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledWallHeatFluxTemperatureFvPatchScalarField.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledWallHeatFluxTemperature/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledWallHeatFluxTemper5688f3fe8e0ba75c377b6965d95955bb.html</filename>
+    <class kind="class">Foam::coupledWallHeatFluxTemperatureFvPatchScalarField</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledWallHeatFluxTemperatureFvPatchScalarField.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/BC/coupledWallHeatFluxTemperature/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2BC_2coupledWallHeatFluxTemperature_2co85f87ef6c6124e62db76b5d9b7e6fc58.html</filename>
+    <class kind="class">Foam::coupledWallHeatFluxTemperatureFvPatchScalarField</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledAccelerationSource.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/fvOptions/coupledAccelerationSource/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAcceleratio915730318a4ebe4cea479fd1a70c8f1d.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAcceleratioe56bcd5dfceba53913740044cb1d8d6a" name="coupledAccelerationSource.H" local="yes" imported="no">coupledAccelerationSource.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::fv</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1fv.html</anchorfile>
+      <anchor>a81278dc4b58ed11b878ddf7458eac6cc</anchor>
+      <arglist>(coupledAccelerationSource, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1fv.html</anchorfile>
+      <anchor>ac9de8c137e3ee151c9bdf6e0e1c183b3</anchor>
+      <arglist>(option, coupledAccelerationSource, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledAccelerationSource.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/fvOptions/coupledAccelerationSource/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAccelerationSource_2coupledAccelerationSource_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAccelerationSource_2coupledAccelerationSource_8H" name="coupledAccelerationSource.H" local="yes" imported="no">coupledAccelerationSource.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::fv</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1fv.html</anchorfile>
+      <anchor>a81278dc4b58ed11b878ddf7458eac6cc</anchor>
+      <arglist>(coupledAccelerationSource, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1fv.html</anchorfile>
+      <anchor>ac9de8c137e3ee151c9bdf6e0e1c183b3</anchor>
+      <arglist>(option, coupledAccelerationSource, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledAccelerationSource.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/fvOptions/coupledAccelerationSource/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAcceleratioe56bcd5dfceba53913740044cb1d8d6a.html</filename>
+    <class kind="class">Foam::fv::coupledAccelerationSource</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::fv</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledAccelerationSource.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/fvOptions/coupledAccelerationSource/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAccelerationSource_2coupledAccelerationSource_8H.html</filename>
+    <class kind="class">Foam::fv::coupledAccelerationSource</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::fv</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledAccelerationSourceTemplates.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/fvOptions/coupledAccelerationSource/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAcceleratioab614abefbc41056626308681b727d71.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAcceleratioe56bcd5dfceba53913740044cb1d8d6a" name="coupledAccelerationSource.H" local="yes" imported="no">coupledAccelerationSource.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>coupledAccelerationSourceTemplates.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/fvOptions/coupledAccelerationSource/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAccelerationSource_22530d5888e0cc7af910ca0034432a4fe.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2fvOptions_2coupledAccelerationSource_2coupledAccelerationSource_8H" name="coupledAccelerationSource.H" local="yes" imported="no">coupledAccelerationSource.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>coupledRotationMotion.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/coupledRotationMotion/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledRotationMotion_2coupledRotationMotion_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledRotationMotion_2coupledRotationMotion_8H" name="coupledRotationMotion.H" local="yes" imported="no">coupledRotationMotion.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::solidBodyMotionFunctions</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1solidBodyMotionFunctions.html</anchorfile>
+      <anchor>ad2dddc968362f8c8f428a0214ded1214</anchor>
+      <arglist>(coupledRotationMotion, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1solidBodyMotionFunctions.html</anchorfile>
+      <anchor>adccfdd417d7157d1956acefb214aab67</anchor>
+      <arglist>(solidBodyMotionFunction, coupledRotationMotion, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledRotationMotion.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/coupledRotationMotion/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledRotationMotion_2coupledRotationMotion_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledRotationMotion_2coupledRotationMotion_8H" name="coupledRotationMotion.H" local="yes" imported="no">coupledRotationMotion.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::solidBodyMotionFunctions</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1solidBodyMotionFunctions.html</anchorfile>
+      <anchor>ad2dddc968362f8c8f428a0214ded1214</anchor>
+      <arglist>(coupledRotationMotion, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1solidBodyMotionFunctions.html</anchorfile>
+      <anchor>adccfdd417d7157d1956acefb214aab67</anchor>
+      <arglist>(solidBodyMotionFunction, coupledRotationMotion, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledRotationMotion.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/coupledRotationMotion/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledRotationMotion_2coupledRotationMotion_8H.html</filename>
+    <class kind="class">Foam::solidBodyMotionFunctions::coupledRotationMotion</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::solidBodyMotionFunctions</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledRotationMotion.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/coupledRotationMotion/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledRotationMotion_2coupledRotationMotion_8H.html</filename>
+    <class kind="class">Foam::solidBodyMotionFunctions::coupledRotationMotion</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::solidBodyMotionFunctions</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledTranslationMotion.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/coupledTranslationMotion/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledTranslatio37625b0d1a1df9fb3d6e89083f6cc21e.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledTranslatio46925343d7e04138b880db0429cc79f1" name="coupledTranslationMotion.H" local="yes" imported="no">coupledTranslationMotion.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::solidBodyMotionFunctions</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1solidBodyMotionFunctions.html</anchorfile>
+      <anchor>a8ac609081b9f06813213726a80de7bed</anchor>
+      <arglist>(coupledTranslationMotion, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1solidBodyMotionFunctions.html</anchorfile>
+      <anchor>ab805d242b0db154feb276bac061cd470</anchor>
+      <arglist>(solidBodyMotionFunction, coupledTranslationMotion, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledTranslationMotion.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/coupledTranslationMotion/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledTranslationMotion_2coupledTranslationMotion_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledTranslationMotion_2coupledTranslationMotion_8H" name="coupledTranslationMotion.H" local="yes" imported="no">coupledTranslationMotion.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::solidBodyMotionFunctions</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1solidBodyMotionFunctions.html</anchorfile>
+      <anchor>a8ac609081b9f06813213726a80de7bed</anchor>
+      <arglist>(coupledTranslationMotion, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1solidBodyMotionFunctions.html</anchorfile>
+      <anchor>ab805d242b0db154feb276bac061cd470</anchor>
+      <arglist>(solidBodyMotionFunction, coupledTranslationMotion, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>coupledTranslationMotion.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/coupledTranslationMotion/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledTranslatio46925343d7e04138b880db0429cc79f1.html</filename>
+    <class kind="class">Foam::solidBodyMotionFunctions::coupledTranslationMotion</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::solidBodyMotionFunctions</namespace>
+  </compound>
+  <compound kind="file">
+    <name>coupledTranslationMotion.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/coupledTranslationMotion/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2coupledTranslationMotion_2coupledTranslationMotion_8H.html</filename>
+    <class kind="class">Foam::solidBodyMotionFunctions::coupledTranslationMotion</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::solidBodyMotionFunctions</namespace>
+  </compound>
+  <compound kind="file">
+    <name>externalCoupledForce.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/externalCoupledForce/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2externalCoupledForce_2externalCoupledForce_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2externalCoupledForce_2externalCoupledForce_8H" name="externalCoupledForce.H" local="yes" imported="no">externalCoupledForce.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::RBD</namespace>
+    <namespace>Foam::RBD::restraints</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1RBD_1_1restraints.html</anchorfile>
+      <anchor>a5b0aae36baf371ae60d2f75cccd43ed7</anchor>
+      <arglist>(externalCoupledForce, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1RBD_1_1restraints.html</anchorfile>
+      <anchor>a45e0c4931defa4fc17f0f70b171c1c78</anchor>
+      <arglist>(restraint, externalCoupledForce, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>externalCoupledForce.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/externalCoupledForce/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2externalCoupledForce_2externalCoupledForce_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2externalCoupledForce_2externalCoupledForce_8H" name="externalCoupledForce.H" local="yes" imported="no">externalCoupledForce.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::RBD</namespace>
+    <namespace>Foam::RBD::restraints</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1RBD_1_1restraints.html</anchorfile>
+      <anchor>a5b0aae36baf371ae60d2f75cccd43ed7</anchor>
+      <arglist>(externalCoupledForce, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1RBD_1_1restraints.html</anchorfile>
+      <anchor>a45e0c4931defa4fc17f0f70b171c1c78</anchor>
+      <arglist>(restraint, externalCoupledForce, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>externalCoupledForce.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/externalCoupledForce/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2externalCoupledForce_2externalCoupledForce_8H.html</filename>
+    <class kind="class">Foam::RBD::restraints::externalCoupledForce</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::RBD</namespace>
+    <namespace>Foam::RBD::restraints</namespace>
+  </compound>
+  <compound kind="file">
+    <name>externalCoupledForce.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/input/meshMotion/externalCoupledForce/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2input_2meshMotion_2externalCoupledForce_2externalCoupledForce_8H.html</filename>
+    <class kind="class">Foam::RBD::restraints::externalCoupledForce</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::RBD</namespace>
+    <namespace>Foam::RBD::restraints</namespace>
+  </compound>
+  <compound kind="file">
+    <name>extForces.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extForces/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extForces_2extForces_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extForces_2extForces_8H" name="extForces.H" local="yes" imported="no">extForces.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>aa716636efbf026c05e4390934a0b9ecd</anchor>
+      <arglist>(extForces, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>abb139c69af1639328222e2af5a471632</anchor>
+      <arglist>(externalIOObject, extForces, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>extForces.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extForces/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extForces_2extForces_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extForces_2extForces_8H" name="extForces.H" local="yes" imported="no">extForces.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>aa716636efbf026c05e4390934a0b9ecd</anchor>
+      <arglist>(extForces, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>abb139c69af1639328222e2af5a471632</anchor>
+      <arglist>(externalIOObject, extForces, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>extForces.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extForces/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extForces_2extForces_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::extForces</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>extForces.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extForces/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extForces_2extForces_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::extForces</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>extFunction.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extFunction/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extFunction_2extFunction_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extFunction_2extFunction_8H" name="extFunction.H" local="yes" imported="no">extFunction.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>afef08e61b202fd937be1eff61e044f51</anchor>
+      <arglist>(extFunction, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>a1c48333766ed4869b5285cbea993091d</anchor>
+      <arglist>(externalIOObject, extFunction, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>extFunction.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extFunction/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extFunction_2extFunction_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extFunction_2extFunction_8H" name="extFunction.H" local="yes" imported="no">extFunction.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>afef08e61b202fd937be1eff61e044f51</anchor>
+      <arglist>(extFunction, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>a1c48333766ed4869b5285cbea993091d</anchor>
+      <arglist>(externalIOObject, extFunction, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>extFunction.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extFunction/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extFunction_2extFunction_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::extFunction</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>extFunction.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extFunction/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extFunction_2extFunction_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::extFunction</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>extPatch.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extPatch/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extPatch_2extPatch_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extPatch_2extPatch_8H" name="extPatch.H" local="yes" imported="no">extPatch.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>a8c2ac9be711eb3f7a5834c9bd93c2431</anchor>
+      <arglist>(extPatch, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>af6e782eb710b761f4c0d2cda89d0929b</anchor>
+      <arglist>(externalIOObject, extPatch, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>extPatch.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extPatch/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extPatch_2extPatch_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extPatch_2extPatch_8H" name="extPatch.H" local="yes" imported="no">extPatch.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>a8c2ac9be711eb3f7a5834c9bd93c2431</anchor>
+      <arglist>(extPatch, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>af6e782eb710b761f4c0d2cda89d0929b</anchor>
+      <arglist>(externalIOObject, extPatch, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>extPatch.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extPatch/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extPatch_2extPatch_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::extPatch</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>extPatch.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extPatch/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extPatch_2extPatch_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::extPatch</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>extSensor.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extSensor/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extSensor_2extSensor_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extSensor_2extSensor_8H" name="extSensor.H" local="yes" imported="no">extSensor.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>a493a5c04a4e6c9037e5c3741ba60f806</anchor>
+      <arglist>(extSensor, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>abd8cbdf792d2ab5074f4a2558bd0a720</anchor>
+      <arglist>(externalIOObject, extSensor, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>extSensor.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extSensor/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extSensor_2extSensor_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extSensor_2extSensor_8H" name="extSensor.H" local="yes" imported="no">extSensor.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>a493a5c04a4e6c9037e5c3741ba60f806</anchor>
+      <arglist>(extSensor, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1externalIOObject.html</anchorfile>
+      <anchor>abd8cbdf792d2ab5074f4a2558bd0a720</anchor>
+      <arglist>(externalIOObject, extSensor, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>extSensor.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extSensor/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extSensor_2extSensor_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::extSensor</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>extSensor.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/externalIO/output/extSensor/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2externalIO_2output_2extSensor_2extSensor_8H.html</filename>
+    <class kind="class">Foam::externalIOObject::extSensor</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::externalIOObject</namespace>
+  </compound>
+  <compound kind="file">
+    <name>json.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2json_8H.html</filename>
+    <namespace>Foam</namespace>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2json_8H.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a8f902008c5eedaec2a88f46546efb8d3</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a13d3dea89b2df135b0f566e278cd4287</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aaa31b2da863e0a9f79a75f01797f5107</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a520a95b521a147b32c5bbebd6d1c41cf</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>json.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2json_8H.html</filename>
+    <namespace>Foam</namespace>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2json_8H.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a8f902008c5eedaec2a88f46546efb8d3</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a13d3dea89b2df135b0f566e278cd4287</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aaa31b2da863e0a9f79a75f01797f5107</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a520a95b521a147b32c5bbebd6d1c41cf</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>socket.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2socket_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2socket_8H" name="socket.H" local="yes" imported="no">socket.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a94241011a0972b2acd4a8d895477e188</anchor>
+      <arglist>(socket, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>socket.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2socket_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2socket_8H" name="socket.H" local="yes" imported="no">socket.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a94241011a0972b2acd4a8d895477e188</anchor>
+      <arglist>(socket, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>socket.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2socket_8H.html</filename>
+    <class kind="class">Foam::socket</class>
+    <namespace>Foam</namespace>
+    <member kind="typedef">
+      <type>boost::asio::ip::tcp</type>
+      <name>tcp</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2socket_8H.html</anchorfile>
+      <anchor>aacd32e7300ba1ea408f0cb79dbe33d86</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>socket.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2socket_8H.html</filename>
+    <class kind="class">Foam::socket</class>
+    <namespace>Foam</namespace>
+    <member kind="typedef">
+      <type>boost::asio::ip::tcp</type>
+      <name>tcp</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2socket_8H.html</anchorfile>
+      <anchor>aacd32e7300ba1ea408f0cb79dbe33d86</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>websocket.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2websocket_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2websocket_8H" name="websocket.H" local="yes" imported="no">websocket.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a2b371f610d4fe253b6b5a05cd789fe8e</anchor>
+      <arglist>(websocket, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>websocket.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2websocket_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2websocket_8H" name="websocket.H" local="yes" imported="no">websocket.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a2b371f610d4fe253b6b5a05cd789fe8e</anchor>
+      <arglist>(websocket, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>websocket.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2websocket_8H.html</filename>
+    <class kind="class">Foam::websocket</class>
+    <namespace>Foam</namespace>
+    <member kind="typedef">
+      <type>boost::asio::ip::tcp</type>
+      <name>tcp</name>
+      <anchorfile>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2websocket_8H.html</anchorfile>
+      <anchor>aacd32e7300ba1ea408f0cb79dbe33d86</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>websocket.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2websocket_8H.html</filename>
+    <class kind="class">Foam::websocket</class>
+    <namespace>Foam</namespace>
+    <member kind="typedef">
+      <type>boost::asio::ip::tcp</type>
+      <name>tcp</name>
+      <anchorfile>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2websocket_8H.html</anchorfile>
+      <anchor>aacd32e7300ba1ea408f0cb79dbe33d86</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>zmq_socket.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2zmq__socket_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2zmq__socket_8H" name="zmq_socket.H" local="yes" imported="no">zmq_socket.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a21603f21c5557b459ea22f2640524f06</anchor>
+      <arglist>(zmq_socket, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>zmq_socket.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2zmq__socket_8C.html</filename>
+    <includes id="FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2zmq__socket_8H" name="zmq_socket.H" local="yes" imported="no">zmq_socket.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a21603f21c5557b459ea22f2640524f06</anchor>
+      <arglist>(zmq_socket, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>zmq_socket.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>classes_2FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2zmq__socket_8H.html</filename>
+    <class kind="class">Foam::zmq_socket</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>zmq_socket.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/ECI4FOAM/src/externalComm/networkInterface/</path>
+    <filename>FMU4FOAM_2ECI4FOAM_2src_2externalComm_2networkInterface_2zmq__socket_8H.html</filename>
+    <class kind="class">Foam::zmq_socket</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>paper.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/paper/</path>
+    <filename>classes_2FMU4FOAM_2paper_2paper_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>paper.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/paper/</path>
+    <filename>FMU4FOAM_2paper_2paper_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>readme.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/paper/</path>
+    <filename>classes_2FMU4FOAM_2paper_2readme_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>readme.md</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/paper/</path>
+    <filename>FMU4FOAM_2paper_2readme_8md.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>FMUController.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/src/OF_FMU/FMU/</path>
+    <filename>classes_2FMU4FOAM_2src_2OF__FMU_2FMU_2FMUController_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2src_2OF__FMU_2FMU_2FMUController_8H" name="FMUController.H" local="yes" imported="no">FMUController.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::functionObjects</namespace>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>classes_2FMU4FOAM_2src_2OF__FMU_2FMU_2FMUController_8C.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1functionObjects.html</anchorfile>
+      <anchor>a61e9a3f43c026579024d8bb542a67def</anchor>
+      <arglist>(FMUController, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1functionObjects.html</anchorfile>
+      <anchor>ab7a22505efaef7969ba03606fd32234a</anchor>
+      <arglist>(functionObject, FMUController, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>FMUController.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/FMU/</path>
+    <filename>FMU4FOAM_2src_2OF__FMU_2FMU_2FMUController_8C.html</filename>
+    <includes id="FMU4FOAM_2src_2OF__FMU_2FMU_2FMUController_8H" name="FMUController.H" local="yes" imported="no">FMUController.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::functionObjects</namespace>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>FMU4FOAM_2src_2OF__FMU_2FMU_2FMUController_8C.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1functionObjects.html</anchorfile>
+      <anchor>a61e9a3f43c026579024d8bb542a67def</anchor>
+      <arglist>(FMUController, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1functionObjects.html</anchorfile>
+      <anchor>ab7a22505efaef7969ba03606fd32234a</anchor>
+      <arglist>(functionObject, FMUController, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>FMUController.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/src/OF_FMU/FMU/</path>
+    <filename>classes_2FMU4FOAM_2src_2OF__FMU_2FMU_2FMUController_8H.html</filename>
+    <class kind="class">Foam::functionObjects::FMUController</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::functionObjects</namespace>
+  </compound>
+  <compound kind="file">
+    <name>FMUController.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/FMU/</path>
+    <filename>FMU4FOAM_2src_2OF__FMU_2FMU_2FMUController_8H.html</filename>
+    <class kind="class">Foam::functionObjects::FMUController</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::functionObjects</namespace>
+  </compound>
+  <compound kind="file">
+    <name>FMU_json.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMU__json_8H.html</filename>
+    <namespace>Foam</namespace>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMU__json_8H.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a8f902008c5eedaec2a88f46546efb8d3</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a13d3dea89b2df135b0f566e278cd4287</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a87ddb08eb8eb2587f43e50ec8c7e7657</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aaa31b2da863e0a9f79a75f01797f5107</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a520a95b521a147b32c5bbebd6d1c41cf</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a5cd4c21c97d6a5b1d0dd09cb4a37b76b</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a9009ed9bec4cc1c5a0f819c27df90215</anchor>
+      <arglist>(json &amp;j, const objectRegistry &amp;obj)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>get_from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a0df8e82a02c8935a58df28168fd62bbc</anchor>
+      <arglist>(const json &amp;j, objectRegistry &amp;obj)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>FMU_json.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMU__json_8H.html</filename>
+    <namespace>Foam</namespace>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMU__json_8H.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a8f902008c5eedaec2a88f46546efb8d3</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a13d3dea89b2df135b0f566e278cd4287</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a87ddb08eb8eb2587f43e50ec8c7e7657</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aaa31b2da863e0a9f79a75f01797f5107</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a520a95b521a147b32c5bbebd6d1c41cf</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a5cd4c21c97d6a5b1d0dd09cb4a37b76b</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a9009ed9bec4cc1c5a0f819c27df90215</anchor>
+      <arglist>(json &amp;j, const objectRegistry &amp;obj)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>get_from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a0df8e82a02c8935a58df28168fd62bbc</anchor>
+      <arglist>(const json &amp;j, objectRegistry &amp;obj)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>FMUSimulator.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMUSimulator_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMUSimulator_8H" name="FMUSimulator.H" local="yes" imported="no">FMUSimulator.H</includes>
+    <includes id="classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMU__json_8H" name="FMU_json.H" local="yes" imported="no">FMU_json.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::functionObjects</namespace>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMUSimulator_8C.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1functionObjects.html</anchorfile>
+      <anchor>a5dd560a4ec57bab45662c44d565c0833</anchor>
+      <arglist>(FMUSimulator, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1functionObjects.html</anchorfile>
+      <anchor>aab549d399a5d87ff1bc5ca9a3e98df62</anchor>
+      <arglist>(functionObject, FMUSimulator, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>FMUSimulator.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMUSimulator_8C.html</filename>
+    <includes id="FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMUSimulator_8H" name="FMUSimulator.H" local="yes" imported="no">FMUSimulator.H</includes>
+    <includes id="FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMU__json_8H" name="FMU_json.H" local="yes" imported="no">FMU_json.H</includes>
+    <namespace>Foam</namespace>
+    <namespace>Foam::functionObjects</namespace>
+    <member kind="typedef">
+      <type>nlohmann::json</type>
+      <name>json</name>
+      <anchorfile>FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMUSimulator_8C.html</anchorfile>
+      <anchor>ab701e3ac61a85b337ec5c1abaad6742d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam_1_1functionObjects.html</anchorfile>
+      <anchor>a5dd560a4ec57bab45662c44d565c0833</anchor>
+      <arglist>(FMUSimulator, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>addToRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam_1_1functionObjects.html</anchorfile>
+      <anchor>aab549d399a5d87ff1bc5ca9a3e98df62</anchor>
+      <arglist>(functionObject, FMUSimulator, dictionary)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>FMUSimulator.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMUSimulator_8H.html</filename>
+    <includes id="classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2pyFMUSim_8H" name="pyFMUSim.H" local="yes" imported="no">pyFMUSim.H</includes>
+    <class kind="class">Foam::functionObjects::FMUSimulator</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::functionObjects</namespace>
+  </compound>
+  <compound kind="file">
+    <name>FMUSimulator.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2FMUSimulator_8H.html</filename>
+    <includes id="FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2pyFMUSim_8H" name="pyFMUSim.H" local="yes" imported="no">pyFMUSim.H</includes>
+    <class kind="class">Foam::functionObjects::FMUSimulator</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::functionObjects</namespace>
+  </compound>
+  <compound kind="file">
+    <name>pyFMUSim.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2pyFMUSim_8C.html</filename>
+    <includes id="classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2pyFMUSim_8H" name="pyFMUSim.H" local="yes" imported="no">pyFMUSim.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a0dafd999eb9d20df11032086a6a41b43</anchor>
+      <arglist>(pyFMUSim, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>pyFMUSim.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2pyFMUSim_8C.html</filename>
+    <includes id="FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2pyFMUSim_8H" name="pyFMUSim.H" local="yes" imported="no">pyFMUSim.H</includes>
+    <namespace>Foam</namespace>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a0dafd999eb9d20df11032086a6a41b43</anchor>
+      <arglist>(pyFMUSim, 0)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>pyFMUSim.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>classes_2FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2pyFMUSim_8H.html</filename>
+    <class kind="class">Foam::pyFMUSim</class>
+    <namespace>Foam</namespace>
+  </compound>
+  <compound kind="file">
+    <name>pyFMUSim.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/FMU4FOAM/src/OF_FMU/pyFMUSim/</path>
+    <filename>FMU4FOAM_2src_2OF__FMU_2pyFMUSim_2pyFMUSim_8H.html</filename>
+    <class kind="class">Foam::pyFMUSim</class>
     <namespace>Foam</namespace>
   </compound>
   <compound kind="file">
@@ -4888,7 +7745,7 @@
       <type>EEqn</type>
       <name>relax</name>
       <anchorfile>EEqn__1p_8H.html</anchorfile>
-      <anchor>ada060d6619956dc9185abaefdb79b7d0</anchor>
+      <anchor>a9b1e3cf7921c1d57830a6970779f3d24</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -8153,6 +11010,21 @@
     <path>/home/faculty/c/carlo.fiorina/data/GeN-Foam/src/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/</path>
     <filename>newPowerModel_8C.html</filename>
     <includes id="powerModel_8H" name="powerModel.H" local="yes" imported="no">powerModel.H</includes>
+  </compound>
+  <compound kind="file">
+    <name>nuclearFuelFMU.C</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU/</path>
+    <filename>nuclearFuelFMU_8C.html</filename>
+  </compound>
+  <compound kind="file">
+    <name>nuclearFuelFMU.H</name>
+    <path>/home/thomas-guilbaud/Software/GeN-Foam-develop-nuclearFuelFMU/GeN-Foam/GeN-Foam/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU/</path>
+    <filename>nuclearFuelFMU_8H.html</filename>
+    <includes id="powerModel_8H" name="powerModel.H" local="yes" imported="no">powerModel.H</includes>
+    <includes id="IOFieldFields_8H" name="IOFieldFields.H" local="yes" imported="no">IOFieldFields.H</includes>
+    <class kind="class">Foam::powerModels::nuclearFuelFMU</class>
+    <namespace>Foam</namespace>
+    <namespace>Foam::powerModels</namespace>
   </compound>
   <compound kind="file">
     <name>nuclearFuelPin.C</name>
@@ -21661,6 +24533,116 @@
     </member>
   </compound>
   <compound kind="class">
+    <name>Foam::powerModels::nuclearFuelFMU</name>
+    <filename>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</filename>
+    <base>Foam::powerModel</base>
+    <member kind="function">
+      <type></type>
+      <name>TypeName</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a1965716a22e2d7b2cd007436311b3927</anchor>
+      <arglist>(&quot;nuclearFuelFMU&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>nuclearFuelFMU</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>ac4940438252b22119a806da7ab8cf4bf</anchor>
+      <arglist>(structure &amp;structure, const dictionary &amp;dicts)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual</type>
+      <name>~nuclearFuelFMU</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a992951cee17e562343eca88e60e70ee1</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual void</type>
+      <name>correct</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>aa6ff3f73bb1486fb6a3948359a93537f</anchor>
+      <arglist>(const volScalarField &amp;HT, const volScalarField &amp;H)</arglist>
+    </member>
+    <member kind="function" virtualness="virtual">
+      <type>virtual void</type>
+      <name>correctT</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a0f85651a8865573dcc1379c3af65fb3e</anchor>
+      <arglist>(volScalarField &amp;T) const</arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>volScalarField</type>
+      <name>Tsurface_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a91d2d2fbea06905033a9584053aeddb6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarList</type>
+      <name>fractionOfPowerFromNeutronics_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a9a9fb1406beb9bc51f2e2ccc35e6fd27</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarListList</type>
+      <name>xPos_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a12a3b4d72d6fe8cdb961816c1f7f02b1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarListList</type>
+      <name>yPos_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>af499662634f4a9d3c67732191cb801f8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarListList</type>
+      <name>zPosMin_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>ae4c6d11281138f4c572e28d0afd7785d</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarListList</type>
+      <name>zPosMax_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>ab3d16c9701f44505018eea96f35a7ecc</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarListList</type>
+      <name>nPoints_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a95f6b1b028f1e42be84a9d39c0d549c8</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>scalarListList</type>
+      <name>epsilon_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a5515d8ba0da5b9c6dd6883df41267427</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>wordList</type>
+      <name>regionIndexToRegionName_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a639c2bc843a6948636eb5bf034616e53</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="variable" protection="protected">
+      <type>labelList</type>
+      <name>cellToRegion_</name>
+      <anchorfile>classFoam_1_1powerModels_1_1nuclearFuelFMU.html</anchorfile>
+      <anchor>a701d76c4cc33a9d530a0d2b7f21c206a</anchor>
+      <arglist></arglist>
+    </member>
+  </compound>
+  <compound kind="class">
     <name>Foam::powerModels::nuclearFuelPin</name>
     <filename>classFoam_1_1powerModels_1_1nuclearFuelPin.html</filename>
     <base>Foam::powerModel</base>
@@ -32047,6 +35029,18 @@
     <class kind="class">Foam::PtrListScalarFieldFieldINew</class>
     <class kind="class">Foam::scalarFieldFieldINew</class>
     <class kind="class">Foam::timeProfile</class>
+    <class kind="class">Foam::pyInterp</class>
+    <class kind="class">Foam::commDataLayer</class>
+    <class kind="class">Foam::registeredObject</class>
+    <class kind="class">Foam::externalIOObjectList</class>
+    <class kind="class">Foam::coupledFlowRateInletVelocityFvPatchVectorField</class>
+    <class kind="class">Foam::coupledFlowRateOutletVelocityFvPatchVectorField</class>
+    <class kind="class">Foam::coupledUniformExternalValueFvPatchField</class>
+    <class kind="class">Foam::coupledWallHeatFluxTemperatureFvPatchScalarField</class>
+    <class kind="class">Foam::socket</class>
+    <class kind="class">Foam::websocket</class>
+    <class kind="class">Foam::zmq_socket</class>
+    <class kind="class">Foam::pyFMUSim</class>
     <class kind="class">Foam::multiphysicsControl</class>
     <class kind="class">Foam::adjointDiffusionNeutronics</class>
     <class kind="class">Foam::albedoSP3FvPatchField</class>
@@ -32287,6 +35281,251 @@
       <anchorfile>namespaceFoam.html</anchorfile>
       <anchor>a1a8374d33d29cd2e004e8a98ac1f3d32</anchor>
       <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a878afec4da8e2c5f0516db7b299f455b</anchor>
+      <arglist>(pyInterp, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aca9cc00d4a199ce31d3d17616269e2c3</anchor>
+      <arglist>(commDataLayer, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a9353e3a18e3381744aab6a8265071998</anchor>
+      <arglist>(registeredObject&lt; bool &gt;,&quot;regBool&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a8ba66ce3d655a948f672e195bc8e4549</anchor>
+      <arglist>(registeredObject&lt; word &gt;,&quot;regWord&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>afe2be2720859468d472528e2d09952e8</anchor>
+      <arglist>(registeredObject&lt; label &gt;,&quot;regLabel&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>af1997ea32469ab0abf8a72875486cf2e</anchor>
+      <arglist>(registeredObject&lt; scalar &gt;,&quot;regScalar&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ad672368f1a28b0d1690b90639b77fe7c</anchor>
+      <arglist>(registeredObject&lt; vector &gt;,&quot;regVector&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ae8ea36464237293e9fe0af3ff5d26405</anchor>
+      <arglist>(registeredObject&lt; symmTensor &gt;,&quot;regSymmTensor&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ad8bb3f2934e5de70642fb4b46df73bf2</anchor>
+      <arglist>(registeredObject&lt; sphericalTensor &gt;,&quot;regSphericalTensor&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ae0bcc17bff0ed10937f7383b21dcf4f5</anchor>
+      <arglist>(registeredObject&lt; tensor &gt;,&quot;regTensor&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a231307ebb7afc6f5a43c31b88a54110d</anchor>
+      <arglist>(registeredObject&lt; Field&lt; scalar &gt;&gt;,&quot;regScalarField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>adf0a8f916e5c2e4ea80e028b8ad2dbd7</anchor>
+      <arglist>(registeredObject&lt; Field&lt; vector &gt;&gt;,&quot;regVectorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aadd4c318728658dadcf44b27c5392379</anchor>
+      <arglist>(registeredObject&lt; Field&lt; symmTensor &gt;&gt;,&quot;regSymmTensorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a4d16534adbe528d5448abbebe6df24d1</anchor>
+      <arglist>(registeredObject&lt; Field&lt; sphericalTensor &gt;&gt;,&quot;regSphericalTensorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTemplateTypeNameWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a553383ed8b6ae56a2f45e703abbf098b</anchor>
+      <arglist>(registeredObject&lt; Field&lt; tensor &gt;&gt;,&quot;regTensorField&quot;)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineDebugSwitchWithName</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aa4d43f00087ae6f16348c5cfdd667b94</anchor>
+      <arglist>(externalIOObject::externalIOObject, &quot;externalIOObject&quot;, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineRunTimeSelectionTable</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a0bb59941e5163421febc20b300bb8ddb</anchor>
+      <arglist>(externalIOObject::externalIOObject, dictionary)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeField</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>af07f405ab587318d50c87eb35f2faf57</anchor>
+      <arglist>(fvPatchVectorField, coupledFlowRateInletVelocityFvPatchVectorField)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeField</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a596f1358d46443534bf57ce6d62aef5a</anchor>
+      <arglist>(fvPatchVectorField, coupledFlowRateOutletVelocityFvPatchVectorField)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>makePatchFields</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aa2d564e4146f42d26717b0a615da47e3</anchor>
+      <arglist>(coupledUniformExternalValue)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeFieldTypedefs</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ab522a4d5b5941b0fefa331dab1a68f12</anchor>
+      <arglist>(coupledUniformExternalValue)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeFieldTypedefs</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>ac2487677eab704ff2c018f31e1bc3740</anchor>
+      <arglist>(uniform)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>makePatchTypeField</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a9ce4c02b25488783b8b2bacd6d164828</anchor>
+      <arglist>(fvPatchScalarField, coupledWallHeatFluxTemperatureFvPatchScalarField)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a8f902008c5eedaec2a88f46546efb8d3</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a13d3dea89b2df135b0f566e278cd4287</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>aaa31b2da863e0a9f79a75f01797f5107</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a520a95b521a147b32c5bbebd6d1c41cf</anchor>
+      <arglist>(const json &amp;j, registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a94241011a0972b2acd4a8d895477e188</anchor>
+      <arglist>(socket, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a2b371f610d4fe253b6b5a05cd789fe8e</anchor>
+      <arglist>(websocket, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a21603f21c5557b459ea22f2640524f06</anchor>
+      <arglist>(zmq_socket, 0)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a87ddb08eb8eb2587f43e50ec8c7e7657</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; scalar &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a5cd4c21c97d6a5b1d0dd09cb4a37b76b</anchor>
+      <arglist>(json &amp;j, const registeredObject&lt; vector &gt; &amp;s)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>add_to_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a9009ed9bec4cc1c5a0f819c27df90215</anchor>
+      <arglist>(json &amp;j, const objectRegistry &amp;obj)</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>get_from_json</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a0df8e82a02c8935a58df28168fd62bbc</anchor>
+      <arglist>(const json &amp;j, objectRegistry &amp;obj)</arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>defineTypeNameAndDebug</name>
+      <anchorfile>namespaceFoam.html</anchorfile>
+      <anchor>a0dafd999eb9d20df11032086a6a41b43</anchor>
+      <arglist>(pyFMUSim, 0)</arglist>
     </member>
     <member kind="function">
       <type></type>
@@ -33705,6 +36944,8 @@
   <compound kind="namespace">
     <name>Foam::functionObjects</name>
     <filename>namespaceFoam_1_1functionObjects.html</filename>
+    <class kind="class">Foam::functionObjects::FMUController</class>
+    <class kind="class">Foam::functionObjects::FMUSimulator</class>
     <class kind="class">Foam::functionObjects::fieldDiffExtents</class>
     <class kind="class">Foam::functionObjects::massFlow</class>
     <class kind="class">Foam::functionObjects::patchScalarFieldValue</class>
@@ -34111,6 +37352,7 @@
     <class kind="class">Foam::powerModels::fixedTemperatureFMU</class>
     <class kind="class">Foam::powerModels::heatedPin</class>
     <class kind="class">Foam::powerModels::lumpedNuclearStructure</class>
+    <class kind="class">Foam::powerModels::nuclearFuelFMU</class>
     <class kind="class">Foam::powerModels::nuclearFuelPin</class>
     <class kind="class">Foam::powerModels::nuclearFuelPinTest</class>
     <class kind="class">Foam::powerModels::nuclearSteadyStatePebble</class>
@@ -34673,7 +37915,7 @@
     <name>README</name>
     <title>GeN-Foam README file</title>
     <filename>README.html</filename>
-    <docanchor file="README.html">md__home_faculty_c_carlo_fiorina_data_GeN_Foam_README</docanchor>
+    <docanchor file="README.html">md__home_thomas_guilbaud_Software_GeN_Foam_develop_nuclearFuelFMU_GeN_Foam_README</docanchor>
   </compound>
   <compound kind="page">
     <name>COMPILE</name>

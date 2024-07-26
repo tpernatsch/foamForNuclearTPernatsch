@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -85,7 +85,8 @@ SourceFiles
 #include "volFields.H"
 #include "meshToMesh.H"
 #include "zeroGradientFvPatchFields.H"
-#include "Function1.H"
+// #include "Function1.H"
+#include "timeProfile.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -116,19 +117,20 @@ protected :
     
     //- Optional table to describe any possible dependence of the momentum
     //  source on time
-    autoPtr<Function1<scalar>> timeProfilePtr_;
+    // autoPtr<Function1<scalar>> timeProfilePtr_;
+    timeProfile momentumSourceTimeProfile_;
 
     //- Optional offset time
-    scalar t0_;
+    // scalar t0_;
 
     //- True if a timeProfilePtr_ exists
-    bool timeProfile_;
+    // bool timeProfile_;
 
     //- Name of the momentum source for FMU coupling
-    word pumpMultiplierNameFromFMU_;
+    // word pumpMultiplierNameFromFMU_;
 
     //- True if a momentumSourceNameForFMU exists
-    bool fromFMU_;
+    // bool fromFMU_;
 
 public:
 
@@ -156,7 +158,8 @@ public:
             //-
             bool timeDependent() const
             {
-                return (timeProfile_ || fromFMU_);
+                // return (timeProfile_ || fromFMU_);
+                return (momentumSourceTimeProfile_.valid());
             }
 };
 

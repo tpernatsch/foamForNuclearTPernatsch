@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -90,7 +90,7 @@ Foam::powerModels::fixedPower::fixedPower
         zeroGradientFvPatchScalarField::typeName
     ),
     timeProfile_(this->toc().size()),
-    t0_(this->toc().size()),
+    // t0_(this->toc().size()),
     timeDependent_(this->toc().size()),
     T_
     (
@@ -163,28 +163,18 @@ Foam::powerModels::fixedPower::fixedPower
         timeDependent_[regioni] = false;
         if (dict.found(timeProfileDictName))
         {
-            
+            // Should I reuse the same IOdictionary strategy from pump.C?
             const dictionary& timeProfileDict(dict.subDict(timeProfileDictName));
-            word type
-            (
-                timeProfileDict.get<word>("type")
-            );
-
-            timeProfile_.set        
+            
+            timeProfile_.set
             (
                 regioni,
-                Function1<scalar>::New
-                (
-                    type,
-                    timeProfileDict,
-                    type
-                )
+                new timeProfile(timeProfileDict, mesh_.time())
             );
+            
             timeDependent_[regioni] = true;
-            t0_[regioni] = timeProfileDict.lookupOrDefault("startTime", 0.0);
-
+            // t0_[regioni] = timeProfileDict.lookupOrDefault("startTime", 0.0);
         }
-
     }
 
     //- The alphaRhoCp is read as a rhoCp, alpha is multiplied at this step
@@ -196,8 +186,6 @@ Foam::powerModels::fixedPower::fixedPower
             ("", dimEnergy/dimVol/dimTemperature, 1e-69)
         );
     alphaRhoCp_.correctBoundaryConditions();
-
-
 }
 
 
@@ -238,9 +226,11 @@ void Foam::powerModels::fixedPower::powerUpdate()
             structure_.cellLists()[region]
         );
 
-        if(timeDependent_[regioni])
+        // if(timeDependent_[regioni])
+        if (timeDependent_[regioni] && timeProfile_[regioni].valid())
         {
-            scalar t(mesh_.time().timeOutputValue()-t0_[regioni]);
+            // scalar t(mesh_.time().timeOutputValue()-t0_[regioni]);
+            scalar t(mesh_.time().timeOutputValue());
             scalar timeDependentPowerDensity(timeProfile_[regioni].value(t));
 
             // The following assumes that each coefficient in the timeProfile_ 
@@ -260,8 +250,12 @@ void Foam::powerModels::fixedPower::powerUpdate()
             
             const volScalarField& powerDensityOld = powerDensity_.oldTime();
             
-            scalar tOld(mesh_.time().timeOutputValue()-t0_[regioni] -
-                mesh_.time().deltaT().value());
+            // scalar tOld(mesh_.time().timeOutputValue()-t0_[regioni] -
+            //     mesh_.time().deltaT().value());
+            scalar tOld
+            (
+                mesh_.time().timeOutputValue() - mesh_.time().deltaT().value()
+            );
             
             scalar timeDependentPowerDensityOld(
                 timeProfile_[regioni].value(tOld));

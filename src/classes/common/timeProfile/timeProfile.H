@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -39,7 +39,32 @@ Class
     Foam::timeProfile
 
 Description
-    Base class for time profile functions
+    Base class for time profile functions. This object embeds the OpenFOAM 
+    Function1 object used to represents tables. timeProfile is also able to
+    input data from an FMI.
+
+    Example of time dependant source entries:
+    \verbatim
+        // Using table
+        externalReactivityTimeProfile
+        {
+            type        table;
+            startTime   100;
+            table       table
+            (
+                (   0   0)
+                (   1   0.0005767131    ) //- i.e. 57.67131 pcm, == 0.2*Beta
+            );
+        }
+
+        // Using FMI
+        externalReactivityTimeProfile
+        {
+            type            fmi;
+            nameFromFMU     gfExtReact;
+            initialValue    0.0;
+        }
+    \endverbatim
 
     Author of this file (and associated .C or included .H files): 
     Thomas Guilbaud <thomas.guilbaud@epfl.ch;>, EPFL/Transmutex SA (Swizerland)
@@ -68,11 +93,11 @@ class timeProfile
 
 protected:
 
-    //- Dictionary name
-    // word dictName_;
-
     //- Dictionary
     dictionary dict_;
+
+    //- Runtime address
+    const Time& runTime_;
 
     //- Type of the function used for calculation (e.g. table, ...)
     word type_;
@@ -80,23 +105,42 @@ protected:
     //- Time offset
     scalar startTime_;
 
+    //-
+    scalar oldTime_;
+
+    //-
+    scalar currentValue_;
+
+    //-
+    scalar oldValue_;
+
     //- Function pointer
     autoPtr<Function1<scalar>> functionPtr_;
+
+    //- Flag true if FMI port correctly setup
+    bool isfmiPortSet_;
+
+    //- Name of the FMI port
+    word nameFromFMU_;
 
 public:
 
     //- Constructors
         //- Disallow default bitwise copy construct
-        timeProfile(const timeProfile&);
+        // timeProfile(const timeProfile&);
 
         //- Disallow default bitwise assignment
-        void operator=(const timeProfile&);
+        // void operator=(const timeProfile&);
 
         //- Constructor from dictionary
-        timeProfile(const dictionary& dict);
+        timeProfile(const dictionary& dict, const Time& runTime);
 
         //- Constructor from IOobject and subDictname
-        timeProfile(IOdictionary object, word timeProfileName);
+        timeProfile(
+            IOdictionary object,
+            word timeProfileName,
+            const Time& runTime
+        );
 
     //- Destructor
         virtual ~timeProfile(){}
@@ -104,8 +148,11 @@ public:
 
     //- Member functions
 
-        //-
-        bool valid();
+        //- Initialiye the FMI port
+        void initializeFMI();
+
+        //- Test if Function1 has been declared or if FMI port has been create
+        bool valid() const;
 
         //- Get the value at a given time minus the start time offset.
         scalar value(scalar time);

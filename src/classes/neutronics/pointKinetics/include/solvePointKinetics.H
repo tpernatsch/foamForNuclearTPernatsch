@@ -15,29 +15,6 @@ if (externalSourceNeutronics_)
             externalSourceModulation_ =
                 externalSourceModulationTimeProfile_.value(timeOutput);
         }
-
-        //- FMU
-        #ifdef isCommDataLayerIncluded
-
-        word externalSourceModKeyFromFMU("externalSourceModulationNameFromFMU");
-        if (
-            externalSource_.found(externalSourceModKeyFromFMU)
-            && !externalSourceModulationTimeProfile_.valid()
-        ) {
-            const word externalSourceModNameFromFMU = externalSource_.get<word>(
-                externalSourceModKeyFromFMU
-            );
-
-            // Communicating with the FMU
-            const Time& runTime = this->db().time();
-            commDataLayer& data = commDataLayer::New(runTime);
-            externalSourceModulation_ = data.getObj<scalar>(
-                externalSourceModNameFromFMU,
-                commDataLayer::causality::in
-            );
-        }
-
-        #endif // isCommDataLayerIncluded
     }
     else if (externalSourceMode_ == "powerMonitoring")
     {
@@ -64,12 +41,14 @@ else
 }
 
 //- Update decayPower_, if available
-if (decayPowerPtr_.valid())
+// if (decayPowerPtr_.valid())
+if (decayPowerTimeProfile_.valid())
 {
-    decayPower_ = decayPowerPtr_->value
-    (
-        mesh_.time().timeOutputValue() - decayPowerStartTime_
-    );
+    // decayPower_ = decayPowerPtr_->value
+    // (
+    //     mesh_.time().timeOutputValue() - decayPowerStartTime_
+    // );
+    decayPower_ = decayPowerTimeProfile_.value(timeOutput);
 }
 
 //- Update fissionPower_ and precursorPowers_ via actual pointKinetics model

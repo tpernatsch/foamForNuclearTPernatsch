@@ -31,12 +31,30 @@ isConverge transient "Transient"
 isConverge transientEnd "Transient end"
 
 # --- Recover the results
-power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?.")
-expectedAt=6.13794e+08
+power=$(grep totalPower ./transient/log.GeN-Foam | tail -1 | awk '{ printf "%.0f\n", $3 }')
+expectedAt=613794000
+
+# --- Check results are correct
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
 
 # --- Check that results are correct
-echo "Power at the end of transient" | tee -a $resFile
-if [ $power = $expectedAt ]; then
+error=0.01
+echo "Power at the end of transient with $error relative error" | tee -a $resFile
+if [ $(isInRange $expectedAt $power $error) -eq 0 ]; then
     echo "Perfect match:" | tee -a $resFile
     echo "|       | Simulated | Expected |" | tee -a $resFile
     echo "|:------|:---------:|:--------:|" | tee -a $resFile

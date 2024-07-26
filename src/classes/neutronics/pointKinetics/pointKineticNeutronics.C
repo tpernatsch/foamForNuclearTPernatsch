@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -37,21 +37,10 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
-#    include <commDataLayer.H>
-#    define isCommDataLayerIncluded
-#  endif
-#endif
-
 #include "pointKineticNeutronics.H"
 #include "zeroGradientFvPatchFields.H"
 #include "addToRunTimeSelectionTable.H"
 #include "coordinateSystem.H"
-
-#ifdef isCommDataLayerIncluded
-#include "commDataLayer.H"
-#endif
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -90,23 +79,19 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     power_(reactorState_.get<scalar>("pTarget")),
     fissionPower_(power_),
     decayPower_(0.0),
-    decayPowerPtr_(nullptr),
-    decayPowerStartTime_(0.0),
+    decayPowerTimeProfile_
+    (
+        reactorState_,
+        "decayPowerTimeProfile",
+        mesh.time()
+    ),
+    // decayPowerPtr_(nullptr),
+    // decayPowerStartTime_(0.0),
     externalReactivityTimeProfile_
     (
         nuclearData_,
-        "externalReactivityTimeProfile"
-    ),
-    externalSource_
-    (
-        IOobject
-        (
-            "externalSource",
-            mesh.time().constant(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::NO_WRITE
-        )
+        "externalReactivityTimeProfile",
+        mesh.time()
     ),
     externalSourceMode_
     (
@@ -129,11 +114,6 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         nuclearData_.lookupOrDefault<scalar>("energyPerFission", 0.0)
     ),
     intrinsicGain_(0.0),
-    externalSourceModulationTimeProfile_
-    (
-        externalSource_,
-        "externalSourceModulationTimeProfile"
-    ),
     externalSourceModulation_(1.0),
     externalSourcePower_(0.0),
     externalSourcePowerOld_(0.0),
@@ -220,7 +200,8 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     boronReactivityTimeProfile_
     (
         nuclearData_,
-        "boronReactivityTimeProfile"
+        "boronReactivityTimeProfile",
+        mesh.time()
     ),
     TFuelRef_(0.0),
     TCladRef_(0.0),
@@ -515,33 +496,12 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     }
 
     //- Check if decay power provided
-    word decayPowerDictName("decayPowerTimeProfile");
-    if (reactorState_.found(decayPowerDictName))
+    if (decayPowerTimeProfile_.valid())
     {
-        const dictionary& decayPowerDict
-        (
-            reactorState_.subDict(decayPowerDictName)
-        );
-        word type
-        (
-            decayPowerDict.get<word>("type")
-        );
-        decayPowerPtr_.reset
-        (
-            Function1<scalar>::New
-            (
-                type,
-                decayPowerDict,
-                type
-            )
-        );
-        decayPowerStartTime_ =
-            decayPowerDict.lookupOrDefault<scalar>("startTime", 0.0);
         const scalar& t(mesh_.time().timeOutputValue());
-        decayPower_ = decayPowerPtr_->value(t-decayPowerStartTime_);
+        decayPower_ = decayPowerTimeProfile_.value(t);
         fissionPower_ = power_ - decayPower_;
         fissionPowerOld_ = fissionPower_;
-
     }
 
     if (liquidFuel_)
@@ -1021,64 +981,6 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             }
         }
     }
-
-    //- FMU communication
-    #ifdef isCommDataLayerIncluded
-
-    //- Set external reactivity control
-    word externalReactivityKeyFromFMU("externalReactivityNameFromFMU");
-    if (nuclearData_.found(externalReactivityKeyFromFMU))
-    {
-        const word externalReactivityNameFromFMU = nuclearData_.get<word>(
-            externalReactivityKeyFromFMU
-        );
-
-        Info << "GeN-Foam FMI input name: " << externalReactivityNameFromFMU 
-            << endl;
-
-        // Communicating with the FMU
-        const Time& runTime = this->db().time();
-        commDataLayer& data = commDataLayer::New(runTime); 
-        // Store in data layer and set its initial value to 0
-        data.storeObj(
-            0.0, // dict.get<scalar>("initialValue"),
-            externalReactivityNameFromFMU,
-            commDataLayer::causality::in
-        );
-        Info << "Using FMUs for the external reactivity of the point-kinetics "
-            << "sub-solver." 
-            << endl;
-    }
-
-    //- Set external source control from FMU
-    if (externalSourceNeutronics_)
-    {
-        word externalSourceModKeyFromFMU("externalSourceModulationNameFromFMU");
-        if (externalSource_.found(externalSourceModKeyFromFMU))
-        {
-            const word externalSourceModNameFromFMU = externalSource_.get<word>(
-                externalSourceModKeyFromFMU
-            );
-
-            Info << "GeN-Foam FMI input name: " << externalSourceModNameFromFMU 
-                << endl;
-
-            // Communicating with the FMU
-            const Time& runTime = this->db().time();
-            commDataLayer& data = commDataLayer::New(runTime); 
-            // Store in data layer and set its initial value to 1.0
-            data.storeObj(
-                1.0, // dict.get<scalar>("initialValue"),
-                externalSourceModNameFromFMU,
-                commDataLayer::causality::in
-            );
-            Info << "Using FMUs for the external source modulation of the point-kinetics "
-                << "sub-solver." 
-                << endl;
-        }
-    }
-
-    #endif // isCommDataLayerIncluded
 
     //- Some notes on modelling choices, for clarity
     Info<< "The pointKinetics neutronics model currently computes average "

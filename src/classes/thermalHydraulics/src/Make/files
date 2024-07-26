@@ -15,6 +15,7 @@ phaseModels/structureModels/powerModels/newPowerModel.C
 phaseModels/structureModels/powerModels/fixedPower/fixedPower.C
 phaseModels/structureModels/powerModels/fixedTemperature/fixedTemperature.C
 phaseModels/structureModels/powerModels/fixedTemperatureFMU/fixedTemperatureFMU.C
+phaseModels/structureModels/powerModels/nuclearFuelFMU/nuclearFuelFMU.C
 phaseModels/structureModels/powerModels/nuclearFuelPin/nuclearFuelPin.C
 phaseModels/structureModels/powerModels/nuclearFuelPinTest/nuclearFuelPinTest.C
 phaseModels/structureModels/powerModels/nuclearSteadyStatePebble/nuclearSteadyStatePebble.C

@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     FFSEulerFoam;
+application     GeN-Foam; // FFSEulerFoam;
 
 startFrom       startTime;
 

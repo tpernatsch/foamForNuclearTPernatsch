@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #----------------------------------------------------------------------------#
 #       ______          _   __           ______                              #
 #      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
@@ -7,6 +7,12 @@
 #    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
 #    Copyright (C) 2015 - 2022 EPFL                                          #
 #----------------------------------------------------------------------------#
+#
+# Example
+# >>> ./Alltest
+#
+# Example in parallel
+# >>> ./Alltest 4    # Run using 4 jobs
 
 cd ${0%/*} || exit 1    # Run from this directory
 
@@ -14,39 +20,67 @@ clear
 
 #------------------------------------------------------------------------------
 
+# Set the maximum number of parallel jobs (default 1)
+MAX_JOBS=1
+
+if [ $# -eq 1 ]
+then 
+    MAX_JOBS=$1
+fi
+
+echo -e "Run tutorials using $MAX_JOBS threads\n"
+
+
+#------------------------------------------------------------------------------
+
 # Select tutorials in the test suite
-tutorials="
-    1D_boiling
-    1D_CHF/imposedPower
-    1D_CHF/imposedTemperature
-    1D_HX/onePhase
-    1D_HX/twoPhase
-    1D_MSR_pointKinetics
-    1D_PSBT_SC/Phase_Ex1_12223
-    1D_PSBT_SC/PhaseII_Ex1_01_5215
-    1D_PSBT_SC/PhaseII_Ex2_04_6770
-    1D_thermalMSR_pointKinetics
-    2D_cavityBoussinesq
-    2D_externalSourceDiffusion
-    2D_FFTF
-    2D_fullCoupling
-    2D_KNS37-L22
-    2D_MSFR
-    2D_onePhaseAndPointKineticsCoupling
-    2D_onePhaseAndSubcriticalPointKineticsCoupling
-    2D_voidMotionNoPhaseChange
-    3D_gFHR
-    3D_NTPfuelAssembly
-    3D_SmallESFR
-    Godiva_SN
-"
+tutorials=(
+    # Tutorial name                 Expected maximum memory usage (Gb)
+    "1D_boiling                     0.2"
+    "1D_CHF/imposedPower            0.2"
+    "1D_CHF/imposedTemperature      0.2"
+    "1D_HX/onePhase                 0.2"
+    "1D_HX/twoPhase                 0.2"
+    "1D_MSR_pointKinetics           0.2"
+    "1D_PSBT_SC/Phase_Ex1_12223     0.2"
+    "1D_PSBT_SC/PhaseII_Ex1_01_5215 0.2"
+    "1D_PSBT_SC/PhaseII_Ex2_04_6770 0.2"
+    "1D_thermalMSR_pointKinetics    0.2"
+    "2D_cavityBoussinesq            0.2"
+    "2D_externalSourceDiffusion     0.2"
+    "2D_FFTF                        0.3"
+    "2D_fullCoupling                0.2"
+    "2D_KNS37-L22                   0.3"
+    "2D_MSFR                        0.3"
+    "2D_onePhaseAndPointKineticsCoupling 0.2"
+    "2D_onePhaseAndSubcriticalPointKineticsCoupling 0.2"
+    "2D_voidMotionNoPhaseChange     0.2"
+    "3D_gFHR                        1.5"
+    "3D_NTPfuelAssembly             0.2"
+    "3D_SmallESFR                   1.0"
+    "Godiva_SN                      1.5"
+)
+
+# Add FMU tutorials only if GeN-Foam has been built with FMU4FOAM
+if [ ! -z $LIB_ECI4FOAM ]
+then
+    echo "GeN-Foam has been built with FMI module"
+    echo "Testing tutorials using FMUs"
+
+    tutorials+=(
+        "FMU/powerTemperatureMomentumControl    0.2"
+        "FMU/2D_PKCoupleFMI/comparisonFMU       0.3"
+        "FMU/2D_PKCoupleFMI/PIDcontrol          0.3"
+    )
+fi
 
 #------------------------------------------------------------------------------
 
 # Declare badges
-badgeSuccess="https://img.shields.io/badge/regressionTest-passed-color.svg?style=flat-square"
-badgePending="https://img.shields.io/badge/regressionTest-pending-grey.svg?style=flat-square"
-badgeFailed="https://img.shields.io/badge/regressionTest-failed-red.svg?style=flat-square"
+badgeSuccess="https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square"
+badgePending="https://img.shields.io/badge/Alltest-pending-grey.svg?style=flat-square"
+badgeFailed="https://img.shields.io/badge/Alltest-failed-red.svg?style=flat-square"
+badgeMemoryOverflow="https://img.shields.io/badge/MemoryOverflow-failed-red.svg?style=flat-square"
 
 # Current folder path
 rootPath=$(pwd)
@@ -55,49 +89,222 @@ rootPath=$(pwd)
 resFile="./regressionResults.md"
 
 # Counting variables
-nbTutoSuccess=0
-nbTutoTotal=0
+nbTutoTotal=${#tutorials[@]}
+
 
 #------------------------------------------------------------------------------
 
 # Clear or create new results file
-echo "# GeN-Foam regression test suite\n" > $resFile
-echo "Regression test of `date +"%d-%b-%Y - %H:%M:%S"`  " >> $resFile
-echo "Tutorials successfully completed: 0/0  [![regressionTest]($badgePending)]()  " >> $resFile
+echo -e "# GeN-Foam regression test suite\n" > $resFile
+echo -e "Regression test of `date +"%d-%b-%Y - %H:%M:%S"`  " >> $resFile
+echo -e "Tutorials successfully completed: 0/$nbTutoTotal  [![regressionTest]($badgePending)]()  " >> $resFile
 
+summaryTable="## Summary\n\n| Tutorial | Status | Time | GeN-Foam memory usage [Gb] |\n|:---------|:------:|:-:|:-:|"
 
-# Run all tutorials and check for clean finish
-for tutorialName in $tutorials
+# Create the summmary table
+echo -e "\n$summaryTable" >> $resFile
+for tutorial_i in "${tutorials[@]}"
 do
-    echo "Running tutorial $tutorialName ...\n"
+    # Split the element into parts
+    tutorialObj=($tutorial_i)
 
-    # Header in markdown
-    echo "\n--------------------------------------------------------------------------------\n" >> $resFile
-    echo "## $tutorialName\n" >> $resFile
-
-    # Run the tutorial
-    cd $tutorialName
-    ./Allclean
-    ./Alltest
-    result=$? # Get the exit code from Alltest (0: success; 1: failed)
-    cd $rootPath
-
-    # Extract results
-    cat $tutorialName/test.out >> $resFile
-
-    # Update number of successful tutotial run
-    oldScore="$nbTutoSuccess/$nbTutoTotal"
-    if [ $result -eq 0 ]
-    then
-        nbTutoSuccess=$(expr $nbTutoSuccess + 1)
-    fi
-    nbTutoTotal=$(expr $nbTutoTotal + 1)
-
-    # Update the regression test score
-    sed -i "s|$oldScore|$nbTutoSuccess/$nbTutoTotal|" $resFile
-
+    echo "| ${tutorialObj[0]} | [![regressionTest]($badgePending)]() |" >> $resFile
 done
 
+
+#------------------------------------------------------------------------------
+
+getUniqueList() {
+    local original_array=("$@")  # Accept the array as arguments
+    local unique_array=()        # Declare an empty array to hold unique elements
+
+
+    # Iterate through the original array
+    for element in "${original_array[@]}"; do
+        # Check if the element is already in the unique_array
+        if [[ ! " ${unique_array[@]} " =~ " ${element} " ]]; then
+            # If not, add it to the unique_array
+            unique_array+=($element)
+        fi
+    done
+
+    echo "${unique_array[@]}"
+}
+
+# Function to convert seconds to hh:mm:ss format
+secondsTo_hhmmss() {
+    local seconds=$1
+    local hours=$((seconds / 3600))
+    local minutes=$(( (seconds % 3600) / 60 ))
+    local seconds=$((seconds % 60))
+    
+    printf "%02d:%02d:%02d\n" $hours $minutes $seconds
+}
+
+getMemoryUsage() {
+    local pid=$1
+    local total=0
+
+    for child_pid in $(pgrep -P $pid)
+    do
+        rss=$(ps -o rss= -p $child_pid)
+        if [ $? -eq 0 ]
+        then
+            cmd=$(ps -o cmd= -p $child_pid)
+            nCore=1
+            if [[ $(echo "$cmd" | grep -c -F "mpirun -np") -eq 1 ]]
+            then
+                nCore=$(echo "$cmd" | cut -d' ' -f3)
+            fi
+
+            if [[ $(echo "$cmd" | grep -c -F "gnuplot") -eq 1 ]]
+            then
+                # kill gnuplot because it is anoying and it consumes too much memory
+                kill $child_pid
+            fi
+
+            # Add only GeN-Foam
+            if [[ $(echo "$cmd" | grep -c -F "GeN-Foam") -eq 1 && $(echo "$cmd" | grep -c -F "log.GeN-Foam") -eq 0 ]]
+            then
+                total=$(($total + $rss))
+            fi
+
+            total=$(($total + $(($(getMemoryUsage $child_pid) / $nCore))))
+        fi
+    done
+
+    echo $total
+}
+
+
+# Run the tutorial with time/memory consumption info
+executeAlltest() {
+    tutorialName=$1
+    expectedMemory=$2
+
+    echo -e "Running tutorial $tutorialName ...\n"
+
+    # Change folder and clean
+    cd $tutorialName
+    ./Allclean
+    
+    # Start time measurement
+    startTime=$(date +%s)
+
+    # Start the command in the background and recover process ID
+    ./Alltest &
+    local pid=$!
+
+    # Monitor the peak memory usage until the command finishes
+    maxMemoryUsage=0
+    while ps -p $pid > /dev/null
+    do
+        tempMaxMemoryUsage=$(getMemoryUsage $pid)
+
+        if [[ $tempMaxMemoryUsage -gt $maxMemoryUsage ]]
+        then
+            maxMemoryUsage=$tempMaxMemoryUsage
+        fi
+
+        sleep 1
+    done
+
+    # Wait for ./Alltest to finish and capture its exit status (0: success; 1: failed)
+    wait $pid
+    local exitStatus=$?
+
+    # End time measurement
+    endTime=$(date +%s)
+    timeUsage=$(secondsTo_hhmmss $(($endTime - $startTime)))
+    echo "$tutorialName time usage: $timeUsage"
+    
+    # Convert to memory usage from kb to Gb
+    maxMemoryUsageGb=$(echo "scale=3; $maxMemoryUsage / (1024 * 1024)" | bc)
+
+    # Check memory overflow (exceeds expected value)
+    isMemoryOverflow=0
+    memoryOverflowText="Passed"
+    if (( $(echo "$maxMemoryUsageGb > $expectedMemory" | bc -l) ))
+    then
+        isMemoryOverflow=1
+        memoryOverflowText="**Failed**"
+        echo "$tutorialName Memory overflow ($maxMemoryUsageGb > $expectedMemory)"
+    else
+        echo "$tutorialName Memory OK ($maxMemoryUsageGb < $expectedMemory)"
+    fi
+
+
+    # Return to root folder
+    cd $rootPath
+
+    # Update successful tutotial run in summary table
+    if [ $exitStatus -eq 0 ] && [ $isMemoryOverflow -eq 0 ]
+    then
+        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[Alltest\]($badgeSuccess)\]() | $timeUsage | $maxMemoryUsageGb < $expectedMemory |," $resFile
+    elif [ $isMemoryOverflow -eq 1 ]
+    then
+        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[Memory overflow\]($badgeMemoryOverflow)\]() | $timeUsage | $maxMemoryUsageGb > $expectedMemory |," $resFile
+    else
+        sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[Alltest\]($badgeFailed)\]() | $timeUsage | $maxMemoryUsageGb < $expectedMemory |," $resFile
+    fi
+
+
+    # Extract results and write into the main md file
+    sed -i "s|## $tutorialName|## $tutorialName\n\n\
+outputAlltest$tutorialName\n\n\
+Time = $timeUsage\n\n\
+Memory = $maxMemoryUsageGb Gb ($memoryOverflowText, expected: $expectedMemory Gb)|" $resFile
+
+    # Replace / to \/
+    escapedPattern=$(sed 's/[\/&]/\\&/g' <<< "outputAlltest$tutorialName")
+
+    # Write output file test.out into the main MD file
+    sed -i "/$escapedPattern/r $tutorialName/test.out" $resFile
+    # Remove delimiter
+    sed -i "/$escapedPattern/d" $resFile
+}
+
+#------------------------------------------------------------------------------
+
+# Counter for the number of background jobs
+jobCount=0
+
+# Run all tutorials and check for clean finish
+for tutorial_i in "${tutorials[@]}"
+do
+    # Split the element into parts
+    tutotialObj=($tutorial_i)
+
+    tutorialName="${tutotialObj[0]}"
+    expectedMemory="${tutotialObj[1]}"
+
+    # Write in Markdown file
+    echo -e "\n--------------------------------------------------------------------------------\n" >> $resFile
+    echo -e "## $tutorialName" >> $resFile
+
+    # Execute Alltest (time and memory usage monitoring) and extract the results
+    # in background
+    executeAlltest $tutorialName $expectedMemory &
+
+    # Decrement or wait job
+    ((jobCount++))
+    if (( $jobCount >= $MAX_JOBS )); then
+        wait -n  # Wait for any job to finish
+        ((jobCount--))
+    fi
+done
+
+# Wait for all remaining jobs to finish
+wait
+
+
+#------------------------------------------------------------------------------
+
+# Count number of tutorial passed with success
+nbTutoSuccess=$(grep -c "Alltest-passed" $resFile)
+
+# Update the regression test score
+sed -i "s|0/$nbTutoTotal|$nbTutoSuccess/$nbTutoTotal|" $resFile
 
 # Update the badge
 if [ $nbTutoSuccess -eq $nbTutoTotal ]
@@ -107,6 +314,7 @@ else
     sed -i "s,$badgePending,$badgeFailed," $resFile
     exit 1
 fi
+
 
 exit 0
 

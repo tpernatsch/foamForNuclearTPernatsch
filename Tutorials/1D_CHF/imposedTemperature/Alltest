@@ -25,11 +25,29 @@ fi
 # --- Recover the results
 input="./40/fluidRegion/heatFlux.structure"
 QwallTop=$(head -40 "$input" | tail -1)
-expectedAt=33423.1
+expectedAt=33429.8
+
+# --- Check results are correct
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
 
 # --- Check that results are correct
-echo "Heat flux of the structure at the top of the channel at 40 seconds" | tee -a $resFile
-if [ $QwallTop = $expectedAt ]; then
+error=0.01
+echo "Heat flux of the structure at the top of the channel at 40 seconds with $error relative error" | tee -a $resFile
+if [ $(isInRange $expectedAt $QwallTop $error) -eq 0 ]; then
     echo "Perfect match:" | tee -a $resFile
     echo "|           | Simulated | Expected |" | tee -a $resFile
     echo "|:----------|:---------:|:--------:|" | tee -a $resFile

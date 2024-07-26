@@ -1,0 +1,172 @@
+#!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+# Author: Thomas Guilbaud, EPFL
+
+#==============================================================================*
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+#==============================================================================*
+# Global Constants and Variables
+#==============================================================================*
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+resFile=test.out
+logFile=log.simulation
+caseName=$(basename $(pwd))
+
+isTestFail=0
+
+
+#==============================================================================*
+# Useful functions
+#==============================================================================*
+
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" >> $resFile
+        echo -e "$name has ${GREEN}converged${NC} \n"
+    else
+        echo -e "$name has NOT converged \n" >> $resFile
+        echo -e "$name has ${RED}NOT converged${NC} \n"
+        exit 1
+    fi
+}
+
+extract()
+{
+    value=$(
+        grep -e "$1" ./log.GeN-Foam |
+        tail -1 |
+        grep -Eo '[0-9]+\.[0-9]+' | #"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?." |
+        xargs |
+        cut -d' ' -f1
+    )
+    echo $value
+}
+
+relativeError()
+{
+    ref=$1
+    value=$2
+    precision=$3
+    relErr=$(bc -l <<<"scale=$precision; 100*($ref-$value)/$ref")
+    echo $relErr
+}
+
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    relErr=$(relativeError $ref $value 20)
+    if (( $(echo "0 <= $relErr && $relErr <= $error" | bc -l) )); then
+        echo 0
+    elif (( $(echo "-$error <= $relErr && $relErr <= 0" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+testAndPrintLine()
+{
+    name=$1
+    value=$2
+    ref=$3
+    error=$4
+    precision=$5
+
+    relErr=$(relativeError $ref $value $precision)
+
+    # Print with colors or not
+    if  [ $(isInRange $ref $value $error) -eq 0 ]
+    then
+        printf "| %-23s | %9s | %9s | ${GREEN}%9s${NC} |\n" \
+            "$name" "$value" "$ref" "$relErr"
+        printf "| %-23s | %9s | %9s | %9s | # Passed\n" \
+            "$name" "$value" "$ref" "$relErr" >> $resFile
+    else
+        printf "| %-23s | %9s | %9s | ${RED}%9s${NC} |\n" \
+            "$name" "$value" "$ref" "$relErr"
+        printf "| %-23s | %9s | %9s | %9s | ! Failed\n" \
+            "$name" "$value" "$ref" "$relErr" >> $resFile
+
+        isTestFail=1
+    fi    
+}
+
+
+#==============================================================================*
+# Run Simulation
+#==============================================================================*
+
+rm -rf $resFile $logFile
+touch $resFile $logFile
+
+echo -e "Run tutorial $caseName ...\n" | tee -a $resFile
+./Allrun >> $logFile
+echo -e "Done running tutorial $caseName ...\n" | tee -a $resFile
+
+
+#==============================================================================*
+# Test Run until the end
+#==============================================================================*
+
+# --- Check it ran
+isConverge . "GeN-Foam + Modelica FMU"
+
+
+#==============================================================================*
+# Test values against references
+#==============================================================================*
+
+# --- Recover the results
+Tout1=$(extract "patch outlet1 TBulk =")
+Tout2=$(extract "patch outlet2 TBulk =")
+
+# --- Check results are correct and print results
+error1=0.1 # %
+
+echo "Simulation & reference comparison" | tee -a $resFile
+echo "  -> $error1 % maximum relative error for (Tout)" | tee -a $resFile
+echo | tee -a $resFile
+echo   "|                         | Simulated | Expected  | Error [%] |" | tee -a $resFile
+echo   "|:------------------------|:---------:|:---------:|:---------:|" | tee -a $resFile
+testAndPrintLine "Outlet temp 1 [K]" $Tout1 392.6      $error1 2
+testAndPrintLine "Outlet temp 2 [K]" $Tout2 392.6      $error1 2
+
+# --- Print summary of the table of test passed
+echo | tee -a $resFile
+if  [ $isTestFail -eq 0 ]
+then
+    echo "All test passed" >> $resFile
+    echo -e "${GREEN}All test passed${NC}"
+else
+    echo "Warning: One or more tested have failed !" >> $resFile
+    echo -e "${RED}Warning: One or more tested have failed !${NC}"
+    isTestFail=1
+fi
+echo | tee -a $resFile
+
+# --- Exit success: 0; or fail: 1
+exit $isTestFail
+
+
+#==============================================================================*

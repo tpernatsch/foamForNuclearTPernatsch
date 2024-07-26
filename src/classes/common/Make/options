@@ -1,5 +1,8 @@
 EXE_INC = \
     -I./InterpolateTable \
+    -I./latticeMap \
+    -I./listOperation \
+    -I./radialBasisFunctionInterpolation \
     -I./timeProfile \
     -I./mergeOrSplitBaffles \
     -I$(LIB_SRC)/meshTools/lnInclude \
@@ -13,3 +16,8 @@ LIB_LIBS = \
     -ldynamicMesh \
     -lreconstruct \
     -lfvOptions
+
+ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))
+    EXE_INC += -I$(LIB_ECI4FOAM)/src/externalComm/lnInclude
+    LIB_LIBS += -L$(FOAM_USER_LIBBIN) -lexternalComm
+endif

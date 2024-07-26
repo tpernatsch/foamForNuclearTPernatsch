@@ -10,12 +10,26 @@ pointIOField neutroUndeformedPoints
         neutroMesh,
         IOobject::READ_IF_PRESENT,
         (
-            (multiphysics.solveThermoMechanics()) ?
-            IOobject::AUTO_WRITE : IOobject::NO_WRITE
+            multiphysics.solveThermoMechanics()
+                ? IOobject::AUTO_WRITE
+                : IOobject::NO_WRITE
         )
     ),
-    neutroMesh.points()
+    neutroStartPoints
 );
+
+// Set the neutroUndeformedPoints if it was not set with the default neutroMesh.points().
+// Without this, the code generates an empty neutroUndeformedPoints with 0().
+if (neutroStartPoints.size() != neutroUndeformedPoints.size())
+{
+    neutroUndeformedPoints.resize(neutroStartPoints.size());
+
+    forAll(neutroStartPoints, iter)
+    {
+        neutroUndeformedPoints[iter] = neutroStartPoints[iter];
+    }
+}
+
 
 if
 (

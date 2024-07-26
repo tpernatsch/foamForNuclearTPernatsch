@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -49,6 +49,40 @@ Description
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
     Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
+Usage
+    \verbatim
+        powerModel
+        {
+            type                fixedPower;
+            volumetricArea      100;
+            T                   652.15;
+            Cp                  500;
+            rho                 7700;
+            powerDensity        4.5e8;
+            powerTimeProfile // Optional
+            {
+                type        table;
+                startTime   0;
+                table       table
+                (
+                    (   0   4.5e8   )
+                    ( 100   4.5e7   )
+                );
+            }
+        }
+
+        // Using FMI input
+        powerModel
+        {
+            type                fixedPower;
+            volumetricArea      100;
+            T                   652.15;
+            Cp                  500;
+            rho                 7700;
+            powerDensity        4.5e8;
+        }
+    \endverbatim
+
 SourceFiles
     fixedPower.C
 
@@ -58,7 +92,8 @@ SourceFiles
 #define fixedPower_H
 
 #include "powerModel.H"
-#include "Function1.H"
+#include "timeProfile.H"
+// #include "Function1.H"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -87,10 +122,11 @@ protected :
 
     //- Optional table to describe any possible dependence of the power
     //  on time
-    PtrList<Function1<scalar>> timeProfile_;
+    // PtrList<Function1<scalar>> timeProfile_;
+    PtrList<timeProfile> timeProfile_;
 
     //- Optional offset time
-    List<scalar> t0_;
+    // List<scalar> t0_;
 
     //- True if a timeProfilePtr_ exists
     List<bool> timeDependent_;

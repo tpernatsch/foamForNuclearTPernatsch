@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -169,7 +169,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             IOobject::NO_WRITE
         ),
         mesh,
-        dimensionedScalar("0", dimensionSet(1, 1, -3 , -1, 0), 0.0),
+        dimensionedScalar("0", dimensionSet(1, 1, -3 , -1, 0), 1.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     alpha_

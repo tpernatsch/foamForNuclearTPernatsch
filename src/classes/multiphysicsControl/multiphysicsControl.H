@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -71,7 +71,7 @@ class multiphysicsControl
 protected :
 
     //- Ref to runTime
-    const Time& runTime_;
+    // Time& runTime_; // remove the const to be able to execute functionObjects
 
     //- Ref to thermalHydraulics mesh
     fvMesh& thermalHydraulicMesh_;
@@ -103,6 +103,9 @@ protected :
     //- liquidFuel flag (true e.g. for MSRs)
     bool liquidFuel_;
 
+    //-
+    bool isEnergyNeutroThemMechFMICorrection_;
+
 public:
 
     TypeName("multiphysicsControl");
@@ -111,7 +114,7 @@ public:
 
         multiphysicsControl
         (
-            const Time& runTime,
+            Time& runTime,
             fvMesh& THMesh,
             fvMesh& NMesh,
             fvMesh& TMMesh
@@ -127,9 +130,16 @@ public:
         //  in fluidRegion
         virtual bool read();
 
-        //- Ovveride PIMPLE loop function to modify some Infos (really, 
+        //- Overide PIMPLE loop function to modify some Infos (really, 
         //  Stefan?)
         virtual bool loop();
+
+        //- Loop for energy-neutronics-thermomechanics coupling
+        bool loopEnergyNeutronicsThermomechanics
+        (
+            scalar couplingResidual, 
+            scalar couplingIter
+        );
 
         //- Access
 

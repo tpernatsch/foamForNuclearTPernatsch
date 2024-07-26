@@ -128,8 +128,8 @@ const volTensorField& Kd2s(F2SPair_.Kd());
     {
         volScalarField dmdt12(posPart(FFPair_.dmdt()));
         volScalarField dmdt21(-negPart(FFPair_.dmdt())); 
-        //UEqn1 += fvm::Sp(dmdt12, U1) - dmdt21*U2;
-        //UEqn2 += fvm::Sp(dmdt21, U2) - dmdt12*U1;
+        UEqn1 += fvm::Sp(dmdt12, U1) - dmdt21*U2;
+        UEqn2 += fvm::Sp(dmdt21, U2) - dmdt12*U1;
     }
 
     //- Add virtual mass forces, if applicable
