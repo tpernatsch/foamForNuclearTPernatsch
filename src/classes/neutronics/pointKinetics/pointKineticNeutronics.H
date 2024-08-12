@@ -72,6 +72,7 @@ Description
             + \rho_{GEM}
             + \rho_{boron}
             + \rho_{ext}
+            + \rho_{ext}^{FMU}
     \f]
 
     where:
@@ -95,6 +96,7 @@ Description
       \rho_{driveline}     | Control rod driveline expansion reactivity contribution
       \rho_{boron}         | Boron concentration reactivity contribution
       \rho_{ext}           | External reactivity contribution
+      \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
     \endtable
 
     Example of mandatory dictionary entries:
@@ -137,11 +139,6 @@ Description
                 (   0   0)
                 (   1   0.0005767131    ) //- i.e. 57.67131 pcm
             );
-
-            //- Or using the FMI
-            // type            fmi;
-            // nameFromFMU     gfExtReact;
-            // initialValue    0.0;
         }
 
         //- Optional time dependant boron reactivity time profile
@@ -153,12 +150,13 @@ Description
                 (   100   0   )
                 (   101   1e-5   )
             );
-
-            //- Or using the FMI
-            // type            fmi;
-            // nameFromFMU     gfBoronReactivity;
-            // initialValue    0.0;
         }
+    \endverbatim
+
+    Optional external reactivity input from FMU in nuclearData file.
+    The default initial value is 0.
+    \verbatim
+        externalReactivityNameFromFMU   gfExtReact;
     \endverbatim
 
     Optional external neutron source file "externalSource"
@@ -175,6 +173,11 @@ Description
         //- Neutron yield of the spallation of proton on heavy metal 
         nuSource            15.5; // [neutron/proton]
 
+        //- Optional external source input from FMU in externalSource file.
+        //- The externalSourceMode must be set to transient. The default initial value
+        //-is 1.
+        externalSourceModulationNameFromFMU     gfExternalSourceMod;
+
         //- External modulation time profile (time, modulation factor)
         externalSourceModulationTimeProfile
         {
@@ -185,11 +188,6 @@ Description
                 (0      1)
                 (20     2)
             );
-
-            //- Or using the FMI
-            // type            fmi;
-            // nameFromFMU     gfExternalSourceMod;
-            // initialValue    1.0;
         }
     \endverbatim
 
@@ -207,6 +205,7 @@ SourceFiles
 #define pointKineticNeutronics_H
 
 #include "neutronics.H"
+#include "Function1.H"
 #include "interpolationTable.H"
 #include "timeProfile.H"
 
@@ -214,6 +213,7 @@ SourceFiles
 
 namespace Foam
 {
+namespace solvers{
 
 /*---------------------------------------------------------------------------*\
                           Class pointKineticNeutronics Declaration
@@ -499,6 +499,10 @@ protected:
     //  store them in pgiMagSf_)
     scalarList phiMagSf_;
 
+    scalar pTotOld_;
+
+    scalar residual_;
+
 private:
 
     //- Disallow default bitwise copy construct
@@ -549,31 +553,15 @@ public:
         //- Compute GEM sodium height and their reactivity contributions
         Pair<scalar> calcGEMLevelAndReactivity();
 
-        //- Used to set all the pointer member variables (the members that end
-        //  with *Orig_) after class initialization (needs to be called by
-        //  solver main)
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const meshToMesh& neutroToFluid,
-            const objectRegistry& srcTM,
-            const meshToMesh& neutroToMech
-        );
-
-        //- Update local (i.e. on local neutronicMesh) instances of the Orig_
-        //  fields defined on the (baffleless) thermalHydraulic mesh
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& neutroToFluid,
-            const meshToMesh& neutroToMech
-        );
-
         //- Solve pointKinetics
-        virtual void correct
-        (
-            scalar& residual,
-            label couplingIter
-        );
+        virtual void correctPhysics();
+
+        virtual scalar maxDeltaT();
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        }
 
         //- To split strings. The file where I got this function originally
         //  defined is in classes/thermalHydraulics/models/include. However,
@@ -630,7 +618,7 @@ public:
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} // End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

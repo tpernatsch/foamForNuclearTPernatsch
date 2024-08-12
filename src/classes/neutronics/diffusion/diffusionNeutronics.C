@@ -41,19 +41,23 @@ License
 #include "zeroGradientFvPatchFields.H"
 #include "addToRunTimeSelectionTable.H"
 #include "coordinateSystem.H"
+#include "volFields.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
+namespace solvers
+{
     defineTypeNameAndDebug(diffusionNeutronics, 0);
 
     addToRunTimeSelectionTable
     (
-        neutronics,
+        solver,
         diffusionNeutronics,
-        dictionary
+        fvMesh
     );
+}
 }
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
@@ -61,7 +65,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::diffusionNeutronics::diffusionNeutronics
+Foam::solvers::diffusionNeutronics::diffusionNeutronics
 (
     fvMesh& mesh
 )
@@ -257,7 +261,7 @@ Foam::diffusionNeutronics::diffusionNeutronics
             IOobject::AUTO_WRITE
         ),
         mesh,
-        dimensionedScalar("", dimTemperature, SMALL),
+        dimensionedScalar("", dimDensity, SMALL),
         zeroGradientFvPatchScalarField::typeName
     ),
     TStructMech_
@@ -273,7 +277,8 @@ Foam::diffusionNeutronics::diffusionNeutronics
         mesh,
         dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    )
+    ),
+    pTotOld_(pTarget_)
 {
     #include "createNeutronicsFields.H"
 }
@@ -281,39 +286,76 @@ Foam::diffusionNeutronics::diffusionNeutronics
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::diffusionNeutronics::~diffusionNeutronics()
+Foam::solvers::diffusionNeutronics::~diffusionNeutronics()
 {}
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::diffusionNeutronics::getCouplingFieldRefs
-(
-    const objectRegistry& srcTH,
-    const meshToMesh& neutroToFluid,
-    const objectRegistry& srcTM,
-    const meshToMesh& neutroToMech
-)
-{
-    #include "defaultGetCouplingFieldRefs.H"
-}
+// void Foam::solvers::diffusionNeutronics::getCouplingFieldRefs
+// (
+//     const objectRegistry& srcTH,
+//     const meshToMesh& neutroToFluid,
+//     const objectRegistry& srcTM,
+//     const meshToMesh& neutroToMech
+// )
+// {
+//     #include "defaultGetCouplingFieldRefs.H"
+// }
 
-void Foam::diffusionNeutronics::interpolateCouplingFields
-(
-    const meshToMesh& neutroToFluid,
-    const meshToMesh& neutroToMech
-)
-{
-    #include "defaultInterpolateCouplingFields.H"
-}
+// void Foam::solvers::diffusionNeutronics::interpolateCouplingFields
+// (
+//     const meshToMesh& neutroToFluid,
+//     const meshToMesh& neutroToMech
+// )
+// {
+//     #include "defaultInterpolateCouplingFields.H"
+// }
 
-void Foam::diffusionNeutronics::correct
-(
-    scalar& residual,
-    label couplingIter
-)
+void Foam::solvers::diffusionNeutronics::correctPhysics()
 {
+    //Compute Pold (for adaptive time step setting)
+    pTotOld_ = power();
+
+    residual_=0;
+
     #include "solveNeutronics.H"
 }
+
+scalar Foam::solvers::diffusionNeutronics::maxDeltaT()
+{
+    scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+
+    if(mesh_.time().value()> mesh_.time().controlDict().get<scalar>("deltaT"))
+    {
+        
+        scalar maxPowerVariation =
+            mesh_.time().controlDict().lookupOrDefault<scalar>
+            (
+                "maxPowerVariation", 
+                0.025
+            );
+        scalar pTot = power();
+
+        scalar powerVariation = mag((pTot - pTotOld_) / (pTotOld_ + SMALL));
+
+
+
+        scalar maxDeltaTNeutroFact = mag(maxPowerVariation/(powerVariation + SMALL));
+
+        scalar deltaTNeutroFact = min(min(maxDeltaTNeutroFact, 1.0 + 0.1*maxDeltaTNeutroFact), 1.2);
+
+        return min(deltaTNeutroFact*mesh_.time().deltaTValue(), newDeltaT);
+    }
+    else
+        return newDeltaT;
+
+    
+
+    Info <<"Computed DeltaT is "<< endl;
+
+
+}
+
 
 // ************************************************************************* //

@@ -1,3 +1,5 @@
 GeN-Foam.C
+regionSolvers/regionSolvers.C
+include/setDeltaT.C
 
 EXE = $(FOAM_USER_APPBIN)/GeN-Foam

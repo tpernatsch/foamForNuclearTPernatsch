@@ -70,6 +70,9 @@ SourceFiles
 namespace Foam
 {
 
+namespace solvers
+{
+
 /*---------------------------------------------------------------------------*\
                           Class linearElasticThermoMechanics Declaration
 \*---------------------------------------------------------------------------*/
@@ -135,6 +138,7 @@ protected:
         int nCorr_;
         scalar convergenceTolerance_;
         Switch compactNormalStress_;
+        scalar residual_;
 
 private:
 
@@ -170,32 +174,37 @@ public:
         //  coupling fields, to be called only once after construction. The 
         //  fields are set via lookup in the src objectRegistry (i.e. 
         //  fluidMeshNB for the current state of GeN-Foam)
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const objectRegistry& srcN
-        );
+        // virtual void getCouplingFieldRefs
+        // (
+        //     const objectRegistry& srcTH,
+        //     const objectRegistry& srcN
+        // );
 
-        //- The old getFields, yet operates on the local refs without having
-        //  the need for all the fields to be passed. This effectively bypasses
-        //  the old limitation of getFields, i.e. if someone wanted to
-        //  implement a new thermoMechanical model that requires more fields 
-        //  for the coupling, then they'd need to modify the getFields function
-        //  in ALL of the other thermoMechanical models too
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& mechToFluid,
-            const meshToMesh& mechToNeutro
-        );
+        // //- The old getFields, yet operates on the local refs without having
+        // //  the need for all the fields to be passed. This effectively bypasses
+        // //  the old limitation of getFields, i.e. if someone wanted to
+        // //  implement a new thermoMechanical model that requires more fields 
+        // //  for the coupling, then they'd need to modify the getFields function
+        // //  in ALL of the other thermoMechanical models too
+        // virtual void interpolateCouplingFields
+        // (
+        //     const meshToMesh& mechToFluid,
+        //     const meshToMesh& mechToNeutro
+        // );
 
         //- Correct/update the properties
-        virtual void correct(scalar& residual);
+        virtual void correctPhysics();
+        virtual scalar maxDeltaT();
+        virtual scalar getResidual()
+        {
+            return residual_;
+        };
 
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} // End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

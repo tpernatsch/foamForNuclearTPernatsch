@@ -1,5 +1,5 @@
 thermoMechanics.C
 linearElastic/linearElasticThermoMechanics.C
-tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+tractionDisplacement/GFTractionDisplacementFvPatchVectorField.C
 
 LIB = $(FOAM_USER_LIBBIN)/libThermoMechanicsSolvers

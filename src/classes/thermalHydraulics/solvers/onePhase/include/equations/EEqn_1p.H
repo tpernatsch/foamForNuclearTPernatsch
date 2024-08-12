@@ -38,6 +38,8 @@
         +   fvOptions_(alpha, rho, he)
     );
 
+
+
     if (fluid_.thermo().dpdt())
         EEqn -= alpha*fvc::ddt(p_);
 
@@ -57,7 +59,7 @@
     //- Add structure heat sources (i.e. powerModels and HX)
     //const volScalarField& Hs(*htcs_["FSPair"]);
     const volScalarField& Hs(FSPair_.htc());
-    /*
+   /*
     volScalarField Hs
     (
         IOobject
@@ -82,8 +84,14 @@
     //- Relax and solve equations, re-limit enthalpies, update fluid
     //  temperatures
     EEqn.relax();
+
+    //Update residual
+
+    // scalar initRes = EEqn.solve().max().initialResidual();
+    // residual=max(residual, initRes);
+    
     fvOptions_.constrain(EEqn);
-    EEqn.solve();
+    residual_  = max(residual_, EEqn.solve().max().initialResidual());
     fvOptions_.correct(he);
     he.relax();
     fluid_.thermo().correct();
@@ -106,4 +114,5 @@
         << " " << min(T).value()
         << " " << max(T).value()
         << " K" << endl;
+
 }

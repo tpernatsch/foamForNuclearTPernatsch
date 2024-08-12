@@ -144,8 +144,10 @@ wmake -j$num_jobs ./src/classes/neutronics
 # Make thermal-mechanics
 wmake -j$num_jobs ./src/classes/thermoMechanics
 
-# Make multiphysics control (depends on thermal-hydraulics)
-wmake -j$num_jobs ./src/classes/multiphysicsControl
+# Make offbeat
+wmake -j$num_jobs ./src/classes/offbeat/SCIANTIX
+wmake -j$num_jobs ./src/classes/offbeat/offbeatLib
+wmake -j$num_jobs ./src/classes/offbeat/offbeat
 
 # Make GeN-Foam
 wmake -j$num_jobs ./GeN-Foam

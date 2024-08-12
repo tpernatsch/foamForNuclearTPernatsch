@@ -54,7 +54,7 @@ SourceFiles
 #ifndef gapContactFvPatchVectorField_H
 #define gapContactFvPatchVectorField_H
 
-#include "tractionDisplacementFvPatchVectorField.H"
+#include "GFTractionDisplacementFvPatchVectorField.H"
 #include "regionCoupledBaseFvPatch.H"
 //#include "gapGasModel.H"
 #include "volFields.H"
@@ -70,7 +70,7 @@ namespace Foam
 
 class gapContactFvPatchVectorField
 :
-    public tractionDisplacementFvPatchVectorField
+    public GFTractionDisplacementFvPatchVectorField
 {
 
     // Private Data

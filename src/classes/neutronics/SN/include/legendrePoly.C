@@ -1,5 +1,8 @@
 namespace Foam
 {
+namespace solvers
+{
+
 
 double legendrePoly(int n, double mu)
 {
@@ -50,5 +53,6 @@ double legendrePoly(int n, double mu)
         default:
             return 0.0;
     }
+}
 }
 }

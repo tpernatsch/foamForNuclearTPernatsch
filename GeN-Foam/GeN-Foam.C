@@ -70,106 +70,109 @@ Description
 
 \*---------------------------------------------------------------------------*/
 
-#include "fvCFD.H"
-#include "fvOptions.H"
-#include "SquareMatrix.H"
-//#include "fvMatrixExt.H"
+#include "argList.H"
+#include "regionSolvers.H"
+#include "setDeltaT.H"
 #include "meshToMesh.H"
-#include "regionProperties.H"
-#include "mergeOrSplitBaffles.H"
-#include "volPointInterpolation.H"
-#include "fixedGradientFvPatchFields.H"
-#include "UPstream.H"
 
-#include "multiphysicsControl.H"
-#include "thermalHydraulicsModel.H"
-#include "neutronics.H"
-#include "thermoMechanics.H"
-
-#if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
-#    include <commDataLayer.H>
-#    define isCommDataLayerIncluded
-#  endif
-#endif
-
-#ifdef isCommDataLayerIncluded
-#include "commDataLayer.H"
-#endif
-
+using namespace Foam;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
 {
-    #define NO_CONTROL
-    #define CREATE_MESH createMeshesPostProcess.H
-    
-    #include "postProcess.H"
+   
+
+    argList::addBoolOption
+    (
+        "legacy",
+        "Run GeN-Foam in legacy mode (V.1)"
+    );
+
+    argList::addBoolOption
+    (
+        "initializeMappedFields",
+        "Map fields across regions as specified in multiRegionCouplingDict"
+    );
+
     #include "setRootCase.H"
     #include "createTime.H"
-    #include "createMeshes.H"
-    #include "createFields.H"
-    #include "createMeshInterpolators.H"
-    #include "createCouplingFields.H"
-    #include "createOutput.H"
 
-    Info<< "\nStarting time loop - \n" << endl;
+    const bool legacy(args.found("legacy"));
+    const bool mappingMode(args.found("initializeMappedFields"));
 
-    Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s" 
-        << nl << endl;
-
-    #include "setDeltaT.H"
-
-    
-
-    while (runTime.run())
+    if(legacy)
     {
+        Info << nl << "Running GeN-Foam in legacy mode (V.1)" << nl<<endl;
+        #include "modifyDictLegacy.H"
+
+        Info << nl << "Dictionaries modified" << nl<<endl;
+    }
+
+    // Create the region meshes and solvers
+    regionSolvers solvers(runTime);
+
+    // Set the initial time-step
+    setDeltaT(runTime, solvers);
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    Info<< nl << "Starting time loop\n" << endl;
+
+    solvers.setGlobalPrefix();
+    solvers.initializeMappedFields(runTime);
+
+    while (runTime.run() and !(mappingMode))
+    {
+
+        solvers.setGlobalPrefix();
+
         runTime++;
 
-        #include "setDeltaT.H"
-        
-        Info << "Time = " << runTime.timeName() << nl << endl;
+        Info<< "Time = " << runTime.timeName() << nl << endl;
 
-        /*
-        #ifdef isCommDataLayerIncluded
-        commDataLayer& data = commDataLayer::New(runTime);
+        scalar outerLoopResidual(0);
+        scalar multiRegionCouplingIter(0);
 
-        label isNewStep = FMUSimulatorLabel != -1
-            ? data.getObj<label>("new_step", commDataLayer::causality::in)
-            : 1;
-
-        do // FMI loop, move everything in multiphysics.loop() (first step)
+        // Multi-region PIMPLE corrector loop
+        do
         {
-        #endif
-        */
-
-        while (multiphysics.loop())
-        {
-            #include "solve.H"
-        }
-        
-        /*
-        #ifdef isCommDataLayerIncluded
-            if (isNewStep != 1 && FMUSimulatorLabel != -1)
+            ++multiRegionCouplingIter;
+            Info <<"Outer iteration No. "<< multiRegionCouplingIter<<nl<<endl;
+            solvers.mapFields(runTime);
+            //solvers.interpolateAndMapFields(runTime);
+            forAll(solvers, i)
             {
-                runTime.functionObjects()[FMUSimulatorLabel].execute();
-
-                isNewStep = data.getObj<label>("new_step", commDataLayer::causality::in);
+                solvers[i].deformMesh();
+                solvers[i].correctPhysics();
+                solvers[i].correctBaffleLessFields();
             }
-        } 
-        while (isNewStep != 1 && FMUSimulatorLabel != -1);
-        #endif
-        */
+            
+            forAll(solvers, i)
+            {
+                outerLoopResidual= max(outerLoopResidual, solvers[i].getResidual());
+            }
+
+            Info <<"Outer loop residual is "<< outerLoopResidual<<nl<<endl;
+        }
+        while
+        (
+        (outerLoopResidual > solvers.multiRegionResidual())
+        &&  (multiRegionCouplingIter < solvers.iterMax()) 
+        &&  (solvers.tightlyCoupled())
+        );
+
+        // Adjust the time-step according to the solver maxDeltaT
+        adjustDeltaT(runTime, solvers);
+
+
+        solvers.setGlobalPrefix();
 
         runTime.write();
 
-        #include "writeOutput.H"
-
-        // Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-        // << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-        // << nl << endl;
-        runTime.printExecutionTime(Info);
+        Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+            << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+            << nl << endl;
     }
 
     Info<< "End\n" << endl;

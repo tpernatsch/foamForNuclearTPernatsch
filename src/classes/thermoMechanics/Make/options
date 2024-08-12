@@ -4,6 +4,7 @@ EXE_INC = \
     -I./linearElastic \
     -I./linearElastic/include \
     -I./tractionDisplacement/lnInclude \
+    -I./../common/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \

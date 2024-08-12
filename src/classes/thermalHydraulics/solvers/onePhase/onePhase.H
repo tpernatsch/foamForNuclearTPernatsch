@@ -64,7 +64,7 @@ namespace Foam
 //class regime;
 //class regimeMapModel;
 
-namespace thermalHydraulicsModels
+namespace solvers
 {
 
 /*---------------------------------------------------------------------------*\
@@ -89,20 +89,9 @@ private:
         
         //- Fluid2 - structure
         FSPair FSPair_;
-    /*
-    //- Phase interaction related  
+
+        scalar residual_;
         
-        //- table of drag coefficients between the fluid and each
-        //  structure region (currently only defined in terms of cellZone)
-        volTensorFieldPtrTable Kds_;
-
-        //- table of heat transfer coefficients between the fluid and each
-        //  structure region
-        volScalarFieldPtrTable htcs_;
-
-        //- Regime map
-        autoPtr<regimeMapModel> regimeMap_;
-    */
 
 public:
 
@@ -112,10 +101,7 @@ public:
 
         onePhase
         (
-            Time& time,
-            fvMesh& mesh, 
-            customPimpleControl& pimple, 
-            fv::options& fvOptions
+            fvMesh& mesh
         );
 
         //- Destructor
@@ -124,20 +110,17 @@ public:
     //- Member Functions
 
         //- Solve thermal-hydraulics
-        virtual void correct
-        (
-            scalar& residual,
-            bool solveFluidDynamics, 
-            bool solveEnergy
-        );
+        virtual void correctPhysics();
+
+        virtual scalar maxDeltaT();
 
         //- Correct fluid and structure temperatures without
         //  updating the flow regime map
-        virtual void correctEnergy(scalar& residual);
+        virtual void correctEnergy();
 
         //- Correct pressure, velocities without updating 
         //  the flow regime map
-        virtual void correctFluidMechanics(scalar& residual);
+        virtual void correctFluidMechanics();
 
         //- Correct models and coupling fields
         virtual void correctModels
@@ -157,6 +140,11 @@ public:
 
         //- Computes the cumulated continuity error
         void calcCumulContErr();
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        };
 };
 
 

@@ -289,7 +289,7 @@ NB: In two-phase simulations with liquid fuel, the powerDensity in neutronics go
 The spatial neutronics solvers always create a *powerDensity* and *secondaryPowerDensity* fields. By default, *secondaryPowerDensity* is set to zero and the *fuelFraction* keyword in *nuclearData* is used to translate the volume-average power density that is normally calculated by multiplying cross-sections and fluxes into the fuel-averaged power density that is needed by the thermal-hydraulic sub-solver
 <br><br> However, a *secondaryPowerDensity* might sometimes be needed. It might be used to provide some power to the coolant in a solid-fuel reactor and, more importantly, to provide some power to the graphite in a liquid-fuel reactor. To calculate a *secondaryPowerDensity*, GeN-Foam needs to know how much of the total power goes into the *secondaryPowerDensity*, and what is the volume fraction of the secondary power-producing structure or liquid. This can be done by using the *fractionToSecondaryPower* and *secondaryPowerVolumeFraction* keywords in each cellZone in *nuclearData* (the same place as *fuelFraction*). If these keywords are present, GeN-Foam will calculate power densities as follows:
 <UL>
-<LI> secondaryPowerDenisty_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
+<LI> secondaryPowerDensity_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
 <LI> powerDensity_ /= max(fuelFraction, SMALL) * (1.0 - fractionToSecondaryPower);
 </UL>
 When the *liquidFuel* flag is set to false, the thermal-hydraulic sub-solver will:

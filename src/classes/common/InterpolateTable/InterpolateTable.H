@@ -1,36 +1,22 @@
 /*---------------------------------------------------------------------------*\
-|       ______          _   __           ______                               |
-|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
-|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
-|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
-|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
-|    Copyright (C) 2015 - 2022 EPFL                                           |
-|                                                                             |
-|    Built on OpenFOAM v2406                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2021 OpenFOAM Foundation
+     \\/     M anipulation  |
 -------------------------------------------------------------------------------
 License
-    This file is part of GeN-Foam.
+    This file is part of OpenFOAM.
 
-    GeN-Foam is free software; you can redistribute it and/or modify it
-    under the terms of the GNU General Public License as published by the
-    Free Software Foundation; either version 2 of the License, or (at your
-    option) any later version.
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    GeN-Foam is distributed in the hope that it will be useful, but WITHOUT
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
     ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
     FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
-
-    This offering is not approved or endorsed by the OpenFOAM Foundation nor
-    OpenCFD Limited, producer and distributor of the OpenFOAM(R)software via
-    www.openfoam.com, and owner of the OPENFOAM(R) and OpenCFD(R) trademarks.
-
-    This particular snippet of code is developed according to the developer's
-    knowledge and experience in OpenFOAM. The users should be aware that
-    there is a chance of bugs in the code, though we've thoroughly test it.
-    The source code may not be in the OpenFOAM coding style, and it might not
-    be making use of inheritance of classes to full extent.
 
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
@@ -54,17 +40,25 @@ Description
 
 \mainauthor
     I. Clifford - PSI (Paul Scherrer Institut, Switzerland)
-    A. Scolaro - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
-    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems 
-    Behaviour)
 
 \contribution
-    E. Brunetto, C. Fiorina - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
+    A. Scolaro, E. Brunetto, C. Fiorina - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
     DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems 
     Behaviour)
 
 \date 
     November 2021
+
+\modification
+    F. Xiang - EPFL & XJTU (Xi'an JiaoTong University, China,
+    Nuclear Thermal-hydraulic Laboratory)
+
+    January 2023
+      The method to deal with the out-of-bound situation is added. Now one can choose
+      whether to extrapolate, keep constant or report un error when the supplied
+      value are out of bounds.
+
+
 
 \*---------------------------------------------------------------------------*/
 
@@ -73,7 +67,9 @@ Description
 
 #include "scalar.H"
 #include "scalarField.H"
-#include "NamedEnum.H"
+
+
+#include "Enum.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -94,9 +90,22 @@ public:
             LINEAR  //!< Linear interpolation between points
         };
 
+        //- Enumeration of out of bounds method
+        enum outofBoundsMehtod
+        {
+            ERROR,          //!< Report un error.
+            EXTRAPOLATION,  //!< Use the two nearest values to extrapolate.
+            FIXED           //!< The value of the bounds will be used.
+        };
+
+           
         //- Static lookup of interpolation method names
-        static const NamedEnum<interpolationMethod, 2>
+        static const Enum<interpolationMethod>
             interpolationMethodNames_;
+
+        //- Static lookup of out of bounds method names
+        static const Enum<outofBoundsMehtod>
+            outofBoundsMehtodNames_;           
 };
 
 
@@ -121,6 +130,9 @@ private:
         
         //- Interpolation method
         interpolationMethod method_;
+
+        //- Out of bounds method
+        outofBoundsMehtod ob_method_;
 
     // Private Member Functions
 
@@ -166,12 +178,14 @@ public:
         (
             const scalarField& xValues,
             const FieldType& data,
-            const interpolationMethod& method
+            const interpolationMethod& method,
+            const outofBoundsMehtod& ob_method = ERROR
         )
         :
             xValues_(xValues),
             data_(data),
-            method_(method)
+            method_(method),
+            ob_method_(ob_method)
         {
             check();
         }
@@ -207,12 +221,57 @@ public:
                     }
                 }
             }
-            
-            // Out of bounds error
-            FatalErrorInFunction()
-                << "Supplied value out of bounds." << abort(FatalError);
-            
-            return 1.0*data_[0];    // Dummy return value
+
+            //- To keep the main body of the code unchanged, the modification for
+            //- the out-of-bound case is done below.   -F.X.
+            switch (ob_method_ )
+            {
+              case ERROR:// Out of bounds error
+              {
+                FatalErrorInFunction()
+                    << "Supplied value out of bounds." << abort(FatalError);
+
+                return 1.0*data_[0];    // Dummy return value
+                break;
+              }
+
+              case FIXED:
+              {
+                if (x < xValues_[0])
+                {
+                  return data_[0];
+                }
+                else
+                {
+                  return data_[xValues_.size()-1];
+                }
+                break;
+              }
+
+              case EXTRAPOLATION:
+              {
+                if (x < xValues_[0])
+                {
+                  scalar x0 = xValues_[0];
+                  scalar x1 = xValues_[1];
+                  return (data_[1]-data_[0])/(x1-x0)*(x-x0)+data_[0];
+                }
+                else
+                {
+                  scalar x0 = xValues_[xValues_.size()-2];
+                  scalar x1 = xValues_[xValues_.size()-1];
+                  return (data_[xValues_.size()-1]-data_[xValues_.size()-2])/(x1-x0)*(x-x0)
+                         +data_[xValues_.size()-2];
+                }
+
+                break;
+              }
+
+              default:
+                FatalErrorInFunction() << "error in interpolateTable.H"<< abort(FatalError);
+                return 1.0*data_[0];
+                break;
+            }
         }
 
     // Member Functions

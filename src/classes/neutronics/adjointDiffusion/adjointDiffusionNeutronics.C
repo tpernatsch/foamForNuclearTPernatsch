@@ -46,14 +46,17 @@ License
 
 namespace Foam
 {
+namespace solvers
+{
     defineTypeNameAndDebug(adjointDiffusionNeutronics, 0);
 
     addToRunTimeSelectionTable
     (
-        neutronics,
+        solver,
         adjointDiffusionNeutronics,
-        dictionary
+        fvMesh
     );
+}
 }
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
@@ -61,7 +64,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
+Foam::solvers::adjointDiffusionNeutronics::adjointDiffusionNeutronics
 (
     fvMesh& mesh
 )
@@ -273,7 +276,9 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
         mesh,
         dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    )
+    ),
+    pTotOld_(pTarget_),
+    residual_(0)
 {
     #include "createNeutronicsFieldsAdjoint.H"
 }
@@ -281,39 +286,61 @@ Foam::adjointDiffusionNeutronics::adjointDiffusionNeutronics
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::adjointDiffusionNeutronics::~adjointDiffusionNeutronics()
+Foam::solvers::adjointDiffusionNeutronics::~adjointDiffusionNeutronics()
 {}
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::adjointDiffusionNeutronics::getCouplingFieldRefs
-(
-    const objectRegistry& srcTH,
-    const meshToMesh& neutroToFluid,
-    const objectRegistry& srcTM,
-    const meshToMesh& neutroToMech
-)
-{
-    #include "defaultGetCouplingFieldRefs.H"
-}
+// void Foam::solvers::adjointDiffusionNeutronics::getCouplingFieldRefs
+// (
+//     const objectRegistry& srcTH,
+//     const meshToMesh& neutroToFluid,
+//     const objectRegistry& srcTM,
+//     const meshToMesh& neutroToMech
+// )
+// {
+//     #include "defaultGetCouplingFieldRefs.H"
+// }
 
-void Foam::adjointDiffusionNeutronics::interpolateCouplingFields
-(
-    const meshToMesh& neutroToFluid,
-    const meshToMesh& neutroToMech
-)
-{
-    #include "defaultInterpolateCouplingFields.H"
-}
+// void Foam::solvers::adjointDiffusionNeutronics::interpolateCouplingFields
+// (
+//     const meshToMesh& neutroToFluid,
+//     const meshToMesh& neutroToMech
+// )
+// {
+//     #include "defaultInterpolateCouplingFields.H"
+// }
 
-void Foam::adjointDiffusionNeutronics::correct
-(
-    scalar& residual, 
-    label couplingIter
-)
+void Foam::solvers::adjointDiffusionNeutronics::correctPhysics()
 {
+    pTotOld_ = power();
+
+    residual_=0;
+
     #include "solveNeutronicsAdjoint.H"
+}
+
+scalar Foam::solvers::adjointDiffusionNeutronics::maxDeltaT()
+{
+    scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+    scalar maxPowerVariation =
+        mesh_.time().controlDict().lookupOrDefault<scalar>
+        (
+            "maxPowerVariation", 
+            0.025
+        );
+    scalar pTot = power();
+
+    scalar powerVariation = mag((pTot - pTotOld_) / (pTotOld_ + SMALL));
+
+    scalar maxDeltaTNeutroFact = mag(maxPowerVariation/(powerVariation + SMALL));
+
+    scalar deltaTNeutroFact = min(min(maxDeltaTNeutroFact, 1.0 + 0.1*maxDeltaTNeutroFact), 1.2);
+
+    return min(deltaTNeutroFact*mesh_.time().deltaTValue(), newDeltaT);
+
+
 }
 
 // ************************************************************************* //

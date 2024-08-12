@@ -72,7 +72,8 @@ SourceFiles
 
 namespace Foam
 {
-
+namespace solvers
+{
 /*---------------------------------------------------------------------------*\
                           Class SNNeutronics Declaration
 \*---------------------------------------------------------------------------*/
@@ -146,6 +147,12 @@ protected:
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
+    bool multiRegion_;
+
+    scalar pTotOld_;
+
+    scalar residual_;
+
 private:
 
     // Private data
@@ -210,26 +217,29 @@ public:
             return pTot;
         }
 
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const meshToMesh& neutroToFluid,
-            const objectRegistry& srcTM,
-            const meshToMesh& neutroToMech
-        );   
+        // virtual void getCouplingFieldRefs
+        // (
+        //     const objectRegistry& srcTH,
+        //     const meshToMesh& neutroToFluid,
+        //     const objectRegistry& srcTM,
+        //     const meshToMesh& neutroToMech
+        // );   
 
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& neutroToFluid,
-            const meshToMesh& neutroToMech
-        );
+        // virtual void interpolateCouplingFields
+        // (
+        //     const meshToMesh& neutroToFluid,
+        //     const meshToMesh& neutroToMech
+        // );
 
         //- Correct/update the properties
-        virtual void correct
-        (
-            scalar& residual,
-            label couplingIter  
-        );  
+        virtual void correctPhysics();
+
+        virtual scalar maxDeltaT();
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        }
 
         //- Access
 
@@ -241,7 +251,7 @@ public:
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} //End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

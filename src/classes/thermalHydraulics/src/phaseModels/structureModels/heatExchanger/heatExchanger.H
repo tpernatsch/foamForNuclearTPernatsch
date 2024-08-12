@@ -78,6 +78,9 @@ protected :
     //- Ref to mesh
     const fvMesh& mesh_;
 
+    autoPtr<fvMesh> sMesh_; //secondaryMesh
+    const dictionary& thisDictionary_;
+
     //- Interfacial area, kinda useless to treat is as a volScalarField as
     //  unlike the structure and powerModels, there will be a separate
     //  heatExchanger object for each pair of cellZones
@@ -94,6 +97,12 @@ protected :
 
     //-
     autoPtr<meshToMesh> mappingPtr_;
+
+    //- Bool to check whether the secondary Mesh has been constructed yet or not. This is necessary as the TH solver
+    //- construct creates the heat exchanger possibly before the other fluid region has been created at all
+    bool constructed_;
+
+
 
 public:
 
@@ -131,6 +140,8 @@ public:
             const volScalarField& H,
             volScalarField& THX
         );    
+
+        void constructSecondaryHX(bool& constructed);
 };
 
 

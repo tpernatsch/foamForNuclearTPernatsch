@@ -28,7 +28,7 @@ forAll(flux_,energyI)
 
     Info<< "neutro Residual = " << initRes << nl << endl;
 
-    neutroEq.solve();
+    residual_=max(residual_, neutroEq.solve().max().initialResidual());
 
     fluxStarAlbedo_ = fluxStar_[energyI];
     /*
@@ -60,7 +60,7 @@ forAll(flux_,energyI)
 
     initRes = neutroEq2.solve().max().initialResidual();
     neutroResidual = max(neutroResidual,initRes);
-    neutroEq2.solve();
+    residual_=max(residual_, neutroEq2.solve().max().initialResidual());
 
     flux_[energyI]=(fluxStar_[energyI]-fluxStar2_[energyI]*2.0)/discFactor[energyI];
     flux_[energyI].correctBoundaryConditions();

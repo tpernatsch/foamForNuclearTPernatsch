@@ -46,14 +46,17 @@ License
 
 namespace Foam
 {
+namespace solvers
+{
     defineTypeNameAndDebug(linearElasticThermoMechanics, 0);
 
     addToRunTimeSelectionTable
     (
-        thermoMechanics,
+        solver,
         linearElasticThermoMechanics,
-        dictionary
+        fvMesh
     );
+}
 }
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
@@ -61,7 +64,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
+Foam::solvers::linearElasticThermoMechanics::linearElasticThermoMechanics
 (
     fvMesh& mesh
 )
@@ -169,7 +172,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             IOobject::NO_WRITE
         ),
         mesh,
-        dimensionedScalar("0", dimensionSet(1, 1, -3 , -1, 0), 1.0),
+        dimensionedScalar("0", dimensionSet(1, 1, -3 , -1, 0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     alpha_
@@ -445,7 +448,7 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
+            IOobject::NO_WRITE
         ),
         mesh_,
         dimensionedScalar("", dimPower/dimVol, 0.0),
@@ -489,7 +492,8 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
         (
             "compactNormalStress"
         )
-    )
+    ),
+    residual_(0)
 {
 
     TStruct_ = TStructRef_;
@@ -636,51 +640,60 @@ Foam::linearElasticThermoMechanics::linearElasticThermoMechanics
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::linearElasticThermoMechanics::~linearElasticThermoMechanics()
+Foam::solvers::linearElasticThermoMechanics::~linearElasticThermoMechanics()
 {}
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::linearElasticThermoMechanics::getCouplingFieldRefs
-(
-    const objectRegistry& srcTH,
-    const objectRegistry& srcN
-)
-{
-    //- Field names must reflect those defined in createCouplingFields.H
-    TFuelOrig_ = 
-        (linkedFuel_) ?
-        srcTH.findObject<volScalarField>("bafflelessTCladAv") :
-        srcTH.findObject<volScalarField>("bafflelessTFuelAv");
-    TStructOrig_ = 
-        srcTH.findObject<volScalarField>("bafflelessTStruct");
-    powerDensityOrig_ = 
-        srcN.findObject<volScalarField>("powerDensity");
-    //- Initialize mapped fields
-    //this->interpolateCouplingFields(mechToFluid);
-}
+// void Foam::solvers::linearElasticThermoMechanics::getCouplingFieldRefs
+// (
+//     const objectRegistry& srcTH,
+//     const objectRegistry& srcN
+// )
+// {
+//     //- Field names must reflect those defined in createCouplingFields.H
+//     TFuelOrig_ = 
+//         (linkedFuel_) ?
+//         srcTH.findObject<volScalarField>("bafflelessTCladAv") :
+//         srcTH.findObject<volScalarField>("bafflelessTFuelAv");
+//     TStructOrig_ = 
+//         srcTH.findObject<volScalarField>("bafflelessTStruct");
+//     powerDensityOrig_ = 
+//         srcN.findObject<volScalarField>("powerDensity");
+//     //- Initialize mapped fields
+//     //this->interpolateCouplingFields(mechToFluid);
+// }
 
-void Foam::linearElasticThermoMechanics::interpolateCouplingFields
-(
-    const meshToMesh& mechToFluid,
-    const meshToMesh& mechToNeutro
+// void Foam::solvers::linearElasticThermoMechanics::interpolateCouplingFields
+// (
+//     const meshToMesh& mechToFluid,
+//     const meshToMesh& mechToNeutro
 
-)
-{
-    mechToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
-    TFuel_.correctBoundaryConditions();
-    mechToFluid.mapTgtToSrc(*TStructOrig_, plusEqOp<scalar>(), TStructFromTH_);
-    TStructFromTH_.correctBoundaryConditions();
+// )
+// {
+//     mechToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
+//     TFuel_.correctBoundaryConditions();
+//     mechToFluid.mapTgtToSrc(*TStructOrig_, plusEqOp<scalar>(), TStructFromTH_);
+//     TStructFromTH_.correctBoundaryConditions();
 
-    mechToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
-    powerDensityNeutronics_.correctBoundaryConditions();
+//     mechToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
+//     powerDensityNeutronics_.correctBoundaryConditions();
     
-}
+// }
 
-void Foam::linearElasticThermoMechanics::correct(scalar& residual) 
+void Foam::solvers::linearElasticThermoMechanics::correctPhysics() 
 {
+
     #include "solveThermalMechanics.H"
 }
+
+scalar Foam::solvers::linearElasticThermoMechanics::maxDeltaT()
+{
+    return GREAT;
+}
+
+
+
 
 // ************************************************************************* //

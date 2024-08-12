@@ -38,11 +38,17 @@ if
     pTot = power();
 }
 
+//-Update mapped fields
+if(liquidFuel_)
+{
+    phiPtr_()=fvc::flux(UPtr_()*alphaPtr_());
+    diffCoeffPrecPtr_()=(alphatPtr_()+muPtr_()/xs_.ScNo())/rhoCool_;
+}
 #include "initializeNeutroSource.H"
 #include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
 
-if(!eigenvalueNeutronics_ && couplingIter == 0) // && !externalSourceNeutronics_)
+if(!eigenvalueNeutronics_)
 {
 
     if(integralPredictor)
@@ -77,8 +83,7 @@ do
 
     neutroIter++;
 
-    Info<< "neutroResidual (couplingIter: " << couplingIter
-        << ", neutroIter: " << neutroIter << "): " << neutroResidual << endl;
+    Info<< "neutroResidual (neutroIter: " << neutroIter << "): " << neutroResidual << endl;
         //<< " after Aitken no: " << aitkenIterNo << endl;
 }
 while
@@ -86,7 +91,7 @@ while
         (neutroResidual > neutronIterationResidual)
     &&  (neutroIter < maxNeutronIterations)
     && !eigenvalueNeutronics_
-    // && !externalSourceNeutronics_
+    // && !externalSourceNeutronics
 );
 
 powerDensity_*=0.0;
@@ -99,12 +104,12 @@ pTot = power();
 
 Info << "power: " << pTot << endl;
 
-Info<< "Final neutroResidual at coupling/neutroIter iter no "
-    << couplingIter << "/" << neutroIter << ": "  << neutroResidual
+Info<< "Final neutroResidual at neutroIter no "
+    << neutroIter << ": "  << neutroResidual
     << " - pow:" << pTot << endl;
 
 //- Determine power densities
-secondaryPowerDenisty_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
+secondaryPowerDensity_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
 powerDensity_ /= max(fuelFraction, SMALL) * (1.0 - fractionToSecondaryPower);
 
 
@@ -133,7 +138,8 @@ if (externalSourceNeutronics_)
     reactorState_.set("pTarget", pTot);
 }
 
-residual = max(residual,neutroResidual);
+
+residual_ = max(residual_,neutroResidual);
 
 oneGroupFlux_ *= 0.0;
 forAll(flux_,energyI)

@@ -65,7 +65,7 @@ SourceFiles
 namespace Foam
 {
 
-namespace thermalHydraulicsModels
+namespace solvers
 {
 
 /*---------------------------------------------------------------------------*\
@@ -114,6 +114,8 @@ public:
 
     static const Enum<heStabilizationMode> heStabilizationModeNames_;
 
+
+
 private:
 
     //- Phases
@@ -149,6 +151,8 @@ private:
         
         //- Mixture density
         volScalarField rho_;
+
+        scalar residual_;
 
     //- Miscellanea
 
@@ -199,10 +203,7 @@ public:
 
         twoPhase
         (
-            Time& time,
-            fvMesh& mesh, 
-            customPimpleControl& pimple, 
-            fv::options& fvOptions
+            fvMesh& mesh
         );
 
         //- Destructor
@@ -211,20 +212,22 @@ public:
     //- Member Functions
 
         //- Solve thermal-hydraulics
-        virtual void correct
-        (
-            scalar& residual,
-            bool solveFluidDynamics, 
-            bool solveEnergy
-        );
+        virtual void correctPhysics();
+
+        virtual scalar maxDeltaT() ;
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        };
 
         //- Correct fluid and structure temperatures without
         //  updating the flow regime map
-        virtual void correctEnergy(scalar& residual);
+        virtual void correctEnergy();
 
         //- Correct pressure, velocities without updating 
         //  the flow regime map
-        virtual void correctFluidMechanics(scalar& residual);
+        virtual void correctFluidMechanics();
 
         //- Correct models and coupling fields
         virtual void correctModels
@@ -237,7 +240,7 @@ public:
         virtual void correctCourant();
 
         //- Custom adjustTimeStep
-        virtual void adjustTimeStep();
+        // virtual void adjustTimeStep();
 
         //- Update continuity errors of the fluid
         void correctContErrs();
@@ -247,6 +250,8 @@ public:
 
         //- Computes the cumulated continuity error
         void calcCumulContErrs();
+
+
 };
 
 
