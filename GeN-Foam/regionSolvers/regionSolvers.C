@@ -152,16 +152,16 @@ Foam::regionSolvers::regionSolvers(const Time& runTime)
     mappingDict_=multiRegionCouplingDict.subDict("mappings");
 
 
-    mappingList_.setSize(mappingRegionMeshes_.size());
+    mappingList_.setSize(regionMeshes_.size());
 
-    forAll(mappingRegionMeshes_,i)
+    forAll(regionMeshes_,i)
     {
         mappingList_.set
         (
             i,
             new PtrList<meshToMesh>
             (
-                mappingRegionMeshes_.size()
+                regionMeshes_.size()
             )
         );
     }
@@ -181,7 +181,9 @@ Foam::regionSolvers::regionSolvers(const Time& runTime)
                         new meshToMesh
                         (
                             regionMeshes_[i],
-                            mappingRegionMeshes_[j],
+                            controlDict.subDict("removeBaffles").get<bool>(regionMeshes_[j].name())?
+                            mappingRegionMeshes_[j]
+                            :regionMeshes_[j],
                             Foam::meshToMesh::interpolationMethod::imCellVolumeWeight, // for now hard-coded, possibly implement mapping type via dict
                             Foam::meshToMesh::procMapMethod::pmAABB,
                             false
@@ -234,9 +236,11 @@ void Foam::regionSolvers::mapFields( const Time& runTime)
                 List<word> sourceFields(iTojRegionmappingDict_.getOrDefault<List<word>>("sourceFields",List<word>::null()));
                 List<word> fieldTypes(iTojRegionmappingDict_.getOrDefault<List<word>>("fieldTypes",List<word>::null()));
 
-                if(regionMeshes_[i].time().controlDict().found("removeBaffles"))
+                bool removeBaffles(false);
+
+                if(runTime.controlDict().found("removeBaffles"))
                 {
-                    const dictionary& removeBafflesDict(regionMeshes_[i].time().controlDict().subDict("removeBaffles"));
+                    const dictionary& removeBafflesDict(runTime.controlDict().subDict("removeBaffles"));
             
                     if(removeBafflesDict.getOrDefault<bool>(regionMeshes_[j].name(), false))
                     {
@@ -244,6 +248,7 @@ void Foam::regionSolvers::mapFields( const Time& runTime)
                         {
                             sourceFields[sourcei]+=".baffleLess";
                         }
+                        removeBaffles = true;
                     }
                 }
 
@@ -267,17 +272,18 @@ void Foam::regionSolvers::mapFields( const Time& runTime)
                         if(fieldTypes[fieldi]=="scalar")
                         {
                             volScalarField& tgtField = const_cast<volScalarField&>(regionMeshes_[i].lookupObject<volScalarField>(targetFields[fieldi]));
-                            if (! mappingRegionMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))
+                            if ((removeBaffles and !(mappingRegionMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))) or (!removeBaffles and !(regionMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))))
                             {
                                 Info<<"Warning! Field " <<sourceFields[fieldi]<< " not found! "<<endl;
 
                             }
                             else
                             {
-                                //Info << "Mapping field " << mappingRegionMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]).name()<<" on to "<< tgtField.name()<< endl;
                                 mappingList_[i][j].mapTgtToSrc
                                 (
-                                    mappingRegionMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
+                                    removeBaffles?
+                                    mappingRegionMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi])
+                                    :regionMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
                                     plusEqOp<scalar>(),
                                     tgtField
                                 );
@@ -287,11 +293,11 @@ void Foam::regionSolvers::mapFields( const Time& runTime)
                         else if(fieldTypes[fieldi]=="vector")
                         {
                             volVectorField& tgtField = const_cast<volVectorField&>(regionMeshes_[i].lookupObject<volVectorField>(targetFields[fieldi]));
-                        // Info << "Mapping field " << mappingRegionMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]).name()<<" on to "<< tgtField.name()<< endl;
-
                             mappingList_[i][j].mapTgtToSrc
                             (
-                                mappingRegionMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
+                                removeBaffles?
+                                mappingRegionMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi])
+                                :regionMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
                                 plusEqOp<vector>(),
                                 tgtField
                             );
@@ -326,9 +332,11 @@ void Foam::regionSolvers::initializeMappedFields( const Time& runTime)
                 List<word> sourceFields(iTojRegionmappingDict_.getOrDefault<List<word>>("sourceFields",List<word>::null()));
                 List<word> fieldTypes(iTojRegionmappingDict_.getOrDefault<List<word>>("fieldTypes",List<word>::null()));
 
-                if(regionMeshes_[i].time().controlDict().found("removeBaffles"))
+                bool removeBaffles(false);
+
+                if(runTime.controlDict().found("removeBaffles"))
                 {
-                    const dictionary& removeBafflesDict(regionMeshes_[i].time().controlDict().subDict("removeBaffles"));
+                    const dictionary& removeBafflesDict(runTime.controlDict().subDict("removeBaffles"));
             
                     if(removeBafflesDict.getOrDefault<bool>(regionMeshes_[j].name(), false))
                     {
@@ -336,6 +344,7 @@ void Foam::regionSolvers::initializeMappedFields( const Time& runTime)
                         {
                             sourceFields[sourcei]+=".baffleLess";
                         }
+                        removeBaffles = true;
                     }
                 }
 
@@ -359,17 +368,18 @@ void Foam::regionSolvers::initializeMappedFields( const Time& runTime)
                         if(fieldTypes[fieldi]=="scalar")
                         {
                             volScalarField& tgtField = const_cast<volScalarField&>(regionMeshes_[i].lookupObject<volScalarField>(targetFields[fieldi]));
-                            if (! mappingRegionMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))
+                            if ((removeBaffles and !(mappingRegionMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))) or (!removeBaffles and !(regionMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))))
                             {
                                 Info<<"Warning! Field " <<sourceFields[fieldi]<< " not found! "<<endl;
 
                             }
                             else
                             {
-                                //Info << "Mapping field " << mappingRegionMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]).name()<<" on to "<< tgtField.name()<< endl;
                                 mappingList_[i][j].mapTgtToSrc
                                 (
-                                    mappingRegionMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
+                                    removeBaffles?
+                                    mappingRegionMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi])
+                                    :regionMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
                                     plusEqOp<scalar>(),
                                     tgtField
                                 );
@@ -380,11 +390,11 @@ void Foam::regionSolvers::initializeMappedFields( const Time& runTime)
                         else if(fieldTypes[fieldi]=="vector")
                         {
                             volVectorField& tgtField = const_cast<volVectorField&>(regionMeshes_[i].lookupObject<volVectorField>(targetFields[fieldi]));
-                        // Info << "Mapping field " << mappingRegionMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]).name()<<" on to "<< tgtField.name()<< endl;
-
                             mappingList_[i][j].mapTgtToSrc
                             (
-                                mappingRegionMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
+                                removeBaffles?
+                                mappingRegionMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi])
+                                :regionMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
                                 plusEqOp<vector>(),
                                 tgtField
                             );
@@ -406,12 +416,12 @@ void Foam::regionSolvers::initializeMappedFields( const Time& runTime)
 }
 
 
+
 void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
 {
    
-    forAll(regionMeshes_, i)
-    {
-        
+    forAll(regionMeshes_, regioni)
+    {        
         autoPtr<fvMesh> baffleLessMesh;
 
         bool removeBaffleBool(false);
@@ -419,11 +429,13 @@ void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
         if (runTime.controlDict().found("removeBaffles"))
         {
             const dictionary& removeBafflesDict = runTime.controlDict().subDict("removeBaffles");
-            removeBaffleBool = removeBafflesDict.getOrDefault<bool>(regionMeshes_[i].name(), "false");
+            removeBaffleBool = removeBafflesDict.getOrDefault<bool>(regionMeshes_[regioni].name(), "false");
         }
 
         if (removeBaffleBool)
         {
+
+            Info << "Creating baffleless mesh for region " << regionMeshes_[regioni].name()<<endl;
             if (UPstream::nProcs() > 1)
             {
                 Info<< "WARNING: the removeBaffles feature is guaranteed to work only "
@@ -431,14 +443,15 @@ void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
                     << "faces of baffe patches! Otherwise, projection artifacts can "
                     << " still occur" << nl << endl;
             }
+
                 
             //- Copy internal geometric data from fluidMesh
-            pointField points(regionMeshes_[i].points());
-            faceList faces(regionMeshes_[i].faces());
-            cellList cells(regionMeshes_[i].cells());
+            pointField points(regionMeshes_[regioni].points());
+            faceList faces(regionMeshes_[regioni].faces());
+            cellList cells(regionMeshes_[regioni].cells());
 
             //- Copy boundary geometric data from fluidMesh
-            const polyBoundaryMesh& patches = regionMeshes_[i].boundaryMesh();
+            const polyBoundaryMesh& patches = regionMeshes_[regioni].boundaryMesh();
             wordList patchNames(patches.names());
             List<polyPatch*> pList;
             forAll(patchNames, i)
@@ -460,7 +473,7 @@ void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
                 (
                     Foam::IOobject
                     (
-                        IOobject::groupName(regionMeshes_[i].name(), "baffleLess"),
+                        IOobject::groupName(regionMeshes_[regioni].name(), "baffleLess"),
                         runTime.timeName(),
                         runTime,
                         Foam::IOobject::NO_READ
@@ -482,7 +495,7 @@ void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
 
             autoPtr<Time> dummyRunTimePtr
             (
-                new Time(Foam::Time::controlDictName, regionMeshes_[i].time().rootPath(), regionMeshes_[i].time().caseName())
+                new Time(Foam::Time::controlDictName, regionMeshes_[regioni].time().rootPath(), regionMeshes_[regioni].time().caseName())
             );
             removeBaffles(baffleLessMesh(), dummyRunTimePtr());
             dummyRunTimePtr.clear();    
@@ -491,10 +504,10 @@ void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
             List<pointZone*> pointZonesNB(0);
             List<faceZone*> faceZonesNB(0);
             List<cellZone*> cellZonesNB(0);
-            forAll(regionMeshes_[i].pointZones().names(), i)
+            forAll(regionMeshes_[regioni].pointZones().names(), i)
             {
-                word name(regionMeshes_[i].pointZones().names()[i]);
-                const pointZone& origZone(regionMeshes_[i].pointZones()[name]);
+                word name(regionMeshes_[regioni].pointZones().names()[i]);
+                const pointZone& origZone(regionMeshes_[regioni].pointZones()[name]);
                 pointZonesNB.append
                 (
                     new pointZone
@@ -502,14 +515,14 @@ void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
                         name,
                         origZone,
                         i,
-                        regionMeshes_[i].pointZones()
+                        regionMeshes_[regioni].pointZones()
                     )
                 );
             }
-            forAll(regionMeshes_[i].faceZones().names(), i)
+            forAll(regionMeshes_[regioni].faceZones().names(), i)
             {
-                word name(regionMeshes_[i].faceZones().names()[i]);
-                const faceZone& origZone(regionMeshes_[i].faceZones()[name]);
+                word name(regionMeshes_[regioni].faceZones().names()[i]);
+                const faceZone& origZone(regionMeshes_[regioni].faceZones()[name]);
                 faceZonesNB.append
                 (
                     new faceZone
@@ -518,14 +531,14 @@ void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
                         origZone,
                         origZone.flipMap(),
                         i,
-                        regionMeshes_[i].faceZones()
+                        regionMeshes_[regioni].faceZones()
                     )
                 );
             }
-            forAll(regionMeshes_[i].cellZones().names(), i)
+            forAll(regionMeshes_[regioni].cellZones().names(), i)
             {
-                word name(regionMeshes_[i].cellZones().names()[i]);
-                const cellZone& origZone(regionMeshes_[i].cellZones()[name]);
+                word name(regionMeshes_[regioni].cellZones().names()[i]);
+                const cellZone& origZone(regionMeshes_[regioni].cellZones()[name]);
                 cellZonesNB.append
                 (
                     new cellZone
@@ -533,7 +546,7 @@ void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
                         name,
                         origZone,
                         i,
-                        regionMeshes_[i].cellZones()
+                        regionMeshes_[regioni].cellZones()
                     )
                 );
             }
@@ -543,11 +556,11 @@ void Foam::regionSolvers::createBaffleLessMeshes(const Time& runTime)
 
         else
         {
-            baffleLessMesh.reset(&regionMeshes_[i]);
+            baffleLessMesh = nullptr;
         }
         
 
-        mappingRegionMeshes_.set(i,baffleLessMesh);
+        mappingRegionMeshes_.set(regioni,baffleLessMesh);
     }
 
 }
@@ -592,9 +605,7 @@ void Foam::regionSolvers::createCouplingFields(const Time& runTime)
                     regioni,
                     new PtrList<volVectorField>(nVectorFields+1)
                 );
-
-                Info <<nl<< "For region: " << regionMeshes_[regioni].name()<<endl;
-
+                
                 forAll(regionsInDict, i) //iterate over the regions found in the dictionary
                 {
                 

@@ -188,7 +188,6 @@ public:
         //- Return power
         virtual scalar power() const = 0;  
 
-        virtual autoPtr<fvMesh> createBaffleLessMesh();
         virtual void correctBaffleLessFields();
 
         virtual void deformMesh();

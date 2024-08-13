@@ -254,7 +254,6 @@ labelList findBaffles(const polyMesh& mesh, const labelList& boundaryFaces)
 
 int removeBaffles(fvMesh& mesh, Time& runTime)//(int argc, char *argv[])
 {
-    Info<< "Creating fluidRegionNB mesh without baffles" << nl << endl;
     //argList::addNote
     //(
     //    "Detect faces that share points (baffles).\n"

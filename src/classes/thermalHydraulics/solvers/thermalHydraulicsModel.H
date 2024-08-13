@@ -249,8 +249,6 @@ public:
         //- Stop execution (for development purposes)
         void stop();
 
-        virtual autoPtr<fvMesh> createBaffleLessMesh();
-
         virtual void correctBaffleLessFields();
 
         virtual void deformMesh();

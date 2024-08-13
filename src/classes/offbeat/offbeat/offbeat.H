@@ -159,9 +159,6 @@ public:
         virtual scalar getResidual(){return 0;};
 
 
-        virtual autoPtr<fvMesh> createBaffleLessMesh();
-        // virtual PtrList<volScalarField>  createScalarBaffleLessFields(){};
-        // virtual PtrList<volVectorField>  createVectorBaffleLessFields(){};
         virtual void correctBaffleLessFields(){};
 
         virtual void deformMesh(){};

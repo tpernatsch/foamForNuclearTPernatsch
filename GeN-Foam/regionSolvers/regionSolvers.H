@@ -198,7 +198,7 @@ public:
 
                 inline solver& operator*();
                 inline solver& operator()();
-                inline solver* operator->();
+                inline solver* operator->() const;
 
                 inline iterator operator++();
                 inline iterator operator++(int);

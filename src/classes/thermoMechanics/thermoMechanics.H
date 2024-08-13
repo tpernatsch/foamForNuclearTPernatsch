@@ -210,9 +210,7 @@ public:
                 return initialResidual_;
             };   
 
-        virtual autoPtr<fvMesh> createBaffleLessMesh();
-        // virtual List<volScalarField>  createScalarBaffleLessFields();
-        // virtual List<volVectorField>  createVectorBaffleLessFields();
+        
         virtual void correctBaffleLessFields();
 
         virtual void deformMesh();

@@ -194,9 +194,6 @@ public:
         virtual scalar getResidual()=0;
 
         //-BaffleLess mesh handling
-        virtual autoPtr<fvMesh> createBaffleLessMesh()=0;
-        // virtual List<volScalarField> createScalarBaffleLessFields()=0;
-        // virtual List<volVectorField>  createVectorBaffleLessFields()=0;
         virtual void correctBaffleLessFields()=0;
 
         virtual void deformMesh()=0;

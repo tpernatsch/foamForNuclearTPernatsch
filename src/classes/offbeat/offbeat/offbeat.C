@@ -240,11 +240,4 @@ Foam::scalar Foam::solvers::offbeat::getMaxToutClad
 }
 
 
-autoPtr<fvMesh> Foam::solvers::offbeat::createBaffleLessMesh()
-{
-    autoPtr<fvMesh> baffleLessMesh;
-    baffleLessMesh.set(&mesh_);
-    return baffleLessMesh;
-}
-
 // ************************************************************************* //
