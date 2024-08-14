@@ -32,7 +32,7 @@ if(controlDict.found("regionSolvers"))
 
 controlDict.regIOobject::write();
 
-if(solveThermalHydraulics)
+if(solveThermalHydraulics or solveEnergy)
 {
     const IOdictionary phaseProperties
     (
@@ -49,6 +49,31 @@ if(solveThermalHydraulics)
     const word fluidSolver(phaseProperties.get<word>("thermalHydraulicsType"));
 
     regionSolversDict.add("fluidRegion", fluidSolver);
+
+    if(solveEnergy)
+    {
+        IOdictionary fvSolTH
+        (
+            IOobject
+            (
+                "fvSolution",
+                runTime.system(),
+                "fluidRegion",
+                runTime.db(),
+                IOobject::MUST_READ,
+                IOobject::AUTO_WRITE
+            )
+        );
+
+
+        fvSolTH.subDict("PIMPLE").add("solveEnergy", "true");
+        if(!solveThermalHydraulics)
+        {
+            fvSolTH.subDict("PIMPLE").add("solveFluidMechanics", "false");
+        }
+        fvSolTH.regIOobject::write();
+    }
+
 
 }
 
@@ -235,7 +260,7 @@ if(solveNeutronics)
 {
     dictionary NeuMappingDict;
 
-    if (solveThermalHydraulics and solveEnergy)
+    if (solveEnergy or solveThermalHydraulics)
     {   
 
         dictionary THToNeu;
