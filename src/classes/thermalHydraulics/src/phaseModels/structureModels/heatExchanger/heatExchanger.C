@@ -71,7 +71,7 @@ Foam::heatExchanger::heatExchanger
         dict
     ),
     mesh_(mesh),
-    sMesh_(nullptr),
+   // sMesh_(nullptr),
     iA_(this->get<scalar>("volumetricArea")),
     Hw_(max(this->get<scalar>("wallConductance"), 1e-69)),
     primaryCells_( mesh_.cellZones()[this->get<word>("primary")]),
@@ -239,25 +239,27 @@ void Foam::heatExchanger::correct
     if(!constructed_)
         constructSecondaryHX(constructed_);
 
+    const fvMesh& sMesh_ = mesh_.time().lookupObjectRef<fvMesh>(this->getOrDefault<word>("secondaryRegion", mesh_.name()));
+
     volScalarField sH
     (
-        sMesh_().foundObject<volScalarField>("htc")  
-        ?  sMesh_().lookupObject<volScalarField>("htc")
-        : sMesh_().lookupObject<volScalarField>("htc.liquid.structure")
+        sMesh_.foundObject<volScalarField>("htc")  
+        ?  sMesh_.lookupObject<volScalarField>("htc")
+        : sMesh_.lookupObject<volScalarField>("htc.liquid.structure")
     );
     volScalarField sHT
     (
-        sMesh_().foundObject<volScalarField>("htc")  
-        ?  sMesh_().lookupObject<volScalarField>("htc")*sMesh_().lookupObject<volScalarField>("T")
-        : sMesh_().lookupObject<volScalarField>("htc.liquid.structure")*sMesh_().lookupObject<volScalarField>("T.liquid")
+        sMesh_.foundObject<volScalarField>("htc")  
+        ?  sMesh_.lookupObject<volScalarField>("htc")*sMesh_.lookupObject<volScalarField>("T")
+        : sMesh_.lookupObject<volScalarField>("htc.liquid.structure")*sMesh_.lookupObject<volScalarField>("T.liquid")
     );
 
     //If twoPhase, correct the herat transfer parameters to account for both phases
 
-    if(sMesh_().foundObject<volScalarField>("htc.vapour.structure"))
+    if(sMesh_.foundObject<volScalarField>("htc.vapour.structure"))
     {
-        const volScalarField& sT2 = (sMesh_().lookupObject<volScalarField>("T.vapour"));
-        const volScalarField& sH2=(sMesh_().lookupObject<volScalarField>("htc.vapour.structure"));
+        const volScalarField& sT2 = (sMesh_.lookupObject<volScalarField>("T.vapour"));
+        const volScalarField& sH2=(sMesh_.lookupObject<volScalarField>("htc.vapour.structure"));
         sHT+=sH2*sT2;
         sH+=sH2;
     }
@@ -284,9 +286,8 @@ void Foam::heatExchanger::correct
         THX[celli] = (Bp*As+Bs)/max(Ap*As-1.0, 1e-69);
     }
 
-    //In the new approach, there is no primary/secondary distinction anymore, as dual meshing handling is been performed
-    //This means that both sides are handled on a separate mesh, hence in mesh1 I only care about setting the primary and viceversa
-
+    //In the new approach, there is no primary/secondary distinction anymore, as a dual-mesh handling is been performed
+    //This means that each side is handled on a separate mesh, hence in each mesh I only care about setting the primary cells
     
     // forAll(secondaryCells_, i)
     // {
@@ -307,10 +308,10 @@ void Foam::heatExchanger::constructSecondaryHX(bool& constructed)
 {
     Info << "Creating heatExchanger: " << thisDictionary_.dictName() << endl;
 
-    sMesh_.reset(const_cast<fvMesh*>(&(mesh_.time().lookupObject<fvMesh>(this->getOrDefault<word>("secondaryRegion", mesh_.name())))));
-
+    // sMesh_.reset(const_cast<fvMesh*>(&(mesh_.time().lookupObject<fvMesh>(this->getOrDefault<word>("secondaryRegion", mesh_.name())))));
+    const fvMesh& sMesh_ = mesh_.time().lookupObjectRef<fvMesh>(this->getOrDefault<word>("secondaryRegion", mesh_.name()));
     //- Read secondary cellZones and their cells
-    secondaryCells_ = sMesh_().cellZones()[this->get<word>("secondary")];
+    secondaryCells_ = sMesh_.cellZones()[this->get<word>("secondary")];
 
     //- Calculate displacement vecdtor that, if applied to the primary
     //  cellZone, would translate it to the secondary cellZone. This assumes
@@ -322,8 +323,8 @@ void Foam::heatExchanger::constructSecondaryHX(bool& constructed)
     vector sCOV(vector::zero);
     const vectorField& primC(mesh_.C());
     const scalarField& primV(mesh_.V());
-    const vectorField& secC(sMesh_().C());
-    const scalarField& secV(sMesh_().V());
+    const vectorField& secC(sMesh_.C());
+    const scalarField& secV(sMesh_.V());
     scalar pV(0);
     scalar sV(0);
     forAll(primaryCells_, i)
@@ -356,9 +357,9 @@ void Foam::heatExchanger::constructSecondaryHX(bool& constructed)
         << "translation of " << delta << " m" << endl;
 
     //- Read mesh geometric data
-    const pointField& pointsRef(sMesh_().points());
-    const faceList& facesRef(sMesh_().faces());
-    const cellList& cellsRef(sMesh_().cells());
+    const pointField& pointsRef(sMesh_.points());
+    const faceList& facesRef(sMesh_.faces());
+    const cellList& cellsRef(sMesh_.cells());
 
     //- Init new mesh geometric data
     pointField points(pointsRef.size());

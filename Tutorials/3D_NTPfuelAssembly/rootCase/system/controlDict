@@ -57,7 +57,7 @@ solveThermalMechanics   false;
 
 liquidFuel          false;
 
-removeBaffles       false;
+removeFluidBaffles       false;
 
 //- Time step control options
 

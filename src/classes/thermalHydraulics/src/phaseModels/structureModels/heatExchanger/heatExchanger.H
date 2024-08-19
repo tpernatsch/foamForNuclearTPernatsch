@@ -78,7 +78,7 @@ protected :
     //- Ref to mesh
     const fvMesh& mesh_;
 
-    autoPtr<fvMesh> sMesh_; //secondaryMesh
+    //autoPtr<fvMesh> sMesh_; //secondaryMesh
     const dictionary& thisDictionary_;
 
     //- Interfacial area, kinda useless to treat is as a volScalarField as

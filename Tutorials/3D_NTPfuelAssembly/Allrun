@@ -24,6 +24,7 @@ rm -rf steadyState
 #==============================================================================*
 
 cp -r rootCase steadyState
+GeN-Foam -legacy -initializeMappedFields -case steadyState
 
 # Run neutronics steady-state
 GeN-Foam -case steadyState |
