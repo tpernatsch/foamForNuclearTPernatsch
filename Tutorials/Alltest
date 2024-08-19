@@ -46,19 +46,19 @@ tutorials=(
     #"1D_PSBT_SC/PhaseII_Ex1_01_5215 0.2"
     #"1D_PSBT_SC/PhaseII_Ex2_04_6770 0.2"
     "1D_thermalMSR_pointKinetics    0.2"
-    #"2D_cavityBoussinesq            0.2"
-    #"2D_externalSourceDiffusion     0.2"
+    "2D_cavityBoussinesq            0.2"
+    "2D_externalSourceDiffusion     0.2"
     #"2D_FFTF                        0.3"
-    #"2D_fullCoupling                0.2"
+    "2D_fullCoupling                0.2"
     #"2D_KNS37-L22                   0.3"
-    #"2D_MSFR                        0.3"
-    #"2D_onePhaseAndPointKineticsCoupling 0.2"
-    #"2D_onePhaseAndSubcriticalPointKineticsCoupling 0.2"
-    #"2D_voidMotionNoPhaseChange     0.2"
-    #"3D_gFHR                        1.5"
+    "2D_MSFR                        0.3"
+    "2D_onePhaseAndPointKineticsCoupling 0.2"
+    "2D_onePhaseAndSubcriticalPointKineticsCoupling 0.2"
+    "2D_voidMotionNoPhaseChange     0.2"
+    "3D_gFHR                        1.5"
     #"3D_NTPfuelAssembly             0.2"
     #"3D_SmallESFR                   1.0"
-   # "Godiva_SN                      1.5"
+    #"Godiva_SN                      1.5"
 )
 
 # Add FMU tutorials only if GeN-Foam has been built with FMU4FOAM
@@ -319,3 +319,4 @@ fi
 exit 0
 
 #------------------------------------------------------------------------------
+

@@ -361,7 +361,7 @@ if(solveNeutronics)
         List<word> fieldTypes(1);
         fieldTypes[0]= "vector";
         List<word> fieldNames(1);
-        fieldNames[0]="disp";
+        fieldNames[0]="meshDisp";
 
         TMToNeu.add("sourceFields", fieldNames);
         TMToNeu.add("targetFields", tgtNames);

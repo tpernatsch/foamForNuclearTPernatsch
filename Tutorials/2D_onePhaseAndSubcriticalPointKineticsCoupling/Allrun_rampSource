@@ -19,6 +19,7 @@ setSteadyState() {
     echo "Setting steady-state ..."
     foamDictionary $2/system/controlDict -entry endTime -set $endTimeSteadyState
     foamDictionary $2/system/controlDict -entry writeInterval -set $endTimeSteadyState
+    GeN-Foam -legacy -initializeMappedFields -case $2
 }
 
 setTransient() {
@@ -33,6 +34,7 @@ setTransient() {
     foamDictionary $2/system/controlDict -entry deltaT -set 1e-7
     foamDictionary $2/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $2/system/controlDict -entry writeInterval -set 10
+    GeN-Foam -legacy -initializeMappedFields -case $2
 }
 
 ################################################################################
