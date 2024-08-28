@@ -88,9 +88,192 @@ Foam::solvers::thermoMechanics::thermoMechanics
         dimensionedVector("", dimLength, vector::zero),
         zeroGradientFvPatchScalarField::typeName
     ),
+    fuelDisp_
+    (
+        IOobject
+        (
+            "fuelDisp",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh
+    ),
+    CRDisp_
+    (
+        IOobject
+        (
+            "CRDisp",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh
+    ),
+    fuelDispVector_
+    (
+        IOobject
+        (
+            "fuelDispVector",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        (fuelDisp_*vector(0,0,1))
+    ),
+    fuelOrientation_(this->subDict("globalOptions").lookup("pinDirection")),
+    TStructFromTH_
+    (
+        IOobject
+        (
+            "TStructFromTH",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 1.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TFuel_
+    (
+        IOobject
+        (
+            "TFuel",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 1.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TFuelRef_
+    (
+        IOobject
+        (
+            "TFuelRef",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("0", dimensionSet(0, 0, 0 , 1, 0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    alphaFuel_
+    (
+        IOobject
+        (
+            "alphaFuel",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("0", dimensionSet(0, 0, 0 , -1, 0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TCRRef_
+    (
+        IOobject
+        (
+            "TCRRef",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("0", dimensionSet(0, 0, 0 , 1, 0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    alphaCR_
+    (
+        IOobject
+        (
+            "alphaCR",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("0", dimensionSet(0, 0, 0 , -1, 0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TMEntries_(this->subDict("materials")),
+    zonesNumber_(TMEntries_.toc().size()),
     initialResidual_(1.0),
     originalPoints_(mesh_.points())
-{}
+
+{
+    PtrList<scalar> TFuelRefList(zonesNumber_);
+    PtrList<scalar> alphaFuelList(zonesNumber_);
+    PtrList<scalar> TCRRefList(zonesNumber_);
+    PtrList<scalar> alphaCRList(zonesNumber_);
+
+    wordList dictEntries(TMEntries_.toc());
+
+
+    forAll(dictEntries,zoneI)
+    {
+        dictionary& dict = TMEntries_.subDict(dictEntries[zoneI]);
+
+        dimensionedScalar TFuelRef = dict.getOrDefault<dimensionedScalar>("TFuelRef", 0.0);
+        dimensionedScalar alphaFuel = dict.getOrDefault<dimensionedScalar>("alphaFuel", 0.0);
+        dimensionedScalar TCRRef = dict.getOrDefault<dimensionedScalar>("TCRRef", 0.0);
+        dimensionedScalar alphaCR = dict.getOrDefault<dimensionedScalar>("alphaCR", 0.0);
+
+
+        TFuelRefList.set
+        (
+            zoneI,
+            new scalar(TFuelRef.value())
+        );
+        alphaFuelList.set
+        (
+            zoneI,
+            new scalar(alphaFuel.value())
+        );
+
+        TCRRefList.set(zoneI,new scalar(TCRRef.value()));
+        alphaCRList.set(zoneI,new scalar(alphaCR.value()));
+    }
+
+    // Set volFields based on dictionary
+    forAll(dictEntries, zoneI)
+    {
+
+        const word& name = dictEntries[zoneI];
+
+        label zoneId = mesh.cellZones().findZoneID(name);
+
+        forAll(mesh.cellZones()[zoneId], cellIlocal)
+        {
+            label cellIglobal = mesh.cellZones()[zoneId][cellIlocal];
+
+            TFuelRef_[cellIglobal] = TFuelRefList[zoneI];
+            alphaFuel_[cellIglobal] = alphaFuelList[zoneI];
+            TCRRef_[cellIglobal] = TCRRefList[zoneI];
+            alphaCR_[cellIglobal] = alphaCRList[zoneI];
+        }
+
+    }
+
+    TFuelRef_.correctBoundaryConditions();
+    alphaFuel_.correctBoundaryConditions();
+
+    TCRRef_.correctBoundaryConditions();
+    alphaCR_.correctBoundaryConditions();
+}
 
 
 // * * * * * * * * * * * * * * * * * Member functions * * * * * * * * * * * * * * * //

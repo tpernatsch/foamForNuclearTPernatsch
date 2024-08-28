@@ -178,7 +178,14 @@ void GFTractionDisplacementFvPatchVectorField::updateCoeffs()
     scalarField lambda(nu*E/((1.0 + nu)*(1.0 - 2.0*nu)));
     scalarField threeK(E/(1.0 - 2.0*nu));
 
-    Switch planeStress(thermoMechanicalProperties.lookup("planeStress"));
+    // Switch planeStress(thermoMechanicalProperties.lookup("planeStress"));
+
+    Switch planeStress
+    (
+        thermoMechanicalProperties.found("rheologyOptions") ?
+        thermoMechanicalProperties.subDict("rhelogyOptions").get<bool>("planeStress")
+        : false
+    );
 
     if (planeStress)
     {
@@ -210,18 +217,14 @@ void GFTractionDisplacementFvPatchVectorField::updateCoeffs()
         const fvPatchField<scalar>& Tmech =
             patch().lookupPatchField<volScalarField, scalar>("TStruct");
 
-		dimensionedScalar TrefStructure
-        (
-            "",
-            dimTemperature,
-            thermoMechanicalProperties.get<scalar>("TStructRef")
-        ); //modified
+		const fvPatchField<scalar>& TrefStructure =
+            patch().lookupPatchField<volScalarField, scalar>("TStructRef"); //modified
 		//fvPatchField<scalar> TrefStructurePatch =
 		//patch().lookupPatchField<volScalarField, scalar>("Tmech");
 		//fvPatchField<scalar> TrefStructurePatch = 
             //(Tmech/Tmech)*TrefStructure.value();
 
-        gradient() += n*threeKalpha*(Tmech-TrefStructure.value())/twoMuLambda; //modified
+        gradient() += n*threeKalpha*(Tmech-TrefStructure)/twoMuLambda; //modified
         //gradient() += n*threeKalpha*(Tmech)/twoMuLambda;
     }
 

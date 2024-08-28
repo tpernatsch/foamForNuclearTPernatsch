@@ -106,7 +106,21 @@ protected:
         fvMesh& mesh_;
 
         //- Mesh displacement
+        //- Move here all the fields needed for coupling with other physics
         volVectorField meshDisp_;
+        volScalarField fuelDisp_;
+        volScalarField CRDisp_;
+        volVectorField fuelDispVector_;
+        vector fuelOrientation_;    
+        volScalarField TStructFromTH_;
+        volScalarField TFuel_;    
+        volScalarField TFuelRef_;
+        volScalarField alphaFuel_;
+        volScalarField TCRRef_;
+        volScalarField alphaCR_;
+        dictionary TMEntries_;
+        label zonesNumber_;
+        
 
         //- Initialize residual
         double initialResidual_;   
