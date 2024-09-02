@@ -1,0 +1,86 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2112                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       regIOobject;
+    location    "constant/neutroRegion/polyMesh";
+    object      faceZones;
+    meta
+    {
+        names           10 ( Edge_7_rotated Edge_14_rotated Edge_15_rotated Edge_5_rotated Edge_10_rotated Edge_6_rotated Edge_11_rotated Edge_12_rotated Edge_16_rotated Edge_9_rotated );
+    }
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+10
+(Edge_7_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(428 449 469 489 509 529 549 569 589 599);
+    flipMap         List<bool> 10{0};
+}
+Edge_14_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(809 829 849 869 889 909 929 949 969 979);
+    flipMap         List<bool> 10{0};
+}
+Edge_15_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(999 1019 1039 1059 1079 1099 1119 1139 1159 1169);
+    flipMap         List<bool> 10{0};
+}
+Edge_5_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(28 49 69 89 109 129 149 169 189 199);
+    flipMap         List<bool> 10{0};
+}
+Edge_10_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(202 205 208 211 214 217 220 223 226 229);
+    flipMap         List<bool> 10{0};
+}
+Edge_6_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(228 249 269 289 309 329 349 369 389 399);
+    flipMap         List<bool> 10{0};
+}
+Edge_11_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(402 405 408 411 414 417 420 423 426 429);
+    flipMap         List<bool> 10{0};
+}
+Edge_12_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(602 605 608 611 614 617 620 623 626 628);
+    flipMap         List<bool> 10{0};
+}
+Edge_16_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1189 1209 1229 1249 1269 1289 1309 1329 1349 1359);
+    flipMap         List<bool> 10{0};
+}
+Edge_9_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(2 5 8 11 14 17 20 23 26 29);
+    flipMap         List<bool> 10{0};
+}
+)
+
+// ************************************************************************* //

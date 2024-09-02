@@ -1,0 +1,3 @@
+loadModel(Modelica);
+loadFile("./lumpedSystem.mo");
+translateModelFMU(lumpedSystem, version="2.0",fmuType="cs")

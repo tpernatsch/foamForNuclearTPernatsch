@@ -1,0 +1,48 @@
+{
+    "mapping": [
+        ["gfExternalSourceMod", "externalSourceModulation"],
+        ["gfExternalReactivity", "externalReactivity"],
+        ["gfSteamGenTemperature1", "steamGenTemperature1"],
+        ["gfSteamGenTemperature2", "steamGenTemperature2"],
+        ["gfSteamGenTemperature3", "steamGenTemperature3"],
+        ["gfSteamGenTemperature4", "steamGenTemperature4"],
+        ["gfSteamGenTemperature5", "steamGenTemperature5"],
+        ["gfSteamGenTemperature6", "steamGenTemperature6"],
+        ["gfSteamGenTemperature7", "steamGenTemperature7"],
+        ["gfSteamGenTemperature8", "steamGenTemperature8"],
+        ["gfInnerCorePowerOut", "innerCorePower"],
+        ["gfOuterCorePowerOut", "outerCorePower"],
+        ["gfSteamGenPowerOut1", "steamGenPower1"],
+        ["gfSteamGenPowerOut2", "steamGenPower2"],
+        ["gfSteamGenPowerOut3", "steamGenPower3"],
+        ["gfSteamGenPowerOut4", "steamGenPower4"],
+        ["gfSteamGenPowerOut5", "steamGenPower5"],
+        ["gfSteamGenPowerOut6", "steamGenPower6"],
+        ["gfSteamGenPowerOut7", "steamGenPower7"],
+        ["gfSteamGenPowerOut8", "steamGenPower8"]
+    ],
+    "from_OF": {
+        "gfInnerCorePowerOut": "REAL",
+        "gfOuterCorePowerOut": "REAL",
+        "gfSteamGenPowerOut1": "REAL",
+        "gfSteamGenPowerOut2": "REAL",
+        "gfSteamGenPowerOut3": "REAL",
+        "gfSteamGenPowerOut4": "REAL",
+        "gfSteamGenPowerOut5": "REAL",
+        "gfSteamGenPowerOut6": "REAL",
+        "gfSteamGenPowerOut7": "REAL",
+        "gfSteamGenPowerOut8": "REAL"
+    },
+    "to_OF": {
+        "gfExternalSourceMod": "REAL",
+        "gfExternalReactivity": "REAL",
+        "gfSteamGenTemperature1": "REAL",
+        "gfSteamGenTemperature2": "REAL",
+        "gfSteamGenTemperature3": "REAL",
+        "gfSteamGenTemperature4": "REAL",
+        "gfSteamGenTemperature5": "REAL",
+        "gfSteamGenTemperature6": "REAL",
+        "gfSteamGenTemperature7": "REAL",
+        "gfSteamGenTemperature8": "REAL"
+    }
+}

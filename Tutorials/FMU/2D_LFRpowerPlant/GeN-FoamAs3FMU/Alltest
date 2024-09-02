@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+# --- Run the simulation
+echo -e "Run tutorial 2D_LFRpowerPlant/GeN-FoamAs3FMU ...\n" | tee -a $resFile
+./Allrun >> log.simulation
+echo -e "Done running tutorial 2D_LFRpowerPlant/GeN-FoamAs3FMU ...\n" | tee -a $resFile
+
+# --- Check it ran
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep "targetTime_ = 1000;" | cut -d';' -f1 )
+    if [ "$string" = "targetTime_ = 1000" ]; then
+        echo -e "$name has converged \n" | tee -a $resFile
+    else
+        echo -e "$name has NOT converged \n" | tee -a $resFile
+        exit 1
+    fi
+}
+
+isConverge Reactor "Transient load follow (GeN-Foam + Modelica + Simulink)"
+
+# --- Exit successfully
+exit 0

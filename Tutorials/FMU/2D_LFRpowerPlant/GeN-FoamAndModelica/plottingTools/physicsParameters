@@ -1,0 +1,36 @@
+if (!exists("log")) log='log.GeN-Foam'
+
+
+set multiplot layout 2, 1 rowsfirst
+
+# First plot -------------------------------------------------------------------*
+set label 1 'a' at graph 0.08,0.9 font ',8'
+set title log
+# set logscale y
+set yr [300:2000]
+set ylabel 'Temperature [K]'
+set xlabel 'Iteration [-]'
+plot x notitle with line linecolor rgb"#ffffff",\
+"< cat ". log ." | grep 'TFuel = ' | cut -d' ' -f7 | tr -d ','" title 'TFuel avg' with lines,\
+"< cat ". log ." | grep 'TClad = ' | cut -d' ' -f7 | tr -d ','" title 'TClad avg' with lines,\
+"< cat ". log ." | grep 'TCool = ' | cut -d' ' -f7 | tr -d ','" title 'TCool avg' with lines
+
+# Second plot ------------------------------------------------------------------*
+set label 1 'b' at graph 0.08,0.9 font ',8'
+unset title
+unset logscale y
+set yr [-100:100]
+set ylabel 'Reactivity [pcm]'
+set xlabel 'Iteration [-]'
+plot x notitle with line linecolor rgb"#ffffff",\
+"< cat ". log ." | grep 'totalReactivity   =' | cut -d' ' -f9 | tr -d ','" title 'Total' with lines,\
+"< cat ". log ." | grep -P '^(?=.*TFuel)(?=.*pcm)' $log | cut -d'=' -f2 | cut -d' ' -f2 | tr -d ','" title 'TFuel' with lines,\
+"< cat ". log ." | grep -P '^(?=.*Doppler)(?=.*pcm)' $log | cut -d'=' -f2 | cut -d' ' -f2 | tr -d ','" title 'Doppler Fast' with lines,\
+"< cat ". log ." | grep -P '^(?=.*TClad)(?=.*pcm)' $log | cut -d'=' -f2 | cut -d' ' -f2 | tr -d ','" title 'TClad' with lines,\
+"< cat ". log ." | grep -P '^(?=.*TCool)(?=.*pcm)' $log | cut -d'=' -f2 | cut -d' ' -f2 | tr -d ','" title 'TCool' with lines,\
+"< cat ". log ." | grep -P '^(?=.*rhoCool)(?=.*pcm)' $log | cut -d'=' -f2 | cut -d' ' -f2 | tr -d ','" title 'rhoCool' with lines,\
+"< cat ". log ." | grep -P '^(?=.*TStruct)(?=.*pcm)' $log | cut -d'=' -f2 | cut -d' ' -f2 | tr -d ','" title 'TStruct' with lines
+unset multiplot
+
+pause 1
+reread

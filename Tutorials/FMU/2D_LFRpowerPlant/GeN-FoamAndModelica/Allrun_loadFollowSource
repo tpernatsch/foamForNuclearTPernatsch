@@ -1,0 +1,123 @@
+#!/bin/bash
+# 2022/01/06  Thomas Guilbaud, EPFL/Transmutex SA
+
+# ---> Run from this directory
+cd ${0%/*} || exit 1
+
+# ---> Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#=============================================================================*
+# Main parameters
+#=============================================================================*
+
+timeSteadyState=1000
+timeTransient=1000
+
+
+#=============================================================================*
+# FMU Generation
+#=============================================================================*
+
+echo "Generate the secondary circuit FMU using Modelica"
+cd rootCase/modelica
+# Need to install ThermoPower package in OMEdit
+# omc FMUGenSecCir.mos
+cd ../..
+
+
+#=============================================================================*
+# GeN-Foam Steady-state
+#=============================================================================*
+
+./Allrun_GeN-FoamStandalone
+
+
+#=============================================================================*
+# Steady-state
+#=============================================================================*
+
+# Run steady-state if it does not exist
+if [ ! -d steadyState ]
+then
+    echo "GeN-Foam + FMUs steady-state simulation in ADS mode"
+
+    cp -r steadyStateStandalone steadyState
+    cd steadyState
+
+    if [ -d 0.converged ]
+    then
+        echo "Replace time folder 0 by 0.converged"
+        rm -r 0
+        cp -r 0.converged 0
+    fi
+
+    foamDictionary constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
+    foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    foamDictionary constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set false
+    foamDictionary constant/neutroRegion/externalSource -entry isExternalSource -set true
+
+    cp ../rootCase/system/controlDict system/
+    cp ../rootCase/secondaryCircuit* .
+    cp ../rootCase/modelica/*.fmu modelica/
+    cp ../rootCase/simulink/*.fmu simulink/
+
+    # Activate FMU Simulator function object
+    sed -i "s|// #include \"FMUSimulatorFunction\"|#include \"FMUSimulatorFunction\"|" system/controlDict
+    sed -i "s|// #include \"functions\"|#include \"functions\"|" system/controlDict
+    
+    # Set main parameter of the load follow simulation in FMU4FOAM object
+    sed -i "s/isLoadFollowSource = False/isLoadFollowSource = True/" secondaryCircuit*.py
+
+    foamDictionary system/controlDict -entry endTime -set $timeSteadyState
+    foamDictionary system/controlDict -entry writeInterval -set $timeSteadyState
+    foamDictionary system/controlDict -entry adjustTimeStep -set false
+    foamDictionary system/controlDict -entry runTimeModifiable -set false
+
+    GeN-Foam | 
+        tee log.GeN-Foam | 
+        grep -E "Time =|deltaT|Courant Number"
+
+    cd ..
+else
+    echo "steadyState folder already exists, no steady-state simulation"
+fi
+
+#=============================================================================*
+# Transient
+#=============================================================================*
+
+echo "Load follow transient simulation using the external neutron source modulation"
+
+# Clean and prepare the case
+rm -r transientLoadFollowSource
+cp -r steadyState transientLoadFollowSource
+cp -r rootCase/system/* transientLoadFollowSource/system
+cp rootCase/secondaryCircuit* transientLoadFollowSource
+cp rootCase/modelica/*.fmu transientLoadFollowSource/modelica/
+cd transientLoadFollowSource
+
+# Activate FMU Simulator function object
+sed -i "s|// #include \"FMUSimulatorFunction\"|#include \"FMUSimulatorFunction\"|" system/controlDict
+sed -i "s|// #include \"functions\"|#include \"functions\"|" system/controlDict
+
+# Set main parameter of the load follow simulation in FMU4FOAM object
+sed -i "s/isLoadFollowSource = False/isLoadFollowSource = True/" secondaryCircuit*.py
+
+# Set simulation parameters
+foamDictionary constant/neutroRegion/externalSource -entry isExternalSource -set true
+foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+foamDictionary constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set true
+foamDictionary system/controlDict -entry endTime -set $(($timeSteadyState + $timeTransient))
+# foamDictionary system/controlDict -entry solveNeutronics -set true
+foamDictionary system/controlDict -entry writeInterval -set 100
+foamDictionary system/controlDict -entry purgeWrite -set 0
+foamDictionary system/controlDict -entry adjustTimeStep -set false
+foamDictionary system/controlDict -entry runTimeModifiable -set false
+
+# Simulation
+GeN-Foam | tee log.GeN-Foam | grep -E "Time =|deltaT|Courant Number"
+
+cd ..
+
+# =============================================================================*

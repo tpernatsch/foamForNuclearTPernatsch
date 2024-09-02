@@ -1,0 +1,62 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2112                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       volScalarField;
+    location    "0/fluidRegion";
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 0 0 0 1 0 0 0 ];
+
+internalField   uniform 720;
+
+boundaryField
+{
+    front
+    {
+        type            wedge;
+    }
+    back
+    {
+        type            wedge;
+    }
+    wall
+    {
+        type            zeroGradient;
+    }
+    bafflePool_master
+    {
+        type            NusseltThermalBaffle1D;
+        value           uniform 710;
+        samplePatch     bafflePool_slave;
+        thickness       0.005;
+        kappa           0;
+        const           7.92351;
+        coeff           0.031694;
+        expRe           0.77;
+        expPr           0.77;
+    }
+    bafflePool_slave
+    {
+        type            NusseltThermalBaffle1D;
+        value           uniform 710;
+        samplePatch     bafflePool_master;
+        const           7.92351;
+        coeff           0.031694;
+        expRe           0.77;
+        expPr           0.77;
+    }
+}
+
+
+// ************************************************************************* //

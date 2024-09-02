@@ -1,0 +1,1138 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2112                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       regIOobject;
+    location    "constant/fluidRegion/polyMesh";
+    object      faceZones;
+    meta
+    {
+        names           84 ( Edge_67_rotated Edge_42_rotated Edge_82_rotated Edge_45_rotated Edge_14_rotated Edge_49_rotated Edge_99_rotated Edge_35_rotated Edge_18_rotated Edge_56_rotated Edge_89_rotated Edge_75_rotated Edge_21_rotated Edge_44_rotated Edge_54_rotated Edge_84_rotated Edge_81_rotated Edge_68_rotated Edge_37_rotated Edge_103_rotated Edge_38_rotated Edge_15_rotated Edge_77_rotated Edge_90_rotated Edge_80_rotated Edge_66_rotated Edge_27_rotated Edge_25_rotated Edge_86_rotated Edge_76_rotated Edge_30_rotated Edge_96_rotated Edge_43_rotated Edge_39_rotated Edge_55_rotated Edge_78_rotated Edge_46_rotated Edge_11_rotated Edge_53_rotated Edge_61_rotated Edge_32_rotated Edge_93_rotated Edge_101_rotated Edge_92_rotated Edge_87_rotated Edge_33_rotated Edge_91_rotated Edge_17_rotated Edge_63_rotated Edge_23_rotated Edge_28_rotated Edge_26_rotated Edge_13_rotated Edge_57_rotated Edge_19_rotated Edge_88_rotated Edge_64_rotated Edge_58_rotated Edge_97_rotated Edge_59_rotated Edge_79_rotated Edge_73_rotated Edge_94_rotated Edge_100_rotated Edge_22_rotated Edge_65_rotated Edge_98_rotated Edge_74_rotated Edge_62_rotated Edge_24_rotated Edge_47_rotated Edge_105_rotated Edge_12_rotated Edge_104_rotated Edge_36_rotated Edge_29_rotated Edge_34_rotated Edge_85_rotated Edge_48_rotated Edge_40_rotated Edge_16_rotated Edge_102_rotated bafflePool baffleFaces );
+    }
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+84
+(Edge_67_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(5102 5105 5108 5111 5114 5117 5120 5123 5126 5128);
+    flipMap         List<bool> 10{0};
+}
+Edge_42_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1992 1995 1998 2001 2004 2007 2010 2013 2016 2019);
+    flipMap         List<bool> 10{0};
+}
+Edge_82_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(7229 7249 7269 7289 7309 7329 7349 7369 7389 7399);
+    flipMap         List<bool> 10{0};
+}
+Edge_45_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_14_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(628 649 669 689 709 729 749 769 789 799);
+    flipMap         List<bool> 10{0};
+}
+Edge_49_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(3332 3335 3338 3341 3344 3347 3350 3353 3356 3359);
+    flipMap         List<bool> 10{0};
+}
+Edge_99_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(8179 8199 8219 8239 8259 8279 8299 8319 8339 8349);
+    flipMap         List<bool> 10{0};
+}
+Edge_35_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(2589 2609 2629 2649 2669 2689 2709 2729 2749 2759);
+    flipMap         List<bool> 10{0};
+}
+Edge_18_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1428 1449 1469 1489 1509 1529 1549 1569 1589 1599);
+    flipMap         List<bool> 10{0};
+}
+Edge_56_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4528 4549 4569 4589 4609 4629 4649 4669 4689 4699);
+    flipMap         List<bool> 10{0};
+}
+Edge_89_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_75_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(5908 5929 5949 5969 5989 6009 6029 6049 6069 6079);
+    flipMap         List<bool> 10{0};
+}
+Edge_21_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(2 5 8 11 14 17 20 23 26 29);
+    flipMap         List<bool> 10{0};
+}
+Edge_44_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_54_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4128 4149 4169 4189 4209 4229 4249 4269 4289 4299);
+    flipMap         List<bool> 10{0};
+}
+Edge_84_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(5482 5485 5488 5491 5494 5497 5500 5503 5506 5509);
+    flipMap         List<bool> 10{0};
+}
+Edge_81_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(7039 7059 7079 7099 7119 7139 7159 7179 7199 7209);
+    flipMap         List<bool> 10{0};
+}
+Edge_68_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(5292 5295 5298 5301 5304 5307 5310 5313 5316 5318);
+    flipMap         List<bool> 10{0};
+}
+Edge_37_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(2969 2989 3009 3029 3049 3069 3089 3109 3129 3139);
+    flipMap         List<bool> 10{0};
+}
+Edge_103_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(8939 8959 8979 8999 9019 9039 9059 9079 9099 9109);
+    flipMap         List<bool> 10{0};
+}
+Edge_38_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(3159 3179 3199 3219 3239 3259 3279 3299 3319 3329);
+    flipMap         List<bool> 10{0};
+}
+Edge_15_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(828 849 869 889 909 929 949 969 989 999);
+    flipMap         List<bool> 10{0};
+}
+Edge_77_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(6289 6309 6329 6349 6369 6389 6409 6429 6449 6459);
+    flipMap         List<bool> 10{0};
+}
+Edge_90_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_80_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(6849 6869 6889 6909 6929 6949 6969 6989 7009 7019);
+    flipMap         List<bool> 10{0};
+}
+Edge_66_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4902 4905 4908 4911 4914 4917 4920 4923 4926 4929);
+    flipMap         List<bool> 10{0};
+}
+Edge_27_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1202 1205 1208 1211 1214 1217 1220 1223 1226 1229);
+    flipMap         List<bool> 10{0};
+}
+Edge_25_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(802 805 808 811 814 817 820 823 826 829);
+    flipMap         List<bool> 10{0};
+}
+Edge_86_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(5882 5885 5888 5891 5894 5897 5900 5903 5906 5909);
+    flipMap         List<bool> 10{0};
+}
+Edge_76_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(6099 6119 6139 6159 6179 6199 6219 6239 6259 6269);
+    flipMap         List<bool> 10{0};
+}
+Edge_30_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1802 1805 1808 1811 1814 1817 1820 1823 1826 1828);
+    flipMap         List<bool> 10{0};
+}
+Edge_96_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(7609 7629 7649 7669 7689 7709 7729 7749 7769 7779);
+    flipMap         List<bool> 10{0};
+}
+Edge_43_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_39_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(3358 3379 3399 3419 3439 3459 3479 3499 3519 3529);
+    flipMap         List<bool> 10{0};
+}
+Edge_55_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4328 4349 4369 4389 4409 4429 4449 4469 4489 4499);
+    flipMap         List<bool> 10{0};
+}
+Edge_78_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(6479 6499 6519 6539 6559 6579 6599 6619 6639 6649);
+    flipMap         List<bool> 10{0};
+}
+Edge_46_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_11_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(28 49 69 89 109 129 149 169 189 199);
+    flipMap         List<bool> 10{0};
+}
+Edge_53_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(3928 3949 3969 3989 4009 4029 4049 4069 4089 4099);
+    flipMap         List<bool> 10{0};
+}
+Edge_61_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(3902 3905 3908 3911 3914 3917 3920 3923 3926 3929);
+    flipMap         List<bool> 10{0};
+}
+Edge_32_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(2018 2039 2059 2079 2099 2119 2139 2159 2179 2189);
+    flipMap         List<bool> 10{0};
+}
+Edge_93_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_101_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(8559 8579 8599 8619 8639 8659 8679 8699 8719 8729);
+    flipMap         List<bool> 10{0};
+}
+Edge_92_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_87_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_33_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(2209 2229 2249 2269 2289 2309 2329 2349 2369 2379);
+    flipMap         List<bool> 10{0};
+}
+Edge_91_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_17_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1228 1249 1269 1289 1309 1329 1349 1369 1389 1399);
+    flipMap         List<bool> 10{0};
+}
+Edge_63_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4302 4305 4308 4311 4314 4317 4320 4323 4326 4329);
+    flipMap         List<bool> 10{0};
+}
+Edge_23_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(402 405 408 411 414 417 420 423 426 429);
+    flipMap         List<bool> 10{0};
+}
+Edge_28_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1402 1405 1408 1411 1414 1417 1420 1423 1426 1429);
+    flipMap         List<bool> 10{0};
+}
+Edge_26_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1002 1005 1008 1011 1014 1017 1020 1023 1026 1029);
+    flipMap         List<bool> 10{0};
+}
+Edge_13_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(428 449 469 489 509 529 549 569 589 599);
+    flipMap         List<bool> 10{0};
+}
+Edge_57_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4728 4749 4769 4789 4809 4829 4849 4869 4889 4899);
+    flipMap         List<bool> 10{0};
+}
+Edge_19_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1628 1649 1669 1689 1709 1729 1749 1769 1789 1799);
+    flipMap         List<bool> 10{0};
+}
+Edge_88_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_64_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4502 4505 4508 4511 4514 4517 4520 4523 4526 4529);
+    flipMap         List<bool> 10{0};
+}
+Edge_58_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4928 4949 4969 4989 5009 5029 5049 5069 5089 5099);
+    flipMap         List<bool> 10{0};
+}
+Edge_97_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(7799 7819 7839 7859 7879 7899 7919 7939 7959 7969);
+    flipMap         List<bool> 10{0};
+}
+Edge_59_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_79_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_73_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(5508 5529 5549 5569 5589 5609 5629 5649 5669 5679);
+    flipMap         List<bool> 10{0};
+}
+Edge_94_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(7402 7405 7408 7411 7414 7417 7420 7423 7426 7428);
+    flipMap         List<bool> 10{0};
+}
+Edge_100_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(8369 8389 8409 8429 8449 8469 8489 8509 8529 8539);
+    flipMap         List<bool> 10{0};
+}
+Edge_22_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(202 205 208 211 214 217 220 223 226 229);
+    flipMap         List<bool> 10{0};
+}
+Edge_65_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4702 4705 4708 4711 4714 4717 4720 4723 4726 4729);
+    flipMap         List<bool> 10{0};
+}
+Edge_98_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(7989 8009 8029 8049 8069 8089 8109 8129 8149 8159);
+    flipMap         List<bool> 10{0};
+}
+Edge_74_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(5708 5729 5749 5769 5789 5809 5829 5849 5869 5879);
+    flipMap         List<bool> 10{0};
+}
+Edge_62_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(4102 4105 4108 4111 4114 4117 4120 4123 4126 4129);
+    flipMap         List<bool> 10{0};
+}
+Edge_24_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(602 605 608 611 614 617 620 623 626 629);
+    flipMap         List<bool> 10{0};
+}
+Edge_47_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_105_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(9319 9339 9359 9379 9399 9419 9439 9459 9479 9489);
+    flipMap         List<bool> 10{0};
+}
+Edge_12_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(228 249 269 289 309 329 349 369 389 399);
+    flipMap         List<bool> 10{0};
+}
+Edge_104_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(9129 9149 9169 9189 9209 9229 9249 9269 9289 9299);
+    flipMap         List<bool> 10{0};
+}
+Edge_36_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(2779 2799 2819 2839 2859 2879 2899 2919 2939 2949);
+    flipMap         List<bool> 10{0};
+}
+Edge_29_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1602 1605 1608 1611 1614 1617 1620 1623 1626 1629);
+    flipMap         List<bool> 10{0};
+}
+Edge_34_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(2399 2419 2439 2459 2479 2499 2519 2539 2559 2569);
+    flipMap         List<bool> 10{0};
+}
+Edge_85_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(5682 5685 5688 5691 5694 5697 5700 5703 5706 5709);
+    flipMap         List<bool> 10{0};
+}
+Edge_48_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+Edge_40_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(3549 3569 3589 3609 3629 3649 3669 3689 3709 3719);
+    flipMap         List<bool> 10{0};
+}
+Edge_16_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(1028 1049 1069 1089 1109 1129 1149 1169 1189 1199);
+    flipMap         List<bool> 10{0};
+}
+Edge_102_rotated
+{
+    type            faceZone;
+    faceLabels      List<label> 10(8749 8769 8789 8809 8829 8849 8869 8889 8909 8919);
+    flipMap         List<bool> 10{0};
+}
+bafflePool
+{
+    type            faceZone;
+    faceLabels      List<label> 0();
+    flipMap         List<bool> 0();
+}
+baffleFaces
+{
+    type            faceZone;
+    faceLabels      List<label> 
+300
+(
+19930
+19931
+19932
+19933
+19934
+19935
+19936
+19937
+19938
+19939
+19940
+19941
+19942
+19943
+19944
+19945
+19946
+19947
+19948
+19949
+19950
+19951
+19952
+19953
+19954
+19955
+19956
+19957
+19958
+19959
+19960
+19961
+19962
+19963
+19964
+19965
+19966
+19967
+19968
+19969
+19970
+19971
+19972
+19973
+19974
+19975
+19976
+19977
+19978
+19979
+19980
+19981
+19982
+19983
+19984
+19985
+19986
+19987
+19988
+19989
+19990
+19991
+19992
+19993
+19994
+19995
+19996
+19997
+19998
+19999
+20000
+20001
+20002
+20003
+20004
+20005
+20006
+20007
+20008
+20009
+20010
+20011
+20012
+20013
+20014
+20015
+20016
+20017
+20018
+20019
+20020
+20021
+20022
+20023
+20024
+20025
+20026
+20027
+20028
+20029
+20030
+20031
+20032
+20033
+20034
+20035
+20036
+20037
+20038
+20039
+20040
+20041
+20042
+20043
+20044
+20045
+20046
+20047
+20048
+20049
+20050
+20051
+20052
+20053
+20054
+20055
+20056
+20057
+20058
+20059
+20060
+20061
+20062
+20063
+20064
+20065
+20066
+20067
+20068
+20069
+20070
+20071
+20072
+20073
+20074
+20075
+20076
+20077
+20078
+20079
+20080
+20081
+20082
+20083
+20084
+20085
+20086
+20087
+20088
+20089
+20090
+20091
+20092
+20093
+20094
+20095
+20096
+20097
+20098
+20099
+20100
+20101
+20102
+20103
+20104
+20105
+20106
+20107
+20108
+20109
+20110
+20111
+20112
+20113
+20114
+20115
+20116
+20117
+20118
+20119
+20120
+20121
+20122
+20123
+20124
+20125
+20126
+20127
+20128
+20129
+20130
+20131
+20132
+20133
+20134
+20135
+20136
+20137
+20138
+20139
+20140
+20141
+20142
+20143
+20144
+20145
+20146
+20147
+20148
+20149
+20150
+20151
+20152
+20153
+20154
+20155
+20156
+20157
+20158
+20159
+20160
+20161
+20162
+20163
+20164
+20165
+20166
+20167
+20168
+20169
+20170
+20171
+20172
+20173
+20174
+20175
+20176
+20177
+20178
+20179
+20180
+20181
+20182
+20183
+20184
+20185
+20186
+20187
+20188
+20189
+20190
+20191
+20192
+20193
+20194
+20195
+20196
+20197
+20198
+20199
+20200
+20201
+20202
+20203
+20204
+20205
+20206
+20207
+20208
+20209
+20210
+20211
+20212
+20213
+20214
+20215
+20216
+20217
+20218
+20219
+20220
+20221
+20222
+20223
+20224
+20225
+20226
+20227
+20228
+20229
+)
+;
+    flipMap         List<bool> 
+300
+(
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+1
+)
+;
+}
+)
+
+// ************************************************************************* //

@@ -1,0 +1,24 @@
+#!/bin/bash
+cd "${0%/*}" || exit     # Run from this directory
+
+# Remove previous simulation folder of the OpenFOAM case
+echo "Remove Reactor folder"
+rm -rf Reactor
+rm -rf *_result.txt *_log.txt
+
+# Generate the FMU of the GeN-Foam
+fmu4foam build -f Reactor.py -of OfReactor/ --no-external-tool
+
+# Generate the FMU for Modelica
+cd modelica
+# omc FMUGenSecCirWithoutCtrl.mos
+cd ..
+
+# Run steady-state
+echo "Simulate steady-state"
+python3 Allrun.py
+
+# Run transient can't reach this point because program stuck in the last python 
+# simulation
+# echo "Simulate transient"
+# python3 Allrun_transient.py

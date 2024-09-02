@@ -1,0 +1,377 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant/fluidRegion";
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// [1] ADVANCED LEAD FAST REACTOR EUROPEAN DEMONSTRATOR - ALFRED PROJECT,
+//      Alessandro Alemberti, Ansaldo Nucleare - Italy, September 26, 2018
+// [2] Heat transfer to liquid metal: Review of data and correlations for tube
+//      bundles, Konstantin Mikityuk, Nuclear Engineering and Design 239 (2009)
+//      680-687
+// [3] ALFRED reactor coolant system design, Alessandro Alemberti, Marco
+//      Caramello, Michele Frignani, Giacomo Grasso, Fabio Merli, Giulia
+//      Morresi, Mariano Tarantino, Nuclear Engineering and Design 370 (2020)
+//      110884
+// [4] OECD. Handbook on Lead-bismuth Eutectic Alloy and Lead Properties,
+//      Materials Compatibility, Thermal-hydraulics and Technologies. Technical
+//      report, OECD/NEA Nuclear Science Committee, 2015
+// [5] Carbajo Juan J., Yoder Gradyon L., Popov Sergey G., Ivanov Victor K. A
+//      review of the thermophysical properties of MOX and UO2 fuels. Journal of
+//      Nuclear Materials, 299:181–198, 2001
+// [6] Rudtsch S., Ebert H.-P., Hemberger F., Barth G., Brandt R., Groß U.,
+//      Hohenauer W., Jaenicke-Roessler K., Kaschnitz E., Pfaff E., Pößnecker
+//      W., Pottlacher G., Rhode M., and Wilthan B. Intercomparison of
+//      Thermophysical Property Measurements on an Austenitic Stainless Steel.
+//      International Journal of Thermophysics, 26:855–867, May 2005.
+
+// ------------------------------------------------------------------------- //
+// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+thermalHydraulicsType   "onePhase";
+
+// ------------------------------------------------------------------------- //
+// --- STRUCTURES PROPERTIES ----------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+volumeFractionFuelAssembly  0.5406; // volume fraction of the structure
+
+DhFuelAssembly              0.009; // m
+
+volumetricAreaFuelAssembly  205.9352; // m2/m3
+
+volumeFractionSteamGen      0.450;
+
+DhSteamGen                  0.039; // m
+
+volumetricAreaSteamGen      56.69862; // m2/m3
+
+
+structureProperties
+{
+    // Hypothesis 1: Suppose same volumeFraction and Dh as in the core active
+    // part.
+    "innerFuelDiagrid:outerFuelDiagrid"
+    {
+        volumeFraction      $volumeFractionFuelAssembly;
+        Dh                  $DhFuelAssembly;
+
+        passiveProperties
+        {
+            volumetricArea      ${{$volumetricAreaFuelAssembly/10.0}};
+            rho                 7870; // kg/m³
+            Cp                  560; // J/kg/K
+            T                   673; // K
+        }
+    }
+
+    "innerUpperAssembly:outerUpperAssembly"
+    {
+        volumeFraction      $volumeFractionFuelAssembly;
+        Dh                  $DhFuelAssembly;
+
+        passiveProperties
+        {
+            volumetricArea      ${{$volumetricAreaFuelAssembly/10.0}};
+            rho                 7870; // kg/m³
+            Cp                  560; // J/kg/K
+            T                   740; // K
+        }
+    }
+
+    "innerLowerFuelAssembly1:innerLowerFuelAssembly2:outerLowerFuelAssembly1:outerLowerFuelAssembly2:innerUpperFuelAssembly:outerUpperFuelAssembly"
+    {
+        volumeFraction      $volumeFractionFuelAssembly;
+        Dh                  $DhFuelAssembly;
+
+        passiveProperties
+        {
+            volumetricArea      ${{$volumetricAreaFuelAssembly/10.0}};
+            rho                 7870; // kg/m³
+            Cp                  560; // J/kg/K
+            T                   673; // K
+        }
+    }
+
+    "innerFuel:outerFuel"
+    {
+        volumeFraction      $volumeFractionFuelAssembly;
+        Dh                  $DhFuelAssembly;
+
+        powerModel
+        {
+            type                nuclearFuelPin;
+            powerDensity        314832859.0768; // in the fuel pellets // W/m³, power.py
+            fuelInnerRadius     0.00100; // m, [3]
+            fuelOuterRadius     0.00450; // m, [3]
+            cladInnerRadius     0.00465; // m, [3]
+            cladOuterRadius     0.00525; // m, [3]
+            fuelMeshSize        16;
+            cladMeshSize        4;
+            fuelRho             10500; // kg/m³
+            cladRho             7800;  // kg/m³
+            fuelCp              440.0; // J/kg/K, [5]
+            cladCp              565;   // J/kg/K, [6] at 500 C
+            fuelK               2;     // W/m/K, [5]
+            cladK               20.2;  // W/m/K, [6] at 500 C
+            fuelT               1800;  // K
+            cladT               800;   // K
+
+            // gapH                780; // W/m2/K
+            // gapH table computed for an average burnup of 73.3 GWd/t, 
+            // [Grasso2014] Table 2: Average burn-up and a maximum linear power
+            // of 35 kW/m, [Grasso2014] Table 2: Maximum linear power
+            gapHPowerDensity    table
+            (
+                (   0                       130     )
+                (   306468250               780     )
+                (   ${{2.0 * 306468250}}    1267.5  )
+            );
+        }
+    }
+
+    primaryPump
+    {
+        volumeFraction          0.919;
+        Dh                      0.400; // thermalHydraulics.py
+        momentumSource          (0 0 95000); // kg/m2/s, [1], thermalHydraulics.py
+
+        // --- Transient for the Unprotected Loss Of Flow (ULOF)
+        momentumSourceTimeProfile
+        {
+            type                table;
+
+            //- Time after which the time table is applied
+            startTime           1500000;
+
+            //- Left column is time elapsed since the startTime defined above
+            table       table
+            (
+                (   0       1   )
+                (   0.0001  0   )
+            );
+        }
+
+        passiveProperties
+        {
+            volumetricArea      10.00000; // m2/m3, thermalHydraulics.py
+            rho                 7870; // kg/m³
+            Cp                  560; // J/kg/K
+            T                   673; // K
+        }
+    }
+
+    "SGenPrim1"
+    {
+        volumeFraction          $volumeFractionSteamGen;
+        Dh                      $DhSteamGen;
+
+        powerModel
+        {
+            type                    fixedTemperatureFMU;
+            temperatureNameFromFMU  "gfSteamGenTemperature1";
+            volumetricArea          $volumetricAreaSteamGen;
+            T                       631;
+        }
+    }
+    "SGenPrim2"
+    {
+        volumeFraction          $volumeFractionSteamGen;
+        Dh                      $DhSteamGen;
+
+        powerModel
+        {
+            type                    fixedTemperatureFMU;
+            temperatureNameFromFMU  "gfSteamGenTemperature2";
+            volumetricArea          $volumetricAreaSteamGen;
+            T                       634;
+        }
+    }
+    "SGenPrim3"
+    {
+        volumeFraction          $volumeFractionSteamGen;
+        Dh                      $DhSteamGen;
+
+        powerModel
+        {
+            type                    fixedTemperatureFMU;
+            temperatureNameFromFMU  "gfSteamGenTemperature3";
+            volumetricArea          $volumetricAreaSteamGen;
+            T                       634;
+        }
+    }
+    "SGenPrim4"
+    {
+        volumeFraction          $volumeFractionSteamGen;
+        Dh                      $DhSteamGen;
+
+        powerModel
+        {
+            type                    fixedTemperatureFMU;
+            temperatureNameFromFMU  "gfSteamGenTemperature4";
+            volumetricArea          $volumetricAreaSteamGen;
+            T                       634;
+        }
+    }
+    "SGenPrim5"
+    {
+        volumeFraction          $volumeFractionSteamGen;
+        Dh                      $DhSteamGen;
+
+        powerModel
+        {
+            type                    fixedTemperatureFMU;
+            temperatureNameFromFMU  "gfSteamGenTemperature5";
+            volumetricArea          $volumetricAreaSteamGen;
+            T                       634;
+        }
+    }
+    "SGenPrim6"
+    {
+        volumeFraction          $volumeFractionSteamGen;
+        Dh                      $DhSteamGen;
+
+        powerModel
+        {
+            type                    fixedTemperatureFMU;
+            temperatureNameFromFMU  "gfSteamGenTemperature6";
+            volumetricArea          $volumetricAreaSteamGen;
+            T                       649;
+        }
+    }
+    "SGenPrim7"
+    {
+        volumeFraction          $volumeFractionSteamGen;
+        Dh                      $DhSteamGen;
+
+        powerModel
+        {
+            type                    fixedTemperatureFMU;
+            temperatureNameFromFMU  "gfSteamGenTemperature7";
+            volumetricArea          $volumetricAreaSteamGen;
+            T                       699;
+        }
+    }
+    "SGenPrim8"
+    {
+        volumeFraction          $volumeFractionSteamGen;
+        Dh                      $DhSteamGen;
+
+        powerModel
+        {
+            type                    fixedTemperatureFMU;
+            temperatureNameFromFMU  "gfSteamGenTemperature8";
+            volumetricArea          $volumetricAreaSteamGen;
+            T                       722;
+        }
+    }
+}
+
+
+// ------------------------------------------------------------------------- //
+// --- REGIME MAP MODEL ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+regimeMapModel
+{
+    type                none;
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+physicsModels
+{
+    dragModels
+    {
+        "innerFuel:outerFuel"
+        {
+            // Blasius correlation
+            // fd = coeff * Re^exp
+            type    ReynoldsPower;
+            coeff   0.316;
+            exp     -0.25;
+        }
+
+        "innerLowerFuelAssembly1:innerLowerFuelAssembly2:outerLowerFuelAssembly1:outerLowerFuelAssembly2:innerUpperFuelAssembly:outerUpperFuelAssembly:innerFuelDiagrid:outerFuelDiagrid"
+        {
+            // Blasius correlation
+            // fd = coeff * Re^exp
+            type    ReynoldsPower;
+            coeff   0.316;
+            exp     -0.25;
+        }
+
+        "primaryPump:SGenPrim1:SGenPrim2:SGenPrim3:SGenPrim4:SGenPrim5:SGenPrim6:SGenPrim7:SGenPrim8"
+        {
+            // Blasius correlation
+            // fd = coeff * Re^exp
+            type    ReynoldsPower;
+            coeff   0.316;
+            exp     -0.25;
+        }
+    }
+
+    heatTransferModels
+    {
+        "innerLowerFuelAssembly1:innerLowerFuelAssembly2:outerLowerFuelAssembly1:outerLowerFuelAssembly2:innerFuel:outerFuel:innerUpperFuelAssembly:outerUpperFuelAssembly:innerFuelDiagrid:outerFuelDiagrid"
+        {
+            // Correlation taken from [2, 4]
+            // Computation done with nusseltCorrelation.py
+            // Nu = const + coeff * Re^expRe * Pr^expPr
+            // Range of validity:
+            //      x : [1.1; 1.95]  // pitch-to-diameter
+            //      Pe: [30; 5000]
+            // pitch-to-diameter ratio at 1.32
+            type    NusseltReynoldsPrandtlPower;
+            const   8.267142;
+            coeff   0.033069;
+            expRe   0.770000;
+            expPr   0.770000;
+        }
+
+        "SGenPrim1:SGenPrim2:SGenPrim3:SGenPrim4:SGenPrim5:SGenPrim6:SGenPrim7:SGenPrim8"
+        {
+            // Correlation taken from [2, 4]
+            // Computation done with nusseltCorrelation.py
+            // Nu = const + coeff * Re^expRe * Pr^expPr
+            // Range of validity:
+            //      x : [1.1; 1.95]  // pitch-to-diameter
+            //      Pe: [30; 5000]
+            // pitch-to-diameter = 1.42
+            type            NusseltAndWall;
+            const   9.368208;
+            coeff   0.037473;
+            expRe   0.770000;
+            expPr   0.770000;
+            // -> H from Nu = 1.101372e+04 W/m2/K
+            addH    2.7e3;
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- MISCELLANEA --------------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+pMin                    1e4;
+
+pRefCell                0;
+
+pRefValue               1e5;
+
+// ************************************************************************* //

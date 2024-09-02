@@ -71,6 +71,10 @@ then
         "FMU/powerTemperatureMomentumControl    0.2"
         "FMU/2D_PKCoupleFMI/comparisonFMU       0.3"
         "FMU/2D_PKCoupleFMI/PIDcontrol          0.3"
+        "FMU/2D_LFRpowerPlant/GeN-FoamAndModelica 10.0"
+        # Optional
+        # "FMU/2D_LFRpowerPlant/GeN-FoamAs2FMU      10.0"
+        # "FMU/2D_LFRpowerPlant/GeN-FoamAs3FMU      10.0"
     )
 fi
 

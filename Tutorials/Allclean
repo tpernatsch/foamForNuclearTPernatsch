@@ -42,6 +42,9 @@ tutorials="
     FMU/2D_PKCoupleFMI/comparisonFMU
     FMU/2D_PKCoupleFMI/PIDcontrol
     FMU/powerTemperatureMomentumControl
+    FMU/2D_LFRpowerPlant/GeN-FoamAndModelica
+    FMU/2D_LFRpowerPlant/GeN-FoamAs2FMU
+    FMU/2D_LFRpowerPlant/GeN-FoamAs3FMU
     testing/2D_MSFR_ULOF_diffusion_and_pk
     toBeUpdated/2D_RegressionESFR
 " 

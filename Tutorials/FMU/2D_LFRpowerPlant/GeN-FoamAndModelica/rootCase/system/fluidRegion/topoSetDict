@@ -1,0 +1,57 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/fluidRegion";
+    object      topoSetDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+actions
+(
+    // --- First, merge the faceZones for the baffle into a faceSet
+    {
+        name        mergeBaffleFace;
+        type        faceSet;
+        action      new;
+        source      zoneToFace;
+        zones
+        (
+            Edge_43_rotated
+            Edge_44_rotated
+            Edge_45_rotated
+            Edge_46_rotated
+            Edge_47_rotated
+            Edge_48_rotated
+            Edge_59_rotated
+            Edge_79_rotated
+            Edge_87_rotated
+            Edge_88_rotated
+            Edge_89_rotated
+            Edge_90_rotated
+            Edge_91_rotated
+            Edge_92_rotated
+            Edge_93_rotated
+        );
+    }
+
+    // --- Second, create a faceZone based on the above faceSet
+    {
+        name        bafflePool;
+        type        faceZoneSet;
+        action      new;
+        source      setToFaceZone;
+        faceSet     mergeBaffleFace;
+    }
+);
+
+
+// ************************************************************************* //

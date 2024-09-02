@@ -1,0 +1,44 @@
+#!/bin/bash
+# 2022/01/06  Thomas Guilbaud, EPFL/Transmutex SA
+
+# ---> Run from this directory
+cd ${0%/*} || exit 1
+
+# ---> Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#=============================================================================*
+# Main parameters
+#=============================================================================*
+
+timeSteadyState=2000
+
+#=============================================================================*
+# Steady-state
+#=============================================================================*
+
+# Run steady-state if it does not exist
+if [ ! -d steadyStateStandalone ]
+then
+    echo "Standalone GeN-Foam steady-state simulation"
+
+    cp -r rootCase steadyStateStandalone
+    cd steadyStateStandalone
+
+    rm -r 0.converged
+
+    foamDictionary system/controlDict -entry endTime -set $timeSteadyState
+    foamDictionary system/controlDict -entry writeInterval -set $timeSteadyState
+
+    GeN-Foam | 
+        tee log.GeN-Foam | 
+        grep -E "Time =|deltaT|Courant Number"
+
+    mv $timeSteadyState 0.converged
+
+    cd ..
+else
+    echo "steadyStateStandalone folder already exists, no steady-state simulation"
+fi
+
+# =============================================================================*

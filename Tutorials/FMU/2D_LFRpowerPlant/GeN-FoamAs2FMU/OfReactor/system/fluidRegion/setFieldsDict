@@ -1,0 +1,42 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system/fluidRegion";
+    object      setFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+defaultFieldValues
+(
+    volScalarFieldValue powerDensity.nuclearFuelPin 0
+);
+
+regions
+(
+    zoneToCell
+    {
+        zone            "innerFuel";
+        fieldValues
+        (
+            volScalarFieldValue powerDensity.nuclearFuelPin 3.807059e+08
+        );
+    }
+
+    zoneToCell
+    {
+        zone            "outerFuel";
+        fieldValues
+        (
+            volScalarFieldValue powerDensity.nuclearFuelPin 3.807059e+08
+        );
+    }
+);

@@ -9,9 +9,9 @@ rm -rf $resFile
 touch $resFile
 
 # --- Run the simulation
-echo -e "Run tutorial 3D_SmallMSFR ...\n" | tee -a $resFile
+echo -e "Run tutorial 3D_SmallESFR ...\n" | tee -a $resFile
 ./Allrun_parallel >> log.simulation
-echo -e "Done running tutorial 3D_SmallMSFR ...\n" | tee -a $resFile
+echo -e "Done running tutorial 3D_SmallESFR ...\n" | tee -a $resFile
 
 # --- Check it ran
 isConverge()

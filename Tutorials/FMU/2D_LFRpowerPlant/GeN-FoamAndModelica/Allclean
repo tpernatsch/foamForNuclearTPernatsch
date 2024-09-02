@@ -1,0 +1,12 @@
+#!/bin/sh
+rm -rf steady*
+rm -rf transient*
+rm -f *.log log.* *.csv *.out
+rm -f rootCase/analyticSolution/GeNFoamData*
+rm -rf temp
+rm -f */*/*.log
+rm -f */*/log*
+rm -f */*/*.makefile
+rm -f */*/*.libs
+rm -f */*/*result.txt
+rm -f */*/*info.json

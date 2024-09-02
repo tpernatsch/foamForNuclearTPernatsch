@@ -1,0 +1,51 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2112                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       dictionary;
+    location    "system/fluidRegion";
+    object      changeDictionaryDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+T
+{
+    boundaryField
+    {
+        bafflePool_master
+        {
+            type            NusseltThermalBaffle1D;
+            value           uniform 710;
+            samplePatch     bafflePool_slave;
+
+            thickness       0.005;      //- Required, baffle thickness
+            kappa           0; // 20;         //- Required, baffle thermal conductivity
+            const           7.923508;   //- Required
+            coeff           0.031694;   //- Required
+            expRe           0.770000;   //- Required
+            expPr           0.770000;   //- Required
+        }
+
+        bafflePool_slave
+        {
+            type            NusseltThermalBaffle1D;
+            value           uniform 710;
+            samplePatch     bafflePool_master;
+
+            const           7.923508;   //- If not provided, defaults to master value
+            coeff           0.031694;   //- If not provided, defaults to master value
+            expRe           0.770000;   //- If not provided, defaults to master value
+            expPr           0.770000;   //- If not provided, defaults to master value
+        }
+    }
+}
+
+// ************************************************************************* //

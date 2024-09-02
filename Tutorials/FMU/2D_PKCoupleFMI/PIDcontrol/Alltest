@@ -9,9 +9,9 @@ rm -rf $resFile
 touch $resFile
 
 # --- Run the simulation
-echo -e "Run tutorial 2D_onePhaseAndPointKineticsCouplingExternalReactivity ...\n" | tee -a $resFile
+echo -e "Run tutorial 2D_PKcoupleExternalReactivity ...\n" | tee -a $resFile
 ./Allrun >> log.simulation
-echo -e "Done running tutorial 2D_onePhaseAndPointKineticsCouplingExternalReactivity ...\n" | tee -a $resFile
+echo -e "Done running tutorial 2D_PKcoupleExternalReactivity ...\n" | tee -a $resFile
 
 # --- Check it ran
 isConverge()

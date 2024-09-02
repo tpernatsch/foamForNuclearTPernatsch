@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant/neutroRegion";
+    object      reactorState;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+pTarget             ${{300e6 / (360/5)}}; // [W] (300 MW)
+
+externalReactivity  0; // 250e-5;
+
+//- keff values using different estimators (relative uncertainty in unit)
+//  keff has no effect on pointKinetics
+
+keff                1.12055;
+
+// keff                      1.06559; // (0.0003), from ANA_KEFF
+
+// keff                      1.06599; // (0.00015), from IMP_KEFF
+
+// keff                      1.06613; // (0.00019), from COL_KEFF
+
+// keff                      1.06599; // (0.00015), from ABS_KEFF
+
+ksrc                0.98; // arbitrary, equivalent to an insertion of reactivity
+                          // of 2041 pcm.
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
