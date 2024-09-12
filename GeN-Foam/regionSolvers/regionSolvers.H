@@ -69,6 +69,8 @@ SourceFiles
 #define regionSolvers_H
 
 #include "solver.H"
+#include "multiPhysicsLoop.H"
+#include "meshHandler.H"
 #include "meshToMesh.H"
 #include "zeroGradientFvPatchFields.H"
 
@@ -85,26 +87,19 @@ class regionSolvers
 {
     // Private Member Data
 
-        //- Region meshes
+        //- mapper
+
+        meshHandler meshHandler_;
         
-        PtrList<fvMesh> regionMeshes_;
-
-        PtrList<fvMesh> mappingRegionMeshes_;
-
         //- Region solvers
         PtrList<solver> solvers_;
+        PtrList<multiPhysicsLoop> loops_;
 
         //- Global space padding prefix
         string prefix0_;
 
         //- List of space padded region prefixes
         stringList prefixes_;
-
-        dictionary mappingDict_;
-        PtrList<PtrList<meshToMesh>> mappingList_;
-        PtrList<PtrList<volScalarField>> scalarCouplingFields_;
-        PtrList<PtrList<volVectorField>> vectorCouplingFields_;
-
 
         bool multiRegionTightCoupled_;
         scalar multiRegionResidual_;
@@ -149,13 +144,20 @@ public:
         //- Reset the Info prefix to null
         void resetPrefix() const;
 
-        void mapFields(const Time& runTime);
+        //void mapFields(const Time& runTime);
 
-        void initializeMappedFields(const Time& runTime);
+        //void initializeMappedFields(const Time& runTime);
 
-        void createBaffleLessMeshes(const Time& runTime);
+        //void createBaffleLessMeshes(const Time& runTime);
 
-        void createCouplingFields(const Time& runTime);
+        //void createCouplingFields(const Time& runTime);
+
+        void correctAllLoops();
+
+        meshHandler& mapper()
+        {
+            return meshHandler_;
+        }
 
         //void interpolateAndMapFields(const Time& runTime);
 
@@ -179,10 +181,6 @@ public:
         public:
 
             // //Access to meshes
-            // PtrList<fvMesh> regionMeshes()
-            // {
-            //     return regions_;
-            // }
 
             friend class regionSolvers;
 

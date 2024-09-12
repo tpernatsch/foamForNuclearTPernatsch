@@ -2,6 +2,8 @@
 EXE_INC = \
     -I. \
     -I./regionSolvers \
+    -I./meshHandler \
+    -I./multiPhysicsSolver \
     -I./regionSolvers/legacyInclude \
     -I./include \
     -I../src/classes/common/lnInclude \

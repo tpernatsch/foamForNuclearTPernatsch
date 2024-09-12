@@ -120,7 +120,8 @@ int main(int argc, char *argv[])
     Info<< nl << "Starting time loop\n" << endl;
 
     solvers.setGlobalPrefix();
-    solvers.initializeMappedFields(runTime);
+
+    solvers.mapper().initializeMappedFields(runTime);
 
     while (runTime.run() and !(mappingMode))
     {
@@ -131,36 +132,24 @@ int main(int argc, char *argv[])
 
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
-        scalar outerLoopResidual(0);
-        scalar multiRegionCouplingIter(0);
+        solvers.mapper().mapAllFields(runTime);
 
-        // Multi-region PIMPLE corrector loop
-        do
+        // Solve each physics once (loose coupling)
+
+        Info << "Solving physics once" << endl;
+
+        forAll(solvers, i)
         {
-            ++multiRegionCouplingIter;
-            Info <<"Outer iteration No. "<< multiRegionCouplingIter<<nl<<endl;
-            solvers.mapFields(runTime);
-            //solvers.interpolateAndMapFields(runTime);
-            forAll(solvers, i)
-            {
-                solvers[i].deformMesh();
-                solvers[i].correctPhysics();
-                solvers[i].correctBaffleLessFields();
-            }
-            
-            forAll(solvers, i)
-            {
-                outerLoopResidual= max(outerLoopResidual, solvers[i].getResidual());
-            }
-
-            Info <<"Outer loop residual is "<< outerLoopResidual<<nl<<endl;
+            solvers[i].deformMesh();
+            solvers[i].correctPhysics();
+            solvers[i].correctBaffleLessFields();
         }
-        while
-        (
-        (outerLoopResidual > solvers.multiRegionResidual())
-        &&  (multiRegionCouplingIter < solvers.iterMax()) 
-        &&  (solvers.tightlyCoupled())
-        );
+
+        // If some physics are tightly coupled, solve them in loop
+
+        Info << "Solving loops" <<endl;
+
+        solvers.correctAllLoops();
 
         // Adjust the time-step according to the solver maxDeltaT
         adjustDeltaT(runTime, solvers);
