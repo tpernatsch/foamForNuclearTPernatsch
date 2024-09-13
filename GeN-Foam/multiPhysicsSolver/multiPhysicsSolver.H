@@ -162,9 +162,9 @@ public:
 
         virtual void correctPhysics();
 
-        virtual scalar maxDeltaT(){return VGREAT;};
+        virtual scalar maxDeltaT();
 
-        virtual scalar getResidual(){return 0;};
+        virtual scalar getResidual();
 
         virtual void getMapper(meshHandler& mapper)
         {

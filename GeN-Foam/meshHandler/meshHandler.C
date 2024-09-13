@@ -25,7 +25,6 @@ License
 
 #include "meshHandler.H"
 #include "solver.H"
-#include "multiPhysicsLoop.H"
 #include "Time.H"
 #include "interpolationCellPoint.H"
 #include "radialBasisFunctionInterpolation.H"

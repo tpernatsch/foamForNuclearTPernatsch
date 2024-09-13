@@ -145,11 +145,6 @@ int main(int argc, char *argv[])
             solvers[i].correctBaffleLessFields();
         }
 
-        // If some physics are tightly coupled, solve them in loop
-
-        Info << "Solving loops" <<endl;
-
-        solvers.correctAllLoops();
 
         // Adjust the time-step according to the solver maxDeltaT
         adjustDeltaT(runTime, solvers);

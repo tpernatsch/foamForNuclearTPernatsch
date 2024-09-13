@@ -25,7 +25,6 @@ License
 
 #include "regionSolvers.H"
 #include "solver.H"
-#include "multiPhysicsLoop.H"
 #include "Time.H"
 #include "interpolationCellPoint.H"
 #include "radialBasisFunctionInterpolation.H"
@@ -297,43 +296,6 @@ void Foam::regionSolvers::resetPrefix() const
 //     }
 // }
 
-
-void Foam::regionSolvers::correctAllLoops()
-{
-    forAll(loops_, loopi)
-    {
-        // Loop over all the multiphysics loops
-        scalar residual(0);
-        scalar nIter(0);
-
-        do
-        {
-            labelList solverLabels(loops_[loopi].whichSolvers());
-            Info << "these are the labels "<< solverLabels <<endl;
-            forAll(solverLabels, labelI)
-            {
-                // Get the solver's label
-                label solverI(solverLabels[labelI]);
-
-                solvers_[solverI].deformMesh();
-                solvers_[solverI].correctPhysics();
-                solvers_[solverI].correctBaffleLessFields();
-            }
-            forAll(solverLabels, labelI)
-            {
-                label solverI(solverLabels[labelI]);
-                residual = max(residual, solvers_[solverI].getResidual());
-            }
-
-            nIter ++;
-        }
-        while
-        (
-            residual > loops_[loopi].minResidual() &&
-            nIter < loops_[loopi].iterMax()
-        );
-    }
-}
 // * * * * * * * * * * * * * * * Member Operators  * * * * * * * * * * * * * //
 
 Foam::solver& Foam::regionSolvers::operator[](const label i)

@@ -39,7 +39,6 @@ SourceFiles
 #include "fvCFD.H"
 #include "SortableList.H"
 
-// Include main offbeat classes
 #include "globalFieldLists.H"
 #include "globalOptions.H"
 #include "offbeatTime.H"

@@ -166,6 +166,28 @@ void Foam::solvers::multiPhysicsSolver::correctPhysics()
     while(residual>minResidual_ && iterN < maxIterations_);
 }
 
+scalar Foam::solvers::multiPhysicsSolver::getResidual()
+{
+    scalar residual= 0;
+    forAll(solvers_, solvI)
+    {
+        residual = max(residual, solvers_[solvI].getResidual());
+    }
+    
+    return residual;
+}
+
+scalar Foam::solvers::multiPhysicsSolver::maxDeltaT()
+{
+    scalar maxDeltaT= VGREAT;
+    forAll(solvers_, solvI)
+    {
+        maxDeltaT = min(maxDeltaT, solvers_[solvI].maxDeltaT());
+    }
+    
+    return maxDeltaT;
+}
+
 
 
 // ************************************************************************* //

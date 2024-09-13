@@ -69,7 +69,6 @@ SourceFiles
 #define regionSolvers_H
 
 #include "solver.H"
-#include "multiPhysicsLoop.H"
 #include "meshHandler.H"
 #include "meshToMesh.H"
 #include "zeroGradientFvPatchFields.H"
@@ -93,7 +92,6 @@ class regionSolvers
         
         //- Region solvers
         PtrList<solver> solvers_;
-        PtrList<multiPhysicsLoop> loops_;
 
         //- Global space padding prefix
         string prefix0_;
@@ -151,8 +149,6 @@ public:
         //void createBaffleLessMeshes(const Time& runTime);
 
         //void createCouplingFields(const Time& runTime);
-
-        void correctAllLoops();
 
         meshHandler& mapper()
         {
