@@ -93,6 +93,7 @@ void Foam::solvers::multiPhysicsSolver::createSolvers(word name)
 {
     multiPhysicsDict_=this->subDict("multiPhysicsSolvers").subDict(name);
     solverNames_= multiPhysicsDict_.subDict("solvers").toc();
+    singlePhysicsSolverNames_.setSize(0);
     minResidual_=multiPhysicsDict_.get<scalar>("minResidual");
     maxIterations_=multiPhysicsDict_.get<label>("maxIterations");
     
@@ -110,6 +111,7 @@ void Foam::solvers::multiPhysicsSolver::createSolvers(word name)
         if(solverType != "multiPhysicsSolver")
         {
             solvers_.set(nameI, solver::New(solverType,  meshHandler_->returnMesh(solverNames_[nameI])));
+            singlePhysicsSolverNames_.append(solverNames_[nameI]);
         }
         else
         {
@@ -144,11 +146,11 @@ void Foam::solvers::multiPhysicsSolver::correctPhysics()
     scalar iterN(0);
     scalar residual(0);
 
-    const Time& runTime(meshHandler_->returnMesh(solverNames_[0]).time());
+    const Time& runTime(meshHandler_->returnMesh(singlePhysicsSolverNames_[0]).time());
 
     do
     {
-        meshHandler_->mapTheseFields(runTime, solverNames_ );
+        meshHandler_->mapTheseFields(runTime, singlePhysicsSolverNames_ );
         forAll(solvers_, solvI)
         {
             solvers_[solvI].deformMesh();

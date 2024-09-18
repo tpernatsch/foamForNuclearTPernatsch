@@ -100,6 +100,7 @@ protected:
         meshHandler* meshHandler_;
         dictionary multiPhysicsDict_;
         wordList solverNames_;
+        wordList singlePhysicsSolverNames_;
         scalar minResidual_;
         label maxIterations_;
 
