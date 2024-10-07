@@ -1,35 +1,32 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-|       ______          _   __           ______                               |
-|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
-|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
-|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
-|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
-|    Copyright (C) 2015 - 2022 EPFL                                           |
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2406                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 FoamFile
 {
-    version     2.0;
-    format      ascii;
-    class       dictionary;
-    object      controlDict;
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          controlDict;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-// General
 
 application     GeN-Foam;
 
-startFrom       startTime;//latestTime;//
+startFrom       startTime;
 
-startTime      	0;
+startTime       0;
 
-stopAt       	endTime;//writeNow;//  
+stopAt          endTime;
 
-endTime        	5;
+endTime         5;
 
-deltaT          1e-2; // time step (if non adjusted)
+deltaT          0.01;
 
-writeControl   	adjustableRunTime;//timeStep;//
+writeControl    adjustableRunTime;
 
 writeInterval   5;
 
@@ -47,37 +44,23 @@ timePrecision   8;
 
 runTimeModifiable yes;
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+regionSolvers
+{
+}
 
-// Physics to solve
+removeBaffles
+{
+}
 
-solveFluidMechanics     true;
+liquidFuel      true;
 
-solveEnergy             true;
+adjustTimeStep  true;
 
-solveNeutronics         true;
+maxDeltaT       1;
 
-solveThermalMechanics   false;
+maxCo           5;
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+maxPowerVariation 0.025;
 
-// Global simulation options
-// This is the crucial flag for MSR simulations. Thanks to this: the power 
-// calculated by the neutronics will be released directly in the coolant; the 
-// delayed neutron precursors will be moved according to the collant velocity;
-// the fuel temperature will be set equal to the coolant temperature.
-
-liquidFuel  			true; 
-
-// Time step control
-
-adjustTimeStep 		true;
-
-maxDeltaT           1;
-
-maxCo               5;
-
-maxPowerVariation   0.025;
 
 // ************************************************************************* //
-

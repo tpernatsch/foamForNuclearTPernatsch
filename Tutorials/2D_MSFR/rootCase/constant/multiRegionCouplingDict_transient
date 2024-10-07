@@ -1,0 +1,58 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2406                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       dictionary;
+    location    "constant";
+    object      multiRegionCouplingDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+multiPhysicsSolvers
+{
+	energyNeutroLoop
+	{
+		solvers
+		{
+			fluidRegion 	onePhase;
+			neutroRegion    diffusionNeutronics;
+		}
+		
+	        minResidual 0.00005;
+        	maxIterations 3;
+	}
+}	
+
+
+mappings
+{
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields    2 ( secondaryPowerDensity powerDensity );
+            targetFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+            fieldTypes      2 ( scalar scalar );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    9 ( T thermo:rho T T.cladAvForNeutronics T.passiveStructure U mu alpha thermo:alpha );
+            targetFields    9 ( TCool rhoCool TFuel TClad TStructMech U mu alpha alphat );
+            fieldTypes      9 ( scalar scalar scalar scalar scalar vector scalar scalar scalar );
+        }
+    }
+}
+
+
+// ************************************************************************* //

@@ -30,11 +30,9 @@ setSteadyStateTH()
     foamDictionary steadyStateTH/system/controlDict -entry adjustTimeStep -set true
     foamDictionary steadyStateTH/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary steadyStateTH/system/controlDict -entry writeInterval -set 1
-    foamDictionary steadyStateTH/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary steadyStateTH/system/controlDict -entry solveEnergy -set false
-    foamDictionary steadyStateTH/system/controlDict -entry solveNeutronics -set false
-    foamDictionary steadyStateTH/system/controlDict -entry solveThermalMechanics -set false
-    GeN-Foam -legacy -initializeMappedFields -case steadyStateTH
+    foamDictionary steadyStateTH/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
+    foamDictionary steadyStateTH/system/controlDict -entry removeBaffles/fluidRegion -set false
+    mv steadyStateTH/constant/multiRegionCouplingDict_steadyStateTH steadyStateTH/constant/multiRegionCouplingDict 
     printf "Case set!\n\n"
 }
 
@@ -53,11 +51,12 @@ setSteadyStateEN()
     foamDictionary steadyStateEN/system/controlDict -entry adjustTimeStep -set false
     foamDictionary steadyStateEN/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary steadyStateEN/system/controlDict -entry writeInterval -set 50
-    foamDictionary steadyStateEN/system/controlDict -entry solveFluidMechanics -set false
-    foamDictionary steadyStateEN/system/controlDict -entry solveEnergy -set true
-    foamDictionary steadyStateEN/system/controlDict -entry solveNeutronics -set true
-    foamDictionary steadyStateEN/system/controlDict -entry solveThermalMechanics -set false
-    GeN-Foam -legacy -initializeMappedFields -case steadyStateEN
+    foamDictionary steadyStateEN/system/controlDict -entry regionSolvers/neutroRegion -set diffusionNeutronics;
+    foamDictionary steadyStateEN/system/controlDict -entry removeBaffles/neutroRegion -set false
+    foamDictionary steadyStateEN/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
+    foamDictionary steadyStateEN/system/fluidRegion/fvSolution -entry PIMPLE/solveEnergy -set true
+    rm steadyStateEN/constant/multiRegionCouplingDict
+    mv steadyStateEN/constant/multiRegionCouplingDict_steadyStateEN steadyStateEN/constant/multiRegionCouplingDict
     printf "Case set!\n\n"
 }
 
@@ -74,11 +73,11 @@ setTransient()
     foamDictionary transient/system/controlDict -entry adjustTimeStep -set true
     foamDictionary transient/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary transient/system/controlDict -entry writeInterval -set 10
-    foamDictionary transient/system/controlDict -entry solveFluidMechanics -set false
-    foamDictionary transient/system/controlDict -entry solveEnergy -set true
-    foamDictionary transient/system/controlDict -entry solveNeutronics -set true
-    foamDictionary transient/system/controlDict -entry solveThermalMechanics -set false
-    GeN-Foam -legacy -initializeMappedFields -case transient
+    foamDictionary transient/system/controlDict -entry regionSolvers/fluidRegion -remove
+    foamDictionary transient/system/controlDict -entry regionSolvers/neutroRegion -remove
+    foamDictionary transient/system/controlDict -entry regionSolvers/energyNeutroLoop -set multiPhysicsSolver
+    rm transient/constant/multiRegionCouplingDict
+    mv transient/constant/multiRegionCouplingDict_transient transient/constant/multiRegionCouplingDict
     printf "Case set!\n\n"
 }
 
@@ -111,7 +110,7 @@ do
 
     #( cd $caseName && runApplication `getApplication` )
     printf "Running $exe on $caseName\n"
-    $exe -legacy -case $caseName 2>&1 | tee "$caseName/log.$exe"
+    $exe -case $caseName 2>&1 | tee "$caseName/log.$exe"
 
     # Kill gnuplot if it was started
     pkill -x gnuplot &> /dev/null &

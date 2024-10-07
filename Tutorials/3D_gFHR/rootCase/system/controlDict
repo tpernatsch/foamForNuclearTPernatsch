@@ -42,13 +42,15 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-solveFluidMechanics true;
+regionSolvers
+{
+    fluidRegion     onePhase;
+}
 
-solveEnergy     true;
-
-solveNeutronics false;
-
-solveThermalMechanics false;
+removeBaffles
+{
+    fluidRegion     false;
+}
 
 liquidFuel      false;
 

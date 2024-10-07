@@ -41,7 +41,7 @@ isInRange()
     fi
 }
 
-keff=$(foamDictionary ./20/uniform/reactorState -entry keff -value)
+keff=$(foamDictionary ./processor0/20/uniform/reactorState -entry keff -value)
 expectedAt=0.980106
 
 # --- Check that results are correct

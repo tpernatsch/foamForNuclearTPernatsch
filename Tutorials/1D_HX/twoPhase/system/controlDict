@@ -1,16 +1,17 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-|       ______          _   __           ______                               |
-|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
-|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
-|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
-|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
-|    Copyright (C) 2015 - 2022 EPFL                                           |
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2406                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
+    arch        "LSB;label=32;scalar=64";
     class       dictionary;
+    location    "system";
     object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -45,41 +46,34 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-//- Physics to Solve
+regionSolvers
+{
+    fluidRegion   twoPhase;
+}
 
-solveFluidMechanics true;
+removeBaffles
+{
+    fluidRegion     false;
+}
 
-solveEnergy     true;
 
 includeKineticEnergy false;
 
-solveNeutronics false;
-
-solveThermalMechanics false;
-
-//- Global options
-
-liquidFuel false;
-
-//- Time step control options
+liquidFuel      false;
 
 adjustTimeStep  true;
 
 maxDeltaT       0.01;
 
-minDeltaT       1e-4;
+minDeltaT       0.0001;
 
 maxCo           10;
 
 maxCoTwoPhase   0.5;
 
-//- Write field options
-
 writeRestartFields true;
 
 writeContinuityErrors true;
-
-//- Function objects
 
 functions
 {
@@ -92,10 +86,9 @@ functions
         regionType      patch;
         name            inletP;
         operation       average;
-        fields          (alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour);
+        fields          ( alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour );
         region          "fluidRegion";
     }
-
     inletSValues
     {
         type            surfaceFieldValue;
@@ -105,10 +98,9 @@ functions
         regionType      patch;
         name            inletS;
         operation       average;
-        fields          (alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour);
+        fields          ( alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour );
         region          "fluidRegion";
     }
-
     outletPValues
     {
         type            surfaceFieldValue;
@@ -118,10 +110,9 @@ functions
         regionType      patch;
         name            outletP;
         operation       average;
-        fields          (alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour);
+        fields          ( alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour );
         region          "fluidRegion";
     }
-
     outletSValues
     {
         type            surfaceFieldValue;
@@ -131,9 +122,12 @@ functions
         regionType      patch;
         name            outletS;
         operation       average;
-        fields          (alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour);
+        fields          ( alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour );
         region          "fluidRegion";
     }
 }
+
+
+
 
 // ************************************************************************* //

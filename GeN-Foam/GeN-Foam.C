@@ -111,6 +111,10 @@ int main(int argc, char *argv[])
 
     // Create the region meshes and solvers
     regionSolvers solvers(runTime);
+    forAll(solvers, i)
+    {
+        solvers[i].correctBaffleLessFields();
+    }
 
     // Set the initial time-step
     setDeltaT(runTime, solvers);

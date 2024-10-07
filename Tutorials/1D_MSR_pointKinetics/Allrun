@@ -23,18 +23,14 @@ setSteadyState()
     printf "Setting steady state case...\n"
     setFields -region neutroRegion
     setFields -region fluidRegion
-    foamDictionary steadyState/system/fvSolution -entry tightlyCoupled -set false
     foamDictionary steadyState/system/controlDict -entry startFrom -set startTime
     foamDictionary steadyState/system/controlDict -entry startTime -set 0
     foamDictionary steadyState/system/controlDict -entry endTime -set 100
     foamDictionary steadyState/system/controlDict -entry adjustTimeStep -set true
     foamDictionary steadyState/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary steadyState/system/controlDict -entry writeInterval -set 100
-    foamDictionary steadyState/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary steadyState/system/controlDict -entry solveEnergy -set true
-    foamDictionary steadyState/system/controlDict -entry solveNeutronics -set false
-    foamDictionary steadyState/system/controlDict -entry solveThermalMechanics -set false
-    GeN-Foam -legacy -initializeMappedFields -case steadyState
+    mv steadyState/constant/multiRegionCouplingDict_TH steadyState/constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields -case steadyState
     printf "Case set!\n\n"
 }
 
@@ -45,18 +41,17 @@ setTransient()
     cp -r transient/0/neutroRegion transient/100/ 
     cp -r transient/0/uniform transient/100/ 
     printf "Setting transient case...\n"
-    foamDictionary transient/system/fvSolution -entry tightlyCoupled -set false
     foamDictionary transient/system/controlDict -entry startFrom -set startTime
     foamDictionary transient/system/controlDict -entry startTime -set 100
     foamDictionary transient/system/controlDict -entry endTime -set 400
     foamDictionary transient/system/controlDict -entry adjustTimeStep -set true
     foamDictionary transient/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary transient/system/controlDict -entry writeInterval -set 10
-    foamDictionary transient/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary transient/system/controlDict -entry solveEnergy -set true
-    foamDictionary transient/system/controlDict -entry solveNeutronics -set true
-    foamDictionary transient/system/controlDict -entry solveThermalMechanics -set false
-    GeN-Foam -legacy -initializeMappedFields -case transient
+    foamDictionary transient/system/controlDict -entry  regionSolvers/neutroRegion -set  pointKinetics
+    foamDictionary transient/system/controlDict -entry  removeBaffles/neutroRegion -set  false
+    rm transient/constant/multiRegionCouplingDict
+    mv transient/constant/multiRegionCouplingDict_Coupled transient/constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields -case transient
     printf "Case set!\n\n"
 }
 
@@ -64,18 +59,13 @@ setTransientEnd()
 {
     runCloneCase $1 $2
     printf "Setting transient case...\n"
-    foamDictionary transientEnd/system/fvSolution -entry tightlyCoupled -set false
     foamDictionary transientEnd/system/controlDict -entry startFrom -set startTime
     foamDictionary transientEnd/system/controlDict -entry startTime -set 400
     foamDictionary transientEnd/system/controlDict -entry endTime -set 401
     foamDictionary transientEnd/system/controlDict -entry adjustTimeStep -set true
     foamDictionary transientEnd/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary transientEnd/system/controlDict -entry writeInterval -set 1
-    foamDictionary transientEnd/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary transientEnd/system/controlDict -entry solveEnergy -set true
-    foamDictionary transientEnd/system/controlDict -entry solveNeutronics -set true
-    foamDictionary transientEnd/system/controlDict -entry solveThermalMechanics -set false
-    GeN-Foam -legacy -initializeMappedFields -case transientEnd
+    GeN-Foam -initializeMappedFields -case transientEnd
 
     printf "Case set!\n\n"
 }

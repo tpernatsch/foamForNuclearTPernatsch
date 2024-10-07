@@ -8,10 +8,10 @@ then
 else
     echo "gnuplot could not be found"
 fi
-
-decomposePar -allRegions
+ 
+decomposePar -region neutroRegion
 mpirun -np 4 $exe -parallel | tee "log.$exe"
-reconstructPar -allRegions
+reconstructPar -region neutroRegion
 
 # Kill gnuplot if it was started
 pkill -x gnuplot &> /dev/null &
