@@ -150,7 +150,6 @@ if (strcmp("R",  coreState))
     fprintf(fid, "expansionFromNominal %.6e;\n\n", expansionFromNominalR);
     fprintf(fid, "radialOrientation    (%i %i %i);\n\n", radialOrientationX, radialOrientationY, radialOrientationZ);
     fprintf(fid, "axialOrientation     (%i %i %i);\n\n", AxialOrientationX, AxialOrientationY, AxialOrientationZ);
-
 end
 if (strcmp("A", coreState))
     fprintf(fid, "expansionFromNominal %.6e;\n\n", expansionFromNominalA);

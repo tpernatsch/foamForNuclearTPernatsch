@@ -17,6 +17,7 @@ FoamFile
 
 discreteDirectionsOct 10;
 
+
 directionUxOct nonuniform List<scalar> 10 (
     1.9178E-01
     5.4614E-01
@@ -42,7 +43,6 @@ directionUyOct nonuniform List<scalar> 10 (
     2.3130E-01
     1.9729E-01
 );
-
 directionUzOct nonuniform List<scalar> 10 (
     1.8343E-01
     1.8343E-01
