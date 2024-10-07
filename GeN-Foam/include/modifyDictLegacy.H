@@ -9,7 +9,39 @@ const bool liquidFuel(runTime.controlDict().getOrDefault<bool>("liquidFuel", fal
 bool PK(false);
 bool linkedFuel(false);
 
-// First: modify the controlDict so that the solvers are created accordingly
+// First: check whether simulation is tightly coupled or not, to see whether a multiPhysicsSolver has to be created.
+
+
+IOdictionary multiRegionCouplingDict
+(
+    IOobject
+    (
+        "multiRegionCouplingDict",
+        runTime.constant(),
+        runTime.db(),
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    )
+);
+
+
+
+IOdictionary fvSolutionDict
+(
+    IOobject
+    (
+        "fvSolution",
+        runTime.system(),
+        runTime.db(),
+        IOobject::MUST_READ,
+        IOobject::NO_WRITE
+    )
+);
+
+bool tightlyCoupled(fvSolutionDict.get<bool>("tightlyCoupled"));
+
+dictionary multiPhysicsSolver;
+dictionary subSolvers;
 
 IOdictionary controlDict
 (
@@ -48,7 +80,11 @@ if(solveThermalHydraulics or solveEnergy)
 
     const word fluidSolver(phaseProperties.get<word>("thermalHydraulicsType"));
 
-    regionSolversDict.add("fluidRegion", fluidSolver);
+    if(!tightlyCoupled)
+        regionSolversDict.add("fluidRegion", fluidSolver);
+    else
+        subSolvers.add("fluidRegion", fluidSolver);
+    
 
     if(solveEnergy)
     {
@@ -121,7 +157,10 @@ if (solveNeutronics)
     if(neutroSolver == "pointKinetics")
         PK=true;
 
-    regionSolversDict.add("neutroRegion", neutroSolver);
+    if(!tightlyCoupled)
+        regionSolversDict.add("neutroRegion", neutroSolver);
+    else
+        subSolvers.add("neutroRegion", neutroSolver);
 }
 
 if(solveThermoMechanics)
@@ -141,11 +180,17 @@ if(solveThermoMechanics)
     const word mechSolver(thermoMechProperties.get<word>("model"));
     linkedFuel = thermoMechProperties.getOrDefault<bool>("linkedFuel", false);
 
-    regionSolversDict.add("thermoMechanicalRegion", mechSolver);
+    if(!tightlyCoupled)
+        regionSolversDict.add("thermoMechanicalRegion", mechSolver);
+    else
+        subSolvers.add("thermoMechanicalRegion", mechSolver);
 }
 
 
-controlDict.add("regionSolvers", regionSolversDict);
+if(tightlyCoupled)
+    multiPhysicsSolver.add("solvers",subSolvers);
+
+
 
 
 //- Now add the removeBafflesOption
@@ -164,38 +209,17 @@ controlDict.add("removeBaffles", removeBafflesDict);
 
 
 // - Now create and write the multiRegionCouplingDict
+if(tightlyCoupled)
+{
+    multiPhysicsSolver.add("maxIterations",  fvSolutionDict.get<scalar>("maxTimeStepIterations"));  
+    multiPhysicsSolver.add("minResidual",  fvSolutionDict.get<scalar>("timeStepResidual"));
+    dictionary solverName;
+    solverName.add("tightLoop", multiPhysicsSolver);
+    multiRegionCouplingDict.add("multiPhysicsSolvers", solverName);
+    regionSolversDict.add("tightLoop", "multiPhysicsSolver");
+}
 
-IOdictionary multiRegionCouplingDict
-(
-    IOobject
-    (
-        "multiRegionCouplingDict",
-        runTime.constant(),
-        runTime.db(),
-        IOobject::NO_READ,
-        IOobject::AUTO_WRITE
-    )
-);
-
-
-IOdictionary fvSolutionDict
-(
-    IOobject
-    (
-        "fvSolution",
-        runTime.system(),
-        runTime.db(),
-        IOobject::MUST_READ,
-        IOobject::NO_WRITE
-    )
-);
-
-
-
-multiRegionCouplingDict.add("maxMultiRegionIterations",  fvSolutionDict.get<scalar>("maxTimeStepIterations"));
-multiRegionCouplingDict.add("multiRegionTightCoupled",  fvSolutionDict.get<bool>("tightlyCoupled"));
-multiRegionCouplingDict.add("multiRegionResidual",  fvSolutionDict.get<scalar>("timeStepResidual"));
-
+controlDict.add("regionSolvers", regionSolversDict);
 //Add outer correctors of the TH cycle
 
 IOdictionary fvSolTH
