@@ -56,6 +56,7 @@ See 2D_MSFR or 3D_SmallESFR of Godiva_SN for exhaustive examples.
     groupsWoDF          | List<int> | No    | Empty   | List of energy group index to not apply discontinuity factors
     doNotParametrize    | List<int> | No    | Empty   | List of energy group index to not use parametrization (use only the values from the reference state)
     ScNo                | Scalar    | No    | 1       | Schmidt number for diffusion of precursors
+    polyharmonicSplineMode | Label  | No    | 1       | Polyharmonic spline function mode (1: \f$ r \f$; 2: \f$ r^2 ln(r) \f$; 3: \f$ r^3 \f$; 4: \f$ r^4 ln(r) \f$)
     axialOrientation    | Vector    | No    | (0,0,1) | Fuel axial orientation
     isLowMemory         | Boolean   | No    | False   | Low memory flag, useful for SN solver
 \endtable
@@ -85,7 +86,7 @@ refers to the kth precursor group.
 <div class="groupHeader">
 \table
     GeN-Foam Parameter  | Param    | Req'd | Default | Notation                 | Description
-    fuelFraction        | Constant | No    | 1       | \f$ \alpha_{fuel} \f$    | Volume of fuel per lattice volume 
+    fuelFraction        | Constant | No    | 1       | \f$ \alpha_{fuel} \f$    | Volume of fuel per lattice volume
     secondaryPowerVolumeFraction | Constant | No | 1 |                          | Volume fraction of secondary power-producing structure e.g., graphite in MSRs
     fractionToSecondaryPower | Constant | No | 0     |                          | Fraction of total power that goes to secondary power-producing structure
     IV                  | Constant | Yes   | -       | \f$ 1/v_g \f$            | Inverse velocity
@@ -184,15 +185,15 @@ namespace Foam
 class XS
 {
     // Private Member Functions
-        
+
         //- Disallow default bitwise copy construct
         XS(const XS&);
 
         //- Disallow default bitwise assignment
         void operator=(const XS&);
-        
+
 protected:
-    
+
     // Protected data
 
         //- Reference to mesh
@@ -214,13 +215,16 @@ protected:
 
             //- Number of Legendre moments
             label legendreMoments_;
-            
+
             //- Fuel axial orientation vector, default along the Z-axis
             vector axialOrientation_;
-            
+
             //- Schmidt number for diffusion of precursors
             scalar ScNo_;
-            
+
+            //- Polyharmonic spline function mode
+            label polyharmonicSplineMode_;
+
             //- List of perturbed reactor states
             PtrList<entry> states_;
 
@@ -232,7 +236,7 @@ protected:
 
             //- Total number of cellzone
             label zoneNumber_;
-        
+
         // Data fields
 
             //- Energy group-wise list of inverse velocity field
@@ -270,7 +274,7 @@ protected:
 
             //- Fuel fraction field
             volScalarField fuelFraction_;
-            
+
             //- Volume fraction of secondary power-producing structure e.g., graphite in MSRs
             volScalarField secondaryPowerVolumeFraction_;
 
@@ -282,7 +286,7 @@ protected:
 
             //- 1 if there is transfer from a group I to J in any cellZone if the XS is higher than 5.0e-6
             SquareMatrix<label> sigmaFromToYesNo_;
-        
+
 
         // Disc factors
 
@@ -294,13 +298,13 @@ protected:
 
             //- Fraction of total power that goes to secondary power-producing structure
             PtrList<scalar> fractionToSecondaryPowerList_;
-            
+
             //- Adjust or not discontinuity factors
             PtrList<bool> dfAdjustList_;
-            
+
             //- Energy group-wise discontinuity factors field
             PtrList<scalarField> discFactorList_;
-            
+
             //- Energy group-wise integral fluxes field for adapting discontinuity factors
             PtrList<scalarField> integralFluxList_;
 
@@ -339,9 +343,9 @@ protected:
             //- Square root fuel temperature field
             volScalarField sqrtT_;
 
-        
+
         // Feedbacks Coefficients
-        
+
             //- Constant inverse velocity data (zoneI -> energyI -> 1/v)
             PtrList<scalarField> IVList_;
 
@@ -356,7 +360,7 @@ protected:
 
             //- Constant total delayed neutron fraction data (zoneI -> beta_tot)
             PtrList<scalar> BetaTotList_;
-            
+
             //- Constant precursor decay constant data (zoneI -> precursorK -> lambda)
             PtrList<scalarField> lambdaList_;
 
@@ -394,7 +398,7 @@ public:
 
     //- Runtime type information
     TypeName("XS");
-    
+
     // Declare run-time constructor selection table
 
     declareRunTimeSelectionTable
@@ -449,17 +453,17 @@ public:
         //- memory (N_moment * N_energy * N_energy)
         Foam::tmp<Foam::volScalarField> sigmaFromTo
         (
-            label momentI, 
-            label energyI, 
+            label momentI,
+            label energyI,
             label energyJ,
-            const volScalarField& Tfuel, 
-            const volScalarField& Tclad, 
-            const volScalarField& rhoCool, 
+            const volScalarField& Tfuel,
+            const volScalarField& Tclad,
+            const volScalarField& rhoCool,
             const volScalarField& TCool,
             const volVectorField& Disp,
-            const volScalarField& TStructMech    
+            const volScalarField& TStructMech
         );
-        
+
         const PtrList<volScalarField> chiPrompt() const
         {
             return chiPrompt_;
@@ -512,27 +516,27 @@ public:
         (
             const fvMesh& mesh
         );
-        
+
         //- Return a pointer to a new XS
         static autoPtr<XS> New
         (
             const fvMesh& mesh
-        );           
+        );
 
     //- Destructor
         virtual ~XS();
 
     // Member Functions
-    
+
         //- Update XS
         void correct
         (
-            const volScalarField& Tfuel, 
-            const volScalarField& Tclad, 
-            const volScalarField& rhoCool, 
+            const volScalarField& Tfuel,
+            const volScalarField& Tclad,
+            const volScalarField& rhoCool,
             const volScalarField& TCool,
             const volVectorField& Disp,
-            const volScalarField& TStructMech             
+            const volScalarField& TStructMech
         );
 
         //- Initialize the XS data set

@@ -65,6 +65,7 @@ Tutorials/**/*.out
 **/old.*
 **/archive.*
 **/*.csv*
+**/*.foam
 
 # Tools
 Tools/**/build

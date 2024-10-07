@@ -51,6 +51,9 @@ const scalar rhoCoolRef(referenceState_.lookupOrDefault("rhoCool", 0.0));
 const scalar axExpRef(referenceState_.lookupOrDefault("axExp", 0.0));
 const scalar radExpRef(referenceState_.lookupOrDefault("radExp", 0.0));
 
+Info<< "Use polyharmonic spline function mode " << polyharmonicSplineMode_
+    << endl;
+
 // Look for reference state and extract reference values
 forAll(referenceZones_, zoneI)
 {
@@ -64,7 +67,7 @@ forAll(referenceZones_, zoneI)
     secondaryPowerVolumeFractionList_.set(zoneI, new scalar(dict.lookupOrDefault("secondaryPowerVolumeFraction", 1.0)));
     fractionToSecondaryPowerList_.set(zoneI, new scalar(dict.lookupOrDefault("fractionToSecondaryPower", 0.0)));
     dfAdjustList_.set(zoneI, new bool(dict.lookupOrDefault("dfAdjust", true)));
-    
+
     // Nuclear data (assumed to be) not affected by feedbacks
     IVList_.set(zoneI, new scalarField("IV", dict, energyGroups_));
     chiPromptList_.set(zoneI, new scalarField("chiPrompt", dict, energyGroups_));
@@ -75,7 +78,7 @@ forAll(referenceZones_, zoneI)
     BetaTotList_.set(zoneI, new scalar(sum(BetaList_[zoneI])));
     lambdaList_.set(zoneI, new scalarField("lambda", dict, precGroups_));
 
-    
+
     // Perturbed nuclear data
     DList_[zoneI].setSize(energyGroups_);
     nuSigmaEffList_[zoneI].setSize(energyGroups_);
@@ -85,10 +88,26 @@ forAll(referenceZones_, zoneI)
 
     forAll(DList_[zoneI], energyI)
     {
-        DList_[zoneI].set(energyI, new nuclearDataOneEnergy(nameZone));
-        nuSigmaEffList_[zoneI].set(energyI, new nuclearDataOneEnergy(nameZone));
-        sigmaPowList_[zoneI].set(energyI, new nuclearDataOneEnergy(nameZone));
-        sigmaDisappList_[zoneI].set(energyI, new nuclearDataOneEnergy(nameZone));
+        DList_[zoneI].set
+        (
+            energyI,
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+        );
+        nuSigmaEffList_[zoneI].set
+        (
+            energyI,
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+        );
+        sigmaPowList_[zoneI].set
+        (
+            energyI,
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+        );
+        sigmaDisappList_[zoneI].set
+        (
+            energyI,
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+        );
     }
 
     forAll(sigmaFromToList_[zoneI], momentI)
@@ -101,7 +120,11 @@ forAll(referenceZones_, zoneI)
 
             forAll(sigmaFromToList_[zoneI][momentI][energyJ], energyI)
             {
-                sigmaFromToList_[zoneI][momentI][energyJ].set(energyI, new nuclearDataOneEnergy(nameZone));
+                sigmaFromToList_[zoneI][momentI][energyJ].set
+                (
+                    energyI,
+                    new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+                );
             }
         }
     }

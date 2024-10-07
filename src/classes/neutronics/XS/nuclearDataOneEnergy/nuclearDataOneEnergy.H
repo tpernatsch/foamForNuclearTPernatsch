@@ -127,13 +127,13 @@ private:
     //- Cellzone name
     word zoneName_;
 
+    //- Polyharmonic spline mode
+    label polyharmonicSplineMode_;
+
     //- Number of perturbed state
     label nParameters_;
 
-    //- Number of perturbed state found and valid
-    // label nParametersReduced_;
-
-    //-
+    //- List of indices of used perturb parameters
     List<label> reducedParamIdx_;
 
     //- List of found perturbed state in nuclearData
@@ -154,10 +154,11 @@ private:
     //- Inversed RBF matrix
     SquareMatrix<scalar> invRBFmatrix_;
 
-    //-
+    //- Buffer list containing the input parameters
     scalarList currValue_;
 
-    //-
+    //- Reduced buffer list containing the input parameters, only contains the
+    //  perturbed parameters
     scalarList currValueReduced_;
 
 public:
@@ -165,7 +166,11 @@ public:
     //- Constructors
 
         //- Constructor from dictionary
-        nuclearDataOneEnergy(const word zoneName);
+        nuclearDataOneEnergy
+        (
+            const word zoneName,
+            const label mode = 1
+        );
 
     //- Destructor
         virtual ~nuclearDataOneEnergy(){}
@@ -188,7 +193,7 @@ public:
         //- Build interpolation scheme
         void build();
 
-        //-
+        //- Return the reference XS value
         scalar getRef() const;
 
         //- Get the interpolated nuclear data value based on the input

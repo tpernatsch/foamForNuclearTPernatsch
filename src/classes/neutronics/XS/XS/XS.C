@@ -73,6 +73,7 @@ Foam::XS::XS
     legendreMoments_(1+nuclearData_.lookupOrDefault("legendreMoments", 0)),
     axialOrientation_(nuclearData_.lookupOrDefault("axialOrientation", vector(0.0, 0.0, 1.0))),
     ScNo_(nuclearData_.lookupOrDefault("ScNo", 1.0)),
+    polyharmonicSplineMode_(nuclearData_.lookupOrDefault("polyharmonicSplineMode", 1)),
     states_(nuclearData_.lookup("states")),
     referenceState_(states_.first().dict()),
     referenceZones_(referenceState_.lookup("zones")),
@@ -242,7 +243,7 @@ Foam::XS::XS
     CRFollowerName_(CRNumber_),
     CRinitialPosition_(CRNumber_),
     CRposition_(CRNumber_),
-    initialDistanceFromMeshCR_(CRNumber_)    
+    initialDistanceFromMeshCR_(CRNumber_)
 {
     #include "readNuclearData.H"
     #include "createXSfields.H"
@@ -259,12 +260,12 @@ Foam::XS::~XS()
 
 void Foam::XS::correct
 (
-    const volScalarField& Tfuel, 
-    const volScalarField& Tclad, 
-    const volScalarField& rhoCool, 
+    const volScalarField& Tfuel,
+    const volScalarField& Tclad,
+    const volScalarField& rhoCool,
     const volScalarField& TCool,
     const volVectorField& Disp,
-    const volScalarField& TStructMech 
+    const volScalarField& TStructMech
 )
 {
     #include "setNeutronicsVariables.H"
@@ -311,16 +312,16 @@ void Foam::XS::adjustDiscFactors(const PtrList<volScalarField>& fluxStar)
 
 Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
 (
-    label momentI, 
-    label energyJ, 
+    label momentI,
+    label energyJ,
     label energyI,
-    const volScalarField& Tfuel, 
-    const volScalarField& Tclad, 
-    const volScalarField& rhoCool, 
+    const volScalarField& Tfuel,
+    const volScalarField& Tclad,
+    const volScalarField& rhoCool,
     const volScalarField& TCool,
     const volVectorField& Disp,
-    const volScalarField& TStructMech  
-) 
+    const volScalarField& TStructMech
+)
 {
     if (!isLowMemory_)
     {

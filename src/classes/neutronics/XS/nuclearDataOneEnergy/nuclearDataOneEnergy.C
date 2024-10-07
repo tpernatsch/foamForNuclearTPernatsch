@@ -45,12 +45,12 @@ License
 
 Foam::nuclearDataOneEnergy::nuclearDataOneEnergy
 (
-    // const dictionary& dict
-    const word zoneName
+    const word zoneName,
+    const label mode
 ) :
     zoneName_(zoneName),
+    polyharmonicSplineMode_(mode),
     nParameters_(7),
-    // nParametersReduced_(0),
     reducedParamIdx_(0),
     isParameterList_(nParameters_),
     data_(0),
@@ -91,14 +91,12 @@ void Foam::nuclearDataOneEnergy::addData
 void Foam::nuclearDataOneEnergy::build()
 {
     // Look for valid perturbed parameters
-    // nParametersReduced_ = 0;
     reducedParamIdx_.clear();
     forAll(parameterList_, paramI)
     {
         isParameterList_[paramI] = !isAllSameValues(parameterList_[paramI]);
         if (isParameterList_[paramI])
         {
-            // nParametersReduced_++;
             reducedParamIdx_.append(paramI);
         }
     }
@@ -122,7 +120,7 @@ void Foam::nuclearDataOneEnergy::build()
         // Compute radial basis function weights
         weights_ = Foam::radialBasisFunctionInterpolation::solvePolyharmonicSpline
         (
-            pointList_, data_, invRBFmatrix_
+            pointList_, data_, invRBFmatrix_, polyharmonicSplineMode_
         );
     }
 }
@@ -168,7 +166,7 @@ scalar Foam::nuclearDataOneEnergy::get
     (
         Foam::radialBasisFunctionInterpolation::polyharmonicSpline
         (
-            weights_, pointList_, currValueReduced_
+            weights_, pointList_, currValueReduced_, polyharmonicSplineMode_
         )
     );
 }
