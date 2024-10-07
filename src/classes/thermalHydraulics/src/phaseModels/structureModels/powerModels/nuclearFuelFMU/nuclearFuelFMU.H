@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2306                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2023 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.

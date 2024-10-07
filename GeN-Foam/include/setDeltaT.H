@@ -1,92 +1,77 @@
-bool adjustTimeStep
-(
-    runTime.controlDict().lookupOrDefault("adjustTimeStep", false)
-);
+/*---------------------------------------------------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+|                                                                             |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
+-------------------------------------------------------------------------------
+License
+    This file is part of GeN-Foam.
 
-//- First, the thermalHydraulic class adjusts the global time step based on
-//  possible Co number limitations. The adjustTimeStep flag is read within the
-//  fuction itself and runTime.deltaT is set (if applicable) within it
-if (multiphysics.solveFluidMechanics() or multiphysics.solveEnergy())
+    GeN-Foam is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    GeN-Foam is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    This offering is not approved or endorsed by the OpenFOAM Foundation nor
+    OpenCFD Limited, producer and distributor of the OpenFOAM(R)software via
+    www.openfoam.com, and owner of the OPENFOAM(R) and OpenCFD(R) trademarks.
+
+    This particular snippet of code is developed according to the developer's
+    knowledge and experience in OpenFOAM. The users should be aware that
+    there is a chance of bugs in the code, though we've thoroughly test it.
+    The source code may not be in the OpenFOAM coding style, and it might not
+    be making use of inheritance of classes to full extent.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Global
+    Foam::setDeltaT
+
+Description
+    Foam::setDeltaT sets the initial time-step according to the solver maxDeltaT
+    Foam::adjustDeltaT adjust the time-step according to the solver maxDeltaT
+
+SourceFiles
+    setDeltaT.C
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef setDeltaT_H
+#define setDeltaT_H
+
+#include "solver.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
 {
-    thermalHydraulics.adjustTimeStep();
-}
 
-//- This bit of code is executed only the first time setDeltaT.H is included
-#ifndef FIRSTDELTAT
-#define FIRSTDELTAT
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-scalar pTotOld(neutronics.power());
+//- Set the initial time-step according to the solver maxDeltaT
+void setDeltaT(Time& runTime,  PtrList<solver>& solvers);
 
-//- Adjusting the time step based on neutronics limitations on the first time
-//  step is useless because information relative to the "real" pTotOld is
-//  unavailable. Thus, for conservativeness, only choose the smallest time
-//  step between that specified by the thermalHydraulics (if any) and the
-//  initial one 
-if (adjustTimeStep)
-{
-    runTime.setDeltaT
-    (
-        min
-        (
-            runTime.deltaTValue(), 
-            runTime.controlDict().get<scalar>("deltaT")
-        )
-    );
-    Info << "initialDeltaT = " << runTime.deltaTValue() << endl;
-}
+//- Adjust the time-step according to the solver maxDeltaT
+void adjustDeltaT(Time& runTime,  PtrList<solver>& solvers);
 
-#else //- Otherwise, if FIRSTDELTAT is set, this is executed
 
-//- Then, the neutronics adjusts it again, if needed. The coding of this
-//  section isn't amazing, but it is due to the fact that the thermalHydraulic
-//  class was developed independently of GeN-Foam and then shoved in it. That
-//  is why the thermalHydraulics adjusts the time step via an ad-hoc made
-//  fuction while the neutronics does it this way
-if 
-(
-    adjustTimeStep 
-and (runTime.timeIndex()-runTime.startTimeIndex()) > 1
-)
-{
-    scalar maxDeltaT =
-        runTime.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-    scalar maxPowerVariation =
-        runTime.controlDict().lookupOrDefault<scalar>
-        (
-            "maxPowerVariation", 
-            0.025
-        );
+} // End namespace Foam
 
-    if (multiphysics.solveNeutronics())
-    {
-        scalar pTot = neutronics.power();
-        
-        scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL));
-        
-        pTotOld = pTot;
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-        scalar maxDeltaTNeutroFact = 
-            mag(maxPowerVariation/(powerVariation + SMALL));
-
-        scalar deltaTNeutroFact = 
-            min(min(maxDeltaTNeutroFact, 1.0 + 0.1*maxDeltaTNeutroFact), 1.2);
-
-        //- If solveFluidMechanics is true, the timeStep could have already
-        //  been adjusted by the thermalHyraulics, in which case set the new
-        //  timeStep only if the neutronics requires an even shorter time-step.
-        runTime.setDeltaT
-        (
-            min
-            (
-                deltaTNeutroFact*runTime.deltaTValue(),
-                (multiphysics.solveFluidMechanics()) ?
-                runTime.deltaTValue() : maxDeltaT
-            )
-        );
-    }
-
-    Info << "deltaT = " << runTime.deltaTValue() << endl;
-}
-    
 #endif
+
+// ************************************************************************* //

@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -38,64 +38,64 @@ License
 \*---------------------------------------------------------------------------*/
 
 #include "twoPhase.H"
-#include <chrono> 
+#include <chrono>
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace thermalHydraulicsModels
+namespace solvers
 {
     defineTypeNameAndDebug(twoPhase, 0);
     addToRunTimeSelectionTable
     (
-        thermalHydraulicsModel, 
-        twoPhase, 
-        thermalHydraulicsModels
+        solver,
+        twoPhase,
+        fvMesh
     );
 }
 }
 
 const Foam::Enum
 <
-    Foam::thermalHydraulicsModels::twoPhase::alphaEqnsSolver
+    Foam::solvers::twoPhase::alphaEqnsSolver
 >
-Foam::thermalHydraulicsModels::twoPhase::alphaEqnsSolverNames_
+Foam::solvers::twoPhase::alphaEqnsSolverNames_
 (
     {
-        { 
-            alphaEqnsSolver::MULES, 
-            "MULES" 
+        {
+            alphaEqnsSolver::MULES,
+            "MULES"
         },
-        { 
-            alphaEqnsSolver::implicitUpwind, 
-            "implicitUpwind" 
+        {
+            alphaEqnsSolver::implicitUpwind,
+            "implicitUpwind"
         }
     }
 );
 
 const Foam::Enum
 <
-    Foam::thermalHydraulicsModels::twoPhase::partialEliminationMode
+    Foam::solvers::twoPhase::partialEliminationMode
 >
-Foam::thermalHydraulicsModels::twoPhase::partialEliminationModeNames_
+Foam::solvers::twoPhase::partialEliminationModeNames_
 (
     {
-        { 
-            partialEliminationMode::none, 
-            "none" 
-        },
-        { 
-            partialEliminationMode::legacy, 
-            "explicit" 
-        },
-        { 
-            partialEliminationMode::implicit, 
-            "implicit" 
+        {
+            partialEliminationMode::none,
+            "none"
         },
         {
-            partialEliminationMode::implicitWithDmdt, 
+            partialEliminationMode::legacy,
+            "explicit"
+        },
+        {
+            partialEliminationMode::implicit,
+            "implicit"
+        },
+        {
+            partialEliminationMode::implicitWithDmdt,
             "implicitWithDmdt"
         }
     }
@@ -103,44 +103,44 @@ Foam::thermalHydraulicsModels::twoPhase::partialEliminationModeNames_
 
 const Foam::Enum
 <
-    Foam::thermalHydraulicsModels::twoPhase::contErrCompensationMode
+    Foam::solvers::twoPhase::contErrCompensationMode
 >
-Foam::thermalHydraulicsModels::twoPhase::contErrCompensationModeNames_
+Foam::solvers::twoPhase::contErrCompensationModeNames_
 (
     {
-        { 
-            contErrCompensationMode::none, 
-            "none" 
+        {
+            contErrCompensationMode::none,
+            "none"
         },
-        { 
-            contErrCompensationMode::Su, 
-            "Su" 
+        {
+            contErrCompensationMode::Su,
+            "Su"
         },
-        { 
-            contErrCompensationMode::Sp, 
-            "Sp" 
+        {
+            contErrCompensationMode::Sp,
+            "Sp"
         },
-        { 
-            contErrCompensationMode::SuSp, 
-            "SuSp" 
+        {
+            contErrCompensationMode::SuSp,
+            "SuSp"
         }
     }
 );
 
 const Foam::Enum
 <
-    Foam::thermalHydraulicsModels::twoPhase::heStabilizationMode
+    Foam::solvers::twoPhase::heStabilizationMode
 >
-Foam::thermalHydraulicsModels::twoPhase::heStabilizationModeNames_
+Foam::solvers::twoPhase::heStabilizationModeNames_
 (
     {
-        { 
-            heStabilizationMode::cutoff, 
-            "cutoff" 
+        {
+            heStabilizationMode::cutoff,
+            "cutoff"
         },
-        { 
-            heStabilizationMode::source, 
-            "source" 
+        {
+            heStabilizationMode::source,
+            "source"
         }
     }
 );
@@ -148,20 +148,16 @@ Foam::thermalHydraulicsModels::twoPhase::heStabilizationModeNames_
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::thermalHydraulicsModels::twoPhase::twoPhase
+Foam::solvers::twoPhase::twoPhase
 (
-    Time& time,
-    fvMesh& mesh,
-    customPimpleControl& pimple,
-    fv::options& fvOptions
+    fvMesh& mesh
 )
 :
     thermalHydraulicsModel
     (
-        time,
+        mesh.time(),
         mesh,
-        pimple,
-        fvOptions
+        fv::options::New(mesh)
     ),
     //- The structure needs to be created before the fluids because
     //  the turbulence models created by the fluids might require a reference
@@ -171,7 +167,7 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     (
         this->subDict("structureProperties"),
         mesh,
-        this->powerDensityNeutronics_ 
+        this->powerDensityNeutronics_
     ),
     fluid1_
     (
@@ -231,6 +227,7 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
         mesh,
         dimensionedScalar("", dimDensity, 0.0)
     ),
+    residual_(0),
     bothPhasesArePresent_(false),
     withinMarginToPhaseChange_(false),
     alphaEqnsSolver_
@@ -246,7 +243,7 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
         (
             pimple_.dict().lookupOrDefault<word>
             (
-                "partialEliminationMode", 
+                "partialEliminationMode",
                 "none"
             )
         )
@@ -296,14 +293,24 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     ),
     oscillationLimiterFraction_
     (
-        pimple.dict().lookupOrDefault<scalar>
+        pimple_.dict().lookupOrDefault<scalar>
         (
-            "oscillationLimiterFraction", 
+            "oscillationLimiterFraction",
             0.0
         )
     )
 {
-    //- Init autoPtr-managed fields, namely flowQuality, XLM (i.e. 
+    setRefCell
+    (
+        p_,
+        p_rgh_,
+        *this,
+        pRefCell_,
+        pRefValue_,
+        forcePRef_
+    );
+    mesh.setFluxRequired(p_rgh_.name());
+    //- Init autoPtr-managed fields, namely flowQuality, XLM (i.e.
     //  Lockhart-Martinelli parameter) and dispersion
     fluid1_.initTwoPhaseFields();
     fluid2_.initTwoPhaseFields();
@@ -313,7 +320,7 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     //  some twoPhaseDragFactor sub-models are not initialized yet)
     if (this->subDict("physicsModels").found("twoPhaseDragMultiplierModel"))
     {
-        if 
+        if
         (
             this->subDict
             (
@@ -338,7 +345,7 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     //- This is specifically to avoid problem when solveAlpha is set to solve
     //  for only one phase, the one for which BCs and initial conditions are
     //  provided, yet this phase starts at 0 while the other phase BC and
-    //  initial conditions were not provided. This is problematic as by 
+    //  initial conditions were not provided. This is problematic as by
     //  default a phase defaults to 0, so if the provided phase is 0 everywhere
     //  too, you have issues with the normalization later. This is veeeery
     //  specific but hey, why not!
@@ -356,21 +363,21 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
         mesh_,
         IOobject::NO_READ
     );
-    if 
+    if
     (
         !fluid1Header.typeHeaderOk<volScalarField>(true)
     and fluid2Header.typeHeaderOk<volScalarField>(true)
     )
     {
-        fluid1_.volScalarField::operator=(geometricOneField()-structure_-fluid2_);
+        fluid1_.volScalarField::operator=(geometricOneField()-fluid2_);
     }
-    if 
+    if
     (
         !fluid2Header.typeHeaderOk<volScalarField>(true)
     and fluid1Header.typeHeaderOk<volScalarField>(true)
     )
     {
-        fluid2_.volScalarField::operator=(geometricOneField()-structure_-fluid1_);
+        fluid2_.volScalarField::operator=(geometricOneField()-fluid1_);
     }
 
     //- Normalize phase fraction fields, structure is left unchanged
@@ -387,15 +394,15 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
     //- Set the bothPhasesArePresentFlag. This is only used within the
     //  adjustTimeStep function and for avoiding doing subcycles if
     //  only one phase is present
-    bothPhasesArePresent_ = 
+    bothPhasesArePresent_ =
     (
-        max((fluid1_*fluid2_)()).value() >= 1e-4 
+        max((fluid1_*fluid2_)()).value() >= 1e-4
     );
 
     //- Initialize fluid-intensive fluxes (i.e. that depend on the phase
-    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL 
+    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL
     //  volumetric flux in m3/s and the REAL mass flux in kg/s. By REAL I mean
-    //  not superficial). This is done after the phaseFraction normalization 
+    //  not superficial). This is done after the phaseFraction normalization
     //  step to ensure consistency. This step has an effect ONLY IF the
     //  alphaPhi, alphaRhoPhi fields were NOT found on disk
     fluid1_.initAlphaPhis();
@@ -426,48 +433,29 @@ Foam::thermalHydraulicsModels::twoPhase::twoPhase
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
 //- Solve according to flags
-void Foam::thermalHydraulicsModels::twoPhase::correct
-(
-    scalar& residual,
-    bool solveFluidDynamics, 
-    bool solveEnergy
-)
-{   
-    correctModels(solveFluidDynamics, solveEnergy);
-    
-    //auto start = std::chrono::steady_clock::now();
-    if (solveFluidDynamics)
-    {
-        correctFluidMechanics(residual);
-    }
-    
-    /*if (solveEnergy and pimple_.finalIter())
-    {
-        int N(pimple_.dict().getOrDefault<int>("nEnergyIter", 1));
-        for(int c = 1; c < N+1; c++)
-        {
-            Info << "\nEnergy: iteration " << c << endl;
-            //if (c != 1)
-                //correctModels(solveFluidDynamics, solveEnergy);
-            correctEnergy(residual);
-        }
-    }*/
+void Foam::solvers::twoPhase::correctPhysics()
+{
 
-    if (solveEnergy)
-    {
-        correctEnergy(residual);
-    }
-    //auto end = std::chrono::steady_clock::now();
-    //std::chrono::duration<double> elapsed_seconds = end-start;
-    //Info << "solveAll: " << elapsed_seconds.count() << "s\n";
+    residual_=0;
 
-    Info << endl;
+    bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").getOrDefault<bool>("solveEnergy", false));
+    bool solveFluidMechanics(mesh_.solutionDict().subDict("PIMPLE").getOrDefault<bool>("solveFluidMechanics", true));
+
+    while(pimple_.loop())
+    {
+        correctModels(true, true);
+
+        if(solveFluidMechanics)
+            correctFluidMechanics();
+
+        if(solveEnergy)
+            correctEnergy();
+
+        Info << endl;
+    }
 }
 
-void Foam::thermalHydraulicsModels::twoPhase::correctFluidMechanics
-(
-    scalar& residual
-)
+void Foam::solvers::twoPhase::correctFluidMechanics()
 {
     #include "alphaEqns_2p.H"
     #include "UEqns_2p.H"
@@ -486,21 +474,24 @@ void Foam::thermalHydraulicsModels::twoPhase::correctFluidMechanics
     calcCumulContErrs();
 }
 
-void Foam::thermalHydraulicsModels::twoPhase::correctEnergy(scalar& residual)
+void Foam::solvers::twoPhase::correctEnergy()
 {
+
     #include "EEqns_2p.H"
+
+
 }
 
-void Foam::thermalHydraulicsModels::twoPhase::correctModels
+void Foam::solvers::twoPhase::correctModels
 (
-    bool solveFluidDynamics, 
+    bool solveFluidDynamics,
     bool solveEnergy
 )
 {
     //- Two-phase Reynolds. Logically it does not belong anywere else as it
     //  involves both fluids and the structure (via the hydraulic diameter)
     /*
-    ReTwoPhase_ = 
+    ReTwoPhase_ =
         max
         (
             mag
@@ -531,14 +522,14 @@ void Foam::thermalHydraulicsModels::twoPhase::correctModels
     /*
     forAll(mesh_.cells(), i)
     {
-        Info<< i << " " << F1SPair_.Re()[i] << " " << fluid1_.dispersion()[i] 
-            << " " << fluid2_.dispersion()[i] << " " << F2SPair_.f()[i] 
+        Info<< i << " " << F1SPair_.Re()[i] << " " << fluid1_.dispersion()[i]
+            << " " << fluid2_.dispersion()[i] << " " << F2SPair_.f()[i]
             << endl;
     }
     */
 }
 
-void Foam::thermalHydraulicsModels::twoPhase::correctCourant()
+void Foam::solvers::twoPhase::correctCourant()
 {
     CoNum_ = 0.0;
     meanCoNum_ = 0.0;
@@ -557,7 +548,7 @@ void Foam::thermalHydraulicsModels::twoPhase::correctCourant()
     Info<< "Courant Number (avg max) = " << meanCoNum_
         << " " << CoNum_ << endl;
 
-    scalar UrCoNum = 
+    scalar UrCoNum =
         0.5*gMax
         (
             fvc::surfaceSum
@@ -573,8 +564,7 @@ void Foam::thermalHydraulicsModels::twoPhase::correctCourant()
     CoNum_ = max(CoNum_, UrCoNum);
 }
 
-
-void Foam::thermalHydraulicsModels::twoPhase::adjustTimeStep()
+scalar Foam::solvers::twoPhase::maxDeltaT()
 {
     this->correctCourant();
 
@@ -582,121 +572,105 @@ void Foam::thermalHydraulicsModels::twoPhase::adjustTimeStep()
     bool phase2(max(fluid2_).value() >= 1e-6);
     bothPhasesArePresent_ = (phase1 and phase2);
 
-    bool adjustTimeStep =
-        runTime_.controlDict().lookupOrDefault("adjustTimeStep", false);
+    scalar maxDeltaT =
+        runTime_.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
 
-    if (adjustTimeStep)
+    scalar minDeltaT =
+        runTime_.controlDict().lookupOrDefault<scalar>("minDeltaT", 1e-69);
+
+    scalar maxCo =
+        runTime_.controlDict().lookupOrDefault<scalar>("maxCo", 1.0);
+
+
+    if (runTime_.controlDict().found("maxCoTwoPhase"))
     {
-        scalar maxCo =
-            runTime_.controlDict().lookupOrDefault<scalar>("maxCo", 1.0);
+        scalar maxCoTwoPhase
+        (
+            runTime_.controlDict().get<scalar>("maxCoTwoPhase")
+        );
 
-        if (runTime_.controlDict().found("maxCoTwoPhase"))
+        if (bothPhasesArePresent_) maxCo = maxCoTwoPhase;
+        else
         {
-            scalar maxCoTwoPhase
+            if
             (
-                runTime_.controlDict().get<scalar>("maxCoTwoPhase")
-            );
-
-            if (bothPhasesArePresent_) maxCo = maxCoTwoPhase;
-            else
+                runTime_.controlDict().found("marginToPhaseChange")
+            //  and phaseChange_.valid()
+            )
             {
-                if 
+                scalar marginToPhaseChange
                 (
-                    runTime_.controlDict().found("marginToPhaseChange")
-                //  and phaseChange_.valid()
+                    runTime_.controlDict().get<scalar>
+                    (
+                        "marginToPhaseChange"
+                    )
+                );
+
+                scalar DT1
+                (
+                    min(mag(fluid1_.T()-FFPair_.iT())().primitiveField())
+                );
+                scalar DT2
+                (
+                    min(mag(fluid2_.T()-FFPair_.iT())().primitiveField())
+                );
+                if
+                (
+                    (
+                        phase1 and !phase2 and DT1 < marginToPhaseChange
+                    ) or
+                    (
+                        phase2 and !phase1 and DT2 < marginToPhaseChange
+                    )
                 )
                 {
-                    scalar marginToPhaseChange
-                    (
-                        runTime_.controlDict().get<scalar>
-                        (
-                            "marginToPhaseChange"
-                        )
-                    );
-
-                    scalar DT1
-                    (
-                        min(mag(fluid1_.T()-FFPair_.iT())().primitiveField())
-                    );
-                    scalar DT2
-                    (
-                        min(mag(fluid2_.T()-FFPair_.iT())().primitiveField())
-                    );
-                    if 
-                    (
-                        (
-                            phase1 and !phase2 and DT1 < marginToPhaseChange
-                        ) or
-                        (
-                            phase2 and !phase1 and DT2 < marginToPhaseChange
-                        )
-                    )
-                    {
-                        maxCo = maxCoTwoPhase;
-                    }
+                    maxCo = maxCoTwoPhase;
                 }
             }
         }
+    }
 
-        scalar maxDeltaT =
-            runTime_.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
-
-        scalar minDeltaT =
-            runTime_.controlDict().lookupOrDefault<scalar>("minDeltaT", 1e-69);
-
-        scalar f =
-            std::abs
-            (
-                runTime_.controlDict().lookupOrDefault<scalar>
-                (
-                    "maxDeltaTMaxRelInc", 
-                    0.1
-                )
-            );
-        scalar maxDeltaTFact = maxCo/(CoNum_ + SMALL);
-        scalar deltaTFact = 
-            min
-            (
-                min
-                (
-                    maxDeltaTFact, 
-                    1.0 + f*maxDeltaTFact
-                ), 
-                1.0 + f
-            );
-
-        runTime_.setDeltaT
+    scalar f =
+        std::abs
         (
-            max
+            runTime_.controlDict().lookupOrDefault<scalar>
             (
-                min
-                (
-                    deltaTFact*runTime_.deltaTValue(),
-                    maxDeltaT
-                ),
-                minDeltaT
+                "maxDeltaTMaxRelInc",
+                0.1
             )
         );
-    }
+    scalar maxDeltaTFact = maxCo/(CoNum_ + SMALL);
+    scalar deltaTFact =
+        min
+        (
+            min
+            (
+                maxDeltaTFact,
+                1.0 + f*maxDeltaTFact
+            ),
+            1.0 + f
+        );
+    return max(min(deltaTFact*runTime_.deltaTValue(),maxDeltaT),minDeltaT);
+
 }
 
 
-void Foam::thermalHydraulicsModels::twoPhase::correctContErrs()
+void Foam::solvers::twoPhase::correctContErrs()
 {
     volScalarField& cE1(fluid1_.contErr());
     volScalarField& cE2(fluid2_.contErr());
     volScalarField& rho1(fluid1_.rho());
     volScalarField& rho2(fluid2_.rho());
 
-    cE1 = 
+    cE1 =
     (
         fvc::ddt(fluid1_, rho1)
     +   fvc::div(fluid1_.alphaRhoPhi())
     -   (fvOptions_(fluid1_, rho1) & rho1)
     );
-    cE2 = 
+    cE2 =
     (
-        fvc::ddt(fluid2_, rho2) 
+        fvc::ddt(fluid2_, rho2)
     +   fvc::div(fluid2_.alphaRhoPhi())
     -   (fvOptions_(fluid2_, rho2) & rho2)
     );
@@ -705,25 +679,25 @@ void Foam::thermalHydraulicsModels::twoPhase::correctContErrs()
         cE1 += FFPair_.dmdt();
         cE2 -= FFPair_.dmdt();
     }
-    
+
     cE1.correctBoundaryConditions();
     cE2.correctBoundaryConditions();
 }
 
 
-void Foam::thermalHydraulicsModels::twoPhase::printContErrs()
+void Foam::solvers::twoPhase::printContErrs()
 {
     volScalarField contErrRel1(fluid1_.contErr()/fluid1_.rho());
     volScalarField contErrRel2(fluid2_.contErr()/fluid2_.rho());
 
-    Info<< "Instantaneous relative continuity errors (" 
+    Info<< "Instantaneous relative continuity errors ("
         << fluid1_.name() << " " << fluid2_.name() << ") = "
         << contErrRel1.weightedAverage(mesh_.V()).value() << " "
         << contErrRel2.weightedAverage(mesh_.V()).value() << " "
         << "1/s" << endl;
 }
 
-void Foam::thermalHydraulicsModels::twoPhase::calcCumulContErrs()
+void Foam::solvers::twoPhase::calcCumulContErrs()
 {
     if (pimple_.finalIter())
     {
@@ -755,7 +729,7 @@ void Foam::thermalHydraulicsModels::twoPhase::calcCumulContErrs()
         cumulContErr2 += deltaCumulContErr2;
 
         Info<< "Cumulative continuity errors ("
-            << fluid1_.name() << " " << fluid2_.name() << ") = " 
+            << fluid1_.name() << " " << fluid2_.name() << ") = "
             << (cumulContErr1/totV) << " " << (cumulContErr2/totV)
             << " kg/m3" << endl;
     }

@@ -10,7 +10,9 @@ FoamFile
 {
     version     2.0;
     format      ascii;
+    arch        "LSB;label=32;scalar=64";
     class       dictionary;
+    location    "system";
     object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -21,7 +23,7 @@ startFrom       startTime;
 
 startTime       0;
 
-stopAt          endTime;//
+stopAt          endTime;
 
 endTime         30;
 
@@ -45,8 +47,6 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-//- Physics to Solve
-
 solveFluidMechanics true;
 
 solveEnergy     true;
@@ -55,16 +55,25 @@ solveNeutronics false;
 
 solveThermalMechanics false;
 
-//- Global options
+liquidFuel      false;
 
-liquidFuel false;
+adjustTimeStep  true;
 
-//- Time step control options
+maxDeltaT       1;
 
-adjustTimeStep      true;
+maxCo           1;
 
-maxDeltaT           1;
+regionSolvers
+{
+    fluidRegion     onePhase;
+}
 
-maxCo               1;
+removeBaffles
+{
+    fluidRegion     0;
+    neutroRegion    0;
+    thermoMechanicalRegion 0;
+}
+
 
 // ************************************************************************* //

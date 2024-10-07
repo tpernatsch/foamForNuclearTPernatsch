@@ -10,7 +10,9 @@ FoamFile
 {
     version     2.0;
     format      ascii;
+    arch        "LSB;label=32;scalar=64";
     class       dictionary;
+    location    "system/fluidRegion";
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -21,26 +23,26 @@ solvers
     {
         solver          GAMG;
         smoother        DIC;
-        tolerance       1e-6;
+        tolerance       1e-06;
         relTol          0;
         maxIter         25;
     }
-
     p_rghFinal
     {
-        $p_rgh;
+        solver          GAMG;
+        smoother        DIC;
+        tolerance       1e-06;
         relTol          0;
+        maxIter         25;
     }
-
     "h.*"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-6;
+        tolerance       1e-06;
         relTol          0;
         minIter         1;
     }
-
     ".*"
     {
         solver          PBiCGStab;
@@ -52,12 +54,13 @@ solvers
 
 PIMPLE
 {
-    nOuterCorrectors            6;
-    nCorrectors                 12;
-    correctUntilConvergence     true;
-    nNonOrthogonalCorrectors    0;
-    momentumMode                faceCentered;
-    oscillationLimiterFraction  0;
+    nOuterCorrectors 6;
+    nCorrectors     12;
+    correctUntilConvergence true;
+    nNonOrthogonalCorrectors 0;
+    momentumMode    faceCentered;
+    oscillationLimiterFraction 0;
+    solveEnergy     true;
 }
 
 relaxationFactors
@@ -65,10 +68,10 @@ relaxationFactors
     equations
     {
     }
-
     fields
     {
     }
 }
+
 
 // ************************************************************************* //

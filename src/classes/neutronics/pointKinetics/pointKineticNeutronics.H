@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -42,22 +42,22 @@ Group
     none
 
 Description
-    Run-time selectable point-kinetic based neutronics solver. It includes 
-    options for a time dependent external reactivity, and an external 
+    Run-time selectable point-kinetic based neutronics solver. It includes
+    options for a time dependent external reactivity, and an external
     reactivity input coming from an FMU.
 
-    The module solves the following point-kinetics equations: 
+    The module solves the following point-kinetics equations:
 
     \f[
-        \frac{dP}{dt} = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P 
+        \frac{dP}{dt} = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P
             + \sum_{i=1}^N \lambda_i C_i + \frac{S}{\Lambda} \\
-        \frac{dC_i}{dt} = \frac{\beta_i}{\Lambda} P 
+        \frac{dC_i}{dt} = \frac{\beta_i}{\Lambda} P
             - \lambda_i C_i \quad \forall i \in [1; N]
     \f]
 
     \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
     \f[
-        \rho_{tot} = 
+        \rho_{tot} =
             \begin{cases}
                 \text{fast}    & -\alpha_D \ln\left( \frac{T_{fuel}}{T_{fuel}^{ref}} \right) \\
                 \text{thermal} &  \alpha_D \left( \sqrt{T_{fuel}} - \sqrt{T_{fuel}^{ref}} \right)
@@ -72,9 +72,32 @@ Description
             + \rho_{GEM}
             + \rho_{boron}
             + \rho_{ext}
+            + \rho_{ext}^{FMU}
     \f]
 
-where:
+    where:
+    \vartable
+      P           | Core power
+      C_i         | Precursor power
+      S           | Optional external source power
+      \beta_{tot} | Total delayed neutron fraction
+      \beta_i     | Delayed neutron fraction for the ith delayed neutron precursor group
+      \lambda_i   | Decay constant for the ith delayed neutron precursor group
+      \Lambda     | Prompt generation lifetime
+      \zeta       | Optional subcritical index
+      S           | Optional external neutron source power
+      \alpha_D             | Doppler feedback coefficient
+      \alpha_{fuel}        | Fuel axial expansion feedback coefficient
+      \alpha_{clad}        | Cladding temperature feedback coefficient
+      \alpha_{cool}^{T}    | Coolant temperature feedback coefficient
+      \alpha_{cool}^{\rho} | Coolant density coefficient
+      \alpha_{struct}      | Core radial expansion feedback coefficient
+      \alpha_{struct}^{mech} | Core expansion feedback coefficient from the mechanical mesh
+      \rho_{driveline}     | Control rod driveline expansion reactivity contribution
+      \rho_{boron}         | Boron concentration reactivity contribution
+      \rho_{ext}           | External reactivity contribution
+      \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
+    \endtable
 
 \vartable
     P           | Core power
@@ -98,34 +121,6 @@ where:
     \rho_{ext}           | External reactivity contribution
     \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
 \endtable
-
-Example of mandatory dictionary entries:
-\verbatim
-    fastNeutrons    true;
-    promptGenerationTime 1e-06; // [s]
-    Beta
-    ( 
-        7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05 
-    );
-    lambda // [1/s]
-    (
-        0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817 
-    );
-    feedbackCoeffFastDoppler    0; // [-]
-    feedbackCoeffTFuel          0; // [1/K]
-    feedbackCoeffTClad          0; // [1/K]
-    feedbackCoeffTCool          0; // [1/K]
-    feedbackCoeffRhoCool        0; // [1/(kg/m3)]
-    feedbackCoeffTStruct        0; // [1/K]
-    feedbackCoeffTStructMech    0; // [1/K]
-    absoluteDrivelineExpansionCoeff 0.0; // [m/K]
-    controlRodReactivityMap 
-    ( 
-        ( 0.1   -0.01   ) 
-        ( 0     0       ) 
-        ( -0.1  0.01    ) 
-    );
-\endverbatim
 
 Example of time dependant source entries:
 \verbatim
@@ -170,7 +165,7 @@ Optional external neutron source file "externalSource"
     //- Beam energy per source particle
     beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
 
-    //- Neutron yield of the spallation of proton on heavy metal 
+    //- Neutron yield of the spallation of proton on heavy metal
     nuSource            15.5; // [neutron/proton]
 
     //- Optional external source input from FMU in externalSource file.
@@ -191,7 +186,7 @@ Optional external neutron source file "externalSource"
     }
 \endverbatim
 
-\mainauthor of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files):
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>;
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
@@ -205,6 +200,7 @@ SourceFiles
 #define pointKineticNeutronics_H
 
 #include "neutronics.H"
+#include "Function1.H"
 #include "interpolationTable.H"
 #include "timeProfile.H"
 
@@ -212,6 +208,7 @@ SourceFiles
 
 namespace Foam
 {
+namespace solvers{
 
 /*---------------------------------------------------------------------------*\
                           Class pointKineticNeutronics Declaration
@@ -497,6 +494,10 @@ protected:
     //  store them in pgiMagSf_)
     scalarList phiMagSf_;
 
+    scalar pTotOld_;
+
+    scalar residual_;
+
 private:
 
     //- Disallow default bitwise copy construct
@@ -547,31 +548,15 @@ public:
         //- Compute GEM sodium height and their reactivity contributions
         Pair<scalar> calcGEMLevelAndReactivity();
 
-        //- Used to set all the pointer member variables (the members that end
-        //  with *Orig_) after class initialization (needs to be called by
-        //  solver main)
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const meshToMesh& neutroToFluid,
-            const objectRegistry& srcTM,
-            const meshToMesh& neutroToMech
-        );
-
-        //- Update local (i.e. on local neutronicMesh) instances of the Orig_
-        //  fields defined on the (baffleless) thermalHydraulic mesh
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& neutroToFluid,
-            const meshToMesh& neutroToMech
-        );
-
         //- Solve pointKinetics
-        virtual void correct
-        (
-            scalar& residual,
-            label couplingIter
-        );
+        virtual void correctPhysics();
+
+        virtual scalar maxDeltaT();
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        }
 
         //- To split strings. The file where I got this function originally
         //  defined is in classes/thermalHydraulics/models/include. However,
@@ -628,7 +613,7 @@ public:
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} // End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

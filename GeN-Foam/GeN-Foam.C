@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -40,135 +40,120 @@ Application
 
 Description
     Multi-physics solver for nuclear reactor analysis. It couples a multi-scale
-    fine/coarse mesh 3-phase (liquid, vapour, porous substructure) sub-solver 
+    fine/coarse mesh 3-phase (liquid, vapour, porous substructure) sub-solver
     for thermal-hydraulics, various sub-solvers for neutronics,
-    a displacement-based sub-solver for thermal-mechanics. The 
-    thermal-hydraulic sub-solver consists of the custom developed FFSEulerFoam 
+    a displacement-based sub-solver for thermal-mechanics. The
+    thermal-hydraulic sub-solver consists of the custom developed FFSEulerFoam
     solver  (https://gitlab.com/virmodoetiae/FFSEulerFoam). It is capable of
     modelling single and two-phase flows, while modelled fuel types consist
     of either liquid fuel (e.g. MSRs) or fuel pin lattices. For the latter,
     the energy dynamics is represented via a 1.5-D finite difference model.
 
     Reference publications:
-    
+
     NOTE: these publications do not cover recent multi-phase developments
 
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, 2015
     "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design 294, pp. 
+    analysis of nuclear reactors", Nuclear Engineering and Design 294, pp.
     24-37
 
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
-    multi-physics solver to the European Sodium Fast Reactor and verification 
-    against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 - 
+    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam
+    multi-physics solver to the European Sodium Fast Reactor and verification
+    against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
     Nice (France), Paper 15226
 
-    Authors of this file (and associated .C or included .H files): 
+    Authors of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>
     EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 
-#include "fvCFD.H"
-#include "fvOptions.H"
-#include "SquareMatrix.H"
-//#include "fvMatrixExt.H"
+#include "argList.H"
+#include "regionSolvers.H"
+#include "setDeltaT.H"
 #include "meshToMesh.H"
-#include "regionProperties.H"
-#include "mergeOrSplitBaffles.H"
-#include "volPointInterpolation.H"
-#include "fixedGradientFvPatchFields.H"
-#include "UPstream.H"
 
-#include "multiphysicsControl.H"
-#include "thermalHydraulicsModel.H"
-#include "neutronics.H"
-#include "thermoMechanics.H"
-
-#if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
-#    include <commDataLayer.H>
-#    define isCommDataLayerIncluded
-#  endif
-#endif
-
-#ifdef isCommDataLayerIncluded
-#include "commDataLayer.H"
-#endif
-
+using namespace Foam;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 int main(int argc, char *argv[])
 {
-    #define NO_CONTROL
-    #define CREATE_MESH createMeshesPostProcess.H
-    
-    #include "postProcess.H"
+
+
+    argList::addBoolOption
+    (
+        "legacy",
+        "Run GeN-Foam in legacy mode (V.1)"
+    );
+
+    argList::addBoolOption
+    (
+        "initializeMappedFields",
+        "Map fields across regions as specified in multiRegionCouplingDict"
+    );
+
     #include "setRootCase.H"
     #include "createTime.H"
-    #include "createMeshes.H"
-    #include "createFields.H"
-    #include "createMeshInterpolators.H"
-    #include "createCouplingFields.H"
-    #include "createOutput.H"
 
-    Info<< "\nStarting time loop - \n" << endl;
+    const bool legacy(args.found("legacy"));
+    const bool mappingMode(args.found("initializeMappedFields"));
 
-    Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s" 
-        << nl << endl;
-
-    #include "setDeltaT.H"
-
-    
-
-    while (runTime.run())
+    if(legacy)
     {
+        Info << nl << "Running GeN-Foam in legacy mode (V.1)" << nl<<endl;
+        #include "modifyDictLegacy.H"
+
+        Info << nl << "Dictionaries modified" << nl<<endl;
+    }
+
+    // Create the region meshes and solvers
+    regionSolvers solvers(runTime);
+
+    // Set the initial time-step
+    setDeltaT(runTime, solvers);
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    Info<< nl << "Starting time loop\n" << endl;
+
+    solvers.setGlobalPrefix();
+
+    solvers.mapper().initializeMappedFields(runTime);
+
+    while (runTime.run() and !(mappingMode))
+    {
+
+        solvers.setGlobalPrefix();
+
         runTime++;
 
-        #include "setDeltaT.H"
-        
-        Info << "Time = " << runTime.timeName() << nl << endl;
+        Info<< "Time = " << runTime.timeName() << nl << endl;
 
-        /*
-        #ifdef isCommDataLayerIncluded
-        commDataLayer& data = commDataLayer::New(runTime);
+        solvers.mapper().mapAllFields(runTime);
 
-        label isNewStep = FMUSimulatorLabel != -1
-            ? data.getObj<label>("new_step", commDataLayer::causality::in)
-            : 1;
+        // Solve each physics once (loose coupling)
 
-        do // FMI loop, move everything in multiphysics.loop() (first step)
+        Info << "Solving physics once" << endl;
+
+        forAll(solvers, i)
         {
-        #endif
-        */
-
-        while (multiphysics.loop())
-        {
-            #include "solve.H"
+            solvers[i].deformMesh();
+            solvers[i].correctPhysics();
+            solvers[i].correctBaffleLessFields();
         }
-        
-        /*
-        #ifdef isCommDataLayerIncluded
-            if (isNewStep != 1 && FMUSimulatorLabel != -1)
-            {
-                runTime.functionObjects()[FMUSimulatorLabel].execute();
 
-                isNewStep = data.getObj<label>("new_step", commDataLayer::causality::in);
-            }
-        } 
-        while (isNewStep != 1 && FMUSimulatorLabel != -1);
-        #endif
-        */
+
+        // Adjust the time-step according to the solver maxDeltaT
+        adjustDeltaT(runTime, solvers);
+
+
+        solvers.setGlobalPrefix();
 
         runTime.write();
 
-        #include "writeOutput.H"
-
-        // Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-        // << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-        // << nl << endl;
         runTime.printExecutionTime(Info);
     }
 

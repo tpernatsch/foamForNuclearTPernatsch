@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -124,7 +124,7 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     const DimensionedField<vector, volMesh>& iF
 )
 :
-    tractionDisplacementFvPatchVectorField(p, iF),
+    GFTractionDisplacementFvPatchVectorField(p, iF),
     regionCoupledPatch_(refCast<const regionCoupledBaseFvPatch>(p)),
     penaltyFact_(0.1),
     offset_(0.0),
@@ -141,7 +141,7 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     const fvPatchFieldMapper& mapper
 )
 :
-    tractionDisplacementFvPatchVectorField(ptf, p, iF, mapper),
+    GFTractionDisplacementFvPatchVectorField(ptf, p, iF, mapper),
     regionCoupledPatch_(refCast<const regionCoupledBaseFvPatch>(p)),
     penaltyFact_(ptf.penaltyFact_),
     offset_(ptf.offset_),
@@ -157,7 +157,7 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     const dictionary& dict
 )
 :
-    tractionDisplacementFvPatchVectorField(p, iF,dict),
+    GFTractionDisplacementFvPatchVectorField(p, iF,dict),
     regionCoupledPatch_(refCast<const regionCoupledBaseFvPatch>(p)),
     penaltyFact_(0.1),
     offset_(0.0),
@@ -182,7 +182,7 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     const gapContactFvPatchVectorField& ptf
 )
 :
-    tractionDisplacementFvPatchVectorField(ptf),
+    GFTractionDisplacementFvPatchVectorField(ptf),
     regionCoupledPatch_(ptf.regionCoupledPatch_),
     penaltyFact_(ptf.penaltyFact_),
     offset_(ptf.offset_),
@@ -197,7 +197,7 @@ gapContactFvPatchVectorField::gapContactFvPatchVectorField
     const DimensionedField<vector, volMesh>& iF
 )
 :
-    tractionDisplacementFvPatchVectorField(ptf, iF),
+    GFTractionDisplacementFvPatchVectorField(ptf, iF),
     regionCoupledPatch_(ptf.regionCoupledPatch_),
     penaltyFact_(ptf.penaltyFact_),
     offset_(ptf.offset_),
@@ -214,7 +214,7 @@ void gapContactFvPatchVectorField::autoMap
     const fvPatchFieldMapper& m
 )
 {
-    tractionDisplacementFvPatchVectorField::autoMap(m);
+    GFTractionDisplacementFvPatchVectorField::autoMap(m);
     gapWidth_.autoMap(m);
     interfaceP_.autoMap(m);
 }
@@ -226,7 +226,7 @@ void gapContactFvPatchVectorField::rmap
     const labelList& addr
 )
 {
-    tractionDisplacementFvPatchVectorField::rmap(ptf, addr);
+    GFTractionDisplacementFvPatchVectorField::rmap(ptf, addr);
 
     const gapContactFvPatchVectorField& dmptf =
         refCast<const gapContactFvPatchVectorField>(ptf);
@@ -304,13 +304,13 @@ void gapContactFvPatchVectorField::updateCoeffs()
     }
     */
 
-    tractionDisplacementFvPatchVectorField::updateCoeffs();
+    GFTractionDisplacementFvPatchVectorField::updateCoeffs();
 }
 
 
 void gapContactFvPatchVectorField::write(Ostream& os) const
 {
-    tractionDisplacementFvPatchVectorField::write(os);
+    GFTractionDisplacementFvPatchVectorField::write(os);
     
     if (regionCoupledPatch_.owner())
     {

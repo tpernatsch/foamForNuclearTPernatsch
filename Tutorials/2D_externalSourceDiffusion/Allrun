@@ -20,7 +20,7 @@ copyFolder() {
 runGeNFoam() {
     simCase=$1
 
-    GeN-Foam -case $simCase | 
+    GeN-Foam -legacy -case $simCase | 
         tee $simCase/log.GeN-Foam | 
         grep -E "Time =|deltaT|power:|keff" 
 }

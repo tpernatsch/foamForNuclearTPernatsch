@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -46,14 +46,17 @@ License
 
 namespace Foam
 {
+namespace solvers
+{
     defineTypeNameAndDebug(SNNeutronics, 0);
 
     addToRunTimeSelectionTable
     (
-        neutronics,
+        solver,
         SNNeutronics,
-        dictionary
+        fvMesh
     );
+}
 }
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
@@ -61,7 +64,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::SNNeutronics::SNNeutronics
+Foam::solvers::SNNeutronics::SNNeutronics
 (
     fvMesh& mesh
 )
@@ -238,7 +241,9 @@ Foam::SNNeutronics::SNNeutronics
     keff1_(0.0),
     keff2_(0.0),
     aitkenIterCounter_(0),
-    aitkenIterNo_(0)
+    aitkenIterNo_(0),
+    pTotOld_(pTarget_),
+    residual_(0)
 {
     #include "readQuadratureSet.H"
     #include "calcLegendreMatrices.H"
@@ -248,39 +253,60 @@ Foam::SNNeutronics::SNNeutronics
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::SNNeutronics::~SNNeutronics()
+Foam::solvers::SNNeutronics::~SNNeutronics()
 {}
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::SNNeutronics::getCouplingFieldRefs
-(
-    const objectRegistry& srcTH,
-    const meshToMesh& neutroToFluid,
-    const objectRegistry& srcTM,
-    const meshToMesh& neutroToMech
-)
-{
-    #include "defaultGetCouplingFieldRefs.H"
-}
+// void Foam::solvers::SNNeutronics::getCouplingFieldRefs
+// (
+//     const objectRegistry& srcTH,
+//     const meshToMesh& neutroToFluid,
+//     const objectRegistry& srcTM,
+//     const meshToMesh& neutroToMech
+// )
+// {
+//     #include "defaultGetCouplingFieldRefs.H"
+// }
 
-void Foam::SNNeutronics::interpolateCouplingFields
-(
-    const meshToMesh& neutroToFluid,
-    const meshToMesh& neutroToMech
-)
-{
-    #include "defaultInterpolateCouplingFields.H"
-}
+// void Foam::solvers::SNNeutronics::interpolateCouplingFields
+// (
+//     const meshToMesh& neutroToFluid,
+//     const meshToMesh& neutroToMech
+// )
+// {
+//     #include "defaultInterpolateCouplingFields.H"
+// }
 
-void Foam::SNNeutronics::correct
-(
-    scalar& residual, 
-    label couplingIter
-) 
+void Foam::solvers::SNNeutronics::correctPhysics() 
 {
+
+    pTotOld_=power();
+    residual_=0;
     #include "solveNeutronicsSN.H"
+}
+
+scalar Foam::solvers::SNNeutronics::maxDeltaT()
+{
+    scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+    scalar maxPowerVariation =
+        mesh_.time().controlDict().lookupOrDefault<scalar>
+        (
+            "maxPowerVariation", 
+            0.025
+        );
+    scalar pTot = power();
+
+    scalar powerVariation = mag((pTot - pTotOld_) / (pTotOld_ + SMALL));
+
+    scalar maxDeltaTNeutroFact = mag(maxPowerVariation/(powerVariation + SMALL));
+
+    scalar deltaTNeutroFact = min(min(maxDeltaTNeutroFact, 1.0 + 0.1*maxDeltaTNeutroFact), 1.2);
+
+    return min(deltaTNeutroFact*mesh_.time().deltaTValue(), newDeltaT);
+
+
 }
 
 // ************************************************************************* //

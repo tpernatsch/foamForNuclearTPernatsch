@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -81,17 +81,6 @@ Usage
 
 #include "pimpleControl.H"
 
-#if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
-#    include <commDataLayer.H>
-#    define isCommDataLayerIncluded
-#  endif
-#endif
-
-#ifdef isCommDataLayerIncluded
-#include "commDataLayer.H"
-#endif
-
 //- Declare that customPimpleControl will be used
 #define customPimple_CONTROL
 
@@ -117,12 +106,10 @@ class customPimpleControl
         void operator=(const customPimpleControl&) = delete;
 
 
+
 protected:
 
     // Protected data
-
-        //- Ref to runTime (used for FMI and functionObject execution)
-        Time& runTime_;
 
         // Solution controls
 
@@ -137,9 +124,6 @@ protected:
             //  first PISO initial residuals
             bool corrPISOUntilConvergence_;
 
-            //- Flag to activate the PIMPLE FMI loop correction
-            bool isFMIcoupledCorrection_;
-
             //-
             int nCorrPISOInPrevPIMPLE_;
 
@@ -148,6 +132,8 @@ protected:
 
             //-
             bool stopLoop_;
+
+
 
     // Protected Member Functions
 
@@ -200,10 +186,11 @@ public:
         customPimpleControl
         (
             fvMesh& mesh,
-            Time& runtime,
             const word& dictName = "PIMPLE",
             const bool verbose = true
         );
+
+         int corr_;  
 
 
     //- Destructor

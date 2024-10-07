@@ -13,7 +13,7 @@ neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
 //- Update reactivity coefficients
 #include "computeFeedbackFieldValues.H"
-#include "correctReactivity.H"
+
 
 
 //- Update old time step values if time step has changed
@@ -40,6 +40,53 @@ if(initPrecursorsLiquidFuel_ &&
 {
     initialize = true;
 }
+
+
+if (initialize)
+{
+    //- TFuelRef limited as it appears in a fraction denominator if doing
+    //  fastNeutrons (for the Doppler coeff)
+
+    TFuelRef_ =
+       reactorState_.lookupOrDefault<scalar>("TFuelRef", TFuelValue);
+
+    TCladRef_ =
+        reactorState_.lookupOrDefault<scalar>("TladRef", TCladValue);
+
+    TCoolRef_ =
+        reactorState_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
+
+    rhoCoolRef_ =     
+        reactorState_.lookupOrDefault<scalar>("rhoCoolRef", rhoCoolValue);
+
+    TStructRef_ =
+        reactorState_.lookupOrDefault<scalar>("TStructRef", TStructValue);
+
+    TStructMechRef_ =
+        reactorState_.lookupOrDefault<scalar>("TStructMechRef", TStructMechValue);
+
+    TDrivelineRef_ =
+        reactorState_.lookupOrDefault<scalar>("TDriveLineRef", TDrivelineValue);
+
+    //- Since a T*Ref_ are scalars, the value inside the dictionary is not
+    //  updated at runTime automatically. The line below resets the SCALAR IN
+    //  THE DICTIONARY at runTime so that the dictionary is written with the
+    //  updated value.
+    reactorState_.set("TFuelRef", TFuelRef_);
+    reactorState_.set("TCladRef", TCladRef_);
+    reactorState_.set("TCoolRef", TCoolRef_);
+    reactorState_.set("rhoCoolRef", rhoCoolRef_);
+    reactorState_.set("TStructRef", TStructRef_);
+    reactorState_.set("TStructMechRef", TStructMechRef_);
+    reactorState_.set("TDrivelineRef", TDrivelineRef_);
+}
+
+#include "correctReactivity.H"
+
+
+//- Correct the diffusion coefficient and flux
+diffCoeffPrecPtr_() = (alphatPtr_()+muPtr_()/ScNo_)/rhoCool_; // exactly the same
+phiPtr_()=fvc::flux(UPtr_()*alphaPtr_());
 
 //Calc equilibrium precPK at the steady-state
 if(initialize)
@@ -170,8 +217,7 @@ do
 
 
     //- Some info on iteartions
-    Info<< "neutroResidual (couplingIter: " << couplingIter
-    << ", neutroIter: " << neutroIter << "): " << neutroResidual
+    Info<< "neutroResidual (neutroIter: " << neutroIter << "): " << neutroResidual
     <<  endl;
 }
 while((neutroResidual > neutronIterationResidual)
@@ -193,8 +239,8 @@ oneGroupFlux_.correctBoundaryConditions();
 
 powerDensity_ *= fluxScaleFactor;
 powerDensity_.correctBoundaryConditions();
-secondaryPowerDenisty_ *= fluxScaleFactor;
-secondaryPowerDenisty_.correctBoundaryConditions();
+secondaryPowerDensity_ *= fluxScaleFactor;
+secondaryPowerDensity_.correctBoundaryConditions();
 
 Info << endl << "pointKinetics: " << endl;
 #include "pointKineticsInfo.H"

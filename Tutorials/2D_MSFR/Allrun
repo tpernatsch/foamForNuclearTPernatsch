@@ -34,6 +34,7 @@ setSteadyStateTH()
     foamDictionary steadyStateTH/system/controlDict -entry solveEnergy -set false
     foamDictionary steadyStateTH/system/controlDict -entry solveNeutronics -set false
     foamDictionary steadyStateTH/system/controlDict -entry solveThermalMechanics -set false
+    GeN-Foam -legacy -initializeMappedFields -case steadyStateTH
     printf "Case set!\n\n"
 }
 
@@ -41,6 +42,8 @@ setSteadyStateEN()
 {
     runCloneCase $1 $2
     printf "Setting steady state  case...\n"
+    cp -r steadyStateEN/0/neutroRegion steadyStateEN/15/
+    cp -r steadyStateEN/0/uniform steadyStateEN/15/  
     foamDictionary steadyStateEN/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
     foamDictionary steadyStateEN/system/fvSolution -entry tightlyCoupled -set false
     foamDictionary steadyStateEN/system/controlDict -entry startFrom -set startTime
@@ -54,6 +57,7 @@ setSteadyStateEN()
     foamDictionary steadyStateEN/system/controlDict -entry solveEnergy -set true
     foamDictionary steadyStateEN/system/controlDict -entry solveNeutronics -set true
     foamDictionary steadyStateEN/system/controlDict -entry solveThermalMechanics -set false
+    GeN-Foam -legacy -initializeMappedFields -case steadyStateEN
     printf "Case set!\n\n"
 }
 
@@ -74,6 +78,7 @@ setTransient()
     foamDictionary transient/system/controlDict -entry solveEnergy -set true
     foamDictionary transient/system/controlDict -entry solveNeutronics -set true
     foamDictionary transient/system/controlDict -entry solveThermalMechanics -set false
+    GeN-Foam -legacy -initializeMappedFields -case transient
     printf "Case set!\n\n"
 }
 
@@ -106,7 +111,7 @@ do
 
     #( cd $caseName && runApplication `getApplication` )
     printf "Running $exe on $caseName\n"
-    $exe -case $caseName 2>&1 | tee "$caseName/log.$exe"
+    $exe -legacy -case $caseName 2>&1 | tee "$caseName/log.$exe"
 
     # Kill gnuplot if it was started
     pkill -x gnuplot &> /dev/null &

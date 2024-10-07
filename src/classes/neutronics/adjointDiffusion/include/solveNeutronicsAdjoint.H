@@ -34,6 +34,14 @@ int neutroIter = 0;
 
 scalar neutroResidual = 0.0;
 
+//-Update mapped fields
+if(liquidFuel_)
+{
+    phiPtr_()=fvc::flux(UPtr_()*alphaPtr_());
+    diffCoeffPrecPtr_()=(alphaPtr_()+muPtr_()/xs_.ScNo())/rhoCool_;
+}
+
+
 do
 {
     Info << "Neutron iteration no:  " << neutroIter << nl << endl;
@@ -45,7 +53,7 @@ do
 
     neutroIter++;
 
-    Info<< "neutroResidual (couplingIter: " << couplingIter << ",neutroIter: "
+    Info<< "neutroResidual (neutroIter: "
     << neutroIter << "): " << neutroResidual << endl;
 
 }while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
@@ -60,10 +68,10 @@ pTot = power();
 
 Info << "power: " << pTot << endl;
 
-Info<< "Final neutroResidual at coupling/neutroIter iter no " << couplingIter << "/" << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl;
+Info<< "Final neutroResidual at neutroIter  no " << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl;
 
 //- Determine power densities
-secondaryPowerDenisty_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
+secondaryPowerDensity_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
 powerDensity_ /= max(fuelFraction, SMALL) * (1.0 - fractionToSecondaryPower);
 
 
@@ -92,7 +100,7 @@ if (eigenvalueNeutronics_)
     xs_.adjustDiscFactors(fluxStar_);
 }
 
-residual = max(residual,neutroResidual);
+residual_ = max(residual_,neutroResidual);
 
 oneGroupFlux_ *= 0.0;
 forAll(flux_,energyI)

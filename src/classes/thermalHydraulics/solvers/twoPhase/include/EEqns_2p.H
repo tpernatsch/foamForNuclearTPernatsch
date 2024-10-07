@@ -292,12 +292,12 @@
     //- Relax and solve equations
     E1Eqn.relax();
     fvOptions_.constrain(E1Eqn);
-    E1Eqn.solve();
+    residual_=max(residual_, E1Eqn.solve().max().initialResidual());
     fvOptions_.correct(he1);
     he1.relax();
     E2Eqn.relax();
     fvOptions_.constrain(E2Eqn);
-    E2Eqn.solve();
+    residual_=max(residual_, E2Eqn.solve().max().initialResidual());
     fvOptions_.correct(he2);
     he2.relax(); 
 

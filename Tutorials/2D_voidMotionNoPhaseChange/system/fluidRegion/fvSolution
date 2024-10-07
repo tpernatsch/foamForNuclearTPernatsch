@@ -10,7 +10,9 @@ FoamFile
 {
     version     2.0;
     format      ascii;
+    arch        "LSB;label=32;scalar=64";
     class       dictionary;
+    location    "system/fluidRegion";
     object      fvSolution;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -21,34 +23,32 @@ solvers
     {
         solver          GAMG;
         smoother        DIC;
-        tolerance       1e-6;
+        tolerance       1e-06;
         relTol          0;
     }
-
     p_rghFinal
     {
-        $p_rgh;
+        solver          GAMG;
+        smoother        DIC;
+        tolerance       1e-06;
         relTol          0;
     }
-
     "e.*"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-6;
+        tolerance       1e-06;
         relTol          0;
         minIter         0;
     }
-
     "h.*"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-6;
+        tolerance       1e-06;
         relTol          0;
         minIter         0;
     }
-
     ".*"
     {
         solver          PBiCGStab;
@@ -56,24 +56,22 @@ solvers
         tolerance       1e-06;
         relTol          0.001;
     }
-
     "alpha"
     {
-        solver              MULES;
-        adjustSubCycles     true;
-        alphaMaxCo          0.25;
+        solver          MULES;
+        adjustSubCycles true;
+        alphaMaxCo      0.25;
     }
 }
 
 PIMPLE
 {
-    nCorrectors                 6;
-    correctUntilConvergence     true;
-    nNonOrthogonalCorrectors    0;
-    partialEliminationMode      implicit;
-    momentumMode                faceCentered;
-    oscillationLimiterFraction  0.5;
-
+    nCorrectors     6;
+    correctUntilConvergence true;
+    nNonOrthogonalCorrectors 0;
+    partialEliminationMode implicit;
+    momentumMode    faceCentered;
+    oscillationLimiterFraction 0.5;
     residualControl
     {
         p_rgh
@@ -83,6 +81,7 @@ PIMPLE
             useFirstPISOInitialResidual true;
         }
     }
+    nOuterCorrectors 18;
 }
 
 relaxationFactors
@@ -97,5 +96,6 @@ relaxationFactors
         "Kd.*"          0.25;
     }
 }
+
 
 // ************************************************************************* //

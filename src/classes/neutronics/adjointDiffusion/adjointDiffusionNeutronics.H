@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -61,6 +61,9 @@ SourceFiles
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
+{
+
+namespace solvers
 {
 
 /*---------------------------------------------------------------------------*\
@@ -127,6 +130,14 @@ protected:
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
+        // multiRegion
+
+    bool multiRegion_;
+
+    scalar pTotOld_;
+
+    scalar residual_;
+
 private:
 
     // Private data
@@ -191,31 +202,34 @@ public:
             return pTot;
         }
 
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const meshToMesh& neutroToFluid,
-            const objectRegistry& srcTM,
-            const meshToMesh& neutroToMech
-        );   
+        // virtual void getCouplingFieldRefs
+        // (
+        //     const objectRegistry& srcTH,
+        //     const meshToMesh& neutroToFluid,
+        //     const objectRegistry& srcTM,
+        //     const meshToMesh& neutroToMech
+        // );   
 
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& neutroToFluid,
-            const meshToMesh& neutroToMech
-        );
+        // virtual void interpolateCouplingFields
+        // (
+        //     const meshToMesh& neutroToFluid,
+        //     const meshToMesh& neutroToMech
+        // );
 
         //- Correct/update the properties
-        virtual void correct
-        (
-            scalar& residual,
-            label couplingIter  
-        );  
+        virtual void correctPhysics();
+
+        virtual scalar maxDeltaT();
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        };
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} //End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

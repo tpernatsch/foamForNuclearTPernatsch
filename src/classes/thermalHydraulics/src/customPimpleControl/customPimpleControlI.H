@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -61,73 +61,12 @@ inline bool Foam::customPimpleControl::correct(bool interrupt)
 
     if (corrPISO_ <= nCorrPISO_ and !interrupt)
     {
-        // Implicit FMI condition
-        #ifdef isCommDataLayerIncluded
-        if (/*corrPISO_ > 1 &&*/ isFMIcoupledCorrection_) // Skip the first correction step
-        {
-            commDataLayer& data = commDataLayer::New(runTime_);
-            scalar& isPressureCorrectorConverged = data.getObj<scalar>
-            (
-                "isPressureCorrectorConverged", 
-                commDataLayer::causality::out
-            );
-            isPressureCorrectorConverged = 0.0;
-            Info<< "Pressure corrector converged: " << isPressureCorrectorConverged
-                << endl;
-            // Need to execute the functionObj FMUController
-            label FMUControllerLabel(-1);
-            forAll(runTime_.functionObjects(), labelI)
-            {
-                if (runTime_.functionObjects()[labelI].type() == "FMUController")
-                {
-                    FMUControllerLabel = labelI;
-                    break; // FMUController is unique
-                }
-            }
-            if (FMUControllerLabel != -1)
-            {
-                runTime_.functionObjects()[FMUControllerLabel].execute();
-            }
-        }
-        #endif
-
         return true;
     }
 
     corrPISO_ = 0;
 
     setFirstIterFlag();
-
-    // FMI loop correction
-    #ifdef isCommDataLayerIncluded
-    if (isFMIcoupledCorrection_)
-    {
-        commDataLayer& data = commDataLayer::New(runTime_);
-        scalar& isPressureCorrectorConverged = data.getObj<scalar>
-        (
-            "isPressureCorrectorConverged", 
-            commDataLayer::causality::out
-        );
-        isPressureCorrectorConverged = 1.0;
-        Info<< "Pressure corrector converged: " << isPressureCorrectorConverged
-            << endl;
-        // Need to execute the functionObj FMUController to send the info back to 
-        // the main script 
-        label FMUControllerLabel(-1);
-        forAll(runTime_.functionObjects(), labelI)
-        {
-            if (runTime_.functionObjects()[labelI].type() == "FMUController")
-            {
-                FMUControllerLabel = labelI;
-                break; // FMUController is unique
-            }
-        }
-        if (FMUControllerLabel != -1)
-        {
-            runTime_.functionObjects()[FMUControllerLabel].execute();
-        }
-    }
-    #endif
 
     return false;
 }

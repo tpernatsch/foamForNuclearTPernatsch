@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2112                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -254,7 +254,6 @@ labelList findBaffles(const polyMesh& mesh, const labelList& boundaryFaces)
 
 int removeBaffles(fvMesh& mesh, Time& runTime)//(int argc, char *argv[])
 {
-    Info<< "Creating fluidRegionNB mesh without baffles" << nl << endl;
     //argList::addNote
     //(
     //    "Detect faces that share points (baffles).\n"

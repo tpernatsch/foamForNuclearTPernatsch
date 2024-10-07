@@ -15,18 +15,38 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model 		linearElasticThermoMechanics;//only model available now
+model 		        legacyThermoMechanics; // linearElasticThermoMechanics;
 
-solveDisplacement   true; // Optional keyword. Default is true
+//Options to turn on physics. Both defaulted to "on"
+
+thermalSolver		on; // Option to turn on/off the thermal solution. Might be not needed as TStruct from TH can be mapped
+mechanicsSolver         on;    // Option to turn on/off mechanics solution
+
+// To mantain continuity with OFFBEAT, in globalOptions general simulation parameters are set. Both entries needed
+
+globalOptions
+{
+    linkedFuel 		    false;
+    pinDirection            (0 0 1);
+}
+
+// To mantain continuity with OFFBEAT. Only rheology option to set is planeStress. Defaulted to off
+
+rheologyOption
+{
+    planeStress 	no;
+}
+
+// solveDisplacement   true; // Optional keyword. Default is true
 
 // constants needed to calculate deformation of fuel, control rods AND structure (1D expansion for fuel and CR, displacement-based solver for structures)
-planeStress     no;
-linkedFuel      false; // true if there is contact between fuel and cladding (expansion driven by cladding)
-fuelOrientation   (0 0 1); 
-TStructRef		300; //ref temperature for structures
+// planeStress     no;
+// linkedFuel      false; // true if there is contact between fuel and cladding (expansion driven by cladding)
+// fuelOrientation   (0 0 1);
+// TStructRef		300; //ref temperature for structures
 
-zones
-(
+materials
+{
     THN
     {
         //for structures
@@ -40,6 +60,7 @@ zones
         TFuelRef        600;
         alphaFuel       1.1e-5;//0.0;//
     }
+
     N
     {
         rho             1000; //density
@@ -49,6 +70,7 @@ zones
         k               5000; // conductivity
         alpha           1.8e-5; // linear expansion coeff (1/K)
     }
+
     alone
     {
         rho             1000; //density
@@ -58,7 +80,6 @@ zones
         k               5000; // conductivity
         alpha           1.8e-5; // linear expansion coeff (1/K)
     }
-        
-);
+};
 
 // ************************************************************************* //

@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -73,6 +73,9 @@ Foam::timeProfile::timeProfile
     runTime_(runTime),
     type_(dict_.get<word>("type")),
     startTime_(dict_.lookupOrDefault<scalar>("startTime", 0.0)),
+    oldTime_(startTime_),
+    currentValue_(0.0),
+    oldValue_(currentValue_),
     functionPtr_(nullptr),
     isfmiPortSet_(false)
 {
@@ -103,6 +106,9 @@ Foam::timeProfile::timeProfile
 :
     runTime_(runTime),
     startTime_(0.0),
+    oldTime_(startTime_),
+    currentValue_(0.0),
+    oldValue_(currentValue_),
     functionPtr_(nullptr),
     isfmiPortSet_(false)
 {
@@ -113,6 +119,7 @@ Foam::timeProfile::timeProfile
         type_ = dict_.get<word>("type");
 
         startTime_ = dict_.lookupOrDefault<scalar>("startTime", 0.0);
+        oldTime_ = startTime_;
 
         if (type_ != "fmi")
         {
@@ -151,8 +158,10 @@ void Foam::timeProfile::initializeFMI()
         // Communicating with the FMU
         commDataLayer& data = commDataLayer::New(runTime_); 
         // Store in data layer and set its initial value to 0 or user defined
+        currentValue_ = dict_.lookupOrDefault<scalar>("initialValue", 0.0);
+        oldValue_ = currentValue_;
         data.storeObj(
-            dict_.lookupOrDefault<scalar>("initialValue", 0.0),
+            currentValue_,
             nameFromFMU_,
             commDataLayer::causality::in
         );
@@ -182,17 +191,28 @@ bool Foam::timeProfile::valid() const
     return(functionPtr_.valid());
 }
 
-scalar Foam::timeProfile::value(scalar time) const
+scalar Foam::timeProfile::value(scalar time)
 {
 #ifdef isCommDataLayerIncluded
     if (isfmiPortSet_)
     {
+        if (time < runTime_.timeOutputValue()) // Ask for old time value
+        {
+            return(oldValue_);
+        }
+
+        if (oldTime_ < runTime_.timeOutputValue() - runTime_.deltaT().value()) // Old time is too old
+        {
+            oldTime_ = runTime_.timeOutputValue() - runTime_.deltaT().value();
+            oldValue_ = currentValue_;
+        }
+
         commDataLayer& data = commDataLayer::New(runTime_);
-        scalar value = data.getObj<scalar>(
+        currentValue_ = data.getObj<scalar>(
             nameFromFMU_,
             commDataLayer::causality::in
         );
-        return(value);
+        return(currentValue_);
     }
 #endif // isCommDataLayerIncluded
 

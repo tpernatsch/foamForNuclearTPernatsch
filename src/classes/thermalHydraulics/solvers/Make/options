@@ -5,8 +5,6 @@ EXE_INC = \
     -I./onePhase/include \
     -I./onePhase/include/equations \
     -I./onePhase/include/equations/pEqnRoutines \
-    -I./onePhaseLegacy \
-    -I./onePhaseLegacy/include/equations \
     -I./twoPhase \
     -I./twoPhase/include/pEqnRoutines \
     -I./twoPhase/include/alphaEqnRoutines \
@@ -20,7 +18,8 @@ EXE_INC = \
     -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
-    -I$(LIB_SRC)/surfMesh/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude \
+    -I$(LIB_SRC)/parallel/reconstruct/reconstruct/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
 
 LIB_LIBS = \
@@ -36,6 +35,9 @@ LIB_LIBS = \
     -lfvOptions \
     -lsampling \
     -lsurfMesh \
+    -ldynamicMesh \
+    -lreconstruct \
+    -lthermoTools \
     -lmeshTools \
 
 ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))

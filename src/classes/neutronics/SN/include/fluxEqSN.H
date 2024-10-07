@@ -27,6 +27,7 @@ forAll(flux_,energyI)
             ).max().initialResidual();
             innerResidual = max(innerResidual, localResidual);
             neutroResidual = max(neutroResidual, localResidual);
+            residual_=max(residual_, localResidual);
             //if(eigenvalueNeutronics_) angularFlux_[energyI][directionI] = max(angularFlux_[energyI][directionI],(angularFlux_[energyI][directionI]*0.0));
             
         }

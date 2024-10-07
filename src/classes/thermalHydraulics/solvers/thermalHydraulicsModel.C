@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -39,20 +39,24 @@ License
 
 #include "thermalHydraulicsModel.H"
 #include "regimeMapModel.H"
+#include "mergeOrSplitBaffles.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
+namespace solvers
+{
     defineTypeNameAndDebug(thermalHydraulicsModel, 0);
-    defineRunTimeSelectionTable(thermalHydraulicsModel, thermalHydraulicsModels);
+    // defineRunTimeSelectionTable(thermalHydraulicsModel, thermalHydraulicsModels);
+}
 }
 
 const Foam::Enum
 <
-    Foam::thermalHydraulicsModel::momentumMode
+    Foam::solvers::thermalHydraulicsModel::momentumMode
 >
-Foam::thermalHydraulicsModel::momentumModeNames_
+Foam::solvers::thermalHydraulicsModel::momentumModeNames_
 (
     {
         { 
@@ -72,14 +76,14 @@ Foam::thermalHydraulicsModel::momentumModeNames_
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::thermalHydraulicsModel::thermalHydraulicsModel
+Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
 (
-    Time& time,
+    const Time& time,
     fvMesh& mesh,
-    customPimpleControl& pimple,
     fv::options& fvOptions
 )
 :
+    solver(mesh),
     IOdictionary
     (
         IOobject
@@ -93,7 +97,7 @@ Foam::thermalHydraulicsModel::thermalHydraulicsModel
     ),
     runTime_(time),
     mesh_(mesh),
-    pimple_(pimple),
+    pimple_(mesh),
     fvOptions_(fvOptions),
     phi_
     (
@@ -197,13 +201,12 @@ Foam::thermalHydraulicsModel::thermalHydraulicsModel
     ),
     porousInterfaceSharpness_
     (
-        pimple.dict().lookupOrDefault<scalar>
+        pimple_.dict().lookupOrDefault<scalar>
         (
             "porousInterfaceSharpness", 
             0.0
         )
     ),
-    powerDensityOrig_(nullptr),
     powerDensityNeutronics_
     (
         IOobject
@@ -231,9 +234,10 @@ Foam::thermalHydraulicsModel::thermalHydraulicsModel
         mesh_,
         dimensionedScalar("", dimPower/dimVol, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    )        
+    ),
+    originalPoints_(mesh_.points())
 {
-    //-
+    -
     setRefCell
     (
         p_,
@@ -278,54 +282,14 @@ Foam::thermalHydraulicsModel::thermalHydraulicsModel
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::thermalHydraulicsModel::~thermalHydraulicsModel()
+Foam::solvers::thermalHydraulicsModel::~thermalHydraulicsModel()
 {}
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
 
-void Foam::thermalHydraulicsModel::getCouplingFieldRefs
-(
-    const objectRegistry& src,
-    const meshToMesh& fluidToNeutro
-)
-{
-    //- Field names must reflect those defined in createCouplingFields.H
-    powerDensityOrig_ = 
-        src.findObject<volScalarField>("powerDensity");
-    secondaryPowerDenistyOrig_ = 
-        src.findObject<volScalarField>("secondaryPowerDenisty");
-
-    //- Do not initialize mapped fields. This has to happen only if
-    //  neutronics is solved for. This is responsability
-    //  of the main
-    //this->interpolateCouplingFields(fluidToNeutro);    
-}
-
-void Foam::thermalHydraulicsModel::interpolateCouplingFields
-(
-    const meshToMesh& fluidToNeutro,
-    label liquidFuel
-)
-{
-    if(liquidFuel) // Map powerDensity to powerDensityNeutronicsToLiquid_ and secondaryPowerDenisty to powerDensityNeutronics_
-    {
-        fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronicsToLiquid_);
-        powerDensityNeutronicsToLiquid_.correctBoundaryConditions();
-        fluidToNeutro.mapTgtToSrc(*secondaryPowerDenistyOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
-        powerDensityNeutronics_.correctBoundaryConditions();
-    }
-    else // Map powerDensity to powerDensityNeutronics_ and secondaryPowerDenisty to powerDensityNeutronicsToLiquid_
-    {
-        fluidToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
-        powerDensityNeutronics_.correctBoundaryConditions();
-        fluidToNeutro.mapTgtToSrc(*secondaryPowerDenistyOrig_, plusEqOp<scalar>(), powerDensityNeutronicsToLiquid_);
-        powerDensityNeutronicsToLiquid_.correctBoundaryConditions();
-    }
-}
-
-void Foam::thermalHydraulicsModel::correctRegimeMaps()
+void Foam::solvers::thermalHydraulicsModel::correctRegimeMaps()
 {
     forAllIter
     (
@@ -338,42 +302,117 @@ void Foam::thermalHydraulicsModel::correctRegimeMaps()
     }
 }
 
-void Foam::thermalHydraulicsModel::stop()
+void Foam::solvers::thermalHydraulicsModel::stop()
 {
     FatalErrorInFunction
         << "Terminating execution"
         << exit(FatalError);
 }
 
-void Foam::thermalHydraulicsModel::adjustTimeStep()
+void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
 {
-    this->correctCourant();
-
-    bool adjustTimeStep =
-        runTime_.controlDict().lookupOrDefault("adjustTimeStep", false);
-
-    scalar maxCo =
-        runTime_.controlDict().lookupOrDefault<scalar>("maxCo", 1.0);
-
-    scalar maxDeltaT =
-        runTime_.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
-
-    if (adjustTimeStep)
+    if (mesh_.time().controlDict().found("removeBaffles"))
     {
-        scalar maxDeltaTFact = maxCo/(CoNum_ + SMALL);
-        scalar deltaTFact = 
-            min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
+        const dictionary& removeBafflesDict = mesh_.time().controlDict().subDict("removeBaffles");
+        if (removeBafflesDict.getOrDefault<bool>(mesh_.name(), false))
+        {
 
-        runTime_.setDeltaT
-        (
-            min
+            const IOdictionary couplingDict
             (
-                deltaTFact*runTime_.deltaTValue(),
-                maxDeltaT
-            )
-        );
+                IOobject
+                (
+                    "multiRegionCouplingDict",
+                    runTime.time().constant(),
+                    runTime.db(),
+                    IOobject::READ_IF_PRESENT,
+                    IOobject::NO_WRITE
+                )
+            );
+
+            //Lookup for the fields that need to be mapped FROM this mesh
+            const dictionary mappingDict(couplingDict.subDict("mappings"));
+            //Loop on every region that is not this one and look for the fields in "sourceFields"
+            const wordList regions(mappingDict.toc());
+
+            forAll(regions, regioni)
+            {
+                if(regions[regioni]!=mesh_.name()) //look for other regions
+                {
+                    const dictionary regionFromDict(mappingDict.subDict(regions[regioni]));
+                    const wordList regionsFrom(regionFromDict.toc());
+                    forAll(regionsFrom, regionFromi)
+                    {
+                        if(regionsFrom[regionFromi]==mesh_.name())
+                        {
+                            const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
+                            const wordList fieldTypes(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("fieldTypes")); // list of types of fields to create
+                            fvMesh& baffleLessMesh = const_cast<fvMesh&>(mesh_.time().lookupObject<fvMesh>(mesh_.name()+".baffleLess"));
+                            forAll(fieldsList, fieldi)
+                            {
+                                if (fieldTypes[fieldi] == "scalar")
+                                {
+                                    volScalarField& field = baffleLessMesh.lookupObjectRef<volScalarField>(fieldsList[fieldi]+".baffleLess");
+                                    field.primitiveFieldRef() = mesh_.lookupObject<volScalarField>(fieldsList[fieldi]).primitiveField();
+                                    field.correctBoundaryConditions();
+                                }
+                                else if (fieldTypes[fieldi] == "vector")
+                                {
+                                    volVectorField& field = baffleLessMesh.lookupObjectRef<volVectorField>(fieldsList[fieldi]+".baffleLess");
+                                    field.primitiveFieldRef() = mesh_.lookupObject<volVectorField>(fieldsList[fieldi]).primitiveField();
+                                    field.correctBoundaryConditions();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
+
+void Foam::solvers::thermalHydraulicsModel::deformMesh()
+{
+    //-Look for the multiRegionDict
+
+    const IOdictionary couplingDict
+    (
+        IOobject
+        (
+            "multiRegionCouplingDict",
+            runTime.time().constant(),
+            runTime.db(),
+            IOobject::READ_IF_PRESENT,
+            IOobject::NO_WRITE
+        )
+    );
+
+    if (couplingDict.found("meshDeformation"))
+    {
+
+        const dictionary deformDict(couplingDict.subDict("meshDeformation"));
+
+        const wordList regions(deformDict.toc());
+
+        forAll(regions, regioni)
+        {
+            if (regions[regioni] == mesh_.name())
+            {
+                const volPointInterpolation& meshPointInterpolation = volPointInterpolation::New(mesh_);
+
+                tmp<pointVectorField> meshPointsDisplacement = meshPointInterpolation.interpolate(mesh_.lookupObject<volVectorField>(deformDict.subDict(mesh_.name()).get<word>("displacementField")));
+
+                tmp<pointField> displacedPoints =originalPoints_ + meshPointsDisplacement->internalField();
+
+                mesh_.movePoints(displacedPoints);
+
+
+            }
+        }
+    }
+}
+
+
+
 
 
 // ************************************************************************* //

@@ -10,4 +10,7 @@ timeProfile/timeProfile.C
 
 mergeOrSplitBaffles/mergeOrSplitBaffles.C
 
+solver/solver.C
+solver/solverNew.C
+
 LIB = $(FOAM_USER_LIBBIN)/libCommon

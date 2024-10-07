@@ -7,7 +7,7 @@
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
 |    Built on OpenFOAM v2212                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -44,7 +44,7 @@ Description
     Reference publications:
 
     Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    "GeN-Foam: a novel OpenFOAMï¿½ based multi-physics solver for 2D/3D transient
     analysis of nuclear reactors", Nuclear Engineering and Design, submitted
 
     Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
@@ -77,10 +77,15 @@ SourceFiles
 #include "turbulentFluidThermoModel.H"
 #include "volPointInterpolation.H"
 #include "meshToMesh.H"
+#include "solver.H"
+#include "volPointInterpolation.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
+{
+
+namespace solvers
 {
 
 /*---------------------------------------------------------------------------*\
@@ -89,6 +94,7 @@ namespace Foam
 
 class thermoMechanics
 :
+    public solver,
     public IOdictionary
 {
 
@@ -100,10 +106,26 @@ protected:
         fvMesh& mesh_;
 
         //- Mesh displacement
+        //- Move here all the fields needed for coupling with other physics
         volVectorField meshDisp_;
+        volScalarField fuelDisp_;
+        volScalarField CRDisp_;
+        volVectorField fuelDispVector_;
+        vector fuelOrientation_;    
+        volScalarField TStructFromTH_;
+        volScalarField TFuel_;    
+        volScalarField TFuelRef_;
+        volScalarField alphaFuel_;
+        volScalarField TCRRef_;
+        volScalarField alphaCR_;
+        dictionary TMEntries_;
+        label zonesNumber_;
+        
 
         //- Initialize residual
-        double initialResidual_;        
+        double initialResidual_;   
+
+        pointField originalPoints_;
 
 private:
 
@@ -121,18 +143,19 @@ public:
     //- Runtime type information
     TypeName("thermoMechanics")
 
-#ifndef SWIG
-        declareRunTimeSelectionTable
-        (
-            autoPtr,
-            thermoMechanics,
-            dictionary,
-            (
-                fvMesh& mesh
-            ),
-            (mesh)
-        );
-#endif
+// #ifndef SWIG
+//         declareRunTimeSelectionTable
+//         (
+//             autoPtr,
+//             thermoMechanics,
+//             dictionary,
+//             (
+//                 fvMesh& mesh,
+//                 bool multiRegion
+//             ),
+//             (mesh)
+//         );
+// #endif
 
     // Constructors
 
@@ -143,10 +166,11 @@ public:
     // Selectors
 
         //- Return a reference to the selected model
-        static autoPtr<thermoMechanics> New
-        (
-            fvMesh& mesh
-        );
+        // static autoPtr<thermoMechanics> New
+        // (
+        //     fvMesh& mesh,
+        //     bool multiRegion = false
+        // );
 
 
     //- Destructor
@@ -159,26 +183,26 @@ public:
         //  coupling fields, to be called only once after construction. The 
         //  fields are set via lookup in the src objectRegistry (i.e. 
         //  fluidMeshNB for the current state of GeN-Foam)
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const objectRegistry& srcN
-        ) = 0;
+        // virtual void getCouplingFieldRefs
+        // (
+        //     const objectRegistry& srcTH,
+        //     const objectRegistry& srcN
+        // ) = 0;
 
-        //- The old getFields, yet operates on the local refs without having
-        //  the need for all the fields to be passed. This effectively bypasses
-        //  the old limitation of getFields, i.e. if someone wanted to
-        //  implement a new thermoMechanical model that requires more fields 
-        //  for the coupling, then they'd need to modify the getFields function
-        //  in ALL of the other thermoMechanical models too
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& mechToFluid,
-            const meshToMesh& mechToNeutro
-        ) = 0;
+        // //- The old getFields, yet operates on the local refs without having
+        // //  the need for all the fields to be passed. This effectively bypasses
+        // //  the old limitation of getFields, i.e. if someone wanted to
+        // //  implement a new thermoMechanical model that requires more fields 
+        // //  for the coupling, then they'd need to modify the getFields function
+        // //  in ALL of the other thermoMechanical models too
+        // virtual void interpolateCouplingFields
+        // (
+        //     const meshToMesh& mechToFluid,
+        //     const meshToMesh& mechToNeutro
+        // ) = 0;
 
         //- Correct/update the properties
-        virtual void correct(scalar& residual) = 0;    
+        // virtual void correct(scalar& residual) = 0;    
 
         //- Needed to remove abstractedness from IOdictionary
         virtual bool writeData(Ostream& os) const
@@ -199,11 +223,16 @@ public:
             {
                 return initialResidual_;
             };   
+
+        
+        virtual void correctBaffleLessFields();
+
+        virtual void deformMesh();
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} // End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

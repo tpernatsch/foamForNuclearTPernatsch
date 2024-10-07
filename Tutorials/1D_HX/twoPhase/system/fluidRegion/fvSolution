@@ -10,9 +10,13 @@ FoamFile
 {
     version     2.0;
     format      ascii;
+    arch        "LSB;label=32;scalar=64";
     class       dictionary;
+    location    "system/fluidRegion";
     object      fvSolution;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 solvers
 {
     p_rgh
@@ -63,21 +67,20 @@ solvers
 
 PIMPLE
 {
-    nCorrectors                         12;
-    correctUntilConvergence             true;
-    nNonOrthogonalCorrectors            0;
-    partialEliminationMode              implicit;
-    momentumMode                        faceCentered;
-    massTransferSafetyFactor            0.90;
-    enthalpyStabilizationMode           source;
-    
+    nCorrectors     12;
+    correctUntilConvergence true;
+    nNonOrthogonalCorrectors 0;
+    partialEliminationMode implicit;
+    momentumMode    faceCentered;
+    massTransferSafetyFactor 0.9;
+    enthalpyStabilizationMode source;
     residualControl
     {
         p_rgh
         {
-            tolerance                           1e-05;
-            relTol                              1;
-            useFirstPISOInitialResidual         true;
+            tolerance       1e-05;
+            relTol          1;
+            useFirstPISOInitialResidual true;
         }
         h.liquid
         {
@@ -85,22 +88,25 @@ PIMPLE
             relTol          0;
         }
     }
+    solveEnergy     true;
+    nOuterCorrectors 12;
 }
 
 relaxationFactors
 {
     equations
     {
-        ".*"                1;
-        "h.vapour"          0.25;
-        "h.vapourFinal"     0.25;
+        ".*"            1;
+        "h.vapour"      0.25;
+        "h.vapourFinal" 0.25;
     }
     fields
     {
-        "T.interface"               0.25;
-        "T.interfaceFinal"          0.25;
-        "dmdt.*"                    0.125;
+        "T.interface"   0.25;
+        "T.interfaceFinal" 0.25;
+        "dmdt.*"        0.125;
     }
 }
+
 
 // ************************************************************************* //

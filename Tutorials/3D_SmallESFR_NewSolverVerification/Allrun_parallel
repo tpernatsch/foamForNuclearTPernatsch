@@ -1,0 +1,32 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+exe="GeN-Foam"
+
+cases="legacySolver newSolver"
+
+for caseName in $cases
+do
+    printf "Preparing to run case $caseName...\n"
+
+    # Start gnuplot if it exist
+    if command -v gnuplot &> /dev/null
+    then
+        gnuplot -e "log='$caseName/log.$exe'" residuals - &> /dev/null &
+    else
+        echo "gnuplot could not be found"
+    fi
+
+    printf "Running $exe on $caseName\n"
+    decomposePar -case $caseName -allRegions
+    mpirun -np 4 $exe -parallel -case $caseName | tee "$caseName/log.$exe"
+
+    # Kill gnuplot if it was started
+    pkill -x gnuplot &> /dev/null
+
+done
+
+#------------------------------------------------------------------------------

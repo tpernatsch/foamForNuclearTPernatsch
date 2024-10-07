@@ -25,7 +25,7 @@ fi
 # --- Recover the results
 input="./40/fluidRegion/heatFlux.structure"
 QwallTop=$(head -40 "$input" | tail -1)
-expectedAt=33423.1
+expectedAt=32947.6 # 33429.8
 
 # --- Check results are correct
 isInRange()

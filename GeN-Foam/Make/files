@@ -1,3 +1,7 @@
 GeN-Foam.C
+regionSolvers/regionSolvers.C
+multiPhysicsSolver/multiPhysicsSolver.C
+meshHandler/meshHandler.C
+include/setDeltaT.C
 
 EXE = $(FOAM_USER_APPBIN)/GeN-Foam

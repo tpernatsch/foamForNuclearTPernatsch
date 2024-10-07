@@ -10,7 +10,7 @@ else
 fi
 
 # Run GeN-Foam
-$exe | tee "log.$exe"
+$exe -legacy | tee "log.$exe"
 
 # Kill gnuplot if it was started
 pkill -x gnuplot &> /dev/null &

@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2312                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2022 OpenCFD Ltd.         |
+|    Built on OpenFOAM v2406                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -171,22 +171,7 @@ Foam::powerModels::fixedPower::fixedPower
                 regioni,
                 new timeProfile(timeProfileDict, mesh_.time())
             );
-
-            // word type
-            // (
-            //     timeProfileDict.get<word>("type")
-            // );
-
-            // timeProfile_.set        
-            // (
-            //     regioni,
-            //     Function1<scalar>::New
-            //     (
-            //         type,
-            //         timeProfileDict,
-            //         type
-            //     )
-            // );
+            
             timeDependent_[regioni] = true;
             // t0_[regioni] = timeProfileDict.lookupOrDefault("startTime", 0.0);
         }

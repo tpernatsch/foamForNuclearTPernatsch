@@ -25,7 +25,7 @@ fi
 # --- Recover the results
 input="./90/fluidRegion/T.fixedPower"
 TwallTop=$(head -40 "$input" | tail -1)
-expectedAt=2625.18
+expectedAt=2617.31
 
 # --- Check results are correct
 isInRange()
