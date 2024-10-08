@@ -47,13 +47,14 @@ solvers
 
 PIMPLE
 {
-    nCorrectors     6;
+    nCorrectors         6;
     nNonOrthogonalCorrectors 0;
     correctUntilConvergence true;
-    momentumMode    cellCenteredFaceReconstruction;
+    momentumMode        cellCenteredFaceReconstruction;
     porousInterfaceSharpness 0.5;
+    solveEnergy         true;
 
-    //- This limits the minimum magnitude of U that can be used in the 
+    //- This limits the minimum magnitude of U that can be used in the
     //  calculation of the drag factor. Defaults to 0. Only (possibly)
     //  useful in certain two-phase scenarios
     minMagU 	1e-2;

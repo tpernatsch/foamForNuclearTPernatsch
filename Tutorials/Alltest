@@ -20,15 +20,52 @@ clear
 
 #------------------------------------------------------------------------------
 
-# Set the maximum number of parallel jobs (default 1)
-MAX_JOBS=1
+# Function to display help
+usage() {
+    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--help]"
+    exit 1
+}
 
-if [ $# -eq 1 ]
-then
-    MAX_JOBS=$1
+# Default values
+num_jobs=1
+fmi_flag=false
+
+# Parse options using getopt
+PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,help -- "$@")
+if [ $? -ne 0 ]; then
+    usage
 fi
 
-echo -e "Run tutorials using $MAX_JOBS threads\n"
+# Rearrange the positional parameters based on the parsed options
+eval set -- "$PARSED_OPTIONS"
+
+# Process the options
+while true; do
+    case "$1" in
+        -j | --jobs)
+            num_jobs="$2"
+            shift 2
+            ;;
+        --fmi)
+            fmi_flag=true
+            shift
+            ;;
+        --help)
+            usage
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+# Script logic
+echo "FMI flag: $fmi_flag"
+echo -e "Run tutorials using $num_jobs threads\n"
 
 
 #------------------------------------------------------------------------------
@@ -62,7 +99,7 @@ tutorials=(
 )
 
 # Add FMU tutorials only if GeN-Foam has been built with FMU4FOAM
-if [ ! -z $LIB_ECI4FOAM ]
+if [[ ! -z $LIB_ECI4FOAM ]] && [ $fmi_flag = 'true' ]
 then
     echo "GeN-Foam has been built with FMI module"
     echo "Testing tutorials using FMUs"
@@ -240,7 +277,7 @@ executeAlltest() {
 
         # Return to root folder
         cd $rootPath
-    
+
     else
         echo "No tutorial named $tutorialName, check in this Alltest the list of tutorial to run"
     fi
@@ -296,7 +333,7 @@ do
 
     # Decrement or wait job
     ((jobCount++))
-    if (( $jobCount >= $MAX_JOBS )); then
+    if (( $jobCount >= $num_jobs )); then
         wait -n  # Wait for any job to finish
         ((jobCount--))
     fi

@@ -51,13 +51,13 @@ runTimeModifiable   true;
 
 //- Physics to solve
 
-solveFluidMechanics     true;
-
-solveEnergy             false;
-
-solveNeutronics         false;
-
-solveThermalMechanics   false;
+// solveFluidMechanics     true;
+//
+// solveEnergy             false;
+//
+// solveNeutronics         false;
+//
+// solveThermalMechanics   false;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -75,13 +75,25 @@ maxPowerVariation   0.025;
 
 //- Mesh control
 
-removeBaffles   true;
+// removeBaffles   true;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 //- Field write options
 
 writeContinuityErrors true;
+
+regionSolvers
+{
+    fluidRegion     onePhase;
+    // neutroRegion    pointKinetics;
+}
+
+removeBaffles
+{
+    fluidRegion     1;
+    // neutroRegion    0;
+}
 
 // ************************************************************************* //
 

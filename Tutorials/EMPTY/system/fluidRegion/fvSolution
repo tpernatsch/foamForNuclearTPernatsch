@@ -149,6 +149,8 @@ PIMPLE
     //  to the main flow direction. Fairly ironic. Experiment for yourself and
     //  see what works
     oscillationLimiterFraction 0;
+
+    solveEnergy         true;
 }
 
 relaxationFactors

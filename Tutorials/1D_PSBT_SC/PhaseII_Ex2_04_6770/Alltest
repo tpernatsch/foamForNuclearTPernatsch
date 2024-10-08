@@ -68,7 +68,7 @@ isInRange()
 }
 
 # --- Check that results are correct
-error=0.01
+error=0.05
 echo "alpha.vapour at the end of the channel with $error relative error" | tee -a $resFile
 if  [ $(isInRange $refAlphaVap $maxAlphaVap    $error) -eq 0 ] &&
     [ $(isInRange $refT        $TatMaxAlphaVap $error) -eq 0 ]

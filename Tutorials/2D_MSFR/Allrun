@@ -32,7 +32,7 @@ setSteadyStateTH()
     foamDictionary steadyStateTH/system/controlDict -entry writeInterval -set 1
     foamDictionary steadyStateTH/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
     foamDictionary steadyStateTH/system/controlDict -entry removeBaffles/fluidRegion -set false
-    mv steadyStateTH/constant/multiRegionCouplingDict_steadyStateTH steadyStateTH/constant/multiRegionCouplingDict 
+    cp steadyStateTH/constant/multiRegionCouplingDict_steadyStateTH steadyStateTH/constant/multiRegionCouplingDict
     printf "Case set!\n\n"
 }
 
@@ -41,7 +41,7 @@ setSteadyStateEN()
     runCloneCase $1 $2
     printf "Setting steady state  case...\n"
     cp -r steadyStateEN/0/neutroRegion steadyStateEN/15/
-    cp -r steadyStateEN/0/uniform steadyStateEN/15/  
+    cp -r steadyStateEN/0/uniform steadyStateEN/15/
     foamDictionary steadyStateEN/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
     foamDictionary steadyStateEN/system/fvSolution -entry tightlyCoupled -set false
     foamDictionary steadyStateEN/system/controlDict -entry startFrom -set startTime
@@ -55,8 +55,8 @@ setSteadyStateEN()
     foamDictionary steadyStateEN/system/controlDict -entry removeBaffles/neutroRegion -set false
     foamDictionary steadyStateEN/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
     foamDictionary steadyStateEN/system/fluidRegion/fvSolution -entry PIMPLE/solveEnergy -set true
-    rm steadyStateEN/constant/multiRegionCouplingDict
-    mv steadyStateEN/constant/multiRegionCouplingDict_steadyStateEN steadyStateEN/constant/multiRegionCouplingDict
+    # rm steadyStateEN/constant/multiRegionCouplingDict
+    cp steadyStateEN/constant/multiRegionCouplingDict_steadyStateEN steadyStateEN/constant/multiRegionCouplingDict
     printf "Case set!\n\n"
 }
 
@@ -76,8 +76,8 @@ setTransient()
     foamDictionary transient/system/controlDict -entry regionSolvers/fluidRegion -remove
     foamDictionary transient/system/controlDict -entry regionSolvers/neutroRegion -remove
     foamDictionary transient/system/controlDict -entry regionSolvers/energyNeutroLoop -set multiPhysicsSolver
-    rm transient/constant/multiRegionCouplingDict
-    mv transient/constant/multiRegionCouplingDict_transient transient/constant/multiRegionCouplingDict
+    # rm transient/constant/multiRegionCouplingDict
+    cp transient/constant/multiRegionCouplingDict_transient transient/constant/multiRegionCouplingDict
     printf "Case set!\n\n"
 }
 
@@ -86,18 +86,18 @@ do
     printf "Preparing to run case $caseName...\n"
 
     case "$caseName" in
-    "steadyStateTH")
-        setSteadyStateTH $caseName rootCase
-        printf "Steady state th case is prepared!\n"
-        ;;
-    "steadyStateEN")
-        setSteadyStateEN $caseName steadyStateTH
-        printf "Steady state NE case is prepared!\n"
-        ;;
-    "transient")
-        printf "Transient case is prepared!\n"
-        setTransient $caseName steadyStateEN
-        ;;
+        "steadyStateTH")
+            setSteadyStateTH $caseName rootCase
+            printf "Steady state th case is prepared!\n"
+            ;;
+        "steadyStateEN")
+            setSteadyStateEN $caseName steadyStateTH
+            printf "Steady state NE case is prepared!\n"
+            ;;
+        "transient")
+            printf "Transient case is prepared!\n"
+            setTransient $caseName steadyStateEN
+            ;;
     esac
 
     # Start gnuplot if it exist

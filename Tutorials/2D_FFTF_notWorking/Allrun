@@ -29,11 +29,13 @@ setSteadyState()
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeSS
     foamDictionary $1/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $1/system/controlDict -entry writeInterval -set $endTimeSS
-    foamDictionary $1/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary $1/system/controlDict -entry solveEnergy -set true
-    foamDictionary $1/system/controlDict -entry solveNeutronics -set false
+    # foamDictionary $1/system/controlDict -entry solveFluidMechanics -set true
+    # foamDictionary $1/system/controlDict -entry solveEnergy -set true
+    # foamDictionary $1/system/controlDict -entry solveNeutronics -set false
     foamDictionary $1/system/controlDict -entry maxCo -set 50.0;
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 2.0;
+    cp $1/constant/multiRegionCouplingDict_steadyState $1/constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
 
@@ -43,18 +45,16 @@ setTransient()
 
     printf "Setting transient case\n"
 
-    
-
     foamDictionary $1/system/controlDict -entry startFrom -set startTime
     foamDictionary $1/system/controlDict -entry startTime -set $endTimeSS
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeT
     foamDictionary $1/system/controlDict -entry writeControl -set timeStep
     foamDictionary $1/system/controlDict -entry writeInterval -set 50
-    foamDictionary $1/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary $1/system/controlDict -entry solveEnergy -set true
-    foamDictionary $1/system/controlDict -entry solveNeutronics -set true
+    # foamDictionary $1/system/controlDict -entry solveFluidMechanics -set true
+    # foamDictionary $1/system/controlDict -entry solveEnergy -set true
+    # foamDictionary $1/system/controlDict -entry solveNeutronics -set true
     foamDictionary $1/system/controlDict -entry maxCo -set 1.0;
-    foamDictionary $1/system/fvSolution -entry tightlyCoupled -set true;
+    # foamDictionary $1/system/fvSolution -entry tightlyCoupled -set true;
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.h -set 0.8
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.hFinal -set 1.0
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.U -set 0.8
@@ -62,6 +62,9 @@ setTransient()
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.p_rgh -set 0.8
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.p_rghFinal -set 1.0
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 1;
+    cp $1/constant/multiRegionCouplingDict_transient $1/constant/multiRegionCouplingDict
+    # foamDictionary $1/constant/multiRegionCouplingDict -entry tightlyCoupled -set true;
+    GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
 
@@ -71,12 +74,12 @@ do
     printf "Preparing to run case $caseName\n"
 
     case "$caseName" in
-    "steadyState")
-        setSteadyState $caseName rootCase
-        ;;
-    "transient")
-        setTransient $caseName steadyState
-        ;;
+        "steadyState")
+            setSteadyState $caseName rootCase
+            ;;
+        "transient")
+            setTransient $caseName steadyState
+            ;;
     esac
 
     # Start gnuplot if it exist
