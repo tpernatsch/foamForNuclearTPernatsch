@@ -47,13 +47,15 @@ runTimeModifiable true;
 
 //- Physics to Solve
 
-solveFluidMechanics true;
+regionSolvers
+{
+    fluidRegion     twoPhase;
+}
 
-solveEnergy     true;
-
-solveNeutronics false;
-
-solveThermalMechanics false;
+removeBaffles
+{
+    fluidRegion     false;
+}
 
 //- Global options
 

@@ -51,10 +51,9 @@ License
 
 Foam::regionSolvers::regionSolvers(const Time& runTime)
 :
-meshHandler_(runTime)
+    meshHandler_(runTime)
 {
     List<Pair<word>> regionSolverNames;
-
 
     //Read mapping dict. Will be used later
     IOdictionary multiRegionCouplingDict
@@ -116,9 +115,10 @@ meshHandler_(runTime)
 
         Info << "Creating solver for region "<< regionName<<nl<<endl;
 
-        if(solverName != "multiPhysicsSolver")
+        if (solverName != "multiPhysicsSolver")
+        {
             solvers_.set(i, solver::New(solverName, meshHandler_.returnMesh(regionName)));
-
+        }
         else
         {
             solvers_.set(i, solver::New(solverName, meshHandler_.returnMesh("dummy")));
@@ -127,7 +127,6 @@ meshHandler_(runTime)
             multiPhysicsSolverPtr->createSolvers(regionName);
             multiPhysicsSolverPtr = nullptr;
         }
-
 
         prefixes_[i] = regionName;
         nRegionNameChars = max(nRegionNameChars, regionName.size());
@@ -173,10 +172,6 @@ void Foam::regionSolvers::resetPrefix() const
 {
     Pout.prefix() = string::null;
 }
-
-
-
-
 
 
 // void Foam::regionSolvers::interpolateAndMapFields(const Time& runTime)

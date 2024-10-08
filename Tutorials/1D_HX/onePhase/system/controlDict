@@ -47,15 +47,17 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-solveFluidMechanics true;
+//- Physics to Solve
 
-solveEnergy     true;
+regionSolvers
+{
+	fluidRegion  onePhase;
+}
 
-includeKineticEnergy false;
-
-solveNeutronics false;
-
-solveThermalMechanics false;
+removeBaffles
+{
+	fluidRegion false;
+}
 
 liquidFuel      false;
 

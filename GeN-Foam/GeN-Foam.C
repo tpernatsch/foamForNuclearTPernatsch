@@ -81,8 +81,6 @@ using namespace Foam;
 
 int main(int argc, char *argv[])
 {
-
-
     argList::addBoolOption
     (
         "legacy",
@@ -101,16 +99,20 @@ int main(int argc, char *argv[])
     const bool legacy(args.found("legacy"));
     const bool mappingMode(args.found("initializeMappedFields"));
 
-    if(legacy)
+    if (legacy)
     {
-        Info << nl << "Running GeN-Foam in legacy mode (V.1)" << nl<<endl;
+        Info<< nl << "Running GeN-Foam in legacy mode (V.1)" << nl << endl;
         #include "modifyDictLegacy.H"
 
-        Info << nl << "Dictionaries modified" << nl<<endl;
+        Info<< nl << "Dictionaries modified" << nl << endl;
     }
 
     // Create the region meshes and solvers
     regionSolvers solvers(runTime);
+    forAll(solvers, i)
+    {
+        solvers[i].correctBaffleLessFields();
+    }
 
     // Set the initial time-step
     setDeltaT(runTime, solvers);
@@ -136,7 +138,7 @@ int main(int argc, char *argv[])
 
         // Solve each physics once (loose coupling)
 
-        Info << "Solving physics once" << endl;
+        Info<< "Solving physics once" << endl;
 
         forAll(solvers, i)
         {

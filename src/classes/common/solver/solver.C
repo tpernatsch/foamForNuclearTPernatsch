@@ -74,14 +74,11 @@ Foam::solver::solver(fvMesh& mesh)
             mesh
         )
     ),
-
     mesh_(mesh),
     steady(mesh_.schemes().steady()),
     LTS(fv::localEulerDdt::enabled(mesh)),
-
     // fvModelsPtr(nullptr),
     // fvConstraintsPtr(nullptr),
-
     mesh(mesh_),
     runTime(mesh_.time())
 {}

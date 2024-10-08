@@ -60,7 +60,7 @@ isInRange()
 
 error=0.001
 echo "keff test with $error relative error" | tee -a $resFile
-if  [ $(isInRange $expectedKeff       $keffLeg       $error) -eq 0 ] &&
+if  [ $(isInRange $expectedKeff $keffLeg $error) -eq 0 ] &&
     [ $(isInRange $expectedKeff $keffNew $error) -eq 0 ]
 then
     echo "Perfect match:" | tee -a $resFile

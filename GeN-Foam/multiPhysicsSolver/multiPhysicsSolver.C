@@ -50,12 +50,11 @@ namespace Foam
 {
 namespace solvers
 {
-
     defineTypeNameAndDebug(multiPhysicsSolver, 0);
     addToRunTimeSelectionTable
     (
-        solver, 
-        multiPhysicsSolver, 
+        solver,
+        multiPhysicsSolver,
         fvMesh
     );
 }
@@ -81,7 +80,6 @@ Foam::solvers::multiPhysicsSolver::multiPhysicsSolver
         )
     ),
     meshHandler_(nullptr)
-
 {
 }
 
@@ -89,40 +87,58 @@ Foam::solvers::multiPhysicsSolver::multiPhysicsSolver
 // * * * * * * * * * * * * * * * * * Member functions * * * * * * * * * * * * * * * //
 
 void Foam::solvers::multiPhysicsSolver::createSolvers(word name)
-
 {
-    multiPhysicsDict_=this->subDict("multiPhysicsSolvers").subDict(name);
-    solverNames_= multiPhysicsDict_.subDict("solvers").toc();
+    multiPhysicsDict_ = this->subDict("multiPhysicsSolvers").subDict(name);
+    solverNames_ = multiPhysicsDict_.subDict("solvers").toc();
     singlePhysicsSolverNames_.setSize(0);
-    minResidual_=multiPhysicsDict_.get<scalar>("minResidual");
-    maxIterations_=multiPhysicsDict_.get<label>("maxIterations");
-    
-    // First i need to create the new solvers
+    minResidual_ = multiPhysicsDict_.get<scalar>("minResidual");
+    maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
+
+    // First create the new solvers
 
     solvers_.setSize(solverNames_.size());
 
     forAll(solverNames_, nameI)
     {
-        Info << "Creating sub-scale solver " <<solverNames_[nameI]<<endl<<nl;
-        word solverType(multiPhysicsDict_.subDict("solvers").get<word>(solverNames_[nameI]));
-        
-        //This replicates the structure of regionSolvers. This allows to create subSolvers which are multiPhysicsSolvers themselves and so on, creating a tree-like structure
+        Info<< "Creating sub-scale solver " << solverNames_[nameI] << nl
+            << endl;
 
-        if(solverType != "multiPhysicsSolver")
+        word solverType
+        (
+            multiPhysicsDict_
+                .subDict("solvers")
+                .get<word>(solverNames_[nameI])
+        );
+
+        // This replicates the structure of regionSolvers. This allows to create
+        // subSolvers which are multiPhysicsSolvers themselves and so on,
+        // creating a tree-like structure
+
+        if (solverType != "multiPhysicsSolver")
         {
-            solvers_.set(nameI, solver::New(solverType,  meshHandler_->returnMesh(solverNames_[nameI])));
+            solvers_.set
+            (
+                nameI,
+                solver::New(solverType, meshHandler_->returnMesh(solverNames_[nameI]))
+            );
             singlePhysicsSolverNames_.append(solverNames_[nameI]);
         }
         else
         {
-            solvers_.set(nameI, solver::New(solverType, meshHandler_->returnMesh("dummy")));
+            solvers_.set
+            (
+                nameI,
+                solver::New(solverType, meshHandler_->returnMesh("dummy"))
+            );
             Foam::solvers::multiPhysicsSolver* multiPhysicsSolverPtr = dynamic_cast<Foam::solvers::multiPhysicsSolver*>(&solvers_[nameI]);
             multiPhysicsSolverPtr->getMapper(*meshHandler_);
             multiPhysicsSolverPtr->createSolvers(solverNames_[nameI]);
             multiPhysicsSolverPtr = nullptr;
         }
-    }  
+    }
 }
+
+
 void Foam::solvers::multiPhysicsSolver::correctBaffleLessFields()
 {
     forAll(solvers_, solvI)
@@ -132,7 +148,6 @@ void Foam::solvers::multiPhysicsSolver::correctBaffleLessFields()
 }
 
 
-
 void Foam::solvers::multiPhysicsSolver::deformMesh()
 {
     forAll(solvers_, solvI)
@@ -140,6 +155,7 @@ void Foam::solvers::multiPhysicsSolver::deformMesh()
         solvers_[solvI].deformMesh();
     }
 }
+
 
 void Foam::solvers::multiPhysicsSolver::correctPhysics()
 {
@@ -170,12 +186,12 @@ void Foam::solvers::multiPhysicsSolver::correctPhysics()
 
 scalar Foam::solvers::multiPhysicsSolver::getResidual()
 {
-    scalar residual= 0;
+    scalar residual = 0;
     forAll(solvers_, solvI)
     {
         residual = max(residual, solvers_[solvI].getResidual());
     }
-    
+
     return residual;
 }
 
@@ -186,10 +202,9 @@ scalar Foam::solvers::multiPhysicsSolver::maxDeltaT()
     {
         maxDeltaT = min(maxDeltaT, solvers_[solvI].maxDeltaT());
     }
-    
+
     return maxDeltaT;
 }
-
 
 
 // ************************************************************************* //

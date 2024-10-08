@@ -14,20 +14,19 @@ FoamFile
     object      nuclearData;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-model 		        legacyThermoMechanics; // linearElasticThermoMechanics;
-
 //Options to turn on physics. Both defaulted to "on"
 
-thermalSolver		on; // Option to turn on/off the thermal solution. Might be not needed as TStruct from TH can be mapped
-mechanicsSolver         on;    // Option to turn on/off mechanics solution
+model	            legacyThermoMechanics;
+
+thermalSolver       on; // Option to turn on/off the thermal solution. Might be not needed as TStruct from TH can be mapped
+mechanicsSolver     on;    // Option to turn on/off mechanics solution
 
 // To mantain continuity with OFFBEAT, in globalOptions general simulation parameters are set. Both entries needed
 
 globalOptions
 {
-    linkedFuel 		    false;
-    pinDirection            (0 0 1);
+    linkedFuel      false;
+    pinDirection    (0 0 1);
 }
 
 // To mantain continuity with OFFBEAT. Only rheology option to set is planeStress. Defaulted to off
@@ -37,48 +36,43 @@ rheologyOption
     planeStress 	no;
 }
 
-// solveDisplacement   true; // Optional keyword. Default is true
-
-// constants needed to calculate deformation of fuel, control rods AND structure (1D expansion for fuel and CR, displacement-based solver for structures)
-// planeStress     no;
-// linkedFuel      false; // true if there is contact between fuel and cladding (expansion driven by cladding)
-// fuelOrientation   (0 0 1);
-// TStructRef		300; //ref temperature for structures
-
 materials
 {
     THN
     {
         //for structures
-        rho             1000; //density
-        E               1e9;  // Young modulus
-        nu              0.3; // Poisson ratio
-        C               20; // cp
-        k               5000; // conductivity
-        alpha           1.8e-5; // linear expansion coeff (1/K)
+        rho         rho     [1 -3 0 0 0]    1000;
+        E           E       [1 -1 -2 0 0]   1e9;
+        nu          nu      [0 0 0 0 0]     0.3;
+        Cp          Cp      [0 2 -2 -1 0]   20;
+        k           k       [1 1 3 -1 0]    5000;
+        alpha       alpha   [0 0 0 0 0]     1.8e-5;
+        Tref        Tref    [0 0 0 1 0]     300;
         // for fuel (only if there is fuel)
-        TFuelRef        600;
-        alphaFuel       1.1e-5;//0.0;//
+        TFuelRef    TFuelRef    [0 0 0 1 0]     668;
+        alphaFuel   alphaFuel   [0 0 0 0 0]     1.1e-5;
     }
 
     N
     {
-        rho             1000; //density
-        E               1e9;  // Young modulus
-        nu              0.3; // Poisson ratio
-        C               20; // cp
-        k               5000; // conductivity
-        alpha           1.8e-5; // linear expansion coeff (1/K)
+        rho         rho     [1 -3 0 0 0]    1000;
+        E           E       [1 -1 -2 0 0]   1e9;
+        nu          nu      [0 0 0 0 0]     0.3;
+        Cp          Cp      [0 2 -2 -1 0]   20;
+        k           k       [1 1 3 -1 0]    5000;
+        alpha       alpha   [0 0 0 0 0]     1.8e-5;
+        Tref        Tref    [0 0 0 1 0]     300;
     }
 
     alone
     {
-        rho             1000; //density
-        E               1e9;  // Young modulus
-        nu              0.3; // Poisson ratio
-        C               20; // cp
-        k               5000; // conductivity
-        alpha           1.8e-5; // linear expansion coeff (1/K)
+        rho         rho     [1 -3 0 0 0]    1000;
+        E           E       [1 -1 -2 0 0]   1e9;
+        nu          nu      [0 0 0 0 0]     0.3;
+        Cp          Cp      [0 2 -2 -1 0]   20;
+        k           k       [1 1 3 -1 0]    5000;
+        alpha       alpha   [0 0 0 0 0]     1.8e-5;
+        Tref        Tref    [0 0 0 1 0]     300;
     }
 };
 

@@ -41,7 +41,7 @@ License
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-void Foam::setDeltaT(Time& runTime,  PtrList<solver>& solvers)
+void Foam::setDeltaT(Time& runTime, PtrList<solver>& solvers)
 {
     runTime.setDeltaT
     (
@@ -54,31 +54,25 @@ void Foam::setDeltaT(Time& runTime,  PtrList<solver>& solvers)
 }
 
 
-void Foam::adjustDeltaT(Time& runTime,  PtrList<solver>& solvers)
+void Foam::adjustDeltaT(Time& runTime, PtrList<solver>& solvers)
 {
     // Update the time-step limited by the solvers maxDeltaT
     if (runTime.controlDict().lookupOrDefault("adjustTimeStep", false))
     {
-        bool transient = false;
         scalar deltaT = VGREAT;
 
         forAll(solvers, i)
         {
-            if (solvers[i].transient())
-            {
-                transient = true;
-                deltaT = min(deltaT, solvers[i].maxDeltaT());
-                // Info <<"New delta T is "<< solvers[i].maxDeltaT()<< endl;
-            }
+            deltaT = min(deltaT, solvers[i].maxDeltaT());
         }
 
-        if (transient && deltaT < ROOTVGREAT)
+        if (deltaT < ROOTVGREAT)
         {
             runTime.setDeltaT
             (
                min
                 (
-                    solver::deltaTFactor*runTime.deltaTValue(),
+                    solver::deltaTFactor * runTime.deltaTValue(),
                     deltaT
                 )
             );

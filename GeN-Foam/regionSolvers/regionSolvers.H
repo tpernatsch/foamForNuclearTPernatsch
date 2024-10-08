@@ -100,8 +100,7 @@ class regionSolvers
 {
     // Private Member Data
 
-        //- mapper
-
+        //- Mapper
         meshHandler meshHandler_;
 
         //- Region solvers

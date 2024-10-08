@@ -60,12 +60,14 @@ solvers
 
 PIMPLE
 {
-    nCorrectors     6;
-    correctUntilConvergence true;
-    nNonOrthogonalCorrectors 0;
-    momentumMode    faceCentered;
-    continuityErrorCompensationMode Su;
-    continuityErrorScaleFactor 0.9;
+    solveEnergy				true;
+    nCorrectors                         6;
+    correctUntilConvergence             true;
+    nNonOrthogonalCorrectors            0;
+    momentumMode                        faceCentered;
+    continuityErrorCompensationMode     Su;
+    continuityErrorScaleFactor          0.9;
+
     residualControl
     {
         p_rgh

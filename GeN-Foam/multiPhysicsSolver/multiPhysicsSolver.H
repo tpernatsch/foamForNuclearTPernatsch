@@ -51,7 +51,7 @@ Description
     solver to the European Sodium Fast Reactor and verification against available codes",
     Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
 
-    Author of this file (and associated .C or included .H files): 
+    Author of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 SourceFiles
@@ -97,11 +97,23 @@ protected:
 
         //- Reference to mesh
         PtrList<solver> solvers_;
+
+        //-
         meshHandler* meshHandler_;
+
+        //-
         dictionary multiPhysicsDict_;
+
+        //-
         wordList solverNames_;
+
+        //-
         wordList singlePhysicsSolverNames_;
+
+        //-
         scalar minResidual_;
+
+        //-
         label maxIterations_;
 
 
@@ -145,9 +157,7 @@ public:
     	virtual ~multiPhysicsSolver(){}
 
 
-    // Member Functions   	
-
-
+    // Member Functions
 
         //- Needed to remove abstractedness from IOdictionary
         virtual bool writeData(Ostream& os) const
@@ -156,7 +166,7 @@ public:
         }
 
         //- Access
-        
+
         virtual void correctBaffleLessFields();
 
         virtual void deformMesh();

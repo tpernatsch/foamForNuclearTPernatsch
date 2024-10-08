@@ -2,4 +2,4 @@
 
 The geometry and case are the same as those of 3D_SMALLESFR. This Tutorial shows the newly implemented thermomechanics solver, taken from the fuel behaviour code OFFBEAT.
 
-The steady state solutions of the legacy (old) approach and the new one are compared. The ./Allrun_parallel script runs both cases sequentially on 4 cores
+The steady state solutions of the legacy (old) approach and the new one are compared. The `./Allrun_parallel` script runs both cases sequentially on 4 cores.

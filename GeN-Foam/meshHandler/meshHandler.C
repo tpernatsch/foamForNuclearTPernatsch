@@ -52,8 +52,7 @@ License
 
 Foam::meshHandler::meshHandler(const Time& runTime)
 {
-
-    //Read meshHandler dict. Will be used later
+    // Read meshHandler dict. Will be used later
     IOdictionary multiRegionCouplingDict
     (
         IOobject
@@ -88,27 +87,34 @@ Foam::meshHandler::meshHandler(const Time& runTime)
     forAll(allRegions, regioni)
     {
         word solverName(controlDict.subDict("regionSolvers").get<word>(allRegions[regioni]));
-        if(solverName!="multiPhysicsSolver")
+        if (solverName!="multiPhysicsSolver")
         {
             meshNames.append(allRegions[regioni]);
         }
-
     }
 
     // If multiPhysicsSolvers are present, also add those extra solvers
 
-    if(multiRegionCouplingDict.found("multiPhysicsSolvers"))
+    if (multiRegionCouplingDict.found("multiPhysicsSolvers"))
     {
         forAll(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc(), MPsolvI) // loop over all multiphysics solvers
         {
             wordList subSolvers // get list of solvers belonging to multiphysics solver i
             (
-                multiRegionCouplingDict.subDict("multiPhysicsSolvers").subDict(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc()[MPsolvI]).subDict("solvers").toc()
+                multiRegionCouplingDict
+                    .subDict("multiPhysicsSolvers")
+                    .subDict(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc()[MPsolvI])
+                    .subDict("solvers").toc()
             );
 
             forAll(subSolvers, solvI) // loop ovcer subsolvers and add them to list of meshes to create only if they are not sub-multiphysicssolvers
             {
-                if(multiRegionCouplingDict.subDict("multiPhysicsSolvers").subDict(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc()[MPsolvI]).subDict("solvers").get<word>(subSolvers[solvI]) != "multiPhysicsSolver")
+                if (multiRegionCouplingDict
+                    .subDict("multiPhysicsSolvers")
+                    .subDict(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc()[MPsolvI])
+                    .subDict("solvers")
+                    .get<word>(subSolvers[solvI]) != "multiPhysicsSolver"
+                )
                 {
                     meshNames.append(subSolvers[solvI]);
                 }
@@ -136,12 +142,9 @@ Foam::meshHandler::meshHandler(const Time& runTime)
         );
     }
 
-
-
-
-    //-Set size of list of (possibly) baffleLess meshes
+    // Set size of list of (possibly) baffleLess meshes
     mappingMeshes_.setSize(meshes_.size());
-    //-Set size of list of couplingFields
+    // Set size of list of couplingFields
     scalarCouplingFields_.setSize(meshes_.size());
     vectorCouplingFields_.setSize(meshes_.size());
 
@@ -150,8 +153,6 @@ Foam::meshHandler::meshHandler(const Time& runTime)
 
 
     // Create mappings
-
-
     mappingList_.setSize(meshes_.size());
 
     forAll(meshes_,i)
@@ -166,14 +167,17 @@ Foam::meshHandler::meshHandler(const Time& runTime)
         );
     }
 
-    //Loop over all regions
+    // Loop over all regions
     forAll(meshes_, i)
     {
-        if (mappingDict_.found(meshes_[i].name())) // check if i find entry in the meshHandler dict
+        // Check if i find entry in the meshHandler dict
+        if (mappingDict_.found(meshes_[i].name()))
         {
-            forAll(meshes_, j) // loop over all other regions
+            // Loop over all other regions
+            forAll(meshes_, j)
             {
-                if (mappingDict_.subDict(meshes_[i].name()).found(meshes_[j].name())) // check if i find entry in the meshHandler subDict
+                // Check if i find entry in the meshHandler subDict
+                if (mappingDict_.subDict(meshes_[i].name()).found(meshes_[j].name()))
                 {
                     mappingList_[i].set
                     (
@@ -181,9 +185,9 @@ Foam::meshHandler::meshHandler(const Time& runTime)
                         new meshToMesh
                         (
                             meshes_[i],
-                            runTime.controlDict().subDict("removeBaffles").get<bool>(meshes_[j].name())?
-                            mappingMeshes_[j]
-                            :meshes_[j],
+                            runTime.controlDict().subDict("removeBaffles").get<bool>(meshes_[j].name())
+                                ? mappingMeshes_[j]
+                                : meshes_[j],
                             Foam::meshToMesh::interpolationMethod::imCellVolumeWeight, // for now hard-coded, possibly implement meshHandler type via dict
                             Foam::meshToMesh::procMapMethod::pmAABB,
                             false
@@ -193,7 +197,6 @@ Foam::meshHandler::meshHandler(const Time& runTime)
             }
         }
     }
-
 }
 
 
@@ -206,14 +209,13 @@ Foam::meshHandler::~meshHandler()
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-void Foam::meshHandler::mapAllFields( const Time& runTime)
+void Foam::meshHandler::mapAllFields(const Time& runTime)
 {
-
     forAll(meshes_, i)
     {
         forAll(meshes_, j)
         {
-            if(mappingDict_.subDict(meshes_[i].name()).found(meshes_[j].name()))
+            if (mappingDict_.subDict(meshes_[i].name()).found(meshes_[j].name()))
             {
                 dictionary iTojRegionmappingDict_(mappingDict_.subDict(meshes_[i].name()).subDict(meshes_[j].name()));
                 List<word> targetFields(iTojRegionmappingDict_.getOrDefault<List<word>>("targetFields", List<word>::null()));
@@ -222,11 +224,11 @@ void Foam::meshHandler::mapAllFields( const Time& runTime)
 
                 bool removeBaffles(false);
 
-                if(runTime.controlDict().found("removeBaffles"))
+                if (runTime.controlDict().found("removeBaffles"))
                 {
                     const dictionary& removeBafflesDict(runTime.controlDict().subDict("removeBaffles"));
 
-                    if(removeBafflesDict.getOrDefault<bool>(meshes_[j].name(), false))
+                    if (removeBafflesDict.getOrDefault<bool>(meshes_[j].name(), false))
                     {
                         forAll(sourceFields, sourcei)
                         {
@@ -236,52 +238,73 @@ void Foam::meshHandler::mapAllFields( const Time& runTime)
                     }
                 }
 
-                if(targetFields.size()!=sourceFields.size())
+                if (targetFields.size()!=sourceFields.size())
                 {
                     FatalErrorInFunction
-                    << "Number of target fields from region "<< meshes_[j].name()<< " is not equal to number of source fields to region "<<mappingMeshes_[i].name()<<"!"
-                    << exit(FatalError);
+                        << "Number of target fields from region "
+                        << meshes_[j].name()
+                        << " is not equal to number of source fields to region "
+                        << mappingMeshes_[i].name() << " !"
+                        << exit(FatalError);
                 }
-                else if(fieldTypes.size()!=sourceFields.size())
+                else if (fieldTypes.size() != sourceFields.size())
                 {
                     FatalErrorInFunction
-                    << "Number of specified field types in meshHandler from region "<< meshes_[j].name()<< " to region "<<meshes_[i].name()<<" is not adequate!"
-                    << exit(FatalError);
+                        << "Number of specified field types in meshHandler from region "
+                        << meshes_[j].name()
+                        << " to region "
+                        << meshes_[i].name()
+                        << " is not adequate !"
+                        << exit(FatalError);
                 }
                 else
                 {
                     forAll(sourceFields, fieldi)
                     {
-
-                        if(fieldTypes[fieldi]=="scalar")
+                        if (fieldTypes[fieldi] == "scalar")
                         {
-                            volScalarField& tgtField = const_cast<volScalarField&>(meshes_[i].lookupObject<volScalarField>(targetFields[fieldi]));
-                            if ((removeBaffles and !(mappingMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))) or (!removeBaffles and !(meshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))))
+                            volScalarField& tgtField = const_cast<volScalarField&>
+                            (
+                                meshes_[i].lookupObject<volScalarField>(targetFields[fieldi])
+                            );
+                            if (
+                                (
+                                    removeBaffles
+                                    && !(mappingMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))
+                                ) || (
+                                    !removeBaffles
+                                    && !(meshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))
+                                )
+                            )
                             {
-                                Info<<"Warning! Field " <<sourceFields[fieldi]<< " not found! "<<endl;
-
+                                Info<< "Warning! Field "
+                                    << sourceFields[fieldi] << " not found !"
+                                    << endl;
                             }
                             else
                             {
                                 mappingList_[i][j].mapTgtToSrc
                                 (
-                                    removeBaffles?
-                                    mappingMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi])
-                                    :meshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
+                                    removeBaffles
+                                        ? mappingMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi])
+                                        : meshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
                                     plusEqOp<scalar>(),
                                     tgtField
                                 );
                                 tgtField.correctBoundaryConditions();
                             }
                         }
-                        else if(fieldTypes[fieldi]=="vector")
+                        else if (fieldTypes[fieldi] == "vector")
                         {
-                            volVectorField& tgtField = const_cast<volVectorField&>(meshes_[i].lookupObject<volVectorField>(targetFields[fieldi]));
+                            volVectorField& tgtField = const_cast<volVectorField&>
+                            (
+                                meshes_[i].lookupObject<volVectorField>(targetFields[fieldi])
+                            );
                             mappingList_[i][j].mapTgtToSrc
                             (
-                                removeBaffles?
-                                mappingMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi])
-                                :meshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
+                                removeBaffles
+                                    ? mappingMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi])
+                                    : meshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
                                 plusEqOp<vector>(),
                                 tgtField
                             );
@@ -290,8 +313,12 @@ void Foam::meshHandler::mapAllFields( const Time& runTime)
                         else
                         {
                             FatalErrorInFunction
-                            << "Field type " << fieldTypes[fieldi]<< " in meshHandler from region "<< meshes_[j].name()<< " to region "<<mappingMeshes_[i].name()<<" is not known!"
-                            << exit(FatalError);
+                                << "Field type " << fieldTypes[fieldi]
+                                << " in meshHandler from region "
+                                << meshes_[j].name()
+                                << " to region " << mappingMeshes_[i].name()
+                                << " is not known !"
+                                << exit(FatalError);
                         }
                     }
                 }
@@ -302,9 +329,8 @@ void Foam::meshHandler::mapAllFields( const Time& runTime)
 }
 
 
-void Foam::meshHandler::mapTheseFields( const Time& runTime, wordList meshToMap)
+void Foam::meshHandler::mapTheseFields(const Time& runTime, wordList meshToMap)
 {
-
     forAll(meshes_, i)
     {
         forAll(meshes_, j)
@@ -320,11 +346,11 @@ void Foam::meshHandler::mapTheseFields( const Time& runTime, wordList meshToMap)
 
                     bool removeBaffles(false);
 
-                    if(runTime.controlDict().found("removeBaffles"))
+                    if (runTime.controlDict().found("removeBaffles"))
                     {
                         const dictionary& removeBafflesDict(runTime.controlDict().subDict("removeBaffles"));
 
-                        if(removeBafflesDict.getOrDefault<bool>(meshes_[j].name(), false))
+                        if (removeBafflesDict.getOrDefault<bool>(meshes_[j].name(), false))
                         {
                             forAll(sourceFields, sourcei)
                             {
@@ -334,52 +360,72 @@ void Foam::meshHandler::mapTheseFields( const Time& runTime, wordList meshToMap)
                         }
                     }
 
-                    if(targetFields.size()!=sourceFields.size())
+                    if (targetFields.size() != sourceFields.size())
                     {
                         FatalErrorInFunction
-                        << "Number of target fields from region "<< meshes_[j].name()<< " is not equal to number of source fields to region "<<mappingMeshes_[i].name()<<"!"
-                        << exit(FatalError);
+                            << "Number of target fields from region "
+                            << meshes_[j].name()
+                            << " is not equal to number of source fields to region "
+                            << mappingMeshes_[i].name() << "!"
+                            << exit(FatalError);
                     }
-                    else if(fieldTypes.size()!=sourceFields.size())
+                    else if (fieldTypes.size() != sourceFields.size())
                     {
                         FatalErrorInFunction
-                        << "Number of specified field types in meshHandler from region "<< meshes_[j].name()<< " to region "<<meshes_[i].name()<<" is not adequate!"
-                        << exit(FatalError);
+                            << "Number of specified field types in meshHandler from region "
+                            << meshes_[j].name() << " to region "
+                            << meshes_[i].name() << " is not adequate!"
+                            << exit(FatalError);
                     }
                     else
                     {
                         forAll(sourceFields, fieldi)
                         {
-
-                            if(fieldTypes[fieldi]=="scalar")
+                            if (fieldTypes[fieldi] == "scalar")
                             {
-                                volScalarField& tgtField = const_cast<volScalarField&>(meshes_[i].lookupObject<volScalarField>(targetFields[fieldi]));
-                                if ((removeBaffles and !(mappingMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))) or (!removeBaffles and !(meshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))))
+                                volScalarField& tgtField = const_cast<volScalarField&>
+                                (
+                                    meshes_[i].lookupObject<volScalarField>(targetFields[fieldi])
+                                );
+                                if (
+                                    (
+                                        removeBaffles
+                                        && !(mappingMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))
+                                    ) || (
+                                        !removeBaffles
+                                        && !(meshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))
+                                    )
+                                )
                                 {
-                                    Info<<"Warning! Field " <<sourceFields[fieldi]<< " not found! "<<endl;
-
+                                    Info<< "Warning! Field "
+                                        << sourceFields[fieldi]
+                                        << " not found!"
+                                        << endl;
                                 }
                                 else
                                 {
                                     mappingList_[i][j].mapTgtToSrc
                                     (
-                                        removeBaffles?
-                                        mappingMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi])
-                                        :meshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
+                                        removeBaffles
+                                            ? mappingMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi])
+                                            : meshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
                                         plusEqOp<scalar>(),
                                         tgtField
                                     );
                                     tgtField.correctBoundaryConditions();
                                 }
                             }
-                            else if(fieldTypes[fieldi]=="vector")
+                            else if (fieldTypes[fieldi] == "vector")
                             {
-                                volVectorField& tgtField = const_cast<volVectorField&>(meshes_[i].lookupObject<volVectorField>(targetFields[fieldi]));
+                                volVectorField& tgtField = const_cast<volVectorField&>
+                                (
+                                    meshes_[i].lookupObject<volVectorField>(targetFields[fieldi])
+                                );
                                 mappingList_[i][j].mapTgtToSrc
                                 (
-                                    removeBaffles?
-                                    mappingMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi])
-                                    :meshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
+                                    removeBaffles
+                                        ? mappingMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi])
+                                        : meshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
                                     plusEqOp<vector>(),
                                     tgtField
                                 );
@@ -388,8 +434,11 @@ void Foam::meshHandler::mapTheseFields( const Time& runTime, wordList meshToMap)
                             else
                             {
                                 FatalErrorInFunction
-                                << "Field type " << fieldTypes[fieldi]<< " in meshHandler from region "<< meshes_[j].name()<< " to region "<<mappingMeshes_[i].name()<<" is not known!"
-                                << exit(FatalError);
+                                    << "Field type " << fieldTypes[fieldi]
+                                    << " in meshHandler from region "
+                                    << meshes_[j].name() << " to region "
+                                    << mappingMeshes_[i].name() << " is not known!"
+                                    << exit(FatalError);
                             }
                         }
                     }

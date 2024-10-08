@@ -42,23 +42,23 @@ tutorials=(
     "1D_HX/onePhase                 0.2"
     "1D_HX/twoPhase                 0.2"
     "1D_MSR_pointKinetics           0.2"
-    #"1D_PSBT_SC/Phase_Ex1_12223     0.2"
-    #"1D_PSBT_SC/PhaseII_Ex1_01_5215 0.2"
-    #"1D_PSBT_SC/PhaseII_Ex2_04_6770 0.2"
+    "1D_PSBT_SC/Phase_Ex1_12223     0.2"
+    "1D_PSBT_SC/PhaseII_Ex1_01_5215 0.2"
+    "1D_PSBT_SC/PhaseII_Ex2_04_6770 0.2"
     "1D_thermalMSR_pointKinetics    0.2"
     "2D_cavityBoussinesq            0.2"
     "2D_externalSourceDiffusion     0.2"
-    #"2D_FFTF                        0.3"
+    "2D_FFTF                        0.3"
     "2D_fullCoupling                0.2"
-    #"2D_KNS37-L22                   0.3"
+    "2D_KNS37-L22                   0.3"
     "2D_MSFR                        0.3"
     "2D_onePhaseAndPointKineticsCoupling 0.2"
     "2D_onePhaseAndSubcriticalPointKineticsCoupling 0.2"
     "2D_voidMotionNoPhaseChange     0.2"
     "3D_gFHR                        1.5"
     "3D_NTPfuelAssembly             0.2"
-    #"3D_SmallESFR                   1.0"
-    #"Godiva_SN                      1.5"
+    "3D_SmallESFR_NewSolverVerification  1.0"
+    "Godiva_SN                      1.5"
 )
 
 # Add FMU tutorials only if GeN-Foam has been built with FMU4FOAM
@@ -182,60 +182,68 @@ executeAlltest() {
     tutorialName=$1
     expectedMemory=$2
 
-    echo -e "Running tutorial $tutorialName ...\n"
+    local exitStatus=1
+    isMemoryOverflow=0
 
-    # Change folder and clean
-    cd $tutorialName
-    ./Allclean
+    if [ -d $tutorialName ]
+    then
+        echo -e "Running tutorial $tutorialName ...\n"
 
-    # Start time measurement
-    startTime=$(date +%s)
+        # Change folder and clean
+        cd $tutorialName
+        ./Allclean
 
-    # Start the command in the background and recover process ID
-    ./Alltest &
-    local pid=$!
+        # Start time measurement
+        startTime=$(date +%s)
 
-    # Monitor the peak memory usage until the command finishes
-    maxMemoryUsage=0
-    while ps -p $pid > /dev/null
-    do
-        tempMaxMemoryUsage=$(getMemoryUsage $pid)
+        # Start the command in the background and recover process ID
+        ./Alltest &
+        local pid=$!
 
-        if [[ $tempMaxMemoryUsage -gt $maxMemoryUsage ]]
+        # Monitor the peak memory usage until the command finishes
+        maxMemoryUsage=0
+        while ps -p $pid > /dev/null
+        do
+            tempMaxMemoryUsage=$(getMemoryUsage $pid)
+
+            if [[ $tempMaxMemoryUsage -gt $maxMemoryUsage ]]
+            then
+                maxMemoryUsage=$tempMaxMemoryUsage
+            fi
+
+            sleep 1
+        done
+
+        # Wait for ./Alltest to finish and capture its exit status (0: success; 1: failed)
+        wait $pid
+        exitStatus=$?
+
+        # End time measurement
+        endTime=$(date +%s)
+        timeUsage=$(secondsTo_hhmmss $(($endTime - $startTime)))
+        echo "$tutorialName time usage: $timeUsage"
+
+        # Convert to memory usage from kb to Gb
+        maxMemoryUsageGb=$(echo "scale=3; $maxMemoryUsage / (1024 * 1024)" | bc)
+
+        # Check memory overflow (exceeds expected value)
+        memoryOverflowText="Passed"
+        if (( $(echo "$maxMemoryUsageGb > $expectedMemory" | bc -l) ))
         then
-            maxMemoryUsage=$tempMaxMemoryUsage
+            isMemoryOverflow=1
+            memoryOverflowText="**Failed**"
+            echo "$tutorialName Memory overflow ($maxMemoryUsageGb > $expectedMemory)"
+        else
+            echo "$tutorialName Memory OK ($maxMemoryUsageGb < $expectedMemory)"
         fi
 
-        sleep 1
-    done
 
-    # Wait for ./Alltest to finish and capture its exit status (0: success; 1: failed)
-    wait $pid
-    local exitStatus=$?
-
-    # End time measurement
-    endTime=$(date +%s)
-    timeUsage=$(secondsTo_hhmmss $(($endTime - $startTime)))
-    echo "$tutorialName time usage: $timeUsage"
-
-    # Convert to memory usage from kb to Gb
-    maxMemoryUsageGb=$(echo "scale=3; $maxMemoryUsage / (1024 * 1024)" | bc)
-
-    # Check memory overflow (exceeds expected value)
-    isMemoryOverflow=0
-    memoryOverflowText="Passed"
-    if (( $(echo "$maxMemoryUsageGb > $expectedMemory" | bc -l) ))
-    then
-        isMemoryOverflow=1
-        memoryOverflowText="**Failed**"
-        echo "$tutorialName Memory overflow ($maxMemoryUsageGb > $expectedMemory)"
+        # Return to root folder
+        cd $rootPath
+    
     else
-        echo "$tutorialName Memory OK ($maxMemoryUsageGb < $expectedMemory)"
+        echo "No tutorial named $tutorialName, check in this Alltest the list of tutorial to run"
     fi
-
-
-    # Return to root folder
-    cd $rootPath
 
     # Update successful tutotial run in summary table
     if [ $exitStatus -eq 0 ] && [ $isMemoryOverflow -eq 0 ]

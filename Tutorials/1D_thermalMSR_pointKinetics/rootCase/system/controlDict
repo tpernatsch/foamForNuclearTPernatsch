@@ -45,16 +45,6 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-//- Physics to Solve
-
-solveFluidMechanics true;
-
-solveEnergy     true;
-
-solveNeutronics false;
-
-solveThermalMechanics false;
-
 //- Global options
 
 liquidFuel true;
@@ -68,5 +58,17 @@ maxDeltaT           1;
 maxCo               1;
 
 maxPowerVariation   0.025;
+
+regionSolvers
+{
+    fluidRegion     onePhase;
+    // neutroRegion    diffusionNeutronics;
+}
+
+removeBaffles
+{
+    fluidRegion     false;
+    // neutroRegion    false;
+}
 
 // ************************************************************************* //

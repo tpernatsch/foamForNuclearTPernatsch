@@ -1,19 +1,20 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-|       ______          _   __           ______                               |
-|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
-|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
-|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
-|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
-|    Copyright (C) 2015 - 2022 EPFL                                           |
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2406                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
 \*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 FoamFile
 {
-    version     2.0;
-    format      ascii;
-    class       dictionary;
-    object      controlDict;
+    version         2;
+    format          ascii;
+    arch            "LSB;label=32;scalar=64";
+    class           dictionary;
+    location        "system";
+    object          controlDict;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 application     GeN-Foam;
 
@@ -45,28 +46,25 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-//- Physics to Solve
+regionSolvers
+{
+    fluidRegion     onePhase;
+}
 
-solveFluidMechanics true;
+removeBaffles
+{
+    fluidRegion     false;
+}
 
-solveEnergy     true;
+liquidFuel      true;
 
-solveNeutronics false;
+adjustTimeStep  true;
 
-solveThermalMechanics false;
+maxDeltaT       1;
 
-//- Global options
+maxCo           1;
 
-liquidFuel true;
+maxPowerVariation 0.025;
 
-//- Time step control options
-
-adjustTimeStep      true;
-
-maxDeltaT           1;
-
-maxCo               1;
-
-maxPowerVariation   0.025;
 
 // ************************************************************************* //

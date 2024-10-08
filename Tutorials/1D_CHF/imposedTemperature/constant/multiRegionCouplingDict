@@ -16,17 +16,11 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-maxMultiRegionIterations 3;
-
-multiRegionTightCoupled 1;
-
-multiRegionResidual 5e-05;
-
 mappings
 {
-    fluidRegion
-    {
-    }
+	fluidRegion
+	{
+	}
 }
 
 
