@@ -201,6 +201,11 @@ void Foam::solvers::extendedThermoMechanics::correctPhysics()
 
 }
 
+void Foam::solvers::extendedThermoMechanics::correctTightlyCoupledPhysics()
+{
+    correctPhysics();
+}
+
 Foam::scalar Foam::solvers::extendedThermoMechanics::maxDeltaT()
 {   
     scalar deltaT(GREAT);

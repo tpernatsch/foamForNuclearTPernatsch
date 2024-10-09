@@ -570,6 +570,11 @@ void Foam::solvers::legacyThermoMechanics::correctPhysics()
     #include "solveThermalMechanics.H"
 }
 
+void Foam::solvers::legacyThermoMechanics::correctTightlyCoupledPhysics() 
+{
+    correctPhysics();
+}
+
 scalar Foam::solvers::legacyThermoMechanics::maxDeltaT()
 {
     return GREAT;

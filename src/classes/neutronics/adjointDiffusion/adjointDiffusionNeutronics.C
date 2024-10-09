@@ -321,6 +321,11 @@ void Foam::solvers::adjointDiffusionNeutronics::correctPhysics()
     #include "solveNeutronicsAdjoint.H"
 }
 
+void Foam::solvers::adjointDiffusionNeutronics::correctTightlyCoupledPhysics()
+{
+    correctPhysics();
+}
+
 scalar Foam::solvers::adjointDiffusionNeutronics::maxDeltaT()
 {
     scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);

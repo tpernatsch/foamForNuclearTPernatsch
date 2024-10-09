@@ -1282,6 +1282,11 @@ void Foam::solvers::pointKineticNeutronics::correctPhysics()
 
 }
 
+void Foam::solvers::pointKineticNeutronics::correctTightlyCoupledPhysics()
+{
+    correctPhysics();
+}
+
 
 scalar Foam::solvers::pointKineticNeutronics::maxDeltaT()
 {

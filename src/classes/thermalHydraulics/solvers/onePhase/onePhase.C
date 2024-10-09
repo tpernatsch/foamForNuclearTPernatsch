@@ -147,8 +147,8 @@ void Foam::solvers::onePhase::correctPhysics()
 
     residual_=0;
 
-    bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").getOrDefault<bool>("solveEnergy", false));
-    bool solveFluidMechanics(mesh_.solutionDict().subDict("PIMPLE").getOrDefault<bool>("solveFluidMechanics", true));
+    bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
+    bool solveFluidMechanics(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveFluidMechanics"));
 
     Info << "Region :" << mesh_.name()<<nl<<endl;
     
@@ -167,6 +167,18 @@ void Foam::solvers::onePhase::correctPhysics()
 
         Info << endl;
     }    
+}
+
+void Foam::solvers::onePhase::correctTightlyCoupledPhysics()
+{
+    Info <<nl;
+    bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
+    correctModels(true,true);
+  
+    if(solveEnergy)
+        correctEnergy();
+    
+    Info <<nl;
 }
 
 void Foam::solvers::onePhase::correctFluidMechanics()

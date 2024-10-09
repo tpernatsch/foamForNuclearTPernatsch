@@ -438,8 +438,8 @@ void Foam::solvers::twoPhase::correctPhysics()
 
     residual_=0;
 
-    bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").getOrDefault<bool>("solveEnergy", false));
-    bool solveFluidMechanics(mesh_.solutionDict().subDict("PIMPLE").getOrDefault<bool>("solveFluidMechanics", true));
+    bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
+    bool solveFluidMechanics(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveFluidMechanics"));
 
     while(pimple_.loop())
     {
@@ -453,6 +453,15 @@ void Foam::solvers::twoPhase::correctPhysics()
 
         Info << endl;
     }
+}
+
+void Foam::solvers::twoPhase::correctTightlyCoupledPhysics()
+{
+    bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
+    correctModels(true,true);
+  
+    if(solveEnergy)
+        correctEnergy();
 }
 
 void Foam::solvers::twoPhase::correctFluidMechanics()

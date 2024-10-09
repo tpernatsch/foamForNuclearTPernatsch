@@ -181,6 +181,7 @@ public:
 
         //- Correct/update the properties
         virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
         virtual scalar maxDeltaT();
         virtual scalar getResidual()
         {

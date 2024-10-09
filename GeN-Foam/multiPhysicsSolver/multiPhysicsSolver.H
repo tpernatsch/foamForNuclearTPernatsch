@@ -116,6 +116,9 @@ protected:
         //-
         label maxIterations_;
 
+        //- 
+        List<bool> correctOnlyEnergy_; 
+
 
 private:
 
@@ -172,6 +175,7 @@ public:
         virtual void deformMesh();
 
         virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
 
         virtual scalar maxDeltaT();
 

@@ -204,6 +204,7 @@ public:
         // virtual void postSolve() = 0;
 
         virtual void correctPhysics() = 0;
+        virtual void correctTightlyCoupledPhysics() = 0;
 
         virtual scalar getResidual()=0;
 

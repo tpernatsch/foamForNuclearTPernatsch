@@ -111,6 +111,7 @@ public:
 
         //- Solve thermal-hydraulics
         virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
 
         virtual scalar maxDeltaT();
 

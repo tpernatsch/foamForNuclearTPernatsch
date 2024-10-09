@@ -134,6 +134,7 @@ public:
 
         // Run offbeat
         virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
 
         // Set next deltaT according to adjustable time class
         virtual scalar maxDeltaT();

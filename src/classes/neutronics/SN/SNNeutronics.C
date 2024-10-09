@@ -287,6 +287,11 @@ void Foam::solvers::SNNeutronics::correctPhysics()
     #include "solveNeutronicsSN.H"
 }
 
+void Foam::solvers::SNNeutronics::correctTightlyCoupledPhysics() 
+{
+    correctPhysics();
+}
+
 scalar Foam::solvers::SNNeutronics::maxDeltaT()
 {
     scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);

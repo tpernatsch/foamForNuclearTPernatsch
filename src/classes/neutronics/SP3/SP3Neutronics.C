@@ -319,6 +319,11 @@ void Foam::solvers::SP3Neutronics::correctPhysics()
     #include "solveNeutronicsSP3.H"
 }
 
+void Foam::solvers::SP3Neutronics::correctTightlyCoupledPhysics()
+{
+    correctPhysics();
+}
+
 
 scalar Foam::solvers::SP3Neutronics::maxDeltaT()
 {

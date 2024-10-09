@@ -203,6 +203,11 @@ void Foam::solvers::offbeat::correctPhysics()
 
 }
 
+void Foam::solvers::offbeat::correctTightlyCoupledPhysics()
+{
+    correctPhysics();
+}
+
 Foam::scalar Foam::solvers::offbeat::maxDeltaT()
 {   
     scalar deltaT(GREAT);

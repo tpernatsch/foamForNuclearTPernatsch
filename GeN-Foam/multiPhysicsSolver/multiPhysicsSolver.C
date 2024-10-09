@@ -98,8 +98,20 @@ void Foam::solvers::multiPhysicsSolver::createSolvers(word name)
 
     solvers_.setSize(solverNames_.size());
 
+    correctOnlyEnergy_.setSize(solverNames_.size());
+    forAll(correctOnlyEnergy_, boolI)
+    {
+        correctOnlyEnergy_[boolI]=true;
+    }
+
+    wordList energyOnlyList = multiPhysicsDict_.getOrDefault<wordList>("includeFluidMechanicsInLoop", wordList());
+
     forAll(solverNames_, nameI)
     {
+
+        if(meshHandler_->contains(energyOnlyList, solverNames_[nameI]))
+            correctOnlyEnergy_[nameI]=false;
+
         Info<< "Creating sub-scale solver " << solverNames_[nameI] << nl
             << endl;
 
@@ -170,7 +182,9 @@ void Foam::solvers::multiPhysicsSolver::correctPhysics()
         forAll(solvers_, solvI)
         {
             solvers_[solvI].deformMesh();
-            solvers_[solvI].correctPhysics();
+            (iterN>0 and correctOnlyEnergy_[solvI])?
+                solvers_[solvI].correctTightlyCoupledPhysics():
+                solvers_[solvI].correctPhysics();
             solvers_[solvI].correctBaffleLessFields();
         }
 
@@ -182,6 +196,11 @@ void Foam::solvers::multiPhysicsSolver::correctPhysics()
         ++iterN;
     }
     while(residual>minResidual_ && iterN < maxIterations_);
+}
+
+void Foam::solvers::multiPhysicsSolver::correctTightlyCoupledPhysics()
+{
+    correctPhysics();
 }
 
 scalar Foam::solvers::multiPhysicsSolver::getResidual()
