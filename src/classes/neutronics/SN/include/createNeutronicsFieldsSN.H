@@ -196,6 +196,6 @@ forAll(facePhis_, directionI)
     facePhis_.set
     (
         directionI,
-        new surfaceScalarField("",directionVersors_[directionI] & mesh_.Sf())
+        new surfaceScalarField("", directionVersors_[directionI] & mesh_.Sf())
     );
-}    
+}

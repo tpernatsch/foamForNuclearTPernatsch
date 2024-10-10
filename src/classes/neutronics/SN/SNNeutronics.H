@@ -42,15 +42,15 @@ Description
     Subclass for SN neutronics (Discrete Ordinate).
 
 \f[
-    \frac{1}{v_i} \frac{d \Omega_j \cdot \phi_{i,j}}{dt} 
+    \frac{1}{v_i} \frac{d \Omega_j \cdot \phi_{i,j}}{dt}
         + \nabla \cdot (\Omega_j \cdot \phi_{i,j})
         + \Sigma_{t,i} \phi_{i,j}
     = S_{i,j}^I + S_{i,j}^A + S_i^D
         \quad \quad \forall i \wedge j \in [1; G] \times [1; M] \\
 
-    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) = 
+    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) =
         \frac{\beta_k}{k_{eff}} \sum_{i'=1}^G \nu \Sigma_{f,i'} \phi_{i'}
-        - \lambda_k C_k 
+        - \lambda_k C_k
         \quad \forall k \in [1; N]
 \f]
 
@@ -60,8 +60,8 @@ with the external source:
         \frac{1}{k_{eff}} \nu \Sigma_{f,i'} \chi_{p,i} + \Sigma_{s,i' \rightarrow i}
     \right) \\
 
-    S_{i,j}^A = \sum_{i'=1}^G \sum_{j'=1}^M \omega_{j'} \phi_{i',j'} \Sigma_{s,i' \rightarrow i} \left( 
-        \sum_{l=1}^p s_{i' \rightarrow i}^l \frac{2l+1}{2} P_l (\Omega_j \cdot \Omega_{j'})    
+    S_{i,j}^A = \sum_{i'=1}^G \sum_{j'=1}^M \omega_{j'} \phi_{i',j'} \Sigma_{s,i' \rightarrow i} \left(
+        \sum_{l=1}^p s_{i' \rightarrow i}^l \frac{2l+1}{2} P_l (\Omega_j \cdot \Omega_{j'})
     \right) \\
 
     S_i^D = \chi_{d,i} \sum_k \lambda_k C_k
@@ -97,7 +97,7 @@ polynomial expansion of the scattering cosine \f$ (\Omega_j \cdot \Omega_{j'}) \
 <ol type="1">
     <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
     GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294, 
+    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294,
     2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
 
     <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam multi-physics
@@ -119,7 +119,6 @@ SourceFiles
 #define SNNeutronics_H
 
 #include "neutronics.H"
-// #include "XSLowMem.H"
 #include "XS.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -138,23 +137,26 @@ class SNNeutronics
 {
 protected:
 
-    // Cross sections
-    // XSLowMem xs_;
+    //- Cross sections
     XS xs_;
 
-    //quadrature Set
+    // Quadrature Set
     IOdictionary quadratureSet_;
     label discreteDirections_;
     vectorField directionVersors_;
     scalarField directionWeights_;
     PtrList<scalarSquareMatrix> legendreMatrices_;
     surfaceScalarField facePhi_;
-    PtrList<surfaceScalarField>  facePhis_;
+    PtrList<surfaceScalarField> facePhis_;
 
-    //Fields
-    List<PtrList<volScalarField> > angularFlux_;
-    PtrList<volScalarField> prec_;//prec per total volume
-    PtrList<volScalarField> precStar_;//prec per volume salt
+    //- Fields
+    List<PtrList<volScalarField>> angularFlux_;
+
+    //- Precursors per total volume
+    PtrList<volScalarField> prec_;
+
+    //- Precursors per volume salt
+    PtrList<volScalarField> precStar_;
     volScalarField defaultFlux_;
     volScalarField defaultPrec_;
 
@@ -171,19 +173,29 @@ protected:
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructMechOrig_;
     const volVectorField* UOrig_;
-    //- Total volume fraction of fluid(s) 
+
+    //- Total volume fraction of fluid(s)
     const volScalarField* alphaOrig_;
+
     //- Thermal diffusivity in kg/m/s
     const volScalarField* alphatOrig_;
+
     //- Molecular viscosity in kg/m/s (== Pa*s)
     const volScalarField* muOrig_;
 
-    //- Mapped fields from TH
+    //- Mapped fuel temperature field from thermal-hydraulics
     volScalarField TFuel_;
+
+    //- Mapped cladding temperature field from thermal-hydraulics
     volScalarField TClad_;
+
+    //- Mapped coolant temperature field from thermal-hydraulics
     volScalarField TCool_;
+
+    //- Mapped coolant density field from thermal-hydraulics
     volScalarField rhoCool_;
-    //- Mapped fields from TM
+
+    //- Mapped structure temprature field from thermal-mechanics
     volScalarField TStructMech_;
 
     //- For Aitken eigenvalue
@@ -192,23 +204,25 @@ protected:
     scalar keff2_;
     int aitkenIterCounter_;
     int aitkenIterNo_;
-    
+
     //- Also mapped, but these are autoPtr as these field are not needed at all
-    //- unless doing liquidFuel. Thus, avoid wasting memory by only setting 
-    //- these fields if they are actually needed
+    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
+    //  these fields if they are actually needed
     autoPtr<volVectorField> UPtr_;
     autoPtr<volScalarField> alphaPtr_;
     autoPtr<volScalarField> alphatPtr_;
     autoPtr<volScalarField> muPtr_;
-    
+
     //- Fields derived from mapped fields
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
     bool multiRegion_;
 
+    //- Old total power
     scalar pTotOld_;
 
+    //- Solver residual
     scalar residual_;
 
 private:
@@ -265,12 +279,10 @@ public:
             scalar pTot = 0;
             forAll(flux_,energyI)
             {
-                
                 pTot += fvc::domainIntegrate
                 (
-                    flux_[energyI]*xs_.sigmaPow()[energyI]
+                    flux_[energyI] * xs_.sigmaPow()[energyI]
                 ).value();
-
             }
             return pTot;
         }
@@ -281,7 +293,7 @@ public:
         //     const meshToMesh& neutroToFluid,
         //     const objectRegistry& srcTM,
         //     const meshToMesh& neutroToMech
-        // );   
+        // );
 
         // virtual void interpolateCouplingFields
         // (

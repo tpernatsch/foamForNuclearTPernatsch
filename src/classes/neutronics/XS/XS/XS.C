@@ -154,9 +154,9 @@ Foam::XS::XS
     integralFluxList_(zoneNumber_),
     adjustDiscFactors_(nuclearData_.lookupOrDefault("adjustDiscFactors", false)),
     useGivenDiscFactors_(nuclearData_.lookupOrDefault("useGivenDiscFactors", false)),
-    groupsWoDF_(nuclearData_.lookupOrDefault<List<int> >("groupsWoDF", List<int>())),
+    groupsWoDF_(nuclearData_.lookupOrDefault<List<int>>("groupsWoDF", List<int>())),
     fastNeutrons_(nuclearData_.lookupOrDefault("fastNeutrons", true)),
-    doNotParametrize_(nuclearData_.lookupOrDefault<List<int> >("doNotParametrize", List<int>())),
+    doNotParametrize_(nuclearData_.lookupOrDefault<List<int>>("doNotParametrize", List<int>())),
     radExp_
     (
         IOobject
@@ -231,12 +231,12 @@ Foam::XS::XS
             "CRmove",
             mesh.time().constant(),
             mesh,
-            IOobject::MUST_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE
         )
     ),
-    CRentries_(CRmove_.lookup("zones")),
-    CRNumber_(CRmove_.lookup("zones").size()),
+    CRentries_(CRmove_.lookupOrDefault("zones", PtrList<entry>(0))),
+    CRNumber_(CRentries_.size()),
     CRstart_(CRNumber_),
     CRfinish_(CRNumber_),
     CRspeed_(CRNumber_),

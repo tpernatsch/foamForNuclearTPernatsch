@@ -41,6 +41,7 @@ License
 #include "zeroGradientFvPatchFields.H"
 #include "addToRunTimeSelectionTable.H"
 #include "coordinateSystem.H"
+#include "IOmanip.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -279,18 +280,19 @@ Foam::solvers::SNNeutronics::~SNNeutronics()
 //     #include "defaultInterpolateCouplingFields.H"
 // }
 
-void Foam::solvers::SNNeutronics::correctPhysics() 
+void Foam::solvers::SNNeutronics::correctPhysics()
 {
-
-    pTotOld_=power();
-    residual_=0;
+    pTotOld_ = power();
+    residual_ = 0;
     #include "solveNeutronicsSN.H"
 }
 
-void Foam::solvers::SNNeutronics::correctTightlyCoupledPhysics() 
+
+void Foam::solvers::SNNeutronics::correctTightlyCoupledPhysics()
 {
     correctPhysics();
 }
+
 
 scalar Foam::solvers::SNNeutronics::maxDeltaT()
 {
@@ -298,9 +300,10 @@ scalar Foam::solvers::SNNeutronics::maxDeltaT()
     scalar maxPowerVariation =
         mesh_.time().controlDict().lookupOrDefault<scalar>
         (
-            "maxPowerVariation", 
+            "maxPowerVariation",
             0.025
         );
+
     scalar pTot = power();
 
     scalar powerVariation = mag((pTot - pTotOld_) / (pTotOld_ + SMALL));
@@ -310,8 +313,7 @@ scalar Foam::solvers::SNNeutronics::maxDeltaT()
     scalar deltaTNeutroFact = min(min(maxDeltaTNeutroFact, 1.0 + 0.1*maxDeltaTNeutroFact), 1.2);
 
     return min(deltaTNeutroFact*mesh_.time().deltaTValue(), newDeltaT);
-
-
 }
+
 
 // ************************************************************************* //

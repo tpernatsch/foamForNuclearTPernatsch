@@ -254,6 +254,7 @@ forAll(states_, stateI)
 }
 
 
+Info<< "Number of control rods: " << CRNumber_ << endl;
 forAll(CRentries_, CRzoneI)
 {
     dictionary& CRdict = CRentries_[CRzoneI].dict();

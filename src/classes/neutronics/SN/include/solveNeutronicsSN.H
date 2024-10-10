@@ -1,4 +1,4 @@
-Info << "Solving neutronics" << endl ;
+Info<< "Solving neutronics" << endl;
 
 xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_);
 #include "setXSFieldsSN.H"
@@ -28,16 +28,16 @@ int maxInnerIter =
 //List<scalar> integralFlux1(xs_.energyGroups());
 //List<scalar> integralFlux2(xs_.energyGroups());
 
-if(aitkenAccelerationEigenvalue)
+if (aitkenAccelerationEigenvalue)
 {
     #include "aitkenAccelerationEigenvalue.H"
 }
 
-//-Update mapped fields
-if(liquidFuel_)
+// Update mapped fields
+if (liquidFuel_)
 {
-    phiPtr_()=fvc::flux(UPtr_()*alphaPtr_());
-    diffCoeffPrecPtr_()=(alphaPtr_()+muPtr_()/xs_.ScNo())/rhoCool_;
+    phiPtr_() = fvc::flux(UPtr_()*alphaPtr_());
+    diffCoeffPrecPtr_() = (alphaPtr_()+muPtr_()/xs_.ScNo())/rhoCool_;
 }
 
 #include "updateScalarFluxes.H"
@@ -45,7 +45,7 @@ scalar pTot(power());
 #include "initializeNeutroSource.H"
 #include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
-if (eigenvalueNeutronics_ && (mesh_.time().timeIndex()-mesh_.time().startTimeIndex())==1 )
+if (eigenvalueNeutronics_ && (mesh_.time().timeIndex() - mesh_.time().startTimeIndex()) == 1)
 {
     #include "normFluxesSN.H"
 }
@@ -63,7 +63,6 @@ if(!eigenvalueNeutronics_ && couplingIter == 0)
     {
         #include "implicitPredictor.H"
     }
-
 }
 */
 
@@ -75,7 +74,7 @@ scalar neutroResidual = 0.0;
 
 do
 {
-    Info << "Neutron iteration no:  " << neutroIter << nl << endl;
+    Info<< nl << "Neutron iteration no:  " << neutroIter << endl;
 
     #include "fluxEqSN.H"
     //The part here below should be included for transients
@@ -86,37 +85,48 @@ do
 
     neutroIter++;
 
-    Info<< "neutroResidual (neutroIter: "
-    << neutroIter << "): " << neutroResidual << endl << " after Aitken no: " << aitkenIterNo_ << endl;
-
-}while( (neutroResidual > neutronIterationResidual) && (neutroIter < maxNeutronIterations) && !eigenvalueNeutronics_);
+    Info<< "neutroResidual (neutroIter: " << neutroIter << "): "
+        << neutroResidual << " after Aitken no: " << aitkenIterNo_
+        << endl;
+}
+while
+(
+    (neutroResidual > neutronIterationResidual)
+    && (neutroIter < maxNeutronIterations)
+    && !eigenvalueNeutronics_
+);
 
 #include "updateScalarFluxes.H"
 
-powerDensity_*=0.0;
-forAll(flux_,energyI)
+powerDensity_ *= 0.0;
+forAll(flux_, energyI)
 {
     powerDensity_ += flux_[energyI] * sigmaPow[energyI];
 }
 
 pTot = power();
 
-Info<< "Final neutroResidual at neutroIter no " << neutroIter << ": "  << neutroResidual << " - pow:" << pTot << endl;
+Info<< "Final neutroResidual at neutroIter no " << neutroIter << ": "
+    << neutroResidual << " - pow:" << pTot
+    << endl;
 
 //- Determine power densities
-secondaryPowerDensity_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
+secondaryPowerDensity_ = powerDensity_ / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower;
 powerDensity_ /= max(fuelFraction, SMALL) * (1.0 - fractionToSecondaryPower);
 
 
 
 if (eigenvalueNeutronics_)
 {
-    Info << "pTarget_ = " << pTarget_ << nl << endl;
-    Info << "keff_ previous = " << keff_ << nl << endl;
-    keff_ *= pTot/pTarget_;
-    keff_ = min(keff_,5);
-    keff_ = max(keff_,0.1);
-    Info << "keff_ = " << keff_ << nl << endl;
+    Info<< "pTarget_ = " << pTarget_ << nl
+        << "keff_ previous = " << keff_ << nl
+        << endl;
+
+    keff_ *= pTot / pTarget_;
+    keff_ = min(keff_, 5.0);
+    keff_ = max(keff_, 0.1);
+
+    Info<< "keff_ = " << keff_ << nl << endl;
 
     // Since a keff_ is a scalar, the value inside the dictionary is not updated at runTime automatically.
     // The line below resets the SCALAR IN THE DICTIONARY at runTime so that the dictionary is written with the updated value.
@@ -130,9 +140,6 @@ if (eigenvalueNeutronics_)
     // );
 
     #include "normFluxesSN.H"
-
 }
 
-
-
-residual_ = max(residual_,neutroResidual);
+residual_ = max(residual_, neutroResidual);

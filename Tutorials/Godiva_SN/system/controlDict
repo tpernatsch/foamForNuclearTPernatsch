@@ -1,9 +1,10 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2406                                  |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
@@ -46,14 +47,6 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-solveFluidMechanics false;
-
-solveEnergy     false;
-
-solveNeutronics true;
-
-solveThermalMechanics false;
-
 liquidFuel      false;
 
 adjustTimeStep  false;
@@ -69,9 +62,7 @@ regionSolvers
 
 removeBaffles
 {
-    fluidRegion     0;
     neutroRegion    0;
-    thermoMechanicalRegion 0;
 }
 
 

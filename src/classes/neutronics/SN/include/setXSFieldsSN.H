@@ -1,4 +1,4 @@
-Info << "set XS fields" << endl ;
+Info << "Set XS fields... ";
 const PtrList<volScalarField>& IV = xs_.IV();
 const PtrList<volScalarField>& D = xs_.D();
 const PtrList<volScalarField>& nuSigmaEff = xs_.nuSigmaEff();
@@ -15,5 +15,5 @@ const volScalarField& fuelFraction = xs_.fuelFraction();
 const volScalarField& secondaryPowerVolumeFraction = xs_.secondaryPowerVolumeFraction();
 const volScalarField& fractionToSecondaryPower = xs_.fractionToSecondaryPower();
 const PtrList<volScalarField >& discFactor = xs_.discFactor();
-Info << "done: set XS fields" << endl ;
 
+Info<< "Done" << endl;

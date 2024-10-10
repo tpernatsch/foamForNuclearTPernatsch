@@ -1,39 +1,41 @@
 
 bool aitkenYesNo = true;
 
-if(aitkenIterCounter_==0) // only happening at first timeStep 
+if (aitkenIterCounter_ == 0) // only happening at first timeStep
 {
-
-    keff0_=keff_;
-
-}  
-if(aitkenIterCounter_==1)
-{
-
-    keff1_=keff_;
-
+    keff0_ = keff_;
 }
-if(aitkenIterCounter_==2)
+
+else if (aitkenIterCounter_ == 1)
+{
+    keff1_ = keff_;
+}
+
+else if (aitkenIterCounter_ == 2)
 {
     aitkenYesNo = true;
 
-    keff2_=keff_;
+    keff2_ = keff_;
 
-    if(
-    mag(keff2_-keff1_)/(max(mag(keff1_-keff0_),SMALL)) > 0.95 
-    || (mag(keff2_-2*keff1_+keff0_)<SMALL)
-    ) aitkenYesNo=false;
-
-
-    if(aitkenYesNo==true)
+    if (
+        mag(keff2_ - keff1_) / max(mag(keff1_ - keff0_), SMALL) > 0.95
+        || mag(keff2_ - 2.0*keff1_ + keff0_) < SMALL
+    )
     {
-        Info << "Intra-step eigenvalue Aitken acceleration no: " << aitkenIterNo_ << endl;
+        aitkenYesNo = false;
+    }
+
+
+    if (aitkenYesNo)
+    {
+        Info<< "Intra-step eigenvalue Aitken acceleration no: " << aitkenIterNo_
+            << "... " << endl;
 
         //keff2_=keff_;
         /*
-        scalar aitkenScaling = 
+        scalar aitkenScaling =
         (
-            ( 
+            (
                 keff0_
                 - (keff1_-keff0_)
                 * (keff1_-keff0_)
@@ -42,13 +44,14 @@ if(aitkenIterCounter_==2)
         );
         keff_ *= aitkenScaling ;
         */
-        keff_ = keff0_ - pow((keff1_-keff0_),2) / (keff2_-2*keff1_+keff0_);
+        keff_ = keff0_ - pow(keff1_ - keff0_, 2.0) / (keff2_ - 2.0*keff1_ + keff0_);
 
-        keff0_=keff_;
+        keff0_ = keff_;
 
-        aitkenIterNo_++ ;
+        aitkenIterNo_++;
         aitkenIterCounter_ = 0;
-        Info<< "Done "  << endl;
+
+        Info<< "Done" << endl;
     }
     else
     {
@@ -57,9 +60,8 @@ if(aitkenIterCounter_==2)
         keff0_ = keff1_;
         keff1_ = keff2_;
 
-        aitkenIterCounter_-- ;
+        aitkenIterCounter_--;
     }
-
 }
-aitkenIterCounter_++ ;
 
+aitkenIterCounter_++;

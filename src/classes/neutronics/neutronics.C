@@ -49,10 +49,8 @@ namespace Foam
 {
 namespace solvers
 {
-
     defineTypeNameAndDebug(neutronics, 0);
 }
-    // defineRunTimeSelectionTable(neutronics, dictionary);
 }
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
@@ -89,9 +87,9 @@ Foam::solvers::neutronics::neutronics
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         )
-    ), 
-    keff_(reactorState_.lookupOrDefault("keff",1.0)),
-    pTarget_(reactorState_.lookupOrDefault("pTarget",1.0)),
+    ),
+    keff_(reactorState_.lookupOrDefault("keff", 1.0)),
+    pTarget_(reactorState_.lookupOrDefault("pTarget", 1.0)),
     powerDensity_
     (
         IOobject
@@ -165,9 +163,6 @@ Foam::solvers::neutronics::neutronics
         "externalSourceModulationTimeProfile",
         mesh.time()
     )
-
-
-
 {
     Info<< "Initial keff = " << keff_ << nl
         << "Is eigenvalue calc : " << eigenvalueNeutronics_ << nl
@@ -181,12 +176,12 @@ Foam::solvers::neutronics::neutronics
 
 void Foam::solvers::neutronics::correctBaffleLessFields()
 {
-    if(mesh_.time().controlDict().found("removeBaffles"))
+    if (mesh_.time().controlDict().found("removeBaffles"))
     {
         const dictionary& removeBafflesDict = mesh_.time().controlDict().subDict("removeBaffles");
+
         if (removeBafflesDict.get<bool>(mesh_.name()))
         {
-
             const IOdictionary couplingDict
             (
                 IOobject
@@ -199,20 +194,21 @@ void Foam::solvers::neutronics::correctBaffleLessFields()
                 )
             );
 
-            //Lookup for the fields that need to be mapped FROM this mesh
+            // Lookup for the fields that need to be mapped FROM this mesh
             const dictionary mappingDict(couplingDict.subDict("mappings"));
-            //Loop on every region that is not this one and look for the fields in "sourceFields"
+            // Loop on every region that is not this one and look for the fields in "sourceFields"
             const wordList regions(mappingDict.toc());
 
             forAll(regions, regioni)
             {
-                if(regions[regioni]!=mesh_.name()) //look for other regions
+                // Look for other regions
+                if (regions[regioni] != mesh_.name())
                 {
                     const dictionary regionFromDict(mappingDict.subDict(regions[regioni]));
                     const wordList regionsFrom(regionFromDict.toc());
                     forAll(regionsFrom, regionFromi)
                     {
-                        if(regionsFrom[regionFromi]==mesh_.name())
+                        if (regionsFrom[regionFromi] == mesh_.name())
                         {
                             const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
                             const wordList fieldTypes(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("fieldTypes")); // list of types of fields to create
@@ -243,8 +239,7 @@ void Foam::solvers::neutronics::correctBaffleLessFields()
 
 void Foam::solvers::neutronics::deformMesh()
 {
-    //-Look for the multiRegionDict
-
+    // Look for the multiRegionDict
     const IOdictionary couplingDict
     (
         IOobject
@@ -270,20 +265,29 @@ void Foam::solvers::neutronics::deformMesh()
             {
                 const volPointInterpolation& meshPointInterpolation = volPointInterpolation::New(mesh_);
 
-                tmp<pointVectorField> meshPointsDisplacement = meshPointInterpolation.interpolate(mesh_.lookupObject<volVectorField>(deformDict.subDict(mesh_.name()).get<word>("displacementField")));
+                tmp<pointVectorField> meshPointsDisplacement
+                (
+                    meshPointInterpolation.interpolate
+                    (
+                        mesh_.lookupObject<volVectorField>
+                        (
+                            deformDict.subDict(mesh_.name()).get<word>("displacementField")
+                        )
+                    )
+                );
 
-                tmp<pointField> displacedPoints =originalPoints_ + meshPointsDisplacement->internalField();
+                tmp<pointField> displacedPoints = originalPoints_ + meshPointsDisplacement->internalField();
 
                 mesh_.movePoints(displacedPoints);
 
-                Info << "Deforming " << mesh_.name()<< " mesh according to displacement field " << deformDict.subDict(mesh_.name()).get<word>("displacementField") << endl;
-
-
+                Info<< "Deforming " << mesh_.name()
+                    << " mesh according to displacement field "
+                    << deformDict.subDict(mesh_.name()).get<word>("displacementField")
+                    << endl;
             }
         }
     }
 }
-
 
 
 // ************************************************************************* //
