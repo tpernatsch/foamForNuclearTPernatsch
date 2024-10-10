@@ -1,12 +1,21 @@
 #!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
 
-# ---> Run from this directory
-cd ${0%/*} || exit 1
+cd ${0%/*} || exit 1    # Run from this directory
 
-# ---> Source tutorial run functions
+#==============================================================================*
+
+# Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
-################################################################################
+#==============================================================================*
 
 cases="steadyState transientRampSource"
 
@@ -19,7 +28,7 @@ setSteadyState() {
     echo "Setting steady-state ..."
     foamDictionary $2/system/controlDict -entry endTime -set $endTimeSteadyState
     foamDictionary $2/system/controlDict -entry writeInterval -set $endTimeSteadyState
-    mv $2/constant/multiRegionCouplingDict_steadyState $2/constant/multiRegionCouplingDict
+    cp $2/constant/multiRegionCouplingDict_steadyState $2/constant/multiRegionCouplingDict
     GeN-Foam -initializeMappedFields -case $2
 }
 
@@ -35,12 +44,12 @@ setTransient() {
     foamDictionary $2/system/controlDict -entry deltaT -set 1e-7
     foamDictionary $2/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $2/system/controlDict -entry writeInterval -set 10
-    rm -r $2/constant/multiRegionCouplingDict
-    mv $2/constant/multiRegionCouplingDict_transient $2/constant/multiRegionCouplingDict
-    GeN-Foam  -initializeMappedFields -case $2
+    cp $2/constant/multiRegionCouplingDict_transient $2/constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields -case $2
 }
 
-################################################################################
+#==============================================================================*
+
 # ---> Simulation cases
 for caseName in $cases; do
     # ---> Setup case
@@ -76,3 +85,5 @@ for caseName in $cases; do
     # ---> Kill gnuplot if it was started
     pkill -x gnuplot &> /dev/null &
 done
+
+#==============================================================================*

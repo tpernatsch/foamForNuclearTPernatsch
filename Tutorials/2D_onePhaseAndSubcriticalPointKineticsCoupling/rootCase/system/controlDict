@@ -47,14 +47,14 @@ runTimeModifiable   true;
 
 regionSolvers
 {
-	fluidRegion onePhase;
-	neutroRegion diffusionNeutronics;
+	fluidRegion     onePhase;
+	neutroRegion    diffusionNeutronics;
 }
 
 removeBaffles
 {
-	fluidRegion true;
-	neutroRegion false;
+	fluidRegion     true;
+	neutroRegion    false;
 }
 
 //- Global options -------------------------------------------------------------*

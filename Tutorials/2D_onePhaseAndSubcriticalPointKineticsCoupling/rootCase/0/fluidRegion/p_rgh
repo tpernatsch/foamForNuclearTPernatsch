@@ -24,18 +24,18 @@ boundaryField
     inlet
     {
         type    fixedFluxPressure;
-        value 	$internalField;
+        value   $internalField;
     }
 
     outlet
     {
-    	type    fixedValue;
-    	value 	uniform 1e5;
+        type    fixedValue;
+        value   uniform 1e5;
     }
 
     fixedWalls
     {
-    	type     fixedFluxPressure;
+        type     fixedFluxPressure;
         value    $internalField;
     }
 

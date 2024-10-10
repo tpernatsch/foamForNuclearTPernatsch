@@ -32,32 +32,32 @@ mixture
 {
     specie
     {
-        molWeight               22.989769;
+        molWeight       22.989769;
     }
     equationOfState
     {
-        rhoCoeffs<8>           (1000 0 0 0 0 0 0 0);
+        rhoCoeffs<8>    (1000 0 0 0 0 0 0 0);
     }
     thermodynamics
     {
-        CpCoeffs<8>            
+        CpCoeffs<8>
         (
             850//1.5640E+03
-            0//-4.5129E-01 
-            0//-3.1104E-04 
-            0//6.5282E-07 
-            0//-1.9570E-10 
-            0 
-            0 
+            0//-4.5129E-01
+            0//-3.1104E-04
+            0//6.5282E-07
+            0//-1.9570E-10
+            0
+            0
             0
         );
-        Hf                      0;
-        Sf                      0;
+        Hf      0;
+        Sf      0;
     }
     transport
     {
-        muCoeffs<8>             (1.8e-4 0 0 0 0 0 0 0);
-        kappaCoeffs<8>          (65 0 0 0 0 0 0 0);
+        muCoeffs<8>     (1.8e-4 0 0 0 0 0 0 0);
+        kappaCoeffs<8>  (65 0 0 0 0 0 0 0);
     }
 }
 

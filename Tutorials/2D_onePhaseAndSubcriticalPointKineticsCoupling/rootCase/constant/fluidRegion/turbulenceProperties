@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-simulationType 	    laminar; // laminar | RAS
+simulationType         laminar; // laminar | RAS
 
 // RAS
 // {
@@ -31,21 +31,21 @@ simulationType 	    laminar; // laminar | RAS
 //     "zone0"
 //     {
 //         convergenceLength           0.1;// k and epsilon will exponentially
-// 					 					// converge to equilibrium according
-// 					 					// to this exponent
-// 		// k and epsilon are determined based on correlations for turbulent
-// 		// intensity (I) and lengh scale (L)
-// 		// Turbulent intensity correlation in the form 0.16*Reynolds^-0.125
-// 		// Reynolds number calculated by the thermal-hydraulic class, according
-// 		// to the input data in phaseProperties
+//                                          // converge to equilibrium according
+//                                          // to this exponent
+//         // k and epsilon are determined based on correlations for turbulent
+//         // intensity (I) and lengh scale (L)
+//         // Turbulent intensity correlation in the form 0.16*Reynolds^-0.125
+//         // Reynolds number calculated by the thermal-hydraulic class, according
+//         // to the input data in phaseProperties
 //         turbulenceIntensityCoeff    0.16;
 //
 //         turbulenceIntensityExp      -0.125;
 //
 //         turbulenceLengthScaleCoeff  0.07; // L = 0.07*Dh (Dh is the hydraulic
-// 					  // diameter secificied in
-// 					  // phaseProperties)
-//         DhStruct 					1;
+//                       // diameter secificied in
+//                       // phaseProperties)
+//         DhStruct                     1;
 //     }
 // }
 
