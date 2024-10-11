@@ -141,7 +141,7 @@ states
                     (5.368688e-03 -9.767777e-04)
                     (-1.895378e-02 5.086316e-02)
                 );
-                sigmaDisapp        nonuniform List<scalar> 2 (6.590576e-01 9.497068e+00);
+                sigmaRemoval       nonuniform List<scalar> 2 (6.590576e-01 9.497068e+00);
                 chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
                 chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
                 Beta               nonuniform List<scalar> 6 (2.280948e-04 1.177753e-03 1.124613e-03 2.522364e-03 1.035069e-03 4.335548e-04);
@@ -181,7 +181,7 @@ states
                     (-2.365090e-02 -5.475458e-03)
                     (-5.633761e-02 1.960847e-01)
                 );
-                sigmaDisapp        nonuniform List<scalar> 2 (8.158188e-01 2.523562e+00);
+                sigmaRemoval       nonuniform List<scalar> 2 (8.158188e-01 2.523562e+00);
                 chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
@@ -229,7 +229,7 @@ states
                     (5.811163e-03 -9.057128e-04)
                     (-1.714937e-02 5.214013e-02)
                 );
-                sigmaDisapp        nonuniform List<scalar> 2 (6.554188e-01 9.493055e+00);
+                sigmaRemoval       nonuniform List<scalar> 2 (6.554188e-01 9.493055e+00);
                 chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
                 chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
                 Beta               nonuniform List<scalar> 6 (2.281004e-04 1.177783e-03 1.124642e-03 2.522434e-03 1.035102e-03 4.335683e-04);
@@ -269,7 +269,7 @@ states
                     (-1.967635e-02 -5.263656e-03)
                     (-5.138997e-02 2.244215e-01)
                 );
-                sigmaDisapp        nonuniform List<scalar> 2 (8.098021e-01 2.510440e+00);
+                sigmaRemoval       nonuniform List<scalar> 2 (8.098021e-01 2.510440e+00);
                 chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
@@ -310,7 +310,7 @@ states
                     (4.764540e-03 2.104527e-04)
                     (2.982081e-03 -1.198037e-01)
                 );
-                sigmaDisapp        nonuniform List<scalar> 2 (3.329470e-02 8.550810e-01);
+                sigmaRemoval       nonuniform List<scalar> 2 (3.329470e-02 8.550810e-01);
                 chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
@@ -359,7 +359,7 @@ states
                     (5.399665e-03 -7.781042e-04)
                     (-1.745023e-02 5.445468e-02)
                 );
-                sigmaDisapp        nonuniform List<scalar> 2 (6.520404e-01 9.174256e+00);
+                sigmaRemoval       nonuniform List<scalar> 2 (6.520404e-01 9.174256e+00);
                 chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
                 chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
                 Beta               nonuniform List<scalar> 6 (2.280958e-04 1.177757e-03 1.124615e-03 2.522367e-03 1.035067e-03 4.335542e-04);
@@ -399,7 +399,7 @@ states
                     (-2.225821e-02 -4.518436e-03)
                     (-5.283403e-02 2.168930e-01)
                 );
-                sigmaDisapp        nonuniform List<scalar> 2 (8.051124e-01 2.500499e+00);
+                sigmaRemoval       nonuniform List<scalar> 2 (8.051124e-01 2.500499e+00);
                 chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
@@ -448,7 +448,7 @@ states
                     (5.459225e-03 -6.800122e-04)
                     (-1.111726e-02 -3.294060e-02)
                 );
-                sigmaDisapp        nonuniform List<scalar> 2 (6.497858e-01 8.112279e+00);
+                sigmaRemoval       nonuniform List<scalar> 2 (6.497858e-01 8.112279e+00);
                 chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
                 chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
                 Beta               nonuniform List<scalar> 6 (2.281852e-04 1.178340e-03 1.125242e-03 2.524046e-03 1.036043e-03 4.339530e-04);
@@ -488,7 +488,7 @@ states
                     (-1.695755e-02 -3.669326e-03)
                     (-4.474089e-02 2.027185e-01)
                 );
-                sigmaDisapp        nonuniform List<scalar> 2 (6.729642e-01 2.388339e+00);
+                sigmaRemoval       nonuniform List<scalar> 2 (6.729642e-01 2.388339e+00);
                 chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
                 Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);

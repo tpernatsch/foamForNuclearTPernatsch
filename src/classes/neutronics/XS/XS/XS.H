@@ -93,7 +93,7 @@ refers to the kth precursor group.
     D                   | Variable | Yes   | -       | \f$ D_g \f$              | Diffusion coefficient
     nuSigmaEff          | Variable | Yes   | -       | \f$ \nu \Sigma_{f,eff, g} \f$ | Fission neutrons cross-section
     sigmaPow            | Variable | Yes   | -       | \f$ \kappa \Sigma_{f, g} \f$ | Fission energy release cross-section
-    sigmaDisapp         | Variable | Yes   | -       | \f$ \Sigma_{disapp, g} \f$ | Disappearence cross-section (\f$\Sigma_{abs} + \Sigma_{capture} + \Sigma_{s, g \rightarrow g}\f$)
+    sigmaRemoval        | Variable | Yes   | -       | \f$ \Sigma_{r, g} \f$ | Removal cross-section (\f$\Sigma_{abs} + \Sigma_{capture} + \Sigma_{s, g \rightarrow g}\f$)
     scatteringMatrixP0  | Variable | Yes   | -       | \f$ \Sigma_{s, g \rightarrow g'} \f$ | Scattering cross-section matrix
     chiPrompt           | Constant | Yes   | -       | \f$ \chi_{p, g} \f$      | Prompt fission emission spectrum
     chiDelayed          | Constant | Yes   | -       | \f$ \chi_{d, g} \f$      | Delayed fission spectrum
@@ -269,7 +269,7 @@ protected:
             PtrList<volScalarField> sigmaPow_;
 
             //- Energy group-wise list of disapearance cross-section field
-            PtrList<volScalarField> sigmaDisapp_;
+            PtrList<volScalarField> sigmaRemoval_;
 
             //- Moments/EnergyJ/EnergyI array of scattering matrices cross-section field
             List<List<PtrList<volScalarField>>> sigmaFromTo_;
@@ -390,8 +390,8 @@ protected:
             //- Variable fission energy release XS data (zoneI -> energyI -> XS)
             List<PtrList<nuclearDataOneEnergy>> sigmaPowList_;
 
-            //- Variable disappearance XS data (zoneI -> energyI -> XS)
-            List<PtrList<nuclearDataOneEnergy>> sigmaDisappList_;
+            //- Variable removal XS data (zoneI -> energyI -> XS)
+            List<PtrList<nuclearDataOneEnergy>> sigmaRemovalList_;
 
             //- Variable scateering matrix XS data (zoneI -> momentI -> energyJ -> energyI -> XS)
             List<List<List<PtrList<nuclearDataOneEnergy>>>> sigmaFromToList_;
@@ -457,9 +457,9 @@ public:
         {
             return sigmaPow_;
         }
-        const PtrList<volScalarField> sigmaDisapp() const
+        const PtrList<volScalarField> sigmaRemoval() const
         {
-            return sigmaDisapp_;
+            return sigmaRemoval_;
         }
         const List<List<PtrList<volScalarField>>> sigmaFromTo() const
         {

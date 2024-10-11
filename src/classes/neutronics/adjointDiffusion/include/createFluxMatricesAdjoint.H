@@ -13,9 +13,7 @@ forAll(neutroEqList, energyI)
         (
              fvm::ddt((1-eigenvalueNeutronics_)*IV[energyI]/discFactor[energyI],fluxStar_[energyI])
              - fvm::laplacian(D[energyI]/discFactor[energyI],fluxStar_[energyI])
-             - fvm::Sp((nuSigmaEff[energyI]/keff_*(1.0-BetaTot)*chiPrompt[energyI]*(1-eigenvalueNeutronics_)-sigmaDisapp[energyI]/discFactor[energyI]),fluxStar_[energyI])
+             - fvm::Sp((nuSigmaEff[energyI]/keff_*(1.0-BetaTot)*chiPrompt[energyI]*(1-eigenvalueNeutronics_)-sigmaRemoval[energyI]/discFactor[energyI]),fluxStar_[energyI])
         )
     );
 }
-
-

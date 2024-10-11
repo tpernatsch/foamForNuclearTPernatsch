@@ -317,13 +317,13 @@ for k = 1 : size(SERPENT_NAME, 1)
         fprintf(fid, "\t\t);\n");
 
 
-        % Sigma disappearence (abs + capture + group transfer below)
-        fprintf(fid, "\t\tsigmaDisapp  nonuniform List<scalar> %i ( ", ng);
+        % Sigma removal (abs + capture + group transfer below)
+        fprintf(fid, "\t\tsigmaRemoval nonuniform List<scalar> %i ( ", ng);
 
-        DISAPP = zeros(ng, 1);
+        REMOVAL = zeros(ng, 1);
         for i = 1 : ng
-            DISAPP(i) = INF_TOT(idx, 2*i-1) - MS(i, i);
-            fprintf(fid, "%.6e ", DISAPP(i)/cm2m);
+            REMOVAL(i) = INF_TOT(idx, 2*i-1) - MS(i, i);
+            fprintf(fid, "%.6e ", REMOVAL(i)/cm2m);
         end
         fprintf(fid, ");\n");
 

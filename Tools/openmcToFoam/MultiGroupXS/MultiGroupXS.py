@@ -227,7 +227,7 @@ class MultiGroupXS(object):
                 self.promptGenerationTime.mean[0][0][0],
                 self.promptGenerationTime.std_dev[0][0][0]
             )
-        
+
         # Other method using 1/(v * nu * Sigma_f)
         IV = self.inverseVelocity.get_xs()[0]
         nuFiss = self.nuFissionXS.get_xs()[0]
@@ -301,7 +301,7 @@ class MultiGroupXS(object):
         sigmaDiapp = list(map(
             lambda inf_tot, P0_i: inf_tot - P0_i, self.totalXS.get_xs(), P0_diag
         ))
-        printVector(file, "sigmaDisapp", sigmaDiapp, 1/cm2m)
+        printVector(file, "sigmaRemoval", sigmaDiapp, 1/cm2m)
 
         printVector(file, self.chiPrompt.name, self.chiPrompt.get_xs())
 

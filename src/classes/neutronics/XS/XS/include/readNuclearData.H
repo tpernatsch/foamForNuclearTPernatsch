@@ -83,7 +83,7 @@ forAll(referenceZones_, zoneI)
     DList_[zoneI].setSize(energyGroups_);
     nuSigmaEffList_[zoneI].setSize(energyGroups_);
     sigmaPowList_[zoneI].setSize(energyGroups_);
-    sigmaDisappList_[zoneI].setSize(energyGroups_);
+    sigmaRemovalList_[zoneI].setSize(energyGroups_);
     sigmaFromToList_[zoneI].setSize(legendreMoments_);
 
     forAll(DList_[zoneI], energyI)
@@ -103,7 +103,7 @@ forAll(referenceZones_, zoneI)
             energyI,
             new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
         );
-        sigmaDisappList_[zoneI].set
+        sigmaRemovalList_[zoneI].set
         (
             energyI,
             new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
@@ -195,7 +195,7 @@ forAll(states_, stateI)
         const scalarField DList("D", dict, energyGroups_);
         const scalarField nuSigmaEffList("nuSigmaEff", dict, energyGroups_);
         const scalarField sigmaPowList("sigmaPow", dict, energyGroups_);
-        const scalarField sigmaDisappList("sigmaDisapp", dict, energyGroups_);
+        const scalarField sigmaRemovalList("sigmaRemoval", dict, energyGroups_);
 
 
         // Fill interpolation objects per zones and per energy for all states
@@ -222,9 +222,9 @@ forAll(states_, stateI)
                 rhoCool, axExp, radExp
             );
 
-            sigmaDisappList_[zoneRefI][energyI].addData
+            sigmaRemovalList_[zoneRefI][energyI].addData
             (
-                sigmaDisappList[energyI],
+                sigmaRemovalList[energyI],
                 TfuelSpectrum, Tclad, Tcool, TstructMech,
                 rhoCool, axExp, radExp
             );

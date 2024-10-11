@@ -82,7 +82,7 @@ Foam::XS::XS
     D_(energyGroups_),
     nuSigmaEff_(energyGroups_),
     sigmaPow_(energyGroups_),
-    sigmaDisapp_(energyGroups_),
+    sigmaRemoval_(energyGroups_),
     sigmaFromTo_(legendreMoments_),
     chiPrompt_(energyGroups_),
     chiDelayed_(energyGroups_),
@@ -222,7 +222,7 @@ Foam::XS::XS
     DList_(zoneNumber_),
     nuSigmaEffList_(zoneNumber_),
     sigmaPowList_(zoneNumber_),
-    sigmaDisappList_(zoneNumber_),
+    sigmaRemovalList_(zoneNumber_),
     sigmaFromToList_(zoneNumber_),
     CRmove_
     (
@@ -282,7 +282,7 @@ void Foam::XS::init()
             DList_[zoneI][energyI].build();
             nuSigmaEffList_[zoneI][energyI].build();
             sigmaPowList_[zoneI][energyI].build();
-            sigmaDisappList_[zoneI][energyI].build();
+            sigmaRemovalList_[zoneI][energyI].build();
         }
         forAll(sigmaFromToList_[zoneI], momentI)
         {

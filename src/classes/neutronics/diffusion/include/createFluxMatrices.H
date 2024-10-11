@@ -32,7 +32,7 @@ forAll(neutroEqList, energyI)
                     (1.0-BetaTot)*
                     chiPrompt[energyI]*
                     (1-eigenvalueNeutronics_) // * (1-externalSourceNeutronics_)
-                -   sigmaDisapp[energyI]
+                -   sigmaRemoval[energyI]
                 )/discFactor[energyI],
                 fluxStar_[energyI]
             )

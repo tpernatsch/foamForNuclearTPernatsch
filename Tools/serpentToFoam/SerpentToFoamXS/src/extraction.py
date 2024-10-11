@@ -323,18 +323,18 @@ def crossSections(
 
                     fprintf(fid,"\n  nonuniform List<scalar> %i (",ng)
 
-                    DISAPP = zeros(ng,1)
+                    REMOVAL = zeros(ng,1)
                     for i = 1:ng
-                            DISAPP(i) = INF_TOT(idx,(i*2)-1) - MS(i,i)
-                            fprintf(fid,"%.6e ",DISAPP(i)/cm2m)
+                            REMOVAL(i) = INF_TOT(idx,(i*2)-1) - MS(i,i)
+                            fprintf(fid,"%.6e ",REMOVAL(i)/cm2m)
                     end
                     fprintf(fid," );")
 
                     """
-                    # sigma disappearence (abs+ capture + group transfer below) -> DISAPP
-                    # sigmaDisapp[i] = INF_TOT[i] - INF_SP0[i,i]
+                    # sigma removal (abs+ capture + group transfer below) -> REMOVAL
+                    # sigmaRemoval[i] = INF_TOT[i] - INF_SP0[i,i]
                     utils.writeSimpleList(
-                        outputFile, "sigmaDisapp",
+                        outputFile, "sigmaRemoval",
                         [v - INF_SP0[serpentUniv][i*(numberOfEnergyGroups+1)] for i, v in enumerate(INF_TOT[serpentUniv])]
                     )
 

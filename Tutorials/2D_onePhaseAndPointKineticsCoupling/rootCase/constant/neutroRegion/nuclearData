@@ -117,7 +117,7 @@ states
             zone0
             {
                 fuelFraction    1;
-                sigmaDisapp     nonuniform List<scalar> 2(5 4);
+                sigmaRemoval    nonuniform List<scalar> 2(5 4);
                 nuSigmaEff      nonuniform List<scalar> 2(1 5.74);
                 sigmaPow        nonuniform List<scalar> 2{1};
                 scatteringMatrixP0 2 2 (

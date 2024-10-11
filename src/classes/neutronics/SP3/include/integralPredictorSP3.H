@@ -25,8 +25,8 @@
     dimensionedScalar leakageTermInt("",(dimless/dimTime),scalar(0.0));
     dimensionedScalar leakageTerm("",(dimless/dimLength),scalar(0.0));
 
-    dimensionedScalar disappearenceTermInt("",(dimless/dimTime),scalar(0.0));
-    dimensionedScalar disappearenceTerm("",(dimless/dimLength),scalar(0.0));
+    dimensionedScalar removalTermInt("",(dimless/dimTime),scalar(0.0));
+    dimensionedScalar removalTerm("",(dimless/dimLength),scalar(0.0));
 
     dimensionedScalar sourceTermInt("",(dimless/dimTime),scalar(0.0));
     dimensionedScalar sourceTerm("",(dimless/dimLength),scalar(0.0));
@@ -43,7 +43,7 @@
 
         leakageTermInt += fvc::domainIntegrate(fvc::laplacian(D[energyI]/discFactor[energyI], fluxStar_[energyI]));
 
-        disappearenceTermInt += fvc::domainIntegrate(sigmaDisapp[energyI]*fluxStar_[energyI]/discFactor[energyI]);
+        removalTermInt += fvc::domainIntegrate(sigmaRemoval[energyI]*fluxStar_[energyI]/discFactor[energyI]);
 
         #include "calcScatteringSource.H"
         scatteringSourceTermInt += fvc::domainIntegrate(scatteringSourceExtra_);
@@ -57,7 +57,7 @@
 
     leakageTerm = leakageTermInt/integralFlux;
 
-    disappearenceTerm = disappearenceTermInt/integralFlux;
+    removalTerm = removalTermInt/integralFlux;
 
     sourceTerm = sourceTermInt/integralFlux;
 
@@ -66,7 +66,7 @@
     dimensionedScalar precursorTerm = precursorTermInt;
 
     Info<< "Predict new integral flux " << endl;
-    dimensionedScalar newIntegralFlux = (precursorTerm + integralFluxOld*temporalTerm)/(temporalTerm-leakageTerm+disappearenceTerm-sourceTerm-scatteringSourceTerm);
+    dimensionedScalar newIntegralFlux = (precursorTerm + integralFluxOld*temporalTerm)/(temporalTerm-leakageTerm+removalTerm-sourceTerm-scatteringSourceTerm);
 
     Info<< "Old integral flux: " << integralFlux.value() << endl;
     Info<< "New predicted integral flux: " << newIntegralFlux.value() << endl;
@@ -86,4 +86,3 @@
 
     #include "initializeNeutroSource.H"
 }
-

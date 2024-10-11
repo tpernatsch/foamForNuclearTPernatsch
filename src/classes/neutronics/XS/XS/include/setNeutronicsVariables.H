@@ -1,7 +1,7 @@
 // Calculate Control Rod position
 forAll(CRentries_, CRzoneI)
 {
-    // Recalculate positions in case mesh has moved 
+    // Recalculate positions in case mesh has moved
     label FOLLOWERzoneId = mesh_.cellZones().findZoneID(CRFollowerName_[CRzoneI]);
 
     if (FOLLOWERzoneId == -1)
@@ -113,7 +113,7 @@ forAll(nuSigmaEff_, energyI)
         forAll(CRentries_, CRzoneI)
         {
             const word& CRname = CRentries_[CRzoneI].keyword();
-            
+
             if (name == CRname)
             {
                 isCR = true;
@@ -198,7 +198,7 @@ forAll(nuSigmaEff_, energyI)
                 isParametrize
             );
 
-            sigmaDisapp_[energyI][cellIglobal] = sigmaDisappList_[zone][energyI].get
+            sigmaRemoval_[energyI][cellIglobal] = sigmaRemovalList_[zone][energyI].get
             (
                 fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
                 Tclad[cellIglobal],
@@ -250,7 +250,7 @@ forAll(nuSigmaEff_, energyI)
     D_[energyI].correctBoundaryConditions();
     nuSigmaEff_[energyI].correctBoundaryConditions();
     sigmaPow_[energyI].correctBoundaryConditions();
-    sigmaDisapp_[energyI].correctBoundaryConditions();
+    sigmaRemoval_[energyI].correctBoundaryConditions();
     forAll(sigmaFromTo_, momentI)
     {
         forAll(sigmaFromTo_[momentI], energyJ)

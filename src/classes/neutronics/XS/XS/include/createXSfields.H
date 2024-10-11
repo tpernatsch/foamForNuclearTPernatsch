@@ -89,16 +89,16 @@ forAll(sigmaPow_, energyI)
     );
 }
 
-forAll(sigmaDisapp_, energyI)
+forAll(sigmaRemoval_, energyI)
 {
-    sigmaDisapp_.set
+    sigmaRemoval_.set
     (
         energyI,
         new volScalarField
         (
             IOobject
             (
-                "sigmaDisapp"+Foam::name(energyI),
+                "sigmaRemoval"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::NO_READ,
@@ -118,7 +118,7 @@ if (!isLowMemory_)
         sigmaFromTo_[momentI].resize(energyGroups_);
         forAll(sigmaFromTo_[momentI], energyJ)
         {
-            sigmaFromTo_[momentI][energyJ].resize(energyGroups_); 
+            sigmaFromTo_[momentI][energyJ].resize(energyGroups_);
             forAll(sigmaFromTo_[momentI][energyJ], energyI)
             {
                 sigmaFromTo_[momentI][energyJ].set
@@ -140,7 +140,7 @@ if (!isLowMemory_)
                     )
                 );
             }
-        } 
+        }
     }
 }
 
