@@ -118,9 +118,16 @@ states
 
         zones
         (
-            fuelFraction    ...;
-            IV  ...;
-            ...
+            core
+            {
+                fuelFraction    ...;
+                IV  ...;
+                ...
+            }
+            reflector
+            {
+                ...
+            }
         );
     }
     Tfuel1200K // Additional state, arbitrary state name
@@ -131,7 +138,10 @@ states
 
         zones
         (
-            ...
+            core
+            {
+                ...
+            }
         );
     }
     TfuelAndRhoHot
@@ -142,7 +152,14 @@ states
 
         zones
         (
-            ...
+            core
+            {
+                ...
+            }
+            reflector
+            {
+                ...
+            }
         );
     }
 );

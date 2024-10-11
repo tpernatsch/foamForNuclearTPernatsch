@@ -31,7 +31,7 @@ cd src
 git clone https://github.com/DLR-RY/FMU4FOAM.git
 ```
 
-Now run: 
+Now run:
 ```bash
 cd FMU4FOAM
 ./build-ECI4FOAM.sh
@@ -63,7 +63,6 @@ To include into GeN-Foam you have to export the `LIB_ECI4FOAM` environment varia
 export LIB_ECI4FOAM="/home/.../path/to/ECI4FOAM"
 ```
 Then the GeN-Foam project can be built as usual.
-
 
 
 ## Features

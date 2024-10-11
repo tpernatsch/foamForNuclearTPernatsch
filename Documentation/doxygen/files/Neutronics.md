@@ -56,7 +56,7 @@ One can find detailed, commented examples in most tutorials. See for instance
 
 ## Various properties
 
-In GeN-Foam, cross-sections and several other neutronics properties are handled by the *XS.H* class.
+In GeN-Foam, cross-sections and several other neutronics properties are handled by the *XS.H* class. Detailed explanations on the file format are provided in *XS.H* and in the tutorials (e.g *3D_SmallESFR*).
 
 <div class="border-box">
 <b>The *nuclearData* dictionary</b>
@@ -70,6 +70,8 @@ It is possible to select different radial basis function based on the polyharmon
 * `2`: $\phi(r) = r^2 \ln(r)$
 * `3`: $\phi(r) = |r^3|$
 * `4`: $\phi(r) = r^4 \ln(r)$
+
+\image html rbfInterpolation.png width=500px
 
 The entry *discFactor* is used only if discontinuity factors have to be used. The term *integralFlux*, is used only if the automatic adjustment of discontinuity factors is performed \cite FIORINA2016212. Nonetheless, these entries should always be present.
 <br><br>
