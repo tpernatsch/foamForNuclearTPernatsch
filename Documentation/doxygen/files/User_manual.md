@@ -7,14 +7,16 @@ This short user manual is meant to provide the user with enough information to u
 <br><br> In a similar fashion, to help describe the use of complex dictionaries (i.e., input files), this manual provides links to one or more commented dictionaries that are available in the tutorials.
 <br><br> Exact keywords for sub-solvers, models, etc can be found in the corresponding header files. However an easier method to find these names consists of the classical OpenFOAM Banana method: write in the dictionary "Banana" (or any funny word you like), and GeN-Foam will normally give you an error and a list of (typically self-explanatory) valid keywords.
 <p>
-N.B.: **Users are expected to be already familiar with OpenFOAM and nuclear engineering!**. 
+N.B.: **Users are expected to be already familiar with OpenFOAM and nuclear engineering!**.
 </div>
+
 
 ## Some theoretical background
 
 A fairly general theoretical presentation of GeN-Foam is provided in Ref. \cite FIORINA201524. It is recommended to go through this paper before starting to use GeN-Foam. However, the paper is getting quite old and it is recommended to refer to Ref. \cite FIORINA2016212  for the diffusion solver, Ref. \cite FIORINA2017419 for the SP3 solver, Refs. \cite Fiorina2019DetailedOpenFoam \cite Fiorina2015ApplicationCodes for the thermal-mechanic solver and its use for mesh deformation, Ref. \cite Fiorina2019DetailedOpenFoam for the SN solver, and Refs. \cite Radman2019ADesign \cite RADMAN2021111178 \cite RADMAN2021111422 for single- and two-phase thermal-hydraulics.
 
-Before using this manual, we recommend going through the introductory lectures to both OpenFOAM and GeN-Foam that are provided in the folder *Documentation/someUsefulDocumentsAndPResentations*. These lectures are taken from an IAEA e-learning course available at https://elearning.iaea.org/m2/course/view.php?id=1286. The course requires registration and a NUCLEUS account, but it should be available to all IAEA member states. 
+Before using this manual, we recommend going through the introductory lectures to both OpenFOAM and GeN-Foam that are provided in the folder *Documentation/someUsefulDocumentsAndPResentations*. These lectures are taken from an IAEA e-learning course available at https://elearning.iaea.org/m2/course/view.php?id=1286. The course requires registration and a NUCLEUS account, but it should be available to all IAEA member states.
+
 
 ## Some practical information
 
@@ -35,9 +37,10 @@ A dummy mesh must always be present in all physics (region) directories, even if
 
 In order to assign different properties (for instance, different porous medium properties or different cross sections) to different zones in a mesh, GeN-Foam employs the OpenFOAM concept of cellZone. Each mesh should then be divided into different cellZones. Each cellZone is associated with a name and this name is used in *constant/fluidRegion/phaseProperties*, *constant/neutroRegion/nuclearData*, *constant/themoMechanicalRegion/themoMechanicalProperties* to associate each cellZone with a set of properties. The creation of cellZones is normally allowed by all meshers, though different names are normally used (for instance, *physical entities* in gmsh and *groups* in Salome). In some cases, conversion of the mesh into an OpenFOAM format creates cellSet instead of cellZones. In these cases, one can use the topoSet utility to convert cellSets into cellZones.
 
+
 ## The source code
 
-GeN-Foam is an open-source code and makes use in its programming of fairly high-level API, intuitive naming of variables, and frequent comments. As such, we encourage users to consider the code itself as an essential part of the documentation. 
+GeN-Foam is an open-source code and makes use in its programming of fairly high-level API, intuitive naming of variables, and frequent comments. As such, we encourage users to consider the code itself as an essential part of the documentation.
 
 The source code is subdivided into 3 main folders:
 * main: containing the main  GeN-Foam.C source file (and other files directly employed by it), which is nothing but a fairly complex  coupling loop that calls various functionalities that are found under  *neutronics*, *thermalHydraulics*, and *thermoMechanics*;

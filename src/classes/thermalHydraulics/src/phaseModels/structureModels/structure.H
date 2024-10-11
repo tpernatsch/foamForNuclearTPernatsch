@@ -39,13 +39,13 @@ Class
     Foam::structure
 
 Description
-    Class to handle the description of a mesh-unresolved structure. It is 
+    Class to handle the description of a mesh-unresolved structure. It is
     derived from phaseBase, to represent the volume fraction of the structure.
-    The key member for the understanding of this class is cellFields_. 
+    The key member for the understanding of this class is cellFields_.
     The structure can be in fact though of as being composed by different
     regions, with properties defined only on certain cells of the mesh.
-    However, as these region are meant NOT to spatially overlap, the 
-    overall structure can be described by a single set of fields (Dh_, iApow_, 
+    However, as these region are meant NOT to spatially overlap, the
+    overall structure can be described by a single set of fields (Dh_, iApow_,
     etc.) that are initialized/set/modified on a cell-by-cell basis.
     The cellFields_ member is thus a HashTable of scalarFields indexed by
     region name. These scalarFields are = 1.0 where the given
@@ -56,7 +56,7 @@ Description
     the regions are effectively cellZones, and the cellFields_ is
     thus a dicts of scalarFields representing where each cellZone exists.
 
-    Author:  
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -143,7 +143,7 @@ protected:
 
     //- Table of limited volume fraction fields indexed by region name
     //  Every field is equal to the overall alpha of structure only in those
-    //  cells where the corresponding region is present, and is 0 
+    //  cells where the corresponding region is present, and is 0
     //  elsewhere
     volScalarFieldTable alphaFields_;
 
@@ -162,7 +162,7 @@ protected:
     //- Hydraulic diameter
     volScalarField Dh_;
 
-    //- Hydraulic diameter in the X, Y, Z directions in the local structure 
+    //- Hydraulic diameter in the X, Y, Z directions in the local structure
     //  frame of reference. Used exclusively for the computation of the local
     //  vector Reynolds number.
     volVectorField lDh_;
@@ -303,11 +303,11 @@ public:
         //  mesh one
         void localToGlobalRotateField(volVectorField& field) const;
 
-        //- Rotate a tensor field from the global reference frame to the local 
+        //- Rotate a tensor field from the global reference frame to the local
         //  one
         void globalToLocalRotateField(volTensorField& field) const;
 
-        //- Rotate a vector field from the global reference frame to the local 
+        //- Rotate a vector field from the global reference frame to the local
         //  one
         void globalToLocalRotateField(volVectorField& field) const;
 
@@ -432,7 +432,7 @@ public:
 //- Definition of templated static function in header, it's best practice
 //  according to C++ 11 guidelines
 template<class Type>
-void structure::setRegionField 
+void structure::setRegionField
 (
     const dictionary& dicts,
     GeometricField<Type, fvPatchField, volMesh>& field,
@@ -451,7 +451,7 @@ void structure::setRegionField
 
     //- field is a reference to a field that already exists. If it was
     //  created with a READ_IF_PRESENT or MUST_READ option, do nothing
-    if 
+    if
     (
         ((
             field.readOpt() == IOobject::MUST_READ
@@ -462,10 +462,10 @@ void structure::setRegionField
     {
         // DO NOTHING
         /*
-        //  This part used to spatially limit the field only over the cells 
+        //  This part used to spatially limit the field only over the cells
         //  overwhich it should be defined.
-        //  Removed. This creates problems to setting powerDenistyNeutronics
-        //  since each powerModel will set it to zero outside its cells 
+        //  Removed. This creates problems to setting powerDensityNeutronics
+        //  since each powerModel will set it to zero outside its cells
         scalarField cellField(mesh_.cells().size(), 0);
         forAll(dicts.toc(), i)
         {
@@ -479,7 +479,7 @@ void structure::setRegionField
         field.primitiveFieldRef() *= cellField;
         */
     }
-    //- Otherwise, read the value the field should have on a 
+    //- Otherwise, read the value the field should have on a
     //  region-by-region basis
     else
     {

@@ -56,7 +56,7 @@ See 2D_MSFR or 3D_SmallESFR of Godiva_SN for exhaustive examples.
     groupsWoDF          | List<int> | No    | Empty   | List of energy group index to not apply discontinuity factors
     doNotParametrize    | List<int> | No    | Empty   | List of energy group index to not use parametrization (use only the values from the reference state)
     ScNo                | Scalar    | No    | 1       | Schmidt number for diffusion of precursors
-    polyharmonicSplineMode | Label  | No    | 1       | Polyharmonic spline function mode (1: \f$ r \f$; 2: \f$ r^2 ln(r) \f$; 3: \f$ r^3 \f$; 4: \f$ r^4 ln(r) \f$)
+    polyharmonicSplineMode | Label  | No    | 1 (linear) | Polyharmonic spline function mode (1: \f$ r \f$; 2: \f$ r^2 ln(r) \f$; 3: \f$ r^3 \f$; 4: \f$ r^4 ln(r) \f$)
     axialOrientation    | Vector    | No    | (0,0,1) | Fuel axial orientation
     isLowMemory         | Boolean   | No    | False   | Low memory flag, useful for SN solver
 \endtable
