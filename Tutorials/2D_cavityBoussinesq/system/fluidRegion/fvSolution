@@ -54,13 +54,14 @@ solvers
 
 PIMPLE
 {
-    nOuterCorrectors 6;
-    nCorrectors     12;
+    nOuterCorrectors    6;
+    nCorrectors         12;
     correctUntilConvergence true;
     nNonOrthogonalCorrectors 0;
-    momentumMode    faceCentered;
+    momentumMode        faceCentered;
     oscillationLimiterFraction 0;
-    solveEnergy     true;
+    solveEnergy         true;
+    solveFluidMechanics true;
 }
 
 relaxationFactors

@@ -11,8 +11,6 @@ FoamFile
     version         2;
     format          ascii;
     class           dictionary;
-    note            "mesh decomposition control dictionary";
-    location        "system";
     object          decomposeParDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

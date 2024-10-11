@@ -25,11 +25,10 @@ multiPhysicsSolvers
 			fluidRegion 	onePhase;
 			neutroRegion    diffusionNeutronics;
 		}
-		
-	        minResidual 0.00005;
-        	maxIterations 3;
+        minResidual 0.00005;
+        maxIterations 3;
 	}
-}	
+}
 
 
 mappings

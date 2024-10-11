@@ -11,26 +11,26 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "system";
     object      setFieldsDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 defaultFieldValues
 (
-    volScalarFieldValue Q 0
+    volScalarFieldValue Q  0
     volScalarFieldValue BU 0
 );
 
 regions
 (
     zoneToCell
-        {
-            name Core;
-            fieldValues
-            (
-                volScalarFieldValue Q 1e8
-            );
-            
-        }
+    {
+        name Core;
+        fieldValues
+        (
+            volScalarFieldValue Q 1e8
+        );
+    }
 );
+
+// ************************************************************************* //

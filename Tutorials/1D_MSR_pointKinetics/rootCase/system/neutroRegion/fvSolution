@@ -18,45 +18,45 @@ FoamFile
 solvers
 {
     "prec.*|precStar.*|adjoint_prec.*"
-    {   
+    {
         solver           PBiCG;//Stab;
         preconditioner   DILU;
         tolerance        1e-6;
         relTol           1e-3;
 
-        /*solver           smoothSolver;
+        /*
+        solver           smoothSolver;
         smoother         GaussSeidel;
         tolerance        1e-5;
-        relTol           0.01;*/
+        relTol           0.01;
+        */
     }
     "flux.*|adjoint_flux.*"
-    { 
-
+    {
         solver          PCG;
         preconditioner  DIC;
         tolerance       1e-6;
         relTol          1e-3;
-   /*
-        solver           GAMG;
-        tolerance        1e-6;
-        relTol           0.01;  //0.1;
-        smoother         DICGaussSeidel;//;
-	    nPostSweeps 	1;
-	    nPreSweeps 	1;
-	    nFinestSweeps 	1;
+        /*
+        solver          GAMG;
+        tolerance       1e-6;
+        relTol          0.01;  //0.1;
+        smoother        DICGaussSeidel;
+        nPostSweeps     1;
+        nPreSweeps      1;
+        nFinestSweeps   1;
 
         cacheAgglomeration  true;
         nCellsInCoarsestLevel 20;
-        agglomerator     faceAreaPair;
-        mergeLevels      1;
-	    processorAgglomerator masterCoarsest; */
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+        processorAgglomerator masterCoarsest;
+        */
     }
     "angularFlux.*"
-    { 
-      
-
-        solver          PBiCGStab;//GAMG;//
-//	smoother        GaussSeidel;//;
+    {
+        solver          PBiCGStab;//GAMG;
+        // smoother        GaussSeidel;
         preconditioner  DILU;
         tolerance       1e-7;
         relTol          1e-1;
@@ -70,7 +70,7 @@ neutronTransport
     implicitPredictor           false;
     aitkenAcceleration          true;
     neutronIterationResidual    0.000001; // required accuracy for the coupling of different energy groups
-    maxNeutronIterations        50; // up to 3-400 if no acceleration techniques 
+    maxNeutronIterations        50; // up to 3-400 if no acceleration techniques
 }
 
 // ************************************************************************* //

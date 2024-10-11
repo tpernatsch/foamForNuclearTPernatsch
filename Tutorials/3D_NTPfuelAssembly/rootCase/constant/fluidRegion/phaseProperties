@@ -53,13 +53,13 @@ structureProperties
 
     centralUnloadedFuelElement
     {
-        // V. ZEIGNER, “Survey Description of the Design and Testing of 
-        // Kiwi-B-4E-301 Propulsion Reactor,” Tech. Rep. LA-3311-MS, Los Alamos 
+        // V. ZEIGNER, “Survey Description of the Design and Testing of
+        // Kiwi-B-4E-301 Propulsion Reactor,” Tech. Rep. LA-3311-MS, Los Alamos
         // Scientific Laboratory (7 1965).
         // "This support rod passed through the cluster plate and the center of
         // the central element, terminating in a button at the core exit end of
-        // the rod. The button acted through a perforated molybdenum cone, 
-        // pyrographite insulation, and a graphite support block to support the 
+        // the rod. The button acted through a perforated molybdenum cone,
+        // pyrographite insulation, and a graphite support block to support the
         // fuel elements and central element against the core pressure drop."
         volumeFraction      0.99;
         Dh                  9.5758e-5;
@@ -114,14 +114,14 @@ physicsModels
     {
         "fuelElement:centralUnloadedFuelElement"
         {
-            // Program ELM: A Tool for Rapid Thermal-Hydraulic Analysis of 
-            // Solid-Core Nuclear Rocket Fuel Elements, James T. Walton, 
-            // Lewis Research Center, NASA-TM-105867, Nov 1992. 
+            // Program ELM: A Tool for Rapid Thermal-Hydraulic Analysis of
+            // Solid-Core Nuclear Rocket Fuel Elements, James T. Walton,
+            // Lewis Research Center, NASA-TM-105867, Nov 1992.
             // Equation in section (10) Wolf-McCarthy II.
-            // This is the earlier of the two correlations developed by these 
-            // researchers based on experimental data for a hydrogen flow in 
-            // a electrically heated stainless steel tube (ref.38). The 
-            // correlation, shown below, was developed over a range ofReynolds 
+            // This is the earlier of the two correlations developed by these
+            // researchers based on experimental data for a hydrogen flow in
+            // a electrically heated stainless steel tube (ref.38). The
+            // correlation, shown below, was developed over a range ofReynolds
             // numbers from 7800 to 1.55e6 and a range of Tw/Tb from 1.5
             // to 2.8.
             // Nu = 0.023 * Re^0.8 * Pr^0.4 * (Tw/Tb)^(-0.3)

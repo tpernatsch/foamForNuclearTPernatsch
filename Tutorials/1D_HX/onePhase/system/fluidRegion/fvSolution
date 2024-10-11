@@ -61,6 +61,7 @@ solvers
 PIMPLE
 {
     solveEnergy				true;
+    solveFluidMechanics     true;
     nCorrectors                         6;
     correctUntilConvergence             true;
     nNonOrthogonalCorrectors            0;

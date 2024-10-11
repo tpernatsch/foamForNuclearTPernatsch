@@ -11,46 +11,16 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      controlDict;
+    object      multiRegionCouplingDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     FFSEulerFoam;
+mappings
+{
+    fluidRegion
+    {
+    }
+}
 
-startFrom       startTime;
-
-startTime       0;
-
-stopAt          endTime;//
-
-endTime         30;
-
-deltaT          0.001;
-
-writeControl    adjustableRunTime;
-
-writeInterval   1;
-
-purgeWrite      0;
-
-writeFormat     ascii;
-
-writePrecision  6;
-
-writeCompression off;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable true;
-
-adjustTimeStep  true;
-
-solveEnergy     true;
-
-maxCo           1;
-
-writeContinuityErrors true;
 
 // ************************************************************************* //

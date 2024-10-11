@@ -60,6 +60,9 @@ Tutorials/**/GeN-Foam.dat
 Tutorials/**/log.*
 Tutorials/**/*.out
 !**/2D_*
+!**/*Ex1*
+!**/*Ex2*
+!**/*Ex3*
 !**/defaultFlux2
 !Tutorials/*/**/XS*
 **/old.*

@@ -23,7 +23,7 @@ solvers
         preconditioner  DIC;
         tolerance       1e-06;
         relTol          0.001;
-/*
+        /*
         solver          GAMG;
         tolerance       1e-06;
         relTol          0.001;
@@ -32,12 +32,11 @@ solvers
         nCellsInCoarsestLevel 50;
         agglomerator    faceAreaPair;
         mergeLevels     1;
-	processorAgglomerator masterCoarsest; 
-*/
+        processorAgglomerator masterCoarsest;
+        */
     }
     "fuelDisp"
     {
-
         solver          PBiCG;
         preconditioner  DILU;
         tolerance       1e-5;
@@ -45,7 +44,6 @@ solvers
     }
     "CRDisp"
     {
-
         solver          PBiCG;
         preconditioner  DILU;
         tolerance       1e-5;
@@ -61,21 +59,22 @@ solvers
         nCellsInCoarsestLevel 50;
         agglomerator    faceAreaPair;
         mergeLevels     1;
-	processorAgglomerator masterCoarsest; 
+        processorAgglomerator masterCoarsest;
     }
 }
+
 stressAnalysis
 {
     compactNormalStress yes;
     nCorrectors     3;
     D               1e-06;
 }
+
 relaxationFactors
 {
     fields
     {
-	Disp 0.99;
-
+        Disp 0.99;
     }
 }
 // ************************************************************************* //

@@ -10,9 +10,7 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    arch        "LSB;label=32;scalar=64";
     class       dictionary;
-    location    "system";
     object      controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -67,17 +65,6 @@ maxDeltaT       1;
 
 maxCo           1;
 
-regionSolvers
-{
-    fluidRegion     onePhase;
-}
-
-removeBaffles
-{
-    fluidRegion     0;
-    neutroRegion    0;
-    thermoMechanicalRegion 0;
-}
 
 
 // ************************************************************************* //

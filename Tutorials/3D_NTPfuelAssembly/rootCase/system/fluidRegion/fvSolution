@@ -67,6 +67,7 @@ PIMPLE
     // nOuterCorrectors    3;
     momentumMode        faceCentered;
     solveEnergy         true;
+    solveFluidMechanics true;
 }
 
 relaxationFactors

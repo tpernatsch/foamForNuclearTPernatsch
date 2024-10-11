@@ -62,7 +62,7 @@ solvers
         solver              implicitUpwind;
         solvePhase          vapour;
         //adjustSubCycles     true;
-        //alphaMaxCo          0.25;   
+        //alphaMaxCo          0.25;
     }
 
     "(k|epsilon|Theta).*"
@@ -77,6 +77,8 @@ solvers
 
 PIMPLE
 {
+    solveEnergy                 true;
+    solveFluidMechanics         true;
     minNOuterCorrectors         3;
     nCorrectors                 12;
     correctUntilConvergence     true;
@@ -117,7 +119,7 @@ relaxationFactors
         "T.interfaceFinal"  0.25;
         "alpha.*"           0.5;
         "phi.*"             0.8;
-    } 
+    }
 }
 
 // ************************************************************************* //

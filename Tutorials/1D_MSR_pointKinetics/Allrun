@@ -6,8 +6,6 @@ cd ${0%/*} || exit 1    # Run from this directory
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
-exe="GeN-Foam"
-
 cases="steadyState transient transientEnd"
 
 runCloneCase()
@@ -38,8 +36,8 @@ setTransient()
 {
     caseName=$1
     runCloneCase $caseName $2
-    cp -r $caseName/0/neutroRegion $caseName/100/ 
-    cp -r $caseName/0/uniform $caseName/100/ 
+    cp -r $caseName/0/neutroRegion $caseName/100/
+    cp -r $caseName/0/uniform $caseName/100/
     printf "Setting $caseName case...\n"
     foamDictionary $caseName/system/controlDict -entry startFrom -set startTime
     foamDictionary $caseName/system/controlDict -entry startTime -set 100
@@ -93,15 +91,15 @@ do
     # Start gnuplot if it exist
     if command -v gnuplot &> /dev/null
     then
-        gnuplot -e "log='$caseName/log.$exe'" residuals - &> /dev/null &
+        gnuplot -e "log='$caseName/log.GeN-Foam'" residuals - &> /dev/null &
     else
         echo "gnuplot could not be found"
     fi
 
     #( cd $caseName && runApplication `getApplication` )
-    printf "Running $exe on $caseName\n"
+    printf "Running GeN-Foam on $caseName\n"
     #set point kinetics initial conditions
-    $exe -case $caseName 2>&1 | tee "$caseName/log.$exe"
+    GeN-Foam -case $caseName 2>&1 | tee "$caseName/log.GeN-Foam"
 
     # Kill gnuplot if it was started
     pkill -x gnuplot &> /dev/null

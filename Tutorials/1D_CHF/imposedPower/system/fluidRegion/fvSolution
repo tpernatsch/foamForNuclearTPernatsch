@@ -95,8 +95,9 @@ PIMPLE
             relTol          0;
         }
     }
-    solveEnergy     true;
-    nOuterCorrectors 12;
+    solveEnergy         true;
+    solveFluidMechanics true;
+    nOuterCorrectors    12;
 }
 
 relaxationFactors

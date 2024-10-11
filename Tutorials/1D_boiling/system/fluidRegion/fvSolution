@@ -65,15 +65,15 @@ solvers
 
 PIMPLE
 {
-    nCorrectors     12;
+    nCorrectors         12;
     nNonOrthogonalCorrectors 0;
-    partialEliminationMode implicit;
-    momentumMode    faceCentered;
-    oscillationLimiterFraction 0;
-    correctUntilConvergence true;
-    massTransferSafetyFactor 0.1;
-    maxTInterfaceDdt 10000;
-    enthalpyStabilizationMode source;
+    partialEliminationMode  implicit;
+    momentumMode        faceCentered;
+    oscillationLimiterFraction  0;
+    correctUntilConvergence     true;
+    massTransferSafetyFactor    0.1;
+    maxTInterfaceDdt    10000;
+    enthalpyStabilizationMode   source;
     residualControl
     {
         p_rgh
@@ -88,8 +88,9 @@ PIMPLE
             relTol          0;
         }
     }
-    solveEnergy     true;
-    nOuterCorrectors 24;
+    solveEnergy         true;
+    solveFluidMechanics true;
+    nOuterCorrectors    24;
 }
 
 relaxationFactors
