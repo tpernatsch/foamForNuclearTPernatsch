@@ -116,10 +116,6 @@ int main(int argc, char *argv[])
 
     // Set the initial time-step
     setDeltaT(runTime, solvers);
-    forAll(solvers, i)
-    {
-        solvers[i].correctBaffleLessFields();
-    }
 
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

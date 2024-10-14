@@ -497,6 +497,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
             List<Pair<scalar>>()
         )
     ),
+    phiOrig_(nullptr),
     intPhiRef_(0),
     phiFaces_(0),
     phiMagSf_(0),
@@ -1194,37 +1195,47 @@ Foam::solvers::pointKineticNeutronics::calcGEMLevelAndReactivity()
     if (this->get<bool>("GEM"))
     {
 
-        //For now hard-coding the fluid mesh to be named fluidRegion
-        const fvMesh& THMesh(mesh_.time().lookupObjectRef<fvMesh>("fluidRegion"));
-        phiOrig_ = THMesh.findObject<surfaceScalarField>("phi");
-        const labelList& faces
-        (
-            THMesh.faceZones()[nuclearData_.get<word>("GEMFlowFaceZone")]
-        );
-        scalarField magSf(mag(THMesh.faceAreas()));
-        forAll(faces, i)
+        if(phiOrig_ == nullptr)
         {
-            const label& facei(faces[i]);
-            phiFaces_.append(facei);
-            phiMagSf_.append(magSf[facei]);
-            intPhiRef_ += (*phiOrig_)[facei]*magSf[facei];
+            word regionName(this->get<word>("fluidRegionName"));
+
+            //For now hard-coding the fluid mesh to be named fluidRegion
+            const fvMesh& THMesh(mesh_.time().lookupObjectRef<fvMesh>(regionName));
+            phiOrig_ = THMesh.findObject<surfaceScalarField>("phi");
+            const labelList& faces
+            (
+                THMesh.faceZones()[nuclearData_.get<word>("GEMFlowFaceZone")]
+            );
+            scalarField magSf(mag(THMesh.faceAreas()));
+            forAll(faces, i)
+            {
+                const label& facei(faces[i]);
+                phiFaces_.append(facei);
+                phiMagSf_.append(magSf[facei]);
+                intPhiRef_ += (*phiOrig_)[facei]*magSf[facei];
+            }
+            reduce(intPhiRef_, sumOp<scalar>());
         }
-        reduce(intPhiRef_, sumOp<scalar>());
-        
+
         scalar intPhiFrac(0);
         forAll(phiFaces_, i)
         {
             const label& facei(phiFaces_[i]);
             intPhiFrac += (*phiOrig_)[facei]*phiMagSf_[i];
         }
+        Info <<"Bla bla " << intPhiRef_<<endl;
+        Info <<"The other "<< intPhiFrac<<endl;
         reduce(intPhiFrac, sumOp<scalar>());
         intPhiFrac /= intPhiRef_;
+        Info <<"Fractions though is " << intPhiFrac<<endl;
 
         //- Specific FFTF relationship between flow fraction and GEM sodium
         //  level
         GEMSodiumLevel =
             (265.0-539504/(2440.13+sqr(intPhiFrac*100)))/100
         -   GEMSodiumLevelRef_;
+
+        Info << "Level is " << GEMSodiumLevel<<endl;
 
         label N(GEMReactivityMap_.size()-1);
         if (GEMReactivityMap_.size() > 1)
@@ -1255,6 +1266,8 @@ Foam::solvers::pointKineticNeutronics::calcGEMLevelAndReactivity()
                         );
                         GEMReactivity =
                             m*(GEMSodiumLevel-X0.first()) + X0.second();
+
+                        Info <<"Reactivity finally is " << GEMReactivity<<endl;
                         break;
                     }
                 }

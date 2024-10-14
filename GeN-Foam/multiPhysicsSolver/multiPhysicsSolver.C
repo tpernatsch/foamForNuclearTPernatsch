@@ -194,6 +194,9 @@ void Foam::solvers::multiPhysicsSolver::correctPhysics()
         }
 
         ++iterN;
+
+        if(residual<minResidual_)
+            Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
     }
     while(residual>minResidual_ && iterN < maxIterations_);
 }
