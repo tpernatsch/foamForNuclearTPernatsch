@@ -58,13 +58,15 @@ solvers
     }
 }
 
-PIMPLE // a detailed explanation of this dictionary is available in this 
+PIMPLE // a detailed explanation of this dictionary is available in this
        // same fvSolution file of the 1D_boiling tutorial
 {
-    nCorrectors      2;//pressure-velocity correctors
+    nCorrectors         2;
+    nOuterCorrectors    1;
     nNonOrthogonalCorrectors 0;
-    // partialEliminationMode      implicit;
-    momentumMode                faceCentered;
+    momentumMode        faceCentered;
+    solveEnergy         true;
+    solveFluidMechanics true;
 }
 
 relaxationFactors

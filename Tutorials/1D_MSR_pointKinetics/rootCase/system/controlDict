@@ -8,10 +8,10 @@
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
-    version     2.0;
-    format      ascii;
-    class       dictionary;
-    object      controlDict;
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          controlDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -45,28 +45,25 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-//- Physics to Solve
+regionSolvers
+{
+    fluidRegion     onePhase;
+}
 
-solveFluidMechanics true;
+removeBaffles
+{
+    fluidRegion     false;
+}
 
-solveEnergy     true;
+liquidFuel      true;
 
-solveNeutronics false;
+adjustTimeStep  true;
 
-solveThermalMechanics false;
+maxDeltaT       1;
 
-//- Global options
+maxCo           1;
 
-liquidFuel true;
+maxPowerVariation 0.025;
 
-//- Time step control options
-
-adjustTimeStep      true;
-
-maxDeltaT           1;
-
-maxCo               1;
-
-maxPowerVariation   0.025;
 
 // ************************************************************************* //

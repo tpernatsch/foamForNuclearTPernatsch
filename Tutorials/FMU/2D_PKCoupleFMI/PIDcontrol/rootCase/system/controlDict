@@ -48,13 +48,17 @@ runTimeModifiable false;
 
 //- Physics
 
-solveFluidMechanics true;
+regionSolvers
+{
+    fluidRegion     onePhase;
+    neutroRegion    diffusionNeutronics;
+}
 
-solveEnergy     true;
-
-solveNeutronics true;
-
-solveThermalMechanics false;
+removeBaffles
+{
+    fluidRegion     true;
+    neutroRegion    false;
+}
 
 
 //- Baffles

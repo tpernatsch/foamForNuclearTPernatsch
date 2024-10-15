@@ -1,9 +1,9 @@
-Info << "set XS fields" << endl ;
+Info << "Set XS fields... ";
 const PtrList<volScalarField>& IV = xs_.IV();
 const PtrList<volScalarField>& D = xs_.D();
 const PtrList<volScalarField>& nuSigmaEff = xs_.nuSigmaEff();
 const PtrList<volScalarField>& sigmaPow = xs_.sigmaPow();
-const PtrList<volScalarField>& sigmaDisapp = xs_.sigmaDisapp();
+const PtrList<volScalarField>& sigmaRemoval = xs_.sigmaRemoval();
 //Line below to be used if using XS instead of XSLowMem
 //const List<List<PtrList<volScalarField > > >& sigmaFromToP = xs_.sigmaFromTo();
 const PtrList<volScalarField>& chiPrompt = xs_.chiPrompt();
@@ -15,5 +15,5 @@ const volScalarField& fuelFraction = xs_.fuelFraction();
 const volScalarField& secondaryPowerVolumeFraction = xs_.secondaryPowerVolumeFraction();
 const volScalarField& fractionToSecondaryPower = xs_.fractionToSecondaryPower();
 const PtrList<volScalarField >& discFactor = xs_.discFactor();
-Info << "done: set XS fields" << endl ;
 
+Info<< "Done" << endl;

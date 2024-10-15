@@ -1,7 +1,16 @@
 #!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
 
-# --- Run from this directory
-cd ${0%/*} || exit 1
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
 
 # --- Initialize the output file
 resFile=test.out
@@ -36,7 +45,7 @@ extract()
     value=$(
         grep -e "$1" ./$2/log.GeN-Foam |
         tail -1 |
-        egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?." 
+        egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?."
     )
     echo $value
 }
@@ -68,7 +77,7 @@ isInRange()
 }
 
 error=0.001
-echo "Max temperatures (avg min max) in trisos" | tee -a $resFile
+echo "Max temperatures (avg min max) in trisos  " | tee -a $resFile
 if  [ $(isInRange $TfmaxAvg $expectedTfmaxAvg $error) -eq 0 ] &&
     [ $(isInRange $TfmaxMin $expectedTfmaxMin $error) -eq 0 ] &&
     [ $(isInRange $TfmaxMax $expectedTfmaxMax $error) -eq 0 ]
@@ -91,3 +100,5 @@ fi
 
 # --- Exit successfully
 exit 0
+
+#==============================================================================*

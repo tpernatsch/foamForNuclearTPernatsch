@@ -13,6 +13,8 @@ FoamFile
     class       dictionary;
     object      phaseProperties;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 thermalHydraulicsType "twoPhase";
 
 fluid1          "liquid";

@@ -24,6 +24,8 @@ rm -rf steadyState
 #==============================================================================*
 
 cp -r rootCase steadyState
+cp steadyState/constant/multiRegionCouplingDict_coupled steadyState/constant/multiRegionCouplingDict
+GeN-Foam -initializeMappedFields -case steadyState
 
 # Run neutronics steady-state
 GeN-Foam -case steadyState |

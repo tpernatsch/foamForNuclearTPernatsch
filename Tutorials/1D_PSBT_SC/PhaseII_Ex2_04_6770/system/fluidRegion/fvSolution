@@ -21,34 +21,32 @@ solvers
     {
         solver          GAMG;
         smoother        DIC;
-        tolerance       1e-8;
+        tolerance       1e-08;
         relTol          0;
     }
-
     p_rghFinal
     {
-        $p_rgh;
+        solver          GAMG;
+        smoother        DIC;
+        tolerance       1e-08;
         relTol          0;
     }
-
     "e.*"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-8;
+        tolerance       1e-08;
         relTol          0;
         minIter         0;
     }
-
     "h.*"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-8;
+        tolerance       1e-08;
         relTol          0;
         minIter         0;
     }
-
     ".*"
     {
         solver          PBiCGStab;
@@ -56,20 +54,16 @@ solvers
         tolerance       1e-06;
         relTol          0.001;
     }
-
     "alpha"
     {
-        solver              implicitUpwind;
-        solvePhase          vapour;
-        //adjustSubCycles     true;
-        //alphaMaxCo          0.25;   
+        solver          implicitUpwind;
+        solvePhase      vapour;
     }
-
     "(k|epsilon|Theta).*"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-7;
+        tolerance       1e-07;
         relTol          0;
         minIter         1;
     }
@@ -77,23 +71,22 @@ solvers
 
 PIMPLE
 {
-    minNOuterCorrectors         3;
-    nCorrectors                 12;
-    correctUntilConvergence     true;
-    nNonOrthogonalCorrectors    0;
-    partialEliminationMode      implicit;
-    momentumMode                faceCentered;
-    oscillationLimiterFraction  0;
-    massTransferSafetyFactor    0.40;
-    enthalpyStabilizationMode   cutoff;
-
+    minNOuterCorrectors 3;
+    nCorrectors     12;
+    correctUntilConvergence true;
+    nNonOrthogonalCorrectors 0;
+    partialEliminationMode implicit;
+    momentumMode    faceCentered;
+    oscillationLimiterFraction 0;
+    massTransferSafetyFactor 0.4;
+    enthalpyStabilizationMode cutoff;
     residualControl
     {
         p_rgh
         {
-            tolerance                           1e-05;
-            relTol                              0;
-            useFirstPISOInitialResidual         true;
+            tolerance       1e-05;
+            relTol          0;
+            useFirstPISOInitialResidual true;
         }
         h.liquid
         {
@@ -101,6 +94,9 @@ PIMPLE
             relTol          0;
         }
     }
+    solveEnergy         true;
+    solveFluidMechanics true;
+    nOuterCorrectors    12;
 }
 
 relaxationFactors
@@ -109,15 +105,15 @@ relaxationFactors
     {
         ".*"            1;
     }
-
     fields
     {
-        "dmdt.*"            0.1;
-        "T.interface"       0.25;
-        "T.interfaceFinal"  0.25;
-        "alpha.*"           0.5;
-        "phi.*"             0.8;
-    } 
+        "dmdt.*"        0.1;
+        "T.interface"   0.25;
+        "T.interfaceFinal" 0.25;
+        "alpha.*"       0.5;
+        "phi.*"         0.8;
+    }
 }
+
 
 // ************************************************************************* //

@@ -1,7 +1,6 @@
 # Subcritical Point-Kinetics Solver
 
-Author:      2022/03/28, Thomas Guilbaud, EPFL/Transmutex SA  
-Last Update: 2022/09/14  
+Author:      2022/03/28, Thomas Guilbaud, EPFL/Transmutex SA
 
 ---
 

@@ -40,13 +40,17 @@ License
 #include "neutronics.H"
 #include "zeroGradientFvPatchFields.H"
 #include "fvmSup.H"
+#include "mergeOrSplitBaffles.H"
+
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
 {
+namespace solvers
+{
     defineTypeNameAndDebug(neutronics, 0);
-    defineRunTimeSelectionTable(neutronics, dictionary);
+}
 }
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
@@ -54,11 +58,12 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::neutronics::neutronics
+Foam::solvers::neutronics::neutronics
 (
     fvMesh& mesh
 )
 :
+    solver(mesh),
     IOdictionary
     (
         IOobject
@@ -66,7 +71,7 @@ Foam::neutronics::neutronics
             "neutronicsProperties",
             mesh.time().constant(),
             mesh,
-            IOobject::MUST_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE
         )
     ),
@@ -83,8 +88,8 @@ Foam::neutronics::neutronics
             IOobject::AUTO_WRITE
         )
     ),
-    keff_(reactorState_.lookupOrDefault("keff",1.0)),
-    pTarget_(reactorState_.lookupOrDefault("pTarget",1.0)),
+    keff_(reactorState_.lookupOrDefault("keff", 1.0)),
+    pTarget_(reactorState_.lookupOrDefault("pTarget", 1.0)),
     powerDensity_
     (
         IOobject
@@ -99,11 +104,11 @@ Foam::neutronics::neutronics
         dimensionedScalar("", dimPower/dimVol, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    secondaryPowerDenisty_
+    secondaryPowerDensity_
     (
         IOobject
         (
-            "secondaryPowerDenisty",
+            "secondaryPowerDensity",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,
@@ -140,6 +145,7 @@ Foam::neutronics::neutronics
     (
         mesh.time().controlDict().lookupOrDefault("liquidFuel", false)
     ),
+    originalPoints_(mesh_.points()),
     externalSource_
     (
         IOobject
@@ -158,84 +164,130 @@ Foam::neutronics::neutronics
         mesh.time()
     )
 {
-    Info << "Initial keff = " << keff_ << endl;
-    Info << "Is eigenvalue calc : " << eigenvalueNeutronics_ << endl;
-    Info << "Is external source calc : " << externalSourceNeutronics_ << endl;
+    Info<< "Initial keff = " << keff_ << nl
+        << "Is eigenvalue calc : " << eigenvalueNeutronics_ << nl
+        << "Is external source calc : " << externalSourceNeutronics_
+        << endl;
 }
 
-// * * * * * * * * * * * * * * * * * Selectors * * * * * * * * * * * * * * * //
 
-Foam::autoPtr<Foam::neutronics> Foam::neutronics::New
-(
-    fvMesh& mesh
-)
+// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
+
+
+void Foam::solvers::neutronics::correctBaffleLessFields()
 {
-    word modelName;
+    if (mesh_.time().controlDict().found("removeBaffles"))
+    {
+        const dictionary& removeBafflesDict = mesh_.time().controlDict().subDict("removeBaffles");
 
-    IOdictionary dict
+        if (removeBafflesDict.get<bool>(mesh_.name()))
+        {
+            const IOdictionary couplingDict
+            (
+                IOobject
+                (
+                    "multiRegionCouplingDict",
+                    runTime.time().constant(),
+                    runTime.db(),
+                    IOobject::MUST_READ,
+                    IOobject::NO_WRITE
+                )
+            );
+
+            // Lookup for the fields that need to be mapped FROM this mesh
+            const dictionary mappingDict(couplingDict.subDict("mappings"));
+            // Loop on every region that is not this one and look for the fields in "sourceFields"
+            const wordList regions(mappingDict.toc());
+
+            forAll(regions, regioni)
+            {
+                // Look for other regions
+                if (regions[regioni] != mesh_.name())
+                {
+                    const dictionary regionFromDict(mappingDict.subDict(regions[regioni]));
+                    const wordList regionsFrom(regionFromDict.toc());
+                    forAll(regionsFrom, regionFromi)
+                    {
+                        if (regionsFrom[regionFromi] == mesh_.name())
+                        {
+                            const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
+                            const wordList fieldTypes(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("fieldTypes")); // list of types of fields to create
+                            fvMesh& baffleLessMesh = const_cast<fvMesh&>(mesh_.time().lookupObject<fvMesh>(mesh_.name()+".baffleLess"));
+                            forAll(fieldsList, fieldi)
+                            {
+                                if (fieldTypes[fieldi] == "scalar")
+                                {
+                                    volScalarField& field = baffleLessMesh.lookupObjectRef<volScalarField>(fieldsList[fieldi]+".baffleLess");
+                                    field.primitiveFieldRef() = mesh_.lookupObject<volScalarField>(fieldsList[fieldi]).primitiveField();
+                                    field.correctBoundaryConditions();
+                                }
+                                else if (fieldTypes[fieldi] == "vector")
+                                {
+                                    volVectorField& field = baffleLessMesh.lookupObjectRef<volVectorField>(fieldsList[fieldi]+".baffleLess");
+                                    field.primitiveFieldRef() = mesh_.lookupObject<volVectorField>(fieldsList[fieldi]).primitiveField();
+                                    field.correctBoundaryConditions();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+void Foam::solvers::neutronics::deformMesh()
+{
+    // Look for the multiRegionDict
+    const IOdictionary couplingDict
     (
         IOobject
         (
-            "neutronicsProperties",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
+            "multiRegionCouplingDict",
+            runTime.time().constant(),
+            runTime.db(),
+            IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE
         )
     );
 
-    dict.lookup("model") >> modelName;
-
-    Info<< "Selecting neutronics model type " << modelName << endl;
-
-    auto* ctorPtr = dictionaryConstructorTable(modelName);
-
-    if (!ctorPtr)
+    if (couplingDict.found("meshDeformation"))
     {
-        FatalErrorIn
-        (
-            "neutronics::New(const volScalarField&, "
-            "const volVectorField&, basicThermo&)"
-        )   << "Unknown neutronics model " << modelName
-            << endl << endl
-            << "Valid models types are :" << endl
-            << dictionaryConstructorTablePtr_->toc()
-            << exit(FatalError);
+
+        const dictionary deformDict(couplingDict.subDict("meshDeformation"));
+
+        const wordList regions(deformDict.toc());
+
+        forAll(regions, regioni)
+        {
+            if (regions[regioni] == mesh_.name())
+            {
+                const volPointInterpolation& meshPointInterpolation = volPointInterpolation::New(mesh_);
+
+                tmp<pointVectorField> meshPointsDisplacement
+                (
+                    meshPointInterpolation.interpolate
+                    (
+                        mesh_.lookupObject<volVectorField>
+                        (
+                            deformDict.subDict(mesh_.name()).get<word>("displacementField")
+                        )
+                    )
+                );
+
+                tmp<pointField> displacedPoints = originalPoints_ + meshPointsDisplacement->internalField();
+
+                mesh_.movePoints(displacedPoints);
+
+                Info<< "Deforming " << mesh_.name()
+                    << " mesh according to displacement field "
+                    << deformDict.subDict(mesh_.name()).get<word>("displacementField")
+                    << endl;
+            }
+        }
     }
-    return
-        autoPtr<neutronics>
-        (
-            ctorPtr(mesh)
-        );
 }
 
-// * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
-
-void Foam::neutronics::deformMesh
-(
-    const meshToMesh& mechToNeutro,
-    const volVectorField& dispOrig
-)
-{
-    const volPointInterpolation& neutroMeshPointInterpolation =
-        volPointInterpolation::New(mesh_);
-
-    tmp<pointVectorField> neutroPointsDisplacementOld =
-        neutroMeshPointInterpolation.interpolate(disp_);
-
-    disp_ *= 0.0;
-    mechToNeutro.mapSrcToTgt(dispOrig, plusEqOp<vector>(), disp_);
-    disp_.correctBoundaryConditions();
-
-    tmp<pointVectorField> neutroPointsDisplacement =
-        neutroMeshPointInterpolation.interpolate(disp_);
-
-    tmp<pointField> displacedPoints =
-        mesh_.points()
-    +   neutroPointsDisplacement->internalField()
-    -   neutroPointsDisplacementOld->internalField();
-
-    mesh_.movePoints(displacedPoints);
-}
 
 // ************************************************************************* //

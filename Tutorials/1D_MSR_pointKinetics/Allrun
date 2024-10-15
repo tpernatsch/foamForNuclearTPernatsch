@@ -6,9 +6,7 @@ cd ${0%/*} || exit 1    # Run from this directory
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
-exe="GeN-Foam"
-
-cases="steadyState  transient  transientEnd "
+cases="steadyState transient transientEnd"
 
 runCloneCase()
 {
@@ -19,58 +17,55 @@ runCloneCase()
 
 setSteadyState()
 {
-    runCloneCase $1 $2
+    caseName=$1
+    runCloneCase $caseName $2
     printf "Setting steady state case...\n"
-    setFields -region neutroRegion
-    setFields -region fluidRegion
-    foamDictionary steadyState/system/fvSolution -entry tightlyCoupled -set false
-    foamDictionary steadyState/system/controlDict -entry startFrom -set startTime
-    foamDictionary steadyState/system/controlDict -entry startTime -set 0
-    foamDictionary steadyState/system/controlDict -entry endTime -set 100
-    foamDictionary steadyState/system/controlDict -entry adjustTimeStep -set true
-    foamDictionary steadyState/system/controlDict -entry writeControl -set adjustableRunTime
-    foamDictionary steadyState/system/controlDict -entry writeInterval -set 100
-    foamDictionary steadyState/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary steadyState/system/controlDict -entry solveEnergy -set true
-    foamDictionary steadyState/system/controlDict -entry solveNeutronics -set false
-    foamDictionary steadyState/system/controlDict -entry solveThermalMechanics -set false
+    foamDictionary $caseName/system/controlDict -entry startFrom -set startTime
+    foamDictionary $caseName/system/controlDict -entry startTime -set 0
+    foamDictionary $caseName/system/controlDict -entry endTime -set 100
+    foamDictionary $caseName/system/controlDict -entry adjustTimeStep -set true
+    foamDictionary $caseName/system/controlDict -entry writeControl -set adjustableRunTime
+    foamDictionary $caseName/system/controlDict -entry writeInterval -set 100
+    cp $caseName/constant/multiRegionCouplingDict_TH $caseName/constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields -case $caseName
     printf "Case set!\n\n"
 }
 
 
 setTransient()
 {
-    runCloneCase $1 $2
-    printf "Setting transient case...\n"
-    foamDictionary transient/system/fvSolution -entry tightlyCoupled -set true
-    foamDictionary transient/system/controlDict -entry startFrom -set startTime
-    foamDictionary transient/system/controlDict -entry startTime -set 100
-    foamDictionary transient/system/controlDict -entry endTime -set 400
-    foamDictionary transient/system/controlDict -entry adjustTimeStep -set true
-    foamDictionary transient/system/controlDict -entry writeControl -set adjustableRunTime
-    foamDictionary transient/system/controlDict -entry writeInterval -set 10
-    foamDictionary transient/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary transient/system/controlDict -entry solveEnergy -set true
-    foamDictionary transient/system/controlDict -entry solveNeutronics -set true
-    foamDictionary transient/system/controlDict -entry solveThermalMechanics -set false
+    caseName=$1
+    runCloneCase $caseName $2
+    cp -r $caseName/0/neutroRegion $caseName/100/
+    cp -r $caseName/0/uniform $caseName/100/
+    printf "Setting $caseName case...\n"
+    foamDictionary $caseName/system/controlDict -entry startFrom -set startTime
+    foamDictionary $caseName/system/controlDict -entry startTime -set 100
+    foamDictionary $caseName/system/controlDict -entry endTime -set 400
+    foamDictionary $caseName/system/controlDict -entry adjustTimeStep -set true
+    foamDictionary $caseName/system/controlDict -entry writeControl -set adjustableRunTime
+    foamDictionary $caseName/system/controlDict -entry writeInterval -set 10
+    foamDictionary $caseName/system/controlDict -entry  regionSolvers/neutroRegion -set pointKinetics
+    foamDictionary $caseName/system/controlDict -entry  removeBaffles/neutroRegion -set false
+    # rm $caseName/constant/multiRegionCouplingDict
+    cp $caseName/constant/multiRegionCouplingDict_Coupled $caseName/constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields -case $caseName
     printf "Case set!\n\n"
 }
 
 setTransientEnd()
 {
-    runCloneCase $1 $2
-    printf "Setting transient case...\n"
-    foamDictionary transientEnd/system/fvSolution -entry tightlyCoupled -set true
-    foamDictionary transientEnd/system/controlDict -entry startFrom -set startTime
-    foamDictionary transientEnd/system/controlDict -entry startTime -set 400
-    foamDictionary transientEnd/system/controlDict -entry endTime -set 401
-    foamDictionary transientEnd/system/controlDict -entry adjustTimeStep -set true
-    foamDictionary transientEnd/system/controlDict -entry writeControl -set adjustableRunTime
-    foamDictionary transientEnd/system/controlDict -entry writeInterval -set 1
-    foamDictionary transientEnd/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary transientEnd/system/controlDict -entry solveEnergy -set true
-    foamDictionary transientEnd/system/controlDict -entry solveNeutronics -set true
-    foamDictionary transientEnd/system/controlDict -entry solveThermalMechanics -set false
+    caseName=$1
+    runCloneCase $caseName $2
+    printf "Setting $caseName case...\n"
+    foamDictionary $caseName/system/controlDict -entry startFrom -set startTime
+    foamDictionary $caseName/system/controlDict -entry startTime -set 400
+    foamDictionary $caseName/system/controlDict -entry endTime -set 401
+    foamDictionary $caseName/system/controlDict -entry adjustTimeStep -set true
+    foamDictionary $caseName/system/controlDict -entry writeControl -set adjustableRunTime
+    foamDictionary $caseName/system/controlDict -entry writeInterval -set 1
+    GeN-Foam -initializeMappedFields -case $caseName
+
     printf "Case set!\n\n"
 }
 
@@ -79,31 +74,32 @@ do
     printf "Preparing to run case $caseName...\n"
 
     case "$caseName" in
-    "steadyState")
-        setSteadyState $caseName rootCase
-        printf "Steady state th case is prepared!\n"
-        ;;
-    "transient")
-        printf "Transient case entered...\n"
-        setTransient $caseName steadyState
-        ;;
-    "transientEnd")
-        printf "Transient case entered...\n"
-        setTransientEnd $caseName transient
-        ;;
+        "steadyState")
+            setSteadyState $caseName rootCase
+            printf "Steady state th case is prepared!\n"
+            ;;
+        "transient")
+            printf "Transient case entered...\n"
+            setTransient $caseName steadyState
+            ;;
+        "transientEnd")
+            printf "Transient case entered...\n"
+            setTransientEnd $caseName transient
+            ;;
     esac
 
     # Start gnuplot if it exist
     if command -v gnuplot &> /dev/null
     then
-        gnuplot -e "log='$caseName/log.$exe'" residuals - &> /dev/null &
+        gnuplot -e "log='$caseName/log.GeN-Foam'" residuals - &> /dev/null &
     else
         echo "gnuplot could not be found"
     fi
 
     #( cd $caseName && runApplication `getApplication` )
-    printf "Running $exe on $caseName\n"
-    $exe -case $caseName 2>&1 | tee "$caseName/log.$exe"
+    printf "Running GeN-Foam on $caseName\n"
+    #set point kinetics initial conditions
+    GeN-Foam -case $caseName 2>&1 | tee "$caseName/log.GeN-Foam"
 
     # Kill gnuplot if it was started
     pkill -x gnuplot &> /dev/null

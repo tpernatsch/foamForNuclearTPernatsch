@@ -23,9 +23,11 @@ if (externalSourceNeutronics_)
 if (liquidFuel_)
 {
     Info<< "    Initial reactivity loss due to delayed neutron precursors movement = "
-    << (precEquilibriumReactivity_ *1e+5) << " pcm"<<endl;
+        << (precEquilibriumReactivity_ *1e+5) << " pcm"
+        << endl;
     Info<< "    Estimated Beta including DNP recirculation = "
-    << (liquidFuelBeta_ *1e+5) << " pcm"<<endl;
+        << (liquidFuelBeta_ *1e+5) << " pcm"
+        << endl;
 }
 if (this->get<bool>("GEM"))
 {

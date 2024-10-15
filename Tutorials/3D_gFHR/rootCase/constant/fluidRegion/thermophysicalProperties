@@ -33,22 +33,22 @@ mixture
 {
     specie
     {
-        molWeight               33.0; // https://www.osti.gov/servlets/purl/1841023
+        molWeight       33.0; // https://www.osti.gov/servlets/purl/1841023
     }
     equationOfState
     {
-        rhoCoeffs<8>           (2413.03 -0.4884 0 0 0 0 0 0); // Molten salts database for energy applications R. Serrano-López
+        rhoCoeffs<8>    (2413.03 -0.4884 0 0 0 0 0 0); // Molten salts database for energy applications R. Serrano-López
     }
     thermodynamics
     {
-        CpCoeffs<8>            (2265.75 0 0 0 0 0 0 0); // Molten salts database for energy applications R. Serrano-López
-        Hf                      0;
-        Sf                      0;
+        CpCoeffs<8>     (2265.75 0 0 0 0 0 0 0); // Molten salts database for energy applications R. Serrano-López
+        Hf              0;
+        Sf              0;
     }
     transport
     {
-        muCoeffs<8>             (0.001 0 0 0 0 0 0 0); // fitted (R=1, T=800-1000K), Molten salts database for energy applications R. Serrano-López
-        kappaCoeffs<8>          (1.1 0 0 0 0 0 0 0); // Molten salts database for energy applications R. Serrano-López
+        muCoeffs<8>     (0.001 0 0 0 0 0 0 0); // fitted (R=1, T=800-1000K), Molten salts database for energy applications R. Serrano-López
+        kappaCoeffs<8>  (1.1 0 0 0 0 0 0 0); // Molten salts database for energy applications R. Serrano-López
     }
 }
 

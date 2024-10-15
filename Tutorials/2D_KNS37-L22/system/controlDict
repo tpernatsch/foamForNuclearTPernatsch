@@ -45,34 +45,27 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-//- Physics to Solve
+regionSolvers
+{
+    fluidRegion     twoPhase;
+}
 
-solveFluidMechanics true;
+removeBaffles
+{
+    fluidRegion     false;
+}
 
-solveEnergy     true;
-includeKineticEnergy false;
-
-solveNeutronics false;
-
-solveThermalMechanics false;
-
-//- Global options
-
-liquidFuel false;
-
-//- Time step control options
+liquidFuel      false;
 
 adjustTimeStep  true;
 
 maxDeltaT       0.01;
 
-minDeltaT       2.5e-5;
+minDeltaT       2.5e-05;
 
 maxCo           10;
 
 maxCoTwoPhase   0.5;
-
-//- Function Objects for tracking variable evolution
 
 functions
 {
@@ -106,7 +99,7 @@ functions
         log             true;
         writeFields     false;
         operation       volAverage;
-        fields          ( alpha.vapour T.activeStructure);
+        fields          ( alpha.vapour T.activeStructure );
     }
     Z545Values
     {
@@ -168,5 +161,8 @@ functions
         patches         ( );
     }
 }
+
+
+
 
 // ************************************************************************* //

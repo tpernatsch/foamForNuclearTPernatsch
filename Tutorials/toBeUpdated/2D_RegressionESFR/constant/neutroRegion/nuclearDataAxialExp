@@ -31,7 +31,7 @@ innerCore
  scatteringMatrixP0  1  1 (
  ( 2.967730e+01 )
  );
- sigmaDisapp nonuniform List<scalar> 1 (5.889000e-01  );
+ sigmaRemoval nonuniform List<scalar> 1 (5.889000e-01  );
  chiPrompt nonuniform List<scalar> 1 (1.000000e+00  );
  chiDelayed nonuniform List<scalar> 1 (1.000000e+00  );
  Beta nonuniform List<scalar> 8 (7.886800e-05 7.250060e-04 2.900990e-04 6.950260e-04 1.478740e-03 6.599940e-04 5.547530e-04 2.702780e-04  );
@@ -46,7 +46,7 @@ outerCore
  scatteringMatrixP0  1  1 (
  ( 2.934090e+01 )
  );
- sigmaDisapp nonuniform List<scalar> 1 (6.143000e-01  );
+ sigmaRemoval nonuniform List<scalar> 1 (6.143000e-01  );
  chiPrompt nonuniform List<scalar> 1 (1.000000e+00  );
  chiDelayed nonuniform List<scalar> 1 (1.000000e+00  );
  Beta nonuniform List<scalar> 8 (7.886800e-05 7.250060e-04 2.900990e-04 6.950260e-04 1.478740e-03 6.599940e-04 5.547530e-04 2.702780e-04  );

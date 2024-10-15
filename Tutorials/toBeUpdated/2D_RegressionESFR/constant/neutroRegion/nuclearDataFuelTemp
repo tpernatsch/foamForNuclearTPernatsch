@@ -33,7 +33,7 @@ zones
 		scatteringMatrixP0  1  1  (
 									( 3.067870e+01 )
 								);
-		sigmaDisapp nonuniform List<scalar> 1 (6.168000e-01  );
+		sigmaRemoval nonuniform List<scalar> 1 (6.168000e-01  );
 		chiPrompt nonuniform List<scalar> 1 (1.000000e+00  );
 		chiDelayed nonuniform List<scalar> 1 (1.000000e+00  );
 		Beta nonuniform List<scalar> 8 (7.765420e-05 7.230780e-04 2.890550e-04 6.917210e-04 1.474410e-03 6.585050e-04 5.521770e-04 2.702120e-04  );
@@ -49,7 +49,7 @@ zones
 		scatteringMatrixP0  1  1  (
 									( 3.032680e+01 )
 								);
-		sigmaDisapp nonuniform List<scalar> 1 (6.431000e-01  );
+		sigmaRemoval nonuniform List<scalar> 1 (6.431000e-01  );
 		chiPrompt nonuniform List<scalar> 1 (1.000000e+00  );
 		chiDelayed nonuniform List<scalar> 1 (1.000000e+00  );
 		Beta nonuniform List<scalar> 8 (7.765420e-05 7.230780e-04 2.890550e-04 6.917210e-04 1.474410e-03 6.585050e-04 5.521770e-04 2.702120e-04  );

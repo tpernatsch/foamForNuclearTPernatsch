@@ -87,6 +87,8 @@ solvers
 
 PIMPLE
 {
+    solveEnergy         true;
+    solveFluidMechanics true;
     nCorrectors      3;
     nNonOrthogonalCorrectors 0;
 

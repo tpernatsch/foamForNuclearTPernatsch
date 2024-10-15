@@ -1,0 +1,77 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2406                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       dictionary;
+    location    "constant";
+    object      multiRegionCouplingDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+maxMultiRegionIterations 6;
+
+multiRegionTightCoupled 1;
+
+multiRegionResidual 5e-05;
+
+meshDeformation
+{
+    neutroRegion
+    {
+        displacementField disp;
+    }
+}
+
+mappings
+{
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields    2 ( powerDensity secondaryPowerDensity );
+            targetFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+            fieldTypes      2 ( scalar scalar );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    5 ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    5 ( TCool rhoCool TFuel TClad TStructMech );
+            fieldTypes      5 ( scalar scalar scalar scalar scalar );
+        }
+        thermoMechanicalRegion
+        {
+            sourceFields    1 ( meshDisp );
+            targetFields    1 ( disp );
+            fieldTypes      1 ( vector );
+        }
+    }
+    thermoMechanicalRegion
+    {
+        fluidRegion
+        {
+            sourceFields    2 ( T.passiveStructure T.fuelAvForNeutronics );
+            targetFields    2 ( TStructFromTH TFuel );
+            fieldTypes      2 ( scalar scalar );
+        }
+        neutroRegion
+        {
+            sourceFields    1 ( powerDensity );
+            targetFields    1 ( powerDensityNeutronics );
+            fieldTypes      1 ( scalar );
+        }
+    }
+}
+
+
+// ************************************************************************* //

@@ -15,13 +15,13 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     GeN-Foam; // FFSEulerFoam;
+application     GeN-Foam;
 
 startFrom       startTime;
 
 startTime       0;
 
-stopAt          endTime; //writeNow;//
+stopAt          endTime;
 
 endTime         12;
 
@@ -45,41 +45,27 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-solveFluidMechanics true;
-
-solveEnergy     true;
-
-solveNeutronics false;
-
-solveThermalMechanics false;
-
 writeContinuityErrors true;
 
-//- timeStep control options
+adjustTimeStep  true;
 
-adjustTimeStep      true;
+maxDeltaT       0.01;
 
-maxDeltaT           0.01;
+maxCo           2;
 
-//- The following happens ONLY IF adjustTimeStep is true.
-//  The time step will be adjusted so to have a Co = maxCoTwoPhase IF:
-//  - both phases are present in the system;
-//    OR
-//  - the system supports phaseChange (i.e. a phaseChange model was specified
-//    in phaseProperties) AND the maximum temperature difference between any
-//    of the fluids temperature and saturation temperature is below
-//    marginToPhaseChange K;
-//  ELSE, the time step will be adjusted to have a Co = maxCo.
-//
-//  In short, for the twoPhase type of thermalHydraulics, the timeStep is
-//  adjusted so that
-//  - Co = maxCo if only one phase is present;
-//  - Co = maxCoTwoPhase if both phases are present or if one phase is close to
-//    saturation (either boiling or condensation);
-maxCo               2.0;
-
-maxCoTwoPhase       0.25;
+maxCoTwoPhase   0.25;
 
 marginToPhaseChange 20;
+
+regionSolvers
+{
+    fluidRegion     twoPhase;
+}
+
+removeBaffles
+{
+    fluidRegion     false;
+}
+
 
 // ************************************************************************* //

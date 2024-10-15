@@ -13,6 +13,8 @@ FoamFile
     class       dictionary;
     object      fvSolution;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 solvers
 {
     p_rgh
@@ -63,26 +65,25 @@ solvers
 
 PIMPLE
 {
-    nCorrectors                         12;
-    correctUntilConvergence             true;
-    nNonOrthogonalCorrectors            0;
-    partialEliminationMode              implicit;
-    momentumMode                        faceCentered;
-    massTransferSafetyFactor            0.40;
-    enthalpyStabilizationMode           source;
-    continuityErrorCompensationMode     Su;
-
-    minKdFF                             1;
-    maxKdFF                             1e5;
-    maxAlphaKdFF                        1e-3;
-    
+    nOuterCorrectors 9;
+    nCorrectors     12;
+    correctUntilConvergence true;
+    nNonOrthogonalCorrectors 0;
+    partialEliminationMode implicit;
+    momentumMode    faceCentered;
+    massTransferSafetyFactor 0.4;
+    enthalpyStabilizationMode source;
+    continuityErrorCompensationMode Su;
+    minKdFF         1;
+    maxKdFF         100000;
+    maxAlphaKdFF    0.001;
     residualControl
     {
         p_rgh
         {
-            tolerance                           1e-05;
-            relTol                              0;
-            useFirstPISOInitialResidual         true;
+            tolerance       1e-05;
+            relTol          0;
+            useFirstPISOInitialResidual true;
         }
         h.liquid
         {
@@ -90,31 +91,32 @@ PIMPLE
             relTol          0;
         }
     }
+    solveEnergy         true;
+    solveFluidMechanics true;
 }
 
 relaxationFactors
 {
     equations
     {
-        ".*"                1;
+        ".*"            1;
     }
     fields
     {
-        "alpha.*"                   0.5;
-        "T.interface"               0.25;
-        "T.interfaceFinal"          0.25;
-        "htc.liquid.vapour"         0.05;
-        "htc.liquid.vapourFinal"    0.05;
-        "htc.vapour.liquid"         0.05;
-        "htc.vapour.liquidFinal"    0.05;
-    
-        "dmdt"                      0.25;
-        "dmdtFinal"                 0.25;
-        "dmdt.*"                    0.25;
-
-        "h.vapour"          0.1;
-        "h.vapourFinal"     0.1;
+        "alpha.*"       0.5;
+        "T.interface"   0.25;
+        "T.interfaceFinal" 0.25;
+        "htc.liquid.vapour" 0.05;
+        "htc.liquid.vapourFinal" 0.05;
+        "htc.vapour.liquid" 0.05;
+        "htc.vapour.liquidFinal" 0.05;
+        "dmdt"          0.25;
+        "dmdtFinal"     0.25;
+        "dmdt.*"        0.25;
+        "h.vapour"      0.1;
+        "h.vapourFinal" 0.1;
     }
 }
+
 
 // ************************************************************************* //

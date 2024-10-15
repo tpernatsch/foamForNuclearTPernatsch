@@ -45,14 +45,14 @@ License
 
 namespace Foam
 {
-namespace thermalHydraulicsModels
+namespace solvers
 {
     defineTypeNameAndDebug(onePhase, 0);
     addToRunTimeSelectionTable
     (
-        thermalHydraulicsModel, 
+        solver, 
         onePhase, 
-        thermalHydraulicsModels
+        fvMesh
     );
 }
 }
@@ -60,20 +60,16 @@ namespace thermalHydraulicsModels
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::thermalHydraulicsModels::onePhase::onePhase
+Foam::solvers::onePhase::onePhase
 (
-    Time& time,
-    fvMesh& mesh,
-    customPimpleControl& pimple,
-    fv::options& fvOptions
+    fvMesh& mesh
 )
 :
     thermalHydraulicsModel
     (
-        time,
+        mesh.time(),
         mesh,
-        pimple,
-        fvOptions
+        fv::options::New(mesh)
     ),
     //- The structure needs to be created before the fluids because
     //  the turbulence models created by the fluids might require a reference
@@ -96,8 +92,10 @@ Foam::thermalHydraulicsModels::onePhase::onePhase
         false       //- No need to read or write the fluid phaseFraction in
                     //  onePhase, it is tied to the structure phaseFraction
     ),
-    FSPair_(fluid_, structure_, *this)
+    FSPair_(fluid_, structure_, *this),
+    residual_(0)
 {
+
     //- Create turbulence model
     fluid_.constructTurbulenceModel();
 
@@ -144,32 +142,49 @@ Foam::thermalHydraulicsModels::onePhase::onePhase
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
 //- Solve according to flags
-void Foam::thermalHydraulicsModels::onePhase::correct
-(
-    scalar& residual,
-    bool solveFluidDynamics, 
-    bool solveEnergy
-)
+void Foam::solvers::onePhase::correctPhysics()
 {   
-    correctModels(solveFluidDynamics, solveEnergy);
-    if (solveFluidDynamics)
-    {
-        correctFluidMechanics(residual);
-    }
-    
-    if (solveEnergy)
-    {
-        correctEnergy(residual);
-    }
 
-    Info << endl;
+    residual_=0;
+
+    bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
+    bool solveFluidMechanics(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveFluidMechanics"));
+
+    Info << "Region :" << mesh_.name()<<nl<<endl;
+    
+
+    while(pimple_.loop())
+    {
+
+        if (solveFluidMechanics or solveEnergy)
+            correctModels(true, true);
+
+        if(solveFluidMechanics)
+            correctFluidMechanics();
+
+        if(solveEnergy)
+            correctEnergy();
+
+        Info << endl;
+    }    
 }
 
-void Foam::thermalHydraulicsModels::onePhase::correctFluidMechanics
-(
-    scalar& residual
-)
+void Foam::solvers::onePhase::correctTightlyCoupledPhysics()
 {
+    Info <<nl;
+    bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
+    correctModels(true,true);
+  
+    if(solveEnergy)
+        correctEnergy();
+    
+    Info <<nl;
+}
+
+void Foam::solvers::onePhase::correctFluidMechanics()
+{
+
+
     #include "UEqn_1p.H"
     if (momentumMode_ == momentumMode::faceCentered)
     {
@@ -186,12 +201,13 @@ void Foam::thermalHydraulicsModels::onePhase::correctFluidMechanics
     calcCumulContErr();
 }
 
-void Foam::thermalHydraulicsModels::onePhase::correctEnergy(scalar& residual)
+void Foam::solvers::onePhase::correctEnergy()
 {
+
     #include "EEqn_1p.H"
 }
 
-void Foam::thermalHydraulicsModels::onePhase::correctModels
+void Foam::solvers::onePhase::correctModels
 (
     bool solveFluidDynamics, 
     bool solveEnergy
@@ -201,7 +217,7 @@ void Foam::thermalHydraulicsModels::onePhase::correctModels
     FSPair_.correct(solveFluidDynamics, solveEnergy);
 }
 
-void Foam::thermalHydraulicsModels::onePhase::correctCourant()
+void Foam::solvers::onePhase::correctCourant()
 {
     CoNum_ = 0.0;
     meanCoNum_ = 0.0;
@@ -220,7 +236,7 @@ void Foam::thermalHydraulicsModels::onePhase::correctCourant()
         << " " << CoNum_ << endl;
 }
 
-void Foam::thermalHydraulicsModels::onePhase::correctContErr()
+void Foam::solvers::onePhase::correctContErr()
 {
     volScalarField& cE(fluid_.contErr());
     volScalarField& rho(fluid_.rho());
@@ -236,7 +252,7 @@ void Foam::thermalHydraulicsModels::onePhase::correctContErr()
 }
 
 
-void Foam::thermalHydraulicsModels::onePhase::printContErr()
+void Foam::solvers::onePhase::printContErr()
 {
     volScalarField contErrRel(fluid_.contErr()/fluid_.rho());
 
@@ -247,7 +263,7 @@ void Foam::thermalHydraulicsModels::onePhase::printContErr()
         << " 1/s" << endl;
 }
 
-void Foam::thermalHydraulicsModels::onePhase::calcCumulContErr()
+void Foam::solvers::onePhase::calcCumulContErr()
 {
     if (pimple_.finalIter())
     {
@@ -275,6 +291,18 @@ void Foam::thermalHydraulicsModels::onePhase::calcCumulContErr()
             << (cumulContErr/totV)
             << " kg/m3" << endl;
     }
+}
+
+
+scalar Foam::solvers::onePhase::maxDeltaT()
+{
+
+    this->correctCourant();
+    scalar newDeltaT = runTime_.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+    scalar maxCo =runTime_.controlDict().lookupOrDefault<scalar>("maxCo", 1.0);
+    scalar maxDeltaTFact = maxCo/(CoNum_ + SMALL);
+    scalar deltaTFact =  min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
+    return min(deltaTFact*runTime_.deltaTValue(),newDeltaT);
 }
 
 

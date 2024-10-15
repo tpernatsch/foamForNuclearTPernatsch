@@ -1,7 +1,16 @@
 #!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
 
-# --- Run from this directory
-cd ${0%/*} || exit 1
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
 
 # --- Initialize the output file
 resFile=test.out
@@ -63,9 +72,9 @@ isInRange()
 }
 
 error=0.0001
-echo "Test keff and power  " | tee -a $resFile
-if  [ $(isInRange $expectedKeff         $keff       $error) ] &&
-    [ $(isInRange $expectedTotalPower   $totalPower $error) ]
+echo "Test keff and power with $error relative error  " | tee -a $resFile
+if  [ $(isInRange $expectedKeff         $keff       $error) -eq 0 ] &&
+    [ $(isInRange $expectedTotalPower   $totalPower $error) -eq 0 ]
 then
     echo "Perfect match:" | tee -a $resFile
     echo "|             | Simulated | Expected |" | tee -a $resFile
@@ -83,3 +92,5 @@ fi
 
 # --- Exit successfully
 exit 0
+
+#==============================================================================*

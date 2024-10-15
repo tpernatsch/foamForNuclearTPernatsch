@@ -1,9 +1,21 @@
 #!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
 
 cd ${0%/*} || exit 1    # Run from this directory
 
+#==============================================================================*
+
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#==============================================================================*
 
 exe="GeN-Foam"
 
@@ -20,6 +32,7 @@ setSteadyStateNSSP ()
 {
     runCloneCase $1 $2
     printf "Setting steady state case using nuclearSteadyStatePebble...\n"
+    GeN-Foam -initializeMappedFields -case steadyStateNSSP
     printf "Case set!\n\n"
 }
 
@@ -28,8 +41,7 @@ setSteadyStateLPS()
 {
     runCloneCase $1 $2
     printf "Setting steady state case using lumpedParameterStructure...\n"
-    rm steadyStateLPS/constant/fluidRegion/phaseProperties
-    mv steadyStateLPS/constant/fluidRegion/phaseProperties_lumpedParam steadyStateLPS/constant/fluidRegion/phaseProperties
+    cp steadyStateLPS/constant/fluidRegion/phaseProperties_lumpedParam steadyStateLPS/constant/fluidRegion/phaseProperties
     printf "Case set!\n\n"
 }
 
@@ -38,14 +50,14 @@ do
     printf "Preparing to run case $caseName...\n"
 
     case "$caseName" in
-    "steadyStateNSSP")
-        setSteadyStateNSSP $caseName rootCase
-        printf "Steady state th case is prepared!\n"
-        ;;
-    "steadyStateLPS")
-        printf "Transient case entered...\n"
-        setSteadyStateLPS $caseName rootCase
-        ;;
+        "steadyStateNSSP")
+            setSteadyStateNSSP $caseName rootCase
+            printf "Steady state th case is prepared!\n"
+            ;;
+        "steadyStateLPS")
+            printf "Transient case entered...\n"
+            setSteadyStateLPS $caseName rootCase
+            ;;
     esac
 
     # Start gnuplot if it exist
@@ -65,4 +77,4 @@ do
 
 done
 
-#------------------------------------------------------------------------------
+#==============================================================================*

@@ -1,17 +1,29 @@
 #!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
 cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
 
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
 
+#==============================================================================*
 
 # Remove log files
 rm -rf log.blockMesh log.checkMesh
 
-# Generate the meshes
+# Generate the mesh
 runApplication blockMesh -case rootCase -region neutroRegion
-blockMesh -case rootCase -region fluidRegion
-blockMesh -case rootCase -region thermoMechanicalRegion
 
 # Check the neutronics mesh
 runApplication checkMesh -case rootCase -region neutroRegion
+
+#==============================================================================*

@@ -45,41 +45,34 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-//- Physics to Solve
+regionSolvers
+{
+    fluidRegion   twoPhase;
+}
 
-solveFluidMechanics true;
+removeBaffles
+{
+    fluidRegion     false;
+}
 
-solveEnergy     true;
 
 includeKineticEnergy false;
 
-solveNeutronics false;
-
-solveThermalMechanics false;
-
-//- Global options
-
-liquidFuel false;
-
-//- Time step control options
+liquidFuel      false;
 
 adjustTimeStep  true;
 
 maxDeltaT       0.01;
 
-minDeltaT       1e-4;
+minDeltaT       0.0001;
 
 maxCo           10;
 
 maxCoTwoPhase   0.5;
 
-//- Write field options
-
 writeRestartFields true;
 
 writeContinuityErrors true;
-
-//- Function objects
 
 functions
 {
@@ -92,10 +85,9 @@ functions
         regionType      patch;
         name            inletP;
         operation       average;
-        fields          (alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour);
+        fields          ( alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour );
         region          "fluidRegion";
     }
-
     inletSValues
     {
         type            surfaceFieldValue;
@@ -105,10 +97,9 @@ functions
         regionType      patch;
         name            inletS;
         operation       average;
-        fields          (alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour);
+        fields          ( alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour );
         region          "fluidRegion";
     }
-
     outletPValues
     {
         type            surfaceFieldValue;
@@ -118,10 +109,9 @@ functions
         regionType      patch;
         name            outletP;
         operation       average;
-        fields          (alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour);
+        fields          ( alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour );
         region          "fluidRegion";
     }
-
     outletSValues
     {
         type            surfaceFieldValue;
@@ -131,9 +121,10 @@ functions
         regionType      patch;
         name            outletS;
         operation       average;
-        fields          (alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour);
+        fields          ( alphaRhoPhi.liquid alphaRhoPhi.vapour T.liquid T.vapour );
         region          "fluidRegion";
     }
 }
+
 
 // ************************************************************************* //

@@ -38,15 +38,15 @@ divSchemes
     div(phi,alpha.vapour)                   Gauss vanLeer;
     div(phir,alpha.liquid,alpha.vapour)     Gauss vanLeer;
     div(phir,alpha.structure,alpha.vapour)  Gauss vanLeer;
-    
+
     "div\(phi.*,U.*\)"                      Gauss upwind;
     "div(alphaRhoPhi,U)"                    Gauss upwind;
     "div(alphaRhoPhiNu,U)"                  Gauss linear;
     "div(alphaRhoPhi,K)"                    Gauss upwind;
-    
+
     "div\(alphaRhoPhi.*,k.*\)"              Gauss upwind;
     "div\(alphaRhoPhi.*,epsilon.*\)"        Gauss upwind;
-    
+
     "div\(alphaRhoPhi.*,(h|e).*\)"          Gauss upwind;
 }
 

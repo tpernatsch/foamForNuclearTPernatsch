@@ -118,10 +118,10 @@ then
     echo -e 'It is recommanded to add the following lines to your ~/.bashrc\n'
     echo -e "## ECI4FOAM\nexport LIB_ECI4FOAM=$pathLibECI4FOAM"
     echo -e "## FMU4FOAM\nexport LIB_FMU4FOAM=$pathLibFMU4FOAM\n"
-    
+
 
 else
-    # Remove the environment variable only in this script, does not affect the 
+    # Remove the environment variable only in this script, does not affect the
     # same variables in the .bashrc
     unset LIB_ECI4FOAM
     unset LIB_FMU4FOAM
@@ -134,6 +134,11 @@ echo "Allwmake GeN-Foam"
 # Make common functions
 wmake -j$num_jobs ./src/classes/common
 
+# Make offbeat
+wmake -j$num_jobs ./src/classes/offbeat/SCIANTIX
+wmake -j$num_jobs ./src/classes/offbeat/offbeatLib
+wmake -j$num_jobs ./src/classes/offbeat/offbeat
+
 # Make thermal-hydraulics
 wmake -j$num_jobs ./src/classes/thermalHydraulics/src
 wmake -j$num_jobs ./src/classes/thermalHydraulics/solvers
@@ -144,8 +149,6 @@ wmake -j$num_jobs ./src/classes/neutronics
 # Make thermal-mechanics
 wmake -j$num_jobs ./src/classes/thermoMechanics
 
-# Make multiphysics control (depends on thermal-hydraulics)
-wmake -j$num_jobs ./src/classes/multiphysicsControl
 
 # Make GeN-Foam
 wmake -j$num_jobs ./GeN-Foam
@@ -157,6 +160,7 @@ echo -e "Make GeN-Foam completed\n"
 echo "Make tests"
 
 wmake -j$num_jobs ./tests/hydrogenThermophysicalProperties
+wmake -j$num_jobs ./tests/radialBasisFunctions
 
 echo -e "Make tests completed\n"
 

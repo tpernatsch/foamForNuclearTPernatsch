@@ -41,7 +41,7 @@ Class
 Description
     Derived class for adjointDiffusion neutronics.
 
-    Author of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files): 
     Equations: Jun Shi <junshi@berkeley.edu>
     Coding: Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Swizerland)
 
@@ -61,6 +61,9 @@ SourceFiles
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
+{
+
+namespace solvers
 {
 
 /*---------------------------------------------------------------------------*\
@@ -127,6 +130,14 @@ protected:
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
+        // multiRegion
+
+    bool multiRegion_;
+
+    scalar pTotOld_;
+
+    scalar residual_;
+
 private:
 
     // Private data
@@ -191,31 +202,35 @@ public:
             return pTot;
         }
 
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const meshToMesh& neutroToFluid,
-            const objectRegistry& srcTM,
-            const meshToMesh& neutroToMech
-        );   
+        // virtual void getCouplingFieldRefs
+        // (
+        //     const objectRegistry& srcTH,
+        //     const meshToMesh& neutroToFluid,
+        //     const objectRegistry& srcTM,
+        //     const meshToMesh& neutroToMech
+        // );   
 
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& neutroToFluid,
-            const meshToMesh& neutroToMech
-        );
+        // virtual void interpolateCouplingFields
+        // (
+        //     const meshToMesh& neutroToFluid,
+        //     const meshToMesh& neutroToMech
+        // );
 
         //- Correct/update the properties
-        virtual void correct
-        (
-            scalar& residual,
-            label couplingIter  
-        );  
+        virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
+
+        virtual scalar maxDeltaT();
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        };
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} //End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

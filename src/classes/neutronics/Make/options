@@ -10,10 +10,9 @@ EXE_INC = \
     -I./SN/include \
     -I./adjointDiffusion \
     -I./adjointDiffusion/include \
+    -I./XS/nuclearDataOnEnergy \
     -I./XS/XS \
     -I./XS/XS/include \
-    -I./XS/XSLowMem \
-    -I./XS/XSLowMem/include \
     -I./pointKinetics \
     -I./pointKinetics/include \
     -I./../common/lnInclude \
@@ -31,7 +30,7 @@ EXE_INC = \
     -I$(LIB_SRC)/regionModels/regionModel/lnInclude \
     -I$(LIB_SRC)/ODE/lnInclude \
     -I$(LIB_SRC)/parallel/reconstruct/reconstruct/lnInclude \
-    -I$(LIB_SRC)/dynamicMesh/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude
 
 LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lCommon \

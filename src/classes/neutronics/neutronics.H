@@ -44,18 +44,21 @@ Group
 Description
     Base class for neutronic models.
 
-    Reference publications
+<b> Reference publications</b>
 
-    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    "GeN-Foam: a novel OpenFOAM� based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design, submitted.
+<ol type="1">
+    <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+    GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294, 
+    2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
 
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
+    <li> Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
     multi-physics solver to the European Sodium Fast Reactor and verification 
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
     Nice (France), Paper 15226
+</ol>
 
-    Author of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files): 
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Swizerland)
 
 SourceFiles
@@ -77,6 +80,7 @@ SourceFiles
 #include "turbulentFluidThermoModel.H"
 #include "volPointInterpolation.H"
 #include "meshToMesh.H"
+#include "solver.H"
 #include "timeProfile.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -84,13 +88,17 @@ SourceFiles
 namespace Foam
 {
 
+namespace solvers
+{
 /*---------------------------------------------------------------------------*\
                           Class neutronics Declaration
 \*---------------------------------------------------------------------------*/
 
 class neutronics
 :
+    public solver,
     public IOdictionary
+
 {
 
 protected:
@@ -112,7 +120,7 @@ protected:
 
     //- Power density for for powerStructure, in case of liquid
     //  fuel, or for liquid, in case of solid fuel
-    volScalarField secondaryPowerDenisty_;
+    volScalarField secondaryPowerDensity_;
 
     //- Mesh displacement
     volVectorField disp_;
@@ -129,11 +137,15 @@ protected:
     //- Liquid fuel (e.g. true for MSRs)
     const bool liquidFuel_;
 
-    //- External source file
+    pointField originalPoints_;
+
+        //- External source file
     IOdictionary externalSource_;
 
     //- Source modulation time profile
     timeProfile externalSourceModulationTimeProfile_;
+    
+
 
 private:
 
@@ -148,19 +160,6 @@ public:
     //- Runtime type information
     TypeName("neutronics")
 
-#ifndef SWIG
-        declareRunTimeSelectionTable
-        (
-            autoPtr,
-            neutronics,
-            dictionary,
-            (
-                fvMesh& mesh
-            ),
-            (mesh)
-        );
-#endif
-
     //- Constructors
 
         //- Construct from mesh
@@ -169,22 +168,16 @@ public:
     //- Selectors
 
         //- Return a reference to the selected model
-        static autoPtr<neutronics> New
-        (
-            fvMesh& mesh
-        );
+        // static autoPtr<neutronics> New
+        // (
+        //     fvMesh& mesh,
+        //     bool multiRegion = false
+        // );
 
     //- Destructor
         virtual ~neutronics(){}
 
     //- Member Functions
-
-        //- Deform mesh
-        virtual void deformMesh
-        (
-            const meshToMesh& mechToNeutro,
-            const volVectorField& dispOrig
-        ); 
 
         //- Return fluxes
         virtual const PtrList<volScalarField> fluxes() const = 0;
@@ -198,45 +191,19 @@ public:
         //- Return power
         virtual scalar power() const = 0;  
 
-        //- Substitutes the old getFields. Set local class references to global
-        //  coupling fields, to be called only once after construction. The 
-        //  fields are set via lookup in the src objectRegistry (i.e. 
-        //  fluidMeshNB for the current state of GeN-Foam)
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const meshToMesh& neutroToFluid,
-            const objectRegistry& srcTM,
-            const meshToMesh& neutroToMech
-        ) = 0;
+        virtual void correctBaffleLessFields();
 
-        //- The old getFields, yet operates on the local refs without having
-        //  the need for all the fields to be passed. This effectively bypasses
-        //  the old limitation of getFields, i.e. if someone wanted to
-        //  implement a new neutronics model that requires more fields for the
-        //  coupling (as it happend with pointKinetics), then they'd need to
-        //  modify the getFields function in ALL of the other neutronics model
-        //  too. Splitting getFields into a getCouplingFieldRefs and 
-        //  interpolateCouplingFields allows one to be as flexible as possible
-        //  with new classes implementations
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& neutroToFluid,
-            const meshToMesh& neutroToMech
-        ) = 0;
+        virtual void deformMesh();
 
-        //- Correct/update the properties
-        virtual void correct
-        (
-            scalar& residual,
-            label couplingIter
-        ) = 0;  
 
         //- Required to remove "abstractedness" from IOdictionary
         virtual bool writeData(Ostream& os) const
         {
             return os.good();
         }
+
+    //    bool solveNeutronics(){return solveNeutronics_;};
+
 
         //- Access
 
@@ -250,9 +217,9 @@ public:
                 return powerDensity_;
             } 
 
-            const volScalarField& secondaryPowerDenisty() const
+            const volScalarField& secondaryPowerDensity() const
             {
-                return secondaryPowerDenisty_;
+                return secondaryPowerDensity_;
             }  
 
             const volVectorField& disp() const
@@ -273,7 +240,7 @@ public:
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} //End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

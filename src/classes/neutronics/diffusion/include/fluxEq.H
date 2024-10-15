@@ -26,7 +26,7 @@ forAll(flux_,energyI)
 
     //Info<< "neutro Residual = " << initRes << nl << endl;
 
-    neutroEq.solve();
+    residual_=max(neutroEq.solve().max().initialResidual(), residual_);
 
     flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
     flux_[energyI].correctBoundaryConditions();

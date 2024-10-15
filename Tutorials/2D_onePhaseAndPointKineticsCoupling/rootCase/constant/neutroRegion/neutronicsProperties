@@ -15,8 +15,8 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model                   pointKinetics;
+model                   diffusionNeutronics;
 
-eigenvalueNeutronics    false;
+eigenvalueNeutronics    true;
 
 // ************************************************************************* //

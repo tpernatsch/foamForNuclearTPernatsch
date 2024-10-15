@@ -11,21 +11,27 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      msfr_n_res;
+    object      nuclearData;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 fastNeutrons            true; // if true interpolates cross section with logarithmic temp for fuel (otherwise, square root)
 
 adjustDiscFactors       false;
 
 useGivenDiscFactors     false;
 
-energyGroups 6 ;
+energyGroups    6;
 
-precGroups 8 ;
+precGroups      8;
 
-zones
+states
 (
-
+    reference // Mandatory state
+    {
+        zones
+        ();
+    }
 );
 
 //- Relevant only for pointKinetics
@@ -76,7 +82,10 @@ fuelFeedbackZones
 (
     "core"
 );
+
 coolantFeedbackZones
 (
     "core"
 );
+
+// ************************************************************************* //

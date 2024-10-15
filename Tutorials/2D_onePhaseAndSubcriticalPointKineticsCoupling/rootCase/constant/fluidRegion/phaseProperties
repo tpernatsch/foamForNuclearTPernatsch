@@ -107,9 +107,9 @@ physicsModels
             // pitch-to-diameter ratio at 1.133333
             type    NusseltReynoldsPrandtlPower;
             const   4.670618;
-        	coeff   0.018682;
-        	expRe   0.770000;
-        	expPr   0.770000;
+            coeff   0.018682;
+            expRe   0.770000;
+            expPr   0.770000;
         }
     }
 }

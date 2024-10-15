@@ -21,7 +21,7 @@ internalField   uniform 1;
 
 boundaryField
 {
-    "fixedWalls"
+    fixedWalls
     {
         type            fixedValue;
         value           uniform 0;
@@ -31,7 +31,6 @@ boundaryField
     {
         type            emtpy;
     }
-  
 }
 
 // ************************************************************************* //

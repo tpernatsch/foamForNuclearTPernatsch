@@ -60,13 +60,19 @@ Tutorials/**/transient*
 Tutorials/**/GeN-Foam.dat
 Tutorials/**/log.*
 Tutorials/**/*.out
+Tutorials/**/*.baffleLess/polyMesh
 !**/2D_*
+!**/*Ex1*
+!**/*Ex2*
+!**/*Ex3*
 !**/defaultFlux2
 !**/2FMU
 !**/3FMU
+!Tutorials/*/**/XS*
 **/old.*
 **/archive.*
 **/*.csv*
+**/*.foam
 
 # Tools
 Tools/**/build

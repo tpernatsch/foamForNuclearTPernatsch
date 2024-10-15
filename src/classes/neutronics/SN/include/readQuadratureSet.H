@@ -1,4 +1,4 @@
-Info<< "Reading quadrature set\n" << endl;
+Info<< "Reading quadrature set... " << endl;
 
 label discreteDirectionsOct = discreteDirections_/8;
 
@@ -27,10 +27,10 @@ forAll(octants, octI)
         directionWeights_[directionI+octI*discreteDirectionsOct] = directionWeightsOct[directionI];
     }
 }
-    
-Info<< "Done\n" << endl;
 
-Info<< "Checking quadrature consistency\n" << endl;
+Info<< "Done" << nl << endl;
+
+Info<< "Checking quadrature consistency" << nl << endl;
 
 scalar totalDirectionsWeight = 0.0;
 scalar maxVersorLenght = 0.0;
@@ -42,9 +42,9 @@ forAll(directionVersors_, directionI)
     maxVersorLenght = max(mag(directionVersors_[directionI]),maxVersorLenght);
     minVersorLenght = min(mag(directionVersors_[directionI]),minVersorLenght);
 }
-    
 
-Info<< "Normalizing to 1 instead of 4*pi..." << endl;
+
+Info<< "Normalizing to 1 instead of 4*pi... ";
 
 directionWeights_ *= 1/totalDirectionsWeight;
 
@@ -52,10 +52,11 @@ forAll(directionVersors_, directionI)
 {
     directionVersors_[directionI] *= 1/mag(directionVersors_[directionI]);
 }
-    
+
 Info<< "Done" << endl;
 
-Info<< "Checking quadrature consistency... again " << endl;
+
+Info<< "Second checking quadrature consistency... ";
 
 totalDirectionsWeight = 0.0;
 maxVersorLenght = 0.0;
@@ -67,15 +68,11 @@ forAll(directionVersors_, directionI)
     maxVersorLenght = max(mag(directionVersors_[directionI]),maxVersorLenght);
     minVersorLenght = min(mag(directionVersors_[directionI]),minVersorLenght);
 }
-    
+
 Info<< "Done" << endl;
 
-
-Info<< "Check report:" << endl;
-Info<< "totalDirectionsWeight: " << totalDirectionsWeight << endl;
-
-Info<< "maxVersorLenght: " << maxVersorLenght <<  endl;
-
-Info<< "minVersorLenght: " << minVersorLenght << nl << endl;
-
-
+Info<< "Check report:" << nl
+    << "    totalDirectionsWeight: " << totalDirectionsWeight << nl
+    << "    maxVersorLenght      : " << maxVersorLenght << nl
+    << "    minVersorLenght      : " << minVersorLenght << nl
+    << endl;

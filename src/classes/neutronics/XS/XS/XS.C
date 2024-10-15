@@ -67,91 +67,22 @@ Foam::XS::XS
             IOobject::NO_WRITE
         )
     ),
-    nuclearDataRadialExp_
-    (
-        IOobject
-        (
-            "nuclearDataRadialExp",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    nuclearDataAxialExp_
-    (
-        IOobject
-        (
-            "nuclearDataAxialExp",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    nuclearDataFuelTemp_
-    (
-        IOobject
-        (
-            "nuclearDataFuelTemp",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    nuclearDataRhoCool_
-    (
-        IOobject
-        (
-            "nuclearDataRhoCool",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    nuclearDataTCool_
-    (
-        IOobject
-        (
-            "nuclearDataTCool",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    nuclearDataCladExp_
-    (
-        IOobject
-        (
-            "nuclearDataCladExp",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    nuclearDataMechTemp_
-    (
-        IOobject
-        (
-            "nuclearDataMechTemp",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    energyGroups_(nuclearData_.lookupOrDefault("energyGroups",1)),
-    precGroups_(nuclearData_.lookupOrDefault("precGroups",1)),
-    legendreMoments_(1+nuclearData_.lookupOrDefault("legendreMoments",0)),
+    isLowMemory_(nuclearData_.lookupOrDefault("isLowMemory", false)),
+    energyGroups_(nuclearData_.lookupOrDefault("energyGroups", 1)),
+    precGroups_(nuclearData_.lookupOrDefault("precGroups", 1)),
+    legendreMoments_(1+nuclearData_.lookupOrDefault("legendreMoments", 0)),
+    axialOrientation_(nuclearData_.lookupOrDefault("axialOrientation", vector(0.0, 0.0, 1.0))),
+    ScNo_(nuclearData_.lookupOrDefault("ScNo", 1.0)),
+    polyharmonicSplineMode_(nuclearData_.lookupOrDefault("polyharmonicSplineMode", 1)),
+    states_(nuclearData_.lookup("states")),
+    referenceState_(states_.first().dict()),
+    referenceZones_(referenceState_.lookup("zones")),
+    zoneNumber_(referenceZones_.size()),
     IV_(energyGroups_),
     D_(energyGroups_),
     nuSigmaEff_(energyGroups_),
     sigmaPow_(energyGroups_),
-    sigmaDisapp_(energyGroups_),
+    sigmaRemoval_(energyGroups_),
     sigmaFromTo_(legendreMoments_),
     chiPrompt_(energyGroups_),
     chiDelayed_(energyGroups_),
@@ -214,20 +145,74 @@ Foam::XS::XS
         zeroGradientFvPatchScalarField::typeName
     ),
     discFactor_(energyGroups_),
-    ScNo_(nuclearData_.lookupOrDefault("ScNo",1.0)),
-    entries_(nuclearData_.lookup("zones")),
-    zoneNumber_(entries_.size()),    
+    sigmaFromToYesNo_(energyGroups_),
     fuelFractionList_(zoneNumber_),
     secondaryPowerVolumeFractionList_(zoneNumber_),
     fractionToSecondaryPowerList_(zoneNumber_),
     dfAdjustList_(zoneNumber_),
     discFactorList_(zoneNumber_),
     integralFluxList_(zoneNumber_),
-    fastNeutrons_(nuclearData_.lookupOrDefault("fastNeutrons",true)),
     adjustDiscFactors_(nuclearData_.lookupOrDefault("adjustDiscFactors", false)),
     useGivenDiscFactors_(nuclearData_.lookupOrDefault("useGivenDiscFactors", false)),
-    groupsWoDF_(nuclearData_.lookupOrDefault<List<int> >("groupsWoDF", List<int>())),
-    doNotParametrize_(nuclearData_.lookupOrDefault<List<int> >("doNotParametrize", List<int>())),
+    groupsWoDF_(nuclearData_.lookupOrDefault<List<int>>("groupsWoDF", List<int>())),
+    fastNeutrons_(nuclearData_.lookupOrDefault("fastNeutrons", true)),
+    doNotParametrize_(nuclearData_.lookupOrDefault<List<int>>("doNotParametrize", List<int>())),
+    radExp_
+    (
+        IOobject
+        (
+            "radExp",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    axExp_
+    (
+        IOobject
+        (
+            "axExp",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    logT_
+    (
+        IOobject
+        (
+            "logT",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    sqrtT_
+    (
+        IOobject
+        (
+            "diffT",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,0,0.5,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
     IVList_(zoneNumber_),
     chiPromptList_(zoneNumber_),
     chiDelayedList_(zoneNumber_),
@@ -237,56 +222,8 @@ Foam::XS::XS
     DList_(zoneNumber_),
     nuSigmaEffList_(zoneNumber_),
     sigmaPowList_(zoneNumber_),
-    sigmaDisappList_(zoneNumber_),
-    sigmaFromToList_(zoneNumber_), 
-    TfuelRef_(nuclearDataFuelTemp_.lookupOrDefault("TfuelRef",900.0)),
-    TfuelPerturbed_(nuclearDataFuelTemp_.lookupOrDefault("TfuelPerturbed",1200.0)),
-    fuelTempDList_(zoneNumber_),
-    fuelTempNuSigmaEffList_(zoneNumber_),
-    fuelTempSigmaPowList_(zoneNumber_),
-    fuelTempSigmaDisappList_(zoneNumber_),
-    fuelTempSigmaFromToList_(zoneNumber_),
-    AxExp_(nuclearDataAxialExp_.lookupOrDefault("expansionFromNominal",1.0)),
-    axialExpDList_(zoneNumber_),
-    axialExpNuSigmaEffList_(zoneNumber_),
-    axialExpSigmaPowList_(zoneNumber_),
-    axialExpSigmaDisappList_(zoneNumber_),
-    axialExpSigmaFromToList_(zoneNumber_),
-    RadExp_(nuclearDataRadialExp_.lookupOrDefault("expansionFromNominal",1.0)),
-    axialOrientation_(nuclearDataRadialExp_.lookupOrDefault("axialOrientation",vector(0.0, 0.0, 1.0))),
-    radialExpDList_(zoneNumber_),
-    radialExpNuSigmaEffList_(zoneNumber_),
-    radialExpSigmaPowList_(zoneNumber_),
-    radialExpSigmaDisappList_(zoneNumber_),
-    radialExpSigmaFromToList_(zoneNumber_),
-    rhoCoolRef_(nuclearDataRhoCool_.lookupOrDefault("rhoCoolRef",860.0)),
-    rhoCoolPerturbed_(nuclearDataRhoCool_.lookupOrDefault("rhoCoolPerturbed",1.0)),
-    rhoCoolDList_(zoneNumber_),
-    rhoCoolNuSigmaEffList_(zoneNumber_),
-    rhoCoolSigmaPowList_(zoneNumber_),
-    rhoCoolSigmaDisappList_(zoneNumber_),
-    rhoCoolSigmaFromToList_(zoneNumber_),
-    TCoolRef_(nuclearDataTCool_.lookupOrDefault("TCoolRef",900.0)),
-    TCoolPerturbed_(nuclearDataTCool_.lookupOrDefault("TCoolPerturbed",1200.0)),
-    TCoolDList_(zoneNumber_),
-    TCoolNuSigmaEffList_(zoneNumber_),
-    TCoolSigmaPowList_(zoneNumber_),
-    TCoolSigmaDisappList_(zoneNumber_),
-    TCoolSigmaFromToList_(zoneNumber_),
-    TcladRef_(nuclearDataCladExp_.lookupOrDefault("TcladRef",900.0)),
-    TcladPerturbed_(nuclearDataCladExp_.lookupOrDefault("TcladPerturbed",1200.0)),
-    cladExpDList_(zoneNumber_),
-    cladExpNuSigmaEffList_(zoneNumber_),
-    cladExpSigmaPowList_(zoneNumber_),
-    cladExpSigmaDisappList_(zoneNumber_),
-    cladExpSigmaFromToList_(zoneNumber_),
-    TStructMechRef_(nuclearDataMechTemp_.lookupOrDefault("TStructMechRef",900.0)),
-    TStructMechPerturbed_(nuclearDataMechTemp_.lookupOrDefault("TStructMechPerturbed",1200.0)),
-    mechTempDList_(zoneNumber_),
-    mechTempNuSigmaEffList_(zoneNumber_),
-    mechTempSigmaPowList_(zoneNumber_),
-    mechTempSigmaDisappList_(zoneNumber_),
-    mechTempSigmaFromToList_(zoneNumber_),
+    sigmaRemovalList_(zoneNumber_),
+    sigmaFromToList_(zoneNumber_),
     CRmove_
     (
         IOobject
@@ -294,22 +231,22 @@ Foam::XS::XS
             "CRmove",
             mesh.time().constant(),
             mesh,
-            IOobject::MUST_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE
         )
     ),
-    CRentries_(CRmove_.lookup("zones")),
-    CRNumber_(CRmove_.lookup("zones").size()),
+    CRentries_(CRmove_.lookupOrDefault("zones", PtrList<entry>(0))),
+    CRNumber_(CRentries_.size()),
     CRstart_(CRNumber_),
     CRfinish_(CRNumber_),
     CRspeed_(CRNumber_),
     CRFollowerName_(CRNumber_),
     CRinitialPosition_(CRNumber_),
     CRposition_(CRNumber_),
-    initialDistanceFromMeshCR_(CRNumber_)        
+    initialDistanceFromMeshCR_(CRNumber_)
 {
     #include "readNuclearData.H"
-    #include "createXSfields.H"    
+    #include "createXSfields.H"
     init();
 }
 
@@ -323,22 +260,46 @@ Foam::XS::~XS()
 
 void Foam::XS::correct
 (
-    const volScalarField& Tfuel, 
-    const volScalarField& Tclad, 
-    const volScalarField& rhoCool, 
+    const volScalarField& Tfuel,
+    const volScalarField& Tclad,
+    const volScalarField& rhoCool,
     const volScalarField& TCool,
     const volVectorField& Disp,
-    const volScalarField& TStructMech 
+    const volScalarField& TStructMech
 )
 {
     #include "setNeutronicsVariables.H"
 }
 
+
 void Foam::XS::init()
 {
+    // Build interpolation scheme
+    forAll(referenceZones_, zoneI)
+    {
+        forAll(DList_[zoneI], energyI)
+        {
+            DList_[zoneI][energyI].build();
+            nuSigmaEffList_[zoneI][energyI].build();
+            sigmaPowList_[zoneI][energyI].build();
+            sigmaRemovalList_[zoneI][energyI].build();
+        }
+        forAll(sigmaFromToList_[zoneI], momentI)
+        {
+            forAll(sigmaFromToList_[zoneI][momentI], energyJ)
+            {
+                forAll(sigmaFromToList_[zoneI][momentI][energyJ], energyI)
+                {
+                    sigmaFromToList_[zoneI][momentI][energyJ][energyI].build();
+                }
+            }
+        }
+    }
+
     #include "setNeutronicsConstants.H"
     #include "setPrecConst.H"
 }
+
 
 void Foam::XS::adjustDiscFactors(const PtrList<volScalarField>& fluxStar)
 {
@@ -349,6 +310,82 @@ void Foam::XS::adjustDiscFactors(const PtrList<volScalarField>& fluxStar)
 }
 
 
+Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
+(
+    label momentI,
+    label energyJ,
+    label energyI,
+    const volScalarField& Tfuel,
+    const volScalarField& Tclad,
+    const volScalarField& rhoCool,
+    const volScalarField& TCool,
+    const volVectorField& Disp,
+    const volScalarField& TStructMech
+)
+{
+    if (!isLowMemory_)
+    {
+        return(sigmaFromTo_[momentI][energyJ][energyI]);
+    }
 
+    tmp<volScalarField> tsigmaFromTo
+    (
+        new volScalarField
+        (
+            IOobject
+            (
+                "XSLowMem::sigmaFromTo",
+                mesh_.time().timeName(),
+                mesh_,
+                IOobject::NO_READ,
+                IOobject::NO_WRITE
+            ),
+            mesh_,
+            dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 0.0),
+            zeroGradientFvPatchScalarField::typeName
+        )
+    );
+    volScalarField& sigmaFromTo(tsigmaFromTo.ref());
+
+    // Check if XS is parametrized for the current energy group
+    bool isParametrize = true;
+    forAll(doNotParametrize_, groupI)
+    {
+        if (energyI == doNotParametrize_[groupI])
+        {
+            isParametrize = false;
+            break;
+        }
+    }
+
+    // Update cells for all zones
+    forAll(referenceZones_, zoneI)
+    {
+        label zone = zoneI;
+
+        const word& name = referenceZones_[zoneI].keyword();
+
+        label zoneId = mesh_.cellZones().findZoneID(name);
+
+        forAll(mesh_.cellZones()[zoneId], cellIlocal)
+        {
+            label cellIglobal = mesh_.cellZones()[zoneId][cellIlocal];
+            zone = zoneI;
+
+            sigmaFromTo[cellIglobal] = sigmaFromToList_[zone][momentI][energyJ][energyI].get(
+                fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
+                Tclad[cellIglobal],
+                TCool[cellIglobal],
+                TStructMech[cellIglobal],
+                rhoCool[cellIglobal],
+                axExp_[cellIglobal],
+                radExp_[cellIglobal],
+                isParametrize
+            );
+        }
+    }
+
+    return tsigmaFromTo;
+}
 
 // ************************************************************************* //

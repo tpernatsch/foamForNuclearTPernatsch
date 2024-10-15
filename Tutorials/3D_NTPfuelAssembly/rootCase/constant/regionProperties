@@ -27,11 +27,6 @@ regions
         neutroRegion
     )
 
-    thermoMechanicalRegion
-    (
-        thermoMechanicalRegion
-    )
-
     // fluidRegionNB
     // (
     //     fluidRegionNB

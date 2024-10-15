@@ -41,88 +41,91 @@ Class
 Description
     Subclass for diffusion neutronics.
 
-    The module solves the multi-group diffusion equations:
+The module solves the multi-group diffusion equations:
 
-    \f[
-        \frac{1}{v_g} \frac{\partial \phi_g}{\partial t} =
-            \nabla D_g \nabla \phi_g
-            + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) \nu \Sigma_{f,g} \phi_g
-            - \Sigma_{r,g} \phi_g
-            + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) S_{n,g}
-            + \chi_{d,g} S_d
-            + S_{s,g} 
-            + S_g
-            \quad \forall g \in [1; G] \\
-        \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) = 
-            \frac{\beta_k}{k_{eff}} \sum_h \nu \Sigma_{f,h} \phi_h
-            - \lambda_k C_k 
-            \quad \forall k \in [1; N]
-    \f]
+\f[
+    \frac{1}{v_g} \frac{\partial \phi_g}{\partial t} =
+        \nabla D_g \nabla \phi_g
+        + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) \nu \Sigma_{f,g} \phi_g
+        - \Sigma_{r,g} \phi_g
+        + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) S_{n,g}
+        + \chi_{d,g} S_d
+        + S_{s,g} 
+        + S_g
+        \quad \forall g \in [1; G] \\
+    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) = 
+        \frac{\beta_k}{k_{eff}} \sum_h \nu \Sigma_{f,h} \phi_h
+        - \lambda_k C_k 
+        \quad \forall k \in [1; N]
+\f]
 
-    with the explicit source term:
+with the explicit source term:
 
-    \f[
-        S_{n,g} = \sum_{h \neq g} \nu \Sigma_{f,h} \phi_h \\
-        S_d = \sum_k \lambda_k C_k \\
-        S_{s,g} = \sum_{h \neq g} \Sigma_{h \rightarrow g} \phi_h
-    \f]
+\f[
+    S_{n,g} = \sum_{h \neq g} \nu \Sigma_{f,h} \phi_h \\
+    S_d = \sum_k \lambda_k C_k \\
+    S_{s,g} = \sum_{h \neq g} \Sigma_{h \rightarrow g} \phi_h
+\f]
 
-    where:
-    \vartable
-      \phi_g         | Neutron flux for the gth energy group
-      C_k            | Concentration of the kth delayed neutron precursor group
-      D_g            | Neutron diffusion coefficient for the gth energy group
-      \chi_{p,g}     | Prompt neutron yield for the gth energy group
-      \chi_{d,g}     | Delayed neutron yield for the ith energy group
-      k_{eff}        | Effective multiplication factor
-      \beta_{tot}    | Total delayed neutron fraction
-      \beta_k        | Delayed neutron fraction for the kth delayed neutron precursor group
-      \nu            | Average number of neutrons per fission
-      \Sigma_{f,g}   | Fission cross section for the gth energy group
-      \Sigma_{r,g}   | Removal (disappearance) cross section for the gth energy group
-      \Sigma_{h \rightarrow g} | Group-transfer cross section from the hth to the gth energy group
-      S_{n,g}        | Fission neutron source from neutron energy groups others than the gth
-      S_d            | Delayed neutron source
-      S_{s,g}        | Scattering neutron source from neutron energy groups others than the gth
-      S_g            | External neutron source for the gth energy group
-      \boldsymbol{u} | Fuel velocity
-      v_g            | Average neutron velocity for the ith energy group
-      \lambda_k      | Decay constant for the kth delayed neutron precursor group
-    \endvartable
+where:
+\vartable
+    \phi_g         | Neutron flux for the gth energy group
+    C_k            | Concentration of the kth delayed neutron precursor group
+    D_g            | Neutron diffusion coefficient for the gth energy group
+    \chi_{p,g}     | Prompt neutron yield for the gth energy group
+    \chi_{d,g}     | Delayed neutron yield for the ith energy group
+    k_{eff}        | Effective multiplication factor
+    \beta_{tot}    | Total delayed neutron fraction
+    \beta_k        | Delayed neutron fraction for the kth delayed neutron precursor group
+    \nu            | Average number of neutrons per fission
+    \Sigma_{f,g}   | Fission cross section for the gth energy group
+    \Sigma_{r,g}   | Removal (disappearance) cross section for the gth energy group
+    \Sigma_{h \rightarrow g} | Group-transfer cross section from the hth to the gth energy group
+    S_{n,g}        | Fission neutron source from neutron energy groups others than the gth
+    S_d            | Delayed neutron source
+    S_{s,g}        | Scattering neutron source from neutron energy groups others than the gth
+    S_g            | External neutron source for the gth energy group
+    \boldsymbol{u} | Fuel velocity
+    v_g            | Average neutron velocity for the gth energy group
+    \lambda_k      | Decay constant for the kth delayed neutron precursor group
+\endvartable
 
 
-    In the neutronicsProperties file, for keff calculation in a critical 
-    reactor:
-    \verbatim
-        model                       diffusionNeutronics;
-        eigenvalueNeutronics        true;
-    \endverbatim
+In the neutronicsProperties file, for keff calculation in a critical 
+reactor:
+\verbatim
+    model                       diffusionNeutronics;
+    eigenvalueNeutronics        true;
+\endverbatim
 
-    For an subcritical reactor driven by an external neutron source: 
-    \verbatim
-        model                       diffusionNeutronics;
-        eigenvalueNeutronics        false;
-        externalSourceNeutronics    true;   
-    \endverbatim
+For an subcritical reactor driven by an external neutron source: 
+\verbatim
+    model                       diffusionNeutronics;
+    eigenvalueNeutronics        false;
+    externalSourceNeutronics    true;   
+\endverbatim
 
-    Reference publications
+<b>Reference publications</b>
 
-    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design, submitted. 
+<ol type="1">
+    <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
+    GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
+    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294, 
+    2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
     
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
+    <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam 
     multi-physics solver to the European Sodium Fast Reactor and verification 
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
     Nice (France), Paper 15226
 
-    Carlo Fiorina, Nordine Kerkar, Konstantin Mikityuk, Pablo Rubiolo, Andreas 
+    <li> Carlo Fiorina, Nordine Kerkar, Konstantin Mikityuk, Pablo Rubiolo, Andreas 
     Pautz, "Development and verification of the neutron diffusion solver for the 
     GeN-Foam multi-physics platform", Annals of Nuclear Energy, 96, 2016, 
     pages 212-222, DOI: http://dx.doi.org/10.1016/j.anucene.2016.05.023.
+</ol>
 
-    Author of this file (and associated .C or included .H files): 
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
+\mainauthor of this file (and associated .C or included .H files): 
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);   
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 
 SourceFiles
@@ -141,6 +144,9 @@ SourceFiles
 namespace Foam
 {
 
+namespace solvers
+{
+
 /*---------------------------------------------------------------------------*\
                           Class diffusionNeutronics Declaration
 \*---------------------------------------------------------------------------*/
@@ -153,6 +159,7 @@ protected:
 
     //- Cross sections
     XS xs_;
+
 
     //- Fields
     volScalarField Dalbedo_;
@@ -202,6 +209,15 @@ protected:
     //- Fields derived from mapped fields
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
+
+    scalar pTotOld_;
+
+    scalar residual_;
+
+    // multiRegion
+
+    bool multiRegion_;
+
 
 private:
 
@@ -257,31 +273,23 @@ public:
             return pTot;
         }
 
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const meshToMesh& neutroToFluid,
-            const objectRegistry& srcTM,
-            const meshToMesh& neutroToMech
-        );   
 
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& neutroToFluid,
-            const meshToMesh& neutroToMech
-        );
 
         //- Correct/update the properties
-        virtual void correct
-        (
-            scalar& residual,
-            label couplingIter  
-        );  
+        virtual void correctPhysics(); 
+        virtual void correctTightlyCoupledPhysics(); 
+
+        virtual scalar maxDeltaT();
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        };
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} //End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

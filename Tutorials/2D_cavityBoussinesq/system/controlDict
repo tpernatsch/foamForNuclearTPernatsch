@@ -21,7 +21,7 @@ startFrom       startTime;
 
 startTime       0;
 
-stopAt          endTime;//
+stopAt          endTime;
 
 endTime         30;
 
@@ -47,24 +47,24 @@ runTimeModifiable true;
 
 //- Physics to Solve
 
-solveFluidMechanics true;
+regionSolvers
+{
+    fluidRegion     onePhase;
+}
 
-solveEnergy     true;
+removeBaffles
+{
+    fluidRegion     false;
+}
 
-solveNeutronics false;
+liquidFuel      false;
 
-solveThermalMechanics false;
+adjustTimeStep  true;
 
-//- Global options
+maxDeltaT       1;
 
-liquidFuel false;
+maxCo           1;
 
-//- Time step control options
 
-adjustTimeStep      true;
-
-maxDeltaT           1;
-
-maxCo               1;
 
 // ************************************************************************* //

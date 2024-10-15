@@ -21,34 +21,32 @@ solvers
     {
         solver          GAMG;
         smoother        DIC;
-        tolerance       1e-6;
+        tolerance       1e-06;
         relTol          0;
     }
-
     p_rghFinal
     {
-        $p_rgh;
+        solver          GAMG;
+        smoother        DIC;
+        tolerance       1e-06;
         relTol          0;
     }
-
     "e.*"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-6;
+        tolerance       1e-06;
         relTol          0;
         minIter         0;
     }
-
     "h.*"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-6;
+        tolerance       1e-06;
         relTol          0;
         minIter         0;
     }
-
     ".*"
     {
         solver          PBiCGStab;
@@ -56,23 +54,25 @@ solvers
         tolerance       1e-06;
         relTol          0.001;
     }
-
     "alpha"
     {
-        solver              MULES;
-        adjustSubCycles     true;
-        alphaMaxCo          0.25;
+        solver          MULES;
+        adjustSubCycles true;
+        alphaMaxCo      0.25;
     }
 }
 
 PIMPLE
 {
-    nCorrectors                 6;
-    correctUntilConvergence     true;
-    nNonOrthogonalCorrectors    0;
-    partialEliminationMode      implicit;
-    momentumMode                faceCentered;
-    oscillationLimiterFraction  0.5;
+    solveEnergy         false;
+    solveFluidMechanics true;
+    nCorrectors         6;
+    nOuterCorrectors    18;
+    nNonOrthogonalCorrectors 0;
+    correctUntilConvergence true;
+    partialEliminationMode implicit;
+    momentumMode        faceCentered;
+    oscillationLimiterFraction 0.5;
 
     residualControl
     {
@@ -97,5 +97,6 @@ relaxationFactors
         "Kd.*"          0.25;
     }
 }
+
 
 // ************************************************************************* //

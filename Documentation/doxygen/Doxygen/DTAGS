@@ -24191,7 +24191,7 @@
     </member>
     <member kind="function">
       <type>const volScalarField &amp;</type>
-      <name>secondaryPowerDenisty</name>
+      <name>secondaryPowerDensity</name>
       <anchorfile>classFoam_1_1neutronics.html</anchorfile>
       <anchor>afd9ca56a197532a65edb7561bb572917</anchor>
       <arglist>() const</arglist>
@@ -24289,7 +24289,7 @@
     </member>
     <member kind="variable" protection="protected">
       <type>volScalarField</type>
-      <name>secondaryPowerDenisty_</name>
+      <name>secondaryPowerDensity_</name>
       <anchorfile>classFoam_1_1neutronics.html</anchorfile>
       <anchor>abb62ce70a64cdeb5bdde9b454a6e018e</anchor>
       <arglist></arglist>
@@ -31533,7 +31533,7 @@
     </member>
     <member kind="variable" protection="protected">
       <type>const volScalarField *</type>
-      <name>secondaryPowerDenistyOrig_</name>
+      <name>secondaryPowerDensityOrig_</name>
       <anchorfile>classFoam_1_1thermalHydraulicsModel.html</anchorfile>
       <anchor>ac33644113ac3b2e5e9d5bdff791f7a0c</anchor>
       <arglist></arglist>

@@ -39,10 +39,10 @@ Class
     Foam::thermalHydraulicsModels::twoPhase
 
 Description
-    This class encapsulates a two fluid + 1 stationary structure 
+    This class encapsulates a two fluid + 1 stationary structure
     Eulerian solver
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch / )
 
 SourceFiles
@@ -65,7 +65,7 @@ SourceFiles
 namespace Foam
 {
 
-namespace thermalHydraulicsModels
+namespace solvers
 {
 
 /*---------------------------------------------------------------------------*\
@@ -88,7 +88,7 @@ public:
 
     enum class partialEliminationMode
     {
-        none, 
+        none,
         legacy,
         implicit,
         implicitWithDmdt
@@ -100,7 +100,7 @@ public:
     {
         none,
         Su,
-        Sp, 
+        Sp,
         SuSp
     };
 
@@ -113,6 +113,8 @@ public:
     };
 
     static const Enum<heStabilizationMode> heStabilizationModeNames_;
+
+
 
 private:
 
@@ -129,26 +131,28 @@ private:
         volScalarField movingAlpha_;
 
     //- Phase pairs
-        
+
         //- Fluid1 - fluid2
         FFPair FFPair_;
-        
+
         //- Fluid1 - structure
         FSPair F1SPair_;
-        
+
         //- Fluid2 - structure
         FSPair F2SPair_;
 
-    //- 
+    //-
         autoPtr<twoPhaseDragFactor> twoPhaseDragFactorPtr_;
 
     //- Mixture quantities
 
         //- Mixture velocity
         volVectorField U_;
-        
+
         //- Mixture density
         volScalarField rho_;
+
+        scalar residual_;
 
     //- Miscellanea
 
@@ -157,7 +161,7 @@ private:
         //- Self explanatory
         bool bothPhasesArePresent_;
 
-        //- True if the temperature of of one of the two fluids is within a 
+        //- True if the temperature of of one of the two fluids is within a
         //  certain margin from saturation temperature
         bool withinMarginToPhaseChange_;
 
@@ -176,16 +180,16 @@ private:
         //-
         const heStabilizationMode heStabilizationMode_;
 
-        //- Feature that removes velocity oscillations and/or smearing in the 
+        //- Feature that removes velocity oscillations and/or smearing in the
         //  main flow direction. However, if dealing with structures that have
         //  large porosity gradiens (i.e. > 0.5 between consecutive cells) or
         //  large gradients in the structure drag tensor, this feature may
-        //  actually induce velocity oscillations in the directions 
-        //  perpendicular to the main flow direction (nedless to say, not in 
+        //  actually induce velocity oscillations in the directions
+        //  perpendicular to the main flow direction (nedless to say, not in
         //  1D). Only applicable to the face-momentum based algorithm.
-        //  This factor weights the "traditional" faceMomentum velocity 
+        //  This factor weights the "traditional" faceMomentum velocity
         //  reconstruction (the one which always causes smearing/oscillations)
-        //  in the main flow direction) with a moving phase fraction-adjusted 
+        //  in the main flow direction) with a moving phase fraction-adjusted
         //  velocity reconstruction (which may induced the aforementioned
         //  transversal oscillations). If set to 0, it is a pure "traditional"
         //  faceMomentum.
@@ -199,10 +203,7 @@ public:
 
         twoPhase
         (
-            Time& time,
-            fvMesh& mesh, 
-            customPimpleControl& pimple, 
-            fv::options& fvOptions
+            fvMesh& mesh
         );
 
         //- Destructor
@@ -211,25 +212,28 @@ public:
     //- Member Functions
 
         //- Solve thermal-hydraulics
-        virtual void correct
-        (
-            scalar& residual,
-            bool solveFluidDynamics, 
-            bool solveEnergy
-        );
+        virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
+
+        virtual scalar maxDeltaT() ;
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        };
 
         //- Correct fluid and structure temperatures without
         //  updating the flow regime map
-        virtual void correctEnergy(scalar& residual);
+        virtual void correctEnergy();
 
-        //- Correct pressure, velocities without updating 
+        //- Correct pressure, velocities without updating
         //  the flow regime map
-        virtual void correctFluidMechanics(scalar& residual);
+        virtual void correctFluidMechanics();
 
         //- Correct models and coupling fields
         virtual void correctModels
         (
-            bool solveFluidDynamics, 
+            bool solveFluidDynamics,
             bool solveEnergy
         );
 
@@ -238,7 +242,6 @@ public:
 
         //- Custom adjustTimeStep
         // virtual void adjustTimeStep();
-        virtual scalar nextDeltaT();
 
         //- Update continuity errors of the fluid
         void correctContErrs();
@@ -248,6 +251,8 @@ public:
 
         //- Computes the cumulated continuity error
         void calcCumulContErrs();
+
+
 };
 
 

@@ -11,7 +11,6 @@ FoamFile
     version     2.0;
     format      ascii;
     class       volVectorField;
-    location    "0";
     object      U;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -25,7 +24,7 @@ boundaryField
 {
     wall
     {
-        type zeroGradient;//slip;
+        type            zeroGradient;//slip;
     }
     top
     {
@@ -33,7 +32,7 @@ boundaryField
     }
     bottom
     {
-        type                fixedValue;
-        value               uniform (0 0 0.211369);
+        type            fixedValue;
+        value           uniform (0 0 0.211369);
     }
 }

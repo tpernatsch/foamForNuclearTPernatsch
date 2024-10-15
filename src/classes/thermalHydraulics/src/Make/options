@@ -13,6 +13,7 @@ EXE_INC = \
     -I./phaseModels/structureModels/powerModels/fixedTemperature \
     -I./phaseModels/structureModels/powerModels/nuclearFuelFMU \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPin \
+    -I./phaseModels/structureModels/powerModels/interpolatedNuclearFuelPin \
     -I./phaseModels/structureModels/powerModels/nuclearSteadyStatePebble \
     -I./phaseModels/structureModels/powerModels/nuclearFuelPinTest \
     -I./phaseModels/structureModels/powerModels/lumpedNuclearStructure \

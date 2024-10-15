@@ -1,0 +1,70 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      multiRegionCouplingDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+meshDeformation
+{
+    neutroRegion
+    {
+        displacementField disp;
+    }
+}
+
+mappings
+{
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields    2 ( powerDensity secondaryPowerDensity );
+            targetFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+            fieldTypes      2 ( scalar scalar );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    5 ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    5 ( TCool rhoCool TFuel TClad TStructMech );
+            fieldTypes      5 ( scalar scalar scalar scalar scalar );
+        }
+        thermoMechanicalRegion
+        {
+            sourceFields    1 ( meshDisp );
+            targetFields    1 ( disp );
+            fieldTypes      1 ( vector );
+        }
+    }
+    thermoMechanicalRegion
+    {
+        fluidRegion
+        {
+            sourceFields    2 ( T.passiveStructure T.fuelAvForNeutronics );
+            targetFields    2 ( TStructFromTH TFuel );
+            fieldTypes      2 ( scalar scalar );
+        }
+        neutroRegion
+        {
+            sourceFields    1 ( powerDensity );
+            targetFields    1 ( powerDensityNeutronics );
+            fieldTypes      1 ( scalar );
+        }
+    }
+}
+
+
+// ************************************************************************* //

@@ -67,7 +67,7 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
                     matrix[energyI][energyJ]=
                                   IV[energyI].internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
                                 - nuSigmaEff[energyI].internalField()[i]/keff_*(1.0-BetaTot.internalField()[i])*chiPrompt[energyI].internalField()[i]/discFactor[energyI].internalField()[i]
-                                + sigmaDisapp[energyI].internalField()[i]/discFactor[energyI].internalField()[i];
+                                + sigmaRemoval[energyI].internalField()[i]/discFactor[energyI].internalField()[i];
                                 //- leakages[energyI].internalField()[i];
                 }else
                 {
@@ -81,7 +81,7 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
                       IV[energyI].internalField()[i]*fluxStar_[energyI].oldTime().internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
                     + leakages[energyI].internalField()[i]
                     + delayedNeutroSource_.internalField()[i]*chiDelayed[energyI].internalField()[i]
-                    + 2*sigmaDisapp[energyI].internalField()[i]*fluxStar2_[energyI].internalField()[i]/discFactor[energyI].internalField()[i]
+                    + 2*sigmaRemoval[energyI].internalField()[i]*fluxStar2_[energyI].internalField()[i]/discFactor[energyI].internalField()[i]
                     + 2*ddtFlux2[energyI].internalField()[i];
         }
 
@@ -109,5 +109,3 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
     #include "initializeNeutroSource.H"
 
 }
-
-

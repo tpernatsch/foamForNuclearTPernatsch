@@ -11,7 +11,6 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "constant";
     object      phaseProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -27,20 +26,20 @@ thermalHydraulicsType    "onePhase";
 // ------------------------------------------------------------------------- //
 
 structureProperties
-{    
-"Core"
+{
+    "Core"
     {
         volumeFraction      0.61; // 61% Packing fraction
         Dh                  0.0255737704918; // dp*eps/(1-eps), April Novak's thesis
         powerModel
         {
             type                nuclearSteadyStatePebble;
-            
+
             // It can be shown that by averaging a/multiple pebble(s) over
             // a volume of any shape, the interfacialArea and volumeFraction
             // of the resulting porous pebble structure are not independent, yet
             // are tied by volumetricArea = 3*volumeFraction/outerPinRadius
-            powerDensityNeutronics            19.96567386e6; 
+            powerDensityNeutronics            19.96567386e6;
             pebbleSurfaceTemperatureGuess 939;
 
             pebbleCoreRadius        1.38e-2;
@@ -54,19 +53,18 @@ structureProperties
 
             nTRISO                  9022;
 
-            trisoFuelKCoeffs      (3.3073 0 0 0 0 0 0 0);                                   // April novak thesis
-            trisoBufferKCoeffs    (0.50 0 0 0 0 0 0 0);                                     // April novak thesis
-            trisoPyCKCoeffs       (4.00 0 0 0 0 0 0 0);                                     // April novak thesis
-            trisoSiCKCoeffs       (90.3 0 0 0 0 0 0 0);   // April Novak thesis fit (R=1.00)
-            pebbleGraphiteKCoeffs (41.68 0 0 0 0 0 0 0);          // April Novak thesis fit (R=1.00)
+            trisoFuelKCoeffs        (3.3073 0 0 0 0 0 0 0); // April novak thesis
+            trisoBufferKCoeffs      (0.50 0 0 0 0 0 0 0);   // April novak thesis
+            trisoPyCKCoeffs         (4.00 0 0 0 0 0 0 0);   // April novak thesis
+            trisoSiCKCoeffs         (90.3 0 0 0 0 0 0 0);   // April Novak thesis fit (R=1.00)
+            pebbleGraphiteKCoeffs   (41.68 0 0 0 0 0 0 0);  // April Novak thesis fit (R=1.00)
 
-            trisoFuelDensityCoeffs      (11031.432 -0.17907428 -9.1359257e-05 2.2133072e-09 0 0 0 0);                                   // April novak thesis
-            trisoBufferDensityCoeffs    (1000 0 0 0 0 0 0 0);                                     // April novak thesis
-            trisoPyCDensityCoeffs       (1900 0 0 0 0 0 0 0);                                     // April novak thesis
-            trisoSiCDensityCoeffs       (4.015E+02 -5.995E-01 3.898E-04 -9.380E-08 0 0 0 0);   // April Novak thesis fit (R=1.00)
-            pebbleGraphiteDensityCoeffs (8.12E+01 -6.14E-02 2.73E-05 -5.18E-09 0 0 0 0);          // April Novak thesis fit (R=1.00)
+            trisoFuelDensityCoeffs      (11031.432 -0.17907428 -9.1359257e-05 2.2133072e-09 0 0 0 0);   // April novak thesis
+            trisoBufferDensityCoeffs    (1000 0 0 0 0 0 0 0);   // April novak thesis
+            trisoPyCDensityCoeffs       (1900 0 0 0 0 0 0 0);   // April novak thesis
+            trisoSiCDensityCoeffs       (4.015E+02 -5.995E-01 3.898E-04 -9.380E-08 0 0 0 0);    // April Novak thesis fit (R=1.00)
+            pebbleGraphiteDensityCoeffs (8.12E+01 -6.14E-02 2.73E-05 -5.18E-09 0 0 0 0);    // April Novak thesis fit (R=1.00)
             coolantDensityCoeffs        (2413.03 -0.4884 0 0 0 0 0 0);
-
         }
     }
 }
@@ -90,7 +88,9 @@ physicsModels
     {
         "Core"
         {
-            type    ReynoldsPower; // Power fit (R=0.9956, Re of 500-3000) from case https://www.kta-gs.de/e/standards/3100/3102_3_engl_1981_03.pdf
+            // Power fit (R=0.9956, Re of 500-3000) from case
+            // https://www.kta-gs.de/e/standards/3100/3102_3_engl_1981_03.pdf
+            type    ReynoldsPower;
             coeff   8.4505;
             exp     -0.147;
         }
@@ -100,7 +100,6 @@ physicsModels
     {
         "Core"
         {
-
             type    NusseltReynoldsPrandtlPower; // Wakao
             const   2; //0; //4.82;
             coeff   1.1; //0.016; //0.0185;

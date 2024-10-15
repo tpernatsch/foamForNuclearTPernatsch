@@ -24,15 +24,15 @@ boundaryField
     inlet
     {
         type            fixedValue;
-        value 			uniform (0 0 1);
+        value           uniform (0 0 1);
     }
     outlet
     {
-    	type            zeroGradient;
+        type            zeroGradient;
     }
     fixedWalls
     {
-    	type            slip;
+        type            slip;
     }
     frontAndBack
     {

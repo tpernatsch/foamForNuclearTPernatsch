@@ -47,21 +47,17 @@ runTimeModifiable true;
 
 //- Physics to Solve
 
-solveFluidMechanics true;
+regionSolvers
+{
+	fluidRegion  onePhase;
+}
 
-solveEnergy     true;
+removeBaffles
+{
+	fluidRegion false;
+}
 
-includeKineticEnergy false;
-
-solveNeutronics false;
-
-solveThermalMechanics false;
-
-//- Global options
-
-liquidFuel false;
-
-//- Time step control options
+liquidFuel      false;
 
 adjustTimeStep  true;
 
@@ -69,13 +65,9 @@ maxDeltaT       0.01;
 
 maxCo           10;
 
-//- Write field options
-
 writeRestartFields true;
 
 writeContinuityErrors true;
-
-//- Function objects
 
 functions
 {
@@ -88,10 +80,9 @@ functions
         regionType      patch;
         name            inletP;
         operation       average;
-        fields          ( alphaRhoPhi T);
+        fields          ( alphaRhoPhi T );
         region          "fluidRegion";
     }
-
     inletSValues
     {
         type            surfaceFieldValue;
@@ -101,10 +92,9 @@ functions
         regionType      patch;
         name            inletS;
         operation       average;
-        fields          ( alphaRhoPhi T);
+        fields          ( alphaRhoPhi T );
         region          "fluidRegion";
     }
-
     outletPValues
     {
         type            surfaceFieldValue;
@@ -114,10 +104,9 @@ functions
         regionType      patch;
         name            outletP;
         operation       average;
-        fields          ( alphaRhoPhi T);
+        fields          ( alphaRhoPhi T );
         region          "fluidRegion";
     }
-
     outletSValues
     {
         type            surfaceFieldValue;
@@ -127,9 +116,22 @@ functions
         regionType      patch;
         name            outletS;
         operation       average;
-        fields          ( alphaRhoPhi T);
+        fields          ( alphaRhoPhi T );
         region          "fluidRegion";
     }
 }
+
+regionSolvers
+{
+    fluidRegion     onePhase;
+}
+
+removeBaffles
+{
+    fluidRegion     0;
+    neutroRegion    0;
+    thermoMechanicalRegion 0;
+}
+
 
 // ************************************************************************* //

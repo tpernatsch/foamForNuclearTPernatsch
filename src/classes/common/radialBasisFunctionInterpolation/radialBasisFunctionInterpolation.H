@@ -41,7 +41,7 @@ Class
 Description
     Base file for list conversion.
 
-\mainauthor 
+\mainauthor
     Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 SourceFiles
@@ -89,17 +89,34 @@ scalar gaussianRadialBasisFunction
     const scalarList eps
 );
 
-//- Polyharmonic spline RBF solver
+//- Polyharmonic spline function
+scalar polyharmonicSplineFunction
+(
+    const scalar rSquare,
+    const label mode
+);
+
+//- Polyharmonic spline RBF solver for 3 dimensions
 scalarList solvePolyharmonicSpline
 (
     const scalarList xList,
     const scalarList yList,
     const scalarList zList,
     const scalarList vList,
-    SquareMatrix<scalar>& invRBFmatrix
+    SquareMatrix<scalar>& invRBFmatrix,
+    const label mode = 2
 );
 
-//- Polyharmonic spline RBF
+//- Generalized polyharmonic spline RBF solver for N dimensions
+scalarList solvePolyharmonicSpline
+(
+    const List<scalarList>& xList,
+    const scalarList& vList,
+    SquareMatrix<scalar>& invRBFmatrix,
+    const label mode = 2
+);
+
+//- Polyharmonic spline RBF for 3 dimensions
 scalar polyharmonicSpline
 (
     const scalarList w,
@@ -108,8 +125,19 @@ scalar polyharmonicSpline
     const scalarList zList,
     const scalar x,
     const scalar y,
-    const scalar z
+    const scalar z,
+    const label mode = 2
 );
+
+//- Generalized polyharmonic spline RBF for N dimensions
+scalar polyharmonicSpline
+(
+    const scalarList& w,
+    const List<scalarList>& xList,
+    const scalarList& x,
+    const label mode = 2
+);
+
 
 //- Experimental RBF solver using derivative information (XY plane only)
 scalarList solvePolyharmonicSplineDerivative

@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model					diffusionNeutronics; // pointKinetics
+model                   diffusionNeutronics; // pointKinetics
 
 eigenvalueNeutronics    true;
 

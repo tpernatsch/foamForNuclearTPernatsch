@@ -37,7 +37,7 @@ tutorials="
     2D_voidMotionNoPhaseChange
     3D_gFHR
     3D_NTPfuelAssembly
-    3D_SmallESFR
+    3D_SmallESFR_NewSolverVerification
     Godiva_SN
     FMU/2D_PKCoupleFMI/comparisonFMU
     FMU/2D_PKCoupleFMI/PIDcontrol
@@ -47,30 +47,35 @@ tutorials="
     FMU/2D_LFRpowerPlant/GeN-FoamAs3FMU
     testing/2D_MSFR_ULOF_diffusion_and_pk
     toBeUpdated/2D_RegressionESFR
-" 
+"
 
 # Clean all the tutorials
 for tutorialName in $tutorials
 do
-    printf "Cleaning tutorial $tutorialName ... "
     path=$(pwd)
-    cd $tutorialName
-
-    if [ -f Allclean ]
+    if [ -d $tutorialName ]
     then
-        ./Allclean
-        printf "\033[0;32mdone\033[0m\n"
-    else
-        if [ -f Allclean.py ]
+        printf "Cleaning tutorial $tutorialName ... "
+        cd $tutorialName
+
+        if [ -f Allclean ]
         then
-            python3 Allclean.py
+            ./Allclean
             printf "\033[0;32mdone\033[0m\n"
         else
-            printf "\033[0;31merror (no cleaning script)\033[0m\n"
+            if [ -f Allclean.py ]
+            then
+                python3 Allclean.py
+                printf "\033[0;32mdone\033[0m\n"
+            else
+                printf "\033[0;31merror (no cleaning script)\033[0m\n"
+            fi
         fi
-    fi
 
-    cd $path
+        cd $path
+    else
+        echo "No tutorial named \033[0;31m$tutorialName\033[0m"
+    fi
 
     # case "$tutorialName" in
     # "3D_SmallESFR")
@@ -149,7 +154,7 @@ do
     #     ./Allclean
     #     cd ..
     #     printf "Done cleaning tutorial $tutorialName...\n"
-    #     ;;        
+    #     ;;
     # "2D_cavityBoussinesq")
     #     printf "Cleaning tutorial $tutorialName...\n"
     #     cd $tutorialName
@@ -191,7 +196,7 @@ do
     #     ./Allclean
     #     cd ..
     #     printf "Done cleaning tutorial $tutorialName...\n"
-    #     ;;   
+    #     ;;
     # "2D_KNS37-L22")
     #     printf "Cleaning tutorial $tutorialName...\n"
     #     cd $tutorialName
@@ -257,7 +262,7 @@ do
     #     python3 Allclean.py
     #     cd ../..
     #     printf "Done cleaning tutorial $tutorialName...\n"
-    #     ;;           
+    #     ;;
     # esac
 
 done

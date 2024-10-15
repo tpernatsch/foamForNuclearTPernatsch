@@ -47,13 +47,15 @@ runTimeModifiable true;
 
 //- Physics to Solve
 
-solveFluidMechanics true;
+regionSolvers
+{
+    fluidRegion     onePhase;
+}
 
-solveEnergy     true;
-
-solveNeutronics false;
-
-solveThermalMechanics false;
+removeBaffles
+{
+    fluidRegion     true;
+}
 
 //- Global options
 
@@ -82,7 +84,7 @@ functions
         thermoName      "thermophysicalProperties";
         alphaRhoPhiName "alphaRhoPhi";
     }
-    
+
     outlet2
     {
         type            TBulk;
@@ -94,7 +96,7 @@ functions
         thermoName      "thermophysicalProperties";
         alphaRhoPhiName "alphaRhoPhi";
     }
-    
+
     massFlow1
     {
         type            massFlow;
@@ -106,7 +108,7 @@ functions
         alphaRhoPhiName "alphaRhoPhi";
         scaleFactor     1;
     }
-    
+
     massFlow2
     {
         type            massFlow;
@@ -133,7 +135,7 @@ functions
         libs            (pyFMUSim);
         pyClassName     momentumSourceTest;
         pyFileName      momentumSourceTest;
-    }  
+    }
 }
 
 // ************************************************************************* //

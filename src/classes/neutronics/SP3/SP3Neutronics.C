@@ -46,14 +46,17 @@ License
 
 namespace Foam
 {
+namespace solvers
+{
     defineTypeNameAndDebug(SP3Neutronics, 0);
 
     addToRunTimeSelectionTable
     (
-        neutronics,
+        solver,
         SP3Neutronics,
-        dictionary
+        fvMesh
     );
+}
 }
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
@@ -61,7 +64,7 @@ namespace Foam
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::SP3Neutronics::SP3Neutronics
+Foam::solvers::SP3Neutronics::SP3Neutronics
 (
     fvMesh& mesh
 )
@@ -251,8 +254,8 @@ Foam::SP3Neutronics::SP3Neutronics
             "rhoCool",
             mesh.time().timeName(),
             mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
+            IOobject::NO_READ,
+            IOobject::NO_WRITE
         ),
         mesh,
         dimensionedScalar("", dimTemperature, SMALL),
@@ -271,7 +274,9 @@ Foam::SP3Neutronics::SP3Neutronics
         mesh,
         dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    )
+    ),
+    pTotOld_(pTarget_),
+    residual_(0)
 {
     #include "createNeutronicsFieldsSP3.H"
 }
@@ -279,39 +284,66 @@ Foam::SP3Neutronics::SP3Neutronics
 
 // * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
 
-Foam::SP3Neutronics::~SP3Neutronics()
+Foam::solvers::SP3Neutronics::~SP3Neutronics()
 {}
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::SP3Neutronics::getCouplingFieldRefs
-(
-    const objectRegistry& srcTH,
-    const meshToMesh& neutroToFluid,
-    const objectRegistry& srcTM,
-    const meshToMesh& neutroToMech
-)
-{
-    #include "defaultGetCouplingFieldRefs.H"
-}
+// void Foam::solvers::SP3Neutronics::getCouplingFieldRefs
+// (
+//     const objectRegistry& srcTH,
+//     const meshToMesh& neutroToFluid,
+//     const objectRegistry& srcTM,
+//     const meshToMesh& neutroToMech
+// )
+// {
+//     #include "defaultGetCouplingFieldRefs.H"
+// }
 
-void Foam::SP3Neutronics::interpolateCouplingFields
-(
-    const meshToMesh& neutroToFluid,
-    const meshToMesh& neutroToMech
-)
-{
-    #include "defaultInterpolateCouplingFields.H"
-}
+// void Foam::solvers::SP3Neutronics::interpolateCouplingFields
+// (
+//     const meshToMesh& neutroToFluid,
+//     const meshToMesh& neutroToMech
+// )
+// {
+//     #include "defaultInterpolateCouplingFields.H"
+// }
 
-void Foam::SP3Neutronics::correct
-(
-    scalar& residual, 
-    label couplingIter
-)
+void Foam::solvers::SP3Neutronics::correctPhysics()
 {
+
+
+    pTotOld_=power();
+    residual_=0;
     #include "solveNeutronicsSP3.H"
 }
 
+void Foam::solvers::SP3Neutronics::correctTightlyCoupledPhysics()
+{
+    correctPhysics();
+}
+
+
+scalar Foam::solvers::SP3Neutronics::maxDeltaT()
+{
+    scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+    scalar maxPowerVariation =
+        mesh_.time().controlDict().lookupOrDefault<scalar>
+        (
+            "maxPowerVariation", 
+            0.025
+        );
+    scalar pTot = power();
+
+    scalar powerVariation = mag((pTot - pTotOld_) / (pTotOld_ + SMALL));
+
+    scalar maxDeltaTNeutroFact = mag(maxPowerVariation/(powerVariation + SMALL));
+
+    scalar deltaTNeutroFact = min(min(maxDeltaTNeutroFact, 1.0 + 0.1*maxDeltaTNeutroFact), 1.2);
+
+    return min(deltaTNeutroFact*mesh_.time().deltaTValue(), newDeltaT);
+
+
+}
 // ************************************************************************* //

@@ -37,29 +37,43 @@ License
 
 \*---------------------------------------------------------------------------*/
 
+#if defined __has_include
+#  if __has_include(<commDataLayer.H>) 
+#    include <commDataLayer.H>
+#    define isCommDataLayerIncluded
+#  endif
+#endif
+
 #include "pointKineticNeutronics.H"
 #include "zeroGradientFvPatchFields.H"
 #include "addToRunTimeSelectionTable.H"
 #include "coordinateSystem.H"
 
+#ifdef isCommDataLayerIncluded
+#include "commDataLayer.H"
+#endif
+
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 namespace Foam
+{
+namespace solvers
 {
     defineTypeNameAndDebug(pointKineticNeutronics, 0);
 
     addToRunTimeSelectionTable
     (
-        neutronics,
+        solver,
         pointKineticNeutronics,
-        dictionary
+        fvMesh
     );
+}
 }
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::pointKineticNeutronics::pointKineticNeutronics
+Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 (
     fvMesh& mesh
 )
@@ -226,10 +240,10 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     (
         IOobject
         (
-            "pointKinetics.TFuel",
+            "TFuel",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
@@ -243,7 +257,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             "TClad",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
@@ -257,7 +271,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             "TCool",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
@@ -271,7 +285,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             "rhoCool",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE
         ),
         mesh,
@@ -285,7 +299,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             "TStruct",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
@@ -483,9 +497,12 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             List<Pair<scalar>>()
         )
     ),
+    phiOrig_(nullptr),
     intPhiRef_(0),
     phiFaces_(0),
-    phiMagSf_(0)
+    phiMagSf_(0),
+    pTotOld_(power_),
+    residual_(0)
 {
     //- Cannot work in eigenvalue mode for obvious reasons, it makes no sense
     if (eigenvalueNeutronics_)
@@ -753,6 +770,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             oneGroupFlux_ += fluxi;
         }
         oneGroupFlux_.correctBoundaryConditions();
+
     }
     //- Update the initOneGroupFlux related quantities after possible
     //  changes in the oneGroupFlux
@@ -924,6 +942,8 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
             << "    " << externalSourceBeamIntensity_*1.602176634e-19 << " A"
             << endl;
         }
+
+        
     }
 
     //- Compute total effective delayed neutron fraction
@@ -960,10 +980,10 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
     );
 
     //- Set flag in base class dict so it can be accessed by the GeN-Foam main
-    bool GEMReactivity(GEMReactivityMap_.size() > 1);
-    this->IOdictionary::set("GEM", GEMReactivity);
+    bool GEMReactivityBool(GEMReactivityMap_.size() > 1);
+    this->IOdictionary::set("GEM", GEMReactivityBool);
 
-    if (GEMReactivity)
+    if (GEMReactivityBool)
     {
         GEMSodiumLevelRef_ = nuclearData_.get<scalar>("GEMSodiumLevelRef");
 
@@ -982,6 +1002,7 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         }
     }
 
+
     //- Some notes on modelling choices, for clarity
     Info<< "The pointKinetics neutronics model currently computes average "
         << "perturbed values for feedback fields (T fuel, cladding, etc.) "
@@ -990,12 +1011,63 @@ Foam::pointKineticNeutronics::pointKineticNeutronics
         << "This will be addressed in future updates, but given that the "
         << "adjoint flux is equal to the flux if dealing with only one energy "
         << "group, this is deemed fine for now." << endl;
-}
 
+
+
+    // #include "computeFeedbackFieldValues.H"
+
+    // //- TFuelRef limited as it appears in a fraction denominator if doing
+    // //  fastNeutrons (for the Doppler coeff)
+
+    // TFuelRef_ =
+    //    reactorState_.lookupOrDefault<scalar>("TFuelRef", TFuelValue);
+
+    // TCladRef_ =
+    //     reactorState_.lookupOrDefault<scalar>("TladRef", TCladValue);
+
+    // TCoolRef_ =
+    //     reactorState_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
+
+    // rhoCoolRef_ =     
+    //     reactorState_.lookupOrDefault<scalar>("rhoCoolRef", rhoCoolValue);
+
+    // TStructRef_ =
+    //     reactorState_.lookupOrDefault<scalar>("TStructRef", TStructValue);
+
+    // TStructMechRef_ =
+    //     reactorState_.lookupOrDefault<scalar>("TStructMechRef", TStructMechValue);
+
+    // TDrivelineRef_ =
+    //     reactorState_.lookupOrDefault<scalar>("TDriveLineRef", TDrivelineValue);
+
+    // //- Since a T*Ref_ are scalars, the value inside the dictionary is not
+    // //  updated at runTime automatically. The line below resets the SCALAR IN
+    // //  THE DICTIONARY at runTime so that the dictionary is written with the
+    // //  updated value.
+    // reactorState_.set("TFuelRef", TFuelRef_);
+    // reactorState_.set("TCladRef", TCladRef_);
+    // reactorState_.set("TCoolRef", TCoolRef_);
+    // reactorState_.set("rhoCoolRef", rhoCoolRef_);
+    // reactorState_.set("TStructRef", TStructRef_);
+    // reactorState_.set("TStructMechRef", TStructMechRef_);
+    // reactorState_.set("TDrivelineRef", TDrivelineRef_);
+    // reactorState_.regIOobject::writeObject
+    // (
+    //     IOstream::ASCII,
+    //     // IOstream::currentVersion,
+    //     // reactorState_.time().writeCompression(),
+    //     true
+    // );
+
+    // #include "correctReactivity.H"
+
+    // Info << endl << "pointKinetics (initial conditions): " << endl;
+    // #include "pointKineticsInfo.H"
+}
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::pointKineticNeutronics::setInitOneGroupFlux()
+void Foam::solvers::pointKineticNeutronics::setInitOneGroupFlux()
 {
     initOneGroupFlux_ = oneGroupFlux_;
     initOneGroupFluxN_ =
@@ -1004,7 +1076,7 @@ void Foam::pointKineticNeutronics::setInitOneGroupFlux()
         fvc::domainIntegrate(sqr(initOneGroupFluxN_)).value();
 }
 
-void Foam::pointKineticNeutronics::setFeedbackCellField
+void Foam::solvers::pointKineticNeutronics::setFeedbackCellField
 (
     volScalarField& feedbackCellField,
     const word& keyword
@@ -1036,7 +1108,7 @@ void Foam::pointKineticNeutronics::setFeedbackCellField
     }
 }
 
-void Foam::pointKineticNeutronics::setBeamParameters()
+void Foam::solvers::pointKineticNeutronics::setBeamParameters()
 {
     if (intrinsicGain_ > 0)
     {
@@ -1045,7 +1117,7 @@ void Foam::pointKineticNeutronics::setBeamParameters()
     }
 }
 
-Foam::scalar Foam::pointKineticNeutronics::calcDrivelineReactivity
+Foam::scalar Foam::solvers::pointKineticNeutronics::calcDrivelineReactivity
 (
     const scalar& drivelineExpansion
 )
@@ -1110,27 +1182,60 @@ Foam::scalar Foam::pointKineticNeutronics::calcDrivelineReactivity
     return drivelineReactivity;
 }
 
+
+// For now GEM REACTIVTY does NOT work in GeN-Foam 2.0
 Foam::Pair<Foam::scalar>
-Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
+Foam::solvers::pointKineticNeutronics::calcGEMLevelAndReactivity()
 {
     scalar GEMSodiumLevel(0);
     scalar GEMReactivity(0);
+
+
+
     if (this->get<bool>("GEM"))
     {
+
+        if(phiOrig_ == nullptr)
+        {
+            word regionName(this->get<word>("fluidRegionName"));
+
+            //For now hard-coding the fluid mesh to be named fluidRegion
+            const fvMesh& THMesh(mesh_.time().lookupObjectRef<fvMesh>(regionName));
+            phiOrig_ = THMesh.findObject<surfaceScalarField>("phi");
+            const labelList& faces
+            (
+                THMesh.faceZones()[nuclearData_.get<word>("GEMFlowFaceZone")]
+            );
+            scalarField magSf(mag(THMesh.faceAreas()));
+            forAll(faces, i)
+            {
+                const label& facei(faces[i]);
+                phiFaces_.append(facei);
+                phiMagSf_.append(magSf[facei]);
+                intPhiRef_ += (*phiOrig_)[facei]*magSf[facei];
+            }
+            reduce(intPhiRef_, sumOp<scalar>());
+        }
+
         scalar intPhiFrac(0);
         forAll(phiFaces_, i)
         {
             const label& facei(phiFaces_[i]);
             intPhiFrac += (*phiOrig_)[facei]*phiMagSf_[i];
         }
+        Info <<"Bla bla " << intPhiRef_<<endl;
+        Info <<"The other "<< intPhiFrac<<endl;
         reduce(intPhiFrac, sumOp<scalar>());
         intPhiFrac /= intPhiRef_;
+        Info <<"Fractions though is " << intPhiFrac<<endl;
 
         //- Specific FFTF relationship between flow fraction and GEM sodium
         //  level
         GEMSodiumLevel =
             (265.0-539504/(2440.13+sqr(intPhiFrac*100)))/100
         -   GEMSodiumLevelRef_;
+
+        Info << "Level is " << GEMSodiumLevel<<endl;
 
         label N(GEMReactivityMap_.size()-1);
         if (GEMReactivityMap_.size() > 1)
@@ -1161,6 +1266,8 @@ Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
                         );
                         GEMReactivity =
                             m*(GEMSodiumLevel-X0.first()) + X0.second();
+
+                        Info <<"Reactivity finally is " << GEMReactivity<<endl;
                         break;
                     }
                 }
@@ -1171,306 +1278,48 @@ Foam::pointKineticNeutronics::calcGEMLevelAndReactivity()
     return Pair<scalar>(GEMSodiumLevel, GEMReactivity);
 }
 
-void Foam::pointKineticNeutronics::getCouplingFieldRefs
-(
-    const objectRegistry& srcTH,
-    const meshToMesh& neutroToFluid,
-    const objectRegistry& srcTM,
-    const meshToMesh& neutroToMech
-)
+
+void Foam::solvers::pointKineticNeutronics::correctPhysics()
 {
-    //- Field names must reflect those defined in createCouplingFields.H
-    TFuelOrig_ =
-        srcTH.findObject<volScalarField>("bafflelessTFuelAv");
-    TCladOrig_ =
-        srcTH.findObject<volScalarField>("bafflelessTCladAv");
-    TCoolOrig_ =
-        srcTH.findObject<volScalarField>("bafflelessTCool");
-    rhoCoolOrig_ =
-        srcTH.findObject<volScalarField>("bafflelessRhoCool");
-    TStructOrig_ =
-        srcTH.findObject<volScalarField>("bafflelessTStruct");
 
-    //- Project thermalHydraulic powerDensities onto the neutronic ones to
-    //  initialize them if the latters do not exist.
-    //  Mirroring what happens in thermalHydraulics.interpolateCouplingFields:
-    //  - if(liquidFuel), map powerDensityNeutronicsToLiquid_ to powerDensity_ 
-    //    and powerDensityNeutronics_ to secondaryPowerDenisty_
-    //  - else, map powerDensityNeutronics_ to powerDensity_ and 
-    //    powerDensityNeutronicsToLiquid_ to secondaryPowerDenisty_
-    if(liquidFuel_)
-    {
-        IOobject powerDensityHeader
-        (
-            "powerDensity",
-            mesh_.time().timeName(),
-            mesh_.time(),
-            IOobject::NO_READ
-        );
+    pTotOld_ = power_;
 
-        if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
-        {
-            powerDensityToLiquidOrig_ =
-                srcTH.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
-            neutroToFluid.mapTgtToSrc
-                (
-                    *powerDensityToLiquidOrig_,
-                    plusEqOp<scalar>(),
-                    powerDensity_
-                );
-            powerDensity_.correctBoundaryConditions();
-        }
-
-        IOobject secondaryPowerDensityHeader
-        (
-            "secondaryPowerDensity",
-            mesh_.time().timeName(),
-            mesh_.time(),
-            IOobject::NO_READ
-        );
-
-        if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
-        {
-            powerDensityOrig_ =
-                srcTH.findObject<volScalarField>("bafflelessPowerDensity");
-            neutroToFluid.mapTgtToSrc
-                (
-                    *powerDensityOrig_,
-                    plusEqOp<scalar>(),
-                    secondaryPowerDenisty_
-                );
-            secondaryPowerDenisty_.correctBoundaryConditions();
-        }
-    }
-    else
-    {
-        IOobject powerDensityHeader
-        (
-            "powerDensity",
-            mesh_.time().timeName(),
-            mesh_.time(),
-            IOobject::NO_READ
-        );
-
-        if (!powerDensityHeader.typeHeaderOk<volScalarField>(true))
-        {
-            powerDensityOrig_ =
-                srcTH.findObject<volScalarField>("bafflelessPowerDensity");
-            neutroToFluid.mapTgtToSrc
-                (
-                    *powerDensityOrig_,
-                    plusEqOp<scalar>(),
-                    powerDensity_
-                );
-            powerDensity_.correctBoundaryConditions();
-        }
-
-        IOobject secondaryPowerDensityHeader
-        (
-            "secondaryPowerDensity",
-            mesh_.time().timeName(),
-            mesh_.time(),
-            IOobject::NO_READ
-        );
-
-        if (!secondaryPowerDensityHeader.typeHeaderOk<volScalarField>(true))
-        {
-            powerDensityToLiquidOrig_ =
-                srcTH.findObject<volScalarField>("bafflelessPowerDensityToLiquid");
-            neutroToFluid.mapTgtToSrc
-                (
-                    *powerDensityToLiquidOrig_,
-                    plusEqOp<scalar>(),
-                    secondaryPowerDenisty_
-                );
-            secondaryPowerDenisty_.correctBoundaryConditions();
-        }
-    }
-
-    if (liquidFuel_)
-    {
-        UOrig_ =
-            srcTH.findObject<volVectorField>("bafflelessU");
-        alphaOrig_ =
-            srcTH.findObject<volScalarField>("bafflelessAlpha");
-        alphatOrig_ =
-            srcTH.findObject<volScalarField>("bafflelessAlphat");
-        muOrig_ =
-            srcTH.findObject<volScalarField>("bafflelessMu");
-    }
-    else
-    {
-        UOrig_ = nullptr;
-        alphaOrig_ = nullptr;
-        alphatOrig_ = nullptr;
-        muOrig_ = nullptr;
-    }
-
-    //- If doing GEM modelling
-    if (this->get<bool>("GEM"))
-    {
-        phiOrig_ =
-            srcTH.findObject<surfaceScalarField>("phi");
-        const labelList& faces
-        (
-            neutroToFluid.tgtRegion().faceZones()
-            [
-                nuclearData_.get<word>("GEMFlowFaceZone")
-            ]
-        );
-        scalarField magSf(mag(neutroToFluid.tgtRegion().faceAreas()));
-        forAll(faces, i)
-        {
-            const label& facei(faces[i]);
-            phiFaces_.append(facei);
-            phiMagSf_.append(magSf[facei]);
-            intPhiRef_ += (*phiOrig_)[facei]*magSf[facei];
-        }
-        reduce(intPhiRef_, sumOp<scalar>());
-    }
-    else
-    {
-        phiOrig_ = nullptr;
-    }
-
-    //- Get T from TM solver
-    TStructMechOrig_ = 
-        srcTM.findObject<volScalarField>("TStruct");
-
-    //- The rest of this function is for initializing the reference values of
-    //  the feedback parameters. If they are found in the dictionary, use
-    //  those, otherwise compute them from the coupling fields (thus
-    //  assuming that the simulation starts from a steady state)
-
-    this->interpolateCouplingFields(neutroToFluid,neutroToMech);
-
-    #include "computeFeedbackFieldValues.H"
-
-    //- TFuelRef limited as it appears in a fraction denominator if doing
-    //  fastNeutrons (for the Doppler coeff)
-    TFuelRef_ =
-        max
-        (
-            reactorState_.lookupOrDefault<scalar>("TFuelRef", TFuelValue),
-            SMALL
-        );
-
-    TCladRef_ =
-        reactorState_.lookupOrDefault<scalar>("TCladRef", TCladValue);
-
-    TCoolRef_ =
-        reactorState_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
-
-    rhoCoolRef_ =
-        reactorState_.lookupOrDefault<scalar>("rhoCoolRef", rhoCoolValue);
-
-    TStructRef_ =
-        reactorState_.lookupOrDefault<scalar>("TStructRef", TStructValue);
-
-    TStructMechRef_ =
-        reactorState_.lookupOrDefault<scalar>("TStructMechRef", TStructMechValue);
-
-    TDrivelineRef_ =
-        reactorState_.lookupOrDefault<scalar>("TDrivelineRef", TDrivelineValue);
-
-    //- Since a T*Ref_ are scalars, the value inside the dictionary is not
-    //  updated at runTime automatically. The line below resets the SCALAR IN
-    //  THE DICTIONARY at runTime so that the dictionary is written with the
-    //  updated value.
-    reactorState_.set("TFuelRef", TFuelRef_);
-    reactorState_.set("TCladRef", TCladRef_);
-    reactorState_.set("TCoolRef", TCoolRef_);
-    reactorState_.set("rhoCoolRef", rhoCoolRef_);
-    reactorState_.set("TStructRef", TStructRef_);
-    reactorState_.set("TStructMechRef", TStructMechRef_);
-    reactorState_.set("TDrivelineRef", TDrivelineRef_);
-    reactorState_.regIOobject::writeObject
-    (
-        IOstream::ASCII,
-        // IOstream::currentVersion,
-        // reactorState_.time().writeCompression(),
-        true
-    );
-
-    #include "correctReactivity.H"
-
-    //Info << endl << "pointKinetics (initial conditions): " << endl;
-    //#include "pointKineticsInfo.H"
-}
-
-void Foam::pointKineticNeutronics::interpolateCouplingFields
-(
-    const meshToMesh& neutroToFluid,
-    const meshToMesh& neutroToMech
-)
-{
-    neutroToFluid.mapTgtToSrc(*TFuelOrig_, plusEqOp<scalar>(), TFuel_);
-    neutroToFluid.mapTgtToSrc(*TCladOrig_, plusEqOp<scalar>(), TClad_);
-    neutroToFluid.mapTgtToSrc(*TCoolOrig_, plusEqOp<scalar>(), TCool_);
-    neutroToFluid.mapTgtToSrc(*rhoCoolOrig_, plusEqOp<scalar>(), rhoCool_);
-    neutroToFluid.mapTgtToSrc(*TStructOrig_, plusEqOp<scalar>(), TStruct_);
-
-    if (liquidFuel_)
-    {
-        neutroToFluid.mapTgtToSrc(*UOrig_, plusEqOp<vector>(), UPtr_());
-        neutroToFluid.mapTgtToSrc
-        (
-            *alphaOrig_,
-            plusEqOp<scalar>(),
-            alphaPtr_()
-        );
-        neutroToFluid.mapTgtToSrc
-        (
-            *alphatOrig_,
-            plusEqOp<scalar>(),
-            alphatPtr_()
-        );
-        neutroToFluid.mapTgtToSrc(*muOrig_, plusEqOp<scalar>(), muPtr_());
-        phiPtr_() = fvc::flux(UPtr_());
-        volScalarField diffCoeffOrig
-        (
-            (
-                *alphatOrig_
-            +   *muOrig_/ScNo_
-            )/(*rhoCoolOrig_)
-        );
-        neutroToFluid.mapTgtToSrc
-        (
-            diffCoeffOrig,
-            plusEqOp<scalar>(),
-            diffCoeffPrecPtr_()
-        );
-
-        UPtr_().correctBoundaryConditions();
-        alphaPtr_().correctBoundaryConditions();
-        alphatPtr_().correctBoundaryConditions();
-        diffCoeffPrecPtr_().correctBoundaryConditions();
-    }
-
-
-    //- Interpolate T from TM solver
-    neutroToMech.mapTgtToSrc(*TStructMechOrig_, plusEqOp<scalar>(), TStructMech_);
-
-    TFuel_.correctBoundaryConditions();
-    TClad_.correctBoundaryConditions();
-    TCool_.correctBoundaryConditions();
-    rhoCool_.correctBoundaryConditions();
-    TStruct_.correctBoundaryConditions();
-}
-
-void Foam::pointKineticNeutronics::correct
-(
-    scalar& residual,
-    label couplingIter
-)
-{
     if(!liquidFuel_)
     {
         #include "solvePointKinetics.H"
-    }else
+    }
+    else
     {
         #include "solvePointKineticsLiquidFuel.H"
     }
+
+}
+
+void Foam::solvers::pointKineticNeutronics::correctTightlyCoupledPhysics()
+{
+    correctPhysics();
+}
+
+
+scalar Foam::solvers::pointKineticNeutronics::maxDeltaT()
+{
+    scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+    scalar maxPowerVariation =
+        mesh_.time().controlDict().lookupOrDefault<scalar>
+        (
+            "maxPowerVariation", 
+            0.025
+        );
+    scalar pTot = power();
+
+    scalar powerVariation = mag((pTot - pTotOld_) / (pTotOld_ + SMALL));
+
+    scalar maxDeltaTNeutroFact = mag(maxPowerVariation/(powerVariation + SMALL));
+
+    scalar deltaTNeutroFact = min(min(maxDeltaTNeutroFact, 1.0 + 0.1*maxDeltaTNeutroFact), 1.2);
+
+    return min(deltaTNeutroFact*mesh_.time().deltaTValue(), newDeltaT);
+
 
 }
 

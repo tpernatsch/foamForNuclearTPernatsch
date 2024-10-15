@@ -11,19 +11,27 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      esfr_core__res;
+    object      quadratureSet;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 discreteDirectionsOct 1;
 
- directionUxOct nonuniform List<scalar> 1 (
-1.0
+directionUxOct nonuniform List<scalar> 1 (
+    1.0
 );
- directionUyOct nonuniform List<scalar> 1 (
-1.0
+
+directionUyOct nonuniform List<scalar> 1 (
+    1.0
 );
- directionUzOct nonuniform List<scalar> 1 (
-1.0
+
+directionUzOct nonuniform List<scalar> 1 (
+    1.0
 );
- directionWeightsOct nonuniform List<scalar> 1 (
-1.0
+
+directionWeightsOct nonuniform List<scalar> 1 (
+    1.0
 );
+
+
+// ************************************************************************* //

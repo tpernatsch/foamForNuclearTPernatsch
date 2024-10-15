@@ -10,9 +10,13 @@ FoamFile
 {
     version     2.0;
     format      ascii;
+    arch        "LSB;label=32;scalar=64";
     class       dictionary;
+    location    "system";
     object      controlDict;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 application     GeN-Foam;
 
 startFrom       startTime;
@@ -43,14 +47,6 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-solveFluidMechanics false;
-
-solveEnergy     false;
-
-solveNeutronics true;
-
-solveThermalMechanics false;
-
 liquidFuel      false;
 
 adjustTimeStep  false;
@@ -58,5 +54,16 @@ adjustTimeStep  false;
 maxDeltaT       1;
 
 maxCo           1;
+
+regionSolvers
+{
+    neutroRegion    SNNeutronics;
+}
+
+removeBaffles
+{
+    neutroRegion    0;
+}
+
 
 // ************************************************************************* //

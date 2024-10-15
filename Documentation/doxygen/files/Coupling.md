@@ -8,7 +8,7 @@
 GeN-Foam has been developed for the steady-state and transient analysis of reactors featuring pin-type, plate-type, or liquid fuel (viz., Molten Salt Reactors). It includes sub-solvers for neutronics, single- and two-phase thermal-hydraulics, and thermal-mechanics, with the choice of the physics to solve that can be made at runtime. Three different meshes are employed for neutronics, thermal-hydraulics, and thermal-mechanics. The selection of the physics to solve is done in *system/controlDict*
 
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The *controlDict* dictionary</b>
 
 The *controlDict* is an extended version of the one that is normally used in other OpenFOAM solvers. Compared to a standard OpenFOAM controlDict, it includes several keywords that allow one to select:
@@ -21,9 +21,10 @@ The *controlDict* is an extended version of the one that is normally used in oth
 Fairly complete examples of *controlDict* for single-phase flow can be found in [2D_FFTF](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/2D_FFTF/rootCase/system/controlDict) and [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/3D_SmallESFR/rootCase/system/controlDict), while an explanation of the two-phase flow options can be found in [1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/1D_boiling/system/controlDict).
 </div>
 
+
 ## Coupling logic
 
-The coupling between physics is achieved by projecting coupling variables from the mesh they are calculated, to the mesh they need to be used. The following figure shows the overall logic behind the coupling. 
+The coupling between physics is achieved by projecting coupling variables from the mesh they are calculated, to the mesh they need to be used. The following figure shows the overall logic behind the coupling.
 
 \image html CouplingGF.png width=500px
 
@@ -39,7 +40,7 @@ Based on the above, one may guess that GeN-Foam can operate in two different mod
 
 Of course, it is also possible to have hybrid approaches, where the temperature in one structure is calculated in part based on the temperatures predicted in the sub-scale structure by the thermal-hydraulics sub-solver, and partly by the thermo-mechanical solver itself (where there is not overlap with the thermo-hydraulics domain).
 
-Tutorial *2D_fullCoupling* has been created to allow users to play around with the couplings and understand their logic. 
+Tutorial *2D_fullCoupling* has been created to allow users to play around with the couplings and understand their logic.
 
 \image html HetHom.png width=500px
 
@@ -48,16 +49,12 @@ N.B.: There is no need for the thermal-hydraulics, thermal-mechanics, and neutro
 N.B.2: It is possible not to solve for displacements in the thermo-mechanics sub-solver setting to *false* the keyword *solveDisplacement* in *thermoMechanicalProperties* .
 
 
-
-
-
-
 ## Prioritization in coupling variables
 
 This is one of the most complex aspects of multi-physics solvers like GeN-Foam. First of all, one should understand that, in multi-physics simulations, the coupling variables \f$q\f$, \f$T\f$, \f$\rho\f$, \f$u\f$, \f$T_s\f$ and \f$d\f$ must exist both in their original form in the region (mesh) where they are created, and in their projected form in the region (mesh) where they are used. With that in mind, the question immediately arises about the origin of variables when multiple sub-solvers are activated.
 
 
-In GeN-Foam, for nearly all the coupling fields, a sub-solver will look at the original form of the coupling variable. For instance, the neutronic sub-solver will read the temperature field of the fuel from the thermal-hydraulics sub-solver (i.e., from the *fluidRegion*). This is physically intuitive and allows  GeN-Foam to behave as expected in sequential runs. For instance, one will be able to run a thermal-hydraulic calculation first, and then start from there and automatically use in a neutronic calculation the resulting temperature and density fields in order to properly parametrize the cross-sections. 
+In GeN-Foam, for nearly all the coupling fields, a sub-solver will look at the original form of the coupling variable. For instance, the neutronic sub-solver will read the temperature field of the fuel from the thermal-hydraulics sub-solver (i.e., from the *fluidRegion*). This is physically intuitive and allows  GeN-Foam to behave as expected in sequential runs. For instance, one will be able to run a thermal-hydraulic calculation first, and then start from there and automatically use in a neutronic calculation the resulting temperature and density fields in order to properly parametrize the cross-sections.
 
 However, a drawback exists for a user that wishes to execute a single-physics simulation, but to provide its own specific value to the coupling field. The standard behavior of GeN-Foam will force this user to provide this value in the region where the field is normally calculated. Following the example above, a user wishing to run a neutronic calculation with their own temperature and density fields will have to generate a mesh for the *fluidfRegion*, and provide the desired temperature and density fields in the 0 (or other *startTime*) folder of that region.
 
@@ -75,12 +72,10 @@ The coupling between physics is obtained via fixed-point iterations and the time
 
 The parameters for the coupling are set in *system/fvSolution*.
 
-<div class="border-box" style='padding:0.1em; margin-left: 4em;  margin-right: 8em;  border: 1px solid gray; background-color:#f2f3fa; color:#05134a'>
+<div class="border-box">
 <b>The general *fvSolution* dictionary</b>
 
 The general *fvSolution* dictionary is found under */system/*  and allows to specify parameters related to the coupling among physics, and in particular: the type of coupling (implicit or explicit); and the parameters that affect the tightness of the implicit coupling.
 
-A commented  *fvSolution* can be found in [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/3D_SmallESFR/rootCase/system/fvSolution). 
+A commented  *fvSolution* can be found in [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/3D_SmallESFR/rootCase/system/fvSolution).
 </div>
-
-

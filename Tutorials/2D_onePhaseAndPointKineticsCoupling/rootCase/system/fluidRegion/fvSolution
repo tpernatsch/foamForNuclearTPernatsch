@@ -60,8 +60,11 @@ solvers
 
 PIMPLE
 {
-    nCorrectors      2;
+    nCorrectors         2;
+    nOuterCorrectors    3;
     nNonOrthogonalCorrectors 0;
+    solveEnergy         true;
+    solveFluidMechanics true;
 }
 
 relaxationFactors

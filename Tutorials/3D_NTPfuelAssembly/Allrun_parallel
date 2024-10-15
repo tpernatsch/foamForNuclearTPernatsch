@@ -33,13 +33,19 @@ decomposePar -case steadyStateN -allRegions
 # Set simulation variables
 foamDictionary steadyStateN/system/controlDict -entry endTime -set $endTimeSSN
 foamDictionary steadyStateN/system/controlDict -entry deltaT -set 1e-6
-foamDictionary steadyStateN/system/controlDict -entry solveFluidMechanics -set false
-foamDictionary steadyStateN/system/controlDict -entry solveEnergy -set false
+#foamDictionary steadyStateN/system/controlDict -entry solveFluidMechanics -set false
+#foamDictionary steadyStateN/system/controlDict -entry solveEnergy -set false
+foamDictionary steadyStateN/system/controlDict -entry regionSolvers/fluidRegion -remove
+mv steadyStateN/constant/multiRegionCouplingDict_neutronSA steadyStateN/constant/multiRegionCouplingDict 
+#GeN-Foam -initializeMappedFields -case steadyStateN
 
 # Run neutronics steady-state
 mpirun -np 2 GeN-Foam -case steadyStateN -parallel |
     tee "steadyStateN/log.GeN-Foam" |
     grep --color=auto -e "Time = \|deltaT ="
+    
+reconstructPar -case steadyStateN -allRegions -latestTime
+cp -r steadyStateN/0/fluidRegion steadyStateN/$endTimeSSN 
 
 
 #==============================================================================*
@@ -49,11 +55,14 @@ mpirun -np 2 GeN-Foam -case steadyStateN -parallel |
 cp -r steadyStateN steadyStateTH
 
 # Set simulation variables
+decomposePar -case steadyStateTH -region fluidRegion -time 1
 foamDictionary steadyStateTH/system/controlDict -entry endTime -set $endTimeSSTH
 foamDictionary steadyStateTH/system/controlDict -entry deltaT -set 2e-5 # 1e-5
 foamDictionary steadyStateTH/system/controlDict -entry adjustTimeStep -set true # false
-foamDictionary steadyStateTH/system/controlDict -entry solveFluidMechanics -set true
-foamDictionary steadyStateTH/system/controlDict -entry solveEnergy -set true
+foamDictionary steadyStateTH/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
+rm steadyStateTH/constant/multiRegionCouplingDict
+mv steadyStateTH/constant/multiRegionCouplingDict_coupled steadyStateTH/constant/multiRegionCouplingDict 
+GeN-Foam -initializeMappedFields -case steadyStateTH
 
 # Run thermal-hydraulics steady-state
 mpirun -np 2 GeN-Foam -case steadyStateTH -parallel |

@@ -39,10 +39,10 @@ Class
     Foam::thermalHydraulicsModel
 
 Description
-    Run-time selectable base abstract class to represent a thermal-hydraulic 
+    Run-time selectable base abstract class to represent a thermal-hydraulic
     solver for an indefinite number of phases.
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -59,7 +59,7 @@ SourceFiles
 #include "customPimpleControl.H"
 #include "runTimeSelectionTables.H"
 
-//- It is pointless to include these in the .C files as any derived solver 
+//- It is pointless to include these in the .C files as any derived solver
 //  class will need all of these anyway, so I include them in the header too
 #include "volFields.H"
 #include "UniformField.H"
@@ -81,27 +81,32 @@ SourceFiles
 #include "structure.H"
 #include "FFPair.H"
 #include "FSPair.H"
+#include "solver.H"
+#include "volPointInterpolation.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-class regimeMapModel;
 
+class regimeMapModel;
+namespace solvers
+{
 /*---------------------------------------------------------------------------*\
                       Class thermalHydraulicsModel Declaration
 \*---------------------------------------------------------------------------*/
 
 class thermalHydraulicsModel
 :
+    public solver,
     public IOdictionary
 {
 public :
 
     enum momentumMode
     {
-        cellCentered, 
+        cellCentered,
         cellCenteredFaceReconstruction,
         faceCentered
     };
@@ -110,13 +115,14 @@ public :
 
 protected:
 
-    Time& runTime_;
+    const Time& runTime_;
 
     fvMesh& mesh_;
 
-    customPimpleControl& pimple_;
+    customPimpleControl pimple_;
 
     fv::options& fvOptions_;
+
 
     //- Optional regime maps that can be used by individual physics models
     typedef HashPtrTable
@@ -160,29 +166,28 @@ protected:
     //- Pressure solution options
     const momentumMode momentumMode_;
 
-    //- Feature that removes velocity oscillations and/or smearing in the 
+    //- Feature that removes velocity oscillations and/or smearing in the
     //  main flow direction. However, if dealing with structures that have
     //  large porosity gradiens (i.e. > 0.5 between consecutive cells) or
     //  large gradients in the structure drag tensor, this feature may
-    //  actually induce velocity oscillations in the directions 
+    //  actually induce velocity oscillations in the directions
     //  perpendicular to the main flow direction.
-    //  This factor weights the "traditional" faceMomentum velocity 
+    //  This factor weights the "traditional" faceMomentum velocity
     //  reconstruction (the one which always causes smearing/oscillations)
-    //  in the main flow direction) with a moving phase fraction-adjusted 
+    //  in the main flow direction) with a moving phase fraction-adjusted
     //  velocity reconstruction (which may induced the aforementioned
-    //  transversal oscillations). This feature only has an affect on the 
+    //  transversal oscillations). This feature only has an affect on the
     //  cellCentered and the cellCenteredFaceReconstruction momentum modes.
     //  Deafults to 0, which amounts to a "traditional" velocity reconstruction
     //  procedure from phi
     const scalar porousInterfaceSharpness_;
 
-    //- Ptrs to coupling fields (i.e. defined on their original mesh)
-    const volScalarField* powerDensityOrig_;
-    const volScalarField* secondaryPowerDenistyOrig_; // Used for graphite in MSRs
-
     //- Mapped fields
     volScalarField powerDensityNeutronics_;
     volScalarField powerDensityNeutronicsToLiquid_;
+
+    //- Original mesh
+    pointField originalPoints_;
 
 public:
 
@@ -191,90 +196,50 @@ public:
 
     //- Declare runtime construction
 
-        declareRunTimeSelectionTable
-        (
-            autoPtr,
-            thermalHydraulicsModel,
-            thermalHydraulicsModels,
-            (
-                Time& time,
-                fvMesh& mesh,
-                customPimpleControl& pimple,
-                fv::options& fvOpt
-            ),
-            (time, mesh, pimple, fvOpt)
-        );
+        // declareRunTimeSelectionTable
+        // (
+        //     autoPtr,
+        //     thermalHydraulicsModel,
+        //     thermalHydraulicsModels,
+        //     (
+        //         Time& time,
+        //         fvMesh& mesh,
+        //         customPimpleControl& pimple,
+        //         fv::options& fvOpt,
+        //         bool multiRegion
+        //     ),
+        //     (time, mesh, pimple, fvOpt, multiRegion)
+        // );
 
     //- Constructors
 
         thermalHydraulicsModel
         (
-            Time& time,
+            const Time& time,
             fvMesh& mesh,
-            customPimpleControl& pimple,
-            fv::options& fvOpt
+            fv::options& fvOpt// multiRegion check
         );
 
         //- Destructor
         virtual ~thermalHydraulicsModel();
 
-    //- Selectors
-
-        static autoPtr<thermalHydraulicsModel> New
-        (
-            Time& time,
-            fvMesh& mesh,
-            customPimpleControl& pimple,
-            fv::options& fvOpt
-        );
-
     //- Member Functions
 
-        //- Substitutes the old getFields. Set local class references to global
-        //  coupling fields, to be called only once after construction. The 
-        //  fields are set via lookup in the src objectRegistry (i.e. 
-        //  neutroMesh for the current state of GeN-Foam)
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& src,
-            const meshToMesh& fluidToNeutro
-        );
-
-        //- The old getFields, yet operates on the local refs without having
-        //  the need for all the fields to be passed. This effectively bypasses
-        //  the old limitation of getFields, i.e. if someone wanted to
-        //  implement a new  model that requires more fields for the
-        //  coupling. Splitting getFields into a getCouplingFieldRefs and 
-        //  interpolateCouplingFields allows one to be as flexible as possible
-        //  with new classes implementations
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& fluidToNeutro,
-            label liquidFuel
-        );
-
-        //- Solve thermal-hydraulics, combination of the other corrects
-        virtual void correct
-        (
-            scalar& residual,
-            bool solveFluidDynamics, 
-            bool solveEnergy
-        ) = 0;
 
         virtual void correctRegimeMaps();
 
         //- Correct fluid and structure temperatures without
         //  updating the flow regime map
-        virtual void correctEnergy(scalar& residual) = 0;
+        virtual void correctEnergy() = 0;
 
-        //- Correct alphas, pressure, velocities without updating 
+        //- Correct alphas, pressure, velocities without updating
         //  the flow regime map
-        virtual void correctFluidMechanics(scalar& residual) = 0;
+        virtual void correctFluidMechanics() = 0;
 
         //- Correct flow regime map and all the coupling fields
         virtual void correctModels
         (
-            bool solveFluidDynamics, 
+            bool solveFluidDynamics,
             bool solveEnergy
         ) = 0;
 
@@ -284,10 +249,12 @@ public:
         //- Stop execution (for development purposes)
         void stop();
 
-        //- A function to allow for the implementation of custom adjustTimeStep
-        //  criteria
-        // virtual void adjustTimeStep();
-        virtual scalar nextDeltaT();
+        virtual void correctBaffleLessFields();
+
+        virtual void deformMesh();
+
+
+
 
         // Access
 
@@ -305,7 +272,7 @@ public:
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} // End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

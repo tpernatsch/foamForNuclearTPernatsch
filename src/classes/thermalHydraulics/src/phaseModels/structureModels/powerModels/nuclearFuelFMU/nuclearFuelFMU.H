@@ -39,7 +39,7 @@ Class
     Foam::powerModels::nuclearFuelFMU
 
 Description
-    Model for representing a nuclear fuel from an external FMU. The current 
+    Model for representing a nuclear fuel from an external FMU. The current
     model relies on the exchange of 3 axially sampled information:
     - Surface temperature of the cladding (GeN-Foam FMI output)
     - Power density in the fuel (GeN-Foam FMI output)
@@ -48,19 +48,19 @@ Description
     The axial sampling can be shared with the FMUs.
 
     It is possible to sample between 1 and N points along a lines by
-    providing x, y, and z coordinates. These samples are extracted in 
+    providing x, y, and z coordinates. These samples are extracted in
     the mesh via the Tsurface.nuclearFuelFMU and powerDensityNeutronics fields.
 
-    GeN-Foam receives from the FMU the surface power uniformly sampled at the 
-    boundary between the structure (e.g cladding) and the fluid. Then it is 
-    possible to reconstruct the Tsurface.nuclearFuelFMU field by interpolating 
-    these samples. The interpolation between the heat flux samples is 
-    performed using the Radial Basis Function interpolation algorithm 
-    (https://en.wikipedia.org/wiki/Radial_basis_function_interpolation). In case 
+    GeN-Foam receives from the FMU the surface power uniformly sampled at the
+    boundary between the structure (e.g cladding) and the fluid. Then it is
+    possible to reconstruct the Tsurface.nuclearFuelFMU field by interpolating
+    these samples. The interpolation between the heat flux samples is
+    performed using the Radial Basis Function interpolation algorithm
+    (https://en.wikipedia.org/wiki/Radial_basis_function_interpolation). In case
     the model contains a single pin, it is possible to set a uniform XY heat
     flux distribution by setting the epsilon parameter to (0 0 nz).
 
-    An interesting property of this powerModel is that the external fuel models 
+    An interesting property of this powerModel is that the external fuel models
     can be in 1 or N FMUs, and coupled to 1 or M powerModels.
 
 Usage
@@ -70,7 +70,7 @@ Usage
     {
         type                        nuclearFuelFMU;
         volumetricArea              ${{2.0*$volFrac / $r}}; // 2.0 * volumeFrac / rCladOuter
-        
+
         // Sampling position, in this case 3 sampling lines
         xPos                        (0.34   0.50   0.66);
         yPos                        (0.05   0.05   0.05);
@@ -80,11 +80,11 @@ Usage
         (
             0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4
         );
-        
+
         // Radial Basis Function interpolation for heat flux reconstruction
         radialBasisFunctionMethod   gaussian; // gaussian or polyharmonicSpline or kriging
         epsilon                     (10 0 100); // Used only for Gaussian Radial Basis Functions interpolation
-        
+
         // FMI ports
         avgPowerDensityNameToFMU
         (
@@ -110,13 +110,13 @@ Usage
 
 
     \verbatim
-    // Example for a 7 fuel pin model in a lattice using the polyharmonic spline 
+    // Example for a 7 fuel pin model in a lattice using the polyharmonic spline
     // interpolation method, fuel length is smaller than total sampling length
     powerModel
     {
         type                        nuclearFuelFMU;
         volumetricArea              ${{2.0*$volFrac / $r}}; // 2.0 * volumeFrac / rCladOuter
-        
+
         // Sampling position, in this case 3 sampling lines
         xyPosLattice
         {
@@ -141,7 +141,7 @@ Usage
         // Optional fuel length incase the axial location is bigger than the
         // fuel, usually the case when simulating cladding longer than fuel
         fuelLength  0.8;
-        
+
         // Radial Basis Function interpolation for heat flux reconstruction
         radialBasisFunctionMethod   polyharmonicSpline;
 
@@ -193,12 +193,12 @@ Usage
         yPos            | List of Y positions of the sampling lines | scalarList | conditional | -
         xyPosLattice    | XY lattice map dictionnary | dict | conditional | -
         axialPowerInterpolationMethod | Interpolation method for LHGR | word | no | linear
-        axialLocationsNameToFMU | FMI port name of axial location list | word | yes | - 
+        axialLocationsNameToFMU | FMI port name of axial location list | word | yes | -
         axialLocations  | Axial position list | scalarList | yes | -
         radialBasisFunctionMethod | Radial Basis Function method name (gaussian, polyharmonicSpline, kriging) | word | yes | -
         epsilon         | Epsilon shaping factor for the Gaussian RBF | scalarList | conditional | -
         avgPowerDensityNameToFMU | List of FMI port names for LHGR output | wordList | yes | -
-        axialProfilePowerDensityNameToFMU | List of FMI port names for power denisty normalized distribution output | wordList | yes | -
+        axialProfilePowerDensityNameToFMU | List of FMI port names for power density normalized distribution output | wordList | yes | -
         TstructNameToFMU | List of FMI port names for Tstructure output | wordList | yes | -
         heatFluxNameFromFMU | List of FMI port names for heat flux input | wordList | conditional | -
         rhoCpdTdtNameFromFMU | List of FMI port names for rhoCpdTdt input | wordList | conditional | -
@@ -210,9 +210,9 @@ Usage
         initRhoCpdTdt   | Initial rho*Cp*dT/dt | scalar | conditional | -
     \endtable
 
-\mainauthor 
+\mainauthor
     Thomas Guilbaud (thomas.guilbaud@epfl.ch)
-    
+
 SourceFiles
     nuclearFuelFMU.C
 
@@ -260,7 +260,7 @@ protected:
     List<bool> isHeatFluxInput_;
 
     //- Fraction of power from neutronics that goes to this powerModel
-    //  This takes into account for instance cases where some of the 
+    //  This takes into account for instance cases where some of the
     //  heating goes to the moderator
     scalarList fractionOfPowerFromNeutronics_;
 
@@ -307,13 +307,13 @@ protected:
 
     //- List that maps the region index to the region name
     wordList regionIndexToRegionName_;
-    
+
     //- List that maps from cell index to region index
     labelList cellToRegion_;
 
     //- Inverse matrix of the Radial Basis Function operator for each cellZone
     List<SquareMatrix<scalar>> invRBFmatrix_;
-    
+
 public:
 
     //- Runtime type information
@@ -354,7 +354,7 @@ public:
             label regioni
         );
 
-        //- Sample Tsurface and power density over lines and transfer data to 
+        //- Sample Tsurface and power density over lines and transfer data to
         //  the FMUs
         void correctInputsForFMUs(label regioni);
 
@@ -365,7 +365,7 @@ private:
 
     // Private Member Functions
 
-        //- Compute a recommended RBF epsilon parameter to avoid peaks in the 
+        //- Compute a recommended RBF epsilon parameter to avoid peaks in the
         //  RBF interpolation
         scalar computeEspilonForRBF(const scalarList list) const;
 };

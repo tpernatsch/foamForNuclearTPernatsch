@@ -42,22 +42,22 @@ Group
     none
 
 Description
-    Run-time selectable point-kinetic based neutronics solver. It includes 
-    options for a time dependent external reactivity, and an external 
+    Run-time selectable point-kinetic based neutronics solver. It includes
+    options for a time dependent external reactivity, and an external
     reactivity input coming from an FMU.
 
-    The module solves the following point-kinetics equations: 
+    The module solves the following point-kinetics equations:
 
     \f[
-        \frac{dP}{dt} = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P 
+        \frac{dP}{dt} = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P
             + \sum_{i=1}^N \lambda_i C_i + \frac{S}{\Lambda} \\
-        \frac{dC_i}{dt} = \frac{\beta_i}{\Lambda} P 
+        \frac{dC_i}{dt} = \frac{\beta_i}{\Lambda} P
             - \lambda_i C_i \quad \forall i \in [1; N]
     \f]
 
     \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
     \f[
-        \rho_{tot} = 
+        \rho_{tot} =
             \begin{cases}
                 \text{fast}    & -\alpha_D \ln\left( \frac{T_{fuel}}{T_{fuel}^{ref}} \right) \\
                 \text{thermal} &  \alpha_D \left( \sqrt{T_{fuel}} - \sqrt{T_{fuel}^{ref}} \right)
@@ -72,6 +72,7 @@ Description
             + \rho_{GEM}
             + \rho_{boron}
             + \rho_{ext}
+            + \rho_{ext}^{FMU}
     \f]
 
     where:
@@ -95,105 +96,97 @@ Description
       \rho_{driveline}     | Control rod driveline expansion reactivity contribution
       \rho_{boron}         | Boron concentration reactivity contribution
       \rho_{ext}           | External reactivity contribution
+      \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
     \endtable
 
-    Example of mandatory dictionary entries:
-    \verbatim
-        fastNeutrons    true;
-        promptGenerationTime 1e-06; // [s]
-        Beta
-        ( 
-            7.2315e-05 0.000609661 0.000471181 0.00118907 0.000445487 9.58515e-05 
-        );
-        lambda // [1/s]
+\vartable
+    P           | Core power
+    C_i         | Precursor power
+    S           | Optional external source power
+    \beta_{tot} | Total delayed neutron fraction
+    \beta_i     | Delayed neutron fraction for the ith delayed neutron precursor group
+    \lambda_i   | Decay constant for the ith delayed neutron precursor group
+    \Lambda     | Prompt generation lifetime
+    \zeta       | Optional subcritical index
+    S           | Optional external neutron source power
+    \alpha_D             | Doppler feedback coefficient
+    \alpha_{fuel}        | Fuel axial expansion feedback coefficient
+    \alpha_{clad}        | Cladding temperature feedback coefficient
+    \alpha_{cool}^{T}    | Coolant temperature feedback coefficient
+    \alpha_{cool}^{\rho} | Coolant density coefficient
+    \alpha_{struct}      | Core radial expansion feedback coefficient
+    \alpha_{struct}^{mech} | Core expansion feedback coefficient from the mechanical mesh
+    \rho_{driveline}     | Control rod driveline expansion reactivity contribution
+    \rho_{boron}         | Boron concentration reactivity contribution
+    \rho_{ext}           | External reactivity contribution
+    \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
+\endtable
+
+Example of time dependant source entries:
+\verbatim
+    //- Optional time dependant external reactivity time profile
+    externalReactivityTimeProfile
+    {
+        type        table;
+        startTime   100;
+        table       table
         (
-            0.0125371 0.0300828 0.109879 0.325484 1.3036 9.51817 
+            (   0   0)
+            (   1   0.0005767131    ) //- i.e. 57.67131 pcm
         );
-        feedbackCoeffFastDoppler    0; // [-]
-        feedbackCoeffTFuel          0; // [1/K]
-        feedbackCoeffTClad          0; // [1/K]
-        feedbackCoeffTCool          0; // [1/K]
-        feedbackCoeffRhoCool        0; // [1/(kg/m3)]
-        feedbackCoeffTStruct        0; // [1/K]
-        feedbackCoeffTStructMech    0; // [1/K]
-        absoluteDrivelineExpansionCoeff 0.0; // [m/K]
-        controlRodReactivityMap 
-        ( 
-            ( 0.1   -0.01   ) 
-            ( 0     0       ) 
-            ( -0.1  0.01    ) 
+    }
+
+    //- Optional time dependant boron reactivity time profile
+    boronReactivityTimeProfile
+    {
+        type        table;
+        table       table
+        (
+            (   100   0   )
+            (   101   1e-5   )
         );
-    \endverbatim
+    }
+\endverbatim
 
-    Example of time dependant source entries:
-    \verbatim
-        //- Optional time dependant external reactivity time profile
-        externalReactivityTimeProfile
-        {
-            type        table;
-            startTime   100;
-            table       table
-            (
-                (   0   0)
-                (   1   0.0005767131    ) //- i.e. 57.67131 pcm
-            );
+Optional external reactivity input from FMU in nuclearData file.
+The default initial value is 0.
+\verbatim
+    externalReactivityNameFromFMU   gfExtReact;
+\endverbatim
 
-            //- Or using the FMI
-            // type            fmi;
-            // nameFromFMU     gfExtReact;
-            // initialValue    0.0;
-        }
+Optional external neutron source file "externalSource"
+\verbatim
+    //- If true, add the external source to the point-kinetics equations
+    isExternalSource    true;
 
-        //- Optional time dependant boron reactivity time profile
-        boronReactivityTimeProfile
-        {
-            type        table;
-            table       table
-            (
-                (   100   0   )
-                (   101   1e-5   )
-            );
+    //- External source mode
+    externalSourceMode  transient; // powerMonitoring // transient
 
-            //- Or using the FMI
-            // type            fmi;
-            // nameFromFMU     gfBoronReactivity;
-            // initialValue    0.0;
-        }
-    \endverbatim
+    //- Beam energy per source particle
+    beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
 
-    Optional external neutron source file "externalSource"
-    \verbatim
-        //- If true, add the external source to the point-kinetics equations
-        isExternalSource    true;
+    //- Neutron yield of the spallation of proton on heavy metal
+    nuSource            15.5; // [neutron/proton]
 
-        //- External source mode
-        externalSourceMode  transient; // powerMonitoring // transient
+    //- Optional external source input from FMU in externalSource file.
+    //- The externalSourceMode must be set to transient. The default initial value
+    //-is 1.
+    externalSourceModulationNameFromFMU     gfExternalSourceMod;
 
-        //- Beam energy per source particle
-        beamEnergy          1.28160e-10; // [J/proton], 800 MeV/proton
+    //- External modulation time profile (time, modulation factor)
+    externalSourceModulationTimeProfile
+    {
+        type        table;
+        startTime   150;
+        table       table
+        (
+            (0      1)
+            (20     2)
+        );
+    }
+\endverbatim
 
-        //- Neutron yield of the spallation of proton on heavy metal 
-        nuSource            15.5; // [neutron/proton]
-
-        //- External modulation time profile (time, modulation factor)
-        externalSourceModulationTimeProfile
-        {
-            type        table;
-            startTime   150;
-            table       table
-            (
-                (0      1)
-                (20     2)
-            );
-
-            //- Or using the FMI
-            // type            fmi;
-            // nameFromFMU     gfExternalSourceMod;
-            // initialValue    1.0;
-        }
-    \endverbatim
-
-    Author of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files):
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>;
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
@@ -207,6 +200,7 @@ SourceFiles
 #define pointKineticNeutronics_H
 
 #include "neutronics.H"
+#include "Function1.H"
 #include "interpolationTable.H"
 #include "timeProfile.H"
 
@@ -214,6 +208,7 @@ SourceFiles
 
 namespace Foam
 {
+namespace solvers{
 
 /*---------------------------------------------------------------------------*\
                           Class pointKineticNeutronics Declaration
@@ -499,6 +494,10 @@ protected:
     //  store them in pgiMagSf_)
     scalarList phiMagSf_;
 
+    scalar pTotOld_;
+
+    scalar residual_;
+
 private:
 
     //- Disallow default bitwise copy construct
@@ -549,31 +548,16 @@ public:
         //- Compute GEM sodium height and their reactivity contributions
         Pair<scalar> calcGEMLevelAndReactivity();
 
-        //- Used to set all the pointer member variables (the members that end
-        //  with *Orig_) after class initialization (needs to be called by
-        //  solver main)
-        virtual void getCouplingFieldRefs
-        (
-            const objectRegistry& srcTH,
-            const meshToMesh& neutroToFluid,
-            const objectRegistry& srcTM,
-            const meshToMesh& neutroToMech
-        );
-
-        //- Update local (i.e. on local neutronicMesh) instances of the Orig_
-        //  fields defined on the (baffleless) thermalHydraulic mesh
-        virtual void interpolateCouplingFields
-        (
-            const meshToMesh& neutroToFluid,
-            const meshToMesh& neutroToMech
-        );
-
         //- Solve pointKinetics
-        virtual void correct
-        (
-            scalar& residual,
-            label couplingIter
-        );
+        virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
+
+        virtual scalar maxDeltaT();
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        }
 
         //- To split strings. The file where I got this function originally
         //  defined is in classes/thermalHydraulics/models/include. However,
@@ -630,7 +614,7 @@ public:
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
+} // End namespace solvers
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

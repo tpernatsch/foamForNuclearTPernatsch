@@ -11,7 +11,6 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "constant";
     object      phaseProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -27,8 +26,8 @@ thermalHydraulicsType    "onePhase";
 // ------------------------------------------------------------------------- //
 
 structureProperties
-{    
-"Core"
+{
+    "Core"
     {
         volumeFraction      0.61; // 61% Packing fraction
         Dh                  0.0255737704918; // dp*eps/(1-eps), April Novak's thesis
@@ -36,12 +35,12 @@ structureProperties
         powerModel
         {
             type                nuclearSteadyStatePebble;
-            
+
             // It can be shown that by averaging a/multiple pebble(s) over
             // a volume of any shape, the interfacialArea and volumeFraction
             // of the resulting porous pebble structure are not independent, yet
             // are tied by volumetricArea = 3*volumeFraction/outerPinRadius
-            powerDensityNeutronics            19.96567386e6; 
+            powerDensityNeutronics            19.96567386e6;
             pebbleSurfaceTemperatureGuess 939;
 
             pebbleCoreRadius        1.38e-2;
@@ -93,7 +92,9 @@ physicsModels
         "Core"
         {
             DhStruct 100; // Kitchen style 6667;
-            type    ReynoldsPower; // Power fit (R=0.9956, Re of 500-3000) from case https://www.kta-gs.de/e/standards/3100/3102_3_engl_1981_03.pdf
+            // Power fit (R=0.9956, Re of 500-3000) from case
+            // https://www.kta-gs.de/e/standards/3100/3102_3_engl_1981_03.pdf
+            type    ReynoldsPower;
             coeff   8.4505;
             exp     -0.147;
         }
@@ -103,7 +104,6 @@ physicsModels
     {
         "Core"
         {
-
             type    NusseltReynoldsPrandtlPower; // Wakao
             const   2; //0; //4.82;
             coeff   1.1; //0.016; //0.0185;
