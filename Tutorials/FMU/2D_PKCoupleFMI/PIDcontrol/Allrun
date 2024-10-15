@@ -27,9 +27,11 @@ then
     cd steadyState
 
     foamDictionary system/controlDict -entry endTime -set $steadyStateDuration
+    cp constant/multiRegionCouplingDict_steadyState constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields
 
-    GeN-Foam | 
-        tee log.GeN-Foam | 
+    GeN-Foam |
+        tee log.GeN-Foam |
         grep -E "Time = |deltaT ="
 
     cd ..
@@ -47,15 +49,18 @@ cp rootCase/ExternalReactivityController* transient/
 cd transient
 
 echo "Change case parameters for transient calculation"
+foamDictionary system/controlDict -entry regionSolvers/neutroRegion -set pointKinetics
 foamDictionary constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
 foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
 foamDictionary system/controlDict -entry endTime -set $(($steadyStateDuration+$transientDuration))
 foamDictionary system/controlDict -entry deltaT -set 1e-3
 foamDictionary system/controlDict -entry writeControl -set timeStep
 foamDictionary system/controlDict -entry writeInterval -set 10
+cp constant/multiRegionCouplingDict_transient constant/multiRegionCouplingDict
+GeN-Foam -initializeMappedFields
 
-GeN-Foam | 
-    tee log.GeN-Foam | 
+GeN-Foam |
+    tee log.GeN-Foam |
     grep -E "Time = |deltaT ="
 
 #=============================================================================*

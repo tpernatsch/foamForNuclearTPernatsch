@@ -36,7 +36,7 @@ setSteadyState()
     foamDictionary $2/system/controlDict -entry deltaT -set 1
     foamDictionary $2/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $2/system/controlDict -entry writeInterval -set 100
-    mv $2/constant/multiRegionCouplingDict_steadyState $2/constant/multiRegionCouplingDict
+    cp $2/constant/multiRegionCouplingDict_steadyState $2/constant/multiRegionCouplingDict
     GeN-Foam -initializeMappedFields -case $2
 }
 

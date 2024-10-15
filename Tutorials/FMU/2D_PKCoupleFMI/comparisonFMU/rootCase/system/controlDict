@@ -41,13 +41,17 @@ timePrecision   8;
 
 runTimeModifiable false;
 
-solveFluidMechanics true;
+regionSolvers
+{
+    fluidRegion     onePhase;
+    neutroRegion    diffusionNeutronics;
+}
 
-solveEnergy     true;
-
-solveNeutronics true;
-
-solveThermalMechanics false;
+removeBaffles
+{
+    fluidRegion     true;
+    neutroRegion    false;
+}
 
 removeFluidBaffles true;
 

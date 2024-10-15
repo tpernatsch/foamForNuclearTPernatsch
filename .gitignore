@@ -59,6 +59,7 @@ Tutorials/**/transient*
 Tutorials/**/GeN-Foam.dat
 Tutorials/**/log.*
 Tutorials/**/*.out
+Tutorials/**/*.baffleLess/polyMesh
 !**/2D_*
 !**/*Ex1*
 !**/*Ex2*

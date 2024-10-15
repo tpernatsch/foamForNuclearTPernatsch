@@ -11,44 +11,31 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSchemes;
+    object      multiRegionCouplingDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-ddtSchemes
+mappings
 {
-    default         Euler;
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields    2 ( powerDensity secondaryPowerDensity );
+            targetFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+            fieldTypes      2 ( scalar scalar );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    5 ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    5 ( TCool rhoCool TFuel TClad TStructMech );
+            fieldTypes      5 ( scalar scalar scalar scalar scalar );
+        }
+    }
 }
 
-gradSchemes
-{
-    default         Gauss linear;
-}
-
-divSchemes
-{
-    default         Gauss linear;
-    "div(facePhi_,angularFlux_)"   Gauss upwind;
-}
-
-laplacianSchemes
-{
-   default         Gauss linear corrected;
-}
-
-interpolationSchemes
-{
-    default         linear;
-}
-
-snGradSchemes
-{
-    default         corrected;
-}
-
-fluxRequired
-{
-    default         false;
-}
 
 // ************************************************************************* //

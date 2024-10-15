@@ -18,7 +18,7 @@ FoamFile
 regions
 (
     fluidRegion       (fluidRegion)
-    neutroRegion       (neutroRegion)
+    // neutroRegion       (neutroRegion)
     // thermoMechanicalRegion       (thermoMechanicalRegion)
     // fluidRegionNB       (fluidRegionNB)
 );

@@ -10,22 +10,32 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    object      defaultFlux;
+    class       dictionary;
+    object      multiRegionCouplingDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [ 0 -2 -1 0 0 0 0 ];
-
-internalField   uniform 0;
-
-boundaryField
+mappings
 {
-    ".*"
+    fluidRegion
     {
-        type            fixedValue;
-        value           uniform 0;
+        neutroRegion
+        {
+            sourceFields    2 ( powerDensity secondaryPowerDensity );
+            targetFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+            fieldTypes      2 ( scalar scalar );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    5 ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    5 ( TCool rhoCool TFuel TClad TStructMech );
+            fieldTypes      5 ( scalar scalar scalar scalar scalar );
+        }
     }
 }
+
 
 // ************************************************************************* //

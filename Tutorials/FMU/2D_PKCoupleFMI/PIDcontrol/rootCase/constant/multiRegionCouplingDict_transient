@@ -10,40 +10,32 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       vectorField;
-    object      points;
+    class       dictionary;
+    object      multiRegionCouplingDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-27
-(
-(0 0 0)
-(0.0005 0 0)
-(0.001 0 0)
-(0 0.0005 0)
-(0.0005 0.0005 0)
-(0.001 0.0005 0)
-(0 0.001 0)
-(0.0005 0.001 0)
-(0.001 0.001 0)
-(0 0 0.0005)
-(0.0005 0 0.0005)
-(0.001 0 0.0005)
-(0 0.0005 0.0005)
-(0.0005 0.0005 0.0005)
-(0.001 0.0005 0.0005)
-(0 0.001 0.0005)
-(0.0005 0.001 0.0005)
-(0.001 0.001 0.0005)
-(0 0 0.001)
-(0.0005 0 0.001)
-(0.001 0 0.001)
-(0 0.0005 0.001)
-(0.0005 0.0005 0.001)
-(0.001 0.0005 0.001)
-(0 0.001 0.001)
-(0.0005 0.001 0.001)
-(0.001 0.001 0.001)
-)
+mappings
+{
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields    2 ( powerDensity secondaryPowerDensity );
+            targetFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+            fieldTypes      2 ( scalar scalar );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    5 ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    5 ( TCool rhoCool TFuel TClad TStructMech );
+            fieldTypes      5 ( scalar scalar scalar scalar scalar );
+        }
+    }
+}
+
 
 // ************************************************************************* //

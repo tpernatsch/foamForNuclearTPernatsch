@@ -10,20 +10,32 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       polyBoundaryMesh;
-    object      boundary;
+    class       dictionary;
+    object      multiRegionCouplingDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-1
-(
-    defaultFaces
+mappings
+{
+    fluidRegion
     {
-        type            empty;
-        inGroups        1(empty);
-        nFaces          24;
-        startFace       12;
+        neutroRegion
+        {
+            sourceFields    2 ( powerDensity secondaryPowerDensity );
+            targetFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+            fieldTypes      2 ( scalar scalar );
+        }
     }
-)
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    5 ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    5 ( TCool rhoCool TFuel TClad TStructMech );
+            fieldTypes      5 ( scalar scalar scalar scalar scalar );
+        }
+    }
+}
+
 
 // ************************************************************************* //
