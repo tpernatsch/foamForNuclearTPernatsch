@@ -15,6 +15,13 @@ To include into GeN-Foam you have to export the `LIB_ECI4FOAM` environment varia
 export LIB_ECI4FOAM="/home/.../path/to/ECI4FOAM"
 ```
 
+Then execute:
+```bash
+./Allwmake --fmi
+# or
+./Allwmake --fmi -j<N>
+```
+
 
 ### Alternative installation from the original FMU4FOAM repository
 

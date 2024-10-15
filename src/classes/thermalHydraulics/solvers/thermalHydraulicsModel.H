@@ -286,7 +286,8 @@ public:
 
         //- A function to allow for the implementation of custom adjustTimeStep
         //  criteria
-        virtual void adjustTimeStep();
+        // virtual void adjustTimeStep();
+        virtual scalar nextDeltaT();
 
         // Access
 

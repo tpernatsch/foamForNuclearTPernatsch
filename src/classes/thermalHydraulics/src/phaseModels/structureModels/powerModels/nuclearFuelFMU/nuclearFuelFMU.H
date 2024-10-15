@@ -224,6 +224,7 @@ SourceFiles
 #include "powerModel.H"
 #include "IOFieldFields.H"
 #include "InterpolateTables.H"
+#include "radialBasisFunctionInterpolation.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -288,14 +289,30 @@ protected:
     //  direction. Only used by gaussian
     scalarListList epsilon_;
 
+    //- Kriging variogram type (gaussian, spherical or exponential)
+    List<Foam::radialBasisFunctionInterpolation::variogramType> krigingType_;
+
+    //- Kriging parameter a, only used by the kriging option
+    scalarList krigingA_;
+
+    //- Kriging parameter c, only used by the kriging option
+    scalarList krigingC_;
+
+    //- Kriging parameter c0, only used by the kriging option
+    scalarList krigingC0_;
+
+    //- Kriging weights for cell, per region, only computed once, only used by
+    //  the kriging option
+    List<List<scalarList>> krigingWeight_;
+
     //- List that maps the region index to the region name
     wordList regionIndexToRegionName_;
     
     //- List that maps from cell index to region index
     labelList cellToRegion_;
 
-    //- Inverse matrix of the Radial Basis Function operator
-    SquareMatrix<scalar> invRBFmatrix_;
+    //- Inverse matrix of the Radial Basis Function operator for each cellZone
+    List<SquareMatrix<scalar>> invRBFmatrix_;
     
 public:
 

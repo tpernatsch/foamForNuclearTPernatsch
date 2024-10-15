@@ -137,18 +137,17 @@ scalarList solvePolyharmonicSpline
 
         SquareMatrix<scalar> A(nx+4, 0.0);
 
+        scalar r2(0);
         forAll(xList, i)
         {
             forAll(xList, j)
             {
                 if (i != j)
                 {
-                    const scalar r(sqrt(
-                        sqr(xList[i]-xList[j]) 
-                        + sqr(yList[i]-yList[j])
-                        + sqr(zList[i]-zList[j])
-                    ));
-                    A[i][j] = sqr(r) * log(r);
+                    r2 = sqr(xList[i]-xList[j])
+                       + sqr(yList[i]-yList[j])
+                       + sqr(zList[i]-zList[j]);
+                    A[i][j] = r2 * 0.5 * log(r2);
                 }
                 else
                 {
@@ -199,14 +198,11 @@ scalar polyharmonicSpline
 {
     const label nx(xList.size());
     scalar res(0);
+    scalar r2(0);
     forAll(xList, i)
     {
-        const scalar r(sqrt(
-            sqr(x-xList[i]) 
-            + sqr(y-yList[i])
-            + sqr(z-zList[i])
-        ));
-        res += w[i] * sqr(r) * log(r);
+        r2 = sqr(x-xList[i]) + sqr(y-yList[i]) + sqr(z-zList[i]);
+        res += w[i] * r2 * 0.5 * log(r2); // eq: w * r^2 * log(r)
     }
     res += w[nx] + w[nx+1]*x + w[nx+2]*y + w[nx+3]*z;
     return(res);
@@ -471,6 +467,10 @@ void solveKriging
     const scalarList xList,
     const scalarList yList,
     const scalarList zList,
+    const variogramType type,
+    const scalar a,
+    const scalar c,
+    const scalar c0,
     SquareMatrix<scalar>& invRBFmatrix
 )
 {
@@ -482,22 +482,60 @@ void solveKriging
 
         SquareMatrix<scalar> A(nx+1, 0.0);
 
-        const scalar a(0.1), b(7.5), c(2.5);
+        // const scalar a(0.1), c(7.5), c0(2.5);
 
-        forAll(xList, i)
-        {
-            forAll(xList, j)
-            {
-                const scalar distance(sqrt
-                (
-                    sqr(xList[i]-xList[j]) + 
-                    sqr(yList[i]-yList[j]) + 
-                    sqr(zList[i]-zList[j])
-                ));
-                A[i][j] = c + b*(1.5*distance/a - 0.5*pow(distance/a, 3.0));
-            }
-            A[i][nx] = 1.0;
-            A[nx][i] = 1.0;
+        scalar distance(0);
+        switch (type) {
+            case spherical:
+                forAll(xList, i)
+                {
+                    forAll(xList, j)
+                    {
+                        distance = sqrt(
+                            sqr(xList[i]-xList[j]) + 
+                            sqr(yList[i]-yList[j]) + 
+                            sqr(zList[i]-zList[j])
+                        ) / a;
+                        if (distance <= 1) {
+                            A[i][j] = c0 + c*(1.5*distance - 0.5*pow(distance, 3.0));
+                        } else {
+                            A[i][j] = c0 + c;
+                        }
+                    }
+                    A[i][nx] = 1.0;
+                    A[nx][i] = 1.0;
+                }
+                break;
+            case gaussian:
+                forAll(xList, i)
+                {
+                    forAll(xList, j)
+                    {
+                        distance = sqr(xList[i]-xList[j]) + 
+                            sqr(yList[i]-yList[j]) + 
+                            sqr(zList[i]-zList[j]);
+                        A[i][j] = c0 + c * (1.0 - exp(-distance / sqr(a)));
+                    }
+                    A[i][nx] = 1.0;
+                    A[nx][i] = 1.0;
+                }
+                break;
+            case exponential:
+                forAll(xList, i)
+                {
+                    forAll(xList, j)
+                    {
+                        distance = sqrt(
+                            sqr(xList[i]-xList[j]) + 
+                            sqr(yList[i]-yList[j]) + 
+                            sqr(zList[i]-zList[j])
+                        );
+                        A[i][j] = c0 + c * (1.0 - exp(-distance/a));
+                    }
+                    A[i][nx] = 1.0;
+                    A[nx][i] = 1.0;
+                }
+                break;
         }
 
         LUscalarMatrix Atemp(A);
@@ -507,34 +545,140 @@ void solveKriging
 }
 
 
-scalar kriging
+scalarList getVariogramVector
 (
     const scalarList xList,
     const scalarList yList,
     const scalarList zList,
-    const scalarList vList,
+    const variogramType type,
+    const scalar a,
+    const scalar c,
+    const scalar c0,
+    const scalar x,
+    const scalar y,
+    const scalar z
+)
+{
+    const label nx(xList.size());
+
+    // const scalar a(0.1), b(7.5), c(2.5);
+    scalarList xVariogram(nx+1);
+    scalar distance(0);
+    switch (type) {
+        case spherical:
+            forAll(xList, i)
+            {
+                distance = sqrt(
+                    sqr(xList[i]-x) + sqr(yList[i]-y) + sqr(zList[i]-z)
+                ) / a;
+                if (distance <= 1) {
+                    xVariogram[i] = c0 + c*(1.5*distance - 0.5*pow(distance, 3.0));
+                } else {
+                    xVariogram[i] = c0 + c;
+                }
+            }
+            break;
+        case gaussian:
+            forAll(xList, i)
+            {
+                distance = sqr(xList[i]-x) +  sqr(yList[i]-y) + sqr(zList[i]-z);
+                xVariogram[i] = c0 + c * (1.0 - exp(-distance/sqr(a)));
+            }
+            break;
+        case exponential:
+            forAll(xList, i)
+            {
+                distance = sqrt(
+                    sqr(xList[i]-x) + 
+                    sqr(yList[i]-y) + 
+                    sqr(zList[i]-z)
+                );
+                xVariogram[i] = c0 + c * (1.0 - exp(-distance/a));
+            }
+            break;
+    }
+    xVariogram[nx] = 1.0;
+
+    return(xVariogram);
+}
+
+scalarList solveKriging
+(
+    const scalarList xList,
+    const scalarList yList,
+    const scalarList zList,
+    const variogramType type,
+    const scalar a,
+    const scalar c,
+    const scalar c0,
     const scalar x,
     const scalar y,
     const scalar z,
     SquareMatrix<scalar>& invRBFmatrix
 )
 {
-    const label nx(xList.size());
+    solveKriging(xList, yList, zList, type, a, c, c0, invRBFmatrix);
 
-    const scalar a(0.1), b(7.5), c(2.5);
-    scalarList xVariogram(nx+1);
-    forAll(xList, i)
+    const scalarList xVariogram(getVariogramVector(
+        xList, yList, zList, type, a, c, c0, x, y, z
+    ));
+
+    return(invRBFmatrix * xVariogram);
+}
+
+scalar kriging
+(
+    const scalarList xList,
+    const scalarList yList,
+    const scalarList zList,
+    const scalarList vList,
+    const variogramType type,
+    const scalar a,
+    const scalar c,
+    const scalar c0,
+    const scalar x,
+    const scalar y,
+    const scalar z,
+    SquareMatrix<scalar>& invRBFmatrix
+)
+{
+    const scalarList xVariogram(getVariogramVector(
+        xList, yList, zList, type, a, c, c0, x, y, z
+    ));
+
+    const scalarList w(invRBFmatrix * xVariogram);
+
+    scalar res(0);
+    forAll(vList, i)
     {
-        const scalar distance(sqrt
-        (
-            sqr(xList[i]-x) + 
-            sqr(yList[i]-y) + 
-            sqr(zList[i]-z)
-        ));
-        xVariogram[i] = c + b*(1.5*distance/a - 0.5*pow(distance/a, 3.0));
+        res += w[i] * vList[i];
     }
-    xVariogram[nx] = 1.0;
 
+    return(res);
+}
+
+scalar kriging
+(
+    const scalarList w,
+    const scalarList vList
+)
+{
+    scalar res(0);
+    forAll(vList, i)
+    {
+        res += w[i] * vList[i];
+    }
+
+    return(res);
+}
+
+scalar kriging
+(
+    const scalarList xVariogram,
+    const scalarList vList,
+    SquareMatrix<scalar>& invRBFmatrix
+)
+{
     const scalarList w(invRBFmatrix * xVariogram);
 
     scalar res(0);

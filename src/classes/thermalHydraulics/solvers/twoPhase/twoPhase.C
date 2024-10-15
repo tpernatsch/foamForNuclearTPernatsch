@@ -574,7 +574,8 @@ void Foam::thermalHydraulicsModels::twoPhase::correctCourant()
 }
 
 
-void Foam::thermalHydraulicsModels::twoPhase::adjustTimeStep()
+// void Foam::thermalHydraulicsModels::twoPhase::adjustTimeStep()
+scalar Foam::thermalHydraulicsModels::twoPhase::nextDeltaT()
 {
     this->correctCourant();
 
@@ -665,8 +666,19 @@ void Foam::thermalHydraulicsModels::twoPhase::adjustTimeStep()
                 1.0 + f
             );
 
-        runTime_.setDeltaT
-        (
+        // runTime_.setDeltaT
+        // (
+        //     max
+        //     (
+        //         min
+        //         (
+        //             deltaTFact*runTime_.deltaTValue(),
+        //             maxDeltaT
+        //         ),
+        //         minDeltaT
+        //     )
+        // );
+        return(
             max
             (
                 min
@@ -678,6 +690,7 @@ void Foam::thermalHydraulicsModels::twoPhase::adjustTimeStep()
             )
         );
     }
+    return(runTime_.deltaTValue());
 }
 
 

@@ -15,7 +15,7 @@ LIB_LIBS = \
     -lfiniteVolume \
     -ldynamicMesh \
     -lreconstruct \
-    -lfvOptions
+    -lfvOptions \
 
 ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))
     EXE_INC += -I$(LIB_ECI4FOAM)/src/externalComm/lnInclude

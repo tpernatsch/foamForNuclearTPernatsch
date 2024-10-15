@@ -3,63 +3,50 @@ bool adjustTimeStep
     runTime.controlDict().lookupOrDefault("adjustTimeStep", false)
 );
 
-//- First, the thermalHydraulic class adjusts the global time step based on
-//  possible Co number limitations. The adjustTimeStep flag is read within the
-//  fuction itself and runTime.deltaT is set (if applicable) within it
-if (multiphysics.solveFluidMechanics() or multiphysics.solveEnergy())
-{
-    thermalHydraulics.adjustTimeStep();
-}
-
-//- This bit of code is executed only the first time setDeltaT.H is included
 #ifndef FIRSTDELTAT
 #define FIRSTDELTAT
-
 scalar pTotOld(neutronics.power());
+#endif
 
-//- Adjusting the time step based on neutronics limitations on the first time
-//  step is useless because information relative to the "real" pTotOld is
-//  unavailable. Thus, for conservativeness, only choose the smallest time
-//  step between that specified by the thermalHydraulics (if any) and the
-//  initial one 
 if (adjustTimeStep)
 {
-    runTime.setDeltaT
-    (
-        min
-        (
-            runTime.deltaTValue(), 
-            runTime.controlDict().get<scalar>("deltaT")
-        )
-    );
-    Info << "initialDeltaT = " << runTime.deltaTValue() << endl;
-}
+    scalar deltaT(runTime.deltaTValue());
 
-#else //- Otherwise, if FIRSTDELTAT is set, this is executed
-
-//- Then, the neutronics adjusts it again, if needed. The coding of this
-//  section isn't amazing, but it is due to the fact that the thermalHydraulic
-//  class was developed independently of GeN-Foam and then shoved in it. That
-//  is why the thermalHydraulics adjusts the time step via an ad-hoc made
-//  fuction while the neutronics does it this way
-if 
-(
-    adjustTimeStep 
-and (runTime.timeIndex()-runTime.startTimeIndex()) > 1
-)
-{
-    scalar maxDeltaT =
-        runTime.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
-
-    scalar maxPowerVariation =
-        runTime.controlDict().lookupOrDefault<scalar>
-        (
-            "maxPowerVariation", 
-            0.025
-        );
-
-    if (multiphysics.solveNeutronics())
+    //- First, the thermalHydraulic class adjusts the global time step based on
+    //  possible Co number limitations. The adjustTimeStep flag is read within the
+    //  function itself and runTime.deltaT is set (if applicable) within it
+    if (multiphysics.solveFluidMechanics() or multiphysics.solveEnergy())
     {
+        deltaT = thermalHydraulics.nextDeltaT();
+    }
+
+    //- Adjusting the time step based on neutronics limitations on the first time
+    //  step is useless because information relative to the "real" pTotOld is
+    //  unavailable. Thus, for conservativeness, only choose the smallest time
+    //  step between that specified by the thermalHydraulics (if any) and the
+    //  initial one
+    if (runTime.timeIndex() == runTime.startTimeIndex())
+    {
+        deltaT = min(deltaT, runTime.controlDict().get<scalar>("deltaT"));
+    }
+
+    //- Then, the neutronics adjusts it again, if needed. The coding of this
+    //  section isn't amazing, but it is due to the fact that the thermalHydraulic
+    //  class was developed independently of GeN-Foam and then shoved in it. That
+    //  is why the thermalHydraulics adjusts the time step via an ad-hoc made
+    //  function while the neutronics does it this way
+    else if (multiphysics.solveNeutronics()) // && runTime.timeIndex() > runTime.startTimeIndex()
+    {
+        scalar maxDeltaT =
+            runTime.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+
+        scalar maxPowerVariation =
+            runTime.controlDict().lookupOrDefault<scalar>
+            (
+                "maxPowerVariation", 
+                0.025
+            );
+
         scalar pTot = neutronics.power();
         
         scalar powerVariation = mag((pTot - pTotOld) / (pTotOld + SMALL));
@@ -73,20 +60,24 @@ and (runTime.timeIndex()-runTime.startTimeIndex()) > 1
             min(min(maxDeltaTNeutroFact, 1.0 + 0.1*maxDeltaTNeutroFact), 1.2);
 
         //- If solveFluidMechanics is true, the timeStep could have already
-        //  been adjusted by the thermalHyraulics, in which case set the new
+        //  been adjusted by the thermalHydraulics, in which case set the new
         //  timeStep only if the neutronics requires an even shorter time-step.
-        runTime.setDeltaT
+        deltaT = min
         (
-            min
-            (
-                deltaTNeutroFact*runTime.deltaTValue(),
-                (multiphysics.solveFluidMechanics()) ?
-                runTime.deltaTValue() : maxDeltaT
-            )
+            deltaTNeutroFact*deltaT,
+            multiphysics.solveFluidMechanics()
+                ? deltaT
+                : maxDeltaT
         );
     }
 
+    // Update deltaT once only at the end
+    runTime.setDeltaT(deltaT);
+
+    #ifdef isCommDataLayerIncluded
+    // Last, after all the other setDeltaT
+    if (isSolveFMI) fmu->setDeltaT();
+    #endif
+
     Info << "deltaT = " << runTime.deltaTValue() << endl;
 }
-    
-#endif

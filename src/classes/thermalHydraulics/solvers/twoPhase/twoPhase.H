@@ -237,7 +237,8 @@ public:
         virtual void correctCourant();
 
         //- Custom adjustTimeStep
-        virtual void adjustTimeStep();
+        // virtual void adjustTimeStep();
+        virtual scalar nextDeltaT();
 
         //- Update continuity errors of the fluid
         void correctContErrs();

@@ -61,6 +61,8 @@ namespace Foam
 namespace radialBasisFunctionInterpolation
 {
 
+enum variogramType { spherical, gaussian, exponential };
+
 //- Weight calculation for the Radial Basis Function interpolation
 //  https://en.wikipedia.org/wiki/Radial_basis_function_interpolation
 scalarList solveGaussianRadialBasisFunction
@@ -164,7 +166,40 @@ void solveKriging
     const scalarList xList,
     const scalarList yList,
     const scalarList zList,
+    const variogramType type,
+    const scalar a,
+    const scalar c,
+    const scalar c0,
     SquareMatrix<scalar>& invRBFmatrix
+);
+
+scalarList solveKriging
+(
+    const scalarList xList,
+    const scalarList yList,
+    const scalarList zList,
+    const variogramType type,
+    const scalar a,
+    const scalar c,
+    const scalar c0,
+    const scalar x,
+    const scalar y,
+    const scalar z,
+    SquareMatrix<scalar>& invRBFmatrix
+);
+
+scalarList getVariogramVector
+(
+    const scalarList xList,
+    const scalarList yList,
+    const scalarList zList,
+    const variogramType type,
+    const scalar a,
+    const scalar c,
+    const scalar c0,
+    const scalar x,
+    const scalar y,
+    const scalar z
 );
 
 //- Kriging
@@ -174,9 +209,26 @@ scalar kriging
     const scalarList yList,
     const scalarList zList,
     const scalarList vList,
+    const variogramType type,
+    const scalar a,
+    const scalar c,
+    const scalar c0,
     const scalar x,
     const scalar y,
     const scalar z,
+    SquareMatrix<scalar>& invRBFmatrix
+);
+
+scalar kriging
+(
+    const scalarList w,
+    const scalarList vList
+);
+
+scalar kriging
+(
+    const scalarList xVariogram,
+    const scalarList vList,
     SquareMatrix<scalar>& invRBFmatrix
 );
 

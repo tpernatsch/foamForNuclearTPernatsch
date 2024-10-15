@@ -30,4 +30,4 @@ LIB_LIBS = \
     -lODE \
     -lgenericPatchFields \
     -lreconstruct \
-    -ldynamicMesh
+    -ldynamicMesh \

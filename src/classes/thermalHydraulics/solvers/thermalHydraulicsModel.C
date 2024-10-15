@@ -345,7 +345,7 @@ void Foam::thermalHydraulicsModel::stop()
         << exit(FatalError);
 }
 
-void Foam::thermalHydraulicsModel::adjustTimeStep()
+scalar Foam::thermalHydraulicsModel::nextDeltaT()
 {
     this->correctCourant();
 
@@ -364,16 +364,40 @@ void Foam::thermalHydraulicsModel::adjustTimeStep()
         scalar deltaTFact = 
             min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
 
-        runTime_.setDeltaT
-        (
-            min
-            (
-                deltaTFact*runTime_.deltaTValue(),
-                maxDeltaT
-            )
-        );
+        return(min(deltaTFact*runTime_.deltaTValue(), maxDeltaT));
     }
+    return(runTime_.deltaTValue());
 }
+
+// void Foam::thermalHydraulicsModel::adjustTimeStep()
+// {
+//     this->correctCourant();
+
+//     bool adjustTimeStep =
+//         runTime_.controlDict().lookupOrDefault("adjustTimeStep", false);
+
+//     scalar maxCo =
+//         runTime_.controlDict().lookupOrDefault<scalar>("maxCo", 1.0);
+
+//     scalar maxDeltaT =
+//         runTime_.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+
+//     if (adjustTimeStep)
+//     {
+//         scalar maxDeltaTFact = maxCo/(CoNum_ + SMALL);
+//         scalar deltaTFact = 
+//             min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
+
+//         runTime_.setDeltaT
+//         (
+//             min
+//             (
+//                 deltaTFact*runTime_.deltaTValue(),
+//                 maxDeltaT
+//             )
+//         );
+//     }
+// }
 
 
 // ************************************************************************* //

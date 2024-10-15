@@ -39,16 +39,16 @@ License
 
 #include "multiphysicsControl.H"
 
-#if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
-#    include <commDataLayer.H>
-#    define isCommDataLayerIncluded
-#  endif
-#endif
-
-#ifdef isCommDataLayerIncluded
-#include "commDataLayer.H"
-#endif
+// #if defined __has_include
+// #  if __has_include(<commDataLayer.H>) 
+// #    include <commDataLayer.H>
+// #    define isCommDataLayerIncluded
+// #  endif
+// #endif
+// 
+// #ifdef isCommDataLayerIncluded
+// #include "commDataLayer.H"
+// #endif
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -125,6 +125,7 @@ bool Foam::multiphysicsControl::loop()
     // Extract label index of FMUController type functionObject, 
     // functionObjects are created by runTime.run()
     // Add if in first iteration, first time index
+    /*
     #ifdef isCommDataLayerIncluded
     label FMUControllerLabel(-1);
     forAll(runTime_.functionObjects(), labelI)
@@ -137,33 +138,34 @@ bool Foam::multiphysicsControl::loop()
     }
 
     // FMI check implicit step // only if multiphysics loop completed
-    /*if (
-        FMUControllerLabel != -1 
-        && !converged_
-    ) // && completed)
-    {
-        runTime_.functionObjects()[FMUControllerLabel].execute();
+    // if (
+    //     FMUControllerLabel != -1 
+    //     && !converged_
+    // ) // && completed)
+    // {
+    //     runTime_.functionObjects()[FMUControllerLabel].execute();
 
-        commDataLayer& data = commDataLayer::New(runTime_);
+    //     commDataLayer& data = commDataLayer::New(runTime_);
 
-        label isNewStep = data.getObj<label>("new_step", commDataLayer::causality::in);
-        
-        // nCorrPIMPLE_ = corr_+2;
-        if (isNewStep == 1)
-        {
-            // converged_ = true;
-            nCorrPIMPLE_ = corr_;
-        }
-        else
-        {
-            converged_ = false;
-            nCorrPIMPLE_ = corr_+2;
-        }
+    //     label isNewStep = data.getObj<label>("new_step", commDataLayer::causality::in);
+    //     
+    //     // nCorrPIMPLE_ = corr_+2;
+    //     if (isNewStep == 1)
+    //     {
+    //         // converged_ = true;
+    //         nCorrPIMPLE_ = corr_;
+    //     }
+    //     else
+    //     {
+    //         converged_ = false;
+    //         nCorrPIMPLE_ = corr_+2;
+    //     }
 
-        Info<< "Multiphysics loop newStep: " << isNewStep << " corr=" << corr_
-            << endl;
-    }*/
+    //     Info<< "Multiphysics loop newStep: " << isNewStep << " corr=" << corr_
+    //         << endl;
+    // }
     #endif
+    */
 
 
     setFirstIterFlag();
@@ -180,6 +182,7 @@ bool Foam::multiphysicsControl::loop()
 
         mesh_.data().setFinalIteration(false);
 
+        /*
         #ifdef isCommDataLayerIncluded
         // FMI check implicit step
         if (FMUControllerLabel != -1)
@@ -196,6 +199,7 @@ bool Foam::multiphysicsControl::loop()
             return(isNewStep != 1);
         }
         #endif
+        */
         
         return false;
     }
@@ -243,7 +247,7 @@ bool Foam::multiphysicsControl::loop()
         }
     }
 
-    
+    /*
     #ifdef isCommDataLayerIncluded
     // FMI check implicit step // only if multiphysics loop completed
     if (FMUControllerLabel != -1 && completed)
@@ -260,6 +264,7 @@ bool Foam::multiphysicsControl::loop()
         return(isNewStep != 1);
     }
     #endif
+    */
     
 
     return !completed;

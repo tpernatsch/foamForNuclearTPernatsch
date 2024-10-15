@@ -86,6 +86,8 @@ Description
 #include "neutronics.H"
 #include "thermoMechanics.H"
 
+// #include <gperftools/profiler.h>
+
 #if defined __has_include
 #  if __has_include(<commDataLayer.H>) 
 #    include <commDataLayer.H>
@@ -95,6 +97,7 @@ Description
 
 #ifdef isCommDataLayerIncluded
 #include "commDataLayer.H"
+#include "fmuControl.H"
 #endif
 
 
@@ -102,6 +105,8 @@ Description
 
 int main(int argc, char *argv[])
 {
+    // ProfilerStart("gen-foam.prof");  // Start profiling
+
     #define NO_CONTROL
     #define CREATE_MESH createMeshesPostProcess.H
     
@@ -119,60 +124,59 @@ int main(int argc, char *argv[])
     Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s" 
         << nl << endl;
 
-    #include "setDeltaT.H"
+    #ifdef isCommDataLayerIncluded
+    // FMU solution control
+    const bool isSolveFMI(runTime.controlDict().lookupOrDefault("solveFMI", false));
+    fmuControl* fmu = nullptr;
+    if (isSolveFMI) fmu = new fmuControl(runTime);
+    #endif
 
-    
+    #include "setDeltaT.H"
 
     while (runTime.run())
     {
+        if (runTime.timeIndex() == 0 && isSolveFMI)
+        {
+            fmu->receive();
+            fmu->send();
+        }
+
         runTime++;
 
-        #include "setDeltaT.H"
-        
         Info << "Time = " << runTime.timeName() << nl << endl;
-
-        /*
+        
         #ifdef isCommDataLayerIncluded
-        commDataLayer& data = commDataLayer::New(runTime);
-
-        label isNewStep = FMUSimulatorLabel != -1
-            ? data.getObj<label>("new_step", commDataLayer::causality::in)
-            : 1;
-
-        do // FMI loop, move everything in multiphysics.loop() (first step)
+        do
         {
+        if (isSolveFMI) fmu->receive();
         #endif
-        */
+
+
+        #include "setDeltaT.H"
 
         while (multiphysics.loop())
         {
             #include "solve.H"
         }
-        
-        /*
-        #ifdef isCommDataLayerIncluded
-            if (isNewStep != 1 && FMUSimulatorLabel != -1)
-            {
-                runTime.functionObjects()[FMUSimulatorLabel].execute();
 
-                isNewStep = data.getObj<label>("new_step", commDataLayer::causality::in);
-            }
-        } 
-        while (isNewStep != 1 && FMUSimulatorLabel != -1);
+
+        #ifdef isCommDataLayerIncluded
+        if (isSolveFMI) fmu->send();
+        } // End fmu implicit loop
+        while (isSolveFMI && fmu->loop());
         #endif
-        */
+
 
         runTime.write();
 
         #include "writeOutput.H"
 
-        // Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
-        // << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-        // << nl << endl;
         runTime.printExecutionTime(Info);
     }
 
     Info<< "End\n" << endl;
+
+    // ProfilerStop();  // Stop profiling
 
     return 0;
 }

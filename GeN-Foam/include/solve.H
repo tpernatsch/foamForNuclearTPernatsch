@@ -76,7 +76,7 @@ else if (solveE or solveN or solveTM)
             if (!solveN and !solveTM)
                 Info << endl;
         }
-        // correctCouplingFields.H is needed only beacuse of the speacial treatment of the 
+        // correctCouplingFields.H is needed only beacuse of the special treatment of the 
         // thermalHydraulic mesh, where we go through a set of fields on a "phantom" mesh 
         // without baffles that is needed to facilitate the mapping.
         // If it was not for that, interpolateCouplingFields of neutronics and thermalMechanics

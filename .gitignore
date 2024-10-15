@@ -43,15 +43,16 @@ Documentation/doxygen/Doxygen/html/**
 src/FMU4FOAM
 
 # Tutorials
-Tutorials/*/**/*1*
-Tutorials/*/**/*2*
-Tutorials/*/**/*3*
+# Tutorials/*/**/*1*
+# Tutorials/*/**/*2*
+# Tutorials/*/**/*3*
 Tutorials/*/**/*4*
 Tutorials/*/**/*5*
 Tutorials/*/**/*6*
 Tutorials/*/**/*7*
 Tutorials/*/**/*8*
 Tutorials/*/**/*9*
+Tutorials/*/**/0.converged*
 Tutorials/**/postProcessing*
 Tutorials/**/processor*
 Tutorials/**/steadyState*
@@ -61,6 +62,8 @@ Tutorials/**/log.*
 Tutorials/**/*.out
 !**/2D_*
 !**/defaultFlux2
+!**/2FMU
+!**/3FMU
 **/old.*
 **/archive.*
 **/*.csv*
