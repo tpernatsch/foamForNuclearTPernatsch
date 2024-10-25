@@ -18,7 +18,7 @@ FoamFile
 thermalHydraulicsType           "onePhase";
 
 structureProperties
-{    
+{
     "outletPlenum:inletPlenum"
     {
         volumeFraction          0;
@@ -128,12 +128,12 @@ structureProperties
 
                 These are obtained via the correlation by
                 J. Lavarenne, et al.
-                "A 2-D correlation to evaluate fuel-cladding gap thermal 
-                conductance in mixed oxide fuel elements for sodium-cooled 
-                fast reactors", Proceedings of Global/Top Fuel 2019, 22-27 
+                "A 2-D correlation to evaluate fuel-cladding gap thermal
+                conductance in mixed oxide fuel elements for sodium-cooled
+                fast reactors", Proceedings of Global/Top Fuel 2019, 22-27
                 September 2019.
 
-                The actual correlation is 
+                The actual correlation is
 
                 gapH = 1e2*(3+Q)*(1+TANH(2e-2*B))
 
@@ -189,7 +189,7 @@ structureProperties
             cladInnerRadius     0.002540;
             fuelOuterRadius     0.002470;
             fuelInnerRadius     0.0;
-            
+
             //- See comments on the innerCore gapHTable
             gapHPowerDensity    table
             (
@@ -211,7 +211,7 @@ structureProperties
     {
         volumeFraction          0.5904344344;
         Dh                      0.0031956386;
-        
+
         passiveProperties
         {
             volumetricArea  100.931;
@@ -367,7 +367,7 @@ structureProperties
     {
         volumeFraction          0;
         Dh                      0.00113;
-        //- Z tortuosity is to prevent back-diffusion of temperature from IHX 
+        //- Z tortuosity is to prevent back-diffusion of temperature from IHX
         //  into hotLeg at very low primary mass flows... even though, do I
         //  really need this? Eh...
         localTortuosity         (1 1 0.01389);
@@ -426,7 +426,7 @@ physicsModels
         }
 
         "innerCore:outerCore:upperShieldCore"
-        {   
+        {
             "localZ"
             {
                 type                Rehme;
@@ -443,7 +443,7 @@ physicsModels
                 coeff   0.96;
                 exp     -0.145;
             }
-            //- In theory drag along the Y axis should not matter (as it is 
+            //- In theory drag along the Y axis should not matter (as it is
             //  perpendicular to the wedge plane), but for consistency I set it
             "localY"
             {
@@ -463,7 +463,7 @@ physicsModels
             wireLeadLen         0.4978;
             wetWrapPerimeter    0.35334;
         }
-        
+
     }
 
     heatTransferModels

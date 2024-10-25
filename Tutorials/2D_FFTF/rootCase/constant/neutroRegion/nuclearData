@@ -82,7 +82,7 @@ coolantFeedbackZones
     "DRI_OFU"
 );
 
-structuresFeedbackZones
+structFeedbackZones
 (
     //"DRI_IPA"
     "DRI_GPL"

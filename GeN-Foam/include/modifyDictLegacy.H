@@ -47,7 +47,7 @@ IOdictionary controlDict
 (
     IOobject
     (
-        "controlDict", 
+        "controlDict",
         runTime.system(),
         runTime.db(),
         IOobject::MUST_READ,
@@ -57,14 +57,14 @@ IOdictionary controlDict
 
 dictionary regionSolversDict;
 
-if(controlDict.found("regionSolvers"))
+if (controlDict.found("regionSolvers"))
 {
     controlDict.remove("regionSolvers");
 }
 
 controlDict.regIOobject::write();
 
-if(solveThermalHydraulics or solveEnergy)
+if (solveThermalHydraulics or solveEnergy)
 {
     const IOdictionary phaseProperties
     (
@@ -80,13 +80,17 @@ if(solveThermalHydraulics or solveEnergy)
 
     const word fluidSolver(phaseProperties.get<word>("thermalHydraulicsType"));
 
-    if(!tightlyCoupled)
+    if (!tightlyCoupled)
+    {
         regionSolversDict.add("fluidRegion", fluidSolver);
+    }
     else
+    {
         subSolvers.add("fluidRegion", fluidSolver);
-    
+    }
 
-    if(solveEnergy)
+
+    if (solveEnergy)
     {
         IOdictionary fvSolTH
         (
@@ -101,19 +105,17 @@ if(solveThermalHydraulics or solveEnergy)
             )
         );
 
-
         fvSolTH.subDict("PIMPLE").add("solveEnergy", "true");
-        if(!solveThermalHydraulics)
+        if (!solveThermalHydraulics)
         {
             fvSolTH.subDict("PIMPLE").add("solveFluidMechanics", "false");
         }
+
         fvSolTH.regIOobject::write();
     }
-
-
 }
 
-if(solveEnergy)
+if (solveEnergy)
 {
     IOdictionary fvSolTH
     (
@@ -128,14 +130,13 @@ if(solveEnergy)
         )
     );
 
-
     fvSolTH.subDict("PIMPLE").add("solveEnergy", "true");
-    if(!solveThermalHydraulics)
+    if (!solveThermalHydraulics)
     {
         fvSolTH.subDict("PIMPLE").add("solveFluidMechanics", "false");
     }
-    fvSolTH.regIOobject::write();
 
+    fvSolTH.regIOobject::write();
 }
 
 if (solveNeutronics)
@@ -153,17 +154,21 @@ if (solveNeutronics)
     );
 
     const word neutroSolver(neutronicsProperties.get<word>("model"));
-    
-    if(neutroSolver == "pointKinetics")
-        PK=true;
 
-    if(!tightlyCoupled)
+    if (neutroSolver == "pointKinetics")
+        PK = true;
+
+    if (!tightlyCoupled)
+    {
         regionSolversDict.add("neutroRegion", neutroSolver);
+    }
     else
+    {
         subSolvers.add("neutroRegion", neutroSolver);
+    }
 }
 
-if(solveThermoMechanics)
+if (solveThermoMechanics)
 {
     const IOdictionary thermoMechProperties
     (
@@ -180,17 +185,21 @@ if(solveThermoMechanics)
     const word mechSolver(thermoMechProperties.get<word>("model"));
     linkedFuel = thermoMechProperties.getOrDefault<bool>("linkedFuel", false);
 
-    if(!tightlyCoupled)
+    if (!tightlyCoupled)
+    {
         regionSolversDict.add("thermoMechanicalRegion", mechSolver);
+    }
     else
+    {
         subSolvers.add("thermoMechanicalRegion", mechSolver);
+    }
 }
 
 
-if(tightlyCoupled)
+if (tightlyCoupled)
+{
     multiPhysicsSolver.add("solvers",subSolvers);
-
-
+}
 
 
 //- Now add the removeBafflesOption
@@ -203,15 +212,14 @@ removeBafflesDict.add("fluidRegion", removeFluidBaffles);
 removeBafflesDict.add("neutroRegion", false);
 removeBafflesDict.add("thermoMechanicalRegion", false);
 
-Info <<removeBafflesDict << endl;
+Info<< removeBafflesDict << endl;
 controlDict.add("removeBaffles", removeBafflesDict);
 
 
-
 // - Now create and write the multiRegionCouplingDict
-if(tightlyCoupled)
+if (tightlyCoupled)
 {
-    multiPhysicsSolver.add("maxIterations",  fvSolutionDict.get<scalar>("maxTimeStepIterations"));  
+    multiPhysicsSolver.add("maxIterations",  fvSolutionDict.get<scalar>("maxTimeStepIterations"));
     multiPhysicsSolver.add("minResidual",  fvSolutionDict.get<scalar>("timeStepResidual"));
     dictionary solverName;
     solverName.add("tightLoop", multiPhysicsSolver);
@@ -235,30 +243,30 @@ IOdictionary fvSolTH
     )
 );
 
-fvSolTH.subDict("PIMPLE").add("nOuterCorrectors", fvSolutionDict.get<scalar>("nOuterCorrectors"));
+fvSolTH.subDict("PIMPLE")
+    .add("nOuterCorrectors", fvSolutionDict.get<scalar>("nOuterCorrectors"));
 
 fvSolTH.regIOobject::write();
 
 // - Add the mappings list
 dictionary mappings;
 
-if(solveThermalHydraulics or solveEnergy)
+if (solveThermalHydraulics or solveEnergy)
 {
     dictionary THMappingDict;
 
     if (solveNeutronics)
     {
- 
         dictionary neuToTH;
         List<word> tgtNames(2);
         tgtNames[0] = "powerDensityNeutronics";
-        tgtNames[1] = "powerDensityNeutronicsToLiquid"; 
+        tgtNames[1] = "powerDensityNeutronicsToLiquid";
         List<word> fieldTypes(2);
         fieldTypes[0]= "scalar";
         fieldTypes[1]= "scalar";
         List<word> fieldNames(2);
 
-        if(!liquidFuel)
+        if (!liquidFuel)
         {
             fieldNames[0] = "powerDensity";
             fieldNames[1] = "secondaryPowerDensity";
@@ -280,22 +288,22 @@ if(solveThermalHydraulics or solveEnergy)
 }
 
 
-if(solveNeutronics)
+if (solveNeutronics)
 {
     dictionary NeuMappingDict;
 
     if (solveEnergy or solveThermalHydraulics)
-    {   
-
+    {
         dictionary THToNeu;
-        if(!liquidFuel)
+
+        if (!liquidFuel)
         {
             List<word> tgtNames(5);
             tgtNames[0] = "TCool";
-            tgtNames[1] = "rhoCool"; 
+            tgtNames[1] = "rhoCool";
             tgtNames[2] = "TFuel";
-            tgtNames[3] = "TClad"; 
-            tgtNames[4] = "TStructMech"; 
+            tgtNames[3] = "TClad";
+            tgtNames[4] = "TStructMech";
             List<word> fieldTypes(5);
             fieldTypes[0]= "scalar";
             fieldTypes[1]= "scalar";
@@ -313,22 +321,20 @@ if(solveNeutronics)
             THToNeu.add("targetFields", tgtNames);
             THToNeu.add("fieldTypes", fieldTypes);
 
-
             NeuMappingDict.add("fluidRegion", THToNeu);
         }
-
         else
         {
             List<word> tgtNames(9);
             tgtNames[0] = "TCool";
-            tgtNames[1] = "rhoCool"; 
+            tgtNames[1] = "rhoCool";
             tgtNames[2] = "TFuel";
-            tgtNames[3] = "TClad"; 
-            tgtNames[4] = "TStructMech"; 
+            tgtNames[3] = "TClad";
+            tgtNames[4] = "TStructMech";
             tgtNames[5] = "U";
-            tgtNames[6] = "mu"; 
+            tgtNames[6] = "mu";
             tgtNames[7] = "alpha";
-            tgtNames[8] = "alphat"; 
+            tgtNames[8] = "alphat";
             List<word> fieldTypes(9);
             fieldTypes[0]= "scalar";
             fieldTypes[1]= "scalar";
@@ -346,9 +352,9 @@ if(solveNeutronics)
             fieldNames[3]= "T.cladAvForNeutronics";
             fieldNames[4] = "T.passiveStructure";
             fieldNames[5] = "U";
-            fieldNames[6] = "mu"; 
+            fieldNames[6] = "mu";
             fieldNames[7] = "alpha";
-            fieldNames[8] = "thermo:alpha"; 
+            fieldNames[8] = "thermo:alpha";
 
             THToNeu.add("sourceFields", fieldNames);
             THToNeu.add("targetFields", tgtNames);
@@ -356,10 +362,9 @@ if(solveNeutronics)
         }
 
         NeuMappingDict.add("fluidRegion", THToNeu);
-
     }
 
-    if(solveThermoMechanics and PK)
+    if (solveThermoMechanics and PK)
     {
         dictionary TMToNeu;
 
@@ -375,9 +380,8 @@ if(solveNeutronics)
         TMToNeu.add("fieldTypes", fieldTypes);
 
         NeuMappingDict.add("thermoMechanicalRegion", TMToNeu);
-
     }
-    if(solveThermoMechanics and !PK)
+    if (solveThermoMechanics and !PK)
     {
         dictionary TMToNeu;
         List<word> tgtNames(1);
@@ -398,8 +402,6 @@ if(solveNeutronics)
         deformSubDict.add("displacementField", "disp");
         deformationDict.add("neutroRegion", deformSubDict);
         multiRegionCouplingDict.add("meshDeformation", deformationDict);
-        
-
     }
 
     mappings.add("neutroRegion", NeuMappingDict);
@@ -411,28 +413,26 @@ if (solveThermoMechanics)
 
     if (solveThermalHydraulics and solveEnergy)
     {
-
         dictionary THToTM;
         List<word> tgtNames(2);
         tgtNames[0] = "TStructFromTH";
-        tgtNames[1] = "TFuel"; 
+        tgtNames[1] = "TFuel";
         List<word> fieldTypes(2);
         fieldTypes[0]= "scalar";
         fieldTypes[1]= "scalar";
         List<word> fieldNames(2);
-        fieldNames[0] = "T.passiveStructure"; 
-        fieldNames[1] = 
-        linkedFuel?
-            "T.cladAvForNeutronics"
-            :"T.fuelAvForNeutronics"
-        ;
+        fieldNames[0] = "T.passiveStructure";
+        fieldNames[1] =
+        linkedFuel
+            ? "T.cladAvForNeutronics"
+            : "T.fuelAvForNeutronics";
 
         THToTM.add("sourceFields", fieldNames);
         THToTM.add("targetFields", tgtNames);
         THToTM.add("fieldTypes", fieldTypes);
 
         TMMappingDict.add("fluidRegion", THToTM);
-    } 
+    }
 
     if (solveNeutronics)
     {
@@ -442,11 +442,10 @@ if (solveThermoMechanics)
         List<word> fieldTypes(1);
         fieldTypes[0]= "scalar";
         List<word> fieldNames(1);
-        fieldNames[0] = 
-        liquidFuel?
-            "secondaryPowerDensity"
-            :"powerDensity"
-        ;
+        fieldNames[0] =
+        liquidFuel
+            ? "secondaryPowerDensity"
+            : "powerDensity";
         NeuToTM.add("sourceFields", fieldNames);
         NeuToTM.add("targetFields", tgtNames);
         NeuToTM.add("fieldTypes", fieldTypes);
@@ -455,6 +454,7 @@ if (solveThermoMechanics)
 
     mappings.add("thermoMechanicalRegion", TMMappingDict);
 }
+
 multiRegionCouplingDict.add("mappings", mappings);
 
 

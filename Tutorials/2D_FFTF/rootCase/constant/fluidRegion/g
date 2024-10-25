@@ -10,24 +10,13 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       dictionary;
-    object      CRmove;
+    class       uniformDimensionedVectorField;
+    object      g;
 }
-//- In case one wants to move control rods, they should define here the control
-//  rods they want to move. These must must be aligned with z axis
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-zones 
-( 
-    /*
-    controlRodCellZoneName
-    {
-        startTime   200.5;
-        endTime     201.7;
-        speed       0.0; //- Positive is entering the core (neg Z)
-        initialDistanceFromMeshCR 0.0;  //- Distance from the position defined 
-                                        //  in the mesh (postive towards the 
-                                        //  core) 
-        followerName    followerCellZoneName; 
-    } 
-    */
-); 
+dimensions      [0 1 -2 0 0 0 0];
+
+value           (0 0 -9.81);
+
+// ************************************************************************* //

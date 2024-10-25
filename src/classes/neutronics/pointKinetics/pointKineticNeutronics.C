@@ -38,7 +38,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
+#  if __has_include(<commDataLayer.H>)
 #    include <commDataLayer.H>
 #    define isCommDataLayerIncluded
 #  endif
@@ -943,7 +943,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
             << endl;
         }
 
-        
+
     }
 
     //- Compute total effective delayed neutron fraction
@@ -1028,7 +1028,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     // TCoolRef_ =
     //     reactorState_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
 
-    // rhoCoolRef_ =     
+    // rhoCoolRef_ =
     //     reactorState_.lookupOrDefault<scalar>("rhoCoolRef", rhoCoolValue);
 
     // TStructRef_ =
@@ -1307,7 +1307,7 @@ scalar Foam::solvers::pointKineticNeutronics::maxDeltaT()
     scalar maxPowerVariation =
         mesh_.time().controlDict().lookupOrDefault<scalar>
         (
-            "maxPowerVariation", 
+            "maxPowerVariation",
             0.025
         );
     scalar pTot = power();

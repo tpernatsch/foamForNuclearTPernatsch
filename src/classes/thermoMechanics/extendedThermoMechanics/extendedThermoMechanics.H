@@ -25,7 +25,7 @@ Class
     Foam::extendedThermoMechanics
 
 Description
-    
+
 
 SourceFiles
     extendedThermoMechanics.C
@@ -86,7 +86,7 @@ class extendedThermoMechanics
         autoPtr<heatSource> heatSrc_;
         autoPtr<thermalSubSolver> thermal_;
         autoPtr<mechanicsSubSolver> mechanics_;
-    
+
     // Private Member Functions
 
         //- Disallow default bitwise copy construct
@@ -98,10 +98,10 @@ class extendedThermoMechanics
 public:
 
     TypeName("extendedThermoMechanics");
-    
+
     // Constructors
 
-    
+
 
         //- Construct from mesh, materials and dictionary
         extendedThermoMechanics

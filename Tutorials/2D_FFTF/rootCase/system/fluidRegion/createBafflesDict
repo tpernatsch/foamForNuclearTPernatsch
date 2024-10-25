@@ -46,18 +46,19 @@ baffles
                 {
                     T
                     {
-                        type  		 zeroGradient;
+                        type        zeroGradient;
                     }
 
                     p_rgh
                     {
-            			type            fixedFluxPressure;
-                        gradient        uniform 0;
-                        value           uniform 100000;
+            			type        fixedFluxPressure;
+                        gradient    uniform 0;
+                        value       uniform 100000;
                     }
+
                     U
                     {
-                        type            slip;
+                        type        slip;
                     }
                 }
             }
@@ -65,7 +66,6 @@ baffles
             {
                 //- Slave side patch
                 name            baffle4;
-
                 type            mappedWall;
                 sampleMode      nearestPatchFace;
                 sampleRegion    fluid;

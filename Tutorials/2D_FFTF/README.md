@@ -1,6 +1,6 @@
 # 2D FFTF
 
-Author: Stefan Radman  
+Author: Stefan Radman;
 Review and editing: Carlo Fiorina
 
 ## Info
@@ -32,8 +32,8 @@ In essence, the LOFWOS 13 test was:
 
 ## Calculation details
 
-The model is hydrid as the vessel consists of a 2-degree wedge while the loops
-consist of paralellopipes. All the absolute volumes are scaled by a factor
+The model is hybrid as the vessel consists of a 2-degree wedge while the loops
+consist of parallelepipeds. All the absolute volumes are scaled by a factor
 360/2 of the total FFTF primary volume.
 
 From a calculation perspective, the steady state is run for 900 s of model time,
@@ -143,3 +143,20 @@ in which the power evolution is shaped almost exclusively dominated by the
 Doppler, fuel axial expansion and GEM reactivity contributions.
 
 Further improvements to the model will be made.
+
+
+## Results
+
+![](./images/FFTF_steadyState_T.png)
+
+*Fig 1: Temperature field during a steady-state.*
+
+
+![](./images/FFTF_steadyState_oneGroupFlux.png)
+
+*Fig 2: One group neutron flux in the core during a steady-state.*
+
+
+## References
+
+[1] Stefan Radman, Carlo Fiorina, Ping Song, Andreas Pautz,"Development of a point-kinetics model in OpenFOAM, integration in GeN-Foam, and validation against FFTF experimental data", In: Annals of Nuclear Energy, Volume 168, 2022, 108891, ISSN 0306-4549, https://doi.org/10.1016/j.anucene.2021.108891.

@@ -13,6 +13,8 @@ FoamFile
     class       dictionary;
     object      fvSolution;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 solvers
 {
     p_rgh
@@ -47,12 +49,15 @@ solvers
 
 PIMPLE
 {
-    nCorrectors         6;
-    nNonOrthogonalCorrectors 0;
-    correctUntilConvergence true;
-    momentumMode        cellCenteredFaceReconstruction;
-    porousInterfaceSharpness 0.5;
-    solveEnergy         true;
+    nCorrectors                 6;
+    nNonOrthogonalCorrectors    0;
+    nOuterCorrectors            6; // 12;
+    correctUntilConvergence     true;
+    momentumMode                cellCenteredFaceReconstruction;
+    porousInterfaceSharpness    0.5;
+    minMagU                     0.01;
+    solveFluidMechanics         true;
+    solveEnergy                 true;
 
     //- This limits the minimum magnitude of U that can be used in the
     //  calculation of the drag factor. Defaults to 0. Only (possibly)

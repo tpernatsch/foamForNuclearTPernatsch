@@ -1,17 +1,16 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  2406                                  |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
 \*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
     format      ascii;
-    arch        "LSB;label=32;scalar=64";
     class       dictionary;
-    location    "constant";
     object      multiRegionCouplingDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -23,7 +22,7 @@ multiPhysicsSolvers
         solvers
         {
             fluidRegion     onePhase;
-            neutroRegion    pointKinetics;
+            neutroRegion    diffusionNeutronics;
         }
         minResidual     0.00005;
         maxIterations   3;
@@ -45,9 +44,9 @@ mappings
     {
         fluidRegion
         {
-            sourceFields    5 ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
-            targetFields    5 ( TCool rhoCool TFuel TClad TStructMech );
-            fieldTypes      5 ( scalar scalar scalar scalar scalar );
+            sourceFields    0 ( /*T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure*/ );
+            targetFields    0 ( /*TCool rhoCool TFuel TClad TStructMech*/ );
+            fieldTypes      0 ( /*scalar scalar scalar scalar scalar*/ );
         }
     }
 }

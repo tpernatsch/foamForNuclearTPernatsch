@@ -453,12 +453,11 @@ void Foam::meshHandler::mapTheseFields(const Time& runTime, wordList meshToMap)
 
 void Foam::meshHandler::initializeMappedFields( const Time& runTime)
 {
-
     forAll(meshes_, i)
     {
         forAll(meshes_, j)
         {
-            if(mappingDict_.subDict(meshes_[i].name()).found(meshes_[j].name()))
+            if( mappingDict_.subDict(meshes_[i].name()).found(meshes_[j].name()))
             {
                 dictionary iTojRegionmappingDict_(mappingDict_.subDict(meshes_[i].name()).subDict(meshes_[j].name()));
                 List<word> targetFields(iTojRegionmappingDict_.getOrDefault<List<word>>("targetFields", List<word>::null()));
@@ -467,52 +466,57 @@ void Foam::meshHandler::initializeMappedFields( const Time& runTime)
 
                 bool removeBaffles(false);
 
-                if(runTime.controlDict().found("removeBaffles"))
+                if (runTime.controlDict().found("removeBaffles"))
                 {
                     const dictionary& removeBafflesDict(runTime.controlDict().subDict("removeBaffles"));
 
-                    if(removeBafflesDict.getOrDefault<bool>(meshes_[j].name(), false))
+                    if (removeBafflesDict.getOrDefault<bool>(meshes_[j].name(), false))
                     {
                         forAll(sourceFields, sourcei)
                         {
-                            sourceFields[sourcei]+=".baffleLess";
+                            sourceFields[sourcei] += ".baffleLess";
                         }
                         removeBaffles = true;
                     }
                 }
 
-                if(targetFields.size()!=sourceFields.size())
+                if (targetFields.size() != sourceFields.size())
                 {
                     FatalErrorInFunction
-                    << "Number of target fields from region "<< meshes_[j].name()<< " is not equal to number of source fields to region "<<mappingMeshes_[i].name()<<"!"
-                    << exit(FatalError);
+                        << "Number of target fields from region "
+                        << meshes_[j].name()
+                        << " is not equal to number of source fields to region "
+                        << mappingMeshes_[i].name()<<"!"
+                        << exit(FatalError);
                 }
-                else if(fieldTypes.size()!=sourceFields.size())
+                else if (fieldTypes.size() != sourceFields.size())
                 {
                     FatalErrorInFunction
-                    << "Number of specified field types in meshHandler from region "<< meshes_[j].name()<< " to region "<<meshes_[i].name()<<" is not adequate!"
-                    << exit(FatalError);
+                        << "Number of specified field types in meshHandler from region "
+                        << meshes_[j].name() << " to region "
+                        << meshes_[i].name() << " is not adequate!"
+                        << exit(FatalError);
                 }
                 else
                 {
                     forAll(sourceFields, fieldi)
                     {
-
-                        if(fieldTypes[fieldi]=="scalar")
+                        if (fieldTypes[fieldi] == "scalar")
                         {
                             volScalarField& tgtField = const_cast<volScalarField&>(meshes_[i].lookupObject<volScalarField>(targetFields[fieldi]));
                             if ((removeBaffles and !(mappingMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))) or (!removeBaffles and !(meshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))))
                             {
-                                Info<<"Warning! Field " <<sourceFields[fieldi]<< " not found! "<<endl;
-
+                                Info<<"Warning! Field " << sourceFields[fieldi]
+                                    << " not found!"
+                                    << endl;
                             }
                             else
                             {
                                 mappingList_[i][j].mapTgtToSrc
                                 (
-                                    removeBaffles?
-                                    mappingMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi])
-                                    :meshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
+                                    removeBaffles
+                                        ? mappingMeshes_[j].lookupObject<volScalarField>(sourceFields[fieldi])
+                                        : meshes_[j].lookupObject<volScalarField>(sourceFields[fieldi]),
                                     plusEqOp<scalar>(),
                                     tgtField
                                 );
@@ -520,14 +524,14 @@ void Foam::meshHandler::initializeMappedFields( const Time& runTime)
                                 tgtField.write();
                             }
                         }
-                        else if(fieldTypes[fieldi]=="vector")
+                        else if (fieldTypes[fieldi] == "vector")
                         {
                             volVectorField& tgtField = const_cast<volVectorField&>(meshes_[i].lookupObject<volVectorField>(targetFields[fieldi]));
                             mappingList_[i][j].mapTgtToSrc
                             (
-                                removeBaffles?
-                                mappingMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi])
-                                :meshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
+                                removeBaffles
+                                    ? mappingMeshes_[j].lookupObject<volVectorField>(sourceFields[fieldi])
+                                    : meshes_[j].lookupObject<volVectorField>(sourceFields[fieldi]),
                                 plusEqOp<vector>(),
                                 tgtField
                             );
@@ -537,22 +541,22 @@ void Foam::meshHandler::initializeMappedFields( const Time& runTime)
                         else
                         {
                             FatalErrorInFunction
-                            << "Field type " << fieldTypes[fieldi]<< " in meshHandler from region "<< meshes_[j].name()<< " to region "<<mappingMeshes_[i].name()<<" is not known!"
-                            << exit(FatalError);
+                                << "Field type " << fieldTypes[fieldi]
+                                << " in meshHandler from region "
+                                << meshes_[j].name() << " to region "
+                                << mappingMeshes_[i].name() << " is not known!"
+                                << exit(FatalError);
                         }
                     }
                 }
             }
         }
     }
-
 }
-
 
 
 void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
 {
-
     forAll(meshes_, regioni)
     {
         autoPtr<fvMesh> baffleLessMesh;
@@ -568,7 +572,8 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
         if (removeBaffleBool)
         {
 
-            Info << "Creating baffleless mesh for region " << meshes_[regioni].name()<<endl;
+            Info<< "Creating baffleless mesh for region " << meshes_[regioni].name()
+                << endl;
             if (UPstream::nProcs() > 1)
             {
                 Info<< "WARNING: the removeBaffles feature is guaranteed to work only "
@@ -628,7 +633,12 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
 
             autoPtr<Time> dummyRunTimePtr
             (
-                new Time(Foam::Time::controlDictName, meshes_[regioni].time().rootPath(), meshes_[regioni].time().caseName())
+                new Time
+                (
+                    Foam::Time::controlDictName,
+                    meshes_[regioni].time().rootPath(),
+                    meshes_[regioni].time().caseName()
+                )
             );
             removeBaffles(baffleLessMesh(), dummyRunTimePtr());
             dummyRunTimePtr.clear();
@@ -684,20 +694,15 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
                 );
             }
             baffleLessMesh().addZones(pointZonesNB, faceZonesNB, cellZonesNB);
-
         }
-
         else
         {
             baffleLessMesh = nullptr;
         }
 
-
         mappingMeshes_.set(regioni,baffleLessMesh);
     }
-
 }
-
 
 
 void Foam::meshHandler::createCouplingFields(const Time& runTime)
@@ -720,10 +725,10 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
 
     forAll(meshes_, regioni) //iterate over the meshes
     {
-        if(runTime.controlDict().found("removeBaffles"))
+        if (runTime.controlDict().found("removeBaffles"))
         {
             const dictionary& removeBafflesDict = runTime.controlDict().subDict("removeBaffles");
-            if(removeBafflesDict.getOrDefault<bool>(meshes_[regioni].name(),false))
+            if (removeBafflesDict.getOrDefault<bool>(meshes_[regioni].name(), false))
             {
 
                 label nScalarFields(0);
@@ -742,28 +747,23 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
 
                 forAll(regionsInDict, i) //iterate over the regions found in the dictionary
                 {
-
-                    if(regionsInDict[i]!=meshes_[regioni].name()) //-look for other (than regionMehses_[regioni]) regions source fields
+                    if (regionsInDict[i]!=meshes_[regioni].name()) //-look for other (than regionMehses_[regioni]) regions source fields
                     {
-
                         const dictionary regionFromDict(mappingDict.subDict(regionsInDict[i]));
                         const wordList regionsFrom(regionFromDict.toc());
                         // scalarCouplingFields_[regioni].setSize(regionsFrom.size());
 
                         forAll(regionsFrom, regionFromi)//-loop over regions in the sub-dict
                         {
-
-                            if(regionsFrom[regionFromi]==meshes_[regioni].name())//-if i find regionMehses_[regioni] in the subdict
+                            if(regionsFrom[regionFromi] == meshes_[regioni].name())//-if i find regionMehses_[regioni] in the subdict
                             {
-
-
                                 const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
                                 const wordList fieldTypes(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("fieldTypes")); // list of types of fields to create
                                 fvMesh& baffleLessMesh = const_cast<fvMesh&>(meshes_[regioni].time().lookupObject<fvMesh>(meshes_[regioni].name()+".baffleLess"));
 
                                 forAll(fieldsList, fieldi)
                                 {
-                                    if (fieldTypes[fieldi] == "scalar" and (!baffleLessMesh.foundObject<volScalarField>(fieldsList[fieldi]+".baffleLess")))
+                                    if (fieldTypes[fieldi] == "scalar" && (!baffleLessMesh.foundObject<volScalarField>(fieldsList[fieldi]+".baffleLess")))
                                     {
                                         scalarCouplingFields_[regioni].resize(nScalarFields+1);
                                         scalarCouplingFields_[regioni].set
@@ -788,7 +788,7 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
 
                                         Info << "Creating baffleless field "<<scalarCouplingFields_[regioni][nScalarFields-1].name() <<endl;
                                     }
-                                    else if (fieldTypes[fieldi] == "vector" and (!baffleLessMesh.foundObject<volVectorField>(fieldsList[fieldi]+".baffleLess")))
+                                    else if (fieldTypes[fieldi] == "vector" && (!baffleLessMesh.foundObject<volVectorField>(fieldsList[fieldi]+".baffleLess")))
                                     {
                                         vectorCouplingFields_[regioni].resize(nVectorFields+1);
                                         vectorCouplingFields_[regioni].set
@@ -811,7 +811,9 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
                                         );
                                         nVectorFields++;
 
-                                        Info << "Creatinfg baffleless field "<< vectorCouplingFields_[regioni][nVectorFields-1].name() <<endl;
+                                        Info<< "Creatinfg baffleless field "
+                                            << vectorCouplingFields_[regioni][nVectorFields-1].name()
+                                            << endl;
                                     }
                                 }
                             }
@@ -822,55 +824,52 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
         }
     }
 
-    Info <<nl;
+    Info<< nl;
 }
 
 Foam::fvMesh& Foam::meshHandler::returnMesh(word meshName)
 {
-
-
-
-    if(meshName == "dummy")
+    if (meshName == "dummy")
+    {
         return meshes_[0];
+    }
     else
     {
         bool found(false);
         label meshIndex(0);
         forAll(meshes_, meshI)
         {
-            if(meshes_[meshI].name() == meshName)
+            if (meshes_[meshI].name() == meshName)
             {
-                meshIndex=meshI;
+                meshIndex = meshI;
                 found = true;
                 break;
             }
-
         }
 
-        if(found)
+        if (found)
         {
             return meshes_[meshIndex];
         }
         else
         {
             FatalErrorInFunction
-            << "Mesh "<<meshName << " not found"<<nl
-            << exit(FatalError);
+                << "Mesh " << meshName << " not found" << nl
+                << exit(FatalError);
 
             return meshes_[0]; //return dummy mesh for compiler
         }
-
     }
 }
 
+
 Foam::fvMesh& Foam::meshHandler::returnMappingMesh(word meshName)
 {
-
     bool found(false);
     label meshIndex(0);
     forAll(mappingMeshes_,meshI)
     {
-        if(mappingMeshes_[meshI].name() == (meshName+".baffleLess"))
+        if (mappingMeshes_[meshI].name() == (meshName+".baffleLess"))
         {
             found = true;
             meshIndex = meshI;
@@ -878,15 +877,15 @@ Foam::fvMesh& Foam::meshHandler::returnMappingMesh(word meshName)
         }
     }
 
-    if(found)
+    if (found)
     {
         return mappingMeshes_[meshIndex];
     }
     else
     {
         FatalErrorInFunction
-        << "Mesh "<<meshName << " not found"<<nl
-        << exit(FatalError);
+            << "Mesh " << meshName << " not found" << nl
+            << exit(FatalError);
 
         return mappingMeshes_[0]; // return dummymesh for compiler
     }
@@ -1031,11 +1030,13 @@ bool Foam::meshHandler::contains(wordList list, word thisWord)
     bool found(false);
     forAll(list, wordi)
     {
-        if(list[wordi]==thisWord)
-            found=true;
+        if (list[wordi] == thisWord)
+        {
+            found = true;
+        }
     }
 
-    return found;
+    return(found);
 }
 
 

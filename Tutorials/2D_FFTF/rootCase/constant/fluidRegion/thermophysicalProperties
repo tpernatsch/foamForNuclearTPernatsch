@@ -11,12 +11,48 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      neutronicsProperties;
+    object      thermophysicalProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model                   pointKinetics;
+thermoType
+{
+    type                heRhoThermo;
+    mixture             pureMixture;
+    equationOfState     Boussinesq;
+    thermo              hConst;
+    transport           const;
+    specie              specie;
+    energy              sensibleEnthalpy;
+}
 
-eigenvalueNeutronics    false;
+pRef        100000;
+
+//- Properties are those of liquid Sodium evaluated at 600 K
+mixture
+{
+    specie
+    {
+        molWeight   22.989769;
+    }
+
+    equationOfState
+    {
+        rho0    874;
+        T0      600;
+        beta    2.602975e-4;
+    }
+
+    thermodynamics
+    {
+        Cp      1301;
+        Hf      0;
+    }
+    transport
+    {
+        mu      3.21e-4;
+        Pr      5.6664993e-3;
+    }
+}
 
 // ************************************************************************* //

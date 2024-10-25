@@ -1,12 +1,24 @@
+"""
+"""
+
+#==============================================================================*
 ### IMPORTS
 
 import sys
 import matplotlib.pyplot as plt
 
 
+#==============================================================================*
+### USAGE
+
+if (len(sys.argv) == 1):
+    print(f"\n    Usage: python3 {sys.argv[0]} path/to/log.GeN-Foam\n")
+    sys.exit(0)
+
+#==============================================================================*
 ### SETTINGS
 
-beta = 1e5*0.00313126
+beta = 0.00313126 * 1e5
 
 SMALL_SIZE = 10
 MEDIUM_SIZE = 12
@@ -21,9 +33,10 @@ plt.rc('legend', fontsize=SMALL_SIZE-1)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
+#==============================================================================*
 ### FUNCTIONS
 
-def readTimes(loglines):
+def readTimes(loglines) -> list:
     times = []
     totalRunTime = 0
     for line in loglines:
@@ -35,7 +48,7 @@ def readTimes(loglines):
     return times
 
 
-def readValues(times, loglines, keyword, pos, scale=1):
+def readValues(times, loglines, keyword, pos, scale=1) -> list:
     values = []
     for line in loglines:
         if keyword in line:
@@ -46,40 +59,43 @@ def readValues(times, loglines, keyword, pos, scale=1):
 
 
 def readExpTimesAndValues(loglines, timeOffset, valueOffset, scaleFactor):
-    times = []
-    values = []
+    times, values = [], []
     for line in loglines:
         try:
-            times.append(float(line.split()[0])+timeOffset)
-            values.append(scaleFactor*float(line.split()[1])+valueOffset)
+            times.append(float(line.split()[0]) + timeOffset)
+            values.append(scaleFactor*float(line.split()[1]) + valueOffset)
         except:
             pass
-    return times, values
+    return(times, values)
 
 
-def matchSize(list1, list2):
+def matchSize(list1: list, list2: list) -> None:
     while len(list1) > len(list2):
         del list1[-1]
     while len(list2) > len(list1):
         del list2[-1]
 
-###
 
-fig, axes = plt.subplots(4, 1, sharex=True)
+#==============================================================================*
+### EXTRACT AND PLOT DATA
+
+fig, axes = plt.subplots(2, 2, sharex=True, figsize=(10, 7))
 
 axP, axF, axT, axR = axes.flatten()
 
 for ax in axes.flatten():
+    ax.set_xlabel(r'$t\;(s)$')
     ax.grid(True)
 
 axP.set_ylabel(r'$P\;(W)$')
 axF.set_ylabel(r'$\dot{m}\;(kg/s)$')
 axT.set_ylabel(r'$T\;(K)$')
 axR.set_ylabel(r'$\rho\;(\$)$')
-axR.set_xlabel(r'$t\;(s)$')
+axP.set_yscale('log')
+axR.set_xlim(900, 1200)
 
 for logname in sys.argv[1:]:
-    print("Processing "+logname)
+    print(f"Processing {logname}")
 
     with open(logname, "r") as log:
         loglines = log.readlines()
@@ -128,9 +144,9 @@ for logname in sys.argv[1:]:
             totalPower = readValues(times, loglines, "totalPower =", 2, 180)
             fissionPower = readValues(times, loglines, "-> fission", 3, 180)
             decayPower = readValues(times, loglines, "-> decay", 3, 180)
-            axP.plot(times, totalPower, label="totalPower")
-            axP.plot(times, fissionPower, label="fissionPower")
-            axP.plot(times, decayPower, label="decayPower")
+            axP.plot(times, totalPower, label="Total Power")
+            axP.plot(times, fissionPower, label="Fission Power")
+            axP.plot(times, decayPower, label="Decay Power")
         except:
             pass
 
@@ -143,7 +159,8 @@ for logname in sys.argv[1:]:
             RTStruct = readValues(times, loglines, "-> TStruct", 3, 1.0/beta)
             RDriveline = readValues(times, loglines, "-> driveline", 3, 1.0/beta)
             RGEM = readValues(times, loglines, "-> GEM", 3, 1.0/beta)
-            axR.plot(times, RTot, label="total")
+
+            axR.plot(times, RTot, label="Total")
             axR.plot(times, RDoppler, label="Doppler")
             axR.plot(times, RTFuel, label="Fuel axial expansion")
             axR.plot(times, RTClad, label="Cladding temperature")
@@ -154,38 +171,46 @@ for logname in sys.argv[1:]:
         except:
             pass
 
-###
+
+#==============================================================================*
 
 timeOffset = 910
 
 with open("expFlow", "r") as log:
     loglines = log.readlines()
     expFlowTimes, expFlowValues = readExpTimesAndValues(loglines, timeOffset, 0, 1)
-    axF.plot(expFlowTimes, expFlowValues, label="expTotal")
+    axF.plot(expFlowTimes, expFlowValues, label="Exp. Total", ls='--')
 
 with open("expPIOTA2", "r") as log:
     loglines = log.readlines()
     expPIOTA2Times, expPIOTA2Values = readExpTimesAndValues(loglines, timeOffset, 273.15, 1)
-    axT.plot(expPIOTA2Times, expPIOTA2Values, label="expPIOTA2")
+    axT.plot(expPIOTA2Times, expPIOTA2Values, label="Exp. PIOTA2", ls='--')
 
 '''
 with open("expPIOTA6", "r") as log:
     loglines = log.readlines()
     expPIOTA6Times, expPIOTA6Values = readExpTimesAndValues(loglines, timeOffset, 273.15, 1)
-    axT.plot(expPIOTA6Times, expPIOTA6Values, label="expPIOTA6")
+    axT.plot(expPIOTA6Times, expPIOTA6Values, label="Exp. PIOTA6", ls='--')
 '''
 
 with open("expPow", "r") as log:
     loglines = log.readlines()
     expPowTimes, expPowValues = readExpTimesAndValues(loglines, timeOffset, 0, 1000000)
-    axP.plot(expPowTimes, expPowValues, label="expPrimary")
+    axP.plot(expPowTimes, expPowValues, label="Exp. Primary", ls='--')
 
 with open("expReactivity", "r") as log:
     loglines = log.readlines()
     expRTimes, expRValues = readExpTimesAndValues(loglines, timeOffset, 0, 1)
-    axR.plot(expRTimes, expRValues, label="expTotal")
+    axR.plot(expRTimes, expRValues, label="Exp. Total", ls='--')
+
+
+#==============================================================================*
 
 for ax in axes.flatten():
-    ax.legend()
+    ax.legend(loc='upper right')
 
+fig.tight_layout()
 plt.show()
+
+
+#==============================================================================*

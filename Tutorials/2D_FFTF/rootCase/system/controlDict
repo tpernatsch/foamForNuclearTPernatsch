@@ -19,9 +19,9 @@ FoamFile
 
 application         GeN-Foam;
 
-startFrom           startTime;
+startFrom           latestTime; // startTime;
 
-startTime           0;
+// startTime           0;
 
 stopAt              endTime;
 
@@ -85,13 +85,13 @@ writeContinuityErrors true;
 
 regionSolvers
 {
-    fluidRegion     onePhase;
+    // fluidRegion     onePhase;
     // neutroRegion    pointKinetics;
 }
 
 removeBaffles
 {
-    fluidRegion     1;
+    // fluidRegion     1;
     // neutroRegion    0;
 }
 

@@ -11,48 +11,27 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      thermophysicalProperties;
+    object      CRmove;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-thermoType
-{
-    type                heRhoThermo;
-    mixture             pureMixture;
-    equationOfState     Boussinesq;
-    thermo              hConst;
-    transport           const;
-    specie              specie;
-    energy              sensibleEnthalpy;
-}
+//- In case one wants to move control rods, they should define here the control
+//  rods they want to move. These must must be aligned with z axis
 
-pRef                        100000;
-
-//- Properties are those of liquid Sodium evaluated at 600 K
-mixture
-{
-    specie
+zones
+(
+    /*
+    controlRodCellZoneName
     {
-        molWeight           22.989769;
+        startTime   200.5;
+        endTime     201.7;
+        speed       0.0; //- Positive is entering the core (neg Z)
+        initialDistanceFromMeshCR 0.0;  //- Distance from the position defined
+                                        //  in the mesh (postive towards the
+                                        //  core)
+        followerName    followerCellZoneName;
     }
-
-    equationOfState
-    {
-        rho0                874;
-        T0                  600;
-        beta                2.602975e-4;
-    }
-
-    thermodynamics
-    {
-        Cp                  1301;
-        Hf                  0;
-    }
-    transport
-    {
-        mu                  3.21e-4;
-        Pr                  5.6664993e-3;
-    }
-}
+    */
+);
 
 // ************************************************************************* //
