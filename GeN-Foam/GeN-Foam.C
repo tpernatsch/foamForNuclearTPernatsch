@@ -151,11 +151,13 @@ int main(int argc, char *argv[])
 
     while (runTime.run() and !(mappingMode))
     {
+        #ifdef isCommDataLayerIncluded
         if (runTime.timeIndex() == 0 && isSolveFMI)
         {
             fmu->receive();
             fmu->send();
         }
+        #endif
 
         solvers.setGlobalPrefix();
 
@@ -182,16 +184,17 @@ int main(int argc, char *argv[])
             solvers[i].correctBaffleLessFields();
         }
 
+        // Adjust the time-step according to the solver maxDeltaT
+        adjustDeltaT(runTime, solvers);
+
         #ifdef isCommDataLayerIncluded
         if (isSolveFMI) fmu->send();
         } // End fmu implicit loop
         while (isSolveFMI && fmu->loop());
+
+        // Last, after all the other setDeltaT
+        if (isSolveFMI) fmu->setDeltaT();
         #endif
-
-
-        // Adjust the time-step according to the solver maxDeltaT
-        adjustDeltaT(runTime, solvers);
-
 
         solvers.setGlobalPrefix();
 

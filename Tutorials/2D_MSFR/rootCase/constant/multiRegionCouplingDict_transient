@@ -18,16 +18,16 @@ FoamFile
 
 multiPhysicsSolvers
 {
-	energyNeutroLoop
-	{
-		solvers
-		{
-			fluidRegion 	onePhase;
-			neutroRegion    diffusionNeutronics;
-		}
+    energyNeutroLoop
+    {
+        solvers
+        {
+            fluidRegion     onePhase;
+            neutroRegion    diffusionNeutronics;
+        }
         minResidual 0.00005;
         maxIterations 3;
-	}
+    }
 }
 
 

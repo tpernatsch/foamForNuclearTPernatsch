@@ -336,13 +336,13 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
 
             forAll(regions, regioni)
             {
-                if(regions[regioni]!=mesh_.name()) //look for other regions
+                if (regions[regioni] != mesh_.name()) //look for other regions
                 {
                     const dictionary regionFromDict(mappingDict.subDict(regions[regioni]));
                     const wordList regionsFrom(regionFromDict.toc());
                     forAll(regionsFrom, regionFromi)
                     {
-                        if(regionsFrom[regionFromi]==mesh_.name())
+                        if (regionsFrom[regionFromi] == mesh_.name())
                         {
                             const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
                             const wordList fieldTypes(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("fieldTypes")); // list of types of fields to create
@@ -399,17 +399,20 @@ void Foam::solvers::thermalHydraulicsModel::deformMesh()
             {
                 const volPointInterpolation& meshPointInterpolation = volPointInterpolation::New(mesh_);
 
-                tmp<pointVectorField> meshPointsDisplacement = meshPointInterpolation.interpolate(mesh_.lookupObject<volVectorField>(deformDict.subDict(mesh_.name()).get<word>("displacementField")));
+                tmp<pointVectorField> meshPointsDisplacement = meshPointInterpolation.interpolate
+                (
+                    mesh_.lookupObject<volVectorField>
+                    (
+                        deformDict.subDict(mesh_.name()).get<word>("displacementField")
+                    )
+                );
 
-                tmp<pointField> displacedPoints =originalPoints_ + meshPointsDisplacement->internalField();
+                tmp<pointField> displacedPoints = originalPoints_ + meshPointsDisplacement->internalField();
 
                 mesh_.movePoints(displacedPoints);
-
-
             }
         }
     }
-    return(runTime_.deltaTValue());
 }
 
 // void Foam::thermalHydraulicsModel::adjustTimeStep()
