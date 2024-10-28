@@ -162,14 +162,14 @@ scalarList solvePolyharmonicSpline
 
         SquareMatrix<scalar> A(nx+4, 0.0);
 
-        scalar r2(0);
+        scalar rSquare(0);
         forAll(xList, i)
         {
             forAll(xList, j)
             {
                 if (i != j)
                 {
-                    const scalar rSquare(
+                    rSquare = (
                         sqr(xList[i]-xList[j])
                         + sqr(yList[i]-yList[j])
                         + sqr(zList[i]-zList[j])
@@ -292,10 +292,10 @@ scalar polyharmonicSpline
 {
     const label nx(xList.size());
     scalar res(0);
-    scalar r2(0);
+    scalar rSquare(0);
     forAll(xList, i)
     {
-        const scalar rSquare(
+        rSquare = (
             sqr(x-xList[i])
             + sqr(y-yList[i])
             + sqr(z-zList[i])

@@ -1,8 +1,21 @@
 #!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
 cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
 
 # Source tutorial run functions
 . $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#==============================================================================*
 
 exe="GeN-Foam"
 
@@ -25,20 +38,23 @@ setSteadyStateN()
 
     printf "Setting steady state case\n"
 
-    foamDictionary $1/system/controlDict -entry startFrom -set startTime
-    foamDictionary $1/system/controlDict -entry startTime -set 0
+    # foamDictionary $1/system/controlDict -entry startFrom -set startTime
+    # foamDictionary $1/system/controlDict -entry startTime -set 0
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeSS_N
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set false
     foamDictionary $1/system/controlDict -entry deltaT -set 0.5
-    foamDictionary $1/system/controlDict -entry writeControl -set adjustableRunTime
+    # foamDictionary $1/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $1/system/controlDict -entry writeInterval -set $endTimeSS_N
-    foamDictionary $1/system/controlDict -entry solveFluidMechanics -set false
-    foamDictionary $1/system/controlDict -entry solveEnergy -set false
-    foamDictionary $1/system/controlDict -entry solveNeutronics -set true
+    # foamDictionary $1/system/controlDict -entry solveFluidMechanics -set false
+    # foamDictionary $1/system/controlDict -entry solveEnergy -set false
+    # foamDictionary $1/system/controlDict -entry solveNeutronics -set true
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry model -set diffusionNeutronics
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
+    foamDictionary $1/system/controlDict -entry removeBaffles.neutroRegion -set false
     foamDictionary $1/system/controlDict -entry maxCo -set 500;
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 2;
+    cp $1/constant/multiRegionCouplingDict_steadyStateN $1/constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
 
@@ -48,17 +64,22 @@ setSteadyStateEN()
 
     printf "Setting steady state case\n"
 
-    foamDictionary $1/system/controlDict -entry startFrom -set startTime
-    foamDictionary $1/system/controlDict -entry startTime -set $endTimeSS_N
+    cp -r $1/0/fluidRegion $1/$endTimeSS_N
+
+    # foamDictionary $1/system/controlDict -entry startFrom -set startTime
+    # foamDictionary $1/system/controlDict -entry startTime -set $endTimeSS_N
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeSS
     foamDictionary $1/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $1/system/controlDict -entry writeInterval -set {$endTimeSS-$endTimeSS_N}
-    foamDictionary $1/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary $1/system/controlDict -entry solveEnergy -set true
-    foamDictionary $1/system/controlDict -entry solveNeutronics -set false
+    # foamDictionary $1/system/controlDict -entry solveFluidMechanics -set true
+    # foamDictionary $1/system/controlDict -entry solveEnergy -set true
+    # foamDictionary $1/system/controlDict -entry solveNeutronics -set false
+    foamDictionary $1/system/controlDict -entry removeBaffles.fluidRegion -set true
     foamDictionary $1/system/controlDict -entry maxCo -set 500;
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 2;
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
+    cp $1/constant/multiRegionCouplingDict_steadyStateTH $1/constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
 
@@ -67,15 +88,15 @@ setTransient()
     runCloneCase $1 $2
 
     printf "Setting transient case\n"
-    
-    foamDictionary $1/system/controlDict -entry startFrom -set startTime
-    foamDictionary $1/system/controlDict -entry startTime -set $endTimeSS
+
+    # foamDictionary $1/system/controlDict -entry startFrom -set startTime
+    # foamDictionary $1/system/controlDict -entry startTime -set $endTimeSS
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeT
     foamDictionary $1/system/controlDict -entry writeControl -set timeStep
     foamDictionary $1/system/controlDict -entry writeInterval -set 50
-    foamDictionary $1/system/controlDict -entry solveFluidMechanics -set true
-    foamDictionary $1/system/controlDict -entry solveEnergy -set true
-    foamDictionary $1/system/controlDict -entry solveNeutronics -set true
+    # foamDictionary $1/system/controlDict -entry solveFluidMechanics -set true
+    # foamDictionary $1/system/controlDict -entry solveEnergy -set true
+    # foamDictionary $1/system/controlDict -entry solveNeutronics -set true
     foamDictionary $1/system/controlDict -entry maxCo -set 2.5;
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.h -set 0.95
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.hFinal -set 1.0
@@ -84,8 +105,13 @@ setTransient()
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.p_rgh -set 1.0
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.p_rghFinal -set 1.0
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 1;
-    foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
-    foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false    
+    # foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
+    # foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    foamDictionary $1/system/controlDict -entry regionSolvers.neutroRegion -remove
+    foamDictionary $1/system/controlDict -entry regionSolvers.fluidRegion -remove
+    foamDictionary $1/system/controlDict -entry regionSolvers.energyNeutroMechLoop -set multiPhysicsSolver
+    cp $1/constant/multiRegionCouplingDict_transient $1/constant/multiRegionCouplingDict
+    GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
 
@@ -94,15 +120,15 @@ do
     printf "Preparing to run case $caseName\n"
 
     case "$caseName" in
-    "steadyStateN")
-        setSteadyStateN $caseName rootCase
-        ;;
-    "steadyStateEN")
-        setSteadyStateEN $caseName steadyStateN
-        ;;
-    "transient")
-        setTransient $caseName steadyStateEN
-        ;;
+        "steadyStateN")
+            setSteadyStateN $caseName rootCase
+            ;;
+        "steadyStateEN")
+            setSteadyStateEN $caseName steadyStateN
+            ;;
+        "transient")
+            setTransient $caseName steadyStateEN
+            ;;
     esac
 
     # Start gnuplot if it exist
@@ -120,3 +146,5 @@ do
     pkill -x gnuplot &> /dev/null
 
 done
+
+#==============================================================================*

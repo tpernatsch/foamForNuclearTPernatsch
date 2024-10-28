@@ -1,14 +1,20 @@
-# 2D FFTF
+# Fast Flux Test Facility - LOFWOS 13 Test
 
 Author: Stefan Radman;
 Review and editing: Carlo Fiorina
 
-## Info
+## Introduction
 
 This is a model of the Fast Flux Test Facility, a former Sodium Fast
 Reactor at the Hanford Site, WA, US, operated in the 1980s. It was in a hybrid
 pool-loop configurations, where the the primary pumps and IHXs lie in a loop
 outside the vessel.
+
+
+<img src="images/FFTF_circuit.png" alt="FFTF_circuit" width="600"/>
+
+*Fig 1: Overview of the FFTF components and loops [1, 2].*
+
 
 This case represents the LOFWOS 13 Test performed at the FFTF in order to test
 the effectiveness of the Gas Expansion Module (GEM) safety features. In
@@ -23,6 +29,12 @@ radially, as were there was sodium, now there is argon gas, thus increasing
 radial leakage. Needless to say, the FFTF core itself was rather small, ~ 1 m
 in diameter, which explains the effectiveness of said feature.
 
+
+<img src="images/FFTF_GEM.png" alt="FFTF_GEM" width="600"/>
+
+*Fig 2: Overview of the operating principle of the GEMs [1, 2].*
+
+
 In essence, the LOFWOS 13 test was:
 
 - operate at steady state, at full flow and half the total power;
@@ -35,6 +47,12 @@ In essence, the LOFWOS 13 test was:
 The model is hybrid as the vessel consists of a 2-degree wedge while the loops
 consist of parallelepipeds. All the absolute volumes are scaled by a factor
 360/2 of the total FFTF primary volume.
+
+
+<img src="images/FFTF_mesh.png" alt="FFTF_Mesh" width="400"/>
+
+*Fig 2: Computational domain of the FFTF thermal–hydraulics. It consists of a 2-D hybrid wedge-parallelepiped model. Regions 1 through 20 represent the primary loop, while regions 21 through 25 represent the secondary loop. The primary and secondary loops are geometrically disconnected domains that are thermally coupled via the IHX. The primary side of the IHX consists of region 19 (red) while the secondary side consists region 24 (blue). Open system boundaries consist of the inlet (blue segment) and outlet (red segment) of the secondary loop. Coarse-mesh regions (cellZones) are reported in Table 1. [1].*
+
 
 From a calculation perspective, the steady state is run for 900 s of model time,
 followed by a transient case in which a pointKinetics model is used to model the
@@ -54,6 +72,37 @@ The transient starts at t = 910 s. For convenience, the transient simulation
 ends at 1200 s, as most of the dynamics is resolved at that point (even though
 a new steady state is not reached). Change the endTimeT variable in the `Allrun`
 script to run up to any point you desire.
+
+
+*Table 1: Porous regions (cellZones) of the thermal–hydraulics 2-D domain of the FFTF as represented in Fig. 3.*
+
+| No. | Name |
+|:----|:-----|
+|  1  | Lower fuel shield |
+|  2  | Inner fuel |
+|  3  | Upper fuel shield |
+|  4  | Lower CR shield |
+|  5  | Control rod (CR) |
+|  6  | Outer fuel |
+|  7  | GEM |
+|  8  | Lower Ref. shield |
+|  9  | Reflector |
+| 10  | Upper Ref. shield |
+| 11  | Radial shield |
+| 12  | Diagrid |
+| 13  | Bypass |
+| 14  | Lower plenum |
+| 15  | Upper plenum |
+| 16  | Primary hot leg |
+| 17  | Primary pump |
+| 18  | Primary junction |
+| 19  | IHX (primary side) |
+| 20  | Primary cold leg |
+| 21  | Secondary cold leg |
+| 22  | Secondary pump |
+| 23  | Secondary junction |
+| 24  | IHX (secondary side) |
+| 25  | Secondary hot leg |
 
 
 ## GeN-Foam features
@@ -98,14 +147,21 @@ porousInterfaceSharpness = 0.5 (see fvSolution)
 
 ## How to run
 
-To run everything, simply launch the `./Allrun` or `./Allrun_parallel` script.
-To plot results, use the plot script by passing the log name as an argument,
-i.e. either
+To run everything, simply launch:
 
 ```bash
-python3 plot.py steadyState/log
+./Allrun
 # or
-python3 plot.py transient/log
+./Allrun_parallel
+```
+
+To plot results, use the plot script by passing the log name as an argument,
+i.e. either:
+
+```bash
+python3 plot.py steadyState/log.GeN-Foam
+# or
+python3 plot.py transient/log.GeN-Foam
 ```
 
 
@@ -147,16 +203,28 @@ Further improvements to the model will be made.
 
 ## Results
 
-![](./images/FFTF_steadyState_T.png)
+<img src="images/FFTF_steadyState.png" alt="FFTF_steadyState" width="600"/>
 
-*Fig 1: Temperature field during a steady-state.*
+*Fig 4: Temperature field during a steady-state.*
 
 
-![](./images/FFTF_steadyState_oneGroupFlux.png)
+<img src="images/FFTF_steadyState_oneGroupFlux.png" alt="FFTF_steadyState_oneGroupFlux" width="600"/>
 
-*Fig 2: One group neutron flux in the core during a steady-state.*
+*Fig 5: One group neutron flux in the core during a steady-state.*
+
+
+<img src="images/FFTF_transient.png" alt="FFTF_transient" width="900"/>
+
+*Fig 6: Evolution of temperature, power, mass flow rate and reactivity during the LOFWOS 13 Test.*
+
+
+<img src="images/FFTF_transient.gif" alt="FFTF_transient" width="900"/>
+
+*Fig 7: Evolution of temperature field during the LOFWOS 13 Test.*
 
 
 ## References
 
 [1] Stefan Radman, Carlo Fiorina, Ping Song, Andreas Pautz,"Development of a point-kinetics model in OpenFOAM, integration in GeN-Foam, and validation against FFTF experimental data", In: Annals of Nuclear Energy, Volume 168, 2022, 108891, ISSN 0306-4549, https://doi.org/10.1016/j.anucene.2021.108891.
+
+[2] C. Cabell, 1980. Summary description of the Fast Flux Test Facility. Technical Repor. Hanford Engineering Development Lab., Richland, WA (USA) doi:10.2172/6032523. URL: http://www.osti.gov/servlets/purl/6032523/.

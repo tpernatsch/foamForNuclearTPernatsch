@@ -387,10 +387,17 @@ structureProperties
 
     heatExchangers
     {
-        "IHX"
+        "pIHX"
         {
             primary             "IHXPrimary";
             secondary           "IHXSecondary";
+            volumetricArea      106.6673;
+            wallConductance     16736.4017;
+        }
+        "sIHX"
+        {
+            primary             "IHXSecondary";
+            secondary           "IHXPrimary";
             volumetricArea      106.6673;
             wallConductance     16736.4017;
         }

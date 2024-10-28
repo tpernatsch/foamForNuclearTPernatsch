@@ -90,10 +90,17 @@ structureProperties
     //  direction in 3-D space.
     heatExchangers
     {
-        "IHX1"
+        "pIHX1"
         {
             primary             "pHX";
             secondary           "sHX";
+            volumetricArea      250;
+            wallConductance     2.5e4;
+        }
+        "sIHX1"
+        {
+            primary             "sHX";
+            secondary           "pHX";
             volumetricArea      250;
             wallConductance     2.5e4;
         }

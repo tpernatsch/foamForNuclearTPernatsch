@@ -92,9 +92,9 @@ axF.set_ylabel(r'$\dot{m}\;(kg/s)$')
 axT.set_ylabel(r'$T\;(K)$')
 axR.set_ylabel(r'$\rho\;(\$)$')
 axP.set_yscale('log')
-axR.set_xlim(900, 1200)
+# axR.set_xlim(900, 1200)
 
-for logname in sys.argv[1:]:
+for logname, ls in zip(sys.argv[1:], ['-', '-.', ':']):
     print(f"Processing {logname}")
 
     with open(logname, "r") as log:
@@ -112,10 +112,10 @@ for logname in sys.argv[1:]:
         flowColdLegSecondaryInlet = readValues(times, loglines, "patch coldLegSecondaryInlet massFlow", 4)
 
 
-        axF.plot(times, flowPrimary, label="primary")
-        axF.plot(times, flowCore, label="core")
-        axF.plot(times, flowInnerCore, label="innerCore")
-        axF.plot(times, flowOuterCore, label="outerCore")
+        axF.plot(times, flowPrimary, label="primary", ls=ls)
+        axF.plot(times, flowCore, label="core", ls=ls)
+        axF.plot(times, flowInnerCore, label="innerCore", ls=ls)
+        axF.plot(times, flowOuterCore, label="outerCore", ls=ls)
 
         TCoreIn = readValues(times, loglines, "faceZone coreInlet TBulk", 4)
         TCoreOut = readValues(times, loglines, "faceZone coreOutlet TBulk", 4)
@@ -129,24 +129,24 @@ for logname in sys.argv[1:]:
         TColdLegPrimary = readValues(times, loglines, "faceZone coldLegMiddleCut TBulk", 4)
 
 
-        axT.plot(times, TCoreIn, label="coreInlet")
-        axT.plot(times, TCoreOut, label="coreOutlet")
-        axT.plot(times, TInnerCoreOut, label="innerCoreOutlet")
-        axT.plot(times, TOuterCoreOut, label="outerCoreOutlet")
-        axT.plot(times, THotLegPrimary, label="THotLegPrimary")
-        axT.plot(times, TColdLegPrimary, label="TColdLegPrimary")
-        #axT.plot(times, TIHXInPrimary, label="IHXPrimaryInlet")
-        #axT.plot(times, TIHXOutPrimary, label="IHXPrimaryOutlet")
-        #axT.plot(times, TIHXInSecondary, label="IHXSecondaryInlet")
-        #axT.plot(times, TIHXOutSecondary, label="IHXSecondaryOutlet")
+        axT.plot(times, TCoreIn, label="coreInlet", ls=ls)
+        axT.plot(times, TCoreOut, label="coreOutlet", ls=ls)
+        axT.plot(times, TInnerCoreOut, label="innerCoreOutlet", ls=ls)
+        axT.plot(times, TOuterCoreOut, label="outerCoreOutlet", ls=ls)
+        axT.plot(times, THotLegPrimary, label="THotLegPrimary", ls=ls)
+        axT.plot(times, TColdLegPrimary, label="TColdLegPrimary", ls=ls)
+        #axT.plot(times, TIHXInPrimary, label="IHXPrimaryInlet", ls=ls)
+        #axT.plot(times, TIHXOutPrimary, label="IHXPrimaryOutlet", ls=ls)
+        #axT.plot(times, TIHXInSecondary, label="IHXSecondaryInlet", ls=ls)
+        #axT.plot(times, TIHXOutSecondary, label="IHXSecondaryOutlet", ls=ls)
 
         try:
             totalPower = readValues(times, loglines, "totalPower =", 2, 180)
             fissionPower = readValues(times, loglines, "-> fission", 3, 180)
             decayPower = readValues(times, loglines, "-> decay", 3, 180)
-            axP.plot(times, totalPower, label="Total Power")
-            axP.plot(times, fissionPower, label="Fission Power")
-            axP.plot(times, decayPower, label="Decay Power")
+            axP.plot(times, totalPower, label="Total Power", ls=ls)
+            axP.plot(times, fissionPower, label="Fission Power", ls=ls)
+            axP.plot(times, decayPower, label="Decay Power", ls=ls)
         except:
             pass
 
@@ -156,18 +156,18 @@ for logname in sys.argv[1:]:
             RTFuel = readValues(times, loglines, "-> TFuel", 3, 1.0/beta)
             RTClad = readValues(times, loglines, "-> TClad", 3, 1.0/beta)
             RRhoCool = readValues(times, loglines, "-> rhoCool", 3, 1.0/beta)
-            RTStruct = readValues(times, loglines, "-> TStruct", 3, 1.0/beta)
+            RTStruct = readValues(times, loglines, "-> TStruct ", 3, 1.0/beta)
             RDriveline = readValues(times, loglines, "-> driveline", 3, 1.0/beta)
             RGEM = readValues(times, loglines, "-> GEM", 3, 1.0/beta)
 
-            axR.plot(times, RTot, label="Total")
-            axR.plot(times, RDoppler, label="Doppler")
-            axR.plot(times, RTFuel, label="Fuel axial expansion")
-            axR.plot(times, RTClad, label="Cladding temperature")
-            axR.plot(times, RRhoCool, label="Coolant density")
-            axR.plot(times, RTStruct, label="Core radial expansion")
-            axR.plot(times, RDriveline, label="Driveline")
-            axR.plot(times, RGEM, label="GEM")
+            axR.plot(times, RTot, label="Total", ls=ls)
+            axR.plot(times, RDoppler, label="Doppler", ls=ls)
+            axR.plot(times, RTFuel, label="Fuel axial expansion", ls=ls)
+            axR.plot(times, RTClad, label="Cladding temperature", ls=ls)
+            axR.plot(times, RRhoCool, label="Coolant density", ls=ls)
+            axR.plot(times, RTStruct, label="Core radial expansion", ls=ls)
+            axR.plot(times, RDriveline, label="Driveline", ls=ls)
+            axR.plot(times, RGEM, label="GEM", ls=ls)
         except:
             pass
 
@@ -210,6 +210,7 @@ for ax in axes.flatten():
     ax.legend(loc='upper right')
 
 fig.tight_layout()
+fig.savefig("FFTF_transient.png")
 plt.show()
 
 
