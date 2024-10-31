@@ -476,7 +476,7 @@ public:
             const volScalarField& Tfuel,
             const volScalarField& Tclad,
             const volScalarField& rhoCool,
-            const volScalarField& TCool,
+            const volScalarField& Tcool,
             const volVectorField& Disp,
             const volScalarField& TStructMech
         );
@@ -551,7 +551,7 @@ public:
             const volScalarField& Tfuel,
             const volScalarField& Tclad,
             const volScalarField& rhoCool,
-            const volScalarField& TCool,
+            const volScalarField& Tcool,
             const volVectorField& Disp,
             const volScalarField& TStructMech
         );

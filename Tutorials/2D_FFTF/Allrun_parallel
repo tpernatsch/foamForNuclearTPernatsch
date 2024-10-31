@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #----------------------------------------------------------------------------#
 #       ______          _   __           ______                              #
 #      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
@@ -42,12 +42,9 @@ setSteadyState()
     foamDictionary $1/system/controlDict -entry writeInterval -set $endTimeSS
     foamDictionary $1/system/controlDict -entry maxCo -set 50.0
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 2.0
-    # foamDictionary $1/system/controlDict -entry regionSolvers.neutroRegion -remove
     foamDictionary $1/system/controlDict -entry regionSolvers.fluidRegion -set onePhase
     foamDictionary $1/system/controlDict -entry removeBaffles.fluidRegion -set true
-    # foamDictionary $1/system/controlDict -entry regionSolvers.energyNeutroMechLoop -set multiPhysicsSolver
     cp $1/constant/multiRegionCouplingDict_steadyState $1/constant/multiRegionCouplingDict
-    # cp $1/constant/multiRegionCouplingDict_steadyStateTH $1/constant/multiRegionCouplingDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
@@ -60,26 +57,25 @@ setTransient()
 
     for i in {0..4}
     do
-        cp -r $1/processor$i/$endTimeN/neutroRegion $1/processor$i/$endTimeSS/
-        cp -r $1/processor$i/$endTimeN/uniform/reactorState $1/processor$i/$endTimeSS/uniform
+        cp -r $1/processor$i/0/neutroRegion $1/processor$i/$endTimeSS/
+        cp -r $1/processor$i/0/uniform/reactorState $1/processor$i/$endTimeSS/uniform
     done
 
-    # Temporarly fix to set the power density field for PK solver, to be fixed
-    reconstructPar -allRegions -latestTime
-    foamListTimes -rm -processor
+    # Set the power density field for PK solver
+    foamDictionary $1/system/controlDict -entry regionSolvers.neutroRegion -set pointKinetics
+    foamDictionary $1/system/controlDict -entry removeBaffles.neutroRegion -set false
+    reconstructPar -allRegions -latestTime -case $1
+    foamListTimes -rm -processor -case $1
     cp $1/constant/multiRegionCouplingDict_initPK $1/constant/multiRegionCouplingDict
     GeN-Foam -initializeMappedFields -case $1
-    decomposePar -allRegions -latestTime
+    decomposePar -allRegions -latestTime -case $1
 
-
+    # Set transient case
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeT
     foamDictionary $1/system/controlDict -entry writeControl -set timeStep
     foamDictionary $1/system/controlDict -entry writeInterval -set 50
     foamDictionary $1/system/controlDict -entry maxCo -set 1.0;
-    # foamDictionary $1/system/controlDict -entry regionSolvers.neutroRegion -set pointKinetics
-    foamDictionary $1/system/controlDict -entry removeBaffles.neutroRegion -set false
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
-    # foamDictionary $1/system/fvSolution -entry tightlyCoupled -set true;
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.h -set 0.8
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.hFinal -set 1.0
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.U -set 0.8

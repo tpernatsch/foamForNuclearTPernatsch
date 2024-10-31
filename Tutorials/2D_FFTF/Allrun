@@ -42,12 +42,9 @@ setSteadyState()
     foamDictionary $1/system/controlDict -entry writeInterval -set $endTimeSS
     foamDictionary $1/system/controlDict -entry maxCo -set 50.0
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 2.0
-    # foamDictionary $1/system/controlDict -entry regionSolvers.neutroRegion -remove
     foamDictionary $1/system/controlDict -entry regionSolvers.fluidRegion -set onePhase
     foamDictionary $1/system/controlDict -entry removeBaffles.fluidRegion -set true
-    # foamDictionary $1/system/controlDict -entry regionSolvers.energyNeutroMechLoop -set multiPhysicsSolver
     cp $1/constant/multiRegionCouplingDict_steadyState $1/constant/multiRegionCouplingDict
-    # cp $1/constant/multiRegionCouplingDict_steadyStateTH $1/constant/multiRegionCouplingDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
@@ -58,7 +55,7 @@ setTransient()
 
     printf "Setting transient case\n"
 
-    # Temporarly fix to set the power density field for PK solver, to be fixed
+    # Set the power density field for PK solver
     cp $1/constant/multiRegionCouplingDict_initPK $1/constant/multiRegionCouplingDict
     GeN-Foam -initializeMappedFields -case $1
 
@@ -67,10 +64,8 @@ setTransient()
     foamDictionary $1/system/controlDict -entry writeControl -set timeStep
     foamDictionary $1/system/controlDict -entry writeInterval -set 50
     foamDictionary $1/system/controlDict -entry maxCo -set 1.0;
-    # foamDictionary $1/system/controlDict -entry regionSolvers.neutroRegion -set pointKinetics
     foamDictionary $1/system/controlDict -entry removeBaffles.neutroRegion -set false
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
-    # foamDictionary $1/system/fvSolution -entry tightlyCoupled -set true;
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.h -set 0.8
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.hFinal -set 1.0
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.U -set 0.8

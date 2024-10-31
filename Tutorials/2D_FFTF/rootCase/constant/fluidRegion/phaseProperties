@@ -387,6 +387,9 @@ structureProperties
 
     heatExchangers
     {
+        // Declare twice the Heat Exchanger, one per cellZone. This allows to
+        // link 2 heat exchanegr side from 2 different mesh (e.g. 1 with sodium
+        // fluid and 1 with water fluid)
         "pIHX"
         {
             primary             "IHXPrimary";

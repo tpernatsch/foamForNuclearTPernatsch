@@ -263,7 +263,7 @@ void Foam::XS::correct
     const volScalarField& Tfuel,
     const volScalarField& Tclad,
     const volScalarField& rhoCool,
-    const volScalarField& TCool,
+    const volScalarField& Tcool,
     const volVectorField& Disp,
     const volScalarField& TStructMech
 )
@@ -318,7 +318,7 @@ Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
     const volScalarField& Tfuel,
     const volScalarField& Tclad,
     const volScalarField& rhoCool,
-    const volScalarField& TCool,
+    const volScalarField& Tcool,
     const volVectorField& Disp,
     const volScalarField& TStructMech
 )
@@ -375,7 +375,7 @@ Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
             sigmaFromTo[cellIglobal] = sigmaFromToList_[zone][momentI][energyJ][energyI].get(
                 fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
                 Tclad[cellIglobal],
-                TCool[cellIglobal],
+                Tcool[cellIglobal],
                 TStructMech[cellIglobal],
                 rhoCool[cellIglobal],
                 axExp_[cellIglobal],
