@@ -43,7 +43,7 @@ lambda
     9.51817
 );
 
-feedbackCoeffFastDoppler    0;
+feedbackCoeffDoppler        0;
 
 feedbackCoeffTFuel          -3e-06;
 
@@ -175,7 +175,7 @@ states
 
     //- Doppler coefficient for the logarithmic fuel temperature feedback.
     //  Used only if fastNeutrons is true. ONLY REQUIRED if fastNeutrons is true
-    feedbackCoeffFastDoppler 0;
+    feedbackCoeffDoppler 0;
 
     //- Reactivity contribution in the form
     //  feedbackCoeffTFuel*(TFuel-TFuelRef)). REQUIRED

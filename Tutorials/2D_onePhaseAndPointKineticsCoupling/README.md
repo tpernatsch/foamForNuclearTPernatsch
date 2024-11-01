@@ -114,7 +114,7 @@ reactivity approaches 0 as the fuel slowly heats up.
 
     //- Doppler coefficient for the logarithmic fuel temperature feedback.
     //  Used only if fastNeutrons is true. ONLY REQUIRED if fastNeutrons is true
-    feedbackCoeffFastDoppler 0;
+    feedbackCoeffDoppler 0;
 
     //- Reactivity contribution in the form
     //  feedbackCoeffTFuel*(TFuel-TFuelRef)). REQUIRED
@@ -277,5 +277,3 @@ reactivity approaches 0 as the fuel slowly heats up.
     {
         "core"      1.0;
     }
-
-

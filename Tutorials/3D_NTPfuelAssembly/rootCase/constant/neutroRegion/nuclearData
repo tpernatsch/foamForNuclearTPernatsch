@@ -46,7 +46,7 @@ lambda
     2.853453e+00  // (2.708403e-03)
 );
 
-feedbackCoeffFastDoppler    0;
+feedbackCoeffDoppler    0;
 
 //- Representative of fuel axial expansion
 feedbackCoeffTFuel          0; // [1/K]

@@ -155,7 +155,7 @@ class MultiGroupXSManager(object):
             file.write(");\n\n")
 
             # Feedback coefficients
-            file.write("feedbackCoeffFastDoppler    0;\n\n")
+            file.write("feedbackCoeffDoppler        0;\n\n")
             file.write("//- Representative of fuel axial expansion\n")
             file.write("feedbackCoeffTFuel          0; // [1/K]\n\n")
             file.write("//- Representative of in-assembly structure density change\n")

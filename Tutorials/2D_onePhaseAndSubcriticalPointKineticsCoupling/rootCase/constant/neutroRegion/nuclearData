@@ -57,7 +57,7 @@ lambda ( // from FWD_ANA_LAMBDA
     1e-5
 );
 
-feedbackCoeffFastDoppler  0; // [1/K]
+feedbackCoeffDoppler      0;
 
 feedbackCoeffTFuel        0; // [1/K], -3e-06
 
@@ -69,7 +69,7 @@ feedbackCoeffRhoCool      0; // [1/K]
 
 feedbackCoeffTStruct      0; // [1/K]
 
-feedbackCoeffTStructMech 0;
+feedbackCoeffTStructMech  0;
 
 absoluteDrivelineExpansionCoeff 0;
 

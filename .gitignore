@@ -35,6 +35,9 @@ GeN-Foam/*.sublime*
 *.o
 *.dep
 **/__pycache__
+*.egg
+Tools/openmcToFoam/**/*.txt
+Tools/openmcToFoam/**/PKG-INFO
 
 # Doxygen files
 Documentation/doxygen/Doxygen/html/**

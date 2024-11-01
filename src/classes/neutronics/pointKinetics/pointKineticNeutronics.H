@@ -430,13 +430,13 @@ protected:
     PtrList<volScalarField> precPKStar_;//solved for
 
     //- If true, fuel temperature feedback (Doppler) computed as
-    //  deltaReactivity = -coeffFastDoppler*ln(TFuel/TFuelRef) with
-    //  coeffFastDoppler being the Doppler constant. If false, Doppler feedback
-    //  computed as deltaReactivity = coeffTFuel*(TFuel-TFuelRef)
+    //  deltaReactivity = -coeffDoppler*ln(TFuel/TFuelRef) with
+    //  coeffDoppler being the Doppler constant. If false, Doppler feedback
+    //  computed as deltaReactivity = coeffDoppler*(sqrt(TFuel) - sqrt(TFuelRef))
     bool fastNeutrons_;
 
     //- Doppler constant if doing fastNeutrons
-    scalar coeffFastDoppler_;
+    scalar coeffDoppler_;
 
     //- Fields to mark which cells are part of X and which aren't, used for
     //  computing the 0-D feedback values (TFuel, TStructures, etc...).

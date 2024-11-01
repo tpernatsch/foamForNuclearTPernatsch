@@ -400,13 +400,11 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     precPKStar_(delayedGroups_),
     fastNeutrons_
     (
-        nuclearData_.lookupOrDefault<bool>("fastNeutrons", false)
+        nuclearData_.get<bool>("fastNeutrons")
     ),
-    coeffFastDoppler_
+    coeffDoppler_
     (
-        //(fastNeutrons_) ?
-        nuclearData_.get<scalar>("feedbackCoeffFastDoppler") //:
-        //0.0
+        nuclearData_.get<scalar>("feedbackCoeffDoppler")
     ),
     fuelFeedbackCellField_
     (

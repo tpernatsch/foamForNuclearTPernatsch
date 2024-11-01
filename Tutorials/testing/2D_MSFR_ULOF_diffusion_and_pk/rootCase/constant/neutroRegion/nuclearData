@@ -51,7 +51,7 @@ lambda
     3.099610e+00
 );
 
-feedbackCoeffFastDoppler    0.037772632;
+feedbackCoeffDoppler    0.037772632;
 
 feedbackCoeffTFuel          0;
 

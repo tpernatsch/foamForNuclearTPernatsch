@@ -59,7 +59,7 @@ lambda ( // from FWD_ANA_LAMBDA
 
 
 // Doppler constant -> affect the slope of max fuel temp ULOF
-feedbackCoeffFastDoppler    566e-5;
+feedbackCoeffDoppler        566e-5;
 
 // Axial expansion
 // feedbackCoeffTFuel          -0.242e-5; // Linked

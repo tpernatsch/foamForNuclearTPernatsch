@@ -41,7 +41,7 @@ python3 SerpentToFoamXS.py path/to/userInputFile
 (`serpentFile_res.m`) must be given using an absolute path only in the
 `userInputFile`.
 
-The user can generate a default `userInputFile.in` by direclty clicking on 
+The user can generate a default `userInputFile.in` by directly clicking on
 "Save".
 The user can edit the `userInputFile` using the GUI view and then click `Save`
 to keep a copy of the input. A copy is always made when the user press
@@ -83,7 +83,7 @@ This parameter only works in bash mode.
 See in `nuclearData` from `2D_onePhaseAndPointKineticsCoupling`
 - Add the other parameters for **point-kinetics** which are not in the Octave file
     - [x] promptGenerationTime              float; (user or extracted ?) (use ADJ_PERT_GEN_TIME ?)
-    - [x] feedbackCoeffFastDoppler          float; (user)
+    - [x] feedbackCoeffDoppler              float; (user)
     - [x] feedbackCoeffTFuel                float; (user)
     - [x] feedbackCoeffTClad                float; (user)
     - [x] feedbackCoeffTCool                float; (user)

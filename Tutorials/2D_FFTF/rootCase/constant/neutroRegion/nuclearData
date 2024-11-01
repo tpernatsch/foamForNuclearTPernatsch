@@ -62,7 +62,7 @@ feedbackCoeffTCool          0;
 feedbackCoeffRhoCool        1.5E-05;
 
 //-
-feedbackCoeffFastDoppler    5.0E-03;
+feedbackCoeffDoppler    5.0E-03;
 
 //- Representative of structure radial expansion
 feedbackCoeffTStruct        -1.0E-05;
