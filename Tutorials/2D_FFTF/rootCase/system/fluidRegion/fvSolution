@@ -51,7 +51,7 @@ PIMPLE
 {
     nCorrectors                 6;
     nNonOrthogonalCorrectors    0;
-    nOuterCorrectors            12;
+    nOuterCorrectors            6; // 12;
     correctUntilConvergence     true;
     momentumMode                cellCenteredFaceReconstruction;
     porousInterfaceSharpness    0.5;

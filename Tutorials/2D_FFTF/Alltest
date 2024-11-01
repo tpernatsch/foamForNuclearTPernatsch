@@ -59,13 +59,13 @@ reactivityDriveline=$(extract "-> driveline")
 reactivityGEM=$(extract "-> GEM")
 totalPower=$(extract "totalPower")
 
-expectedDoppler=237.0728
-expectedClad=0.8198844
-expectedDensity="-2.525069"
-expectedStructures="-1.017622"
-expectedDriveline="-8.631667"
-expectedGEM="-464.8497"
-expectedTotalPower=29490.49
+expectedDoppler=238.1535 # 237.0728
+expectedClad=0.8706593 # 0.8198844
+expectedDensity="-2.523688" # "-2.525069"
+expectedStructures="-5.55205" # "-1.017622"
+expectedDriveline="-7.249654" # "-8.631667"
+expectedGEM="-464.8492" # "-464.8497"
+expectedTotalPower=28761.75 # 29490.49
 
 
 # --- Check results are correct

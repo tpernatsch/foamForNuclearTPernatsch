@@ -17,6 +17,10 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 #==============================================================================*
 
+endTimeTH=15
+endTimeEN=165
+endTimeTransient=175
+
 cases="steadyStateTH steadyStateEN transient"
 
 runCloneCase()
@@ -31,13 +35,10 @@ setSteadyStateTH()
     runCloneCase $1 $2
     printf "Setting steady state case...\n"
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
-    foamDictionary $1/system/fvSolution -entry tightlyCoupled -set false
-    foamDictionary $1/system/controlDict -entry startFrom -set startTime
-    foamDictionary $1/system/controlDict -entry startTime -set 0
-    foamDictionary $1/system/controlDict -entry endTime -set 15
+    # foamDictionary $1/system/fvSolution -entry tightlyCoupled -set false
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeTH
     foamDictionary $1/system/controlDict -entry deltaT -set 1e-03
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
-    foamDictionary $1/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $1/system/controlDict -entry writeInterval -set 1
     foamDictionary $1/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
     foamDictionary $1/system/controlDict -entry removeBaffles/fluidRegion -set false
@@ -50,16 +51,14 @@ setSteadyStateEN()
 {
     runCloneCase $1 $2
     printf "Setting steady state  case...\n"
-    cp -r $1/0/neutroRegion $1/15/
-    cp -r $1/0/uniform $1/15/
+    cp -r $1/0/neutroRegion $1/$endTimeTH/
+    cp -r $1/0/uniform $1/$endTimeTH/
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
-    foamDictionary $1/system/fvSolution -entry tightlyCoupled -set false
-    foamDictionary $1/system/controlDict -entry startFrom -set startTime
-    foamDictionary $1/system/controlDict -entry startTime -set 15
-    foamDictionary $1/system/controlDict -entry endTime -set 165
+    # foamDictionary $1/system/fvSolution -entry tightlyCoupled -set false
+    foamDictionary $1/system/controlDict -entry startTime -set $endTimeTH
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeEN
     foamDictionary $1/system/controlDict -entry deltaT -set 0.25
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set false
-    foamDictionary $1/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $1/system/controlDict -entry writeInterval -set 50
     foamDictionary $1/system/controlDict -entry regionSolvers/neutroRegion -set diffusionNeutronics;
     foamDictionary $1/system/controlDict -entry removeBaffles/neutroRegion -set false
@@ -75,13 +74,11 @@ setTransient()
     runCloneCase $1 $2
     printf "Setting $1 case...\n"
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
-    foamDictionary $1/system/fvSolution -entry tightlyCoupled -set true
-    foamDictionary $1/system/controlDict -entry startFrom -set startTime
-    foamDictionary $1/system/controlDict -entry startTime -set 165
-    foamDictionary $1/system/controlDict -entry endTime -set 175
+    # foamDictionary $1/system/fvSolution -entry tightlyCoupled -set true
+    foamDictionary $1/system/controlDict -entry startTime -set $endTimeEN
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeTransient
     foamDictionary $1/system/controlDict -entry deltaT -set 1e-03
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
-    foamDictionary $1/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $1/system/controlDict -entry writeInterval -set 10
     foamDictionary $1/system/controlDict -entry regionSolvers/fluidRegion -remove
     foamDictionary $1/system/controlDict -entry regionSolvers/neutroRegion -remove
