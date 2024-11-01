@@ -164,7 +164,7 @@ class MultiGroupXS(object):
         # Scattering Matrix P0 to P5
         self.scatterMatrixXS = openmc.mgxs.ScatterMatrixXS(
             domain=self.domain, energy_groups=self.energyGroups,
-            name='scatteringMatrixP'
+            name='scatteringMatrixP', nu=True
         )
         self.scatterMatrixXS.legendre_order = self.scatteringMatrixNumber-1
         self.scatterMatrixXS.correction = None
