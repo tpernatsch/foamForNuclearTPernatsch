@@ -17,6 +17,7 @@ if (liquidFuel_)
             zeroGradientFvPatchVectorField::typeName
         )
     );
+
     alphaPtr_.reset
     (
         new volScalarField
@@ -34,6 +35,7 @@ if (liquidFuel_)
             zeroGradientFvPatchScalarField::typeName
         )
     );
+
     alphatPtr_.reset
     (
         new volScalarField
@@ -51,6 +53,7 @@ if (liquidFuel_)
             zeroGradientFvPatchScalarField::typeName
         )
     );
+
     muPtr_.reset
     (
         new volScalarField
@@ -68,6 +71,7 @@ if (liquidFuel_)
             zeroGradientFvPatchScalarField::typeName
         )
     );
+
     phiPtr_.reset
     (
         new surfaceScalarField
@@ -83,6 +87,7 @@ if (liquidFuel_)
             fvc::flux(UPtr_())
         )
     );
+
     diffCoeffPrecPtr_.reset
     (
         new volScalarField
@@ -102,7 +107,7 @@ if (liquidFuel_)
     );
 }
 
-forAll(flux_,fluxI)
+forAll(flux_, fluxI)
 {
     flux_.set
     (
@@ -122,7 +127,7 @@ forAll(flux_,fluxI)
     );
 }
 
-forAll(fluxStar_,fluxI)
+forAll(fluxStar_, fluxI)
 {
     fluxStar_.set
     (
@@ -142,7 +147,7 @@ forAll(fluxStar_,fluxI)
     );
 }
 
-forAll(externalSourceFlux_,externalSourceFluxI)
+forAll(externalSourceFlux_, externalSourceFluxI)
 {
     externalSourceFlux_.set
     (
@@ -163,13 +168,13 @@ forAll(externalSourceFlux_,externalSourceFluxI)
 }
 
 oneGroupFlux_ *= 0.0;
-forAll(flux_,energyI)
+forAll(flux_, energyI)
 {
-    oneGroupFlux_+=flux_[energyI];
+    oneGroupFlux_ += flux_[energyI];
 }
 
 
-forAll(precStar_,precI)
+forAll(precStar_, precI)
 {
     precStar_.set
     (

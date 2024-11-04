@@ -1,12 +1,11 @@
 
 {
-
-    Info << "Accelerating neutronic solution: integral predictor" << endl ;
+    Info<< "Accelerating neutronic solution: integral predictor" << endl;
 
     oneGroupFlux_ *= 0.0;
     forAll(fluxStar_, energyI)
     {
-           oneGroupFlux_ +=fluxStar_[energyI];
+        oneGroupFlux_ += fluxStar_[energyI];
     }
     dimensionedScalar integralFlux = fvc::domainIntegrate(oneGroupFlux_);
 
@@ -14,42 +13,41 @@
     oneGroupFluxOld *= 0.0;
     forAll(fluxStar_, energyI)
     {
-           oneGroupFluxOld +=fluxStar_[energyI].oldTime();
+        oneGroupFluxOld += fluxStar_[energyI].oldTime();
     }
 
     dimensionedScalar integralFluxOld = fvc::domainIntegrate(oneGroupFluxOld);
 
-    dimensionedScalar temporalTermInt("",(dimless/dimTime),scalar(0.0));
-    dimensionedScalar temporalTerm("",(dimless/dimLength),scalar(0.0));
+    dimensionedScalar temporalTermInt("", (dimless/dimTime), scalar(0.0));
+    dimensionedScalar temporalTerm("", (dimless/dimLength), scalar(0.0));
 
-    dimensionedScalar leakageTermInt("",(dimless/dimTime),scalar(0.0));
-    dimensionedScalar leakageTerm("",(dimless/dimLength),scalar(0.0));
+    dimensionedScalar leakageTermInt("", (dimless/dimTime), scalar(0.0));
+    dimensionedScalar leakageTerm("", (dimless/dimLength), scalar(0.0));
 
-    dimensionedScalar removalTermInt("",(dimless/dimTime),scalar(0.0));
-    dimensionedScalar removalTerm("",(dimless/dimLength),scalar(0.0));
+    dimensionedScalar removalTermInt("", (dimless/dimTime), scalar(0.0));
+    dimensionedScalar removalTerm("", (dimless/dimLength), scalar(0.0));
 
-    dimensionedScalar sourceTermInt("",(dimless/dimTime),scalar(0.0));
-    dimensionedScalar sourceTerm("",(dimless/dimLength),scalar(0.0));
+    dimensionedScalar sourceTermInt("", (dimless/dimTime), scalar(0.0));
+    dimensionedScalar sourceTerm("", (dimless/dimLength), scalar(0.0));
 
-    dimensionedScalar scatteringSourceTermInt("",(dimless/dimTime),scalar(0.0));
-    dimensionedScalar scatteringSourceTerm("",(dimless/dimLength),scalar(0.0));
+    dimensionedScalar scatteringSourceTermInt("", (dimless/dimTime), scalar(0.0));
+    dimensionedScalar scatteringSourceTerm("", (dimless/dimLength), scalar(0.0));
 
-    for(label energyI=0; energyI<xs_.energyGroups() ; energyI++)
+    for (label energyI = 0; energyI < xs_.energyGroups(); energyI++)
     {
-
         Dalbedo_ = D[energyI];
 
-        temporalTermInt += fvc::domainIntegrate(IV[energyI]*fluxStar_[energyI]/discFactor[energyI]/mesh_.time().deltaT());
+        temporalTermInt += fvc::domainIntegrate(IV[energyI] * fluxStar_[energyI]/discFactor[energyI]/mesh_.time().deltaT());
 
         leakageTermInt += fvc::domainIntegrate(fvc::laplacian(D[energyI]/discFactor[energyI], fluxStar_[energyI]));
 
-        removalTermInt += fvc::domainIntegrate(sigmaRemoval[energyI]*fluxStar_[energyI]/discFactor[energyI]);
+        removalTermInt += fvc::domainIntegrate(sigmaRemoval[energyI] * fluxStar_[energyI]/discFactor[energyI]);
 
         #include "calcScatteringSource.H"
         scatteringSourceTermInt += fvc::domainIntegrate(scatteringSourceExtra_);
     }
 
-    sourceTermInt = fvc::domainIntegrate(neutroSource_/keff_*(1.0-BetaTot));
+    sourceTermInt = fvc::domainIntegrate(neutroSource_/keff_ * (1.0-BetaTot));
 
     dimensionedScalar precursorTermInt = fvc::domainIntegrate(delayedNeutroSource_);
 
@@ -68,17 +66,21 @@
     Info<< "Predict new integral flux " << endl;
     dimensionedScalar newIntegralFlux = (precursorTerm + integralFluxOld*temporalTerm)/(temporalTerm-leakageTerm+removalTerm-sourceTerm-scatteringSourceTerm);
 
-    Info<< "Old integral flux: " << integralFlux.value() << endl;
-    Info<< "New predicted integral flux: " << newIntegralFlux.value() << endl;
+    Info<< "Old integral flux: " << integralFlux.value() << nl
+        << "New predicted integral flux: " << newIntegralFlux.value()
+        << endl;
 
     Info<< "Reconstruct fluxes " << endl;
     forAll(fluxStar_, energyI)
     {
         Dalbedo_ = D[energyI];
+
         fluxStarAlbedo_ *= 0.0;
+
         fluxStar_[energyI] *= newIntegralFlux/integralFluxOld;
         fluxStar_[energyI].correctBoundaryConditions();
-        flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
+
+        flux_[energyI] = fluxStar_[energyI]/discFactor[energyI];
         flux_[energyI].correctBoundaryConditions();
     }
 
