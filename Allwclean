@@ -6,8 +6,8 @@ wclean libso ./src/classes/thermalHydraulics/src
 wclean libso ./src/classes/thermalHydraulics/solvers
 wclean libso ./src/classes/neutronics
 wclean libso ./src/classes/thermoMechanics
-wclean libso ./src/classes/offbeat/offbeat
-wclean libso ./src/classes/offbeat/offbeatLib
+wclean libso ./src/classes/offbeat/solvers
+wclean libso ./src/classes/offbeat/src/offbeatLib
 wclean libso ./src/classes/offbeat/SCIANTIX
 wclean ./GeN-Foam
 
