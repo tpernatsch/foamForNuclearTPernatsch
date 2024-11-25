@@ -553,7 +553,10 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
         scalar q = structure_.powerDensityNeutronics()[celli];
         const scalar& dV(V[celli]);
         scalar Q_cell = q*dV;
-        scalar Q_pebble_tot = Q_cell*((4.0/3.0 * pi_ * pow(rshell, 3))/dV)*(1.0/alpha_[celli]);
+        scalar Q_pebble_tot = 
+            alpha_[celli]== 0 ?
+            0
+            :Q_cell*((4.0/3.0 * pi_ * pow(rshell, 3))/dV)*(1.0/alpha_[celli]);
         //scalar q_pebble = Q_pebble_tot / (4.0/3.0 * pi_ * pow(rshell, 3));
         scalar q_matrix = Q_pebble_tot / (4.0/3.0 * pi_ * (pow(rmatrix, 3) - pow(rcore, 3)));
         scalar Q_triso = Q_pebble_tot / Ntriso;
