@@ -1,0 +1,5 @@
+#!/bin/sh
+
+rm -fr steady*
+rm log.simulation
+rm test.out

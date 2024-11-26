@@ -1,0 +1,98 @@
+#!/bin/bash
+
+#!/bin/bash
+#SBATCH --job-name=zoner
+#SBATCH --output=zone.o
+#SBATCH --error=zone.error
+
+#SBATCH --partition=savio2
+#SBATCH --time=05:00:00
+#SBATCH --nodes=6
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=28
+
+
+# QoS: savio_normal
+#SBATCH --qos=savio_lowprio
+#
+# Account:
+#SBATCH -A co_nuclear  #fc_neutronics
+
+# Source OpenFOAM environment
+source /global/home/groups/co_nuclear/OpenFOAM-v2206/OpenFOAM-v2206/etc/bashrc
+
+# Initialization (Remove old results, optional depending on what you want)
+
+
+## Loc, opt -1 and r_zone and z_zone = -1 -1 
+
+
+#
+## Print current combination
+#echo "Running simulation for r_zone=-1 and z_zone=-1"
+#python3 create_case.py 1 -1 -1
+#decomposePar -allRegions -force -time 0 
+#mpirun -np 168 -oversubscribe GeN-Foam -parallel >> log
+#reconstructPar -region fluidRegion -time 10
+#cp processor0/GeN-Foam.dat ./
+### Save the results with r_zone and z_zone in the filenames
+#mv ./10/fluidRegion/T ./result_execute/T_-1_-1
+#mv ./10/fluidRegion/Tfmax.nuclearSteadyStatePebble ./result_execute/Tfmax_-1_-1
+#mv ./10/fluidRegion/p_rgh ./result_execute/p_-1_-1
+#mv ./10/fluidRegion/TpS.nuclearSteadyStatePebble ./result_execute/TpS_-1_-1
+#mv ./10/fluidRegion/U ./result_execute/U_-1_-1
+#mv log ./result_execute/of_-1_-1.log
+
+
+
+
+
+
+# Print current combination
+#echo "Running simulation for r_zone=0 and z_zone=0"
+#python3 create_case.py 2 0 0
+#decomposePar -region fluidRegion -force -time 0 
+#mpirun -np 168 -oversubscribe GeN-Foam -parallel >> log
+#reconstructPar -region fluidRegion -time 10
+#cp processor0/GeN-Foam.dat ./
+## Save the results with r_zone and z_zone in the filenames
+#mv ./10/fluidRegion/T ./result_execute/T_0_0
+#mv ./10/fluidRegion/Tfmax.nuclearSteadyStatePebble ./result_execute/Tfmax_0_0
+#mv ./10/fluidRegion/p_rgh ./result_execute/p_0_0
+#mv ./10/fluidRegion/TpS.nuclearSteadyStatePebble ./result_execute/TpS_0_0
+#mv ./10/fluidRegion/U ./result_execute/U_0_0
+#mv log ./result_execute/of_0_0.log
+#decomposePar -allRegions -force -time 0 
+
+
+# Loop through r_zone and z_zone values
+for r_zone in  4 5 6; do
+    for z_zone in 12 14 16 20; do
+        rm log
+        
+        # Print current combination
+        echo "Running simulation for r_zone=$r_zone and z_zone=$z_zone"
+        
+        # Run Python script with current r_zone and z_zone values
+        python3 create_case.py 3 "$r_zone" "$z_zone"
+        
+        # Decompose the case for parallel processing
+        decomposePar -region fluidRegion -force -time 0 
+        
+        # Run the simulation in parallel
+        mpirun -np 168 -oversubscribe GeN-Foam -parallel >> log
+
+        # Reconstruct the results for the specified time (e.g., time 10)
+        reconstructPar -region fluidRegion -time 10
+        cp processor0/GeN-Foam.dat ./
+        # Save the results with r_zone and z_zone in the filenames
+        mv ./10/fluidRegion/T ./result_execute/T_"$r_zone"_"$z_zone"
+        mv ./10/fluidRegion/Tfmax.nuclearSteadyStatePebble ./result_execute/Tfmax_"$r_zone"_"$z_zone"
+        mv ./10/fluidRegion/p_rgh ./result_execute/p_"$r_zone"_"$z_zone"
+        mv ./10/fluidRegion/TpS.nuclearSteadyStatePebble ./result_execute/TpS_"$r_zone"_"$z_zone"
+        mv ./10/fluidRegion/U ./result_execute/U_"$r_zone"_"$z_zone"
+        mv log ./result_execute/of_"$r_zone"_"$z_zone".log
+        
+    done
+done
+

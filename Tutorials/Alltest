@@ -93,6 +93,7 @@ tutorials=(
     "2D_onePhaseAndSubcriticalPointKineticsCoupling 0.2"
     "2D_voidMotionNoPhaseChange     0.2"
     "3D_gFHR                        1.5"
+    "3D_HTR-10                      1.0"
     "3D_NTPfuelAssembly             0.2"
     "3D_SmallESFR_NewSolverVerification  1.0"
     "Godiva_SN                      1.5"
