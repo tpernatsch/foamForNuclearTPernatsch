@@ -131,6 +131,8 @@ fi
 
 echo "Allwmake GeN-Foam"
 
+git submodule update --init --recursive
+
 # Make common functions
 wmake -j$num_jobs ./src/classes/common
 
