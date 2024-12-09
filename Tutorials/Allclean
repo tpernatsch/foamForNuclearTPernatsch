@@ -21,6 +21,7 @@ tutorials="
     1D_HX/onePhase
     1D_HX/twoPhase
     1D_MSR_pointKinetics
+    1D_neutronicsDiffusion
     1D_PSBT_SC/Phase_Ex1_12223
     1D_PSBT_SC/PhaseII_Ex1_01_5215
     1D_PSBT_SC/PhaseII_Ex2_04_6770
