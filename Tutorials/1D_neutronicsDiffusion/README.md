@@ -100,13 +100,13 @@ The script should output the shape of the flux and compare it to the analytic fo
 
 ## Possible exercises
 
-- What to the keff when the fuel length increase/decrease?
-- How the keff is affected when increasing/decreasing `nuSigmaEff`, `sigmaRemoval` or `D` in [constant/neutroRegion/nuclearData](./constant/neutroRegion/nuclearData)
+- How the keff is affected when increasing/decreasing the fuel length?
+- How the keff is affected when increasing/decreasing `nuSigmaEff`, `sigmaRemoval` or `D` in [`constant/neutroRegion/nuclearData`](./constant/neutroRegion/nuclearData)
 - Does the normalization power `pTarget` in [`0.orig/uniform/reactorState`](./0.orig/uniform/reactorState) affects the keff?
 - Does the neutron flux vanishes at the top and bottom boundaries?
-    - To check this, it is possible to change the neutron flux boundary conditions from `fixedValue` to an albedo boundary condition `albedoSP3`. You can uncomment the albedo boundary condition and comment the `fixedValue` boundary condition in [0.orig/neutroRegion/defaultFlux](./0.orig/neutroRegion/defaultFlux).
+    - To check this, it is possible to change the neutron flux boundary conditions from `fixedValue` to an albedo boundary condition `albedoSP3`. You can uncomment the albedo boundary condition and comment the `fixedValue` boundary condition in [`0.orig/neutroRegion/defaultFlux`](./0.orig/neutroRegion/defaultFlux).
     - Then clean and run the simulation.
-    - The flux should not anymore tends to zero at the boundary. One can change the `isAddExtrapolationDistance` flag in the [Allplot.py](./Allplot.py) script to see the extrapolation limit and see the following results.
+    - The flux should not anymore tends to zero at the boundary. One can change the `isAddExtrapolationDistance` flag in the [`Allplot.py`](./Allplot.py) script to see the extrapolation limit and see the following results.
 
 ![](./images/results_neutronFlux_extrapolated.png)
 
