@@ -188,6 +188,27 @@ int main(int argc, char *argv[])
         adjustDeltaT(runTime, solvers);
 
         #ifdef isCommDataLayerIncluded
+        if (isSolveFMI)
+        {
+            commDataLayer& data = commDataLayer::New(runTime);
+            scalar& isConvergedFMI = data.getObj<scalar>
+            (
+                "isConverged",
+                commDataLayer::causality::out
+            );
+            isConvergedFMI = 1.0;
+            // isConvergedFMI = 0.0;
+
+            // forAll(solvers, i)
+            // {
+            //     if (solvers[i].getResidual() < 1e-6)
+            //     {
+            //         isConvergedFMI = 1.0;
+            //         break;
+            //     }
+            // }
+        }
+
         if (isSolveFMI) fmu->send();
         } // End fmu implicit loop
         while (isSolveFMI && fmu->loop());

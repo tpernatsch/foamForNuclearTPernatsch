@@ -253,7 +253,7 @@ protected:
     //- Average cladding temperature field for coupling
     volScalarField Tcav_;
 
-    //- Fields representing the average surface temperature of the structure
+    //- Field representing the average surface temperature of the structure
     volScalarField Tsurface_;
 
     //- Heat flux FMI input flag
@@ -305,6 +305,38 @@ protected:
     //  the kriging option
     List<List<scalarList>> krigingWeight_;
 
+    //- Kriging variogram type (gaussian, spherical or exponential)
+    List<Foam::radialBasisFunctionInterpolation::variogramType> krigingTypeFuel_;
+
+    //- Kriging parameter a, only used by the kriging option
+    scalarList krigingAfuel_;
+
+    //- Kriging parameter c, only used by the kriging option
+    scalarList krigingCfuel_;
+
+    //- Kriging parameter c0, only used by the kriging option
+    scalarList krigingC0fuel_;
+
+    //- Kriging weights for cell, per region, only computed once, only used by
+    //  the kriging option
+    List<List<scalarList>> krigingWeightFuel_;
+
+    //- Kriging variogram type (gaussian, spherical or exponential)
+    List<Foam::radialBasisFunctionInterpolation::variogramType> krigingTypeClad_;
+
+    //- Kriging parameter a, only used by the kriging option
+    scalarList krigingAclad_;
+
+    //- Kriging parameter c, only used by the kriging option
+    scalarList krigingCclad_;
+
+    //- Kriging parameter c0, only used by the kriging option
+    scalarList krigingC0clad_;
+
+    //- Kriging weights for cell, per region, only computed once, only used by
+    //  the kriging option
+    List<List<scalarList>> krigingWeightClad_;
+
     //- List that maps the region index to the region name
     wordList regionIndexToRegionName_;
 
@@ -313,6 +345,12 @@ protected:
 
     //- Inverse matrix of the Radial Basis Function operator for each cellZone
     List<SquareMatrix<scalar>> invRBFmatrix_;
+
+    //- Inverse matrix of the Radial Basis Function operator for each cellZone
+    List<SquareMatrix<scalar>> invRBFmatrixFuel_;
+
+    //- Inverse matrix of the Radial Basis Function operator for each cellZone
+    List<SquareMatrix<scalar>> invRBFmatrixClad_;
 
 public:
 
@@ -351,12 +389,17 @@ public:
         (
             const volScalarField& HT,
             const volScalarField& H,
-            label regioni
+            const label regioni
         );
 
         //- Sample Tsurface and power density over lines and transfer data to
         //  the FMUs
-        void correctInputsForFMUs(label regioni);
+        void correctInputsForFMUs
+        (
+            const volScalarField& HTSum,
+            const volScalarField& HSum,
+            const label regioni
+        );
 
         //- Return surface temperature (i.e. outer cladding temperature)
         virtual void correctT(volScalarField& T) const;
