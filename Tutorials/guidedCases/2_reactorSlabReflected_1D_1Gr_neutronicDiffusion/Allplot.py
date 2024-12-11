@@ -12,6 +12,7 @@ import sys
 import numpy as np
 from fluidfoam import readmesh, readscalar
 import matplotlib.pyplot as plt
+from scipy import optimize
 
 #==============================================================================*
 # Functions
@@ -35,10 +36,28 @@ def getKeff(filename: str) -> float:
     return(0)
 
 
+def analyticSolution(fuelLength, reflWidth):
+    DR = 0.2
+    DC = 0.1275
+    SigmaAR = 3
+    LR = np.sqrt(DR/SigmaAR)
+
+    func = lambda B: np.tan(B*fuelLength/2) - DR/(DC*LR*B) / np.tanh(reflWidth/LR)
+
+    sol = optimize.root(func, [1])
+    B = sol.x[0]
+
+    def phi(z):
+        if (np.abs(z) <= fuelLength/2):
+            return(np.cos(B*z))
+        return(np.cos(B*fuelLength/2) * np.sinh((fuelLength/2 + reflWidth - np.abs(z))/LR)) / np.sinh(reflWidth/LR)
+
+    return(phi)
+
+
 def plotFlux(
         timeStep: str,
-        fieldName: str,
-        isAddExtrapolationDistance: bool=False
+        fieldName: str
     ) -> None:
     """
     isAddExtrapolationDistance:
@@ -53,13 +72,16 @@ def plotFlux(
         fieldName=fieldName
     )
 
-    fuelLength = 1.5
+    fuelLength = 1.197
+    reflWidth = 0.5
+    fuelLengthNoRefl = 1.5
 
     # Normalize the flux
     normFlux = [flux0_ / max(flux0) for flux0_ in flux0]
 
     # Analytic solution
-    fluxTh = lambda z_: np.sin(z_ * np.pi/fuelLength)
+    fluxTh = analyticSolution(fuelLength, reflWidth)
+    fluxThNoRefl = lambda z_: np.cos(z_ * np.pi/fuelLengthNoRefl) if np.abs(z_) < fuelLengthNoRefl/2 else 0
 
     # Compute the relative error between GeN-Foam and the analytic solution
     relError = [(normFlux_ / fluxTh(z_) - 1) * 100 for z_, normFlux_ in zip(z, normFlux)]
@@ -71,7 +93,18 @@ def plotFlux(
     ymax = max(normFlux) * 1.05
 
     axFlux.plot(z, normFlux, label="GeN-Foam")
-    axFlux.plot(z, fluxTh(z), label="Analytic", ls="--")
+    axFlux.plot(z, [fluxTh(z_) for z_ in z], label="Analytic", ls="--")
+    axFlux.plot(z, [fluxThNoRefl(z_) for z_ in z], label="Analytic no refl", ls="-.")
+
+    # Core boundaries
+    axFlux.vlines(
+        x=[-fuelLength/2, fuelLength/2], ymin=0, ymax=ymax,
+        color="tab:grey", alpha=0.5
+    )
+    axFlux.vlines(
+        x=[-fuelLengthNoRefl/2, fuelLengthNoRefl/2], ymin=0, ymax=ymax,
+        color="tab:grey", alpha=0.5, ls='-.'
+    )
     axFlux.set_ylabel("Neutron flux [a.u]")
     axFlux.set_ylim((0, ymax))
     axFlux.legend()
@@ -83,45 +116,7 @@ def plotFlux(
         ax.set_xlabel("Axial position [m]")
         ax.set_xlim(min(z), max(z))
 
-
-    if (isAddExtrapolationDistance):
-        # Estimated extrapolated limit
-        d = 0.1275*3*0.7104
-
-        print(f"\nEstimated extrapolation length = {d} m\n")
-
-        # Right extrapolation
-        slope = (normFlux[-1]-normFlux[-2])/(z[-1]-z[-2])
-        zExtra = np.linspace(z[-1], z[-1]+d, 100)
-        extFlux = lambda z_: slope*(z_ - z[-1]) + normFlux[-1]
-        axFlux.plot(
-            zExtra, extFlux(zExtra),
-            ls=':', color='tab:grey',
-            label="Extrapolated limit"
-        )
-
-        # Left extrapolation
-        slope = (normFlux[0]-normFlux[1])/(z[0]-z[1])
-        zExtra = np.linspace(z[0]-d, z[0], 100)
-        extFlux = lambda z_: slope*(z_ - z[0]) + normFlux[0]
-        axFlux.plot(zExtra, extFlux(zExtra), ls=':', color='tab:grey')
-
-        # Core boundaries
-        axFlux.vlines(
-            x=[0, fuelLength], ymin=0, ymax=ymax,
-            color="tab:grey", alpha=0.5
-        )
-
-        # Reset axis limits
-        axError.hlines(xmin=min(z)-d, xmax=max(z)+d, y=[0], alpha=0.5, color="tab:grey")
-        for ax in axes:
-            ax.set_xlim(min(z) - d, max(z) + d)
-
-        axFlux.legend()
-
-    else:
-        axError.hlines(xmin=min(z), xmax=max(z), y=[0], alpha=0.5, color="tab:grey")
-
+    axError.hlines(xmin=min(z), xmax=max(z), y=[0], alpha=0.5, color="tab:grey")
 
     fig.tight_layout()
 
@@ -148,7 +143,7 @@ if __name__ == "__main__":
 
     # Plot and extract keff
     if (not isTest):
-        plotFlux(timeStep, fieldName, isAddExtrapolationDistance=False)
+        plotFlux(timeStep, fieldName)
 
         # Extract keff
         keff = getKeff(f"{timeStep}/uniform/reactorState")
@@ -173,6 +168,7 @@ if __name__ == "__main__":
             sys.exit(0)
         else:
             sys.exit(1)
+
 
 
 #==============================================================================*
