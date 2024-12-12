@@ -87,7 +87,7 @@ Foam::meshHandler::meshHandler(const Time& runTime)
     forAll(allRegions, regioni)
     {
         word solverName(controlDict.subDict("regionSolvers").get<word>(allRegions[regioni]));
-        if (solverName!="multiPhysicsSolver")
+        if (solverName != "multiPhysicsSolver")
         {
             meshNames.append(allRegions[regioni]);
         }
@@ -155,7 +155,7 @@ Foam::meshHandler::meshHandler(const Time& runTime)
     // Create mappings
     mappingList_.setSize(meshes_.size());
 
-    forAll(meshes_,i)
+    forAll(meshes_, i)
     {
         mappingList_.set
         (

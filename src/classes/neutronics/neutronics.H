@@ -49,20 +49,20 @@ Description
 <ol type="1">
     <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
     GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294, 
+    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294,
     2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
 
-    <li> Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
-    multi-physics solver to the European Sodium Fast Reactor and verification 
+    <li> Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam
+    multi-physics solver to the European Sodium Fast Reactor and verification
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
     Nice (France), Paper 15226
 </ol>
 
-\mainauthor of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Swizerland)
 
 SourceFiles
-    neutronics.C    
+    neutronics.C
 
 
 \*---------------------------------------------------------------------------*/
@@ -98,7 +98,6 @@ class neutronics
 :
     public solver,
     public IOdictionary
-
 {
 
 protected:
@@ -115,6 +114,9 @@ protected:
     //- Target power
     scalar pTarget_;
 
+    //- Old total power
+    scalar pTotOld_;
+
     //- Fuel power density
     volScalarField powerDensity_;
 
@@ -122,11 +124,65 @@ protected:
     //  fuel, or for liquid, in case of solid fuel
     volScalarField secondaryPowerDensity_;
 
+    //- One group averaged neutron flux
+    volScalarField oneGroupFlux_;
+
+    //- Ptrs to coupling fields (i.e. defined on their original mesh)
+    const volScalarField* TFuelOrig_;
+    const volScalarField* TCladOrig_;
+    const volScalarField* TCoolOrig_;
+    const volScalarField* rhoCoolOrig_;
+    const volScalarField* TStructOrig_;
+    const volScalarField* TStructMechOrig_;
+    const volVectorField* UOrig_;
+
+    //- Total volume fraction of fluid(s)
+    const volScalarField* alphaOrig_;
+
+    //- Thermal diffusivity in kg/m/s
+    const volScalarField* alphatOrig_;
+
+    //- Molecular viscosity in kg/m/s (== Pa*s)
+    const volScalarField* muOrig_;
+
+    //- Mapped fuel temperature field from thermal-hydraulics
+    volScalarField TFuel_;
+
+    //- Mapped cladding temperature field from thermal-hydraulics
+    volScalarField TClad_;
+
+    //- Mapped coolant temperature field from thermal-hydraulics
+    volScalarField TCool_;
+
+    //- Mapped coolant density field from thermal-hydraulics
+    volScalarField rhoCool_;
+
+    //- This is also used to compute TDriveline
+    volScalarField TStruct_;
+
+    //- Mapped structure temprature field from thermal-mechanics
+    volScalarField TStructMech_;
+
+    //- Also mapped, but these are autoPtr as these field are not needed at all
+    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
+    //  these fields if they are actually needed
+    autoPtr<volVectorField> UPtr_;
+    autoPtr<volScalarField> alphaPtr_;
+    autoPtr<volScalarField> alphatPtr_;
+    autoPtr<volScalarField> muPtr_;
+
+    //- Fields derived from mapped fields
+    autoPtr<surfaceScalarField> phiPtr_;
+    autoPtr<volScalarField> diffCoeffPrecPtr_;
+
     //- Mesh displacement
     volVectorField disp_;
 
     //- Initialize residual
     scalar initialResidual_;
+
+    //- Solver residual
+    scalar residual_;
 
     //- Eigenvalue flag
     bool eigenvalueNeutronics_;
@@ -137,14 +193,14 @@ protected:
     //- Liquid fuel (e.g. true for MSRs)
     const bool liquidFuel_;
 
+    //-
     pointField originalPoints_;
 
-        //- External source file
+    //- External source file
     IOdictionary externalSource_;
 
     //- Source modulation time profile
     timeProfile externalSourceModulationTimeProfile_;
-    
 
 
 private:
@@ -186,10 +242,10 @@ public:
         virtual const PtrList<volScalarField> precursors() const = 0;
 
         //- Return one group flux
-        virtual const volScalarField& oneGroupFlux() const = 0;
+        // virtual const volScalarField& oneGroupFlux() const = 0;
 
         //- Return power
-        virtual scalar power() const = 0;  
+        virtual scalar power() const = 0;
 
         virtual void correctBaffleLessFields();
 
@@ -202,8 +258,6 @@ public:
             return os.good();
         }
 
-    //    bool solveNeutronics(){return solveNeutronics_;};
-
 
         //- Access
 
@@ -215,27 +269,38 @@ public:
             const volScalarField& powerDensity() const
             {
                 return powerDensity_;
-            } 
+            }
 
             const volScalarField& secondaryPowerDensity() const
             {
                 return secondaryPowerDensity_;
-            }  
+            }
+
+            //- Return one group flux
+            virtual const volScalarField& oneGroupFlux() const
+            {
+                return oneGroupFlux_;
+            }
 
             const volVectorField& disp() const
             {
                 return disp_;
-            }       
+            }
 
             bool eigenvalue() const
             {
                 return eigenvalueNeutronics_;
-            } 
+            }
 
             scalar initialResidual() const
             {
                 return initialResidual_;
             }
+
+            virtual scalar getResidual()
+            {
+                return residual_;
+            };
 };
 
 

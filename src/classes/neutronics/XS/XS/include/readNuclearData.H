@@ -1,4 +1,4 @@
-Info<< "\nReading nuclear data\n" << endl;
+Info<< nl << "Reading nuclear data" << nl << endl;
 
 // Log error if found previous GeN-Foam nuclearData file format
 if (nuclearData_.found("zones"))
@@ -204,29 +204,37 @@ forAll(states_, stateI)
             DList_[zoneRefI][energyI].addData
             (
                 DList[energyI],
-                TfuelSpectrum, Tclad, Tcool, TstructMech,
-                rhoCool, axExp, radExp
+                {
+                    TfuelSpectrum, Tclad, Tcool, TstructMech,
+                    rhoCool, axExp, radExp
+                }
             );
 
             nuSigmaEffList_[zoneRefI][energyI].addData
             (
                 nuSigmaEffList[energyI],
-                TfuelSpectrum, Tclad, Tcool, TstructMech,
-                rhoCool, axExp, radExp
+                {
+                    TfuelSpectrum, Tclad, Tcool, TstructMech,
+                    rhoCool, axExp, radExp
+                }
             );
 
             sigmaPowList_[zoneRefI][energyI].addData
             (
                 sigmaPowList[energyI],
-                TfuelSpectrum, Tclad, Tcool, TstructMech,
-                rhoCool, axExp, radExp
+                {
+                    TfuelSpectrum, Tclad, Tcool, TstructMech,
+                    rhoCool, axExp, radExp
+                }
             );
 
             sigmaRemovalList_[zoneRefI][energyI].addData
             (
                 sigmaRemovalList[energyI],
-                TfuelSpectrum, Tclad, Tcool, TstructMech,
-                rhoCool, axExp, radExp
+                {
+                    TfuelSpectrum, Tclad, Tcool, TstructMech,
+                    rhoCool, axExp, radExp
+                }
             );
         }
 
@@ -244,8 +252,10 @@ forAll(states_, stateI)
                     sigmaFromToList_[zoneRefI][momentI][energyJ][energyI].addData
                     (
                         sigmaFromToList(energyJ, energyI),
-                        TfuelSpectrum, Tclad, Tcool, TstructMech,
-                        rhoCool, axExp, radExp
+                        {
+                            TfuelSpectrum, Tclad, Tcool, TstructMech,
+                            rhoCool, axExp, radExp
+                        }
                     );
                 }
             }

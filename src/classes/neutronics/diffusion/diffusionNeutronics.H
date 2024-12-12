@@ -50,12 +50,12 @@ The module solves the multi-group diffusion equations:
         - \Sigma_{r,g} \phi_g
         + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) S_{n,g}
         + \chi_{d,g} S_d
-        + S_{s,g} 
+        + S_{s,g}
         + S_g
         \quad \forall g \in [1; G] \\
-    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) = 
+    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) =
         \frac{\beta_k}{k_{eff}} \sum_h \nu \Sigma_{f,h} \phi_h
-        - \lambda_k C_k 
+        - \lambda_k C_k
         \quad \forall k \in [1; N]
 \f]
 
@@ -91,18 +91,18 @@ where:
 \endvartable
 
 
-In the neutronicsProperties file, for keff calculation in a critical 
+In the neutronicsProperties file, for keff calculation in a critical
 reactor:
 \verbatim
     model                       diffusionNeutronics;
     eigenvalueNeutronics        true;
 \endverbatim
 
-For an subcritical reactor driven by an external neutron source: 
+For an subcritical reactor driven by an external neutron source:
 \verbatim
     model                       diffusionNeutronics;
     eigenvalueNeutronics        false;
-    externalSourceNeutronics    true;   
+    externalSourceNeutronics    true;
 \endverbatim
 
 <b>Reference publications</b>
@@ -110,22 +110,22 @@ For an subcritical reactor driven by an external neutron source:
 <ol type="1">
     <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
     GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294, 
+    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294,
     2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
-    
-    <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam 
-    multi-physics solver to the European Sodium Fast Reactor and verification 
+
+    <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam
+    multi-physics solver to the European Sodium Fast Reactor and verification
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
     Nice (France), Paper 15226
 
-    <li> Carlo Fiorina, Nordine Kerkar, Konstantin Mikityuk, Pablo Rubiolo, Andreas 
-    Pautz, "Development and verification of the neutron diffusion solver for the 
-    GeN-Foam multi-physics platform", Annals of Nuclear Energy, 96, 2016, 
+    <li> Carlo Fiorina, Nordine Kerkar, Konstantin Mikityuk, Pablo Rubiolo, Andreas
+    Pautz, "Development and verification of the neutron diffusion solver for the
+    GeN-Foam multi-physics platform", Annals of Nuclear Energy, 96, 2016,
     pages 212-222, DOI: http://dx.doi.org/10.1016/j.anucene.2016.05.023.
 </ol>
 
-\mainauthor of this file (and associated .C or included .H files): 
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);   
+\mainauthor of this file (and associated .C or included .H files):
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 
 SourceFiles
@@ -174,49 +174,48 @@ protected:
     volScalarField defaultPrec_;
 
     //- Derived fields
-    volScalarField oneGroupFlux_;
+    // volScalarField oneGroupFlux_;
     volScalarField neutroSource_;
     volScalarField delayedNeutroSource_;
     volScalarField scatteringSourceExtra_;
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
-    const volScalarField* TFuelOrig_;
-    const volScalarField* TCladOrig_;
-    const volScalarField* TCoolOrig_;
-    const volScalarField* rhoCoolOrig_;
-    const volScalarField* TStructMechOrig_;
-    const volVectorField* UOrig_;
-    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s)
-    const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
-    const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
+    // const volScalarField* TFuelOrig_;
+    // const volScalarField* TCladOrig_;
+    // const volScalarField* TCoolOrig_;
+    // const volScalarField* rhoCoolOrig_;
+    // const volScalarField* TStructMechOrig_;
+    // const volVectorField* UOrig_;
+    // const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s)
+    // const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
+    // const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
 
     //- Mapped fields from TH
-    volScalarField TFuel_;
-    volScalarField TClad_;
-    volScalarField TCool_;
-    volScalarField rhoCool_;
-    //- Mapped fields from TM
-    volScalarField TStructMech_;
-    
+    // volScalarField TFuel_;
+    // volScalarField TClad_;
+    // volScalarField TCool_;
+    // volScalarField rhoCool_;
+    // //- Mapped fields from TM
+    // volScalarField TStructMech_;
+
     //- Also mapped, but these are autoPtr as these field are not needed at all
     //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
     //  these fields if they are actually needed
-    autoPtr<volVectorField> UPtr_;
-    autoPtr<volScalarField> alphaPtr_;
-    autoPtr<volScalarField> alphatPtr_;
-    autoPtr<volScalarField> muPtr_;
-    
+    // autoPtr<volVectorField> UPtr_;
+    // autoPtr<volScalarField> alphaPtr_;
+    // autoPtr<volScalarField> alphatPtr_;
+    // autoPtr<volScalarField> muPtr_;
+
     //- Fields derived from mapped fields
-    autoPtr<surfaceScalarField> phiPtr_;
-    autoPtr<volScalarField> diffCoeffPrecPtr_;
+    // autoPtr<surfaceScalarField> phiPtr_;
+    // autoPtr<volScalarField> diffCoeffPrecPtr_;
 
-    scalar pTotOld_;
+    // scalar pTotOld_;
 
-    scalar residual_;
+    // scalar residual_;
 
-    // multiRegion
-
-    bool multiRegion_;
+    //- multiRegion
+    // bool multiRegion_;
 
 
 private:
@@ -253,38 +252,36 @@ public:
         }
 
         //- Return one group flux
-        virtual const volScalarField& oneGroupFlux() const
-        {
-            return oneGroupFlux_;
-        }
+        // virtual const volScalarField& oneGroupFlux() const
+        // {
+        //     return oneGroupFlux_;
+        // }
 
         //- Return power
         virtual scalar power() const
         {
             scalar pTot = 0;
 
-            forAll(flux_,energyI)
+            forAll(flux_, energyI)
             {
                 pTot += fvc::domainIntegrate
                 (
-                    flux_[energyI]*xs_.sigmaPow()[energyI]
+                    flux_[energyI] * xs_.sigmaPow()[energyI]
                 ).value();
             }
             return pTot;
         }
 
-
-
         //- Correct/update the properties
-        virtual void correctPhysics(); 
-        virtual void correctTightlyCoupledPhysics(); 
+        virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
 
         virtual scalar maxDeltaT();
 
-        virtual scalar getResidual()
-        {
-            return residual_;
-        };
+        // virtual scalar getResidual()
+        // {
+        //     return residual_;
+        // };
 };
 
 

@@ -162,41 +162,41 @@ protected:
 
     //Derived fields
     PtrList<volScalarField> flux_;
-    volScalarField oneGroupFlux_;
+    // volScalarField oneGroupFlux_;
     volScalarField neutroSource_;
     volScalarField delayedNeutroSource_;
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
-    const volScalarField* TFuelOrig_;
-    const volScalarField* TCladOrig_;
-    const volScalarField* TCoolOrig_;
-    const volScalarField* rhoCoolOrig_;
-    const volScalarField* TStructMechOrig_;
-    const volVectorField* UOrig_;
+    // const volScalarField* TFuelOrig_;
+    // const volScalarField* TCladOrig_;
+    // const volScalarField* TCoolOrig_;
+    // const volScalarField* rhoCoolOrig_;
+    // const volScalarField* TStructMechOrig_;
+    // const volVectorField* UOrig_;
 
-    //- Total volume fraction of fluid(s)
-    const volScalarField* alphaOrig_;
+    // //- Total volume fraction of fluid(s)
+    // const volScalarField* alphaOrig_;
 
-    //- Thermal diffusivity in kg/m/s
-    const volScalarField* alphatOrig_;
+    // //- Thermal diffusivity in kg/m/s
+    // const volScalarField* alphatOrig_;
 
-    //- Molecular viscosity in kg/m/s (== Pa*s)
-    const volScalarField* muOrig_;
+    // //- Molecular viscosity in kg/m/s (== Pa*s)
+    // const volScalarField* muOrig_;
 
-    //- Mapped fuel temperature field from thermal-hydraulics
-    volScalarField TFuel_;
+    // //- Mapped fuel temperature field from thermal-hydraulics
+    // volScalarField TFuel_;
 
-    //- Mapped cladding temperature field from thermal-hydraulics
-    volScalarField TClad_;
+    // //- Mapped cladding temperature field from thermal-hydraulics
+    // volScalarField TClad_;
 
-    //- Mapped coolant temperature field from thermal-hydraulics
-    volScalarField TCool_;
+    // //- Mapped coolant temperature field from thermal-hydraulics
+    // volScalarField TCool_;
 
-    //- Mapped coolant density field from thermal-hydraulics
-    volScalarField rhoCool_;
+    // //- Mapped coolant density field from thermal-hydraulics
+    // volScalarField rhoCool_;
 
-    //- Mapped structure temprature field from thermal-mechanics
-    volScalarField TStructMech_;
+    // //- Mapped structure temprature field from thermal-mechanics
+    // volScalarField TStructMech_;
 
     //- For Aitken eigenvalue
     scalar keff0_;
@@ -217,13 +217,13 @@ protected:
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
-    bool multiRegion_;
+    // bool multiRegion_;
 
     //- Old total power
-    scalar pTotOld_;
+    // scalar pTotOld_;
 
-    //- Solver residual
-    scalar residual_;
+    // //- Solver residual
+    // scalar residual_;
 
 private:
 
@@ -268,16 +268,16 @@ public:
         }
 
         //- Return one group flux
-        virtual const volScalarField& oneGroupFlux() const
-        {
-            return oneGroupFlux_;
-        }
+        // virtual const volScalarField& oneGroupFlux() const
+        // {
+        //     return oneGroupFlux_;
+        // }
 
         //- Return power
         virtual scalar power() const
         {
             scalar pTot = 0;
-            forAll(flux_,energyI)
+            forAll(flux_, energyI)
             {
                 pTot += fvc::domainIntegrate
                 (
@@ -287,30 +287,16 @@ public:
             return pTot;
         }
 
-        // virtual void getCouplingFieldRefs
-        // (
-        //     const objectRegistry& srcTH,
-        //     const meshToMesh& neutroToFluid,
-        //     const objectRegistry& srcTM,
-        //     const meshToMesh& neutroToMech
-        // );
-
-        // virtual void interpolateCouplingFields
-        // (
-        //     const meshToMesh& neutroToFluid,
-        //     const meshToMesh& neutroToMech
-        // );
-
         //- Correct/update the properties
         virtual void correctPhysics();
         virtual void correctTightlyCoupledPhysics();
 
         virtual scalar maxDeltaT();
 
-        virtual scalar getResidual()
-        {
-            return residual_;
-        }
+        // virtual scalar getResidual()
+        // {
+        //     return residual_;
+        // }
 
         //- Access
 

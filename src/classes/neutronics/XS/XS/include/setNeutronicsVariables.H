@@ -72,8 +72,8 @@ tDNeutroRad.clear();
 DNeutroAx.clear();
 
 // log(T) if fast spectrum or sqrt(T) if thermal
-logT_ = log(max(0.01, Tfuel/dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 1.0)));
-sqrtT_ = pow(max(dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 0.0), Tfuel), 0.5);
+logT_ = log(max(0.01, Tfuel/dimensionedScalar("", dimTemperature, 1.0)));
+sqrtT_ = pow(max(dimensionedScalar("", dimTemperature, 0.0), Tfuel), 0.5);
 
 forAll(nuSigmaEff_, energyI)
 {
@@ -164,49 +164,57 @@ forAll(nuSigmaEff_, energyI)
 
             D_[energyI][cellIglobal] = DList_[zone][energyI].get
             (
-                fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                Tclad[cellIglobal],
-                Tcool[cellIglobal],
-                TStructMech[cellIglobal],
-                rhoCool[cellIglobal],
-                axExp_[cellIglobal],
-                radExp_[cellIglobal],
+                {
+                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
+                    Tclad[cellIglobal],
+                    Tcool[cellIglobal],
+                    TStructMech[cellIglobal],
+                    rhoCool[cellIglobal],
+                    axExp_[cellIglobal],
+                    radExp_[cellIglobal]
+                },
                 isParametrize
             );
 
             nuSigmaEff_[energyI][cellIglobal] = nuSigmaEffList_[zone][energyI].get
             (
-                fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                Tclad[cellIglobal],
-                Tcool[cellIglobal],
-                TStructMech[cellIglobal],
-                rhoCool[cellIglobal],
-                axExp_[cellIglobal],
-                radExp_[cellIglobal],
+                {
+                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
+                    Tclad[cellIglobal],
+                    Tcool[cellIglobal],
+                    TStructMech[cellIglobal],
+                    rhoCool[cellIglobal],
+                    axExp_[cellIglobal],
+                    radExp_[cellIglobal]
+                },
                 isParametrize
             );
 
             sigmaPow_[energyI][cellIglobal] = sigmaPowList_[zone][energyI].get
             (
-                fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                Tclad[cellIglobal],
-                Tcool[cellIglobal],
-                TStructMech[cellIglobal],
-                rhoCool[cellIglobal],
-                axExp_[cellIglobal],
-                radExp_[cellIglobal],
+                {
+                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
+                    Tclad[cellIglobal],
+                    Tcool[cellIglobal],
+                    TStructMech[cellIglobal],
+                    rhoCool[cellIglobal],
+                    axExp_[cellIglobal],
+                    radExp_[cellIglobal]
+                },
                 isParametrize
             );
 
             sigmaRemoval_[energyI][cellIglobal] = sigmaRemovalList_[zone][energyI].get
             (
-                fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                Tclad[cellIglobal],
-                Tcool[cellIglobal],
-                TStructMech[cellIglobal],
-                rhoCool[cellIglobal],
-                axExp_[cellIglobal],
-                radExp_[cellIglobal],
+                {
+                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
+                    Tclad[cellIglobal],
+                    Tcool[cellIglobal],
+                    TStructMech[cellIglobal],
+                    rhoCool[cellIglobal],
+                    axExp_[cellIglobal],
+                    radExp_[cellIglobal]
+                },
                 isParametrize
             );
 
@@ -217,13 +225,15 @@ forAll(nuSigmaEff_, energyI)
                     forAll(sigmaFromTo_[momentI], energyJ)
                     {
                         sigmaFromTo_[momentI][energyJ][energyI][cellIglobal] = sigmaFromToList_[zone][momentI][energyJ][energyI].get(
-                            fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                            Tclad[cellIglobal],
-                            Tcool[cellIglobal],
-                            TStructMech[cellIglobal],
-                            rhoCool[cellIglobal],
-                            axExp_[cellIglobal],
-                            radExp_[cellIglobal],
+                            {
+                                fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
+                                Tclad[cellIglobal],
+                                Tcool[cellIglobal],
+                                TStructMech[cellIglobal],
+                                rhoCool[cellIglobal],
+                                axExp_[cellIglobal],
+                                radExp_[cellIglobal]
+                            },
                             isParametrize
                         );
                     }

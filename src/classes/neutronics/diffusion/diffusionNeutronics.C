@@ -145,18 +145,18 @@ Foam::solvers::diffusionNeutronics::diffusionNeutronics
         dimensionedScalar("", dimless/dimVol, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    oneGroupFlux_
-    (
-        IOobject
-        (
-            "oneGroupFlux",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        defaultFlux_
-    ),
+    // oneGroupFlux_
+    // (
+    //     IOobject
+    //     (
+    //         "oneGroupFlux",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::NO_READ,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     defaultFlux_
+    // ),
     neutroSource_
     (
         IOobject
@@ -198,87 +198,87 @@ Foam::solvers::diffusionNeutronics::diffusionNeutronics
         mesh,
         dimensionedScalar("", dimless/dimVol/dimTime, 0.0),
         zeroGradientFvPatchScalarField::typeName
-    ),
-    TFuelOrig_(nullptr),
-    TCladOrig_(nullptr),
-    TCoolOrig_(nullptr),
-    rhoCoolOrig_(nullptr),
-    TStructMechOrig_(nullptr),
-    UOrig_(nullptr),
-    alphaOrig_(nullptr),
-    alphatOrig_(nullptr),
-    muOrig_(nullptr),
-    TFuel_
-    (
-        IOobject
-        (
-            "TFuel",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimTemperature, 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    TClad_
-    (
-        IOobject
-        (
-            "TClad",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimTemperature, 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    TCool_
-    (
-        IOobject
-        (
-            "TCool",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimTemperature, 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    rhoCool_
-    (
-        IOobject
-        (
-            "rhoCool",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimDensity, SMALL),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    TStructMech_
-    (
-        IOobject
-        (
-            "TStructMech",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimTemperature, 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    pTotOld_(pTarget_)
+    )//,
+    // TFuelOrig_(nullptr),
+    // TCladOrig_(nullptr),
+    // TCoolOrig_(nullptr),
+    // rhoCoolOrig_(nullptr),
+    // TStructMechOrig_(nullptr),
+    // UOrig_(nullptr),
+    // alphaOrig_(nullptr),
+    // alphatOrig_(nullptr),
+    // muOrig_(nullptr),
+    // TFuel_
+    // (
+    //     IOobject
+    //     (
+    //         "TFuel",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::READ_IF_PRESENT,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedScalar("", dimTemperature, 0.0),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
+    // TClad_
+    // (
+    //     IOobject
+    //     (
+    //         "TClad",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::READ_IF_PRESENT,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedScalar("", dimTemperature, 0.0),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
+    // TCool_
+    // (
+    //     IOobject
+    //     (
+    //         "TCool",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::READ_IF_PRESENT,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedScalar("", dimTemperature, 0.0),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
+    // rhoCool_
+    // (
+    //     IOobject
+    //     (
+    //         "rhoCool",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::NO_READ,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedScalar("", dimDensity, SMALL),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
+    // TStructMech_
+    // (
+    //     IOobject
+    //     (
+    //         "TStructMech",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::READ_IF_PRESENT,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedScalar("", dimTemperature, 0.0),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
+    // pTotOld_(pTarget_)
 {
     #include "createNeutronicsFields.H"
 }
@@ -292,29 +292,9 @@ Foam::solvers::diffusionNeutronics::~diffusionNeutronics()
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-// void Foam::solvers::diffusionNeutronics::getCouplingFieldRefs
-// (
-//     const objectRegistry& srcTH,
-//     const meshToMesh& neutroToFluid,
-//     const objectRegistry& srcTM,
-//     const meshToMesh& neutroToMech
-// )
-// {
-//     #include "defaultGetCouplingFieldRefs.H"
-// }
-
-// void Foam::solvers::diffusionNeutronics::interpolateCouplingFields
-// (
-//     const meshToMesh& neutroToFluid,
-//     const meshToMesh& neutroToMech
-// )
-// {
-//     #include "defaultInterpolateCouplingFields.H"
-// }
-
 void Foam::solvers::diffusionNeutronics::correctPhysics()
 {
-    //Compute Pold (for adaptive time step setting)
+    //Compute old power (for adaptive time step setting)
     pTotOld_ = power();
 
     residual_=0;
@@ -322,44 +302,37 @@ void Foam::solvers::diffusionNeutronics::correctPhysics()
     #include "solveNeutronics.H"
 }
 
+
 void Foam::solvers::diffusionNeutronics::correctTightlyCoupledPhysics()
 {
     correctPhysics();
 }
 
+
 scalar Foam::solvers::diffusionNeutronics::maxDeltaT()
 {
     scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
 
-    if(mesh_.time().value()> mesh_.time().controlDict().get<scalar>("deltaT"))
+    if (mesh_.time().value() > mesh_.time().controlDict().get<scalar>("deltaT"))
     {
-        
         scalar maxPowerVariation =
             mesh_.time().controlDict().lookupOrDefault<scalar>
             (
-                "maxPowerVariation", 
+                "maxPowerVariation",
                 0.025
             );
         scalar pTot = power();
 
         scalar powerVariation = mag((pTot - pTotOld_) / (pTotOld_ + SMALL));
 
-
-
-        scalar maxDeltaTNeutroFact = mag(maxPowerVariation/(powerVariation + SMALL));
+        scalar maxDeltaTNeutroFact = mag(maxPowerVariation / (powerVariation + SMALL));
 
         scalar deltaTNeutroFact = min(min(maxDeltaTNeutroFact, 1.0 + 0.1*maxDeltaTNeutroFact), 1.2);
 
         return min(deltaTNeutroFact*mesh_.time().deltaTValue(), newDeltaT);
     }
-    else
-        return newDeltaT;
 
-    
-
-    Info <<"Computed DeltaT is "<< endl;
-
-
+    return newDeltaT;
 }
 
 

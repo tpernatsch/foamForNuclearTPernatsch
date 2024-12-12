@@ -90,6 +90,7 @@ Foam::solvers::neutronics::neutronics
     ),
     keff_(reactorState_.lookupOrDefault("keff", 1.0)),
     pTarget_(reactorState_.lookupOrDefault("pTarget", 1.0)),
+    pTotOld_(pTarget_),
     powerDensity_
     (
         IOobject
@@ -118,6 +119,120 @@ Foam::solvers::neutronics::neutronics
         dimensionedScalar("", dimPower/dimVol, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
+    oneGroupFlux_
+    (
+        IOobject
+        (
+            "oneGroupFlux",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimless/dimArea/dimTime, 1),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TFuelOrig_(nullptr),
+    TCladOrig_(nullptr),
+    TCoolOrig_(nullptr),
+    rhoCoolOrig_(nullptr),
+    TStructOrig_(nullptr),
+    TStructMechOrig_(nullptr),
+    UOrig_(nullptr),
+    alphaOrig_(nullptr),
+    alphatOrig_(nullptr),
+    muOrig_(nullptr),
+    TFuel_
+    (
+        IOobject
+        (
+            "TFuel",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TClad_
+    (
+        IOobject
+        (
+            "TClad",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TCool_
+    (
+        IOobject
+        (
+            "TCool",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    rhoCool_
+    (
+        IOobject
+        (
+            "rhoCool",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimDensity, SMALL),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TStruct_
+    (
+        IOobject
+        (
+            "TStruct",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    TStructMech_
+    (
+        IOobject
+        (
+            "TStructMech",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimTemperature, 0.0),
+        zeroGradientFvPatchScalarField::typeName
+    ),
+    UPtr_(nullptr),
+    alphaPtr_(nullptr),
+    alphatPtr_(nullptr),
+    muPtr_(nullptr),
+    phiPtr_(nullptr),
+    diffCoeffPrecPtr_(nullptr),
     disp_
     (
         IOobject
@@ -133,6 +248,7 @@ Foam::solvers::neutronics::neutronics
         zeroGradientFvPatchScalarField::typeName
     ),
     initialResidual_(1.0),
+    residual_(0.0),
     eigenvalueNeutronics_
     (
         IOdictionary::lookupOrDefault("eigenvalueNeutronics", false)
@@ -210,8 +326,12 @@ void Foam::solvers::neutronics::correctBaffleLessFields()
                     {
                         if (regionsFrom[regionFromi] == mesh_.name())
                         {
-                            const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
-                            const wordList fieldTypes(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("fieldTypes")); // list of types of fields to create
+                            // list of fields to create
+                            const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields"));
+
+                            // list of types of fields to create
+                            const wordList fieldTypes(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("fieldTypes"));
+
                             fvMesh& baffleLessMesh = const_cast<fvMesh&>(mesh_.time().lookupObject<fvMesh>(mesh_.name()+".baffleLess"));
                             forAll(fieldsList, fieldi)
                             {
@@ -254,7 +374,6 @@ void Foam::solvers::neutronics::deformMesh()
 
     if (couplingDict.found("meshDeformation"))
     {
-
         const dictionary deformDict(couplingDict.subDict("meshDeformation"));
 
         const wordList regions(deformDict.toc());

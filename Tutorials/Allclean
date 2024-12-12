@@ -42,6 +42,7 @@ tutorials="
     reactorCases/Godiva_SN
 
     guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion
+    guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion
 
     fmuCases/2D_PKCoupleFMI/comparisonFMU
     fmuCases/2D_PKCoupleFMI/PIDcontrol

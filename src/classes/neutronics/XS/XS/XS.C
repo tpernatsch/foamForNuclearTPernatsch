@@ -373,13 +373,15 @@ Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
             zone = zoneI;
 
             sigmaFromTo[cellIglobal] = sigmaFromToList_[zone][momentI][energyJ][energyI].get(
-                fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                Tclad[cellIglobal],
-                Tcool[cellIglobal],
-                TStructMech[cellIglobal],
-                rhoCool[cellIglobal],
-                axExp_[cellIglobal],
-                radExp_[cellIglobal],
+                {
+                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
+                    Tclad[cellIglobal],
+                    Tcool[cellIglobal],
+                    TStructMech[cellIglobal],
+                    rhoCool[cellIglobal],
+                    axExp_[cellIglobal],
+                    radExp_[cellIglobal]
+                },
                 isParametrize
             );
         }

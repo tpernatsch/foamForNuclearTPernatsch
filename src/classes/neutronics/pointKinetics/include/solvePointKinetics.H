@@ -12,7 +12,7 @@ if(mesh_.time().timeIndex() == mesh_.time().startTimeIndex()+1)
 #include "computeFeedbackFieldValues.H"
 if (initialize)
 {
-    
+
         //- TFuelRef limited as it appears in a fraction denominator if doing
     //  fastNeutrons (for the Doppler coeff)
 
@@ -25,7 +25,7 @@ if (initialize)
     TCoolRef_ =
         reactorState_.lookupOrDefault<scalar>("TCoolRef", TCoolValue);
 
-    rhoCoolRef_ =     
+    rhoCoolRef_ =
         reactorState_.lookupOrDefault<scalar>("rhoCoolRef", rhoCoolValue);
 
     TStructRef_ =
@@ -176,12 +176,12 @@ secondaryPowerDensity_.correctBoundaryConditions();
 
 //- Only possible to re-scale precursors if they were initially present,
 //  so I'm using a forAllIter rather than a for, as delayedGroups_ is not
-//  necessarily representative of the length of the precursors_ PtrList
+//  necessarily representative of the length of the prec_ PtrList
 int i = 0;
 forAllIter
 (
     PtrList<volScalarField>,
-    precursors_,
+    prec_,
     iter
 )
 {

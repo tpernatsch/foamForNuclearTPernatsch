@@ -102,50 +102,50 @@ protected:
     volScalarField defaultPrec_;
 
     //- Derived fields
-    volScalarField oneGroupFlux_;
+    // volScalarField oneGroupFlux_;
     volScalarField neutroSource_;
     volScalarField delayedNeutroSource_;
     volScalarField scatteringSourceExtra_;
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
-    const volScalarField* TFuelOrig_;
-    const volScalarField* TCladOrig_;
-    const volScalarField* TCoolOrig_;
-    const volScalarField* rhoCoolOrig_;
-    const volScalarField* TStructMechOrig_;
-    const volVectorField* UOrig_;
-    //- Total volume fraction of fluid(s)
-    const volScalarField* alphaOrig_;
-    //- Thermal diffusivity in kg/m/s
-    const volScalarField* alphatOrig_;
-    //- Molecular viscosity in kg/m/s (== Pa*s)
-    const volScalarField* muOrig_;
+    // const volScalarField* TFuelOrig_;
+    // const volScalarField* TCladOrig_;
+    // const volScalarField* TCoolOrig_;
+    // const volScalarField* rhoCoolOrig_;
+    // const volScalarField* TStructMechOrig_;
+    // const volVectorField* UOrig_;
+    // //- Total volume fraction of fluid(s)
+    // const volScalarField* alphaOrig_;
+    // //- Thermal diffusivity in kg/m/s
+    // const volScalarField* alphatOrig_;
+    // //- Molecular viscosity in kg/m/s (== Pa*s)
+    // const volScalarField* muOrig_;
 
-    //- Mapped fields from TH
-    volScalarField TFuel_;
-    volScalarField TClad_;
-    volScalarField TCool_;
-    volScalarField rhoCool_;
-    //- Mapped fields from TM
-    volScalarField TStructMech_;
+    // //- Mapped fields from TH
+    // volScalarField TFuel_;
+    // volScalarField TClad_;
+    // volScalarField TCool_;
+    // volScalarField rhoCool_;
+    // //- Mapped fields from TM
+    // volScalarField TStructMech_;
 
-    //- Also mapped, but these are autoPtr as these field are not needed at all
-    //- unless doing liquidFuel. Thus, avoid wasting memory by only setting
-    //- these fields if they are actually needed
-    autoPtr<volVectorField> UPtr_;
-    autoPtr<volScalarField> alphaPtr_;
-    autoPtr<volScalarField> alphatPtr_;
-    autoPtr<volScalarField> muPtr_;
+    // //- Also mapped, but these are autoPtr as these field are not needed at all
+    // //- unless doing liquidFuel. Thus, avoid wasting memory by only setting
+    // //- these fields if they are actually needed
+    // autoPtr<volVectorField> UPtr_;
+    // autoPtr<volScalarField> alphaPtr_;
+    // autoPtr<volScalarField> alphatPtr_;
+    // autoPtr<volScalarField> muPtr_;
 
-    //- Fields derived from mapped fields
-    autoPtr<surfaceScalarField> phiPtr_;
-    autoPtr<volScalarField> diffCoeffPrecPtr_;
+    // //- Fields derived from mapped fields
+    // autoPtr<surfaceScalarField> phiPtr_;
+    // autoPtr<volScalarField> diffCoeffPrecPtr_;
 
-    bool multiRegion_;
+    // bool multiRegion_;
 
-    scalar pTotOld_;
+    // scalar pTotOld_;
 
-    scalar residual_;
+    // scalar residual_;
 
 private:
 
@@ -189,51 +189,37 @@ public:
             return prec_;
         }
 
-        //- Return one group flux
-        virtual const volScalarField& oneGroupFlux() const
-        {
-            return oneGroupFlux_;
-        }
+        // //- Return one group flux
+        // virtual const volScalarField& oneGroupFlux() const
+        // {
+        //     return oneGroupFlux_;
+        // }
 
         //- Return power
         virtual scalar power() const
         {
             scalar pTot = 0;
-            forAll(flux_,energyI)
+            forAll(flux_, energyI)
             {
 
                 pTot += fvc::domainIntegrate
                 (
-                    flux_[energyI]*xs_.sigmaPow()[energyI]
+                    flux_[energyI] * xs_.sigmaPow()[energyI]
                 ).value();
 
             }
             return pTot;
         }
 
-        // virtual void getCouplingFieldRefs
-        // (
-        //     const objectRegistry& srcTH,
-        //     const meshToMesh& neutroToFluid,
-        //     const objectRegistry& srcTM,
-        //     const meshToMesh& neutroToMech
-        // );
-
-        // virtual void interpolateCouplingFields
-        // (
-        //     const meshToMesh& neutroToFluid,
-        //     const meshToMesh& neutroToMech
-        // );
-
         //- Correct/update the properties
         virtual void correctPhysics();
         virtual void correctTightlyCoupledPhysics();
 
         virtual scalar maxDeltaT();
-        virtual scalar getResidual()
-        {
-            return residual_;
-        }
+        // virtual scalar getResidual()
+        // {
+        //     return residual_;
+        // }
 };
 
 

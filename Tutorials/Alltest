@@ -87,6 +87,7 @@ echo
 tutorials=(
     # Tutorial name                   Expected maximum memory usage (Gb)
     "guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion            0.2"
+    "guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion   0.2"
     "featureCases/1D_boiling                                        0.2"
     "featureCases/1D_CHF/imposedPower                               0.2"
     "featureCases/1D_CHF/imposedTemperature                         0.2"
@@ -137,6 +138,7 @@ then
     tutorials=(
         # Tutorial name                   Expected maximum memory usage (Gb)
         "guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion            0.2"
+        "guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion   0.2"
         "featureCases/1D_HX/onePhase                                    0.2"
         "featureCases/1D_PSBT_SC/Phase_Ex1_12223                        0.2"
         "featureCases/2D_cavityBoussinesq                               0.2"

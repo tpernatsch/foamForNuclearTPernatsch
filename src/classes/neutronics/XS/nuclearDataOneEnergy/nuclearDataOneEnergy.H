@@ -155,7 +155,7 @@ private:
     SquareMatrix<scalar> invRBFmatrix_;
 
     //- Buffer list containing the input parameters
-    scalarList currValue_;
+    // scalarList currValue_;
 
     //- Reduced buffer list containing the input parameters, only contains the
     //  perturbed parameters
@@ -181,13 +181,14 @@ public:
         //- Add data point for interpolation
         void addData(
             const scalar value,
-            const scalar Tfuel,
-            const scalar Tclad,
-            const scalar Tcool,
-            const scalar TstructMech,
-            const scalar rhoCool,
-            const scalar axExp,
-            const scalar radExp
+            const List<scalar> parameters
+            // const scalar Tfuel,
+            // const scalar Tclad,
+            // const scalar Tcool,
+            // const scalar TstructMech,
+            // const scalar rhoCool,
+            // const scalar axExp,
+            // const scalar radExp
         );
 
         //- Build interpolation scheme
@@ -199,13 +200,14 @@ public:
         //- Get the interpolated nuclear data value based on the input
         //- parameters
         scalar get(
-            const scalar Tfuel,
-            const scalar Tclad,
-            const scalar Tcool,
-            const scalar TstructMech,
-            const scalar rhoCool,
-            const scalar axExp,
-            const scalar radExp,
+            // const scalar Tfuel,
+            // const scalar Tclad,
+            // const scalar Tcool,
+            // const scalar TstructMech,
+            // const scalar rhoCool,
+            // const scalar axExp,
+            // const scalar radExp,
+            const List<scalar> parameters,
             const bool isParametrize = true
         );
 
