@@ -133,16 +133,16 @@ Foam::solvers::neutronics::neutronics
         dimensionedScalar("", dimless/dimArea/dimTime, 1),
         zeroGradientFvPatchScalarField::typeName
     ),
-    TFuelOrig_(nullptr),
-    TCladOrig_(nullptr),
-    TCoolOrig_(nullptr),
-    rhoCoolOrig_(nullptr),
-    TStructOrig_(nullptr),
-    TStructMechOrig_(nullptr),
-    UOrig_(nullptr),
-    alphaOrig_(nullptr),
-    alphatOrig_(nullptr),
-    muOrig_(nullptr),
+    // TFuelOrig_(nullptr),
+    // TCladOrig_(nullptr),
+    // TCoolOrig_(nullptr),
+    // rhoCoolOrig_(nullptr),
+    // TStructOrig_(nullptr),
+    // TStructMechOrig_(nullptr),
+    // UOrig_(nullptr),
+    // alphaOrig_(nullptr),
+    // alphatOrig_(nullptr),
+    // muOrig_(nullptr),
     TFuel_
     (
         IOobject
@@ -233,20 +233,20 @@ Foam::solvers::neutronics::neutronics
     muPtr_(nullptr),
     phiPtr_(nullptr),
     diffCoeffPrecPtr_(nullptr),
-    disp_
-    (
-        IOobject
-        (
-            "disp",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedVector("d_zero", dimLength, vector::zero),
-        zeroGradientFvPatchScalarField::typeName
-    ),
+    // disp_
+    // (
+    //     IOobject
+    //     (
+    //         "disp",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::READ_IF_PRESENT,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedVector("d_zero", dimLength, vector::zero),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
     initialResidual_(1.0),
     residual_(0.0),
     eigenvalueNeutronics_

@@ -84,7 +84,7 @@ states
 (
     reference
     {
-        Tfuel   900;
+        TFuel   900;
         rhoCool 4125;
 
         zones
@@ -184,9 +184,9 @@ states
         );
     }
 
-    Tfuel1500K
+    TFuel1500K
     {
-        Tfuel   1500;
+        TFuel   1500;
 
         zones
         (

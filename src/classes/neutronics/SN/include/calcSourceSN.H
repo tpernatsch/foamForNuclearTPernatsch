@@ -11,8 +11,8 @@ forAll(sigmaFromToTempEJEI,momentL)
             (
                 xs_.sigmaFromTo
                 (
-                    momentL, energyJ, energyI,
-                    TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_
+                    momentL, energyJ, energyI/*,
+                    TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_*/
                 )
             )
         );

@@ -162,41 +162,8 @@ protected:
 
     //Derived fields
     PtrList<volScalarField> flux_;
-    // volScalarField oneGroupFlux_;
     volScalarField neutroSource_;
     volScalarField delayedNeutroSource_;
-
-    //- Ptrs to coupling fields (i.e. defined on their original mesh)
-    // const volScalarField* TFuelOrig_;
-    // const volScalarField* TCladOrig_;
-    // const volScalarField* TCoolOrig_;
-    // const volScalarField* rhoCoolOrig_;
-    // const volScalarField* TStructMechOrig_;
-    // const volVectorField* UOrig_;
-
-    // //- Total volume fraction of fluid(s)
-    // const volScalarField* alphaOrig_;
-
-    // //- Thermal diffusivity in kg/m/s
-    // const volScalarField* alphatOrig_;
-
-    // //- Molecular viscosity in kg/m/s (== Pa*s)
-    // const volScalarField* muOrig_;
-
-    // //- Mapped fuel temperature field from thermal-hydraulics
-    // volScalarField TFuel_;
-
-    // //- Mapped cladding temperature field from thermal-hydraulics
-    // volScalarField TClad_;
-
-    // //- Mapped coolant temperature field from thermal-hydraulics
-    // volScalarField TCool_;
-
-    // //- Mapped coolant density field from thermal-hydraulics
-    // volScalarField rhoCool_;
-
-    // //- Mapped structure temprature field from thermal-mechanics
-    // volScalarField TStructMech_;
 
     //- For Aitken eigenvalue
     scalar keff0_;
@@ -216,14 +183,6 @@ protected:
     //- Fields derived from mapped fields
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
-
-    // bool multiRegion_;
-
-    //- Old total power
-    // scalar pTotOld_;
-
-    // //- Solver residual
-    // scalar residual_;
 
 private:
 
@@ -267,12 +226,6 @@ public:
             return prec_;
         }
 
-        //- Return one group flux
-        // virtual const volScalarField& oneGroupFlux() const
-        // {
-        //     return oneGroupFlux_;
-        // }
-
         //- Return power
         virtual scalar power() const
         {
@@ -292,11 +245,6 @@ public:
         virtual void correctTightlyCoupledPhysics();
 
         virtual scalar maxDeltaT();
-
-        // virtual scalar getResidual()
-        // {
-        //     return residual_;
-        // }
 
         //- Access
 

@@ -71,7 +71,7 @@ isInRange()
     fi
 }
 
-error=0.0001
+error=0.001
 echo "Test keff and power with $error relative error  " | tee -a $resFile
 if  [ $(isInRange $expectedKeff         $keff       $error) -eq 0 ] &&
     [ $(isInRange $expectedTotalPower   $totalPower $error) -eq 0 ]

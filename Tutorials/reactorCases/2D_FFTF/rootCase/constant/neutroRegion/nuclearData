@@ -153,6 +153,15 @@ controlRodReactivityMap
     11-09-2019 11:38:11
 */
 
+xsVariables
+{
+    TFuel   log;
+    TClad   lin;
+    rhoCool lin;
+    axExp   lin;
+    radExp  lin;
+}
+
 states
 (
     reference

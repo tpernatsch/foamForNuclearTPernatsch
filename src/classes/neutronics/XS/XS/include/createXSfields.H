@@ -253,3 +253,40 @@ forAll(discFactor_, energyI)
         )
     );
 }
+
+// Create variable fields (e.g TFuel, rhoCool, ...) or read if already set
+forAll(xsVariableNames_, varI)
+{
+    word variableName(xsVariableNames_[varI]);
+
+    if (mesh_.foundObject<volScalarField>(variableName))
+    {
+        volScalarField& varField = const_cast<volScalarField&>
+        (
+            mesh_.lookupObject<volScalarField>(variableName)
+        );
+
+        xsVariableFields_.set(varI, &varField);
+    }
+    else
+    {
+        xsVariableFields_.set
+        (
+            varI,
+            new volScalarField
+            (
+                IOobject
+                (
+                    variableName,
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::READ_IF_PRESENT,
+                    IOobject::AUTO_WRITE
+                ),
+                mesh_,
+                dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
+                zeroGradientFvPatchScalarField::typeName
+            )
+        );
+    }
+}

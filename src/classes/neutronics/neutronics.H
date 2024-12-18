@@ -128,22 +128,22 @@ protected:
     volScalarField oneGroupFlux_;
 
     //- Ptrs to coupling fields (i.e. defined on their original mesh)
-    const volScalarField* TFuelOrig_;
-    const volScalarField* TCladOrig_;
-    const volScalarField* TCoolOrig_;
-    const volScalarField* rhoCoolOrig_;
-    const volScalarField* TStructOrig_;
-    const volScalarField* TStructMechOrig_;
-    const volVectorField* UOrig_;
+    // const volScalarField* TFuelOrig_;
+    // const volScalarField* TCladOrig_;
+    // const volScalarField* TCoolOrig_;
+    // const volScalarField* rhoCoolOrig_;
+    // const volScalarField* TStructOrig_;
+    // const volScalarField* TStructMechOrig_;
+    // const volVectorField* UOrig_;
 
     //- Total volume fraction of fluid(s)
-    const volScalarField* alphaOrig_;
+    // const volScalarField* alphaOrig_;
 
     //- Thermal diffusivity in kg/m/s
-    const volScalarField* alphatOrig_;
+    // const volScalarField* alphatOrig_;
 
     //- Molecular viscosity in kg/m/s (== Pa*s)
-    const volScalarField* muOrig_;
+    // const volScalarField* muOrig_;
 
     //- Mapped fuel temperature field from thermal-hydraulics
     volScalarField TFuel_;
@@ -176,7 +176,7 @@ protected:
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
     //- Mesh displacement
-    volVectorField disp_;
+    // volVectorField disp_;
 
     //- Initialize residual
     scalar initialResidual_;
@@ -241,9 +241,6 @@ public:
         //- Return precursors
         virtual const PtrList<volScalarField> precursors() const = 0;
 
-        //- Return one group flux
-        // virtual const volScalarField& oneGroupFlux() const = 0;
-
         //- Return power
         virtual scalar power() const = 0;
 
@@ -282,10 +279,10 @@ public:
                 return oneGroupFlux_;
             }
 
-            const volVectorField& disp() const
-            {
-                return disp_;
-            }
+            // const volVectorField& disp() const
+            // {
+            //     return disp_;
+            // }
 
             bool eigenvalue() const
             {

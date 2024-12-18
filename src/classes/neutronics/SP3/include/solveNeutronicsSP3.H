@@ -1,7 +1,7 @@
 Info<< "Solving neutronics" << endl;
 
 // Correct XS fields
-xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_);
+xs_.correct(/*TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_*/);
 
 #include "setXSFields.H"
 
@@ -39,7 +39,7 @@ if
     pTot = power();
 }
 
-//-Update mapped fields
+//- Update mapped fields
 if (liquidFuel_)
 {
     phiPtr_() = fvc::flux(UPtr_() * alphaPtr_());

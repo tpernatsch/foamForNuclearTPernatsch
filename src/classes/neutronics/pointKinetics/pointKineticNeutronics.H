@@ -233,12 +233,7 @@ protected:
     scalar decayPower_;
 
     //- Optional decay power
-    // autoPtr<Function1<scalar>> decayPowerPtr_;
     timeProfile decayPowerTimeProfile_;
-
-    //- Time offset for the calcuation of the decayPower based on the
-    //  provided Function1, if any
-    // scalar decayPowerStartTime_;
 
     //- Due to whatever the user might please
     timeProfile externalReactivityTimeProfile_;
@@ -360,48 +355,10 @@ protected:
     scalar TStructMechRef_;
     scalar TDrivelineRef_;
 
-    //- Ptrs to coupling fields (i.e. defined on their original mesh)
-    // const volScalarField* TFuelOrig_;
-    // const volScalarField* TCladOrig_;
-    // const volScalarField* TCoolOrig_;
-    // const volScalarField* rhoCoolOrig_;
-    // const volScalarField* TStructOrig_;
-    // const volScalarField* TStructMechOrig_;
-    // const volScalarField* powerDensityOrig_;
-    // const volScalarField* powerDensityToLiquidOrig_;
-    // const volVectorField* UOrig_;
-    // const volScalarField* alphaOrig_;
-    // const volScalarField* alphatOrig_;
-    // const volScalarField* muOrig_;
-
-    // //- Mapped fields from TH
-    // volScalarField TFuel_;
-    // volScalarField TClad_;
-    // volScalarField TCool_;
-    // volScalarField rhoCool_;
-    // volScalarField TStruct_; //- This is also used to compute TDriveline
-    // //- Mapped fields from TM
-    // volScalarField TStructMech_;
-
-    // //- Also mapped, but these are autoPtr as these field are not needed at all
-    // //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
-    // //  these fields if they are actually needed
-    // autoPtr<volVectorField> UPtr_;
-    // autoPtr<volScalarField> alphaPtr_;
-    // autoPtr<volScalarField> alphatPtr_;
-    // autoPtr<volScalarField> muPtr_;
-
-    // //- Fields derived from mapped fields
-    // autoPtr<surfaceScalarField> phiPtr_;
-    // autoPtr<volScalarField> diffCoeffPrecPtr_;
-
     //- Fields necessary when an albedo boundary condition has been used
     //  to calculate the initial fluxes
     volScalarField Dalbedo_;
     volScalarField fluxStarAlbedo_;
-
-    //-
-    // volScalarField oneGroupFlux_;
 
     //- Initial flux
     volScalarField initOneGroupFlux_;
@@ -494,10 +451,6 @@ protected:
     //  store them in pgiMagSf_)
     scalarList phiMagSf_;
 
-    // scalar pTotOld_;
-
-    // scalar residual_;
-
 private:
 
     //- Disallow default bitwise copy construct
@@ -554,11 +507,6 @@ public:
 
         virtual scalar maxDeltaT();
 
-        // virtual scalar getResidual()
-        // {
-        //     return residual_;
-        // }
-
         //- To split strings. The file where I got this function originally
         //  defined is in classes/thermalHydraulics/models/include. However,
         //  including things from thermalHydraulics in neutronics, even if it's
@@ -598,12 +546,6 @@ public:
             {
                 return prec_;
             };
-
-            //- Return one group flux
-            // virtual const volScalarField& oneGroupFlux() const
-            // {
-            //     return oneGroupFlux_;
-            // }
 
             //- Return power
             virtual scalar power() const

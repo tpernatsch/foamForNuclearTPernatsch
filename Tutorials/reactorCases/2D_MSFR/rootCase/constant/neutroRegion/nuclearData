@@ -31,11 +31,17 @@ precGroups      8;
 
 // ScNo 1; This can be used to set the Schmidt number for diffusion of precursors
 
+xsVariables
+{
+    TFuel       log;
+    rhoCool     lin;
+}
+
 states
 (
     reference
     {
-        Tfuel   900;
+        TFuel   900;
         rhoCool 4125;
 
         zones
@@ -135,9 +141,9 @@ states
         );
     }
 
-    Tfuel1500K
+    TFuel1500K
     {
-        Tfuel   1500;
+        TFuel   1500;
 
         zones
         (

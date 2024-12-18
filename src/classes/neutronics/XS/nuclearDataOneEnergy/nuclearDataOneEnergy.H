@@ -169,7 +169,8 @@ public:
         nuclearDataOneEnergy
         (
             const word zoneName,
-            const label mode = 1
+            const label mode = 1,
+            const label nParameters = 1
         );
 
     //- Destructor
@@ -181,7 +182,7 @@ public:
         //- Add data point for interpolation
         void addData(
             const scalar value,
-            const List<scalar> parameters
+            const List<scalar>& parameters
             // const scalar Tfuel,
             // const scalar Tclad,
             // const scalar Tcool,
@@ -207,7 +208,7 @@ public:
             // const scalar rhoCool,
             // const scalar axExp,
             // const scalar radExp,
-            const List<scalar> parameters,
+            const List<scalar>& parameters,
             const bool isParametrize = true
         );
 

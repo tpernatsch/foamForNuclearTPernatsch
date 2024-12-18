@@ -69,7 +69,7 @@ Foam::solvers::adjointDiffusionNeutronics::adjointDiffusionNeutronics
     fvMesh& mesh
 )
 :
-    neutronics(mesh), // adjointDiffusionNeutronics is derived from neutronics
+    neutronics(mesh),
     xs_(mesh),
     Dalbedo_
     (
@@ -129,18 +129,6 @@ Foam::solvers::adjointDiffusionNeutronics::adjointDiffusionNeutronics
         dimensionedScalar("", dimensionSet(0,-2,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    // oneGroupFlux_
-    // (
-    //     IOobject
-    //     (
-    //         "oneGroupFlux",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     defaultFlux_
-    // ),
     scatteringSourceExtra_
     (
         IOobject
@@ -197,88 +185,7 @@ Foam::solvers::adjointDiffusionNeutronics::adjointDiffusionNeutronics
         mesh,
         dimensionedScalar("", dimensionSet(0,-2,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
-    )//,
-    // TFuelOrig_(nullptr),
-    // TCladOrig_(nullptr),
-    // TCoolOrig_(nullptr),
-    // rhoCoolOrig_(nullptr),
-    // TStructMechOrig_(nullptr),
-    // UOrig_(nullptr),
-    // alphaOrig_(nullptr),
-    // alphatOrig_(nullptr),
-    // muOrig_(nullptr),
-    // TFuel_
-    // (
-    //     IOobject
-    //     (
-    //         "TFuel",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // TClad_
-    // (
-    //     IOobject
-    //     (
-    //         "TClad",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // TCool_
-    // (
-    //     IOobject
-    //     (
-    //         "TCool",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // rhoCool_
-    // (
-    //     IOobject
-    //     (
-    //         "rhoCool",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::NO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, SMALL),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // TStructMech_
-    // (
-    //     IOobject
-    //     (
-    //         "TStructMech",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // pTotOld_(pTarget_)//,
-    // residual_(0)
+    )
 {
     #include "createNeutronicsFieldsAdjoint.H"
 }

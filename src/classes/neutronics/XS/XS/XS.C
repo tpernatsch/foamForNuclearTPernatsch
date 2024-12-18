@@ -74,6 +74,12 @@ Foam::XS::XS
     axialOrientation_(nuclearData_.lookupOrDefault("axialOrientation", vector(0.0, 0.0, 1.0))),
     ScNo_(nuclearData_.lookupOrDefault("ScNo", 1.0)),
     polyharmonicSplineMode_(nuclearData_.lookupOrDefault("polyharmonicSplineMode", 1)),
+    xsVariablesDict_(nuclearData_.subDict("xsVariables")),
+    nxsVariables_(xsVariablesDict_.toc().size()),
+    xsVariableNames_(nxsVariables_),
+    xsVariableTypes_(nxsVariables_),
+    xsVariableFields_(nxsVariables_),
+    xsVariableTransformedFields_(nxsVariables_),
     states_(nuclearData_.lookup("states")),
     referenceState_(states_.first().dict()),
     referenceZones_(referenceState_.lookup("zones")),
@@ -157,62 +163,76 @@ Foam::XS::XS
     groupsWoDF_(nuclearData_.lookupOrDefault<List<int>>("groupsWoDF", List<int>())),
     fastNeutrons_(nuclearData_.lookupOrDefault("fastNeutrons", true)),
     doNotParametrize_(nuclearData_.lookupOrDefault<List<int>>("doNotParametrize", List<int>())),
-    radExp_
+    disp_
     (
         IOobject
         (
-            "radExp",
+            "disp",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ,
+            IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
         mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
+        dimensionedVector("d_zero", dimLength, vector::zero),
         zeroGradientFvPatchScalarField::typeName
     ),
-    axExp_
-    (
-        IOobject
-        (
-            "axExp",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    logT_
-    (
-        IOobject
-        (
-            "logT",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    sqrtT_
-    (
-        IOobject
-        (
-            "diffT",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimensionSet(0,0,0,0.5,0,0,0), 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
+    // radExp_
+    // (
+    //     IOobject
+    //     (
+    //         "radExp",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::NO_READ,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
+    // axExp_
+    // (
+    //     IOobject
+    //     (
+    //         "axExp",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::NO_READ,
+    //         IOobject::AUTO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
+    // logT_
+    // (
+    //     IOobject
+    //     (
+    //         "logT",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::NO_READ,
+    //         IOobject::NO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
+    // sqrtT_
+    // (
+    //     IOobject
+    //     (
+    //         "diffT",
+    //         mesh.time().timeName(),
+    //         mesh,
+    //         IOobject::NO_READ,
+    //         IOobject::NO_WRITE
+    //     ),
+    //     mesh,
+    //     dimensionedScalar("", dimensionSet(0,0,0,0.5,0,0,0), 0.0),
+    //     zeroGradientFvPatchScalarField::typeName
+    // ),
     IVList_(zoneNumber_),
     chiPromptList_(zoneNumber_),
     chiDelayedList_(zoneNumber_),
@@ -260,12 +280,12 @@ Foam::XS::~XS()
 
 void Foam::XS::correct
 (
-    const volScalarField& Tfuel,
-    const volScalarField& Tclad,
-    const volScalarField& rhoCool,
-    const volScalarField& Tcool,
-    const volVectorField& Disp,
-    const volScalarField& TStructMech
+    // const volScalarField& Tfuel,
+    // const volScalarField& Tclad,
+    // const volScalarField& rhoCool,
+    // const volScalarField& Tcool,
+    // const volVectorField& Disp,
+    // const volScalarField& TStructMech
 )
 {
     #include "setNeutronicsVariables.H"
@@ -314,13 +334,13 @@ Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
 (
     label momentI,
     label energyJ,
-    label energyI,
-    const volScalarField& Tfuel,
-    const volScalarField& Tclad,
-    const volScalarField& rhoCool,
-    const volScalarField& Tcool,
-    const volVectorField& Disp,
-    const volScalarField& TStructMech
+    label energyI//,
+    // const volScalarField& Tfuel,
+    // const volScalarField& Tclad,
+    // const volScalarField& rhoCool,
+    // const volScalarField& Tcool,
+    // const volVectorField& Disp,
+    // const volScalarField& TStructMech
 )
 {
     if (!isLowMemory_)
@@ -359,6 +379,7 @@ Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
     }
 
     // Update cells for all zones
+    scalarList variableValues(nxsVariables_);
     forAll(referenceZones_, zoneI)
     {
         label zone = zoneI;
@@ -372,18 +393,24 @@ Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
             label cellIglobal = mesh_.cellZones()[zoneId][cellIlocal];
             zone = zoneI;
 
-            sigmaFromTo[cellIglobal] = sigmaFromToList_[zone][momentI][energyJ][energyI].get(
+            forAll(variableValues, varI)
+            {
+                if (xsVariableTypes_[varI] == "lin")
                 {
-                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                    Tclad[cellIglobal],
-                    Tcool[cellIglobal],
-                    TStructMech[cellIglobal],
-                    rhoCool[cellIglobal],
-                    axExp_[cellIglobal],
-                    radExp_[cellIglobal]
-                },
-                isParametrize
-            );
+                    variableValues[varI] = xsVariableFields_[varI][cellIglobal];
+                }
+                else
+                {
+                    variableValues[varI] = xsVariableTransformedFields_[varI][cellIglobal];
+                }
+            }
+
+            sigmaFromTo[cellIglobal] =
+                sigmaFromToList_[zone][momentI][energyJ][energyI].get
+                (
+                    variableValues,
+                    isParametrize
+                );
         }
     }
 

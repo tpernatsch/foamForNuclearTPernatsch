@@ -23,7 +23,7 @@ forAll(CRentries_, CRzoneI)
     {
         label cellIglobal = mesh_.cellZones()[FOLLOWERzoneId][cellIlocal];
 
-        maxFollowerHeight = max(cellHeight,centersSF[cellIglobal]) ;
+        maxFollowerHeight = max(cellHeight, centersSF[cellIglobal]);
 
         cellHeight = maxFollowerHeight;
     }
@@ -48,32 +48,101 @@ forAll(CRentries_, CRzoneI)
 }
 
 
-// Compute expansions
-tmp<volVectorField> tDNeutroRad(new volVectorField(Disp));
-volVectorField& DNeutroRad = tDNeutroRad.ref();
+// // Compute expansions
+// tmp<volVectorField> tDNeutroRad(new volVectorField(Disp));
+// volVectorField& DNeutroRad = tDNeutroRad.ref();
 
-tmp<volScalarField> tDNeutroAx(new volScalarField(Disp & axialOrientation_));
-volScalarField& DNeutroAx = tDNeutroAx.ref();
+// tmp<volScalarField> tDNeutroAx(new volScalarField(Disp & axialOrientation_));
+// volScalarField& DNeutroAx = tDNeutroAx.ref();
 
-DNeutroRad.replace(0, DNeutroRad.component(0)*(1.0 - axialOrientation_[0]));
-DNeutroRad.replace(1, DNeutroRad.component(1)*(1.0 - axialOrientation_[1]));
-DNeutroRad.replace(2, DNeutroRad.component(2)*(1.0 - axialOrientation_[2]));
+// DNeutroRad.replace(0, DNeutroRad.component(0)*(1.0 - axialOrientation_[0]));
+// DNeutroRad.replace(1, DNeutroRad.component(1)*(1.0 - axialOrientation_[1]));
+// DNeutroRad.replace(2, DNeutroRad.component(2)*(1.0 - axialOrientation_[2]));
 
-DNeutroRad.correctBoundaryConditions();
-DNeutroAx.correctBoundaryConditions();
+// DNeutroRad.correctBoundaryConditions();
+// DNeutroAx.correctBoundaryConditions();
 
-radExp_ = fvc::div(DNeutroRad)/2.0;
-axExp_ = fvc::grad(DNeutroAx) & axialOrientation_;
+// radExp_ = fvc::div(DNeutroRad)/2.0;
+// axExp_ = fvc::grad(DNeutroAx) & axialOrientation_;
 
-radExp_.correctBoundaryConditions();
-axExp_.correctBoundaryConditions();
+// radExp_.correctBoundaryConditions();
+// axExp_.correctBoundaryConditions();
 
-tDNeutroRad.clear();
-DNeutroAx.clear();
+// tDNeutroRad.clear();
+// tDNeutroAx.clear();
 
 // log(T) if fast spectrum or sqrt(T) if thermal
-logT_ = log(max(0.01, Tfuel/dimensionedScalar("", dimTemperature, 1.0)));
-sqrtT_ = pow(max(dimensionedScalar("", dimTemperature, 0.0), Tfuel), 0.5);
+// logT_ = log(max(0.01, Tfuel/dimensionedScalar("", dimTemperature, 1.0)));
+// sqrtT_ = pow(max(dimensionedScalar("", dimTemperature, 0.0), Tfuel), 0.5);
+
+// Change variable law
+forAll(xsVariableNames_, varI)
+{
+    word variableName(xsVariableNames_[varI]);
+    word variableType(xsVariableTypes_[varI]);
+
+    // Compute expansion
+    if (variableName == "radExp")
+    {
+        tmp<volVectorField> tDNeutroRad(new volVectorField(disp_));
+        volVectorField& DNeutroRad = tDNeutroRad.ref();
+
+        DNeutroRad.replace(0, DNeutroRad.component(0)*(1.0 - axialOrientation_[0]));
+        DNeutroRad.replace(1, DNeutroRad.component(1)*(1.0 - axialOrientation_[1]));
+        DNeutroRad.replace(2, DNeutroRad.component(2)*(1.0 - axialOrientation_[2]));
+
+        DNeutroRad.correctBoundaryConditions();
+
+        // Compute radial expansion
+        xsVariableFields_[varI] = fvc::div(DNeutroRad)/2.0;
+
+        xsVariableFields_[varI].correctBoundaryConditions();
+
+        tDNeutroRad.clear();
+    }
+    else if (variableName == "axExp")
+    {
+        tmp<volScalarField> tDNeutroAx(new volScalarField(disp_ & axialOrientation_));
+        volScalarField& DNeutroAx = tDNeutroAx.ref();
+
+        DNeutroAx.correctBoundaryConditions();
+
+        // Compute axial expansion
+        xsVariableFields_[varI] = fvc::grad(DNeutroAx) & axialOrientation_;
+
+        xsVariableFields_[varI].correctBoundaryConditions();
+
+        tDNeutroAx.clear();
+    }
+
+    // Tranform with user-specified law
+    if (variableType == "log")
+    {
+        xsVariableTransformedFields_.set(varI, log
+        (
+            max
+            (
+                xsVariableFields_[varI] / dimensionedScalar("", xsVariableFields_[varI].dimensions(), 1.0),
+                0.01
+            )
+        ));
+    }
+    else if (variableType == "sqrt")
+    {
+        xsVariableTransformedFields_.set(varI, pow
+        (
+            max
+            (
+                xsVariableFields_[varI],
+                dimensionedScalar("", xsVariableFields_[varI].dimensions(), 0.0)
+            ),
+            0.5
+        ));
+    }
+}
+
+
+scalarList variableValues(nxsVariables_);
 
 forAll(nuSigmaEff_, energyI)
 {
@@ -162,59 +231,48 @@ forAll(nuSigmaEff_, energyI)
             // Tfuel, cladExp, Tcool, rhoCool, TStructMech, axialExp and
             // radialExp.
 
+            // scalarList variableValues({
+            //     fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
+            //     Tclad[cellIglobal],
+            //     Tcool[cellIglobal],
+            //     TStructMech[cellIglobal],
+            //     rhoCool[cellIglobal],
+            //     axExp_[cellIglobal],
+            //     radExp_[cellIglobal]
+            // });
+            forAll(variableValues, varI)
+            {
+                if (xsVariableTypes_[varI] == "lin")
+                {
+                    variableValues[varI] = xsVariableFields_[varI][cellIglobal];
+                }
+                else
+                {
+                    variableValues[varI] = xsVariableTransformedFields_[varI][cellIglobal];
+                }
+            }
+
             D_[energyI][cellIglobal] = DList_[zone][energyI].get
             (
-                {
-                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                    Tclad[cellIglobal],
-                    Tcool[cellIglobal],
-                    TStructMech[cellIglobal],
-                    rhoCool[cellIglobal],
-                    axExp_[cellIglobal],
-                    radExp_[cellIglobal]
-                },
+                variableValues,
                 isParametrize
             );
 
             nuSigmaEff_[energyI][cellIglobal] = nuSigmaEffList_[zone][energyI].get
             (
-                {
-                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                    Tclad[cellIglobal],
-                    Tcool[cellIglobal],
-                    TStructMech[cellIglobal],
-                    rhoCool[cellIglobal],
-                    axExp_[cellIglobal],
-                    radExp_[cellIglobal]
-                },
+                variableValues,
                 isParametrize
             );
 
             sigmaPow_[energyI][cellIglobal] = sigmaPowList_[zone][energyI].get
             (
-                {
-                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                    Tclad[cellIglobal],
-                    Tcool[cellIglobal],
-                    TStructMech[cellIglobal],
-                    rhoCool[cellIglobal],
-                    axExp_[cellIglobal],
-                    radExp_[cellIglobal]
-                },
+                variableValues,
                 isParametrize
             );
 
             sigmaRemoval_[energyI][cellIglobal] = sigmaRemovalList_[zone][energyI].get
             (
-                {
-                    fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                    Tclad[cellIglobal],
-                    Tcool[cellIglobal],
-                    TStructMech[cellIglobal],
-                    rhoCool[cellIglobal],
-                    axExp_[cellIglobal],
-                    radExp_[cellIglobal]
-                },
+                variableValues,
                 isParametrize
             );
 
@@ -224,18 +282,12 @@ forAll(nuSigmaEff_, energyI)
                 {
                     forAll(sigmaFromTo_[momentI], energyJ)
                     {
-                        sigmaFromTo_[momentI][energyJ][energyI][cellIglobal] = sigmaFromToList_[zone][momentI][energyJ][energyI].get(
-                            {
-                                fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-                                Tclad[cellIglobal],
-                                Tcool[cellIglobal],
-                                TStructMech[cellIglobal],
-                                rhoCool[cellIglobal],
-                                axExp_[cellIglobal],
-                                radExp_[cellIglobal]
-                            },
-                            isParametrize
-                        );
+                        sigmaFromTo_[momentI][energyJ][energyI][cellIglobal] =
+                            sigmaFromToList_[zone][momentI][energyJ][energyI].get
+                            (
+                                variableValues,
+                                isParametrize
+                            );
                     }
                 }
             }

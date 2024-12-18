@@ -128,11 +128,11 @@ scalar polyharmonicSplineFunction
         case 1:
             return(sqrt(rSquare));
         case 2:
-            return(rSquare * log(sqrt(rSquare)));
+            return(0.5 * rSquare * log(rSquare)); // r² log(r)
         case 3:
             return(sqrt(rSquare) * rSquare);
         case 4:
-            return(sqr(rSquare) * log(sqrt(rSquare)));
+            return(0.5 * sqr(rSquare) * log(rSquare));
         default:
             Info<< "Polyharmonic spline mode " << mode << " not in range [1; 4], return 0"
                 << endl;
@@ -316,7 +316,13 @@ scalar polyharmonicSpline
 {
     const label nx(xList.first().size());
 
-    scalar res(0);
+    // Polynomial Correction
+    scalar res(w[nx]);
+    forAll(xInput, paramI)
+    {
+        res += w[nx+paramI+1] * xInput[paramI];
+    }
+
     scalar rSquare(0);
     forAll(xList.first(), dataI)
     {
@@ -329,12 +335,6 @@ scalar polyharmonicSpline
         {
             res += w[dataI] * polyharmonicSplineFunction(rSquare, mode);
         }
-    }
-    // Polynomial Correction
-    res += w[nx];
-    forAll(xInput, paramI)
-    {
-        res += w[nx+paramI+1] * xInput[paramI];
     }
     return(res);
 }

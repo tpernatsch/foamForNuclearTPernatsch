@@ -70,7 +70,7 @@ Foam::solvers::SNNeutronics::SNNeutronics
     fvMesh& mesh
 )
 :
-    neutronics(mesh),//SNNeutronics is derived from neutronics
+    neutronics(mesh),
     xs_(mesh),
     quadratureSet_
     (
@@ -119,18 +119,6 @@ Foam::solvers::SNNeutronics::SNNeutronics
         zeroGradientFvPatchScalarField::typeName
     ),
     flux_(xs_.energyGroups()),
-    // oneGroupFlux_
-    // (
-    //     IOobject
-    //     (
-    //         "oneGroupFlux",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     defaultFlux_
-    // ),
     neutroSource_
     (
         IOobject
@@ -159,92 +147,11 @@ Foam::solvers::SNNeutronics::SNNeutronics
         dimensionedScalar("", dimensionSet(0,-3,-1,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    // TFuelOrig_(nullptr),
-    // TCladOrig_(nullptr),
-    // TCoolOrig_(nullptr),
-    // rhoCoolOrig_(nullptr),
-    // TStructMechOrig_(nullptr),
-    // UOrig_(nullptr),
-    // alphaOrig_(nullptr),
-    // alphatOrig_(nullptr),
-    // muOrig_(nullptr),
-    // TFuel_
-    // (
-    //     IOobject
-    //     (
-    //         "TFuel",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // TClad_
-    // (
-    //     IOobject
-    //     (
-    //         "TClad",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // TCool_
-    // (
-    //     IOobject
-    //     (
-    //         "TCool",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // rhoCool_
-    // (
-    //     IOobject
-    //     (
-    //         "rhoCool",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::NO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, SMALL),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // TStructMech_
-    // (
-    //     IOobject
-    //     (
-    //         "TStructMech",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimTemperature, 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
     keff0_(0.0),
     keff1_(0.0),
     keff2_(0.0),
     aitkenIterCounter_(0),
-    aitkenIterNo_(0)//,
-    // pTotOld_(pTarget_)//,
-    // residual_(0)
+    aitkenIterNo_(0)
 {
     #include "readQuadratureSet.H"
     #include "calcLegendreMatrices.H"

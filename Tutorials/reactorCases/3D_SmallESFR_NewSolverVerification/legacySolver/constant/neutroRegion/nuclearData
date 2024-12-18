@@ -37,12 +37,21 @@ axialOrientation    (0 0 1);
 // Here below, the cross-sections (and few other parameters) are specified for each cellZone in the
 // neutronics mesh. ALL cellZones must be specified in "reference"!
 
+xsVariables
+{
+    TFuel   log;
+    TClad   lin;
+    rhoCool lin;
+    axExp   lin;
+    radExp  lin;
+}
+
 states
 (
     reference
     {
-        Tfuel   900;
-        Tclad   668;
+        TFuel   900;
+        TClad   668;
         rhoCool 860;
         axExp   0;
         radExp  0;
@@ -53,23 +62,23 @@ states
         );
     }
 
-    Tfuel1200K
+    TFuel1200K
     {
-        Tfuel   1200;
+        TFuel   1200;
 
         zones
         (
-            #include "XSTfuel1200K"
+            #include "XSTFuel1200K"
         );
     }
 
-    Tclad1950K
+    TClad1950K
     {
-        Tclad   1950;
+        TClad   1950;
 
         zones
         (
-            #include "XSTclad1950K"
+            #include "XSTClad1950K"
         );
     }
 

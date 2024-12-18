@@ -1,7 +1,7 @@
 Info<< "Solving neutronics" << endl;
 
 // Correct XS fields
-xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_);
+xs_.correct(/*TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_*/);
 
 #include "setXSFieldsSN.H"
 

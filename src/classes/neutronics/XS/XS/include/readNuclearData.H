@@ -40,27 +40,54 @@ if (states_.first().keyword() != "reference")
 Info<< nl << "Build XSs using "
     << energyGroups_ << " energy groups and "
     << precGroups_ << " precursor groups"
+    << nl
     << endl;
 
-// Reference perturbed parameters
-const scalar TfuelRef(referenceState_.lookupOrDefault("Tfuel", 0.01));
-const scalar TcladRef(referenceState_.lookupOrDefault("Tclad", 0.0));
-const scalar TcoolRef(referenceState_.lookupOrDefault("Tcool", 0.0));
-const scalar TstructMechRef(referenceState_.lookupOrDefault("TstructMech", 0.0));
-const scalar rhoCoolRef(referenceState_.lookupOrDefault("rhoCool", 0.0));
-const scalar axExpRef(referenceState_.lookupOrDefault("axExp", 0.0));
-const scalar radExpRef(referenceState_.lookupOrDefault("radExp", 0.0));
+Info<< "XS variables:" << endl;
+scalarList variableRefValues(0);
+forAll(xsVariablesDict_.toc(), varI)
+{
+    word variableName(xsVariablesDict_.toc()[varI]);
 
-Info<< "Use polyharmonic spline function mode " << polyharmonicSplineMode_
+    word variableType(xsVariablesDict_.get<word>(variableName));
+
+    xsVariableNames_[varI] = variableName;
+    xsVariableTypes_[varI] = variableType;
+
+    variableRefValues.append
+    (
+        referenceState_.get<scalar>(variableName)
+    );
+
+    Info<< tab
+        << variableName
+        << ", law: " << variableType
+        << ", ref value: " << variableRefValues[varI]
+        << endl;
+}
+
+// Reference perturbed parameters
+// const scalar TfuelRef(referenceState_.lookupOrDefault("Tfuel", 0.01));
+// const scalar TcladRef(referenceState_.lookupOrDefault("Tclad", 0.0));
+// const scalar TcoolRef(referenceState_.lookupOrDefault("Tcool", 0.0));
+// const scalar TstructMechRef(referenceState_.lookupOrDefault("TstructMech", 0.0));
+// const scalar rhoCoolRef(referenceState_.lookupOrDefault("rhoCool", 0.0));
+// const scalar axExpRef(referenceState_.lookupOrDefault("axExp", 0.0));
+// const scalar radExpRef(referenceState_.lookupOrDefault("radExp", 0.0));
+
+Info<< nl
+    << "Use polyharmonic spline function mode " << polyharmonicSplineMode_
+    << nl
     << endl;
 
 // Look for reference state and extract reference values
+Info<< "Zones:" << endl;
 forAll(referenceZones_, zoneI)
 {
     dictionary& dict = referenceZones_[zoneI].dict();
     const word& nameZone = referenceZones_[zoneI].keyword();
 
-    Info<< "    Found zone: " << nameZone << endl;
+    Info<< tab << "Found zone: " << nameZone << endl;
 
     // Extract constant factors
     fuelFractionList_.set(zoneI, new scalar(dict.lookupOrDefault("fuelFraction", 1.0)));
@@ -78,7 +105,6 @@ forAll(referenceZones_, zoneI)
     BetaTotList_.set(zoneI, new scalar(sum(BetaList_[zoneI])));
     lambdaList_.set(zoneI, new scalarField("lambda", dict, precGroups_));
 
-
     // Perturbed nuclear data
     DList_[zoneI].setSize(energyGroups_);
     nuSigmaEffList_[zoneI].setSize(energyGroups_);
@@ -91,22 +117,22 @@ forAll(referenceZones_, zoneI)
         DList_[zoneI].set
         (
             energyI,
-            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_, nxsVariables_)
         );
         nuSigmaEffList_[zoneI].set
         (
             energyI,
-            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_, nxsVariables_)
         );
         sigmaPowList_[zoneI].set
         (
             energyI,
-            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_, nxsVariables_)
         );
         sigmaRemovalList_[zoneI].set
         (
             energyI,
-            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_, nxsVariables_)
         );
     }
 
@@ -123,7 +149,7 @@ forAll(referenceZones_, zoneI)
                 sigmaFromToList_[zoneI][momentI][energyJ].set
                 (
                     energyI,
-                    new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_)
+                    new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_, nxsVariables_)
                 );
             }
         }
@@ -132,31 +158,61 @@ forAll(referenceZones_, zoneI)
 
 
 // Read data
-Info<< "Parameters (Tfuel, Tclad, Tcool, TstructMech, rhoCool, axExp, radExp)"
-    << endl;
+// Info<< "Parameters (Tfuel, Tclad, Tcool, TstructMech, rhoCool, axExp, radExp) << endl;"
+
 forAll(states_, stateI)
 {
     dictionary& dictState = states_[stateI].dict();
     const word& nameState = states_[stateI].keyword();
 
     // Extract perturbation input
-    const scalar Tfuel(dictState.lookupOrDefault("Tfuel", TfuelRef));
-    const scalar Tclad(dictState.lookupOrDefault("Tclad", TcladRef));
-    const scalar Tcool(dictState.lookupOrDefault("Tcool", TcoolRef));
-    const scalar TstructMech(dictState.lookupOrDefault("TstructMech", TstructMechRef));
-    const scalar rhoCool(dictState.lookupOrDefault("rhoCool", rhoCoolRef));
-    const scalar axExp(dictState.lookupOrDefault("axExp", axExpRef));
-    const scalar radExp(dictState.lookupOrDefault("radExp", radExpRef));
+    Info<< "State: " << nameState << " (";
+    scalarList variableValues(0);
+    forAll(xsVariableNames_, varI)
+    {
+        word variableName(xsVariableNames_[varI]);
+        word variableType(xsVariableTypes_[varI]);
 
-    const scalar TfuelSpectrum(fastNeutrons_ ? log(Tfuel) : pow(Tfuel, 0.5));
+        scalar variableValue(dictState.lookupOrDefault(variableName, variableRefValues[varI]));
 
-    Info<< "State: " << nameState
-        << " ("
-        << Tfuel << ", " << Tclad << ", " << Tcool << ", "
-        << TstructMech << ", " << rhoCool << ", " << axExp << ", "
-        << radExp
-        << ")"
-        << endl;
+        // Print before transformation
+        Info<< variableValue;
+        if (varI < nxsVariables_-1)
+        {
+            Info<< ", ";
+        }
+
+        // Transformation
+        if (variableType == "log")
+        {
+            variableValue = log(variableValue);
+        }
+        else if (variableType == "sqrt")
+        {
+            variableValue = sqrt(variableValue);
+        }
+
+        variableValues.append(variableValue);
+    }
+    Info<< ")" << endl;
+
+    // const scalar Tfuel(dictState.lookupOrDefault("Tfuel", TfuelRef));
+    // const scalar Tclad(dictState.lookupOrDefault("Tclad", TcladRef));
+    // const scalar Tcool(dictState.lookupOrDefault("Tcool", TcoolRef));
+    // const scalar TstructMech(dictState.lookupOrDefault("TstructMech", TstructMechRef));
+    // const scalar rhoCool(dictState.lookupOrDefault("rhoCool", rhoCoolRef));
+    // const scalar axExp(dictState.lookupOrDefault("axExp", axExpRef));
+    // const scalar radExp(dictState.lookupOrDefault("radExp", radExpRef));
+
+    // const scalar TfuelSpectrum(fastNeutrons_ ? log(Tfuel) : pow(Tfuel, 0.5));
+
+    // Info<< "State: " << nameState
+    //     << " ("
+    //     << Tfuel << ", " << Tclad << ", " << Tcool << ", "
+    //     << TstructMech << ", " << rhoCool << ", " << axExp << ", "
+    //     << radExp
+    //     << ")"
+    //     << endl;
 
     // Extract zones from perturbed state
     PtrList<entry> zones = dictState.lookup("zones");
@@ -190,7 +246,7 @@ forAll(states_, stateI)
             continue;
         }
 
-        Info<< "    zone name: " << nameZone << endl;
+        Info<< tab << "zone name: " << nameZone << endl;
 
         const scalarField DList("D", dict, energyGroups_);
         const scalarField nuSigmaEffList("nuSigmaEff", dict, energyGroups_);
@@ -204,37 +260,41 @@ forAll(states_, stateI)
             DList_[zoneRefI][energyI].addData
             (
                 DList[energyI],
-                {
-                    TfuelSpectrum, Tclad, Tcool, TstructMech,
-                    rhoCool, axExp, radExp
-                }
+                variableValues
+                // {
+                //     TfuelSpectrum, Tclad, Tcool, TstructMech,
+                //     rhoCool, axExp, radExp
+                // }
             );
 
             nuSigmaEffList_[zoneRefI][energyI].addData
             (
                 nuSigmaEffList[energyI],
-                {
-                    TfuelSpectrum, Tclad, Tcool, TstructMech,
-                    rhoCool, axExp, radExp
-                }
+                variableValues
+                // {
+                //     TfuelSpectrum, Tclad, Tcool, TstructMech,
+                //     rhoCool, axExp, radExp
+                // }
             );
 
             sigmaPowList_[zoneRefI][energyI].addData
             (
                 sigmaPowList[energyI],
-                {
-                    TfuelSpectrum, Tclad, Tcool, TstructMech,
-                    rhoCool, axExp, radExp
-                }
+                variableValues
+                // {
+                //     TfuelSpectrum, Tclad, Tcool, TstructMech,
+                //     rhoCool, axExp, radExp
+                // }
             );
 
             sigmaRemovalList_[zoneRefI][energyI].addData
             (
                 sigmaRemovalList[energyI],
-                {
-                    TfuelSpectrum, Tclad, Tcool, TstructMech,
-                    rhoCool, axExp, radExp
-                }
+                variableValues
+                // {
+                //     TfuelSpectrum, Tclad, Tcool, TstructMech,
+                //     rhoCool, axExp, radExp
+                // }
             );
         }
 
@@ -252,10 +312,11 @@ forAll(states_, stateI)
                     sigmaFromToList_[zoneRefI][momentI][energyJ][energyI].addData
                     (
                         sigmaFromToList(energyJ, energyI),
-                        {
-                            TfuelSpectrum, Tclad, Tcool, TstructMech,
-                            rhoCool, axExp, radExp
-                        }
+                        variableValues
+                        // {
+                        //     TfuelSpectrum, Tclad, Tcool, TstructMech,
+                        //     rhoCool, axExp, radExp
+                        // }
                     );
                 }
             }

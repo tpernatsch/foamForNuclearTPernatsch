@@ -242,6 +242,25 @@ protected:
             //- Polyharmonic spline function mode
             label polyharmonicSplineMode_;
 
+            //- XS variables for parametrization
+            dictionary& xsVariablesDict_;
+
+            //- Nb of XS variables
+            label nxsVariables_;
+
+            //- List variable names
+            List<word> xsVariableNames_;
+
+            //- List variable type
+            List<word> xsVariableTypes_;
+
+            //- XS variable fields
+            PtrList<volScalarField> xsVariableFields_;
+
+            //- XS variable fields transformed by the law provided in
+            //  xsVariablesDict_
+            PtrList<volScalarField> xsVariableTransformedFields_;
+
             //- List of perturbed reactor states
             PtrList<entry> states_;
 
@@ -348,17 +367,20 @@ protected:
 
         // Fields
 
-            //- Radial expansion field
-            volScalarField radExp_;
+            //- Mesh displacement
+            volVectorField disp_;
 
-            //- Axial expansion field
-            volScalarField axExp_;
+            //- Radial expansion field
+            // volScalarField radExp_;
+
+            // //- Axial expansion field
+            // volScalarField axExp_;
 
             //- Logarithmic fuel temperature field
-            volScalarField logT_;
+            // volScalarField logT_;
 
-            //- Square root fuel temperature field
-            volScalarField sqrtT_;
+            // //- Square root fuel temperature field
+            // volScalarField sqrtT_;
 
 
         // Feedbacks Coefficients
@@ -472,13 +494,13 @@ public:
         (
             label momentI,
             label energyI,
-            label energyJ,
-            const volScalarField& Tfuel,
-            const volScalarField& Tclad,
-            const volScalarField& rhoCool,
-            const volScalarField& Tcool,
-            const volVectorField& Disp,
-            const volScalarField& TStructMech
+            label energyJ//,
+            // const volScalarField& Tfuel,
+            // const volScalarField& Tclad,
+            // const volScalarField& rhoCool,
+            // const volScalarField& Tcool,
+            // const volVectorField& Disp,
+            // const volScalarField& TStructMech
         );
 
         const PtrList<volScalarField> chiPrompt() const
@@ -548,12 +570,12 @@ public:
         //- Update XS
         void correct
         (
-            const volScalarField& Tfuel,
-            const volScalarField& Tclad,
-            const volScalarField& rhoCool,
-            const volScalarField& Tcool,
-            const volVectorField& Disp,
-            const volScalarField& TStructMech
+            // const volScalarField& Tfuel,
+            // const volScalarField& Tclad,
+            // const volScalarField& rhoCool,
+            // const volScalarField& Tcool,
+            // const volVectorField& Disp,
+            // const volScalarField& TStructMech
         );
 
         //- Initialize the XS data set

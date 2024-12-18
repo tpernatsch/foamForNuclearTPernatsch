@@ -90,7 +90,6 @@ protected:
     volScalarField defaultPrec_;
 
     //- Derived fields
-    // volScalarField oneGroupFlux_;
     volScalarField scatteringSourceExtra_;
 
     //- Calc
@@ -98,45 +97,6 @@ protected:
     volScalarField adjointPrec_beta_;
     volScalarField adjointFlux_chiP_;
     volScalarField adjointFlux_chiD_;
-
-    //- Ptrs to coupling fields (i.e. defined on their original mesh)
-    // const volScalarField* TFuelOrig_;
-    // const volScalarField* TCladOrig_;
-    // const volScalarField* TCoolOrig_;
-    // const volScalarField* rhoCoolOrig_;
-    // const volScalarField* TStructMechOrig_;
-    // const volVectorField* UOrig_;
-    // const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s)
-    // const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
-    // const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
-
-    // //- Mapped fields from TH
-    // volScalarField TFuel_;
-    // volScalarField TClad_;
-    // volScalarField TCool_;
-    // volScalarField rhoCool_;
-    // //- Mapped fields from TM
-    // volScalarField TStructMech_;
-
-    // //- Also mapped, but these are autoPtr as these field are not needed at all
-    // //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
-    // //  these fields if they are actually needed
-    // autoPtr<volVectorField> UPtr_;
-    // autoPtr<volScalarField> alphaPtr_;
-    // autoPtr<volScalarField> alphatPtr_;
-    // autoPtr<volScalarField> muPtr_;
-
-    // //- Fields derived from mapped fields
-    // autoPtr<surfaceScalarField> phiPtr_;
-    // autoPtr<volScalarField> diffCoeffPrecPtr_;
-
-        // multiRegion
-
-    // bool multiRegion_;
-
-    // scalar pTotOld_;
-
-    // scalar residual_;
 
 private:
 
@@ -180,12 +140,6 @@ public:
             return prec_;
         }
 
-        //- Return one group flux
-        // virtual const volScalarField& oneGroupFlux() const
-        // {
-        //     return oneGroupFlux_;
-        // }
-
         //- Return power
         virtual scalar power() const
         {
@@ -205,11 +159,6 @@ public:
         virtual void correctTightlyCoupledPhysics();
 
         virtual scalar maxDeltaT();
-
-        // virtual scalar getResidual()
-        // {
-        //     return residual_;
-        // };
 };
 
 
