@@ -22,7 +22,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::InterpolateTable
+    Foam::InterpolateTableGF
 
 Description
     Class for interpolation in tabulated data.
@@ -32,7 +32,7 @@ Description
     facilitating multi-dimensional interpolation.
     Currently provides two interpolation methods, step and linear (see )
     
-    This is an alternative to OpenFOAM's built in interpolateTable and
+    This is an alternative to OpenFOAM's built in InterpolateTableGF and
     interpolateTable2D classes, which partially combines the two using
     templates. It was created largely for 2D tables where we want to look up
     one dimension first and then interpolate many times in the resulting
@@ -62,8 +62,8 @@ Description
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef InterpolateTable_H
-#define InterpolateTable_H
+#ifndef InterpolateTableGF_H
+#define InterpolateTableGF_H
 
 #include "scalar.H"
 #include "scalarField.H"
@@ -77,7 +77,7 @@ namespace Foam
 {
 
 //- Helper base class for interpolation tables
-class interpolateTableBase
+class InterpolateTableBaseGF
 {
 public:
     // Public typedefs
@@ -110,13 +110,13 @@ public:
 
 
 /*---------------------------------------------------------------------------*\
-                         Class InterpolateTable Declaration
+                         Class InterpolateTableGF Declaration
 \*---------------------------------------------------------------------------*/
 
 template<class FieldType, class Type, class ReturnType>
-class InterpolateTable
+class InterpolateTableGF
 :
-    interpolateTableBase
+    InterpolateTableBaseGF
 {
 private:
     
@@ -163,10 +163,10 @@ private:
         }
         
         //- Disallow default bitwise copy construct
-        InterpolateTable(const InterpolateTable<FieldType, Type, ReturnType>&);
+        InterpolateTableGF(const InterpolateTableGF<FieldType, Type, ReturnType>&);
 
         //- Disallow default bitwise assignment
-        void operator=(const InterpolateTable<FieldType, Type, ReturnType>&);
+        void operator=(const InterpolateTableGF<FieldType, Type, ReturnType>&);
 
 
 public:
@@ -174,7 +174,7 @@ public:
     // Constructors
 
         //- Construct from tabulated values
-        InterpolateTable
+        InterpolateTableGF
         (
             const scalarField& xValues,
             const FieldType& data,
@@ -192,7 +192,7 @@ public:
 
 
     //- Destructor
-    ~InterpolateTable() {}
+    ~InterpolateTableGF() {}
     
     // Member Operators
 
@@ -268,7 +268,7 @@ public:
               }
 
               default:
-                FatalErrorInFunction() << "error in interpolateTable.H"<< abort(FatalError);
+                FatalErrorInFunction() << "error in InterpolateTableGF.H"<< abort(FatalError);
                 return 1.0*data_[0];
                 break;
             }
@@ -318,7 +318,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 template<>
-scalar InterpolateTable<scalarField, scalar, scalar>::integral(scalar k) const;
+scalar InterpolateTableGF<scalarField, scalar, scalar>::integral(scalar k) const;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

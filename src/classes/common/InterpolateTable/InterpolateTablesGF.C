@@ -21,48 +21,68 @@ License
     You should have received a copy of the GNU General Public License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
-\mainauthor
-    I. Clifford - PSI (Paul Scherrer Institut, Switzerland)
-
-\contribution
-    A. Scolaro, E. Brunetto, C. Fiorina - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
-    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems 
-    Behaviour)
-
-\date 
-    November 2021
-
 \*---------------------------------------------------------------------------*/
 
-#ifndef InterpolateTables_H
-#define InterpolateTables_H
-
-#include "InterpolateTable.H"
-#include "scalar.H"
-#include "scalarField.H"
-#include "scalarFieldField.H"
+#include "InterpolateTablesGF.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
 
-//- 1D interpolation table returning scalar values
-typedef InterpolateTable<scalarField, scalar, scalar> scalarInterpolateTable;
-
-//- 2D interpolation table, returning tmp<scalarField>
-typedef InterpolateTable<FieldField<Field, scalar>, scalarField, tmp<scalarField> >
-    scalarFieldInterpolateTable;
-
-    //- 3D interpolation table, returning tmp<scalarField>
-typedef InterpolateTable<PtrList<FieldField<Field, scalar>>, FieldField<Field, scalar>, tmp<FieldField<Field, scalar>> >
-    scalarFieldFieldInterpolateTable;
+// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
 
-} // End namespace Foam
+
+const Foam::Enum<Foam::InterpolateTableBaseGF::interpolationMethod>
+    InterpolateTableBaseGF::interpolationMethodNames_
+({
+    {interpolationMethod::STEP, "step"},
+    {interpolationMethod::LINEAR, "linear"},
+});
+
+const Foam::Enum<Foam::InterpolateTableBaseGF::outofBoundsMehtod>
+    InterpolateTableBaseGF::outofBoundsMehtodNames_
+({
+    {outofBoundsMehtod::ERROR, "error"},
+    {outofBoundsMehtod::EXTRAPOLATION, "extrapolation"},
+    {outofBoundsMehtod::FIXED, "fixed"},
+});
+
+
+// * * * * * * * * * * * * * * Member Functions ** * * * * * * * * * * * * * //
+
+template<>
+scalar scalarInterpolateTableGF::integral(scalar k) const
+{
+    scalar res = 0;
+    
+    for (int i=1; i < xValues_.size(); i++)
+    {
+        scalar dx = pow(xValues_[i], k) - pow(xValues_[i-1], k);
+        
+        if (method_ ==  STEP)
+        {
+            res += data_[i-1]*dx;
+        }
+        else if (method_ == LINEAR)
+        {
+            // Trapezoidal integration
+            res += 0.5*(data_[i-1] + data_[i])*dx;
+        }
+    }
+    
+    return res;
+}
+
+
+//- Explicit class instantiations
+template class InterpolateTableGF<scalarField, scalar, scalar>;
+template class InterpolateTableGF
+            <FieldField<Field, scalar>, scalarField,tmp<scalarField> >;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-#endif
+} // End namespace Foam
 
 // ************************************************************************* //

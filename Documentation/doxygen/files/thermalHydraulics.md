@@ -21,9 +21,8 @@ GeN-Foam was born for safety analyses and, to reduce computational footprint, it
 
 Thermal-hydraulics calculations are performed by classes derived from *thermalHydraulicsModel.H* that contain specific sub-solvers:
 * *onePhase* for single-phase calculations, using the formulation proposed in Refs. \cite Radman2019ADesign \cite RADMAN2021111178 \cite RADMAN2021111422  (see *onePhase.H*)
-* *onePhaseLegacy* for single-phase calculations, using the formulation proposed in Ref. \cite FIORINA201524 (see *onePhaseLegacy.H*)
 * *twoPhase* for adjoint diffusion calculations, using the formulation proposed in Refs. \cite Radman2019ADesign \cite RADMAN2021111178 \cite RADMAN2021111422 (see *twoPhase.H*)
-For the user, the derived classes translate into runtime selectable models. The specific sub-solver to be used in a simulation can be selected at runtime in the *phaseProperties* dictionary in *constant/fluidRegion/*, using the keyword *thermalHydraulicsType*. 
+For the user, the derived classes translate into runtime selectable models. The specific sub-solver to be used in a simulation can be selected in the solvers dictionary like explained in the coupling section.
 
 
 ## Porous-medium properties

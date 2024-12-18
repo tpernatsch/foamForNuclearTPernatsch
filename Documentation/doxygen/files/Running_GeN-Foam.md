@@ -8,7 +8,7 @@ GeN-Foam
 mpirun -np nProcessors GeN-Foam -parallel
 ```
 
-In case of parallel calculations, one should decompose each one of the three meshes using the command
+In case of parallel calculations, one should decompose each one of three meshes using the command
 
 ```bash
 decomposePar -region regionName
