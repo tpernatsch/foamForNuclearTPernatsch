@@ -9,6 +9,7 @@ wclean libso ./src/classes/thermoMechanics
 wclean libso ./src/classes/offbeat/solvers
 wclean libso ./src/classes/offbeat/src/offbeatLib
 wclean libso ./src/classes/offbeat/src/SCIANTIX
+wclean libso ./src/classes/openFoamImportedSolvers
 wclean ./GeN-Foam
 
 wclean ./tests/hydrogenThermophysicalProperties
