@@ -38,6 +38,8 @@ Neutronics calculations are performed by classes derived from *neutronics* that 
 * *SNNeutronics* for discrete ordinates calculations (see *SNNeutronics.H*)
 For the user, the derived classes translate into runtime selectable models. The specific sub-solver to be used in a simulation can be selected at runtime in the *constant/neutroRegion/neutronicsProperties* dictionary.
 
+The choice of the model is achieved by selecting the wanted solver in either *regionSolvers* or *multiPhysicsSolvers* depending on whether the neutronics solvers need to be part of a tightly coupled loop or not.
+
 
 <div class="border-box">
 <b>The *neutronicsProperties* dictionary</b>

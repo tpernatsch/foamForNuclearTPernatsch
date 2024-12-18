@@ -58,10 +58,10 @@ Description
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef PtrListScalarFieldFieldINew_H
-#define PtrListScalarFieldFieldINew_H
+#ifndef PtrListScalarFieldFieldINewGF_H
+#define PtrListScalarFieldFieldINewGF_H
 
-#include "scalarFieldFieldINew.H"
+#include "scalarFieldFieldINewGF.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -69,17 +69,17 @@ namespace Foam
 {
     
 //- Constructor class for FieldField<Field, scalar>
-class PtrListScalarFieldFieldINew
+class PtrListScalarFieldFieldINewGF
 {
     public:
         
         //- Construct from istream
-        PtrListScalarFieldFieldINew() {}
+        PtrListScalarFieldFieldINewGF() {}
         
         //- New from input stream
         autoPtr<FieldField<Field, scalar>> operator()(Istream& is) const
         {
-            return autoPtr<FieldField<Field, scalar>>(new FieldField<Field, scalar>(PtrList<scalarField>(is, scalarFieldFieldINew())));
+            return autoPtr<FieldField<Field, scalar>>(new FieldField<Field, scalar>(PtrList<scalarField>(is, scalarFieldFieldINewGF())));
         }
 };
 

@@ -58,8 +58,8 @@ Description
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef scalarFieldFieldINew_H
-#define scalarFieldFieldINew_H
+#ifndef scalarFieldFieldINewGF_H
+#define scalarFieldFieldINewGF_H
 
 #include "scalarFieldField.H"
 
@@ -69,12 +69,12 @@ namespace Foam
 {
     
 //- Constructor class for FieldField<Field, scalar>
-class scalarFieldFieldINew
+class scalarFieldFieldINewGF
 {
     public:
         
         //- Construct from istream
-        scalarFieldFieldINew() {}
+        scalarFieldFieldINewGF() {}
         
         //- New from input stream
         autoPtr<scalarField> operator()(Istream& is) const
