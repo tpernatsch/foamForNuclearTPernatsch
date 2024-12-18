@@ -15,6 +15,7 @@ EXE_INC = \
     -I../src/classes/offbeat/offbeatLib/lnInclude \
     -I../src/classes/offbeat/SCIANTIX/lnInclude \
     -I../src/include \
+    -I../src/classes/openFoamImportedSolvers/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
@@ -40,6 +41,7 @@ EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) -loffbeatMain \
     -L$(FOAM_USER_LIBBIN) -loffbeat \
     -L$(FOAM_USER_LIBBIN) -lsciantix \
+    -L$(FOAM_USER_LIBBIN) -lOFSolvers \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \
     -lsolidThermo \

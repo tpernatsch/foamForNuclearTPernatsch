@@ -151,6 +151,9 @@ wmake -j$num_jobs ./src/classes/neutronics
 # Make thermal-mechanics
 wmake -j$num_jobs ./src/classes/thermoMechanics
 
+# Make OpenFOAM-imported solvers
+wmake -j$num_jobs ./src/classes/openFoamImportedSolvers
+
 
 # Make GeN-Foam
 wmake -j$num_jobs ./GeN-Foam
