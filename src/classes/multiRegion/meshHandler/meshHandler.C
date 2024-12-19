@@ -43,7 +43,6 @@ License
 #include "interpolationCellPoint.H"
 #include "radialBasisFunctionInterpolation.H"
 #include "mergeOrSplitBaffles.H"
-#include "fluid.H"
 #include "hexCellFvMesh.H"
 
 
@@ -180,13 +179,20 @@ Foam::meshHandler::meshHandler(const Time& runTime)
                 // Check if i find entry in the meshHandler subDict
                 if (mappingDict_.subDict(meshes_[i].name()).found(meshes_[j].name()))
                 {
+                    bool removeBaffles(false);
+                    if(runTime.controlDict().found("removeBaffles"))
+                    {
+                        removeBaffles= runTime.controlDict().
+                        subDict("removeBaffles").
+                        getOrDefault<bool>(meshes_[j].name(),false);
+                    }
                     mappingList_[i].set
                     (
                         j,
                         new meshToMesh
                         (
                             meshes_[i],
-                            runTime.controlDict().subDict("removeBaffles").get<bool>(meshes_[j].name())
+                            removeBaffles
                                 ? mappingMeshes_[j]
                                 : meshes_[j],
                             Foam::meshToMesh::interpolationMethod::imCellVolumeWeight, // for now hard-coded, possibly implement meshHandler type via dict
