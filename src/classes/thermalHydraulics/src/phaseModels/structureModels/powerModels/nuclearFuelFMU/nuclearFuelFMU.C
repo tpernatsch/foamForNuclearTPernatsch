@@ -241,7 +241,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
         yPos_.append(yPos);
         axialLoc_.append(axialLoc);
         fuelLength_.append(fuelLength);
-        zMethod_.append((interpolateTableBase::interpolationMethodNames_[
+        zMethod_.append((interpolateTableBaseGF::interpolationMethodNames_[
             dict.lookupOrDefault<word>("axialPowerInterpolationMethod", "linear")
         ]));
         radialBasisFunctionMethod_.append(radialBasisFunctionMethod);

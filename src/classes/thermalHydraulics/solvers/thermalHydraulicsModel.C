@@ -345,28 +345,35 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
                         if (regionsFrom[regionFromi] == mesh_.name())
                         {
                             const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
-                            const wordList fieldTypes(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("fieldTypes")); // list of types of fields to create
                             fvMesh& baffleLessMesh = const_cast<fvMesh&>(mesh_.time().lookupObject<fvMesh>(mesh_.name()+".baffleLess"));
                             forAll(fieldsList, fieldi)
                             {
-                                if (fieldTypes[fieldi] == "scalar")
-                                {
-                                    volScalarField& field = baffleLessMesh.lookupObjectRef<volScalarField>(fieldsList[fieldi]+".baffleLess");
-                                    field.primitiveFieldRef() = mesh_.lookupObject<volScalarField>(fieldsList[fieldi]).primitiveField();
-                                    field.correctBoundaryConditions();
-                                }
-                                else if (fieldTypes[fieldi] == "vector")
-                                {
-                                    volVectorField& field = baffleLessMesh.lookupObjectRef<volVectorField>(fieldsList[fieldi]+".baffleLess");
-                                    field.primitiveFieldRef() = mesh_.lookupObject<volVectorField>(fieldsList[fieldi]).primitiveField();
-                                    field.correctBoundaryConditions();
-                                }
+                                correctBaffleLessField<scalar>(fieldsList[fieldi], baffleLessMesh);
+                                correctBaffleLessField<vector>(fieldsList[fieldi], baffleLessMesh);
+                                correctBaffleLessField<tensor>(fieldsList[fieldi], baffleLessMesh);
+                                correctBaffleLessField<symmTensor>(fieldsList[fieldi], baffleLessMesh);
+                                correctBaffleLessField<sphericalTensor>(fieldsList[fieldi], baffleLessMesh);
+
                             }
                         }
                     }
                 }
             }
         }
+    }
+}
+
+template<class Type>
+void Foam::solvers::thermalHydraulicsModel::correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh)
+{
+
+    typedef GeometricField<Type, fvPatchField, volMesh> VolFieldType;
+
+    if(mesh_.foundObject<VolFieldType>(fieldName))
+    {
+        VolFieldType& field = baffleLessMesh.lookupObjectRef<VolFieldType>(fieldName+".baffleLess");
+        field.primitiveFieldRef() = mesh_.lookupObject<VolFieldType>(fieldName).primitiveField();
+        field.correctBoundaryConditions();
     }
 }
 

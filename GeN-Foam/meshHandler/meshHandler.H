@@ -39,11 +39,7 @@ Class
     Foam::meshHandler
 
 Description
-    Class to hold the lists of region meshes and solvers
-
-    Also provides loop and iteration functionality which automatically set the
-    region Info prefix for each of the solvers returned by the '[]' operator or
-    iterator.
+    Class to hold the lists of region meshes and to perform the mesh-to-mesh mappings
 
 Usage
     Given the \c meshHandler named solvers:
@@ -85,6 +81,8 @@ SourceFiles
 #include "solver.H"
 #include "meshToMesh.H"
 #include "zeroGradientFvPatchFields.H"
+#include "meshHandler.H"
+#include "volFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -109,6 +107,7 @@ class meshHandler
         PtrList<PtrList<meshToMesh>> mappingList_;
         PtrList<PtrList<volScalarField>> scalarCouplingFields_;
         PtrList<PtrList<volVectorField>> vectorCouplingFields_;
+        List<List<void*>> couplingFields_;
 
 
 public:
@@ -145,6 +144,36 @@ public:
         fvMesh& returnMappingMesh(word meshName);
         bool contains(wordList list, word thisWord);
 
+        template<class Type>
+        void map
+        (
+            word srcFieldName, 
+            word tgtFieldName, 
+            label tgtFieldLabel, 
+            label srcFieldLabel, 
+            bool removeBaffles
+        );
+
+        template<class Type>
+        void mapAndWrite
+        (
+            word srcFieldName, 
+            word tgtFieldName, 
+            label tgtFieldLabel, 
+            label srcFieldLabel, 
+            bool removeBaffles
+        );
+
+        template<class Type>
+        void createBaffleLessField
+        (
+            word fieldName, 
+            label regionLabel, 
+            fvMesh& baffleLessMesh, 
+            label& nCouplingFields
+        );
+
+
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -152,6 +181,10 @@ public:
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#ifdef NoRepository
+    #include "meshHandlerTemplates.C"
+#endif
 
 #endif
 
