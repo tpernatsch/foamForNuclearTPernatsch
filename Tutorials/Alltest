@@ -29,9 +29,10 @@ usage() {
 # Default values
 num_jobs=1
 fmi_flag=false
+fast_flag=false
 
 # Parse options using getopt
-PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,help -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,fast,help -- "$@")
 if [ $? -ne 0 ]; then
     usage
 fi
@@ -50,6 +51,10 @@ while true; do
             fmi_flag=true
             shift
             ;;
+        --fast)
+            fast_flag=true
+            shift
+            ;;
         --help)
             usage
             ;;
@@ -65,37 +70,47 @@ done
 
 # Script logic
 echo "FMI flag: $fmi_flag"
-echo -e "Run tutorials using $num_jobs threads\n"
+echo -e "Run tutorials using $num_jobs threads"
+if [ $fast_flag = 'true' ]
+then
+    echo "Run fast cases only"
+else
+    echo "Run all cases"
+fi
+
+echo
 
 
 #------------------------------------------------------------------------------
 
 # Select tutorials in the test suite
 tutorials=(
-    # Tutorial name                 Expected maximum memory usage (Gb)
-    "1D_boiling                     0.2"
-    "1D_CHF/imposedPower            0.2"
-    "1D_CHF/imposedTemperature      0.2"
-    "1D_HX/onePhase                 0.2"
-    "1D_HX/twoPhase                 0.2"
-    "1D_MSR_pointKinetics           0.2"
-    "1D_PSBT_SC/Phase_Ex1_12223     0.2"
-    "1D_PSBT_SC/PhaseII_Ex1_01_5215 0.2"
-    "1D_PSBT_SC/PhaseII_Ex2_04_6770 0.2"
-    "1D_thermalMSR_pointKinetics    0.2"
-    "2D_cavityBoussinesq            0.2"
-    "2D_externalSourceDiffusion     0.2"
-    "2D_FFTF                        0.3"
-    "2D_fullCoupling                0.2"
-    "2D_KNS37-L22                   0.3"
-    "2D_MSFR                        0.3"
-    "2D_onePhaseAndPointKineticsCoupling 0.2"
-    "2D_onePhaseAndSubcriticalPointKineticsCoupling 0.2"
-    "2D_voidMotionNoPhaseChange     0.2"
-    "3D_gFHR                        1.5"
-    "3D_NTPfuelAssembly             0.2"
-    "3D_SmallESFR_NewSolverVerification  1.0"
-    "Godiva_SN                      1.5"
+    # Tutorial name                   Expected maximum memory usage (Gb)
+    "guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion            0.2"
+    "featureCases/1D_boiling                                        0.2"
+    "featureCases/1D_CHF/imposedPower                               0.2"
+    "featureCases/1D_CHF/imposedTemperature                         0.2"
+    "featureCases/1D_HX/onePhase                                    0.2"
+    "featureCases/1D_HX/twoPhase                                    0.2"
+    "featureCases/1D_PSBT_SC/Phase_Ex1_12223                        0.2"
+    "featureCases/1D_PSBT_SC/PhaseII_Ex1_01_5215                    0.2"
+    "featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770                    0.2"
+    "featureCases/2D_cavityBoussinesq                               0.2"
+    "featureCases/2D_externalSourceDiffusion                        0.2"
+    "featureCases/2D_fullCoupling                                   0.2"
+    "featureCases/2D_KNS37-L22                                      0.3"
+    "featureCases/2D_onePhaseAndPointKineticsCoupling               0.2"
+    "featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling    0.2"
+    "featureCases/2D_voidMotionNoPhaseChange                        0.2"
+    "reactorCases/1D_MSR_pointKinetics                              0.2"
+    "reactorCases/1D_thermalMSR_pointKinetics                       0.2"
+    "reactorCases/2D_FFTF                                           0.3"
+    "reactorCases/2D_MSFR                                           0.3"
+    "reactorCases/3D_gFHR                                           1.5"
+    "reactorCases/3D_HTR-10                                         1.0"
+    "reactorCases/3D_NTPfuelAssembly                                0.2"
+    "reactorCases/3D_SmallESFR_NewSolverVerification                1.0"
+    "reactorCases/Godiva_SN                                         1.5"
 )
 
 # Add FMU tutorials only if GeN-Foam has been built with FMU4FOAM
@@ -105,13 +120,30 @@ then
     echo "Testing tutorials using FMUs"
 
     tutorials+=(
-        "FMU/powerTemperatureMomentumControl    0.2"
-        "FMU/2D_PKCoupleFMI/comparisonFMU       0.3"
-        "FMU/2D_PKCoupleFMI/PIDcontrol          0.3"
-        "FMU/2D_LFRpowerPlant/GeN-FoamAndModelica 10.0"
+        "fmuCases/powerTemperatureMomentumControl                   0.2"
+        "fmuCases/2D_PKCoupleFMI/comparisonFMU                      0.3"
+        "fmuCases/2D_PKCoupleFMI/PIDcontrol                         0.3"
+        "fmuCases/2D_LFRpowerPlant/GeN-FoamAndModelica             10.0"
         # Optional
-        # "FMU/2D_LFRpowerPlant/GeN-FoamAs2FMU      10.0"
-        # "FMU/2D_LFRpowerPlant/GeN-FoamAs3FMU      10.0"
+        # "fmuCases/2D_LFRpowerPlant/GeN-FoamAs2FMU                  10.0"
+        # "fmuCases/2D_LFRpowerPlant/GeN-FoamAs3FMU                  10.0"
+    )
+fi
+
+
+# Overwrite tutorial list to fast tutorials
+if [ $fast_flag = 'true' ]
+then
+    tutorials=(
+        # Tutorial name                   Expected maximum memory usage (Gb)
+        "guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion            0.2"
+        "featureCases/1D_HX/onePhase                                    0.2"
+        "featureCases/1D_PSBT_SC/Phase_Ex1_12223                        0.2"
+        "featureCases/2D_cavityBoussinesq                               0.2"
+        "featureCases/2D_externalSourceDiffusion                        0.2"
+        "featureCases/2D_fullCoupling                                   0.2"
+        "featureCases/2D_onePhaseAndPointKineticsCoupling               0.2"
+        "reactorCases/1D_thermalMSR_pointKinetics                       0.2"
     )
 fi
 
@@ -128,6 +160,11 @@ rootPath=$(pwd)
 
 # Name of the result file in Markdown
 resFile="./regressionResults.md"
+
+if [ $fast_flag = 'true' ]
+then
+    resFile="./regressionResults-fast.md"
+fi
 
 # Counting variables
 nbTutoTotal=${#tutorials[@]}
@@ -158,7 +195,6 @@ done
 getUniqueList() {
     local original_array=("$@")  # Accept the array as arguments
     local unique_array=()        # Declare an empty array to hold unique elements
-
 
     # Iterate through the original array
     for element in "${original_array[@]}"; do

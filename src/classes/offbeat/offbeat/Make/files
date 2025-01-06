@@ -1,3 +1,0 @@
-offbeat.C
-
-LIB = $(FOAM_USER_LIBBIN)/liboffbeatMain

@@ -3,12 +3,12 @@
 scalar DopplerReactivity = 0.0;
 if (fastNeutrons_)
 {
-    DopplerReactivity = -coeffFastDoppler_*
+    DopplerReactivity = -coeffDoppler_*
         Foam::log(max(TFuelValue, SMALL) / max(TFuelRef_, SMALL));
-} 
+}
 else // For thermal spectrum
 {
-    DopplerReactivity = coeffFastDoppler_* (sqrt(TFuelValue) - sqrt(TFuelRef_));
+    DopplerReactivity = coeffDoppler_* (sqrt(TFuelValue) - sqrt(TFuelRef_));
 }
 
 scalar TFuelReactivity =

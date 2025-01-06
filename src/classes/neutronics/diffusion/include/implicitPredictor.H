@@ -1,13 +1,13 @@
-Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3)" << endl ;
+Info<< "Accelerating neutronic solution: implicit predictor (not tested for SP3)"
+    << endl;
+
 {
-
-
     PtrList<volScalarField> leakages(xs_.energyGroups());
     forAll(leakages,energyI)
     {
-
         Dalbedo_ = D[energyI];
         fluxStarAlbedo_ *= 0.0;
+
         leakages.set
         (
             energyI,
@@ -26,63 +26,64 @@ Info << "Accelerating neutronic solution: implicit predictor (not tested for SP3
         );
     }
 
-    forAll(fluxStar_[0].internalField(),i)
+    forAll(fluxStar_[0].internalField(), i)
     {
-        SquareMatrix<scalar> matrix(xs_.energyGroups(),xs_.energyGroups(),Foam::zero());
-        List<scalar> source(xs_.energyGroups(),0.0);
-        List<scalar> predictedFlux(xs_.energyGroups(),0.0);
+        SquareMatrix<scalar> matrix(xs_.energyGroups(), xs_.energyGroups(), Foam::zero());
+        List<scalar> source(xs_.energyGroups(), 0.0);
+        List<scalar> predictedFlux(xs_.energyGroups(), 0.0);
 
-        forAll(flux_,energyI)//initialized predicted flux
+        // Initialized predicted flux
+        forAll(flux_,energyI)
         {
             predictedFlux[energyI] = fluxStar_[energyI].internalField()[i] ;
         }
 
-        forAll(flux_,energyI)
+        forAll(flux_, energyI)
         {
-            forAll(flux_,energyJ)
+            forAll(flux_, energyJ)
             {
-                if(energyJ==energyI)
+                if (energyJ == energyI)
                 {
                     matrix[energyI][energyJ]=
-                                  IV[energyI].internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
-                                - nuSigmaEff[energyI].internalField()[i]/keff_*(1.0-BetaTot.internalField()[i])*chiPrompt[energyI].internalField()[i]/discFactor[energyI].internalField()[i]
-                                + sigmaRemoval[energyI].internalField()[i]/discFactor[energyI].internalField()[i];
-                                //- leakages[energyI].internalField()[i];
-                }else
+                        IV[energyI].internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
+                      - nuSigmaEff[energyI].internalField()[i]/keff_ * (1.0 - BetaTot.internalField()[i]) * chiPrompt[energyI].internalField()[i]/discFactor[energyI].internalField()[i]
+                      + sigmaRemoval[energyI].internalField()[i]/discFactor[energyI].internalField()[i];
+                      //- leakages[energyI].internalField()[i];
+                }
+                else
                 {
                     matrix[energyI][energyJ]=
-                                - sigmaFromTo[energyJ][energyI].internalField()[i]/discFactor[energyJ].internalField()[i]
-                                - nuSigmaEff[energyJ].internalField()[i]/keff_*(1.0-BetaTot.internalField()[i])*chiPrompt[energyI].internalField()[i]/discFactor[energyJ].internalField()[i];
+                      - sigmaFromTo[energyJ][energyI].internalField()[i] / discFactor[energyJ].internalField()[i]
+                      - nuSigmaEff[energyJ].internalField()[i]/keff_ * (1.0 - BetaTot.internalField()[i]) * chiPrompt[energyI].internalField()[i]/discFactor[energyJ].internalField()[i];
                 }
             }
 
             source[energyI]=
-                      IV[energyI].internalField()[i]*fluxStar_[energyI].oldTime().internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
-                    + leakages[energyI].internalField()[i]
-                    + delayedNeutroSource_.internalField()[i]*chiDelayed[energyI].internalField()[i];
+                IV[energyI].internalField()[i]*fluxStar_[energyI].oldTime().internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
+              + leakages[energyI].internalField()[i]
+              + delayedNeutroSource_.internalField()[i]*chiDelayed[energyI].internalField()[i];
         }
 
-        solve(predictedFlux,matrix,source);
+        solve(predictedFlux, matrix, source);
 
-        forAll(fluxStar_,energyI)
+        forAll(fluxStar_, energyI)
         {
-
             fluxStar_[energyI].primitiveFieldRef()[i] = predictedFlux[energyI];
-
         }
 
     }
 
-    forAll(flux_,energyI)
+    forAll(flux_, energyI)
     {
         Dalbedo_ = D[energyI];
-        fluxStarAlbedo_ *= 0.0;
-        fluxStar_[energyI].correctBoundaryConditions();
-        flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
-        flux_[energyI].correctBoundaryConditions();
 
+        fluxStarAlbedo_ *= 0.0;
+
+        fluxStar_[energyI].correctBoundaryConditions();
+
+        flux_[energyI] = fluxStar_[energyI]/discFactor[energyI];
+        flux_[energyI].correctBoundaryConditions();
     }
 
     #include "initializeNeutroSource.H"
-
 }

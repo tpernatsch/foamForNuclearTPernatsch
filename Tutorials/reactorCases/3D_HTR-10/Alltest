@@ -1,0 +1,105 @@
+#!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+# --- Run the simulation
+echo -e "Run tutorial 3D_HTR-10 ...\n" | tee -a $resFile
+./Allrun >> log.simulation
+echo -e "Done running tutorial 3D_HTR-10 ...\n" | tee -a $resFile
+
+
+
+# --- Check it ran
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" | tee -a $resFile
+    else
+        echo -e "$name has NOT converged \n" | tee -a $resFile
+        exit 1
+    fi
+}
+isConverge steadyState "Steady state"
+
+
+# --- Recover the results
+extract()
+{
+    value=$(
+        grep -e "$1" ./$2/log.GeN-Foam |
+        tail -1 |
+        egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?." 
+    )
+    echo $value
+}
+
+# --- Recover the results
+Tfmax=$(extract "T.nuclearSteadyStatePebble.Tfmax" steadyState)
+TfmaxAvg=$(echo "$Tfmax" | cut -d " " -f1)
+TfmaxMin=$(echo "$Tfmax" | cut -d " " -f2)
+TfmaxMax=$(echo "$Tfmax" | cut -d " " -f3)
+expectedTfmaxAvg=774.446
+expectedTfmaxMin=523.15
+expectedTfmaxMax=1441.35
+
+# --- Check results are correct
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+error=0.001
+echo "Max temperatures (avg min max) in trisos" | tee -a $resFile
+if  [ $(isInRange $TfmaxAvg $expectedTfmaxAvg $error) -eq 0 ] &&
+    [ $(isInRange $TfmaxMin $expectedTfmaxMin $error) -eq 0 ] &&
+    [ $(isInRange $TfmaxMax $expectedTfmaxMax $error) -eq 0 ]
+then
+    echo "Perfect match:" | tee -a $resFile
+    echo "|           | Simulated | Expected |" | tee -a $resFile
+    echo "|:----------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Tfmax avg | $TfmaxAvg | $expectedTfmaxAvg |" | tee -a $resFile
+    echo "| Tfmax min | $TfmaxMin | $expectedTfmaxMin |" | tee -a $resFile
+    echo "| Tfmax max | $TfmaxMax | $expectedTfmaxMax |" | tee -a $resFile
+else
+    echo "Divergent results:" | tee -a $resFile
+    echo "|           | Simulated | Expected |" | tee -a $resFile
+    echo "|:----------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Tfmax avg | $TfmaxAvg | $expectedTfmaxAvg |" | tee -a $resFile
+    echo "| Tfmax min | $TfmaxMin | $expectedTfmaxMin |" | tee -a $resFile
+    echo "| Tfmax max | $TfmaxMax | $expectedTfmaxMax |" | tee -a $resFile
+    exit 1
+fi
+
+# --- Exit successfully
+exit 0
+
+#==============================================================================*

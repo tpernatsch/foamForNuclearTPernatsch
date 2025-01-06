@@ -250,6 +250,10 @@ public:
         void stop();
 
         virtual void correctBaffleLessFields();
+        
+        template<class Type>
+        void correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh);
+
 
         virtual void deformMesh();
 

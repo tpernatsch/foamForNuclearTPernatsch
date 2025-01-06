@@ -2,3 +2,7 @@
 	path = FMU4FOAM
 	url = https://gitlab.com/foam-for-nuclear/FMU4FOAM.git
 	branch = develop
+[submodule "src/classes/offbeat/src"]
+	path = src/classes/offbeat/src
+	url = https://gitlab.com/foam-for-nuclear/offbeat.git
+	branch = ffn/Gen-Foam2

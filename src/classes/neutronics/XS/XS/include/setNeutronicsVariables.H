@@ -159,14 +159,14 @@ forAll(nuSigmaEff_, energyI)
             }
 
             // Adjustment of D and XS for current reactor conditions of:
-            // Tfuel, cladExp, TCool, rhoCool, TStructMech, axialExp and
+            // Tfuel, cladExp, Tcool, rhoCool, TStructMech, axialExp and
             // radialExp.
 
             D_[energyI][cellIglobal] = DList_[zone][energyI].get
             (
                 fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
                 Tclad[cellIglobal],
-                TCool[cellIglobal],
+                Tcool[cellIglobal],
                 TStructMech[cellIglobal],
                 rhoCool[cellIglobal],
                 axExp_[cellIglobal],
@@ -178,7 +178,7 @@ forAll(nuSigmaEff_, energyI)
             (
                 fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
                 Tclad[cellIglobal],
-                TCool[cellIglobal],
+                Tcool[cellIglobal],
                 TStructMech[cellIglobal],
                 rhoCool[cellIglobal],
                 axExp_[cellIglobal],
@@ -190,7 +190,7 @@ forAll(nuSigmaEff_, energyI)
             (
                 fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
                 Tclad[cellIglobal],
-                TCool[cellIglobal],
+                Tcool[cellIglobal],
                 TStructMech[cellIglobal],
                 rhoCool[cellIglobal],
                 axExp_[cellIglobal],
@@ -202,7 +202,7 @@ forAll(nuSigmaEff_, energyI)
             (
                 fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
                 Tclad[cellIglobal],
-                TCool[cellIglobal],
+                Tcool[cellIglobal],
                 TStructMech[cellIglobal],
                 rhoCool[cellIglobal],
                 axExp_[cellIglobal],
@@ -219,7 +219,7 @@ forAll(nuSigmaEff_, energyI)
                         sigmaFromTo_[momentI][energyJ][energyI][cellIglobal] = sigmaFromToList_[zone][momentI][energyJ][energyI].get(
                             fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
                             Tclad[cellIglobal],
-                            TCool[cellIglobal],
+                            Tcool[cellIglobal],
                             TStructMech[cellIglobal],
                             rhoCool[cellIglobal],
                             axExp_[cellIglobal],

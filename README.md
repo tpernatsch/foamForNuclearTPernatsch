@@ -35,11 +35,6 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 - the support of the community.
 
 
-## Forum
-
-A forum to get support from the developers and the community is available at the following link: [Forum](https://foam-for-nuclear.org/phpBB/)
-
-
 ## Copyright
 
 © Contributions are individually acknowledged in the header files

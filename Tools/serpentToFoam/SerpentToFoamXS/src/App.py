@@ -92,7 +92,7 @@ class App(object):
 
         self.pointKineticsParameterList = ParameterGroup.ParameterGroup(self.pointKineticsKeyWord, "PK")
         # self.pointKineticsParameterList.addParameter("promptGenerationTime", tk.StringVar(self.master), default="1e-7", unit="s")
-        self.pointKineticsParameterList.addParameter("feedbackCoeffFastDoppler", tk.StringVar(self.master), default="0", unit="1/K")
+        self.pointKineticsParameterList.addParameter("feedbackCoeffDoppler", tk.StringVar(self.master), default="0", unit="1/K")
         # feedbackCoeffTFuel = tk.StringVar(self.master) # in case the code had to display multiple variables
         self.pointKineticsParameterList.addParameter("feedbackCoeffTFuel", tk.StringVar(self.master), default="0", unit="1/K")
         self.pointKineticsParameterList.addParameter("feedbackCoeffTClad", tk.StringVar(self.master), default="0", unit="1/K")

@@ -123,7 +123,7 @@ class MultiGroupXSManager(object):
         file.write("// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //\n\n")
 
         file.write("energyGroups                {}; // [{}] eV\n\n".format(
-            self.energyGroups.num_groups, 
+            self.energyGroups.num_groups,
             ", ".join([f"{val:.6e}" for val in self.energyGroups.group_edges])
         ))
         file.write("precGroups                  {};\n\n".format(len(self.delayedGroups)))
@@ -155,7 +155,7 @@ class MultiGroupXSManager(object):
             file.write(");\n\n")
 
             # Feedback coefficients
-            file.write("feedbackCoeffFastDoppler    0;\n\n")
+            file.write("feedbackCoeffDoppler        0;\n\n")
             file.write("//- Representative of fuel axial expansion\n")
             file.write("feedbackCoeffTFuel          0; // [1/K]\n\n")
             file.write("//- Representative of in-assembly structure density change\n")
@@ -172,7 +172,7 @@ class MultiGroupXSManager(object):
             # Zones
             file.write("fuelFeedbackZones ();\n\n")
             file.write("coolantFeedbackZones ();\n\n")
-            file.write("structuresFeedbackZones ();\n\n")
+            file.write("structFeedbackZones ();\n\n")
             file.write("drivelineFeedbackZones ();\n\n\n")
 
         # Diffusion data

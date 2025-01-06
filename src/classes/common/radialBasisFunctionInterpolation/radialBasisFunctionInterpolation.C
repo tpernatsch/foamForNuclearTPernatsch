@@ -128,11 +128,11 @@ scalar polyharmonicSplineFunction
         case 1:
             return(sqrt(rSquare));
         case 2:
-            return(rSquare * log(sqrt(rSquare)));
+            return(rSquare * 0.5 * log(rSquare));
         case 3:
             return(sqrt(rSquare) * rSquare);
         case 4:
-            return(sqr(rSquare) * log(sqrt(rSquare)));
+            return(sqr(rSquare) * 0.5 * log(rSquare));
         default:
             Info<< "Polyharmonic spline mode " << mode << " not in range [1; 4], return 0"
                 << endl;

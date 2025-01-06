@@ -51,16 +51,11 @@ Description
     solver to the European Sodium Fast Reactor and verification against available codes",
     Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
 
-    Author of this file (and associated .C or included .H files): 
+    Author of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 SourceFiles
     thermoMechanics.C
-
-
-
-
-
 
 \*---------------------------------------------------------------------------*/
 
@@ -111,19 +106,19 @@ protected:
         volScalarField fuelDisp_;
         volScalarField CRDisp_;
         volVectorField fuelDispVector_;
-        vector fuelOrientation_;    
+        vector fuelOrientation_;
         volScalarField TStructFromTH_;
-        volScalarField TFuel_;    
+        volScalarField TFuel_;
         volScalarField TFuelRef_;
         volScalarField alphaFuel_;
         volScalarField TCRRef_;
         volScalarField alphaCR_;
         dictionary TMEntries_;
         label zonesNumber_;
-        
+
 
         //- Initialize residual
-        double initialResidual_;   
+        double initialResidual_;
 
         pointField originalPoints_;
 
@@ -177,11 +172,11 @@ public:
     	virtual ~thermoMechanics(){}
 
 
-    // Member Functions   	
+    // Member Functions
 
         //- Substitutes the old getFields. Set local class references to global
-        //  coupling fields, to be called only once after construction. The 
-        //  fields are set via lookup in the src objectRegistry (i.e. 
+        //  coupling fields, to be called only once after construction. The
+        //  fields are set via lookup in the src objectRegistry (i.e.
         //  fluidMeshNB for the current state of GeN-Foam)
         // virtual void getCouplingFieldRefs
         // (
@@ -192,7 +187,7 @@ public:
         // //- The old getFields, yet operates on the local refs without having
         // //  the need for all the fields to be passed. This effectively bypasses
         // //  the old limitation of getFields, i.e. if someone wanted to
-        // //  implement a new thermoMechanical model that requires more fields 
+        // //  implement a new thermoMechanical model that requires more fields
         // //  for the coupling, then they'd need to modify the getFields function
         // //  in ALL of the other thermoMechanical models too
         // virtual void interpolateCouplingFields
@@ -202,7 +197,7 @@ public:
         // ) = 0;
 
         //- Correct/update the properties
-        // virtual void correct(scalar& residual) = 0;    
+        // virtual void correct(scalar& residual) = 0;
 
         //- Needed to remove abstractedness from IOdictionary
         virtual bool writeData(Ostream& os) const
@@ -216,16 +211,19 @@ public:
             const volVectorField& meshDisp() const
             {
                 return meshDisp_;
-            } 
+            }
 
             //- Return initialResidual_
             double initialResidual() const
             {
                 return initialResidual_;
-            };   
+            };
 
-        
+
         virtual void correctBaffleLessFields();
+                
+        template<class Type>
+        void correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh);
 
         virtual void deformMesh();
 };

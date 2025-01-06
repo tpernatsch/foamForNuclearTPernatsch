@@ -1,12 +1,9 @@
 
 EXE_INC = \
     -I. \
-    -I./regionSolvers \
-    -I./meshHandler \
-    -I./multiPhysicsSolver \
-    -I./regionSolvers/legacyInclude \
     -I./include \
     -I../src/classes/common/lnInclude \
+    -I../src/classes/multiRegion/lnInclude \
     -I../src/classes/thermalHydraulics/src/lnInclude \
     -I../src/classes/thermalHydraulics/solvers/lnInclude \
     -I../src/classes/neutronics/lnInclude \
@@ -15,6 +12,7 @@ EXE_INC = \
     -I../src/classes/offbeat/offbeatLib/lnInclude \
     -I../src/classes/offbeat/SCIANTIX/lnInclude \
     -I../src/include \
+    -I../src/classes/openFoamImportedSolvers/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
@@ -33,6 +31,7 @@ EXE_INC = \
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lCommon \
+    -L$(FOAM_USER_LIBBIN) -lMultiRegion \
     -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
     -L$(FOAM_USER_LIBBIN) -lFFSSolvers2 \
     -L$(FOAM_USER_LIBBIN) -lNeutronicsSolvers \
@@ -40,6 +39,7 @@ EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) -loffbeatMain \
     -L$(FOAM_USER_LIBBIN) -loffbeat \
     -L$(FOAM_USER_LIBBIN) -lsciantix \
+    -L$(FOAM_USER_LIBBIN) -lOFSolvers \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \
     -lsolidThermo \

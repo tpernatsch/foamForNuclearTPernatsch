@@ -87,14 +87,14 @@ Foam::criticalHeatFluxModels::lookUpTableCHF::lookUpTableCHF
     pressureValues_(dict.lookup("pressureValues")),
     massFlowRateValues_(dict.lookup("massFlowRateValues")),
     qualityValues_(dict.lookup("qualityValues")),
-    data_(PtrList<FieldField<Field, scalar>>(dict.lookup("data"), PtrListScalarFieldFieldINew())),
-    pMethod(interpolateTableBase::interpolationMethodNames_[
+    data_(PtrList<FieldField<Field, scalar>>(dict.lookup("data"), PtrListScalarFieldFieldINewGF())),
+    pMethod(InterpolateTableBaseGF::interpolationMethodNames_[
         dict.lookupOrDefault<word>("pressureInterpolationMethod", "linear")
     ]),
-    gMethod_(interpolateTableBase::interpolationMethodNames_[
+    gMethod_(InterpolateTableBaseGF::interpolationMethodNames_[
         dict.lookupOrDefault<word>("massFlowRateInterpolationMethod", "linear")
     ]),
-    xeMethod_(interpolateTableBase::interpolationMethodNames_[
+    xeMethod_(InterpolateTableBaseGF::interpolationMethodNames_[
         dict.lookupOrDefault<word>("qualityInterpolationMethod", "linear")
     ]),
     pTable_(pressureValues_, data_, pMethod)
@@ -156,13 +156,13 @@ Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
     FieldField<Field, scalar> pData(pTable_(pk));
 
     // Create 2D table (x is massFlowRate, y is quality)    
-    scalarFieldInterpolateTable gTable(massFlowRateValues_, pData, gMethod_);
+    scalarFieldInterpolateTableGF gTable(massFlowRateValues_, pData, gMethod_);
 
     // Interpolate 2D table with mass flow rate
     scalarField gData(gTable(massFlowi));
 
     // Create 1D table (main coordinate is quality)    
-    scalarInterpolateTable xeTable(qualityValues_, gData, xeMethod_);
+    scalarInterpolateTableGF xeTable(qualityValues_, gData, xeMethod_);
 
     // Interpolate 1D table and get final value of critical heat flux.
     // Then convert kW/m2 ----> W/m2

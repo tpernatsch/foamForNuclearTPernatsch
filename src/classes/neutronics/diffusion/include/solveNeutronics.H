@@ -1,7 +1,11 @@
+Info<< "Solving neutronics" << endl;
+
+// Correct XS fields
 xs_.correct(TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_);
 
 #include "setXSFields.H"
 
+// Read solver parameters from fvSolution
 const dictionary& neutronTransport =
     mesh_.solutionDict().subDict("neutronTransport");
 
@@ -20,17 +24,20 @@ scalar neutronIterationResidual =
 int maxNeutronIterations =
     neutronTransport.lookupOrDefault<int>("maxNeutronIterations", 10);
 
-scalar pTot(1.0);
 
-forAll(flux_,energyI)
+// Correct flux with discontinuity factors
+forAll(flux_, energyI)
 {
-    flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
+    flux_[energyI] = fluxStar_[energyI] / discFactor[energyI];
 }
+
+// Compute total power
+scalar pTot(1.0);
 
 if
 (
-    eigenvalueNeutronics_
-&&  (mesh_.time().timeIndex() - mesh_.time().startTimeIndex()) == 1
+    eigenvalueNeutronics_ &&
+    (mesh_.time().timeIndex() - mesh_.time().startTimeIndex()) == 1
 )
 {
     pTot = power();
@@ -38,28 +45,26 @@ if
     pTot = power();
 }
 
-//-Update mapped fields
-if(liquidFuel_)
+// Update mapped fields
+if (liquidFuel_)
 {
-    phiPtr_()=fvc::flux(UPtr_()*alphaPtr_());
-    diffCoeffPrecPtr_()=(alphatPtr_()+muPtr_()/xs_.ScNo())/rhoCool_;
+    phiPtr_() = fvc::flux(UPtr_() * alphaPtr_());
+    diffCoeffPrecPtr_() = (alphatPtr_() + muPtr_() / xs_.ScNo()) / rhoCool_;
 }
 #include "initializeNeutroSource.H"
 #include "precEq.H"
 #include "initializeDelayedNeutroSource.H"
 
-if(!eigenvalueNeutronics_)
+if (!eigenvalueNeutronics_)
 {
-
-    if(integralPredictor)
+    if (integralPredictor)
     {
         #include "integralPredictor.H"
     }
-    if(implicitPredictor)
+    if (implicitPredictor)
     {
         #include "implicitPredictor.H"
     }
-
 }
 
 int aitkenIterCounter = 0;
@@ -73,7 +78,7 @@ scalar neutroResidual = 0.0;
 
 do
 {
-    Info << "Neutron iteration no:  " << neutroIter << nl << endl;
+    Info<< "Neutron iteration no:  " << neutroIter << nl << endl;
 
     #include "fluxEq.H"
 
@@ -83,50 +88,41 @@ do
 
     neutroIter++;
 
-    Info<< "neutroResidual (neutroIter: " << neutroIter << "): " << neutroResidual << endl;
+    Info<< "neutroResidual (neutroIter: " << neutroIter << "): " << neutroResidual
+        << endl;
         //<< " after Aitken no: " << aitkenIterNo << endl;
 }
 while
 (
-        (neutroResidual > neutronIterationResidual)
-    &&  (neutroIter < maxNeutronIterations)
-    && !eigenvalueNeutronics_
+    (neutroResidual > neutronIterationResidual) &&
+    (neutroIter < maxNeutronIterations) &&
+    !eigenvalueNeutronics_
     // && !externalSourceNeutronics
 );
 
-powerDensity_*=0.0;
-forAll(flux_,energyI)
+// Reset and compute power density field
+powerDensity_ *= 0.0;
+forAll(flux_, energyI)
 {
     powerDensity_ += flux_[energyI] * sigmaPow[energyI];
 }
 
 pTot = power();
 
-Info << "power: " << pTot << endl;
-
-Info<< "Final neutroResidual at neutroIter no "
+Info<< "power: " << pTot << nl
+    << "Final neutroResidual at neutroIter no "
     << neutroIter << ": "  << neutroResidual
-    << " - pow:" << pTot << endl;
+    << " - pow:" << pTot
+    << endl;
 
-//- Determine power densities
-secondaryPowerDensity_ = powerDensity_  / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower  ;
+// Determine power densities
+secondaryPowerDensity_ = powerDensity_ / max(secondaryPowerVolumeFraction, SMALL) * fractionToSecondaryPower;
 powerDensity_ /= max(fuelFraction, SMALL) * (1.0 - fractionToSecondaryPower);
 
 
 if (eigenvalueNeutronics_)
 {
-    Info << "pTarget_ = " << pTarget_ << nl << endl;
-    Info << "keff_ previous = " << keff_ << nl << endl;
-    keff_ *= pTot/pTarget_;
-    keff_ = min(keff_,5);
-    keff_ = max(keff_,0.1);
-    Info << "keff_ = " << keff_ << nl << endl;
-
-    //- Since a keff_ is a scalar, the value inside the dictionary is not
-    //  updated at runTime automatically. The line below resets the SCALAR IN
-    //  THE DICTIONARY at runTime so that the dictionary is written with the
-    //  updated value.
-    reactorState_.set("keff", keff_);
+    #include "calcKeff.H"
 
     #include "normFluxes.H"
     xs_.adjustDiscFactors(fluxStar_);
@@ -134,15 +130,16 @@ if (eigenvalueNeutronics_)
 
 if (externalSourceNeutronics_)
 {
-    //- Output the integrated power in reactor state
+    // Output the integrated power in reactor state
     reactorState_.set("pTarget", pTot);
 }
 
 
-residual_ = max(residual_,neutroResidual);
+residual_ = max(residual_, neutroResidual);
 
+// Reset and compute one group field
 oneGroupFlux_ *= 0.0;
-forAll(flux_,energyI)
+forAll(flux_, energyI)
 {
-    oneGroupFlux_+=flux_[energyI];
+    oneGroupFlux_ += flux_[energyI];
 }

@@ -223,7 +223,7 @@ SourceFiles
 
 #include "powerModel.H"
 #include "IOFieldFields.H"
-#include "InterpolateTables.H"
+#include "InterpolateTablesGF.H"
 #include "radialBasisFunctionInterpolation.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -283,7 +283,7 @@ protected:
     List<scalar> fuelLength_;
 
     //- Axial location interpolation method
-    List<interpolateTableBase::interpolationMethod> zMethod_;
+    List<interpolateTableBaseGF::interpolationMethod> zMethod_;
 
     //- Radial basis function method name (polyharmonicSpline, gaussian)
     List<word> radialBasisFunctionMethod_;

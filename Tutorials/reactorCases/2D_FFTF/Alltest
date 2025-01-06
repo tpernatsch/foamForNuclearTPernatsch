@@ -1,0 +1,123 @@
+#!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
+
+# --- Initialize the output file
+resFile=test.out
+logFile=log.simulation
+rm -rf $resFile $logFile
+touch $resFile $logFile
+
+# --- Run the simulation
+echo -e "Run tutorial 2D_FFTF ...\n" | tee -a $resFile
+./Allrun_parallel >> $logFile
+echo -e "Done running tutorial 2D_FFTF ...\n" | tee -a $resFile
+
+# --- Check it ran
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" | tee -a $resFile
+    else
+        echo -e "$name has NOT converged \n" | tee -a $resFile
+        exit 1
+    fi
+}
+
+isConverge steadyState "Energy steady state"
+isConverge transient   "Transient"
+
+# --- Recover the results
+extract()
+{
+    value=$(
+        grep -e "$1" ./transient/log.GeN-Foam |
+        tail -1 |
+        egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?."
+    )
+    echo $value
+}
+
+reactivityDoppler=$(extract "-> Doppler")
+reactivityClad=$(extract "-> TClad")
+reactivityDensity=$(extract "-> rhoCool")
+reactivityStructures=$(extract "-> TStruct  ")
+reactivityDriveline=$(extract "-> driveline")
+reactivityGEM=$(extract "-> GEM")
+totalPower=$(extract "totalPower")
+
+expectedDoppler=238.1535 # 237.0728
+expectedClad=0.8706593 # 0.8198844
+expectedDensity="-2.523688" # "-2.525069"
+expectedStructures="-5.55205" # "-1.017622"
+expectedDriveline="-7.249654" # "-8.631667"
+expectedGEM="-464.8492" # "-464.8497"
+expectedTotalPower=28761.75 # 29490.49
+
+
+# --- Check results are correct
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+error=0.01
+echo "Reactivity contributions with $error relative error" | tee -a $resFile
+if  [ $(isInRange $expectedDoppler    $reactivityDoppler    $error) -eq 0 ] &&
+    [ $(isInRange $expectedClad       $reactivityClad       $error) -eq 0 ] &&
+    [ $(isInRange $expectedDensity    $reactivityDensity    $error) -eq 0 ] &&
+    [ $(isInRange $expectedStructures $reactivityStructures $error) -eq 0 ] &&
+    [ $(isInRange $expectedDriveline  $reactivityDriveline  $error) -eq 0 ] &&
+    [ $(isInRange $expectedGEM        $reactivityGEM        $error) -eq 0 ] &&
+    [ $(isInRange $expectedTotalPower $totalPower           $error) -eq 0 ]
+then
+    echo "Perfect match:" | tee -a $resFile
+    echo "|             | Simulated | Expected |" | tee -a $resFile
+    echo "|:------------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Doppler     | $reactivityDoppler | $expectedDoppler |" | tee -a $resFile
+    echo "| Cladding    | $reactivityClad | $expectedClad |" | tee -a $resFile
+    echo "| Density     | $reactivityDensity | $expectedDensity |" | tee -a $resFile
+    echo "| Structures  | $reactivityStructures | $expectedStructures |" | tee -a $resFile
+    echo "| Driveline   | $reactivityDriveline | $expectedDriveline |" | tee -a $resFile
+    echo "| GEM         | $reactivityGEM | $expectedGEM |" | tee -a $resFile
+    echo "| Total power | $totalPower | $expectedTotalPower |" | tee -a $resFile
+else
+    echo "Divergent results:" | tee -a $resFile
+    echo "|             | Simulated | Expected |" | tee -a $resFile
+    echo "|:------------|:---------:|:--------:|" | tee -a $resFile
+    echo "| Doppler     | $reactivityDoppler | $expectedDoppler |" | tee -a $resFile
+    echo "| Cladding    | $reactivityClad | $expectedClad |" | tee -a $resFile
+    echo "| Density     | $reactivityDensity | $expectedDensity |" | tee -a $resFile
+    echo "| Structures  | $reactivityStructures | $expectedStructures |" | tee -a $resFile
+    echo "| Driveline   | $reactivityDriveline | $expectedDriveline |" | tee -a $resFile
+    echo "| GEM         | $reactivityGEM | $expectedGEM |" | tee -a $resFile
+    echo "| Total power | $totalPower | $expectedTotalPower |" | tee -a $resFile
+    exit 1
+fi
+
+# --- Exit successfully
+exit 0

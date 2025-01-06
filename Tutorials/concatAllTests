@@ -11,18 +11,18 @@ concat()
     cat $file >> regressionResults
 }
 
-concat 1D_boiling/test.out
-concat 1D_CHF/imposedPower/test.out
-concat 1D_CHF/imposedTemperature/test.out
-concat 1D_HX/onePhase/test.out
-concat 1D_HX/twoPhase/test.out
-concat 1D_MSR_pointKinetics/test.out
-concat 1D_PSBT_SC/test.out
-concat 2D_cavityBoussinesq/test.out
-concat 2D_FFTF/test.out
-concat 2D_KNS37-L22/test.out
-concat 2D_MSFR/test.out
-concat 2D_onePhaseAndPointKineticsCoupling/test.out
-concat 2D_voidMotionNoPhaseChange/test.out
-concat 3D_SmallESFR/test.out
-concat Godiva_SN/test.out
+concat featureCases/1D_boiling/test.out
+concat featureCases/1D_CHF/imposedPower/test.out
+concat featureCases/1D_CHF/imposedTemperature/test.out
+concat featureCases/1D_HX/onePhase/test.out
+concat featureCases/1D_HX/twoPhase/test.out
+concat featureCases/1D_PSBT_SC/test.out
+concat featureCases/2D_cavityBoussinesq/test.out
+concat featureCases/2D_KNS37-L22/test.out
+concat featureCases/2D_onePhaseAndPointKineticsCoupling/test.out
+concat featureCases/2D_voidMotionNoPhaseChange/test.out
+concat reactorCases/1D_MSR_pointKinetics/test.out
+concat reactorCases/2D_FFTF/test.out
+concat reactorCases/2D_MSFR/test.out
+concat reactorCases/3D_SmallESFR/test.out
+concat reactorCases/Godiva_SN/test.out

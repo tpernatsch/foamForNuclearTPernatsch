@@ -1,4 +1,5 @@
 Info << "Set XS fields... ";
+
 const PtrList<volScalarField>& IV = xs_.IV();
 const PtrList<volScalarField>& D = xs_.D();
 const PtrList<volScalarField>& nuSigmaEff = xs_.nuSigmaEff();

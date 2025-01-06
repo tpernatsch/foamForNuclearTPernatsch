@@ -1,0 +1,54 @@
+#!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+# --- Run the simulation
+echo -e "Run tutorial 1D_neutronicsDiffusion ...\n" | tee -a $resFile
+./Allrun >> log.simulation
+echo -e "Done running tutorial 1D_neutronicsDiffusion ...\n" | tee -a $resFile
+
+# --- Check it ran
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" | tee -a $resFile
+    else
+        echo -e "$name has NOT converged \n" | tee -a $resFile
+        exit 1
+    fi
+}
+
+isConverge "" "1D_neutronicsDiffusion"
+
+
+python3 Allplot.py 1 flux0 True  | tee -a $resFile
+
+if [[ $? -eq 0 ]]
+then
+    echo "All tests passed" | tee -a $resFile
+else
+    echo "Divergent results, see log" | tee -a $resFile
+    exit 1
+fi
+
+
+# --- Exit successfully
+exit 0

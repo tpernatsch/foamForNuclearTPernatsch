@@ -1,0 +1,38 @@
+if (!exists("log")) log='log.GeN-Foam'
+if (!exists("fluid1")) fluid1='liquid'
+if (!exists("fluid2")) fluid2='vapour'
+
+set multiplot layout 2, 1 rowsfirst
+
+# First plot -------------------------------------------------------------------*
+set label 1 'a' at graph 0.08,0.9 font ',8'
+set title log
+set logscale y
+set ylabel 'Residual (-)'
+set xlabel 'Iteration (-)'
+plot x notitle with line linecolor rgb"#ffffff",\
+"< cat ". log ." | grep 'Solving for p_rgh' | cut -d' ' -f9 | tr -d ','" title 'p-rgh' with lines,\
+"< cat ". log ." | grep 'Solving for h,' | cut -d' ' -f9 | tr -d ','" title 'h' with lines,\
+"< cat ". log ." | grep 'Solving for h.". fluid1 ."' | cut -d' ' -f9 | tr -d ','" title 'h.'.fluid1 with lines,\
+"< cat ". log ." | grep 'Solving for h.". fluid2 ."' | cut -d' ' -f9 | tr -d ','" title 'h.'.fluid2 with lines,\
+"< cat ". log ." | grep 'Final neutroResidual' | cut -d' ' -f7 | tr -d ','" title 'fluxes' with lines,\
+"< cat ". log ." | grep 'Solving for dispx' | cut -d' ' -f9 | tr -d ','" title 'dispx' with lines,\
+"< cat ". log ." | grep 'Solving for dispy' | cut -d' ' -f9 | tr -d ','" title 'dispy' with lines,\
+"< cat ". log ." | grep 'Solving for dispz' | cut -d' ' -f9 | tr -d ','" title 'dispz' with lines
+
+# Second plot ------------------------------------------------------------------*
+set label 1 'b' at graph 0.08,0.9 font ',8'
+unset title
+unset logscale y
+# set yr [300:1500]
+set ylabel 'Temperature [K]'
+set xlabel 'Iteration [-]'
+plot x notitle with line linecolor rgb"#ffffff",\
+"< cat ". log ." | grep 'TFuel = ' | cut -d' ' -f7 | tr -d ','" title 'TFuel avg' with lines,\
+"< cat ". log ." | grep 'TClad = ' | cut -d' ' -f7 | tr -d ','" title 'TClad avg' with lines,\
+"< cat ". log ." | grep 'TCool = ' | cut -d' ' -f7 | tr -d ','" title 'TCool avg' with lines
+unset multiplot
+
+# Refresh
+pause 1
+reread

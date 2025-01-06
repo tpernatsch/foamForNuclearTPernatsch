@@ -1,23 +1,23 @@
 neutroResidual = 0.0;
 
-if(aitkenAcceleration)
+if (aitkenAcceleration)
 {
     #include "aitkenAcceleration.H"
-}   
+}
 
-forAll(flux_,energyI)
+forAll(flux_, energyI)
 {
     Dalbedo_ = D[energyI];
     fluxStarAlbedo_ *= 0.0;
     #include "calcScatteringSource.H"
-    neutroSource_ -= nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_); // * (1-externalSourceNeutronics_);
+    neutroSource_ -= nuSigmaEff[energyI] * flux_[energyI] * (1-eigenvalueNeutronics_); // * (1-externalSourceNeutronics_);
 
     fvMatrix<scalar> neutroEq
     (
         neutroEqList[energyI]
-      - neutroSource_*(1.0-BetaTot)*chiPrompt[energyI]/keff_
-      - delayedNeutroSource_*chiDelayed[energyI]
-      - scatteringSourceExtra_ 
+      - neutroSource_ * (1.0-BetaTot) * chiPrompt[energyI]/keff_
+      - delayedNeutroSource_ * chiDelayed[energyI]
+      - scatteringSourceExtra_
     );
 
 
@@ -26,10 +26,10 @@ forAll(flux_,energyI)
 
     //Info<< "neutro Residual = " << initRes << nl << endl;
 
-    residual_=max(neutroEq.solve().max().initialResidual(), residual_);
+    residual_ = max(neutroEq.solve().max().initialResidual(), residual_);
 
     flux_[energyI]=fluxStar_[energyI]/discFactor[energyI];
     flux_[energyI].correctBoundaryConditions();
-    neutroSource_ += nuSigmaEff[energyI]*flux_[energyI]*(1-eigenvalueNeutronics_); // * (1-externalSourceNeutronics_);
+    neutroSource_ += nuSigmaEff[energyI] * flux_[energyI] * (1-eigenvalueNeutronics_); // * (1-externalSourceNeutronics_);
 
 }

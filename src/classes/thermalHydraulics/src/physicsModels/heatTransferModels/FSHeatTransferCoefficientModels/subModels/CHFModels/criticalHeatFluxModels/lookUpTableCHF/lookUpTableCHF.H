@@ -59,10 +59,10 @@ SourceFiles
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #include "CHFModel.H"
-#include "InterpolateTables.H"
-#include "InterpolateTable.H"
-#include "scalarFieldFieldINew.H"
-#include "PtrListScalarFieldFieldINew.H"
+#include "InterpolateTablesGF.H"
+#include "InterpolateTableGF.H"
+#include "scalarFieldFieldINewGF.H"
+#include "PtrListScalarFieldFieldINewGF.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -128,16 +128,16 @@ protected:
     PtrList<FieldField<Field, scalar>> data_;
 
     //- Pressure interpolation method
-    interpolateTableBase::interpolationMethod pMethod;
+    InterpolateTableBaseGF::interpolationMethod pMethod;
     
     //- Mass flow rate interpolation method
-    interpolateTableBase::interpolationMethod gMethod_;
+    InterpolateTableBaseGF::interpolationMethod gMethod_;
     
     //- Quality interpolation method
-    interpolateTableBase::interpolationMethod xeMethod_;
+    InterpolateTableBaseGF::interpolationMethod xeMethod_;
     
     //- 3D Interpolation table (pressure as the main direction)
-    scalarFieldFieldInterpolateTable pTable_;
+    scalarFieldFieldInterpolateTableGF pTable_;
 
 
     
