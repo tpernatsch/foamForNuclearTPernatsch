@@ -264,6 +264,9 @@ protected:
     //  heating goes to the moderator
     scalarList fractionOfPowerFromNeutronics_;
 
+    //- Volume fraction of fuel
+    scalarList fuelFraction_;
+
     //- If true, update avg TFuel and avg TClad fields for neutronics coupling
     List<bool> isFuelTemperatureFieldFromFMU_;
 

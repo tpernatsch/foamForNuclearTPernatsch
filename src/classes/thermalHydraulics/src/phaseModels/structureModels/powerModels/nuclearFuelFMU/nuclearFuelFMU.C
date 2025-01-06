@@ -141,6 +141,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
     ),
     isHeatFluxInput_(0),
     fractionOfPowerFromNeutronics_(0),
+    fuelFraction_(0),
     isFuelTemperatureFieldFromFMU_(0),
     xPos_(0),
     yPos_(0),
@@ -201,6 +202,10 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
         (
             dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics", 1.0)
         );
+        scalar fuelFraction
+        (
+            dict.lookupOrDefault<scalar>("fuelFraction", 1.0)
+        );
         scalarList xPos(0);
         scalarList yPos(0);
         const scalarField axialLoc(dict.get<scalarField>("axialLocations"));
@@ -242,6 +247,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
 
         // Fill in lists for this region
         fractionOfPowerFromNeutronics_.append(fractionOfPowerFromNeutronics);
+        fuelFraction_.append(fuelFraction);
         const bool isFuelTemperatureFieldFromFMU
         (
             dict.found("TFuelNameFromFMU") && dict.found("TCladNameFromFMU")
@@ -1079,6 +1085,7 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         const scalar powerDensity
         (
             fractionOfPowerFromNeutronics_[regioni]
+                * fuelFraction_[regioni]
                 * structure_.powerDensityNeutronics()[celli]
         );
         totalPowerNeutronics += powerDensity * V[celli];
@@ -1088,20 +1095,18 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         {
             heatFlux = interpolatedValue;
 
-            totalPowerEnthalpy += (powerDensity - heatFlux * iA_[celli] / alpha_[celli]) * V[celli];
+            totalPowerEnthalpy += (powerDensity - heatFlux * iA_[celli]) * V[celli];
         }
         else // rho Cp dT/dt = interpolatedValue
         {
-            heatFlux = alpha_[celli] * (powerDensity - interpolatedValue) / iA_[celli];
+            heatFlux = (powerDensity - interpolatedValue) / iA_[celli];
 
             totalPowerEnthalpy += interpolatedValue * V[celli];
         }
 
-        totalPowerFromHeatFlux += heatFlux * iA_[celli] * V[celli] / alpha_[celli];
+        totalPowerFromHeatFlux += heatFlux * iA_[celli] * V[celli];
 
         Vtot += V[celli];
-
-        // Info<< "Heat flux evaluated " << xCell << " " << yCell << ": " << heatFlux << endl;
 
 
         // Update Tsurface
@@ -1199,7 +1204,7 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs
     const wordList htcNameToFMU(dict.lookupOrDefault<wordList>("htcNameToFMU", {}));
 
     // Read region values
-    const scalar& fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
+    // const scalar& fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
 
     // Loop over the fuel models
     forAll(avgPowerDensityNameToFMU, nameI)
@@ -1229,12 +1234,13 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs
             // Accumulate surface temperature values
             // TstructToFMUtemp += std::to_string(Tsurface_[cellNumber])+" ";
             TstructToFMUtemp.append(Tsurface_[cellNumber]);
-            TfluidToFMUtemp.append(HTSum[cellNumber] / (max(HSum[cellNumber], SMALL)));
+            TfluidToFMUtemp.append(HTSum[cellNumber] / max(HSum[cellNumber], SMALL));
             htcToFMUtemp.append(HSum[cellNumber]);
 
             // Accumulate power values
             const scalar& qRef(structure_.powerDensityNeutronics()[cellNumber]);
-            profileData.append(qRef * fractionOfPowerFromNeutronics);
+            // profileData.append(qRef * fractionOfPowerFromNeutronics);
+            profileData.append(qRef /*/ fractionOfPowerFromNeutronics*/);
         }
 
         // Rescale data

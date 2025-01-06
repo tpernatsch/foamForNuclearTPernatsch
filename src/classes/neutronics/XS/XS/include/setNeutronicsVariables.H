@@ -73,7 +73,7 @@ DNeutroAx.clear();
 
 // log(T) if fast spectrum or sqrt(T) if thermal
 logT_ = log(max(0.01, Tfuel/dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 1.0)));
-sqrtT_ = pow(Tfuel, 0.5);
+sqrtT_ = pow(max(dimensionedScalar("", dimensionSet(0,0,0,1,0,0,0), 0.0), Tfuel), 0.5);
 
 forAll(nuSigmaEff_, energyI)
 {

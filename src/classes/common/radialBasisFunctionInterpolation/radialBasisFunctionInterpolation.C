@@ -162,18 +162,16 @@ scalarList solvePolyharmonicSpline
 
         SquareMatrix<scalar> A(nx+4, 0.0);
 
-        scalar r2(0);
+        scalar rSquare(0);
         forAll(xList, i)
         {
             forAll(xList, j)
             {
                 if (i != j)
                 {
-                    const scalar rSquare(
-                        sqr(xList[i]-xList[j])
-                        + sqr(yList[i]-yList[j])
-                        + sqr(zList[i]-zList[j])
-                    );
+                    rSquare = sqr(xList[i]-xList[j])
+                            + sqr(yList[i]-yList[j])
+                            + sqr(zList[i]-zList[j]);
                     A[i][j] = polyharmonicSplineFunction(rSquare, mode);
                 }
                 else
@@ -230,13 +228,14 @@ scalarList solvePolyharmonicSpline
 
         SquareMatrix<scalar> A(w.size(), 0.0);
 
+        scalar rSquare(0);
         forAll(xList.first(), dataI)
         {
             forAll(xList.first(), dataJ)
             {
                 if (dataI != dataJ)
                 {
-                    scalar rSquare(0);
+                    rSquare = 0.0;
                     forAll(xList, paramI)
                     {
                         rSquare += sqr(xList[paramI][dataI] - xList[paramI][dataJ]);
@@ -292,14 +291,12 @@ scalar polyharmonicSpline
 {
     const label nx(xList.size());
     scalar res(0);
-    scalar r2(0);
+    scalar rSquare(0);
     forAll(xList, i)
     {
-        const scalar rSquare(
-            sqr(x-xList[i])
-            + sqr(y-yList[i])
-            + sqr(z-zList[i])
-        );
+        rSquare = sqr(x-xList[i])
+                + sqr(y-yList[i])
+                + sqr(z-zList[i]);
         res += w[i] * polyharmonicSplineFunction(rSquare, mode);
     }
     res += w[nx] + w[nx+1]*x + w[nx+2]*y + w[nx+3]*z;
@@ -448,18 +445,17 @@ scalar polyharmonicSplineDerivative
 {
     const label nx(xList.size());
     scalar res(0);
+    scalar r2(0);
     forAll(xList, i)
     {
-        const scalar r(sqrt(
-            sqr(x-xList[i])
-            + sqr(y-yList[i])
-            + sqr(z-zList[i])
-        ));
-        if (r > 0)
+        r2 = sqr(x-xList[i])
+           + sqr(y-yList[i])
+           + sqr(z-zList[i]);
+        if (r2 > 0)
         {
             res += (
                 w[i] + w[i+nx] * (x-xList[i]) + w[i+2*nx] * (y-yList[i])
-            ) * sqr(r) * log(r);
+            ) * r2 * log(sqrt(r2));
         }
     }
     res += w[3*nx] + w[3*nx+1]*x + w[3*nx+2]*y + w[3*nx+3]*z;
@@ -492,18 +488,17 @@ scalarList solvePolyharmonicSplineIntegral
         // const labelList& regionCells(structure_.cellLists()[region]);
         const scalarList& V(mesh.V());
 
+        scalar r2(0);
         forAll(xList, i)
         {
             forAll(xList, j)
             {
                 if (i != j)
                 {
-                    const scalar r(sqrt(
-                        sqr(xList[i]-xList[j])
+                    r2 = sqr(xList[i]-xList[j])
                         + sqr(yList[i]-yList[j])
-                        + sqr(zList[i]-zList[j])
-                    ));
-                    A[i][j] = sqr(r) * log(r);
+                        + sqr(zList[i]-zList[j]);
+                    A[i][j] = r2 * log(sqrt(r2));
                 }
                 else
                 {
@@ -578,14 +573,13 @@ scalar polyharmonicSplineIntegral
 {
     const label nx(xList.size());
     scalar res(0);
+    scalar r2(0);
     forAll(xList, i)
     {
-        const scalar r(sqrt(
-            sqr(x-xList[i])
+        r2 = sqr(x-xList[i])
             + sqr(y-yList[i])
-            + sqr(z-zList[i])
-        ));
-        res += w[i] * sqr(r) * log(r);
+            + sqr(z-zList[i]);
+        res += w[i] * r2 * log(sqrt(r2));
     }
     res += w[nx];
     return(res);
