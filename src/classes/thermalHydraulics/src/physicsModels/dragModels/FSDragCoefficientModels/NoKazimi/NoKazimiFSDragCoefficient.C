@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FSDragCoefficientModels
     defineTypeNameAndDebug(NoKazimi, 0);
     addToRunTimeSelectionTable
     (
-        FSDragCoefficientModel, 
-        NoKazimi, 
+        FSDragCoefficientModel,
+        NoKazimi,
         FSDragCoefficientModels
     );
 }
@@ -107,15 +107,15 @@ Foam::scalar Foam::FSDragCoefficientModels::NoKazimi::value
                 (
                     max
                     (
-                        ((Rei-400.0)/2200.0), 
+                        ((Rei-400.0)/2200.0),
                         0.0
-                    ), 
+                    ),
                     1.0
                 )
             );
             return sqrt(psi)*ft+sqrt(1.0-psi)*fl;
         }
-        else    
+        else
             return ft;
     }
     return fl;

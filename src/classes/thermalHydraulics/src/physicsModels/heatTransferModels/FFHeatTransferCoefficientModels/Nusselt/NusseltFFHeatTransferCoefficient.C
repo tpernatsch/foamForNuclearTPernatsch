@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FFHeatTransferCoefficientModels
     defineTypeNameAndDebug(Nusselt, 0);
     addToRunTimeSelectionTable
     (
-        FFHeatTransferCoefficientModel, 
-        Nusselt, 
+        FFHeatTransferCoefficientModel,
+        Nusselt,
         FFHeatTransferCoefficientModels
     );
 }
@@ -100,12 +100,12 @@ Foam::scalar Foam::FFHeatTransferCoefficientModels::Nusselt::value
         if (usePeclet_)
             return
                 scalar
-                ( 
+                (
                     (kappa_[celli]/Dhi)*
                     (A_ + B_*pow(Re_[celli]*Pr_[celli], C_))
                 );
         else
-            return 
+            return
                 scalar
                 (
                     (kappa_[celli]/Dhi)*

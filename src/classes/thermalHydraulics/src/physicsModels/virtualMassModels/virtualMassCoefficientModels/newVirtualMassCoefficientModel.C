@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ License
 
 // * * * * * * * * * * * * * * * * Selector  * * * * * * * * * * * * * * * * //
 
-Foam::autoPtr<Foam::virtualMassCoefficientModel> 
+Foam::autoPtr<Foam::virtualMassCoefficientModel>
 Foam::virtualMassCoefficientModel::New
 (
     const FFPair& pair,
@@ -52,7 +52,7 @@ Foam::virtualMassCoefficientModel::New
 {
     word type(dict.lookup("type"));
 
-    Info<< "Selecting virtualMassCoefficientModel for pair " << pair.name() 
+    Info<< "Selecting virtualMassCoefficientModel for pair " << pair.name()
         << ": " << type << endl;
 
     auto* ctorPtr = virtualMassCoefficientModelsConstructorTable(type);
@@ -62,7 +62,7 @@ Foam::virtualMassCoefficientModel::New
         FatalErrorInFunction
             << "Unknown virtualMassCoefficientModel type "
             << type << endl << endl
-            << "Valid virtualMassCoefficientModel types are : " 
+            << "Valid virtualMassCoefficientModel types are : "
             << endl
             << virtualMassCoefficientModelsConstructorTablePtr_
             ->sortedToc()

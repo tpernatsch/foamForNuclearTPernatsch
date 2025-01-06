@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ Description
     Class to model a generic fluid phase. It mainly acts as a variable
     placeholder, as little functionality is deferred to the class itself.
 
-    Author: 
+    Author:
     Stefan Radman (stefanradman92@gmail.com, stefan.radman@epfl.ch)
 
 SourceFiles
@@ -124,12 +124,12 @@ private :
 
         -> (re-arrange)
 
-        ddt(alpha) + div(alphaPhi) 
+        ddt(alpha) + div(alphaPhi)
         =
         (1/rho)*
         (
             alpha*ddt(rho) + alphaPhil&grad(rho) + dmdt
-        ) 
+        )
         =
         dgdt
     */
@@ -138,7 +138,7 @@ private :
     //- A field that represents the sign of phase change in each cell, i.e.
     //  1 if the phase is appearning, -1 if disappearing, 0 else. This field
     //  is currently only used by the nucleateBoiling heatTransfer model
-    mutable autoPtr<scalarField> phaseChangeSignPtr_; 
+    mutable autoPtr<scalarField> phaseChangeSignPtr_;
 
     //- Flow quality of the phase. While these are not intrinsic
     //  properties to the fluid itself (they depend on the properties of the
@@ -183,26 +183,26 @@ private :
     //- Ref to powerDensity from neutronics (projected on fluid mesh)
     volScalarField& powerDensityNeutronicsToLiquid_;
 
-    //- Continuity error of the phase 
+    //- Continuity error of the phase
     //  (== fvc::ddt(alpha, rho) + fvc::div(alphaRhoPhi)) (kg/m3/s)
     volScalarField contErr_;
 
     //- Cumulat-ive/ed continuity error integrated in time and volume (kg)
     scalar cumulContErr_;
 
-    //- 
+    //-
     autoPtr<fluidDiameterModel> diameterPtr_;
 
     //- Characteristic dimension of the fluid. This is equal to the structure
     //  hydraulic diameter if this fluid is continuous, else it is specified
     //  by the fluidDiameterModel within fluidGeometry. Information on whether
     //  a fluid is continuous or dispersed in a certain regime is specified in
-    //  the fluidGeometry dict as well. Since this is regime-dependent, this 
+    //  the fluidGeometry dict as well. Since this is regime-dependent, this
     //  field is manipulated by reference by diameterPtr_ and can be different
     //  from the structure Dh only in two-phase simulations
     volScalarField Dh_;
 
-    //- Marker field that is 1 where the phase is dispersed, 0 where it is 
+    //- Marker field that is 1 where the phase is dispersed, 0 where it is
     //  continuous, and between 0 and 1 in interpolation regimes.
     //  Handled by an autoPtr as it is non-trivial only in two-phase scenarios
     mutable autoPtr<scalarField> dispersionPtr_;
@@ -243,7 +243,7 @@ public:
 
     //- Member Functions
 
-        //- Set all the autoPtr to the fields required for two-phase 
+        //- Set all the autoPtr to the fields required for two-phase
         //  simulations
         void initTwoPhaseFields() const;
 
@@ -273,11 +273,11 @@ public:
         //- Update diameter based on the diameterModel
         void correctDiameter();
 
-        //- Update/set the belowThermoResidualAlpha/aboveThermoResidualAlpha 
+        //- Update/set the belowThermoResidualAlpha/aboveThermoResidualAlpha
         //  fields. Only useful in twoPhase simulations
         void correctThermoResidualMarkers();
 
-        //- Boussinesq-sensitive density. If both the Boussinesq_ and 
+        //- Boussinesq-sensitive density. If both the Boussinesq_ and
         //  isConstant flags are true, the returned density is equal
         //  to rho0 provided in thermoPhysicalProperties in equationOfState
         volScalarField& rho(bool isVariableIfBoussinesq=false);

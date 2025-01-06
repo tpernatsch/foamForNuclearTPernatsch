@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -136,7 +136,7 @@ Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
     const scalar Li(mag(FFPairPtr_->L()[celli]));
     // Calculate the liquid and vapor saturated enthalpy in this cell.
     scalar hLsati(hLsat[celli]);
-    scalar hVsati(hLsat[celli] + Li);   
+    scalar hVsati(hLsat[celli] + Li);
     // Calculate the mass flow rate in this cell
     scalar massFlowi(rhoLi*uLi*aLi+rhoVi*uVi*(1-aLi));
     // Calculate the liquid and vapor enthalpy in this cell.
@@ -150,18 +150,18 @@ Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
     scalar EquilibriumQualityi((hMixi-hLsati)/Li);
 
     //convert pressure to KPa, which is used in CHF look-up table
-    scalar pk(pi/1000.0); 
+    scalar pk(pi/1000.0);
 
     // Interpolate 3D table with pressure
     FieldField<Field, scalar> pData(pTable_(pk));
 
-    // Create 2D table (x is massFlowRate, y is quality)    
+    // Create 2D table (x is massFlowRate, y is quality)
     scalarFieldInterpolateTableGF gTable(massFlowRateValues_, pData, gMethod_);
 
     // Interpolate 2D table with mass flow rate
     scalarField gData(gTable(massFlowi));
 
-    // Create 1D table (main coordinate is quality)    
+    // Create 1D table (main coordinate is quality)
     scalarInterpolateTableGF xeTable(qualityValues_, gData, xeMethod_);
 
     // Interpolate 1D table and get final value of critical heat flux.
@@ -176,11 +176,11 @@ Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
       scalar K2((2.0*PitchToDiameter_ - 1.5)*exp(-pow(abs(EquilibriumQualityi),3.0)/2.0));
       QCHF = QCHF * K2;
     }
-    else 
+    else
     {
       scalar K1(max(0.6,sqrt(0.008/Dhi)));
       QCHF = QCHF * K1;
     }
-     
+
     return QCHF;
 }

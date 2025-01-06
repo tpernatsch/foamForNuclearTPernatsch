@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -45,35 +45,35 @@ Description
     Same as standard OpenFOAM. porousKEpsilon is provided as additional model.
     The only difference is that it forces k and epsilon to equilibrium values
     inside the porous zones. These equilibium values can be set in the
-    porousKepsionProperties sub-dictionary here below. k and epsilon are 
-    determined based on correlations for tubulent intensity (I) and lengh 
-    scale (L). Turbulent intensity correlation in the form 
+    porousKepsionProperties sub-dictionary here below. k and epsilon are
+    determined based on correlations for tubulent intensity (I) and lengh
+    scale (L). Turbulent intensity correlation in the form
     turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp,
-    with Reynolds number calculated by the thermal-hydraulic class, according 
-    to the input data in phaseProperties. 
+    with Reynolds number calculated by the thermal-hydraulic class, according
+    to the input data in phaseProperties.
 
-    Please notice that a porous medium simulation using the porousKEpsilon 
-    model entails the risk of an unstable solution. This is due to the fact 
-    that the turbulent viscosity will be that of the sub-scale structure, and 
-    thus not enough to stabilize a solution on the length scale of the coarse 
-    mesh. To address this problem, one can define the keyword DhStruct in 
+    Please notice that a porous medium simulation using the porousKEpsilon
+    model entails the risk of an unstable solution. This is due to the fact
+    that the turbulent viscosity will be that of the sub-scale structure, and
+    thus not enough to stabilize a solution on the length scale of the coarse
+    mesh. To address this problem, one can define the keyword DhStruct in
     constant/fluidRegion/phaseProperties/dragModels.(nameOfPhase).structure.
     (nameOfCellZones). This keyword defines the hydraulic diameter of the whole
-    porous structure. The code uses it to make sure the turbulent viscosity 
+    porous structure. The code uses it to make sure the turbulent viscosity
     results in a  laminar Reynolds number (defaulted to 500).
 
 Usage
-    The following sub-dictionary should be included in the turbulenceProperties 
+    The following sub-dictionary should be included in the turbulenceProperties
     dictionary:
     \verbatim
     porousKEpsilonProperties
     {
         "zones of application"
         {
-        
-            convergenceLength           0.5; // k and epsilon will exponentially 
+
+            convergenceLength           0.5; // k and epsilon will exponentially
                          // converge to equilibrium according to this exponent
-            turbulenceIntensityCoeff    0.16; 
+            turbulenceIntensityCoeff    0.16;
             turbulenceIntensityExp      -0.125;
             turbulenceLengthScaleCoeff  0.07;
         }
@@ -152,7 +152,7 @@ protected:
             //- Sub-dict
             dictionary porousKEpsilonDict_;
 
-            //- Characteristic length over which k and epsilon converge to 
+            //- Characteristic length over which k and epsilon converge to
             //  their equilibrium values
             volScalarField convergenceLength_;
 
@@ -169,7 +169,7 @@ protected:
             volScalarField equilibriumEpsilon_;
             volScalarField equilibriumK_;
 
-            //- Fields for nutStabilization as seen in the old GeN-Foam 
+            //- Fields for nutStabilization as seen in the old GeN-Foam
             //  porousKEpsilon
             bool nutStabilization_;
             autoPtr<volScalarField> DhStructPtr_;

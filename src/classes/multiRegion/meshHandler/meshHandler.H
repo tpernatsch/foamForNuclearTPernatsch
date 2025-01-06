@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -147,29 +147,29 @@ public:
         template<class Type>
         void map
         (
-            word srcFieldName, 
-            word tgtFieldName, 
-            label tgtFieldLabel, 
-            label srcFieldLabel, 
+            word srcFieldName,
+            word tgtFieldName,
+            label tgtFieldLabel,
+            label srcFieldLabel,
             bool removeBaffles
         );
 
         template<class Type>
         void mapAndWrite
         (
-            word srcFieldName, 
-            word tgtFieldName, 
-            label tgtFieldLabel, 
-            label srcFieldLabel, 
+            word srcFieldName,
+            word tgtFieldName,
+            label tgtFieldLabel,
+            label srcFieldLabel,
             bool removeBaffles
         );
 
         template<class Type>
         void createBaffleLessField
         (
-            word fieldName, 
-            label regionLabel, 
-            fvMesh& baffleLessMesh, 
+            word fieldName,
+            label regionLabel,
+            fvMesh& baffleLessMesh,
             label& nCouplingFields
         );
 

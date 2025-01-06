@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,7 +43,7 @@ Description
     convection, two-phase convection, sub-cooled and nucleate boiling, to
     film boiling (the latter, hopefully). Replicates what TRACE does.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles
@@ -115,7 +115,7 @@ private:
 
     //- Ptr to mass transfer term at the wall (of the phaseChange class) so
     //  that it can be set here to account e.g. for sub-cooled boiling
-    // Breaking encapsulation in an awful manner, as this modifies 
+    // Breaking encapsulation in an awful manner, as this modifies
     // a private member of another class. Should be changed....
     mutable volScalarField* dmdtWPtr_;
 

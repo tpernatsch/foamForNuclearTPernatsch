@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -90,7 +90,7 @@ Foam::scalar Foam::contactPartitionModels::complementary::value
         (
             mesh_.lookupClass<contactPartitionModel>()
         );
-        complementaryModel_ = 
+        complementaryModel_ =
         (
             (this->type() == models[models.toc()[0]]->type()) ?
             models[models.toc()[1]] : models[models.toc()[0]]
@@ -109,9 +109,9 @@ void Foam::contactPartitionModels::complementary::correctField
     if (complementaryPair_ == nullptr)
     {
         HashTable<const FSPair*> pairs(mesh_.lookupClass<FSPair>());
-        complementaryPair_ = 
+        complementaryPair_ =
         &(
-            (pair_.name() == pairs[pairs.toc()[0]]->name()) ? 
+            (pair_.name() == pairs[pairs.toc()[0]]->name()) ?
             pairs[pairs.toc()[1]] : pairs[pairs.toc()[0]]
         );
     }
@@ -123,7 +123,7 @@ void Foam::contactPartitionModels::complementary::correctField
         (
             mesh_.lookupClass<contactPartitionModel>()
         );
-        complementaryModel_ = 
+        complementaryModel_ =
         (
             (this->type() == models[models.toc()[0]]->type()) ?
             models[models.toc()[1]] : models[models.toc()[0]]

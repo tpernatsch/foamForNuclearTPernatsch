@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -58,13 +58,13 @@ const Foam::Enum
 Foam::functionObjects::pressureDrop::regionTypeNames_
 (
     {
-        { 
-            regionType::patch, 
-            "patch" 
+        {
+            regionType::patch,
+            "patch"
         },
-        { 
-            regionType::faceSet_, 
-            "faceSet" 
+        {
+            regionType::faceSet_,
+            "faceSet"
         }
     }
 );
@@ -86,7 +86,7 @@ void Foam::functionObjects::pressureDrop::writeFileHeader(Ostream& os)
         );
         writeHeader(os, headerText);
     }
-    
+
     word time("Time = "+mesh_.time().timeName());
 
     os << time << endl;
@@ -193,7 +193,7 @@ bool Foam::functionObjects::pressureDrop::read(const dictionary& dict)
                 reduce(S1_, sumOp<scalar>());
             }
         }
-        
+
         if (region2Type_ == regionType::patch)
         {
             const polyBoundaryMesh& pbm = mesh_.boundaryMesh();
@@ -274,7 +274,7 @@ bool Foam::functionObjects::pressureDrop::write()
     switch (region1Type_)
     {
         case regionType::patch :
-        {               
+        {
             const fvPatchScalarField& pp = p.boundaryField()[patchID1_];
             const fvPatch& patch(mesh_.boundary()[patchID1_]);
             const scalarField& magSf(patch.magSf());
@@ -303,7 +303,7 @@ bool Foam::functionObjects::pressureDrop::write()
     switch (region2Type_)
     {
         case regionType::patch :
-        {               
+        {
             const fvPatchScalarField& pp = p.boundaryField()[patchID2_];
             const fvPatch& patch(mesh_.boundary()[patchID2_]);
             const scalarField& magSf(patch.magSf());

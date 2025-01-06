@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -41,7 +41,7 @@ Class
 Description
     PIMPLE control class to supply convergence information/checks for
     the PIMPLE loop. In addition to standard PIMPLE functions, this class
-    adds support for a variable number of PISO iterations (via the 
+    adds support for a variable number of PISO iterations (via the
     corrPISOUntilConvergence_ flag) within each PIMPLE iteration, and
     adds an optional residual control for the number of PIMPLE iterations
     performed in each time step based on the evaulation of the initialResidual
@@ -50,7 +50,7 @@ Description
     base class). This proves particularly more useful for multiphase
     simulation.
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch; stefanradman92@gmail.com)
 
 Usage
@@ -118,9 +118,9 @@ protected:
 
             //- If true, the number of PISO iterations performed in every
             //  PIMPLE iteration will be at most nCorrPISO_, but the PISO
-            //  iterations will stop if the linear solver has reached 
+            //  iterations will stop if the linear solver has reached
             //  convergence. This operates completely independently form the
-            //  novel optional residualControl for pressure based on 
+            //  novel optional residualControl for pressure based on
             //  first PISO initial residuals
             bool corrPISOUntilConvergence_;
 
@@ -137,10 +137,10 @@ protected:
 
     // Protected Member Functions
 
-        //- Based on maxTypeResidual in solutionControl. The idea is to get 
+        //- Based on maxTypeResidual in solutionControl. The idea is to get
         //  the initResidual of the first PISO corrector loop of the previous
         //  PIMPLE iteration. This is because it is a good indicator of the
-        //  convergence of pressure-velocity coupling in multiphase 
+        //  convergence of pressure-velocity coupling in multiphase
         //  scenarios. This and the next function work in tandem. In
         //  particular, the residual pair consists of the initial residual of
         //  the very first PISO corrector of the first PIMPLE iteration, while
@@ -165,9 +165,9 @@ protected:
         //- Return true if all convergence checks are satisfied. This modified
         //  version can used the first PISO initialResidual for the evaulation
         //  of convergence criteria if the useFirstPISOInitialResidualFlag
-        //  is specified in the field residualControl dict. 
+        //  is specified in the field residualControl dict.
         //  It is meant specifically for the pressure field and does not make
-        //  sense to use it with any other field. Nonetheless, the flag 
+        //  sense to use it with any other field. Nonetheless, the flag
         //  defaults to false if not provided and this function behaves exactly
         //  like its original version
         virtual bool criteriaSatisfied();
@@ -190,7 +190,7 @@ public:
             const bool verbose = true
         );
 
-         int corr_;  
+         int corr_;
 
 
     //- Destructor

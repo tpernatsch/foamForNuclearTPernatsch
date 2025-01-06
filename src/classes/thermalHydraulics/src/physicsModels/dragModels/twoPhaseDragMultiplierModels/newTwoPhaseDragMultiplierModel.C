@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -41,7 +41,7 @@ License
 
 // * * * * * * * * * * * * * * * * Selector  * * * * * * * * * * * * * * * * //
 
-Foam::autoPtr<Foam::twoPhaseDragMultiplierModel> 
+Foam::autoPtr<Foam::twoPhaseDragMultiplierModel>
 Foam::twoPhaseDragMultiplierModel::New
 (
     const fvMesh& mesh,
@@ -51,7 +51,7 @@ Foam::twoPhaseDragMultiplierModel::New
 {
     word type(dict.lookup("type"));
 
-    Info<< "Selecting twoPhaseDragMultiplierModel: " 
+    Info<< "Selecting twoPhaseDragMultiplierModel: "
         << type << endl;
 
     auto* ctorPtr = twoPhaseDragMultiplierModelsConstructorTable(type);
@@ -61,7 +61,7 @@ Foam::twoPhaseDragMultiplierModel::New
         FatalErrorInFunction
             << "Unknown twoPhaseDragMultiplierModel type "
             << type << endl << endl
-            << "Valid twoPhaseDragMultiplierModel types are : " 
+            << "Valid twoPhaseDragMultiplierModel types are : "
             << endl
             << twoPhaseDragMultiplierModelsConstructorTablePtr_
             ->sortedToc()

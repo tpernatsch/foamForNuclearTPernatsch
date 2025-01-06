@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,10 +42,10 @@ Group
     grpRASTurbulence
 
 Description
-   Same as porousKEpsiolon but turbulent intensity correlation in the form 
-   turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp + 
-   turbulenceIntensityAlphaCoeff * 
-   * (1-alpha), where alpha is the phase fraction. 
+   Same as porousKEpsiolon but turbulent intensity correlation in the form
+   turbulenceIntensityCoeff*Reynolds^turbulenceIntensityExp +
+   turbulenceIntensityAlphaCoeff *
+   * (1-alpha), where alpha is the phase fraction.
 
 SourceFiles
     porousKEpsilon2PhaseCorrected.C
@@ -119,7 +119,7 @@ protected:
             //- Sub-dict
             dictionary porousKEpsilon2PhaseCorrectedDict_;
 
-            //- Characteristic length over which k and epsilon converge to 
+            //- Characteristic length over which k and epsilon converge to
             //  their equilibrium values
             volScalarField convergenceLength_;
 
@@ -139,7 +139,7 @@ protected:
             volScalarField equilibriumEpsilon_;
             volScalarField equilibriumK_;
 
-            //- Fields for nutStabilization as seen in the old GeN-Foam 
+            //- Fields for nutStabilization as seen in the old GeN-Foam
             //  porousKEpsilon2PhaseCorrected
             bool nutStabilization_;
             autoPtr<volScalarField> DhStructPtr_;

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -44,13 +44,13 @@ Description
     should be directly members of other classes (e.g., Reynolds of fluids
     should be in the fluid class), in general these numbers depend on a
     multitude of parameters. You cannot define a Reynolds for a fluid by
-    itself, it needs to be geometrically constratined in a certain domain 
+    itself, it needs to be geometrically constratined in a certain domain
     (so that a hydraulic diameter can be defined), so it is not properly
     "just" of the fluid. While this logic can of course be debate, I wanted
     to keep it simple and not start dispersing dimensionless numbers randomly
-    around the code. 
+    around the code.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com; stefan.radman@epfl.ch)
 
 SourceFiles
@@ -144,13 +144,13 @@ protected :
 
     //- Table of volScalarFields (for htcs)
     //- Heat transfer coefficients between bulk of each fluid and interface
-    typedef HashTable<volScalarField*, word, word::hash> 
+    typedef HashTable<volScalarField*, word, word::hash>
         volScalarFieldPtrTable;
     volScalarFieldPtrTable htcs_;
 
     //- Linearized semi-implicit heat sources due to interfacial heat and mass
     //  transfer (inclusive of intrinsic mass transfer enthalpy contribution)
-    typedef HashTable<fvScalarMatrix*, word, word::hash> 
+    typedef HashTable<fvScalarMatrix*, word, word::hash>
         fvScalarMatrixPtrTable;
     fvScalarMatrixPtrTable heSources_;
 
@@ -202,10 +202,10 @@ public:
         //- Add virtual mass contribution to UEqn
         void addVirtualMassForce(fvVectorMatrix& UEqn) const;
 
-        //- 
+        //-
         void correct
         (
-            const bool& correctFluidDynamics, 
+            const bool& correctFluidDynamics,
             const bool& correctEnergy
         );
 
@@ -261,7 +261,7 @@ public:
                 const dictionary& dict
             ) const
             {
-                return 
+                return
                     (
                         dict.found(this->name())
                     or  dict.found(this->reversedName())
@@ -273,7 +273,7 @@ public:
                 const dictionary& dict
             ) const
             {
-                return 
+                return
                     (dict.found(this->name())) ?
                     dict.subDict(this->name()) :
                     dict.subDict(this->reversedName());
@@ -317,7 +317,7 @@ public:
             const volScalarField& Re() const
             {
                 return Re_;
-            }       
+            }
 
             const volScalarField& magUr() const
             {

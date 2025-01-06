@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,10 +40,10 @@ Class
 
 Description
     Wallis correlation for interfacial liquid-vapour sodium friction
-    H. Ninokata, T. Okano, "SABENA: subassembly boiling evolution numerical 
+    H. Ninokata, T. Okano, "SABENA: subassembly boiling evolution numerical
     analysis", Nucl. Eng. Des., 120 (1990), pp. 349-367
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

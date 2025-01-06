@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -41,7 +41,7 @@ Class
 Description
     Derived class for adjointDiffusion neutronics.
 
-\mainauthor of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files):
     Equations: Jun Shi <junshi@berkeley.edu>
     Coding: Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Swizerland)
 
@@ -106,7 +106,7 @@ protected:
     const volScalarField* rhoCoolOrig_;
     const volScalarField* TStructMechOrig_;
     const volVectorField* UOrig_;
-    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s) 
+    const volScalarField* alphaOrig_; //- Total volume fraction of fluid(s)
     const volScalarField* alphatOrig_; //- Thermal diffusivity in kg/m/s
     const volScalarField* muOrig_; //- Molecular viscosity in kg/m/s (== Pa*s)
 
@@ -117,15 +117,15 @@ protected:
     volScalarField rhoCool_;
     //- Mapped fields from TM
     volScalarField TStructMech_;
-    
+
     //- Also mapped, but these are autoPtr as these field are not needed at all
-    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting 
+    //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
     //  these fields if they are actually needed
     autoPtr<volVectorField> UPtr_;
     autoPtr<volScalarField> alphaPtr_;
     autoPtr<volScalarField> alphatPtr_;
     autoPtr<volScalarField> muPtr_;
-    
+
     //- Fields derived from mapped fields
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
@@ -192,7 +192,7 @@ public:
             scalar pTot = 0;
             forAll(flux_,energyI)
             {
-                
+
                 pTot += fvc::domainIntegrate
                 (
                     flux_[energyI]*xs_.sigmaPow()[energyI]
@@ -208,7 +208,7 @@ public:
         //     const meshToMesh& neutroToFluid,
         //     const objectRegistry& srcTM,
         //     const meshToMesh& neutroToMech
-        // );   
+        // );
 
         // virtual void interpolateCouplingFields
         // (

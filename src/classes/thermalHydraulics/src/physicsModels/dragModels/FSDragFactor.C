@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -183,7 +183,7 @@ void Foam::FSDragFactor::correctField(volTensorField& Kd) const
     (
         pair_.mesh().solutionDict().subDict("PIMPLE").lookupOrDefault<scalar>
         (
-            "minMagU", 
+            "minMagU",
             0
         )
     );
@@ -211,7 +211,7 @@ void Foam::FSDragFactor::correctField(volTensorField& Kd) const
         forAll(cells_, i)
         {
             const label& celli(cells_[i]);
-            halfAlphaRhoMagUByDh_[i] = 
+            halfAlphaRhoMagUByDh_[i] =
                 0.5/Dh_[celli]*
                 (1.0-alphas_[celli])*
                 rho_[celli]*

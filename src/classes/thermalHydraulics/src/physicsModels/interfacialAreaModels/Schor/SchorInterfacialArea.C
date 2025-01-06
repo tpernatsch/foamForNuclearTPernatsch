@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -107,7 +107,7 @@ Foam::interfacialAreaModels::Schor::Schor
         dict.getOrDefault<scalar>("minInterfacialAreaAtLargeAlpha", 0)
     )
 {
-    if 
+    if
     (
         !(pair.fluid1().isLiquid() and pair.fluid2().isGas())
     and !(pair.fluid2().isLiquid() and pair.fluid1().isGas())
@@ -130,7 +130,7 @@ Foam::scalar Foam::interfacialAreaModels::Schor::value
 {
     const scalar& alpha(vapour_.normalized()[celli]);
     scalar scaleFactor(vapour_[celli]/max(alpha, 1e-9));
-    return 
+    return
         scaleFactor*
         (
             (alpha < alpha1_) ?

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,10 +43,10 @@ Description
     regression test to verify capability to handle multiple
     "nuclear" power models
 
-    Authors: 
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com), 
+    Authors:
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
     Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
-    
+
 SourceFiles
     nuclearFuelPinTest.C
 
@@ -85,7 +85,7 @@ protected:
     //- Power density of the fuel
     //volScalarField powerDensity_;
 
-    //- Fields representing pin centerline, outer fuel, inner cladding and 
+    //- Fields representing pin centerline, outer fuel, inner cladding and
     //  outer cladding temperatures
     volScalarField Tfi_;
     volScalarField Tfo_;
@@ -104,7 +104,7 @@ protected:
     scalar Tcmin_;
 
     //- Fraction of power from neutronics that goes to this powerModel
-    //  This take sinto account for instance cases where some of the 
+    //  This take sinto account for instance cases where some of the
     //  heating goes to the moderator
     scalarList fractionOfPowerFromNeutronics_;
 
@@ -176,7 +176,7 @@ protected:
 
     //- Optional table to describe the dependence of the gap condunctance on
     //  the volumetric power density
-    HashTable<autoPtr<Function1<scalar>>, word, word::hash> 
+    HashTable<autoPtr<Function1<scalar>>, word, word::hash>
         gapHPowerDensityTable_;
 
     //-
@@ -222,8 +222,8 @@ public:
         //  current system conditions
         void updateLocalTemperatureProfile
         (
-            const label& celli, 
-            const scalar& ht, 
+            const label& celli,
+            const scalar& ht,
             const scalar& h
         );
 

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -90,10 +90,10 @@ Foam::scalar Foam::LeidenFrostTemperatureModels::GroeneveldStewart::value
     {
         Tmin = 557.85+44.1*pli*(1e-6)-3.72*pow(pli*1e-6,2);
     }
-    else // Ramp up to critical pressure 
+    else // Ramp up to critical pressure
     {
         scalar DeltaTmin(557.85+44.1*9-3.72*pow(9.0,2)-Tsati);
-        Tmin = Tsati+(criticalPressure_-pli)/(criticalPressure_-9*1e6)*DeltaTmin;  
+        Tmin = Tsati+(criticalPressure_-pli)/(criticalPressure_-9*1e6)*DeltaTmin;
     }
 
     return Tmin;

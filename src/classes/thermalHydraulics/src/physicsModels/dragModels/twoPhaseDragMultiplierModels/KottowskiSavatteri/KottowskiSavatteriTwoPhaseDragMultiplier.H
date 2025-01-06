@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -44,7 +44,7 @@ Description
 
     phi2 = 10^(2*( 0.1046*(log10X)^2 - 0.5098*log10X + 0.6252 ))
 
-    log10 is the log in basis 10, while X2 is the well-known 
+    log10 is the log in basis 10, while X2 is the well-known
     Lockhart-Martinelli parameter and is defined as:
 
     X2 = (mu_I/mu_O)^0.2 * (flowQuality_I/flowQuality_O)^1.8 * rho_O/rho_I
@@ -55,7 +55,7 @@ Description
     For futher info see H.M. Kottowsi, C. Savatteri, "Fundamentals of Liquid
     Metal Boiling Thermohydraulics", Nucl. Eng. Des. vol. 82, pp. 281-304, 1984
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

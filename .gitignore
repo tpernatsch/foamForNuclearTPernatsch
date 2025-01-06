@@ -46,15 +46,22 @@ Documentation/doxygen/Doxygen/html/**
 FMU4FOAM
 
 # Tutorials
-# Tutorials/*/**/*1*
-# Tutorials/*/**/*2*
-# Tutorials/*/**/*3*
-# Tutorials/*/**/*4*
-# Tutorials/*/**/*5*
-# Tutorials/*/**/*6*
-# Tutorials/*/**/*7*
-# Tutorials/*/**/*8*
-# Tutorials/*/**/*9*
+Tutorials/featureCases/1D_boiling/*[123456789]*
+Tutorials/featureCases/1D_CHF/imposedPower/*[123456789]*
+Tutorials/featureCases/1D_CHF/imposedTemperature/*[123456789]*
+Tutorials/featureCases/1D_HX/onePhase/*[123456789]*
+Tutorials/featureCases/1D_HX/twoPhase/*[123456789]*
+Tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/*[123456789]*
+Tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex1_01_5215/*[123456789]*
+Tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770/*[123456789]*
+Tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex3_11-0312_power_increase/*[123456789]*
+Tutorials/featureCases/2D_cavityBoussinesq/*[123456789]*
+Tutorials/featureCases/2D_KNS37-L22/*[123456789]*
+!Tutorials/featureCases/2D_KNS37-L22/-2
+Tutorials/featureCases/2D_voidMotionNoPhaseChange/*[123456789]*
+Tutorials/guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion/[01]
+Tutorials/guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion/[01]
+Tutorials/reactorCases/Godiva_SN/*[123456789]*
 Tutorials/*/**/0.converged*
 Tutorials/**/postProcessing*
 Tutorials/**/processor*

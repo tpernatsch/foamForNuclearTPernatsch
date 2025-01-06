@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,8 +42,8 @@ Description
     modifiedEngel correlation for pressure drop
 
     @article{BUBELIS20083299,
-    title = "Review and proposal for best fit of wire-wrapped fuel bundle 
-        friction factor and pressure drop predictions using various existing 
+    title = "Review and proposal for best fit of wire-wrapped fuel bundle
+        friction factor and pressure drop predictions using various existing
         correlations",
     journal = "Nuclear Engineering and Design",
     volume = "238",
@@ -56,13 +56,13 @@ Description
     author = "E. Bubelis and M. Schikorr",
     abstract = "The aim of this paper is to provide an overview of the existing
         wire-wrapped fuel bundle friction factor/pressure drop correlations and
-        to qualitatively evaluate which of the existing friction factor 
-        correlations are the best in retracing the results of a large set of 
-        the experimental data available on wire-wrapped fuel assemblies tested 
+        to qualitatively evaluate which of the existing friction factor
+        correlations are the best in retracing the results of a large set of
+        the experimental data available on wire-wrapped fuel assemblies tested
         under different coolant conditions."
     }
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

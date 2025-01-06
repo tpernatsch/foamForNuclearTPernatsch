@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -123,13 +123,13 @@ void Foam::virtualMass::correct()
     (
         pair_.pimple().dict().lookupOrDefault<bool>
         (
-            "virtualMassUsesMixtureDensity", 
+            "virtualMassUsesMixtureDensity",
             false
         )
     );
     volScalarField alphaRhoVm(Vm_*pair_.alphaDispersed());
     if (virtualMassUsesMixtureDensity)
-        alphaRhoVm *= 
+        alphaRhoVm *=
             (
                 fluid1_.rho()*fluid1_.normalized()
             +   fluid2_.rho()*fluid2_.normalized()
@@ -138,7 +138,7 @@ void Foam::virtualMass::correct()
         alphaRhoVm *= pair_.rhoContinuous();
 
     //-
-    VmForces_[U1_.name()] = 
+    VmForces_[U1_.name()] =
         alphaRhoVm*
         (
             fvm::ddt(U1_)
@@ -151,7 +151,7 @@ void Foam::virtualMass::correct()
             )
         );
 
-    VmForces_[U2_.name()] = 
+    VmForces_[U2_.name()] =
         alphaRhoVm*
         (
             fvm::ddt(U2_)

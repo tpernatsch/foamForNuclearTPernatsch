@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -85,10 +85,10 @@ Foam::scalar Foam::suppressionFactorModels::Chen::value
     if (otherFluidPtr_ == nullptr)
     {
         HashTable<const fluid*> fluids(pair_.mesh().lookupClass<fluid>());
-        otherFluidPtr_ = 
+        otherFluidPtr_ =
             (fluids[fluids.toc()[0]]->name() == pair_.fluidRef().name()) ?
             fluids[fluids.toc()[1]] : fluids[fluids.toc()[0]];
-    }   
+    }
 
     const scalar& a(pair_.fluidRef().normalized()[celli]);
     const scalar& oa(otherFluidPtr_->normalized()[celli]);

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FFDragCoefficientModels
     defineTypeNameAndDebug(Bestion, 0);
     addToRunTimeSelectionTable
     (
-        FFDragCoefficientModel, 
-        Bestion, 
+        FFDragCoefficientModel,
+        Bestion,
         FFDragCoefficientModels
     );
 }
@@ -84,7 +84,7 @@ Foam::FFDragCoefficientModels::Bestion::Bestion
 {
     const fluid& fluid1(pair.fluid1());
     const fluid& fluid2(pair.fluid2());
-    if 
+    if
     (
         !(fluid1.isLiquid() and fluid2.isGas()) and
         !(fluid2.isLiquid() and fluid1.isGas())
@@ -112,7 +112,7 @@ Foam::scalar Foam::FFDragCoefficientModels::Bestion::value
     scalar Co(1.2-0.2*sqrt(vapour_.rho()[celli]/liquid_.rho()[celli])); // Global Formula used in previous TRACE
     //scalar Co(1.2);   // Ancient Formula
     //scalar Co(1.0);   // New formula for the new TRACE
-    scalar Ps( 
+    scalar Ps(
         (Co==1.0) ? 1.0 : min(pow(((1.0-Co*avap)*vapour_.magU()[celli]/max(1.0-avap,SMALL)-Co*liquid_.magU()[celli])/max(pair_.magUr()[celli],SMALL),2),0.05)
         );
     // Test for verification //

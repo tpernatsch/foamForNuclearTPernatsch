@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -57,7 +57,7 @@ License
 
 namespace Foam
 {
-    typedef byRegimeModel<scalar, dispersionModel> 
+    typedef byRegimeModel<scalar, dispersionModel>
         byRegimeDispersion;
 
     addNamedToRunTimeSelectionTable
@@ -68,7 +68,7 @@ namespace Foam
         byRegime
     );
 
-    typedef byRegimeModel<scalar, fluidDiameterModel> 
+    typedef byRegimeModel<scalar, fluidDiameterModel>
         byRegimeFluidDiameter;
 
     addNamedToRunTimeSelectionTable
@@ -79,7 +79,7 @@ namespace Foam
         byRegime
     );
 
-    typedef byRegimeModel<scalar, interfacialAreaModel> 
+    typedef byRegimeModel<scalar, interfacialAreaModel>
         byRegimeInterfacialArea;
 
     addNamedToRunTimeSelectionTable
@@ -90,7 +90,7 @@ namespace Foam
         byRegime
     );
 
-    typedef byRegimeModel<scalar, contactPartitionModel> 
+    typedef byRegimeModel<scalar, contactPartitionModel>
         byRegimeContactPartition;
 
     addNamedToRunTimeSelectionTable
@@ -101,7 +101,7 @@ namespace Foam
         byRegime
     );
 
-    typedef byRegimeModel<scalar, FFDragCoefficientModel> 
+    typedef byRegimeModel<scalar, FFDragCoefficientModel>
         byRegimeFFDragCoefficient;
 
     addNamedToRunTimeSelectionTable
@@ -112,7 +112,7 @@ namespace Foam
         byRegime
     );
 
-    typedef byRegimeModel<scalar, FSDragCoefficientModel> 
+    typedef byRegimeModel<scalar, FSDragCoefficientModel>
         byRegimeFSDragCoefficient;
 
     addNamedToRunTimeSelectionTable
@@ -123,7 +123,7 @@ namespace Foam
         byRegime
     );
 
-    typedef byRegimeModel<scalar, virtualMassCoefficientModel> 
+    typedef byRegimeModel<scalar, virtualMassCoefficientModel>
         byRegimeVirtualMassCoefficient;
 
     addNamedToRunTimeSelectionTable
@@ -134,7 +134,7 @@ namespace Foam
         byRegime
     );
 
-    typedef byRegimeModel<tensor, twoPhaseDragMultiplierModel> 
+    typedef byRegimeModel<tensor, twoPhaseDragMultiplierModel>
         byRegimeTwoPhaseDragMultiplier;
 
     addNamedToRunTimeSelectionTable
@@ -145,7 +145,7 @@ namespace Foam
         byRegime
     );
 
-    typedef byRegimeModel<scalar, FFHeatTransferCoefficientModel> 
+    typedef byRegimeModel<scalar, FFHeatTransferCoefficientModel>
         byRegimeFFHeatTransferCoefficient;
 
     addNamedToRunTimeSelectionTable
@@ -156,7 +156,7 @@ namespace Foam
         byRegime
     );
 
-    typedef byRegimeModel<scalar, FSHeatTransferCoefficientModel> 
+    typedef byRegimeModel<scalar, FSHeatTransferCoefficientModel>
         byRegimeFSHeatTransferCoefficient;
 
     addNamedToRunTimeSelectionTable

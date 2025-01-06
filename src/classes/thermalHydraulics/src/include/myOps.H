@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ Description
     A collection of functions that are currently only used for under-relaxation
     and word-porcessing purposes
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -67,7 +67,7 @@ namespace myOps
             exists;
         --  false otherwise;
     -   if on the last PIMPLE iteration:
-        --  true if the keyword 
+        --  true if the keyword
             fvSolution.relaxationFactors.fields.(name+"Final") exists;
         --  false otherwise;
     */
@@ -76,12 +76,12 @@ namespace myOps
     /*
     Given a word name, the function returns:
     -   if NOT on the last PIMPLE iteration:
-        --  the scalar found under 
+        --  the scalar found under
             fvSolution.relaxationFactors.fields.name if name exists;
         --  1.0 otherwise;
     -   if on the last PIMPLE iteration:
-        --  the scalar found under 
-            fvSolution.relaxationFactors.fields.(name+"Final") if name 
+        --  the scalar found under
+            fvSolution.relaxationFactors.fields.(name+"Final") if name
             exists;
         --  1.0 otherwise;
 
@@ -102,7 +102,7 @@ namespace myOps
     template<class Type>
     List<Type> split(const Type& compoundItem, char d);
 
-    //- Split a string or word according to any delimiter char in ds, and 
+    //- Split a string or word according to any delimiter char in ds, and
     //  return a list of split elements
     template<class Type>
     List<Type> split(const Type& compoundItem, List<char> ds);

@@ -1,6 +1,6 @@
 # 2D-wedge ALFRED model with FMU balance of plant
 
-Author: Thomas Guilbaud, EPFL/Transmutex SA, 26/01/2023  
+Author: Thomas Guilbaud, EPFL/Transmutex SA, 26/01/2023
 
 ---
 
@@ -16,7 +16,7 @@ The purpose of this case is to simulate coupled GeN-Foam/FMU of an entire power-
 Each cases needs the FMU representing the balance of plant modeled using Modelica. A first steady-state simulation is performed before each transient. The transient simulation relies on the point-kinetics sub-solver.
 
 Before the simulation, make sure that your system has the following requirements:
-- OpenFOAM-v2406
+- OpenFOAM-v2412
 - GeN-Foam/develop build with FMU4FOAM (`./Allwmake --fmi`)
 - OpenModelica 1.21.0 (`omc --Version`)
 - Python3.8 with PyFMI (2.10.0), Pandas (1.4.3), Numpy (1.23.1)
@@ -38,7 +38,7 @@ Generate the FMU using the OpenModelica compiler:
 omc FMUGenSecCir.mos # generate all FMUs
 # or
 omc FMUGenSecCirWithCtrl.mos # generate SecondaryCircuitWithControl.fmu from SecondaryCircuitWithControl.mo
-# or 
+# or
 omc FMUGenSecCirWithoutCtrl.mos # generate SecondaryCircuitWithoutControl.fmu from SecondaryCircuitWithoutControl.mo
 ```
 
@@ -102,7 +102,7 @@ The user is invited to play with the different architectures by changing the `py
 
 ## All FMUs !
 
-Two special cases have been created in `GeN-FoamAs2FMU` and `GeN-FoamAs3FMU` where GeN-Foam is embedded in a FMU. The architecture is more homogeneous. 
+Two special cases have been created in `GeN-FoamAs2FMU` and `GeN-FoamAs3FMU` where GeN-Foam is embedded in a FMU. The architecture is more homogeneous.
 
 Go in [GeN-FoamAs2FMU](GeN-FoamAs2FMU) or [GeN-FoamAs3FMU](GeN-FoamAs3FMU) and execute:
 ```bash

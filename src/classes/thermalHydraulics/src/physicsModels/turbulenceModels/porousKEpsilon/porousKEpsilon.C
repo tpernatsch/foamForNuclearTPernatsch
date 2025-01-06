@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -74,7 +74,7 @@ void porousKEpsilon<BasicTurbulenceModel>::correctNut()
 
     if (nutStabilization_)
     {
-        this->nut_ += 
+        this->nut_ +=
             pos(structure_)*FSPair_.fluidRef().magU()*DhStructPtr_()/
             laminarReStructPtr_();
         this->nut_.correctBoundaryConditions();
@@ -225,21 +225,21 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
     ),
     fluidName_
     (
-        alpha.name() == "alpha" ? 
+        alpha.name() == "alpha" ?
         "" : myOps::split<word>(alpha.name(), '.')[1]
     ),
     structure_
     (
-        this->mesh_.objectRegistry::template 
+        this->mesh_.objectRegistry::template
             lookupObject<structure>("alpha.structure")
     ),
     FSPair_
     (
-        this->mesh_.objectRegistry::template 
+        this->mesh_.objectRegistry::template
             foundObject<FSPair>(fluidName_+".structure") ?
-        this->mesh_.objectRegistry::template 
+        this->mesh_.objectRegistry::template
             lookupObject<FSPair>(fluidName_+".structure") :
-        this->mesh_.objectRegistry::template 
+        this->mesh_.objectRegistry::template
             lookupObject<FSPair>("fluid.structure")
     ),
     porousKEpsilonDict_
@@ -332,24 +332,24 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
     }
 
     wordList regionsInDict(0);
-    
+
     forAll(porousKEpsilonDict_.toc(), i)
     {
         word key(porousKEpsilonDict_.toc()[i]);
         const dictionary& regionDict(porousKEpsilonDict_.subDict(key));
-        
+
         wordList regions(myOps::split<word>(key, ':'));
 
         forAll(regions, j)
         {
             word region(regions[j]);
-            
-            //- If the region volumeFraction is 0, there is no structure so 
-            //  regular kEpsilon applies and there is no need to set 
+
+            //- If the region volumeFraction is 0, there is no structure so
+            //  regular kEpsilon applies and there is no need to set
             //  porousKEpsilon properties
             if (max(structure_.alphaFields()[region]).value() == 0.0) continue;
-            
-            Info<< "Setting porousKEpsilon parameters for region: " << region 
+
+            Info<< "Setting porousKEpsilon parameters for region: " << region
             << endl;
 
             regionsInDict.append(region);
@@ -379,13 +379,13 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
                 convergenceLength_[celli] = convergenceLength;
                 turbulenceIntensityCoeff_[celli] = turbulenceIntensityCoeff;
                 turbulenceIntensityExp_[celli] = turbulenceIntensityExp;
-                turbulenceLengthScaleCoeff_[celli] = 
+                turbulenceLengthScaleCoeff_[celli] =
                     turbulenceLengthScaleCoeff;
             }
             convergenceLength_.correctBoundaryConditions();
             turbulenceIntensityCoeff_.correctBoundaryConditions();
             turbulenceIntensityExp_.correctBoundaryConditions();
-            turbulenceLengthScaleCoeff_.correctBoundaryConditions();  
+            turbulenceLengthScaleCoeff_.correctBoundaryConditions();
 
             //- nut stabilization fields, create only if keyword found
             if (regionDict.found("DhStruct"))
@@ -425,8 +425,8 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
                             this->mesh_,
                             dimensionedScalar
                             (
-                                "", 
-                                dimless, 
+                                "",
+                                dimless,
                                 defaultLaminarReStruct
                             ),
                             zeroGradientFvPatchScalarField::typeName
@@ -438,7 +438,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
                 (
                     regionDict.lookupOrDefault<scalar>
                     (
-                        "laminarReStruct", 
+                        "laminarReStruct",
                         defaultLaminarReStruct
                     )
                 );
@@ -450,7 +450,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
                 }
                 DhStructPtr_().correctBoundaryConditions();
                 laminarReStructPtr_().correctBoundaryConditions();
-            }  
+            }
         }
     }
 
@@ -463,7 +463,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
         //  kEpsilon applies and there is no need to check for porousKEpsilon
         //  properties
         if (max(structure_.alphaFields()[region]).value() == 0.0) continue;
-        
+
         bool found(false);
         forAll(regionsInDict, j)
         {
@@ -483,10 +483,10 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
         }
     }
 
-    convergenceLength_ = 
+    convergenceLength_ =
         max
         (
-            convergenceLength_, 
+            convergenceLength_,
             dimensionedScalar("", dimLength, SMALL)
         );
     convergenceLength_.correctBoundaryConditions();
@@ -570,7 +570,7 @@ void porousKEpsilon<BasicTurbulenceModel>::correct()
     );
     //equilibriumEpsilon_.correctBoundaryConditions();
     equilibriumEpsilon_ =
-    ( 
+    (
         Cmu3by4_*pow(equilibriumK_, 1.5)
         /
         (
@@ -613,7 +613,7 @@ void porousKEpsilon<BasicTurbulenceModel>::correct()
         C1_*alpha()*rho()*G*epsilon_()/k_()*noStructure()
       - fvm::SuSp
         (
-            ((2.0/3.0)*C1_ - C3_)*alpha()*rho()*divU*noStructure(), 
+            ((2.0/3.0)*C1_ - C3_)*alpha()*rho()*divU*noStructure(),
             epsilon_
         )
       - fvm::Sp(C2_*alpha()*rho()*epsilon_()/k_()*noStructure(), epsilon_)
@@ -645,7 +645,7 @@ void porousKEpsilon<BasicTurbulenceModel>::correct()
       + alphaRhoConv()*equilibriumK_
       + fvOptions(alpha, rho, k_)
     );
-    
+
     kEqn.ref().relax();
     fvOptions.constrain(kEqn.ref());
     solve(kEqn);

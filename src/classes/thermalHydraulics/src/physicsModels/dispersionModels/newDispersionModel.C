@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,7 +51,7 @@ Foam::autoPtr<Foam::dispersionModel> Foam::dispersionModel::New
 {
     word type(dict.lookup("type"));
 
-    Info<< "Selecting dispersionModel for pair " << pair.name() << ": " 
+    Info<< "Selecting dispersionModel for pair " << pair.name() << ": "
         << type << endl;
 
     auto* ctorPtr = dispersionModelsConstructorTable(type);
@@ -61,7 +61,7 @@ Foam::autoPtr<Foam::dispersionModel> Foam::dispersionModel::New
         FatalErrorInFunction
             << "Unknown dispersionModel type "
             << type << endl << endl
-            << "Valid dispersionModel types are : " 
+            << "Valid dispersionModel types are : "
             << endl
             << dispersionModelsConstructorTablePtr_
             ->sortedToc()

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -63,17 +63,17 @@ const Foam::Enum
 Foam::fluid::stateOfMatterNames_
 (
     {
-        { 
-            stateOfMatter::undetermined, 
-            "undetermined" 
+        {
+            stateOfMatter::undetermined,
+            "undetermined"
         },
-        { 
-            stateOfMatter::liquid, 
-            "liquid" 
+        {
+            stateOfMatter::liquid,
+            "liquid"
         },
-        { 
-            stateOfMatter::gas, 
-            "gas" 
+        {
+            stateOfMatter::gas,
+            "gas"
         }
     }
 );
@@ -90,7 +90,7 @@ Foam::fluid::fluid
 )
 :
     phaseBase
-    ( 
+    (
         dict,
         mesh,
         phaseName,
@@ -104,7 +104,7 @@ Foam::fluid::fluid
         (
             dict_.lookupOrDefault<word>
             (
-                "stateOfMatter", 
+                "stateOfMatter",
                 "undetermined"
             )
         )
@@ -148,7 +148,7 @@ Foam::fluid::fluid
                 (
                     mesh.time().controlDict().lookupOrDefault<bool>
                     (
-                        "writeRestartFields", 
+                        "writeRestartFields",
                         true
                     )
                 ) ?
@@ -171,7 +171,7 @@ Foam::fluid::fluid
                 (
                     mesh.time().controlDict().lookupOrDefault<bool>
                     (
-                        "writeRestartFields", 
+                        "writeRestartFields",
                         true
                     )
                 ) ?
@@ -194,7 +194,7 @@ Foam::fluid::fluid
                 (
                     mesh.time().controlDict().lookupOrDefault<bool>
                     (
-                        "writeRestartFields", 
+                        "writeRestartFields",
                         true
                     )
                 ) ?
@@ -217,7 +217,7 @@ Foam::fluid::fluid
                 (
                     mesh.time().controlDict().lookupOrDefault<bool>
                     (
-                        "writeRestartFields", 
+                        "writeRestartFields",
                         true
                     )
                 ) ?
@@ -326,7 +326,7 @@ Foam::fluid::fluid
                 (
                     mesh.time().controlDict().lookupOrDefault<bool>
                     (
-                        "writeContinuityErrors", 
+                        "writeContinuityErrors",
                         false
                     )
                 ) ?
@@ -360,7 +360,7 @@ Foam::fluid::fluid
         (
             "thermoResidualAlpha",
             dict_,
-            dimless, 
+            dimless,
             0.0
         )
     ),
@@ -381,7 +381,7 @@ Foam::fluid::fluid
 
     mesh.setFluxRequired(this->name());
 
-    //- Set initial cellZone powerDensity, 
+    //- Set initial cellZone powerDensity,
     //  if no field already available in time folder
     if (dict_.found("initialPowerDensity"))
     {
@@ -467,9 +467,9 @@ Foam::fluid::fluid
     delimiters[0] = '<';
     delimiters[1] = '>';
     delimiters[2] = ',';
-    for 
+    for
     (
-        word const &w : 
+        word const &w :
         myOps::split<word>
         (
             thermo_->thermoName(), delimiters
@@ -484,7 +484,7 @@ Foam::fluid::fluid
     }
     if (Boussinesq_)
     {
-        rho0Ptr_ = 
+        rho0Ptr_ =
             new volScalarField
             (
                 IOobject
@@ -496,8 +496,8 @@ Foam::fluid::fluid
                 mesh_,
                 dimensionedScalar
                 (
-                    "rho0", 
-                    dimDensity, 
+                    "rho0",
+                    dimDensity,
                     thermo_->subDict("mixture").subDict("equationOfState")
                 ),
                 zeroGradientFvPatchScalarField::typeName
@@ -573,7 +573,7 @@ Foam::fluid::fluid
                         (
                             mesh.time().controlDict().lookupOrDefault<bool>
                             (
-                                "writeRestartFields", 
+                                "writeRestartFields",
                                 true
                             )
                         ) ?
@@ -586,8 +586,8 @@ Foam::fluid::fluid
             )
         );
     }
-    
-    //- What about alphaPhi, alphaRhoPhi? Well, these depend on the 
+
+    //- What about alphaPhi, alphaRhoPhi? Well, these depend on the
     //  phase fraction (unlike phi) but at this step there have been no
     //  phase fractions normalizations (which can only be done by the main
     //  solver). Thus, rather than tentatively set the fields twice (here,
@@ -596,7 +596,7 @@ Foam::fluid::fluid
     //  main solver via the initAlphaPhis function. Needless to say, if
     //  alphaPhi and alphaRhoPhi are found on disk, those are read and that's
     //  the end of it
-    
+
     //- Init placeholder fields
     kappa_ = thermo_->kappa();
     Cp_ = thermo_->Cp();
@@ -619,7 +619,7 @@ void Foam::fluid::initTwoPhaseFields() const
     (
         new scalarField(mesh_.C().size(), int(0))
     );
-    
+
     if(!flowQualityPtr_.valid())
     {
         flowQualityPtr_.reset
@@ -636,7 +636,7 @@ void Foam::fluid::initTwoPhaseFields() const
                         (
                             mesh_.time().controlDict().lookupOrDefault<bool>
                             (
-                                "writeAllFields", 
+                                "writeAllFields",
                                 false
                             )
                         ) ?
@@ -650,7 +650,7 @@ void Foam::fluid::initTwoPhaseFields() const
             )
         );
     }
-    
+
     XLMPtr_.reset
     (
         new volScalarField
@@ -665,7 +665,7 @@ void Foam::fluid::initTwoPhaseFields() const
                     (
                         mesh_.time().controlDict().lookupOrDefault<bool>
                         (
-                            "writeAllFields", 
+                            "writeAllFields",
                             false
                         )
                     ) ?
@@ -747,7 +747,7 @@ void Foam::fluid::constructTurbulenceModel()
             alphaRhoPhi_,
             phi(),
             thermo_
-        ); 
+        );
 }
 
 void Foam::fluid::correctAlphaRhoMagU()
@@ -761,14 +761,14 @@ void Foam::fluid::correctDiameter()
     {
         diameterPtr_->correctField(Dh_);
     }
-    
+
 }
 
 void Foam::fluid::correctThermoResidualMarkers()
 {
     if (aboveThermoResidualAlphaPtr_.valid())
     {
-        aboveThermoResidualAlphaPtr_() = 
+        aboveThermoResidualAlphaPtr_() =
             pos(normalized_-thermoResidualAlpha_);
     }
     else
@@ -780,7 +780,7 @@ void Foam::fluid::correctThermoResidualMarkers()
     }
     if (belowThermoResidualAlphaPtr_.valid())
     {
-        belowThermoResidualAlphaPtr_() = 
+        belowThermoResidualAlphaPtr_() =
             neg0(normalized_-thermoResidualAlpha_);
     }
     else

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -44,7 +44,7 @@ Description
     \f[
         P_t = D_p + 1.0444 D_w \\
         P_{w,pin} = N_p \pi (D_p + D_w) \\
-        B = \sqrt{\frac{P_t}{D_p}} 
+        B = \sqrt{\frac{P_t}{D_p}}
             + \left(
                 7.6 \frac{D_p+D_w}{L_w} \left( \frac{P_t}{D_p} \right)^2
             \right)^{2.16} \\
@@ -76,10 +76,10 @@ Description
     \endverbatim
 
     Reference publications:
-    Klaus Rehme, "PRESSURE DROP CORRELATIONS FOR FUEL ELEMENT SPACERS", Nuclear 
+    Klaus Rehme, "PRESSURE DROP CORRELATIONS FOR FUEL ELEMENT SPACERS", Nuclear
     Technology, 1973, Vol. 17, 1, pages 15-23, DOI:10.13182/NT73-A31250.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

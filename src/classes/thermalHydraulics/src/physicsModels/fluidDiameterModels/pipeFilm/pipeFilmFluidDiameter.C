@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -82,9 +82,9 @@ Foam::scalar Foam::fluidDiameterModels::pipeFilm::value
     const label& celli
 ) const
 {
-    return 
+    return
         scalar
-        (   
+        (
             (1.0-sqrt(1.0-max(fluid_.normalized()[celli], residualAlpha_)))*
             pair_.structureRef().Dh()[celli]
         );

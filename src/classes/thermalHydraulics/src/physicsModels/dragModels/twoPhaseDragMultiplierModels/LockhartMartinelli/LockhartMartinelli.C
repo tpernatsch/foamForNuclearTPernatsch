@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,8 +49,8 @@ namespace twoPhaseDragMultiplierModels
     defineTypeNameAndDebug(LockhartMartinelli, 0);
     addToRunTimeSelectionTable
     (
-        twoPhaseDragMultiplierModel, 
-        LockhartMartinelli, 
+        twoPhaseDragMultiplierModel,
+        LockhartMartinelli,
         twoPhaseDragMultiplierModels
     );
 }
@@ -87,7 +87,7 @@ Foam::scalar Foam::twoPhaseDragMultiplierModels::LockhartMartinelli::phi2
     if (onePhase(celli))
         return 1.0;
     const scalar& X(mFluidPtr_->XLM()[celli]);
-    return 
+    return
         scalar
         (
             min(1.0 + C_/X + 1.0/sqr(X), maxPhi2_)

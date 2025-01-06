@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -52,8 +52,8 @@ namespace powerModels
     defineTypeNameAndDebug(lumpedNuclearStructure, 0);
     addToRunTimeSelectionTable
     (
-        powerModel, 
-        lumpedNuclearStructure, 
+        powerModel,
+        lumpedNuclearStructure,
         powerModels
     );
 }
@@ -160,14 +160,14 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         mesh_,
         dimensionedScalar("", dimPower/dimTemperature/dimLength, 0),
         zeroGradientFvPatchScalarField::typeName
-    ),    
+    ),
     Hs_(0),
     rhoCp_(0),
     volFraction_(0),
     qFraction_(0),
     cellToRegion_(mesh_.cells().size(), 0),
     regionIndexToRegionName_(0)
-{   
+{
     this->setInterfacialArea();
     structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensity");
 
@@ -181,7 +181,7 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
     forAll(this->toc(), regioni)
     {
         word region(this->toc()[regioni]);
-        const dictionary& dict(this->subDict(region));       
+        const dictionary& dict(this->subDict(region));
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (
@@ -255,7 +255,7 @@ Foam::powerModels::lumpedNuclearStructure::lumpedNuclearStructure
         Info<< "Setting lumpedNuclearStructure initial temperatures from "
                 << T_.name() << endl;
     }
-    
+
     //- Set I/O fields and compute initial scalar max, min
     forAll(this->cellList_, i)
     {
@@ -284,7 +284,7 @@ Foam::powerModels::lumpedNuclearStructure::~lumpedNuclearStructure()
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void 
+void
 Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
 (
     const label& celli,
@@ -308,7 +308,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
     const scalarList& rhoCp(rhoCp_[regioni]);
     const scalarList& volFraction(volFraction_[regioni]);
     const scalarList& qFraction(qFraction_[regioni]);
-    
+
     const scalarField& TOld = T_.oldTime()[celli];
 
     const scalar& iA = this->iA_[celli];
@@ -342,7 +342,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
                 M[0][1] =   -Hs[1];
                 M[0][0] =   volFraction[0] * rhoCp[0] / dt + Hs[1];
                 S[0] =      diffusion
-                            + q * qFraction[0] 
+                            + q * qFraction[0]
                             + TOld[0] * volFraction[0] * rhoCp[0] / dt;
 
             }
@@ -353,7 +353,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
                 for (int i = 1; i < nodesNumber-1; i++)
                 {
                     diffusion *= 0.0;
-                    if (nodeMatrix == i && kappaMatrix != 0) // TmatrixPtr_.valid()) 
+                    if (nodeMatrix == i && kappaMatrix != 0) // TmatrixPtr_.valid())
                     {
                         // volScalarField laplacian(fvc::laplacian(TmatrixPtr_()));
                         // diffusion = kappaMatrix * laplacian[celli];
@@ -363,7 +363,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
                     M[i][i-1] =     -Hs[i];
                     M[i][i] =       volFraction[i] * rhoCp[i] / dt + Hs[i+1] + Hs[i];
                     S[i] =          diffusion
-                                    + q * qFraction[i] 
+                                    + q * qFraction[i]
                                     + TOld[i] * volFraction[i] * rhoCp[i] / dt;
                 }
             }
@@ -383,9 +383,9 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
                 M[i][i-1] =     -Hs[i];
                 M[i][i] =       volFraction[i] * rhoCp[i] / dt + Hs[i] + HtoCool;
                 S[i] =          diffusion
-                                + q * qFraction[i] 
-                                + TOld[i] * volFraction[i] * rhoCp[i] / dt 
-                                + HtoCool * Tcool;      
+                                + q * qFraction[i]
+                                + TOld[i] * volFraction[i] * rhoCp[i] / dt
+                                + HtoCool * Tcool;
             }
         }
 
@@ -405,7 +405,7 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
                 (
                     diffusion
                     + q * qFraction[0]
-                    + TOld[0] * volFraction[0] * rhoCp[0] / dt 
+                    + TOld[0] * volFraction[0] * rhoCp[0] / dt
                     + HtoCool * Tcool
                 );
         T = S/M;
@@ -413,14 +413,14 @@ Foam::powerModels::lumpedNuclearStructure::updateLocalTemperatureProfile
 
     //- Set fields (max and outer)
     Tmax_[celli] = T[0] + q * qFraction[0] / Hs[0];
-    Tsurface_[celli] = (Hs[nodesNumber] * T[nodesNumber-1] + Hcool * Tcool ) 
+    Tsurface_[celli] = (Hs[nodesNumber] * T[nodesNumber-1] + Hcool * Tcool )
                         / (Hs[nodesNumber] + Hcool);
 
     /*
-    Info << "T " << T << endl;    
+    Info << "T " << T << endl;
     Info << "Tmax_[celli] " << Tmax_[celli] << endl;
     Info << "Tsurface_[celli] " << Tsurface_[celli] << endl;
-    Info << "Tcool " << Tcool << endl;   
+    Info << "Tcool " << Tcool << endl;
     */
 
     //- Update average fuel and clad temp used for coupling
@@ -450,7 +450,7 @@ void Foam::powerModels::lumpedNuclearStructure::correct
     {
         label celli(this->cellList_[i]);
         updateLocalTemperatureProfile(celli, HTSum[celli], HSum[celli]);
-    }    
+    }
 }
 
 

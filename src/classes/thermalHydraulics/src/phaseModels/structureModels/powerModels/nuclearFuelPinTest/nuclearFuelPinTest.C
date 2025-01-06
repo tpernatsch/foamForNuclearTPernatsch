@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,8 +51,8 @@ namespace powerModels
     defineTypeNameAndDebug(nuclearFuelPinTest, 0);
     addToRunTimeSelectionTable
     (
-        powerModel, 
-        nuclearFuelPinTest, 
+        powerModel,
+        nuclearFuelPinTest,
         powerModels
     );
 }
@@ -210,7 +210,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
     dA_(0),
     gapHPowerDensityTable_(0),
     useGapHPowerDensityTable_(0)
-{   
+{
     //structure_.setRegionField(*this, powerDensity_, "powerDensity");
     structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensity");
 
@@ -235,7 +235,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
     {
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
-        
+
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (
@@ -251,7 +251,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
         regionIndexToRegionName_.append(region);
 
         //- Read region dict entries
-        scalar fractionOfPowerFromNeutronics(dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics",1.0));        
+        scalar fractionOfPowerFromNeutronics(dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics",1.0));
         scalar rfi(dict.get<scalar>("fuelInnerRadius"));
         scalar rfo(dict.get<scalar>("fuelOuterRadius"));
         scalar rci(dict.get<scalar>("cladInnerRadius"));
@@ -300,7 +300,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
         }
         scalar kf(dict.get<scalar>("fuelK"));
         scalar kc(dict.get<scalar>("cladK"));
-        
+
         bool hollowFuel((rfi >= 1e-5) ? true : false);
 
         if (!foundBoundaryTemperatures and !foundTrad)
@@ -347,7 +347,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
         );
 
         //- Fill in lists for this region
-        fractionOfPowerFromNeutronics_.append(fractionOfPowerFromNeutronics), 
+        fractionOfPowerFromNeutronics_.append(fractionOfPowerFromNeutronics),
         fuelMeshSize_.append(fuelMeshSize);
         cladMeshSize_.append(cladMeshSize);
         meshSize_.append(meshSize);
@@ -363,7 +363,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
         rhoCpc_.append(rhoCpc);
         kf_.append(kf);
         kc_.append(kc);
-        
+
         hollowFuel_.append(hollowFuel);
         dA_.append(dA);
 
@@ -410,7 +410,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
 
                 The code below does just this, by creating a copy dict of
                 powerModel renaming it to gapHPowerDensity table, resetting
-                type to table, and passing that to the Function1 table 
+                type to table, and passing that to the Function1 table
                 selector
             */
             dictionary tableDict(tableName);
@@ -435,8 +435,8 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
             gapH = dict.get<scalar>("gapH");
         }
 
-        //- The gapH list needs to have the same length as the number of 
-        //  regions no matter what, or the indexing will stop working as 
+        //- The gapH list needs to have the same length as the number of
+        //  regions no matter what, or the indexing will stop working as
         //  intended
         gapH_.append(gapH);
 
@@ -462,7 +462,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
             Trad_.set(i, new Field<scalar>(0, 0));
         }
 
-        //- If the files are present, reconstruct initial Trad_ profile 
+        //- If the files are present, reconstruct initial Trad_ profile
         //  analytically. The analytical form is:
         //  T(r) = -(1/4)*powerDensity_(r)*r^2/k + C*ln(r)/k + D
         //  with C and D coming from imposing fixedValue BC on all sides,
@@ -496,10 +496,10 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
                 scalar Df;
                 scalar Cc;
                 scalar Dc;
-                
+
                 if (hollowFuel)
                 {
-                    Cf = 
+                    Cf =
                         (kf*(tfi-tfo)-0.25*q*(sqr(rfo)-sqr(rfi)))/
                         log(rfi/rfo);
                 }
@@ -510,7 +510,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
                 Df = tfo+(0.25*q*sqr(rfo)-Cf*log(rfo))/kf;
                 Cc = (tco-tci)*kc/(log(rco/rci));
                 Dc = tci - log(rci)*Cc/kc;
-                
+
                 forAll(Trad_[celli], j)
                 {
                     scalar r(rList[j]);
@@ -521,7 +521,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
                             (hollowFuel) ? Cf*log(r)/kf : 0.0;
                     }
                     else
-                    {   
+                    {
                         Trad_[celli][j] = Cc*log(r)/kc + Dc;
                     }
                 }
@@ -539,7 +539,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
                 Trad_.set(celli, new Field<scalar>(meshSize_[regioni], 0));
                 forAll(Trad_[celli], subCelli)
                 {
-                    Trad_[celli][subCelli] = 
+                    Trad_[celli][subCelli] =
                         (subCelli < fuelMeshSize_[regioni]) ?
                         Tf0[regioni] : Tc0[regioni];
                 }
@@ -551,7 +551,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
         Info<< "Setting nuclearFuelPinTest initial temperatures from "
                 << Trad_.name() << endl;
     }
-    
+
     //- Set I/O fields and compute initial scalar max, min
     scalar Tfavav(0);
     scalar Tcavav(1e69);
@@ -572,7 +572,7 @@ Foam::powerModels::nuclearFuelPinTest::nuclearFuelPinTest
         const scalarList& rRegion(r_[regioni]);
         scalar& Tfavi(Tfav_[celli]);
         scalar& Tcavi(Tcav_[celli]);
-        
+
         updateLocalAvgGlobalMinMaxT
         (
             0,
@@ -670,10 +670,10 @@ void Foam::powerModels::nuclearFuelPinTest::updateLocalAvgGlobalMinMaxT
     scalar intr(0);
     scalar intTr(0);
     for(int j = starti; j < endi; j++)
-    {   
+    {
         const scalar& T(Trad[j]);
         scalar rdr(r[j]*dr);
-        
+
         //- Cells at the mesh ends are only half as wide (the other half
         //  belongs to the ghost node). Thus, weigh temperatures at the extrema
         //  by a factor 0.5
@@ -693,7 +693,7 @@ void Foam::powerModels::nuclearFuelPinTest::updateLocalAvgGlobalMinMaxT
     Tavi = intTr/intr;
 }
 
-void 
+void
 Foam::powerModels::nuclearFuelPinTest::updateLocalTemperatureProfile
 (
     const label& celli,
@@ -701,7 +701,7 @@ Foam::powerModels::nuclearFuelPinTest::updateLocalTemperatureProfile
     const scalar& HSumi
 )
 {
- 
+
     //-
     scalarField& Trad(Trad_[celli]);
 
@@ -719,7 +719,7 @@ Foam::powerModels::nuclearFuelPinTest::updateLocalTemperatureProfile
     const scalar& rfo(rfo_[regioni]);
     const scalar& rci(rci_[regioni]);
     const scalar& fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
-    
+
     const scalarField& TOld = Trad_.oldTime()[celli];
 
     //- Update power density
@@ -745,7 +745,7 @@ Foam::powerModels::nuclearFuelPinTest::updateLocalTemperatureProfile
     scalar twoPkByDrc(2.0*pi_*kc/drc);
     scalar drhf(drf/2.0);
     scalar drhc(drc/2.0);
-    
+
     //- Construct matrix, source
     {
         //- Set zeroGradient BC at fuel inner surface
@@ -884,7 +884,7 @@ Foam::powerModels::nuclearFuelPinTest::updateLocalTemperatureProfile
     (
         (HSumi*Tco_[celli]-HTSumi)*2.0*pi_*rco
     );
-    Info<< celli << " " << numericalLP << " " << analyticalLP << " W/m" 
+    Info<< celli << " " << numericalLP << " " << analyticalLP << " W/m"
         << endl;
 
     //- Check energy conservation via heat flux comparison. However, since
@@ -894,7 +894,7 @@ Foam::powerModels::nuclearFuelPinTest::updateLocalTemperatureProfile
     //  between outer cladding and outer fuel
     scalar heatFluxg(gapH*(Tfo_[celli]-Tci_[celli]));
     scalar heatFluxAdjc((HSumi*Tco_[celli]-HTSumi)*(rco/rfo));
-    Info<< celli << " " << heatFluxg << " " << heatFluxAdjc << " W/m2" 
+    Info<< celli << " " << heatFluxg << " " << heatFluxAdjc << " W/m2"
         << endl;
     */
 }
@@ -911,9 +911,9 @@ void Foam::powerModels::nuclearFuelPinTest::correct
     Tfmin_ = 1e69;
     Tcmax_ = 0.0;
     Tcmin_ = 1e69;
-    
+
     //- Update temperatures cell-by-cell and compute averages over the entire
-    //  spatial extent of the nuclearFuelPinTest model (what I call global 
+    //  spatial extent of the nuclearFuelPinTest model (what I call global
     //  averages, opposed to local averages, which are the average temperature
     //  values, fuel and clad, of the local radial pin temperature profile)
     const scalarField& V(mesh_.V());
@@ -940,9 +940,9 @@ void Foam::powerModels::nuclearFuelPinTest::correct
     reduce(Tcmax_, maxOp<scalar>());
     reduce(Tcmin_, minOp<scalar>());
 
-    Info<< "T.nuclearFuelPinTest.fuel (avg min max) = " 
+    Info<< "T.nuclearFuelPinTest.fuel (avg min max) = "
         << Tfavav << " " << Tfmin_ << " " << Tfmax_ << " K" << endl;
-    Info<< "T.nuclearFuelPinTest.clad (avg min max) = " 
+    Info<< "T.nuclearFuelPinTest.clad (avg min max) = "
         << Tcavav << " " << Tcmin_ << " " << Tcmax_ << " K" << endl;
 
     //- Save these to the dictionary
@@ -998,7 +998,7 @@ nodes before and after the boundary nodes 0 and 4.
 
 
 
-Let us discretise the eq. term by term with a finite difference scheme. For a 
+Let us discretise the eq. term by term with a finite difference scheme. For a
 radial node i, one has:
 
     1) rho*cp*ddtT -> rho_i*cp_i*( T_i - T_i_old )/dt =
@@ -1007,20 +1007,20 @@ radial node i, one has:
             -   T_(i, old)* (rho_i*cp_i/dt)
 
 
-    
+
     2) (k/r)*ddr(r*ddr(T)) = k*( (1/r)*(ddr(T)) + d2dr2(T) ) =>
-        
-        
+
+
 
         2.1) (k/r)*ddr(T) -> k*( T_(i+1) - T_(i-1) )/(2*dr*r_i) [CDS scheme] =
 
             =       T_(i+1) *   (  k/(2*dr*r_i) )
                 +   T_(i-1) *   ( -k/(2*dr*r_i) )
-        
-        
+
+
 
         2.2) k*d2dr2(T) = ddr(ddr(T)) -> k*( ddr(T)_(i+1) - ddr(T)_i )/dr
-            
+
             = k_i*( (T_(i+1) - T_(i))/dr - (T_(i) - T_(i-1))/dr )/dr =
 
             =       T_(i+1) *   (   k/(dr^2) )
@@ -1038,7 +1038,7 @@ radial node i, one has:
 
 
     Recall that (k/r)*ddr(r*ddr(T)) appears with the - sign in the heat
-    equation, so all the coefficients from 2) need to be changed in sign. 
+    equation, so all the coefficients from 2) need to be changed in sign.
     Combining the coefficients from 1) and 2) and 2.2) we get equation [I]:
 
         rho*cp*ddtT - div(k*grad(T)) = q ->
@@ -1056,7 +1056,7 @@ radial node i, one has:
         B = 1.0/(2*dr*r_i)
         X = rho_i*cp_i/dr
 
-    Then we can re-write the whole thing as:                                 
+    Then we can re-write the whole thing as:
 
         rho*cp*ddtT - div(k*grad(T)) = q ->
 
@@ -1086,7 +1086,7 @@ play. Let us have the following boundary conditions:
         ->      T_1 *       ( -2A )
             +   T_0 *       ( 2A + X )
             =
-                q_i  
+                q_i
             +   T_(0, old)*X                                               [II]
 
 
@@ -1103,7 +1103,7 @@ play. Let us have the following boundary conditions:
 
         -> T_N = T_(N-2) + (2*dr/k)*hExt*(TExt -T_(N-1))
 
-    If we substitute the expression for the ghost node T_N in equation I, we 
+    If we substitute the expression for the ghost node T_N in equation I, we
     obtain the BC. For convenience, let us rename C = (2*dr/k):
 
         rho*cp*ddtT - div(k*grad(T)) = q -> (convective at r = rOut) ->
@@ -1121,18 +1121,18 @@ So, there you have it, the boundary coefficients (II, III) and the bulk
 coefficients (I).
 Ok, now what if you want to do a cylinder? Well, you don't need to change
 anything as there are no terms that contain 1/r_i for the zeroGradient
-expression at r = r_1. Ok again, what if you want to do a proper nuclear fuel 
-pin? Well, you should be able to understand what I did in the code. I 
-used a convective boundary condition at the fuel outer surface where TExt is 
-the  actual T_(i+1), while the fuel T_(i+1) is treated as a ghost node. Same 
-for the inner side of the cladding, yet the coefficients are swapped for 
-obvious reasons. For the outer cladding surface, again, it is a convective 
-boundary conditions, yet it is complicated by the fact that I might have a mix 
-of vapour and liquid, at different temperatures, both contacting the pin. For 
+expression at r = r_1. Ok again, what if you want to do a proper nuclear fuel
+pin? Well, you should be able to understand what I did in the code. I
+used a convective boundary condition at the fuel outer surface where TExt is
+the  actual T_(i+1), while the fuel T_(i+1) is treated as a ghost node. Same
+for the inner side of the cladding, yet the coefficients are swapped for
+obvious reasons. For the outer cladding surface, again, it is a convective
+boundary conditions, yet it is complicated by the fact that I might have a mix
+of vapour and liquid, at different temperatures, both contacting the pin. For
 simplicity, I assume a single cladding outer temperature. Then, due to the
 additivity of heat transfer phenomena, I simply consider:
 
-    k*( T_N - T_(N-2) )/2*dr = 
+    k*( T_N - T_(N-2) )/2*dr =
         =   hVap*fracVap*(TVap - T_(N-1)) + hLiq*fracLiq*(TLiq - T_(N-1))
 
 with fracVap and fracLiq being the fractions of structure interfacial area
@@ -1141,7 +1141,7 @@ treatment of the convective boundary conditions can be generalized for any
 number of fluids contacting the pin.
 Let us have:
 
-    k*( T_N - T_(N-2) )/2*dr = 
+    k*( T_N - T_(N-2) )/2*dr =
         =   SUM_j [hf_j(T_(ext, j) - T_(N-1))]
 
 Where SUM_j denotes a summation over the j indices. hf_j is the heat
@@ -1149,12 +1149,12 @@ transfer coefficient betwee the j-th fluid and the structure, multiplied by
 the fraction of interfacial area of the structure that is in contact with the
 j-th fluid. Then, this can be re-written as:
 
-    k*( T_N - T_(N-2) )/2*dr = 
+    k*( T_N - T_(N-2) )/2*dr =
         =   SUM_j[hf_j*T_(ext, j)] - SUM_j[hf_j]*T_(N-1)
         =   HTSum - HSum*T_(N-1)
 
 which is the notation that is used in the code implementation. This grants more
-generality to this class, which does not need to now any details on how many 
+generality to this class, which does not need to now any details on how many
 fluid are there, nor what are the interfacial area fractions and so on, as
 these need to be passed by the user at a higher level (i.e., when calling the
 correct(HTSum, HSum) function in the main program).

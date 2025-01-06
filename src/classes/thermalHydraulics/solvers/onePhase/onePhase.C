@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace solvers
     defineTypeNameAndDebug(onePhase, 0);
     addToRunTimeSelectionTable
     (
-        solver, 
-        onePhase, 
+        solver,
+        onePhase,
         fvMesh
     );
 }
@@ -79,11 +79,11 @@ Foam::solvers::onePhase::onePhase
     (
         this->subDict("structureProperties"),
         mesh,
-        this->powerDensityNeutronics_ 
+        this->powerDensityNeutronics_
     ),
     fluid_
     (
-        (this->found("fluidProperties")) 
+        (this->found("fluidProperties"))
     ?   this->subDict("fluidProperties") : *this,
         mesh,
         word(""),   //- This is the phase name, setting it to "" signals a
@@ -101,9 +101,9 @@ Foam::solvers::onePhase::onePhase
 
     //- Set phase fraction fields (constant in time), structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
-    
+
     //- The normalized field is non-trivial (i.e. different than 1) only in the
-    //  twoPhase solver. However, it is used by some models in the shared 
+    //  twoPhase solver. However, it is used by some models in the shared
     //  thermal-hydraulics library, so it should be set nonetheless! The most
     //  important quantity that relies on this is the Reynolds computed by
     //  the fluidStructurePair object
@@ -117,9 +117,9 @@ Foam::solvers::onePhase::onePhase
     fluid_.Dh() = structure_.Dh();
 
     //- Initialize fluid-intensive fluxes (i.e. that depend on the phase
-    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL 
+    //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL
     //  volumetric flux in m3/s and the REAL mass flux in kg/s. By REAL I mean
-    //  not superficial). This is done after the phaseFraction normalization 
+    //  not superficial). This is done after the phaseFraction normalization
     //  step to ensure consistency. This step has an effect ONLY IF the
     //  alphaPhi, alphaRhoPhi fields were NOT found on disk
     fluid_.initAlphaPhis();
@@ -143,7 +143,7 @@ Foam::solvers::onePhase::onePhase
 
 //- Solve according to flags
 void Foam::solvers::onePhase::correctPhysics()
-{   
+{
 
     residual_=0;
 
@@ -151,7 +151,7 @@ void Foam::solvers::onePhase::correctPhysics()
     bool solveFluidMechanics(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveFluidMechanics"));
 
     Info << "Region :" << mesh_.name()<<nl<<endl;
-    
+
 
     while(pimple_.loop())
     {
@@ -166,7 +166,7 @@ void Foam::solvers::onePhase::correctPhysics()
             correctEnergy();
 
         Info << endl;
-    }    
+    }
 }
 
 void Foam::solvers::onePhase::correctTightlyCoupledPhysics()
@@ -174,10 +174,10 @@ void Foam::solvers::onePhase::correctTightlyCoupledPhysics()
     Info <<nl;
     bool solveEnergy(mesh_.solutionDict().subDict("PIMPLE").get<bool>("solveEnergy"));
     correctModels(true,true);
-  
+
     if(solveEnergy)
         correctEnergy();
-    
+
     Info <<nl;
 }
 
@@ -209,7 +209,7 @@ void Foam::solvers::onePhase::correctEnergy()
 
 void Foam::solvers::onePhase::correctModels
 (
-    bool solveFluidDynamics, 
+    bool solveFluidDynamics,
     bool solveEnergy
 )
 {
@@ -241,13 +241,13 @@ void Foam::solvers::onePhase::correctContErr()
     volScalarField& cE(fluid_.contErr());
     volScalarField& rho(fluid_.rho());
 
-    cE = 
+    cE =
     (
         fvc::ddt(fluid_, rho)
     +   fvc::div(fluid_.alphaRhoPhi())
     -   (fvOptions_(fluid_, rho) & rho)
     );
-    
+
     cE.correctBoundaryConditions();
 }
 
@@ -287,7 +287,7 @@ void Foam::solvers::onePhase::calcCumulContErr()
 
         cumulContErr += deltaCumulContErr;
 
-        Info<< "Cumulative continuity error = " 
+        Info<< "Cumulative continuity error = "
             << (cumulContErr/totV)
             << " kg/m3" << endl;
     }

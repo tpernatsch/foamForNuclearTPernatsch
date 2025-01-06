@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -58,17 +58,17 @@ const Foam::Enum
 Foam::functionObjects::massFlow::regionTypeNames_
 (
     {
-        { 
-            regionType::patch, 
-            "patch" 
+        {
+            regionType::patch,
+            "patch"
         },
-        { 
-            regionType::faceSet, 
-            "faceSet" 
+        {
+            regionType::faceSet,
+            "faceSet"
         },
-        { 
-            regionType::faceZone, 
-            "faceZone" 
+        {
+            regionType::faceZone,
+            "faceZone"
         }
     }
 );
@@ -212,7 +212,7 @@ bool Foam::functionObjects::massFlow::write()
 
     if (alphaRhoPhiPtr_ == nullptr)
     {
-        alphaRhoPhiPtr_ = 
+        alphaRhoPhiPtr_ =
             &mesh_.lookupObject<surfaceScalarField>(alphaRhoPhiName_);
     }
 
@@ -223,7 +223,7 @@ bool Foam::functionObjects::massFlow::write()
 
     if (regionType_ == regionType::patch)
     {
-        const fvsPatchField<scalar>& alphaRhoPhip 
+        const fvsPatchField<scalar>& alphaRhoPhip
             = alphaRhoPhi.boundaryField()[patchID_];
         const fvPatch& patch(mesh_.boundary()[patchID_]);
         const scalarField& magSf(patch.magSf());
@@ -251,7 +251,7 @@ bool Foam::functionObjects::massFlow::write()
 
     mDot *= scaleFactor_;
 
-    Log << "    " << regionTypeNames_[regionType_] << " " << regionName_ 
+    Log << "    " << regionTypeNames_[regionType_] << " " << regionName_
         << " massFlow = " << mDot << " kg/s over " << S << " m2" << endl;
     file() << mDot;
     this->setResult(regionName_+"_massFlow", mDot);

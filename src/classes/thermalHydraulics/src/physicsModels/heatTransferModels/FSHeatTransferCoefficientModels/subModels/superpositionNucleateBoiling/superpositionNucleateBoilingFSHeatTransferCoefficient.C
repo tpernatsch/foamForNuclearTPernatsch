@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FSHeatTransferCoefficientModels
     defineTypeNameAndDebug(superpositionNucleateBoiling, 0);
     addToRunTimeSelectionTable
     (
-        FSHeatTransferCoefficientModel, 
-        superpositionNucleateBoiling, 
+        FSHeatTransferCoefficientModel,
+        superpositionNucleateBoiling,
         FSHeatTransferCoefficientModels
     );
 }
@@ -114,13 +114,13 @@ superpositionNucleateBoiling
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar 
+Foam::scalar
 Foam::FSHeatTransferCoefficientModels::superpositionNucleateBoiling::value
 (
     const label& celli
 ) const
 {
-    return 
+    return
         htcFCPtr_->value(celli)*FPtr_->value(celli)
     +   htcPBPtr_->value(celli)*SPtr_->value(celli);
 }

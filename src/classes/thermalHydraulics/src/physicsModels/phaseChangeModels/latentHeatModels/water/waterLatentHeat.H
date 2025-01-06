@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,18 +39,18 @@ Class
     Foam::latentHeatModels::water
 
 Description
-    This class describes the latent heat of vaporization of water in the 
-    0.01-350 C range. It was obtained from a fit (in the form of 
-    L = A+B*log(C-T) with T being the liquid temperature (K)) of NIST water 
+    This class describes the latent heat of vaporization of water in the
+    0.01-350 C range. It was obtained from a fit (in the form of
+    L = A+B*log(C-T) with T being the liquid temperature (K)) of NIST water
     data at saturation found at:
     https://www.nist.gov/system/files/documents/srd/NISTIR5078-Tab1.pdf
 
     It performs reasonably well up to ~ 365 C as well, considering that the
-    critical water temperature is 375.16 C (at which point the latent heat 
-    becomes 0, but is limited for obvious numerical reasons as this code is not 
+    critical water temperature is 375.16 C (at which point the latent heat
+    becomes 0, but is limited for obvious numerical reasons as this code is not
     meant for sub-supercritical fluid transition simulations)
 
-    Author: 
+    Author:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles
@@ -88,7 +88,7 @@ public:
         water
         (
             const phaseChangeModel& pcm,
-            const dictionary& dict, 
+            const dictionary& dict,
             const objectRegistry& objReg
         );
 

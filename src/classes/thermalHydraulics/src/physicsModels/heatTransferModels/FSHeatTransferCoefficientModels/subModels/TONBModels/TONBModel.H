@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ Description
     Model for the prediction of the temperature of the onset of nucleate
     boiling (i.e. T_ONB)
 
-    Author: 
+    Author:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles
@@ -134,12 +134,12 @@ public:
         //- Set ptrs
         void setPtrs() const;
 
-        //- Return value of the temperature of the onset of nucleate boiling. 
+        //- Return value of the temperature of the onset of nucleate boiling.
         //  Unfortunately, this requires the 2-phase forced convection htc as
         //  well, and I have no way of getting that from registry
         virtual scalar value
         (
-            const label& celli, 
+            const label& celli,
             const scalar& htc2pFCi
         ) const = 0;
 };

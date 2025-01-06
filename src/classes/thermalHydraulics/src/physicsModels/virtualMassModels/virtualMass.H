@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -41,7 +41,7 @@ Class
 Description
     Class to handle virtual mass
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -85,11 +85,11 @@ protected:
     const fluid& fluid2_;
 
     const volVectorField& U1_;
-    
+
     const volVectorField& U2_;
-    
+
     const surfaceScalarField& phi1_;
-    
+
     const surfaceScalarField& phi2_;
 
     autoPtr<virtualMassCoefficientModel> VmPtr_;

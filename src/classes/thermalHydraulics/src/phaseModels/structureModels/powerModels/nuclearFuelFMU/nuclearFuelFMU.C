@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -38,7 +38,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
+#  if __has_include(<commDataLayer.H>)
 #    include <commDataLayer.H>
 #    define isCommDataLayerIncluded
 #  endif
@@ -64,8 +64,8 @@ namespace powerModels
     defineTypeNameAndDebug(nuclearFuelFMU, 0);
     addToRunTimeSelectionTable
     (
-        powerModel, 
-        nuclearFuelFMU, 
+        powerModel,
+        nuclearFuelFMU,
         powerModels
     );
 }
@@ -200,7 +200,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
         {
             if (dict.found("xPos") && dict.found("yPos"))
             {
-                Info<< "nuclearFuelFMU uses XY posisions from xPos and yPos in region " 
+                Info<< "nuclearFuelFMU uses XY posisions from xPos and yPos in region "
                     << region << " (list mode)"
                     << endl;
 
@@ -209,7 +209,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
             }
             else if (dict.found("xyPosLattice"))
             {
-                Info<< "nuclearFuelFMU uses XY posisions from xyPosLattice in region " 
+                Info<< "nuclearFuelFMU uses XY posisions from xyPosLattice in region "
                     << region << " (lattice mode)"
                     << endl;
 
@@ -250,7 +250,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
         if (radialBasisFunctionMethod == "gaussian")
         {
             epsilon_.append(dict.get<scalarList>("epsilon"));
-            
+
             const scalar epsilonX(computeEspilonForRBF(xPos));
             const scalar epsilonY(computeEspilonForRBF(yPos));
             const scalar epsilonZ(computeEspilonForRBF(axialLoc));
@@ -277,7 +277,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
             krigingC_.append(krigingOptions.get<scalar>("c"));
             krigingC0_.append(krigingOptions.get<scalar>("c0"));
         }
-        
+
         //- Add to regionIndexToRegionName_ mapping
         regionIndexToRegionName_.append(region);
 
@@ -329,7 +329,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
         // Check lengths of FMI port lists
         {
             const label nx(xPos.size());
-            
+
             if (nx != yPos.size())
             {
                 FatalErrorInFunction
@@ -406,7 +406,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
                 << axialProfilePowerDensityNameToFMU[nameI] << " "
                 << TstructNameToFMU[nameI] << " "
                 << (
-                    isHeatFluxInput 
+                    isHeatFluxInput
                     ? heatFluxNameFromFMU[nameI]
                     : rhoCpdTdtNameFromFMU[nameI]
                 );
@@ -422,7 +422,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
                 {
                     Info<< endl;
                 }
-    
+
             // Average power density
             data.storeObj
             (
@@ -583,8 +583,8 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
     label regioni
 )
 {
-    // Communicating with the FMU, extract default values stored in 
-    // commDataLayer 
+    // Communicating with the FMU, extract default values stored in
+    // commDataLayer
     const Time& runTime = this->db().time();
     commDataLayer& data = commDataLayer::New(runTime);
 
@@ -627,7 +627,7 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
     scalarList fieldFromFMUList(nFMIports * nAxialLoc);
     scalarList TFuelFieldFromFMUList(nFMIports * nAxialLoc);
     scalarList TCladFieldFromFMUList(nFMIports * nAxialLoc);
-    
+
     // Extract x, y, z, heat flux (or enthalpy) into list
     forAll(fieldNameFromFMU, nameI)
     {
@@ -724,11 +724,11 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         else
         {
             FatalErrorInFunction
-                << "No heat flux list provided in region " << region 
+                << "No heat flux list provided in region " << region
                 << " for FMI port " << fieldNameFromFMU[nameI]
                 << exit(FatalError);
         }
-        
+
         if (mesh_.time().writeTime()) // This .write() is slowing down the code (x20)!
         {
             fmiState_.set
@@ -778,7 +778,7 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         (
             xPosList, yPosList, zPosList, fieldFromFMUList, epsilon_[regioni], invRBFmatrix_[regioni]
         );
-        
+
         if (isFuelTemperatureFieldFromFMU)
         {
             interpolationWeightsTFuel = Foam::radialBasisFunctionInterpolation::solveGaussianRadialBasisFunction
@@ -829,11 +829,11 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
 
     scalar totalPowerFromHeatFlux(0), totalPowerEnthalpy(0), totalPowerNeutronics(0);
 
-    // Update all Tsurface cells in the region using heat flux interpolated 
+    // Update all Tsurface cells in the region using heat flux interpolated
     forAll(regionCells, i)
     {
         const label celli(regionCells[i]);
-        
+
         // Get coolant temperature
         const scalar HSumi(HSum[celli]);
         if (HSumi == 0)
@@ -858,20 +858,20 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         {
             interpolatedValue = Foam::radialBasisFunctionInterpolation::polyharmonicSpline
             (
-                interpolationWeights, xPosList, yPosList, zPosList, 
+                interpolationWeights, xPosList, yPosList, zPosList,
                 xCell, yCell, zCell
             );
-            
+
             if (isFuelTemperatureFieldFromFMU)
             {
                 interpolatedValueTFuel = Foam::radialBasisFunctionInterpolation::polyharmonicSpline
                 (
-                    interpolationWeightsTFuel, xPosList, yPosList, zPosList, 
+                    interpolationWeightsTFuel, xPosList, yPosList, zPosList,
                     xCell, yCell, zCell
                 );
                 interpolatedValueTClad = Foam::radialBasisFunctionInterpolation::polyharmonicSpline
                 (
-                    interpolationWeightsTClad, xPosList, yPosList, zPosList, 
+                    interpolationWeightsTClad, xPosList, yPosList, zPosList,
                     xCell, yCell, zCell
                 );
             }
@@ -880,23 +880,23 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         {
             interpolatedValue = Foam::radialBasisFunctionInterpolation::gaussianRadialBasisFunction
             (
-                interpolationWeights, xPosList, yPosList, zPosList, 
-                xCell, yCell, zCell, 
+                interpolationWeights, xPosList, yPosList, zPosList,
+                xCell, yCell, zCell,
                 epsilon_[regioni]
             );
-            
+
             if (isFuelTemperatureFieldFromFMU)
             {
                 interpolatedValueTFuel = Foam::radialBasisFunctionInterpolation::gaussianRadialBasisFunction
                 (
-                    interpolationWeightsTFuel, xPosList, yPosList, zPosList, 
-                    xCell, yCell, zCell, 
+                    interpolationWeightsTFuel, xPosList, yPosList, zPosList,
+                    xCell, yCell, zCell,
                     epsilon_[regioni]
                 );
                 interpolatedValueTClad = Foam::radialBasisFunctionInterpolation::gaussianRadialBasisFunction
                 (
-                    interpolationWeightsTClad, xPosList, yPosList, zPosList, 
-                    xCell, yCell, zCell, 
+                    interpolationWeightsTClad, xPosList, yPosList, zPosList,
+                    xCell, yCell, zCell,
                     epsilon_[regioni]
                 );
             }
@@ -908,7 +908,7 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
             (
                 krigingWeight_[regioni][i], fieldFromFMUList
             );
-            
+
             if (isFuelTemperatureFieldFromFMU)
             {
                 interpolatedValueTFuel = Foam::radialBasisFunctionInterpolation::kriging
@@ -942,7 +942,7 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
             );
 
             heatFlux = alpha_[celli] * (powerDensity - interpolatedValue) / iA_[celli];
-            
+
             totalPowerEnthalpy += interpolatedValue * V[celli];
             totalPowerNeutronics += powerDensity * V[celli];
         }
@@ -965,7 +965,7 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
         }
     }
 
-    Info<< "Integrated power in cellZone " << region << ":" << nl 
+    Info<< "Integrated power in cellZone " << region << ":" << nl
         << "    heat flux  = " << totalPowerFromHeatFlux << " W" << nl
         << "    rhoCpdTdt  = " << totalPowerEnthalpy << " W" << nl
         << "    neutronics = " << totalPowerNeutronics << " W"
@@ -974,8 +974,8 @@ void Foam::powerModels::nuclearFuelFMU::correctHeatFluxInputsFromFMUs
 
 void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni)
 {
-    // Communicating with the FMU, extract default values stored in 
-    // commDataLayer 
+    // Communicating with the FMU, extract default values stored in
+    // commDataLayer
     const Time& runTime = this->db().time();
     commDataLayer& data = commDataLayer::New(runTime);
 
@@ -990,7 +990,7 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni)
     word axialLocToFMUtemp(Foam::listConversion::stringify<scalar>(axialLoc));
     word& axialLocToFMU = data.getObj<word>
     (
-        axialLocNameToFMU, 
+        axialLocNameToFMU,
         commDataLayer::causality::out
     );
     axialLocToFMU = axialLocToFMUtemp;
@@ -1025,7 +1025,7 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni)
             (
                 mesh_.findCell(point(xPos, yPos, axialLoc[locI]))
             );
-            
+
             // Accumulate surface temperature values
             // TstructToFMUtemp += std::to_string(Tsurface_[cellNumber])+" ";
             TstructToFMUtemp.append(Tsurface_[cellNumber]);
@@ -1064,7 +1064,7 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni)
                 axialProfilePowerDensityToFMUtemp.append(1.0);
             }
             WarningIn("Foam::nuclearFuelFMU::correct()") << nl
-                << "    Set normalized power density axial profile to 1.0 in " 
+                << "    Set normalized power density axial profile to 1.0 in "
                 << avgPowerDensityNameToFMU[nameI] << "." << nl
                 << "    The integral of the power density is 0.0." << nl
                 << endl;
@@ -1074,17 +1074,17 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni)
         // Extract from commDataLayer to send to FMI
         word& TstructToFMU = data.getObj<word>
         (
-            TstructNameToFMU[nameI], 
+            TstructNameToFMU[nameI],
             commDataLayer::causality::out
         );
         scalar& avgPowerDensityToFMU = data.getObj<scalar>
         (
-            avgPowerDensityNameToFMU[nameI], 
+            avgPowerDensityNameToFMU[nameI],
             commDataLayer::causality::out
         );
         word& axialProfilePowerDensityToFMU = data.getObj<word>
         (
-            axialProfilePowerDensityNameToFMU[nameI], 
+            axialProfilePowerDensityNameToFMU[nameI],
             commDataLayer::causality::out
         );
 

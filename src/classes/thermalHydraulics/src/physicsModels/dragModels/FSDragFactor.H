@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,8 +43,8 @@ Description
     functionality.
 
 
-Usage 
-    The following sub-dictionary should be included as a powerModel 
+Usage
+    The following sub-dictionary should be included as a powerModel
     in phaseProperties.
 
     Example for isotropic:
@@ -57,7 +57,7 @@ Usage
             {
             type    ReynoldsPower;
             coeff   1.84; //
-            exp     -0.2; 
+            exp     -0.2;
             }
         }
     }
@@ -76,27 +76,27 @@ Usage
                 {
                     type    ReynoldsPower;
                     coeff   1.84; //
-                    exp     -0.2; 
+                    exp     -0.2;
                 }
                 localY
                 {
                     type    ReynoldsPower;
                     coeff   1.84; //
-                    exp     -0.2; 
+                    exp     -0.2;
                 }
                 localZ
                 {
                     type    ReynoldsPower;
                     coeff   0.184; //
-                    exp     -0.2; 
-                }           
+                    exp     -0.2;
+                }
 
             }
         }
     }
     \endverbatim
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -134,7 +134,7 @@ protected :
     //- Cells in which this model operates
     labelList cells_;
 
-    //- True if the drag factor tensor is isotropic 
+    //- True if the drag factor tensor is isotropic
     bool isotropic_;
 
     //- Structure phase fraction
@@ -155,7 +155,7 @@ protected :
 
     //-
     mutable scalarField halfAlphaRhoMagUByDh_;
-    
+
     //- Drag coefficient for an isotropiuc drag factor
     autoPtr<FSDragCoefficientModel> fdPtr_;
 

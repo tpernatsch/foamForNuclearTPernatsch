@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,8 +49,8 @@ namespace functionObjects
     defineTypeNameAndDebug(patchScalarFieldValue, 0);
     addToRunTimeSelectionTable
     (
-        functionObject, 
-        patchScalarFieldValue, 
+        functionObject,
+        patchScalarFieldValue,
         dictionary
     );
 }
@@ -74,7 +74,7 @@ void Foam::functionObjects::patchScalarFieldValue::writeFileHeader(Ostream& os)
         );
         writeHeader(os, headerText);
     }
-    
+
     word time("Time = "+mesh_.time().timeName());
 
     os << time << endl;
@@ -112,9 +112,9 @@ bool Foam::functionObjects::patchScalarFieldValue::read(const dictionary& dict)
         patchName_ = dict.get<word>("patch");
 
         const polyBoundaryMesh& pbm = mesh_.boundaryMesh();
-        
+
         patchID_ = pbm.findIndex(patchName_);
-        
+
         return true;
     }
 
@@ -143,13 +143,13 @@ bool Foam::functionObjects::patchScalarFieldValue::write()
 
     const scalar t = mesh_.time().timeOutputValue();
 
-    file() << "( " << t << " ( "; 
+    file() << "( " << t << " ( ";
     forAll(bField, i)
     {
         file() << bField[i] << " ";
     }
     file() << "))";
-    
+
     return true;
 }
 

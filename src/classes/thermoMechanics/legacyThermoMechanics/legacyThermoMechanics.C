@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -206,7 +206,7 @@ Foam::solvers::legacyThermoMechanics::legacyThermoMechanics
         mesh,
         dimensionedScalar("", dimensionSet(0,2,-2,0,0,0,0), 0.0),
         zeroGradientFvPatchScalarField::typeName
-    ),   
+    ),
     mu_
     (
         IOobject
@@ -303,7 +303,7 @@ Foam::solvers::legacyThermoMechanics::legacyThermoMechanics
             (rhoE_/rho_)/
             (2.0*(1.0 + nu_))
         )*
-        twoSymm(fvc::grad(disp_)) 
+        twoSymm(fvc::grad(disp_))
     +   (
             nu_*(rhoE_/rho_)/
             (
@@ -363,14 +363,14 @@ Foam::solvers::legacyThermoMechanics::legacyThermoMechanics
             IOobject::AUTO_WRITE
         ),
         mesh_,
-        dimensionedScalar("", dimless, 0.0), 
+        dimensionedScalar("", dimless, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     nCorr_
     (
         mesh.solutionDict().subDict("stressAnalysis").lookupOrDefault<int>
         (
-            "nCorrectors", 
+            "nCorrectors",
             1
         )
     ),
@@ -465,7 +465,7 @@ Foam::solvers::legacyThermoMechanics::legacyThermoMechanics
     alpha_.correctBoundaryConditions();
 
 
-    
+
 
     E_ = rhoE_/rho_ ;
     mu_ = E_/(2.0*(1.0 + nu_)) ;
@@ -485,13 +485,13 @@ Foam::solvers::legacyThermoMechanics::legacyThermoMechanics
         lambda_ = nu_*E_/((1.0 + nu_)*(1.0 - nu_));
         threeK_ = E_/(1.0 - nu_);
         lambda_.correctBoundaryConditions();
-        threeK_.correctBoundaryConditions();        
+        threeK_.correctBoundaryConditions();
     }
     else
     {
         Info<< "Plane Strain\n" << endl;
     }
-   
+
 
     Info<< "Normalising k : k/rho\n" << endl;
     volScalarField k(rhoK_/rho_);
@@ -501,19 +501,19 @@ Foam::solvers::legacyThermoMechanics::legacyThermoMechanics
     threeKalpha_ = threeK_*alpha_;
     DT_ = k/C_;
 
-    sigmaD_ = 
+    sigmaD_ =
         mu_*twoSymm(fvc::grad(disp_)) + lambda_*(I*tr(fvc::grad(disp_)));
     divSigmaExp_ = fvc::div(sigmaD_);
 
 
     if (compactNormalStress_)
     {
-        divSigmaExp_ -= 
+        divSigmaExp_ -=
             fvc::laplacian(2*mu_ + lambda_, disp_, "laplacian(DD,D)");
     }
     else
     {
-        divSigmaExp_ -= 
+        divSigmaExp_ -=
             fvc::div((2*mu_ + lambda_)*fvc::grad(disp_), "div(sigmaD)");
     }
     mesh_.setFluxRequired(disp_.name());
@@ -535,13 +535,13 @@ Foam::solvers::legacyThermoMechanics::~legacyThermoMechanics()
 // )
 // {
 //     //- Field names must reflect those defined in createCouplingFields.H
-//     TFuelOrig_ = 
+//     TFuelOrig_ =
 //         (linkedFuel_) ?
 //         srcTH.findObject<volScalarField>("bafflelessTCladAv") :
 //         srcTH.findObject<volScalarField>("bafflelessTFuelAv");
-//     TStructOrig_ = 
+//     TStructOrig_ =
 //         srcTH.findObject<volScalarField>("bafflelessTStruct");
-//     powerDensityOrig_ = 
+//     powerDensityOrig_ =
 //         srcN.findObject<volScalarField>("powerDensity");
 //     //- Initialize mapped fields
 //     //this->interpolateCouplingFields(mechToFluid);
@@ -561,16 +561,16 @@ Foam::solvers::legacyThermoMechanics::~legacyThermoMechanics()
 
 //     mechToNeutro.mapTgtToSrc(*powerDensityOrig_, plusEqOp<scalar>(), powerDensityNeutronics_);
 //     powerDensityNeutronics_.correctBoundaryConditions();
-    
+
 // }
 
-void Foam::solvers::legacyThermoMechanics::correctPhysics() 
+void Foam::solvers::legacyThermoMechanics::correctPhysics()
 {
     residual_ = 0;
     #include "solveThermalMechanics.H"
 }
 
-void Foam::solvers::legacyThermoMechanics::correctTightlyCoupledPhysics() 
+void Foam::solvers::legacyThermoMechanics::correctTightlyCoupledPhysics()
 {
     correctPhysics();
 }

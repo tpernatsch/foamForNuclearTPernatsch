@@ -7,9 +7,14 @@ wclean libso ./src/classes/thermalHydraulics/src
 wclean libso ./src/classes/thermalHydraulics/solvers
 wclean libso ./src/classes/neutronics
 wclean libso ./src/classes/thermoMechanics
-wclean libso ./src/classes/offbeat/solvers
-wclean libso ./src/classes/offbeat/src/offbeatLib
-wclean libso ./src/classes/offbeat/src/SCIANTIX
+
+if [ -d "./src/classes/offbeat/src/offbeatLib" ]
+then
+    wclean libso ./src/classes/offbeat/solvers
+    wclean libso ./src/classes/offbeat/src/offbeatLib
+    wclean libso ./src/classes/offbeat/src/SCIANTIX
+fi
+
 wclean libso ./src/classes/openFoamImportedSolvers
 wclean ./GeN-Foam
 

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -41,7 +41,7 @@ Class
 Description
     Heat transfer coefficient for forced convective flows that is computed
     starting from the Nusselt, which is turn obtained via correlation in the
-    form 
+    form
 
     \f[
         Nu = A + B \times Re^C Pr^D \left( \frac{T_w}{T_b} \right)^E
@@ -122,7 +122,7 @@ private:
 
     //- Ref to structure wall temperature
     const volScalarField& Twall_;
- 
+
     //- Ref to fluid temperature
     const volScalarField& Tfluid_;
 

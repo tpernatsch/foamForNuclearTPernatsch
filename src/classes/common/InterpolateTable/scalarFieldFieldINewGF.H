@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,17 +43,17 @@ Description
 
 \mainauthor
     I. Clifford - PSI (Paul Scherrer Institut, Switzerland)
-    A. Scolaro - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
-    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems 
+    A. Scolaro - EPFL (ECOLE POLYTECHNIQUE FEDERALE
+    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems
     Behaviour)
 
 \contribution
-    E. Brunetto, C. Fiorina - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
-    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems 
+    E. Brunetto, C. Fiorina - EPFL (ECOLE POLYTECHNIQUE FEDERALE
+    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems
     Behaviour)
 
 
-\date 
+\date
     November 2021
 
 \*---------------------------------------------------------------------------*/
@@ -67,15 +67,15 @@ Description
 
 namespace Foam
 {
-    
+
 //- Constructor class for FieldField<Field, scalar>
 class scalarFieldFieldINewGF
 {
     public:
-        
+
         //- Construct from istream
         scalarFieldFieldINewGF() {}
-        
+
         //- New from input stream
         autoPtr<scalarField> operator()(Istream& is) const
         {

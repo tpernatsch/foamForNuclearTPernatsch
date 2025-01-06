@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -78,17 +78,17 @@ Foam::interfacialAreaModels::spherical::spherical
     DhDispersed_(pair.DhDispersed()),
     cutoffAlpha_(dict.lookupOrDefault<scalar>("cutoffAlpha", 0.9))
 {
-    if 
+    if
     (
         !(pair.fluid1().isLiquid() and pair.fluid2().isGas())
     and !(pair.fluid2().isLiquid() and pair.fluid1().isGas())
     )
     {
         FatalErrorInFunction
-            << "Either phase " << pair.fluid1().name() << " or " 
+            << "Either phase " << pair.fluid1().name() << " or "
             << pair.fluid2().name()
             << " have an undetermined stateOfMatter (should be specified in "
-            << "phaseProperties." << pair.fluid1().name() 
+            << "phaseProperties." << pair.fluid1().name()
             << "Properties and/or "
             << "phaseProperties." << pair.fluid2().name() << "Properties)"
             << exit(FatalError);
@@ -104,11 +104,11 @@ Foam::scalar Foam::interfacialAreaModels::spherical::value
 {
     scalar aSum(dispersed_[celli]+continuous_[celli]);
     scalar a(dispersed_[celli]/aSum);
-    return 
+    return
         aSum*
         (
-            (a < cutoffAlpha_) ? 
-            6.0*a/DhDispersed_[celli] : 
+            (a < cutoffAlpha_) ?
+            6.0*a/DhDispersed_[celli] :
             6.0*a/DhDispersed_[celli]*(1.0-a)/(1.0-cutoffAlpha_)
         );
 

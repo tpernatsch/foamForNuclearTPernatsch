@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,12 +39,12 @@ Class
     Foam::powerModel
 
 Description
-    Run-time selectable class to handle the thermal description (i.e. energy 
+    Run-time selectable class to handle the thermal description (i.e. energy
     source/sinks) of a structure.
-    It returns a heat source term to the main solver be used in the energy 
+    It returns a heat source term to the main solver be used in the energy
     equations.
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -153,7 +153,7 @@ public:
         /*
         volScalarField& initFieldInTable
         (
-            word name, 
+            word name,
             dimensionedScalar value,
             bool readIfPresent,
             bool autoWrite
@@ -167,8 +167,8 @@ public:
         //  HT = H*T
         //  H = H
         virtual void correct
-        ( 
-            const volScalarField& HT, 
+        (
+            const volScalarField& HT,
             const volScalarField& H
         ) = 0;
 
@@ -179,7 +179,7 @@ public:
         virtual void powerOff(){}
 
         //- Remove abstractness inherited from regIOobject
-        virtual bool writeData(Ostream& os) const 
+        virtual bool writeData(Ostream& os) const
         {
             return os.good();
         }
@@ -196,7 +196,7 @@ public:
                 return cellField_;
             }
 
-            structure& structureRef() 
+            structure& structureRef()
             {
                 return structure_;
             }

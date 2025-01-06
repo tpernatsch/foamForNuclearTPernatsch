@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ Description
     Saturation model for water in the 0.01-350 *C range based on TRACE:
     https://www.nrc.gov/docs/ML1200/ML120060218.pdf
 
-    Author: 
+    Author:
 	Gauthier Lazare, Carlo Fiorina
 
 SourceFiles
@@ -82,7 +82,7 @@ private :
     const scalar B_;
     const scalar C_;
     */
-    // Constants 
+    // Constants
     const scalar Rv_;
 
 public:
@@ -95,7 +95,7 @@ public:
         waterTRACE
         (
             const phaseChangeModel& pcm,
-            const dictionary& dict, 
+            const dictionary& dict,
             const objectRegistry& objReg
         );
 

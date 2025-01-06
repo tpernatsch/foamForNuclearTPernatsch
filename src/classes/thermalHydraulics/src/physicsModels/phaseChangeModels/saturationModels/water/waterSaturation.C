@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -64,7 +64,7 @@ Foam::saturationModels::water::
 water
 (
     const phaseChangeModel& pcm,
-    const dictionary& dict, 
+    const dictionary& dict,
     const objectRegistry& objReg
 )
 :
@@ -114,7 +114,7 @@ Foam::scalar Foam::saturationModels::water::valueTSat
     const label& celli
 ) const
 {
-    return pow(p_[celli]/A_, 1.0/C_) + B_;       
+    return pow(p_[celli]/A_, 1.0/C_) + B_;
 }
 
 // ************************************************************************* //

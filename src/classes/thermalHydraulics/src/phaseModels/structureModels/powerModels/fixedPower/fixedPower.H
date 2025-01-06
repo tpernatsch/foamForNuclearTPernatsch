@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,13 +39,13 @@ Class
     Foam::powerModels::fixedPower
 
 Description
-    Describes a generic structure with a constant or time depdendent internal 
+    Describes a generic structure with a constant or time depdendent internal
     power production.
     Solves an energy equation for the structure, updating the average
     structure temperature (assumed equal to the structure surface temperature
     for fluid heat transfer purposes).
 
-    Authors: 
+    Authors:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
     Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 

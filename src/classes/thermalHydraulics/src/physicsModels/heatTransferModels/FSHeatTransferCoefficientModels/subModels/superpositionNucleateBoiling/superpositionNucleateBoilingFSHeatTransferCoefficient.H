@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,7 +43,7 @@ Description
     evolve into nucleate boiling ones, but no sub-cooled boiling region in
     between.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles
@@ -82,10 +82,10 @@ private:
     //- Pool boiling heat transfer coefficient
     autoPtr<FSHeatTransferCoefficientModel> htcPBPtr_;
 
-    //- 
+    //-
     autoPtr<flowEnhancementFactorModel> FPtr_;
 
-    //- 
+    //-
     autoPtr<suppressionFactorModel> SPtr_;
 
 public:

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -41,21 +41,21 @@ Class
 Description
     Describes triso and pebble of a pebble-bed reactor. Only steady-state.
 
-    Authors:  
+    Authors:
     Yvver Robert, Ludovic Jantzen (UC Berkeley)
     Review: Carlo Fiorina
-    
-    
+
+
 
 Usage
     \verbatim
             type                nuclearSteadyStatePebble;
-            
+
             // It can be shown that by averaging a/multiple pebble(s) over
             // a volume of any shape, the interfacialArea and volumeFraction
             // of the resulting porous pebble structure are not independent, yet
             // are tied by volumetricArea = 3*volumeFraction/outerPinRadius
-            powerDensityNeutronics            19.96567386e6; 
+            powerDensityNeutronics            19.96567386e6;
             pebbleSurfaceTemperatureGuess 939;
 
             pebbleCoreRadius        1.38e-2;
@@ -70,9 +70,9 @@ Usage
             nTRISO                  9022;
 
             trisoFuelKCoeffs      (3.3073 0 0 0 0 0 0 0);
-            trisoBufferKCoeffs    (0.50 0 0 0 0 0 0 0); 
+            trisoBufferKCoeffs    (0.50 0 0 0 0 0 0 0);
             trisoPyCKCoeffs       (4.00 0 0 0 0 0 0 0);
-            trisoSiCKCoeffs       (90.3 0 0 0 0 0 0 0); 
+            trisoSiCKCoeffs       (90.3 0 0 0 0 0 0 0);
             pebbleGraphiteKCoeffs (41.68 0 0 0 0 0 0 0);
 
             trisoFuelDensityCoeffs      (11031.432 -0.17907428 -9.1359257e-05 2.2133072e-09 0 0 0 0); thesis
@@ -116,7 +116,7 @@ class nuclearSteadyStatePebble
 protected:
 
     //- Fraction of power from neutronics that goes to this powerModel
-    //  This take sinto account for instance cases where some of the 
+    //  This take sinto account for instance cases where some of the
     //  heating goes to the moderator
     scalarList fractionOfPowerFromNeutronics_;
 

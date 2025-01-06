@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,11 +40,11 @@ Class
 
 Description
     Calculate the temperature of onset of nucleate boiling according to the
-    model by N. Basu, G.R. Warrier, and V.K. Dhir, "Onset of Nucleate Boiling 
-    and Active Nucleation Site Density During Subcooled Flow Boiling," 
+    model by N. Basu, G.R. Warrier, and V.K. Dhir, "Onset of Nucleate Boiling
+    and Active Nucleation Site Density During Subcooled Flow Boiling,"
     J. Heat Transfer, 124, 717-728, 2002.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles
@@ -107,7 +107,7 @@ public:
         //- Return TONB
         virtual scalar value
         (
-            const label& celli, 
+            const label& celli,
             const scalar& htc2pFCi
         ) const;
 };

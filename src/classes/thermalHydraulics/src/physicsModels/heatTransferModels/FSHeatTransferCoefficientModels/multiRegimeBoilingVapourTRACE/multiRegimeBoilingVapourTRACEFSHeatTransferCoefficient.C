@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,8 +51,8 @@ namespace FSHeatTransferCoefficientModels
     defineTypeNameAndDebug(multiRegimeBoilingVapourTRACE, 0);
     addToRunTimeSelectionTable
     (
-        FSHeatTransferCoefficientModel, 
-        multiRegimeBoilingVapourTRACE, 
+        FSHeatTransferCoefficientModel,
+        multiRegimeBoilingVapourTRACE,
         FSHeatTransferCoefficientModels
     );
 }
@@ -117,7 +117,7 @@ multiRegimeBoilingVapourTRACE
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar 
+Foam::scalar
 Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingVapourTRACE::value
 (
     const label& celli
@@ -140,22 +140,22 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingVapourTRACE::value
         // If alpha < 0.6, inverted annular model used, else need to be coded = later.
         /*if (alphai<0.6)
         {
-            // Annular flow model 
+            // Annular flow model
         }
-        else 
+        else
         {
-            // Need to be coded - Invert slug + Dispersed flow 
-            return 0.0  
+            // Need to be coded - Invert slug + Dispersed flow
+            return 0.0
         }*/
-        
+
         if (POSTCHFi==1) // Post CHF Region only for inverted annular
-        {   
+        {
             scalar hFBi(htcAFPtr_->value(celli));
-            return hFBi; 
+            return hFBi;
         }
-        else // Transition region 
-        { 
-            // HTC at TLF for Film Boiling (see TRACE) - here only inverted annular 
+        else // Transition region
+        {
+            // HTC at TLF for Film Boiling (see TRACE) - here only inverted annular
             scalar Twi0(Twi);
             const_cast<scalar&>(Twi) = TLFi;
             scalar hFBiMIN(htcAFPtr_->value(celli));

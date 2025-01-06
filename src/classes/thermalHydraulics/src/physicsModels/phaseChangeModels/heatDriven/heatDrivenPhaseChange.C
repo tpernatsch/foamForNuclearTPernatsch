@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -65,21 +65,21 @@ const Foam::Enum
 Foam::phaseChangeModels::heatDrivenPhaseChange::modeNames_
 (
     {
-        { 
-            mode::conductionLimited, 
-            "conductionLimited" 
+        {
+            mode::conductionLimited,
+            "conductionLimited"
         },
-        { 
-            mode::onePhaseDriven, 
-            "onePhaseDriven" 
+        {
+            mode::onePhaseDriven,
+            "onePhaseDriven"
         },
-        { 
-            mode::twoPhaseDriven, 
-            "twoPhaseDriven" 
+        {
+            mode::twoPhaseDriven,
+            "twoPhaseDriven"
         },
-        { 
-            mode::mixedDriven, 
-            "mixedDriven" 
+        {
+            mode::mixedDriven,
+            "mixedDriven"
         }
     }
 );
@@ -107,7 +107,7 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::heatDrivenPhaseChange
 {
     if (drivingPhaseName_ != "")
     {
-        if  
+        if
         (
             drivingPhaseName_ != fluid1_.name()
         and drivingPhaseName_ != fluid2_.name()
@@ -123,7 +123,7 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::heatDrivenPhaseChange
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-void Foam::phaseChangeModels::heatDrivenPhaseChange::correctInterfacialDmdt() 
+void Foam::phaseChangeModels::heatDrivenPhaseChange::correctInterfacialDmdt()
 {
     //- Interfacial mass transfers for each side
     volScalarField dmdtI1i
@@ -137,7 +137,7 @@ void Foam::phaseChangeModels::heatDrivenPhaseChange::correctInterfacialDmdt()
 
     switch (mode_)
     {
-        case heatDrivenPhaseChange::mode::conductionLimited : 
+        case heatDrivenPhaseChange::mode::conductionLimited :
             dmdtI_ = dmdtI1i + dmdtI2i;
             break;
 
@@ -146,13 +146,13 @@ void Foam::phaseChangeModels::heatDrivenPhaseChange::correctInterfacialDmdt()
             break;
 
         case heatDrivenPhaseChange::mode::onePhaseDriven :
-            dmdtI_ = 
+            dmdtI_ =
                 (fluid1_.name() == drivingPhaseName_) ?
-                dmdtI1i : dmdtI2i;      
+                dmdtI1i : dmdtI2i;
             break;
 
         case heatDrivenPhaseChange::mode::mixedDriven :
-            dmdtI_ = 
+            dmdtI_ =
                 (fluid1_.name() == drivingPhaseName_) ?
                 dmdtI1i + negPart(dmdtI2i) :
                 posPart(dmdtI1i) + dmdtI2i;

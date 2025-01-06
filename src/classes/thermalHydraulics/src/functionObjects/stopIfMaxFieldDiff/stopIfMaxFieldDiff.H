@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ Group
     grpFieldFunctionObjects
 
 Description
-    Stops the simulation when max(field1-field2) > 0 and prints out the 
+    Stops the simulation when max(field1-field2) > 0 and prints out the
     simulation time. Both field1 and field2 must be volSclaraFields
 
 Usage
@@ -66,7 +66,7 @@ Usage
         type          | type name: stopIfMaxFieldDiff  | yes        |
         writeToFile   | write extents data to file | no       | yes
         log           | write extents data to standard output | no | yes
-        field1        |                          | yes 
+        field1        |                          | yes
         field2        |                          | yes
     \endtable
 
@@ -110,12 +110,12 @@ class stopIfMaxFieldDiff
 :
     public fvMeshFunctionObject
 {
-public: 
+public:
 
 protected:
 
     // Protected data
-        
+
         //- Name of fields
         word field1Name_;
         word field2Name_;

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -41,7 +41,7 @@ Class
 Description
     Regime domain representation in 2D parameter-space.
 
-    Autor: 
+    Autor:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -83,7 +83,7 @@ private:
     //  regimeDomain. Used for interpolation purposes
     List<const regimeBoundary2D*> internalBoundaryPtrs_;
 
-    //- If positive, the polygon is convex with counter-clockwise ordered 
+    //- If positive, the polygon is convex with counter-clockwise ordered
     //  points. If negaative, it is convex with clockwise ordered points.
     //  if 0 then the polygon is concave
     int sign_;
@@ -116,7 +116,7 @@ public:
         //-
         Tuple2<Vector2D<scalar>, Vector2D<scalar>> boundingBox() const;
 
-        //- 
+        //-
         void setInternalBoundaries();
 
         //- Check whether point p is contained within the domain
@@ -128,7 +128,7 @@ public:
 
         //- Check whether point p is contained within the domain. Also works
         //  for convex polygons though more expensive than the other
-        //  formulation and so it should really be used only for concave 
+        //  formulation and so it should really be used only for concave
         //  polygons
         bool concaveContainsPoint(const Vector2D<scalar>& p) const;
 
@@ -139,7 +139,7 @@ public:
                 return id_;
             }
 
-            //- Non const-access as well to allow the use of the setNbr 
+            //- Non const-access as well to allow the use of the setNbr
             //  function of regimeBoundary2D
             List<regimeBoundary2D>& boundaries()
             {

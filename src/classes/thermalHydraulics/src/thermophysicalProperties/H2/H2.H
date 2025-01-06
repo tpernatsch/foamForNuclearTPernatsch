@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -48,54 +48,54 @@ Description
 
 References
     [1] Fang et al, Study on high-temperature hydrogen dissociation for nuclear
-        thermal propulsion reactor, Nuclear Engineering and Design 392 (2022) 
+        thermal propulsion reactor, Nuclear Engineering and Design 392 (2022)
         111753
 
-    [2] Reisfeld, THERMODYNAMIC AND TRANSPORT PROPERTIES OF DISSOCIATED 
+    [2] Reisfeld, THERMODYNAMIC AND TRANSPORT PROPERTIES OF DISSOCIATED
         HYDROGEN MIXTURES, 1957, LANL, LA-2123.
 
-    [3] Roder et al, Computer Programs for Thermodynamic and Transport 
+    [3] Roder et al, Computer Programs for Thermodynamic and Transport
         Properties of Hydrogen (Tabcode-ll), 1972, NBS Technical note 625.
 
-    [4] NIST Chemistry WebBook, Hydrogen atom - Gas phase thermochemestry data: 
+    [4] NIST Chemistry WebBook, Hydrogen atom - Gas phase thermochemestry data:
         https://webbook.nist.gov/cgi/cbook.cgi?ID=C12385136&Mask=1
 
-    [5] Muzny, C.D., Huber, M.L., Kazakov, A.F., 2013. Correlation for the 
-        viscosity of normal hydrogen obtained from symbolic regression. 
+    [5] Muzny, C.D., Huber, M.L., Kazakov, A.F., 2013. Correlation for the
+        viscosity of normal hydrogen obtained from symbolic regression.
         J. Chem. Eng. Data 58 (4), 969–979. https://doi.org/10.1021/je301273j
 
-    [6] Vanderslice, J.T., Weissman, S., Mason, E.A., Fallon, R.J., 1962. 
-        High-temperature transport properties of dissociating hydrogen. 
+    [6] Vanderslice, J.T., Weissman, S., Mason, E.A., Fallon, R.J., 1962.
+        High-temperature transport properties of dissociating hydrogen.
         Phys. Fluids 5 (2), 155–164. https://doi.org/10.1063/1.1706590
 
-    [7] NIST Chemistry WebBook, Hydrogen molecule - Gas phase thermochemestry 
+    [7] NIST Chemistry WebBook, Hydrogen molecule - Gas phase thermochemestry
         data: https://webbook.nist.gov/cgi/cbook.cgi?ID=C1333740&Mask=1
 
-    [8] Assael, M.J., Assael, J.-A.- M., Huber, M.L., Perkins, R.A., 
+    [8] Assael, M.J., Assael, J.-A.- M., Huber, M.L., Perkins, R.A.,
         Takata, Y., 2011. Correlation of the Thermal Conductivity of Normal and
-        Parahydrogen from the Triple Point to 1000 K and up to 100 MPa. 
-        J. Phys. Chem. Ref. Data 40 (3), 033101. 
+        Parahydrogen from the Triple Point to 1000 K and up to 100 MPa.
+        J. Phys. Chem. Ref. Data 40 (3), 033101.
         https://doi.org/10.1063/1.3606499
 
-    [9] Leachman, J. W., R. T Jacobsen, S. G. Penoncello, et E. W. Lemmon. 
-        « Fundamental Equations of State for Parahydrogen, Normal Hydrogen, and 
-        Orthohydrogen ». Journal of Physical and Chemical Reference Data 38, 
+    [9] Leachman, J. W., R. T Jacobsen, S. G. Penoncello, et E. W. Lemmon.
+        « Fundamental Equations of State for Parahydrogen, Normal Hydrogen, and
+        Orthohydrogen ». Journal of Physical and Chemical Reference Data 38,
         no 3 (1 septembre 2009): 721‑48. https://doi.org/10.1063/1.3160306.
 
-    [10] Robert D.McCarty, Hydrogen Technological Survey, Thermophysical 
+    [10] Robert D.McCarty, Hydrogen Technological Survey, Thermophysical
         Properties Cryogenics Division, Institute for Basic Standards
         https://ntrs.nasa.gov/api/citations/19760004209/downloads/19760004209.pdf
 
-    [11] Mason, Edward A., et William E. Rice. « The Intermolecular Potentials 
-        of Helium and Hydrogen ». The Journal of Chemical Physics 22, no 3 
+    [11] Mason, Edward A., et William E. Rice. « The Intermolecular Potentials
+        of Helium and Hydrogen ». The Journal of Chemical Physics 22, no 3
         (1 mars 1954): 522‑35. https://doi.org/10.1063/1.1740100.
 
-    [12] Mason, Edward A. « Transport Properties of Gases Obeying a Modified 
-        Buckingham (Exp-Six) Potential ». The Journal of Chemical Physics 22, 
+    [12] Mason, Edward A. « Transport Properties of Gases Obeying a Modified
+        Buckingham (Exp-Six) Potential ». The Journal of Chemical Physics 22,
         no 2 (1 février 1954): 169‑86. https://doi.org/10.1063/1.1740026.
 
-    [13] Amdur, I., et E. A. Mason. « Properties of Gases at Very High 
-        Temperatures ». Physics of Fluids 1, no 5 (1958): 370. 
+    [13] Amdur, I., et E. A. Mason. « Properties of Gases at Very High
+        Temperatures ». Physics of Fluids 1, no 5 (1958): 370.
         https://doi.org/10.1063/1.1724353.
 
 SourceFiles
@@ -132,13 +132,13 @@ class H2
 {
     // Private data
 
-        //- Hydrogen atomic weight [kg/kmol] 
+        //- Hydrogen atomic weight [kg/kmol]
         scalar W_H_;
 
         //- Perfect gas constant
         scalar R_;
 
-        //- 
+        //-
         scalar n_;
 
         //-
@@ -214,15 +214,15 @@ public:
 
             //- Equilibrium constant from [1] Eq 3 and [2]
             inline scalar Kp(scalar T) const;
-            
+
             //- Mole fraction of atomic hydrogen from [1] Eq 2 and [2]
             inline scalar x_H(scalar p, scalar T) const;
-            
+
             //- Weight fraction of atomic hydrogen from [1] Eq 2 and [2]
             inline scalar w_H(scalar p, scalar T) const;
 
 
-        // Average effective collision integrals, definition of the average 
+        // Average effective collision integrals, definition of the average
         // effective collision integrals defined in [1] and [6]
 
             //- Ω(1,1){1,1} defined in [1]
@@ -233,25 +233,25 @@ public:
 
             //- Ω(2,2){1,1} defined in [1]
             //  Coeffs fitted with data from [6], table II, for T>1000K
-            //  Coeffs fitted with data from [12], using parameters from [6], 
+            //  Coeffs fitted with data from [12], using parameters from [6],
             //  [11], and Eq.(23) from [13]
             inline scalar omega22_11(scalar T) const;
 
             // inline scalar omega11_22(scalar T) const;
-            
+
             //- Ω(2,2){2,2} defined in [1]
             //  Coeffs fitted with data from [6], table II
             inline scalar omega22_22(scalar T) const;
 
             //- Ω(1,1){1,2} defined in [1]
             //  Coeffs fitted with data from [6], table II
-            //  Fitted on values from 1000 to 10000 K every 500 K and extended 
+            //  Fitted on values from 1000 to 10000 K every 500 K and extended
             //  to cryogenic temperatures
             inline scalar omega11_12(scalar T) const;
-            
+
             //- Ω(2,2){1,2} defined in [1]
             //  Coeffs fitted with data from [6], table II
-            //  Fitted on values from 1000 to 10000 K every 500 K and extended 
+            //  Fitted on values from 1000 to 10000 K every 500 K and extended
             //  to cryogenic temperatures
             inline scalar omega22_12(scalar T) const;
 
@@ -266,10 +266,10 @@ public:
             //  Fitted on values from 1000 to 10000 K every 500 K and extended
             // to cryogenic temperatures
             inline scalar B_12(scalar T) const;
-            
+
             //- C{1,2} defined in [1]
             //  Coeffs fitted with data from [6], table II
-            //  Fitted on values from 1000 to 10000 K every 500 K and extended 
+            //  Fitted on values from 1000 to 10000 K every 500 K and extended
             //  to cryogenic temperatures
             inline scalar C_12(scalar T) const;
 
@@ -278,10 +278,10 @@ public:
 
             //- Density of atomic hydrogen [kg/m^3]
             inline scalar densityH(scalar p, scalar T) const;
-            
+
             //- Density of molecular hydrogen [kg/m^3]
             inline scalar densityH2(scalar p, scalar T) const;
-            
+
             //- Density [kg/m^3]
             inline scalar rho(scalar p, scalar T) const;
 
@@ -316,7 +316,7 @@ public:
             //  https://www.afs.enea.it/project/neptunius/docs/fluent/html/ug/node335.htm for entropy departure
             //  From NIST https://webbook.nist.gov/cgi/cbook.cgi?ID=C1333740&Mask=1//Thermo-Gas
             inline scalar entropyH2(const scalar p, const scalar T) const;
-            
+
             //- Entropy [J/(kg K)]
             inline scalar S(const scalar p, const scalar T) const;
 
@@ -337,9 +337,9 @@ public:
             inline scalar cpPerfectGasH2(scalar T) const;
 
             //- Heat capacity of atomic hydrogen [J/(kg K)]
-            //  Coefficients from [4] for T in [298; 6000] K for monoatomic 
+            //  Coefficients from [4] for T in [298; 6000] K for monoatomic
             //  hydrogen heat capacity
-            //  Note: the equation of State for monoatomic hydrogen is 
+            //  Note: the equation of State for monoatomic hydrogen is
             //  PerfectGas, hence its capacity depends only on temperature
             inline scalar heatCapacityH(scalar T) const;
 
@@ -356,11 +356,11 @@ public:
 
         // Physical properties
 
-            //- Coefficients from [5] zero_density_limit Eqs. (3) and (4), 
-            //  coefficients ai in Table 2. 
+            //- Coefficients from [5] zero_density_limit Eqs. (3) and (4),
+            //  coefficients ai in Table 2.
             inline scalar viscosity0(scalar T) const;
 
-            //- Coefficients from [5] the excess contribution Eqs. (5), (6) and 
+            //- Coefficients from [5] the excess contribution Eqs. (5), (6) and
             //  (7), coefficients bi in Table 3.
             inline scalar viscosity1(scalar T) const;
 
@@ -373,16 +373,16 @@ public:
 
             //- Thermal conductivity of molecular hydrogen [W/(m K)]
             // Expressions from:
-            // - Ref. [8] 
+            // - Ref. [8]
             // - lambda_0 expression from Eq. (2), coefficients Aij found in Table 2.
             // - lambda_excess expression from Eq. (3), coefficients Bij found in Table 2.
             // - lambda_critical expression from Eq. (8), coefficients Ci found in the text following Eq. (8).
-            // Note: lambda_critical used here is obtained via empirical 
-            // correlation, the deviation for the Roder and Diller data is -8% 
-            // to +15%, while those for the simplified Olchowy-Sengers 
+            // Note: lambda_critical used here is obtained via empirical
+            // correlation, the deviation for the Roder and Diller data is -8%
+            // to +15%, while those for the simplified Olchowy-Sengers
             // enhancement vary from -9% to +9%.
             inline scalar thermalConductivityH2(scalar p, scalar T) const;
-            
+
             //- Thermal conductivity  [W/(m K)]
             //  Expressions from [1]
             inline scalar kappa(scalar p, scalar T) const;
@@ -401,22 +401,22 @@ public:
             //- Prandtl number [-]
             inline scalar Pr(const scalar p, const scalar T) const;
 
-                    
+
             //- Vapour pressure [Pa]
             inline scalar pv(scalar p, scalar T) const { return 0; }
-                                    
+
             //- Heat of vapourisation [J/kg]
             inline scalar hl(scalar p, scalar T) const { return h(p, T); }
-                                    
+
             //- Ideal gas heat capacity [J/(kg K)]
             inline scalar Cpg(scalar p, scalar T) const { return Cp(p, T); }
-                                                                            
+
             //- Vapour viscosity [Pa s]
             inline scalar mug(scalar p, scalar T) const { return mu(p, T); }
 
-            //- Vapour thermal conductivity [W/(m K)]      
+            //- Vapour thermal conductivity [W/(m K)]
             inline scalar kappag(scalar p, scalar T) const { return kappa(p, T); }
-                                                                
+
             //- Surface tension [N/m]
             inline scalar sigma(scalar p, scalar T) const { return 0; }
 

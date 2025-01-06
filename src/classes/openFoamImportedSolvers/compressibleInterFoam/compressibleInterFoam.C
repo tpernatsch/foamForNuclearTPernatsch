@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace solvers
     defineTypeNameAndDebug(compressibleInterFoam, 0);
     addToRunTimeSelectionTable
     (
-        solver, 
-        compressibleInterFoam, 
+        solver,
+        compressibleInterFoam,
         fvMesh
     );
 }
@@ -224,7 +224,7 @@ Foam::solvers::compressibleInterFoam::compressibleInterFoam
         phi_,
         rhoPhi_,
         alphaPhi10,
-        mixture_ 
+        mixture_
     ));
 
     Info << endl;
@@ -235,7 +235,7 @@ Foam::solvers::compressibleInterFoam::compressibleInterFoam
 
 //- Solve according to flags
 void Foam::solvers::compressibleInterFoam::correctPhysics()
-{   
+{
         // --- Pressure-velocity PIMPLE corrector loop
         while (pimple_.loop())
         {

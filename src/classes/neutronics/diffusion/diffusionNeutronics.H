@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,12 +50,12 @@ The module solves the multi-group diffusion equations:
         - \Sigma_{r,g} \phi_g
         + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) S_{n,g}
         + \chi_{d,g} S_d
-        + S_{s,g} 
+        + S_{s,g}
         + S_g
         \quad \forall g \in [1; G] \\
-    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) = 
+    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) =
         \frac{\beta_k}{k_{eff}} \sum_h \nu \Sigma_{f,h} \phi_h
-        - \lambda_k C_k 
+        - \lambda_k C_k
         \quad \forall k \in [1; N]
 \f]
 
@@ -91,18 +91,18 @@ where:
 \endvartable
 
 
-In the neutronicsProperties file, for keff calculation in a critical 
+In the neutronicsProperties file, for keff calculation in a critical
 reactor:
 \verbatim
     model                       diffusionNeutronics;
     eigenvalueNeutronics        true;
 \endverbatim
 
-For an subcritical reactor driven by an external neutron source: 
+For an subcritical reactor driven by an external neutron source:
 \verbatim
     model                       diffusionNeutronics;
     eigenvalueNeutronics        false;
-    externalSourceNeutronics    true;   
+    externalSourceNeutronics    true;
 \endverbatim
 
 <b>Reference publications</b>
@@ -110,22 +110,22 @@ For an subcritical reactor driven by an external neutron source:
 <ol type="1">
     <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
     GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294, 
+    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294,
     2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
-    
-    <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam 
-    multi-physics solver to the European Sodium Fast Reactor and verification 
+
+    <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam
+    multi-physics solver to the European Sodium Fast Reactor and verification
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
     Nice (France), Paper 15226
 
-    <li> Carlo Fiorina, Nordine Kerkar, Konstantin Mikityuk, Pablo Rubiolo, Andreas 
-    Pautz, "Development and verification of the neutron diffusion solver for the 
-    GeN-Foam multi-physics platform", Annals of Nuclear Energy, 96, 2016, 
+    <li> Carlo Fiorina, Nordine Kerkar, Konstantin Mikityuk, Pablo Rubiolo, Andreas
+    Pautz, "Development and verification of the neutron diffusion solver for the
+    GeN-Foam multi-physics platform", Annals of Nuclear Energy, 96, 2016,
     pages 212-222, DOI: http://dx.doi.org/10.1016/j.anucene.2016.05.023.
 </ol>
 
-\mainauthor of this file (and associated .C or included .H files): 
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);   
+\mainauthor of this file (and associated .C or included .H files):
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 
 SourceFiles
@@ -197,7 +197,7 @@ protected:
     volScalarField rhoCool_;
     //- Mapped fields from TM
     volScalarField TStructMech_;
-    
+
     //- Also mapped, but these are autoPtr as these field are not needed at all
     //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
     //  these fields if they are actually needed
@@ -205,7 +205,7 @@ protected:
     autoPtr<volScalarField> alphaPtr_;
     autoPtr<volScalarField> alphatPtr_;
     autoPtr<volScalarField> muPtr_;
-    
+
     //- Fields derived from mapped fields
     autoPtr<surfaceScalarField> phiPtr_;
     autoPtr<volScalarField> diffCoeffPrecPtr_;
@@ -276,8 +276,8 @@ public:
 
 
         //- Correct/update the properties
-        virtual void correctPhysics(); 
-        virtual void correctTightlyCoupledPhysics(); 
+        virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
 
         virtual scalar maxDeltaT();
 

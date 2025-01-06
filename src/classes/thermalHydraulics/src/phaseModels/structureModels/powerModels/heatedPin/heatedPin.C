@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,8 +51,8 @@ namespace powerModels
     defineTypeNameAndDebug(heatedPin, 0);
     addToRunTimeSelectionTable
     (
-        powerModel, 
-        heatedPin, 
+        powerModel,
+        heatedPin,
         powerModels
     );
 }
@@ -153,7 +153,7 @@ Foam::powerModels::heatedPin::heatedPin
     cellToRegion_(mesh_.cells().size(), 0),
     pi_(constant::mathematical::pi),
     dA_(0)
-{   
+{
     structure_.setRegionField(*this, powerDensity_, "powerDensity");
 
     bool foundBoundaryTemperatures
@@ -174,7 +174,7 @@ Foam::powerModels::heatedPin::heatedPin
     {
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
-        
+
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (
@@ -209,7 +209,7 @@ Foam::powerModels::heatedPin::heatedPin
                 << "specify either fuelRhoCp or both fuelRho and fuelCp"
                 << exit(FatalError);
         }
-        
+
         scalar k(dict.get<scalar>("k"));
         bool hollow((ri >= 1e-5) ? true : false);
 
@@ -257,7 +257,7 @@ Foam::powerModels::heatedPin::heatedPin
             Trad_.set(i, new Field<scalar>(0, 0));
         }
 
-        //- If the files are present, reconstruct initial Trad_ profile 
+        //- If the files are present, reconstruct initial Trad_ profile
         //  analytically. The analytical form is:
         //  T(r) = -(1/4)*powerDensity_(r)*r^2/k + C*ln(r)/k + D
         //  with C and D coming from imposing fixedValue BC on all sides,
@@ -283,10 +283,10 @@ Foam::powerModels::heatedPin::heatedPin
                 scalar to = To_[celli];
                 scalar C;
                 scalar D;
-                
+
                 if (hollow)
                 {
-                    C = 
+                    C =
                         (k*(ti-to)-0.25*q*(sqr(ro)-sqr(ri)))/
                         log(ri/ro);
                 }
@@ -295,7 +295,7 @@ Foam::powerModels::heatedPin::heatedPin
                     C = 0.0;
                 }
                 D = to+(0.25*q*sqr(ro)-C*log(ro))/k;
-                
+
                 forAll(Trad_[celli], j)
                 {
                     scalar r(rList[j]);
@@ -327,7 +327,7 @@ Foam::powerModels::heatedPin::heatedPin
         Info<< "Setting heatedPin initial temperatures from "
                 << Trad_.name() << endl;
     }
-    
+
     //- Set I/O fields and compute initial scalar max, min
     scalar Tavav(0);
     scalar totV(0.0);
@@ -343,7 +343,7 @@ Foam::powerModels::heatedPin::heatedPin
 
         const scalarList& rRegion(r_[regioni]);
         scalar& Tavi(Tav_[celli]);
-        
+
         updateLocalAvgGlobalMinMaxT
         (
             0,
@@ -416,10 +416,10 @@ void Foam::powerModels::heatedPin::updateLocalAvgGlobalMinMaxT
     scalar intr(0);
     scalar intTr(0);
     for(int j = starti; j < endi; j++)
-    {   
+    {
         const scalar& T(Trad[j]);
         scalar rdr(r[j]*dr);
-        
+
         //- Cells at the mesh ends are only half as wide (the other half
         //  belongs to the ghost node). Thus, weigh temperatures at the extrema
         //  by a factor 0.5
@@ -439,7 +439,7 @@ void Foam::powerModels::heatedPin::updateLocalAvgGlobalMinMaxT
     Tavi = intTr/intr;
 }
 
-void 
+void
 Foam::powerModels::heatedPin::updateLocalTemperatureProfile
 (
     const label& celli,
@@ -469,7 +469,7 @@ Foam::powerModels::heatedPin::updateLocalTemperatureProfile
     //- Init matrix, source
     SquareMatrix<scalar> M(meshSize, meshSize, Foam::zero());
     List<scalar> S(meshSize, 0.0);
-    
+
     //- Fill in matrix, source coeffs
     {
         //- Set zeroGradient BC at pin inner surface
@@ -482,7 +482,7 @@ Foam::powerModels::heatedPin::updateLocalTemperatureProfile
             M[0][0] =   B+XdA;
             S[0] =      q*dA+TOld[0]*XdA;
         }
-        
+
         //- Set bulk
         for (int i = 1; i < meshSize-1; i++)
         {
@@ -550,11 +550,11 @@ void Foam::powerModels::heatedPin::correct
     //- Reset min, max, fuel, clad temperatures
     Tmax_ = 0.0;
     Tmin_ = 1e69;
-    
+
     //- Update temperatures cell-by-cell and compute averages over the entire
-    //  spatial extent of the heatedPin model (what I call global 
+    //  spatial extent of the heatedPin model (what I call global
     //  averages, opposed to local averages, which are the average temperature
-    //  values, fuel and clad, of the local cell radial pin temperature 
+    //  values, fuel and clad, of the local cell radial pin temperature
     //  profile)
     const scalarField& V(mesh_.V());
     scalar totV(0);
@@ -574,7 +574,7 @@ void Foam::powerModels::heatedPin::correct
     reduce(Tmax_, maxOp<scalar>());
     reduce(Tmin_, minOp<scalar>());
 
-    Info<< "T.heatedPin (avg min max) = " 
+    Info<< "T.heatedPin (avg min max) = "
         << Tavav << " " << Tmin_ << " " << Tmax_ << " K" << endl;
 
     //- Save these to the dictionary

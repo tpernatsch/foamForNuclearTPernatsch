@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -150,7 +150,7 @@ void Foam::velocityRundownFvPatchVectorField::updateCoeffs()
         vectorField Up(this->patch().size(), vector::zero);
 
         Up = U0_*Foam::pow(A_+B_*(t-t0_), C_);
-        
+
         this->operator==(Up);
 
         fixedValueFvPatchVectorField::updateCoeffs();

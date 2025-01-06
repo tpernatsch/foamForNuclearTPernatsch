@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -41,7 +41,7 @@ Class
 Description
     Base abstract class for the fluid and structure classes.
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -85,7 +85,7 @@ protected:
     //- Return the residual phase-fraction for given phase
     //  Used to stabilize the phase momentum as the phase-fraction -> 0
     const dimensionedScalar residualAlpha_;
-    
+
 
 public:
 
@@ -123,7 +123,7 @@ public:
             const dimensionedScalar& residualAlpha() const
             {
                 return residualAlpha_;
-            } 
+            }
 };
 
 

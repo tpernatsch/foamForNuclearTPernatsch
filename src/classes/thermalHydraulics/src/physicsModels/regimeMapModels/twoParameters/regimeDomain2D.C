@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -94,11 +94,11 @@ Foam::regimeMapModels::regimeDomain2D::regimeDomain2D
                 p1Ptr
             )
         );
-        //Info<< "        added boundary " << boundaries_[i].p0() << " " 
+        //Info<< "        added boundary " << boundaries_[i].p0() << " "
         //    << boundaries_[i].p1() << endl;
     }
 
-    //- Determine polygon sign (1 = convex counter-clockwise, -1 = convex 
+    //- Determine polygon sign (1 = convex counter-clockwise, -1 = convex
     //  clockwise, 0 = concave (ordering is inconsequential in that scenario))
     forAll(boundaries_, i)
     {
@@ -107,7 +107,7 @@ Foam::regimeMapModels::regimeDomain2D::regimeDomain2D
         if (i == boundaries_.size()-1)
             b1Ptr = &(boundaries_[0]);
         else
-            b1Ptr = &(boundaries_[i+1]); 
+            b1Ptr = &(boundaries_[i+1]);
         const regimeBoundary2D& b1(*b1Ptr);
         const Vector2D<scalar>& v0(b0.vNorm());
         const Vector2D<scalar>& v1(b1.vNorm());
@@ -120,7 +120,7 @@ Foam::regimeMapModels::regimeDomain2D::regimeDomain2D
             else
                 sign_ = -1;
         }
-        else 
+        else
         {
             if (sign_*sign < 0)
             {
@@ -141,7 +141,7 @@ Foam::regimeMapModels::regimeDomain2D::regimeDomain2D
         {
             rayNorm_ = Vector2D<scalar>
             (
-                rng.sample01<scalar>(), 
+                rng.sample01<scalar>(),
                 rng.sample01<scalar>()
             ).normalise();
             scalar dot(mag(rayNorm_&boundaries_[i].vNorm()));
@@ -161,7 +161,7 @@ Foam::regimeMapModels::regimeDomain2D::regimeDomain2D
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::Tuple2<Foam::Vector2D<Foam::scalar>, Foam::Vector2D<Foam::scalar>> 
+Foam::Tuple2<Foam::Vector2D<Foam::scalar>, Foam::Vector2D<Foam::scalar>>
 Foam::regimeMapModels::regimeDomain2D::boundingBox() const
 {
     const Vector2D<scalar>& p0(*pointPtrs_[0]);
@@ -176,7 +176,7 @@ Foam::regimeMapModels::regimeDomain2D::boundingBox() const
         maxY = max(maxY, p[1]);
     }
 
-    return 
+    return
         Tuple2<Vector2D<scalar>, Vector2D<scalar>>
         (
             Vector2D<scalar>(minX, minY),
@@ -204,7 +204,7 @@ bool Foam::regimeMapModels::regimeDomain2D::containsPoint
     //- If the polygon is not concave
     if (sign_ != 0)
         return convexContainsPoint(p);
-    //- Else 
+    //- Else
     return concaveContainsPoint(p);
 }
 
@@ -218,7 +218,7 @@ bool Foam::regimeMapModels::regimeDomain2D::convexContainsPoint
     //  the involved vectors is always 0, as these objects are 2-D) between
     //  each of the vectors that can be constructed between each boundary
     //  starting poing p0 and the point under exam p with the corresponding
-    //  p0-p1 vector for each boundary, for all boundaries. If the sign of 
+    //  p0-p1 vector for each boundary, for all boundaries. If the sign of
     //  these products is the same for all boundaries, then the point lies in
     //  the domain. This only works if the domain is convex (i.e. sign_ != 0)
     forAll(boundaries_, i)
@@ -258,7 +258,7 @@ bool Foam::regimeMapModels::regimeDomain2D::concaveContainsPoint
 
         //- The condition on vxvp1 is strictly greater or strictly lesser so to
         //  not consider the intersections with end-points in the count. Only
-        //  intersections with start points are considered. The condition on 
+        //  intersections with start points are considered. The condition on
         //  vp0xv010 is striclty greater than 0 so that points on the edge are
         //  considered outtside of the domain. In my experience with typical
         //  regime maps, this is the best option

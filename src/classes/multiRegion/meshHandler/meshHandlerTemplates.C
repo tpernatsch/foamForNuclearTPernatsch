@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,17 +49,17 @@ License
 template<class Type>
 void Foam::meshHandler::map
 (
-    word srcFieldName, 
-    word tgtFieldName, 
-    label tgtFieldLabel, 
-    label srcFieldLabel, 
+    word srcFieldName,
+    word tgtFieldName,
+    label tgtFieldLabel,
+    label srcFieldLabel,
     bool removeBaffles
 )
 {
     typedef GeometricField<Type, fvPatchField, volMesh> VolFieldType;
     if(this->meshes_[tgtFieldLabel].foundObject<VolFieldType>(tgtFieldName))
     {
-        
+
         if
         (
             (
@@ -72,10 +72,10 @@ void Foam::meshHandler::map
         )
         {
             FatalErrorInFunction
-            << "Types of mapping fields " << srcFieldName << 
+            << "Types of mapping fields " << srcFieldName <<
             " and " << tgtFieldName << " do not match" <<endl;
         }
-        
+
         VolFieldType& tgtField = const_cast<VolFieldType&>
         (
             this->meshes_[tgtFieldLabel].lookupObject<VolFieldType>(tgtFieldName)
@@ -97,17 +97,17 @@ void Foam::meshHandler::map
 template<class Type>
 void Foam::meshHandler::mapAndWrite
 (
-    word srcFieldName, 
-    word tgtFieldName, 
-    label tgtFieldLabel, 
-    label srcFieldLabel, 
+    word srcFieldName,
+    word tgtFieldName,
+    label tgtFieldLabel,
+    label srcFieldLabel,
     bool removeBaffles
 )
 {
     typedef GeometricField<Type, fvPatchField, volMesh> VolFieldType;
     if(this->meshes_[tgtFieldLabel].foundObject<VolFieldType>(tgtFieldName))
     {
-        
+
         if
         (
             (
@@ -120,10 +120,10 @@ void Foam::meshHandler::mapAndWrite
         )
         {
             FatalErrorInFunction
-            << "Types of mapping fields " << srcFieldName << 
+            << "Types of mapping fields " << srcFieldName <<
             " and " << tgtFieldName << " do not match" <<endl;
         }
-        
+
         VolFieldType& tgtField = const_cast<VolFieldType&>
         (
             this->meshes_[tgtFieldLabel].lookupObject<VolFieldType>(tgtFieldName)

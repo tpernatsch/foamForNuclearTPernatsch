@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ License
 
 // * * * * * * * * * * * * * * * * Selector  * * * * * * * * * * * * * * * * //
 
-Foam::autoPtr<Foam::TONBModel> 
+Foam::autoPtr<Foam::TONBModel>
 Foam::TONBModel::New
 (
     const FSPair& pair,
@@ -58,7 +58,7 @@ Foam::TONBModel::New
 
     Info<< "Selecting TONBModel for pair " << pair.name()
         << ": " << type << endl;
-    
+
     auto* ctorPtr = TONBModelsConstructorTable(type);
 
     if (!ctorPtr)

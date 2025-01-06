@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FSDragCoefficientModels
     defineTypeNameAndDebug(BaxiDalleDonne, 0);
     addToRunTimeSelectionTable
     (
-        FSDragCoefficientModel, 
-        BaxiDalleDonne, 
+        FSDragCoefficientModel,
+        BaxiDalleDonne,
         FSDragCoefficientModels
     );
 }
@@ -95,7 +95,7 @@ Foam::scalar Foam::FSDragCoefficientModels::BaxiDalleDonne::value
 {
     const scalar& Rei(Re(celli));
     scalar fl(A_/Rei);  //- There should be a *pow(Twall/Tbulk, 1.5), but I am
-                        //  lazy now (plus, what about cases where I do not 
+                        //  lazy now (plus, what about cases where I do not
                         //  solve for energy? I could handle this with some
                         //  flags and ifs)
     scalar ft(0.316*(B_+C_*pow(Rei,0.086))/pow(Rei, 0.25));
@@ -109,15 +109,15 @@ Foam::scalar Foam::FSDragCoefficientModels::BaxiDalleDonne::value
                 (
                     max
                     (
-                        ((Rei-400.0)/4600.0), 
+                        ((Rei-400.0)/4600.0),
                         0.0
-                    ), 
+                    ),
                     1.0
                 )
             );
             return sqrt(psi)*ft+sqrt(1.0-psi)*fl;
         }
-        else 
+        else
             return ft;
     }
     return fl;

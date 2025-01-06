@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -38,7 +38,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
+#  if __has_include(<commDataLayer.H>)
 #    include <commDataLayer.H>
 #    define isCommDataLayerIncluded
 #  endif
@@ -103,9 +103,9 @@ Foam::FSHeatTransferCoefficientModels::NusseltWallAndHfromFMU::NusseltWallAndHfr
         HNameFromFMU_ = dict.get<word>(HKeyFromFMU);
         // Communicating with the FMU
         const Time& runTime = this->db().time();
-        commDataLayer& data = commDataLayer::New(runTime); 
-        // Store in data layer and set its initial value to 0 
-        // in the dictionary      
+        commDataLayer& data = commDataLayer::New(runTime);
+        // Store in data layer and set its initial value to 0
+        // in the dictionary
         data.storeObj(
             scalar(0.0),
             HNameFromFMU_,
@@ -130,7 +130,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::NusseltWallAndHfromFMU::valu
     commDataLayer& data = commDataLayer::New(runTime);
     const scalar H_fromFMU =
         data.getObj<scalar>(HNameFromFMU_,commDataLayer::causality::in);
-                
+
     //- I am creating a scalar on return to (hopefully) force Return Value
     //  Optimizations (RVOs, C++ performance stuff)
     scalar H_fluid;

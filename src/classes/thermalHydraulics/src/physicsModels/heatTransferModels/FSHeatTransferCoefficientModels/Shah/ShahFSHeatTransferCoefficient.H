@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -75,7 +75,7 @@ private:
 
     //- Ptr to structure wall temperature (only used if !useExplicitHeatFlux_)
     const volScalarField* Twall_;
- 
+
     //- Ptr to fluid temperature (only used if !useExplicitHeatFlux_)
     const volScalarField* Tf_;
 
@@ -97,7 +97,7 @@ private:
     scalar exp_;
 
     //- Interpolation limits (I've chones them arbitrarily but and abrupt
-    //  change in the model coefficients is for sure not helpful). The 
+    //  change in the model coefficients is for sure not helpful). The
     //  abrupt threhsold provided by Shah is at a reduced pressure (i.e.
     //  p_/pCrit_) of 1e-3
     scalar pR0_;

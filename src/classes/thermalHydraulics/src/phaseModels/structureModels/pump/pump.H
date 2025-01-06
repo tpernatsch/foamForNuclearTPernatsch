@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,11 +39,11 @@ Class
     Foam::pump
 
 Description
-    Allow defining a momentum source, including options for a time 
+    Allow defining a momentum source, including options for a time
     dependent source, and a source coming from an FMU
 
-    Authors: 
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com), 
+    Authors:
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
     Carlo Fiorina for the FMU part
 
 Usage
@@ -62,7 +62,7 @@ Usage
             startTime   100;
             table       table
             (
-                //- <Time>  <Momentum source scaling factor> 
+                //- <Time>  <Momentum source scaling factor>
                 (   0       1   )
                 (   1       0.1 )
             );
@@ -101,7 +101,7 @@ class structure;
 \*---------------------------------------------------------------------------*/
 
 class pump
-: 
+:
     public IOdictionary
 {
 protected :
@@ -114,7 +114,7 @@ protected :
 
     //- Const value of the momentum source
     vector pumpValue_;
-    
+
     //- Optional table to describe any possible dependence of the momentum
     //  source on time
     // autoPtr<Function1<scalar>> timeProfilePtr_;
@@ -151,7 +151,7 @@ public:
     //- Member Functions
 
         //- Update momentum source field
-        void correct(volVectorField& pumpField);    
+        void correct(volVectorField& pumpField);
 
         //- Access
 

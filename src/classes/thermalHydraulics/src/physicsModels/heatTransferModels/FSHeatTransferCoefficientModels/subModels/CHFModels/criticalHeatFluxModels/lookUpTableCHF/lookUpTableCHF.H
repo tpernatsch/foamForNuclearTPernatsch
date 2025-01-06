@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -36,14 +36,14 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 Class
     Foam::CHFModel::lookUpTableCHF
-    
+
 Description
     Compute the Critical Heat Flux with a Look Up Table.
 
 Author
     - Yuhang Niu (niu.yuhang@epfl.ch)
-    - A. Scolaro - EPFL (ECOLE POLYTECHNIQUE FEDERALE 
-    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems 
+    - A. Scolaro - EPFL (ECOLE POLYTECHNIQUE FEDERALE
+    DE LAUSANNE, Switzerland, Laboratory for Reactor Physics and Systems
     Behaviour)
     - C. Fiorina - Texas A&M University (TAMU)
 
@@ -87,22 +87,22 @@ protected:
     //- Ref to flow quality
     const volScalarField& mass_flow_quality_;
 
-    //- Ref to pressure 
+    //- Ref to pressure
     const volScalarField& p_;
 
-    //- Ref to 
+    //- Ref to
     const volScalarField& rhoL_;
 
     //- Ref to rho vapour
     const volScalarField& rhoV_;
 
-    //- Ref to liquid velocity 
+    //- Ref to liquid velocity
     const volScalarField& uL_;
 
-    //- Ref to vapour velocity 
+    //- Ref to vapour velocity
     const volScalarField& uV_;
 
-    //- Ref to alpha normalized liquid 
+    //- Ref to alpha normalized liquid
     const volScalarField& normalizedL_;
 
     //- Ptr to FFPair (breaking encapsulation as usual)
@@ -116,31 +116,31 @@ protected:
 
     //- Tabulated pressure values (direction z)
     scalarField pressureValues_;
-    
+
     //- Tabulated mass flow rate values (direction x)
     scalarField massFlowRateValues_;
-    
+
     //- Tabulated quality values (direction y)
     scalarField qualityValues_;
-    
+
     //- Tabulated ptrList of 2D tables (i.e. raw data for the 3D interpolation
     // table)
     PtrList<FieldField<Field, scalar>> data_;
 
     //- Pressure interpolation method
     InterpolateTableBaseGF::interpolationMethod pMethod;
-    
+
     //- Mass flow rate interpolation method
     InterpolateTableBaseGF::interpolationMethod gMethod_;
-    
+
     //- Quality interpolation method
     InterpolateTableBaseGF::interpolationMethod xeMethod_;
-    
+
     //- 3D Interpolation table (pressure as the main direction)
     scalarFieldFieldInterpolateTableGF pTable_;
 
 
-    
+
 public:
 
     //- Runtime type information

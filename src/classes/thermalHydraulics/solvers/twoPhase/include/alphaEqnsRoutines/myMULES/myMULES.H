@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -46,11 +46,11 @@ Description
 
     Parameters are the variable to solve, the normal convective flux and the
     actual explicit flux of the variable which is also used to return limited
-    flux used in the bounded-solution. 
+    flux used in the bounded-solution.
     This version is virtually indentical to the MULES present in OpenFOAM6.
     The main difference consists in the option to provide a space-dependent
     limiter field, something which is absent in the v1812 OpenFOAM version of
-    MULES. 
+    MULES.
     Modified by Stefan Radman (stefan.radman@epfl.ch/stefanradman92@gmail.com)
 
 SourceFiles

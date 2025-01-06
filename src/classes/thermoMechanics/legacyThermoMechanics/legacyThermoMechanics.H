@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,7 +51,7 @@ Description
     solver to the European Sodium Fast Reactor and verification against available codes",
     Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
 
-    Author of this file (and associated .C or included .H files): 
+    Author of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 SourceFiles
@@ -158,8 +158,8 @@ public:
     // Member Functions
 
         //- Substitutes the old getFields. Set local class references to global
-        //  coupling fields, to be called only once after construction. The 
-        //  fields are set via lookup in the src objectRegistry (i.e. 
+        //  coupling fields, to be called only once after construction. The
+        //  fields are set via lookup in the src objectRegistry (i.e.
         //  fluidMeshNB for the current state of GeN-Foam)
         // virtual void getCouplingFieldRefs
         // (
@@ -170,7 +170,7 @@ public:
         // //- The old getFields, yet operates on the local refs without having
         // //  the need for all the fields to be passed. This effectively bypasses
         // //  the old limitation of getFields, i.e. if someone wanted to
-        // //  implement a new thermoMechanical model that requires more fields 
+        // //  implement a new thermoMechanical model that requires more fields
         // //  for the coupling, then they'd need to modify the getFields function
         // //  in ALL of the other thermoMechanical models too
         // virtual void interpolateCouplingFields

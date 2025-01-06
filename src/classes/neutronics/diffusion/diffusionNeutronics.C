@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -333,11 +333,11 @@ scalar Foam::solvers::diffusionNeutronics::maxDeltaT()
 
     if(mesh_.time().value()> mesh_.time().controlDict().get<scalar>("deltaT"))
     {
-        
+
         scalar maxPowerVariation =
             mesh_.time().controlDict().lookupOrDefault<scalar>
             (
-                "maxPowerVariation", 
+                "maxPowerVariation",
                 0.025
             );
         scalar pTot = power();
@@ -355,7 +355,7 @@ scalar Foam::solvers::diffusionNeutronics::maxDeltaT()
     else
         return newDeltaT;
 
-    
+
 
     Info <<"Computed DeltaT is "<< endl;
 

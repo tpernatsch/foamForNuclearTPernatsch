@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -67,13 +67,13 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io)
      || (io.readOpt() == IOobject::READ_IF_PRESENT && headerOk())
     )
     {
-        //- readStream(typeName) >> *this; // there was a problem with the 
+        //- readStream(typeName) >> *this; // there was a problem with the
         //  operator ">>" for Field<Type> (the function "new" is missing for
-        //  Field<Type>) problem work around: skip that operator, directly use 
+        //  Field<Type>) problem work around: skip that operator, directly use
         //  the read function and provide it with the right pointer.
         FieldField<Field, Type>::readIstream
         (
-            readStream(typeName), 
+            readStream(typeName),
             IOFieldField<Field, Type>::INew()
         );
         close();
@@ -84,7 +84,7 @@ Foam::IOFieldField<Field,Type>::IOFieldField(const IOobject& io)
 template<template<class> class Field, class Type>
 Foam::IOFieldField<Field,Type>::IOFieldField
 (
-    const IOobject& io, 
+    const IOobject& io,
     const label size
 )
 :
@@ -111,13 +111,13 @@ Foam::IOFieldField<Field,Type>::IOFieldField
      || (io.readOpt() == IOobject::READ_IF_PRESENT && headerOk())
     )
     {
-        //- readStream(typeName) >> *this; // there was a problem with the 
+        //- readStream(typeName) >> *this; // there was a problem with the
         //  operator ">>" for Field<Type> (the function "new" is missing for
-        //  Field<Type>) problem work around: skip that operator, directly use 
+        //  Field<Type>) problem work around: skip that operator, directly use
         //  the read function and provide it with the right pointer.
         FieldField<Field, Type>::readIstream
         (
-            readStream(typeName), 
+            readStream(typeName),
             IOFieldField<Field, Type>::INew()
         );
         close();
@@ -132,7 +132,7 @@ Foam::IOFieldField<Field,Type>::IOFieldField
 template<template<class> class Field, class Type>
 Foam::IOFieldField<Field,Type>::IOFieldField
 (
-    const IOobject& io, 
+    const IOobject& io,
     const FieldField<Field,Type>& f
 )
 :
@@ -163,13 +163,13 @@ Foam::IOFieldField<Field,Type>::IOFieldField
         ||  (io.readOpt() == IOobject::READ_IF_PRESENT && headerOk())
     )
     {
-        //- readStream(typeName) >> *this; // there was a problem with the 
+        //- readStream(typeName) >> *this; // there was a problem with the
         //  operator ">>" for Field<Type> (the function "new" is missing for
-        //  Field<Type>) problem work around: skip that operator, directly use 
+        //  Field<Type>) problem work around: skip that operator, directly use
         //  the read function and provide it with the right pointer.
         FieldField<Field, Type>::readIstream
         (
-            readStream(typeName), 
+            readStream(typeName),
             IOFieldField<Field, Type>::INew()
         );
         close();
@@ -186,7 +186,7 @@ Foam::IOFieldField<Field,Type>::IOFieldField
 template<template<class> class Field, class Type>
 Foam::IOFieldField<Field,Type>::IOFieldField
 (
-    const IOobject& io, 
+    const IOobject& io,
     FieldField<Field,Type>& f
 )
 :
@@ -222,13 +222,13 @@ Foam::IOFieldField<Field,Type>::IOFieldField
         ||  (io.readOpt() == IOobject::READ_IF_PRESENT && headerOk())
     )
     {
-        //- readStream(typeName) >> *this; // there was a problem with the 
+        //- readStream(typeName) >> *this; // there was a problem with the
         //  operator ">>" for Field<Type> (the function "new" is missing for
-        //  Field<Type>) problem work around: skip that operator, directly use 
+        //  Field<Type>) problem work around: skip that operator, directly use
         //  the read function and provide it with the right pointer.
         FieldField<Field, Type>::readIstream
         (
-            readStream(typeName), 
+            readStream(typeName),
             IOFieldField<Field, Type>::INew()
         );
         close();
@@ -266,12 +266,12 @@ template<template<class> class Field, class Type>
 Foam::IOFieldField<Field,Type>&
 Foam::IOFieldField<Field,Type>::oldTime()
 {
-    //- static_cast<const subscaleFuel&>(*this) converts *this into 
-    //  const subscaleFuel&. Applying the static_cast operator to a null 
-    //  pointer will convert it to a null pointer value of the target 
+    //- static_cast<const subscaleFuel&>(*this) converts *this into
+    //  const subscaleFuel&. Applying the static_cast operator to a null
+    //  pointer will convert it to a null pointer value of the target
     //  type
     static_cast<const IOFieldField<Field,Type>&>(*this).oldTime();
-                                                        
+
     return *field0Ptr_;
 }
 

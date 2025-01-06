@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,21 +43,21 @@ Description
     two parts of a mesh. By 'thin' we mean that the thermal inertia of the
     baffle is neglected and that baffle wall temperatures on both sides are
     predicted via an instantaneous heat flux balance. The fluid-baffle heat
-    transfer coefficients for wall-fluid (and the other wall-fluid pair if 
+    transfer coefficients for wall-fluid (and the other wall-fluid pair if
     doing twoPhase simulations) are calculated starting from the Nusselt number
     calculated in a form Nu = const + coeff*(Re^expRe)*(Pr^expPr) with user
     provided coefficients. The update for the fields on both sides of the
-    baffle is implicit, meaning that the owner patchField also sets the 
+    baffle is implicit, meaning that the owner patchField also sets the
     valueFraction/refValue/refGradient of the nbrPatch. In two-phase scenarios,
-    the owner of the patchField associated with the first instantiation of a 
+    the owner of the patchField associated with the first instantiation of a
     fluid type object also sets the aforementioned fields for the owner
     and nbr patchFields of the other fluid temperature. This is done to
-    preserve the implicitness of the method and to avoid useless extra 
-    caculations. Encapsulation flies out of the window but encapsulation is a 
+    preserve the implicitness of the method and to avoid useless extra
+    caculations. Encapsulation flies out of the window but encapsulation is a
     C++ idea that, if followed with pseudo-religious fervor, leads to shit
     anyways!
 
-    Author: 
+    Author:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 Usage
@@ -81,7 +81,7 @@ Usage
         type            NusseltThermalBaffle1D;
         value           $internalField;
         samplePatch     <masterPatchName>;
-        
+
         const           4;      //- If not provided, defaults to master value
         coeff           0.018;  //- If not provided, defaults to master value
         expRe           0.8;    //- If not provided, defaults to master value
@@ -305,7 +305,7 @@ public:
         tmp<scalarField> calcH
         (
             const FSPair& pair,
-            const NusseltThermalBaffle1DFvPatchScalarField& patchField            
+            const NusseltThermalBaffle1DFvPatchScalarField& patchField
         );
 
         //- Write

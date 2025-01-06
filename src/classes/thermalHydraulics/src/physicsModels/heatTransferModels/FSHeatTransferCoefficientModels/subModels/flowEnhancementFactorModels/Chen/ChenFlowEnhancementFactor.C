@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -82,7 +82,7 @@ Foam::scalar Foam::flowEnhancementFactorModels::Chen::value
 ) const
 {
     scalar invX(1.0/pair_.fluidRef().XLM()[celli]);
-    return 
+    return
         (invX > 0.1002071798) ?
         min(2.35*pow(0.213+invX, 0.736), maxValue_) :
         1.0;

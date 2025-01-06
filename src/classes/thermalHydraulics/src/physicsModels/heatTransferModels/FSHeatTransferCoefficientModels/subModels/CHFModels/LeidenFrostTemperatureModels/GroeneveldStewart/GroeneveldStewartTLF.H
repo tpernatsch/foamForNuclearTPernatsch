@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,11 +40,11 @@ Class
 
 Description
     Calculate the Leidenfrost Temperature at which the heat flux is minimal in the
-    hysteresis after the CHF. The formula used is the same as TRACE with the correlation 
+    hysteresis after the CHF. The formula used is the same as TRACE with the correlation
     of GroeneveldStewart. WARNING, it is not complete yet, it lack the term due to
     quality.
 
-    Author: 
+    Author:
     Gauthier Lazare (gauthier.lazare@gmail.com)
 
 SourceFiles

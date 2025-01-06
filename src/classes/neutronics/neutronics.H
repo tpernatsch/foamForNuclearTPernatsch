@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,20 +49,20 @@ Description
 <ol type="1">
     <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
     GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294, 
+    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294,
     2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
 
-    <li> Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam 
-    multi-physics solver to the European Sodium Fast Reactor and verification 
+    <li> Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam
+    multi-physics solver to the European Sodium Fast Reactor and verification
     against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
     Nice (France), Paper 15226
 </ol>
 
-\mainauthor of this file (and associated .C or included .H files): 
+\mainauthor of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Swizerland)
 
 SourceFiles
-    neutronics.C    
+    neutronics.C
 
 
 \*---------------------------------------------------------------------------*/
@@ -144,7 +144,7 @@ protected:
 
     //- Source modulation time profile
     timeProfile externalSourceModulationTimeProfile_;
-    
+
 
 
 private:
@@ -189,10 +189,10 @@ public:
         virtual const volScalarField& oneGroupFlux() const = 0;
 
         //- Return power
-        virtual scalar power() const = 0;  
+        virtual scalar power() const = 0;
 
         virtual void correctBaffleLessFields();
-        
+
         template<class Type>
         void correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh);
 
@@ -218,22 +218,22 @@ public:
             const volScalarField& powerDensity() const
             {
                 return powerDensity_;
-            } 
+            }
 
             const volScalarField& secondaryPowerDensity() const
             {
                 return secondaryPowerDensity_;
-            }  
+            }
 
             const volVectorField& disp() const
             {
                 return disp_;
-            }       
+            }
 
             bool eigenvalue() const
             {
                 return eigenvalueNeutronics_;
-            } 
+            }
 
             scalar initialResidual() const
             {

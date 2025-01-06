@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FFDragCoefficientModels
     defineTypeNameAndDebug(SchillerNaumann, 0);
     addToRunTimeSelectionTable
     (
-        FFDragCoefficientModel, 
-        SchillerNaumann, 
+        FFDragCoefficientModel,
+        SchillerNaumann,
         FFDragCoefficientModels
     );
 }
@@ -84,7 +84,7 @@ Foam::scalar Foam::FFDragCoefficientModels::SchillerNaumann::value
 ) const
 {
     const scalar& Rei(Re_[celli]);
-    return 
+    return
         1.5*
         (
             (Rei < 1000) ? 24*(1.0+0.15*pow(Rei, 0.687))/Rei : 0.44

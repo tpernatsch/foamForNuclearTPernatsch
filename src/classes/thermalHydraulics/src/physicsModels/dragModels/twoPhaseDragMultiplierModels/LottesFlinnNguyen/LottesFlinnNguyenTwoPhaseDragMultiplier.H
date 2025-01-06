@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,21 +39,21 @@ Class
     Foam::twoPhaseDragMultiplierModels::LottesFlinnNguyen
 
 Description
-    Model in the spirit of Lottes-Flinn, i.e.: 
+    Model in the spirit of Lottes-Flinn, i.e.:
 
-    phi2 = 1/(alpha^exp) 
-    
+    phi2 = 1/(alpha^exp)
+
     with alpha being the normalized phase fraction (by the void fraction) of
     the multiplierFluid and exp defaulting to 2 (which is the actual
     Lottes-Flinn model). The exp can be user-provided (it is know from e.g.
     TRACE development that this exponent can be slightly smaller for bubbly
-    flows, e.g. in the 1.7-1.8 range). The actual phase-fraction of the vapour 
+    flows, e.g. in the 1.7-1.8 range). The actual phase-fraction of the vapour
     is computed via the correlation by Nguyen:
     H. Nguyen "A finite element method for one-dimensional sodium boiling
-    simulation" in Third International Topical Meeting on Reactor 
+    simulation" in Third International Topical Meeting on Reactor
     Thermal-hydraulics, p.17C
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

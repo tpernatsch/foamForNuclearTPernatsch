@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -38,7 +38,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
+#  if __has_include(<commDataLayer.H>)
 #    include <commDataLayer.H>
 #    define isCommDataLayerIncluded
 #  endif
@@ -61,8 +61,8 @@ namespace powerModels
     defineTypeNameAndDebug(fixedTemperatureFMU, 0);
     addToRunTimeSelectionTable
     (
-        powerModel, 
-        fixedTemperatureFMU, 
+        powerModel,
+        fixedTemperatureFMU,
         powerModels
     );
 }
@@ -113,7 +113,7 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
 
             // Communicating with the FMU
             const Time& runTime = this->db().time();
-            commDataLayer& data = commDataLayer::New(runTime); 
+            commDataLayer& data = commDataLayer::New(runTime);
 
             //- Compute the average value of the temperature field
             label cellZoneID = mesh_.cellZones().findZoneID(region);
@@ -121,8 +121,8 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
             scalarField fieldZone(T_, tgtCellZone);
             scalar Tavg = gAverage(fieldZone);
 
-            // Store in data layer and set its initial value to the T 
-            // in the dictionary 
+            // Store in data layer and set its initial value to the T
+            // in the dictionary
             data.storeObj(
                 Tavg, // dict.get<scalar>("T"),
                 temperatureNameFromFMU,
@@ -148,7 +148,7 @@ void Foam::powerModels::fixedTemperatureFMU::temperatureUpdate() const
     {
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
-        
+
         word temperatureKeyFromFMU("temperatureNameFromFMU");
         const word temperatureNameFromFMU = dict.get<word>(temperatureKeyFromFMU);
 
@@ -157,7 +157,7 @@ void Foam::powerModels::fixedTemperatureFMU::temperatureUpdate() const
         commDataLayer& data = commDataLayer::New(runTime);
         const scalar temperatureFromFMU =
             data.getObj<scalar>(temperatureNameFromFMU,commDataLayer::causality::in);
-        
+
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (

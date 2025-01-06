@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -47,7 +47,7 @@ namespace Foam
     defineTypeNameAndDebug(powerModel, 0);
     defineRunTimeSelectionTable
     (
-        powerModel, 
+        powerModel,
         powerModels
     );
 }
@@ -120,7 +120,7 @@ Foam::powerModel::powerModel
     {
         word region(regions[i]);
         const dictionary& regionDict(this->subDict(region));
-        
+
         const labelList& regionCells(structure_.cellLists()[region]);
         forAll(regionCells, j)
         {
@@ -149,7 +149,7 @@ Foam::powerModel::powerModel
                 alpha_[cellj] = regionAlpha[cellj];
             }
         }
-    } 
+    }
 
     iA_.correctBoundaryConditions();
     alpha_.correctBoundaryConditions();
@@ -166,7 +166,7 @@ void Foam::powerModel::setInterfacialArea()
         word region(regions[i]);
         const dictionary& regionDict(this->subDict(region));
         scalar iA(regionDict.get<scalar>("volumetricArea"));
-        
+
         const labelList& regionCells(structure_.cellLists()[region]);
         forAll(regionCells, j)
         {
@@ -199,7 +199,7 @@ Foam::volScalarField& Foam::powerModel::initFieldInTable
                     mesh_.time().timeName(),
                     mesh_,
                     (
-                        (readIfPresent) ? 
+                        (readIfPresent) ?
                         IOobject::READ_IF_PRESENT : IOobject::NO_READ
                     ),
                     (
@@ -214,7 +214,7 @@ Foam::volScalarField& Foam::powerModel::initFieldInTable
         );
     }
     volScalarField& field(*IOFields_[name]);
-    
+
     IOobject fieldHeader
     (
         name,

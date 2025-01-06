@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,8 +51,8 @@ namespace powerModels
     defineTypeNameAndDebug(interpolatedNuclearFuelPin, 0);
     addToRunTimeSelectionTable
     (
-        powerModel, 
-        interpolatedNuclearFuelPin, 
+        powerModel,
+        interpolatedNuclearFuelPin,
         powerModels
     );
 }
@@ -116,17 +116,17 @@ Foam::powerModels::interpolatedNuclearFuelPin::interpolatedNuclearFuelPin
         dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
     )
-{   
+{
 
     structure_.setRegionField(*this, interpolatedPowerDensity_, "powerDensity");
     structure_.setRegionField(*this, T_, "T");
-    
+
 
     forAll(this->toc(), regioni)
     {
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
-        
+
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (
@@ -185,7 +185,7 @@ void Foam::powerModels::interpolatedNuclearFuelPin::correct
     }
 
     T_.correctBoundaryConditions();
-    
+
 }
 
 

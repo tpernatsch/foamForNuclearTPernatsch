@@ -8,7 +8,7 @@ paraFoam -region regionName
 
 where the `regionName` is `fluidRegion`, `neutroRegion` or `thermalMechanicalRegion`.
 
-Please notice that `paraFoam` is essentially an extension of paraview and it requires having paraview installed. In the openfoam.com distribution, paraview is not distributed with OpenFOAM, but needs to be installed separately (see the [ParaView website](https://www.paraview.org/)). In Ubuntu, it is normally enough to type in the terminal:
+Please notice that `paraFoam` is essentially an extension of ParaView and it requires having ParaView installed. In the [openfom.com](https://openfoam.com) distribution, ParaView is not distributed with OpenFOAM, but needs to be installed separately (see the [ParaView website](https://www.paraview.org/)). In Ubuntu, it is normally enough to type in the terminal:
 
 ```bash
 sudo apt-get -y install paraview

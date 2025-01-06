@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -76,7 +76,7 @@ SourceFiles
 Note
     This model will work as expected only in scenarios where the gas is
     dispersed and the liquid is continuous! While it will still technically
-    run also in opposite scenarios, the validity of the results is 
+    run also in opposite scenarios, the validity of the results is
     questionable. This is due to the fact that the fluid-fluid drag coefficient
     Cd is computed by taking into consideration the dispersed Dh and continuous
     rho, while the source terms in this model are hard-coded to use the
@@ -112,13 +112,13 @@ class LaheyKEpsilon
     public kEpsilon<BasicTurbulenceModel>
 {
     // Private data
-    
+
         //- Phase names
         mutable word liquidName_;
-        mutable word gasName_; 
-        
-        //- Field pointers. As these fields are expected to be constructed at 
-        //  different times in the solver, they can't be looked-up at 
+        mutable word gasName_;
+
+        //- Field pointers. As these fields are expected to be constructed at
+        //  different times in the solver, they can't be looked-up at
         //  construction. The private access functions serve that purpose
         mutable const fluid* gasPtr_;
         mutable const fluid* liquidPtr_;
@@ -138,22 +138,22 @@ class LaheyKEpsilon
         //- Access-like
 
             const fluid& gas() const;
-            
+
             const fluid& liquid() const;
-            
+
             const FFPair& pair() const;
 
             //- This looks up the liquid-vapour friction factor Kd and
             //  starting from it, it inverts it to obtain what was the
             //  drag coefficient Cd. In particular
-            //  Kd = 
+            //  Kd =
             //      0.5*(alpha_c*alpha_d)/(alpha_c+alpha_d)*
             //      (rho_c/Dh_d)*mag(U_c-U_d)*Cd
             //
             //  with c and d standing for the continuous and dispersed
             //  phase respectively
             const tmp<volScalarField> Cd() const;
-    
+
 
 protected:
 

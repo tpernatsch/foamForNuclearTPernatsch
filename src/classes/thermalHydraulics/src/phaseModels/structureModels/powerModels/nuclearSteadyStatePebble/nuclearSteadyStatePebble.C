@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,8 +51,8 @@ namespace powerModels
     defineTypeNameAndDebug(nuclearSteadyStatePebble, 0);
     addToRunTimeSelectionTable
     (
-        powerModel, 
-        nuclearSteadyStatePebble, 
+        powerModel,
+        nuclearSteadyStatePebble,
         powerModels
     );
 }
@@ -86,7 +86,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         mesh_,
         dimensionedScalar("", dimTemperature, 0),
         zeroGradientFvPatchScalarField::typeName
-    ),    
+    ),
     Tmav_
     (
         IOobject
@@ -292,14 +292,14 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
     cellToRegion_(mesh_.cells().size(), 0),
     regionIndexToRegionName_(0),
     pi_(constant::mathematical::pi)
-{   
+{
     structure_.setRegionField(*this, structureRef.powerDensityNeutronics(), "powerDensityNeutronics");
     const scalarField& V(mesh_.V());
     forAll(this->toc(), regioni)
     {
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
-        
+
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (
@@ -315,8 +315,8 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         regionIndexToRegionName_.append(region);
 
         //- Read region dict entries
-        scalar fractionOfPowerFromNeutronics(dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics",1.0)); 
-        scalar TpS_guess(dict.lookupOrDefault<scalar>("pebbleSurfaceTemperatureGuess", 900)); 
+        scalar fractionOfPowerFromNeutronics(dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics",1.0));
+        scalar TpS_guess(dict.lookupOrDefault<scalar>("pebbleSurfaceTemperatureGuess", 900));
         scalar rcore(dict.get<scalar>("pebbleCoreRadius"));
         scalar rmatrix(dict.get<scalar>("pebbleMatrixRadius"));
         scalar rshell(dict.get<scalar>("pebbleShellRadius"));
@@ -354,9 +354,9 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         rPyCin_.append(rPyCin);
         rSiC_.append(rSiC);
         rPyCout_.append(rPyCout);
-        
+
         Ntriso_.append(Ntriso);
-        
+
         kfuelCoeffs_.append(kfuelCoeffs);
         kbufferCoeffs_.append(kbufferCoeffs);
         kSiCCoeffs_.append(kSiCCoeffs);
@@ -384,7 +384,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         scalar rPyCin(rPyCin_[regioni]);
         scalar rSiC(rSiC_[regioni]);
         scalar rPyCout(rPyCout_[regioni]);
-        
+
         label  Ntriso(Ntriso_[regioni]);
 
         scalar TpS_guess(TpS_guess_[regioni]);
@@ -406,7 +406,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         scalar q = structure_.powerDensityNeutronics()[celli];
         const scalar& dV(V[celli]);
         scalar Q_cell = q*dV;
-        scalar Q_pebble_tot = 
+        scalar Q_pebble_tot =
             alpha_[celli]== 0 ?
             0
             :Q_cell*((4.0/3.0 * pi_ * pow(rshell, 3))/dV)*(1.0/alpha_[celli]);
@@ -427,7 +427,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         TpS_[celli]   = TpS_guess;
         Tmout_[celli] = TpS_[celli] + (Q_pebble_tot/(4*pi_*kgraphite))*(1/rmatrix-1/rshell);
         Tmav_[celli]  = Tmout_[celli]+(q_matrix/(6*keffmatrix))*(pow(rmatrix,2)-3*(pow(rmatrix,5)-pow(rcore,5))/(5*(pow(rmatrix,3)-pow(rcore,3))))+(pow(rcore,3)*q_matrix)/(3*keffmatrix)*(1/rmatrix-3*(pow(rmatrix,2)-pow(rcore,2))/(2*(pow(rmatrix,3)-pow(rcore,3))));
-        TfS_[celli]   = Tmav_[celli] + Q_triso/(4*pi_) * (1/kbuffer*(1/rfuel-1/rbuffer) +  1/kPyC*(1/rbuffer-1/rPyCin) + 1/kSiC*(1/rPyCin-1/rSiC) + 1/kPyC*(1/rSiC-1/rPyCout));    
+        TfS_[celli]   = Tmav_[celli] + Q_triso/(4*pi_) * (1/kbuffer*(1/rfuel-1/rbuffer) +  1/kPyC*(1/rbuffer-1/rPyCin) + 1/kSiC*(1/rPyCin-1/rSiC) + 1/kPyC*(1/rSiC-1/rPyCout));
         Tfav_[celli]  = TfS_[celli] + q_fuel*pow(rfuel,2) / (15*kfuel);
         Tfmax_[celli]  = TfS_[celli] + q_fuel*pow(rfuel,2) / (6*kfuel);
         keffMatrix_[celli] = keffmatrix;
@@ -530,7 +530,7 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
     forAll(this->cellList_, i)
     {
         label celli(this->cellList_[i]);
-        
+
         label regioni(cellToRegion_[celli]);
         //scalar fractionOfPowerFromNeutronics(fractionOfPowerFromNeutronics_[regioni]);
         scalar rcore(rcore_[regioni]);
@@ -541,19 +541,19 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
         scalar rPyCin(rPyCin_[regioni]);
         scalar rSiC(rSiC_[regioni]);
         scalar rPyCout(rPyCout_[regioni]);
-        
+
         label  Ntriso(Ntriso_[regioni]);
-              
+
         scalar kfuel(kfuelCoeffs_[regioni].value(Tfav_[celli]));
         scalar kbuffer(kbufferCoeffs_[regioni].value((TfS_[celli]+Tmav_[celli])/2));
         scalar kSiC(kSiCCoeffs_[regioni].value((TfS_[celli]+Tmav_[celli])/2));
         scalar kPyC(kPyCCoeffs_[regioni].value((TfS_[celli]+Tmav_[celli])/2));
-        scalar kgraphite(kgraphiteCoeffs_[regioni].value(Tmav_[celli]));        
+        scalar kgraphite(kgraphiteCoeffs_[regioni].value(Tmav_[celli]));
 
         scalar q = structure_.powerDensityNeutronics()[celli];
         const scalar& dV(V[celli]);
         scalar Q_cell = q*dV;
-        scalar Q_pebble_tot = 
+        scalar Q_pebble_tot =
             alpha_[celli]== 0 ?
             0
             :Q_cell*((4.0/3.0 * pi_ * pow(rshell, 3))/dV)*(1.0/alpha_[celli]);
@@ -574,7 +574,7 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
         TpS_[celli]   = (surfaceHeatFlux_[celli] + HTSum[celli]) / HSum[celli];
         Tmout_[celli] = TpS_[celli]   + (Q_pebble_tot/(4*pi_*kgraphite))*(1/rmatrix-1/rshell);
         Tmav_[celli]  = Tmout_[celli] + (q_matrix/(6*keffmatrix))*(pow(rmatrix,2)-3*(pow(rmatrix,5)-pow(rcore,5))/(5*(pow(rmatrix,3)-pow(rcore,3))))+(pow(rcore,3)*q_matrix)/(3*keffmatrix)*(1/rmatrix-3*(pow(rmatrix,2)-pow(rcore,2))/(2*(pow(rmatrix,3)-pow(rcore,3))));
-        TfS_[celli]   = Tmav_[celli]  + Q_triso/(4*pi_) * (1/kbuffer*(1/rfuel-1/rbuffer) +  1/kPyC*(1/rbuffer-1/rPyCin) + 1/kSiC*(1/rPyCin-1/rSiC) + 1/kPyC*(1/rSiC-1/rPyCout));    
+        TfS_[celli]   = Tmav_[celli]  + Q_triso/(4*pi_) * (1/kbuffer*(1/rfuel-1/rbuffer) +  1/kPyC*(1/rbuffer-1/rPyCin) + 1/kSiC*(1/rPyCin-1/rSiC) + 1/kPyC*(1/rSiC-1/rPyCout));
         Tfav_[celli]  = TfS_[celli]   + q_fuel*pow(rfuel,2) / (15*kfuel);
         Tfmax_[celli] = TfS_[celli]   + q_fuel*pow(rfuel,2) / (6*kfuel);
         keffMatrix_[celli] = keffmatrix;
@@ -583,8 +583,8 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
         rhobuffer_[celli] = rhobufferCoeffs_[regioni].value((TfS_[celli]+Tmav_[celli])/2);
         rhoSiC_[celli] = rhoSiCCoeffs_[regioni].value((TfS_[celli]+Tmav_[celli])/2);
         rhoPyC_[celli] = rhoPyCCoeffs_[regioni].value((TfS_[celli]+Tmav_[celli])/2);
-        rhographite_[celli] = rhographiteCoeffs_[regioni].value(Tmav_[celli]);   
-        rhocoolant_[celli] = rhocoolantCoeffs_[regioni].value(HTSum[celli] / HSum[celli]);   
+        rhographite_[celli] = rhographiteCoeffs_[regioni].value(Tmav_[celli]);
+        rhocoolant_[celli] = rhocoolantCoeffs_[regioni].value(HTSum[celli] / HSum[celli]);
 
         totV += dV;
         Tfavav += Tfav_[celli]*dV;
@@ -618,7 +618,7 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
     this->IOdictionary::set("rhoPyC", rhoPyC_);
     this->IOdictionary::set("rhographite", rhographite_);
     this->IOdictionary::set("rhocoolant", rhocoolant_);
-    
+
     reduce(totV, sumOp<scalar>());
     reduce(Tfavav, sumOp<scalar>());
     reduce(Tfmaxav, sumOp<scalar>());
@@ -663,7 +663,7 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
     this->IOdictionary::set("Tfavmax",    Tfavmax_);
     this->IOdictionary::set("Tfavmin",    Tfavmin_);
     this->IOdictionary::set("Tfmaxmax",   Tfavmax_);
-    this->IOdictionary::set("Tfmaxmin",   Tfavmin_);    
+    this->IOdictionary::set("Tfmaxmin",   Tfavmin_);
     this->IOdictionary::set("Tmoutmax",   Tmoutmax_);
     this->IOdictionary::set("Tmoutmin",   Tmoutmin_);
     this->IOdictionary::set("Tmavmax",    Tmavmax_);
@@ -695,4 +695,3 @@ void Foam::powerModels::nuclearSteadyStatePebble::updateLocalAvgGlobalMinMaxT
     if (T < Tmin) Tmin = T;
 }
 // ************************************************************************* //
-

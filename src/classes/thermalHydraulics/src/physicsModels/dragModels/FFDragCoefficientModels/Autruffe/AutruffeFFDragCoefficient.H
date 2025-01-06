@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -41,12 +41,12 @@ Class
 Description
     Autruffe correlation for the friction factor between two fluids,
     originally developed for sodium liquid-vapour pairs. See
-    Autruffe, M.I., Wilson, G.J., Stewart, B., Kazimi, M.S., 1979. A proposed 
-    momentum exchange coefficient for two-phase modeling of sodium boiling. 
-    In: Proc. Int. Meeting on Fast Reactor Safety Tech. 4, Seattle, WA, pp. 
+    Autruffe, M.I., Wilson, G.J., Stewart, B., Kazimi, M.S., 1979. A proposed
+    momentum exchange coefficient for two-phase modeling of sodium boiling.
+    In: Proc. Int. Meeting on Fast Reactor Safety Tech. 4, Seattle, WA, pp.
     2515–2521
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

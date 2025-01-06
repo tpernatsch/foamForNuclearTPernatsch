@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -52,8 +52,8 @@ namespace FFHeatTransferCoefficientModels
     defineTypeNameAndDebug(NoKazimi, 0);
     addToRunTimeSelectionTable
     (
-        FFHeatTransferCoefficientModel, 
-        NoKazimi, 
+        FFHeatTransferCoefficientModel,
+        NoKazimi,
         FFHeatTransferCoefficientModels
     );
 }
@@ -89,7 +89,7 @@ Foam::FFHeatTransferCoefficientModels::NoKazimi::NoKazimi
         sqrt
         (
             // W/1000 g/mol->kg/mol
-            bulkFluid_.thermo().W()().average().value()/1000.0/ 
+            bulkFluid_.thermo().W()().average().value()/1000.0/
             (
                 2.0*constant::mathematical::pi*
                 constant::physicoChemical::R.value()
@@ -108,7 +108,7 @@ Foam::scalar Foam::FFHeatTransferCoefficientModels::NoKazimi::value
     scalar alpha(max(alpha_[celli], 1e-9));
     const scalar& rho(rho_[celli]);
     const scalar& L(pair_.L()[celli]);
-    return 
+    return
         min
         (
             iA_[celli]*kappa_[celli]/(alpha*(1.0-alpha))
