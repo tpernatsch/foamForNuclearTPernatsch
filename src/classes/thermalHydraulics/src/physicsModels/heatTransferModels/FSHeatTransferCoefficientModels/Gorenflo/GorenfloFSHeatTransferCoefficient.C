@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FSHeatTransferCoefficientModels
     defineTypeNameAndDebug(Gorenflo, 0);
     addToRunTimeSelectionTable
     (
-        FSHeatTransferCoefficientModel, 
-        Gorenflo, 
+        FSHeatTransferCoefficientModel,
+        Gorenflo,
         FSHeatTransferCoefficientModels
     );
 }
@@ -91,7 +91,7 @@ Foam::FSHeatTransferCoefficientModels::Gorenflo::Gorenflo
     ),
     q_
     (
-        (useExplicitHeatFlux_) ? 
+        (useExplicitHeatFlux_) ?
         &pair.mesh().lookupObject<volScalarField>("heatFlux.structure") :
         nullptr
     ),
@@ -110,20 +110,20 @@ Foam::FSHeatTransferCoefficientModels::Gorenflo::Gorenflo
 /*
 IMPLEMENTATION NOTES
 
-The original pool boiling heat transfer coefficient by Gorenflo is the following 
+The original pool boiling heat transfer coefficient by Gorenflo is the following
 form:
 
 htcPB = h0_*F*((q/q0_)^n)*(R_/R0_)^0.133
 
-with F being a function of the reduced pressure, i.e. p/pCtri_. Needless to 
-say, this form is not particularly suitable for a numerical implementation in 
-its current form as htcPB is required to compute q in the first place. In 
+with F being a function of the reduced pressure, i.e. p/pCtri_. Needless to
+say, this form is not particularly suitable for a numerical implementation in
+its current form as htcPB is required to compute q in the first place. In
 general, the pool boiling heat flux is given by:
 
 q = htc*(Twall-Tsat)
 
 with htc being the total heat transfer coefficient between wall and fluid,
-Twall being the wall temperature and Tsat the saturation temperature. By 
+Twall being the wall temperature and Tsat the saturation temperature. By
 assuming that htc ~ htcPB (i.e. that most of the heat flux is due to the pool
 boiling mechanism), one can tha equate:
 

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -75,7 +75,7 @@ valueType Foam::regimeMapModel::interpolateValue
 ) const
 {
     //- The If-else appears to be useless, but it is to force a Return Value
-    //  Optimization for the case n==1. I should check the actual performance 
+    //  Optimization for the case n==1. I should check the actual performance
     //  gain...
     const DynamicList<Tuple2<label,scalar>>& rlci
     (
@@ -92,11 +92,11 @@ valueType Foam::regimeMapModel::interpolateValue
     );
     for(int j=1; j<n; j++)
     {
-        //- The first element of the tuple is the regime label (which 
+        //- The first element of the tuple is the regime label (which
         //  corresponds to the label of the sub-model in models
-        //  while the second element of the tuple corresponds to 
+        //  while the second element of the tuple corresponds to
         //  the coefficient of the associated regime, used to weight the
-        //  contribution of the correpsonding regime model value valuej in 
+        //  contribution of the correpsonding regime model value valuej in
         //  the total value value
         const Tuple2<label,scalar>& rlcij(rlci[j]);
         value += rlcij.second()*models[rlcij.first()]->value(celli);

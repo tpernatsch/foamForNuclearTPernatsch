@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -75,12 +75,12 @@ Foam::phaseChangeModel::phaseChangeModel
     fluid2_(pair.fluid2()),
     liquid_
     (
-        (pair.fluid1().isLiquid()) ? 
+        (pair.fluid1().isLiquid()) ?
         pair.fluid1() : pair.fluid2()
     ),
     vapour_
     (
-        (pair.fluid1().isGas()) ? 
+        (pair.fluid1().isGas()) ?
         pair.fluid1() : pair.fluid2()
     ),
     p_(mesh_.lookupObject<volScalarField>("p")),
@@ -171,8 +171,8 @@ Foam::phaseChangeModel::phaseChangeModel
     residualIACells_(0),
     dmLostToLimiter_(0)
 {
-    //- 
-    if 
+    //-
+    if
     (
         !(fluid1_.isLiquid() and fluid2_.isGas())
     and !(fluid2_.isLiquid() and fluid1_.isGas())
@@ -208,7 +208,7 @@ Foam::phaseChangeModel::phaseChangeModel
     (
         this->lookupOrDefault<wordList>
         (
-            "residualInterfacialAreaRegions", 
+            "residualInterfacialAreaRegions",
             wordList()
         )
     );
@@ -232,12 +232,12 @@ Foam::phaseChangeModel::phaseChangeModel
     //  dimVolume (e.g. explicit terms)
     heSources_.set
     (
-        fluid1_.thermo().he().name(), 
+        fluid1_.thermo().he().name(),
         new fvScalarMatrix(fluid1_.thermo().he(), dimPower)
     );
     heSources_.set
     (
-        fluid2_.thermo().he().name(), 
+        fluid2_.thermo().he().name(),
         new fvScalarMatrix(fluid2_.thermo().he(), dimPower)
     );
 }
@@ -281,11 +281,11 @@ void Foam::phaseChangeModel::limitMassTransfer()
 
     and that they are solved explicitly (albeit with the whole MULES limiter
     step before the explicit solution), there should be a maximum allowable
-    limit on the value of the mass transfer term. This can be computed from 
-    the continuity equations assuming the maximum allowable ddt within a 
+    limit on the value of the mass transfer term. This can be computed from
+    the continuity equations assuming the maximum allowable ddt within a
     single time-step (i.e. that ddt that would make my phase fraction change
-    from its current value to 0 in one time step). Due to the way the 
-    equations are implemented, a maximum on dmdt is derived from the 
+    from its current value to 0 in one time step). Due to the way the
+    equations are implemented, a maximum on dmdt is derived from the
     continuity equation of phase 1 while a minimum is derived from that of
     phase 2. Continuity errors are (for now) not considered.
     */
@@ -335,8 +335,8 @@ void Foam::phaseChangeModel::limitMassTransfer()
 
         /*if (pimple_.finalIter())
         {
-            Info<< "Cumulative dm lost to limiter = " 
-                << (dmLostToLimiter_) 
+            Info<< "Cumulative dm lost to limiter = "
+                << (dmLostToLimiter_)
                 << " kg/m3" << endl;
         }*/
     }
@@ -357,10 +357,10 @@ void Foam::phaseChangeModel::correctInterfacialTemperature()
                 "maxTInterfaceDdt"
             )
         );
-        
+
         scalar dt(mesh_.time().deltaTValue());
         saturationPtr_->correctField(iT_, "TSat");
-        
+
         forAll(iT_, i)
         {
             const scalar& iT0(iT_.oldTime()[i]);
@@ -393,17 +393,17 @@ void Foam::phaseChangeModel::correct()
     latentHeatPtr_->correctField(L_);
     L_.relax();
 
-    //- Calculate dmdtI <- depends on the actual run-time selected phaseChange 
+    //- Calculate dmdtI <- depends on the actual run-time selected phaseChange
     //  model
     correctInterfacialDmdt();
 
     //- Update total dmdt and relax
     dmdt_.storePrevIter();
     dmdt_ = dmdtI_ + dmdtW_;
-    limitMassTransfer(); 
+    limitMassTransfer();
     dmdt_.relax();
 
-    //- The rest of this function is to set heSources_ in an 
+    //- The rest of this function is to set heSources_ in an
     //  energy-conservative way
     //- Refs and fields
     const volScalarField& he1(fluid1_.thermo().he());
@@ -414,7 +414,7 @@ void Foam::phaseChangeModel::correct()
     volScalarField& htc2(pair_.htc(fluid2_.name()));
     volScalarField he1I(fluid1_.thermo().he(p_, iT_));
     volScalarField he2I(fluid2_.thermo().he(p_, iT_));
-    
+
     /*-----------------------------------------------------------------------*/
 
     volScalarField c1
@@ -441,7 +441,7 @@ void Foam::phaseChangeModel::correct()
         dimensionedScalar("", dimDensity/dimTime, 0),
         zeroGradientFvPatchScalarField::typeName
     );
-    
+
     //- Fraction of total dmdt that is due to wall boiling (can be negative,
     //  e.g. vapour at saturation but sub-cooled boiling implies that dmdtI
     //  and dmdt (=dmdtI+dmdtW) have opposing signs)
@@ -456,14 +456,14 @@ void Foam::phaseChangeModel::correct()
         }
     }
 
-    //- The htcs are set to 0 in the phase-change region and the mass 
+    //- The htcs are set to 0 in the phase-change region and the mass
     //  transfer enthalpy contribution are accounted for via a SuSp(c, he) term
     //  for both phases. The next for loop is used to calculate these terms.
     //  Nonetheless, for visual purposes, I still want the htcs to have their
     //  model-computed values in the boiling/condensing region just so that I
     //  can have an idea of what is going on in paraView. This storePrevIter is
     //  thus used for chaching purposes (the htcs are restored only in FFPair.C
-    //  correct() after the interfacial non-mass-transfer 
+    //  correct() after the interfacial non-mass-transfer
     //  enthalpy contributions are added).
     htc1.storePrevIter();
     htc2.storePrevIter();
@@ -497,24 +497,24 @@ void Foam::phaseChangeModel::correct()
                 via energy conservative approaches (e.g. heat conduction
                 limited). Thus, to be consistent, I need to adjust the
                 interfacial heat fluxes by the ratio of the original
-                dmdt had it been computed via a perfectly 
+                dmdt had it been computed via a perfectly
                 energy-conservative approach (i.e. dmdtIi0) to the actual
                 dmdti which is not assured to satisfy dmdtiI = (q1i+q2i)/Li.
-                In this way I assure energy conservation when accounting 
+                In this way I assure energy conservation when accounting
                 for dmdti in the energy equations, regardless of how dmdti
                 was actually computed (note, there is nothing un-physical
                 about computing dmdt with approaches that are not based
                 on energy conservation, as long as the dmdtI is added to
                 the energy equations in a way that is energy conservative).
-                However, I am not sure that this energy-conservativity 
+                However, I am not sure that this energy-conservativity
                 necessarily lead to meaningful temperature profiles IF
                 the dmdtI is not computed via approaches other than the
                 heat-conduction limited one. Oh, well!
             */
             scalar dmdtIi0((q1i+q2i)/Li);
-            dmdtIi0 = 
-                (dmdtIi0 >= 0.0) ? 
-                max(dmdtMin, dmdtIi0) : 
+            dmdtIi0 =
+                (dmdtIi0 >= 0.0) ?
+                max(dmdtMin, dmdtIi0) :
                 min(-dmdtMin, dmdtIi0);
             scalar f(dmdtIi/dmdtIi0);
             scalar dmdtILi(dmdtIi*Li);
@@ -573,31 +573,31 @@ void Foam::phaseChangeModel::correct()
     dmdt12.correctBoundaryConditions();
     dmdt21.correctBoundaryConditions();
 
-    //- If phase 1 gains enthalpy from the disappearance of phase 2 (e.g. if 
+    //- If phase 1 gains enthalpy from the disappearance of phase 2 (e.g. if
     //  phase 1 is liquid, 2 is vapour and the vapour is condensing) then the
-    //  enthalpy added to phase 1 is at saturation (i.e. the interfacial 
-    //  enthalpy, he1I). If phase 1 loses enthalpy from its own disappearance 
+    //  enthalpy added to phase 1 is at saturation (i.e. the interfacial
+    //  enthalpy, he1I). If phase 1 loses enthalpy from its own disappearance
     //  (e.g. if phase 1 is liquid, 2 is vapour and the liquid is boiling) then
     //  the enthalpy is removed from phase 1 at its current enthalpy (he1).
-    //  This strategy is to prevent possible thermal run-aways. Note that 
+    //  This strategy is to prevent possible thermal run-aways. Note that
     //  beacuse of this formulation, the enthalpy gain term can be treated
     //  implicitly but the loss term must be treated explcitly. The same logic
     //  is applied to the he source of phase 2. It works regardless of which
     //  phase is liquid and which phase is vapour
-    *(heSources_[he1.name()]) = 
+    *(heSources_[he1.name()]) =
         fvm::SuSp(c1, he1)      //- Contrib. from interf. and wall mass transf.
     +   fvm::Sp(dmdt12, he1)    //- Contrib. from intrinsic phase change (imp.)
     -   dmdt21*he1I;            //- Contrib. from intrinsic phase change (exp.)
-    *(heSources_[he2.name()]) = 
+    *(heSources_[he2.name()]) =
         fvm::SuSp(c2, he2)
     +   fvm::Sp(dmdt21, he2)
     -   dmdt12*he2I;
-    
+
     //- Store prev iters for under-relaxation (at the next iteration)
     dmdtI_.storePrevIter();
     dmdtW_.storePrevIter();
 
-    //- Reset wall contribution (it is computed by some 
+    //- Reset wall contribution (it is computed by some
     //  FSHeatTransferCoefficient models but due to how said models work, it
     //  cannot be reset from within them)
     forAll(mesh_.cells(), i)
@@ -613,7 +613,7 @@ void Foam::phaseChangeModel::correct()
         (
             he1I[i]+L_[i]-he2I[i]
         );
-        
+
         scalar Xi
         (
             (
@@ -627,7 +627,7 @@ void Foam::phaseChangeModel::correct()
                 ) - he1I[i]
             )/(he2I[i]+deltai-he1I[i])
         );
-        Info<< he1[i] << " " << he1I[i] << " " << (he2[i]+deltai) << " " 
+        Info<< he1[i] << " " << he1I[i] << " " << (he2[i]+deltai) << " "
             << (he2I[i]+deltai) << " " << L_[i] << " | X = " << Xi << endl;
     }*/
 }

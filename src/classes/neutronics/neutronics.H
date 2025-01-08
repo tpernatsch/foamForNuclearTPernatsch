@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -246,6 +246,9 @@ public:
 
         virtual void correctBaffleLessFields();
 
+        template<class Type>
+        void correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh);
+
         virtual void deformMesh();
 
 
@@ -273,16 +276,10 @@ public:
                 return secondaryPowerDensity_;
             }
 
-            //- Return one group flux
-            virtual const volScalarField& oneGroupFlux() const
+            const volVectorField& disp() const
             {
-                return oneGroupFlux_;
+                return disp_;
             }
-
-            // const volVectorField& disp() const
-            // {
-            //     return disp_;
-            // }
 
             bool eigenvalue() const
             {

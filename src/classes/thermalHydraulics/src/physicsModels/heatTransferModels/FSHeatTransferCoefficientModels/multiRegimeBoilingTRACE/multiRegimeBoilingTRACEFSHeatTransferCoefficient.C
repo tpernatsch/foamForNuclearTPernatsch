@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,8 +51,8 @@ namespace FSHeatTransferCoefficientModels
     defineTypeNameAndDebug(multiRegimeBoilingTRACE, 0);
     addToRunTimeSelectionTable
     (
-        FSHeatTransferCoefficientModel, 
-        multiRegimeBoilingTRACE, 
+        FSHeatTransferCoefficientModel,
+        multiRegimeBoilingTRACE,
         FSHeatTransferCoefficientModels
     );
 }
@@ -158,7 +158,7 @@ multiRegimeBoilingTRACE
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar 
+Foam::scalar
 Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACE::value
 (
     const label& celli
@@ -172,7 +172,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACE::value
     if (dmdtWPtr_ == nullptr)
     {
         //- Ptr to wall mass transfer term (i.e. due to subcooled boiling)
-        dmdtWPtr_ = 
+        dmdtWPtr_ =
             &
             (
                 pair_.mesh().lookupObjectRef<volScalarField>
@@ -208,7 +208,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACE::value
             {
                 //- Film condensation heat transfer coefficient
                 scalar htcCndi(htcCndPtr_->value(celli));
-                
+
                 //- Linear interpolation if 0.8 < alphai < 0.9
                 if (alphai < 0.9)
                 {
@@ -217,7 +217,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACE::value
                 }
                 else //- Film condensation only
                     return htcCndi;
-            }   
+            }
         }
         else
             return htc2pFCi;
@@ -243,9 +243,9 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACE::value
             if (Twi < TCHFi)    //- Below CHF, i.e. either nucleate boiling
                                 //  or subcooled boiling
             {
-                //- Calc hPB at boiling onset, i.e. the hPB when the wall 
-                //  temperature is TONBi. This is done by caching Twi, 
-                //  setting it to TONB,  using the htcPB model to calc the 
+                //- Calc hPB at boiling onset, i.e. the hPB when the wall
+                //  temperature is TONBi. This is done by caching Twi,
+                //  setting it to TONB,  using the htcPB model to calc the
                 //  hPB with Tw=TONB, then re-setting the Twi
                 scalar Twi0(Twi);
                 const_cast<scalar&>(Twi) = TONBi;
@@ -259,8 +259,8 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACE::value
                 scalar qNBi = pow(pow(qFCi, 3)+pow(qPBi-qBIi, 3), 1.0/3.0);
 
                 //- Please note that only the dmdtW is set in this scope as
-                //  the subcooled boiling heat transfer coefficient and the 
-                //  nucleate boiling heat transfer coefficient are computed 
+                //  the subcooled boiling heat transfer coefficient and the
+                //  nucleate boiling heat transfer coefficient are computed
                 //  in the same way, outside and after this scope
                 scalar f(1.0);
                 if (SCBFPtr_.valid())
@@ -269,14 +269,14 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACE::value
                 }
                 scalar qSCDmdti(f*(qNBi-qFCi));
 
-                //- If fluid1 is liquid and 2 is vapour then L > 0 and 
+                //- If fluid1 is liquid and 2 is vapour then L > 0 and
                 //  this sub-cooled boiling term is also > 0. If fluid2
-                //  is liquid and fluid1 is vapour then L < 0 and 
-                //  everything still  works out in terms of the dmdtW 
+                //  is liquid and fluid1 is vapour then L < 0 and
+                //  everything still  works out in terms of the dmdtW
                 //  sign, as I recall that it is positive for phase
-                //  changes from fluid1 to fluid2 and negative 
+                //  changes from fluid1 to fluid2 and negative
                 //  vice-versa
-                (*dmdtWPtr_)[celli] = 
+                (*dmdtWPtr_)[celli] =
                     pair_.structureRef().iAact()[celli]*qSCDmdti/
                     mag(FFPairPtr_->L()[celli]);
 
@@ -284,7 +284,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACE::value
                 dT = (dT >= 0.0) ? max(dT, 1e-3) : min(-dT, -1e-3);
                 return qNBi/dT;
             }
-            else    //- Post-CHF heat transfer, currently missing 
+            else    //- Post-CHF heat transfer, currently missing
                     //  implementation
             {
                 return 1.0;

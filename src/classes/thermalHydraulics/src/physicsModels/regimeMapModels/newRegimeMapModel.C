@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,7 +50,7 @@ Foam::autoPtr<Foam::regimeMapModel> Foam::regimeMapModel::New
 {
     word type(dict.lookup("type"));
 
-    Info<< endl << "Constructing regimeMap " << dict.dictName() 
+    Info<< endl << "Constructing regimeMap " << dict.dictName()
         << " of type: " << type << endl;
 
     auto* ctorPtr = regimeMapModelsConstructorTable(type);

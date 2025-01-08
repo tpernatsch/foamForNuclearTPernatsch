@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,10 +39,10 @@ Class
     Foam::subCooledBoilingFractionModel
 
 Description
-    Model for the prediction of the sub-cooled bulk liquid temperature at 
+    Model for the prediction of the sub-cooled bulk liquid temperature at
     which bubble detachment occurs (only for sub-cooled boiling)
 
-    Author: 
+    Author:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles

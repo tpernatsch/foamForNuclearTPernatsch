@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,20 +40,20 @@ Class
 
 Description
     Correlation to be used in annular flow scenarios in which the phase of
-    interest to which this model is applied flows in a film along the 
+    interest to which this model is applied flows in a film along the
     structures (e.g. pins) of interest. It assumes that the dimensionless
     film thickness d+ (=d/Dh with Dh being the structure hydraulic diameter)
     is proportional to the Wallis interfacial drag coefficient so that:
-    
+
     0.005*75*alphaN = 0.005*300*d/Dh
 
-    with alphaN being the normalized phase fraction of the phase of interest 
+    with alphaN being the normalized phase fraction of the phase of interest
     and the film thickness is thus computed as:
 
     d = 0.25*alphaN*Dh
 
     See TRACE theory manual (https://www.nrc.gov/docs/ML1200/ML120060218.pdf,
-    pp. 135-136, eqns. 4-37, 4-38) for further info  
+    pp. 135-136, eqns. 4-37, 4-38) for further info
 
     Author:
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
@@ -85,10 +85,10 @@ class WallisFilm
 {
 protected:
 
-    //- Minimum allowable value of the phase fraction to avoid null fluid 
+    //- Minimum allowable value of the phase fraction to avoid null fluid
     //  diameter
     scalar residualAlpha_;
-    
+
 public:
 
     //- Runtime type information

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,8 +49,8 @@ namespace twoPhaseDragMultiplierModels
     defineTypeNameAndDebug(LottesFlinnNguyen, 0);
     addToRunTimeSelectionTable
     (
-        twoPhaseDragMultiplierModel, 
-        LottesFlinnNguyen, 
+        twoPhaseDragMultiplierModel,
+        LottesFlinnNguyen,
         twoPhaseDragMultiplierModels
     );
 }
@@ -82,7 +82,7 @@ Foam::scalar Foam::twoPhaseDragMultiplierModels::LottesFlinnNguyen::phi2
 ) const
 {
     //- If it is "almost" single-phase flow, return 1.0
-    return 
+    return
         (mFluidPtr_->normalized()[celli] > 0.999) ?
         1.0 :
         pow(1.0-pow(1.0+pow(mFluidPtr_->XLM()[celli], 0.8), -0.378), -exp_);

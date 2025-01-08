@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,7 +43,6 @@ License
 #include "interpolationCellPoint.H"
 #include "radialBasisFunctionInterpolation.H"
 #include "mergeOrSplitBaffles.H"
-#include "fluid.H"
 #include "multiPhysicsSolver.H"
 
 

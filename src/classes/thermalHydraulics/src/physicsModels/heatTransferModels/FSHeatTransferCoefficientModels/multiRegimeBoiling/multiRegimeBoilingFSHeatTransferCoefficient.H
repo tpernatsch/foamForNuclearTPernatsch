@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,7 +43,7 @@ Description
     convection, two-phase convection, sub-cooled and nucleate boiling, to
     film boiling (the latter, hopefully).
 
-    Author: 
+    Author:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles
@@ -115,7 +115,7 @@ protected:
 
     //- Ptr to mass transfer term at the wall (of the phaseChange class) so
     //  that it can be set here to account e.g. for sub-cooled boiling.
-    //  Please, never forget that encapsulation leads to total madness if 
+    //  Please, never forget that encapsulation leads to total madness if
     //  followed religiously. Still I encourage people to find more
     //  elegant and simpler solutions, if any
     mutable volScalarField* dmdtWPtr_;
@@ -124,7 +124,7 @@ protected:
     scalar exp_;
     scalar oneByExp_;
 
-    //- Superposition is performed on heat fluxes rather than heat transfer 
+    //- Superposition is performed on heat fluxes rather than heat transfer
     //  coefficients
     bool qMode_;
 
@@ -135,23 +135,23 @@ protected:
 
 //- Protected methods
 
-    //- Set the subcooled boiling mass transfer term for celli 
+    //- Set the subcooled boiling mass transfer term for celli
     void setDmdtW
     (
-        const label& celli, 
-        const scalar& qNBi, 
+        const label& celli,
+        const scalar& qNBi,
         const scalar& qFCi
     ) const;
 
     //- Return the nucleate boiling heat flux in celli for a given value of the
-    //  wall temperature (will be used to numerically calculate the derivative 
-    //  of qNB, which is required to find the critical heat flux temperature 
+    //  wall temperature (will be used to numerically calculate the derivative
+    //  of qNB, which is required to find the critical heat flux temperature
     //  given the critical flux value)
     scalar qNB
     (
-        const label& celli, 
+        const label& celli,
         const scalar& Twi1
-    ) const; 
+    ) const;
 
 public:
 
@@ -176,7 +176,7 @@ public:
         //- Return htc for cell celli
         virtual scalar value(const label& celli) const;
 
-        
+
 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

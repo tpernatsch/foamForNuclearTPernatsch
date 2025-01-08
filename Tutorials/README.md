@@ -23,12 +23,14 @@ The Tutorials folder is divided in four types of tutorials:
 - [featureCases](./featureCases/) that contains tests and validation cases for specific features in GeN-Foam
 - [fmuCases](./fmuCases/) that contains examples of use of the FMI standard with GeN-Foam
 
+[EMPTY](./EMPTY/) contains an empty GeN-Foam case with default parameters and default regions.
+
 
 ## Regression test suite
 
 It is highly recommended to run the [`Alltest`](./Alltest) or [`regressionTest`](./regressionTest) scripts when developing to make sure that GeN-Foam behaves as expected. This script runs all the tutorials contained in this folder, except `testing` and `toBeUpdated`. It is an extensive process that might require a day of calculation depending on the hardware.
 
-The results of the test are summarized in the [regressionResults.md](regressionResults.md) file.
+The results of the test are summarized in the [regressionResults.md](regressionResults.md) file. In `--fast` mode, the results are summarized in [regressionResults-fast.md](./regressionResults-fast.md).
 
 ```bash
 ./Alltest
@@ -39,6 +41,9 @@ The results of the test are summarized in the [regressionResults.md](regressionR
 # To add fmi cases to be run, works in parallel
 ./Alltest --fmi
 
-# To run only fast cases, works in parallel
+# To run only fast cases, works in parallel (< 1 min per case)
 ./Alltest --fast
+
+# To run with the minimum information printed on the terminal
+./Alltest --quiet
 ```

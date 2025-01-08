@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,11 +51,11 @@ Description
 
     Please note that X in use in phi is X = sqrt(X2) and that phi2 = phi^2
 
-    Kaiser, A., Peppler, W., Vöröss, L., 1974. "Type of flow, pressure drop, 
-    and critical heat flux of a two-phase sodium flow". Nucl. Eng. Des. 30, 
+    Kaiser, A., Peppler, W., Vöröss, L., 1974. "Type of flow, pressure drop,
+    and critical heat flux of a two-phase sodium flow". Nucl. Eng. Des. 30,
     pp. 305–315.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

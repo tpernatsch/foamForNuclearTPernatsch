@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -84,8 +84,8 @@ Foam::twoPhaseDragFactor::twoPhaseDragFactor
         mesh_,
         dimensionedTensor
         (
-            "", 
-            dimDensity*dimVelocity/dimTime, 
+            "",
+            dimDensity*dimVelocity/dimTime,
             tensor
             (
                 1, 0, 0,
@@ -126,9 +126,9 @@ void Foam::twoPhaseDragFactor::correct()
     if (notFirstTimeStep)
         KdTotU_.relax();
     dimensionedScalar minMagU("", dimVelocity, 1e-9);
-    F1SPair_.Kd() = 
+    F1SPair_.Kd() =
         F1SPair_.f()*KdTotU_/max(F1SPair_.fluidRef().magU(), minMagU);
-    F2SPair_.Kd() = 
+    F2SPair_.Kd() =
         F2SPair_.f()*KdTotU_/max(F2SPair_.fluidRef().magU(), minMagU);
 }
 

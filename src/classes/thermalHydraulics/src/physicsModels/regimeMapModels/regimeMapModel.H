@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,9 +39,9 @@ Class
     Foam::regimeMapModel
 
 Description
-    Run-time selectable class to handle flow regime map models. 
+    Run-time selectable class to handle flow regime map models.
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -130,7 +130,7 @@ public:
         virtual ~regimeMapModel(){}
 
     //- Selectors
-    
+
         //- The selector does not have to be the same as the constructor
         static autoPtr<regimeMapModel> New
         (
@@ -157,13 +157,13 @@ public:
 
         //- If different models in the models list use different correlations
         //  to predict a value for a certain quantity, this function returns
-        //  the interpolated value (for the mesh cell in exam) between the 
-        //  different models, as each model corrseponds to a certain flow 
+        //  the interpolated value (for the mesh cell in exam) between the
+        //  different models, as each model corrseponds to a certain flow
         //  regime
         template<class valueType, class modelType>
         valueType interpolateValue
         (
-            const List<autoPtr<modelType>>& models, 
+            const List<autoPtr<modelType>>& models,
             const label& celli
         ) const;
 
@@ -184,7 +184,7 @@ public:
                 return regimeLabelToName_;
             }
 
-            const DynamicList<DynamicList<Tuple2<label,scalar>>>& 
+            const DynamicList<DynamicList<Tuple2<label,scalar>>>&
             regimeLabelCoeffs() const
             {
                 return regimeLabelCoeffs_;
@@ -194,7 +194,7 @@ public:
 
         static const regimeMapModel& lookupRegimeMap
         (
-            const objectRegistry& objReg, 
+            const objectRegistry& objReg,
             const word& name
         );
 };

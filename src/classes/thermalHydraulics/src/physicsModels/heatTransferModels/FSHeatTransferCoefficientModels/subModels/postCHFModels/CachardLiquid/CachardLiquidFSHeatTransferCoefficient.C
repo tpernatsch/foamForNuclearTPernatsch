@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FSHeatTransferCoefficientModels
     defineTypeNameAndDebug(CachardLiquid, 0);
     addToRunTimeSelectionTable
     (
-        FSHeatTransferCoefficientModel, 
-        CachardLiquid, 
+        FSHeatTransferCoefficientModel,
+        CachardLiquid,
         FSHeatTransferCoefficientModels
     );
 }
@@ -97,7 +97,7 @@ Foam::FSHeatTransferCoefficientModels::CachardLiquid::CachardLiquid
         dimensionedScalar("",dimensionSet(1,0,-3,-1,0,0,0),0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
-    sigmaSB_(5.670*1e-8), 
+    sigmaSB_(5.670*1e-8),
     gravity_(9.81),
     epsilonWall_(dict.get<scalar>("wallEmissivity")),
     epsilonLiq_(dict.get<scalar>("liquidEmissivity"))
@@ -129,24 +129,24 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::CachardLiquid::value
     const scalar DRi = 0.01; // Bundle Rod Diameter
     const scalar& Dhi(Dh_[celli]);
 
-    // Radiation due to Phase 
+    // Radiation due to Phase
     scalar dT(Twi-Tli);
     dT = (dT >= 0.0) ? max(dT, 1e-6) : min(dT, -1e-6);
     // Film Thickness for Rod Bundle (see TRACE)
     scalar deltai(Dhi/2*(pow(1+alphai*((4/Foam::constant::mathematical::pi)*pow(pi/max(DRi,1e-6),2)-1),0.5)-1));
     // Non dimensionnal Film Thickness (see TRACE)
     scalar deltastari(deltai*pow(rhoVapi*gravity_*(rhoLiqi-rhoVapi)/pow(max(mugi,1e-6),2),1.0/3));
-    scalar hIniti(kgi/max(deltai,1e-6));    
-    // Liquid Nusselt Number 
+    scalar hIniti(kgi/max(deltai,1e-6));
+    // Liquid Nusselt Number
     scalar Nuwli(max(0,1.3*(0.268*pow(deltastari,0.77)-0.34)));
     scalar hwlPhase(hIniti*Nuwli*(Twi-Tsati)/dT);
-    
+
     // HTC due to Radiation
     scalar a(max(epsilonLiq_*sqrt(1.0-alphai),1e-6));
-    scalar b(1.0/epsilonWall_-1.0); 
+    scalar b(1.0/epsilonWall_-1.0);
     scalar hwlRad(sigmaSB_*(pow(Twi,2)+pow(Tsati,2))*(Twi+Tsati)/max(1/a+b,1e-6));
 
-    // IOobject for the hwl Phase -> gives the mass rate change to MultiRegimeBoilingTRACECHF. 
+    // IOobject for the hwl Phase -> gives the mass rate change to MultiRegimeBoilingTRACECHF.
     hGamma_[celli] = hwlPhase;
 
     return hwlPhase+hwlRad;

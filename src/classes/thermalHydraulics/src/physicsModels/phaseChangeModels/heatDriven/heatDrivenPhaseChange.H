@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -46,18 +46,18 @@ Description
         transfer across interface if the interfacial heat fluxes do not
         balance out. It q1i and q2i are the respective heat fluxes form the
         bulk of phase 1/2 to the interface, then dmdt_ = (q1i+q2i)/L with L
-        being the latent heat. This is the approach found in TRACE 
+        being the latent heat. This is the approach found in TRACE
         (check theory manual, https://www.nrc.gov/docs/ML0710/ML071000097.pdf)
         but it is not suited if there is a massive difference in the volumetric
         heat capacity (J/K/m3) of the phases (such as in the case of sodium, due
-        to the density difference of a factor ~ 2000). It can be very unstable 
+        to the density difference of a factor ~ 2000). It can be very unstable
         and not converge at all in such scenarios;
 
     -   twoPhaseDriven: evaporation is driven uniquely by liquid superheat and
         condensation is driven uniquely by vapor undercooling. There is no need
         to specify which phase is liquid and which is vapour in the
-        phaseProperties dict, as this information is contained in the latent 
-        heat L (positive if phase1 is liquid and 2 is vapour, negative 
+        phaseProperties dict, as this information is contained in the latent
+        heat L (positive if phase1 is liquid and 2 is vapour, negative
         otherwise);
 
     -   onePhaseDriven: both evaporation and condensation are driven uniquely
@@ -84,7 +84,7 @@ Description
 
         saturationModel                 //- Unrelated to the heatDriven model
         {
-            type       "BrowningPotter"; 
+            type       "BrowningPotter";
         }
     }
     \endverbatim
@@ -118,7 +118,7 @@ public:
 
     enum mode
     {
-        conductionLimited, 
+        conductionLimited,
         onePhaseDriven,
         twoPhaseDriven,
         mixedDriven
@@ -154,7 +154,7 @@ public:
 
         //-
         virtual void correctInterfacialDmdt();
-        
+
 };
 
 

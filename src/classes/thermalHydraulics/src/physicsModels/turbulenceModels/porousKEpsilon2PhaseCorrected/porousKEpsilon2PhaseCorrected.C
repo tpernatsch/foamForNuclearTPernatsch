@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -74,7 +74,7 @@ void porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::correctNut()
 
     if (nutStabilization_)
     {
-        this->nut_ += 
+        this->nut_ +=
             pos(structure_)*FSPair_.fluidRef().magU()*DhStructPtr_()/
             laminarReStructPtr_();
         this->nut_.correctBoundaryConditions();
@@ -225,21 +225,21 @@ porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::porousKEpsilon2PhaseCorrect
     ),
     fluidName_
     (
-        alpha.name() == "alpha" ? 
+        alpha.name() == "alpha" ?
         "" : myOps::split<word>(alpha.name(), '.')[1]
     ),
     structure_
     (
-        this->mesh_.objectRegistry::template 
+        this->mesh_.objectRegistry::template
             lookupObject<structure>("alpha.structure")
     ),
     FSPair_
     (
-        this->mesh_.objectRegistry::template 
+        this->mesh_.objectRegistry::template
             foundObject<FSPair>(fluidName_+".structure") ?
-        this->mesh_.objectRegistry::template 
+        this->mesh_.objectRegistry::template
             lookupObject<FSPair>(fluidName_+".structure") :
-        this->mesh_.objectRegistry::template 
+        this->mesh_.objectRegistry::template
             lookupObject<FSPair>("fluid.structure")
     ),
     porousKEpsilon2PhaseCorrectedDict_
@@ -344,24 +344,24 @@ porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::porousKEpsilon2PhaseCorrect
     }
 
     wordList regionsInDict(0);
-    
+
     forAll(porousKEpsilon2PhaseCorrectedDict_.toc(), i)
     {
         word key(porousKEpsilon2PhaseCorrectedDict_.toc()[i]);
         const dictionary& regionDict(porousKEpsilon2PhaseCorrectedDict_.subDict(key));
-        
+
         wordList regions(myOps::split<word>(key, ':'));
 
         forAll(regions, j)
         {
             word region(regions[j]);
-            
-            //- If the region volumeFraction is 0, there is no structure so 
-            //  regular kEpsilon applies and there is no need to set 
+
+            //- If the region volumeFraction is 0, there is no structure so
+            //  regular kEpsilon applies and there is no need to set
             //  porousKEpsilon2PhaseCorrected properties
             if (max(structure_.alphaFields()[region]).value() == 0.0) continue;
-            
-            Info<< "Setting porousKEpsilon2PhaseCorrected parameters for region: " << region 
+
+            Info<< "Setting porousKEpsilon2PhaseCorrected parameters for region: " << region
             << endl;
 
             regionsInDict.append(region);
@@ -396,14 +396,14 @@ porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::porousKEpsilon2PhaseCorrect
                 turbulenceIntensityCoeff_[celli] = turbulenceIntensityCoeff;
                 turbulenceIntensityAlphaCoeff_[celli] = turbulenceIntensityAlphaCoeff;
                 turbulenceIntensityExp_[celli] = turbulenceIntensityExp;
-                turbulenceLengthScaleCoeff_[celli] = 
+                turbulenceLengthScaleCoeff_[celli] =
                     turbulenceLengthScaleCoeff;
             }
             convergenceLength_.correctBoundaryConditions();
             turbulenceIntensityCoeff_.correctBoundaryConditions();
-            turbulenceIntensityAlphaCoeff_.correctBoundaryConditions(); 
+            turbulenceIntensityAlphaCoeff_.correctBoundaryConditions();
             turbulenceIntensityExp_.correctBoundaryConditions();
-            turbulenceLengthScaleCoeff_.correctBoundaryConditions();  
+            turbulenceLengthScaleCoeff_.correctBoundaryConditions();
 
             //- nut stabilization fields, create only if keyword found
             if (regionDict.found("DhStruct"))
@@ -443,8 +443,8 @@ porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::porousKEpsilon2PhaseCorrect
                             this->mesh_,
                             dimensionedScalar
                             (
-                                "", 
-                                dimless, 
+                                "",
+                                dimless,
                                 defaultLaminarReStruct
                             ),
                             zeroGradientFvPatchScalarField::typeName
@@ -456,7 +456,7 @@ porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::porousKEpsilon2PhaseCorrect
                 (
                     regionDict.lookupOrDefault<scalar>
                     (
-                        "laminarReStruct", 
+                        "laminarReStruct",
                         defaultLaminarReStruct
                     )
                 );
@@ -468,7 +468,7 @@ porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::porousKEpsilon2PhaseCorrect
                 }
                 DhStructPtr_().correctBoundaryConditions();
                 laminarReStructPtr_().correctBoundaryConditions();
-            }  
+            }
         }
     }
 
@@ -481,7 +481,7 @@ porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::porousKEpsilon2PhaseCorrect
         //  kEpsilon applies and there is no need to check for porousKEpsilon2PhaseCorrected
         //  properties
         if (max(structure_.alphaFields()[region]).value() == 0.0) continue;
-        
+
         bool found(false);
         forAll(regionsInDict, j)
         {
@@ -501,10 +501,10 @@ porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::porousKEpsilon2PhaseCorrect
         }
     }
 
-    convergenceLength_ = 
+    convergenceLength_ =
         max
         (
-            convergenceLength_, 
+            convergenceLength_,
             dimensionedScalar("", dimLength, SMALL)
         );
     convergenceLength_.correctBoundaryConditions();
@@ -587,14 +587,14 @@ void porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::correct()
                 )
                 + turbulenceIntensityAlphaCoeff_*
                 (1.0-FSPair_.fluidRef()/(1.0-structure_))
-                // Note that phase fraction must be divided by 
+                // Note that phase fraction must be divided by
                 //(1-alpha.structure) to get relative value
             )
         )
     );
     //equilibriumEpsilon_.correctBoundaryConditions();
     equilibriumEpsilon_ =
-    ( 
+    (
         Cmu3by4_*pow(equilibriumK_, 1.5)
         /
         (
@@ -637,7 +637,7 @@ void porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::correct()
         C1_*alpha()*rho()*G*epsilon_()/k_()*noStructure()
       - fvm::SuSp
         (
-            ((2.0/3.0)*C1_ - C3_)*alpha()*rho()*divU*noStructure(), 
+            ((2.0/3.0)*C1_ - C3_)*alpha()*rho()*divU*noStructure(),
             epsilon_
         )
       - fvm::Sp(C2_*alpha()*rho()*epsilon_()/k_()*noStructure(), epsilon_)
@@ -669,7 +669,7 @@ void porousKEpsilon2PhaseCorrected<BasicTurbulenceModel>::correct()
       + alphaRhoConv()*equilibriumK_
       + fvOptions(alpha, rho, k_)
     );
-    
+
     kEqn.ref().relax();
     fvOptions.constrain(kEqn.ref());
     solve(kEqn);

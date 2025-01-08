@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FFDragCoefficientModels
     defineTypeNameAndDebug(Autruffe, 0);
     addToRunTimeSelectionTable
     (
-        FFDragCoefficientModel, 
-        Autruffe, 
+        FFDragCoefficientModel,
+        Autruffe,
         FFDragCoefficientModels
     );
 }
@@ -80,7 +80,7 @@ Foam::FFDragCoefficientModels::Autruffe::Autruffe
 {
     const fluid& fluid1(pair.fluid1());
     const fluid& fluid2(pair.fluid2());
-    if 
+    if
     (
         !(fluid1.isLiquid() and fluid2.isGas()) and
         !(fluid2.isLiquid() and fluid1.isGas())
@@ -106,7 +106,7 @@ Foam::scalar Foam::FFDragCoefficientModels::Autruffe::value
     const scalar& a(vapour_.normalized()[celli]);
     //- The coeff is 2.155 but, the FFDragFactor multiplies this value times
     //  0.5, so the coeff here is doubled
-    return 
+    return
         4.31*max(pow((1.0-a)*(1.0+75.0*(1.0-a)),0.95),0.005)
         *(vapour_.rho()[celli]/pair_.rhoContinuous()[celli])
         *(pair_.DhDispersed()[celli]/pair_.DhContinuous()[celli]);

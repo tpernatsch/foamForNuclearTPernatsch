@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,10 +40,10 @@ Class
 
 Description
     Compute bubble/droplet diameter based on pressure and temperature
-    changes assuming constant moles within bubble/droplet (i.e. no mass 
+    changes assuming constant moles within bubble/droplet (i.e. no mass
     exchange) via ideal gas law
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles

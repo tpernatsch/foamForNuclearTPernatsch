@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -244,7 +244,7 @@ void mixtureKEpsilon<BasicTurbulenceModel>::initMixtureFields()
     if (rhom_.valid()) return;
 
     // Local references to gas-phase properties
-    const mixtureKEpsilon<BasicTurbulenceModel>& turbd = 
+    const mixtureKEpsilon<BasicTurbulenceModel>& turbd =
         refCast<const mixtureKEpsilon<BasicTurbulenceModel>>
         (
             gas().turbulence()
@@ -253,7 +253,7 @@ void mixtureKEpsilon<BasicTurbulenceModel>::initMixtureFields()
     const volScalarField& epsilong = turbd.epsilon();
 
     // Local references to liquid-phase properties
-    const mixtureKEpsilon<BasicTurbulenceModel>& turbc = 
+    const mixtureKEpsilon<BasicTurbulenceModel>& turbc =
         refCast<const mixtureKEpsilon<BasicTurbulenceModel>>
         (
             liquid().turbulence()
@@ -345,7 +345,7 @@ void mixtureKEpsilon<BasicTurbulenceModel>::setFluidNames() const
     HashTable<const fluid*> fluids(mesh.lookupClass<const fluid>());
     const fluid& fluid1 = *(fluids[fluids.toc()[0]]);
     const fluid& fluid2 = *(fluids[fluids.toc()[1]]);
-    if 
+    if
     (
         !(fluid1.isLiquid() and fluid2.isGas()) and
         !(fluid2.isLiquid() and fluid1.isGas())
@@ -382,7 +382,7 @@ const Foam::fluid& mixtureKEpsilon<BasicTurbulenceModel>::liquid() const
     if (!liquidPtr_)
     {
         const fvMesh& mesh(this->mesh_);
-        liquidPtr_ = 
+        liquidPtr_ =
             &(mesh.lookupObject<fluid>("alpha."+liquidName_));
     }
     return *liquidPtr_;
@@ -397,7 +397,7 @@ const Foam::FFPair& mixtureKEpsilon<BasicTurbulenceModel>::pair() const
         const fvMesh& mesh(this->mesh_);
         word keyLG(IOobject::groupName(liquidName_, gasName_));
         word keyGL(IOobject::groupName(gasName_, liquidName_));
-        pairPtr_ = 
+        pairPtr_ =
             &(
                 (mesh.foundObject<FFPair>(keyLG)) ?
                 mesh.lookupObject<FFPair>(keyLG) :
@@ -433,13 +433,13 @@ const
     const volScalarField& l(liquid());
     const volScalarField& g(gas());
 
-    //- Compute Cd from Kd, cell-by-cell as it's faster (I don't really care 
+    //- Compute Cd from Kd, cell-by-cell as it's faster (I don't really care
     //  about BCs)
     forAll(Cd, i)
     {
         const scalar& li(l[i]);
         const scalar& gi(g[i]);
-        Cd[i] = 
+        Cd[i] =
             (2.0)*p.Kd()[i]*p.DhDispersed()[i]/p.rhoContinuous()[i]/
             max
             (

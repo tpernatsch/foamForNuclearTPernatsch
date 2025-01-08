@@ -16,7 +16,7 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // Cells to refine; name of 'cellSet'
-set             all; 
+set             all;
 
 // Type of coordinate system:
 // - global : coordinate system same for every cell. Usually aligned with
@@ -43,7 +43,7 @@ patchLocalCoeffs
 
 // Specifies the direction to be refined by the name used above
 // To refine in the third direction, use the keyword 'normal'
-directions      
+directions
 (
     normal
 );
@@ -51,7 +51,7 @@ directions
 // Whether to use hex topology. This will
 // - if patchLocal: all cells on selected patch should be hex
 // - split all hexes in 2x2x2 through the middle of edges.
-useHexTopology  no; 
+useHexTopology  no;
 
 // Cut purely geometric (will cut hexes through vertices) or take
 // topology into account. Incompatible with 'useHexTopology'
@@ -59,3 +59,5 @@ geometricCut    no;
 
 // Write meshes from intermediate steps
 writeMesh       no;
+
+// ************************************************************************* //

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,7 +51,7 @@ Foam::autoPtr<Foam::fluidDiameterModel> Foam::fluidDiameterModel::New
 {
     word type(dict.lookup("type"));
 
-    Info<< "Selecting fluidDiameterModel for fluid " << fluid.name() << ": " 
+    Info<< "Selecting fluidDiameterModel for fluid " << fluid.name() << ": "
         << type << endl;
 
     auto* ctorPtr = fluidDiameterModelsConstructorTable(type);
@@ -61,12 +61,12 @@ Foam::autoPtr<Foam::fluidDiameterModel> Foam::fluidDiameterModel::New
         fluid.mesh().lookupObjectRef<FSPair>(fluid.name()+".structure")
     );
 
-    if(!ctorPtr) 
+    if(!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluidDiameterModel type "
             << type << endl << endl
-            << "Valid fluidDiameterModel types are : " 
+            << "Valid fluidDiameterModel types are : "
             << endl
             << fluidDiameterModelsConstructorTablePtr_
             ->sortedToc()
@@ -88,17 +88,17 @@ Foam::autoPtr<Foam::fluidDiameterModel> Foam::fluidDiameterModel::New
 {
     word type(dict.lookup("type"));
 
-    Info<< "Selecting fluidDiameterModel for fluid " << pair.fluidRef().name() 
+    Info<< "Selecting fluidDiameterModel for fluid " << pair.fluidRef().name()
         << ": " << type << endl;
 
     auto* ctorPtr = fluidDiameterModelsConstructorTable(type);
 
-    if(!ctorPtr) 
+    if(!ctorPtr)
     {
         FatalErrorInFunction
             << "Unknown fluidDiameterModel type "
             << type << endl << endl
-            << "Valid fluidDiameterModel types are : " 
+            << "Valid fluidDiameterModel types are : "
             << endl
             << fluidDiameterModelsConstructorTablePtr_
             ->sortedToc()

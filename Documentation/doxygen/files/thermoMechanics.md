@@ -12,7 +12,7 @@ N.B. what in OFFBEAT is named *solverDict*, in GeN-Foam has been renamed *thermo
 
 The *thermoMechanicalProperties* dictionary can be found under *constant/thermoMechanicalRegion* and allow to define the thermo-mechanical properties of structures, subdivided according to the cellZones of the thermoMechanicalRegion mesh.
 <br><br>One can find a detailed, commented example in the tutorial
-[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/3D_SmallESFR/rootCase/constant/thermoMechanicalRegion/thermoMechanicalProperties).
+[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/thermoMechanicalRegion/thermoMechanicalProperties).
 </div>
 <br>
 
@@ -26,6 +26,7 @@ Besides the standard ones available in OpenFOAM, GeN-Foam includes a *tractionDi
 
 Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/thermoMechanicalRegion*.
 
+
 ## Mesh deformation
 
-The new structure of GeN-Foam allows to deform each mesh based on any user-defined vectorial field. In particular, it might be of interest to solve the neutron transport on a deformed mesh. To do this, the user needs to make sure to map the *meshDisp* field from the mechanics to the neutronics. Moreover, in the *constant/multiRegionCouplingDict*, one can speficy for each physics if the mesh needs to be deformed and based on which field the deformation is computed. An example of this is found in the [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/3D_SmallESFR/rootCase/system/controlDict) tutorial.
+The new structure of GeN-Foam allows to deform each mesh based on any user-defined vectorial field. In particular, it might be of interest to solve the neutron transport on a deformed mesh. To do this, the user needs to make sure to map the *meshDisp* field from the mechanics to the neutronics. Moreover, in the *constant/multiRegionCouplingDict*, one can specify for each physics if the mesh needs to be deformed and based on which field the deformation is computed. An example of this is found in the [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/system/controlDict) tutorial.

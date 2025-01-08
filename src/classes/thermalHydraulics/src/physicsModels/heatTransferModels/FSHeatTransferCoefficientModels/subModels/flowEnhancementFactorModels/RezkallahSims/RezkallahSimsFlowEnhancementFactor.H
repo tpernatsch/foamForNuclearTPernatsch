@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,16 +40,16 @@ Class
 
 Description
     Two-phase flow enhancement factor for the convective heat transfer
-    coefficient based on the work of K.S. Rezkallah and G.E. Sims, 
-    "An Examination of Correlations of Mean Heat Transfer Coefficients in 
+    coefficient based on the work of K.S. Rezkallah and G.E. Sims,
+    "An Examination of Correlations of Mean Heat Transfer Coefficients in
     Two-Phase Two-Component Flow in Vertical Tubes," AIChE Symposium
     Series, 83 (257), 109-114, 1987.
     The TRACE code typically uses this over the Chen model due to greater
     numerical stability of this approach, particularly for low-pressure,
-    low mass flow scenarios (see 
+    low mass flow scenarios (see
     https://www.nrc.gov/docs/ML1200/ML120060218.pdf, pp. 263-267)
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

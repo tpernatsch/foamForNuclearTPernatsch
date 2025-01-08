@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -48,7 +48,7 @@ namespace Foam
     defineTypeNameAndDebug(TONBModel, 0);
     defineRunTimeSelectionTable
     (
-        TONBModel, 
+        TONBModel,
         TONBModels
     );
 }
@@ -87,7 +87,7 @@ void Foam::TONBModel::setPtrs() const
     if (otherFluidPtr_ == nullptr)
     {
         HashTable<const fluid*> fluids(pair_.mesh().lookupClass<fluid>());
-        otherFluidPtr_ = 
+        otherFluidPtr_ =
             (fluids[fluids.toc()[0]]->name() == pair_.fluidRef().name()) ?
             fluids[fluids.toc()[1]] : fluids[fluids.toc()[0]];
     }
@@ -97,7 +97,7 @@ void Foam::TONBModel::setPtrs() const
         word pairName2(otherFluidPtr_->name()+"."+pair_.fluidRef().name());
         if (pair_.mesh().foundObject<volScalarField>("L."+pairName1))
         {
-            LPtr_ = 
+            LPtr_ =
                 &(
                     pair_.mesh().lookupObject<volScalarField>
                     (
@@ -107,7 +107,7 @@ void Foam::TONBModel::setPtrs() const
         }
         else
         {
-            LPtr_ = 
+            LPtr_ =
                 &(
                     pair_.mesh().lookupObject<volScalarField>
                     (

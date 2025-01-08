@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -52,11 +52,11 @@ Description
     Please note that X in use in phi2 is X = sqrt(X2).
 
     Kaiser, A., Huber, F., Bottoni, M., Dorr, B., 1988. "Contribution to sodium
-    boiling heat transfer, pressure drop, and void distribution in multi-pin 
-    geometry". In: Proc. 13th Liquid Metal Boiling Working Group (LMBWG), pp. 
+    boiling heat transfer, pressure drop, and void distribution in multi-pin
+    geometry". In: Proc. 13th Liquid Metal Boiling Working Group (LMBWG), pp.
     71–98.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

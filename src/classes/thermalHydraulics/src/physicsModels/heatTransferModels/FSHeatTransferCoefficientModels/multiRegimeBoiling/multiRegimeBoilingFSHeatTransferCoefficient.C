@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,8 +51,8 @@ namespace FSHeatTransferCoefficientModels
     defineTypeNameAndDebug(multiRegimeBoiling, 0);
     addToRunTimeSelectionTable
     (
-        FSHeatTransferCoefficientModel, 
-        multiRegimeBoiling, 
+        FSHeatTransferCoefficientModel,
+        multiRegimeBoiling,
         FSHeatTransferCoefficientModels
     );
 }
@@ -172,7 +172,7 @@ void Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::setDmdtW
     const scalar& qFCi
 ) const
 {
-    //- No sub-cooled boiling possible if a model for the temperature of 
+    //- No sub-cooled boiling possible if a model for the temperature of
     //  onest of nucleate boiling (ONB) is not provided
     if (TONBPtr_.valid())
     {
@@ -187,14 +187,14 @@ void Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::setDmdtW
         //- Heat flux that results in vapour generation
         scalar qSCDmdti(f*(qNBi-qFCi));
 
-        //- If fluid1 is liquid and 2 is vapour then L > 0 and 
+        //- If fluid1 is liquid and 2 is vapour then L > 0 and
         //  this sub-cooled boiling term is also > 0. If fluid2
-        //  is liquid and fluid1 is vapour then L < 0 and 
-        //  everything still  works out in terms of the dmdtW 
+        //  is liquid and fluid1 is vapour then L < 0 and
+        //  everything still  works out in terms of the dmdtW
         //  sign, as I recall that it is positive for phase
-        //  changes from fluid1 to fluid2 and negative 
+        //  changes from fluid1 to fluid2 and negative
         //  vice-versa
-        (*dmdtWPtr_)[celli] = 
+        (*dmdtWPtr_)[celli] =
             pair_.structureRef().iAact()[celli]*qSCDmdti/
             FFPairPtr_->L()[celli];
     }
@@ -208,7 +208,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::qNB
 {
     const scalar& Tfi(Tf_[celli]);
     const scalar& Tsati(FFPairPtr_->iT()[celli]);
-    
+
     //- Cache and overwrite current wall temperature in celli if requested
     const scalar& Twi(Tw_[celli]);
     scalar Twi0(Twi);
@@ -225,24 +225,24 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::qNB
     //- Overall nucleate boiling htc and heat flux;
     scalar qNBi(0.0);
 
-    //- If computing the nucleate boiling heat flux via the TRACE approach 
+    //- If computing the nucleate boiling heat flux via the TRACE approach
     //  (i.e. superposing the heat fluxes, not the htcs)
     if (qMode_)
     {
         if (SPtr_.valid())  //- If a suppression factor model is the one that
                             //  is used to turn-off pool boiling as the flow
                             //  becomes increasingly annular
-            qNBi = 
+            qNBi =
                 pow
                 (
-                    pow(qFCi, exp_) + pow(SPtr_->value(celli)*qPBi, exp_), 
+                    pow(qFCi, exp_) + pow(SPtr_->value(celli)*qPBi, exp_),
                     oneByExp_
                 );
         else if (TONBPtr_.valid())  //- If doing things the TRACE way, i.e.
                                     //  avoiding discontinuities at the onest
                                     //  of boiling via a qBI term
         {
-            //- Calc pool boiling heat flux at the onset of boiling (ONB, 
+            //- Calc pool boiling heat flux at the onset of boiling (ONB,
             //  needless to say, cannot do that if a TONB model has not been
             //  specified)
             scalar Twi00(Twi);
@@ -271,7 +271,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::qNB
             (
                 pow
                 (
-                    pow(htc2pFCi_, exp_)+pow(SPtr_->value(celli)*htcPBi, exp_), 
+                    pow(htc2pFCi_, exp_)+pow(SPtr_->value(celli)*htcPBi, exp_),
                     oneByExp_
                 )
             );
@@ -290,13 +290,13 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::qNB
         setDmdtW(celli, qNBi, qFCi);
     else //- Reset wall temperature in celli and return qNB
         const_cast<scalar&>(Twi) = Twi0;
-        
+
     return qNBi;
 }
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::scalar 
+Foam::scalar
 Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
 (
     const label& celli
@@ -310,7 +310,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
     if (dmdtWPtr_ == nullptr)
     {
         //- Ptr to wall mass transfer term (i.e. due to subcooled boiling)
-        dmdtWPtr_ = 
+        dmdtWPtr_ =
             &
             (
                 pair_.mesh().lookupObjectRef<volScalarField>
@@ -344,7 +344,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
             {
                 //- Film condensation heat transfer coefficient
                 scalar htcCndi(htcCndPtr_->value(celli));
-                
+
                 //- Linear interpolation if 0.8 < alphai < 0.9
                 if (alphai < 0.9)
                 {
@@ -353,7 +353,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
                 }
                 else //- Film condensation only
                     return htcCndi;
-            }   
+            }
         }
         else
             return htc2pFCi_;
@@ -385,10 +385,10 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
                 (void) qNBi; //- Suppress unused variable warining
                 return htcNBi_;
             }
-            else    //- Post-CHF heat transfer, currently missing 
+            else    //- Post-CHF heat transfer, currently missing
                     //  implementation
             {
-                return 1.0; 
+                return 1.0;
             }
         }
     }

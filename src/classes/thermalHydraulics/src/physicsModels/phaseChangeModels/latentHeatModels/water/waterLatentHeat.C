@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -64,7 +64,7 @@ Foam::latentHeatModels::water::
 water
 (
     const phaseChangeModel& pcm,
-    const dictionary& dict, 
+    const dictionary& dict,
     const objectRegistry& objReg
 )
 :
@@ -83,9 +83,9 @@ const
 {
     //- The critical T of water is 647.3 K, but the fit spew out 681.718 as
     //  a limit temperature for the fit. Understandable, since the data range
-    //  used for the fit is 0.01-350 *C, and that above that the latent heat 
+    //  used for the fit is 0.01-350 *C, and that above that the latent heat
     //  drops very, very rapidly to 0, which I do not want to deal with as I do
-    //  not deal with supercritical transitions and shit like that. This is 
+    //  not deal with supercritical transitions and shit like that. This is
     //  fine. Latent heat here is in SI units (J/kg)
 
     scalar T(min(max(iT_[celli], 273.16), 680));

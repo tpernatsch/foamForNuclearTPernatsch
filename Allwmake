@@ -136,6 +136,9 @@ git submodule update --init --recursive src/classes/offbeat
 # Make common functions
 wmake -j$num_jobs ./src/classes/common
 
+# Make multi-region functions
+wmake -j$num_jobs ./src/classes/multiRegion
+
 # Make offbeat
 wmake -j$num_jobs ./src/classes/offbeat/src/SCIANTIX
 wmake -j$num_jobs ./src/classes/offbeat/src/offbeatLib

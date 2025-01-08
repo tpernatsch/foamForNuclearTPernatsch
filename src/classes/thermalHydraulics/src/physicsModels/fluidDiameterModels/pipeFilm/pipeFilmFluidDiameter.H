@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -45,7 +45,7 @@ Description
     1-sqrt(1-alphaN) with alphaN being the normalized phase fraction of the
     phase of interest
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles
@@ -75,7 +75,7 @@ class pipeFilm
 {
 protected:
 
-    //- Minimum allowable value of the phase fraction to avoid null fluid 
+    //- Minimum allowable value of the phase fraction to avoid null fluid
     //  diameter
     scalar residualAlpha_;
 

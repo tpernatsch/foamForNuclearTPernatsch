@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -70,7 +70,7 @@ class structure;
 \*---------------------------------------------------------------------------*/
 
 class heatExchanger
-: 
+:
     public IOdictionary
 {
 protected :
@@ -135,11 +135,11 @@ public:
         //  THX is the field to be set according to the updated HX surface
         //  temperatures with might mapping magic
         void correct
-        ( 
-            const volScalarField& HT, 
+        (
+            const volScalarField& HT,
             const volScalarField& H,
             volScalarField& THX
-        );    
+        );
 
         void constructSecondaryHX(bool& constructed);
 };

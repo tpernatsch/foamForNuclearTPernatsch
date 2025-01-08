@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -223,7 +223,7 @@ SourceFiles
 
 #include "powerModel.H"
 #include "IOFieldFields.H"
-#include "InterpolateTables.H"
+#include "InterpolateTablesGF.H"
 #include "radialBasisFunctionInterpolation.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -280,7 +280,7 @@ protected:
     List<scalar> fuelLength_;
 
     //- Axial location interpolation method
-    List<interpolateTableBase::interpolationMethod> zMethod_;
+    List<InterpolateTableBaseGF::interpolationMethod> zMethod_;
 
     //- Radial basis function method name (polyharmonicSpline, gaussian)
     List<word> radialBasisFunctionMethod_;

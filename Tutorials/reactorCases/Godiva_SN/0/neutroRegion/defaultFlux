@@ -23,8 +23,7 @@ boundaryField
 {
     ".*"
     {
-
-        type            inletOutlet;//zeroGradient;//fixedValue;//
+        type            inletOutlet; // zeroGradient; // fixedValue;
 	    phi             facePhi;
 	    inletValue	    uniform 0;
         value           uniform 0;

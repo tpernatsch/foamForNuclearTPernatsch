@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FSDragCoefficientModels
     defineTypeNameAndDebug(Rehme, 0);
     addToRunTimeSelectionTable
     (
-        FSDragCoefficientModel, 
-        Rehme, 
+        FSDragCoefficientModel,
+        Rehme,
         FSDragCoefficientModels
     );
 }
@@ -78,11 +78,11 @@ Foam::FSDragCoefficientModels::Rehme::Rehme
     scalar Dw(this->get<scalar>("wireDiameter"));
     scalar Lw(this->get<scalar>("wireLeadLen"));
     scalar wetWrapPer(this->get<scalar>("wetWrapPerimeter"));
-    
+
     scalar Pt(Dp+1.0444*Dw);
     scalar wetPinPer(Np*constant::mathematical::pi*(Dp+Dw));
     scalar B(sqrt(Pt/Dp) + pow((7.6*(Dp+Dw)*sqr(Pt/Dp)/Lw), 2.16));
-    
+
     A_ = wetPinPer/(wetPinPer+wetWrapPer);
     B1_ = 64*sqrt(B);
     B2_ = 0.0816*pow(B, 0.9335);

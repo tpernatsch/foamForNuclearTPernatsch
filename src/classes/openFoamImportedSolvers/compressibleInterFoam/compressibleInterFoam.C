@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -236,34 +236,33 @@ Foam::solvers::compressibleInterFoam::compressibleInterFoam
 //- Solve according to flags
 void Foam::solvers::compressibleInterFoam::correctPhysics()
 {
-        // --- Pressure-velocity PIMPLE corrector loop
-        while (pimple_.loop())
+    // --- Pressure-velocity PIMPLE corrector loop
+    while (pimple_.loop())
+    {
+        #include "alphaControls.H"
+        #include "compressibleAlphaEqnSubCycle.H"
+
+        turbulence_->correctPhasePhi();
+
+        #include "UEqn.H"
+        volScalarField divUp("divUp", fvc::div(fvc::absolute(phi_, U_), p_));
+        #include "TEqn.H"
+
+        // --- Pressure corrector loop
+        while (pimple_.correct())
         {
-            #include "alphaControls.H"
-            #include "compressibleAlphaEqnSubCycle.H"
-
-            turbulence_->correctPhasePhi();
-
-            #include "UEqn.H"
-            volScalarField divUp("divUp", fvc::div(fvc::absolute(phi_, U_), p_));
-            #include "TEqn.H"
-
-            // --- Pressure corrector loop
-            while (pimple_.correct())
-            {
-                #include "pEqn.H"
-            }
-
-            if (pimple_.turbCorr())
-            {
-                turbulence_->correct();
-            }
+            #include "pEqn.H"
         }
+
+        if (pimple_.turbCorr())
+        {
+            turbulence_->correct();
+        }
+    }
 }
 
 void Foam::solvers::compressibleInterFoam::correctTightlyCoupledPhysics()
 {
-
 }
 
 void Foam::solvers::compressibleInterFoam::correctFluidMechanics()
@@ -274,29 +273,21 @@ void Foam::solvers::compressibleInterFoam::correctEnergy()
 {
 }
 
-
-
 void Foam::solvers::compressibleInterFoam::correctCourant()
 {
-
 }
 
 void Foam::solvers::compressibleInterFoam::correctContErr()
 {
-
 }
-
 
 void Foam::solvers::compressibleInterFoam::printContErr()
 {
-
 }
 
 void Foam::solvers::compressibleInterFoam::calcCumulContErr()
 {
-
 }
-
 
 scalar Foam::solvers::compressibleInterFoam::maxDeltaT()
 {

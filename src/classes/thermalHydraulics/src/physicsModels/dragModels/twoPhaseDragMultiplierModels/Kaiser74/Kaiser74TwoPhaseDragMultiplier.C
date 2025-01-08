@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,8 +49,8 @@ namespace twoPhaseDragMultiplierModels
     defineTypeNameAndDebug(Kaiser74, 0);
     addToRunTimeSelectionTable
     (
-        twoPhaseDragMultiplierModel, 
-        Kaiser74, 
+        twoPhaseDragMultiplierModel,
+        Kaiser74,
         twoPhaseDragMultiplierModels
     );
 }
@@ -83,7 +83,7 @@ Foam::scalar Foam::twoPhaseDragMultiplierModels::Kaiser74::phi2
     if (onePhase(celli))
         return 1.0;
     /*
-    So 
+    So
         phi = 8.2/X^0.55    ->
         phi2 = 67.24/(X^1.1)
     */

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -56,7 +56,7 @@ License
 
 namespace Foam
 {
-    typedef constantModel<scalar, latentHeatModel> 
+    typedef constantModel<scalar, latentHeatModel>
         constantLatentHeat;
 
     addNamedToRunTimeSelectionTable
@@ -67,7 +67,7 @@ namespace Foam
         constant
     );
 
-    typedef constantModel<scalar, fluidDiameterModel> 
+    typedef constantModel<scalar, fluidDiameterModel>
         constantFluidDiameter;
 
     addNamedToRunTimeSelectionTable
@@ -78,7 +78,7 @@ namespace Foam
         constant
     );
 
-    typedef constantModel<scalar, interfacialAreaModel> 
+    typedef constantModel<scalar, interfacialAreaModel>
         constantIntefacialArea;
 
     addNamedToRunTimeSelectionTable
@@ -89,7 +89,7 @@ namespace Foam
         constant
     );
 
-    typedef constantModel<scalar, contactPartitionModel> 
+    typedef constantModel<scalar, contactPartitionModel>
         constantContactPartition;
 
     addNamedToRunTimeSelectionTable
@@ -100,7 +100,7 @@ namespace Foam
         constant
     );
 
-    typedef constantModel<scalar, FFDragCoefficientModel> 
+    typedef constantModel<scalar, FFDragCoefficientModel>
         constantFFDragCoefficient;
 
     addNamedToRunTimeSelectionTable
@@ -111,7 +111,7 @@ namespace Foam
         constant
     );
 
-    typedef constantModel<scalar, FSDragCoefficientModel> 
+    typedef constantModel<scalar, FSDragCoefficientModel>
         constantFSDragCoefficient;
 
     addNamedToRunTimeSelectionTable
@@ -122,7 +122,7 @@ namespace Foam
         constant
     );
 
-    typedef constantModel<scalar, virtualMassCoefficientModel> 
+    typedef constantModel<scalar, virtualMassCoefficientModel>
         constantVirtualMassCoefficient;
 
     addNamedToRunTimeSelectionTable
@@ -133,7 +133,7 @@ namespace Foam
         constant
     );
 
-    typedef constantModel<scalar, FFHeatTransferCoefficientModel> 
+    typedef constantModel<scalar, FFHeatTransferCoefficientModel>
         constantFFHeatTransferCoefficient;
 
     addNamedToRunTimeSelectionTable
@@ -144,7 +144,7 @@ namespace Foam
         constant
     );
 
-    typedef constantModel<scalar, FSHeatTransferCoefficientModel> 
+    typedef constantModel<scalar, FSHeatTransferCoefficientModel>
         constantFSHeatTransferCoefficient;
 
     addNamedToRunTimeSelectionTable

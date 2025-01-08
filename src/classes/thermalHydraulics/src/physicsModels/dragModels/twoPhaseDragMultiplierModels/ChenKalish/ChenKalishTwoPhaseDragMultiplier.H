@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -44,16 +44,16 @@ Description
 
     phi2 = e^(2*( 0.0867*(logX)^2 - 0.518*logX + 1.59 ))
 
-    log is the natural logarithm, while X2 is the well-known 
+    log is the natural logarithm, while X2 is the well-known
     Lockhart-Martinelli parameter and is defined as:
 
     X2 = (mu_I/mu_O)^0.2 * (flowQuality_I/flowQuality_O)^1.8 * rho_O/rho_I
 
     Chen, J.C., Kalish, S., 1970. "An experimental investigation of two-phase
-    pressure drop for potassium with and without net vaporization." In: 4th 
+    pressure drop for potassium with and without net vaporization." In: 4th
     Int. Heat transfer Conf, Vol. 6.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

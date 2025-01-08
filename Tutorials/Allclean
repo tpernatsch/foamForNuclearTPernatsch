@@ -14,6 +14,12 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 rm -f log.time
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+path=$(pwd)
+
 tutorials="
     featureCases/1D_boiling
     featureCases/1D_CHF/imposedPower
@@ -37,6 +43,7 @@ tutorials="
     reactorCases/2D_FFTF
     reactorCases/2D_MSFR
     reactorCases/3D_gFHR
+    reactorCases/3D_HTR-10
     reactorCases/3D_NTPfuelAssembly
     reactorCases/3D_SmallESFR_NewSolverVerification
     reactorCases/Godiva_SN
@@ -50,14 +57,15 @@ tutorials="
     fmuCases/2D_LFRpowerPlant/GeN-FoamAndModelica
     fmuCases/2D_LFRpowerPlant/GeN-FoamAs2FMU
     fmuCases/2D_LFRpowerPlant/GeN-FoamAs3FMU
+
     testing/2D_MSFR_ULOF_diffusion_and_pk
+
     toBeUpdated/2D_RegressionESFR
 "
 
 # Clean all the tutorials
 for tutorialName in $tutorials
 do
-    path=$(pwd)
     if [ -d $tutorialName ]
     then
         printf "Cleaning tutorial $tutorialName ... "
@@ -66,20 +74,20 @@ do
         if [ -f Allclean ]
         then
             ./Allclean
-            printf "\033[0;32mdone\033[0m\n"
+            printf "${GREEN}done$NC\n"
         else
             if [ -f Allclean.py ]
             then
                 python3 Allclean.py
-                printf "\033[0;32mdone\033[0m\n"
+                printf "${GREEN}done$NC\n"
             else
-                printf "\033[0;31merror (no cleaning script)\033[0m\n"
+                printf "${RED}error (no cleaning script)$NC\n"
             fi
         fi
 
         cd $path
     else
-        echo "No tutorial named \033[0;31m$tutorialName\033[0m"
+        echo "No tutorial named ${RED}$tutorialName$NC"
     fi
 done
 

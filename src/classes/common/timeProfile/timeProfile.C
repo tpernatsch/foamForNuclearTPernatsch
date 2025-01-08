@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -38,7 +38,7 @@ License
 \*---------------------------------------------------------------------------*/
 
 #if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
+#  if __has_include(<commDataLayer.H>)
 #    include <commDataLayer.H>
 #    define isCommDataLayerIncluded
 #  endif
@@ -115,7 +115,7 @@ Foam::timeProfile::timeProfile
     if (object.found(timeProfileName))
     {
         dict_ = object.subDict(timeProfileName);
-        
+
         type_ = dict_.get<word>("type");
 
         startTime_ = dict_.lookupOrDefault<scalar>("startTime", 0.0);
@@ -152,11 +152,11 @@ void Foam::timeProfile::initializeFMI()
         nameFromFMU_ = dict_.get<word>(keyFromFMU);
 
         Info<< dict_.dictName()
-            << " FMI input name: " << nameFromFMU_ 
+            << " FMI input name: " << nameFromFMU_
             << endl;
 
         // Communicating with the FMU
-        commDataLayer& data = commDataLayer::New(runTime_); 
+        commDataLayer& data = commDataLayer::New(runTime_);
         // Store in data layer and set its initial value to 0 or user defined
         currentValue_ = dict_.lookupOrDefault<scalar>("initialValue", 0.0);
         oldValue_ = currentValue_;

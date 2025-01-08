@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,10 +39,10 @@ Class
     Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingVapourTRACE
 
 Description
-    Heat transfer coefficient for the transition Boiling Regime and the 
+    Heat transfer coefficient for the transition Boiling Regime and the
     POST CHF Regimes (vapour side). It uses the correlations from TRACE.
 
-    Authors: 
+    Authors:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
     Gauthier Lazare (gauthier.lazare@gmail.com)
 
@@ -75,19 +75,19 @@ class multiRegimeBoilingVapourTRACE
     public FSHeatTransferCoefficientModel
 {
 private:
-    //- Ref to pressure 
+    //- Ref to pressure
     const volScalarField& p_;
 
     //- Ref to wall temperature
     const volScalarField& Tw_;
 
-    // - Boolean values to know if we are after or before CHF 
+    // - Boolean values to know if we are after or before CHF
     const volScalarField& CHFBool_;
 
     // - Weighted fraction for the transition boiling
     const volScalarField& wfTB_;
 
-    //- Temperature of the Leidenfrost model 
+    //- Temperature of the Leidenfrost model
     const volScalarField& TLF_;
 
     //- Ptr to FFPair (breaking encapsulation as usual)

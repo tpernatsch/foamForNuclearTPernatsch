@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,7 +39,7 @@ Class
     Foam::saturationModels::water
 
 Description
-    Saturation model for water in the 0.01-350 *C range based on an 
+    Saturation model for water in the 0.01-350 *C range based on an
     interpolation of NIST data in the form Psat = A*(T-B)^C. The NIST data
     can be found at:
     https://www.nist.gov/system/files/documents/srd/NISTIR5078-Tab1.pdf
@@ -93,7 +93,7 @@ public:
         water
         (
             const phaseChangeModel& pcm,
-            const dictionary& dict, 
+            const dictionary& dict,
             const objectRegistry& objReg
         );
 

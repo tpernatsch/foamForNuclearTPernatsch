@@ -23,17 +23,17 @@ solvers
         preconditioner  DIC;
         tolerance       1e-06;
         relTol          0.001;
-/*
+        /*
         solver          GAMG;
         tolerance       1e-06;
         relTol          0.001;
         smoother        GaussSeidel;
-        cacheAgglomeration true;
-        nCellsInCoarsestLevel 50;
+        cacheAgglomeration  true;
+        nCellsInCoarsestLevel   50;
         agglomerator    faceAreaPair;
         mergeLevels     1;
-	processorAgglomerator masterCoarsest;
-*/
+	    processorAgglomerator   masterCoarsest;
+        */
     }
 
     "fuelDisp"
@@ -64,7 +64,7 @@ relaxationFactors
 {
     fields
     {
-	   disp 0.99;
+        disp 0.99;
     }
 }
 

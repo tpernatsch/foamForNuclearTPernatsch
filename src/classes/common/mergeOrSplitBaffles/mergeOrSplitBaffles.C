@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -222,7 +222,7 @@ labelList findBaffles(const polyMesh& mesh, const labelList& boundaryFaces)
 
 
     // Write to faceSet for ease of post-processing.
-    
+
     {
         faceSet duplicateSet
         (
@@ -247,7 +247,7 @@ labelList findBaffles(const polyMesh& mesh, const labelList& boundaryFaces)
             << nl << endl;
         duplicateSet.write();
     }
-    
+
     return duplicates;
 }
 
@@ -468,7 +468,7 @@ int removeBaffles(fvMesh& mesh, Time& runTime)//(int argc, char *argv[])
 
         topoSet::removeFiles(mesh);
         processorMeshes::removeFiles(mesh);
-        
+
         //Dump duplicated points (if any)
         const labelList& pointMap = map().pointMap();
 
@@ -494,7 +494,7 @@ int removeBaffles(fvMesh& mesh, Time& runTime)//(int argc, char *argv[])
             << dupPoints.objectPath() << nl << endl;
 
         dupPoints.write();
-        
+
     }
 
     Info<< "End\n" << endl;

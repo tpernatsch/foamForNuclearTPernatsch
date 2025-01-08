@@ -17,8 +17,8 @@ import sys
 
 verbose: int = 1
 
-old_version: str = 'v2312'
-new_version: str = 'v2406'
+old_version: str = 'v2406'
+new_version: str = 'v2412'
 
 old_copyright: str = 'Copyright 2011-2016 OpenFOAM Foundation, 2017-2023 OpenCFD Ltd.'
 new_copyright: str = 'Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.'
@@ -32,7 +32,7 @@ folder = os.getcwd()
 
 versions = [
     'v1806', 'v1812', 'v1906', 'v1912', 'v2006', 'v2012', 'v2106', 'v2112',
-    'v2206', 'v2212', 'v2306', 'v2312', 'v2406'
+    'v2206', 'v2212', 'v2306', 'v2312', 'v2406', 'v2412'
 ]
 
 stats: dict = {'totalFiles': 0}

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace regimeMapModels
     defineTypeNameAndDebug(twoParameters, 0);
     addToRunTimeSelectionTable
     (
-        regimeMapModel, 
-        twoParameters, 
+        regimeMapModel,
+        twoParameters,
         regimeMapModels
     );
 
@@ -61,7 +61,7 @@ namespace regimeMapModels
         scalarVector2D,
         word,
         word::hash
-    > pointTable; 
+    > pointTable;
     typedef HashTable
     <
         regimeDomain2D,
@@ -78,13 +78,13 @@ const Foam::Enum
 Foam::regimeMapModels::twoParameters::interpolationModeNames_
 (
     {
-        { 
-            interpolationMode::linear, 
-            "linear" 
+        {
+            interpolationMode::linear,
+            "linear"
         },
-        { 
-            interpolationMode::quadratic, 
-            "quadratic" 
+        {
+            interpolationMode::quadratic,
+            "quadratic"
         }
     }
 );
@@ -112,7 +112,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
         (
             this->lookupOrDefault<word>
             (
-                "interpolationMode", 
+                "interpolationMode",
                 "linear"
             )
         )
@@ -127,7 +127,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
         this->subDict("regimePoints"),
         iter
     )
-    {   
+    {
         points_.insert
         (
             iter->keyword(),
@@ -169,7 +169,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
         id += 1;
     }
 
-    //- Set regime boundaries owners and neighbours, flag regime boundaries 
+    //- Set regime boundaries owners and neighbours, flag regime boundaries
     //  that are internal, for each domain (i.e. shared by two domains). The
     //  latter are only used for interpolation purposes
     forAllIter
@@ -226,14 +226,14 @@ Foam::regimeMapModels::twoParameters::twoParameters
         forAll(d.boundaries(), i)
         {
             regimeBoundary2D& b(d.boundaries()[i]);
-            Info<< "            " << b.p0() << " " << b.p1() << " " 
+            Info<< "            " << b.p0() << " " << b.p1() << " "
                 << b.ownerId() << " " << b.nbrId() << endl;
         }
         Info << "        internal boundaries" << endl;
         forAll(d.internalBoundaryPtrs(), i)
         {
             const regimeBoundary2D& b(*d.internalBoundaryPtrs()[i]);
-            Info<< "            " << b.p0() << " " << b.p1() << " " 
+            Info<< "            " << b.p0() << " " << b.p1() << " "
                 << b.ownerId() << " " << b.nbrId() << endl;
         }
     }
@@ -246,12 +246,12 @@ Foam::regimeMapModels::twoParameters::twoParameters
     (
         regimeDomains_[regimeLabelToName_[0]].boundingBox()
     );
-    scalar  minX=bb0.first()[0], minY=bb0.first()[1], maxX=bb0.second()[0], 
+    scalar  minX=bb0.first()[0], minY=bb0.first()[1], maxX=bb0.second()[0],
             maxY=bb0.second()[1];
     forAllConstIter
     (
-        regimeDomainTable, 
-        regimeDomains_, 
+        regimeDomainTable,
+        regimeDomains_,
         iter
     )
     {
@@ -299,7 +299,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
     (
         mesh_.cells().size()
     );
-    
+
     Info << endl;
 }
 
@@ -311,14 +311,14 @@ void Foam::regimeMapModels::twoParameters::correct()
     //- Lookup parameter field ptrs if not set
     if (parameter1Ptr_ == nullptr)
     {
-        parameter1Ptr_ = 
+        parameter1Ptr_ =
             &mesh_.lookupObjectRef<volScalarField>(parameter1Name_).field();
-    } 
+    }
     if (parameter2Ptr_ == nullptr)
     {
-        parameter2Ptr_ = 
+        parameter2Ptr_ =
             &mesh_.lookupObjectRef<volScalarField>(parameter2Name_).field();
-    } 
+    }
     const scalarField& x(*parameter1Ptr_);
     const scalarField& y(*parameter2Ptr_);
 
@@ -348,12 +348,12 @@ void Foam::regimeMapModels::twoParameters::correct()
             iter
         )
         {
-            //- I recall that regimeLabelCoeffs_ is a list of tuples of each 
+            //- I recall that regimeLabelCoeffs_ is a list of tuples of each
             //  mesh cell, wherein for each cell, the tuple consists of the ID
             //  of the regime that exists in said cell (first tuple element)
             //  and the coefficient weighting the contribution of said regime
             //  (which is 1.0 if only one regime exists). To check how this
-            //  is factually used to interpolate the value of models of 
+            //  is factually used to interpolate the value of models of
             //  interest, go see the interpolateValue, interpolateValueCmpt
             //  template functions in regimeMapModelTemplates.C
             if (iter().containsPoint(p))
@@ -380,12 +380,12 @@ void Foam::regimeMapModels::twoParameters::correct()
                     //- In theory, a starting max distance of sqrt(2) should
                     //  be sufficient as these distances are in the normalized
                     //  domain, whose range for both parameters is [0, 1] (so
-                    //  the max possible distance is between (0,0) and (1,1)). 
+                    //  the max possible distance is between (0,0) and (1,1)).
                     //  Nonetheless, I want to play it safe so 2 it is
                     scalar distance(2);
                     scalar nbrId(-1);
                     forAll(internalBoundaryPtrs, j)
-                    {   
+                    {
                         const regimeBoundary2D& boundaryj
                         (
                             *internalBoundaryPtrs[j]
@@ -406,7 +406,7 @@ void Foam::regimeMapModels::twoParameters::correct()
                     {
                         scalar c(0.0);
                         switch (interpolationMode_)
-                        {   
+                        {
                             case interpolationMode::linear :
                             {
                                 c = 0.5*(d + 1.0);
@@ -416,7 +416,7 @@ void Foam::regimeMapModels::twoParameters::correct()
                             {
                                 c = 1.0-0.5*sqr(d-1.0);
                                 break;
-                            }                
+                            }
                         }
                         regimeLabelCoeffsi[0].second() = c;
                         regimeLabelCoeffsi.append
@@ -427,7 +427,7 @@ void Foam::regimeMapModels::twoParameters::correct()
                 }
             }
             //- Debug & development infos
-            
+
             //Info<< i << ", (" << x[i] << " " << y[i] << ") => " << p << ", "
             //    << regimePtr->id() << ", " << regimeLabelCoeffsi << endl;
         }

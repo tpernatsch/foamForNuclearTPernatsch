@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ License
 
 // * * * * * * * * * * * * * * * * Selector  * * * * * * * * * * * * * * * * //
 
-Foam::autoPtr<Foam::contactPartitionModel> 
+Foam::autoPtr<Foam::contactPartitionModel>
 Foam::contactPartitionModel::New
 (
     const FSPair& pair,
@@ -52,7 +52,7 @@ Foam::contactPartitionModel::New
 {
     word type(dict.lookup("type"));
 
-    Info<< "Selecting contactPartitionModel for pair " << pair.name() << ": " 
+    Info<< "Selecting contactPartitionModel for pair " << pair.name() << ": "
         << type << endl;
 
     auto* ctorPtr = contactPartitionModelsConstructorTable(type);
@@ -62,7 +62,7 @@ Foam::contactPartitionModel::New
         FatalErrorInFunction
             << "Unknown contactPartitionModel type "
             << type << endl << endl
-            << "Valid contactPartitionModel types are : " 
+            << "Valid contactPartitionModel types are : "
             << endl
             << contactPartitionModelsConstructorTablePtr_
             ->sortedToc()

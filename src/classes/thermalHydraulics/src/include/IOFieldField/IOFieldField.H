@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,7 +39,7 @@ Class
     Foam::IOFieldField
 
 Description
-    A primitive FieldField of type \<T\> with automated input and output. 
+    A primitive FieldField of type \<T\> with automated input and output.
     Includes functionalities for time dependent simulations.
 
 SourceFiles
@@ -74,7 +74,7 @@ class IOFieldField
     public FieldField<Field,Type>
 {
 
-//- Next few lines needed to overcome the problem described in line 54 of 
+//- Next few lines needed to overcome the problem described in line 54 of
 //  IOFieldField.C
 public:
 
@@ -82,20 +82,20 @@ public:
 
     //- Class INew<T> is the existing one but does not work with Fields. Create
     //  class INew (nested in IOFieldField) that works (only) with Field<Type>
-    class INew 
+    class INew
     {
     public:
         //- Construct from Istream
-        tmp<typeField> operator()(Foam::Istream& is) const 
+        tmp<typeField> operator()(Foam::Istream& is) const
         {
             return tmp<typeField>
             (
-                //- The original one gives: T::new(is) where T is a type 
-                // (Field<Type> for me) and the problem is that "new" is not 
-                //  defined for Field<Type>. "Field" has a contructor from 
+                //- The original one gives: T::new(is) where T is a type
+                // (Field<Type> for me) and the problem is that "new" is not
+                //  defined for Field<Type>. "Field" has a contructor from
                 //  istream
-                new typeField(is) 
-                                   
+                new typeField(is)
+
             );
         }
     };
@@ -162,9 +162,9 @@ public:
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//- When you create a template, the compiler reads and discards everything 
+//- When you create a template, the compiler reads and discards everything
 //  unless you use the template.
-#include "IOFieldField.C"  
+#include "IOFieldField.C"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

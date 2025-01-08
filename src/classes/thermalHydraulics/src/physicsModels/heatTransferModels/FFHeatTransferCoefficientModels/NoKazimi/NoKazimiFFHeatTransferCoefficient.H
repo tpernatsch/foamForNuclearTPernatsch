@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,7 +43,7 @@ Description
     coefficient. Can be only used if a phaseChangeModel is specified as this
     models relies on latent heat.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles
@@ -78,7 +78,7 @@ class NoKazimi
 private:
 
     const volScalarField& alpha_;
-    
+
     const volScalarField& rho_;
 
     const volScalarField& kappa_;
@@ -86,7 +86,7 @@ private:
     const volScalarField& Cp_;
 
     const volScalarField& Pr_;
-    
+
     const volScalarField& magU_;
 
     //- Ref to pressure

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -66,7 +66,7 @@ void Foam::myMULES::explicitSolve
 
         ddt(alpha) + div(alpha_f*phi) = Su + alpha*Sp
 
-        with ddt being evaulated as forward Euler, div being evaulated 
+        with ddt being evaulated as forward Euler, div being evaulated
         explicitly and alpha*Sp being treated implicitly. Please note that Sp
         should be negative for its implicit treatment to increase stability
     */
@@ -96,9 +96,9 @@ void Foam::myMULES::explicitSolve
           + Su.field()
         //- this psiIf is NOT alpha. Note that psiIf was set to 0 and that
         //  psiIf was used as a placeholder to store fvc::surfaceIntegrate(
-        //  psiIf, phiPsi), which is the explicit evaluation of 
+        //  psiIf, phiPsi), which is the explicit evaluation of
         //  div(alpha_f*phi). So the psiIf in here IS div(alpha_f*phi). This is
-        //  just a computer trick to save RAM and avoid creating extra data 
+        //  just a computer trick to save RAM and avoid creating extra data
         //  structures for holding variables
           - psiIf
         )/(rho.field()*rDeltaT - Sp.field());

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,10 +39,10 @@ Class
     Foam::FSHeatTransferCoefficientModels::CachardLiquid
 
 Description
-    Heat transfer coefficient for Inverted Annular Flow - for the liquid phase. 
-    This code cooperate with the CachardVapourFSHeatTransferCoefficient. 
+    Heat transfer coefficient for Inverted Annular Flow - for the liquid phase.
+    This code cooperate with the CachardVapourFSHeatTransferCoefficient.
     Warning, this model has been coded for rod bundle, especially for delta model,
-    the thickness of the film of vapor. 
+    the thickness of the film of vapor.
 
     Author:
     Gauthier LAZARE - gauthier.lazare@gmail.com
@@ -77,11 +77,11 @@ private:
 
     //- Ref to structure wall temperature
     const volScalarField& Twall_;
- 
-    //- Ref to saturation temperature 
+
+    //- Ref to saturation temperature
     const volScalarField& Tsat_;
 
-    //- Ref to liquid temperature 
+    //- Ref to liquid temperature
     const volScalarField& Tfluid_;
 
     //- Ref to normalized void fraction
@@ -104,23 +104,23 @@ private:
 
     //-Ref to Dh vapour
     const volScalarField&  Dh_;
-    
+
     //- Ref to the mass transfer rate - breaking encapsulation to reach MultiRegimeBoiling
     mutable volScalarField hGamma_;
 
     //- Reference parameter
     //- Stefan Boltzman Constant in W/m2/K
     scalar sigmaSB_;
-    //- Gravity 
+    //- Gravity
     scalar gravity_;
 
     //- Input parameters
-    //- Wall emissivity 
+    //- Wall emissivity
     scalar epsilonWall_;
     //- Liquid emissivity
     scalar epsilonLiq_;
 
-    
+
 
 public:
 

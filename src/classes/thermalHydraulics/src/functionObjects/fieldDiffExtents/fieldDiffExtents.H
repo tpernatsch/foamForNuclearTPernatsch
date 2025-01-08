@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -71,7 +71,7 @@ Usage
         writeToFile   | write extents data to file  | no        | yes
         log           | write extents data to standard output|no| yes
         internalField | Process the internal field  | no        | yes
-        threshold     | Field value to identify extents boundary| yes 
+        threshold     | Field value to identify extents boundary| yes
         referencePosition | Reference position      | no        | (0 0 0)
         fields        | list of fields to process   | yes       |
         maskFields    | list of mask fields         | yes       |

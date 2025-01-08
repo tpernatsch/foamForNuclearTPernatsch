@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FFDragCoefficientModels
     defineTypeNameAndDebug(NoKazimi, 0);
     addToRunTimeSelectionTable
     (
-        FFDragCoefficientModel, 
-        NoKazimi, 
+        FFDragCoefficientModel,
+        NoKazimi,
         FFDragCoefficientModels
     );
 }
@@ -80,7 +80,7 @@ Foam::FFDragCoefficientModels::NoKazimi::NoKazimi
 {
     const fluid& fluid1(pair.fluid1());
     const fluid& fluid2(pair.fluid2());
-    if 
+    if
     (
         !(fluid1.isLiquid() and fluid2.isGas()) and
         !(fluid2.isLiquid() and fluid1.isGas())
@@ -98,7 +98,7 @@ Foam::FFDragCoefficientModels::NoKazimi::NoKazimi
     //- Compute A_
     scalar P(dict.get<scalar>("pinPitch"));
     scalar D(dict.get<scalar>("pinDiameter"));
-    A_ = 
+    A_ =
         (4.0*constant::mathematical::pi)/
         (D*(2.0*sqrt(3.0)*sqr(P/D)-constant::mathematical::pi));
 }

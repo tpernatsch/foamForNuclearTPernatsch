@@ -1,6 +1,6 @@
 # Compiling GeN-Foam {#COMPILE}
 
-GeN-Foam is built as a standard OpenFOAM solver, based on the [www.openfoam.com](https://www.openfoam.com/) distribution. AAs such, one should first install the latest OpenFOAM version and then compile GeN-Foam by typing in a terminal in the GeN-Foam source code root folder:
+GeN-Foam is built as a standard OpenFOAM solver, based on the [www.openfoam.com](https://www.openfoam.com/) distribution. As such, one should first install the latest OpenFOAM version and then compile GeN-Foam by typing in a terminal in the GeN-Foam source code root folder:
 
 ```bash
 # Clean GeN-Foam executable

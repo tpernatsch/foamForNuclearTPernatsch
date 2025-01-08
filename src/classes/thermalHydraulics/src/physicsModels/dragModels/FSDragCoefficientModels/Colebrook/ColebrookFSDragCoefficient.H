@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,19 +39,19 @@ Class
     Foam::FSDragCoefficientModels::Colebrook
 
 Description
-    Drag coefficient in the form 
+    Drag coefficient in the form
     \f[
         f_d = ( A \log_{10}(Re) + B )^C \\
 	K_d = 0.5 f_d \frac{\alpha \rho |U|}{D_h}
     \f]
-    
+
     \vartable
         Re      | Reynolds number (superficial in two-phase) of the fluid
 	A, B, C | Selectable constants
     \endtable
-    
-    
-    Example of mandatory dictionary entries (with this coefficients, this 
+
+
+    Example of mandatory dictionary entries (with this coefficients, this
     is the Filonenko correlation):
     \verbatim
     coeff   1.82;
@@ -59,7 +59,7 @@ Description
     exp     2.0;
     \endverbatim
 
-    Author: 
+    Author:
     Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 SourceFiles

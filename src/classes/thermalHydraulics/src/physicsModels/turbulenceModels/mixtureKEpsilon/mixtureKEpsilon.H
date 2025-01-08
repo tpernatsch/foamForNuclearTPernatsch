@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -135,15 +135,15 @@ class mixtureKEpsilon
         //- Access-like
 
             const fluid& gas() const;
-            
+
             const fluid& liquid() const;
-            
+
             const FFPair& pair() const;
 
             //- This looks up the liquid-vapour friction factor Kd and
             //  starting from it, it inverts it to obtain what was the
             //  drag coefficient Cd. In particular
-            //  Kd = 
+            //  Kd =
             //      0.5*(alpha_c*alpha_d)/(alpha_c+alpha_d)*
             //      (rho_c/Dh_d)*mag(U_c-U_d)*Cd
             //

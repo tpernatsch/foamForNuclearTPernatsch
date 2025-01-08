@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,14 +39,14 @@ Class
     Foam::thermalHydraulicsModels::onePhaseLegacy
 
 Description
-    This class is based on onePhase.H and implements the legacy porous medium 
+    This class is based on onePhase.H and implements the legacy porous medium
     Navier Stokes solver with upgrades from the current formulations in onePhase.H.
 
-    Author: 
-    
+    Author:
+
     Mixer: Peter German (peter.german@tamu.edu / grmnptr@gmail.com)
 
-    Authors of the original solvers: 
+    Authors of the original solvers:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
     Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
@@ -86,7 +86,7 @@ public:
     enum class phaseChangeModel
     {
         none,
-        heatConductionLimited, 
+        heatConductionLimited,
         individualSideDriven
     };
 
@@ -103,7 +103,7 @@ private:
         fluid fluid_;
 
     //- Phase pairs
-        
+
         //- Fluid - structure
         FSPair FSPair_;
 
@@ -112,15 +112,15 @@ private:
 
     //- Additional, temporary fields for the solver
 
-        //- Darcy velocity which is the 
+        //- Darcy velocity which is the
         autoPtr<volVectorField> UDarcy_;
 
-        //- Continuous Darcy flux 
+        //- Continuous Darcy flux
         autoPtr<surfaceScalarField> phiDarcy_;
 
-        //- A field that contains a fixed density throughout 
-        //- the iteration. In other words, this is a temporary container 
-        //- for the current density. 
+        //- A field that contains a fixed density throughout
+        //- the iteration. In other words, this is a temporary container
+        //- for the current density.
         volScalarField fixedRho_;
 
         //- The temperature correction term for the Boussinesq approximation
@@ -136,8 +136,8 @@ private:
 
     //- Member variable that contains the compressibility indicator
 
-        //- User defined (in phaseDict) switch to use incompressible treatment 
-        //- with Boussinesq approximation. If true, the equation of state must be 
+        //- User defined (in phaseDict) switch to use incompressible treatment
+        //- with Boussinesq approximation. If true, the equation of state must be
         //- rhoConst
         bool incompressibleTreatment_;
 
@@ -150,8 +150,8 @@ public:
         onePhaseLegacy
         (
             Time& time,
-            fvMesh& mesh, 
-            customPimpleControl& pimple, 
+            fvMesh& mesh,
+            customPimpleControl& pimple,
             fv::options& fvOptions
         );
 
@@ -164,7 +164,7 @@ public:
         virtual void correct
         (
             scalar& residual,
-            bool solveFluidDynamics, 
+            bool solveFluidDynamics,
             bool solveEnergy
         );
 
@@ -172,14 +172,14 @@ public:
         //  updating the flow regime map
         virtual void correctEnergy(scalar& residual);
 
-        //- Correct pressure, velocities without updating 
+        //- Correct pressure, velocities without updating
         //  the flow regime map
         virtual void correctFluidMechanics(scalar& residual);
 
         //- Correct models and coupling fields
         virtual void correctModels
         (
-            bool solveFluidDynamics, 
+            bool solveFluidDynamics,
             bool solveEnergy
         );
 

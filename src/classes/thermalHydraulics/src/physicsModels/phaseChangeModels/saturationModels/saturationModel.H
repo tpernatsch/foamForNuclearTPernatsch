@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -98,7 +98,7 @@ public:
         saturationModels,
         (
             const phaseChangeModel& pcm,
-            const dictionary& dict, 
+            const dictionary& dict,
             const objectRegistry& objReg
         ),
         (pcm, dict, objReg)
@@ -109,7 +109,7 @@ public:
         saturationModel
         (
             const phaseChangeModel& pcm,
-            const dictionary& dict, 
+            const dictionary& dict,
             const objectRegistry& objReg
         );
 
@@ -121,7 +121,7 @@ public:
         static autoPtr<saturationModel> New
         (
             const phaseChangeModel& pcm,
-            const dictionary& dict, 
+            const dictionary& dict,
             const objectRegistry& objReg
         );
 
@@ -138,7 +138,7 @@ public:
         //-
         virtual void correctField
         (
-            volScalarField& field, 
+            volScalarField& field,
             const word& func
         );
 };

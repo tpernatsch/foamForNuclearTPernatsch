@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,8 +49,8 @@ namespace powerOffCriterionModels
     defineTypeNameAndDebug(fieldValue, 0);
     addToRunTimeSelectionTable
     (
-        powerOffCriterionModel, 
-        fieldValue, 
+        powerOffCriterionModel,
+        fieldValue,
         powerOffCriterionModels
     );
 }
@@ -63,13 +63,13 @@ const Foam::Enum
 Foam::powerOffCriterionModels::fieldValue::fieldOpNames_
 (
     {
-        { 
+        {
             fieldOp::max,
-            "max" 
+            "max"
         },
-        { 
+        {
             fieldOp::min,
-            "min" 
+            "min"
         }
     }
 );
@@ -81,13 +81,13 @@ const Foam::Enum
 Foam::powerOffCriterionModels::fieldValue::criterionNames_
 (
     {
-        { 
-            criterion::above, 
-            "valueAboveThreshold" 
+        {
+            criterion::above,
+            "valueAboveThreshold"
         },
-        { 
-            criterion::below, 
-            "valueBelowThreshold" 
+        {
+            criterion::below,
+            "valueBelowThreshold"
         }
     }
 );
@@ -143,7 +143,7 @@ Foam::powerOffCriterionModels::fieldValue::~fieldValue()
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 bool Foam::powerOffCriterionModels::fieldValue::powerOffCriterion()
-{   
+{
     if (fieldPtr_ == nullptr)
     {
         fieldPtr_ = &mesh_.lookupObject<volScalarField>(fieldName_);
@@ -191,7 +191,7 @@ bool Foam::powerOffCriterionModels::fieldValue::powerOffCriterion()
         else if (!InfoFlag_) time0_ = mesh_.time().timeOutputValue();
     }
     if (flag and !InfoFlag_) InfoFlag_ = true;
-    if (InfoFlag_) 
+    if (InfoFlag_)
             Info << "Power off at t = " << time0_+timeDelay_ << " s" << endl;
     return flag;
 }

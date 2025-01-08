@@ -16,7 +16,7 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 keff            0.9388902;  // In eigenvalue calculations, this represent the
-                            // initial guess, and it will be replaves by the
+                            // initial guess, and it will be replaces by the
                             // final result.
                             // In transient calculations. This parameter
                             // divides the production term in the neutronics

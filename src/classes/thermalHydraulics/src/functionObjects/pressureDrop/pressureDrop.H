@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -71,7 +71,7 @@ Usage
         type          | type name: pressureDrop  | yes        |
         writeToFile   | write extents data to file | no       | yes
         log           | write extents data to standard output | no | yes
-        regionType    | Either cellZone or patch | Yes 
+        regionType    | Either cellZone or patch | Yes
         patches       | list of patches to process | depends on regionType
         cellZones     | list of cellZones to process | depends on regionType
     \endtable
@@ -119,7 +119,7 @@ class pressureDrop
     public fvMeshFunctionObject,
     public writeFile
 {
-public: 
+public:
 
     //-
     enum regionType
@@ -138,12 +138,12 @@ protected:
         regionType region1Type_;
         //- Downstream region type
         regionType region2Type_;
-        
+
         //- Regions to assess
         word region1Name_;
         word region2Name_;
-        
-        //- 
+
+        //-
         label patchID1_;
         label patchID2_;
         labelList faces1_;
@@ -152,7 +152,7 @@ protected:
         //- Surface areas of region 1,2
         scalar S1_;
         scalar S2_;
-        
+
         //- Name of pressure field
         word pName_;
 

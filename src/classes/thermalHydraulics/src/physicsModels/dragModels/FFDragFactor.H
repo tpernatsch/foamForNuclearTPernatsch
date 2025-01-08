@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ Description
     Base class to represent a FFDragFactor with basing name access
     functionality.
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -90,7 +90,7 @@ protected :
 
     //- Slip velocity
     const volScalarField& magUr_;
-    
+
     //- Drag coefficient for an isotropiuc drag factor
     autoPtr<FFDragCoefficientModel> fdPtr_;
 

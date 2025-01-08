@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -87,7 +87,7 @@ Foam::interfacialAreaModels::NoKazimi::NoKazimi
         )
     )
 {
-    if 
+    if
     (
         !(pair.fluid1().isLiquid() and pair.fluid2().isGas())
     and !(pair.fluid2().isLiquid() and pair.fluid1().isGas())
@@ -110,7 +110,7 @@ Foam::scalar Foam::interfacialAreaModels::NoKazimi::value
 {
     const scalar& a(vapour_[celli]);
     const scalar& aN(vapour_.normalized()[celli]);
-    return 
+    return
         A_*a*
         min
         (

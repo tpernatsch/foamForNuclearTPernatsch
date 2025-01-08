@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ Description
     Base class for lattices.
 
 Usage
-    Exemple for an hexagonal lattice 
+    Exemple for an hexagonal lattice
     \verbatim
     xyPosLattice
     {
@@ -51,7 +51,7 @@ Usage
         pitch       0.6;
         type        hexagonal;
         lattice
-        (   
+        (
             e e F F F      //   y -->
              e F F F F     // x
               F F F F F    // |
@@ -61,7 +61,7 @@ Usage
     }
     \endverbatim
 
-    Exemple for a square lattice 
+    Exemple for a square lattice
     \verbatim
     xyPosLattice
     {
@@ -70,7 +70,7 @@ Usage
         pitch       0.12;
         type        square;
         lattice
-        (   
+        (
             e e e e e F F F F F e e e e e  //   y -->
             e e e F F F F F F F F F e e e  // x
             e e F F F F F F F F F F F e e  // |
@@ -90,7 +90,7 @@ Usage
     }
     \endverbatim
 
-\mainauthor 
+\mainauthor
     Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 SourceFiles
@@ -128,13 +128,13 @@ protected:
 
     //- Y position of the lattice center
     scalar originY_;
-    
+
     //- FMU pitch distance
     scalar pitch_;
 
     //- Rotation angle of the lattice, default 0 rad
     scalar rotationAngle_;
-    
+
     //- Number of elements in the lattice on the X axis
     label nx_;
 

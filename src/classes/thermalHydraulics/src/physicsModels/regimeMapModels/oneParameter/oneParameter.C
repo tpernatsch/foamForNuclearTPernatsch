@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -51,8 +51,8 @@ namespace regimeMapModels
     defineTypeNameAndDebug(oneParameter, 0);
     addToRunTimeSelectionTable
     (
-        regimeMapModel, 
-        oneParameter, 
+        regimeMapModel,
+        oneParameter,
         regimeMapModels
     );
 }
@@ -65,13 +65,13 @@ const Foam::Enum
 Foam::regimeMapModels::oneParameter::interpolationModeNames_
 (
     {
-        { 
-            interpolationMode::linear, 
-            "linear" 
+        {
+            interpolationMode::linear,
+            "linear"
         },
-        { 
-            interpolationMode::quadratic, 
-            "quadratic" 
+        {
+            interpolationMode::quadratic,
+            "quadratic"
         }
     }
 );
@@ -99,7 +99,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
         (
             this->lookupOrDefault<word>
             (
-                "interpolationMode", 
+                "interpolationMode",
                 "linear"
             )
         )
@@ -113,8 +113,8 @@ Foam::regimeMapModels::oneParameter::oneParameter
         this->subDict("regimeBounds"),
         iter
     )
-    {   
-        names_.append(iter->keyword());  
+    {
+        names_.append(iter->keyword());
         bounds.append
         (
             List<scalar>(iter->stream())
@@ -133,18 +133,18 @@ Foam::regimeMapModels::oneParameter::oneParameter
             }
 
         is converted into two ordered lists, ordered by threshold value, i.e.:
-        
+
             thresholds_ = [0, 0.37, 0.5, 1, 1.1, 1.2, 1.5]
-            names_ = 
+            names_ =
             [
-                "regime2", 
+                "regime2",
                 "",
                 "regime0",
                 "regime4",
                 "",
                 "regime1"
             ]
-            interpolationFlags = 
+            interpolationFlags =
             [
                 false,
                 true,
@@ -156,7 +156,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
         so that names_[i] is bounded by thresholds_[i] and
         thresholds_[i+1]. If the upper threshold of regime i and the lower
         threshold of regime i+1 mismatch, an nameless interpolation regime is
-        created. 
+        created.
     */
 
     //- Re-arrange individual bounds so that leftmost value is smaller
@@ -170,7 +170,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
             bounds[i][1] = tmp;
         }
     }
-    
+
     //- Then do the re-arranging as described before
     List<scalar> tmpBound;
     word tmpName;
@@ -210,7 +210,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
         mesh_.cells().size()
     );
 
-    //- Assemble all. Note that thresholds is longer than names_ and 
+    //- Assemble all. Note that thresholds is longer than names_ and
     //  interpolationFlags by 1
     wordList tmpNames(names_);
     names_ = wordList(0);
@@ -239,12 +239,12 @@ void Foam::regimeMapModels::oneParameter::correct()
 {
     if (parameterPtr_ == nullptr)
     {
-        parameterPtr_ = 
+        parameterPtr_ =
             &mesh_.lookupObjectRef<volScalarField>
             (
                 word(this->lookup("parameter"))
             ).field();
-    } 
+    }
     const scalarField& p(*parameterPtr_);
 
     int N(mesh_.cells().size());
@@ -259,17 +259,17 @@ void Foam::regimeMapModels::oneParameter::correct()
     forAll(names_, i)
     {
         bool interpolated(interpolationFlags_[i]);
-        
+
         const scalar& t0(thresholds_[i]);
         const scalar& t1(thresholds_[i+1]);
         scalar dt(t1-t0);
         scalarField t1_pByDt((t1-p)/dt);
         scalarField p_t0ByDt((p-t0)/dt);
-        
+
         if (!interpolated)
         {
             label regimeLabel(regimeNameToLabel_[names_[i]]);
-            
+
             for (int j = 0; j < N; j++)
             {
                 if (t1_pByDt[j] > 0 and p_t0ByDt[j] >= 0)
@@ -321,7 +321,7 @@ void Foam::regimeMapModels::oneParameter::correct()
                         scalar c1(t1_pByDt[j]);
                         if (c0 >= 0 and c1 > 0)
                         {
-                            c0 = 
+                            c0 =
                             (
                                 (p[j] <= mid) ?
                                 1.0-2.0*sqr(c0) :
@@ -362,8 +362,8 @@ void Foam::regimeMapModels::oneParameter::correct()
                                         //  of the regime class as the len of
                                         //  its cellList is still 0 at this
                                         //  point
-        //- This is equivalent to 
-        //  isPresent = ((max(t1_pByDt) > 0) and max(p_t0ByDt[j]) >= 0)); 
+        //- This is equivalent to
+        //  isPresent = ((max(t1_pByDt) > 0) and max(p_t0ByDt[j]) >= 0));
         //  but faster
         forAll(mesh_.cells(), j)
         {
@@ -427,7 +427,7 @@ void Foam::regimeMapModels::oneParameter::correct()
                                     cellList.append(j);
                                     scalar& c1(regime.coeffs1()[j]);
                                     scalar& c2(regime.coeffs2()[j]);
-                                    c1 = 
+                                    c1 =
                                     (
                                         (p[j] <= mid) ?
                                         1.0-2.0*sqr(p_t0ByDt[j]) :
@@ -446,14 +446,14 @@ void Foam::regimeMapModels::oneParameter::correct()
                                     cellList.append(j);
                                     scalar& c1(regime.coeffs1()[j]);
                                     scalar& c2(regime.coeffs2()[j]);
-                                    c1 = 
+                                    c1 =
                                     (
                                         f*
                                         (
                                             (p[j] <= mid) ?
                                             1.0-2.0*sqr(p_t0ByDt[j]) :
                                             2.0*sqr(t1_pByDt[j])
-                                        ) 
+                                        )
                                     +   (1.0-f)*c1
                                     );
                                     c2 = 1.0-c1;

@@ -1,12 +1,9 @@
 
 EXE_INC = \
     -I. \
-    -I./regionSolvers \
-    -I./meshHandler \
-    -I./multiPhysicsSolver \
-    -I./regionSolvers/legacyInclude \
     -I./include \
     -I../src/classes/common/lnInclude \
+    -I../src/classes/multiRegion/lnInclude \
     -I../src/classes/thermalHydraulics/src/lnInclude \
     -I../src/classes/thermalHydraulics/solvers/lnInclude \
     -I../src/classes/neutronics/lnInclude \
@@ -34,6 +31,7 @@ EXE_INC = \
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lCommon \
+    -L$(FOAM_USER_LIBBIN) -lMultiRegion \
     -L$(FOAM_USER_LIBBIN) -lFFSSrc2 \
     -L$(FOAM_USER_LIBBIN) -lFFSSolvers2 \
     -L$(FOAM_USER_LIBBIN) -lNeutronicsSolvers \

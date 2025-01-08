@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,9 +40,9 @@ Class
 
 Description
     Heat transfer coefficient for pool boiling scenarios calculated via the
-    correlation devised by  D. Gorenflo, "Pool Boiling," VDI-Heat Atlas, 
-    Sect. Ha, VDI-Verlag, Dusseldorf, 1993. Obtained from secondary reference: 
-    J.G. Collier and J. R. Thome, Convective Boiling and Condensation, 
+    correlation devised by  D. Gorenflo, "Pool Boiling," VDI-Heat Atlas,
+    Sect. Ha, VDI-Verlag, Dusseldorf, 1993. Obtained from secondary reference:
+    J.G. Collier and J. R. Thome, Convective Boiling and Condensation,
     3rd Edition, p. 155-158, Oxford University Press, Oxford, 1994.
 
 SourceFiles
@@ -77,7 +77,7 @@ private:
 
     //- Ptr to structure wall temperature (only used if !useExplicitHeatFlux_)
     const volScalarField* Twall_;
- 
+
     //- Ptr to saturation temperature (only used if !useExplicitHeatFlux_)
     const volScalarField* Tsat_;
 
@@ -96,7 +96,7 @@ private:
     scalar q0_;
     //- Absolute surface roghness
     scalar R0_;
-    
+
     //- Input paramenters
     //- Absolute surface roghness
     scalar R_;

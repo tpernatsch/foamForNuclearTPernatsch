@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,11 +40,11 @@ Class
 
 Description
     Heat transfer coefficient for Inverted Annular Flow - for the vapour phase.
-    This code cooperate with the CachardLiquidFSHeatTransferCoefficient.  
+    This code cooperate with the CachardLiquidFSHeatTransferCoefficient.
     Warning, this model has been coded for rod bundle, especially for the delta model,
-    the thickness of the film of vapor. 
+    the thickness of the film of vapor.
 
-    Author: 
+    Author:
     Gauthier LAZARE - gauthier.lazare@gmail.com
 
 SourceFiles
@@ -81,7 +81,7 @@ private:
     //- Ref to normalized void fraction
     const volScalarField& alpha_;
 
-    //- Ref to the thermal conductivity of the vapour 
+    //- Ref to the thermal conductivity of the vapour
     const volScalarField& kg_;
 
     //- Ref to the hydraulic diameter
@@ -95,9 +95,9 @@ private:
     /*//- hInit = k_g/delta -> initial heat transfer coefficient without turbulence
     mutable volScalarField hInit_;
 
-    //- Nusselt Number 
+    //- Nusselt Number
     mutable volScalarField Nuwl_;*/
-    
+
 
 public:
 

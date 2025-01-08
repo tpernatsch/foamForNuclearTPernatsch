@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,16 +40,16 @@ Class
 
 Description
     Calculate the temperature of onset of nucleate boiling according to the
-    model by N. SahaZuber, G.R. Warrier, and V.K. Dhir, "Onset of Nucleate Boiling 
-    and Active Nucleation Site Density During Subcooled Flow Boiling," 
+    model by N. SahaZuber, G.R. Warrier, and V.K. Dhir, "Onset of Nucleate Boiling
+    and Active Nucleation Site Density During Subcooled Flow Boiling,"
     J. Heat Transfer, 124, 717-728, 2002..
     This model should only to be used in the following parameter range:
     *   p =         0.1 - 13.8 MPa
-    *   massFlux =  95 - 2760 kg/m2/s   (i.e. ~ 0.1 - 2.7 m/s for water at ~ 
+    *   massFlux =  95 - 2760 kg/m2/s   (i.e. ~ 0.1 - 2.7 m/s for water at ~
                                         1000 kg/m3)
     *   heatFlux =  0.28 - 1.89 MW/m^2
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

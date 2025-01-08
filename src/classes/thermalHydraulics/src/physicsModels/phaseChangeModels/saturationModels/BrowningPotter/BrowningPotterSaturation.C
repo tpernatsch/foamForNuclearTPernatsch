@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -64,7 +64,7 @@ Foam::saturationModels::BrowningPotter::
 BrowningPotter
 (
     const phaseChangeModel& pcm,
-    const dictionary& dict, 
+    const dictionary& dict,
     const objectRegistry& objReg
 )
 :
@@ -104,8 +104,8 @@ Foam::scalar Foam::saturationModels::BrowningPotter::valueLnPSat
 {
     const scalar& T(iT_[celli]);
     //- The + log(1e6) is to have p in Pa rather than MPa
-    return 
-        (11.9463 - 12633.37/T - 0.4672*log(T)) + log(1e6); 
+    return
+        (11.9463 - 12633.37/T - 0.4672*log(T)) + log(1e6);
 }
 
 Foam::scalar Foam::saturationModels::BrowningPotter::valueTSat
@@ -113,17 +113,17 @@ Foam::scalar Foam::saturationModels::BrowningPotter::valueTSat
     const label& celli
 ) const
 {
-    return 
+    return
         923840.0/
         (
-        -   11275 
+        -   11275
         +   Foam::sqrt
             (
                 127125625 + 1847680*
                 (
-                    7.8270 
+                    7.8270
                 -   log(p_[celli]/1e6) // p in MPa
-                ) 
+                )
             )
         );
 }

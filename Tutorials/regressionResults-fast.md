@@ -1,7 +1,7 @@
 # GeN-Foam regression test suite
 
-Regression test of 08-Jan-2025 - 15:56:20  
-Tutorials successfully completed: 9/9  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()  
+Regression test of 08-Jan-2025 - 15:56:20
+Tutorials successfully completed: 9/9  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()
 
 ## Summary
 
@@ -21,11 +21,11 @@ Tutorials successfully completed: 9/9  [![regressionTest](https://img.shields.io
 
 ## guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion
 
-Run tutorial 1D_neutronicsDiffusion ...
+Run tutorial 1_reactorSlab_1D_1Gr_neutronicDiffusion ...
 
-Done running tutorial 1D_neutronicsDiffusion ...
+Done running tutorial 1_reactorSlab_1D_1Gr_neutronicDiffusion ...
 
-1D_neutronicsDiffusion has converged 
+1_reactorSlab_1D_1Gr_neutronicDiffusion has converged
 
 keff with 1e-05 relative error
 |      | Simulated | Expected |
@@ -34,7 +34,7 @@ keff with 1e-05 relative error
 
 All tests passed
 
-Time = 00:00:02
+Time = 00:00:01
 
 Memory = 0 Gb (Passed, expected: 0.2 Gb)
 
@@ -46,7 +46,7 @@ Run tutorial 1D_neutronicsDiffusion ...
 
 Done running tutorial 1D_neutronicsDiffusion ...
 
-1D_neutronicsDiffusion has converged 
+1D_neutronicsDiffusion has converged
 
 keff with 1e-05 relative error
 |      | Simulated | Expected |
@@ -67,7 +67,7 @@ Run tutorial 1D_HX onePhase ...
 
 Done running tutorial 1D_HX onePhase ...
 
-1D_HX onePhase has converged 
+1D_HX onePhase has converged
 
 
 Time = 00:00:24
@@ -82,7 +82,7 @@ Run tutorial 1D_PSBT_SC ...
 
 Done running tutorial 1D_PSBT_SC ...
 
-1D_PSBT_SC has converged 
+1D_PSBT_SC has converged
 
 alpha.vapour at the end of the channel with 0.05 relative error
 Perfect match:
@@ -92,7 +92,7 @@ Perfect match:
 
 Time = 00:00:35
 
-Memory = .077 Gb (Passed, expected: 0.2 Gb)
+Memory = .082 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -102,7 +102,7 @@ Run tutorial 2D_cavityBoussinesq ...
 
 Done running tutorial 2D_cavityBoussinesq ...
 
-2D_cavityBoussinesq has converged 
+2D_cavityBoussinesq has converged
 
 
 Time = 00:01:37
@@ -117,11 +117,11 @@ Run tutorial 2D_externalSourceDiffusion ...
 
 Done running tutorial 2D_externalSourceDiffusion ...
 
-Steady-state has converged 
+Steady-state has converged
 
 The relation S/(1-keff) = S + nuSigmaF*phi has been verified
 
-Test power and fluxes  
+Test power and fluxes
 Perfect match:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
@@ -133,7 +133,7 @@ Perfect match:
 
 Time = 00:00:26
 
-Memory = .079 Gb (Passed, expected: 0.2 Gb)
+Memory = .084 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -143,9 +143,9 @@ Run tutorial 2D_fullCoupling ...
 
 Done running tutorial 2D_fullCoupling ...
 
-Steady State has converged 
+Steady State has converged
 
-Transient (no driveline) has converged 
+Transient (no driveline) has converged
 
 
 Time = 00:00:23
@@ -160,13 +160,13 @@ Run tutorial 2D_onePhaseAndPointKineticsCoupling ...
 
 Done running tutorial 2D_onePhaseAndPointKineticsCoupling ...
 
-Steady State has converged 
+Steady State has converged
 
-Transient (no driveline) has converged 
+Transient (no driveline) has converged
 
-Transient (with driveline) has converged 
+Transient (with driveline) has converged
 
-Transient (with boron) has converged 
+Transient (with boron) has converged
 
 
 Time = 00:01:26
@@ -181,11 +181,11 @@ Run tutorial 1D_MSR_pointKinetics ...
 
 Done running tutorial 1D_MSR_pointKinetics ...
 
-Steady state has converged 
+Steady state has converged
 
-Transient has converged 
+Transient has converged
 
-Transient end has converged 
+Transient end has converged
 
 Power at the end of transient with 0.01 relative error
 Perfect match:

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -40,11 +40,11 @@ Class
 
 Description
     Heat transfer coefficient for that covers many regimes, from single phase
-    convection, two-phase convection, sub-cooled and nucleate boiling, to the 
-    CHF point, the transition and the post CHF models for film boiling. It uses 
-    the correlations from TRACE. 
+    convection, two-phase convection, sub-cooled and nucleate boiling, to the
+    CHF point, the transition and the post CHF models for film boiling. It uses
+    the correlations from TRACE.
 
-    Author: 
+    Author:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
     Gauthier Lazare (gauthier.lazare@gmail.com)
 
@@ -84,10 +84,10 @@ class multiRegimeBoilingTRACECHF
 {
 private:
 
-    //- Ref to pair 
+    //- Ref to pair
     const FSPair& pair_;
 
-    //- Ref to pressure 
+    //- Ref to pressure
     const volScalarField& p_;
 
     //- Ref to wall temperature
@@ -99,7 +99,7 @@ private:
     // - scalar values to know if we are before or after CHF (0 PreCHF/ 1 Transition/ 2 post CHF)
     mutable volScalarField CHFBool_;
 
-    // - Weighted fraction for the transition boiling  
+    // - Weighted fraction for the transition boiling
     mutable volScalarField wfTB_;
 
     // - Leidenfrost Temperature needed for the transition boiling for Vapour
@@ -135,7 +135,7 @@ private:
     //- Critical Heat Flux model
     autoPtr<CHFModel> qCHFPtr_;
 
-    //- Leidenfrost Temperature model 
+    //- Leidenfrost Temperature model
     autoPtr<TLFModel> TLFPtr_;
 
     //- Inverted Annular Flow heat transfer coefficient
@@ -145,7 +145,7 @@ private:
 
     //- Ptr to mass transfer term at the wall (of the phaseChange class) so
     //  that it can be set here to account e.g. for sub-cooled boiling
-    // Breaking encapsulation in an awful manner, as this modifies 
+    // Breaking encapsulation in an awful manner, as this modifies
     // a private member of another class. Should be changed....
     mutable volScalarField* dmdtWPtr_;
 

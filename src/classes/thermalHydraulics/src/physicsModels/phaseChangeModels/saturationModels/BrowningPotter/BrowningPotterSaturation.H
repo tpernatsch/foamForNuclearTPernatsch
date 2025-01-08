@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,9 +39,9 @@ Class
     Foam::saturationModels::BrowningPotter
 
 Description
-    Saturation model based on results by Browning and Potter, refer to 
+    Saturation model based on results by Browning and Potter, refer to
     https://www.ne.anl.gov/eda/ANL-RE-95-2.pdf. The saturation pressure form is
-    lnPSat = A + B/TSat + C*ln(TSat), which is not invertible in TSat. TSat is 
+    lnPSat = A + B/TSat + C*ln(TSat), which is not invertible in TSat. TSat is
     inverted by approximateding ln(TSat) by a second order polyinomial.
 
 SourceFiles
@@ -85,7 +85,7 @@ public:
         BrowningPotter
         (
             const phaseChangeModel& pcm,
-            const dictionary& dict, 
+            const dictionary& dict,
             const objectRegistry& objReg
         );
 

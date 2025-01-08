@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,8 +49,8 @@ namespace twoPhaseDragMultiplierModels
     defineTypeNameAndDebug(KottowskiSavatteri, 0);
     addToRunTimeSelectionTable
     (
-        twoPhaseDragMultiplierModel, 
-        KottowskiSavatteri, 
+        twoPhaseDragMultiplierModel,
+        KottowskiSavatteri,
         twoPhaseDragMultiplierModels
     );
 }
@@ -85,8 +85,8 @@ Foam::scalar Foam::twoPhaseDragMultiplierModels::KottowskiSavatteri::phi2
         return 1.0;
     }
     //- The correlation is valid only for 7e-2 < X < 30
-    scalar log10X(log10(min(max(mFluidPtr_->XLM()[celli], 0.07), 30))); 
-    return 
+    scalar log10X(log10(min(max(mFluidPtr_->XLM()[celli], 0.07), 30)));
+    return
         pow
         (
             10,

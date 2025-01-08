@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,8 +49,8 @@ namespace twoPhaseDragMultiplierModels
     defineTypeNameAndDebug(Kaiser88, 0);
     addToRunTimeSelectionTable
     (
-        twoPhaseDragMultiplierModel, 
-        Kaiser88, 
+        twoPhaseDragMultiplierModel,
+        Kaiser88,
         twoPhaseDragMultiplierModels
     );
 }
@@ -85,7 +85,7 @@ Foam::scalar Foam::twoPhaseDragMultiplierModels::Kaiser88::phi2
     //- I am limiting this for 7e-2 < X < 30 like Kottowski-Savatteri
     //  out of consistency
     scalar logSqrtX(log(sqrt(min(max(mFluidPtr_->XLM()[celli], 0.07), 30))));
-    return 
+    return
         exp
         (
             2.0*

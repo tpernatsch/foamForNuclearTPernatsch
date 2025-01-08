@@ -18,9 +18,9 @@ rm -rf $resFile
 touch $resFile
 
 # --- Run the simulation
-echo -e "Run tutorial 1D_neutronicsDiffusion ...\n" | tee -a $resFile
+echo -e "Run tutorial 2_reactorSlabReflected_1D_1Gr_neutronicDiffusion ...\n" | tee -a $resFile
 ./Allrun >> log.simulation
-echo -e "Done running tutorial 1D_neutronicsDiffusion ...\n" | tee -a $resFile
+echo -e "Done running tutorial 2_reactorSlabReflected_1D_1Gr_neutronicDiffusion ...\n" | tee -a $resFile
 
 # --- Check it ran
 isConverge()
@@ -36,7 +36,7 @@ isConverge()
     fi
 }
 
-isConverge "" "1D_neutronicsDiffusion"
+isConverge "" "2_reactorSlabReflected_1D_1Gr_neutronicDiffusion"
 
 
 python3 Allplot.py 1 flux0 True  | tee -a $resFile

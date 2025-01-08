@@ -15,7 +15,16 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-fastNeutrons            true; // if true interpolates cross section with logarithmic temp for fuel (otherwise, square root)
+// If true interpolates cross section with logarithmic temp for fuel
+// (otherwise, square root)
+fastNeutrons            true;
+
+// Polyharmonic spline function
+// - 1: phi(r) = |r|  -> linear interpolation
+// - 2: phi(r) = r^2 ln(r)
+// - 3: phi(r) = |r^3|
+// - 4: phi(r) = r^4 ln(r)
+polyharmonicSplineMode  1;
 
 adjustDiscFactors       false;
 

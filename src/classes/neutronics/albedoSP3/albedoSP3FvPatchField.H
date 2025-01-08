@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,8 +42,8 @@ Description
     Albedo boundary condition for SP3 or diffusion calculations. Please note that the
     boundary condition needs to be set both for first and second moments in SP3.
 
-    Author of this file (and associated .C or included .H files):  
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)   
+    Author of this file (and associated .C or included .H files):
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 Usage
     \verbatim
@@ -57,7 +57,7 @@ Usage
         value           uniform 1;
     }
     \endverbatim
- 
+
 SourceFiles
     albedoSP3FvPatchField.C
 
@@ -91,12 +91,12 @@ class albedoSP3FvPatchField
     // Private data
 
     Field<Type> gradient_;
-    
+
     //- Coeff gamma
     scalar gamma_;
-    
+
     //scalarField diffCoeff_;
-    
+
     //- Name of the diffusion coefficient field
     word diffCoeffName_;
 
@@ -188,7 +188,7 @@ public:
     {
         return gradient_;
     }
-    
+
     virtual scalar& gamma()
     {
         return gamma_;

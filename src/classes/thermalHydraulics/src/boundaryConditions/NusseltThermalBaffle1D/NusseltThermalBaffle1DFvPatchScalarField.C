@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -192,8 +192,8 @@ NusseltThermalBaffle1DFvPatchScalarField
             //- Set ptr to otherFluidPatchFieldPtr_ but I cannot do this with
             //  setPtrs as it might cause the whole constructor to fail (
             //  setPtrs does other things as well, and does other things would
-            //  end up looking for patches that might not exist yet) 
-            word fluidName(myOps::split<word>(TName_, '.')[1]); 
+            //  end up looking for patches that might not exist yet)
+            word fluidName(myOps::split<word>(TName_, '.')[1]);
             HashTable<const fluid*> fluids
             (
                 this->internalField().mesh().lookupClass<fluid>()
@@ -203,19 +203,19 @@ NusseltThermalBaffle1DFvPatchScalarField
                 "T."
             +   (
                     (fluids[fluids.toc()[0]]->name() == fluidName) ?
-                    fluids[fluids.toc()[1]]->name() : 
+                    fluids[fluids.toc()[1]]->name() :
                     fluids[fluids.toc()[0]]->name()
                 )
             );
             otherFluidPatchFieldPtr_ =
-            &(  
+            &(
                 const_cast<NusseltThermalBaffle1DFvPatchScalarField&>
                 (
                     refCast<const NusseltThermalBaffle1DFvPatchScalarField>
                     (
                         patch().lookupPatchField
                         <
-                            volScalarField, 
+                            volScalarField,
                             scalar
                         >
                         (
@@ -258,7 +258,7 @@ NusseltThermalBaffle1DFvPatchScalarField
         }
     }
     hw_ = max(hw_, 1e-69);
-    
+
     fvPatchScalarField::operator=(scalarField("value", dict, p.size()));
 
     if (dict.found("refValue"))
@@ -344,11 +344,11 @@ bool NusseltThermalBaffle1DFvPatchScalarField::owner() const
 }
 
 void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
-{    
+{
     if (nbrPatchFieldPtr_ == nullptr)
     {
         nbrPatchFieldPtr_ =
-            &(  
+            &(
                 const_cast<NusseltThermalBaffle1DFvPatchScalarField&>
                 (
                     refCast<const NusseltThermalBaffle1DFvPatchScalarField>
@@ -368,7 +368,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
     {
         if (fluidPtr_ == nullptr or otherFluidPtr_ == nullptr)
         {
-            word fluidName(myOps::split<word>(TName_, '.')[1]); 
+            word fluidName(myOps::split<word>(TName_, '.')[1]);
             HashTable<const fluid*> fluids
             (
                 this->internalField().mesh().lookupClass<fluid>()
@@ -387,14 +387,14 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
         }
         if (pairPtr_ == nullptr or otherPairPtr_ == nullptr)
         {
-            pairPtr_ = 
+            pairPtr_ =
                 &(
                     this->internalField().mesh().lookupObject<FSPair>
                     (
                         fluidPtr_->name()+".structure"
                     )
                 );
-            otherPairPtr_ = 
+            otherPairPtr_ =
                 &(
                     this->internalField().mesh().lookupObject<FSPair>
                     (
@@ -427,14 +427,14 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
 
             //- Set ptr to other fluid patch owner
             otherFluidPatchFieldPtr_ =
-            &(  
+            &(
                 const_cast<NusseltThermalBaffle1DFvPatchScalarField&>
                 (
                     refCast<const NusseltThermalBaffle1DFvPatchScalarField>
                     (
                         patch().lookupPatchField
                         <
-                            volScalarField, 
+                            volScalarField,
                             scalar
                         >
                         (
@@ -445,15 +445,15 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
             );
 
             //- Set ptr to other fluid patch nbr
-            const label otherFluidNbrPatchi = 
+            const label otherFluidNbrPatchi =
                 otherFluidPatchFieldPtr_->samplePolyPatch().index();
-            const fvPatch& nbrPatch = 
+            const fvPatch& nbrPatch =
                 otherFluidPatchFieldPtr_->patch().boundaryMesh()
                 [
                     otherFluidNbrPatchi
                 ];
             otherFluidNbrPatchFieldPtr_ =
-            &(  
+            &(
                 const_cast<NusseltThermalBaffle1DFvPatchScalarField&>
                 (
                     refCast<const NusseltThermalBaffle1DFvPatchScalarField>
@@ -531,10 +531,10 @@ void NusseltThermalBaffle1DFvPatchScalarField::rmap
 }
 
 //- Something super-weird  going on here... I had to override the evaluate
-//  method of mixedFvPatchScalarField in order to limit the deltaCoeffs 
+//  method of mixedFvPatchScalarField in order to limit the deltaCoeffs
 //  as I was occasionally getting floating point exceptions here in MPI
 //  for very, very funky decomposed domains (e.g., random decomposition
-//  scheme). Even weirder though, If I store 
+//  scheme). Even weirder though, If I store
 //  max(this->patch().deltaCoeffs(), 1e-69) in a scalarField and use
 //  that one instead in the denominator, it crashes as if I am not
 //  limiting it. No clue what is happening here, though results between
@@ -558,7 +558,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::evaluate
         +   refGrad()/max(this->patch().deltaCoeffs(), 1e-69)
         )
     );
-  
+
     fvPatchScalarField::evaluate();
 }
 
@@ -578,7 +578,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
         UPstream::msgType() = oldTag+1;
 
         setPtrs();
-        
+
         if (this->owner())
         {
             const label patchi = patch().index();
@@ -586,22 +586,22 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
 
             if (twoPhaseOwner_)
             {
-                const label otherFluidPatchi = 
+                const label otherFluidPatchi =
                     otherFluidPatchFieldPtr_->patch().index();
-                const label otherFluidNbrPatchi = 
+                const label otherFluidNbrPatchi =
                     otherFluidNbrPatchFieldPtr_->patch().index();
 
                 //- Cache fluid thermal conducitivities (molecular ones, not
                 //  effective ones as turbulence is supposed to be captured by the
                 //  Nusselt correlation)
-                
-                
+
+
                 //- Calculate heat transfer coefficients
                 scalarField hf
                 (
                     calcH
                     (
-                        *pairPtr_, 
+                        *pairPtr_,
                         *this
                     )()
                 );
@@ -609,7 +609,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 (
                     calcH
                     (
-                        *pairPtr_, 
+                        *pairPtr_,
                         *nbrPatchFieldPtr_
                     )()
                 );
@@ -617,7 +617,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 (
                     calcH
                     (
-                        *otherPairPtr_, 
+                        *otherPairPtr_,
                         *otherFluidPatchFieldPtr_
                     )()
                 );
@@ -625,7 +625,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 (
                     calcH
                     (
-                        *otherPairPtr_, 
+                        *otherPairPtr_,
                         *otherFluidNbrPatchFieldPtr_
                     )()
                 );
@@ -651,7 +651,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 //- Effective turbulent thermal conductivities used only to adjust
                 //  the gradient to account for the fact that this BC "sees" a
                 //  cell-center - face-center heat transfer coefficient of hf
-                //  (and the calculated variants), while the rest of the code 
+                //  (and the calculated variants), while the rest of the code
                 //  "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
                 //  with k being the effective fluid thermal conductivity on the
                 //  patch
@@ -665,9 +665,9 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 (
                     otherFluidPtr_->turbulence().kappaEff(otherFluidNbrPatchi)()
                 );
-                
+
                 //- These calls are necessary to sync fields on nbr sides if the
-                //  nbr patch does not belong to the same processor as the owner 
+                //  nbr patch does not belong to the same processor as the owner
                 //  (only relevant in MPI)
                 mappedPatchBase::map().distribute(nbrKfEff);
                 mappedPatchBase::map().distribute(otherFluidNbrKfEff);
@@ -691,7 +691,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 scalarField oneByAnbrAminOne(max(A*nbrA-1.0, 1e-69));
                 scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne); //- New T wall
                 scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne); //- New nbr T wall
-                
+
                 //this->valueFraction() = 0;
                 //this->refValue() = 0;
                 this->refGrad() = (hf/kfEff)*(Tw-Ti);
@@ -700,11 +700,11 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 nbrPatchFieldPtr_->refGrad() = (nbrHf/nbrKfEff)*(nbrTw-nbrTi);
                 //otherFluidPatchFieldPtr_->valueFraction() = 0;
                 //otherFluidPatchFieldPtr_->refValue() = 0;
-                otherFluidPatchFieldPtr_->refGrad() = 
+                otherFluidPatchFieldPtr_->refGrad() =
                     (otherFluidHf/otherFluidKfEff)*(Tw-otherFluidTi);
                 //otherFluidNbrPatchFieldPtr_->valueFraction() = 0;
                 //otherFluidNbrPatchFieldPtr_->refValue() = 0;
-                otherFluidNbrPatchFieldPtr_->refGrad() = 
+                otherFluidNbrPatchFieldPtr_->refGrad() =
                     (otherFluidNbrHf/otherFluidNbrKfEff)*(nbrTw-otherFluidNbrTi);
             }
             else if (!twoPhase_)
@@ -712,13 +712,13 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 //- Cache thermal conductivities
                 scalarField kf(fluidPtr_->turbulence().kappaEff(patchi));
                 scalarField nbrKf(fluidPtr_->turbulence().kappaEff(nbrPatchi));
-                
+
                 //- Calculate heat transfer coefficients
                 scalarField hf
                 (
                     calcH
                     (
-                        *pairPtr_, 
+                        *pairPtr_,
                         *this
                     )()
                 );
@@ -726,7 +726,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 (
                     calcH
                     (
-                        *pairPtr_, 
+                        *pairPtr_,
                         *nbrPatchFieldPtr_
                     )()
                 );
@@ -734,7 +734,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 //- Effective turbulent thermal conductivities used only to adjust
                 //  the gradient to account for the fact that this BC "sees" a
                 //  cell-center - face-center heat transfer coefficient of hf
-                //  (and the calculated variants), while the rest of the code 
+                //  (and the calculated variants), while the rest of the code
                 //  "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
                 //  with k being the effective fluid thermal conductivity on the
                 //  patch
@@ -744,7 +744,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 //- Internal temperature fields
                 scalarField Ti(patchInternalField()());
                 scalarField nbrTi(nbrPatchFieldPtr_->patchInternalField()());
-                
+
                 //- Distribute nbr quantities to avoid BS in MPI
                 mappedPatchBase::map().distribute(nbrKfEff);
                 mappedPatchBase::map().distribute(nbrTi);
@@ -772,14 +772,14 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
 
         if (debug)
         {
-            const phaseCompressibleTurbulenceModel& turbModel = 
+            const phaseCompressibleTurbulenceModel& turbModel =
                 fluidPtr_->turbulence();
             scalarField kf(turbModel.kappaEff(patch().index()));
             scalar Q = gAverage(kf*snGrad());
                 Pout<< patch().boundaryMesh().mesh().name() << ':'
                     << patch().name() << ':'
                     << this->internalField().name() << " <- "
-                    << patch().boundaryMesh()[samplePolyPatch().index()].name() 
+                    << patch().boundaryMesh()[samplePolyPatch().index()].name()
                     << ':' << this->internalField().name() << " :"
                     << " heat[W]:" << Q
                     << " walltemperature "
@@ -798,7 +798,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
 tmp<scalarField> NusseltThermalBaffle1DFvPatchScalarField::calcH
 (
     const FSPair& pair,
-    const NusseltThermalBaffle1DFvPatchScalarField& patchField            
+    const NusseltThermalBaffle1DFvPatchScalarField& patchField
 )
 {
     const label patchi(patchField.patch().index());
@@ -813,7 +813,7 @@ tmp<scalarField> NusseltThermalBaffle1DFvPatchScalarField::calcH
         return
             (
                 (
-                    patchField.cnst() 
+                    patchField.cnst()
                 +   patchField.coeff()*
                     pow(Re, patchField.expRe())*
                     pow(Pr, patchField.expPr())
@@ -825,7 +825,7 @@ tmp<scalarField> NusseltThermalBaffle1DFvPatchScalarField::calcH
         return
             (
                 (
-                    patchField.cnst() 
+                    patchField.cnst()
                 +   patchField.coeff()*
                     pow(Re, patchField.expRe())*
                     pow(Pr, patchField.expPr())

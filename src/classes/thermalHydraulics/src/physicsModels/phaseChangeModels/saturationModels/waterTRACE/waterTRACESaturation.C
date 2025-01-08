@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -64,7 +64,7 @@ Foam::saturationModels::waterTRACE::
 waterTRACE
 (
     const phaseChangeModel& pcm,
-    const dictionary& dict, 
+    const dictionary& dict,
     const objectRegistry& objReg
 )
 :
@@ -82,7 +82,7 @@ waterTRACE
     B_(273.159),
     C_(4.247368421052632),
     */
-    // Constant of water 
+    // Constant of water
     Rv_(461.4975)  // J/kg/K
 
 {}
@@ -113,7 +113,7 @@ Foam::scalar Foam::saturationModels::waterTRACE::valuePSat
         const scalar CAP(-5.3512);
         const scalar DAP(20.387);
         scalar ps(AAP*pow(Ts/BAP,CAP)*exp(DAP*(Ts-BAP)/Ts));
-        return ps; 
+        return ps;
     }
     else if (T<609.62462615967)
     {
@@ -165,8 +165,8 @@ Foam::scalar Foam::saturationModels::waterTRACE::valuePSatPrime
         const scalar AA(3180619.59);
         const scalar BA(2470.2120);
         scalar hs(AA-BA*Ts);
-        scalar slope(hs*ps/Rv_/sqr(Ts)); 
-        return slope; 
+        scalar slope(hs*ps/Rv_/sqr(Ts));
+        return slope;
     }
     else if (T<609.62462615967)
     {
@@ -203,7 +203,7 @@ Foam::scalar Foam::saturationModels::waterTRACE::valueTSat
     const label& celli
 ) const
 {
-    const scalar& pi(p_[celli]); 
+    const scalar& pi(p_[celli]);
     /*
     // ----- Stefan Radman Version - Interpolation NIST  ----- //
     scalar TsRAD(pow(pi/A_, 1.0/C_) + B_ );
@@ -211,7 +211,7 @@ Foam::scalar Foam::saturationModels::waterTRACE::valueTSat
     */
 
     //-------------------------------------------------------------//
-    
+
     // ----- TRACE Version - different formulas according to pressure ----- //
 
     if (pi<90.56466*1000)
@@ -243,7 +243,7 @@ Foam::scalar Foam::saturationModels::waterTRACE::valueTSat
             hsapprox=AAH - BAH*Tsapprox;
             Ts=Tsapprox/(1-Rv_*Tsapprox/hsapprox*log(ps/psapprox));
         }
-        return Ts; 
+        return Ts;
     }
     else if (pi<13.969971285053*1e6)
     {

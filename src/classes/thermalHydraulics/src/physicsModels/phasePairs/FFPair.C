@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -239,7 +239,7 @@ Foam::FFPair::FFPair
     firstTimeStepAndIter_(true)
 {
     Info << endl;
-    
+
     //- Init htcs
     htcs_.set
     (
@@ -286,12 +286,12 @@ Foam::FFPair::FFPair
     //  dimVolume (e.g. explicit terms)
     heSources_.set
     (
-        fluid1_.thermo().he().name(), 
+        fluid1_.thermo().he().name(),
         new fvScalarMatrix(fluid1_.thermo().he(), dimPower)
     );
     heSources_.set
     (
-        fluid2_.thermo().he().name(), 
+        fluid2_.thermo().he().name(),
         new fvScalarMatrix(fluid2_.thermo().he(), dimPower)
     );
 
@@ -435,7 +435,7 @@ void Foam::FFPair::addVirtualMassForce(fvVectorMatrix& UEqn) const
 
 void Foam::FFPair::correct
 (
-    const bool& correctFluidDynamics, 
+    const bool& correctFluidDynamics,
     const bool& correctEnergy
 )
 {
@@ -456,11 +456,11 @@ void Foam::FFPair::correct
     const scalarField& continuity2(fluid1_.dispersion());
 
     //- Update dipsersed/continuous phase fractions
-    alphaDispersed_.primitiveFieldRef() = 
-        fluid1_.primitiveField()*fluid1_.dispersion() 
+    alphaDispersed_.primitiveFieldRef() =
+        fluid1_.primitiveField()*fluid1_.dispersion()
     +   fluid2_.primitiveField()*fluid2_.dispersion();
     alphaDispersed_.correctBoundaryConditions();
-    alphaContinuous_.primitiveFieldRef() = 
+    alphaContinuous_.primitiveFieldRef() =
         fluid1_.primitiveField()*continuity1
     +   fluid2_.primitiveField()*continuity2;
     alphaContinuous_.correctBoundaryConditions();
@@ -469,11 +469,11 @@ void Foam::FFPair::correct
     fluid1_.correctDiameter();
     fluid2_.correctDiameter();
 
-    DhDispersed_.primitiveFieldRef() = 
-        Dh1.primitiveField()*fluid1_.dispersion() 
+    DhDispersed_.primitiveFieldRef() =
+        Dh1.primitiveField()*fluid1_.dispersion()
     +   Dh2.primitiveField()*fluid2_.dispersion();
     DhDispersed_.correctBoundaryConditions();
-    DhContinuous_.primitiveFieldRef() = 
+    DhContinuous_.primitiveFieldRef() =
         Dh1.primitiveField()*continuity1
     +   Dh2.primitiveField()*continuity2;
     DhContinuous_.correctBoundaryConditions();
@@ -486,16 +486,16 @@ void Foam::FFPair::correct
     +   fluid2_.rho().primitiveField()*continuity2;
     rhoContinuous_.correctBoundaryConditions();
 
-    nuContinuous_.primitiveFieldRef() = 
+    nuContinuous_.primitiveFieldRef() =
         fluid1_.thermo().nu()()*continuity1
     +   fluid2_.thermo().nu()()*continuity2;
     nuContinuous_.correctBoundaryConditions();
-    
-    PrContinuous_.primitiveFieldRef() = 
+
+    PrContinuous_.primitiveFieldRef() =
         fluid1_.Pr()*continuity1
     +   fluid2_.Pr()*continuity2;
     PrContinuous_.correctBoundaryConditions();
-    
+
     //-
     magUr_ = mag(U1-U2);
     Re_ = max(magUr_*DhDispersed_/nuContinuous_, minRe_);
@@ -535,7 +535,7 @@ void Foam::FFPair::correct
         }
         else
         {
-            XLM1i = 
+            XLM1i =
                 min
                 (
                     max
@@ -558,7 +558,7 @@ void Foam::FFPair::correct
         }
         else
         {
-            XLM2i = 
+            XLM2i =
                 min
                 (
                     max
@@ -616,7 +616,7 @@ void Foam::FFPair::correct
                     scalar c((a1-a)/a1);
                     Kdlim = c*KdFF1 + (1.0-c)*KdFF0;
                 }
-                Kdi = max(Kdi, Kdlim);   
+                Kdi = max(Kdi, Kdlim);
             }
         }
         else if (KdFF0 != 0)
@@ -654,13 +654,13 @@ void Foam::FFPair::correct
             htc2Ptr_->correctField(htc2);
             htc2.relax();
         }
-        
+
         //- Correct interfacial temperature and/or mass transfer
         fluid1_.correctThermoResidualMarkers();
         fluid2_.correctThermoResidualMarkers();
         if (phaseChangePtr_.valid())
         {
-            //- Limits interfacial area, updates interfacial temperature, 
+            //- Limits interfacial area, updates interfacial temperature,
             //  latent heat and mass transfer
             phaseChangePtr_->correct();
         }
@@ -671,19 +671,19 @@ void Foam::FFPair::correct
             const volScalarField& neg1(fluid1_.belowThermoResidualAlpha());
             const volScalarField& neg2(fluid2_.belowThermoResidualAlpha());
             myOps::storePrevIterIfRelax(iT_);
-            iT_ = 
+            iT_ =
                 pos1*pos2*
                 (
                     htc1*fluid1_.thermo().T() + htc2*fluid2_.thermo().T()
                 )/
                 (
                     max
-                    (   
-                        htc1+htc2, 
+                    (
+                        htc1+htc2,
                         dimensionedScalar
                         (
-                            "", 
-                            dimPower/dimArea/dimTemperature, 
+                            "",
+                            dimPower/dimArea/dimTemperature,
                             1e-6
                         )
                     )
@@ -702,12 +702,12 @@ void Foam::FFPair::correct
         const volScalarField& he2(fluid2_.thermo().he());
         const volScalarField& Cp1(fluid1_.Cp());
         const volScalarField& Cp2(fluid2_.Cp());
-        *(heSources_[he1.name()]) =  
+        *(heSources_[he1.name()]) =
         -   (
                 htc1*iA_*(he1/Cp1 + iT_ - fluid1_.thermo().T())
             -   fvm::Sp(htc1*iA_/Cp1, he1)
             )();
-        *(heSources_[he2.name()]) =  
+        *(heSources_[he2.name()]) =
         -   (
                 htc2*iA_*(he2/Cp2 + iT_ - fluid2_.thermo().T())
             -   fvm::Sp(htc2*iA_/Cp2, he2)
@@ -715,9 +715,9 @@ void Foam::FFPair::correct
 
         if (phaseChangePtr_.valid())
         {
-            *heSources_[he1.name()] += phaseChangePtr_->heSource(he1.name()); 
-            *heSources_[he2.name()] += phaseChangePtr_->heSource(he2.name()); 
-            
+            *heSources_[he1.name()] += phaseChangePtr_->heSource(he1.name());
+            *heSources_[he2.name()] += phaseChangePtr_->heSource(he2.name());
+
             //- Re-set htc to their values before their were modified by
             //  phaseChangePtr_->correctHeSources() (which caches them in
             //  prevIter)

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FSHeatTransferCoefficientModels
     defineTypeNameAndDebug(Shah, 0);
     addToRunTimeSelectionTable
     (
-        FSHeatTransferCoefficientModel, 
-        Shah, 
+        FSHeatTransferCoefficientModel,
+        Shah,
         FSHeatTransferCoefficientModels
     );
 }
@@ -91,7 +91,7 @@ Foam::FSHeatTransferCoefficientModels::Shah::Shah
     ),
     q_
     (
-        (useExplicitHeatFlux_) ? 
+        (useExplicitHeatFlux_) ?
         &pair.mesh().lookupObject<volScalarField>("heatFlux.structure") :
         nullptr
     ),
@@ -113,12 +113,12 @@ Foam::FSHeatTransferCoefficientModels::Shah::Shah
 /*
 IMPLEMENTATION NOTES
 
-The original pool boiling heat transfer coefficient by Shah is the following 
+The original pool boiling heat transfer coefficient by Shah is the following
 form:
 
 htcPB = C * q^n * pR^m
 
-with C, n, m being constants, pR being the reduced pressure (i.e. the 
+with C, n, m being constants, pR being the reduced pressure (i.e. the
 ration of the fluid pressure to the fluid pressure at its critical point)
 and q being the heat flux between wall and fluid. Needless to say, this form
 is not particularly suitable for a numerical implementation in its current
@@ -193,7 +193,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Shah::value
     else
     {
         const scalar& q((*q_)[celli]);
-        
+
         if (q > 0.0)
         {
             //- Reduced pressure

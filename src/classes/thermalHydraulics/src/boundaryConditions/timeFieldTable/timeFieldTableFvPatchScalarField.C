@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -76,14 +76,14 @@ timeFieldTableFvPatchScalarField
             <
                 Tuple2
                 <
-                    scalar, 
+                    scalar,
                     scalarField
                 >
             >
         >("table")
     ),
     tStart_(table_[0].first())
-{    
+{
     updateField();
 }
 
@@ -152,7 +152,7 @@ void Foam::timeFieldTableFvPatchScalarField::updateField()
                     break;
                 currentIndex_++;
                 t0 = table_[currentIndex_].first();
-                t1 = table_[currentIndex_+1].first(); 
+                t1 = table_[currentIndex_+1].first();
             }
         }
 
@@ -166,7 +166,7 @@ void Foam::timeFieldTableFvPatchScalarField::updateField()
             scalar c((t1-t)/(t1-t0));
 
             //- Linear interpolation between the fields at the provided times
-            //  if the time falls in between two time bins 
+            //  if the time falls in between two time bins
             this->operator==
             (
                 c*f0+(1.0-c)*f1
@@ -206,7 +206,7 @@ void Foam::timeFieldTableFvPatchScalarField::write(Ostream& os) const
         <
             Tuple2
             <
-                scalar, 
+                scalar,
                 scalarField
             >
         >

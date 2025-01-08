@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -49,7 +49,7 @@ Foam::autoPtr<Foam::powerModel> Foam::powerModel::New
 )
 {
     word type(dicts.subDict(dicts.toc()[0]).get<word>("type"));
-    Info<< "Constructing powerModel of type " << type 
+    Info<< "Constructing powerModel of type " << type
         << " in region(s): " << dicts.keys() << endl;
 
     auto* ctorPtr = powerModelsConstructorTable(type);

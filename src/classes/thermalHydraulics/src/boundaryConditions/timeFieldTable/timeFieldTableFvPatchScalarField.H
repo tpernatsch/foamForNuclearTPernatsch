@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -44,7 +44,7 @@ Group
 Description
     Boundary condition that allows to specify a scalarField over the boundary
     that changes in time via a table entry in the form
-    
+
     \verbatim
     table
     (
@@ -53,16 +53,16 @@ Description
         (tN (v0_N v1_N v2_N ...))
     );
     \endverbatim
-    
-    with ti being the time value at whiche the field vj_i is to be applied, 
+
+    with ti being the time value at whiche the field vj_i is to be applied,
     with j looping over face cells according to the patch indices. Field
     vj_0 will be applied for times t < t0 and field vj_N will be applied
     for times t > tN.
     This functionality is currently unavailable in OpenFOAM and I could not
-    even resort to the Table class while coding this, as it is templated and 
+    even resort to the Table class while coding this, as it is templated and
     does not support the scalarField type as template parameter.
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch; stefanradman92@gmail.com)
 
 Usage

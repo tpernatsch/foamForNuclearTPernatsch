@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -36,20 +36,16 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::regionSolvers
+    Foam::meshHandler
 
 Description
-    Class to hold the lists of region meshes and solvers
-
-    Also provides loop and iteration functionality which automatically set the
-    region Info prefix for each of the solvers returned by the '[]' operator or
-    iterator.
+    Class to hold the lists of region meshes and to perform the mesh-to-mesh mappings
 
 Usage
-    Given the \c regionSolvers named solvers:
+    Given the \c meshHandler named solvers:
     \verbatim
         // Create the region meshes and solvers
-        regionSolvers solvers(runTime);
+        meshHandler solvers(runTime);
     \endverbatim
 
     The list of solvers can be looped over:
@@ -66,7 +62,7 @@ Usage
 
     Alternatively the list of solvers can be iterated over:
     \verbatim
-        forAllIter(regionSolvers, solvers, solver)
+        forAllIter(meshHandler, solvers, solver)
         {
             solver->momentumPredictor();
         }
@@ -75,17 +71,18 @@ Usage
     automatically resets the \c Info prefix to spaces.
 
 SourceFiles
-    regionSolvers.C
+    meshHandler.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef regionSolvers_H
-#define regionSolvers_H
+#ifndef mapping_H
+#define mapping_H
 
 #include "solver.H"
-#include "meshHandler.H"
 #include "meshToMesh.H"
 #include "zeroGradientFvPatchFields.H"
+#include "meshHandler.H"
+#include "volFields.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -93,30 +90,24 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                      Class regionSolvers Declaration
+                      Class meshHandler Declaration
 \*---------------------------------------------------------------------------*/
 
-class regionSolvers
+class meshHandler
 {
     // Private Member Data
 
-        //- Mapper
-        meshHandler meshHandler_;
+        //- Region meshes
 
-        //- Region solvers
-        PtrList<solver> solvers_;
+        PtrList<fvMesh> meshes_;
 
-        //- Global space padding prefix
-        string prefix0_;
+        PtrList<fvMesh> mappingMeshes_;
 
-        //- List of space padded region prefixes
-        stringList prefixes_;
-
-        bool multiRegionTightCoupled_;
-        scalar multiRegionResidual_;
-        scalar maxMultiRegionIterations_;
-
-        SquareMatrix<scalar> invRBFmatrix_;
+        dictionary mappingDict_;
+        PtrList<PtrList<meshToMesh>> mappingList_;
+        PtrList<PtrList<volScalarField>> scalarCouplingFields_;
+        PtrList<PtrList<volVectorField>> vectorCouplingFields_;
+        List<List<void*>> couplingFields_;
 
 
 public:
@@ -127,118 +118,73 @@ public:
     // Constructors
 
         //- Construct from components
-        regionSolvers(const Time& runTime);
+        meshHandler(const Time& runTime);
 
         //- Disallow default bitwise copy construction
-        regionSolvers(const regionSolvers&) = delete;
+        meshHandler(const meshHandler&) = delete;
 
 
     //- Destructor
-    ~regionSolvers();
+    ~meshHandler();
 
 
     // Member Functions
 
-        bool tightlyCoupled(){return multiRegionTightCoupled_;};
-        scalar multiRegionResidual(){return multiRegionResidual_;};
-        scalar iterMax() {return maxMultiRegionIterations_;};
+        void mapAllFields(const Time& runTime);
 
-        //- Return the number of region solvers
-        inline label size() const;
+        void mapTheseFields(const Time& runTime, wordList meshToMap);
 
-        //- Set the Info prefix to space padding for global messages
-        void setGlobalPrefix() const;
+        void initializeMappedFields(const Time& runTime);
 
-        //- Set the Info prefix to the space padded region name
-        void setPrefix(const label i) const;
+        void createBaffleLessMeshes(const Time& runTime);
 
-        //- Reset the Info prefix to null
-        void resetPrefix() const;
+        void createCouplingFields(const Time& runTime);
 
-        //void mapFields(const Time& runTime);
+        fvMesh& returnMesh(word meshName);
+        fvMesh& returnMappingMesh(word meshName);
+        bool contains(wordList list, word thisWord);
 
-        //void initializeMappedFields(const Time& runTime);
+        template<class Type>
+        void map
+        (
+            word srcFieldName,
+            word tgtFieldName,
+            label tgtFieldLabel,
+            label srcFieldLabel,
+            bool removeBaffles
+        );
 
-        //void createBaffleLessMeshes(const Time& runTime);
+        template<class Type>
+        void mapAndWrite
+        (
+            word srcFieldName,
+            word tgtFieldName,
+            label tgtFieldLabel,
+            label srcFieldLabel,
+            bool removeBaffles
+        );
 
-        //void createCouplingFields(const Time& runTime);
-
-        meshHandler& mapper()
-        {
-            return meshHandler_;
-        }
-
-        //void interpolateAndMapFields(const Time& runTime);
-
-
-    // Iterator
-
-        class iterator;
-        friend class iterator;
-
-        // Iterator class to loop over the solvers, setting the prefix for each
-        class iterator
-        {
-            // Private Data
-
-                //- Reference to the regionSolvers
-                regionSolvers& regionSolvers_;
-
-                //- Current solver index
-                label index_;
-
-        public:
-
-            // //Access to meshes
-
-            friend class regionSolvers;
-
-            // Constructors
-
-                //- Construct for the regionSolvers
-                inline explicit iterator(regionSolvers&);
-
-            // Member Operators
-
-                inline bool operator==(const iterator&) const;
-                inline bool operator!=(const iterator&) const;
-
-                inline solver& operator*();
-                inline solver& operator()();
-                inline solver* operator->() const;
-
-                inline iterator operator++();
-                inline iterator operator++(int);
-        };
-
-        //- Return an iterator to begin traversing the solvers
-        inline iterator begin();
-
-        //- Return an iterator to end traversing the solvers
-        inline iterator end();
+        template<class Type>
+        void createBaffleLessField
+        (
+            word fieldName,
+            label regionLabel,
+            fvMesh& baffleLessMesh,
+            label& nCouplingFields
+        );
 
 
-    // Member Operators
-
-        //- Cast to the list of solvers
-        inline operator PtrList<solver>&();
-
-        //- Set the region i prefix and return the corresponding solver
-        solver& operator[](const label i);
-
-        //- Disallow default bitwise assignment
-        void operator=(const regionSolvers&) = delete;
 };
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-#include "regionSolversI.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#ifdef NoRepository
+    #include "meshHandlerTemplates.C"
+#endif
 
 #endif
 

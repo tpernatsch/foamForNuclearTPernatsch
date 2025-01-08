@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -123,7 +123,7 @@ protected:
     //- Mass transfer (from fluid1 to fluid2) at the fluid-fluid interface
     volScalarField dmdtI_;
 
-    //- Mass transfer (from fluid1 to fluid2) at the fluid1-wall (if > 0) or 
+    //- Mass transfer (from fluid1 to fluid2) at the fluid1-wall (if > 0) or
     //  fluid2-wall (if < 0) interface (e.g. sub-cooled boiling)
     volScalarField dmdtW_;
 
@@ -132,7 +132,7 @@ protected:
 
     //- Ptr to latentHeatModel
     autoPtr<latentHeatModel> latentHeatPtr_;
-   
+
     //- Ptr to saturation model
     autoPtr<saturationModel> saturationPtr_;
 
@@ -142,13 +142,13 @@ protected:
     //-
     DynamicList<label> residualIACells_;
 
-    //- Total cumulative mass that should have been transferred between the 
-    //  phases that was removed by the dmdt limiter 
+    //- Total cumulative mass that should have been transferred between the
+    //  phases that was removed by the dmdt limiter
     scalar dmLostToLimiter_;
 
     //- Linearized semi-implicit heat sources due to mass transfer (inclusive
     //  of intrinsic mass transfer enthalpy contribution)
-    typedef HashTable<fvScalarMatrix*, word, word::hash> 
+    typedef HashTable<fvScalarMatrix*, word, word::hash>
         fvScalarMatrixPtrTable;
     fvScalarMatrixPtrTable heSources_;
 
@@ -183,7 +183,7 @@ public:
     //  Carlo to make sure that multiRegimeBoiling can access dmdtW_ without
     //  issues. However, I believe this to be unnecessary as dmdtW_ is accessed
     //  via the objectRegistry lookup mechanism (in multiRegimeBoiling).
-    //  If friend keywords were necessary, you would see them all over 
+    //  If friend keywords were necessary, you would see them all over
     //  OpenFOAM wherever objectRegistry lookups are involved, and in any
     //  class whose members (or the class itself) could be targets of a lookup.
     //  This is not the case

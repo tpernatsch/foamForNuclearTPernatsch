@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,10 +39,10 @@ Class
     Foam::TLFModel
 
 Description
-    Model for the prediction of the Leidenfrost temperature (i.e. T_min) for 
+    Model for the prediction of the Leidenfrost temperature (i.e. T_min) for
     which the heat flux is minimal. After this temperature, we are in post CHF Regime
 
-    Author: 
+    Author:
     Gauthier Lazare (gauthier.lazare@gmail.com)
 
 SourceFiles
@@ -81,7 +81,7 @@ protected:
     //- Ref to Tsat (i.e. the interface T)
     const volScalarField& Tsat_;
 
-    //- Ref to pressure 
+    //- Ref to pressure
     const volScalarField& p_;
 
 public:

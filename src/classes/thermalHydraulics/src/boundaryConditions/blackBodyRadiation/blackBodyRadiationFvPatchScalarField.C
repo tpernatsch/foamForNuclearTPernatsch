@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -133,7 +133,7 @@ void Foam::blackBodyRadiationFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    //- Current patch temperature 
+    //- Current patch temperature
     scalarField Tp(*this);
 
     //- Internal field
@@ -147,7 +147,7 @@ void Foam::blackBodyRadiationFvPatchScalarField::updateCoeffs()
 
     //- Loop over all the faces of the boundary patch
     forAll(patch(), i)
-    {   
+    {
         if (Ti[i] > 0)
         {
             //- Compute Fourier heat flux
@@ -155,7 +155,7 @@ void Foam::blackBodyRadiationFvPatchScalarField::updateCoeffs()
 
             //- Compute outer cladding or metal/oxide interface temperature
             Tp[i] = Foam::pow(
-                q/(sigma_ * emissivity_) + Foam::pow4(Ta_), 
+                q/(sigma_ * emissivity_) + Foam::pow4(Ta_),
                 1.0/4.0
             );
         }

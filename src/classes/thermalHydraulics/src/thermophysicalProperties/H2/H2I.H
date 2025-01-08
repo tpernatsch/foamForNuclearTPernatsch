@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -95,12 +95,12 @@ inline Foam::scalar Foam::H2::omega22_11(scalar T) const
 
 
 // inline Foam::scalar Foam::H2::omega11_22(scalar T) const
-// { 
+// {
 //     // (not used)
 //     // Ω(1,1){2,2} defined in [1]
 //     // Coeffs fitted with data from [6], table II
 //     return(
-//         5e-16*pow(T, 4.0) - 2e-11*pow(T, 3.0) 
+//         5e-16*pow(T, 4.0) - 2e-11*pow(T, 3.0)
 //         + 2e-7*pow(T, 2.0) - 0.0015*T + 6.401
 //     );
 // }
@@ -186,7 +186,7 @@ inline Foam::scalar Foam::H2::densityH2(scalar p, scalar T) const
     if (discriminant < 0)
     {
         return(
-            2.0*sqrt(-p_/3.0) * cos(acos(3.0*q_/(2.0*p_)*sqrt(-3.0/p_))/3.0) 
+            2.0*sqrt(-p_/3.0) * cos(acos(3.0*q_/(2.0*p_)*sqrt(-3.0/p_))/3.0)
             - B_/(3.0*A_)
         );
     }
@@ -231,7 +231,7 @@ inline Foam::scalar Foam::H2::CpMCv(scalar p, scalar T) const
         -Rmass*T / sqr(V-b_spec+c_) + alpha_*(b_spec+ 2.0*V)/sqr(V*(V+b_spec))
     );
 
-    // Only if eq of state can be written as f(x,y,z)=0, true for cubic 
+    // Only if eq of state can be written as f(x,y,z)=0, true for cubic
     // equations
     const scalar dVdT(-dPdT / dPdV);
 
@@ -272,7 +272,7 @@ inline Foam::scalar Foam::H2::idealEntropyH2(const scalar p, const scalar T) con
 
 
 inline Foam::scalar Foam::H2::idealEntropyH(const scalar p, const scalar T) const
-{   
+{
     // const scalar Tref(273.15); // K
     // const scalar Pref(101325.0); // Pa
     // const scalar s_ref(114.72e3); // J/kmol/K
@@ -328,19 +328,19 @@ inline Foam::scalar Foam::H2::specificEnthalpyH(scalar T) const
     const scalar T_(T/1000.0);
 
     /*const scalar enthalpyH(
-        218.0 
-        + A_*T_ 
-        + B_*pow(T_, 2.0)/2.0 
-        + C_*pow(T_, 3.0)/3.0 
-        + D_*pow(T_, 4.0)/4.0 
+        218.0
+        + A_*T_
+        + B_*pow(T_, 2.0)/2.0
+        + C_*pow(T_, 3.0)/3.0
+        + D_*pow(T_, 4.0)/4.0
         - E_/T_ + F_ - H_
     ); // kJ/mol */
     const scalar enthalpyH(
-        218.0 
-        + 20.78603*T_ 
-        + 4.850638e-10*sqr(T_)/2.0 
-        - 1.582916e-10*pow(T_, 3.0)/3.0 
-        + 1.525102e-11*pow(T_, 4.0)/4.0 
+        218.0
+        + 20.78603*T_
+        + 4.850638e-10*sqr(T_)/2.0
+        - 1.582916e-10*pow(T_, 3.0)/3.0
+        + 1.525102e-11*pow(T_, 4.0)/4.0
         - 3.196347e-11/T_ + 211.8020 - 217.9994
     ); // kJ/mol
 
@@ -349,7 +349,7 @@ inline Foam::scalar Foam::H2::specificEnthalpyH(scalar T) const
 
 
 inline Foam::scalar Foam::H2::specificEnthalpyH2(scalar p, scalar T) const
-{ 
+{
     // Molecular hydrogen
     // const scalar n_(0.4986 + 1.1735*omega() + 0.4754*pow(omega(), 2.0));
     // const scalar alpha0_(0.42748*pow(R_*Tc(), 2.0) / Pc()); // J*m3/(mol^2)
@@ -387,7 +387,7 @@ inline Foam::scalar Foam::H2::cpPerfectGasH2(scalar T) const
     return
     (
         (1.0-sig_) * (4701.236*sigmoid(T, 2.326426e-02, 137.8745) + 9704.076)
-        + sig_ * (-9.870353e-05*sqr(T) + 1.706997*T + 14170.57) 
+        + sig_ * (-9.870353e-05*sqr(T) + 1.706997*T + 14170.57)
     );
 }
 
@@ -410,10 +410,10 @@ inline Foam::scalar Foam::H2::heatCapacityH(scalar T) const
     const scalar cpNIST
     (
         // A_ + B_*T_ + C_*pow(T_, 2.0) + D_*pow(T_, 3.0) + E_/pow(T_, 2.0)
-        20.78603 
-        + 4.850638e-10*T_ 
-        - 1.582916e-10*sqr(T_) 
-        + 1.525102e-11*pow(T_, 3.0) 
+        20.78603
+        + 4.850638e-10*T_
+        - 1.582916e-10*sqr(T_)
+        + 1.525102e-11*pow(T_, 3.0)
         + 3.196347e-11/sqr(T_)
     );
 
@@ -422,7 +422,7 @@ inline Foam::scalar Foam::H2::heatCapacityH(scalar T) const
 
 
 inline Foam::scalar Foam::H2::heatCapacityH2(scalar p, scalar T) const
-{   
+{
     const scalar Rmass(R_/W());
 
     // const scalar n_(0.4986 + 1.1735*omega() + 0.4754*sqr(omega()));
@@ -438,12 +438,12 @@ inline Foam::scalar Foam::H2::heatCapacityH2(scalar p, scalar T) const
     (
         -Rmass*T / sqr(V-b_spec+c_) + alpha_*(b_spec+ 2.0*V) / sqr(V*(V+b_spec))
     );
-    
+
     const scalar dVdT(-dPdT / dPdV);
-    
+
     const scalar cpDeparture
     (
-        -p*dVdT + Rmass - (n_*alpha_/T)*((1.0+n_)/b_spec)*log((V+b_spec)/V) 
+        -p*dVdT + Rmass - (n_*alpha_/T)*((1.0+n_)/b_spec)*log((V+b_spec)/V)
         - alpha_*(1.0+n_)*dVdT / (V*(V+b_spec))
     );
 
@@ -455,7 +455,7 @@ inline Foam::scalar Foam::H2::Cp(scalar p, scalar T) const
 {
     // Mass weighted heat capacity for H-H2 mix
     const scalar w_H_(w_H(p, T));
-    
+
     return(w_H_*heatCapacityH(T) + (1.0-w_H_)*heatCapacityH2(p, T));
 }
 
@@ -516,8 +516,8 @@ inline Foam::scalar Foam::H2::viscosity1(scalar T) const
     const scalar T_star(T/30.41);
 
     const scalar B_star(
-        -0.1870 
-        + 2.4871/T_star 
+        -0.1870
+        + 2.4871/T_star
         + 3.7151/sqr(T_star)
         -11.0972/pow(T_star, 3.0)
         + 9.0965/pow(T_star, 4.0)
@@ -540,7 +540,7 @@ inline Foam::scalar Foam::H2::viscosityH(scalar T) const
 
 inline Foam::scalar Foam::H2::mu(scalar p, scalar T) const
 {
-    // Molecular hydrogen 
+    // Molecular hydrogen
     // const scalar C1(6.43449673);
     // const scalar C2(4.56334068e-2);
     // const scalar C3(2.32797868e-1);
@@ -562,22 +562,22 @@ inline Foam::scalar Foam::H2::mu(scalar p, scalar T) const
     const scalar viscosityH2_(
         viscosity0(T) + viscosity1(T)*rhoH2 + 1e-6*(
             6.43449673*sqr(rhoR) * exp(
-                4.56334068e-2*Tr 
-                + 2.32797868e-1/Tr 
-                + 9.58326120e-1*sqr(rhoR)/(1.27941189e-1+Tr) 
+                4.56334068e-2*Tr
+                + 2.32797868e-1/Tr
+                + 9.58326120e-1*sqr(rhoR)/(1.27941189e-1+Tr)
                 + 3.63576595e-1*pow(rhoR, 6.0)
             )
         )
     );
 
-    // Atomic hydrogen 
+    // Atomic hydrogen
     const scalar viscosityH_(viscosityH(T));
 
     // Mix
     const scalar x_H_(x_H(p, T));
 
     // Pure molecular hydrogen
-    if (x_H_ == 0) 
+    if (x_H_ == 0)
     {
         return viscosityH2_;
     }
@@ -590,7 +590,7 @@ inline Foam::scalar Foam::H2::mu(scalar p, scalar T) const
         + 2.0*(1.0-x_H_)*x_H_/(W()+W_H_) * R_*T/(p*D_H_H2) * (1.0 + 3.0*W_H_*A_/(5.0*W()))
     );
     const scalar H_22(
-        sqr(x_H_)/viscosityH_ 
+        sqr(x_H_)/viscosityH_
         + 2.0*(1.0-x_H_)*x_H_/(W()+W_H_) * R_*T/(p*D_H_H2) * (1.0 + 3.0*W()*A_/(5.0*W_H_))
     );
     const scalar H_12(
@@ -598,7 +598,7 @@ inline Foam::scalar Foam::H2::mu(scalar p, scalar T) const
     );
 
     return(
-        (sqr(1.0-x_H_)/H_11 + sqr(x_H_)/H_22 - 2.0*(1.0-x_H_)*x_H_*H_12/(H_11*H_22)) 
+        (sqr(1.0-x_H_)/H_11 + sqr(x_H_)/H_22 - 2.0*(1.0-x_H_)*x_H_*H_12/(H_11*H_22))
         / (1.0 - sqr(H_12)/(H_11*H_22))
     );
 }
@@ -671,36 +671,36 @@ inline Foam::scalar Foam::H2::kappa(scalar p, scalar T) const
     const scalar lambda_12(15.0/4.0 * R_/W_H_H2_ * 2.6693e-4*sqrt(M_12*1e-3*T)/omega22_12(T));
     const scalar U_y
     (
-        4.0/15.0 * A12 * W_H_*W()/sqr(M_12) * sqr(lambda_12)/(lambda_H*lambdaH2) 
-        - (B12/5.0+1.0/12.0) 
+        4.0/15.0 * A12 * W_H_*W()/sqr(M_12) * sqr(lambda_12)/(lambda_H*lambdaH2)
+        - (B12/5.0+1.0/12.0)
         - 1.0/A12*(3.0*B12/8.0-25.0/32.0) * sqr(W_H_-W())/(W_H_*W())
     );
     const scalar U_z
     (
         4.0/15.0 * A12 * (
             lambda_12*(1.0/lambda_H + 1.0/lambdaH2)*W_H_*W()/sqr(M_12) -1.0
-        ) 
+        )
         - (B12/5.0+1.0/12.0)
     );
     const scalar U_1
     (
-        4.0/15.0 * A12 - (B12/5.0+1.0/12.0)*W_H_/W() 
+        4.0/15.0 * A12 - (B12/5.0+1.0/12.0)*W_H_/W()
         + sqr(W_H_-W())/(2.0*W_H_*W())
     );
     const scalar U_2
     (
-        4.0/15.0 * A12 - (B12/5.0+1.0/12.0)*W()/W_H_ 
+        4.0/15.0 * A12 - (B12/5.0+1.0/12.0)*W()/W_H_
         + sqr(W()-W_H_)/(2.0*W_H_*W())
     );
 
     const scalar X_lambda
     (
-        sqr(x_H_)/lambda_H + 2.0*x_H_*(1.0-x_H_)/lambda_12 
+        sqr(x_H_)/lambda_H + 2.0*x_H_*(1.0-x_H_)/lambda_12
         + sqr(1.0-x_H_)/lambdaH2
     );
     const scalar Y_lambda
     (
-        sqr(x_H_)/lambda_H*U_1 + 2.0*x_H_*(1.0-x_H_)/lambda_12*U_y 
+        sqr(x_H_)/lambda_H*U_1 + 2.0*x_H_*(1.0-x_H_)/lambda_12*U_y
         + sqr(1.0-x_H_)/lambdaH2*U_2
     );
     const scalar Z_lambda
@@ -717,7 +717,7 @@ inline Foam::scalar Foam::H2::kappa(scalar p, scalar T) const
 
     const scalar lambda_r
     (
-        p*D(p, T)/T * sqr(delta_H/(R_*T)) 
+        p*D(p, T)/T * sqr(delta_H/(R_*T))
         * x_H_*(1.0-x_H_)/sqr(2.0-x_H_)
     );
 

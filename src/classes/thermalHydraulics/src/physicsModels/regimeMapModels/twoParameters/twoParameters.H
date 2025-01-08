@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -48,10 +48,10 @@ Description
         "mapName"
         {
             type twoParameters;
-            
+
             // These correspond to the desired parameters for the 2-D map.
-            // These can only correspond to the IOobject names of 
-            // tvolScalarField ype objects in the mesh object registry. No 
+            // These can only correspond to the IOobject names of
+            // tvolScalarField ype objects in the mesh object registry. No
             // other volTypeFields are supported
             parameter1      "name1";
             parameter2      "name2";
@@ -63,7 +63,7 @@ Description
             // instabilities. In order to deal with the fact that the two axes
             // (or dimensions) of the regime map might refer to parameters with
             // wildy different domains (e.g. one axis corresponds to a volume
-            // fraction, which spans 0-1, while the other corresponds to a 
+            // fraction, which spans 0-1, while the other corresponds to a
             // mass flux, which can spans up to e.g. 10000 kg/m2/s), it is
             // difficult to define an absolute meaningful "distance" in this
             // 2-D domain. Thus, this width refers to the relative width of
@@ -71,7 +71,7 @@ Description
             // both axes span the 0-1 range only. Thus, this width needs to be
             // comprised between 0 and 1, wherein 0 = no interpolation (not
             // recommended) and 1 = everything is interpolated (then the map
-            // loses meaning). A generic value of 0.1 would serve a good 
+            // loses meaning). A generic value of 0.1 would serve a good
             // starting guess.
             interpolationWidth  value;
 
@@ -82,7 +82,7 @@ Description
 
             // Dictionary that holds pairs of point names and point coordinates
             // (par1_X, par2_X) for a generic point pX in the parameters space.
-            // These points are used to construct the regime domains in the 
+            // These points are used to construct the regime domains in the
             // regime map. The names of the points can be set to anything, as
             // long as they are referenced correctly in the reigmes dictionary
             // when building the regime domains
@@ -109,7 +109,7 @@ Description
             /*
                 ^ parameter2
                 |
-                |   
+                |
                 |                     C
                 |                     |\
                 |                     | \
@@ -119,11 +119,11 @@ Description
                 |          |          |     \
                 |          F----------E------D
                 |
-                i-------------------------------------------------> parameter1 
+                i-------------------------------------------------> parameter1
             *//*
             // In this scenario, while the domain EDC could be constructed
-            // from only those three points (as CE is straight), the code 
-            // requires it to be constructed as EDCB (or DCBE, CBED, EBCD, you 
+            // from only those three points (as CE is straight), the code
+            // requires it to be constructed as EDCB (or DCBE, CBED, EBCD, you
             // get the idea), as if the B point is not included, the "internal
             // boundary" BE between the two domains will never be recognized
             // as such, thus leading to outright interpolation errors.
@@ -139,7 +139,7 @@ Description
     }
     \endverbatim
 
-    Author: 
+    Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@alumni.epfl.ch)
 
 SourceFiles
@@ -173,12 +173,12 @@ public:
 
     enum class interpolationMode
     {
-        linear, 
+        linear,
         quadratic
     };
 
     static const Enum<interpolationMode> interpolationModeNames_;
-    
+
 private:
 
     //- Parameter names
@@ -196,7 +196,7 @@ private:
         scalarVector2D,
         word,
         word::hash
-    >   pointTable; 
+    >   pointTable;
     pointTable points_;
 
     //- Table of regimeDomains
@@ -206,7 +206,7 @@ private:
         word,
         word::hash
     >   regimeDomainTable;
-    regimeDomainTable regimeDomains_; 
+    regimeDomainTable regimeDomains_;
 
     //- Scale factors for normalization
     scalar DX_;
@@ -216,7 +216,7 @@ private:
     const interpolationMode interpolationMode_;
     scalar interpolationWidth_;
     bool interpolate_;
-    
+
 
 public:
 

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -77,13 +77,13 @@ class gapContactFvPatchVectorField
 
         //- Local reference to region couple patch
         const regionCoupledBaseFvPatch& regionCoupledPatch_;
-        
+
         //- Penalty factor
         scalar penaltyFact_;
 
         //- POffse
         scalar offset_;
-        
+
         //- Gap width [m]
         mutable scalarField gapWidth_;
 
@@ -91,11 +91,11 @@ class gapContactFvPatchVectorField
         mutable scalarField interfaceP_;
 
     // Private functions
-        
+
 protected:
 
     // Protected functions
-    
+
             //- Return the neighbour patchField
             inline const gapContactFvPatchVectorField& neighbour() const
             {
@@ -114,7 +114,7 @@ protected:
 
             //- Minimum patch stiffness for interface pressure evaluation
             scalar boundaryStiffness() const;
-            
+
 public:
 
     //- Runtime type information
@@ -186,12 +186,12 @@ public:
     // Member functions
 
         // Access
-        
+
             //- Interface pressure
             inline const scalarField& interfaceP() const
             {
                 return interfaceP_;
-            }       
+            }
 
         // Mapping functions
 
@@ -207,7 +207,7 @@ public:
                 const fvPatchVectorField&,
                 const labelList&
             );
-            
+
         // Modify
 
             //- Update the coefficients associated with the patch field

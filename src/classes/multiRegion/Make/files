@@ -1,0 +1,5 @@
+regionSolvers/regionSolvers.C
+meshHandler/meshHandler.C
+multiPhysicsSolver/multiPhysicsSolver.C
+
+LIB = $(FOAM_USER_LIBBIN)/libMultiRegion

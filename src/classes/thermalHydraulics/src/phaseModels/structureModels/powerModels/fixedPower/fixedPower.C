@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -54,8 +54,8 @@ namespace powerModels
     defineTypeNameAndDebug(fixedPower, 0);
     addToRunTimeSelectionTable
     (
-        powerModel, 
-        fixedPower, 
+        powerModel,
+        fixedPower,
         powerModels
     );
 }
@@ -120,7 +120,7 @@ Foam::powerModels::fixedPower::fixedPower
     )
 {
     this->setInterfacialArea();
-    
+
     structure_.setRegionField(*this, powerDensity_, "powerDensity");
     structure_.setRegionField(*this, T_, "T");
 
@@ -165,23 +165,23 @@ Foam::powerModels::fixedPower::fixedPower
         {
             // Should I reuse the same IOdictionary strategy from pump.C?
             const dictionary& timeProfileDict(dict.subDict(timeProfileDictName));
-            
+
             timeProfile_.set
             (
                 regioni,
                 new timeProfile(timeProfileDict, mesh_.time())
             );
-            
+
             timeDependent_[regioni] = true;
             // t0_[regioni] = timeProfileDict.lookupOrDefault("startTime", 0.0);
         }
     }
 
     //- The alphaRhoCp is read as a rhoCp, alpha is multiplied at this step
-    alphaRhoCp_ = 
+    alphaRhoCp_ =
         max
         (
-            alpha_*alphaRhoCp_, 
+            alpha_*alphaRhoCp_,
             dimensionedScalar
             ("", dimEnergy/dimVol/dimTemperature, 1e-69)
         );
@@ -219,7 +219,7 @@ void Foam::powerModels::fixedPower::powerUpdate()
     forAll(this->toc(), regioni)
     {
         word region(this->toc()[regioni]);
-        
+
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (
@@ -233,40 +233,40 @@ void Foam::powerModels::fixedPower::powerUpdate()
             scalar t(mesh_.time().timeOutputValue());
             scalar timeDependentPowerDensity(timeProfile_[regioni].value(t));
 
-            // The following assumes that each coefficient in the timeProfile_ 
-            // array represents a scaling factor relative to the initial power 
-            // density value. For instance, a coefficient of 1 at position 'i' 
+            // The following assumes that each coefficient in the timeProfile_
+            // array represents a scaling factor relative to the initial power
+            // density value. For instance, a coefficient of 1 at position 'i'
             // implies that the power at time step 'i' is equal to the initial
             // value.
 
             // The power density at each cell and at time t is calculated using:
-            //        powerDensity(t - deltat) = 
+            //        powerDensity(t - deltat) =
             //                 initialPowerDensity * timeCoefficient(t - deltat)
             //
             //        powerDensity(t) = initialPowerDensity * timeCoefficient(t)
 
             // Using the previous relations, we can eliminate the initial
             // power value and derive the updated power density.
-            
+
             const volScalarField& powerDensityOld = powerDensity_.oldTime();
-            
+
             // scalar tOld(mesh_.time().timeOutputValue()-t0_[regioni] -
             //     mesh_.time().deltaT().value());
             scalar tOld
             (
                 mesh_.time().timeOutputValue() - mesh_.time().deltaT().value()
             );
-            
+
             scalar timeDependentPowerDensityOld(
                 timeProfile_[regioni].value(tOld));
 
             forAll(regionCells, i)
             {
                 label celli(regionCells[i]);
-                
+
                 powerDensity_[celli] =  timeDependentPowerDensity * (
                     powerDensityOld[celli]/timeDependentPowerDensityOld);
-            }          
+            }
         }
     }
 }
@@ -279,16 +279,16 @@ void Foam::powerModels::fixedPower::correct
 {
     this->powerUpdate();
     scalar dt(mesh_.time().deltaT().value());
-    volScalarField& T0(T_.oldTime()); 
-    
+    volScalarField& T0(T_.oldTime());
+
     forAll(cellList_, i)
     {
         label celli(cellList_[i]);
         scalar alphaRhoCpByDt(alphaRhoCp_[celli]/dt);
         const scalar& iA(iA_[celli]);
-        T_[celli] = 
+        T_[celli] =
             (
-                iA*HTSum[celli] 
+                iA*HTSum[celli]
             +   alpha_[celli]*powerDensity_[celli]
             +   alphaRhoCpByDt*T0[celli]
             )/

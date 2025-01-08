@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -42,7 +42,7 @@ Description
     2D line segment representing the boundary between two different
     regimeDomains.
 
-    Author: 
+    Author:
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -98,7 +98,7 @@ private:
     //- regimeDomain that owns the segment (i.e. pointed by vNormPerp_)
     const regimeDomain2D* ownerPtr_;
 
-    //- regimeDomain on the other side of the segment (i.e. opposite to 
+    //- regimeDomain on the other side of the segment (i.e. opposite to
     //  vNormPerp_)
     const regimeDomain2D* nbrPtr_;
 
@@ -181,9 +181,9 @@ public:
                 return len_;
             }
 
-            //- Careful when you call these, if the ptr is not set (via an 
+            //- Careful when you call these, if the ptr is not set (via an
             //  earlier call of setOnwer, setNbr)
-            
+
             const regimeDomain2D& owner() const
             {
                 return *ownerPtr_;

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -43,10 +43,10 @@ Description
     is coupled to the fluid(s) via a convective boundary condition. The
     equation is solved via the finite volume method
 
-    Authors: 
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com), 
+    Authors:
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
     Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
-    
+
 SourceFiles
     heatedPin.C
 
@@ -84,7 +84,7 @@ protected:
     //- Power density of the pin
     volScalarField powerDensity_;
 
-    //- Fields representing inner and outer pin temperatures 
+    //- Fields representing inner and outer pin temperatures
     volScalarField Ti_;
     volScalarField To_;
 
@@ -169,8 +169,8 @@ public:
         //  current system conditions
         void updateLocalTemperatureProfile
         (
-            const label& celli, 
-            const scalar& ht, 
+            const label& celli,
+            const scalar& ht,
             const scalar& h
         );
 

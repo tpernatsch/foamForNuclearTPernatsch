@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -116,7 +116,7 @@ Foam::scalar Foam::regimeMapModels::regimeBoundary2D::distanceTo
 (
     const Vector2D<scalar>& p
 ) const
-{    
+{
     Vector2D<scalar> v0p(p-p0());
     scalar v0pParLen(v0p & vNorm_);
     if (v0pParLen < 0)
@@ -134,7 +134,7 @@ bool Foam::regimeMapModels::regimeBoundary2D::operator==
     const regimeBoundary2D& rhs
 ) const
 {
-    if 
+    if
     (
         (p0() == rhs.p0() and p1() == rhs.p1())
     or  (p0() == rhs.p1() and p1() == rhs.p0())

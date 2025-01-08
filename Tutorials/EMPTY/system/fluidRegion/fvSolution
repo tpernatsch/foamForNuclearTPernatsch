@@ -89,7 +89,7 @@ PIMPLE
 {
     solveEnergy         true;
     solveFluidMechanics true;
-    nCorrectors      3;
+    nCorrectors         3;
     nNonOrthogonalCorrectors 0;
 
     //- The following feature applies only to the twoPhase solver and is

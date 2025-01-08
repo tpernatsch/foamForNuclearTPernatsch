@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace FSHeatTransferCoefficientModels
     defineTypeNameAndDebug(CachardVapour, 0);
     addToRunTimeSelectionTable
     (
-        FSHeatTransferCoefficientModel, 
-        CachardVapour, 
+        FSHeatTransferCoefficientModel,
+        CachardVapour,
         FSHeatTransferCoefficientModels
     );
 }
@@ -101,7 +101,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::CachardVapour::value
     const scalar& pi(p_[celli]);
 
 
-    // Film Thickness delta 
+    // Film Thickness delta
     scalar deltai(Dhi/2*(pow(1+alphai*((4/Foam::constant::mathematical::pi)*pow(pi/max(DRi,1e-6),2)-1),0.5)-1));
     scalar hCachard = 2*kgi/max(deltai,1e-6);
 

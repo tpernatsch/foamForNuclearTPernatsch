@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,8 +50,8 @@ namespace powerModels
     defineTypeNameAndDebug(fixedTemperature, 0);
     addToRunTimeSelectionTable
     (
-        powerModel, 
-        fixedTemperature, 
+        powerModel,
+        fixedTemperature,
         powerModels
     );
 }
@@ -102,9 +102,9 @@ Foam::powerModels::fixedTemperature::fixedTemperature
         word timeProfileDictName("temperatureTimeProfile");
         if (dict.found(timeProfileDictName))
         {
-            
+
             const dictionary& timeProfileDict(dict.subDict(timeProfileDictName));
-            
+
             timeProfile_.set
             (
                 regioni,
@@ -116,7 +116,7 @@ Foam::powerModels::fixedTemperature::fixedTemperature
             //     timeProfileDict.get<word>("type")
             // );
 
-            // timeProfile_.set        
+            // timeProfile_.set
             // (
             //     regioni,
             //     Function1<scalar>::New
@@ -147,7 +147,7 @@ void Foam::powerModels::fixedTemperature::temperatureUpdate() const
     forAll(this->toc(), regioni)
     {
         word region(this->toc()[regioni]);
-        
+
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (
@@ -158,16 +158,16 @@ void Foam::powerModels::fixedTemperature::temperatureUpdate() const
         {
             // scalar t(mesh_.time().timeOutputValue()-t0_[regioni]);
             scalar t(mesh_.time().timeOutputValue());
-            scalar timeDependentTemperature(timeProfile_[regioni].value(t));            
+            scalar timeDependentTemperature(timeProfile_[regioni].value(t));
 
-            // The following assumes that each coefficient in the timeProfile_ 
-            // array represents a scaling factor relative to the initial  
-            // temperature value. For instance, a coefficient of 1 at position  
-            // 'i' implies that the temperature at time step 'i' is equal to the 
+            // The following assumes that each coefficient in the timeProfile_
+            // array represents a scaling factor relative to the initial
+            // temperature value. For instance, a coefficient of 1 at position
+            // 'i' implies that the temperature at time step 'i' is equal to the
             // initial value.
 
             // The T at each cell and at time t is calculated using:
-            //        T(t - deltat) = 
+            //        T(t - deltat) =
             //                 initialT * timeCoefficient(t - deltat)
             //
             //        T(t) = initialT * timeCoefficient(t)
@@ -191,7 +191,7 @@ void Foam::powerModels::fixedTemperature::temperatureUpdate() const
                     TemperatureOld[celli]/timeDependentTemperatureOld);
                 // Different for FMI, see fixedTemperatureFMI
                 // T_[celli] =  timeDependentTemperature;
-            }          
+            }
         }
     }
 }

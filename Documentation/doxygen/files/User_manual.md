@@ -15,7 +15,7 @@ N.B.: **Users are expected to be already familiar with OpenFOAM and nuclear engi
 
 A fairly general theoretical presentation of GeN-Foam is provided in Ref. \cite FIORINA201524. It is recommended to go through this paper before starting to use GeN-Foam. However, the paper is getting quite old and it is recommended to refer to Ref. \cite FIORINA2016212  for the diffusion solver, Ref. \cite FIORINA2017419 for the SP3 solver, Refs. \cite Fiorina2019DetailedOpenFoam \cite Fiorina2015ApplicationCodes for the thermal-mechanic solver and its use for mesh deformation, Ref. \cite Fiorina2019DetailedOpenFoam for the SN solver, and Refs. \cite Radman2019ADesign \cite RADMAN2021111178 \cite RADMAN2021111422 for single- and two-phase thermal-hydraulics.
 
-Before using this manual, we recommend going through the introductory lectures to both OpenFOAM and GeN-Foam that are provided in the folder *Documentation/someUsefulDocumentsAndPResentations*. These lectures are taken from an IAEA e-learning course available at https://elearning.iaea.org/m2/course/view.php?id=1286. The course requires registration and a NUCLEUS account, but it should be available to all IAEA member states.
+Before using this manual, we recommend going through the introductory lectures to both OpenFOAM and GeN-Foam that are provided in the folder *Documentation/usefulDocumentsAndPresentations*. These lectures are taken from an IAEA e-learning course available at https://elearning.iaea.org/m2/course/view.php?id=1286. The course requires registration and a NUCLEUS account, but it should be available to all IAEA member states.
 
 
 ## Some practical information

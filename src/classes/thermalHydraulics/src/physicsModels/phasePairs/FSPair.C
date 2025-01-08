@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -69,8 +69,8 @@ Foam::FSPair::FSPair
         IOobject
         (
             (
-                (fluidRef.mesh().thisDb().lookupClass<fluid>().size() > 1) ? 
-                IOobject::groupName(fluidRef.name(), "structure") : 
+                (fluidRef.mesh().thisDb().lookupClass<fluid>().size() > 1) ?
+                IOobject::groupName(fluidRef.name(), "structure") :
                 "fluid.structure"
             ),
             fluidRef.mesh().time().timeName(),
@@ -169,24 +169,24 @@ Foam::FSPair::FSPair
     )
 {
     Info << endl;
-    
+
     bool onePhase(mesh_.thisDb().lookupClass<fluid>().size() == 1);
-    
+
     const dictionary& physicsModelsDict(dict_.subDict("physicsModels"));
-    
+
     //- Construct drag and heat transfer models
     const dictionary* dragModelsDictPtr(nullptr);
     const dictionary* heatTransferModelsDictPtr(nullptr);
     if (onePhase)
     {
-        dragModelsDictPtr = 
+        dragModelsDictPtr =
             &(physicsModelsDict.subDict("dragModels"));
-        heatTransferModelsDictPtr = 
+        heatTransferModelsDictPtr =
             &(physicsModelsDict.subDict("heatTransferModels"));
     }
     else
     {
-        if 
+        if
         (
             foundUnorderedPairSubDict
             (
@@ -194,7 +194,7 @@ Foam::FSPair::FSPair
             )
         )
         {
-            dragModelsDictPtr = 
+            dragModelsDictPtr =
                 &(
                     getUnorderedPairSubDict
                     (
@@ -202,7 +202,7 @@ Foam::FSPair::FSPair
                     )
                 );
         }
-        if 
+        if
         (
             foundUnorderedPairSubDict
             (
@@ -210,7 +210,7 @@ Foam::FSPair::FSPair
             )
         )
         {
-            heatTransferModelsDictPtr = 
+            heatTransferModelsDictPtr =
                 &(
                     getUnorderedPairSubDict
                     (
@@ -259,7 +259,7 @@ Foam::FSPair::FSPair
             );
         }
     }
-    
+
     //- Contact fraction models
     if (!onePhase)
     {
@@ -267,7 +267,7 @@ Foam::FSPair::FSPair
         (
             physicsModelsDict.subDict("pairGeometryModels")
         );
-        if 
+        if
         (
             foundUnorderedPairSubDict(pairGeometryModels)
         )
@@ -300,7 +300,7 @@ Foam::FSPair::FSPair
             );
         }
 
-        //- 
+        //-
         fPtr_.reset
         (
             new volScalarField
@@ -324,7 +324,7 @@ Foam::FSPair::FSPair
 
 void Foam::FSPair::correct
 (
-    const bool& correctFluidDynamics, 
+    const bool& correctFluidDynamics,
     const bool& correctEnergy
 )
 {
@@ -338,7 +338,7 @@ void Foam::FSPair::correct
     //  structure_.Dh() which does not change in time.
     const volScalarField& Dh(structure_.Dh());
     const volVectorField& lDh(structure_.lDh());
-    
+
     //- Correct Reynolds
     volScalarField nu(fluid_.thermo().nu());
     Re_ = fluid_.normalized()*mag(U)*Dh/nu;
@@ -351,7 +351,7 @@ void Foam::FSPair::correct
     //  we get a matrix whose diagonal elements are the components of lRe.
     //  Then directly set these diagonal elemets (I guess this is the most
     //  efficient approch)
-    volTensorField tlRet = 
+    volTensorField tlRet =
         fluid_.normalized()*(structure_.Rg2l()&U)*lDh/fluid_.thermo().nu()();
     lRe_.replace(0, max(tlRet.component(0), minRe_));
     lRe_.replace(1, max(tlRet.component(4), minRe_));
@@ -420,7 +420,7 @@ void Foam::FSPair::correct
         }
         Kd_.correctBoundaryConditions();
         Kd_.relax();
-        
+
         //- Rotate drag
         structure_.localToGlobalRotateField(Kd_);
     }
@@ -428,7 +428,7 @@ void Foam::FSPair::correct
     //- Correct contact partition fraction, if valid
     if (fPtr_.valid())
         contactPartition_->correctField(fPtr_());
-    
+
     if (correctEnergy)
     {
         myOps::storePrevIterIfRelax(htc_);

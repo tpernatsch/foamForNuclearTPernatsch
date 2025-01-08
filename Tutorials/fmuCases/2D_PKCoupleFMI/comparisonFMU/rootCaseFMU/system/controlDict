@@ -61,11 +61,6 @@ removeBaffles
 }
 
 
-//- Baffles
-
-removeFluidBaffles true;
-
-
 //- Time control
 
 adjustTimeStep  true;

@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2406                                                  |
+|    Built on OpenFOAM v2412                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -44,10 +44,10 @@ Description
     with a finite differences scheme. Only radial heat diffusion is considered.
     Derivation of the equations is provided at the end of the present file.
 
-    Authors: 
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com), 
+    Authors:
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
     Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
-    
+
 SourceFiles
     interpolatedNuclearFuelPin.C
 
