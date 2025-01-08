@@ -87,14 +87,14 @@ Foam::criticalHeatFluxModels::lookUpTableCHF::lookUpTableCHF
     pressureValues_(dict.lookup("pressureValues")),
     massFlowRateValues_(dict.lookup("massFlowRateValues")),
     qualityValues_(dict.lookup("qualityValues")),
-    data_(PtrList<FieldField<Field, scalar>>(dict.lookup("data"), PtrListScalarFieldFieldINew())),
-    pMethod(interpolateTableBase::interpolationMethodNames_[
+    data_(PtrList<FieldField<Field, scalar>>(dict.lookup("data"), PtrListScalarFieldFieldINewGF())),
+    pMethod(InterpolateTableBaseGF::interpolationMethodNames_[
         dict.lookupOrDefault<word>("pressureInterpolationMethod", "linear")
     ]),
-    gMethod_(interpolateTableBase::interpolationMethodNames_[
+    gMethod_(InterpolateTableBaseGF::interpolationMethodNames_[
         dict.lookupOrDefault<word>("massFlowRateInterpolationMethod", "linear")
     ]),
-    xeMethod_(interpolateTableBase::interpolationMethodNames_[
+    xeMethod_(InterpolateTableBaseGF::interpolationMethodNames_[
         dict.lookupOrDefault<word>("qualityInterpolationMethod", "linear")
     ]),
     pTable_(pressureValues_, data_, pMethod)
@@ -136,7 +136,7 @@ Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
     const scalar Li(mag(FFPairPtr_->L()[celli]));
     // Calculate the liquid and vapor saturated enthalpy in this cell.
     scalar hLsati(hLsat[celli]);
-    scalar hVsati(hLsat[celli] + Li);   
+    scalar hVsati(hLsat[celli] + Li);
     // Calculate the mass flow rate in this cell
     scalar massFlowi(rhoLi*uLi*aLi+rhoVi*uVi*(1-aLi));
     // Calculate the liquid and vapor enthalpy in this cell.
@@ -150,19 +150,19 @@ Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
     scalar EquilibriumQualityi((hMixi-hLsati)/Li);
 
     //convert pressure to KPa, which is used in CHF look-up table
-    scalar pk(pi/1000.0); 
+    scalar pk(pi/1000.0);
 
     // Interpolate 3D table with pressure
     FieldField<Field, scalar> pData(pTable_(pk));
 
-    // Create 2D table (x is massFlowRate, y is quality)    
-    scalarFieldInterpolateTable gTable(massFlowRateValues_, pData, gMethod_);
+    // Create 2D table (x is massFlowRate, y is quality)
+    scalarFieldInterpolateTableGF gTable(massFlowRateValues_, pData, gMethod_);
 
     // Interpolate 2D table with mass flow rate
     scalarField gData(gTable(massFlowi));
 
-    // Create 1D table (main coordinate is quality)    
-    scalarInterpolateTable xeTable(qualityValues_, gData, xeMethod_);
+    // Create 1D table (main coordinate is quality)
+    scalarInterpolateTableGF xeTable(qualityValues_, gData, xeMethod_);
 
     // Interpolate 1D table and get final value of critical heat flux.
     // Then convert kW/m2 ----> W/m2
@@ -176,11 +176,11 @@ Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
       scalar K2((2.0*PitchToDiameter_ - 1.5)*exp(-pow(abs(EquilibriumQualityi),3.0)/2.0));
       QCHF = QCHF * K2;
     }
-    else 
+    else
     {
       scalar K1(max(0.6,sqrt(0.008/Dhi)));
       QCHF = QCHF * K1;
     }
-     
+
     return QCHF;
 }

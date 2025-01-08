@@ -278,7 +278,9 @@ void Foam::meshHandler::mapAllFields(const Time& runTime)
                             )
                             {
                                 Info<< "Warning! Field "
-                                    << sourceFields[fieldi] << " not found !"
+                                    << sourceFields[fieldi]
+                                    << " not found in region "
+                                    << meshes_[j].name() << " !"
                                     << endl;
                             }
                             else
@@ -399,7 +401,8 @@ void Foam::meshHandler::mapTheseFields(const Time& runTime, wordList meshToMap)
                                 {
                                     Info<< "Warning! Field "
                                         << sourceFields[fieldi]
-                                        << " not found!"
+                                        << " not found in region "
+                                        << meshes_[j].name() << " !"
                                         << endl;
                                 }
                                 else
@@ -507,7 +510,8 @@ void Foam::meshHandler::initializeMappedFields( const Time& runTime)
                             if ((removeBaffles and !(mappingMeshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))) or (!removeBaffles and !(meshes_[j].foundObject<volScalarField>(sourceFields[fieldi]))))
                             {
                                 Info<<"Warning! Field " << sourceFields[fieldi]
-                                    << " not found!"
+                                    << " not found in region "
+                                    << meshes_[j].name() << " !"
                                     << endl;
                             }
                             else
