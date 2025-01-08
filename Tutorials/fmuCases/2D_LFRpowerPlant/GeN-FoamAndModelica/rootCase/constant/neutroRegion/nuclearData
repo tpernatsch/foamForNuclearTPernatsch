@@ -143,6 +143,9 @@ drivelineFeedbackZones
 );
 
 
+xsVariables
+{}
+
 //- Foam zones from Serpent universes
 
 zones

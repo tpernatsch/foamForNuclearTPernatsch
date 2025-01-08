@@ -25,6 +25,9 @@ energyGroups    6;
 
 precGroups      8;
 
+xsVariables
+{}
+
 states
 (
     reference // Mandatory state

@@ -23,6 +23,9 @@ legendreMoments 3;
 
 isLowMemory     true;
 
+xsVariables
+{}
+
 states
 (
     reference

@@ -144,6 +144,9 @@ drivelineFeedbackZones
 
 //- Foam zones from Serpent universes
 
+xsVariables
+{}
+
 zones
 (
 	"innerFuel"  //- Serpent Universe: uInnFuel

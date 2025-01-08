@@ -89,6 +89,9 @@ externalReactivityTimeProfile
 
 //- Foam zones from Serpent universes
 
+xsVariables
+{}
+
 states
 (
     reference

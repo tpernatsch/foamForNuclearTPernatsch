@@ -63,7 +63,11 @@ In GeN-Foam, cross-sections and several other neutronics properties are handled 
 <div class="border-box">
 <b>The *nuclearData* dictionary</b>
 
-The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It contains all basic nuclear properties for the reference and perturbed reactor states. For instance,including *Tfuel* in *reference* and a perturbed state represents the temperatures at which the reference and perturbed cross-sections have been calculated, respectively. Radial Basis Function interpolation is performed by GeN-Foam between reference and perturbed reactor states, except for fuel temperature, for which a logarithmic or square root interpolation is provided (depending on the spectrum, which in turn is defined by the keyword *fastNeutrons*). If no perturbed state data are provided, the reference cross-sections are used. Nuclear data can be generated using any nuclear code.
+The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It contains all basic nuclear properties for the reference and perturbed reactor states. For instance, including *Tfuel* in *reference* and a perturbed state represents the temperatures at which the reference and perturbed cross-sections have been calculated, respectively. Radial Basis Function interpolation is performed by GeN-Foam between reference and perturbed reactor states. It is possible to provide the XS set with multiple perturbation variables (see example below). If no perturbed state data are provided, the reference cross-sections are used.
+
+Special field for axial and radial expansions are provided as `axExp` and `radExp` (see [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData)).
+
+Nuclear data can be generated using any nuclear code.
 * [serpentToFoam](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/serpentToFoam/serpent2.1.23) routines provided with GeN-Foam (in the *Tools* folder) is an Octave script that automatically converts Serpent output files into the nuclear data files employed by GeN-Foam.
 * [openmcToFoam](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/openmcToFoam) Python package provided with GeN-Foam automatically converts OpenMC output into nuclear data files.
 
@@ -83,12 +87,53 @@ One can find more details on all the parameters in the *XS.H* file and commented
 [2D_onePhaseAndPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData) (for point kinetics).
 [2D_onePhaseAndSubcriticalPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource) (for subcritical point kinetics).
 
+One can parametrize the XS on any field provided by GeN-Foam. Three laws are currently provided to the user (linear, square root and logarithmic). It is possible to assign the law through the following sub dictionary in *nuclearData* with the name of the field:
+```cpp
+xsVariables
+{
+    TFuel       log;
+    rhoCool     lin;
+}
+
+states
+(
+    reference
+    {
+        TFuel   900;
+        rhoCool 4125;
+        #include "XSref"
+    }
+
+    Tfuel1200K
+    {
+        TFuel   1200;
+        #include "XSTfuel1200K"
+    }
+
+    rhoCool3500kgm3
+    {
+        rhoCool 3500;
+        #include "XSrhoCool3500kgm3"
+    }
+
+    Tfuel1200KandRhoCool3500kgm3
+    {
+        TFuel   1200;
+        rhoCool 3500;
+        #include "XSTfuel1200KandRhoCool3500kgm3"
+    }
+);
+```
+
 N.B.1: Cross-sections must be expressed according to the International System of Units (so m, not cm).
 
 N.B.2: defaultPrec has 1/m3 units except for the adjoint solver that needs 1/m2/s.
 
 N.B.3: The *nuclearData* file must always be present, even when not parametrizing cross-sections. If no parametrization is needed, the “zones” card must be left “blank” as:
 ```cpp
+xsVariables
+{}
+
 states
 (
     reference
@@ -128,12 +173,12 @@ As in all standard OpenFOAM solvers, initial values (IC) and boundary conditions
 In addition to the standard OpenFOAM BC, an albedo boundary condition (see *albedoSP3FvPatchField.H*) is available in GeN-Foam for diffusion and SP3 calculations and can be used according to the following syntax:
 
 ```cpp
-	type            albedoSP3;
-	gamma			0.5;            // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
-	diffCoeffName	Dalbedo;        // not to be changed
-	fluxStarAlbedo  fluxStarAlbedo; // not to be changed
-	forSecondMoment false;          // true in case it is a condition for a second moment flux (for SP3 calculations)
-	value           uniform 1;
+    type            albedoSP3;
+    gamma           0.5;            // defined as (1-alpha)/(1+alpha)/2, alpha being the albedo coefficient
+    diffCoeffName   Dalbedo;        // not to be changed
+    fluxStarAlbedo  fluxStarAlbedo; // not to be changed
+    forSecondMoment false;          // true in case it is a condition for a second moment flux (for SP3 calculations)
+    value           uniform 1;
 ```
 Please note that the boundary condition needs to be set both for the first and second moments in SP3.
 

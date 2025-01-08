@@ -29,6 +29,8 @@ energyGroups    1;
 
 precGroups      6;
 
+xsVariables
+{}
 
 states
 (

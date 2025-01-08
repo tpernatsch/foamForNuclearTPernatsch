@@ -43,7 +43,7 @@ Info<< nl << "Build XSs using "
     << nl
     << endl;
 
-Info<< "XS variables:" << endl;
+Info<< "XS variables: " << (nxsVariables_ == 0 ? "None" : 0) << endl;
 scalarList variableRefValues(0);
 forAll(xsVariablesDict_.toc(), varI)
 {

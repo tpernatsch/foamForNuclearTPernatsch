@@ -53,6 +53,8 @@ energyGroups    2;
 
 precGroups      6;
 
+xsVariables
+{}
 
 states
 (
