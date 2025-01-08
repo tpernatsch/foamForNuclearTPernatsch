@@ -20,19 +20,38 @@ clear
 
 #------------------------------------------------------------------------------
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
 # Function to display help
 usage() {
     echo "Usage: $0 [-j N|--jobs N] [--fmi] [--help]"
     exit 1
 }
 
+echoCmd()
+{
+    txtVar1=$1
+    txtVar2=$2
+    quiet_flag_in=$3
+    if [[ $quiet_flag_in = 'true' && ! -z "$txtVar2" ]]
+    then
+        printf "$txtVar2"
+    elif [ ! $quiet_flag_in = 'true' ]
+    then
+        printf "$txtVar1"
+    fi
+}
+
 # Default values
 num_jobs=1
 fmi_flag=false
 fast_flag=false
+quiet_flag=false
 
 # Parse options using getopt
-PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,fast,help -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,fast,quiet,help -- "$@")
 if [ $? -ne 0 ]; then
     usage
 fi
@@ -55,6 +74,10 @@ while true; do
             fast_flag=true
             shift
             ;;
+        --quiet)
+            quiet_flag=true
+            shift
+            ;;
         --help)
             usage
             ;;
@@ -70,13 +93,17 @@ done
 
 # Script logic
 echo "FMI flag: $fmi_flag"
+
 echo -e "Run tutorials using $num_jobs threads"
-if [ $fast_flag = 'true' ]
+if [ $num_jobs -gt 1 ]
 then
-    echo "Run fast cases only"
-else
-    echo "Run all cases"
+    quiet_flag="false"
+    echo "Cannot run quiet if multiple jobs"
 fi
+
+echo "Quiet flag: $quiet_flag"
+
+echoCmd "Run all cases\n" "Run fast cases only\n" $fast_flag
 
 echo
 
@@ -267,7 +294,8 @@ executeAlltest() {
 
     if [ -d $tutorialName ]
     then
-        echo -e "Running tutorial $tutorialName ...\n"
+        echoCmd "\n--------------------------------------------------------------------------------\n\n" "" $quiet_flag
+        echoCmd "Running tutorial $tutorialName ...\n" "Running tutorial $tutorialName ... " $quiet_flag
 
         # Change folder and clean
         cd $tutorialName
@@ -277,7 +305,12 @@ executeAlltest() {
         startTime=$(date +%s)
 
         # Start the command in the background and recover process ID
-        ./Alltest &
+        if [ $quiet_flag = 'true' ]
+        then
+            ./Alltest &> /dev/null &
+        else
+            ./Alltest &
+        fi
         local pid=$!
 
         # Monitor the peak memory usage until the command finishes
@@ -301,7 +334,7 @@ executeAlltest() {
         # End time measurement
         endTime=$(date +%s)
         timeUsage=$(secondsTo_hhmmss $(($endTime - $startTime)))
-        echo "$tutorialName time usage: $timeUsage"
+        echoCmd "$tutorialName time usage: $timeUsage\n" "" $quiet_flag
 
         # Convert to memory usage from kb to Gb
         maxMemoryUsageGb=$(echo "scale=3; $maxMemoryUsage / (1024 * 1024)" | bc)
@@ -312,11 +345,10 @@ executeAlltest() {
         then
             isMemoryOverflow=1
             memoryOverflowText="**Failed**"
-            echo "$tutorialName Memory overflow ($maxMemoryUsageGb > $expectedMemory)"
+            echoCmd "$tutorialName Memory overflow ($maxMemoryUsageGb > $expectedMemory)\n" "" $quiet_flag
         else
-            echo "$tutorialName Memory OK ($maxMemoryUsageGb < $expectedMemory)"
+            echoCmd "$tutorialName Memory OK ($maxMemoryUsageGb < $expectedMemory)\n" "" $quiet_flag
         fi
-
 
         # Return to root folder
         cd $rootPath
@@ -329,11 +361,14 @@ executeAlltest() {
     if [ $exitStatus -eq 0 ] && [ $isMemoryOverflow -eq 0 ]
     then
         sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[Alltest\]($badgeSuccess)\]() | $timeUsage | $maxMemoryUsageGb < $expectedMemory |," $resFile
+        echoCmd "$tutorialName ... ${GREEN}Success$NC\n" "${GREEN}Success$NC" $quiet_flag
     elif [ $isMemoryOverflow -eq 1 ]
     then
         sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[Memory overflow\]($badgeMemoryOverflow)\]() | $timeUsage | $maxMemoryUsageGb > $expectedMemory |," $resFile
+        echoCmd "$tutorialName ... ${RED}Memory Overflow$NC\n" "${RED}Memory Overflow$NC" $quiet_flag
     else
         sed -i "s,| $tutorialName | \[\!\[regressionTest\]($badgePending)\]() |,| $tutorialName | \[\!\[Alltest\]($badgeFailed)\]() | $timeUsage | $maxMemoryUsageGb < $expectedMemory |," $resFile
+        echoCmd "$tutorialName ... ${RED}Failed$NC\n" "${RED}Failed$NC" $quiet_flag
     fi
 
 
@@ -350,6 +385,8 @@ Memory = $maxMemoryUsageGb Gb ($memoryOverflowText, expected: $expectedMemory Gb
     sed -i "/$escapedPattern/r $tutorialName/test.out" $resFile
     # Remove delimiter
     sed -i "/$escapedPattern/d" $resFile
+
+    echo
 }
 
 #------------------------------------------------------------------------------
@@ -393,13 +430,16 @@ nbTutoSuccess=$(grep -c "Alltest-passed" $resFile)
 
 # Update the regression test score
 sed -i "s|0/$nbTutoTotal|$nbTutoSuccess/$nbTutoTotal|" $resFile
+printf "\nRegression test completed, $nbTutoSuccess/$nbTutoTotal cases completed: "
 
 # Update the badge
 if [ $nbTutoSuccess -eq $nbTutoTotal ]
 then
     sed -i "s,$badgePending,$badgeSuccess," $resFile
+    printf "${GREEN}Success$NC\n"
 else
     sed -i "s,$badgePending,$badgeFailed," $resFile
+    printf "${RED}Failure$NC\n"
     exit 1
 fi
 

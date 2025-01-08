@@ -3,8 +3,8 @@
 Several tutorials have been prepared to help users familiarize with GeN-Foam and provide a relatively comprehensive outlook of its functionalities. In each tutorial:
 * a `README` file provides a general description of the tutorials.
 * the relevant entries in the input files (dictionaries) are often commented to allow identifying the role of non-obvious parameters.
-* an `Allrun` bash script is provided that can be used to run the tutorial. The Allrun script can also give a better understanding of the steps to take to run GeN-Foam simulations.
-* in computational-intensive cases, an Allrun_parallel bash script is provided to run the tutorial using multiple cores.
+* an `Allrun` bash script is provided that can be used to run the tutorial. The `Allrun` script can also give a better understanding of the steps to take to run GeN-Foam simulations.
+* in computational-intensive cases, an `Allrun_parallel` bash script is provided to run the tutorial using multiple cores.
 * an `Allclean` script is provided to clean up a case after running it.
 
 The following tutorials are distributed together with GeN-Foam. The list below is in alphabetic order and do not represent a progression in complexity. However, **in 3D_SmallESFR, (hopefully) all non-obvious or non-OpenFOAM-standard input parameters are commented, or they include an indication about the tutorial to look at for additional information**. It represents a good starting point to understand and use GeN-Foam, at least for single-phase applications.
@@ -79,4 +79,4 @@ will assume a spatially uniform power.
 
 **Work in progress / need adaptation from previous GeN-Foam**
 
-* *ESFR2D_regression* is a 2-D r-z model of the ESFR. It is a full multiphysics case. It includes both core and primary pool. The Python `Allrun.py` and the bash Allrun.sh scripts sequentially run a number of cases as specified in the runDict file. The current set-up perform a full set of cases with increasing complexity and it is suitable as regression case. Additional information in the regression case can be found in Ref. [4].
+* *ESFR2D_regression* is a 2-D r-z model of the ESFR. It is a full multiphysics case. It includes both core and primary pool. The Python `Allrun.py` and the bash `Allrun.sh` scripts sequentially run a number of cases as specified in the runDict file. The current set-up perform a full set of cases with increasing complexity and it is suitable as regression case. Additional information in the regression case can be found in Ref. [4].

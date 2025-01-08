@@ -19,7 +19,7 @@ simulationType 	laminar;
 
 RAS
 {
-    RASModel        porousKEpsilon;//laminar;//kEpsilon;//;
+    RASModel        porousKEpsilon; // laminar; // kEpsilon;
 
     turbulence      on;
 

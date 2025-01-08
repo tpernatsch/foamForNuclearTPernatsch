@@ -42,4 +42,4 @@ In addition, OpenFOAM allows to use [function objects](https://www.openfoam.com/
 postProcess -func singleGraph -region neutroRegion
 ```
 
-Function objects can also employed at run time via the *controlDict* (see for instance [2D_FFTF](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/master/Tutorials/2D_FFTF/rootCase/system/controlDict)).
+Function objects can also employed at run time via the *controlDict* (see for instance [2D_FFTF](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict)).

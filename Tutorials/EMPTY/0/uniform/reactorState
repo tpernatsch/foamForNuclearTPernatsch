@@ -15,8 +15,14 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+// In eigenvalue calculations, this represent the initial guess, and it will be
+// replaces by the final result. In transient calculations, this parameter
+// divides the production term in the neutronics equations. In this way, if one
+// performs an eigenvalue calculation and then restart from there as a
+// transient, the reactor will be critical (unless something is changed).
 keff        1;
 
+// Target power value in Watts for the eigenvalue calculations
 pTarget     3.600000e+09;
 
 // ************************************************************************* //

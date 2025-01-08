@@ -43,7 +43,6 @@ timePrecision   8;
 
 runTimeModifiable true;
 
-
 regionSolvers
 {
     neutroRegion     diffusionNeutronics;
@@ -53,9 +52,6 @@ removeBaffles
 {
     neutroRegion     false;
 }
-
-
-removeFluidBaffles true;
 
 adjustTimeStep  true;
 

@@ -17,7 +17,7 @@ FoamFile
 
 d2dt2Schemes
 {
-    default         steadyState;//Euler;//
+    default         steadyState; // Euler;
 }
 
 ddtSchemes
@@ -34,7 +34,6 @@ gradSchemes
 
 divSchemes
 {
-    //default         Gauss linear;
     default         Gauss linear;
     div(sigmaD)     Gauss linear;
     div(fuelDisp)   Gauss upwind;

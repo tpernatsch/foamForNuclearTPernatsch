@@ -78,7 +78,7 @@ Foam::solvers::compressibleInterFoam::compressibleInterFoam
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-    mesh_
+        mesh_
     ),
     U_
     (
@@ -236,34 +236,33 @@ Foam::solvers::compressibleInterFoam::compressibleInterFoam
 //- Solve according to flags
 void Foam::solvers::compressibleInterFoam::correctPhysics()
 {
-        // --- Pressure-velocity PIMPLE corrector loop
-        while (pimple_.loop())
+    // --- Pressure-velocity PIMPLE corrector loop
+    while (pimple_.loop())
+    {
+        #include "alphaControls.H"
+        #include "compressibleAlphaEqnSubCycle.H"
+
+        turbulence_->correctPhasePhi();
+
+        #include "UEqn.H"
+        volScalarField divUp("divUp", fvc::div(fvc::absolute(phi_, U_), p_));
+        #include "TEqn.H"
+
+        // --- Pressure corrector loop
+        while (pimple_.correct())
         {
-            #include "alphaControls.H"
-            #include "compressibleAlphaEqnSubCycle.H"
-
-            turbulence_->correctPhasePhi();
-
-            #include "UEqn.H"
-            volScalarField divUp("divUp", fvc::div(fvc::absolute(phi_, U_), p_));
-            #include "TEqn.H"
-
-            // --- Pressure corrector loop
-            while (pimple_.correct())
-            {
-                #include "pEqn.H"
-            }
-
-            if (pimple_.turbCorr())
-            {
-                turbulence_->correct();
-            }
+            #include "pEqn.H"
         }
+
+        if (pimple_.turbCorr())
+        {
+            turbulence_->correct();
+        }
+    }
 }
 
 void Foam::solvers::compressibleInterFoam::correctTightlyCoupledPhysics()
 {
-
 }
 
 void Foam::solvers::compressibleInterFoam::correctFluidMechanics()
@@ -274,29 +273,21 @@ void Foam::solvers::compressibleInterFoam::correctEnergy()
 {
 }
 
-
-
 void Foam::solvers::compressibleInterFoam::correctCourant()
 {
-
 }
 
 void Foam::solvers::compressibleInterFoam::correctContErr()
 {
-
 }
-
 
 void Foam::solvers::compressibleInterFoam::printContErr()
 {
-
 }
 
 void Foam::solvers::compressibleInterFoam::calcCumulContErr()
 {
-
 }
-
 
 scalar Foam::solvers::compressibleInterFoam::maxDeltaT()
 {

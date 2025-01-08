@@ -39,11 +39,9 @@ Class
     Foam::thermalHydraulicsModels::compressibleInterFoam
 
 Description
-    This class encapsulates a single fluid + 1 stationary structure
-    Eulerian solver with a user-defineable regime-map based phyiscs modelling.
-
-    Author:
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    Solver for two compressible, non-isothermal immiscible fluids using a VOF
+    (volume of fluid) phase-fraction based interface capturing approach. This
+    standard solver has been transposed from OpenFOAM.
 
 SourceFiles
     compressibleInterFoam.C
@@ -89,7 +87,10 @@ class compressibleInterFoam
 {
 private:
 
+    //- Mesh
     fvMesh& mesh_;
+
+    //-
     pimpleControl pimple_;
 
     //- Phases

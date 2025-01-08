@@ -54,9 +54,6 @@ removeBaffles
     neutroRegion     false;
 }
 
-
-removeFluidBaffles true;
-
 adjustTimeStep  true;
 
 maxDeltaT       1;

@@ -280,7 +280,7 @@ protected:
     List<scalar> fuelLength_;
 
     //- Axial location interpolation method
-    List<interpolateTableBaseGF::interpolationMethod> zMethod_;
+    List<InterpolateTableBaseGF::interpolationMethod> zMethod_;
 
     //- Radial basis function method name (polyharmonicSpline, gaussian)
     List<word> radialBasisFunctionMethod_;

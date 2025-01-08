@@ -241,7 +241,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
         yPos_.append(yPos);
         axialLoc_.append(axialLoc);
         fuelLength_.append(fuelLength);
-        zMethod_.append((interpolateTableBaseGF::interpolationMethodNames_[
+        zMethod_.append((InterpolateTableBaseGF::interpolationMethodNames_[
             dict.lookupOrDefault<word>("axialPowerInterpolationMethod", "linear")
         ]));
         radialBasisFunctionMethod_.append(radialBasisFunctionMethod);
@@ -1036,7 +1036,7 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs(label regioni)
         }
 
         // Rescale data
-        scalarInterpolateTable zTable(axialLoc, profileData, zMethod_[regioni]);
+        scalarInterpolateTableGF zTable(axialLoc, profileData, zMethod_[regioni]);
         const scalar linPowerIntegral(zTable.integral(1));
         const scalar zLength(fuelLength_[regioni]); // axialLoc[axialLoc.size()-1] - axialLoc[0]);
 

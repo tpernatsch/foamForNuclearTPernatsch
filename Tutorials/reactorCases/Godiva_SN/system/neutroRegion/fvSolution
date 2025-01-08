@@ -19,7 +19,7 @@ solvers
 {
     "prec.*|precStar.*|adjoint_prec.*"
     {
-        solver           PBiCG;//Stab;
+        solver           PBiCG; // Stab;
         preconditioner   DILU;
         tolerance        1e-6;
         relTol           1e-3;
@@ -38,25 +38,25 @@ solvers
         tolerance       1e-6;
         relTol          1e-3;
         /*
-        solver           GAMG;
-        tolerance        1e-6;
-        relTol           0.01;
-        smoother         DICGaussSeidel;
+        solver          GAMG;
+        tolerance       1e-6;
+        relTol          0.01;
+        smoother        DICGaussSeidel;
         nPostSweeps 	1;
         nPreSweeps 	    1;
         nFinestSweeps 	1;
 
         cacheAgglomeration  true;
         nCellsInCoarsestLevel 20;
-        agglomerator     faceAreaPair;
-        mergeLevels      1;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
         processorAgglomerator masterCoarsest;
         */
     }
 
     "angularFlux.*"
     {
-        solver          PBiCGStab;//GAMG;
+        solver          PBiCGStab; // GAMG;
         // smoother        GaussSeidel;
         preconditioner  DILU;
         tolerance       1e-7;
