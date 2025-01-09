@@ -164,18 +164,18 @@ scalar Foam::nuclearDataOneEnergy::get
     // currValue_[6] = radExp;
 
     // Build reduced parameter list
-    // forAll(reducedParamIdx_, paramI)
-    // {
-    //     // currValueReduced_[paramI] = currValue_[reducedParamIdx_[paramI]];
-    //     currValueReduced_[paramI] = parameters[reducedParamIdx_[paramI]];
-    // }
+    forAll(reducedParamIdx_, paramI)
+    {
+        // currValueReduced_[paramI] = currValue_[reducedParamIdx_[paramI]];
+        currValueReduced_[paramI] = parameters[reducedParamIdx_[paramI]];
+    }
 
     return
     (
         Foam::radialBasisFunctionInterpolation::polyharmonicSpline
         (
-            // weights_, pointList_, currValueReduced_, polyharmonicSplineMode_
-            weights_, pointList_, parameters, polyharmonicSplineMode_
+            weights_, pointList_, currValueReduced_, polyharmonicSplineMode_
+            // weights_, pointList_, parameters, polyharmonicSplineMode_
         )
     );
 }

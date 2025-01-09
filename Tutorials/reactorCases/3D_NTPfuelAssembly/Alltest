@@ -109,7 +109,7 @@ testAndPrintLine()
             "$name" "$value" "$ref" "$relErr" >> $resFile
 
         isTestFail=1
-    fi    
+    fi
 }
 
 
@@ -121,7 +121,7 @@ rm -rf $resFile $logFile
 touch $resFile $logFile
 
 echo -e "Run tutorial $caseName ...\n" | tee -a $resFile
-./Allrun >> $logFile
+./Allrun_parallel >> $logFile
 echo -e "Done running tutorial $caseName ...\n" | tee -a $resFile
 
 

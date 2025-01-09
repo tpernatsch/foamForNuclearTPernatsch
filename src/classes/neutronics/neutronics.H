@@ -276,10 +276,10 @@ public:
                 return secondaryPowerDensity_;
             }
 
-            const volVectorField& disp() const
-            {
-                return disp_;
-            }
+            // const volVectorField& disp() const
+            // {
+            //     return disp_;
+            // }
 
             bool eigenvalue() const
             {

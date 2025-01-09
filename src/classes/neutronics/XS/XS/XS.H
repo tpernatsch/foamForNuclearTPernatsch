@@ -254,8 +254,8 @@ protected:
             //- List variable type
             List<word> xsVariableTypes_;
 
-            //- XS variable fields
-            PtrList<volScalarField> xsVariableFields_;
+            //- XS variable fields, use UPtrList to avoid double free
+            UPtrList<volScalarField> xsVariableFields_;
 
             //- XS variable fields transformed by the law provided in
             //  xsVariablesDict_

@@ -34,6 +34,9 @@ energyGroups    1;
 
 precGroups      1;
 
+xsVariables
+{}
+
 states
 (
     reference

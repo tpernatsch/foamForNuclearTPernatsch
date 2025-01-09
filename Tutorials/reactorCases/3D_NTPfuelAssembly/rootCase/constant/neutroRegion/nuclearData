@@ -100,11 +100,8 @@ drivelineFeedbackZones ();
 
 xsVariables
 {
-    TFuel   log;
-    TClad   lin;
+    TFuel   sqrt;
     rhoCool lin;
-    axExp   lin;
-    radExp  lin;
 }
 
 //- Diffusion data

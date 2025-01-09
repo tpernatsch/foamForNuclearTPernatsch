@@ -45,13 +45,13 @@ timePrecision   8;
 
 runTimeModifiable true;
 
-solveFluidMechanics true;
+// solveFluidMechanics true;
 
-solveEnergy     true;
+// solveEnergy     true;
 
-solveNeutronics true;
+// solveNeutronics true;
 
-solveThermalMechanics true;
+// solveThermalMechanics true;
 
 liquidFuel      false;
 
