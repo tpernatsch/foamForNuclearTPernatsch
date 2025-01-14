@@ -378,10 +378,11 @@ image: ubuntu
 
 pages:
   stage: deploy
+  image: python:latest
 
   script:
     - export DEBIAN_FRONTEND=noninteractive
-    - apt-get update && apt-get -y install doxygen graphviz texlive-bibtex-extra
+    - apt-get update && apt-get -y install doxygen graphviz perl texlive-bibtex-extra texlive-latex-extra
     - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
 
     # Install MkDocs and any MkDocs plugins you use
