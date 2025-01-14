@@ -24,7 +24,8 @@ Please notice that a new version of OpenFOAM is released by ESI/OpenCFD twice a 
 
 GeN-Foam is a complex OpenFOAM solver. For this reason, some resources have been prepared to support users and developers:
 
-- [Online Doxygen-generated documentation](https://foam-for-nuclear.gitlab.io/GeN-Foam/index.html)
+- The main user guide and documentation for GeN-Foam can be found here: [GeN-Foam Documentation](https://foam-for-nuclear.gitlab.io/GeN-Foam/).
+- [Online Doxygen-generated documentation](https://foam-for-nuclear.gitlab.io/GeN-Foam/doxygen/index.html)
 - The **slides** of introductory lectures to both OpenFOAM and GeN-Foam are provided in the folder [Documentation/usefulDocumentsAndPresentations](./Documentation/usefulDocumentsAndPresentations/). These lectures are taken from an IAEA e-learning course available at https://elearning.iaea.org/m2/course/view.php?id=1286. The course requires registration and a NUCLEUS account, but it should be available to all IAEA member states.
 - Several commented [Tutorials](./Tutorials/) have been prepared to showcase the use and capabilities of the solver.
 - An [EMPTY case](./Tutorials/EMPTY/) is also provided that can be used for step-by-step building one’s case. One can start from the EMPTY case to build each new case, as it already includes a consistent minimum set of (dummy) files that must be present independent of the physics that are solved for.

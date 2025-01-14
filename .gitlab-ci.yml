@@ -383,6 +383,7 @@ pages:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update && apt-get -y install doxygen graphviz texlive-bibtex-extra
     - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
+    - mkdir public/doxygen
     - mv Documentation/doxygen/Doxygen/html/ public/doxygen
 
     # Install MkDocs and any MkDocs plugins you use
