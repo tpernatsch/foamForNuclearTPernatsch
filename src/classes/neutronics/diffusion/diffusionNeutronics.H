@@ -39,35 +39,41 @@ Class
     Foam::diffusionNeutronics
 
 Description
-    Subclass for diffusion neutronics.
+    Subclass for diffusion neutronics [@FIORINA201524] [@Fiorina2015ApplicationCodes] [@FIORINA2016212].
 
 The module solves the multi-group diffusion equations:
 
-\f[
-    \frac{1}{v_g} \frac{\partial \phi_g}{\partial t} =
+$$
+\begin{align}
+    \frac{1}{v_g} \frac{\partial \phi_g}{\partial t} = &
         \nabla D_g \nabla \phi_g
-        + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) \nu \Sigma_{f,g} \phi_g
-        - \Sigma_{r,g} \phi_g
-        + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) S_{n,g}
-        + \chi_{d,g} S_d
+        + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) \nu \Sigma_{f,g} \phi_g \\
+        & - \Sigma_{r,g} \phi_g
+        + \frac{\chi_{p,g}}{k_{eff}} (1-\beta_{tot}) S_{n,g} \\
+        & + \chi_{d,g} S_d
         + S_{s,g}
         + S_g
-        \quad \forall g \in [1; G] \\
-    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) =
+        \quad \forall g \in [1; G]
+\end{align}
+$$
+
+$$
+    \frac{\partial C_k}{\partial t} + \nabla \cdot (\mathbf{u} C_k) =
         \frac{\beta_k}{k_{eff}} \sum_h \nu \Sigma_{f,h} \phi_h
         - \lambda_k C_k
         \quad \forall k \in [1; N]
-\f]
+$$
 
 with the explicit source term:
 
-\f[
-    S_{n,g} = \sum_{h \neq g} \nu \Sigma_{f,h} \phi_h \\
-    S_d = \sum_k \lambda_k C_k \\
-    S_{s,g} = \sum_{h \neq g} \Sigma_{h \rightarrow g} \phi_h
-\f]
+$$
+\begin{align}
+    S_{n,g} & = \sum_{h \neq g} \nu \Sigma_{f,h} \phi_h \\
+    S_d     & = \sum_k \lambda_k C_k \\
+    S_{s,g} & = \sum_{h \neq g} \Sigma_{h \rightarrow g} \phi_h
+\end{align}
+$$
 
-where:
 \vartable
     \phi_g         | Neutron flux for the gth energy group
     C_k            | Concentration of the kth delayed neutron precursor group
@@ -85,25 +91,32 @@ where:
     S_d            | Delayed neutron source
     S_{s,g}        | Scattering neutron source from neutron energy groups others than the gth
     S_g            | External neutron source for the gth energy group
-    \boldsymbol{u} | Fuel velocity
+    \mathbf{u}     | Fuel velocity
     v_g            | Average neutron velocity for the gth energy group
     \lambda_k      | Decay constant for the kth delayed neutron precursor group
 \endvartable
 
 
-In the neutronicsProperties file, for keff calculation in a critical
-reactor:
-\verbatim
-    model                       diffusionNeutronics;
-    eigenvalueNeutronics        true;
-\endverbatim
+Usage
 
-For an subcritical reactor driven by an external neutron source:
-\verbatim
-    model                       diffusionNeutronics;
-    eigenvalueNeutronics        false;
-    externalSourceNeutronics    true;
-\endverbatim
+    In the neutronicsProperties file, for keff calculation in a critical
+    reactor:
+    \verbatim
+        model                       diffusionNeutronics;
+        eigenvalueNeutronics        true;
+    \endverbatim
+
+    For an subcritical reactor driven by an external neutron source:
+    \verbatim
+        model                       diffusionNeutronics;
+        eigenvalueNeutronics        false;
+        externalSourceNeutronics    true;
+    \endverbatim
+
+
+SourceFiles
+    diffusionNeutronics.C
+
 
 <b>Reference publications</b>
 
@@ -128,8 +141,6 @@ For an subcritical reactor driven by an external neutron source:
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 
-SourceFiles
-    diffusionNeutronics.C
 
 \*---------------------------------------------------------------------------*/
 

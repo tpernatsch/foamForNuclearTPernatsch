@@ -1,0 +1,33 @@
+/* Increase font size for all info blocks */
+.md-typeset .admonition,
+.md-typeset details {
+    font-size: 14px; /* Adjust font size here */
+    line-height: 1.5; /* Optional: improve readability */
+}
+
+table th, table td {
+  font-size: 14px; /* Adjust as needed */
+}
+
+table th {
+  background-color: #f0f0f0; /* Light gray color for header */
+  color: #333333; /* Dark color for text */
+}
+
+/* General table styling for all tables */
+table {
+  width: 100%; /* Ensures the table uses full width */
+  table-layout: auto; /* Allow columns to adjust based on content */
+}
+
+/* Set the first column to auto width and the rest to take up remaining space */
+table th:nth-child(1),
+table td:nth-child(1) {
+    white-space: nowrap; /* Prevents line breaks within the first column */
+    width: auto; /* First column adjusts to content */
+}
+
+table th:nth-child(2),
+table td:nth-child(2) {
+    width: 100%; /* Second column takes remaining space */
+}

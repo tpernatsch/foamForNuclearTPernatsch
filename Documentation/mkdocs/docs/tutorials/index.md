@@ -1,0 +1,142 @@
+# Tutorials
+
+Several tutorials have been prepared to help users familiarize with GeN-Foam and provide a relatively comprehensive outlook of its functionalities. In each tutorial:
+
+- a `README` file provides a general description of the tutorials.
+- the relevant entries in the input files (dictionaries) are often commented to allow identifying the role of non-obvious parameters.
+- an `Allrun` bash script is provided that can be used to run the tutorial. The `Allrun` script can also give a better understanding of the steps to take to run GeN-Foam simulations.
+- in computational-intensive cases, an `Allrun_parallel` bash script is provided to run the tutorial using multiple cores.
+- an `Allclean` script is provided to clean up a case after running it.
+
+The following tutorials are distributed together with GeN-Foam. The list below is in alphabetic order and do not represent a progression in complexity. However, **in 3D_SmallESFR, (hopefully) all non-obvious or non-OpenFOAM-standard input parameters are commented, or they include an indication about the tutorial to look at for additional information**. It represents a good starting point to understand and use GeN-Foam, at least for single-phase applications.
+
+
+## 1D Heat Exchanger
+
+*1D_HX* showcases the utilization of the heatExchanger feature. This feature allows to thermally couple two mesh domains that exist within the same mesh region, but whose cells are otherwise not connected one another. In particular, the test case consists of two parallel 1-D channels, both with their inlet and outlet. Axially, a heated cellZone exists only on one of the two channels, while two cellZones acting as a primary and secondary side of a heat exchanger, respectively, exist on each channel, allowing the heated fluid in the heated channel to exchange heat with the cooler fluid flow in the unheated channel. The onePhase case showcases the feature for a single-phase flow, while the twoPhase case showcases the feature for two-phase flow, in which the vapour condenses in the heatExchanger cellZone and heats up the fluid on the other heatExchanger side. FunctionObjects (defined at the end of the controlDict for both cases) allow to track quantities of interest at the end of each time-step, such as the liquid inlet and outlet temperature and mass flow on both channels, allowing to check for energy conservation. The specific heatExchanger feature options related to its usage are commented in the constant/fluidRegion/phaseProperties dictionary of each case.
+
+
+## 1D Boiling
+
+*1D_boiling* illustrates in a simple way the two-phase capabilities of GeN-Foam. It consists of a 1D channel with pressure-driven sodium flow. A power source is turned on at time 0 and eventually leads to boiling, with flow excursion (as the flow is pressure driven). When the maximum void fraction passes a certain threshold, the power source is turned off (see controlDict). This situation is typically encountered in sodium boiling experiments (e.g. KNS). The plot.py script allows you to plot the initial residual of the pressure equation (the most critical to the solver) at the BEGINNING of the LAST Outer iteration. This gives a measure of how well the COUPLING between energy and fluid dynamics has converged. This is different than the LAST initialResidual of the LAST Outer iteration (which will always be
+significantly smaller). For further info see comments in constant/fluidRegion/phaseProperties, system/controlDict, system/fluidRegion/fvSolution.
+
+
+## 1D MSR using point kinetics
+
+*1D_MSR_pointKinetics* displays how to use the point kinetics module of GeN-Foam for MSRs. It is a simple 1-D case with core, hot leg, pump, heat exchanger and cold leg. The geometry is one-dimensional and salt recirculation is simulated by making use of a cyclic boundary condition between top and bottom boundaries. Three simulations are performed: a first simulation couples energy and fluid dynamics to obtain a steady state at the desired power level; a second simulation couples energy, fluid dynamics and point kinetics to simulate a loss-of-flow; a third simulation is run to allow GeN-Foam to recalculate the reactivity loss due to recirculation of the delayed neutron precursors (which can be used to verify the results vs analytical results). Please notice that the power for the steady state has been imposed via the powerDensity field specified in the fluidProperties sub-dictionary in the constant/fluidRegion/phaseProperties dictionary and models a constant power density in the core and null in the other regions. This power is then automatically updated by the point kinetics solver during the transient. Please notice also that a correct evaluation of the reactivity worth of delayed neutron precursors in MSRs would require knowledge of the adjointflux. In GeN-Foam, the adjoint flux is approximated by the oneGroupFlux.When fluxes are not calculated via a diffusion calculation, one has to manually provide the oneGroupFlux in 0/neutroRegion. In this tutorial, the oneGroupFlux has been set to 1 in the core and zero elsewhere. This is done via the initialOneGroupFluxByZone keyword in nuclearData. A few Python files are provided to plot essential results (for instance:  python plotPKPower_Temp.py ./transient/log.GeN-Foam ). In addition, a .m file (that can be run using Octave)is provided that calculates expected results at the end of the transient.
+
+## 1D Thermal MSR using point kinetics
+
+*1D_thermalMSR_pointKinetics*  is the same as 1D_MSR_pointKinetics, but for a thermal MSR. This implies that there is
+a graphite structure in the core. The objective is to show: how to use the lumpedParamterStructure power model; and how to set a power density both in the salt and in the graphite.
+
+
+## 1D PSBT SC
+
+*1D_PSBT_SC* presents a simple 1-D case for water boiling based on the OECD/NEA Benchmark Based on NUPEC Pressurized Water Reactor (PWR) Subchannel and Bundle Tests (PSBT), case 12223 (exercise 1). Please note that models for water boiling are still preliminary, incomplete (missing models for boiling crisis) and in Beta testing.
+
+
+## 1D CHF
+
+*1D_CHF* provides 2 examples of 1-D channels with boiling water and achievement of critical heat flux conditions, both in the case of imposed power and in the case of imposed temperature. In the case of imposed power, the power is gradually increased and subsequently decreased in order to reproduce the well-known hysteresis caused by the boiling crisis. In the case of imposed temperature, the temperature is only increased with time. It shows that with imposed temperature we pass through the Leidenfrost temperature. The resulting heat flux vs wall temperature curves can be plotted using python3 and the printResults.py scripts that are available in each case folder.
+
+## 2D Cavity Boussinesq
+
+*2D_cavityBoussinesq* portrays the use of the Boussinesq feature. The Boussinesq approximation is used in buoyancy-driven flows and assumes that the effects of temperature-induced density changes are relevant ONLY in the calculation of the buoyancy momentum source terms, while in all other terms of the momentum equation, the density is kept constant. The domain consists of a square with 10 cm sides and two opposing walls maintained at 500 K and 1000 K, with the fluid starting at rest and at 500 K. The cooled and heated wall patch normals are perpendicular to gravity, while gravity acts in the positive X direction.  A steady state is reached with the establishment of a circular liquid motion so that it rises against gravity at the heated wall and descends at the cooled wall.
+
+
+## 2D External Source Diffusion
+
+*2D_externalSourceDiffusion* is a model of a sliced torus. This tutorial uses the neutronics sub-solver with an external neutron source. A script is provided to compare the results with the usual calculation of a neutron source amplified by a subcritical reactor (1/(1-keff)). The external neutron source is homogeneous in the mesh.
+
+
+## 2D Fast Flux Test Facility (FFTF)
+
+*2D_FFTF* is a model of the Fast Flux Test Facility. It was in a hybrid pool-loop configuration, where the primary pumps and IHXs lie in a loop outside the vessel. This case reproduces the LOFWOS 13 Test performed at the FFTF in order to test the effectiveness of the Gas Expansion Module (GEM) safety feature. In essence, these were empty assembly wrappers closed at the top and open at the bottom, partly filled with argon gas, positioned at the periphery of the active core. In operation, the pressure head at the GEM inlet would compress the argon gas so that the free surface sodium level would rise above the active core level. During a ULOF, the loss of pressure head would cause the argon gas to expand and lower the free surface sodium level below the active core region, thus increasing leakage. The model is hybrid as the vessel consists of a 2-degree wedge while the loops consist of parallelepipeds. All the volumes are scaled by a factor 360/2. From a calculation perspective, the steady-state is run for 900 s, followed by a transient case in which a pointKinetics model is used to model the power evolution. Please notice that the power for the steady state is set directly via the field powerDensity.nuclearFuelPin in 0/fluidRegion, though the Allrun_powerFromDiffusion script is also provided that instead runs an initial diffusion calculation and uses the resulting power profile in the subsequent transient. For convenience, the transient simulation ends at 1200 s, as most of the dynamic is resolved at that point  From a user perspective, this case showcases the usage of the gapHPowerDensityTable and a time-dependent momentumSource, as discussed in constant/fluidRegion/phaseProperties. A third feature is the GEM, which is currently partially hard coded in the pointKinetics class. The case showcases the use of the decay power model for point kinetics (not implemented for liquidFuel yet, though). In constant/neutroRegion/reactorState one can optionally define a decay power and its evolution in time (via a table or expressions evaluated via the standard OpenFOAM Function1 feature). The power provided under pTarget is the initial TOTAL power, and the pointKinetics model will operate only on the fission power, initially set as total minus decay. The heatExchanger feature is used to model heat transfer between the two physically separated mesh-domains representing the primary and the secondary loops. Furthermore, the model uses the momentumMode named cellCenteredFaceReconstruction.
+
+
+## 2D Full Coupling
+
+*2D_fullCoupling* is a very simple 2-D case that one can use to test and play around with physics coupling. It consists of a steady state based on diffusion and a transient based on point-kinetics.
+
+- Each physics is simulated on a 2-D rectangular domain in the x-z plane
+    - the N (neutronics) domain has one cellZone and is between x=0 and x=0.75
+    - the TH (thermal-hydraulics) domain has one cellZone and is between x=0.25 and x=0.5
+    - the TM (thermal-mechanics) domain has 3 cellZones: one from x=0.25 and x=0.5; one from x=0.5 and x=0.75; one from x=0.75 and x=1
+- This combination provides the TM domain with:
+    - a zone overlapped to both N and TH, where it can get the temperature from the TH
+    - one region overlapped only with N where it can get the powerDensity from N and calculate its own temperature
+    - one region not overlapped with anything where it will calculate T without sources
+- Similarly, the N domain will have:
+    - a region not overlapped with anything, where it will use default values of XS
+    - a region overlapped with both TM and TH, where it will get a field from both
+    - a region overlapped only with TM
+- In TH, coolant (properties ~ sodium) flows from the bottom of the domain to the top (along z).
+
+In N, cross-sections have been arbitrarily chosen so to obtain a critical system in 2 groups. They are used in an initial steady-state diffusion
+calculation to obtain the power shape to be used in the point kinetics transient calculations. The TM features a fixed boundary on the right side. In case an initial diffusion calculation is not performed, the point kinetic solver will assume a spatially uniform power.
+
+
+## 2D Molten Salt Fast Reactor (MSFR)
+
+*2D_MSFR* is a 2-D r-z model of a Molten Salt Fast Reactor. It solves for neutronics and thermal-hydraulics. The Allrun bash script will first run a steady-state case with fluid dynamics only. Starting from the results of the simulation, a second steady-state is launched solving for neutronics and energy equations. Finally, a simple transient calculation is run. No reactivity is inserted in the transient and the power will simply stay constant for 10 seconds. Any modification to the initial conditions of the transient case will instead trigger an actual transient. For example, modifying the *keff* in the *reactorState* dictionary will trigger a reactivity-initiated transient. A more realistic transient can be initiated by modifying the heat transfer in the heat exchanger in the *phaseProperties* dict. The case is similar to the one presented in Ref. [@refId0]. Please note that to reduce computing time, the fluid-dynamics equations are not solved in the second steady-state and in the transient simulation. Note also that an upwind scheme is employed for the divergence term in the diffusion equations (in *system/neutroRegion/fvSchemes*), which is necessary to achieve convergence.
+
+
+## 2D One phase and Point Kinetics coupling
+
+*2D_onePhaseAndPointKineticsCoupling* is a simplified test case for the *pointKinetics* neutronics model. It consists of a 2-D square domain made of a single porous cellZone containing fuel as sub-scale structure. A coolant (properties ~ sodium) flows from the bottom of the domain to the top. A set of cross-sections has been arbitrarily chosen and is used in the steady-state calculation to obtain (using the diffusion solver) a flux (and power) shape to be used in the point kinetic calculations. Without this step, the point kinetic solvers would assume a flat power profile.  Three transients are simulated: a 0.2$ reactivity insertion with the only feedback being a -0.3 pcm/K for fuel temperature (arbitrary); a 0.2$ reactivity insertion with an additional feedback from an assumed driveline expansion; like the first transient, but with time-dependent insertion of reactivity from Boron (removal), with a reactivity profile that is specified in nuclearData. In the second transient, the control rod reactivity map (see *constant/neutroRegion/nuclearData*) is set to 100pcm/cm (more than one order of magnitude higher than realistic values, used here only for demonstration purposes). The absolute driveline thermal expansion coefficient is assumed to be 8e-5 m/K. Time steps are adjusted to resolve 1% power increases (see *system/controlDict*). Results (power and average fuel temperature) can be visualized via the plot.py Python script. To run, use the Allrun bash script. Several additional information on the tutorial and the point kinetic model can be found in the README file of the tutorial. In addition, a detailed explanation of the parameters employed for point kinetics calculations can be found in *constant/neutroRegion/nuclearData*.
+
+
+## 2D One phase and Subcritical Point Kinetics coupling
+
+*2D_onePhaseAndSubcriticalPointKineticsCoupling* is a modified tutorial based on *2D_onePhaseAndPointKineticsCoupling*. This tutorial shows how to use the point-kinetics solver with an external source. It also benchmarks the point-kinetics solver against numerical solutions for 2 cases: ramp insertion of reactivity and ramp amplification of an external neutron source. To use the subcritical point-kinetics, the user has to add the *constant/neutroRegion/externalSource* file. It contains a flag to activate the external source, an entry for the source mode, a particle beam energy, a neutron yield and the *externalSourceModulationTimeProfile*, which allows the user to modulate the source strength with 1 corresponding to no modification.
+
+
+## 2D Void Motion without phase change
+
+*2D_voidMotionNoPhaseChange* is a very simple tutorial displaying a two-phase case without mass transfer between phases. Please refer to the 1D_boiling tutorial for details on how to use the two-phase flow solver. The main additional feature employed in this tutorial compared to *1D_boiling* is the use of the *initialAlphas* subdict in the *vapourProperties* subdict of the *phaseProperties* dictionary. It is used to provide potentially different initial phase fractions for different cellZones (as an alternative to the use of setFields).To run, use the Allrun bash script.
+
+
+## 3D Small European Sodium Fast Reactor (ESFR)
+
+*3D_SmallESFR* is a slightly simplified 3-D model of the core of the European Sodium Fast Reactor (ESFR). It is a full multiphysics case, including thermal-hydraulics, neutronics and thermal-mechanics (with expansion of the meshes based on the displacement field calculated by the thermal-mechanics). The `Allrun` and `Allrun_parallel` bash scripts can be used to run the tutorial in 1 or 4 cores, respectively. The scripts will first run a steady-state case with eigenvalue neutronics, and then start from the obtained steady-state and run a simple transient calculation. No reactivity is inserted in the transient and the power will simply stay constant for 10 seconds. Any modification to the initial conditions of the transient case will instead trigger an actual transient. For example, modifying the *keff* in the *reactorState* dictionary will trigger a reactivity-initiated transient. A more realistic transient can be initiated by modifying the *CRmove* dictionary. The case is similar to the one presented in Refs. [@FIORINA201524] [@Fiorina2015ApplicationCodes].
+
+
+## 3D Nuclear Thermal Propulsion (NTP) fuel assembly
+
+*3D_NTPfuelAssembly* is a simplified 3-D model of the KIWI-B-4E NTP reactor. This tutorial uses diffusion and porous k-epsilon sub-solvers, respectively for neutronics and thermal-hydraulics. Fuel temperature and coolant density perturbed XSs are provided. It also features the hydrogen `H2` thermophysical properties in OpenFOAM format that model the hydrogen dissociation at high temperatures. An `Allclean` script is provided to clean up the case. An `Allpostprocess` script is provided to extract the main parameters as well as axial distributions (powerDensity, fluxes, temperatures, coolant density). The case is similar to the one presented in Refs. [@Guilbaud2023].
+
+
+## Godiva using Discrete oridinates (SN)
+
+*Godiva_SN* This is a purely neutronic eigenvalue case displaying how to use the discrete ordinate (SN) solver of GeN-Foam. It simulates the Godiva experiment, constituted by a small super-prompt-critical sphere of enriched uranium. The SN solver is selected in the *constant/neutroRegion/neutronicProperties* dictionary. The file *constant/neutroRegion/quadratureSet* contains a simple quadrature set with 4 directions per octant. A more complex  (and more computationally requiring) quadrature set with 16 directions per octant can be found in *constant/neutroRegion/quadratureSet16*. A simpler one, with 1 direction per octant, can be found in *constant/neutroRegion/quadratureSet16*. The scattering anisotropy can be changed by changing the *legendreMoments* flag in *constant/neutroRegion/nuclearData*. Of course, one should make sure that the corresponding scattering matrices are provided in the same file. In the current tutorial, scattering matrices are provided till the 5th moment. This is a  computationally intensive tutorial. It is suggested to run it using the `Allrun_parallel` bash script on a good machine. In principle, the SN solver could be used for time-dependent calculations. However, no acceleration techniques are currently implemented, making the solver particularly slow. An `Allclean` script is provided to clean up the case.
+
+
+## 3D Pebble Bed FHR
+
+*3D_gFHR*  This is a simple 3D model of the Kairos gFHR. It shows how to use the *nuclearSteadyStatePebble* and lumpedNuclearStructure* power models to describe pebbles and triso. The *nuclearSteadyStatePebble* model is a steady-state model purpose-made for pebble bed reactors. It allows including several details of the pebble/triso geometry and composition in an intuitive way. The *lumpedNuclearStructure* model is a general model that allows the user to set up an electric equivalent made of resistances and capacitances disposed in series. It can be used for transient calculations but it requires the users to translate their problem into an electrical equivalent. For this tutorial, such derivation is provided in the *derivations* document, with calculations that are done in the *lumped_structure* pythons script. The `Allrun` file will simply run two different steady-states with the two models. One can check that the two models are equivalent for instance by plotting the max triso temperatures in ParaView.
+
+
+## Functional Mock-up Interface (FMI)
+
+### Power, temperature and momentum control
+
+*FMU/powerTemperatureMomentumControl*  This tutorial tests a maximum of FMI features in GeN-Foam. It includes pump momentum control, temperature control and measure, power control and measure, and heat transfer control. It consists of two independent channels with the same mass flow rate controlled via two pumps. Two heat exchangers are placed on top of the pump with a fixed temperature and fixed power.
+
+
+### 2D Point-kinetics coupled with FMI
+
+*FMU/2D_PKCoupleFMI* This case has been derived from *2D_onePhaseAndPointKineticsCoupling*. It reuses the same mesh and physical parameters. This case is an example of the use of external reactivity control by an FMU. It uses the point-kinetics sub-solver with an additional reactivity contribution from an FMU. An additional case is provided to demonstrate the use of active monitoring to stabilize power using external reactivity (*FMU/2D_PKCoupleFMI/PIDcontrol*).
+
+
+### 2D Lead Fast Reactor power plant
+
+*FMU/2D_LFRpowerPlant*  The purpose of this case is to simulate coupled GeN-Foam/FMU of an entire power-plant from the core to the turbine. The reactor is the Lead Fast Reactor (LFR) ALFRED of 300 MWth. The case is similar to the one presented in Refs. [@GUILBAUD2024105022].
+
+
+## Work in progress / need adaptation from previous GeN-Foam
+
+### 2D ESFR
+
+*ESFR2D_regression* is a 2-D r-z model of the ESFR. It is a full multiphysics case. It includes both core and primary pool. The Python `Allrun.py` and the bash `Allrun.sh` scripts sequentially run a number of cases as specified in the runDict file. The current set-up perform a full set of cases with increasing complexity and it is suitable as regression case. Additional information in the regression case can be found in Ref. [4].

@@ -39,33 +39,35 @@ Class
     Foam::SNNeutronics
 
 Description
-    Subclass for SN neutronics (Discrete Ordinate).
+    Subclass for SN neutronics (Discrete Ordinate) [@FIORINA201524] [@Fiorina2015ApplicationCodes].
 
-\f[
+$$
+\begin{align}
     \frac{1}{v_i} \frac{d \Omega_j \cdot \phi_{i,j}}{dt}
         + \nabla \cdot (\Omega_j \cdot \phi_{i,j})
         + \Sigma_{t,i} \phi_{i,j}
-    = S_{i,j}^I + S_{i,j}^A + S_i^D
+    & = S_{i,j}^I + S_{i,j}^A + S_i^D
         \quad \quad \forall i \wedge j \in [1; G] \times [1; M] \\
-
-    \frac{\partial C_k}{\partial t} + \nabla \cdot (\boldsymbol{u} C_k) =
+    \frac{\partial C_k}{\partial t} + \nabla \cdot (\mathbf{u} C_k) & =
         \frac{\beta_k}{k_{eff}} \sum_{i'=1}^G \nu \Sigma_{f,i'} \phi_{i'}
         - \lambda_k C_k
         \quad \forall k \in [1; N]
-\f]
+\end{align}
+$$
 
 with the external source:
-\f[
-    S_{i,j}^I = \sum_{i'=1}^G \sum_{j'=1}^M \omega_{j'} \phi_{i',j'} \left(
+
+$$
+\begin{align}
+    S_{i,j}^I & = \sum_{i'=1}^G \sum_{j'=1}^M \omega_{j'} \phi_{i',j'} \left(
         \frac{1}{k_{eff}} \nu \Sigma_{f,i'} \chi_{p,i} + \Sigma_{s,i' \rightarrow i}
     \right) \\
-
-    S_{i,j}^A = \sum_{i'=1}^G \sum_{j'=1}^M \omega_{j'} \phi_{i',j'} \Sigma_{s,i' \rightarrow i} \left(
+    S_{i,j}^A & = \sum_{i'=1}^G \sum_{j'=1}^M \omega_{j'} \phi_{i',j'} \Sigma_{s,i' \rightarrow i} \left(
         \sum_{l=1}^p s_{i' \rightarrow i}^l \frac{2l+1}{2} P_l (\Omega_j \cdot \Omega_{j'})
     \right) \\
-
-    S_i^D = \chi_{d,i} \sum_k \lambda_k C_k
-\f]
+    S_i^D & = \chi_{d,i} \sum_k \lambda_k C_k
+\end{align}
+$$
 
 The anisotropic scattering terms are considered adopting a pth order Legendre
 polynomial expansion of the scattering cosine \f$ (\Omega_j \cdot \Omega_{j'}) \f$
@@ -87,7 +89,7 @@ polynomial expansion of the scattering cosine \f$ (\Omega_j \cdot \Omega_{j'}) \
     \omega_{j'}             | Normalized quadrature weight associated to the direction \f$ \Omega_{j'} \f$
     s_{i \rightarrow i'}^l  | lth Legendre coefficient of the scattering cross-section \f$ \Sigma_{s,i \rightarrow i'} \f$
     P_l                     | lth Legendre polynomial
-    \boldsymbol{u}          | Fuel velocity
+    \mathbf{u}          | Fuel velocity
     v_i                     | Average neutron velocity of the energy group i
     \Omega_j                | Unit vector of the angular direction j
 \endvartable

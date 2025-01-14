@@ -48,15 +48,18 @@ Description
 
     The module solves the following point-kinetics equations:
 
-    \f[
-        \frac{dP}{dt} = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P
+    $$
+    \begin{align}
+        \frac{dP}{dt} & = \frac{\rho_{tot} - \zeta - \beta_{tot}}{\Lambda} P
             + \sum_{i=1}^N \lambda_i C_i + \frac{S}{\Lambda} \\
-        \frac{dC_i}{dt} = \frac{\beta_i}{\Lambda} P
+        \frac{dC_i}{dt} & = \frac{\beta_i}{\Lambda} P
             - \lambda_i C_i \quad \forall i \in [1; N]
-    \f]
+    \end{align}
+    $$
 
-    \f$ \rho_{tot} \f$: the total reactivity that can be decomposed as:
-    \f[
+    $\rho_{tot}$: the total reactivity that can be decomposed as:
+
+    $$
         \rho_{tot} =
             \begin{cases}
                 \text{fast}    & -\alpha_D \ln\left( \frac{T_{fuel}}{T_{fuel}^{ref}} \right) \\
@@ -73,31 +76,7 @@ Description
             + \rho_{boron}
             + \rho_{ext}
             + \rho_{ext}^{FMU}
-    \f]
-
-    where:
-    \vartable
-      P           | Core power
-      C_i         | Precursor power
-      S           | Optional external source power
-      \beta_{tot} | Total delayed neutron fraction
-      \beta_i     | Delayed neutron fraction for the ith delayed neutron precursor group
-      \lambda_i   | Decay constant for the ith delayed neutron precursor group
-      \Lambda     | Prompt generation lifetime
-      \zeta       | Optional subcritical index
-      S           | Optional external neutron source power
-      \alpha_D             | Doppler feedback coefficient
-      \alpha_{fuel}        | Fuel axial expansion feedback coefficient
-      \alpha_{clad}        | Cladding temperature feedback coefficient
-      \alpha_{cool}^{T}    | Coolant temperature feedback coefficient
-      \alpha_{cool}^{\rho} | Coolant density coefficient
-      \alpha_{struct}      | Core radial expansion feedback coefficient
-      \alpha_{struct}^{mech} | Core expansion feedback coefficient from the mechanical mesh
-      \rho_{driveline}     | Control rod driveline expansion reactivity contribution
-      \rho_{boron}         | Boron concentration reactivity contribution
-      \rho_{ext}           | External reactivity contribution
-      \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
-    \endtable
+    $$
 
 \vartable
     P           | Core power
@@ -120,7 +99,10 @@ Description
     \rho_{boron}         | Boron concentration reactivity contribution
     \rho_{ext}           | External reactivity contribution
     \rho_{ext}^{FMU}     | External reactivity contribution from an FMU
-\endtable
+\endvartable
+
+
+Usage
 
 Example of time dependant source entries:
 \verbatim
@@ -186,13 +168,14 @@ Optional external neutron source file "externalSource"
     }
 \endverbatim
 
+
+SourceFiles
+    pointKineticNeutronics.C
+
 \mainauthor of this file (and associated .C or included .H files):
     Stefan Radman <stefanradman92@gmail.com; stefan.radman@epfl.ch;>;
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
-
-SourceFiles
-    pointKineticNeutronics.C
 
 \*---------------------------------------------------------------------------*/
 
