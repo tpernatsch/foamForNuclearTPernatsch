@@ -1,5 +1,5 @@
 
-# Coupling and time stepping {#COUPLING}
+# Coupling and time stepping
 
 **Work in progress!!**
 
@@ -8,18 +8,17 @@
 GeN-Foam has been developed for the steady-state and transient analysis of reactors featuring pin-type, plate-type, or liquid fuel (viz., Molten Salt Reactors). It includes sub-solvers for neutronics, single- and two-phase thermal-hydraulics, thermal-mechanics and fuel-behaviour, via the newly imported libraries of the fuel behaviour code [OFFBEAT](https://gitlab.com/foam-for-nuclear/offbeat). An arbitrary number of *regions* can be created, each associated to a different mesh and physics. The selection of the physics to solve is done in *system/controlDict*, in the *regionSolvers* entry.
 
 
-<div class="border-box">
-<b>The *controlDict* dictionary</b>
+### The *controlDict* dictionary
 
 The *controlDict* is an extended version of the one that is normally used in other OpenFOAM solvers. Compared to a standard OpenFOAM controlDict, it includes several keywords that allow one to select:
-<UL>
-<LI> Which physics to solve via the *regionSolvers subDict*. In this dictionary, the names of the regions to create is specified, and to each a physics-solver is associated, i.e. *onePhase*, *diffusionNeutronics* etc. Additionally, a *multiPhysicsSolver* can be selected. Its specifics are detailed in the following section.
-<LI> The type of reactor via the keyword *liquidFuel*.
-<LI> The options for time stepping via the keywords *adjustTimeStep*, *maxDeltaT*, *maxCo* and *maxPowerVariation*, as well as *maxCoTwoPhase* and *marginToPhaseChange* for two-phase flow simulations.
-<LI> An option for mesh manipulation called *removeBaffles*. This allows to select the physics that require the creation of a ghost mesh without baffles. This ghost mesh allows for better mesh-to-mesh projections between different physics. WARNING: parallel execution not tested.
-</UL>
+
+- Which physics to solve via the *regionSolvers subDict*. In this dictionary, the names of the regions to create is specified, and to each a physics-solver is associated, i.e. *onePhase*, *diffusionNeutronics* etc. Additionally, a *multiPhysicsSolver* can be selected. Its specifics are detailed in the following section.
+- The type of reactor via the keyword *liquidFuel*.
+- The options for time stepping via the keywords *adjustTimeStep*, *maxDeltaT*, *maxCo* and *maxPowerVariation*, as well as *maxCoTwoPhase* and *marginToPhaseChange* for two-phase flow simulations.
+- An option for mesh manipulation called *removeBaffles*. This allows to select the physics that require the creation of a ghost mesh without baffles. This ghost mesh allows for better mesh-to-mesh projections between different physics. WARNING: parallel execution not tested.
+
 Fairly complete examples of *controlDict* for single-phase flow can be found in [2D_FFTF](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict) and [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/system/controlDict), while an explanation of the two-phase flow options can be found in [1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_boiling/system/controlDict).
-</div>
+
 
 
 ## Coupling logic
@@ -49,9 +48,88 @@ N.B.: There is no need for the thermal-hydraulics, thermal-mechanics, and neutro
 
 N.B.2: It is possible not to solve for displacements in the thermo-mechanics sub-solver setting to *false* the keyword *solveDisplacement* in *thermoMechanicalProperties*.
 
-## *multiPhysicsSolver*
+Here is a list of the fields which are most commonly coupled across physics and their names
 
-## *multiPhysicsSolver*
+| Physics Field                 | ThermalHydraulics                                                            | Neutronics            | ThermoMechanics                     |
+|-------------------------------|---------------------------------------------------------------|-----------------------|------------------------|
+| Coolant T                     | T                                                             | TCool                 | -                      |
+| Coolant velocity              | U                                                             | U                     | -                      |
+| Coolant density               | thermo:rho                                                    | rhoCool               | -                      |
+| Fuel temperature (avg)        | T.fuelAvForNeutronics                                         | TFuel                 | TFuel                  |
+| Clad temperature (avg)        | T.cladAvForNeutronics                                         | TClad                 | TFuel (if linked fuel) |
+| Structures temperature        | T.passiveStructure                                            | TStruct | TStructFromTH/T*      |
+| Power density (structures)    | powerDensityNeutronics                                        | powerDensity          | powerDensityNeutronics |
+| Power density (liquid)        | powerDensityNeutronicsToLiquid                                | secondaryPowerDensity | -                      |
+| Displacement                  | -                                                             | disp                  | meshDisp/disp **      |
+| Coolant viscosity             | mu                                                            | mu                    | -                      |
+| Coolant phase                 | alpha+phaseName e.g. alpha.liquid (twoPhase) alpha (onePhase) | alpha***             | -                      |
+| Thermal turbulent diffusivity | alphat (if exists)                                            | alphat                | -                      |
+
+
+\* In the thermomechanics, the diffusion equation is solved only in the non-porous zones, while temperature from the thermal-hydraulics is expected in the porous structures. Hence, the structures temperatures need to be mapped onto the TStructFromTH field
+
+\** The thermomechanics solver computes the displacement using the linear elastic formulation. The result of this is the field named disp. In order to compute the neutronics deformation, the radial component of disp is combined to an axial component computed as the thermal deformation of fuel/control rods (if available). Hence, this is the field which is normally expected to be coupled to the neutronics field named disp.
+
+\*** Most of the MSR cases which involve liquid fuel (and as a result the need to map the coolant phase from TH to neutronics) are single-phase, hence simply mapping alpha (TH) to alpha (neutronics) will work. However, in case a multi-physics liquid-fuel case needs to be simulated, the coolant fraction that needs to be mapped is the sum of alpha.liquid and alpha.vapour. Such a field is currently not existing in the thermal-hydraulics solver. However, using the conventional OpenFOAM functions one can create a new field runTime and map it if needed. An example of such approach is shown below.
+In the *controlDict* add:
+```cpp
+functions
+{
+    newFieldCreation
+    {
+        type			coded; 
+        libs			("libutilityFunctionObjects.so");
+        name			newFieldCreation;
+        executeControl	timeStep;
+        executeInterval 1;
+        enabled			true;
+        region          fluidRegion; //or whatever other region, but important to specify otherwise it is defaulted to region0 and the fields are not found
+
+        codeExecute
+        #{
+            //Lookup the fields needed for the creation of the new field
+
+            const volScalarField& field1 = mesh().lookupObjectRef<volScalarField>("field1"); //Use correct names of the fields
+            const volScalarField& field2 = mesh().lookupObjectRef<volScalarField>("field2");
+
+            // Creation of the new field
+
+            static autoPtr<volScalarField> newField;
+
+            if(!mesh().foundObject<volScalarField>("newField"))
+            {
+                newField.reset
+                (
+                    new volScalarField
+                    (
+                        IOobject
+                        (
+                            "newField",
+                            mesh().time().timeName(),
+                            mesh(),
+                            IOobject::NO_READ,
+                            IOobject::AUTO_WRITE
+                        ),
+                        field1 +field2 //here as an example the sum of the two fields is considered
+                    )
+                );
+
+            }
+            else
+            {
+                // Insert here any operation required
+                newField() = field1+field2;
+                newField().correctBoundaryConditions();
+            }
+
+
+
+        #};
+    }
+}
+```
+
+## The *multiPhysicsSolver*
 
 Many multi-physics simulations might require large flexibility on the time-loops. For instance, while some physics might be tightly coupled, others are only loosely coupled. This is, for instance, often the case for multi-scale simulations, where physics are tightly coupled within a scale and loosely across scales. In order to create this additional flexibility, a new solver type is introduced, named the *multiPhysicsSolver*. The *multiPhysicsSolver* consists of a list of tightly coupled physics. During run-time, when the physics are corrected, if they are part of a *multiPhysicsSolver*, the physics will be corrected iteratively, until a user-input convergence criterion is met. *multiPhysicsSolvers* are also defined in *constant/multiRegionCouplingDict* in the *multiPhysicsSolvers* sub-dictionary. Each entry of the subDict corresponds to a different *multiPhysicsSolver*, characterized by a list of subSolvers (i.e. the solvers that are tightly coupled), a minimum residual to reach before the Picard iterations are interrupted and a maximum number of iterations. Note that *multiPhysicsSolvers* can be nested within one other, possibly leading to tree-like structure like shown below.
 
