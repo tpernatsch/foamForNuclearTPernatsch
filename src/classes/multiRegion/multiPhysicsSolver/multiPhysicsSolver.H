@@ -39,20 +39,47 @@ Class
     Foam::multiPhysicsSolver
 
 Description
-    Base class for thermo-mechanical models.
+    This class creates a multiphysics tightly coupled loop, made of an arbitrary
+    number of physics. The class member-functions are inherited from solver.H 
+    and are the same as those of the other solvers. Each member function consists
+    of a loop where the same member function is called iteratively for all the 
+    solvers included in the multiPhysicsSolver. Note that another multiphysicsSolver
+    can be created within a multiphysicsSolver, hence creating a hierarchical
+    structure which might be helpful for multi-scale problems.
 
-    Reference publications:
+Usage
+    In multiRegionCouplingDict, the multiPhysicsSolvers subDict is used to create a
+    multiPhysicsSolver
 
-    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    "GeN-Foam: a novel OpenFOAM� based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design, submitted
+    \verbatim
+        multiPhysicsSolvers
+        {
+            multiPhysicsSolver1 //multiPhysicsSolverName
+            {
+                solvers // list of solvers
+                {
+                    regionName              solverName;
+                    fluidRegion             onePhase;
+                    neutroRegion            diffusionNeutronics;
+                    multiPhysicsSolver2     multiPhysicsSolver;
+                }
+                minResidual 0.00005;   // residual after which the iteration is ended
+                maxIterations 3;       // maximum number of iterations before the loop is ended
+                includeFluidMechanicsInLoop  false; //defaulted to false
+            }
+        }
 
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-    solver to the European Sodium Fast Reactor and verification against available codes",
-    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+        multiPhysicsSolver2
+        {
+            ...   
+        }
+    \endverbatim
+    }
 
-    Author of this file (and associated .C or included .H files):
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
+    If includeFluidMechanicsInLoop entry is set to false (default value), for the thermal-hydraulics
+    solvers only the energy is solved iteratively with the other physics, while the fluid-mechanics
+    is solved only once at the beginning of the iteration. This is done so that useless 
+    fluid-mechanics iterations are solved.
 
 SourceFiles
     multiPhysicsSolver.C

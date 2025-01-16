@@ -39,36 +39,31 @@ Class
     Foam::meshHandler
 
 Description
-    Class to hold the lists of region meshes and to perform the mesh-to-mesh mappings
+    Class to hold all the region meshes and perform the volumetric mappings
 
-Usage
-    Given the \c meshHandler named solvers:
+Usage 
+    In multiRegionCouplingDict
     \verbatim
-        // Create the region meshes and solvers
-        meshHandler solvers(runTime);
-    \endverbatim
-
-    The list of solvers can be looped over:
-    \verbatim
-        forAll(solvers, i)
+        mappings
         {
-            solvers[i].momentumPredictor();
+            <Name of region ONTO which I am mapping>
+            {
+                <Name of region FROM which I am mapping>
+                {
+                    sourceFields    (nameOfSourceField1 nameOfSourceField2);
+                    targetFields    (nameOfTargetField1 nameOfTargetField2);
+                }
+            }
+            neutroRegion
+            {
+                fluidRegion
+                {
+                    sourceFields    ( T U mu alpha );
+                    targetFields    (TCool U mu alpha );
+                }
+            }
         }
     \endverbatim
-    where the '[]' operator sets the region Info prefix.  After the loop the
-    region Info prefix remains set to the last region prefix and so for global
-    messages, e.g. the global time-step the Info prefix must be specifically
-    reset to spaces by calling the \c setGlobalPrefix() function.
-
-    Alternatively the list of solvers can be iterated over:
-    \verbatim
-        forAllIter(meshHandler, solvers, solver)
-        {
-            solver->momentumPredictor();
-        }
-    \endverbatim
-    where the iterator increment sets the region \c Info prefix and at the end
-    automatically resets the \c Info prefix to spaces.
 
 SourceFiles
     meshHandler.C

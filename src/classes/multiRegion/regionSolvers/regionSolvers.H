@@ -74,6 +74,19 @@ Usage
     where the iterator increment sets the region \c Info prefix and at the end
     automatically resets the \c Info prefix to spaces.
 
+    This class creates the solvers at the highest level. If a solver is a multi-
+    physics solver, more solver will be created iteratively. When setting up 
+    the simulation, in controlDict the regions are specified as:
+    \verbatim
+        regionSolvers
+        {
+            regionName      solverName;
+            fluidRegion     onePhase;
+            neutroRegion    diffusionNeutronics;
+            loop1           multiPhysicsSolver;
+        }
+    \endverbatim
+
 SourceFiles
     regionSolvers.C
 
