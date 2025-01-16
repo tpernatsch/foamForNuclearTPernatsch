@@ -18,19 +18,7 @@ GeN-Foam was born for safety analyses and, to reduce computational footprint, it
 
 ## Sub-solvers
 
-Thermal-hydraulics calculations are performed by classes derived from *thermalHydraulicsModel.H* that contain specific sub-solvers:
-- *onePhase* for single-phase calculations, using the formulation proposed in Refs. [@Radman2019ADesign] [@RADMAN2021111178] [@RADMAN2021111422]  (see *onePhase.H*)
-- *twoPhase* for adjoint diffusion calculations, using the formulation proposed in Refs. [@Radman2019ADesign] [@RADMAN2021111178] [@RADMAN2021111422] (see *twoPhase.H*)
-
-For the user, the derived classes translate into runtime selectable models. The specific sub-solver to be used in a simulation can be selected in the solvers dictionary like explained in the coupling section.
-
-
-### OpenFOAM-based sub-solvers
-
-The new GeN-Foam structure allows to include already developed OpenFOAM solver. This requires to transpose the solver application into a GeN-Foam solver class. *compressibleInterFoam* shows how to translate standard OpenFOAM solvers into this new format, taking into account all the dependencies.
-
-We list below the imported OpenFOAM-based standard solvers available in GeN-Foam.
-* *compressibleInterFoam* for two compressible, non-isothermal immiscible fluids using a VOF (volume of fluid) phase-fraction based interface capturing approach. This standard solver has been transposed from OpenFOAM ([link](https://www.openfoam.com/documentation/guides/latest/man/compressibleInterFoam.html)) into the new GeN-Foam solver structure (see *src/classes/openFoamImportedSolvers/compressibleInterFoam*).
+More information in [this page](thermalHydraulicsSolvers.md).
 
 
 ## Porous-medium properties
@@ -46,7 +34,10 @@ One can find detailed, commented examples in the tutorials
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/fluidRegion/phaseProperties) (single phase) and
 [1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_boiling/constant/fluidRegion/phaseProperties) (two phases). In addition, an example of how to use a two-dimensional flow-regime map can be found in [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties).
 
-**Drag models**. Currently, available models to describe pressure drops induced by the sub-scale structure or by a second phase include:
+
+#### Drag models
+
+Currently, available models to describe pressure drops induced by the sub-scale structure or by a second phase include:
 
 - Fluid-fluid drag models (see *FFDragCoefficientModel.H*)
 	- Autruffe (see *AutruffeFFDragCoefficient.H*)
@@ -74,18 +65,21 @@ One can find detailed, commented examples in the tutorials
 	- Lottes Flinn (see *LottesFlinnTwoPhaseDragMultiplier.H*)
 	- Lottes Flinn Nguyen(see *LottesFlinnNguyenTwoPhaseDragMultiplier.H*)
 
-**Heat transfer models**. Currently, available models to describe the energy exchange with a sub-scale structure or with a second phase include:
 
-- Fluid-fluid heat-tranfer models (see *FFHeatTransferCoefficientModel.H*)
+#### Heat transfer models
+
+Currently, available models to describe the energy exchange with a sub-scale structure or with a second phase include:
+
+- Fluid-fluid heat-transfer models (see *FFHeatTransferCoefficientModel.H*)
 	- No Kazimi (see *NoKazimiFFHeatTransferCoefficient.H*)
 	- Nusselt number correlation as Reynolds and Prandtl powers (see *NusseltFFHeatTransferCoefficient.H*) $Nu = A + B \times Re^C Pr^D$
-- Fluid-structure heat-tranfer models (see FSHeatTransferCoefficientModel.H)
+- Fluid-structure heat-transfer models (see FSHeatTransferCoefficientModel.H)
 	- Nusselt number correlation as Reynolds and Prandtl powers and surface to bulk temperature ratio (see *NusseltFSHeatTransferCoefficient.H*) $Nu = A + B \times Re^C Pr^D \left( \frac{T_w}{T_b} \right)^E$
 	- Nusselt number correlation as Reynolds and Prandtl powers, plus an additional heat transfer coefficient to take into account the resistance of a wall (see *NusseltAndWallFSHeatTransferCoefficient.H*) $H = \frac{Nu \times \kappa}{D_h} + H_{wall} \quad \text{with} \quad Nu = A + B \times Re^C Pr^D$
 	-  Shah (see *ShahFSHeatTransferCoefficient.H*)
 	-  Gorenflo (see *GorenfloFSHeatTransferCoefficient.H*)
 	-  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does below CHF (see *multiRegimeBoilingTRACEFSHeatTransferCoefficient.H*) ADD REF GAUTHIER
-	-  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does, including CHF and post-CHF. Not verified! It requires specifying the *multiRegimeBoilingTRACECHF* model for the water.structure heat transfer, and the *multiRegimeBoilingVapourTRACE* model for the vapour.structure heat tranfer (see *multiRegimeBoilingTRACECHFFSHeatTransferCoefficient.H* and *multiRegimeBoilingVapourTRACEFSHeatTransferCoefficient.H*). Please notice that a lookup table for CHF is still missing.
+	-  multiRegimeBoilingTRACE - multi-regime heat transfer coefficient that replicates what TRACE does, including CHF and post-CHF. Not verified! It requires specifying the *multiRegimeBoilingTRACECHF* model for the water.structure heat transfer, and the *multiRegimeBoilingVapourTRACE* model for the vapour.structure heat transfer (see *multiRegimeBoilingTRACECHFFSHeatTransferCoefficient.H* and *multiRegimeBoilingVapourTRACEFSHeatTransferCoefficient.H*). Please notice that a lookup table for CHF is still missing.
 	-  multiRegimeBoiling - multi-regime heat transfer coefficient that replicates the same logic as TRACE, but with more flexibility for user-selectable sub-models (see *multiRegimeBoiling.H*). Can be used below CHF.
 	-  Sub-models employed by the multi-regime models:
 		- Critical heat flux related models (see *CHFModel.H*):
@@ -111,25 +105,20 @@ One can find detailed, commented examples in the tutorials
 		- Temperature of the onset of nucleate boiling (see *TONBModel.H*)
 			- Basu (see *BasuTONB.H*)
 
-**Special models**. Dedicated models for specific sub-scale structures include:
 
-- Power models, i.e., active media that can provide and subtract energy, including:
-	- Fixed (possibly time-dependent) power (see *fixedPower.H* and the tutorial *1D_CHF/imposedPower*)
-	- Fixed (possibly time-dependent) temperature (see *fixedTemperature.H* and the tutorial *1D_CHF/imposedTemperature*)
-	- Heated pin, typically used for electrically heated pins (see *heatedPin.H* and the tutorial *2D_KNS37-L22*)
-	- Nuclear fuel from FMU(s) (see *nuclearFuelFMU.H*)
-	- Nuclear fuel pin (see *nuclearFuelPin.H* and the tutorials *3D_SmallESFR* and *2D_FFTF*)
-	- Lumped-parameter nuclear structure (see *lumpedNuclearStructure.H*) and the tutorial *1D_thermalMSR_pointKinetics*
-	- Steady-state model purpose made for pebble bed reactors (see *nuclearSteadyStatePebble.H*) and the tutorial *3D_gFHR*
-- A heat exchanger model that is used to model the heat transfer between two disconnected regions, for instance representing the primary and secondary circuit (see *heatExchanger.H* and the tutorials *1D_HX* and *2D_FFTF*)
-- A pump model used to set a (possibly time-dependent) momentum source (see *pump.H* and tutorials *2D_FFTF* and *2D_MSFR*).
+#### Special models
 
-**Models for two-phase flows**. Currently, available models for two-phase flow simulations include:
+Dedicated models for specific sub-scale structures are described in more details in [this page](thermalHydraulicsSubScaleStructures.md).
+
+
+#### Models for two-phase flows
+
+Currently, available models for two-phase flow simulations include:
 
 - Contact partition models (see *contactPartitionModel.H*)
 	- Linear (see *linearContactPartition.H*)
 	- Complementary (see *complementaryContactPartition.H*)
-- Disperions models (see *dispersionModel.H*)
+- Dispersions models (see *dispersionModel.H*)
 	- Constant (see *constantDispersion.H*)
 - Fluid diameter models (see *fluidDiameterModel.H*)
 	- Iso-molar bubble (see *isomolarBubbleFluidDiameter.H*)
@@ -140,25 +129,28 @@ One can find detailed, commented examples in the tutorials
 	- Virtual mass coefficient (see *virtualMassCoefficientModel.H*)
 - Interfacial area models (see *interfacialAreaModel.H*)
 	- Annular (see *annularInterfacialArea.H*)
-	- No Kazimi  (see *NoKazimiInterfacialArea.H*)
+	- No Kazimi (see *NoKazimiInterfacialArea.H*)
 	- Schor (see *SchorInterfacialArea.H*)
 	- Spherical (see *sphericalInterfacialArea.H*)
 - Phase change models
 	- Forced constant (see *forcedConstantPhaseChange.H*)
-	- Heat driven  (see *heatDrivenPhaseChange.H*)
+	- Heat driven (see *heatDrivenPhaseChange.H*)
 	- Latent heat (see *latentHeatModel.H*)
 		- Fink Leibowitz for sodium (see *FinkLeibowitzLatentHeat.H*)
 		- NIST interpolation for water (see *waterLatentHeat.H*)
-		- Use value for thermophysicalProerties dictionary (see *fromThermophysicalPropertiesLatentHeat.H*)
+		- Use value for *thermophysicalProperties* dictionary (see *fromThermophysicalPropertiesLatentHeat.H*)
 	- Saturation temperature/pressure (see *saturationModel.H*)
 		- Browning Potter for sodium (see *BrowningPotterSaturation.H*)
 		- NIST interpolation for water (see *waterSaturation.H*)
-		- TRACE model interpolation for water - YET TO BE VEIFIED (see *waterTRACESaturation.H*)
+		- TRACE model interpolation for water - YET TO BE VERIFIED (see *waterTRACESaturation.H*)
 		- Constant temperature (see *constantTemperatureSaturation.H*)
 
-**Regime maps**. In GeN-Foam, it is possible to employ 1- and 2-dimensional regime maps to use different models for different flow conditions. This can be used for instance in one-phase simulation to provide different correlations for turbulent and laminar flow (see [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/fluidRegion/phaseProperties) for a commented example), or in 2-phase flow simulations to provide full regime maps (see [1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_boiling/constant/fluidRegion/phaseProperties) for a commented example of a 1-dimensional map, and [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties) for a commented example of a 2-dimensional map). Multiple maps can be used in the same simulation. In addition, regime-maps models can be mixed with multi-regime models, as in [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties), where a *preCHFTraceRegimeMap* is employed to assign models for phase dispersion, interfacial area and bubble diameter, while a single multi-regime model is employed to describe heat transfer between liquid and structure throughout the various regimes.
 
-N.B.: Anisotropic pressure drops can be set by by setting 3 different correlations for the 3 different local axis. An example of usage can be found in FSDragFactor.H . In addition, it is possible to use anisotropic hydraulic diameter. The anisotropy of the hydraulic diameter can be set using the keyword *localDhAnisotrpy* and assigned to it a vector of 3 scaling factors (one for each local direction).
+#### Regime maps
+
+In GeN-Foam, it is possible to employ 1- and 2-dimensional regime maps to use different models for different flow conditions. This can be used for instance in one-phase simulation to provide different correlations for turbulent and laminar flow (see [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/fluidRegion/phaseProperties) for a commented example), or in 2-phase flow simulations to provide full regime maps (see [1D_boiling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_boiling/constant/fluidRegion/phaseProperties) for a commented example of a 1-dimensional map, and [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties) for a commented example of a 2-dimensional map). Multiple maps can be used in the same simulation. In addition, regime-maps models can be mixed with multi-regime models, as in [1D_PSBT_SC](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties), where a *preCHFTraceRegimeMap* is employed to assign models for phase dispersion, interfacial area and bubble diameter, while a single multi-regime model is employed to describe heat transfer between liquid and structure throughout the various regimes.
+
+N.B.: Anisotropic pressure drops can be set by by setting 3 different correlations for the 3 different local axis. An example of usage can be found in FSDragFactor.H . In addition, it is possible to use anisotropic hydraulic diameter. The anisotropy of the hydraulic diameter can be set using the keyword *localDhAnisotropy* and assigned to it a vector of 3 scaling factors (one for each local direction).
 
 N.B.2: The thermal-hydraulic class can make use of a local coordinate system, which can be used by setting the keywords *localX* and *localY*  in the sub-dictionary *dragModels.(nameOfPhase).structure.(nameOfCellZones)* of the dictionary *constant/fluidRegion/phaseProperties*. A local coordinate system can be used for instance when one knows the pressure drop correlation in a direction that is different from the x, y, and z directions of the global coordinate system. Besides drag models, the local coordinate system can be used also for defining a tortuosity (keyword *localTortuosity*, to be defined as a vector in the local coordinate system).
 
@@ -188,7 +180,7 @@ The *turbulenceProperties* dictionary can be found under *constant/fluidRegion/*
 
 When clear-fluid simulations (i.e., without porous zones) are performed, one can use the standard kEpsilon model of OpenFOAM.
 
-When porous zones are present in the simulation, it is recommended to use *porousKEpsilon* (see *porousKEpsilon.H*). The only difference w.r.t. the standard k-epsilon model is that it forces k and epsilon to equilibrium values inside the porous zones. These equilibrium values can be set in the *porousKepsionProperties* sub-dictionary. Please notice that a porous medium simulation using the equilibrium values of k and epsilon for the sub-scale structure (viz., the values inside a fuel sub-channel) would entail the risk of an unstable solution. This occurs because the turbulent viscosity is primarily associated with the sub-scale structure, which might not be sufficient to maintain stability at the coarse mesh's length scale. To address this problem, one can define the keyword DhStruct in *constant/fluidRegion/phaseProperties/dragModels.(nameOfPhase).structure.(nameOfCellZones)*. This keyword defines the hydraulic diameter of the whole porous structure (viz., the dimension of the assembly, if using baffles to model wrappers, or of the entire core). The code uses it to make sure the turbulent viscosity results in a laminar Reynolds number (defaulted to 500).
+When porous zones are present in the simulation, it is recommended to use *porousKEpsilon* (see *porousKEpsilon.H*). The only difference w.r.t. the standard k-epsilon model is that it forces k and epsilon to equilibrium values inside the porous zones. These equilibrium values can be set in the *porousKepsilonProperties* sub-dictionary. Please notice that a porous medium simulation using the equilibrium values of k and epsilon for the sub-scale structure (viz., the values inside a fuel sub-channel) would entail the risk of an unstable solution. This occurs because the turbulent viscosity is primarily associated with the sub-scale structure, which might not be sufficient to maintain stability at the coarse mesh's length scale. To address this problem, one can define the keyword DhStruct in *constant/fluidRegion/phaseProperties/dragModels.(nameOfPhase).structure.(nameOfCellZones)*. This keyword defines the hydraulic diameter of the whole porous structure (viz., the dimension of the assembly, if using baffles to model wrappers, or of the entire core). The code uses it to make sure the turbulent viscosity results in a laminar Reynolds number (defaulted to 500).
 
 
 While some approaches to model k and epsilon for two-phase flow simulations are presently included in the code. In particular, the Lahey model (see *LaheyKEpsilon.H*) and a mixture model (see *mixtureKEpsilon.H*) can be used for clear-fluids, or mixed clear-fluid and porous-medium simulations in case of strongly advective two-phase flow scenarios where turbulent mixing may be neglected. In addition, a simple extension of the *porousKEpsilon* model has been implemented that allows to correct the turbulent intensity using a term that is proportional to the fraction of the other phase (see *porousKEpsilon2PhaseCorrected.H*).
@@ -221,7 +213,7 @@ For the power generated in the fluid itself:
 - The thermal-hydraulics solver will normally use the *powerDensity* field that it finds in the 0 (or *startTime*) folder.
 - One can override this behavior by using the *initialPowerDensity* keyword in the *phaseProperties* (see [1D_MSR_pointKinetics](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/fluidRegion/phaseProperties)) for an example. Also in this case the field in the 0 (or *startTime*) folder will take priority.
 
-If neutronics is activated, the power density will be taken from the neutronic sub-solver. For eigenvalue calculations, the power is set in the *pTarget* keyword in the *reactorState* dictionary. For transients, the power is a result of calculations. There is one important exception to this behavior: the point kinetics solver will only rescale the power densities (see below about why plural) that it finds in *neutroRegion*, or, if it does not find it, the one(s) that it finds in *fluidRegion*. The rescaled power density will be written to both *neutroRegion* and *fluidRegion*. For point kinetics, the *pTarget* keyword in *reactorState* is not used by the solver itself. However, to correctly plot point kinetics results, pTarget must be consistent with the mentioned power densities.
+If neutronics is activated, the power density will be taken from the neutronics sub-solver. For eigenvalue calculations, the power is set in the *pTarget* keyword in the *reactorState* dictionary. For transients, the power is a result of calculations. There is one important exception to this behavior: the point kinetics solver will only rescale the power densities (see below about why plural) that it finds in *neutroRegion*, or, if it does not find it, the one(s) that it finds in *fluidRegion*. The rescaled power density will be written to both *neutroRegion* and *fluidRegion*. For point kinetics, the *pTarget* keyword in *reactorState* is not used by the solver itself. However, to correctly plot point kinetics results, pTarget must be consistent with the mentioned power densities.
 
 NB: In two-phase simulations with liquid fuel, the powerDensity in neutronics goes to anything that is liquid in thermal-hydraulics. You are supposed to have one liquid and one gas. Otherwise, power will be counted twice.
 
@@ -245,12 +237,12 @@ When the *liquidFuel* flag is set to true, the thermal-hydraulic sub-solver will
 - take the *powerDensity* field from neutronics and project it to its own *powerDensityNeutronicsToLiquid* field;
 - take the *secondaryPowerDensity* field from neutronics and project it to its own *powerDensityNeutronics* field.
 
-When point kinetics is used, the solver will simply rescale the *powerDensity* and *secondaryPowerDensity* it finds, and the thermal-hydraulic solver will take them depending on the *liquidFuel* flag as described above. The only exception is when *liquidFuel* is true and the *initialPowerDensity* keyword is used. In this case, *initialPowerDensity* will take priority and this is the value that GeN-Foam will rescale and print to the powerDensityToLqiuid
+When point kinetics is used, the solver will simply rescale the *powerDensity* and *secondaryPowerDensity* it finds, and the thermal-hydraulic solver will take them depending on the *liquidFuel* flag as described above. The only exception is when *liquidFuel* is true and the *initialPowerDensity* keyword is used. In this case, *initialPowerDensity* will take priority and this is the value that GeN-Foam will rescale and print to the powerDensityToLiquid
 
 
 NB1: The power densities in the thermal-hydraulic sub-solver are ALWAYS the physical ones: for instance, when the *nuclearFuelPin* model is used for pin-based reactors, *powerDensity* refers to the power density inside the fuel matrix. For liquid fuel, the *powerDensity* is the power density in the liquid. They are not the power densities smeared over the whole volume.
 
-NB2: If you calculate the powerDensity using Serpent, you have to divide it by the fuel fractio before feeding it to GeN-Foam (see [Neutronics](neutronics.md), in the introduction, NB2)
+NB2: If you calculate the powerDensity using Serpent, you have to divide it by the fuel fraction before feeding it to GeN-Foam (see [Neutronics](neutronics.md), in the introduction, NB2)
 
 
 ## Discretization and solution

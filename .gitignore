@@ -42,6 +42,7 @@ Tools/openmcToFoam/**/PKG-INFO
 # Doxygen files
 Documentation/doxygen/Doxygen/html/**
 public
+Documentation/mkdocs/docs/classes
 
 # FMU installation
 FMU4FOAM

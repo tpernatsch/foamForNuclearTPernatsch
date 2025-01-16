@@ -42,11 +42,11 @@ Description
     This class encapsulates a single fluid + 1 stationary structure
     Eulerian solver with a user-defineable regime-map based phyiscs modelling.
 
-    Author:
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
-
 SourceFiles
     onePhase.C
+
+\mainauthor
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 \*---------------------------------------------------------------------------*/
 

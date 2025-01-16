@@ -41,10 +41,6 @@ Class
 Description
     Describes a structure with a constant surface temperature
 
-Authors:
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
-    Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
-
 Usage
     \verbatim
         powerModel
@@ -80,10 +76,14 @@ Usage
                 initialValue    850;
             }
         }
-    \endvarbatim
+    \endverbatim
 
 SourceFiles
     fixedTemperature.C
+
+\mainauthor
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
+    Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
 \*---------------------------------------------------------------------------*/
 

@@ -8,7 +8,7 @@ paraFoam -region regionName
 
 where the `regionName` is `fluidRegion`, `neutroRegion` or `thermalMechanicalRegion`.
 
-Please notice that `paraFoam` is essentially an extension of ParaView and it requires having ParaView installed. In the [openfom.com](https://openfoam.com) distribution, ParaView is not distributed with OpenFOAM, but needs to be installed separately (see the [ParaView website](https://www.paraview.org/)). In Ubuntu, it is normally enough to type in the terminal:
+Please notice that `paraFoam` is essentially an extension of ParaView and it requires having ParaView installed. In the [openfoam.com](https://openfoam.com) distribution, ParaView is not distributed with OpenFOAM, but needs to be installed separately (see the [ParaView website](https://www.paraview.org/)). In Ubuntu, it is normally enough to type in the terminal:
 
 ```bash
 sudo apt-get -y install paraview
@@ -17,9 +17,9 @@ sudo apt-get -y install paraview
 In case of parallel calculations, one should first reconstruct each one of the three meshes using the command
 
 ```bash
-recontructPar -region regionName
+reconstructPar -region regionName
 # or
-recontructPar -allRegions
+reconstructPar -allRegions
 ```
 
 where the `regionName` is once again `fluidRegion`, `neutroRegion` or `thermalMechanicalRegion`.
@@ -31,7 +31,7 @@ Useful information is also stored in the log file. The log file can be created b
 ```bash
 GeN-Foam | tee log.GeN-Foam
 # or
-mpirun -np nProcessors GeN-Foam -parallel | tee log.GeN-Foam
+mpirun -np <nProcessors> GeN-Foam -parallel | tee log.GeN-Foam
 ```
 
 Python can effectively be used to extract information from the `log.GeN-Foam` (several examples are available in the tutorials).

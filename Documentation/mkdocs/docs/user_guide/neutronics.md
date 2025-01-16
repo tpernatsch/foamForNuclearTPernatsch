@@ -47,7 +47,7 @@ The choice of the model is achieved by selecting the wanted solver in either *re
 
 ### The *neutronicsProperties* dictionary
 
-The *neutronicsProperties* dictionary is found under *constant/neutroRegion/* and it can be used to set the type of neutronic simulation by using the following keywords:
+The *neutronicsProperties* dictionary is found under *constant/neutroRegion/* and it can be used to set the type of neutronics simulation by using the following keywords:
 
 - *model*  is used to define what type of simulation needs to be performed. It can be *pointKinetics*, *diffusionNeutronics*, *SP3Neutronics*, *SNNeutronics*, *adjointDiffusion*. *adjointDiffusion* has been developed only as an eigenvalue solver. The others can be used for transient calculations. However, the SN transient solver has not been tested. In addition, it is currently not accelerated, thus extremely slow (it can require
 hundreds of iterations per time step).
@@ -71,8 +71,9 @@ The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It con
 Special field for axial and radial expansions are provided as `axExp` and `radExp` (see [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData)).
 
 Nuclear data can be generated using any nuclear code.
-* [serpentToFoam](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/serpentToFoam/serpent2.1.23) routines provided with GeN-Foam (in the *Tools* folder) is an Octave script that automatically converts Serpent output files into the nuclear data files employed by GeN-Foam.
-* [openmcToFoam](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/openmcToFoam) Python package provided with GeN-Foam automatically converts OpenMC output into nuclear data files.
+
+- [serpentToFoam](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/serpentToFoam/serpent2.1.23) routines provided with GeN-Foam (in the *Tools* folder) is an Octave script that automatically converts Serpent output files into the nuclear data files employed by GeN-Foam.
+- [openmcToFoam](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/openmcToFoam) Python package provided with GeN-Foam automatically converts OpenMC output into nuclear data files.
 
 It is possible to select different radial basis function based on the polyharmonic splines using the *polyharmonicSplineMode* keyword.
 
@@ -81,7 +82,7 @@ It is possible to select different radial basis function based on the polyharmon
 - `3`: $\phi(r) = |r^3|$
 - `4`: $\phi(r) = r^4 \ln(r)$
 
-\image html rbfInterpolation.png width=500px
+<img src="../images/rbfInterpolation.png" alt="Radial Basis Function example on arbitrary set of XS points" width="500"/>
 
 The entry *discFactor* is used only if discontinuity factors have to be used. The term *integralFlux*, is used only if the automatic adjustment of discontinuity factors is performed [@FIORINA2016212]. Nonetheless, these entries should always be present.
 
@@ -92,6 +93,7 @@ One can find more details on all the parameters in the *XS.H* file and commented
 [2D_onePhaseAndSubcriticalPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource) (for subcritical point kinetics).
 
 One can parametrize the XS on any field provided by GeN-Foam. Three laws are currently provided to the user (linear, square root and logarithmic). It is possible to assign the law through the following sub dictionary in *nuclearData* with the name of the field:
+
 ```cpp
 xsVariables
 {
@@ -134,6 +136,7 @@ N.B.1: Cross-sections must be expressed according to the International System of
 N.B.2: defaultPrec has 1/m3 units except for the adjoint solver that needs 1/m2/s.
 
 N.B.3: The *nuclearData* file must always be present, even when not parametrizing cross-sections. If no parametrization is needed, the “zones” card must be left “blank” as:
+
 ```cpp
 xsVariables
 {}
@@ -157,7 +160,7 @@ An additional dictionary is needed to provide the quadrature set when performing
 The *quadratureSet* dictionary is found under *constant/neutroRegion/*. It contains the quadrature set for discrete ordinate calculations.
 One can find examples of three different quadrature sets in the tutorial
 [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/Godiva_SN/constant/neutroRegion/).
-S4 and S8 chebichev Legendre quadrature sets can be found in [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/develop/Tools/chebichevLegendreQuadratureSets/)
+S4 and S8 Chebyshev-Legendre quadrature sets can be found in [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/develop/Tools/chebichevLegendreQuadratureSets/).
 
 
 ### The *CRMove* dictionary
@@ -194,7 +197,7 @@ N.B.: Boundary conditions must be applied to *fluxStar...* and not to *flux...* 
 A correct evaluation of the reactivity worth of delayed neutron precursors in MSRs, as well as of the impact of temperatures on reactivities, normally requires the knowledge of the adjoint flux. In GeN-Foam, the field *oneGroupFlux* is used by the point kinetic solver for weighting temperatures, densities and precursors. When fluxes are not calculated via a spatial neutronics calculation, one has to manually provide the *oneGroupFlux* in *0/neutroRegion*. As an alternative, one can use the *initialOneGroupFluxByZone* keyword in *nuclearData* (see [1D_MSR_pointKinetics](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData)). Please notice that:
 
 - If calculated fluxes are available in *neutroRegion*, these will be user to recalculate and overwrite *oneGroupFlux*.
-- If no fluxes are available, the neutronic sub-solver will use the provided *oneGroupFlux*
+- If no fluxes are available, the neutronics sub-solver will use the provided *oneGroupFlux*
 - If the *initialOneGroupFluxByZone* keyword is used in *nuclearData*, this will be used to overwrite *oneGroupFlux*
 
 

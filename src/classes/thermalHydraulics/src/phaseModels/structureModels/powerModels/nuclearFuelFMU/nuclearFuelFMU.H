@@ -41,6 +41,7 @@ Class
 Description
     Model for representing a nuclear fuel from an external FMU. The current
     model relies on the exchange of 3 axially sampled information:
+
     - Surface temperature of the cladding (GeN-Foam FMI output)
     - Power density in the fuel (GeN-Foam FMI output)
     - Heat flux between the structure and the fluid (GeN-Foam FMI input)
@@ -58,163 +59,168 @@ Description
     performed using the Radial Basis Function interpolation algorithm
     (https://en.wikipedia.org/wiki/Radial_basis_function_interpolation). In case
     the model contains a single pin, it is possible to set a uniform XY heat
-    flux distribution by setting the epsilon parameter to (0 0 nz).
+    flux distribution by setting the epsilon parameter to `(0 0 nz)`.
 
     An interesting property of this powerModel is that the external fuel models
     can be in 1 or N FMUs, and coupled to 1 or M powerModels.
 
 Usage
+    Example for a 3 fuel pin model
+
     \verbatim
-    // Example for a 3 fuel pin model
-    powerModel
-    {
-        type                        nuclearFuelFMU;
-        volumetricArea              ${{2.0*$volFrac / $r}}; // 2.0 * volumeFrac / rCladOuter
+        powerModel
+        {
+            type                        nuclearFuelFMU;
+            volumetricArea              ${{2.0*$volFrac / $r}}; // 2.0 * volumeFrac / rCladOuter
 
-        // Sampling position, in this case 3 sampling lines
-        xPos                        (0.34   0.50   0.66);
-        yPos                        (0.05   0.05   0.05);
-        axialPowerInterpolationMethod   linear;
-        axialLocationsNameToFMU     gfAxialLocations;
-        axialLocations
-        (
-            0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4
-        );
+            // Sampling position, in this case 3 sampling lines
+            xPos                        (0.34   0.50   0.66);
+            yPos                        (0.05   0.05   0.05);
+            axialPowerInterpolationMethod   linear;
+            axialLocationsNameToFMU     gfAxialLocations;
+            axialLocations
+            (
+                0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4
+            );
 
-        // Radial Basis Function interpolation for heat flux reconstruction
-        radialBasisFunctionMethod   gaussian; // gaussian or polyharmonicSpline or kriging
-        epsilon                     (10 0 100); // Used only for Gaussian Radial Basis Functions interpolation
+            // Radial Basis Function interpolation for heat flux reconstruction
+            radialBasisFunctionMethod   gaussian; // gaussian or polyharmonicSpline or kriging
+            epsilon                     (10 0 100); // Used only for Gaussian Radial Basis Functions interpolation
 
-        // FMI ports
-        avgPowerDensityNameToFMU
-        (
-            gfPowerDensity0 gfPowerDensity1 gfPowerDensity2
-        );
-        axialProfilePowerDensityNameToFMU
-        (
-            gfAxialProfPwrDens0 gfAxialProfPwrDens1 gfAxialProfPwrDens2
-        );
-        TstructNameToFMU
-        (
-            gfTstruct0 gfTstruct1 gfTstruct2
-        );
-        heatFluxNameFromFMU // or rhoCpdTdtNameFromFMU
-        (
-            gfSurfacePower0 gfSurfacePower1 gfSurfacePower2
-        );
-        initPowerDensity    100e6;
-        initTstruct         600;
-        initHeatFlux        1e5;
-    }
+            // FMI ports
+            avgPowerDensityNameToFMU
+            (
+                gfPowerDensity0 gfPowerDensity1 gfPowerDensity2
+            );
+            axialProfilePowerDensityNameToFMU
+            (
+                gfAxialProfPwrDens0 gfAxialProfPwrDens1 gfAxialProfPwrDens2
+            );
+            TstructNameToFMU
+            (
+                gfTstruct0 gfTstruct1 gfTstruct2
+            );
+            heatFluxNameFromFMU // or rhoCpdTdtNameFromFMU
+            (
+                gfSurfacePower0 gfSurfacePower1 gfSurfacePower2
+            );
+            initPowerDensity    100e6;
+            initTstruct         600;
+            initHeatFlux        1e5;
+        }
     \endverbatim
 
 
+    Example for a 7 fuel pin model in a lattice using the polyharmonic spline
+    interpolation method, fuel length is smaller than total sampling length
+
     \verbatim
-    // Example for a 7 fuel pin model in a lattice using the polyharmonic spline
-    // interpolation method, fuel length is smaller than total sampling length
-    powerModel
-    {
-        type                        nuclearFuelFMU;
-        volumetricArea              ${{2.0*$volFrac / $r}}; // 2.0 * volumeFrac / rCladOuter
-
-        // Sampling position, in this case 3 sampling lines
-        xyPosLattice
+        powerModel
         {
-            origin          (0 0);
-            type            hexagonal; // square; // hexagonal;
-            nElements       (3 3);
-            pitch           0.5;
-            rotationAngle   0;
-            lattice // 7 pins
+            type                        nuclearFuelFMU;
+            volumetricArea              ${{2.0*$volFrac / $r}}; // 2.0 * volumeFrac / rCladOuter
+
+            // Sampling position, in this case 3 sampling lines
+            xyPosLattice
+            {
+                origin          (0 0);
+                type            hexagonal; // square; // hexagonal;
+                nElements       (3 3);
+                pitch           0.5;
+                rotationAngle   0;
+                lattice // 7 pins
+                (
+                    e F F
+                    F F F
+                    F F e
+                );
+            }
+            axialPowerInterpolationMethod   linear;
+            axialLocationsNameToFMU     gfAxialLocations;
+            axialLocations
             (
-                e F F
-                 F F F
-                  F F e
+                0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4
             );
+            // Optional fuel length incase the axial location is bigger than the
+            // fuel, usually the case when simulating cladding longer than fuel
+            fuelLength  0.8;
+
+            // Radial Basis Function interpolation for heat flux reconstruction
+            radialBasisFunctionMethod   polyharmonicSpline;
+
+            // FMI ports
+            avgPowerDensityNameToFMU
+            (
+                gfPowerDensity0 gfPowerDensity1 gfPowerDensity2 gfPowerDensity3
+                gfPowerDensity4 gfPowerDensity5 gfPowerDensity6
+            );
+            axialProfilePowerDensityNameToFMU
+            (
+                gfAxialProfPwrDens0 gfAxialProfPwrDens1 gfAxialProfPwrDens2
+                gfAxialProfPwrDens3 gfAxialProfPwrDens4 gfAxialProfPwrDens5
+                gfAxialProfPwrDens6
+            );
+            TstructNameToFMU
+            (
+                gfTstruct0 gfTstruct1 gfTstruct2 gfTstruct3 gfTstruct4 gfTstruct5
+                gfTstruct6
+            );
+            heatFluxNameFromFMU // or rhoCpdTdtNameFromFMU
+            (
+                gfSurfacePower0 gfSurfacePower1 gfSurfacePower2 gfSurfacePower3
+                gfSurfacePower4 gfSurfacePower5 gfSurfacePower6
+            );
+            // Optional fuel and cladding axial samples
+            TFuelNameFromFMU
+            (
+                gfTFuel0 gfTFuel1 gfTFuel2 gfTFuel3
+                gfTFuel4 gfTFuel5 gfTFuel6
+            );
+            TCladNameFromFMU
+            (
+                gfTCladding0 gfTCladding1 gfTCladding2 gfTCladding3
+                gfTCladding4 gfTCladding5 gfTCladding6
+            );
+            initPowerDensity    100e6;
+            initTstruct         600;
+            initHeatFlux        1e5;
         }
-        axialPowerInterpolationMethod   linear;
-        axialLocationsNameToFMU     gfAxialLocations;
-        axialLocations
-        (
-            0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4
-        );
-        // Optional fuel length incase the axial location is bigger than the
-        // fuel, usually the case when simulating cladding longer than fuel
-        fuelLength  0.8;
-
-        // Radial Basis Function interpolation for heat flux reconstruction
-        radialBasisFunctionMethod   polyharmonicSpline;
-
-        // FMI ports
-        avgPowerDensityNameToFMU
-        (
-            gfPowerDensity0 gfPowerDensity1 gfPowerDensity2 gfPowerDensity3
-            gfPowerDensity4 gfPowerDensity5 gfPowerDensity6
-        );
-        axialProfilePowerDensityNameToFMU
-        (
-            gfAxialProfPwrDens0 gfAxialProfPwrDens1 gfAxialProfPwrDens2
-            gfAxialProfPwrDens3 gfAxialProfPwrDens4 gfAxialProfPwrDens5
-            gfAxialProfPwrDens6
-        );
-        TstructNameToFMU
-        (
-            gfTstruct0 gfTstruct1 gfTstruct2 gfTstruct3 gfTstruct4 gfTstruct5
-            gfTstruct6
-        );
-        heatFluxNameFromFMU // or rhoCpdTdtNameFromFMU
-        (
-            gfSurfacePower0 gfSurfacePower1 gfSurfacePower2 gfSurfacePower3
-            gfSurfacePower4 gfSurfacePower5 gfSurfacePower6
-        );
-        // Optional fuel and cladding axial samples
-        TFuelNameFromFMU
-        (
-            gfTFuel0 gfTFuel1 gfTFuel2 gfTFuel3
-            gfTFuel4 gfTFuel5 gfTFuel6
-        );
-        TCladNameFromFMU
-        (
-            gfTCladding0 gfTCladding1 gfTCladding2 gfTCladding3
-            gfTCladding4 gfTCladding5 gfTCladding6
-        );
-        initPowerDensity    100e6;
-        initTstruct         600;
-        initHeatFlux        1e5;
-    }
     \endverbatim
 
     where the entries mean:
-    \table
-        Property     | Description                        | Type | Req'd | Dflt
-        type            | Type name: nuclearFuelFMU       | word |  yes  | -
-        volumetricArea  | Volumetric area of the porous medium | scalar | yes | -
-        xPos            | List of X positions of the sampling lines | scalarList | conditional | -
-        yPos            | List of Y positions of the sampling lines | scalarList | conditional | -
-        xyPosLattice    | XY lattice map dictionnary | dict | conditional | -
-        axialPowerInterpolationMethod | Interpolation method for LHGR | word | no | linear
-        axialLocationsNameToFMU | FMI port name of axial location list | word | yes | -
-        axialLocations  | Axial position list | scalarList | yes | -
-        radialBasisFunctionMethod | Radial Basis Function method name (gaussian, polyharmonicSpline, kriging) | word | yes | -
-        epsilon         | Epsilon shaping factor for the Gaussian RBF | scalarList | conditional | -
-        avgPowerDensityNameToFMU | List of FMI port names for LHGR output | wordList | yes | -
-        axialProfilePowerDensityNameToFMU | List of FMI port names for power density normalized distribution output | wordList | yes | -
-        TstructNameToFMU | List of FMI port names for Tstructure output | wordList | yes | -
-        heatFluxNameFromFMU | List of FMI port names for heat flux input | wordList | conditional | -
-        rhoCpdTdtNameFromFMU | List of FMI port names for rhoCpdTdt input | wordList | conditional | -
-        TFuelNameFromFMU | List of FMI port names for fuel temperature input | wordList | no | -
-        TCladNameFromFMU | List of FMI port names for cladding temperature input | wordList | no | -
-        initPowerDensity | Initial power density | scalar | yes | -
-        initTstruct     | Initial structure temperature | scalar | yes | -
-        initHeatFlux    | Initial heat flux | scalar | conditional | -
-        initRhoCpdTdt   | Initial rho*Cp*dT/dt | scalar | conditional | -
-    \endtable
+    \vartable
 
-\mainauthor
-    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+    | Property     | Description                        | Type | Req'd | Dflt
+    |:-|:-|:-:|:-:|:-:|
+    type            | Type name: nuclearFuelFMU       | word |  yes  | -
+    volumetricArea  | Volumetric area of the porous medium | scalar | yes | -
+    xPos            | List of X positions of the sampling lines | scalarList | conditional | -
+    yPos            | List of Y positions of the sampling lines | scalarList | conditional | -
+    xyPosLattice    | XY lattice map dictionnary | dict | conditional | -
+    axialPowerInterpolationMethod | Interpolation method for LHGR | word | no | linear
+    axialLocationsNameToFMU | FMI port name of axial location list | word | yes | -
+    axialLocations  | Axial position list | scalarList | yes | -
+    radialBasisFunctionMethod | Radial Basis Function method name (gaussian, polyharmonicSpline, kriging) | word | yes | -
+    epsilon         | Epsilon shaping factor for the Gaussian RBF | scalarList | conditional | -
+    avgPowerDensityNameToFMU | List of FMI port names for LHGR output | wordList | yes | -
+    axialProfilePowerDensityNameToFMU | List of FMI port names for power density normalized distribution output | wordList | yes | -
+    TstructNameToFMU | List of FMI port names for Tstructure output | wordList | yes | -
+    heatFluxNameFromFMU | List of FMI port names for heat flux input | wordList | conditional | -
+    rhoCpdTdtNameFromFMU | List of FMI port names for rhoCpdTdt input | wordList | conditional | -
+    TFuelNameFromFMU | List of FMI port names for fuel temperature input | wordList | no | -
+    TCladNameFromFMU | List of FMI port names for cladding temperature input | wordList | no | -
+    initPowerDensity | Initial power density | scalar | yes | -
+    initTstruct     | Initial structure temperature | scalar | yes | -
+    initHeatFlux    | Initial heat flux | scalar | conditional | -
+    initRhoCpdTdt   | Initial rho*Cp*dT/dt | scalar | conditional | -
+
+    \endvartable
 
 SourceFiles
     nuclearFuelFMU.C
+
+\mainauthor
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 \*---------------------------------------------------------------------------*/
 

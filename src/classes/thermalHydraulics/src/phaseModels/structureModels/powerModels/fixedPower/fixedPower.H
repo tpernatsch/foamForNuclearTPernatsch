@@ -45,10 +45,6 @@ Description
     structure temperature (assumed equal to the structure surface temperature
     for fluid heat transfer purposes).
 
-    Authors:
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
-    Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
-
 Usage
     \verbatim
         powerModel
@@ -85,6 +81,11 @@ Usage
 
 SourceFiles
     fixedPower.C
+
+
+\mainauthor
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
+    Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
 \*---------------------------------------------------------------------------*/
 

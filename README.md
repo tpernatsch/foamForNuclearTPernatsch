@@ -1,4 +1,4 @@
-# GeN-Foam README file {#README}
+# GeN-Foam
 
 GeN-Foam is a multi-physics solver for reactor analysis. It can solve (coupled or alternatively) for:
 

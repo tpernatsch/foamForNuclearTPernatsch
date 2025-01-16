@@ -1,9 +1,10 @@
 
 # Thermal-mechanics
 
-GeN-Foam can currently use two different thermomechanics solvers. One is a simple linear elasticity solver and the other is an extended thermomechanics solver derived from OFFBEAT. The former will be presented here, whereas the latter is described in details in the OFFBEAT guide.
+GeN-Foam can currently use two different thermomechanics solvers. One is a simple linear elasticity solver and the other is an extended thermomechanics solver derived from OFFBEAT [@SCOLARO2020110416]. The former will be presented here, whereas the latter is described in details in the [OFFBEAT Documentation](https://foam-for-nuclear.gitlab.io/offbeat/).
 
 N.B. what in OFFBEAT is named *solverDict*, in GeN-Foam has been renamed *thermomechanicalProperties*, for continuity between the two mechanics solvers.
+
 
 ## Various properties
 

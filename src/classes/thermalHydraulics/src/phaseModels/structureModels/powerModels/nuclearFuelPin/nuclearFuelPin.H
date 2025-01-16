@@ -44,12 +44,242 @@ Description
     with a finite differences scheme. Only radial heat diffusion is considered.
     Derivation of the equations is provided at the end of the present file.
 
-    Authors:
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
-    Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
+## Derivation
+
+\warning
+THIS IS THE DERIVATION OF THE PREVIOUS FINITE-DIFFERENCE EQUATIONS
+WHICH ARE NO LONGER USED. THE CURRENT CODE IS BASED ON FINITE VOLUME SCHEME
+WHICH IS SIGNIFICANTLY MORE CONSERVATIVE THAN THE FINITE-DIFFERENCE ONE
+FOR THE SAME MESH SIZE. THE FINITE VOLUME DERIVATION IS NOT REPORTED AS...
+
+I added this section in the hope that it might spare quite some time to anyone
+who will unfortunately have to deal with this code after me. It shows how the
+1-D matrices in updateLocalTemperatureProfile are built.
+
+Let us start with the heat diffusion equation in cylindrical coordinates with
+temporally constant cp, rho and spatially constant k. For simplicity,
+let us not consider a pin right now, just a regular uniform hollow cylinder:
+
+$$
+\rho c_p \frac{dT}{dt} - div(k grad(T)) = q    \rightarrow    \rho c_p \frac{dT}{dt} - \frac{k}{r} \frac{d}{dr} r \frac{dT}{dr}  = q
+$$
+
+Here is an example of a mesh with 5 nodes, represented by (o) and two "ghost"
+nodes before and after the boundary nodes 0 and 4.
+
+```
+    radius=   rIn  ...                           ...  rOut
+
+    index =   0         1         2         3         4 (= N-1)
+
+    x_ _ _ _ _o_________o_________o_________o_________o_ _ _ _ _x
+```
+
+
+Let us discretise the eq. term by term with a finite difference scheme. For a
+radial node $i$, one has:
+
+1)
+
+$$
+\rho c_p \frac{dT}{dt} \rightarrow
+    \rho_i c_{p_i} \frac{T_i - T_{i,\text{old}}}{dt} =
+    T_i \left( \frac{\rho_i c_{p,i}}{dt} \right)
+    - T_{i,\text{old}} \left( \frac{\rho_i c_{p,i}}{dt} \right)
+$$
+
+2)
+
+$$
+\frac{k}{r} \frac{d}{dr} r \frac{dT}{dr} = k \left( \frac{1}{r}\frac{dT}{dr} + \frac{d^2T}{dr^2} \right)
+$$
+
+2.1)
+
+$$
+\frac{k}{r}\frac{dT}{dr} \rightarrow k \frac{T_{i+1} - T_{i-1}}{2 r_i dr} \text{[CDS scheme]} =
+      T_{i+1} \frac{k}{2 r_i dr}
+    - T_{i-1} \frac{k}{2 r_i dr}
+$$
+
+2.2)
+
+$$
+\begin{align}
+k \frac{d^2T}{dr^2} = \frac{d}{dr} \frac{dT}{dr} \rightarrow
+k \frac{ \frac{dT_{i+1} }{dr} - \frac{dT_i}{dr} }{dr}
+    & = k_i \frac{ \frac{T_{i+1} - T_i}{dr} - \frac{T_i - T_{i-1}}{dr} }{dr} \\
+    & = T_{i+1} \frac{k}{dr^2}
+        - T_i \frac{2k}{dr^2}
+        + T_{i-1} \frac{k}{dr^2}
+\end{align}
+$$
+
+So
+
+$$
+\frac{k}{r} \frac{d}{dr} r \frac{dT}{dr} \rightarrow
+    T_{i+1} k \left( \frac{1}{dr^2} + \frac{1}{2 r_i dr} \right)
+-   T_i \frac{2k}{dr^2}
++   T_{i-1} k \left( \frac{1}{dr^2} - \frac{1}{2 r_i dr} \right)
+$$
+
+
+Recall that $\frac{k}{r} \frac{d}{dr} r \frac{dT}{dr}$ appears with the - sign in the heat
+equation, so all the coefficients from 2) need to be changed in sign.
+Combining the coefficients from 1) and 2) and 2.2) we get equation [I]:
+
+$$
+\begin{align}
+& \rho c_p \frac{dT}{dt} - div(k grad(T)) = q \\
+& \rightarrow
+-   T_{i+1} k \left( \frac{1}{dr^2}  - \frac{1}{2 r_i dr}        \right)
++   T_i       \left( \frac{2k}{dr^2} + \frac{\rho_i c_{p,i}}{dt} \right)
+-   T_{i-1} k \left( \frac{1}{dr^2}  + \frac{1}{2 r_i dr}        \right)
+=
+    q_i
++   T_{i, old} \frac{\rho_i c_{p,i}}{dt}
+\end{align}
+$$
+
+If we set:
+
+$$
+\begin{align}
+A & = \frac{k}{dr^2} \\
+B & = \frac{1}{2 r_i dr} \\
+X & = \frac{\rho_i c_{p,i}}{dt}
+\end{align}
+$$
+
+Then we can re-write the whole thing as (referred later as eq. I):
+
+$$
+\begin{align}
+& \rho c_p \frac{dT}{dt} - div(k grad(T)) = q \\
+& \rightarrow
+    T_{i+1} ( -A + B )
++   T_i     ( 2A + X )
++   T_{i-1} ( -A - B )
+=
+    q_i
++   T_{i, old} X
+\end{align}
+$$
+
+
+Equation I is valid everywhere, even at the boundaries. However, at the
+boundaries, $T_N$ and $T_{-1}$ do not exists. This is where ghost nodes come into
+play. Let us have the following boundary conditions:
+
+    1) Zero gradient at $i = 0$ : (i.e. Neumann)
+
+$$
+\begin{align}
+\frac{dT}{dr} |_{r_0} = 0  & \rightarrow  \frac{T_1 - T_{-1}}{2} dr = 0 \\
+                           & \rightarrow  T_{-1} = T_1
+\end{align}
+$$
+
+    $T_{-1}$ does not exists and is our left ghost node. It does not matter,
+    we obtained a relationship between $T_1$ and $T_{-1}$! Let us substitute this
+    relationship in equation [I] and we get the equation at the left boundary
+    (referred later as eq. [II]):
+
+$$
+\rho c_p \frac{dT}{dt} - div(k grad(T)) = q
+    & \rightarrow (zeroGradient at r = rIn) \\
+    & \rightarrow T_1 \times ( -2A ) + T_0 \times ( 2A + X ) = q_i + T_{0, old} X
+$$
+
+    2) Convective boundary condition at $i = N-1$ : (i.e. Robin)
+
+$$
+k \frac{dT}{dr} |_N = h_{Ext} (T_{Ext} - T_{N-1})
+$$
+
+    with hExt being the heat transfer coefficients of the medium after
+    rOut and TExt being the temperature of the medium. As before, we can
+    discretize it as:
+
+$$
+k \frac{ T_N - T_{N-2} }{2 dr} = h_{Ext} (T_{Ext} - T_{N-1})
+\rightarrow
+T_N = T_{N-2} + \frac{2 dr}{k} h_{Ext} (T_{Ext} - T_{N-1})
+$$
+
+    If we substitute the expression for the ghost node T_N in equation I, we
+    obtain the BC. For convenience, let us rename $C = \frac{2 dr}{k}$
+    (referred later as eq. [III]):
+
+$$
+\begin{align}
+\rho c_p \frac{dT}{dt} - div(k grad(T)) = q
+    & \rightarrow (convective at r = rOut) \\
+    & \rightarrow
+                T_{N-1} ( 2A + h_{Ext} C (A+B) + X )
+            +   T_{N-2} \times ( -2A )
+            =
+                q_{N-1}
+            +   T_{N-1, old} X
+            +   T_{Ext} h{Ext} C (A+B)
+\end{align}
+$$
+
+So, there you have it, the boundary coefficients (II, III) and the bulk
+coefficients (I).
+Ok, now what if you want to do a cylinder? Well, you don't need to change
+anything as there are no terms that contain 1/r_i for the zeroGradient
+expression at $r = r_1$. Ok again, what if you want to do a proper nuclear fuel
+pin? Well, you should be able to understand what I did in the code. I
+used a convective boundary condition at the fuel outer surface where TExt is
+the  actual $T_{i+1}$, while the fuel $T_{i+1}$ is treated as a ghost node. Same
+for the inner side of the cladding, yet the coefficients are swapped for
+obvious reasons. For the outer cladding surface, again, it is a convective
+boundary conditions, yet it is complicated by the fact that I might have a mix
+of vapour and liquid, at different temperatures, both contacting the pin. For
+simplicity, I assume a single cladding outer temperature. Then, due to the
+additivity of heat transfer phenomena, I simply consider:
+
+$$
+k \frac{T_N - T_{N-2}}{2} dr =
+    h_{Vap} f_{Vap} (T_{Vap} - T_{N-1}) + h_{Liq} f_{Liq} (T_{Liq} - T_{N-1})
+$$
+
+with $f_{Vap}$ and $f_{Liq}$ being the fractions of structure interfacial area
+that is in contact with either the vapour or the liquid. More in general, the
+treatment of the convective boundary conditions can be generalized for any
+number of fluids contacting the pin.
+Let us have:
+
+$$
+k \frac{T_N - T_{N-2}}{2} dr = \sum_j h_{f,j} (T_{ext, j} - T_{N-1})
+$$
+
+$h_{f,j}$ is the heat
+transfer coefficient betwee the j-th fluid and the structure, multiplied by
+the fraction of interfacial area of the structure that is in contact with the
+j-th fluid. Then, this can be re-written as:
+
+$$
+\begin{align}
+k \frac{T_N - T_{N-2}}{2} dr & = \sum_j h_{f,j} T_{ext, j} - T_{N-1} \sum_j h_{f,j} \\
+                             & = HTSum - T_{N-1} \times HSum
+\end{align}
+$$
+
+which is the notation that is used in the code implementation. This grants more
+generality to this class, which does not need to now any details on how many
+fluid are there, nor what are the interfacial area fractions and so on, as
+these need to be passed by the user at a higher level (i.e., when calling the
+correct(HTSum, HSum) function in the main program).
 
 SourceFiles
     nuclearFuelPin.C
+
+\mainauthor
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
+    Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
 
 \*---------------------------------------------------------------------------*/
 

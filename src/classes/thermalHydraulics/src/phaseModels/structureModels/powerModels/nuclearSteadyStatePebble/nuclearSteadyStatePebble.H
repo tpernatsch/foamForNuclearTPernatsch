@@ -41,12 +41,6 @@ Class
 Description
     Describes triso and pebble of a pebble-bed reactor. Only steady-state.
 
-    Authors:
-    Yvver Robert, Ludovic Jantzen (UC Berkeley)
-    Review: Carlo Fiorina
-
-
-
 Usage
     \verbatim
             type                nuclearSteadyStatePebble;
@@ -55,7 +49,7 @@ Usage
             // a volume of any shape, the interfacialArea and volumeFraction
             // of the resulting porous pebble structure are not independent, yet
             // are tied by volumetricArea = 3*volumeFraction/outerPinRadius
-            powerDensityNeutronics            19.96567386e6;
+            powerDensityNeutronics        19.96567386e6;
             pebbleSurfaceTemperatureGuess 939;
 
             pebbleCoreRadius        1.38e-2;
@@ -69,11 +63,11 @@ Usage
 
             nTRISO                  9022;
 
-            trisoFuelKCoeffs      (3.3073 0 0 0 0 0 0 0);
-            trisoBufferKCoeffs    (0.50 0 0 0 0 0 0 0);
-            trisoPyCKCoeffs       (4.00 0 0 0 0 0 0 0);
-            trisoSiCKCoeffs       (90.3 0 0 0 0 0 0 0);
-            pebbleGraphiteKCoeffs (41.68 0 0 0 0 0 0 0);
+            trisoFuelKCoeffs        (3.3073 0 0 0 0 0 0 0);
+            trisoBufferKCoeffs      (0.50 0 0 0 0 0 0 0);
+            trisoPyCKCoeffs         (4.00 0 0 0 0 0 0 0);
+            trisoSiCKCoeffs         (90.3 0 0 0 0 0 0 0);
+            pebbleGraphiteKCoeffs   (41.68 0 0 0 0 0 0 0);
 
             trisoFuelDensityCoeffs      (11031.432 -0.17907428 -9.1359257e-05 2.2133072e-09 0 0 0 0); thesis
             trisoBufferDensityCoeffs    (1000 0 0 0 0 0 0 0);
@@ -86,6 +80,10 @@ Usage
 
 SourceFiles
     nuclearSteadyStatePebble.C
+
+\mainauthor
+    Yvver Robert, Ludovic Jantzen (UC Berkeley)
+    Review: Carlo Fiorina
 
 \*---------------------------------------------------------------------------*/
 

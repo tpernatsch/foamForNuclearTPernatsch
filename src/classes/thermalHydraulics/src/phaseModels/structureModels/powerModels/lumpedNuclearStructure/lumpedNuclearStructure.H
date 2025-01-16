@@ -40,20 +40,22 @@ Class
 
 Description
     Model for representing a lumped-parameter structure characterized
-    by a user selectable number of nodes (indicated below as T[]).
+    by a user selectable number of nodes (indicated below as T[idx]).
     \verbatim
     Tmax            T[0]           T[1]          T[n-1]         Tsurface
       | --- H[0] --- | --- H[1] --- | --- H[2] --- |  --- H[n] --- |
     \endverbatim
-    Note that only T[] are state variables while Tmax and Tsurface can
+    Note that only T[idx] are state variables while Tmax and Tsurface can
     be found after matrix solution.
     Note also that one needs n+1 conductances when solving for n nodes
     The equation in the class can be obtained starting from a simple
     energy balance for the ith node:
-    \verbatim
-    V_i*rho_i*cp_i * dT/dt =
-    V*Q*qf + H[i](T_(i-1) - T_i) - H[i+1](T_(i) - T_(i+1)
-    \endverbatim
+
+    $$
+        V_i \rho_i c_{p,i} \frac{dT}{dt} =
+        V Q q_f + H_i (T_{i-1} - T_i) - H_{i+1}(T_i - T_{i+1})
+    $$
+
     and dividing all terms by the volume of the structure.
     This means that the heat conductances  should be calculated as
     the power flowing between two nodes divided by the diffence in
@@ -71,74 +73,74 @@ Usage
 
     Example for one node:
     \verbatim
-    powerModel
-    {
-        type                lumpedNuclearStructure;
-        volumetricArea      40;
-        powerDensity        5e6; // Power density smeared over the entire
-                                 // structure
-        nodesNumber         1; // Number of nodes
-        nodeFuel            0; // Define which node temperature is used
-                               // to parametrize XS according to
-                               // nuclearDataFuelTemp
-        nodeClad            0; // Define which node temperature is used
-                               // to parametrize XS according to
-                               // nuclearDataCladExp. Of course, it does
-                               // not have to represent a cladding. It
-                               // could be used to parametrize over the
-                               // graphite temperature in PBRs
-        nodeMatrix          0; // optional: Define which node temperature
-                               // is used to perform a thermal diffusion
-                               // in the matrix
-        kappaMatrix         10; // optional: Thermal conductivity in the
-                                // matrix to compute the thermal diffusion.
-                                // When set to 0, the thermal diffusion is
-                                // not computed.
-        heatConductances    (450000 225000); // Heat conductances from
-                                             // average to max,
-                                             // and average to surface.
-                                             // Note that heat conductances (W/K)
-                                             // must be divided by the volume
-                                             // of the entire structure.
-                                             // There must be one more conductance
-                                             // than the number of nodes
-                                             // (see explanation in class)
-        rhoCp               (53576.92); // for each node
-        volumeFractions     (1); // Fraction of the volume of the structure
-                                 // occupied by each node
-        powerFractions      (1); // Fraction of total power in the strucure
-                                 // that goes to each node
-        T0                  900; // Initial temperature, if no found in
-                                 // the time folder
-    }
+        powerModel
+        {
+            type                lumpedNuclearStructure;
+            volumetricArea      40;
+            powerDensity        5e6; // Power density smeared over the entire
+                                    // structure
+            nodesNumber         1; // Number of nodes
+            nodeFuel            0; // Define which node temperature is used
+                                // to parametrize XS according to
+                                // nuclearDataFuelTemp
+            nodeClad            0; // Define which node temperature is used
+                                // to parametrize XS according to
+                                // nuclearDataCladExp. Of course, it does
+                                // not have to represent a cladding. It
+                                // could be used to parametrize over the
+                                // graphite temperature in PBRs
+            nodeMatrix          0; // optional: Define which node temperature
+                                // is used to perform a thermal diffusion
+                                // in the matrix
+            kappaMatrix         10; // optional: Thermal conductivity in the
+                                    // matrix to compute the thermal diffusion.
+                                    // When set to 0, the thermal diffusion is
+                                    // not computed.
+            heatConductances    (450000 225000); // Heat conductances from
+                                                // average to max,
+                                                // and average to surface.
+                                                // Note that heat conductances (W/K)
+                                                // must be divided by the volume
+                                                // of the entire structure.
+                                                // There must be one more conductance
+                                                // than the number of nodes
+                                                // (see explanation in class)
+            rhoCp               (53576.92); // for each node
+            volumeFractions     (1); // Fraction of the volume of the structure
+                                    // occupied by each node
+            powerFractions      (1); // Fraction of total power in the strucure
+                                    // that goes to each node
+            T0                  900; // Initial temperature, if no found in
+                                    // the time folder
+        }
     \endverbatim
 
     Example for 3 nodes:
     \verbatim
-    powerModel
-    {
-        type                lumpedNuclearStructure;
-        volumetricArea      40;
-        powerDensity        5e6;
-        nodesNumber         3;
-        nodeFuel            0;
-        nodeClad            1;
-        nodeMatrix          2;
-        kappaMatrix         12;
-        heatConductances    (600000 240000 600000 1200000);
-        rhoCp               (53576.92 53576.92 53576.92);
-        volumeFractions     (0.75 0.125 0.125);
-        powerFractions      (1 0 0);
-        T0                  900;
-    }
+        powerModel
+        {
+            type                lumpedNuclearStructure;
+            volumetricArea      40;
+            powerDensity        5e6;
+            nodesNumber         3;
+            nodeFuel            0;
+            nodeClad            1;
+            nodeMatrix          2;
+            kappaMatrix         12;
+            heatConductances    (600000 240000 600000 1200000);
+            rhoCp               (53576.92 53576.92 53576.92);
+            volumeFractions     (0.75 0.125 0.125);
+            powerFractions      (1 0 0);
+            T0                  900;
+        }
     \endverbatim
-
-    Authors:
-    Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
-    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 SourceFiles
     lumpedNuclearStructure.C
+
+\mainauthor
+    Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 \*---------------------------------------------------------------------------*/
 

@@ -39,7 +39,7 @@ Class
     Foam::SP3Neutronics
 
 Description
-    Subclass for SP3 neutronics.
+    Subclass for SP3 neutronics [@FIORINA201524] [@Fiorina2015ApplicationCodes] [@FIORINA2017419].
 
 <b>Reference publications</b>
 

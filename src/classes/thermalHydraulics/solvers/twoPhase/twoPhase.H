@@ -42,11 +42,11 @@ Description
     This class encapsulates a two fluid + 1 stationary structure
     Eulerian solver
 
-    Author:
-    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch / )
-
 SourceFiles
     twoPhase.C
+
+\mainauthor
+    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch / )
 
 \*---------------------------------------------------------------------------*/
 

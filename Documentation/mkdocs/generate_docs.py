@@ -307,32 +307,24 @@ def main():
     # Step 2: Generate class entries for dynamic folders, respecting order from Overview files
     # Define the dictionary with folders and corresponding overview files
     nav_sections = {
+        # Neutronics
         "diffusion": ("docs/classes/neutronics/diffusion/", "docs/user_guide/neutronics.md"),
         "adjoint_diffusion": ("docs/classes/neutronics/adjointDiffusion/", "docs/user_guide/neutronics.md"),
         "SP3": ("docs/classes/neutronics/SP3/", "docs/user_guide/neutronics.md"),
         "SN": ("docs/classes/neutronics/SN/", "docs/user_guide/neutronics.md"),
         "point_kinetics": ("docs/classes/neutronics/pointKinetics/", "docs/user_guide/neutronics.md"),
-        # "mechanics_solver": ("docs/classes/physicsSubSolvers/mechanicsSubSolver/", "docs/user_guide/solverDict/mechanics_solver.md"),
-        # "multi_material_correction": ("docs/classes/physicsSubSolvers/mechanicsSubSolver/multiMaterialInterface/", "docs/user_guide/solverDict/multi_material_correction.md"),
-        # "neutronics_solver": ("docs/classes/physicsSubSolvers/neutronicsSubSolver/", "docs/user_guide/solverDict/neutronics_solver.md"),
-        # "element_transport": ("docs/classes/elementTransport/", "docs/user_guide/solverDict/element_transport_solver.md"),
-        # "gap_gas_model": ("docs/classes/gapGasModel/", "docs/user_guide/solverDict/gap_gas.md"),
-        # "heat_source": ("docs/classes/heatSource/", "docs/user_guide/solverDict/heat_source.md"),
-        # "fast_flux": ("docs/classes/fastFlux/", "docs/user_guide/solverDict/fast_flux.md"),
-        # "burnup": ("docs/classes/burnup/", "docs/user_guide/solverDict/burnup.md"),
-        # "fission_gas_release": ("docs/classes/fissionGasRelease/", "docs/user_guide/solverDict/fgr.md"),
-        # "rheology": ("docs/classes/rheology/", "docs/user_guide/solverDict/rheology.md"),
-        # "slice_mapper": ("docs/classes/sliceMapper/", "docs/user_guide/solverDict/slice_mapper.md"),
-        # # Boundary conditions for T
-        # "fixed_temperature_bcs": ("docs/classes/fvPatchFields/fixedTemperature/", "docs/user_guide/boundaryConditions/temperatureBCs.md"),
-        # "convective_htc_bcs": ("docs/classes/fvPatchFields/convectiveHTC/", "docs/user_guide/boundaryConditions/temperatureBCs.md"),
-        # "temperature_coupled_bcs": ("docs/classes/fvPatchFields/temperatureCoupled/", "docs/user_guide/boundaryConditions/temperatureBCs.md"),
-        # "radiative_convective_sink_bcs": ("docs/classes/fvPatchFields/radiativeConvectiveSink/", "docs/user_guide/boundaryConditions/temperatureBCs.md"),
-        # # Boundary conditions for D
-        # "traction_displacement_bcs": ("docs/classes/fvPatchFields/tractionDisplacement/", "docs/user_guide/boundaryConditions/displacementBCs.md"),
-        # "implicit_contact_bcs": ("docs/classes/fvPatchFields/implicitContact/", "docs/user_guide/boundaryConditions/displacementBCs.md"),
-        # "fixed_displacement_bcs": ("docs/classes/fvPatchFields/fixedDisplacement/", "docs/user_guide/boundaryConditions/displacementBCs.md"),
-        # "fixed_displacement_zero_shear_bcs": ("docs/classes/fvPatchFields/fixedDisplacementZeroShear/", "docs/user_guide/boundaryConditions/displacementBCs.md"),
+        # Thermal-hydraulics
+        "one_phase": ("docs/classes/thermalHydraulics/solvers/onePhase/", "docs/user_guide/thermalHydraulicsSolvers.md"),
+        "two_phase": ("docs/classes/thermalHydraulics/solvers/twoPhase/", "docs/user_guide/thermalHydraulicsSolvers.md"),
+        "compressible_inter_foam": ("docs/classes/openFoamImportedSolvers/compressibleInterFoam/", "docs/user_guide/thermalHydraulicsSolvers.md"),
+        # Thermal-hydraulics sub-scale structures
+        "fixed_power": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedPower/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
+        "fixed_temperature": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperature/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
+        "heated_pin": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/heatedPin/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
+        "lumped_nuclear_structure": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/lumpedNuclearStructure/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
+        "nuclear_fuel_fmu": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
+        "nuclear_fuel_pin": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelPin/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
+        "nuclear_steady_state_pebble": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearSteadyStatePebble/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
     }
 
     # Generate dynamic navigation for all sections
@@ -344,8 +336,11 @@ def main():
     # for key in ["fixed_temperature_bcs", "convective_htc_bcs", "temperature_coupled_bcs", "radiative_convective_sink_bcs",
     #             "traction_displacement_bcs", "implicit_contact_bcs", "fixed_displacement_bcs", "fixed_displacement_zero_shear_bcs"]:
     #     dynamic_navs[key] = indent_navigation(dynamic_navs[key], 3)
-    # for key in ["point_kinetics"]:
-    #     dynamic_navs[key] = indent_navigation(dynamic_navs[key], -1)
+    for key in [
+        "one_phase", "two_phase", "compressible_inter_foam",
+        "fixed_power", "fixed_temperature", "heated_pin", "lumped_nuclear_structure", "nuclear_fuel_fmu", "nuclear_fuel_pin", "nuclear_steady_state_pebble"
+    ]:
+        dynamic_navs[key] = indent_navigation(dynamic_navs[key], 2)
 
     # Indent nav blocks if necessary
     # dynamic_navs["multi_material_correction"] = indent_navigation(dynamic_navs["multi_material_correction"], 2)
@@ -364,7 +359,22 @@ nav:
 {dynamic_SP3_nav}
 {dynamic_SN_nav}
 {dynamic_point_kinetics_nav}
-    - Thermal-hydraulics: user_guide/thermalHydraulics.md
+    - Thermal-hydraulics:
+      - Overview: user_guide/thermalHydraulics.md
+      - Solvers:
+        - Overview: user_guide/thermalHydraulicsSolvers.md
+{dynamic_one_phase_nav}
+{dynamic_two_phase_nav}
+{dynamic_compressible_inter_foam_nav}
+      - Sub-scale structures:
+        - Overview: user_guide/thermalHydraulicsSubScaleStructures.md
+{dynamic_fixed_power_nav}
+{dynamic_fixed_temperature_nav}
+{dynamic_heated_pin_nav}
+{dynamic_lumped_nuclear_structure_nav}
+{dynamic_nuclear_fuel_fmu_nav}
+{dynamic_nuclear_fuel_pin_nav}
+{dynamic_nuclear_steady_state_pebble_nav}
     - Thermo-mechanics: user_guide/thermoMechanics.md
     - Coupling solvers and time stepping: user_guide/coupling.md
     - FMU: user_guide/fmu.md
@@ -378,6 +388,7 @@ nav:
   - Developer's Guide: developer_guide/index.md
   - Publications: publications.md
   - Bibliography: bibliography.md
+  - Contributors: contributors.md
 
 theme:
   name: material

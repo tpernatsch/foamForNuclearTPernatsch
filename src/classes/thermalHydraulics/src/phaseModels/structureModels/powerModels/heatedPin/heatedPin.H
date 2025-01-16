@@ -43,12 +43,12 @@ Description
     is coupled to the fluid(s) via a convective boundary condition. The
     equation is solved via the finite volume method
 
-    Authors:
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
-    Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
-
 SourceFiles
     heatedPin.C
+
+\mainauthor
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
+    Carlo Fiorina (carlo.fiorina@epfl.ch / carlo.fiorina@outlook.com)
 
 \*---------------------------------------------------------------------------*/
 

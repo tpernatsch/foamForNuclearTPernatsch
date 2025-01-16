@@ -6,6 +6,7 @@ GeN-Foam provides several interface points to communicate with [Functional Mock-
 ## Compiling
 
 Follow the instructions for
+
 - ECI4FOAM: https://gitlab.com/foam-for-nuclear/ECI4FOAM
 - FMU4FOAM: https://gitlab.com/foam-for-nuclear/FMU4FOAM
 
@@ -83,7 +84,7 @@ In this section, a list of FMI inputs/outputs in GeN-Foam is provided with a lin
 | Momentum source | [src/classes/thermalHydraulics/src/phaseModels/structureModels/pump](../classes/thermalHydraulics/src/phaseModels/structureModels/pump) |
 | Fix-temperature structure | [src/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperature](../classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperature/fixedTemperature.md) |
 | Fix-power structure | [src/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedPower](../classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedPower/fixedPower.md) |
-| Additional heat transfer coefficient in serie | [src/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU](../classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU/NusseltWallAndHfromFMUFSHeatTransferCoefficient.md) |
+| Additional heat transfer coefficient in series | [src/classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU](../classes/thermalHydraulics/src/physicsModels/heatTransferModels/FSHeatTransferCoefficientModels/NusseltWallAndHfromFMU/NusseltWallAndHfromFMUFSHeatTransferCoefficient.md) |
 | External reactivity in the point-kinetics solver | [src/classes/neutronics/pointKinetics](../classes/neutronics/pointKinetics/pointKineticNeutronics.md) |
 | External neutron source modulation in the point-kinetics solver | [src/classes/neutronics/pointKinetics](../classes/neutronics/pointKinetics/pointKineticNeutronics.md) |
 | Boron reactivity in the point-kinetics solver | [src/classes/neutronics/pointKinetics](../classes/neutronics/pointKinetics/pointKineticNeutronics.md) |
