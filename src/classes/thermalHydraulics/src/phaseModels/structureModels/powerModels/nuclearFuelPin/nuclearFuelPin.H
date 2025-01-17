@@ -187,9 +187,11 @@ $$
     (referred later as eq. [II]):
 
 $$
+\begin{align}
 \rho c_p \frac{dT}{dt} - div(k grad(T)) = q
-    & \rightarrow (zeroGradient at r = rIn) \\
+    & \rightarrow (\text{zeroGradient at} r = r_{In}) \\
     & \rightarrow T_1 \times ( -2A ) + T_0 \times ( 2A + X ) = q_i + T_{0, old} X
+\end{align}
 $$
 
     2) Convective boundary condition at $i = N-1$ : (i.e. Robin)
@@ -215,14 +217,14 @@ $$
 $$
 \begin{align}
 \rho c_p \frac{dT}{dt} - div(k grad(T)) = q
-    & \rightarrow (convective at r = rOut) \\
+    & \rightarrow (\text{convective at} r = r_{Out}) \\
     & \rightarrow
                 T_{N-1} ( 2A + h_{Ext} C (A+B) + X )
             +   T_{N-2} \times ( -2A )
             =
                 q_{N-1}
             +   T_{N-1, old} X
-            +   T_{Ext} h{Ext} C (A+B)
+            +   T_{Ext} h_{Ext} C (A+B)
 \end{align}
 $$
 
@@ -273,6 +275,100 @@ generality to this class, which does not need to now any details on how many
 fluid are there, nor what are the interfacial area fractions and so on, as
 these need to be passed by the user at a higher level (i.e., when calling the
 correct(HTSum, HSum) function in the main program).
+
+\par Options
+
+    Parameters in the powerModel subdictionary for `nuclearFuelPin`:
+
+    - <b>`powerDensity`</b> - Initial uniform power density if not computed by
+    the neutronics sub-solver.
+    - <b>`fuelInnerRadius`</b> - Fuel pellet inner radius.
+    - <b>`fuelOuterRadius`</b> - Fuel pellet outer radius.
+    - <b>`cladInnerRadius`</b> - Cladding inner radius.
+    - <b>`cladOuterRadius`</b> - Cladding outer radius.
+    - <b>`fuelMeshSize`</b> - Fuel pellet radial mesh size.
+    - <b>`cladMeshSize`</b> - Cladding radial mesh size.
+    - <b>`fuelRho`</b> - Fuel constant density in kg/m3.
+    - <b>`fuelCp`</b> - Fuel constant specific heat capacity in J/kg/K.
+    - <b>`fuelK`</b> - Fuel constant thermal conductivity in W/m/K.
+    - <b>`cladRho`</b> - Cladding constant density in kg/m3.
+    - <b>`cladCp`</b> - Cladding constant specific heat capacity in J/kg/K.
+    - <b>`cladK`</b> - Cladding constant thermal conductivity in W/m/K.
+    - <b>`fuelT`</b> - Fuel initial temperature.
+    - <b>`cladT`</b> - Cladding initial temperature.
+    - <b>`gapH`</b> - Gap gas constant heat transfer coefficient.
+    - <b>`gapHPowerDensity`</b> - Gap gas power-dependent heat transfer
+    coefficient. Can be used in replacement of `gapH`.
+
+Usage
+    From the one phase and PK tutorial.
+    \verbatim
+        powerModel
+        {
+            type                nuclearFuelPin;
+
+            // Initial power density if not computed by the neutronics sub-solver
+            powerDensity        0;
+
+            // Fuel pin dimensions in m
+            fuelInnerRadius     0.0012;
+            fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     0.005365;
+
+            // Fuel pin radial mesh
+            fuelMeshSize        16;
+            cladMeshSize        4;
+
+            // Fuel constant thermophysical properties
+            fuelRho             10480; // kg/m3
+            fuelCp              250; // J/kg/K
+            fuelK               3; // W/m/K
+
+            // Cladding constant thermophysical properties
+            cladRho             7500;
+            cladCp              500;
+            cladK               20;
+
+            // Gap gas heat transfer coefficient
+            gapH                3000;
+
+            // Initial fuel and cladding temperatures
+            fuelT               600;
+            cladT               600;
+        }
+    \endverbatim
+
+    From the FFTF tutorial.
+    \verbatim
+        powerModel
+        {
+            //- This volume fraction accounts for the pins only
+            type                nuclearFuelPin;
+            volumeFraction      0.5539729557;
+            fuelMeshSize        10;
+            cladMeshSize        5;
+            fuelT               574.56;
+            cladT               574.56;
+            cladK               20;
+            fuelK               3;
+            cladRho             7870;
+            fuelRho             10480;
+            cladCp              500;
+            fuelCp              250;
+            cladOuterRadius     0.002921;
+            cladInnerRadius     0.002540;
+            fuelOuterRadius     0.002470;
+            fuelInnerRadius     0.0;
+
+            // Optional power-dependent heat transfer coefficient
+            gapHPowerDensity    table
+            (
+                (   0               528.4782467867  )
+                (   795443280.75916 3170.8694807204 )
+            );
+        }
+    \endverbatim
 
 SourceFiles
     nuclearFuelPin.C

@@ -43,6 +43,8 @@ Description
 
 Usage
     \verbatim
+        powerModel
+        {
             type                nuclearSteadyStatePebble;
 
             // It can be shown that by averaging a/multiple pebble(s) over
@@ -75,7 +77,7 @@ Usage
             trisoSiCDensityCoeffs       (4.015E+02 -5.995E-01 3.898E-04 -9.380E-08 0 0 0 0);
             pebbleGraphiteDensityCoeffs (8.12E+01 -6.14E-02 2.73E-05 -5.18E-09 0 0 0 0);
             coolantDensityCoeffs        (2413.03 -0.4884 0 0 0 0 0 0);
-
+        }
     \endverbatim
 
 SourceFiles

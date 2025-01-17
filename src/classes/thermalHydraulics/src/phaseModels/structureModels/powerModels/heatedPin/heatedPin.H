@@ -41,7 +41,22 @@ Class
 Description
     Model for representing a heated pin with constant material properties that
     is coupled to the fluid(s) via a convective boundary condition. The
-    equation is solved via the finite volume method
+    equation is solved via the finite volume method.
+
+
+\par Options
+
+    Parameters in the powerModel subdictionary for `heatedPin`:
+
+    - <b>`innerRadius`</b> - Pin inner radius.
+    - <b>`outerRadius`</b> - Pin outer radius.
+    - <b>`meshSize`</b> - Pin radial mesh.
+    - <b>`rho`</b> - Pin density in kg/m3.
+    - <b>`Cp`</b> - Pin specific heat capacity in J/kg/K
+    - <b>`rhoCp`</b> - If `rho` and `Cp` are not provided `rhoCp` can be used.
+    - <b>`k`</b> - Pin thermal conductivity.
+    - <b>`T`</b> - Pin initial temperature.
+
 
 SourceFiles
     heatedPin.C

@@ -58,15 +58,11 @@ One can find detailed, commented examples in most tutorials. See for instance
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/neutronicsProperties) (single phase).
 
 
+## The *nuclearData* dictionary
 
-## Various properties
+In GeN-Foam, cross-sections and several other neutronics properties are handled by the *XS.H* class. Detailed explanations on the file format are provided in *XS.H* and in the tutorials (e.g [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData)).
 
-In GeN-Foam, cross-sections and several other neutronics properties are handled by the *XS.H* class. Detailed explanations on the file format are provided in *XS.H* and in the tutorials (e.g *3D_SmallESFR*).
-
-
-### The *nuclearData* dictionary
-
-The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It contains all basic nuclear properties for the reference and perturbed reactor states. For instance, including *Tfuel* in *reference* and a perturbed state represents the temperatures at which the reference and perturbed cross-sections have been calculated, respectively. Radial Basis Function interpolation is performed by GeN-Foam between reference and perturbed reactor states. It is possible to provide the XS set with multiple perturbation variables (see example below). If no perturbed state data are provided, the reference cross-sections are used.
+The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It contains all basic nuclear properties for the reference and perturbed reactor states. For instance, including *TFuel* in *reference* and a perturbed state represents the temperatures at which the reference and perturbed cross-sections have been calculated, respectively. Radial Basis Function interpolation is performed by GeN-Foam between reference and perturbed reactor states. It is possible to provide the XS set with multiple perturbation variables (see example below). If no perturbed state data are provided, the reference cross-sections are used.
 
 Special field for axial and radial expansions are provided as `axExp` and `radExp` (see [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData)).
 
@@ -75,24 +71,32 @@ Nuclear data can be generated using any nuclear code.
 - [serpentToFoam](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/serpentToFoam/serpent2.1.23) routines provided with GeN-Foam (in the *Tools* folder) is an Octave script that automatically converts Serpent output files into the nuclear data files employed by GeN-Foam.
 - [openmcToFoam](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/openmcToFoam) Python package provided with GeN-Foam automatically converts OpenMC output into nuclear data files.
 
-It is possible to select different radial basis function based on the polyharmonic splines using the *polyharmonicSplineMode* keyword.
+The entry *discFactor* is used only if discontinuity factors have to be used. The term *integralFlux*, is used only if the automatic adjustment of discontinuity factors is performed [@FIORINA2016212]. Nonetheless, these entries should always be present.
+
+
+### XS parametrization
+
+GeN-Foam features XS parametrization using the Radial Basis Function interpolation scheme on any field provided by GeN-Foam. This method allows to interpolate the XS using multiple parameters/perturbations (see example below).
+
+It is possible to select different radial basis function based on the polyharmonic splines using the *polyharmonicSplineMode* keyword. The figure below shows the radial basis function influence on the interpolation. The default mode is `1`, which guarantee a linear interpolation.
 
 - `1`: $\phi(r) = |r|$
 - `2`: $\phi(r) = r^2 \ln(r)$
 - `3`: $\phi(r) = |r^3|$
 - `4`: $\phi(r) = r^4 \ln(r)$
 
-<img src="../images/rbfInterpolation.png" alt="Radial Basis Function example on arbitrary set of XS points" width="500"/>
+<figure markdown="span">
+  ![RBF](../images/rbfInterpolation.png){ width="500" }
+  <figcaption>Radial Basis Function example on arbitrary set of XS points</figcaption>
+</figure>
 
-The entry *discFactor* is used only if discontinuity factors have to be used. The term *integralFlux*, is used only if the automatic adjustment of discontinuity factors is performed [@FIORINA2016212]. Nonetheless, these entries should always be present.
+In combination to the RBF interpolation, three laws are currently provided to the user to modify the behavior and improve interpolation accuracy:
 
-One can find more details on all the parameters in the *XS.H* file and commented examples of *nuclearData* in the tutorials
-[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData) (for diffusion or SP3),
-[Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/Godiva_SN/constant/neutroRegion/nuclearData) (for discrete ordinates) and
-[2D_onePhaseAndPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData) (for point kinetics).
-[2D_onePhaseAndSubcriticalPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource) (for subcritical point kinetics).
+- `lin`: linear
+- `sqrt`: square root
+- `log`: logarithmic
 
-One can parametrize the XS on any field provided by GeN-Foam. Three laws are currently provided to the user (linear, square root and logarithmic). It is possible to assign the law through the following sub dictionary in *nuclearData* with the name of the field:
+It is possible to assign the law through the *xsVariables* sub dictionary in *nuclearData* with the name of the field. If one or several fields provided in *xsVariables* are not default to GeN-Foam (e.g Tmatrix), the code will automatically create it in the neutronics region and can be used for additional coupling with other solvers (see the [coupling page](coupling.md)).
 
 ```cpp
 xsVariables
@@ -103,17 +107,25 @@ xsVariables
 
 states
 (
-    reference
+    reference // Mandatory name not to be modified
     {
         TFuel   900;
         rhoCool 4125;
-        #include "XSref"
+
+        zones
+        (
+            zone1
+            {
+                ...
+            }
+            ...
+        );
     }
 
-    Tfuel1200K
+    Tfuel1200K // Arbitrary name
     {
         TFuel   1200;
-        #include "XSTfuel1200K"
+        #include "XSTfuel1200K" // OpenFOAM shortcut to attach file content at this location
     }
 
     rhoCool3500kgm3
@@ -135,7 +147,7 @@ N.B.1: Cross-sections must be expressed according to the International System of
 
 N.B.2: defaultPrec has 1/m3 units except for the adjoint solver that needs 1/m2/s.
 
-N.B.3: The *nuclearData* file must always be present, even when not parametrizing cross-sections. If no parametrization is needed, the “zones” card must be left “blank” as:
+N.B.3: The *nuclearData* file must always be present, even when not parametrizing cross-sections. If no parametrization is needed, the `zones` card must be left “blank” as:
 
 ```cpp
 xsVariables
@@ -151,13 +163,18 @@ states
 );
 ```
 
+One can find more details on all the parameters in the *XS.H* file and commented examples of *nuclearData* in the tutorials
+[3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData) (for diffusion or SP3),
+[Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/Godiva_SN/constant/neutroRegion/nuclearData) (for discrete ordinates) and
+[2D_onePhaseAndPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData) (for point kinetics).
+[2D_onePhaseAndSubcriticalPointKineticsCoupling](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource) (for subcritical point kinetics).
 
-An additional dictionary is needed to provide the quadrature set when performing discrete ordinate calculations.
 
+## Various properties
 
 ### The *quadratureSet* dictionary
 
-The *quadratureSet* dictionary is found under *constant/neutroRegion/*. It contains the quadrature set for discrete ordinate calculations.
+An additional dictionary is needed to provide the quadrature set when performing discrete ordinate calculations. The *quadratureSet* dictionary is found under *constant/neutroRegion/*. It contains the quadrature set for discrete ordinate calculations.
 One can find examples of three different quadrature sets in the tutorial
 [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/Godiva_SN/constant/neutroRegion/).
 S4 and S8 Chebyshev-Legendre quadrature sets can be found in [Godiva_SN](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/develop/Tools/chebichevLegendreQuadratureSets/).
@@ -189,7 +206,7 @@ Please note that the boundary condition needs to be set both for the first and s
 
 IC and BC for precursors do not have to be specified for standard reactors. On the other hand, they should be specified in the case of liquid fuel reactors (e.g., Molten Salt Reactors). This is possible by creating a *defaultPrec* field, in case the same conditions apply to all precursor groups, or by creating the fields named *prec0*, *prec1*, etc., in case different conditions must be provided for different precursor groups.
 
-N.B.: Boundary conditions must be applied to *fluxStar...* and not to *flux...* since GeN-Foam solves for these variables. *fluxStar...* represent continuous fluxes, while _flux..._ represent the real fluxes. They differ only in case discontinuity factors are employed [@FIORINA2016212].
+N.B.: Boundary conditions must be applied to *fluxStar...* and not to *flux...* since GeN-Foam solves for these variables. *fluxStar...* represent continuous fluxes, while *flux...* represent the real fluxes. They differ only in case discontinuity factors are employed [@FIORINA2016212].
 
 
 ### Setting the weighting in point-kinetics calculations

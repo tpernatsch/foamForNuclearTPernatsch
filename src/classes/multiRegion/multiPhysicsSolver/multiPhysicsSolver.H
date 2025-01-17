@@ -40,9 +40,9 @@ Class
 
 Description
     This class creates a multiphysics tightly coupled loop, made of an arbitrary
-    number of physics. The class member-functions are inherited from solver.H 
+    number of physics. The class member-functions are inherited from solver.H
     and are the same as those of the other solvers. Each member function consists
-    of a loop where the same member function is called iteratively for all the 
+    of a loop where the same member function is called iteratively for all the
     solvers included in the multiPhysicsSolver. Note that another multiphysicsSolver
     can be created within a multiphysicsSolver, hence creating a hierarchical
     structure which might be helpful for multi-scale problems.
@@ -71,14 +71,13 @@ Usage
 
         multiPhysicsSolver2
         {
-            ...   
+            ...
         }
     \endverbatim
-    }
 
     If includeFluidMechanicsInLoop entry is set to false (default value), for the thermal-hydraulics
     solvers only the energy is solved iteratively with the other physics, while the fluid-mechanics
-    is solved only once at the beginning of the iteration. This is done so that useless 
+    is solved only once at the beginning of the iteration. This is done so that useless
     fluid-mechanics iterations are solved.
 
 SourceFiles
@@ -143,8 +142,8 @@ protected:
         //-
         label maxIterations_;
 
-        //- 
-        List<bool> correctOnlyEnergy_; 
+        //-
+        List<bool> correctOnlyEnergy_;
 
 
 private:
