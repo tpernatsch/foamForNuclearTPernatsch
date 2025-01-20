@@ -19,8 +19,6 @@ FoamFile
 // --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-thermalHydraulicsType    "onePhase";
-
 fluidProperties
 {
     initialPowerDensity
@@ -34,7 +32,7 @@ fluidProperties
 // ------------------------------------------------------------------------- //
 
 structureProperties
-{    
+{
     "core"
     {
         volumeFraction      0;

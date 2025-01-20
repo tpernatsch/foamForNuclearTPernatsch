@@ -35,9 +35,8 @@ mappings
     {
         fluidRegion
         {
-            targetFields    2 ( powerDensity secondaryPowerDensity );
-            sourceFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
-            fieldTypes      2 ( scalar scalar );
+            targetFields    ( powerDensity secondaryPowerDensity );
+            sourceFields    ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
         }
     }
 

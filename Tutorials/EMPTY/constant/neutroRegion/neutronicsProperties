@@ -15,14 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// This is the model used to solve neutronics. It can be:
-// - diffusionNeutronics
-// - SP3Neutronics
-// - SNNeutronics
-// - pointKinetics
-// - adjointDiffusion
-model					diffusionNeutronics;
-
 eigenvalueNeutronics    false;
+
 
 // ************************************************************************* //

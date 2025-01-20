@@ -16,12 +16,6 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // ------------------------------------------------------------------------- //
-// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
-// ------------------------------------------------------------------------- //
-
-thermalHydraulicsType    "twoPhase";
-
-// ------------------------------------------------------------------------- //
 // --- FLUID PROPERTIES ---------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
@@ -82,19 +76,19 @@ structureProperties
     "heated"
     {
         volumeFraction  0.5655077285; //0.4464738237;
-        Dh              0.0078395462; // 0.0117778432;// 
+        Dh              0.0078395462; // 0.0117778432;//
 
         powerModel
         {
             type            fixedPower;
 
-            //- The heater "coats" 0.85 mm of the 4.75 mm radius pin, and 
+            //- The heater "coats" 0.85 mm of the 4.75 mm radius pin, and
             //  for simplicity it is thus treated as a fixedPower source
-            //  with a volume fraction equal to the total heater volume 
+            //  with a volume fraction equal to the total heater volume
             //  fraction (with respect to the total mesh volume).
-            volumeFraction  0.0937099273; //0.145493575;  
+            volumeFraction  0.0937099273; //0.145493575;
             volumetricArea  121.08049093;//121.08049093; //187.9889784;  //=heating surface area/cellzone volume
-            powerDensity    1943301220; 
+            powerDensity    1943301220;
             T               592.75;
             Cp              500;
             rho             7700;
@@ -135,7 +129,7 @@ regimeMapModels
 
         //- Vapour phase fraction
         parameter1      "normalized.alpha.vapour";
-        
+
         //- Liquid mass flux
         parameter2      "alphaRhoMagU.liquid";
 
@@ -144,7 +138,7 @@ regimeMapModels
         interpolationMode linear;
 
         //- This is an approximation to the TRACE pre-CHF flow regime map
-        //  described at page 201 (225 of the PDF) in 
+        //  described at page 201 (225 of the PDF) in
         //  https://www.nrc.gov/docs/ML1200/ML120060218.pdf
         //  It is an approximation as there is no possibility do define
         //  as explicit interpolation region between alpha 0.5 and alpha
@@ -169,13 +163,13 @@ regimeMapModels
             |           /      |            |
             |          /       |annularMist |
             |         /        |            |
-            |        7         |            |  
+            |        7         |            |
             |        |         |            |
             |        |capSlugBu|            |
             0--------1---------2------------3--------> parameter1 (void)
         */
         //- Nonetheless, consider that the TRACE map is an approixmation
-        //  itself, so this is fine and is still consistent with the 
+        //  itself, so this is fine and is still consistent with the
         //  Choe-Weismann cap/slug to bubbly transition criteria
         regimePoints
         {
@@ -336,7 +330,7 @@ physicsModels
                     type constant;
                     dispersedPhase  "liquid";
                 }
-                
+
             }
 
             interfacialAreaDensityModel

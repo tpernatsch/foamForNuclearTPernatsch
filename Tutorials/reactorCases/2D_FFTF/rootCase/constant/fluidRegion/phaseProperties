@@ -15,8 +15,6 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-thermalHydraulicsType           "onePhase";
-
 structureProperties
 {
     "outletPlenum:inletPlenum"

@@ -35,18 +35,16 @@ mappings
     {
         neutroRegion
         {
-            sourceFields    2 ( powerDensity secondaryPowerDensity );
-            targetFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
-            fieldTypes      2 ( scalar scalar );
+            sourceFields    ( powerDensity secondaryPowerDensity );
+            targetFields    ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
         }
     }
     neutroRegion
     {
         fluidRegion
         {
-            sourceFields    0 ( /*T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure*/ );
-            targetFields    0 ( /*TCool rhoCool TFuel TClad TStructMech*/ );
-            fieldTypes      0 ( /*scalar scalar scalar scalar scalar*/ );
+            sourceFields    ( /*T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure*/ );
+            targetFields    ( /*TCool rhoCool TFuel TClad TStructMech*/ );
         }
     }
 }

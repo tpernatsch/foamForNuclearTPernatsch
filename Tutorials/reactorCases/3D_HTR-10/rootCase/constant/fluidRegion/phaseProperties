@@ -17,18 +17,12 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // ------------------------------------------------------------------------- //
-// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
-// ------------------------------------------------------------------------- //
-
-thermalHydraulicsType    "onePhase";
-
-// ------------------------------------------------------------------------- //
 // --- STRUCTURES PROPERTIES ----------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
 structureProperties
 
-{   
+{
     "Core"
     {
         volumeFraction      0.57; // 61% Packing fraction
@@ -36,13 +30,13 @@ structureProperties
         powerModel // power production model for the sub-scale structure
         {
            type                nuclearSteadyStatePebble;
-           
+
            // It can be shown that by averaging a/multiple pebble(s) over
            // a volume of any shape, the interfacialArea and volumeFraction
            // of the resulting porous pebble structure are not independent, yet
            // are tied by volumetricAre a = 3*volumeFraction/outerPinRadius
-           powerDensityNeutronics           1480541.224578661; 
-           pebbleSurfaceTemperatureGuess 523.15; 
+           powerDensityNeutronics           1480541.224578661;
+           pebbleSurfaceTemperatureGuess 523.15;
            pebbleCoreRadius        0;
            pebbleMatrixRadius      2.5e-2;
            pebbleShellRadius       3e-2;
@@ -52,7 +46,7 @@ structureProperties
            trisoSiCRadius          4.15e-4;
            trisoOuterPyCRadius     4.55e-4;
            nTRISO                  8335;
-           
+
            trisoFuelDensityCoeffs      (11031.432 -0.17907428 -9.1359257e-05 2.2133072e-09 0 0 0 0);                                   // April novak thesis
            trisoBufferDensityCoeffs    (1000 0 0 0 0 0 0 0);                                     // April novak thesis
            trisoPyCDensityCoeffs       (1900 0 0 0 0 0 0 0);                                     // April novak thesis

@@ -8,7 +8,7 @@ A coarse-mesh porous-medium treatment of the core implies that the core is model
 
 With regards to the modeling of the sub-scale structures, GeN-Foam allows modeling simultaneously in the same region both a "power model" and a "passive structure". Power models are used to model for instance the nuclear fuel (based on a 1-D approximation), electrically heated rods, or a fixed temperature body (which can be used to approximate a heat exchanger). Passive structures are structures that passively heat up or cool down based on their heat capacity, volumetric area, and heat transfer with the coolant. This can be used to model structures like assembly wrappers or reflectors.
 
-All thermal-hydraulics functionalities are handled by the class *thermalHydraulicsModel.H*, the derived classes for the various sub-solvers (see below), and a thermal-hydraulic library that can be found under */GeN-Foam/classes/thermalHydraulics/src*.
+All thermal-hydraulics functionalities are handled by the class *thermalHydraulicsModel.H*, the derived classes for the various sub-solvers (see below), and a thermal-hydraulic library that can be found under [GeN-Foam/classes/thermalHydraulics/src](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/src/classes/thermalHydraulics/src).
 
 
 ### The porous-medium approach in GeN-Foam
@@ -193,12 +193,12 @@ One can find a detailed, commented example of a porous one-phase simulation in t
 
 Initial and boundary conditions adopt the usual OpenFOAM logic for one- and two-phase solvers. A couple of things to be kept in mind:
 
-- The pressure field we solve for is p_rgh (pressure minus the gravitational head)
+- The pressure field we solve for is *p_rgh* (pressure minus the gravitational head)
 - When performing turbulent analyses, one needs to add the fields *k*, *epsilon*, nut and *alphat*
 
 One thing that instead specific to GeN-Foam (except for the one-phase legacy sub-solver) and that one needs to keep in mind is that U (or u.(name of fluid)) are the real velocities, not the Darcy velocities. In a porous structure, they represent the actual velocity of the fluid, and not the velocity multiplied by the fluid fraction. For instance, U will increase when transiting from a high- to a low-porosity region.
 
-OpenFOAM provides most of the boundary conditions one may need for thermal-hydraulics models. In addition, a few boundary conditions have been included in GeN-Foam and can be found in *GeN-Foam/classes/thermalHydraulics/src/boundaryConditions*. Information on the use of each boundary condition can be found in the header files (.H).
+OpenFOAM provides most of the boundary conditions one may need for thermal-hydraulics models. In addition, a few boundary conditions have been included in GeN-Foam and can be found in [GeN-Foam/classes/thermalHydraulics/src/boundaryConditions](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/src/classes/thermalHydraulics/src/boundaryConditions). Information on the use of each boundary condition can be found in the header files (.H).
 
 
 ### Setting the initial power
@@ -240,11 +240,11 @@ When the *liquidFuel* flag is set to true, the thermal-hydraulic sub-solver will
 When point kinetics is used, the solver will simply rescale the *powerDensity* and *secondaryPowerDensity* it finds, and the thermal-hydraulic solver will take them depending on the *liquidFuel* flag as described above. The only exception is when *liquidFuel* is true and the *initialPowerDensity* keyword is used. In this case, *initialPowerDensity* will take priority and this is the value that GeN-Foam will rescale and print to the powerDensityToLiquid
 
 
-NB1: The power densities in the thermal-hydraulic sub-solver are ALWAYS the physical ones: for instance, when the *nuclearFuelPin* model is used for pin-based reactors, *powerDensity* refers to the power density inside the fuel matrix. For liquid fuel, the *powerDensity* is the power density in the liquid. They are not the power densities smeared over the whole volume.
+N.B1: The power densities in the thermal-hydraulic sub-solver are ALWAYS the physical ones: for instance, when the *nuclearFuelPin* model is used for pin-based reactors, *powerDensity* refers to the power density inside the fuel matrix. For liquid fuel, the *powerDensity* is the power density in the liquid. They are not the power densities smeared over the whole volume.
 
-NB2: If you calculate the powerDensity using Serpent, you have to divide it by the fuel fraction before feeding it to GeN-Foam (see [Neutronics](neutronics.md), in the introduction, NB2)
+N.B2: If you calculate the powerDensity using Serpent, you have to divide it by the fuel fraction before feeding it to GeN-Foam (see [Neutronics](neutronics.md#the-reactorstate-dictionary))
 
 
 ## Discretization and solution
 
-Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *constant/fluidRegion*.
+Details for discretization and solution of equations are handled in a standard OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in *system/fluidRegion*.

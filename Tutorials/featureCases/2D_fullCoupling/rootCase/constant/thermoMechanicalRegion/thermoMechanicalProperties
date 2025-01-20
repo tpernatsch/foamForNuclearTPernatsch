@@ -14,9 +14,8 @@ FoamFile
     object      nuclearData;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-//Options to turn on physics. Both defaulted to "on"
 
-model	            legacyThermoMechanics;
+// Options to turn on physics. Both defaulted to "on"
 
 thermalSolver       on; // Option to turn on/off the thermal solution. Might be not needed as TStruct from TH can be mapped
 mechanicsSolver     on;    // Option to turn on/off mechanics solution

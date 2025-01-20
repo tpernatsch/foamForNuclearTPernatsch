@@ -28,8 +28,6 @@ FoamFile
 // currently not accelrated, thus extremely slow (it can require
 // hundreds of iterations per time step).
 
-model					diffusionNeutronics;
-
 eigenvalueNeutronics    true; // transient calculation if set to false
 
 // ************************************************************************* //

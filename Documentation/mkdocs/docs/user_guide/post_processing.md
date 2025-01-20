@@ -6,7 +6,7 @@ Postprocessing can be performed using `paraFoam`, the standard post-processing t
 paraFoam -region regionName
 ```
 
-where the `regionName` is `fluidRegion`, `neutroRegion` or `thermalMechanicalRegion`.
+where the `regionName` is e.g `fluidRegion` or `neutroRegion`.
 
 Please notice that `paraFoam` is essentially an extension of ParaView and it requires having ParaView installed. In the [openfoam.com](https://openfoam.com) distribution, ParaView is not distributed with OpenFOAM, but needs to be installed separately (see the [ParaView website](https://www.paraview.org/)). In Ubuntu, it is normally enough to type in the terminal:
 
@@ -14,7 +14,7 @@ Please notice that `paraFoam` is essentially an extension of ParaView and it req
 sudo apt-get -y install paraview
 ```
 
-In case of parallel calculations, one should first reconstruct each one of the three meshes using the command
+In case of parallel calculations, one should first reconstruct each one of the meshes using the command
 
 ```bash
 reconstructPar -region regionName
@@ -22,11 +22,11 @@ reconstructPar -region regionName
 reconstructPar -allRegions
 ```
 
-where the `regionName` is once again `fluidRegion`, `neutroRegion` or `thermalMechanicalRegion`.
+where the `regionName` is once again e.g `fluidRegion` or `neutroRegion`. Notice that the `<timeStep>/uniform` folder is not a region and requires the `-allRegions` flag to be merged.
 
 Besides `paraFoam`, GeN-Foam also creates, in the case folder (or in the processor folder for parallel simulations), the `GeN-Foam.dat` file that summarizes few main quantity of interests: time(s), keff(-), power(W), flux0 (m-2s-1), TFuel_Max, TFuel_Avg TFuel_Min, TCladding_Max, TCladding_Avg, TCladding_Min.
 
-Useful information is also stored in the log file. The log file can be created by adding the '| tee log.GeN-Foam' command to the launch command, i.e.:
+Useful information is also stored in the log file. The log file can be created by adding the `| tee log.GeN-Foam` command to the launch command, i.e.:
 
 ```bash
 GeN-Foam | tee log.GeN-Foam

@@ -15,8 +15,6 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model               linearElasticThermoMechanics;	//only model available now
-
 // constants needed to calculate deformation of fuel, control rods AND structure
 // (1D expansion for fuel and CR, displacement-based solver for structures)
 

@@ -34,28 +34,32 @@ $$
 
 Neutronics calculations are performed by classes derived from *neutronics* that contain specific sub-solvers:
 
-- [pointKineticNeutronics](../classes/neutronics/pointKinetics/pointKineticNeutronics.md) for point kinetics calculations (see *pointKineticNeutronics.H*)
-- [diffusionNeutronics](../classes/neutronics/diffusion/diffusionNeutronics.md) for diffusion calculations (see *diffusionNeutronics.H*)
-- [adjointDiffusionNeutronics](../classes/neutronics/adjointDiffusion/adjointDiffusionNeutronics.md) for adjoint diffusion calculations (see *adjointDiffusionNeutronics.H*)
-- [SP3Neutronics](../classes/neutronics/SP3/SP3Neutronics.md) for diffusion calculations (see *SP3Neutronics.H*)
-- [SNNeutronics](../classes/neutronics/SN/SNNeutronics.md) for discrete ordinates calculations (see *SNNeutronics.H*)
+| Solver         | Model name in GeN-Foam | Links for more info |
+|:---------------|:----------------------:|:--------------------|
+| Point-kinetics | `pointKinetics`        | [pointKineticNeutronics.H](../classes/neutronics/pointKinetics/pointKineticNeutronics.md) |
+| Diffusion      | `diffusionNeutronics`  | [diffusionNeutronics.H](../classes/neutronics/diffusion/diffusionNeutronics.md) |
+| Adjoint diffusion | `adjointDiffusion` | [adjointDiffusionNeutronics.H](../classes/neutronics/adjointDiffusion/adjointDiffusionNeutronics.md) |
+| Diffusion in $SP_3$ | `SP3Neutronics` | [SP3Neutronics.H](../classes/neutronics/SP3/SP3Neutronics.md) |
+| Discrete ordinates ($S_N$) | `SNNeutronics` | [SNNeutronics.H](../classes/neutronics/SN/SNNeutronics.md) |
 
 For the user, the derived classes translate into runtime selectable models. The specific sub-solver to be used in a simulation can be selected at runtime in the *constant/neutroRegion/neutronicsProperties* dictionary.
 
-The choice of the model is achieved by selecting the wanted solver in either *regionSolvers* or *multiPhysicsSolvers* depending on whether the neutronics solvers need to be part of a tightly coupled loop or not.
+The choice of the model is achieved by selecting the wanted solver in either *regionSolvers* or *multiPhysicsSolvers* depending on whether the neutronics solvers need to be part of a tightly coupled loop or not (see [Coupling solvers](./coupling.md#the-controldict-dictionary)).
+
+*adjointDiffusion* has been developed only as an eigenvalue solver. The others can be used for transient calculations. However, the SN transient solver has not been tested. In addition, it is currently not accelerated, thus extremely slow (it can require hundreds of iterations per time step).
 
 
 ### The *neutronicsProperties* dictionary
 
 The *neutronicsProperties* dictionary is found under *constant/neutroRegion/* and it can be used to set the type of neutronics simulation by using the following keywords:
 
-- *model*  is used to define what type of simulation needs to be performed. It can be *pointKinetics*, *diffusionNeutronics*, *SP3Neutronics*, *SNNeutronics*, *adjointDiffusion*. *adjointDiffusion* has been developed only as an eigenvalue solver. The others can be used for transient calculations. However, the SN transient solver has not been tested. In addition, it is currently not accelerated, thus extremely slow (it can require
-hundreds of iterations per time step).
 - *eigenvalueNeutronics* should be set to *true* for eigenvalue calculations, false for transients.
 - *externalSourceNeutronics* should be set to *true* for external neutron source calculations. The *eigenvalueNeutronics* variable should be put to false and the *keff* = 1.
 
 One can find detailed, commented examples in most tutorials. See for instance
 [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/neutronicsProperties) (single phase).
+
+N.B: The parameter *model* used to define what type of simulation needs to be performed as been replaced by the selection of model in the *system/controlDict* (see [Coupling solvers](./coupling.md#the-controldict-dictionary)).
 
 
 ## The *nuclearData* dictionary

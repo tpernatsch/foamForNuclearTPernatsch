@@ -19,8 +19,6 @@ FoamFile
 // --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-thermalHydraulicsType    "onePhase";
-
 fluidProperties
 {
     initialPowerDensity
@@ -34,15 +32,15 @@ fluidProperties
 // ------------------------------------------------------------------------- //
 
 structureProperties
-{    
+{
     // Parallel slabs of graphite, 4 cm thick, with 1 cm thick slab channel
     "core"
     {
         volumeFraction      0.8;
         Dh                  0.02;
- 
+
         //2cm of heated graphite (half slab), 30W/mk conductivity
-        powerModel 
+        powerModel
         {
             type                lumpedNuclearStructure;
             volumetricArea      40;
@@ -50,27 +48,27 @@ structureProperties
                                      // structure
             nodesNumber         1; // Number of nodes
             nodeFuel            0; // Define which node temperature is used
-                                   // to paramtrize XS according to 
+                                   // to paramtrize XS according to
                                    // nuclearDataFuelTemp
             nodeClad            0; // Define which node temperature is used
-                                   // to paramtrize XS according to 
-                                   // nuclearDataCladExp. Of course, it does 
+                                   // to paramtrize XS according to
+                                   // nuclearDataCladExp. Of course, it does
                                    // not have to represent a cladding. It
                                    // could be used to paramtrize over the
                                    // graphite temperature in PBRs
             heatConductances    (450000 225000); // Heat conductances from
-                                                 // average to max (6*k/Dtot^2), 
-                                                 // and average to surface 
+                                                 // average to max (6*k/Dtot^2),
+                                                 // and average to surface
                                                  // (3*k/Dtot^2).
-                                                 // Note that heat conductances (W/K) 
+                                                 // Note that heat conductances (W/K)
                                                  // must be divided by the volume
                                                  // of the entire structure.
-                                                 // There must be one more conductance 
-                                                 // than the number of nodes 
+                                                 // There must be one more conductance
+                                                 // than the number of nodes
                                                  // (see explanation in class)
             rhoCp               (5357692); // for each node
-            volumeFractions     (1); // Frction of the volume of the structure 
-                                     // occupied by each node 
+            volumeFractions     (1); // Frction of the volume of the structure
+                                     // occupied by each node
             powerFractions      (1); // Fraction of total power in the strucure
                                      // that goes to each node
             T0                  900; // Initial temperature, if no found in
@@ -80,7 +78,7 @@ structureProperties
         // 1.5cm of heated graphite + 0.5cm of non-heated graphite
         // 30W/mk conductivity
         // For testig purposes. No real physical sense
-        powerModel 
+        powerModel
         {
             type                lumpedNuclearStructure;
             volumetricArea      40;
@@ -93,7 +91,7 @@ structureProperties
             //                  - H1 = (H_11*H_12)/(H_11+H_12) with:
             //                      H_11 = 3*k/R1/Rtot
             //                      H_12 = k / R2 / Rtot with R2=0.5cm
-            //                  - H2 = k / R2 / Rtot 
+            //                  - H2 = k / R2 / Rtot
             rhoCp               (5357692 5357692);
             volumeFractions     (0.75 0.25);
             powerFractions      (1 0);
@@ -104,7 +102,7 @@ structureProperties
         //1.5cm of heated graphite + 2 slabs of 0.25cm of non-heated graphite
         // 30W/mk conductivity
         // For testig purposes. No real physical sense
-        powerModel 
+        powerModel
         {
             type                lumpedNuclearStructure;
             volumetricArea      40;

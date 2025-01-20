@@ -36,7 +36,7 @@ Fairly complete examples of *controlDict* for single-phase flow can be found in 
 
 ## Coupling logic
 
-The coupling between physics is achieved by projecting coupling variables from the mesh they are calculated, to the mesh they need to be used. The details of the coupling can be specified in *constant/multiRegionCouplingDict*. In the sub-dictionary *mappings*, for each region one can select the fields to map *onto* it. This is done by creating a *subDict* named after the region *from* which the fields are mapped. For instance, if a field needs to mapped into the fluidRegion from the neutroRegion, the specifics of the mapping are found under *multiRegionDict/mappings/fluidRegion/neutroRegion*. In this *subDict*, one can specify the name of the field of the original mesh in the *sourceFields* entry (e.g., *powerDensity* in the neutroRegion) and the name of the field onto which the original field is mapped in the *targetFields* entry (e.g. *powerDensityNeutronics* in the fluidRegion). For now this routine is not templated, hence the user needs to specify also the field type (i.e. scalar or vector). A detailed usage of this new coupling routine can be found in any multi-physics tutorial, such as [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/).
+The coupling between physics is achieved by projecting coupling variables from the mesh they are calculated, to the mesh they need to be used. The details of the coupling can be specified in *constant/multiRegionCouplingDict*. In the sub-dictionary *mappings*, for each region one can select the fields to map *onto* it. This is done by creating a *subDict* named after the region *from* which the fields are mapped. For instance, if a field needs to mapped into the fluidRegion from the neutroRegion, the specifics of the mapping are found under *multiRegionDict/mappings/fluidRegion/neutroRegion*. In this *subDict*, one can specify the name of the field of the original mesh in the *sourceFields* entry (e.g., *powerDensity* in the neutroRegion) and the name of the field onto which the original field is mapped in the *targetFields* entry (e.g. *powerDensityNeutronics* in the fluidRegion). This routine is templated, hence the user doesn't need to specify the field type (i.e. scalar or vector). A detailed usage of this new coupling routine can be found in any multi-physics tutorial, such as [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/).
 
 Example:
 
@@ -50,7 +50,6 @@ mappings
         {
             sourceFields    ( powerDensity );
             targetFields    ( powerDensityNeutronics );
-            fieldTypes      ( scalar );
         }
     }
     neutroRegion
@@ -59,7 +58,6 @@ mappings
         {
             sourceFields    ( T      thermo:rho );
             targetFields    ( TCool  rhoCool );
-            fieldTypes      ( scalar scalar );
         }
     }
 }

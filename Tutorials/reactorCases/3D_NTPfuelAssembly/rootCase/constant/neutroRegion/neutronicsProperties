@@ -15,14 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// List of neutronics solver:
-// - diffusionNeutronics
-// - SP3Neutronics
-// - SNNeutronics
-// - adjointDiffusionNeutronics
-// - pointKinetics
-model                   diffusionNeutronics;
-
 eigenvalueNeutronics    true;
+
 
 // ************************************************************************* //

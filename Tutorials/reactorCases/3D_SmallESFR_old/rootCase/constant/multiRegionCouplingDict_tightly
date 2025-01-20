@@ -46,39 +46,34 @@ mappings
     {
         neutroRegion
         {
-            sourceFields    2 ( powerDensity secondaryPowerDensity );
-            targetFields    2 ( powerDensityNeutronics powerDensityNeutronicsToLiquid);
-            fieldTypes      2 ( scalar scalar );
+            sourceFields    ( powerDensity secondaryPowerDensity );
+            targetFields    ( powerDensityNeutronics powerDensityNeutronicsToLiquid);
         }
     }
     neutroRegion
     {
         fluidRegion
         {
-            sourceFields    5 ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
-            targetFields    5 ( TCool rhoCool TFuel TClad TStructMech );
-            fieldTypes      5 ( scalar scalar scalar scalar scalar );
+            sourceFields    ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    ( TCool rhoCool TFuel TClad TStructMech );
         }
         thermoMechanicalRegion
         {
-            sourceFields    1 ( meshDisp );
-            targetFields    1 ( disp );
-            fieldTypes      1 ( vector );
+            sourceFields    ( meshDisp );
+            targetFields    ( disp );
         }
     }
     thermoMechanicalRegion
     {
         fluidRegion
         {
-            sourceFields    2 ( T.passiveStructure T.fuelAvForNeutronics );
-            targetFields    2 ( TStructFromTH TFuel );
-            fieldTypes      2 ( scalar scalar );
+            sourceFields    ( T.passiveStructure T.fuelAvForNeutronics );
+            targetFields    ( TStructFromTH TFuel );
         }
         neutroRegion
         {
-            sourceFields    1 ( powerDensity );
-            targetFields    1 ( powerDensityNeutronics );
-            fieldTypes      1 ( scalar );
+            sourceFields    ( powerDensity );
+            targetFields    ( powerDensityNeutronics );
         }
     }
 }

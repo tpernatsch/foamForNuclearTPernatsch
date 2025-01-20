@@ -15,10 +15,9 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model                   pointKinetics;
-
 fluidRegionName         fluidRegion;
 
 eigenvalueNeutronics    false;
+
 
 // ************************************************************************* //

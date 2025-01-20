@@ -15,12 +15,10 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model                       diffusionNeutronics;
-
 eigenvalueNeutronics        false;
 
-externalSourceNeutronics    true;   // if true, put eigenvalueNeutronics to 
-                                    // false to perform a steady-state 
+externalSourceNeutronics    true;   // if true, put eigenvalueNeutronics to
+                                    // false to perform a steady-state
                                     // calculation
 
 // ************************************************************************* //

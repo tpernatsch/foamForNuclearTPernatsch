@@ -16,12 +16,6 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // ------------------------------------------------------------------------- //
-// --- THERMAL-HYDRAULIC TYPE ---------------------------------------------- //
-// ------------------------------------------------------------------------- //
-
-thermalHydraulicsType    "twoPhase";
-
-// ------------------------------------------------------------------------- //
 // --- FLUID PROPERTIES ---------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
@@ -56,14 +50,14 @@ vapourProperties
 // ------------------------------------------------------------------------- //
 
 structureProperties
-{  
+{
     // left and down region
     "leftdownregioninletcorner"
     {
         volumeFraction  0.3371328621;
         Dh              0.0063460691;
     }
-    
+
     "leftdownregioninletside1"
     {
         volumeFraction  0.3879703571;
@@ -87,7 +81,7 @@ structureProperties
         volumeFraction  0.4464738237;
         Dh              0.0117778432;
     }
-       
+
     "leftdownregionheatedcorner"
     {
         volumeFraction  0.3371328621;
@@ -105,7 +99,7 @@ structureProperties
             rho             7700;
         }
     }
-    
+
     "leftdownregionheatedside1"
     {
         volumeFraction  0.3879703571;
@@ -140,7 +134,7 @@ structureProperties
             Cp              500;
             rho             7700;
         }
-    }   
+    }
 
     "leftdownregionheatedcenter1"
     {
@@ -159,7 +153,7 @@ structureProperties
             rho             7700;
         }
     }
-    
+
     "leftdownregionheatedcenter2"
     {
         volumeFraction  0.4464738237;
@@ -183,7 +177,7 @@ structureProperties
         volumeFraction  0.3371328621;
         Dh              0.0063460691;
     }
-    
+
     "leftdownregionoutletside1"
     {
         volumeFraction  0.3879703571;
@@ -214,7 +208,7 @@ structureProperties
         volumeFraction  0.3371328621;
         Dh              0.0063460691;
     }
-    
+
     "rightdownregioninletside"
     {
         volumeFraction  0.3879703571;
@@ -232,7 +226,7 @@ structureProperties
         volumeFraction  0.4464738237;
         Dh              0.0117778432;
     }
-       
+
     "rightdownregionheatedcorner"
     {
         volumeFraction  0.3371328621;
@@ -248,10 +242,10 @@ structureProperties
             T               556.1;
             Cp              500;
             rho             7700;
-            
+
         }
     }
-    
+
     "rightdownregionheatedside"
     {
         volumeFraction  0.3879703571;
@@ -287,7 +281,7 @@ structureProperties
             rho             7700;
         }
     }
-    
+
     "rightdownregionheatedcenter2"
     {
         volumeFraction  0.4464738237;
@@ -311,7 +305,7 @@ structureProperties
         volumeFraction  0.3371328621;
         Dh              0.0063460691;
     }
-    
+
     "rightdownregionoutletside"
     {
         volumeFraction  0.3879703571;
@@ -384,17 +378,17 @@ physicsModels
             "leftdownregionheatedcorner:leftdownregionheatedside1:leftdownregionheatedside2:leftdownregionheatedcenter1:leftdownregionheatedcenter2:rightdownregionheatedcorner:rightdownregionheatedside:rightdownregionheatedcenter1:rightdownregionheatedcenter2"
             {
                 //- This model is intended to reproduce a bare-minimum of the
-                //  TRACE two-phase heat transfer model (see 
+                //  TRACE two-phase heat transfer model (see
                 //  https://www.nrc.gov/docs/ML1200/ML120060218.pdf), though
                 //  it is currently lacking CHF-prediction and post-CHF models.
-                //  The nucleateBoilingOnsetModel and the 
-                //  subCooledBoilingFractionModel are optional. If the former 
+                //  The nucleateBoilingOnsetModel and the
+                //  subCooledBoilingFractionModel are optional. If the former
                 //  is specified, the fluid can undergo sub-cooled boiling in
                 //  those regions were the Twall > TonsetNucleateBoiling (TONB)
                 //  with TONB being calculated by the selected model (only Basu
                 //  et al. model currently implemented). If not specified, no
                 //  sub-cooled boiling is predicted. If the latter is
-                //  specified, only a portion of the total pool boiling heat 
+                //  specified, only a portion of the total pool boiling heat
                 //  flux will contribute to a net vapour generation term.
                 //  Currently only one model is implemented (SahaZuber), but it
                 //  is outside the applicability range for the present case, so

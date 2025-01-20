@@ -15,8 +15,6 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-thermalHydraulicsType "twoPhase";
-
 fluid1          "liquid";
 
 fluid2          "vapour";
