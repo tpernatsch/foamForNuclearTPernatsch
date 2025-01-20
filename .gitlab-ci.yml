@@ -26,7 +26,7 @@ pages:
     - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
 
     # Install MkDocs and any MkDocs plugins you use
-    - pip install mkdocs mkdocs-material mkdocs-bibtex mkdocs-get-deps mkdocs-macros-plugin mkdocs-material-extensions
+    - pip install mkdocs mkdocs-material mkdocs-bibtex==2.16.2 mkdocs-get-deps mkdocs-macros-plugin mkdocs-material-extensions
 
     # Move into the mkdocs folder to match the local setup
     - cd Documentation/mkdocs
