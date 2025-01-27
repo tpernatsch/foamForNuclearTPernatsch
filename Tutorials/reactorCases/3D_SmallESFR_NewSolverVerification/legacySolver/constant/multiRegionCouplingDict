@@ -23,6 +23,7 @@ multiRegionTightCoupled 1;
 multiRegionResidual 5e-05;
 
 meshDeformation
+{
     neutroRegion
     {
         displacementField disp;
