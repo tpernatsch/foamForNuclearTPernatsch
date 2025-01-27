@@ -4,6 +4,7 @@ EXE_INC = \
     -I./include \
     -I./compressibleInterFoam \
     -I./compressibleInterFoam/include/equations \
+    -I./scalarTransportFoam \
     -I$(FOAM_SOLVERS)/multiPhase/compressibleInterFoam/surfaceTensionModels/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \

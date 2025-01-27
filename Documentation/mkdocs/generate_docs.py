@@ -317,6 +317,7 @@ def main():
         "one_phase": ("docs/classes/thermalHydraulics/solvers/onePhase/", "docs/user_guide/thermalHydraulicsSolvers.md"),
         "two_phase": ("docs/classes/thermalHydraulics/solvers/twoPhase/", "docs/user_guide/thermalHydraulicsSolvers.md"),
         "compressible_inter_foam": ("docs/classes/openFoamImportedSolvers/compressibleInterFoam/", "docs/user_guide/thermalHydraulicsSolvers.md"),
+        "scalar_transport_foam": ("docs/classes/openFoamImportedSolvers/scalarTransportFoam/", "docs/user_guide/thermalHydraulicsSolvers.md"),
         # Thermal-hydraulics sub-scale structures
         "fixed_power": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedPower/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
         "fixed_temperature": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperature/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
@@ -337,7 +338,7 @@ def main():
     #             "traction_displacement_bcs", "implicit_contact_bcs", "fixed_displacement_bcs", "fixed_displacement_zero_shear_bcs"]:
     #     dynamic_navs[key] = indent_navigation(dynamic_navs[key], 3)
     for key in [
-        "one_phase", "two_phase", "compressible_inter_foam",
+        "one_phase", "two_phase", "compressible_inter_foam", "scalar_transport_foam",
         "fixed_power", "fixed_temperature", "heated_pin", "lumped_nuclear_structure", "nuclear_fuel_fmu", "nuclear_fuel_pin", "nuclear_steady_state_pebble"
     ]:
         dynamic_navs[key] = indent_navigation(dynamic_navs[key], 2)
@@ -366,6 +367,7 @@ nav:
 {dynamic_one_phase_nav}
 {dynamic_two_phase_nav}
 {dynamic_compressible_inter_foam_nav}
+{dynamic_scalar_transport_foam_nav}
       - Sub-scale structures:
         - Overview: user_guide/thermalHydraulicsSubScaleStructures.md
 {dynamic_fixed_power_nav}
