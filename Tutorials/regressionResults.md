@@ -32,7 +32,7 @@ Tutorials successfully completed: 29/29  [![regressionTest](https://img.shields.
 | reactorCases/3D_gFHR | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:26:55 | .795 < 1.5 |
 | reactorCases/3D_HTR-10 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 02:51:46 | .763 < 1.0 |
 | reactorCases/3D_NTPfuelAssembly | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 02:12:23 | .130 < 0.2 |
-| reactorCases/3D_SmallESFR_NewSolverVerification | [![Alltest](https://img.shields.io/badge/Alltest-failed-red.svg?style=flat-square)]() | 00:06:38 | .177 < 1.0 |
+| reactorCases/3D_SmallESFR_NewSolverVerification | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:06:38 | .177 < 1.0 |
 | reactorCases/Godiva_SN | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 01:45:57 | 1.076 < 1.5 |
 | fmuCases/powerTemperatureMomentumControl | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:13 | .103 < 0.2 |
 | fmuCases/2D_PKCoupleFMI/comparisonFMU | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:24 | .213 < 0.3 |
