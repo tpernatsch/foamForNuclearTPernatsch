@@ -78,6 +78,7 @@ SourceFiles
 #include "zeroGradientFvPatchFields.H"
 #include "meshHandler.H"
 #include "volFields.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -94,9 +95,9 @@ class meshHandler
 
         //- Region meshes
 
-        PtrList<fvMesh> meshes_;
+        PtrList<dynamicFvMesh> meshes_;
 
-        PtrList<fvMesh> mappingMeshes_;
+        PtrList<dynamicFvMesh> mappingMeshes_;
 
         dictionary mappingDict_;
         PtrList<PtrList<meshToMesh>> mappingList_;
@@ -135,8 +136,8 @@ public:
 
         void createCouplingFields(const Time& runTime);
 
-        fvMesh& returnMesh(word meshName);
-        fvMesh& returnMappingMesh(word meshName);
+        dynamicFvMesh& returnMesh(word meshName);
+        dynamicFvMesh& returnMappingMesh(word meshName);
         bool contains(wordList list, word thisWord);
 
         template<class Type>

@@ -2,13 +2,13 @@ EXE_INC = \
     -I./.. \
     -I../common/lnInclude \
     -I./include \
-    -I./compressibleInterFoam \
-    -I./compressibleInterFoam/include/equations \
+    -I./interFoam \
+    -I./interFoam/include/equations \
     -I$(FOAM_SOLVERS)/multiPhase/compressibleInterFoam/surfaceTensionModels/lnInclude \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
-    -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
+    -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/transportModels/twoPhaseMixture/lnInclude \
     -I$(LIB_SRC)/transportModels/interfaceProperties/lnInclude \
     -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
@@ -16,24 +16,40 @@ EXE_INC = \
     -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude \
     -I$(FOAM_SOLVERS)/multiphase/compressibleInterFoam/VoFphaseCompressibleTurbulenceModels/lnInclude \
     -I$(FOAM_SOLVERS)/multiphase/compressibleInterFoam/twoPhaseMixtureThermo/lnInclude \
+    -I$(LIB_SRC)/phaseSystemModels/twoPhaseInter/incompressibleInterPhaseTransportModel/lnInclude \
+    -I$(LIB_SRC)/phaseSystemModels/twoPhaseInter/VoFphaseIncompressibleTurbulenceModels/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_SRC)/sampling/lnInclude \
+    -I$(LIB_SRC)/dynamicFvMesh/lnInclude \
+    -I$(LIB_SRC)/transportModels \
+    -I$(LIB_SRC)/transportModels/incompressible/lnInclude \
+    -I$(LIB_SRC)/transportModels/interfaceProperties/lnInclude \
+    -I$(LIB_SRC)/transportModels/twoPhaseMixture/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/incompressible/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/phaseIncompressible/lnInclude \
+    -I$(LIB_SRC)/transportModels/immiscibleIncompressibleTwoPhaseMixture/lnInclude
+
+
 
 LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lCommon \
     -lfiniteVolume \
     -lfvOptions \
     -lmeshTools \
-    -ltwoPhaseMixtureThermo \
-    -ltwoPhaseSurfaceTension \
-    -lcompressibleTransportModels \
-    -lfluidThermophysicalModels \
-    -lspecie \
-    -ltwoPhaseMixture \
-    -ltwoPhaseProperties \
+    -lsampling \
+    -ldynamicFvMesh \
+    -lincompressibleTransportModels \
     -linterfaceProperties \
+    -limmiscibleIncompressibleTwoPhaseMixture \
+    -ltwoPhaseProperties \
     -lturbulenceModels \
-    -lcompressibleTurbulenceModels \
-    -lthermoTools \
-    -lVoFphaseCompressibleTurbulenceModels
+    -lincompressibleTurbulenceModels \
+    -lwaveModels \
+    -lVoFphaseTurbulentTransportModels \
+    -lincompressibleInterPhaseTransportModels
+
 
 ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))
     EXE_INC += -I$(LIB_ECI4FOAM)/src/externalComm/lnInclude

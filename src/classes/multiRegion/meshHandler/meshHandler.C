@@ -44,6 +44,7 @@ License
 #include "radialBasisFunctionInterpolation.H"
 #include "mergeOrSplitBaffles.H"
 #include "hexCellFvMesh.H"
+#include "dynamicFvMesh.H"
 
 
 
@@ -128,7 +129,7 @@ Foam::meshHandler::meshHandler(const Time& runTime)
         meshes_.set
         (
             meshI,
-            new fvMesh
+            Foam::dynamicFvMesh::New
             (
                 IOobject
                 (
@@ -386,7 +387,7 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
 {
     forAll(meshes_, regioni)
     {
-        autoPtr<fvMesh> baffleLessMesh;
+        autoPtr<dynamicFvMesh> baffleLessMesh;
 
         bool removeBaffleBool(false);
 
@@ -434,7 +435,7 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
             //- Assemble mesh as copy from points, faces, cells with no boundary
             baffleLessMesh.reset
             (
-                new Foam::fvMesh
+                Foam::dynamicFvMesh::New
                 (
                     Foam::IOobject
                     (
@@ -442,10 +443,10 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
                         runTime.timeName(),
                         runTime,
                         Foam::IOobject::NO_READ
-                    ),
-                    std::move(points),
-                    std::move(faces),
-                    std::move(cells)
+                    )
+                    // std::move(points),
+                    // std::move(faces),
+                    // std::move(cells)
                 )
             );
 
@@ -575,7 +576,7 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
                             if(regionsFrom[regionFromi] == meshes_[regioni].name())//-if i find regionMehses_[regioni] in the subdict
                             {
                                 const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
-                                fvMesh& baffleLessMesh = const_cast<fvMesh&>(meshes_[regioni].time().lookupObject<fvMesh>(meshes_[regioni].name()+".baffleLess"));
+                                dynamicFvMesh& baffleLessMesh = const_cast<dynamicFvMesh&>(meshes_[regioni].time().lookupObject<dynamicFvMesh>(meshes_[regioni].name()+".baffleLess"));
 
                                 forAll(fieldsList, fieldi)
                                 {
@@ -596,7 +597,7 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
     Info<< nl;
 }
 
-Foam::fvMesh& Foam::meshHandler::returnMesh(word meshName)
+Foam::dynamicFvMesh& Foam::meshHandler::returnMesh(word meshName)
 {
     if (meshName == "dummy")
     {
@@ -632,7 +633,7 @@ Foam::fvMesh& Foam::meshHandler::returnMesh(word meshName)
 }
 
 
-Foam::fvMesh& Foam::meshHandler::returnMappingMesh(word meshName)
+Foam::dynamicFvMesh& Foam::meshHandler::returnMappingMesh(word meshName)
 {
     bool found(false);
     label meshIndex(0);
