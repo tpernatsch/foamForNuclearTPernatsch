@@ -67,6 +67,7 @@ Foam::XS::XS
             IOobject::NO_WRITE
         )
     ),
+    isReadWriteXS_(nuclearData_.lookupOrDefault("isReadWriteXS", false)),
     isLowMemory_(nuclearData_.lookupOrDefault("isLowMemory", false)),
     energyGroups_(nuclearData_.lookupOrDefault("energyGroups", 1)),
     precGroups_(nuclearData_.lookupOrDefault("precGroups", 1)),

@@ -40,6 +40,21 @@ forAll(nuSigmaEff_, energyI)
                 fuelFraction_[cellIglobal] = fuelFractionList_[zone];
                 secondaryPowerVolumeFraction_[cellIglobal] = secondaryPowerVolumeFractionList_[zone];
                 fractionToSecondaryPower_[cellIglobal] = fractionToSecondaryPowerList_[zone];
+
+                // Variables
+                D_[energyI][cellIglobal] = DList_[zone][energyI].getRef();
+                nuSigmaEff_[energyI][cellIglobal] = nuSigmaEffList_[zone][energyI].getRef();
+                sigmaPow_[energyI][cellIglobal] = sigmaPowList_[zone][energyI].getRef();
+                sigmaRemoval_[energyI][cellIglobal] = sigmaRemovalList_[zone][energyI].getRef();
+
+                forAll(sigmaFromTo_, momentI)
+                {
+                    forAll(sigmaFromTo_[momentI], energyJ)
+                    {
+                        sigmaFromTo_[momentI][energyJ][energyI][cellIglobal] =
+                            sigmaFromToList_[zone][momentI][energyJ][energyI].getRef();
+                    }
+                }
             }
         }
     }
@@ -53,7 +68,7 @@ forAll(nuSigmaEff_, energyI)
     secondaryPowerVolumeFraction_.correctBoundaryConditions();
     fractionToSecondaryPower_.correctBoundaryConditions();
 }
- 
+
 // Check that XSs have been specified for all regions
 {
     forAll(mesh_.cellZones().names(), cellZoneI)
@@ -70,7 +85,7 @@ forAll(nuSigmaEff_, energyI)
         }
         if (!zoneInEntries)
         {
-            FatalErrorInFunction 
+            FatalErrorInFunction
                 << "Zone: " << zoneName << " not found in neutronicProperties!"
                 << exit(FatalError);
         }

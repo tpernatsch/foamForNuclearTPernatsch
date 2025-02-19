@@ -221,6 +221,10 @@ protected:
             //- Nuclear data dictionary
             IOdictionary nuclearData_;
 
+            //- Flag to read and write variable XS fields. Be careful, can be
+            // intensive
+            bool isReadWriteXS_;
+
             //- Flag for low memory consumption when creating XS field
             bool isLowMemory_;
 

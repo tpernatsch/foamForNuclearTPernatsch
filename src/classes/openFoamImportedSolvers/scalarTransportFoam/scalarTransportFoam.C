@@ -124,6 +124,8 @@ Foam::solvers::scalarTransportFoam::scalarTransportFoam
 
 void Foam::solvers::scalarTransportFoam::correctPhysics()
 {
+    phi_ = fvc::flux(U_);
+
     while (pimple_.loop())
     {
         while (pimple_.correctNonOrthogonal())
