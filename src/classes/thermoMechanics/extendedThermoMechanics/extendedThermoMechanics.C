@@ -54,7 +54,7 @@ Foam::solvers::extendedThermoMechanics::extendedThermoMechanics
 :
     thermoMechanics(mesh),
     runTime_(static_cast<const offbeatTime&>(mesh.time())),
-    mesh_(mesh),
+    mesh_(static_cast<dynamicFvMesh&>(mesh)),
     solverDict_
     (
         IOobject
@@ -96,6 +96,8 @@ Foam::solvers::extendedThermoMechanics::extendedThermoMechanics
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 void Foam::solvers::extendedThermoMechanics::correctPhysics()
 {
+
+    mesh_.update();
 
     Info << "Solving region: " << mesh_.name()<<nl<<endl;
     // True when time step is converged

@@ -55,6 +55,7 @@ SourceFiles
 #include "thermoMechanics.H"
 
 #include "runTimeSelectionTables.H"
+#include "dynamicFvMesh.H"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -76,7 +77,7 @@ class extendedThermoMechanics
     // Private data
 
         const offbeatTime& runTime_;
-        fvMesh& mesh_;
+        dynamicFvMesh& mesh_;
         IOdictionary solverDict_;
         timeHandling adjustableTime_;
         globalOptions globalOpt_;
