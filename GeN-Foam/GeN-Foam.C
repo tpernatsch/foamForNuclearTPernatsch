@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
 
     solvers.setGlobalPrefix();
 
-    solvers.mapper().initializeMappedFields(runTime);
+    solvers.mapper().initializeMappedFields(runTime, mappingMode);
 
     #ifdef isCommDataLayerIncluded
     // FMU solution control

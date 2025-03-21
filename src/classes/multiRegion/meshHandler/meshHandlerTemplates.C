@@ -101,7 +101,8 @@ void Foam::meshHandler::mapAndWrite
     word tgtFieldName,
     label tgtFieldLabel,
     label srcFieldLabel,
-    bool removeBaffles
+    bool removeBaffles,
+    bool initializeMappedFields
 )
 {
     typedef GeometricField<Type, fvPatchField, volMesh> VolFieldType;
@@ -138,7 +139,10 @@ void Foam::meshHandler::mapAndWrite
             tgtField
         );
         tgtField.correctBoundaryConditions();
-        tgtField.write();
+        if (initializeMappedFields)
+        {
+            tgtField.write();
+        }
     }
 }
 
