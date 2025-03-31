@@ -65,7 +65,7 @@ namespace solvers
     (
         solver,
         pointKineticNeutronics,
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -75,7 +75,7 @@ namespace solvers
 
 Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     neutronics(mesh),

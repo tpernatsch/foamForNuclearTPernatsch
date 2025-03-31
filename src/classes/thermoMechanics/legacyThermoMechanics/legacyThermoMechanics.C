@@ -54,7 +54,7 @@ namespace solvers
     (
         solver,
         legacyThermoMechanics,
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -66,7 +66,7 @@ namespace solvers
 
 Foam::solvers::legacyThermoMechanics::legacyThermoMechanics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     thermoMechanics(mesh),

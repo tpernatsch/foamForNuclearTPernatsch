@@ -216,7 +216,7 @@ public:
         thermalHydraulicsModel
         (
             const Time& time,
-            fvMesh& mesh,
+            dynamicFvMesh& mesh,
             fv::options& fvOpt// multiRegion check
         );
 

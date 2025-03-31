@@ -60,7 +60,7 @@ namespace solvers
 
 Foam::solvers::neutronics::neutronics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     solver(mesh),

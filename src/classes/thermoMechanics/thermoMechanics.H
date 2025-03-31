@@ -155,7 +155,7 @@ public:
     // Constructors
 
         //- Construct from mesh
-        thermoMechanics(fvMesh& mesh);
+        thermoMechanics(dynamicFvMesh& mesh);
 
 
     // Selectors

@@ -58,7 +58,7 @@ namespace solvers
 
 Foam::solvers::thermoMechanics::thermoMechanics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     solver(mesh),

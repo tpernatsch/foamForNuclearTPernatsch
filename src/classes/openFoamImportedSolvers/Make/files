@@ -1,3 +1,3 @@
-interFoam/interFoam.C
+compressibleInterDyMFoam/compressibleInterDyMFoam.C
 
 LIB = $(FOAM_USER_LIBBIN)/libOFSolvers

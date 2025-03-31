@@ -663,136 +663,136 @@ Foam::dynamicFvMesh& Foam::meshHandler::returnMappingMesh(word meshName)
 
 
 
-// void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
-// {
+void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
+{
 
-//     const IOdictionary couplingDict
-//     (
-//         IOobject
-//         (
-//             "multiRegionCouplingDict",
-//             runTime.time().constant(),
-//             runTime.db(),
-//             IOobject::MUST_READ,
-//             IOobject::NO_WRITE
-//         )
-//     );
+    const IOdictionary couplingDict
+    (
+        IOobject
+        (
+            "multiRegionCouplingDict",
+            runTime.time().constant(),
+            runTime.db(),
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    );
 
-//     if(couplingDict.found("interpolatedMappings"))
-//     {
-//         const dictionary interpolatedMappingDict(couplingDict.subDict("interpolatedMappings"));
+    if(couplingDict.found("interpolatedMappings"))
+    {
+        const dictionary interpolatedMappingDict(couplingDict.subDict("interpolatedMappings"));
 
-//         forAll(meshes_, regioni)
-//         {
-//             if (interpolatedMappingDict.found(meshes_[regioni].name()))
-//             {
-//                 const dictionary regionToDict(interpolatedMappingDict.subDict(meshes_[regioni].name()));
+        forAll(meshes_, regioni)
+        {
+            if (interpolatedMappingDict.found(meshes_[regioni].name()))
+            {
+                const dictionary regionToDict(interpolatedMappingDict.subDict(meshes_[regioni].name()));
 
-//                 scalarList fieldValues(0);
-//                 scalarList xPos(0);
-//                 scalarList yPos(0);
-//                 scalarList zPos(0);
+                scalarList fieldValues(0);
+                scalarList xPos(0);
+                scalarList yPos(0);
+                scalarList zPos(0);
 
-//                 List<word> regionsFrom(regionToDict.get<List<word>>("fromWhichRegions"));
-//                 word fieldFromName(regionToDict.get<word>("fieldFromName"));
-//                 word fieldToName(regionToDict.get<word>("fieldToName"));
-//                 scalarList axialLocs(regionToDict.get<List<scalar>>("axialLocations"));
-//                 word interpolationType(regionToDict.get<word>("interpolationType"));
-//                 volScalarField& fieldToBeMapped(const_cast<volScalarField&>(meshes_[regioni].lookupObject<volScalarField>(fieldToName)));
-
-
-//                 forAll(regionsFrom, regionFromi)
-//                 {
-//                     label whichMesh(0);
-
-//                     // Get mesh reference
-//                     forAll(meshes_, i)
-//                     {
-//                         if(meshes_[i].name()==regionsFrom[regionFromi])
-//                             whichMesh = i;
-//                     }
+                List<word> regionsFrom(regionToDict.get<List<word>>("fromWhichRegions"));
+                word fieldFromName(regionToDict.get<word>("fieldFromName"));
+                word fieldToName(regionToDict.get<word>("fieldToName"));
+                scalarList axialLocs(regionToDict.get<List<scalar>>("axialLocations"));
+                word interpolationType(regionToDict.get<word>("interpolationType"));
+                volScalarField& fieldToBeMapped(const_cast<volScalarField&>(meshes_[regioni].lookupObject<volScalarField>(fieldToName)));
 
 
-//                     // - Get axial locations
-//                     zPos.append(axialLocs);
+                forAll(regionsFrom, regionFromi)
+                {
+                    label whichMesh(0);
 
-//                     // - Get x and y
-//                     vector centerOfMass(gSum(meshes_[whichMesh].C().field()*meshes_[whichMesh].V().field())/gSum(meshes_[whichMesh].V().field()));
-
-//                     for(label i = 0; i<axialLocs.size(); i++)
-//                     {
-//                         xPos.append(centerOfMass[0]);
-//                         yPos.append(centerOfMass[1]);
-//                         // - Now I have a list of (x,y,z) for one region. I need to get to associate a value to each coordinate
-
-//                         point samplePoint(centerOfMass[0], centerOfMass[1], axialLocs[i]);
-
-//                         // interpolationCellPoint<scalar> pointInterpolator(meshes_[whichMesh]);
-
-//                         label celli = meshes_[whichMesh].findCell(samplePoint);
-
-//                         const volScalarField& field(meshes_[whichMesh].lookupObject<volScalarField>(fieldFromName));
-
-//                         fieldValues.append(field[celli]);
-
-//                     }
-//                 }
-
-//                 scalarList interpolationWeights(0);
-//                 scalar interpolatedValue(0);
+                    // Get mesh reference
+                    forAll(meshes_, i)
+                    {
+                        if(meshes_[i].name()==regionsFrom[regionFromi])
+                            whichMesh = i;
+                    }
 
 
-//                 if (interpolationType == "kriging")
-//                 {
-//                     Foam::radialBasisFunctionInterpolation::solveKriging
-//                     (
-//                         xPos, yPos, zPos, invRBFmatrix_
-//                     );
+                    // - Get axial locations
+                    zPos.append(axialLocs);
 
-//                     forAll(meshes_[regioni].C(), centerI)
-//                     {
-//                         interpolatedValue = Foam::radialBasisFunctionInterpolation::kriging
-//                         (
-//                             xPos, yPos, zPos, fieldValues,
-//                             meshes_[regioni].C()[centerI][0], meshes_[regioni].C()[centerI][1],meshes_[regioni].C()[centerI][2],
-//                             invRBFmatrix_
-//                         );
+                    // - Get x and y
+                    vector centerOfMass(gSum(meshes_[whichMesh].C().field()*meshes_[whichMesh].V().field())/gSum(meshes_[whichMesh].V().field()));
 
-//                         fieldToBeMapped[centerI] = interpolatedValue;
-//                     }
+                    for(label i = 0; i<axialLocs.size(); i++)
+                    {
+                        xPos.append(centerOfMass[0]);
+                        yPos.append(centerOfMass[1]);
+                        // - Now I have a list of (x,y,z) for one region. I need to get to associate a value to each coordinate
 
-//                     fieldToBeMapped.correctBoundaryConditions();
-//                 }
-//                 else if (interpolationType == "polyharmonicSpline")
-//                 {
-//                     interpolationWeights = Foam::radialBasisFunctionInterpolation::solvePolyharmonicSpline
-//                     (
-//                         xPos, yPos, zPos, fieldValues,  invRBFmatrix_
-//                     );
+                        point samplePoint(centerOfMass[0], centerOfMass[1], axialLocs[i]);
 
-//                     forAll(meshes_[regioni].C(), centerI)
-//                     {
-//                         interpolatedValue = Foam::radialBasisFunctionInterpolation::polyharmonicSpline
-//                         (
-//                             interpolationWeights,
-//                             xPos, yPos, zPos,
-//                             meshes_[regioni].C()[centerI][0], meshes_[regioni].C()[centerI][1],meshes_[regioni].C()[centerI][2]
-//                         );
+                        // interpolationCellPoint<scalar> pointInterpolator(meshes_[whichMesh]);
 
-//                         fieldToBeMapped[centerI] = interpolatedValue;
-//                     }
-//                 }
-//                 else
-//                 {
-//                     FatalErrorInFunction
-//                         << interpolationType << " is an incorrect "
-//                         << "radial basis function method. Available methods: polyharmonicSpline, gaussian, kriging"
-//                         << exit(FatalError);
-//                 }
-//             }
-//         }
-//     }
-// }
+                        label celli = meshes_[whichMesh].findCell(samplePoint);
+
+                        const volScalarField& field(meshes_[whichMesh].lookupObject<volScalarField>(fieldFromName));
+
+                        fieldValues.append(field[celli]);
+
+                    }
+                }
+
+                scalarList interpolationWeights(0);
+                scalar interpolatedValue(0);
+
+
+                // if (interpolationType == "kriging")
+                // {
+                //     Foam::radialBasisFunctionInterpolation::solveKriging
+                //     (
+                //         xPos, yPos, zPos, invRBFmatrix_
+                //     );
+
+                //     forAll(meshes_[regioni].C(), centerI)
+                //     {
+                //         interpolatedValue = Foam::radialBasisFunctionInterpolation::kriging
+                //         (
+                //             xPos, yPos, zPos, fieldValues,
+                //             meshes_[regioni].C()[centerI][0], meshes_[regioni].C()[centerI][1],meshes_[regioni].C()[centerI][2],
+                //             invRBFmatrix_
+                //         );
+
+                //         fieldToBeMapped[centerI] = interpolatedValue;
+                //     }
+
+                //     fieldToBeMapped.correctBoundaryConditions();
+                // }
+                if (interpolationType == "polyharmonicSpline")
+                {
+                    interpolationWeights = Foam::radialBasisFunctionInterpolation::solvePolyharmonicSpline
+                    (
+                        xPos, yPos, zPos, fieldValues,  invRBFmatrix_
+                    );
+
+                    forAll(meshes_[regioni].C(), centerI)
+                    {
+                        interpolatedValue = Foam::radialBasisFunctionInterpolation::polyharmonicSpline
+                        (
+                            interpolationWeights,
+                            xPos, yPos, zPos,
+                            meshes_[regioni].C()[centerI][0], meshes_[regioni].C()[centerI][1],meshes_[regioni].C()[centerI][2]
+                        );
+
+                        fieldToBeMapped[centerI] = interpolatedValue;
+                    }
+                }
+                else
+                {
+                    FatalErrorInFunction
+                        << interpolationType << " is an incorrect "
+                        << "radial basis function method. Available methods: polyharmonicSpline, gaussian, kriging"
+                        << exit(FatalError);
+                }
+            }
+        }
+    }
+}
 
 
 bool Foam::meshHandler::contains(wordList list, word thisWord)

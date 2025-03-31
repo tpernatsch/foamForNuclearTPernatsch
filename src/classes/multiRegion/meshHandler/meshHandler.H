@@ -105,6 +105,8 @@ class meshHandler
         PtrList<PtrList<volVectorField>> vectorCouplingFields_;
         List<List<void*>> couplingFields_;
 
+        SquareMatrix<scalar> invRBFmatrix_;
+
 
 public:
 
@@ -135,6 +137,8 @@ public:
         void createBaffleLessMeshes(const Time& runTime);
 
         void createCouplingFields(const Time& runTime);
+
+        void interpolateAndMapFields(const Time& runTime);
 
         dynamicFvMesh& returnMesh(word meshName);
         dynamicFvMesh& returnMappingMesh(word meshName);

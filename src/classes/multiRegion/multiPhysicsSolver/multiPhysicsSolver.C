@@ -55,7 +55,7 @@ namespace solvers
     (
         solver,
         multiPhysicsSolver,
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -64,7 +64,7 @@ namespace solvers
 
 Foam::solvers::multiPhysicsSolver::multiPhysicsSolver
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     solver(mesh),

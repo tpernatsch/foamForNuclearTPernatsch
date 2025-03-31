@@ -1,9 +1,9 @@
 /*---------------------------------------------------------------------------*\
-|       ______          _   __           ______                               |
-|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
-|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
-|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
-|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|                                                              |
+|      / /      / | / /          / /               |
+|     / /    /  \  /  |/ /    / /     /  \ /  `/  /  ` \    |
+|    / // /  /  / / /|  /  // / /    / // // // /  / / / / / /    |
+|    \/   \/ // |/          //       \/ \,/  // // //     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
 |    Built on OpenFOAM v2412                                                  |
@@ -36,25 +36,35 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::thermalHydraulicsModels::onePhase
+    Foam::thermalHydraulicsModels::compressibleInterDyMFoam
 
 Description
-    This class encapsulates a single fluid + 1 stationary structure
-    Eulerian solver with a user-defineable regime-map based phyiscs modelling.
+    Solver for two compressible, non-isothermal immiscible fluids using a VOF
+    (volume of fluid) phase-fraction based interface capturing approach. This
+    standard solver has been transposed from OpenFOAM.
 
 SourceFiles
-    onePhase.C
-
-\mainauthor
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    compressibleInterDyMFoam.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef onePhase_H
-#define onePhase_H
+#ifndef compressibleInterDyMFoamH
+#define compressibleInterDyMFoamH
 
-#include "thermalHydraulicsModel.H"
+#include "fvCFD.H"
+#include "CMULES.H"
+#include "EulerDdtScheme.H"
+#include "localEulerDdtScheme.H"
+#include "CrankNicolsonDdtScheme.H"
+#include "subCycle.H"
+#include "compressibleInterPhaseTransportModel.H"
+#include "pimpleControl.H"
+#include "fvOptions.H"
+#include "fvcSmooth.H"
+#include "solver.H"
+#include "IOMRFZoneList.H"
 #include "dynamicFvMesh.H"
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -69,44 +79,86 @@ namespace solvers
 {
 
 /*---------------------------------------------------------------------------*\
-                      Class onePhase Declaration
+                      Class compressibleInterDyMFoam Declaration
 \*---------------------------------------------------------------------------*/
 
-class onePhase
+class compressibleInterDyMFoam
 :
-    public thermalHydraulicsModel
+    public solver
 {
 private:
 
+    //- Mesh
+    dynamicFvMesh& dynMesh;
+
+    //-
+    pimpleControl pimple;
+
     //- Phases
 
-        //- Structure
-        structure structure_;
+    scalar cumulativeContErr;
 
-        //- Fluid
-        fluid fluid_;
 
-    //- Phase pairs
+    volScalarField p_rgh;
+    volVectorField U;
+    surfaceScalarField phi;
+    twoPhaseMixtureThermo mixture;
+    volScalarField& alpha1;
+    volScalarField& alpha2;
+    const volScalarField& rho1;
+    const volScalarField& rho2;
+    volScalarField rho;
+    dimensionedScalar pMin;
 
-        //- Fluid2 - structure
-        FSPair FSPair_;
+    //- Gravity related fields
+    uniformDimensionedVectorField g;
+    uniformDimensionedScalarField hRef;
+    dimensionedScalar ghRef;
+    volScalarField gh;
+    surfaceScalarField ghf;
 
-        scalar residual_;
+    surfaceScalarField rhoPhi;
+    volScalarField dgdt;
+
+    // //Create alphaFluxes
+    // IOobject alphaPhi10Header;
+    // bool alphaRestart;
+    // surfaceScalarField alphaPhi10;
+    autoPtr<compressibleInterPhaseTransportModel> turbulence;
+    surfaceVectorField Uf;
+    volScalarField K;
+
+    fv::options& fvOptions;
+    volScalarField& p;
+    volScalarField& T;
+    const volScalarField& psi1;
+    const volScalarField& psi2;
+
+    // Alpha fluxes
+
+    IOobject alphaPhi10Header;
+    bool alphaRestart;
+    surfaceScalarField alphaPhi10;
+    surfaceScalarField alphaPhiUn;
+    tmp<surfaceScalarField> talphaPhi1Corr0;
+
+    IOMRFZoneList MRF;
+
 
 
 public:
 
-    TypeName("onePhase");
+    TypeName("compressibleInterDyMFoam");
 
     //- Constructors
 
-        onePhase
+        compressibleInterDyMFoam
         (
             dynamicFvMesh& mesh
         );
 
         //- Destructor
-        virtual ~onePhase(){}
+        virtual ~compressibleInterDyMFoam(){}
 
     //- Member Functions
 
@@ -118,21 +170,14 @@ public:
 
         //- Correct fluid and structure temperatures without
         //  updating the flow regime map
-        virtual void correctEnergy();
+        void correctEnergy();
 
         //- Correct pressure, velocities without updating
         //  the flow regime map
-        virtual void correctFluidMechanics();
-
-        //- Correct models and coupling fields
-        virtual void correctModels
-        (
-            bool solveFluidDynamics,
-            bool solveEnergy
-        );
+        void correctFluidMechanics();
 
         //- Update and print Courant number
-        virtual void correctCourant();
+        void correctCourant();
 
         //- Update continuity errors of the fluid
         void correctContErr();
@@ -145,8 +190,13 @@ public:
 
         virtual scalar getResidual()
         {
-            return residual_;
+            return scalar(0);
         };
+
+        virtual void correctBaffleLessFields()
+        {}
+        virtual void deformMesh()
+        {}
 };
 
 

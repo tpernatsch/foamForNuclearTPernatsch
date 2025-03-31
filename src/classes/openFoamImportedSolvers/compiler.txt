@@ -1,0 +1,12 @@
+Compiling enabled on 32 cores
+    ln: ./lnInclude
+Making dependencies: compressibleInterDyMFoam.C
+wmkdepend: could not open 'compressibleInterPhaseTransportModel.H' for source file 'compressibleInterDyMFoam/compressibleInterDyMFoam.C': No such file or directory
+wmkdepend: could not open 'solver.H' for source file 'compressibleInterDyMFoam/compressibleInterDyMFoam.C': No such file or directory
+g++ -std=c++17 -m64 -pthread -DOPENFOAM=2412 -DWM_DP -DWM_LABEL_SIZE=32 -Wall -Wextra -Wold-style-cast -Wnon-virtual-dtor -Wno-unused-parameter -Wno-invalid-offsetof -Wno-attributes -Wno-unknown-pragmas -O3  -DNoRepository -ftemplate-depth-100  -I.. -I../../VoF -I../twoPhaseMixtureThermo -I../VoFphaseCompressibleTurbulenceModels/lnInclude -I/usr/lib/openfoam/openfoam2412/src/finiteVolume/lnInclude -I/usr/lib/openfoam/openfoam2412/src/meshTools/lnInclude -I/usr/lib/openfoam/openfoam2412/src/transportModels/compressible/lnInclude -I/usr/lib/openfoam/openfoam2412/src/thermophysicalModels/basic/lnInclude -I/usr/lib/openfoam/openfoam2412/src/transportModels/twoPhaseMixture/lnInclude -I/usr/lib/openfoam/openfoam2412/src/transportModels/interfaceProperties/lnInclude -I/usr/lib/openfoam/openfoam2412/src/TurbulenceModels/turbulenceModels/lnInclude -I/usr/lib/openfoam/openfoam2412/src/TurbulenceModels/compressible/lnInclude -I/usr/lib/openfoam/openfoam2412/src/TurbulenceModels/phaseCompressible/lnInclude -I/usr/lib/openfoam/openfoam2412/src/dynamicMesh/lnInclude -I/usr/lib/openfoam/openfoam2412/src/dynamicFvMesh/lnInclude -iquote. -IlnInclude -I/usr/lib/openfoam/openfoam2412/src/OpenFOAM/lnInclude -I/usr/lib/openfoam/openfoam2412/src/OSspecific/POSIX/lnInclude   -fPIC -c compressibleInterDyMFoam/compressibleInterDyMFoam.C -o Make/linux64GccDPInt32Opt/compressibleInterDyMFoam/compressibleInterDyMFoam.o
+In file included from compressibleInterDyMFoam/compressibleInterDyMFoam.C:40:
+compressibleInterDyMFoam/compressibleInterDyMFoam.H:60:10: fatal error: compressibleInterPhaseTransportModel.H: No such file or directory
+   60 | #include "compressibleInterPhaseTransportModel.H"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [/usr/lib/openfoam/openfoam2412/wmake/rules/General/transform:38: Make/linux64GccDPInt32Opt/compressibleInterDyMFoam/compressibleInterDyMFoam.o] Error 1

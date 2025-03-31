@@ -79,7 +79,7 @@ Foam::solvers::thermalHydraulicsModel::momentumModeNames_
 Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
 (
     const Time& time,
-    fvMesh& mesh,
+    dynamicFvMesh& mesh,
     fv::options& fvOptions
 )
 :

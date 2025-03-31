@@ -186,6 +186,7 @@ SourceFiles
 #include "Function1.H"
 #include "interpolationTable.H"
 #include "timeProfile.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -450,7 +451,7 @@ public:
     //- Constructors
 
         //- Construct from mesh, read data from IOdictionaries
-        pointKineticNeutronics(fvMesh& mesh);
+        pointKineticNeutronics(dynamicFvMesh& mesh);
 
     //- Destructor
         virtual ~pointKineticNeutronics(){}

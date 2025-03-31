@@ -98,6 +98,7 @@ SourceFiles
 #include "fvCFD.H"
 #include "solver.H"
 #include "meshHandler.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -179,7 +180,7 @@ public:
     // Constructors
 
         //- Construct from mesh
-        multiPhysicsSolver(fvMesh& mesh);
+        multiPhysicsSolver(dynamicFvMesh& mesh);
 
 
     //- Destructor

@@ -39,7 +39,7 @@ namespace solvers
     (
         solver, 
         extendedThermoMechanics, 
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -49,12 +49,12 @@ namespace solvers
 
 Foam::solvers::extendedThermoMechanics::extendedThermoMechanics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     thermoMechanics(mesh),
     runTime_(static_cast<const offbeatTime&>(mesh.time())),
-    mesh_(static_cast<dynamicFvMesh&>(mesh)),
+    mesh_(mesh),
     solverDict_
     (
         IOobject

@@ -107,7 +107,7 @@ public:
         //- Construct from mesh, materials and dictionary
         extendedThermoMechanics
         (
-            fvMesh& mesh
+            dynamicFvMesh& mesh
         );
 
     // Selectors

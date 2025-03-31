@@ -50,7 +50,7 @@ SourceFiles
 #ifndef solver_H
 #define solver_H
 
-#include "fvMesh.H"
+#include "dynamicFvMesh.H"
 #include "argList.H"
 // #include "pimpleNoLoopControl.H"
 // #include "fvModels.H"
@@ -74,7 +74,7 @@ protected:
     // Protected Data
 
         //- Region mesh
-        fvMesh& mesh_;
+        dynamicFvMesh& mesh_;
 
         //- Switch for steady-state
         //  Set automatically from the selected ddt scheme
@@ -107,7 +107,7 @@ public:
     // Public Data
 
         //- Region mesh
-        const fvMesh& mesh;
+        const dynamicFvMesh& mesh;
 
         //- Time
         const Time& runTime;
@@ -129,8 +129,8 @@ public:
         (
             autoPtr,
             solver,
-            fvMesh,
-            (fvMesh& mesh),
+            dynamicFvMesh,
+            (dynamicFvMesh& mesh),
             (mesh)
         );
 
@@ -138,7 +138,7 @@ public:
     // Constructors
 
         //- Construct from region mesh
-        solver(fvMesh& mesh);
+        solver(dynamicFvMesh& mesh);
 
         //- Disallow default bitwise copy construction
         solver(const solver&) = delete;
@@ -150,7 +150,7 @@ public:
         static autoPtr<solver> New
         (
             const word& solverName,
-            fvMesh& mesh
+            dynamicFvMesh& mesh
         );
 
         //- Load the specified solver library
