@@ -40,7 +40,9 @@ Class
 
 Description
     This class encapsulates a two fluid + 1 stationary structure
-    Eulerian solver
+    Eulerian solver.
+
+    Detailed documentation will come soon. For now refer to [Overview](../../../../user_guide/thermalHydraulics/porousMedium.md)
 
 SourceFiles
     twoPhase.C

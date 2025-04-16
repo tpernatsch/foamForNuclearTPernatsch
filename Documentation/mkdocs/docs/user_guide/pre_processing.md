@@ -1,6 +1,6 @@
 # Preprocessing
 
-Before running GeN-Foam, one has to provide meshes, physical properties, discretization methods (if one does not want to use the default ones) and simulation details. This section provides a quick overview of the input deck of GeN-Foam. For more details, please refer to the [User manual](index.md).
+Before running GeN-Foam, one has to provide meshes, physical properties, discretization methods (if one does not want to use the default ones) and simulation details. This section provides a quick overview of the input deck of GeN-Foam.
 
 
 ## Meshing
@@ -80,6 +80,8 @@ One can find a commented example in the tutorial
 ## Initial values and boundary conditions
 
 As in all standard OpenFOAM solvers, initial values (IC) and boundary conditions (BC) should be provided in the “0” folder, or in the time folder corresponding to the *startTime* of the simulation, if different than 0.
+
+Fields which need to be mapped across physics can be initialized by running `GeN-Foam -initializeMappedFields`. This will construct the solvers and mappings and map the fields across physics as specified in the *multiRegionCouplingDict*. This might be useful for restart simulations and for point-kinetics simulations as explained in [this page](./thermalHydraulics/settingCase.md#setting-the-initial-power).
 
 
 ## Discretization and solution

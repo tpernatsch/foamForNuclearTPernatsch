@@ -22,8 +22,9 @@ It should be mentioned that GeN-Foam was mainly designed for coarse-mesh analyse
 
 - [User manual](user_guide/index.md)
 	- [Neutronics](user_guide/neutronics.md)
-	- [Thermal-hydraulics](user_guide/thermalHydraulics.md)
+	- [Thermal-hydraulics](user_guide/thermalHydraulics/index.md)
 	- [Thermal-mechanics](user_guide/thermoMechanics.md)
+	- [OpenFOAM-imported solvers](user_guide/openfoamImportedSolvers.md)
 	- [Coupling and time stepping](user_guide/coupling.md)
 	- [FMU](user_guide/fmu.md)
 

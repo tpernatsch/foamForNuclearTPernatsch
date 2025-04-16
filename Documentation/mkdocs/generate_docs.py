@@ -314,18 +314,18 @@ def main():
         "SN": ("docs/classes/neutronics/SN/", "docs/user_guide/neutronics.md"),
         "point_kinetics": ("docs/classes/neutronics/pointKinetics/", "docs/user_guide/neutronics.md"),
         # Thermal-hydraulics
-        "one_phase": ("docs/classes/thermalHydraulics/solvers/onePhase/", "docs/user_guide/thermalHydraulicsSolvers.md"),
-        "two_phase": ("docs/classes/thermalHydraulics/solvers/twoPhase/", "docs/user_guide/thermalHydraulicsSolvers.md"),
-        "compressible_inter_foam": ("docs/classes/openFoamImportedSolvers/compressibleInterFoam/", "docs/user_guide/thermalHydraulicsSolvers.md"),
-        "scalar_transport_foam": ("docs/classes/openFoamImportedSolvers/scalarTransportFoam/", "docs/user_guide/thermalHydraulicsSolvers.md"),
+        "one_phase": ("docs/classes/thermalHydraulics/solvers/onePhase/", "docs/user_guide/thermalHydraulics/thermalHydraulicsSolvers.md"),
+        "two_phase": ("docs/classes/thermalHydraulics/solvers/twoPhase/", "docs/user_guide/thermalHydraulics/thermalHydraulicsSolvers.md"),
+        "compressible_inter_foam": ("docs/classes/openFoamImportedSolvers/compressibleInterFoam/", "docs/user_guide/openfoamImportedSolvers.md"),
+        "scalar_transport_foam": ("docs/classes/openFoamImportedSolvers/scalarTransportFoam/", "docs/user_guide/openfoamImportedSolvers.md"),
         # Thermal-hydraulics sub-scale structures
-        "fixed_power": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedPower/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
-        "fixed_temperature": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperature/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
-        "heated_pin": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/heatedPin/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
-        "lumped_nuclear_structure": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/lumpedNuclearStructure/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
-        "nuclear_fuel_fmu": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
-        "nuclear_fuel_pin": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelPin/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
-        "nuclear_steady_state_pebble": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearSteadyStatePebble/", "docs/user_guide/thermalHydraulicsSubScaleStructures.md"),
+        "fixed_power": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedPower/", "docs/user_guide/thermalHydraulics/thermalHydraulicsSubScaleStructures.md"),
+        "fixed_temperature": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/fixedTemperature/", "docs/user_guide/thermalHydraulics/thermalHydraulicsSubScaleStructures.md"),
+        "heated_pin": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/heatedPin/", "docs/user_guide/thermalHydraulics/thermalHydraulicsSubScaleStructures.md"),
+        "lumped_nuclear_structure": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/lumpedNuclearStructure/", "docs/user_guide/thermalHydraulics/thermalHydraulicsSubScaleStructures.md"),
+        "nuclear_fuel_fmu": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelFMU/", "docs/user_guide/thermalHydraulics/thermalHydraulicsSubScaleStructures.md"),
+        "nuclear_fuel_pin": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearFuelPin/", "docs/user_guide/thermalHydraulics/thermalHydraulicsSubScaleStructures.md"),
+        "nuclear_steady_state_pebble": ("docs/classes/thermalHydraulics/src/phaseModels/structureModels/powerModels/nuclearSteadyStatePebble/", "docs/user_guide/thermalHydraulics/thermalHydraulicsSubScaleStructures.md"),
     }
 
     # Generate dynamic navigation for all sections
@@ -338,7 +338,12 @@ def main():
     #             "traction_displacement_bcs", "implicit_contact_bcs", "fixed_displacement_bcs", "fixed_displacement_zero_shear_bcs"]:
     #     dynamic_navs[key] = indent_navigation(dynamic_navs[key], 3)
     for key in [
-        "one_phase", "two_phase", "compressible_inter_foam", "scalar_transport_foam",
+        "compressible_inter_foam", "scalar_transport_foam",
+    ]:
+        dynamic_navs[key] = indent_navigation(dynamic_navs[key], 0)
+
+    for key in [
+        "one_phase", "two_phase",
         "fixed_power", "fixed_temperature", "heated_pin", "lumped_nuclear_structure", "nuclear_fuel_fmu", "nuclear_fuel_pin", "nuclear_steady_state_pebble"
     ]:
         dynamic_navs[key] = indent_navigation(dynamic_navs[key], 2)
@@ -361,15 +366,16 @@ nav:
 {dynamic_SN_nav}
 {dynamic_point_kinetics_nav}
     - Thermal-hydraulics:
-      - Overview: user_guide/thermalHydraulics.md
+      - user_guide/thermalHydraulics/index.md
+      - Porous medium: user_guide/thermalHydraulics/porousMedium.md
+      - Thermal and Turbulence: user_guide/thermalHydraulics/thermalAndTurbulenceProperties.md
+      - Setting Case: user_guide/thermalHydraulics/settingCase.md
       - Solvers:
-        - Overview: user_guide/thermalHydraulicsSolvers.md
+        - Overview: user_guide/thermalHydraulics/thermalHydraulicsSolvers.md
 {dynamic_one_phase_nav}
 {dynamic_two_phase_nav}
-{dynamic_compressible_inter_foam_nav}
-{dynamic_scalar_transport_foam_nav}
       - Sub-scale structures:
-        - Overview: user_guide/thermalHydraulicsSubScaleStructures.md
+        - Overview: user_guide/thermalHydraulics/thermalHydraulicsSubScaleStructures.md
 {dynamic_fixed_power_nav}
 {dynamic_fixed_temperature_nav}
 {dynamic_heated_pin_nav}
@@ -378,6 +384,10 @@ nav:
 {dynamic_nuclear_fuel_pin_nav}
 {dynamic_nuclear_steady_state_pebble_nav}
     - Thermo-mechanics: user_guide/thermoMechanics.md
+    - OpenFOAM-imported solvers:
+      - Overview: user_guide/openfoamImportedSolvers.md
+{dynamic_compressible_inter_foam_nav}
+{dynamic_scalar_transport_foam_nav}
     - Coupling solvers and time stepping: user_guide/coupling.md
     - FMU: user_guide/fmu.md
     - Pre-processing: user_guide/pre_processing.md
@@ -388,7 +398,6 @@ nav:
   - Tools: tools/index.md
   - Tutorials: tutorials/index.md
   - Developer's Guide: developer_guide/index.md
-  - Publications: publications.md
   - Bibliography: bibliography.md
   - Contributors: contributors.md
 

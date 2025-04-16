@@ -1,5 +1,5 @@
 
-# Coupling and time stepping
+# Coupling and time stepping {#COUPLING}
 
 **Work in progress!!**
 
@@ -77,7 +77,7 @@ functions
 {
     newFieldCreation
     {
-        type			coded; 
+        type			coded;
         libs			("libutilityFunctionObjects.so");
         name			newFieldCreation;
         executeControl	timeStep;
