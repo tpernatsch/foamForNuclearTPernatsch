@@ -35,8 +35,8 @@ forAll(D_, energyI)
                 "D"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
-                isReadWriteXS_ ? IOobject::READ_IF_PRESENT : IOobject::NO_READ,
-                isReadWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
+                IOobject::READ_IF_PRESENT,
+                isWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
             ),
             mesh_,
             dimensionedScalar("", dimensionSet(0,1,0,0,0,0,0), 1.0),
@@ -57,8 +57,8 @@ forAll(nuSigmaEff_, energyI)
                 "nuSigmaEff"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
-                isReadWriteXS_ ? IOobject::READ_IF_PRESENT : IOobject::NO_READ,
-                isReadWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
+                IOobject::READ_IF_PRESENT,
+                isWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
             ),
             mesh_,
             dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
@@ -79,8 +79,8 @@ forAll(sigmaPow_, energyI)
                 "sigmaPow"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
-                isReadWriteXS_ ? IOobject::READ_IF_PRESENT : IOobject::NO_READ,
-                isReadWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
+                IOobject::READ_IF_PRESENT,
+                isWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
             ),
             mesh_,
             dimensionedScalar("", dimensionSet(1,1,-2,0,0,0,0), 1.0),
@@ -101,8 +101,8 @@ forAll(sigmaRemoval_, energyI)
                 "sigmaRemoval"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
-                isReadWriteXS_ ? IOobject::READ_IF_PRESENT : IOobject::NO_READ,
-                isReadWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
+                IOobject::READ_IF_PRESENT,
+                isWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
             ),
             mesh_,
             dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
@@ -128,11 +128,11 @@ if (!isLowMemory_)
                     (
                         IOobject
                         (
-                            "sigmaFromToP"+Foam::name(momentI)+"_"+Foam::name(energyJ)+Foam::name(energyI),
+                            "sigmaFromToP"+Foam::name(momentI)+"_"+Foam::name(energyJ)+"_"+Foam::name(energyI),
                             mesh_.time().timeName(),
                             mesh_,
-                            isReadWriteXS_ ? IOobject::READ_IF_PRESENT : IOobject::NO_READ,
-                            isReadWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
+                            IOobject::READ_IF_PRESENT,
+                            isWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
                         ),
                         mesh_,
                         dimensionedScalar("", dimensionSet(0,-1,0,0,0,0,0), 1.0),
@@ -156,8 +156,8 @@ forAll(chiPrompt_, energyI)
                 "chiPrompt"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
-                IOobject::NO_READ,
-                IOobject::NO_WRITE
+                IOobject::READ_IF_PRESENT,
+                isWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
             ),
             mesh_,
             dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 1.0),
@@ -178,8 +178,8 @@ forAll(chiDelayed_, energyI)
                 "chiDelayed"+Foam::name(energyI),
                 mesh_.time().timeName(),
                 mesh_,
-                IOobject::NO_READ,
-                IOobject::NO_WRITE
+                IOobject::READ_IF_PRESENT,
+                isWriteXS_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
             ),
             mesh_,
             dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 1.0),

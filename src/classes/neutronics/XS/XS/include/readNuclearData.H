@@ -97,8 +97,6 @@ forAll(referenceZones_, zoneI)
 
     // Nuclear data (assumed to be) not affected by feedbacks
     IVList_.set(zoneI, new scalarField("IV", dict, energyGroups_));
-    chiPromptList_.set(zoneI, new scalarField("chiPrompt", dict, energyGroups_));
-    chiDelayedList_.set(zoneI, new scalarField("chiDelayed", dict, energyGroups_));
     discFactorList_.set(zoneI, new scalarField("discFactor", dict, energyGroups_));
     integralFluxList_.set(zoneI, new scalarField("integralFlux", dict, energyGroups_));
     BetaList_.set(zoneI, new scalarField("Beta", dict, precGroups_));
@@ -111,6 +109,8 @@ forAll(referenceZones_, zoneI)
     sigmaPowList_[zoneI].setSize(energyGroups_);
     sigmaRemovalList_[zoneI].setSize(energyGroups_);
     sigmaFromToList_[zoneI].setSize(legendreMoments_);
+    chiPromptList_[zoneI].setSize(energyGroups_);
+    chiDelayedList_[zoneI].setSize(energyGroups_);
 
     forAll(DList_[zoneI], energyI)
     {
@@ -130,6 +130,16 @@ forAll(referenceZones_, zoneI)
             new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_, nxsVariables_)
         );
         sigmaRemovalList_[zoneI].set
+        (
+            energyI,
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_, nxsVariables_)
+        );
+        chiPromptList_[zoneI].set
+        (
+            energyI,
+            new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_, nxsVariables_)
+        );
+        chiDelayedList_[zoneI].set
         (
             energyI,
             new nuclearDataOneEnergy(nameZone, polyharmonicSplineMode_, nxsVariables_)
@@ -252,6 +262,8 @@ forAll(states_, stateI)
         const scalarField nuSigmaEffList("nuSigmaEff", dict, energyGroups_);
         const scalarField sigmaPowList("sigmaPow", dict, energyGroups_);
         const scalarField sigmaRemovalList("sigmaRemoval", dict, energyGroups_);
+        const scalarField chiPromptList("chiPrompt", dict, energyGroups_);
+        const scalarField chiDelayedList("chiDelayed", dict, energyGroups_);
 
 
         // Fill interpolation objects per zones and per energy for all states
@@ -261,40 +273,36 @@ forAll(states_, stateI)
             (
                 DList[energyI],
                 variableValues
-                // {
-                //     TfuelSpectrum, Tclad, Tcool, TstructMech,
-                //     rhoCool, axExp, radExp
-                // }
             );
 
             nuSigmaEffList_[zoneRefI][energyI].addData
             (
                 nuSigmaEffList[energyI],
                 variableValues
-                // {
-                //     TfuelSpectrum, Tclad, Tcool, TstructMech,
-                //     rhoCool, axExp, radExp
-                // }
             );
 
             sigmaPowList_[zoneRefI][energyI].addData
             (
                 sigmaPowList[energyI],
                 variableValues
-                // {
-                //     TfuelSpectrum, Tclad, Tcool, TstructMech,
-                //     rhoCool, axExp, radExp
-                // }
             );
 
             sigmaRemovalList_[zoneRefI][energyI].addData
             (
                 sigmaRemovalList[energyI],
                 variableValues
-                // {
-                //     TfuelSpectrum, Tclad, Tcool, TstructMech,
-                //     rhoCool, axExp, radExp
-                // }
+            );
+
+            chiPromptList_[zoneRefI][energyI].addData
+            (
+                chiPromptList[energyI],
+                variableValues
+            );
+
+            chiDelayedList_[zoneRefI][energyI].addData
+            (
+                chiDelayedList[energyI],
+                variableValues
             );
         }
 

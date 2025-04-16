@@ -241,7 +241,7 @@ forAll(nuSigmaEff_, energyI)
             //     radExp_[cellIglobal]
             // });
 
-            if (!isReadWriteXS_)
+            if (!isReadXS_)
             {
                 forAll(variableValues, varI)
                 {
@@ -274,6 +274,18 @@ forAll(nuSigmaEff_, energyI)
                 );
 
                 sigmaRemoval_[energyI][cellIglobal] = sigmaRemovalList_[zone][energyI].get
+                (
+                    variableValues,
+                    isParametrize
+                );
+
+                chiPrompt_[energyI][cellIglobal] = chiPromptList_[zone][energyI].get
+                (
+                    variableValues,
+                    isParametrize
+                );
+
+                chiDelayed_[energyI][cellIglobal] = chiDelayedList_[zone][energyI].get
                 (
                     variableValues,
                     isParametrize
@@ -317,6 +329,8 @@ forAll(nuSigmaEff_, energyI)
     nuSigmaEff_[energyI].correctBoundaryConditions();
     sigmaPow_[energyI].correctBoundaryConditions();
     sigmaRemoval_[energyI].correctBoundaryConditions();
+    chiPrompt_[energyI].correctBoundaryConditions();
+    chiDelayed_[energyI].correctBoundaryConditions();
     forAll(sigmaFromTo_, momentI)
     {
         forAll(sigmaFromTo_[momentI], energyJ)

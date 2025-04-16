@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 27-janv.-2025 - 09:13:41  
+Regression test of 27-janv.-2025 - 19:56:25  
 OpenFOAM Version: v2412  
 Tutorials successfully completed: 9/9  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()  
 
@@ -8,15 +8,15 @@ Tutorials successfully completed: 9/9  [![regressionTest](https://img.shields.io
 
 | Tutorial | Status | Time | GeN-Foam memory usage [Gb] |
 |:---------|:------:|:-:|:-:|
-| guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .025 < 0.2 |
+| guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .026 < 0.2 |
 | guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .025 < 0.2 |
-| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:07 | .085 < 0.2 |
-| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:10 | .081 < 0.2 |
+| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:06 | .086 < 0.2 |
+| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:11 | .081 < 0.2 |
 | featureCases/2D_cavityBoussinesq | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:32 | .082 < 0.2 |
 | featureCases/2D_externalSourceDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:08 | .083 < 0.2 |
 | featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:08 | .085 < 0.2 |
 | featureCases/2D_onePhaseAndPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:29 | .084 < 0.2 |
-| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:43 | .085 < 0.2 |
+| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:42 | .085 < 0.2 |
 
 --------------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ All tests passed
 
 Time = 00:00:01
 
-Memory = .025 Gb (Passed, expected: 0.2 Gb)
+Memory = .026 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -71,9 +71,9 @@ Done running tutorial 1D_HX onePhase ...
 1D_HX onePhase has converged 
 
 
-Time = 00:00:07
+Time = 00:00:06
 
-Memory = .085 Gb (Passed, expected: 0.2 Gb)
+Memory = .086 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -91,7 +91,7 @@ Perfect match:
 |:-------------|:---------:|:--------:|
 | alpha vapour | 0.133727 | 0.131886 |
 
-Time = 00:00:10
+Time = 00:00:11
 
 Memory = .081 Gb (Passed, expected: 0.2 Gb)
 
@@ -194,6 +194,6 @@ Perfect match:
 |:------|:---------:|:--------:|
 | Power | 415251000 | 415258000 |
 
-Time = 00:00:43
+Time = 00:00:42
 
 Memory = .085 Gb (Passed, expected: 0.2 Gb)

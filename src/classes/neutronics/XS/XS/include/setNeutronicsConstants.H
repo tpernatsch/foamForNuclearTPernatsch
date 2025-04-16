@@ -33,8 +33,8 @@ forAll(nuSigmaEff_, energyI)
 
                 // Constant
                 IV_[energyI][cellIglobal] = IVList_[zone][energyI];
-                chiPrompt_[energyI][cellIglobal] = chiPromptList_[zone][energyI];
-                chiDelayed_[energyI][cellIglobal] = chiDelayedList_[zone][energyI];
+                // chiPrompt_[energyI][cellIglobal] = chiPromptList_[zone][energyI];
+                // chiDelayed_[energyI][cellIglobal] = chiDelayedList_[zone][energyI];
                 BetaTot_[cellIglobal] = BetaTotList_[zone];
 
                 fuelFraction_[cellIglobal] = fuelFractionList_[zone];
@@ -46,6 +46,8 @@ forAll(nuSigmaEff_, energyI)
                 nuSigmaEff_[energyI][cellIglobal] = nuSigmaEffList_[zone][energyI].getRef();
                 sigmaPow_[energyI][cellIglobal] = sigmaPowList_[zone][energyI].getRef();
                 sigmaRemoval_[energyI][cellIglobal] = sigmaRemovalList_[zone][energyI].getRef();
+                chiPrompt_[energyI][cellIglobal] = chiPromptList_[zone][energyI].getRef();
+                chiDelayed_[energyI][cellIglobal] = chiDelayedList_[zone][energyI].getRef();
 
                 forAll(sigmaFromTo_, momentI)
                 {
@@ -61,8 +63,6 @@ forAll(nuSigmaEff_, energyI)
 
     // Correct boundary conditions
     IV_[energyI].correctBoundaryConditions();
-    chiPrompt_[energyI].correctBoundaryConditions();
-    chiDelayed_[energyI].correctBoundaryConditions();
     BetaTot_.correctBoundaryConditions();
     fuelFraction_.correctBoundaryConditions();
     secondaryPowerVolumeFraction_.correctBoundaryConditions();

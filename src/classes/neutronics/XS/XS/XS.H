@@ -221,9 +221,11 @@ protected:
             //- Nuclear data dictionary
             IOdictionary nuclearData_;
 
-            //- Flag to read and write variable XS fields. Be careful, can be
-            // intensive
-            bool isReadWriteXS_;
+            //- Flag to read variable XS fields. Be careful, can be intensive
+            bool isReadXS_;
+
+            //- Flag to write variable XS fields. Be careful, can be intensive
+            bool isWriteXS_;
 
             //- Flag for low memory consumption when creating XS field
             bool isLowMemory_;
@@ -393,10 +395,10 @@ protected:
             PtrList<scalarField> IVList_;
 
             //- Constant prompt fission emission spectrum data (zoneI -> energyI -> chi_p)
-            PtrList<scalarField> chiPromptList_;
+            List<PtrList<nuclearDataOneEnergy>> chiPromptList_;
 
             //- Constant delayed neutron emission spectrum data (zoneI -> energyI -> chi_d)
-            PtrList<scalarField> chiDelayedList_;
+            List<PtrList<nuclearDataOneEnergy>> chiDelayedList_;
 
             //- Constant delayed neutron fraction data (zoneI -> precursorK -> beta)
             PtrList<scalarField> BetaList_;
