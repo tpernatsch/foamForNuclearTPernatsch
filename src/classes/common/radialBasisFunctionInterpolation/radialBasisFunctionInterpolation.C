@@ -261,8 +261,6 @@ scalarList solvePolyharmonicSpline
         LUscalarMatrix Atemp(A);
 
         Atemp.inv(invRBFmatrix);
-
-        // solve(w, A, vListTemp);
     }
 
     scalarList vListTemp(vList);
@@ -294,9 +292,9 @@ scalar polyharmonicSpline
     scalar rSquare(0);
     forAll(xList, i)
     {
-        rSquare = sqr(x-xList[i])
-                + sqr(y-yList[i])
-                + sqr(z-zList[i]);
+        rSquare = sqr(x - xList[i])
+                + sqr(y - yList[i])
+                + sqr(z - zList[i]);
         res += w[i] * polyharmonicSplineFunction(rSquare, mode);
     }
     res += w[nx] + w[nx+1]*x + w[nx+2]*y + w[nx+3]*z;
@@ -317,7 +315,7 @@ scalar polyharmonicSpline
     scalar rSquare(0);
     forAll(xList.first(), dataI)
     {
-        rSquare = 0;
+        rSquare = 0.0;
         forAll(xInput, paramI)
         {
             rSquare += sqr(xInput[paramI] - xList[paramI][dataI]);
@@ -472,7 +470,8 @@ scalarList solvePolyharmonicSplineIntegral
     const scalar totalIntegral,
     const labelList& regionCells,
     const fvMesh& mesh,
-    SquareMatrix<scalar>& invRBFmatrix
+    SquareMatrix<scalar>& invRBFmatrix,
+    const label mode
 )
 {
     const label nx(xList.size());
@@ -488,62 +487,40 @@ scalarList solvePolyharmonicSplineIntegral
         // const labelList& regionCells(structure_.cellLists()[region]);
         const scalarList& V(mesh.V());
 
-        scalar r2(0);
+        scalar rSquare(0);
         forAll(xList, i)
         {
             forAll(xList, j)
             {
                 if (i != j)
                 {
-                    r2 = sqr(xList[i]-xList[j])
-                        + sqr(yList[i]-yList[j])
-                        + sqr(zList[i]-zList[j]);
-                    A[i][j] = r2 * log(sqrt(r2));
+                    rSquare = sqr(xList[i] - xList[j])
+                            + sqr(yList[i] - yList[j])
+                            + sqr(zList[i] - zList[j]);
+                    A[i][j] = polyharmonicSplineFunction(rSquare, mode);
                 }
                 else
                 {
-                    A[i][j] = 0;
+                    A[i][j] = 0.0;
                 }
             }
             // Polynomial correction
-            A[i][nx] = 1;
-            // A[i][nx+1] = xList[i];
-            // A[i][nx+2] = yList[i];
-            // A[i][nx+3] = zList[i];
-            // A[i][nx+1] = zList[i];
-            // A[nx][i] = 1;
-            // A[nx+1][i] = xList[i];
-            // A[nx+2][i] = yList[i];
-            // A[nx+3][i] = zList[i];
-            // A[nx+1][i] = zList[i];
+            A[i][nx] = 1.0;
 
-            scalar totalVolume(0), totalPhi(0);
+            scalar totalPhi(0), totalVolume(0);
             forAll(regionCells, celli)
             {
-                const scalar xCell(mesh.C().internalField()[celli].x());
-                const scalar yCell(mesh.C().internalField()[celli].y());
-                const scalar zCell(mesh.C().internalField()[celli].z());
-                const scalar xPos(xCell-xList[i]);
-                const scalar yPos(yCell-yList[i]);
-                const scalar zPos(zCell-zList[i]);
-                // label cellNumber = mesh.findCell(point(xPos, yPos, zPos));
-                // totalPower += //alpha_[celli]
-                //     /***/ fractionOfPowerFromNeutronics_[regioni]
-                //     * structure_.powerDensityNeutronics()[celli]
-                //     * V[celli];
-                totalVolume += V[celli];
-                const scalar rsqr(sqr(xPos)+sqr(yPos)+sqr(zPos));
-                // totalPhi += (rsqr * log(sqrt(rsqr))) * V[cellNumber];
-                totalPhi += (rsqr * log(sqrt(rsqr))) * V[celli];
-            }
+                rSquare = sqr(mesh.C().internalField()[celli].x() - xList[i])
+                        + sqr(mesh.C().internalField()[celli].y() - yList[i])
+                        + sqr(mesh.C().internalField()[celli].z() - zList[i]);
 
-            // Info<< totalPhi << " " << totalVolume << endl;
+                totalPhi += polyharmonicSplineFunction(rSquare, mode) * V[celli];
+                totalVolume += V[celli];
+            }
 
             A[nx][i] = totalPhi;
             A[nx][nx] = totalVolume;
         }
-
-        // solve(w, A, vListTemp);
 
         // Inverse the matrix once and store it for later iterations
         LUscalarMatrix Atemp(A);
@@ -568,20 +545,20 @@ scalar polyharmonicSplineIntegral
     const scalarList zList,
     const scalar x,
     const scalar y,
-    const scalar z
+    const scalar z,
+    const label mode
 )
 {
     const label nx(xList.size());
-    scalar res(0);
-    scalar r2(0);
+    scalar res(w[nx]);
+    scalar rSquare(0);
     forAll(xList, i)
     {
-        r2 = sqr(x-xList[i])
-            + sqr(y-yList[i])
-            + sqr(z-zList[i]);
-        res += w[i] * r2 * log(sqrt(r2));
+        rSquare = sqr(x - xList[i])
+                + sqr(y - yList[i])
+                + sqr(z - zList[i]);
+        res += w[i] * polyharmonicSplineFunction(rSquare, mode);
     }
-    res += w[nx];
     return(res);
 }
 

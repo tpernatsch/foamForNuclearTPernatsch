@@ -256,8 +256,14 @@ protected:
     //- Field representing the average surface temperature of the structure
     volScalarField Tsurface_;
 
+    //-
+    volScalarField interpolationCorrectFactor_;
+
     //- Heat flux FMI input flag
     List<bool> isHeatFluxInput_;
+
+    //- rhocpdTdt FMI input flag
+    List<bool> isRhoCpdTdtInput_;
 
     //- Fraction of power from neutronics that goes to this powerModel
     //  This takes into account for instance cases where some of the
@@ -267,8 +273,36 @@ protected:
     //- Volume fraction of fuel
     scalarList fuelFraction_;
 
-    //- If true, update avg TFuel and avg TClad fields for neutronics coupling
+    //- If true, update avg TFuel field for neutronics coupling
     List<bool> isFuelTemperatureFieldFromFMU_;
+
+    //- If true, update avg TClad field for neutronics coupling
+    List<bool> isCladTemperatureFieldFromFMU_;
+
+    //-
+    scalarList relaxationFactorTfluid_;
+
+    //-
+    scalarList relaxationFactorTstruct_;
+
+    //-
+    scalarList relaxationFactorProfilePowerDensity_;
+
+    //-
+    scalarList relaxationFactorHtc_;
+
+    //- RegionI -> nameI -> locI
+    List<List<List<scalar>>> oldTfluid_;
+
+    //-
+    List<List<List<scalar>>> oldTstruct_;
+
+    //-
+    List<List<List<scalar>>> oldProfilePowerDensity_;
+
+    //-
+    List<List<List<scalar>>> oldHtc_;
+
 
     //- X-position of sampling lines
     scalarListList xPos_;
@@ -283,7 +317,7 @@ protected:
     List<scalar> fuelLength_;
 
     //- Axial location interpolation method
-    List<interpolateTableBaseGF::interpolationMethod> zMethod_;
+    List<InterpolateTableBaseGF::interpolationMethod> zMethod_;
 
     //- Radial basis function method name (polyharmonicSpline, gaussian)
     List<word> radialBasisFunctionMethod_;
@@ -348,6 +382,9 @@ protected:
 
     //- Inverse matrix of the Radial Basis Function operator for each cellZone
     List<SquareMatrix<scalar>> invRBFmatrix_;
+
+    //- Inverse matrix of the Radial Basis Function operator for each cellZone
+    // List<SquareMatrix<scalar>> invRBFintegralMatrix_;
 
     //- Inverse matrix of the Radial Basis Function operator for each cellZone
     List<SquareMatrix<scalar>> invRBFmatrixFuel_;

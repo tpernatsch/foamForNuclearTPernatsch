@@ -172,7 +172,8 @@ scalarList solvePolyharmonicSplineIntegral
     const scalar totalIntegral,
     const labelList& regionCells,
     const fvMesh& mesh,
-    SquareMatrix<scalar>& invRBFmatrix
+    SquareMatrix<scalar>& invRBFmatrix,
+    const label mode = 2
 );
 
 //- Experimental RBF imposing an integral under the interpolation field
@@ -184,7 +185,8 @@ scalar polyharmonicSplineIntegral
     const scalarList zList,
     const scalar x,
     const scalar y,
-    const scalar z
+    const scalar z,
+    const label mode = 2
 );
 
 
