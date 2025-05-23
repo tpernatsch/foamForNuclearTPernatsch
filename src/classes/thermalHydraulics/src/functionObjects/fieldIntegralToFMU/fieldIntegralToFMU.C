@@ -37,7 +37,7 @@ License
 
 \*---------------------------------------------------------------------------*/
 #if defined __has_include
-#  if __has_include(<commDataLayer.H>) 
+#  if __has_include(<commDataLayer.H>)
 #    include <commDataLayer.H>
 #    define isCommDataLayerIncluded
 #  endif
@@ -97,7 +97,7 @@ Foam::externalIOObject::fieldIntegralToFMU::fieldIntegralToFMU
         )
     ),
     cellZone_(dict.get<word>("cellZone")),
-    nameFMU_(dict.get<word>("nameFMU")),    
+    nameFMU_(dict.get<word>("nameFMU")),
     fieldPtr_(nullptr)
 {
     read(dict);
@@ -112,17 +112,17 @@ bool Foam::externalIOObject::fieldIntegralToFMU::read(const dictionary& dict)
 {
     commDataLayer& data = commDataLayer::New(time_);
 
-    data.storeObj(0.0,nameFMU_,commDataLayer::causality::out);
-    
+    data.storeObj(0.0, nameFMU_, commDataLayer::causality::out);
+
     return false;
 }
 
 bool Foam::externalIOObject::fieldIntegralToFMU::execute()
 {
     commDataLayer& data = commDataLayer::New(time_);
-    
+
     scalar& result = data.getObj<scalar>(
-        nameFMU_, 
+        nameFMU_,
         commDataLayer::causality::out
     );
 
@@ -142,7 +142,7 @@ bool Foam::externalIOObject::fieldIntegralToFMU::execute()
 }
 
 bool Foam::externalIOObject::fieldIntegralToFMU::write()
-{ 
+{
     return false;
 }
 
