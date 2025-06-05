@@ -36,32 +36,32 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::multiPhysicsSolver
+    Foam::picardLoopNoFluid
 
 Description
     This class creates a multiphysics tightly coupled loop, made of an arbitrary
     number of physics. The class member-functions are inherited from solver.H
     and are the same as those of the other solvers. Each member function consists
     of a loop where the same member function is called iteratively for all the
-    solvers included in the multiPhysicsSolver. Note that another multiphysicsSolver
-    can be created within a multiphysicsSolver, hence creating a hierarchical
+    solvers included in the picardLoopNoFluid. Note that another picardLoopNoFluid
+    can be created within a picardLoopNoFluid, hence creating a hierarchical
     structure which might be helpful for multi-scale problems.
 
 Usage
-    In multiRegionCouplingDict, the multiPhysicsSolvers subDict is used to create a
-    multiPhysicsSolver
+    In multiRegionCouplingDict, the picardLoopNoFluids subDict is used to create a
+    picardLoopNoFluid
 
     \verbatim
-        multiPhysicsSolvers
+        picardLoopNoFluids
         {
-            multiPhysicsSolver1 //multiPhysicsSolverName
+            picardLoopNoFluid1 //picardLoopNoFluidName
             {
                 solvers // list of solvers
                 {
                     regionName              solverName;
                     fluidRegion             onePhase;
                     neutroRegion            diffusionNeutronics;
-                    multiPhysicsSolver2     multiPhysicsSolver;
+                    picardLoopNoFluid2     picardLoopNoFluid;
                 }
                 minResidual 0.00005;   // residual after which the iteration is ended
                 maxIterations 3;       // maximum number of iterations before the loop is ended
@@ -69,7 +69,7 @@ Usage
             }
         }
 
-        multiPhysicsSolver2
+        picardLoopNoFluid2
         {
             ...
         }
@@ -81,70 +81,54 @@ Usage
     fluid-mechanics iterations are solved.
 
 SourceFiles
-    multiPhysicsSolver.C
-
-
-
-
-
+    picardLoopNoFluid.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef thermoMechanics_H
-#define thermoMechanics_H
+#ifndef picardLoopNoFluid_H
+#define picardLoopNoFluid_H
 
 #include "volFields.H"
-#include "runTimeSelectionTables.H"
 #include "fvCFD.H"
-#include "solver.H"
 #include "meshHandler.H"
 #include "dynamicFvMesh.H"
+#include "volPointInterpolation.H"
+#include "solver.H"
+#include "loop.H"
+#include "addToRunTimeSelectionTable.H"
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+
 namespace Foam
 {
-
 namespace solvers
 {
 
 /*---------------------------------------------------------------------------*\
-                          Class multiPhysicsSolver Declaration
+                          Class picardLoopNoFluid Declaration
 \*---------------------------------------------------------------------------*/
 
-class multiPhysicsSolver
+class picardLoopNoFluid
 :
-    public solver,
-    public IOdictionary
+    public loop
 {
 
 protected:
 
     // Protected data
 
-        //- Reference to mesh
-        PtrList<solver> solvers_;
-
         //-
-        meshHandler* meshHandler_;
 
-        //-
-        dictionary multiPhysicsDict_;
+        dictionary multiPhysicsDict_; 
+        dictionary loopProperties_;
 
-        //-
-        wordList solverNames_;
-
-        //-
-        wordList singlePhysicsSolverNames_;
-
-        //-
         scalar minResidual_;
-
-        //-
         label maxIterations_;
+        scalar couplingStartTime_;
 
-        //-
-        List<bool> correctOnlyEnergy_;
+
 
 
 private:
@@ -152,75 +136,43 @@ private:
     // Private Member Functions
 
         //- Disallow default bitwise copy construct
-        multiPhysicsSolver(const multiPhysicsSolver&);
+        picardLoopNoFluid(const picardLoopNoFluid&);
 
         //- Disallow default bitwise assignment
-        void operator=(const multiPhysicsSolver&);
+        void operator=(const picardLoopNoFluid&);
 
 
 public:
 
     //- Runtime type information
-    TypeName("multiPhysicsSolver")
+    TypeName("picardLoopNoFluid")
 
-// #ifndef SWIG
-//         declareRunTimeSelectionTable
-//         (
-//             autoPtr,
-//             multiPhysicsSolver,
-//             dictionary,
-//             (
-//                 fvMesh& mesh,
-//                 bool multiRegion
-//             ),
-//             (mesh)
-//         );
-// #endif
 
     // Constructors
 
         //- Construct from mesh
-        multiPhysicsSolver(dynamicFvMesh& mesh);
+        picardLoopNoFluid(dynamicFvMesh& mesh);
+
+    // Selectors
 
 
     //- Destructor
-    	virtual ~multiPhysicsSolver(){}
+    	virtual ~picardLoopNoFluid(){}
 
 
     // Member Functions
 
-        //- Needed to remove abstractedness from IOdictionary
-        virtual bool writeData(Ostream& os) const
-        {
-            return os.good();
-        }
-
         //- Access
 
-        virtual void correctBaffleLessFields();
-
-        virtual void deformMesh();
-
+        virtual void createSolvers(word name);
         virtual void correctPhysics();
-        virtual void correctTightlyCoupledPhysics();
-
-        virtual scalar maxDeltaT();
-
-        virtual scalar getResidual();
-
-        virtual void getMapper(meshHandler& mapper)
-        {
-            meshHandler_ =&mapper;
-        };
-
-        void createSolvers(word name);
 
 };
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-} // End namespace solvers
 } // End namespace Foam
+}
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

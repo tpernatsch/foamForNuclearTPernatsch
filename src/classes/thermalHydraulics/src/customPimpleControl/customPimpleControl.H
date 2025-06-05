@@ -211,6 +211,9 @@ public:
 
             //- Pressure corrector loop control with interrupt control
             inline bool correct(bool interrupt);
+
+            //- Return true for first PIMPLE (outer) iteration
+            inline bool firstIter() const;
 };
 
 

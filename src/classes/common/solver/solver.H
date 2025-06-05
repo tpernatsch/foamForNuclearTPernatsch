@@ -213,6 +213,11 @@ public:
 
         virtual void deformMesh()=0;
 
+        word regionName()
+        {
+            return mesh_.name();
+        }
+
 
     // Member Operators
 

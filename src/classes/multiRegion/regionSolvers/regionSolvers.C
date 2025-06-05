@@ -43,7 +43,7 @@ License
 #include "interpolationCellPoint.H"
 #include "radialBasisFunctionInterpolation.H"
 #include "mergeOrSplitBaffles.H"
-#include "multiPhysicsSolver.H"
+#include "loop.H"
 
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
@@ -52,6 +52,7 @@ Foam::regionSolvers::regionSolvers(const Time& runTime)
 :
     meshHandler_(runTime)
 {
+
     List<Pair<word>> regionSolverNames;
 
     //Read mapping dict. Will be used later
@@ -59,7 +60,7 @@ Foam::regionSolvers::regionSolvers(const Time& runTime)
     (
         IOobject
         (
-            "multiRegionCouplingDict",
+            "regionsDict",
             runTime.time().constant(),
             runTime.db(),
             IOobject::MUST_READ,
@@ -80,10 +81,10 @@ Foam::regionSolvers::regionSolvers(const Time& runTime)
     );
 
 
-    if (controlDict.found("regionSolvers"))
+    if (multiRegionCouplingDict.found("regionSolvers"))
     {
         const dictionary& regionSolversDict =
-            controlDict.subDict("regionSolvers");
+            multiRegionCouplingDict.subDict("regionSolvers").subDict("Level_0");
 
         forAllConstIter(dictionary, regionSolversDict, iter)
         {
@@ -95,9 +96,9 @@ Foam::regionSolvers::regionSolvers(const Time& runTime)
     }
     else //no backward compatibility for now
     {
-        FatalIOErrorInFunction(runTime.controlDict())
+        FatalIOErrorInFunction(runTime.constant())
                         << "regionSolvers list missing from "
-                        << runTime.controlDict().name()
+                        << multiRegionCouplingDict.name()
                         << exit(FatalIOError);
     }
 
@@ -114,17 +115,19 @@ Foam::regionSolvers::regionSolvers(const Time& runTime)
 
         Info << "Creating solver for region "<< regionName<<nl<<endl;
 
-        if (solverName != "multiPhysicsSolver")
+        static const HashSet<word> loopTypes = { "PicardLoop", "PicardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
+
+        word meshToUse = loopTypes.found(solverName) ? "dummy" : regionName;
+
+        solvers_.set(i, solver::New(solverName, meshHandler_.returnMesh(meshToUse)));
+        
+        if (Foam::isA<Foam::solvers::loop>(solvers_[i]))
         {
-            solvers_.set(i, solver::New(solverName, meshHandler_.returnMesh(regionName)));
-        }
-        else
-        {
-            solvers_.set(i, solver::New(solverName, meshHandler_.returnMesh("dummy")));
-            Foam::solvers::multiPhysicsSolver* multiPhysicsSolverPtr = dynamic_cast<Foam::solvers::multiPhysicsSolver*>(&solvers_[i]);
-            multiPhysicsSolverPtr->getMapper(meshHandler_);
-            multiPhysicsSolverPtr->createSolvers(regionName);
-            multiPhysicsSolverPtr = nullptr;
+            Foam::solvers::loop& loopRef =
+                Foam::refCast<Foam::solvers::loop>(solvers_[i]);
+
+            loopRef.getMapper(meshHandler_);
+            loopRef.createSolvers(regionName);
         }
 
         prefixes_[i] = regionName;
@@ -180,7 +183,7 @@ void Foam::regionSolvers::resetPrefix() const
 //     (
 //         IOobject
 //         (
-//             "multiRegionCouplingDict",
+//             ,
 //             runTime.time().constant(),
 //             runTime.db(),
 //             IOobject::MUST_READ,

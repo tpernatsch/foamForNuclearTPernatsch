@@ -57,7 +57,7 @@ Foam::meshHandler::meshHandler(const Time& runTime)
     (
         IOobject
         (
-            "multiRegionCouplingDict",
+            "regionsDict",
             runTime.time().constant(),
             runTime.db(),
             IOobject::MUST_READ,
@@ -81,42 +81,106 @@ Foam::meshHandler::meshHandler(const Time& runTime)
 
     // First create all the meshes -> they are created and handled by meshHandler
 
-    wordList allRegions(controlDict.subDict("regionSolvers").toc());
+    wordList allRegions(multiRegionCouplingDict.subDict("regionSolvers").subDict("Level_0").toc());
     wordList meshNames(0);
+
+    wordList availableSolvers =
+    (
+        Foam::solver::dynamicFvMeshConstructorTablePtr_->toc()
+    );   
+
+    static const HashSet<word> loopTypes = { "PicardLoop", "PicardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
 
     forAll(allRegions, regioni)
     {
-        word solverName(controlDict.subDict("regionSolvers").get<word>(allRegions[regioni]));
-        if (solverName != "multiPhysicsSolver")
+        word solverName(multiRegionCouplingDict.subDict("regionSolvers").subDict("Level_0").get<word>(allRegions[regioni]));
+        if (!(loopTypes.found(solverName)))
         {
-            meshNames.append(allRegions[regioni]);
+            if(availableSolvers.found(solverName))
+            {
+                meshNames.append(allRegions[regioni]);
+            }
+            else
+            {
+                FatalErrorInFunction <<
+                "Solver " << solverName <<
+                " does not exist. Possible solvers are" <<
+                Foam::solver::dynamicFvMeshConstructorTablePtr_->toc()
+                <<endl<<exit(FatalError);
+            }
         }
     }
 
     // If multiPhysicsSolvers are present, also add those extra solvers
 
-    if (multiRegionCouplingDict.found("multiPhysicsSolvers"))
+    forAll(multiRegionCouplingDict.subDict("regionSolvers").toc(), MPsolvI) // loop over all multiphysics solvers
     {
-        forAll(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc(), MPsolvI) // loop over all multiphysics solvers
+        if(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI] != "Level_0")
         {
             wordList subSolvers // get list of solvers belonging to multiphysics solver i
             (
                 multiRegionCouplingDict
-                    .subDict("multiPhysicsSolvers")
-                    .subDict(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc()[MPsolvI])
-                    .subDict("solvers").toc()
+                    .subDict("regionSolvers")
+                    .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                    .subDict("subSolvers").toc()
             );
-
-            forAll(subSolvers, solvI) // loop ovcer subsolvers and add them to list of meshes to create only if they are not sub-multiphysicssolvers
+    
+            forAll(subSolvers, solvI) // loop over subsolvers and add them to list of meshes to create only if they are not sub-multiphysicssolvers
             {
-                if (multiRegionCouplingDict
-                    .subDict("multiPhysicsSolvers")
-                    .subDict(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc()[MPsolvI])
-                    .subDict("solvers")
-                    .get<word>(subSolvers[solvI]) != "multiPhysicsSolver"
+                if (!(loopTypes.found(multiRegionCouplingDict
+                    .subDict("regionSolvers")
+                    .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                    .subDict("subSolvers")
+                    .get<word>(subSolvers[solvI])))
                 )
                 {
                     meshNames.append(subSolvers[solvI]);
+
+
+                    // Check if the solver is a multiScaleLoop
+
+                    if(multiRegionCouplingDict
+                       .subDict("regionSolvers")
+                       .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                       .found("multiScaleLoopCoeffs")
+                    )
+                    {
+                        dictionary mSLCDict = 
+                        (
+                            multiRegionCouplingDict
+                            .subDict("regionSolvers")
+                            .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                            .subDict("multiScaleLoopCoeffs")
+                        );
+
+                        vectorList locations = mSLCDict.get<vectorList>("locations");
+
+                        word regionToReplicate = mSLCDict.get<word>("regionToReplicate");
+
+                        forAll(locations, locI)
+                        {
+                            meshNames.append(regionToReplicate + Foam::name(locI));
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    word solverIName(multiRegionCouplingDict
+                    .subDict("regionSolvers")
+                    .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                    .subDict("subSolvers")
+                    .get<word>(subSolvers[solvI]));
+
+                    if(!(availableSolvers.found(solverIName)))
+                    {
+                        FatalErrorInFunction <<
+                        "Solver " << solverIName <<
+                        " does not exist. Possible solvers are" <<
+                        Foam::solver::dynamicFvMeshConstructorTablePtr_->toc()
+                        <<endl<<exit(FatalError);
+                    }
                 }
             }
         }
@@ -540,7 +604,7 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
     (
         IOobject
         (
-            "multiRegionCouplingDict",
+            "regionsDict",
             runTime.time().constant(),
             runTime.db(),
             IOobject::MUST_READ,
@@ -670,7 +734,7 @@ void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
     (
         IOobject
         (
-            "multiRegionCouplingDict",
+            "regionsDict",
             runTime.time().constant(),
             runTime.db(),
             IOobject::MUST_READ,

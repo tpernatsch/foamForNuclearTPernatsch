@@ -37,9 +37,9 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "thermalHydraulicsModel.H"
+#include "rhoPimpleFoam.H"
+#include "addToRunTimeSelectionTable.H"
 #include "regimeMapModel.H"
-#include "mergeOrSplitBaffles.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
 
@@ -47,295 +47,287 @@ namespace Foam
 {
 namespace solvers
 {
-    defineTypeNameAndDebug(thermalHydraulicsModel, 0);
-    // defineRunTimeSelectionTable(thermalHydraulicsModel, thermalHydraulicsModels);
+    defineTypeNameAndDebug(rhoPimpleFoam, 0);
+    addToRunTimeSelectionTable
+    (
+        solver,
+        rhoPimpleFoam,
+        dynamicFvMesh
+    );
 }
 }
 
-const Foam::Enum
-<
-    Foam::solvers::thermalHydraulicsModel::momentumMode
->
-Foam::solvers::thermalHydraulicsModel::momentumModeNames_
-(
-    {
-        {
-            momentumMode::cellCentered,
-            "cellCentered"
-        },
-        {
-            momentumMode::cellCenteredFaceReconstruction,
-            "cellCenteredFaceReconstruction"
-        },
-        {
-            momentumMode::faceCentered,
-            "faceCentered"
-        }
-    }
-);
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
+Foam::solvers::rhoPimpleFoam::rhoPimpleFoam
 (
-    const Time& time,
-    dynamicFvMesh& mesh,
-    fv::options& fvOptions
+    dynamicFvMesh& mesh_
 )
 :
-    solver(mesh),
-    IOdictionary
+    solver(mesh_),
+    mesh_(mesh_),
+    pimple_(mesh_),
+    pThermo_(fluidThermo::New(mesh_)),
+    thermo_(pThermo_()),
+    p_(thermo_.p()),
+    rho_
     (
         IOobject
         (
-            "phaseProperties",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ_IF_MODIFIED,
-            IOobject::NO_WRITE
-        )
+            "rho",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::READ_IF_PRESENT,
+            IOobject::AUTO_WRITE
+        ),
+        thermo_.rho()
     ),
-    runTime_(time),
-    mesh_(mesh),
-    pimple_(mesh),
-    fvOptions_(fvOptions),
+    U_
+    (
+        IOobject
+        (
+            "U",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_
+    ),
     phi_
     (
         IOobject
         (
             "phi",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::NO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimVol/dimTime, 0.0)
-    ),
-    g_
-    (
-        IOobject
-        (
-            "g",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    hRef_
-    (
-        IOobject
-        (
-            "hRef",
-            mesh.time().constant(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::NO_WRITE
-        ),
-        dimensionedScalar("hRef", dimLength, 0)
-    ),
-    gh_
-    (
-        "gh",
-        (g_ & mesh.C()) + mag(g_)*hRef_
-    ),
-    ghf_
-    (
-        "ghf",
-        (g_ & mesh.Cf()) + mag(g_)*hRef_
-    ),
-    p_rgh_
-    (
-        IOobject
-        (
-            "p_rgh",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh
-    ),
-    p_
-    (
-        IOobject
-        (
-            "p",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        p_rgh_
-    ),
-    stressTensor_
-    (
-        IOobject
-        (
-            "stressTensor",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedSymmTensor("", dimPressure, symmTensor::zero)
-    ),
-    kappaEff_
-    (
-        IOobject
-        (
-            "kappaEff",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimPower/dimTemperature/dimLength, 0)
-    ),
-    pMin_
-    (
-        "pMin",
-        p_.dimensions(),
-        *this
-    ),
-    pRefCell_
-    (
-        this->lookupOrDefault("pRefCell", 0)
-    ),
-    pRefValue_
-    (
-        this->lookupOrDefault("pRefValue", 0)
-    ),
-    forcePRef_
-    (
-        this->lookupOrDefault<bool>("forcePRef", false)
-    ),
-    initialFluidMass_("initialFluidMass", dimMass, 0),
-    momentumMode_
-    (
-        momentumModeNames_.get
-        (
-            pimple_.dict().lookupOrDefault<word>
-            (
-                "momentumMode",
-                "cellCentered"
-            )
-        )
-    ),
-    porousInterfaceSharpness_
-    (
-        pimple_.dict().lookupOrDefault<scalar>
-        (
-            "porousInterfaceSharpness",
-            0.0
-        )
-    ),
-    powerDensityNeutronics_
-    (
-        IOobject
-        (
-            "powerDensityNeutronics",
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,
             IOobject::AUTO_WRITE
         ),
-        mesh_,
-        dimensionedScalar("", dimPower/dimVol, 0.0),
-        zeroGradientFvPatchScalarField::typeName
+        linearInterpolate(rho_*U_) & mesh_.Sf()
     ),
-    powerDensityNeutronicsToLiquid_
+    pressureControl_(p_, rho_, pimple_.dict(), false),
+    turbulence_
+    (
+        compressible::turbulenceModel::New
+        (
+            rho_,
+            U_,
+            phi_,
+            thermo_
+        )
+    ),
+    dpdt_
     (
         IOobject
         (
-            "powerDensityNeutronicsToLiquid",
+            "dpdt",
             mesh_.time().timeName(),
             mesh_,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
+            mesh_.dynamic() ?
+                IOobject::READ_IF_PRESENT :
+                IOobject::NO_READ,
+            mesh_.dynamic() ?
+                IOobject::AUTO_WRITE :
+                IOobject::NO_WRITE
         ),
-        mesh_,
-        dimensionedScalar("", dimPower/dimVol, 0.0),
-        zeroGradientFvPatchScalarField::typeName
+        fvc::ddt(p_)
     ),
+    K_("K", 0.5*magSqr(U_)),
+    MRF_(mesh_),
+    rhoMax_("rhoMax", dimDensity, GREAT, pimple_.dict()),
+    rhoMin_("rhoMin", dimDensity, Zero, pimple_.dict()),
+    fvOptions_(fv::options::New(mesh_)),
+    correctPhi_(pimple_.dict().getOrDefault<bool>("correctPhi", false)),
+    moveMeshOuterCorrectors_(pimple_.dict().getOrDefault<bool>("moveMeshOuterCorrectors_", false)),
+    checkMeshCourantNo_(pimple_.dict().getOrDefault<bool>("checkMeshCourantNo", false)),
+    rhoUf_(nullptr),
+    residual_(0),
+    cumulativeContErr_(0),
     originalPoints_(mesh_.points())
 {
-    -
-    setRefCell
-    (
-        p_,
-        p_rgh_,
-        *this,
-        pRefCell_,
-        pRefValue_,
-        forcePRef_
-    );
-    mesh.setFluxRequired(p_rgh_.name());
 
-    //- Construct regime maps, if any
-    if (this->found("regimeMapModels"))
+    if(mesh_.dynamic())
     {
-        const dictionary& regimeMapModelsDict
+        Info<< "Constructing face momentum rhoUf_" << endl;
+ 
+        rhoUf_.reset
         (
-            this->subDict("regimeMapModels")
-        );
-        wordList regimeMapNames = regimeMapModelsDict.toc();
-        forAll(regimeMapNames, i)
-        {
-            const dictionary& regimeMapModelDict
+            new surfaceVectorField
             (
-                regimeMapModelsDict.subDict(regimeMapNames[i])
-            );
-            regimeMapModels_.set
-            (
-                regimeMapModelDict.dictName(),
-                autoPtr<regimeMapModel>
+                IOobject
                 (
-                    regimeMapModel::New
-                    (
-                        mesh_,
-                        regimeMapModelDict
-                    )
-                )
-            );
-        }
+                    "rhoUf_",
+                    mesh_.time().timeName(),
+                    mesh_,
+                    IOobject::READ_IF_PRESENT,
+                    IOobject::AUTO_WRITE
+                ),
+                fvc::interpolate(rho_*U_)
+            )
+        );
     }
+
+    // thermo_.validate(args.executable(), "h", "e");
+    turbulence_->validate();
+    mesh_.setFluxRequired(p_.name());
+
+    
 }
-
-
-// * * * * * * * * * * * * * * * * Destructor  * * * * * * * * * * * * * * * //
-
-Foam::solvers::thermalHydraulicsModel::~thermalHydraulicsModel()
-{}
 
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-
-void Foam::solvers::thermalHydraulicsModel::correctRegimeMaps()
+//- Solve according to flags
+void Foam::solvers::rhoPimpleFoam::correctPhysics()
 {
-    forAllIter
-    (
-        regimeMapTable,
-        regimeMapModels_,
-        iter
-    )
+
+    residual_=0;
+    autoPtr<volScalarField> divrhoU;
+    if (correctPhi_)
     {
-        iter()->correct();
+        divrhoU.reset
+        (
+            new volScalarField
+            (
+                "divrhoU",
+                fvc::div(fvc::absolute(phi_, rho_, U_))
+            )
+        );
+    }
+
+
+    // --- Pressure-velocity pimple_ corrector loop
+    while (pimple_.loop())
+    {
+        if (pimple_.firstIter() || moveMeshOuterCorrectors_)
+        {
+            // Store momentum to set rhoUf_ for introduced faces.
+            autoPtr<volVectorField> rhoU;
+            if (rhoUf_.valid())
+            {
+                rhoU.reset(new volVectorField("rhoU", rho_*U_));
+            }
+
+            // Do any mesh_ changes
+            mesh_.controlledUpdate();
+
+            if (mesh_.changing())
+            {
+                MRF_.update();
+
+                if (correctPhi_)
+                {
+                    // Calculate absolute flux
+                    // from the mapped surface velocity
+                    phi_ = mesh_.Sf() & rhoUf_();
+
+                    #include "correctPhi.H"
+
+                    // Make the fluxes relative to the mesh_-motion
+                    fvc::makeRelative(phi_, rho_, U_);
+                }
+
+                // if (checkMeshCourantNo_)
+                // {
+                //     #include "meshCourantNo.H"
+                // }
+            }
+        }
+
+        if (pimple_.firstIter() && !pimple_.SIMPLErho())
+        {
+            #include "rhoEqn.H"
+        }
+
+        #include "UEqn.H"
+        #include "EEqn.H"
+
+        // --- Pressure corrector loop
+        while (pimple_.correct())
+        {
+            if (pimple_.consistent())
+            {
+                #include "pcEqn.H"
+            }
+            else
+            {
+                #include "pEqn.H"
+            }
+        }
+
+        if (pimple_.turbCorr())
+        {
+            turbulence_->correct();
+        }
+    }
+
+    rho_ = thermo_.rho();
+
+
+
+    // stressTensor_ = -turbulence_->devRhoReff()()-fluid_.thermo().p()*symmTensor(1,0,0,1,0,1);
+}
+
+void Foam::solvers::rhoPimpleFoam::correctTightlyCoupledPhysics()
+{
+    #include "EEqn.H"
+}
+
+void Foam::solvers::rhoPimpleFoam::compressibleContinuityErrs()
+{
+    {
+    dimensionedScalar totalMass = fvc::domainIntegrate(rho_);
+ 
+    scalar sumLocalContErr =
+        (fvc::domainIntegrate(mag(rho_ - thermo_.rho()))/totalMass).value();
+ 
+    scalar globalContErr =
+        (fvc::domainIntegrate(rho_ - thermo_.rho())/totalMass).value();
+ 
+    cumulativeContErr_ += globalContErr;
+ 
+    Info<< "time step continuity errors : sum local = " << sumLocalContErr
+        << ", global = " << globalContErr
+        << ", cumulative = " << cumulativeContErr_
+        << endl;
     }
 }
 
-void Foam::solvers::thermalHydraulicsModel::stop()
+
+scalar Foam::solvers::rhoPimpleFoam::maxDeltaT()
 {
-    FatalErrorInFunction
-        << "Terminating execution"
-        << exit(FatalError);
+
+    scalar CoNum = 0.0;
+    scalar meanCoNum = 0.0;
+ 
+    {
+        scalarField sumPhi
+        (
+            fvc::surfaceSum(mag(phi_))().primitiveField()/rho_.primitiveField()
+        );
+    
+        CoNum = 0.5*gMax(sumPhi/mesh_.V().field())*mesh_.time().deltaTValue();
+    
+        meanCoNum =
+            0.5*(gSum(sumPhi)/gSum(mesh.V().field()))*mesh_.time().deltaTValue();
+    }
+ 
+    Info<< "Courant Number mean: " << meanCoNum
+        << " max: " << CoNum << endl;
+
+
+    scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+    scalar maxCo =mesh_.time().controlDict().lookupOrDefault<scalar>("maxCo", 1.0);
+    scalar maxDeltaTFact = maxCo/(CoNum + SMALL);
+    scalar deltaTFact =  min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
+
+    return min(deltaTFact*mesh_.time().deltaTValue(),newDeltaT);
+
 }
 
-void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
+void Foam::solvers::rhoPimpleFoam::correctBaffleLessFields()
 {
     if (mesh_.time().controlDict().found("removeBaffles"))
     {
@@ -390,7 +382,7 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
 }
 
 template<class Type>
-void Foam::solvers::thermalHydraulicsModel::correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh)
+void Foam::solvers::rhoPimpleFoam::correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh)
 {
 
     typedef GeometricField<Type, fvPatchField, volMesh> VolFieldType;
@@ -403,7 +395,7 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessField(word fieldNam
     }
 }
 
-void Foam::solvers::thermalHydraulicsModel::deformMesh()
+void Foam::solvers::rhoPimpleFoam::deformMesh()
 {
     //-Look for the multiRegionDict
 
@@ -447,38 +439,6 @@ void Foam::solvers::thermalHydraulicsModel::deformMesh()
         }
     }
 }
-
-// void Foam::thermalHydraulicsModel::adjustTimeStep()
-// {
-//     this->correctCourant();
-
-//     bool adjustTimeStep =
-//         runTime_.controlDict().lookupOrDefault("adjustTimeStep", false);
-
-//     scalar maxCo =
-//         runTime_.controlDict().lookupOrDefault<scalar>("maxCo", 1.0);
-
-//     scalar maxDeltaT =
-//         runTime_.controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
-
-//     if (adjustTimeStep)
-//     {
-//         scalar maxDeltaTFact = maxCo/(CoNum_ + SMALL);
-//         scalar deltaTFact =
-//             min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
-
-//         runTime_.setDeltaT
-//         (
-//             min
-//             (
-//                 deltaTFact*runTime_.deltaTValue(),
-//                 maxDeltaT
-//             )
-//         );
-//     }
-// }
-
-
 
 
 

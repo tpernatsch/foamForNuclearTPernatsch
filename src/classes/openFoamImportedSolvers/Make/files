@@ -1,3 +1,4 @@
-compressibleInterDyMFoam/compressibleInterDyMFoam.C
-
+fluidModel/fluidModel.C
+pimpleFluid/pimpleFluid.C
+pimpleFluid/parabolicVelocityPatchField/transitionalParabolicVelocityFvPatchVectorField.C
 LIB = $(FOAM_USER_LIBBIN)/libOFSolvers

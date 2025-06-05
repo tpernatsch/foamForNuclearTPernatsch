@@ -306,7 +306,7 @@ void Foam::heatExchanger::constructSecondaryHX(bool& constructed)
     Info<< "Creating heatExchanger: " << thisDictionary_.dictName() << endl;
 
     // sMesh_.reset(const_cast<fvMesh*>(&(mesh_.time().lookupObject<fvMesh>(this->getOrDefault<word>("secondaryRegion", mesh_.name())))));
-    const fvMesh& sMesh_ = mesh_.time().lookupObjectRef<fvMesh>(this->getOrDefault<word>("secondaryRegion", mesh_.name()));
+    const fvMesh& sMesh_ = mesh_.time().lookupObjectRef<dynamicFvMesh>(this->getOrDefault<word>("secondaryRegion", mesh_.name()));
     //- Read secondary cellZones and their cells
     secondaryCells_ = sMesh_.cellZones()[this->get<word>("secondary")];
 

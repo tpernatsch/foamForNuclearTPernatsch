@@ -175,8 +175,6 @@ int main(int argc, char *argv[])
 
         // Solve each physics once (loose coupling)
 
-        Info<< "Solving physics once" << endl;
-
         forAll(solvers, i)
         {
             solvers[i].deformMesh();

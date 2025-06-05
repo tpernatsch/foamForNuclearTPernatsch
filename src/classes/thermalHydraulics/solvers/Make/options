@@ -8,6 +8,8 @@ EXE_INC = \
     -I./twoPhase \
     -I./twoPhase/include/pEqnRoutines \
     -I./twoPhase/include/alphaEqnRoutines \
+    -I./onePhaseRhoPimpleFoam/ \
+    -I./onePhaseRhoPimpleFoam/include/ \
     -I./../../common/lnInclude \
     -I./../src/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \

@@ -108,6 +108,10 @@
     fluid_.Cp() = fluid_.thermo().Cp();
     fluid_.mu() = fluid_.thermo().mu();
     fluid_.Pr() = fluid_.Cp()*fluid_.mu()/fluid_.kappa();
+    kappaEff_ = 
+    (
+        fluid_.thermo().kappaEff(fluid_.turbulence().alphat())
+    );
 
     Info<< "T (avg min max) = "
         << T.weightedAverage(mesh_.V()).value()

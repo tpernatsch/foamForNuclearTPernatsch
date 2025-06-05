@@ -36,26 +36,33 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::heatExchanger
+    Foam::thermalHydraulicsModels::rhoPimpleFoam
 
 Description
-    Heat exchanger.
-
-    Author
-    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
+    This class encapsulates a single fluid + 1 stationary structure
+    Eulerian solver with a user-defineable regime-map based phyiscs modelling.
 
 SourceFiles
-    heatExchanger.C
+    rhoPimpleFoam.C
+
+\mainauthor
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef heatExchanger_H
-#define heatExchanger_H
+#ifndef rhoPimpleFoam_H
+#define rhoPimpleFoam_H
 
-#include "volFields.H"
-#include "meshToMesh.H"
-#include "zeroGradientFvPatchFields.H"
 #include "dynamicFvMesh.H"
+#include "turbulentFluidThermoModel.H"
+#include "CorrectPhi.H"
+#include "pressureControl.H"
+#include "solver.H"
+#include "IOMRFZoneList.H"
+#include "fvCFD.H"
+#include "fvOptions.H"
+#include "volPointInterpolation.H"
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -63,88 +70,103 @@ namespace Foam
 {
 
 //- Forward declarations
-class fluid;
-class structure;
+//class regime;
+//class regimeMapModel;
+
+namespace solvers
+{
 
 /*---------------------------------------------------------------------------*\
-                           Class heatExchanger Declaration
+                      Class rhoPimpleFoam Declaration
 \*---------------------------------------------------------------------------*/
 
-class heatExchanger
-:
-    public IOdictionary
+class rhoPimpleFoam
+:     
+    public solver
 {
-protected :
+private:
 
-    //- Ref to mesh
-    const fvMesh& mesh_;
 
-    //autoPtr<fvMesh> sMesh_; //secondaryMesh
-    const dictionary& thisDictionary_;
+    dynamicFvMesh& mesh_;
+    pimpleControl pimple_;
+    autoPtr<fluidThermo> pThermo_;
+    fluidThermo& thermo_;
 
-    //- Interfacial area, kinda useless to treat is as a volScalarField as
-    //  unlike the structure and powerModels, there will be a separate
-    //  heatExchanger object for each pair of cellZones
-    scalar iA_;
+    volScalarField p_;
+    volScalarField rho_;
+    volVectorField U_;
+    surfaceScalarField phi_;
+    
+    pressureControl pressureControl_;
+    autoPtr<compressible::turbulenceModel> turbulence_;
 
-    //- Wall conductance (i.e. wall thermal conductivity / wall thickness)
-    scalar Hw_;
+    volScalarField dpdt_;
+    volScalarField K_;
 
-    //-
-    labelList primaryCells_;
+    IOMRFZoneList MRF_;
+    const dimensionedScalar rhoMax_;
+    const dimensionedScalar rhoMin_;
 
-    //-
-    labelList secondaryCells_;
+    fv::options& fvOptions_;
 
-    //-
-    autoPtr<meshToMesh> mappingPtr_;
+    bool correctPhi_;
+    bool moveMeshOuterCorrectors_;
+    bool checkMeshCourantNo_;
 
-    //- Bool to check whether the secondary Mesh has been constructed yet or not. This is necessary as the TH solver
-    //- construct creates the heat exchanger possibly before the other fluid region has been created at all
-    bool constructed_;
+    autoPtr<surfaceVectorField> rhoUf_;
+
+    scalar residual_;
+    scalar cumulativeContErr_;
+
+    //- Original mesh
+    pointField originalPoints_;
+    
 
 
 
 public:
 
-    TypeName("heatExchanger");
+    TypeName("rhoPimpleFoam");
 
     //- Constructors
 
-        heatExchanger
+        rhoPimpleFoam
         (
-            const fvMesh& mesh,
-            const dictionary& dict
+            dynamicFvMesh& mesh
         );
 
         //- Destructor
-        virtual ~heatExchanger() {}
+        virtual ~rhoPimpleFoam(){}
 
     //- Member Functions
 
-        //- Return volumetric area as a field rather than a scalar, so that it
-        //  can also act as an HX marker field (i.e. iA = 0 in those cells where
-        //  the HX does not exist)
-        tmp<volScalarField> iA() const;
+        //- Solve thermal-hydraulics
+        virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
 
-        //- In two-phase solvers :
-        //  HT = H1*frac1*T1 + H2*frac2*T2
-        //  H =  H1*frac1 + H2*frac2
-        //- In a mono-phase solver :
-        //  HT = H*T
-        //  H = H
-        //  THX is the field to be set according to the updated HX surface
-        //  temperatures with might mapping magic
-        void correct
-        (
-            const volScalarField& HT,
-            const volScalarField& H,
-            volScalarField& THX
-        );
+        virtual scalar maxDeltaT();
 
-        void constructSecondaryHX(bool& constructed);
+        //- Update continuity errors of the fluid
+        void compressibleContinuityErrs();
+
+        virtual scalar getResidual()
+        {
+            return residual_;
+        };
+
+        virtual void correctBaffleLessFields();
+
+        template<class Type>
+        void correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh);
+
+        void deformMesh();
+
 };
 
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace thermalHydraulicsModels
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -83,6 +83,7 @@ SourceFiles
 #include "FSPair.H"
 #include "solver.H"
 #include "volPointInterpolation.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -117,7 +118,7 @@ protected:
 
     const Time& runTime_;
 
-    fvMesh& mesh_;
+    dynamicFvMesh& mesh_;
 
     customPimpleControl pimple_;
 
@@ -145,6 +146,8 @@ protected:
     //- Pressure
     volScalarField p_rgh_;
     volScalarField p_;
+    volSymmTensorField stressTensor_;
+    volScalarField kappaEff_;
 
     //- Minimum allowable pressure
     dimensionedScalar pMin_;

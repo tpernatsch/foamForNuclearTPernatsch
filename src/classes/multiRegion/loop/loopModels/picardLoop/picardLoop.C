@@ -37,11 +37,15 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "multiPhysicsSolver.H"
+#include "picardLoop.H"
 #include "zeroGradientFvPatchFields.H"
 #include "mergeOrSplitBaffles.H"
 #include "fvmSup.H"
-#include "addToRunTimeSelectionTable.H"
+#include "fixedValuePointPatchFields.H"
+#include "primitivePatchInterpolation.H"
+#include "mappedPatchBase.H"
+#include "tractionDisplacementFvPatchVectorField.H"
+
 
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -50,67 +54,39 @@ namespace Foam
 {
 namespace solvers
 {
-    defineTypeNameAndDebug(multiPhysicsSolver, 0);
-    addToRunTimeSelectionTable
-    (
-        solver,
-        multiPhysicsSolver,
-        dynamicFvMesh
-    );
+    defineTypeNameAndDebug(picardLoop, 0);
+    addToRunTimeSelectionTable(solver, picardLoop, dynamicFvMesh);
 }
 }
+
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::solvers::multiPhysicsSolver::multiPhysicsSolver
+Foam::solvers::picardLoop::picardLoop
 (
     dynamicFvMesh& mesh
 )
 :
-    solver(mesh),
-    IOdictionary
-    (
-        IOobject
-        (
-            "multiRegionCouplingDict",
-            runTime.time().constant(),
-            runTime.db(),
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    meshHandler_(nullptr)
+    loop(mesh)
 {
 }
 
 
-// * * * * * * * * * * * * * * * * * Member functions * * * * * * * * * * * * * * * //
+// * * * * * * * * * * * * * * * * * Member Functions * * * * * * * * * * * * * * * //
 
-void Foam::solvers::multiPhysicsSolver::createSolvers(word name)
+void Foam::solvers::picardLoop::createSolvers(word name)
 {
-    multiPhysicsDict_ = this->subDict("multiPhysicsSolvers").subDict(name);
-    solverNames_ = multiPhysicsDict_.subDict("solvers").toc();
+    multiPhysicsDict_ = this->subDict("regionSolvers").subDict(name);
+
+    solverNames_ = multiPhysicsDict_.subDict("subSolvers").toc();
     singlePhysicsSolverNames_.setSize(0);
-    minResidual_ = multiPhysicsDict_.get<scalar>("minResidual");
-    maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
 
     // First create the new solvers
 
     solvers_.setSize(solverNames_.size());
 
-    correctOnlyEnergy_.setSize(solverNames_.size());
-    forAll(correctOnlyEnergy_, boolI)
-    {
-        correctOnlyEnergy_[boolI]=true;
-    }
-
-    wordList energyOnlyList = multiPhysicsDict_.getOrDefault<wordList>("includeFluidMechanicsInLoop", wordList());
-
     forAll(solverNames_, nameI)
     {
-
-        if(meshHandler_->contains(energyOnlyList, solverNames_[nameI]))
-            correctOnlyEnergy_[nameI]=false;
 
         Info<< "Creating sub-scale solver " << solverNames_[nameI] << nl
             << endl;
@@ -118,7 +94,7 @@ void Foam::solvers::multiPhysicsSolver::createSolvers(word name)
         word solverType
         (
             multiPhysicsDict_
-                .subDict("solvers")
+                .subDict("subSolvers")
                 .get<word>(solverNames_[nameI])
         );
 
@@ -126,50 +102,39 @@ void Foam::solvers::multiPhysicsSolver::createSolvers(word name)
         // subSolvers which are multiPhysicsSolvers themselves and so on,
         // creating a tree-like structure
 
-        if (solverType != "multiPhysicsSolver")
+        static const HashSet<word> loopTypes = { "PicardLoop", "PicardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
+
+        const word& meshName = solverNames_[nameI];
+        word meshToUse = loopTypes.found(solverType) ? "dummy" : meshName;
+
+        solvers_.set
+        (
+            nameI,
+            solver::New(solverType, meshHandler_->returnMesh(meshToUse))
+        );
+
+        if (Foam::isA<Foam::solvers::loop>(solvers_[nameI]))
         {
-            solvers_.set
-            (
-                nameI,
-                solver::New(solverType, meshHandler_->returnMesh(solverNames_[nameI]))
-            );
-            singlePhysicsSolverNames_.append(solverNames_[nameI]);
+            Foam::solvers::loop& loopRef =
+                Foam::refCast<Foam::solvers::loop>(solvers_[nameI]);
+
+            loopRef.getMapper(*meshHandler_);
+            loopRef.createSolvers(solverNames_[nameI]);
         }
         else
         {
-            solvers_.set
-            (
-                nameI,
-                solver::New(solverType, meshHandler_->returnMesh("dummy"))
-            );
-            Foam::solvers::multiPhysicsSolver* multiPhysicsSolverPtr = dynamic_cast<Foam::solvers::multiPhysicsSolver*>(&solvers_[nameI]);
-            multiPhysicsSolverPtr->getMapper(*meshHandler_);
-            multiPhysicsSolverPtr->createSolvers(solverNames_[nameI]);
-            multiPhysicsSolverPtr = nullptr;
+            singlePhysicsSolverNames_.append(solverNames_[nameI]);
         }
     }
+
+    //loopProperties_ = multiPhysicsDict_.subDict("loopProperties");
+    couplingStartTime_ = multiPhysicsDict_.getOrDefault<scalar>("couplingStartTime",0);
+    minResidual_ = multiPhysicsDict_.get<scalar>("minResidual");
+    maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
+        
 }
 
-
-void Foam::solvers::multiPhysicsSolver::correctBaffleLessFields()
-{
-    forAll(solvers_, solvI)
-    {
-        solvers_[solvI].correctBaffleLessFields();
-    }
-}
-
-
-void Foam::solvers::multiPhysicsSolver::deformMesh()
-{
-    forAll(solvers_, solvI)
-    {
-        solvers_[solvI].deformMesh();
-    }
-}
-
-
-void Foam::solvers::multiPhysicsSolver::correctPhysics()
+void Foam::solvers::picardLoop::correctPhysics()
 {
     scalar iterN(0);
     scalar residual(0);
@@ -182,9 +147,7 @@ void Foam::solvers::multiPhysicsSolver::correctPhysics()
         forAll(solvers_, solvI)
         {
             solvers_[solvI].deformMesh();
-            (iterN>0 and correctOnlyEnergy_[solvI])?
-                solvers_[solvI].correctTightlyCoupledPhysics():
-                solvers_[solvI].correctPhysics();
+            solvers_[solvI].correctPhysics();
             solvers_[solvI].correctBaffleLessFields();
         }
 
@@ -199,34 +162,9 @@ void Foam::solvers::multiPhysicsSolver::correctPhysics()
             Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
     }
     while(residual>minResidual_ && iterN < maxIterations_);
+
 }
 
-void Foam::solvers::multiPhysicsSolver::correctTightlyCoupledPhysics()
-{
-    correctPhysics();
-}
-
-scalar Foam::solvers::multiPhysicsSolver::getResidual()
-{
-    scalar residual = 0;
-    forAll(solvers_, solvI)
-    {
-        residual = max(residual, solvers_[solvI].getResidual());
-    }
-
-    return residual;
-}
-
-scalar Foam::solvers::multiPhysicsSolver::maxDeltaT()
-{
-    scalar maxDeltaT= VGREAT;
-    forAll(solvers_, solvI)
-    {
-        maxDeltaT = min(maxDeltaT, solvers_[solvI].maxDeltaT());
-    }
-
-    return maxDeltaT;
-}
 
 
 // ************************************************************************* //
