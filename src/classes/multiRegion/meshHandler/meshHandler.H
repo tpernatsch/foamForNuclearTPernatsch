@@ -97,7 +97,7 @@ class meshHandler
 
         PtrList<dynamicFvMesh> meshes_;
 
-        PtrList<dynamicFvMesh> mappingMeshes_;
+        PtrList<fvMesh> mappingMeshes_;
 
         dictionary mappingDict_;
         PtrList<PtrList<meshToMesh>> mappingList_;
@@ -141,7 +141,7 @@ public:
         void interpolateAndMapFields(const Time& runTime);
 
         dynamicFvMesh& returnMesh(word meshName);
-        dynamicFvMesh& returnMappingMesh(word meshName);
+        fvMesh& returnMappingMesh(word meshName);
         bool contains(wordList list, word thisWord);
 
         template<class Type>

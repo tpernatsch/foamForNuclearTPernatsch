@@ -53,11 +53,6 @@ maxCo           1;
 
 maxCoTwoPhase   0.5;
 
-regionSolvers
-{
-    fluidRegion     twoPhase;
-}
-
 removeBaffles
 {
     fluidRegion     false;

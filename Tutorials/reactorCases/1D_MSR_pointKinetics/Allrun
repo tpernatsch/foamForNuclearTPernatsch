@@ -26,7 +26,7 @@ setSteadyState()
     foamDictionary $caseName/system/controlDict -entry adjustTimeStep -set true
     foamDictionary $caseName/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $caseName/system/controlDict -entry writeInterval -set $endTimeSS
-    cp $caseName/constant/multiRegionCouplingDict_TH $caseName/constant/multiRegionCouplingDict
+    cp $caseName/constant/regionsDict_TH $caseName/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $caseName
     printf "Case set!\n\n"
 }
@@ -43,9 +43,8 @@ setTransient()
     foamDictionary $caseName/system/controlDict -entry adjustTimeStep -set true
     foamDictionary $caseName/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $caseName/system/controlDict -entry writeInterval -set 10
-    foamDictionary $caseName/system/controlDict -entry  regionSolvers/neutroRegion -set pointKinetics
     foamDictionary $caseName/system/controlDict -entry  removeBaffles/neutroRegion -set false
-    cp $caseName/constant/multiRegionCouplingDict_Coupled $caseName/constant/multiRegionCouplingDict
+    cp $caseName/constant/regionsDict_Coupled $caseName/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $caseName
     printf "Case set!\n\n"
 }

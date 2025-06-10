@@ -40,9 +40,8 @@ setSteadyStateTH()
     foamDictionary $1/system/controlDict -entry deltaT -set 1e-03
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
     foamDictionary $1/system/controlDict -entry writeInterval -set 1
-    foamDictionary $1/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
     foamDictionary $1/system/controlDict -entry removeBaffles/fluidRegion -set false
-    cp $1/constant/multiRegionCouplingDict_steadyStateTH $1/constant/multiRegionCouplingDict
+    cp $1/constant/regionsDict_steadyStateTH $1/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
@@ -60,11 +59,10 @@ setSteadyStateEN()
     foamDictionary $1/system/controlDict -entry deltaT -set 0.25
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set false
     foamDictionary $1/system/controlDict -entry writeInterval -set 50
-    foamDictionary $1/system/controlDict -entry regionSolvers/neutroRegion -set diffusionNeutronics;
     foamDictionary $1/system/controlDict -entry removeBaffles/neutroRegion -set false
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveEnergy -set true
-    cp steadyStateEN/constant/multiRegionCouplingDict_steadyStateEN $1/constant/multiRegionCouplingDict
+    cp steadyStateEN/constant/regionsDict_steadyStateEN $1/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
@@ -80,10 +78,7 @@ setTransient()
     foamDictionary $1/system/controlDict -entry deltaT -set 1e-03
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
     foamDictionary $1/system/controlDict -entry writeInterval -set 10
-    foamDictionary $1/system/controlDict -entry regionSolvers/fluidRegion -remove
-    foamDictionary $1/system/controlDict -entry regionSolvers/neutroRegion -remove
-    foamDictionary $1/system/controlDict -entry regionSolvers/energyNeutroLoop -set multiPhysicsSolver
-    cp $1/constant/multiRegionCouplingDict_transient $1/constant/multiRegionCouplingDict
+    cp $1/constant/regionsDict_transient $1/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }

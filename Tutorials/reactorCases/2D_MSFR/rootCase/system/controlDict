@@ -45,10 +45,6 @@ timePrecision   8;
 
 runTimeModifiable yes;
 
-regionSolvers
-{
-}
-
 removeBaffles
 {
 }

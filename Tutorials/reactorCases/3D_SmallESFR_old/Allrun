@@ -13,7 +13,7 @@ runCloneCase()
     printf "Cloning $2 to case $1..."
     #foamCloneCase -latestTime $2 $1
     cp -r $2 $1
-    mv steadyState/constant/multiRegionCouplingDict_loosely steadyState/constant/multiRegionCouplingDict
+    mv steadyState/constant/regionsDict_loosely steadyState/constant/regionsDict
     printf "$2 cloned!\n"
 }
 
@@ -29,14 +29,10 @@ setTransient()
     foamDictionary transient/system/controlDict -entry adjustTimeStep -set true
     foamDictionary transient/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary transient/system/controlDict -entry writeInterval -set 10
-    foamDictionary transient/system/controlDict -entry regionSolvers/fluidRegion -remove
-    foamDictionary transient/system/controlDict -entry regionSolvers/neutroRegion -remove
-    foamDictionary transient/system/controlDict -entry regionSolvers/thermoMechanicalRegion -remove
-    foamDictionary transient/system/controlDict -entry regionSolvers/energyNeutroMechLoop -set multiPhysicsSolver
     foamDictionary transient/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
     
-    rm transient/constant/multiRegionCouplingDict
-    mv transient/constant/multiRegionCouplingDict_tightly transient/constant/multiRegionCouplingDict
+    rm transient/constant/regionsDict
+    mv transient/constant/regionsDict_tightly transient/constant/regionsDict
     printf "Case set!\n\n"
 }
 

@@ -32,8 +32,7 @@ foamDictionary steadyStateN/system/controlDict -entry endTime -set $endTimeSSN
 foamDictionary steadyStateN/system/controlDict -entry deltaT -set 1e-6
 #foamDictionary steadyStateN/system/controlDict -entry solveFluidMechanics -set false
 #foamDictionary steadyStateN/system/controlDict -entry solveEnergy -set false
-foamDictionary steadyStateN/system/controlDict -entry regionSolvers/fluidRegion -remove
-cp steadyStateN/constant/multiRegionCouplingDict_neutronSA steadyStateN/constant/multiRegionCouplingDict
+cp steadyStateN/constant/regionsDict_neutronSA steadyStateN/constant/regionsDict
 #GeN-Foam -initializeMappedFields -case steadyStateN
 
 # Run neutronics steady-state
@@ -56,8 +55,7 @@ decomposePar -case steadyState -region fluidRegion -time 1
 foamDictionary steadyState/system/controlDict -entry endTime -set $endTimeSSTH
 foamDictionary steadyState/system/controlDict -entry deltaT -set 2e-5 # 1e-5
 foamDictionary steadyState/system/controlDict -entry adjustTimeStep -set true # false
-foamDictionary steadyState/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
-cp steadyState/constant/multiRegionCouplingDict_coupled steadyState/constant/multiRegionCouplingDict
+cp steadyState/constant/regionsDict_coupled steadyState/constant/regionsDict
 GeN-Foam -initializeMappedFields -case steadyState
 
 # Run thermal-hydraulics steady-state

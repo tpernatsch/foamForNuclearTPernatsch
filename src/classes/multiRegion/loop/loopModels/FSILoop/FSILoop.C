@@ -176,7 +176,7 @@ void Foam::solvers::FSILoop::createSolvers(word name)
         (
             (fluidSolverType != "onePhase" and fluidSolverType != "pimpleFluid") 
             or
-            (solidSolverType != "legacyThermomechanics" and solidSolverType != "extendedThermoMechanics")
+            (solidSolverType != "legacyThermomechanics" and solidSolverType != "extendedThermoMechanics" and solidSolverType != "fuelBehaviour")
 
         )
         {
@@ -185,7 +185,7 @@ void Foam::solvers::FSILoop::createSolvers(word name)
             <<  endl
             << "Valid types are: "  << endl
             <<"Fluid: 2(pimpleFluid, onePhase) " << endl
-            <<"Solid: 2(extendedThermoMechanics, legacyThermoMechanics)" << endl
+            <<"Solid: 3(extendedThermoMechanics, legacyThermoMechanics, fuelBehaviour)" << endl
             << exit(FatalError);
         }
 

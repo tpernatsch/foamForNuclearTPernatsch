@@ -42,9 +42,8 @@ setSteadyState()
     foamDictionary $1/system/controlDict -entry writeInterval -set $endTimeSS
     foamDictionary $1/system/controlDict -entry maxCo -set 50.0
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 2.0
-    foamDictionary $1/system/controlDict -entry regionSolvers.fluidRegion -set onePhase
     foamDictionary $1/system/controlDict -entry removeBaffles.fluidRegion -set true
-    cp $1/constant/multiRegionCouplingDict_steadyState $1/constant/multiRegionCouplingDict
+    cp $1/constant/regionsDict_steadyState $1/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
@@ -56,7 +55,7 @@ setTransient()
     printf "Setting transient case\n"
 
     # Set the power density field for PK solver
-    cp $1/constant/multiRegionCouplingDict_initPK $1/constant/multiRegionCouplingDict
+    cp $1/constant/regionsDict_initPK $1/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $1
 
 
@@ -73,10 +72,7 @@ setTransient()
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.p_rgh -set 0.8
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.p_rghFinal -set 1.0
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 1;
-    foamDictionary $1/system/controlDict -entry regionSolvers.neutroRegion -remove
-    foamDictionary $1/system/controlDict -entry regionSolvers.fluidRegion -remove
-    foamDictionary $1/system/controlDict -entry regionSolvers.energyNeutroMechLoop -set multiPhysicsSolver
-    cp $1/constant/multiRegionCouplingDict_transient $1/constant/multiRegionCouplingDict
+    cp $1/constant/regionsDict_transient $1/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }

@@ -371,7 +371,7 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
                         if (regionsFrom[regionFromi] == mesh_.name())
                         {
                             const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
-                            dynamicFvMesh& baffleLessMesh = const_cast<dynamicFvMesh&>(mesh_.time().lookupObject<dynamicFvMesh>(mesh_.name()+".baffleLess"));
+                            fvMesh& baffleLessMesh = const_cast<fvMesh&>(mesh_.time().lookupObject<fvMesh>(mesh_.name()+".baffleLess"));
                             forAll(fieldsList, fieldi)
                             {
                                 correctBaffleLessField<scalar>(fieldsList[fieldi], baffleLessMesh);

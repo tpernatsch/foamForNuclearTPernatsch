@@ -47,11 +47,6 @@ runTimeModifiable true;
 
 //- Physics to Solve
 
-regionSolvers
-{
-    fluidRegion     twoPhase;
-}
-
 removeBaffles
 {
     fluidRegion     false;
