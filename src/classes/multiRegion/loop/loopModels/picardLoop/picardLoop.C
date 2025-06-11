@@ -102,7 +102,7 @@ void Foam::solvers::picardLoop::createSolvers(word name)
         // subSolvers which are multiPhysicsSolvers themselves and so on,
         // creating a tree-like structure
 
-        static const HashSet<word> loopTypes = { "PicardLoop", "PicardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
+        static const HashSet<word> loopTypes = { "picardLoop", "picardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
 
         const word& meshName = solverNames_[nameI];
         word meshToUse = loopTypes.found(solverType) ? "dummy" : meshName;

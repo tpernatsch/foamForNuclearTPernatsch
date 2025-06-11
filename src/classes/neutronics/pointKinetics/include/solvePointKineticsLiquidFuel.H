@@ -252,7 +252,7 @@ if(nuclearData_.found("updatePowerFields"))
         word fieldName = subDict.get<word>(regions[regI]);
         const dynamicFvMesh& regionMesh = mesh_.time().lookupObject<dynamicFvMesh>(regions[regI]);
         volScalarField& powerField = const_cast<volScalarField&>(regionMesh.lookupObject<volScalarField>(fieldName));
-        powerField *= powerDensityScaleFactor;
+        powerField *= fluxScaleFactor;
     }
 }
 

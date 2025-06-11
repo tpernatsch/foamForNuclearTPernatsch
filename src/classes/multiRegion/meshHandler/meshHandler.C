@@ -90,7 +90,7 @@ Foam::meshHandler::meshHandler(const Time& runTime)
         Foam::solver::dynamicFvMeshConstructorTablePtr_->toc()
     );   
 
-    static const HashSet<word> loopTypes = { "PicardLoop", "PicardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
+        static const HashSet<word> loopTypes = { "picardLoop", "picardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
 
     forAll(allRegions, regioni)
     {

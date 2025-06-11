@@ -115,7 +115,7 @@ Foam::regionSolvers::regionSolvers(const Time& runTime)
 
         Info << "Creating solver for region "<< regionName<<nl<<endl;
 
-        static const HashSet<word> loopTypes = { "PicardLoop", "PicardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
+        static const HashSet<word> loopTypes = { "picardLoop", "picardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
 
         word meshToUse = loopTypes.found(solverName) ? "dummy" : regionName;
 
