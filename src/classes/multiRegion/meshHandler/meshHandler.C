@@ -233,6 +233,81 @@ Foam::meshHandler::meshHandler(const Time& runTime)
         );
     }
 
+    if(runTime.controlDict().found("writeUndeformedMeshForRestart"))
+    {
+        forAll(meshes_, j)
+        {
+            if
+            (
+                runTime.controlDict().get<wordList>("writeUndeformedMeshForRestart").
+                found(meshes_[j].name())
+            )
+            {
+                pointIOField undeformedPoints
+                (
+                    IOobject
+                    (
+                        meshes_[j].name()+"UndeformedPoints",
+                        meshes_[j].time().timeName(),
+                        meshes_[j],
+                        IOobject::READ_IF_PRESENT,
+                        IOobject::AUTO_WRITE
+                    ),
+                meshes_[j].points()
+                );
+
+                Info << "Writing undeformed mesh points for restart " << endl;
+                undeformedPoints.write();
+            }
+        }
+    }
+
+    if(runTime.controlDict().found("mapOnUndeformed"))
+    {
+        forAll(meshes_, j)
+        {
+            if
+            (
+                runTime.controlDict().get<wordList>("mapOnUndeformed").
+                found(meshes_[j].name())
+            )
+            {
+
+                Info << "Undeforming " << meshes_[j].name() << " mesh to create the mappings" <<endl;
+                pointIOField deformedPoints
+                (
+                    IOobject
+                    (
+                        meshes_[j].name()+"DeformedPoints",
+                        meshes_[j].time().timeName(),
+                        meshes_[j],
+                        IOobject::NO_READ,
+                        IOobject::AUTO_WRITE
+                    ),
+                    meshes_[j].points()
+                );
+
+                deformedPoints.write();
+
+                pointIOField undeformedPoints
+                (
+                    IOobject
+                    (
+                        meshes_[j].name()+"UndeformedPoints",
+                        meshes_[j].time().timeName(),
+                        meshes_[j],
+                        IOobject::MUST_READ,
+                        IOobject::NO_WRITE
+                    )
+                );
+
+                meshes_[j].movePoints(undeformedPoints);
+            }
+        }
+    }
+
+
+
     // Loop over all regions
     forAll(meshes_, i)
     {
@@ -268,6 +343,36 @@ Foam::meshHandler::meshHandler(const Time& runTime)
                     );
                 }
             }
+        }
+    }
+
+    if(runTime.controlDict().found("mapOnUndeformed"))
+    {
+        forAll(meshes_, j)
+        {
+            if
+            (
+                runTime.controlDict().get<wordList>("mapOnUndeformed").
+                found(meshes_[j].name())
+            )
+            {
+                pointIOField deformedPoints
+                (
+                    IOobject
+                    (
+                        meshes_[j].name()+"DeformedPoints",
+                        meshes_[j].time().timeName(),
+                        meshes_[j],
+                        IOobject::MUST_READ,
+                        IOobject::NO_WRITE
+                    )
+                );
+
+                meshes_[j].movePoints(deformedPoints);
+            }
+
+
+            Info << "Deforming " << meshes_[j].name() << " mesh back" <<endl;
         }
     }
 }
