@@ -48,4 +48,3 @@ LIB_LIBS = \
     -lVoFphaseCompressibleTurbulenceModels \
     -ldynamicMesh \
     -ldynamicFvMesh
-

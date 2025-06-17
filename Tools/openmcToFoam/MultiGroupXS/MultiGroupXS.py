@@ -324,7 +324,7 @@ class MultiGroupXS(object):
             flux[0][0]/fluxMaster[0][0] for flux, fluxMaster in zip(
                 self.integralFlux.mean, fluxIntegralMaster.mean
             )
-        ]
+        ][::-1]
         printVector(file, "integralFlux", normalizedFlux)
 
         file.write("\t}\n\n")

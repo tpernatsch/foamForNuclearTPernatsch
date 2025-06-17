@@ -42,6 +42,8 @@ Description
     This class encapsulates a single fluid + 1 stationary structure
     Eulerian solver with a user-defineable regime-map based phyiscs modelling.
 
+    Detailed documentation will come soon. For now refer to [Overview](../../../../user_guide/thermalHydraulics/porousMedium.md)
+
 SourceFiles
     onePhase.C
 

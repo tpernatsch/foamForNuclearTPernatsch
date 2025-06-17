@@ -42,8 +42,9 @@ Group
     none
 
 Description
-    Run-time selectable point-kinetic based neutronics solver. It includes
-    options for a time dependent external reactivity, and an external
+    Run-time selectable point-kinetic based neutronics solver [@RADMAN2022108891].
+    This solver can be run in both solid and liquid fuel simulation [@HABTEMARIAM2024110237].
+    It includes options for a time dependent external reactivity, and an external
     reactivity input coming from an FMU.
 
     The module solves the following point-kinetics equations:

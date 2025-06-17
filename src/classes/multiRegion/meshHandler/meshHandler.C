@@ -396,7 +396,11 @@ void Foam::meshHandler::mapTheseFields(const Time& runTime, wordList meshToMap)
 
 
 
-void Foam::meshHandler::initializeMappedFields( const Time& runTime)
+void Foam::meshHandler::initializeMappedFields
+(
+    const Time& runTime,
+    const bool initializeMappedFields
+)
 {
     forAll(meshes_, i)
     {
@@ -437,10 +441,10 @@ void Foam::meshHandler::initializeMappedFields( const Time& runTime)
                 {
                     forAll(sourceFields, fieldi)
                     {
-                        mapAndWrite<scalar>(sourceFields[fieldi], targetFields[fieldi],i, j, removeBaffles);
-                        mapAndWrite<vector>(sourceFields[fieldi], targetFields[fieldi],i, j, removeBaffles);
-                        mapAndWrite<tensor>(sourceFields[fieldi], targetFields[fieldi],i, j, removeBaffles);
-                        mapAndWrite<symmTensor>(sourceFields[fieldi], targetFields[fieldi],i, j, removeBaffles);
+                        mapAndWrite<scalar>(sourceFields[fieldi], targetFields[fieldi],i, j, removeBaffles, initializeMappedFields);
+                        mapAndWrite<vector>(sourceFields[fieldi], targetFields[fieldi],i, j, removeBaffles, initializeMappedFields);
+                        mapAndWrite<tensor>(sourceFields[fieldi], targetFields[fieldi],i, j, removeBaffles, initializeMappedFields);
+                        mapAndWrite<symmTensor>(sourceFields[fieldi], targetFields[fieldi],i, j, removeBaffles, initializeMappedFields);
                     }
                 }
             }

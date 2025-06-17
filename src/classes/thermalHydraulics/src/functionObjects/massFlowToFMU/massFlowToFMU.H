@@ -36,7 +36,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::externalIOObject::fieldIntegralToFMU
+    Foam::externalIOObject::massFlowToFMU
 
 Description
     Output an integral over a cellZone to an FMU
@@ -44,9 +44,9 @@ Description
 Usage
     Minimal example by using \c system/externalCouplingDict:
     \verbatim
-    fieldIntegralToFMU
+    massFlowToFMU
     {
-        type        fieldIntegralToFMU;
+        type        massFlowToFMU;
         nameFMU     hxPowerOut;
         fieldName   heatFlux.structure;
         region      fluidRegion;
@@ -57,7 +57,7 @@ Usage
     where the entries mean:
     \table
       Property  | Description                   | Type | Req'd | Dflt
-      type      | Type name: fieldIntegralToFMU | word |  yes  | -
+      type      | Type name: massFlowToFMU | word |  yes  | -
       nameFMU   | name of the output scalar     | word |  yes  | -
       fieldName | name of the measurement field | word |  yes  | -
       region    | name of the region            | word |  yes  | -
@@ -65,12 +65,12 @@ Usage
     \endtable
 
 SourceFiles
-    fieldIntegralToFMU.C
+    massFlowToFMU.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef externalIOObject_fieldIntegralToFMU_H
-#define externalIOObject_fieldIntegralToFMU_H
+#ifndef externalIOObject_massFlowToFMU_H
+#define externalIOObject_massFlowToFMU_H
 
 #include "fvMeshFunctionObject.H"
 #include "writeFile.H"
@@ -91,10 +91,10 @@ namespace externalIOObject //functionObjects
 {
 
 /*---------------------------------------------------------------------------*\
-                        Class fieldIntegralToFMU Declaration
+                        Class massFlowToFMU Declaration
 \*---------------------------------------------------------------------------*/
 
-class fieldIntegralToFMU
+class massFlowToFMU
 :
     public externalIOObject
     // public fvMeshFunctionObject  //This would also work
@@ -104,18 +104,43 @@ class fieldIntegralToFMU
 {
 public:
 
+    //-
+    enum regionType
+    {
+        patch,
+        faceSet,
+        faceZone
+    };
+
+    static const Enum<regionType> regionTypeNames_;
+
 protected:
 
     // Protected data
 
-        //- Name of fields
-        word fieldName_;
-
         //- Mesh
         const fvMesh& mesh_;
 
-        //- Name of cellZone
-        word cellZone_;
+        //-
+        word regionName_;
+
+        //- Patch related
+        label patchID_;
+
+        //- faceZone or faceSet related
+        labelList faces_;
+
+        //- Region type
+        regionType regionType_;
+
+        //- Field names
+        word alphaRhoPhiName_;
+
+        //- Field ptrs
+        const surfaceScalarField* alphaRhoPhiPtr_;
+
+        //- Optional scale factor
+        scalar scaleFactor_;
 
         //- Name of scalar to be exhanged with the FMU
         word nameFMU_;
@@ -123,29 +148,26 @@ protected:
         //- Initial FMI value
         scalar initValue_;
 
-        //- Field ptrs
-        const volScalarField* fieldPtr_;
-
 
     // Protected Member Functions
 
         //- No copy construct
-        fieldIntegralToFMU(const fieldIntegralToFMU&) = delete;
+        massFlowToFMU(const massFlowToFMU&) = delete;
 
         //- No copy assignment
-        void operator=(const fieldIntegralToFMU&) = delete;
+        void operator=(const massFlowToFMU&) = delete;
 
 
 public:
 
     //- Runtime type information
-    TypeName("fieldIntegralToFMU");
+    TypeName("massFlowToFMU");
 
 
     // Constructors
 
         //- Construct from Time and dictionary
-        fieldIntegralToFMU
+        massFlowToFMU
         (
             const word& name,
             const Time& runTime,
@@ -154,7 +176,7 @@ public:
 
 
     //- Destructor
-    virtual ~fieldIntegralToFMU() = default;
+    virtual ~massFlowToFMU() = default;
 
 
     // Member Functions
@@ -165,7 +187,7 @@ public:
         //- Execute, currently does nothing
         virtual bool execute();
 
-        //- Write the fieldIntegralToFMU
+        //- Write the massFlowToFMU
         virtual bool write();
 };
 

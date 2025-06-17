@@ -1,8 +1,8 @@
 # GeN-Foam regression test suite
 
-Regression test of 06-Jun-2025 - 11:44:01  
-OpenFOAM Version: v2412  
-Tutorials successfully completed: 0/26  [![regressionTest](https://img.shields.io/badge/Alltest-pending-grey.svg?style=flat-square)]()  
+Regression test of 06-Jun-2025 - 11:44:01
+OpenFOAM Version: v2412
+Tutorials successfully completed: 0/26  [![regressionTest](https://img.shields.io/badge/Alltest-pending-grey.svg?style=flat-square)]()
 
 ## Summary
 

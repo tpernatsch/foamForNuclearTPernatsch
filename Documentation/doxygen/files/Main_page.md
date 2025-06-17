@@ -1,4 +1,4 @@
-* [Introduction to GeN-Foam - README file](@ref README)
+* [Introduction to GeN-Foam - README file](https://gitlab.com/foam-for-nuclear/GeN-Foam)
 	* [Compiling GeN-Foam](@ref COMPILE)
 	* [Preprocessing](@ref PREPROCESSING)
 	* [Running GeN-Foam](@ref RUNNING)

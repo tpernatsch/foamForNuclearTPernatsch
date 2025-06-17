@@ -66,6 +66,11 @@ void Foam::adjustDeltaT(Time& runTime, PtrList<solver>& solvers)
             deltaT = min(deltaT, solvers[i].maxDeltaT());
         }
 
+        deltaT = max
+        (
+            deltaT, runTime.controlDict().lookupOrDefault("minDeltaT", VSMALL)
+        );
+
         if (deltaT < ROOTVGREAT)
         {
             runTime.setDeltaT

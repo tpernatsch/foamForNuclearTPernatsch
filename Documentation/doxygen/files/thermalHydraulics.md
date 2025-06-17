@@ -149,16 +149,16 @@ One can find detailed, commented examples in the tutorials
 <UL>
 <LI> Power models, i.e., active media that can provide and subtract energy, including:
 	<UL>
-	<LI> Fixed (possibly time-dependent) power (see *fixedPower.H* and the tutorial *1D_CHF/imposedPower*)
-	<LI> Fixed (possibly time-dependent) temperature (see *fixedTemperature.H* and the tutorial *1D_CHF/imposedTemperature*)
-	<LI> Heated pin, typically used for electrically heated pins (see *heatedPin.H* and the tutorial *2D_KNS37-L22*)
+	<LI> Fixed (possibly time-dependent) power (see *fixedPower.H* and the tutorial [1D_CHF/imposedPower](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_CHF/imposedPower/))
+	<LI> Fixed (possibly time-dependent) temperature (see *fixedTemperature.H* and the tutorial [1D_CHF/imposedTemperature](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_CHF/imposedTemperature/))
+	<LI> Heated pin, typically used for electrically heated pins (see *heatedPin.H* and the tutorial [2D_KNS37-L22](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_KNS37-L22/))
 	<LI> Nuclear fuel from FMU(s) (see *nuclearFuelFMU.H*)
-	<LI> Nuclear fuel pin (see *nuclearFuelPin.H* and the tutorials *3D_SmallESFR* and *2D_FFTF*)
-	<LI> Lumped-parameter nuclear structure (see *lumpedNuclearStructure.H*) and the tutorial *1D_thermalMSR_pointKinetics*
-	<LI> Steady-state model purpose made for pebble bed reactors (see *nuclearSteadyStatePebble.H*) and the tutorial *3D_gFHR*
+	<LI> Nuclear fuel pin (see *nuclearFuelPin.H* and the tutorials [3D_SmallESFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/) and [2D_FFTF](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/2D_FFTF/))
+	<LI> Lumped-parameter nuclear structure (see *lumpedNuclearStructure.H*) and the tutorial [1D_thermalMSR_pointKinetics](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/1D_thermalMSR_pointKinetics/)
+	<LI> Steady-state model purpose made for pebble bed reactors (see *nuclearSteadyStatePebble.H*) and the tutorial [3D_gFHR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_gFHR/)
 	</UL>
-<LI> A heat exchanger model that is used to model the heat transfer between two disconnected regions, for instance representing the primary and secondary circuit (see *heatExchanger.H* and the tutorials *1D_HX* and *2D_FFTF*)
-<LI> A pump model used to set a (possibly time-dependent) momentum source (see *pump.H* and tutorials *2D_FFTF* and *2D_MSFR*).
+<LI> A heat exchanger model that is used to model the heat transfer between two disconnected regions, for instance representing the primary and secondary circuit (see *heatExchanger.H* and the tutorials [1D_HX](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_HX/) and [2D_FFTF](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/2D_FFTF/))
+<LI> A pump model used to set a (possibly time-dependent) momentum source (see *pump.H* and tutorials [2D_FFTF](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/2D_FFTF/) and [2D_MSFR](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/2D_MSFR/)).
 </UL>
 <br>
 <p>

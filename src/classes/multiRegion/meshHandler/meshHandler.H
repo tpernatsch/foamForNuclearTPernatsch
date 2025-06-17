@@ -41,7 +41,7 @@ Class
 Description
     Class to hold all the region meshes and perform the volumetric mappings
 
-Usage 
+Usage
     In multiRegionCouplingDict
     \verbatim
         mappings
@@ -132,7 +132,11 @@ public:
 
         void mapTheseFields(const Time& runTime, wordList meshToMap);
 
-        void initializeMappedFields(const Time& runTime);
+        void initializeMappedFields
+        (
+            const Time& runTime,
+            const bool initializeMappedFields
+        );
 
         void createBaffleLessMeshes(const Time& runTime);
 
@@ -161,7 +165,8 @@ public:
             word tgtFieldName,
             label tgtFieldLabel,
             label srcFieldLabel,
-            bool removeBaffles
+            bool removeBaffles,
+            bool initializeMappedFields
         );
 
         template<class Type>

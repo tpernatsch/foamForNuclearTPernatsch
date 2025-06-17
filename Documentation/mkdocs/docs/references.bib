@@ -49,6 +49,34 @@
     abstract = {Recent numerical advancements at the Laboratory for Reactor Physics and Systems Behaviour (LRS) have led to the development of a novel two-phase porous medium-based thermal–hydraulic simulation tool, integrated in the broader multi-physics framework of the GeN-Foam code. This simulation tool takes advantage of the modern programming paradigm offered by the finite volume-oriented OpenFOAM numerical library. It enables the 3-D investigation of thermal-hydraulic phenomena in nuclear systems via a dispersed Euler-Euler 6-equation formalism for the representation of two-phase flow. Stemming from previous work related to the presentation and verification of the solution algorithms, this paper is focused on the presentation of the modelling capabilities and their validation against different sets of sodium boiling experiments. These experiments were performed under both quasi-steady-state and transient conditions at former experimental facilities at the Joint Research Centre, Ispra and Kernforschungszentrum Karlsruhe.}
 }
 
+@article{RADMAN2022108891,
+    title = {Development of a point-kinetics model in OpenFOAM, integration in GeN-Foam, and validation against FFTF experimental data},
+    journal = {Annals of Nuclear Energy},
+    volume = {168},
+    pages = {108891},
+    year = {2022},
+    issn = {0306-4549},
+    doi = {https://doi.org/10.1016/j.anucene.2021.108891},
+    url = {https://www.sciencedirect.com/science/article/pii/S0306454921007684},
+    author = {Stefan Radman and Carlo Fiorina and Ping Song and Andreas Pautz},
+    keywords = {GeN-Foam, OpenFOAM, Point-kinetics, Sodium-cooled Fast Reactor, Unprotected Loss Of Flow},
+    abstract = {Following the growing interest that we observe in the use of OpenFOAM for nuclear reactor analysis, the current work presents a point-kinetics model and associated open-source code that can easily be integrated in existing thermal–hydraulic solvers to streamline the use of OpenFOAM for multi-physics investigations. As a proof of concept, we have integrated the new solver in the GeN-Foam multiphysics platform, and validated it against past experimental measurements from the Fast Flux Test Facility, a 400 MW (th) Sodium-cooled Fast Reactor located at the Hanford Site, Washington, USA. Both steady-state and transient simulations provide satisfactory results, also in view of previous studies with other codes. Overall, the developed point-kinetics model and its integration in GeN-Foam have proven to be suitable for the system-level investigation of nuclear reactor transients, thus enabling a more widespread use by the nuclear community of a major open-source toolkit like OpenFOAM.}
+}
+
+@article{HABTEMARIAM2024110237,
+    title = {On the need for multi-dimensional models for the safety analysis of (fast-spectrum) Molten Salt Reactors},
+    journal = {Annals of Nuclear Energy},
+    volume = {197},
+    pages = {110237},
+    year = {2024},
+    issn = {0306-4549},
+    doi = {https://doi.org/10.1016/j.anucene.2023.110237},
+    url = {https://www.sciencedirect.com/science/article/pii/S030645492300556X},
+    author = {Nahom Habtemariam and Carlo Fiorina and Stefano Lorenzi and Antonio Cammi},
+    keywords = {Molten salt fast reactor (MSFR), Safety analysis, Multi-physics simulation},
+    abstract = {This paper aims at characterizing the impact of adopting numerical models with different dimensionalities on the predicted behavior of fast-spectrum Molten Salt Reactors (MSRs). The study encompasses 1-D, 2-D, and 3-D representations of thermal-hydraulics and precursor transport/diffusion, along with spatial and point kinetics models for neutronics. We evaluate the accuracy of each model based on steady-state results and on the reactor response to 2 different transient initiators. The findings emphasize the significance of utilizing a 3-D representation with accurate thermal-hydraulics modeling, and with either spatial kinetics or carefully calibrated point kinetics incorporating a spatial description of precursors transport. 2-D and 1-D models can reproduce main trends and remain valuable tools for e.g. reactor design, control-oriented studies or uncertainty quantification. However, proper calibration of these models is needed and the user should be aware that alterations in flow patterns could jeopardize model calibration and hide first-order local effects.}
+}
+
 @article{FIORINA2016212,
     title = {Development and verification of the neutron diffusion solver for the GeN-Foam multi-physics platform},
     journal = {Annals of Nuclear Energy},

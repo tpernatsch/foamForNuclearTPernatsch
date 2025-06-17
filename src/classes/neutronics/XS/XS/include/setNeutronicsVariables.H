@@ -240,54 +240,70 @@ forAll(nuSigmaEff_, energyI)
             //     axExp_[cellIglobal],
             //     radExp_[cellIglobal]
             // });
-            forAll(variableValues, varI)
+
+            if (!isReadXS_)
             {
-                if (xsVariableTypes_[varI] == "lin")
+                forAll(variableValues, varI)
                 {
-                    variableValues[varI] = xsVariableFields_[varI][cellIglobal];
-                }
-                else
-                {
-                    variableValues[varI] = xsVariableTransformedFields_[varI][cellIglobal];
-                }
-            }
-
-            D_[energyI][cellIglobal] = DList_[zone][energyI].get
-            (
-                variableValues,
-                isParametrize
-            );
-
-            nuSigmaEff_[energyI][cellIglobal] = nuSigmaEffList_[zone][energyI].get
-            (
-                variableValues,
-                isParametrize
-            );
-
-            sigmaPow_[energyI][cellIglobal] = sigmaPowList_[zone][energyI].get
-            (
-                variableValues,
-                isParametrize
-            );
-
-            sigmaRemoval_[energyI][cellIglobal] = sigmaRemovalList_[zone][energyI].get
-            (
-                variableValues,
-                isParametrize
-            );
-
-            if (!isLowMemory_)
-            {
-                forAll(sigmaFromTo_, momentI)
-                {
-                    forAll(sigmaFromTo_[momentI], energyJ)
+                    if (xsVariableTypes_[varI] == "lin")
                     {
-                        sigmaFromTo_[momentI][energyJ][energyI][cellIglobal] =
-                            sigmaFromToList_[zone][momentI][energyJ][energyI].get
-                            (
-                                variableValues,
-                                isParametrize
-                            );
+                        variableValues[varI] = xsVariableFields_[varI][cellIglobal];
+                    }
+                    else
+                    {
+                        variableValues[varI] = xsVariableTransformedFields_[varI][cellIglobal];
+                    }
+                }
+
+                D_[energyI][cellIglobal] = DList_[zone][energyI].get
+                (
+                    variableValues,
+                    isParametrize
+                );
+
+                nuSigmaEff_[energyI][cellIglobal] = nuSigmaEffList_[zone][energyI].get
+                (
+                    variableValues,
+                    isParametrize
+                );
+
+                sigmaPow_[energyI][cellIglobal] = sigmaPowList_[zone][energyI].get
+                (
+                    variableValues,
+                    isParametrize
+                );
+
+                sigmaRemoval_[energyI][cellIglobal] = sigmaRemovalList_[zone][energyI].get
+                (
+                    variableValues,
+                    isParametrize
+                );
+
+                chiPrompt_[energyI][cellIglobal] = chiPromptList_[zone][energyI].get
+                (
+                    variableValues,
+                    isParametrize
+                );
+
+                chiDelayed_[energyI][cellIglobal] = chiDelayedList_[zone][energyI].get
+                (
+                    variableValues,
+                    isParametrize
+                );
+
+                if (!isLowMemory_)
+                {
+                    forAll(sigmaFromTo_, momentI)
+                    {
+                        forAll(sigmaFromTo_[momentI], energyJ)
+                        {
+                            sigmaFromTo_[momentI][energyJ][energyI][cellIglobal] =
+                                sigmaFromToList_[zone][momentI][energyJ][energyI].get
+                                (
+                                    variableValues,
+                                    isParametrize
+                                );
+                        }
                     }
                 }
             }
@@ -313,6 +329,8 @@ forAll(nuSigmaEff_, energyI)
     nuSigmaEff_[energyI].correctBoundaryConditions();
     sigmaPow_[energyI].correctBoundaryConditions();
     sigmaRemoval_[energyI].correctBoundaryConditions();
+    chiPrompt_[energyI].correctBoundaryConditions();
+    chiDelayed_[energyI].correctBoundaryConditions();
     forAll(sigmaFromTo_, momentI)
     {
         forAll(sigmaFromTo_[momentI], energyJ)

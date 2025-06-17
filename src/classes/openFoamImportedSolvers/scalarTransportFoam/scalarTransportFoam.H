@@ -36,142 +36,149 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::externalIOObject::fieldIntegralToFMU
+    Foam::thermalHydraulicsModels::scalarTransportFoam
 
 Description
-    Output an integral over a cellZone to an FMU
+    OpenFOAM-based passive scalar transport equation solver
+    ([link to OpenFOAM documentation](https://www.openfoam.com/documentation/guides/latest/doc/guide-applications-solvers-basic-scalarTransportFoam.html)).
 
-Usage
-    Minimal example by using \c system/externalCouplingDict:
-    \verbatim
-    fieldIntegralToFMU
-    {
-        type        fieldIntegralToFMU;
-        nameFMU     hxPowerOut;
-        fieldName   heatFlux.structure;
-        region      fluidRegion;
-        cellZone    hx;
-    }
-    \endverbatim
+    The equation is given by:
 
-    where the entries mean:
-    \table
-      Property  | Description                   | Type | Req'd | Dflt
-      type      | Type name: fieldIntegralToFMU | word |  yes  | -
-      nameFMU   | name of the output scalar     | word |  yes  | -
-      fieldName | name of the measurement field | word |  yes  | -
-      region    | name of the region            | word |  yes  | -
-      cellZone  | position of the cellZone      | word |  yes  | -
-    \endtable
+    $$
+        \frac{\partial T}{\partial t} + \nabla \cdot \left( \mathbf{u} T \right) - \nabla \cdot \left(D_T \nabla T \right)
+        = S_T
+    $$
+
+    \vartable
+    T       | Passive scalar
+    D_T     | Diffusion coefficient
+    S_T     | Source
+    \endvartable
+
+    \heading Required fields
+    \plaintable
+        T       | Passive scalar
+        U       | Velocity [m/s]
+    \endplaintable
+
 
 SourceFiles
-    fieldIntegralToFMU.C
+    scalarTransportFoam.C
 
 \*---------------------------------------------------------------------------*/
 
-#ifndef externalIOObject_fieldIntegralToFMU_H
-#define externalIOObject_fieldIntegralToFMU_H
+#ifndef scalarTransportFoam_H
+#define scalarTransportFoam_H
 
-#include "fvMeshFunctionObject.H"
-#include "writeFile.H"
-#include "volFieldSelection.H"
-#include "rhoThermo.H"
-#include "IOobjectList.H"
-#include "faceSet.H"
-#include "surfaceFields.H"
-#include "fvc.H"
+#include "fvCFD.H"
+#include "pimpleControl.H"
+#include "fvOptions.H"
+#include "solver.H"
 
-#include "externalIOObject.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 namespace Foam
 {
-namespace externalIOObject //functionObjects
+
+namespace solvers
 {
 
 /*---------------------------------------------------------------------------*\
-                        Class fieldIntegralToFMU Declaration
+                      Class scalarTransportFoam Declaration
 \*---------------------------------------------------------------------------*/
 
-class fieldIntegralToFMU
+class scalarTransportFoam
 :
-    public externalIOObject
-    // public fvMeshFunctionObject  //This would also work
-    // but one would have to put the functionObject in
-    // the controlDict instead of the externalCouplingDict
-    // which goes against the logic of FMU4FOAM
+    public solver
 {
-public:
+private:
 
-protected:
+    //- Mesh
+    fvMesh& mesh_;
 
-    // Protected data
+    //-
+    pimpleControl pimple_;
 
-        //- Name of fields
-        word fieldName_;
+    //- Scalar field to be transported
+    volScalarField T_;
 
-        //- Mesh
-        const fvMesh& mesh_;
+    //- Velocity field
+    volVectorField U_;
 
-        //- Name of cellZone
-        word cellZone_;
+    //-
+    surfaceScalarField phi_;
 
-        //- Name of scalar to be exhanged with the FMU
-        word nameFMU_;
+    //-
+    IOdictionary transportProperties_;
 
-        //- Initial FMI value
-        scalar initValue_;
+    //-
+    dimensionedScalar DT_;
 
-        //- Field ptrs
-        const volScalarField* fieldPtr_;
-
-
-    // Protected Member Functions
-
-        //- No copy construct
-        fieldIntegralToFMU(const fieldIntegralToFMU&) = delete;
-
-        //- No copy assignment
-        void operator=(const fieldIntegralToFMU&) = delete;
+    //-
+    fv::options& fvOptions_;
 
 
 public:
 
-    //- Runtime type information
-    TypeName("fieldIntegralToFMU");
+    TypeName("scalarTransportFoam");
 
+    //- Constructors
 
-    // Constructors
-
-        //- Construct from Time and dictionary
-        fieldIntegralToFMU
+        scalarTransportFoam
         (
-            const word& name,
-            const Time& runTime,
-            const dictionary& dict
+            fvMesh& mesh_
         );
 
+        //- Destructor
+        virtual ~scalarTransportFoam(){}
 
-    //- Destructor
-    virtual ~fieldIntegralToFMU() = default;
+    //- Member Functions
 
+        //- Solve thermal-hydraulics
+        virtual void correctPhysics();
+        virtual void correctTightlyCoupledPhysics();
 
-    // Member Functions
+        virtual scalar maxDeltaT();
 
-        //- Read the field extents data
-        virtual bool read(const dictionary&);
+        //- Correct fluid and structure temperatures without
+        //  updating the flow regime map
+        void correctEnergy();
 
-        //- Execute, currently does nothing
-        virtual bool execute();
+        //- Correct pressure, velocities without updating
+        //  the flow regime map
+        void correctFluidMechanics();
 
-        //- Write the fieldIntegralToFMU
-        virtual bool write();
+        //- Update and print Courant number
+        void correctCourant();
+
+        //- Update continuity errors of the fluid
+        void correctContErr();
+
+        //- Print continuity error information
+        void printContErr();
+
+        //- Computes the cumulated continuity error
+        void calcCumulContErr();
+
+        virtual scalar getResidual()
+        {
+            return scalar(0);
+        };
+
+        virtual void correctBaffleLessFields()
+        {}
+        virtual void deformMesh()
+        {}
 };
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-} // End namespace externalIOObject
+} // End namespace thermalHydraulicsModels
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 } // End namespace Foam
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

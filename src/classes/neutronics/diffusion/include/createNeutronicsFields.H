@@ -160,7 +160,7 @@ forAll(externalSourceFlux_, externalSourceFluxI)
                 mesh_.time().timeName(),
                 mesh_,
                 IOobject::READ_IF_PRESENT,
-                IOobject::AUTO_WRITE
+                externalSourceNeutronics_ ? IOobject::AUTO_WRITE : IOobject::NO_WRITE
             ),
             defaultExternalSourceFlux_
         )
