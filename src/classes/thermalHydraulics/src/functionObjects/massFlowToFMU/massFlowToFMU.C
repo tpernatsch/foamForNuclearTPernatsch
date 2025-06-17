@@ -45,7 +45,7 @@ License
 
 #ifdef isCommDataLayerIncluded
 
-#include "fieldIntegralToFMU.H"
+#include "massFlowToFMU.H"
 #include "addToRunTimeSelectionTable.H"
 #include "commDataLayer.H"
 #include "externalIOObject.H"
@@ -60,8 +60,8 @@ namespace Foam
 {
 namespace functionObjects
 {
-    defineTypeNameAndDebug(fieldIntegralToFMU, 0);
-    addToRunTimeSelectionTable(functionObject, fieldIntegralToFMU, dictionary);
+    defineTypeNameAndDebug(massFlowToFMU, 0);
+    addToRunTimeSelectionTable(functionObject, massFlowToFMU, dictionary);
 }
 }
 */
@@ -70,14 +70,36 @@ namespace Foam
 {
 namespace externalIOObject
 {
-    defineTypeNameAndDebug(fieldIntegralToFMU, 0);
-    addToRunTimeSelectionTable(externalIOObject, fieldIntegralToFMU, dictionary);
+    defineTypeNameAndDebug(massFlowToFMU, 0);
+    addToRunTimeSelectionTable(externalIOObject, massFlowToFMU, dictionary);
 }
 }
+
+const Foam::Enum
+<
+    Foam::externalIOObject::massFlowToFMU::regionType
+>
+Foam::externalIOObject::massFlowToFMU::regionTypeNames_
+(
+    {
+        {
+            regionType::patch,
+            "patch"
+        },
+        {
+            regionType::faceSet,
+            "faceSet"
+        },
+        {
+            regionType::faceZone,
+            "faceZone"
+        }
+    }
+);
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::externalIOObject::fieldIntegralToFMU::fieldIntegralToFMU
+Foam::externalIOObject::massFlowToFMU::massFlowToFMU
 (
     const word& name,
     const Time& runTime,
@@ -85,7 +107,6 @@ Foam::externalIOObject::fieldIntegralToFMU::fieldIntegralToFMU
 )
 :
     externalIOObject(name, runTime, dict),
-    fieldName_(dict.get<word>("fieldName")),
     mesh_
     (
         refCast<const fvMesh>
@@ -96,10 +117,14 @@ Foam::externalIOObject::fieldIntegralToFMU::fieldIntegralToFMU
             )
         )
     ),
-    cellZone_(dict.get<word>("cellZone")),
+    regionName_(dict.get<word>("regionName")),
+    patchID_(0),
+    faces_(0),
+    alphaRhoPhiName_(dict.get<word>("alphaRhoPhiName")),
+    alphaRhoPhiPtr_(nullptr),
+    scaleFactor_(dict.lookupOrDefault<scalar>("scaleFactor", 1.0)),
     nameFMU_(dict.get<word>("nameFMU")),
-    initValue_(dict.lookupOrDefault<scalar>("initValue", 0.0)),
-    fieldPtr_(nullptr)
+    initValue_(dict.lookupOrDefault<scalar>("initValue", 0.0))
 {
     read(dict);
     execute();
@@ -109,8 +134,58 @@ Foam::externalIOObject::fieldIntegralToFMU::fieldIntegralToFMU
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
-bool Foam::externalIOObject::fieldIntegralToFMU::read(const dictionary& dict)
+bool Foam::externalIOObject::massFlowToFMU::read(const dictionary& dict)
 {
+    // Set region type
+    regionType_ = regionType
+    (
+        regionTypeNames_.get
+        (
+            dict.get<word>("regionType")
+        )
+    );
+
+    if (regionType_ == regionType::patch)
+    {
+        const polyBoundaryMesh& pbm = mesh_.boundaryMesh();
+        patchID_ = pbm.findPatchID(regionName_);
+    }
+    else if (regionType_ == regionType::faceZone)
+    {
+        const faceZoneMesh& faceZones(mesh_.faceZones());
+        const labelList& faceis(faceZones[regionName_]);
+        forAll(faceis, i)
+        {
+            faces_.append(faceis[i]);
+        }
+    }
+    else if (regionType_ == regionType::faceSet)
+    {
+        IOobjectList objects
+        (
+            mesh_,
+            mesh_.time().findInstance
+            (
+                polyMesh::meshSubDir/"sets",
+                word::null,
+                IOobject::READ_IF_PRESENT,
+                mesh_.facesInstance()
+            ),
+            polyMesh::meshSubDir/"sets"
+        );
+        IOobjectList faceSets(objects.lookupClass(faceSet::typeName));
+        if (faceSets.found(regionName_))
+        {
+            Foam::faceSet set(*faceSets[regionName_]);
+            forAllIter(faceSet, set, iter)
+            {
+                label facei(*iter);
+                faces_.append(facei);
+            }
+        }
+    }
+
+    // Set FMI initialization
     commDataLayer& data = commDataLayer::New(time_);
 
     data.storeObj(initValue_, nameFMU_, commDataLayer::causality::out);
@@ -118,7 +193,7 @@ bool Foam::externalIOObject::fieldIntegralToFMU::read(const dictionary& dict)
     return false;
 }
 
-bool Foam::externalIOObject::fieldIntegralToFMU::execute()
+bool Foam::externalIOObject::massFlowToFMU::execute()
 {
     commDataLayer& data = commDataLayer::New(time_);
 
@@ -127,25 +202,57 @@ bool Foam::externalIOObject::fieldIntegralToFMU::execute()
         commDataLayer::causality::out
     );
 
-    const volScalarField& field = mesh_.lookupObject<volScalarField>(
-        fieldName_
-    );
+    if (alphaRhoPhiPtr_ == nullptr)
+    {
+        alphaRhoPhiPtr_ =
+            &mesh_.lookupObject<surfaceScalarField>(alphaRhoPhiName_);
+    }
 
-    label cellZoneID = mesh_.cellZones().findZoneID(cellZone_);
-    const cellZone& tgtCellZone = mesh_.cellZones()[cellZoneID];
+    const surfaceScalarField& alphaRhoPhi(*alphaRhoPhiPtr_);
 
-    scalarField fieldZone(field, tgtCellZone);
-    scalarField volZone(mesh_.V(), tgtCellZone);
+    scalar S(0.0);
+    scalar mDot(0.0);
 
-    result = gSum(fieldZone * volZone);
+    if (regionType_ == regionType::patch)
+    {
+        const fvsPatchField<scalar>& alphaRhoPhip
+            = alphaRhoPhi.boundaryField()[patchID_];
+        const fvPatch& patch(mesh_.boundary()[patchID_]);
+        const scalarField& magSf(patch.magSf());
+        forAll(magSf, i)
+        {
+            const scalar& magSfi(magSf[i]);
+            S += magSfi;
+            mDot += mag(alphaRhoPhip[i]);
+        }
+    }
+    else
+    {
+        const scalarField& magSf(mesh_.magSf());
+        forAll(faces_, i)
+        {
+            const label& facei(faces_[i]);
+            const scalar& magSfi(magSf[facei]);
+            S += magSfi;
+            mDot += mag(alphaRhoPhi[facei]);
+        }
+    }
+
+    reduce(S, sumOp<scalar>());
+    reduce(mDot, sumOp<scalar>());
+
+    mDot *= scaleFactor_;
+
+    result = mDot;
 
     return false;
 }
 
-bool Foam::externalIOObject::fieldIntegralToFMU::write()
+bool Foam::externalIOObject::massFlowToFMU::write()
 {
     return false;
 }
 
 #endif
+
 // ************************************************************************* //
