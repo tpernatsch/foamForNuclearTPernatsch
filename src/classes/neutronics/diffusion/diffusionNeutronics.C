@@ -189,61 +189,6 @@ Foam::solvers::diffusionNeutronics::diffusionNeutronics
     )
 {
     #include "createNeutronicsFields.H"
-
-    // Change original points if the displacement field in non-zero
-
-    const IOdictionary couplingDict
-    (
-        IOobject
-        (
-            "regionsDict",
-            runTime.time().constant(),
-            runTime.db(),
-            IOobject::READ_IF_PRESENT,
-            IOobject::NO_WRITE
-        )
-    );
-
-    if (couplingDict.found("meshDeformation"))
-    {
-        const dictionary deformDict(couplingDict.subDict("meshDeformation"));
-
-        const wordList regions(deformDict.toc());
-
-        forAll(regions, regioni)
-        {
-            if (regions[regioni] == mesh_.name())
-            {
-               
-                tmp<volVectorField> disp 
-                (
-                    mesh_.lookupObject<volVectorField>
-                    (
-                        deformDict.subDict(mesh_.name()).get<word>("displacementField")
-                    )     
-                );
-
-
-                if(fvc::domainIntegrate(disp()).value() != vector::zero)
-                {
-
-                    
-                    const volPointInterpolation& meshPointInterpolation = volPointInterpolation::New(mesh_);
-
-                    tmp<pointVectorField> meshPointsDisplacement
-                    (
-                        meshPointInterpolation.interpolate
-                        (
-                            disp()
-                        )
-                    );
-
-                    originalPoints_ -= meshPointsDisplacement->internalField();
-                }
-            }
-        }
-
-    }
 }
 
 
