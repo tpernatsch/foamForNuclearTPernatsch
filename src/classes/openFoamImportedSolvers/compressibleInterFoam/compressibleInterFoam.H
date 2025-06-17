@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2412                                                  |
+|    Built on OpenFOAM v2406                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -39,9 +39,11 @@ Class
     Foam::thermalHydraulicsModels::compressibleInterFoam
 
 Description
-    Solver for two compressible, non-isothermal immiscible fluids using a VOF
-    (volume of fluid) phase-fraction based interface capturing approach. This
-    standard solver has been transposed from OpenFOAM.
+    This class encapsulates a single fluid + 1 stationary structure 
+    Eulerian solver with a user-defineable regime-map based phyiscs modelling.
+
+    Author: 
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
     compressibleInterFoam.C
@@ -87,10 +89,7 @@ class compressibleInterFoam
 {
 private:
 
-    //- Mesh
     fvMesh& mesh_;
-
-    //-
     pimpleControl pimple_;
 
     //- Phases
@@ -148,7 +147,7 @@ public:
 
         compressibleInterFoam
         (
-            fvMesh& mesh_
+            dynamicFvMesh& mesh_
         );
 
         //- Destructor
@@ -166,7 +165,7 @@ public:
         //  updating the flow regime map
         void correctEnergy();
 
-        //- Correct pressure, velocities without updating
+        //- Correct pressure, velocities without updating 
         //  the flow regime map
         void correctFluidMechanics();
 

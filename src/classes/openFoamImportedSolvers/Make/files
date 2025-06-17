@@ -1,4 +1,3 @@
-fluidModel/fluidModel.C
-pimpleFluid/pimpleFluid.C
-pimpleFluid/parabolicVelocityPatchField/transitionalParabolicVelocityFvPatchVectorField.C
+compressibleInterFoam/compressibleInterFoam.C
+
 LIB = $(FOAM_USER_LIBBIN)/libOFSolvers

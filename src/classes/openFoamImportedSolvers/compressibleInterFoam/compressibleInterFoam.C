@@ -6,7 +6,7 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2412                                                  |
+|    Built on OpenFOAM v2406                                                  |
 |    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
@@ -50,9 +50,9 @@ namespace solvers
     defineTypeNameAndDebug(compressibleInterFoam, 0);
     addToRunTimeSelectionTable
     (
-        solver,
-        compressibleInterFoam,
-        fvMesh
+        solver, 
+        compressibleInterFoam, 
+        dynamicFvMesh
     );
 }
 }
@@ -62,7 +62,7 @@ namespace solvers
 
 Foam::solvers::compressibleInterFoam::compressibleInterFoam
 (
-    fvMesh& mesh_
+    dynamicFvMesh& mesh_
 )
 :
     solver(mesh_),
@@ -78,7 +78,7 @@ Foam::solvers::compressibleInterFoam::compressibleInterFoam
             IOobject::MUST_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh_
+    mesh_
     ),
     U_
     (
@@ -224,7 +224,7 @@ Foam::solvers::compressibleInterFoam::compressibleInterFoam
         phi_,
         rhoPhi_,
         alphaPhi10,
-        mixture_
+        mixture_ 
     ));
 
     Info << endl;
@@ -235,34 +235,35 @@ Foam::solvers::compressibleInterFoam::compressibleInterFoam
 
 //- Solve according to flags
 void Foam::solvers::compressibleInterFoam::correctPhysics()
-{
-    // --- Pressure-velocity PIMPLE corrector loop
-    while (pimple_.loop())
-    {
-        #include "alphaControls.H"
-        #include "compressibleAlphaEqnSubCycle.H"
-
-        turbulence_->correctPhasePhi();
-
-        #include "UEqn.H"
-        volScalarField divUp("divUp", fvc::div(fvc::absolute(phi_, U_), p_));
-        #include "TEqn.H"
-
-        // --- Pressure corrector loop
-        while (pimple_.correct())
+{   
+        // --- Pressure-velocity PIMPLE corrector loop
+        while (pimple_.loop())
         {
-            #include "pEqn.H"
-        }
+            #include "alphaControls.H"
+            #include "compressibleAlphaEqnSubCycle.H"
 
-        if (pimple_.turbCorr())
-        {
-            turbulence_->correct();
+            turbulence_->correctPhasePhi();
+
+            #include "UEqn.H"
+            volScalarField divUp("divUp", fvc::div(fvc::absolute(phi_, U_), p_));
+            #include "TEqn.H"
+
+            // --- Pressure corrector loop
+            while (pimple_.correct())
+            {
+                #include "pEqn.H"
+            }
+
+            if (pimple_.turbCorr())
+            {
+                turbulence_->correct();
+            }
         }
-    }
 }
 
 void Foam::solvers::compressibleInterFoam::correctTightlyCoupledPhysics()
 {
+
 }
 
 void Foam::solvers::compressibleInterFoam::correctFluidMechanics()
@@ -273,94 +274,33 @@ void Foam::solvers::compressibleInterFoam::correctEnergy()
 {
 }
 
+
+
 void Foam::solvers::compressibleInterFoam::correctCourant()
 {
+
 }
 
 void Foam::solvers::compressibleInterFoam::correctContErr()
 {
+
 }
+
 
 void Foam::solvers::compressibleInterFoam::printContErr()
 {
+
 }
 
 void Foam::solvers::compressibleInterFoam::calcCumulContErr()
 {
+
 }
+
 
 scalar Foam::solvers::compressibleInterFoam::maxDeltaT()
 {
-    scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
-
-    // adjustTimeStep = runTime.controlDict().getOrDefault("adjustTimeStep", false);
-
-    scalar maxCo = mesh_.time().controlDict().getOrDefault<scalar>("maxCo", 1);
-
-    if (mesh_.time().value() > mesh_.time().controlDict().get<scalar>("deltaT"))
-    {
-        scalar CoNum = 0.0;
-        scalar meanCoNum = 0.0;
-
-        if (mesh_.nInternalFaces())
-        {
-            scalarField sumPhi
-            (
-                mixture_.nearInterface()().primitiveField()
-                *fvc::surfaceSum(mag(phi_))().primitiveField()
-            );
-
-            CoNum = 0.5*gMax(sumPhi/mesh_.V().field())*mesh_.time().deltaTValue();
-
-            meanCoNum =
-                0.5*(gSum(sumPhi)/gSum(mesh_.V().field()))*mesh_.time().deltaTValue();
-        }
-
-        Info<< "Courant Number mean: " << meanCoNum
-            << " max: " << CoNum << endl;
-
-
-        scalar maxAlphaCo
-        (
-            mesh_.time().controlDict().get<scalar>("maxAlphaCo")
-        );
-
-        scalar alphaCoNum = 0.0;
-        scalar meanAlphaCoNum = 0.0;
-
-        if (mesh_.nInternalFaces())
-        {
-            scalarField sumPhi
-            (
-                mixture_.nearInterface()().primitiveField()
-                *fvc::surfaceSum(mag(phi_))().primitiveField()
-            );
-
-            alphaCoNum = 0.5*gMax(sumPhi/mesh_.V().field())*mesh_.time().deltaTValue();
-
-            meanAlphaCoNum =
-                0.5*(gSum(sumPhi)/gSum(mesh_.V().field()))*mesh_.time().deltaTValue();
-        }
-
-        Info<< "Interface Courant Number mean: " << meanAlphaCoNum
-            << " max: " << alphaCoNum << endl;
-
-        scalar maxDeltaTFact =
-            min(maxCo/(CoNum + SMALL), maxAlphaCo/(alphaCoNum + SMALL));
-
-        scalar deltaTFact = min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
-
-        newDeltaT =
-        (
-            min
-            (
-                deltaTFact*mesh_.time().deltaTValue(),
-                newDeltaT
-            )
-        );
-    }
-
-    return newDeltaT;
+    return scalar(VGREAT);
 }
 
 
