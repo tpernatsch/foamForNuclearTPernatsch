@@ -281,7 +281,9 @@ forAll(xsVariableNames_, varI)
                     mesh_.time().timeName(),
                     mesh_,
                     IOobject::READ_IF_PRESENT,
-                    IOobject::AUTO_WRITE
+                    (variableName == "axExp" or variableName == "radExp") ?
+                        IOobject::NO_WRITE:
+                        IOobject::AUTO_WRITE
                 ),
                 mesh_,
                 dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),

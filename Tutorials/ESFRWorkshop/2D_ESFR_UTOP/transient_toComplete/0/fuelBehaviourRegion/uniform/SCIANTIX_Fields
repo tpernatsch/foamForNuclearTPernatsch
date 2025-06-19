@@ -1,0 +1,41 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       SCIANTIX;
+    location    "583.522882481/fuelBehaviourRegion/uniform";
+    object      SCIANTIX_Fields;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+fgr produced (in the OFFBEAT model) 4.29432e+14;
+
+fgr produced (in the corresponding 360 degree rod) 1.54595e+17;
+
+fgr released (in the OFFBEAT model) 3.24036e+10;
+
+fgr released (in the corresponding 360 degree rod) 1.16653e+13;
+
+fgr%            0.00754569;
+
+He produced (in the OFFBEAT model) 3.14916e+12;
+
+He produced (in the corresponding 360 degree rod) 1.1337e+15;
+
+He released (in the OFFBEAT model) 0;
+
+He released (in the corresponding 360 degree rod) 0;
+
+He%             0;
+
+
+
+// ************************************************************************* //

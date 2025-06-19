@@ -20,7 +20,7 @@ regions
     fluidRegion             (fluidRegion)
     neutroRegion            (neutroRegion)
     thermoMechanicalRegion  (thermoMechanicalRegion)
-    // fluidRegionNB           (fluidRegionNB)
+    //fluidRegion.baffleLess  (fluidRegion.baffleLess)
 );
 
 // ************************************************************************* //

@@ -1,0 +1,124 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      nuclearData;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Relevant for both pointKinetics and diffusionNeutronics
+
+fastNeutrons    true;
+
+updatePowerFields
+{
+	fuelBehaviourRegion lhgr;
+}
+
+//- Relevant only for pointKinetics
+
+promptGenerationTime 4.74e-7;
+
+Beta
+(
+    5.42e-5
+    59.23e-5
+    21.34e-5
+    51.96e-5
+    114.32e-5
+    47.47e-5
+    41.60e-5
+    20.68e-5
+    
+);
+
+lambda
+(
+    1.247e-2
+    2.829e-2
+    4.252e-2
+    1.33e-1
+    2.925e-1
+    6.665e-1
+    1.6325
+    3.555
+);
+
+
+feedbackCoeffDoppler 761e-5;
+
+feedbackCoeffTFuel -0.195e-5;
+
+feedbackCoeffTClad 0.086e-5;
+
+feedbackCoeffTCool 0;
+
+feedbackCoeffRhoCool -1.129e-5;
+
+feedbackCoeffTStruct 0;
+
+feedbackCoeffTStructMech 0;
+
+absoluteDrivelineExpansionCoeff 1.28219e-4;
+
+controlRodReactivityMap
+(
+	( 0 0 ) //- Pair in the form ( expans(m) reacitivity(-) )
+	( 0.05 0)
+	( 0.1 0)
+	(0.15	0)
+	(0.2 0)
+);
+
+
+fuelFeedbackZones
+(
+    "IFFE"
+    "OFFE"
+    "IFFI"
+    "OFFI"
+);
+
+coolFeedbackZones
+(
+    "IFFE"
+    "OFFE"
+    "IFFI"
+    "OFFI"
+    "plenum"
+    "upperSA"
+    "lowerSA"
+);
+drivelineFeedbackZones
+(
+    "upperSA"
+);
+TStructFeedbackZones
+(
+    "upperSA"
+);
+
+//controlRodReactivityMap ( ( 0.1 -0.01 ) ( 0 0 ) ( -0.1 0.01 ) );
+
+//- Evolution of the external reactivity
+externalReactivityTimeProfile
+{
+    type        table;
+    table       table
+    (
+        (0  0    )
+        (5    0)
+        (15    400e-5) //- i.e. 57.67131 pcm, == 0.2*Beta
+    );
+}
+
+// ************************************************************************* //

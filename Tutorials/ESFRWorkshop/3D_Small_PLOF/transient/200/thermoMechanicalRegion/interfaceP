@@ -11,7 +11,7 @@ FoamFile
     format      ascii;
     arch        "LSB;label=32;scalar=64";
     class       volScalarField;
-    location    "200/thermoMechanicalRegion";
+    location    "100/thermoMechanicalRegion";
     object      interfaceP;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

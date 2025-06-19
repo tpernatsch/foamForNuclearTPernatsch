@@ -1,0 +1,264 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain;
+neutronicsSolver        fromLatestTime;
+elementTransport        byList;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              constantLhgr;
+burnup                  fromPower;
+fastFlux                timeDependentAxialProfile;
+corrosion               fromLatestTime;
+gapGas                  FRAPCON;
+fgr                     SCIANTIX;
+sliceMapper             byMaterial;
+
+elementTransportOptions
+{
+    solvers        ( porosityTransport );
+
+    porosityOptions
+    {
+        advectiveTerm   true;           // True by default
+        diffusiveTerm   false;           // True by default
+        boundedAdvectionTerm true;
+    }
+}
+
+
+globalOptions
+{
+    pinDirection            (0 0 1);
+    reactorType             "SFR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     off;
+}
+
+rheologyOptions
+{
+    thermalExpansion on;
+    modifiedPlaneStrain on;
+    springModulus   3500;
+    coolantPressureList
+    {
+        file            "$FOAM_CASE/constant/systemPressure";
+        outOfBounds     clamp;
+    }
+    planeStress     off;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;  
+    cylindricalStress   on;  
+
+    multiMaterialCorrection
+    {
+        type                    uniform2D;
+        defaultWeights          1;
+    }
+}
+
+fgrOptions
+{
+    nFrequency  1;
+    relax       0.1;
+    addToRegistry true;
+}
+
+gapGasOptions
+{
+    gapPatches ( fuelOuter cladInner );
+    holePatches ( fuelInner );
+    topFuelPatches    ( fuelTop);
+    bottomFuelPatches ( fuelBottom);
+
+    gapVolumeOffset 0.0;
+    gasReserveVolume 0.0;
+    gasReserveTemperature 290;
+}
+
+heatSourceOptions
+{
+    externalPowerUpdate yes;
+    lhgr     27782.22;
+    //timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type constantTabulated;
+        #include "axialProfile";
+        axialInterpolationMethod step;
+        burnupInterpolationMethod linear;
+    }
+
+    radialProfile
+    {
+        type    flat;
+    }
+
+    materials ( fissile fertile );
+}
+
+
+fastFluxOptions
+{
+    timePoints  ( 0.0 0.083333 300.08333  600.08333  900.08333);
+    fastFlux    ( 0.0 1.5945e15  1.6088e15    1.6350e15 1.6350e15);
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type timeDependentTabulated;
+        #include "axialFluxProfile";
+        axialInterpolationMethod linear;
+        burnupInterpolationMethod linear;
+    }
+
+    materials ( fissile fertile cladding );
+}
+
+
+materials
+{
+    writeMaterialProperties true;
+    fissile
+    {
+        material                    UPuO2;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        densificationModel          UO2FRAPCON;
+        swellingModel               UO2FRAPCON;
+        relocationModel             UO2FRAPCON;
+        conductivityModel           UPuO2Philipponeau;
+
+        enrichment                  0.00257;
+        rGrain                      6.0e-06;
+        GdContent                   0.0;
+        theoreticalDensity          11039;
+        densityFraction             0.955;
+        dishFraction                0.0;
+
+        resinteringDensityChange    0.3;
+        GapCold                     0.155e-3;
+        DiamCold                    9.36e-3;
+        recoveryFraction            0.5;
+        outerPatch                  "fuelOuter";
+
+        isotropicCracking           on;
+        nCracksMax                  12;
+
+        rheologyModel               elasticity;
+        
+        poreVelocityModel MOXLackey;
+        
+        ratioUMetal         0.8196;
+        ratioPuMetal        0.1790;
+        ratioAmMetal        0.0014;
+        oxygenMetalRatio    1.970;
+        
+        nSlices 15;
+        
+        isotopesU
+        (
+            0.000e-2 // U234
+            0.253e-2 // U235
+            0.000e-2 // U236
+           99.747e-2 // U238
+        );
+        
+        isotopesPu
+        (
+             3.625e-2 // Pu238 
+            47.904e-2 // Pu239
+            29.859e-2 // Pu240
+             8.252e-2 // Pu241
+            10.360e-2 // Pu242
+        );
+        
+        isotopesAm
+        (
+            1.0
+            0.0
+        );
+    }
+        
+    fertile
+    {
+        material                    UO2;
+        Tref                        Tref [ 0 0 0 1 0 ] 293;
+
+        densificationModel          UO2FRAPCON;
+        swellingModel               UO2FRAPCON;
+        relocationModel             UO2FRAPCON;
+
+        enrichment                  0.00257;
+        rGrain                      6.0e-06;
+        GdContent                   0.0;
+        theoreticalDensity          10950;
+        densityFraction             0.955;
+        dishFraction                0.0;
+
+        resinteringDensityChange    0.3;
+        GapCold                     0.155e-3;
+        DiamCold                    9.36e-3;
+        recoveryFraction            0.5;
+        outerPatch                  "fuelOuter";
+
+        isotropicCracking           on;
+        nCracksMax                  12;
+
+        rheologyModel               elasticity;
+        
+        poreVelocityModel MOXLackey;
+        
+        nSlices 5;
+    }
+
+    cladding
+    {
+        material                steel1515Ti;
+        Tref                    Tref [ 0 0 0 1 0 ] 293;
+
+        PoissonRatioModel "1515TiTobbe";
+
+        rheologyModel   misesPlasticCreep;
+        rheologyModelOptions
+        {
+            plasticStrainVsYieldStress table
+            (
+                (0    250e6)
+            );
+
+            creepModel TobbeAIM1CreepModel;
+            relax 0.7;
+        }
+
+        nSlices 1;
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,31 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyTopoChanger;
+    location    "constant/polyMesh";
+    object      meshModifiers;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+1
+(
+couple0
+{
+    type            perfectInterface;
+    active          true;
+    faceZoneName    upperSA_to_plenumplenum_to_upperSACutFaceZone;
+    masterPatchName upperSA_to_plenum;
+    slavePatchName  plenum_to_upperSA;
+}
+)
+
+// ************************************************************************* //

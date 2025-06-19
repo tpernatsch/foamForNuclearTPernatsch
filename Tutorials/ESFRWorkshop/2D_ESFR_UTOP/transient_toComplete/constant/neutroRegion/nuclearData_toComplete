@@ -1,0 +1,173 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      nuclearData;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//-------------------------------------//
+//-----------NUCLEAR DATA--------------//
+//-------------------------------------//
+
+// From Serpent, do not change
+
+promptGenerationTime 4.74e-7;
+
+Beta
+(
+    5.42e-5
+    59.23e-5
+    21.34e-5
+    51.96e-5
+    114.32e-5
+    47.47e-5
+    41.60e-5
+    20.68e-5
+    
+);
+
+lambda
+(
+    1.247e-2
+    2.829e-2
+    4.252e-2
+    1.33e-1
+    2.925e-1
+    6.665e-1
+    1.6325
+    3.555
+);
+
+//-------------------------------------//
+//-------REACTIVITY COEFFICIENTS-------//
+//-------------------------------------//
+
+//- If fastNeutrons on feedbackCoeffDoppler represents the Doppler Constant,
+// otherwise the Doppler coefficient
+fastNeutrons    ;
+
+
+
+// From Serpent:
+    //Doppler constant = 761e-5 pcm
+    // T Fuel Expansion Coefficient =  -0.195e-5 pcm/K
+    // T Clad Feedback Coefficient = 0.086e-5 pcm/K
+    // Coolant density coefficient = -1.129e-5 pcm/kg/m^3
+
+feedbackCoeffDoppler ;
+
+feedbackCoeffTFuel ;
+
+feedbackCoeffTClad ;
+
+feedbackCoeffTCool ;
+
+feedbackCoeffRhoCool ;
+
+feedbackCoeffTStruct ;
+
+feedbackCoeffTStructMech ;
+
+
+// Additionally, one can include the effects of the ACS expansion
+// One can supply thermal expansion coefficient for the driveline 
+// and a reactivty map (expansion vs reactivity
+
+// For further exercises, you can use alpha = 1.28219e-4 m/K
+
+absoluteDrivelineExpansionCoeff 1.28219e-4;
+
+controlRodReactivityMap
+(
+	( 0 0 ) //- Pair in the form ( expans(m) reacitivity(-) )
+	( 0.05 0)
+	( 0.1 0)
+	(0.15	0)
+	(0.2 0)
+);
+
+
+// In order to compute the reactivity effects, the field variables need to be 
+// integrated. The PK solver allows to select only a sub-set of mesh regions
+// where the integration is performed. These can be specified for each region, 
+// otherwise they are defaulted to the whole geometry
+
+
+// For fuel/clad, only the core regions are relevant i.e.,
+// IFFI
+// OFFI
+// IFFE
+// OFFE
+fuelFeedbackZones
+(
+
+);
+
+// For the coolant they all are relevant
+// IFFI
+// OFFI
+// IFFE
+// OFFE
+// diagrid
+// plenum
+// upperSA
+// lowerSA
+
+coolFeedbackZones
+(
+);
+
+// Only the upperSA is relevant for the driveline expansion
+
+drivelineFeedbackZones
+(
+
+);
+
+
+
+
+
+//-------------------------------------//
+//---------EXTERNAL REACTIVITY---------//
+//-------------------------------------//
+
+// Simulate a 400 pcm linear insertion in 10 seconds, starting from 5 to 15
+
+
+externalReactivityTimeProfile
+{
+    type        table;
+    table       table
+    (
+        (    ) // (time  pcm)
+        (    )
+        (    ) 
+    );
+}
+
+
+//-------------------------------------//
+//---------COUPLING OPTIONS------------//
+//-------------------------------------//
+
+// This card is used if neither volumetric or surface mapping are viable to update
+// power in other regions from the PK solver. In this case, the linear heat rate
+// of the fuel region is multiplied by powerNew/powerOld by the PK solver
+
+updatePowerFields
+{
+	fuelBehaviourRegion lhgr;
+}
+
+// ************************************************************************* //

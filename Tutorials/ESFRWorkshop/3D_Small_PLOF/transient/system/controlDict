@@ -15,7 +15,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-// Run from 200 to 500s, with adaptive time step, writing every 10 seconds
+// Run from 200 to 400, with adaptive time step, writing every 10 seconds
 
 application     GeN-Foam;
 
@@ -25,7 +25,7 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         500;
+endTime         400;
 
 deltaT          1;
 
