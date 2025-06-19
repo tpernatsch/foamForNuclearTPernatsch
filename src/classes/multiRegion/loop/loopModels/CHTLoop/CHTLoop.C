@@ -135,6 +135,7 @@ void Foam::solvers::CHTLoop::createSolvers(word name)
     minResidual_ = multiPhysicsDict_.get<scalar>("minResidual");
     maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
     useHTC_ = CHTProperties_.getOrDefault<bool>("useHTC", false);
+    oneWayCoupling_ = CHTProperties_.getOrDefault<bool>("oneWayCoupling", false);
 
 
         // Get indices of solvers
@@ -197,31 +198,61 @@ void Foam::solvers::CHTLoop::createSolvers(word name)
 
 void Foam::solvers::CHTLoop::correctPhysics()
 {
-    // Start loop 
-
-    scalar iterN(0);
-    scalar residual(0);
-
-    do 
+    if(oneWayCoupling_)
     {
-        // fromSolidToFluid();
-        solvers_[fluidSolverID_].correctPhysics();
-        if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
-            fromFluidToSolid();
-        solvers_[solidSolverID_].correctPhysics();
-        if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
-            fromSolidToFluid();
-
-        
-        if(meshHandler_->returnMesh(solidRegionName_).time().value()>2)
-            residual = calcFSIResidual();
-
-        ++iterN;
-
-        if(residual<minResidual_)
-            Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
+        word targetRegion  = CHTProperties_.get<word>("targetRegion");
+        if(targetRegion == fluidRegionName_)
+        {
+            solvers_[solidSolverID_].correctPhysics();
+            if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
+                fromSolidToFluid();
+            solvers_[fluidSolverID_].correctPhysics();
+        }
+        else if(targetRegion == solidRegionName_)
+        {
+            solvers_[fluidSolverID_].correctPhysics();
+            if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
+                fromFluidToSolid();
+            solvers_[solidSolverID_].correctPhysics();            
+        }
+        else
+        {
+            FatalErrorInFunction
+            << "Target region must be either "
+            <<  fluidRegionName_
+            << " or " 
+            << solidRegionName_ << endl
+            << exit(FatalError);
+        }
     }
-    while(residual>minResidual_ && iterN < maxIterations_); 
+    
+    else
+    {
+        // Start loop 
+
+        scalar iterN(0);
+        scalar residual(0);
+        do 
+        {
+            // fromSolidToFluid();
+            solvers_[fluidSolverID_].correctPhysics();
+            if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
+                fromFluidToSolid();
+            solvers_[solidSolverID_].correctPhysics();
+            if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
+                fromSolidToFluid();
+
+            
+            if(meshHandler_->returnMesh(solidRegionName_).time().value()>2)
+                residual = calcFSIResidual();
+
+            ++iterN;
+
+            if(residual<minResidual_)
+                Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
+        }
+        while(residual>minResidual_ && iterN < maxIterations_); 
+    }
 }
 
 

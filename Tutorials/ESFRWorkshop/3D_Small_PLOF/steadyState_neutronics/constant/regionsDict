@@ -28,7 +28,7 @@ regionSolvers
 {
     Level_0
     {
-        neutroRegion SP3Neutronics;
+        neutroRegion diffusionNeutronics;
     }
 }
 

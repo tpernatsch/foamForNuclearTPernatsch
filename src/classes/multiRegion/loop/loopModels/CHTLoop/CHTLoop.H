@@ -132,6 +132,7 @@ protected:
         scalar minResidual_;
         label maxIterations_;
         bool useHTC_;
+        bool oneWayCoupling_;
 
 
 private:
