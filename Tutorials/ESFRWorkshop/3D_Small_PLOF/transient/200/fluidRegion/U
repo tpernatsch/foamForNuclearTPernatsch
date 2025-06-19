@@ -18,7 +18,7 @@ FoamFile
 
 dimensions      [0 1 -1 0 0 0 0];
 
-internalField   nonuniform List<vector> 
+internalField   nonuniform List<vector>
 23322
 (
 (-3.3797e-13 -5.218866e-14 4.559114)
@@ -23347,12 +23347,12 @@ internalField   nonuniform List<vector>
 ;
 
 
-// The inlet BC will be changed to be a time-dependent one. The velocity is halved 
+// The inlet BC will be changed to be a time-dependent one. The velocity is halved
 // every 10 seconds, until it reaches 25% of nominal core flow
 
 // The BC which will be used is uniformFixedValue - an OpenFOAM BC.
 // If uniformValue supplied is "table", then a time-table is specified
-// as 
+// as
     // unformValue table
     // (
     //     (time_i (v_x v_y v_z)_i)
@@ -23366,7 +23366,7 @@ internalField   nonuniform List<vector>
         // (300    (0 0 4.559114))
         // (310    (0 0 2.279557))
         // (320    (0 0 1.1397785))
-        // (3000  (0 0 1.1397785)) 
+        // (3000  (0 0 1.1397785))
 
 boundaryField
 {
@@ -23377,13 +23377,13 @@ boundaryField
     bottom
     {
         type            uniformFixedValue;
-        uniformvalue    table
+        uniformValue    table
         (
             (200     (0 0 4.559114))
             (300    (0 0 4.559114))
             (310    (0 0 2.279557))
             (320    (0 0 1.1397785))
-            (3000  (0 0 1.1397785))   
+            (3000  (0 0 1.1397785))
         );
     }
     walls
