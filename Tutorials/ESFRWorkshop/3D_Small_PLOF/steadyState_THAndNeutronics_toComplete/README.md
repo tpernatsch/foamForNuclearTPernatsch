@@ -7,7 +7,7 @@ In this case, a steady-state fully coupled neutronics and thermalhydraulics simu
 # Tasks
 
 1. **Complete the regionsDict dictionary.** In regionDict, change the regionSolvers and mappings entries to correctly set-up the physics of the problem. In order to select the correct coupling fields, please refer to the field names table in https://foam-for-nuclear.gitlab.io/GeN-Foam/user_guide/coupling/
-2. **Activate remove baffles options.** In system/controlDict, activate the removeBaffles option for the fluidRegion. This is necessary to correctly perform the mapping between fluid and neutroncis regions
+2. **Complete the controlDict.** In system/controlDict, follow the comments to fill the dictionary to set up the main simulation parameters
 3. **Run case.** Run the simulation with GeN-Foam | tee log.GeN-Foam. To run in parallel do:
    - `decomposePar -allRegions`
    - `mpirun -np 4 GeN-Foam -parallel | tee log.GeN-Foam`

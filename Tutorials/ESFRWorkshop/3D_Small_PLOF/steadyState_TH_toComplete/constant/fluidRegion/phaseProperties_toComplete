@@ -20,8 +20,7 @@ FoamFile
 // ------------------------------------------------------------------------- //
 
 // This is a simplified ESFR-like core. The geometry parameters do not correspond to any specific fuel
-// design, but they are chosen to create realsitic parameters. A more realistic phase-properties defintion
-// is found in the next tutorial
+// design, but they are chosen to create realsitic parameters.
 
 // Volume fraction = 0.718520968 (volumeFraction)
 // Hydraulic diameter = 0.00365; (Dh)
@@ -43,107 +42,106 @@ FoamFile
 //      Clad cp =  500 (cladCp)
 //      Clad k =  20 (cladK)
 
-// FDM parameters
-//      Fuel n-cells = 30 (fuelMeshSize)
-//      Clad n-cells = 5 (cladMeshSize)
-//      Fuel T0 = 668K (fuelT)
-//      Clad T0 = 668K (cladT)
-//      Wrappers T0 = 668 K (T)
 
 structureProperties
 {
     "diagrid:axialReflector:radialReflector:follower:controlRod"
     {
-        volumeFraction      ;
-        Dh                  ; //hydraulic diameter
+        volumeFraction      0.718520968;
+        Dh                  0.00365;; //hydraulic diameter
 
         passiveProperties // properties of the passive (non-power-producing)
               // structure. In this case, the metallic wrapper.
               // As a matter of fact one should include also
               // the dummy pins. Not done here for simplcity.
         {
-            volumetricArea  ;
-            rhoCp           ;
-            T               ;
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
         }
 
     }
 
     "innerCore"
     {
-        volumeFraction      ;
-        Dh                  ;
+        // Generic porous media properties
+
+        volumeFraction      ...;
+        Dh                  ...;
 
         powerModel // power production model for the sub-scale structure
         {
-            type                nuclearFuelPin;
+            // The available model for a subscale fuel pin is "nuclearFuelPin"
+            // Try banana method to see available models!!!
+            type                ...; 
 
-            powerDensity        0; 
-            fuelInnerRadius     ;
-            fuelOuterRadius     ;
-            cladInnerRadius     ;
-            cladOuterRadius     ;
-            fuelMeshSize        ;
-            cladMeshSize        ;
-            fuelRho             ;
-            fuelCp              ;
-            cladRho             ;
-            cladCp              ;
-            gapH                ;
-            fuelK               ;
-            cladK               ;
-            fuelT               ;
-            cladT               ;
+            powerDensity        0; // initialzation value if field not found in 0
+
+            // Geometrical paramters. Used to both calculate temperature distribution 
+            // and volumetric area
+
+            fuelInnerRadius     ...;
+            fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     ...;
+
+            // Sub-scale discretization (FDM)
+            fuelMeshSize        30;
+            cladMeshSize        5;
+
+            // Materials properties
+            fuelRho             ...;
+            fuelCp              250;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+
+            // Initialization values
+            fuelT               668;
+            cladT               668;
         }
 
         passiveProperties // these are the properties of the metallic wrappers
         {
-            volumetricArea  ;
-            rhoCp           ;
-            T               ;
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
         }
     }
 
     "outerCore"
     {
-        volumeFraction      ;
-        Dh                  ;
+        volumeFraction      0.718520968;
+        Dh                  0.00365;; //hydraulic diameter
 
         powerModel // power production model for the sub-scale structure
         {
             type                nuclearFuelPin;
-
-            // The volumetricArea keyword is now deprecated for the
-            // nuclearFuelPin and heatedPin powerModels, as it can be shown
-            // that by averaging a cylindrical pin (or a bundle of pins) over
-            // a volume of any shape, the interfacialArea and volumeFraction
-            // of the resulting porous pin structure are not independent, yet
-            // are tied by volumetricArea = 2*volumeFraction/outerPinRadius
-            // volumetricArea      267.855;
-            powerDensity        0;  //- fields on disk have priority, if they
-                                    //  are not found, this value is used
-            fuelInnerRadius     ;
-            fuelOuterRadius     ;
-            cladInnerRadius     ;
-            cladOuterRadius     ;
-            fuelMeshSize        ;
-            cladMeshSize        ;
-            fuelRho             ;
-            fuelCp              ;
-            cladRho             ;
-            cladCp              ;
-            gapH                ;
-            fuelK               ;
-            cladK               ;
-            fuelT               ;
-            cladT               ;
+            powerDensity        0; 
+            fuelInnerRadius     0.0012;
+            fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     0.005365;
+            fuelMeshSize        30;
+            cladMeshSize        5;
+            fuelRho             10480;
+            fuelCp              250;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               668;
+            cladT               668;
         }
 
         passiveProperties // these are the properties of the metallic wrappers
         {
-            volumetricArea  ;
-            rhoCp           ;
-            T               ;
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
         }
     }
 }
@@ -175,23 +173,25 @@ regimeMapModels
 // --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
 // ------------------------------------------------------------------------- //
 
-// For drag model, the typical // f = 0.687 * Re^(-0.25) (ReynoldsPower) is used 
-// For heat transfer coefficient byRegime model (NusseltReynoldsPrandtlPower) is used with
-// Nu = 4 for laminar and Nu = 4.82 + 0.0185*Re^(0.827)*Pr^(0.827) for turbulent
+
+
 
 physicsModels
 {
+    // For drag model, the typical // f = 0.687 * Re^(-0.25) is used 
     dragModels
     {
         "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
         {
-            type ;
-            coeff ;
-            exp ;
+            type    ReynoldsPower; // f = coeff*Re^(exp)
+            coeff ...;
+            exp ...;
 
         }
     }
 
+    // For heat transfer coefficient use:
+    // Nu = 4 for laminar and Nu = 4.82 + 0.0185*Re^(0.827)*Pr^(0.827) for turbulent
     heatTransferModels
     {
         "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
@@ -205,14 +205,18 @@ physicsModels
             {
                 // Nu = const + coeff * Re^expRe * Pr^expPr
                 type    NusseltReynoldsPrandtlPower;
-                const   ;
-                coeff   ;
-                expRe   ;
-                expPr   ;
+                const   ...;
+                coeff   ...;
+                expRe   ...;
+                expPr   ...;
             }
             "turbulent"
             {
-
+                type    NusseltReynoldsPrandtlPower;
+                const   ...;
+                coeff   ...;
+                expRe   ...;
+                expPr   ...;
             }
         }
     }

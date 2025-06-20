@@ -15,6 +15,16 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+//--------------------------------------//
+//-----------LINEAR SOLVERS-------------//
+//--------------------------------------//
+
+// Linear solvers are selected here. These are the same as OpenFOAM, complete list is available at
+// https://www.openfoam.com/documentation/user-guide/6-solving/6.3-solution-and-algorithm-control
+
+// For the sake of the workshop, do not change
+
+
 solvers
 {
     p_rgh
@@ -56,7 +66,64 @@ solvers
     }
 }
 
-// Use two correctors and 6 outer correctors. Solve for both energy and mechanics
+//--------------------------------------//
+//-------PIMPLE LOOP SOLUTION-----------//
+//--------------------------------------//
+
+// The TH solution is solved using a PIMPLE loop.
+// The PIMPLE loop merges the SIMPLE and PISO loops
+// The general workflow goes as follow
+
+                                                                                 
+//                           ┌──────────────────────────────┐                       
+//                           │                              │                       
+//                           │                              │                       
+//                           │   Correct Momentum for U     ◄─────────────┐         
+//                           │                              │             │         
+//                           │                              │             │         
+//                           └──────────────────────────────┘             │         
+//                                          |                             │         
+//                                          |                             │         
+//                                          |                             │         
+//                                          |                             │         
+//                           ┌──────────────────────────────┐             │         
+//                           │                              │             │         
+//                           │                              │             │         
+//         ┌─────────────────►    Solve U without grad(p)   │             │         
+//         │                 │                              │             │         
+//         │                 │                              │             │         
+//         │                 └──────────────────────────────┘             │         
+//         │                                |                             │         
+//         │                                |                        Outer Corrector 
+//         │                                |                             │         
+//         │                                |                             │         
+//         │                 ┌──────────────────────────────┐             │         
+//         │                 │                              │             │         
+//         │                 │                              │             │         
+//   Inner Corrector         │   Solve Pressure Equation    │             │         
+//         │                 │                              │             │         
+//         │                 │                              │             │         
+//         │                 └──────────────────────────────┘             │         
+//         │                                |                             │         
+//         │                                |                             │         
+//         │                                |                             │         
+//         │                                |                             │         
+//         │                 ┌──────────────────────────────┐             │         
+//         │                 │                              │             │         
+//         │                 │                              │             │         
+//         │                 │  Re-compute U explicitly     │             │         
+//         └─────────────────┼                              ┼─────────────┘         
+//                           │                              │                       
+//                           └──────────────────────────────┘                       
+
+// For the sake of this exercise, please select 
+//  2 inner correctors (nCorrectors)
+//  6 outer correctors (nOuterCorrectors)
+
+// With solveEnergy and solveFluidMechanics one
+// can specify if energy and momentum need to be solved or not
+// they are bools (true/false). Please enable solution of both
+
 PIMPLE
 {
     nCorrectors     ;
@@ -64,10 +131,17 @@ PIMPLE
     solveEnergy     ;
     solveFluidMechanics ;
 
+    // Do not change
     momentumMode    faceCentered;
 }
 
-relaxationFactors
+
+//--------------------------------------//
+//-------RELAXATION FACTORS-------------//
+//--------------------------------------//
+
+//Here the user can specify relaxation factors for the equations
+// In this exercise no relaxation will be used
 {
     equations
     {

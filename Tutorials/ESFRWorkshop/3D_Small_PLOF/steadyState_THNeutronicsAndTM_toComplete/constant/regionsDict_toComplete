@@ -30,7 +30,18 @@ regionSolvers
 }
 
 
-// Add displacement based on field named "disp"
+// ------------------------------------------------------------------------- //
+// ----------------- MESHES TO DEFORM -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+// Using this sub-dictionary, one can specify for each regions if the mesh
+// has to be displaced and, if so, which field to be used for that
+// The field has to be a vectorial field which represents the displacement
+
+// In this exercise, we will deform the neutronics mesh using the displacement
+// field called "disp". This field is not computed by the neutronics solver,
+// hence we will have to make sure that the field is mapped from the TM
+// solver!
 
 meshDeformation
 {
@@ -41,10 +52,15 @@ meshDeformation
 }
 
 
+
+// ------------------------------------------------------------------------- //
+// ----------------- MESHES TO DEFORM -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
 // Add thermomechanics mappings too:
 
 //TM --> neutronics:
-    // meshDisp --> disp
+    // meshDisp --> disp      IMPORTANT FOR DISPLACEMENT
 
 // fluid --> TM:
     // T.passiveStructure --> TStructFromTH

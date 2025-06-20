@@ -7,7 +7,7 @@ In this case, a steady-state fully coupled neutronics,nthermalhydraulics and the
 # Tasks
 
 1. **Complete the regionsDict dictionary.** In regionDict, change the regionSolvers and mappings entries to correctly set-up the physics of the problem. In order to select the correct coupling fields, please refer to the field names table in https://foam-for-nuclear.gitlab.io/GeN-Foam/user_guide/coupling/
-2. **Run case.** Run the simulation with GeN-Foam | tee log.GeN-Foam. To run in parallel do:
+2. **Run case.** Run the simulation with `GeN-Foam | tee log.GeN-Foam`. To run in parallel do:
    - `decomposePar -allRegions`
    - `mpirun -np 4 GeN-Foam -parallel | tee log.GeN-Foam`
 3. **Plot Results** Run the "plotResults.py" file to study the convergence of k-eff and fuel and coolant temperatures. Compare the results to those in which core expansions were not included

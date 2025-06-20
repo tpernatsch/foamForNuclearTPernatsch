@@ -58,8 +58,8 @@ mappings
     {
         neutroRegion //source region 
         {
-            targetFields ();
-            sourceFields ();
+            targetFields (); // this is the name of the field in the target region 
+            sourceFields (); // this is the name of the field in the source region 
         }
     }
     neutroRegion // target region

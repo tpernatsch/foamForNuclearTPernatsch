@@ -17,32 +17,52 @@ FoamFile
 
 dimensions      [0 0 0 1 0 0 0];
 
-//Hot-zero-power T = 668
+// Dirichlet BC--> 
+// type fixedValue;
+// value uniform *value*
+
+// Neumann BC --> 
+// type zeroGradient (if grad = 0)
+// type fixedGradient; 
+// value uniform *gradientValue* (if grad!=0) 
+
+// Robin BC --> 
+// type mixed;
+// refValue uniform *refValue*
+// refGradient uniform *refGrad*
+// valueFraction uniform *valueFraction*
+//where
+// phi_wall = valueFraction * refValue + (1-valueFraction)* (refGrad + cellValue)
+
+//For more details about the standard BC, please refer to 
+// https://www.openfoam.com/documentation/user-guide/a-reference/a.4-standard-boundary-conditions
+
+
 
 internalField   uniform  668;
 
 boundaryField
 {
-    top
+    top // use grad=0
     {
-        type ;
+        type  ...;
     }
-    bottom
+    bottom // use value = 668K
     {
-        type ;
-        value uniform ;
+        type  ...;
+        value uniform ...;
     }
-    walls
+    walls // use grad=0 
     {
-        type ;
+        type ...;
     }
-    baffle0
+    baffle0 // use grad=0 
     {
-        type ;
+        type ...;
     }
-    baffle1
+    baffle1 // use grad=0 
     {
-        type ;
+        type ...;
     }
 }
 

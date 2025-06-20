@@ -16,6 +16,6 @@ In this case, a steady-state stand-alone thermalhydraulics simulation of a small
    - Create a powerModel for the inner and outer core zones using the nuclearFuelPin model.
    - Assign drag and heat transfer coefficient models to all zones for both laminar and turbulent scenarios.
 4. **Specify PIMPLE loop specs.** In the system/fluidRegion/fvSolution file, modify the PIMPLE entry to perform PIMPLE loops with two correctors and 6 outer correctors
-6. **Run case.** Run the simulation with GeN-Foam | tee log.GeN-Foam. To run in parallel do:
+6. **Run case.** Run the simulation with `GeN-Foam | tee log.GeN-Foam`. To run in parallel do:
    - `decomposePar -region fluidRegion`
    - `mpirun -np 4 GeN-Foam -parallel | tee log.GeN-Foam`
