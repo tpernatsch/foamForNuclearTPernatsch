@@ -6,10 +6,10 @@ Starting from the converged steady state, perform a transient simulation of a Pr
 
 # Tasks
 
-1. **Copy the 100s folder from the steady state into the tranient folder.** The time-folder 100 previously obtained will be used as starting time folder for the transient simulation. After copying the file, please make sure to delete the 100/neutroRegion/polyMesh folder. This, in fact, corresponds to the deformed mesh file. If this mesh is used at restart:
+1. **Copy the 200s folder from the steady state into the tranient folder.** The time-folder 200 previously obtained will be used as starting time folder for the transient simulation. After copying the file, please make sure to delete the 200/neutroRegion/polyMesh folder. This, in fact, corresponds to the deformed mesh file. If this mesh is used at restart:
    - The weights of the mesh-to-mesh mappings will be wrongly computed 
    - The displacement will be applied to an already-deformed mesh, duplicating the effect
-2. **Modify the 100/fluidRegion/U boundary file.** The IC will be the non-uniform result from the steady-state. The inlet BC however needs to be modified to recreate a time-varying BC. This is achieved using the OpenFOAM *uniformFixedValue* BC as follows:
+2. **Modify the 200/fluidRegion/U boundary file.** The IC will be the non-uniform result from the steady-state. The inlet BC however needs to be modified to recreate a time-varying BC. This is achieved using the OpenFOAM *uniformFixedValue* BC as follows:
 ```
 type              uniformFixedValue;
 uniformValue      table

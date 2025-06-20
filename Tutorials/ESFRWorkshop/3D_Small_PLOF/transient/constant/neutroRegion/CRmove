@@ -15,8 +15,8 @@ FoamFile
 }
 
 
-// We want to simulate a full control rod insertion 10 seconds from BOC (260s) which is completed in 
-// 0.25 seconds (260.25s) with an insertion speed of 9 m/s
+// We want to simulate a full control rod insertion 10 seconds from BOC (160s) which is completed in 
+// 0.25 seconds (160.25s) with an insertion speed of 9 m/s
 
 // control rods is called "controlRod" and follower is "follower"
 
@@ -24,8 +24,8 @@ zones
 ( 
     controlRod
     {
-        startTime 260;
-        endTime  260.25;
+        startTime 160;
+        endTime 160.25;
         speed 9; // positive entering the core
         initialDistanceFromMeshCR 0.0; // distance from the position defined in the mesh (postive towards the core) 
         followerName	follower; // name of the cellZone representing the follower

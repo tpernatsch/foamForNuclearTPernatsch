@@ -15,8 +15,8 @@ FoamFile
 }
 
 
-// We want to simulate a full control rod insertion 10 seconds from BOC (310s) which is completed in 
-// 0.25 seconds (310.25s) with an insertion speed of 9 m/s
+// We want to simulate a full control rod insertion 10 seconds from BOC (160s) which is completed in 
+// 0.25 seconds (160.25s) with an insertion speed of 9 m/s
 
 // control rods is called "controlRod" and follower is "follower"
 

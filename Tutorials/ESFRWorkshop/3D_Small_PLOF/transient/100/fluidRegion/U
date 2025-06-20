@@ -23355,19 +23355,14 @@ boundaryField
     bottom
     {
         type            uniformFixedValue;
-        uniformValue    table;
-        uniformValueCoeffs
-        {
-            values          
-4
-(
-(200 (0 0 4.559114))
-(250 (0 0 4.559114))
-(260 (0 0 2.279557))
-(270 (0 0 1.139779))
-)
-;
-        }
+        uniformValue    table
+        (
+            (100     (0 0 4.559114))
+            (150     (0 0 4.559114))
+            (160     (0 0 2.279557))
+            (170     (0 0 1.1397785))
+            (2000    (0 0 1.1397785)) 
+        );
         value           uniform (0 0 4.559114);
     }
     walls
