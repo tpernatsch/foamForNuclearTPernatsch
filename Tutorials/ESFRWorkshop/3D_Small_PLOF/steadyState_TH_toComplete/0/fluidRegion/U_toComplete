@@ -41,24 +41,24 @@ boundaryField
 {
     top // use starndard grad = 0
     {
-        type ;
+        type ...;
     }
     bottom // use dirichlet, with v_z = 4.559114016 m/s
     {
-       type ;
+       type ...;
        value uniform (); // its a vector!
     }
     walls // use "slip" BC, which sets velocity = 0 perpendicular to wall
     {
-        type ;
+        type ...;
     }
     baffle0 // use "slip" BC, which sets velocity = 0 perpendicular to wall
     {
-        type ;
+        type ...;
     }
     baffle1 // use "slip" BC, which sets velocity = 0 perpendicular to wall
     {
-        type ;
+        type ...;
     }
 }
 

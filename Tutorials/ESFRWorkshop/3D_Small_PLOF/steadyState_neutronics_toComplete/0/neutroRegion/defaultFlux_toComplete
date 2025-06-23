@@ -43,7 +43,7 @@ boundaryField
 {
     ".*" // this means "on all the boundaries"
     {
-        type        ;  // please set the flux value to 0
+        type       ... ;  // please set the flux value to 0
     }
 }
 

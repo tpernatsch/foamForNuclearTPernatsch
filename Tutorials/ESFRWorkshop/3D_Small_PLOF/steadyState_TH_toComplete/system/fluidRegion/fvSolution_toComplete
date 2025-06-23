@@ -126,10 +126,10 @@ solvers
 
 PIMPLE
 {
-    nCorrectors     ;
-    nOuterCorrectors ;
-    solveEnergy     ;
-    solveFluidMechanics ;
+    nCorrectors     ...;
+    nOuterCorrectors ...;
+    solveEnergy     ...;
+    solveFluidMechanics ...;
 
     // Do not change
     momentumMode    faceCentered;

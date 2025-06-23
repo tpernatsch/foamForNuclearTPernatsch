@@ -47,7 +47,7 @@ meshDeformation
 {
     neutroRegion
     {
-        displacementField ;
+        displacementField ...;
     }
 }
 
@@ -89,21 +89,21 @@ mappings
         }
         thermoMechanicalRegion
         {
-            sourceFields ();
-            targetFields ();
+            sourceFields (...);
+            targetFields (...);
         }
     }
     thermoMechanicalRegion
     {
         fluidRegion
         {
-            sourceFields ();
-            targetFields ();
+            sourceFields (...);
+            targetFields (...);
         }
         neutroRegion
         {
-            sourceFields ();
-            targetFields ();
+            sourceFields (...);
+            targetFields (...);
         }
     }
 }

@@ -46,12 +46,19 @@ elementTransportOptions
 
     porosityOptions
     {
-        advectiveTerm   true;           // True by default
-        diffusiveTerm   false;           // True by default
+        advectiveTerm   true;          
+        diffusiveTerm   false;      
         boundedAdvectionTerm true;
     }
 }
 
+
+//------------------------------------------//
+//-----------SOLVERS OPTIONS----------------//
+//------------------------------------------//
+
+// Options which apply to several solvers
+// These are generic simulation parameters
 
 globalOptions
 {
@@ -59,11 +66,14 @@ globalOptions
     reactorType             "SFR";
 }
 
+// Thermal solver options
+
 thermalSolverOptions
 {
     heatFluxSummary     off;
 }
 
+// Mechanics solver options
 rheologyOptions
 {
     thermalExpansion on;
@@ -89,12 +99,16 @@ mechanicsSolverOptions
     }
 }
 
+// Fission gas release options
+
 fgrOptions
 {
     nFrequency  1;
     relax       0.1;
     addToRegistry true;
 }
+
+// Gap model options
 
 gapGasOptions
 {
@@ -107,6 +121,8 @@ gapGasOptions
     gasReserveVolume 0.0;
     gasReserveTemperature 290;
 }
+
+// Power source options
 
 heatSourceOptions // Data from ESFR-SIMPLE benchmark WP 3
 {
@@ -130,6 +146,7 @@ heatSourceOptions // Data from ESFR-SIMPLE benchmark WP 3
     materials ( fissile fertile );
 }
 
+// Flux options
 
 fastFluxOptions
 {
@@ -150,7 +167,17 @@ fastFluxOptions
 
 
 
-// Inner fuel composition is 17.990 Pu% and 82.010 U% --> material name is UPuO2
+//------------------------------------------//
+//-----------MATERIALS PROPERTIES-----------//
+//------------------------------------------//
+
+// For each zone of the mesh, it is assumed that a different material is used
+// and material properties need to be specified.
+
+// For this exercise, the UPuO2 model available in the fuel behaviour solver
+// to model MOX fuel need to be completed to reflect the ESFR-SMART fuel composition
+
+// Inner fuel composition is 17.990 Pu% and 82.010 U% --> material name is "UPuO2"
 // Uranium enrichment is 0.257%
 // Pu composition is: 
 // 238: 3.625%
@@ -164,7 +191,7 @@ materials
     writeMaterialProperties true;
     fissile
     {
-        material                    ;
+        material                    ...;
         Tref                        Tref [ 0 0 0 1 0 ] 293;
 
         densificationModel          UO2FRAPCON;
@@ -209,7 +236,7 @@ materials
         
         isotopesPu
         (
-             3.625e-2 // Pu238 
+            3.625e-2 // Pu238 
             ... // Pu239
             ... // Pu240
             ... // Pu241

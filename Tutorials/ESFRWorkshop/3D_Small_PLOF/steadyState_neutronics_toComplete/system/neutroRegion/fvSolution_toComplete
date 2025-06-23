@@ -91,9 +91,9 @@ neutronTransport
 				                        // with explicit diffusion term
     aitkenAcceleration          false;
 
-    neutronIterationResidual     ; // required accuracy for the coupling
+    neutronIterationResidual     ...; // required accuracy for the coupling
 					                    // of different energy groups
-    maxNeutronIterations         ; // up to 3-400 if no acceleration techniques
+    maxNeutronIterations         ...; // up to 3-400 if no acceleration techniques
 }
 
 // ************************************************************************* //

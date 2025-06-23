@@ -64,19 +64,19 @@ fastNeutrons    ;
     // T Clad Feedback Coefficient = 0.086e-5 pcm/K
     // Coolant density coefficient = -1.129e-5 pcm/kg/m^3
 
-feedbackCoeffDoppler ;
+feedbackCoeffDoppler ...;
 
-feedbackCoeffTFuel ;
+feedbackCoeffTFuel ...;
 
-feedbackCoeffTClad ;
+feedbackCoeffTClad ...;
 
-feedbackCoeffTCool ;
+feedbackCoeffTCool ...;
 
-feedbackCoeffRhoCool ;
+feedbackCoeffRhoCool ...;
 
-feedbackCoeffTStruct ;
+feedbackCoeffTStruct ...;
 
-feedbackCoeffTStructMech ;
+feedbackCoeffTStructMech ...;
 
 
 // Additionally, one can include the effects of the ACS expansion
@@ -110,7 +110,9 @@ controlRodReactivityMap
 // OFFE
 fuelFeedbackZones
 (
-
+    "IFFI"
+    "OFFI"
+    ...
 );
 
 // For the coolant they all are relevant
@@ -125,13 +127,14 @@ fuelFeedbackZones
 
 coolFeedbackZones
 (
+    ...
 );
 
 // Only the upperSA is relevant for the driveline expansion
 
 drivelineFeedbackZones
 (
-
+    ...
 );
 
 
@@ -150,9 +153,9 @@ externalReactivityTimeProfile
     type        table;
     table       table
     (
-        (    ) // (time  pcm)
-        (    )
-        (    ) 
+        ( ...  ... ) // (time  pcm)
+        ( ...  ... )
+        ( ...  ... ) 
     );
 }
 

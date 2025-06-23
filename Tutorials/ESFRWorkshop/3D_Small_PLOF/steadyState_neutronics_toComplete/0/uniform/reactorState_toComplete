@@ -18,10 +18,10 @@ FoamFile
 // If the simulation is run in eigenvalue mode, keff represents the first guess
 // Else, this k-eff value is the term by which the fission source is divided
 
-keff            ;
+keff            ...;
 
 // This is the target value for eignevalue calculations 
 // Power is 800 MWth
-pTarget         ; // 
+pTarget         ...; // 
 
 // ************************************************************************* //
