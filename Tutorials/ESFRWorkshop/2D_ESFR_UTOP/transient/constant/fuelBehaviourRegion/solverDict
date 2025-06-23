@@ -27,7 +27,7 @@ rheology                byMaterial;
 
 heatSource              constantLhgr;
 burnup                  fromPower;
-fastFlux                timeDependentAxialProfile;
+fastFlux                fromLatestTime;
 corrosion               fromLatestTime;
 gapGas                  FRAPCON;
 fgr                     SCIANTIX;

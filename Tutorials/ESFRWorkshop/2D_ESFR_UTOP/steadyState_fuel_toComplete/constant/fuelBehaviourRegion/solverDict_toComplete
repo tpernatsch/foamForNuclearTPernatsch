@@ -126,7 +126,7 @@ gapGasOptions
 
 heatSourceOptions // Data from ESFR-SIMPLE benchmark WP 3
 {
-    timePoints  (  0.0 0.083333 300.08333  600.08333  900.08333 );
+    timePoints  (  0.0 7199.9712 25927199.971199997  51847199.971200004  77767199.9712 );
     lhgr        ( 0.0 27182.74  27609.12    27782.22 27782.22);
     timeInterpolationMethod linear;
 

@@ -11,7 +11,7 @@ FoamFile
     format      ascii;
     arch        "LSB;label=32;scalar=64";
     class       FRAPCON;
-    location    "583.522882481/fuelBehaviourRegion/uniform";
+    location    "51801860.86068268/fuelBehaviourRegion/uniform";
     object      gapGas;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -19,19 +19,19 @@ FoamFile
 massFractions   
 {
     Ar              0;
-    He              1;
-    Kr              1.25233e-08;
+    He              0.0381343;
+    Kr              0.0700837;
     Ne              0;
     Rn              0;
-    Xe              1.59353e-07;
+    Xe              0.891782;
 }
 ;
 
 gasPressureType fromModel;
 
-gapVolume (in the OFFBEAT model) 9.36255e-09;
-gapVolume (in the corresponding 360 degree rod) 3.37052e-06;
-gapTemperature  900.083;
+gapVolume (in the OFFBEAT model) 3.32829e-09;
+gapVolume (in the corresponding 360 degree rod) 1.19819e-06;
+gapTemperature  833.638;
 
 reserveVolume (in the OFFBEAT model) 0;
 reserveVolume (in the corresponding 360 degree rod) 0;
@@ -41,24 +41,24 @@ dishVolume (in the OFFBEAT model) 0;
 dishVolume (in the corresponding 360 degree rod) 0;
 dishTemperature 0;
 
-holeVolume (in the OFFBEAT model) 1.62669e-08;
-holeVolume (in the corresponding 360 degree rod) 5.85607e-06;
-holeTemperature 2178.28;
+holeVolume (in the OFFBEAT model) 1.66122e-08;
+holeVolume (in the corresponding 360 degree rod) 5.98039e-06;
+holeTemperature 1917.26;
 
-topPlenumVolume (in the OFFBEAT model) 9.73317e-09;
-topPlenumVolume (in the corresponding 360 degree rod) 3.50394e-06;
-topPlenumTemperature 859.193;
+topPlenumVolume (in the OFFBEAT model) 7.50866e-09;
+topPlenumVolume (in the corresponding 360 degree rod) 2.70312e-06;
+topPlenumTemperature 862.146;
 
-bottomPlenumVolume (in the OFFBEAT model) 1.89014e-07;
-bottomPlenumVolume (in the corresponding 360 degree rod) 6.80452e-05;
-bottomPlenumTemperature 669.589;
+bottomPlenumVolume (in the OFFBEAT model) 1.88669e-07;
+bottomPlenumVolume (in the corresponding 360 degree rod) 6.7921e-05;
+bottomPlenumTemperature 669.975;
 
-crackGasVolume (in the OFFBEAT model) 3.19133e-10;
-crackGasVolume (in the corresponding 360 degree rod) 1.14888e-07;
-crackGasTemperature 1482.16;
+crackGasVolume (in the OFFBEAT model) 2.62466e-09;
+crackGasVolume (in the corresponding 360 degree rod) 9.44878e-07;
+crackGasTemperature 1376.68;
 
-gasPressure     243716;
-gasMass         3.666e-08;
+gasPressure     449309;
+gasMass         9.61339e-07;
 
 
 // ************************************************************************* //

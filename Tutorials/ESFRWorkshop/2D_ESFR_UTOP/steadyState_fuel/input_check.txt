@@ -18,4 +18,4 @@ igas_effective_coefficient = 1
 igas_sweeping = 1
 imicro_cracking_span = 0
 0	0	0	0	
-2.77778e-06	0	0	0	
+0.24	0	0	0	

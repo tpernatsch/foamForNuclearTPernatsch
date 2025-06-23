@@ -24,4 +24,4 @@ Moreover, the PK solution is used to update the LHR in the fuel pin, so that bot
     - Define the different reactivity coefficients for fuel/cladding temperature and coolant density
     - Create the reactity map to simulate a 400 pcm insertion in 10 seconds, starting from 5 s.
     - (Optional) Add the CR reactivity map to simulate CR driveline expansion
-3. **Run case.** Run the simulation with `GeN-Foam | tee log.GeN-Foam`
+3. **Run case.** Run the simulation with `GeN-Foam | tee log.GeN-Foam` (20 minutes)

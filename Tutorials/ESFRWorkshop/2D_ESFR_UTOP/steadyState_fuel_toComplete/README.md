@@ -11,4 +11,4 @@ Because of the complexity of the fuel-behaviour solver, this exercise is very sh
 1. **Complete the constant/fuelBehaviourRegion/solverDict dictionary.** In solverDict:
     - Select the correct solvers for the thermal and mechanical solutions
     - in "materials", fill the material properties to represent MOX fuel
-2. **Run case.** Run the simulation with `GeN-Foam | tee log.GeN-Foam`
+2. **Run case.** Run the simulation with `GeN-Foam | tee log.GeN-Foam` (8 minutes) 

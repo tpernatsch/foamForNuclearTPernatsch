@@ -24,7 +24,7 @@ uniformValue      table
 3. **Change the neutronics simulation mode.** Modify the constant/neutroRegion/neutronicsProperties dictionary to select a transient calculations
 4. **Define the CRMove dictionary.** Complete the constant/neutroRegion/CRMove dictionary to simulate a full control rods insertion 10 s from BOC which is completed in 0.25 s. Assume the CR speed is 9 m/s.
 5. **Specify simulation data.** Complete the system/controlDict file to perform a transient simulation of 300 s which starts from the last available time step, with adaptive time-stepping (limiting the Co number to 10 and the relative power variation to 0.025), with an initial delta-t = 1s, writing results every 10 s.
-6. **Run case.** Run the simulation with GeN-Foam | tee log.GeN-Foam. To run in parallel do:
+6. **Run case.** Run the simulation with GeN-Foam | tee log.GeN-Foam. To run in parallel (8/9 minutes) do:
    - `decomposePar -allRegions`
    - `mpirun -np 4 GeN-Foam -parallel | tee log.GeN-Foam`
 7. **Plot results** Plot the power and temperature evolution using the plotResults.py script
