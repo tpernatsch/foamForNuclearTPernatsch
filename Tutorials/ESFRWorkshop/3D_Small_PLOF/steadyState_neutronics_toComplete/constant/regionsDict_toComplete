@@ -22,7 +22,7 @@ FoamFile
 // ------------------------------------------------------------------------- //
 
 // Create a region named neutroRegion which uses a diffusionNeutronics solver
-
+// Format is: "regionName    solverName;"
 regionSolvers
 {
     Level_0
