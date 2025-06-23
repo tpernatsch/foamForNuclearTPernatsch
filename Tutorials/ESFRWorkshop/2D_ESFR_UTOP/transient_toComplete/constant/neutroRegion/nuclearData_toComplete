@@ -171,6 +171,7 @@ externalReactivityTimeProfile
 updatePowerFields
 {
 	fuelBehaviourRegion lhgr;
+	fuelBehaviourRegion Q;
 }
 
 // ************************************************************************* //
