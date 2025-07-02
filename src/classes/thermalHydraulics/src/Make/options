@@ -128,6 +128,7 @@ EXE_INC = \
     -I./boundaryConditions/blackBodyRadiation \
     -I./boundaryConditions/velocityRundown \
     -I./boundaryConditions/timeFieldTable \
+    -I./boundaryConditions/mappedDarcyVelocity \
     -I./functionObjects/fieldDiffExtents \
     -I./functionObjects/TBulk \
     -I./functionObjects/massFlow \

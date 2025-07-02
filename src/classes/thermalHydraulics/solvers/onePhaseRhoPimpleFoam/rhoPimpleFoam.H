@@ -120,6 +120,8 @@ private:
 
     //- Original mesh
     pointField originalPoints_;
+
+    bool solveEnergy_;
     
 
 

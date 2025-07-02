@@ -145,7 +145,8 @@ Foam::solvers::rhoPimpleFoam::rhoPimpleFoam
     rhoUf_(nullptr),
     residual_(0),
     cumulativeContErr_(0),
-    originalPoints_(mesh_.points())
+    originalPoints_(mesh_.points()),
+    solveEnergy_(true)
 {
 
     if(mesh_.dynamic())
@@ -172,6 +173,8 @@ Foam::solvers::rhoPimpleFoam::rhoPimpleFoam
     // thermo_.validate(args.executable(), "h", "e");
     turbulence_->validate();
     mesh_.setFluxRequired(p_.name());
+
+    solveEnergy_ = pimple_.dict().get<bool>("solveEnergy");
 
     
 }
@@ -242,7 +245,9 @@ void Foam::solvers::rhoPimpleFoam::correctPhysics()
         }
 
         #include "UEqn.H"
-        #include "EEqn.H"
+
+        if(solveEnergy_)
+            #include "EEqn.H"
 
         // --- Pressure corrector loop
         while (pimple_.correct())
