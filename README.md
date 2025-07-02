@@ -15,7 +15,7 @@ N.B.: GeN-Foam is a flexible tool that allows the modeling of irregular geometri
 
 ## OpenFOAM version
 
-The current version of GeN-Foam is based on OpenFOAM, ESI/OpenCFD distribution, currently v2412, available at [www.openfoam.com](https://www.openfoam.com).
+The current version of GeN-Foam is based on OpenFOAM, ESI/OpenCFD distribution, currently v2506, available at [www.openfoam.com](https://www.openfoam.com).
 
 Please notice that a new version of OpenFOAM is released by ESI/OpenCFD twice a year. It may take a few weeks for the developers to update GeN-Foam to a new OpenFOAM release.
 
