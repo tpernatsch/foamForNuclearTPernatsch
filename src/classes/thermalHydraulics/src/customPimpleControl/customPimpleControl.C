@@ -119,7 +119,7 @@ bool Foam::customPimpleControl::criteriaSatisfied()
             );
 
             Pair<scalar> residuals = (useFirstPISOInitialResidual)
-                ? firstPISOPrevPIMPLEResidual(solverPerfDictEntry)
+                ? previousPIMPLEFirstPISORes_
                 : maxResidual(solverPerfDictEntry);
 
             checked = true;
@@ -137,7 +137,7 @@ bool Foam::customPimpleControl::criteriaSatisfied()
             else
             {
                 const scalar iniRes =
-                    residualControl_[fieldi].initialResidual + SMALL;
+                    residualControl_[fieldi].initialResidual + ROOTVSMALL;
 
             //  Info <<"Residual first is " << residuals.first() << " and last is "<< residuals.last()<<endl;
                 relative =
@@ -173,69 +173,13 @@ bool Foam::customPimpleControl::criteriaSatisfied()
     return checked && achieved;
 }
 
-template<class Type>
-bool Foam::customPimpleControl::firstPISOPrevPIMPLETypeResidual
-(
-    const entry& solverPerfDictEntry,
-    Pair<scalar>& residuals
-) const
-{
-    typedef GeometricField<Type, fvPatchField, volMesh> fieldType;
-
-    const word& fieldName = solverPerfDictEntry.keyword();
-
-    if (mesh_.foundObject<fieldType>(fieldName))
-    {
-        const List<SolverPerformance<Type>> sp(solverPerfDictEntry.stream());
-
-        residuals.first() =
-            mag
-            (
-                sp
-                [
-                    sp.size()
-                -   nCorrPISOInPrevPIMPLE_
-                -   nCorrPISOInPrevPrevPIMPLE_
-                ].initialResidual()
-            );
-        residuals.last() =
-            mag(sp[sp.size()-nCorrPISOInPrevPIMPLE_].initialResidual());
-
-        return true;
-    }
-
-    return false;
-}
 
 Foam::Pair<Foam::scalar> Foam::customPimpleControl::firstPISOPrevPIMPLEResidual
 (
     const entry& solverPerfDictEntry
 ) const
 {
-    Pair<scalar> residuals(0.0, 0.0);
-
-    // Check with builtin short-circuit
-    const bool ok =
-    (
-        firstPISOPrevPIMPLETypeResidual<scalar>
-        (solverPerfDictEntry, residuals)
-    ||  firstPISOPrevPIMPLETypeResidual<vector>
-        (solverPerfDictEntry, residuals)
-    ||  firstPISOPrevPIMPLETypeResidual<sphericalTensor>
-        (solverPerfDictEntry, residuals)
-    ||  firstPISOPrevPIMPLETypeResidual<symmTensor>
-        (solverPerfDictEntry, residuals)
-    ||  firstPISOPrevPIMPLETypeResidual<tensor>
-        (solverPerfDictEntry, residuals)
-    );
-
-    if (!ok && solutionControl::debug)
-    {
-        Info<<"No residual for " << solverPerfDictEntry.keyword()
-            << " on mesh " << mesh_.name() << nl;
-    }
-
-    return residuals;
+    return previousPIMPLEFirstPISORes_;
 }
 
 
@@ -254,6 +198,7 @@ Foam::customPimpleControl::customPimpleControl
     nCorrPISOInPrevPIMPLE_(0),
     nCorrPISOInPrevPrevPIMPLE_(0),
     stopLoop_(false),
+    previousPIMPLEFirstPISORes_(VGREAT, VGREAT),
     corr_(0)
 {
     read();
@@ -339,6 +284,44 @@ bool Foam::customPimpleControl::loop()
     nCorrPISOInPrevPrevPIMPLE_ = nCorrPISOInPrevPIMPLE_;
 
     return !completed;
+}
+
+void Foam::customPimpleControl::updateFirstPISOPrevPIMPLE()
+{
+    if (corrPISO_==1)
+    {
+        const dictionary& solverDict = mesh_.data().solverPerformanceDict();
+    
+        forAllConstIters(solverDict, iter)
+        {
+            const entry& solverPerfDictEntry = *iter;
+    
+            const word& fieldName = solverPerfDictEntry.keyword();
+    
+            if(fieldName == "p_rgh")
+            {
+                const List<SolverPerformance<scalar>> sp(solverPerfDictEntry.stream());
+    
+                previousPIMPLEFirstPISORes_[0] = previousPIMPLEFirstPISORes_[1];
+    
+                previousPIMPLEFirstPISORes_[1] =    
+                (
+                    mag
+                    (
+                        sp
+                        [
+                            sp.size() -1
+                        ].initialResidual()
+                    )
+                );
+            }
+
+            else
+            {
+                Info <<"No residual for p_rgh on mesh " << mesh_.name() << nl;
+            }
+        }
+    }
 }
 
 

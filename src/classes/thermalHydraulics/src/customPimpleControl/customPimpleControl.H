@@ -133,6 +133,8 @@ protected:
             //-
             bool stopLoop_;
 
+            mutable Pair<scalar> previousPIMPLEFirstPISORes_;
+
 
 
     // Protected Member Functions
@@ -146,18 +148,9 @@ protected:
         //  the very first PISO corrector of the first PIMPLE iteration, while
         //  the second contains the initial residual of the first PISO
         //  corrector of the previous PIMPLE iteration
-        template<class Type>
-        bool firstPISOPrevPIMPLETypeResidual
-        (
-            const entry& solverPerfDictEntry,
-            Pair<scalar>& residual
-        ) const;
 
-        //-
-        Pair<scalar> firstPISOPrevPIMPLEResidual
-        (
-            const entry& solverPerfDictEntry
-        ) const;
+        // Since v2506, this is handled by updateFirstPISOPrevPIMPLE() function
+
 
         //- Read controls from fvSolution dictionary
         virtual bool read();
@@ -211,6 +204,8 @@ public:
 
             //- Pressure corrector loop control with interrupt control
             inline bool correct(bool interrupt);
+
+            virtual void updateFirstPISOPrevPIMPLE();
 };
 
 

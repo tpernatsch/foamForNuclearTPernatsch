@@ -22,3 +22,4 @@ bool converged =
 if (pimple_.corrNonOrtho() == 1)
     convergedPISO = converged;
 
+pimple_.updateFirstPISOPrevPIMPLE();
