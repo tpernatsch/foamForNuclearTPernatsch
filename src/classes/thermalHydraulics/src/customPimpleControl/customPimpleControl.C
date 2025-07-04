@@ -137,9 +137,8 @@ bool Foam::customPimpleControl::criteriaSatisfied()
             else
             {
                 const scalar iniRes =
-                    residualControl_[fieldi].initialResidual + ROOTVSMALL;
+                    residualControl_[fieldi].initialResidual + SMALL;
 
-            //  Info <<"Residual first is " << residuals.first() << " and last is "<< residuals.last()<<endl;
                 relative =
                     (stopIfFirstResRelChangeAboveRelTol) ?
                     residuals.last() / residuals.first() :
@@ -174,15 +173,6 @@ bool Foam::customPimpleControl::criteriaSatisfied()
 }
 
 
-Foam::Pair<Foam::scalar> Foam::customPimpleControl::firstPISOPrevPIMPLEResidual
-(
-    const entry& solverPerfDictEntry
-) const
-{
-    return previousPIMPLEFirstPISORes_;
-}
-
-
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
 Foam::customPimpleControl::customPimpleControl
@@ -198,7 +188,7 @@ Foam::customPimpleControl::customPimpleControl
     nCorrPISOInPrevPIMPLE_(0),
     nCorrPISOInPrevPrevPIMPLE_(0),
     stopLoop_(false),
-    previousPIMPLEFirstPISORes_(VGREAT, VGREAT),
+    previousPIMPLEFirstPISORes_(0, 0),
     corr_(0)
 {
     read();
