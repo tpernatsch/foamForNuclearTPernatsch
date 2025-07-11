@@ -78,18 +78,12 @@ Foam::functionObjects::TBulk::regionTypeNames_
 
 void Foam::functionObjects::TBulk::writeFileHeader(Ostream& os)
 {
-    if (writtenHeader_)
-    {
-        writeBreak(os);
-    }
-    else
+    if (!writtenHeader_)
     {
         writeHeader(os, "Field extents");
+        writeCommented(os, "Time TBulk[K]");
+        os << endl;
     }
-
-    writeCommented(os, "Time");
-
-    os  << endl;
 
     writtenHeader_ = true;
 }
@@ -248,8 +242,11 @@ bool Foam::functionObjects::TBulk::write()
     scalar Tb(hDot/max(hDotByT, 1e-9));
 
     Log << "    " << regionTypeNames_[regionType_] << " " << regionName_
-        << " TBulk = " << Tb << " K" << endl;
-    file() << Tb;
+        << " TBulk = " << Tb << " K"
+        << endl;
+
+    file() << mesh_.time().timeName() << " " << Tb << endl;
+
     this->setResult(regionName_+"_TBulk", Tb);
 
     Log << endl;

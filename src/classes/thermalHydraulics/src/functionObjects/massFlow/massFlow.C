@@ -78,16 +78,12 @@ Foam::functionObjects::massFlow::regionTypeNames_
 
 void Foam::functionObjects::massFlow::writeFileHeader(Ostream& os)
 {
-    if (writtenHeader_)
-    {
-        writeBreak(os);
-    }
-    else
+    if (!writtenHeader_)
     {
         writeHeader(os, "Field extents");
+        writeCommented(os, "Time massFlow[kg/s]");
+        os << endl;
     }
-
-    writeCommented(os, "Time");
 
     /*
     for (const word& fieldName : fieldSet_.selectionNames())
@@ -104,7 +100,6 @@ void Foam::functionObjects::massFlow::writeFileHeader(Ostream& os)
     }
     */
 
-    os  << endl;
 
     writtenHeader_ = true;
 }
@@ -252,8 +247,11 @@ bool Foam::functionObjects::massFlow::write()
     mDot *= scaleFactor_;
 
     Log << "    " << regionTypeNames_[regionType_] << " " << regionName_
-        << " massFlow = " << mDot << " kg/s over " << S << " m2" << endl;
-    file() << mDot;
+        << " massFlow = " << mDot << " kg/s over " << S << " m2"
+        << endl;
+
+    file() << mesh_.time().timeName() << " " << mDot << endl;
+
     this->setResult(regionName_+"_massFlow", mDot);
 
     Log << endl;
