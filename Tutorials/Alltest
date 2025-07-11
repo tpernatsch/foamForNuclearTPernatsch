@@ -26,7 +26,7 @@ NC='\033[0m'
 
 # Function to display help
 usage() {
-    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--help]"
+    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--fast] [--help]"
     exit 1
 }
 

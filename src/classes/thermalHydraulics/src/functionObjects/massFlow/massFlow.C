@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2412                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
+|    Built on OpenFOAM v2506                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -78,16 +78,12 @@ Foam::functionObjects::massFlow::regionTypeNames_
 
 void Foam::functionObjects::massFlow::writeFileHeader(Ostream& os)
 {
-    if (writtenHeader_)
-    {
-        writeBreak(os);
-    }
-    else
+    if (!writtenHeader_)
     {
         writeHeader(os, "Field extents");
+        writeCommented(os, "Time massFlow[kg/s]");
+        os << endl;
     }
-
-    writeCommented(os, "Time");
 
     /*
     for (const word& fieldName : fieldSet_.selectionNames())
@@ -104,7 +100,6 @@ void Foam::functionObjects::massFlow::writeFileHeader(Ostream& os)
     }
     */
 
-    os  << endl;
 
     writtenHeader_ = true;
 }
@@ -252,8 +247,11 @@ bool Foam::functionObjects::massFlow::write()
     mDot *= scaleFactor_;
 
     Log << "    " << regionTypeNames_[regionType_] << " " << regionName_
-        << " massFlow = " << mDot << " kg/s over " << S << " m2" << endl;
-    file() << mDot;
+        << " massFlow = " << mDot << " kg/s over " << S << " m2"
+        << endl;
+
+    file() << mesh_.time().timeName() << " " << mDot << endl;
+
     this->setResult(regionName_+"_massFlow", mDot);
 
     Log << endl;

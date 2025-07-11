@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2412                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
+|    Built on OpenFOAM v2506                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -198,10 +198,10 @@ scalarList solvePolyharmonicSpline
         // solve(w, A, vListTemp);
     }
 
-    scalarList vListTemp(vList);
-    for (int i = 0; i < 4; i++)
+    scalarList vListTemp(w.size(), 0.0);
+    forAll(vList, paramI)
     {
-        vListTemp.append(0);
+        vListTemp[paramI] = vList[paramI];
     }
 
     w = invRBFmatrix * vListTemp;
@@ -239,7 +239,9 @@ scalarList solvePolyharmonicSpline
                     {
                         rSquare += sqr(xList[paramI][dataI] - xList[paramI][dataJ]);
                     }
-                    A[dataI][dataJ] = polyharmonicSplineFunction(rSquare, mode);
+                    scalar poly(polyharmonicSplineFunction(rSquare, mode));
+                    A[dataI][dataJ] = poly;
+                    A[dataJ][dataI] = poly;
                 }
                 else
                 {
@@ -264,10 +266,10 @@ scalarList solvePolyharmonicSpline
         // solve(w, A, vListTemp);
     }
 
-    scalarList vListTemp(vList);
-    forAll(xList, paramI)
+    scalarList vListTemp(w.size(), 0.0);
+    forAll(vList, paramI)
     {
-        vListTemp.append(0);
+        vListTemp[paramI] = vList[paramI];
     }
 
     w = invRBFmatrix * vListTemp;

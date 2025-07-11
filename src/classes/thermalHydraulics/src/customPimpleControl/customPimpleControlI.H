@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2412                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
+|    Built on OpenFOAM v2506                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -71,10 +71,5 @@ inline bool Foam::customPimpleControl::correct(bool interrupt)
     return false;
 }
 
-inline bool Foam::customPimpleControl::firstIter() const
-{
-    return corr_ == 1;
-}
- 
 
 // ************************************************************************* //

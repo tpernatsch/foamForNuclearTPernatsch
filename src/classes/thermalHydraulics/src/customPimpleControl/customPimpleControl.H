@@ -6,8 +6,8 @@
 |    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
 |    Copyright (C) 2015 - 2022 EPFL                                           |
 |                                                                             |
-|    Built on OpenFOAM v2412                                                  |
-|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2024 OpenCFD Ltd.          |
+|    Built on OpenFOAM v2506                                                  |
+|    Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.          |
 -------------------------------------------------------------------------------
 License
     This file is part of GeN-Foam.
@@ -133,6 +133,8 @@ protected:
             //-
             bool stopLoop_;
 
+            mutable Pair<scalar> previousPIMPLEFirstPISORes_;
+
 
 
     // Protected Member Functions
@@ -146,18 +148,9 @@ protected:
         //  the very first PISO corrector of the first PIMPLE iteration, while
         //  the second contains the initial residual of the first PISO
         //  corrector of the previous PIMPLE iteration
-        template<class Type>
-        bool firstPISOPrevPIMPLETypeResidual
-        (
-            const entry& solverPerfDictEntry,
-            Pair<scalar>& residual
-        ) const;
 
-        //-
-        Pair<scalar> firstPISOPrevPIMPLEResidual
-        (
-            const entry& solverPerfDictEntry
-        ) const;
+        // Since v2506, this is handled by updateFirstPISOPrevPIMPLE() function
+
 
         //- Read controls from fvSolution dictionary
         virtual bool read();
@@ -212,8 +205,7 @@ public:
             //- Pressure corrector loop control with interrupt control
             inline bool correct(bool interrupt);
 
-            //- Return true for first PIMPLE (outer) iteration
-            inline bool firstIter() const;
+            virtual void updateFirstPISOPrevPIMPLE();
 };
 
 
