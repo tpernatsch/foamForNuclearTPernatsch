@@ -152,6 +152,7 @@ int main(int argc, char *argv[])
     while (runTime.run() and !(mappingMode))
     {
         #ifdef isCommDataLayerIncluded
+        // At the first time step
         if (runTime.timeIndex() == 0 && isSolveFMI)
         {
             fmu->receive();
@@ -186,12 +187,36 @@ int main(int argc, char *argv[])
         adjustDeltaT(runTime, solvers);
 
         #ifdef isCommDataLayerIncluded
+        if (isSolveFMI)
+        {
+            // Update isConverged flag as FMU output
+            commDataLayer& data = commDataLayer::New(runTime);
+            scalar& isConvergedFMI = data.getObj<scalar>
+            (
+                "isConverged",
+                commDataLayer::causality::out
+            );
+            isConvergedFMI = 1.0;
+
+            forAll(solvers, i)
+            {
+                if (solvers[i].getResidual() > 1e-6)
+                {
+                    isConvergedFMI = 0.0;
+                }
+            }
+        }
+
         if (isSolveFMI) fmu->send();
         } // End fmu implicit loop
         while (isSolveFMI && fmu->loop());
 
         // Last, after all the other setDeltaT
-        if (isSolveFMI) fmu->setDeltaT();
+        if (isSolveFMI)
+        {
+            fmu->setDeltaT();
+            if (fmu->isTerminated()) break;
+        }
         #endif
 
         solvers.setGlobalPrefix();
