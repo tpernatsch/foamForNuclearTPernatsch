@@ -300,8 +300,78 @@ void Foam::solvers::compressibleInterFoam::calcCumulContErr()
 
 scalar Foam::solvers::compressibleInterFoam::maxDeltaT()
 {
-    return scalar(VGREAT);
+    scalar newDeltaT = mesh_.time().controlDict().lookupOrDefault<scalar>("maxDeltaT", GREAT);
+
+    // adjustTimeStep = runTime.controlDict().getOrDefault("adjustTimeStep", false);
+
+    scalar maxCo = mesh_.time().controlDict().getOrDefault<scalar>("maxCo", 1);
+
+    if (mesh_.time().value() > mesh_.time().controlDict().get<scalar>("deltaT"))
+    {
+        scalar CoNum = 0.0;
+        scalar meanCoNum = 0.0;
+
+        if (mesh_.nInternalFaces())
+        {
+            scalarField sumPhi
+            (
+                mixture_.nearInterface()().primitiveField()
+                *fvc::surfaceSum(mag(phi_))().primitiveField()
+            );
+
+            CoNum = 0.5*gMax(sumPhi/mesh_.V().field())*mesh_.time().deltaTValue();
+
+            meanCoNum =
+                0.5*(gSum(sumPhi)/gSum(mesh_.V().field()))*mesh_.time().deltaTValue();
+        }
+
+        Info<< "Courant Number mean: " << meanCoNum
+            << " max: " << CoNum << endl;
+
+
+        scalar maxAlphaCo
+        (
+            mesh_.time().controlDict().get<scalar>("maxAlphaCo")
+        );
+
+        scalar alphaCoNum = 0.0;
+        scalar meanAlphaCoNum = 0.0;
+
+        if (mesh_.nInternalFaces())
+        {
+            scalarField sumPhi
+            (
+                mixture_.nearInterface()().primitiveField()
+                *fvc::surfaceSum(mag(phi_))().primitiveField()
+            );
+
+            alphaCoNum = 0.5*gMax(sumPhi/mesh_.V().field())*mesh_.time().deltaTValue();
+
+            meanAlphaCoNum =
+                0.5*(gSum(sumPhi)/gSum(mesh_.V().field()))*mesh_.time().deltaTValue();
+        }
+
+        Info<< "Interface Courant Number mean: " << meanAlphaCoNum
+            << " max: " << alphaCoNum << endl;
+
+        scalar maxDeltaTFact =
+            min(maxCo/(CoNum + SMALL), maxAlphaCo/(alphaCoNum + SMALL));
+
+        scalar deltaTFact = min(min(maxDeltaTFact, 1.0 + 0.1*maxDeltaTFact), 1.2);
+
+        newDeltaT =
+        (
+            min
+            (
+                deltaTFact*mesh_.time().deltaTValue(),
+                newDeltaT
+            )
+        );
+    }
+
+    return newDeltaT;
 }
+
 
 
 // ************************************************************************* //
