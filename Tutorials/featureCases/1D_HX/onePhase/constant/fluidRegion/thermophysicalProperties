@@ -38,30 +38,30 @@ mixture
     {
         //- Discrepancy with experimental values below 1% in the
         //  400 K - 1950 K range, deteriorates slowly
-        rhoCoeffs<8>           
+        rhoCoeffs<8>
         (
             1006.81
             -2.17E-01
             -2.83E-06
             -6.54E-09
-            0 
-            0 
-            0 
+            0
+            0
+            0
             0
         );
     }
     thermodynamics
     {
         //-
-        CpCoeffs<8>            
+        CpCoeffs<8>
         (
             1250//1585.342657//1.5640E+03
-            0//-6.247611E-1//-4.5129E-01 
-            0//1.726981E-4//-3.1104E-04 
-            0//1.509324E-7//6.5282E-07 
-            0//-3.205128E-11//-1.9570E-10 
-            0 
-            0 
+            0//-6.247611E-1//-4.5129E-01
+            0//1.726981E-4//-3.1104E-04
+            0//1.509324E-7//6.5282E-07
+            0//-3.205128E-11//-1.9570E-10
+            0
+            0
             0
         );
         Hf                      0;
@@ -69,10 +69,10 @@ mixture
     }
     transport
     {
-        //- Discrepancy with experimental values below 1% in the 
+        //- Discrepancy with experimental values below 1% in the
         //  400 K - 1400 K, deteriorates quickly after that
-        
-        muCoeffs<8>             
+
+        muCoeffs<8>
         (
             4.932462E-03
             -2.654334E-05
@@ -84,7 +84,7 @@ mixture
             0
         );
         /*
-        muCoeffs<8>             
+        muCoeffs<8>
         (
             4.932462E-02
             -2.654334E-04
@@ -96,17 +96,17 @@ mixture
             0
         );
         */
-        
+
         //- Provided by evaluators for the 371 K - 2503.7 K
-        kappaCoeffs<8>          
+        kappaCoeffs<8>
         (
-            124.67 
+            124.67
             -1.1381e-1
-            5.5226e-5 
-            -1.1842e-8 
-            0 
-            0 
-            0 
+            5.5226e-5
+            -1.1842e-8
+            0
+            0
+            0
             0
         );
     }

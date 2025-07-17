@@ -228,13 +228,14 @@ scalarList solvePolyharmonicSpline
 
         SquareMatrix<scalar> A(w.size(), 0.0);
 
+        scalar rSquare(0);
         forAll(xList.first(), dataI)
         {
             forAll(xList.first(), dataJ)
             {
                 if (dataI != dataJ)
                 {
-                    scalar rSquare(0);
+                    rSquare = 0.0;
                     forAll(xList, paramI)
                     {
                         rSquare += sqr(xList[paramI][dataI] - xList[paramI][dataJ]);
@@ -262,8 +263,6 @@ scalarList solvePolyharmonicSpline
         LUscalarMatrix Atemp(A);
 
         Atemp.inv(invRBFmatrix);
-
-        // solve(w, A, vListTemp);
     }
 
     scalarList vListTemp(w.size(), 0.0);
@@ -295,9 +294,9 @@ scalar polyharmonicSpline
     scalar rSquare(0);
     forAll(xList, i)
     {
-        rSquare = sqr(x-xList[i])
-                + sqr(y-yList[i])
-                + sqr(z-zList[i]);
+        rSquare = sqr(x - xList[i])
+                + sqr(y - yList[i])
+                + sqr(z - zList[i]);
         res += w[i] * polyharmonicSplineFunction(rSquare, mode);
     }
     res += w[nx] + w[nx+1]*x + w[nx+2]*y + w[nx+3]*z;
@@ -324,7 +323,7 @@ scalar polyharmonicSpline
     scalar rSquare(0);
     forAll(xList.first(), dataI)
     {
-        rSquare = 0;
+        rSquare = 0.0;
         forAll(xInput, paramI)
         {
             rSquare += sqr(xInput[paramI] - xList[paramI][dataI]);
@@ -496,38 +495,26 @@ scalarList solvePolyharmonicSplineIntegral
             {
                 if (i != j)
                 {
-                    rSquare = sqr(xList[i]-xList[j])
-                            + sqr(yList[i]-yList[j])
-                            + sqr(zList[i]-zList[j]);
+                    rSquare = sqr(xList[i] - xList[j])
+                            + sqr(yList[i] - yList[j])
+                            + sqr(zList[i] - zList[j]);
                     A[i][j] = polyharmonicSplineFunction(rSquare, mode);
                 }
                 else
                 {
-                    A[i][j] = 0;
+                    A[i][j] = 0.0;
                 }
             }
             // Polynomial correction
-            A[i][nx] = 1;
-            // A[i][nx+1] = xList[i];
-            // A[i][nx+2] = yList[i];
-            // A[i][nx+3] = zList[i];
-            // A[i][nx+1] = zList[i];
-            // A[nx][i] = 1;
-            // A[nx+1][i] = xList[i];
-            // A[nx+2][i] = yList[i];
-            // A[nx+3][i] = zList[i];
-            // A[nx+1][i] = zList[i];
+            A[i][nx] = 1.0;
 
-            scalar totalVolume(0), totalPhi(0);
+            scalar totalPhi(0), totalVolume(0);
             forAll(regionCells, celli)
             {
-                const scalar xCell(mesh.C().internalField()[celli].x());
-                const scalar yCell(mesh.C().internalField()[celli].y());
-                const scalar zCell(mesh.C().internalField()[celli].z());
+                rSquare = sqr(mesh.C().internalField()[celli].x() - xList[i])
+                        + sqr(mesh.C().internalField()[celli].y() - yList[i])
+                        + sqr(mesh.C().internalField()[celli].z() - zList[i]);
 
-                rSquare = sqr(xCell-xList[i])
-                        + sqr(yCell-yList[i])
-                        + sqr(zCell-zList[i]);
                 totalPhi += polyharmonicSplineFunction(rSquare, mode) * V[celli];
                 totalVolume += V[celli];
             }
@@ -535,8 +522,6 @@ scalarList solvePolyharmonicSplineIntegral
             A[nx][i] = totalPhi;
             A[nx][nx] = totalVolume;
         }
-
-        // solve(w, A, vListTemp);
 
         // Inverse the matrix once and store it for later iterations
         LUscalarMatrix Atemp(A);
@@ -570,9 +555,9 @@ scalar polyharmonicSplineIntegral
     scalar rSquare(0);
     forAll(xList, i)
     {
-        rSquare = sqr(x-xList[i])
-                + sqr(y-yList[i])
-                + sqr(z-zList[i]);
+        rSquare = sqr(x - xList[i])
+                + sqr(y - yList[i])
+                + sqr(z - zList[i]);
         res += w[i] * polyharmonicSplineFunction(rSquare, mode);
     }
     return(res);
