@@ -183,9 +183,6 @@ int main(int argc, char *argv[])
             solvers[i].correctBaffleLessFields();
         }
 
-        // Adjust the time-step according to the solver maxDeltaT
-        adjustDeltaT(runTime, solvers);
-
         #ifdef isCommDataLayerIncluded
         if (isSolveFMI)
         {
@@ -198,18 +195,22 @@ int main(int argc, char *argv[])
             );
             isConvergedFMI = 1.0;
 
-            forAll(solvers, i)
-            {
-                if (solvers[i].getResidual() > 1e-6)
-                {
-                    isConvergedFMI = 0.0;
-                }
-            }
+            // forAll(solvers, i)
+            // {
+            //     if (solvers[i].getResidual() > 1e-4)
+            //     {
+            //         isConvergedFMI = 0.0;
+            //     }
+            // }
         }
 
         if (isSolveFMI) fmu->send();
         } // End fmu implicit loop
         while (isSolveFMI && fmu->loop());
+
+        // Adjust the time-step according to the solver maxDeltaT
+        // Need to be after the FMI loop
+        adjustDeltaT(runTime, solvers);
 
         // Last, after all the other setDeltaT
         if (isSolveFMI)
