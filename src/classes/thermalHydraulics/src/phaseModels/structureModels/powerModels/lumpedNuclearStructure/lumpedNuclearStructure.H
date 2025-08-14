@@ -57,15 +57,15 @@ Description
     $$
 
     and dividing all terms by the volume of the structure.
-    This means that the heat conductances  should be calculated as
-    the power flowing between two nodes divided by the diffence in
-    temperatures at steadystate, abd divided by the volume of the
+    This means that the heat conductances should be calculated as
+    the power flowing between two nodes divided by the difference in
+    temperatures at steadystate, and divided by the volume of the
     structure.
-    Note that Q is the power density from neutronincs, which is
-    assumed to spead over all structure. The power fraction qf
+    Note that Q is the power density from neutronics, which is
+    assumed to spread over all structure. The power fraction qf
     can be used to concentrate this power over certain nodes.
     Zero-gradient BCs are used at the inner boundary and convective
-    BCs are used at the external boundary (in contact with the coolant)
+    BCs are used at the external boundary (in contact with the coolant).
 
 Usage
     The following sub-dictionary should be included as a powerModel

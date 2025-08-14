@@ -1,0 +1,180 @@
+#!/bin/sh
+#===============================================================================*
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#===============================================================================*
+
+nCores=8
+
+# Steady-state end times
+endTimeSSN=0.2
+endTimeSSFM=2
+endTimeSSTH=20 # 50
+
+# Transient times
+startTimeT=20823
+endTimeT=20900
+
+cases="steadyStateN steadyStateFM steadyStateTH transientShutdown"
+
+
+#===============================================================================*
+
+rmAndCopyFrom()
+{
+    targetCase=$1
+    sourceCase=$2
+
+    echo "Cloning $sourceCase to case $targetCase\n"
+    rm -rf $targetCase
+    cp -r $sourceCase $targetCase
+    echo "Duplication done"
+}
+
+setSteadyStateN()
+{
+    rmAndCopyFrom $1 $2
+
+    echo "Setting steady-state case for neutronics only\n"
+
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeSSN
+    foamDictionary $1/system/controlDict -entry writeInterval -set 0.1
+    foamDictionary $1/system/controlDict -entry deltaT -set 1e-3
+
+    cp $1/constant/regionsDict_steadyStateN $1/constant/regionsDict
+    GeN-Foam -initializeMappedFields -case $1 > $1/log.GeN-Foam.initializeMappedFields
+
+    echo "Case set!\n\n"
+}
+
+setSteadyStateFM()
+{
+    rmAndCopyFrom $1 $2
+
+    echo "Setting steady-state case for fluid mechanics only\n"
+
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeSSFM
+    foamDictionary $1/system/controlDict -entry writeInterval -set 0.2
+    foamDictionary $1/system/controlDict -entry deltaT -set 1e-5
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.solveEnergy -set false
+    cp $1/constant/regionsDict_steadyStateFM $1/constant/regionsDict
+    for i in `seq 0 $(($nCores-1))`
+    do
+        cp -r steadyStateN/processor$i/0/fluidRegion $1/processor$i/$endTimeSSN
+    done
+
+    echo "Case set!\n\n"
+}
+
+setSteadyStateTH()
+{
+    rmAndCopyFrom $1 $2
+
+    echo "Setting steady-state case for coupled neutronics and thermal-hydraulics\n"
+
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeSSTH
+    foamDictionary $1/system/controlDict -entry writeInterval -set 1
+    foamDictionary $1/system/controlDict -entry deltaT -set 0.015
+    foamDictionary $1/system/controlDict -entry adjustTimeStep -set false
+    foamDictionary $1/system/controlDict -entry timePrecision -set 8
+    # foamDictionary $1/system/controlDict -entry maxDeltaT -set 0.1
+    # foamDictionary $1/system/controlDict -entry maxCo -set 100 # goes to 1 for final results
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.nCorrectors -set 3
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.nOuterCorrectors -set 3
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.solveEnergy -set true
+    cp $1/constant/regionsDict_steadyStateTH $1/constant/regionsDict
+    for i in `seq 0 $(($nCores-1))`
+    do
+        cp -r steadyStateFM/processor$i/$endTimeSSN/uniform/reactorState $1/processor$i/$endTimeSSFM/uniform
+        cp -r steadyStateFM/processor$i/$endTimeSSN/neutroRegion $1/processor$i/$endTimeSSFM
+    done
+
+    mpirun -np $nCores GeN-Foam -initializeMappedFields -parallel -case $1 > $1/log.GeN-Foam.initializeMappedFields
+
+    echo "Case set!\n\n"
+}
+
+setTransientShutdown()
+{
+    rmAndCopyFrom $1 $2
+
+    echo "Setting shutdown transient case\n"
+
+    # Set up time to transient time as in LASL report LA-3185-MS
+    for i in `seq 0 $(($nCores-1))`
+    do
+        cp -r $1/processor$i/$endTimeSSTH $1/processor$i/$startTimeT
+    done
+
+    # Change simulation parameters
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeT
+    foamDictionary $1/system/controlDict -entry deltaT -set 1e-2
+    foamDictionary $1/system/controlDict -entry timePrecision -set 5
+    foamDictionary $1/system/controlDict -entry writeInterval -set 1
+    foamDictionary $1/system/controlDict -entry purgeWrite -set 0
+    foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    cp $1/constant/regionsDict_transient $1/constant/regionsDict
+
+    mpirun -np $nCores GeN-Foam -initializeMappedFields -parallel -case $1 > $1/log.GeN-Foam.initializeMappedFields
+
+    echo "Case set!\n\n"
+}
+
+setParallelMeshing()
+{
+    nCores=$1
+    caseName=$2
+    region=$3
+
+    foamDictionary $caseName/system/$region/decomposeParDict -entry numberOfSubdomains -set $nCores
+    # foamDictionary $caseName/system/$region/decomposeParDict -entry method -set simple
+    # foamDictionary $caseName/system/$region/decomposeParDict -entry simpleCoeffs.n -set "(1 1 $nCores)"
+}
+
+
+#===============================================================================*
+
+for caseName in $cases
+do
+    if [ ! -d $caseName ]
+    then
+        echo "Preparing to run case $caseName\n"
+
+        case "$caseName" in
+            "steadyStateN")
+                setSteadyStateN $caseName rootCase
+                setParallelMeshing $nCores $caseName fluidRegion
+                setParallelMeshing $nCores $caseName neutroRegion
+                decomposePar -case $caseName -allRegions -copyUniform > $caseName/log.decomposePar
+                ;;
+            "steadyStateFM")
+                setSteadyStateFM $caseName steadyStateN
+                ;;
+            "steadyStateTH")
+                setSteadyStateTH $caseName steadyStateFM
+                ;;
+            "transientShutdown")
+                setTransientShutdown $caseName steadyStateTH
+                ;;
+        esac
+
+        # Create a .foam file for vizualization
+        rm -rf $caseName/*.foam
+        touch $caseName/${caseName}.foam
+
+        echo "Running GeN-Foam on $caseName\n"
+
+        mpirun -np $nCores GeN-Foam -parallel -case $caseName  |
+            tee "$caseName/log.GeN-Foam" |
+            grep --color=auto -e "Time = \|deltaT =\|keff_ =\|Courant\|pow:\|T (avg"
+
+    else
+        echo "$caseName case already exist. No simulation of $caseName"
+    fi
+done
+
+#===============================================================================*

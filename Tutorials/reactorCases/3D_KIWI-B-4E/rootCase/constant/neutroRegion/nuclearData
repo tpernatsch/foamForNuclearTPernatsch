@@ -1,0 +1,233 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant/neutroRegion";
+    object      nuclearData;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+energyGroups                2; // [0.000000e+00, 6.250000e-01, 2.000000e+07] eV
+
+precGroups                  6;
+
+polyharmonicSplineMode      1;
+
+//- Point Kinetics data
+fastNeutrons                true;
+
+promptGenerationTime        3.571485e-05; // [s] (1.584595e-08)
+
+Beta
+(
+    2.285127e-04  // (4.402223e-08)
+    1.180026e-03  // (2.272815e-07)
+    1.126848e-03  // (2.170125e-07)
+    2.527636e-03  // (4.866769e-07)
+    1.037503e-03  // (1.996539e-07)
+    4.345650e-04  // (8.363008e-08)
+);
+// Beta tot = 653.509 pcm
+
+lambda
+(
+    1.333623e-02  // (2.566366e-06)
+    3.273731e-02  // (6.297438e-06)
+    1.207837e-01  // (2.322766e-05)
+    3.028201e-01  // (5.820689e-05)
+    8.496638e-01  // (1.631340e-04)
+    2.853584e+00  // (5.479324e-04)
+);
+
+// ---- From fuelAssembly
+// Alpha Doppler
+feedbackCoeffDoppler        -1.474e-04; // [1/sqrt(K)] (+/- 1.771e-04)
+
+//- Representative of fuel axial expansion
+feedbackCoeffTFuel          -8.796e-07; // [1/K] (+/- 3.874e-08)
+
+//- Representative of in-assembly structure density change
+//  (i.e. cladding AND wrapper wire)
+feedbackCoeffTClad          0; // [1/K]
+
+feedbackCoeffTCool          0; // [1/K]
+
+// Coolant density
+feedbackCoeffRhoCool        6.484e-03; // [1/(kg/m3)] (+/- 2.202e-03)
+
+//- Representative of structure radial expansion
+feedbackCoeffTStruct        0; // [1/K]
+
+feedbackCoeffTStructMech     0;
+
+absoluteDrivelineExpansionCoeff 0; // [m/K]
+// ----
+
+//- CR insertion/driveline expansion (in m) vs reactivity
+controlRodReactivityMap ();
+
+//- Represents the reactivity instertion ramp in this case
+externalReactivityTimeProfile
+{
+    type        table;
+
+    startTime   0;
+
+    table       table
+    (
+        (  20820.000  0.000000e+00 )
+        (  20821.158  -2.033462e-05 )
+        (  20824.866  -2.698907e-05 )
+        (  20827.226  -4.259102e-05 )
+        (  20828.579  -1.691196e-04 )
+        (  20829.600  -4.273930e-04 )
+        (  20830.462  -9.030808e-04 )
+        (  20831.680  -1.889753e-03 )
+        (  20833.083  -3.388395e-03 )
+        (  20834.126  -4.285669e-03 )
+        (  20836.181  -5.262202e-03 )
+        (  20839.252  -6.378748e-03 )
+        (  20842.336  -7.887014e-03 )
+        (  20844.571  -9.209480e-03 )
+        (  20845.959  -1.039647e-02 )
+        (  20847.356  -1.180565e-02 )
+        (  20848.237  -1.287738e-02 )
+        (  20848.764  -1.345791e-02 )
+        (  20848.951  -1.397064e-02 )
+        (  20849.977  -1.436093e-02 )
+        (  20850.975  -1.402387e-02 )
+        (  20851.792  -1.333774e-02 )
+        (  20852.605  -1.251612e-02 )
+        (  20853.421  -1.179556e-02 )
+        (  20854.071  -1.109334e-02 )
+        (  20854.902  -1.075308e-02 )
+        (  20856.267  -1.124295e-02 )
+        (  20858.324  -1.226852e-02 )
+        (  20861.602  -1.434317e-02 )
+        (  20864.722  -1.649538e-02 )
+        (  20866.998  -1.833980e-02 )
+        (  20868.930  -1.980760e-02 )
+        (  20871.047  -2.129192e-02 )
+        (  20872.794  -2.208596e-02 )
+        (  20873.830  -2.238023e-02 )
+        (  20874.854  -2.251997e-02 )
+        (  20876.039  -2.258771e-02 )
+        (  20876.524  -2.235460e-02 )
+        (  20878.496  -2.176714e-02 )
+        (  20882.148  -2.101058e-02 )
+        (  20885.475  -2.035736e-02 )
+        (  20889.977  -1.956298e-02 )
+        (  20896.994  -1.843259e-02 )
+        (  20902.848  -1.754202e-02 )
+        (  20907.032  -1.692620e-02 )
+        (  20908.206  -1.680403e-02 )
+        (  20909.895  -1.687429e-02 )
+        (  20911.944  -1.748455e-02 )
+        (  20914.360  -1.866456e-02 )
+        (  20916.633  -2.015485e-02 )
+        (  20918.066  -2.142927e-02 )
+        (  20919.358  -2.276071e-02 )
+        (  20919.774  -2.348313e-02 )
+        (  20920.369  -2.413288e-02 )
+        (  20921.271  -2.448182e-02 )
+        (  20921.818  -2.470468e-02 )
+    );
+}
+
+
+
+fuelFeedbackZones
+(
+    fuelElement_45
+    fuelElement_39
+    fuelElement_34
+    fuelElement_30
+    fuelElement_26
+    fuelElement_22
+    fuelElement_19
+    fuelElement_17
+    fuelElement_15
+    fuelElement_13
+);
+
+coolFeedbackZones
+(
+    fuelElement_45
+    fuelElement_39
+    fuelElement_34
+    fuelElement_30
+    fuelElement_26
+    fuelElement_22
+    fuelElement_19
+    fuelElement_17
+    fuelElement_15
+    fuelElement_13
+    unloadedElementsTypeC
+    unloadedElementsTypeT
+    inletPropellant
+    nozzleChamber
+    coreSupport
+);
+
+structFeedbackZones
+(
+    coreSupport
+    supportPlate
+);
+
+drivelineFeedbackZones ();
+
+
+//- Diffusion data
+xsVariables
+{
+    TFuel   log;
+    rhoCool lin;
+}
+
+
+states
+(
+    reference
+    {
+        TFuel   1547; // K
+        rhoCool 0.91729; // kg/m3 -> keff = 0.999028 +/- 0.000090
+
+        zones
+        (
+            #include "XSref"
+        );
+    }
+    TFuel300K
+    {
+        TFuel   300; // K
+
+        zones
+        (
+            #include "XSTFuel300K"
+        );
+    }
+    rhoCool10kgm3
+    {
+        // From OpenMC (nInactiveCycles = 30, nActiveCycles = 1000, particles = 100000):
+        //   coolantDensityReductionInCoreRelVar = 10.0 # relative variation
+        //   feedbackCoeffRhoCool = 7.674e-03 +/- 1.319e-05 [1/(kg/m3)]
+        rhoCool 10.0902; // kg/m3 -> keff = 1.074599 +/- 0.000092
+
+        zones
+        (
+            #include "XSrhoCool10kgm3"
+        );
+    }
+);
+
+// ************************************************************************* //
