@@ -122,8 +122,9 @@ private:
     pointField originalPoints_;
 
     bool solveEnergy_;
-    
 
+    volSymmTensorField stressTensor_;
+    volScalarField kappaEff_;
 
 
 public:

@@ -123,16 +123,21 @@ protected:
         dictionary CHTProperties_; 
 
         word fluidRegionName_;
-        label fluidPatchID_;
         word solidRegionName_;
-        label solidPatchID_;
         label fluidSolverID_;
         label solidSolverID_;
+
+        //- List of coupled patches 
+        labelList fluidPatchIDs_;
+        labelList solidPatchIDs_;
+        
         scalar couplingStartTime_;
         scalar minResidual_;
         label maxIterations_;
         bool useHTC_;
         bool oneWayCoupling_;
+        word fluidKappa_;
+        word solidKappa_;
 
 
 private:

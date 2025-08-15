@@ -506,6 +506,9 @@ protected:
     //-
     boolList useGapHPowerDensityTable_;
 
+    // - List to fuel fractions (i.e., fuel only, without considering the cladding)
+    scalarList fuelFraction_;
+
 public:
 
     //- Runtime type information

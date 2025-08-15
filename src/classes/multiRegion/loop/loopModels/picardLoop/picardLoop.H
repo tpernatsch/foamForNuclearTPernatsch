@@ -48,37 +48,39 @@ Description
     structure which might be helpful for multi-scale problems.
 
 Usage
-    In multiRegionCouplingDict, the picardLoops subDict is used to create a
-    picardLoop
+    In regionsDict, the following subDict is used to create a picardLoop
 
     \verbatim
-        picardLoops
+        regionSolvers
         {
-            picardLoop1 //picardLoopName
+            Level_0
             {
-                solvers // list of solvers
+                Level_1     picardLoop;
+            }
+            Level_1
+            {
+                subSolvers // list of solvers
                 {
                     regionName              solverName;
                     fluidRegion             onePhase;
                     neutroRegion            diffusionNeutronics;
-                    picardLoop2     picardLoop;
+                    Level_2                 picardLoop;
                 }
                 minResidual 0.00005;   // residual after which the iteration is ended
-                maxIterations 3;       // maximum number of iterations before the loop is ended
-                includeFluidMechanicsInLoop  false; //defaulted to false
+                maxIterations 3;       // maximum number of iterations before the loop is ended            
             }
-        }
 
-        picardLoop2
-        {
-            ...
+            Level_2
+            {
+                ...
+            }
         }
     \endverbatim
 
-    If includeFluidMechanicsInLoop entry is set to false (default value), for the thermal-hydraulics
-    solvers only the energy is solved iteratively with the other physics, while the fluid-mechanics
-    is solved only once at the beginning of the iteration. This is done so that useless
-    fluid-mechanics iterations are solved.
+    The picardLoop automatically solves all the equations of the solvers for each time step.
+    In some cases, it is convenient to only solve the energy equation of the
+    thermal-hydraulics solver, while the fluid-mechanics is solved only once at the
+    beginning of the iteration. This can be done by setting the picardLoopNoFluid solover instead.
 
 SourceFiles
     picardLoop.C

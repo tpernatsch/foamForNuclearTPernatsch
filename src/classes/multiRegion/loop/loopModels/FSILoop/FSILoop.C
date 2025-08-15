@@ -148,7 +148,7 @@ void Foam::solvers::FSILoop::createSolvers(word name)
         << "Please select one fluid and one solid solver"
         <<  endl
         << "Valid types are: "  << endl
-        <<"Fluid: 2(pimpleFluid, onePhase) " << endl
+        <<"Fluid: 2(rhoPimpleFoam, onePhase) " << endl
         <<"Solid: 2(extendedThermoMechanics, legacyThermoMechanics)" << endl
         << exit(FatalError);
     }
@@ -174,7 +174,7 @@ void Foam::solvers::FSILoop::createSolvers(word name)
 
         if 
         (
-            (fluidSolverType != "onePhase" and fluidSolverType != "pimpleFluid") 
+            (fluidSolverType != "onePhase" and fluidSolverType != "rhoPimpleFoam") 
             or
             (solidSolverType != "legacyThermomechanics" and solidSolverType != "extendedThermoMechanics" and solidSolverType != "fuelBehaviour")
 
@@ -184,7 +184,7 @@ void Foam::solvers::FSILoop::createSolvers(word name)
             << "Please select one fluid and one solid solver"
             <<  endl
             << "Valid types are: "  << endl
-            <<"Fluid: 2(pimpleFluid, onePhase) " << endl
+            <<"Fluid: 2(rhoPimpleFoam, onePhase) " << endl
             <<"Solid: 3(extendedThermoMechanics, legacyThermoMechanics, fuelBehaviour)" << endl
             << exit(FatalError);
         }
@@ -403,17 +403,19 @@ void Foam::solvers::FSILoop::fromFluidToSolid()
         nbrPatch.lookupPatchField<volScalarField, scalar>("T");
 
         bool useHTC = FSIProperties_.get<bool>("useHTC");
+        word fluidKappa = FSIProperties_.getOrDefault<word>("fluidKappa", "kappaEff");
+        word solidKappa = FSIProperties_.getOrDefault<word>("solidKappa", "k");
 
         scalarList htcFluid = 
         (
             useHTC ?
             nbrPatch.lookupPatchField<volScalarField, scalar>("htc") :
-            nbrPatch.lookupPatchField<volScalarField , scalar>("kappaEff") * nbrPatch.deltaCoeffs()
+            nbrPatch.lookupPatchField<volScalarField , scalar>(fluidKappa) * nbrPatch.deltaCoeffs()
         );
 
         scalarField solidWeight = 
         (
-            solidMesh.boundary()[solidPatchID_].lookupPatchField<volScalarField, scalar>("k")
+            solidMesh.boundary()[solidPatchID_].lookupPatchField<volScalarField, scalar>(solidKappa)
             * solidMesh.boundary()[solidPatchID_].deltaCoeffs()
         );
 
@@ -530,15 +532,18 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
         scalarList temperatureSolid =
         nbrPatch.lookupPatchField<volScalarField, scalar>("T");
 
-        scalarList htcSolid = 
-            nbrPatch.lookupPatchField<volScalarField , scalar>("k") * nbrPatch.deltaCoeffs();
-        
         bool useHTC(FSIProperties_.get<bool>("useHTC"));
+        word fluidKappa = FSIProperties_.getOrDefault<word>("fluidKappa", "kappaEff");
+        word solidKappa = FSIProperties_.getOrDefault<word>("solidKappa", "k");
+
+        scalarList htcSolid = 
+            nbrPatch.lookupPatchField<volScalarField , scalar>(solidKappa) * nbrPatch.deltaCoeffs();
+
         scalarField fluidWeight = 
         (
             useHTC ?
             (fluidMesh.boundary()[fluidPatchID_].lookupPatchField<volScalarField, scalar>("htc")) :
-            (fluidMesh.boundary()[fluidPatchID_].lookupPatchField<volScalarField, scalar>("kappaEff")
+            (fluidMesh.boundary()[fluidPatchID_].lookupPatchField<volScalarField, scalar>(fluidKappa)
             * fluidMesh.boundary()[fluidPatchID_].deltaCoeffs())
         );
 

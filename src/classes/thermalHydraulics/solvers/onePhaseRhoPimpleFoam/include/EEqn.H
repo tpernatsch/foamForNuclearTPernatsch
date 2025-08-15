@@ -34,4 +34,9 @@
     fvOptions_.correct(he);
 
     thermo_.correct();
+
+    kappaEff_ = 
+    (
+      thermo_.kappaEff(turbulence_->alphat())
+    );
 }

@@ -39,46 +39,46 @@ Class
     Foam::FSILoop
 
 Description
-    This class creates a multiphysics tightly coupled loop, made of an arbitrary
-    number of physics. The class member-functions are inherited from solver.H
-    and are the same as those of the other solvers. Each member function consists
-    of a loop where the same member function is called iteratively for all the
-    solvers included in the FSILoop. Note that another FSILoop
-    can be created within a FSILoop, hence creating a hierarchical
-    structure which might be helpful for multi-scale problems.
+    This class implements a dedicated Fluid–Structure Interaction (FSI) solver
+    that couples a single fluid region to a single solid region using the
+    Arbitrary Lagrangian–Eulerian (ALE) approach. The solver is designed as a
+    specialized loop that advances both physics in a tightly coupled manner
+    within each time step, ensuring consistent interface conditions for velocity,
+    displacement, and traction. It assumkes that the solid and fluid are coupled
+    through a single patch on both sides, allowing for a direct exchange of
+    information between the fluid and solid regions. The fluid solver is expected 
+    to support dynamicFvMesh in order to deform the mesh according to the solid 
+    displacement. The loop assumes that the solid region is not deformed, using 
+    a non-updated approach for the displacement solution.
 
 Usage
-    In multiRegionCouplingDict, the FSILoops subDict is used to create a
-    FSILoop
+    In regionsDict, a subDict in regionsDict/regionSolvers is used to create a FSILoop
 
     \verbatim
-        FSILoops
+        Level_1
         {
-            FSILoop1 //FSILoopName
+            subSolvers
             {
-                solvers // list of solvers
-                {
-                    regionName              solverName;
-                    fluidRegion             onePhase;
-                    neutroRegion            diffusionNeutronics;
-                    FSILoop2     FSILoop;
-                }
-                minResidual 0.00005;   // residual after which the iteration is ended
-                maxIterations 3;       // maximum number of iterations before the loop is ended
-                includeFluidMechanicsInLoop  false; //defaulted to false
+                fluid rhoPimpleFoam;
+                solid extendedThermoMechanics;
+                ...
+                arbitraryName  solverName;
+            }
+            
+            maxIterations 100;
+            minResidual 1e-5;
+            
+            FSILoopCoeffs
+            {
+                fluidRegionName fluid; // Name of the fluid region
+                solidRegionName solid; // Name of the solid region
+                solidSidePatchName plate; // Name of the coupled patch on the solid side
+                fluidSidePatchName plate; // Name of the coupled patch on the fluid side
+                underRelaxationFactor 0.05; // Under-relaxation factor for the coupling
+                couplingStartTime 2; // Time after which the coupling starts
             }
         }
-
-        FSILoop2
-        {
-            ...
-        }
     \endverbatim
-
-    If includeFluidMechanicsInLoop entry is set to false (default value), for the thermal-hydraulics
-    solvers only the energy is solved iteratively with the other physics, while the fluid-mechanics
-    is solved only once at the beginning of the iteration. This is done so that useless
-    fluid-mechanics iterations are solved.
 
 SourceFiles
     FSILoop.C

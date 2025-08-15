@@ -129,6 +129,7 @@ EXE_INC = \
     -I./boundaryConditions/velocityRundown \
     -I./boundaryConditions/timeFieldTable \
     -I./boundaryConditions/mappedDarcyVelocity \
+    -I./boundaryConditions/parabolicVelocityPatchField \
     -I./functionObjects/fieldDiffExtents \
     -I./functionObjects/TBulk \
     -I./functionObjects/massFlow \

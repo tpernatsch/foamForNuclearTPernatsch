@@ -88,6 +88,7 @@ Foam::solvers::thermoMechanics::thermoMechanics
         dimensionedVector("", dimLength, vector::zero),
         zeroGradientFvPatchScalarField::typeName
     ),
+    correctDispForNeutroMesh_(this->subDict("couplingOptions").lookupOrDefault<bool>("correctDispForNeutro", false)),
     fuelDisp_
     (
         IOobject
@@ -95,10 +96,14 @@ Foam::solvers::thermoMechanics::thermoMechanics
             "fuelDisp",
             mesh.time().timeName(),
             mesh,
-            IOobject::MUST_READ,
+            correctDispForNeutroMesh_ ?
+                IOobject::MUST_READ :
+                IOobject::NO_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,1,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),
     CRDisp_
     (
@@ -107,10 +112,14 @@ Foam::solvers::thermoMechanics::thermoMechanics
             "CRDisp",
             mesh.time().timeName(),
             mesh,
-            IOobject::MUST_READ,
+            correctDispForNeutroMesh_ ?
+                IOobject::MUST_READ :
+                IOobject::NO_READ,
             IOobject::AUTO_WRITE
         ),
-        mesh
+        mesh,
+        dimensionedScalar("", dimensionSet(0,0,1,0,0,0,0), 0.0),
+        zeroGradientFvPatchScalarField::typeName
     ),
     fuelDispVector_
     (

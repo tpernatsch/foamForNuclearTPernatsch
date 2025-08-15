@@ -136,9 +136,11 @@ void Foam::solvers::CHTLoop::createSolvers(word name)
     maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
     useHTC_ = CHTProperties_.getOrDefault<bool>("useHTC", false);
     oneWayCoupling_ = CHTProperties_.getOrDefault<bool>("oneWayCoupling", false);
+    fluidKappa_ = CHTProperties_.getOrDefault<word>("fluidKappa", "kappaEff");
+    solidKappa_ = CHTProperties_.getOrDefault<word>("solidKappa", "k");
 
 
-        // Get indices of solvers
+    // Get indices of solvers
 
     if(solvers_.size()!=2)
     {
@@ -146,7 +148,7 @@ void Foam::solvers::CHTLoop::createSolvers(word name)
         << "Please select one fluid and one solid solver"
         <<  endl
         << "Valid types are: "  << endl
-        <<"Fluid: 2(pimpleFluid, onePhase) " << endl
+        <<"Fluid: 2(rhoPimpleFoam, onePhase) " << endl
         <<"Solid: 2(extendedThermoMechanics, legacyThermoMechanics)" << endl
         << exit(FatalError);
     }
@@ -172,7 +174,7 @@ void Foam::solvers::CHTLoop::createSolvers(word name)
 
         if 
         (
-            (fluidSolverType != "onePhase" and fluidSolverType != "pimpleFluid") 
+            (fluidSolverType != "onePhase" and fluidSolverType != "rhoPimpleFoam") 
             or
             (solidSolverType != "legacyThermomechanics" and solidSolverType != "extendedThermoMechanics" and solidSolverType != "fuelBehaviour")
 
@@ -182,17 +184,53 @@ void Foam::solvers::CHTLoop::createSolvers(word name)
             << "Please select one fluid and one solid solver"
             <<  endl
             << "Valid types are: "  << endl
-            <<"Fluid: 2(pimpleFluid, onePhase) " << endl
+            <<"Fluid: 2(rhoPimpleFoam, onePhase) " << endl
             <<"Solid: 3(extendedThermoMechanics, legacyThermoMechanics, fuelBehaviour)" << endl
             << exit(FatalError);
         }
 
     }
     
-    word fluidSidePatchName = CHTProperties_.get<word>("fluidSidePatchName");
-    fluidPatchID_ = meshHandler_->returnMesh(fluidRegionName_).boundaryMesh().findPatchID(fluidSidePatchName);
-    word solidSidePatchName = CHTProperties_.get<word>("solidSidePatchName");
-    solidPatchID_ = meshHandler_->returnMesh(solidRegionName_).boundaryMesh().findPatchID(solidSidePatchName);
+
+    // Get list of patches 
+    wordList fluidPatches = CHTProperties_.get<wordList>("fluidPatches");
+    wordList solidPatches = CHTProperties_.get<wordList>("solidPatches");
+    fluidPatchIDs_.setSize(fluidPatches.size());
+    solidPatchIDs_.setSize(solidPatches.size());
+
+    if(fluidPatches.size() != solidPatches.size())
+    {
+        FatalErrorInFunction
+        << "Number of fluid and solid patches must be equal"
+        <<  endl
+        << "Fluid patches: " << fluidPatches.size() << endl
+        << "Solid patches: " << solidPatches.size() << endl
+        << exit(FatalError);
+    }
+
+    forAll(fluidPatches, wordI)
+    {
+        label fluidPatchID = meshHandler_->returnMesh(fluidRegionName_).boundaryMesh().findPatchID(fluidPatches[wordI]);
+        if(fluidPatchID == -1)
+        {
+            FatalErrorInFunction
+            << "Patch " << fluidPatches[wordI] << " not found in fluid region "
+            << fluidRegionName_ << endl
+            << exit(FatalError);
+        }
+        fluidPatchIDs_[wordI]= fluidPatchID;
+
+        label solidPatchID = meshHandler_->returnMesh(solidRegionName_).boundaryMesh().findPatchID(solidPatches[wordI]);
+        if(solidPatchID == -1)
+        {
+            FatalErrorInFunction
+            << "Patch " << fluidPatches[wordI] << " not found in solid region "
+            << solidRegionName_ << endl
+            << exit(FatalError);
+        }
+        solidPatchIDs_[wordI] = solidPatchID;
+    }
+    
     
 }
 
@@ -265,60 +303,63 @@ void Foam::solvers::CHTLoop::fromFluidToSolid()
 
     const volScalarField& Ts = solidMesh.lookupObject<volScalarField>("T");
 
-    const fvPatchScalarField& T_patch = Ts.boundaryField()[solidPatchID_];
+    forAll(solidPatchIDs_, solidPatchI)
+    {
+        const fvPatchScalarField& T_patch = Ts.boundaryField()[solidPatchIDs_[solidPatchI]];
 
-    const mixedFvPatchField<scalar>& mixedPatch =
-    refCast<const mixedFvPatchField<scalar>>(T_patch);
+        const mixedFvPatchField<scalar>& mixedPatch =
+        refCast<const mixedFvPatchField<scalar>>(T_patch);
 
-    scalarField& refVal = const_cast<scalarField&>(mixedPatch.refValue());
-    scalarField& valueFrac = const_cast<scalarField&>(mixedPatch.valueFraction());
-    scalarField& refGrad = const_cast<scalarField&>(mixedPatch.refGrad());
-
-
-    int oldTag = UPstream::msgType();
-    UPstream::msgType() = oldTag+1;
+        scalarField& refVal = const_cast<scalarField&>(mixedPatch.refValue());
+        scalarField& valueFrac = const_cast<scalarField&>(mixedPatch.valueFraction());
+        scalarField& refGrad = const_cast<scalarField&>(mixedPatch.refGrad());
 
 
-    const mappedPatchBase& Tmpp = refCast<const mappedPatchBase>
-    (
-        mixedPatch.patch().patch()
-    );
+        int oldTag = UPstream::msgType();
+        UPstream::msgType() = oldTag+1;
 
-    const polyMesh& nbrMesh = Tmpp.sampleMesh();
-    const fvPatch& nbrPatch = refCast<const fvMesh>
-    (
-        nbrMesh
-    ).boundary()[Tmpp.samplePolyPatch().index()];
 
-    scalarList temperatureFluid =
-    nbrPatch.lookupPatchField<volScalarField, scalar>("T");
+        const mappedPatchBase& Tmpp = refCast<const mappedPatchBase>
+        (
+            mixedPatch.patch().patch()
+        );
 
-    bool useHTC = CHTProperties_.get<bool>("useHTC");
+        const polyMesh& nbrMesh = Tmpp.sampleMesh();
+        const fvPatch& nbrPatch = refCast<const fvMesh>
+        (
+            nbrMesh
+        ).boundary()[Tmpp.samplePolyPatch().index()];
 
-    scalarList htcFluid = 
-    (
-        useHTC ?
-        nbrPatch.lookupPatchField<volScalarField, scalar>("htc") :
-        nbrPatch.lookupPatchField<volScalarField , scalar>("kappaEff") * nbrPatch.deltaCoeffs()
-    );
+        scalarList temperatureFluid =
+        nbrPatch.lookupPatchField<volScalarField, scalar>("T");
 
-    scalarField solidWeight = 
-    (
-        solidMesh.boundary()[solidPatchID_].lookupPatchField<volScalarField, scalar>("k")
-        * solidMesh.boundary()[solidPatchID_].deltaCoeffs()
-    );
+        bool useHTC = CHTProperties_.get<bool>("useHTC");
 
-    // Set ref value
+        scalarList htcFluid = 
+        (
+            useHTC ?
+            nbrPatch.lookupPatchField<volScalarField, scalar>("htc") :
+            nbrPatch.lookupPatchField<volScalarField , scalar>(fluidKappa_) * nbrPatch.deltaCoeffs()
+        );
 
-    Tmpp.distribute(temperatureFluid);
-    refVal = temperatureFluid;
+        scalarField solidWeight = 
+        (
+            solidMesh.boundary()[solidPatchIDs_[solidPatchI]].lookupPatchField<volScalarField, scalar>(solidKappa_)
+            * solidMesh.boundary()[solidPatchIDs_[solidPatchI]].deltaCoeffs()
+        );
 
-    //Set value fraction
-    Tmpp.distribute(htcFluid);
-    valueFrac = htcFluid / (solidWeight + htcFluid);
+        // Set ref value
 
-    //Set gradient
-    refGrad = 0;
+        Tmpp.distribute(temperatureFluid);
+        refVal = temperatureFluid;
+
+        //Set value fraction
+        Tmpp.distribute(htcFluid);
+        valueFrac = htcFluid / (solidWeight + htcFluid);
+
+        //Set gradient
+        refGrad = 0;
+    }
 
 }
 
@@ -330,57 +371,61 @@ void Foam::solvers::CHTLoop::fromSolidToFluid()
 
     const volScalarField& Tf = fluidMesh.lookupObject<volScalarField>("T");
 
-    const fvPatchScalarField& T_patch = Tf.boundaryField()[fluidPatchID_];
-
-    const mixedFvPatchField<scalar>& mixedPatch =
-    refCast<const mixedFvPatchField<scalar>>(T_patch);
-
-    scalarField& refVal = const_cast<scalarField&>(mixedPatch.refValue());
-    scalarField& valueFrac = const_cast<scalarField&>(mixedPatch.valueFraction());
-    scalarField& refGrad = const_cast<scalarField&>(mixedPatch.refGrad());
-
-
-    int oldTag = UPstream::msgType();
-    UPstream::msgType() = oldTag+1;
-
-
-    const mappedPatchBase& Tmpp = refCast<const mappedPatchBase>
-    (
-        mixedPatch.patch().patch()
-    );
-
-    const polyMesh& nbrMesh = Tmpp.sampleMesh();
-    const fvPatch& nbrPatch = refCast<const fvMesh>
-    (
-        nbrMesh
-    ).boundary()[Tmpp.samplePolyPatch().index()];
-
-    scalarList temperatureSolid =
-    nbrPatch.lookupPatchField<volScalarField, scalar>("T");
-
-    scalarList htcSolid = 
-        nbrPatch.lookupPatchField<volScalarField , scalar>("k") * nbrPatch.deltaCoeffs();
+    forAll(fluidPatchIDs_, fluidPatchI)
+    {
     
-    bool useHTC(CHTProperties_.get<bool>("useHTC"));
-    scalarField fluidWeight = 
-    (
-        useHTC ?
-        (fluidMesh.boundary()[fluidPatchID_].lookupPatchField<volScalarField, scalar>("htc")) :
-        (fluidMesh.boundary()[fluidPatchID_].lookupPatchField<volScalarField, scalar>("kappaEff")
-        * fluidMesh.boundary()[fluidPatchID_].deltaCoeffs())
-    );
+        const fvPatchScalarField& T_patch = Tf.boundaryField()[fluidPatchIDs_[fluidPatchI]];
 
-    // Set ref value
+        const mixedFvPatchField<scalar>& mixedPatch =
+        refCast<const mixedFvPatchField<scalar>>(T_patch);
 
-    Tmpp.distribute(temperatureSolid);
-    refVal = temperatureSolid;
+        scalarField& refVal = const_cast<scalarField&>(mixedPatch.refValue());
+        scalarField& valueFrac = const_cast<scalarField&>(mixedPatch.valueFraction());
+        scalarField& refGrad = const_cast<scalarField&>(mixedPatch.refGrad());
 
-    //Set value fraction
-    Tmpp.distribute(htcSolid);
-    valueFrac = htcSolid / (fluidWeight + htcSolid);
 
-    //Set gradient
-    refGrad = 0;
+        int oldTag = UPstream::msgType();
+        UPstream::msgType() = oldTag+1;
+
+
+        const mappedPatchBase& Tmpp = refCast<const mappedPatchBase>
+        (
+            mixedPatch.patch().patch()
+        );
+
+        const polyMesh& nbrMesh = Tmpp.sampleMesh();
+        const fvPatch& nbrPatch = refCast<const fvMesh>
+        (
+            nbrMesh
+        ).boundary()[Tmpp.samplePolyPatch().index()];
+
+        scalarList temperatureSolid =
+        nbrPatch.lookupPatchField<volScalarField, scalar>("T");
+
+        scalarList htcSolid = 
+            nbrPatch.lookupPatchField<volScalarField , scalar>(solidKappa_) * nbrPatch.deltaCoeffs();
+        
+        bool useHTC(CHTProperties_.get<bool>("useHTC"));
+        scalarField fluidWeight = 
+        (
+            useHTC ?
+            (fluidMesh.boundary()[fluidPatchIDs_[fluidPatchI]].lookupPatchField<volScalarField, scalar>("htc")) :
+            (fluidMesh.boundary()[fluidPatchIDs_[fluidPatchI]].lookupPatchField<volScalarField, scalar>(fluidKappa_)
+            * fluidMesh.boundary()[fluidPatchIDs_[fluidPatchI]].deltaCoeffs())
+        );
+
+        // Set ref value
+
+        Tmpp.distribute(temperatureSolid);
+        refVal = temperatureSolid;
+
+        //Set value fraction
+        Tmpp.distribute(htcSolid);
+        valueFrac = htcSolid / (fluidWeight + htcSolid);
+
+        //Set gradient
+        refGrad = 0;
+    }
 
 
 }

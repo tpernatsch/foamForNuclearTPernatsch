@@ -39,46 +39,40 @@ Class
     Foam::picardLoopNoFluid
 
 Description
-    This class creates a multiphysics tightly coupled loop, made of an arbitrary
-    number of physics. The class member-functions are inherited from solver.H
-    and are the same as those of the other solvers. Each member function consists
-    of a loop where the same member function is called iteratively for all the
-    solvers included in the picardLoopNoFluid. Note that another picardLoopNoFluid
-    can be created within a picardLoopNoFluid, hence creating a hierarchical
-    structure which might be helpful for multi-scale problems.
+    Identical to the picardLoop, but it does not solve the fluid-mechancs equations at
+    each of the iterations. Instead, it solves the fluid-mechanics equations only once
+    at the beginning of the iteration, and then solves the energy equation of the
+    thermal-hydraulics solver iteratively with the other physics. 
 
 Usage
-    In multiRegionCouplingDict, the picardLoopNoFluids subDict is used to create a
-    picardLoopNoFluid
+    In regionsDict, the following subDict is used to create a picardLoopNoFluid
 
     \verbatim
-        picardLoopNoFluids
+        regionSolvers
         {
-            picardLoopNoFluid1 //picardLoopNoFluidName
+            Level_0
             {
-                solvers // list of solvers
+                Level_1     picardLoopNoFluid;
+            }
+            Level_1
+            {
+                subSolvers // list of solvers
                 {
                     regionName              solverName;
                     fluidRegion             onePhase;
                     neutroRegion            diffusionNeutronics;
-                    picardLoopNoFluid2     picardLoopNoFluid;
+                    Level_2                 picardLoopNoFluid;
                 }
                 minResidual 0.00005;   // residual after which the iteration is ended
-                maxIterations 3;       // maximum number of iterations before the loop is ended
-                includeFluidMechanicsInLoop  false; //defaulted to false
+                maxIterations 3;       // maximum number of iterations before the loop is ended            
+            }
+
+            Level_2
+            {
+                ...
             }
         }
-
-        picardLoopNoFluid2
-        {
-            ...
-        }
     \endverbatim
-
-    If includeFluidMechanicsInLoop entry is set to false (default value), for the thermal-hydraulics
-    solvers only the energy is solved iteratively with the other physics, while the fluid-mechanics
-    is solved only once at the beginning of the iteration. This is done so that useless
-    fluid-mechanics iterations are solved.
 
 SourceFiles
     picardLoopNoFluid.C

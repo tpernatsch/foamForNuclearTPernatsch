@@ -70,7 +70,18 @@ Foam::solvers::rhoPimpleFoam::rhoPimpleFoam
     pimple_(mesh_),
     pThermo_(fluidThermo::New(mesh_)),
     thermo_(pThermo_()),
-    p_(thermo_.p()),
+    p_
+    (
+        IOobject
+        (
+            "p",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::MUST_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_
+    ),
     rho_
     (
         IOobject
@@ -146,7 +157,33 @@ Foam::solvers::rhoPimpleFoam::rhoPimpleFoam
     residual_(0),
     cumulativeContErr_(0),
     originalPoints_(mesh_.points()),
-    solveEnergy_(true)
+    solveEnergy_(true),
+    stressTensor_
+    (
+        IOobject
+        (
+            "stressTensor",
+            mesh_.time().timeName(),
+            mesh_,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh_,
+        dimensionedSymmTensor("stressTensor", dimPressure, symmTensor::zero)
+    ),
+    kappaEff_
+    (
+        IOobject
+        (
+            "kappaEff",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimPower/dimTemperature/dimLength, 0)
+    )
 {
 
     if(mesh_.dynamic())
@@ -213,8 +250,8 @@ void Foam::solvers::rhoPimpleFoam::correctPhysics()
                 rhoU.reset(new volVectorField("rhoU", rho_*U_));
             }
 
-            // Do any mesh_ changes
-            mesh_.controlledUpdate();
+            // Do any mesh_ changes -- commented as FSILoop takes care of it
+            // mesh_.controlledUpdate();
 
             if (mesh_.changing())
             {
@@ -270,9 +307,7 @@ void Foam::solvers::rhoPimpleFoam::correctPhysics()
 
     rho_ = thermo_.rho();
 
-
-
-    // stressTensor_ = -turbulence_->devRhoReff()()-fluid_.thermo().p()*symmTensor(1,0,0,1,0,1);
+    stressTensor_ = -turbulence_->devRhoReff()()-p_*symmTensor(1,0,0,1,0,1);
 }
 
 void Foam::solvers::rhoPimpleFoam::correctTightlyCoupledPhysics()
