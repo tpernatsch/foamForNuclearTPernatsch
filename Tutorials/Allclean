@@ -44,6 +44,7 @@ tutorials="
     reactorCases/2D_MSFR
     reactorCases/3D_gFHR
     reactorCases/3D_HTR-10
+    reactorCases/3D_KIWI-B-4E
     reactorCases/3D_NTPfuelAssembly
     reactorCases/3D_SmallESFR_NewSolverVerification
     reactorCases/Godiva_SN
