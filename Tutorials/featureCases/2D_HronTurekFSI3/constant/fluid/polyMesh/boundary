@@ -1,0 +1,75 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "constant/fluid/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+7
+(
+    frontAndBackPlanes
+    {
+        type            empty;
+        inGroups        1(empty);
+        nFaces          41938;
+        startFace       41438;
+    }
+    inlet
+    {
+        type            patch;
+        nFaces          80;
+        startFace       83376;
+    }
+    outlet
+    {
+        type            patch;
+        nFaces          78;
+        startFace       83456;
+    }
+    top
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          254;
+        startFace       83534;
+    }
+    bottom
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          254;
+        startFace       83788;
+    }
+    plate
+    {
+        type            mappedWall;
+        inGroups        1(wall);
+        nFaces          201;
+        startFace       84042;
+        sampleMode      nearestPatchFaceAMI;
+        sampleRegion    solid;
+        samplePatch     plate;
+        AMIMethod       faceAreaWeightAMI;
+    }
+    cylinder
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          133;
+        startFace       84243;
+    }
+)
+
+// ************************************************************************* //

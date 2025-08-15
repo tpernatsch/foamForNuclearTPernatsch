@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# Run the case
+GeN-Foam | tee log.GeN-Foam
+
+# ----------------------------------------------------------------- end-of-file
