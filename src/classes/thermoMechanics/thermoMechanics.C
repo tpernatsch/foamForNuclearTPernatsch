@@ -89,50 +89,9 @@ Foam::solvers::thermoMechanics::thermoMechanics
         zeroGradientFvPatchScalarField::typeName
     ),
     correctDispForNeutroMesh_(this->subDict("couplingOptions").lookupOrDefault<bool>("correctDispForNeutro", false)),
-    fuelDisp_
-    (
-        IOobject
-        (
-            "fuelDisp",
-            mesh.time().timeName(),
-            mesh,
-            correctDispForNeutroMesh_ ?
-                IOobject::MUST_READ :
-                IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimensionSet(0,0,1,0,0,0,0), 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    CRDisp_
-    (
-        IOobject
-        (
-            "CRDisp",
-            mesh.time().timeName(),
-            mesh,
-            correctDispForNeutroMesh_ ?
-                IOobject::MUST_READ :
-                IOobject::NO_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh,
-        dimensionedScalar("", dimensionSet(0,0,1,0,0,0,0), 0.0),
-        zeroGradientFvPatchScalarField::typeName
-    ),
-    fuelDispVector_
-    (
-        IOobject
-        (
-            "fuelDispVector",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        (fuelDisp_*vector(0,0,1))
-    ),
+    fuelDisp_(nullptr),
+    CRDisp_(nullptr),
+    fuelDispVector_(nullptr),
     fuelOrientation_(this->subDict("globalOptions").lookup("pinDirection")),
     TStructFromTH_
     (
@@ -282,6 +241,62 @@ Foam::solvers::thermoMechanics::thermoMechanics
 
     TCRRef_.correctBoundaryConditions();
     alphaCR_.correctBoundaryConditions();
+
+    if(this->found("couplingOptions"))
+    {
+        if(this->subDict("couplingOptions").lookupOrDefault<bool>("correctDispForNeutro", false))
+        {
+            fuelDisp_.reset
+            (
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "fuelDisp",
+                        mesh.time().timeName(),
+                        mesh,
+                        IOobject::MUST_READ,
+                        IOobject::AUTO_WRITE
+                    ),
+                    mesh_
+                )
+            );
+
+            CRDisp_.reset
+            (
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "CRDisp",
+                        mesh.time().timeName(),
+                        mesh,
+                        IOobject::MUST_READ,
+                        IOobject::AUTO_WRITE
+                    ),
+                    mesh_
+                )
+            );
+
+            fuelDispVector_.reset
+            (
+                new volVectorField
+                (
+                    IOobject
+                    (
+                        "fuelDispVector",
+                        mesh.time().timeName(),
+                        mesh,
+                        IOobject::READ_IF_PRESENT,
+                        IOobject::AUTO_WRITE
+                    ),
+                    (fuelDisp_()*vector(0,0,1))
+                )
+            );
+        }
+    }
+
+
 }
 
 

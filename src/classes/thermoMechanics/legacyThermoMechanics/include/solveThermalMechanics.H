@@ -136,7 +136,7 @@ if (solveDisplacement_)
 
         fvScalarMatrix fuelDispEqn
         (
-            fvm::div(faceArea,fuelDisp_, "div(fuelDisp)")
+            fvm::div(faceArea,fuelDisp_(), "div(fuelDisp)")
          ==
             alphaFuel_*(TFuel_-TFuelRef_)
         );
@@ -146,7 +146,7 @@ if (solveDisplacement_)
 
         fvScalarMatrix CRDispEqn
         (
-            fvm::div(faceAreaCR,CRDisp_, "div(CRDisp)")
+            fvm::div(faceAreaCR,CRDisp_(), "div(CRDisp)")
          ==
             -alphaCR_*(TStruct_-TCRRef_)
         );
@@ -154,11 +154,11 @@ if (solveDisplacement_)
         fuelDispEqn.solve();
         CRDispEqn.solve();
 
-        fuelDispVector_ = (fuelDisp_+CRDisp_)*fuelOrientation_;
+        fuelDispVector_() = (fuelDisp_()+CRDisp_())*fuelOrientation_;
 
         meshDisp_ = 
             (disp_-((disp_ & fuelOrientation_) * fuelOrientation_)) 
-        +   fuelDispVector_ ; //- Remove any axial variation
+        +   fuelDispVector_() ; //- Remove any axial variation
 
         meshDisp_.correctBoundaryConditions();
 
@@ -168,10 +168,10 @@ else
 {
     disp_ *= 0.0;
     disp_.correctBoundaryConditions();
-    fuelDisp_ *= 0.0;
-    fuelDisp_.correctBoundaryConditions();
-    CRDisp_ *= 0.0;
-    CRDisp_.correctBoundaryConditions();
+    fuelDisp_() *= 0.0;
+    fuelDisp_().correctBoundaryConditions();
+    CRDisp_() *= 0.0;
+    CRDisp_().correctBoundaryConditions();
     meshDisp_ *= 0.0;
     meshDisp_.correctBoundaryConditions();
 }

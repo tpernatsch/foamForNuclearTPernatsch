@@ -1,0 +1,203 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2212                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           dictionary;
+    object          phaseProperties;
+}
+
+thermalHydraulicsType "onePhase";
+
+structureProperties
+{
+    innerPropellant
+    {
+        volumeFraction  0;
+        Dh              3;
+        T               200;
+    }
+    outerPropellant
+    {
+        volumeFraction  0;
+        Dh              3;
+        T               200;
+    }
+    hotFrit
+    {
+        volumeFraction  0.3;
+        Dh              0.002;
+        passiveProperties
+        {
+            volumetricArea  95;
+            rho             2019;
+            Cp              365;
+            T               200;
+        }
+    }
+    o1
+    {
+        volumeFraction  0.7;
+        Dh              0.0002;
+        passiveProperties
+        {
+            volumetricArea  95;
+            rho             1750;
+            Cp              3662;
+            T               200;
+        }
+    }
+    o4
+    {
+        volumeFraction  0.25;
+        Dh              2.0e-05;
+        passiveProperties
+        {
+            volumetricArea  95;
+            rho             1750;
+            Cp              3662;
+            T               200;
+        }
+    }
+    o5
+    {
+        volumeFraction  0.4;
+        Dh              5.0e-05;
+        passiveProperties
+        {
+            volumetricArea  95;
+            rho             1750;
+            Cp              3662;
+            T               200;
+        }
+    }
+    o2
+    {
+        volumeFraction  0.3;
+        Dh              3.0e-05;
+        passiveProperties
+        {
+            volumetricArea  95;
+            rho             1750;
+            Cp              3662;
+            T               200;
+        }
+    }
+    o3
+    {
+        volumeFraction  0.25;
+        Dh              2.0e-05;
+        passiveProperties
+        {
+            volumetricArea  95;
+            rho             1750;
+            Cp              3662;
+            T               200;
+        }
+    }
+    fuel
+    {
+        volumeFraction  0.6;
+        Dh              0.0004;
+        powerModel
+        {
+            type            lumpedNuclearStructure;
+            volumetricArea  6000;
+            powerDensity    0;
+            nodesNumber     2;
+            nodeFuel        0;
+            nodeClad        1;
+            heatConductances ( 4.787e+09 6.477e+09 2.912e+10 );
+            rhoCp           ( 1.986e+06 4.374e+06 );
+            volumeFractions ( 0.50878 0.49122 );
+            powerFractions  ( 1 0 );
+            T0              200;
+        }
+    }
+}
+
+regimeMapModel
+{
+    type            none;
+}
+
+physicsModels
+{
+    dragModels
+    {
+        "fuel:hotFrit:o1:o2:o3:o4:o5"
+        {
+            type            ReynoldsPower;
+            const           0.55;
+            coeff           1;
+            exp             -1;
+        }
+        "innerPropellant:outerPropellant"
+        {
+            type            ReynoldsPower;
+            coeff           0.184;
+            exp             -0.2;
+        }
+    }
+    heatTransferModels
+    {
+        fuel
+        {
+            type            NusseltReynoldsPrandtlPower;
+            const           0;
+            coeff           0.6071;
+            expRe           0.666667;
+            expPr           0.333333;
+        }
+        hotFrit
+        {
+            type            NusseltReynoldsPrandtlPower;
+            const           0;
+            coeff           0.3643;
+            expRe           0.666667;
+            expPr           0.333333;
+        }
+        "o1:o2:o3:o4:o5"
+        {
+            type            NusseltReynoldsPrandtlPower;
+            const           0;
+            coeff           1.275;
+            expRe           0.666667;
+            expPr           0.333333;
+        }
+        innerPropellant
+        {
+            type            NusseltReynoldsPrandtlPower;
+            const           0;
+            coeff           0.023;
+            expRe           0.8;
+            expPr           0.4;
+            expTc           -0.3;
+        }
+        outerPropellant
+        {
+            type            NusseltReynoldsPrandtlPower;
+            const           0;
+            coeff           0.023;
+            expRe           0.8;
+            expPr           0.4;
+            expTc           -0.3;
+        }
+    }
+}
+
+pMin            10000;
+
+pRefCell        0;
+
+pRefValue       100000;
+
+
+// ************************************************************************* //

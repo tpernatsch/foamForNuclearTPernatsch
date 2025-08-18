@@ -1,0 +1,115 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      decomposeParDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+numberOfSubdomains  8;
+
+//- Keep owner and neighbour on same processor for faces in zones:
+// preserveFaceZones (heater solid1 solid3);
+
+method          simple;
+// method          hierarchical;
+//method          simple;
+//method          manual;
+
+simpleCoeffs
+{
+    n           (8 1 1);
+    delta       0.001;
+}
+
+hierarchicalCoeffs
+{
+    n           (8 1 1);
+    delta       0.001;
+    order       xyz;
+}
+
+scotchCoeffs
+{
+    //processorWeights
+    //(
+    //    1
+    //    1
+    //    1
+    //    1
+    //);
+    // writeGraph  true;
+    // strategy "b";
+}
+
+manualCoeffs
+{
+    dataFile    "decompositionData";
+}
+
+// constraints
+// {
+//     preserveAssemblies
+//     {
+//         type            geometric;
+//         grow            false;
+//         //selection       true;
+
+//         selection
+//         {
+//             a15
+//             {
+//                 source           cylinder;
+//                 point1          (0      0.27393 0);
+//                 point2          (0.6392 0.27393 0);
+//                 radius          0.0456;
+//             }
+//             a16
+//             {
+//                 source           cylinder;
+//                 point1          (0      0.18262 0);
+//                 point2          (0.6392 0.18262 0);
+//                 radius          0.0456;
+//             }
+//             a17
+//             {
+//                 source           cylinder;
+//                 point1          (0      0.09131 0);
+//                 point2          (0.6392 0.09131 0);
+//                 radius          0.0456;
+//             }
+//             a18
+//             {
+//                 source           cylinder;
+//                 point1          (0      0 0);
+//                 point2          (0.6392 0 0);
+//                 radius          0.0456;
+//             }
+//             a22
+//             {
+//                 source           cylinder;
+//                 point1          (0      0.228275 0.0790768);
+//                 point2          (0.6392 0.228275 0.0790768);
+//                 radius          0.0456;
+//             }
+//             a23
+//             {
+//                 source           cylinder;
+//                 point1          (0      0.136965 0.0790768);
+//                 point2          (0.6392 0.136965 0.0790768);
+//                 radius          0.0456;
+//             }
+//         }
+//     }
+// }
+
+// ************************************************************************* //

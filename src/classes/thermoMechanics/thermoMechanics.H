@@ -104,9 +104,9 @@ protected:
         //- Move here all the fields needed for coupling with other physics
         volVectorField meshDisp_;
         bool correctDispForNeutroMesh_;
-        volScalarField fuelDisp_;
-        volScalarField CRDisp_;
-        volVectorField fuelDispVector_;
+        autoPtr<volScalarField> fuelDisp_;
+        autoPtr<volScalarField> CRDisp_;
+        autoPtr<volVectorField> fuelDispVector_;
         vector fuelOrientation_;
         volScalarField TStructFromTH_;
         volScalarField TFuel_;

@@ -207,11 +207,13 @@ int main(int argc, char *argv[])
         if (isSolveFMI) fmu->send();
         } // End fmu implicit loop
         while (isSolveFMI && fmu->loop());
+        #endif 
 
         // Adjust the time-step according to the solver maxDeltaT
         // Need to be after the FMI loop
         adjustDeltaT(runTime, solvers);
 
+        #ifdef isCommDataLayerIncluded 
         // Last, after all the other setDeltaT
         if (isSolveFMI)
         {
