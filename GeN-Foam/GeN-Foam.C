@@ -167,6 +167,7 @@ int main(int argc, char *argv[])
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
         solvers.mapper().mapAllFields(runTime);
+        solvers.mapper().interpolateAndMapFields(runTime);
 
         #ifdef isCommDataLayerIncluded
         do

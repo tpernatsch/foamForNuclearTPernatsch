@@ -765,11 +765,23 @@ void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
                 scalarList yPos(0);
                 scalarList zPos(0);
 
-                List<word> regionsFrom(regionToDict.get<List<word>>("fromWhichRegions"));
-                word fieldFromName(regionToDict.get<word>("fieldFromName"));
-                word fieldToName(regionToDict.get<word>("fieldToName"));
+                List<word> regionsFrom(regionToDict.get<List<word>>("sourceRegions"));
+
+                word fieldFromName(regionToDict.get<word>("sourceField"));
+                word fieldToName(regionToDict.get<word>("targetField"));
+
+                vector axialDir(regionToDict.get<vector>("axialDirection"));
+                scalar magAd = mag(axialDir);
+                if (magAd <= VSMALL)
+                {
+                    FatalErrorInFunction << "axialDirection must be non-zero." << exit(FatalError);
+                }
+                axialDir /= magAd; // unit axial direction
+
                 scalarList axialLocs(regionToDict.get<List<scalar>>("axialLocations"));
+
                 word interpolationType(regionToDict.get<word>("interpolationType"));
+
                 volScalarField& fieldToBeMapped(const_cast<volScalarField&>(meshes_[regioni].lookupObject<volScalarField>(fieldToName)));
 
 
@@ -784,57 +796,163 @@ void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
                             whichMesh = i;
                     }
 
+                    dictionary avgOpts;
 
-                    // - Get axial locations
-                    zPos.append(axialLocs);
-
-                    // - Get x and y
-                    vector centerOfMass(gSum(meshes_[whichMesh].C().field()*meshes_[whichMesh].V().field())/gSum(meshes_[whichMesh].V().field()));
-
-                    for(label i = 0; i<axialLocs.size(); i++)
+                    if (regionToDict.found("averageOptions"))
                     {
-                        xPos.append(centerOfMass[0]);
-                        yPos.append(centerOfMass[1]);
-                        // - Now I have a list of (x,y,z) for one region. I need to get to associate a value to each coordinate
-
-                        point samplePoint(centerOfMass[0], centerOfMass[1], axialLocs[i]);
-
-                        // interpolationCellPoint<scalar> pointInterpolator(meshes_[whichMesh]);
-
-                        label celli = meshes_[whichMesh].findCell(samplePoint);
-
-                        const volScalarField& field(meshes_[whichMesh].lookupObject<volScalarField>(fieldFromName));
-
-                        fieldValues.append(field[celli]);
-
+                        avgOpts = regionToDict.subDict("averageOptions");
                     }
-                }
+                    
+                    word avgType = avgOpts.get<word>("type");
+                    if (avgType != "volumeAverage" and avgType != "patchAverage")
+                    {
+                        FatalErrorInFunction
+                            << "Unknown average type " << avgType
+                            << ". Available types: volumeAverage, patchAverage"
+                            << exit(FatalError);
+                    }
 
+                    scalar dzHalf = 1e-8;
+                    if (axialLocs.size() > 1)
+                    {
+                        scalar minDiff = GREAT;
+                        for (auto i = 0; i < axialLocs.size() - 1; ++i)
+                        {
+                            minDiff = min(minDiff, mag(axialLocs[i+1] - axialLocs[i]));
+                        }
+                        dzHalf = 0.5*minDiff;
+                    }
+
+                    vector centerOfMass
+                    (
+                        gSum(meshes_[whichMesh].C().field()*meshes_[whichMesh].V().field())
+                        / gSum(meshes_[whichMesh].V().field())
+                    );
+
+                    const vectorField& C = meshes_[whichMesh].C();
+                    const scalarField& V = meshes_[whichMesh].V();
+                
+                    label patchID = -1;
+                    if (avgType == "patchAverage")
+                    {
+                        word avgPatchName = avgOpts.get<word>("patchName"); // used if patchAverage
+
+                        if (meshes_[whichMesh].boundaryMesh().findPatchID(avgPatchName)==-1)
+                        {
+                            FatalErrorInFunction << "patch '" << avgPatchName << "' not found in mesh " << meshes_[whichMesh].name() << exit(FatalError);
+                        }
+                        patchID = meshes_[whichMesh].boundaryMesh().findPatchID(avgPatchName);
+                        // const polyPatch& pp = meshes_[whichMesh].boundaryMesh()[patchID]; // used later
+                    }
+                
+                
+                    // --- per-axial-location loop
+                    forAll(axialLocs, ai)
+                    {
+                        scalar sTarget = axialLocs[ai];                    // this is the axial coordinate along axialDir
+                        scalar com_s = (centerOfMass & axialDir);         // projection of COM along axialDir
+
+                        // Build a 3D sample point that has projection sTarget on axialDir
+                        // i.e. translate the COM along axialDir by (sTarget - com_s)
+                        vector sampleVec = centerOfMass + axialDir*(sTarget - com_s);
+                        point samplePoint3D(sampleVec);
+
+                        // append global coordinates (so RBF always gets global x,y,z)
+                        xPos.append(samplePoint3D.x());
+                        yPos.append(samplePoint3D.y());
+                        zPos.append(samplePoint3D.z());
+
+                        // compute average value in this axial slice
+                        scalar num = 0.0;
+                        scalar den = 0.0;
+                        scalar avgVal = 0.0;
+
+                        if (avgType == "volumeAverage")
+                        {
+                            // average over cells whose projection falls inside the slice
+                            const volScalarField& srcField = meshes_[whichMesh].lookupObject<volScalarField>(fieldFromName);
+
+                            forAll(C, cellI)
+                            {
+                                scalar s = (C[cellI] & axialDir);
+                                if (mag(s - sTarget) <= dzHalf)
+                                {
+                                    num += srcField[cellI] * V[cellI];
+                                    den += V[cellI];
+                                }
+                            }
+
+                            // fallback: if slice empty, fallback to nearest cell via findCell(samplePoint3D)
+                            if (den <= VSMALL)
+                            {
+                                label celli = meshes_[whichMesh].findCell(samplePoint3D);
+                                if (celli >= 0)
+                                {
+                                    num = srcField[celli];
+                                    den = 1.0;
+                                }
+                            }
+                        }
+                        else if (avgType == "patchAverage")
+                        {
+                            // get patch geometry
+                            const polyPatch& pp = meshes_[whichMesh].boundaryMesh()[patchID];
+                            const vectorField& faceCentres = pp.faceCentres(); // face centres in global coords
+                            const fvPatch& patch = meshes_[whichMesh].boundary()[patchID];
+                            const scalarField& faceAreas   = patch.magSf(); // face areas        // face areas
+
+                            scalarField patchVals; 
+
+                            const volScalarField& vField = meshes_[whichMesh].lookupObject<volScalarField>(fieldFromName);
+                            // boundaryField()[patchID].patchInternalField() returns the per-patch internal values
+                            patchVals = vField.boundaryField()[patchID];
+
+                            // accumulate area-weighted average of faces inside slice
+                            forAll(patchVals, fI)
+                            {
+                                scalar s = (faceCentres[fI] & axialDir);
+                                if (mag(s - sTarget) <= dzHalf)
+                                {
+                                    num += patchVals[fI] * faceAreas[fI];
+                                    den += faceAreas[fI];
+                                }
+                            }
+
+                            // fallback: if den == 0, try to pick the face closest to samplePoint3D
+                            if (den <= VSMALL)
+                            {
+                                // find nearest face in this patch (cheap linear search)
+                                scalar bestDist = GREAT;
+                                label bestFace = -1;
+                                forAll(faceCentres, fI)
+                                {
+                                    scalar d = mag(faceCentres[fI] - samplePoint3D);
+                                    if (d < bestDist) { bestDist = d; bestFace = fI; }
+                                }
+                                if (bestFace >= 0)
+                                {
+                                    num = patchVals[bestFace] * faceAreas[bestFace];
+                                    den = faceAreas[bestFace];
+                                }
+                            }
+                        }
+                        else
+                        {
+                            FatalErrorInFunction << "Unknown averageOptions.type: " << avgType << exit(FatalError);
+                        }
+
+                        if (den > VSMALL) avgVal = num/den;
+                        else avgVal = 0.0; // or handle differently
+
+                        fieldValues.append(avgVal);
+                    }
+
+                }
+                                    
                 scalarList interpolationWeights(0);
                 scalar interpolatedValue(0);
+                 
 
-
-                // if (interpolationType == "kriging")
-                // {
-                //     Foam::radialBasisFunctionInterpolation::solveKriging
-                //     (
-                //         xPos, yPos, zPos, invRBFmatrix_
-                //     );
-
-                //     forAll(meshes_[regioni].C(), centerI)
-                //     {
-                //         interpolatedValue = Foam::radialBasisFunctionInterpolation::kriging
-                //         (
-                //             xPos, yPos, zPos, fieldValues,
-                //             meshes_[regioni].C()[centerI][0], meshes_[regioni].C()[centerI][1],meshes_[regioni].C()[centerI][2],
-                //             invRBFmatrix_
-                //         );
-
-                //         fieldToBeMapped[centerI] = interpolatedValue;
-                //     }
-
-                //     fieldToBeMapped.correctBoundaryConditions();
-                // }
                 if (interpolationType == "polyharmonicSpline")
                 {
                     interpolationWeights = Foam::radialBasisFunctionInterpolation::solvePolyharmonicSpline
