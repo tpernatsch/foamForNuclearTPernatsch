@@ -44,6 +44,10 @@ Description
     at the beginning of the iteration, and then solves the energy equation of the
     thermal-hydraulics solver iteratively with the other physics. 
 
+    Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
+
+
 Usage
     In regionsDict, the following subDict is used to create a picardLoopNoFluid
 

@@ -31,26 +31,19 @@ Group
     grpInletBoundaryConditions
 
 Description
-    Velocity inlet boundary condition either correcting the extrapolated
-    velocity or creating a uniform velocity field normal to the patch adjusted
-    to match the specified flow rate
+    Exactly the same as OpenFOAM's flowRateInletVelocity, but renormalizes the
+    velocity to account for the porosity at the patch.
 
-    For a mass-based flux:
-    - the flow rate should be provided in kg/s
-    - if \c rho is "none" the flow rate is in m3/s
-    - otherwise \c rho should correspond to the name of the density field
-    - if the density field cannot be found in the database, the user must
-      specify the inlet density using the \c rhoInlet entry
+    Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
 
-    For a volumetric-based flux:
-    - the flow rate is in m3/s
 
 Usage
     \table
         Property     | Description             | Required    | Default value
         massFlowRate | mass flow rate [kg/s]   | no          |
         volumetricFlowRate | volumetric flow rate [m3/s]| no |
-        rho          | density field name      | no          | rho
+        rho          | density field name      | no          | thermo:rho
         rhoInlet     | inlet density           | no          |
         extrapolateProfile | Extrapolate velocity profile | no | false
     \endtable
@@ -59,7 +52,7 @@ Usage
     \verbatim
     <patchName>
     {
-        type                flowRateInletVelocity;
+        type                fixedMassFlowRate;
         volumetricFlowRate  0.2;
         extrapolateProfile  yes;
         value               uniform (0 0 0);
@@ -70,7 +63,7 @@ Usage
     \verbatim
     <patchName>
     {
-        type                flowRateInletVelocity;
+        type                fixedMassFlowRate;
         massFlowRate        0.2;
         extrapolateProfile  yes;
         rho                 rho;
@@ -87,11 +80,6 @@ Note
     - The value is positive into the domain (as an inlet)
     - May not work correctly for transonic inlets
     - Strange behaviour with potentialFoam since the U equation is not solved
-
-See also
-    Foam::fixedValueFvPatchField
-    Foam::Function1Types
-    Foam::flowRateOutletVelocityFvPatchVectorField
 
 SourceFiles
     fixedMassFlowRateFvPatchVectorField.C

@@ -39,16 +39,18 @@ Class
     Foam::CHTLoop
 
 Description
-    This class creates a multiphysics tightly coupled loop, made of an arbitrary
-    number of physics. The class member-functions are inherited from solver.H
-    and are the same as those of the other solvers. Each member function consists
-    of a loop where the same member function is called iteratively for all the
-    solvers included in the CHTLoop. Note that another CHTLoop
-    can be created within a CHTLoop, hence creating a hierarchical
-    structure which might be helpful for multi-scale problems.
+    This class implements a loop for the conjugate heat transfer (CHT) problems.
+    It is designed to handle the coupling between fluid and solid regions in a
+    multi-region simulation. It iteratively solves the energy equations for both
+    fluid and solid regions, allowing for the exchange of thermal information
+    between them, in particular assuring temperature and heat flux continuity.
+
+    Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
+
 
 Usage
-    In multiRegionCouplingDict, the CHTLoops subDict is used to create a
+    In regionsDict, the CHTLoops subDict is used to create a
     CHTLoop
 
     \verbatim

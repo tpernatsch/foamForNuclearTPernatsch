@@ -47,6 +47,10 @@ Description
     can be created within a picardLoop, hence creating a hierarchical
     structure which might be helpful for multi-scale problems.
 
+    Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
+
+
 Usage
     In regionsDict, the following subDict is used to create a picardLoop
 

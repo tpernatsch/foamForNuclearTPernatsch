@@ -839,10 +839,9 @@ void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
 
                         if (meshes_[whichMesh].boundaryMesh().findPatchID(avgPatchName)==-1)
                         {
-                            FatalErrorInFunction << "patch '" << avgPatchName << "' not found in mesh " << meshes_[whichMesh].name() << exit(FatalError);
+                            FatalErrorInFunction << "Patch '" << avgPatchName << "' not found in mesh " << meshes_[whichMesh].name() << exit(FatalError);
                         }
                         patchID = meshes_[whichMesh].boundaryMesh().findPatchID(avgPatchName);
-                        // const polyPatch& pp = meshes_[whichMesh].boundaryMesh()[patchID]; // used later
                     }
                 
                 
@@ -904,7 +903,6 @@ void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
                             scalarField patchVals; 
 
                             const volScalarField& vField = meshes_[whichMesh].lookupObject<volScalarField>(fieldFromName);
-                            // boundaryField()[patchID].patchInternalField() returns the per-patch internal values
                             patchVals = vField.boundaryField()[patchID];
 
                             // accumulate area-weighted average of faces inside slice
