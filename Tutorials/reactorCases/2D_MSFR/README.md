@@ -4,6 +4,15 @@
 
 The `Allrun` bash script can be used to run the tutorial. The `Allclean` bash script can be used to clean it up. The script will first run a steady-state case with fluid-dynamics only. Starting from the results of the simulation, a second steady-state is launched solving for neutronics and energy equations. Finally, a simple transient calculation is run. No reactivity is inserted in the transient and the power will simply stay constant for 10 seconds.
 
+It is also possible to run only one or more cases explicitly by passing their names as arguments to the script. This can be useful for hands-on sessions and learning — for example, the script can be used to run only the first case, and students can then prepare and launch the coupled and transient simulations themselves. Examples:
+
+```bash
+./Allrun steadyStateTH
+./Allrun steadyStateEN transient
+```
+
+Valid case names are: steadyStateTH, steadyStateEN, transient. If no arguments are given, all three cases are executed in sequence. Invalid arguments will result in an error message.
+
 Any modification to the initial conditions of the transient case will instead trigger an actual transient. For example, modifying the keff in the [`reactorState`](./rootCase/0/uniform/reactorState) dictionary will trigger a reactivity-initiated transient. A more realistic transient can be initiated by modifying the heat transfer in the heat exchanger in the `phaseProperties` dict. The case is similar to the one presented in Ref. [1]. Please note that, to reduce computing time, the fluid-dynamics equations are not solved in the second steady-state and in the transient simulation. Note also that an upwind scheme is employed for the divergence term in the diffusion equations (in [`system/neutroRegion/fvSchemes`](./rootCase/system/neutroRegion/fvSchemes)), which is necessary to achieve convergence.
 
 Lastly, a considerably finer mesh is provided under `constant/*/polyMeshFiner` directories.

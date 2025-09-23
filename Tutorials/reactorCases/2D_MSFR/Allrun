@@ -21,7 +21,29 @@ endTimeTH=15
 endTimeEN=165
 endTimeTransient=175
 
-cases="steadyStateTH steadyStateEN transient"
+# Default order of cases
+all_cases="steadyStateTH steadyStateEN transient"
+
+if [ $# -eq 0 ]; then
+    cases="$all_cases"
+else
+    cases=""
+    for c in $all_cases; do
+        for arg in "$@"; do
+            if [ "$c" = "$arg" ]; then
+                cases="$cases $c"
+            fi
+        done
+    done
+
+    for arg in "$@"; do
+        echo "$all_cases" | grep -qw "$arg" || {
+            echo "Error: invalid case '$arg'"
+            echo "Valid cases are: $all_cases"
+            exit 1
+        }
+    done
+fi
 
 runCloneCase()
 {
@@ -34,8 +56,9 @@ setSteadyStateTH()
 {
     runCloneCase $1 $2
     printf "Setting steady state case...\n"
-    foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
-    # foamDictionary $1/system/fvSolution -entry tightlyCoupled -set false
+    rm -r $1/0/neutroRegion $1/constant/neutroRegion $1/system/neutroRegion
+    rm -r $1/0/uniform
+    rm -r $1/constant/fluidRegion/polyMeshFine
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeTH
     foamDictionary $1/system/controlDict -entry deltaT -set 1e-03
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
@@ -43,7 +66,7 @@ setSteadyStateTH()
     foamDictionary $1/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
     foamDictionary $1/system/controlDict -entry removeBaffles/fluidRegion -set false
     cp $1/constant/multiRegionCouplingDict_steadyStateTH $1/constant/multiRegionCouplingDict
-    GeN-Foam -initializeMappedFields -case $1
+    rm $1/constant/multiRegionCouplingDict_*
     printf "Case set!\n\n"
 }
 
@@ -51,21 +74,23 @@ setSteadyStateEN()
 {
     runCloneCase $1 $2
     printf "Setting steady state  case...\n"
+    cp -r $3/$endTimeTH $1/$endTimeTH
     cp -r $1/0/neutroRegion $1/$endTimeTH/
     cp -r $1/0/uniform $1/$endTimeTH/
-    foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
-    # foamDictionary $1/system/fvSolution -entry tightlyCoupled -set false
+    rm -r $1/constant/neutroRegion/polyMeshFine $1/constant/fluidRegion/polyMeshFine
     foamDictionary $1/system/controlDict -entry startTime -set $endTimeTH
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeEN
     foamDictionary $1/system/controlDict -entry deltaT -set 0.25
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set false
-    foamDictionary $1/system/controlDict -entry writeInterval -set 50
+    foamDictionary $1/system/controlDict -entry writeInterval -set 50    
+    foamDictionary $1/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
+    foamDictionary $1/system/controlDict -entry removeBaffles/fluidRegion -set false
     foamDictionary $1/system/controlDict -entry regionSolvers/neutroRegion -set diffusionNeutronics;
     foamDictionary $1/system/controlDict -entry removeBaffles/neutroRegion -set false
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveEnergy -set true
-    cp steadyStateEN/constant/multiRegionCouplingDict_steadyStateEN $1/constant/multiRegionCouplingDict
-    GeN-Foam -initializeMappedFields -case $1
+    cp $1/constant/multiRegionCouplingDict_steadyStateEN $1/constant/multiRegionCouplingDict
+    rm $1/constant/multiRegionCouplingDict_*
     printf "Case set!\n\n"
 }
 
@@ -73,8 +98,9 @@ setTransient()
 {
     runCloneCase $1 $2
     printf "Setting $1 case...\n"
+    cp -r $3/$endTimeEN $1/$endTimeEN
+    rm -r $1/constant/neutroRegion/polyMeshFine $1/constant/fluidRegion/polyMeshFine
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
-    # foamDictionary $1/system/fvSolution -entry tightlyCoupled -set true
     foamDictionary $1/system/controlDict -entry startTime -set $endTimeEN
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeTransient
     foamDictionary $1/system/controlDict -entry deltaT -set 1e-03
@@ -82,9 +108,12 @@ setTransient()
     foamDictionary $1/system/controlDict -entry writeInterval -set 10
     foamDictionary $1/system/controlDict -entry regionSolvers/fluidRegion -remove
     foamDictionary $1/system/controlDict -entry regionSolvers/neutroRegion -remove
+    foamDictionary $1/system/controlDict -entry removeBaffles -remove
     foamDictionary $1/system/controlDict -entry regionSolvers/energyNeutroLoop -set multiPhysicsSolver
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveEnergy -set true
     cp $1/constant/multiRegionCouplingDict_transient $1/constant/multiRegionCouplingDict
-    GeN-Foam -initializeMappedFields -case $1
+    rm $1/constant/multiRegionCouplingDict_*
     printf "Case set!\n\n"
 }
 
@@ -98,12 +127,12 @@ do
             printf "Steady state th case is prepared!\n"
             ;;
         "steadyStateEN")
-            setSteadyStateEN $caseName steadyStateTH
+            setSteadyStateEN $caseName rootCase steadyStateTH
             printf "Steady state NE case is prepared!\n"
             ;;
         "transient")
             printf "Transient case is prepared!\n"
-            setTransient $caseName steadyStateEN
+            setTransient $caseName rootCase steadyStateEN
             ;;
     esac
 
