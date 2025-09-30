@@ -39,7 +39,7 @@ namespace solvers
     (
         solver, 
         extendedThermoMechanics, 
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -49,7 +49,7 @@ namespace solvers
 
 Foam::solvers::extendedThermoMechanics::extendedThermoMechanics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     thermoMechanics(mesh),
@@ -96,6 +96,8 @@ Foam::solvers::extendedThermoMechanics::extendedThermoMechanics
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 void Foam::solvers::extendedThermoMechanics::correctPhysics()
 {
+
+    mesh_.update();
 
     Info << "Solving region: " << mesh_.name()<<nl<<endl;
     // True when time step is converged

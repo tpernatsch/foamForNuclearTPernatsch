@@ -58,10 +58,5 @@ removeBaffles
     fluidRegion     false;
 }
 
-regionSolvers
-{
-    fluidRegion     twoPhase;
-}
-
 
 // ************************************************************************* //

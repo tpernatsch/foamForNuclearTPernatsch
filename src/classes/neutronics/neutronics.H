@@ -82,6 +82,7 @@ SourceFiles
 #include "meshToMesh.H"
 #include "solver.H"
 #include "timeProfile.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -219,7 +220,7 @@ public:
     //- Constructors
 
         //- Construct from mesh
-        neutronics(fvMesh& mesh);
+        neutronics(dynamicFvMesh& mesh);
 
     //- Selectors
 

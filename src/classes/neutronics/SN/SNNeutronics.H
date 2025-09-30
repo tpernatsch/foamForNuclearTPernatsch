@@ -122,6 +122,7 @@ SourceFiles
 
 #include "neutronics.H"
 #include "XS.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -208,7 +209,7 @@ public:
     // Constructors
 
         //- Construct from mesh, read data from IOdictionaries
-        SNNeutronics(fvMesh& mesh);
+        SNNeutronics(dynamicFvMesh& mesh);
 
     //- Destructor
         virtual ~SNNeutronics();

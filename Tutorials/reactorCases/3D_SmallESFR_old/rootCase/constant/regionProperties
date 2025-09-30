@@ -12,9 +12,9 @@ FoamFile
     format      ascii;
     arch        "LSB;label=32;scalar=64";
     class       dictionary;
-<<<<<<<< HEAD:Tutorials/1D_HX/onePhase/constant/multiRegionCouplingDict
+<<<<<<<< HEAD:Tutorials/1D_HX/onePhase/constant/regionsDict
     location    "constant";
-    object      multiRegionCouplingDict;
+    object      regionsDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -35,6 +35,12 @@ rheologyOption
     planeStress 	no;
 }
 
+couplingOptions
+{
+    correctDispForNeutro true;
+    correctTFromTH       true;
+}
+
 materials
 {
     THN

@@ -46,7 +46,7 @@ do
         runCloneCase $caseName rootCase
         printf "Steady state case is prepared!\n"
         printf "Running $exe on $caseName\n"
-        decomposePar -case $caseName -allRegions
+        decomposePar -case $caseName -allRegions 
         ;;
     "transient")
         printf "Transient case entered...\n"

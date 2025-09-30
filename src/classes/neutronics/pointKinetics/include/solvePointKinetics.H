@@ -200,5 +200,19 @@ if (TFuel_.mesh().time().write())
     reactorState_.set("precursorPowers", precursorPowers_);
 }
 
+if(nuclearData_.found("updatePowerFields"))
+{
+    dictionary& subDict = nuclearData_.subDict("updatePowerFields");
+    wordList regions = subDict.toc();
+    forAll(regions, regI)
+    {
+
+        word fieldName = subDict.get<word>(regions[regI]);
+        const dynamicFvMesh& regionMesh = mesh_.time().lookupObject<dynamicFvMesh>(regions[regI]);
+        volScalarField& powerField = const_cast<volScalarField&>(regionMesh.lookupObject<volScalarField>(fieldName));
+        powerField *= powerDensityScaleFactor;
+    }
+}
+
 Info << endl << "pointKinetics: " << endl;
 #include "pointKineticsInfo.H"

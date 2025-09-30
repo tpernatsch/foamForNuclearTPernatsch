@@ -39,7 +39,7 @@ namespace solvers
     (
         solver, 
         fuelBehaviour, 
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -49,7 +49,7 @@ namespace solvers
 
 Foam::solvers::fuelBehaviour::fuelBehaviour
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     solver(mesh),

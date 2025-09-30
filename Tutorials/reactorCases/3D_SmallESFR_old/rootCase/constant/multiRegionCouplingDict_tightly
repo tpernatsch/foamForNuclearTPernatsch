@@ -13,7 +13,7 @@ FoamFile
     arch        "LSB;label=32;scalar=64";
     class       dictionary;
     location    "constant";
-    object      multiRegionCouplingDict;
+    object      regionsDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -133,15 +133,17 @@ echo "Allwmake GeN-Foam"
 
 git submodule update --init --recursive src/classes/offbeat
 
-# Make common functions
+# Make OFFBEAT libs
+wmake -j$num_jobs ./src/classes/offbeat/src/SCIANTIX
+wmake -j$num_jobs ./src/classes/offbeat/src/offbeatLib
+
+# Make common libs
 wmake -j$num_jobs ./src/classes/common
 
 # Make multi-region functions
 wmake -j$num_jobs ./src/classes/multiRegion
 
-# Make offbeat
-wmake -j$num_jobs ./src/classes/offbeat/src/SCIANTIX
-wmake -j$num_jobs ./src/classes/offbeat/src/offbeatLib
+# Make offbeat apps
 wmake -j$num_jobs ./src/classes/offbeat/solvers
 
 # Make thermal-hydraulics

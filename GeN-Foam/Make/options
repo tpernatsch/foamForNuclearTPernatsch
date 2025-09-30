@@ -28,6 +28,7 @@ EXE_INC = \
     -I$(LIB_SRC)/ODE/lnInclude \
     -I$(LIB_SRC)/parallel/reconstruct/reconstruct/lnInclude \
     -I$(LIB_SRC)/dynamicMesh/lnInclude \
+    -I$(LIB_SRC)/dynamicFvMesh/lnInclude \
 
 EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lCommon \
@@ -57,6 +58,7 @@ EXE_LIBS = \
     -lgenericPatchFields \
     -lreconstruct \
     -ldynamicMesh \
+    -ldynamicFvMesh \
 
 ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))
     EXE_INC += -I$(LIB_ECI4FOAM)/src/externalComm/lnInclude

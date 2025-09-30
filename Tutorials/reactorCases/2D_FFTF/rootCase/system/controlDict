@@ -47,17 +47,6 @@ timePrecision       8;
 
 runTimeModifiable   true;
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-//- Physics to solve
-
-// solveFluidMechanics     true;
-//
-// solveEnergy             false;
-//
-// solveNeutronics         false;
-//
-// solveThermalMechanics   false;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -82,12 +71,6 @@ maxPowerVariation   0.025;
 //- Field write options
 
 writeContinuityErrors true;
-
-regionSolvers
-{
-    // fluidRegion     onePhase;
-    // neutroRegion    pointKinetics;
-}
 
 removeBaffles
 {

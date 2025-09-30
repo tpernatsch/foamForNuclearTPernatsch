@@ -241,6 +241,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         scalar rfo(dict.get<scalar>("fuelOuterRadius"));
         scalar rci(dict.get<scalar>("cladInnerRadius"));
         scalar rco(dict.get<scalar>("cladOuterRadius"));
+        scalar fuelFraction((pow(rfo,2)-pow(rfi,2))/(pow(rco,2)));
         label fuelMeshSize(dict.get<label>("fuelMeshSize"));
         label cladMeshSize(dict.get<label>("cladMeshSize"));
         label meshSize(fuelMeshSize+cladMeshSize);
@@ -341,6 +342,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         rfo_.append(rfo);
         rci_.append(rci);
         rco_.append(rco);
+
         drf_.append(drf);
         drc_.append(drc);
         drg_.append(drg);
@@ -426,6 +428,8 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         gapH_.append(gapH);
 
         useGapHPowerDensityTable_.append(foundTable);
+
+        fuelFraction_.append(fuelFraction);
 
         if (foundTable and foundValue)
         {
@@ -896,6 +900,7 @@ void Foam::powerModels::nuclearFuelPin::correct
     Tfmin_ = 1e69;
     Tcmax_ = 0.0;
     Tcmin_ = 1e69;
+    scalar totalPower(0.0);
 
     //- Update temperatures cell-by-cell and compute averages over the entire
     //  spatial extent of the nuclearFuelPin model (what I call global
@@ -908,15 +913,18 @@ void Foam::powerModels::nuclearFuelPin::correct
     forAll(this->cellList_, i)
     {
         label celli(this->cellList_[i]);
+        label regioni(cellToRegion_[celli]);
         updateLocalTemperatureProfile(celli, HTSum[celli], HSum[celli]);
         const scalar& dV(V[celli]);
         totV += dV;
         Tfavav += Tfav_[celli]*dV;
         Tcavav += Tcav_[celli]*dV;
+        totalPower += structure_.powerDensityNeutronics()[celli] * alpha_[celli] * V[celli]*fuelFraction_[regioni];
     }
     reduce(totV, sumOp<scalar>());
     reduce(Tfavav, sumOp<scalar>());
     reduce(Tcavav, sumOp<scalar>());
+    reduce(totalPower, sumOp<scalar>());
     Tfavav /= totV;
     Tcavav /= totV;
 
@@ -929,6 +937,8 @@ void Foam::powerModels::nuclearFuelPin::correct
         << Tfavav << " " << Tfmin_ << " " << Tfmax_ << " K" << endl;
     Info<< "T.nuclearFuelPin.clad (avg min max) = "
         << Tcavav << " " << Tcmin_ << " " << Tcmax_ << " K" << endl;
+    Info<< "Total power in nuclearFuelPin = "
+        << totalPower << " W" << endl;
 
     //- Save these to the dictionary
     this->IOdictionary::set("Tfavav", Tfavav);

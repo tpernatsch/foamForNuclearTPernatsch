@@ -50,7 +50,7 @@ License
 Foam::autoPtr<Foam::solver> Foam::solver::New
 (
     const word& solverName,
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 {
     Info<< "Selecting solver " << solverName << endl;
@@ -80,7 +80,7 @@ Foam::autoPtr<Foam::solver> Foam::solver::New
     // autoPtr<solver> solverPtr(cstrIter()(mesh));
 
 
-    auto* ctorPtr = fvMeshConstructorTable(solverName);
+    auto* ctorPtr = dynamicFvMeshConstructorTable(solverName);
 
     if (!ctorPtr)
     {
@@ -88,7 +88,7 @@ Foam::autoPtr<Foam::solver> Foam::solver::New
             << "Unknown solver of type: "
             << solverName << endl << endl
             << "Valid solvers types are: " << endl
-            << fvMeshConstructorTablePtr_->sortedToc()
+            << dynamicFvMeshConstructorTablePtr_->sortedToc()
             << exit(FatalError);
     }
     return

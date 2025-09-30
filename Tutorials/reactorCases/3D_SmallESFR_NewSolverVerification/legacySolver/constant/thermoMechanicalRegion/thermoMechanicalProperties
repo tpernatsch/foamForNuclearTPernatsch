@@ -34,6 +34,12 @@ rheologyOption
     planeStress 	no;
 }
 
+couplingOptions
+{
+    correctTFromTH on;
+    correctDispForNeutro on;
+}
+
 // What "zones" used to be. Structure changed to be compatible with OFFBEAT. Possible extension to non-constant materials
 
 materials

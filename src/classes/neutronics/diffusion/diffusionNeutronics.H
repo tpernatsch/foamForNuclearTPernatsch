@@ -149,6 +149,7 @@ SourceFiles
 
 #include "neutronics.H"
 #include "XS.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -202,7 +203,7 @@ public:
         TypeName("diffusionNeutronics");
 
     //- Constructors
-        diffusionNeutronics(fvMesh& mesh);
+        diffusionNeutronics(dynamicFvMesh& mesh);
 
     //- Destructor
         virtual ~diffusionNeutronics();

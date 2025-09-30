@@ -53,13 +53,6 @@ maxCo           5;
 
 maxPowerVariation 0.01;
 
-regionSolvers
-{
-    fluidRegion     onePhase;
-    neutroRegion    diffusionNeutronics;
-    thermoMechanicalRegion legacyThermoMechanics;
-}
-
 removeBaffles
 {
     fluidRegion     true;

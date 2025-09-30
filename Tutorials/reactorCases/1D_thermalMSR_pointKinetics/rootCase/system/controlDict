@@ -59,12 +59,6 @@ maxCo               1;
 
 maxPowerVariation   0.025;
 
-regionSolvers
-{
-    fluidRegion     onePhase;
-    // neutroRegion    diffusionNeutronics;
-}
-
 removeBaffles
 {
     fluidRegion     false;

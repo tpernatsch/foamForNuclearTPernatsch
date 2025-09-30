@@ -1,0 +1,88 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2112                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant/fluidRegion";
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;    // General thermophysical model calculation
+                                    // based on enthalpy h or internal energy e,
+                                    // and density rho
+    mixture         pureMixture;
+    transport       polynomial;
+    thermo          hPolynomial;
+    //equationOfState PengRobinsonGas;
+    equationOfState icoPolynomial;  // changed from PengRobinsonGas, which was not giving reasonable results
+    specie          specie;         // Thermophysical properties of species,
+                                    // derived from Cp, h and/or s
+    energy          sensibleEnthalpy;
+}
+
+pRef            0; // Pa
+mixture
+{
+    specie
+    {
+        nMoles      1;
+        molWeight   2.016; // g/mol
+    }
+    equationOfState
+    {
+        Tc      0; // K, Critical temperature
+        Vc      ${{1.0/(31.262/2.016)}}; // m3/kmol, Critical volume
+        Pc      1.2964e6; // Pa, Critical pressure
+
+        omega   -0.219; // Acentric factor, https://en.wikipedia.org/wiki/Acentric_factor
+
+        //rhoCoeffs<8> (  // 7th order polynomial line of best fit generated in polynomialPlotter.py using NIST data. This goes below zero at a few points so not using rn
+	    //    2.6312690E+01 -1.5654483E-01 3.4832321E-04 -3.7432963E-07
+	    //    2.1564136E-10 -6.8137583E-14 1.1124061E-17 -7.3322603E-22
+        //);
+        rhoCoeffs<8> (  // this is a linear fit from NIST inlet density to NIST outlet density. fit generated in polynomialPlotter.py
+            6.19235776e+00 -1.63183743e-03 0 0
+            0 0 0 0
+        );
+
+    }
+    thermodynamics
+    {
+        CpCoeffs<8> (  // 7th order polynomial line of best fit generated in polynomialPlotter.py using NIST data
+	        9.0666563E+03 3.1421926E+01 -6.7455458E-02 7.1515610E-05
+	        -4.0137000E-08 1.2321676E-11 -1.9581690E-15 1.2604665E-19
+        );
+
+        Hf          58214; // J/kg (heat of fusion) // enthalpy = 3958.3e3;
+
+        Sf          46.002e3; // J/kg/K (entropy)
+
+        Tref        300; // K
+    }
+    transport
+    {
+        muCoeffs<8> (  // 7th order polynomial line of best fit generated in polynomialPlotter.py using NIST data
+	        2.6957516E-06 2.1373381E-08 -1.2715441E-12 -5.1005087E-15
+	        4.4678334E-18 -1.6867110E-21 3.0456404E-25 -2.1428674E-29
+        );
+
+        kappaCoeffs<8> (  // 7th order polynomial line of best fit generated in polynomialPlotter.py using NIST data
+	        2.6996175E-02 6.4565768E-04 -4.7047980E-07 3.9063188E-10
+	        -1.6097504E-13 3.5289666E-17 -4.0803188E-21 1.9064082E-25
+        );
+
+        Pr              0.701; // https://lambdageeks.com/prandtl-number/
+    }
+}
+
+// ************************************************************************* //

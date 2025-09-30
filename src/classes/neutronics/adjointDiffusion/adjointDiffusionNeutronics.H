@@ -57,6 +57,7 @@ SourceFiles
 
 #include "neutronics.H"
 #include "XS.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -120,7 +121,7 @@ public:
     // Constructors
 
         //- Construct from mesh, read data from IOdictionaries
-        adjointDiffusionNeutronics(fvMesh& mesh);
+        adjointDiffusionNeutronics(dynamicFvMesh& mesh);
 
     //- Destructor
         virtual ~adjointDiffusionNeutronics();

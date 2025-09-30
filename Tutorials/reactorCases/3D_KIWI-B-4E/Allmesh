@@ -1,0 +1,85 @@
+#!/bin/sh
+#===============================================================================*
+# Author: Thomas Guilbaud, 08/10/2022
+
+# Run from this directory
+cd ${0%/*} || exit 1
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#===============================================================================*
+# Colors
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+
+#===============================================================================*
+
+createMesh() {
+    # Recover variables
+    case=$1
+    region=$2
+    unvMeshName=$3
+
+    # Convert UNV mesh to OpenFOAM mesh
+    ideasUnvToFoam $unvMeshName -case $case | tee log.ideasUnvToFoam.$region
+
+    # Remove existing polyMesh in the region
+    rm -rf $case/constant/${region}/polyMesh
+    mv $case/constant/polyMesh $case/constant/$region
+
+    # createPatch -overwrite -case $case -region $region
+
+    # Rescale the mesh
+    # transformPoints -scale 1e-2 -case $case -region $region
+
+    # Check mesh quality
+    checkMesh -case $case -region $region | tee log.checkMesh.$region
+}
+
+# Clean logs
+rm -rf log.*Region
+
+# Create meshes for the regions
+createMesh rootCase neutroRegion mesh/neutroMesh.unv
+createMesh rootCase fluidRegion  mesh/fluidMesh.unv
+
+# Create baffles
+createBaffles -case rootCase/ -region fluidRegion -overwrite | tee log.createBaffles.fluidRegion
+
+
+#===============================================================================*
+# Check all commands have run successfully
+
+isCmdRunSuccessfully() {
+    cmdName=$1
+    region=$2
+
+    isSuccess=$(tail log.$cmdName.$region | grep "End" | wc -l)
+
+    echo -n "Run successfully $cmdName in $region ... "
+
+    if [ $isSuccess -eq 1 ]
+    then
+        echo "${GREEN}Yes${NC}"
+    else
+        echo "${RED}No${NC}"
+    fi
+}
+
+echo
+
+isCmdRunSuccessfully ideasUnvToFoam fluidRegion
+isCmdRunSuccessfully ideasUnvToFoam neutroRegion
+
+isCmdRunSuccessfully checkMesh fluidRegion
+isCmdRunSuccessfully checkMesh neutroRegion
+
+isCmdRunSuccessfully createBaffles fluidRegion
+
+echo "\nEnd of Allmesh"
+
+#===============================================================================*

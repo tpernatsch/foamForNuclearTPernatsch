@@ -1,0 +1,114 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+
+
+type                sets;
+
+libs                ( "libsampling.so" );
+
+interpolationScheme cell; // cellPatchConstrained; // pointMVC; // cellPoint; // cellPointFace; // 
+
+setFormat           raw;
+
+sets
+(
+    FluidAxial
+    {
+        type    uniform;
+        axis    z;
+        start   (0 0.02 -0.66);
+        end     (0 0.02 0.66);
+        nPoints 1000;
+    }
+
+    FluidAxialR1
+    {
+        type    uniform;
+        axis    z;
+        start   (0 0.0438 -0.66);
+        end     (0 0.0438 0.66);
+        nPoints 1000;
+    }
+
+    FluidAxialR2
+    {
+        type    uniform;
+        axis    z;
+        start   (0 0.0938 -0.66);
+        end     (0 0.0938 0.66);
+        nPoints 1000;
+    }
+    
+    FluidAxialR3
+    {
+        type    uniform;
+        axis    z;
+        start   (0.1447 0 -0.66);
+        end     (0.1447 0 0.66);
+        nPoints 1000;
+    }
+    
+    FluidAxialR4
+    {
+        type    uniform;
+        axis    z;
+        start   (0.1951 0 -0.66);
+        end     (0.1951 0 0.66);
+        nPoints 1000;
+    }
+    
+    FluidAxialR5
+    {
+        type    uniform;
+        axis    z;
+        start   (0.2464 0 -0.66);
+        end     (0.2464 0 0.66);
+        nPoints 1000;
+    }
+    
+    FluidAxialR6
+    {
+        type    uniform;
+        axis    z;
+        start   (0.2973 0 -0.66);
+        end     (0.2973 0 0.66);
+        nPoints 1000;
+    }
+    
+    FluidAxialR7
+    {
+        type    uniform;
+        axis    z;
+        start   (0.3480 0 -0.66);
+        end     (0.3480 0 0.66);
+        nPoints 1000;
+    }
+
+    FluidAxialR8
+    {
+        type    uniform;
+        axis    z;
+        start   (0 0.3995 -0.66);
+        end     (0 0.3995 0.66);
+        nPoints 1000;
+    }
+);
+
+fields
+(
+    T
+    Tsurface.lumpedNuclearStructure
+    Tmatrix.lumpedNuclearStructure
+    Tmax.lumpedNuclearStructure
+    p
+    powerDensityNeutronics
+    magU
+);
+
+//***************************************************************************//

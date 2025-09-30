@@ -54,7 +54,7 @@ namespace solvers
     (
         solver,
         adjointDiffusionNeutronics,
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -66,7 +66,7 @@ namespace solvers
 
 Foam::solvers::adjointDiffusionNeutronics::adjointDiffusionNeutronics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     neutronics(mesh),

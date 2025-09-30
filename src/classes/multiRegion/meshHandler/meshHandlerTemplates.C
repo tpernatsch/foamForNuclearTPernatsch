@@ -44,6 +44,7 @@ License
 #include "radialBasisFunctionInterpolation.H"
 #include "mergeOrSplitBaffles.H"
 #include "hexCellFvMesh.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 template<class Type>

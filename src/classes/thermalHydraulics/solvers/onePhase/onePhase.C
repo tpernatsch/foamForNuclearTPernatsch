@@ -52,7 +52,7 @@ namespace solvers
     (
         solver,
         onePhase,
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -62,7 +62,7 @@ namespace solvers
 
 Foam::solvers::onePhase::onePhase
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     thermalHydraulicsModel

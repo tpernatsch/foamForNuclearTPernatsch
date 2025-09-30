@@ -121,7 +121,7 @@ public:
         //- Construct from mesh, materials and dictionary
         fuelBehaviour
         (
-            fvMesh& mesh
+            dynamicFvMesh& mesh
         );
 
     // Selectors

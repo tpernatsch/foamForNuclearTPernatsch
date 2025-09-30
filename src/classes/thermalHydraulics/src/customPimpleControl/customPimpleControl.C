@@ -305,11 +305,6 @@ void Foam::customPimpleControl::updateFirstPISOPrevPIMPLE()
                     )
                 );
             }
-
-            else
-            {
-                Info <<"No residual for p_rgh on mesh " << mesh_.name() << nl;
-            }
         }
     }
 }

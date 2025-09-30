@@ -259,19 +259,56 @@ protected:
     //- Average cladding temperature field for coupling
     volScalarField Tcav_;
 
-    //- Fields representing the average surface temperature of the structure
+    //- Field representing the average surface temperature of the structure
     volScalarField Tsurface_;
+
+    //-
+    volScalarField interpolationCorrectFactor_;
 
     //- Heat flux FMI input flag
     List<bool> isHeatFluxInput_;
+
+    //- rhocpdTdt FMI input flag
+    List<bool> isRhoCpdTdtInput_;
 
     //- Fraction of power from neutronics that goes to this powerModel
     //  This takes into account for instance cases where some of the
     //  heating goes to the moderator
     scalarList fractionOfPowerFromNeutronics_;
 
-    //- If true, update avg TFuel and avg TClad fields for neutronics coupling
+    //- Volume fraction of fuel
+    scalarList fuelFraction_;
+
+    //- If true, update avg TFuel field for neutronics coupling
     List<bool> isFuelTemperatureFieldFromFMU_;
+
+    //- If true, update avg TClad field for neutronics coupling
+    List<bool> isCladTemperatureFieldFromFMU_;
+
+    //-
+    scalarList relaxationFactorTfluid_;
+
+    //-
+    scalarList relaxationFactorTstruct_;
+
+    //-
+    scalarList relaxationFactorProfilePowerDensity_;
+
+    //-
+    scalarList relaxationFactorHtc_;
+
+    //- RegionI -> nameI -> locI
+    List<List<List<scalar>>> oldTfluid_;
+
+    //-
+    List<List<List<scalar>>> oldTstruct_;
+
+    //-
+    List<List<List<scalar>>> oldProfilePowerDensity_;
+
+    //-
+    List<List<List<scalar>>> oldHtc_;
+
 
     //- X-position of sampling lines
     scalarListList xPos_;
@@ -311,6 +348,38 @@ protected:
     //  the kriging option
     List<List<scalarList>> krigingWeight_;
 
+    //- Kriging variogram type (gaussian, spherical or exponential)
+    List<Foam::radialBasisFunctionInterpolation::variogramType> krigingTypeFuel_;
+
+    //- Kriging parameter a, only used by the kriging option
+    scalarList krigingAfuel_;
+
+    //- Kriging parameter c, only used by the kriging option
+    scalarList krigingCfuel_;
+
+    //- Kriging parameter c0, only used by the kriging option
+    scalarList krigingC0fuel_;
+
+    //- Kriging weights for cell, per region, only computed once, only used by
+    //  the kriging option
+    List<List<scalarList>> krigingWeightFuel_;
+
+    //- Kriging variogram type (gaussian, spherical or exponential)
+    List<Foam::radialBasisFunctionInterpolation::variogramType> krigingTypeClad_;
+
+    //- Kriging parameter a, only used by the kriging option
+    scalarList krigingAclad_;
+
+    //- Kriging parameter c, only used by the kriging option
+    scalarList krigingCclad_;
+
+    //- Kriging parameter c0, only used by the kriging option
+    scalarList krigingC0clad_;
+
+    //- Kriging weights for cell, per region, only computed once, only used by
+    //  the kriging option
+    List<List<scalarList>> krigingWeightClad_;
+
     //- List that maps the region index to the region name
     wordList regionIndexToRegionName_;
 
@@ -319,6 +388,15 @@ protected:
 
     //- Inverse matrix of the Radial Basis Function operator for each cellZone
     List<SquareMatrix<scalar>> invRBFmatrix_;
+
+    //- Inverse matrix of the Radial Basis Function operator for each cellZone
+    // List<SquareMatrix<scalar>> invRBFintegralMatrix_;
+
+    //- Inverse matrix of the Radial Basis Function operator for each cellZone
+    List<SquareMatrix<scalar>> invRBFmatrixFuel_;
+
+    //- Inverse matrix of the Radial Basis Function operator for each cellZone
+    List<SquareMatrix<scalar>> invRBFmatrixClad_;
 
 public:
 
@@ -357,12 +435,17 @@ public:
         (
             const volScalarField& HT,
             const volScalarField& H,
-            label regioni
+            const label regioni
         );
 
         //- Sample Tsurface and power density over lines and transfer data to
         //  the FMUs
-        void correctInputsForFMUs(label regioni);
+        void correctInputsForFMUs
+        (
+            const volScalarField& HTSum,
+            const volScalarField& HSum,
+            const label regioni
+        );
 
         //- Return surface temperature (i.e. outer cladding temperature)
         virtual void correctT(volScalarField& T) const;

@@ -56,6 +56,7 @@ SourceFiles
 #define onePhase_H
 
 #include "thermalHydraulicsModel.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -103,7 +104,7 @@ public:
 
         onePhase
         (
-            fvMesh& mesh
+            dynamicFvMesh& mesh
         );
 
         //- Destructor

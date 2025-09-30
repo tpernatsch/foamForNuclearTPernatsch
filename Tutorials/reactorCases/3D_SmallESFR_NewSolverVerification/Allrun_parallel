@@ -30,7 +30,7 @@ do
     fi
 
     printf "Running GeN-Foam on $caseName\n"
-    decomposePar -case $caseName -allRegions
+    decomposePar -case $caseName -allRegions -copyUniform
     mpirun -np 4 GeN-Foam -parallel -case $caseName | tee "$caseName/log.GeN-Foam"
 
     # Kill gnuplot if it was started

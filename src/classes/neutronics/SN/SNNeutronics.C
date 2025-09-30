@@ -55,7 +55,7 @@ namespace solvers
     (
         solver,
         SNNeutronics,
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -67,7 +67,7 @@ namespace solvers
 
 Foam::solvers::SNNeutronics::SNNeutronics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     neutronics(mesh),

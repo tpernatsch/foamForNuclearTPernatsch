@@ -46,11 +46,6 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-regionSolvers
-{
-    fluidRegion onePhase;
-}
-
 removeBaffles
 {
     fluidRegion false;

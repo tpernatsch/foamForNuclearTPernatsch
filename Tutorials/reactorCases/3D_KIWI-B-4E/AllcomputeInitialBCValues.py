@@ -1,0 +1,238 @@
+"""
+Script to compute the boundary conditions for U, k, epsilon.
+
+Author: Thomas Guilbaud and Eymeric Simonnot, EPFL, 2023/06/29
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from hydrogen import rho, dynamicViscosity
+
+# References:
+# [1] 1991 Finseth - Overview of ROVER engines tests final report
+# [2] 1965 LANL - Survey Description of the Design and testing of Kiwi-B-4E-301 Propulsion Reactor
+# [3] NIST Thermophysical Properties of Fluid Systems : https://webbook.nist.gov/chemistry/fluid/
+# [4] C.J. Greenshields, H.G. Weller, Notes on Computational Fluid Dynamics: General Principles
+# https://doc.cfd.direct/notes/cfd-general-principles/
+
+
+# Reference values
+# massFlow = 31 # kg/s from [1][2]
+
+# Computed values
+rho_inlet = 10.36 # 11.34 # kg/m3 11.535
+S = 0.566337 # m2
+D = 0.889 # m, ~35 inches ~ (4*S/3.141592)**0.5
+mu = 3.9824e-06 # Pa.s, from NIST
+
+def getU(massFlow: float, pressure: float=1):
+    # The pressure is fixed at the outlet, and zeroGradient conditions are applied at the other boundaries
+    # The velocity is fixed at the inlet, this is a robust set of boundary conditions
+    # for the mass and momentum equations
+    # The inlet value of the velocity is not given in the reports.
+    # This value is calculated knowing the thermophysical properties of hydrogen at the (P, T) inlet conditions [3],
+    # the massFlow [1][2] and the section of passage of the flow.
+    # The assumption here is a uniform average value of the speed at the inlet.
+
+    # u_inlet = massFlow / (rho(T=83.3, p=pressure) * S)
+    u_inlet = massFlow / (rho_inlet * S)
+    # print(f"U = {u_inlet} m/s")
+    return(u_inlet)
+
+
+def getK(u_inlet, pressure: float=1):
+    # From [4] Sections 7.2 : Initialisation of the k-epsilon model & 7.3 : Inlet turbulence
+    # k is determined based on correlation for turbulent intensity (I)
+
+    # Reynolds = u_inlet * rho(T=83.3, p=pressure) * D / dynamicViscosity(T=83.3, p=pressure) # 1.22e7
+    Reynolds = u_inlet * rho_inlet * D / mu # 1.22e7
+    # print(f"Re = {Reynolds}")
+
+    I = 0.055*Reynolds**(-0.041) # 0.16 * Reynolds**(-0.125)
+    k_inlet = 3/2 * (u_inlet*I)**2
+    # print(f"k = {k_inlet} m2/s2")
+    return(k_inlet)
+
+
+def getEpsilon(k_inlet):
+    # From [4] Sections 7.2 : Initialisation of the k-epsilon model & 7.3 : Inlet turbulence
+    # epsilon is determined based on the k value calculated at the inlet
+    # and the mixing length lm = 0.07*D
+
+    lm = 0.07 * D
+    epsilon_inlet = 0.09**(3/4) * k_inlet**(3/2) / lm
+    # print(f"epsilon = {epsilon_inlet} m2/s3")
+    return(epsilon_inlet)
+
+# timeMassFlowrate = [
+#     t+8 for t in [-6.99325303199635, 0.204892586613687, 2.14930253735668, 4.34827600480153,
+#     24.7499206644867, 26.3014473557129, 28.6332215737406, 47.1804848434676,
+#     58.5937607792817, 59.890723953806, 96.0, 106.0, 133.0]
+# ]
+# massFlowList = [
+#     31.1430783558922, 31.0909760337762, 30.8959443685583, 29.8546020116727,
+#     13.9033118092636, 13.0476133118093, 12.5481820439588, 12.5345697255681,
+#     12.4519570346455, 12.4425692288588, 12.4425692288588, 6.228, 0.1
+# ]
+# Experimental data from LANL Report LA-3185-MS
+#   Chapiter III, Figure 9a, page 61
+#   Chapiter XV, Table III, page 328
+timeMassFlowrate = [
+    20822.9602774092, 20830.4146364074, 20832.1971992561, 20834.1850959171,
+    20835.7713343801, 20838.8368569558, 20843.3830541666, 20847.558850965,
+    20849.7798629177, 20852.8192262901, 20854.8809654861, 20856.8160802331,
+    20858.5171526736, 20860.6469695302, 20865.3325666147, 20868.1548057035,
+    20870.7108176851, 20873.7990521272, 20879.230548619, 20882.7979918539,
+    20887.430343517, 20889.9328783235, 20926, 20937, 20962.4, 20964, 20991,
+    21013
+]
+massFlowList = [
+    31.082840078101, 31.0423682460298, 30.9092973877877, 29.9607191133102,
+    28.7675359187008, 26.332393087713, 22.8033544527425, 19.5231124633684,
+    17.8822687573944, 15.4966250794625, 13.9060032378315, 13.0070686586673,
+    12.7016902894025, 12.6901269088107, 12.6646874715088, 12.6740432976239,
+    12.6848445463131, 12.668077644455, 12.6879456347445, 12.6685769722533,
+    12.6434266194661, 12.6298396472708, 12.6298396472708, 6.35029, 6.35029,
+    0.907185, 3.85554, 2.58548
+]
+
+
+
+# Pressure
+
+# Experimental data from LANL Report LA-3185-MS, Chapiter IV, Figure 4, page 72
+timePressureNozzleChamber = [
+    20809.3919848761, 20820.5013970169, 20828.9821932471, 20833.0564784053,
+    20833.3734135865, 20838.1802638346, 20839.4758058911, 20840.2598034446,
+    20841.1939281892, 20845.1305967556, 20846.6819110635, 20849.2118322468,
+    20851.4859811785, 20852.9094093607, 20858.4196333004, 20870.5271132487,
+    20875.6119768137, 20885.2312375763, 20898.9372940964, 20909.1737444224,
+    20916.9414364948, 20927.5170630673, 20934.7732106368, 20939.8163722042,
+    20949.3299879064, 20958.9172771376, 20965.9718650523, 20971.1109412141,
+    20979.5500354467, 20993.5758072812, 21003.4508402952, 21011.6438927425,
+    21022.9451340719, 21039.1838919084, 21057.7635218727, 21084.9198626614,
+    21120.7808004003, 21150.4698425055
+]
+pressureNozzleChamber = [
+    3403818.64454422, 3400046.3130745, 3376461.57404838, 3263271.18371583,
+    3064395.70879403, 2806021.67247993, 2573685.92411534, 2275267.92474736,
+    2076182.87585501, 2025154.16980868, 1825859.54694579, 1593104.65064013,
+    1327308.62883276, 1111493.44321902, 943982.502034595, 749385.403047953,
+    606864.879960337, 570470.570930001, 582380.506328974, 545776.623328098,
+    510011.036209382, 357344.066011482, 255496.22788937, 187527.811151115,
+    217425.327094715, 176900.877376667, 128954.442165353, 73376.4474902356,
+    124343.814813477, 177555.157089572, 174201.973560935, 113445.968345405,
+    134454.481001961, 153786.401894198, 155759.464153428, 146538.209449674,
+    142643.200533786, 140843.931323297
+]
+
+# Experimental data from LANL Report LA-3185-MS, Chapiter IV, Figure 5, page 73
+timeDeltaPcore = [
+    # 20762.1709981791, 20808.1484853501, 20830.0302102301, 20834.7997020361,
+    # 20839.2484687966, 20842.3832974673, 20844.2973017712, 20845.2905148154,
+    # 20846.697566628, 20848.9426419467, 20852.5430392319, 20858.6368150968,
+    # 20860.0955967555, 20861.3888429068, 20864.0374110247, 20867.5757324946,
+    # 20870.7829829498, 20875.707664294, 20878.3976162887, 20883.0326104949,
+    # 20888.9298129449, 20893.6889587817, 20897.392815759, 20901.7277768581,
+    # 20904.9246813441, 20909.8079788115, 20914.111902003, 20917.8571428571,
+    # 20923.9612646913, 20928.8445621586, 20934.617612978, 20937.8869392485,
+    # 20938.9215361695, 20949.6192683331, 20956.5717596424, 20961.7447442476,
+    # 20966.1314351928, 20975.5876510511, 20976.7981294488, 20984.8576394637,
+    # 20992.8757656017, 20999.8799867572, 21014.033272637, 21027.8968713789,
+    # 21041.2742095679, 21051.2994537328, 21061.8937262043, 21082.0269822877,
+    # 21093.7386194339, 21105.45025658, 21120.741599073, 21133.7982122165,
+    # 21148.5412183413
+    20760.1241842599, 20816.2114599738, 20835.3301410753, 20841.6914124773,
+    20845.4686595035, 20847.5994142362, 20849.6488128791, 20852.8333226796,
+    20856.5272765662, 20859.6420525754, 20863.9268066379, 20870.9679825046,
+    20878.0808292123, 20884.8120771178, 20890.9525248475, 20902.7820877135,
+    20920.6203789257, 20933.2208875949, 20941.8058921179, 20950.5768534176,
+    20955.2800102276, 20956.1129416231, 20966.9178051677, 20984.1536739054,
+    20985.2519811176, 20991.801146346, 20995.7062386561, 20998.3503115745,
+    21005.5580737202, 21008.5372562465, 21021.4341335286, 21027.9348725131,
+    21032.7426300099, 21036.3106756623, 21048.5237743802, 21075.9737064866,
+    21120.66531848, 21172.9288579736
+]
+deltaPcore = [
+    # 563115.726105268, 565688.432144131, 564163.744682013, 539830.777540333,
+    # 505203.721387824, 453126.013233131, 402582.787106694, 364658.227021125,
+    # 310931.766899902, 247747.020744941, 200432.7365886, 170614.812409751,
+    # 137453.676322533, 110613.300249577, 99643.3861752385, 99780.5101011678,
+    # 112559.15405562, 104841.035939032, 92290.9318611283, 95634.1437694982,
+    # 95862.6836460468, 94465.3255437204, 88281.6894553882, 80540.7173511453,
+    # 71173.8472680274, 65035.9191550049, 81020.6510918975, 73256.8249999998,
+    # 65584.4148587218, 59446.4867456991, 64415.596632944, 29742.8325051253,
+    # -9761.91758400925, -12510.9258133524, -7496.10795079759, 155629.126218914,
+    # -11871.0141590161, -12295.4453583208, 9105.68165277647, 39472.1015353419,
+    # 71418.7114214723, 96998.8533180318, 97547.3490217487, 109157.174750423,
+    # 116793.67148253, 117182.189272662, 118383.656052233, 116000.311625368,
+    # 119617.771385596, 123235.231145824, 125409.624828416, 122752.032549692,
+    # 123323.382241065
+    565097.093320383, 565140.098008431, 565011.885273879, 564130.956943558,
+    560752.551388099, 530560.589279897, 494501.291906735, 448375.157992294,
+    393024.652046529, 341869.373619266, 283161.830907134, 193419.861576845,
+    154811.801884725, 134648.212497437, 117841.659876514, 97643.8804266781,
+    97105.1198316939, 86542.2602736141, 62174.8958521856, 51218.5834649479,
+    22685.9078297452, -9173.88826709448, -11342.0190303499, -9361.93361110477,
+    207742.292465813, -9413.21870492581, -3571.52598687786, 49221.6701242928,
+    63423.9015746178, 94419.8643724102, 105230.868993822, 114408.229689144,
+    93419.2708231734, 74953.4317292507, 82415.9470999332, 85584.938522289,
+    91153.1107399582, 91221.7579749165
+]
+
+deltaPcoreInterp = np.interp(timePressureNozzleChamber, timeDeltaPcore, deltaPcore)
+
+pressureInletCore = [Pout+deltaP for Pout, deltaP in zip(pressureNozzleChamber, deltaPcoreInterp)]
+
+pressureInletCoreInterp = np.interp(timeMassFlowrate, timePressureNozzleChamber, pressureInletCore)
+
+uList = [getU(massFlow=massFlow, pressure=pressure) for massFlow, pressure in zip(massFlowList, pressureInletCore)]
+kList = [getK(u, p) for u, p in zip(uList, pressureInletCore)]
+epsList = [getEpsilon(k) for k in kList]
+
+print(len(timeMassFlowrate))
+print("u")
+for t, u in zip(timeMassFlowrate, uList):
+    print(f"({t+20*0:.3f}  (0 0 -{u:.3f}))")
+
+print("k")
+for t, k in zip(timeMassFlowrate, kList):
+    print(f"({t+20*0:.3f}  {k:.3e})")
+
+print("eps")
+for t, eps in zip(timeMassFlowrate, epsList):
+    print(f"({t+20*0:.3f}  {eps:.3e})")
+
+print(len(timePressureNozzleChamber))
+print("Pout")
+for t, p in zip(timePressureNozzleChamber, pressureNozzleChamber):
+    print(f"({t:.3f}  {p:.3f})")
+
+print("massFlowrate")
+for t, m in zip(timeMassFlowrate, massFlowList):
+    print(f"({t:.3f}  (0 0 -{m:.3f}))")
+
+
+
+
+fig, (axPressure, axU) = plt.subplots(nrows=2, sharex=True)
+
+axPressure.plot(timePressureNozzleChamber, pressureNozzleChamber, label="Nozzle chamber")
+axPressure.plot(timePressureNozzleChamber, pressureInletCore, label="Core inlet")
+axPressure.plot(timeMassFlowrate, pressureInletCoreInterp, ls='--', label="Core inlet interp")
+axPressure.plot(timeDeltaPcore, deltaPcore, label="Core pressure drop")
+axPressure.set_xlabel("Time [s]")
+axPressure.set_ylabel("Pressure [Pa]")
+axPressure.grid(True)
+axPressure.legend()
+
+axU.plot(timeMassFlowrate, uList)
+axU.plot(timeMassFlowrate, [getU(massFlow=massFlow, pressure=34e5) for massFlow in massFlowList])
+axU.set_xlabel("Time [s]")
+axU.set_ylabel("Velocity [m/s]")
+axU.grid(True)
+axU.legend()
+
+fig.tight_layout()
+fig.savefig("fig_initialBC.png")

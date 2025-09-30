@@ -39,7 +39,7 @@ do
         runCloneCase $caseName rootCase
         printf "Steady state case is prepared!\n"
         printf "Running $exe on $caseName\n"
-        decomposePar -case $caseName -allRegions -time 0
+        decomposePar -case $caseName -allRegions -copyUniform -time 0
         ;;
     esac
 

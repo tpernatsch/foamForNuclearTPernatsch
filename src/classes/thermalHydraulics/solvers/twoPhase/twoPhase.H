@@ -61,6 +61,7 @@ SourceFiles
 #include "upwind.H"
 #include "gaussConvectionScheme.H"
 #include "myMULES.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -205,7 +206,7 @@ public:
 
         twoPhase
         (
-            fvMesh& mesh
+            dynamicFvMesh& mesh
         );
 
         //- Destructor

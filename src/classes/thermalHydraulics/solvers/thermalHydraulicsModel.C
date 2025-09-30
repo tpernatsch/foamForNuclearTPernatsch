@@ -79,7 +79,7 @@ Foam::solvers::thermalHydraulicsModel::momentumModeNames_
 Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
 (
     const Time& time,
-    fvMesh& mesh,
+    dynamicFvMesh& mesh,
     fv::options& fvOptions
 )
 :
@@ -168,6 +168,32 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
             IOobject::AUTO_WRITE
         ),
         p_rgh_
+    ),
+    stressTensor_
+    (
+        IOobject
+        (
+            "stressTensor",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedSymmTensor("", dimPressure, symmTensor::zero)
+    ),
+    kappaEff_
+    (
+        IOobject
+        (
+            "kappaEff",
+            mesh.time().timeName(),
+            mesh,
+            IOobject::NO_READ,
+            IOobject::AUTO_WRITE
+        ),
+        mesh,
+        dimensionedScalar("", dimPower/dimTemperature/dimLength, 0)
     ),
     pMin_
     (
@@ -321,7 +347,7 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
             (
                 IOobject
                 (
-                    "multiRegionCouplingDict",
+                    "regionsDict",
                     runTime.time().constant(),
                     runTime.db(),
                     IOobject::READ_IF_PRESENT,
@@ -385,7 +411,7 @@ void Foam::solvers::thermalHydraulicsModel::deformMesh()
     (
         IOobject
         (
-            "multiRegionCouplingDict",
+            "regionsDict",
             runTime.time().constant(),
             runTime.db(),
             IOobject::READ_IF_PRESENT,

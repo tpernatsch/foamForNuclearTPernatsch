@@ -1,0 +1,197 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      createBafflesDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Whether to convert internal faces only (so leave boundary faces intact).
+// This is only relevant if your face selection type can pick up boundary
+// faces.
+internalFacesOnly   true;
+
+// Baffles to create.
+baffles
+{
+    baffle
+    {
+        //- Use predefined faceZone to select faces and orientation.
+        type        faceZone;
+        zoneName    baffle;
+
+        patches
+        {
+            master
+            {
+                //- Master side patch
+                name            baffle_master;
+                type            mappedWall; // cyclic; // mappedWall;
+                neighbourPatch  baffle_slave;
+                sampleMode      nearestPatchFace;
+                sampleRegion    fluid;
+                samplePatch     baffle_slave;
+                offsetMode      uniform;
+                transform       coincidentFullMatch;
+                offset          (0 0 0);
+
+                patchFields
+                {
+                    ".*"
+                    {
+                        type        zeroGradient;
+                    }
+
+                    U
+                    {
+                        type        slip;
+                    }
+                }
+            }
+
+            slave
+            {
+                //- Slave side patch
+                name            baffle_slave;
+                type            mappedWall; // cyclic; // mappedWall;
+                neighbourPatch  baffle_master;
+                sampleMode      nearestPatchFace;
+                sampleRegion    fluid;
+                samplePatch     baffle_master;
+                offsetMode      uniform;
+                transform       coincidentFullMatch;
+                offset          (0 0 0);
+
+                patchFields
+                {
+                    ${...master.patchFields}
+                }
+            }
+        }
+    }
+    
+    inletFuelElement
+    {
+        //- Use predefined faceZone to select faces and orientation.
+        type        faceZone;
+        zoneName    inletFuelElement;
+
+        patches
+        {
+            master
+            {
+                //- Master side patch
+                name            inletFuelElement;
+                type            cyclic;
+                neighbourPatch  inletFuelElement_slave;
+                sampleMode      nearestPatchFace;
+                sampleRegion    fluid;
+                samplePatch     inletFuelElement_slave;
+                offsetMode      uniform;
+                transform       coincidentFullMatch;
+                offset          (0 0 0);
+
+                patchFields
+                {
+                    "(nut|alphat|epsilon|k|p|p_rgh|T|U)"
+                    {
+                        type        cyclic;
+                    }
+
+                    Tmatrix.lumpedNuclearStructure
+                    {
+                        type        zeroGradient;
+                        patchType   cyclic;
+                    }
+                }
+            }
+
+            slave
+            {
+                //- Slave side patch
+                name            inletFuelElement_slave;
+                type            cyclic;
+                neighbourPatch  inletFuelElement;
+                sampleMode      nearestPatchFace;
+                sampleRegion    fluid;
+                samplePatch     inletFuelElement;
+                offsetMode      uniform;
+                transform       coincidentFullMatch;
+                offset          (0 0 0);
+
+                patchFields
+                {
+                    ${...master.patchFields}
+                }
+            }
+        }
+    }
+
+    outletFuelElement
+    {
+        //- Use predefined faceZone to select faces and orientation.
+        type        faceZone;
+        zoneName    outletFuelElement;
+
+        patches
+        {
+            master
+            {
+                //- Master side patch
+                name            outletFuelElement;
+                type            cyclic;
+                neighbourPatch  outletFuelElement_slave;
+                sampleMode      nearestPatchFace;
+                sampleRegion    fluid;
+                samplePatch     outletFuelElement_slave;
+                offsetMode      uniform;
+                transform       coincidentFullMatch;
+                offset          (0 0 0);
+
+                patchFields
+                {
+                    "(nut|alphat|epsilon|k|p|p_rgh|T|U)"
+                    {
+                        type        cyclic;
+                    }
+
+                    Tmatrix.lumpedNuclearStructure
+                    {
+                        type        zeroGradient;
+                        patchType   cyclic;
+                    }
+                }
+            }
+
+            slave
+            {
+                //- Slave side patch
+                name            outletFuelElement_slave;
+                type            cyclic;
+                neighbourPatch  outletFuelElement;
+                sampleMode      nearestPatchFace;
+                sampleRegion    fluid;
+                samplePatch     outletFuelElement;
+                offsetMode      uniform;
+                transform       coincidentFullMatch;
+                offset          (0 0 0);
+
+                patchFields
+                {
+                    ${...master.patchFields}
+                }
+            }
+        }
+    }
+}
+
+// ************************************************************************* //

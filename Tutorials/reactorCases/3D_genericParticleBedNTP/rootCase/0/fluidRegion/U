@@ -1,0 +1,86 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2212                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+FoamFile
+{
+    version         2;
+    format          ascii;
+    class           volVectorField;
+    object          U;
+}
+
+dimensions      [ 0 1 -1 0 0 0 0 ];
+
+internalField   uniform ( 0 0 0 );
+
+boundaryField
+{
+    "outerPropellantInlet15"
+    {
+        type            flowRateInletVelocity;
+        massFlowRate    constant ${{0.444960/2}};
+        rho             "thermo:rho";
+        value           uniform ( 1 0 0 );
+    }
+    "outerPropellantInlet16"
+    {
+        type            flowRateInletVelocity;
+        massFlowRate    constant ${{0.550758/2}};
+        rho             "thermo:rho";
+        value           uniform ( 1 0 0 );
+    }
+    "outerPropellantInlet17"
+    {
+        type            flowRateInletVelocity;
+        massFlowRate    constant ${{0.628171/2}};
+        rho             "thermo:rho";
+        value           uniform ( 1 0 0 );
+    }
+    "outerPropellantInlet18"
+    {
+        type            flowRateInletVelocity;
+        massFlowRate    constant ${{0.6758197/12}};
+        rho             "thermo:rho";
+        value           uniform ( 1 0 0 );
+    }
+    "outerPropellantInlet22"
+    {
+        type            flowRateInletVelocity;
+        massFlowRate    constant ${{0.523904}};
+        rho             "thermo:rho";
+        value           uniform ( 1 0 0 );
+    }
+    "outerPropellantInlet23"
+    {
+        type            flowRateInletVelocity;
+        massFlowRate    constant ${{0.575881/2}};
+        rho             "thermo:rho";
+        value           uniform ( 1 0 0 );
+    }
+    ".*Inlet|.*Outlet"
+    {
+        type            fixedValue;
+        value           uniform ( 0 0 0 );
+    }
+    "outerPropellantOR.*"
+    {
+        type            fixedValue;
+        value           uniform ( 0 0 0 );
+    }
+    "innerPropellantOutlet.*"
+    {
+        type            zeroGradient;
+    }
+    ".*Right|.*Left"
+    {
+        type            symmetry;
+    }
+}
+
+
+// ************************************************************************* //

@@ -55,6 +55,7 @@ SourceFiles
 #include "volFields.H"
 #include "meshToMesh.H"
 #include "zeroGradientFvPatchFields.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 

@@ -51,6 +51,8 @@ Usage
         fieldName   heatFlux.structure;
         region      fluidRegion;
         cellZone    hx;
+        initValue   0.0;
+        scaleFactor 1.0;
     }
     \endverbatim
 
@@ -62,6 +64,8 @@ Usage
       fieldName | name of the measurement field | word |  yes  | -
       region    | name of the region            | word |  yes  | -
       cellZone  | position of the cellZone      | word |  yes  | -
+      initValue | Initial value                 | scalar | no | 0.0
+      scaleFactor| Scaling factor               | scalar | no | 1.0
     \endtable
 
 SourceFiles
@@ -119,6 +123,12 @@ protected:
 
         //- Name of scalar to be exhanged with the FMU
         word nameFMU_;
+
+        //- Initial FMI value
+        scalar initValue_;
+
+        //- Scaling factor
+        scalar scaleFactor_;
 
         //- Field ptrs
         const volScalarField* fieldPtr_;

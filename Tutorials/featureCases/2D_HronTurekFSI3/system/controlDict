@@ -1,0 +1,141 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     GeN-Foam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         6;
+
+deltaT          1e-3;
+
+writeControl    timeStep;
+
+writeInterval   20;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+adjustTimeStep  no;
+
+maxCo           0.2;
+
+functions
+{
+    trackDisplacement
+    {
+        type            coded;
+        functionObjectLibs ("libutilityFunctionObjects.so");
+        name dispTrack;
+        region solid;
+
+        writeControl   writeTime;
+        writeInterval  1;
+        executeControl writeTime;
+        executeInterval 1;
+
+        codeInclude
+        #{
+            #include "fvCFD.H"
+            #include "pointFields.H"
+            #include "volPointInterpolation.H"
+        #};
+
+codeExecute
+#{
+
+    autoPtr<volPointInterpolation> interp(nullptr);
+    interp.reset
+    (
+        new volPointInterpolation
+        (
+            mesh()
+        )
+    );
+    // Interpolate volVectorField "D" to point field
+
+    volVectorField D(
+    IOobject(
+        "D",
+        mesh().time().timeName(),
+        mesh(),
+        IOobject::MUST_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh()
+);
+   // const volVectorField& D = mesh().lookupObject<volVectorField>("D");
+    const pointVectorField pointD = interp().interpolate(D);
+
+    static const point targetPoint(0.6, 0.2, 0.0);
+
+    // Only find closest point once
+    static label pointID = -1;
+    if (pointID < 0)
+    {
+        scalar minDist = GREAT;
+        forAll(mesh().points(), i)
+        {
+            scalar dist = mag(mesh().points()[i] - targetPoint);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                pointID = i;
+            }
+        }
+
+        Info << " Closest point to " << targetPoint
+             << " is point " << pointID << " at " << mesh().points()[pointID]
+             << " (distance = " << minDist << ")" << endl;
+    }
+
+    vector pointDValue = vector::zero;
+    if (pointID > -1)
+    {
+        pointDValue = pointD[pointID];
+    }
+
+     static OFstream historyFile("displacementHistory.dat");
+     historyFile
+         << time_.time().value()
+         << " " << pointDValue.x()
+         << " " << pointDValue.y()
+         << " " << pointDValue.z()
+         << " " << mag(pointDValue)
+         << endl;
+#};
+
+    }
+}
+
+// ************************************************************************* //

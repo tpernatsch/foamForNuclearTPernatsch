@@ -1,0 +1,919 @@
+fuelElement_13  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.128 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (5.155039e-06 1.934668e-04);
+    D                  nonuniform List<scalar> 2 (1.086108e-02 7.700436e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (4.653318e-01 1.084086e+01);
+    sigmaPow           nonuniform List<scalar> 2 (5.907293e-12 1.378608e-10);
+    scatteringMatrixP0 2 2 (
+        (3.261084e+01 1.390792e-01)
+        (9.406680e-01 3.881907e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.446298e+00 -2.551980e-02)
+        (-9.238200e-02 2.245732e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (3.906228e-01 -4.746344e-03)
+        (-4.142236e-02 2.652157e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (6.617323e-02 -1.798285e-03)
+        (-1.717099e-02 7.518732e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (5.938365e-03 -6.640579e-04)
+        (-8.290363e-03 2.205004e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (3.495427e-03 -3.409837e-04)
+        (-3.146580e-03 2.005482e-02)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (5.197279e-01 6.287409e+00);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.279362e-04 1.176659e-03 1.123411e-03 2.519053e-03 1.033064e-03 4.327372e-04);
+    lambda             nonuniform List<scalar> 6 (1.333605e-02 3.273860e-02 1.207809e-01 3.027896e-01 8.495316e-01 2.853140e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (1.320324e-02 1.507365e-02);
+}
+
+fuelElement_15  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.148 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (5.007607e-06 1.910513e-04);
+    D                  nonuniform List<scalar> 2 (1.084536e-02 7.550415e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (5.265395e-01 1.236881e+01);
+    sigmaPow           nonuniform List<scalar> 2 (6.683647e-12 1.572913e-10);
+    scatteringMatrixP0 2 2 (
+        (3.263508e+01 1.356415e-01)
+        (9.686808e-01 3.889218e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.461089e+00 -2.448263e-02)
+        (-9.219473e-02 2.243298e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.008382e-01 -4.987870e-03)
+        (-4.701768e-02 2.776188e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (6.949714e-02 -1.915909e-03)
+        (-1.408446e-02 7.098108e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (8.482962e-03 -6.641909e-04)
+        (-7.631806e-03 3.344738e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (4.306437e-03 -2.688082e-04)
+        (-4.321395e-03 2.012753e-02)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (5.560936e-01 7.059025e+00);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.279471e-04 1.176726e-03 1.123480e-03 2.519233e-03 1.033163e-03 4.327775e-04);
+    lambda             nonuniform List<scalar> 6 (1.333606e-02 3.273856e-02 1.207810e-01 3.027904e-01 8.495352e-01 2.853152e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (5.234091e-03 6.405249e-03);
+}
+
+fuelElement_17  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.17 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (4.707308e-06 1.854368e-04);
+    D                  nonuniform List<scalar> 2 (1.087659e-02 7.447328e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (5.778864e-01 1.372500e+01);
+    sigmaPow           nonuniform List<scalar> 2 (7.334089e-12 1.745377e-10);
+    scatteringMatrixP0 2 2 (
+        (3.252846e+01 1.241420e-01)
+        (1.046417e+00 3.874033e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.460131e+00 -2.272035e-02)
+        (-9.875215e-02 2.264134e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.101231e-01 -4.358970e-03)
+        (-4.689513e-02 2.555351e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (7.091049e-02 -1.495591e-03)
+        (-1.833019e-02 8.579081e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (5.323299e-03 -7.059931e-04)
+        (-1.065565e-02 3.339112e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (4.892506e-03 -2.692525e-04)
+        (-3.873115e-03 1.254910e-02)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (5.748094e-01 7.794584e+00);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.279787e-04 1.176913e-03 1.123674e-03 2.519722e-03 1.033421e-03 4.328838e-04);
+    lambda             nonuniform List<scalar> 6 (1.333607e-02 3.273848e-02 1.207812e-01 3.027924e-01 8.495436e-01 2.853180e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (1.135055e-02 1.656841e-02);
+}
+
+fuelElement_19  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.195 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (4.338881e-06 1.776206e-04);
+    D                  nonuniform List<scalar> 2 (1.091471e-02 7.351967e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (6.264941e-01 1.497891e+01);
+    sigmaPow           nonuniform List<scalar> 2 (7.949175e-12 1.904834e-10);
+    scatteringMatrixP0 2 2 (
+        (3.240975e+01 1.122539e-01)
+        (1.160371e+00 3.851303e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.461947e+00 -2.067072e-02)
+        (-1.062976e-01 2.250104e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.195774e-01 -3.791887e-03)
+        (-4.856933e-02 2.673048e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (7.700009e-02 -1.503856e-03)
+        (-2.381467e-02 7.569681e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (8.984671e-03 -5.922130e-04)
+        (-1.048829e-02 2.937901e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (7.554497e-03 -2.391038e-04)
+        (-6.864111e-03 2.985334e-02)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (5.902739e-01 8.517599e+00);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.280249e-04 1.177187e-03 1.123955e-03 2.520432e-03 1.033795e-03 4.330375e-04);
+    lambda             nonuniform List<scalar> 6 (1.333608e-02 3.273836e-02 1.207814e-01 3.027951e-01 8.495555e-01 2.853220e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (3.741173e-03 6.854287e-03);
+}
+
+fuelElement_22  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.224 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (4.086522e-06 1.723674e-04);
+    D                  nonuniform List<scalar> 2 (1.093809e-02 7.232291e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (6.883491e-01 1.660333e+01);
+    sigmaPow           nonuniform List<scalar> 2 (8.732185e-12 2.111407e-10);
+    scatteringMatrixP0 2 2 (
+        (3.231886e+01 1.029964e-01)
+        (1.254544e+00 3.836738e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.464575e+00 -1.902293e-02)
+        (-1.099874e-01 2.293652e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.321907e-01 -3.510479e-03)
+        (-5.746468e-02 2.881178e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (7.914214e-02 -1.403831e-03)
+        (-2.183616e-02 7.872385e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (1.194650e-02 -5.490887e-04)
+        (-1.193051e-02 1.334576e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (7.826664e-03 -1.416257e-04)
+        (-4.961543e-03 3.038810e-04)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (6.172906e-01 9.400439e+00);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.280594e-04 1.177397e-03 1.124174e-03 2.520992e-03 1.034099e-03 4.331624e-04);
+    lambda             nonuniform List<scalar> 6 (1.333610e-02 3.273826e-02 1.207816e-01 3.027976e-01 8.495662e-01 2.853256e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (7.263431e-03 1.585340e-02);
+}
+
+fuelElement_26  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.258 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (3.770320e-06 1.668030e-04);
+    D                  nonuniform List<scalar> 2 (1.096233e-02 7.096329e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (7.513061e-01 1.839365e+01);
+    sigmaPow           nonuniform List<scalar> 2 (9.528542e-12 2.339079e-10);
+    scatteringMatrixP0 2 2 (
+        (3.223955e+01 9.184206e-02)
+        (1.372196e+00 3.821525e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.476012e+00 -1.717666e-02)
+        (-1.152545e-01 2.322907e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.432222e-01 -3.107793e-03)
+        (-6.122092e-02 2.765828e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (8.261542e-02 -1.378463e-03)
+        (-2.522423e-02 8.032759e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (1.423684e-02 -3.418374e-04)
+        (-1.219576e-02 2.204176e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (8.269102e-03 -1.734639e-04)
+        (-6.283202e-03 1.170065e-02)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (6.426327e-01 1.038729e+01);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.281091e-04 1.177694e-03 1.124481e-03 2.521771e-03 1.034514e-03 4.333331e-04);
+    lambda             nonuniform List<scalar> 6 (1.333612e-02 3.273813e-02 1.207819e-01 3.028008e-01 8.495800e-01 2.853302e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (4.632836e-03 1.268204e-02);
+}
+
+fuelElement_30  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.297 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (3.422003e-06 1.594366e-04);
+    D                  nonuniform List<scalar> 2 (1.098082e-02 6.969816e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (8.133935e-01 2.005154e+01);
+    sigmaPow           nonuniform List<scalar> 2 (1.031317e-11 2.549909e-10);
+    scatteringMatrixP0 2 2 (
+        (3.217477e+01 7.968996e-02)
+        (1.546097e+00 3.797817e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.487362e+00 -1.471879e-02)
+        (-1.223962e-01 2.319245e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.513826e-01 -2.698750e-03)
+        (-7.130877e-02 2.681327e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (8.517859e-02 -1.008725e-03)
+        (-2.713657e-02 7.872001e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (1.428779e-02 -4.079449e-04)
+        (-1.564851e-02 2.702062e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (7.080490e-03 -1.747467e-04)
+        (-8.782746e-03 1.658485e-02)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (6.655606e-01 1.136606e+01);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.281797e-04 1.178113e-03 1.124911e-03 2.522858e-03 1.035087e-03 4.335687e-04);
+    lambda             nonuniform List<scalar> 6 (1.333614e-02 3.273795e-02 1.207823e-01 3.028050e-01 8.495983e-01 2.853364e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (6.132920e-03 2.261699e-02);
+}
+
+fuelElement_34  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.341 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (3.073158e-06 1.530661e-04);
+    D                  nonuniform List<scalar> 2 (1.098903e-02 6.826942e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (8.762954e-01 2.190290e+01);
+    sigmaPow           nonuniform List<scalar> 2 (1.110755e-11 2.785342e-10);
+    scatteringMatrixP0 2 2 (
+        (3.213975e+01 6.653668e-02)
+        (1.713188e+00 3.779794e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.496506e+00 -1.229352e-02)
+        (-1.284517e-01 2.328323e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.587260e-01 -2.249772e-03)
+        (-8.081940e-02 2.710226e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (9.134804e-02 -8.307868e-04)
+        (-3.422509e-02 7.642579e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (1.514191e-02 -3.788942e-04)
+        (-1.605184e-02 2.632183e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (8.716507e-03 -1.609392e-04)
+        (-6.090528e-03 2.610405e-02)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (6.878979e-01 1.242959e+01);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.282600e-04 1.178586e-03 1.125397e-03 2.524078e-03 1.035726e-03 4.338316e-04);
+    lambda             nonuniform List<scalar> 6 (1.333617e-02 3.273775e-02 1.207828e-01 3.028096e-01 8.496183e-01 2.853431e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (4.614113e-03 2.356968e-02);
+}
+
+fuelElement_39  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.392 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (2.767084e-06 1.464893e-04);
+    D                  nonuniform List<scalar> 2 (1.098909e-02 6.674754e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (9.487778e-01 2.383568e+01);
+    sigmaPow           nonuniform List<scalar> 2 (1.202280e-11 3.031129e-10);
+    scatteringMatrixP0 2 2 (
+        (3.212307e+01 5.544199e-02)
+        (1.934077e+00 3.757812e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.509274e+00 -1.033448e-02)
+        (-1.314498e-01 2.319417e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.682304e-01 -1.899389e-03)
+        (-9.887945e-02 2.754009e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (9.224693e-02 -7.032300e-04)
+        (-3.713098e-02 7.102870e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (1.807857e-02 -3.394174e-04)
+        (-1.893973e-02 3.539827e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (8.618171e-03 -8.367879e-05)
+        (-7.487285e-03 2.727627e-02)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (7.178028e-01 1.358347e+01);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.283413e-04 1.179067e-03 1.125891e-03 2.525325e-03 1.036382e-03 4.341015e-04);
+    lambda             nonuniform List<scalar> 6 (1.333619e-02 3.273755e-02 1.207832e-01 3.028144e-01 8.496390e-01 2.853500e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (4.552285e-03 3.266666e-02);
+}
+
+fuelElement_45  // OpenMC: Universe Fuel (UC2) e=93.000 %; rhoU = 0.45 g/cm3
+{
+    fuelFraction       6.721789e-01;
+    IV                 nonuniform List<scalar> 2 (1.849249e-06 1.307316e-04);
+    D                  nonuniform List<scalar> 2 (1.098876e-02 6.628012e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (9.201674e-01 2.352988e+01);
+    sigmaPow           nonuniform List<scalar> 2 (1.165279e-11 2.992242e-10);
+    scatteringMatrixP0 2 2 (
+        (3.220089e+01 2.053269e-02)
+        (2.643221e+00 3.676673e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.524432e+00 -3.875531e-03)
+        (-1.441978e-01 2.375432e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.694054e-01 -7.194782e-04)
+        (-1.231243e-01 2.787068e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (9.484572e-02 -3.012621e-04)
+        (-5.341883e-02 9.116582e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (1.842979e-02 -8.708652e-05)
+        (-2.414816e-02 3.199307e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (9.970818e-03 -2.406467e-05)
+        (-1.478012e-02 1.267422e-02)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (6.569545e-01 1.410147e+01);
+    chiPrompt          nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (1.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (2.286573e-04 1.180860e-03 1.127695e-03 2.529731e-03 1.038568e-03 4.350042e-04);
+    lambda             nonuniform List<scalar> 6 (1.333626e-02 3.273702e-02 1.207844e-01 3.028270e-01 8.496933e-01 2.853683e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (1.464333e-02 4.599412e-01);
+}
+
+unloadedElementsTypeC  // OpenMC: uCentralUnloadedFuelElement
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (2.602511e-06 1.646601e-04);
+    D                  nonuniform List<scalar> 2 (8.280979e-03 6.273725e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (4.295978e+01 5.428481e-02)
+        (1.318226e+00 5.161765e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.881234e+00 -1.307873e-02)
+        (-1.197378e-01 1.893943e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (5.031984e-01 -1.841056e-03)
+        (-8.818030e-02 -3.174718e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (1.076062e-01 -5.011941e-04)
+        (-3.771334e-02 -4.080990e-01)
+    );
+    scatteringMatrixP4 2 2 (
+        (2.431893e-02 -2.886319e-04)
+        (-1.651979e-02 -4.272330e-01)
+    );
+    scatteringMatrixP5 2 2 (
+        (4.108960e-03 -1.387059e-04)
+        (-8.875296e-03 -3.857883e-01)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (1.729184e-01 2.201273e+00);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (1.142285e-02 7.130519e-02);
+}
+
+unloadedElementsTypeT  // OpenMC: uCentralUnloadedFuelElementTa
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (1.795379e-06 1.497949e-04);
+    D                  nonuniform List<scalar> 2 (8.649017e-03 6.519481e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (4.093536e+01 1.933840e-02)
+        (1.750539e+00 4.835790e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.755120e+00 -4.768687e-03)
+        (-1.436832e-01 1.981849e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (5.003371e-01 -5.747400e-04)
+        (-1.171322e-01 -2.311631e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (1.123689e-01 -1.948825e-04)
+        (-4.992562e-02 -2.818439e-01)
+    );
+    scatteringMatrixP4 2 2 (
+        (3.055007e-02 -6.886278e-05)
+        (-2.400734e-02 -3.335273e-01)
+    );
+    scatteringMatrixP5 2 2 (
+        (5.037881e-03 -2.770044e-05)
+        (-1.572353e-02 -3.549409e-01)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (3.593731e-01 2.857338e+00);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (1.162178e-03 3.133831e-02);
+}
+
+coreSupport  // OpenMC: Graphite Core Support
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (3.521876e-06 2.305191e-04);
+    D                  nonuniform List<scalar> 2 (8.287570e-03 6.434681e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (4.316934e+01 8.579443e-02)
+        (2.096809e-01 5.205454e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (3.036017e+00 -2.336921e-02)
+        (-1.065916e-02 1.075450e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.082022e-01 -2.528268e-03)
+        (-1.856705e-02 -8.131501e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (7.042700e-02 -4.833146e-04)
+        (-8.349707e-03 -7.081987e-01)
+    );
+    scatteringMatrixP4 2 2 (
+        (3.561431e-03 -2.758183e-04)
+        (-3.550622e-03 -5.701602e-01)
+    );
+    scatteringMatrixP5 2 2 (
+        (-1.333524e-03 -2.742906e-04)
+        (-9.036950e-04 -4.833140e-01)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (8.740328e-02 2.309055e-01);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (2.114635e-03 3.632112e-03);
+}
+
+supportPlate  // OpenMC: Aluminum Support Plate (6061T6 Alloy)
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (2.691199e-06 2.506946e-04);
+    D                  nonuniform List<scalar> 2 (2.434318e-02 3.600865e-02);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (1.575098e+01 5.438357e-03)
+        (4.333672e-02 8.365247e+00)
+    );
+    scatteringMatrixP1 2 2 (
+        (2.080414e+00 -1.384845e-03)
+        (-2.584791e-03 2.212263e-02)
+    );
+    scatteringMatrixP2 2 2 (
+        (5.895971e-01 -1.010556e-04)
+        (-1.283173e-03 -1.539383e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (9.214849e-02 -3.527973e-05)
+        (-1.686884e-03 -1.483214e-01)
+    );
+    scatteringMatrixP4 2 2 (
+        (2.237782e-02 -5.433713e-05)
+        (-8.241508e-04 -1.394919e-01)
+    );
+    scatteringMatrixP5 2 2 (
+        (6.667663e-03 3.976014e-06)
+        (-4.070931e-04 -1.129414e-01)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (2.277479e-02 8.639323e-01);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (3.003145e-03 7.327066e-03);
+}
+
+reflector  // OpenMC: Reflector (Graphite)
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (8.859485e-06 2.431699e-04);
+    D                  nonuniform List<scalar> 2 (7.618951e-03 6.416929e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (4.650400e+01 3.116653e-01)
+        (1.559828e-01 5.223404e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (3.067734e+00 -8.365603e-02)
+        (-6.338935e-03 8.888563e-01)
+    );
+    scatteringMatrixP2 2 2 (
+        (2.408581e-01 -9.064146e-03)
+        (-1.387057e-02 -8.986693e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (3.260677e-02 -2.053743e-03)
+        (-5.898449e-03 -7.350614e-01)
+    );
+    scatteringMatrixP4 2 2 (
+        (-9.736019e-03 -1.293148e-03)
+        (-2.442845e-03 -5.995455e-01)
+    );
+    scatteringMatrixP5 2 2 (
+        (-3.349429e-03 -6.633054e-04)
+        (-8.826483e-04 -4.941820e-01)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (3.130432e-01 1.783720e-01);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (2.074738e-01 7.087422e-02);
+}
+
+reflectorSystemBe  // OpenMC: Reflector System Container (Beryllium)
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (1.001799e-05 2.771890e-04);
+    D                  nonuniform List<scalar> 2 (5.339115e-03 4.455610e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (6.760740e+01 7.263874e-01)
+        (5.561378e-02 7.476488e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (5.867849e+00 -1.979067e-01)
+        (1.180856e-02 8.231207e-01)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.681612e-01 -2.225804e-02)
+        (-4.385246e-03 -2.960857e+00)
+    );
+    scatteringMatrixP3 2 2 (
+        (8.930885e-02 -2.886488e-03)
+        (-4.551945e-03 -2.528091e+00)
+    );
+    scatteringMatrixP4 2 2 (
+        (8.993156e-03 -1.784917e-03)
+        (-2.491847e-03 -1.942378e+00)
+    );
+    scatteringMatrixP5 2 2 (
+        (1.392338e-03 6.665769e-04)
+        (-7.569895e-04 -1.358099e+00)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (6.901724e-01 1.311903e-01);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (1.519469e-01 3.838921e-02);
+}
+
+controlDrum  // OpenMC:
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (1.023827e-05 2.956350e-04);
+    D                  nonuniform List<scalar> 2 (5.589547e-03 4.469916e-03);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (6.231118e+01 7.206075e-01)
+        (4.431113e-02 7.098696e+01)
+    );
+    scatteringMatrixP1 2 2 (
+        (5.473760e+00 -1.880316e-01)
+        (9.425579e-03 2.812857e-01)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.815705e-01 -2.325924e-02)
+        (-3.379949e-03 -2.986820e+00)
+    );
+    scatteringMatrixP3 2 2 (
+        (8.194102e-02 -4.028596e-03)
+        (-4.054044e-03 -2.522606e+00)
+    );
+    scatteringMatrixP4 2 2 (
+        (9.945599e-03 -3.069801e-03)
+        (-2.103400e-03 -1.893336e+00)
+    );
+    scatteringMatrixP5 2 2 (
+        (4.717865e-03 1.265000e-03)
+        (-1.624673e-04 -1.247028e+00)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (2.796458e+00 3.308912e+00);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (5.253608e-03 1.054194e-03);
+}
+
+inletSpacer  // OpenMC: Inlet Spacer (6061T6 Alloy)
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (5.299986e-06 2.644693e-04);
+    D                  nonuniform List<scalar> 2 (2.420009e-02 3.583634e-02);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (1.552513e+01 1.500047e-02)
+        (2.894359e-02 8.379393e+00)
+    );
+    scatteringMatrixP1 2 2 (
+        (1.794431e+00 -3.780011e-03)
+        (-2.660727e-03 7.043218e-03)
+    );
+    scatteringMatrixP2 2 2 (
+        (4.774413e-01 -2.511192e-04)
+        (-2.579180e-03 -1.981663e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (7.977801e-02 -1.490390e-04)
+        (-4.549139e-04 -1.653799e-01)
+    );
+    scatteringMatrixP4 2 2 (
+        (1.596064e-02 -1.439816e-04)
+        (2.076021e-04 -1.638193e-01)
+    );
+    scatteringMatrixP5 2 2 (
+        (1.383295e-02 -3.152482e-04)
+        (-8.462149e-04 -1.104525e-01)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (4.162075e-02 8.946262e-01);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (4.141520e-04 2.560807e-04);
+}
+
+reflectorInletPropellant  // OpenMC: Reflector Inlet Propellant
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (7.418152e-06 2.959462e-04);
+    D                  nonuniform List<scalar> 2 (3.528105e-01 6.962543e-02);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (2.540551e+00 1.293892e-01)
+        (2.559762e-04 6.769653e+00)
+    );
+    scatteringMatrixP1 2 2 (
+        (1.724170e+00 4.548188e-02)
+        (2.109038e-04 1.833517e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (6.862215e-01 -1.445980e-02)
+        (1.387256e-04 4.580573e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (3.526166e-02 -2.068165e-02)
+        (6.508149e-05 1.071641e-01)
+    );
+    scatteringMatrixP4 2 2 (
+        (-1.030198e-01 -5.054917e-03)
+        (9.904818e-06 1.916799e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (-1.093123e-02 3.245857e-03)
+        (-2.024042e-05 5.893323e-03)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (1.303761e-01 3.976134e-02);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (6.134847e-03 1.732005e-03);
+}
+
+reflectorCornerPropellant  // OpenMC: Reflector Corner Propellant
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (6.116282e-06 2.982184e-04);
+    D                  nonuniform List<scalar> 2 (3.565991e-01 6.918582e-02);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (2.568063e+00 1.019314e-01)
+        (3.778580e-04 6.812423e+00)
+    );
+    scatteringMatrixP1 2 2 (
+        (1.737033e+00 3.527064e-02)
+        (2.829045e-04 1.817934e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (6.837104e-01 -1.164387e-02)
+        (1.442433e-04 4.433097e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (2.826662e-02 -1.604823e-02)
+        (2.821442e-05 9.860653e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (-1.057542e-01 -3.752603e-03)
+        (-2.656652e-05 2.031727e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (-1.013885e-02 2.531891e-03)
+        (-2.608980e-05 3.445528e-03)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (1.027439e-01 4.018653e-02);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (4.403402e-03 1.832823e-03);
+}
+
+upperPropellantPlenum  // OpenMC: Inlet Core Plenum Propellant
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (5.007450e-06 2.923690e-04);
+    D                  nonuniform List<scalar> 2 (3.579887e-01 7.177146e-02);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (2.615423e+00 7.758690e-02)
+        (3.797615e-04 6.701549e+00)
+    );
+    scatteringMatrixP1 2 2 (
+        (1.762795e+00 2.631596e-02)
+        (3.018528e-04 1.834613e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (6.853140e-01 -9.772641e-03)
+        (1.907152e-04 4.649438e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (2.036329e-02 -1.244503e-02)
+        (9.348082e-05 1.105520e-01)
+    );
+    scatteringMatrixP4 2 2 (
+        (-1.091518e-01 -2.413212e-03)
+        (2.655026e-05 1.323670e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (-7.426889e-03 2.286606e-03)
+        (-1.653116e-05 6.129770e-03)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (7.825112e-02 3.940764e-02);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (6.323886e-03 4.242074e-03);
+}
+
+inletPropellant  // OpenMC: Inlet Core Propellant (in spacer)
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (2.440806e-06 2.322882e-04);
+    D                  nonuniform List<scalar> 2 (4.302946e-01 1.008870e-01);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (2.256999e+00 3.111388e-02)
+        (6.493833e-04 5.742219e+00)
+    );
+    scatteringMatrixP1 2 2 (
+        (1.514344e+00 1.027712e-02)
+        (4.051579e-04 1.952983e+00)
+    );
+    scatteringMatrixP2 2 2 (
+        (5.795947e-01 -4.388003e-03)
+        (7.888406e-05 5.600118e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (8.862911e-03 -5.100800e-03)
+        (-1.418282e-04 1.458050e-01)
+    );
+    scatteringMatrixP4 2 2 (
+        (-9.583266e-02 -7.305651e-04)
+        (-1.847980e-04 1.793645e-02)
+    );
+    scatteringMatrixP5 2 2 (
+        (-4.889897e-03 1.134588e-03)
+        (-1.130384e-04 1.403551e-03)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (3.143443e-02 3.165743e-02);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (9.956294e-04 3.388850e-03);
+}
+
+nozzleChamber  // OpenMC: Nozzle Chamber (core outlet propellant)
+{
+    fuelFraction       0.000000e+00;
+    IV                 nonuniform List<scalar> 2 (3.896695e-06 2.607437e-04);
+    D                  nonuniform List<scalar> 2 (1.362473e+00 2.355959e-01);
+    nuSigmaEff         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    sigmaPow           nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    scatteringMatrixP0 2 2 (
+        (6.956719e-01 1.672666e-02)
+        (6.364638e-03 2.053927e+00)
+    );
+    scatteringMatrixP1 2 2 (
+        (4.677192e-01 5.206420e-03)
+        (3.588834e-03 5.853250e-01)
+    );
+    scatteringMatrixP2 2 2 (
+        (1.810568e-01 -1.454775e-03)
+        (1.353906e-03 1.607996e-01)
+    );
+    scatteringMatrixP3 2 2 (
+        (5.350176e-03 -1.775413e-03)
+        (2.003471e-04 4.636839e-02)
+    );
+    scatteringMatrixP4 2 2 (
+        (-2.867472e-02 -5.896344e-04)
+        (-2.999784e-04 9.827902e-03)
+    );
+    scatteringMatrixP5 2 2 (
+        (-2.235891e-03 1.595198e-05)
+        (-3.440906e-04 5.109562e-03)
+    );
+    sigmaRemoval       nonuniform List<scalar> 2 (1.688144e-02 1.680567e-02);
+    chiPrompt          nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    chiDelayed         nonuniform List<scalar> 2 (0.000000e+00 0.000000e+00);
+    Beta               nonuniform List<scalar> 6 (0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00);
+    lambda             nonuniform List<scalar> 6 (1.333622e-02 3.273732e-02 1.207837e-01 3.028200e-01 8.496632e-01 2.853582e+00);
+    discFactor         nonuniform List<scalar> 2 (1.000000e+00 1.000000e+00);
+    integralFlux       nonuniform List<scalar> 2 (8.637412e-03 7.856662e-03);
+}

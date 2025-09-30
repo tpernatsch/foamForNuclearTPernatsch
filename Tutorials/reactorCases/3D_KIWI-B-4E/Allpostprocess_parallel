@@ -1,0 +1,126 @@
+#!/bin/sh
+#==============================================================================*
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#==============================================================================*
+
+# Default case name to analyze
+caseName=steadyStateTH
+timeStep=20
+
+# Extract case name provided by the user
+if [ $# -gt 1 ]
+then
+    caseName=$1
+fi
+
+if [ $# -eq 2 ]
+then
+    timeStep=$2
+fi
+
+endTime=$(foamDictionary $caseName/system/controlDict -entry endTime -value)
+
+# Shortcut
+pathF="$caseName/postProcessing/sampleFluidDict/fluidRegion/$timeStep"
+pathN="$caseName/postProcessing/sampleNeutroDict/neutroRegion/$timeStep"
+
+echo "End time of $caseName simulation = $endTime s"
+
+#==============================================================================*
+
+echo "Analyze results from $caseName case at time step $timeStep\n"
+
+# Apply post process
+mpirun -np 8 postProcess -parallel \
+    -case $caseName -region fluidRegion -time "$timeStep:" -dict system/functionsFluidDict \
+    -fields '(U magU)' > $caseName/log.postProcess.functions
+
+mpirun -np 8 postProcess -parallel \
+    -case $caseName -region fluidRegion -time "$timeStep:" -dict system/functionsFluidDict \
+    -fields '(U magU p T htc alphaPhi alphaRhoPhi T.passiveStructure
+        Tsurface.lumpedNuclearStructure Tmatrix.lumpedNuclearStructure
+        Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityNeutronics)' \
+    > $caseName/log.postProcess.functions
+
+mpirun -np 8 postProcess -parallel \
+    -case $caseName -region neutroRegion -dict system/functionsNeutroDict \
+    -noZero -time "$timeStep:" \
+    -fields '(powerDensity)' >> $caseName/log.postProcess.functions
+
+echo "End post-processing with system/functionsFluidDict and system/functionsNeutroDict"
+
+# Extract the fields from sample dict specifications
+mpirun -np 8 postProcess -parallel \
+    -case $caseName -region fluidRegion \
+    -func sampleFluidDict > $caseName/log.postProcess.fluidRegion.sampleFluidDict
+
+mpirun -np 8 postProcess -parallel \
+    -case $caseName -region neutroRegion \
+    -func sampleNeutroDict > $caseName/log.postProcess.neutroRegion.sampleNeutroDict
+
+echo "End post-processing with system/sampleFluidDict and system/sampleNeutroDict"
+
+
+#==============================================================================*
+# Generate graphs
+
+# Analyze the last results
+python3 AllcomputeMainParameters.py $caseName/log.postProcess.functions
+
+
+# Axial distribution
+python3 AllplotAxialDistribution.py \
+    $pathF/FluidAxialR5_T_Tmatrix.lumpedNuclearStructure_Tmax.lumpedNuclearStructure_Tsurface.lumpedNuclearStructure_magU_p_powerDensityNeutronics.xy \
+    $pathN/NeutroAxialR5_TCool_TFuel_flux0_flux1_oneGroupFlux_powerDensity_rhoCool.xy
+
+python3 AllplotAxialDistribution.py \
+    $pathF/FluidAxialR4_T_Tmatrix.lumpedNuclearStructure_Tmax.lumpedNuclearStructure_Tsurface.lumpedNuclearStructure_magU_p_powerDensityNeutronics.xy \
+    $pathN/NeutroAxialR4_TCool_TFuel_flux0_flux1_oneGroupFlux_powerDensity_rhoCool.xy
+
+python3 AllplotAxialDistribution.py \
+    $pathF/FluidAxialR1_T_Tmatrix.lumpedNuclearStructure_Tmax.lumpedNuclearStructure_Tsurface.lumpedNuclearStructure_magU_p_powerDensityNeutronics.xy \
+    $pathN/NeutroAxialR1_TCool_TFuel_flux0_flux1_oneGroupFlux_powerDensity_rhoCool.xy
+
+
+# Radial distribution
+python3 AllplotRadialDistribution.py \
+    $pathN/NeutroRadial_TCool_TFuel_flux0_flux1_oneGroupFlux_powerDensity_rhoCool.xy
+
+
+# Residuals
+python3 AllplotResiduals.py $caseName/log.GeN-Foam
+
+
+# 3D plots
+reconstructPar -allRegions -newTimes -case $caseName -time $timeStep
+python3 Allplot3Ddistribution.py $caseName $timeStep
+
+
+if [ $caseName = "transientShutdown" ] || [ $caseName = "transientShutdown/" ]
+then
+    echo "Found $caseName case, run transient analysis scripts."
+
+    mpirun -np 8 postProcess -parallel \
+        -case $caseName -region fluidRegion -time "20823:$timeStep" -dict system/functions \
+        -fields '(U magU p T htc alphaPhi alphaRhoPhi T.passiveStructure
+            Tsurface.lumpedNuclearStructure Tmatrix.lumpedNuclearStructure
+            Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityNeutronics)' \
+        > $caseName/log.functions_transient
+
+    mpirun -np 8 postProcess -parallel \
+        -case $caseName -region fluidRegion -func sampleFluidDict \
+        -fields '(U magU p T htc alphaPhi alphaRhoPhi T.passiveStructure
+            Tsurface.lumpedNuclearStructure Tmatrix.lumpedNuclearStructure
+            Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityNeutronics)' \
+        >> $caseName/log.postProcess.fluidRegion.sampleFluidDict
+
+    # Plot transient
+    python3 AllplotTransientFromFunctionObjects.py $caseName $timeStep
+fi
+
+#==============================================================================*

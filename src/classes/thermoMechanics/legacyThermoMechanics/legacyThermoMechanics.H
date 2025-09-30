@@ -149,7 +149,7 @@ public:
     // Constructors
 
         //- Construct from mesh, read data from IOdictionaries
-        legacyThermoMechanics(fvMesh& mesh);
+        legacyThermoMechanics(dynamicFvMesh& mesh);
 
     //- Destructor
         virtual ~legacyThermoMechanics();

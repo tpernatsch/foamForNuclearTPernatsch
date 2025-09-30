@@ -32,6 +32,7 @@ tutorials="
     featureCases/1D_PSBT_SC/PhaseII_Ex3_11-0312_power_increase
     featureCases/2D_cavityBoussinesq
     featureCases/2D_externalSourceDiffusion
+    featureCases/2D_flowOverHeatedPlate
     featureCases/2D_fullCoupling
     featureCases/2D_KNS37-L22
     featureCases/2D_onePhaseAndPointKineticsCoupling
@@ -42,8 +43,10 @@ tutorials="
     reactorCases/1D_thermalMSR_pointKinetics
     reactorCases/2D_FFTF
     reactorCases/2D_MSFR
+    reactorCases/3D_genericParticleBedNTP
     reactorCases/3D_gFHR
     reactorCases/3D_HTR-10
+    reactorCases/3D_KIWI-B-4E
     reactorCases/3D_NTPfuelAssembly
     reactorCases/3D_SmallESFR_NewSolverVerification
     reactorCases/Godiva_SN

@@ -45,13 +45,6 @@ timePrecision   6;
 
 runTimeModifiable true;
 
-//- Physics to Solve
-
-regionSolvers
-{
-	fluidRegion  onePhase;
-}
-
 removeBaffles
 {
 	fluidRegion false;

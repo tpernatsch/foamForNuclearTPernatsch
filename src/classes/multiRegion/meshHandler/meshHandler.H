@@ -41,8 +41,11 @@ Class
 Description
     Class to hold all the region meshes and perform the volumetric mappings
 
+    Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
+
 Usage
-    In multiRegionCouplingDict
+    In regionsDict
     \verbatim
         mappings
         {
@@ -78,6 +81,7 @@ SourceFiles
 #include "zeroGradientFvPatchFields.H"
 #include "meshHandler.H"
 #include "volFields.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -94,7 +98,7 @@ class meshHandler
 
         //- Region meshes
 
-        PtrList<fvMesh> meshes_;
+        PtrList<dynamicFvMesh> meshes_;
 
         PtrList<fvMesh> mappingMeshes_;
 
@@ -103,6 +107,8 @@ class meshHandler
         PtrList<PtrList<volScalarField>> scalarCouplingFields_;
         PtrList<PtrList<volVectorField>> vectorCouplingFields_;
         List<List<void*>> couplingFields_;
+
+        SquareMatrix<scalar> invRBFmatrix_;
 
 
 public:
@@ -139,7 +145,9 @@ public:
 
         void createCouplingFields(const Time& runTime);
 
-        fvMesh& returnMesh(word meshName);
+        void interpolateAndMapFields(const Time& runTime);
+
+        dynamicFvMesh& returnMesh(word meshName);
         fvMesh& returnMappingMesh(word meshName);
         bool contains(wordList list, word thisWord);
 

@@ -1,0 +1,324 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      functions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// This dict is the set of functions to evaluate interesting values with the 
+// -postProcess utility. Problems with running these functions while the 
+// simulation runs in parallel have been encountered. Using these functions on 
+// a reconstructed case works as excpected.
+
+application     GeN-Foam;
+
+writeInterval   0.01;
+
+functions
+{
+    // --- Surface fields
+    vInlet
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            inlet;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    vOutlet
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            outlet;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    vWall
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU Ux Uy Uz p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            defaultFaces;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    vInletFuel
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      faceZone; // patch;
+        name            inletFuelElement;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    vOutletFuel
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      faceZone; // patch;
+        name            outletFuelElement;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    vInletUnloaded
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      faceZone; // patch;
+        name            inletCentralUnloaded;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    vOutletUnloaded
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      faceZone; // patch;
+        name            outletCentralUnloaded;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+
+    // --- Field min max
+	minMaxTemperature
+    {
+        type            fieldMinMax;
+        libs            (fieldFunctionObjects);
+        mode            magnitude;
+	    region          fluidRegion;
+        fields
+        (
+            T 
+            Tsurface.lumpedNuclearStructure 
+            Tmatrix.lumpedNuclearStructure 
+            Tmax.lumpedNuclearStructure
+            powerDensityNeutronics
+        );
+        enabled         true;
+        log             true;
+        writeControl    runTime;
+        writeInterval   $writeInterval;
+    }
+
+    
+    // --- Power integral over fluidRegion
+    totalPowerFluid
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      all;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     0.672179; // Fuel fraction
+    }
+
+    // --- Power integral over neutroRegion
+    totalPowerNeutro // This value must be coherent with totalPowerFluid
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensity);
+        operation       volIntegrate;
+        region          neutroRegion;
+        regionType      all;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     0.672179; // Fuel fraction
+    }
+
+    // --- Power integral over fluidRegion using iiint Ah(Tf-Ts)dV
+    deltaT
+    {
+        type            subtract;
+        libs            (fieldFunctionObjects);
+        fields          (Tsurface.lumpedNuclearStructure T);
+        result          deltaT;
+        region          fluidRegion;
+        regionType      cellZone;
+        regionName      fuelElements;
+        log             false;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+    }
+    limitFieldsDeltaT // Limit to avoid negative values (e.g in unloadedElements)
+    {
+        type            limitFields;
+        libs            (fieldFunctionObjects);
+        fields          (deltaT);
+        limit           min;
+        min             0;
+        result          deltaT;
+        region          fluidRegion;
+        log             false;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+    }
+    deltaTcentral
+    {
+        type            subtract;
+        libs            (fieldFunctionObjects);
+        fields          (T.passiveStructure T);
+        result          deltaTcentral;
+        region          fluidRegion;
+        regionType      cellZone;
+        regionName      unloadedElements;
+        log             false;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+    }
+    limitFieldsDeltaTcentral // Limit to avoid negative values (e.g in unloadedElements)
+    {
+        type            limitFields;
+        libs            (fieldFunctionObjects);
+        fields          (deltaTcentral);
+        limit           min;
+        min             0;
+        result          deltaTcentral;
+        region          fluidRegion;
+        log             false;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+    }
+    hdeltaT
+    {
+        type            multiply;
+        libs            (fieldFunctionObjects);
+        fields          (htc deltaT);
+        result          hdeltaT;
+        region          fluidRegion;
+        log             false;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+    }
+    hdeltaTcentral
+    {
+        type            multiply;
+        libs            (fieldFunctionObjects);
+        fields          (htc deltaTcentral);
+        result          hdeltaTcentral;
+        region          fluidRegion;
+        log             false;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+    }
+    totalPowerAhdeltaT // This value must be consistent with totalPowerFluid
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (hdeltaT);
+        region          fluidRegion;
+        operation       volIntegrate;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     ${{477.305494}}; // * 0.672179}}; // volumetricArea * fuelFraction
+    }
+    totalPowerAhdeltaTcentral // This value must be consistent with totalPowerFluid
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (hdeltaTcentral);
+        region          fluidRegion;
+        operation       volIntegrate;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     ${{94.707459}}; // * 0.773275}}; // volumetricArea * structureFraction
+    }
+
+    magU
+    {
+        // Mandatory entries (unmodifiable)
+        type            mag;
+        libs            (fieldFunctionObjects);
+
+        // Mandatory (inherited) entries (runtime modifiable)
+        field           U;
+
+        // Optional (inherited) entries
+        result          magU;
+        region          fluidRegion;
+        log             false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+    }
+}
+
+
+// ************************************************************************* //

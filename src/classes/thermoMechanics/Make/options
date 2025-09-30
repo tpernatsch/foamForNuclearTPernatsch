@@ -31,6 +31,7 @@ EXE_INC = \
     -I$(LIB_SRC)/thermophysicalModels/specie/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/solidThermo/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/solidSpecie/lnInclude \
+    -I$(LIB_SRC)/dynamicFvMesh/lnInclude \
     -I$(LIB_SRC)/regionModels/regionModel/lnInclude \
     -I$(LIB_SRC)/ODE/lnInclude \
     -I$(LIB_SRC)/parallel/reconstruct/reconstruct/lnInclude \
@@ -40,6 +41,7 @@ LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN)\
     -loffbeat \
     -lmeshTools \
+    -ldynamicFvMesh \
     -lfiniteVolume \
     -lfvOptions \
     -lregionModels \

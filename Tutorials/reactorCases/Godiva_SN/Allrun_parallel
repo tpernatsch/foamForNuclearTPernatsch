@@ -29,7 +29,7 @@ nCores=4
 
 # Decompose mesh for parallel computation
 foamDictionary system/neutroRegion/decomposeParDict -entry numberOfSubdomains -set $nCores
-decomposePar -region neutroRegion
+decomposePar -region neutroRegion -copyUniform
 # Manually copy pasting uniform folder because only one region
 for i in $(seq 0 $(($nCores-1)))
 do

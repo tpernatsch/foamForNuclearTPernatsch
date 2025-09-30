@@ -1,0 +1,671 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      functions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// This dict is the set of functions to evaluate interesting values with the 
+// -postProcess utility. Problems with running these functions while the 
+// simulation runs in parallel have been encountered. Using these functions on 
+// a reconstructed case works as excpected.
+
+functions
+{
+    totalPowerFluid
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      all;
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     0.58;
+    }
+    totalPowerThermo
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          thermoMechanicalRegion;
+        regionType      all;
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        //scaleFactor     0.58;
+    }
+    totalPower15
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellSet;
+        name            region0;
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     ${{0.58*2}}; // 0.58 is fuel structure packing fraction. 2 is bc half assemlby
+    }
+    totalPower16
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellSet;
+        name            region1;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     ${{0.58*2}}; // 0.58 is fuel structure packing fraction. 2 is bc half assemlby
+    }
+    totalPower17
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellSet;
+        name            region2;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     ${{0.58*2}}; // 0.58 is fuel structure packing fraction. 2 is bc half assemlby
+    }
+    totalPower18 // 18 is the 1/12 assembly 
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellSet;
+        name            region3;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     ${{0.58*12}}; // 0.58 is fuel structure packing fraction. 12 is bc 1/12 assemlby
+    }
+    totalPower22 // 22 is the only full cylinder
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellSet;
+        name            region4;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     0.58;
+    }
+    totalPower23
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellSet;
+        name            region5;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval   $writeInterval;
+        scaleFactor     ${{0.58*2}}; // 0.58 is fuel structure packing fraction. 2 is bc half assemlby
+    }
+    // --- Mass flow
+    // assembly 15
+    mFlowInlet15
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outerPropellantInlet15;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     2;
+    }
+    mFlowOutlet15
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet15;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     2;
+    }
+    // assembly 16
+    mFlowInlet16
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outerPropellantInlet16;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     2;
+    }
+    mFlowOutlet16
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet16;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     2;
+    }
+    // assembly 17
+    mFlowInlet17
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outerPropellantInlet17;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     2;
+    }
+    mFlowOutlet17
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet17;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     2;
+    }
+    // assembly 18
+    mFlowInlet18
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outerPropellantInlet18;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     12;
+    }
+    mFlowOutlet18
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet18;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     12;
+    }
+    // assembly 22
+    mFlowInlet22
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outerPropellantInlet22;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    mFlowOutlet22
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet22;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 23
+    mFlowInlet23
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      outerPropellantInlet23;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     2;
+    }
+    mFlowOutlet23
+    {
+        type            massFlow;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     true;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet23;
+        alphaRhoPhiName alphaRhoPhi;
+        scaleFactor     2;
+    }
+
+
+    // --- Bulk temperature
+    // assembly 15
+    TOutlet15
+    {
+        type            TBulk;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet15;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 16
+    TOutlet16
+    {
+        type            TBulk;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet16;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 17
+    TOutlet17
+    {
+        type            TBulk;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet17;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 18
+    TOutlet18
+    {
+        type            TBulk;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet18;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 22
+    TOutlet22
+    {
+        type            TBulk;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet22;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 23
+    TOutlet23
+    {
+        type            TBulk;
+        libs            ("libfieldFunctionObjects.so");
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        regionName      innerPropellantOutlet23;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+
+    // --- Bulk outlet velocity
+    // assembly 15
+    vOutlet15
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            innerPropellantOutlet15;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 16
+    vOutlet16
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            innerPropellantOutlet16;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 17
+    vOutlet17
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            innerPropellantOutlet17;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 18
+    vOutlet18
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            innerPropellantOutlet18;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 22
+    vOutlet22
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            innerPropellantOutlet22;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 23
+    vOutlet23
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            innerPropellantOutlet23;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // --- Bulk inlet velocity
+    // assembly 15
+    vInlet15
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            outerPropellantInlet15;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 16
+    vInlet16
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            outerPropellantInlet16;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 17
+    vInlet17
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            outerPropellantInlet17;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 18
+    vInlet18
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            outerPropellantInlet18;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 22
+    vInlet22
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            outerPropellantInlet22;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    // assembly 23
+    vInlet23
+    {
+        type            surfaceFieldValue; // fieldAverage;
+        libs            (fieldFunctionObjects);
+        fields          (magU p T alphaRhoPhi alphaPhi);
+        operation       areaAverage;
+        log             true;
+        writeFields     false;
+        writeControl    adjustableRunTime;
+        writeInterval	$writeInterval;
+        region          fluidRegion;
+        regionType      patch;
+        name            outerPropellantInlet23;
+        thermoName      thermophysicalProperties;
+        alphaRhoPhiName alphaRhoPhi;
+    }
+    minMaxTemperature
+    {
+        type            fieldMinMax;
+        libs            (fieldFunctionObjects);
+        mode            magnitude;
+	    region          fluidRegion;
+        fields
+        (
+            T 
+            Tsurface.lumpedNuclearStructure 
+            T.lumpedNuclearStructure 
+            Tmax.lumpedNuclearStructure
+        );
+        enabled         true;
+        log             true;
+        writeControl    runTime;
+        writeInterval   $writeInterval;
+    }
+    // writeCellCentres // gives the cell center locations. helps w post processing
+    // {
+    //     // Mandatory entries (unmodifiable)
+    //     type            writeCellCentres;
+    //     libs            (fieldFunctionObjects);
+
+    //     // Optional (inherited) entries
+    //     region          fluidRegoin;
+    //     enabled         true;
+    //     log             true;
+    //     timeStart       0;
+    //     timeEnd         1;
+    //     executeControl  timeStep;
+    //     executeInterval 1;
+    //     writeControl    timeStep;
+    //     writeInterval   1;
+    // }
+
+    // writeCellVolumes
+    // {
+    //     // Mandatory entries (unmodifiable)
+    //     type            writeCellVolumes;
+    //     libs            (fieldFunctionObjects);
+
+    //     // Optional (inherited) entries
+    //     //region          fluidRegion;
+    //     region          thermoMechanicalRegion;
+    //     enabled         true;
+    //     log             true;
+    //     timeStart       0;
+    //     timeEnd         1;
+    //     executeControl  timeStep;
+    //     executeInterval 1;
+    //     writeControl    timeStep;
+    //     writeInterval   1;
+    // }
+}
+// ************************************************************************* //

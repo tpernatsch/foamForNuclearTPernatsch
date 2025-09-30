@@ -128,6 +128,9 @@ EXE_INC = \
     -I./boundaryConditions/blackBodyRadiation \
     -I./boundaryConditions/velocityRundown \
     -I./boundaryConditions/timeFieldTable \
+    -I./boundaryConditions/mappedDarcyVelocity \
+    -I./boundaryConditions/parabolicVelocityPatchField \
+    -I./boundaryConditions/fixedMassFlowRate \
     -I./functionObjects/fieldDiffExtents \
     -I./functionObjects/TBulk \
     -I./functionObjects/massFlow \
@@ -145,6 +148,7 @@ EXE_INC = \
     -I$(LIB_SRC)/finiteVolume/lnInclude \
     -I$(LIB_SRC)/meshTools/lnInclude \
     -I$(LIB_SRC)/sampling/lnInclude \
+    -I$(LIB_SRC)/dynamicFvMesh/lnInclude \
 
 LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lCommon \
@@ -155,6 +159,7 @@ LIB_LIBS = \
     -lturbulenceModels \
     -lcompressibleTurbulenceModels \
     -lfiniteVolume \
+    -ldynamicFvMesh \
     -lfvOptions \
     -lmeshTools \
     -lsampling \

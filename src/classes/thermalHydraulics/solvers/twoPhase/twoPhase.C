@@ -52,7 +52,7 @@ namespace solvers
     (
         solver,
         twoPhase,
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -150,7 +150,7 @@ Foam::solvers::twoPhase::heStabilizationModeNames_
 
 Foam::solvers::twoPhase::twoPhase
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     thermalHydraulicsModel

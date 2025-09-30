@@ -44,6 +44,8 @@ License
 #include "radialBasisFunctionInterpolation.H"
 #include "mergeOrSplitBaffles.H"
 #include "hexCellFvMesh.H"
+#include "dynamicFvMesh.H"
+#include "staticFvMesh.H"
 
 
 
@@ -56,7 +58,7 @@ Foam::meshHandler::meshHandler(const Time& runTime)
     (
         IOobject
         (
-            "multiRegionCouplingDict",
+            "regionsDict",
             runTime.time().constant(),
             runTime.db(),
             IOobject::MUST_READ,
@@ -80,42 +82,106 @@ Foam::meshHandler::meshHandler(const Time& runTime)
 
     // First create all the meshes -> they are created and handled by meshHandler
 
-    wordList allRegions(controlDict.subDict("regionSolvers").toc());
+    wordList allRegions(multiRegionCouplingDict.subDict("regionSolvers").subDict("Level_0").toc());
     wordList meshNames(0);
+
+    wordList availableSolvers =
+    (
+        Foam::solver::dynamicFvMeshConstructorTablePtr_->toc()
+    );   
+
+        static const HashSet<word> loopTypes = { "picardLoop", "picardLoopNoFluid", "FSILoop", "CHTLoop", "multiScaleLoop"};
 
     forAll(allRegions, regioni)
     {
-        word solverName(controlDict.subDict("regionSolvers").get<word>(allRegions[regioni]));
-        if (solverName != "multiPhysicsSolver")
+        word solverName(multiRegionCouplingDict.subDict("regionSolvers").subDict("Level_0").get<word>(allRegions[regioni]));
+        if (!(loopTypes.found(solverName)))
         {
-            meshNames.append(allRegions[regioni]);
+            if(availableSolvers.found(solverName))
+            {
+                meshNames.append(allRegions[regioni]);
+            }
+            else
+            {
+                FatalErrorInFunction <<
+                "Solver " << solverName <<
+                " does not exist. Possible solvers are" <<
+                Foam::solver::dynamicFvMeshConstructorTablePtr_->toc()
+                <<endl<<exit(FatalError);
+            }
         }
     }
 
     // If multiPhysicsSolvers are present, also add those extra solvers
 
-    if (multiRegionCouplingDict.found("multiPhysicsSolvers"))
+    forAll(multiRegionCouplingDict.subDict("regionSolvers").toc(), MPsolvI) // loop over all multiphysics solvers
     {
-        forAll(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc(), MPsolvI) // loop over all multiphysics solvers
+        if(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI] != "Level_0")
         {
             wordList subSolvers // get list of solvers belonging to multiphysics solver i
             (
                 multiRegionCouplingDict
-                    .subDict("multiPhysicsSolvers")
-                    .subDict(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc()[MPsolvI])
-                    .subDict("solvers").toc()
+                    .subDict("regionSolvers")
+                    .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                    .subDict("subSolvers").toc()
             );
-
-            forAll(subSolvers, solvI) // loop ovcer subsolvers and add them to list of meshes to create only if they are not sub-multiphysicssolvers
+    
+            forAll(subSolvers, solvI) // loop over subsolvers and add them to list of meshes to create only if they are not sub-multiphysicssolvers
             {
-                if (multiRegionCouplingDict
-                    .subDict("multiPhysicsSolvers")
-                    .subDict(multiRegionCouplingDict.subDict("multiPhysicsSolvers").toc()[MPsolvI])
-                    .subDict("solvers")
-                    .get<word>(subSolvers[solvI]) != "multiPhysicsSolver"
+                if (!(loopTypes.found(multiRegionCouplingDict
+                    .subDict("regionSolvers")
+                    .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                    .subDict("subSolvers")
+                    .get<word>(subSolvers[solvI])))
                 )
                 {
                     meshNames.append(subSolvers[solvI]);
+
+
+                    // Check if the solver is a multiScaleLoop
+
+                    if(multiRegionCouplingDict
+                       .subDict("regionSolvers")
+                       .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                       .found("multiScaleLoopCoeffs")
+                    )
+                    {
+                        dictionary mSLCDict = 
+                        (
+                            multiRegionCouplingDict
+                            .subDict("regionSolvers")
+                            .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                            .subDict("multiScaleLoopCoeffs")
+                        );
+
+                        vectorList locations = mSLCDict.get<vectorList>("locations");
+
+                        word regionToReplicate = mSLCDict.get<word>("regionToReplicate");
+
+                        forAll(locations, locI)
+                        {
+                            meshNames.append(regionToReplicate + Foam::name(locI));
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    word solverIName(multiRegionCouplingDict
+                    .subDict("regionSolvers")
+                    .subDict(multiRegionCouplingDict.subDict("regionSolvers").toc()[MPsolvI])
+                    .subDict("subSolvers")
+                    .get<word>(subSolvers[solvI]));
+
+                    if(!(availableSolvers.found(solverIName)))
+                    {
+                        FatalErrorInFunction <<
+                        "Solver " << solverIName <<
+                        " does not exist. Possible solvers are" <<
+                        Foam::solver::dynamicFvMeshConstructorTablePtr_->toc()
+                        <<endl<<exit(FatalError);
+                    }
                 }
             }
         }
@@ -128,7 +194,7 @@ Foam::meshHandler::meshHandler(const Time& runTime)
         meshes_.set
         (
             meshI,
-            new fvMesh
+            Foam::dynamicFvMesh::New
             (
                 IOobject
                 (
@@ -166,6 +232,7 @@ Foam::meshHandler::meshHandler(const Time& runTime)
             )
         );
     }
+
 
     // Loop over all regions
     forAll(meshes_, i)
@@ -453,6 +520,8 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
                 )
             );
 
+            
+
             //- Add boundary data
             baffleLessMesh().addFvPatches(pList);
 
@@ -543,7 +612,7 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
     (
         IOobject
         (
-            "multiRegionCouplingDict",
+            "regionsDict",
             runTime.time().constant(),
             runTime.db(),
             IOobject::MUST_READ,
@@ -600,7 +669,7 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
     Info<< nl;
 }
 
-Foam::fvMesh& Foam::meshHandler::returnMesh(word meshName)
+Foam::dynamicFvMesh& Foam::meshHandler::returnMesh(word meshName)
 {
     if (meshName == "dummy")
     {
@@ -666,136 +735,252 @@ Foam::fvMesh& Foam::meshHandler::returnMappingMesh(word meshName)
 
 
 
-// void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
-// {
+void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
+{
 
-//     const IOdictionary couplingDict
-//     (
-//         IOobject
-//         (
-//             "multiRegionCouplingDict",
-//             runTime.time().constant(),
-//             runTime.db(),
-//             IOobject::MUST_READ,
-//             IOobject::NO_WRITE
-//         )
-//     );
+    const IOdictionary couplingDict
+    (
+        IOobject
+        (
+            "regionsDict",
+            runTime.time().constant(),
+            runTime.db(),
+            IOobject::MUST_READ,
+            IOobject::NO_WRITE
+        )
+    );
 
-//     if(couplingDict.found("interpolatedMappings"))
-//     {
-//         const dictionary interpolatedMappingDict(couplingDict.subDict("interpolatedMappings"));
+    if(couplingDict.found("interpolatedMappings"))
+    {
+        const dictionary interpolatedMappingDict(couplingDict.subDict("interpolatedMappings"));
 
-//         forAll(meshes_, regioni)
-//         {
-//             if (interpolatedMappingDict.found(meshes_[regioni].name()))
-//             {
-//                 const dictionary regionToDict(interpolatedMappingDict.subDict(meshes_[regioni].name()));
+        forAll(meshes_, regioni)
+        {
+            if (interpolatedMappingDict.found(meshes_[regioni].name()))
+            {
+                const dictionary regionToDict(interpolatedMappingDict.subDict(meshes_[regioni].name()));
 
-//                 scalarList fieldValues(0);
-//                 scalarList xPos(0);
-//                 scalarList yPos(0);
-//                 scalarList zPos(0);
+                scalarList fieldValues(0);
+                scalarList xPos(0);
+                scalarList yPos(0);
+                scalarList zPos(0);
 
-//                 List<word> regionsFrom(regionToDict.get<List<word>>("fromWhichRegions"));
-//                 word fieldFromName(regionToDict.get<word>("fieldFromName"));
-//                 word fieldToName(regionToDict.get<word>("fieldToName"));
-//                 scalarList axialLocs(regionToDict.get<List<scalar>>("axialLocations"));
-//                 word interpolationType(regionToDict.get<word>("interpolationType"));
-//                 volScalarField& fieldToBeMapped(const_cast<volScalarField&>(meshes_[regioni].lookupObject<volScalarField>(fieldToName)));
+                List<word> regionsFrom(regionToDict.get<List<word>>("sourceRegions"));
 
+                word fieldFromName(regionToDict.get<word>("sourceField"));
+                word fieldToName(regionToDict.get<word>("targetField"));
 
-//                 forAll(regionsFrom, regionFromi)
-//                 {
-//                     label whichMesh(0);
+                vector axialDir(regionToDict.get<vector>("axialDirection"));
+                scalar magAd = mag(axialDir);
+                if (magAd <= VSMALL)
+                {
+                    FatalErrorInFunction << "axialDirection must be non-zero." << exit(FatalError);
+                }
+                axialDir /= magAd; // unit axial direction
 
-//                     // Get mesh reference
-//                     forAll(meshes_, i)
-//                     {
-//                         if(meshes_[i].name()==regionsFrom[regionFromi])
-//                             whichMesh = i;
-//                     }
+                scalarList axialLocs(regionToDict.get<List<scalar>>("axialLocations"));
 
+                word interpolationType(regionToDict.get<word>("interpolationType"));
 
-//                     // - Get axial locations
-//                     zPos.append(axialLocs);
-
-//                     // - Get x and y
-//                     vector centerOfMass(gSum(meshes_[whichMesh].C().field()*meshes_[whichMesh].V().field())/gSum(meshes_[whichMesh].V().field()));
-
-//                     for(label i = 0; i<axialLocs.size(); i++)
-//                     {
-//                         xPos.append(centerOfMass[0]);
-//                         yPos.append(centerOfMass[1]);
-//                         // - Now I have a list of (x,y,z) for one region. I need to get to associate a value to each coordinate
-
-//                         point samplePoint(centerOfMass[0], centerOfMass[1], axialLocs[i]);
-
-//                         // interpolationCellPoint<scalar> pointInterpolator(meshes_[whichMesh]);
-
-//                         label celli = meshes_[whichMesh].findCell(samplePoint);
-
-//                         const volScalarField& field(meshes_[whichMesh].lookupObject<volScalarField>(fieldFromName));
-
-//                         fieldValues.append(field[celli]);
-
-//                     }
-//                 }
-
-//                 scalarList interpolationWeights(0);
-//                 scalar interpolatedValue(0);
+                volScalarField& fieldToBeMapped(const_cast<volScalarField&>(meshes_[regioni].lookupObject<volScalarField>(fieldToName)));
 
 
-//                 if (interpolationType == "kriging")
-//                 {
-//                     Foam::radialBasisFunctionInterpolation::solveKriging
-//                     (
-//                         xPos, yPos, zPos, invRBFmatrix_
-//                     );
+                forAll(regionsFrom, regionFromi)
+                {
+                    label whichMesh(0);
 
-//                     forAll(meshes_[regioni].C(), centerI)
-//                     {
-//                         interpolatedValue = Foam::radialBasisFunctionInterpolation::kriging
-//                         (
-//                             xPos, yPos, zPos, fieldValues,
-//                             meshes_[regioni].C()[centerI][0], meshes_[regioni].C()[centerI][1],meshes_[regioni].C()[centerI][2],
-//                             invRBFmatrix_
-//                         );
+                    // Get mesh reference
+                    forAll(meshes_, i)
+                    {
+                        if(meshes_[i].name()==regionsFrom[regionFromi])
+                            whichMesh = i;
+                    }
 
-//                         fieldToBeMapped[centerI] = interpolatedValue;
-//                     }
+                    dictionary avgOpts;
 
-//                     fieldToBeMapped.correctBoundaryConditions();
-//                 }
-//                 else if (interpolationType == "polyharmonicSpline")
-//                 {
-//                     interpolationWeights = Foam::radialBasisFunctionInterpolation::solvePolyharmonicSpline
-//                     (
-//                         xPos, yPos, zPos, fieldValues,  invRBFmatrix_
-//                     );
+                    if (regionToDict.found("averageOptions"))
+                    {
+                        avgOpts = regionToDict.subDict("averageOptions");
+                    }
+                    
+                    word avgType = avgOpts.get<word>("type");
+                    if (avgType != "volumeAverage" and avgType != "patchAverage")
+                    {
+                        FatalErrorInFunction
+                            << "Unknown average type " << avgType
+                            << ". Available types: volumeAverage, patchAverage"
+                            << exit(FatalError);
+                    }
 
-//                     forAll(meshes_[regioni].C(), centerI)
-//                     {
-//                         interpolatedValue = Foam::radialBasisFunctionInterpolation::polyharmonicSpline
-//                         (
-//                             interpolationWeights,
-//                             xPos, yPos, zPos,
-//                             meshes_[regioni].C()[centerI][0], meshes_[regioni].C()[centerI][1],meshes_[regioni].C()[centerI][2]
-//                         );
+                    scalar dzHalf = 1e-8;
+                    if (axialLocs.size() > 1)
+                    {
+                        scalar minDiff = GREAT;
+                        for (auto i = 0; i < axialLocs.size() - 1; ++i)
+                        {
+                            minDiff = min(minDiff, mag(axialLocs[i+1] - axialLocs[i]));
+                        }
+                        dzHalf = 0.5*minDiff;
+                    }
 
-//                         fieldToBeMapped[centerI] = interpolatedValue;
-//                     }
-//                 }
-//                 else
-//                 {
-//                     FatalErrorInFunction
-//                         << interpolationType << " is an incorrect "
-//                         << "radial basis function method. Available methods: polyharmonicSpline, gaussian, kriging"
-//                         << exit(FatalError);
-//                 }
-//             }
-//         }
-//     }
-// }
+                    vector centerOfMass
+                    (
+                        gSum(meshes_[whichMesh].C().field()*meshes_[whichMesh].V().field())
+                        / gSum(meshes_[whichMesh].V().field())
+                    );
+
+                    const vectorField& C = meshes_[whichMesh].C();
+                    const scalarField& V = meshes_[whichMesh].V();
+                
+                    label patchID = -1;
+                    if (avgType == "patchAverage")
+                    {
+                        word avgPatchName = avgOpts.get<word>("patchName"); // used if patchAverage
+
+                        if (meshes_[whichMesh].boundaryMesh().findPatchID(avgPatchName)==-1)
+                        {
+                            FatalErrorInFunction << "Patch '" << avgPatchName << "' not found in mesh " << meshes_[whichMesh].name() << exit(FatalError);
+                        }
+                        patchID = meshes_[whichMesh].boundaryMesh().findPatchID(avgPatchName);
+                    }
+                
+                
+                    // --- per-axial-location loop
+                    forAll(axialLocs, ai)
+                    {
+                        scalar sTarget = axialLocs[ai];                    // this is the axial coordinate along axialDir
+                        scalar com_s = (centerOfMass & axialDir);         // projection of COM along axialDir
+
+                        // Build a 3D sample point that has projection sTarget on axialDir
+                        // i.e. translate the COM along axialDir by (sTarget - com_s)
+                        vector sampleVec = centerOfMass + axialDir*(sTarget - com_s);
+                        point samplePoint3D(sampleVec);
+
+                        // append global coordinates (so RBF always gets global x,y,z)
+                        xPos.append(samplePoint3D.x());
+                        yPos.append(samplePoint3D.y());
+                        zPos.append(samplePoint3D.z());
+
+                        // compute average value in this axial slice
+                        scalar num = 0.0;
+                        scalar den = 0.0;
+                        scalar avgVal = 0.0;
+
+                        if (avgType == "volumeAverage")
+                        {
+                            // average over cells whose projection falls inside the slice
+                            const volScalarField& srcField = meshes_[whichMesh].lookupObject<volScalarField>(fieldFromName);
+
+                            forAll(C, cellI)
+                            {
+                                scalar s = (C[cellI] & axialDir);
+                                if (mag(s - sTarget) <= dzHalf)
+                                {
+                                    num += srcField[cellI] * V[cellI];
+                                    den += V[cellI];
+                                }
+                            }
+
+                            // fallback: if slice empty, fallback to nearest cell via findCell(samplePoint3D)
+                            if (den <= VSMALL)
+                            {
+                                label celli = meshes_[whichMesh].findCell(samplePoint3D);
+                                if (celli >= 0)
+                                {
+                                    num = srcField[celli];
+                                    den = 1.0;
+                                }
+                            }
+                        }
+                        else if (avgType == "patchAverage")
+                        {
+                            // get patch geometry
+                            const polyPatch& pp = meshes_[whichMesh].boundaryMesh()[patchID];
+                            const vectorField& faceCentres = pp.faceCentres(); // face centres in global coords
+                            const fvPatch& patch = meshes_[whichMesh].boundary()[patchID];
+                            const scalarField& faceAreas   = patch.magSf(); // face areas        // face areas
+
+                            scalarField patchVals; 
+
+                            const volScalarField& vField = meshes_[whichMesh].lookupObject<volScalarField>(fieldFromName);
+                            patchVals = vField.boundaryField()[patchID];
+
+                            // accumulate area-weighted average of faces inside slice
+                            forAll(patchVals, fI)
+                            {
+                                scalar s = (faceCentres[fI] & axialDir);
+                                if (mag(s - sTarget) <= dzHalf)
+                                {
+                                    num += patchVals[fI] * faceAreas[fI];
+                                    den += faceAreas[fI];
+                                }
+                            }
+
+                            // fallback: if den == 0, try to pick the face closest to samplePoint3D
+                            if (den <= VSMALL)
+                            {
+                                // find nearest face in this patch (cheap linear search)
+                                scalar bestDist = GREAT;
+                                label bestFace = -1;
+                                forAll(faceCentres, fI)
+                                {
+                                    scalar d = mag(faceCentres[fI] - samplePoint3D);
+                                    if (d < bestDist) { bestDist = d; bestFace = fI; }
+                                }
+                                if (bestFace >= 0)
+                                {
+                                    num = patchVals[bestFace] * faceAreas[bestFace];
+                                    den = faceAreas[bestFace];
+                                }
+                            }
+                        }
+                        else
+                        {
+                            FatalErrorInFunction << "Unknown averageOptions.type: " << avgType << exit(FatalError);
+                        }
+
+                        if (den > VSMALL) avgVal = num/den;
+                        else avgVal = 0.0; // or handle differently
+
+                        fieldValues.append(avgVal);
+                    }
+
+                }
+                                    
+                scalarList interpolationWeights(0);
+                scalar interpolatedValue(0);
+                 
+
+                if (interpolationType == "polyharmonicSpline")
+                {
+                    interpolationWeights = Foam::radialBasisFunctionInterpolation::solvePolyharmonicSpline
+                    (
+                        xPos, yPos, zPos, fieldValues,  invRBFmatrix_
+                    );
+
+                    forAll(meshes_[regioni].C(), centerI)
+                    {
+                        interpolatedValue = Foam::radialBasisFunctionInterpolation::polyharmonicSpline
+                        (
+                            interpolationWeights,
+                            xPos, yPos, zPos,
+                            meshes_[regioni].C()[centerI][0], meshes_[regioni].C()[centerI][1],meshes_[regioni].C()[centerI][2]
+                        );
+
+                        fieldToBeMapped[centerI] = interpolatedValue;
+                    }
+                }
+                else
+                {
+                    FatalErrorInFunction
+                        << interpolationType << " is an incorrect "
+                        << "radial basis function method. Available methods: polyharmonicSpline, gaussian, kriging"
+                        << exit(FatalError);
+                }
+            }
+        }
+    }
+}
 
 
 bool Foam::meshHandler::contains(wordList list, word thisWord)

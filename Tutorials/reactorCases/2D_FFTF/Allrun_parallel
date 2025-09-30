@@ -42,9 +42,8 @@ setSteadyState()
     foamDictionary $1/system/controlDict -entry writeInterval -set $endTimeSS
     foamDictionary $1/system/controlDict -entry maxCo -set 50.0
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 2.0
-    foamDictionary $1/system/controlDict -entry regionSolvers.fluidRegion -set onePhase
     foamDictionary $1/system/controlDict -entry removeBaffles.fluidRegion -set true
-    cp $1/constant/multiRegionCouplingDict_steadyState $1/constant/multiRegionCouplingDict
+    cp $1/constant/regionsDict_steadyState $1/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
@@ -62,13 +61,12 @@ setTransient()
     done
 
     # Set the power density field for PK solver
-    foamDictionary $1/system/controlDict -entry regionSolvers.neutroRegion -set pointKinetics
     foamDictionary $1/system/controlDict -entry removeBaffles.neutroRegion -set false
     reconstructPar -allRegions -latestTime -case $1
     foamListTimes -rm -processor -case $1
-    cp $1/constant/multiRegionCouplingDict_initPK $1/constant/multiRegionCouplingDict
+    cp $1/constant/regionsDict_initPK $1/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $1
-    decomposePar -allRegions -latestTime -case $1
+    decomposePar -allRegions -latestTime -case $1 -copyUniform
 
     # Set transient case
     foamDictionary $1/system/controlDict -entry endTime -set $endTimeT
@@ -83,10 +81,7 @@ setTransient()
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.p_rgh -set 0.8
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.p_rghFinal -set 1.0
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 1;
-    foamDictionary $1/system/controlDict -entry regionSolvers.neutroRegion -remove
-    foamDictionary $1/system/controlDict -entry regionSolvers.fluidRegion -remove
-    foamDictionary $1/system/controlDict -entry regionSolvers.energyNeutroMechLoop -set multiPhysicsSolver
-    cp $1/constant/multiRegionCouplingDict_transient $1/constant/multiRegionCouplingDict
+    cp $1/constant/regionsDict_transient $1/constant/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
@@ -100,7 +95,7 @@ do
         case "$caseName" in
             "steadyState")
                 setSteadyState $caseName rootCase
-                decomposePar -case $caseName -allRegions
+                decomposePar -case $caseName -allRegions -copyUniform
                 ;;
             "transient")
                 setTransient $caseName steadyState

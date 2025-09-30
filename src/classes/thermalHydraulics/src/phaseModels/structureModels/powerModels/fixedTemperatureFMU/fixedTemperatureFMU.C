@@ -158,6 +158,9 @@ void Foam::powerModels::fixedTemperatureFMU::temperatureUpdate() const
         const scalar temperatureFromFMU =
             data.getObj<scalar>(temperatureNameFromFMU,commDataLayer::causality::in);
 
+        Info << "Updating temperature in " << region
+             << " from FMU: " << temperatureFromFMU << endl;
+
         //- Setup cellToRegion_ mapping
         const labelList& regionCells
         (

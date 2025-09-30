@@ -1,0 +1,101 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2406                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "constant/fluidRegion/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+9
+(
+    inlet
+    {
+        type            patch;
+        nFaces          10806;
+        startFace       691212;
+    }
+    outlet
+    {
+        type            patch;
+        nFaces          10806;
+        startFace       702018;
+    }
+    defaultFaces
+    {
+        type            patch;
+        nFaces          9486;
+        startFace       712824;
+    }
+    baffle_master
+    {
+        type            mappedWall;
+        inGroups        3(wall mappedPatch baffle);
+        nFaces          112200;
+        startFace       722310;
+        sampleMode      nearestPatchFace;
+        sampleRegion    fluid;
+        samplePatch     baffle_slave;
+    }
+    baffle_slave
+    {
+        type            mappedWall;
+        inGroups        3(wall mappedPatch baffle);
+        nFaces          112200;
+        startFace       834510;
+        sampleMode      nearestPatchFace;
+        sampleRegion    fluid;
+        samplePatch     baffle_master;
+    }
+    inletFuelElement
+    {
+        type            cyclic;
+        inGroups        2(cyclic inletFuelElement);
+        nFaces          9252;
+        startFace       946710;
+        matchTolerance  0.0001;
+        transform       coincidentFullMatch;
+        neighbourPatch  inletFuelElement_slave;
+    }
+    inletFuelElement_slave
+    {
+        type            cyclic;
+        inGroups        2(cyclic inletFuelElement);
+        nFaces          9252;
+        startFace       955962;
+        matchTolerance  0.0001;
+        transform       coincidentFullMatch;
+        neighbourPatch  inletFuelElement;
+    }
+    outletFuelElement
+    {
+        type            cyclic;
+        inGroups        2(cyclic outletFuelElement);
+        nFaces          9252;
+        startFace       965214;
+        matchTolerance  0.0001;
+        transform       coincidentFullMatch;
+        neighbourPatch  outletFuelElement_slave;
+    }
+    outletFuelElement_slave
+    {
+        type            cyclic;
+        inGroups        2(cyclic outletFuelElement);
+        nFaces          9252;
+        startFace       974466;
+        matchTolerance  0.0001;
+        transform       coincidentFullMatch;
+        neighbourPatch  outletFuelElement;
+    }
+)
+
+// ************************************************************************* //

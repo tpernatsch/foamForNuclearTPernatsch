@@ -18,22 +18,21 @@ FoamFile
 solvers
 {
     "prec.*|precStar.*|adjoint_prec.*"
-    {   
+    {
         solver           PBiCG;
         preconditioner   DILU;
         tolerance        1e-6;
         relTol           1e-3;
     }
     "flux.*|adjoint_flux.*"
-    { 
-
+    {
         solver          PCG;
         preconditioner  DIC;
         tolerance       1e-6;
         relTol          1e-3;
     }
     "angularFlux.*"
-    { 
+    {
         solver          PBiCGStab;
         preconditioner  DILU;
         tolerance       1e-7;
@@ -43,21 +42,21 @@ solvers
 
 neutronTransport
 {
-    //- Integral neutron balance made at each time step to predict fluxes at 
+    //- Integral neutron balance made at each time step to predict fluxes at
     //  next step (can be unstable)
-    integralPredictor           false; 
-    
+    integralPredictor           false;
+
     implicitPredictor           false;
-    
+
     ROMAcceleration             false;
-    
+
     aitkenAcceleration          false;
 
     //- Required accuracy for the coupling of different energy groups
-    neutronIterationResidual    0.000001; 
+    neutronIterationResidual    0.000001;
 
-    //- Up to 3-400 if no acceleration techniques 
-    maxNeutronIterations        50; 
+    //- Up to 3-400 if no acceleration techniques
+    maxNeutronIterations        50;
 }
 
 // ************************************************************************* //

@@ -45,7 +45,7 @@ License
 namespace Foam
 {
     defineTypeNameAndDebug(solver, 0);
-    defineRunTimeSelectionTable(solver, fvMesh);
+    defineRunTimeSelectionTable(solver, dynamicFvMesh);
 }
 
 
@@ -63,7 +63,7 @@ bool Foam::solver::writeData(Ostream&) const
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::solver::solver(fvMesh& mesh)
+Foam::solver::solver(dynamicFvMesh& mesh)
 :
     regIOobject
     (

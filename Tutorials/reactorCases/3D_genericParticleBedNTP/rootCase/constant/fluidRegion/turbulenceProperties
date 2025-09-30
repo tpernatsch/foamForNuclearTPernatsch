@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      turbulenceProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType 	RAS;
+
+RAS
+{
+    RASModel        porousKEpsilon;
+
+    turbulence      on;
+
+    printCoeffs     on;
+}
+
+porousKEpsilonProperties
+{
+    fuel
+    {
+        convergenceLength           1e-3;//
+        turbulenceIntensityCoeff    0.16;
+        turbulenceIntensityExp      -0.125;
+        turbulenceLengthScaleCoeff  0.07;   // 
+        //DhStruct 		            20; // all DhStruct solved in preprocess.py
+    }
+    hotFrit
+    {
+        ${fuel};
+        convergenceLength           1e-3;//
+        //DhStruct                    2.3333e-03;                    
+    }
+    "o1:o2:o3:o4:o5"
+    {
+        ${fuel};
+        convergenceLength           1e-3;//
+        //DhStruct                    2.5000e-04;                    
+    }
+    innerPropellant
+    {
+        ${fuel};
+        convergenceLength           1e-2;//
+        //DhStruct                    3.2400;
+    }
+    outerPropellant
+    {
+        ${fuel};
+        convergenceLength           1e-2;//
+        //DhStruct                    3.0375;                    
+    }
+}
+
+// ************************************************************************* //

@@ -113,6 +113,7 @@ echo
 # Select tutorials in the test suite
 tutorials=(
     # Tutorial name                   Expected maximum memory usage (Gb)
+    "testing/unitTests                                              0.2"
     "guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion            0.2"
     "guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion   0.2"
     "featureCases/1D_boiling                                        0.2"
@@ -125,6 +126,7 @@ tutorials=(
     "featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770                    0.2"
     "featureCases/2D_cavityBoussinesq                               0.2"
     "featureCases/2D_externalSourceDiffusion                        0.2"
+    "featureCases/2D_flowOverHeatedPlate                            0.2"
     "featureCases/2D_fullCoupling                                   0.2"
     "featureCases/2D_KNS37-L22                                      0.3"
     "featureCases/2D_onePhaseAndPointKineticsCoupling               0.2"
@@ -134,8 +136,10 @@ tutorials=(
     "reactorCases/1D_thermalMSR_pointKinetics                       0.2"
     "reactorCases/2D_FFTF                                           0.3"
     "reactorCases/2D_MSFR                                           0.3"
+    "reactorCases/3D_genericParticleBedNTP                          1.5"
     "reactorCases/3D_gFHR                                           1.5"
     "reactorCases/3D_HTR-10                                         1.0"
+    "reactorCases/3D_KIWI-B-4E                                      0.6"
     "reactorCases/3D_NTPfuelAssembly                                0.2"
     "reactorCases/3D_SmallESFR_NewSolverVerification                1.0"
     "reactorCases/Godiva_SN                                         1.5"
@@ -164,12 +168,14 @@ if [ $fast_flag = 'true' ]
 then
     tutorials=(
         # Tutorial name                   Expected maximum memory usage (Gb)
+        "testing/unitTests                                              0.2"
         "guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion            0.2"
         "guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion   0.2"
         "featureCases/1D_HX/onePhase                                    0.2"
         "featureCases/1D_PSBT_SC/Phase_Ex1_12223                        0.2"
         "featureCases/2D_cavityBoussinesq                               0.2"
         "featureCases/2D_externalSourceDiffusion                        0.2"
+        "featureCases/2D_flowOverHeatedPlate                            0.2"
         "featureCases/2D_fullCoupling                                   0.2"
         "featureCases/2D_onePhaseAndPointKineticsCoupling               0.2"
         "reactorCases/1D_thermalMSR_pointKinetics                       0.2"

@@ -67,6 +67,7 @@ SourceFiles
 
 #include "neutronics.H"
 #include "XS.H"
+#include "dynamicFvMesh.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -128,7 +129,7 @@ public:
     // Constructors
 
         //- Construct from mesh, read data from IOdictionaries
-        SP3Neutronics(fvMesh& mesh);
+        SP3Neutronics(dynamicFvMesh& mesh);
 
     //- Destructor
         virtual ~SP3Neutronics();

@@ -55,7 +55,7 @@ namespace solvers
     (
         solver,
         diffusionNeutronics,
-        fvMesh
+        dynamicFvMesh
     );
 }
 }
@@ -67,7 +67,7 @@ namespace solvers
 
 Foam::solvers::diffusionNeutronics::diffusionNeutronics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     neutronics(mesh),//diffusionNeutronics is derived from neutronics

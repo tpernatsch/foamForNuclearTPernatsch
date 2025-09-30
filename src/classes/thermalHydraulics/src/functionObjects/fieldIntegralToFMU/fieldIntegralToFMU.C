@@ -98,6 +98,8 @@ Foam::externalIOObject::fieldIntegralToFMU::fieldIntegralToFMU
     ),
     cellZone_(dict.get<word>("cellZone")),
     nameFMU_(dict.get<word>("nameFMU")),
+    initValue_(dict.lookupOrDefault<scalar>("initValue", 0.0)),
+    scaleFactor_(dict.lookupOrDefault<scalar>("scaleFactor", 1.0)),
     fieldPtr_(nullptr)
 {
     read(dict);
@@ -112,7 +114,7 @@ bool Foam::externalIOObject::fieldIntegralToFMU::read(const dictionary& dict)
 {
     commDataLayer& data = commDataLayer::New(time_);
 
-    data.storeObj(0.0,nameFMU_,commDataLayer::causality::out);
+    data.storeObj(initValue_, nameFMU_, commDataLayer::causality::out);
 
     return false;
 }
@@ -136,7 +138,7 @@ bool Foam::externalIOObject::fieldIntegralToFMU::execute()
     scalarField fieldZone(field, tgtCellZone);
     scalarField volZone(mesh_.V(), tgtCellZone);
 
-    result = gSum(fieldZone * volZone);
+    result = scaleFactor_ * gSum(fieldZone * volZone);
 
     return false;
 }

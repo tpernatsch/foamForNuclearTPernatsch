@@ -1,8 +1,8 @@
 # GeN-Foam regression test suite
 
-Regression test of 10-juil.-2025 - 14:18:17  
-OpenFOAM Version: v2506  
-Tutorials successfully completed: 29/29  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()  
+Regression test of 10-juil.-2025 - 14:18:17
+OpenFOAM Version: v2506
+Tutorials successfully completed: 29/29  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()
 
 ## Summary
 
@@ -46,7 +46,7 @@ Run tutorial 1_reactorSlab_1D_1Gr_neutronicDiffusion ...
 
 Done running tutorial 1_reactorSlab_1D_1Gr_neutronicDiffusion ...
 
-1_reactorSlab_1D_1Gr_neutronicDiffusion has converged 
+1_reactorSlab_1D_1Gr_neutronicDiffusion has converged
 
 keff with 1e-05 relative error
 |      | Simulated | Expected |
@@ -67,7 +67,7 @@ Run tutorial 2_reactorSlabReflected_1D_1Gr_neutronicDiffusion ...
 
 Done running tutorial 2_reactorSlabReflected_1D_1Gr_neutronicDiffusion ...
 
-2_reactorSlabReflected_1D_1Gr_neutronicDiffusion has converged 
+2_reactorSlabReflected_1D_1Gr_neutronicDiffusion has converged
 
 keff with 1e-05 relative error
 |      | Simulated | Expected |
@@ -88,7 +88,7 @@ Run tutorial 1D_boiling ...
 
 Done running tutorial 1D_boiling ...
 
-1D_boiling has converged 
+1D_boiling has converged
 
 
 Time = 00:01:51
@@ -103,7 +103,7 @@ Run tutorial 1D_CHF imposedPower ...
 
 Done running tutorial 1D_CHF imposedPower ...
 
-1D_CHF imposedPower has converged 
+1D_CHF imposedPower has converged
 
 Structure temperature at the top of the channel at 90 seconds with 0.01 relative error
 Perfect match:
@@ -123,7 +123,7 @@ Run tutorial 1D_CHF imposedTemperature ...
 
 Done running tutorial 1D_CHF imposedTemperature ...
 
-1D_CHF imposedTemperature has converged 
+1D_CHF imposedTemperature has converged
 
 Heat flux of the structure at the top of the channel at 40 seconds with 0.01 relative error
 Perfect match:
@@ -143,7 +143,7 @@ Run tutorial 1D_HX onePhase ...
 
 Done running tutorial 1D_HX onePhase ...
 
-1D_HX onePhase has converged 
+1D_HX onePhase has converged
 
 
 Time = 00:00:07
@@ -158,7 +158,7 @@ Run tutorial 1D_HX twoPhase ...
 
 Done running tutorial 1D_HX twoPhase ...
 
-1D_HX twoPhase has converged 
+1D_HX twoPhase has converged
 
 
 Time = 00:01:15
@@ -173,7 +173,7 @@ Run tutorial 1D_PSBT_SC ...
 
 Done running tutorial 1D_PSBT_SC ...
 
-1D_PSBT_SC has converged 
+1D_PSBT_SC has converged
 
 alpha.vapour at the end of the channel with 0.05 relative error
 Perfect match:
@@ -191,9 +191,9 @@ Memory = .081 Gb (Passed, expected: 0.2 Gb)
 
 Run tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 ...
 
-Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 
+Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215
 
-PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 has converged 
+PSBT_Rod_Bundle_CHF PhaseII_Ex1_01_5215 has converged
 
 alpha.vapour at the end of the channel with 0.01 relative error
 Perfect match:
@@ -212,9 +212,9 @@ Memory = .090 Gb (Passed, expected: 0.2 Gb)
 
 Run tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 ...
 
-Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 
+Done running tutorial PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770
 
-PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 has converged 
+PSBT_Rod_Bundle_CHF PhaseII_Ex2_04_6770 has converged
 
 alpha.vapour at the end of the channel with 0.05 relative error
 Perfect match:
@@ -235,7 +235,7 @@ Run tutorial 2D_cavityBoussinesq ...
 
 Done running tutorial 2D_cavityBoussinesq ...
 
-2D_cavityBoussinesq has converged 
+2D_cavityBoussinesq has converged
 
 
 Time = 00:00:37
@@ -250,11 +250,11 @@ Run tutorial 2D_externalSourceDiffusion ...
 
 Done running tutorial 2D_externalSourceDiffusion ...
 
-Steady-state has converged 
+Steady-state has converged
 
 The relation S/(1-keff) = S + nuSigmaF*phi has been verified
 
-Test power and fluxes  
+Test power and fluxes
 Perfect match:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
@@ -276,9 +276,9 @@ Run tutorial 2D_fullCoupling ...
 
 Done running tutorial 2D_fullCoupling ...
 
-Steady State has converged 
+Steady State has converged
 
-Transient (no driveline) has converged 
+Transient (no driveline) has converged
 
 
 Time = 00:00:09
@@ -293,7 +293,7 @@ Run tutorial 2D_KNS37-L22 ...
 
 Done running tutorial 2D_KNS37-L22 ...
 
-2D_KNS37-L22 has converged 
+2D_KNS37-L22 has converged
 
 Test with 0.2 relative error
 Perfect match:
@@ -315,13 +315,13 @@ Run tutorial 2D_onePhaseAndPointKineticsCoupling ...
 
 Done running tutorial 2D_onePhaseAndPointKineticsCoupling ...
 
-Steady State has converged 
+Steady State has converged
 
-Transient (no driveline) has converged 
+Transient (no driveline) has converged
 
-Transient (with driveline) has converged 
+Transient (with driveline) has converged
 
-Transient (with boron) has converged 
+Transient (with boron) has converged
 
 
 Time = 00:00:34
@@ -338,11 +338,11 @@ Run tutorial 2D_onePhaseAndSubcriticalPointKineticsCoupling rampReactivity ...
 
 Done running tutorial 2D_onePhaseAndSubcriticalPointKineticsCoupling ...
 
-Steady-State has converged 
+Steady-State has converged
 
-Transient ramp source has converged 
+Transient ramp source has converged
 
-Transient ramp reactivity has converged 
+Transient ramp reactivity has converged
 
 Final powers with 0.001 relative error
 
@@ -364,7 +364,7 @@ Run tutorial 2D_voidMotionNoPhaseChange ...
 
 Done running tutorial 2D_voidMotionNoPhaseChange ...
 
-2D_voidMotionNoPhaseChange has converged 
+2D_voidMotionNoPhaseChange has converged
 
 
 Time = 00:00:38
@@ -379,11 +379,11 @@ Run tutorial 1D_MSR_pointKinetics ...
 
 Done running tutorial 1D_MSR_pointKinetics ...
 
-Steady state has converged 
+Steady state has converged
 
-Transient has converged 
+Transient has converged
 
-Transient end has converged 
+Transient end has converged
 
 Power at the end of transient with 0.01 relative error
 Perfect match:
@@ -403,11 +403,11 @@ Run tutorial 1D_MSR_pointKinetics ...
 
 Done running tutorial 1D_MSR_pointKinetics ...
 
-Steady state has converged 
+Steady state has converged
 
-Transient has converged 
+Transient has converged
 
-Transient end has converged 
+Transient end has converged
 
 Power at the end of transient with 0.01 relative error
 Perfect match:
@@ -427,9 +427,9 @@ Run tutorial 2D_FFTF ...
 
 Done running tutorial 2D_FFTF ...
 
-Energy steady state has converged 
+Energy steady state has converged
 
-Transient has converged 
+Transient has converged
 
 Reactivity contributions with 0.01 relative error
 Perfect match:
@@ -455,13 +455,13 @@ Run tutorial 2D_MSFR ...
 
 Done running tutorial 2D_MSFR ...
 
-Thermal-hydraulic steady state has converged 
+Thermal-hydraulic steady state has converged
 
-Energy steady state has converged 
+Energy steady state has converged
 
-Transient has converged 
+Transient has converged
 
-Test keff and power with 0.001 relative error  
+Test keff and power with 0.001 relative error
 Perfect match:
 |             | Simulated | Expected |
 |:------------|:---------:|:--------:|
@@ -480,11 +480,11 @@ Run tutorial 3D_gFHR ...
 
 Done running tutorial 3D_gFHR ...
 
-Steady state NSSP has converged 
+Steady state NSSP has converged
 
-Steady state LPS has converged 
+Steady state LPS has converged
 
-Max temperatures (avg min max) in trisos  
+Max temperatures (avg min max) in trisos
 Perfect match:
 |           | Simulated | Expected |
 |:----------|:---------:|:--------:|
@@ -504,7 +504,7 @@ Run tutorial 3D_HTR-10 ...
 
 Done running tutorial 3D_HTR-10 ...
 
-Steady state has converged 
+Steady state has converged
 
 Max temperatures (avg min max) in trisos
 Perfect match:
@@ -526,7 +526,7 @@ Run tutorial 3D_NTPfuelAssembly ...
 
 Done running tutorial 3D_NTPfuelAssembly ...
 
-Steady state neutronics & thermal-hydraulics has converged 
+Steady state neutronics & thermal-hydraulics has converged
 
 Simulation & reference comparison
   -> 0.1 % maximum relative error for (keff, power neutro & fluid)
@@ -555,9 +555,9 @@ Run tutorial 3D_SmallESFR ...
 
 Done running tutorial 3D_SmallESFR ...
 
-Steady state - Legacy has converged 
+Steady state - Legacy has converged
 
-Steady state - New has converged 
+Steady state - New has converged
 
 keff test with 0.001 relative error
 Perfect match:
@@ -578,7 +578,7 @@ Run tutorial Godiva_SN ...
 
 Done running tutorial Godiva_SN ...
 
-Godiva_SN has converged 
+Godiva_SN has converged
 
 keff with 0.001 relative error
 Perfect match:
@@ -598,7 +598,7 @@ Run tutorial powerTemperatureMomentumControl ...
 
 Done running tutorial powerTemperatureMomentumControl ...
 
-GeN-Foam + Modelica FMU has converged 
+GeN-Foam + Modelica FMU has converged
 
 Simulation & reference comparison
   -> 0.1 % maximum relative error for (Tout)
@@ -623,13 +623,13 @@ Run tutorial 2D_onePhaseAndPointKineticsCouplingExternalReactivity ...
 
 Done running tutorial 2D_onePhaseAndPointKineticsCouplingExternalReactivity ...
 
-Steady State FMU coupled has converged 
+Steady State FMU coupled has converged
 
-Transient FMU coupled has converged 
+Transient FMU coupled has converged
 
-Steady State uncoupled has converged 
+Steady State uncoupled has converged
 
-Transient uncoupled has converged 
+Transient uncoupled has converged
 
 
 Time = 00:01:33
@@ -644,9 +644,9 @@ Run tutorial 2D_PKcoupleExternalReactivity ...
 
 Done running tutorial 2D_PKcoupleExternalReactivity ...
 
-Steady State has converged 
+Steady State has converged
 
-Transient has converged 
+Transient has converged
 
 
 Time = 00:02:16

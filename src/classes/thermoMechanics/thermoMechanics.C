@@ -58,7 +58,7 @@ namespace solvers
 
 Foam::solvers::thermoMechanics::thermoMechanics
 (
-    fvMesh& mesh
+    dynamicFvMesh& mesh
 )
 :
     solver(mesh),
@@ -88,42 +88,10 @@ Foam::solvers::thermoMechanics::thermoMechanics
         dimensionedVector("", dimLength, vector::zero),
         zeroGradientFvPatchScalarField::typeName
     ),
-    fuelDisp_
-    (
-        IOobject
-        (
-            "fuelDisp",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh
-    ),
-    CRDisp_
-    (
-        IOobject
-        (
-            "CRDisp",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::AUTO_WRITE
-        ),
-        mesh
-    ),
-    fuelDispVector_
-    (
-        IOobject
-        (
-            "fuelDispVector",
-            mesh.time().timeName(),
-            mesh,
-            IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE
-        ),
-        (fuelDisp_*vector(0,0,1))
-    ),
+    correctDispForNeutroMesh_(this->subDict("couplingOptions").lookupOrDefault<bool>("correctDispForNeutro", false)),
+    fuelDisp_(nullptr),
+    CRDisp_(nullptr),
+    fuelDispVector_(nullptr),
     fuelOrientation_(this->subDict("globalOptions").lookup("pinDirection")),
     TStructFromTH_
     (
@@ -273,6 +241,62 @@ Foam::solvers::thermoMechanics::thermoMechanics
 
     TCRRef_.correctBoundaryConditions();
     alphaCR_.correctBoundaryConditions();
+
+    if(this->found("couplingOptions"))
+    {
+        if(this->subDict("couplingOptions").lookupOrDefault<bool>("correctDispForNeutro", false))
+        {
+            fuelDisp_.reset
+            (
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "fuelDisp",
+                        mesh.time().timeName(),
+                        mesh,
+                        IOobject::MUST_READ,
+                        IOobject::AUTO_WRITE
+                    ),
+                    mesh_
+                )
+            );
+
+            CRDisp_.reset
+            (
+                new volScalarField
+                (
+                    IOobject
+                    (
+                        "CRDisp",
+                        mesh.time().timeName(),
+                        mesh,
+                        IOobject::MUST_READ,
+                        IOobject::AUTO_WRITE
+                    ),
+                    mesh_
+                )
+            );
+
+            fuelDispVector_.reset
+            (
+                new volVectorField
+                (
+                    IOobject
+                    (
+                        "fuelDispVector",
+                        mesh.time().timeName(),
+                        mesh,
+                        IOobject::READ_IF_PRESENT,
+                        IOobject::AUTO_WRITE
+                    ),
+                    (fuelDisp_()*vector(0,0,1))
+                )
+            );
+        }
+    }
+
+
 }
 
 
@@ -293,7 +317,7 @@ void Foam::solvers::thermoMechanics::correctBaffleLessFields()
             (
                 IOobject
                 (
-                    "multiRegionCouplingDict",
+                    "regionsDict",
                     runTime.time().constant(),
                     runTime.db(),
                     IOobject::MUST_READ,
@@ -358,7 +382,7 @@ void Foam::solvers::thermoMechanics::deformMesh()
     (
         IOobject
         (
-            "multiRegionCouplingDict",
+            "regionsDict",
             runTime.time().constant(),
             runTime.db(),
             IOobject::READ_IF_PRESENT,
