@@ -23,4 +23,9 @@ wclean libso ./applications/modules/fuelBehaviour
 wclean libso ./applications/modules/openFoamImported
 
 # clean apps
-wclean libso ./applications/solvers/GeN-Foam
+wclean ./applications/solvers/GeN-Foam
+
+# clean tools 
+wclean ./tests/hydrogenThermophysicalProperties
+wclean ./tests/radialBasisFunctions
+
