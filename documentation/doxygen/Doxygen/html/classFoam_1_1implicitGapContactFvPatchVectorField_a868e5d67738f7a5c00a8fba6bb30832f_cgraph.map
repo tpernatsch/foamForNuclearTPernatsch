@@ -1,0 +1,6 @@
+<map id="boundaryStiffness" name="boundaryStiffness">
+<area shape="rect" id="node1" title="Minimum patch stiffness for interface pressure evaluation." alt="" coords="5,71,144,98"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledOFFBEATFvPatch.html#acfa7528cfeee102a905008394641d01c" title="Return faceCell addressing." alt="" coords="192,5,427,47"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="281,71,338,98"/>
+<area shape="rect" id="node4" href="$EEqn__1pl_8H.html#a0bf7c6d3f8200774cfd62534a837b61d" title="Kinetic energy per unit volume." alt="" coords="290,122,329,149"/>
+</map>

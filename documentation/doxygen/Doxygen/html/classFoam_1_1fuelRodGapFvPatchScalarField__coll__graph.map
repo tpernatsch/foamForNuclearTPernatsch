@@ -1,0 +1,4 @@
+<map id="fuelRodGapFvPatchScalarField" name="fuelRodGapFvPatchScalarField">
+<area shape="rect" id="node1" title="Region coupled patchField for temperature fields in solid heat conduction." alt="" coords="5,439,251,736"/>
+<area shape="rect" id="node2" href="$classFoam_1_1resistiveGapFvPatchScalarField.html" title="Coupled boundary condition for modeling the presence of a fixed gap (or contact) resistance between t..." alt="" coords="17,5,239,391"/>
+</map>

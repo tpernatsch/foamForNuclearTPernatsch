@@ -1,0 +1,4 @@
+<map id="conductivityTobbe1515Ti" name="conductivityTobbe1515Ti">
+<area shape="rect" id="node1" title="Class modelling conductivity of 15&#45;15 Ti cladding material through the Tobbe correlation (1975)." alt="" coords="19,204,239,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="5,5,252,156"/>
+</map>

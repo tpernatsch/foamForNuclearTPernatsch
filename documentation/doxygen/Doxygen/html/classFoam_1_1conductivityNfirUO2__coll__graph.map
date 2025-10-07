@@ -1,0 +1,4 @@
+<map id="conductivityNfirUO2" name="conductivityNfirUO2">
+<area shape="rect" id="node1" title="Model for thermal conductivity of UO2 from Nfir." alt="" coords="34,204,223,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="5,5,252,156"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" title=" " alt="" coords="5,35,104,61"/>
+<area shape="rect" id="node2" href="$classFoam_1_1leastSquaresGradfVectors.html" title="Vectors for the leastSquaresGradf gradient scheme." alt="" coords="159,5,350,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1leastSquaresImplicitContactVectors.html" title="Least&#45;squares gradient scheme vectors." alt="" coords="152,57,357,98"/>
+</map>

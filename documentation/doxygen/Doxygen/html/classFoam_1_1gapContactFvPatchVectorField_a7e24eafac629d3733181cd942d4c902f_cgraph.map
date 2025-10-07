@@ -1,0 +1,9 @@
+<map id="updateCoeffs" name="updateCoeffs">
+<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="5,136,113,163"/>
+<area shape="rect" id="node2" href="$classFoam_1_1gapContactFvPatchVectorField.html#a200d97d8bb99741d5a1ce420403a3ee1" title="Minimum patch stiffness for interface pressure evaluation." alt="" coords="225,5,364,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1gapContactFvPatchVectorField.html#a66d6ceb4f8baa05f6925129e54af8130" title="Return the gap width." alt="" coords="253,56,337,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1gapContactFvPatchVectorField.html#ab2e303f32e766aefa59c6b2eb4eb9b0d" title="Return the neighbour patchField." alt="" coords="251,107,338,133"/>
+<area shape="rect" id="node5" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a357c5e37e5d7c583fa172625b8c11009" title="Is it the owner?" alt="" coords="161,158,428,199"/>
+<area shape="rect" id="node6" href="$classFoam_1_1tractionDisplacementFvPatchVectorField.html#a74e4949548f54559ec29ed380af143d5" title=" " alt="" coords="190,223,399,265"/>
+<area shape="rect" id="node7" href="$classFoam_1_1GFTractionDisplacementFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="175,289,414,330"/>
+</map>

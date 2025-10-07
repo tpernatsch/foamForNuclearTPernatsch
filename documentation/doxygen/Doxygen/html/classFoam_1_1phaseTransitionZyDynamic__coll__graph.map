@@ -1,0 +1,4 @@
+<map id="phaseTransitionZyDynamic" name="phaseTransitionZyDynamic">
+<area shape="rect" id="node1" title="Class for the beta phase transition of Zy&#45;based claddings, dynamic approach derived from &quot;A...." alt="" coords="11,292,246,413"/>
+<area shape="rect" id="node2" href="$classFoam_1_1phaseTransitionModel.html" title="Parent class for phase transition model." alt="" coords="5,5,252,244"/>
+</map>

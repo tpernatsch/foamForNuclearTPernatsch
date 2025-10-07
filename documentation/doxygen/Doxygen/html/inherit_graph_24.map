@@ -1,0 +1,8 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classFoam_1_1diffCoefModel.html" title="Mother class for fission products diffusion coefficient models." alt="" coords="5,107,119,133"/>
+<area shape="rect" id="node2" href="$classFoam_1_1diffCoefArrhenius.html" title="Diffusion coefficient to be calculated in Arrhenius form." alt="" coords="167,5,301,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1diffCoefGraphite.html" title="Diffusion coefficient for PyC material from PARFUME manual and INL report." alt="" coords="169,56,299,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1diffCoefKernel.html" title="Diffusion coefficient for Kernel material from PARFUME manual and INL report." alt="" coords="177,107,291,133"/>
+<area shape="rect" id="node5" href="$classFoam_1_1diffCoefPyC.html" title="Diffusion coefficient for PyC material from PARFUME manual and INL report." alt="" coords="185,157,283,184"/>
+<area shape="rect" id="node6" href="$classFoam_1_1diffCoefSiC.html" title="Diffusion coefficient for PyC material from PARFUME manual and INL report." alt="" coords="187,208,281,235"/>
+</map>

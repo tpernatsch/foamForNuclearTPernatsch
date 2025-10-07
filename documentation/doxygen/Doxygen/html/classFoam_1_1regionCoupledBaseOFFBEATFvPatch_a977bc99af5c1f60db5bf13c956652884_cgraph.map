@@ -1,0 +1,4 @@
+<map id="sameRegion" name="sameRegion">
+<area shape="rect" id="node1" title="Returns if it is the same Region." alt="" coords="5,13,108,39"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a977bc99af5c1f60db5bf13c956652884" title="Cached sampleRegion != mesh.name()" alt="" coords="156,5,407,47"/>
+</map>

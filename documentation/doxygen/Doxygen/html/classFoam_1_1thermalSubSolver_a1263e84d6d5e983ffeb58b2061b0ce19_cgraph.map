@@ -1,0 +1,4 @@
+<map id="thermalSubSolver" name="thermalSubSolver">
+<area shape="rect" id="node1" title="Construct from mesh, materials and dictionary." alt="" coords="5,13,144,39"/>
+<area shape="rect" id="node2" href="$classFoam_1_1materials.html#a56f367de83e781901e1ab98db2614ff6" title="Correct/update the thermoMechanical properties." alt="" coords="192,5,373,47"/>
+</map>

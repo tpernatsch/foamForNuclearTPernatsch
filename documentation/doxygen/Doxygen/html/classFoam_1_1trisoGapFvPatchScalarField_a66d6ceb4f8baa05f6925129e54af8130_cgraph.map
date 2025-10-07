@@ -1,0 +1,6 @@
+<map id="gapWidth" name="gapWidth">
+<area shape="rect" id="node1" title="Return the gap width." alt="" coords="5,78,89,105"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a05f9da785fabd880c4a17a02b2365cb9" title="Interpolate field." alt="" coords="145,5,396,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a46c8495af036bc6de089ae800f741df0" title="Return regionCoupledBase neighb Patch." alt="" coords="137,71,404,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a1b3f4e19df6ef6a92dad048eb1097423" title="Return regionCoupledPolyPatch." alt="" coords="137,136,404,177"/>
+</map>

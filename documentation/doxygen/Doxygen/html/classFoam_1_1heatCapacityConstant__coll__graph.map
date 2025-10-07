@@ -1,0 +1,4 @@
+<map id="heatCapacityConstant" name="heatCapacityConstant">
+<area shape="rect" id="node1" title="Model for constant heat capacity. The value is read from dictionary." alt="" coords="27,204,230,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1heatCapacityModel.html" title="Mother class for heat capacity models." alt="" coords="5,5,252,156"/>
+</map>

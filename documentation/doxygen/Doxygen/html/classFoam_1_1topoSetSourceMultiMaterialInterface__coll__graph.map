@@ -1,0 +1,4 @@
+<map id="topoSetSourceMultiMaterialInterface" name="topoSetSourceMultiMaterialInterface">
+<area shape="rect" id="node1" title="Interfaces between materials are defined by a topoSetSource, e.g. boxToFace, faceToFace." alt="" coords="18,189,247,355"/>
+<area shape="rect" id="node2" href="$classFoam_1_1uniformMultiMaterialInterface.html" title="Interfaces between materials are defined by a uniform." alt="" coords="5,5,260,141"/>
+</map>

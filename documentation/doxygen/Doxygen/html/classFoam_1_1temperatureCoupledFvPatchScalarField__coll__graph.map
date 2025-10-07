@@ -1,0 +1,4 @@
+<map id="temperatureCoupledFvPatchScalarField" name="temperatureCoupledFvPatchScalarField">
+<area shape="rect" id="node1" title="Coupled boundary condition that forces continuity (for the temperature field) between two bodies with..." alt="" coords="5,424,239,721"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledFvPatchScalarField.html" title="General region&#45;coupled patchField. Conceptually similar to cyclicAMI, but does not assume continuity ..." alt="" coords="5,5,239,376"/>
+</map>

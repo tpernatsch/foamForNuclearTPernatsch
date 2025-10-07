@@ -1,0 +1,4 @@
+<map id="nbrPatchID" name="nbrPatchID">
+<area shape="rect" id="node1" title="Neighbour patch ID." alt="" coords="5,5,97,32"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a4d9289befb88b8ef43b587546c31ab1f" title="Neighbour patch name." alt="" coords="145,5,263,32"/>
+</map>

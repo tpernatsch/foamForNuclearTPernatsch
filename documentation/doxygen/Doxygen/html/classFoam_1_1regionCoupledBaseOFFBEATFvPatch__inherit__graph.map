@@ -1,0 +1,5 @@
+<map id="regionCoupledBaseOFFBEATFvPatch" name="regionCoupledBaseOFFBEATFvPatch">
+<area shape="rect" id="node1" title="Base class of regionCoupledFvPatch with common functionality for regionCoupledFvPatch and regionCoupl..." alt="" coords="21,233,271,589"/>
+<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledOFFBEATFvPatch.html" title="Common functionality for regionCoupleFvPatch and regionCoupledWallFvPatch." alt="" coords="15,637,277,832"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledOFFBEATLduInterface.html" title="An abstract base class for region coupled interfaces." alt="" coords="5,5,287,185"/>
+</map>

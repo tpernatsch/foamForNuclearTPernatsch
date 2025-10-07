@@ -1,0 +1,5 @@
+<map id="updateCoeffs" name="updateCoeffs">
+<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="5,35,113,61"/>
+<area shape="rect" id="node2" href="$UEqn__1p_8H.html#a7fe02434a19f3e00e927f32adcbb193b" title=" " alt="" coords="237,5,296,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledFvPatchScalarField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="161,57,372,98"/>
+</map>

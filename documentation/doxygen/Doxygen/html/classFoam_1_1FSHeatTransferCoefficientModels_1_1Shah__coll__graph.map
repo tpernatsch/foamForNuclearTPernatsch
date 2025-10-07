@@ -1,0 +1,4 @@
+<map id="Shah" name="Shah">
+<area shape="rect" id="node1" title="Heat transfer coefficient for pool boiling scenarios calculated via the correlation devised by Shah,..." alt="" coords="71,263,187,384"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FSHeatTransferCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) heat transfer coefficient." alt="" coords="5,5,252,215"/>
+</map>

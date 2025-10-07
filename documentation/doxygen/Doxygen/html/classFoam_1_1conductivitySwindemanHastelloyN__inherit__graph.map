@@ -1,0 +1,4 @@
+<map id="conductivitySwindemanHastelloyN" name="conductivitySwindemanHastelloyN">
+<area shape="rect" id="node1" title="Model for conductivity of H&#45;N, derived from the work of Swinderman." alt="" coords="5,204,292,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="25,5,272,156"/>
+</map>

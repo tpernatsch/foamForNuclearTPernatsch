@@ -1,0 +1,4 @@
+<map id="setBeamParameters" name="setBeamParameters">
+<area shape="rect" id="node1" title="Set beam parameter from the external source power S." alt="" coords="224,5,379,32"/>
+<area shape="rect" id="node2" href="$classFoam_1_1solvers_1_1pointKineticNeutronics.html#a79e6b4ce48b37f06154f436bd9229a43" title="Constructors." alt="" coords="5,5,176,32"/>
+</map>

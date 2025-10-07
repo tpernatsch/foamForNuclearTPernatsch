@@ -1,0 +1,9 @@
+<map id="updateCoeffs" name="updateCoeffs">
+<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="5,147,113,174"/>
+<area shape="rect" id="node2" href="$classFoam_1_1globalOptions.html#a21357e5588a342e823928e777eff1314" title=" " alt="" coords="203,5,359,47"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="252,71,309,98"/>
+<area shape="rect" id="node4" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="259,122,302,149"/>
+<area shape="rect" id="node5" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="261,173,300,199"/>
+<area shape="rect" id="node6" href="$classFoam_1_1gapGasModel.html#a2ef4e25d44488e458821bf9debb36df1" title="Return gas pressure." alt="" coords="195,223,366,250"/>
+<area shape="rect" id="node7" href="$classFoam_1_1solidDirectionMixedFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="161,275,400,316"/>
+</map>

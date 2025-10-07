@@ -1,0 +1,6 @@
+<map id="boundaryShearStiffness" name="boundaryShearStiffness">
+<area shape="rect" id="node1" title="Minimum patch shear stiffness for friction evaluation." alt="" coords="5,71,181,98"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledOFFBEATFvPatch.html#acfa7528cfeee102a905008394641d01c" title="Return faceCell addressing." alt="" coords="229,5,464,47"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="318,71,375,98"/>
+<area shape="rect" id="node4" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="325,122,368,149"/>
+</map>

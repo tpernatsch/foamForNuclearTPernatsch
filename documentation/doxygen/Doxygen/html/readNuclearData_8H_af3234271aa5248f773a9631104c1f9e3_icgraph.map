@@ -1,0 +1,39 @@
+<map id="reduce" name="reduce">
+<area shape="rect" id="node1" title=" " alt="" coords="336,1183,403,1210"/>
+<area shape="rect" id="node2" href="$classFoam_1_1sliceMapperAutoAxialSlices.html#a289b7069a688c48f8ddc88bbba6a4085" title=" " alt="" coords="43,5,251,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1sliceMapperByMaterial.html#a289b7069a688c48f8ddc88bbba6a4085" title=" " alt="" coords="39,71,255,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1sliceMapperByPellets.html#a289b7069a688c48f8ddc88bbba6a4085" title=" " alt="" coords="43,136,250,177"/>
+<area shape="rect" id="node5" href="$classFoam_1_1solvers_1_1onePhase.html#a416eeefe4b59f1124821c6b6ecfb5a7e" title="Computes the cumulated continuity error." alt="" coords="55,201,239,243"/>
+<area shape="rect" id="node6" href="$classFoam_1_1solvers_1_1twoPhase.html#a77adf862c35ad1bbeb7fb94b6f78aee6" title="Computes the cumulated continuity error." alt="" coords="55,267,239,308"/>
+<area shape="rect" id="node7" href="$classFoam_1_1solvers_1_1pointKineticNeutronics.html#aac856fe36d9b9a04679a37602e4017b6" title="Compute GEM sodium height and their reactivity contributions." alt="" coords="5,332,288,373"/>
+<area shape="rect" id="node8" href="$classFoam_1_1constantLhgr.html#acd18af56e2bcaa9177d3d39ae2d28629" title="Calculate the fuel height." alt="" coords="47,397,246,439"/>
+<area shape="rect" id="node9" href="$classFoam_1_1mechanicsSubSolver.html#a55f780b77ab1f3e304781c2a217224c5" title="Disable solution in the out&#45;of&#45;plane direction for wedge cases." alt="" coords="46,463,247,504"/>
+<area shape="rect" id="node10" href="$classFoam_1_1heatExchanger.html#a7b22ae96fc052249a82b8544932ff897" title=" " alt="" coords="58,528,235,569"/>
+<area shape="rect" id="node11" href="$classFoam_1_1burnupLassmann.html#a3ae44b28050c3aa494c1d8e18cf618c1" title="Update the burnup." alt="" coords="58,593,235,635"/>
+<area shape="rect" id="node12" href="$classFoam_1_1fgrSCIANTIX.html#a3ae44b28050c3aa494c1d8e18cf618c1" title="Update fission gas distribution in fuel grains." alt="" coords="70,659,223,700"/>
+<area shape="rect" id="node13" href="$classFoam_1_1powerModels_1_1heatedPin.html#a08cf6ccfed7f616074be223f0d2379f3" title="In two&#45;phase solvers :" alt="" coords="66,724,227,765"/>
+<area shape="rect" id="node14" href="$classFoam_1_1powerModels_1_1nuclearFuelPin.html#a08cf6ccfed7f616074be223f0d2379f3" title="In two&#45;phase solvers :" alt="" coords="61,789,232,831"/>
+<area shape="rect" id="node15" href="$classFoam_1_1powerModels_1_1nuclearFuelPinTest.html#a08cf6ccfed7f616074be223f0d2379f3" title="In two&#45;phase solvers :" alt="" coords="66,855,227,911"/>
+<area shape="rect" id="node16" href="$classFoam_1_1powerModels_1_1nuclearSteadyStatePebble.html#a08cf6ccfed7f616074be223f0d2379f3" title="In two&#45;phase solvers :" alt="" coords="50,935,243,991"/>
+<area shape="rect" id="node17" href="$classFoam_1_1rheologyByMaterial.html#a936ae81dceafb8b4dbbe096895e378a1" title="Correct out of plane strain for modifiedPlaneStress cases." alt="" coords="44,1016,249,1057"/>
+<area shape="rect" id="node18" href="$classFoam_1_1mechanicsSubSolver.html#a0bcbc98223b9bcb67b2a2638e9a70647" title="Find nearest cell to volumetric centre of mesh." alt="" coords="46,1081,247,1123"/>
+<area shape="rect" id="node19" href="$classFoam_1_1fissionGasRelease.html#a0e62e1ecf7cf14a4a7e1fbcf694cb8f9" title="Construct from mesh, materials and dict." alt="" coords="54,1147,239,1188"/>
+<area shape="rect" id="node20" href="$setNeutronicsVariables_8H.html#a2428955ee674d42574e73d905589463a" title=" " alt="" coords="118,1213,175,1239"/>
+<area shape="rect" id="node21" href="$classFoam_1_1mechanicsSubSolver.html#ade2d136749cd713e372db41fbc068a93" title="Print surface force summary." alt="" coords="46,1264,247,1305"/>
+<area shape="rect" id="node22" href="$classFoam_1_1powerModels_1_1heatedPin.html#a5df612853023ce36358872f98ac1fbe2" title=" " alt="" coords="66,1329,227,1371"/>
+<area shape="rect" id="node23" href="$classFoam_1_1creepModel.html#a20fdbca5d1c2f89978659a802bea7a08" title="Return next time increment according to creep model." alt="" coords="35,1395,258,1422"/>
+<area shape="rect" id="node24" href="$classFoam_1_1fastNeutronGPLS.html#a20fdbca5d1c2f89978659a802bea7a08" title="Return next time increment according to fastNeutronGPLS model." alt="" coords="59,1447,235,1488"/>
+<area shape="rect" id="node25" href="$classFoam_1_1hydrogenGPLS.html#a20fdbca5d1c2f89978659a802bea7a08" title="Return next time increment according to hydrogenGPLS model." alt="" coords="67,1512,227,1553"/>
+<area shape="rect" id="node26" href="$classFoam_1_1powerModels_1_1nuclearFuelPin.html#a00a0807b8131c3860dc8ac801e00dc68" title=" " alt="" coords="37,1577,257,1619"/>
+<area shape="rect" id="node27" href="$classFoam_1_1powerModels_1_1nuclearFuelPinTest.html#a0fceab77e99080514ba347aa8a16fb11" title=" " alt="" coords="66,1643,227,1699"/>
+<area shape="rect" id="node28" href="$classFoam_1_1functionObjects_1_1pressureDrop.html#afac0600fef97b05534a595ce00b272ed" title="Read the field extents data." alt="" coords="63,1724,231,1765"/>
+<area shape="rect" id="node29" href="$classFoam_1_1tractionDisplacementFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="27,1789,266,1831"/>
+<area shape="rect" id="node30" href="$classFoam_1_1hydrogenGPLS.html#a36192d67a282f9bd0b616971016d94bc" title="Update the yield stress: called at end of time&#45;step." alt="" coords="67,1855,227,1896"/>
+<area shape="rect" id="node31" href="$classFoam_1_1misesPlasticity.html#a36192d67a282f9bd0b616971016d94bc" title="Update the yield stress: called at end of time&#45;step." alt="" coords="64,1920,229,1961"/>
+<area shape="rect" id="node32" href="$classFoam_1_1neoHookeanMisesPlasticity.html#a36192d67a282f9bd0b616971016d94bc" title="Update the yield stress: called at end of time&#45;step." alt="" coords="24,1985,269,2027"/>
+<area shape="rect" id="node33" href="$classFoam_1_1fixedPointLoadFvPatchVectorField.html#a4cde3bc9e8f5668ba9b042b380644839" title="Update the pressure and traction." alt="" coords="41,2051,253,2092"/>
+<area shape="rect" id="node34" href="$classFoam_1_1fixedTorqueFvPatchVectorField.html#a4cde3bc9e8f5668ba9b042b380644839" title="Update the pressure and traction." alt="" coords="47,2116,246,2157"/>
+<area shape="rect" id="node35" href="$classFoam_1_1functionObjects_1_1massFlow.html#ae8f6374e29a250261b3979bbd6e5cb40" title="Write the massFlow." alt="" coords="63,2181,231,2223"/>
+<area shape="rect" id="node36" href="$classFoam_1_1functionObjects_1_1pressureDrop.html#ae8f6374e29a250261b3979bbd6e5cb40" title="Write the pressureDrop." alt="" coords="63,2247,231,2288"/>
+<area shape="rect" id="node37" href="$classFoam_1_1functionObjects_1_1TBulk.html#ae8f6374e29a250261b3979bbd6e5cb40" title="Write the TBulk." alt="" coords="63,2312,231,2353"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="gas_grain_modes" name="gas_grain_modes">
+<area shape="rect" id="node1" title=" " alt="" coords="241,64,377,91"/>
+<area shape="rect" id="node2" href="$GasDiffusion_8C.html#a611c27103dc6fe6aa6f4deb75f5a849b" title=" " alt="" coords="47,5,152,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1fgrSCIANTIX.html#a26c00137b9633a1a774705a289afc5ff" title="Pass previous time&#45;step cell variables to SCIANTIX." alt="" coords="18,57,181,98"/>
+<area shape="rect" id="node4" href="$classFoam_1_1fgrSCIANTIX.html#a9b42189daf8926864d6b6b2f83b0ad1d" title="Pass new valus of variables to OFFBEAT and updates volFields." alt="" coords="5,122,193,163"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" title=" " alt="" coords="5,78,216,105"/>
+<area shape="rect" id="node2" href="$classFoam_1_1blackBodyRadiationFvPatchScalarField.html" title="This boundary condition provides a simplified black body radiation condition calculated as:" alt="" coords="267,5,469,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1extrapolatedFixedValueFvPatchScalarField.html" title="Extrapolate internal field to the boundary as a fixedValue." alt="" coords="273,71,463,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1timeFieldTableFvPatchScalarField.html" title="Boundary condition that allows to specify a scalarField over the boundary that changes in time via a ..." alt="" coords="264,136,472,177"/>
+</map>

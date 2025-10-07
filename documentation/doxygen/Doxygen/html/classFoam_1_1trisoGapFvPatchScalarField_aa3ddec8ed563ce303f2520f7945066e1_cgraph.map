@@ -1,0 +1,13 @@
+<map id="hGap" name="hGap">
+<area shape="rect" id="node1" title="Return the interface conductance." alt="" coords="5,249,61,276"/>
+<area shape="rect" id="node2" href="$classFoam_1_1gapGasModel.html#a52a179884b04b249e82b491db769395f" title="Return the accommodation coefficient." alt="" coords="109,5,280,32"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="328,128,385,155"/>
+<area shape="rect" id="node4" href="$classFoam_1_1trisoGapFvPatchScalarField.html#a272b2cc5c2b966d570a226f85aff725d" title="Return the jumpDistance." alt="" coords="175,107,214,133"/>
+<area shape="rect" id="node5" href="$classFoam_1_1gapGasModel.html#a8507d3b5b07831f1f2b85d5118eacf7e" title="Gap gas thermal conductivity." alt="" coords="113,158,276,199"/>
+<area shape="rect" id="node6" href="$namespaceFoam.html#ae3317836dd08502698e96ad9524be3da" title=" " alt="" coords="151,224,238,251"/>
+<area shape="rect" id="node7" href="$EEqn__1p_8H.html#ad0f94aa7ea43d4be0bae24e3a89aad0c" title=" " alt="" coords="337,249,376,276"/>
+<area shape="rect" id="node8" href="$classFoam_1_1gapGasModel.html#a2ef4e25d44488e458821bf9debb36df1" title="Return gas pressure." alt="" coords="109,325,280,352"/>
+<area shape="rect" id="node9" href="$classFoam_1_1trisoGapFvPatchScalarField.html#ae9fb0fffe855f8afd3d0bf0d9a992641" title="Return the surface roughness." alt="" coords="175,376,214,403"/>
+<area shape="rect" id="node10" href="$EEqns__2p_8H.html#a016032aa1b1ec0dd197a68119b12fd52" title=" " alt="" coords="175,427,214,453"/>
+<area shape="rect" id="node11" href="$EEqns__2p_8H.html#a616e91adeb29d49ab9d9f35f0124ab4a" title=" " alt="" coords="175,477,214,504"/>
+</map>

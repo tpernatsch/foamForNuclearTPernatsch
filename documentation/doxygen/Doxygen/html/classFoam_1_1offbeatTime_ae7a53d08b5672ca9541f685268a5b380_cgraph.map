@@ -1,0 +1,6 @@
+<map id="offbeatTime" name="offbeatTime">
+<area shape="rect" id="node1" title="Construct from objectRegistry arguments." alt="" coords="5,56,107,83"/>
+<area shape="rect" id="node2" href="$modifyDictLegacy_8H.html#a5709cbe3090f3e86b33c7a544424c5ed" title=" " alt="" coords="173,5,267,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1offbeatTime.html#ad4c888c2122c2c14211d79c8ddc4098a" title="Return time unit." alt="" coords="197,56,243,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1offbeatTime.html#a4424676d00ead6c6a8ceb602d50fb6b8" title="Convert the user&#45;time (e.g. hours) to real&#45;time (s)." alt="" coords="155,107,285,133"/>
+</map>

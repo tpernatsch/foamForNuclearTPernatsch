@@ -1,0 +1,4 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classFoam_1_1corrosionModel.html" title="Base class for patch&#45;specific corrosion models. The parent class typeName is &quot;fromLatestTime&quot;...." alt="" coords="5,5,128,32"/>
+<area shape="rect" id="node2" href="$classFoam_1_1zircaloyOuterCorrosion.html" title="Water&#45;side corrosion for zircaloy cladding. The model&#39;s constants are taken from the BISON manual." alt="" coords="176,5,347,32"/>
+</map>

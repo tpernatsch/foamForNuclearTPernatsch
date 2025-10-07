@@ -1,0 +1,4 @@
+<map id="Nusselt" name="Nusselt">
+<area shape="rect" id="node1" title="Heat transfer coefficient for forced convective flows that is computed starting from the Nusselt,..." alt="" coords="71,292,187,413"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FFHeatTransferCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) heat transfer coefficient." alt="" coords="5,5,252,244"/>
+</map>

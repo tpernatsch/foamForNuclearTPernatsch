@@ -1,0 +1,30 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" title=" " alt="" coords="5,39,216,80"/>
+<area shape="rect" id="node2" href="$classFoam_1_1solidDirectionMixedFvPatchVectorField.html" title="Author." alt="" coords="264,39,467,80"/>
+<area shape="rect" id="node3" href="$classFoam_1_1fixedDisplacementZeroShearFvPatchVectorField.html" title="The component of the displacement normal to the patch is applied, and the shear traction is set to ze..." alt="" coords="523,39,733,80"/>
+<area shape="rect" id="node4" href="$classFoam_1_1coolantPressureFixedDisplacementZeroShearFvPatchVectorField.html" title="Coolant pressure patch&#45;field of fixed&#45;displacement&#45;zeroShear type. It is designed for the top cap out..." alt="" coords="789,5,1040,47"/>
+<area shape="rect" id="node6" href="$classFoam_1_1plenumSpringFixedDisplacementZeroShearFvPatchVectorField.html" title="Plenum spring patchfield for the top of the fuel column (fixedDisplacement&#45; zeroShear version)." alt="" coords="797,71,1033,112"/>
+<area shape="rect" id="node5" href="$classFoam_1_1topCladRingFixedDisplacementZeroShearFvPatchVectorField.html" title="Patchfield for the top cladding ring, to be used when the top cap is not explicitly part of the model..." alt="" coords="1088,5,1313,47"/>
+<area shape="rect" id="node7" title=" " alt="" coords="265,304,466,345"/>
+<area shape="rect" id="node8" href="$classFoam_1_1GFTractionDisplacementFvPatchVectorField.html" title="Fixed traction boundary condition for the standard linear elastic, fixed coefficient displacement equ..." alt="" coords="530,256,726,297"/>
+<area shape="rect" id="node10" href="$classFoam_1_1tractionDisplacementFvPatchVectorField.html" title="Fixed traction boundary condition for the standard linear elastic, fixed coefficient displacement equ..." alt="" coords="521,352,735,393"/>
+<area shape="rect" id="node9" href="$classFoam_1_1gapContactFvPatchVectorField.html" title="Daugther&#45;class to the tractionDisplacement BC for modeling the contact between fuel and cladding...." alt="" coords="805,202,1024,229"/>
+<area shape="rect" id="node11" href="$classFoam_1_1contactFvPatchVectorField.html" title="Applies interface pressure if surface penetration is detected. Requires regioncoupled...." alt="" coords="818,581,1011,607"/>
+<area shape="rect" id="node12" href="$classFoam_1_1coolantPressureFvPatchVectorField.html" title="Re&#45;implementation of the tractionDisplacement mother class that allows the user to deal only with &quot;co..." alt="" coords="805,253,1024,295"/>
+<area shape="rect" id="node14" href="$classFoam_1_1fixedPointLoadFvPatchVectorField.html" title=" " alt="" coords="810,384,1019,425"/>
+<area shape="rect" id="node15" href="$classFoam_1_1fixedTorqueFvPatchVectorField.html" title=" " alt="" coords="821,449,1009,491"/>
+<area shape="rect" id="node16" href="$classFoam_1_1gapPressureFvPatchVectorField.html" title=" " alt="" coords="817,515,1012,556"/>
+<area shape="rect" id="node17" href="$classFoam_1_1plenumSpringPressureFvPatchVectorField.html" title="Daugther&#45;class to the tractionDisplacement BC for modeling the pressure exerted by the plenum spring." alt="" coords="805,136,1024,177"/>
+<area shape="rect" id="node13" href="$classFoam_1_1topCladRingPressureFvPatchVectorField.html" title="Daugther&#45;class to the tractionDisplacement BC for modeling the effect on the clad of gap pressure,..." alt="" coords="1097,253,1305,295"/>
+<area shape="rect" id="node18" title=" " alt="" coords="280,705,451,731"/>
+<area shape="rect" id="node19" href="$classFoam_1_1fixedDisplacementFvPatchVectorField.html" title="fixedDisplacement patchfield. The fixed displacement can be provided as a time series." alt="" coords="531,632,725,673"/>
+<area shape="rect" id="node23" href="$classFoam_1_1fixedTemperatureFvPatchScalarField.html" title="Boundary condition to impose a fixed temperature." alt="" coords="515,763,741,804"/>
+<area shape="rect" id="node20" href="$classFoam_1_1coolantPressureFixedDisplacementFvPatchVectorField.html" title="Coolant pressure patch&#45;field of fixed&#45;displacement type. It is designed for the top cap outer or bott..." alt="" coords="789,632,1040,673"/>
+<area shape="rect" id="node22" href="$classFoam_1_1plenumSpringFixedDisplacementFvPatchVectorField.html" title="Plenum spring patchfield for the top of the fuel column or for the topCap inner patch (fixedDisplacem..." alt="" coords="797,319,1033,360"/>
+<area shape="rect" id="node21" href="$classFoam_1_1topCladRingFixedDisplacementFvPatchVectorField.html" title="Patchfield for the top cladding ring, to be used when the top cap is not explicitly part of the model..." alt="" coords="1088,632,1313,673"/>
+<area shape="rect" id="node24" href="$classFoam_1_1axialProfileFvPatchScalarField.html" title="Boundary condition to impose a temperature axial profile (constant in time)." alt="" coords="821,763,1008,804"/>
+<area shape="rect" id="node25" href="$classFoam_1_1timeDependentAxialProfileFvPatchScalarField.html" title="Boundary condition to impose a time&#45;dependent axial temperature profile." alt="" coords="816,828,1013,869"/>
+<area shape="rect" id="node26" href="$classFoam_1_1timeDependentTemperatureFvPatchScalarField.html" title="Boundary condition to impose a time&#45;dependent fixed temperature." alt="" coords="812,893,1017,935"/>
+<area shape="rect" id="node27" href="$classFoam_1_1xzTemperatureProfileFvPatchScalarField.html" title="Boundary condition to apply a temperature profile constant in time but varying along x and z directio..." alt="" coords="809,697,1020,739"/>
+<area shape="rect" id="node28" href="$classFoam_1_1plenumSpringBase.html" title="Base class with common functinality for plenumSpring patch fields." alt="" coords="556,143,700,170"/>
+</map>

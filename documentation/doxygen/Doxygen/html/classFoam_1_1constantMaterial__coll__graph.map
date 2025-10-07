@@ -1,0 +1,4 @@
+<map id="constantMaterial" name="constantMaterial">
+<area shape="rect" id="node1" title="Class for the user manual input of the thermomechanical properties of the simulated materials." alt="" coords="45,644,213,765"/>
+<area shape="rect" id="node2" href="$classFoam_1_1materialModel.html" title="Parent class for all materials. Some of its functions are pure virtual and must be implemented in the..." alt="" coords="5,5,252,596"/>
+</map>

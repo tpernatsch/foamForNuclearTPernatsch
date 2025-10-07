@@ -1,0 +1,4 @@
+<map id="init" name="init">
+<area shape="rect" id="node1" title="Initialize the XS data set." alt="" coords="92,5,135,32"/>
+<area shape="rect" id="node2" href="$classFoam_1_1XS.html#a5dcffd55a0e6d9328ac35d8195ad4b4f" title="Construct from mesh and thermo&#45;mechanical properties." alt="" coords="5,5,44,32"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="correct" name="correct">
+<area shape="rect" id="node1" title="Update the burnup." alt="" coords="5,123,72,149"/>
+<area shape="rect" id="node2" href="$UEqn__1p_8H.html#a7fe02434a19f3e00e927f32adcbb193b" title=" " alt="" coords="183,5,241,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1burnupFromPower.html#a3ae44b28050c3aa494c1d8e18cf618c1" title="Update the burnup." alt="" coords="120,57,304,98"/>
+<area shape="rect" id="node4" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="352,123,409,149"/>
+<area shape="rect" id="node5" href="$namespaceFoam.html#ae3317836dd08502698e96ad9524be3da" title=" " alt="" coords="169,173,255,200"/>
+<area shape="rect" id="node6" href="$readNuclearData_8H.html#af3234271aa5248f773a9631104c1f9e3" title=" " alt="" coords="179,224,245,251"/>
+</map>

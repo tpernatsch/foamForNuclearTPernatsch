@@ -1,0 +1,6 @@
+<map id="polyharmonicSplineIntegral" name="polyharmonicSplineIntegral">
+<area shape="rect" id="node1" title="Experimental RBF imposing an integral under the interpolation field." alt="" coords="5,56,207,83"/>
+<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="329,5,387,32"/>
+<area shape="rect" id="node3" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#a99aadde0ced6ab167dc741efca810b7f" title="Polyharmonic spline function." alt="" coords="255,56,461,83"/>
+<area shape="rect" id="node4" href="$solvePointKinetics_8H.html#a7155d56b187a002d8cdd92aa43066620" title=" " alt="" coords="339,107,377,133"/>
+</map>

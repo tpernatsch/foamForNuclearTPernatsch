@@ -1,0 +1,12 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classFoam_1_1heatCapacityModel.html" title="Mother class for heat capacity models." alt="" coords="5,208,153,235"/>
+<area shape="rect" id="node2" href="$classFoam_1_1heatCapacityBanerjee1515Ti.html" title="Correlation for 15&#45;15 Ti heat capacity from Banerjee et al. (2007)." alt="" coords="201,5,412,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1heatCapacityConstant.html" title="Model for constant heat capacity. The value is read from dictionary." alt="" coords="223,56,390,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1heatCapacityFinkUPuO2.html" title="Heat Capacity model for (U,Pu)O2 derived from Fink. Source : https://info.ornl.gov/sites/publications..." alt="" coords="217,107,396,133"/>
+<area shape="rect" id="node5" href="$classFoam_1_1heatCapacityIAEAZy.html" title="Correlation for Zircaloy heat capacity from IAEA. Click here for the related IAEA publication." alt="" coords="229,157,384,184"/>
+<area shape="rect" id="node6" href="$classFoam_1_1heatCapacityMatproUO2.html" title="Heat Capacity model for UO2 derived from MATPROv11." alt="" coords="215,208,398,235"/>
+<area shape="rect" id="node7" href="$classFoam_1_1heatCapacityMatproUPuO2.html" title="Heat Capacity model for (U,Pu)O2 derived from MATPROv11." alt="" coords="207,259,406,285"/>
+<area shape="rect" id="node8" href="$classFoam_1_1heatCapacityMatproZy.html" title="Correlation for Zircaloy heat capacity from Matpro. Link : https://www.nrc.gov/docs/ML1429/ML14296A06..." alt="" coords="221,309,392,336"/>
+<area shape="rect" id="node9" href="$classFoam_1_1heatCapacityMolybdenum.html" title=" " alt="" coords="210,360,403,387"/>
+<area shape="rect" id="node10" href="$classFoam_1_1heatCapacitySneadSiC.html" title="Correlation for SiC heat capacity from Snead et al. (2007)." alt="" coords="222,411,391,437"/>
+</map>

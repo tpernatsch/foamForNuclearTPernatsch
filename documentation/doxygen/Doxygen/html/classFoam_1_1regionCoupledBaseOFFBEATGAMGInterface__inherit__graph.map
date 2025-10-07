@@ -1,0 +1,6 @@
+<map id="regionCoupledBaseOFFBEATGAMGInterface" name="regionCoupledBaseOFFBEATGAMGInterface">
+<area shape="rect" id="node1" title="Base class for GAMG agglomerated coupled region interface." alt="" coords="7,233,349,413"/>
+<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledOFFBEATGAMGInterface.html" title="GAMG agglomerated coupled region interface." alt="" coords="23,461,333,612"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,57,127,134"/>
+<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledOFFBEATLduInterface.html" title="An abstract base class for region coupled interfaces." alt="" coords="151,5,432,185"/>
+</map>

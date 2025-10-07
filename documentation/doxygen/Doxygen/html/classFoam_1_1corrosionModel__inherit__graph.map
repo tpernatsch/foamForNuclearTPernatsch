@@ -1,0 +1,4 @@
+<map id="corrosionModel" name="corrosionModel">
+<area shape="rect" id="node1" title="Base class for patch&#45;specific corrosion models. The parent class typeName is &quot;fromLatestTime&quot;...." alt="" coords="5,5,252,200"/>
+<area shape="rect" id="node2" href="$classFoam_1_1zircaloyOuterCorrosion.html" title="Water&#45;side corrosion for zircaloy cladding. The model&#39;s constants are taken from the BISON manual." alt="" coords="25,248,232,384"/>
+</map>

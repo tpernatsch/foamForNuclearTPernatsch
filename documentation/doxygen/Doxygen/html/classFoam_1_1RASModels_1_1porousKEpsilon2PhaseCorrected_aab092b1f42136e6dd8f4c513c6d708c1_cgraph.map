@@ -1,0 +1,8 @@
+<map id="porousKEpsilon2PhaseCorrected" name="porousKEpsilon2PhaseCorrected">
+<area shape="rect" id="node1" title="Construct from components." alt="" coords="5,107,237,133"/>
+<area shape="rect" id="node2" href="$classFoam_1_1structure.html#aa8ba27c1f6cefdd2cf3456b668e3ebec" title=" " alt="" coords="285,5,492,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1structure.html#a5266b7f2620c92c2ebc4b161bb508dd9" title=" " alt="" coords="296,56,481,83"/>
+<area shape="rect" id="node4" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="360,107,417,133"/>
+<area shape="rect" id="node5" href="$classFoam_1_1RASModels_1_1porousKEpsilon2PhaseCorrected.html#a2cc3daa68147a9052c2b37e9ac37eca4" title="Return the turbulence kinetic energy." alt="" coords="369,157,408,184"/>
+<area shape="rect" id="node6" href="$classFoam_1_1structure.html#ab0b4f2fe70836c04375a5b12d9655dd7" title="Const access." alt="" coords="299,208,479,235"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="NoKazimi" name="NoKazimi">
+<area shape="rect" id="node1" title="No&#45;Kazimi model for interfacial friction." alt="" coords="204,292,325,413"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FFDragCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) drag coefficient." alt="" coords="5,42,252,193"/>
+<area shape="rect" id="node3" href="$classFoam_1_1fluid.html" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="277,5,527,229"/>
+</map>

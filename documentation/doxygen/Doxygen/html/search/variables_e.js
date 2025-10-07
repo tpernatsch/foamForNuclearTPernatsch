@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['o16_9527',['O16',['../GlobalVariables_8C.html#a6a35a678a05079033cf0200f2466776f',1,'GlobalVariables.C']]],
+  ['occoeff_9528',['ocCoeff',['../compressibleInterFoam_2include_2equations_2alphaEqn_8H.html#addd123e02e0f345c7547fe9275c8d573',1,'ocCoeff():&#160;alphaEqn.H'],['../interFoam_2include_2equations_2alphaEqn_8H.html#addd123e02e0f345c7547fe9275c8d573',1,'ocCoeff():&#160;alphaEqn.H']]],
+  ['offbeat_9529',['OFFBEAT',['../interpolateTuFields_8H.html#af669ae67908100d2e8aa2103e18e8f60',1,'interpolateTuFields.H']]],
+  ['ofluidptr_5f_9530',['oFluidPtr_',['../classFoam_1_1twoPhaseDragMultiplierModel.html#aa9093cc2756eabf636ce002235646214',1,'Foam::twoPhaseDragMultiplierModel']]],
+  ['oldtime_5f_9531',['oldTime_',['../classFoam_1_1timeProfile.html#a61b2d759bcdf7d7158bc1decf22a0634',1,'Foam::timeProfile']]],
+  ['oldvalue_5f_9532',['oldValue_',['../classFoam_1_1timeProfile.html#a5cabdbb144f39ab63bb4ce07026dfe88',1,'Foam::timeProfile']]],
+  ['om_5f_9533',['OM_',['../classFoam_1_1poreVelocityMOXLackey.html#a06be8cbe50f430c20e07a6cc4b0b10dc',1,'Foam::poreVelocityMOXLackey']]],
+  ['onebyexp_5f_9534',['oneByExp_',['../classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling.html#acee358bcf72043d5bf26d252ab1cc571',1,'Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling']]],
+  ['onegroupflux_5f_9535',['oneGroupFlux_',['../classFoam_1_1solvers_1_1neutronics.html#a05a39571155b6ded783dee3b1e8d5faf',1,'Foam::solvers::neutronics']]],
+  ['originalpoints_5f_9536',['originalPoints_',['../classFoam_1_1solvers_1_1neutronics.html#a5ef887492dcc62855dc539fa4b10f2dc',1,'Foam::solvers::neutronics::originalPoints_()'],['../classFoam_1_1solvers_1_1thermalHydraulicsModel.html#a5ef887492dcc62855dc539fa4b10f2dc',1,'Foam::solvers::thermalHydraulicsModel::originalPoints_()'],['../classFoam_1_1solvers_1_1thermoMechanics.html#a5ef887492dcc62855dc539fa4b10f2dc',1,'Foam::solvers::thermoMechanics::originalPoints_()']]],
+  ['originx_5f_9537',['originX_',['../classFoam_1_1latticeMap.html#aeac758c56414abba14929db79be860f5',1,'Foam::latticeMap']]],
+  ['originy_5f_9538',['originY_',['../classFoam_1_1latticeMap.html#ab7a74394f6cbbf5190dca74695caed3d',1,'Foam::latticeMap']]],
+  ['otherfluid_5f_9539',['otherFluid_',['../classFoam_1_1FFHeatTransferCoefficientModel.html#a8c5ad90c0cd1c97dfe58525a288d0f47',1,'Foam::FFHeatTransferCoefficientModel']]],
+  ['otherfluidptr_5f_9540',['otherFluidPtr_',['../classFoam_1_1flowEnhancementFactorModels_1_1COBRA__TF.html#a4615ddb7d592b36a28f7812ea1e824f7',1,'Foam::flowEnhancementFactorModels::COBRA_TF::otherFluidPtr_()'],['../classFoam_1_1TONBModel.html#a4615ddb7d592b36a28f7812ea1e824f7',1,'Foam::TONBModel::otherFluidPtr_()'],['../classFoam_1_1suppressionFactorModels_1_1Chen.html#a4615ddb7d592b36a28f7812ea1e824f7',1,'Foam::suppressionFactorModels::Chen::otherFluidPtr_()']]],
+  ['outofboundsmehtodnames_5f_9541',['outofBoundsMehtodNames_',['../classFoam_1_1InterpolateTableBaseGF.html#a0ca14154112aa029d76b1d18aa62d601',1,'Foam::InterpolateTableBaseGF']]],
+  ['output_5ffile_9542',['Output_file',['../MainVariables_8C.html#aafb81fd67fdd3da7806926c11dc31859',1,'MainVariables.C']]],
+  ['oxidethickness_5f_9543',['oxideThickness_',['../classFoam_1_1corrosion.html#a6ce4f4709864caa70f0cda8ae50aa926',1,'Foam::corrosion']]],
+  ['oxygen_5fto_5fmetal_5fratio_9544',['Oxygen_to_metal_ratio',['../GlobalVariables_8C.html#a62ec9bd41c3696820347691fae19b6a9',1,'GlobalVariables.C']]],
+  ['oxygenmetalratio_5f_9545',['oxygenMetalRatio_',['../classFoam_1_1fissionGasRelease.html#a017d7bce4c1cf95a128a49a8c52a8629',1,'Foam::fissionGasRelease::oxygenMetalRatio_()'],['../classFoam_1_1fuelMaterial.html#a532723027aff7409e6747a1a8529ae67',1,'Foam::fuelMaterial::oxygenMetalRatio_()']]]
+];

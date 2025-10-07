@@ -1,0 +1,11 @@
+<map id="updateCoeffs" name="updateCoeffs">
+<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="5,196,113,223"/>
+<area shape="rect" id="node2" href="$UEqn__1p_8H.html#a7fe02434a19f3e00e927f32adcbb193b" title=" " alt="" coords="512,32,571,59"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="513,167,570,193"/>
+<area shape="rect" id="node4" href="$classFoam_1_1trisoGapFvPatchScalarField.html#a66d6ceb4f8baa05f6925129e54af8130" title="Return the gap width." alt="" coords="219,272,303,299"/>
+<area shape="rect" id="node5" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a05f9da785fabd880c4a17a02b2365cb9" title="Interpolate field." alt="" coords="416,219,667,261"/>
+<area shape="rect" id="node6" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a46c8495af036bc6de089ae800f741df0" title="Return regionCoupledBase neighb Patch." alt="" coords="408,287,675,329"/>
+<area shape="rect" id="node7" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a1b3f4e19df6ef6a92dad048eb1097423" title="Return regionCoupledPolyPatch." alt="" coords="408,359,675,401"/>
+<area shape="rect" id="node8" href="$classFoam_1_1trisoGapFvPatchScalarField.html#aa3ddec8ed563ce303f2520f7945066e1" title="Return the interface conductance." alt="" coords="233,171,289,197"/>
+<area shape="rect" id="node9" href="$classFoam_1_1resistiveGapFvPatchScalarField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="161,54,360,95"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="poreVelocityMOXLackey" name="poreVelocityMOXLackey">
+<area shape="rect" id="node1" title="Model to compute pore velocity within MOX fuel with the correlation provided by Lackey et Al." alt="" coords="21,263,236,428"/>
+<area shape="rect" id="node2" href="$classFoam_1_1poreVelocityModel.html" title="Mother class for pore velocity models. If selected, sets the velocity to zero." alt="" coords="5,5,252,215"/>
+</map>

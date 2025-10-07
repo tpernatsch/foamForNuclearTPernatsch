@@ -1,0 +1,4 @@
+<map id="elementTransport" name="elementTransport">
+<area shape="rect" id="node1" title="Mother class for handling element transport solvers." alt="" coords="5,5,252,229"/>
+<area shape="rect" id="node2" href="$classFoam_1_1elementTransportByList.html" title="Class that gathers all the user&#45;selected transport solvers in a ptrList, to handle the solution of th..." alt="" coords="23,277,235,457"/>
+</map>

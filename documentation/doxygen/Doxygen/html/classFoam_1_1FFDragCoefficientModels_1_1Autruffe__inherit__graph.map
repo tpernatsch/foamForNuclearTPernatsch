@@ -1,0 +1,4 @@
+<map id="Autruffe" name="Autruffe">
+<area shape="rect" id="node1" title="Autruffe correlation for the friction factor between two fluids, originally developed for sodium liqu..." alt="" coords="71,219,187,340"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FFDragCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) drag coefficient." alt="" coords="5,5,252,171"/>
+</map>

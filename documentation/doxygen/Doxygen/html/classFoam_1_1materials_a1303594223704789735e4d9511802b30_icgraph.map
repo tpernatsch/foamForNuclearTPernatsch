@@ -1,0 +1,8 @@
+<map id="matAddrList" name="matAddrList">
+<area shape="rect" id="node1" title="Return reference to material addressing list." alt="" coords="269,143,371,170"/>
+<area shape="rect" id="node2" href="$classFoam_1_1burnupLassmann.html#a649a6a9220f36a953efc8cdbe9abfbb4" title="Construct from mesh, global Options, materials and dict." alt="" coords="25,5,202,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1sliceMapperAutoAxialSlices.html#a289b7069a688c48f8ddc88bbba6a4085" title=" " alt="" coords="9,71,217,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1sliceMapperByMaterial.html#a289b7069a688c48f8ddc88bbba6a4085" title=" " alt="" coords="5,136,221,177"/>
+<area shape="rect" id="node5" href="$classFoam_1_1sliceMapperByPellets.html#a289b7069a688c48f8ddc88bbba6a4085" title=" " alt="" coords="10,201,217,243"/>
+<area shape="rect" id="node6" href="$classFoam_1_1fissionGasRelease.html#a0e62e1ecf7cf14a4a7e1fbcf694cb8f9" title="Construct from mesh, materials and dict." alt="" coords="21,267,206,308"/>
+</map>

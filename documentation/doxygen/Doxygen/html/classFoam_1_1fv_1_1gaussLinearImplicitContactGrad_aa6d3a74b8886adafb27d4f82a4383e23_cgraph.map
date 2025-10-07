@@ -1,0 +1,5 @@
+<map id="correctBoundaryConditions" name="correctBoundaryConditions">
+<area shape="rect" id="node1" title="Correct the boundary values of the gradient using the patchField." alt="" coords="5,31,204,57"/>
+<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="252,5,309,32"/>
+<area shape="rect" id="node3" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="261,56,300,83"/>
+</map>

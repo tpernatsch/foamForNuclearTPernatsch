@@ -1,0 +1,4 @@
+<map id="poreVelocityMOXClementFinnis" name="poreVelocityMOXClementFinnis">
+<area shape="rect" id="node1" title="Model to compute pore velocity with the correlation provided by Clement and Finnis." alt="" coords="5,263,268,443"/>
+<area shape="rect" id="node2" href="$classFoam_1_1poreVelocityModel.html" title="Mother class for pore velocity models. If selected, sets the velocity to zero." alt="" coords="13,5,260,215"/>
+</map>

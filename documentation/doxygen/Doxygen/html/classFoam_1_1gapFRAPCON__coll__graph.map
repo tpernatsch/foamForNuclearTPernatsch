@@ -1,0 +1,4 @@
+<map id="gapFRAPCON" name="gapFRAPCON">
+<area shape="rect" id="node1" title="Model for gap gas composition, volume, temperature and pressure. Some routines are derived from FRAPC..." alt="" coords="54,527,203,853"/>
+<area shape="rect" id="node2" href="$classFoam_1_1gapGasModel.html" title="Parent class for gap gas model. The user can select the gap gas model specifying the keyword &quot;gapGas&quot;..." alt="" coords="5,5,252,479"/>
+</map>

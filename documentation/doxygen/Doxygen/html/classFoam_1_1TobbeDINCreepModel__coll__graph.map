@@ -1,0 +1,4 @@
+<map id="TobbeDINCreepModel" name="TobbeDINCreepModel">
+<area shape="rect" id="node1" title="Creep model from Tobbe (1975) correlation, for the specific steel DIN 1.4970m of the 15&#45;15 Ti class...." alt="" coords="29,351,228,472"/>
+<area shape="rect" id="node2" href="$classFoam_1_1creepModel.html" title="Creep model mother class." alt="" coords="5,5,252,303"/>
+</map>

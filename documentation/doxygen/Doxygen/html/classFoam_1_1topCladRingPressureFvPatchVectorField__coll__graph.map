@@ -1,0 +1,4 @@
+<map id="topCladRingPressureFvPatchVectorField" name="topCladRingPressureFvPatchVectorField">
+<area shape="rect" id="node1" title="Daugther&#45;class to the tractionDisplacement BC for modeling the effect on the clad of gap pressure,..." alt="" coords="11,336,233,575"/>
+<area shape="rect" id="node2" href="$classFoam_1_1coolantPressureFvPatchVectorField.html" title="Re&#45;implementation of the tractionDisplacement mother class that allows the user to deal only with &quot;co..." alt="" coords="5,5,239,288"/>
+</map>

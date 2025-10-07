@@ -1,0 +1,4 @@
+<map id="conductivityUPuO2Magni2020" name="conductivityUPuO2Magni2020">
+<area shape="rect" id="node1" title="Model for thermal conductivity of high&#45;Pu content MOX. The used correlation is taken from &quot;Modelling ..." alt="" coords="5,204,260,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="9,5,256,156"/>
+</map>

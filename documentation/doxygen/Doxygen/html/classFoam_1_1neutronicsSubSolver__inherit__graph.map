@@ -1,0 +1,4 @@
+<map id="neutronicsSubSolver" name="neutronicsSubSolver">
+<area shape="rect" id="node1" title="Parent class for neutronics subsolver." alt="" coords="5,5,252,273"/>
+<area shape="rect" id="node2" href="$classFoam_1_1diffusionSolver.html" title="Daugther class of neutronicsSubSolver class based on one&#45;group diffusion theory." alt="" coords="51,321,206,545"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="conductivityPARFUMESiC" name="conductivityPARFUMESiC">
+<area shape="rect" id="node1" title="Conductivity of PyC material from PARFUME manual." alt="" coords="17,204,240,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="5,5,252,156"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classFoam_1_1burnup.html" title="Parent class for burnup model. It prepares functionalities for daughter classes but does not create t..." alt="" coords="5,5,72,32"/>
+<area shape="rect" id="node2" href="$classFoam_1_1constantBurnup.html" title="Derived from burnup mother class, this class reads the burnup field from the initial condition file." alt="" coords="120,5,244,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1burnupFromPower.html" title="Derived from constantBurnup, this class calculates the evolution of burnup over time from the local p..." alt="" coords="292,5,432,32"/>
+<area shape="rect" id="node4" href="$classFoam_1_1burnupLassmann.html" title="Class to handle the depletion of 14 selected nuclides through the numerical solution of simplified Ba..." alt="" coords="480,5,613,32"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="thermalSubSolver" name="thermalSubSolver">
+<area shape="rect" id="node1" title="Parent class for thermal solvers." alt="" coords="72,5,319,449"/>
+<area shape="rect" id="node2" href="$classFoam_1_1readTemperature.html" title="Daugther calss of thermalSubSolver that allows to provide the solver with a set of pre&#45;calculated and..." alt="" coords="5,497,175,619"/>
+<area shape="rect" id="node3" href="$classFoam_1_1solidConductionSolver.html" title="Class handling the solid heat conduction in presence of a heat source." alt="" coords="199,497,402,619"/>
+</map>

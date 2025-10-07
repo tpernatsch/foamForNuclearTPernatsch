@@ -1,0 +1,4 @@
+customPimpleControl/customPimpleControl.C
+
+
+LIB = $(FOAM_USER_LIBBIN)/libSolutionControl

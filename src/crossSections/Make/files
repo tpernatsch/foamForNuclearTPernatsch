@@ -1,0 +1,4 @@
+XS/nuclearDataOneEnergy/nuclearDataOneEnergy.C
+XS/XS/XS.C
+
+LIB = $(FOAM_USER_LIBBIN)/libCrossSections

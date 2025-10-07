@@ -1,0 +1,4 @@
+<map id="constructDiameterModel" name="constructDiameterModel">
+<area shape="rect" id="node1" title="Construct diameter model. Only relevant in twoPhase simulations." alt="" coords="5,5,188,32"/>
+<area shape="rect" id="node2" href="$classFoam_1_1fluidDiameterModel.html#a6f22fb248e45888d4afe527f6e17e593" title=" " alt="" coords="236,5,468,32"/>
+</map>

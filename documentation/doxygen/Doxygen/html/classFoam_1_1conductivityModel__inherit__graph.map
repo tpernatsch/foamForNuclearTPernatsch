@@ -1,0 +1,17 @@
+<map id="conductivityModel" name="conductivityModel">
+<area shape="rect" id="node1" title="Mother class for conductivity models." alt="" coords="1563,5,1809,156"/>
+<area shape="rect" id="node2" href="$classFoam_1_1conductivityConstant.html" title="Model for constant conductivity. The value is read from dictionary." alt="" coords="5,226,201,347"/>
+<area shape="rect" id="node3" href="$classFoam_1_1conductivityMatproUO2.html" title="Model for UO2 conductivity from MATPROv11." alt="" coords="225,226,437,347"/>
+<area shape="rect" id="node4" href="$classFoam_1_1conductivityMolybdenum.html" title=" " alt="" coords="461,211,708,362"/>
+<area shape="rect" id="node5" href="$classFoam_1_1conductivityNfirUO2.html" title="Model for thermal conductivity of UO2 from Nfir." alt="" coords="733,226,922,347"/>
+<area shape="rect" id="node6" href="$classFoam_1_1conductivityPARFUMEBuffer.html" title="Buffer thermal conductivity model." alt="" coords="946,226,1186,347"/>
+<area shape="rect" id="node7" href="$classFoam_1_1conductivityPARFUMESiC.html" title="Conductivity of PyC material from PARFUME manual." alt="" coords="1211,226,1433,347"/>
+<area shape="rect" id="node8" href="$classFoam_1_1conductivityRelapZy.html" title="Model for conductivity of Zircaloy material derived by RELAP." alt="" coords="1458,226,1650,347"/>
+<area shape="rect" id="node9" href="$classFoam_1_1conductivitySwindemanHastelloyN.html" title="Model for conductivity of H&#45;N, derived from the work of Swinderman." alt="" coords="1675,226,1961,347"/>
+<area shape="rect" id="node10" href="$classFoam_1_1conductivityTobbe1515Ti.html" title="Class modelling conductivity of 15&#45;15 Ti cladding material through the Tobbe correlation (1975)." alt="" coords="1985,226,2205,347"/>
+<area shape="rect" id="node11" href="$classFoam_1_1conductivityUO2IFA601.html" title="Model for conductivity of UO2 &#45; IFA&#45;601 rod." alt="" coords="2229,226,2439,347"/>
+<area shape="rect" id="node12" href="$classFoam_1_1conductivityUPuO2Kato.html" title="S.Novascone et al.,Modeling porosity migration in LWR and fast reactor MOX fuel using the finite elem..." alt="" coords="2463,226,2675,347"/>
+<area shape="rect" id="node13" href="$classFoam_1_1conductivityUPuO2LanningBeyer.html" title=" " alt="" coords="2699,204,2921,369"/>
+<area shape="rect" id="node14" href="$classFoam_1_1conductivityUPuO2Magni2020.html" title="Model for thermal conductivity of high&#45;Pu content MOX. The used correlation is taken from &quot;Modelling ..." alt="" coords="2945,226,3200,347"/>
+<area shape="rect" id="node15" href="$classFoam_1_1conductivityUPuO2Philipponneau.html" title="Model for thermal conductivity of MOX taken from &quot;Thermal conductivity of &#160;(U,Pu)O2−x mixed oxide fue..." alt="" coords="3225,226,3499,347"/>
+</map>

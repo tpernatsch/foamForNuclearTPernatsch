@@ -1,0 +1,4 @@
+<map id="sliceMapperByPellets" name="sliceMapperByPellets">
+<area shape="rect" id="node1" title="The slices are created with a similar algorithm as in the sliceMappeByMaterial class...." alt="" coords="29,453,228,575"/>
+<area shape="rect" id="node2" href="$classFoam_1_1sliceMapper.html" title="Parent class for slice mapper. This class creates a mapping framework for passing information from an..." alt="" coords="5,5,252,405"/>
+</map>

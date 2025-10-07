@@ -1,0 +1,4 @@
+<map id="thermalExpansionMartinUPuO2" name="thermalExpansionMartinUPuO2">
+<area shape="rect" id="node1" title="Class modelling thermal expansion of MOX fuel according to Martin correlation. Source : &quot;Thermophysic..." alt="" coords="5,219,268,340"/>
+<area shape="rect" id="node2" href="$classFoam_1_1thermalExpansionModel.html" title="Mother class for thermal expansion models." alt="" coords="13,5,260,171"/>
+</map>

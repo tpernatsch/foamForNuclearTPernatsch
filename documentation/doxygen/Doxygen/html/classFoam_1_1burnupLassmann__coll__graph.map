@@ -1,0 +1,4 @@
+<map id="burnupLassmann" name="burnupLassmann">
+<area shape="rect" id="node1" title="Class to handle the depletion of 14 selected nuclides through the numerical solution of simplified Ba..." alt="" coords="9,233,178,413"/>
+<area shape="rect" id="node2" href="$classFoam_1_1burnupFromPower.html" title="Derived from constantBurnup, this class calculates the evolution of burnup over time from the local p..." alt="" coords="5,5,181,185"/>
+</map>

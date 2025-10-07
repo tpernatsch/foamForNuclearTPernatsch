@@ -1,0 +1,4 @@
+<map id="corrosionByPatch" name="corrosionByPatch">
+<area shape="rect" id="node1" title="A corrosion model is created for each patch listed in the corrosionOptions dictionary." alt="" coords="43,351,214,501"/>
+<area shape="rect" id="node2" href="$classFoam_1_1corrosion.html" title="Base class for handling corrosion models. The user can select the corrosion model specifying the keyw..." alt="" coords="5,5,252,303"/>
+</map>

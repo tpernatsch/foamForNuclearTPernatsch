@@ -1,22 +1,26 @@
 #!/bin/sh
 cd ${0%/*} || exit 1    # Run from this directory
 
-wclean libso ./src/classes/common
-wclean libso ./src/classes/multiRegion
-wclean libso ./src/classes/thermalHydraulics/src
-wclean libso ./src/classes/thermalHydraulics/solvers
-wclean libso ./src/classes/neutronics
-wclean libso ./src/classes/thermoMechanics
+# clean OFFBEAT libs
+wclean libso ./src/offbeat/src/SCIANTIX
+wclean libso ./src/offbeat/src/offbeatLib
 
-if [ -d "./src/classes/offbeat/src/offbeatLib" ]
-then
-    wclean libso ./src/classes/offbeat/solvers
-    wclean libso ./src/classes/offbeat/src/offbeatLib
-    wclean libso ./src/classes/offbeat/src/SCIANTIX
-fi
+# clean src libs
+wclean libso ./src/interpolationModels 
+wclean libso ./src/solutionControl 
+wclean libso ./src/profiles 
+wclean libso ./src/crossSections
+wclean libso ./src/porousMediaModels
+wclean libso ./src/thermophysicalProperties
+wclean libso ./src/multiRegion
+wclean libso ./src/fvPatchFields
 
-wclean libso ./src/classes/openFoamImportedSolvers
-wclean ./GeN-Foam
+# clean modules
+wclean libso ./applications/modules/thermalHydraulics
+wclean libso ./applications/modules/neutronics
+wclean libso ./applications/modules/thermoMechanics
+wclean libso ./applications/modules/fuelBehaviour
+wclean libso ./applications/modules/openFoamImported
 
-wclean ./tests/hydrogenThermophysicalProperties
-wclean ./tests/radialBasisFunctions
+# clean apps
+wclean libso ./applications/solvers/GeN-Foam

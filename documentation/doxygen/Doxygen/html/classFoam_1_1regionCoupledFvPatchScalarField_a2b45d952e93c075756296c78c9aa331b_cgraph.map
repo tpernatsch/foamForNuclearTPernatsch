@@ -1,0 +1,7 @@
+<map id="weights" name="weights">
+<area shape="rect" id="node1" title="Local weight for this coupled field." alt="" coords="5,97,79,124"/>
+<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="231,5,289,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a05f9da785fabd880c4a17a02b2365cb9" title="Interpolate field." alt="" coords="135,57,385,98"/>
+<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a66e91b4823e075c8fd369857a957f833" title="Return neighbor fvPatch." alt="" coords="127,122,393,163"/>
+<area shape="rect" id="node5" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a1b3f4e19df6ef6a92dad048eb1097423" title="Return regionCoupledPolyPatch." alt="" coords="127,187,393,229"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="materialsByZone" name="materialsByZone">
+<area shape="rect" id="node1" title="Construct from mesh and dictionary." alt="" coords="5,56,140,83"/>
+<area shape="rect" id="node2" href="$classFoam_1_1materialsByZone.html#aaedae3e4d1713745f2eb9ca0b5b22083" title="Update addressing for each material." alt="" coords="227,5,347,32"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="435,31,492,57"/>
+<area shape="rect" id="node4" href="$classFoam_1_1materialModel.html#a826c6b53271ea838bf2b10c25332d7bd" title="Select from dictionary." alt="" coords="188,107,387,133"/>
+</map>

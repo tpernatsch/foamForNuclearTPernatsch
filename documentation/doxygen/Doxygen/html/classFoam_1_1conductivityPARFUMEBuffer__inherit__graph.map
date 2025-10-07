@@ -1,0 +1,4 @@
+<map id="conductivityPARFUMEBuffer" name="conductivityPARFUMEBuffer">
+<area shape="rect" id="node1" title="Buffer thermal conductivity model." alt="" coords="9,204,249,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="5,5,252,156"/>
+</map>

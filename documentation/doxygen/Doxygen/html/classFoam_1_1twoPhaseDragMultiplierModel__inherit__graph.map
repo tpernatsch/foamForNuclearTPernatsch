@@ -1,0 +1,12 @@
+<map id="twoPhaseDragMultiplierModel" name="twoPhaseDragMultiplierModel">
+<area shape="rect" id="node1" title="Author: Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)" alt="" coords="506,131,761,384"/>
+<area shape="rect" id="node3" href="$classFoam_1_1twoPhaseDragMultiplierModels_1_1ChenKalish.html" title="Model by Chen and Kalish for the multiplier, specifically for potassium two&#45;phase flows:" alt="" coords="5,432,136,553"/>
+<area shape="rect" id="node4" href="$classFoam_1_1twoPhaseDragMultiplierModels_1_1Kaiser74.html" title="Model by Kaiser et al. for the multiplier, specifically for sodium two&#45;phase flows:" alt="" coords="161,432,277,553"/>
+<area shape="rect" id="node5" href="$classFoam_1_1twoPhaseDragMultiplierModels_1_1Kaiser88.html" title="Model by Kaiser et al. for the multiplier, specifically for sodium two&#45;phase flows:" alt="" coords="301,432,417,553"/>
+<area shape="rect" id="node6" href="$classFoam_1_1twoPhaseDragMultiplierModels_1_1KottowskiSavatteri.html" title="Model by Kottowski and Savatteri for the multiplier, specifically for sodium two&#45;phase flows:" alt="" coords="441,432,623,553"/>
+<area shape="rect" id="node7" href="$classFoam_1_1twoPhaseDragMultiplierModels_1_1LockhartMartinelli.html" title="Class to handle fluid&#45;structure friction coefficient (drag) multipliers." alt="" coords="647,432,823,553"/>
+<area shape="rect" id="node8" href="$classFoam_1_1twoPhaseDragMultiplierModels_1_1LottesFlinn.html" title="Model in the spirit of Lottes&#45;Flinn, i.e.:" alt="" coords="847,432,977,553"/>
+<area shape="rect" id="node9" href="$classFoam_1_1twoPhaseDragMultiplierModels_1_1LottesFlinnNguyen.html" title="Model in the spirit of Lottes&#45;Flinn, i.e.:" alt="" coords="1002,432,1182,553"/>
+<area shape="rect" id="node10" href="$classFoam_1_1twoPhaseDragMultiplierModels_1_1constant.html" title="Returns a constant multiplier. Just for code testing purposes." alt="" coords="1206,432,1322,553"/>
+<area shape="rect" id="node2" title=" " alt="" coords="583,5,684,83"/>
+</map>

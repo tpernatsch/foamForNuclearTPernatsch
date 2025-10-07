@@ -1,0 +1,4 @@
+<map id="CachardLiquid" name="CachardLiquid">
+<area shape="rect" id="node1" title="Heat transfer coefficient for Inverted Annular Flow &#45; for the liquid phase. This code cooperate with ..." alt="" coords="53,263,204,384"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FSHeatTransferCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) heat transfer coefficient." alt="" coords="5,5,252,215"/>
+</map>

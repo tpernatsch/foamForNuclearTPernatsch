@@ -1,0 +1,16 @@
+<map id="updateVariables" name="updateVariables">
+<area shape="rect" id="node1" title="Update variables at the end of time step." alt="" coords="5,284,132,311"/>
+<area shape="rect" id="node2" href="$MainVariables_8C.html#a37e42c8ec23608460ab0d31e74fa691e" title=" " alt="" coords="385,5,463,32"/>
+<area shape="rect" id="node3" href="$GlobalVariables_8C.html#ad0c24ba77401891635172ee247392b5e" title=" " alt="" coords="195,436,273,463"/>
+<area shape="rect" id="node4" href="$MainVariables_8C.html#a71b7e957e36e7100f3df67418f6d621c" title=" " alt="" coords="357,132,491,159"/>
+<area shape="rect" id="node5" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="205,487,263,513"/>
+<area shape="rect" id="node6" href="$MainVariables_8C.html#a751e9a885c7d74fb68adf4ef4a19b43f" title=" " alt="" coords="336,81,512,108"/>
+<area shape="rect" id="node7" href="$MainVariables_8C.html#a23fa458641fd228ce94e0214a3d14386" title=" " alt="" coords="347,296,501,323"/>
+<area shape="rect" id="node8" href="$InputReading_8C.html#a5a576d8f8e46e9585c2a9270a1c59975" title=" " alt="" coords="180,132,288,159"/>
+<area shape="rect" id="node9" href="$MainVariables_8C.html#a117e8d6448c5083b8521d35e8bc0fd12" title=" " alt="" coords="352,183,496,209"/>
+<area shape="rect" id="node10" href="$MainVariables_8C.html#a2b9dea9ea2bb5c6558daed801850744e" title=" " alt="" coords="377,233,471,260"/>
+<area shape="rect" id="node11" href="$MainSCIANTIX_8C.html#a36f6e107003687250e8e0b4835c93a0a" title=" " alt="" coords="180,233,288,260"/>
+<area shape="rect" id="node12" href="$MainVariables_8C.html#ae1ce1257601fdc2063b6585f173ecda1" title=" " alt="" coords="373,372,475,399"/>
+<area shape="rect" id="node13" href="$SetOptions_8C.html#a06928130e698781bc8f037cc60a30f89" title=" " alt="" coords="187,537,281,564"/>
+<area shape="rect" id="node14" href="$MainVariables_8C.html#abf9772488ce9d05229dc985f35833a2b" title=" " alt="" coords="184,588,284,615"/>
+</map>

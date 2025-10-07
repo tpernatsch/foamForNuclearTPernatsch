@@ -1,0 +1,5 @@
+<map id="elementTransportByList" name="elementTransportByList">
+<area shape="rect" id="node1" title="Construct from mesh, materials and dictionary." alt="" coords="5,31,181,57"/>
+<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="302,5,359,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1transportSolver.html#a0880054076362de5921334a970bb887a" title="Return a pointer to a new transport solver." alt="" coords="229,56,432,83"/>
+</map>

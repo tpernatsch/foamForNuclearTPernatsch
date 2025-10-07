@@ -1,0 +1,4 @@
+<map id="multiRegimeBoilingVapourTRACE" name="multiRegimeBoilingVapourTRACE">
+<area shape="rect" id="node1" title="Heat transfer coefficient for the transition Boiling Regime and the POST CHF Regimes (vapour side)...." alt="" coords="17,263,240,428"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FSHeatTransferCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) heat transfer coefficient." alt="" coords="5,5,252,215"/>
+</map>

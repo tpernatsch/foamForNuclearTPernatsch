@@ -1,0 +1,4 @@
+<map id="burnupFromPower" name="burnupFromPower">
+<area shape="rect" id="node1" title="Derived from constantBurnup, this class calculates the evolution of burnup over time from the local p..." alt="" coords="5,248,181,428"/>
+<area shape="rect" id="node2" href="$classFoam_1_1constantBurnup.html" title="Derived from burnup mother class, this class reads the burnup field from the initial condition file." alt="" coords="13,5,173,200"/>
+</map>

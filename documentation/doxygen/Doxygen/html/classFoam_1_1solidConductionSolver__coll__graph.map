@@ -1,0 +1,4 @@
+<map id="solidConductionSolver" name="solidConductionSolver">
+<area shape="rect" id="node1" title="Class handling the solid heat conduction in presence of a heat source." alt="" coords="27,483,230,604"/>
+<area shape="rect" id="node2" href="$classFoam_1_1thermalSubSolver.html" title="Parent class for thermal solvers." alt="" coords="5,5,252,435"/>
+</map>

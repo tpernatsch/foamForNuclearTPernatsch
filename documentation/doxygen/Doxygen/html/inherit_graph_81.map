@@ -1,0 +1,10 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" title=" " alt="" coords="427,71,498,98"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledOFFBEATFvPatch.html" title="Common functionality for regionCoupleFvPatch and regionCoupledWallFvPatch." alt="" coords="688,71,915,98"/>
+<area shape="rect" id="node3" title=" " alt="" coords="73,173,194,199"/>
+<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledBaseOFFBEATGAMGInterface.html" title="Base class for GAMG agglomerated coupled region interface." alt="" coords="309,173,616,199"/>
+<area shape="rect" id="node5" href="$classFoam_1_1regionCoupledOFFBEATGAMGInterface.html" title="GAMG agglomerated coupled region interface." alt="" coords="664,173,939,199"/>
+<area shape="rect" id="node6" title=" " alt="" coords="413,122,513,149"/>
+<area shape="rect" id="node7" href="$classFoam_1_1regionCoupledOFFBEATLduInterface.html" title="An abstract base class for region coupled interfaces." alt="" coords="5,67,261,94"/>
+<area shape="rect" id="node8" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html" title="Base class of regionCoupledFvPatch with common functionality for regionCoupledFvPatch and regionCoupl..." alt="" coords="351,5,574,47"/>
+</map>

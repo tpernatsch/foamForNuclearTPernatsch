@@ -1,0 +1,12 @@
+solver/solver.C
+solver/solverNew.C
+regionSolvers/regionSolvers.C
+meshHandler/meshHandler.C
+meshHandler/mergeOrSplitBaffles/mergeOrSplitBaffles.C
+loop/loop.C
+loop/loopModels/FSILoop/FSILoop.C
+loop/loopModels/CHTLoop/CHTLoop.C
+loop/loopModels/picardLoop/picardLoop.C
+loop/loopModels/picardLoopNoFluid/picardLoopNoFluid.C
+
+LIB = $(FOAM_USER_LIBBIN)/libMultiRegion

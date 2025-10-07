@@ -1,0 +1,4 @@
+<map id="checkFailure" name="checkFailure">
+<area shape="rect" id="node1" title="Check if failure occurred in the material." alt="" coords="232,13,335,39"/>
+<area shape="rect" id="node2" href="$classFoam_1_1materialsByZone.html#ac0331c74f8920bf0d9b418dbc1022e2a" title="Check material failure occurrence." alt="" coords="5,5,184,47"/>
+</map>

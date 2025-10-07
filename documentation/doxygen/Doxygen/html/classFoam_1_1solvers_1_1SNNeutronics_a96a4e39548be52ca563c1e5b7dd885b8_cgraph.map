@@ -1,0 +1,6 @@
+<map id="power" name="power">
+<area shape="rect" id="node1" title="Return power." alt="" coords="5,56,68,83"/>
+<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="167,5,224,32"/>
+<area shape="rect" id="node3" href="$solveNeutronicsAdjoint_8H.html#ae5591870910ae075926ced03a5923185" title=" " alt="" coords="171,56,220,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1XS.html#aa3757df4a20f8fb067a76e9acb069849" title=" " alt="" coords="116,107,275,133"/>
+</map>

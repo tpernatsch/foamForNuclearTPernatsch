@@ -1,0 +1,4 @@
+<map id="neighbour" name="neighbour">
+<area shape="rect" id="node1" title="Return the neighbour patchField." alt="" coords="5,13,92,39"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a66e91b4823e075c8fd369857a957f833" title="Return neighbor fvPatch." alt="" coords="140,5,407,47"/>
+</map>

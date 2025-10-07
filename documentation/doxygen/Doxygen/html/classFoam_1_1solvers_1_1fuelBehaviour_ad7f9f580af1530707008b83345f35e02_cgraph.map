@@ -1,0 +1,8 @@
+<map id="correctPhysics" name="correctPhysics">
+<area shape="rect" id="node1" title="Called at the start of the time&#45;step, before the PIMPLE loop." alt="" coords="5,107,121,133"/>
+<area shape="rect" id="node2" href="$namespaceFoam.html#a2271e5e85d1beaf72684ebf2effbed35" title="Call relax() for each GeometricField&lt;Type&gt; PtrList." alt="" coords="195,5,411,32"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="274,56,331,83"/>
+<area shape="rect" id="node4" href="$namespaceFoam.html#a83c66213b1559c51dd0c02e70b9649a0" title="Call relax() for each GeometricField&lt;Type&gt; PtrList." alt="" coords="213,107,392,133"/>
+<area shape="rect" id="node5" href="$namespaceFoam.html#a36639954baf7476f9632bf234c3d967b" title="Call storePrevIter() for each GeometricField&lt;Type&gt; PtrList." alt="" coords="187,157,418,184"/>
+<area shape="rect" id="node6" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#ad538fccfe3d43de0c90d84e2be2ea5b6" title="Update AMI." alt="" coords="169,209,436,250"/>
+</map>

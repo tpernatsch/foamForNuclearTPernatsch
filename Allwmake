@@ -134,34 +134,28 @@ echo "Allwmake GeN-Foam"
 git submodule update --init --recursive src/classes/offbeat
 
 # Make OFFBEAT libs
-wmake -j$num_jobs ./src/classes/offbeat/src/SCIANTIX
-wmake -j$num_jobs ./src/classes/offbeat/src/offbeatLib
+wmake -j$num_jobs ./src/offbeat/src/SCIANTIX
+wmake -j$num_jobs ./src/offbeat/src/offbeatLib
 
-# Make common libs
-wmake -j$num_jobs ./src/classes/common
+# Make src libs
+wmake -j$num_jobs ./src/interpolationModels 
+wmake -j$num_jobs ./src/solutionControl 
+wmake -j$num_jobs ./src/profiles 
+wmake -j$num_jobs ./src/crossSections
+wmake -j$num_jobs ./src/porousMediaModels
+wmake -j$num_jobs ./src/thermophysicalProperties
+wmake -j$num_jobs ./src/multiRegion
+wmake -j$num_jobs ./src/fvPatchFields
 
-# Make multi-region functions
-wmake -j$num_jobs ./src/classes/multiRegion
+# Make modules
+wmake -j$num_jobs ./applications/modules/thermalHydraulics
+wmake -j$num_jobs ./applications/modules/neutronics
+wmake -j$num_jobs ./applications/modules/thermoMechanics
+wmake -j$num_jobs ./applications/modules/fuelBehaviour
+wmake -j$num_jobs ./applications/modules/openFoamImported
 
-# Make offbeat apps
-wmake -j$num_jobs ./src/classes/offbeat/solvers
-
-# Make thermal-hydraulics
-wmake -j$num_jobs ./src/classes/thermalHydraulics/src
-wmake -j$num_jobs ./src/classes/thermalHydraulics/solvers
-
-# Make neutronics
-wmake -j$num_jobs ./src/classes/neutronics
-
-# Make thermal-mechanics
-wmake -j$num_jobs ./src/classes/thermoMechanics
-
-# Make OpenFOAM-imported solvers
-wmake -j$num_jobs ./src/classes/openFoamImportedSolvers
-
-
-# Make GeN-Foam
-wmake -j$num_jobs ./GeN-Foam
+# Make apps
+wmake -j$num_jobs ./applications/solvers/GeN-Foam
 
 echo -e "Make GeN-Foam completed\n"
 

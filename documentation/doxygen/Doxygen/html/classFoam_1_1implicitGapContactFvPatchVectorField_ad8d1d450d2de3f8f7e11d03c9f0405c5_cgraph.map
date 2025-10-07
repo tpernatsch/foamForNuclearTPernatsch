@@ -1,0 +1,5 @@
+<map id="boundaryShearStiffness" name="boundaryShearStiffness">
+<area shape="rect" id="node1" title="Minimum patch shear stiffness for friction evaluation." alt="" coords="5,31,181,57"/>
+<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="229,5,287,32"/>
+<area shape="rect" id="node3" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="237,56,279,83"/>
+</map>

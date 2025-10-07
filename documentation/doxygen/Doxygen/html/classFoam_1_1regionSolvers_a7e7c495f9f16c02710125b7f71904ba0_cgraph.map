@@ -1,0 +1,12 @@
+<map id="regionSolvers" name="regionSolvers">
+<area shape="rect" id="node1" title="Construct from components." alt="" coords="5,239,116,265"/>
+<area shape="rect" id="node2" href="$modifyDictLegacy_8H.html#a5709cbe3090f3e86b33c7a544424c5ed" title=" " alt="" coords="219,5,313,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1meshHandler.html#a705fcaa90f47a60c9873508684d0bbe1" title=" " alt="" coords="185,107,347,149"/>
+<area shape="rect" id="node4" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="489,148,547,175"/>
+<area shape="rect" id="node5" href="$classFoam_1_1solvers_1_1multiPhysicsSolver.html#a4880618f4804b90fa615836a429d69fe" title=" " alt="" coords="164,314,368,355"/>
+<area shape="rect" id="node6" href="$classFoam_1_1solvers_1_1multiPhysicsSolver.html#aada74a4d3149a0009211b512e06d6ca7" title=" " alt="" coords="416,285,620,326"/>
+<area shape="rect" id="node7" href="$classFoam_1_1solver.html#a4e88fa615eb4ce91c137a3c0ba02fc9b" title="Select, construct and return the solver." alt="" coords="447,351,589,377"/>
+<area shape="rect" id="node8" href="$modifyDictLegacy_8H.html#a06f6a78ff3720f6dd93626f9e39eb4f9" title=" " alt="" coords="174,431,358,457"/>
+<area shape="rect" id="node9" href="$classFoam_1_1meshHandler.html#a5e7e9383caef054445a425977024af50" title=" " alt="" coords="185,173,347,214"/>
+<area shape="rect" id="node10" href="$classFoam_1_1regionSolvers.html#a47b3bf30da1eb3ab8076b5fbe00e0494" title="Return the number of region solvers." alt="" coords="242,481,290,508"/>
+</map>

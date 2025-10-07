@@ -1,0 +1,6 @@
+<map id="correct" name="correct">
+<area shape="rect" id="node1" title="Correct velocity according to Sens model." alt="" coords="5,56,72,83"/>
+<area shape="rect" id="node2" href="$EEqns__2p_8H.html#a41a371debc8f4fa40469231470618dda" title=" " alt="" coords="129,5,168,32"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="120,56,177,83"/>
+<area shape="rect" id="node4" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="129,107,168,133"/>
+</map>

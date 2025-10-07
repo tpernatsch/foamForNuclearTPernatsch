@@ -1,0 +1,4 @@
+<map id="calcReferenceDimensions" name="calcReferenceDimensions">
+<area shape="rect" id="node1" title="Calculate the fuel height." alt="" coords="160,5,351,32"/>
+<area shape="rect" id="node2" href="$classFoam_1_1constantLhgr.html#a540aa9ef7a8a536da67fdcc282d62d7c" title="Construct from mesh, materials and dict." alt="" coords="5,5,112,32"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="fissionGasRelease" name="fissionGasRelease">
+<area shape="rect" id="node1" title="Parent class for fission gas release model." alt="" coords="5,5,252,449"/>
+<area shape="rect" id="node2" href="$classFoam_1_1fgrSCIANTIX.html" title="Wrapping class for an fgr model coupling OFFBEAT to SCIANTIX." alt="" coords="22,497,235,707"/>
+</map>

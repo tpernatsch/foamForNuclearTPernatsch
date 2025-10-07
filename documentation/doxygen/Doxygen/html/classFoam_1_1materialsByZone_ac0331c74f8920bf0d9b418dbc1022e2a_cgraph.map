@@ -1,0 +1,5 @@
+<map id="checkFailure" name="checkFailure">
+<area shape="rect" id="node1" title="Check material failure occurrence." alt="" coords="5,42,108,69"/>
+<area shape="rect" id="node2" href="$classFoam_1_1materialModel.html#a3e8dc8adbe4def9e69f6ab7e9a845d3f" title="Check if failure occurred in the material." alt="" coords="156,5,317,47"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="208,71,265,98"/>
+</map>

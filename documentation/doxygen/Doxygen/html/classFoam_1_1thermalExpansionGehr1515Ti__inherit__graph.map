@@ -1,0 +1,4 @@
+<map id="thermalExpansionGehr1515Ti" name="thermalExpansionGehr1515Ti">
+<area shape="rect" id="node1" title="Class modelling the thermal expansion of 15&#45;15 Ti cladding through the correlation proposed by Gehr (..." alt="" coords="5,219,256,340"/>
+<area shape="rect" id="node2" href="$classFoam_1_1thermalExpansionModel.html" title="Mother class for thermal expansion models." alt="" coords="7,5,254,171"/>
+</map>

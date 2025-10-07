@@ -1,0 +1,8 @@
+<map id="interfacialAreaModel" name="interfacialAreaModel">
+<area shape="rect" id="node1" title="Class to handle fluid&#45;fluid interfacial area." alt="" coords="169,131,416,340"/>
+<area shape="rect" id="node3" href="$classFoam_1_1interfacialAreaModels_1_1NoKazimi.html" title="Author: Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)" alt="" coords="5,447,127,627"/>
+<area shape="rect" id="node4" href="$classFoam_1_1interfacialAreaModels_1_1Schor.html" title="Author: Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)" alt="" coords="151,388,282,685"/>
+<area shape="rect" id="node5" href="$classFoam_1_1interfacialAreaModels_1_1annular.html" title="Interfacial area model that assumes that the dispersed phase flow is annular (i.e...." alt="" coords="307,454,433,619"/>
+<area shape="rect" id="node6" href="$classFoam_1_1interfacialAreaModels_1_1spherical.html" title="Author: Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)" alt="" coords="457,454,584,619"/>
+<area shape="rect" id="node2" title=" " alt="" coords="242,5,343,83"/>
+</map>

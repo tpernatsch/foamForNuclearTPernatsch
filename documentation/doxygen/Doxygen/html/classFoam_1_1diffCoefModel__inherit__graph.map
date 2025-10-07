@@ -1,0 +1,8 @@
+<map id="diffCoefModel" name="diffCoefModel">
+<area shape="rect" id="node1" title="Mother class for fission products diffusion coefficient models." alt="" coords="342,5,589,244"/>
+<area shape="rect" id="node2" href="$classFoam_1_1diffCoefArrhenius.html" title="Diffusion coefficient to be calculated in Arrhenius form." alt="" coords="5,321,176,443"/>
+<area shape="rect" id="node3" href="$classFoam_1_1diffCoefGraphite.html" title="Diffusion coefficient for PyC material from PARFUME manual and INL report." alt="" coords="200,292,365,472"/>
+<area shape="rect" id="node4" href="$classFoam_1_1diffCoefKernel.html" title="Diffusion coefficient for Kernel material from PARFUME manual and INL report." alt="" coords="390,292,541,472"/>
+<area shape="rect" id="node5" href="$classFoam_1_1diffCoefPyC.html" title="Diffusion coefficient for PyC material from PARFUME manual and INL report." alt="" coords="565,292,704,472"/>
+<area shape="rect" id="node6" href="$classFoam_1_1diffCoefSiC.html" title="Diffusion coefficient for PyC material from PARFUME manual and INL report." alt="" coords="728,292,867,472"/>
+</map>

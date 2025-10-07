@@ -1,0 +1,10 @@
+<map id="twoPhase" name="twoPhase">
+<area shape="rect" id="node1" title="Constructors." alt="" coords="5,188,91,215"/>
+<area shape="rect" id="node2" href="$classFoam_1_1fluid.html#ae6984849624951f976129ba760f2cb3d" title=" " alt="" coords="175,5,334,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1fluid.html#ad171d939558972a1b8e8d3443913634f" title="Construct diameter model. Only relevant in twoPhase simulations." alt="" coords="143,57,366,98"/>
+<area shape="rect" id="node4" href="$classFoam_1_1fluid.html#a8d39324ca54771714eb694b23830bfa3" title="Construct turbulence model. Required as the turbulence model might." alt="" coords="139,122,371,163"/>
+<area shape="rect" id="node5" href="$classFoam_1_1fluid.html#a6a22d6973938e79b73ec99f5ca83669f" title="Initialize alphaPhi and alphaRhoPhi, to be called as a separate." alt="" coords="161,188,348,215"/>
+<area shape="rect" id="node6" href="$classFoam_1_1fluid.html#a92a7f4c3b034b264511c0bc863d943f3" title="Member Functions." alt="" coords="161,239,348,281"/>
+<area shape="rect" id="node7" href="$classFoam_1_1phaseBase.html#acc80e00a8ac919288fb55bd14cc88bf6" title=" " alt="" coords="163,305,346,332"/>
+<area shape="rect" id="node8" href="$classFoam_1_1fluid.html#acd6d0e52337be3f13bfd9fabf7061ec0" title=" " alt="" coords="167,356,342,383"/>
+</map>

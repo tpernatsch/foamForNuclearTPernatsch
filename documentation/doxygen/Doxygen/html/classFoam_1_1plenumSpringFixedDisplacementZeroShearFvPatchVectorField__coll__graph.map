@@ -1,0 +1,5 @@
+<map id="plenumSpringFixedDisplacementZeroShearFvPatchVectorField" name="plenumSpringFixedDisplacementZeroShearFvPatchVectorField">
+<area shape="rect" id="node1" title="Plenum spring patchfield for the top of the fuel column (fixedDisplacement&#45; zeroShear version)." alt="" coords="113,365,376,604"/>
+<area shape="rect" id="node2" href="$classFoam_1_1fixedDisplacementZeroShearFvPatchVectorField.html" title="The component of the displacement normal to the patch is applied, and the shear traction is set to ze..." alt="" coords="5,5,241,317"/>
+<area shape="rect" id="node3" href="$classFoam_1_1plenumSpringBase.html" title="Base class with common functinality for plenumSpring patch fields." alt="" coords="265,20,469,303"/>
+</map>

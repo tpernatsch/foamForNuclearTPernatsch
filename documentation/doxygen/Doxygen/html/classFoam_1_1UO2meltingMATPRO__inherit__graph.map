@@ -1,0 +1,4 @@
+<map id="UO2meltingMATPRO" name="UO2meltingMATPRO">
+<area shape="rect" id="node1" title="Model to check failure of UO2 based on a limit melting temperature from MATPROv11." alt="" coords="33,351,224,487"/>
+<area shape="rect" id="node2" href="$classFoam_1_1failureModel.html" title="Mother class for materials failure criteria." alt="" coords="5,5,252,303"/>
+</map>

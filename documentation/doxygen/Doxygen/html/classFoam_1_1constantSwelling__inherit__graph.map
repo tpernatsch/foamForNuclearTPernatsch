@@ -1,0 +1,4 @@
+<map id="constantSwelling" name="constantSwelling">
+<area shape="rect" id="node1" title="Class caculating the swelling with a provided constant swelling rate." alt="" coords="44,292,213,413"/>
+<area shape="rect" id="node2" href="$classFoam_1_1swellingModel.html" title="Parent class for swelling model." alt="" coords="5,5,252,244"/>
+</map>

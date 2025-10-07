@@ -1,0 +1,4 @@
+<map id="multiMaterialInterface" name="multiMaterialInterface">
+<area shape="rect" id="node1" title="Base class for defining the set of faces that constitute the interfaces between different materials." alt="" coords="9,5,256,200"/>
+<area shape="rect" id="node2" href="$classFoam_1_1uniformMultiMaterialInterface.html" title="Interfaces between materials are defined by a uniform." alt="" coords="5,248,260,384"/>
+</map>

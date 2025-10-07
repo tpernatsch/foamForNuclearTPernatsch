@@ -1,0 +1,4 @@
+<map id="thermalExpansionMatproUPuO2" name="thermalExpansionMatproUPuO2">
+<area shape="rect" id="node1" title="Class modelling thermal expansion of (U,Pu)O2 MOX fuel from MATPROv11." alt="" coords="5,219,272,340"/>
+<area shape="rect" id="node2" href="$classFoam_1_1thermalExpansionModel.html" title="Mother class for thermal expansion models." alt="" coords="15,5,262,171"/>
+</map>

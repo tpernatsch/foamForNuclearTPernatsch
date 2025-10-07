@@ -1,0 +1,10 @@
+<map id="thermo" name="thermo">
+<area shape="rect" id="node1" title=" " alt="" coords="308,211,377,237"/>
+<area shape="rect" id="node2" href="$classFoam_1_1compressible_1_1NusseltThermalBaffle1DFvPatchScalarField.html#aa5d38c7d49e82a9ac1b3b73153ba3526" title=" " alt="" coords="30,5,235,61"/>
+<area shape="rect" id="node3" href="$classFoam_1_1structure.html#ac1d902746e45c59a040dc16151d08411" title=" " alt="" coords="43,86,223,127"/>
+<area shape="rect" id="node4" href="$classFoam_1_1FFPair.html#a96e5e09fe81bdd4bf544bb08e02fc4cb" title="Constructors." alt="" coords="55,152,210,179"/>
+<area shape="rect" id="node5" href="$classFoam_1_1structure.html#aa9d78d8aeeb07a10342fbde2abf3bc98" title=" " alt="" coords="35,203,231,245"/>
+<area shape="rect" id="node6" href="$classFoam_1_1thermalHydraulicsModels_1_1onePhaseLegacy.html#ad1fa2bf55ac7d53d9f03048c680331af" title="Constructors." alt="" coords="5,269,260,310"/>
+<area shape="rect" id="node7" href="$classFoam_1_1phaseChangeModel.html#a300cf8460a39408081ad845c806f59f0" title="Constructors." alt="" coords="35,334,230,375"/>
+<area shape="rect" id="node8" href="$classFoam_1_1criticalHeatFluxModels_1_1lookUpTableCHF.html#a2c1e1872d359910de4c35cf8f003871c" title="Return CHF." alt="" coords="25,399,241,441"/>
+</map>

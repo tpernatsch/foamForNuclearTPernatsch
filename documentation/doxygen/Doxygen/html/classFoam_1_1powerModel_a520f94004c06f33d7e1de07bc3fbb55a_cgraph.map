@@ -1,0 +1,7 @@
+<map id="powerModel" name="powerModel">
+<area shape="rect" id="node1" title="Construct over specific cells." alt="" coords="5,81,108,108"/>
+<area shape="rect" id="node2" href="$UEqn__1p_8H.html#a7fe02434a19f3e00e927f32adcbb193b" title=" " alt="" coords="230,5,289,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1structure.html#aa8ba27c1f6cefdd2cf3456b668e3ebec" title=" " alt="" coords="156,56,363,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1structure.html#a5266b7f2620c92c2ebc4b161bb508dd9" title=" " alt="" coords="167,107,352,133"/>
+<area shape="rect" id="node5" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="231,157,288,184"/>
+</map>

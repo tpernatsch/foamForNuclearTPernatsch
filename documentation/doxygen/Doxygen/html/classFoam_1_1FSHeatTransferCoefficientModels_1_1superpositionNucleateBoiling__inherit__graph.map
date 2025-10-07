@@ -1,0 +1,4 @@
+<map id="superpositionNucleateBoiling" name="superpositionNucleateBoiling">
+<area shape="rect" id="node1" title="Heat transfer coefficient for both single&#45;phase convective scenarios that evolve into nucleate boilin..." alt="" coords="5,277,255,399"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FSHeatTransferCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) heat transfer coefficient." alt="" coords="7,5,253,229"/>
+</map>

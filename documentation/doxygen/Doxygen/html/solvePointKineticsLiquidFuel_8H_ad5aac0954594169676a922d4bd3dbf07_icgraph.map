@@ -1,0 +1,15 @@
+<map id="set" name="set">
+<area shape="rect" id="node1" title="Calculate weighted precursors to be fed to power equation." alt="" coords="301,407,344,434"/>
+<area shape="rect" id="node2" href="$classFoam_1_1powerModels_1_1heatedPin.html#a08cf6ccfed7f616074be223f0d2379f3" title="In two&#45;phase solvers :" alt="" coords="49,5,210,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1powerModels_1_1nuclearFuelPin.html#a08cf6ccfed7f616074be223f0d2379f3" title="In two&#45;phase solvers :" alt="" coords="44,71,215,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1powerModels_1_1nuclearFuelPinTest.html#a08cf6ccfed7f616074be223f0d2379f3" title="In two&#45;phase solvers :" alt="" coords="49,137,210,193"/>
+<area shape="rect" id="node5" href="$classFoam_1_1powerModels_1_1nuclearSteadyStatePebble.html#a08cf6ccfed7f616074be223f0d2379f3" title="In two&#45;phase solvers :" alt="" coords="33,217,226,273"/>
+<area shape="rect" id="node6" href="$classFoam_1_1powerModels_1_1heatedPin.html#a5df612853023ce36358872f98ac1fbe2" title=" " alt="" coords="49,297,210,339"/>
+<area shape="rect" id="node7" href="$classFoam_1_1powerModels_1_1nuclearFuelPin.html#a00a0807b8131c3860dc8ac801e00dc68" title=" " alt="" coords="19,363,239,404"/>
+<area shape="rect" id="node8" href="$classFoam_1_1powerModels_1_1nuclearFuelPinTest.html#a0fceab77e99080514ba347aa8a16fb11" title=" " alt="" coords="49,429,210,485"/>
+<area shape="rect" id="node9" href="$classFoam_1_1powerModels_1_1nuclearSteadyStatePebble.html#a21ef3d5d5f55e90a8b86ac16508445be" title=" " alt="" coords="29,509,230,565"/>
+<area shape="rect" id="node10" href="$classFoam_1_1solvers_1_1pointKineticNeutronics.html#a79e6b4ce48b37f06154f436bd9229a43" title="Constructors." alt="" coords="5,589,253,631"/>
+<area shape="rect" id="node11" href="$classFoam_1_1functionObjects_1_1massFlow.html#afac0600fef97b05534a595ce00b272ed" title="Read the field extents data." alt="" coords="45,655,213,696"/>
+<area shape="rect" id="node12" href="$classFoam_1_1functionObjects_1_1pressureDrop.html#afac0600fef97b05534a595ce00b272ed" title="Read the field extents data." alt="" coords="45,720,213,761"/>
+<area shape="rect" id="node13" href="$classFoam_1_1functionObjects_1_1TBulk.html#afac0600fef97b05534a595ce00b272ed" title="Read the field extents data." alt="" coords="45,785,213,827"/>
+</map>

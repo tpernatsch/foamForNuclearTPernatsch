@@ -1,0 +1,4 @@
+<map id="onePhaseLegacy" name="onePhaseLegacy">
+<area shape="rect" id="node1" title="This class is based on onePhase.H and implements the legacy porous medium Navier Stokes solver with u..." alt="" coords="5,131,216,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1thermalHydraulicsModel.html" title="Run&#45;time selectable base abstract class to represent a thermal&#45;hydraulic solver for an indefinite num..." alt="" coords="19,5,202,83"/>
+</map>

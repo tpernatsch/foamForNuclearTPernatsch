@@ -1,0 +1,4 @@
+<map id="getLawsAdditionalStrain" name="getLawsAdditionalStrain">
+<area shape="rect" id="node1" title="Collect additional strain field from zone constitutive laws." alt="" coords="5,5,185,32"/>
+<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="233,5,291,32"/>
+</map>

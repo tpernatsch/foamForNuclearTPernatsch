@@ -1,0 +1,9 @@
+<map id="multiRegimeBoilingTRACECHF" name="multiRegimeBoilingTRACECHF">
+<area shape="rect" id="node1" title="Constructors." alt="" coords="5,148,227,175"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FSPair.html#a470f06cfb9b6ee887cd85d63de275607" title="Access." alt="" coords="317,5,467,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1FSHeatTransferCoefficientModel.html#a36b78812f386917072b03a36268d6bce" title="Selectors." alt="" coords="275,57,509,98"/>
+<area shape="rect" id="node4" href="$classFoam_1_1CHFModel.html#a7e263170f97b07d12b6c4669e7222647" title="Selectors." alt="" coords="307,123,477,149"/>
+<area shape="rect" id="node5" href="$classFoam_1_1TLFModel.html#af566bef79ea9ba0081e18a38047d50a9" title="Selectors." alt="" coords="309,173,475,200"/>
+<area shape="rect" id="node6" href="$classFoam_1_1subCooledBoilingFractionModel.html#a305ff3b42e0285ee3b072d30500afec0" title="Selectors." alt="" coords="277,225,507,266"/>
+<area shape="rect" id="node7" href="$classFoam_1_1TONBModel.html#adb431ddf087e79fec7a2b09c0c469715" title="Selectors." alt="" coords="302,291,482,317"/>
+</map>

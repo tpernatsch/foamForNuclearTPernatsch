@@ -1,0 +1,12 @@
+<map id="solveEnergy" name="solveEnergy">
+<area shape="rect" id="node1" title=" " alt="" coords="292,274,395,301"/>
+<area shape="rect" id="node2" href="$classFoam_1_1thermalHydraulicsModels_1_1onePhaseLegacy.html#ace6b3314b058f5c94eb96f99a1f4784d" title="Member Functions." alt="" coords="8,5,241,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1solvers_1_1onePhase.html#ab339c59ef518e68e6ba82997b9d06454" title="Correct models and coupling fields." alt="" coords="33,71,217,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1thermalHydraulicsModels_1_1onePhaseLegacy.html#ab339c59ef518e68e6ba82997b9d06454" title="Correct models and coupling fields." alt="" coords="5,136,244,177"/>
+<area shape="rect" id="node5" href="$classFoam_1_1solvers_1_1twoPhase.html#ab339c59ef518e68e6ba82997b9d06454" title="Correct models and coupling fields." alt="" coords="33,201,217,243"/>
+<area shape="rect" id="node6" href="$classFoam_1_1solvers_1_1onePhase.html#ad7f9f580af1530707008b83345f35e02" title="Member Functions." alt="" coords="33,267,217,308"/>
+<area shape="rect" id="node7" href="$classFoam_1_1solvers_1_1twoPhase.html#ad7f9f580af1530707008b83345f35e02" title="Member Functions." alt="" coords="33,332,217,373"/>
+<area shape="rect" id="node8" href="$classFoam_1_1solvers_1_1onePhase.html#a678012cee3ab2f52dc6a27a883ca078b" title=" " alt="" coords="13,397,236,439"/>
+<area shape="rect" id="node9" href="$classFoam_1_1solvers_1_1twoPhase.html#a678012cee3ab2f52dc6a27a883ca078b" title=" " alt="" coords="13,463,236,504"/>
+<area shape="rect" id="node10" href="$modifyDictLegacy_8H.html#ac069dfdebae349286896e7b5cd5c2a1e" title=" " alt="" coords="105,529,144,555"/>
+</map>

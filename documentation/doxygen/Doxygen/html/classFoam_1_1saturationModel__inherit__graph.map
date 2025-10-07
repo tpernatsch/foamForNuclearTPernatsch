@@ -1,0 +1,8 @@
+<map id="saturationModel" name="saturationModel">
+<area shape="rect" id="node1" title=" " alt="" coords="261,131,508,399"/>
+<area shape="rect" id="node3" href="$classFoam_1_1saturationModels_1_1BrowningPotter.html" title="Saturation model based on results by Browning and Potter, refer to https://www.ne...." alt="" coords="5,454,164,619"/>
+<area shape="rect" id="node4" href="$classFoam_1_1saturationModels_1_1constantTemperature.html" title="Constant saturation pressure and temperature." alt="" coords="188,447,384,627"/>
+<area shape="rect" id="node5" href="$classFoam_1_1saturationModels_1_1water.html" title="Saturation model for water in the 0.01&#45;350 C range based on an interpolation of NIST data in the form..." alt="" coords="408,454,559,619"/>
+<area shape="rect" id="node6" href="$classFoam_1_1saturationModels_1_1waterTRACE.html" title="Saturation model for water in the 0.01&#45;350 *C range based on TRACE: https://www.nrc...." alt="" coords="583,454,733,619"/>
+<area shape="rect" id="node2" title=" " alt="" coords="334,5,435,83"/>
+</map>

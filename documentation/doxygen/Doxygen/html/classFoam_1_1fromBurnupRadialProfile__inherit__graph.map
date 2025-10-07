@@ -1,0 +1,4 @@
+<map id="fromBurnupRadialProfile" name="fromBurnupRadialProfile">
+<area shape="rect" id="node1" title="Class to prescribe a radial profile as predicted by the burnup module." alt="" coords="20,351,237,472"/>
+<area shape="rect" id="node2" href="$classFoam_1_1radialProfile.html" title="Base class for a general profile in the radial direction. The base class assumes a uniform &quot;flat&quot; pro..." alt="" coords="5,5,252,303"/>
+</map>

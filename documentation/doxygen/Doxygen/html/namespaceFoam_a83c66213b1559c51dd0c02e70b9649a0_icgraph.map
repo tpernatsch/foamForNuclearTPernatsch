@@ -1,0 +1,6 @@
+<map id="relaxGlobalFields" name="relaxGlobalFields">
+<area shape="rect" id="node1" title="Call relax() for each GeometricField&lt;Type&gt; PtrList." alt="" coords="285,78,420,105"/>
+<area shape="rect" id="node2" href="$classFoam_1_1solvers_1_1fuelBehaviour.html#ad7f9f580af1530707008b83345f35e02" title="Called at the start of the time&#45;step, before the PIMPLE loop." alt="" coords="15,5,227,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1solvers_1_1extendedThermoMechanics.html#ad7f9f580af1530707008b83345f35e02" title="Called at the start of the time&#45;step, before the PIMPLE loop." alt="" coords="5,71,237,112"/>
+<area shape="rect" id="node4" href="$offbeat_8C.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="94,137,149,163"/>
+</map>

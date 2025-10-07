@@ -1,0 +1,11 @@
+<map id="neighbFvPatch" name="neighbFvPatch">
+<area shape="rect" id="node1" title="Return neighbor fvPatch." alt="" coords="287,242,404,269"/>
+<area shape="rect" id="node2" href="$classFoam_1_1implicitGapContactFvPatchVectorField.html#a10b9916046046b03c06b1e87c9262394" title="Return the neighbour patchField." alt="" coords="13,5,231,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1fuelRodGapFvPatchScalarField.html#a9df681019edd4cce2ec87cee0e0d2d1d" title="Return the neighbour patchField." alt="" coords="5,71,239,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1trisoGapFvPatchScalarField.html#acdb4aa62dad7c399381623288727889b" title="Return the neighbour patchField." alt="" coords="16,136,228,177"/>
+<area shape="rect" id="node5" href="$classFoam_1_1contactFvPatchVectorField.html#a167c86e6e0382553e6eda496312cad35" title="Return the neighbour patchField." alt="" coords="19,201,225,243"/>
+<area shape="rect" id="node6" href="$classFoam_1_1gapContactFvPatchVectorField.html#ab2e303f32e766aefa59c6b2eb4eb9b0d" title="Return the neighbour patchField." alt="" coords="6,267,238,308"/>
+<area shape="rect" id="node7" href="$classFoam_1_1regionCoupledFvPatchScalarField.html#a2b45d952e93c075756296c78c9aa331b" title="Local weight for this coupled field." alt="" coords="17,332,227,373"/>
+<area shape="rect" id="node8" href="$classFoam_1_1resistiveGapFvPatchScalarField.html#a2b45d952e93c075756296c78c9aa331b" title="Local weight for this coupled field." alt="" coords="23,397,221,439"/>
+<area shape="rect" id="node9" href="$classFoam_1_1temperatureCoupledFvPatchScalarField.html#a2b45d952e93c075756296c78c9aa331b" title="Local weight for this coupled field." alt="" coords="21,463,223,504"/>
+</map>

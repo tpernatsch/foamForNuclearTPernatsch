@@ -1,0 +1,4 @@
+<map id="axialProfileFvPatchScalarField" name="axialProfileFvPatchScalarField">
+<area shape="rect" id="node1" title="Boundary condition to impose a temperature axial profile (constant in time)." alt="" coords="25,336,227,589"/>
+<area shape="rect" id="node2" href="$classFoam_1_1fixedTemperatureFvPatchScalarField.html" title="Boundary condition to impose a fixed temperature." alt="" coords="5,5,247,288"/>
+</map>

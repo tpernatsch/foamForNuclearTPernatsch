@@ -1,0 +1,4 @@
+<map id="regionCoupledBaseOFFBEAT" name="regionCoupledBaseOFFBEAT">
+<area shape="rect" id="node1" title="Base class with common functinality for regionCoupled polyPatch. It includes AMI." alt="" coords="5,5,248,244"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledOFFBEATPolyPatch.html" title="Region coupled polyPatch." alt="" coords="12,292,241,721"/>
+</map>

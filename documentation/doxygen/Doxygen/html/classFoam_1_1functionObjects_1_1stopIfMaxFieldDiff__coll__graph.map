@@ -1,0 +1,4 @@
+<map id="stopIfMaxFieldDiff" name="stopIfMaxFieldDiff">
+<area shape="rect" id="node1" title="Stops the simulation when max(field1&#45;field2) &gt; 0 and prints out the simulation time...." alt="" coords="5,131,183,355"/>
+<area shape="rect" id="node2" title=" " alt="" coords="11,5,177,83"/>
+</map>

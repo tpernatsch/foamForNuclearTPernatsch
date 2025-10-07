@@ -1,0 +1,6 @@
+<map id="evaluate" name="evaluate">
+<area shape="rect" id="node1" title="evaluate the patch" alt="" coords="5,56,84,83"/>
+<area shape="rect" id="node2" href="$namespaceFoam_1_1myMULES.html#a8db4bd63b51f07fbea4b4d8a129868ac" title=" " alt="" coords="132,5,315,32"/>
+<area shape="rect" id="node3" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="204,56,243,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1solidDirectionMixedFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="169,107,277,133"/>
+</map>

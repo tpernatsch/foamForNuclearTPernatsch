@@ -1,0 +1,6 @@
+<map id="phaseBase" name="phaseBase">
+<area shape="rect" id="node1" title="Base abstract class for the fluid and structure classes." alt="" coords="191,131,327,325"/>
+<area shape="rect" id="node3" href="$classFoam_1_1fluid.html" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="5,454,256,678"/>
+<area shape="rect" id="node4" href="$classFoam_1_1structure.html" title="Class to handle the description of a mesh&#45;unresolved structure. It is derived from phaseBase,..." alt="" coords="281,373,495,759"/>
+<area shape="rect" id="node2" title=" " alt="" coords="202,5,315,83"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="conductivityUO2IFA601" name="conductivityUO2IFA601">
+<area shape="rect" id="node1" title="Model for conductivity of UO2 &#45; IFA&#45;601 rod." alt="" coords="24,204,233,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="5,5,252,156"/>
+</map>

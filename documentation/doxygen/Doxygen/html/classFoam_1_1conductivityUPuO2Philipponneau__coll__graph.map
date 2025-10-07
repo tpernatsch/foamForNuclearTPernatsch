@@ -1,0 +1,4 @@
+<map id="conductivityUPuO2Philipponneau" name="conductivityUPuO2Philipponneau">
+<area shape="rect" id="node1" title="Model for thermal conductivity of MOX taken from &quot;Thermal conductivity of &#160;(U,Pu)O2−x mixed oxide fue..." alt="" coords="5,204,280,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="19,5,266,156"/>
+</map>

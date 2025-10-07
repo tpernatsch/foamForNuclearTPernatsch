@@ -1,0 +1,12 @@
+<map id="burnupLassmann" name="burnupLassmann">
+<area shape="rect" id="node1" title="Construct from mesh, global Options, materials and dict." alt="" coords="5,239,139,265"/>
+<area shape="rect" id="node2" href="$classFoam_1_1burnupLassmann.html#addf8912292f54793a7a752c301494f2e" title="Calculate inner and outer radii." alt="" coords="248,5,347,32"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="456,31,513,57"/>
+<area shape="rect" id="node4" href="$classFoam_1_1fuelMaterial.html#a41713dcb462da47bbbec60ea65ae620a" title="Return the density fraction." alt="" coords="225,107,370,149"/>
+<area shape="rect" id="node5" href="$classFoam_1_1fuelMaterial.html#af983a51c7dbda2b75f8f50397b6f99f2" title="Return the initial enrichment." alt="" coords="225,173,370,214"/>
+<area shape="rect" id="node6" href="$classFoam_1_1burnupLassmann.html#af3068b560a0d4fb13915f39ca7013457" title="Initialize XS and nuclear data." alt="" coords="235,239,359,265"/>
+<area shape="rect" id="node7" href="$classFoam_1_1materials.html#a1303594223704789735e4d9511802b30" title="Return reference to material addressing list." alt="" coords="190,289,405,316"/>
+<area shape="rect" id="node8" href="$classFoam_1_1materialModel.html#afbc111b36720d6c7e0dadb9eb86b0c5e" title=" " alt="" coords="217,341,378,382"/>
+<area shape="rect" id="node9" href="$classFoam_1_1materials.html#a6567210f2fbce56615fdafa90f4271b4" title="Return reference to materials list." alt="" coords="187,407,408,433"/>
+<area shape="rect" id="node10" href="$classFoam_1_1materialModel.html#a73572f70de721e7793f801ae26c5a6c5" title="Return material name." alt="" coords="217,458,378,499"/>
+</map>

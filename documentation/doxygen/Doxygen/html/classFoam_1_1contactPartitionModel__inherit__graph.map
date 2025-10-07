@@ -1,0 +1,6 @@
+<map id="contactPartitionModel" name="contactPartitionModel">
+<area shape="rect" id="node1" title="Class to handle fluid&#45;structure interfacial contact contact fractions." alt="" coords="63,131,310,325"/>
+<area shape="rect" id="node3" href="$classFoam_1_1contactPartitionModels_1_1complementary.html" title="Author: Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)" alt="" coords="5,373,192,509"/>
+<area shape="rect" id="node4" href="$classFoam_1_1contactPartitionModels_1_1linear.html" title="Author: Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)" alt="" coords="217,381,333,502"/>
+<area shape="rect" id="node2" title=" " alt="" coords="136,5,237,83"/>
+</map>

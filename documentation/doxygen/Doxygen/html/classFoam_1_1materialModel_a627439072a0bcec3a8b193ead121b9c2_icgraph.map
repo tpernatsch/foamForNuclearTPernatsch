@@ -1,0 +1,4 @@
+<map id="additionalStrains" name="additionalStrains">
+<area shape="rect" id="node1" title="Return the tensor of additional strains." alt="" coords="232,13,364,39"/>
+<area shape="rect" id="node2" href="$classFoam_1_1materialsByZone.html#a8a9f67a73908f8ffc379f7365b51c790" title="Additional strain components per material." alt="" coords="5,5,184,47"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="porousKEpsilon2PhaseCorrected&lt; BasicTurbulenceModel &gt;" name="porousKEpsilon2PhaseCorrected&lt; BasicTurbulenceModel &gt;">
+<area shape="rect" id="node1" title="Same as porousKEpsiolon but turbulent intensity correlation in the form turbulenceIntensityCoeff*Reyn..." alt="" coords="131,901,399,1331"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,600,217,692"/>
+<area shape="rect" id="node3" href="$classFoam_1_1FSPair.html" title="Class to handle dimensionless numbers that characterise the system, e.g. Reynolds,..." alt="" coords="370,453,517,839"/>
+<area shape="rect" id="node4" href="$classFoam_1_1structure.html" title="Class to handle the description of a mesh&#45;unresolved structure. It is derived from phaseBase,..." alt="" coords="179,5,393,391"/>
+</map>

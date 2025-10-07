@@ -1,0 +1,5 @@
+<map id="CHFModel" name="CHFModel">
+<area shape="rect" id="node1" title="Model for the prediction of the critical heat flux." alt="" coords="6,453,253,604"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,159,107,237"/>
+<area shape="rect" id="node3" href="$classFoam_1_1FSPair.html" title="Class to handle dimensionless numbers that characterise the system, e.g. Reynolds,..." alt="" coords="131,5,277,391"/>
+</map>

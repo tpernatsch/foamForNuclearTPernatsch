@@ -1,0 +1,7 @@
+<map id="sliceMapper" name="sliceMapper">
+<area shape="rect" id="node1" title="Parent class for slice mapper. This class creates a mapping framework for passing information from an..." alt="" coords="249,131,496,531"/>
+<area shape="rect" id="node3" href="$classFoam_1_1sliceMapperAutoAxialSlices.html" title="Slice mapper developed for quasi2D or 2D r&#45;z coarse smeared geometries." alt="" coords="5,579,244,700"/>
+<area shape="rect" id="node4" href="$classFoam_1_1sliceMapperByMaterial.html" title="The slices are created on a material basis. The number and height of the slices are provided by the u..." alt="" coords="269,579,477,700"/>
+<area shape="rect" id="node5" href="$classFoam_1_1sliceMapperByPellets.html" title="The slices are created with a similar algorithm as in the sliceMappeByMaterial class...." alt="" coords="501,579,700,700"/>
+<area shape="rect" id="node2" title=" " alt="" coords="324,5,421,83"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="densityFrac" name="densityFrac">
+<area shape="rect" id="node1" title="Return the density fraction." alt="" coords="231,13,328,39"/>
+<area shape="rect" id="node2" href="$classFoam_1_1burnupLassmann.html#a649a6a9220f36a953efc8cdbe9abfbb4" title="Construct from mesh, global Options, materials and dict." alt="" coords="5,5,183,47"/>
+</map>

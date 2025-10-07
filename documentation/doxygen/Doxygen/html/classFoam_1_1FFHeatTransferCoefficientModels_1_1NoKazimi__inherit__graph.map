@@ -1,0 +1,4 @@
+<map id="NoKazimi" name="NoKazimi">
+<area shape="rect" id="node1" title="NoKazimi model for the liquid side of a liquid&#45;vapour heat transfer coefficient. Can be only used if ..." alt="" coords="68,292,189,413"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FFHeatTransferCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) heat transfer coefficient." alt="" coords="5,5,252,244"/>
+</map>

@@ -1,6 +1,0 @@
-thermalHydraulicsModel.C
-onePhase/onePhase.C
-twoPhase/twoPhase.C
-onePhaseRhoPimpleFoam/rhoPimpleFoam.C
-
-LIB = $(FOAM_USER_LIBBIN)/libFFSSolvers2

@@ -1,0 +1,5 @@
+<map id="boundaryStiffness" name="boundaryStiffness">
+<area shape="rect" id="node1" title="Minimum patch stiffness for interface pressure evaluation." alt="" coords="172,31,311,57"/>
+<area shape="rect" id="node2" href="$classFoam_1_1gapContactFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="11,5,119,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1gapContactFvPatchVectorField.html#a4cde3bc9e8f5668ba9b042b380644839" title="Update the pressure and traction." alt="" coords="5,56,124,83"/>
+</map>

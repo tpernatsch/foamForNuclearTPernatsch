@@ -1,0 +1,9 @@
+<map id="calculateInitialGapWidth" name="calculateInitialGapWidth">
+<area shape="rect" id="node1" title="Calculate gapWidth." alt="" coords="5,152,188,179"/>
+<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="341,5,398,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a05f9da785fabd880c4a17a02b2365cb9" title="Interpolate field." alt="" coords="244,57,495,98"/>
+<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a46c8495af036bc6de089ae800f741df0" title="Return regionCoupledBase neighb Patch." alt="" coords="551,121,817,162"/>
+<area shape="rect" id="node5" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a357c5e37e5d7c583fa172625b8c11009" title="Is it the owner?" alt="" coords="551,190,817,231"/>
+<area shape="rect" id="node6" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a1b3f4e19df6ef6a92dad048eb1097423" title="Return regionCoupledPolyPatch." alt="" coords="551,265,817,306"/>
+<area shape="rect" id="node7" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#ad538fccfe3d43de0c90d84e2be2ea5b6" title="Update AMI." alt="" coords="236,174,503,215"/>
+</map>

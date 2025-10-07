@@ -1,0 +1,4 @@
+<map id="timeDependentVhgr" name="timeDependentVhgr">
+<area shape="rect" id="node1" title="Volumetric heat source is provided." alt="" coords="17,439,241,633"/>
+<area shape="rect" id="node2" href="$classFoam_1_1heatSource.html" title="Parent class for heat source model." alt="" coords="5,5,252,391"/>
+</map>

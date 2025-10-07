@@ -1,0 +1,5 @@
+<map id="kappa" name="kappa">
+<area shape="rect" id="node1" title="Correct fluid thermo placeholder fields and Prandtl;." alt="" coords="189,31,251,57"/>
+<area shape="rect" id="node2" href="$classFoam_1_1H2.html#aa3d16e0f36b6c7f0e4c8fdd59878d31f" title="Liquid thermal diffusivity of enthalpy [kg/ms]." alt="" coords="5,5,141,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1H2.html#a5f7ea10311a61400800d8918b329dd8b" title="Prandtl number [&#45;]." alt="" coords="21,56,126,83"/>
+</map>

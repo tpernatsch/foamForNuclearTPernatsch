@@ -1,0 +1,4 @@
+<map id="coolantPressureFixedDisplacementZeroShearFvPatchVectorField" name="coolantPressureFixedDisplacementZeroShearFvPatchVectorField">
+<area shape="rect" id="node1" title="Coolant pressure patch&#45;field of fixed&#45;displacement&#45;zeroShear type. It is designed for the top cap out..." alt="" coords="5,365,281,677"/>
+<area shape="rect" id="node2" href="$classFoam_1_1fixedDisplacementZeroShearFvPatchVectorField.html" title="The component of the displacement normal to the patch is applied, and the shear traction is set to ze..." alt="" coords="25,5,261,317"/>
+</map>

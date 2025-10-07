@@ -1,0 +1,4 @@
+<map id="fissionGasRelease" name="fissionGasRelease">
+<area shape="rect" id="node1" title="Parent class for fission gas release model." alt="" coords="5,468,252,897"/>
+<area shape="rect" id="node2" href="$classFoam_1_1materials.html" title="Parent class that handles the evolution of material properties and behavioral models." alt="" coords="5,5,252,405"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="powerModel" name="powerModel">
+<area shape="rect" id="node1" title="Run&#45;time selectable class to handle the thermal description (i.e. energy source/sinks) of a structure..." alt="" coords="23,453,270,765"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,159,107,237"/>
+<area shape="rect" id="node3" href="$classFoam_1_1structure.html" title="Class to handle the description of a mesh&#45;unresolved structure. It is derived from phaseBase,..." alt="" coords="131,5,346,391"/>
+</map>

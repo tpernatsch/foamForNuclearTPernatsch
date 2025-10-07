@@ -1,0 +1,4 @@
+<map id="heatCapacitySneadSiC" name="heatCapacitySneadSiC">
+<area shape="rect" id="node1" title="Correlation for SiC heat capacity from Snead et al. (2007)." alt="" coords="26,204,231,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1heatCapacityModel.html" title="Mother class for heat capacity models." alt="" coords="5,5,252,156"/>
+</map>

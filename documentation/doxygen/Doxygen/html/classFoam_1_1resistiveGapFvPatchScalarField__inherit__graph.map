@@ -1,0 +1,6 @@
+<map id="resistiveGapFvPatchScalarField" name="resistiveGapFvPatchScalarField">
+<area shape="rect" id="node1" title="Coupled boundary condition for modeling the presence of a fixed gap (or contact) resistance between t..." alt="" coords="149,351,371,736"/>
+<area shape="rect" id="node3" href="$classFoam_1_1fuelRodGapFvPatchScalarField.html" title="Region coupled patchField for temperature fields in solid heat conduction." alt="" coords="5,784,251,1081"/>
+<area shape="rect" id="node4" href="$classFoam_1_1trisoGapFvPatchScalarField.html" title="Region coupled patchField for temperature fields in solid heat conduction in a spherical gap." alt="" coords="275,784,509,1081"/>
+<area shape="rect" id="node2" href="$classFoam_1_1temperatureCoupledFvPatchScalarField.html" title="Coupled boundary condition that forces continuity (for the temperature field) between two bodies with..." alt="" coords="143,5,377,303"/>
+</map>

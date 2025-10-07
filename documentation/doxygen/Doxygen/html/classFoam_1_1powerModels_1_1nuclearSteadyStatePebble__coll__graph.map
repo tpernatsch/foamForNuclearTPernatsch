@@ -1,0 +1,4 @@
+<map id="nuclearSteadyStatePebble" name="nuclearSteadyStatePebble">
+<area shape="rect" id="node1" title="Describes triso and pebble of a pebble&#45;bed reactor. Only steady&#45;state." alt="" coords="5,365,257,677"/>
+<area shape="rect" id="node2" href="$classFoam_1_1powerModel.html" title="Run&#45;time selectable class to handle the thermal description (i.e. energy source/sinks) of a structure..." alt="" coords="8,5,255,317"/>
+</map>

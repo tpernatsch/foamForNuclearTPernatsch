@@ -1,0 +1,7 @@
+<map id="updateCoeffs" name="updateCoeffs">
+<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="5,81,113,108"/>
+<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="175,5,232,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1implicitGapContactFvPatchVectorField.html#a66d6ceb4f8baa05f6925129e54af8130" title="Return the gap width." alt="" coords="161,56,245,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a46c8495af036bc6de089ae800f741df0" title="Return regionCoupledBase neighb Patch." alt="" coords="293,74,560,115"/>
+<area shape="rect" id="node5" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="184,157,223,184"/>
+</map>

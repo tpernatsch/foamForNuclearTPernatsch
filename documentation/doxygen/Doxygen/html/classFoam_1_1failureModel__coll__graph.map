@@ -1,0 +1,4 @@
+<map id="failureModel" name="failureModel">
+<area shape="rect" id="node1" title="Mother class for materials failure criteria." alt="" coords="5,453,252,736"/>
+<area shape="rect" id="node2" href="$classFoam_1_1sliceMapper.html" title="Parent class for slice mapper. This class creates a mapping framework for passing information from an..." alt="" coords="5,5,252,391"/>
+</map>

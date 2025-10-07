@@ -1,0 +1,4 @@
+<map id="emissivityRelapUO2" name="emissivityRelapUO2">
+<area shape="rect" id="node1" title="UO2 emissivity model derived from RELAP." alt="" coords="33,204,224,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1emissivityModel.html" title="Mother class for emissivity models." alt="" coords="5,5,252,156"/>
+</map>

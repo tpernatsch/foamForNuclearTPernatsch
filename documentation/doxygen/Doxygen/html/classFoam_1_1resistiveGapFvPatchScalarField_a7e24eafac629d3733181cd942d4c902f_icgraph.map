@@ -1,0 +1,5 @@
+<map id="updateCoeffs" name="updateCoeffs">
+<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="287,46,395,73"/>
+<area shape="rect" id="node2" href="$classFoam_1_1fuelRodGapFvPatchScalarField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="5,5,239,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1trisoGapFvPatchScalarField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="16,71,228,112"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="leastSquaresGradf" name="leastSquaresGradf">
+<area shape="rect" id="node1" title=" " alt="" coords="5,85,148,112"/>
+<area shape="rect" id="node2" href="$solvePointKinetics_8H.html#adb97abfa5d13987c131264ad1d8faccc" title=" " alt="" coords="214,5,413,32"/>
+<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="285,56,342,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1leastSquaresGradfVectors.html#aeda2f2954f2313a4e438190a03304204" title="Return reference to neighbour least square vectors." alt="" coords="196,107,431,149"/>
+<area shape="rect" id="node5" href="$classFoam_1_1leastSquaresGradfVectors.html#ac44e7fd8e94deac5a60d09dc404a7f13" title="Return reference to owner least square vectors." alt="" coords="196,173,431,214"/>
+</map>

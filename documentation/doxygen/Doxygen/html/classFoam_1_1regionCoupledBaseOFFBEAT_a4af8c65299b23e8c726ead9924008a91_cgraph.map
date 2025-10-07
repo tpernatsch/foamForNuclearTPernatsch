@@ -1,0 +1,6 @@
+<map id="interpolate" name="interpolate">
+<area shape="rect" id="node1" title=" " alt="" coords="5,56,99,83"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#afaa206195c902e68893d24ba87b9037d" title="Return a reference to the AMI interpolator." alt="" coords="163,5,209,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#ae282d8595a556cc251bc745007c95d8c" title="Return a reference to the neighbour patch." alt="" coords="147,56,225,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a21dcffdf27811a03e0d7ef231bf18c28" title="Does this side own the patch?" alt="" coords="155,107,217,133"/>
+</map>

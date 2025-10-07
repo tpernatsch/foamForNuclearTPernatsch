@@ -1,0 +1,5 @@
+<map id="kappa" name="kappa">
+<area shape="rect" id="node1" title="Gap gas thermal conductivity." alt="" coords="287,46,348,73"/>
+<area shape="rect" id="node2" href="$classFoam_1_1fuelRodGapFvPatchScalarField.html#aa3ddec8ed563ce303f2520f7945066e1" title="Return the interface conductance." alt="" coords="5,5,239,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1trisoGapFvPatchScalarField.html#aa3ddec8ed563ce303f2520f7945066e1" title="Return the interface conductance." alt="" coords="16,71,228,112"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="solve" name="solve">
+<area shape="rect" id="node1" title="Actual function that either solves for one or both phaseFractions." alt="" coords="309,351,367,378"/>
+<area shape="rect" id="node2" href="$classFoam_1_1burnupLassmann.html#a3ae44b28050c3aa494c1d8e18cf618c1" title="Update the burnup." alt="" coords="45,5,222,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1RASModels_1_1mixtureKEpsilon.html#a3ae44b28050c3aa494c1d8e18cf618c1" title="Solve the turbulence equations and correct the turbulence viscosity." alt="" coords="34,71,233,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1RASModels_1_1porousKEpsilon.html#a3ae44b28050c3aa494c1d8e18cf618c1" title="Solve the turbulence equations and correct the turbulence viscosity." alt="" coords="10,136,257,177"/>
+<area shape="rect" id="node5" href="$classFoam_1_1RASModels_1_1porousKEpsilon2PhaseCorrected.html#a3ae44b28050c3aa494c1d8e18cf618c1" title="Solve the turbulence equations and correct the turbulence viscosity." alt="" coords="6,201,261,243"/>
+<area shape="rect" id="node6" href="$implicitPredictor_8H.html#ad4152604cc2cfb2d05dfe6d0749d12e8" title=" " alt="" coords="105,267,162,294"/>
+<area shape="rect" id="node7" href="$compressibleInterFoam_2include_2equations_2UEqn_8H.html#abcdecaf1fe3c5dd6e642b0fa5a7cc875" title=" " alt="" coords="114,318,153,345"/>
+<area shape="rect" id="node8" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#ac45ac0f51d90c669bc1d65c4a9b0fcdd" title="Experimental RBF solver using derivative information (XY plane only)" alt="" coords="15,369,252,425"/>
+<area shape="rect" id="node9" href="$classFoam_1_1powerModels_1_1heatedPin.html#aebceb9d61655d7851a7ab3a7710164ea" title="Update temperature profiles Tc, Tf, in a single domain cell with." alt="" coords="5,449,261,505"/>
+<area shape="rect" id="node10" href="$classFoam_1_1powerModels_1_1lumpedNuclearStructure.html#aebceb9d61655d7851a7ab3a7710164ea" title="Update temperature profiles Tc, Tf, in a single domain cell with." alt="" coords="17,529,249,585"/>
+<area shape="rect" id="node11" href="$classFoam_1_1powerModels_1_1nuclearFuelPin.html#aebceb9d61655d7851a7ab3a7710164ea" title="Update temperature profiles Tc, Tf, in a single domain cell with." alt="" coords="31,609,235,665"/>
+<area shape="rect" id="node12" href="$classFoam_1_1powerModels_1_1nuclearFuelPinTest.html#aebceb9d61655d7851a7ab3a7710164ea" title="Update temperature profiles Tc, Tf, in a single domain cell with." alt="" coords="21,689,245,745"/>
+<area shape="rect" id="node13" href="$compressibleInterFoam_2include_2equations_2pEqn_8H.html#a1f35d4b5ae6812b00fbd1ae99512f403" title=" " alt="" coords="105,769,162,795"/>
+</map>

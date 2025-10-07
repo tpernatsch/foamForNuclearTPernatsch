@@ -1,0 +1,8 @@
+<map id="New" name="New">
+<area shape="rect" id="node1" title="Selectors." alt="" coords="348,151,399,177"/>
+<area shape="rect" id="node2" href="$classFoam_1_1FSPair.html#a641cfcbe9a70b9717a90dc5e19b65d62" title="Constructors." alt="" coords="77,5,229,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoiling.html#aeb615903bb3ddaa54f52ddf17d80d603" title="Constructors." alt="" coords="35,56,270,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoilingTRACE.html#a372db76952778b907a91a0d231033262" title="Constructors." alt="" coords="28,136,277,192"/>
+<area shape="rect" id="node5" href="$classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoilingTRACECHF.html#ab88c86ec12273cdb644af085f008ae54" title="Constructors." alt="" coords="15,216,291,272"/>
+<area shape="rect" id="node6" href="$classFoam_1_1FSHeatTransferCoefficientModels_1_1multiRegimeBoilingVapourTRACE.html#a3f94087f35dc4722725e34316ee9d2c8" title="Constructors." alt="" coords="5,296,300,352"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="radialProfile" name="radialProfile">
+<area shape="rect" id="node1" title="Base class for a general profile in the radial direction. The base class assumes a uniform &quot;flat&quot; pro..." alt="" coords="385,5,631,303"/>
+<area shape="rect" id="node2" href="$classFoam_1_1burnupDependentTabulatedRadialProfile.html" title="Class providing a burnup&#45;dependent radial profile, which is defined by the user by interpolation in a..." alt="" coords="5,365,232,531"/>
+<area shape="rect" id="node3" href="$classFoam_1_1constantTabulatedRadialProfile.html" title="Radial profile defined using an constant interpolation table as a function of the radial position...." alt="" coords="256,387,504,509"/>
+<area shape="rect" id="node4" href="$classFoam_1_1fromBurnupRadialProfile.html" title="Class to prescribe a radial profile as predicted by the burnup module." alt="" coords="529,387,746,509"/>
+<area shape="rect" id="node5" href="$classFoam_1_1timeDependentTabulatedRadialProfile.html" title="Class providing a time&#45;dependent radial profile, which is defined by the user by interpolation in a 2..." alt="" coords="771,351,1024,545"/>
+</map>

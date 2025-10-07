@@ -1,0 +1,15 @@
+<map id="controlDict" name="controlDict">
+<area shape="rect" id="node1" title=" " alt="" coords="280,342,373,369"/>
+<area shape="rect" id="node2" href="$classFoam_1_1constantBurnup.html#ab03493ca3ffbfbf1215b766897207515" title="Construct from mesh, materials and dict." alt="" coords="35,5,203,47"/>
+<area shape="rect" id="node3" href="$classFoam_1_1creepModel.html#aaf9dac69cacf7add98286a65e7cc953b" title="Construct from dictionary." alt="" coords="5,71,232,98"/>
+<area shape="rect" id="node4" href="$classFoam_1_1fastNeutronGPLS.html#abbe955279f0c0e13b4adba6ba2fc9f4c" title="Construct from mesh, global options, materials , dict and labelList." alt="" coords="31,123,207,164"/>
+<area shape="rect" id="node5" href="$classFoam_1_1fissionGasRelease.html#a0e62e1ecf7cf14a4a7e1fbcf694cb8f9" title="Construct from mesh, materials and dict." alt="" coords="26,188,211,229"/>
+<area shape="rect" id="node6" href="$classFoam_1_1heatSource.html#a6bac532ea3a42434f281e5ed799e0b15" title="Construct from mesh, materials and dict." alt="" coords="9,254,229,281"/>
+<area shape="rect" id="node7" href="$classFoam_1_1hydrogenGPLS.html#aca98beecd5cf371a29b6bc182937dba1" title="Construct from mesh, global options, materials , dict and labelList." alt="" coords="39,305,199,347"/>
+<area shape="rect" id="node8" href="$modifyDictLegacy_8H.html#a9197b30a719d0403479723d2b3abde8d" title=" " alt="" coords="99,371,138,398"/>
+<area shape="rect" id="node9" href="$classFoam_1_1materials.html#aa103d227b22704ece29816acdf89ff3a" title="Construct from material dictionary." alt="" coords="19,422,218,449"/>
+<area shape="rect" id="node10" href="$classFoam_1_1meshHandler.html#ac46e69b084c4352e472a72b42bd83ca5" title="Construct from components." alt="" coords="38,473,199,515"/>
+<area shape="rect" id="node11" href="$classFoam_1_1offbeatTime.html#ae7a53d08b5672ca9541f685268a5b380" title="Construct from objectRegistry arguments." alt="" coords="42,539,195,580"/>
+<area shape="rect" id="node12" href="$classFoam_1_1regionSolvers.html#a7e7c495f9f16c02710125b7f71904ba0" title="Construct from components." alt="" coords="41,604,196,645"/>
+<area shape="rect" id="node13" href="$classFoam_1_1timeDependentLhgr.html#ad33e5ec4991b61dce0a1240c122b0496" title="Construct from mesh, materials and dict." alt="" coords="21,669,216,711"/>
+</map>

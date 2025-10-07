@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classFoam_1_1failureModel.html" title="Mother class for materials failure criteria." alt="" coords="5,183,109,209"/>
+<area shape="rect" id="node2" href="$classFoam_1_1UO2meltingMATPRO.html" title="Model to check failure of UO2 based on a limit melting temperature from MATPROv11." alt="" coords="174,5,329,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1UPuO2meltingMagni2020.html" title="Model to check failure of UPuO2 based on a limit melting temperature from &quot;Modelling and assessment o..." alt="" coords="157,56,345,83"/>
+<area shape="rect" id="node4" href="$classFoam_1_1ZyOverstrainBISON.html" title="Burst overstrain criterion for Zircaloy&#45;4 derived from BISON code." alt="" coords="177,107,325,133"/>
+<area shape="rect" id="node5" href="$classFoam_1_1ZyOverstrainRIA.html" title="Overstrain criterion to asses clad failure during the PCMI phase of a RIA transient." alt="" coords="187,157,316,184"/>
+<area shape="rect" id="node6" href="$classFoam_1_1ZyOverstressBISON.html" title="Burst overstress criterion for Zircaloy&#45;4 derived from BISON code. NOTE: oxidation contribution still..." alt="" coords="176,208,327,235"/>
+<area shape="rect" id="node7" href="$classFoam_1_1ZyPlasticInstabilityBISON.html" title="Plastic instability criterion for Zircaloy&#45;4 derived from BISON code." alt="" coords="157,259,345,285"/>
+<area shape="rect" id="node8" href="$classFoam_1_1Zy__CSED__RIA__EPRI.html" title="Clad failure criterion during the PCMI phase of a RIA transient based on the strain energy density (S..." alt="" coords="178,309,325,336"/>
+<area shape="rect" id="node9" href="$classFoam_1_1combinedFailureCriteria.html" title="Criterion used to combine multiple failure criteria. Failure is supposed to occur when one of the cri..." alt="" coords="163,360,340,387"/>
+</map>

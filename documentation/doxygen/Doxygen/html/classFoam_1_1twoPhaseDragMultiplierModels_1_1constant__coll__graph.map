@@ -1,0 +1,4 @@
+<map id="constant" name="constant">
+<area shape="rect" id="node1" title="Returns a constant multiplier. Just for code testing purposes." alt="" coords="75,277,191,399"/>
+<area shape="rect" id="node2" href="$classFoam_1_1twoPhaseDragMultiplierModel.html" title="Author: Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)" alt="" coords="5,5,260,229"/>
+</map>

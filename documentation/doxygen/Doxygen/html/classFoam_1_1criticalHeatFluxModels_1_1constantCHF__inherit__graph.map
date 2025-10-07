@@ -1,0 +1,4 @@
+<map id="constantCHF" name="constantCHF">
+<area shape="rect" id="node1" title="Gives a constant Critical Heat Flux provided in Phase Properties." alt="" coords="58,204,199,325"/>
+<area shape="rect" id="node2" href="$classFoam_1_1CHFModel.html" title="Model for the prediction of the critical heat flux." alt="" coords="5,5,252,156"/>
+</map>

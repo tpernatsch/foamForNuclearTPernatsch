@@ -1,0 +1,5 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$classFoam_1_1thermalSubSolver.html" title="Parent class for thermal solvers." alt="" coords="5,31,144,57"/>
+<area shape="rect" id="node2" href="$classFoam_1_1readTemperature.html" title="Daugther calss of thermalSubSolver that allows to provide the solver with a set of pre&#45;calculated and..." alt="" coords="209,5,342,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1solidConductionSolver.html" title="Class handling the solid heat conduction in presence of a heat source." alt="" coords="192,56,359,83"/>
+</map>

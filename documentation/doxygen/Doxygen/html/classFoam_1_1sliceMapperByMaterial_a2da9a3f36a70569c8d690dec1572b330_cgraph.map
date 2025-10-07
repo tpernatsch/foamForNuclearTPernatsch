@@ -1,0 +1,6 @@
+<map id="sliceMapperByMaterial" name="sliceMapperByMaterial">
+<area shape="rect" id="node1" title="Construct from mesh." alt="" coords="5,64,177,91"/>
+<area shape="rect" id="node2" href="$classFoam_1_1sliceMapperByMaterial.html#a289b7069a688c48f8ddc88bbba6a4085" title=" " alt="" coords="243,5,363,32"/>
+<area shape="rect" id="node3" href="$classFoam_1_1sliceMapper.html#a1bc4050fecc0710fe957b91e15dc6b4f" title=" " alt="" coords="227,57,380,98"/>
+<area shape="rect" id="node4" href="$classFoam_1_1globalOptions.html#aae00636b93c38b6ea2f362c2161757e6" title=" " alt="" coords="225,122,381,163"/>
+</map>

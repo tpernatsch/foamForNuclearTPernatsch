@@ -1,0 +1,4 @@
+<map id="coupled" name="coupled">
+<area shape="rect" id="node1" title="Return true because this patch is coupled." alt="" coords="5,13,79,39"/>
+<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledOFFBEATPolyPatch.html#a39c01db0e66d00fe0621a0c7e5fc4ead" title="Is it coupled?" alt="" coords="127,5,373,47"/>
+</map>

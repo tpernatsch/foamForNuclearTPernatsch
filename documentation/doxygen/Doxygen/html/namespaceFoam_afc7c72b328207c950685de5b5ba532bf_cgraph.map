@@ -1,0 +1,4 @@
+<map id="isInUserParameters" name="isInUserParameters">
+<area shape="rect" id="node1" title="Return true if parameter is provided by the user." alt="" coords="5,5,155,32"/>
+<area shape="rect" id="node2" href="$namespaceFoam.html#a031675f70306203cab7e488dab8fd5db" title="Return a reference to the user parameters dictionary." alt="" coords="203,5,327,32"/>
+</map>

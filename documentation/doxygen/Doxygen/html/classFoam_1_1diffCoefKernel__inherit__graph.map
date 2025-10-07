@@ -1,0 +1,4 @@
+<map id="diffCoefKernel" name="diffCoefKernel">
+<area shape="rect" id="node1" title="Diffusion coefficient for Kernel material from PARFUME manual and INL report." alt="" coords="53,292,204,472"/>
+<area shape="rect" id="node2" href="$classFoam_1_1diffCoefModel.html" title="Mother class for fission products diffusion coefficient models." alt="" coords="5,5,252,244"/>
+</map>

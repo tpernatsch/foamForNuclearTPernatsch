@@ -1,0 +1,8 @@
+<map id="updateSurfaceTemperature" name="updateSurfaceTemperature">
+<area shape="rect" id="node1" title="Updates surface temperature (includes oxide treatement if present)" alt="" coords="303,151,501,177"/>
+<area shape="rect" id="node2" href="$classFoam_1_1axialProfileFvPatchScalarField.html#ace43f2f8645d920e9c620a8a15ee638c" title="Construct from patch, internal field and dictionary." alt="" coords="17,5,243,61"/>
+<area shape="rect" id="node3" href="$classFoam_1_1fixedTemperatureFvPatchScalarField.html#a7e24eafac629d3733181cd942d4c902f" title="Return the matrix diagonal coefficients corresponding to the." alt="" coords="76,85,184,112"/>
+<area shape="rect" id="node4" href="$classFoam_1_1timeDependentAxialProfileFvPatchScalarField.html#a7e24eafac629d3733181cd942d4c902f" title="Return the matrix diagonal coefficients corresponding to the." alt="" coords="30,136,230,192"/>
+<area shape="rect" id="node5" href="$classFoam_1_1timeDependentTemperatureFvPatchScalarField.html#a7e24eafac629d3733181cd942d4c902f" title="Return the matrix diagonal coefficients corresponding to the." alt="" coords="5,217,255,258"/>
+<area shape="rect" id="node6" href="$classFoam_1_1xzTemperatureProfileFvPatchScalarField.html#a7e24eafac629d3733181cd942d4c902f" title="Return the matrix diagonal coefficients corresponding to the." alt="" coords="11,282,249,323"/>
+</map>

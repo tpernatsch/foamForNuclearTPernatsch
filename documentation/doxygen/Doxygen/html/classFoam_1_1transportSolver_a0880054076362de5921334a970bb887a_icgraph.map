@@ -1,0 +1,4 @@
+<map id="New" name="New">
+<area shape="rect" id="node1" title="Return a pointer to a new transport solver." alt="" coords="260,13,311,39"/>
+<area shape="rect" id="node2" href="$classFoam_1_1elementTransportByList.html#aa6eeeebb638649be88b7ddc306cb9468" title="Construct from mesh, materials and dictionary." alt="" coords="5,5,212,47"/>
+</map>
