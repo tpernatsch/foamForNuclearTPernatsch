@@ -54,10 +54,11 @@ done
 echo "Number of jobs: $num_jobs"
 echo "FMI flag: $fmi_flag"
 
+git submodule update --init --recursive 
+
 # Build with FMI option
 if [ $fmi_flag = 'true' ]
 then
-    git submodule update --init --recursive
 
     cd FMU4FOAM
 
@@ -130,8 +131,6 @@ fi
 #==============================================================================*
 
 echo "Allwmake GeN-Foam"
-
-git submodule update --init --recursive src/classes/offbeat
 
 # Make OFFBEAT libs
 wmake -j$num_jobs ./src/offbeat/src/SCIANTIX
