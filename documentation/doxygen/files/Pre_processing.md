@@ -25,8 +25,6 @@ A *polyMesh* folder will be created (or updated) in the folder *constant*. One s
 
 Please notice that the *3D_SmallESFR* tutorial already contains the correct *polyMesh* folders so that one can avoid the mesh generation step.
 
-N.B. **A dummy mesh must always be present in all physics (region) directories**, even if not solved for. The [EMPTY](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/EMPTY) case is already provided with minimal dummy meshes and consistent fields in the “0” folder. Be careful! In the case of parallel calculations, all your meshes will have to have a number of cells equal or higher than the number of domains you are decomposing your geometry into. In case you need more cells than what is available in the EMPTY case, you can run a `refineMesh`.
-
 
 ## Physical properties
 

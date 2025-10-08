@@ -26,12 +26,6 @@ Here below are a couple of essential points that make GeN-Foam different than mo
 
 GeN-Foam employs a  multi-region approach to model different physics using different meshes. This implies that the *0*, *constant* and *system* folders of each case contain multiple folders, one for each physics. In particular, the regions *fluidRegion*, *neutroRegion* and *thermoMechanicalRegion* are employed in GeN-Foam for thermal-hydraulics, neutronics and thermal-mechanics. There is no requirement for the three meshes to occupy the same region of space. Consistent mapping of fields is performed and a reference value is given to a field if no correspondence is found in the mesh where its value is being projected from.
 
-<div class="border-box">
-<b>The meshes</b>
-
-A dummy mesh must always be present in all physics (region) directories, even if not solved for. The EMPTY case is already provided with minimal dummy meshes and consistent fields in the “0” folder. Be careful! In the case of parallel calculations, all your meshes will have to have a number of cells equal or higher than the number of domains you are decomposing your geometry into. In case you need more cells than what is available in the EMPTY case, you can run a `refineMesh`.
-</div>
-
 
 **The multi-zone approach**
 

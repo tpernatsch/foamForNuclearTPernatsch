@@ -27,12 +27,7 @@ Here below are a couple of essential points that make GeN-Foam different than mo
 GeN-Foam employs a  multi-region approach to model different physics using different meshes. This implies that the *0*, *constant* and *system* folders of each case contain multiple folders, one for each physics. In particular, the regions *fluidRegion*, *neutroRegion* and *thermoMechanicalRegion* are employed in GeN-Foam for thermal-hydraulics, neutronics and thermal-mechanics. There is no requirement for the three meshes to occupy the same region of space. Consistent mapping of fields is performed and a reference value is given to a field if no correspondence is found in the mesh where its value is being projected from.
 
 
-### The meshes
-
-The EMPTY case is already provided with minimal dummy meshes and consistent fields in the “0” folder. Be careful! In the case of parallel calculations, all your meshes will have to have a number of cells equal or higher than the number of domains you are decomposing your geometry into. In case you need more cells than what is available in the EMPTY case, you can run a `refineMesh`.
-
-
-**The multi-zone approach**
+### The multi-zone approach
 
 In order to assign different properties (for instance, different porous medium properties or different cross sections) to different zones in a mesh, GeN-Foam employs the OpenFOAM concept of cellZone. Each mesh should then be divided into different cellZones. Each cellZone is associated with a name and this name is used in *constant/fluidRegion/phaseProperties*, *constant/neutroRegion/nuclearData*, *constant/thermoMechanicalRegion/thermoMechanicalProperties* to associate each cellZone with a set of properties. The creation of cellZones is normally allowed by all meshers, though different names are normally used (for instance, *physical entities* in gmsh and *groups* in Salome). In some cases, conversion of the mesh into an OpenFOAM format creates cellSet instead of cellZones. In these cases, one can use the topoSet utility to convert cellSets into cellZones.
 
