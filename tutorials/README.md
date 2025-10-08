@@ -26,7 +26,7 @@ The Tutorials folder is divided in four types of tutorials:
 
 ## Regression test suite
 
-It is highly recommended to run the [`Alltest`](./Alltest) or [`regressionTest`](./regressionTest) scripts when developing to make sure that GeN-Foam behaves as expected. This script runs all the tutorials contained in this folder, except `testing` and `toBeUpdated`. It is an extensive process that might require a day of calculation depending on the hardware.
+It is highly recommended to run the [`Alltest`](./Alltest) script when developing to make sure that GeN-Foam behaves as expected. This script runs all the tutorials contained in this folder, except `toBeUpdated`. It is an extensive process that might require a day of calculation depending on the hardware.
 
 The results of the test are summarized in the [regressionResults.md](regressionResults.md) file. In `--fast` mode, the results are summarized in [regressionResults-fast.md](./regressionResults-fast.md).
 
