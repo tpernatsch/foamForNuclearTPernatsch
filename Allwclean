@@ -14,6 +14,7 @@ wclean libso ./src/porousMediaModels
 wclean libso ./src/thermophysicalProperties
 wclean libso ./src/multiRegion
 wclean libso ./src/fvPatchFields
+wclean libso ./src/functionObjects
 
 # clean modules
 wclean libso ./applications/modules/thermalHydraulics
@@ -25,7 +26,7 @@ wclean libso ./applications/modules/openFoamImported
 # clean apps
 wclean ./applications/solvers/GeN-Foam
 
-# clean tools 
+# clean tests 
 wclean ./tests/hydrogenThermophysicalProperties
 wclean ./tests/radialBasisFunctions
 
