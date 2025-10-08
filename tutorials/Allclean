@@ -21,6 +21,8 @@ NC='\033[0m'
 path=$(pwd)
 
 tutorials="
+    testing/unitTests
+
     featureCases/1D_boiling
     featureCases/1D_CHF/imposedPower
     featureCases/1D_CHF/imposedTemperature

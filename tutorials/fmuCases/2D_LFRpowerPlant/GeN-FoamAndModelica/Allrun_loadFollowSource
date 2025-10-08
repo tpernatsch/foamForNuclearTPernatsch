@@ -90,7 +90,7 @@ fi
 echo "Load follow transient simulation using the external neutron source modulation"
 
 # Clean and prepare the case
-rm -r transientLoadFollowSource
+rm -rf transientLoadFollowSource
 cp -r steadyState transientLoadFollowSource
 cp -r rootCase/system/* transientLoadFollowSource/system
 cp rootCase/secondaryCircuit* transientLoadFollowSource

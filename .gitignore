@@ -58,6 +58,7 @@ tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex1_01_5215/*[123456789]*
 tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770/*[123456789]*
 tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex3_11-0312_power_increase/*[123456789]*
 tutorials/featureCases/2D_cavityBoussinesq/*[123456789]*
+tutorials/featureCases/2D_flowOverHeatedPlate/*[123456789]*
 tutorials/featureCases/2D_KNS37-L22/*[123456789]*
 !tutorials/featureCases/2D_KNS37-L22/-2
 tutorials/featureCases/2D_voidMotionNoPhaseChange/*[123456789]*
@@ -82,7 +83,7 @@ tutorials/**/*.baffleLess/polyMesh
 !**/2FMU
 !**/3FMU
 !**/quadratureSet*
-!Tutorials/*/**/XS*
+!tutorials/*/**/XS*
 **/old.*
 **/archive.*
 **/*.csv*

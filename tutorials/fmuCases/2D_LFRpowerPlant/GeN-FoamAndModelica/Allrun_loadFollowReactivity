@@ -92,7 +92,7 @@ fi
 echo "Load follow transient simulation using reactivity control"
 
 # Clean and prepare the case
-rm -r transientLoadFollowReactivity
+rm -rf transientLoadFollowReactivity
 cp -r steadyState transientLoadFollowReactivity
 cp -r rootCase/system/* transientLoadFollowReactivity/system
 cp rootCase/secondaryCircuit* transientLoadFollowReactivity

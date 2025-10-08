@@ -5,6 +5,6 @@
 
 # Clean the case
 foamListTimes -rm # Remove all time directories
-rm -r postProcessing # Remove post-processing directories
-rm log.* # Remove log files
-rm temperaturePlot.png # Remove temperature plot image
+rm -rf postProcessing # Remove post-processing directories
+rm -f log.* # Remove log files
+rm -f temperaturePlot.png # Remove temperature plot image
