@@ -23,8 +23,6 @@ The Tutorials folder is divided in four types of tutorials:
 - [featureCases](./featureCases/) that contains tests and validation cases for specific features in GeN-Foam
 - [fmuCases](./fmuCases/) that contains examples of use of the FMI standard with GeN-Foam
 
-[EMPTY](./EMPTY/) contains an empty GeN-Foam case with default parameters and default regions.
-
 
 ## Regression test suite
 

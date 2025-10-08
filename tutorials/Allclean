@@ -21,7 +21,7 @@ NC='\033[0m'
 path=$(pwd)
 
 tutorials="
-    testing/unitTests
+    ../tests
 
     featureCases/1D_boiling
     featureCases/1D_CHF/imposedPower
@@ -45,6 +45,7 @@ tutorials="
     reactorCases/1D_thermalMSR_pointKinetics
     reactorCases/2D_FFTF
     reactorCases/2D_MSFR
+    reactorCases/2D_MSFR_ULOF_diffusion_and_pk
     reactorCases/3D_genericParticleBedNTP
     reactorCases/3D_gFHR
     reactorCases/3D_HTR-10
@@ -62,8 +63,6 @@ tutorials="
     fmuCases/2D_LFRpowerPlant/GeN-FoamAndModelica
     fmuCases/2D_LFRpowerPlant/GeN-FoamAs2FMU
     fmuCases/2D_LFRpowerPlant/GeN-FoamAs3FMU
-
-    testing/2D_MSFR_ULOF_diffusion_and_pk
 
     toBeUpdated/2D_RegressionESFR
 "
