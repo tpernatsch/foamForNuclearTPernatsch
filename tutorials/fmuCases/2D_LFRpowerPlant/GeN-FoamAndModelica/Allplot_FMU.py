@@ -46,8 +46,8 @@ if (len(sys.argv) <= 1):
 
 
 # Create figures
-fig1, axes1 = plt.subplots(nrows=2, ncols=2, sharex=True, figsize=(14, 10))
-fig2, axes2 = plt.subplots(nrows=2, ncols=3, sharex=True, figsize=(14, 10))
+fig1, axes1 = plt.subplots(nrows=2, ncols=2, sharex=True, figsize=(9, 6), dpi=300)
+fig2, axes2 = plt.subplots(nrows=2, ncols=2, sharex=True, figsize=(9, 6), dpi=300)
 
 # Linestyle array -> 3 input files maximum
 linestyles = ["-", "--", "-."]
@@ -71,7 +71,7 @@ for k, filename, ls in zip(range(len(sys.argv[1:])), sys.argv[1:], linestyles):
 
     # Create figure for plot
     axTemperature, axPower, axEnthalpy, axSteamQuality = axes1.flatten()
-    axPressure, axPID, axMassflowrate, axFrequency, axRate, _ = axes2.flatten()
+    axPressure, axPID, axMassflowrate, axFrequency = axes2.flatten()
 
     powerTotGFInput = []
     powerInje = listModifier(data['injectedPower'], scale=1e-6)
@@ -179,7 +179,7 @@ for k, filename, ls in zip(range(len(sys.argv[1:])), sys.argv[1:], linestyles):
     axSteamQuality.set_ylabel(r'Steam quality [$-$]')
     axPressure.set_ylabel(r'Pressure [$MPa$]')
     axPID.set_ylabel(r'PID output [$-$]')
-    axRate.set_ylabel(r'Rate [$-$]')
+    # axRate.set_ylabel(r'Rate [$-$]')
     axMassflowrate.set_ylabel(r'Mass flow rate [$kg/s$]')
     axFrequency.set_ylabel(r'Frequency [$Hz$]')
 
@@ -201,8 +201,8 @@ for k, filename, ls in zip(range(len(sys.argv[1:])), sys.argv[1:], linestyles):
 fig1.tight_layout()
 fig2.tight_layout()
 
-fig1.savefig("results_allplot_fmu1.png")
-fig2.savefig("results_allplot_fmu2.png")
+fig1.savefig("fig_results_allplot_fmu1.png")
+fig2.savefig("fig_results_allplot_fmu2.png")
 
 # plt.show()
 

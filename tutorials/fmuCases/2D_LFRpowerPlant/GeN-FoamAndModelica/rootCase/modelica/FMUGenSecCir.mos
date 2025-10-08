@@ -1,5 +1,5 @@
-/* 
-Script to generate the secondary circuit in FMU 
+/*
+Script to generate the secondary circuit in FMU
 */
 
 // Load the mandatory libraries
@@ -19,6 +19,6 @@ setCommandLineOptions("--debug=-disableDirectionalDerivatives");
 setDebugFlags("fmuExperimental"); // To enable derivatives
 
 // Build the FMU
-translateModelFMU(SecondaryCircuitWithControl, version="2.0", fmuType="cs");
-// translateModelFMU(SecondaryCircuitWithoutControl, version="2.0", fmuType="cs");
-translateModelFMU(PIDfreq, version="2.0", fmuType="cs");
+buildModelFMU(SecondaryCircuitWithControl, version="2.0", fmuType="cs");
+// buildModelFMU(SecondaryCircuitWithoutControl, version="2.0", fmuType="cs");
+buildModelFMU(PIDfreq, version="2.0", fmuType="cs");

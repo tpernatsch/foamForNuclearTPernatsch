@@ -1,6 +1,6 @@
 """
 Script to analyse the csv output from the FMU coupled simulation with GeN-Foam.
-Able to render in real time the coupled GeN-Foam/FMU simulation. 
+Able to render in real time the coupled GeN-Foam/FMU simulation.
 
 Author: Thomas Guilbaud, EPFL/Transmutex SA, 04/2023
 """
@@ -24,8 +24,8 @@ def listModifier(l: list, scale: float=1, offset: float=0) -> list:
 def extractFromLogPK(filename: str, pattern: str, idx: int=2, tmin: float=0, tmax: float=1e9):
     time = 0
     times, values = [], []
-    with open(filename, 'r') as file:
-        for line in file.readlines():
+    with open(filename, 'r') as f:
+        for line in f:
             if ("Time = " in line and "ExecutionTime" not in line):
                 time = float(line.split()[2])
             elif (pattern in line):
@@ -105,7 +105,7 @@ for ax in axes.flatten():
     ax.set_xlabel(r'Time [$s$]')
     ax.grid(True)
     ax.legend()
- 
+
 def update(frame):
     """
     Function to update the plot values.
@@ -138,7 +138,7 @@ def update(frame):
     # Extract the time
     time = data['time']
     lastTime = list(time)[-1]
- 
+
     # --- Update all the graphs with the new values
     # Power in MW
     powerSG = listModifier(data['injectedPower'], scale=1e-6)
@@ -179,7 +179,7 @@ def update(frame):
     # Specific enthalpy in MJ/kg
     for i, pltEnthalpy in enumerate(pltEnthalpys):
         pltEnthalpy.set_data(time, listModifier(data[f'SG{i+1}.h[2]'], scale=1e-6))
-    
+
     # Resize all the plots
     for ax in axes.flatten():
         ax.relim()
@@ -187,7 +187,7 @@ def update(frame):
 
     # axFrequency.set_ylim((49.97, 50.03))
     # axPower.set_ylim(0)
- 
+
 # Main function for animation
 animation = FuncAnimation(fig, update, interval=1000)
 

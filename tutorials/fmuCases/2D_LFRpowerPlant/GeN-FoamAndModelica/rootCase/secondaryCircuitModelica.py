@@ -36,7 +36,7 @@ class secondaryCircuit(FMU4FOAM.FMUBase):
         self.current_time = 0
         self.previous_time = self.current_time
         self.indexWrite = 0
-        self.writeInterval = 0
+        self.writeInterval = 1
         self.substep = 1
         self.maxGb = 2
         parametersToRecord: list[str] = None
@@ -107,18 +107,19 @@ class secondaryCircuit(FMU4FOAM.FMUBase):
 
         # Set parameters relevant for load follow. Be carefull when changing
         # the name isLoadFollow as it is used to set the load follow transient
+        startTransientTime = 1000
         isLoadFollowReactivity = False
         if (isLoadFollowReactivity):
-            self.setVar("stepActivateExtReactivity.startTime", 1000)
+            self.setVar("stepActivateExtReactivity.startTime", startTransientTime)
 
         isLoadFollowSource = False
         if (isLoadFollowSource):
-            self.setVar("stepActivateExtSource.startTime", 1000)
+            self.setVar("stepActivateExtSource.startTime", startTransientTime)
 
         if (isLoadFollowReactivity or isLoadFollowSource):
-            self.setVar("rampLoad.startTime", 1100)
+            self.setVar("rampLoad.startTime", startTransientTime+100)
             self.setVar("rampLoad.height", -20e6)
-            self.setVar("rampLoad2.startTime", 1600)
+            self.setVar("rampLoad2.startTime", startTransientTime+600)
             self.setVar("rampLoad2.height", 20e6)
 
 

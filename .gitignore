@@ -45,7 +45,7 @@ public
 documentation/mkdocs/docs/classes
 
 # FMU installation
-FMU4FOAM
+thirdParty/FMU4FOAM
 
 # Tutorials
 tutorials/featureCases/1D_boiling/*[123456789]*

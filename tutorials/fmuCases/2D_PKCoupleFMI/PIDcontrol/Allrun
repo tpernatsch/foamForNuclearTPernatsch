@@ -28,11 +28,11 @@ then
 
     foamDictionary system/controlDict -entry endTime -set $steadyStateDuration
     cp constant/regionsDict_steadyState constant/regionsDict
-    GeN-Foam -initializeMappedFields
+    GeN-Foam -initializeMappedFields > log.GeN-Foam.initializeMappedFields
 
     GeN-Foam |
         tee log.GeN-Foam |
-        grep -E "Time = |deltaT ="
+        grep -e "Time = \|deltaT ="
 
     cd ..
 else
@@ -55,10 +55,10 @@ foamDictionary system/controlDict -entry deltaT -set 1e-3
 foamDictionary system/controlDict -entry writeControl -set timeStep
 foamDictionary system/controlDict -entry writeInterval -set 10
 cp constant/regionsDict_transient constant/regionsDict
-GeN-Foam -initializeMappedFields
+GeN-Foam -initializeMappedFields > log.GeN-Foam.initializeMappedFields
 
 GeN-Foam |
     tee log.GeN-Foam |
-    grep -E "Time = |deltaT ="
+    grep -e "Time = \|deltaT ="
 
 #=============================================================================*

@@ -1,5 +1,5 @@
-/* 
-Script to generate the secondary circuit in FMU 
+/*
+Script to generate the secondary circuit in FMU
 */
 
 // Load the mandatory libraries
@@ -14,4 +14,4 @@ setCommandLineOptions("--fmiFilter=none");
 setCommandLineOptions("--fmiSources=true");
 
 // Build the FMU
-translateModelFMU(SecondaryCircuitWithControl, version="2.0", fmuType="cs");
+buildModelFMU(SecondaryCircuitWithControl, version="2.0", fmuType="cs");

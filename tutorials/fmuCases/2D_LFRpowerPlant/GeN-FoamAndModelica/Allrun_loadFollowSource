@@ -11,7 +11,7 @@ cd ${0%/*} || exit 1
 # Main parameters
 #=============================================================================*
 
-timeSteadyState=1000
+timeSteadyState=200
 timeTransient=1000
 
 
@@ -73,6 +73,7 @@ then
     foamDictionary system/controlDict -entry writeInterval -set $timeSteadyState
     foamDictionary system/controlDict -entry adjustTimeStep -set false
     foamDictionary system/controlDict -entry runTimeModifiable -set false
+    GeN-Foam -initializeMappedFields > log.GeN-Foam.initializeMappedFields
 
     GeN-Foam |
         tee log.GeN-Foam |
@@ -113,6 +114,7 @@ foamDictionary system/controlDict -entry endTime -set $(($timeSteadyState + $tim
 foamDictionary system/controlDict -entry writeInterval -set 100
 foamDictionary system/controlDict -entry adjustTimeStep -set false
 foamDictionary system/controlDict -entry runTimeModifiable -set false
+GeN-Foam -initializeMappedFields > log.GeN-Foam.initializeMappedFields
 
 # Simulation
 GeN-Foam | tee log.GeN-Foam | grep -E "Time =|deltaT|Courant Number"

@@ -6,4 +6,4 @@ loadFile("./momentumSourceTest.mo");
 setCommandLineOptions("--fmiFilter=none");
 setCommandLineOptions("--fmiSources=true");
 
-translateModelFMU(momentumSourceTest, version="2.0",fmuType="cs")
+buildModelFMU(momentumSourceTest, version="2.0",fmuType="cs")

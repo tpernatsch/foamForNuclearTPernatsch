@@ -60,7 +60,7 @@ git submodule update --init --recursive
 if [ $fmi_flag = 'true' ]
 then
 
-    cd FMU4FOAM
+    cd thirdParty/FMU4FOAM
 
     # Build paths
     pathLibFMU4FOAM=$(pwd)
@@ -72,17 +72,6 @@ then
         echo "Build ECI4FOAM"
         ./build-ECI4FOAM.sh -j$num_jobs
     fi
-
-    # if [[ -z "$LIB_ECI4FOAM" ]]
-    # then
-    #     echo -e "## ECI4FOAM\nexport LIB_ECI4FOAM=$pathLibECI4FOAM" >> $HOME/.bashrc
-    # fi
-
-    # LIB_ECI4FOAM found but incorrect path -> build from another project
-    # if [[ ! -z "$LIB_ECI4FOAM" ]] && [ $pathLibECI4FOAM != $LIB_ECI4FOAM ]
-    # then
-    #     sed -i "/LIB_ECI4FOAM=/c\\export LIB_ECI4FOAM=$pathLibECI4FOAM" $HOME/.bashrc
-    # fi
 
     # Force export of LIB path
     export LIB_ECI4FOAM=$pathLibECI4FOAM
@@ -97,23 +86,11 @@ then
             ./Allwmake -j$num_jobs
         fi
 
-        # if [[ -z "$LIB_FMU4FOAM" ]]
-        # then
-        #     echo 'Add'
-        #     echo -e "## FMU4FOAM\nexport LIB_FMU4FOAM=$pathLibFMU4FOAM" >> $HOME/.bashrc
-        # fi
-
-        # LIB_FMU4FOAM found but incorrect path -> build from another project
-        # if [[ ! -z "$LIB_FMU4FOAM" ]] && [ $pathLibFMU4FOAM != $LIB_FMU4FOAM ]
-        # then
-        #     sed -i "/LIB_FMU4FOAM=/c\\export LIB_FMU4FOAM=$pathLibFMU4FOAM" $HOME/.bashrc
-        # fi
-
         # Force export of LIB path
         export LIB_FMU4FOAM=$pathLibFMU4FOAM
     fi
 
-    cd ..
+    cd ../..
 
     echo -e '\nIf you build ECI4FOAM or FMU4FOAM for FMI coupled simulation.'
     echo -e 'It is recommanded to add the following lines to your ~/.bashrc\n'
