@@ -46,8 +46,6 @@ cp rootCaseFMU/ExternalReactivityController* transientFMU/
 cd transientFMU
 
 echo "Change case parameters for transientFMU calculation"
-foamDictionary system/controlDict -entry regionSolvers/neutroRegion -set pointKinetics
-foamDictionary constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
 foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
 foamDictionary system/controlDict -entry endTime -set $(($steadyStateDuration+$transientDuration))
 foamDictionary system/controlDict -entry deltaT -set 1e-6
@@ -85,8 +83,6 @@ cd ..
 cp -r steadyStateUncoupled transientUncoupled
 cd transientUncoupled
 
-foamDictionary system/controlDict -entry regionSolvers/neutroRegion -set pointKinetics
-foamDictionary constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
 foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
 foamDictionary system/controlDict -entry endTime -set $(($steadyStateDuration+$transientDuration))
 foamDictionary system/controlDict -entry deltaT -set 1e-6

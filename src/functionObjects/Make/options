@@ -34,5 +34,5 @@ LIB_LIBS = \
 
 ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))
     EXE_INC += -I$(LIB_ECI4FOAM)/src/externalComm/lnInclude
-    LIB_LIBS += -lexternalComm
+    LIB_LIBS += -L$(FOAM_USER_LIBBIN) -lexternalComm
 endif

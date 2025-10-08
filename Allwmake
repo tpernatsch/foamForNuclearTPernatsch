@@ -54,7 +54,7 @@ done
 echo "Number of jobs: $num_jobs"
 echo "FMI flag: $fmi_flag"
 
-git submodule update --init --recursive 
+git submodule update --init --recursive
 
 # Build with FMI option
 if [ $fmi_flag = 'true' ]
@@ -137,13 +137,14 @@ wmake -j$num_jobs ./src/offbeat/src/SCIANTIX
 wmake -j$num_jobs ./src/offbeat/src/offbeatLib
 
 # Make src libs
-wmake -j$num_jobs ./src/interpolationModels 
-wmake -j$num_jobs ./src/solutionControl 
-wmake -j$num_jobs ./src/profiles 
+wmake -j$num_jobs ./src/interpolationModels
+wmake -j$num_jobs ./src/solutionControl
+wmake -j$num_jobs ./src/profiles
 wmake -j$num_jobs ./src/crossSections
 wmake -j$num_jobs ./src/porousMediaModels
 wmake -j$num_jobs ./src/thermophysicalProperties
 wmake -j$num_jobs ./src/multiRegion
+wmake -j$num_jobs ./src/functionObjects
 wmake -j$num_jobs ./src/fvPatchFields
 
 # Make modules

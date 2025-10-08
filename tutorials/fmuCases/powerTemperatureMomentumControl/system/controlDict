@@ -47,11 +47,6 @@ runTimeModifiable true;
 
 //- Physics to Solve
 
-regionSolvers
-{
-    fluidRegion     onePhase;
-}
-
 removeBaffles
 {
     fluidRegion     true;
@@ -76,7 +71,7 @@ functions
     outlet1
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFunctionObjects.so" );
         log             true;
         region          fluidRegion;
         regionType      patch;
@@ -88,7 +83,7 @@ functions
     outlet2
     {
         type            TBulk;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFunctionObjects.so" );
         log             true;
         region          fluidRegion;
         regionType      patch;
@@ -100,7 +95,7 @@ functions
     massFlow1
     {
         type            massFlow;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFunctionObjects.so" );
         log             true;
         region          fluidRegion;
         regionType      patch;
@@ -112,7 +107,7 @@ functions
     massFlow2
     {
         type            massFlow;
-        libs            ( "libfieldFunctionObjects.so" );
+        libs            ( "libFunctionObjects.so" );
         log             true;
         region          fluidRegion;
         regionType      patch;

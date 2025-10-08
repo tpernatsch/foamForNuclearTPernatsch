@@ -48,12 +48,6 @@ runTimeModifiable false;
 
 //- Physics
 
-regionSolvers
-{
-    fluidRegion     onePhase;
-    neutroRegion    diffusionNeutronics;
-}
-
 removeBaffles
 {
     fluidRegion     true;

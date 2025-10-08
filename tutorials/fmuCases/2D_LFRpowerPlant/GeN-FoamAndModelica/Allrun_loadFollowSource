@@ -52,10 +52,10 @@ then
         cp -r 0.converged 0
     fi
 
-    foamDictionary constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
     foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
     foamDictionary constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set false
     foamDictionary constant/neutroRegion/externalSource -entry isExternalSource -set true
+    cp constant/regionsDict_transient constant/regionsDict
 
     cp ../rootCase/system/controlDict system/
     cp ../rootCase/secondaryCircuit* .
@@ -65,7 +65,7 @@ then
     # Activate FMU Simulator function object
     sed -i "s|// #include \"FMUSimulatorFunction\"|#include \"FMUSimulatorFunction\"|" system/controlDict
     sed -i "s|// #include \"functions\"|#include \"functions\"|" system/controlDict
-    
+
     # Set main parameter of the load follow simulation in FMU4FOAM object
     sed -i "s/isLoadFollowSource = False/isLoadFollowSource = True/" secondaryCircuit*.py
 
@@ -74,8 +74,8 @@ then
     foamDictionary system/controlDict -entry adjustTimeStep -set false
     foamDictionary system/controlDict -entry runTimeModifiable -set false
 
-    GeN-Foam | 
-        tee log.GeN-Foam | 
+    GeN-Foam |
+        tee log.GeN-Foam |
         grep -E "Time =|deltaT|Courant Number"
 
     cd ..
@@ -105,13 +105,12 @@ sed -i "s|// #include \"functions\"|#include \"functions\"|" system/controlDict
 sed -i "s/isLoadFollowSource = False/isLoadFollowSource = True/" secondaryCircuit*.py
 
 # Set simulation parameters
+cp constant/regionsDict_transient constant/regionsDict
 foamDictionary constant/neutroRegion/externalSource -entry isExternalSource -set true
 foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
 foamDictionary constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set true
 foamDictionary system/controlDict -entry endTime -set $(($timeSteadyState + $timeTransient))
-# foamDictionary system/controlDict -entry solveNeutronics -set true
 foamDictionary system/controlDict -entry writeInterval -set 100
-foamDictionary system/controlDict -entry purgeWrite -set 0
 foamDictionary system/controlDict -entry adjustTimeStep -set false
 foamDictionary system/controlDict -entry runTimeModifiable -set false
 

@@ -29,7 +29,7 @@ writeControl        adjustableRunTime;
 
 writeInterval       1;
 
-purgeWrite          2;
+purgeWrite          0;
 
 writeFormat         ascii; // ascii / binary (remove the warning due to
                            // precision)
@@ -43,15 +43,11 @@ timePrecision       6;
 
 runTimeModifiable   true;
 
-//- Physics to Solve ----------------------------------------------------------*
-
-solveFluidMechanics     true;
-
-solveEnergy             true;
-
-solveNeutronics         true;
-
-solveThermalMechanics   false;
+removeBaffles
+{
+    fluidRegion     true;
+    neutroRegion    false;
+}
 
 
 //- Global options ------------------------------------------------------------*
@@ -66,9 +62,6 @@ maxDeltaT           1;
 
 maxCo               5;
 
-//- Mesh control --------------------------------------------------------------*
-
-removeBaffles       false;
 
 //- --*
 

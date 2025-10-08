@@ -16,11 +16,10 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model					    diffusionNeutronics; // diffusionNeutronics | pointKinetics
-
 eigenvalueNeutronics        true;
 
 //- If true, add the external source to the point-kinetics equations
 externalSourceNeutronics    false;
+
 
 // ************************************************************************* //

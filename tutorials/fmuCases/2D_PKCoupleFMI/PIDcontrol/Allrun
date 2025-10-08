@@ -49,8 +49,6 @@ cp rootCase/ExternalReactivityController* transient/
 cd transient
 
 echo "Change case parameters for transient calculation"
-foamDictionary system/controlDict -entry regionSolvers/neutroRegion -set pointKinetics
-foamDictionary constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
 foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
 foamDictionary system/controlDict -entry endTime -set $(($steadyStateDuration+$transientDuration))
 foamDictionary system/controlDict -entry deltaT -set 1e-3

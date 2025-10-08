@@ -21,8 +21,8 @@ def listModifier(l: list, scale: float=1, offset: float=0) -> list:
 def extractFromLogPK(filename: str, pattern: str, idx: int=2, tmin: float=0, tmax: float=1e9):
     time = 0
     times, values = [], []
-    with open(filename, 'r') as file:
-        for line in file.readlines():
+    with open(filename, 'r') as f:
+        for line in f:
             if ("Time = " in line and "ExecutionTime" not in line):
                 time = float(line.split()[2])
             elif (pattern in line):
@@ -99,13 +99,13 @@ for k, filename, ls in zip(range(len(sys.argv[1:])), sys.argv[1:], linestyles):
             inletSteamQuality = list(data[f'SG{i}.x[1]'])
             inletTemperature = list(data[f'SG{i}.T[1]'])
             print(f'SG{i} {inletTemperature[-1]:10.2f} K {inletEnthalpy[-1]:24.3f} MJ/kg {inletSteamQuality[-1]:10.4f}')
-        
+
         # Print info per SG sections
         print(
             f'SG{i}',
             f'{T[-1]:10.2f} K',
             f'{power[-1]/56.70*5/360:10.5f} MW',
-            f'{enthalpy[-1]:10.3f} MJ/kg',  
+            f'{enthalpy[-1]:10.3f} MJ/kg',
             f'{steamQuality[-1]:10.4f}',
             f'{pressure[-1]:10.4f} MPa'
         )
@@ -127,7 +127,7 @@ for k, filename, ls in zip(range(len(sys.argv[1:])), sys.argv[1:], linestyles):
     print(f"Target inlet  temperature {400+273.15} K")
     print(f"Target outlet temperature {480+273.15} K")
 
-    
+
     path = "/".join(filename.split("/")[:-1])
     logFilename = path+"/log.GeN-Foam"
     powerSG = 0
@@ -138,7 +138,7 @@ for k, filename, ls in zip(range(len(sys.argv[1:])), sys.argv[1:], linestyles):
         extractFromLog(logFilename, "volIntegrate\(fluidRegion\) of powerDensityNeutronics = (.*)")[-1]/1e6
     ))
     print(f"  Power SG   = {powerSG/1e6:.6f} MW")
-    
+
     Si = extractFromLog(logFilename, "faceZone Edge_14_rotated massFlow = .* kg/s over (.*) m2")[-1]
     So = extractFromLog(logFilename, "faceZone Edge_35_rotated massFlow = .* kg/s over (.*) m2")[-1]
 
@@ -164,8 +164,8 @@ for k, filename, ls in zip(range(len(sys.argv[1:])), sys.argv[1:], linestyles):
     # axPower.plot(time, powerInje, ls=ls, label="Injected")
 
     axPID.plot(time, listModifier(data['valveVapAdmissionTurb.theta'], scale=90), ls=ls, label='Valve turbine admission [deg]' if k==0 else "")
-    
-    # axRate.plot(time, listModifier(data['derValveAdmission.y'], scale=90), ls=ls, label='Valve turbine admission [deg/s]' if k==0 else "") 
+
+    # axRate.plot(time, listModifier(data['derValveAdmission.y'], scale=90), ls=ls, label='Valve turbine admission [deg/s]' if k==0 else "")
 
     axMassflowrate.plot(time, data['sensW.w'], ls=ls, label="Outlet SG" if k==0 else "")
 
@@ -198,9 +198,12 @@ for k, filename, ls in zip(range(len(sys.argv[1:])), sys.argv[1:], linestyles):
         # Reset color wheel for the next plots
         ax.set_prop_cycle(None)
 
+fig1.tight_layout()
+fig2.tight_layout()
+
 fig1.savefig("results_allplot_fmu1.png")
 fig2.savefig("results_allplot_fmu2.png")
 
-plt.show()
+# plt.show()
 
 #=============================================================================*

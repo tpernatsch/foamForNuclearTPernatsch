@@ -1,8 +1,6 @@
 #!/bin/sh
 rm -rf steady* transient*
-rm -rf *.log
-rm -rf log.*
-rm -rf *.out
+rm -rf *.log log.* *.out *.png
 rm -rf rootCase/*.libs
 rm -rf rootCase/*.log
 rm -rf rootCase/*.makefile

@@ -13,6 +13,8 @@ FoamFile
     class       dictionary;
     object      controlDict;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
 application     GeN-Foam;
 
 startFrom       latestTime;
@@ -40,12 +42,6 @@ timeFormat      general;
 timePrecision   8;
 
 runTimeModifiable false;
-
-regionSolvers
-{
-    fluidRegion     onePhase;
-    neutroRegion    diffusionNeutronics;
-}
 
 removeBaffles
 {

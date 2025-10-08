@@ -1,9 +1,19 @@
-### IMPORTS
+#=============================================================================*
+# Imports
 
 import sys
 import matplotlib.pyplot as plt
 
-### MAIN
+
+#=============================================================================*
+
+if (len(sys.argv) < 2):
+    print("Usage: python plot.py folder/path ...")
+    sys.exit(1)
+
+
+#=============================================================================*
+# Main
 
 fig, (ax1, ax2, ax3) = plt.subplots(3, sharex=True)
 
@@ -14,7 +24,9 @@ ax3.set_xlabel("time(s)")
 
 linestyles = ["-", "--"]
 
-for filename, linestyle in zip(sys.argv[1:], linestyles):
+folders = sys.argv[1:]
+
+for filename, linestyle in zip(folders, linestyles):
 
     with open(filename, "r") as file:
         lines = file.readlines()
@@ -45,15 +57,21 @@ for filename, linestyle in zip(sys.argv[1:], linestyles):
         del TFuels[0]
         t0 = times[0]
         for i in range(len(times)) :
-            times[i] = times[i] - t0  
+            times[i] = times[i] - t0
         del times[-1]
         ax1.plot(times, powers, label=filename, linestyle=linestyle)
-        ax2.plot(times, totRhos, label=filename, linestyle=linestyle)  
-        ax3.plot(times, TFuels, label=filename, linestyle=linestyle)      
+        ax2.plot(times, totRhos, label=filename, linestyle=linestyle)
+        ax3.plot(times, TFuels, label=filename, linestyle=linestyle)
+
 ax1.legend()
 ax1.grid(True)
 ax2.legend()
 ax2.grid(True)
 ax3.legend()
 ax3.grid(True)
-plt.show()
+
+fig.tight_layout()
+fig.savefig(f"fig_results_{'_'.join([folder.replace('/', '') for folder in folders])}.png")
+
+
+#=============================================================================*

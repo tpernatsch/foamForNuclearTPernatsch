@@ -46,8 +46,8 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 *Modeling of the European Sodium Fast Reactor: Boiling in a windowed assembly and core flowering*
 
 <div style="text-align:center;">
-  <img src="./Documentation/media/assmblyWindows.png" width="200">
-  <img src="./Documentation/media/coreFlowering.png" width="300">
+  <img src="./documentation/media/assmblyWindows.png" width="200">
+  <img src="./documentation/media/coreFlowering.png" width="300">
 </div>
 <br>
 
@@ -55,7 +55,7 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 *Full plant modeling of the ALFRED Lead Fast Reactor using the FMI interface and Modelica*
 
 <div style="text-align:center;">
-  <img src="./Documentation/media/LFRfull.png" width="1000">
+  <img src="./documentation/media/LFRfull.png" width="1000">
 </div>
 <br>
 
@@ -63,9 +63,9 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 *Modeling of Molten Salt Reactors: the MSRE and the MSFR*
 
 <div style="text-align:center;">
-  <img src="./Documentation/media/MSRE.png" width="300">
-  <img src="./Documentation/media/precTot3D.png" width="300">
-  <img src="./Documentation/media/precTot3Dside.png" width="100">
+  <img src="./documentation/media/MSRE.png" width="300">
+  <img src="./documentation/media/precTot3D.png" width="300">
+  <img src="./documentation/media/precTot3Dside.png" width="100">
 </div>
 <br>
 
@@ -73,6 +73,6 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 *Modeling of FFTF: 2-D primary circuit thermal-hydraulics and core fluxes*
 
 <div style="text-align:center;">
-  <img src="./Documentation/media/FFTF.png" width="800">
+  <img src="./documentation/media/FFTF.png" width="800">
 </div>
 <br>

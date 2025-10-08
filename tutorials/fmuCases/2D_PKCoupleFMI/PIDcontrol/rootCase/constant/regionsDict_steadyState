@@ -10,21 +10,39 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volScalarField;
-    object      fuelDisp;
+    class       dictionary;
+    object      regionsDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 1 0 0 0 0 0];
-
-internalField   uniform 0;
-
-boundaryField
+regionSolvers
 {
-    ".*"
+    Level_0
     {
-       type            zeroGradient;
-    }  
+        fluidRegion     onePhase;
+        neutroRegion    diffusionNeutronics;
+    }
 }
+
+mappings
+{
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields    ( powerDensity secondaryPowerDensity );
+            targetFields    ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    ( TCool rhoCool TFuel TClad TStructMech );
+        }
+    }
+}
+
 
 // ************************************************************************* //

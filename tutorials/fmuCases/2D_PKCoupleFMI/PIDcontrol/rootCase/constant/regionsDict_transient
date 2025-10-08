@@ -15,6 +15,15 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+regionSolvers
+{
+    Level_0
+    {
+        fluidRegion     onePhase;
+        neutroRegion    pointKinetics;
+    }
+}
+
 mappings
 {
     fluidRegion

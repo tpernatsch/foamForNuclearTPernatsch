@@ -17,10 +17,25 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 #==============================================================================*
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+resFile=test.out
+
+
 echo "Test hydrogen thermophysical properties"
-Test-hydrogenThermophysicalProperties
+Test-hydrogenThermophysicalProperties >> $resFile
 
 echo "Test radial basis functions"
-Test-radialBasisFunctions
+Test-radialBasisFunctions >> $resFile
+
+
+# Remove color tags
+sed -i "s/\[0m//" $resFile
+sed -i "s/\[32m//" $resFile
+sed -i "s/\[33m//" $resFile
+sed -i "s/\*\*\*\*//" $resFile
+
 
 #==============================================================================*

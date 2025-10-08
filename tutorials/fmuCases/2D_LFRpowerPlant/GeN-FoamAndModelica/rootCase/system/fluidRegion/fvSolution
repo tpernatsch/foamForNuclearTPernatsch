@@ -89,6 +89,8 @@ PIMPLE
 {
     nCorrectors      3;
     nNonOrthogonalCorrectors 0;
+    solveFluidMechanics     true;
+    solveEnergy             true;
 
     //- The following feature applies only to the twoPhase solver and is
     //  compatible with all momentumModes (see below)

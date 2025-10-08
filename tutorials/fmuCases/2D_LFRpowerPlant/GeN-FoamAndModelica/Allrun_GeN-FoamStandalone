@@ -25,13 +25,14 @@ then
     cp -r rootCase steadyStateStandalone
     cd steadyStateStandalone
 
-    rm -r 0.converged
+    rm -rf 0.converged
 
+    cp constant/regionsDict_steadyState constant/regionsDict
     foamDictionary system/controlDict -entry endTime -set $timeSteadyState
     foamDictionary system/controlDict -entry writeInterval -set $timeSteadyState
 
-    GeN-Foam | 
-        tee log.GeN-Foam | 
+    GeN-Foam |
+        tee log.GeN-Foam |
         grep -E "Time =|deltaT|Courant Number"
 
     mv $timeSteadyState 0.converged

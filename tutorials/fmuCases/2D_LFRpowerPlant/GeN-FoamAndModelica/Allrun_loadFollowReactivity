@@ -53,10 +53,10 @@ then
         cp -r 0.converged 0
     fi
 
-    foamDictionary constant/neutroRegion/neutronicsProperties -entry model -set pointKinetics
     foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
     foamDictionary constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set false
     foamDictionary constant/neutroRegion/externalSource -entry isExternalSource -set false
+    cp constant/regionsDict_transient constant/regionsDict
 
     cp ../rootCase/system/controlDict system/
     cp ../rootCase/secondaryCircuit* .
@@ -70,15 +70,15 @@ then
     # Set main parameter of the load follow simulation in FMU4FOAM object
     # sed -i "s/isLoadFollowReactivity = False/isLoadFollowReactivity = True/" secondaryCircuit*.py
     # sed -i "s/self.setVar(\"stepActivateExtReactivity.startTime\", 1000)/self.setVar(\"stepActivateExtReactivity.startTime\", 0)/" secondaryCircuit*.py
-    
+
     foamDictionary system/controlDict -entry endTime -set $timeSteadyState
     foamDictionary system/controlDict -entry writeInterval -set $timeSteadyState
     foamDictionary system/controlDict -entry adjustTimeStep -set false
     foamDictionary system/controlDict -entry runTimeModifiable -set false
 
-    GeN-Foam | 
-        tee log.GeN-Foam | 
-        grep -E "Time =|deltaT|Courant Number"
+    GeN-Foam |
+        tee log.GeN-Foam |
+        grep -e "Time =\|deltaT\|Courant Number"
 
     cd ..
 else
@@ -110,16 +110,15 @@ sed -i "s|// #include \"functions\"|#include \"functions\"|" system/controlDict
 sed -i "s/isLoadFollowReactivity = False/isLoadFollowReactivity = True/" secondaryCircuit*.py
 
 # Set simulation parameters
+cp constant/regionsDict_transient constant/regionsDict
 foamDictionary constant/neutroRegion/externalSource -entry isExternalSource -set false
 foamDictionary system/controlDict -entry endTime -set $(($timeSteadyState + $timeTransient))
-# foamDictionary system/controlDict -entry solveNeutronics -set true
 foamDictionary system/controlDict -entry writeInterval -set 100
-foamDictionary system/controlDict -entry purgeWrite -set 0
 foamDictionary system/controlDict -entry adjustTimeStep -set false
 foamDictionary system/controlDict -entry runTimeModifiable -set false
 
 # Simulation
-GeN-Foam | tee log.GeN-Foam | grep -E "Time =|deltaT|Courant Number"
+GeN-Foam | tee log.GeN-Foam | grep -e "Time =\|deltaT\|Courant Number"
 
 # Simulation with GeN-Foam in parallel
 # decomposePar -allRegions

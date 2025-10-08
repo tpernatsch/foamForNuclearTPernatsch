@@ -15,10 +15,32 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+regionSolvers
+{
+    Level_0
+    {
+        fluidRegion     onePhase;
+        neutroRegion    diffusionNeutronics;
+    }
+}
+
 mappings
 {
     fluidRegion
     {
+        neutroRegion
+        {
+            sourceFields    ( powerDensity secondaryPowerDensity );
+            targetFields    ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    ( TCool rhoCool TFuel TClad TStructMech );
+        }
     }
 }
 

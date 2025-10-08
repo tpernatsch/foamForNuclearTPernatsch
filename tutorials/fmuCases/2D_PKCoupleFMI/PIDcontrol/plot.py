@@ -13,7 +13,7 @@ import pandas as pd
 #=============================================================================*
 
 if (len(sys.argv) < 2):
-    print("Usage: python plot.py folder1/log.GeN-Foam ...")
+    print("Usage: python plot.py folder/path ...")
     sys.exit(1)
 
 #=============================================================================*
@@ -34,8 +34,8 @@ class SList:
     """ Super list to manipulate the values from the log. """
 
     def __init__(
-        self, 
-        keyWord: str, 
+        self,
+        keyWord: str,
         ax=None,
         pos: int=2,
         exception: str="",
@@ -72,9 +72,9 @@ class SList:
 
     def plot(self, time: list) -> None:
         self.ax.plot(
-            time[1:], 
-            self.list[:-1], 
-            linestyle=self.linestyle, 
+            time[1:],
+            self.list[:-1],
+            linestyle=self.linestyle,
             label=self.label
         )
 
@@ -87,19 +87,20 @@ fig, axes = plt.subplots(3, sharex=True)
 
 (axPower, axReactivity, axTemperature) = axes.flatten()
 
-for filename, linestyle in zip(sys.argv[1:], linestyles):
+folders = sys.argv[1:]
+
+for folder, linestyle in zip(folders, linestyles):
     records = {
         "time": SList("Time = ", exception="ExecutionTime"),
         "powers": SList("totalPower", ax=axPower, linestyle=linestyle, label="Point-Kinetics"),
         "TFuels": SList("TFuel = ", ax=axTemperature, linestyle=linestyle, label="Fuel"),
         "totRhos": SList("totalReactivity", ax=axReactivity, linestyle=linestyle, label="Total"),
         "fuelRhos": SList("-> TFuel", pos=3, ax=axReactivity, linestyle=linestyle, label="TFuel"),
-        "extRhos": SList("-> extReactivity", pos=3, ax=axReactivity, linestyle=linestyle, label="Ext react"),
-        "extRhoFMUs": SList("-> extReactivitFMU", ax=axReactivity, linestyle=linestyle, label="Ext FMU")
+        "extRhos": SList("-> extReactivity", pos=3, ax=axReactivity, linestyle=linestyle, label="Ext react")
     }
-    
+
     # Read file
-    with open(filename, "r") as file:
+    with open(f"{folder}/log.GeN-Foam", "r") as file:
         # Read lines
         for line in file.readlines():
             for record in records.values():
@@ -109,7 +110,7 @@ for filename, linestyle in zip(sys.argv[1:], linestyles):
             if ("ClockTime" in line):
                 for record in records.values():
                     record.addValue()
-    
+
     # Offset the time
     times = records["time"]
     times.modifyList(offset=-100)
@@ -119,35 +120,34 @@ for filename, linestyle in zip(sys.argv[1:], linestyles):
     records["powers"].plot(times)
     records["totRhos"].plot(times)
     records["extRhos"].plot(times)
-    records["extRhoFMUs"].plot(times)
     records["fuelRhos"].plot(times)
     records["TFuels"].plot(times)
 
-#=============================================================================*
 
-# Read from FMU output
-data = pd.read_csv("transient/ExternalReactivityController.csv")
+    # Read from FMU output
+    data = pd.read_csv(f"{folder}/ExternalReactivityController.csv")
 
-time = listModifier(data['time'], offset=-100)
-idxTime = time.index(0)
+    time = listModifier(data['time'], offset=-100)
+    idxTime = time.index(0)
 
-powerGF = list(data['power'])
-powerRamp = list(data['ramp.y'])
-diffPower = relError(powerRamp, powerGF)
-extRhoFMUs = listModifier(data['pid.y'], scale=1e5)
+    powerGF = list(data['power'])
+    powerRamp = list(data['ramp.y'])
+    diffPower = relError(powerRamp, powerGF)
+    extRhoFMUs = listModifier(data['pid.y'], scale=1e5)
 
-# print(
-#     f"At time t=0 (idx {idxTime}): {time[idxTime:idxTime+4]}\n",
-#     f"rhoTot={records['totRhos'].list[0:4]}\n", 
-#     f"PK            = {records['powers'].list[0:4]}\n", 
-#     f"fieldIntegral = {powerGF[idxTime:idxTime+4]}\n", 
-#     f"PID output    = {list(data['pid.y'])[idxTime:idxTime+4]}\n", 
-#     f"ramp          = {powerRamp[idxTime:idxTime+4]}\n",
-#     f"Rel error power = {diffPower[idxTime:idxTime+4]}\n"
-# )
+    # print(
+    #     f"At time t=0 (idx {idxTime}): {time[idxTime:idxTime+4]}\n",
+    #     f"rhoTot={records['totRhos'].list[0:4]}\n",
+    #     f"PK            = {records['powers'].list[0:4]}\n",
+    #     f"fieldIntegral = {powerGF[idxTime:idxTime+4]}\n",
+    #     f"PID output    = {list(data['pid.y'])[idxTime:idxTime+4]}\n",
+    #     f"ramp          = {powerRamp[idxTime:idxTime+4]}\n",
+    #     f"Rel error power = {diffPower[idxTime:idxTime+4]}\n"
+    # )
 
-# axPower.plot(time, powerGF, label="fieldIntegralToFMU")
-axPower.plot(time, powerRamp, label='Command')
+    # axPower.plot(time, powerGF, label="fieldIntegralToFMU")
+    axPower.plot(time, powerRamp, label='Command')
+
 
 axPower.set_xlim(0)
 # axPower.set_ylim((9.8e6, 11.3e6))
@@ -166,6 +166,9 @@ axPower.set_ylabel("Power [W]")
 axReactivity.set_ylabel("Reactivity [pcm]")
 axTemperature.set_ylabel("Fuel temperature [K]")
 
-plt.show()
+fig.tight_layout()
+fig.savefig(f"fig_results_{'_'.join([folder.replace('/', '') for folder in folders])}.png")
+
+# plt.show()
 
 #=============================================================================*
