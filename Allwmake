@@ -54,6 +54,7 @@ done
 echo "Number of jobs: $num_jobs"
 echo "FMI flag: $fmi_flag"
 
+# Collect all submodules
 git submodule update --init --recursive
 
 # Build with FMI option
@@ -145,6 +146,26 @@ wmake -j$num_jobs ./tests/radialBasisFunctions
 
 echo -e "Make tests completed\n"
 
+
+#==============================================================================*
+# Update the main README.md
+
+current_version=$(grep -oP '(?<=based on OpenFOAM, ESI/OpenCFD distribution, currently )v\d+\d+\d+\d+' README.md)
+
+current_version_num=$(echo $current_version | sed -r "s/v//")
+new_version_num=$(echo $WM_PROJECT_VERSION | sed -r "s/v//")
+
+checkUpgrade=$(echo "$current_version_num < $new_version_num" | bc -l)
+if [[ $checkUpgrade -eq 1 ]]
+then
+    echo "Current OpenFOAM version ($current_version) is not the lastest."
+    echo "Found OpenFOAM version $WM_PROJECT_VERSION, upgrade README.md"
+    sed -i "s/$current_version/$WM_PROJECT_VERSION/" README.md
+fi
+
+
+#==============================================================================*
+# Info
 
 if [ $fmi_flag = 'true' ]
 then
