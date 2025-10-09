@@ -11,12 +11,38 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    location    "constant/neutroRegion";
-    object      neutronicsProperties;
+    object      regionsDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-eigenvalueNeutronics    false; // true | false
+regionSolvers
+{
+    Level_0
+    {
+        fluidRegion     onePhase;
+        neutroRegion    pointKinetics;
+    }
+}
+
+mappings
+{
+    fluidRegion
+    {
+        neutroRegion
+        {
+            sourceFields    ( powerDensity secondaryPowerDensity );
+            targetFields    ( powerDensityNeutronics powerDensityNeutronicsToLiquid );
+        }
+    }
+    neutroRegion
+    {
+        fluidRegion
+        {
+            sourceFields    ( T thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T.passiveStructure );
+            targetFields    ( TCool rhoCool TFuel TClad TStructMech );
+        }
+    }
+}
 
 
 // ************************************************************************* //

@@ -136,7 +136,7 @@ model SecondaryCircuitWithControl
     Placement(visible = true, transformation(origin = {-226, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   // Eletric power output
   Modelica.SIunits.Power injectedPower;
-  Modelica.Blocks.Sources.Ramp rampLoad(duration = 10, height = -20e6, offset = 0, startTime = 1e15) annotation(
+  Modelica.Blocks.Sources.Ramp rampLoad(duration = 60, height = -20e6, offset = 0, startTime = 1e15) annotation(
     Placement(visible = true, transformation(origin = {120, -130}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   ThermoPower.Electrical.FrequencySensor frequencySensor annotation(
     Placement(visible = true, transformation(origin = {150, 100}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -163,7 +163,7 @@ model SecondaryCircuitWithControl
   parameter Real Kp = 0.2*Ku;
   parameter Real Ti = 0.5*Tu;
   parameter Real Td = 0.33*Tu*1000;
-  Modelica.Blocks.Continuous.LimPID pidFrequency(Td = Td, Ti = Ti, controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, k = Kp, limitsAtInit = true, yMax = 1, yMin = 0, y_start = 0.285) annotation(
+  Modelica.Blocks.Continuous.LimPID pidFrequency(Td = Td, Ti = Ti, controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, k = Kp, limitsAtInit = true, yMax = 1, yMin = 0.05, y_start = 0.285) annotation(
     Placement(visible = true, transformation(origin = {100, 140}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   //
   // Ziegler–Nichols tuning method (no overshoot)
@@ -192,7 +192,7 @@ model SecondaryCircuitWithControl
     Placement(visible = true, transformation(origin = {260, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Gain corePowerMeasure(k = 72*198.28145) annotation(
     Placement(visible = true, transformation(origin = {290, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp rampLoad2(duration = 10, height = 20e6, offset = 0, startTime = 1e15) annotation(
+  Modelica.Blocks.Sources.Ramp rampLoad2(duration = 60, height = 20e6, offset = 0, startTime = 1e15) annotation(
     Placement(visible = true, transformation(origin = {120, -160}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Add3 add3 annotation(
     Placement(visible = true, transformation(origin = {160, -130}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -395,7 +395,7 @@ equation
     Line(points = {{402, 130}, {430, 130}}, color = {0, 0, 127}));
   annotation(
     uses(ThermoPower(version = "3.1"), Modelica(version = "3.2.3")),
-    Diagram(coordinateSystem(extent = {{-280, 180}, {440, -200}}), graphics = {Rectangle(origin = {330, -140}, lineColor = {114, 159, 207}, fillColor = {255, 255, 255}, lineThickness = 1, extent = {{-110, 50}, {110, -50}}), Rectangle(origin = {130, 135}, lineColor = {114, 159, 207}, fillColor = {255, 255, 255}, lineThickness = 1, extent = {{-50, 45}, {50, -45}}), Text(origin = {395, -180}, extent = {{-45, 10}, {45, -10}}, textString = "External Reactivity 
+    Diagram(coordinateSystem(extent = {{-280, 180}, {440, -200}}), graphics = {Rectangle(origin = {330, -140}, lineColor = {114, 159, 207}, fillColor = {255, 255, 255}, lineThickness = 1, extent = {{-110, 50}, {110, -50}}), Rectangle(origin = {130, 135}, lineColor = {114, 159, 207}, fillColor = {255, 255, 255}, lineThickness = 1, extent = {{-50, 45}, {50, -45}}), Text(origin = {395, -180}, extent = {{-45, 10}, {45, -10}}, textString = "External Reactivity
 Controller"), Text(origin = {130, 170}, extent = {{-50, 10}, {50, -10}}, textString = "Turbine-admission
 Controller"), Rectangle(origin = {330, 100}, lineColor = {114, 159, 207}, fillColor = {255, 255, 255}, lineThickness = 1, extent = {{-110, 50}, {110, -50}}), Text(origin = {395, 60}, extent = {{-45, 10}, {45, -10}}, textString = "External Source
 Controller")}),

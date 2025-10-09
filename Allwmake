@@ -1,24 +1,39 @@
 #!/bin/bash
-#==============================================================================*
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
 
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
 
+
 #==============================================================================*
 
 # Function to display help
 usage() {
-    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--help]"
+    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--doc] [--help]"
+    echo "    -j N|--jobs N     Number of processor used for compilation"
+    echo "    --fmi             Activate compilation with FMI features"
+    echo "    --doc             Change OpenFOAM version in READMEs and in header"
+    echo "                      files based on WM_PROJECT_VERSION env variable."
+    echo "                      Only used by developers and maintainers."
+    echo "    --help            Print current usage"
     exit 1
 }
 
 # Default values
 num_jobs=1
 fmi_flag=false
+doc_flag=false
 
 # Parse options using getopt
-PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,help -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,doc,help -- "$@")
 if [ $? -ne 0 ]; then
     usage
 fi
@@ -37,6 +52,10 @@ while true; do
             fmi_flag=true
             shift
             ;;
+        --doc)
+            doc_flag=true
+            shift
+            ;;
         --help)
             usage
             ;;
@@ -53,6 +72,10 @@ done
 # Script logic
 echo "Number of jobs: $num_jobs"
 echo "FMI flag: $fmi_flag"
+echo "Doc flag: $doc_flag"
+
+
+#==============================================================================*
 
 # Collect all submodules
 git submodule update --init --recursive
@@ -106,6 +129,7 @@ else
     unset LIB_FMU4FOAM
 fi
 
+
 #==============================================================================*
 
 echo "Allwmake GeN-Foam"
@@ -137,6 +161,7 @@ wmake -j$num_jobs ./applications/solvers/GeN-Foam
 
 echo -e "Make GeN-Foam completed\n"
 
+
 #==============================================================================*
 
 echo "Make tests"
@@ -148,19 +173,31 @@ echo -e "Make tests completed\n"
 
 
 #==============================================================================*
-# Update the main README.md
+# Update version in files
 
-current_version=$(grep -oP '(?<=based on OpenFOAM, ESI/OpenCFD distribution, currently )v\d+\d+\d+\d+' README.md)
-
-current_version_num=$(echo $current_version | sed -r "s/v//")
-new_version_num=$(echo $WM_PROJECT_VERSION | sed -r "s/v//")
-
-checkUpgrade=$(echo "$current_version_num < $new_version_num" | bc -l)
-if [[ $checkUpgrade -eq 1 ]]
+if [ $doc_flag = 'true' ]
 then
-    echo "Current OpenFOAM version ($current_version) is not the lastest."
-    echo "Found OpenFOAM version $WM_PROJECT_VERSION, upgrade README.md"
-    sed -i "s/$current_version/$WM_PROJECT_VERSION/" README.md
+    # Main README.md version
+    current_version=$(grep -oP '(?<=based on OpenFOAM, ESI/OpenCFD distribution, currently )v\d+\d+\d+\d+' README.md)
+
+    current_version_num=$(echo $current_version | sed -r "s/v//")
+    new_version_num=$(echo $WM_PROJECT_VERSION | sed -r "s/v//")
+
+    checkUpgrade=$(echo "$current_version_num < $new_version_num" | bc -l)
+    if [[ $checkUpgrade -eq 1 ]]
+    then
+        echo "Current OpenFOAM version ($current_version) is not the lastest."
+        echo "Found OpenFOAM version $WM_PROJECT_VERSION, upgrade README.md"
+        sed -i "s/$current_version/$WM_PROJECT_VERSION/" README.md
+    fi
+
+    # Code headers
+    checkUpgrade=$(echo "$current_version_num <= $new_version_num" | bc -l)
+    if [[ $checkUpgrade -eq 1 ]]
+    then
+        echo "Update version in headers"
+        python3 tools/caseFormatting/changeHeader.py
+    fi
 fi
 
 
@@ -174,5 +211,6 @@ then
     echo -e "## ECI4FOAM\nexport LIB_ECI4FOAM=$pathLibECI4FOAM"
     echo -e "## FMU4FOAM\nexport LIB_FMU4FOAM=$pathLibFMU4FOAM"
 fi
+
 
 #==============================================================================*

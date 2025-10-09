@@ -45,17 +45,13 @@ timePrecision       6;
 
 runTimeModifiable   false;
 
-//- Physics to Solve ----------------------------------------------------------*
+solveFMI            true;
 
-solveFluidMechanics     true;
-
-solveEnergy             true;
-
-solveNeutronics         true; // false;
-
-solveThermalMechanics   false;
-
-solveFMI                true;
+removeBaffles
+{
+    fluidRegion     true;
+    neutroRegion    false;
+}
 
 
 //- Global options ------------------------------------------------------------*
@@ -69,12 +65,6 @@ adjustTimeStep      false;
 maxDeltaT           1;
 
 maxCo               5;
-
-//- Mesh control --------------------------------------------------------------*
-
-removeBaffles       false;
-
-//- --*
 
 timeStartFunctions  0; // 349;
 
@@ -356,7 +346,7 @@ functions
         timeStart       $timeStartFunctions;
         log             true;
     }
-    
+
     corePower
     {
         type            volFieldValue;
@@ -373,7 +363,7 @@ functions
         scaleFactor     ${{72.0 * 0.363516}}; // 0.300239}}; // 0.382179}}; // 360/5 (wedge) * fuelFractionInCore // power.py
     }
 
-    
+
     subtract1
     {
         // Mandatory entries (unmodifiable)
@@ -420,7 +410,7 @@ functions
         timeStart       $timeStartFunctions;
         log             true;
     }
-    
+
 
     avg1
     {
