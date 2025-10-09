@@ -1,0 +1,58 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       volSymmTensorField;
+    location    "100/fluidRegion";
+    object      stressTensor;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform (0 0 0 0 0 0);
+
+boundaryField
+{
+    top
+    {
+        type            calculated;
+        value           nonuniform List<symmTensor> 0();
+    }
+    bottom
+    {
+        type            calculated;
+        value           uniform (0 0 0 0 0 0);
+    }
+    walls
+    {
+        type            calculated;
+        value           uniform (0 0 0 0 0 0);
+    }
+    baffle0
+    {
+        type            calculated;
+        value           uniform (0 0 0 0 0 0);
+    }
+    baffle1
+    {
+        type            calculated;
+        value           uniform (0 0 0 0 0 0);
+    }
+    procBoundary0to1
+    {
+        type            processor;
+        value           uniform (0 0 0 0 0 0);
+    }
+}
+
+
+// ************************************************************************* //

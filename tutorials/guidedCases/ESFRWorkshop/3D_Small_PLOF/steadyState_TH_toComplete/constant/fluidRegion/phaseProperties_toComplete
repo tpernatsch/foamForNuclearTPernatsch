@@ -1,0 +1,234 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// ------------------------------------------------------------------------- //
+// --- STRUCTURES PROPERTIES ----------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+// This is a simplified ESFR-like core. The geometry parameters do not correspond to any specific fuel
+// design, but they are chosen to create realsitic parameters.
+
+// Volume fraction = 0.718520968 (volumeFraction)
+// Hydraulic diameter = 0.00365; (Dh)
+
+// Wrapper properties:
+//      Volumetric area = 5 m^-1 (volumetricArea)
+//      rho*cp = 4.8e6 (rhoCp)
+
+// Fuel properties (nuclearFuelPin)
+//      Fuel inner radius = 0.0012 m (fuelInnerRadius)
+//      Fuel outer radius = 0.004715 m (fuelOuterRadius)
+//      Clad inner radius = 0.004865 m (cladInnerRadius)
+//      Clad outer radius = 0.005365 m (cladOuterRadius)
+//      Gap conductance = 3000  (gapH)
+//      Fuel density =  10480 (fuelRho)
+//      Fuel cp =  250 (fuelCp)
+//      Fuel k =  3 (fuelK)
+//      Clad density =  7500 (cladRho)
+//      Clad cp =  500 (cladCp)
+//      Clad k =  20 (cladK)
+
+
+structureProperties
+{
+    "diagrid:axialReflector:radialReflector:follower:controlRod"
+    {
+        volumeFraction      0.718520968;
+        Dh                  0.00365;; //hydraulic diameter
+
+        passiveProperties // properties of the passive (non-power-producing)
+              // structure. In this case, the metallic wrapper.
+              // As a matter of fact one should include also
+              // the dummy pins. Not done here for simplcity.
+        {
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
+        }
+
+    }
+
+    "innerCore"
+    {
+        // Generic porous media properties
+
+        volumeFraction      ...;
+        Dh                  ...;
+
+        powerModel // power production model for the sub-scale structure
+        {
+            // The available model for a subscale fuel pin is "nuclearFuelPin"
+            // Try banana method to see available models!!!
+            type                ...; 
+
+            powerDensity        0; // initialzation value if field not found in 0
+
+            // Geometrical paramters. Used to both calculate temperature distribution 
+            // and volumetric area
+
+            fuelInnerRadius     ...;
+            fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     ...;
+
+            // Sub-scale discretization (FDM)
+            fuelMeshSize        30;
+            cladMeshSize        5;
+
+            // Materials properties
+            fuelRho             ...;
+            fuelCp              250;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+
+            // Initialization values
+            fuelT               668;
+            cladT               668;
+        }
+
+        passiveProperties // these are the properties of the metallic wrappers
+        {
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
+        }
+    }
+
+    "outerCore"
+    {
+        volumeFraction      0.718520968;
+        Dh                  0.00365;; //hydraulic diameter
+
+        powerModel // power production model for the sub-scale structure
+        {
+            type                nuclearFuelPin;
+            powerDensity        0; 
+            fuelInnerRadius     0.0012;
+            fuelOuterRadius     0.004715;
+            cladInnerRadius     0.004865;
+            cladOuterRadius     0.005365;
+            fuelMeshSize        30;
+            cladMeshSize        5;
+            fuelRho             10480;
+            fuelCp              250;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               668;
+            cladT               668;
+        }
+
+        passiveProperties // these are the properties of the metallic wrappers
+        {
+            volumetricArea  5;
+            rhoCp           4.8e6;
+            T               668;
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME MAP MODEL ---------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+// A laminar-turbulent regime model is defined to model both laminar and
+// turbulent flows. Limits are set at 1000 and 2300
+
+regimeMapModels
+{
+    "lamTurb"
+    {
+        type                oneParameter;
+        parameter           "Re";
+        regimeBounds
+        {
+            "laminar"       (0      1000);  //- 0 is automatically extended
+                                            //  to -inf
+            "turbulent"     (2300   2301);  //- 2031 is automatically extended
+                                            //  to +inf
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- REGIME PHYSICS FOR EACH REGIME -------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+
+
+
+physicsModels
+{
+    // For drag model, the typical // f = 0.687 * Re^(-0.25) is used 
+    dragModels
+    {
+        "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
+        {
+            type    ReynoldsPower; // f = coeff*Re^(exp)
+            coeff ...;
+            exp ...;
+
+        }
+    }
+
+    // For heat transfer coefficient use:
+    // Nu = 4 for laminar and Nu = 4.82 + 0.0185*Re^(0.827)*Pr^(0.827) for turbulent
+    heatTransferModels
+    {
+        "diagrid:axialReflector:radialReflector:follower:controlRod:innerCore:outerCore"
+        {
+            type        byRegime;
+            regimeMap   "lamTurb";
+
+            //- List of subdicts specifying a heatTransferModel for each regime
+            //  in the lamTurb regimeMap
+            "laminar"
+            {
+                // Nu = const + coeff * Re^expRe * Pr^expPr
+                type    NusseltReynoldsPrandtlPower;
+                const   ...;
+                coeff   ...;
+                expRe   ...;
+                expPr   ...;
+            }
+            "turbulent"
+            {
+                type    NusseltReynoldsPrandtlPower;
+                const   ...;
+                coeff   ...;
+                expRe   ...;
+                expPr   ...;
+            }
+        }
+    }
+}
+
+// ------------------------------------------------------------------------- //
+// --- MISCELLANEA --------------------------------------------------------- //
+// ------------------------------------------------------------------------- //
+
+// Do not change
+pMin                    10000;
+pRefCell                0;
+pRefValue               100000;
+
+// ************************************************************************* //

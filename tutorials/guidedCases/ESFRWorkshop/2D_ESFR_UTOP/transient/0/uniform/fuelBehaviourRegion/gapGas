@@ -1,0 +1,64 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       FRAPCON;
+    location    "2825.1558548351827/fuelBehaviourRegion/uniform";
+    object      gapGas;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+massFractions   
+{
+    Ar              0;
+    He              1;
+    Kr              0;
+    Ne              0;
+    Rn              0;
+    Xe              0;
+}
+;
+
+gasPressureType fromModel;
+
+gapVolume (in the OFFBEAT model) 7.15274e-09;
+gapVolume (in the corresponding 360 degree rod) 2.57496e-06;
+gapTemperature  861.324;
+
+reserveVolume (in the OFFBEAT model) 0;
+reserveVolume (in the corresponding 360 degree rod) 0;
+reserveT_       290;
+
+dishVolume (in the OFFBEAT model) 0;
+dishVolume (in the corresponding 360 degree rod) 0;
+dishTemperature 0;
+
+holeVolume (in the OFFBEAT model) 1.63837e-08;
+holeVolume (in the corresponding 360 degree rod) 5.89808e-06;
+holeTemperature 2048.69;
+
+topPlenumVolume (in the OFFBEAT model) 9.8585e-09;
+topPlenumVolume (in the corresponding 360 degree rod) 3.54903e-06;
+topPlenumTemperature 855.824;
+
+bottomPlenumVolume (in the OFFBEAT model) 1.8892e-07;
+bottomPlenumVolume (in the corresponding 360 degree rod) 6.80106e-05;
+bottomPlenumTemperature 668.212;
+
+crackGasVolume (in the OFFBEAT model) 2.48353e-09;
+crackGasVolume (in the corresponding 360 degree rod) 8.94063e-07;
+crackGasTemperature 1479.83;
+
+gasPressure     243241;
+gasMass         3.666e-08;
+
+
+// ************************************************************************* //

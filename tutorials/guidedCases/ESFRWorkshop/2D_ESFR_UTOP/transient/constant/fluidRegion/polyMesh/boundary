@@ -1,0 +1,100 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+11
+(
+    IHXBaffle
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          268;
+        startFace       75063;
+    }
+    reflectorBaffle
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          148;
+        startFace       75331;
+    }
+    freeLevel
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          100;
+        startFace       75479;
+    }
+    walls
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          603;
+        startFace       75579;
+    }
+    redanBaffle
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          28;
+        startFace       76182;
+    }
+    diagridBaffle
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          168;
+        startFace       76210;
+    }
+    wedgeYPositive
+    {
+        type            wedge;
+        inGroups        1(wall);
+        nFaces          38025;
+        startFace       76378;
+    }
+    wedgeYNegative
+    {
+        type            wedge;
+        inGroups        1(wall);
+        nFaces          38025;
+        startFace       114403;
+    }
+    pumpBaffles
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          278;
+        startFace       152428;
+    }
+    coreBaffle
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          148;
+        startFace       152706;
+    }
+    reflectorBoundaries
+    {
+        type            wall;
+        inGroups        1(wall);
+        nFaces          58;
+        startFace       152854;
+    }
+)
+
+// ************************************************************************* //

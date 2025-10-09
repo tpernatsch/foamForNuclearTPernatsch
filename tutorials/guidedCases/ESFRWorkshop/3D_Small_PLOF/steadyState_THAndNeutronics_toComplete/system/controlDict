@@ -1,0 +1,97 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// controlDict is the main solution control dictionary in all OpenFOAM simulations
+// solution parameters which influence the whole simulation (not a region specifically)
+// are found here
+
+//-------------------------------//
+//----APPLICATION SELECTION -----//
+//-------------------------------//
+
+// Name of OpenFOAM application used 
+// Might be necessary for pre/post-processing
+application     GeN-Foam; 
+
+//-------------------------------//
+//----TIME AND WRITE CONTROL-----//
+//-------------------------------//
+
+// Please set up the simulation so that it starts at t=0 and stops at 100s,
+// printing results every 100 seconds
+
+// Use a non-adaptive deltaT of 1 second
+
+startFrom       startTime; // latestTime
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         100;
+
+adaptiveTimeStep false;
+
+deltaT          1;
+
+maxDeltaT       1; // Only useful if adaptiveTimeStep is true
+
+maxCo           40; // Sets max Co number if adaptiveTimeStep
+
+maxPowerVariation 0.025; // Sets max Power variation if adaptiveTimeStep
+
+writeControl    runTime; // this specify that it will write every *writeInterval* seconds.
+                         // Alternatively, one can select timeStep, which means that it will
+                         // write every *writeInterval* time steps
+
+writeInterval   100;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  7;
+
+writeCompression false;
+
+timeFormat      general;
+
+timePrecision   8;
+
+runTimeModifiable true;
+
+liquidFuel      false;
+
+
+//-------------------------------//
+//-------COUPLING OPTIONS--------//
+//-------------------------------//
+
+// If some regions have "baffles", i.e., internal boundaries,
+// the projection alghoritms might create problems. This 
+// entries are used to remove baffles from the meshes to 
+// create the weights of the mappings.
+
+// Select baffle removal from the fluid region only
+removeBaffles
+{
+    fluidRegion     true;
+    neutroRegion    false;
+}
+
+
+// ************************************************************************* //
