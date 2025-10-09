@@ -14,8 +14,50 @@ clear
 
 
 #==============================================================================*
+# Default values
 
-# Function to display help
+num_jobs=1
+fmi_flag=false
+doc_flag=false
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+
+#==============================================================================*
+# Usefull functions
+
+checkCompletionApplication()
+{
+    program=$1
+    if ! command -v $program >/dev/null 2>&1
+    then
+        printf "${RED}Error${NC}: $program error in compiling $program\n"
+        exit 1
+    else
+        printf "Make $program ${GREEN}successfully${NC}\n"
+    fi
+}
+
+checkCompletionLib()
+{
+    src=$1
+    libname=$(grep -oP '\$\((?:FOAM_USER_LIBBIN)\)/\K\S+' $src/Make/files)
+    if [ ! -f "$FOAM_USER_LIBBIN/$libname.so" ]
+    then
+        printf "${RED}Error${NC}: Compilation of $libname was unsuccessful\n"
+        echo "Correct any error in the $src library"
+        exit 1
+    else
+        printf "Make ${GREEN}successfully${NC} $libname from $src\n"
+    fi
+}
+
+
+#==============================================================================*
+# Usage and help
+
 usage() {
     echo "Usage: $0 [-j N|--jobs N] [--fmi] [--doc] [--help]"
     echo "    -j N|--jobs N     Number of processor used for compilation"
@@ -26,11 +68,6 @@ usage() {
     echo "    --help            Print current usage"
     exit 1
 }
-
-# Default values
-num_jobs=1
-fmi_flag=false
-doc_flag=false
 
 # Parse options using getopt
 PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,doc,help -- "$@")
@@ -69,13 +106,22 @@ while true; do
     esac
 done
 
+echo "===================="
+echo "Build foamForNuclear"
+echo "===================="
+echo
+
 # Script logic
-echo "Number of jobs: $num_jobs"
-echo "FMI flag: $fmi_flag"
-echo "Doc flag: $doc_flag"
+echo "Options"
+echo "-------"
+echo "    Number of jobs: $num_jobs"
+echo "    FMI flag: $fmi_flag"
+echo "    Doc flag: $doc_flag"
+echo
 
 
 #==============================================================================*
+# Submodules
 
 # Collect all submodules
 git submodule update --init --recursive
@@ -83,7 +129,6 @@ git submodule update --init --recursive
 # Build with FMI option
 if [ $fmi_flag = 'true' ]
 then
-
     cd thirdParty/FMU4FOAM
 
     # Build paths
@@ -93,7 +138,9 @@ then
     # LIB_ECI4FOAM not found -> build and add env var
     if [[ -z "$LIB_ECI4FOAM" ]] || [ $pathLibECI4FOAM != $LIB_ECI4FOAM ]
     then
-        echo "Build ECI4FOAM"
+        echo    "Build ECI4FOAM"
+        echo -e "--------------\n"
+
         ./build-ECI4FOAM.sh -j$num_jobs
     fi
 
@@ -106,7 +153,9 @@ then
         # LIB_FMU4FOAM not found -> build and add env var
         if [[ -z "$LIB_FMU4FOAM" ]] || [ $pathLibFMU4FOAM != $LIB_FMU4FOAM ]
         then
-            echo "Build FMU4FOAM"
+            echo    "Build FMU4FOAM"
+            echo -e "--------------\n"
+
             ./Allwmake -j$num_jobs
         fi
 
@@ -131,8 +180,10 @@ fi
 
 
 #==============================================================================*
+# Make applications
 
-echo "Allwmake GeN-Foam"
+echo    "Allwmake GeN-Foam"
+echo -e "-----------------\n"
 
 # Make OFFBEAT libs
 wmake -j$num_jobs ./src/offbeat/src/SCIANTIX
@@ -159,17 +210,17 @@ wmake -j$num_jobs ./applications/modules/openFoamImported
 # Make apps
 wmake -j$num_jobs ./applications/solvers/GeN-Foam
 
-echo -e "Make GeN-Foam completed\n"
-
 
 #==============================================================================*
+# Make tests
 
-echo "Make tests"
+echo    "Make tests"
+echo -e "----------\n"
 
 wmake -j$num_jobs ./tests/hydrogenThermophysicalProperties
 wmake -j$num_jobs ./tests/radialBasisFunctions
 
-echo -e "Make tests completed\n"
+echo -e "\nMake tests completed\n"
 
 
 #==============================================================================*
@@ -177,8 +228,12 @@ echo -e "Make tests completed\n"
 
 if [ $doc_flag = 'true' ]
 then
+    echo "Update version in doc"
+    echo "---------------------"
+    echo
+
     # Main README.md version
-    current_version=$(grep -oP '(?<=based on OpenFOAM, ESI/OpenCFD distribution, currently )v\d+\d+\d+\d+' README.md)
+    current_version=$(grep -oP 'based on the \*\*OpenFOAM® \(ESI/OpenCFD\)\*\* distribution, currently[^v]*\K(v\d+)' README.md)
 
     current_version_num=$(echo $current_version | sed -r "s/v//")
     new_version_num=$(echo $WM_PROJECT_VERSION | sed -r "s/v//")
@@ -195,14 +250,39 @@ then
     checkUpgrade=$(echo "$current_version_num <= $new_version_num" | bc -l)
     if [[ $checkUpgrade -eq 1 ]]
     then
-        echo "Update version in headers"
+        echo "Update version in headers to OpenFOAM version $WM_PROJECT_VERSION"
         python3 tools/caseFormatting/changeHeader.py
+        echo
     fi
 fi
 
 
 #==============================================================================*
-# Info
+# Info and checks
+
+checkCompletionLib ./src/offbeat/src/SCIANTIX
+checkCompletionLib ./src/offbeat/src/offbeatLib
+checkCompletionLib ./src/interpolationModels
+checkCompletionLib ./src/solutionControl
+checkCompletionLib ./src/profiles
+checkCompletionLib ./src/crossSections
+checkCompletionLib ./src/porousMediaModels
+checkCompletionLib ./src/thermophysicalProperties
+checkCompletionLib ./src/multiRegion
+checkCompletionLib ./src/functionObjects
+checkCompletionLib ./src/fvPatchFields
+checkCompletionLib ./applications/modules/thermalHydraulics
+checkCompletionLib ./applications/modules/neutronics
+checkCompletionLib ./applications/modules/thermoMechanics
+checkCompletionLib ./applications/modules/fuelBehaviour
+checkCompletionLib ./applications/modules/openFoamImported
+
+echo
+
+checkCompletionApplication GeN-Foam
+
+echo
+
 
 if [ $fmi_flag = 'true' ]
 then

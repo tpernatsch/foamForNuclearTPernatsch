@@ -127,6 +127,11 @@ for root, dirs, files in os.walk(folder):
                     stats[version]['N Files'] += 1
                     break
 
+            # Break to avoid overwriting non modified files and ask make to
+            # recompile files
+            if (original_content == file_contents):
+                continue
+
             # Dump file
             with open(filepath, "w") as file:
                 file.write(file_contents)
