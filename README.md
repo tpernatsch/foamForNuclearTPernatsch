@@ -9,7 +9,7 @@ FFN provides a **modular and extensible framework** for simulating a wide range 
 
 FFN integrates several physics modules developed through extensive research in nuclear system modeling:
 
-- **Neutronics:** point kinetics, diffusion, adjoint diffusion, $\text{SP}_3$, and discrete ordinates ($\text S_N$) (steady or transient);
+- **Neutronics:** point kinetics, diffusion, adjoint diffusion, SP3, and discrete ordinates (SN) (steady or transient);
 - **Thermal-hydraulics:** one-phase RANS-CFD and porous-medium models, and a two-phase porous-medium Euler–Euler model for sodium and water;
 - **Solid temperature models:** for sub-scale structures, including 1-D fuel, fixed temperature/power, heated rods, fuel pebbles, and lumped-parameter models;
 - **Thermomechanics:** linear/nonlinear elasticity, plasticity, creep, and temperature-dependent material properties;
