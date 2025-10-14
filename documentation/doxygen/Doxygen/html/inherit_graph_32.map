@@ -1,5 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1fastFlux.html" title="Parent class for fast flux model. It prepares functionalities for daughter classes but does not creat..." alt="" coords="5,5,80,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1constantFastFlux.html" title="Derived from fastFlux mother class, this class reads the fastFlux and fastFluence fields from the ini..." alt="" coords="128,5,260,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1timeDependentAxialProfile.html" title="Derived from the base constantFastFlux class, this class considers a time&#45;dependent rod&#45;average fast ..." alt="" coords="308,5,505,32"/>
-</map>

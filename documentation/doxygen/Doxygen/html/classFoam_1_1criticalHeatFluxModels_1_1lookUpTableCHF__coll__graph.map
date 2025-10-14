@@ -1,6 +1,0 @@
-<map id="lookUpTableCHF" name="lookUpTableCHF">
-<area shape="rect" id="node1" title=" " alt="" coords="285,439,450,707"/>
-<area shape="rect" id="node2" href="$classFoam_1_1CHFModel.html" title="Model for the prediction of the critical heat flux." alt="" coords="5,115,252,266"/>
-<area shape="rect" id="node3" href="$classFoam_1_1FFPair.html" title="Class to handle dimensionless numbers that characterise the system, e.g. Reynolds,..." alt="" coords="276,5,459,376"/>
-<area shape="rect" id="node4" href="$classFoam_1_1InterpolateTableGF.html" title=" " alt="" coords="483,79,724,303"/>
-</map>

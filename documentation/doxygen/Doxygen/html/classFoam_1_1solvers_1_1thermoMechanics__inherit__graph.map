@@ -1,7 +1,0 @@
-<map id="thermoMechanics" name="thermoMechanics">
-<area shape="rect" id="node1" title=" " alt="" coords="157,409,354,736"/>
-<area shape="rect" id="node4" href="$classFoam_1_1solvers_1_1extendedThermoMechanics.html" title=" " alt="" coords="5,821,244,1059"/>
-<area shape="rect" id="node5" href="$classFoam_1_1solvers_1_1legacyThermoMechanics.html" title=" " alt="" coords="268,784,507,1096"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solver.html" title="Abstract base class for run&#45;time selectable region solvers." alt="" coords="33,5,280,361"/>
-<area shape="rect" id="node3" title=" " alt="" coords="305,145,406,222"/>
-</map>

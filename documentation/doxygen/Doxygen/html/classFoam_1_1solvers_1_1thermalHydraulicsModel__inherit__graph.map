@@ -1,7 +1,0 @@
-<map id="thermalHydraulicsModel" name="thermalHydraulicsModel">
-<area shape="rect" id="node1" title=" " alt="" coords="154,409,373,839"/>
-<area shape="rect" id="node4" href="$classFoam_1_1solvers_1_1onePhase.html" title=" " alt="" coords="5,909,244,1177"/>
-<area shape="rect" id="node5" href="$classFoam_1_1solvers_1_1twoPhase.html" title=" " alt="" coords="269,887,535,1199"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solver.html" title="Abstract base class for run&#45;time selectable region solvers." alt="" coords="41,5,288,361"/>
-<area shape="rect" id="node3" title=" " alt="" coords="313,145,414,222"/>
-</map>

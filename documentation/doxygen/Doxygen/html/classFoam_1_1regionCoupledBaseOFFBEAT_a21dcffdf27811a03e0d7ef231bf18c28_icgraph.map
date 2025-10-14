@@ -1,5 +1,0 @@
-<map id="owner" name="owner">
-<area shape="rect" id="node1" title="Does this side own the patch?" alt="" coords="320,35,383,61"/>
-<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a4af8c65299b23e8c726ead9924008a91" title=" " alt="" coords="92,5,185,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a357c5e37e5d7c583fa172625b8c11009" title="Is it the owner?" alt="" coords="5,57,272,98"/>
-</map>

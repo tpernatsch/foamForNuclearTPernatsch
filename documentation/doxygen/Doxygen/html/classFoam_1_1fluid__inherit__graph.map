@@ -1,4 +1,0 @@
-<map id="fluid" name="fluid">
-<area shape="rect" id="node1" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="5,248,256,472"/>
-<area shape="rect" id="node2" href="$classFoam_1_1phaseBase.html" title="Base abstract class for the fluid and structure classes." alt="" coords="63,5,199,200"/>
-</map>

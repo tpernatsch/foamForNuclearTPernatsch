@@ -1,4 +1,0 @@
-<map id="nbrMesh" name="nbrMesh">
-<area shape="rect" id="node1" title="Returns neighbour polyMesh." alt="" coords="5,13,84,39"/>
-<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a20fe4642c2e0a69119be87338fc27e6d" title="Neighbour region name." alt="" coords="132,5,383,47"/>
-</map>

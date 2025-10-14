@@ -49,19 +49,9 @@ Description
     of either liquid fuel (e.g. MSRs) or fuel pin lattices. For the latter,
     the energy dynamics is represented via a 1.5-D finite difference model.
 
-    Reference publications:
+    Reference publications [@FIORINA201524] [@FIORINA201515226].
 
     NOTE: these publications do not cover recent multi-phase developments
-
-    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk, 2015
-    "GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design 294, pp.
-    24-37
-
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam
-    multi-physics solver to the European Sodium Fast Reactor and verification
-    against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
-    Nice (France), Paper 15226
 
     Authors of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>
@@ -208,13 +198,13 @@ int main(int argc, char *argv[])
         if (isSolveFMI) fmu->send();
         } // End fmu implicit loop
         while (isSolveFMI && fmu->loop());
-        #endif 
+        #endif
 
         // Adjust the time-step according to the solver maxDeltaT
         // Need to be after the FMI loop
         adjustDeltaT(runTime, solvers);
 
-        #ifdef isCommDataLayerIncluded 
+        #ifdef isCommDataLayerIncluded
         // Last, after all the other setDeltaT
         if (isSolveFMI)
         {

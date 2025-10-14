@@ -1,4 +1,0 @@
-<map id="coolantPressureFixedDisplacementFvPatchVectorField" name="coolantPressureFixedDisplacementFvPatchVectorField">
-<area shape="rect" id="node1" title="Coolant pressure patch&#45;field of fixed&#45;displacement type. It is designed for the top cap outer or bott..." alt="" coords="5,307,271,589"/>
-<area shape="rect" id="node2" href="$classFoam_1_1fixedDisplacementFvPatchVectorField.html" title="fixedDisplacement patchfield. The fixed displacement can be provided as a time series." alt="" coords="33,5,243,259"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="NusseltWallAndHfromFMU" name="NusseltWallAndHfromFMU">
-<area shape="rect" id="node1" title="Heat transfer coefficient for forced convective flows that is computed starting from the Nusselt,..." alt="" coords="13,263,244,384"/>
-<area shape="rect" id="node2" href="$classFoam_1_1FSHeatTransferCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) heat transfer coefficient." alt="" coords="5,5,252,215"/>
-</map>

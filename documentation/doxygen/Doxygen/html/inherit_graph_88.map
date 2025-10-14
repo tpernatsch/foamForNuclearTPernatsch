@@ -1,4 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1rheology.html" title="Parent class that handles the evolution of rheological models." alt="" coords="5,5,84,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1rheologyByMaterial.html" title="Rheology laws are specified on each material subdictionary." alt="" coords="132,5,283,32"/>
-</map>

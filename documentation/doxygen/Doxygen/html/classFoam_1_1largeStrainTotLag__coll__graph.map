@@ -1,4 +1,0 @@
-<map id="largeStrainTotLag" name="largeStrainTotLag">
-<area shape="rect" id="node1" title="Finite&#45; (or large&#45;) strain mechanics sub&#45;solver." alt="" coords="43,673,214,795"/>
-<area shape="rect" id="node2" href="$classFoam_1_1mechanicsSubSolver.html" title="Parent class for mechanics solvers. It can be selected with the &quot;fromLatestTime&quot; typeName in solverDi..." alt="" coords="5,5,252,625"/>
-</map>

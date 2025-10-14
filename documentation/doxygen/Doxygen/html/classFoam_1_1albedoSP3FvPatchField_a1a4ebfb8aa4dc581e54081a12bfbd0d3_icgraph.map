@@ -1,4 +1,0 @@
-<map id="evaluate" name="evaluate">
-<area shape="rect" id="node1" title="Evaluate the patch field." alt="" coords="225,5,304,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1albedoSP3FvPatchField.html#a003974e3ce4bf2a4e6943a04055a058b" title="Construct from patch, internal field and dictionary." alt="" coords="5,5,177,32"/>
-</map>

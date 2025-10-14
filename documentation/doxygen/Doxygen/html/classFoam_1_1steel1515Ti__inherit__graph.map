@@ -1,4 +1,0 @@
-<map id="steel1515Ti" name="steel1515Ti">
-<area shape="rect" id="node1" title="Class modelling the austenitic steel 15&#45;15 Ti cladding material." alt="" coords="24,644,233,795"/>
-<area shape="rect" id="node2" href="$classFoam_1_1materialModel.html" title="Parent class for all materials. Some of its functions are pure virtual and must be implemented in the..." alt="" coords="5,5,252,596"/>
-</map>

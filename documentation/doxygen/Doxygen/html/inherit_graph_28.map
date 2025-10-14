@@ -1,4 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1elementTransport.html" title="Mother class for handling element transport solvers." alt="" coords="5,5,141,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1elementTransportByList.html" title="Class that gathers all the user&#45;selected transport solvers in a ptrList, to handle the solution of th..." alt="" coords="189,5,365,32"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="coolantPressureFvPatchVectorField" name="coolantPressureFvPatchVectorField">
-<area shape="rect" id="node1" title="Re&#45;implementation of the tractionDisplacement mother class that allows the user to deal only with &quot;co..." alt="" coords="5,497,239,780"/>
-<area shape="rect" id="node2" href="$classFoam_1_1tractionDisplacementFvPatchVectorField.html" title="Fixed traction boundary condition for the standard linear elastic, fixed coefficient displacement equ..." alt="" coords="8,5,236,449"/>
-</map>

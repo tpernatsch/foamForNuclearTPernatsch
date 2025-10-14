@@ -1,4 +1,0 @@
-<map id="interpolatedNuclearFuelPin" name="interpolatedNuclearFuelPin">
-<area shape="rect" id="node1" title="Model for representing a nuclear fuel pin with constant material properties. Models fuel,..." alt="" coords="17,380,240,633"/>
-<area shape="rect" id="node2" href="$classFoam_1_1powerModel.html" title="Run&#45;time selectable class to handle the thermal description (i.e. energy source/sinks) of a structure..." alt="" coords="5,5,252,332"/>
-</map>

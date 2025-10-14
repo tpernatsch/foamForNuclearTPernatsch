@@ -1,7 +1,0 @@
-<map id="Integrator" name="Integrator">
-<area shape="rect" id="node1" title=" " alt="" coords="192,81,279,108"/>
-<area shape="rect" id="node2" href="$Burnup_8C.html#a4edbab8a11c995ff280702ef695cb294" title=" " alt="" coords="41,5,109,32"/>
-<area shape="rect" id="node3" href="$GasProduction_8C.html#a34882e589ece59169709f41d881c9d30" title=" " alt="" coords="17,56,133,83"/>
-<area shape="rect" id="node4" href="$HeliumProduction_8C.html#a941fb346cba7843567634e34529881ed" title=" " alt="" coords="5,107,144,133"/>
-<area shape="rect" id="node5" href="$SolverVerification_8C.html#a0b528d738701447b405afb9fd0809345" title=" " alt="" coords="7,157,143,184"/>
-</map>

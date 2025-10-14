@@ -1,5 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1axialProfile.html" title="Base class for a general profile in the axial direction. The base class assumes a uniform &quot;flat&quot; prof..." alt="" coords="5,35,100,61"/>
-<area shape="rect" id="node2" href="$classFoam_1_1constantTabulatedAxialProfile.html" title="Axial profile defined using an constant interpolation table as a function of the axial position...." alt="" coords="150,5,365,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1timeDependentTabulatedAxialProfile.html" title="Class providing a time&#45;dependent axial profile, which is defined by the user by interpolation in a 2D..." alt="" coords="148,57,367,98"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="heatCapacityMatproUO2" name="heatCapacityMatproUO2">
-<area shape="rect" id="node1" title="Heat Capacity model for UO2 derived from MATPROv11." alt="" coords="19,204,238,325"/>
-<area shape="rect" id="node2" href="$classFoam_1_1heatCapacityModel.html" title="Mother class for heat capacity models." alt="" coords="5,5,252,156"/>
-</map>

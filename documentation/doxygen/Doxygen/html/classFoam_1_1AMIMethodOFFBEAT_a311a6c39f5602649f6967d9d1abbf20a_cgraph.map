@@ -1,4 +1,0 @@
-<map id="checkPatches" name="checkPatches">
-<area shape="rect" id="node1" title="Check AMI patch coupling." alt="" coords="5,5,116,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1AMIMethodOFFBEAT.html#afe416df447993060296e30a9954ed9a2" title="Flag to indicate that interpolation patches are conformal." alt="" coords="164,5,252,32"/>
-</map>

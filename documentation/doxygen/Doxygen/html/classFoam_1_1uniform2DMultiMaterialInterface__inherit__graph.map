@@ -1,4 +1,0 @@
-<map id="uniform2DMultiMaterialInterface" name="uniform2DMultiMaterialInterface">
-<area shape="rect" id="node1" title="Interfaces between materials are defined by a uniform weight. The weight is set to 0 along the z&#45;dire..." alt="" coords="5,189,277,311"/>
-<area shape="rect" id="node2" href="$classFoam_1_1uniformMultiMaterialInterface.html" title="Interfaces between materials are defined by a uniform." alt="" coords="14,5,269,141"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="multiPhysicsSolver" name="multiPhysicsSolver">
-<area shape="rect" id="node1" title=" " alt="" coords="208,424,447,736"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solver.html" title="Abstract base class for run&#45;time selectable region solvers." alt="" coords="5,5,252,361"/>
-<area shape="rect" id="node3" title=" " alt="" coords="277,145,378,222"/>
-<area shape="rect" id="node4" href="$classFoam_1_1meshHandler.html" title="Class to hold all the region meshes and perform the volumetric mappings." alt="" coords="402,49,607,317"/>
-</map>

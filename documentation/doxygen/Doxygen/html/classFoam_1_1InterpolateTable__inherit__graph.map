@@ -1,6 +1,0 @@
-<map id="InterpolateTable&lt; FieldType, Type, ReturnType &gt;" name="InterpolateTable&lt; FieldType, Type, ReturnType &gt;">
-<area shape="rect" id="node1" title="Class for interpolation in tabulated data. This class doesn&#39;t actually store any fields,..." alt="" coords="119,132,325,312"/>
-<area shape="rect" id="node3" href="$classFoam_1_1InterpolateTable.html" title=" " alt="" coords="5,404,217,599"/>
-<area shape="rect" id="node4" href="$classFoam_1_1InterpolateTable.html" title=" " alt="" coords="242,411,423,591"/>
-<area shape="rect" id="node2" href="$classFoam_1_1interpolateTableBase.html" title="Helper base class for interpolation tables." alt="" coords="143,5,301,83"/>
-</map>

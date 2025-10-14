@@ -54,8 +54,13 @@ Description
         T_w           | Wall temperature
         T_b           | Bulk temperature
         A, B, C, D, E | Selectable constants
-    \endtable
+    \endvartable
 
+    Authors:
+    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+
+Usage
     Example of mandatory dictionary entries:
     \verbatim
         const   4;
@@ -75,10 +80,6 @@ Description
         expPr   0.4;
         expTc   -0.3;
     \endverbatim
-
-    Authors:
-    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
-    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 SourceFiles
     NusseltFSHeatTransferCoefficient.C

@@ -1,7 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,111,107,138"/>
-<area shape="rect" id="node2" href="$classFoam_1_1albedoSP3FvPatchField.html" title="Albedo boundary condition for SP3 or diffusion calculations. Please note that the boundary condition ..." alt="" coords="174,5,346,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1convectiveHTCFvPatchScalarField.html" title="Heat sink boundary defined by a convective heat transfer coefficient and a sink temperature." alt="" coords="155,71,365,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1radiativeConvectiveSinkFvPatchScalarField.html" title="Heat sink boundary for solid temperature defined by radiative and convective heat transfer coefficien..." alt="" coords="161,136,359,177"/>
-<area shape="rect" id="node5" href="$classFoam_1_1timeDependentAxialProfileHTCfvPatchScalarField.html" title="Heat sink boundary defined by an axial profile of convective heat transfer coefficients and a sink te..." alt="" coords="161,201,359,243"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="convexContainsPoint" name="convexContainsPoint">
-<area shape="rect" id="node1" title="Check whether point p is contained within the domain, but works." alt="" coords="5,97,164,124"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="277,5,334,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regimeMapModels_1_1regimeBoundary2D.html#a4cc2ff4d271f5aebc1ee378b3c359b4a" title="Access." alt="" coords="212,57,399,98"/>
-<area shape="rect" id="node4" href="$classFoam_1_1regimeMapModels_1_1regimeBoundary2D.html#a2be12955f05c95018bbee9df417637d7" title=" " alt="" coords="212,122,399,163"/>
-<area shape="rect" id="node5" href="$solvePointKinetics_8H.html#a7155d56b187a002d8cdd92aa43066620" title=" " alt="" coords="286,188,325,215"/>
-</map>

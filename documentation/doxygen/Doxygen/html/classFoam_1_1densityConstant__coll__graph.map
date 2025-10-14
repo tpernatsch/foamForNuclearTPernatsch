@@ -1,4 +1,0 @@
-<map id="densityConstant" name="densityConstant">
-<area shape="rect" id="node1" title="Model for constant density. The value is read from dictionary." alt="" coords="47,204,211,325"/>
-<area shape="rect" id="node2" href="$classFoam_1_1densityModel.html" title="Mother class for density models." alt="" coords="5,5,252,156"/>
-</map>

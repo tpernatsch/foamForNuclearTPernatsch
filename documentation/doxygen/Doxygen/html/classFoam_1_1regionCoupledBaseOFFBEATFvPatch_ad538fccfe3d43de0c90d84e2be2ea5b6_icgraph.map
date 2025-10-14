@@ -1,6 +1,0 @@
-<map id="updateAMI" name="updateAMI">
-<area shape="rect" id="node1" title="Update AMI." alt="" coords="285,78,377,105"/>
-<area shape="rect" id="node2" href="$classFoam_1_1mechanicsSubSolver.html#a64670a115d9834840a13670f0bf0f9ef" title="Calculate gapWidth." alt="" coords="21,5,222,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1solvers_1_1fuelBehaviour.html#ad7f9f580af1530707008b83345f35e02" title="Called at the start of the time&#45;step, before the PIMPLE loop." alt="" coords="15,71,227,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1solvers_1_1extendedThermoMechanics.html#ad7f9f580af1530707008b83345f35e02" title="Called at the start of the time&#45;step, before the PIMPLE loop." alt="" coords="5,136,237,177"/>
-</map>

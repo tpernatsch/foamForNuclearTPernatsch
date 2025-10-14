@@ -1,5 +1,0 @@
-<map id="pointKineticNeutronics" name="pointKineticNeutronics">
-<area shape="rect" id="node1" title=" " alt="" coords="29,844,259,1215"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solvers_1_1neutronics.html" title=" " alt="" coords="274,365,478,795"/>
-<area shape="rect" id="node3" href="$classFoam_1_1timeProfile.html" title="Base class for time profile functions. This object embeds the OpenFOAM Function1 object used to repre..." alt="" coords="5,5,149,288"/>
-</map>

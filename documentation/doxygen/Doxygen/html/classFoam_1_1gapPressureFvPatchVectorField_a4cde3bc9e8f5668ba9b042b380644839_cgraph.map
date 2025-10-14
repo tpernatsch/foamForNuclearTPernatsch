@@ -1,4 +1,0 @@
-<map id="updateTraction" name="updateTraction">
-<area shape="rect" id="node1" title="Update the pressure and traction." alt="" coords="5,5,124,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1gapGasModel.html#a2ef4e25d44488e458821bf9debb36df1" title="Return gas pressure." alt="" coords="172,5,343,32"/>
-</map>

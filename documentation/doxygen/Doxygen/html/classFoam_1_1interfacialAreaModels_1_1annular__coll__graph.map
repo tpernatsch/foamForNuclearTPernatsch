@@ -1,4 +1,0 @@
-<map id="annular" name="annular">
-<area shape="rect" id="node1" title="Interfacial area model that assumes that the dispersed phase flow is annular (i.e...." alt="" coords="65,219,192,384"/>
-<area shape="rect" id="node2" href="$classFoam_1_1interfacialAreaModel.html" title="Class to handle fluid&#45;fluid interfacial area." alt="" coords="5,5,252,171"/>
-</map>

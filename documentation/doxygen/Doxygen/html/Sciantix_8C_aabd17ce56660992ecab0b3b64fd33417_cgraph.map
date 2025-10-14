@@ -1,9 +1,0 @@
-<map id="Sciantix" name="Sciantix">
-<area shape="rect" id="node1" title=" " alt="" coords="5,132,80,159"/>
-<area shape="rect" id="node2" href="$Burnup_8C.html#a4edbab8a11c995ff280702ef695cb294" title=" " alt="" coords="166,5,234,32"/>
-<area shape="rect" id="node3" href="$FuelDensity_8C.html#af7039a47f4e1e5ea778bc92c3582b0d1" title="FuelDensity." alt="" coords="151,56,249,83"/>
-<area shape="rect" id="node4" href="$FuelMicroStructure_8C.html#a75beae42da11eca1a4cc292c0ac97b59" title=" " alt="" coords="128,107,272,133"/>
-<area shape="rect" id="node5" href="$InertGasBehavior_8C.html#a584e2beef6d1eac6b54025709b3699bf" title=" " alt="" coords="133,157,267,184"/>
-<area shape="rect" id="node6" href="$SetVariables_8C.html#a24a085882e16f96932d7d58d0e627aef" title=" " alt="" coords="149,208,251,235"/>
-<area shape="rect" id="node7" href="$UpdateVariables_8C.html#a3c53c2ddc79e5242faa3b52bec82e2bf" title=" " alt="" coords="135,259,265,285"/>
-</map>

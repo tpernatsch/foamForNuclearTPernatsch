@@ -1,6 +1,0 @@
-<map id="updateLocalTemperatureProfile" name="updateLocalTemperatureProfile">
-<area shape="rect" id="node1" title="Update temperature profiles Tc, Tf, in a single domain cell with." alt="" coords="5,56,229,83"/>
-<area shape="rect" id="node2" href="$solvePointKinetics_8H.html#a5bbfd838dc83547e202d54a2d8578182" title=" " alt="" coords="277,5,316,32"/>
-<area shape="rect" id="node3" href="$EEqn__1p_8H.html#ab8fc5669aa3ba2d4b66ff43ff446d633" title="Add structure heat sources (i.e. powerModels and HX)" alt="" coords="277,56,316,83"/>
-<area shape="rect" id="node4" href="$EEqn__1p_8H.html#ad0f94aa7ea43d4be0bae24e3a89aad0c" title=" " alt="" coords="277,107,316,133"/>
-</map>

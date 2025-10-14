@@ -1,6 +1,0 @@
-<map id="regimeMapModel" name="regimeMapModel">
-<area shape="rect" id="node1" title="Run&#45;time selectable class to handle flow regime map models." alt="" coords="103,131,349,428"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regimeMapModels_1_1oneParameter.html" title="Regime map model that depend on a single scalar parameter value." alt="" coords="5,476,215,597"/>
-<area shape="rect" id="node4" href="$classFoam_1_1regimeMapModels_1_1twoParameters.html" title="Regime map model that depends on two parameters." alt="" coords="239,476,448,597"/>
-<area shape="rect" id="node2" title=" " alt="" coords="175,5,277,83"/>
-</map>

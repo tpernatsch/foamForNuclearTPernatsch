@@ -1,4 +1,0 @@
-<map id="read" name="read">
-<area shape="rect" id="node1" title="Read controls from fvSolution dictionary." alt="" coords="216,5,267,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1customPimpleControl.html#a7bbdf61c5ddf2a79f9c01202bbd4796d" title="Construct from mesh and the name of control sub&#45;dictionary." alt="" coords="5,5,168,32"/>
-</map>

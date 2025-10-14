@@ -1,5 +1,0 @@
-<map id="initMixtureFields" name="initMixtureFields">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,136,57"/>
-<area shape="rect" id="node2" href="$classFoam_1_1RASModels_1_1mixtureKEpsilon.html#ad79e047917669fbb490d351478651e20" title="Return the turbulence kinetic energy dissipation rate." alt="" coords="184,5,253,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1RASModels_1_1mixtureKEpsilon.html#a2cc3daa68147a9052c2b37e9ac37eca4" title="Return the turbulence kinetic energy." alt="" coords="199,56,238,83"/>
-</map>

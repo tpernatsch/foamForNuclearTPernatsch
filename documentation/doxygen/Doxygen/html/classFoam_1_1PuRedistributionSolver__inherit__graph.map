@@ -1,4 +1,0 @@
-<map id="PuRedistributionSolver" name="PuRedistributionSolver">
-<area shape="rect" id="node1" title="Daugther class of transportSolver class that solves for the redistribution of Pu." alt="" coords="25,351,232,516"/>
-<area shape="rect" id="node2" href="$classFoam_1_1transportSolver.html" title="Mother class for transport solvers." alt="" coords="5,5,252,303"/>
-</map>

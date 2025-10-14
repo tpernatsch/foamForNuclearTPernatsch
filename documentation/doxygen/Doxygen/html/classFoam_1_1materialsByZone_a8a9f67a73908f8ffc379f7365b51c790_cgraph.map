@@ -1,5 +1,0 @@
-<map id="additionalStrains" name="additionalStrains">
-<area shape="rect" id="node1" title="Additional strain components per material." alt="" coords="5,42,137,69"/>
-<area shape="rect" id="node2" href="$classFoam_1_1materialModel.html#a627439072a0bcec3a8b193ead121b9c2" title="Return the tensor of additional strains." alt="" coords="185,5,347,47"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="237,71,295,98"/>
-</map>

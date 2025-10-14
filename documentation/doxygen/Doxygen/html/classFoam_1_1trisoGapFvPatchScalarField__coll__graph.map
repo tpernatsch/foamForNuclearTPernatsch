@@ -1,4 +1,0 @@
-<map id="trisoGapFvPatchScalarField" name="trisoGapFvPatchScalarField">
-<area shape="rect" id="node1" title="Region coupled patchField for temperature fields in solid heat conduction in a spherical gap." alt="" coords="5,439,240,736"/>
-<area shape="rect" id="node2" href="$classFoam_1_1resistiveGapFvPatchScalarField.html" title="Coupled boundary condition for modeling the presence of a fixed gap (or contact) resistance between t..." alt="" coords="12,5,233,391"/>
-</map>

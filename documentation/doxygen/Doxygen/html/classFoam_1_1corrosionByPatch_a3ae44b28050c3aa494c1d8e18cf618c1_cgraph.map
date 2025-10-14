@@ -1,5 +1,0 @@
-<map id="correct" name="correct">
-<area shape="rect" id="node1" title="Update the corrosion." alt="" coords="5,5,72,32"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="383,5,440,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1corrosion.html#ae5693a309a936ac1040dd48c2881677f" title="Move mesh according to oxide layer thickness." alt="" coords="120,31,335,57"/>
-</map>

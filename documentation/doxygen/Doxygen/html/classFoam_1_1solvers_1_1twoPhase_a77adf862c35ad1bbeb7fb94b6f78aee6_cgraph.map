@@ -1,6 +1,0 @@
-<map id="calcCumulContErrs" name="calcCumulContErrs">
-<area shape="rect" id="node1" title="Computes the cumulated continuity error." alt="" coords="5,56,151,83"/>
-<area shape="rect" id="node2" href="$solvePointKinetics_8H.html#a5bbfd838dc83547e202d54a2d8578182" title=" " alt="" coords="213,5,251,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="203,56,261,83"/>
-<area shape="rect" id="node4" href="$readNuclearData_8H.html#af3234271aa5248f773a9631104c1f9e3" title=" " alt="" coords="199,107,265,133"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="updateTraction" name="updateTraction">
-<area shape="rect" id="node1" title="Update the pressure and traction." alt="" coords="5,101,124,127"/>
-<area shape="rect" id="node2" href="$classFoam_1_1globalOptions.html#a21357e5588a342e823928e777eff1314" title=" " alt="" coords="188,5,344,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1gapGasModel.html#a2ef4e25d44488e458821bf9debb36df1" title="Return gas pressure." alt="" coords="181,71,351,98"/>
-<area shape="rect" id="node4" href="$classFoam_1_1plenumSpringBase.html#acf461e1ff2f9ebd5e259ed50fd1d395a" title="Return total spring elongation." alt="" coords="172,123,360,164"/>
-<area shape="rect" id="node5" href="$classFoam_1_1plenumSpringBase.html#a98b5bcd3ddcb7a4ed229450b89559cc4" title="Return spring modulus." alt="" coords="172,188,360,229"/>
-</map>

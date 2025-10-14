@@ -1,8 +1,0 @@
-<map id="IntraGranularGasBehavior" name="IntraGranularGasBehavior">
-<area shape="rect" id="node1" title=" " alt="" coords="5,107,196,133"/>
-<area shape="rect" id="node2" href="$GasDiffusion_8C.html#a611c27103dc6fe6aa6f4deb75f5a849b" title=" " alt="" coords="299,5,404,32"/>
-<area shape="rect" id="node3" href="$GasProduction_8C.html#a34882e589ece59169709f41d881c9d30" title=" " alt="" coords="293,56,409,83"/>
-<area shape="rect" id="node4" href="$HeliumProduction_8C.html#a941fb346cba7843567634e34529881ed" title=" " alt="" coords="282,107,421,133"/>
-<area shape="rect" id="node5" href="$IntraGranularBubbleEvolution_8C.html#a4a879750ec88d3b858963478d53af9b7" title=" " alt="" coords="244,157,459,184"/>
-<area shape="rect" id="node6" href="$IntraGranularGasSwelling_8C.html#afd7e81eede66401c20ed683bd811e430" title=" " alt="" coords="257,208,445,235"/>
-</map>

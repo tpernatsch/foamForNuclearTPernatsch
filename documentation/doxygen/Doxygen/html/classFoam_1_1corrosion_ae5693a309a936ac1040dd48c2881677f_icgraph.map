@@ -1,4 +1,0 @@
-<map id="updateMesh" name="updateMesh">
-<area shape="rect" id="node1" title="Move mesh according to oxide layer thickness." alt="" coords="232,13,335,39"/>
-<area shape="rect" id="node2" href="$classFoam_1_1corrosionByPatch.html#a3ae44b28050c3aa494c1d8e18cf618c1" title="Update the corrosion." alt="" coords="5,5,184,47"/>
-</map>

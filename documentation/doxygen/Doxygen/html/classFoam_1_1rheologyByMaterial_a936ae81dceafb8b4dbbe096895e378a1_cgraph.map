@@ -1,9 +1,0 @@
-<map id="correctModifiedPlaneStrain" name="correctModifiedPlaneStrain">
-<area shape="rect" id="node1" title="Correct out of plane strain for modifiedPlaneStress cases." alt="" coords="5,147,203,174"/>
-<area shape="rect" id="node2" href="$classFoam_1_1globalOptions.html#a21357e5588a342e823928e777eff1314" title=" " alt="" coords="258,5,414,47"/>
-<area shape="rect" id="node3" href="$EEqns__2p_8H.html#a41a371debc8f4fa40469231470618dda" title=" " alt="" coords="317,71,355,98"/>
-<area shape="rect" id="node4" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="307,122,365,149"/>
-<area shape="rect" id="node5" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="315,173,357,199"/>
-<area shape="rect" id="node6" href="$classFoam_1_1gapGasModel.html#a2ef4e25d44488e458821bf9debb36df1" title="Return gas pressure." alt="" coords="251,223,421,250"/>
-<area shape="rect" id="node7" href="$readNuclearData_8H.html#af3234271aa5248f773a9631104c1f9e3" title=" " alt="" coords="303,274,369,301"/>
-</map>

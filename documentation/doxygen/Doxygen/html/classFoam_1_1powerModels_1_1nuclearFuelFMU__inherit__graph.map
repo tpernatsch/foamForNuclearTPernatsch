@@ -1,4 +1,0 @@
-<map id="nuclearFuelFMU" name="nuclearFuelFMU">
-<area shape="rect" id="node1" title="Model for representing a nuclear fuel from an external FMU. The current model relies on the exchange ..." alt="" coords="5,380,264,707"/>
-<area shape="rect" id="node2" href="$classFoam_1_1powerModel.html" title="Run&#45;time selectable class to handle the thermal description (i.e. energy source/sinks) of a structure..." alt="" coords="11,5,258,332"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="updateCoeffs" name="updateCoeffs">
-<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="333,151,441,177"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solidDirectionMixedFvPatchVectorField.html#a96dc99388e664182349d72cdca254c20" title="evaluate the patch" alt="" coords="106,5,185,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1coolantPressureFixedDisplacementZeroShearFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="10,56,281,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1fixedDisplacementZeroShearFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="37,136,254,192"/>
-<area shape="rect" id="node5" href="$classFoam_1_1plenumSpringFixedDisplacementZeroShearFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="5,216,285,272"/>
-<area shape="rect" id="node6" href="$classFoam_1_1topCladRingFixedDisplacementZeroShearFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="11,296,280,352"/>
-</map>

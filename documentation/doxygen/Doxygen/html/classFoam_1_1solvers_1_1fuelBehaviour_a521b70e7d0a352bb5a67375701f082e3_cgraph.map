@@ -1,7 +1,0 @@
-<map id="fuelBehaviour" name="fuelBehaviour">
-<area shape="rect" id="node1" title="Construct from mesh, materials and dictionary." alt="" coords="5,93,119,120"/>
-<area shape="rect" id="node2" href="$namespaceFoam.html#a40aa6b550af75aa6c919390a41ef1dd8" title="Check the supplied user parameters in system/userParameters." alt="" coords="167,5,375,32"/>
-<area shape="rect" id="node3" href="$namespaceFoam.html#ab466c49cab7da77c712cd4d34068b4fb" title="Display a list of registered user parameters." alt="" coords="177,57,364,98"/>
-<area shape="rect" id="node4" href="$namespaceFoam.html#a53acaa1722b7acd4e6a0d6d833ae404c" title="Display a list of user&#45;specified parameters." alt="" coords="175,123,366,149"/>
-<area shape="rect" id="node5" href="$classFoam_1_1timeHandling.html#aedb27abcaa28f54163ba60e7424f0026" title="Set last time marker after which the simulation is stopped." alt="" coords="193,174,348,215"/>
-</map>

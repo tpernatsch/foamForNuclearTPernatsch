@@ -1,4 +1,0 @@
-<map id="multiRegimeBoiling" name="multiRegimeBoiling">
-<area shape="rect" id="node1" title="Heat transfer coefficient that covers many regimes, from single phase convection, two&#45;phase convectio..." alt="" coords="35,277,222,575"/>
-<area shape="rect" id="node2" href="$classFoam_1_1FSHeatTransferCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) heat transfer coefficient." alt="" coords="5,5,252,229"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="name" name="name">
-<area shape="rect" id="node1" title="Return material name." alt="" coords="248,78,307,105"/>
-<area shape="rect" id="node2" href="$classFoam_1_1burnupLassmann.html#a649a6a9220f36a953efc8cdbe9abfbb4" title="Construct from mesh, global Options, materials and dict." alt="" coords="14,5,191,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1fissionGasRelease.html#a0e62e1ecf7cf14a4a7e1fbcf694cb8f9" title="Construct from mesh, materials and dict." alt="" coords="10,71,195,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1rheologyByMaterial.html#ac82a723cbbe5296b2099337072a9715f" title="Construct from mesh, materials and dictionary." alt="" coords="5,136,200,177"/>
-</map>

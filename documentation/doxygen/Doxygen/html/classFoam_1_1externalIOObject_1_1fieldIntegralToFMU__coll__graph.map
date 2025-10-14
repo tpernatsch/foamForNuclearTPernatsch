@@ -1,4 +1,0 @@
-<map id="fieldIntegralToFMU" name="fieldIntegralToFMU">
-<area shape="rect" id="node1" title="Output an integral over a cellZone to an FMU." alt="" coords="5,131,185,369"/>
-<area shape="rect" id="node2" title=" " alt="" coords="29,5,161,83"/>
-</map>

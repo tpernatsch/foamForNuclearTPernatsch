@@ -1,4 +1,0 @@
-<map id="conductivityRelapZy" name="conductivityRelapZy">
-<area shape="rect" id="node1" title="Model for conductivity of Zircaloy material derived by RELAP." alt="" coords="33,204,225,325"/>
-<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="5,5,252,156"/>
-</map>

@@ -1,9 +1,0 @@
-<map id="correct" name="correct">
-<area shape="rect" id="node1" title="Correct/update the properties." alt="" coords="5,177,72,203"/>
-<area shape="rect" id="node2" href="$classFoam_1_1mechanicsSubSolver.html#a4ed93fdbc5713963c0ac373392390f6b" title="Return the divergence of the explicit component of the traction." alt="" coords="120,5,321,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1mechanicsSubSolver.html#a10dc1e2ff7ca36888ab3eb9f988187a7" title="Return the gradient of displacement grad(D) including corrections." alt="" coords="120,71,321,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1mechanicsSubSolver.html#ac4c4b6a792e72090a46cbbf625af6aa2" title="Return the corrected explicit component of the traction." alt="" coords="120,136,321,177"/>
-<area shape="rect" id="node5" href="$classFoam_1_1mechanicsSubSolver.html#a3ed39c84d16525bfb98b19b614b8d525" title="Return $2*\mu + \lambda$ at the faces including corrections." alt="" coords="120,201,321,243"/>
-<area shape="rect" id="node6" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="192,267,249,294"/>
-<area shape="rect" id="node7" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="199,318,242,345"/>
-</map>

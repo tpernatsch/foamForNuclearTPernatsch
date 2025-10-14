@@ -1,5 +1,0 @@
-<map id="setInternalBoundaries" name="setInternalBoundaries">
-<area shape="rect" id="node1" title=" " alt="" coords="5,35,171,61"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="289,5,346,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regimeMapModels_1_1regimeBoundary2D.html#ae8d16955c05a9c3f159e725fbfec832e" title="Returns label of nbr regimeDomain, if set, otherwise returns &#45;1." alt="" coords="219,57,416,98"/>
-</map>

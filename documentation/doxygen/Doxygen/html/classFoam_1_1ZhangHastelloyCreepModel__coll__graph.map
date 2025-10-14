@@ -1,4 +1,0 @@
-<map id="ZhangHastelloyCreepModel" name="ZhangHastelloyCreepModel">
-<area shape="rect" id="node1" title="Applies a power law time exponential to compute creep strain rate. Model derived from work of Zhang." alt="" coords="9,351,248,472"/>
-<area shape="rect" id="node2" href="$classFoam_1_1creepModel.html" title="Creep model mother class." alt="" coords="5,5,252,303"/>
-</map>

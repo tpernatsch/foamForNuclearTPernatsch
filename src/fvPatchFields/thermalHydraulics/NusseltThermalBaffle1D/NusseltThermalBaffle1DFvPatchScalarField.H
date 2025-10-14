@@ -45,7 +45,7 @@ Description
     predicted via an instantaneous heat flux balance. The fluid-baffle heat
     transfer coefficients for wall-fluid (and the other wall-fluid pair if
     doing twoPhase simulations) are calculated starting from the Nusselt number
-    calculated in a form Nu = const + coeff*(Re^expRe)*(Pr^expPr) with user
+    calculated in a form $Nu = const + coeff Re^{expRe} Pr^{expPr}$ with user
     provided coefficients. The update for the fields on both sides of the
     baffle is implicit, meaning that the owner patchField also sets the
     valueFraction/refValue/refGradient of the nbrPatch. In two-phase scenarios,

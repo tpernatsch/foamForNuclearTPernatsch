@@ -1,9 +1,0 @@
-<map id="fluid" name="fluid">
-<area shape="rect" id="node1" title=" " alt="" coords="5,132,56,159"/>
-<area shape="rect" id="node2" href="$namespaceFoam.html#a972b7cbb1064ab9fa64c1fa555393c9e" title=" " alt="" coords="104,5,347,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="395,31,452,57"/>
-<area shape="rect" id="node4" href="$Tu2OFFBEATtable_8H.html#af7e16d1939c3f9ad4093bdce9261c0da" title=" " alt="" coords="177,107,274,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1phaseBase.html#a470f06cfb9b6ee887cd85d63de275607" title=" " alt="" coords="135,157,316,184"/>
-<area shape="rect" id="node6" href="$classFoam_1_1phaseBase.html#acc80e00a8ac919288fb55bd14cc88bf6" title=" " alt="" coords="134,208,317,235"/>
-<area shape="rect" id="node7" href="$classFoam_1_1fluid.html#aff95d465650759a2c00c79eb7b070b8d" title=" " alt="" coords="169,259,281,285"/>
-</map>

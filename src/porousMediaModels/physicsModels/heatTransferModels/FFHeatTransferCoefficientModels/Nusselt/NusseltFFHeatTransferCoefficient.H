@@ -43,7 +43,9 @@ Description
     starting from the Nusselt, which is turn obtained via correlation in the
     form
 
-    Nu = A_+B_*(Re^C_)*(Pr^D_)
+    \f[
+        Nu = A_+B_*(Re^C_)*(Pr^D_)
+    \f]
 
     with Re, Pr being the Reynolds (superficial in two-phase) and Prandlt
     of the fluid, and A, B, C, D selectable consts
@@ -51,7 +53,8 @@ Description
     Author:
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
-Example of mandatory dictionary entries:
+Usage
+    Example of mandatory dictionary entries:
     \verbatim
     const   4;
     coeff   0.01;

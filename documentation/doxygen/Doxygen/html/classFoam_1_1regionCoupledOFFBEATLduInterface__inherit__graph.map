@@ -1,5 +1,0 @@
-<map id="regionCoupledOFFBEATLduInterface" name="regionCoupledOFFBEATLduInterface">
-<area shape="rect" id="node1" title="An abstract base class for region coupled interfaces." alt="" coords="149,5,431,185"/>
-<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html" title="Base class of regionCoupledFvPatch with common functionality for regionCoupledFvPatch and regionCoupl..." alt="" coords="5,233,255,589"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEATGAMGInterface.html" title="Base class for GAMG agglomerated coupled region interface." alt="" coords="279,321,621,501"/>
-</map>

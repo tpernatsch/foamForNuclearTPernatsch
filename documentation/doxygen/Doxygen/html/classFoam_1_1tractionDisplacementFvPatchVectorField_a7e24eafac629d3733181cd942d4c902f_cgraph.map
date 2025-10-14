@@ -1,7 +1,0 @@
-<map id="updateCoeffs" name="updateCoeffs">
-<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="5,81,113,108"/>
-<area shape="rect" id="node2" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="199,5,242,32"/>
-<area shape="rect" id="node3" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="201,56,240,83"/>
-<area shape="rect" id="node4" href="$readNuclearData_8H.html#af3234271aa5248f773a9631104c1f9e3" title=" " alt="" coords="187,107,254,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1tractionDisplacementFvPatchVectorField.html#a4cde3bc9e8f5668ba9b042b380644839" title="Update the pressure and traction." alt="" coords="161,157,280,184"/>
-</map>

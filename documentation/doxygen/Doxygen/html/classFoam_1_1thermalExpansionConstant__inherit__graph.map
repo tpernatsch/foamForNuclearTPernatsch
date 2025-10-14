@@ -1,4 +1,0 @@
-<map id="thermalExpansionConstant" name="thermalExpansionConstant">
-<area shape="rect" id="node1" title="Model for constant thermal expansion coefficient. The value is read from dictionary." alt="" coords="11,219,246,340"/>
-<area shape="rect" id="node2" href="$classFoam_1_1thermalExpansionModel.html" title="Mother class for thermal expansion models." alt="" coords="5,5,252,171"/>
-</map>

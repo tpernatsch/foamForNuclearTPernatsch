@@ -1,4 +1,0 @@
-<map id="PARFUMEBufferCreepModel" name="PARFUMEBufferCreepModel">
-<area shape="rect" id="node1" title="Compute creep strain rate in the following way: creep_rate = K*[s1 &#45; vc * (s2 + s3)]*fast_neutron_flu..." alt="" coords="9,351,248,487"/>
-<area shape="rect" id="node2" href="$classFoam_1_1creepModel.html" title="Creep model mother class." alt="" coords="5,5,252,303"/>
-</map>

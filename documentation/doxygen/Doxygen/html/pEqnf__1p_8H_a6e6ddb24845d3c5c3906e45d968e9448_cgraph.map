@@ -1,9 +1,0 @@
-<map id="while" name="while">
-<area shape="rect" id="node1" title=" " alt="" coords="5,132,63,159"/>
-<area shape="rect" id="node2" href="$updateAlphaPhiAndInitControls__1p_8H.html#af4804c4f6fe5c6e70b7d387bc1608640" title=" " alt="" coords="143,5,206,32"/>
-<area shape="rect" id="node3" href="$pEqnf__1p_8H.html#a8a083a37dcea5a06783fda0135fb484b" title=" " alt="" coords="131,56,218,83"/>
-<area shape="rect" id="node4" href="$pEqnf__1p_8H.html#a6d42a1cc03b686a3af950d2d303d179e" title=" " alt="" coords="111,107,239,133"/>
-<area shape="rect" id="node5" href="$compressibleInterFoam_2include_2equations_2pEqn_8H.html#a339ff8f7a5671b6edeba77dbcd0f9923" title=" " alt="" coords="138,157,211,184"/>
-<area shape="rect" id="node6" href="$solveP__rgh__1p_8H.html#a73205a3cb71010293a28021e0feabba5" title=" " alt="" coords="123,208,226,235"/>
-<area shape="rect" id="node7" href="$calcPhiSbyA__1p_8H.html#a2c8fbae74ef00c7ffa97241aa04b3de3" title="Construct flux due to explicit sources, namely buoyancy/gravity effects." alt="" coords="137,259,212,285"/>
-</map>

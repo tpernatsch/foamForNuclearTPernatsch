@@ -1,4 +1,0 @@
-<map id="heatCapacityFinkUPuO2" name="heatCapacityFinkUPuO2">
-<area shape="rect" id="node1" title="Heat Capacity model for (U,Pu)O2 derived from Fink. Source : https://info.ornl.gov/sites/publications..." alt="" coords="21,204,236,325"/>
-<area shape="rect" id="node2" href="$classFoam_1_1heatCapacityModel.html" title="Mother class for heat capacity models." alt="" coords="5,5,252,156"/>
-</map>

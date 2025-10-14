@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,78,119,105"/>
-<area shape="rect" id="node2" href="$classFoam_1_1RASModels_1_1mixtureKEpsilon.html" title="Mixture k&#45;epsilon turbulence model for two&#45;phase gas&#45;liquid systems." alt="" coords="167,5,416,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1RASModels_1_1porousKEpsilon.html" title="Same as standard OpenFOAM. porousKEpsilon is provided as additional model. The only difference is tha..." alt="" coords="170,71,413,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1RASModels_1_1porousKEpsilon2PhaseCorrected.html" title="Same as porousKEpsiolon but turbulent intensity correlation in the form turbulenceIntensityCoeff*Reyn..." alt="" coords="175,136,407,177"/>
-</map>

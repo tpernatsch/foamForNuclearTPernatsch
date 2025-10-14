@@ -1,6 +1,0 @@
-<map id="constantTabulatedAzimuthalProfile" name="constantTabulatedAzimuthalProfile">
-<area shape="rect" id="node1" title="Construct from dictionary." alt="" coords="5,64,212,105"/>
-<area shape="rect" id="node2" href="$classFoam_1_1azimuthalProfile.html#a1827f0579de0604ea2285d264ff33fd1" title=" " alt="" coords="260,5,432,47"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="480,42,537,69"/>
-<area shape="rect" id="node4" href="$classFoam_1_1InterpolateTable.html#adaa3670392f77cb9bd35aa924242a7a6" title=" " alt="" coords="261,123,431,164"/>
-</map>

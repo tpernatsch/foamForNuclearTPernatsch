@@ -1,8 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1poreVelocityModel.html" title="Mother class for pore velocity models. If selected, sets the velocity to zero." alt="" coords="5,107,148,133"/>
-<area shape="rect" id="node2" href="$classFoam_1_1poreVelocityConstant.html" title="By selecting this constant model the velocity is read from the previous time step folder...." alt="" coords="229,5,390,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1poreVelocityMOXClementFinnis.html" title="Model to compute pore velocity with the correlation provided by Clement and Finnis." alt="" coords="196,56,423,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1poreVelocityMOXLackey.html" title="Model to compute pore velocity within MOX fuel with the correlation provided by Lackey et Al." alt="" coords="220,107,399,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1poreVelocityMOXVaporPressure.html" title=" " alt="" coords="196,157,423,184"/>
-<area shape="rect" id="node6" href="$classFoam_1_1poreVelocityUO2Sens.html" title="Model to compute pore velocity with the correlation provided by Sens (P.F. Sens. The kinetics of pore..." alt="" coords="228,208,391,235"/>
-</map>

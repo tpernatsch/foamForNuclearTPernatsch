@@ -1,7 +1,0 @@
-<map id="Cons_bolt" name="Cons_bolt">
-<area shape="rect" id="node1" title=" " alt="" coords="531,81,617,108"/>
-<area shape="rect" id="node2" href="$GasDiffusionCoefficient_8C.html#aa56d60d77d485094bb725997ffd26fcb" title=" " alt="" coords="288,5,463,32"/>
-<area shape="rect" id="node3" href="$InterGranularBubbleEvolution_8C.html#a0ef11764a7f327a789a91fb4edf9de43" title=" " alt="" coords="268,56,483,83"/>
-<area shape="rect" id="node4" href="$IntraGranularBubbleEvolution_8C.html#a4a879750ec88d3b858963478d53af9b7" title=" " alt="" coords="5,132,220,159"/>
-<area shape="rect" id="node5" href="$IntraGranularBubbleRadius_8C.html#a38032cee88dfa97b6df7fc68eafb13ea" title=" " alt="" coords="277,157,474,184"/>
-</map>

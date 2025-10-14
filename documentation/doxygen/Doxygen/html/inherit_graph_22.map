@@ -1,5 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1densificationModel.html" title="Parent class for densification model." alt="" coords="5,31,151,57"/>
-<area shape="rect" id="node2" href="$classFoam_1_1densificationEmpirical.html" title="Empirical model for densification. The fuel tends toward a final value of density (due to densificati..." alt="" coords="199,5,366,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1densificationFRAPCON.html" title="Class modelling the densification phenomenon derived from FRAPCON." alt="" coords="199,56,367,83"/>
-</map>

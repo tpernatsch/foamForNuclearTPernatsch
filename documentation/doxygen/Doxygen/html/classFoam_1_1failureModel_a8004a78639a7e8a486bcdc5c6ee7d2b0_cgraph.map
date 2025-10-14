@@ -1,5 +1,0 @@
-<map id="checkFailure" name="checkFailure">
-<area shape="rect" id="node1" title="Check failure occurrence." alt="" coords="5,35,108,61"/>
-<area shape="rect" id="node2" href="$classFoam_1_1offbeatTime.html#ad4c888c2122c2c14211d79c8ddc4098a" title="Return time unit." alt="" coords="156,5,335,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1offbeatTime.html#a8111f813290dae0d302603537d017158" title="Current user time." alt="" coords="169,57,322,98"/>
-</map>

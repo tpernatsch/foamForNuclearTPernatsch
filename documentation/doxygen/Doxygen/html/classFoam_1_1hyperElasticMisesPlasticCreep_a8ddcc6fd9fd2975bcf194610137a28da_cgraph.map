@@ -1,7 +1,0 @@
-<map id="correct" name="correct">
-<area shape="rect" id="node1" title="Update hydrostatic and deviatoric stresses." alt="" coords="5,60,72,87"/>
-<area shape="rect" id="node2" href="$EEqns__2p_8H.html#a41a371debc8f4fa40469231470618dda" title=" " alt="" coords="343,31,381,57"/>
-<area shape="rect" id="node3" href="$classFoam_1_1misesPlasticity.html#a8ddcc6fd9fd2975bcf194610137a28da" title="Update hydrostatic and deviatoric stress" alt="" coords="120,82,285,123"/>
-<area shape="rect" id="node4" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="333,119,391,145"/>
-<area shape="rect" id="node5" href="$namespaceSolver.html#a0de0b4e8649f37dfbe579cf165ef9fd7" title=" " alt="" coords="157,31,249,57"/>
-</map>

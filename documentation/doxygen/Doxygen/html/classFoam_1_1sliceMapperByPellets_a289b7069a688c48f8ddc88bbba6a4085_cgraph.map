@@ -1,8 +1,0 @@
-<map id="calcAddressing" name="calcAddressing">
-<area shape="rect" id="node1" title=" " alt="" coords="5,107,125,133"/>
-<area shape="rect" id="node2" href="$EEqns__2p_8H.html#a41a371debc8f4fa40469231470618dda" title=" " alt="" coords="265,5,303,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="255,56,313,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1materials.html#a1303594223704789735e4d9511802b30" title="Return reference to material addressing list." alt="" coords="177,107,391,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1materials.html#a6567210f2fbce56615fdafa90f4271b4" title="Return reference to materials list." alt="" coords="173,157,395,184"/>
-<area shape="rect" id="node6" href="$readNuclearData_8H.html#af3234271aa5248f773a9631104c1f9e3" title=" " alt="" coords="251,208,317,235"/>
-</map>

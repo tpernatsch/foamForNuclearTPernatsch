@@ -1,6 +1,0 @@
-<map id="TONBModel" name="TONBModel">
-<area shape="rect" id="node1" title="Model for the prediction of the temperature of the onset of nucleate boiling (i.e...." alt="" coords="31,740,278,920"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,446,107,523"/>
-<area shape="rect" id="node3" href="$classFoam_1_1FSPair.html" title="Class to handle dimensionless numbers that characterise the system, e.g. Reynolds,..." alt="" coords="285,292,432,677"/>
-<area shape="rect" id="node4" href="$classFoam_1_1fluid.html" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="51,5,301,229"/>
-</map>

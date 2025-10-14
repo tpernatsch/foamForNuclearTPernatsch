@@ -1,4 +1,0 @@
-<map id="conductivityConstant" name="conductivityConstant">
-<area shape="rect" id="node1" title="Model for constant conductivity. The value is read from dictionary." alt="" coords="31,204,227,325"/>
-<area shape="rect" id="node2" href="$classFoam_1_1conductivityModel.html" title="Mother class for conductivity models." alt="" coords="5,5,252,156"/>
-</map>

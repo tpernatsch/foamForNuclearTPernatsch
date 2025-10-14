@@ -1,4 +1,0 @@
-<map id="fieldName" name="fieldName">
-<area shape="rect" id="node1" title="Return name of the solving variable." alt="" coords="144,5,233,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1transportSolver.html#a58e7a5f458dfdf4e7e9120cd220e09da" title="Return true if converged." alt="" coords="5,5,96,32"/>
-</map>

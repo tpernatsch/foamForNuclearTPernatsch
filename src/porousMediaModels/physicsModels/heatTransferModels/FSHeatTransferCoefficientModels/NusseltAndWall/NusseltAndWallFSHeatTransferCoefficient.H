@@ -52,7 +52,7 @@ Description
         Re         | Reynolds number (superficial in two-phase) of the fluid
         Pr         | Prandtl number of the fluid
         A, B, C, D | Selectable constants
-    \endtable
+    \endvartable
 
     Additional heat transfer coeff to take into account the wall resistance,
     such that
@@ -61,6 +61,11 @@ Description
         \frac{1}{H} = \frac{1}{\frac{Nu \kappa}{D_h}} + \frac{1}{H_{wall}}
     \f]
 
+    Authors:
+    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+
+Usage
     Example of mandatory dictionary entries:
     \verbatim
         const   4;
@@ -69,10 +74,6 @@ Description
         expPr   0.8;
         addH    10000;
     \endverbatim
-
-    Authors:
-    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
-    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 SourceFiles
     NusseltAndWallFSHeatTransferCoefficient.C

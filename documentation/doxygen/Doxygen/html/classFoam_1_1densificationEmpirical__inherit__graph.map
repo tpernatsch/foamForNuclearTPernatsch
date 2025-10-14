@@ -1,4 +1,0 @@
-<map id="densificationEmpirical" name="densificationEmpirical">
-<area shape="rect" id="node1" title="Empirical model for densification. The fuel tends toward a final value of density (due to densificati..." alt="" coords="27,292,230,413"/>
-<area shape="rect" id="node2" href="$classFoam_1_1densificationModel.html" title="Parent class for densification model." alt="" coords="5,5,252,244"/>
-</map>

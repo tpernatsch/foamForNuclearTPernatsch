@@ -1,4 +1,0 @@
-<map id="nVectors" name="nVectors">
-<area shape="rect" id="node1" title="Return reference to neighbour least square vectors." alt="" coords="272,13,351,39"/>
-<area shape="rect" id="node2" href="$classFoam_1_1fv_1_1leastSquaresImplicitContactGrad.html#a235976831405ff5c4770d4b4e1b015cb" title="Return the gradient of the given field to the gradScheme::grad." alt="" coords="5,5,224,47"/>
-</map>

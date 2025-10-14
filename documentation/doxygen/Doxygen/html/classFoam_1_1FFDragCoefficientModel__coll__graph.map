@@ -1,5 +1,0 @@
-<map id="FFDragCoefficientModel" name="FFDragCoefficientModel">
-<area shape="rect" id="node1" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) drag coefficient." alt="" coords="15,439,262,589"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,152,107,229"/>
-<area shape="rect" id="node3" href="$classFoam_1_1FFPair.html" title="Class to handle dimensionless numbers that characterise the system, e.g. Reynolds,..." alt="" coords="131,5,314,376"/>
-</map>

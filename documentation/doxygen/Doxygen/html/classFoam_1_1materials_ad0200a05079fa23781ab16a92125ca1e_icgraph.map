@@ -1,4 +1,0 @@
-<map id="additionalStrains" name="additionalStrains">
-<area shape="rect" id="node1" title="Additional strain components per material." alt="" coords="271,13,403,39"/>
-<area shape="rect" id="node2" href="$classFoam_1_1rheology.html#a05a2fe527d2b25ca355c3a5bda2ea56a" title="Correct/update the properties." alt="" coords="5,5,223,47"/>
-</map>

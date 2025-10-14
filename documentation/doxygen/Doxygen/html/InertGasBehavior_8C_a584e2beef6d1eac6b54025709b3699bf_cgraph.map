@@ -1,6 +1,0 @@
-<map id="InertGasBehavior" name="InertGasBehavior">
-<area shape="rect" id="node1" title=" " alt="" coords="5,56,140,83"/>
-<area shape="rect" id="node2" href="$GlobalVariables_8C.html#a35bb9fbc8cfb4b0083e70b164944eeec" title=" " alt="" coords="208,5,359,32"/>
-<area shape="rect" id="node3" href="$InterGranularGasBehavior_8C.html#a8f6770a351281fe2b0ea6fe73d92134b" title=" " alt="" coords="188,56,379,83"/>
-<area shape="rect" id="node4" href="$IntraGranularGasBehavior_8C.html#ad0f041fddf42740dcb0f9c9523aeb629" title=" " alt="" coords="188,107,379,133"/>
-</map>

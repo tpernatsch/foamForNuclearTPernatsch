@@ -1,6 +1,0 @@
-<map id="FFPair" name="FFPair">
-<area shape="rect" id="node1" title="Class to handle dimensionless numbers that characterise the system, e.g. Reynolds,..." alt="" coords="168,365,351,736"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,108,103,185"/>
-<area shape="rect" id="node3" href="$classFoam_1_1customPimpleControl.html" title="PIMPLE control class to supply convergence information/checks for the PIMPLE loop...." alt="" coords="127,5,391,288"/>
-<area shape="rect" id="node4" href="$classFoam_1_1fluid.html" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="415,35,666,259"/>
-</map>

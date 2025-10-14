@@ -1,6 +1,0 @@
-<map id="subCooledBoilingFractionModel" name="subCooledBoilingFractionModel">
-<area shape="rect" id="node1" title="Model for the prediction of the sub&#45;cooled bulk liquid temperature at which bubble detachment occurs ..." alt="" coords="19,131,266,355"/>
-<area shape="rect" id="node3" href="$classFoam_1_1subCooledBoilingFractionModels_1_1SahaZuber.html" title="Calculate the temperature of onset of nucleate boiling according to the model by N...." alt="" coords="5,403,133,524"/>
-<area shape="rect" id="node4" href="$classFoam_1_1subCooledBoilingFractionModels_1_1constant.html" title="Return constant subCooled boiling fraction." alt="" coords="158,403,274,524"/>
-<area shape="rect" id="node2" title=" " alt="" coords="92,5,193,83"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="AMI" name="AMI">
-<area shape="rect" id="node1" title="Return a reference to the AMI interpolator." alt="" coords="320,71,367,98"/>
-<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a2304bdb4b410b9d88a254f0bcb3efe68" title="Return a reference to the AMI interpolator." alt="" coords="5,5,272,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a4af8c65299b23e8c726ead9924008a91" title=" " alt="" coords="92,71,185,98"/>
-<area shape="rect" id="node4" href="$classFoam_1_1gapContactFvPatchVectorField.html#a4cde3bc9e8f5668ba9b042b380644839" title="Update the pressure and traction." alt="" coords="23,123,255,164"/>
-</map>

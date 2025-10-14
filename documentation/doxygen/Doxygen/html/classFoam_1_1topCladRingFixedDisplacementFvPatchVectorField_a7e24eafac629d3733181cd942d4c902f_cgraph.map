@@ -1,8 +1,0 @@
-<map id="updateCoeffs" name="updateCoeffs">
-<area shape="rect" id="node1" title="Return the matrix diagonal coefficients corresponding to the." alt="" coords="5,122,113,149"/>
-<area shape="rect" id="node2" href="$classFoam_1_1globalOptions.html#a21357e5588a342e823928e777eff1314" title=" " alt="" coords="169,5,325,47"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="218,71,275,98"/>
-<area shape="rect" id="node4" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="225,122,268,149"/>
-<area shape="rect" id="node5" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="227,173,266,199"/>
-<area shape="rect" id="node6" href="$classFoam_1_1gapGasModel.html#a2ef4e25d44488e458821bf9debb36df1" title="Return gas pressure." alt="" coords="161,223,332,250"/>
-</map>

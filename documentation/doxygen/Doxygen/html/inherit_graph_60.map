@@ -1,8 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1multiMaterialInterface.html" title="Base class for defining the set of faces that constitute the interfaces between different materials." alt="" coords="5,85,173,112"/>
-<area shape="rect" id="node2" href="$classFoam_1_1uniformMultiMaterialInterface.html" title="Interfaces between materials are defined by a uniform." alt="" coords="221,85,440,112"/>
-<area shape="rect" id="node3" href="$classFoam_1_1cellZoneMultiMaterialInterface.html" title="Materials are defined by cellZones, and interfaces between materials lie at the interface between cel..." alt="" coords="495,5,717,32"/>
-<area shape="rect" id="node4" href="$classFoam_1_1faceSetMultiMaterialInterface.html" title="Interfaces between materials are defined by a faceSet." alt="" coords="498,56,714,83"/>
-<area shape="rect" id="node5" href="$classFoam_1_1topoSetSourceMultiMaterialInterface.html" title="Interfaces between materials are defined by a topoSetSource, e.g. boxToFace, faceToFace." alt="" coords="505,107,707,149"/>
-<area shape="rect" id="node6" href="$classFoam_1_1uniform2DMultiMaterialInterface.html" title="Interfaces between materials are defined by a uniform weight. The weight is set to 0 along the z&#45;dire..." alt="" coords="488,173,724,200"/>
-</map>

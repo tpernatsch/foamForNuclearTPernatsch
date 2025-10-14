@@ -1,9 +1,0 @@
-<map id="AMIInterpolationOFFBEAT" name="AMIInterpolationOFFBEAT">
-<area shape="rect" id="node1" title="Construct from agglomeration of AMIInterpolationOFFBEAT." alt="" coords="5,132,195,159"/>
-<area shape="rect" id="node2" href="$classFoam_1_1AMIInterpolationOFFBEAT.html#a3c4785d8328be0bd29ad56c7151721a8" title="Return const access to source patch addressing." alt="" coords="243,5,336,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1AMIInterpolationOFFBEAT.html#ad6bb383e9c2a1aec78274c8123470240" title="Return const access to source patch face areas." alt="" coords="248,56,331,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1AMIInterpolationOFFBEAT.html#a762629cf16d34a98d595b8319d573141" title="Return const access to source patch weights." alt="" coords="243,107,336,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1AMIInterpolationOFFBEAT.html#af13463eec7684a6361bb7a753622c6ea" title="Return const access to target patch addressing." alt="" coords="243,157,335,184"/>
-<area shape="rect" id="node6" href="$classFoam_1_1AMIInterpolationOFFBEAT.html#af0d226200363591e910f1605c0283351" title="Return const access to target patch face areas." alt="" coords="249,208,330,235"/>
-<area shape="rect" id="node7" href="$classFoam_1_1AMIInterpolationOFFBEAT.html#a3b2b3ab0a575c63bc98f06106ee72f67" title="Return const access to target patch weights." alt="" coords="243,259,335,285"/>
-</map>

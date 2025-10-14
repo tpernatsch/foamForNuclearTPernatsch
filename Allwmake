@@ -19,6 +19,7 @@ clear
 num_jobs=1
 fmi_flag=false
 doc_flag=false
+api_flag=false
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -65,12 +66,13 @@ usage() {
     echo "    --doc             Change OpenFOAM version in READMEs and in header"
     echo "                      files based on WM_PROJECT_VERSION env variable."
     echo "                      Only used by developers and maintainers."
+    echo "    --api             Build the Python API"
     echo "    --help            Print current usage"
     exit 1
 }
 
 # Parse options using getopt
-PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,doc,help -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,doc,api,help -- "$@")
 if [ $? -ne 0 ]; then
     usage
 fi
@@ -91,6 +93,10 @@ while true; do
             ;;
         --doc)
             doc_flag=true
+            shift
+            ;;
+        --api)
+            api_flag=true
             shift
             ;;
         --help)
@@ -117,6 +123,7 @@ echo "-------"
 echo "    Number of jobs: $num_jobs"
 echo "    FMI flag: $fmi_flag"
 echo "    Doc flag: $doc_flag"
+echo "    API flag: $api_flag"
 echo
 
 
@@ -283,6 +290,13 @@ checkCompletionApplication GeN-Foam
 
 echo
 
+# Build the Python API
+if [ $api_flag = 'true' ]
+then
+    cd pythonapi
+    pip3 install -e .
+    cd ..
+fi
 
 if [ $fmi_flag = 'true' ]
 then

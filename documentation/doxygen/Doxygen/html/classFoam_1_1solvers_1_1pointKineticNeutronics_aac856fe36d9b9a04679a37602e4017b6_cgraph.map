@@ -1,6 +1,0 @@
-<map id="calcGEMLevelAndReactivity" name="calcGEMLevelAndReactivity">
-<area shape="rect" id="node1" title="Compute GEM sodium height and their reactivity contributions." alt="" coords="5,56,209,83"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="288,5,345,32"/>
-<area shape="rect" id="node3" href="$correctReactivity_8H.html#a0231f7ecfd7d54d20d29bb0703abe776" title=" " alt="" coords="257,56,376,83"/>
-<area shape="rect" id="node4" href="$readNuclearData_8H.html#af3234271aa5248f773a9631104c1f9e3" title=" " alt="" coords="283,107,350,133"/>
-</map>

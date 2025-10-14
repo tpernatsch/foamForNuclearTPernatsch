@@ -1,5 +1,0 @@
-<map id="calcPrimaryCreepRatePrime" name="calcPrimaryCreepRatePrime">
-<area shape="rect" id="node1" title="Compute derivative of primary creep rate." alt="" coords="5,31,211,57"/>
-<area shape="rect" id="node2" href="$UEqn__1p_8H.html#a7fe02434a19f3e00e927f32adcbb193b" title=" " alt="" coords="273,5,331,32"/>
-<area shape="rect" id="node3" href="$namespaceFoam.html#ae3317836dd08502698e96ad9524be3da" title=" " alt="" coords="259,56,345,83"/>
-</map>

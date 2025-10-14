@@ -1,6 +1,0 @@
-<map id="createSliceID" name="createSliceID">
-<area shape="rect" id="node1" title=" " alt="" coords="301,78,409,105"/>
-<area shape="rect" id="node2" href="$classFoam_1_1sliceMapperAutoAxialSlices.html#a879ff3ace36bb5b7b04afe15b2bfd7bc" title="Construct from mesh." alt="" coords="5,5,253,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1sliceMapperByMaterial.html#a2da9a3f36a70569c8d690dec1572b330" title="Construct from mesh." alt="" coords="21,71,237,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1sliceMapperByPellets.html#aeb9e9934615383a6498ce995cbf5512b" title="Construct from mesh." alt="" coords="26,136,233,177"/>
-</map>

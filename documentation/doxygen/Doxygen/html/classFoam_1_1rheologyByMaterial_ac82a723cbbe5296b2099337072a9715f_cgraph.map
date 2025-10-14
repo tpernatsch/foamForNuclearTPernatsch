@@ -1,8 +1,0 @@
-<map id="rheologyByMaterial" name="rheologyByMaterial">
-<area shape="rect" id="node1" title="Construct from mesh, materials and dictionary." alt="" coords="5,123,156,149"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="286,5,343,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1materialModel.html#afbc111b36720d6c7e0dadb9eb86b0c5e" title=" " alt="" coords="234,57,395,98"/>
-<area shape="rect" id="node4" href="$classFoam_1_1materials.html#a6567210f2fbce56615fdafa90f4271b4" title="Return reference to materials list." alt="" coords="204,123,425,149"/>
-<area shape="rect" id="node5" href="$classFoam_1_1materialModel.html#a73572f70de721e7793f801ae26c5a6c5" title="Return material name." alt="" coords="234,174,395,215"/>
-<area shape="rect" id="node6" href="$classFoam_1_1constitutiveLaw.html#a2b5c848df37c7b78d4d043ef47c62f4b" title="Selector." alt="" coords="212,240,417,267"/>
-</map>

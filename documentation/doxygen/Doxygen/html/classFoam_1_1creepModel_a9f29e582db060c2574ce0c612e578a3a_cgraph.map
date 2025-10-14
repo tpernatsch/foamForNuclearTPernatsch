@@ -1,5 +1,0 @@
-<map id="correctAxialStrain" name="correctAxialStrain">
-<area shape="rect" id="node1" title="correctAxialStrain in case of plane stress" alt="" coords="5,31,144,57"/>
-<area shape="rect" id="node2" href="$EEqns__2p_8H.html#a41a371debc8f4fa40469231470618dda" title=" " alt="" coords="201,5,240,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="192,56,249,83"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="userParametersRegistry" name="userParametersRegistry">
-<area shape="rect" id="node1" title="Dictionary to record all registered user parameters." alt="" coords="269,81,448,108"/>
-<area shape="rect" id="node2" href="$namespaceFoam.html#a40aa6b550af75aa6c919390a41ef1dd8" title="Check the supplied user parameters in system/userParameters." alt="" coords="31,5,195,32"/>
-<area shape="rect" id="node3" href="$namespaceFoam.html#ab466c49cab7da77c712cd4d34068b4fb" title="Display a list of registered user parameters." alt="" coords="5,56,221,83"/>
-<area shape="rect" id="node4" href="$namespaceFoam.html#a6ce1b45f3fab16c2d63c430627aadfd1" title="Return the default value of a user parameter from the registry." alt="" coords="21,107,206,133"/>
-<area shape="rect" id="node5" href="$namespaceFoam.html#afae3891f4355be72bea6351b9cee951e" title=" " alt="" coords="29,157,198,184"/>
-</map>

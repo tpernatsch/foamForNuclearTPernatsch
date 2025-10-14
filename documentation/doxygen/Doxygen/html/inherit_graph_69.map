@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" title=" " alt="" coords="5,31,119,57"/>
-<area shape="rect" id="node2" href="$classFoam_1_1phaseBase.html" title="Base abstract class for the fluid and structure classes." alt="" coords="167,31,260,57"/>
-<area shape="rect" id="node3" href="$classFoam_1_1fluid.html" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="323,5,373,32"/>
-<area shape="rect" id="node4" href="$classFoam_1_1structure.html" title="Class to handle the description of a mesh&#45;unresolved structure. It is derived from phaseBase,..." alt="" coords="308,56,388,83"/>
-</map>

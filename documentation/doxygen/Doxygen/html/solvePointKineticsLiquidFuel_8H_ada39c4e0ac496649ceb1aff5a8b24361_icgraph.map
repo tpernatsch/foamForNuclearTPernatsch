@@ -1,5 +1,0 @@
-<map id="diffCoeffPrecPtr_" name="diffCoeffPrecPtr_">
-<area shape="rect" id="node1" title="Correct the diffusion coefficient and flux." alt="" coords="111,31,241,57"/>
-<area shape="rect" id="node2" href="$precEqAdjoint_8H.html#a96d0351bc6016c4d07b9e688e5c1b865" title=" " alt="" coords="5,5,63,32"/>
-<area shape="rect" id="node3" href="$createNeutronicsFieldsAdjoint_8H.html#af8bc169eba905485123c31c252bf9b5c" title=" " alt="" coords="15,56,53,83"/>
-</map>

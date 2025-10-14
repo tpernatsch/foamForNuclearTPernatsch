@@ -1,5 +1,0 @@
-<map id="calcHeatFlux" name="calcHeatFlux">
-<area shape="rect" id="node1" title="Compute heat flux at the boundary." alt="" coords="5,31,112,57"/>
-<area shape="rect" id="node2" href="$Tu2OFFBEATtable_8H.html#ae101432ee6bf26b04ea153bffd4818ed" title=" " alt="" coords="160,5,247,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="175,56,232,83"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="combinedFailureCriteria" name="combinedFailureCriteria">
-<area shape="rect" id="node1" title="Criterion used to combine multiple failure criteria. Failure is supposed to occur when one of the cri..." alt="" coords="22,351,235,501"/>
-<area shape="rect" id="node2" href="$classFoam_1_1failureModel.html" title="Mother class for materials failure criteria." alt="" coords="5,5,252,303"/>
-</map>

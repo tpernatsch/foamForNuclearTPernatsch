@@ -1,5 +1,0 @@
-<map id="Wallis" name="Wallis">
-<area shape="rect" id="node1" title="Wallis correlation for interfacial liquid&#45;vapour sodium friction H. Ninokata, T. Okano,..." alt="" coords="207,292,323,413"/>
-<area shape="rect" id="node2" href="$classFoam_1_1FFDragCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) drag coefficient." alt="" coords="5,42,252,193"/>
-<area shape="rect" id="node3" href="$classFoam_1_1fluid.html" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="277,5,527,229"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="neighbFvPatch" name="neighbFvPatch">
-<area shape="rect" id="node1" title="Return neighbor fvPatch." alt="" coords="5,35,123,61"/>
-<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a7de75a086e51fb6764bcf4d6d494257c" title="Returns fvMesh." alt="" coords="249,5,343,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a7aa44128e705d20591f0a3a7a5da630b" title="Neighbour patch ID." alt="" coords="171,57,421,98"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="correct" name="correct">
-<area shape="rect" id="node1" title="Solve the turbulence equations and correct the turbulence viscosity." alt="" coords="5,56,72,83"/>
-<area shape="rect" id="node2" href="$TEqn_8H.html#a5ff896e3b5818c32a68eafd5d09688c8" title=" " alt="" coords="132,5,199,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1RASModels_1_1mixtureKEpsilon.html#aaffe89433f18f1ee4137486e19219448" title=" " alt="" coords="120,56,211,83"/>
-<area shape="rect" id="node4" href="$compressibleInterFoam_2include_2equations_2pEqn_8H.html#a66f3920b2f029902b5c04c483b0b9936" title=" " alt="" coords="140,107,191,133"/>
-</map>

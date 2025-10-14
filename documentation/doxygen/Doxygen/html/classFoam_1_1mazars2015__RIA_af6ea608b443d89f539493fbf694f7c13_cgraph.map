@@ -1,7 +1,0 @@
-<map id="correct" name="correct">
-<area shape="rect" id="node1" title="Update damage and correct Young Modulus E." alt="" coords="5,81,72,108"/>
-<area shape="rect" id="node2" href="$classFoam_1_1eig3.html#a392020f51bb57f7d74e47ef94752a1fb" title=" " alt="" coords="120,5,361,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="212,56,269,83"/>
-<area shape="rect" id="node4" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="219,107,262,133"/>
-<area shape="rect" id="node5" href="$EEqn__1p_8H.html#ad0f94aa7ea43d4be0bae24e3a89aad0c" title=" " alt="" coords="221,157,260,184"/>
-</map>

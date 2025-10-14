@@ -1,7 +1,0 @@
-<map id="test_PHSRBFlin1D" name="test_PHSRBFlin1D">
-<area shape="rect" id="node1" title=" " alt="" coords="5,97,145,123"/>
-<area shape="rect" id="node2" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#a5957166a142c29f6a8479f0807e3576c" title="Polyharmonic spline RBF for 3 dimensions." alt="" coords="193,5,436,47"/>
-<area shape="rect" id="node3" href="$Test-radialBasisFunctions_8C.html#ad6f9c543fc465da4f6cdc02aa0cb3517" title=" " alt="" coords="257,71,372,98"/>
-<area shape="rect" id="node4" href="$Test-radialBasisFunctions_8C.html#afca13366e558735215a9d96170db3ed2" title=" " alt="" coords="263,122,366,149"/>
-<area shape="rect" id="node5" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#af4def77ab956c5f12a92879a2167e449" title="Polyharmonic spline RBF solver for 3 dimensions." alt="" coords="196,173,433,229"/>
-</map>

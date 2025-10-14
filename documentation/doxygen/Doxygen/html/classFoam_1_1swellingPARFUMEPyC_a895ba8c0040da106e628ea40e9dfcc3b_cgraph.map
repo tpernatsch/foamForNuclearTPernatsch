@@ -1,9 +1,0 @@
-<map id="correct" name="correct">
-<area shape="rect" id="node1" title="Update." alt="" coords="5,132,72,159"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="188,5,245,32"/>
-<area shape="rect" id="node3" href="$namespaceFoam.html#afc7c72b328207c950685de5b5ba532bf" title="Return true if parameter is provided by the user." alt="" coords="120,56,313,83"/>
-<area shape="rect" id="node4" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="195,107,238,133"/>
-<area shape="rect" id="node5" href="$EEqn__1p_8H.html#ad0f94aa7ea43d4be0bae24e3a89aad0c" title=" " alt="" coords="197,157,236,184"/>
-<area shape="rect" id="node6" href="$EEqns__2p_8H.html#a016032aa1b1ec0dd197a68119b12fd52" title=" " alt="" coords="197,208,236,235"/>
-<area shape="rect" id="node7" href="$EEqns__2p_8H.html#a616e91adeb29d49ab9d9f35f0124ab4a" title=" " alt="" coords="197,259,236,285"/>
-</map>

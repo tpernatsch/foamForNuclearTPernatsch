@@ -1,5 +1,0 @@
-<map id="NoKazimi" name="NoKazimi">
-<area shape="rect" id="node1" title="Author: Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)" alt="" coords="110,521,231,687"/>
-<area shape="rect" id="node2" href="$classFoam_1_1interfacialAreaModel.html" title="Class to handle fluid&#45;fluid interfacial area." alt="" coords="202,307,449,472"/>
-<area shape="rect" id="node3" href="$classFoam_1_1fluid.html" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="5,5,256,229"/>
-</map>

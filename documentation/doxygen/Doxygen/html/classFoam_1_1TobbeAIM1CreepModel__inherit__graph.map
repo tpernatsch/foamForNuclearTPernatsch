@@ -1,4 +1,0 @@
-<map id="TobbeAIM1CreepModel" name="TobbeAIM1CreepModel">
-<area shape="rect" id="node1" title="Creep model from Tobbe (1975) correlation, for the specific steel AIM1 of the 15&#45;15 Ti class." alt="" coords="25,351,232,472"/>
-<area shape="rect" id="node2" href="$classFoam_1_1creepModel.html" title="Creep model mother class." alt="" coords="5,5,252,303"/>
-</map>

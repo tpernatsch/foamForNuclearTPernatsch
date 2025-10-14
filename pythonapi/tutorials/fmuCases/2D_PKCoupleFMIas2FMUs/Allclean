@@ -1,0 +1,6 @@
+#!/bin/bash
+
+python3 Allclean.py
+
+rm -rf steadyState transient CoreFMU CoreFMU{1..8}
+rm -f CoreFMU.fmu *_result.txt

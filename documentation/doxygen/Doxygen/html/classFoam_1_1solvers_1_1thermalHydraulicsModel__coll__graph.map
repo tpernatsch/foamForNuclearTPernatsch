@@ -1,6 +1,0 @@
-<map id="thermalHydraulicsModel" name="thermalHydraulicsModel">
-<area shape="rect" id="node1" title=" " alt="" coords="218,424,437,853"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solver.html" title="Abstract base class for run&#45;time selectable region solvers." alt="" coords="5,5,252,361"/>
-<area shape="rect" id="node3" title=" " alt="" coords="277,145,378,222"/>
-<area shape="rect" id="node4" href="$classFoam_1_1customPimpleControl.html" title="PIMPLE control class to supply convergence information/checks for the PIMPLE loop...." alt="" coords="402,42,666,325"/>
-</map>

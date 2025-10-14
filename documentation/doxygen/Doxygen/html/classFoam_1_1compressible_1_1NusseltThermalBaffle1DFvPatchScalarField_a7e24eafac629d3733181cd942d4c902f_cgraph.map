@@ -1,5 +1,0 @@
-<map id="updateCoeffs" name="updateCoeffs">
-<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="5,31,113,57"/>
-<area shape="rect" id="node2" href="$classFoam_1_1compressible_1_1NusseltThermalBaffle1DFvPatchScalarField.html#aa5d38c7d49e82a9ac1b3b73153ba3526" title=" " alt="" coords="217,5,276,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1fluid.html#a5c1d5898dbbb21dbbd6dd97b87710b4d" title="Access (const and non&#45;const)" alt="" coords="161,56,332,83"/>
-</map>

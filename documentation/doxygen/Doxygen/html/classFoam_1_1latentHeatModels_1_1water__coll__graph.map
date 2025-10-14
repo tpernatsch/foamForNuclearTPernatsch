@@ -1,4 +1,0 @@
-<map id="water" name="water">
-<area shape="rect" id="node1" title="This class describes the latent heat of vaporization of water in the 0.01&#45;350 C range...." alt="" coords="71,307,187,428"/>
-<area shape="rect" id="node2" href="$classFoam_1_1latentHeatModel.html" title="Class used to describe the latent heat of fluid that is undergoing phase change. It can depend on som..." alt="" coords="5,5,252,259"/>
-</map>

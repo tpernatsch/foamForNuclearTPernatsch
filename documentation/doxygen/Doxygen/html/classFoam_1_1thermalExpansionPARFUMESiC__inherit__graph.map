@@ -1,4 +1,0 @@
-<map id="thermalExpansionPARFUMESiC" name="thermalExpansionPARFUMESiC">
-<area shape="rect" id="node1" title="Class modelling the thermal expansion of SiC with a constant value 4.9×10^−6 /K from PARFUME." alt="" coords="5,219,265,340"/>
-<area shape="rect" id="node2" href="$classFoam_1_1thermalExpansionModel.html" title="Mother class for thermal expansion models." alt="" coords="12,5,259,171"/>
-</map>

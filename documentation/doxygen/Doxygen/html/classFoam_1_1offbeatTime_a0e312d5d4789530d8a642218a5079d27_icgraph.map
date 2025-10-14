@@ -1,4 +1,0 @@
-<map id="timeToUserTime" name="timeToUserTime">
-<area shape="rect" id="node1" title="Convert the real&#45;time (s) into user&#45;time (e.g. hours)" alt="" coords="136,5,265,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1offbeatTime.html#a8111f813290dae0d302603537d017158" title="Current user time." alt="" coords="5,5,88,32"/>
-</map>

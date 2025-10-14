@@ -1,6 +1,0 @@
-<map id="clearGeom" name="clearGeom">
-<area shape="rect" id="node1" title="Clear geometry." alt="" coords="345,78,439,105"/>
-<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledOFFBEATPolyPatch.html#a60983bf9f9ad6158ce126c2d96eb1acc" title="Correct patches after moving points." alt="" coords="28,5,275,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledOFFBEATPolyPatch.html#a06139aa7a91eeed82560f0c3d03d1845" title="Update of the patch topology." alt="" coords="28,71,275,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledOFFBEATPolyPatch.html#a28d5f34450d15bef174c0b0e0411cc50" title="Destructor." alt="" coords="5,136,297,177"/>
-</map>

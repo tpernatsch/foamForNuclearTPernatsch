@@ -1,7 +1,0 @@
-<map id="phiPtr_" name="phiPtr_">
-<area shape="rect" id="node1" title=" " alt="" coords="240,81,307,108"/>
-<area shape="rect" id="node2" href="$precEqAdjoint_8H.html#a96d0351bc6016c4d07b9e688e5c1b865" title=" " alt="" coords="70,5,127,32"/>
-<area shape="rect" id="node3" href="$createNeutronicsFieldsAdjoint_8H.html#af8bc169eba905485123c31c252bf9b5c" title=" " alt="" coords="79,56,118,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1fluid.html#a6a22d6973938e79b73ec99f5ca83669f" title="Initialize alphaPhi and alphaRhoPhi, to be called as a separate." alt="" coords="5,107,192,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1fluid.html#afa376adc6cc59952d2f6f2ad38bba068" title=" " alt="" coords="37,157,160,184"/>
-</map>

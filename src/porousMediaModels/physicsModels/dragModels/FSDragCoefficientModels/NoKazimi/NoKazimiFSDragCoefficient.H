@@ -46,6 +46,7 @@ Description
     Author:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
+Usage
     Example of mandatory dictionary entries:
     \verbatim
     pinPitch        0.006;

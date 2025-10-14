@@ -1,8 +1,0 @@
-<map id="updateAMI" name="updateAMI">
-<area shape="rect" id="node1" title="Update AMI." alt="" coords="5,107,97,133"/>
-<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a2304bdb4b410b9d88a254f0bcb3efe68" title="Return a reference to the AMI interpolator." alt="" coords="247,5,294,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a46c8495af036bc6de089ae800f741df0" title="Return regionCoupledBase neighb Patch." alt="" coords="231,56,310,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a357c5e37e5d7c583fa172625b8c11009" title="Is it the owner?" alt="" coords="239,107,302,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a1b3f4e19df6ef6a92dad048eb1097423" title="Return regionCoupledPolyPatch." alt="" coords="195,157,346,184"/>
-<area shape="rect" id="node6" href="$classFoam_1_1regionCoupledBaseOFFBEAT.html#a9f816d46870e7842532ae562aa6ff1d6" title="Return a reference to the projection surface." alt="" coords="145,209,396,250"/>
-</map>

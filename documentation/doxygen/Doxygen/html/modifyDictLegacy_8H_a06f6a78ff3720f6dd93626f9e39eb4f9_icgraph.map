@@ -1,6 +1,0 @@
-<map id="multiRegionCouplingDict" name="multiRegionCouplingDict">
-<area shape="rect" id="node1" title=" " alt="" coords="215,64,399,91"/>
-<area shape="rect" id="node2" href="$modifyDictLegacy_8H.html#a24c464aec0d92936d1c461aea568079d" title=" " alt="" coords="63,5,109,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1meshHandler.html#ac46e69b084c4352e472a72b42bd83ca5" title="Construct from components." alt="" coords="5,57,167,98"/>
-<area shape="rect" id="node4" href="$classFoam_1_1regionSolvers.html#a7e7c495f9f16c02710125b7f71904ba0" title="Construct from components." alt="" coords="9,122,163,163"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="write" name="write">
-<area shape="rect" id="node1" title="Write." alt="" coords="303,123,357,150"/>
-<area shape="rect" id="node2" href="$classFoam_1_1axialProfileFvPatchScalarField.html#a293fdfec8bdfbd5c3913ab4c9f3454ff" title="Write." alt="" coords="35,5,225,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1timeDependentAxialProfileFvPatchScalarField.html#a293fdfec8bdfbd5c3913ab4c9f3454ff" title="Write." alt="" coords="30,71,230,127"/>
-<area shape="rect" id="node4" href="$classFoam_1_1timeDependentTemperatureFvPatchScalarField.html#a293fdfec8bdfbd5c3913ab4c9f3454ff" title="Write." alt="" coords="5,152,255,193"/>
-<area shape="rect" id="node5" href="$classFoam_1_1xzTemperatureProfileFvPatchScalarField.html#a293fdfec8bdfbd5c3913ab4c9f3454ff" title="Write." alt="" coords="28,217,232,259"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="powerLaw" name="powerLaw">
-<area shape="rect" id="node1" title="Applies a power law to compute creep strain rate." alt="" coords="63,351,194,472"/>
-<area shape="rect" id="node2" href="$classFoam_1_1creepModel.html" title="Creep model mother class." alt="" coords="5,5,252,303"/>
-</map>

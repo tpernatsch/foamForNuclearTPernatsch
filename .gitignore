@@ -36,13 +36,19 @@ GeN-Foam/*.sublime*
 *.dep
 **/__pycache__
 *.egg
+*.egg-info
 tools/openmcToFoam/**/*.txt
 tools/openmcToFoam/**/PKG-INFO
 
 # Doxygen files
 documentation/doxygen/Doxygen/html/**
-public
 documentation/mkdocs/docs/classes
+documentation/**/generated
+documentation/**/_build
+public
+
+# Python API
+pythonapi/build
 
 # FMU installation
 thirdParty/FMU4FOAM

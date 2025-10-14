@@ -39,7 +39,8 @@ Class
     Foam::diffusionNeutronics
 
 Description
-    Subclass for diffusion neutronics [@FIORINA201524] [@Fiorina2015ApplicationCodes] [@FIORINA2016212].
+    Subclass for diffusion neutronics.
+    Reference publications [@FIORINA201524] [@FIORINA201515226] [@FIORINA2016212].
 
 The module solves the multi-group diffusion equations:
 
@@ -116,26 +117,6 @@ Usage
 
 SourceFiles
     diffusionNeutronics.C
-
-
-<b>Reference publications</b>
-
-<ol type="1">
-    <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294,
-    2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
-
-    <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam
-    multi-physics solver to the European Sodium Fast Reactor and verification
-    against available codes", Proceedings of ICAPP 2015, May 03-06, 2015 -
-    Nice (France), Paper 15226
-
-    <li> Carlo Fiorina, Nordine Kerkar, Konstantin Mikityuk, Pablo Rubiolo, Andreas
-    Pautz, "Development and verification of the neutron diffusion solver for the
-    GeN-Foam multi-physics platform", Annals of Nuclear Energy, 96, 2016,
-    pages 212-222, DOI: http://dx.doi.org/10.1016/j.anucene.2016.05.023.
-</ol>
 
 \mainauthor of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);

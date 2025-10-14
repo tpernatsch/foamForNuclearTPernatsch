@@ -1,6 +1,0 @@
-<map id="interpolateTableBase" name="interpolateTableBase">
-<area shape="rect" id="node1" title="Helper base class for interpolation tables." alt="" coords="191,5,349,83"/>
-<area shape="rect" id="node2" href="$classFoam_1_1InterpolateTable.html" title=" " alt="" coords="5,404,217,599"/>
-<area shape="rect" id="node3" href="$classFoam_1_1InterpolateTable.html" title=" " alt="" coords="311,411,493,591"/>
-<area shape="rect" id="node4" href="$classFoam_1_1InterpolateTable.html" title="Class for interpolation in tabulated data. This class doesn&#39;t actually store any fields,..." alt="" coords="167,132,373,312"/>
-</map>

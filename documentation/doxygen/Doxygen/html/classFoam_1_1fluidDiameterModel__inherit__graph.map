@@ -1,8 +1,0 @@
-<map id="fluidDiameterModel" name="fluidDiameterModel">
-<area shape="rect" id="node1" title="Class to handle fluid diameter." alt="" coords="203,131,450,384"/>
-<area shape="rect" id="node3" href="$classFoam_1_1fluidDiameterModels_1_1WallisFilm.html" title="Correlation to be used in annular flow scenarios in which the phase of interest to which this model i..." alt="" coords="5,461,139,583"/>
-<area shape="rect" id="node4" href="$classFoam_1_1fluidDiameterModels_1_1isomolarBubble.html" title="Compute bubble/droplet diameter based on pressure and temperature changes assuming constant moles wit..." alt="" coords="163,432,323,612"/>
-<area shape="rect" id="node5" href="$classFoam_1_1fluidDiameterModels_1_1isothermal.html" title="Compute bubble/droplet diameter based on pressure changes assuming constant temperature and mass with..." alt="" coords="347,447,475,597"/>
-<area shape="rect" id="node6" href="$classFoam_1_1fluidDiameterModels_1_1pipeFilm.html" title="Correlation to be used in annular flow scenarios in which the phase of interest to which this model i..." alt="" coords="499,461,632,583"/>
-<area shape="rect" id="node2" title=" " alt="" coords="276,5,377,83"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="mechanicsSubSolver" name="mechanicsSubSolver">
-<area shape="rect" id="node1" title="Construct from mesh, materials, rheology and dictionary." alt="" coords="5,56,163,83"/>
-<area shape="rect" id="node2" href="$classFoam_1_1mechanicsSubSolver.html#a05b1777332db627c781ed4c46650b1d9" title="Disable solution in the out&#45;of&#45;plane direction for wedge cases." alt="" coords="280,5,391,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1mechanicsSubSolver.html#a470f06cfb9b6ee887cd85d63de275607" title="Access functions" alt="" coords="306,56,365,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1multiMaterialInterface.html#ad7a55c4f505f53c718c410ae400b0b1f" title="Select from dictionary." alt="" coords="211,107,460,133"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="fixedDisplacementFvPatchVectorField" name="fixedDisplacementFvPatchVectorField">
-<area shape="rect" id="node1" title="fixedDisplacement patchfield. The fixed displacement can be provided as a time series." alt="" coords="175,145,384,399"/>
-<area shape="rect" id="node3" href="$classFoam_1_1coolantPressureFixedDisplacementFvPatchVectorField.html" title="Coolant pressure patch&#45;field of fixed&#45;displacement type. It is designed for the top cap outer or bott..." alt="" coords="5,447,271,729"/>
-<area shape="rect" id="node4" href="$classFoam_1_1plenumSpringFixedDisplacementFvPatchVectorField.html" title="Plenum spring patchfield for the top of the fuel column or for the topCap inner patch (fixedDisplacem..." alt="" coords="295,483,546,693"/>
-<area shape="rect" id="node2" title=" " alt="" coords="194,5,365,97"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="axialProfileFvPatchScalarField" name="axialProfileFvPatchScalarField">
-<area shape="rect" id="node1" title="Construct from patch, internal field and dictionary." alt="" coords="5,31,192,72"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="519,46,576,73"/>
-<area shape="rect" id="node3" href="$classFoam_1_1globalOptions.html#aae00636b93c38b6ea2f362c2161757e6" title=" " alt="" coords="277,31,433,72"/>
-<area shape="rect" id="node4" href="$classFoam_1_1fixedTemperatureFvPatchScalarField.html#a7493b3ebe04f4954e8ee65476556f38f" title="Updates surface temperature (includes oxide treatement if present)" alt="" coords="240,97,471,153"/>
-</map>

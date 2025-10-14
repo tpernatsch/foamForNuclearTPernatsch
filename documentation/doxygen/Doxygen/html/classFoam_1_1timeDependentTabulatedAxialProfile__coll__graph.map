@@ -1,4 +1,0 @@
-<map id="timeDependentTabulatedAxialProfile" name="timeDependentTabulatedAxialProfile">
-<area shape="rect" id="node1" title="Class providing a time&#45;dependent axial profile, which is defined by the user by interpolation in a 2D..." alt="" coords="6,365,251,560"/>
-<area shape="rect" id="node2" href="$classFoam_1_1axialProfile.html" title="Base class for a general profile in the axial direction. The base class assumes a uniform &quot;flat&quot; prof..." alt="" coords="5,5,252,317"/>
-</map>

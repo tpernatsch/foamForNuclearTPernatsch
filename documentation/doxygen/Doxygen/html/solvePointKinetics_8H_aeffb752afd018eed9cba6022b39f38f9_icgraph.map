@@ -1,4 +1,0 @@
-<map id="timeOutput" name="timeOutput">
-<area shape="rect" id="node1" title="Get current simulation time." alt="" coords="92,5,188,32"/>
-<area shape="rect" id="node2" href="$solvePointKinetics_8H.html#a5336b1adf20b5b3544e641cfcbbce525" title="Update external source power." alt="" coords="5,5,44,32"/>
-</map>

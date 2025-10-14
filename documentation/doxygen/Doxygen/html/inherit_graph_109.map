@@ -1,6 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1yieldStressModel.html" title="yield stress mother class To use with the vonMises rheology" alt="" coords="5,56,140,83"/>
-<area shape="rect" id="node2" href="$classFoam_1_1hardening.html" title="User defined constant yield stress as a function of the equivalent plastic strain." alt="" coords="227,5,313,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1yieldStressConstant.html" title="User defined constant yield stress." alt="" coords="194,56,346,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1yieldStressFRAPTRAN.html" title="yield stress model from WGFS RIA fuel codes benchmark Phase II specifications. https://www...." alt="" coords="188,107,352,133"/>
-</map>

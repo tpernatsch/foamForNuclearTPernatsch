@@ -1,7 +1,0 @@
-<map id="emissivityModel" name="emissivityModel">
-<area shape="rect" id="node1" title="Mother class for emissivity models." alt="" coords="381,5,627,156"/>
-<area shape="rect" id="node2" href="$classFoam_1_1constantEmissivityMolybdenum.html" title=" " alt="" coords="5,204,272,325"/>
-<area shape="rect" id="node3" href="$classFoam_1_1constantEmissivityZy.html" title="Class to set Zy emissivity to a constant input value." alt="" coords="297,204,495,325"/>
-<area shape="rect" id="node4" href="$classFoam_1_1emissivityConstant.html" title="Model for constant emissivity. The value is read from dictionary." alt="" coords="520,204,704,325"/>
-<area shape="rect" id="node5" href="$classFoam_1_1emissivityRelapUO2.html" title="UO2 emissivity model derived from RELAP." alt="" coords="729,204,919,325"/>
-</map>

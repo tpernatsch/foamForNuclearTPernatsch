@@ -1,4 +1,0 @@
-<map id="thermalExpansionSneadSiC" name="thermalExpansionSneadSiC">
-<area shape="rect" id="node1" title="Class modelling the thermal expansion of SiC with a value from Snead. the mean thermal expansion coef..." alt="" coords="10,219,247,340"/>
-<area shape="rect" id="node2" href="$classFoam_1_1thermalExpansionModel.html" title="Mother class for thermal expansion models." alt="" coords="5,5,252,171"/>
-</map>

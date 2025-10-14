@@ -1,6 +1,0 @@
-<map id="setInterfacialArea" name="setInterfacialArea">
-<area shape="rect" id="node1" title="For some models it is mandatory, others (e.g. the pin ones) should." alt="" coords="309,78,448,105"/>
-<area shape="rect" id="node2" href="$classFoam_1_1powerModels_1_1fixedPower.html#a4869187ce11652768a144d653f05ac8b" title="Constructors." alt="" coords="47,5,219,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1powerModels_1_1fixedTemperature.html#a2b54096181326868569b551d6c9e2c74" title="Constructors." alt="" coords="5,71,261,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1powerModels_1_1lumpedNuclearStructure.html#a64ea010d3c9053b77061947a7c0fca9e" title=" " alt="" coords="39,137,227,193"/>
-</map>

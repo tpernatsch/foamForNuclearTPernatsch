@@ -1,6 +1,0 @@
-<map id="limiter" name="limiter">
-<area shape="rect" id="node1" title=" " alt="" coords="264,71,329,98"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solidDirectionMixedFvPatchVectorField.html#a96dc99388e664182349d72cdca254c20" title="evaluate the patch" alt="" coords="5,5,216,47"/>
-<area shape="rect" id="node3" href="$namespaceFoam_1_1myMULES.html#a71d1731d21977db75d5f9bf2e880775f" title=" " alt="" coords="85,71,137,98"/>
-<area shape="rect" id="node4" href="$classFoam_1_1solidDirectionMixedFvPatchVectorField.html#ae1194d950867c886b49f68afd6c5a770" title="snGrad with non&#45;orthogonal correction" alt="" coords="11,123,210,164"/>
-</map>

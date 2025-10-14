@@ -1,5 +1,0 @@
-<map id="plenumSpringPressureFvPatchVectorField" name="plenumSpringPressureFvPatchVectorField">
-<area shape="rect" id="node1" title="Daugther&#45;class to the tractionDisplacement BC for modeling the pressure exerted by the plenum spring." alt="" coords="122,497,357,736"/>
-<area shape="rect" id="node2" href="$classFoam_1_1tractionDisplacementFvPatchVectorField.html" title="Fixed traction boundary condition for the standard linear elastic, fixed coefficient displacement equ..." alt="" coords="5,5,233,449"/>
-<area shape="rect" id="node3" href="$classFoam_1_1plenumSpringBase.html" title="Base class with common functinality for plenumSpring patch fields." alt="" coords="257,86,461,369"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="kappa" name="kappa">
-<area shape="rect" id="node1" title="Return kappa." alt="" coords="252,42,313,69"/>
-<area shape="rect" id="node2" href="$classFoam_1_1resistiveGapFvPatchScalarField.html#a2b45d952e93c075756296c78c9aa331b" title="Local weight for this coupled field." alt="" coords="5,5,204,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1temperatureCoupledFvPatchScalarField.html#a2b45d952e93c075756296c78c9aa331b" title="Local weight for this coupled field." alt="" coords="68,71,141,98"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="boundaryShearStiffness" name="boundaryShearStiffness">
-<area shape="rect" id="node1" title="Minimum patch shear stiffness for friction evaluation." alt="" coords="172,5,348,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1implicitGapContactFvPatchVectorField.html#aadbc9650a3efebff90c04e72b6642d3b" title="Correct weights for this coupled field." alt="" coords="5,5,124,32"/>
-</map>

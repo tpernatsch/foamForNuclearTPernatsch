@@ -1,5 +1,0 @@
-<map id="userParameter" name="userParameter">
-<area shape="rect" id="node1" title="Return a user parameter." alt="" coords="5,31,123,57"/>
-<area shape="rect" id="node2" href="$namespaceFoam.html#a6ce1b45f3fab16c2d63c430627aadfd1" title="Return the default value of a user parameter from the registry." alt="" coords="171,5,356,32"/>
-<area shape="rect" id="node3" href="$namespaceFoam.html#a031675f70306203cab7e488dab8fd5db" title="Return a reference to the user parameters dictionary." alt="" coords="201,56,325,83"/>
-</map>

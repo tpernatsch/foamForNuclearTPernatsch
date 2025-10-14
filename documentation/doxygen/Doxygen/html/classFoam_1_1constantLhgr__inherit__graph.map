@@ -1,5 +1,0 @@
-<map id="constantLhgr" name="constantLhgr">
-<area shape="rect" id="node1" title="Derived from the base heatSource class, this class act as the parent class for all heat source models..." alt="" coords="21,439,237,809"/>
-<area shape="rect" id="node3" href="$classFoam_1_1timeDependentLhgr.html" title="Derived from the base constantLhgr class, this class considers a time&#45;dependent linear heat generatio..." alt="" coords="17,857,241,1037"/>
-<area shape="rect" id="node2" href="$classFoam_1_1heatSource.html" title="Parent class for heat source model." alt="" coords="5,5,252,391"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="SNNeutronics" name="SNNeutronics">
-<area shape="rect" id="node1" title=" " alt="" coords="112,497,351,853"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solvers_1_1neutronics.html" title=" " alt="" coords="5,5,209,435"/>
-<area shape="rect" id="node3" href="$classFoam_1_1XS.html" title="Class for XS parametrization and other nuclear data. Nuclear data are always provided in MKSA units a..." alt="" coords="233,27,480,413"/>
-</map>

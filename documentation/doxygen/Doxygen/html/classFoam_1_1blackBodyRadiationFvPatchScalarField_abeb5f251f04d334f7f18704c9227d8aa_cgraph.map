@@ -1,4 +1,0 @@
-<map id="clone" name="clone">
-<area shape="rect" id="node1" title="Construct and return a clone." alt="" coords="5,13,63,39"/>
-<area shape="rect" id="node2" href="$classFoam_1_1blackBodyRadiationFvPatchScalarField.html#ad9f6527e94ae523cdc920a781e41ba5e" title="Construct from patch and internal field." alt="" coords="111,5,313,47"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="ZyOverstressBISON" name="ZyOverstressBISON">
-<area shape="rect" id="node1" title="Burst overstress criterion for Zircaloy&#45;4 derived from BISON code. NOTE: oxidation contribution still..." alt="" coords="35,336,222,472"/>
-<area shape="rect" id="node2" href="$classFoam_1_1failureModel.html" title="Mother class for materials failure criteria." alt="" coords="5,5,252,288"/>
-</map>

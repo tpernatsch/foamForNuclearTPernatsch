@@ -1,9 +1,0 @@
-<map id="densityModel" name="densityModel">
-<area shape="rect" id="node1" title="Mother class for density models." alt="" coords="581,5,828,156"/>
-<area shape="rect" id="node2" href="$classFoam_1_1constantDensityMolybdenum.html" title=" " alt="" coords="5,204,255,325"/>
-<area shape="rect" id="node3" href="$classFoam_1_1constantDensityUO2.html" title="Class to set UO2 density to a constant input value." alt="" coords="279,204,471,325"/>
-<area shape="rect" id="node4" href="$classFoam_1_1constantDensityUPuO2.html" title="Class modelling the constant density of (U,Pu)O2 MOX fuel." alt="" coords="495,204,703,325"/>
-<area shape="rect" id="node5" href="$classFoam_1_1densityConstant.html" title="Model for constant density. The value is read from dictionary." alt="" coords="728,204,892,325"/>
-<area shape="rect" id="node6" href="$classFoam_1_1densityIAEAZy.html" title="Class modelling Zy density from IAEA." alt="" coords="916,204,1069,325"/>
-<area shape="rect" id="node7" href="$classFoam_1_1densitySchumann1515Ti.html" title="Class modelling the density evolution of 15&#45;15Ti cladding material through the Schumann (1970) correl..." alt="" coords="1094,204,1313,325"/>
-</map>

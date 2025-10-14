@@ -49,8 +49,9 @@ Description
     \vartable
         Re      | Reynolds number (superficial in two-phase) of the fluid
 	A, B, C | Selectable constants
-    \endtable
+    \endvartable
 
+Usage
     Example of mandatory dictionary entries (with this coefficients, this
     is the Blasius correlation):
     \verbatim

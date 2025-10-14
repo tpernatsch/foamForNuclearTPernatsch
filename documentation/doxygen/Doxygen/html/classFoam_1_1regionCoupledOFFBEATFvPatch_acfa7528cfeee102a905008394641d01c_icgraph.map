@@ -1,7 +1,0 @@
-<map id="faceCells" name="faceCells">
-<area shape="rect" id="node1" title="Return faceCell addressing." alt="" coords="285,123,368,150"/>
-<area shape="rect" id="node2" href="$classFoam_1_1gapContactFvPatchVectorField.html#ad8d1d450d2de3f8f7e11d03c9f0405c5" title="Minimum patch shear stiffness for friction evaluation." alt="" coords="5,5,237,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1implicitGapContactFvPatchVectorField.html#a868e5d67738f7a5c00a8fba6bb30832f" title="Minimum patch stiffness for interface pressure evaluation." alt="" coords="14,71,229,127"/>
-<area shape="rect" id="node4" href="$classFoam_1_1contactFvPatchVectorField.html#a868e5d67738f7a5c00a8fba6bb30832f" title="Minimum patch stiffness for interface pressure evaluation." alt="" coords="18,152,225,193"/>
-<area shape="rect" id="node5" href="$classFoam_1_1gapContactFvPatchVectorField.html#a200d97d8bb99741d5a1ce420403a3ee1" title="Minimum patch stiffness for interface pressure evaluation." alt="" coords="5,217,237,259"/>
-</map>

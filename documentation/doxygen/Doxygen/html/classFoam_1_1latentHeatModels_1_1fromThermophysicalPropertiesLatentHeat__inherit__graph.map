@@ -1,4 +1,0 @@
-<map id="fromThermophysicalPropertiesLatentHeat" name="fromThermophysicalPropertiesLatentHeat">
-<area shape="rect" id="node1" title="Class that computes latent heat based on the specified enthalpies of formation of the fluids...." alt="" coords="5,336,255,501"/>
-<area shape="rect" id="node2" href="$classFoam_1_1latentHeatModel.html" title="Class used to describe the latent heat of fluid that is undergoing phase change. It can depend on som..." alt="" coords="7,5,253,288"/>
-</map>

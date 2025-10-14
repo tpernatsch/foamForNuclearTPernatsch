@@ -1,4 +1,0 @@
-<map id="smallStrain" name="smallStrain">
-<area shape="rect" id="node1" title="Small&#45;strain mechanics sub&#45;solver." alt="" coords="63,673,195,795"/>
-<area shape="rect" id="node2" href="$classFoam_1_1mechanicsSubSolver.html" title="Parent class for mechanics solvers. It can be selected with the &quot;fromLatestTime&quot; typeName in solverDi..." alt="" coords="5,5,252,625"/>
-</map>

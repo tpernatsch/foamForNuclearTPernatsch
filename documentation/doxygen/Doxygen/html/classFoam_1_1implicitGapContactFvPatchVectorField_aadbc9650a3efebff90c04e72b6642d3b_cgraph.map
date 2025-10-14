@@ -1,7 +1,0 @@
-<map id="correctWeights" name="correctWeights">
-<area shape="rect" id="node1" title="Correct weights for this coupled field." alt="" coords="5,81,124,108"/>
-<area shape="rect" id="node2" href="$classFoam_1_1implicitGapContactFvPatchVectorField.html#ad8d1d450d2de3f8f7e11d03c9f0405c5" title="Minimum patch shear stiffness for friction evaluation." alt="" coords="172,5,348,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="396,56,453,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1implicitGapContactFvPatchVectorField.html#a868e5d67738f7a5c00a8fba6bb30832f" title="Minimum patch stiffness for interface pressure evaluation." alt="" coords="191,107,329,133"/>
-<area shape="rect" id="node5" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="241,157,279,184"/>
-</map>

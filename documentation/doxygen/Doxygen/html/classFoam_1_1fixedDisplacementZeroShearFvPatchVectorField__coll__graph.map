@@ -1,4 +1,0 @@
-<map id="fixedDisplacementZeroShearFvPatchVectorField" name="fixedDisplacementZeroShearFvPatchVectorField">
-<area shape="rect" id="node1" title="The component of the displacement normal to the patch is applied, and the shear traction is set to ze..." alt="" coords="5,395,241,707"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solidDirectionMixedFvPatchVectorField.html" title="Author." alt="" coords="9,5,237,347"/>
-</map>

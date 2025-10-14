@@ -48,9 +48,12 @@ Description
     \vartable
         Re      | Reynolds number (superficial in two-phase) of the fluid
 	A, B, C | Selectable constants
-    \endtable
+    \endvartable
 
+    Author:
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
+Usage
     Example of mandatory dictionary entries (with this coefficients, this
     is the Filonenko correlation):
     \verbatim
@@ -58,9 +61,6 @@ Description
     const   -1.64;
     exp     2.0;
     \endverbatim
-
-    Author:
-    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 SourceFiles
     ColebrookFSDragCoefficient.C

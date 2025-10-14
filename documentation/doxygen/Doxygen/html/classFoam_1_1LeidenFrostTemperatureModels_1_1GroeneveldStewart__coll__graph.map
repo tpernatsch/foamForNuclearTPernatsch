@@ -1,4 +1,0 @@
-<map id="GroeneveldStewart" name="GroeneveldStewart">
-<area shape="rect" id="node1" title="Calculate the Leidenfrost Temperature at which the heat flux is minimal in the hysteresis after the C..." alt="" coords="37,219,220,340"/>
-<area shape="rect" id="node2" href="$classFoam_1_1TLFModel.html" title="Model for the prediction of the Leidenfrost temperature (i.e. T_min) for which the heat flux is minim..." alt="" coords="5,5,252,171"/>
-</map>

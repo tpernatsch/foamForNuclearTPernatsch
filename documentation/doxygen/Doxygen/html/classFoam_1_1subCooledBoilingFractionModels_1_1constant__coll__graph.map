@@ -1,4 +1,0 @@
-<map id="constant" name="constant">
-<area shape="rect" id="node1" title="Return constant subCooled boiling fraction." alt="" coords="71,263,187,384"/>
-<area shape="rect" id="node2" href="$classFoam_1_1subCooledBoilingFractionModel.html" title="Model for the prediction of the sub&#45;cooled bulk liquid temperature at which bubble detachment occurs ..." alt="" coords="5,5,252,215"/>
-</map>

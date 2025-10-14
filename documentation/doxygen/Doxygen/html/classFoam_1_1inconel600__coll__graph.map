@@ -1,4 +1,0 @@
-<map id="inconel600" name="inconel600">
-<area shape="rect" id="node1" title="Inconel600 thermoMechanical properties, taken mostly from the web." alt="" coords="64,644,193,868"/>
-<area shape="rect" id="node2" href="$classFoam_1_1materialModel.html" title="Parent class for all materials. Some of its functions are pure virtual and must be implemented in the..." alt="" coords="5,5,252,596"/>
-</map>

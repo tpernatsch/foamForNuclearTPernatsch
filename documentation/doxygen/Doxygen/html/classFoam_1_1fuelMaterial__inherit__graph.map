@@ -1,6 +1,0 @@
-<map id="fuelMaterial" name="fuelMaterial">
-<area shape="rect" id="node1" title="Parent class for all fuel materials (UO2, UPuO2 etc.)." alt="" coords="143,644,309,1073"/>
-<area shape="rect" id="node3" href="$classFoam_1_1UO2.html" title="UO2 material class." alt="" coords="5,1121,215,1287"/>
-<area shape="rect" id="node4" href="$classFoam_1_1UPuO2.html" title="UPuO2 material class." alt="" coords="239,1121,448,1287"/>
-<area shape="rect" id="node2" href="$classFoam_1_1materialModel.html" title="Parent class for all materials. Some of its functions are pure virtual and must be implemented in the..." alt="" coords="103,5,349,596"/>
-</map>

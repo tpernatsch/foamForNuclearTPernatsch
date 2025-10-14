@@ -1,6 +1,0 @@
-<map id="nbrPatchID" name="nbrPatchID">
-<area shape="rect" id="node1" title="Neighbour patch ID." alt="" coords="320,78,412,105"/>
-<area shape="rect" id="node2" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a46c8495af036bc6de089ae800f741df0" title="Return regionCoupledBase neighb Patch." alt="" coords="5,5,272,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a0fcb93fd32fd26289caa394092c424d4" title="Return neighbour." alt="" coords="5,71,272,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html#a66e91b4823e075c8fd369857a957f833" title="Return neighbor fvPatch." alt="" coords="5,136,272,177"/>
-</map>

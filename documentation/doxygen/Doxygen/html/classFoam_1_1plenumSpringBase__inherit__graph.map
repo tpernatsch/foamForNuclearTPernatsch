@@ -1,6 +1,0 @@
-<map id="plenumSpringBase" name="plenumSpringBase">
-<area shape="rect" id="node1" title="Base class with common functinality for plenumSpring patch fields." alt="" coords="310,5,514,288"/>
-<area shape="rect" id="node2" href="$classFoam_1_1plenumSpringFixedDisplacementFvPatchVectorField.html" title="Plenum spring patchfield for the top of the fuel column or for the topCap inner patch (fixedDisplacem..." alt="" coords="5,351,256,560"/>
-<area shape="rect" id="node3" href="$classFoam_1_1plenumSpringFixedDisplacementZeroShearFvPatchVectorField.html" title="Plenum spring patchfield for the top of the fuel column (fixedDisplacement&#45; zeroShear version)." alt="" coords="281,336,543,575"/>
-<area shape="rect" id="node4" href="$classFoam_1_1plenumSpringPressureFvPatchVectorField.html" title="Daugther&#45;class to the tractionDisplacement BC for modeling the pressure exerted by the plenum spring." alt="" coords="568,336,803,575"/>
-</map>

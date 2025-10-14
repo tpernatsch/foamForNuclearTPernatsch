@@ -40,16 +40,7 @@ Class
 
 Description
     Base class for thermo-mechanical models.
-
-    Reference publications:
-
-    Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    "GeN-Foam: a novel OpenFOAM� based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors", Nuclear Engineering and Design, submitted
-
-    Carlo Fiorina, Konstantin Mikityuk, " Application of the new GeN-Foam multi-physics
-    solver to the European Sodium Fast Reactor and verification against available codes",
-    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
+    Reference publications [@FIORINA201524] [@FIORINA201515226].
 
     Author of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
@@ -222,7 +213,7 @@ public:
 
 
         virtual void correctBaffleLessFields();
-                
+
         template<class Type>
         void correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh);
 

@@ -1,4 +1,0 @@
-<map id="isothermal" name="isothermal">
-<area shape="rect" id="node1" title="Compute bubble/droplet diameter based on pressure changes assuming constant temperature and mass with..." alt="" coords="65,277,193,428"/>
-<area shape="rect" id="node2" href="$classFoam_1_1fluidDiameterModel.html" title="Class to handle fluid diameter." alt="" coords="5,5,252,229"/>
-</map>

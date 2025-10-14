@@ -1,6 +1,0 @@
-<map id="yieldStressModel" name="yieldStressModel">
-<area shape="rect" id="node1" title="yield stress mother class To use with the vonMises rheology" alt="" coords="164,5,411,185"/>
-<area shape="rect" id="node2" href="$classFoam_1_1hardening.html" title="User defined constant yield stress as a function of the equivalent plastic strain." alt="" coords="5,248,169,369"/>
-<area shape="rect" id="node3" href="$classFoam_1_1yieldStressConstant.html" title="User defined constant yield stress." alt="" coords="193,248,381,369"/>
-<area shape="rect" id="node4" href="$classFoam_1_1yieldStressFRAPTRAN.html" title="yield stress model from WGFS RIA fuel codes benchmark Phase II specifications. https://www...." alt="" coords="406,233,606,384"/>
-</map>

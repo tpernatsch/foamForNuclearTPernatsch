@@ -1,4 +1,0 @@
-<map id="topCladRingFixedDisplacementZeroShearFvPatchVectorField" name="topCladRingFixedDisplacementZeroShearFvPatchVectorField">
-<area shape="rect" id="node1" title="Patchfield for the top cladding ring, to be used when the top cap is not explicitly part of the model..." alt="" coords="18,365,269,604"/>
-<area shape="rect" id="node2" href="$classFoam_1_1coolantPressureFixedDisplacementZeroShearFvPatchVectorField.html" title="Coolant pressure patch&#45;field of fixed&#45;displacement&#45;zeroShear type. It is designed for the top cap out..." alt="" coords="5,5,281,317"/>
-</map>

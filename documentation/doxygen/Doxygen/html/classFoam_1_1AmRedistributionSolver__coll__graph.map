@@ -1,4 +1,0 @@
-<map id="AmRedistributionSolver" name="AmRedistributionSolver">
-<area shape="rect" id="node1" title="Daugther class of transportSolver class that solves for the redistribution of Am." alt="" coords="23,336,235,501"/>
-<area shape="rect" id="node2" href="$classFoam_1_1transportSolver.html" title="Mother class for transport solvers." alt="" coords="5,5,252,288"/>
-</map>

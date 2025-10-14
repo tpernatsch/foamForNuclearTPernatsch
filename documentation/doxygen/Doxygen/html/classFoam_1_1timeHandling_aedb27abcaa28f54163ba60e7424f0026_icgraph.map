@@ -1,5 +1,0 @@
-<map id="setLastTimeMarker" name="setLastTimeMarker">
-<area shape="rect" id="node1" title="Set last time marker after which the simulation is stopped." alt="" coords="332,46,479,73"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solvers_1_1extendedThermoMechanics.html#a3761294ef201f55258b58ee20c4d0f5b" title="Construct from mesh, materials and dictionary." alt="" coords="5,5,284,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1solvers_1_1fuelBehaviour.html#a521b70e7d0a352bb5a67375701f082e3" title="Construct from mesh, materials and dictionary." alt="" coords="39,71,251,112"/>
-</map>

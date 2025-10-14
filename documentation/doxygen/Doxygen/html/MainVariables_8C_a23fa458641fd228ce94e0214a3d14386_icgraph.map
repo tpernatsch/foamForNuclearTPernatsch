@@ -1,8 +1,0 @@
-<map id="Input_history_points" name="Input_history_points">
-<area shape="rect" id="node1" title=" " alt="" coords="568,100,723,127"/>
-<area shape="rect" id="node2" href="$classFoam_1_1fgrSCIANTIX.html#a3ae44b28050c3aa494c1d8e18cf618c1" title="Update fission gas distribution in fuel grains." alt="" coords="5,73,159,114"/>
-<area shape="rect" id="node3" href="$classFoam_1_1fgrSCIANTIX.html#ad42e786dbfe7f2b488cb59b56ba4747c" title="Construct from mesh, materials and dict." alt="" coords="365,34,518,76"/>
-<area shape="rect" id="node4" href="$MainSCIANTIX_8C.html#a36f6e107003687250e8e0b4835c93a0a" title=" " alt="" coords="207,118,315,144"/>
-<area shape="rect" id="node5" href="$classFoam_1_1fgrSCIANTIX.html#a58a141413d55108017a06b4a4290b956" title="Update variables at the end of time step." alt="" coords="5,148,159,189"/>
-<area shape="rect" id="node6" href="$TimeStepCalculation_8C.html#a07fb5948619d5a0c7ff05ae908ca79db" title=" " alt="" coords="363,151,520,178"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="constantFastFlux" name="constantFastFlux">
-<area shape="rect" id="node1" title="Derived from fastFlux mother class, this class reads the fastFlux and fastFluence fields from the ini..." alt="" coords="45,277,213,472"/>
-<area shape="rect" id="node2" href="$classFoam_1_1fastFlux.html" title="Parent class for fast flux model. It prepares functionalities for daughter classes but does not creat..." alt="" coords="5,5,252,229"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="timeDependentAxialProfile" name="timeDependentAxialProfile">
-<area shape="rect" id="node1" title="Derived from the base constantFastFlux class, this class considers a time&#45;dependent rod&#45;average fast ..." alt="" coords="5,248,239,369"/>
-<area shape="rect" id="node2" href="$classFoam_1_1constantFastFlux.html" title="Derived from fastFlux mother class, this class reads the fastFlux and fastFluence fields from the ini..." alt="" coords="38,5,206,200"/>
-</map>

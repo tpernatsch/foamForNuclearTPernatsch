@@ -1,7 +1,0 @@
-<map id="kriging" name="kriging">
-<area shape="rect" id="node1" title="Kriging." alt="" coords="5,68,72,95"/>
-<area shape="rect" id="node2" href="$EEqns__2p_8H.html#a41a371debc8f4fa40469231470618dda" title=" " alt="" coords="328,5,367,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="319,68,376,95"/>
-<area shape="rect" id="node4" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#a12248313e8449a57edf6552f1b3a9603" title=" " alt="" coords="120,43,271,69"/>
-<area shape="rect" id="node5" href="$solvePointKinetics_8H.html#a7155d56b187a002d8cdd92aa43066620" title=" " alt="" coords="328,131,367,157"/>
-</map>

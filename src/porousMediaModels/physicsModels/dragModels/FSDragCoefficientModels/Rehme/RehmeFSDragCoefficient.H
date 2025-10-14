@@ -64,8 +64,16 @@ Description
         L_w        | Wire lead length (i.e pitch of the wrapper wire)
         P_{w,pin}  | Wetted pin perimeter
         P_{w,wrap} | Wetted wrapper perimeter
-    \endtable
+    \endvartable
 
+    Reference publications:
+    Klaus Rehme, "PRESSURE DROP CORRELATIONS FOR FUEL ELEMENT SPACERS", Nuclear
+    Technology, 1973, Vol. 17, 1, pages 15-23, DOI:10.13182/NT73-A31250.
+
+    Author:
+    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
+
+Usage
     Example of mandatory dictionary entries:
     \verbatim
     numberOfPins        37;
@@ -74,13 +82,6 @@ Description
     wireLeadLen         0.1;        //- I.e. pitch of the wrapper wire
     wetWrapPerimeter    0.175237;   //- Wetted wrapper perimeter (wrapper only)
     \endverbatim
-
-    Reference publications:
-    Klaus Rehme, "PRESSURE DROP CORRELATIONS FOR FUEL ELEMENT SPACERS", Nuclear
-    Technology, 1973, Vol. 17, 1, pages 15-23, DOI:10.13182/NT73-A31250.
-
-    Author:
-    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles
     Rehme.C

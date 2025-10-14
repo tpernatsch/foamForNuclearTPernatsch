@@ -1,6 +1,0 @@
-<map id="solvePolyharmonicSpline" name="solvePolyharmonicSpline">
-<area shape="rect" id="node1" title="Polyharmonic spline RBF solver for 3 dimensions." alt="" coords="269,71,456,98"/>
-<area shape="rect" id="node2" href="$classFoam_1_1nuclearDataOneEnergy.html#a7740c7ab195c03ac140f1f75f633470f" title="Build interpolation scheme." alt="" coords="5,5,221,47"/>
-<area shape="rect" id="node3" href="$Test-radialBasisFunctions_8C.html#a82aa73e09c28267c282494039905ddfc" title=" " alt="" coords="43,71,183,98"/>
-<area shape="rect" id="node4" href="$Test-radialBasisFunctions_8C.html#addd01a673752d6a3c4c516ba02cf70ec" title=" " alt="" coords="43,122,183,149"/>
-</map>

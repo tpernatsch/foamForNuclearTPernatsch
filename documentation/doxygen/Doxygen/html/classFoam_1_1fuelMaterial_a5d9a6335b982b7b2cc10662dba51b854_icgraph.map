@@ -1,4 +1,0 @@
-<map id="oxygenMetalRatio" name="oxygenMetalRatio">
-<area shape="rect" id="node1" title="Return the initial oxygen to metal ratio." alt="" coords="239,13,380,39"/>
-<area shape="rect" id="node2" href="$classFoam_1_1fissionGasRelease.html#a0e62e1ecf7cf14a4a7e1fbcf694cb8f9" title="Construct from mesh, materials and dict." alt="" coords="5,5,191,47"/>
-</map>

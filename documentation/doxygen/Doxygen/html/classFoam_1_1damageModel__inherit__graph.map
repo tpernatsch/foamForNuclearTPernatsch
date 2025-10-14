@@ -1,4 +1,0 @@
-<map id="damageModel" name="damageModel">
-<area shape="rect" id="node1" title="yield stress mother class To use with the vonMises rheology" alt="" coords="5,5,252,185"/>
-<area shape="rect" id="node2" href="$classFoam_1_1mazars2015__RIA.html" title="Damage model for UO2. This model describes the loss of stiffness of the material by reducing the elas..." alt="" coords="6,233,251,663"/>
-</map>

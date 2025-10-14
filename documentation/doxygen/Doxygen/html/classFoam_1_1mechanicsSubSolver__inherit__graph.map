@@ -1,7 +1,0 @@
-<map id="mechanicsSubSolver" name="mechanicsSubSolver">
-<area shape="rect" id="node1" title="Parent class for mechanics solvers. It can be selected with the &quot;fromLatestTime&quot; typeName in solverDi..." alt="" coords="255,5,502,625"/>
-<area shape="rect" id="node2" href="$classFoam_1_1largeStrainTotLag.html" title="Finite&#45; (or large&#45;) strain mechanics sub&#45;solver." alt="" coords="5,776,176,897"/>
-<area shape="rect" id="node3" href="$classFoam_1_1largeStrainUpdLag.html" title="Finite&#45; (or large&#45;) strain mechanics sub&#45;solver." alt="" coords="200,673,379,1000"/>
-<area shape="rect" id="node4" href="$classFoam_1_1smallStrain.html" title="Small&#45;strain mechanics sub&#45;solver." alt="" coords="403,776,535,897"/>
-<area shape="rect" id="node5" href="$classFoam_1_1smallStrainIncUpdated.html" title="Mechanics sub&#45;solver solving for incremental displacement field. Small strain approximation is used f..." alt="" coords="559,703,766,971"/>
-</map>

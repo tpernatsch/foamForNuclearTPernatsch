@@ -1,5 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1azimuthalProfile.html" title="Base class for a general profile in the azimuthal direction. The base class assumes a uniform &quot;flat&quot; ..." alt="" coords="5,46,133,73"/>
-<area shape="rect" id="node2" href="$classFoam_1_1constantTabulatedAzimuthalProfile.html" title="Azimuthal profile defined using an constant interpolation table as a function of the azimuthal positi..." alt="" coords="204,5,411,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1timeDependentTabulatedAzimuthalProfile.html" title="Class providing a time&#45;dependent azimuthal profile, which is defined by the user by interpolation in ..." alt="" coords="181,71,433,112"/>
-</map>

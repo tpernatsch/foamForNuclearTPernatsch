@@ -1,6 +1,0 @@
-<map id="CHFModel" name="CHFModel">
-<area shape="rect" id="node1" title="Model for the prediction of the critical heat flux." alt="" coords="41,131,287,281"/>
-<area shape="rect" id="node3" href="$classFoam_1_1criticalHeatFluxModels_1_1constantCHF.html" title="Gives a constant Critical Heat Flux provided in Phase Properties." alt="" coords="5,403,147,524"/>
-<area shape="rect" id="node4" href="$classFoam_1_1criticalHeatFluxModels_1_1lookUpTableCHF.html" title=" " alt="" coords="171,329,336,597"/>
-<area shape="rect" id="node2" title=" " alt="" coords="113,5,215,83"/>
-</map>

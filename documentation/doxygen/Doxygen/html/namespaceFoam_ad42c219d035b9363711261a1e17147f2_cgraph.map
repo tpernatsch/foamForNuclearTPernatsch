@@ -1,5 +1,0 @@
-<map id="adjustDeltaT" name="adjustDeltaT">
-<area shape="rect" id="node1" title="Adjust the time&#45;step according to the solver maxDeltaT." alt="" coords="5,31,111,57"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="177,5,235,32"/>
-<area shape="rect" id="node3" href="$setRDeltaT_8H.html#ac9f2a747c4b35cd15767b59329d62d97" title=" " alt="" coords="159,56,253,83"/>
-</map>

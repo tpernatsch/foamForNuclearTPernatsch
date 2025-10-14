@@ -1,4 +1,0 @@
-<map id="sliceMapperAutoAxialSlices" name="sliceMapperAutoAxialSlices">
-<area shape="rect" id="node1" title="Slice mapper developed for quasi2D or 2D r&#45;z coarse smeared geometries." alt="" coords="9,439,248,560"/>
-<area shape="rect" id="node2" href="$classFoam_1_1sliceMapper.html" title="Parent class for slice mapper. This class creates a mapping framework for passing information from an..." alt="" coords="5,5,252,391"/>
-</map>

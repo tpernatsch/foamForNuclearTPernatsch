@@ -1,4 +1,0 @@
-<map id="thermalExpansionRelapUO2" name="thermalExpansionRelapUO2">
-<area shape="rect" id="node1" title="Class modelling thermal expansion of UO2 fuel derived from RELAP." alt="" coords="8,219,249,340"/>
-<area shape="rect" id="node2" href="$classFoam_1_1thermalExpansionModel.html" title="Mother class for thermal expansion models." alt="" coords="5,5,252,171"/>
-</map>

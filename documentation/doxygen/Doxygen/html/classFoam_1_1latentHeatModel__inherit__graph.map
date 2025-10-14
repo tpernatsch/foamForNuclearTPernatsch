@@ -1,7 +1,0 @@
-<map id="latentHeatModel" name="latentHeatModel">
-<area shape="rect" id="node1" title="Class used to describe the latent heat of fluid that is undergoing phase change. It can depend on som..." alt="" coords="178,131,425,413"/>
-<area shape="rect" id="node3" href="$classFoam_1_1latentHeatModels_1_1FinkLeibowitz.html" title="This class describes the latent heat of vaporization of liquid sodium according to the data presented..." alt="" coords="5,483,152,605"/>
-<area shape="rect" id="node4" href="$classFoam_1_1latentHeatModels_1_1fromThermophysicalPropertiesLatentHeat.html" title="Class that computes latent heat based on the specified enthalpies of formation of the fluids...." alt="" coords="177,461,426,627"/>
-<area shape="rect" id="node5" href="$classFoam_1_1latentHeatModels_1_1water.html" title="This class describes the latent heat of vaporization of water in the 0.01&#45;350 C range...." alt="" coords="450,483,566,605"/>
-<area shape="rect" id="node2" title=" " alt="" coords="251,5,352,83"/>
-</map>

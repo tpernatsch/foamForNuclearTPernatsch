@@ -1,7 +1,0 @@
-<map id="solveKriging" name="solveKriging">
-<area shape="rect" id="node1" title=" " alt="" coords="5,53,108,80"/>
-<area shape="rect" id="node2" href="$EEqns__2p_8H.html#a41a371debc8f4fa40469231470618dda" title=" " alt="" coords="355,28,393,55"/>
-<area shape="rect" id="node3" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#a12248313e8449a57edf6552f1b3a9603" title=" " alt="" coords="156,79,307,105"/>
-<area shape="rect" id="node4" href="$solvePointKinetics_8H.html#a7155d56b187a002d8cdd92aa43066620" title=" " alt="" coords="355,104,393,131"/>
-<area shape="rect" id="node5" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#a92a60b6bb62dda728c59430ef0b7a3cf" title="Solve Kriging matrix." alt="" coords="180,28,283,55"/>
-</map>

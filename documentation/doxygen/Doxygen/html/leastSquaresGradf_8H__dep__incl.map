@@ -1,5 +1,0 @@
-<map id="/home/lrs/GeN&#45;Foam/src/classes/offbeat/src/offbeatLib/finiteVolume/fvc/leastSquaresGradf.H" name="/home/lrs/GeN&#45;Foam/src/classes/offbeat/src/offbeatLib/finiteVolume/fvc/leastSquaresGradf.H">
-<area shape="rect" id="node1" title="Calculate the cell&#45;center gradient with leastSquares but using the given face&#45;center values." alt="" coords="145,5,345,76"/>
-<area shape="rect" id="node2" href="$leastSquaresGradf_8C.html" title=" " alt="" coords="5,124,205,195"/>
-<area shape="rect" id="node3" href="$mechanicsSubSolver_8C.html" title=" " alt="" coords="229,124,541,195"/>
-</map>

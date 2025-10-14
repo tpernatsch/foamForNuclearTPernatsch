@@ -1,5 +1,0 @@
-<map id="InterpolateTableBaseGF" name="InterpolateTableBaseGF">
-<area shape="rect" id="node1" title="Helper base class for interpolation tables." alt="" coords="40,5,263,97"/>
-<area shape="rect" id="node2" href="$classFoam_1_1InterpolateTableGF.html" title=" " alt="" coords="5,448,247,672"/>
-<area shape="rect" id="node3" href="$classFoam_1_1InterpolateTableGF.html" title="Class for interpolation in tabulated data. This class doesn&#39;t actually store any fields,..." alt="" coords="142,147,374,327"/>
-</map>

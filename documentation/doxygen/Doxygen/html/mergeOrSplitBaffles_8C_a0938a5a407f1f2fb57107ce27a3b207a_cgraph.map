@@ -1,8 +1,0 @@
-<map id="removeBaffles" name="removeBaffles">
-<area shape="rect" id="node1" title=" " alt="" coords="5,107,123,133"/>
-<area shape="rect" id="node2" href="$mergeOrSplitBaffles_8C.html#a007a77b5274469deb7ca7fccd8ee09c2" title=" " alt="" coords="207,5,297,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="381,81,439,108"/>
-<area shape="rect" id="node4" href="$mergeOrSplitBaffles_8C.html#ac30eea5d1200c7665eebbaf9152c4a18" title=" " alt="" coords="171,107,333,133"/>
-<area shape="rect" id="node5" href="$mergeOrSplitBaffles_8C.html#acd1b0860237a7ead4bd9365047c6565a" title=" " alt="" coords="205,157,299,184"/>
-<area shape="rect" id="node6" href="$namespaceFoam_1_1myOps.html#a9c6941fd6343a31e270e81867634452e" title="Split a string or word according to a delimiter char d, and return a." alt="" coords="178,208,326,235"/>
-</map>

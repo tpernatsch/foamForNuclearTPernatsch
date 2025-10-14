@@ -1,6 +1,0 @@
-<map id="timeDependentAxialProfile" name="timeDependentAxialProfile">
-<area shape="rect" id="node1" title="Construct from mesh, materials and dict." alt="" coords="5,56,203,83"/>
-<area shape="rect" id="node2" href="$classFoam_1_1fastFlux.html#a470f06cfb9b6ee887cd85d63de275607" title="Return mesh reference (not implemented)" alt="" coords="257,5,420,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1axialProfile.html#a5eaf9d8a90f6d6556dbe0bf5c85b54bd" title="Select from dictionary." alt="" coords="251,56,427,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1globalOptions.html#aae00636b93c38b6ea2f362c2161757e6" title=" " alt="" coords="261,107,417,149"/>
-</map>

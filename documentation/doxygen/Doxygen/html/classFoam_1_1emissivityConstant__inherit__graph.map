@@ -1,4 +1,0 @@
-<map id="emissivityConstant" name="emissivityConstant">
-<area shape="rect" id="node1" title="Model for constant emissivity. The value is read from dictionary." alt="" coords="37,204,221,325"/>
-<area shape="rect" id="node2" href="$classFoam_1_1emissivityModel.html" title="Mother class for emissivity models." alt="" coords="5,5,252,156"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="pump" name="pump">
-<area shape="rect" id="node1" title="Allow defining a momentum source, including options for a time dependent source, and a source coming ..." alt="" coords="55,351,203,516"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,108,107,185"/>
-<area shape="rect" id="node3" href="$classFoam_1_1timeProfile.html" title="Base class for time profile functions. This object embeds the OpenFOAM Function1 object used to repre..." alt="" coords="131,5,275,288"/>
-</map>

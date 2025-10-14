@@ -1,5 +1,0 @@
-<map id="constructHeatExchangers" name="constructHeatExchangers">
-<area shape="rect" id="node1" title="By default heatExchangers operate on cellZones, so the way they are." alt="" coords="5,31,193,57"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="252,5,309,32"/>
-<area shape="rect" id="node3" href="$solvePointKinetics_8H.html#a14b2f13717368942a3a5da1100dd27bf" title=" " alt="" coords="241,56,320,83"/>
-</map>

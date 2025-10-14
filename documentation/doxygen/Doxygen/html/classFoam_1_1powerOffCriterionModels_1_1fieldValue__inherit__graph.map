@@ -1,4 +1,0 @@
-<map id="fieldValue" name="fieldValue">
-<area shape="rect" id="node1" title="Turns power off if the field value maximum exceeds a provided value." alt="" coords="47,204,210,340"/>
-<area shape="rect" id="node2" href="$classFoam_1_1powerOffCriterionModel.html" title="Author: Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)" alt="" coords="5,5,252,156"/>
-</map>

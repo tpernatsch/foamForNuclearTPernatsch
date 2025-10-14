@@ -1,5 +1,0 @@
-<map id="constantBurnup" name="constantBurnup">
-<area shape="rect" id="node1" title="Derived from burnup mother class, this class reads the burnup field from the initial condition file." alt="" coords="49,292,209,487"/>
-<area shape="rect" id="node3" href="$classFoam_1_1burnupFromPower.html" title="Derived from constantBurnup, this class calculates the evolution of burnup over time from the local p..." alt="" coords="41,535,217,715"/>
-<area shape="rect" id="node2" href="$classFoam_1_1burnup.html" title="Parent class for burnup model. It prepares functionalities for daughter classes but does not create t..." alt="" coords="5,5,252,244"/>
-</map>

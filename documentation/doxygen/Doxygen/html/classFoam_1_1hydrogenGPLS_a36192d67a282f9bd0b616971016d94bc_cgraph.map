@@ -1,6 +1,0 @@
-<map id="updateTotalFields" name="updateTotalFields">
-<area shape="rect" id="node1" title="Update the yield stress: called at end of time&#45;step." alt="" coords="5,56,141,83"/>
-<area shape="rect" id="node2" href="$EEqns__2p_8H.html#a41a371debc8f4fa40469231470618dda" title=" " alt="" coords="203,5,242,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="194,56,251,83"/>
-<area shape="rect" id="node4" href="$readNuclearData_8H.html#af3234271aa5248f773a9631104c1f9e3" title=" " alt="" coords="189,107,256,133"/>
-</map>

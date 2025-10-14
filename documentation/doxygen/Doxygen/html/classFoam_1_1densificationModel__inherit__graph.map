@@ -1,5 +1,0 @@
-<map id="densificationModel" name="densificationModel">
-<area shape="rect" id="node1" title="Parent class for densification model." alt="" coords="97,5,343,244"/>
-<area shape="rect" id="node2" href="$classFoam_1_1densificationEmpirical.html" title="Empirical model for densification. The fuel tends toward a final value of density (due to densificati..." alt="" coords="5,292,208,413"/>
-<area shape="rect" id="node3" href="$classFoam_1_1densificationFRAPCON.html" title="Class modelling the densification phenomenon derived from FRAPCON." alt="" coords="233,292,437,413"/>
-</map>

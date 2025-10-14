@@ -1,8 +1,0 @@
-<map id="uniformMultiMaterialInterface" name="uniformMultiMaterialInterface">
-<area shape="rect" id="node1" title="Interfaces between materials are defined by a uniform." alt="" coords="419,248,674,384"/>
-<area shape="rect" id="node3" href="$classFoam_1_1cellZoneMultiMaterialInterface.html" title="Materials are defined by cellZones, and interfaces between materials lie at the interface between cel..." alt="" coords="5,454,264,575"/>
-<area shape="rect" id="node4" href="$classFoam_1_1faceSetMultiMaterialInterface.html" title="Interfaces between materials are defined by a faceSet." alt="" coords="289,454,541,575"/>
-<area shape="rect" id="node5" href="$classFoam_1_1topoSetSourceMultiMaterialInterface.html" title="Interfaces between materials are defined by a topoSetSource, e.g. boxToFace, faceToFace." alt="" coords="565,432,795,597"/>
-<area shape="rect" id="node6" href="$classFoam_1_1uniform2DMultiMaterialInterface.html" title="Interfaces between materials are defined by a uniform weight. The weight is set to 0 along the z&#45;dire..." alt="" coords="819,454,1091,575"/>
-<area shape="rect" id="node2" href="$classFoam_1_1multiMaterialInterface.html" title="Base class for defining the set of faces that constitute the interfaces between different materials." alt="" coords="423,5,670,200"/>
-</map>

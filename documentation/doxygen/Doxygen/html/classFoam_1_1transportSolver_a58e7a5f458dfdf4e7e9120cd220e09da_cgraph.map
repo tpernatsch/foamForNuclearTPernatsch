@@ -1,4 +1,0 @@
-<map id="converged" name="converged">
-<area shape="rect" id="node1" title="Return true if converged." alt="" coords="5,5,96,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1transportSolver.html#a9a7ffa70977a8df1ec9f5b35c0fa8555" title="Return name of the solving variable." alt="" coords="144,5,233,32"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="expPr" name="expPr">
-<area shape="rect" id="node1" title=" " alt="" coords="251,35,309,61"/>
-<area shape="rect" id="node2" href="$classFoam_1_1compressible_1_1NusseltThermalBaffle1DFvPatchScalarField.html#aa5d38c7d49e82a9ac1b3b73153ba3526" title=" " alt="" coords="75,5,133,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1compressible_1_1NusseltThermalBaffle1DFvPatchScalarField.html#a6745519f7eeb4338970b1387b2c9c6f2" title="Construct from patch, internal field and dictionary." alt="" coords="5,57,203,98"/>
-</map>

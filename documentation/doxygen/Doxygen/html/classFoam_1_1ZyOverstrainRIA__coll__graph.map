@@ -1,4 +1,0 @@
-<map id="ZyOverstrainRIA" name="ZyOverstrainRIA">
-<area shape="rect" id="node1" title="Overstrain criterion to asses clad failure during the PCMI phase of a RIA transient." alt="" coords="46,336,211,501"/>
-<area shape="rect" id="node2" href="$classFoam_1_1failureModel.html" title="Mother class for materials failure criteria." alt="" coords="5,5,252,288"/>
-</map>

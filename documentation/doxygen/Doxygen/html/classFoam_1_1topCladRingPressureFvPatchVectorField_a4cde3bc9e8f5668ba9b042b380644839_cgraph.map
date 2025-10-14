@@ -1,6 +1,0 @@
-<map id="updateTraction" name="updateTraction">
-<area shape="rect" id="node1" title="Update the pressure and traction." alt="" coords="5,71,124,98"/>
-<area shape="rect" id="node2" href="$classFoam_1_1globalOptions.html#a21357e5588a342e823928e777eff1314" title=" " alt="" coords="179,5,335,47"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="229,71,286,98"/>
-<area shape="rect" id="node4" href="$classFoam_1_1gapGasModel.html#a2ef4e25d44488e458821bf9debb36df1" title="Return gas pressure." alt="" coords="172,122,343,149"/>
-</map>

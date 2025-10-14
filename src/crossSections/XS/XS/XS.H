@@ -44,7 +44,6 @@ Description
 
 See 2D_MSFR or 3D_SmallESFR of Godiva_SN for exhaustive examples.
 
-<div class="groupHeader">
 \table
     Parameter           | Type      | Req'd | Default | Description
     energyGroups        | Integer   | No    | 1       | Number of energy groups
@@ -60,13 +59,11 @@ See 2D_MSFR or 3D_SmallESFR of Godiva_SN for exhaustive examples.
     axialOrientation    | Vector    | No    | (0,0,1) | Fuel axial orientation
     isLowMemory         | Boolean   | No    | False   | Low memory flag, useful for SN solver
 \endtable
-</div>
 
 The following table lists the possible perturb state keywords to be used in the
 state dictionaries. it is possible to use multiple parameters in the same state
 (e.g Tfuel and rhoCool).
 
-<div class="groupHeader">
 \table
     Parameter   | Type   | Req'd | Default | Description
     Tfuel       | Scalar | No    | 0.01    | Fuel temperature in K
@@ -77,13 +74,11 @@ state dictionaries. it is possible to use multiple parameters in the same state
     axExp       | Scalar | No    | 0       | Axial expansion from nominal
     radExp      | Scalar | No    | 0       | Radial expansion from nominal
 \endtable
-</div>
 
 Here follow the list of group wise nuclear data for each cellzone to be provided
 for GeN-Foam. Each subscript \f$g\f$ refers the gth energy group. Each \f$k\f$
 refers to the kth precursor group.
 
-<div class="groupHeader">
 \table
     GeN-Foam Parameter  | Param    | Req'd | Default | Notation                 | Description
     fuelFraction        | Constant | No    | 1       | \f$ \alpha_{fuel} \f$    | Volume of fuel per lattice volume
@@ -103,7 +98,6 @@ refers to the kth precursor group.
     discFactor          | Constant | Yes   | -       | \f$ \gamma_g \f$         | Discontinuity factors
     integralFlux        | Constant | Yes   | -       | \f$ \Phi_g \f$           | Integral flux for adapting disc factors
 \endtable
-</div>
 
 Example of dictionary entries for perturbed state XS in the nuclearData file:
 \verbatim

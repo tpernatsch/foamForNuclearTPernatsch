@@ -1,7 +1,0 @@
-<map id="multiRegimeBoilingTRACE" name="multiRegimeBoilingTRACE">
-<area shape="rect" id="node1" title="Constructors." alt="" coords="5,97,200,124"/>
-<area shape="rect" id="node2" href="$classFoam_1_1FSPair.html#a470f06cfb9b6ee887cd85d63de275607" title="Access." alt="" coords="291,5,440,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1FSHeatTransferCoefficientModel.html#a36b78812f386917072b03a36268d6bce" title="Selectors." alt="" coords="248,57,483,98"/>
-<area shape="rect" id="node4" href="$classFoam_1_1subCooledBoilingFractionModel.html#a305ff3b42e0285ee3b072d30500afec0" title="Selectors." alt="" coords="250,122,481,163"/>
-<area shape="rect" id="node5" href="$classFoam_1_1TONBModel.html#adb431ddf087e79fec7a2b09c0c469715" title="Selectors." alt="" coords="275,188,455,215"/>
-</map>

@@ -1,6 +1,0 @@
-<map id="correctPhysics" name="correctPhysics">
-<area shape="rect" id="node1" title="Member Functions." alt="" coords="5,56,121,83"/>
-<area shape="rect" id="node2" href="$compressibleInterFoam_2include_2equations_2pEqn_8H.html#ac7881d221ccaabe954186a3ab20dce0a" title=" " alt="" coords="169,5,281,32"/>
-<area shape="rect" id="node3" href="$UEqn__1p_8H.html#ad88de63afdc39b2cf53cf4aa8b950e00" title=" " alt="" coords="180,56,271,83"/>
-<area shape="rect" id="node4" href="$correctBoundaryFlux__1p_8H.html#abd794da5875d9deafa372bcf979d8c33" title="Correct fixed&#45;flux phi BCs to be consistent with the velocity BCs." alt="" coords="206,107,245,133"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="diffCoefGraphite" name="diffCoefGraphite">
-<area shape="rect" id="node1" title="Diffusion coefficient for PyC material from PARFUME manual and INL report." alt="" coords="46,292,211,472"/>
-<area shape="rect" id="node2" href="$classFoam_1_1diffCoefModel.html" title="Mother class for fission products diffusion coefficient models." alt="" coords="5,5,252,244"/>
-</map>

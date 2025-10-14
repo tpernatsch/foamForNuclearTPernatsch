@@ -1,7 +1,0 @@
-<map id="sigmaPow" name="sigmaPow">
-<area shape="rect" id="node1" title=" " alt="" coords="277,111,367,138"/>
-<area shape="rect" id="node2" href="$classFoam_1_1solvers_1_1adjointDiffusionNeutronics.html#a96a4e39548be52ca563c1e5b7dd885b8" title="Return power." alt="" coords="5,5,229,47"/>
-<area shape="rect" id="node3" href="$classFoam_1_1solvers_1_1diffusionNeutronics.html#a96a4e39548be52ca563c1e5b7dd885b8" title="Return power." alt="" coords="29,71,206,112"/>
-<area shape="rect" id="node4" href="$classFoam_1_1solvers_1_1SNNeutronics.html#a96a4e39548be52ca563c1e5b7dd885b8" title="Return power." alt="" coords="13,136,222,177"/>
-<area shape="rect" id="node5" href="$classFoam_1_1solvers_1_1SP3Neutronics.html#a96a4e39548be52ca563c1e5b7dd885b8" title="Return power." alt="" coords="10,201,225,243"/>
-</map>

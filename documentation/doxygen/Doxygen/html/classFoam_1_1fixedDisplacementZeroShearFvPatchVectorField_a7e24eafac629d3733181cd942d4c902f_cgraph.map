@@ -1,6 +1,0 @@
-<map id="updateCoeffs" name="updateCoeffs">
-<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="5,56,113,83"/>
-<area shape="rect" id="node2" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="259,5,302,32"/>
-<area shape="rect" id="node3" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="261,56,300,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1solidDirectionMixedFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="161,107,400,149"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="GasProduction" name="GasProduction">
-<area shape="rect" id="node1" title=" " alt="" coords="5,81,121,108"/>
-<area shape="rect" id="node2" href="$GlobalVariables_8C.html#ad0c24ba77401891635172ee247392b5e" title=" " alt="" coords="198,5,275,32"/>
-<area shape="rect" id="node3" href="$FissionYield_8C.html#ae9900e88d712703ccb7d8aa0c7605281" title=" " alt="" coords="173,56,300,83"/>
-<area shape="rect" id="node4" href="$FissionYield_8C.html#a9dbc9978de85d9dd7206d7a5d7e43b33" title=" " alt="" coords="171,107,302,133"/>
-<area shape="rect" id="node5" href="$namespaceSolver.html#a58b83820e152079a0355f14bedee6225" title=" " alt="" coords="169,157,304,184"/>
-</map>

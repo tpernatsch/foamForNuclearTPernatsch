@@ -1,6 +1,0 @@
-<map id="regionCoupledOFFBEATFvPatch" name="regionCoupledOFFBEATFvPatch">
-<area shape="rect" id="node1" title="Common functionality for regionCoupleFvPatch and regionCoupledWallFvPatch." alt="" coords="33,395,296,589"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,137,105,215"/>
-<area shape="rect" id="node3" title=" " alt="" coords="129,137,200,215"/>
-<area shape="rect" id="node4" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html" title="Base class of regionCoupledFvPatch with common functionality for regionCoupledFvPatch and regionCoupl..." alt="" coords="224,5,473,347"/>
-</map>

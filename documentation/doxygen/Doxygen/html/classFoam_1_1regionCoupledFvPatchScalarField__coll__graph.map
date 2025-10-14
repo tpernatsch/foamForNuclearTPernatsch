@@ -1,5 +1,0 @@
-<map id="regionCoupledFvPatchScalarField" name="regionCoupledFvPatchScalarField">
-<area shape="rect" id="node1" title="General region&#45;coupled patchField. Conceptually similar to cyclicAMI, but does not assume continuity ..." alt="" coords="79,409,313,780"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,130,160,222"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledBaseOFFBEATFvPatch.html" title="Base class of regionCoupledFvPatch with common functionality for regionCoupledFvPatch and regionCoupl..." alt="" coords="185,5,434,347"/>
-</map>

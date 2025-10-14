@@ -1,4 +1,0 @@
-<map id="updateCoeffs" name="updateCoeffs">
-<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="132,5,240,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1convectiveHTCFvPatchScalarField.html#a1a4ebfb8aa4dc581e54081a12bfbd0d3" title="Evaluate the patch field." alt="" coords="5,5,84,32"/>
-</map>

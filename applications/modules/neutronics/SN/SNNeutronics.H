@@ -39,7 +39,8 @@ Class
     Foam::SNNeutronics
 
 Description
-    Subclass for SN neutronics (Discrete Ordinate) [@FIORINA201524] [@Fiorina2015ApplicationCodes].
+    Subclass for SN neutronics (Discrete Ordinate).
+    Reference publications [@FIORINA201524] [@FIORINA201515226].
 
 $$
 \begin{align}
@@ -93,19 +94,6 @@ polynomial expansion of the scattering cosine \f$ (\Omega_j \cdot \Omega_{j'}) \
     v_i                     | Average neutron velocity of the energy group i
     \Omega_j                | Unit vector of the angular direction j
 \endvartable
-
-<b>Reference publications</b>
-
-<ol type="1">
-    <li> Carlo Fiorina, Ivor Clifford, Manuele Aufiero, Konstantin Mikityuk,
-    GeN-Foam: a novel OpenFOAM® based multi-physics solver for 2D/3D transient
-    analysis of nuclear reactors, Nuclear Engineering and Design, Volume 294,
-    2015, Pages 24-37, ISSN 0029-5493, https://doi.org/10.1016/j.nucengdes.2015.05.035.
-
-    <li> Carlo Fiorina, Konstantin Mikityuk, "Application of the new GeN-Foam multi-physics
-    solver to the European Sodium Fast Reactor and verification against available codes",
-    Proceedings of ICAPP 2015, May 03-06, 2015 - Nice (France), Paper 15226
-</ol>
 
 \mainauthor of this file (and associated .C or included .H files):
     Derived by Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;> (EPFL, Switzerland)

@@ -1,4 +1,0 @@
-<map id="faceSetMultiMaterialInterface" name="faceSetMultiMaterialInterface">
-<area shape="rect" id="node1" title="Interfaces between materials are defined by a faceSet." alt="" coords="7,189,259,311"/>
-<area shape="rect" id="node2" href="$classFoam_1_1uniformMultiMaterialInterface.html" title="Interfaces between materials are defined by a uniform." alt="" coords="5,5,260,141"/>
-</map>

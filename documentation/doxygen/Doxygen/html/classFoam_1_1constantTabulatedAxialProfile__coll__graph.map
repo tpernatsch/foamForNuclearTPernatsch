@@ -1,4 +1,0 @@
-<map id="constantTabulatedAxialProfile" name="constantTabulatedAxialProfile">
-<area shape="rect" id="node1" title="Axial profile defined using an constant interpolation table as a function of the axial position...." alt="" coords="5,365,256,472"/>
-<area shape="rect" id="node2" href="$classFoam_1_1axialProfile.html" title="Base class for a general profile in the axial direction. The base class assumes a uniform &quot;flat&quot; prof..." alt="" coords="7,5,254,317"/>
-</map>

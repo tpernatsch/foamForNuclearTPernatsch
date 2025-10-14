@@ -1,8 +1,0 @@
-<map id="userParameters" name="userParameters">
-<area shape="rect" id="node1" title="Return a reference to the user parameters dictionary." alt="" coords="217,132,341,159"/>
-<area shape="rect" id="node2" href="$namespaceFoam.html#a40aa6b550af75aa6c919390a41ef1dd8" title="Check the supplied user parameters in system/userParameters." alt="" coords="5,5,169,32"/>
-<area shape="rect" id="node3" href="$namespaceFoam.html#afc7c72b328207c950685de5b5ba532bf" title="Return true if parameter is provided by the user." alt="" coords="13,56,162,83"/>
-<area shape="rect" id="node4" href="$namespaceFoam.html#a53acaa1722b7acd4e6a0d6d833ae404c" title="Display a list of user&#45;specified parameters." alt="" coords="14,107,161,133"/>
-<area shape="rect" id="node5" href="$namespaceFoam.html#aba67e4998566368d93b5938156d7fd73" title=" " alt="" coords="32,157,143,184"/>
-<area shape="rect" id="node6" href="$namespaceFoam.html#a98793fbf061910b33103ef60076de71c" title="Register and read a user parameter or return a default value." alt="" coords="29,208,146,235"/>
-</map>

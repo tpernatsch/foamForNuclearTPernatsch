@@ -1,5 +1,0 @@
-<map id="BestionTRACE" name="BestionTRACE">
-<area shape="rect" id="node1" title="Bestion model for interfacial friction. Distribution parameter set to zero as in TRACE." alt="" coords="189,307,340,428"/>
-<area shape="rect" id="node2" href="$classFoam_1_1FFDragCoefficientModel.html" title="Class to manage the fluid&#45;structure (i.e. fluid&#45;wall) drag coefficient." alt="" coords="5,42,252,193"/>
-<area shape="rect" id="node3" href="$classFoam_1_1fluid.html" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="277,5,527,229"/>
-</map>

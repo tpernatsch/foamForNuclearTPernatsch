@@ -1,6 +1,0 @@
-<map id="virtualMass" name="virtualMass">
-<area shape="rect" id="node1" title="Class to handle virtual mass." alt="" coords="87,740,222,993"/>
-<area shape="rect" id="node2" title=" " alt="" coords="5,453,107,531"/>
-<area shape="rect" id="node3" href="$classFoam_1_1FFPair.html" title="Class to handle dimensionless numbers that characterise the system, e.g. Reynolds,..." alt="" coords="238,307,421,677"/>
-<area shape="rect" id="node4" href="$classFoam_1_1fluid.html" title="Class to model a generic fluid phase. It mainly acts as a variable placeholder, as little functionali..." alt="" coords="51,5,301,229"/>
-</map>

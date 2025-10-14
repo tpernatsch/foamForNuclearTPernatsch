@@ -1,7 +1,0 @@
-<map id="interpolatedNuclearFuelPin" name="interpolatedNuclearFuelPin">
-<area shape="rect" id="node1" title=" " alt="" coords="5,81,204,108"/>
-<area shape="rect" id="node2" href="$classFoam_1_1structure.html#a5266b7f2620c92c2ebc4b161bb508dd9" title=" " alt="" coords="258,5,443,32"/>
-<area shape="rect" id="node3" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="497,107,555,133"/>
-<area shape="rect" id="node4" href="$classFoam_1_1powerModels_1_1interpolatedNuclearFuelPin.html#a8fc8c05c610e629783c80688340f8db4" title="Set interfacial area consistently with the pin geometry. In." alt="" coords="281,107,420,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1structure.html#a9252328db1f82344da0559bc347f3e0a" title="Member Functions." alt="" coords="252,158,449,199"/>
-</map>

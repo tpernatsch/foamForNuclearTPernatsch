@@ -1,5 +1,0 @@
-<map id="lumpedNuclearStructure" name="lumpedNuclearStructure">
-<area shape="rect" id="node1" title="Model for representing a lumped&#45;parameter structure characterized by a user selectable number of node..." alt="" coords="113,380,365,677"/>
-<area shape="rect" id="node2" href="$classFoam_1_1powerModel.html" title="Run&#45;time selectable class to handle the thermal description (i.e. energy source/sinks) of a structure..." alt="" coords="5,5,252,317"/>
-<area shape="rect" id="node3" href="$classFoam_1_1IOFieldField.html" title=" " alt="" coords="276,35,424,288"/>
-</map>

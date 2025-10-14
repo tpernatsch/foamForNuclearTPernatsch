@@ -1,4 +1,0 @@
-<map id="rheologyByMaterial" name="rheologyByMaterial">
-<area shape="rect" id="node1" title="Rheology laws are specified on each material subdictionary." alt="" coords="17,497,240,721"/>
-<area shape="rect" id="node2" href="$classFoam_1_1rheology.html" title="Parent class that handles the evolution of rheological models." alt="" coords="5,5,252,449"/>
-</map>

@@ -1,8 +1,0 @@
-<map id="spherical" name="spherical">
-<area shape="rect" id="node1" title=" " alt="" coords="5,107,87,133"/>
-<area shape="rect" id="node2" href="$classFoam_1_1FFPair.html#a6676ebc5398ae4c515c27a6405cea62b" title=" " alt="" coords="151,5,301,32"/>
-<area shape="rect" id="node3" href="$classFoam_1_1FFPair.html#aab793f84ac558a425b7bb6c8ca16176b" title=" " alt="" coords="151,56,301,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1fluid.html#a48121b56e3e6bef6fa30d0a603ced655" title=" " alt="" coords="157,107,295,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1fluid.html#ab1b1db98a9d988bae8944437fb1b8d21" title="Related to stateOfMatter." alt="" coords="150,157,302,184"/>
-<area shape="rect" id="node6" href="$classFoam_1_1phaseBase.html#acc80e00a8ac919288fb55bd14cc88bf6" title=" " alt="" coords="135,208,317,235"/>
-</map>

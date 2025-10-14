@@ -1,5 +1,0 @@
-<map id="plenumSpringFixedDisplacementFvPatchVectorField" name="plenumSpringFixedDisplacementFvPatchVectorField">
-<area shape="rect" id="node1" title="Plenum spring patchfield for the top of the fuel column or for the topCap inner patch (fixedDisplacem..." alt="" coords="99,336,350,545"/>
-<area shape="rect" id="node2" href="$classFoam_1_1fixedDisplacementFvPatchVectorField.html" title="fixedDisplacement patchfield. The fixed displacement can be provided as a time series." alt="" coords="5,20,215,273"/>
-<area shape="rect" id="node3" href="$classFoam_1_1plenumSpringBase.html" title="Base class with common functinality for plenumSpring patch fields." alt="" coords="239,5,443,288"/>
-</map>

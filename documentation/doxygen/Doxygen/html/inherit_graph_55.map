@@ -1,4 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classFoam_1_1materials.html" title="Parent class that handles the evolution of material properties and behavioral models." alt="" coords="5,5,89,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1materialsByZone.html" title="The materials are identified with the cellZones. However, the same material model (e...." alt="" coords="137,5,272,32"/>
-</map>

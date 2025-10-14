@@ -1,7 +1,0 @@
-<map id="polyharmonicSplineFunction" name="polyharmonicSplineFunction">
-<area shape="rect" id="node1" title="Polyharmonic spline function." alt="" coords="289,81,496,108"/>
-<area shape="rect" id="node2" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#a5957166a142c29f6a8479f0807e3576c" title="Polyharmonic spline RBF for 3 dimensions." alt="" coords="48,5,199,32"/>
-<area shape="rect" id="node3" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#a72eaf5d3f685ff6c048dbd5387e09439" title="Experimental RBF imposing an integral under the interpolation field." alt="" coords="23,56,224,83"/>
-<area shape="rect" id="node4" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#af4def77ab956c5f12a92879a2167e449" title="Polyharmonic spline RBF solver for 3 dimensions." alt="" coords="30,107,217,133"/>
-<area shape="rect" id="node5" href="$namespaceFoam_1_1radialBasisFunctionInterpolation.html#a0783001694ac83daffc73bfbb87539a7" title="Experimental RBF solver imposing an integral under the interpolation field." alt="" coords="5,157,241,184"/>
-</map>

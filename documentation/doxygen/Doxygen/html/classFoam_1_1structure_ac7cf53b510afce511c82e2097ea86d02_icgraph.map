@@ -1,7 +1,0 @@
-<map id="Dh" name="Dh">
-<area shape="rect" id="node1" title=" " alt="" coords="308,127,348,153"/>
-<area shape="rect" id="node2" href="$classFoam_1_1compressible_1_1NusseltThermalBaffle1DFvPatchScalarField.html#aa5d38c7d49e82a9ac1b3b73153ba3526" title=" " alt="" coords="30,5,235,61"/>
-<area shape="rect" id="node3" href="$classFoam_1_1solvers_1_1onePhase.html#a025fa77686c71f0790650cfd8721ac9f" title="Constructors." alt="" coords="41,86,225,127"/>
-<area shape="rect" id="node4" href="$classFoam_1_1thermalHydraulicsModels_1_1onePhaseLegacy.html#ad1fa2bf55ac7d53d9f03048c680331af" title="Constructors." alt="" coords="5,151,260,193"/>
-<area shape="rect" id="node5" href="$classFoam_1_1structure.html#ac725130cc4964290bf27d822d4159f5b" title="Constructors." alt="" coords="93,217,173,244"/>
-</map>

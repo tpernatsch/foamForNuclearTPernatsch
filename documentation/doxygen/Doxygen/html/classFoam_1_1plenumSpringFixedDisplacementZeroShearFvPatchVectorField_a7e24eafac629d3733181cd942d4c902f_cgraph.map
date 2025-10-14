@@ -1,8 +1,0 @@
-<map id="updateCoeffs" name="updateCoeffs">
-<area shape="rect" id="node1" title="Update the coefficients associated with the patch field." alt="" coords="5,107,113,133"/>
-<area shape="rect" id="node2" href="$EEqn__1p_8H.html#ab1184b82774c9d22cebacfa6994470b7" title=" " alt="" coords="259,5,302,32"/>
-<area shape="rect" id="node3" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="261,56,300,83"/>
-<area shape="rect" id="node4" href="$classFoam_1_1gapGasModel.html#a2ef4e25d44488e458821bf9debb36df1" title="Return gas pressure." alt="" coords="195,107,366,133"/>
-<area shape="rect" id="node5" href="$classFoam_1_1plenumSpringBase.html#acf461e1ff2f9ebd5e259ed50fd1d395a" title="Return total spring elongation." alt="" coords="187,158,375,199"/>
-<area shape="rect" id="node6" href="$classFoam_1_1solidDirectionMixedFvPatchVectorField.html#a7e24eafac629d3733181cd942d4c902f" title="Update the coefficients associated with the patch field." alt="" coords="161,223,400,265"/>
-</map>

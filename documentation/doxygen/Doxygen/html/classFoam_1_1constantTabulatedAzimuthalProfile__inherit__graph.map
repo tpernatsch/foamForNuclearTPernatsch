@@ -1,4 +1,0 @@
-<map id="constantTabulatedAzimuthalProfile" name="constantTabulatedAzimuthalProfile">
-<area shape="rect" id="node1" title="Azimuthal profile defined using an constant interpolation table as a function of the azimuthal positi..." alt="" coords="12,351,245,501"/>
-<area shape="rect" id="node2" href="$classFoam_1_1azimuthalProfile.html" title="Base class for a general profile in the azimuthal direction. The base class assumes a uniform &quot;flat&quot; ..." alt="" coords="5,5,252,303"/>
-</map>

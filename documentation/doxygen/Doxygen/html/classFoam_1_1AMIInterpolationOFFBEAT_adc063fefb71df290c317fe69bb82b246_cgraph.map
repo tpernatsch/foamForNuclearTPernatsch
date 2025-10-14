@@ -1,5 +1,0 @@
-<map id="tgtPointFace" name="tgtPointFace">
-<area shape="rect" id="node1" title="Return target patch face index of point on source patch face." alt="" coords="5,31,108,57"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="156,5,213,32"/>
-<area shape="rect" id="node3" href="$solvePointKinetics_8H.html#afb05ee311f845ad38e7649bdb877ce7d" title=" " alt="" coords="165,56,204,83"/>
-</map>

@@ -1,4 +1,0 @@
-<map id="userTimeToTime" name="userTimeToTime">
-<area shape="rect" id="node1" title="Convert the user&#45;time (e.g. hours) to real&#45;time (s)." alt="" coords="155,5,285,32"/>
-<area shape="rect" id="node2" href="$classFoam_1_1offbeatTime.html#ae7a53d08b5672ca9541f685268a5b380" title="Construct from objectRegistry arguments." alt="" coords="5,5,107,32"/>
-</map>

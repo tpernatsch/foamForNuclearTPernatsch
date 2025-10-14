@@ -1,4 +1,0 @@
-<map id="diffCoefArrhenius" name="diffCoefArrhenius">
-<area shape="rect" id="node1" title="Diffusion coefficient to be calculated in Arrhenius form." alt="" coords="43,292,214,413"/>
-<area shape="rect" id="node2" href="$classFoam_1_1diffCoefModel.html" title="Mother class for fission products diffusion coefficient models." alt="" coords="5,5,252,244"/>
-</map>

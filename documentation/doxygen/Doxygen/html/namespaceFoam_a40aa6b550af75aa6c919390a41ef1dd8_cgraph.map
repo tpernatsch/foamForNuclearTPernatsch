@@ -1,6 +1,0 @@
-<map id="checkUserParameters" name="checkUserParameters">
-<area shape="rect" id="node1" title="Check the supplied user parameters in system/userParameters." alt="" coords="5,31,169,57"/>
-<area shape="rect" id="node2" href="$calcScatteringSourceAdjoint_8H.html#a56c25250273deb5895931907a55f269c" title=" " alt="" coords="444,5,501,32"/>
-<area shape="rect" id="node3" href="$namespaceFoam.html#a031675f70306203cab7e488dab8fd5db" title="Return a reference to the user parameters dictionary." alt="" coords="245,31,369,57"/>
-<area shape="rect" id="node4" href="$namespaceFoam.html#aea78a809a68455ebbb16743d0a12db21" title="Dictionary to record all registered user parameters." alt="" coords="217,81,396,108"/>
-</map>

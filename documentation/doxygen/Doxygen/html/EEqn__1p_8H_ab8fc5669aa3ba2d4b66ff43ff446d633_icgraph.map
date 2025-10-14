@@ -1,5 +1,0 @@
-<map id="Hs" name="Hs">
-<area shape="rect" id="node1" title="Add structure heat sources (i.e. powerModels and HX)" alt="" coords="285,60,324,87"/>
-<area shape="rect" id="node2" href="$classFoam_1_1powerModels_1_1lumpedNuclearStructure.html#a64ea010d3c9053b77061947a7c0fca9e" title=" " alt="" coords="27,5,215,61"/>
-<area shape="rect" id="node3" href="$classFoam_1_1powerModels_1_1lumpedNuclearStructure.html#aebceb9d61655d7851a7ab3a7710164ea" title="Update temperature profiles Tc, Tf, in a single domain cell with." alt="" coords="5,85,237,141"/>
-</map>

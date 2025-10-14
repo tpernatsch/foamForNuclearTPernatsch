@@ -1,5 +1,0 @@
-<map id="regionCoupleType" name="regionCoupleType">
-<area shape="rect" id="node1" title="Return the interface type." alt="" coords="273,57,412,84"/>
-<area shape="rect" id="node2" href="$classFoam_1_1implicitGapContactFvPatchVectorField.html#af5bf19a20fc88622bab16fa60c775129" title="Return the interface type." alt="" coords="10,5,221,61"/>
-<area shape="rect" id="node3" href="$classFoam_1_1regionCoupledFvPatchScalarField.html#af5bf19a20fc88622bab16fa60c775129" title="Return the interface type." alt="" coords="5,86,225,127"/>
-</map>

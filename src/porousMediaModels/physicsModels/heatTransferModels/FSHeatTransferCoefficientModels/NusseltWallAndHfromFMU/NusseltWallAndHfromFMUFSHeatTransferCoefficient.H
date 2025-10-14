@@ -43,7 +43,9 @@ Description
     starting from the Nusselt, which is turn obtained via correlation in the
     form
 
-    Nu = A_+B_*(Re^C_)*(Pr^D_)
+    \f[
+        Nu = A_+B_*(Re^C_)*(Pr^D_)
+    \f]
 
     with Re, Pr being the Reynolds (superficial in two-phase) and Prandlt
     of the fluid, and A, B, C, D selectable consts
@@ -51,8 +53,16 @@ Description
     Additional heat transfer coeff to take into account the wall resistance,
     such that
 
-    1/H = (1/(Nu * kappa / Dh)) + (1/H_wall) + (1/ H_fromFMU)
+    \f[
+        1/H = (1/(Nu * kappa / Dh)) + (1/H_wall) + (1/ H_fromFMU)
+    \f]
 
+    Authors:
+    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+    Carlo Fiorina for the FMU part
+
+Usage
     Example of mandatory dictionary entries:
     \verbatim
         const   4;
@@ -62,11 +72,6 @@ Description
         addH    10000;
         HNameFromFMU   HCoupled; //This is the name given to the H in OpenFOAM
     \endverbatim
-
-    Authors:
-    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
-    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
-    Carlo Fiorina for the FMU part
 
 SourceFiles
     NusseltWallAndHfromFMUFSHeatTransferCoefficient.C
