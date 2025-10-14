@@ -1,16 +1,16 @@
 #==============================================================================*
 #
-# GeN-Foam GitLab CI/CD
+# Foam-For-Nuclear GitLab CI/CD
 #
 # Prepared by:
 #     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 #     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 #
-# Comment: fix problem with build environment for test cases
 #==============================================================================*
 
 #image: ubuntu # opencfd/openfoam-dev
 image: ubuntu
+
 
 #==============================================================================*
 #                                    Deploy
@@ -44,5 +44,7 @@ pages:
     - if: $CI_COMMIT_BRANCH == "develop"
     - if: $CI_COMMIT_BRANCH == "refactoringBranch"
       allow_failure: true
+      when: manual
+
 
 #==============================================================================*
