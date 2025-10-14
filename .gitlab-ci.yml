@@ -34,7 +34,7 @@ pages:
     - sphinx-build -b html documentation/sphinx public
 
     # Move Doxygen documentation to the public directory alongside Sphinx
-    - mv Documentation/doxygen/Doxygen/html/ public/doxygen
+    - mv documentation/doxygen/Doxygen/html/ public/doxygen
 
   artifacts:
     paths:
