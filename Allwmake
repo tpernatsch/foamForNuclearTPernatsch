@@ -60,7 +60,7 @@ checkCompletionLib()
 # Usage and help
 
 usage() {
-    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--doc] [--help]"
+    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--doc] [--api] [--help]"
     echo "    -j N|--jobs N     Number of processor used for compilation"
     echo "    --fmi             Activate compilation with FMI features"
     echo "    --doc             Change OpenFOAM version in READMEs and in header"
@@ -253,13 +253,15 @@ then
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" README.md
     fi
 
-    # Code headers
+    # Code headers and doxygen
     checkUpgrade=$(echo "$current_version_num <= $new_version_num" | bc -l)
     if [[ $checkUpgrade -eq 1 ]]
     then
         echo "Update version in headers to OpenFOAM version $WM_PROJECT_VERSION"
         python3 tools/caseFormatting/changeHeader.py
         echo
+
+        sed -i "s/$current_version/$WM_PROJECT_VERSION/" documentation/doxygen/Doxygen/Doxyfile
     fi
 fi
 
@@ -293,6 +295,9 @@ echo
 # Build the Python API
 if [ $api_flag = 'true' ]
 then
+    echo    "foamForNuclear Python API installation"
+    echo -e "--------------------------------------\n"
+
     cd pythonapi
     pip3 install -e .
     cd ..

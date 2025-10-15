@@ -82,7 +82,6 @@ while (versions[-1] != new_version):
     )
     strings_to_replace.append(
         {'old': f'Copyright 2011-2016 OpenFOAM Foundation, 2017-{getYear(versions[-1])} OpenCFD Ltd.', 'new': new_copyright},
-
     )
 
     versions.append(nextVersion(versions[-1]))
