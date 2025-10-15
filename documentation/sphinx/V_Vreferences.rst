@@ -70,7 +70,7 @@ Thermal-hydraulics / heat and mass transfer
   <https://doi.org/10.1016/j.nucengdes.2024.113639>`_", Nuclear Engineering and
   Design, vol. 429, p. 113 639, 2024, ISSN: 0029-5493.
 
-  - Relevance - **GeN-Foam**. Validation of porous-mdeium thermal hydraulics and
+  - Relevance - **GeN-Foam**. Validation of porous-medium thermal hydraulics and
     the hydrogen thermo-physical properties against data from the  KIWI-B-4E experiment
 
 - C. Fiorina, "`Impact of the volume heat source on the RANS-based CFD analysis of
@@ -86,7 +86,6 @@ Thermal-hydraulics / heat and mass transfer
 
   - Relevance - **GeN-Foam**. VErification of porous-medium models against heterogeneous
     models for nuclear thermal propulsion.
-
 
 
 ----------
@@ -187,6 +186,7 @@ Structural mechanics and fuel performance
 
   - Relevance - **OFFBEAT**.@Ale
 
+
 ----------------------------------------
 Multiphysics coupling and integral tests
 ----------------------------------------
@@ -214,6 +214,17 @@ Multiphysics coupling and integral tests
 
   - Relevance - **GeN-Foam**. Validation of GeN-Foam against steady-state and
     transient data from the FFTF
+
+.. _GUILBAUD202313182:
+
+- T. Guilbaud and C. Fiorina, "`Multi-physics modeling of the KIWI-B-4E Nuclear
+  Thermal Propulsion system using OpenMC and GeN-Foam: preliminary as-
+  sessment against experimental data <https://doi.org/10.13182/T128-42091>`_",
+  In: Transactions of the American Nuclear
+  Society, Indianapolis, Indiana, USA (June 11-14, 2023)
+
+  - Relevance - **GeN-Foam**. Validation against data from the KIWI-B-4E nuclear
+    thermal propulsion reactor.
 
 - T. Guilbaud, E. Simonnot, A. Scolaro, and C. Fiorina, "`Full core study of the
   KIWI-B-4E Nuclear Thermal Propulsion system using OpenMC and GeN-Foam
@@ -268,9 +279,6 @@ Others
   Physics of Reactors 2022 (PHYSOR 2022), Pittsburgh, PA, Aug. 2022.
 
   - Relevance - **GeN-Foam**. Summary of the V&V status in 2022.
-
-
-
 
 
 ---------------------------------------

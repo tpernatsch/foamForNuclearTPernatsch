@@ -252,9 +252,9 @@ def generate_class_rst_files(ffn_lib_dirs: list[str], rst_output_dir: str) -> di
                     rst_content += f"============\n\n"
                     # rst_content += f"- `{class_name}.H <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/main/{file_path}>`_\n"
                     # rst_content += f"- `{class_name}.C <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/main/{file_path.replace('.H', '.C')}>`_\n"
-                    rst_content += f"- `Doxygen doc <https://foam-for-nuclear.gitlab.io/GeN-Foam/doxygen/{class_name}_8H.html>`_\n"
-                    rst_content += f"- `{class_name}.H <https://foam-for-nuclear.gitlab.io/GeN-Foam/doxygen/{class_name}_8H_source.html>`_\n"
-                    rst_content += f"- `{class_name}.C <https://foam-for-nuclear.gitlab.io/GeN-Foam/doxygen/{class_name}_8C_source.html>`_\n"
+                    rst_content += f"- `Doxygen doc <https://foam-for-nuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_\n"
+                    rst_content += f"- `{class_name}.H <https://foam-for-nuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_\n"
+                    rst_content += f"- `{class_name}.C <https://foam-for-nuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_\n"
 
                     # Write to rst file in the corresponding output directory
                     rst_file_path = os.path.join(output_dir, f"{class_name}.rst")
@@ -390,12 +390,6 @@ def transform_content(content, is_options_section=False):
 
     transformed_content = replaceInlineMath(transformed_content)
     transformed_content = replaceInlineReference(transformed_content)
-
-    # transformed_content = re.sub(r"\\f\[", "\n.. math::\n", transformed_content)
-    # transformed_content = re.sub("\n\n$$", "\n.. math::\n", transformed_content)
-    # transformed_content = re.sub("\n$$\n\n", "\n", transformed_content)
-    # transformed_content = re.sub(r"\\f\]", "\n", transformed_content)
-
 
     return transformed_content
 

@@ -9,14 +9,20 @@ provide a relatively comprehensive outlook of its functionalities. In each
 tutorial:
 
 - a `README` file provides a general description of the tutorials.
-- the relevant entries in the input files (dictionaries) are often commented to allow identifying the role of non-obvious parameters.
-- an `Allrun` bash script is provided that can be used to run the tutorial. The `Allrun` script can also give a better understanding of the steps to take to run GeN-Foam simulations.
-- in computational-intensive cases, an `Allrun_parallel` bash script is provided to run the tutorial using multiple cores.
+- the relevant entries in the input files (dictionaries) are often commented to
+  allow identifying the role of non-obvious parameters.
+- an `Allrun` bash script is provided that can be used to run the tutorial. The
+  `Allrun` script can also give a better understanding of the steps to take to
+  run GeN-Foam simulations.
+- in computational-intensive cases, an `Allrun_parallel` bash script is provided
+  to run the tutorial using multiple cores.
 - an `Allclean` script is provided to clean up a case after running it.
 
 The following tutorials are distributed together with GeN-Foam. The list below
 is in alphabetic order and do not represent a progression in complexity.
-However, **in 3D_SmallESFR, (hopefully) all non-obvious or non-OpenFOAM-standard input parameters are commented, or they include an indication about the tutorial to look at for additional information**. It represents a good starting point to understand and use GeN-Foam, at least for single-phase applications.
+However, **in 3D_SmallESFR, (hopefully) all non-obvious or non-OpenFOAM-standard input parameters are commented, or they include an indication about the tutorial to look at for additional information**.
+It represents a good starting point to understand and use GeN-Foam, at least for
+single-phase applications.
 
 
 1D_HX
@@ -94,7 +100,7 @@ the end of the transient.
 
 is the same as 1D_MSR_pointKinetics, but for a thermal MSR. This implies that
 there is a graphite structure in the core. The objective is to show: how to use
-the lumpedParamterStructure power model; and how to set a power density both in
+the lumpedParameterStructure power model; and how to set a power density both in
 the salt and in the graphite.
 
 
@@ -312,7 +318,7 @@ conditions of the transient case will instead trigger an actual transient. For
 example, modifying the *keff* in the *reactorState* dictionary will trigger a
 reactivity-initiated transient. A more realistic transient can be initiated by
 modifying the *CRmove* dictionary. The case is similar to the one presented in
-Refs. \cite FIORINA201524 \cite Fiorina2015ApplicationCodes.
+Refs. :ref:`FIORINA201524 <FIORINA201524>` :ref:`FIORINA2017419 <FIORINA2017419>`.
 
 
 3D_NTPfuelAssembly
@@ -326,7 +332,7 @@ OpenFOAM format that model the hydrogen dissociation at high temperatures.
 An `Allclean` script is provided to clean up the case. An `Allpostprocess`
 script is provided to extract the main parameters as well as axial
 distributions (powerDensity, fluxes, temperatures, coolant density). The case
-is similar to the one presented in Refs. \cite Guilbaud2023.
+is similar to the one presented in Refs. :ref:`GUILBAUD202313182 <GUILBAUD202313182>`.
 
 
 Godiva_SN
@@ -384,7 +390,7 @@ of the pump with a fixed temperature and fixed power.
 
 
 2D_PKCoupleFMI
-------------------
+--------------
 
 This case has been derived from *2D_onePhaseAndPointKineticsCoupling*. It reuses
 the same mesh and physical parameters. This case is an example of the use of
@@ -395,12 +401,12 @@ external reactivity (*FMU/2D_PKCoupleFMI/PIDcontrol*).
 
 
 2D_LFRpowerPlant
---------------------
+----------------
 
 The purpose of this case is to simulate coupled GeN-Foam/FMU of an entire
 power-plant from the core to the turbine. The reactor is the Lead Fast Reactor
 (LFR) ALFRED of 300 MWth. The case is similar to the one presented in
-Refs. \cite GUILBAUD2024105022.
+Refs. :ref:`GUILBAUD2024105022 <GUILBAUD2024105022>`.
 
 
 Work in progress / need adaptation from previous GeN-Foam

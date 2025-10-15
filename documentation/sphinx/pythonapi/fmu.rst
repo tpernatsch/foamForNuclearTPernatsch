@@ -20,7 +20,7 @@ other models.
 
 Examples of use are provided in the following examples:
 
-- examples/fmuCases/2D_PKCoupleFMI
+- tutorials/fmuCases/2D_PKCoupleFMI
 
 
 Export OpenFOAM cases in FMU
@@ -51,4 +51,4 @@ steps based on the smallest among all FMUs.
 
 Example of use can be found here:
 
-- examples/fmuCases/2D_PKCoupleFMIas2FMUs
+- tutorials/fmuCases/2D_PKCoupleFMIas2FMUs

@@ -50,7 +50,7 @@ Thermal-hydraulics / heat and mass transfer
     and sinks,  the concept of sub-scale structures, and turbulence in porous media.
     It briefly explains the concept of global and local coordinate systems.
   - Warning - Navier-Stokes equations are now solved based on the real fluid velocity,
-    not Darcy velocity (See :ref:`RADMAN2021111178`).
+    not Darcy velocity (See :ref:`RADMAN2021111178 <RADMAN2021111178>`).
 
 .. _RADMAN2021111178:
 
@@ -102,7 +102,7 @@ Thermal-hydraulics / heat and mass transfer
   <https://doi.org/10.1016/j.nucengdes.2021.111178`_", Nuclear Engineering and
   Design, vol. 335, 111178, Dec. 2019.
 
-  - Relevance - **GeN-Foam**. Exampe of use of thermal and pressure baffles.
+  - Relevance - **GeN-Foam**. Example of use of thermal and pressure baffles.
 
 .. _FIORINA2019376:
 
@@ -231,6 +231,8 @@ Multiphysics coupling
 FMI coupling
 ------------
 
+.. _GUILBAUD2024105022:
+
 - T. Guilbaud, et al. "`Investigating the Functional Mock-up Interface as a Coupling
   Framework for the multi-fidelity analysis of nuclear reactors
   <https://doi.org/10.1016/j.pnucene.2023.105022>`_", Progress in Nuclear Energy
@@ -240,10 +242,9 @@ FMI coupling
     of the FMI interface.
 
 
-
-------
+---------------------------
 Other relevant publications
-------
+---------------------------
 
 - C. Fiorina, I. Clifford, S. Kelm, and S. Lorenzi, "`On the development of multi-
   physics tools for nuclear reactor analysis based on OpenFOAM (R): state of the
@@ -264,9 +265,9 @@ Other relevant publications
     with the current foamForNuclear libraries is not guaranteed.
 
 
-------
+------------------
 Learning resources
-------
+------------------
 
 - "`Multi-physics modelling and simulation of nuclear reactors using OpenFOAM
    <https://elearning.iaea.org/m2/course/view.php?id=1286>`_"
@@ -277,7 +278,7 @@ Learning resources
   - Warning. Requires an IAEA Nucleus account. The course was offered prior
     to foamForNuclear, so prior to a new structure that merges the capabilities
     of GeN-Foam and OFFBEAT, and widely expand the multi-physics capabilities
-    of the platform. However, it still provides a well strcutured
+    of the platform. However, it still provides a well structured
     introduction on how to approach complex OpenFOAM-based tools like foamForNuclear
 
 

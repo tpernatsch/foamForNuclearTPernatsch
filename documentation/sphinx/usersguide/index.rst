@@ -25,4 +25,3 @@ through the essential aspects of using foamForNuclear to perform simulations.
    important_notes
    tips_and_tricks
    tutorials
-   user_manual
