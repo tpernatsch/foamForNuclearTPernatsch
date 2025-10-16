@@ -1,10 +1,6 @@
 # GeN-Foam regression test suite
 
-<<<<<<< HEAD:Tutorials/regressionResults-fast.md
 Regression test of 29-sept.-2025 - 10:10:49  
-=======
-Regression test of 08-oct.-2025 - 17:20:06  
->>>>>>> refactoringBranch:tutorials/regressionResults-fast.md
 OpenFOAM Version: v2506  
 Tutorials successfully completed: 11/11  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()  
 
