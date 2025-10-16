@@ -36,44 +36,51 @@ GeN-Foam/*.sublime*
 *.dep
 **/__pycache__
 *.egg
-Tools/openmcToFoam/**/*.txt
-Tools/openmcToFoam/**/PKG-INFO
+*.egg-info
+tools/openmcToFoam/**/*.txt
+tools/openmcToFoam/**/PKG-INFO
 
 # Doxygen files
-Documentation/doxygen/Doxygen/html/**
+documentation/doxygen/Doxygen/html/**
+documentation/mkdocs/docs/classes
+documentation/**/generated
+documentation/**/_build
 public
-Documentation/mkdocs/docs/classes
+
+# Python API
+pythonapi/build
 
 # FMU installation
-FMU4FOAM
+thirdParty/FMU4FOAM
 
 # Tutorials
-Tutorials/featureCases/1D_boiling/*[123456789]*
-Tutorials/featureCases/1D_CHF/imposedPower/*[123456789]*
-Tutorials/featureCases/1D_CHF/imposedTemperature/*[123456789]*
-Tutorials/featureCases/1D_HX/onePhase/*[123456789]*
-Tutorials/featureCases/1D_HX/twoPhase/*[123456789]*
-Tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/*[123456789]*
-Tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex1_01_5215/*[123456789]*
-Tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770/*[123456789]*
-Tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex3_11-0312_power_increase/*[123456789]*
-Tutorials/featureCases/2D_cavityBoussinesq/*[123456789]*
-Tutorials/featureCases/2D_KNS37-L22/*[123456789]*
-!Tutorials/featureCases/2D_KNS37-L22/-2
-Tutorials/featureCases/2D_voidMotionNoPhaseChange/*[123456789]*
-Tutorials/guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion/[01]
-Tutorials/guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion/[01]
-Tutorials/reactorCases/Godiva_SN/*[123456789]*
-Tutorials/fmuCases/powerTemperatureMomentumControl/*[123456789]*
-Tutorials/*/**/0.converged*
-Tutorials/**/postProcessing*
-Tutorials/**/processor*
-Tutorials/**/steadyState*
-Tutorials/**/transient*
-Tutorials/**/GeN-Foam.dat
-Tutorials/**/log.*
-Tutorials/**/*.out
-Tutorials/**/*.baffleLess/polyMesh
+tutorials/featureCases/1D_boiling/*[123456789]*
+tutorials/featureCases/1D_CHF/imposedPower/*[123456789]*
+tutorials/featureCases/1D_CHF/imposedTemperature/*[123456789]*
+tutorials/featureCases/1D_HX/onePhase/*[123456789]*
+tutorials/featureCases/1D_HX/twoPhase/*[123456789]*
+tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/*[123456789]*
+tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex1_01_5215/*[123456789]*
+tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770/*[123456789]*
+tutorials/featureCases/1D_PSBT_SC/PhaseII_Ex3_11-0312_power_increase/*[123456789]*
+tutorials/featureCases/2D_cavityBoussinesq/*[123456789]*
+tutorials/featureCases/2D_flowOverHeatedPlate/*[123456789]*
+tutorials/featureCases/2D_KNS37-L22/*[123456789]*
+!tutorials/featureCases/2D_KNS37-L22/-2
+tutorials/featureCases/2D_voidMotionNoPhaseChange/*[123456789]*
+tutorials/guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion/[01]
+tutorials/guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion/[01]
+tutorials/reactorCases/Godiva_SN/*[123456789]*
+tutorials/fmuCases/powerTemperatureMomentumControl/*[123456789]*
+tutorials/*/**/0.converged*
+tutorials/**/postProcessing*
+tutorials/**/processor*
+tutorials/**/steadyState*
+tutorials/**/transient*
+tutorials/**/GeN-Foam.dat
+tutorials/**/*.baffleLess/polyMesh
+**/log.*
+**/*.out
 !**/2D_*
 !**/*Ex1*
 !**/*Ex2*
@@ -82,11 +89,11 @@ Tutorials/**/*.baffleLess/polyMesh
 !**/2FMU
 !**/3FMU
 !**/quadratureSet*
-!Tutorials/*/**/XS*
+!tutorials/*/**/XS*
 **/old.*
 **/archive.*
 **/*.csv*
 **/*.foam
 
 # Tools
-Tools/**/build
+tools/**/build

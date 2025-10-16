@@ -1,0 +1,153 @@
+#!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#==============================================================================*
+
+endTimeTH=15
+endTimeEN=165
+endTimeTransient=175
+
+# Default order of cases
+all_cases="steadyStateTH steadyStateEN transient"
+
+if [ $# -eq 0 ]; then
+    cases="$all_cases"
+else
+    cases=""
+    for c in $all_cases; do
+        for arg in "$@"; do
+            if [ "$c" = "$arg" ]; then
+                cases="$cases $c"
+            fi
+        done
+    done
+
+    for arg in "$@"; do
+        echo "$all_cases" | grep -qw "$arg" || {
+            echo "Error: invalid case '$arg'"
+            echo "Valid cases are: $all_cases"
+            exit 1
+        }
+    done
+fi
+
+runCloneCase()
+{
+    printf "Cloning $2 to case $1..."
+    cp -r $2 $1
+    printf "$2 cloned!\n"
+}
+
+setSteadyStateTH()
+{
+    runCloneCase $1 $2
+    printf "Setting steady state case...\n"
+    rm -r $1/0/neutroRegion $1/constant/neutroRegion $1/system/neutroRegion
+    rm -r $1/0/uniform
+    rm -r $1/constant/fluidRegion/polyMeshFine
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeTH
+    foamDictionary $1/system/controlDict -entry deltaT -set 1e-03
+    foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
+    foamDictionary $1/system/controlDict -entry writeInterval -set 1
+    foamDictionary $1/system/controlDict -entry regionSolvers/fluidRegion -set onePhase
+    foamDictionary $1/system/controlDict -entry removeBaffles/fluidRegion -set false
+    cp $1/constant/regionsDict_steadyStateTH $1/constant/regionsDict
+    rm $1/constant/regionsDict_*
+    printf "Case set!\n\n"
+}
+
+setSteadyStateEN()
+{
+    runCloneCase $1 $2
+    printf "Setting steady state  case...\n"
+    cp -r $3/$endTimeTH $1/$endTimeTH
+    cp -r $1/0/neutroRegion $1/$endTimeTH/
+    cp -r $1/0/uniform $1/$endTimeTH/
+    rm -r $1/constant/neutroRegion/polyMeshFine $1/constant/fluidRegion/polyMeshFine
+    foamDictionary $1/system/controlDict -entry startTime -set $endTimeTH
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeEN
+    foamDictionary $1/system/controlDict -entry deltaT -set 0.25
+    foamDictionary $1/system/controlDict -entry adjustTimeStep -set false
+    foamDictionary $1/system/controlDict -entry writeInterval -set 50    
+    foamDictionary $1/system/controlDict -entry removeBaffles/fluidRegion -set false
+    foamDictionary $1/system/controlDict -entry removeBaffles/neutroRegion -set false
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveEnergy -set true
+    cp $1/constant/regionsDict_steadyStateEN $1/constant/regionsDict
+    rm $1/constant/regionsDict_*
+    printf "Case set!\n\n"
+}
+
+setTransient()
+{
+    runCloneCase $1 $2
+    printf "Setting $1 case...\n"
+    cp -r $3/$endTimeEN $1/$endTimeEN
+    rm -r $1/constant/neutroRegion/polyMeshFine $1/constant/fluidRegion/polyMeshFine
+    foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    foamDictionary $1/system/controlDict -entry startTime -set $endTimeEN
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeTransient
+    foamDictionary $1/system/controlDict -entry deltaT -set 1e-03
+    foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
+    foamDictionary $1/system/controlDict -entry writeInterval -set 10
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveFluidMechanics -set false
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE/solveEnergy -set true
+    cp $1/constant/regionsDict_transient $1/constant/regionsDict
+    foamDictionary $1/system/controlDict -entry removeBaffles/fluidRegion -set false
+    foamDictionary $1/system/controlDict -entry removeBaffles/neutroRegion -set false
+    rm $1/constant/regionsDict_*
+    printf "Case set!\n\n"
+}
+
+for caseName in $cases
+do
+    printf "Preparing to run case $caseName...\n"
+
+    case "$caseName" in
+        "steadyStateTH")
+            setSteadyStateTH $caseName rootCase
+            printf "Steady state th case is prepared!\n"
+            ;;
+        "steadyStateEN")
+            setSteadyStateEN $caseName rootCase steadyStateTH
+            printf "Steady state NE case is prepared!\n"
+            ;;
+        "transient")
+            printf "Transient case is prepared!\n"
+            setTransient $caseName rootCase steadyStateEN
+            ;;
+    esac
+
+    # Start gnuplot if it exist
+    if command -v gnuplot &> /dev/null
+    then
+        gnuplot -e "log='$caseName/log.GeN-Foam'" residuals - &> /dev/null &
+    else
+        echo "gnuplot could not be found"
+    fi
+
+    #( cd $caseName && runApplication `getApplication` )
+    printf "Running GeN-Foam on $caseName\n"
+    GeN-Foam -case $caseName 2>&1 | tee "$caseName/log.GeN-Foam"
+
+    # Kill gnuplot if it was started
+    pkill -x gnuplot &> /dev/null &
+
+done
+
+# expected keff: 0.960282
+#==============================================================================*

@@ -1,0 +1,15 @@
+thermalHydraulics/blackBodyRadiation/blackBodyRadiationFvPatchScalarField.C
+thermalHydraulics/NusseltThermalBaffle1D/NusseltThermalBaffle1DFvPatchScalarField.C
+thermalHydraulics/velocityRundown/velocityRundownFvPatchVectorField.C
+thermalHydraulics/timeFieldTable/timeFieldTableFvPatchScalarField.C
+thermalHydraulics/mappedDarcyVelocity/mappedDarcyVelocityFvPatchVectorField.C
+thermalHydraulics/parabolicVelocityPatchField/parabolicVelocityFvPatchVectorField.C
+thermalHydraulics/fixedMassFlowRate/fixedMassFlowRateFvPatchVectorField.C
+
+neutronics/albedoSP3/albedoSP3FvPatchField.C
+
+thermoMechanics/tractionDisplacement/GFTractionDisplacementFvPatchVectorField.C
+
+
+
+LIB = $(FOAM_USER_LIBBIN)/libFvPatchFields

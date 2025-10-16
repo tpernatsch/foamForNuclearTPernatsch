@@ -1,0 +1,83 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p_rgh
+    {
+        solver          GAMG;
+        smoother        FDIC;
+        tolerance       1e-6;
+        relTol          0.01;
+    }
+
+    p_rghFinal
+    {
+        $p_rgh;
+        relTol          0;
+    }
+
+    "e.*"
+    {
+        solver          PBiCGStab;//smoothSolver;
+        smoother        symGaussSeidel;
+        preconditioner  diagonal;
+        tolerance       1e-5;
+        relTol          0.1;
+        minIter         0;
+    }
+
+    "h.*"
+    {
+        solver          PBiCGStab;//smoothSolver;
+        preconditioner  diagonal;
+        smoother        symGaussSeidel;
+        tolerance       1e-5;
+        relTol          0.1;
+        minIter         0;
+    }
+
+    ".*"
+    {
+        solver          PBiCGStab;
+        preconditioner  diagonal;
+        tolerance       1e-4;
+        relTol          0.1;
+    }
+}
+
+PIMPLE
+{
+    // momentumPredictor   yes;
+    // correctPhi          yes;
+    nCorrectors         1;
+    nNonOrthogonalCorrectors 0;
+    // nOuterCorrectors    3;
+    momentumMode                faceCentered;
+    solveEnergy             true;   
+    solveFluidMechanics     true;
+}
+
+relaxationFactors
+{
+    fields//equations
+    {
+        ".*"            0.6;
+    }
+}
+
+// ************************************************************************* //

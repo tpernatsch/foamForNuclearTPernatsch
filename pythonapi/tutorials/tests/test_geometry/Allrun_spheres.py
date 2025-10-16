@@ -1,0 +1,61 @@
+import foamForNuclear as ffn
+import foamForNuclear.mesh as mesh
+
+
+nMesh = mesh.BlockMesh(region='neutroMesh')
+
+nMesh.createHalfSphere(
+    "center",
+    radius=1,
+    nCenter=4, nBorder=4,
+    isAddBoundaryConditions=True
+)
+nMesh.createHollowHalfSphere(
+    "ringSphere1",
+    innerRadius=1, outerRadius=2,
+    nr=2, nt=4,
+    isAddBoundaryConditions=True
+)
+nMesh.createHollowHalfSphere(
+    "ringSphere2",
+    innerRadius=2, outerRadius=3,
+    nr=1, nt=4,
+    isAddBoundaryConditions=True
+)
+nMesh.createCylinderAlongZ(
+    name="core",
+    radius=1,
+    lowZ=0, highZ=1,
+    nx=4, ny=4, nz=4,
+    isAddBoundaryConditions=True
+)
+nMesh.createRingAlongZ(
+    name="ring",
+    innerRadius=2,
+    outerRadius=3,
+    lowZ=0, highZ=1,
+    nr=1, nt=4, nz=3,
+    isAddBoundaryConditions=True
+)
+
+nMesh.addMergePatchPairs()
+nMesh.mergePatchesWithName(name='top', includeFacename=['Top_'])
+nMesh.mergePatchesWithName(name='wall', includeFacename=['Wall'])
+
+solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
+
+
+model = ffn.Model()
+model.settings.application = 'dummy'
+
+model.solvers.append(solver)
+
+ffn.allclean()
+model.export_to_openfoam()
+
+ffn.run_preprocessing(model=model)
+
+model.plot_mesh(region=nMesh, show_edges=True)
+# model.plot_boundary(region=nMesh, boundaryName='defaultFaces', show_edges=True)
+for boundaryName in ['top', 'wall']:
+    model.plot_boundary(region=nMesh, boundaryName=boundaryName, show_edges=True)

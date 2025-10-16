@@ -1,0 +1,75 @@
+
+EXE_INC = \
+    -I. \
+    -I./include \
+    -I./../../../src/interpolationModels/lnInclude \
+    -I./../../../src/solutionControl/lnInclude \
+    -I./../../../src/profiles/lnInclude \
+    -I./../../../src/crossSections/lnInclude \
+    -I./../../../src/porousMediaModels/lnInclude \
+    -I./../../../src/thermophysicalProperties/lnInclude \
+    -I./../../../src/multiRegion/lnInclude \
+    -I./../../../src/fvPatchFields/lnInclude \
+    -I./../../modules/thermalHydraulics/lnInclude \
+    -I./../../modules/neutronics/lnInclude \
+    -I./../../modules/thermoMechanics/lnInclude \
+    -I./../../modules/fuelBehaviour/lnInclude \
+    -I./../../modules/openFoamImported/lnInclude \
+    -I$(LIB_SRC)/meshTools/lnInclude \
+    -I$(LIB_SRC)/sampling/lnInclude \
+    -I$(LIB_SRC)/finiteVolume/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/compressible/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/turbulenceModels/lnInclude \
+    -I$(LIB_SRC)/TurbulenceModels/phaseCompressible/lnInclude \
+    -I$(LIB_SRC)/transportModels/compressible/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/specie/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/solidThermo/lnInclude \
+    -I$(LIB_SRC)/thermophysicalModels/solidSpecie/lnInclude \
+    -I$(LIB_SRC)/regionModels/regionModel/lnInclude \
+    -I$(LIB_SRC)/ODE/lnInclude \
+    -I$(LIB_SRC)/parallel/reconstruct/reconstruct/lnInclude \
+    -I$(LIB_SRC)/dynamicMesh/lnInclude \
+    -I$(LIB_SRC)/dynamicFvMesh/lnInclude \
+
+EXE_LIBS = \
+    -L$(FOAM_USER_LIBBIN) -lInterpolationModels \
+    -L$(FOAM_USER_LIBBIN) -lSolutionControl \
+    -L$(FOAM_USER_LIBBIN) -lProfiles \
+    -L$(FOAM_USER_LIBBIN) -lCrossSections \
+    -L$(FOAM_USER_LIBBIN) -lPorousMediaModels \
+    -L$(FOAM_USER_LIBBIN) -lThermophysicalProperties \
+    -L$(FOAM_USER_LIBBIN) -lMultiRegion \
+    -L$(FOAM_USER_LIBBIN) -lFvPatchFields \
+    -L$(FOAM_USER_LIBBIN) -lFluidSolvers\
+    -L$(FOAM_USER_LIBBIN) -lNeutronicsSolvers \
+    -L$(FOAM_USER_LIBBIN) -lThermoMechanicsSolvers \
+    -L$(FOAM_USER_LIBBIN) -lOFSolvers \
+    -L$(FOAM_USER_LIBBIN) -loffbeat \
+    -L$(FOAM_USER_LIBBIN) -lsciantix \
+    -L$(FOAM_USER_LIBBIN) -lOFSolvers \
+    -lcompressibleTransportModels \
+    -lfluidThermophysicalModels \
+    -lsolidThermo \
+    -lsolidSpecie \
+    -lspecie \
+    -lcompressibleTurbulenceModels \
+    -lturbulenceModels \
+    -lmeshTools \
+    -lfiniteVolume \
+    -lfvOptions \
+    -lregionModels \
+    -lsampling \
+    -lsolidSpecie \
+    -lODE \
+    -lgenericPatchFields \
+    -lreconstruct \
+    -ldynamicMesh \
+    -ldynamicFvMesh \
+
+ifneq (,$(findstring ECI4FOAM,$(LIB_ECI4FOAM)))
+    EXE_INC += -I$(LIB_ECI4FOAM)/src/externalComm/lnInclude
+    EXE_INC += -I$(LIB_FMU4FOAM)/src/OF_FMU/fmuControl/lnInclude
+    EXE_LIBS += -lexternalComm
+    EXE_LIBS += -L$(FOAM_USER_LIBBIN) -lFMUControl
+endif

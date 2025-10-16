@@ -1,0 +1,24 @@
+/*
+Script to generate the secondary circuit in FMU
+*/
+
+// Load the mandatory libraries
+loadModel(Modelica, ThermoPower);
+
+// Load all the files composing the model
+loadFile("./SignalProcess.mo");
+loadFile("./SecondaryCircuitWithControl.mo");
+loadFile("./SecondaryCircuitWithoutControl.mo");
+loadFile("./PIDfreq.mo");
+
+// Some useful options for FMI
+setCommandLineOptions("--fmiFilter=none");
+setCommandLineOptions("--fmiSources=true");
+setCommandLineOptions("--initOptModules=inputDerivativesUsed");
+setCommandLineOptions("--debug=-disableDirectionalDerivatives");
+setDebugFlags("fmuExperimental"); // To enable derivatives
+
+// Build the FMU
+buildModelFMU(SecondaryCircuitWithControl, version="2.0", fmuType="cs");
+// buildModelFMU(SecondaryCircuitWithoutControl, version="2.0", fmuType="cs");
+buildModelFMU(PIDfreq, version="2.0", fmuType="cs");

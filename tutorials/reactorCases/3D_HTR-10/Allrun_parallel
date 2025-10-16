@@ -1,0 +1,62 @@
+#!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#==============================================================================*
+
+exe="GeN-Foam"
+
+cases="steadyState"
+
+runCloneCase()
+{
+    printf "Cloning $2 to case $1..."
+    #foamCloneCase -latestTime $2 $1
+    cp -r $2 $1
+    printf "$2 cloned!\n"
+}
+
+
+for caseName in $cases
+do
+    printf "Preparing to run case $caseName...\n"
+
+    case "$caseName" in
+    "steadyState")
+        runCloneCase $caseName rootCase
+        printf "Steady state case is prepared!\n"
+        printf "Running $exe on $caseName\n"
+        decomposePar -case $caseName -allRegions -copyUniform -time 0
+        ;;
+    esac
+
+    # Start gnuplot if it exist
+    if command -v gnuplot &> /dev/null
+    then
+        gnuplot -e "log='$caseName/log.$exe'" residuals - &> /dev/null &
+    else
+        echo "gnuplot could not be found"
+    fi
+
+    printf "Running $exe on $caseName\n"
+    mpirun -np 6 $exe -parallel -case $caseName | tee "$caseName/log.$exe"
+
+    # Kill gnuplot if it was started
+    pkill -x gnuplot &> /dev/null
+
+done
+
+#==============================================================================*

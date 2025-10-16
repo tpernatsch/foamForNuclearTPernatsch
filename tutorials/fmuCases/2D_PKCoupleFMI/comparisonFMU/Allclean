@@ -1,0 +1,4 @@
+#!/bin/sh
+rm -rf steady* transient*
+rm -rf *.log log.* *.out *.png
+rm -rf rootCase*/*.libs rootCase*/*.log rootCase*/*.makefile

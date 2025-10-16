@@ -1,0 +1,64 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2412                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       FRAPCON;
+    location    "25888284.641197/fuelBehaviourRegion/uniform";
+    object      gapGas;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+massFractions   
+{
+    Ar              0;
+    He              0.0746556;
+    Kr              0.0674227;
+    Ne              0;
+    Rn              0;
+    Xe              0.857922;
+}
+;
+
+gasPressureType fromModel;
+
+gapVolume (in the OFFBEAT model) 4.35913e-09;
+gapVolume (in the corresponding 360 degree rod) 1.56929e-06;
+gapTemperature  850.835;
+
+reserveVolume (in the OFFBEAT model) 0;
+reserveVolume (in the corresponding 360 degree rod) 0;
+reserveT_       290;
+
+dishVolume (in the OFFBEAT model) 0;
+dishVolume (in the corresponding 360 degree rod) 0;
+dishTemperature 0;
+
+holeVolume (in the OFFBEAT model) 1.65264e-08;
+holeVolume (in the corresponding 360 degree rod) 5.9495e-06;
+holeTemperature 2029.58;
+
+topPlenumVolume (in the OFFBEAT model) 8.44609e-09;
+topPlenumVolume (in the corresponding 360 degree rod) 3.04059e-06;
+topPlenumTemperature 864.221;
+
+bottomPlenumVolume (in the OFFBEAT model) 1.88913e-07;
+bottomPlenumVolume (in the corresponding 360 degree rod) 6.80087e-05;
+bottomPlenumTemperature 669.161;
+
+crackGasVolume (in the OFFBEAT model) 2.48363e-09;
+crackGasVolume (in the corresponding 360 degree rod) 8.94107e-07;
+crackGasTemperature 1455.42;
+
+gasPressure     344826;
+gasMass         4.91055e-07;
+
+
+// ************************************************************************* //

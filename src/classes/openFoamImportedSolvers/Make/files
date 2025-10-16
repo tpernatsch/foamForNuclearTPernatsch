@@ -1,5 +1,0 @@
-compressibleInterFoam/compressibleInterFoam.C
-
-scalarTransportFoam/scalarTransportFoam.C
-
-LIB = $(FOAM_USER_LIBBIN)/libOFSolvers

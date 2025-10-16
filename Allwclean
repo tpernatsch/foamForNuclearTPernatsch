@@ -1,22 +1,41 @@
 #!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
 cd ${0%/*} || exit 1    # Run from this directory
 
-wclean libso ./src/classes/common
-wclean libso ./src/classes/multiRegion
-wclean libso ./src/classes/thermalHydraulics/src
-wclean libso ./src/classes/thermalHydraulics/solvers
-wclean libso ./src/classes/neutronics
-wclean libso ./src/classes/thermoMechanics
 
-if [ -d "./src/classes/offbeat/src/offbeatLib" ]
-then
-    wclean libso ./src/classes/offbeat/solvers
-    wclean libso ./src/classes/offbeat/src/offbeatLib
-    wclean libso ./src/classes/offbeat/src/SCIANTIX
-fi
+# clean OFFBEAT libs
+wclean libso ./src/offbeat/src/SCIANTIX
+wclean libso ./src/offbeat/src/offbeatLib
 
-wclean libso ./src/classes/openFoamImportedSolvers
-wclean ./GeN-Foam
+# clean src libs
+wclean libso ./src/interpolationModels
+wclean libso ./src/solutionControl
+wclean libso ./src/profiles
+wclean libso ./src/crossSections
+wclean libso ./src/porousMediaModels
+wclean libso ./src/thermophysicalProperties
+wclean libso ./src/multiRegion
+wclean libso ./src/fvPatchFields
+wclean libso ./src/functionObjects
 
+# clean modules
+wclean libso ./applications/modules/thermalHydraulics
+wclean libso ./applications/modules/neutronics
+wclean libso ./applications/modules/thermoMechanics
+wclean libso ./applications/modules/fuelBehaviour
+wclean libso ./applications/modules/openFoamImported
+
+# clean apps
+wclean ./applications/solvers/GeN-Foam
+
+# clean tests
 wclean ./tests/hydrogenThermophysicalProperties
 wclean ./tests/radialBasisFunctions

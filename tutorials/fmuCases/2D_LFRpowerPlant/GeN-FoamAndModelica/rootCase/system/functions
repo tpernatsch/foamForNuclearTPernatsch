@@ -1,0 +1,498 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      functions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+writeIntervalFunctions  1;
+
+timeStartFunctions      0;
+
+functions
+{
+    avgCoolantTemperature
+    {
+        type            volFieldValue;
+        libs            ( "libfieldFunctionObjects.so" );
+        operation       volAverage;
+        region          fluidRegion;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        fields
+        (
+            T
+        );
+    }
+
+    minMaxTFuel
+    {
+        type            fieldMinMax;
+        libs            (fieldFunctionObjects);
+        writeControl    adjustableRunTime;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        location        false;
+        mode            magnitude;
+        region          fluidRegion;
+        log             true;
+        fields
+        (
+            Tfi.nuclearFuelPin
+            Tfav.nuclearFuelPin
+            Tfo.nuclearFuelPin
+        );
+    }
+
+    minMaxTClad
+    {
+        type              fieldMinMax;
+        libs              (fieldFunctionObjects);
+        writeControl      adjustableRunTime;
+        writeInterval     1;
+        timeStart         $timeStartFunctions;
+        location          false;
+        mode              magnitude;
+        region            fluidRegion;
+        log               true;
+        fields
+        (
+            Tci.nuclearFuelPin
+            Tcav.nuclearFuelPin
+            Tco.nuclearFuelPin
+        );
+    }
+
+    mFlowInnerCore
+    {
+        type            massFlow; // [kg/s]
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_14_rotated;
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     72.0; // 360/5 (wedge)
+    }
+    mFlowOuterCore
+    {
+        type            massFlow; // [kg/s]
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_35_rotated;
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     72.0; // 360/5 (wedge)
+    }
+
+    mFlowSG
+    {
+        type            massFlow; // [kg/s]
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_102_rotated; // Edge_122_rotated;
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     72.0; // 360/5 (wedge)
+    }
+    mFlowPrimaryPumpInlet
+    {
+        type            massFlow; // [kg/s]
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_81_rotated; // Edge_102_rotated;
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     72.0; // 360/5 (wedge)
+    }
+    mFlowPrimaryPumpOutlet
+    {
+        type            massFlow; // [kg/s]
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_82_rotated; // Edge_103_rotated;
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     72.0; // 360/5 (wedge)
+    }
+
+    avgSGInletTemperature
+    {
+        type            TBulk;
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_94_rotated; // Edge_115_rotated;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+    avgSGOutletTemperature
+    {
+        type            TBulk;
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_98_rotated; // Edge_119_rotated;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+
+    avgLowerPlenumInnerCoreInletTemperature
+    {
+        type            TBulk;
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_13_rotated;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+    avgLowerPlenumOuterCoreInletTemperature
+    {
+        type            TBulk;
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_34_rotated;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+
+    avgInnerCoreInletTemperature
+    {
+        type            TBulk;
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_14_rotated;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+    avgInnerCoreOutletTemperature
+    {
+        type            TBulk;
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_15_rotated;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+    avgOuterCoreInletTemperature
+    {
+        type            TBulk;
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_35_rotated;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+    avgOuterCoreOutletTemperature
+    {
+        type            TBulk;
+        libs            ( "libFunctionObjects.so" );
+        region          fluidRegion;
+        regionType      faceZone;
+        regionName      Edge_36_rotated;
+        thermoName      "thermophysicalProperties";
+        alphaRhoPhiName "alphaRhoPhi";
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+
+    corePower
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        fields          (powerDensityNeutronics);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      all;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     ${{72.0 * 0.37756}}; // 0.300239}}; // 360/5 (wedge) * fuelFractionInCore // power.py
+    }
+
+
+    /*subtract1
+    {
+        // Mandatory entries (unmodifiable)
+        type            subtract;
+        libs            (fieldFunctionObjects);
+
+        // Mandatory (inherited) entry (runtime modifiable)
+        fields
+        (
+            T
+            T.fixedTemperatureFMU
+        );
+
+        // Optional (inherited) entries
+        region          fluidRegion;
+        regionType      cellZone;
+        regionName      "SGenPrim1:SGenPrim2:SGenPrim3:SGenPrim4:SGenPrim5:SGenPrim6:SGenPrim7:SGenPrim8";
+        writeControl    adjustableRunTime;
+        writeFields     true;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+
+    multiply1
+    {
+        // Mandatory entries (unmodifiable)
+        type    multiply;
+        libs    (fieldFunctionObjects);
+
+        // Mandatory (inherited) entry (runtime modifiable)
+        fields (
+            htc
+            subtract(T,T.fixedTemperatureFMU)
+        );
+
+        // Optional (inherited) entries
+        region          fluidRegion;
+        regionType      cellZone;
+        regionName      "SGenPrim1:SGenPrim2:SGenPrim3:SGenPrim4:SGenPrim5:SGenPrim6:SGenPrim7:SGenPrim8";
+        writeControl    adjustableRunTime;
+        writeFields     true;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+    }
+
+
+    avg1
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellZone;
+        name            SGenPrim1;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     ${{72 * 56.69862}}; // wedge scaling * volumetric area
+        fields
+        (
+            multiply(htc,subtract(T,T.fixedTemperatureFMU))
+        );
+    }
+    avg2
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellZone;
+        name            SGenPrim2;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     ${{72 * 56.69862}};
+        fields
+        (
+            multiply(htc,subtract(T,T.fixedTemperatureFMU))
+        );
+    }
+    avg3
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellZone;
+        name            SGenPrim3;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     ${{72 * 56.69862}};
+        fields
+        (
+            multiply(htc,subtract(T,T.fixedTemperatureFMU))
+        );
+    }
+    avg4
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellZone;
+        name            SGenPrim4;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     ${{72 * 56.69862}};
+        fields
+        (
+            multiply(htc,subtract(T,T.fixedTemperatureFMU))
+        );
+    }
+    avg5
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellZone;
+        name            SGenPrim5;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     ${{72 * 56.69862}};
+        fields
+        (
+            multiply(htc,subtract(T,T.fixedTemperatureFMU))
+        );
+    }
+    avg6
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellZone;
+        name            SGenPrim6;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     ${{72 * 56.69862}};
+        fields
+        (
+            multiply(htc,subtract(T,T.fixedTemperatureFMU))
+        );
+    }
+    avg7
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellZone;
+        name            SGenPrim7;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     ${{72 * 56.69862}};
+        fields
+        (
+            multiply(htc,subtract(T,T.fixedTemperatureFMU))
+        );
+    }
+    avg8
+    {
+        type            volFieldValue;
+        libs            (fieldFunctionObjects);
+        operation       volIntegrate;
+        region          fluidRegion;
+        regionType      cellZone;
+        name            SGenPrim8;
+        writeControl    adjustableRunTime;
+        writeFields     false;
+        writeInterval   $writeIntervalFunctions;
+        timeStart       $timeStartFunctions;
+        log             true;
+        scaleFactor     ${{72 * 56.69862}};
+        fields
+        (
+            multiply(htc,subtract(T,T.fixedTemperatureFMU))
+        );
+    }*/
+}
+
+// ************************************************************************* //

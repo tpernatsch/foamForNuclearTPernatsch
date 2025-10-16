@@ -1,24 +1,78 @@
 #!/bin/bash
-#==============================================================================*
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
 
 cd ${0%/*} || exit 1    # Run from this directory
 
 clear
 
-#==============================================================================*
 
-# Function to display help
+#==============================================================================*
+# Default values
+
+num_jobs=1
+fmi_flag=false
+doc_flag=false
+api_flag=false
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+
+#==============================================================================*
+# Usefull functions
+
+checkCompletionApplication()
+{
+    program=$1
+    if ! command -v $program >/dev/null 2>&1
+    then
+        printf "${RED}Error${NC}: $program error in compiling $program\n"
+        exit 1
+    else
+        printf "Make $program ${GREEN}successfully${NC}\n"
+    fi
+}
+
+checkCompletionLib()
+{
+    src=$1
+    libname=$(grep -oP '\$\((?:FOAM_USER_LIBBIN)\)/\K\S+' $src/Make/files)
+    if [ ! -f "$FOAM_USER_LIBBIN/$libname.so" ]
+    then
+        printf "${RED}Error${NC}: Compilation of $libname was unsuccessful\n"
+        echo "Correct any error in the $src library"
+        exit 1
+    else
+        printf "Make ${GREEN}successfully${NC} $libname from $src\n"
+    fi
+}
+
+
+#==============================================================================*
+# Usage and help
+
 usage() {
-    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--help]"
+    echo "Usage: $0 [-j N|--jobs N] [--fmi] [--doc] [--api] [--help]"
+    echo "    -j N|--jobs N     Number of processor used for compilation"
+    echo "    --fmi             Activate compilation with FMI features"
+    echo "    --doc             Change OpenFOAM version in READMEs and in header"
+    echo "                      files based on WM_PROJECT_VERSION env variable."
+    echo "                      Only used by developers and maintainers."
+    echo "    --api             Build the Python API"
+    echo "    --help            Print current usage"
     exit 1
 }
 
-# Default values
-num_jobs=1
-fmi_flag=false
-
 # Parse options using getopt
-PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,help -- "$@")
+PARSED_OPTIONS=$(getopt -n "$0" -o j:h --long jobs:,fmi,doc,api,help -- "$@")
 if [ $? -ne 0 ]; then
     usage
 fi
@@ -37,6 +91,14 @@ while true; do
             fmi_flag=true
             shift
             ;;
+        --doc)
+            doc_flag=true
+            shift
+            ;;
+        --api)
+            api_flag=true
+            shift
+            ;;
         --help)
             usage
             ;;
@@ -50,16 +112,31 @@ while true; do
     esac
 done
 
+echo "===================="
+echo "Build foamForNuclear"
+echo "===================="
+echo
+
 # Script logic
-echo "Number of jobs: $num_jobs"
-echo "FMI flag: $fmi_flag"
+echo "Options"
+echo "-------"
+echo "    Number of jobs: $num_jobs"
+echo "    FMI flag: $fmi_flag"
+echo "    Doc flag: $doc_flag"
+echo "    API flag: $api_flag"
+echo
+
+
+#==============================================================================*
+# Submodules
+
+# Collect all submodules
+git submodule update --init --recursive
 
 # Build with FMI option
 if [ $fmi_flag = 'true' ]
 then
-    git submodule update --init --recursive
-
-    cd FMU4FOAM
+    cd thirdParty/FMU4FOAM
 
     # Build paths
     pathLibFMU4FOAM=$(pwd)
@@ -68,20 +145,11 @@ then
     # LIB_ECI4FOAM not found -> build and add env var
     if [[ -z "$LIB_ECI4FOAM" ]] || [ $pathLibECI4FOAM != $LIB_ECI4FOAM ]
     then
-        echo "Build ECI4FOAM"
+        echo    "Build ECI4FOAM"
+        echo -e "--------------\n"
+
         ./build-ECI4FOAM.sh -j$num_jobs
     fi
-
-    # if [[ -z "$LIB_ECI4FOAM" ]]
-    # then
-    #     echo -e "## ECI4FOAM\nexport LIB_ECI4FOAM=$pathLibECI4FOAM" >> $HOME/.bashrc
-    # fi
-
-    # LIB_ECI4FOAM found but incorrect path -> build from another project
-    # if [[ ! -z "$LIB_ECI4FOAM" ]] && [ $pathLibECI4FOAM != $LIB_ECI4FOAM ]
-    # then
-    #     sed -i "/LIB_ECI4FOAM=/c\\export LIB_ECI4FOAM=$pathLibECI4FOAM" $HOME/.bashrc
-    # fi
 
     # Force export of LIB path
     export LIB_ECI4FOAM=$pathLibECI4FOAM
@@ -92,27 +160,17 @@ then
         # LIB_FMU4FOAM not found -> build and add env var
         if [[ -z "$LIB_FMU4FOAM" ]] || [ $pathLibFMU4FOAM != $LIB_FMU4FOAM ]
         then
-            echo "Build FMU4FOAM"
+            echo    "Build FMU4FOAM"
+            echo -e "--------------\n"
+
             ./Allwmake -j$num_jobs
         fi
-
-        # if [[ -z "$LIB_FMU4FOAM" ]]
-        # then
-        #     echo 'Add'
-        #     echo -e "## FMU4FOAM\nexport LIB_FMU4FOAM=$pathLibFMU4FOAM" >> $HOME/.bashrc
-        # fi
-
-        # LIB_FMU4FOAM found but incorrect path -> build from another project
-        # if [[ ! -z "$LIB_FMU4FOAM" ]] && [ $pathLibFMU4FOAM != $LIB_FMU4FOAM ]
-        # then
-        #     sed -i "/LIB_FMU4FOAM=/c\\export LIB_FMU4FOAM=$pathLibFMU4FOAM" $HOME/.bashrc
-        # fi
 
         # Force export of LIB path
         export LIB_FMU4FOAM=$pathLibFMU4FOAM
     fi
 
-    cd ..
+    cd ../..
 
     echo -e '\nIf you build ECI4FOAM or FMU4FOAM for FMI coupled simulation.'
     echo -e 'It is recommanded to add the following lines to your ~/.bashrc\n'
@@ -127,51 +185,123 @@ else
     unset LIB_FMU4FOAM
 fi
 
-#==============================================================================*
-
-echo "Allwmake GeN-Foam"
-
-git submodule update --init --recursive src/classes/offbeat
-
-# Make common functions
-wmake -j$num_jobs ./src/classes/common
-
-# Make multi-region functions
-wmake -j$num_jobs ./src/classes/multiRegion
-
-# Make offbeat
-wmake -j$num_jobs ./src/classes/offbeat/src/SCIANTIX
-wmake -j$num_jobs ./src/classes/offbeat/src/offbeatLib
-wmake -j$num_jobs ./src/classes/offbeat/solvers
-
-# Make thermal-hydraulics
-wmake -j$num_jobs ./src/classes/thermalHydraulics/src
-wmake -j$num_jobs ./src/classes/thermalHydraulics/solvers
-
-# Make neutronics
-wmake -j$num_jobs ./src/classes/neutronics
-
-# Make thermal-mechanics
-wmake -j$num_jobs ./src/classes/thermoMechanics
-
-# Make OpenFOAM-imported solvers
-wmake -j$num_jobs ./src/classes/openFoamImportedSolvers
-
-
-# Make GeN-Foam
-wmake -j$num_jobs ./GeN-Foam
-
-echo -e "Make GeN-Foam completed\n"
 
 #==============================================================================*
+# Make applications
 
-echo "Make tests"
+echo    "Allwmake GeN-Foam"
+echo -e "-----------------\n"
+
+# Make OFFBEAT libs
+wmake -j$num_jobs ./src/offbeat/src/SCIANTIX
+wmake -j$num_jobs ./src/offbeat/src/offbeatLib
+
+# Make src libs
+wmake -j$num_jobs ./src/interpolationModels
+wmake -j$num_jobs ./src/solutionControl
+wmake -j$num_jobs ./src/profiles
+wmake -j$num_jobs ./src/crossSections
+wmake -j$num_jobs ./src/porousMediaModels
+wmake -j$num_jobs ./src/thermophysicalProperties
+wmake -j$num_jobs ./src/multiRegion
+wmake -j$num_jobs ./src/functionObjects
+wmake -j$num_jobs ./src/fvPatchFields
+
+# Make modules
+wmake -j$num_jobs ./applications/modules/thermalHydraulics
+wmake -j$num_jobs ./applications/modules/neutronics
+wmake -j$num_jobs ./applications/modules/thermoMechanics
+wmake -j$num_jobs ./applications/modules/fuelBehaviour
+wmake -j$num_jobs ./applications/modules/openFoamImported
+
+# Make apps
+wmake -j$num_jobs ./applications/solvers/GeN-Foam
+
+
+#==============================================================================*
+# Make tests
+
+echo    "Make tests"
+echo -e "----------\n"
 
 wmake -j$num_jobs ./tests/hydrogenThermophysicalProperties
 wmake -j$num_jobs ./tests/radialBasisFunctions
 
-echo -e "Make tests completed\n"
+echo -e "\nMake tests completed\n"
 
+
+#==============================================================================*
+# Update version in files
+
+if [ $doc_flag = 'true' ]
+then
+    echo "Update version in doc"
+    echo "---------------------"
+    echo
+
+    # Main README.md version
+    current_version=$(grep -oP 'based on the \*\*OpenFOAM® \(ESI/OpenCFD\)\*\* distribution, currently[^v]*\K(v\d+)' README.md)
+
+    current_version_num=$(echo $current_version | sed -r "s/v//")
+    new_version_num=$(echo $WM_PROJECT_VERSION | sed -r "s/v//")
+
+    checkUpgrade=$(echo "$current_version_num < $new_version_num" | bc -l)
+    if [[ $checkUpgrade -eq 1 ]]
+    then
+        echo "Current OpenFOAM version ($current_version) is not the lastest."
+        echo "Found OpenFOAM version $WM_PROJECT_VERSION, upgrade README.md"
+        sed -i "s/$current_version/$WM_PROJECT_VERSION/" README.md
+    fi
+
+    # Code headers and doxygen
+    checkUpgrade=$(echo "$current_version_num <= $new_version_num" | bc -l)
+    if [[ $checkUpgrade -eq 1 ]]
+    then
+        echo "Update version in headers to OpenFOAM version $WM_PROJECT_VERSION"
+        python3 tools/caseFormatting/changeHeader.py
+        echo
+
+        sed -i "s/$current_version/$WM_PROJECT_VERSION/" documentation/doxygen/Doxygen/Doxyfile
+    fi
+fi
+
+
+#==============================================================================*
+# Info and checks
+
+checkCompletionLib ./src/offbeat/src/SCIANTIX
+checkCompletionLib ./src/offbeat/src/offbeatLib
+checkCompletionLib ./src/interpolationModels
+checkCompletionLib ./src/solutionControl
+checkCompletionLib ./src/profiles
+checkCompletionLib ./src/crossSections
+checkCompletionLib ./src/porousMediaModels
+checkCompletionLib ./src/thermophysicalProperties
+checkCompletionLib ./src/multiRegion
+checkCompletionLib ./src/functionObjects
+checkCompletionLib ./src/fvPatchFields
+checkCompletionLib ./applications/modules/thermalHydraulics
+checkCompletionLib ./applications/modules/neutronics
+checkCompletionLib ./applications/modules/thermoMechanics
+checkCompletionLib ./applications/modules/fuelBehaviour
+checkCompletionLib ./applications/modules/openFoamImported
+
+echo
+
+checkCompletionApplication GeN-Foam
+
+echo
+
+# Build the Python API
+if [ $api_flag = 'true' ]
+then
+    echo    "foamForNuclear Python API installation"
+    echo -e "--------------------------------------\n"
+
+    cd pythonapi
+    pip3 install -e .
+    cd ..
+fi
 
 if [ $fmi_flag = 'true' ]
 then
@@ -180,5 +310,6 @@ then
     echo -e "## ECI4FOAM\nexport LIB_ECI4FOAM=$pathLibECI4FOAM"
     echo -e "## FMU4FOAM\nexport LIB_FMU4FOAM=$pathLibFMU4FOAM"
 fi
+
 
 #==============================================================================*

@@ -1,0 +1,101 @@
+#!/bin/bash
+
+# --- Run from this directory
+cd ${0%/*} || exit 1
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf "$resFile"
+touch "$resFile"
+
+# --- Run the simulation
+echo -e "Run tutorial 3D_genericParticleBedNTP ...\n" | tee -a $resFile
+./Allrun_shorter >> log.simulation
+echo -e "Done running tutorial 3D_genericParticleBedNTP ...\n" | tee -a $resFile
+
+
+# --- Check it ran
+endString=$(tail -3 ./log.GeN-Foam | grep End)
+if [ "$endString" = "End" ]; then
+    echo -e "3D_genericParticleBedNTP has converged \n" | tee -a "$resFile"
+else
+    echo -e "3D_genericParticleBedNTP has NOT converged \n" | tee -a "$resFile"
+    exit 1
+fi
+
+# --- Recover TBulk from outlet logs (handles 2-line pattern)
+extract_TBulk()
+{
+    awk '
+    /^TBulk TOutlet[0-9]+ write:/ { wantNext=1; next }
+
+    wantNext && /patch[[:space:]]+innerPropellantOutlet[0-9]+/ {
+        id=$2
+        val=$5
+        print id, val
+        wantNext=0
+    }
+    ' ./log.GeN-Foam
+}
+
+
+# --- Expected TBulk values
+declare -A expectedTBulk=(
+    ["innerPropellantOutlet15"]=804.86569
+    ["innerPropellantOutlet16"]=1361.7657
+    ["innerPropellantOutlet17"]=1579.3129
+    ["innerPropellantOutlet18"]=1577.1483
+    ["innerPropellantOutlet22"]=1151.2722
+    ["innerPropellantOutlet23"]=1435.1303
+)
+
+# --- Check results are correct
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+# Define tolerance BEFORE using isInRange
+error=0.001
+allGood=1
+
+# --- Write header once
+echo "|                 Quantity                |   Simulated  | Expected  |" | tee -a "$resFile"
+echo "|:----------------------------------------|:------------:|:---------:|" | tee -a "$resFile"
+
+# --- TBulk outlets check (single combined table)
+while read -r outlet value; do
+    expected=${expectedTBulk[$outlet]}
+    # Skip if this outlet is not in the expected list
+    if [ -z "$expected" ]; then
+        continue
+    fi
+
+    if [ "$(isInRange "$value" "$expected" "$error")" -eq 0 ]; then
+        echo "| $outlet                 | $value    | $expected |" | tee -a "$resFile"
+    else
+        echo "| $outlet (divergent)     | $value    | $expected |" | tee -a "$resFile"
+    fi
+done < <(extract_TBulk)
+
+
+# --- Final summary
+if [ $allGood -eq 1 ]; then
+    echo -e "\nPerfect match" | tee -a $resFile
+else
+    echo -e "\nDivergent results" | tee -a $resFile
+fi
+
+# --- Exit successfully
+exit 0

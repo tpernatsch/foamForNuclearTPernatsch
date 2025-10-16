@@ -1,16 +1,16 @@
 #==============================================================================*
 #
-# GeN-Foam GitLab CI/CD
+# Foam-For-Nuclear GitLab CI/CD
 #
 # Prepared by:
 #     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 #     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 #
-# Comment: fix problem with build environment for test cases
 #==============================================================================*
 
 #image: ubuntu # opencfd/openfoam-dev
 image: ubuntu
+
 
 #==============================================================================*
 #                                    Deploy
@@ -18,32 +18,32 @@ image: ubuntu
 
 pages:
   stage: deploy
-  image: python:latest
+  image: python:3.10.12
+  allow_failure: true
 
   script:
+    # Install and build doxygen doc
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update && apt-get -y install doxygen graphviz perl texlive-bibtex-extra texlive-latex-extra
-    - cd Documentation/doxygen/Doxygen && doxygen && cd ../../../
+    - cd documentation/doxygen/Doxygen && doxygen && cd ../../../
 
-    # Install MkDocs and any MkDocs plugins you use
-    - pip install mkdocs mkdocs-material mkdocs-bibtex==2.16.2 mkdocs-get-deps mkdocs-macros-plugin mkdocs-material-extensions
+    # Install and build Sphinx doc
+    - pip3 install -U sphinx sphinx-rtd-theme sphinx_intl myst-parser sphinx-mermaid
+    - cd pythonapi && pip3 install -e . && cd ..
+    - python3 documentation/sphinx/generate_cpp_docs.py
+    - sphinx-build -b html documentation/sphinx public
 
-    # Move into the mkdocs folder to match the local setup
-    - cd Documentation/mkdocs
-
-    # Build the MkDocs documentation
-    - python3 generate_docs.py
-    - mkdocs build --site-dir ../../public
-    - cd ../../
-
-    # Move Doxygen documentation to the public directory alongside MkDocs
-    - mv Documentation/doxygen/Doxygen/html/ public/doxygen
+    # Move Doxygen documentation to the public directory alongside Sphinx
+    - mv documentation/doxygen/Doxygen/html/ public/doxygen
 
   artifacts:
     paths:
       - public
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
+    - if: $CI_COMMIT_BRANCH == "master"
+      allow_failure: true
+      when: manual
+
 
 #==============================================================================*

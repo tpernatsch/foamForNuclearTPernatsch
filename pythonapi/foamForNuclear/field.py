@@ -1,0 +1,588 @@
+import foamlib
+import numpy as np
+
+from foamForNuclear.mesh.blockMesh import Face
+from foamForNuclear.boundaryConditions import *
+from foamForNuclear.boundaryConditions.empty import Empty
+from foamForNuclear.boundaryConditions.slip import Slip
+from foamForNuclear.boundaryConditions.zeroGradient import ZeroGradient
+from foamForNuclear.checkvalue import check_type, check_value
+from foamForNuclear.common import *
+from foamForNuclear.openfoamFile import OpenFOAMFile
+
+_FIELD_TYPES = {"volScalarField", "volVectorField", "volTensorField"}
+_GAS_PRESSURE_TYPES = {"fromModel", "fixed", "fromList"}
+
+
+class Dimension:
+    """
+    Dimension class. Dimension objects can be multiplied or divided to create
+    compound units. Default unit is no unit.
+
+    Example
+    -------
+    Example of use ::
+
+        dim1 = ffn.Dimension(default='flux')
+        dim2 = ffn.Dimension(length=3)
+        dim3 = dim1 * dim2
+        dim4 = dim3 / dim2
+
+    Parameters
+    ----------
+    default : str
+        Default unit name:
+
+        - Neutron flux : `neutronFlux` or `flux`
+        - Temperature : `T` or `temperature`
+        - Velocity :  `U` or `velocity`
+        - Pressure : `p` or `pressure`
+        - Surface : `S`, `A`, `surface`, or `area`
+        - Volume : `V` or `volume`
+        - Force : `F` or `force`
+        - Energy : `E` or `energy`
+        - Mass density : `rho` or `massDensity`
+        - Specific heat capacity : `Cp` or `specificHeatCapacity`
+        - Thermal conductivity : `k` or `thermalConductivity`
+        - Turbulent kinetic energy : `turbulentKineticEnergy`
+        - Turbulent kinetic energy dissipation rate : `epsilon` or `turbulentKineticEnergyDissipationRate`
+        - Specific dissipation rate : `omega` or `specificDissipationRate`
+        - Turbulent (eddy) kinematic viscosity : `nut` or `turbulentKinematicViscosity`
+        - Turbulent (eddy) dynamic viscosity : `mut` or `turbulentDynamicViscosity`
+        - Thermal eddy diffusivity : `alphat` or `thermalEddyDiffusivity`
+
+    mass : float
+        Mass in kilogram
+    length : float
+        Length in metre
+    time : float
+        Time in seconds
+    temperature : float
+        Temperature in Kelvin
+    moles : float
+        Moles in mole
+    current : float
+        Current in Ampere
+    luminousyIntensity : float
+        Luminous intensity in Candela
+
+    Attributes
+    ----------
+    mass : float
+        Mass in kilogram
+    length : float
+        Length in metre
+    time : float
+        Time in seconds
+    temperature : float
+        Temperature in Kelvin
+    moles : float
+        Moles in mole
+    current : float
+        Current in Ampere
+    luminousyIntensity : float
+        Luminous intensity in Candela
+    """
+    def __init__(
+            self,
+            default: str='',
+            mass=0,
+            length=0,
+            time=0,
+            temperature=0,
+            moles=0,
+            current=0,
+            luminousyIntensity=0,
+        ):
+        self.mass = mass
+        self.length = length
+        self.time = time
+        self.temperature = temperature
+        self.moles = moles
+        self.current = current
+        self.luminousyIntensity = luminousyIntensity
+
+        if (default in ["flux", "neutronFlux"]):
+            self.set_to_flux()
+        elif (default in ["T", "temperature"]):
+            self.set_to_temperature()
+        elif (default in ["U", "velocity"]):
+            self.set_to_velocity()
+        elif (default in ["p", "pressure", "elasticModulus", "G"]):
+            self.set_to_pressure()
+        elif (default in ["S", "A", "surface", "area"]):
+            self.set_to_surface()
+        elif (default in ["V", "volume"]):
+            self.set_to_volume()
+        elif (default in ["F", "force"]):
+            self.set_to_force()
+        elif (default in ["E", "energy"]):
+            self.set_to_energy()
+        elif (default in ["rho", "massDensity"]):
+            self.set_to_mass_density()
+        elif (default in ["Cp", "specificHeatCapacity"]):
+            self.set_to_specific_heat_capacity()
+        elif (default in ["k", "thermalConductivity"]):
+            self.set_to_thermal_conductivity()
+        elif (default in ["turbulentKineticEnergy"]):
+            self.set_to_turbulent_kinetic_energy()
+        elif (default in ["epsilon", "turbulentKineticEnergyDissipationRate"]):
+            self.set_to_turbulent_kinetic_energy_dissipation_rate()
+        elif (default in ["omega", "specificDissipationRate"]):
+            self.set_to_specific_dissipation_rate()
+        elif (default in ["nut", "turbulentKinematicViscosity"]):
+            self.set_to_turbulent_kinematic_viscosity()
+        elif (default in ["mut", "turbulentDynamicViscosity"]):
+            self.set_to_turbulent_dynamic_viscosity()
+        elif (default in ["alphat", "thermalEddyDiffusivity"]):
+            self.set_to_thermal_eddy_diffusivity()
+
+
+    def __repr__(self):
+        return(f"[{self.mass} {self.length} {self.time} {self.temperature} {self.moles} {self.current} {self.luminousyIntensity}]")
+
+    def __mul__(self, rhs):
+        return(Dimension(
+            mass=self.mass + rhs.mass,
+            length=self.length + rhs.length,
+            time=self.time + rhs.time,
+            temperature=self.temperature + rhs.temperature,
+            moles=self.moles + rhs.moles,
+            current=self.current + rhs.current,
+            luminousyIntensity=self.luminousyIntensity + rhs.luminousyIntensity,
+        ))
+
+    def __truediv__(self, rhs):
+        return(Dimension(
+            mass=self.mass - rhs.mass,
+            length=self.length - rhs.length,
+            time=self.time - rhs.time,
+            temperature=self.temperature - rhs.temperature,
+            moles=self.moles - rhs.moles,
+            current=self.current - rhs.current,
+            luminousyIntensity=self.luminousyIntensity - rhs.luminousyIntensity,
+        ))
+
+    def __eq__(self, rhs):
+        return(
+            self.mass == rhs.mass and
+            self.length == rhs.length and
+            self.time == rhs.time and
+            self.temperature == rhs.temperature and
+            self.moles == rhs.moles and
+            self.current == rhs.current and
+            self.luminousyIntensity == rhs.luminousyIntensity
+        )
+
+    def __ne__(self, rhs):
+        return(not self.__eq__(rhs))
+
+
+    def reset(self):
+        self.mass = 0
+        self.length = 0
+        self.time = 0
+        self.temperature = 0
+        self.moles = 0
+        self.current = 0
+        self.luminousyIntensity = 0
+
+    def set_to_flux(self):
+        self.reset()
+        self.length = -2
+        self.time = -1
+
+    def set_to_temperature(self):
+        self.reset()
+        self.temperature = 1
+
+    def set_to_velocity(self):
+        self.reset()
+        self.length = 1
+        self.time = -1
+
+    def set_to_pressure(self):
+        self.reset()
+        self.mass = 1
+        self.length = -1
+        self.time = -2
+
+    def set_to_surface(self):
+        self.reset()
+        self.length = 2
+
+    def set_to_volume(self):
+        self.reset()
+        self.length = 3
+
+    def set_to_force(self):
+        self.reset()
+        self.mass = 1
+        self.length = 1
+        self.time = -2
+
+    def set_to_energy(self):
+        self.reset()
+        self.mass = 1
+        self.length = 2
+        self.time = -2
+
+    def set_to_mass_density(self):
+        self.reset()
+        self.mass = 1
+        self.length = -3
+
+    def set_to_specific_heat_capacity(self):
+        self.reset()
+        self.length = 2
+        self.time = -2
+        self.temperature = -1
+
+    def set_to_thermal_conductivity(self):
+        self.reset()
+        self.mass = 1
+        self.length = 1
+        self.time = 3
+        self.temperature = -1
+
+    def set_to_turbulent_kinetic_energy(self):
+        self.reset()
+        self.length = 2
+        self.time = -2
+
+    def set_to_turbulent_kinetic_energy_dissipation_rate(self):
+        self.reset()
+        self.length = 2
+        self.time = -3
+
+    def set_to_specific_dissipation_rate(self):
+        self.reset()
+        self.time = -1
+
+    def set_to_turbulent_kinematic_viscosity(self):
+        self.reset()
+        self.length = 2
+        self.time = -1
+
+    def set_to_turbulent_dynamic_viscosity(self):
+        self.reset()
+        self.mass = 1
+        self.length = -1
+        self.time = -1
+
+    def set_to_thermal_eddy_diffusivity(self):
+        self.reset()
+        self.mass = 1
+        self.length = -1
+        self.time = -1
+
+
+class ReducedDimension(Dimension):
+    """
+    Reduced dimension object used for material declaration in thermo-mechanics
+    solver.
+    """
+    def __init__(
+            self,
+            default: str='',
+            mass: int=0,
+            length: int=0,
+            time: int=0,
+            temperature: int=0,
+            moles: int=0
+        ):
+        super().__init__(default, mass, length, time, temperature, moles)
+
+    def __repr__(self):
+        return(f"[{self.mass} {self.length} {self.time} {self.temperature} {self.moles}]")
+
+
+class Field(OpenFOAMFile):
+    """
+    Field object collecting the internal value per cell and the boundary
+    conditions.
+
+    Parameters
+    ----------
+    name : str
+        Name of the field
+    dimensions : Dimension
+        Dimension of the field (default to no unit)
+    internalField : int | float | Vector
+        Value of the internal field
+    boundaryField : OpenFOAMDict
+        Dictionary grouping all the boundary conditions attached to the field
+    region : str
+        Name of the region (default to `""`).
+    """
+    def __init__(
+            self,
+            name: str,
+            dimensions: Dimension=Dimension(),
+            internalField: int | float | Vector=None,
+            boundaryField: OpenFOAMDict=None,
+            region: str=""
+        ):
+        super().__init__(name, region=region)
+
+        self.fieldType = None
+        self.dimensions = dimensions
+        self.internalField = internalField
+        self.boundaryField = boundaryField
+
+    @property
+    def dimensions(self):
+        return self._dimensions
+
+    @dimensions.setter
+    def dimensions(self, dimensions) -> None:
+        check_type("dimensions", dimensions, Dimension)
+        self._dimensions = dimensions
+
+    @property
+    def internalField(self):
+        return self._internalField
+
+    @internalField.setter
+    def internalField(self, internalField) -> None:
+        check_type("internalField", internalField, (float, int, Vector), none_ok=True)
+        self._internalField = internalField
+        if (internalField is not None):
+            self.setFieldType()
+
+    @property
+    def boundaryField(self):
+        return self._boundaryField
+
+    @boundaryField.setter
+    def boundaryField(self, boundaryField) -> None:
+        check_type("boundaryField", boundaryField, OpenFOAMDict, none_ok=True)
+        if (boundaryField is not None):
+            self._boundaryField = boundaryField
+        else:
+            self._boundaryField = OpenFOAMDict({}) # Do not put it as default in the __init__
+
+    def getPatch(self, dict_):
+        if (dict_['type'] == "calculated"):
+            return(Calculated())
+        elif (dict_['type'] == "empty"):
+            return(Empty())
+        elif (dict_['type'] == "fixedValue"):
+            return(FixedValue(value=dict_['value']))
+        elif (dict_['type'] == "slip"):
+            return(Slip())
+        elif (dict_['type'] == "wedge"):
+            return(Wedge())
+        elif (dict_['type'] == "zeroGradient"):
+            return(ZeroGradient())
+        # To be continued
+        return(Empty())
+
+
+    def setFieldType(self):
+        if (isinstance(self.internalField, (int, float))):
+            self.fieldType = 'volScalarField'
+        elif (isinstance(self.internalField, (list, Vector, np.ndarray))):
+            self.fieldType = 'volVectorField'
+        elif (isinstance(self.internalField, (list, Tensor, np.ndarray))):
+            self.fieldType = 'volTensorField'
+        else:
+            msg = f"Cannot find a proper field format for type {type(self.internalField).__name__}"
+            raise ValueError(msg)
+
+
+    def add_boundary_condition(self, name: str | Face, boundaryCondition: Patch):
+        """
+        Add/Set a boundary condition to a boundary face
+
+        Parameters
+        ----------
+        name : str | Face
+            Name of the patch or Face to apply the boundary condition
+        boundaryCondition : Patch
+            Boundary condition definition
+        """
+        self.set_boundary_condition(name=name, boundaryCondition=boundaryCondition)
+
+
+    def set_boundary_condition(self, name: str | Face, boundaryCondition: Patch):
+        """
+        Add/Set a boundary condition to a boundary face
+
+        Parameters
+        ----------
+        name : str | Face
+            Name of the patch or Face to apply the boundary condition
+        boundaryCondition : Patch
+            Boundary condition definition
+        """
+        check_type("name", name, (str, Face))
+        check_type("boundaryCondition", boundaryCondition, Patch)
+        if (isinstance(name, str)):
+            name = format_to_openfoam_regex(name)
+            self.boundaryField[name] = boundaryCondition
+        elif (isinstance(name, Face)):
+            self.boundaryField[name.name] = boundaryCondition
+        else:
+            msg = f"Boundary name must be a 'str' OR 'Face'. Found type {type(name).__name__}"
+            raise ValueError(msg)
+
+
+    def export_to_openfoam(self):
+        with open(f"{self.folder}/{self.region}/{self.name}", 'w') as f:
+            f.write(openfoamHeader)
+            f.write(openfoamFileHeader(self.name, self.fieldType))
+
+            f.write(addParameter('dimensions', self.dimensions, isAddExtraLine=True))
+
+            if (isinstance(self.internalField, (float, int, Vector))):
+                f.write(addParameter('internalField', f"uniform {self.internalField}", isAddExtraLine=True))
+
+            f.write(f"boundaryField{self.boundaryField!r}\n")
+
+            f.write(openfoamFooterLine)
+
+
+    def import_from_openfoam(self, path: str=None):
+        foamField = foamlib.FoamFieldFile(path if path is not None else self.path)
+
+        # Internal field
+        internalField = foamField.internal_field
+        if (isinstance(internalField, (list, np.ndarray))):
+            # Field is a list
+            if (len(internalField.shape) == 1):
+                if (len(internalField) == 3):
+                    self.internalField = Vector(internalField[0], internalField[1], internalField[2])
+                # elif (len(internalField) == 6):
+                #     self.internalField = Tensor(internalField)
+            elif (len(internalField.shape) == 2):
+                None
+        elif (isinstance(internalField, (float, int))):
+            self.internalField = internalField
+
+        # Boundary
+        self.boundaryField = OpenFOAMDict({})
+        for bcName, bc in foamField.boundary_field.items():
+            self.set_boundary_condition(bcName, self.getPatch(bc))
+
+        # Dimensions
+        dim = foamField.dimensions
+        self.dimensions = Dimension(
+            mass=dim.mass,
+            length=dim.length,
+            time=dim.time,
+            temperature=dim.temperature,
+            moles=dim.moles,
+            current=dim.current,
+            luminousyIntensity=dim.luminous_intensity
+        )
+
+
+class GapGas(OpenFOAMFile):
+    """
+    The `FRAPCON` class in `OFFBEAT` requires the user to set various parameters
+    in `gapGasOptions` (a subdictionary of the `solverDict`) and `gapGas`
+    (a dictionary in the `0/uniform/` folder), as described below.
+
+    Parameters
+    ----------
+    gasPressureType : str
+        Defines the method for gas pressure calculation (options: `fromModel`,
+        `fixed`, or `fromList`).
+    gasPressure : float
+        Fixed gas pressure value when `gasPressureType` is set to `fixed`.
+    gapPressureList : Table
+        Activated only if `gasPressureType` is set as `fromList`, this is a
+        sub-dictionary used to provide a time-dependent table for gas pressure.
+    type
+        Parameter of `gapPressureList` subdictionary; it specifies the table
+        type (`table`).
+    values
+        Parameter of `gapPressureList` subdictionary; it is a list of
+        time-pressure pairs (e.g., `[(0.0, 1e5), (100.0, 1e6)]`).
+    outOfBounds
+        Parameter of `gapPressureList` subdictionary; it handles the method for
+        out-of-bounds values (default: `clamp`).
+    interpolationScheme
+        Parameter of `gapPressureList` subdictionary; it specifies the
+        interpolation method between time points (e.g., `linear`).
+    region : str
+        Name of the region (default `""`)
+
+    Attributes
+    ----------
+    massFractions : OpenFOAMDict
+        Specifies the initial mass fractions of gases (`Ar`, `He`, `Kr`, `Ne`,
+        `Rn`, `Xe`). Default to pure helium.
+    """
+
+    def __init__(
+            self,
+            gasPressureType,
+            gasPressure=None,
+            # gapPressureList=None,
+            region = ""
+        ):
+        super().__init__("gapGas", region=region)
+
+        self.gasPressureType = gasPressureType
+        self.gasPressure = gasPressure
+        # self.gapPressureList = gapPressureList
+        self.massFractions = OpenFOAMDict({
+            'Ar': 0,
+            'He': 1,
+            'Kr': 0,
+            'Ne': 0,
+            'Rn': 0,
+            'Xe': 0,
+        })
+
+    @property
+    def gasPressureType(self):
+        return self._gasPressureType
+
+    @gasPressureType.setter
+    def gasPressureType(self, gasPressureType) -> None:
+        check_type("gasPressureType", gasPressureType, str)
+        check_value("gasPressureType", gasPressureType, _GAS_PRESSURE_TYPES)
+        self._gasPressureType = gasPressureType
+
+    @property
+    def gasPressure(self):
+        return self._gasPressure
+
+    @gasPressure.setter
+    def gasPressure(self, gasPressure) -> None:
+        check_type("gasPressure", gasPressure, (float, int), none_ok=True)
+        self._gasPressure = gasPressure
+
+    # @property
+    # def gapPressureList(self):
+    #     return self._gapPressureList
+
+    # @gapPressureList.setter
+    # def gapPressureList(self, gapPressureList) -> None:
+    #     check_type("gapPressureList", gapPressureList, (Table, list, np.ndarray), none_ok=True)
+    #     if (isinstance(gapPressureList, Table)):
+    #         self._gapPressureList = gapPressureList
+    #     elif (gapPressureList is None):
+    #         self._gapPressureList = None
+    #     else:
+    #         self._gapPressureList = Table(gapPressureList)
+
+
+    @OpenFOAMFile._write_to_file
+    def export_to_openfoam(self):
+        text = ""
+
+        text += f"massFractions{self.massFractions!r}\n"
+
+        text += addParameter('gasPressureType', self.gasPressureType, isAddExtraLine=True)
+
+        if (self.gasPressure is not None):
+            text += addParameter('gasPressure', self.gasPressure, isAddExtraLine=True)
+
+        # if (self.gapPressureList is not None):
+        #     text += addParameter('gapPressureList', self.gapPressureList, isAddExtraLine=True)
+
+        return(text)

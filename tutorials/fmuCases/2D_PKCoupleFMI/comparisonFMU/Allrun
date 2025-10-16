@@ -1,0 +1,100 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+# In this script, a first calculation with the FMU is performed (steady-state
+# and transient). Then, the same calculation is performed but without the FMU
+# coupling.
+
+#=============================================================================*
+# Simulation parameters
+
+steadyStateDuration=100
+transientDuration=100
+
+#=============================================================================*
+# Build FMU
+
+# cd rootCaseFMU
+# omc FMUGen.mos
+# cd ..
+
+#=============================================================================*
+# Steady-state GeN-Foam/FMU coupling
+
+cp -r rootCaseFMU steadyStateFMU
+cd steadyStateFMU
+
+foamDictionary system/controlDict -entry endTime -set $steadyStateDuration
+cp constant/regionsDict_steadyState constant/regionsDict
+GeN-Foam -initializeMappedFields
+
+GeN-Foam |
+    tee log.GeN-Foam |
+    grep -E "Time = |deltaT ="
+
+cd ..
+
+
+#=============================================================================*
+# Transient GeN-Foam/FMU coupling
+
+cp -r steadyStateFMU transientFMU
+cp rootCaseFMU/ExternalReactivityController* transientFMU/
+cd transientFMU
+
+echo "Change case parameters for transientFMU calculation"
+foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+foamDictionary system/controlDict -entry endTime -set $(($steadyStateDuration+$transientDuration))
+foamDictionary system/controlDict -entry deltaT -set 1e-6
+foamDictionary system/controlDict -entry writeControl -set timeStep
+foamDictionary system/controlDict -entry writeInterval -set 10
+cp constant/regionsDict_transient constant/regionsDict
+GeN-Foam -initializeMappedFields
+
+GeN-Foam |
+    tee log.GeN-Foam |
+    grep -E "Time = |deltaT ="
+
+cd ..
+
+
+#=============================================================================*
+# Steady-state GeN-Foam uncoupled
+
+cp -r rootCase steadyStateUncoupled
+cd steadyStateUncoupled
+
+foamDictionary system/controlDict -entry endTime -set $steadyStateDuration
+cp constant/regionsDict_steadyState constant/regionsDict
+GeN-Foam -initializeMappedFields
+
+GeN-Foam |
+    tee log.GeN-Foam |
+    grep -E "Time = |deltaT ="
+
+cd ..
+
+#=============================================================================*
+# Transient GeN-Foam uncoupled
+
+cp -r steadyStateUncoupled transientUncoupled
+cd transientUncoupled
+
+foamDictionary constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+foamDictionary system/controlDict -entry endTime -set $(($steadyStateDuration+$transientDuration))
+foamDictionary system/controlDict -entry deltaT -set 1e-6
+foamDictionary system/controlDict -entry writeControl -set timeStep
+foamDictionary system/controlDict -entry writeInterval -set 10
+cp constant/regionsDict_transient constant/regionsDict
+GeN-Foam -initializeMappedFields
+
+GeN-Foam |
+    tee log.GeN-Foam |
+    grep -E "Time = |deltaT ="
+
+cd ..
+
+#=============================================================================*

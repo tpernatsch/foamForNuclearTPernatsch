@@ -1,0 +1,98 @@
+#!/bin/sh
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+#------------------------------------------------------------------------------
+
+rm -f log.time
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+path=$(pwd)
+
+tutorials="
+    ../tests
+
+    featureCases/1D_boiling
+    featureCases/1D_CHF/imposedPower
+    featureCases/1D_CHF/imposedTemperature
+    featureCases/1D_HX/onePhase
+    featureCases/1D_HX/twoPhase
+    featureCases/1D_PSBT_SC/Phase_Ex1_12223
+    featureCases/1D_PSBT_SC/PhaseII_Ex1_01_5215
+    featureCases/1D_PSBT_SC/PhaseII_Ex2_04_6770
+    featureCases/1D_PSBT_SC/PhaseII_Ex3_11-0312_power_increase
+    featureCases/2D_cavityBoussinesq
+    featureCases/2D_externalSourceDiffusion
+    featureCases/2D_flowOverHeatedPlate
+    featureCases/2D_fullCoupling
+    featureCases/2D_KNS37-L22
+    featureCases/2D_onePhaseAndPointKineticsCoupling
+    featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling
+    featureCases/2D_voidMotionNoPhaseChange
+
+    reactorCases/1D_MSR_pointKinetics
+    reactorCases/1D_thermalMSR_pointKinetics
+    reactorCases/2D_FFTF
+    reactorCases/2D_MSFR
+    reactorCases/2D_MSFR_ULOF_diffusion_and_pk
+    reactorCases/3D_genericParticleBedNTP
+    reactorCases/3D_gFHR
+    reactorCases/3D_HTR-10
+    reactorCases/3D_KIWI-B-4E
+    reactorCases/3D_NTPfuelAssembly
+    reactorCases/3D_SmallESFR_NewSolverVerification
+    reactorCases/Godiva_SN
+
+    guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion
+    guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion
+
+    fmuCases/2D_PKCoupleFMI/comparisonFMU
+    fmuCases/2D_PKCoupleFMI/PIDcontrol
+    fmuCases/powerTemperatureMomentumControl
+    fmuCases/2D_LFRpowerPlant/GeN-FoamAndModelica
+    fmuCases/2D_LFRpowerPlant/GeN-FoamAs2FMU
+    fmuCases/2D_LFRpowerPlant/GeN-FoamAs3FMU
+
+    toBeUpdated/2D_RegressionESFR
+"
+
+# Clean all the tutorials
+for tutorialName in $tutorials
+do
+    if [ -d $tutorialName ]
+    then
+        printf "Cleaning tutorial $tutorialName ... "
+        cd $tutorialName
+
+        if [ -f Allclean ]
+        then
+            ./Allclean
+            printf "${GREEN}done$NC\n"
+        else
+            if [ -f Allclean.py ]
+            then
+                python3 Allclean.py
+                printf "${GREEN}done$NC\n"
+            else
+                printf "${RED}error (no cleaning script)$NC\n"
+            fi
+        fi
+
+        cd $path
+    else
+        echo "No tutorial named ${RED}$tutorialName$NC"
+    fi
+done
+
+#------------------------------------------------------------------------------

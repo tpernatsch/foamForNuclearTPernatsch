@@ -1,0 +1,315 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      phaseProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+structureProperties
+{    
+    "coldPool" //1
+    {
+        volumeFraction     0;
+        Dh 		3;
+	
+           }
+    "hotPool" //2
+    {
+        volumeFraction     0;
+	    Dh 		3;
+	
+       
+    }
+    "CSS:diagrid" //4
+    {
+	volumeFraction      0.7321390465;
+        Dh                  0.0033698759;
+       
+    }
+    "lowerSA:upperSA" //6
+    {
+    	volumeFraction      0.7199944655;
+        Dh                  0.0033698759;
+       
+    }
+    "plenum" //7
+    { 
+    	volumeFraction 	    0;
+    	Dh		    0.19635;
+    	
+    }
+    "IFFI" //8
+    {	
+        volumeFraction      0.7321390465;
+        Dh                  0.0033698759;
+        
+        
+        powerModel // power production model for the sub-scale structure
+        {
+            type                nuclearFuelPin;
+            powerDensity        0;  //- fields on disk have priority, if they
+            fuelInnerRadius     0.001560;
+            fuelOuterRadius     0.004680;
+            cladInnerRadius     0.004835;
+            cladOuterRadius     0.005358;
+            fuelMeshSize        16;
+            cladMeshSize        4;
+            fuelRho             10480;
+            fuelCp              250.933367343;
+            cladRho             7500;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               668;
+            cladT               668;
+        }
+       
+
+     }
+     "OFFI" //9
+     {
+        volumeFraction      0.7321390465;
+        Dh                  0.0033698759;
+        
+        
+        powerModel // power production model for the sub-scale structure
+        {
+            type                nuclearFuelPin;
+            updateFromOFFBEAT true;
+            powerDensity        0;                       //  are not found, this value is used
+            fuelInnerRadius     0.001560;
+            fuelOuterRadius     0.004680;
+            cladInnerRadius     0.004835;
+            cladOuterRadius     0.005358;
+            fuelMeshSize        16;
+            cladMeshSize        4;
+            fuelRho             10480;
+            fuelCp              250.933367343;
+            cladRho             7700;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               668;
+            cladT               668;
+        }
+       
+   }
+   
+    "IFFE" //10
+    {
+        volumeFraction      0.7321390465;
+        Dh                  0.0033698759;
+        
+        powerModel // power production model for the sub-scale structure
+        {
+            type                nuclearFuelPin;
+            updateFromOFFBEAT true;
+            powerDensity        0;                       //  are not found, this value is used
+            fuelInnerRadius     0;
+            fuelOuterRadius     0.004680;
+            cladInnerRadius     0.004835;
+            cladOuterRadius     0.005358;
+            fuelMeshSize        16;
+            cladMeshSize        4;
+            fuelRho             10480;
+            fuelCp              250.933367343;
+            cladRho             7700;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               668;
+            cladT               668;
+        }
+        
+    }
+    
+    "OFFE" //11
+    {
+        volumeFraction      0.7321390465;
+        Dh                  0.0033698759;
+        
+        powerModel // power production model for the sub-scale structure
+        {
+            type                nuclearFuelPin;
+            updateFromOFFBEAT true;
+            powerDensity        0;                       //  are not found, this value is used
+            fuelInnerRadius     0;
+            fuelOuterRadius     0.004680;
+            cladInnerRadius     0.004835;
+            cladOuterRadius     0.005358;
+            fuelMeshSize        16;
+            cladMeshSize        4;
+            fuelRho             10480;
+            fuelCp              250.933367343;
+            cladRho             7700;
+            cladCp              500;
+            gapH                3000;
+            fuelK               3;
+            cladK               20;
+            fuelT               668;
+            cladT               668;
+        }
+        
+    }
+    "reflector" //12
+    {
+    	volumeFraction      0.7199944655;
+        Dh                  0.0033698759;
+        
+    }
+    "IHX" //13
+    {
+    	volumeFraction      0.71;
+    	Dh 		    0.11;
+    	
+        powerModel
+        {
+            type                fixedTemperature;
+            volumetricArea      30;
+            T                   668;
+            Cp                  500;
+            rho                 7700;
+           //powerDensity        -4798611.9;
+        }
+    }
+    "pumpRotor" //14
+    {	
+    	volumeFraction   0.55;
+    	Dh		 1;
+    	
+        momentumSource      (0 0 -460000);
+       
+    } 	
+    "pumpGuide"
+    {	
+    	volumeFraction   0.55;
+    	Dh		 1;
+    	
+    } 	
+    			
+    	   
+}
+
+regimeMapModels
+{
+    "lamTurb"
+    {
+        type                oneParameter;
+        parameter           "Re";
+        regimeBounds
+        {
+            "laminar"       (0      1000);  //- 0 is automatically extended
+                                            //  to -inf
+            "turbulent"     (2300   2301);  //- 2031 is automatically extended
+                                            //  to +inf
+        }
+    }
+}
+
+physicsModels
+{
+    dragModels
+    {
+        "coldPool:hotPool:IHX:pumpRotor:pumpGuide:diagrid:CSS"
+        {
+            type    ReynoldsPower;
+            coeff   0.13;
+            exp     -0.25;
+        }
+         "lowerSA:upperSA:plenum"
+        {
+            type    ReynoldsPower;
+            coeff   0.57;
+            exp     -0.25;
+        }
+         "IFFE:IFFI"
+        {
+
+            type    ReynoldsPower;
+            coeff   0.57;
+            exp     -0.25;
+        }
+         "OFFE:OFFI"
+        {
+
+            type    ReynoldsPower;
+            coeff   0.57;
+            exp     -0.25;
+        }
+    }
+
+    heatTransferModels
+    {
+    
+           "IHX:pumpRotor"
+           {
+		    type        byRegime;
+		    regimeMap   "lamTurb";
+		    
+		    //- List of subdicts specifying a heatTransferModel for each regime
+		    //  in the lamTurb regimeMap
+		    "laminar"
+		    {
+		        // Nu = const + coeff * Re^expRe * Pr^expPr
+		        type    NusseltReynoldsPrandtlPower; 
+		        const   4;
+		        coeff   0;
+		        expRe   0;
+		        expPr   0;
+		    }
+		    "turbulent"
+		    {
+		        type    NusseltReynoldsPrandtlPower;
+		        const   4.82;
+		        coeff   0.0185;
+		        expRe   0.827;
+		        expPr   0.827;
+		    }
+	    }
+	    "IFFI:OFFI:IFFE:OFFE:plenum:upperSA:lowerSA"
+	     {
+		    type        byRegime;
+		    regimeMap   "lamTurb";
+		    
+		    //- List of subdicts specifying a heatTransferModel for each regime
+		    //  in the lamTurb regimeMap
+		    "laminar"
+		    {
+		        // Nu = const + coeff * Re^expRe * Pr^expPr
+		        type    NusseltReynoldsPrandtlPower; 
+		        const   4;
+		        coeff   0;
+		        expRe   0;
+		        expPr   0;
+		    }
+		    "turbulent"
+		    {
+		        type    NusseltReynoldsPrandtlPower;
+		        const   3.521;
+		        coeff   0.014;
+		        expRe   0.770;
+		        expPr   0.770;
+		    }
+	    }
+	    
+    }
+}
+
+pMin                    10000;
+pRefCell                0;
+pRefValue               100000;
+
+// ************************************************************************* //

@@ -1,0 +1,119 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      T;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 200;
+
+boundaryField
+{
+    outerPropellantInlet18 // inlet
+    {
+        type            fixedValue;
+        value           uniform 200;
+    }
+    outerPropellantInlet17 // inlet
+    {
+        type            fixedValue;
+        value           uniform 200;
+    }
+    outerPropellantInlet16 // inlet
+    {
+        type            fixedValue;
+        value           uniform 200;
+    }
+    outerPropellantInlet15 // inlet
+    {
+        type            fixedValue;
+        value           uniform 200;
+    }
+    outerPropellantInlet22 // inlet
+    {
+        type            fixedValue;
+        value           uniform 200;
+    }
+    outerPropellantInlet23 // inlet
+    {
+        type            fixedValue;
+        value           uniform 200;
+    }
+    ".*"
+    {
+        type            zeroGradient;
+        value           $internalField;
+    }
+    ".*Right|.*Left"
+    {
+        type            symmetry;
+    }
+    // ".*"
+    // {
+    //     type            zeroGradient;
+    //     value           $internalField;
+    // }
+    outerPropellantOR15
+    {
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        Tnbr            "T";
+        kappaMethod     lookup;
+        kappa           "htc";
+        value           $internalField;
+    } 
+    outerPropellantOR16
+    {
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        Tnbr            "T";
+        kappaMethod     lookup;
+        kappa           "htc";
+        value           $internalField;
+    } 
+    outerPropellantOR17
+    {
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        Tnbr            "T";
+        kappaMethod     lookup;
+        kappa           "htc";
+        value           $internalField;
+    } 
+    outerPropellantOR18
+    {
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        Tnbr            "T";
+        kappaMethod     lookup;
+        kappa           "htc";
+        value           $internalField;
+    } 
+    outerPropellantOR22
+    {
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        Tnbr            "T";
+        kappaMethod     lookup;
+        kappa           "htc";
+        value           $internalField;
+    } 
+    outerPropellantOR23
+    {
+        type            compressible::turbulentTemperatureRadCoupledMixed;
+        Tnbr            "T";
+        kappaMethod     lookup;
+        kappa           "htc";
+        value           $internalField;
+    } 
+}
+
+
+// ************************************************************************* //

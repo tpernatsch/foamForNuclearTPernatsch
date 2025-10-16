@@ -1,0 +1,41 @@
+#!/bin/bash
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#==============================================================================*
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+resFile=test.out
+
+
+echo "Test hydrogen thermophysical properties"
+Test-hydrogenThermophysicalProperties >> $resFile
+
+echo "Test radial basis functions"
+Test-radialBasisFunctions >> $resFile
+
+
+# Remove color tags
+sed -i "s/\[0m//" $resFile
+sed -i "s/\[32m//" $resFile
+sed -i "s/\[33m//" $resFile
+sed -i "s/\*\*\*\*//" $resFile
+
+
+#==============================================================================*

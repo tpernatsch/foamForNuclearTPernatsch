@@ -1,0 +1,9 @@
+loadModel(Modelica);
+
+loadFile("./momentumSourceTest.mo");
+
+// Some useful options for FMI
+setCommandLineOptions("--fmiFilter=none");
+setCommandLineOptions("--fmiSources=true");
+
+buildModelFMU(momentumSourceTest, version="2.0",fmuType="cs")

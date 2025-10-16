@@ -1,36 +1,60 @@
-# GeN-Foam
+# foamForNuclear (FFN)
 
-GeN-Foam is a multi-physics solver for reactor analysis. It can solve (coupled or alternatively) for:
+**foamForNuclear (FFN)** is a **general-purpose, OpenFOAM®-based multi-physics platform** for the analysis and design of nuclear systems. It originates from the **merging and extension** of two OpenFOAM-based nuclear projects: **GeN-Foam**, dedicated to multi-physics reactor simulation, and **OFFBEAT**, focused on advanced nuclear fuel performance modeling.
 
-- neutronics, with models for point kinetics, diffusion (transient and eigenvalue), adjoint diffusion (only eigenvalue), SP3 (transient and eigenvalue), discrete ordinates (only eigenvalue);
-- one-phase thermal-hydraulics, according to both RANS-CFD and porous-medium coarse-mesh approaches (the two approaches can be combined in the same mesh);
-- two-phase porous-medium thermal-hydraulics, according to an Euler-Euler model, with models and correlations available for sodium and water;
-- temperatures in sub-scale solid structures in porous-medium regions, based on user-selectable models including 1-D fuel, fixed temperature, fixed power, fuel pebbles, heated rods, as well as a generic lumped-parameters model based on the concept of electric equivalence;
-- thermal-mechanics based on linear thermo-elasticity, which can be used to evaluate deformations and temperatures in solid structures. Deformations can be used to modify the meshes for thermal-hydraulics and neutronics.
-
-It should be mentioned that GeN-Foam was mainly designed for coarse-mesh analyses of a reactor core (with porous medium approach and sub-scale representation of fuel). However, pin-by-pin and other heterogeneous models can be obtained by connecting the thermal-mechanics and thermal-hydraulics regions using coupled boundary conditions.
-
-N.B.: GeN-Foam is a flexible tool that allows the modeling of irregular geometries and particularly complex phenomena. However, it requires a good familiarity with Linux and OpenFOAM, as well as a solid background in multi-physics nuclear applications. Familiarity with CFD methods is strongly recommended. In addition, a good familiarity with C++ and the OpenFOAM API will be important to unlock the full potential of the code. The OpenFOAM API and the class-based structure of GeN-Foam allow an experienced user to quickly and safely add solvers, models, and equations, thus tailoring the code to their needs.
+FFN provides a **modular and extensible framework** for simulating a wide range of physics, from core neutronics and thermal-hydraulics to advanced thermomechanics and fuel behavior. Each physics capability is implemented as an independent **module**, solving a specific set of equations that can run standalone or be coupled with others in a multi-physics environment.
 
 
-## OpenFOAM version
+## Physics Modules
 
-The current version of GeN-Foam is based on OpenFOAM, ESI/OpenCFD distribution, currently v2506, available at [www.openfoam.com](https://www.openfoam.com).
+FFN integrates several physics modules developed through extensive research in nuclear system modeling:
 
-Please notice that a new version of OpenFOAM is released by ESI/OpenCFD twice a year. It may take a few weeks for the developers to update GeN-Foam to a new OpenFOAM release.
+- **Neutronics:** point kinetics, diffusion, adjoint diffusion, SP3, and discrete ordinates (SN) (steady or transient);
+- **Thermal-hydraulics:** one-phase RANS-CFD and porous-medium models, and a two-phase porous-medium Euler–Euler model for sodium and water;
+- **Solid temperature models:** for sub-scale structures, including 1-D fuel, fixed temperature/power, heated rods, fuel pebbles, and lumped-parameter models;
+- **Thermomechanics:** linear/nonlinear elasticity, plasticity, creep, and temperature-dependent material properties;
+- **Fuel behavior:** densification, swelling, fission gas release, creep, irradiation growth, non-conformal gap heat transfer, and burnup-dependent material properties.
+
+The **modular structure** of FFN allows users familiar with the OpenFOAM® API to easily add new solvers to the list of available physics. As an example, a **Volume of Fluid** solver from OpenFOAM® is already integrated into FFN, enabling free-surface flow simulations.
+
+
+## Applications within FFN
+
+The FFN platform currently includes two main applications that make use of the physics modules:
+
+
+### GeN-Foam
+
+GeN-Foam is a **multi-physics application** enabling the coupling of multiple modules within a single simulation. GeN-Foam provides the infrastructure for:
+
+- Defining **independent physics regions** (e.g., neutronics, thermal-hydraulics, thermomechanics, fuel behavior);
+- Choosing **arbitrary coupling types** (volume, surface or interpolation-based for any field);
+- Customizing **time-loops**, allowing both loosely and tightly coupling.
+
+This architecture supports multi-scale analyses combining coarse and detailed models in a unified simulation.
+
+
+### OFFBEAT
+
+While the fuel behavior module can be integrated into GeN-Foam, **OFFBEAT** remains a **standalone application** within FFN, dedicated to **single-mesh fuel performance** simulations. It provides high-fidelity thermo-mechanical and material evolution modeling for individual fuel pins, rods, or pebbles.
+
+
+## OpenFOAM Version
+
+FFN is based on the **OpenFOAM® (ESI/OpenCFD)** distribution, currently **v2506**, available at [www.openfoam.com](https://www.openfoam.com). The platform is regularly updated to maintain compatibility with new releases.
 
 
 ## Documentation
 
-GeN-Foam is a complex OpenFOAM solver. For this reason, some resources have been prepared to support users and developers:
+Resources for users and developers include:
 
-- The main user guide and documentation for GeN-Foam can be found here: [GeN-Foam Documentation](https://foam-for-nuclear.gitlab.io/GeN-Foam/).
-- [Online Doxygen-generated documentation](https://foam-for-nuclear.gitlab.io/GeN-Foam/doxygen/index.html)
-- The **slides** of introductory lectures to both OpenFOAM and GeN-Foam are provided in the folder [Documentation/usefulDocumentsAndPresentations](./Documentation/usefulDocumentsAndPresentations/). These lectures are taken from an IAEA e-learning course available at https://elearning.iaea.org/m2/course/view.php?id=1286. The course requires registration and a NUCLEUS account, but it should be available to all IAEA member states.
-- Several commented [Tutorials](./Tutorials/) have been prepared to showcase the use and capabilities of the solver.
-- An [EMPTY case](./Tutorials/EMPTY/) is also provided that can be used for step-by-step building one’s case. One can start from the EMPTY case to build each new case, as it already includes a consistent minimum set of (dummy) files that must be present independent of the physics that are solved for.
+- **User Guide and Theory Manual** ([link](https://foam-for-nuclear.gitlab.io/foamForNuclear/index.html))
+- **Online Doxygen API** ([link](https://foam-for-nuclear.gitlab.io/foamForNuclear/doxygen/index.html))
+- **Introductory Lectures** ([`documentation/usefulDocumentsAndPresentations/`](./documentation/usefulDocumentsAndPresentations/))
+- **Tutorial Cases** for each physics module and coupling type ([`tutorials`](./tutorials/))
 
 Users are also encouraged to make use of the typical OpenFOAM learning strategies:
+
 - the high-level C++-based object-oriented language of OpenFOAM, which normally allows understanding the logic of a solver easily;
 - the comments that are typically available in the source code and, in particular, in the header files of each class;
 - the support of the community.
@@ -38,7 +62,7 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 
 ## Copyright
 
-© Contributions are individually acknowledged in the header files
+© Contributions are individually acknowledged in the header files.
 
 
 ## Gallery
@@ -46,33 +70,29 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 *Modeling of the European Sodium Fast Reactor: Boiling in a windowed assembly and core flowering*
 
 <div style="text-align:center;">
-  <img src="./Documentation/media/assmblyWindows.png" width="200">
-  <img src="./Documentation/media/coreFlowering.png" width="300">
+  <img src="./documentation/media/assmblyWindows.png" height="200">
+  <img src="./documentation/media/coreFlowering.png" height="200">
 </div>
-<br>
 
 
-*Full plant modeling of the ALFRED Lead Fast Reactor using the FMI interface and Modelica*
+*Full-plant modeling of the ALFRED Lead Fast Reactor using the FMI interface and Modelica*
 
 <div style="text-align:center;">
-  <img src="./Documentation/media/LFRfull.png" width="1000">
+  <img src="./documentation/media/LFRfull.png" width="1000">
 </div>
-<br>
 
 
-*Modeling of Molten Salt Reactors: the MSRE and the MSFR*
+*Modeling of Molten Salt Reactors: MSRE and MSFR*
 
 <div style="text-align:center;">
-  <img src="./Documentation/media/MSRE.png" width="300">
-  <img src="./Documentation/media/precTot3D.png" width="300">
-  <img src="./Documentation/media/precTot3Dside.png" width="100">
+  <img src="./documentation/media/MSRE.png" height="300">
+  <img src="./documentation/media/precTot3D.png" height="300">
+  <img src="./documentation/media/precTot3Dside.png" height="300">
 </div>
-<br>
 
 
 *Modeling of FFTF: 2-D primary circuit thermal-hydraulics and core fluxes*
 
 <div style="text-align:center;">
-  <img src="./Documentation/media/FFTF.png" width="800">
+  <img src="./documentation/media/FFTF.png" width="800">
 </div>
-<br>

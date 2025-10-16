@@ -1,0 +1,103 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2406                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       volVectorField;
+    location    "0/fluidRegion";
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform (0 0 -5.298);
+
+boundaryField
+{
+    inlet
+    {
+        type            flowRateInletVelocity;
+        massFlowRate    table;
+        massFlowRateCoeffs
+        {
+            values          
+28
+(
+(20822.96 31.083)
+(20830.415 31.042)
+(20832.197 30.909)
+(20834.185 29.961)
+(20835.771 28.768)
+(20838.837 26.332)
+(20843.383 22.803)
+(20847.559 19.523)
+(20849.78 17.882)
+(20852.819 15.497)
+(20854.881 13.906)
+(20856.816 13.007)
+(20858.517 12.702)
+(20860.647 12.69)
+(20865.333 12.665)
+(20868.155 12.674)
+(20870.711 12.685)
+(20873.799 12.668)
+(20879.231 12.688)
+(20882.798 12.669)
+(20887.43 12.643)
+(20889.933 12.63)
+(20926 12.63)
+(20937 6.35)
+(20962.4 6.35)
+(20964 0.907)
+(20991 3.856)
+(21013 2.585)
+)
+;
+        }
+        rho             thermo:rho;
+        value           uniform (0 0 -1);
+    }
+    outlet
+    {
+        type            zeroGradient;
+    }
+    defaultFaces
+    {
+        type            slip;
+    }
+    baffle_master
+    {
+        type            slip;
+    }
+    baffle_slave
+    {
+        type            slip;
+    }
+    inletFuelElement
+    {
+        type            cyclic;
+    }
+    inletFuelElement_slave
+    {
+        type            cyclic;
+    }
+    outletFuelElement
+    {
+        type            cyclic;
+    }
+    outletFuelElement_slave
+    {
+        type            cyclic;
+    }
+}
+
+
+// ************************************************************************* //

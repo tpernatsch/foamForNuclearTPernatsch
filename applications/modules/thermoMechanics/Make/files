@@ -1,0 +1,6 @@
+thermoMechanics.C
+legacyThermoMechanics/legacyThermoMechanics.C
+
+extendedThermoMechanics/extendedThermoMechanics.C
+
+LIB = $(FOAM_USER_LIBBIN)/libThermoMechanicsSolvers

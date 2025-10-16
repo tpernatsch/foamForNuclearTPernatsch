@@ -1,0 +1,309 @@
+"""
+
+"""
+#==============================================================================*
+# Imports
+
+import foamForNuclear as ffn
+import foamForNuclear.boundaryConditions as bc
+import foamForNuclear.mesh as mesh
+import matplotlib.pyplot as plt
+
+
+#==============================================================================*
+
+ffn.allclean()
+
+#==============================================================================*
+# Mesh
+
+thMesh = mesh.BlockMesh(region="fluidRegion")
+
+pPipe1 = thMesh.createCube("pPipe", 0, 0, 0, 0.1, 0.1, 0.5, nz=10)
+heater = thMesh.extrudeTop([pPipe1], "heater", dz=1, nz=20)
+pHX = thMesh.extrudeTop([heater], "pHX", dz=1, nz=20)
+pPipe2 = thMesh.extrudeTop([pHX], "pPipe", dz=0.5, nz=10)
+
+sPipe1 = thMesh.createCube("sPipe", 0.2, 0, 0, 0.3, 0.1, 0.5, nz=10)
+sPipe2 = thMesh.extrudeTop([sPipe1], "sPipe", dz=1, nz=20)
+sHX = thMesh.extrudeTop([sPipe2], "sHX", dz=1, nz=20)
+sPipe3 = thMesh.extrudeTop([sHX], "sPipe", dz=0.5, nz=10)
+
+outletP = ffn.Face("outletP")
+outletP.addSubFace(pPipe2.topFace())
+
+outletS = ffn.Face("outletS")
+outletS.addSubFace(sPipe3.topFace())
+
+inletP = ffn.Face("inletP")
+inletP.addSubFace(pPipe1.bottomFace())
+
+inletS = ffn.Face("inletS")
+inletS.addSubFace(sPipe1.bottomFace())
+
+walls = ffn.Face("walls", boundaryType="wall")
+for face in [pPipe1, heater, pHX, pPipe2, sPipe1, sPipe2, sHX, sPipe3]:
+    walls.addSubFace(face.leftFace())
+    walls.addSubFace(face.rightFace())
+    walls.addSubFace(face.frontFace())
+    walls.addSubFace(face.backFace())
+
+thMesh.addBoundary(outletP)
+thMesh.addBoundary(outletS)
+thMesh.addBoundary(inletP)
+thMesh.addBoundary(inletS)
+thMesh.addBoundary(walls)
+
+
+#==============================================================================*
+# Fields
+
+timeFolder0 = ffn.TimeFolder(0)
+
+
+T = ffn.Field("T", region="fluidRegion")
+T.dimensions = ffn.Dimension(default='T')
+T.internalField = 653.15
+T.set_boundary_condition("inletP", bc.FixedValue(T.internalField))
+T.set_boundary_condition("inletS", bc.FixedValue(T.internalField))
+T.set_boundary_condition("outletP", bc.ZeroGradient())
+T.set_boundary_condition("outletS", bc.ZeroGradient())
+T.set_boundary_condition("walls", bc.ZeroGradient())
+
+U = ffn.Field("U", region="fluidRegion")
+U.dimensions = ffn.Dimension(default='U')
+U.internalField = ffn.Vector(0, 0, 2)
+U.set_boundary_condition("inletP", bc.FixedValue(U.internalField))
+U.set_boundary_condition("inletS", bc.FixedValue(U.internalField))
+U.set_boundary_condition("outletP", bc.ZeroGradient())
+U.set_boundary_condition("outletS", bc.ZeroGradient())
+U.set_boundary_condition("walls", bc.Slip())
+
+p = ffn.Field("p", region="fluidRegion")
+p.dimensions = ffn.Dimension(default="p")
+p.internalField = 1e5
+p.set_boundary_condition("inletP", bc.Calculated(p.internalField))
+p.set_boundary_condition("inletS", bc.Calculated(p.internalField))
+p.set_boundary_condition("outletP", bc.Calculated(p.internalField))
+p.set_boundary_condition("outletS", bc.Calculated(p.internalField))
+p.set_boundary_condition("walls", bc.Calculated(p.internalField))
+
+p_rgh = ffn.Field("p_rgh", region="fluidRegion")
+p_rgh.dimensions = ffn.Dimension(default="p")
+p_rgh.internalField = 1e5
+p_rgh.set_boundary_condition("inletP", bc.FixedFluxPressure(p_rgh.internalField))
+p_rgh.set_boundary_condition("inletS", bc.FixedFluxPressure(p_rgh.internalField))
+p_rgh.set_boundary_condition("outletP", bc.FixedFluxPressure(p_rgh.internalField))
+p_rgh.set_boundary_condition("outletS", bc.FixedFluxPressure(p_rgh.internalField))
+p_rgh.set_boundary_condition("walls", bc.FixedFluxPressure(p_rgh.internalField))
+
+
+timeFolder0.append(T)
+timeFolder0.append(U)
+timeFolder0.append(p)
+timeFolder0.append(p_rgh)
+
+
+#==============================================================================*
+# Solvers
+
+thSolver = ffn.ThermalHydraulicsSolver(
+    region="fluidRegion",
+    solver="onePhase",
+    removeBaffles=False,
+    mesh=thMesh
+)
+thSolver.turbulenceProperties.simulationType = "laminar"
+# GeN-Foam crashes with Polynomial thermophysical properties
+# thSolver.thermophysicalProperties = ffn.thermophysicalProperties.SodiumPolynomial()
+thSolver.thermophysicalProperties = ffn.thermophysicalProperty.SodiumConst()
+
+
+pipes = ffn.StructureProperty(zones=["pPipe", "sPipe", "pHX", "sHX"], volumeFraction=0.5, Dh=0.005)
+
+heater = ffn.StructureProperty(zones=['heater'], volumeFraction=0.5, Dh=0.005)
+heater.powerModel = ffn.FixedPower(
+    volumetricArea=300,
+    T=653.15,
+    Cp=500,
+    rho=7700,
+    powerDensity=1.1e9,
+)
+
+heatExchanger = ffn.HeatExchangerModel(
+    name="HeatExchanger1",
+    primary="pHX",
+    secondary="sHX",
+    volumetricArea=250,
+    wallConductance=2.5e4
+)
+
+# pump = ffn.Pump(
+#     zones=['pump'],
+#     Dh=0.5,
+#     volumeFraction=0,
+#     momentumSource=ffn.Vector(0, 0, -166000),
+#     momentumSourceTimeProfile=ffn.TimeProfile(
+#         type_='table',
+#         table=[
+#             (   0,   1   ),
+#             (   1,   0.8490104619    ),
+#             (   2,   0.7126676467    ),
+#             (   3,   0.5704819773    ),
+#             (   4,   0.4544049355    ),
+#             (   5,   0.4067212859    ),
+#         ]
+#     )
+# )
+
+
+phaseProperties = thSolver.phaseProperties
+phaseProperties.structureProperties.append(pipes)
+phaseProperties.structureProperties.append(heater)
+phaseProperties.structureProperties.append(heatExchanger)
+# phaseProperties.structureProperties.append(pump)
+
+phaseProperties.dragModels.append(
+    ffn.ReynoldsPower(coeff=0.316, exp=-0.25, zones=["pPipe", "sPipe", "pHX", "sHX", "heater"])
+)
+phaseProperties.heatTransferModels.append(
+    ffn.NusseltReynoldsPrandtlPower(const=4, coeff=0.02, expRe=0.8, expPr=0.8, zones=["heater", "pHX", "sHX"])
+)
+
+thSolver.fvSchemes.laplacianSchemes['default'] = "Gauss linear uncorrected"
+thSolver.fvSchemes.divSchemes['default'] = "none"
+thSolver.fvSchemes.divSchemes['div(phi,alpha)'] = "Gauss vanLeer"
+thSolver.fvSchemes.divSchemes['div(phir,alpha)'] = "Gauss vanLeer"
+thSolver.fvSchemes.divSchemes['div\(phi.*,U.*\)'] = "Gauss upwind"
+thSolver.fvSchemes.divSchemes['div(alphaRhoPhi,U)'] = "Gauss upwind"
+thSolver.fvSchemes.divSchemes['div(alphaRhoPhiNu,U)'] = "Gauss linear"
+thSolver.fvSchemes.divSchemes['div(alphaRhoPhi,K)'] = "Gauss upwind"
+thSolver.fvSchemes.divSchemes['div\(alphaRhoPhi.*,(h|e).*\)'] = "Gauss upwind"
+
+thSolution = ffn.fvSolution()
+thSolution.append('"p_rgh.*"', ffn.fvSolutionSolver(
+    solver='GAMG',
+    smoother='DIC',
+    tolerance=1e-6,
+    relTol=0
+))
+smoothSolver = ffn.fvSolutionSolver(
+    solver='smoothSolver',
+    smoother='symGaussSeidel',
+    tolerance=1e-6,
+    relTol=0,
+    minIter=1
+)
+thSolution.append('"e.*"', smoothSolver)
+thSolution.append('"h.*"', smoothSolver)
+thSolution.append('".*"', ffn.fvSolutionSolver(
+    solver='PBiCGStab',
+    preconditioner='diagonal',
+    tolerance=1e-6,
+    relTol=0.001
+))
+
+thSolver.fvSolution = thSolution
+
+
+thSolver.pimpleOptions.nCorrectors = 6
+thSolver.pimpleOptions.nOuterCorrectors = 6
+thSolver.pimpleOptions.correctUntilConvergence = True
+thSolver.pimpleOptions.momentumMode = "faceCentered"
+thSolver.pimpleOptions.continuityErrorCompensationMode = "Su"
+thSolver.pimpleOptions.continuityErrorScaleFactor = 0.9
+
+thSolver.add_relaxation_on_equation('".*"', 1)
+
+
+#==============================================================================*
+# Function objects
+
+massFlow = ffn.MassFlow(
+    'inletMassFlow',
+    log=True,
+    writeFields=False,
+    writeControl="adjustableRunTime",
+    writeInterval=0.01,
+    region=thMesh.region,
+    regionName='inletP'
+)
+TBulk = ffn.TBulk(
+    'outletTBulkP',
+    log=True,
+    writeFields=False,
+    writeControl="adjustableRunTime",
+    writeInterval=0.01,
+    region=thMesh.region,
+    regionName='outletP'
+)
+
+#==============================================================================*
+# Settings
+
+model = ffn.Model()
+
+model.solvers.append(thSolver)
+model.timeFolders = [timeFolder0]
+
+model.add_function_object(massFlow)
+model.add_function_object(TBulk)
+
+settings: ffn.ControlDict = model.settings
+
+settings.application = 'GeN-Foam'
+settings.endTime = 20
+settings.deltaT = 0.001
+settings.writeControl = 'adjustableRunTime'
+settings.writeInterval = 1
+settings.writePrecision = 6
+settings.timePrecision = 6
+settings.runTimeModifiable = True
+settings.adjustTimeStep = True
+settings.maxDeltaT = 0.01
+
+settings.functionObjects.append(ffn.FunctionObject('vOutlet', "surfaceFieldValue"))
+
+print(model)
+
+# Export to OpenFOAM
+model.export_to_openfoam()
+
+
+#==============================================================================*
+# Run
+
+ffn.run(model=model, is_preprocessing=True)
+
+
+#==============================================================================*
+# Post-processing
+
+massFlowData = massFlow.read_from_case(0)
+TBulkData = TBulk.read_from_case(0)
+
+fig, ax = plt.subplots()
+ax.plot(TBulkData['Time'], TBulkData['TBulk'], label="Outlet Primary")
+ax.set_xlabel('Time [s]')
+ax.set_ylabel('Temperature [K]')
+ax.legend()
+fig.tight_layout()
+fig.savefig("fig_results_TBulk.png")
+
+model.plot_slice(
+    region=thMesh,
+    time=20,
+    fieldName='T',
+    cmap='RdBu_r',
+    unit='K'
+)
+model.plot_animation(
+    region=thMesh,
+    fieldName='T',
+    cmap='RdBu_r',
+    unit='K',
+    fps=2,
+    normal='y'
+)
+
+#==============================================================================*

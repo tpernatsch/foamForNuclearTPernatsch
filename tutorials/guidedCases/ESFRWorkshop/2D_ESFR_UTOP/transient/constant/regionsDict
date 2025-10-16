@@ -1,0 +1,83 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      mappingDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+regionSolvers
+{
+	Level_0
+	{
+		fluidRegion onePhase;
+		neutroRegion pointKinetics;
+		Level_1		CHTLoop;
+	}
+	Level_1
+	{
+		subSolvers
+		{
+			fuelBehaviourRegion fuelBehaviour;
+			channelRegion onePhase;
+		}
+		minResidual 1e-5;
+		maxIterations 1;
+		CHTLoopCoeffs
+		{
+			fluidRegionName channelRegion;
+			solidRegionName fuelBehaviourRegion;
+			fluidSidePatchName wall2;
+			solidSidePatchName cladOuter;
+			useHTC yes;
+
+			oneWayCoupling true;
+			targetRegion fuelBehaviourRegion;
+		}
+	}
+
+};
+
+mappings
+{
+	fluidRegion
+	{
+		neutroRegion
+		{
+			targetFields (powerDensityNeutronics);
+			sourceFields (powerDensity);
+		};
+	};
+	fuelBehaviourRegion
+	{
+	};
+	channelRegion
+	{
+		fluidRegion
+		{
+			targetFields (U p_rgh T p htc);
+			sourceFields (U p_rgh T p htc);
+		};
+	};
+	neutroRegion
+	{
+		fluidRegion
+		{
+			targetFields (rhoCool TFuel TClad  TStruct);
+			sourceFields (thermo:rho T.fuelAvForNeutronics T.cladAvForNeutronics T);
+		};
+	};
+	
+};
+			
+
+// ************************************************************************* //

@@ -1,0 +1,18 @@
+/*
+Script to generate the secondary circuit in FMU
+*/
+
+// Load the mandatory libraries
+loadModel(Modelica, ThermoPower);
+
+// Load all the files composing the model
+loadFile("./ExternalReactivityController.mo");
+
+// Some useful options for FMI
+setCommandLineOptions("--fmiFilter=none");
+setCommandLineOptions("--fmiSources=true");
+setCommandLineOptions("--fmiFlags=s");
+
+// Build the FMU
+translateModelFMU(ExternalReactivityController, version="2.0", fmuType="cs");
+buildModelFMU(ExternalReactivityController, version="2.0", fmuType="cs");

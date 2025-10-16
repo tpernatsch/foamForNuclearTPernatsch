@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 1 -1 0 0 0 0];
+
+
+// Dirichlet BC--> 
+// type fixedValue;
+// value uniform *value*
+
+// Neumann BC --> 
+// type zeroGradient (if grad = 0)
+// type fixedGradient; 
+// value uniform *gradientValue* (if grad!=0) 
+
+// Robin BC --> 
+// type mixed;
+// refValue uniform *refValue*
+// refGradient uniform *refGrad*
+// valueFraction uniform *valueFraction*
+//where
+// phi_wall = valueFraction * refValue + (1-valueFraction)* (refGrad + cellValue)
+
+internalField   uniform (0 0 4.559114016);
+
+boundaryField
+{
+    top // use starndard grad = 0
+    {
+        type ...;
+    }
+    bottom // use dirichlet, with v_z = 4.559114016 m/s
+    {
+       type ...;
+       value uniform (); // its a vector!
+    }
+    walls // use "slip" BC, which sets velocity = 0 perpendicular to wall
+    {
+        type ...;
+    }
+    baffle0 // use "slip" BC, which sets velocity = 0 perpendicular to wall
+    {
+        type ...;
+    }
+    baffle1 // use "slip" BC, which sets velocity = 0 perpendicular to wall
+    {
+        type ...;
+    }
+}
+
+// ************************************************************************* //

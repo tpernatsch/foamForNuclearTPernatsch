@@ -1,0 +1,42 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+
+
+type                sets;
+
+libs                ( "libsampling.so" );
+
+interpolationScheme cell; // cellPatchConstrained; // pointMVC; // cellPoint; // cellPointFace; // 
+
+setFormat           raw;
+
+sets
+(
+    fuelRegionAxial
+    {
+        type    uniform;
+        axis    z;
+        start   (1.011e-3 2.756e-2 0.0);
+        end     (.6416 1.659e-2 2.386e-4);
+        nPoints 100;
+    }
+);
+
+fields
+(
+    T
+    Tsurface.lumpedNuclearStructure
+    Tmatrix.lumpedNuclearStructure
+    Tmax.lumpedNuclearStructure
+    p
+    powerDensityNeutronics
+    magU
+);
+
+//***************************************************************************//

@@ -1,0 +1,5 @@
+InterpolateTable/InterpolateTablesGF.C
+
+radialBasisFunctionInterpolation/radialBasisFunctionInterpolation.C
+
+LIB = $(FOAM_USER_LIBBIN)/libInterpolationModels

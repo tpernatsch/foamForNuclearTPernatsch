@@ -1,0 +1,347 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+44
+(
+    o5Right
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       230481;
+    }
+    o4Right
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       230781;
+    }
+    innerPropellantRight
+    {
+        type            symmetry;
+        nFaces          3000;
+        startFace       231081;
+    }
+    hotFritRight
+    {
+        type            symmetry;
+        nFaces          1500;
+        startFace       234081;
+    }
+    o3Right
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       235581;
+    }
+    outerPropellantRight
+    {
+        type            symmetry;
+        nFaces          1500;
+        startFace       235881;
+    }
+    fuelRight
+    {
+        type            symmetry;
+        nFaces          3000;
+        startFace       237381;
+    }
+    o2Right
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       240381;
+    }
+    o1Right
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       240681;
+    }
+    o5Left
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       240981;
+    }
+    o4Left
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       241281;
+    }
+    innerPropellantLeft
+    {
+        type            symmetry;
+        nFaces          3000;
+        startFace       241581;
+    }
+    hotFritLeft
+    {
+        type            symmetry;
+        nFaces          1500;
+        startFace       244581;
+    }
+    o3Left
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       246081;
+    }
+    outerPropellantLeft
+    {
+        type            symmetry;
+        nFaces          1500;
+        startFace       246381;
+    }
+    fuelLeft
+    {
+        type            symmetry;
+        nFaces          3000;
+        startFace       247881;
+    }
+    o2Left
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       250881;
+    }
+    o1Left
+    {
+        type            symmetry;
+        nFaces          300;
+        startFace       251181;
+    }
+    innerPropellantOutlet15
+    {
+        type            patch;
+        nFaces          36;
+        startFace       251481;
+    }
+    hotFritOutlet
+    {
+        type            wall;
+        nFaces          117;
+        startFace       251517;
+    }
+    fuelOutlet
+    {
+        type            wall;
+        nFaces          234;
+        startFace       251634;
+    }
+    coldFritOutlet
+    {
+        type            wall;
+        nFaces          117;
+        startFace       251868;
+    }
+    outerPropellantOutlet
+    {
+        type            wall;
+        nFaces          117;
+        startFace       251985;
+    }
+    innerPropellantInlet
+    {
+        type            wall;
+        nFaces          234;
+        startFace       252102;
+    }
+    hotFritInlet
+    {
+        type            wall;
+        nFaces          117;
+        startFace       252336;
+    }
+    fuelInlet
+    {
+        type            wall;
+        nFaces          234;
+        startFace       252453;
+    }
+    coldFritInlet
+    {
+        type            wall;
+        nFaces          117;
+        startFace       252687;
+    }
+    outerPropellantInlet15
+    {
+        type            patch;
+        nFaces          18;
+        startFace       252804;
+    }
+    // outerPropellantOR15
+    // {
+    //     type            wall;
+    //     nFaces          600;
+    //     startFace       252822;
+    // }
+    outerPropellantOR15
+    {
+        type            mappedWall;
+        inGroups        1(wall);
+        nFaces          600;
+        startFace       252822;
+        sampleMode      nearestPatchFace;
+        sampleRegion    thermoMechanicalRegion;
+        samplePatch     ifc15;
+    }
+    innerPropellantOutlet16
+    {
+        type            patch;
+        nFaces          36;
+        startFace       253422;
+    }
+    outerPropellantInlet16
+    {
+        type            patch;
+        nFaces          18;
+        startFace       253458;
+    }
+    // outerPropellantOR16
+    // {
+    //     type            wall;
+    //     nFaces          600;
+    //     startFace       253476;
+    // }
+    outerPropellantOR16
+    {
+        type            mappedWall;
+        inGroups        1(wall);
+        nFaces          600;
+        startFace       253476;
+        sampleMode      nearestPatchFace;
+        sampleRegion    thermoMechanicalRegion;
+        samplePatch     ifc16;
+    }
+    innerPropellantOutlet17
+    {
+        type            patch;
+        nFaces          36;
+        startFace       254076;
+    }
+    outerPropellantInlet17
+    {
+        type            patch;
+        nFaces          18;
+        startFace       254112;
+    }
+    // outerPropellantOR17
+    // {
+    //     type            wall;
+    //     nFaces          600;
+    //     startFace       254130;
+    // }
+    outerPropellantOR17
+    {
+        type            mappedWall;
+        inGroups        1(wall);
+        nFaces          600;
+        startFace       254130;
+        sampleMode      nearestPatchFace;
+        sampleRegion    thermoMechanicalRegion;
+        samplePatch     ifc17;
+    }
+    innerPropellantOutlet18
+    {
+        type            patch;
+        nFaces          18;
+        startFace       254730;
+    }
+    outerPropellantInlet18
+    {
+        type            patch;
+        nFaces          9;
+        startFace       254748;
+    }
+    // outerPropellantOR18
+    // {
+    //     type            wall;
+    //     nFaces          300;
+    //     startFace       254757;
+    // }
+    outerPropellantOR18
+    {
+        type            mappedWall;
+        inGroups        1(wall);
+        nFaces          300;
+        startFace       254757;
+        sampleMode      nearestPatchFace;
+        sampleRegion    thermoMechanicalRegion;
+        samplePatch     ifc18;
+    }
+    innerPropellantOutlet22
+    {
+        type            patch;
+        nFaces          72;
+        startFace       255057;
+    }
+    // outerPropellantOR22
+    // {
+    //     type            wall;
+    //     nFaces          1200;
+    //     startFace       255129;
+    // }
+    outerPropellantOR22
+    {
+        type            mappedWall;
+        inGroups        1(wall);
+        nFaces          1200;
+        startFace       255129;
+        sampleMode      nearestPatchFace;
+        sampleRegion    thermoMechanicalRegion;
+        samplePatch     ifc22;
+    }
+    outerPropellantInlet22
+    {
+        type            patch;
+        nFaces          36;
+        startFace       256329;
+    }
+    innerPropellantOutlet23
+    {
+        type            patch;
+        nFaces          36;
+        startFace       256365;
+    }
+    outerPropellantInlet23
+    {
+        type            patch;
+        nFaces          18;
+        startFace       256401;
+    }
+    // outerPropellantOR23
+    // {
+    //     type            wall;
+    //     nFaces          600;
+    //     startFace       256419;
+    // }
+    outerPropellantOR23
+    {
+        type            mappedWall;
+        inGroups        1(wall);
+        nFaces          600;
+        startFace       256419;
+        sampleMode      nearestPatchFace;
+        sampleRegion    thermoMechanicalRegion;
+        samplePatch     ifc23;
+    }
+)
+
+// ************************************************************************* //

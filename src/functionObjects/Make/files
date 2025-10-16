@@ -1,0 +1,9 @@
+fieldDiffExtents/fieldDiffExtents.C
+TBulk/TBulk.C
+massFlow/massFlow.C
+pressureDrop/pressureDrop.C
+stopIfMaxFieldDiff/stopIfMaxFieldDiff.C
+patchScalarFieldValue/patchScalarFieldValue.C
+
+
+LIB = $(FOAM_USER_LIBBIN)/libFunctionObjects

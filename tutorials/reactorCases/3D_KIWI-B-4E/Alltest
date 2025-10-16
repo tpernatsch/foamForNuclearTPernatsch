@@ -1,0 +1,346 @@
+#!/bin/bash
+#===============================================================================*
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#===============================================================================*
+
+nCores=8
+
+# Steady-state end times
+endTimeSSN=0.2
+endTimeSSFM=2
+endTimeSSTH=20
+
+cases="steadyStateN steadyStateFM steadyStateTH"
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
+isTestFail=0
+
+# --- Initialize the output file
+resFile=test.out
+rm -rf $resFile
+touch $resFile
+
+
+#===============================================================================*
+
+rmAndCopyFrom()
+{
+    targetCase=$1
+    sourceCase=$2
+
+    echo -e "Cloning $sourceCase to case $targetCase\n"
+    rm -rf $targetCase
+    cp -r $sourceCase $targetCase
+    echo -e "Duplication done"
+}
+
+setSteadyStateN()
+{
+    rmAndCopyFrom $1 $2
+
+    echo -e "Setting steady-state case for neutronics only\n"
+
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeSSN
+    foamDictionary $1/system/controlDict -entry writeInterval -set 0.1
+    foamDictionary $1/system/controlDict -entry deltaT -set 1e-3
+
+    cp $1/constant/regionsDict_steadyStateN $1/constant/regionsDict
+    GeN-Foam -initializeMappedFields -case $1 > $1/log.GeN-Foam.initializeMappedFields
+
+    echo -e "Case set!\n\n"
+}
+
+setSteadyStateFM()
+{
+    rmAndCopyFrom $1 $2
+
+    echo -e "Setting steady-state case for fluid mechanics only\n"
+
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeSSFM
+    foamDictionary $1/system/controlDict -entry writeInterval -set 0.2
+    foamDictionary $1/system/controlDict -entry deltaT -set 1e-5
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.solveEnergy -set false
+    cp $1/constant/regionsDict_steadyStateFM $1/constant/regionsDict
+    for i in `seq 0 $(($nCores-1))`
+    do
+        cp -r steadyStateN/processor$i/0/fluidRegion $1/processor$i/$endTimeSSN
+    done
+
+    echo -e "Case set!\n\n"
+}
+
+setSteadyStateTH()
+{
+    rmAndCopyFrom $1 $2
+
+    echo -e "Setting steady-state case for coupled neutronics and thermal-hydraulics\n"
+
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeSSTH
+    foamDictionary $1/system/controlDict -entry writeInterval -set 1
+    foamDictionary $1/system/controlDict -entry deltaT -set 0.015
+    foamDictionary $1/system/controlDict -entry adjustTimeStep -set false
+    foamDictionary $1/system/controlDict -entry timePrecision -set 8
+    # foamDictionary $1/system/controlDict -entry maxDeltaT -set 0.1
+    # foamDictionary $1/system/controlDict -entry maxCo -set 100 # goes to 1 for final results
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.nCorrectors -set 3
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.nOuterCorrectors -set 3
+    foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.solveEnergy -set true
+    cp $1/constant/regionsDict_steadyStateTH $1/constant/regionsDict
+    for i in `seq 0 $(($nCores-1))`
+    do
+        cp -r steadyStateFM/processor$i/$endTimeSSN/uniform/reactorState $1/processor$i/$endTimeSSFM/uniform
+        cp -r steadyStateFM/processor$i/$endTimeSSN/neutroRegion $1/processor$i/$endTimeSSFM
+    done
+
+    mpirun -np $nCores GeN-Foam -initializeMappedFields -parallel -case $1 > $1/log.GeN-Foam.initializeMappedFields
+
+    echo -e "Case set!\n\n"
+}
+
+setTransientShutdown()
+{
+    rmAndCopyFrom $1 $2
+
+    echo -e "Setting shutdown transient case\n"
+
+    # Set up time to transient time as in LASL report LA-3185-MS
+    for i in `seq 0 $(($nCores-1))`
+    do
+        cp -r $1/processor$i/$endTimeSSTH $1/processor$i/$startTimeT
+    done
+
+    # Change simulation parameters
+    foamDictionary $1/system/controlDict -entry endTime -set $endTimeT
+    foamDictionary $1/system/controlDict -entry deltaT -set 1e-2
+    foamDictionary $1/system/controlDict -entry timePrecision -set 5
+    foamDictionary $1/system/controlDict -entry writeInterval -set 1
+    foamDictionary $1/system/controlDict -entry purgeWrite -set 0
+    foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
+    cp $1/constant/regionsDict_transient $1/constant/regionsDict
+
+    mpirun -np $nCores GeN-Foam -initializeMappedFields -parallel -case $1 > $1/log.GeN-Foam.initializeMappedFields
+
+    echo -e "Case set!\n\n"
+}
+
+setParallelMeshing()
+{
+    nCores=$1
+    caseName=$2
+    region=$3
+
+    foamDictionary $caseName/system/$region/decomposeParDict -entry numberOfSubdomains -set $nCores
+    # foamDictionary $caseName/system/$region/decomposeParDict -entry method -set simple
+    # foamDictionary $caseName/system/$region/decomposeParDict -entry simpleCoeffs.n -set "(1 1 $nCores)"
+}
+
+
+#===============================================================================*
+
+echo -e "Run tutorial 3D_KIWI-B-4E ...\n" | tee -a $resFile
+
+for caseName in $cases
+do
+    if [ ! -d $caseName ]
+    then
+        echo -e "Preparing to run case $caseName\n"
+
+        case "$caseName" in
+            "steadyStateN")
+                setSteadyStateN $caseName rootCase
+                setParallelMeshing $nCores $caseName fluidRegion
+                setParallelMeshing $nCores $caseName neutroRegion
+                decomposePar -case $caseName -allRegions -copyUniform > $caseName/log.decomposePar
+                ;;
+            "steadyStateFM")
+                setSteadyStateFM $caseName steadyStateN
+                ;;
+            "steadyStateTH")
+                setSteadyStateTH $caseName steadyStateFM
+                ;;
+            "transientShutdown")
+                setTransientShutdown $caseName steadyStateTH
+                ;;
+        esac
+
+        # Create a .foam file for vizualization
+        rm -rf $caseName/*.foam
+        touch $caseName/${caseName}.foam
+
+        echo -e "Running GeN-Foam on $caseName\n"
+
+        mpirun -np $nCores GeN-Foam -parallel -case $caseName  |
+            tee "$caseName/log.GeN-Foam" >> log.simulation
+
+    else
+        echo -e "$caseName case already exist. No simulation of $caseName"
+    fi
+done
+
+echo -e "Done running tutorial 3D_KIWI-B-4E ...\n" | tee -a $resFile
+
+
+#===============================================================================*
+
+# --- Check it ran
+isConverge()
+{
+    folder=$1
+    name=$2
+    string=$(tail -3 ./$folder/log.GeN-Foam | grep End)
+    if [ "$string" = "End" ]; then
+        echo -e "$name has converged \n" >> $resFile
+        echo -e "$name has ${GREEN}converged${NC} \n"
+    else
+        echo -e "$name has NOT converged \n" >> $resFile
+        echo -e "$name has ${RED}NOT converged${NC} \n"
+        exit 1
+    fi
+}
+
+# --- Check results are correct
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    valueMin=$(bc -l <<<"$value*(1-$error)")
+    valueMax=$(bc -l <<<"$value*(1+$error)")
+    if (( $(echo "$valueMin <= $ref && $ref <= $valueMax" | bc -l) )); then
+        echo 0
+    elif (( $(echo "$valueMax <= $ref && $ref <= $valueMin" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+extract()
+{
+    keyword=$1
+    filename=$2
+    value=$(
+        grep -e "$keyword" ./$filename |
+        tail -1 |
+        egrep -o "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?." |
+        xargs |
+        cut -d' ' -f1
+    )
+    echo $value
+}
+
+relativeError()
+{
+    ref=$1
+    value=$2
+    precision=$3
+    relErr=$(bc -l <<<"scale=$precision; 100*($ref-$value)/$ref")
+    echo $relErr
+}
+
+isInRange()
+{
+    ref=$1
+    value=$2
+    error=$3
+    relErr=$(relativeError $ref $value 20)
+    if (( $(echo "0 <= $relErr && $relErr <= $error" | bc -l) )); then
+        echo 0
+    elif (( $(echo "-$error <= $relErr && $relErr <= 0" | bc -l) )); then
+        echo 0
+    else
+        echo 1
+    fi
+}
+
+testAndPrintLine()
+{
+    name=$1
+    value=$2
+    ref=$3
+    error=$4
+    precision=$5
+
+    relErr=$(relativeError $ref $value $precision)
+
+    # Print with colors or not
+    if  [ $(isInRange $ref $value $error) -eq 0 ]
+    then
+        printf "| %-23s | %9s | %9s | ${GREEN}%9s${NC} |\n" \
+            "$name" "$value" "$ref" "$relErr"
+        printf "| %-23s | %9s | %9s | %9s | # Passed\n" \
+            "$name" "$value" "$ref" "$relErr" >> $resFile
+    else
+        printf "| %-23s | %9s | %9s | ${RED}%9s${NC} |\n" \
+            "$name" "$value" "$ref" "$relErr"
+        printf "| %-23s | %9s | %9s | %9s | ! Failed\n" \
+            "$name" "$value" "$ref" "$relErr" >> $resFile
+
+        isTestFail=1
+    fi
+}
+
+isConverge steadyStateN  "Neutronics steady state"
+isConverge steadyStateFM "Fluid-Mechanics steady state"
+isConverge steadyStateTH "Thermal-hydraulic steady state"
+
+
+mpirun -np 8 postProcess -parallel \
+    -case $caseName -region fluidRegion -time ":$endTimeSSTH" -dict system/functionsFluidDict \
+    -fields '(U magU p T htc alphaPhi alphaRhoPhi T.passiveStructure
+        Tsurface.lumpedNuclearStructure Tmatrix.lumpedNuclearStructure
+        Tmax.lumpedNuclearStructure totalPowerAhdeltaTcentral powerDensityNeutronics)' \
+    > $caseName/log.postProcess.functions
+
+
+keff=$(extract "keff_ =" "steadyStateTH/log.GeN-Foam")
+totalPowerNeutro=$(extract "pTarget_ =" "steadyStateTH/log.GeN-Foam")
+totalPowerFluid=$(extract "volIntegrate(fluidRegion) of powerDensityNeutronics" "steadyStateTH/log.postProcess.functions")
+Tout=$(extract "areaAverage(outlet) of T" "steadyStateTH/log.postProcess.functions")
+
+scaledPowerNeutro=$(python -c "print(float($totalPowerNeutro) * 1e-6)")
+scaledPowerFluid=$(python -c "print(float($totalPowerFluid) * 1e-6)")
+
+echo "$totalPowerNeutro $totalPowerFluid $scaledPowerNeutro $scaledPowerFluid"
+
+error1=0.001
+error2=0.05
+
+echo "Simulation & reference comparison" | tee -a $resFile
+echo "  -> $error1 % maximum relative error for (keff, power neutro & fluid)" | tee -a $resFile
+echo "  -> $error2 % maximum relative error for (Tout)" | tee -a $resFile
+echo | tee -a $resFile
+echo   "|                         | Simulated | Expected  | Error [%] |" | tee -a $resFile
+echo   "|:------------------------|:---------:|:---------:|:---------:|" | tee -a $resFile
+testAndPrintLine "keff"                    $keff              1.0940776 $error1 5
+testAndPrintLine "Total power neutro [MW]" $scaledPowerNeutro 905       $error1 5
+testAndPrintLine "Total power fluid  [MW]" $scaledPowerFluid  905       $error1 5
+# testAndPrintLine "Total mass flow  [kg/s]" $massFlowrate      31.0      $error2 2
+testAndPrintLine "Outlet temperature  [K]" $Tout              1762.667  $error2 2
+
+# --- Print summary of the table of test passed
+echo | tee -a $resFile
+if  [ $isTestFail -eq 0 ]
+then
+    echo "All test passed" >> $resFile
+    echo -e "${GREEN}All test passed${NC}"
+else
+    echo "Warning: One or more tested have failed !" >> $resFile
+    echo -e "${RED}Warning: One or more tested have failed !${NC}"
+    isTestFail=1
+fi
+echo | tee -a $resFile
+
+# --- Exit success: 0; or fail: 1
+exit $isTestFail
+
+
+#===============================================================================*

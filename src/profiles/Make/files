@@ -1,0 +1,4 @@
+timeProfile/timeProfile.C
+
+
+LIB = $(FOAM_USER_LIBBIN)/libProfiles
