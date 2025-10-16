@@ -13,9 +13,4 @@ We list below the imported OpenFOAM-based standard solvers available in GeN-Foam
     using a VOF (volume of fluid) phase-fraction based interface capturing
     approach. This standard solver has been transposed from OpenFOAM
     (`link <https://www.openfoam.com/documentation/guides/latest/man/compressibleInterFoam.html>`_)
-    into the GeN-Foam solver structure (see [*src/classes/openFoamImportedSolvers/compressibleInterFoam*](../classes/openFoamImportedSolvers/compressibleInterFoam/compressibleInterFoam.md)).
-:scalarTransportFoam: passive scalar transport equation solver. This standard
-    solver has been transposed from OpenFOAM
-    (`link <https://www.openfoam.com/documentation/guides/latest/man/scalarTransportFoam.html>`_)
-    into the new GeN-Foam solver structure
-    (see [*src/classes/openFoamImportedSolvers/scalarTransportFoam*](../classes/openFoamImportedSolvers/scalarTransportFoam/scalarTransportFoam.md)).
+    into the GeN-Foam solver structure (see :ref:`compressibleInterFoam <compressibleInterFoam>`).

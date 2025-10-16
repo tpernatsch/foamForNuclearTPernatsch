@@ -57,7 +57,7 @@ The new structure of GeN-Foam allows to deform each mesh based on any
 user-defined vectorial field. In particular, it might be of interest to solve
 the neutron transport on a deformed mesh. To do this, the user needs to make
 sure to map the *meshDisp* field from the mechanics to the neutronics. Moreover,
-in the *constant/multiRegionCouplingDict*, one can specify for each physics if
+in the *constant/regionsDict*, one can specify for each physics if
 the mesh needs to be deformed and based on which field the deformation is
 computed. An example of this is found in the
 `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/system/controlDict>`_
