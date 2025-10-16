@@ -57,11 +57,11 @@ Example:
 
 
 Fairly complete examples of *controlDict* for single-phase flow can be found in
-`2D_FFTF <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict>`_
+`2D_FFTF <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict>`_
 and
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/system/controlDict>`_,
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/system/controlDict>`_,
 while an explanation of the two-phase flow options can be found in
-`1D_boiling <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_boiling/system/controlDict>`_.
+`1D_boiling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_boiling/system/controlDict>`_.
 
 
 Coupling logic
@@ -82,7 +82,7 @@ the original field is mapped in the *targetFields* entry (e.g.
 the user doesn't need to specify the field type (i.e. scalar or vector). A
 detailed usage of this new coupling routine can be found in any multi-physics
 tutorial, such as
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/>`_.
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/>`_.
 
 Example:
 
@@ -167,7 +167,7 @@ the sub-scale structure by the thermal-hydraulics sub-solver, and partly by the
 thermo-mechanical solver itself (where there is not overlap with the
 thermo-hydraulics domain).
 
-Tutorial `2D_fullCoupling <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_fullCoupling>`_
+Tutorial `2D_fullCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_fullCoupling>`_
 has been created to allow users to play around with the couplings and understand
 their logic.
 

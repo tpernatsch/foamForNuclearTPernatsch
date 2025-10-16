@@ -42,17 +42,17 @@ Building Source on Linux
 ------------------------
 
 All foamForNuclear source code is hosted on `GitLab
-<https://gitlab.com/foam-for-nuclear/foam-for-nuclear-repository>`_. If you have `git
+<https://gitlab.com/foamForNuclear/foamForNuclear>`_. If you have `git
 <https://git-scm.com>`_, and a modern C++ compiler installed, you can
 download and install foamForNuclear by entering the following commands in a terminal:
 
 .. code-block:: bash
 
    # Clone the repo
-   git clone --recursive https://gitlab.com/foam-for-nuclear/foam-for-nuclear-repository.git
+   git clone --recursive https://gitlab.com/foamForNuclear/foamForNuclear.git
 
-   # Compile the project
-   ./Allwmake_ESI -j<N>
+   # Compile the project and build the foamForNuclear Python API
+   ./Allwmake -j<N> --api
 
 
 The :mod:`foamForNuclear <pythonapi>` Python package must be installed separately. The easiest way

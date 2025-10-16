@@ -42,7 +42,7 @@ structures like assembly wrappers or reflectors.
 All thermal-hydraulics functionalities are handled by the class
 :ref:`thermalHydraulicsModel.H <thermalHydraulicsModel>`, the derived classes for the various sub-solvers
 (see below), and a thermal-hydraulic library that can be found under
-[GeN-Foam/classes/thermalHydraulics/src](https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/src/classes/thermalHydraulics/src).
+`foamForNuclear/src/porousMediaModels <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/src/porousMediaModels>`.
 
 
 The porous-medium approach in GeN-Foam

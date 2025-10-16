@@ -25,9 +25,9 @@ two-phase flow analyses, two dictionaries must be employed named
 defined in the *phaseProperties* dictionary.
 
 One can find a detailed, commented example in the tutorials
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/fluidRegion/thermophysicalProperties>`_ (one-phase),
-`1D_boiling (liquid) <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_boiling/constant/fluidRegion/thermophysicalProperties.liquid>`_ (two-phase, liquid)
-`1D_boiling (vapour) <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_boiling/constant/fluidRegion/thermophysicalProperties.vapour>`_ (two-phase, vapour)
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/fluidRegion/thermophysicalProperties>`_ (one-phase),
+`1D_boiling (liquid) <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_boiling/constant/fluidRegion/thermophysicalProperties.liquid>`_ (two-phase, liquid)
+`1D_boiling (vapour) <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_boiling/constant/fluidRegion/thermophysicalProperties.vapour>`_ (two-phase, vapour)
 
 
 Turbulence properties
@@ -73,4 +73,4 @@ that is proportional to the fraction of the other phase (see
 
 One can find a detailed, commented example of a porous one-phase simulation in
 the tutorial
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/fluidRegion/turbulenceProperties>`_.
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/fluidRegion/turbulenceProperties>`_.

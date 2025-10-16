@@ -29,7 +29,7 @@ properties of structures, subdivided according to the cellZones of the
 thermoMechanicalRegion mesh.
 
 One can find a detailed, commented example in the tutorial
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/thermoMechanicalRegion/thermoMechanicalProperties>`_.
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/thermoMechanicalRegion/thermoMechanicalProperties>`_.
 
 
 Initial and boundary conditions
@@ -60,5 +60,5 @@ sure to map the *meshDisp* field from the mechanics to the neutronics. Moreover,
 in the *constant/multiRegionCouplingDict*, one can specify for each physics if
 the mesh needs to be deformed and based on which field the deformation is
 computed. An example of this is found in the
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/system/controlDict>`_
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/system/controlDict>`_
 tutorial.

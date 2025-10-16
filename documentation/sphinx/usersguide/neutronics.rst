@@ -55,7 +55,7 @@ Of course, in such cases, one should pay attention to setting proper boundary
 conditions for the precursors.
 
 A commented *reactorState* can be found in `3D_SmallESFR
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/0/uniform/reactorState>`_.
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/0/uniform/reactorState>`_.
 
 NB: Please note that in parallel calculations, the updated *reactorState* can be found in *timeStep/uniform/*.
 
@@ -113,7 +113,7 @@ following keywords:
                            should be put to false and the *keff* = 1.
 
 One can find detailed, commented examples in most tutorials. See for instance
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/neutronicsProperties>`_ (single phase).
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_ (single phase).
 
 N.B: The parameter *model* used to define what type of simulation needs to be
 performed as been replaced by the selection of model in the *system/controlDict*
@@ -127,7 +127,7 @@ The *nuclearData* dictionary
 In GeN-Foam, cross-sections and several other neutronics properties are handled
 by the :ref:`XS.H <XS>` class. Detailed explanations on the file format are provided in
 :ref:`XS.H <XS>` and in the tutorials (e.g `3D_SmallESFR
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData>`_).
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/nuclearData>`_).
 
 The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It
 contains all basic nuclear properties for the reference and perturbed reactor
@@ -141,15 +141,15 @@ are used.
 
 Special field for axial and radial expansions are provided as ``axExp`` and
 ``radExp`` (see `3D_SmallESFR
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData>`_).
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/nuclearData>`_).
 
 Nuclear data can be generated using any nuclear code.
 
-:`serpentToFoam <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/serpentToFoam/serpent2.1.23>`_:
+:`serpentToFoam <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tools/serpentToFoam/serpent2.1.23>`_:
     routines provided with GeN-Foam (in the *Tools* folder) is an Octave script
     that automatically converts Serpent output files into the nuclear data files
     employed by GeN-Foam.
-:`openmcToFoam <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/openmcToFoam>`_:
+:`openmcToFoam <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tools/openmcToFoam>`_:
     Python package provided with GeN-Foam automatically converts OpenMC output
     into nuclear data files.
 
@@ -275,10 +275,10 @@ coupling with other solvers (see the :ref:`coupling page <userguide_coupling>`).
 
 One can find more details on all the parameters in the :ref:`XS.H <XS>` file and commented
 examples of *nuclearData* in the tutorials
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData>`_ (for diffusion or SP3),
-`Godiva_SN <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/Godiva_SN/constant/neutroRegion/nuclearData>`_ (for discrete ordinates) and
-`2D_onePhaseAndPointKineticsCoupling <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData>`_ (for point kinetics).
-`2D_onePhaseAndSubcriticalPointKineticsCoupling <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource>`_ (for subcritical point kinetics).
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/nuclearData>`_ (for diffusion or SP3),
+`Godiva_SN <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/Godiva_SN/constant/neutroRegion/nuclearData>`_ (for discrete ordinates) and
+`2D_onePhaseAndPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData>`_ (for point kinetics).
+`2D_onePhaseAndSubcriticalPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource>`_ (for subcritical point kinetics).
 
 
 ------------------
@@ -293,9 +293,9 @@ discrete ordinate calculations. The *quadratureSet* dictionary is found under
 *constant/neutroRegion/*. It contains the quadrature set for discrete ordinate
 calculations. One can find examples of three different quadrature sets in the
 tutorial `Godiva_SN
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/Godiva_SN/constant/neutroRegion/>`_.
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/Godiva_SN/constant/neutroRegion/>`_.
 S4 and S8 Chebyshev-Legendre quadrature sets can be found in `Godiva_SN
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/develop/Tools/chebichevLegendreQuadratureSets/>`_.
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tools/chebichevLegendreQuadratureSets/>`_.
 
 
 The *CRMove* dictionary
@@ -308,7 +308,7 @@ insertion/extraction and the speed of insertion/extraction (positive speed for
 insertion).
 
 One can find a commented example in the tutorial
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/CRmove>`_, though this option is not actually used in the tutorial.
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/CRmove>`_, though this option is not actually used in the tutorial.
 
 
 Initial and boundary conditions
@@ -373,7 +373,7 @@ densities and precursors. When fluxes are not calculated via a spatial
 neutronics calculation, one has to manually provide the *oneGroupFlux* in
 *0/neutroRegion*. As an alternative, one can use the *initialOneGroupFluxByZone*
 keyword in *nuclearData* (see `1D_MSR_pointKinetics
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData>`_). Please notice that:
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData>`_). Please notice that:
 
 - If calculated fluxes are available in *neutroRegion*, these will be user to recalculate and overwrite *oneGroupFlux*.
 - If no fluxes are available, the neutronics sub-solver will use the provided *oneGroupFlux*
