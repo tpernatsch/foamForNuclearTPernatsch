@@ -41,8 +41,7 @@ pages:
       - public
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "develop"
-    - if: $CI_COMMIT_BRANCH == "refactoringBranch"
+    - if: $CI_COMMIT_BRANCH == "master"
       allow_failure: true
       when: manual
 
