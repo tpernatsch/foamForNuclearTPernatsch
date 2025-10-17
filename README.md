@@ -60,6 +60,18 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 - the support of the community.
 
 
+## Getting started
+
+```bash
+# Clone the repo
+git clone --recursive https://gitlab.com/foamForNuclear/foamForNuclear.git
+
+# Compile the foamForNuclear project and build the foamForNuclear Python API
+cd foamForNuclear
+./Allwmake -j4 --api
+```
+
+
 ## Copyright
 
 © Contributions are individually acknowledged in the header files.
@@ -98,13 +110,3 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 </div>
 
 
-## Getting started
-
-```bash
-# Clone the repo
-git clone --recursive https://gitlab.com/foamForNuclear/foamForNuclear.git
-
-# Compile the foamForNuclear project and build the foamForNuclear Python API
-cd foamForNuclear
-./Allwmake -j4 --api
-```
