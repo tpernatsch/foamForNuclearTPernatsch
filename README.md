@@ -48,8 +48,9 @@ FFN is based on the **OpenFOAM® (ESI/OpenCFD)** distribution, currently **v2506
 
 Resources for users and developers include:
 
-- **User Guide and Theory Manual** ([link](https://foamfornuclear.gitlab.io/foamForNuclear/index.html))
-- **Online Doxygen API** ([link](https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/index.html))
+- **User Guide and Theory Manual:** [![foamForNuclear User's Guide](https://img.shields.io/badge/foamForNuclear-User_Guide-blue?logo=sphinx)](https://foamfornuclear.gitlab.io/foamForNuclear/index.html)
+- **Online Doxygen API:** [![foamForNuclear Doxygen](https://img.shields.io/badge/foamForNuclear-Doxygen-blue?logo=doxygen)](https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/index.html)
+- **Python API Documentation:** [![foamForNuclear Doxygen](https://img.shields.io/badge/foamForNuclear-Python_API-blue?logo=python)](https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/index.html)
 - **Introductory Lectures** ([`documentation/usefulDocumentsAndPresentations/`](./documentation/usefulDocumentsAndPresentations/))
 - **Tutorial Cases** for each physics module and coupling type ([`tutorials`](./tutorials/))
 
@@ -108,5 +109,3 @@ cd foamForNuclear
 <div style="text-align:center;">
   <img src="./documentation/media/FFTF.png" width="800">
 </div>
-
-

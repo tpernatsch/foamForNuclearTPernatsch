@@ -5,8 +5,7 @@ Python API
 ==========
 
 foamForNuclear includes a Python API that enables programmatic pre- and
-post-processing. The easiest way to begin using the API is to take a look at the
-:ref:`examples`.
+post-processing.
 
 
 .. rubric:: Modules
