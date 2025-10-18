@@ -52,3 +52,4 @@ Contents
    cppapi/index
    theoryReferences
    V_Vreferences
+   contributors
