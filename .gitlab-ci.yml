@@ -33,6 +33,9 @@ pages:
     - python3 documentation/sphinx/buildTutorialsDoc.py
     - python3 documentation/sphinx/generate_cpp_docs.py
     - sphinx-build -b html documentation/sphinx public
+    - echo "Searching for tutorials.rst:"
+    - find documentation/sphinx -name tutorials.rst
+
 
     # Move Doxygen documentation to the public directory alongside Sphinx
     - mv documentation/doxygen/Doxygen/html/ public/doxygen
@@ -40,6 +43,14 @@ pages:
   artifacts:
     paths:
       - public
+
+
+artifacts:
+  paths:
+    - public
+    - documentation/sphinx
+  expire_in: 1 week
+
 
   rules:
     #- if: $CI_COMMIT_BRANCH == "master"
