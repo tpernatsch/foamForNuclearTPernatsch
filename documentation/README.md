@@ -1,6 +1,6 @@
 # Documentation
 
-This folder contains links to a comprehensive online documentation:
+This folder is used to build the code documentation, including for example:
 
 - Sphinx documentation for the User Guide, C++ code and Python API ([link](./sphinx/))
 - Doxygen-generated documentation ([link](./doxygen/files/))
