@@ -30,11 +30,13 @@ pages:
     # Install and build Sphinx doc
     - pip3 install -U sphinx sphinx-rtd-theme sphinx_intl myst-parser sphinx-mermaid
     - cd pythonapi && pip3 install -e . && cd ..
-    - python3 documentation/sphinx/buildTutorialsDoc.py
+    - cd documentation/sphinx && python3 buildTutorialsDoc.py && cd ../../
     - python3 documentation/sphinx/generate_cpp_docs.py
     - sphinx-build -b html documentation/sphinx public
     - echo "Searching for tutorials.rst:"
     - find documentation/sphinx -name tutorials.rst
+    - find documentation/sphinx -type f -name "*.rst"
+    - ls -R documentation/sphinx
 
 
     # Move Doxygen documentation to the public directory alongside Sphinx
