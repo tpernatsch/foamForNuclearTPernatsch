@@ -4,9 +4,7 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the path to the tutorials directory relative to the script
-tutorials_dir = os.path.abspath(os.path.join(script_dir, "../../../tutorials")
-
-
+tutorials_dir = os.path.abspath(os.path.join(script_dir, "../../../tutorials"))
 
 # Destination base directory for documentation
 docs_base_dir = "./usersguide"
