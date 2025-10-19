@@ -23,11 +23,11 @@ with open(main_tutorials_path, "w") as main_index:
     main_index.write("Tutorials\n====================\n\n")
 
     # Prepend README.md content from tutorials/import
-    import_readme_path = os.path.join(tutorials_dir,  "README.md")
-    if os.path.exists(import_readme_path):
-        with open(import_readme_path, "r") as readme_file:
-            main_index.write(readme_file.read())
-            main_index.write("\n\n")  # Add spacing after README content
+    # import_readme_path = os.path.join(tutorials_dir,  "README.md")
+    # if os.path.exists(import_readme_path):
+    #     with open(import_readme_path, "r") as readme_file:
+    #         main_index.write(readme_file.read())
+    #         main_index.write("\n\n")  # Add spacing after README content
 
 
     # Include the README.md again, parsed by MyST
