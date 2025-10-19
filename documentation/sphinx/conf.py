@@ -21,7 +21,7 @@ current_year = datetime.datetime.now().year
 # -- Project information -----------------------------------------------------
 
 project = "foamForNuclear"
-copyright = f"2015-{current_year}, foamForNuclear Team, documentation and Python API prepared by Thomas Guilbaud"
+copyright = f"2015-{current_year}, foamForNuclear Team, Python API prepared by Thomas Guilbaud"
 author = "foamForNuclear Team"
 
 
@@ -39,12 +39,6 @@ extensions = [
     "myst_parser",
     "sphinxmermaid"
 ]
-
-
-myst_enable_extensions = [
-    "front_matter",
-]
-
 
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),

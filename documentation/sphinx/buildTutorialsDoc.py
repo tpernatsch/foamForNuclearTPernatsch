@@ -29,7 +29,14 @@ with open(main_tutorials_path, "w") as main_index:
             main_index.write(readme_file.read())
             main_index.write("\n\n")  # Add spacing after README content
 
-    main_index.write(".. toctree::\n   :maxdepth: 2\n   :caption: Tutorial Sections\n\n")
+
+    # Include the README.md again, parsed by MyST
+    main_index.write(".. include:: {}\n".format(import_readme_path))
+    main_index.write("   :parser: myst_parser.sphinx_\n")
+
+
+
+    main_index.write(".. toctree::\n   :maxdepth: 2\n   :caption: List of tutorials\n\n")
 
     # Iterate over section folders in the tutorials source
     for section in sorted(os.listdir(tutorials_dir)):
