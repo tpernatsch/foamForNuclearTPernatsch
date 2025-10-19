@@ -1,10 +1,13 @@
 import os
 
+
 # Get the absolute path to the directory containing this script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
-# Construct the path to the tutorials directory relative to the script
-tutorials_dir = os.path.abspath(os.path.join(script_dir, "../../../tutorials"))
+# Construct the correct path to the tutorials directory
+tutorials_dir = os.path.join(script_dir, "..", "..", "tutorials")
+tutorials_dir = os.path.abspath(tutorials_dir)
+
 
 # Destination base directory for documentation
 docs_base_dir = "./usersguide"
