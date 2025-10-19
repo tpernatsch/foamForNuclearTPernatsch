@@ -24,17 +24,14 @@ with open(main_tutorials_path, "w") as main_index:
 
     # Prepend README.md content from tutorials/import
     import_readme_path = os.path.join(tutorials_dir,  "README.md")
-    # if os.path.exists(import_readme_path):
-    #     with open(import_readme_path, "r") as readme_file:
-    #         main_index.write(readme_file.read())
-    #         main_index.write("\n\n")  # Add spacing after README content
-
+    if os.path.exists(import_readme_path):
+        with open(import_readme_path, "r") as readme_file:
+            main_index.write(readme_file.read())
+            main_index.write("\n\n")  # Add spacing after README content
 
     # Include the README.md again, parsed by MyST
-    main_index.write(".. include:: {}\n".format(import_readme_path))
-    main_index.write("   :parser: myst_parser.sphinx_\n")
-
-
+    #main_index.write(".. include:: {}\n".format(import_readme_path))
+    #main_index.write("   :parser: myst_parser.sphinx_\n")
 
     main_index.write(".. toctree::\n   :maxdepth: 2\n   :caption: List of tutorials\n\n")
 
