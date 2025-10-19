@@ -45,13 +45,6 @@ pages:
       - public
 
 
-artifacts:
-  paths:
-    - public
-    - documentation/sphinx
-  expire_in: 1 week
-
-
   rules:
     #- if: $CI_COMMIT_BRANCH == "master"
 
