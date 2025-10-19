@@ -40,6 +40,12 @@ extensions = [
     "sphinxmermaid"
 ]
 
+
+myst_enable_extensions = [
+    "front_matter",
+]
+
+
 intersphinx_mapping = {
     "rtd": ("https://docs.readthedocs.io/en/stable/", None),
     "python": ("https://docs.python.org/3/", None),
