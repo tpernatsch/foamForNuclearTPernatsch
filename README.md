@@ -20,7 +20,7 @@ The **modular structure** of FFN allows users familiar with the OpenFOAM® API t
 
 ## Applications within FFN
 
-The FFN platform currently includes two main applications that make use of the physics modules:
+The FFN platform currently features two primary solver applications that leverage its physics modules: GeN-Foam and OFFBEAT. GeN-Foam offers flexible integration, allowing users to combine any set of physics modules—including OFFBEAT itself—for comprehensive simulations. For convenience, a standalone version of OFFBEAT is also available. Additionally, users familiar with OpenFOAM can easily develop custom solvers tailored to specific needs. This is particularly useful for specialized applications that require only one or two physics modules, where the full capabilities of GeN-Foam may be unnecessary.
 
 
 ### GeN-Foam
@@ -37,11 +37,6 @@ This architecture supports multi-scale analyses combining coarse and detailed mo
 ### OFFBEAT
 
 While the fuel behavior module can be integrated into GeN-Foam, **OFFBEAT** remains a **standalone application** within FFN, dedicated to **single-mesh fuel performance** simulations. It provides high-fidelity thermo-mechanical and material evolution modeling for individual fuel pins, rods, or pebbles.
-
-
-## OpenFOAM Version
-
-FFN is based on the **OpenFOAM® (ESI/OpenCFD)** distribution, currently **v2506**, available at [www.openfoam.com](https://www.openfoam.com). The platform is regularly updated to maintain compatibility with new releases.
 
 
 ## Documentation
@@ -61,9 +56,23 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 - the support of the community.
 
 
+## OpenFOAM Version
+
+FFN is based on the **OpenFOAM® (ESI/OpenCFD)** distribution, currently **v2506**, available at [www.openfoam.com](https://www.openfoam.com). The platform is regularly updated to maintain compatibility with new releases.
+
 ## Getting started
 
+First, [install OpenFOAM](https://www.openfoam.com/). If installing from source, [follow the instructions here](https://develop.openfoam.com/Development/openfoam/-/blob/master/doc/Build.md). Check for the appropriate version specified above!
+
+Make sure OpenFOAM has been installed correctly and that the environment is correctly sourced. For instance, when installing from source, and if installing under the ~/openfoam folder:
 ```bash
+source ~/openfoam/OpenFOAM-v2506/etc/bashrc
+```
+
+Once you are sure the appropriate OpenFOAM version is correctly installed, and the OpenFOAM environment is sourced:
+
+```bash
+
 # Clone the repo
 git clone --recursive https://gitlab.com/foamForNuclear/foamForNuclear.git
 
@@ -71,6 +80,7 @@ git clone --recursive https://gitlab.com/foamForNuclear/foamForNuclear.git
 cd foamForNuclear
 ./Allwmake -j4 --api
 ```
+j4 is telling your compiler to use 4 cores. You can use as many as your system allows.
 
 
 ## Copyright
