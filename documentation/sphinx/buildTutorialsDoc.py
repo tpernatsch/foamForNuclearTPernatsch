@@ -1,7 +1,7 @@
 import os
 
 # Source directory for tutorials
-tutorials_dir = "./../../tutorials"
+tutorials_dir = "./../../../tutorials"
 
 # Destination base directory for documentation
 docs_base_dir = "./usersguide"
