@@ -1,7 +1,12 @@
 import os
 
-# Source directory for tutorials
-tutorials_dir = "./../../../tutorials"
+# Get the absolute path to the directory containing this script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the path to the tutorials directory relative to the script
+tutorials_dir = os.path.abspath(os.path.join(script_dir, "../../../tutorials")
+
+
 
 # Destination base directory for documentation
 docs_base_dir = "./usersguide"
@@ -13,7 +18,6 @@ os.makedirs(docs_tutorials_dir, exist_ok=True)
 # Create the main tutorials.rst file
 main_tutorials_path = os.path.join(docs_base_dir, "tutorials.rst")
 with open(main_tutorials_path, "w") as main_index:
-
 
     main_index.write(".. _usersguide_tutorials:\n\n")
     main_index.write("Tutorials\n====================\n\n")
