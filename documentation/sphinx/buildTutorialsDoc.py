@@ -8,7 +8,6 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 tutorials_dir = os.path.join(script_dir, "..", "..", "tutorials")
 tutorials_dir = os.path.abspath(tutorials_dir)
 
-
 # Destination base directory for documentation
 docs_base_dir = "./usersguide"
 docs_tutorials_dir = os.path.join(docs_base_dir, "tutorials")
@@ -23,6 +22,13 @@ with open(main_tutorials_path, "w") as main_index:
     main_index.write(".. _usersguide_tutorials:\n\n")
     main_index.write("Tutorials\n====================\n\n")
     main_index.write(".. toctree::\n   :maxdepth: 2\n   :caption: Tutorial Sections\n\n")
+
+    # Prepend README.md content from tutorials/import
+    import_readme_path = os.path.join(tutorials_dir,  "README.md")
+    if os.path.exists(import_readme_path):
+        with open(import_readme_path, "r") as readme_file:
+            main_index.write(readme_file.read())
+            main_index.write("\n\n")  # Add spacing after README content
 
     # Iterate over section folders in the tutorials source
     for section in sorted(os.listdir(tutorials_dir)):

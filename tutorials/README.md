@@ -1,8 +1,6 @@
 # Tutorials
 
-This folder contains a set of tutorials that have been selected to provide a relatively comprehensive outlook on the functionalities of GeN-Foam. In [`3D_SmallESFR`](./3D_SmallESFR_NewSolverVerification/), essentially all non-obvious or non-OpenFOAM standard input parameters are commented, or they include an indication on the tutorial to look at for additional comments.
-
-In each tutorial:
+A set of tutorials is distributed to provide a relatively comprehensive outlook on the functionalities of FFN. In each tutorial:
 
 - a `README.md` file provides a general description of the tutorials
 
@@ -14,19 +12,20 @@ In each tutorial:
 
 - in complex cases, an `Allclean` script is provided to clean up a case after running it and before another simulation
 
+N.B.: In [`3D_SmallESFR`](./3D_SmallESFR_NewSolverVerification/), many non-obvious or non-OpenFOAM standard input parameters are commented, or they include an indication on the tutorial to look at for additional comments.
 
 ## Cases
 
 The Tutorials folder is divided in four types of tutorials:
-- [guidedCases](./guidedCases/) that contains simple cases to teach the user how to use GeN-Foam
-- [reactorCases](./reactorCases/) that contains complex cases representing partial or complete nuclear reactors
-- [featureCases](./featureCases/) that contains tests and validation cases for specific features in GeN-Foam
-- [fmuCases](./fmuCases/) that contains examples of use of the FMI standard with GeN-Foam
+- [guidedCases](./guidedCases/): simple cases to teach the user how to use FFN
+- [reactorCases](./reactorCases/): complex cases representing partial or complete nuclear reactors
+- [featureCases](./featureCases/): tests and validation cases for specific features
+- [fmuCases](./fmuCases/): examples of use of the FMI standard
 
 
 ## Regression test suite
 
-It is highly recommended to run the [`Alltest`](./Alltest) script when developing to make sure that GeN-Foam behaves as expected. This script runs all the tutorials contained in this folder, except `toBeUpdated`. It is an extensive process that might require a day of calculation depending on the hardware.
+The [`Alltest`](./Alltest) script can be used when developing to make sure that FFN behaves as expected. This script runs all the tutorials contained in this folder. It is an extensive process that might require a day of calculation depending on the hardware.
 
 The results of the test are summarized in the [regressionResults.md](regressionResults.md) file. In `--fast` mode, the results are summarized in [regressionResults-fast.md](./regressionResults-fast.md).
 
