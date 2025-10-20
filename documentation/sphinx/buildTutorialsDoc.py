@@ -34,10 +34,6 @@ with open(main_tutorials_path, "w") as main_index:
             main_index.write(readme_file.read())
             main_index.write("\n\n")  # Add spacing after README content
 
-    # Include the README.md again, parsed by MyST
-    #main_index.write(".. include:: {}\n".format(import_readme_path))
-    #main_index.write("   :parser: myst_parser.sphinx_\n")
-
     main_index.write(".. toctree::\n   :maxdepth: 2\n   :caption: List of tutorials\n\n")
 
     # Iterate over section folders in the tutorials source
@@ -61,8 +57,8 @@ with open(main_tutorials_path, "w") as main_index:
                     tutorial_path = os.path.join(section_path, tutorial)
 
                     if os.path.isdir(tutorial_path):
-                        readme_path = os.path.join(tutorial_path, "README.rst")
-                        tutorial_rst_path = os.path.join(docs_section_path, f"{tutorial}.rst")
+                        readme_path = os.path.join(tutorial_path, "README.md")
+                        tutorial_rst_path = os.path.join(docs_section_path, f"{tutorial}.md")
 
                         # Create tutorial .rst file in documentation
                         with open(tutorial_rst_path, "w") as tutorial_rst:

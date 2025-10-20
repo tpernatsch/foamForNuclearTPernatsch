@@ -51,6 +51,11 @@ intersphinx_mapping = {
 }
 intersphinx_disabled_domains = ["std"]
 
+myst_enable_extensions = [
+    "amsmath",
+    "dollarmath",
+]
+
 templates_path = ["_templates"]
 
 # -- Options for EPUB output
