@@ -1,4 +1,9 @@
 import os
+from re import finditer
+
+def camel_case_split(identifier):
+    matches = finditer('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', identifier)
+    return(' '.join([m.group(0).capitalize() for m in matches]))
 
 
 # Get the absolute path to the directory containing this script
@@ -20,7 +25,7 @@ main_tutorials_path = os.path.join(docs_base_dir, "tutorials.rst")
 with open(main_tutorials_path, "w") as main_index:
 
     main_index.write(".. _usersguide_tutorials:\n\n")
-    main_index.write("Tutorials\n====================\n\n")
+    main_index.write("Tutorials\n=========\n\n")
 
     # Prepend README.md content from tutorials/import
     import_readme_path = os.path.join(tutorials_dir,  "README.md")
@@ -48,24 +53,23 @@ with open(main_tutorials_path, "w") as main_index:
             # Create section index.rst in documentation
             section_index_path = os.path.join(docs_section_path, "index.rst")
             with open(section_index_path, "w") as section_index:
-                section_index.write(f"{section.capitalize()} Tutorials\n{'=' * (len(section) + 10)}\n\n")
+                section_index.write(f"{camel_case_split(section)} Tutorials\n{'=' * (len(section) + 11)}\n\n")
                 section_index.write(".. toctree::\n   :maxdepth: 1\n\n")
 
                 # Iterate over tutorials in the section
                 for tutorial in sorted(os.listdir(section_path)):
                     tutorial_path = os.path.join(section_path, tutorial)
-                    
+
                     if os.path.isdir(tutorial_path):
-                        readme_path = os.path.join(tutorial_path, "README.md")
+                        readme_path = os.path.join(tutorial_path, "README.rst")
                         tutorial_rst_path = os.path.join(docs_section_path, f"{tutorial}.rst")
 
                         # Create tutorial .rst file in documentation
                         with open(tutorial_rst_path, "w") as tutorial_rst:
-                            tutorial_rst.write(f"{tutorial}\n{'=' * len(tutorial)}\n\n")
+                            # tutorial_rst.write(f"{tutorial}\n{'=' * len(tutorial)}\n\n")
                             if os.path.exists(readme_path):
                                 with open(readme_path, "r") as readme_file:
                                     tutorial_rst.write(readme_file.read())
 
                         # Add tutorial to section index
                         section_index.write(f"   {tutorial}\n")
-
