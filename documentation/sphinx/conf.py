@@ -21,7 +21,7 @@ current_year = datetime.datetime.now().year
 # -- Project information -----------------------------------------------------
 
 project = "foamForNuclear"
-copyright = f"2015-{current_year}, foamForNuclear Team, Python API prepared by Thomas Guilbaud"
+copyright = f"2015-{current_year}, foamForNuclear Team"
 author = "foamForNuclear Team"
 
 
