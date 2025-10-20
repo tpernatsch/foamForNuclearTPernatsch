@@ -6,7 +6,7 @@ Author: Thomas Guilbaud, EPFL/Transmutex SA, 26/01/2023
 
 The purpose of this case is to simulate coupled GeN-Foam/FMU of an entire power-plant from the core to the turbine. The reactor is the Lead Fast Reactor (LFR) ALFRED of 300 MWth.
 
-![](./images/LFRfull.png)
+![](./images/2D_LFRpowerPlant_LFRfull.png)
 
 *Fig 1. Full plant modeling of the ALFRED Lead Fast Reactor using the FMI interface and Modelica.*
 
@@ -51,7 +51,7 @@ It is possible to change the architecture in the [rootCase/system/controlDict](r
 
 The system relies on 2 PID controllers, one on the grid frequency that controls the turbine valve admission to balance the mechanical and the electrical power. The second PID controls the reactivity insertion or the beam modulation to improve the core power response.
 
-![](images/SecondaryCircuitWithControlLegendSource.png)
+![](images/2D_LFRpowerPlant_SecondaryCircuitWithControlLegendSource.png)
 
 *Fig 2: Balance of plant model using Modelica used by GeN-Foam.*
 

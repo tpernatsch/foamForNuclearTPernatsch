@@ -1,6 +1,7 @@
 # Vynnycky Conjugate Heat Transfer (CHT) Benchmark
 
 ## Description
+
 The **Vynnycky et al. CHT benchmark** is a canonical problem for validating conjugate heat transfer solvers, based on the study:
 
 > Vynnycky M., Kimura S., Kanev K., Pop I. (1998) *Forced convection heat transfer from a flat plate: the conjugate problem*. Int. J. Heat Mass Transfer, 41(1), 45–59.
@@ -49,29 +50,19 @@ https://github.com/hmarschall/multiRegionFoam/tree/dev/tutorials/conjugateHeatTr
 ## Boundary & Initial Conditions
 
 - **Inlet:** uniform velocity profile $U_\infty = 1 \ m/s$ such that
-  $$
-  Re = \frac{U_\infty L_f}{\nu} = 10^4
-  $$
+  $Re = \frac{U_\infty L_f}{\nu} = 10^4$
   with uniform fluid temperature $T_\infty$.
 
 - **Plate top surface (fluid-solid interface):**
-  - Coupled CHT:  
-    $$
-    -k_f \left.\frac{\partial T_f}{\partial y}\right|_{\text{interface}} = -k_s \left.\frac{\partial T_s}{\partial y}\right|_{\text{interface}}
-    $$
+  - Coupled CHT:
+    $-k_f \left.\frac{\partial T_f}{\partial y}\right|_{\text{interface}} = -k_s \left.\frac{\partial T_s}{\partial y}\right|_{\text{interface}}$
   - Temperature continuity:
-    $$
-    T_f|_{\text{interface}} = T_s|_{\text{interface}}
-    $$
+    $T_f|_{\text{interface}} = T_s|_{\text{interface}}$
 
 - **Plate bottom surface:** Dirichlet BC
-  $$
-  T_s = 310 \ K
-  $$
+  $T_s = 310 \ K$
 - **Plate left and right surfaces:** adiabatic BC
-  $$
-  \frac{\partial T_s}{\partial y} = 0
-  $$
+  $\frac{\partial T_s}{\partial y} = 0$
 - **Outlet:** zero-gradient for velocity and temperature; fixed reference pressure.
 
 - **Walls:** no-slip velocity, adiabatic temperature boundary.
@@ -80,19 +71,17 @@ https://github.com/hmarschall/multiRegionFoam/tree/dev/tutorials/conjugateHeatTr
 
 ## Reference Output Quantities
 
-- Normalized temoeratures along the plate, computed as
-  $$
-  \theta = \frac{T-T_\infty}{T_s-T_\infty}
-  $$
+- Normalized temperatures along the plate, computed as
+  $\theta = \frac{T-T_\infty}{T_s-T_\infty}$
 
 ---
 
 ## Geometry Illustration
 
-![Geometry](benchmark/geometry.png)
+![Geometry](images/2D_flowOverHeatedPlate_geometry.png)
 
 ---
 
 ## Results Visualization
 
-The Allrun script automatically launches the "plotResults.py" python file which extracts the temperatures results, normalizes them and plots them against the available numerical and analytical benchmark results.
+The `Allrun` script automatically launches the `plotResults.py` python file which extracts the temperatures results, normalizes them and plots them against the available numerical and analytical benchmark results.

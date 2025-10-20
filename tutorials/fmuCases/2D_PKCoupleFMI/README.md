@@ -2,24 +2,24 @@
 
 ## Description
 
-This case has been derived from `2D_onePhaseAndPointKineticsCoupling`. It 
+This case has been derived from `2D_onePhaseAndPointKineticsCoupling`. It
 reuses the same mesh and physical parameters.
 
 This case is an example of the use of external reactivity control by an FMU.
-It uses the point-kinetics sub-solver with an additional reactivity 
+It uses the point-kinetics sub-solver with an additional reactivity
 contribution coming from an FMU.
 
-To link an FMU with a reactivity control, it is required to add the 
+To link an FMU with a reactivity control, it is required to add the
 following line in [nuclearData](PIDcontrol/rootCase/constant/neutroRegion/nuclearData).
 
 ```
 externalReactivityNameFromFMU   gfExtReact;
 ```
 
-The current PID controller measures the power over the core. A command is 
+The current PID controller measures the power over the core. A command is
 provided to target a specific power. The FMU has been built using OpenModelica.
 
-![](images/ExternalReactivityController.png)
+![](images/2D_PKCoupleFMI_ExternalReactivityController.png)
 
 *Fig 1: Power/reactivity PID controller viewed from OpenModelica.*
 
@@ -45,7 +45,7 @@ python3 plot.py transientFMU/log.GeN-Foam transientUncoupled/log.GeN-Foam
 
 The results should look like below:
 
-![](images/comparison.png)
+![](images/2D_PKCoupleFMI_comparison.png)
 
 *Fig 2: Plot of core parameters to a ramp insertion of 57.67131 pcm during 1 s.*
 
@@ -69,6 +69,6 @@ python3 plot.py transient/log.GeN-Foam
 
 The results should look like below:
 
-![](images/pidResponse.png)
+![](images/2D_PKCoupleFMI_pidResponse.png)
 
 *Fig 3: Plot of core parameters with controlled PID responses to a 10% power increase request.*

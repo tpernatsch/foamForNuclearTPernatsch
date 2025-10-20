@@ -2,14 +2,14 @@
 
 Author: Thomas Guilbaud, EPFL ([thomas.guilbaud@epfl.ch](mailto:thomas.guilbaud@epfl.ch))
 
-This tutorial simulates the coupled neutronics and thermal-hydraulics of a hydrogen-cooled fuel assembly of the KIWI-B-4E NTP reactor. 
+This tutorial simulates the coupled neutronics and thermal-hydraulics of a hydrogen-cooled fuel assembly of the KIWI-B-4E NTP reactor.
 
 
 ## Introduction
 
 A Nuclear Thermal Propulsion (NTP) reactor is a space propulsion engine that uses the energy of a nuclear reactor to heat and expand a lightweight propellant gas. During the 1960s, the USA dedicated an extensive research program called NERVA (Nuclear Engine for Rocket Vehicle Application) to develop NTPs for interplanetary missions following the Apollo program. Several prototypes have been ground-tested such as the KIWI-B-4E reactor. It was the first prototype to succeed in a restart at full power in 1964 ([Finseth, 1991](#3-j-l-finseth-overview-of-rover-engine-tests-final-report-national-aeronautics-and-space-administration-nasa-cr-184270-february-1991)).
 
-<img src="images/Reactor1965SurveyDesignKiwiB4E.png" alt="Reactor" width="450"/>
+<img src="images/3D_NTPfuelAssembly_Reactor1965SurveyDesignKiwiB4E.png" alt="Reactor" width="450"/>
 
 *Fig 1: KIWI-B-4E reactor scheme from Ref. ([Zeigner, 1965](#2-v-l-zeigner-survey-description-of-the-design-and-testing-of-kiwi-b-4e-301-propulsion-reactor-los-alamos-scientific-laboratory-report-la-3311-ms-may-1965)). Dimensions are in inches.*
 
@@ -18,7 +18,7 @@ In rocketry, it is important to maximize the thrust and the efficiency of the en
 
 $$
     v_2 \approx \sqrt{
-        \frac{2 \gamma}{\gamma-1} \frac{RT}{M_{mol}} 
+        \frac{2 \gamma}{\gamma-1} \frac{RT}{M_{mol}}
     }
 $$
 
@@ -28,7 +28,7 @@ $$ I_{sp} = \frac{v_2}{g} $$
 
 Thus, the higher the temperature and lower the molar mass, the higher the thrust and the engine efficiency. Hydrogen, which is the lightest gas, was used as propellant and coolant for the core.
 
-In comparison, the [RS-25 rocket engine](https://en.wikipedia.org/wiki/RS-25) of the space shuttle in a vacuum, which burns liquid oxygen and hydrogen, has the following performances: 
+In comparison, the [RS-25 rocket engine](https://en.wikipedia.org/wiki/RS-25) of the space shuttle in a vacuum, which burns liquid oxygen and hydrogen, has the following performances:
 
 | Parameters                | KIWI-B-4E | RS-25    |
 |:--------------------------|:---------:|:--------:|
@@ -43,14 +43,14 @@ In comparison, the [RS-25 rocket engine](https://en.wikipedia.org/wiki/RS-25) of
 
 A KIWI-B-4E fuel assembly is composed of a central hexagonal unloaded fuel element surrounded by 6 hexagonal fuel elements (see Fig. 2).
 
-<img src="images/FuelAssembly1965SurveyDesignKiwiB4E.png" alt="FuelAssembly" width="450"/>
-<img src="images/FuelAssemblyMesh.png" alt="FuelAssemblyMesh" height="300"/>
+<img src="images/3D_NTPfuelAssembly_FuelAssembly1965SurveyDesignKiwiB4E.png" alt="FuelAssembly" width="450"/>
+<img src="images/3D_NTPfuelAssembly_FuelAssemblyMesh.png" alt="FuelAssemblyMesh" height="300"/>
 
 *Fig 2: Fuel assembly scheme from 1965 design survey of KIWI-B-4E ([Zeigner, 1965](#2-v-l-zeigner-survey-description-of-the-design-and-testing-of-kiwi-b-4e-301-propulsion-reactor-los-alamos-scientific-laboratory-report-la-3311-ms-may-1965)) and mesh used in GeN-Foam.*
 
 Each fuel element has 19 propellant channels (see Fig. 3). The fuel is composed of highly enriched uranium $UC_2$ in a graphite matrix ([Zeigner, 1965](#2-v-l-zeigner-survey-description-of-the-design-and-testing-of-kiwi-b-4e-301-propulsion-reactor-los-alamos-scientific-laboratory-report-la-3311-ms-may-1965), [Finseth, 1991](#3-j-l-finseth-overview-of-rover-engine-tests-final-report-national-aeronautics-and-space-administration-nasa-cr-184270-february-1991)).
 
-<img src="images/FuelElement1965SurveyDesignKiwiB4E.png" alt="FuelElement" width="450"/>
+<img src="images/3D_NTPfuelAssembly_FuelElement1965SurveyDesignKiwiB4E.png" alt="FuelElement" width="450"/>
 
 *Fig 3: Fuel assembly scheme from 1965 design survey of KIWI-B-4E ([Zeigner, 1965](#2-v-l-zeigner-survey-description-of-the-design-and-testing-of-kiwi-b-4e-301-propulsion-reactor-los-alamos-scientific-laboratory-report-la-3311-ms-may-1965)).*
 
@@ -71,10 +71,10 @@ The multi-group XSs (MGXS) were generated using a core model of KIWI-B-4E in Ope
 
 The friction factor and heat transfer coefficient for the fuel element are computed using the following equations:
 
-- From Ref. ([Taler, 2016](#7-dawid-taler-determining-velocity-and-friction-factor-for-turbulent-flow-in-smooth-tubes-international-journal-of-sciences-105-2016-pp-109-122)), $Re \in [3e3; 1e7]$: 
+- From Ref. ([Taler, 2016](#7-dawid-taler-determining-velocity-and-friction-factor-for-turbulent-flow-in-smooth-tubes-international-journal-of-sciences-105-2016-pp-109-122)), $Re \in [3e3; 1e7]$:
     $f = (1.2776 log(Re)-0.406)^{-2.246}$
 
-- From Ref. ([Walton, 1992](#4-james-t-walton-program-elm-a-tool-for-rapid-thermal-hydraulic-analysis-of-solid-core-nuclear-rocket-fuel-elements-lewis-research-center-nasa-tm-105867-november-1992)), N°10 Wolf-McCarthy II, $T_w/T_b \in [1.5; 2.8]$, $Re \in [7800; 1.55e6]$: 
+- From Ref. ([Walton, 1992](#4-james-t-walton-program-elm-a-tool-for-rapid-thermal-hydraulic-analysis-of-solid-core-nuclear-rocket-fuel-elements-lewis-research-center-nasa-tm-105867-november-1992)), N°10 Wolf-McCarthy II, $T_w/T_b \in [1.5; 2.8]$, $Re \in [7800; 1.55e6]$:
     $Nu = 0.023 Re^{0.8} Pr^{0.4} (T_w/T_b)^{-0.3}$
 
 
@@ -143,37 +143,37 @@ This table has been generated using the [`analysis.py`](./analysis.py) script. T
 The following graphs have been generated using the [`AllplotAxialDistribution.py`](./AllplotAxialDistribution.py) script.
 
 
-<img src="images/fuelElementAxialDistribution.png" alt="powerDistribution" width="450"/>
+<img src="images/3D_NTPfuelAssembly_fuelElementAxialDistribution.png" alt="powerDistribution" width="450"/>
 
 *Fig 4: Axial distribution summary in a KIWI-B-4E fuel element, including temperatures, velocity, pressure, power density, and experimental data from Ref. ([Elder, 1964](#1-m-elder-preliminary-report-kiwi-b-4e-301-los-alamos-scientific-laboratory-report-la-3185-ms-october-1964)) at t=20400s.*
 
 
-<img src="images/axialPowerDistribution.png" alt="powerDistribution" width="450"/>
+<img src="images/3D_NTPfuelAssembly_axialPowerDistribution.png" alt="powerDistribution" width="450"/>
 
 *Fig 5: Axial distribution of the power density in a KIWI-B-4E fuel element.*
 
 
-<img src="images/axialFluxDistribution.png" alt="powerDistribution" width="450"/>
+<img src="images/3D_NTPfuelAssembly_axialFluxDistribution.png" alt="powerDistribution" width="450"/>
 
 *Fig 6: Axial distribution of the neutron fluxes in a KIWI-B-4E fuel element.*
 
 
-<img src="images/axialTemperatureDistribution.png" alt="temperatureDistribution" width="450"/>
+<img src="images/3D_NTPfuelAssembly_axialTemperatureDistribution.png" alt="temperatureDistribution" width="450"/>
 
 *Fig 7: Axial distribution of the temperatures in a KIWI-B-4E fuel element.*
 
 
-<img src="images/axialDensityDistribution.png" alt="hydrogenDensityDistribution" width="450"/>
+<img src="images/3D_NTPfuelAssembly_axialDensityDistribution.png" alt="hydrogenDensityDistribution" width="450"/>
 
 *Fig 8: Axial distribution of the Hydrogen density in a KIWI-B-4E fuel element.*
 
 
-<img src="images/axialVelocityDistribution.png" alt="hydrogenVelocityDistribution" width="450"/>
+<img src="images/3D_NTPfuelAssembly_axialVelocityDistribution.png" alt="hydrogenVelocityDistribution" width="450"/>
 
 *Fig 9: Axial distribution of the Hydrogen velocity in a KIWI-B-4E fuel element.*
 
 
-<img src="images/axialPressureDistribution.png" alt="hydrogenPressureDistribution" width="450"/>
+<img src="images/3D_NTPfuelAssembly_axialPressureDistribution.png" alt="hydrogenPressureDistribution" width="450"/>
 
 *Fig 10: Axial distribution of the pressure in a KIWI-B-4E fuel element.*
 

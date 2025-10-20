@@ -85,7 +85,7 @@ Then run the case by running this command:
 The case should take no more than a few seconds. The results are stored in the `1` folder. The `1/uniform/reactorState` file stores the integral parameters of the simulation (e.g $k_\text{eff}$ and the power). The flux distribution is stored in the `1/neutroRegion/flux0` file.
 
 
-<img src="images/results_mesh_flux0.png" width="250"/>
+<img src="images/1_reactorSlab_1D_1Gr_neutronicDiffusion_results_mesh_flux0.png" width="250"/>
 
 *Fig 1. Neutron flux distribution in the slab reactor (visualized using [ParaView](https://www.paraview.org/)).*
 
@@ -102,7 +102,7 @@ python3 Allplot.py  1         flux0
 
 The script should output the shape of the flux and compare it to the analytic formula.
 
-![](./images/results_neutronFlux.png)
+![](./images/1_reactorSlab_1D_1Gr_neutronicDiffusion_results_neutronFlux.png)
 
 *Fig 2. Neutron flux comparison between GeN-Foam and an analytical solution.*
 
@@ -117,6 +117,6 @@ The script should output the shape of the flux and compare it to the analytic fo
     - Then clean and run the simulation.
     - The flux should not anymore tends to zero at the boundary. One can change the `isAddExtrapolationDistance` flag in the [`Allplot.py`](./Allplot.py) script to see the extrapolation limit and see the following results.
 
-![](./images/results_neutronFlux_extrapolated.png)
+![](./images/1_reactorSlab_1D_1Gr_neutronicDiffusion_results_neutronFlux_extrapolated.png)
 
 *Fig 3. Neutron flux axial distribution using albedo boundary conditions. Comparison with analytical solution with zero flux at the boundaries.*

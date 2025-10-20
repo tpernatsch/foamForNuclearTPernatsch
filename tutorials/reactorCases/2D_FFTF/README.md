@@ -11,7 +11,7 @@ pool-loop configurations, where the the primary pumps and IHXs lie in a loop
 outside the vessel.
 
 
-<img src="images/FFTF_circuit.png" alt="FFTF_circuit" width="600"/>
+<img src="images/2D_FFTF_circuit.png" alt="FFTF_circuit" width="600"/>
 
 *Fig 1: Overview of the FFTF components and loops [1, 2].*
 
@@ -19,7 +19,7 @@ outside the vessel.
 This case represents the LOFWOS 13 Test performed at the FFTF in order to test the effectiveness of the Gas Expansion Module (GEM) safety features (see Fig. 2). In essence, these were empty assembly wrappers closed at the top and open at the bottom, partly filled with argon gas, positioned on the periphery of the active core. In operation, the pressure head at the GEM inlet would compress the argon gas so that the free surface sodium level would rise above the active core level. During a ULOF accident, the loss of pressure head would cause the argon gas to expand and lower the free surface sodium level below the active core region. From a neutronics perspective, this "uncovers" part of the core radially, as were there was sodium, now there is argon gas, thus increasing radial leakage. Needless to say, the FFTF core itself was rather small, ~ 1 m in diameter, which explains the effectiveness of said feature.
 
 
-<img src="images/FFTF_GEM.png" alt="FFTF_GEM" width="600"/>
+<img src="images/2D_FFTF_GEM.png" alt="FFTF_GEM" width="600"/>
 
 *Fig 2: Overview of the operating principle of the GEMs [1, 2].*
 
@@ -36,7 +36,7 @@ In essence, the LOFWOS 13 test was:
 The model is hybrid as the vessel consists of a 2-degree wedge while the loops consist of parallelepipeds. All the absolute volumes are scaled by a factor 360/2 of the total FFTF primary volume.
 
 
-<img src="images/FFTF_mesh.png" alt="FFTF_Mesh" width="400"/>
+<img src="images/2D_FFTF_mesh.png" alt="FFTF_Mesh" width="400"/>
 
 *Fig 2: Computational domain of the FFTF thermal–hydraulics. It consists of a 2-D hybrid wedge-parallelepiped model. Regions 1 through 20 represent the primary loop, while regions 21 through 25 represent the secondary loop. The primary and secondary loops are geometrically disconnected domains that are thermally coupled via the IHX. The primary side of the IHX consists of region 19 (red) while the secondary side consists region 24 (blue). Open system boundaries consist of the inlet (blue segment) and outlet (red segment) of the secondary loop. Coarse-mesh regions (cellZones) are reported in Table 1 [1].*
 
@@ -124,22 +124,22 @@ Further improvements to the model will be made.
 
 ## Results
 
-<img src="images/FFTF_steadyState.png" alt="FFTF_steadyState" width="600"/>
+<img src="images/2D_FFTF_steadyState.png" alt="FFTF_steadyState" width="600"/>
 
 *Fig 4: Temperature field during a steady-state.*
 
 
-<img src="images/FFTF_steadyState_oneGroupFlux.png" alt="FFTF_steadyState_oneGroupFlux" width="600"/>
+<img src="images/2D_FFTF_steadyState_oneGroupFlux.png" alt="FFTF_steadyState_oneGroupFlux" width="600"/>
 
 *Fig 5: One group neutron flux in the core during a steady-state.*
 
 
-<img src="images/FFTF_transient.png" alt="FFTF_transient" width="900"/>
+<img src="images/2D_FFTF_transient.png" alt="FFTF_transient" width="900"/>
 
 *Fig 6: Evolution of temperature, power, mass flow rate and reactivity during the LOFWOS 13 Test.*
 
 
-<img src="images/FFTF_transient.gif" alt="FFTF transient animation" width="900"/>
+<img src="images/2D_FFTF_transient.gif" alt="FFTF transient animation" width="900"/>
 
 *Fig 7: Evolution of temperature field during the LOFWOS 13 Test.*
 

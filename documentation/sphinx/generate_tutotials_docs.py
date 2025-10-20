@@ -1,5 +1,6 @@
 import os
 from re import finditer
+import shutil
 
 def camel_case_split(identifier):
     matches = finditer('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', identifier)
@@ -9,12 +10,12 @@ def camel_case_split(identifier):
 # Get the absolute path to the directory containing this script
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
+
 # Construct the correct path to the tutorials directory
-tutorials_dir = os.path.join(script_dir, "..", "..", "tutorials")
-tutorials_dir = os.path.abspath(tutorials_dir)
+tutorials_dir = os.path.abspath("tutorials")
 
 # Destination base directory for documentation
-docs_base_dir = "./usersguide"
+docs_base_dir =  os.path.join(script_dir, "usersguide")
 docs_tutorials_dir = os.path.join(docs_base_dir, "tutorials")
 
 # Ensure the tutorials documentation directory exists
@@ -69,3 +70,13 @@ with open(main_tutorials_path, "w") as main_index:
 
                         # Add tutorial to section index
                         section_index.write(f"   {tutorial}\n")
+
+                        # Add missing images
+                        tutorial_image_path = os.path.join(tutorial_path, "images")
+                        if os.path.isdir(tutorial_image_path):
+                            doc_image_path = os.path.join(docs_section_path, "images")
+                            os.makedirs(doc_image_path, exist_ok=True)
+
+                            for image in os.listdir(tutorial_image_path):
+                                image_path = os.path.join(tutorial_image_path, image)
+                                shutil.copyfile(image_path, os.path.join(doc_image_path, image))
