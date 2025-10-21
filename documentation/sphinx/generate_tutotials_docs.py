@@ -1,10 +1,20 @@
+#==============================================================================*
+# Imports
+
 import os
 from re import finditer
 import shutil
+import sys
+
+
+#==============================================================================*
+# Functions
 
 def camel_case_split(identifier):
     matches = finditer('.+?(?:(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])|$)', identifier)
     return(' '.join([m.group(0).capitalize() for m in matches]))
+
+#==============================================================================*
 
 
 # Get the absolute path to the directory containing this script
@@ -35,7 +45,8 @@ with open(main_tutorials_path, "w") as main_index:
             main_index.write(readme_file.read())
             main_index.write("\n\n")  # Add spacing after README content
 
-    main_index.write(".. toctree::\n   :maxdepth: 2\n   :caption: List of tutorials\n\n")
+    main_index.write("List of tutorials\n=================\n\n")
+    main_index.write(".. toctree::\n   :maxdepth: 2\n\n")
 
     # Iterate over section folders in the tutorials source
     for section in sorted(os.listdir(tutorials_dir)):
@@ -80,3 +91,11 @@ with open(main_tutorials_path, "w") as main_index:
                             for image in os.listdir(tutorial_image_path):
                                 image_path = os.path.join(tutorial_image_path, image)
                                 shutil.copyfile(image_path, os.path.join(doc_image_path, image))
+
+
+#==============================================================================*
+
+print(f"python3 {sys.argv[0]} ... End")
+
+
+#==============================================================================*

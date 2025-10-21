@@ -15,7 +15,9 @@ First we start from the diffusion equation for the two regions, namely Core ($C$
 
 $$
 D_C \nabla^2 \phi_C + \nu \Sigma_f^C \phi_C - \Sigma_a^C \phi_C = 0
-\newline
+$$
+
+$$
 D_R \nabla^2 \phi_R - \Sigma_a^R \phi_R = 0
 $$
 
@@ -23,7 +25,9 @@ The core is centered on 0, so the solution to the above equations looks like thi
 
 $$
 \phi_C(z) = A \cos(B_g z)
-\newline
+$$
+
+$$
 \phi_R(z) = E \exp\left(\frac{-z}{L_R}\right) + F \exp\left(\frac{z}{L_R}\right)
 $$
 
