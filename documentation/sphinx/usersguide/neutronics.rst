@@ -55,7 +55,7 @@ Of course, in such cases, one should pay attention to setting proper boundary
 conditions for the precursors.
 
 A commented *reactorState* can be found in `3D_SmallESFR
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/0/uniform/reactorState>`_.
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/0/uniform/reactorState>`_.
 
 NB: Please note that in parallel calculations, the updated *reactorState* can be found in *timeStep/uniform/*.
 
@@ -88,8 +88,8 @@ For the user, the derived classes translate into runtime selectable models. The
 specific sub-solver to be used in a simulation can be selected at runtime in the
 *constant/neutroRegion/neutronicsProperties* dictionary.
 
-The choice of the model is achieved by selecting the wanted solver in either
-*regionSolvers* or *multiPhysicsSolvers* depending on whether the neutronics
+The choice of the model is achieved by selecting the wanted solver in 
+*regionSolvers* depending on whether the neutronics
 solvers need to be part of a tightly coupled loop or not (see
 :ref:`Coupling solvers <userguide_coupling_the-controlDict-dictionary>`).
 
@@ -106,19 +106,21 @@ The *neutronicsProperties* dictionary is found under *constant/neutroRegion/*
 and it can be used to set the type of neutronics simulation by using the
 following keywords:
 
-:eigenvalueNeutronics: should be set to *true* for eigenvalue calculations,
+:eigenvalueNeutronics: should be set to ``true`` for eigenvalue calculations,
                        false for transients.
-:externalSourceNeutronics: should be set to *true* for external neutron source
-                           calculations. The *eigenvalueNeutronics* variable
-                           should be put to false and the *keff* = 1.
+:externalSourceNeutronics: should be set to ``true`` for external neutron source
+                           calculations. The ``eigenvalueNeutronics`` variable
+                           should be put to ``false`` and the ``keff = 1``.
 
 One can find detailed, commented examples in most tutorials. See for instance
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/neutronicsProperties>`_ (single phase).
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_ (single phase).
 
 N.B: The parameter *model* used to define what type of simulation needs to be
-performed as been replaced by the selection of model in the *system/controlDict*
-(see :ref:`Coupling solvers <userguide_coupling_the-controlDict-dictionary>`).
+performed as been replaced by the selection of model in the *system/regionsDict*
+(see :ref:`Coupling solvers <userguide_coupling>`).
 
+
+.. _userguide_neutronics_nuclearData:
 
 ----------------------------
 The *nuclearData* dictionary
@@ -127,11 +129,11 @@ The *nuclearData* dictionary
 In GeN-Foam, cross-sections and several other neutronics properties are handled
 by the :ref:`XS.H <XS>` class. Detailed explanations on the file format are provided in
 :ref:`XS.H <XS>` and in the tutorials (e.g `3D_SmallESFR
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData>`_).
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/nuclearData>`_).
 
 The *nuclearData* dictionary can be found under *constant/neutroRegion/*. It
 contains all basic nuclear properties for the reference and perturbed reactor
-states. For instance, including *TFuel* in *reference* and a perturbed state
+states. For instance, including ``TFuel`` in the ``reference`` state and a perturbed state
 represents the temperatures at which the reference and perturbed cross-sections
 have been calculated, respectively. Radial Basis Function interpolation is
 performed by GeN-Foam between reference and perturbed reactor states. It is
@@ -141,20 +143,20 @@ are used.
 
 Special field for axial and radial expansions are provided as ``axExp`` and
 ``radExp`` (see `3D_SmallESFR
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData>`_).
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/nuclearData>`_).
 
 Nuclear data can be generated using any nuclear code.
 
-:`serpentToFoam <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/serpentToFoam/serpent2.1.23>`_:
-    routines provided with GeN-Foam (in the *Tools* folder) is an Octave script
+:`serpentToFoam <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tools/serpentToFoam/serpent2.1.23>`_:
+    routines provided with GeN-Foam (in the *tools* folder) is an Octave script
     that automatically converts Serpent output files into the nuclear data files
     employed by GeN-Foam.
-:`openmcToFoam <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tools/openmcToFoam>`_:
+:`openmcToFoam <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tools/openmcToFoam>`_:
     Python package provided with GeN-Foam automatically converts OpenMC output
     into nuclear data files.
 
-The entry *discFactor* is used only if discontinuity factors have to be used.
-The term *integralFlux*, is used only if the automatic adjustment of
+The entry ``discFactor`` is used only if discontinuity factors have to be used.
+The term ``integralFlux``, is used only if the automatic adjustment of
 discontinuity factors is performed (see :ref:`FIORINA2016212 <FIORINA2016212>`). Nonetheless, these entries
 should always be present.
 
@@ -168,7 +170,7 @@ interpolation scheme on any field provided by GeN-Foam. This method allows to
 interpolate the XS using multiple parameters/perturbations (see example below).
 
 It is possible to select different radial basis function based on the
-polyharmonic splines using the *polyharmonicSplineMode* keyword. The figure
+polyharmonic splines using the ``polyharmonicSplineMode`` keyword. The figure
 below shows the radial basis function influence on the interpolation. The
 default mode is ``1``, which guarantee a linear interpolation:
 
@@ -190,9 +192,9 @@ the user to modify the behavior and improve interpolation accuracy:
 :``sqrt``: square root
 :``log``: logarithmic
 
-It is possible to assign the law through the *xsVariables* sub dictionary in
+It is possible to assign the law through the ``xsVariables`` sub dictionary in
 *nuclearData* with the name of the field. If one or several fields provided in
-*xsVariables* are not default to GeN-Foam (e.g Tmatrix), the code will
+``xsVariables`` are not default to GeN-Foam (e.g ``Tmatrix``), the code will
 automatically create it in the neutronics region and can be used for additional
 coupling with other solvers (see the :ref:`coupling page <userguide_coupling>`).
 
@@ -275,15 +277,17 @@ coupling with other solvers (see the :ref:`coupling page <userguide_coupling>`).
 
 One can find more details on all the parameters in the :ref:`XS.H <XS>` file and commented
 examples of *nuclearData* in the tutorials
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/nuclearData>`_ (for diffusion or SP3),
-`Godiva_SN <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/Godiva_SN/constant/neutroRegion/nuclearData>`_ (for discrete ordinates) and
-`2D_onePhaseAndPointKineticsCoupling <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData>`_ (for point kinetics).
-`2D_onePhaseAndSubcriticalPointKineticsCoupling <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource>`_ (for subcritical point kinetics).
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/nuclearData>`_ (for diffusion or SP3),
+`Godiva_SN <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/Godiva_SN/constant/neutroRegion/nuclearData>`_ (for discrete ordinates) and
+`2D_onePhaseAndPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndPointKineticsCoupling/rootCase/constant/neutroRegion/nuclearData>`_ (for point kinetics).
+`2D_onePhaseAndSubcriticalPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource>`_ (for subcritical point kinetics).
 
 
 ------------------
 Various properties
 ------------------
+
+.. _userguide_neutronics_quadratureSet:
 
 The *quadratureSet* dictionary
 ------------------------------
@@ -293,10 +297,12 @@ discrete ordinate calculations. The *quadratureSet* dictionary is found under
 *constant/neutroRegion/*. It contains the quadrature set for discrete ordinate
 calculations. One can find examples of three different quadrature sets in the
 tutorial `Godiva_SN
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/Godiva_SN/constant/neutroRegion/>`_.
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/Godiva_SN/constant/neutroRegion/>`_.
 S4 and S8 Chebyshev-Legendre quadrature sets can be found in `Godiva_SN
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/develop/Tools/chebichevLegendreQuadratureSets/>`_.
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tools/chebichevLegendreQuadratureSets/>`_.
 
+
+.. _userguide_neutronics_crmove:
 
 The *CRMove* dictionary
 -----------------------
@@ -308,7 +314,7 @@ insertion/extraction and the speed of insertion/extraction (positive speed for
 insertion).
 
 One can find a commented example in the tutorial
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/constant/neutroRegion/CRmove>`_, though this option is not actually used in the tutorial.
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/CRmove>`_, though this option is not actually used in the tutorial.
 
 
 Initial and boundary conditions
@@ -316,7 +322,7 @@ Initial and boundary conditions
 
 As in all standard OpenFOAM solvers, initial conditions (IC) and boundary conditions
 (BC) should be provided in the "0" folder, or the folder corresponding to the
-*startTime* of the simulation, if different than 0. In the case of neutronics,
+``startTime`` of the simulation, if different than 0. In the case of neutronics,
 the user can either specify different IC and BC for each one of the energy
 groups (with fluxes that must be named *fluxStar0*, *fluxStar1*, etc…) or
 provide the same IC and BC to all fluxes by using the *defaultFlux* field. In
@@ -373,7 +379,7 @@ densities and precursors. When fluxes are not calculated via a spatial
 neutronics calculation, one has to manually provide the *oneGroupFlux* in
 *0/neutroRegion*. As an alternative, one can use the *initialOneGroupFluxByZone*
 keyword in *nuclearData* (see `1D_MSR_pointKinetics
-<https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData>`_). Please notice that:
+<https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/1D_MSR_pointKinetics/rootCase/constant/neutroRegion/nuclearData>`_). Please notice that:
 
 - If calculated fluxes are available in *neutroRegion*, these will be user to recalculate and overwrite *oneGroupFlux*.
 - If no fluxes are available, the neutronics sub-solver will use the provided *oneGroupFlux*
@@ -394,7 +400,7 @@ Subcritical point-kinetics
 
 To use the subcritical point-kinetics, the user has to add the
 *constant/neutroRegion/externalSource*. The file contains a flag to activate the
-external neutron source (*isExternalSource*).
+external neutron source (``isExternalSource``).
 
 Several parameters related to a spallation source are included such as the
 energy per source particle in J/source particle and the neutron yield of the
@@ -404,5 +410,5 @@ An external source modulation timetable is provided to manually modulate the
 source strength.
 
 In the case of an FMI coupling, it is possible to use the
-*externalSourceModulationNameFromFMU* entry to change the external source
-modulation through an FMI. To use it, the mode must be *transient*.
+``externalSourceModulationNameFromFMU`` entry to change the external source
+modulation through an FMI. To use it, the mode must be ``transient``.

@@ -17,6 +17,23 @@ Parallel computing is achieved through OpenFOAM's domain decomposition and
 MPI-based parallelism, allowing high-resolution simulations on large-scale HPC
 systems.
 
+
+----
+
+**Repository:** |gitlab-badge|
+
+**Doxygen documentation:** |doxygen-badge|
+
+----
+
+.. |gitlab-badge| image:: https://img.shields.io/badge/foamForNuclear-GitLab-orange?logo=gitlab
+   :target: https://gitlab.com/foamForNuclear/foamForNuclear
+   :alt: foamForNuclear GitLab
+
+.. |doxygen-badge| image:: https://img.shields.io/badge/foamForNuclear-Doxygen-blue?logo=doxygen
+   :target: https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/index.html
+   :alt: foamForNuclear Doxygen
+
 .. note::
 
    This project is under active development.
@@ -35,3 +52,4 @@ Contents
    cppapi/index
    theoryReferences
    V_Vreferences
+   contributors

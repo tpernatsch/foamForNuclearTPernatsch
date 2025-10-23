@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 14-Okt-2025 - 11:08:17  
+Regression test of 29-sept.-2025 - 10:10:49  
 OpenFOAM Version: v2506  
 Tutorials successfully completed: 11/11  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()  
 
@@ -8,51 +8,15 @@ Tutorials successfully completed: 11/11  [![regressionTest](https://img.shields.
 
 | Tutorial | Status | Time | GeN-Foam memory usage [Gb] |
 |:---------|:------:|:-:|:-:|
-| ../tests | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | 0 < 0.2 |
-| guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .026 < 0.2 |
+| guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .027 < 0.2 |
 | guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .026 < 0.2 |
-| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:07 | .090 < 0.2 |
-| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:09 | .084 < 0.2 |
-| featureCases/2D_cavityBoussinesq | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:29 | .087 < 0.2 |
-| featureCases/2D_externalSourceDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:02 | .086 < 0.2 |
-| featureCases/2D_flowOverHeatedPlate | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:11 | .126 < 0.2 |
-| featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:08 | .089 < 0.2 |
-| featureCases/2D_onePhaseAndPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:28 | .088 < 0.2 |
-| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:39 | .089 < 0.2 |
-
---------------------------------------------------------------------------------
-
-## ../tests
-
-Test mole fraction x_H with 5% threshold ... passed with 5 points
-
-Test rho (density) with 15% threshold ... passed with 112 points
-
-Test cp (isobaric specific heat capacity) with 10% threshold ... passed with 40 points
-
-Test cv (isochoric specific heat capacity) with 15% threshold ... passed with 28 points
-
-Test mu (dynamic viscosity) with 25% threshold ... 
-     WARNING: mu(1.03421e+07 Pa, 83.3333 K) = 6.65438e-06 Pa.s (exp: 5.1228e-06) -> rel error = 0.260092
-     WARNING: mu(3.10264e+07 Pa, 83.3333 K) = 1.17613e-05 Pa.s (exp: 8.70808e-06) -> rel error = 0.298321
-passed with 112 points
-
-Test Ha (specific enthalpy) with 50% threshold ... passed with 112 points
-
-Test D (diffusion) with 5% threshold ... passed with 6 points
-
-Test S (specific entropy) with 15% threshold ... passed with 112 points
-
-Test 1D polyharmonic spline RBF with 0.01% threshold ... passed with 4 points
-
-Test 2D polyharmonic spline RBF with 0.01% threshold ... passed with 5 points
-
-Test 2D polyharmonic spline RBF for small values with 0.02% threshold ... passed with 2 points
-
-
-Time = 00:00:01
-
-Memory = 0 Gb (Passed, expected: 0.2 Gb)
+| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:06 | .087 < 0.2 |
+| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:10 | .082 < 0.2 |
+| featureCases/2D_cavityBoussinesq | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:31 | .083 < 0.2 |
+| featureCases/2D_externalSourceDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:02 | .084 < 0.2 |
+| featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:08 | .086 < 0.2 |
+| featureCases/2D_onePhaseAndPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:30 | .085 < 0.2 |
+| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:43 | .087 < 0.2 |
 
 --------------------------------------------------------------------------------
 
@@ -73,7 +37,7 @@ All tests passed
 
 Time = 00:00:01
 
-Memory = .026 Gb (Passed, expected: 0.2 Gb)
+Memory = .027 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -107,9 +71,9 @@ Done running tutorial 1D_HX onePhase ...
 1D_HX onePhase has converged 
 
 
-Time = 00:00:07
+Time = 00:00:06
 
-Memory = .090 Gb (Passed, expected: 0.2 Gb)
+Memory = .087 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -127,7 +91,7 @@ Perfect match:
 |:-------------|:---------:|:--------:|
 | alpha vapour | 0.133727 | 0.131886 |
 
-Time = 00:00:09
+Time = 00:00:10
 
 Memory = .084 Gb (Passed, expected: 0.2 Gb)
 
@@ -142,9 +106,9 @@ Done running tutorial 2D_cavityBoussinesq ...
 2D_cavityBoussinesq has converged 
 
 
-Time = 00:00:29
+Time = 00:00:31
 
-Memory = .087 Gb (Passed, expected: 0.2 Gb)
+Memory = .086 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -185,11 +149,11 @@ Done running tutorial 2D_flowOverHeatedPlate ...
 Perfect match:
 |           | Simulated | Expected |
 |:----------|:---------:|:--------:|
-| TMax      |  309.142  |  309.143 |
+| TMax      |  309.143  |  309.143 |
 
-Time = 00:01:11
+Time = 00:01:20
 
-Memory = .126 Gb (Passed, expected: 0.2 Gb)
+Memory = .125 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -204,9 +168,9 @@ Steady State has converged
 Transient (no driveline) has converged 
 
 
-Time = 00:00:08
+Time = 00:00:07
 
-Memory = .089 Gb (Passed, expected: 0.2 Gb)
+Memory = .088 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -225,7 +189,7 @@ Transient (with driveline) has converged
 Transient (with boron) has converged 
 
 
-Time = 00:00:28
+Time = 00:00:30
 
 Memory = .088 Gb (Passed, expected: 0.2 Gb)
 
@@ -249,6 +213,6 @@ Perfect match:
 |:------|:---------:|:--------:|
 | Power | 415251000 | 415258000 |
 
-Time = 00:00:39
+Time = 00:00:43
 
 Memory = .089 Gb (Passed, expected: 0.2 Gb)

@@ -32,23 +32,16 @@ The *controlDict* is an extended version of the one that is normally used in
 other OpenFOAM solvers. Compared to a standard OpenFOAM controlDict, it includes
 several keywords that allow one to select:
 
-- Which physics to solve via the *regionSolvers subDict*. In this dictionary, the names of the regions to create is specified, and to each a physics-solver is associated, i.e. *onePhase*, *diffusionNeutronics* etc. Additionally, a *multiPhysicsSolver* can be selected. Its specifics are detailed in the following section.
-- The type of reactor via the keyword *liquidFuel*.
-- The options for time stepping via the keywords *adjustTimeStep*, *maxDeltaT*, *maxCo* and *maxPowerVariation*, as well as *maxCoTwoPhase* and *marginToPhaseChange* for two-phase flow simulations.
-- An option for mesh manipulation called *removeBaffles*. This allows to select the physics that require the creation of a ghost mesh without baffles. This ghost mesh allows for better mesh-to-mesh projections between different physics. WARNING: parallel execution not tested.
+- Which physics to solve via the ``regionSolvers``. In this dictionary, the names of the regions to create is specified, and to each a physics-solver is associated, i.e. ``onePhase``, ``diffusionNeutronics`` etc. Additionally, a ``picardLoop`` can be selected. Its specifics are detailed in the following section.
+- The type of reactor via the keyword ``liquidFuel``.
+- The options for time stepping via the keywords ``adjustTimeStep``, ``maxDeltaT``, ``maxCo`` and ``maxPowerVariation``, as well as ``maxCoTwoPhase`` and ``marginToPhaseChange`` for two-phase flow simulations.
+- An option for mesh manipulation called ``removeBaffles``. This allows to select the physics that require the creation of a ghost mesh without baffles. This ghost mesh allows for better mesh-to-mesh projections between different physics. WARNING: parallel execution not tested.
 
 Example:
 
 .. code :: cpp
 
     // In system/controlDict
-
-    regionSolvers
-    {
-        fluidRegion     onePhase;
-        neutroRegion    diffusionNeutronics;
-        loop1           multiPhysicsSolver;
-    }
 
     removeBaffles
     {
@@ -57,11 +50,11 @@ Example:
 
 
 Fairly complete examples of *controlDict* for single-phase flow can be found in
-`2D_FFTF <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict>`_
+`2D_FFTF <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict>`_
 and
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/system/controlDict>`_,
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/system/controlDict>`_,
 while an explanation of the two-phase flow options can be found in
-`1D_boiling <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/1D_boiling/system/controlDict>`_.
+`1D_boiling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_boiling/system/controlDict>`_.
 
 
 Coupling logic
@@ -69,26 +62,35 @@ Coupling logic
 
 The coupling between physics is achieved by projecting coupling variables from
 the mesh they are calculated, to the mesh they need to be used. The details of
-the coupling can be specified in *constant/multiRegionCouplingDict*. In the
-sub-dictionary *mappings*, for each region one can select the fields to map
+the coupling can be specified in *constant/regionsDict*. In the
+sub-dictionary ``mappings``, for each region one can select the fields to map
 *onto* it. This is done by creating a *subDict* named after the region *from*
 which the fields are mapped. For instance, if a field needs to mapped into the
 fluidRegion from the neutroRegion, the specifics of the mapping are found under
-*multiRegionDict/mappings/fluidRegion/neutroRegion*. In this *subDict*, one can
+*regionsDict/mappings/fluidRegion/neutroRegion*. In this *subDict*, one can
 specify the name of the field of the original mesh in the *sourceFields* entry
-(e.g., *powerDensity* in the neutroRegion) and the name of the field onto which
+(e.g., ``powerDensity`` in the neutroRegion) and the name of the field onto which
 the original field is mapped in the *targetFields* entry (e.g.
-*powerDensityNeutronics* in the fluidRegion). This routine is templated, hence
+``powerDensityNeutronics`` in the fluidRegion). This routine is templated, hence
 the user doesn't need to specify the field type (i.e. scalar or vector). A
 detailed usage of this new coupling routine can be found in any multi-physics
 tutorial, such as
-`3D_SmallESFR <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/reactorCases/3D_SmallESFR_NewSolverVerification/newSolver/>`_.
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/>`_.
 
-Example:
+Example of loose coupling:
 
 .. code :: cpp
 
-    // In constant/multiRegionCouplingDict
+    // In constant/regionsDict
+
+    regionSolvers
+    {
+        Level_0
+        {
+            fluidRegion     onePhase;
+            neutroRegion    diffusionNeutronics;
+        }
+    }
 
     mappings
     {
@@ -107,6 +109,31 @@ Example:
                 sourceFields    ( T      thermo:rho );
                 targetFields    ( TCool  rhoCool );
             }
+        }
+    }
+
+
+Example of tight coupling:
+
+.. code :: cpp
+
+    // In constant/regionsDict
+
+    regionSolvers
+    {
+        Level_0
+        {
+            Level_1 picardLoop;
+        }
+        Level_1
+        {
+            subSolvers
+            {
+                fluidRegion     onePhase;
+                neutroRegion    diffusionNeutronics;
+            }
+            minResidual     0.00005;
+            maxIterations   3;
         }
     }
 
@@ -167,7 +194,7 @@ the sub-scale structure by the thermal-hydraulics sub-solver, and partly by the
 thermo-mechanical solver itself (where there is not overlap with the
 thermo-hydraulics domain).
 
-Tutorial `2D_fullCoupling <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/tree/master/Tutorials/featureCases/2D_fullCoupling>`_
+Tutorial `2D_fullCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_fullCoupling>`_
 has been created to allow users to play around with the couplings and understand
 their logic.
 
@@ -337,24 +364,24 @@ In the *controlDict* add:
     }
 
 
-The *multiPhysicsSolver*
-========================
+The *loops*
+===========
 
 Many multi-physics simulations might require large flexibility on the
 time-loops. For instance, while some physics might be tightly coupled, others
 are only loosely coupled. This is, for instance, often the case for multi-scale
 simulations, where physics are tightly coupled within a scale and loosely across
 scales. In order to create this additional flexibility, a new solver type is
-introduced, named the *multiPhysicsSolver*. The *multiPhysicsSolver* consists of
+introduced, named the ``picardLoop``. The ``picardLoop`` consists of
 a list of tightly coupled physics. During run-time, when the physics are
-corrected, if they are part of a *multiPhysicsSolver*, the physics will be
+corrected, if they are part of a ``picardLoop``, the physics will be
 corrected iteratively, until a user-input convergence criterion is met.
-*multiPhysicsSolvers* are also defined in *constant/multiRegionCouplingDict* in
-the *multiPhysicsSolvers* sub-dictionary. Each entry of the subDict corresponds
-to a different *multiPhysicsSolver*, characterized by a list of subSolvers (i.e.
+*picardLoops* are also defined in *constant/regionsDict* in
+the ``regionSolvers`` sub-dictionary. Each entry of the subDict corresponds
+to a different ``picardLoop``, characterized by a list of subSolvers (i.e.
 the solvers that are tightly coupled), a minimum residual to reach before the
 Picard iterations are interrupted and a maximum number of iterations. Note that
-*multiPhysicsSolvers* can be nested within one other, possibly leading to
+*picardLoops* can be nested within one other, possibly leading to
 tree-like structure as shown below.
 
 .. mermaid::
@@ -368,20 +395,25 @@ tree-like structure as shown below.
         E --> G[Solver 4]
 
 
-Which can be translated in *constant/multiRegionCouplingDict*:
+Which can be translated in *constant/regionsDict*:
 
 .. code :: cpp
 
-    // In constant/multiRegionCouplingDict
+    // In constant/regionsDict
 
-    multiPhysicsSolvers
+    regionSolvers
     {
+        Level_0
+        {
+            Solver1                 physicsB;
+            MultiPhysicsSolver1     picardLoop;
+        }
         MultiPhysicsSolver1
         {
             solvers
             {
                 Solver2                 physicsD;
-                MultiPhysicsSolver2     multiPhysicsSolver;
+                MultiPhysicsSolver2     picardLoop;
             }
             minResidual     0.00005;
             maxIterations   3;
@@ -399,21 +431,8 @@ Which can be translated in *constant/multiRegionCouplingDict*:
     }
 
 
-And in *system/controlDict*:
-
-.. code :: cpp
-
-    // In system/controlDict
-
-    regionSolvers
-    {
-        Solver1                 physicsB;
-        MultiPhysicsSolver1     multiPhysicsSolver;
-    }
-
-
-Note that all the physics that are specified in the *regionSolvers* dict are
-loosely coupled, whereas only those specified within a *multiPhysicsSolver* are
+Note that all the physics that are specified in the ``regionSolvers`` dict are
+loosely coupled, whereas only those specified within a ``picardLoop`` are
 tightly coupled.
 
 The previous example would correspond to a time loop as shown below.

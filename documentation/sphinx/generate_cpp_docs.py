@@ -250,11 +250,11 @@ def generate_class_rst_files(ffn_lib_dirs: list[str], rst_output_dir: str) -> di
 
                     rst_content += f"Link to code\n"
                     rst_content += f"============\n\n"
-                    # rst_content += f"- `{class_name}.H <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/main/{file_path}>`_\n"
-                    # rst_content += f"- `{class_name}.C <https://gitlab.com/foam-for-nuclear/GeN-Foam/-/blob/main/{file_path.replace('.H', '.C')}>`_\n"
-                    rst_content += f"- `Doxygen doc <https://foam-for-nuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_\n"
-                    rst_content += f"- `{class_name}.H <https://foam-for-nuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_\n"
-                    rst_content += f"- `{class_name}.C <https://foam-for-nuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_\n"
+                    # rst_content += f"- `{class_name}.H <https://gitlab.com/foamForNuclear/foamForNuclear/-/blob/main/{file_path}>`_\n"
+                    # rst_content += f"- `{class_name}.C <https://gitlab.com/foamForNuclear/foamForNuclear/-/blob/main/{file_path.replace('.H', '.C')}>`_\n"
+                    rst_content += f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_\n"
+                    rst_content += f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_\n"
+                    rst_content += f"- `{class_name}.C <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_\n"
 
                     # Write to rst file in the corresponding output directory
                     rst_file_path = os.path.join(output_dir, f"{class_name}.rst")

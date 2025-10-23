@@ -10,7 +10,7 @@ authors = [
 description = "FoamForNuclear Python API"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
-version = "2506"
+version = "v2506"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -44,10 +44,10 @@ dependencies = [
 openmc = ["openmc"]
 
 [project.urls]
-Homepage = "https://gitlab.com/foam-for-nuclear/foam-for-nuclear-repository"
-Documentation = "https://foam-for-nuclear.gitlab.io/foam-for-nuclear-repository/"
-Repository = "https://gitlab.com/foam-for-nuclear/foam-for-nuclear-repository"
-Issues = "https://gitlab.com/foam-for-nuclear/foam-for-nuclear-repository/-/issues"
+Homepage = "https://gitlab.com/foamForNuclear/foamForNuclear/"
+Documentation = "https://foamfornuclear.gitlab.io/foamForNuclear/"
+Repository = "https://gitlab.com/foamForNuclear/foamForNuclear/"
+Issues = "https://gitlab.com/foamForNuclear/foamForNuclear/-/issues"
 
 [tool.setuptools.packages.find]
 include = ['foamForNuclear*']

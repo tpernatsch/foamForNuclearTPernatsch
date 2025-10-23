@@ -222,6 +222,7 @@ wmake -j$num_jobs ./applications/solvers/GeN-Foam
 #==============================================================================*
 # Make tests
 
+echo
 echo    "Make tests"
 echo -e "----------\n"
 
@@ -250,8 +251,16 @@ then
     if [[ $checkUpgrade -eq 1 ]]
     then
         echo "Current OpenFOAM version ($current_version) is not the lastest."
-        echo "Found OpenFOAM version $WM_PROJECT_VERSION, upgrade README.md"
+        echo "Found OpenFOAM version $WM_PROJECT_VERSION, upgrade:"
+        echo "  - README.md"
+        echo "  - documentation/doxygen/Doxygen/Doxyfile"
+        echo "  - pythonapi/pyproject.toml"
+        echo "  - pythonapi/foamForNuclear/__init__.py"
+
         sed -i "s/$current_version/$WM_PROJECT_VERSION/" README.md
+        sed -i "s/$current_version/$WM_PROJECT_VERSION/" documentation/doxygen/Doxygen/Doxyfile
+        sed -i "s/$current_version/$WM_PROJECT_VERSION/" pythonapi/pyproject.toml
+        sed -i "s/$current_version/$WM_PROJECT_VERSION/" pythonapi/foamForNuclear/__init__.py
     fi
 
     # Code headers and doxygen
@@ -261,8 +270,6 @@ then
         echo "Update version in headers to OpenFOAM version $WM_PROJECT_VERSION"
         python3 tools/caseFormatting/changeHeader.py
         echo
-
-        sed -i "s/$current_version/$WM_PROJECT_VERSION/" documentation/doxygen/Doxygen/Doxyfile
     fi
 fi
 

@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 """
-Foam-For-Nuclear:
+FoamForNuclear:
 
-    /*----------------------------------------------------------------------------*\\
-    |       ______ ______ _   __    |                                              |
-    |      / ____// ____// | / /    | Foam-For-Nuclear - Python-API                |
-    |     / /_   / /_   /  |/ /     | Version: 2506                                |
-    |    / __/  / __/  / /|  /      | Website: https://gitlab.com/foam-for-nuclear |
-    |   /_/    /_/    /_/ |_/       | Copyright (C) 2015 - 2025 EPFL               |
-    |                               |                                              |
-    \*----------------------------------------------------------------------------*/
+    /*--------------------------------------------------------------------------*\\
+    |       ______ ______ _   __    |                                            |
+    |      / ____// ____// | / /    | FoamForNuclear - Python-API                |
+    |     / /_   / /_   /  |/ /     | Version: v2506                             |
+    |    / __/  / __/  / /|  /      | Website: https://gitlab.com/foamForNuclear |
+    |   /_/    /_/    /_/ |_/       | Copyright (C) 2015 - 2025 EPFL             |
+    |                               |                                            |
+    \*--------------------------------------------------------------------------*/
 
 License
-    This file is part of Foam-For-Nuclear.
+    This file is part of FoamForNuclear.
 
-    Foam-For-Nuclear is free software; you can redistribute it and/or modify it
+    FoamForNuclear is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the
     Free Software Foundation; either version 2 of the License, or (at your
     option) any later version.
 
-    Foam-For-Nuclear is distributed in the hope that it will be useful, but
+    FoamForNuclear is distributed in the hope that it will be useful, but
     WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
     or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.

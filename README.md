@@ -48,8 +48,9 @@ FFN is based on the **OpenFOAM® (ESI/OpenCFD)** distribution, currently **v2506
 
 Resources for users and developers include:
 
-- **User Guide and Theory Manual** ([link](https://foam-for-nuclear.gitlab.io/foamForNuclear/index.html))
-- **Online Doxygen API** ([link](https://foam-for-nuclear.gitlab.io/foamForNuclear/doxygen/index.html))
+- **User Guide and Theory Manual:** [![foamForNuclear User's Guide](https://img.shields.io/badge/foamForNuclear-User_Guide-blue?logo=sphinx)](https://foamfornuclear.gitlab.io/foamForNuclear/index.html)
+- **Online Doxygen API:** [![foamForNuclear Doxygen](https://img.shields.io/badge/foamForNuclear-Doxygen-blue?logo=doxygen)](https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/index.html)
+- **Python API Documentation:** [![foamForNuclear Doxygen](https://img.shields.io/badge/foamForNuclear-Python_API-blue?logo=python)](https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/index.html)
 - **Introductory Lectures** ([`documentation/usefulDocumentsAndPresentations/`](./documentation/usefulDocumentsAndPresentations/))
 - **Tutorial Cases** for each physics module and coupling type ([`tutorials`](./tutorials/))
 
@@ -58,6 +59,18 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 - the high-level C++-based object-oriented language of OpenFOAM, which normally allows understanding the logic of a solver easily;
 - the comments that are typically available in the source code and, in particular, in the header files of each class;
 - the support of the community.
+
+
+## Getting started
+
+```bash
+# Clone the repo
+git clone --recursive https://gitlab.com/foamForNuclear/foamForNuclear.git
+
+# Compile the foamForNuclear project and build the foamForNuclear Python API
+cd foamForNuclear
+./Allwmake -j4 --api
+```
 
 
 ## Copyright

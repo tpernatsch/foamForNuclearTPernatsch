@@ -2,7 +2,7 @@
 
 Author: Thomas Guilbaud, 2022/07/17
 
-This package aims to generate multi-group cross-sections (MGXS) for the deterministic multi-physics code [GeN-Foam](https://gitlab.com/foam-for-nuclear/GeN-Foam) using the Monte Carlo code [OpenMC](https://docs.openmc.org/en/stable/).
+This package aims to generate multi-group cross-sections (MGXS) for the deterministic multi-physics code [GeN-Foam](https://gitlab.com/foamForNuclear/foamForNuclear/) using the Monte Carlo code [OpenMC](https://docs.openmc.org/en/stable/).
 
 Package updated to OpenMC version 0.13.4.
 
