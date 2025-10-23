@@ -23,6 +23,7 @@ wclean libso ./src/crossSections
 wclean libso ./src/porousMediaModels
 wclean libso ./src/thermophysicalProperties
 wclean libso ./src/multiRegion
+wclean libso ./src/patches
 wclean libso ./src/fvPatchFields
 wclean libso ./src/functionObjects
 

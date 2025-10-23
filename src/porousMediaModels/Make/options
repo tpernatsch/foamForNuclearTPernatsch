@@ -4,6 +4,8 @@ EXE_INC = \
     -I./../profiles/lnInclude \
     -I./../solutionControl/lnInclude \
     -I./../interpolationModels/lnInclude \
+    -I./../fvPatchFields/lnInclude \
+    -I./../patches/lnInclude \
     -I./include \
     -I./include/IOFieldField \
     -I./phaseModels \
@@ -144,6 +146,8 @@ LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lProfiles \
     -L$(FOAM_USER_LIBBIN) -lSolutionControl \
     -L$(FOAM_USER_LIBBIN) -lInterpolationModels \
+    -L$(FOAM_USER_LIBBIN) -lFvPatchFields \
+    -L$(FOAM_USER_LIBBIN) -lPatches \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \

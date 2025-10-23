@@ -7,10 +7,16 @@ EXE_INC = \
     -I./thermalHydraulics/mappedDarcyVelocity \
     -I./thermalHydraulics/parabolicVelocityPatchField \
     -I./thermalHydraulics/fixedMassFlowRate \
+    -I./thermalHydraulics/discontinuousCyclicAMI \ 
+    -I./thermalHydraulics/jumpDiscontinuousCyclicAMI \ 
+    -I./thermalHydraulics/bernoulliJumpAMI \
+    -I./thermalHydraulics/massConservationJumpAMI \
+    -I./thermalHydraulics/tJunctionJumpAMI \
     -I./neutronics/albedoSP3 \
     -I./thermoMechanics/tractionDisplacement \
     -I./../porousMediaModels/lnInclude \
     -I./../profiles/lnInclude \
+    -I./../patches/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
@@ -26,6 +32,7 @@ EXE_INC = \
 LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lPorousMediaModels \
     -L$(FOAM_USER_LIBBIN) -lProfiles \
+    -L$(FOAM_USER_LIBBIN) -lPatches \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \

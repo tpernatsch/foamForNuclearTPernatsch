@@ -205,6 +205,7 @@ wmake -j$num_jobs ./src/porousMediaModels
 wmake -j$num_jobs ./src/thermophysicalProperties
 wmake -j$num_jobs ./src/multiRegion
 wmake -j$num_jobs ./src/functionObjects
+wmake -j$num_jobs ./src/patches
 wmake -j$num_jobs ./src/fvPatchFields
 
 # Make modules
@@ -279,6 +280,7 @@ checkCompletionLib ./src/porousMediaModels
 checkCompletionLib ./src/thermophysicalProperties
 checkCompletionLib ./src/multiRegion
 checkCompletionLib ./src/functionObjects
+checkCompletionLib ./src/patches
 checkCompletionLib ./src/fvPatchFields
 checkCompletionLib ./applications/modules/thermalHydraulics
 checkCompletionLib ./applications/modules/neutronics

@@ -51,7 +51,7 @@ tutorials="
     reactorCases/3D_HTR-10
     reactorCases/3D_KIWI-B-4E
     reactorCases/3D_NTPfuelAssembly
-    reactorCases/3D_SmallESFR_NewSolverVerification
+    reactorCases/3D_SmallESFR
     reactorCases/Godiva_SN
 
     guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion
@@ -64,7 +64,6 @@ tutorials="
     fmuCases/2D_LFRpowerPlant/GeN-FoamAs2FMU
     fmuCases/2D_LFRpowerPlant/GeN-FoamAs3FMU
 
-    toBeUpdated/2D_RegressionESFR
 "
 
 # Clean all the tutorials
