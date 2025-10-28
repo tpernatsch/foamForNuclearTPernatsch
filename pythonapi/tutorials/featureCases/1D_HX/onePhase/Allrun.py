@@ -144,7 +144,7 @@ heatExchanger = ffn.HeatExchangerModel(
 #     volumeFraction=0,
 #     momentumSource=ffn.Vector(0, 0, -166000),
 #     momentumSourceTimeProfile=ffn.TimeProfile(
-#         type_='table',
+#         type='table',
 #         table=[
 #             (   0,   1   ),
 #             (   1,   0.8490104619    ),

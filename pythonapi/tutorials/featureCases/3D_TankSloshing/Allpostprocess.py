@@ -7,6 +7,12 @@ try:
         show_edges=True,
         fieldName='alpha.water'
     )
+    model.plot_mesh(
+        region=thMesh,
+        time=model.settings.endTime/2,
+        show_edges=True,
+        fieldName='alpha.water'
+    )
 except:
     pass
 
@@ -17,5 +23,6 @@ model.plot_animation(
     threshold=[0.9, 1.1],
     thresholdFieldName="alpha.water",
     unit='m/s',
-    fps=5
+    # fps=5,
+    limits=[0, 2]
 )

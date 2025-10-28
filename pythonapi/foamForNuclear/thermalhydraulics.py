@@ -696,7 +696,7 @@ class PimpleOptions(OpenFOAMDict):
 
     @momentumMode.setter
     def momentumMode(self, momentumMode) -> None:
-        check_type("momentumMode", momentumMode, str)
+        check_type("momentumMode", momentumMode, str, none_ok=True)
         if momentumMode is not None:
             check_value("momentumMode", momentumMode, _MOMENTUM_MODE_TYPES)
         self._momentumMode = momentumMode

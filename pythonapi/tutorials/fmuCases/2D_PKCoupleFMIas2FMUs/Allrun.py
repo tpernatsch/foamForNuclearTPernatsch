@@ -351,7 +351,7 @@ def generateTransientModel(model: ffn.Model, neutronicsSolver: ffn.Solver):
     ]
 
     pointKineticsData.externalReactivityTimeProfile = ffn.TimeProfile(
-        type_='fmi',
+        type='fmi',
         nameFromFMU='gfExtReact',
         initialValue=0
     )
