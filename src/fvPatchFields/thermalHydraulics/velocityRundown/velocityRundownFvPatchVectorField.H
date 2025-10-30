@@ -47,6 +47,7 @@ Description
     to match the specified flow rate
 
     For a mass-based flux:
+
     - the flow rate should be provided in kg/s
     - if \c rho is "none" the flow rate is in m3/s
     - otherwise \c rho should correspond to the name of the density field
@@ -54,10 +55,14 @@ Description
       specify the inlet density using the \c rhoInlet entry
 
     For a volumetric-based flux:
+
     - the flow rate is in m3/s
 
-Usage
-    Sets a time-dependent velocity in the form U(t) = U0*((A+B*(t-t0))^C)
+    Sets a time-dependent velocity in the form
+
+    $$
+    U(t) = U_0 (A + B (t-t_0))^C
+    $$
 
 See also
     Foam::fixedValueFvPatchField

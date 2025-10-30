@@ -45,35 +45,54 @@ Description
     fluid and solid regions, allowing for the exchange of thermal information
     between them, in particular assuring temperature and heat flux continuity.
 
-    Author of this file (and associated .C or included .H files):
-    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
+\par Options
 
+    \table
+        Property        | Description               | Req'd | Default value
+        subSolvers      | List of subsolvers        | yes   |
+        maxIterations   | Maximum number of iterations | yes |
+        minResidual     | Minimum residual          | yes |
+        CHTLoopCoeffs   | Sub-dict for CHT          | yes |
+        fluidRegionName | Name of the fluid region  | yes |
+        solidRegionName | Name of the solid region  | yes |
+        solidPatches    | Name of the coupled patch on the solid side | yes |
+        fluidPatches    | Name of the coupled patch on the fluid side | yes |
+        couplingStartTime | Time after which the coupling starts | no | 0
+        useHTC          |                           | no | false
+        oneWayCoupling  |                           | no | false
+        solidKappa      |                           | no | k
+        fluidKappa      |                           | no | kappaEff
+        includeFluidMechanicsInLoop |               | no | ()
+    \endtable
 
 Usage
     In regionsDict, the CHTLoops subDict is used to create a
     CHTLoop
 
     \verbatim
-        CHTLoops
+        regionSolvers
         {
-            CHTLoop1 //CHTLoopName
+            Level_0
+            {
+                CHTLoop1    CHTLoop;
+            }
+            CHTLoop1
             {
                 solvers // list of solvers
                 {
-                    regionName              solverName;
-                    fluidRegion             onePhase;
-                    neutroRegion            diffusionNeutronics;
-                    CHTLoop2     CHTLoop;
+                    regionName      solverName;
+                    fluidRegion     onePhase;
+                    neutroRegion    diffusionNeutronics;
+                    CHTLoop2        CHTLoop;
                 }
                 minResidual 0.00005;   // residual after which the iteration is ended
                 maxIterations 3;       // maximum number of iterations before the loop is ended
                 includeFluidMechanicsInLoop  false; //defaulted to false
             }
-        }
-
-        CHTLoop2
-        {
-            ...
+            CHTLoop2
+            {
+                ...
+            }
         }
     \endverbatim
 
@@ -84,6 +103,9 @@ Usage
 
 SourceFiles
     CHTLoop.C
+
+\mainauthor Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 
@@ -122,17 +144,17 @@ protected:
         //-
 
         dictionary multiPhysicsDict_;
-        dictionary CHTProperties_; 
+        dictionary CHTProperties_;
 
         word fluidRegionName_;
         word solidRegionName_;
         label fluidSolverID_;
         label solidSolverID_;
 
-        //- List of coupled patches 
+        //- List of coupled patches
         labelList fluidPatchIDs_;
         labelList solidPatchIDs_;
-        
+
         scalar couplingStartTime_;
         scalar minResidual_;
         label maxIterations_;

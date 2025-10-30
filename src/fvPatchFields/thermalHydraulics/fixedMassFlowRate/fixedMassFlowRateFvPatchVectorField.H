@@ -34,19 +34,20 @@ Description
     Exactly the same as OpenFOAM's flowRateInletVelocity, but renormalizes the
     velocity to account for the porosity at the patch.
 
-    Author of this file (and associated .C or included .H files):
-    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
 
+\par Options
 
-Usage
     \table
         Property     | Description             | Required    | Default value
         massFlowRate | mass flow rate [kg/s]   | no          |
-        volumetricFlowRate | volumetric flow rate [m3/s]| no |
+        volumetricFlowRate | volumetric flow rate [m3/s] | no |
         rho          | density field name      | no          | thermo:rho
         rhoInlet     | inlet density           | no          |
         extrapolateProfile | Extrapolate velocity profile | no | false
     \endtable
+
+
+Usage
 
     Example of the boundary condition specification for a volumetric flow rate:
     \verbatim
@@ -83,6 +84,9 @@ Note
 
 SourceFiles
     fixedMassFlowRateFvPatchVectorField.C
+
+\mainauthor Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 

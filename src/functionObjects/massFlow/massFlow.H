@@ -42,8 +42,23 @@ Group
     grpFieldFunctionObjects
 
 Description
-    Calculates the total mass flux through a set of faceSets, faceZones or
-    patches.
+    Calculates the total mass flux in kg/s through a set of faceSets, faceZones
+    or patches.
+
+\par Options
+
+    \table
+        Property      | Description              | Required   | Default value
+        type          | type name: massFlow      | yes        |
+        writeToFile   | write extents data to file | no       | yes
+        log           | write extents data to standard output | no | yes
+        alphaRhoPhiName | name of mass face flow field | yes |
+        regionType    | either cellZone or patch | yes |
+        regionName    | name of the regionType to process | yes |
+        scaleFactor   | rescale the output by this factor | no | 1.0
+    \endtable
+
+    Output data is written to the file \<timeDir\>/massFlow.dat
 
 Usage
     Example of function object specification:
@@ -61,19 +76,6 @@ Usage
     }
     \endverbatim
 
-    Where the entries comprise:
-    \table
-        Property      | Description              | Required   | Default value
-        type          | type name: massFlow      | yes        |
-        writeToFile   | write extents data to file | no       | yes
-        log           | write extents data to standard output | no | yes
-        alphaRhoPhiName | name of mass face flow field | yes |
-        regionType    | either cellZone or patch | yes |
-        regionName    | name of the regionType to process | yes |
-        scaleFactor   | rescale the output by this factor | no | 1.0
-    \endtable
-
-    Output data is written to the file \<timeDir\>/massFlow.dat
 
 Note
     For non-scalar fields, the magnitude of the field is employed and compared

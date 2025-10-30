@@ -45,37 +45,39 @@ Description
     This boundary condition provides a simplified black body radiation condition
     calculated as:
 
-    \f[
+    $$
         T_{mat} = \sqrt[4]{\frac{q''}{\sigma \epsilon} + T_a^4}
-    \f]
+    $$
 
     The heat flux is approximated using the Fourier law with the cells at the
     boundary:
 
-    \f[
+    $$
         q'' = \kappa \frac{T_{cell} - T_{patch face}}{d}
-    \f]
+    $$
 
-    where
-    \vartable
-        T_{mat}     | Temperature of the material [K]
-        q''         | Heat flux field [W/m2]
-        \sigma      | Stefan-Boltzmann constant (5.670373e-8 W/(m2 K4))
-        \epsilon    | Emissivity of the material surface [-]
-        T_a         | Ambient temperature [K]
-        T_{cell}    | Temperature of the cell [K]
-        T_{surface} | Temperature of the patch face [K]
-        \kappa      | Thermal conductivity of the material [W/(m K)]
-        d           | Distance from the cell to patch face [m]
-    \endtable
+\vartable
+    T_{mat}     | Temperature of the material [K]
+    q''         | Heat flux field [W/m2]
+    \sigma      | Stefan-Boltzmann constant (5.670373e-8 W/(m2 K4))
+    \epsilon    | Emissivity of the material surface [-]
+    T_a         | Ambient temperature [K]
+    T_{cell}    | Temperature of the cell [K]
+    T_{surface} | Temperature of the patch face [K]
+    \kappa      | Thermal conductivity of the material [W/(m K)]
+    d           | Distance from the cell to patch face [m]
+\endvartable
 
-Usage
+\par Options
+
     \table
         Property   | Description                          | Req'd | Default
         emissivity | Emissivity of the material surface   | yes |
         kappa      | Thermal conductivity of the material | yes |
         Ta         | Ambient temperature                  | yes |
     \endtable
+
+Usage
 
     Example of the boundary condition specification:
     \verbatim
@@ -95,7 +97,7 @@ Usage
     libs ("libFFSSrc2.so");
     \endverbatim
 
-    Author of this file (and associated .C or included .H files):
+\mainauthor Author of this file (and associated .C or included .H files):
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL (Switzerland)
 
 SourceFiles

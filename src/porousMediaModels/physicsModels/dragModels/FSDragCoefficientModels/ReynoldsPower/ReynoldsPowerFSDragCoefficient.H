@@ -39,24 +39,38 @@ Class
     Foam::FSDragCoefficientModels::ReynoldsPower
 
 Description
-    Drag coefficient in the form
-    \f[
-        f_d = A + B \times Re^C \\
-	K_d = 0.5 f_d \frac{\alpha \rho |U|}{D_h}
-    \f]
+    Drag coefficient in the form $f_d = A + B \times Re^C$
 
-    where:
-    \vartable
-        Re      | Reynolds number (superficial in two-phase) of the fluid
-	A, B, C | Selectable constants
-    \endvartable
+    $$
+        f_d = const + coeff \times Re^{exp} \\
+	    K_d = 0.5 f_d \frac{\alpha \rho |U|}{D_h}
+    $$
+
+\vartable
+    Re      | Reynolds number (superficial in two-phase) of the fluid
+    const, coeff, exp | Selectable constants
+\endvartable
+
+\par Options
+
+    \table
+        Property        | Description               | Req'd | Default value
+        coeff           | Value of coeff            | yes   |
+        exp             | Value of exp              | yes   |
+        const           | Value of const            | no    | 0
+    \endtable
 
 Usage
     Example of mandatory dictionary entries (with this coefficients, this
     is the Blasius correlation):
+
     \verbatim
-    coeff   0.316;
-    exp     -0.25;
+    <cellZoneName>
+    {
+        type    ReynoldsPower;
+        coeff   0.316;
+        exp     -0.25;
+    }
     \endverbatim
 
 SourceFiles

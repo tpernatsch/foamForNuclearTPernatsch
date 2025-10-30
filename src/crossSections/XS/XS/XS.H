@@ -42,27 +42,11 @@ Description
     Class for XS parametrization and other nuclear data. Nuclear data are always
     provided in MKSA units and not in cm.
 
-See 2D_MSFR or 3D_SmallESFR of Godiva_SN for exhaustive examples.
+    See 2D_MSFR or 3D_SmallESFR of Godiva_SN for exhaustive examples.
 
-\table
-    Parameter           | Type      | Req'd | Default | Description
-    energyGroups        | Integer   | No    | 1       | Number of energy groups
-    precGroups          | Integer   | No    | 1       | Number of precursor groups
-    legendreMoments     | Integer   | No    | 0       | Number of Legendre moments
-    fastNeutrons        | Boolean   | No    | True    | Flag for fast neutron spectrum, if true, use log(Tfuel) law, else use sqrt(Tfuel) law
-    adjustDiscFactors   | Boolean   | No    | False   | Flag to apply the discontinuity factor adjustement
-    useGivenDiscFactors | Boolean   | No    | False   | Flag to use homogeneous discontinuity factors provided in state/zone
-    groupsWoDF          | List<int> | No    | Empty   | List of energy group index to not apply discontinuity factors
-    doNotParametrize    | List<int> | No    | Empty   | List of energy group index to not use parametrization (use only the values from the reference state)
-    ScNo                | Scalar    | No    | 1       | Schmidt number for diffusion of precursors
-    polyharmonicSplineMode | Label  | No    | 1 (linear) | Polyharmonic spline function mode (1: \f$ r \f$; 2: \f$ r^2 ln(r) \f$; 3: \f$ r^3 \f$; 4: \f$ r^4 ln(r) \f$)
-    axialOrientation    | Vector    | No    | (0,0,1) | Fuel axial orientation
-    isLowMemory         | Boolean   | No    | False   | Low memory flag, useful for SN solver
-\endtable
-
-The following table lists the possible perturb state keywords to be used in the
-state dictionaries. it is possible to use multiple parameters in the same state
-(e.g Tfuel and rhoCool).
+    The following table lists the possible perturb state keywords to be used in the
+    state dictionaries. it is possible to use multiple parameters in the same state
+    (e.g Tfuel and rhoCool).
 
 \table
     Parameter   | Type   | Req'd | Default | Description
@@ -75,9 +59,9 @@ state dictionaries. it is possible to use multiple parameters in the same state
     radExp      | Scalar | No    | 0       | Radial expansion from nominal
 \endtable
 
-Here follow the list of group wise nuclear data for each cellzone to be provided
-for GeN-Foam. Each subscript \f$g\f$ refers the gth energy group. Each \f$k\f$
-refers to the kth precursor group.
+    Here follow the list of group wise nuclear data for each cellzone to be provided
+    for GeN-Foam. Each subscript \f$g\f$ refers the gth energy group. Each \f$k\f$
+    refers to the kth precursor group.
 
 \table
     GeN-Foam Parameter  | Param    | Req'd | Default | Notation                 | Description
@@ -99,65 +83,86 @@ refers to the kth precursor group.
     integralFlux        | Constant | Yes   | -       | \f$ \Phi_g \f$           | Integral flux for adapting disc factors
 \endtable
 
-Example of dictionary entries for perturbed state XS in the nuclearData file:
-\verbatim
-states
-(
-    reference // Mandatory state
-    {
-        // Reference parameters
-        Tfuel       1000;
-        rhoCool     1000;
-        // Assume the other parameters are not used
+\par Options
 
-        zones
+    \table
+        Parameter           | Type      | Req'd | Default | Description
+        energyGroups        | Integer   | No    | 1       | Number of energy groups
+        precGroups          | Integer   | No    | 1       | Number of precursor groups
+        legendreMoments     | Integer   | No    | 0       | Number of Legendre moments
+        fastNeutrons        | Boolean   | No    | True    | Flag for fast neutron spectrum, if true, use log(Tfuel) law, else use sqrt(Tfuel) law
+        adjustDiscFactors   | Boolean   | No    | False   | Flag to apply the discontinuity factor adjustement
+        useGivenDiscFactors | Boolean   | No    | False   | Flag to use homogeneous discontinuity factors provided in state/zone
+        groupsWoDF          | List<int> | No    | Empty   | List of energy group index to not apply discontinuity factors
+        doNotParametrize    | List<int> | No    | Empty   | List of energy group index to not use parametrization (use only the values from the reference state)
+        ScNo                | Scalar    | No    | 1       | Schmidt number for diffusion of precursors
+        polyharmonicSplineMode | Label  | No    | 1 (linear) | Polyharmonic spline function mode (1: \f$ r \f$; 2: \f$ r^2 ln(r) \f$; 3: \f$ r^3 \f$; 4: \f$ r^4 ln(r) \f$)
+        axialOrientation    | Vector    | No    | (0,0,1) | Fuel axial orientation
+        isLowMemory         | Boolean   | No    | False   | Low memory flag, useful for SN solver
+    \endtable
+
+Usage
+
+    Example of dictionary entries for perturbed state XS in the nuclearData file:
+
+    \verbatim
+        states
         (
-            core
+            reference // Mandatory state
             {
-                fuelFraction    ...;
-                IV  ...;
-                ...
+                // Reference parameters
+                Tfuel       1000;
+                rhoCool     1000;
+                // Assume the other parameters are not used
+
+                zones
+                (
+                    core
+                    {
+                        fuelFraction    ...;
+                        IV  ...;
+                        ...
+                    }
+                    reflector
+                    {
+                        ...
+                    }
+                );
             }
-            reflector
+            Tfuel1200K // Additional state, arbitrary state name
             {
-                ...
+                // Perturb only Tfuel
+                Tfuel       1200;
+                // Assume by default that rhoCool is not perturb and uses rhoCool = 1000
+
+                zones
+                (
+                    core
+                    {
+                        ...
+                    }
+                );
+            }
+            TfuelAndRhoHot
+            {
+                // Use both Tfuel and rhoCool parameters to perturb the state
+                Tfuel       1200;
+                rhoCool     900;
+
+                zones
+                (
+                    core
+                    {
+                        ...
+                    }
+                    reflector
+                    {
+                        ...
+                    }
+                );
             }
         );
-    }
-    Tfuel1200K // Additional state, arbitrary state name
-    {
-        // Perturb only Tfuel
-        Tfuel       1200;
-        // Assume by default that rhoCool is not perturb and uses rhoCool = 1000
-
-        zones
-        (
-            core
-            {
-                ...
-            }
-        );
-    }
-    TfuelAndRhoHot
-    {
-        // Use both Tfuel and rhoCool parameters to perturb the state
-        Tfuel       1200;
-        rhoCool     900;
-
-        zones
-        (
-            core
-            {
-                ...
-            }
-            reflector
-            {
-                ...
-            }
-        );
-    }
-);
-\endverbatim
+    \endverbatim
 
 \mainauthor of this file (and associated .C or included .H files)
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland);

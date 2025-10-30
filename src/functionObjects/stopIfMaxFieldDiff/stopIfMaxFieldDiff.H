@@ -45,6 +45,17 @@ Description
     Stops the simulation when max(field1-field2) > 0 and prints out the
     simulation time. Both field1 and field2 must be volSclaraFields
 
+\par Options
+
+    \table
+        Property      | Description              | Required   | Default value
+        type          | type name: stopIfMaxFieldDiff | yes   |
+        writeToFile   | write extents data to file | no       | yes
+        log           | write extents data to standard output | no | yes
+        field1        |                          | yes        |
+        field2        |                          | yes        |
+    \endtable
+
 Usage
     Example of function object specification:
     \verbatim
@@ -60,15 +71,6 @@ Usage
     }
     \endverbatim
 
-    Where the entries comprise:
-    \table
-        Property      | Description              | Required   | Default value
-        type          | type name: stopIfMaxFieldDiff  | yes        |
-        writeToFile   | write extents data to file | no       | yes
-        log           | write extents data to standard output | no | yes
-        field1        |                          | yes
-        field2        |                          | yes
-    \endtable
 
 Note
     For non-scalar fields, the magnitude of the field is employed and compared

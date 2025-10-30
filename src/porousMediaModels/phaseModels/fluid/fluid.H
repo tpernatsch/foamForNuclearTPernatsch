@@ -42,11 +42,11 @@ Description
     Class to model a generic fluid phase. It mainly acts as a variable
     placeholder, as little functionality is deferred to the class itself.
 
-    Author:
-    Stefan Radman (stefanradman92@gmail.com, stefan.radman@epfl.ch)
-
 SourceFiles
     fluid.C
+
+\mainauthor Author:
+    Stefan Radman (stefanradman92@gmail.com, stefan.radman@epfl.ch)
 
 \*---------------------------------------------------------------------------*/
 

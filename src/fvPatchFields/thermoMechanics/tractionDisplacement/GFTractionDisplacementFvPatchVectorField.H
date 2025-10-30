@@ -43,12 +43,11 @@ Description
     coefficient displacement equation. Modified from original version to allows
     for a user-selected reference temperature
 
-    Modification of this file (and associated .C or included .H files)
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
-
 SourceFiles
     GFTractionDisplacementFvPatchVectorField.C
 
+\mainauthor Modification of this file (and associated .C or included .H files)
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 

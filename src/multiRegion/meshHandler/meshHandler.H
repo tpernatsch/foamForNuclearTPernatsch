@@ -41,9 +41,6 @@ Class
 Description
     Class to hold all the region meshes and perform the volumetric mappings
 
-    Author of this file (and associated .C or included .H files):
-    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
-
 Usage
     In regionsDict
     \verbatim
@@ -70,6 +67,9 @@ Usage
 
 SourceFiles
     meshHandler.C
+
+\mainauthor Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 

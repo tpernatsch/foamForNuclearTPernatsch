@@ -45,6 +45,21 @@ Description
     Calculates the total mass flux through a set of faceSets, faceZones or
     patches.
 
+\par Options
+
+    \table
+        Property      | Description              | Required   | Default value
+        type          | type name: TBulk         | yes        |
+        writeToFile   | write extents data to file | no       | yes
+        log           | write extents data to standard output | no | yes
+        thermoName    | name of fluid thermophysicalProperties dict | yes |
+        alphaRhoPhiName | name of mass face flow field | yes  |
+        regionType    | either cellZone or patch | yes        |
+        regionName    | name of the regionType to process | yes |
+    \endtable
+
+    Output data is written to the file \<timeDir\>/TBulk.dat
+
 Usage
     Example of function object specification:
     \verbatim
@@ -60,20 +75,6 @@ Usage
         alphaRhoPhiName     "alphaRhoPhi.liquid"
     }
     \endverbatim
-
-    Where the entries comprise:
-    \table
-        Property      | Description              | Required   | Default value
-        type          | type name: TBulk      | yes        |
-        writeToFile   | write extents data to file | no       | yes
-        log           | write extents data to standard output | no | yes
-        thermoName    | name of fluid thermophysicalProperties dict | yes
-        alphaRhoPhiName | name of mass face flow field | yes |
-        regionType    | either cellZone or patch | yes |
-        regionName    | name of the regionType to process | yes |
-    \endtable
-
-    Output data is written to the file \<timeDir\>/TBulk.dat
 
 Note
     For non-scalar fields, the magnitude of the field is employed and compared

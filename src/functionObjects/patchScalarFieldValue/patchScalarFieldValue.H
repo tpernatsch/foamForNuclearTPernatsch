@@ -44,6 +44,18 @@ Group
 Description
     Writes the values of an fvPatchScalarField
 
+\par Options
+
+    \table
+        Property      | Description              | Required   | Default value
+        type          | type name: patchScalarFieldValue  | yes |
+        writeToFile   | write extents data to file | no       | yes
+        log           | write extents data to standard output | no | yes
+        field         | field name               | yes        | no
+    \endtable
+
+    Output data is written to the file \<timeDir\>/patchScalarFieldValue.dat
+
 Usage
     Example of function object specification:
     \verbatim
@@ -58,16 +70,6 @@ Usage
     }
     \endverbatim
 
-    Where the entries comprise:
-    \table
-        Property      | Description              | Required   | Default value
-        type          | type name: patchScalarFieldValue  | yes        |
-        writeToFile   | write extents data to file | no       | yes
-        log           | write extents data to standard output | no | yes
-        field         | field name               | yes        | no
-    \endtable
-
-    Output data is written to the file \<timeDir\>/patchScalarFieldValue.dat
 
 See also
     Foam::functionObjects::fvMeshFunctionObject

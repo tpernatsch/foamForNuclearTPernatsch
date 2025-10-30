@@ -42,12 +42,11 @@ Description
     Fixed traction boundary condition for the standard linear elastic, fixed
     coefficient displacement equation.
 
-    Modification of this file (and associated .C or included .H files)
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
-
 SourceFiles
     gapContactFvPatchVectorField.C
 
+\mainauthor Modification of this file (and associated .C or included .H files)
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 

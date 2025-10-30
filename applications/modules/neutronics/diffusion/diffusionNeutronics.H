@@ -107,7 +107,7 @@ Usage
         eigenvalueNeutronics        true;
     \endverbatim
 
-    For an subcritical reactor driven by an external neutron source:
+    For a subcritical reactor driven by an external neutron source:
     \verbatim
         model                       diffusionNeutronics;
         eigenvalueNeutronics        false;

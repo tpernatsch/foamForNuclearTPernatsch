@@ -43,46 +43,64 @@ Description
     starting from the Nusselt, which is turn obtained via correlation in the
     form
 
-    \f[
-        Nu = A + B \times Re^C Pr^D \left( \frac{T_w}{T_b} \right)^E
-    \f]
+    $$
+        Nu = const + coeff \times Re^{expRe} Pr^{expPr} \left( \frac{T_w}{T_b} \right)^{expTc}
+    $$
 
-    where:
-    \vartable
-        Re            | Reynolds number (superficial in two-phase) of the fluid
-        Pr            | Prandtl number of the fluid
-        T_w           | Wall temperature
-        T_b           | Bulk temperature
-        A, B, C, D, E | Selectable constants
-    \endvartable
+\vartable
+    Re            | Reynolds number (superficial in two-phase) of the fluid
+    Pr            | Prandtl number of the fluid
+    T_w           | Wall temperature
+    T_b           | Fluid bulk temperature
+    const, coeff, expRe, expPr, expTc | Selectable constants
+\endvartable
 
-    Authors:
-    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
-    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+\par Options
+
+    \table
+        Property        | Description               | Req'd | Default value
+        coeff           | Value of coeff            | yes   |
+        const           | Value of const            | yes   |
+        expRe           | Value of exp Reynolds     | yes   |
+        expPr           | Value of exp Prandtl      | yes   |
+        expTc           | Balue of exp Tc           | no    | 0
+    \endtable
+
 
 Usage
     Example of mandatory dictionary entries:
     \verbatim
+    <cellZoneName>
+    {
         const   4;
         coeff   0.01;
         expRe   0.8;
         expPr   0.8;
+    }
     \endverbatim
 
     Example using wall/fluid temperature ratio from:
     Walton 1992, (10) Wolf-McCarthy II
     \f$ Nu = 0.023 Re^{0.8} Pr^{0.4} \left( \frac{T_w}{T_b} \right)^{-0.3} \f$
     with Re = [7800; 1.55e6] and \f$ T_w/T_b \f$ = [1.5; 2.8]
+
     \verbatim
+    <cellZoneName>
+    {
         const   0;
         coeff   0.023;
         expRe   0.8;
         expPr   0.4;
         expTc   -0.3;
+    }
     \endverbatim
 
 SourceFiles
     NusseltFSHeatTransferCoefficient.C
+
+\mainauthor Authors:
+    Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 \*---------------------------------------------------------------------------*/
 

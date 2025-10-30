@@ -62,9 +62,6 @@ Description
     even resort to the Table class while coding this, as it is templated and
     does not support the scalarField type as template parameter.
 
-    Author:
-    Stefan Radman (stefan.radman@epfl.ch; stefanradman92@gmail.com)
-
 Usage
     \verbatim
     boundaryName
@@ -81,6 +78,9 @@ Usage
 
 SourceFiles
     timeFieldTableFvPatchScalarField.C
+
+\mainauthor Author:
+    Stefan Radman (stefan.radman@epfl.ch; stefanradman92@gmail.com)
 
 \*---------------------------------------------------------------------------*/
 

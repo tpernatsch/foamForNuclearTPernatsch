@@ -39,31 +39,46 @@ Class
     Foam::FSDragCoefficientModels::Colebrook
 
 Description
-    Drag coefficient in the form
-    \f[
-        f_d = ( A \log_{10}(Re) + B )^C \\
-	K_d = 0.5 f_d \frac{\alpha \rho |U|}{D_h}
-    \f]
+    Drag coefficient in the form $f_d = ( A \log_{10}(Re) + B )^C$
 
-    \vartable
-        Re      | Reynolds number (superficial in two-phase) of the fluid
-	A, B, C | Selectable constants
-    \endvartable
+    $$
+        f_d = ( coeff \times \log_{10}(Re) + const )^{exp} \\
+	    K_d = 0.5 f_d \frac{\alpha \rho |U|}{D_h}
+    $$
 
-    Author:
-    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+\vartable
+    Re      | Reynolds number (superficial in two-phase) of the fluid
+    coeff, const, exp | Selectable constants
+\endvartable
+
+\par Options
+
+    \table
+        Property        | Description               | Req'd | Default value
+        coeff           | Value of coeff            | yes   |
+        exp             | Value of exp              | yes   |
+        const           | Value of const            | yes   |
+    \endtable
 
 Usage
     Example of mandatory dictionary entries (with this coefficients, this
     is the Filonenko correlation):
+
     \verbatim
-    coeff   1.82;
-    const   -1.64;
-    exp     2.0;
+    <cellZoneName>
+    {
+        type    Colebrook;
+        coeff   1.82;
+        const   -1.64;
+        exp     2.0;
+    }
     \endverbatim
 
 SourceFiles
     ColebrookFSDragCoefficient.C
+
+\mainauthor Author:
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 \*---------------------------------------------------------------------------*/
 

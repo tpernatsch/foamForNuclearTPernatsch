@@ -42,9 +42,6 @@ Description
     Albedo boundary condition for SP3 or diffusion calculations. Please note that the
     boundary condition needs to be set both for first and second moments in SP3.
 
-    Author of this file (and associated .C or included .H files):
-    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
-
 Usage
     \verbatim
     <patchName>
@@ -60,6 +57,9 @@ Usage
 
 SourceFiles
     albedoSP3FvPatchField.C
+
+\mainauthor Author of this file (and associated .C or included .H files):
+    Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 

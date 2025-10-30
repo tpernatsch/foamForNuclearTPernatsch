@@ -46,36 +46,56 @@ Description
     within each time step, ensuring consistent interface conditions for velocity,
     displacement, and traction. It assumkes that the solid and fluid are coupled
     through a single patch on both sides, allowing for a direct exchange of
-    information between the fluid and solid regions. The fluid solver is expected 
-    to support dynamicFvMesh in order to deform the mesh according to the solid 
-    displacement. The loop assumes that the solid region is not deformed, using 
+    information between the fluid and solid regions. The fluid solver is expected
+    to support dynamicFvMesh in order to deform the mesh according to the solid
+    displacement. The loop assumes that the solid region is not deformed, using
     a non-updated approach for the displacement solution.
+
+\par Options
+
+    \table
+        Property        | Description               | Req'd | Default value
+        subSolvers      | List of subsolvers        | yes   |
+        maxIterations   | Maximum number of iterations | yes |
+        minResidual     | Minimum residual          | yes |
+        FSILoopCoeffs   | Sub-dict for FSI          | yes |
+        fluidRegionName | Name of the fluid region  | yes |
+        solidRegionName | Name of the solid region  | yes |
+        solidSidePatchName | Name of the coupled patch on the solid side | yes |
+        fluidSidePatchName | Name of the coupled patch on the fluid side | yes |
+        underRelaxationFactor | Under-relaxation factor for the coupling | yes |
+        couplingStartTime | Time after which the coupling starts | no | 0
+        thermalCoupling |                           | no | false
+    \endtable
 
 Usage
     In regionsDict, a subDict in regionsDict/regionSolvers is used to create a FSILoop
 
     \verbatim
-        Level_1
+        regionSolvers
         {
-            subSolvers
+            Level_1
             {
-                fluid rhoPimpleFoam;
-                solid extendedThermoMechanics;
-                ...
-                arbitraryName  solverName;
-            }
-            
-            maxIterations 100;
-            minResidual 1e-5;
-            
-            FSILoopCoeffs
-            {
-                fluidRegionName fluid; // Name of the fluid region
-                solidRegionName solid; // Name of the solid region
-                solidSidePatchName plate; // Name of the coupled patch on the solid side
-                fluidSidePatchName plate; // Name of the coupled patch on the fluid side
-                underRelaxationFactor 0.05; // Under-relaxation factor for the coupling
-                couplingStartTime 2; // Time after which the coupling starts
+                subSolvers
+                {
+                    fluid rhoPimpleFoam;
+                    solid extendedThermoMechanics;
+                    ...
+                    arbitraryName  solverName;
+                }
+
+                maxIterations 100;
+                minResidual 1e-5;
+
+                FSILoopCoeffs
+                {
+                    fluidRegionName     fluid; // Name of the fluid region
+                    solidRegionName     solid; // Name of the solid region
+                    solidSidePatchName  plate; // Name of the coupled patch on the solid side
+                    fluidSidePatchName  plate; // Name of the coupled patch on the fluid side
+                    underRelaxationFactor 0.05; // Under-relaxation factor for the coupling
+                    couplingStartTime   2; // Time after which the coupling starts
+                }
             }
         }
     \endverbatim
@@ -120,7 +140,7 @@ protected:
         //-
 
         dictionary multiPhysicsDict_;
-        dictionary FSIProperties_; 
+        dictionary FSIProperties_;
 
         word fluidRegionName_;
         label fluidPatchID_;
@@ -133,7 +153,7 @@ protected:
         scalar minResidual_;
         label maxIterations_;
         bool thermalCoupling_;
-        
+
         autoPtr<volPointInterpolation> solidInterpolator_;
         autoPtr<vectorField> oldDisplacementAtFaces_;
         autoPtr<volVectorField> fluidDisplacementAtSolid_;

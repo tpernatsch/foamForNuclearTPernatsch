@@ -41,7 +41,7 @@ Class
 Description
     Rheme correlation for pressure drop
 
-    \f[
+    $$
         P_t = D_p + 1.0444 D_w \\
         P_{w,pin} = N_p \pi (D_p + D_w) \\
         B = \sqrt{\frac{P_t}{D_p}}
@@ -54,37 +54,41 @@ Description
         B_2 = 0.0816 B^{0.9335} \\
         \\
         f_d = A \left( \frac{B_1}{Re} + \frac{B_2}{Re^{0.133}} \right)
-    \f]
+    $$
 
-    where
-    \vartable
-        N_p        | Number of pins
-        D_p        | Pin diameter
-        D_w        | Wire diameter
-        L_w        | Wire lead length (i.e pitch of the wrapper wire)
-        P_{w,pin}  | Wetted pin perimeter
-        P_{w,wrap} | Wetted wrapper perimeter
-    \endvartable
 
     Reference publications:
     Klaus Rehme, "PRESSURE DROP CORRELATIONS FOR FUEL ELEMENT SPACERS", Nuclear
     Technology, 1973, Vol. 17, 1, pages 15-23, DOI:10.13182/NT73-A31250.
 
-    Author:
-    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
+\vartable
+    N_p        | Number of pins
+    D_p        | Pin diameter
+    D_w        | Wire diameter
+    L_w        | Wire lead length (i.e pitch of the wrapper wire)
+    P_{w,pin}  | Wetted pin perimeter
+    P_{w,wrap} | Wetted wrapper perimeter
+\endvartable
+
 
 Usage
     Example of mandatory dictionary entries:
     \verbatim
-    numberOfPins        37;
-    pinDiameter         0.006000;
-    wireDiameter        0.0016;
-    wireLeadLen         0.1;        //- I.e. pitch of the wrapper wire
-    wetWrapPerimeter    0.175237;   //- Wetted wrapper perimeter (wrapper only)
+    <cellZoneName>
+    {
+        numberOfPins        37;
+        pinDiameter         0.006000;
+        wireDiameter        0.0016;
+        wireLeadLen         0.1;        //- I.e. pitch of the wrapper wire
+        wetWrapPerimeter    0.175237;   //- Wetted wrapper perimeter (wrapper only)
+    }
     \endverbatim
 
 SourceFiles
     Rehme.C
+
+\mainauthor Author:
+    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 \*---------------------------------------------------------------------------*/
 

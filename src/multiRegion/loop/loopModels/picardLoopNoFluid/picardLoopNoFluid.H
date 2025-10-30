@@ -42,11 +42,17 @@ Description
     Identical to the picardLoop, but it does not solve the fluid-mechancs equations at
     each of the iterations. Instead, it solves the fluid-mechanics equations only once
     at the beginning of the iteration, and then solves the energy equation of the
-    thermal-hydraulics solver iteratively with the other physics. 
+    thermal-hydraulics solver iteratively with the other physics.
 
-    Author of this file (and associated .C or included .H files):
-    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
+\par Options
 
+    \table
+        Property        | Description               | Req'd | Default value
+        subSolvers      | List of subsolvers        | yes   |
+        maxIterations   | Maximum number of iterations | yes |
+        minResidual     | Minimum residual          | yes |
+        couplingStartTime | Time after which the coupling starts | no | 0
+    \endtable
 
 Usage
     In regionsDict, the following subDict is used to create a picardLoopNoFluid
@@ -68,7 +74,7 @@ Usage
                     Level_2                 picardLoopNoFluid;
                 }
                 minResidual 0.00005;   // residual after which the iteration is ended
-                maxIterations 3;       // maximum number of iterations before the loop is ended            
+                maxIterations 3;       // maximum number of iterations before the loop is ended
             }
 
             Level_2
@@ -80,6 +86,9 @@ Usage
 
 SourceFiles
     picardLoopNoFluid.C
+
+\mainauthor Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 
@@ -119,7 +128,7 @@ protected:
 
         //-
 
-        dictionary multiPhysicsDict_; 
+        dictionary multiPhysicsDict_;
         dictionary loopProperties_;
 
         scalar minResidual_;

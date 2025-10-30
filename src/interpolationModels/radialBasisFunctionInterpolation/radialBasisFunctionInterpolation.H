@@ -39,13 +39,13 @@ Class
     Foam::radialBasisFunctionInterpolation
 
 Description
-    Base file for list conversion.
-
-\mainauthor
-    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
+    Base file for radial basis functions.
 
 SourceFiles
     radialBasisFunctionInterpolation.C
+
+\mainauthor
+    Thomas Guilbaud (thomas.guilbaud@epfl.ch)
 
 \*---------------------------------------------------------------------------*/
 

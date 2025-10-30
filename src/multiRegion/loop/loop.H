@@ -48,11 +48,11 @@ Description
     structure which might be helpful for multi-scale problems.
 
 Usage
-    In multiRegionCouplingDict, the multiPhysicsSolvers subDict is used to create a
+    In regionsDict, the regionSolvers subDict is used to create a
     loop
 
     \verbatim
-        multiPhysicsSolvers
+        regionSolvers
         {
             multiPhysicsSolver1 //multiPhysicsSolverName
             {
@@ -67,12 +67,12 @@ Usage
                 maxIterations 3;       // maximum number of iterations before the loop is ended
                 includeFluidMechanicsInLoop  false; //defaulted to false
             }
+            multiPhysicsSolver2
+            {
+                ...
+            }
         }
 
-        multiPhysicsSolver2
-        {
-            ...
-        }
     \endverbatim
 
     If includeFluidMechanicsInLoop entry is set to false (default value), for the thermal-hydraulics
@@ -82,10 +82,6 @@ Usage
 
 SourceFiles
     loop.C
-
-
-
-
 
 
 \*---------------------------------------------------------------------------*/

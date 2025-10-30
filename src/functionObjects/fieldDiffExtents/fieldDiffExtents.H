@@ -48,6 +48,25 @@ Description
     The extents are derived from the bound box limits after identifying the
     locations where one field exceeds the maskField
 
+
+\par Options
+
+    \table
+        Property      | Description                 | Required  | Default value
+        type          | type name: fieldDiffExtents | yes       |
+        writeToFile   | write extents data to file  | no        | yes
+        log           | write extents data to standard output|no| yes
+        internalField | Process the internal field  | no        | yes
+        threshold     | Field value to identify extents boundary| yes |
+        referencePosition | Reference position      | no        | (0 0 0)
+        fields        | list of fields to process   | yes       |
+        maskFields    | list of mask fields         | yes       |
+        patches       | list of patches to process  | no        | all patches
+    \endtable
+
+    Output data is written to the file \<timeDir\>/fieldDiffExtents.dat
+
+
 Usage
     Example of function object specification:
     \verbatim
@@ -64,21 +83,6 @@ Usage
     }
     \endverbatim
 
-    Where the entries comprise:
-    \table
-        Property      | Description                 | Required  | Default value
-        type          | type name: fieldDiffExtents | yes       |
-        writeToFile   | write extents data to file  | no        | yes
-        log           | write extents data to standard output|no| yes
-        internalField | Process the internal field  | no        | yes
-        threshold     | Field value to identify extents boundary| yes
-        referencePosition | Reference position      | no        | (0 0 0)
-        fields        | list of fields to process   | yes       |
-        maskFields    | list of mask fields         | yes       |
-        patches       | list of patches to process  | no      | \<all patches\>
-    \endtable
-
-    Output data is written to the file \<timeDir\>/fieldDiffExtents.dat
 
 Note
     For non-scalar fields, the magnitude of the field is employed and compared

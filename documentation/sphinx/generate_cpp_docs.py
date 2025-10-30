@@ -1,5 +1,74 @@
 """
 Generate the doc for Sphinx RST files
+
+Usage in headers of .H files.
+
+- Structure must always be
+    - Class
+    - Description (with equation)
+    - \vartable (Variable section, optional)
+    - Usage (optional)
+    - SourceFiles
+    - \mainauthor
+- Add references using [@nameOfTheReferenceInSphinxTheory]
+- Equation must be between double $$ signs
+
+
+Class
+    Foam::nameOfTheClass
+
+Description
+    Description of the class.
+    Reference publications [@FIORINA201524] [@FIORINA201515226].
+
+    $$
+    equation1
+    $$
+
+    Lorem ipsum...
+
+    $$
+    equation2
+    $$
+
+    ...
+
+
+\vartable
+    \phi_g         | Neutron flux for the gth energy group
+    C_k            | Concentration of the kth delayed neutron precursor group
+\endvartable
+
+\par Options
+
+    \table
+        Parameter           | Type      | Req'd | Default | Description
+        energyGroups        | Integer   | No    | 1       | Number of energy groups
+        precGroups          | Integer   | No    | 1       | Number of precursor groups
+    \endtable
+
+Usage
+    In the neutronicsProperties file, for keff calculation in a critical
+    reactor:
+    \verbatim
+        model                       diffusionNeutronics;
+        eigenvalueNeutronics        true;
+    \endverbatim
+
+    For an subcritical reactor driven by an external neutron source:
+    \verbatim
+        model                       diffusionNeutronics;
+        eigenvalueNeutronics        false;
+        externalSourceNeutronics    true;
+    \endverbatim
+
+SourceFiles
+    nameOfTheClass.C
+
+\mainauthor of this file (and associated .C or included .H files):
+    Author1 <email1@email.com>, instituation (country);
+    Author2 <email2@email.com>, instituation (country);
+
 """
 
 #==============================================================================*
