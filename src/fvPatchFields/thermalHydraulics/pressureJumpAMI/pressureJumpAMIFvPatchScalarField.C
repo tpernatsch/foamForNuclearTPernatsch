@@ -52,6 +52,7 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     jump_(this->size(), Zero),
     bernoulliCorrection_(false),
     source_(this->size(), Zero),
+    sourceTable_(nullptr),
     pressureLossCoeff_(0),
     pumpCoeffs_(1, Zero),
     pumpVelocityTable_(nullptr),
@@ -71,6 +72,7 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     jump_(ptf.jump_, mapper),
     bernoulliCorrection_(ptf.bernoulliCorrection_),
     source_(ptf.source_, mapper),
+    sourceTable_(ptf.sourceTable_.clone()),
     pressureLossCoeff_(ptf.pressureLossCoeff_),
     pumpCoeffs_(ptf.pumpCoeffs_),
     pumpVelocityTable_(ptf.pumpVelocityTable_.clone()),
@@ -89,6 +91,7 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     jump_(p.size(), Zero),
     bernoulliCorrection_(dict.getOrDefault<bool>("bernoulli", true)),
     source_(p.size(), Zero),
+    sourceTable_(nullptr),
     pressureLossCoeff_(dict.getOrDefault<scalar>("lossCoeff", 0)),
     pumpCoeffs_(dict.getOrDefault<scalarList>("pumpCoeffs", scalarList(1, Zero))),
     pumpVelocityTable_(nullptr),
@@ -96,10 +99,15 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
 {
     source_.assign("pSource", dict, p.size(), IOobjectOption::LAZY_READ);
 
-    if(dict.found("pumpSpeedTable"))
+    if(dict.found("pumpVelocityTable"))
     {
-        pumpVelocityTable_ = Function1<scalar>::New("pumpSpeedTable", dict, &this->db());
-        nominalVelocity_ = dict.get<scalar>("nominalSpeed");
+        pumpVelocityTable_ = Function1<scalar>::New("pumpVelocityTable", dict, &this->db());
+        nominalVelocity_ = dict.get<scalar>("nominalVelocity");
+    }
+
+    if(dict.found("sourceTable"))
+    {
+        sourceTable_ = Function1<scalar>::New("sourceTable", dict, &this->db());
     }
 
 
@@ -115,6 +123,7 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     jump_(ptf.jump_),
     bernoulliCorrection_(ptf.bernoulliCorrection_),
     source_(ptf.source_),
+    sourceTable_(ptf.sourceTable_.clone()),
     pressureLossCoeff_(ptf.pressureLossCoeff_),
     pumpCoeffs_(ptf.pumpCoeffs_),
     pumpVelocityTable_(ptf.pumpVelocityTable_.clone()),
@@ -132,6 +141,7 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     jump_(ptf.jump_),
     bernoulliCorrection_(ptf.bernoulliCorrection_),
     source_(ptf.source_),
+    sourceTable_(ptf.sourceTable_.clone()),
     pressureLossCoeff_(ptf.pressureLossCoeff_),
     pumpCoeffs_(ptf.pumpCoeffs_),
     pumpVelocityTable_(ptf.pumpVelocityTable_.clone()),
@@ -184,6 +194,16 @@ void Foam::pressureJumpAMIFvPatchScalarField::updateCoeffs()
 
         // Update jump to account for differences in velocity
 
+        // In order to account for the correct flow direction,
+        // first I check the flux value. If positive the flow is 
+        // from the owner into the slave, hence vOwner is employed
+        // for the calculations. Otherwise, I have to do the opposite
+
+        const scalarField& fluxOwner = 
+            this->patch().lookupPatchField<surfaceScalarField, scalar>("alphaRhoPhi");
+
+        bool ownerToSlave = (fluxOwner[0]>=0);
+
         const vectorField& vOwner  = 
             this->patch().lookupPatchField<volVectorField, vector>("U");
 
@@ -222,9 +242,17 @@ void Foam::pressureJumpAMIFvPatchScalarField::updateCoeffs()
                 scalar newSpeed = pumpVelocityTable_->value(this->db().time().value());
                 scalar speedRatio = newSpeed/nominalVelocity_;
 
-                forAll(correctedCoeffs, coeffI)
+                if(speedRatio < SMALL)
                 {
-                    correctedCoeffs[coeffI] = pumpCoeffs_[coeffI]*pow(speedRatio, 2-coeffI);
+                    correctedCoeffs = scalarList(pumpCoeffs_.size(), 0);
+                }
+
+                else
+                {
+                    forAll(correctedCoeffs, coeffI)
+                    {
+                        correctedCoeffs[coeffI] = pumpCoeffs_[coeffI]*pow(speedRatio, 2-coeffI);
+                    }
                 }
             }
 
@@ -237,7 +265,21 @@ void Foam::pressureJumpAMIFvPatchScalarField::updateCoeffs()
             }
         }
 
-        this->jump_ = source_ - pressureLossCoeff_*0.5*rhoOwner*pow(magUSlave, 2) + pumpSource;
+        scalarField correctedSource(source_);
+
+        if(sourceTable_ != nullptr)
+        {
+            
+            correctedSource = source_ * sourceTable_->value(this->db().time().value());
+            
+        }
+
+        this->jump_ = 
+        (
+            ownerToSlave? 
+                correctedSource - pressureLossCoeff_*0.5*rhoOwner*pow(magUOwner, 2) + pumpSource :
+                correctedSource + pressureLossCoeff_*0.5*rhoSlaveOnMaster*pow(magUSlave,2) + pumpSource
+        );
 
         if(bernoulliCorrection_)
         {  
@@ -284,7 +326,7 @@ void Foam::pressureJumpAMIFvPatchScalarField::write(Ostream& os) const
     if (this->discontinuousCyclicAMIPatch().owner())
     {
         jump_.writeEntry("jump", os);
-        source_.writeEntry("source", os);
+        source_.writeEntry("pSource", os);
     }
 
     fvPatchField<scalar>::writeValueEntry(os);

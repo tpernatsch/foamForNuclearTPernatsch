@@ -3,10 +3,10 @@ surfaceScalarField fluxHbyA = fvc::flux(HbyA);
 
 forAll(mesh_.boundary(), patchi)
 {
-    if (isA<branchingJunctionJumpAMIFvPatchVectorField>(U.boundaryField()[patchi]))
+    if (isA<junctionJumpAMIFvPatchVectorField>(U.boundaryField()[patchi]))
     {
-        const branchingJunctionJumpAMIFvPatchVectorField& tJunctionPatch =
-            refCast< const branchingJunctionJumpAMIFvPatchVectorField>(U.boundaryField()[patchi]);
+        const junctionJumpAMIFvPatchVectorField& tJunctionPatch =
+            refCast< const junctionJumpAMIFvPatchVectorField>(U.boundaryField()[patchi]);
         
         if(tJunctionPatch.discontinuousCyclicAMIPatch().owner())
         {
@@ -15,24 +15,6 @@ forAll(mesh_.boundary(), patchi)
         else
         {
             fluxHbyA.boundaryFieldRef()[patchi] =mesh_.Sf().boundaryField()[patchi] &  (U.boundaryField()[patchi]);      
-        }
-    }
-
-
-    if (isA<connectingJunctionJumpAMIFvPatchVectorField>(U.boundaryField()[patchi]))
-    {
-        const connectingJunctionJumpAMIFvPatchVectorField& tJunctionPatch =
-            refCast< const connectingJunctionJumpAMIFvPatchVectorField>(U.boundaryField()[patchi]);
-        const connectingJunctionJumpAMIFvPatchVectorField& nbrtJunctionPatch = 
-            refCast< const connectingJunctionJumpAMIFvPatchVectorField>(tJunctionPatch.neighbourPatchField());
-        
-        if(tJunctionPatch.discontinuousCyclicAMIPatch().owner())
-        {
-            fluxHbyA.boundaryFieldRef()[patchi] =mesh_.Sf().boundaryField()[patchi] &  ((U.boundaryField()[patchi]));
-        }
-        else
-        {
-            fluxHbyA.boundaryFieldRef()[patchi] =nbrtJunctionPatch.scalingFactors()*mesh_.Sf().boundaryField()[patchi] &  ((U.boundaryField()[patchi]));
         }
     }
 }

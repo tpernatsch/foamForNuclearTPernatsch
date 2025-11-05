@@ -57,8 +57,7 @@ SourceFiles
 
 #include "thermalHydraulicsModel.H"
 #include "dynamicFvMesh.H"
-#include "branchingJunctionJumpAMIFvPatchVectorField.H"
-#include "connectingJunctionJumpAMIFvPatchVectorField.H"
+#include "junctionJumpAMIFvPatchVectorField.H"
 #include "massConservationJumpAMIFvPatchVectorField.H"
 #include "discontinuousCyclicAMIFvsPatchField.H"
 

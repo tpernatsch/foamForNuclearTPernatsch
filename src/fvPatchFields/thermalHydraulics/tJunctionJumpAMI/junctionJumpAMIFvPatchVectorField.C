@@ -37,12 +37,12 @@ License
 
 \*---------------------------------------------------------------------------*/
 
-#include "branchingJunctionJumpAMIFvPatchVectorField.H"
+#include "junctionJumpAMIFvPatchVectorField.H"
 #include "addToRunTimeSelectionTable.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
-Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatchVectorField
+Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 (
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF
@@ -56,9 +56,9 @@ Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatc
 {}
 
 
-Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatchVectorField
+Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 (
-    const branchingJunctionJumpAMIFvPatchVectorField& ptf,
+    const junctionJumpAMIFvPatchVectorField& ptf,
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF,
     const fvPatchFieldMapper& mapper
@@ -72,7 +72,7 @@ Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatc
 {}
 
 
-Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatchVectorField
+Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 (
     const fvPatch& p,
     const DimensionedField<vector, volMesh>& iF,
@@ -93,9 +93,9 @@ Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatc
 
 
 
-Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatchVectorField
+Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 (
-    const branchingJunctionJumpAMIFvPatchVectorField& ptf
+    const junctionJumpAMIFvPatchVectorField& ptf
 )
 :
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(ptf),
@@ -106,9 +106,9 @@ Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatc
 {}
 
 
-Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatchVectorField
+Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 (
-    const branchingJunctionJumpAMIFvPatchVectorField& ptf,
+    const junctionJumpAMIFvPatchVectorField& ptf,
     const DimensionedField<vector, volMesh>& iF
 )
 :
@@ -122,7 +122,7 @@ Foam::branchingJunctionJumpAMIFvPatchVectorField::branchingJunctionJumpAMIFvPatc
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-Foam::tmp<Foam::Field<Foam::vector>> Foam::branchingJunctionJumpAMIFvPatchVectorField::jump() const
+Foam::tmp<Foam::Field<Foam::vector>> Foam::junctionJumpAMIFvPatchVectorField::jump() const
 {
     if (this->discontinuousCyclicAMIPatch().owner())
     {
@@ -130,8 +130,8 @@ Foam::tmp<Foam::Field<Foam::vector>> Foam::branchingJunctionJumpAMIFvPatchVector
     }
     else
     {
-        const branchingJunctionJumpAMIFvPatchVectorField& nbrPatch =
-            refCast<const branchingJunctionJumpAMIFvPatchVectorField>
+        const junctionJumpAMIFvPatchVectorField& nbrPatch =
+            refCast<const junctionJumpAMIFvPatchVectorField>
             (
                 this->neighbourPatchField()
             );
@@ -169,12 +169,12 @@ Foam::tmp<Foam::Field<Foam::vector>> Foam::branchingJunctionJumpAMIFvPatchVector
 }
 
 
-void Foam::branchingJunctionJumpAMIFvPatchVectorField::updateCoeffs()
+void Foam::junctionJumpAMIFvPatchVectorField::updateCoeffs()
 {
     if(this->discontinuousCyclicAMIPatch().owner())
     {
-        const branchingJunctionJumpAMIFvPatchVectorField& nbrPatch =
-            refCast<const branchingJunctionJumpAMIFvPatchVectorField>
+        const junctionJumpAMIFvPatchVectorField& nbrPatch =
+            refCast<const junctionJumpAMIFvPatchVectorField>
             (
                 this->neighbourPatchField()
             );
@@ -199,65 +199,55 @@ void Foam::branchingJunctionJumpAMIFvPatchVectorField::updateCoeffs()
 
         forAll(overlapPatchIndeces, i) // sum of fluxes in all directions except the neighb patch
         {
-            restOfFlux += mag(flux.boundaryField()[overlapPatchIndeces[i]]);
+            restOfFlux += flux.boundaryField()[overlapPatchIndeces[i]];
         }
-
-        scalarField thisFlux = mag(flux.boundaryField()[this->discontinuousCyclicAMIPatch().index()]); 
-        scalarField nbrFlux = mag(flux.boundaryField()[this->discontinuousCyclicAMIPatch().neighbPatch().index()]);
-
-        scalarField nominator = nbrFlux;
-        scalarField denominator = restOfFlux + nbrFlux + VSMALL;
-
-        // Same for density and areas
 
         const volScalarField& rho=
             this->db().lookupObject<volScalarField>("thermo:rho");
 
         const scalarField& nbrRho =
             rho.boundaryField()[this->discontinuousCyclicAMIPatch().neighbPatch().index()];
-        const scalarField& thisRho =
-            rho.boundaryField()[this->discontinuousCyclicAMIPatch().index()];
-
         
         const surfaceScalarField& areas = this->patch().boundaryMesh().mesh().magSf();
 
         const scalarField& nbrArea =
             areas.boundaryField()[this->discontinuousCyclicAMIPatch().neighbPatch().index()];
-        const scalarField& thisArea =
-            areas.boundaryField()[this->discontinuousCyclicAMIPatch().index()];
 
-        
         const volScalarField& alpha = 
             this->db().lookupObject<volScalarField>("alpha");
 
         const scalarField& nbrAlpha =
             alpha.boundaryField()[this->discontinuousCyclicAMIPatch().neighbPatch().index()];   
-        const scalarField& thisAlpha =
-            alpha.boundaryField()[this->discontinuousCyclicAMIPatch().index()];
+
+        scalarField nbrFlux = flux.boundaryField()[this->discontinuousCyclicAMIPatch().neighbPatch().index()];
 
 
-        if(min(denominator) == 0)
-        {
-  
-            this->jump_ = 0*this->patchInternalField();
+        // Need to compute the flux like this because if I take the value at the patch
+        // it only takes into account the flow through the one patch which is not the total
+        // value
+        scalarField thisFlux = 
+        (
+            alpha.boundaryField()[this->discontinuousCyclicAMIPatch().index()]
+           *rho.boundaryField()[this->discontinuousCyclicAMIPatch().index()]
+           *(this->patchInternalField() & this->patch().Sf()) 
+        );
 
-        }
-        else
-        {
-            scalingFactors_ = nominator/denominator;    
+        // Compute expected velocity from mass conservation
 
-            vectorField velocityVersor = this->patchInternalField()/(mag(this->patchInternalField())+VSMALL);
+        scalarField expectedU = -(thisFlux+restOfFlux)/(nbrAlpha*nbrRho*nbrArea+VSMALL); 
 
-            vectorField LHS = this->patchInternalField()*(thisRho*thisAlpha*thisArea- nbrRho*nbrArea*nbrAlpha)/(nbrRho*nbrArea*nbrAlpha+VSMALL);
-            vectorField RHS = restOfFlux*velocityVersor/(nbrRho*nbrArea*nbrAlpha+VSMALL);
+        scalarField scalarOwnerU =
+        (
+            thisFlux[0]>=0 ?
+            mag(this->patchInternalField()) :
+            -mag(this->patchInternalField())
+        );
+
+        scalingFactors_ = nbrFlux/(nbrFlux+restOfFlux+VSMALL);
         
-            this->jump_ = 
-            (
-                underRelaxation_*(LHS-RHS) + (1-underRelaxation_)*this->jump_   
-
-            );
-        }
-
+        vectorField patchNormal = this->patch().nf();
+        this->jump_ = underRelaxation_*(-expectedU-scalarOwnerU)*patchNormal + (1-underRelaxation_)*this->jump_; 
+        
     }
 
     jumpDiscontinuousCyclicAMIFvPatchField<vector>::updateCoeffs();
@@ -265,7 +255,7 @@ void Foam::branchingJunctionJumpAMIFvPatchVectorField::updateCoeffs()
 
 
 
-void Foam::branchingJunctionJumpAMIFvPatchVectorField::autoMap
+void Foam::junctionJumpAMIFvPatchVectorField::autoMap
 (
     const fvPatchFieldMapper& m
 )
@@ -275,7 +265,7 @@ void Foam::branchingJunctionJumpAMIFvPatchVectorField::autoMap
 }
 
 
-void Foam::branchingJunctionJumpAMIFvPatchVectorField::rmap
+void Foam::junctionJumpAMIFvPatchVectorField::rmap
 (
     const fvPatchField<vector>& ptf,
     const labelList& addr
@@ -283,13 +273,13 @@ void Foam::branchingJunctionJumpAMIFvPatchVectorField::rmap
 {
     jumpDiscontinuousCyclicAMIFvPatchField<vector>::rmap(ptf, addr);
 
-    const branchingJunctionJumpAMIFvPatchVectorField& tiptf =
-        refCast<const branchingJunctionJumpAMIFvPatchVectorField>(ptf);
+    const junctionJumpAMIFvPatchVectorField& tiptf =
+        refCast<const junctionJumpAMIFvPatchVectorField>(ptf);
     jump_.rmap(tiptf.jump_, addr);
 }
 
 
-void Foam::branchingJunctionJumpAMIFvPatchVectorField::write(Ostream& os) const
+void Foam::junctionJumpAMIFvPatchVectorField::write(Ostream& os) const
 {
     fvPatchField<vector>::write(os);
     os.writeEntry("patchType", this->interfaceFieldType());
@@ -309,7 +299,7 @@ void Foam::branchingJunctionJumpAMIFvPatchVectorField::write(Ostream& os) const
 
 
 
-void Foam::branchingJunctionJumpAMIFvPatchVectorField::updateInterfaceMatrix
+void Foam::junctionJumpAMIFvPatchVectorField::updateInterfaceMatrix
 (
     solveScalarField& result,
     const bool add,
@@ -369,7 +359,7 @@ void Foam::branchingJunctionJumpAMIFvPatchVectorField::updateInterfaceMatrix
 
 namespace Foam 
 { 
-    makePatchTypeField(fvPatchVectorField, branchingJunctionJumpAMIFvPatchVectorField); 
+    makePatchTypeField(fvPatchVectorField, junctionJumpAMIFvPatchVectorField); 
 }
 
 // ************************************************************************* //

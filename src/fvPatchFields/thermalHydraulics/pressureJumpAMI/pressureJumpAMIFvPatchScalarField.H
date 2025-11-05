@@ -129,6 +129,7 @@ protected:
     scalarField                 jump_; // total jump applied: jump = bernoulli + source - losses + pump
     bool                        bernoulliCorrection_; // option to include bernoulli pressure correction
     scalarField                 source_; // user-input total source
+    autoPtr<Function1<scalar>>  sourceTable_; // table to correct user-input total source
     scalar                      pressureLossCoeff_; // K in delta_P = K * 0.5 * rho * magU^2
     scalarList                  pumpCoeffs_;  // pump characteristics coefficients 
     autoPtr<Function1<scalar>>  pumpVelocityTable_; // pump speed table to correct characteristics

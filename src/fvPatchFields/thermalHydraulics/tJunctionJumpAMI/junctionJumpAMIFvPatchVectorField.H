@@ -36,7 +36,7 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Class
-    Foam::branchingJunctionJumpAMIFvPatchVectorField
+    Foam::junctionJumpAMIFvPatchVectorField
 
 Group
     grpCoupledBoundaryConditions
@@ -87,11 +87,11 @@ See also
     Foam::jumpDiscontinuousCyclicAMIFvPatchField
 
 SourceFiles
-    branchingJunctionJumpAMIFvPatchVectorField.C
+    junctionJumpAMIFvPatchVectorField.C
 \*---------------------------------------------------------------------------*/
 
-#ifndef branchingJunctionJumpAMIFvPatchVectorField_H
-#define branchingJunctionJumpAMIFvPatchVectorField_H
+#ifndef junctionJumpAMIFvPatchVectorField_H
+#define junctionJumpAMIFvPatchVectorField_H
 
 #include "jumpDiscontinuousCyclicAMIFvPatchField.H"
 
@@ -101,11 +101,11 @@ namespace Foam
 {
 
 /*---------------------------------------------------------------------------*\
-                  Class branchingJunctionJumpAMIFvPatchVectorField Declaration
+                  Class junctionJumpAMIFvPatchVectorField Declaration
 \*---------------------------------------------------------------------------*/
 
 
-class branchingJunctionJumpAMIFvPatchVectorField
+class junctionJumpAMIFvPatchVectorField
 :
     public jumpDiscontinuousCyclicAMIFvPatchField<vector>
 {
@@ -125,46 +125,46 @@ protected:
 public:
 
     //- Runtime type information
-    TypeName("branchingJunctionJumpAMI");
+    TypeName("junctionJumpAMI");
 
 
     // Constructors
 
         //- Construct from patch and internal field
-        branchingJunctionJumpAMIFvPatchVectorField
+        junctionJumpAMIFvPatchVectorField
         (
             const fvPatch&,
             const DimensionedField<vector, volMesh>&
         );
 
         //- Construct from patch, internal field and dictionary
-        branchingJunctionJumpAMIFvPatchVectorField
+        junctionJumpAMIFvPatchVectorField
         (
             const fvPatch&,
             const DimensionedField<vector, volMesh>&,
             const dictionary&
         );
 
-        //- Construct by mapping given branchingJunctionJumpAMIFvPatchVectorField onto a
+        //- Construct by mapping given junctionJumpAMIFvPatchVectorField onto a
         //  new patch
-        branchingJunctionJumpAMIFvPatchVectorField
+        junctionJumpAMIFvPatchVectorField
         (
-            const branchingJunctionJumpAMIFvPatchVectorField&,
+            const junctionJumpAMIFvPatchVectorField&,
             const fvPatch&,
             const DimensionedField<vector, volMesh>&,
             const fvPatchFieldMapper&
         );
 
         //- Construct as copy
-        branchingJunctionJumpAMIFvPatchVectorField
+        junctionJumpAMIFvPatchVectorField
         (
-            const branchingJunctionJumpAMIFvPatchVectorField&
+            const junctionJumpAMIFvPatchVectorField&
         );
 
         //- Construct as copy setting internal field reference
-        branchingJunctionJumpAMIFvPatchVectorField
+        junctionJumpAMIFvPatchVectorField
         (
-            const branchingJunctionJumpAMIFvPatchVectorField&,
+            const junctionJumpAMIFvPatchVectorField&,
             const DimensionedField<vector, volMesh>&
         );
 
@@ -260,7 +260,7 @@ public:
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 // #ifdef NoRepository
-//     #include "branchingJunctionJumpAMIFvPatchVectorField.C"
+//     #include "junctionJumpAMIFvPatchVectorField.C"
 // #endif
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
