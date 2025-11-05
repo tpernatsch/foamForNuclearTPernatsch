@@ -327,11 +327,11 @@ def generateCaseAsFMU(caseName: str, pythonFileName: str):
 def allclean():
     """
     Remove all OpenFOAM files and folder, and `*.png`, `*.gif`, `*_log.txt`,
-    `*.csv`, `*.json`, and `input_check.txt` files.
+    `*.csv`, and `input_check.txt` files.
     """
     commands =  ". ${WM_PROJECT_DIR:?}/bin/tools/CleanFunctions\n"
     commands += "cleanCase0\n"
-    commands += "rm -rf constant system processor* log.* Allrun.pre* *.png *.gif *_log.txt *.csv *.json input_check.txt\n"
+    commands += "rm -rf constant system processor* log.* Allrun.pre* *.png *.gif *_log.txt *.csv input_check.txt\n"
 
     process = subprocess.Popen('/bin/bash', stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
     out, err = process.communicate(commands)
