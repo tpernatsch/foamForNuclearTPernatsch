@@ -3856,18 +3856,19 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             wallFace.addSubFace(newBlock1.backFace())
                             wallFace.addSubFace(newBlock2.rightFace())
 
-                            # wall1 = Face(f"{name}WallFront_{idxFace}")
-                            # wall1.addSubFace(newBlock.frontFace())
-                            # wall2 = Face(f"{name}WallRight_{idxFace}")
-                            # wall2.addSubFace(newBlock.rightFace())
-                            # wall3 = Face(f"{name}WallBack_{idxFace}")
-                            # wall3.addSubFace(newBlock.backFace())
-                            # wall3 = Face(f"{name}WallBack_{idxFace}")
-                            # wall3.addSubFace(newBlock.backFace())
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.addSubFace(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallRight1_{idxFace}")
+                            wall2.addSubFace(newBlock1.rightFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.addSubFace(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallLeft2_{idxFace}")
+                            wall4.addSubFace(newBlock2.leftFace())
 
-                            # self.addBoundary(wall1)
-                            # self.addBoundary(wall2)
-                            # self.addBoundary(wall3)
+                            self.addBoundary(wall1)
+                            self.addBoundary(wall2)
+                            self.addBoundary(wall3)
+                            self.addBoundary(wall4)
 
                     # Front left
                     if (test == (False, True, True, True)):
@@ -3913,6 +3914,20 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             wallFace.addSubFace(newBlock1.leftFace())
                             wallFace.addSubFace(newBlock2.frontFace())
 
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.addSubFace(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallRight1_{idxFace}")
+                            wall2.addSubFace(newBlock1.rightFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.addSubFace(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallLeft2_{idxFace}")
+                            wall4.addSubFace(newBlock2.leftFace())
+
+                            self.addBoundary(wall1)
+                            self.addBoundary(wall2)
+                            self.addBoundary(wall3)
+                            self.addBoundary(wall4)
+
                     # Front right
                     if (test == (True, False, True, True)):
                         xmin, xmax, ymin, ymax = block
@@ -3957,6 +3972,20 @@ class BlockMesh(OpenFOAMFile, Mesh):
                             wallFace.addSubFace(newBlock1.rightFace())
                             wallFace.addSubFace(newBlock2.frontFace())
 
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.addSubFace(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallLeft1_{idxFace}")
+                            wall2.addSubFace(newBlock1.leftFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.addSubFace(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallRight2_{idxFace}")
+                            wall4.addSubFace(newBlock2.rightFace())
+
+                            self.addBoundary(wall1)
+                            self.addBoundary(wall2)
+                            self.addBoundary(wall3)
+                            self.addBoundary(wall4)
+
                     # Back left
                     if (test == (True, True, True, False)):
                         xmin, xmax, ymin, ymax = block
@@ -4000,6 +4029,20 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
                             wallFace.addSubFace(newBlock1.backFace())
                             wallFace.addSubFace(newBlock2.leftFace())
+
+                            wall1 = Face(f"{name}WallFront1_{idxFace}")
+                            wall1.addSubFace(newBlock1.frontFace())
+                            wall2 = Face(f"{name}WallLeft1_{idxFace}")
+                            wall2.addSubFace(newBlock1.leftFace())
+                            wall3 = Face(f"{name}WallBack2_{idxFace}")
+                            wall3.addSubFace(newBlock2.backFace())
+                            wall4 = Face(f"{name}WallRight2_{idxFace}")
+                            wall4.addSubFace(newBlock2.rightFace())
+
+                            self.addBoundary(wall1)
+                            self.addBoundary(wall2)
+                            self.addBoundary(wall3)
+                            self.addBoundary(wall4)
 
                     if (isAddBoundaryConditions):
                         topFace.addSubFace(newBlock1.topFace())
@@ -4987,6 +5030,11 @@ class BlockMesh(OpenFOAMFile, Mesh):
             Elbow radius applied to all the piping links (default 0).
         isAddBoundaryConditions : bool
             (default False)
+
+        Return
+        ------
+        dict[Block]
+            List of Block.
         """
         with open(filename, 'r', encoding='utf-8') as f:
             data = json.load(f)
