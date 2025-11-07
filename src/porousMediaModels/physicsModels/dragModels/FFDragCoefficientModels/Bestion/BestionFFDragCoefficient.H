@@ -41,11 +41,11 @@ Class
 Description
     Bestion Model for interfacial friction implementation test
 
-    Author:
+\mainauthor
     Gauthier Lazare (gauthier.lazare@epfl.ch)
 
 SourceFiles
-    Bestion.C
+    BestionFFDragCoefficient.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -75,7 +75,10 @@ class Bestion
 {
 protected:
 
+    //- Reference to vapour phase
     const fluid& vapour_;
+
+    //- Reference to liquid phase
     const fluid& liquid_;
 
 public:

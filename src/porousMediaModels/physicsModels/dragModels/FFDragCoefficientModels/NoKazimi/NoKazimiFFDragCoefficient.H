@@ -40,12 +40,12 @@ Class
 
 Description
     No-Kazimi model for interfacial friction.
-
-    Author:
+    
+\mainauthor:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles
-    NoKazimi.C
+    NoKazimiFFDragCoefficient.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -75,6 +75,7 @@ class NoKazimi
 {
 protected:
 
+    //- Reference to vapour phase
     const fluid& vapour_;
 
     //- Pre-computed coeffs

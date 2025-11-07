@@ -95,7 +95,7 @@ Foam::FFDragCoefficientModels::NoKazimi::NoKazimi
             << exit(FatalError);
     }
 
-    //- Compute A_
+    //  Compute A_
     scalar P(dict.get<scalar>("pinPitch"));
     scalar D(dict.get<scalar>("pinDiameter"));
     A_ =
@@ -111,7 +111,7 @@ Foam::scalar Foam::FFDragCoefficientModels::NoKazimi::value
 ) const
 {
     const scalar& a(vapour_.normalized()[celli]);
-    //- The coeff is 0.0025 but, the FFDragFactor multiplies this value times
+    //  The coeff is 0.0025 but, the FFDragFactor multiplies this value times
     //  0.5, so the coeff here is doubled. Also, this model does not use the
     //  dispersed phase hydraulic diameter as char. dimension, rather, it
     //  uses its own char. dimension computed via the A_ thing. For this reason

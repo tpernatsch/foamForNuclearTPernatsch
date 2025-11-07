@@ -43,11 +43,11 @@ Description
     H. Ninokata, T. Okano, "SABENA: subassembly boiling evolution numerical
     analysis", Nucl. Eng. Des., 120 (1990), pp. 349-367
 
-    Author:
+\mainauthor:
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles
-    Wallis.C
+    WallisFFDragCoefficient.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -77,6 +77,7 @@ class Wallis
 {
 protected:
 
+    //- Reference to vapour phase
     const fluid& vapour_;
 
 public:

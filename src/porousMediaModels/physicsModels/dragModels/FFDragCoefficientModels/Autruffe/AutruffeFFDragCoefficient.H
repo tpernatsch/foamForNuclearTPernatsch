@@ -46,11 +46,11 @@ Description
     In: Proc. Int. Meeting on Fast Reactor Safety Tech. 4, Seattle, WA, pp.
     2515–2521
 
-    Author:
-    Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
+\mainauthor
+    Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
-    Autruffe.C
+    AutruffeFFDragCoefficient.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -80,6 +80,7 @@ class Autruffe
 {
 protected:
 
+    //- Reference to vapour phase
     const fluid& vapour_;
 
 public:

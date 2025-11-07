@@ -42,7 +42,7 @@ Description
     Schiller-Neumann model for interfacial friction.
 
 SourceFiles
-    SchillerNaumann.C
+    SchillerNaumannFFDragCoefficient.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -72,6 +72,7 @@ class SchillerNaumann
 {
 public:
 
+    // TODO: Is it Naumann or Neumann?
     TypeName("SchillerNaumann");
 
     //- Constructors

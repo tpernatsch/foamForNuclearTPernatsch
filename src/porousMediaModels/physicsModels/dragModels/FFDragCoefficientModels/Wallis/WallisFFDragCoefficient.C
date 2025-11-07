@@ -104,7 +104,7 @@ Foam::scalar Foam::FFDragCoefficientModels::Wallis::value
 ) const
 {
     scalar sqrta(sqrt(vapour_.normalized()[celli]));
-    //- The coeff is 0.01 but, the FFDragFactor multiplies this value times
+    //  The coeff is 0.01 but, the FFDragFactor multiplies this value times
     //  0.5, so the coeff here is doubled
     return 0.02*sqrta*(1.0+150*(1.0-sqrta));
 }

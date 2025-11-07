@@ -42,11 +42,11 @@ Description
     Bestion model for interfacial friction.
     Distribution parameter set to zero as in TRACE
 
-    Author:
+\mainauthor
     Gauthier Lazare (gauthier.lazare@epfl.ch)
 
 SourceFiles
-    BestionTRACE.C
+    BestionTRACEFFDragCoefficient.C
 
 \*---------------------------------------------------------------------------*/
 
@@ -76,7 +76,10 @@ class BestionTRACE
 {
 protected:
 
+    //- Reference to vapour phase
     const fluid& vapour_;
+
+    //- Reference to liquid phase
     const fluid& liquid_;
 
 public:

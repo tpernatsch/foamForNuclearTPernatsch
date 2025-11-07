@@ -104,7 +104,7 @@ Foam::scalar Foam::FFDragCoefficientModels::Autruffe::value
 ) const
 {
     const scalar& a(vapour_.normalized()[celli]);
-    //- The coeff is 2.155 but, the FFDragFactor multiplies this value times
+    //  The coeff is 2.155 but, the FFDragFactor multiplies this value times
     //  0.5, so the coeff here is doubled
     return
         4.31*max(pow((1.0-a)*(1.0+75.0*(1.0-a)),0.95),0.005)
