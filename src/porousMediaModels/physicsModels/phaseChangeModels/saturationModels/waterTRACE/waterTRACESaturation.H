@@ -42,7 +42,7 @@ Description
     Saturation model for water in the 0.01-350 *C range based on TRACE:
     https://www.nrc.gov/docs/ML1200/ML120060218.pdf
 
-    Author:
+\mainauthor
 	Gauthier Lazare, Carlo Fiorina
 
 SourceFiles

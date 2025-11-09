@@ -41,7 +41,7 @@ Class
 Description
     Calculate virtual mass based on a coefficient
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles

@@ -53,7 +53,7 @@ Description
     simulation" in Third International Topical Meeting on Reactor
     Thermal-hydraulics, p.17C
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

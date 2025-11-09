@@ -115,6 +115,7 @@ Foam::scalar Foam::FFDragCoefficientModels::Bestion::value
     scalar Ps(
         (Co==1.0) ? 1.0 : min(pow(((1.0-Co*avap)*vapour_.magU()[celli]/max(1.0-avap,SMALL)-Co*liquid_.magU()[celli])/max(pair_.magUr()[celli],SMALL),2),0.05)
         );
+    // TODO: Eliminate following commented lines?
     // Test for verification //
     //const volScalarField& a1(pair_.fluid1());
     //const volScalarField& a2(pair_.fluid2());

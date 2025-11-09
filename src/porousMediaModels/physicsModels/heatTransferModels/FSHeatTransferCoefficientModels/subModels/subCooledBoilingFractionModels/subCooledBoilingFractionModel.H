@@ -42,7 +42,7 @@ Description
     Model for the prediction of the sub-cooled bulk liquid temperature at
     which bubble detachment occurs (only for sub-cooled boiling)
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles

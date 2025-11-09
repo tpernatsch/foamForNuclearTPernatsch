@@ -41,7 +41,7 @@ Class
 Description
     Returns a constant multiplier. Just for code testing purposes
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

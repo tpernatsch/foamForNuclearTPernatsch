@@ -40,7 +40,7 @@ Class
 
 Description
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com; stefan.radman@epfl.ch)
 
 SourceFiles

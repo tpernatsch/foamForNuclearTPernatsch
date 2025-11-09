@@ -50,7 +50,7 @@ Description
     base class). This proves particularly more useful for multiphase
     simulation.
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch; stefanradman92@gmail.com)
 
 Usage

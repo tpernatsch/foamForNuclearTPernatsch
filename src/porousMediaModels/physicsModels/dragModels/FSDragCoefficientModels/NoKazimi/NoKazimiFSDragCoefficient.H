@@ -43,7 +43,7 @@ Description
 
     https://dspace.mit.edu/handle/1721.1/60581
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 Usage

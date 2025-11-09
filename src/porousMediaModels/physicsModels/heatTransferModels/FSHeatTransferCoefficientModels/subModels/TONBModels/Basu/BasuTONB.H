@@ -44,7 +44,7 @@ Description
     and Active Nucleation Site Density During Subcooled Flow Boiling,"
     J. Heat Transfer, 124, 717-728, 2002.
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

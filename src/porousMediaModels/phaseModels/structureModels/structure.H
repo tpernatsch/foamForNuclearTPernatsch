@@ -56,7 +56,7 @@ Description
     the regions are effectively cellZones, and the cellFields_ is
     thus a dicts of scalarFields representing where each cellZone exists.
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles

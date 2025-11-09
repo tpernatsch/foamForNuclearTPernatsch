@@ -43,7 +43,7 @@ Description
     evolve into nucleate boiling ones, but no sub-cooled boiling region in
     between.
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles

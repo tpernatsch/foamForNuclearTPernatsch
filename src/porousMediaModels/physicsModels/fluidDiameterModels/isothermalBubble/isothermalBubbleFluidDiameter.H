@@ -42,7 +42,7 @@ Description
     constant temperature and mass within bubble/droplet (i.e. no mass exchange)
     via ideal gas law
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles

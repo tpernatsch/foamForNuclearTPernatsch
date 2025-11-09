@@ -139,7 +139,7 @@ Description
     }
     \endverbatim
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@alumni.epfl.ch)
 
 SourceFiles

@@ -44,7 +44,7 @@ Description
     of GroeneveldStewart. WARNING, it is not complete yet, it lack the term due to
     quality.
 
-    Author:
+\mainauthor
     Gauthier Lazare (gauthier.lazare@gmail.com)
 
 SourceFiles

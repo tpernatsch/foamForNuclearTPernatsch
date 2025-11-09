@@ -50,7 +50,7 @@ Description
     to keep it simple and not start dispersing dimensionless numbers randomly
     around the code.
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com; stefan.radman@epfl.ch)
 
 SourceFiles

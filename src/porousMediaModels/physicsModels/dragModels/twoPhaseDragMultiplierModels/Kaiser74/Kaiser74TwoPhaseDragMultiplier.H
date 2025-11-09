@@ -55,7 +55,7 @@ Description
     and critical heat flux of a two-phase sodium flow". Nucl. Eng. Des. 30,
     pp. 305–315.
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

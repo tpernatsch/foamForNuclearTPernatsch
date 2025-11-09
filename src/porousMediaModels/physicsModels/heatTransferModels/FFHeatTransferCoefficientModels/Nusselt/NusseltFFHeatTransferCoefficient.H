@@ -50,7 +50,7 @@ Description
     with Re, Pr being the Reynolds (superficial in two-phase) and Prandlt
     of the fluid, and A, B, C, D selectable consts
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 Usage

@@ -49,7 +49,7 @@ Description
     TRACE development that this exponent can be slightly smaller for bubbly
     flows, e.g. in the 1.7-1.8 range).
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

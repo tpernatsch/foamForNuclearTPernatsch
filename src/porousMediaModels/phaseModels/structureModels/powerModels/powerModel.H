@@ -44,7 +44,7 @@ Description
     It returns a heat source term to the main solver be used in the energy
     equations.
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles

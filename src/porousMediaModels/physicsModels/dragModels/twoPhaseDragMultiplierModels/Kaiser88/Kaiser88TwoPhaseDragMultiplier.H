@@ -56,7 +56,7 @@ Description
     geometry". In: Proc. 13th Liquid Metal Boiling Working Group (LMBWG), pp.
     71–98.
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

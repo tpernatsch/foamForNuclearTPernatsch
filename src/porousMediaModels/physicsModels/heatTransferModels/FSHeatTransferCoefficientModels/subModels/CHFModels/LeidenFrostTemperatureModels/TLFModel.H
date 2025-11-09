@@ -42,7 +42,7 @@ Description
     Model for the prediction of the Leidenfrost temperature (i.e. T_min) for
     which the heat flux is minimal. After this temperature, we are in post CHF Regime
 
-    Author:
+\mainauthor
     Gauthier Lazare (gauthier.lazare@gmail.com)
 
 SourceFiles

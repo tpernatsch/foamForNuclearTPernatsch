@@ -41,7 +41,7 @@ Class
 Description
     Turns power off if the field value maximum exceeds a provided value.
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 Usage

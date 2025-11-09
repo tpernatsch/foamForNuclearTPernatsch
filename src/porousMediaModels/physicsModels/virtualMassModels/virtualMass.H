@@ -41,7 +41,7 @@ Class
 Description
     Class to handle virtual mass
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles

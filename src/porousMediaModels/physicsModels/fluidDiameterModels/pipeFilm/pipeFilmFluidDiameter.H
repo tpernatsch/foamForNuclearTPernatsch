@@ -45,7 +45,7 @@ Description
     1-sqrt(1-alphaN) with alphaN being the normalized phase fraction of the
     phase of interest
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles

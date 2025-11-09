@@ -42,7 +42,7 @@ Description
     Interfacial area model that assumes that the dispersed phase flow is
     annular (i.e. cylindrical topology)
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

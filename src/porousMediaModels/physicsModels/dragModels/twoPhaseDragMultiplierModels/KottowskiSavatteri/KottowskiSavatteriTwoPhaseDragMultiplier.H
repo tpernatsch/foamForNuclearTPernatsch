@@ -55,7 +55,7 @@ Description
     For futher info see H.M. Kottowsi, C. Savatteri, "Fundamentals of Liquid
     Metal Boiling Thermohydraulics", Nucl. Eng. Des. vol. 82, pp. 281-304, 1984
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

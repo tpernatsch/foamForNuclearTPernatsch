@@ -43,7 +43,7 @@ Description
     coefficient. Can be only used if a phaseChangeModel is specified as this
     models relies on latent heat.
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

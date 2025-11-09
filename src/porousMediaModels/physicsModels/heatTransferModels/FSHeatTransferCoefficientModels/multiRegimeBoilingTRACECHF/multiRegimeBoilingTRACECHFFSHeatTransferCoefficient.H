@@ -44,7 +44,7 @@ Description
     CHF point, the transition and the post CHF models for film boiling. It uses
     the correlations from TRACE.
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
     Gauthier Lazare (gauthier.lazare@gmail.com)
 

@@ -42,7 +42,7 @@ Description
     Model for the prediction of the temperature of the onset of nucleate
     boiling (i.e. T_ONB)
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles

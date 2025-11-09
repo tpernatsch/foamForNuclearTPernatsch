@@ -42,7 +42,7 @@ Description
     Base class to represent a FFDragFactor with basing name access
     functionality.
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles

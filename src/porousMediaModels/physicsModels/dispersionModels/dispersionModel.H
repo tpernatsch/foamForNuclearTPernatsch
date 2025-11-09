@@ -41,7 +41,7 @@ Class
 Description
     Class to handle fluid-structure interfacial contact contact fractions
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles

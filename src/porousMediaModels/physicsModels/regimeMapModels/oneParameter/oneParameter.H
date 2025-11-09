@@ -41,7 +41,7 @@ Class
 Description
     Regime map model that depend on a single scalar parameter value.
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles

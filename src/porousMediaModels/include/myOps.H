@@ -42,7 +42,7 @@ Description
     A collection of functions that are currently only used for under-relaxation
     and word-porcessing purposes
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles

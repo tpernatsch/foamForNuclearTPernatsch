@@ -41,7 +41,7 @@ Class
 Description
     Class to handle fluid-structure friction coefficient (drag) multipliers.
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

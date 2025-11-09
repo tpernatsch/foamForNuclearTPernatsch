@@ -50,7 +50,7 @@ Description
     becomes 0, but is limited for obvious numerical reasons as this code is not
     meant for sub-supercritical fluid transition simulations)
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles

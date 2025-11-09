@@ -55,7 +55,7 @@ Description
     See TRACE theory manual (https://www.nrc.gov/docs/ML1200/ML120060218.pdf,
     pp. 135-136, eqns. 4-37, 4-38) for further info
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles

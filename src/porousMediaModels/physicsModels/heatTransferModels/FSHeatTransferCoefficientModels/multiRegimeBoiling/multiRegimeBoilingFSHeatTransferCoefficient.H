@@ -43,7 +43,7 @@ Description
     convection, two-phase convection, sub-cooled and nucleate boiling, to
     film boiling (the latter, hopefully).
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
 
 SourceFiles

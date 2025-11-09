@@ -44,7 +44,7 @@ Description
     Warning, this model has been coded for rod bundle, especially for the delta model,
     the thickness of the film of vapor.
 
-    Author:
+\mainauthor
     Gauthier LAZARE - gauthier.lazare@gmail.com
 
 SourceFiles

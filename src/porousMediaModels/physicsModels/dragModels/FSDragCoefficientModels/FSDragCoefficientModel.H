@@ -41,7 +41,7 @@ Class
 Description
     Class to manage the fluid-structure (i.e. fluid-wall) drag coefficient
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com; stefan.radman@epfl.ch)
 
 SourceFiles

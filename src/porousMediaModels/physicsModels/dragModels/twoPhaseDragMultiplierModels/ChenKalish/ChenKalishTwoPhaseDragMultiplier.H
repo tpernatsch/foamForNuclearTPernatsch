@@ -53,7 +53,7 @@ Description
     pressure drop for potassium with and without net vaporization." In: 4th
     Int. Heat transfer Conf, Vol. 6.
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

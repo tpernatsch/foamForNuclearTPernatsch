@@ -41,7 +41,7 @@ Class
 Description
     Gives a constant Critical Heat Flux provided in Phase Properties.
 
-    Author:
+\mainauthor
     Gauthier Lazare (gauthier.lazare@gmail.com)
 
 SourceFiles

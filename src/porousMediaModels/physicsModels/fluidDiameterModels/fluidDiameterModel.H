@@ -41,7 +41,7 @@ Class
 Description
     Class to handle fluid diameter
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles

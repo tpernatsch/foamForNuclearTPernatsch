@@ -43,7 +43,7 @@ Description
     changes assuming constant moles within bubble/droplet (i.e. no mass
     exchange) via ideal gas law
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@alumni.epfl.ch; sradman@protonmail.com)
 
 SourceFiles

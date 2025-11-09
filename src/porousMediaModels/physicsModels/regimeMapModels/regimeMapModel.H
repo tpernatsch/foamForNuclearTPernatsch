@@ -41,7 +41,7 @@ Class
 Description
     Run-time selectable class to handle flow regime map models.
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles

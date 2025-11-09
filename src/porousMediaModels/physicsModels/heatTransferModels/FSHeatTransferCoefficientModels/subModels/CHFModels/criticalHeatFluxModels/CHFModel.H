@@ -41,7 +41,7 @@ Class
 Description
     Model for the prediction of the critical heat flux.
 
-    Author:
+\mainauthor
     Gauthier Lazare (gauthier.lazare@gmail.com)
 
 SourceFiles

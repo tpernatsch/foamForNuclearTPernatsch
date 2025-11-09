@@ -49,7 +49,7 @@ Description
                                         1000 kg/m3)
     *   heatFlux =  0.28 - 1.89 MW/m^2
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

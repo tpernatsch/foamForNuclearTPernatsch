@@ -82,7 +82,7 @@ Description
             wire-wrap lead pitch-to-diameter ratios. }
     }
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

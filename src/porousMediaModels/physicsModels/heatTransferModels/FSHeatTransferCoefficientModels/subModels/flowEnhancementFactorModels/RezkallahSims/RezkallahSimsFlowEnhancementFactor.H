@@ -49,7 +49,7 @@ Description
     low mass flow scenarios (see
     https://www.nrc.gov/docs/ML1200/ML120060218.pdf, pp. 263-267)
 
-    Author:
+\mainauthor
     Stefan Radman (sradman@protonmail.com / stefan.radman@epfl.ch)
 
 SourceFiles

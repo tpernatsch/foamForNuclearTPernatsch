@@ -42,7 +42,7 @@ Description
     2D line segment representing the boundary between two different
     regimeDomains.
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
