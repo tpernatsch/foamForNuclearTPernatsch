@@ -39,7 +39,7 @@ License
 
 #include "heatExchanger.H"
 
-//- From forward declarations
+//  From forward declarations
 #include "fluid.H"
 #include "structure.H"
 
@@ -266,7 +266,7 @@ void Foam::heatExchanger::correct
     scalarField HpOs = mappingPtr_->mapTgtToSrc(H.internalField());
     scalarField HsOp = mappingPtr_->mapSrcToTgt(sH.internalField());
 
-    //- The max against 1e-69 is just to avoid the case in which the
+    //  The max against 1e-69 is just to avoid the case in which the
     //  heat transfer coefficient on both side is 0 (which results in
     //  Ap*As = 1.0), a case in which no heat is to be transferred via the HX
     //  but that would result in a division by 0 if not accounted for. Please
@@ -296,7 +296,7 @@ void Foam::heatExchanger::correct
     //     THX[celli] = (Bs*Ap+Bp)/max(As*Ap-1.0, 1e-69);
     // }
 
-    //- Kinda useless but whatever, at least the fields looks nicer in paraView
+    //  Kinda useless but whatever, at least the fields looks nicer in paraView
     //  if you set the boundaries
     THX.correctBoundaryConditions();
 }
@@ -307,10 +307,10 @@ void Foam::heatExchanger::constructSecondaryHX(bool& constructed)
 
     // sMesh_.reset(const_cast<fvMesh*>(&(mesh_.time().lookupObject<fvMesh>(this->getOrDefault<word>("secondaryRegion", mesh_.name())))));
     const fvMesh& sMesh_ = mesh_.time().lookupObjectRef<dynamicFvMesh>(this->getOrDefault<word>("secondaryRegion", mesh_.name()));
-    //- Read secondary cellZones and their cells
+    //  Read secondary cellZones and their cells
     secondaryCells_ = sMesh_.cellZones()[this->get<word>("secondary")];
 
-    //- Calculate displacement vecdtor that, if applied to the primary
+    //  Calculate displacement vecdtor that, if applied to the primary
     //  cellZone, would translate it to the secondary cellZone. This assumes
     //  that the cellZones have the same shape and volume. If that is not
     //  the case, a check is done afterwards (currently only on the volume, not
@@ -353,24 +353,24 @@ void Foam::heatExchanger::constructSecondaryHX(bool& constructed)
     Info<< "Heat exchanger " << thisDictionary_.dictName() << " mapping: applied "
         << "translation of " << delta << " m" << endl;
 
-    //- Read mesh geometric data
+    //  Read mesh geometric data
     const pointField& pointsRef(sMesh_.points());
     const faceList& facesRef(sMesh_.faces());
     const cellList& cellsRef(sMesh_.cells());
 
-    //- Init new mesh geometric data
+    //  Init new mesh geometric data
     pointField points(pointsRef.size());
     faceList faces(facesRef.size());
     cellList cells(cellsRef.size());
 
-    //- Create translated mesh
+    //  Create translated mesh
     //  First, copy all points and apply translation
     forAll(points, i)
     {
         points[i] = pointsRef[i] + delta;
     }
 
-    //- Set faces, cells as copies of the original indexing (yet the indexing
+    //  Set faces, cells as copies of the original indexing (yet the indexing
     //  applies to the translated points, so all the resulting faces and cells
     //  will result translated as well)
     forAll(faces, i)
@@ -382,7 +382,7 @@ void Foam::heatExchanger::constructSecondaryHX(bool& constructed)
         cells[i] = cellsRef[i];
     }
 
-    //- Assemble new translated mesh
+    //  Assemble new translated mesh
     autoPtr<fvMesh> translatedMeshPtr;
     translatedMeshPtr.reset
     (
@@ -403,7 +403,7 @@ void Foam::heatExchanger::constructSecondaryHX(bool& constructed)
     );
     fvMesh& translatedMesh = translatedMeshPtr();
 
-    //- Assemble mapping
+    //  Assemble mapping
     mappingPtr_.reset
     (
         new meshToMesh

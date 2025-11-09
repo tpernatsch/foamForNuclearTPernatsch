@@ -151,7 +151,7 @@ NusseltThermalBaffle1DFvPatchScalarField
     kw_(0),
     hw_(0)
 {
-    //- If I am either in onePhase OR (in twoPhase AND I am the controller fluid)
+    //  If I am either in onePhase OR (in twoPhase AND I am the controller fluid)
     if (!twoPhase_ or twoPhaseOwner_)
     {
         if (this->owner())
@@ -185,11 +185,11 @@ NusseltThermalBaffle1DFvPatchScalarField
             hw_ = nbrField.hw();
         }
     }
-    else //- If I am in twoPhase AND I am not the controller fluid
+    else //  If I am in twoPhase AND I am not the controller fluid
     {
         if (this->owner())
         {
-            //- Set ptr to otherFluidPatchFieldPtr_ but I cannot do this with
+            //  Set ptr to otherFluidPatchFieldPtr_ but I cannot do this with
             //  setPtrs as it might cause the whole constructor to fail (
             //  setPtrs does other things as well, and does other things would
             //  end up looking for patches that might not exist yet)
@@ -406,7 +406,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
         {
             word otherFluidTName("T."+otherFluidPtr_->name());
 
-            //- Check that the BC for the other fluid is also of type
+            //  Check that the BC for the other fluid is also of type
             //  NusseltThermalBaffle1D
             const mixedFvPatchScalarField& otherFluidPatchField =
                 refCast<const mixedFvPatchScalarField>
@@ -425,7 +425,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
                 << exit(FatalError);
             }
 
-            //- Set ptr to other fluid patch owner
+            //  Set ptr to other fluid patch owner
             otherFluidPatchFieldPtr_ =
             &(
                 const_cast<NusseltThermalBaffle1DFvPatchScalarField&>
@@ -444,7 +444,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
                 )
             );
 
-            //- Set ptr to other fluid patch nbr
+            //  Set ptr to other fluid patch nbr
             const label otherFluidNbrPatchi =
                 otherFluidPatchFieldPtr_->samplePolyPatch().index();
             const fvPatch& nbrPatch =
@@ -530,7 +530,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::rmap
     }*/
 }
 
-//- Something super-weird  going on here... I had to override the evaluate
+//  Something super-weird  going on here... I had to override the evaluate
 //  method of mixedFvPatchScalarField in order to limit the deltaCoeffs
 //  as I was occasionally getting floating point exceptions here in MPI
 //  for very, very funky decomposed domains (e.g., random decomposition
@@ -591,12 +591,12 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 const label otherFluidNbrPatchi =
                     otherFluidNbrPatchFieldPtr_->patch().index();
 
-                //- Cache fluid thermal conducitivities (molecular ones, not
+                //  Cache fluid thermal conducitivities (molecular ones, not
                 //  effective ones as turbulence is supposed to be captured by the
                 //  Nusselt correlation)
 
 
-                //- Calculate heat transfer coefficients
+                //  Calculate heat transfer coefficients
                 scalarField hf
                 (
                     calcH
@@ -630,7 +630,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                     )()
                 );
 
-                //- Internal field temperatures
+                //  Internal field temperatures
                 scalarField Ti
                 (
                     this->patchInternalField()()
@@ -648,7 +648,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                     otherFluidNbrPatchFieldPtr_->patchInternalField()()
                 );
 
-                //- Effective turbulent thermal conductivities used only to adjust
+                //  Effective turbulent thermal conductivities used only to adjust
                 //  the gradient to account for the fact that this BC "sees" a
                 //  cell-center - face-center heat transfer coefficient of hf
                 //  (and the calculated variants), while the rest of the code
@@ -666,7 +666,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                     otherFluidPtr_->turbulence().kappaEff(otherFluidNbrPatchi)()
                 );
 
-                //- These calls are necessary to sync fields on nbr sides if the
+                //  These calls are necessary to sync fields on nbr sides if the
                 //  nbr patch does not belong to the same processor as the owner
                 //  (only relevant in MPI)
                 mappedPatchBase::map().distribute(nbrKfEff);
@@ -676,7 +676,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 mappedPatchBase::map().distribute(nbrHf);
                 mappedPatchBase::map().distribute(otherFluidNbrHf);
 
-                //- Set mixedFvPatchScalarField quantities required for BC update
+                //  Set mixedFvPatchScalarField quantities required for BC update
                 //  As this runs only on the owner, I update the nbr values as well
                 //  so to have a truly implicit update
                 scalarField hm(hf+otherFluidHf);
@@ -689,8 +689,8 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                     (nbrHf*nbrTi+otherFluidNbrHf*otherFluidNbrTi)/hw_
                 );
                 scalarField oneByAnbrAminOne(max(A*nbrA-1.0, 1e-69));
-                scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne); //- New T wall
-                scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne); //- New nbr T wall
+                scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne); //  New T wall
+                scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne); //  New nbr T wall
 
                 //this->valueFraction() = 0;
                 //this->refValue() = 0;
@@ -709,11 +709,11 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
             }
             else if (!twoPhase_)
             {
-                //- Cache thermal conductivities
+                //  Cache thermal conductivities
                 scalarField kf(fluidPtr_->turbulence().kappaEff(patchi));
                 scalarField nbrKf(fluidPtr_->turbulence().kappaEff(nbrPatchi));
 
-                //- Calculate heat transfer coefficients
+                //  Calculate heat transfer coefficients
                 scalarField hf
                 (
                     calcH
@@ -731,7 +731,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                     )()
                 );
 
-                //- Effective turbulent thermal conductivities used only to adjust
+                //  Effective turbulent thermal conductivities used only to adjust
                 //  the gradient to account for the fact that this BC "sees" a
                 //  cell-center - face-center heat transfer coefficient of hf
                 //  (and the calculated variants), while the rest of the code
@@ -741,16 +741,16 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 scalarField kfEff(fluidPtr_->turbulence().kappaEff(patchi));
                 scalarField nbrKfEff(fluidPtr_->turbulence().kappaEff(nbrPatchi));
 
-                //- Internal temperature fields
+                //  Internal temperature fields
                 scalarField Ti(patchInternalField()());
                 scalarField nbrTi(nbrPatchFieldPtr_->patchInternalField()());
 
-                //- Distribute nbr quantities to avoid BS in MPI
+                //  Distribute nbr quantities to avoid BS in MPI
                 mappedPatchBase::map().distribute(nbrKfEff);
                 mappedPatchBase::map().distribute(nbrTi);
                 mappedPatchBase::map().distribute(nbrHf);
 
-                //- Set mixedFvPatchScalarField quantities required for BC update
+                //  Set mixedFvPatchScalarField quantities required for BC update
                 //  As this runs only on the owner, I update the nbr values as well
                 //  so to have a truly implicit update
                 scalarField A(1.0+hf/hw_);
@@ -802,12 +802,12 @@ tmp<scalarField> NusseltThermalBaffle1DFvPatchScalarField::calcH
 )
 {
     const label patchi(patchField.patch().index());
-    //- Molecular thermal conducitivity for computing the htc from the Nu
+    //  Molecular thermal conducitivity for computing the htc from the Nu
     scalarField k(pair.fluidRef().thermo().kappa(patchi));
     const scalarField& Re(pair.Re().boundaryField()[patchi]);
     const scalarField& Pr(pair.fluidRef().Pr().boundaryField()[patchi]);
     const scalarField& Dh(pair.structureRef().Dh().boundaryField()[patchi]);
-    if (pair.fPtr().valid()) //- Not valid in onePhase
+    if (pair.fPtr().valid()) //  Not valid in onePhase
     {
         const scalarField& f(pair.f().boundaryField()[patchi]);
         return

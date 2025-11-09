@@ -81,7 +81,7 @@ Foam::twoPhaseDragMultiplierModel::twoPhaseDragMultiplierModel
         dict.lookupOrDefault<scalar>("maxPhi2", 1000)
     )
 {
-    //- Set ptr to multiplier fluid
+    //  Set ptr to multiplier fluid
     mFluidPtr_ =
         &(
             mesh_.lookupObject<fluid>
@@ -90,13 +90,13 @@ Foam::twoPhaseDragMultiplierModel::twoPhaseDragMultiplierModel
             )
         );
 
-    //- Set ptr to other fluid
+    //  Set ptr to other fluid
     HashTable<const fluid*> fluids(mesh_.lookupClass<fluid>());
     wordList fluidNames(fluids.toc());
     oFluidPtr_ = (fluidNames[0] == "alpha."+mFluidPtr_->name()) ?
         fluids[fluidNames[1]] : fluids[fluidNames[0]];
 
-    //- Set ptr to mKd
+    //  Set ptr to mKd
     const FSPair& pair
     (
         mesh_.lookupObject<FSPair>(mFluidPtr_->name()+".structure")
@@ -111,7 +111,7 @@ bool Foam::twoPhaseDragMultiplierModel::onePhase(const label& celli) const
     return (mFluidPtr_->normalized()[celli] > 0.9999);
 }
 
-//- Default value
+//  Default value
 Foam::scalar Foam::twoPhaseDragMultiplierModel::phi2
 (
     const label& celli

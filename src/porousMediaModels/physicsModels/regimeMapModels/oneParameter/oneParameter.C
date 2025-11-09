@@ -105,7 +105,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
         )
     )
 {
-    //- Read the regime names and the bounds from the dict
+    //  Read the regime names and the bounds from the dict
     List<List<scalar>> bounds(0);
     forAllIter
     (
@@ -121,7 +121,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
         );
     }
 
-    //- Order bounds and names into ascending threshold values, and
+    //  Order bounds and names into ascending threshold values, and
     //  re-arrange the data so that something in a format e.g.:
     /*
             regimeBounds
@@ -159,7 +159,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
         created.
     */
 
-    //- Re-arrange individual bounds so that leftmost value is smaller
+    //  Re-arrange individual bounds so that leftmost value is smaller
     //  than the rightmost one
     for (int i = 0; i < bounds.size(); i++)
     {
@@ -171,7 +171,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
         }
     }
 
-    //- Then do the re-arranging as described before
+    //  Then do the re-arranging as described before
     List<scalar> tmpBound;
     word tmpName;
     bool swap(true);
@@ -194,7 +194,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
         }
     }
 
-    //- Reset regimeLabelToName and regimeLabelCoeffs
+    //  Reset regimeLabelToName and regimeLabelCoeffs
     forAll(names_, i)
     {
         word name(names_[i]);
@@ -210,7 +210,7 @@ Foam::regimeMapModels::oneParameter::oneParameter
         mesh_.cells().size()
     );
 
-    //- Assemble all. Note that thresholds is longer than names_ and
+    //  Assemble all. Note that thresholds is longer than names_ and
     //  interpolationFlags by 1
     wordList tmpNames(names_);
     names_ = wordList(0);
@@ -249,13 +249,13 @@ void Foam::regimeMapModels::oneParameter::correct()
 
     int N(mesh_.cells().size());
 
-    //- Reset (faster like this when compared to using a mesh-size constructor)
+    //  Reset (faster like this when compared to using a mesh-size constructor)
     for (int i=0; i < N; i++)
     {
         regimeLabelCoeffs_[i] = DynamicList<Tuple2<label,scalar>>(0);
     }
 
-    //-
+    // 
     forAll(names_, i)
     {
         bool interpolated(interpolationFlags_[i]);
@@ -358,11 +358,11 @@ void Foam::regimeMapModels::oneParameter::correct()
         scalar dt(t1-t0);
         scalarField t1_pByDt((t1-p)/dt);
         scalarField p_t0ByDt((p-t0)/dt);
-        bool isCurrentlyPresent = false;//- I can't use the omonymous method
+        bool isCurrentlyPresent = false;//  I can't use the omonymous method
                                         //  of the regime class as the len of
                                         //  its cellList is still 0 at this
                                         //  point
-        //- This is equivalent to
+        //  This is equivalent to
         //  isPresent = ((max(t1_pByDt) > 0) and max(p_t0ByDt[j]) >= 0));
         //  but faster
         forAll(mesh_.cells(), j)
@@ -481,7 +481,7 @@ void Foam::regimeMapModels::oneParameter::correct()
         }
     }
 
-    //- Update the requiresModelCorrection flag. The way this is done is
+    //  Update the requiresModelCorrection flag. The way this is done is
     //  not related to the specific run-time-selectable regimeMapModel,
     //  so its wrapped in a function in the base class
     this->setRequiresModelCorrection();

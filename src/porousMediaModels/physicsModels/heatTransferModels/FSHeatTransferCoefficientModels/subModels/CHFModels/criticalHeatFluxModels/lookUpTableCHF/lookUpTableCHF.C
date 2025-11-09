@@ -116,7 +116,7 @@ Foam::scalar Foam::criticalHeatFluxModels::lookUpTableCHF::value
     }
 
     // ---------------------------------- //
-    //--- Refs --//
+    // -- Refs --//
     const scalar& xi(mass_flow_quality_[celli]);
     const scalar& pi(p_[celli]);
     const scalar& rhoLi(rhoL_[celli]);

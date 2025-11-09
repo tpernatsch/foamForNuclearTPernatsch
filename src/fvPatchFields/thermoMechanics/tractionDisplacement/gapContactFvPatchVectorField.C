@@ -62,7 +62,7 @@ Foam::gapContactFvPatchVectorField::gapWidth() const
     const regionCoupledFvPatch& nbrPatch
         = refCast<const regionCoupledFvPatch>(patch.neighbPatch());
 
-    //- Include the total displacement
+    //  Include the total displacement
 /*
     const thermoMechanicsSolver& thermoMechanics
         = patch.boundaryMesh().mesh().lookupObject<thermoMechanicsSolver>("thermoMechanics");
@@ -263,7 +263,7 @@ void gapContactFvPatchVectorField::updateCoeffs()
         // Update the neighbour gap width
         nbr.gapWidth_ = nbrPatch.regionCoupledPatch().interpolate(gapWidth_);
 
-        //- Calculate the interface pressure
+        //  Calculate the interface pressure
         interfaceP_ = max
         (
            -penaltyFact_*min(boundaryStiffness(), nbr.boundaryStiffness())*gapWidth_,
@@ -281,7 +281,7 @@ void gapContactFvPatchVectorField::updateCoeffs()
     ) = gapWidth_;
 
 
-    //- Include the gap gas pressure
+    //  Include the gap gas pressure
     //const gapGasModel& gapGas
     //    = patch.boundaryMesh().mesh().lookupObject<gapGasModel>("gapGas");
   /*

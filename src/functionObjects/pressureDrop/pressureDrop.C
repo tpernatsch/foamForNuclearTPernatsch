@@ -267,7 +267,7 @@ bool Foam::functionObjects::pressureDrop::write()
     const volScalarField& p(*pPtr_);
     surfaceScalarField pi(fvc::interpolate(p));
 
-    //- Pressures at regions 1, 2
+    //  Pressures at regions 1, 2
     scalar p1(0);
     scalar p2(0);
 

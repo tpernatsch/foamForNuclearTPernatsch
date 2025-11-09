@@ -81,7 +81,7 @@ water
 Foam::scalar Foam::latentHeatModels::water::value(const label& celli)
 const
 {
-    //- The critical T of water is 647.3 K, but the fit spew out 681.718 as
+    //  The critical T of water is 647.3 K, but the fit spew out 681.718 as
     //  a limit temperature for the fit. Understandable, since the data range
     //  used for the fit is 0.01-350 *C, and that above that the latent heat
     //  drops very, very rapidly to 0, which I do not want to deal with as I do

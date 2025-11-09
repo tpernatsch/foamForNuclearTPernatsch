@@ -98,7 +98,7 @@ Foam::regimeMapModels::regimeDomain2D::regimeDomain2D
         //    << boundaries_[i].p1() << endl;
     }
 
-    //- Determine polygon sign (1 = convex counter-clockwise, -1 = convex
+    //  Determine polygon sign (1 = convex counter-clockwise, -1 = convex
     //  clockwise, 0 = concave (ordering is inconsequential in that scenario))
     forAll(boundaries_, i)
     {
@@ -124,14 +124,14 @@ Foam::regimeMapModels::regimeDomain2D::regimeDomain2D
         {
             if (sign_*sign < 0)
             {
-                //- Then domain is concave
+                //  Then domain is concave
                 sign_ = 0;
                 break;
             }
         }
     }
 
-    //- Construct the ray to be used for intercept testing in a manner so
+    //  Construct the ray to be used for intercept testing in a manner so
     //  that is not parallel to any boundary in the domain
     Random rng(-(1922-1991)*(id+1917));
     bool flag = true;
@@ -201,10 +201,10 @@ bool Foam::regimeMapModels::regimeDomain2D::containsPoint
     const Vector2D<scalar>& p
 ) const
 {
-    //- If the polygon is not concave
+    //  If the polygon is not concave
     if (sign_ != 0)
         return convexContainsPoint(p);
-    //- Else
+    //  Else
     return concaveContainsPoint(p);
 }
 
@@ -214,7 +214,7 @@ bool Foam::regimeMapModels::regimeDomain2D::convexContainsPoint
     const Vector2D<scalar>& p
 ) const
 {
-    //- The logic here is to perform a cross-product (wherein the thrid cmpt of
+    //  The logic here is to perform a cross-product (wherein the thrid cmpt of
     //  the involved vectors is always 0, as these objects are 2-D) between
     //  each of the vectors that can be constructed between each boundary
     //  starting poing p0 and the point under exam p with the corresponding
@@ -239,7 +239,7 @@ bool Foam::regimeMapModels::regimeDomain2D::concaveContainsPoint
     const Vector2D<scalar>& p
 ) const
 {
-    //- The idea is to count the number of times a test ray that starts at
+    //  The idea is to count the number of times a test ray that starts at
     //  p and extends towards infinity intersects domain boundaries. If said
     //  number is odd, the point is inside the domain, otherwise it is outside.
     //  The test ray is rayNorm_. This approax works for both concave and
@@ -256,7 +256,7 @@ bool Foam::regimeMapModels::regimeDomain2D::concaveContainsPoint
         scalar vxvp1(rayNorm_[0]*vp1[1]-rayNorm_[1]*vp1[0]);
         scalar vp0xv01(vp0[0]*v01[1]-vp0[1]*v01[0]);
 
-        //- The condition on vxvp1 is strictly greater or strictly lesser so to
+        //  The condition on vxvp1 is strictly greater or strictly lesser so to
         //  not consider the intersections with end-points in the count. Only
         //  intersections with start points are considered. The condition on
         //  vp0xv010 is striclty greater than 0 so that points on the edge are

@@ -74,7 +74,7 @@ valueType Foam::regimeMapModel::interpolateValue
     const label& celli
 ) const
 {
-    //- The If-else appears to be useless, but it is to force a Return Value
+    //  The If-else appears to be useless, but it is to force a Return Value
     //  Optimization for the case n==1. I should check the actual performance
     //  gain...
     const DynamicList<Tuple2<label,scalar>>& rlci
@@ -84,7 +84,7 @@ valueType Foam::regimeMapModel::interpolateValue
     int n(rlci.size());
     if (n == 1)
         return valueType(models[rlci[0].first()]->value(celli));
-    //- else
+    //  else
     const Tuple2<label,scalar>& rlci0(rlci[0]);
     valueType value
     (
@@ -92,7 +92,7 @@ valueType Foam::regimeMapModel::interpolateValue
     );
     for(int j=1; j<n; j++)
     {
-        //- The first element of the tuple is the regime label (which
+        //  The first element of the tuple is the regime label (which
         //  corresponds to the label of the sub-model in models
         //  while the second element of the tuple corresponds to
         //  the coefficient of the associated regime, used to weight the

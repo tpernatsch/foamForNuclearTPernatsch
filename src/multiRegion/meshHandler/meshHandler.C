@@ -481,12 +481,12 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
             }
 
 
-            //- Copy internal geometric data from fluidMesh
+            //  Copy internal geometric data from fluidMesh
             pointField points(meshes_[regioni].points());
             faceList faces(meshes_[regioni].faces());
             cellList cells(meshes_[regioni].cells());
 
-            //- Copy boundary geometric data from fluidMesh
+            //  Copy boundary geometric data from fluidMesh
             const polyBoundaryMesh& patches = meshes_[regioni].boundaryMesh();
             wordList patchNames(patches.names());
             List<polyPatch*> pList;
@@ -502,7 +502,7 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
                 );
             }
 
-            //- Assemble mesh as copy from points, faces, cells with no boundary
+            //  Assemble mesh as copy from points, faces, cells with no boundary
             baffleLessMesh.reset
             (
                 new Foam::fvMesh
@@ -522,10 +522,10 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
 
             
 
-            //- Add boundary data
+            //  Add boundary data
             baffleLessMesh().addFvPatches(pList);
 
-            //- One of the main issues when passing the actual runTime to removeBaffles
+            //  One of the main issues when passing the actual runTime to removeBaffles
             //  was that the functionObjects execution flags were getting reset to
             //  false. Probably other aspects of runTime were getting modified too. To
             //  avoid all these issues, let removeBaffles operate with a dummy runTime
@@ -543,7 +543,7 @@ void Foam::meshHandler::createBaffleLessMeshes(const Time& runTime)
             removeBaffles(baffleLessMesh(), dummyRunTimePtr());
             dummyRunTimePtr.clear();
 
-            //- Copy mesh zones
+            //  Copy mesh zones
             List<pointZone*> pointZonesNB(0);
             List<faceZone*> faceZonesNB(0);
             List<cellZone*> cellZonesNB(0);
@@ -637,15 +637,15 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
 
                 forAll(regionsInDict, i) //iterate over the regions found in the dictionary
                 {
-                    if (regionsInDict[i]!=meshes_[regioni].name()) //-look for other (than regionMehses_[regioni]) regions source fields
+                    if (regionsInDict[i]!=meshes_[regioni].name()) // look for other (than regionMehses_[regioni]) regions source fields
                     {
                         const dictionary regionFromDict(mappingDict.subDict(regionsInDict[i]));
                         const wordList regionsFrom(regionFromDict.toc());
                         // scalarCouplingFields_[regioni].setSize(regionsFrom.size());
 
-                        forAll(regionsFrom, regionFromi)//-loop over regions in the sub-dict
+                        forAll(regionsFrom, regionFromi)// loop over regions in the sub-dict
                         {
-                            if(regionsFrom[regionFromi] == meshes_[regioni].name())//-if i find regionMehses_[regioni] in the subdict
+                            if(regionsFrom[regionFromi] == meshes_[regioni].name())// if i find regionMehses_[regioni] in the subdict
                             {
                                 const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
                                 fvMesh& baffleLessMesh = const_cast<fvMesh&>(meshes_[regioni].time().lookupObject<fvMesh>(meshes_[regioni].name()+".baffleLess"));

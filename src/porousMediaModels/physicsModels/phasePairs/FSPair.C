@@ -174,7 +174,7 @@ Foam::FSPair::FSPair
 
     const dictionary& physicsModelsDict(dict_.subDict("physicsModels"));
 
-    //- Construct drag and heat transfer models
+    //  Construct drag and heat transfer models
     const dictionary* dragModelsDictPtr(nullptr);
     const dictionary* heatTransferModelsDictPtr(nullptr);
     if (onePhase)
@@ -260,7 +260,7 @@ Foam::FSPair::FSPair
         }
     }
 
-    //- Contact fraction models
+    //  Contact fraction models
     if (!onePhase)
     {
         const dictionary& pairGeometryModels
@@ -300,7 +300,7 @@ Foam::FSPair::FSPair
             );
         }
 
-        //-
+        // 
         fPtr_.reset
         (
             new volScalarField
@@ -328,10 +328,10 @@ void Foam::FSPair::correct
     const bool& correctEnergy
 )
 {
-    //- Init refs
+    //  Init refs
     const volVectorField& U(fluid_.U());
 
-    //- Previously fluid_.Dh(). The difference is that fluid_.Dh() will be
+    //  Previously fluid_.Dh(). The difference is that fluid_.Dh() will be
     //  different than the structure Dh in regions where fluid_ is dispersed.
     //  Nonetheless, the Reynolds for the fluid-structure pair when the fluid
     //  is dispersed is fairly meaningless, so I changed it to utilize the
@@ -339,15 +339,15 @@ void Foam::FSPair::correct
     const volScalarField& Dh(structure_.Dh());
     const volVectorField& lDh(structure_.lDh());
 
-    //- Correct Reynolds
+    //  Correct Reynolds
     volScalarField nu(fluid_.thermo().nu());
     Re_ = fluid_.normalized()*mag(U)*Dh/nu;
     Re_ = max(Re_, minRe_);
 
-    //- Calculate anisotropic reynolds
+    //  Calculate anisotropic reynolds
     /*  This was the original formulation. Below is the much more efficient one
         which is cell-by-cell, as I do not really care about BC values
-    //- Rotate U in the local frame, make an outer product with lDh so that
+    //  Rotate U in the local frame, make an outer product with lDh so that
     //  we get a matrix whose diagonal elements are the components of lRe.
     //  Then directly set these diagonal elemets (I guess this is the most
     //  efficient approch)
@@ -360,7 +360,7 @@ void Foam::FSPair::correct
     scalar minRe(minRe_.value());
     if (structure_.hasLocalReferenceFrame())
     {
-        //- This is to rotate the fluid velocity from the global frame to the
+        //  This is to rotate the fluid velocity from the global frame to the
         //  local one
         const volTensorField R(structure_.Rg2l());
         forAll(mesh_.cells(), i)
@@ -391,7 +391,7 @@ void Foam::FSPair::correct
     if (correctFluidDynamics)
     {
         myOps::storePrevIterIfRelax(Kd_);
-        //- Correct drag factor
+        //  Correct drag factor
         forAllIter
         (
             KdTable,
@@ -403,7 +403,7 @@ void Foam::FSPair::correct
             dragFactor.correctField(Kd_);
         }
 
-        //- Limit drag factor
+        //  Limit drag factor
         scalar KdFS
         (
             pimple_.lookupOrDefault<scalar>("minKdFS", 0)
@@ -421,18 +421,18 @@ void Foam::FSPair::correct
         Kd_.correctBoundaryConditions();
         Kd_.relax();
 
-        //- Rotate drag
+        //  Rotate drag
         structure_.localToGlobalRotateField(Kd_);
     }
 
-    //- Correct contact partition fraction, if valid
+    //  Correct contact partition fraction, if valid
     if (fPtr_.valid())
         contactPartition_->correctField(fPtr_());
 
     if (correctEnergy)
     {
         myOps::storePrevIterIfRelax(htc_);
-        //- Correct heat transfer coefficient
+        //  Correct heat transfer coefficient
         forAllIter
         (
             htcTable,
@@ -445,7 +445,7 @@ void Foam::FSPair::correct
         }
         htc_.correctBoundaryConditions();
 
-        //- Correct htc to account for contact partition, if valid
+        //  Correct htc to account for contact partition, if valid
         if (fPtr_.valid())
             htc_ *= fPtr_();
         htc_.relax();

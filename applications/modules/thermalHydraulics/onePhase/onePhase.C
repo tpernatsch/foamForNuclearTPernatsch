@@ -71,7 +71,7 @@ Foam::solvers::onePhase::onePhase
         mesh,
         fv::options::New(mesh)
     ),
-    //- The structure needs to be created before the fluids because
+    //  The structure needs to be created before the fluids because
     //  the turbulence models created by the fluids might require a reference
     //  to the structure (obtained via objectRegistry lookup in the specific
     //  turbulence model class)
@@ -86,37 +86,37 @@ Foam::solvers::onePhase::onePhase
         (this->found("fluidProperties"))
     ?   this->subDict("fluidProperties") : *this,
         mesh,
-        word(""),   //- This is the phase name, setting it to "" signals a
+        word(""),   //  This is the phase name, setting it to "" signals a
                     //  onePhase solver to the rest of the FFS library
         this->powerDensityNeutronicsToLiquid_,
-        false       //- No need to read or write the fluid phaseFraction in
+        false       //  No need to read or write the fluid phaseFraction in
                     //  onePhase, it is tied to the structure phaseFraction
     ),
     FSPair_(fluid_, structure_, *this),
     residual_(0)
 {
 
-    //- Create turbulence model
+    //  Create turbulence model
     fluid_.constructTurbulenceModel();
 
-    //- Set phase fraction fields (constant in time), structure has priority
+    //  Set phase fraction fields (constant in time), structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
 
-    //- The normalized field is non-trivial (i.e. different than 1) only in the
+    //  The normalized field is non-trivial (i.e. different than 1) only in the
     //  twoPhase solver. However, it is used by some models in the shared
     //  thermal-hydraulics library, so it should be set nonetheless! The most
     //  important quantity that relies on this is the Reynolds computed by
     //  the fluidStructurePair object
     fluid_.normalized() = fluid_/(1.0-structure_);
 
-    //- Set fluid characteristic dimension to structure hydraulic diameter.
+    //  Set fluid characteristic dimension to structure hydraulic diameter.
     //  This is handled by the fluidGeometry class in the twoPhase solver
     //  (as the fluid characteristic dimension will depend on the regime)
     //  so here I need to do it manually. Since I assume that the structure is
     //  immutable, this is done only once
     fluid_.Dh() = structure_.Dh();
 
-    //- Initialize fluid-intensive fluxes (i.e. that depend on the phase
+    //  Initialize fluid-intensive fluxes (i.e. that depend on the phase
     //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL
     //  volumetric flux in m3/s and the REAL mass flux in kg/s. By REAL I mean
     //  not superficial). This is done after the phaseFraction normalization
@@ -124,15 +124,15 @@ Foam::solvers::onePhase::onePhase
     //  alphaPhi, alphaRhoPhi fields were NOT found on disk
     fluid_.initAlphaPhis();
 
-    //- Initialize continuity errors. It's important to do it here or, if not
+    //  Initialize continuity errors. It's important to do it here or, if not
     //  solving for fluidMechanics, these would never get corrected
     correctContErr();
 
-    //- The total volumetric flux is the REAL fluid volumetric flux. Might
+    //  The total volumetric flux is the REAL fluid volumetric flux. Might
     //  as well remove phi_ entirely as a field, I know... Maybe in the future
     phi_ = fluid_.alphaPhi();
 
-    //- Compute initialFluidMass
+    //  Compute initialFluidMass
     initialFluidMass_ = fvc::domainIntegrate(fluid_.rho()*fluid_);
 
     Info << endl;
@@ -141,7 +141,7 @@ Foam::solvers::onePhase::onePhase
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-//- Solve according to flags
+//  Solve according to flags
 void Foam::solvers::onePhase::correctPhysics()
 {
 
@@ -195,7 +195,7 @@ void Foam::solvers::onePhase::correctFluidMechanics()
         #include "pEqn_1p.H"
     }
 
-    //- Continuity error adjustment and infos
+    //  Continuity error adjustment and infos
     correctContErr();
     printContErr();
     calcCumulContErr();

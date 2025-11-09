@@ -94,7 +94,7 @@ void Foam::myMULES::explicitSolve
         (
             rho.oldTime().field()*psi0*rDeltaT
           + Su.field()
-        //- this psiIf is NOT alpha. Note that psiIf was set to 0 and that
+        //  this psiIf is NOT alpha. Note that psiIf was set to 0 and that
         //  psiIf was used as a placeholder to store fvc::surfaceIntegrate(
         //  psiIf, phiPsi), which is the explicit evaluation of
         //  div(alpha_f*phi). So the psiIf in here IS div(alpha_f*phi). This is

@@ -75,7 +75,7 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         pimple,
         fvOptions
     ),
-    //- The structure model needs to be created before the fluids because
+    //  The structure model needs to be created before the fluids because
     //  the turbulence models created by the fluids might require a reference
     //  to the structure (obtained via objectRegistry lookup in the specific
     //  turbulence model class)
@@ -90,10 +90,10 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         (this->found("fluidProperties"))
     ?   this->subDict("fluidProperties") : *this,
         mesh,
-        word(""),   //- This is the phase name, setting it to "" signals a
+        word(""),   //  This is the phase name, setting it to "" signals a
                     //  onePhase solver to the rest of the FFS library
         this->powerDensityNeutronicsToLiquid_,
-        false       //- No need to read or write the fluid phaseFraction in
+        false       //  No need to read or write the fluid phaseFraction in
                     //  onePhase, it is tied to the structure phaseFraction
     ),
     FSPair_(fluid_, structure_, *this),
@@ -119,10 +119,10 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     fixedRho_.correctBoundaryConditions();
     rhok_.correctBoundaryConditions();
 
-    //- checking if the incompressible treatment is activated. In that case
-    //- the solver becomes a porous version of buoyantBoussinesqPIMPLFoam.
-    //- If this is activated, the only equation of state accepted is
-    //- rhoConst.
+    //  checking if the incompressible treatment is activated. In that case
+    //  the solver becomes a porous version of buoyantBoussinesqPIMPLFoam.
+    //  If this is activated, the only equation of state accepted is
+    //  rhoConst.
     dictionary phaseDict = fluid_.dict();
     incompressibleTreatment_ = bool
     (
@@ -132,8 +132,8 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     	)
     );
 
-    //- Checking if heRhoThermo has the correct equationOfState for the
-    //- current solver.
+    //  Checking if heRhoThermo has the correct equationOfState for the
+    //  current solver.
     dictionary thermoDict = fluid_.thermo().subDict("thermoType");
     if(incompressibleTreatment_
        and word(thermoDict.lookup("equationOfState")) != "rhoConst")
@@ -144,8 +144,8 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         e.exit(100);
     }
 
-    //- Reading reference temperature and thermal expansion coefficient
-    //- for the Boussinesq approximation
+    //  Reading reference temperature and thermal expansion coefficient
+    //  for the Boussinesq approximation
     dictionary eosDict = fluid_.thermo()
                          .subDict("mixture")
                          .subDict("equationOfState");
@@ -170,22 +170,22 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         )
     );
 
-    //- Create turbulence model
+    //  Create turbulence model
     fluid_.constructTurbulenceModel();
 
-    //- Set phase fraction fields (constant in time), structure has priority
+    //  Set phase fraction fields (constant in time), structure has priority
     fluid_.volScalarField::operator=(1.0-structure_);
 
-    //- The normalized field is non-trivial (i.e. different than 1) only in the
+    //  The normalized field is non-trivial (i.e. different than 1) only in the
     //  twoPhase solver. However, it is used by some models in the shared
     //  thermal-hydraulics library, so it should be set nonetheless! The most
     //  important quantity that relies on this is the Reynolds computed by
     //  the FSPair object
     fluid_.normalized() = fluid_/(1.0-structure_);
 
-    //- Calculating rhok value for boussinesq approximation if incompressible flow.
-    //- also, update thermo.tho() to make sure the neutronics solver has access to
-    //- the density feedback.
+    //  Calculating rhok value for boussinesq approximation if incompressible flow.
+    //  also, update thermo.tho() to make sure the neutronics solver has access to
+    //  the density feedback.
     if(incompressibleTreatment_)
     {
         rhok_ = 1.0 - beta_()*(fluid_.thermo().T() - Tref_());
@@ -194,14 +194,14 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         fluid_.thermo().rho().correctBoundaryConditions();
     }
 
-    //- Set fluid characteristic dimension to structure hydraulic diameter.
+    //  Set fluid characteristic dimension to structure hydraulic diameter.
     //  This is handled by the fluidGeometry class in the twoPhase solver
     //  (as the fluid characteristic dimension will depend on the regime)
     //  so here I need to do it manually. Since I assume that the structure is
     //  immutable, this is done only once
     fluid_.Dh() = structure_.Dh();
 
-    //- Initialize fluid-intensive fluxes (i.e. that depend on the phase
+    //  Initialize fluid-intensive fluxes (i.e. that depend on the phase
     //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL
     //  volumetric flux in m3/s and the REAL mass flux in kg/s. By REAL I mean
     //  not superficial). This is done after the phaseFraction normalization
@@ -209,14 +209,14 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
     //  alphaPhi, alphaRhoPhi fields were NOT found on disk
     fluid_.initAlphaPhis();
 
-    //- The total volumetric flux is the REAL fluid volumetric flux. Might
+    //  The total volumetric flux is the REAL fluid volumetric flux. Might
     //  as well remove phi_ entirely as a field, I know... Maybe in the future
     phi_ = fluid_.alphaPhi();
 
-    //- Compute initialFluidMass
+    //  Compute initialFluidMass
     initialFluidMass_ = fvc::domainIntegrate(fluid_.thermo().rho()*fluid_);
 
-    //- Setting up the initial Darcy velocity and flux
+    //  Setting up the initial Darcy velocity and flux
     UDarcy_.reset
     (
         new volVectorField
@@ -233,10 +233,10 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         )
     );
 
-    //- Making sure that the division of boundary conditions does not result in
-    //- a "calculated" boundary field. So we set the same boundary conditions as
-    //- the ones given for the real velocity. Exceptions are wedge and empty BCs,
-    //- because those are not touched.
+    //  Making sure that the division of boundary conditions does not result in
+    //  a "calculated" boundary field. So we set the same boundary conditions as
+    //  the ones given for the real velocity. Exceptions are wedge and empty BCs,
+    //  because those are not touched.
 
     forAll(fluid_.U().boundaryField(), bcInd)
     {
@@ -286,7 +286,7 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
         )
     );
 
-    //- Initialize continuity errors. It's important to do it here or, if not
+    //  Initialize continuity errors. It's important to do it here or, if not
     //  solving for fluidMechanics, these would never get corrected
     correctContErr();
 
@@ -296,7 +296,7 @@ Foam::thermalHydraulicsModels::onePhaseLegacy::onePhaseLegacy
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-//- Solve according to flags
+//  Solve according to flags
 void Foam::thermalHydraulicsModels::onePhaseLegacy::correct
 (
     scalar& residual,

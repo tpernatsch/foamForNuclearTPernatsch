@@ -376,12 +376,12 @@ Foam::fluid::fluid
         Info << endl << "Constructing fluid" << endl;
     }
 
-    //- Construct thermodynamics package
+    //  Construct thermodynamics package
     thermo_.reset(rhoThermo::New(mesh, this->name()));
 
     mesh.setFluxRequired(this->name());
 
-    //- Set initial cellZone powerDensity,
+    //  Set initial cellZone powerDensity,
     //  if no field already available in time folder
     if (dict_.found("initialPowerDensity"))
     {
@@ -423,7 +423,7 @@ Foam::fluid::fluid
         }
     }
 
-    //- Set initial cellZone phase fractions, if present
+    //  Set initial cellZone phase fractions, if present
     if (dict_.found("initialAlpha"))
     {
         const dictionary& alpha0s
@@ -461,7 +461,7 @@ Foam::fluid::fluid
 
     thermo_->validate(phaseName, "h", "e");
 
-    //- Set Boussinesq_ flag by reading thermophysicalProperties data and init
+    //  Set Boussinesq_ flag by reading thermophysicalProperties data and init
     //  rho0Ptr if using the Boussinesq approx
     List<char> delimiters(3);
     delimiters[0] = '<';
@@ -504,7 +504,7 @@ Foam::fluid::fluid
             );
     }
 
-    //- The rest of the constructor is only for correctly setting the
+    //  The rest of the constructor is only for correctly setting the
     //  boundary conditions of phi
     const word phiName = IOobject::groupName("phi", this->name());
 
@@ -587,7 +587,7 @@ Foam::fluid::fluid
         );
     }
 
-    //- What about alphaPhi, alphaRhoPhi? Well, these depend on the
+    //  What about alphaPhi, alphaRhoPhi? Well, these depend on the
     //  phase fraction (unlike phi) but at this step there have been no
     //  phase fractions normalizations (which can only be done by the main
     //  solver). Thus, rather than tentatively set the fields twice (here,
@@ -597,7 +597,7 @@ Foam::fluid::fluid
     //  alphaPhi and alphaRhoPhi are found on disk, those are read and that's
     //  the end of it
 
-    //- Init placeholder fields
+    //  Init placeholder fields
     kappa_ = thermo_->kappa();
     Cp_ = thermo_->Cp();
     mu_ = thermo_->mu();

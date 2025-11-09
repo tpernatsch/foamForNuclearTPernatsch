@@ -92,7 +92,7 @@ Foam::scalar Foam::FFHeatTransferCoefficientModels::Nusselt::value
     const label& celli
 ) const
 {
-    //- I am creating a scalar on return to (hopefully) force Return Value
+    //  I am creating a scalar on return to (hopefully) force Return Value
     //  Optimizations (RVOs, C++ performance stuff)
     scalar Dhi(max(Dh_[celli], 1e-4));
     if (B_ != 0)

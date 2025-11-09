@@ -84,14 +84,14 @@ int test_moleFraction(const scalar threshold)
 
     H2 H2_;
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> T{1500.0, 1500.0, 4000.0, 4000.0, 2500.0};
     std::vector<scalar> p{0.1, 100.0, 0.1, 100.0, 10.0};
     std::vector<scalar> x_Href{
         5.57e-5, 1.76e-6, 0.9634, 0.1473, 7.97e-3
     };
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < T.size(); i++)
@@ -101,7 +101,7 @@ int test_moleFraction(const scalar threshold)
         const scalar x_Href_i(x_Href[i]);
         const scalar x_H_i(H2_.x_H(p_i, T_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(x_H_i, x_Href_i));
         if (relErr > threshold)
         {
@@ -117,7 +117,7 @@ int test_moleFraction(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;
@@ -130,7 +130,7 @@ int test_rho(const scalar threshold)
 
     H2 H2_;
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> T{
         83.33334, 111.11112, 222.22224, 333.33336, 444.44448,
         555.5556, 833.3334, 1111.1112, 1388.889, 1666.6668,
@@ -222,7 +222,7 @@ int test_rho(const scalar threshold)
         2.203259081
     };
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < T.size(); i++)
@@ -232,7 +232,7 @@ int test_rho(const scalar threshold)
         const scalar rhoRef_i(rhoRef[i]);
         const scalar rho_i(H2_.rho(p_i, T_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(rho_i, rhoRef_i));
         if (relErr > threshold)
         {
@@ -248,7 +248,7 @@ int test_rho(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;
@@ -261,7 +261,7 @@ int test_Ha(const scalar threshold)
 
     H2 H2_;
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> T{
         83.33334, 111.11112, 222.22224, 333.33336, 444.44448,
         555.5556, 833.3334, 1111.1112, 1388.889, 1666.6668,
@@ -353,7 +353,7 @@ int test_Ha(const scalar threshold)
         56289200
     };
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < T.size(); i++)
@@ -363,7 +363,7 @@ int test_Ha(const scalar threshold)
         const scalar HaRef_i(HaRef[i]);
         const scalar Ha_i(H2_.Ha(p_i, T_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(Ha_i, HaRef_i));
         if (relErr > threshold)
         {
@@ -379,7 +379,7 @@ int test_Ha(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;
@@ -392,7 +392,7 @@ int test_D(const scalar threshold)
 
     H2 H2_;
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> T{
         1000, 1500, 2000, 2500, 3000, 3500
     };
@@ -403,7 +403,7 @@ int test_D(const scalar threshold)
         0.172, 0.363, 0.620, 0.942, 1.33, 1.78
     };
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < T.size(); i++)
@@ -413,7 +413,7 @@ int test_D(const scalar threshold)
         const scalar p_DRef_i(p_i*DRef[i]/100.0);
         const scalar p_D_i(p_i*H2_.D(p_i, T_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(p_D_i, p_DRef_i));
         if (relErr > threshold)
         {
@@ -429,7 +429,7 @@ int test_D(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;
@@ -442,7 +442,7 @@ int test_S(const scalar threshold)
 
     H2 H2_;
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> T{
         83.33334, 111.11112, 222.22224, 333.33336, 444.44448,
         555.5556, 833.3334, 1111.1112, 1388.889, 1666.6668,
@@ -527,7 +527,7 @@ int test_S(const scalar threshold)
         78556.9284, 80616.834, 82576.2564, 84531.492
     };
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < T.size(); i++)
@@ -537,7 +537,7 @@ int test_S(const scalar threshold)
         const scalar SRef_i(SRef[i]);
         const scalar S_i(H2_.S(p_i, T_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(S_i, SRef_i));
         if (relErr > threshold)
         {
@@ -553,7 +553,7 @@ int test_S(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     // Info << H2_.idealEntropyH(3.10264e+07, 3333.33) << endl;
@@ -571,7 +571,7 @@ int test_cv(const scalar threshold)
 
     H2 H2_;
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> T{
         90, 260, 280, 500, 800, 1200, 1600,
         90, 260, 280, 500, 800, 1200, 1600,
@@ -591,7 +591,7 @@ int test_cv(const scalar threshold)
         6.92e3, 10.02e3, 10.13e3, 10.4e3, 10.57e3, 11.24e3, 12.12e3
     };
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < T.size(); i++)
@@ -601,7 +601,7 @@ int test_cv(const scalar threshold)
         const scalar cvRef_i(cvRef[i]);
         const scalar cv_i(H2_.Cp(p_i, T_i) - H2_.CpMCv(p_i, T_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(cv_i, cvRef_i));
         if (relErr > threshold)
         {
@@ -617,7 +617,7 @@ int test_cv(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;
@@ -630,7 +630,7 @@ int test_cp(const scalar threshold)
 
     H2 H2_;
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> T{
         90, 260, 280, 500, 800, 1200, 1600, 2000, 2500, 3000,
         90, 260, 280, 500, 800, 1200, 1600, 2000, 2500, 3000,
@@ -650,7 +650,7 @@ int test_cp(const scalar threshold)
         12.44e3, 14.26e3, 14.35e3, 14.54e3, 14.70e3, 15.37e3, 16.25e3, 17.21e3, 17.80e3, 18.39e3
     };
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < T.size(); i++)
@@ -660,7 +660,7 @@ int test_cp(const scalar threshold)
         const scalar cpRef_i(cpRef[i]);
         const scalar cp_i(H2_.Cp(p_i, T_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(cp_i, cpRef_i));
         if (relErr > threshold)
         {
@@ -676,7 +676,7 @@ int test_cp(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;
@@ -690,7 +690,7 @@ int test_mu(const scalar threshold)
 
     H2 H2_;
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> T{
         83.33334, 111.11112, 222.22224, 333.33336, 444.44448,
         555.5556, 833.3334, 1111.1112, 1388.889, 1666.6668,
@@ -782,7 +782,7 @@ int test_mu(const scalar threshold)
         3.85417E-05
     };
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nWarning(0);
     int nCorrect(0);
@@ -793,7 +793,7 @@ int test_mu(const scalar threshold)
         const scalar muRef_i(muRef[i]);
         const scalar mu_i(H2_.mu(p_i, T_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(mu_i, muRef_i));
         if (0.9 >= relErr && relErr > threshold)
         {
@@ -823,7 +823,7 @@ int test_mu(const scalar threshold)
         Info << endl;
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;

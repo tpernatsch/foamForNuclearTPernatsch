@@ -115,10 +115,10 @@ Foam::virtualMass::virtualMass
 
 void Foam::virtualMass::correct()
 {
-    //- Store Vm in alphaRhoVm_
+    //  Store Vm in alphaRhoVm_
     VmPtr_->correctField(Vm_);
 
-    //- Actually update alphaRhoVm
+    //  Actually update alphaRhoVm
     bool virtualMassUsesMixtureDensity
     (
         pair_.pimple().dict().lookupOrDefault<bool>
@@ -137,7 +137,7 @@ void Foam::virtualMass::correct()
     else
         alphaRhoVm *= pair_.rhoContinuous();
 
-    //-
+    // 
     VmForces_[U1_.name()] =
         alphaRhoVm*
         (

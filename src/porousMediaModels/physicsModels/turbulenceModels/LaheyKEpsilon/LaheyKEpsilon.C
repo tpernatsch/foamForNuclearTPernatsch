@@ -223,7 +223,7 @@ const
     const volScalarField& l(liquid());
     const volScalarField& g(gas());
 
-    //- Compute Cd from Kd, cell-by-cell as it's faster (I don't really care
+    //  Compute Cd from Kd, cell-by-cell as it's faster (I don't really care
     //  about BCs)
     forAll(Cd, i)
     {

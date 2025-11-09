@@ -148,7 +148,7 @@ void Foam::powerModels::fixedTemperature::temperatureUpdate() const
     {
         word region(this->toc()[regioni]);
 
-        //- Setup cellToRegion_ mapping
+        //  Setup cellToRegion_ mapping
         const labelList& regionCells
         (
             structure_.cellLists()[region]
@@ -208,7 +208,7 @@ void Foam::powerModels::fixedTemperature::correctT(volScalarField& T) const
 
 void Foam::powerModels::fixedTemperature::powerOff()
 {
-    //- If you set iA to 0, the energy contribution from this powerModel to the
+    //  If you set iA to 0, the energy contribution from this powerModel to the
     //  fluid energy equation will be 0, equivalent to a "power" off scenario
     iA_ *= 0.0;
 }

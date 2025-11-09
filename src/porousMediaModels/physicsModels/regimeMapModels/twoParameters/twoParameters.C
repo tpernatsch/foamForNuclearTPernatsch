@@ -120,7 +120,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
     interpolationWidth_(this->get<scalar>("interpolationWidth")),
     interpolate_(interpolationWidth_ != 0.0)
 {
-    //- Read regimePoints and insert them in the points_ hashTable
+    //  Read regimePoints and insert them in the points_ hashTable
     forAllIter
     (
         dictionary,
@@ -139,7 +139,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
         );
     }
 
-    //- Construct regimeDomains, regimeNameToLabel, regimeLabelToName
+    //  Construct regimeDomains, regimeNameToLabel, regimeLabelToName
     label id(0);
     forAllIter
     (
@@ -169,7 +169,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
         id += 1;
     }
 
-    //- Set regime boundaries owners and neighbours, flag regime boundaries
+    //  Set regime boundaries owners and neighbours, flag regime boundaries
     //  that are internal, for each domain (i.e. shared by two domains). The
     //  latter are only used for interpolation purposes
     forAllIter
@@ -210,7 +210,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
         d0.setInternalBoundaries();
     }
 
-    //- Debug & development Infos
+    //  Debug & development Infos
     forAllIter
     (
         regimeDomainTable,
@@ -238,7 +238,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
         }
     }
 
-    //- Calculate scale factor to normalize regime extent in parameter space.
+    //  Calculate scale factor to normalize regime extent in parameter space.
     //  This gives meaning to the concept of "distance" of a point in parameter
     //  space to a line segment (i.e. regime boundary) in the same parameter
     //  space, which is used for interpolation purposes
@@ -265,7 +265,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
     DX_ = maxX-minX;
     DY_ = maxY-minY;
 
-    //- Normalize all points with respect to the width of the domains
+    //  Normalize all points with respect to the width of the domains
     //  in the space of each parameter (x is parameter1, y is parameter2)
     forAllIter
     (
@@ -279,7 +279,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
         p[1] /= DY_;
     }
 
-    //- Re-calculate regime boundary members
+    //  Re-calculate regime boundary members
     forAllIter
     (
         regimeDomainTable,
@@ -294,7 +294,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
         }
     }
 
-    //- Init regimeLabelCoeffs
+    //  Init regimeLabelCoeffs
     regimeLabelCoeffs_ = DynamicList<DynamicList<Tuple2<label,scalar>>>
     (
         mesh_.cells().size()
@@ -308,7 +308,7 @@ Foam::regimeMapModels::twoParameters::twoParameters
 
 void Foam::regimeMapModels::twoParameters::correct()
 {
-    //- Lookup parameter field ptrs if not set
+    //  Lookup parameter field ptrs if not set
     if (parameter1Ptr_ == nullptr)
     {
         parameter1Ptr_ =
@@ -324,22 +324,22 @@ void Foam::regimeMapModels::twoParameters::correct()
 
     int N(mesh_.cells().size());
 
-    //- Loop over all mesh cell labels
+    //  Loop over all mesh cell labels
     for (int i=0; i < N; i++)
     {
-        //- Reset regimeLabelCoeffs for the i-th mesh cell
+        //  Reset regimeLabelCoeffs for the i-th mesh cell
         DynamicList<Tuple2<label,scalar>>& regimeLabelCoeffsi
         (
             regimeLabelCoeffs_[i]
         );
         regimeLabelCoeffsi = DynamicList<Tuple2<label,scalar>>(0);
 
-        //- Value of the tuple parameter1-parameter2 which is used to determine
+        //  Value of the tuple parameter1-parameter2 which is used to determine
         //  the existing regime in the i-th mesh cell (normalized so distances
         //  make sense for the purposes of interpolation)
         Vector2D<scalar> p(x[i]/DX_, y[i]/DY_);
 
-        //- Find the regime the point belongs to
+        //  Find the regime the point belongs to
         const regimeDomain2D* regimePtr = nullptr;
         forAllConstIter
         (
@@ -348,7 +348,7 @@ void Foam::regimeMapModels::twoParameters::correct()
             iter
         )
         {
-            //- I recall that regimeLabelCoeffs_ is a list of tuples of each
+            //  I recall that regimeLabelCoeffs_ is a list of tuples of each
             //  mesh cell, wherein for each cell, the tuple consists of the ID
             //  of the regime that exists in said cell (first tuple element)
             //  and the coefficient weighting the contribution of said regime
@@ -366,7 +366,7 @@ void Foam::regimeMapModels::twoParameters::correct()
                 break;
             }
         }
-        if (regimePtr != nullptr) //- Set regimeLabelCoeffs
+        if (regimePtr != nullptr) //  Set regimeLabelCoeffs
         {
             if (interpolate_)
             {
@@ -377,7 +377,7 @@ void Foam::regimeMapModels::twoParameters::correct()
                 );
                 if (internalBoundaryPtrs.size() != 0)
                 {
-                    //- In theory, a starting max distance of sqrt(2) should
+                    //  In theory, a starting max distance of sqrt(2) should
                     //  be sufficient as these distances are in the normalized
                     //  domain, whose range for both parameters is [0, 1] (so
                     //  the max possible distance is between (0,0) and (1,1)).
@@ -398,7 +398,7 @@ void Foam::regimeMapModels::twoParameters::correct()
                         }
                     }
 
-                    //- The coefficient is calculated so that, at the boundary,
+                    //  The coefficient is calculated so that, at the boundary,
                     //  distance = 0 and c = 0.5, regardless of the
                     //  interpolation type
                     scalar d(distance/interpolationWidth_);
@@ -426,12 +426,12 @@ void Foam::regimeMapModels::twoParameters::correct()
                     }
                 }
             }
-            //- Debug & development infos
+            //  Debug & development infos
 
             //Info<< i << ", (" << x[i] << " " << y[i] << ") => " << p << ", "
             //    << regimePtr->id() << ", " << regimeLabelCoeffsi << endl;
         }
-        else //- Point is outside regime map bounds, throw an error
+        else //  Point is outside regime map bounds, throw an error
         {
             FatalErrorInFunction
                 << "Point (" << x[i] << ", " << y[i] << ") in parameter space "

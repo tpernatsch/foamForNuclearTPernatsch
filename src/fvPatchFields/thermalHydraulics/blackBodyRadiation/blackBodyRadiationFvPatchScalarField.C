@@ -133,27 +133,27 @@ void Foam::blackBodyRadiationFvPatchScalarField::updateCoeffs()
         return;
     }
 
-    //- Current patch temperature
+    //  Current patch temperature
     scalarField Tp(*this);
 
-    //- Internal field
+    //  Internal field
     const scalarField Ti(patchInternalField());
 
-    //- Inverse cell to patch face distances
+    //  Inverse cell to patch face distances
     const scalarField invD = patch().deltaCoeffs();
 
     // Stefan-Boltzmann constant
     const scalar sigma_(constant::physicoChemical::sigma.value());
 
-    //- Loop over all the faces of the boundary patch
+    //  Loop over all the faces of the boundary patch
     forAll(patch(), i)
     {
         if (Ti[i] > 0)
         {
-            //- Compute Fourier heat flux
+            //  Compute Fourier heat flux
             const scalar q = Foam::mag(-kappa_ * (Tp[i] - Ti[i]) * invD[i]);
 
-            //- Compute outer cladding or metal/oxide interface temperature
+            //  Compute outer cladding or metal/oxide interface temperature
             Tp[i] = Foam::pow(
                 q/(sigma_ * emissivity_) + Foam::pow4(Ta_),
                 1.0/4.0

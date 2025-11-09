@@ -131,7 +131,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::NusseltWallAndHfromFMU::valu
     const scalar H_fromFMU =
         data.getObj<scalar>(HNameFromFMU_,commDataLayer::causality::in);
 
-    //- I am creating a scalar on return to (hopefully) force Return Value
+    //  I am creating a scalar on return to (hopefully) force Return Value
     //  Optimizations (RVOs, C++ performance stuff)
     scalar H_fluid;
     if (B_ != 0)

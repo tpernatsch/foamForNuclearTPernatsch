@@ -51,7 +51,7 @@ Foam::autoPtr<Foam::FSDragCoefficientModel> Foam::FSDragCoefficientModel::New
 {
     word type(dict.get<word>("type"));
 
-    //- Set fluidName to "fluid" if the fluid has no name (just for Info
+    //  Set fluidName to "fluid" if the fluid has no name (just for Info
     //  cleanliness when using the monoPhase solver)
     word fluidName(pair.fluidName() == "" ? "fluid" : pair.fluidName());
 

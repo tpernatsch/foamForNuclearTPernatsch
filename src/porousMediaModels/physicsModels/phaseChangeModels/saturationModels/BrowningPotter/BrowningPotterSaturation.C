@@ -103,7 +103,7 @@ Foam::scalar Foam::saturationModels::BrowningPotter::valueLnPSat
 ) const
 {
     const scalar& T(iT_[celli]);
-    //- The + log(1e6) is to have p in Pa rather than MPa
+    //  The + log(1e6) is to have p in Pa rather than MPa
     return
         (11.9463 - 12633.37/T - 0.4672*log(T)) + log(1e6);
 }

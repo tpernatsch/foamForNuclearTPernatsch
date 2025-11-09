@@ -81,7 +81,7 @@ Foam::scalar Foam::twoPhaseDragMultiplierModels::LottesFlinnNguyen::phi2
     const label& celli
 ) const
 {
-    //- If it is "almost" single-phase flow, return 1.0
+    //  If it is "almost" single-phase flow, return 1.0
     return
         (mFluidPtr_->normalized()[celli] > 0.999) ?
         1.0 :

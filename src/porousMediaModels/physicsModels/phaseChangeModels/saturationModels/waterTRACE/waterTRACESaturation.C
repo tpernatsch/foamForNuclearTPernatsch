@@ -210,7 +210,7 @@ Foam::scalar Foam::saturationModels::waterTRACE::valueTSat
     //Info << "Tsat Interpolation NIST --" << TsRAD << endl;
     */
 
-    //-------------------------------------------------------------//
+    // ------------------------------------------------------------//
 
     // ----- TRACE Version - different formulas according to pressure ----- //
 

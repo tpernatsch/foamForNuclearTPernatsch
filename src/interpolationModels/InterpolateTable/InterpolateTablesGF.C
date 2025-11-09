@@ -76,7 +76,7 @@ scalar scalarInterpolateTableGF::integral(scalar k) const
 }
 
 
-//- Explicit class instantiations
+//  Explicit class instantiations
 template class InterpolateTableGF<scalarField, scalar, scalar>;
 template class InterpolateTableGF
             <FieldField<Field, scalar>, scalarField,tmp<scalarField> >;

@@ -91,11 +91,11 @@ int test_PHSRBFlin1D(const scalar threshold)
 
     scalarList weights = solvePolyharmonicSpline(posList, values, invRBFmatrix);
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> xRef{0.1, 1.0, 2.0, 3.0};
     std::vector<scalar> yRef{1, 10.0, 20.0, 30.0};
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < xRef.size(); i++)
@@ -105,7 +105,7 @@ int test_PHSRBFlin1D(const scalar threshold)
         const scalar y_i(yRef[i]);
         const scalar y_e(polyharmonicSpline(weights, posList, x_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(y_i, y_e));
         if (relErr > threshold)
         {
@@ -124,7 +124,7 @@ int test_PHSRBFlin1D(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;
@@ -153,12 +153,12 @@ int test_PHSRBFlin2D(const scalar threshold)
 
     scalarList weights = solvePolyharmonicSpline(posList, values, invRBFmatrix);
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> xRef{ 1.0,  1.0,  2.0,  1.0,  2.0};
     std::vector<scalar> yRef{ 2.0,  4.0,  2.0,  8.0,  4.0};
     std::vector<scalar> zRef{10.0, 20.0, 40.0, 40.0, 50.0};
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < xRef.size(); i++)
@@ -169,7 +169,7 @@ int test_PHSRBFlin2D(const scalar threshold)
         const scalar z_i(zRef[i]);
         const scalar z_e(polyharmonicSpline(weights, posList, xy_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(z_i, z_e));
         if (relErr > threshold)
         {
@@ -188,7 +188,7 @@ int test_PHSRBFlin2D(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;
@@ -253,12 +253,12 @@ int test_PHSRBFlin2DSmallValues(const scalar threshold)
 
     scalarList weights = solvePolyharmonicSpline(posList, values, invRBFmatrix);
 
-    //- Reference values
+    //  Reference values
     std::vector<scalar> xRef{301.0, 350.0};
     std::vector<scalar> yRef{600.0, 950.0};
     std::vector<scalar> zRef{8.745962599638433e-12, 9.001298609220322e-12};
 
-    //- Loop over the tests
+    //  Loop over the tests
     int nFailed(0);
     int nCorrect(0);
     for (size_t i = 0; i < xRef.size(); i++)
@@ -269,7 +269,7 @@ int test_PHSRBFlin2DSmallValues(const scalar threshold)
         const scalar z_i(zRef[i]);
         const scalar z_e(polyharmonicSpline(weights, posList, xy_i));
 
-        //- Relative error test
+        //  Relative error test
         const scalar relErr(relativeError(z_i, z_e));
         if (relErr > threshold)
         {
@@ -288,7 +288,7 @@ int test_PHSRBFlin2DSmallValues(const scalar threshold)
         }
     }
 
-    //- Resume all tests
+    //  Resume all tests
     printSummary(nFailed, nCorrect);
 
     return nFailed;

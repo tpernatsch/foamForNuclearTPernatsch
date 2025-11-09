@@ -94,7 +94,7 @@ bool Foam::functionObjects::stopIfMaxFieldDiff::execute()
 
 bool Foam::functionObjects::stopIfMaxFieldDiff::write()
 {
-    //- Set pointers
+    //  Set pointers
     if (field1Ptr_ == nullptr)
     {
         field1Ptr_ = &mesh_.lookupObject<volScalarField>(field1Name_);
@@ -106,7 +106,7 @@ bool Foam::functionObjects::stopIfMaxFieldDiff::write()
     const volScalarField& field1(*field1Ptr_);
     const volScalarField& field2(*field2Ptr_);
 
-    //- Check
+    //  Check
     if (max(field1-field2).value() > 0.0)
     {
         Log << "    Terminated by " << type() << " " << name() << " at time = "

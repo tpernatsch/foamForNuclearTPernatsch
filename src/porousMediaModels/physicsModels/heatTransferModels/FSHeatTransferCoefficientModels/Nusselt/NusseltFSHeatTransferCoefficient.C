@@ -95,11 +95,11 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Nusselt::value
     const label& celli
 ) const
 {
-    //- I am creating a scalar on return to (hopefully) force Return Value
+    //  I am creating a scalar on return to (hopefully) force Return Value
     //  Optimizations (RVOs, C++ performance stuff)
     if (B_ != 0)
     {
-        //- Compute wall/fluid temperature ratio if asked and if structure
+        //  Compute wall/fluid temperature ratio if asked and if structure
         //  exists
         scalar Tratio(1.0);
         if (E_ != 0.0 && Twall_[celli] > 0.0)

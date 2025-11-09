@@ -109,7 +109,7 @@ Foam::powerModel::powerModel
         zeroGradientFvPatchScalarField::typeName
     )
 {
-    //- Set the fundamental properties that define a powerModel, its
+    //  Set the fundamental properties that define a powerModel, its
     //  interfacial area and its volume fraction (alpha). This might be, in
     //  principle, different than the volume fraction of the regions over which
     //  the powerModel is defined. If a volumeFraction keyword is found within

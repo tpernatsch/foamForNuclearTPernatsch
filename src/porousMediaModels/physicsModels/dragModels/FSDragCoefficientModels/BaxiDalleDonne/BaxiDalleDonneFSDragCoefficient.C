@@ -80,7 +80,7 @@ Foam::FSDragCoefficientModels::BaxiDalleDonne::BaxiDalleDonne
     scalar Dw(dict.get<scalar>("wireDiameter"));
     scalar H(dict.get<scalar>("wireLeadLen"));
     scalar Pt(Dp+1.0444*Dw);
-    A_ = (80.0/sqrt(100*H))*pow(Pt/Dp, 1.5); //- H provided in m but needs to
+    A_ = (80.0/sqrt(100*H))*pow(Pt/Dp, 1.5); //  H provided in m but needs to
                                              //  be in cm
     B_ = 1.034/pow(Pt/Dp, 0.124);
     C_ = 29.7*pow(Pt/Dp, 6.9)/pow(H/(Dp+Dw), 2.239);
@@ -94,7 +94,7 @@ Foam::scalar Foam::FSDragCoefficientModels::BaxiDalleDonne::value
 ) const
 {
     const scalar& Rei(Re(celli));
-    scalar fl(A_/Rei);  //- There should be a *pow(Twall/Tbulk, 1.5), but I am
+    scalar fl(A_/Rei);  //  There should be a *pow(Twall/Tbulk, 1.5), but I am
                         //  lazy now (plus, what about cases where I do not
                         //  solve for energy? I could handle this with some
                         //  flags and ifs)

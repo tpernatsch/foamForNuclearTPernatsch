@@ -89,7 +89,7 @@ Foam::FSDragFactor::FSDragFactor
     validY_(false),
     validZ_(false)
 {
-    //- Set cells_ in which this model exists. This is done based on the
+    //  Set cells_ in which this model exists. This is done based on the
     //  regions in which this model is defined, with the region names being
     //  in the dict name
     wordList regions(myOps::split<word>(dict.dictName(), ':'));

@@ -129,7 +129,7 @@ Foam::powerModels::fixedPower::fixedPower
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
 
-        //- Setup cellToRegion_ mapping
+        //  Setup cellToRegion_ mapping
         const labelList& regionCells
         (
             structure_.cellLists()[region]
@@ -177,7 +177,7 @@ Foam::powerModels::fixedPower::fixedPower
         }
     }
 
-    //- The alphaRhoCp is read as a rhoCp, alpha is multiplied at this step
+    //  The alphaRhoCp is read as a rhoCp, alpha is multiplied at this step
     alphaRhoCp_ =
         max
         (
@@ -204,7 +204,7 @@ void Foam::powerModels::fixedPower::correctT(volScalarField& T) const
         label celli(cellList_[i]);
         T[celli] = T_[celli];
     }
-    //- Correct boundary conditions called on T in structure.C after it has
+    //  Correct boundary conditions called on T in structure.C after it has
     //  been set, cell-by-cell, by all powerModels
 }
 
@@ -220,7 +220,7 @@ void Foam::powerModels::fixedPower::powerUpdate()
     {
         word region(this->toc()[regioni]);
 
-        //- Setup cellToRegion_ mapping
+        //  Setup cellToRegion_ mapping
         const labelList& regionCells
         (
             structure_.cellLists()[region]

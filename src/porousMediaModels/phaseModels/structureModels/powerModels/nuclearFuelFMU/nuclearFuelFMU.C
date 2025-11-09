@@ -356,7 +356,7 @@ Foam::powerModels::nuclearFuelFMU::nuclearFuelFMU
             }
         }
 
-        //- Add to regionIndexToRegionName_ mapping
+        //  Add to regionIndexToRegionName_ mapping
         regionIndexToRegionName_.append(region);
 
         // Set default values from phaseProperties
@@ -1700,7 +1700,7 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs
         oldHtc_[regioni][nameI] = htcToFMUtemp;
         oldProfilePowerDensity_[regioni][nameI] = axialProfilePowerDensityToFMUtemp;
 
-        //- Write FMI state
+        //  Write FMI state
         if (mesh_.time().writeTime())
         {
             if (!TstructNameToFMU.empty())
@@ -1745,7 +1745,7 @@ void Foam::powerModels::nuclearFuelFMU::correctInputsForFMUs
 void Foam::powerModels::nuclearFuelFMU::correctT(volScalarField& T) const
 {
     Info<< "Correct T nuclearFuelFMU" << endl;
-    //- Set T to surface temperature
+    //  Set T to surface temperature
     forAll(cellList_, i)
     {
         label celli(cellList_[i]);

@@ -233,7 +233,7 @@ Foam::solvers::compressibleInterFoam::compressibleInterFoam
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-//- Solve according to flags
+//  Solve according to flags
 void Foam::solvers::compressibleInterFoam::correctPhysics()
 {
         // --- Pressure-velocity PIMPLE corrector loop

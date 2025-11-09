@@ -171,7 +171,7 @@ Foam::phaseChangeModel::phaseChangeModel
     residualIACells_(0),
     dmLostToLimiter_(0)
 {
-    //-
+    // 
     if
     (
         !(fluid1_.isLiquid() and fluid2_.isGas())
@@ -186,7 +186,7 @@ Foam::phaseChangeModel::phaseChangeModel
             << exit(FatalError);
     }
 
-    //- Set initial interfacial temperature (to avoid problems with the
+    //  Set initial interfacial temperature (to avoid problems with the
     //  under-relaxation at the first time-step in EEqns.H
     IOobject iTHeader
     (
@@ -200,10 +200,10 @@ Foam::phaseChangeModel::phaseChangeModel
         saturationPtr_->correctField(iT_, "TSat");
     }
 
-    //-
+    // 
     latentHeatPtr_->correctField(L_);
 
-    //- Read residualIACells from cellZones
+    //  Read residualIACells from cellZones
     wordList residualIARegions
     (
         this->lookupOrDefault<wordList>
@@ -224,7 +224,7 @@ Foam::phaseChangeModel::phaseChangeModel
         }
     }
 
-    //- It is dimPower instead of dimPower/dimVolume as the fvScalarMatrix
+    //  It is dimPower instead of dimPower/dimVolume as the fvScalarMatrix
     //  expects objects that are either already integrated over the volume
     //  (e.g. what the fvm::Su, SuSp, etc. return) or objects that are not
     //  already volume integrated, yet whose dimensions are equal to the
@@ -270,7 +270,7 @@ void Foam::phaseChangeModel::limitInterfacialArea()
 
 void Foam::phaseChangeModel::limitMassTransfer()
 {
-    //- Prevent removing mass from phases that are not present in a cell
+    //  Prevent removing mass from phases that are not present in a cell
     dmdt_ = posPart(dmdt_)*pos(fluid1_) + negPart(dmdt_)*pos(fluid2_);
 
     /*
@@ -381,31 +381,31 @@ void Foam::phaseChangeModel::correctInterfacialTemperature()
 
 void Foam::phaseChangeModel::correct()
 {
-    //- Limit interfacial area so boiling can start
+    //  Limit interfacial area so boiling can start
     //  (very crude, it's the best I have for now)
     limitInterfacialArea();
 
-    //- Update saturation temperature
+    //  Update saturation temperature
     correctInterfacialTemperature();
 
-    //- Update latent heat
+    //  Update latent heat
     myOps::storePrevIterIfRelax(L_);
     latentHeatPtr_->correctField(L_);
     L_.relax();
 
-    //- Calculate dmdtI <- depends on the actual run-time selected phaseChange
+    //  Calculate dmdtI <- depends on the actual run-time selected phaseChange
     //  model
     correctInterfacialDmdt();
 
-    //- Update total dmdt and relax
+    //  Update total dmdt and relax
     dmdt_.storePrevIter();
     dmdt_ = dmdtI_ + dmdtW_;
     limitMassTransfer();
     dmdt_.relax();
 
-    //- The rest of this function is to set heSources_ in an
+    //  The rest of this function is to set heSources_ in an
     //  energy-conservative way
-    //- Refs and fields
+    //  Refs and fields
     const volScalarField& he1(fluid1_.thermo().he());
     const volScalarField& he2(fluid2_.thermo().he());
     const volScalarField& T1(fluid1_.thermo().T());
@@ -442,7 +442,7 @@ void Foam::phaseChangeModel::correct()
         zeroGradientFvPatchScalarField::typeName
     );
 
-    //- Fraction of total dmdt that is due to wall boiling (can be negative,
+    //  Fraction of total dmdt that is due to wall boiling (can be negative,
     //  e.g. vapour at saturation but sub-cooled boiling implies that dmdtI
     //  and dmdt (=dmdtI+dmdtW) have opposing signs)
     scalarField fw(mesh_.cells().size(), 0.0);
@@ -456,7 +456,7 @@ void Foam::phaseChangeModel::correct()
         }
     }
 
-    //- The htcs are set to 0 in the phase-change region and the mass
+    //  The htcs are set to 0 in the phase-change region and the mass
     //  transfer enthalpy contribution are accounted for via a SuSp(c, he) term
     //  for both phases. The next for loop is used to calculate these terms.
     //  Nonetheless, for visual purposes, I still want the htcs to have their
@@ -487,7 +487,7 @@ void Foam::phaseChangeModel::correct()
             scalar q1i(iAi*htc1i*(T1[i]-iTi));
             scalar q2i(iAi*htc2i*(T2[i]-iTi));
 
-            //- Interfacial contribution
+            //  Interfacial contribution
             /*
                 Nothing guarantees that the computed dmdtI
                 already satisfies energy conservation in the sense that
@@ -521,13 +521,13 @@ void Foam::phaseChangeModel::correct()
             c1i = (dmdtILi-f*q2i)/he1i;
             c2i = (dmdtILi-f*q1i)/he2i;
 
-            //- Wall contribution
+            //  Wall contribution
             if (dmdtWi > 0.0)
                 c1i += (dmdtWi*Li)/he1i;
             else if (dmdtWi < 0.0)
                 c2i += (dmdtWi*Li)/he2i;
 
-            //- Set htcs to 0 so that the interfacial contribtuion is not
+            //  Set htcs to 0 so that the interfacial contribtuion is not
             //  counted twice (added in FFPair.C) in cells that are boiling
             htc1i = 0;
             htc2i = 0;
@@ -536,7 +536,7 @@ void Foam::phaseChangeModel::correct()
 
     /*-----------------------------------------------------------------------*/
 
-    //- This is longer to write but faster than using posPart/negPart
+    //  This is longer to write but faster than using posPart/negPart
     //  because I do not care about boundary values
     volScalarField dmdt12
     (
@@ -573,7 +573,7 @@ void Foam::phaseChangeModel::correct()
     dmdt12.correctBoundaryConditions();
     dmdt21.correctBoundaryConditions();
 
-    //- If phase 1 gains enthalpy from the disappearance of phase 2 (e.g. if
+    //  If phase 1 gains enthalpy from the disappearance of phase 2 (e.g. if
     //  phase 1 is liquid, 2 is vapour and the vapour is condensing) then the
     //  enthalpy added to phase 1 is at saturation (i.e. the interfacial
     //  enthalpy, he1I). If phase 1 loses enthalpy from its own disappearance
@@ -585,19 +585,19 @@ void Foam::phaseChangeModel::correct()
     //  is applied to the he source of phase 2. It works regardless of which
     //  phase is liquid and which phase is vapour
     *(heSources_[he1.name()]) =
-        fvm::SuSp(c1, he1)      //- Contrib. from interf. and wall mass transf.
-    +   fvm::Sp(dmdt12, he1)    //- Contrib. from intrinsic phase change (imp.)
-    -   dmdt21*he1I;            //- Contrib. from intrinsic phase change (exp.)
+        fvm::SuSp(c1, he1)      //  Contrib. from interf. and wall mass transf.
+    +   fvm::Sp(dmdt12, he1)    //  Contrib. from intrinsic phase change (imp.)
+    -   dmdt21*he1I;            //  Contrib. from intrinsic phase change (exp.)
     *(heSources_[he2.name()]) =
         fvm::SuSp(c2, he2)
     +   fvm::Sp(dmdt21, he2)
     -   dmdt12*he2I;
 
-    //- Store prev iters for under-relaxation (at the next iteration)
+    //  Store prev iters for under-relaxation (at the next iteration)
     dmdtI_.storePrevIter();
     dmdtW_.storePrevIter();
 
-    //- Reset wall contribution (it is computed by some
+    //  Reset wall contribution (it is computed by some
     //  FSHeatTransferCoefficient models but due to how said models work, it
     //  cannot be reset from within them)
     forAll(mesh_.cells(), i)

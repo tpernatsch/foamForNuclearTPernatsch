@@ -433,7 +433,7 @@ const
     const volScalarField& l(liquid());
     const volScalarField& g(gas());
 
-    //- Compute Cd from Kd, cell-by-cell as it's faster (I don't really care
+    //  Compute Cd from Kd, cell-by-cell as it's faster (I don't really care
     //  about BCs)
     forAll(Cd, i)
     {
@@ -574,7 +574,7 @@ tmp<volScalarField> mixtureKEpsilon<BasicTurbulenceModel>::bubbleG() const
     tmp<volScalarField> bubbleG
     (
         Cp_*
-        //- Differs from the Lahey model as it has this extra term (which also
+        //  Differs from the Lahey model as it has this extra term (which also
         //  makes them dimensionally different, but hey, I didn't come up
         //  with this, just porting stuff over to FFSEulerFoam)
         //   |
@@ -613,7 +613,7 @@ void mixtureKEpsilon<BasicTurbulenceModel>::correct()
     // Only solve the mixture turbulence for the gas-phase
     if (!isGas_)
     {
-        //- The consistency check is now done for both phases at every call
+        //  The consistency check is now done for both phases at every call
         //  of initMixtureFields, no need to do it here too
         return;
     }
@@ -626,7 +626,7 @@ void mixtureKEpsilon<BasicTurbulenceModel>::correct()
     // Initialise the mixture fields if they have not yet been constructed
     initMixtureFields();
 
-    //- Note: I could modify all this to comply with the new structure
+    //  Note: I could modify all this to comply with the new structure
     //  (i.e. using gas() and liquid() for more symmetry and code clarity)
     //  but there is no practical need to and I'd only risk breaking things,
     //  so I won't
@@ -640,7 +640,7 @@ void mixtureKEpsilon<BasicTurbulenceModel>::correct()
     volScalarField& nutg = this->nut_;
 
     // Local references to liquid-phase properties
-    //- This is a werid way of getting a ref to liquid().turbulence(). Why
+    //  This is a werid way of getting a ref to liquid().turbulence(). Why
     //  so? First, I need it non-const accessible, so I need const_case.
     //  Secondly, I cannot just cast liquid().turbulence() as the casting
     //  fails, so I look for the turbulence model in the mesh registry as

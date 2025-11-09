@@ -42,7 +42,7 @@ License
 #include "fvcDiv.H"
 #include "myOps.H"
 
-//- From forward declarations in structureModel.C
+//  From forward declarations in structureModel.C
 #include "fluid.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
@@ -78,7 +78,7 @@ Foam::structureModels::byZone::byZone
 {
     bool foundAtLeastOnePassivePropertiesDict(false);
 
-    //- Correct header class names. This is necessary for all volScalarField
+    //  Correct header class names. This is necessary for all volScalarField
     //  of the structure that are read/written from disk, as, for whatever
     //  reason I can't figure out, their class header defaults to "byZone"
     //  instead of "volScalarField". This can mess up field reading.
@@ -91,7 +91,7 @@ Foam::structureModels::byZone::byZone
     this->IOobject::headerClassName() = "volScalarField";
     this->volScalarField::headerClassName() = "volScalarField";
 
-    //- At least it worked for this field
+    //  At least it worked for this field
     Tpas_.headerClassName() = "volScalarField";
 
     bool alphaHeaderOk(this->typeHeaderOk<volScalarField>(true));
@@ -99,7 +99,7 @@ Foam::structureModels::byZone::byZone
 
     forAll(dict.toc(), i)
     {
-        //- The sturctureProperties dictionary keys consist in cellZone names.
+        //  The sturctureProperties dictionary keys consist in cellZone names.
         //  These keys can consist in either the name of a single cellZone, or
         //  for brevitiy, multplie cellZone names in a single string (e.g. if
         //  multiple cellZones share the same structure properties, e.g.
@@ -119,7 +119,7 @@ Foam::structureModels::byZone::byZone
             word zone(zones[i]);
             const labelList& zoneCellList(mesh.cellZones()[zone]);
 
-            //- Construct cellLists_, cells_, cellFields_
+            //  Construct cellLists_, cells_, cellFields_
             regions_.append(zone);
             cellLists_.insert
             (
@@ -141,7 +141,7 @@ Foam::structureModels::byZone::byZone
                 zoneCellField
             );
 
-            //- Set volumeFraction of the structure, hydraulic diameter.
+            //  Set volumeFraction of the structure, hydraulic diameter.
             //  volumeFraction set here only if alpha.structure not found
             //  on disk
             scalar Dh(zoneDict.get<scalar>("Dh"));
@@ -165,7 +165,7 @@ Foam::structureModels::byZone::byZone
             }
 
 
-            //- Set HashTable of volumeFraction volScalarField indexed by
+            //  Set HashTable of volumeFraction volScalarField indexed by
             //  region (i.e. zone) name
             volScalarField zoneAlphaField(*this);
             zoneAlphaField.primitiveFieldRef() *= zoneCellField;
@@ -176,7 +176,7 @@ Foam::structureModels::byZone::byZone
                 zoneAlphaField
             );
 
-            //- Read momentum source
+            //  Read momentum source
             if (zoneDict.found("momentumSource"))
             {
                 pumps_.insert
@@ -215,7 +215,7 @@ Foam::structureModels::byZone::byZone
                 }
             }
 
-            //- Set passive properties fields if keywords present
+            //  Set passive properties fields if keywords present
             if (zoneDict.isDict("passiveProperties"))
             {
                 foundAtLeastOnePassivePropertiesDict = true;
@@ -225,7 +225,7 @@ Foam::structureModels::byZone::byZone
                     zoneDict.subDict("passiveProperties")
                 );
 
-                //- Set interfacial area and rhoCp (later, alphaRhoCp) of the
+                //  Set interfacial area and rhoCp (later, alphaRhoCp) of the
                 //  passive subStructure
                 scalar iApas(pasDict.get<scalar>("volumetricArea"));
                 scalar rhoCppas(0);
@@ -267,12 +267,12 @@ Foam::structureModels::byZone::byZone
                 {
                     label cellj(zoneCellList[j]);
                     iApas_[cellj] = iApas;
-                    alphaRhoCppas_[cellj] = rhoCppas;   //- The multiplication
+                    alphaRhoCppas_[cellj] = rhoCppas;   //  The multiplication
                                                         //  by alphapas_ will
                                                         //  be done at the end
                 }
 
-                //- Only adjust passive subStructure volume fraction if keyword
+                //  Only adjust passive subStructure volume fraction if keyword
                 //  found in the passive properties dictionary
                 if (pasDict.found("volumeFraction"))
                 {
@@ -283,12 +283,12 @@ Foam::structureModels::byZone::byZone
                         alphapas_[cellj] = alphapas;
                     }
                 }
-                //- If the alpha.structure file does not exist in the initial
+                //  If the alpha.structure file does not exist in the initial
                 //  time step folder, and a volumeFraction keyword is not found
                 //  in the passive subStructure dict, init value to region
                 //  alpha value, read before
 
-                //- NOTE: Oddly enough, the class keyword in the file headers
+                //  NOTE: Oddly enough, the class keyword in the file headers
                 //  of alphapas_, Tpas_, are set to byZone rather than
                 //  volScalarField. This is due to some weird dark magic of
                 //  the runTimeSelection mechanism, which I have no will to
@@ -306,7 +306,7 @@ Foam::structureModels::byZone::byZone
                     }
                 }
 
-                //- If the passive subStructure temperature field does not
+                //  If the passive subStructure temperature field does not
                 //  exist in the initial time step folder, get it from dict
                 if (!TpasHeaderOk)
                 {
@@ -319,10 +319,10 @@ Foam::structureModels::byZone::byZone
                 }
             }
 
-            //- Now for the rotation matrices to move from the global to the
+            //  Now for the rotation matrices to move from the global to the
             //  local reference frame
 
-            //- Lambda function to rotate a vector around an axis by a certain
+            //  Lambda function to rotate a vector around an axis by a certain
             //  angle in radians, counter-clockwise
             auto rotateCCWAroundAxisByAngle = []
             (
@@ -360,22 +360,22 @@ Foam::structureModels::byZone::byZone
                 zoneDict.lookupOrDefault<vector>("localZ", vector(0,0,1))
             );
             localZ /= mag(localZ);
-            //- Non orthogonality absorption
+            //  Non orthogonality absorption
             if (foundLocalX and !foundLocalZ)
             {
-                //- Absorb non-orthogonalities in Z
+                //  Absorb non-orthogonalities in Z
                 localZ -= (localX&localZ)*localX/mag(localX);
                 localZ /= mag(localZ);
             }
             else if (!foundLocalX and foundLocalZ)
             {
-                //- Absorb non-orthogonalities in X
+                //  Absorb non-orthogonalities in X
                 localX -= (localX&localZ)*localZ/mag(localZ);
                 localX /= mag(localX);
             }
             else
             {
-                //- Split non-orthogonalities equally among X and Z by
+                //  Split non-orthogonalities equally among X and Z by
                 //  rotating them in the plane they lie in by an angle
                 //  computed so that, after the rotation, they will be
                 //  orthogonal
@@ -392,13 +392,13 @@ Foam::structureModels::byZone::byZone
                 rotateCCWAroundAxisByAngle(localZ, axis, deltaTheta);
             }
 
-            //- Compute third axis
+            //  Compute third axis
             vector localY(localZ ^ localX);
             localY /= mag(localY);
 
-            //- Construct transformation matrices
+            //  Construct transformation matrices
 
-            //- The basis change matrix is the transformation to move from
+            //  The basis change matrix is the transformation to move from
             //  the local reference frame to the global one. It is constructed
             //  by simply arranging the local basis vectors (expressed in
             //  global reference frame coordinates) in columns. Since these are
@@ -421,7 +421,7 @@ Foam::structureModels::byZone::byZone
                 Rg2l_[cellj] = Rg2l;
             }
 
-            //- Construct lDh_ (for isotropic structures each component of
+            //  Construct lDh_ (for isotropic structures each component of
             //  lDh_ is equal to Dh cell by cell)
             vector lDhAnisotropy
             (
@@ -439,7 +439,7 @@ Foam::structureModels::byZone::byZone
                 lDh_[cellj][2] = lDhAnisotropy[2]*Dh_[cellj];
             }
 
-            //- Construct global tortuosity tensor by transforming it from the
+            //  Construct global tortuosity tensor by transforming it from the
             //  local frame (as provided in the dictionary) to the global one.
             //  Recall that if R is the transformation matrix to rotate a
             //  vector from the local to the global frame, a local tensor Q can
@@ -468,14 +468,14 @@ Foam::structureModels::byZone::byZone
         }
     }
 
-    //- Don't write passiveStructure temperature field to files if no passive
+    //  Don't write passiveStructure temperature field to files if no passive
     //  properties were specified in the phasePropertiesDict
     if (!foundAtLeastOnePassivePropertiesDict)
     {
         Tpas_.writeOpt() = IOobject::NO_WRITE;
     }
 
-    //- Correct BCs of fields set cell-by-cell
+    //  Correct BCs of fields set cell-by-cell
     this->correctBoundaryConditions();
     Dh_.correctBoundaryConditions();
     Tpas_.correctBoundaryConditions();
@@ -489,7 +489,7 @@ Foam::structureModels::byZone::byZone
         momentumSourcePtr_().correctBoundaryConditions();
     }
 
-    //- Multiply rhoCppas by alphapas to get actual volumetric heat capacity
+    //  Multiply rhoCppas by alphapas to get actual volumetric heat capacity
     //  of the passive subStructure, limit to avoid 0 matrix coefficients when
     //  solving for passive subSubstructure energy equation
     alphaRhoCppas_ =
@@ -500,7 +500,7 @@ Foam::structureModels::byZone::byZone
         );
     alphaRhoCppas_.correctBoundaryConditions();
 
-    //- Construct powerModels
+    //  Construct powerModels
     //  First, I need a list of all the typeNames in the various subDicts
     wordList powerModelTypes(0);
     forAll(dict.toc(), i)
@@ -535,7 +535,7 @@ Foam::structureModels::byZone::byZone
 
     forAll(powerModelTypes, i)
     {
-        //- Then, for each typeName, create a dict of subDicts
+        //  Then, for each typeName, create a dict of subDicts
         dictionary dicts;
         word powerModelType(powerModelTypes[i]);
 
@@ -563,7 +563,7 @@ Foam::structureModels::byZone::byZone
             }
         }
 
-        //- Finally, construct one powerModel per type
+        //  Finally, construct one powerModel per type
         powerModels_.insert
         (
             powerModelType,
@@ -575,7 +575,7 @@ Foam::structureModels::byZone::byZone
         );
     }
 
-    //- Adjust iAact that was left out as it is a member of powerModel
+    //  Adjust iAact that was left out as it is a member of powerModel
     forAllIter
     (
         powerModelTable,

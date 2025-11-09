@@ -189,7 +189,7 @@ bool Foam::functionObjects::TBulk::write()
 
     Log << type() << " " << name() <<  " write:" << nl;
 
-    //- Set pointers
+    //  Set pointers
     if (thermoPtr_ == nullptr)
     {
         thermoPtr_ = &mesh_.lookupObject<rhoThermo>(thermoName_);

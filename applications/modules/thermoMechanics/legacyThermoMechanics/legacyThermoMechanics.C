@@ -534,7 +534,7 @@ Foam::solvers::legacyThermoMechanics::~legacyThermoMechanics()
 //     const objectRegistry& srcN
 // )
 // {
-//     //- Field names must reflect those defined in createCouplingFields.H
+//     //  Field names must reflect those defined in createCouplingFields.H
 //     TFuelOrig_ =
 //         (linkedFuel_) ?
 //         srcTH.findObject<volScalarField>("bafflelessTCladAv") :
@@ -543,7 +543,7 @@ Foam::solvers::legacyThermoMechanics::~legacyThermoMechanics()
 //         srcTH.findObject<volScalarField>("bafflelessTStruct");
 //     powerDensityOrig_ =
 //         srcN.findObject<volScalarField>("powerDensity");
-//     //- Initialize mapped fields
+//     //  Initialize mapped fields
 //     //this->interpolateCouplingFields(mechToFluid);
 // }
 

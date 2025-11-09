@@ -39,7 +39,7 @@ License
 
 #include "pump.H"
 
-//- From forward declarations
+//  From forward declarations
 #include "structure.H"
 
 // * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //

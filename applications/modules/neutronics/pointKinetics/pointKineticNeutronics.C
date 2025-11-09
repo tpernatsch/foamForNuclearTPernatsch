@@ -382,7 +382,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     phiFaces_(0),
     phiMagSf_(0)
 {
-    //- Cannot work in eigenvalue mode for obvious reasons, it makes no sense
+    //  Cannot work in eigenvalue mode for obvious reasons, it makes no sense
     if (eigenvalueNeutronics_)
     {
         FatalErrorInFunction
@@ -390,7 +390,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
             << exit(FatalError);
     }
 
-    //- Check if decay power provided
+    //  Check if decay power provided
     if (decayPowerTimeProfile_.valid())
     {
         const scalar& t(mesh_.time().timeOutputValue());
@@ -503,7 +503,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
         );
     }
 
-    //- Check that provided power is > 0
+    //  Check that provided power is > 0
     if (power_ <= 0)
     {
         FatalErrorInFunction
@@ -511,7 +511,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
             << exit(FatalError);
     }
 
-    //- Check that provided promptGenerationTime is > 0
+    //  Check that provided promptGenerationTime is > 0
     if (promptGenerationTime_ <= 0)
     {
         FatalErrorInFunction
@@ -519,7 +519,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
             << exit(FatalError);
     }
 
-    //- Create fluxes_ PtrList. If pre-existing flux fields exist in the start
+    //  Create fluxes_ PtrList. If pre-existing flux fields exist in the start
     //  time folder, read those and determine the number of energy groups. If
     //  they do not exist, read the number of energy groups from nuclearData
     //  and create the corresponding number of flux fields, scaled so to add
@@ -566,7 +566,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     }
     if (fluxes_.size() == 0)
     {
-        //- One group flux is init from this dict ONLY IF no existing flux
+        //  One group flux is init from this dict ONLY IF no existing flux
         //  files are already present (otherwise it is just reconstructed
         //  from the sum of those)
         if (nuclearData_.found("initialOneGroupFluxByZone"))
@@ -650,11 +650,11 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
         oneGroupFlux_.correctBoundaryConditions();
 
     }
-    //- Update the initOneGroupFlux related quantities after possible
+    //  Update the initOneGroupFlux related quantities after possible
     //  changes in the oneGroupFlux
     setInitOneGroupFlux();
 
-    //- Read real precursors if present, they only get re-scaled by
+    //  Read real precursors if present, they only get re-scaled by
     //  pointKinetic results
     label i = 0;
     while (true)
@@ -743,7 +743,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 
     }
 
-    //- Set precursorPowers so that, if they are not found in reactorState, the
+    //  Set precursorPowers so that, if they are not found in reactorState, the
     //  system starts from a steady-state.
     if (!reactorState_.found("precursorPowers"))
     {
@@ -754,14 +754,14 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
         }
     }
 
-    //- Set variables from externalSource file
+    //  Set variables from externalSource file
     if (externalSourceNeutronics_)
     {
         nuSource_ = externalSource_.lookupOrDefault<scalar>("nuSource", 0.0);
 
         beamEnergy_ = externalSource_.lookupOrDefault<scalar>("beamEnergy", 0.0);
 
-        //- Check external source mode key word
+        //  Check external source mode key word
         std::vector<word> externalSourceModeCases({
             "transient", "powerMonitoring"
         });
@@ -782,7 +782,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
             powerRecordPtr_.clear();
         }
 
-        //- Intrinsic gain computation
+        //  Intrinsic gain computation
         if (nuFission_ > 0 && beamEnergy_ > 0)
         {
             intrinsicGain_ = energyPerFission_*nuSource_ / (nuFission_*beamEnergy_);
@@ -794,7 +794,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
                 << exit(FatalError);
         }
 
-        //- Subcriticality factors computation
+        //  Subcriticality factors computation
         const bool isKsrcDefined = reactorState_.found("ksrc");
         const bool isSubcriticalIndexDefined = reactorState_.found("subcriticalIndex");
         if (!isKsrcDefined && isSubcriticalIndexDefined)
@@ -806,13 +806,13 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
             subcriticalIndex_ = (1. - ksrc_) / ksrc_;
         }
 
-        //- External source power computation for steady-state configuration
+        //  External source power computation for steady-state configuration
         if (subcriticalIndex_ != 0)
         {
             externalSourcePowerRef_ = subcriticalIndex_ * fissionPower_;
             externalSourcePower_ = externalSourcePowerRef_;
 
-            //- Beam parameters
+            //  Beam parameters
             setBeamParameters();
 
             Info << "Beam initial parameters\n"
@@ -824,13 +824,13 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 
     }
 
-    //- Compute total effective delayed neutron fraction
+    //  Compute total effective delayed neutron fraction
     forAll(betas_, i)
     {
         beta_ += betas_[i];
     }
 
-    //-
+    // 
     setFeedbackCellField
     (
         fuelFeedbackCellField_,
@@ -857,7 +857,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
         "drivelineFeedbackZones"
     );
 
-    //- Set flag in base class dict so it can be accessed by the GeN-Foam main
+    //  Set flag in base class dict so it can be accessed by the GeN-Foam main
     bool GEMReactivityBool(GEMReactivityMap_.size() > 1);
     this->IOdictionary::set("GEM", GEMReactivityBool);
 
@@ -865,7 +865,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     {
         GEMSodiumLevelRef_ = nuclearData_.get<scalar>("GEMSodiumLevelRef");
 
-        //- Check that GEMReactivityMap is indexed by descending sodium level
+        //  Check that GEMReactivityMap is indexed by descending sodium level
         //  values
         for (int i = 0; i < GEMReactivityMap_.size()-1; i++)
         {
@@ -881,7 +881,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     }
 
 
-    //- Some notes on modelling choices, for clarity
+    //  Some notes on modelling choices, for clarity
     Info<< "The pointKinetics neutronics model currently computes average "
         << "perturbed values for feedback fields (T fuel, cladding, etc.) "
         << "by weighting those over oneGroupFlux. This is not technically "
@@ -894,7 +894,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 
     // #include "computeFeedbackFieldValues.H"
 
-    // //- TFuelRef limited as it appears in a fraction denominator if doing
+    // //  TFuelRef limited as it appears in a fraction denominator if doing
     // //  fastNeutrons (for the Doppler coeff)
 
     // TFuelRef_ =
@@ -918,7 +918,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     // TDrivelineRef_ =
     //     reactorState_.lookupOrDefault<scalar>("TDriveLineRef", TDrivelineValue);
 
-    // //- Since a T*Ref_ are scalars, the value inside the dictionary is not
+    // //  Since a T*Ref_ are scalars, the value inside the dictionary is not
     // //  updated at runTime automatically. The line below resets the SCALAR IN
     // //  THE DICTIONARY at runTime so that the dictionary is written with the
     // //  updated value.
@@ -1008,7 +1008,7 @@ Foam::scalar Foam::solvers::pointKineticNeutronics::calcDrivelineReactivity
         scalar xFirst(controlRodReactivityMap_[0].first());
         scalar xLast(controlRodReactivityMap_[N-1].first());
 
-        //- If the map is indexed for ascending parameter values
+        //  If the map is indexed for ascending parameter values
         if (xFirst > xLast)
         {
             for (int i = 0; i < N-1; i++)
@@ -1032,7 +1032,7 @@ Foam::scalar Foam::solvers::pointKineticNeutronics::calcDrivelineReactivity
             }
         }
 
-        //- If the map is indexed for descending parameter values
+        //  If the map is indexed for descending parameter values
         else
         {
             for (int i = 0; i < N-1; i++)
@@ -1107,7 +1107,7 @@ Foam::solvers::pointKineticNeutronics::calcGEMLevelAndReactivity()
         intPhiFrac /= intPhiRef_;
         Info <<"Fractions though is " << intPhiFrac<<endl;
 
-        //- Specific FFTF relationship between flow fraction and GEM sodium
+        //  Specific FFTF relationship between flow fraction and GEM sodium
         //  level
         GEMSodiumLevel =
             (265.0-539504/(2440.13+sqr(intPhiFrac*100)))/100

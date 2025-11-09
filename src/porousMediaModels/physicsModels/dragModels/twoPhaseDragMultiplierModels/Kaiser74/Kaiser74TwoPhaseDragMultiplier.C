@@ -87,7 +87,7 @@ Foam::scalar Foam::twoPhaseDragMultiplierModels::Kaiser74::phi2
         phi = 8.2/X^0.55    ->
         phi2 = 67.24/(X^1.1)
     */
-    //- I am limiting this for 7e-2 < X < 30 like Kottowski-Savatteri
+    //  I am limiting this for 7e-2 < X < 30 like Kottowski-Savatteri
     //  out of consistency
     return 67.24/pow(min(max(mFluidPtr_->XLM()[celli], 0.07), 30), 1.1);
 }

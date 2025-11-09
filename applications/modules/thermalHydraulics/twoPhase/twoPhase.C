@@ -159,7 +159,7 @@ Foam::solvers::twoPhase::twoPhase
         mesh,
         fv::options::New(mesh)
     ),
-    //- The structure needs to be created before the fluids because
+    //  The structure needs to be created before the fluids because
     //  the turbulence models created by the fluids might require a reference
     //  to the structure (obtained via objectRegistry lookup in the specific
     //  turbulence model class)
@@ -310,12 +310,12 @@ Foam::solvers::twoPhase::twoPhase
         forcePRef_
     );
     mesh.setFluxRequired(p_rgh_.name());
-    //- Init autoPtr-managed fields, namely flowQuality, XLM (i.e.
+    //  Init autoPtr-managed fields, namely flowQuality, XLM (i.e.
     //  Lockhart-Martinelli parameter) and dispersion
     fluid1_.initTwoPhaseFields();
     fluid2_.initTwoPhaseFields();
 
-    //- Construct twoPhaseDragFactor (needs to be done AFTER fluid twoPhase
+    //  Construct twoPhaseDragFactor (needs to be done AFTER fluid twoPhase
     //  field init as some fields of the fluid class that can be required by
     //  some twoPhaseDragFactor sub-models are not initialized yet)
     if (this->subDict("physicsModels").found("twoPhaseDragMultiplierModel"))
@@ -342,7 +342,7 @@ Foam::solvers::twoPhase::twoPhase
             );
         }
     }
-    //- This is specifically to avoid problem when solveAlpha is set to solve
+    //  This is specifically to avoid problem when solveAlpha is set to solve
     //  for only one phase, the one for which BCs and initial conditions are
     //  provided, yet this phase starts at 0 while the other phase BC and
     //  initial conditions were not provided. This is problematic as by
@@ -380,18 +380,18 @@ Foam::solvers::twoPhase::twoPhase
         fluid2_.volScalarField::operator=(geometricOneField()-fluid1_);
     }
 
-    //- Normalize phase fraction fields, structure is left unchanged
+    //  Normalize phase fraction fields, structure is left unchanged
     volScalarField corr(movingAlpha_/(fluid1_+fluid2_));
     fluid1_.volScalarField::operator*=(corr);
     fluid2_.volScalarField::operator*=(corr);
     fluid1_.correctBoundaryConditions();
     fluid2_.correctBoundaryConditions();
 
-    //- Set the normalized phase fraction fields
+    //  Set the normalized phase fraction fields
     fluid1_.normalized() = fluid1_/movingAlpha_;
     fluid2_.normalized() = fluid2_/movingAlpha_;
 
-    //- Set the bothPhasesArePresentFlag. This is only used within the
+    //  Set the bothPhasesArePresentFlag. This is only used within the
     //  adjustTimeStep function and for avoiding doing subcycles if
     //  only one phase is present
     bothPhasesArePresent_ =
@@ -399,7 +399,7 @@ Foam::solvers::twoPhase::twoPhase
         max((fluid1_*fluid2_)()).value() >= 1e-4
     );
 
-    //- Initialize fluid-intensive fluxes (i.e. that depend on the phase
+    //  Initialize fluid-intensive fluxes (i.e. that depend on the phase
     //  fraction, namely alphaPhi and alphaRhoPhi, which are the REAL
     //  volumetric flux in m3/s and the REAL mass flux in kg/s. By REAL I mean
     //  not superficial). This is done after the phaseFraction normalization
@@ -408,10 +408,10 @@ Foam::solvers::twoPhase::twoPhase
     fluid1_.initAlphaPhis();
     fluid2_.initAlphaPhis();
 
-    //- Set total volumetric flux (real one, not superficial)
+    //  Set total volumetric flux (real one, not superficial)
     phi_ = fluid1_.alphaPhi() + fluid2_.alphaPhi();
 
-    //- Create turbulence models. This is done outside of fluid constructors as
+    //  Create turbulence models. This is done outside of fluid constructors as
     //  turbulence models might require references to fields that do not exist
     //  yet (e.g. the Reynolds number between fluid and structure, or between
     //  the two fluids, which are in the FFPair/FSPair classes, that cannot be
@@ -419,11 +419,11 @@ Foam::solvers::twoPhase::twoPhase
     fluid1_.constructTurbulenceModel();
     fluid2_.constructTurbulenceModel();
 
-    //- Construct fluid diameter models
+    //  Construct fluid diameter models
     fluid1_.constructDiameterModel();
     fluid2_.constructDiameterModel();
 
-    //- Compute initialFluidMass
+    //  Compute initialFluidMass
     //initialFluidMass_ = fvc::domainIntegrate(fluid_.rho()*fluid_);
 
     Info << endl;
@@ -432,7 +432,7 @@ Foam::solvers::twoPhase::twoPhase
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-//- Solve according to flags
+//  Solve according to flags
 void Foam::solvers::twoPhase::correctPhysics()
 {
 
@@ -477,7 +477,7 @@ void Foam::solvers::twoPhase::correctFluidMechanics()
         #include "pEqn_2p.H"
     }
 
-    //- Continuity error adjustment and infos
+    //  Continuity error adjustment and infos
     correctContErrs();
     printContErrs();
     calcCumulContErrs();
@@ -497,7 +497,7 @@ void Foam::solvers::twoPhase::correctModels
     bool solveEnergy
 )
 {
-    //- Two-phase Reynolds. Logically it does not belong anywere else as it
+    //  Two-phase Reynolds. Logically it does not belong anywere else as it
     //  involves both fluids and the structure (via the hydraulic diameter)
     /*
     ReTwoPhase_ =

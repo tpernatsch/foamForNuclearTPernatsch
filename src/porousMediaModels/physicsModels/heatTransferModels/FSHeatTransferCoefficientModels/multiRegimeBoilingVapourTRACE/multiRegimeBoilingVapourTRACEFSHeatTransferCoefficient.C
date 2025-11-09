@@ -129,13 +129,13 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingVapourTRACE::value
         FFPairPtr_ = FFPairs[FFPairs.toc()[0]];
     }
 
-    //- Refs
+    //  Refs
     const scalar& Twi(Tw_[celli]);
     const scalar& POSTCHFi(CHFBool_[celli]);    // 0 = PreCHF, 1 = Transition, 2 = PostCHF
     const scalar& wfTBi(wfTB_[celli]);          // Weight for transition
     const scalar& TLFi(TLF_[celli]);            // Leidenfrost Temperature -> Used for transition
 
-    if (POSTCHFi>=1)    //- In POSTCHF MODEL
+    if (POSTCHFi>=1)    //  In POSTCHF MODEL
     {
         // If alpha < 0.6, inverted annular model used, else need to be coded = later.
         /*if (alphai<0.6)

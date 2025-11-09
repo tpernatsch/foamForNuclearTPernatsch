@@ -300,7 +300,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
 
-        //- Setup cellToRegion_ mapping
+        //  Setup cellToRegion_ mapping
         const labelList& regionCells
         (
             structure_.cellLists()[region]
@@ -311,10 +311,10 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
             cellToRegion_[celli] = regioni;
         }
 
-        //- Add to regionIndexToRegionName_ mapping
+        //  Add to regionIndexToRegionName_ mapping
         regionIndexToRegionName_.append(region);
 
-        //- Read region dict entries
+        //  Read region dict entries
         scalar fractionOfPowerFromNeutronics(dict.lookupOrDefault<scalar>("fractionOfPowerFromNeutronics",1.0));
         scalar TpS_guess(dict.lookupOrDefault<scalar>("pebbleSurfaceTemperatureGuess", 900));
         scalar rcore(dict.get<scalar>("pebbleCoreRadius"));
@@ -341,7 +341,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         Polynomial<8> rhographiteCoeffs(dict.get<Polynomial<8>>("pebbleGraphiteDensityCoeffs"));
         Polynomial<8> rhocoolantCoeffs(dict.get<Polynomial<8>>("coolantDensityCoeffs"));
 
-        //- Fill in lists for this region
+        //  Fill in lists for this region
 
         fractionOfPowerFromNeutronics_.append(fractionOfPowerFromNeutronics);
         TpS_guess_.append(TpS_guess);
@@ -439,7 +439,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         rhocoolant_[celli] = rhocoolant;
     }
 
-    //- Initialize in dict
+    //  Initialize in dict
     this->IOdictionary::set("Tfav", Tfav_);
     this->IOdictionary::set("Tfmax", Tfmax_);
     this->IOdictionary::set("Tmav", Tmav_);
@@ -475,7 +475,7 @@ Foam::powerModels::nuclearSteadyStatePebble::nuclearSteadyStatePebble
         this->structureRef().TFuelAv()[celli] = Tfav_[celli];
         this->structureRef().TCladAv()[celli] = Tcav_[celli];
 */
-    //- Finally, set up interfacial area
+    //  Finally, set up interfacial area
     this->setInterfacialArea();
 }
 
@@ -504,7 +504,7 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
     const volScalarField& HSum    // == SUM_j [htc_j*frac_j]
 )
 {
-    //- Reset min, max, average temperatures
+    //  Reset min, max, average temperatures
     Tfavmax_ = 0.0;
     Tfavmin_ = 1e69;
     Tfmaxmax_ = 0.0;
@@ -603,7 +603,7 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
         updateLocalAvgGlobalMinMaxT(TfS_[celli],   TfSmin_,   TfSmax_);
     }
 
-    //- Save these to the dictionary
+    //  Save these to the dictionary
     this->IOdictionary::set("Tfav", Tfav_);
     this->IOdictionary::set("Tfmax", Tfmax_);
     this->IOdictionary::set("Tmav", Tmav_);
@@ -653,7 +653,7 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
     Info<< "T.nuclearSteadyStatePebble.Tfav (avg min max) = "   << Tfavav   << " " << Tfavmin_   << " " << Tfavmax_   << " K" << endl;
     Info<< "T.nuclearSteadyStatePebble.Tfmax (avg min max) = "  << Tfmaxav  << " " << Tfmaxmin_  << " " << Tfmaxmax_  << " K" << endl;
 
-    //- Save these to the dictionary
+    //  Save these to the dictionary
     this->IOdictionary::set("Tfavav",     Tfavav);
     this->IOdictionary::set("Tfmaxav",    Tfmaxav);
     this->IOdictionary::set("Tmavav",     Tmavav);
@@ -676,7 +676,7 @@ void Foam::powerModels::nuclearSteadyStatePebble::correct
 
 void Foam::powerModels::nuclearSteadyStatePebble::correctT(volScalarField& T) const
 {
-    //- Set T to pebble surface temperature, i.e. TpS_
+    //  Set T to pebble surface temperature, i.e. TpS_
     forAll(cellList_, i)
     {
         label celli(cellList_[i]);

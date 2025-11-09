@@ -135,7 +135,7 @@ timeFieldTableFvPatchScalarField
 
 void Foam::timeFieldTableFvPatchScalarField::updateField()
 {
-    //- Simulation time
+    //  Simulation time
     const scalar t = db().time().timeOutputValue();
 
     if (t > tStart_)
@@ -158,26 +158,26 @@ void Foam::timeFieldTableFvPatchScalarField::updateField()
 
         if (currentIndex_ < (table_.size()-1))
         {
-            //- Read table values at correct index
+            //  Read table values at correct index
             scalarField& f0(table_[currentIndex_].second());
             scalarField& f1(table_[currentIndex_+1].second());
 
-            //- Interpolation coefficient
+            //  Interpolation coefficient
             scalar c((t1-t)/(t1-t0));
 
-            //- Linear interpolation between the fields at the provided times
+            //  Linear interpolation between the fields at the provided times
             //  if the time falls in between two time bins
             this->operator==
             (
                 c*f0+(1.0-c)*f1
             );
         }
-        else //- i.e. t > tLast
+        else //  i.e. t > tLast
         {
             this->operator==(table_[table_.size()-1].second());
         }
     }
-    else //- i.e. t <= tStart
+    else //  i.e. t <= tStart
     {
         this->operator==(table_[0].second());
     }

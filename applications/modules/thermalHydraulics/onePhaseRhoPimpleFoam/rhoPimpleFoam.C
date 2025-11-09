@@ -219,7 +219,7 @@ Foam::solvers::rhoPimpleFoam::rhoPimpleFoam
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-//- Solve according to flags
+//  Solve according to flags
 void Foam::solvers::rhoPimpleFoam::correctPhysics()
 {
 
@@ -437,7 +437,7 @@ void Foam::solvers::rhoPimpleFoam::correctBaffleLessField(word fieldName, fvMesh
 
 void Foam::solvers::rhoPimpleFoam::deformMesh()
 {
-    //-Look for the multiRegionDict
+    // Look for the multiRegionDict
 
     const IOdictionary couplingDict
     (

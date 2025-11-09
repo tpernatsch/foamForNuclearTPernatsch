@@ -81,7 +81,7 @@ Foam::latentHeatModel::latentHeatModel
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-//- Default
+//  Default
 Foam::scalar Foam::latentHeatModel::value(const label& celli) const
 {
     return 1.0;

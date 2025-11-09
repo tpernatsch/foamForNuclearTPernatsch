@@ -127,7 +127,7 @@ Foam::powerModels::interpolatedNuclearFuelPin::interpolatedNuclearFuelPin
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
 
-        //- Setup cellToRegion_ mapping
+        //  Setup cellToRegion_ mapping
         const labelList& regionCells
         (
             structure_.cellLists()[region]
@@ -138,10 +138,10 @@ Foam::powerModels::interpolatedNuclearFuelPin::interpolatedNuclearFuelPin
             cellToRegion_[celli] = regioni;
         }
 
-        //- Add to regionIndexToRegionName_ mapping
+        //  Add to regionIndexToRegionName_ mapping
         regionIndexToRegionName_.append(region);
 
-        //- Read region dict entries
+        //  Read region dict entries
         scalar rfo(dict.get<scalar>("fuelOuterRadius"));
         rfo_.append(rfo);
     }
@@ -191,7 +191,7 @@ void Foam::powerModels::interpolatedNuclearFuelPin::correct
 
 void Foam::powerModels::interpolatedNuclearFuelPin::correctT(volScalarField& T) const
 {
-    //- Set T to pin surface temperature, i.e. Tco_
+    //  Set T to pin surface temperature, i.e. Tco_
     forAll(cellList_, i)
     {
         label celli(cellList_[i]);

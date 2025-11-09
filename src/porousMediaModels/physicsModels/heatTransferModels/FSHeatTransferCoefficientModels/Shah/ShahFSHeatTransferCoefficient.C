@@ -96,7 +96,7 @@ Foam::FSHeatTransferCoefficientModels::Shah::Shah
         nullptr
     ),
     p_(pair.mesh().lookupObject<volScalarField>("p")),
-    pCrit_(3.5e7), //- Specific to Sodium
+    pCrit_(3.5e7), //  Specific to Sodium
     C0_(13.7),
     C1_(6.9),
     m0_(0.22),
@@ -170,7 +170,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Shah::value
         if (deltaT > 0.0)
         {
             scalar pR(p_[celli]/pCrit_);
-            //- Interpolate C, m to avoid discontinuity at pR = 1e-3
+            //  Interpolate C, m to avoid discontinuity at pR = 1e-3
             scalar f
             (
                 min
@@ -196,9 +196,9 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Shah::value
 
         if (q > 0.0)
         {
-            //- Reduced pressure
+            //  Reduced pressure
             scalar pR(p_[celli]/pCrit_);
-            //- Interpolate C, m to avoid discontinuity at pR = 1e-3
+            //  Interpolate C, m to avoid discontinuity at pR = 1e-3
             scalar f
             (
                 min

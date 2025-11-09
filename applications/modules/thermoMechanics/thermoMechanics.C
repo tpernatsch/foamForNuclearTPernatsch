@@ -376,7 +376,7 @@ void Foam::solvers::thermoMechanics::correctBaffleLessField(word fieldName, fvMe
 
 void Foam::solvers::thermoMechanics::deformMesh()
 {
-    //-Look for the multiRegionDict
+    // Look for the multiRegionDict
 
     const IOdictionary couplingDict
     (

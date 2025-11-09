@@ -62,7 +62,7 @@ void porousKEpsilon<BasicTurbulenceModel>::correctNut()
     this->nut_ = Cmu_*sqr(k_)/epsilon_;
     this->nut_.correctBoundaryConditions();
 
-    //- Correct alphat before nut is stabilized
+    //  Correct alphat before nut is stabilized
     this->Prt_ = dimensioned<scalar>::lookupOrDefault
     (
         "Prt",
@@ -82,7 +82,7 @@ void porousKEpsilon<BasicTurbulenceModel>::correctNut()
 
     fv::options::New(this->mesh_).correct(this->nut_);
 
-    // BasicTurbulenceModel::correctNut();  //- Eh, I don't want other things
+    // BasicTurbulenceModel::correctNut();  //  Eh, I don't want other things
                                             //  messing with the stabilized nut
 }
 
@@ -255,7 +255,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
             this->mesh_
         ),
         this->mesh_,
-        dimensionedScalar("", dimLength, 1e69), //- Size matters lol
+        dimensionedScalar("", dimLength, 1e69), //  Size matters lol
         zeroGradientFvPatchScalarField::typeName
     ),
     turbulenceIntensityCoeff_
@@ -344,7 +344,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
         {
             word region(regions[j]);
 
-            //- If the region volumeFraction is 0, there is no structure so
+            //  If the region volumeFraction is 0, there is no structure so
             //  regular kEpsilon applies and there is no need to set
             //  porousKEpsilon properties
             if (max(structure_.alphaFields()[region]).value() == 0.0) continue;
@@ -387,7 +387,7 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
             turbulenceIntensityExp_.correctBoundaryConditions();
             turbulenceLengthScaleCoeff_.correctBoundaryConditions();
 
-            //- nut stabilization fields, create only if keyword found
+            //  nut stabilization fields, create only if keyword found
             if (regionDict.found("DhStruct"))
             {
                 scalar defaultLaminarReStruct(500);
@@ -454,12 +454,12 @@ porousKEpsilon<BasicTurbulenceModel>::porousKEpsilon
         }
     }
 
-    //- Check that porousKEpsilon properties were set for all porous regions
+    //  Check that porousKEpsilon properties were set for all porous regions
     forAll(structure_.regions(), i)
     {
         word region(structure_.regions()[i]);
 
-        //- If the region volumeFraction is 0, there is no structure so regular
+        //  If the region volumeFraction is 0, there is no structure so regular
         //  kEpsilon applies and there is no need to check for porousKEpsilon
         //  properties
         if (max(structure_.alphaFields()[region]).value() == 0.0) continue;
@@ -552,11 +552,11 @@ void porousKEpsilon<BasicTurbulenceModel>::correct()
     // Update epsilon and G at the wall
     epsilon_.boundaryFieldRef().updateCoeffs();
 
-    //- Structure marker fields
+    //  Structure marker fields
     tmp<volScalarField> noStructure(neg0(structure_));
     tmp<volScalarField> yesStructure(pos(structure_));
 
-    //- Compute equilibrium k, epsilon values
+    //  Compute equilibrium k, epsilon values
     equilibriumK_ =
     (
         1.5*sqr
@@ -596,7 +596,7 @@ void porousKEpsilon<BasicTurbulenceModel>::correct()
         << " " << equilibriumK_.dimensions() << endl;
     */
 
-    //- magU/convergenceLength gives the inverse of the convergence time scale,
+    //  magU/convergenceLength gives the inverse of the convergence time scale,
     //  i.e. what was previously know/provided as convergenceRate
     tmp<volScalarField> alphaRhoConv
     (

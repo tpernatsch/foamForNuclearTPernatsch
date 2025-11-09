@@ -115,7 +115,7 @@ Foam::powerModels::fixedTemperatureFMU::fixedTemperatureFMU
             const Time& runTime = this->db().time();
             commDataLayer& data = commDataLayer::New(runTime);
 
-            //- Compute the average value of the temperature field
+            //  Compute the average value of the temperature field
             label cellZoneID = mesh_.cellZones().findZoneID(region);
             const cellZone& tgtCellZone = mesh_.cellZones()[cellZoneID];
             scalarField fieldZone(T_, tgtCellZone);
@@ -161,7 +161,7 @@ void Foam::powerModels::fixedTemperatureFMU::temperatureUpdate() const
         Info << "Updating temperature in " << region
              << " from FMU: " << temperatureFromFMU << endl;
 
-        //- Setup cellToRegion_ mapping
+        //  Setup cellToRegion_ mapping
         const labelList& regionCells
         (
             structure_.cellLists()[region]
@@ -187,7 +187,7 @@ void Foam::powerModels::fixedTemperatureFMU::correctT(volScalarField& T) const
 
 void Foam::powerModels::fixedTemperatureFMU::powerOff()
 {
-    //- If you set iA to 0, the energy contribution from this powerModel to the
+    //  If you set iA to 0, the energy contribution from this powerModel to the
     //  fluid energy equation will be 0, equivalent to a "power" off scenario
     iA_ *= 0.0;
 }

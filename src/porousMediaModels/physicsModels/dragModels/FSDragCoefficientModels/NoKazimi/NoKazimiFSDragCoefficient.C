@@ -90,7 +90,7 @@ Foam::scalar Foam::FSDragCoefficientModels::NoKazimi::value
 ) const
 {
     const scalar& Rei(Re(celli));
-    scalar fl(A_/Rei);              //- I am missing a *pow(Twall/Tbulk, 1.5)
+    scalar fl(A_/Rei);              //  I am missing a *pow(Twall/Tbulk, 1.5)
                                     //  for simplicity, as Twall is 0 in those
                                     //  structure regions where there are no
                                     //  powerModels or passiveModels specified

@@ -84,7 +84,7 @@ Foam::scalar Foam::twoPhaseDragMultiplierModels::KottowskiSavatteri::phi2
     {
         return 1.0;
     }
-    //- The correlation is valid only for 7e-2 < X < 30
+    //  The correlation is valid only for 7e-2 < X < 30
     scalar log10X(log10(min(max(mFluidPtr_->XLM()[celli], 0.07), 30)));
     return
         pow

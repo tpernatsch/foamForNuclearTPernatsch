@@ -87,7 +87,7 @@ Foam::scalar Foam::subCooledBoilingFractionModels::SahaZuber::value
 
     const scalar& Tsati(FFPairPtr_->iT()[celli]);
 
-    //- Minimum liquid tempreature for bubble detachment
+    //  Minimum liquid tempreature for bubble detachment
     scalar Tldi =
         max
         (

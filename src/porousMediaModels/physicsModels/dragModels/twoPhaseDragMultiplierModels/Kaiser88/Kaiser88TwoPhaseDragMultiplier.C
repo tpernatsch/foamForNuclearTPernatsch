@@ -82,7 +82,7 @@ Foam::scalar Foam::twoPhaseDragMultiplierModels::Kaiser88::phi2
 {
     if (onePhase(celli))
         return 1.0;
-    //- I am limiting this for 7e-2 < X < 30 like Kottowski-Savatteri
+    //  I am limiting this for 7e-2 < X < 30 like Kottowski-Savatteri
     //  out of consistency
     scalar logSqrtX(log(sqrt(min(max(mFluidPtr_->XLM()[celli], 0.07), 30))));
     return

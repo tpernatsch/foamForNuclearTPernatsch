@@ -275,7 +275,7 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
     );
     mesh.setFluxRequired(p_rgh_.name());
 
-    //- Construct regime maps, if any
+    //  Construct regime maps, if any
     if (this->found("regimeMapModels"))
     {
         const dictionary& regimeMapModelsDict
@@ -405,7 +405,7 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessField(word fieldNam
 
 void Foam::solvers::thermalHydraulicsModel::deformMesh()
 {
-    //-Look for the multiRegionDict
+    // Look for the multiRegionDict
 
     const IOdictionary couplingDict
     (

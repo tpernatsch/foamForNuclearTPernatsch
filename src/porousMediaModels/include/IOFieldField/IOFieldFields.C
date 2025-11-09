@@ -41,7 +41,7 @@ License
 
 namespace Foam
 {
-    //- scalarFieldField is what is to be placed at the top of the file in the
+    //  scalarFieldField is what is to be placed at the top of the file in the
     //  case folder
     defineTemplateTypeNameAndDebugWithName
     (

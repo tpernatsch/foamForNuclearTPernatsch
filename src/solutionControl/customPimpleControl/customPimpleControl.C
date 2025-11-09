@@ -197,7 +197,7 @@ Foam::customPimpleControl::customPimpleControl
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
-//- This is identical to what is found in pimpleControl. However, by re-
+//  This is identical to what is found in pimpleControl. However, by re-
 //  defining it here, I allow it to use the new criteriaSatisfied() functions
 //  defined by customPimpleControl
 bool Foam::customPimpleControl::loop()

@@ -240,7 +240,7 @@ Foam::FFPair::FFPair
 {
     Info << endl;
 
-    //- Init htcs
+    //  Init htcs
     htcs_.set
     (
         fluid1_.name(),
@@ -278,7 +278,7 @@ Foam::FFPair::FFPair
         )
     );
 
-    //- It is dimPower instead of dimPower/dimVolume as the fvScalarMatrix
+    //  It is dimPower instead of dimPower/dimVolume as the fvScalarMatrix
     //  expects objects that are either already integrated over the volume
     //  (e.g. what the fvm::Su, SuSp, etc. return) or objects that are not
     //  already volume integrated, yet whose dimensions are equal to the
@@ -297,7 +297,7 @@ Foam::FFPair::FFPair
 
     const dictionary& physicsModelsDict(dict_.subDict("physicsModels"));
 
-    //- Drag
+    //  Drag
     if (physicsModelsDict.found("dragModels"))
     {
         const dictionary& dragModelsDict
@@ -317,7 +317,7 @@ Foam::FFPair::FFPair
         }
     }
 
-    //- Virtual mass
+    //  Virtual mass
     if (physicsModelsDict.found("virtualMassCoefficientModel"))
     {
         const dictionary& virtualMassModelDict
@@ -334,7 +334,7 @@ Foam::FFPair::FFPair
         );
     }
 
-    //- Heat transfer
+    //  Heat transfer
     if (physicsModelsDict.found("heatTransferModels"))
     {
         const dictionary& heatTransferModelsDict
@@ -370,7 +370,7 @@ Foam::FFPair::FFPair
         }
     }
 
-    //- Geometry models
+    //  Geometry models
     const dictionary& pairGeometryModels
     (
         physicsModelsDict.subDict("pairGeometryModels")
@@ -405,7 +405,7 @@ Foam::FFPair::FFPair
         )
     );
 
-    //- Mass transfer
+    //  Mass transfer
     if (physicsModelsDict.found("phaseChangeModel"))
     {
         const dictionary& phaseChangeModelDict
@@ -439,13 +439,13 @@ void Foam::FFPair::correct
     const bool& correctEnergy
 )
 {
-    //- Init refs and dispersion marker fields
+    //  Init refs and dispersion marker fields
     const volVectorField& U1(fluid1_.U());
     const volVectorField& U2(fluid2_.U());
     const volScalarField& Dh1(fluid1_.Dh());
     const volScalarField& Dh2(fluid2_.Dh());
 
-    //- Update dispersion/continuity
+    //  Update dispersion/continuity
     scalarField oldDispersion(fluid1_.dispersion());
     dispersion1Ptr_->correctField(fluid1_.dispersion());
     scalar f = myOps::relaxationFactor(mesh_, "dispersion");
@@ -455,7 +455,7 @@ void Foam::FFPair::correct
     const scalarField& continuity1(fluid2_.dispersion());
     const scalarField& continuity2(fluid1_.dispersion());
 
-    //- Update dipsersed/continuous phase fractions
+    //  Update dipsersed/continuous phase fractions
     alphaDispersed_.primitiveFieldRef() =
         fluid1_.primitiveField()*fluid1_.dispersion()
     +   fluid2_.primitiveField()*fluid2_.dispersion();
@@ -465,7 +465,7 @@ void Foam::FFPair::correct
     +   fluid2_.primitiveField()*continuity2;
     alphaContinuous_.correctBoundaryConditions();
 
-    //- Update fluid diameter (needs to be done AFTER dispersion update)
+    //  Update fluid diameter (needs to be done AFTER dispersion update)
     fluid1_.correctDiameter();
     fluid2_.correctDiameter();
 
@@ -478,7 +478,7 @@ void Foam::FFPair::correct
     +   Dh2.primitiveField()*continuity2;
     DhContinuous_.correctBoundaryConditions();
 
-    //- Correct interfacial area density
+    //  Correct interfacial area density
     iAPtr_->correctField(iA_);
 
     rhoContinuous_.primitiveFieldRef() =
@@ -496,11 +496,11 @@ void Foam::FFPair::correct
     +   fluid2_.Pr()*continuity2;
     PrContinuous_.correctBoundaryConditions();
 
-    //-
+    // 
     magUr_ = mag(U1-U2);
     Re_ = max(magUr_*DhDispersed_/nuContinuous_, minRe_);
 
-    //- Correct two-phase quantities. I do this on a by-cell basis to
+    //  Correct two-phase quantities. I do this on a by-cell basis to
     //  spare myself the need to do annoying pow operations in cells that
     //  are basically single-phase
     volScalarField& X1(fluid1_.flowQuality());
@@ -571,7 +571,7 @@ void Foam::FFPair::correct
                     fluid2_.maxXLM()
                 );
         }
-        //- Normalize to account for the fact that the clipping for XLM1 and
+        //  Normalize to account for the fact that the clipping for XLM1 and
         //  XLM2 might differ, so that XML1*XLM2 = 1.0 could be violated. So,
         //  restore it via a normalization
         scalar c(sqrt(1.0/(XLM1i*XLM2i)));
@@ -585,13 +585,13 @@ void Foam::FFPair::correct
 
     if (correctFluidDynamics)
     {
-        //- Correct drag coefficient
+        //  Correct drag coefficient
         if (KdPtr_.valid())
         {
             myOps::storePrevIterIfRelax(Kd_);
             KdPtr_->correctField(Kd_);
         }
-        //- Limit drag coefficient
+        //  Limit drag coefficient
         scalar KdFF0
         (
             pimple_.dict().lookupOrDefault<scalar>("minKdFF", 1)
@@ -630,7 +630,7 @@ void Foam::FFPair::correct
         Kd_.correctBoundaryConditions();
         Kd_.relax();
 
-        //- Correct virtual mass forces
+        //  Correct virtual mass forces
         if (virtualMassPtr_.valid())
         {
             virtualMassPtr_->correct();
@@ -639,7 +639,7 @@ void Foam::FFPair::correct
 
     if (correctEnergy)
     {
-        //- Correct heat transfer coefficient
+        //  Correct heat transfer coefficient
         volScalarField& htc1(*htcs_[fluid1_.name()]);
         volScalarField& htc2(*htcs_[fluid2_.name()]);
         if (htc1Ptr_.valid())
@@ -655,12 +655,12 @@ void Foam::FFPair::correct
             htc2.relax();
         }
 
-        //- Correct interfacial temperature and/or mass transfer
+        //  Correct interfacial temperature and/or mass transfer
         fluid1_.correctThermoResidualMarkers();
         fluid2_.correctThermoResidualMarkers();
         if (phaseChangePtr_.valid())
         {
-            //- Limits interfacial area, updates interfacial temperature,
+            //  Limits interfacial area, updates interfacial temperature,
             //  latent heat and mass transfer
             phaseChangePtr_->correct();
         }
@@ -696,7 +696,7 @@ void Foam::FFPair::correct
                 firstTimeStepAndIter_ = false;
         }
 
-        //- Add interfacial and mass transfer enthalpy contributions to
+        //  Add interfacial and mass transfer enthalpy contributions to
         //  heSources
         const volScalarField& he1(fluid1_.thermo().he());
         const volScalarField& he2(fluid2_.thermo().he());
@@ -718,7 +718,7 @@ void Foam::FFPair::correct
             *heSources_[he1.name()] += phaseChangePtr_->heSource(he1.name());
             *heSources_[he2.name()] += phaseChangePtr_->heSource(he2.name());
 
-            //- Re-set htc to their values before their were modified by
+            //  Re-set htc to their values before their were modified by
             //  phaseChangePtr_->correctHeSources() (which caches them in
             //  prevIter)
             htc1 = htc1.prevIter();

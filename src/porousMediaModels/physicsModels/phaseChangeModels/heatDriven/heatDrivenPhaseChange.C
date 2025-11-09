@@ -125,7 +125,7 @@ Foam::phaseChangeModels::heatDrivenPhaseChange::heatDrivenPhaseChange
 
 void Foam::phaseChangeModels::heatDrivenPhaseChange::correctInterfacialDmdt()
 {
-    //- Interfacial mass transfers for each side
+    //  Interfacial mass transfers for each side
     volScalarField dmdtI1i
     (
         htc1_*iA_*(T1_-iT_)/L_

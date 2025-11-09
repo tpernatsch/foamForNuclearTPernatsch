@@ -96,7 +96,7 @@ Foam::FSHeatTransferCoefficientModels::Gorenflo::Gorenflo
         nullptr
     ),
     p_(pair.mesh().lookupObject<volScalarField>("p")),
-    pCrit_(2.209e7), //- Specific to Water
+    pCrit_(2.209e7), //  Specific to Water
     h0_(5600),
     q0_(20000),
     R0_(4e-7),
@@ -162,7 +162,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Gorenflo::value
         const scalar& q((*q_)[celli]);
         if (q > 0.0)
         {
-            //- Reduced pressure
+            //  Reduced pressure
             scalar pR(p_[celli]/pCrit_);
             scalar F(1.73*pow(pR, 0.27) + (6.1+0.68/(1.0-pR))*sqr(pR));
             scalar n(0.9-0.3*pow(pR, 0.15));
