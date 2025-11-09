@@ -53,10 +53,10 @@ Description
     fluid type object also sets the aforementioned fields for the owner
     and nbr patchFields of the other fluid temperature. This is done to
     preserve the implicitness of the method and to avoid useless extra
-    caculations. Encapsulation flies out of the window but encapsulation is a
-    C++ idea that, if followed with pseudo-religious fervor, leads to shit
-    anyways!
-
+    caculations. 
+    
+    This approach weakens encapsulation, but it is required here to maintain
+    a stable and fully implicit coupling across the baffle.
 
 Usage
     \verbatim

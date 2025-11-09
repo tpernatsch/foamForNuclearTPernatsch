@@ -79,7 +79,7 @@ protected:
     //- Ref to pair
     const FSPair& pair_;
 
-    //- Ptr to FFPair (fUcK eNcApSuLaTi1o0N!11!1)
+    //- Ptr to FFPair
     mutable const FFPair* FFPairPtr_;
 
 public:

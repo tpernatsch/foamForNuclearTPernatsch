@@ -163,16 +163,14 @@ protected:
     void correctInterfacialTemperature();
 
     //- Limit mass transfer in two ways:
-    //  -   make it so that mass cannot be removed from a fluid in a cell
-    //      if there is no fluid to remove mass from in that cell (it is
-    //  -   apply an adaptive mass transfer limiter to limit the impact of
-    //      sporious continuity error contributions on the parameters that
-    //      govern mass transfer (e.g. temperatures) in cells where the
-    //      continuity error is excessive. The idea behind the limiter is
-    //      described in the source file. Am I sure this is needed? Nope,
-    //      but this PhD I'm doing is basically about testing whatever
-    //      bullshit idea I can come up with to make things better. Jesus
-    //      fucking Christ, I hate this
+    //  1) make it so that mass cannot be removed from a fluid in a cell
+    //     if there is no fluid to remove mass from in that cell (it is
+    //  2) apply an adaptive mass transfer limiter to limit the impact of
+    //     sporious continuity error contributions on the parameters that
+    //     govern mass transfer (e.g. temperatures) in cells where the
+    //     continuity error is excessive. The idea behind the limiter is
+    //     described in the source file. 
+    // NOTE: to be double-checked if method 2) is needed
     void limitMassTransfer();
 
 public:

@@ -231,15 +231,14 @@ Foam::structure::structure
 {
     bool foundAtLeastOnePassivePropertiesDict(false);
 
-    //  Correct header class names. This is necessary for all volScalarField
-    //  of the structure that are read/written from disk, as, for whatever
-    //  reason I can't figure out, their class header defaults to "byZone"
-    //  instead of "volScalarField". This can mess up field reading.
-    //  Now the fun part. Changing the headerClassName via the headerClassName
-    //  method only works for member fields BUT NOT for the base volScalarField
-    //  (i.e. for the alpha.structure field). I tried all of the three variants
-    //  below but literally no variant works... What the actual fuck in the
-    //  name of sweet baby Jesus? Jasak help pls
+    // Correct header class names. This is necessary for all volScalarField members
+    // of the structure that are read/written from disk because, for reasons still
+    // unclear, their header class defaults to "byZone" instead of "volScalarField",
+    // which breaks field reading.
+    //
+    // NOTE: Changing the headerClassName via headerClassName() works for member
+    // fields but *not* for the base volScalarField itself (e.g., alpha.structure).
+    // The variants tested so far do not correct the base-field header.
     this->headerClassName() = "volScalarField";
     this->IOobject::headerClassName() = "volScalarField";
     this->volScalarField::headerClassName() = "volScalarField";
