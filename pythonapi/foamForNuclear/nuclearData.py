@@ -1433,20 +1433,13 @@ class NuclearData(OpenFOAMFile):
 
 
     def export_for_spatial_solver_to_openfoam(self):
-        ng = np.array([
-            [zone.energyGroups for zone in state.zones]
+        ng = [zone.energyGroups for state in self.states for zone in state.zones]
+        nd = [zone.precGroups for state in self.states for zone in state.zones]
+        groupStructure = [
+            zone.groupStructure
             for state in self.states
-        ]).flatten()
-        nd = np.array([
-            [zone.precGroups for zone in state.zones]
-            for state in self.states
-        ]).flatten()
-
-        groupStructure = np.array([
-            [zone.groupStructure for zone in state.zones if zone.groupStructure is not None]
-            for state in self.states
-        ])
-
+            for zone in state.zones if zone.groupStructure is not None
+        ]
 
         text = ""
 
@@ -1467,8 +1460,8 @@ class NuclearData(OpenFOAMFile):
             self.energyGroups = ng[0]
             self.precGroups = nd[0]
 
-            if (any([e != None for e in groupStructure.flatten()]) != 0):
-                text += f'// Group structure : {groupStructure[0][0]} MeV\n'
+            if (any([e != None for e in groupStructure]) != 0):
+                text += f'// Group structure : {groupStructure[0]} MeV\n'
 
             text += addParameter('energyGroups', self.energyGroups, isAddExtraLine=True)
             text += addParameter('precGroups', self.precGroups, isAddExtraLine=True)
