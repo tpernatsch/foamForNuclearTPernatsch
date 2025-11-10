@@ -116,13 +116,6 @@ public:
         //  for fluid-structure drag.
         void correctField(volScalarField& Kd) const;
 
-        //- Access
-
-            /*
-            const labelList& cells() const
-            {
-                return cells_;
-            }*/
 };
 
 

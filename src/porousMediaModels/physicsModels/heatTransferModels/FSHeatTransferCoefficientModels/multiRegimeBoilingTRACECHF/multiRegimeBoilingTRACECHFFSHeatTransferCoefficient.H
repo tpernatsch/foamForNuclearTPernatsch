@@ -145,8 +145,8 @@ private:
 
     //- Ptr to mass transfer term at the wall (of the phaseChange class) so
     //  that it can be set here to account e.g. for sub-cooled boiling
-    // Breaking encapsulation in an awful manner, as this modifies
-    // a private member of another class. Should be changed....
+    //  Breaking encapsulation in an awful manner, as this modifies
+    //  a private member of another class. Should be changed....
     mutable volScalarField* dmdtWPtr_;
 
     //-

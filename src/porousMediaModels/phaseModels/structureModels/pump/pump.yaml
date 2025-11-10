@@ -1,8 +1,8 @@
 description: |-
   Allow defining a momentum source, including options for a time
-      dependent source, and a source coming from an FMU
+  dependent source, and a source coming from an FMU
 
-      Authors:
+  \mainauthor
       Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
       Carlo Fiorina for the FMU part
 
@@ -16,52 +16,63 @@ options:
     type: vector
     required: true
     default:
-    description: |
+    description: Momentum source vector
+  - key: momentumSourceTimeProfile
+    type: timeTable
+    required: false
+    default:
+    description: Momentum source scaling factor as a time table or FMI port.
 
 usage:
   - comment: |-
       Usage already present in Header (verbatim):
     snippet: |-
-      Example of mandatory dictionary entries:
-          \verbatim
-              volumeFraction      0.5;
-              Dh                  1;
-              momentumSource      (0 0 1000);
-          \endverbatim
+      // Example of mandatory dictionary entries:
+      volumeFraction      0.5;
+      Dh                  1;
+      momentumSource      (0 0 1000);
 
-          Example of time dependant momentum source scaling entries:
-          \verbatim
-              momentumSourceTimeProfile
-              {
-                  type        table;
-                  startTime   100;
-                  table       table
-                  (
-                      //- <Time>  <Momentum source scaling factor>
-                      (   0       1   )
-                      (   1       0.1 )
-                  );
-              }
-          \endverbatim
+      // Example of time dependant momentum source scaling entries:
+      momentumSourceTimeProfile
+      {
+          type        table;
+          startTime   100;
+          table       table
+          (
+              //- <Time>  <Momentum source scaling factor>
+              (   0       1   )
+              (   1       0.1 )
+          );
+      }
 
-          Example of entries for scaling source coming from FMUs:
-          \verbatim
-              pumpMultiplierNameFromFMU   momentumSourceCoupled;
-          \endverbatim
+      // Example of entries for scaling source coming from FMUs:
+      momentumSourceTimeProfile
+      {
+          type            fmi;
+          nameFromFMU     momentumSourceCoupled;
+          initialValue    1.0;
+      }
   - comment: |-
-      The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
+      The model is specified via the ``momentumSource`` entry in the ``structureModels/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
     snippet: |
       phaseProperties
       {
-        physicsModels
-        {
-          <subModel>
+          structureModels
           {
-            "<zoneName>"
-            {
-              type pump;
-            }
+              "<zoneName>"
+              {
+                  volumeFraction          0;
+                  Dh                      0.0032;
+                  momentumSource          (0 0 -166000);
+                  momentumSourceTimeProfile
+                  {
+                      type        table;
+                      startTime   910;
+                      table       table
+                      (
+                          (   0   1   )
+                          (   1   0.8490104619    )
+                      );
+              }
           }
-        }
       }
-

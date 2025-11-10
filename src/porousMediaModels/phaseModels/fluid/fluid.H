@@ -177,9 +177,6 @@ private :
     //- Prandtl of the fluid
     volScalarField Pr_;
 
-    //- Additional powerDensity deposited directly to the fluid
-    //autoPtr<volScalarField> powerDensityPtr_;
-
     //- Ref to powerDensity from neutronics (projected on fluid mesh)
     volScalarField& powerDensityNeutronicsToLiquid_;
 

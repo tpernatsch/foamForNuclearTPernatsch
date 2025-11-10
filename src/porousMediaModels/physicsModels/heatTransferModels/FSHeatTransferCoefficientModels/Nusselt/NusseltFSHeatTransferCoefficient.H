@@ -145,11 +145,19 @@ private:
     //- Ref to fluid temperature
     const volScalarField& Tfluid_;
 
-    //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)*(Twall/Tfluid)^(E_)
+    //- Coefficient in Nu = A_ + B_*Re^(C_)*Pr^(D_)*(Twall/Tfluid)^(E_)
     const scalar A_;
+
+    //- Coefficient in Nu = A_ + B_*Re^(C_)*Pr^(D_)*(Twall/Tfluid)^(E_)
     const scalar B_;
+
+    //- Coefficient in Nu = A_ + B_*Re^(C_)*Pr^(D_)*(Twall/Tfluid)^(E_)
     const scalar C_;
+
+    //- Coefficient in Nu = A_ + B_*Re^(C_)*Pr^(D_)*(Twall/Tfluid)^(E_)
     const scalar D_;
+
+    //- Coefficient in Nu = A_ + B_*Re^(C_)*Pr^(D_)*(Twall/Tfluid)^(E_)
     const scalar E_;
 
     //- If C_ == D_, no need to do pow(Re, C_)*pow(Pr, D_), you can just do

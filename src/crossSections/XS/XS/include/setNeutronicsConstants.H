@@ -33,8 +33,6 @@ forAll(nuSigmaEff_, energyI)
 
                 // Constant
                 IV_[energyI][cellIglobal] = IVList_[zone][energyI];
-                // chiPrompt_[energyI][cellIglobal] = chiPromptList_[zone][energyI];
-                // chiDelayed_[energyI][cellIglobal] = chiDelayedList_[zone][energyI];
                 BetaTot_[cellIglobal] = BetaTotList_[zone];
 
                 fuelFraction_[cellIglobal] = fuelFractionList_[zone];

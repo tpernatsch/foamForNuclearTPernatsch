@@ -109,12 +109,12 @@ Foam::powerModel::powerModel
         zeroGradientFvPatchScalarField::typeName
     )
 {
-    //  Set the fundamental properties that define a powerModel, its
-    //  interfacial area and its volume fraction (alpha). This might be, in
-    //  principle, different than the volume fraction of the regions over which
-    //  the powerModel is defined. If a volumeFraction keyword is found within
-    //  the powerModel dict within a region, set that as the powerModel alpha,
-    //  otherwise use the structure alpha for that region
+    // Set the fundamental properties that define a powerModel, its
+    // interfacial area and its volume fraction (alpha). This might be, in
+    // principle, different than the volume fraction of the regions over which
+    // the powerModel is defined. If a volumeFraction keyword is found within
+    // the powerModel dict within a region, set that as the powerModel alpha,
+    // otherwise use the structure alpha for that region
     const wordList& regions(this->toc());
     forAll(regions, i)
     {
@@ -177,62 +177,5 @@ void Foam::powerModel::setInterfacialArea()
     iA_.correctBoundaryConditions();
 }
 
-/*
-Foam::volScalarField& Foam::powerModel::initFieldInTable
-(
-    word name,
-    dimensionedScalar value,
-    bool readIfPresent,
-    bool autoWrite
-)
-{
-    if (!IOFields_.found(name))
-    {
-        IOFields_.set
-        (
-            name,
-            new volScalarField
-            (
-                IOobject
-                (
-                    name,
-                    mesh_.time().timeName(),
-                    mesh_,
-                    (
-                        (readIfPresent) ?
-                        IOobject::READ_IF_PRESENT : IOobject::NO_READ
-                    ),
-                    (
-                        (autoWrite) ?
-                        IOobject::AUTO_WRITE : IOobject::NO_WRITE
-                    )
-                ),
-                mesh_,
-                dimensionedScalar(value.name(), value.dimensions(), 0.0),
-                zeroGradientFvPatchScalarField::typeName
-            )
-        );
-    }
-    volScalarField& field(*IOFields_[name]);
-
-    IOobject fieldHeader
-    (
-        name,
-        mesh_.time().timeName(),
-        mesh_,
-        IOobject::NO_READ
-    );
-    if (!fieldHeader.typeHeaderOk<volScalarField>(true))
-    {
-        forAll(cellList_, i)
-        {
-            field[cellList_[i]] = value.value();
-        }
-        field.correctBoundaryConditions();
-    }
-
-    return field;
-}
-*/
 
 // ************************************************************************* //

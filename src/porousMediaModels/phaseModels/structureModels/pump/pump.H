@@ -85,7 +85,6 @@ SourceFiles
 #include "volFields.H"
 #include "meshToMesh.H"
 #include "zeroGradientFvPatchFields.H"
-// #include "Function1.H"
 #include "timeProfile.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -117,20 +116,8 @@ protected :
 
     //- Optional table to describe any possible dependence of the momentum
     //  source on time
-    // autoPtr<Function1<scalar>> timeProfilePtr_;
     timeProfile momentumSourceTimeProfile_;
 
-    //- Optional offset time
-    // scalar t0_;
-
-    //- True if a timeProfilePtr_ exists
-    // bool timeProfile_;
-
-    //- Name of the momentum source for FMU coupling
-    // word pumpMultiplierNameFromFMU_;
-
-    //- True if a momentumSourceNameForFMU exists
-    // bool fromFMU_;
 
 public:
 
@@ -158,7 +145,6 @@ public:
             //-
             bool timeDependent() const
             {
-                // return (timeProfile_ || fromFMU_);
                 return (momentumSourceTimeProfile_.valid());
             }
 };

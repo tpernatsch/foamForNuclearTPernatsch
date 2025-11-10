@@ -151,7 +151,7 @@ NusseltThermalBaffle1DFvPatchScalarField
     kw_(0),
     hw_(0)
 {
-    //  If I am either in onePhase OR (in twoPhase AND I am the controller fluid)
+    // If I am either in onePhase OR (in twoPhase AND I am the controller fluid)
     if (!twoPhase_ or twoPhaseOwner_)
     {
         if (this->owner())
@@ -171,10 +171,7 @@ NusseltThermalBaffle1DFvPatchScalarField
             const NusseltThermalBaffle1DFvPatchScalarField& nbrField =
             refCast<const NusseltThermalBaffle1DFvPatchScalarField>
             (
-                nbrPatch.lookupPatchField<volScalarField, scalar>
-                (
-                    TName_
-                )
+                nbrPatch.lookupPatchField<volScalarField, scalar>(TName_)
             );
             const_ = dict.getOrDefault<scalar>("const", nbrField.cnst());
             coeff_ = dict.getOrDefault<scalar>("coeff", nbrField.coeff());
@@ -185,14 +182,14 @@ NusseltThermalBaffle1DFvPatchScalarField
             hw_ = nbrField.hw();
         }
     }
-    else //  If I am in twoPhase AND I am not the controller fluid
+    else // If I am in twoPhase AND I am not the controller fluid
     {
         if (this->owner())
         {
-            //  Set ptr to otherFluidPatchFieldPtr_ but I cannot do this with
-            //  setPtrs as it might cause the whole constructor to fail (
-            //  setPtrs does other things as well, and does other things would
-            //  end up looking for patches that might not exist yet)
+            // Set ptr to otherFluidPatchFieldPtr_ but I cannot do this with
+            // setPtrs as it might cause the whole constructor to fail (
+            // setPtrs does other things as well, and does other things would
+            // end up looking for patches that might not exist yet)
             word fluidName(myOps::split<word>(TName_, '.')[1]);
             HashTable<const fluid*> fluids
             (
@@ -202,9 +199,9 @@ NusseltThermalBaffle1DFvPatchScalarField
             (
                 "T."
             +   (
-                    (fluids[fluids.toc()[0]]->name() == fluidName) ?
-                    fluids[fluids.toc()[1]]->name() :
-                    fluids[fluids.toc()[0]]->name()
+                    (fluids[fluids.toc()[0]]->name() == fluidName)
+                        ? fluids[fluids.toc()[1]]->name()
+                        : fluids[fluids.toc()[0]]->name()
                 )
             );
             otherFluidPatchFieldPtr_ =
@@ -213,11 +210,7 @@ NusseltThermalBaffle1DFvPatchScalarField
                 (
                     refCast<const NusseltThermalBaffle1DFvPatchScalarField>
                     (
-                        patch().lookupPatchField
-                        <
-                            volScalarField,
-                            scalar
-                        >
+                        patch().lookupPatchField<volScalarField, scalar>
                         (
                             otherFluidTName
                         )
@@ -406,8 +399,8 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
         {
             word otherFluidTName("T."+otherFluidPtr_->name());
 
-            //  Check that the BC for the other fluid is also of type
-            //  NusseltThermalBaffle1D
+            // Check that the BC for the other fluid is also of type
+            // NusseltThermalBaffle1D
             const mixedFvPatchScalarField& otherFluidPatchField =
                 refCast<const mixedFvPatchScalarField>
                 (
@@ -419,24 +412,20 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
             if (otherFluidPatchField.type() != this->type())
             {
                 FatalErrorInFunction()
-                << "Patch field for field " << otherFluidTName
-                << " should be of type " << this->type() << " instead of "
-                << otherFluidPatchField.type()
-                << exit(FatalError);
+                    << "Patch field for field " << otherFluidTName
+                    << " should be of type " << this->type() << " instead of "
+                    << otherFluidPatchField.type()
+                    << exit(FatalError);
             }
 
-            //  Set ptr to other fluid patch owner
+            // Set ptr to other fluid patch owner
             otherFluidPatchFieldPtr_ =
             &(
                 const_cast<NusseltThermalBaffle1DFvPatchScalarField&>
                 (
                     refCast<const NusseltThermalBaffle1DFvPatchScalarField>
                     (
-                        patch().lookupPatchField
-                        <
-                            volScalarField,
-                            scalar
-                        >
+                        patch().lookupPatchField<volScalarField, scalar>
                         (
                             otherFluidTName
                         )
@@ -444,7 +433,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
                 )
             );
 
-            //  Set ptr to other fluid patch nbr
+            // Set ptr to other fluid patch nbr
             const label otherFluidNbrPatchi =
                 otherFluidPatchFieldPtr_->samplePolyPatch().index();
             const fvPatch& nbrPatch =
@@ -489,14 +478,6 @@ void NusseltThermalBaffle1DFvPatchScalarField::setPtrs()
             pairPtr_ = pairs[pairs.toc()[0]];
         }
     }
-
-    /*
-    Info << "Fluid name: " << fluidPtr_->name() << endl;
-    if (otherFluidPtr_ != nullptr)
-    {
-        Info << "Other fluid name: " << otherFluidPtr_->name() << endl;
-    }
-    */
 }
 
 void NusseltThermalBaffle1DFvPatchScalarField::autoMap
@@ -507,11 +488,6 @@ void NusseltThermalBaffle1DFvPatchScalarField::autoMap
     mappedPatchBase::clearOut();
 
     mixedFvPatchScalarField::autoMap(m);
-
-    /*if (this->owner())
-    {
-        anyScalarFieldMember_.autoMap(m);
-    }*/
 }
 
 void NusseltThermalBaffle1DFvPatchScalarField::rmap
@@ -521,24 +497,17 @@ void NusseltThermalBaffle1DFvPatchScalarField::rmap
 )
 {
     mixedFvPatchScalarField::rmap(ptf, addr);
-
-    /*if (this->owner())
-    {
-        const NusseltThermalBaffle1DFvPatchScalarField& tiptf =
-            refCast<const NusseltThermalBaffle1DFvPatchScalarField>(ptf);
-        anyScalarFieldMember_.rmap(tiptf.anyScalarFieldMember_, addr);
-    }*/
 }
 
-//  Something super-weird  going on here... I had to override the evaluate
-//  method of mixedFvPatchScalarField in order to limit the deltaCoeffs
-//  as I was occasionally getting floating point exceptions here in MPI
-//  for very, very funky decomposed domains (e.g., random decomposition
-//  scheme). Even weirder though, If I store
-//  max(this->patch().deltaCoeffs(), 1e-69) in a scalarField and use
-//  that one instead in the denominator, it crashes as if I am not
-//  limiting it. No clue what is happening here, though results between
-//  funky MPI calculations and regular single-core ones agree well, so...
+// Something super-weird  going on here... I had to override the evaluate
+// method of mixedFvPatchScalarField in order to limit the deltaCoeffs
+// as I was occasionally getting floating point exceptions here in MPI
+// for very, very funky decomposed domains (e.g., random decomposition
+// scheme). Even weirder though, If I store
+// max(this->patch().deltaCoeffs(), 1e-69) in a scalarField and use
+// that one instead in the denominator, it crashes as if I am not
+// limiting it. No clue what is happening here, though results between
+// MPI calculations and regular single-core ones agree well, so...
 void NusseltThermalBaffle1DFvPatchScalarField::evaluate
 (
     const Pstream::commsTypes
@@ -569,8 +538,10 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
         return;
     }
 
-
-    if(this->internalField().mesh().time().timeIndex()>this->internalField().mesh().time().startTimeIndex() )
+    if (
+        this->internalField().mesh().time().timeIndex()
+        > this->internalField().mesh().time().startTimeIndex()
+    )
     {
         // Since we're inside initEvaluate/evaluate there might be processor
         // comms underway. Change the tag we use.
@@ -591,46 +562,30 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 const label otherFluidNbrPatchi =
                     otherFluidNbrPatchFieldPtr_->patch().index();
 
-                //  Cache fluid thermal conducitivities (molecular ones, not
-                //  effective ones as turbulence is supposed to be captured by the
-                //  Nusselt correlation)
+                // Cache fluid thermal conducitivities (molecular ones, not
+                // effective ones as turbulence is supposed to be captured by the
+                // Nusselt correlation)
 
 
-                //  Calculate heat transfer coefficients
+                // Calculate heat transfer coefficients
                 scalarField hf
                 (
-                    calcH
-                    (
-                        *pairPtr_,
-                        *this
-                    )()
+                    calcH(*pairPtr_, *this)()
                 );
                 scalarField nbrHf
                 (
-                    calcH
-                    (
-                        *pairPtr_,
-                        *nbrPatchFieldPtr_
-                    )()
+                    calcH(*pairPtr_, *nbrPatchFieldPtr_)()
                 );
                 scalarField otherFluidHf
                 (
-                    calcH
-                    (
-                        *otherPairPtr_,
-                        *otherFluidPatchFieldPtr_
-                    )()
+                    calcH(*otherPairPtr_, *otherFluidPatchFieldPtr_)()
                 );
                 scalarField otherFluidNbrHf
                 (
-                    calcH
-                    (
-                        *otherPairPtr_,
-                        *otherFluidNbrPatchFieldPtr_
-                    )()
+                    calcH(*otherPairPtr_, *otherFluidNbrPatchFieldPtr_)()
                 );
 
-                //  Internal field temperatures
+                // Internal field temperatures
                 scalarField Ti
                 (
                     this->patchInternalField()()
@@ -648,13 +603,13 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                     otherFluidNbrPatchFieldPtr_->patchInternalField()()
                 );
 
-                //  Effective turbulent thermal conductivities used only to adjust
-                //  the gradient to account for the fact that this BC "sees" a
-                //  cell-center - face-center heat transfer coefficient of hf
-                //  (and the calculated variants), while the rest of the code
-                //  "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
-                //  with k being the effective fluid thermal conductivity on the
-                //  patch
+                // Effective turbulent thermal conductivities used only to adjust
+                // the gradient to account for the fact that this BC "sees" a
+                // cell-center - face-center heat transfer coefficient of hf
+                // (and the calculated variants), while the rest of the code
+                // "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
+                // with k being the effective fluid thermal conductivity on the
+                // patch
                 scalarField kfEff(fluidPtr_->turbulence().kappaEff(patchi));
                 scalarField nbrKfEff(fluidPtr_->turbulence().kappaEff(nbrPatchi));
                 scalarField otherFluidKfEff
@@ -666,9 +621,9 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                     otherFluidPtr_->turbulence().kappaEff(otherFluidNbrPatchi)()
                 );
 
-                //  These calls are necessary to sync fields on nbr sides if the
-                //  nbr patch does not belong to the same processor as the owner
-                //  (only relevant in MPI)
+                // These calls are necessary to sync fields on nbr sides if the
+                // nbr patch does not belong to the same processor as the owner
+                // (only relevant in MPI)
                 mappedPatchBase::map().distribute(nbrKfEff);
                 mappedPatchBase::map().distribute(otherFluidNbrKfEff);
                 mappedPatchBase::map().distribute(nbrTi);
@@ -676,9 +631,9 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 mappedPatchBase::map().distribute(nbrHf);
                 mappedPatchBase::map().distribute(otherFluidNbrHf);
 
-                //  Set mixedFvPatchScalarField quantities required for BC update
-                //  As this runs only on the owner, I update the nbr values as well
-                //  so to have a truly implicit update
+                // Set mixedFvPatchScalarField quantities required for BC update
+                // As this runs only on the owner, I update the nbr values as well
+                // so to have a truly implicit update
                 scalarField hm(hf+otherFluidHf);
                 scalarField nbrHm(nbrHf+otherFluidNbrHf);
                 scalarField A(1.0+hm/hw_);
@@ -689,70 +644,54 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                     (nbrHf*nbrTi+otherFluidNbrHf*otherFluidNbrTi)/hw_
                 );
                 scalarField oneByAnbrAminOne(max(A*nbrA-1.0, 1e-69));
-                scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne); //  New T wall
-                scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne); //  New nbr T wall
+                scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne); // New T wall
+                scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne); // New nbr T wall
 
-                //this->valueFraction() = 0;
-                //this->refValue() = 0;
                 this->refGrad() = (hf/kfEff)*(Tw-Ti);
-                //nbrPatchFieldPtr_->valueFraction() = 0;
-                //nbrPatchFieldPtr_->refValue() = 0;
                 nbrPatchFieldPtr_->refGrad() = (nbrHf/nbrKfEff)*(nbrTw-nbrTi);
-                //otherFluidPatchFieldPtr_->valueFraction() = 0;
-                //otherFluidPatchFieldPtr_->refValue() = 0;
                 otherFluidPatchFieldPtr_->refGrad() =
                     (otherFluidHf/otherFluidKfEff)*(Tw-otherFluidTi);
-                //otherFluidNbrPatchFieldPtr_->valueFraction() = 0;
-                //otherFluidNbrPatchFieldPtr_->refValue() = 0;
                 otherFluidNbrPatchFieldPtr_->refGrad() =
                     (otherFluidNbrHf/otherFluidNbrKfEff)*(nbrTw-otherFluidNbrTi);
             }
             else if (!twoPhase_)
             {
-                //  Cache thermal conductivities
+                // Cache thermal conductivities
                 scalarField kf(fluidPtr_->turbulence().kappaEff(patchi));
                 scalarField nbrKf(fluidPtr_->turbulence().kappaEff(nbrPatchi));
 
-                //  Calculate heat transfer coefficients
+                // Calculate heat transfer coefficients
                 scalarField hf
                 (
-                    calcH
-                    (
-                        *pairPtr_,
-                        *this
-                    )()
+                    calcH(*pairPtr_, *this)()
                 );
                 scalarField nbrHf
                 (
-                    calcH
-                    (
-                        *pairPtr_,
-                        *nbrPatchFieldPtr_
-                    )()
+                    calcH(*pairPtr_, *nbrPatchFieldPtr_)()
                 );
 
-                //  Effective turbulent thermal conductivities used only to adjust
-                //  the gradient to account for the fact that this BC "sees" a
-                //  cell-center - face-center heat transfer coefficient of hf
-                //  (and the calculated variants), while the rest of the code
-                //  "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
-                //  with k being the effective fluid thermal conductivity on the
-                //  patch
+                // Effective turbulent thermal conductivities used only to adjust
+                // the gradient to account for the fact that this BC "sees" a
+                // cell-center - face-center heat transfer coefficient of hf
+                // (and the calculated variants), while the rest of the code
+                // "sees" a heat transfer coefficient of k*patch().deltaCoeffs(),
+                // with k being the effective fluid thermal conductivity on the
+                // patch
                 scalarField kfEff(fluidPtr_->turbulence().kappaEff(patchi));
                 scalarField nbrKfEff(fluidPtr_->turbulence().kappaEff(nbrPatchi));
 
-                //  Internal temperature fields
+                // Internal temperature fields
                 scalarField Ti(patchInternalField()());
                 scalarField nbrTi(nbrPatchFieldPtr_->patchInternalField()());
 
-                //  Distribute nbr quantities to avoid BS in MPI
+                // Distribute nbr quantities to avoid BS in MPI
                 mappedPatchBase::map().distribute(nbrKfEff);
                 mappedPatchBase::map().distribute(nbrTi);
                 mappedPatchBase::map().distribute(nbrHf);
 
-                //  Set mixedFvPatchScalarField quantities required for BC update
-                //  As this runs only on the owner, I update the nbr values as well
-                //  so to have a truly implicit update
+                // Set mixedFvPatchScalarField quantities required for BC update
+                // As this runs only on the owner, I update the nbr values as well
+                // so to have a truly implicit update
                 scalarField A(1.0+hf/hw_);
                 scalarField B((hf/hw_)*Ti);
                 scalarField nbrA(1.0+nbrHf/hw_);
@@ -761,11 +700,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::updateCoeffs()
                 scalarField Tw((B*nbrA+nbrB)/oneByAnbrAminOne);
                 scalarField nbrTw((nbrB*A+B)/oneByAnbrAminOne);
 
-                //this->valueFraction() = 0;
-                //this->refValue() = 0;
                 this->refGrad() = (hf/kfEff)*(Tw-Ti);
-                //nbrPatchFieldPtr_->valueFraction() = 0;
-                //nbrPatchFieldPtr_->refValue() = 0;
                 nbrPatchFieldPtr_->refGrad() = (nbrHf/nbrKfEff)*(nbrTw-nbrTi);
             }
         }
@@ -802,35 +737,35 @@ tmp<scalarField> NusseltThermalBaffle1DFvPatchScalarField::calcH
 )
 {
     const label patchi(patchField.patch().index());
-    //  Molecular thermal conducitivity for computing the htc from the Nu
+    // Molecular thermal conducitivity for computing the htc from the Nu
     scalarField k(pair.fluidRef().thermo().kappa(patchi));
     const scalarField& Re(pair.Re().boundaryField()[patchi]);
     const scalarField& Pr(pair.fluidRef().Pr().boundaryField()[patchi]);
     const scalarField& Dh(pair.structureRef().Dh().boundaryField()[patchi]);
-    if (pair.fPtr().valid()) //  Not valid in onePhase
+    if (pair.fPtr().valid()) // Not valid in onePhase
     {
         const scalarField& f(pair.f().boundaryField()[patchi]);
         return
+        (
             (
-                (
-                    patchField.cnst()
-                +   patchField.coeff()*
-                    pow(Re, patchField.expRe())*
-                    pow(Pr, patchField.expPr())
-                )*f*k/Dh
-            );
+                patchField.cnst()
+            +   patchField.coeff()*
+                pow(Re, patchField.expRe())*
+                pow(Pr, patchField.expPr())
+            )*f*k/Dh
+        );
     }
     else
     {
         return
+        (
             (
-                (
-                    patchField.cnst()
-                +   patchField.coeff()*
-                    pow(Re, patchField.expRe())*
-                    pow(Pr, patchField.expPr())
-                )*k/Dh
-            );
+                patchField.cnst()
+            +   patchField.coeff()*
+                pow(Re, patchField.expRe())*
+                pow(Pr, patchField.expPr())
+            )*k/Dh
+        );
     }
 }
 
@@ -848,7 +783,7 @@ void NusseltThermalBaffle1DFvPatchScalarField::write(Ostream& os) const
     os.writeKeyword("expPr")<< expPr_
         << token::END_STATEMENT << nl;
 
-    if (this->owner() and ((twoPhase_ and twoPhaseOwner_) or !twoPhase_))
+    if (this->owner() && ((twoPhase_ and twoPhaseOwner_) || !twoPhase_))
     {
         os.writeKeyword("thickness")<< tw_
             << token::END_STATEMENT << nl;

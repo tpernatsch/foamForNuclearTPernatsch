@@ -173,9 +173,13 @@ protected:
     //  subMeshSize_) representing the temperatures in each node
     IOFieldField<Field, scalar> T_;
 
-    //- Fields representing max, matrix and surface temperatures
+    //- Field representing max temperature
     volScalarField Tmax_;
+
+    //- Field representing matrix temperature
     volScalarField Tmatrix_;
+
+    //- Field representing surface temperature
     volScalarField Tsurface_;
 
     //- Field representing the laplacian of the matrix temperature
@@ -201,6 +205,8 @@ protected:
     //- Thermal conductivity for matrix node (only one matrix structure) in
     //  W/m/K
     scalarList kappaMatrix_;
+
+    //-
     volScalarField kappaMatrixField_;
 
     //- Heat conductances between nodes (including first and last
@@ -264,19 +270,6 @@ public:
 
         //- Return surface temperature (i.e. outer cladding temperature)
         virtual void correctT(volScalarField& T) const;
-
-
-        //- Const access
-
-            // const autoPtr<volScalarField>& TmatrixPtr() const
-            // {
-            //     return TmatrixPtr_;
-            // }
-
-            // const volScalarField& Tmatrix() const
-            // {
-            //     return TmatrixPtr_();
-            // }
 };
 
 

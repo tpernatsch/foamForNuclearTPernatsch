@@ -56,7 +56,7 @@ Usage
             [nameOfCellZone]
             {
             type    ReynoldsPower;
-            coeff   1.84; //
+            coeff   1.84;
             exp     -0.2;
             }
         }
@@ -75,22 +75,21 @@ Usage
                 localX
                 {
                     type    ReynoldsPower;
-                    coeff   1.84; //
+                    coeff   1.84;
                     exp     -0.2;
                 }
                 localY
                 {
                     type    ReynoldsPower;
-                    coeff   1.84; //
+                    coeff   1.84;
                     exp     -0.2;
                 }
                 localZ
                 {
                     type    ReynoldsPower;
-                    coeff   0.184; //
+                    coeff   0.184;
                     exp     -0.2;
                 }
-
             }
         }
     }
@@ -151,6 +150,8 @@ protected :
 
     //- Fluid velocity
     const volVectorField& U_;
+
+    //-
     const volScalarField& magU_;
 
     //-
@@ -170,7 +171,11 @@ protected :
 
     //-
     bool validX_;
+
+    //-
     bool validY_;
+
+    //-
     bool validZ_;
 
 public:
@@ -195,13 +200,6 @@ public:
         //  for fluid-structure drag.
         void correctField(volTensorField& Kd) const;
 
-        //- Access
-
-            /*
-            const labelList& cells() const
-            {
-                return cells_;
-            }*/
 };
 
 

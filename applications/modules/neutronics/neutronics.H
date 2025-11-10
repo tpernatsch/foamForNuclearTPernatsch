@@ -45,6 +45,21 @@ Description
     Base class for neutronic models.
     Reference publications [@FIORINA201524] [@FIORINA201515226].
 
+Usage
+
+    In the neutronicsProperties file, for keff calculation in a critical
+    reactor:
+    \verbatim
+        eigenvalueNeutronics        true;
+    \endverbatim
+
+    For a subcritical reactor driven by an external neutron source (only for
+    diffusionNeutronics sub-solver):
+    \verbatim
+        eigenvalueNeutronics        false;
+        externalSourceNeutronics    true;
+    \endverbatim
+
 
 \mainauthor of this file (and associated .C or included .H files):
     Carlo Fiorina <carlo.fiorina@outlook.com; carlo.fiorina@epfl.ch;>, EPFL (Swizerland)

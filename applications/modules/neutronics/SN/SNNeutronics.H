@@ -131,13 +131,25 @@ protected:
     //- Cross sections
     XS xs_;
 
-    // Quadrature Set
+    //- Quadrature Set
     IOdictionary quadratureSet_;
+
+    //-
     label discreteDirections_;
+
+    //-
     vectorField directionVersors_;
+
+    //-
     scalarField directionWeights_;
+
+    //-
     PtrList<scalarSquareMatrix> legendreMatrices_;
+
+    //-
     surfaceScalarField facePhi_;
+
+    //-
     PtrList<surfaceScalarField> facePhis_;
 
     //- Fields
@@ -148,31 +160,59 @@ protected:
 
     //- Precursors per volume salt
     PtrList<volScalarField> precStar_;
+
+    //-
     volScalarField defaultFlux_;
+
+    //-
     volScalarField defaultPrec_;
 
-    //Derived fields
-    PtrList<volScalarField> flux_;
-    volScalarField neutroSource_;
-    volScalarField delayedNeutroSource_;
+    // Derived fields
 
-    //- For Aitken eigenvalue
-    scalar keff0_;
-    scalar keff1_;
-    scalar keff2_;
-    int aitkenIterCounter_;
-    int aitkenIterNo_;
+        //-
+        PtrList<volScalarField> flux_;
+
+        //-
+        volScalarField neutroSource_;
+
+        //-
+        volScalarField delayedNeutroSource_;
+
+    // For Aitken eigenvalue
+
+        //-
+        scalar keff0_;
+
+        //-
+        scalar keff1_;
+
+        //-
+        scalar keff2_;
+
+        //-
+        int aitkenIterCounter_;
+
+        //-
+        int aitkenIterNo_;
 
     //- Also mapped, but these are autoPtr as these field are not needed at all
     //  unless doing liquidFuel. Thus, avoid wasting memory by only setting
     //  these fields if they are actually needed
     autoPtr<volVectorField> UPtr_;
+
+    //-
     autoPtr<volScalarField> alphaPtr_;
+
+    //-
     autoPtr<volScalarField> alphatPtr_;
+
+    //-
     autoPtr<volScalarField> muPtr_;
 
     //- Fields derived from mapped fields
     autoPtr<surfaceScalarField> phiPtr_;
+
+    //-
     autoPtr<volScalarField> diffCoeffPrecPtr_;
 
 private:

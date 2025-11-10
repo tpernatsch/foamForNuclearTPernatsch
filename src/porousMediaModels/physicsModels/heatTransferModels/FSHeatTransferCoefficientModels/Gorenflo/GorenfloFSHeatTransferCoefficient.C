@@ -96,7 +96,7 @@ Foam::FSHeatTransferCoefficientModels::Gorenflo::Gorenflo
         nullptr
     ),
     p_(pair.mesh().lookupObject<volScalarField>("p")),
-    pCrit_(2.209e7), //  Specific to Water
+    pCrit_(2.209e7), // Specific to Water
     h0_(5600),
     q0_(20000),
     R0_(4e-7),
@@ -106,38 +106,6 @@ Foam::FSHeatTransferCoefficientModels::Gorenflo::Gorenflo
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-/*
-IMPLEMENTATION NOTES
-
-The original pool boiling heat transfer coefficient by Gorenflo is the following
-form:
-
-htcPB = h0_*F*((q/q0_)^n)*(R_/R0_)^0.133
-
-with F being a function of the reduced pressure, i.e. p/pCtri_. Needless to
-say, this form is not particularly suitable for a numerical implementation in
-its current form as htcPB is required to compute q in the first place. In
-general, the pool boiling heat flux is given by:
-
-q = htc*(Twall-Tsat)
-
-with htc being the total heat transfer coefficient between wall and fluid,
-Twall being the wall temperature and Tsat the saturation temperature. By
-assuming that htc ~ htcPB (i.e. that most of the heat flux is due to the pool
-boiling mechanism), one can tha equate:
-
-htcPB = h0_*F*((htcPB*(Twall-Tsat)/q0_)^n)*(R_/R0_)^0.133
-
-which can be re-arranged to isolate htcPB on the left hand side as:
-
-htcPB = (h0_*F*((Twall-Tsat)^n)*(R_/R0_)^0.133/(q0_^n))^(1.0/(1.0-n))
-
-Which is how the correlation is implemented here.
-The assumption of htc ~ htcPB can be rather crude but it is widely employed
-to yield a feasable numerical implementation in other computer codes too (e.g.
-TRACE)
-*/
 
 Foam::scalar Foam::FSHeatTransferCoefficientModels::Gorenflo::value
 (
@@ -155,21 +123,25 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Gorenflo::value
             return pow(h0_*A_*F*pow(deltaT/q0_,n), (1.0/(1.0-n)));
         }
         else
+        {
             return 0.0;
+        }
     }
     else
     {
         const scalar& q((*q_)[celli]);
         if (q > 0.0)
         {
-            //  Reduced pressure
+            // Reduced pressure
             scalar pR(p_[celli]/pCrit_);
             scalar F(1.73*pow(pR, 0.27) + (6.1+0.68/(1.0-pR))*sqr(pR));
             scalar n(0.9-0.3*pow(pR, 0.15));
             return h0_*F*pow(q/q0_, n)*A_;
         }
         else
+        {
             return 0.0;
+        }
     }
 }
 

@@ -409,22 +409,38 @@ protected:
     //  across fuel and cladding
     IOFieldField<Field, scalar> Trad_;
 
-    //- Fields representing pin centerline, outer fuel, inner cladding and
-    //  outer cladding temperatures
+    //- Field representing pin centerlinetemperature
     volScalarField Tfi_;
+
+    //- Field representing pin outer fuel temperature
     volScalarField Tfo_;
+
+    //- Field representing pin inner cladding temperature
     volScalarField Tci_;
+
+    //- Field representing pin outer cladding temperature
     volScalarField Tco_;
 
-    //- Average fuel and cladding temperatures
+    //- Average fuel temperature
     volScalarField Tfav_;
+
+    //- Average cladding temperature
     volScalarField Tcav_;
 
-    //- Scalars that are input in the IOdictionary for passing min/max fuel
-    //  clad temperatures
+    //- Scalar that are input in the IOdictionary for passing max fuel
+    //  temperature
     scalar Tfmax_;
+
+    //- Scalar that are input in the IOdictionary for passing min fuel
+    //  temperature
     scalar Tfmin_;
+
+    //- Scalar that are input in the IOdictionary for passing max cladding
+    //  temperature
     scalar Tcmax_;
+
+    //- Scalar that are input in the IOdictionary for passing min cladding
+    //  temperature
     scalar Tcmin_;
 
     //- Fraction of power from neutronics that goes to this powerModel

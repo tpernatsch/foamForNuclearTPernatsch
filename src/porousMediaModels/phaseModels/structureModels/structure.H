@@ -82,7 +82,7 @@ SourceFiles
 namespace Foam
 {
 
-//- Forward declarations
+// Forward declarations
 class fluid;
 
 /*---------------------------------------------------------------------------*\
@@ -287,9 +287,6 @@ public:
             fluid& fluid,
             const volScalarField& H
         ) const;
-
-        //- Function to access any member field of a powerModel, needed e.g.
-        //  to get temperatures from the fuelModel
 
         //- Turn off all powerDensity fields of all the powerModels if the
         //  powerOffCriterionModel criterion is satisfied

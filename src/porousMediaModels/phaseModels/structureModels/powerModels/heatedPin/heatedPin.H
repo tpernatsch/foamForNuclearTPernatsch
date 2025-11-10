@@ -99,16 +99,19 @@ protected:
     //- Power density of the pin
     volScalarField powerDensity_;
 
-    //- Fields representing inner and outer pin temperatures
+    //- Fields representing inner pin temperature
     volScalarField Ti_;
+
+    //- Fields representing outer pin temperature
     volScalarField To_;
 
     //- Average temperature
     volScalarField Tav_;
 
-    //- Scalars that are input in the IOdictionary for passing min/max
-    //  temperatures
+    //- Scalars that are input in the IOdictionary for passing min temperature
     scalar Tmax_;
+
+    //- Scalars that are input in the IOdictionary for passing max temperature
     scalar Tmin_;
 
     //- Number of cells in the 1-D radial mesh

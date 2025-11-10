@@ -151,10 +151,6 @@ void albedoSP3FvPatchField<Type>::rmap
 )
 {
     fvPatchField<Type>::rmap(ptf, addr);
-
-    // const albedoSP3FvPatchField<Type>& fgptf =
-    //     refCast<const albedoSP3FvPatchField<Type> >(ptf);
-
 }
 
 
@@ -177,13 +173,13 @@ void albedoSP3FvPatchField<Type>::evaluate(const Pstream::commsTypes)
             fluxStarAlbedo_
         );
 
-    if(forSecondMoment_)
+    if (forSecondMoment_)
     {
         Field<Type>::operator=
         (
             this->patchInternalField()
-        + (this->patchInternalField()*gamma_/diffCoeff*21.0/20.0)/this->patch().deltaCoeffs()
-        -  (Type(pTraits<Type>::one)*fluxStarAlbedo*gamma_/(diffCoeff*27.0/35.0)*3.0/20.0)/this->patch().deltaCoeffs()
+            + (this->patchInternalField()*gamma_/diffCoeff*21.0/20.0)/this->patch().deltaCoeffs()
+            - (Type(pTraits<Type>::one)*fluxStarAlbedo*gamma_/(diffCoeff*27.0/35.0)*3.0/20.0)/this->patch().deltaCoeffs()
         );
     }
     else
@@ -191,8 +187,8 @@ void albedoSP3FvPatchField<Type>::evaluate(const Pstream::commsTypes)
         Field<Type>::operator=
         (
             this->patchInternalField()
-        + (this->patchInternalField()*gamma_/diffCoeff)/this->patch().deltaCoeffs()
-        -  (Type(pTraits<Type>::one)*fluxStarAlbedo*gamma_/diffCoeff*3.0/4.0)/this->patch().deltaCoeffs()
+            + (this->patchInternalField()*gamma_/diffCoeff)/this->patch().deltaCoeffs()
+            - (Type(pTraits<Type>::one)*fluxStarAlbedo*gamma_/diffCoeff*3.0/4.0)/this->patch().deltaCoeffs()
         );
     }
 
@@ -205,31 +201,21 @@ tmp<Field<Type> > albedoSP3FvPatchField<Type>::valueInternalCoeffs
 (
     const tmp<scalarField>&
 ) const
-
 {
-
     const Field<scalar>& diffCoeff =
         this->patch().template lookupPatchField<volScalarField, scalar>
         (
             diffCoeffName_
         );
-    // const Field<scalar>& fluxStarAlbedo =
-    //     this->patch().template lookupPatchField<volScalarField, scalar>
-    //     (
-    //         fluxStarAlbedo_
-    //     );
 
-    if(forSecondMoment_)
+    if (forSecondMoment_)
     {
         return Type(pTraits<Type>::one) * (1 + gamma_/(diffCoeff*27.0/35.0)*21.0/20.0/this->patch().deltaCoeffs());
-
     }
     else
     {
         return Type(pTraits<Type>::one) * (1 + gamma_/diffCoeff/this->patch().deltaCoeffs());
     }
-
-
 }
 
 template<class Type>
@@ -237,7 +223,6 @@ tmp<Field<Type> > albedoSP3FvPatchField<Type>::valueBoundaryCoeffs
 (
     const tmp<scalarField>&
 ) const
-
 {
     const Field<scalar>& diffCoeff =
         this->patch().template lookupPatchField<volScalarField, scalar>
@@ -250,10 +235,9 @@ tmp<Field<Type> > albedoSP3FvPatchField<Type>::valueBoundaryCoeffs
             fluxStarAlbedo_
         );
 
-    if(forSecondMoment_)
+    if (forSecondMoment_)
     {
         return -Type(pTraits<Type>::one) * (fluxStarAlbedo*gamma_/(diffCoeff*27.0/35.0)*3.0/20.0/this->patch().deltaCoeffs());
-
     }
     else
     {
@@ -273,22 +257,15 @@ gradientInternalCoeffs() const
         (
             diffCoeffName_
         );
-    // const Field<scalar>& fluxStarAlbedo =
-    //     this->patch().template lookupPatchField<volScalarField, scalar>
-    //     (
-    //         fluxStarAlbedo_
-    //     );
 
-    if(forSecondMoment_)
+    if (forSecondMoment_)
     {
         return Type(pTraits<Type>::one)*(- gamma_/(diffCoeff*27.0/35.0)*21.0/20.0);
-
     }
     else
     {
         return Type(pTraits<Type>::one)*(- gamma_/diffCoeff);
     }
-
 }
 
 
@@ -307,10 +284,9 @@ gradientBoundaryCoeffs() const
             fluxStarAlbedo_
         );
 
-    if(forSecondMoment_)
+    if (forSecondMoment_)
     {
         return Type(pTraits<Type>::one)*fluxStarAlbedo*gamma_/(diffCoeff*27.0/35.0)*3.0/20.0;
-
     }
     else
     {
@@ -326,11 +302,6 @@ tmp<Field<Type> > albedoSP3FvPatchField<Type>::snGrad() const
         (
             diffCoeffName_
         );
-    // const Field<scalar>& fluxStarAlbedo =
-    //     this->patch().template lookupPatchField<volScalarField, scalar>
-    //     (
-    //         fluxStarAlbedo_
-    //     );
 
     return (- (this->patchInternalField()*gamma_/diffCoeff));
 }
@@ -338,7 +309,6 @@ tmp<Field<Type> > albedoSP3FvPatchField<Type>::snGrad() const
 template<class Type>
 void albedoSP3FvPatchField<Type>::write(Ostream& os) const
 {
-
     fvPatchField<Type>::write(os);
 
     os.writeKeyword("gamma")
@@ -351,7 +321,6 @@ void albedoSP3FvPatchField<Type>::write(Ostream& os) const
         << forSecondMoment_ << token::END_STATEMENT << nl;
 
     this->writeEntry("value", os);
-
 }
 
 
@@ -366,6 +335,7 @@ namespace Foam
 makePatchTypeFieldTypedefs(albedoSP3);
 
 makePatchFields(albedoSP3);
+
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 } // End namespace Foam

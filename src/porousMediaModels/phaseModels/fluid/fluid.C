@@ -353,7 +353,6 @@ Foam::fluid::fluid
         dimensionedScalar("", dimLength, SMALL),
         zeroGradientFvPatchScalarField::typeName
     ),
-    //dispersion_(mesh.C().size(), scalar(0.0)),
     thermoResidualAlpha_
     (
         dimensionedScalar::lookupOrDefault
@@ -376,18 +375,17 @@ Foam::fluid::fluid
         Info << endl << "Constructing fluid" << endl;
     }
 
-    //  Construct thermodynamics package
+    // Construct thermodynamics package
     thermo_.reset(rhoThermo::New(mesh, this->name()));
 
     mesh.setFluxRequired(this->name());
 
-    //  Set initial cellZone powerDensity,
-    //  if no field already available in time folder
+    // Set initial cellZone powerDensity,
+    // if no field already available in time folder
     if (dict_.found("initialPowerDensity"))
     {
-        if(!powerDensityNeutronicsToLiquid.typeHeaderOk<volScalarField>(true))
+        if (!powerDensityNeutronicsToLiquid.typeHeaderOk<volScalarField>(true))
         {
-            //volScalarField& powerDensity(powerDensityPtr_());
             volScalarField& powerDensity(powerDensityNeutronicsToLiquid);
             const dictionary& powerDensity0s
             (
@@ -423,7 +421,7 @@ Foam::fluid::fluid
         }
     }
 
-    //  Set initial cellZone phase fractions, if present
+    // Set initial cellZone phase fractions, if present
     if (dict_.found("initialAlpha"))
     {
         const dictionary& alpha0s
@@ -461,8 +459,8 @@ Foam::fluid::fluid
 
     thermo_->validate(phaseName, "h", "e");
 
-    //  Set Boussinesq_ flag by reading thermophysicalProperties data and init
-    //  rho0Ptr if using the Boussinesq approx
+    // Set Boussinesq_ flag by reading thermophysicalProperties data and init
+    // rho0Ptr if using the Boussinesq approx
     List<char> delimiters(3);
     delimiters[0] = '<';
     delimiters[1] = '>';
@@ -504,8 +502,8 @@ Foam::fluid::fluid
             );
     }
 
-    //  The rest of the constructor is only for correctly setting the
-    //  boundary conditions of phi
+    // The rest of the constructor is only for correctly setting the
+    // boundary conditions of phi
     const word phiName = IOobject::groupName("phi", this->name());
 
     IOobject phiHeader
@@ -587,17 +585,17 @@ Foam::fluid::fluid
         );
     }
 
-    //  What about alphaPhi, alphaRhoPhi? Well, these depend on the
-    //  phase fraction (unlike phi) but at this step there have been no
-    //  phase fractions normalizations (which can only be done by the main
-    //  solver). Thus, rather than tentatively set the fields twice (here,
-    //  maybe wrong, and then in the main to correct for potential phase
-    //  fraction normalization issues), this needs to be handled by the
-    //  main solver via the initAlphaPhis function. Needless to say, if
-    //  alphaPhi and alphaRhoPhi are found on disk, those are read and that's
-    //  the end of it
+    // What about alphaPhi, alphaRhoPhi? Well, these depend on the
+    // phase fraction (unlike phi) but at this step there have been no
+    // phase fractions normalizations (which can only be done by the main
+    // solver). Thus, rather than tentatively set the fields twice (here,
+    // maybe wrong, and then in the main to correct for potential phase
+    // fraction normalization issues), this needs to be handled by the
+    // main solver via the initAlphaPhis function. Needless to say, if
+    // alphaPhi and alphaRhoPhi are found on disk, those are read and that's
+    // the end of it
 
-    //  Init placeholder fields
+    // Init placeholder fields
     kappa_ = thermo_->kappa();
     Cp_ = thermo_->Cp();
     mu_ = thermo_->mu();
@@ -620,7 +618,7 @@ void Foam::fluid::initTwoPhaseFields() const
         new scalarField(mesh_.C().size(), int(0))
     );
 
-    if(!flowQualityPtr_.valid())
+    if (!flowQualityPtr_.valid())
     {
         flowQualityPtr_.reset
         (
@@ -668,9 +666,9 @@ void Foam::fluid::initTwoPhaseFields() const
                             "writeAllFields",
                             false
                         )
-                    ) ?
-                    IOobject::AUTO_WRITE :
-                    IOobject::NO_WRITE
+                    )
+                    ? IOobject::AUTO_WRITE
+                    : IOobject::NO_WRITE
                 )
             ),
             mesh_,
@@ -761,7 +759,6 @@ void Foam::fluid::correctDiameter()
     {
         diameterPtr_->correctField(Dh_);
     }
-
 }
 
 void Foam::fluid::correctThermoResidualMarkers()
@@ -795,17 +792,21 @@ void Foam::fluid::correctThermoResidualMarkers()
 volScalarField& Foam::fluid::rho(bool isVariableIfBoussinesq)
 {
     if (Boussinesq_ and !isVariableIfBoussinesq)
+    {
         return *rho0Ptr_;
-    else
-        return thermo_->rho();
+    }
+
+    return thermo_->rho();
 }
 
 const volScalarField& Foam::fluid::rho(bool isVariableIfBoussinesq) const
 {
     if (Boussinesq_ and !isVariableIfBoussinesq)
+    {
         return *rho0Ptr_;
-    else
-        return thermo_->rho();
+    }
+
+    return thermo_->rho();
 }
 
 

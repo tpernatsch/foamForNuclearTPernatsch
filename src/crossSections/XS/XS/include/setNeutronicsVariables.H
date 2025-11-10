@@ -48,33 +48,6 @@ forAll(CRentries_, CRzoneI)
 }
 
 
-// // Compute expansions
-// tmp<volVectorField> tDNeutroRad(new volVectorField(Disp));
-// volVectorField& DNeutroRad = tDNeutroRad.ref();
-
-// tmp<volScalarField> tDNeutroAx(new volScalarField(Disp & axialOrientation_));
-// volScalarField& DNeutroAx = tDNeutroAx.ref();
-
-// DNeutroRad.replace(0, DNeutroRad.component(0)*(1.0 - axialOrientation_[0]));
-// DNeutroRad.replace(1, DNeutroRad.component(1)*(1.0 - axialOrientation_[1]));
-// DNeutroRad.replace(2, DNeutroRad.component(2)*(1.0 - axialOrientation_[2]));
-
-// DNeutroRad.correctBoundaryConditions();
-// DNeutroAx.correctBoundaryConditions();
-
-// radExp_ = fvc::div(DNeutroRad)/2.0;
-// axExp_ = fvc::grad(DNeutroAx) & axialOrientation_;
-
-// radExp_.correctBoundaryConditions();
-// axExp_.correctBoundaryConditions();
-
-// tDNeutroRad.clear();
-// tDNeutroAx.clear();
-
-// log(T) if fast spectrum or sqrt(T) if thermal
-// logT_ = log(max(0.01, Tfuel/dimensionedScalar("", dimTemperature, 1.0)));
-// sqrtT_ = pow(max(dimensionedScalar("", dimTemperature, 0.0), Tfuel), 0.5);
-
 // Change variable law
 forAll(xsVariableNames_, varI)
 {
@@ -230,16 +203,6 @@ forAll(nuSigmaEff_, energyI)
             // Adjustment of D and XS for current reactor conditions of:
             // Tfuel, cladExp, Tcool, rhoCool, TStructMech, axialExp and
             // radialExp.
-
-            // scalarList variableValues({
-            //     fastNeutrons_? logT_[cellIglobal] : sqrtT_[cellIglobal],
-            //     Tclad[cellIglobal],
-            //     Tcool[cellIglobal],
-            //     TStructMech[cellIglobal],
-            //     rhoCool[cellIglobal],
-            //     axExp_[cellIglobal],
-            //     radExp_[cellIglobal]
-            // });
 
             if (!isReadXS_)
             {

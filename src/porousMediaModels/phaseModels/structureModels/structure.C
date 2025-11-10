@@ -116,7 +116,7 @@ Foam::structure::structure
             "T.activeStructure",
             mesh.time().timeName(),
             mesh,
-            IOobject::NO_READ, //  Constructed from powerModel initial Ts
+            IOobject::NO_READ, // Constructed from powerModel initial Ts
             IOobject::NO_WRITE
         ),
         mesh,
@@ -243,7 +243,7 @@ Foam::structure::structure
     this->IOobject::headerClassName() = "volScalarField";
     this->volScalarField::headerClassName() = "volScalarField";
 
-    //  At least it worked for this field
+    // At least it worked for this field
     Tpas_.headerClassName() = "volScalarField";
 
     bool alphaHeaderOk(this->typeHeaderOk<volScalarField>(true));
@@ -251,13 +251,13 @@ Foam::structure::structure
 
     forAll(dict.toc(), i)
     {
-        //  The sturctureProperties dictionary keys consist in cellZone names.
-        //  These keys can consist in either the name of a single cellZone, or
-        //  for brevitiy, multplie cellZone names in a single string (e.g. if
-        //  multiple cellZones share the same structure properties, e.g.
-        //  powerModels, void fraction, hydraulic diameter, etc.). The format
-        //  for the latter is "zone0:zone1:zone2:...:zoneN", i.e. the colon is
-        //  the separation character between zone names
+        // The sturctureProperties dictionary keys consist in cellZone names.
+        // These keys can consist in either the name of a single cellZone, or
+        // for brevitiy, multplie cellZone names in a single string (e.g. if
+        // multiple cellZones share the same structure properties, e.g.
+        // powerModels, void fraction, hydraulic diameter, etc.). The format
+        // for the latter is "zone0:zone1:zone2:...:zoneN", i.e. the colon is
+        // the separation character between zone names
         word key(dict.toc()[i]);
         if (key == "type") continue;
         if (key == "powerOffCriterionModel") continue;
@@ -271,7 +271,7 @@ Foam::structure::structure
             word zone(zones[i]);
             const labelList& zoneCellList(mesh.cellZones()[zone]);
 
-            //  Construct cellLists_, cells_, cellFields_
+            // Construct cellLists_, cells_, cellFields_
             regions_.append(zone);
             cellLists_.insert
             (
@@ -293,9 +293,9 @@ Foam::structure::structure
                 zoneCellField
             );
 
-            //  Set volumeFraction of the structure, hydraulic diameter.
-            //  volumeFraction set here only if alpha.structure not found
-            //  on disk
+            // Set volumeFraction of the structure, hydraulic diameter.
+            // volumeFraction set here only if alpha.structure not found
+            // on disk
             scalar Dh(zoneDict.get<scalar>("Dh"));
             if (!alphaHeaderOk)
             {
@@ -317,8 +317,8 @@ Foam::structure::structure
             }
 
 
-            //  Set HashTable of volumeFraction volScalarField indexed by
-            //  region (i.e. zone) name
+            // Set HashTable of volumeFraction volScalarField indexed by
+            // region (i.e. zone) name
             volScalarField zoneAlphaField(*this);
             zoneAlphaField.primitiveFieldRef() *= zoneCellField;
             zoneAlphaField.correctBoundaryConditions();
@@ -328,7 +328,7 @@ Foam::structure::structure
                 zoneAlphaField
             );
 
-            //  Read momentum source
+            // Read momentum source
             if (zoneDict.found("momentumSource"))
             {
                 pumps_.insert
@@ -367,7 +367,7 @@ Foam::structure::structure
                 }
             }
 
-            //  Set passive properties fields if keywords present
+            // Set passive properties fields if keywords present
             if (zoneDict.isDict("passiveProperties"))
             {
                 foundAtLeastOnePassivePropertiesDict = true;
@@ -377,8 +377,8 @@ Foam::structure::structure
                     zoneDict.subDict("passiveProperties")
                 );
 
-                //  Set interfacial area and rhoCp (later, alphaRhoCp) of the
-                //  passive subStructure
+                // Set interfacial area and rhoCp (later, alphaRhoCp) of the
+                // passive subStructure
                 scalar iApas(pasDict.get<scalar>("volumetricArea"));
                 scalar rhoCppas(0);
                 if
@@ -419,13 +419,13 @@ Foam::structure::structure
                 {
                     label cellj(zoneCellList[j]);
                     iApas_[cellj] = iApas;
-                    alphaRhoCppas_[cellj] = rhoCppas;   //  The multiplication
-                                                        //  by alphapas_ will
-                                                        //  be done at the end
+                    alphaRhoCppas_[cellj] = rhoCppas;   // The multiplication
+                                                        // by alphapas_ will
+                                                        // be done at the end
                 }
 
-                //  Only adjust passive subStructure volume fraction if keyword
-                //  found in the passive properties dictionary
+                // Only adjust passive subStructure volume fraction if keyword
+                // found in the passive properties dictionary
                 if (pasDict.found("volumeFraction"))
                 {
                     scalar alphapas(pasDict.get<scalar>("volumeFraction"));
@@ -435,19 +435,19 @@ Foam::structure::structure
                         alphapas_[cellj] = alphapas;
                     }
                 }
-                //  If the alpha.structure file does not exist in the initial
-                //  time step folder, and a volumeFraction keyword is not found
-                //  in the passive subStructure dict, init value to region
-                //  alpha value, read before
+                // If the alpha.structure file does not exist in the initial
+                // time step folder, and a volumeFraction keyword is not found
+                // in the passive subStructure dict, init value to region
+                // alpha value, read before
 
-                //  NOTE: Oddly enough, the class keyword in the file headers
-                //  of alphapas_, Tpas_, are set to byZone rather than
-                //  volScalarField. This is due to some weird dark magic of
-                //  the runTimeSelection mechanism, which I have no will to
-                //  investigate. Thus, to check that fields are present, the
-                //  headerType that needs to be looked for is byZone, not
-                //  volScalarField. Thanks to Carlo for finding out about this
-                //  odd behaviour
+                // NOTE: Oddly enough, the class keyword in the file headers
+                // of alphapas_, Tpas_, are set to byZone rather than
+                // volScalarField. This is due to some weird dark magic of
+                // the runTimeSelection mechanism, which I have no will to
+                // investigate. Thus, to check that fields are present, the
+                // headerType that needs to be looked for is byZone, not
+                // volScalarField. Thanks to Carlo for finding out about this
+                // odd behaviour
                 else if (!alphaHeaderOk)
                 {
                     scalar alpha(zoneDict.get<scalar>("volumeFraction"));
@@ -458,8 +458,8 @@ Foam::structure::structure
                     }
                 }
 
-                //  If the passive subStructure temperature field does not
-                //  exist in the initial time step folder, get it from dict
+                // If the passive subStructure temperature field does not
+                // exist in the initial time step folder, get it from dict
                 if (!TpasHeaderOk)
                 {
                     scalar Tpas(pasDict.get<scalar>("T"));
@@ -471,11 +471,11 @@ Foam::structure::structure
                 }
             }
 
-            //  Now for the rotation matrices to move from the global to the
-            //  local reference frame
+            // Now for the rotation matrices to move from the global to the
+            // local reference frame
 
-            //  Lambda function to rotate a vector around an axis by a certain
-            //  angle in radians, counter-clockwise
+            // Lambda function to rotate a vector around an axis by a certain
+            // angle in radians, counter-clockwise
             auto rotateCCWAroundAxisByAngle = []
             (
                 vector& v,
@@ -495,12 +495,11 @@ Foam::structure::structure
                     y*x*(1-c)+z*s,      c+sqr(y)*(1-c),     y*z*(1-c)-x*s,
 
                     z*x*(1-c)-y*s,      z*y*(1-c)+x*s,      c+sqr(z)*(1-c)
-
                 );
                 v = R & v;
             };
 
-            //  Construct rotation matrices
+            // Construct rotation matrices
             bool foundLocalX(zoneDict.found("localX"));
             bool foundLocalZ(zoneDict.found("localZ"));
             if (foundLocalX or foundLocalZ)
@@ -532,6 +531,7 @@ Foam::structure::structure
                         )
                     );
                 if (!Rg2lPtr_.valid())
+                {
                     Rg2lPtr_.reset
                     (
                         new volTensorField
@@ -557,6 +557,8 @@ Foam::structure::structure
                             zeroGradientFvPatchTensorField::typeName
                         )
                     );
+                }
+
                 volTensorField& Rl2g(Rl2gPtr_());
                 volTensorField& Rg2l(Rg2lPtr_());
 
@@ -570,25 +572,25 @@ Foam::structure::structure
                     zoneDict.lookupOrDefault<vector>("localZ", vector(0,0,1))
                 );
                 localZ /= mag(localZ);
-                //  Non orthogonality absorption
+                // Non orthogonality absorption
                 if (foundLocalX and !foundLocalZ)
                 {
-                    //  Absorb non-orthogonalities in Z
+                    // Absorb non-orthogonalities in Z
                     localZ -= (localX&localZ)*localX/mag(localX);
                     localZ /= mag(localZ);
                 }
                 else if (!foundLocalX and foundLocalZ)
                 {
-                    //  Absorb non-orthogonalities in X
+                    // Absorb non-orthogonalities in X
                     localX -= (localX&localZ)*localZ/mag(localZ);
                     localX /= mag(localX);
                 }
                 else
                 {
-                    //  Split non-orthogonalities equally among X and Z by
-                    //  rotating them in the plane they lie in by an angle
-                    //  computed so that, after the rotation, they will be
-                    //  orthogonal
+                    // Split non-orthogonalities equally among X and Z by
+                    // rotating them in the plane they lie in by an angle
+                    // computed so that, after the rotation, they will be
+                    // orthogonal
                     scalar deltaTheta
                     (
                         (
@@ -602,20 +604,20 @@ Foam::structure::structure
                     rotateCCWAroundAxisByAngle(localZ, axis, deltaTheta);
                 }
 
-                //  Compute third axis
+                // Compute third axis
                 vector localY(localZ ^ localX);
                 localY /= mag(localY);
 
-                //  Construct transformation matrices
+                // Construct transformation matrices
 
-                //  The basis change matrix is the transformation to move from
-                //  the local reference frame to the global one. It is constructed
-                //  by simply arranging the local basis vectors (expressed in
-                //  global reference frame coordinates) in columns. Since these are
-                //  orthonormal, the matrix is orthonormal and its inverse is equal
-                //  to its transpose. Thus, the transformation matrix to move from
-                //  the global to the local frame is the transpose of the one to
-                //  move from the local to the global frame
+                // The basis change matrix is the transformation to move from
+                // the local reference frame to the global one. It is constructed
+                // by simply arranging the local basis vectors (expressed in
+                // global reference frame coordinates) in columns. Since these are
+                // orthonormal, the matrix is orthonormal and its inverse is equal
+                // to its transpose. Thus, the transformation matrix to move from
+                // the global to the local frame is the transpose of the one to
+                // move from the local to the global frame
                 tensor Rl2gi
                 (
                     localX[0], localY[0], localZ[0],
@@ -634,8 +636,8 @@ Foam::structure::structure
                 Rg2l.correctBoundaryConditions();
             }
 
-            //  Construct lDh_ (for isotropic structures each component of
-            //  lDh_ is equal to Dh cell by cell)
+            // Construct lDh_ (for isotropic structures each component of
+            // lDh_ is equal to Dh cell by cell)
             vector lDhAnisotropy
             (
                 zoneDict.lookupOrDefault<vector>
@@ -652,13 +654,13 @@ Foam::structure::structure
                 lDh_[cellj][2] = lDhAnisotropy[2]*Dh_[cellj];
             }
 
-            //  Construct global tortuosity tensor by transforming it from the
-            //  local frame (as provided in the dictionary) to the global one.
-            //  Recall that if R is the transformation matrix to rotate a
-            //  vector from the local to the global frame, a local tensor Q can
-            //  be rotated to the global frame via R & Q & R.T(). In this case,
-            //  R = Rl2g. Note that while Rl2g.T() = Rg2l, Rl2g.T() was kept
-            //  for clarity
+            // Construct global tortuosity tensor by transforming it from the
+            // local frame (as provided in the dictionary) to the global one.
+            // Recall that if R is the transformation matrix to rotate a
+            // vector from the local to the global frame, a local tensor Q can
+            // be rotated to the global frame via R & Q & R.T(). In this case,
+            // R = Rl2g. Note that while Rl2g.T() = Rg2l, Rl2g.T() was kept
+            // for clarity
             if (zoneDict.found("localTortuosity"))
             {
                 if (!tortuosityPtr_.valid())
@@ -714,14 +716,14 @@ Foam::structure::structure
         }
     }
 
-    //  Don't write passiveStructure temperature field to files if no passive
-    //  properties were specified in the phasePropertiesDict
+    // Don't write passiveStructure temperature field to files if no passive
+    // properties were specified in the phasePropertiesDict
     if (!foundAtLeastOnePassivePropertiesDict)
     {
         Tpas_.writeOpt() = IOobject::NO_WRITE;
     }
 
-    //  Correct BCs of fields set cell-by-cell
+    // Correct BCs of fields set cell-by-cell
     this->correctBoundaryConditions();
     Dh_.correctBoundaryConditions();
     Tpas_.correctBoundaryConditions();
@@ -737,9 +739,9 @@ Foam::structure::structure
         momentumSourcePtr_().correctBoundaryConditions();
     }
 
-    //  Multiply rhoCppas by alphapas to get actual volumetric heat capacity
-    //  of the passive subStructure, limit to avoid 0 matrix coefficients when
-    //  solving for passive subSubstructure energy equation
+    // Multiply rhoCppas by alphapas to get actual volumetric heat capacity
+    // of the passive subStructure, limit to avoid 0 matrix coefficients when
+    // solving for passive subSubstructure energy equation
     alphaRhoCppas_ =
         Foam::max
         (
@@ -748,8 +750,8 @@ Foam::structure::structure
         );
     alphaRhoCppas_.correctBoundaryConditions();
 
-    //  Construct powerModels
-    //  First, I need a list of all the typeNames in the various subDicts
+    // Construct powerModels
+    // First, I need a list of all the typeNames in the various subDicts
     wordList powerModelTypes(0);
     forAll(dict.toc(), i)
     {
@@ -783,7 +785,7 @@ Foam::structure::structure
 
     forAll(powerModelTypes, i)
     {
-        //  Then, for each typeName, create a dict of subDicts
+        // Then, for each typeName, create a dict of subDicts
         dictionary dicts;
         word powerModelType(powerModelTypes[i]);
 
@@ -811,7 +813,7 @@ Foam::structure::structure
             }
         }
 
-        //  Finally, construct one powerModel per type
+        // Finally, construct one powerModel per type
         powerModels_.insert
         (
             powerModelType,
@@ -823,8 +825,8 @@ Foam::structure::structure
         );
     }
 
-    //  Adjust iAact that was left out as it is a member of powerModel
-    //  and set intitial Tact_
+    // Adjust iAact that was left out as it is a member of powerModel
+    // and set intitial Tact_
     forAllIter
     (
         powerModelTable,
@@ -927,8 +929,8 @@ void Foam::structure::constructHeatExchangers()
             );
         }
 
-        //  If HXs were specified, created the HX-specific fields, THXPtr_ and
-        //  iAHXPtr_
+        // If HXs were specified, created the HX-specific fields, THXPtr_ and
+        // iAHXPtr_
         THXPtr_.reset
         (
             new volScalarField
@@ -983,7 +985,7 @@ void Foam::structure::correct
     const volScalarField& H
 )
 {
-    //  Correct powerModels & correct active structure surface temperature
+    // Correct powerModels & correct active structure surface temperature
     forAllIter
     (
         powerModelTable,
@@ -996,7 +998,7 @@ void Foam::structure::correct
     }
     Tact_.correctBoundaryConditions();
 
-    //  Correct HX surface temperature
+    // Correct HX surface temperature
     if (THXPtr_.valid())
     {
         forAllIter
@@ -1006,20 +1008,20 @@ void Foam::structure::correct
             iter
         )
         {
-            //  Unlike powerModels, the functionalities of correct and correctT
-            //  are merged into a single correct. Why didn't I do so in
-            //  powerModels? A very good question for past Stefan which present
-            //  Stefan does not know the answer to. Probably for added
-            //  """flexibility""" given that powerModel is runTimeSelectable
-            //  and heatExchanger is not?
+            // Unlike powerModels, the functionalities of correct and correctT
+            // are merged into a single correct. Why didn't I do so in
+            // powerModels? A very good question for past Stefan which present
+            // Stefan does not know the answer too. Probably for added
+            // """flexibility""" given that powerModel is runTimeSelectable
+            // and heatExchanger is not?
             iter().correct(HT, H, THXPtr_());
         }
     }
 
     if (Tpas_.writeOpt() == IOobject::AUTO_WRITE)
     {
-        //  Correct inert subStructure. What follows is the equivalent of doing
-        //  the following:
+        // Correct inert subStructure. What follows is the equivalent of doing
+        // the following:
         /*
             fvScalarMatrix pasEqn
             (
@@ -1030,9 +1032,9 @@ void Foam::structure::correct
             );
             pasEqn.solve();
         */
-        //  Except, it is faster like this rather than to solve an equation
-        //  over the entire mesh, as the passive subStructure might not exist
-        //  everywhere
+        // Except, it is faster like this rather than to solve an equation
+        // over the entire mesh, as the passive subStructure might not exist
+        // everywhere
 
         scalar dt(mesh_.time().deltaT().value());
         const volScalarField& Tpas0(Tpas_.oldTime());
@@ -1040,8 +1042,8 @@ void Foam::structure::correct
         {
             label celli(cells_[i]);
             const scalar& iA(iApas_[celli]);
-            if (iA == 0) continue;  //  Avoid solving where the passive
-                                    //  structure does not exist
+            if (iA == 0) continue;  // Avoid solving where the passive
+                                    // structure does not exist
             scalar alphaRhoCpByDt(alphaRhoCppas_[celli]/dt);
             Tpas_[celli] =
                 (
@@ -1053,17 +1055,17 @@ void Foam::structure::correct
         Tpas_.correctBoundaryConditions();
     }
 
-    //  Update Twall, heatFlux
+    // Update Twall, heatFlux
     forAll(cells_, i)
     {
         const label& celli(cells_[i]);
         scalar& Twall(Twall_[celli]);
 
-        //  Set wall temperature as  power structure surface temperature
+        // Set wall temperature as  power structure surface temperature
         Twall = Tact_[celli];
 
-        //  Update heat flux (mostly for extra info purposes, maybe only
-        //  used by the Shah pool boiling model under some circumstances).
+        // Update heat flux (mostly for extra info purposes, maybe only
+        // used by the Shah pool boiling model under some circumstances).
         heatFlux_[celli] = H[celli]*Twall-HT[celli];
     }
     Twall_.correctBoundaryConditions();
@@ -1088,8 +1090,8 @@ Foam::tmp<Foam::volScalarField> Foam::structure::explicitHeatSource
 
     if (THXPtr_.valid())
     {
-        //  Read comment on the same piece of code in
-        //  linearizedSemiImplicitHeatSource
+        // Read comment on the same piece of code in
+        // linearizedSemiImplicitHeatSource
         if (Foam::max(THXPtr_()).value() > 1e-69)
         {
             volScalarField& Q = tQ.ref();
@@ -1115,35 +1117,35 @@ Foam::structure::linearizedSemiImplicitHeatSource
     (
         new fvScalarMatrix
         (
-                //  Source/sink due to active subStructure
+                // Source/sink due to active subStructure
                 iAact_*H*(Tact_-T+he/Cp)
             -   fvm::Sp(iAact_*H/Cp, he)
-                //  Source/sink due to passive subStructure
+                // Source/sink due to passive subStructure
             +   iApas_*H*(Tpas_-T+he/Cp)
             -   fvm::Sp(iApas_*H/Cp, he)
         )
     );
 
-    //  Add HX contribution
+    // Add HX contribution
     if (THXPtr_.valid())
     {
-        //  What is the deal with this funky max? Well, the heatExchanger class
-        //  does not set THX at construction (as the class itself only accesses
-        //  THX though the correct function), so that, if the
-        //  linearizedSemiImplicitHeatSource function is called BEFORE
-        //  structure correct (depending on how the EEqn of the solver is
-        //  implemented), then at the VERY FIRST PIMPLE iteration of the VERY
-        //  FIRST time-step, THX = 0 and the resulting massive heat transfer
-        //  with the fluid will make the simulation explode. Thus, if THX is 0
-        //  everywhere (i.e. if it was not set yet at all), do not add HX
-        //  contributions. I could do this by checking if I am in the first
-        //  PIMPLE iteration of the first simulation time step, but whatever.
-        //  Ok, ok, what if I wanted to set it at construction? Well, you
-        //  cannot because you inherently need T and H*T to correct the HX
-        //  temperatures, and those need to be passed somehow. Wanna use
-        //  registry lookup? Very bad idea, all the heat transfer tables
-        //  that contain the Hs are constructed only after the structure (and
-        //  it cannot be otherwise). So, just shut up and go with the flow!
+        // What is the deal with this max? Well, the heatExchanger class
+        // does not set THX at construction (as the class itself only accesses
+        // THX though the correct function), so that, if the
+        // linearizedSemiImplicitHeatSource function is called BEFORE
+        // structure correct (depending on how the EEqn of the solver is
+        // implemented), then at the VERY FIRST PIMPLE iteration of the VERY
+        // FIRST time-step, THX = 0 and the resulting massive heat transfer
+        // with the fluid will make the simulation explode. Thus, if THX is 0
+        // everywhere (i.e. if it was not set yet at all), do not add HX
+        // contributions. I could do this by checking if I am in the first
+        // PIMPLE iteration of the first simulation time step, but whatever.
+        // Ok, ok, what if I wanted to set it at construction? Well, you
+        // cannot because you inherently need T and H*T to correct the HX
+        // temperatures, and those need to be passed somehow. Wanna use
+        // registry lookup? Very bad idea, all the heat transfer tables
+        // that contain the Hs are constructed only after the structure (and
+        // it cannot be otherwise).
         if (Foam::max(THXPtr_()).value() > 1e-69)
         {
             fvScalarMatrix& Q = tQ.ref();

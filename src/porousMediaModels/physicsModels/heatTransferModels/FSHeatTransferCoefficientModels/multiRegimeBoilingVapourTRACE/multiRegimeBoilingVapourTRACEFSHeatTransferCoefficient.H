@@ -42,7 +42,7 @@ Description
     Heat transfer coefficient for the transition Boiling Regime and the
     POST CHF Regimes (vapour side). It uses the correlations from TRACE.
 
-    Authors:
+\mainauthor
     Stefan Radman (sradman@pm.me / stefan.radman@epfl.ch)
     Gauthier Lazare (gauthier.lazare@gmail.com)
 
@@ -75,6 +75,7 @@ class multiRegimeBoilingVapourTRACE
     public FSHeatTransferCoefficientModel
 {
 private:
+
     //- Ref to pressure
     const volScalarField& p_;
 

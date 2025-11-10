@@ -33,12 +33,11 @@ namespace Foam
 {
 namespace solvers
 {
-
     defineTypeNameAndDebug(fuelBehaviour, 0);
     addToRunTimeSelectionTable
     (
-        solver, 
-        fuelBehaviour, 
+        solver,
+        fuelBehaviour,
         dynamicFvMesh
     );
 }
@@ -66,7 +65,6 @@ Foam::solvers::fuelBehaviour::fuelBehaviour
             IOobject::NO_WRITE
         )
     ),
-    // adjustableTime_(mesh_, const_cast<offbeatTime&>(runTime_)),
     globalOpt_(mesh_, solverDict_),
     mat_(materials::New(mesh_, solverDict_)),
     mapper_(sliceMapper::New(mesh_, mat_, solverDict_)),
@@ -88,16 +86,6 @@ Foam::solvers::fuelBehaviour::fuelBehaviour
     listRegisteredUserParameters();
     checkUserParameters();
 
-    // Set last time marker to adjustable time step
-    // adjustableTime_.setLastTimeMarker
-    // (
-    //     min
-    //     (
-    //         heatSrc_->lastTimeMarker(),
-    //         runTime_.endTime().value()
-    //     )
-    // );
-
     runTime_.endTime().value() =
     (
         min
@@ -118,7 +106,7 @@ void Foam::solvers::fuelBehaviour::correctPhysics()
     bool converged_ = false;
 
     // Read from fvSolution dict the maximum number of outer iterations
-    const dictionary& stressControl = 
+    const dictionary& stressControl =
     mesh_.solutionDict().subDict("stressAnalysis");
     int maxOuterIter(readInt(stressControl.lookup("maxOuterIter")));
 
@@ -126,28 +114,25 @@ void Foam::solvers::fuelBehaviour::correctPhysics()
     int nOuterIter = 0;
 
     // Update mesh if necessary
-    if
-    (
-        mesh_.foundObject<fvMesh>("referenceMesh")
-    )
+    if (mesh_.foundObject<fvMesh>("referenceMesh"))
     {
         mechanics_->updateMesh();
     }
 
     // Update mesh due to transport solvers requirements if needed
     elementTransport_->updateMesh();
-    
+
     // Update incremental fields (DD and gradDD = 0) if necessary
     mechanics_->updateIncrementalFields();
 
-    do 
+    do
     {
         Info << "OuterIteration n. " << nOuterIter << nl <<  endl;
 
         storeGlobalFieldsPrevIter();
 
         // First update corrosion, only then update AMI. Necessary because
-        // if corrosion moves the mesh, the AMI is also updated given that 
+        // if corrosion moves the mesh, the AMI is also updated given that
         // moving the mesh clears the geometry and the AMIPtr. However this
         // first update, does not use the updated mesh location
         // TODO: find a way to update mesh without AMI?
@@ -181,35 +166,34 @@ void Foam::solvers::fuelBehaviour::correctPhysics()
         relaxGlobalFields();
 
         nOuterIter++;
-        
+
         // Check convergence
-        converged_ = 
+        converged_ =
         (
-            mechanics_->converged() 
-            and 
+            mechanics_->converged()
+            &&
             thermal_->converged()
-            and 
+            &&
             rheo_->converged()
-            and
+            &&
             neutronics_->converged()
-            and
+            &&
             elementTransport_->converged()
         );
     }
     while
     (
-        (nOuterIter < 2)  
-        || 
-        (not(converged_) && nOuterIter < maxOuterIter) 
+        (nOuterIter < 2)
+        ||
+        (not(converged_) && nOuterIter < maxOuterIter)
     );
 
     mechanics_->updateTotalFields();
-    gapGas_->updateVariables();    
+    gapGas_->updateVariables();
     fgr_->updateVariables();
 
     // Check if failure occurred
     mat_->checkFailure();
-
 }
 
 void Foam::solvers::fuelBehaviour::correctTightlyCoupledPhysics()
@@ -218,7 +202,7 @@ void Foam::solvers::fuelBehaviour::correctTightlyCoupledPhysics()
 }
 
 Foam::scalar Foam::solvers::fuelBehaviour::maxDeltaT()
-{   
+{
     scalar deltaT(GREAT);
     deltaT = min(deltaT, mechanics_->nextDeltaT());
     deltaT = min(deltaT, heatSrc_->nextDeltaT());
@@ -226,7 +210,7 @@ Foam::scalar Foam::solvers::fuelBehaviour::maxDeltaT()
     deltaT = min(deltaT, fgr_->nextDeltaT());
     deltaT = min(deltaT, mat_->nextDeltaT());
     deltaT = min(deltaT, elementTransport_->nextDeltaT());
-    
+
     return deltaT;
 }
 
@@ -242,8 +226,8 @@ Foam::scalar Foam::solvers::fuelBehaviour::getMaxToutClad
 
     forAll(mesh_.boundaryMesh(), patchI)
     {
-        // Look for cladding outer patch 
-        if( mesh_.boundaryMesh()[patchI].name() == cladOuterPatchName ) 
+        // Look for cladding outer patch
+        if( mesh_.boundaryMesh()[patchI].name() == cladOuterPatchName )
         {
             Tmax = max(Tref.boundaryField()[patchI]);
             break;

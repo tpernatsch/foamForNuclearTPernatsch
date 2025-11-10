@@ -90,7 +90,6 @@ Foam::powerModels::fixedPower::fixedPower
         zeroGradientFvPatchScalarField::typeName
     ),
     timeProfile_(this->toc().size()),
-    // t0_(this->toc().size()),
     timeDependent_(this->toc().size()),
     T_
     (
@@ -129,7 +128,7 @@ Foam::powerModels::fixedPower::fixedPower
         word region(this->toc()[regioni]);
         const dictionary& dict(this->subDict(region));
 
-        //  Setup cellToRegion_ mapping
+        // Setup cellToRegion_ mapping
         const labelList& regionCells
         (
             structure_.cellLists()[region]
@@ -173,11 +172,10 @@ Foam::powerModels::fixedPower::fixedPower
             );
 
             timeDependent_[regioni] = true;
-            // t0_[regioni] = timeProfileDict.lookupOrDefault("startTime", 0.0);
         }
     }
 
-    //  The alphaRhoCp is read as a rhoCp, alpha is multiplied at this step
+    // The alphaRhoCp is read as a rhoCp, alpha is multiplied at this step
     alphaRhoCp_ =
         max
         (
@@ -204,8 +202,8 @@ void Foam::powerModels::fixedPower::correctT(volScalarField& T) const
         label celli(cellList_[i]);
         T[celli] = T_[celli];
     }
-    //  Correct boundary conditions called on T in structure.C after it has
-    //  been set, cell-by-cell, by all powerModels
+    // Correct boundary conditions called on T in structure.C after it has
+    // been set, cell-by-cell, by all powerModels
 }
 
 
@@ -220,13 +218,12 @@ void Foam::powerModels::fixedPower::powerUpdate()
     {
         word region(this->toc()[regioni]);
 
-        //  Setup cellToRegion_ mapping
+        // Setup cellToRegion_ mapping
         const labelList& regionCells
         (
             structure_.cellLists()[region]
         );
 
-        // if(timeDependent_[regioni])
         if (timeDependent_[regioni] && timeProfile_[regioni].valid())
         {
             // scalar t(mesh_.time().timeOutputValue()-t0_[regioni]);
@@ -250,8 +247,6 @@ void Foam::powerModels::fixedPower::powerUpdate()
 
             const volScalarField& powerDensityOld = powerDensity_.oldTime();
 
-            // scalar tOld(mesh_.time().timeOutputValue()-t0_[regioni] -
-            //     mesh_.time().deltaT().value());
             scalar tOld
             (
                 mesh_.time().timeOutputValue() - mesh_.time().deltaT().value()

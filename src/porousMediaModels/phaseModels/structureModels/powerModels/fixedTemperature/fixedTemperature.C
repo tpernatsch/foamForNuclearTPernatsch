@@ -79,14 +79,13 @@ Foam::powerModels::fixedTemperature::fixedTemperature
             mesh_.time().timeName(),
             mesh_,
             IOobject::READ_IF_PRESENT,
-            IOobject::AUTO_WRITE //AUTO_WRITE
+            IOobject::AUTO_WRITE
         ),
         mesh_,
         dimensionedScalar("", dimTemperature, 0.0),
         zeroGradientFvPatchScalarField::typeName
     ),
     timeProfile_(this->toc().size()),
-    // t0_(this->toc().size()),
     timeDependent_(this->toc().size())
 {
     this->setInterfacialArea();
@@ -111,24 +110,7 @@ Foam::powerModels::fixedTemperature::fixedTemperature
                 new timeProfile(timeProfileDict, mesh_.time())
             );
 
-            // word type
-            // (
-            //     timeProfileDict.get<word>("type")
-            // );
-
-            // timeProfile_.set
-            // (
-            //     regioni,
-            //     Function1<scalar>::New
-            //     (
-            //         type,
-            //         timeProfileDict,
-            //         type
-            //     )
-            // );
             timeDependent_[regioni] = true;
-            // t0_[regioni] = timeProfileDict.lookupOrDefault("startTime", 0.0);
-
         }
     }
 }
@@ -148,15 +130,14 @@ void Foam::powerModels::fixedTemperature::temperatureUpdate() const
     {
         word region(this->toc()[regioni]);
 
-        //  Setup cellToRegion_ mapping
+        // Setup cellToRegion_ mapping
         const labelList& regionCells
         (
             structure_.cellLists()[region]
         );
-        // if(timeDependent_[regioni])
+
         if (timeDependent_[regioni] && timeProfile_[regioni].valid())
         {
-            // scalar t(mesh_.time().timeOutputValue()-t0_[regioni]);
             scalar t(mesh_.time().timeOutputValue());
             scalar timeDependentTemperature(timeProfile_[regioni].value(t));
 
@@ -176,8 +157,6 @@ void Foam::powerModels::fixedTemperature::temperatureUpdate() const
             // temperature value and derive the updated temperature.
 
             const volScalarField& TemperatureOld = T_.oldTime();
-            // scalar tOld(mesh_.time().timeOutputValue()-t0_[regioni] -
-            //     mesh_.time().deltaT().value());
             scalar tOld
             (
                 mesh_.time().timeOutputValue() - mesh_.time().deltaT().value()
@@ -208,8 +187,8 @@ void Foam::powerModels::fixedTemperature::correctT(volScalarField& T) const
 
 void Foam::powerModels::fixedTemperature::powerOff()
 {
-    //  If you set iA to 0, the energy contribution from this powerModel to the
-    //  fluid energy equation will be 0, equivalent to a "power" off scenario
+    // If you set iA to 0, the energy contribution from this powerModel to the
+    // fluid energy equation will be 0, equivalent to a "power" off scenario
     iA_ *= 0.0;
 }
 

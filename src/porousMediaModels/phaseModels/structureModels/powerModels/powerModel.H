@@ -65,7 +65,7 @@ SourceFiles
 namespace Foam
 {
 
-//- Forward declarations
+// Forward declarations
 class structure;
 
 /*---------------------------------------------------------------------------*\
@@ -149,16 +149,6 @@ public:
         //  that do not use this will construct the interfacial area their own
         //  way
         virtual void setInterfacialArea();
-
-        /*
-        volScalarField& initFieldInTable
-        (
-            word name,
-            dimensionedScalar value,
-            bool readIfPresent,
-            bool autoWrite
-        );
-        */
 
         //- In two-phase solvers :
         //  HT = H1*frac1*T1 + H2*frac2*T2

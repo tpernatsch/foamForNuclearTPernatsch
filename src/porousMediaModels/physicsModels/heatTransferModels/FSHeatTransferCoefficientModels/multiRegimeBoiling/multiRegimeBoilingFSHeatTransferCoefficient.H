@@ -122,15 +122,21 @@ protected:
 
     //- Superposition exponent
     scalar exp_;
+
+    //-
     scalar oneByExp_;
 
     //- Superposition is performed on heat fluxes rather than heat transfer
     //  coefficients
     bool qMode_;
 
-    //- Cache (yikes!)
+    //- Cache
     mutable scalar htc2pFCi_;
+
+    //- Cache
     mutable scalar TONBi_;
+
+    //- Cache
     mutable scalar htcNBi_;
 
 //- Protected methods

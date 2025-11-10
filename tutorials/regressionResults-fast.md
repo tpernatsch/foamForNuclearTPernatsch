@@ -1,6 +1,6 @@
 # GeN-Foam regression test suite
 
-Regression test of 29-sept.-2025 - 10:10:49  
+Regression test of 10-nov.-2025 - 11:54:21  
 OpenFOAM Version: v2506  
 Tutorials successfully completed: 11/11  [![regressionTest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]()  
 
@@ -8,28 +8,17 @@ Tutorials successfully completed: 11/11  [![regressionTest](https://img.shields.
 
 | Tutorial | Status | Time | GeN-Foam memory usage [Gb] |
 |:---------|:------:|:-:|:-:|
-<<<<<<< HEAD:Tutorials/regressionResults-fast.md
-| guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .027 < 0.2 |
-| guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .026 < 0.2 |
-| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:06 | .087 < 0.2 |
-| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:10 | .082 < 0.2 |
-| featureCases/2D_cavityBoussinesq | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:31 | .083 < 0.2 |
-| featureCases/2D_externalSourceDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:02 | .084 < 0.2 |
-| featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:08 | .086 < 0.2 |
-| featureCases/2D_onePhaseAndPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:30 | .085 < 0.2 |
-| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:43 | .087 < 0.2 |
-=======
 | ../tests | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | 0 < 0.2 |
 | guidedCases/1_reactorSlab_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .027 < 0.2 |
 | guidedCases/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:01 | .026 < 0.2 |
-| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:07 | .090 < 0.2 |
-| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:10 | .084 < 0.2 |
+| featureCases/1D_HX/onePhase | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:08 | .090 < 0.2 |
+| featureCases/1D_PSBT_SC/Phase_Ex1_12223 | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:11 | .084 < 0.2 |
 | featureCases/2D_cavityBoussinesq | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:31 | .086 < 0.2 |
 | featureCases/2D_externalSourceDiffusion | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:02 | .086 < 0.2 |
-| featureCases/2D_flowOverHeatedPlate | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:20 | .125 < 0.2 |
-| featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:07 | .088 < 0.2 |
+| featureCases/2D_flowOverHeatedPlate | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:01:21 | .125 < 0.2 |
+| featureCases/2D_fullCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:08 | .089 < 0.2 |
 | featureCases/2D_onePhaseAndPointKineticsCoupling | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:29 | .088 < 0.2 |
-| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:43 | .089 < 0.2 |
+| reactorCases/1D_thermalMSR_pointKinetics | [![Alltest](https://img.shields.io/badge/Alltest-passed-color.svg?style=flat-square)]() | 00:00:43 | .090 < 0.2 |
 
 --------------------------------------------------------------------------------
 
@@ -64,7 +53,6 @@ Test 2D polyharmonic spline RBF for small values with 0.02% threshold ... passed
 Time = 00:00:01
 
 Memory = 0 Gb (Passed, expected: 0.2 Gb)
->>>>>>> refactoringBranch:tutorials/regressionResults-fast.md
 
 --------------------------------------------------------------------------------
 
@@ -119,15 +107,9 @@ Done running tutorial 1D_HX onePhase ...
 1D_HX onePhase has converged 
 
 
-<<<<<<< HEAD:Tutorials/regressionResults-fast.md
-Time = 00:00:06
-
-Memory = .087 Gb (Passed, expected: 0.2 Gb)
-=======
-Time = 00:00:07
+Time = 00:00:08
 
 Memory = .090 Gb (Passed, expected: 0.2 Gb)
->>>>>>> refactoringBranch:tutorials/regressionResults-fast.md
 
 --------------------------------------------------------------------------------
 
@@ -145,7 +127,7 @@ Perfect match:
 |:-------------|:---------:|:--------:|
 | alpha vapour | 0.133727 | 0.131886 |
 
-Time = 00:00:10
+Time = 00:00:11
 
 Memory = .084 Gb (Passed, expected: 0.2 Gb)
 
@@ -205,7 +187,7 @@ Perfect match:
 |:----------|:---------:|:--------:|
 | TMax      |  309.143  |  309.143 |
 
-Time = 00:01:20
+Time = 00:01:21
 
 Memory = .125 Gb (Passed, expected: 0.2 Gb)
 
@@ -222,9 +204,9 @@ Steady State has converged
 Transient (no driveline) has converged 
 
 
-Time = 00:00:07
+Time = 00:00:08
 
-Memory = .088 Gb (Passed, expected: 0.2 Gb)
+Memory = .089 Gb (Passed, expected: 0.2 Gb)
 
 --------------------------------------------------------------------------------
 
@@ -243,11 +225,7 @@ Transient (with driveline) has converged
 Transient (with boron) has converged 
 
 
-<<<<<<< HEAD:Tutorials/regressionResults-fast.md
-Time = 00:00:30
-=======
 Time = 00:00:29
->>>>>>> refactoringBranch:tutorials/regressionResults-fast.md
 
 Memory = .088 Gb (Passed, expected: 0.2 Gb)
 
@@ -273,4 +251,4 @@ Perfect match:
 
 Time = 00:00:43
 
-Memory = .089 Gb (Passed, expected: 0.2 Gb)
+Memory = .090 Gb (Passed, expected: 0.2 Gb)

@@ -50,13 +50,6 @@ License
 #include "commDataLayer.H"
 #endif
 
-// * * * * * * * * * * * * * * Static Data Members * * * * * * * * * * * * * //
-
-// namespace Foam
-// {
-//     defineTypeNameAndDebug(neutronics, 0);
-//     defineRunTimeSelectionTable(neutronics, dictionary);
-// }
 
 // * * * * * * * * * * * * * Private Member Functions  * * * * * * * * * * * //
 
@@ -196,12 +189,14 @@ scalar Foam::timeProfile::value(scalar time)
 #ifdef isCommDataLayerIncluded
     if (isfmiPortSet_)
     {
-        if (time < runTime_.timeOutputValue()) // Ask for old time value
+        // Ask for old time value
+        if (time < runTime_.timeOutputValue())
         {
             return(oldValue_);
         }
 
-        if (oldTime_ < runTime_.timeOutputValue() - runTime_.deltaT().value()) // Old time is too old
+        // Old time is too old
+        if (oldTime_ < runTime_.timeOutputValue() - runTime_.deltaT().value())
         {
             oldTime_ = runTime_.timeOutputValue() - runTime_.deltaT().value();
             oldValue_ = currentValue_;

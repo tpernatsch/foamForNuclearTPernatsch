@@ -63,9 +63,6 @@ SourceFiles
 namespace Foam
 {
 
-//- Forward declarations
-//class regime;
-//class regimeMapModel;
 
 namespace solvers
 {
@@ -88,11 +85,12 @@ private:
         //- Fluid
         fluid fluid_;
 
-    //- Phase pairs
+    // Phase pairs
 
         //- Fluid2 - structure
         FSPair FSPair_;
 
+        //- Residual values
         scalar residual_;
 
 

@@ -66,15 +66,6 @@ forAll(xsVariablesDict_.toc(), varI)
         << endl;
 }
 
-// Reference perturbed parameters
-// const scalar TfuelRef(referenceState_.lookupOrDefault("Tfuel", 0.01));
-// const scalar TcladRef(referenceState_.lookupOrDefault("Tclad", 0.0));
-// const scalar TcoolRef(referenceState_.lookupOrDefault("Tcool", 0.0));
-// const scalar TstructMechRef(referenceState_.lookupOrDefault("TstructMech", 0.0));
-// const scalar rhoCoolRef(referenceState_.lookupOrDefault("rhoCool", 0.0));
-// const scalar axExpRef(referenceState_.lookupOrDefault("axExp", 0.0));
-// const scalar radExpRef(referenceState_.lookupOrDefault("radExp", 0.0));
-
 Info<< nl
     << "Use polyharmonic spline function mode " << polyharmonicSplineMode_
     << nl
@@ -168,8 +159,6 @@ forAll(referenceZones_, zoneI)
 
 
 // Read data
-// Info<< "Parameters (Tfuel, Tclad, Tcool, TstructMech, rhoCool, axExp, radExp) << endl;"
-
 forAll(states_, stateI)
 {
     dictionary& dictState = states_[stateI].dict();
@@ -206,23 +195,6 @@ forAll(states_, stateI)
     }
     Info<< ")" << endl;
 
-    // const scalar Tfuel(dictState.lookupOrDefault("Tfuel", TfuelRef));
-    // const scalar Tclad(dictState.lookupOrDefault("Tclad", TcladRef));
-    // const scalar Tcool(dictState.lookupOrDefault("Tcool", TcoolRef));
-    // const scalar TstructMech(dictState.lookupOrDefault("TstructMech", TstructMechRef));
-    // const scalar rhoCool(dictState.lookupOrDefault("rhoCool", rhoCoolRef));
-    // const scalar axExp(dictState.lookupOrDefault("axExp", axExpRef));
-    // const scalar radExp(dictState.lookupOrDefault("radExp", radExpRef));
-
-    // const scalar TfuelSpectrum(fastNeutrons_ ? log(Tfuel) : pow(Tfuel, 0.5));
-
-    // Info<< "State: " << nameState
-    //     << " ("
-    //     << Tfuel << ", " << Tclad << ", " << Tcool << ", "
-    //     << TstructMech << ", " << rhoCool << ", " << axExp << ", "
-    //     << radExp
-    //     << ")"
-    //     << endl;
 
     // Extract zones from perturbed state
     PtrList<entry> zones = dictState.lookup("zones");
@@ -321,10 +293,6 @@ forAll(states_, stateI)
                     (
                         sigmaFromToList(energyJ, energyI),
                         variableValues
-                        // {
-                        //     TfuelSpectrum, Tclad, Tcool, TstructMech,
-                        //     rhoCool, axExp, radExp
-                        // }
                     );
                 }
             }

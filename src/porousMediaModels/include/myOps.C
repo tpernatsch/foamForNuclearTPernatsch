@@ -50,7 +50,6 @@ namespace myOps
             name += "Final";
         }
 
-
         return mesh.relaxField(name);
     }
 
@@ -61,10 +60,10 @@ namespace myOps
             name += "Final";
         }
 
-        return
-            (mesh.relaxField(name)) ?
-            mesh.fieldRelaxationFactor(name) :
-            1.0;
+        return((mesh.relaxField(name))
+            ? mesh.fieldRelaxationFactor(name)
+            : 1.0
+        );
     }
 }
 }

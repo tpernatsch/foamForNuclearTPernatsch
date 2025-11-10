@@ -85,22 +85,6 @@ void Foam::functionObjects::massFlow::writeFileHeader(Ostream& os)
         os << endl;
     }
 
-    /*
-    for (const word& fieldName : fieldSet_.selectionNames())
-    {
-        if (internalField_)
-        {
-            writeTabbed(os, fieldName + "_internal");
-        }
-        for (const label patchi : patchIDs_)
-        {
-            const word& patchName = mesh_.boundaryMesh()[patchi].name();
-            writeTabbed(os, fieldName + "_" + patchName);
-        }
-    }
-    */
-
-
     writtenHeader_ = true;
 }
 

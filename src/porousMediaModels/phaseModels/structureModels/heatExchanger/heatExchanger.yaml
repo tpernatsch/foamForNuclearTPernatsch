@@ -1,7 +1,7 @@
 description: |-
   Heat exchanger.
 
-      Author
+  \mainauthor
       Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 admonitions:
@@ -14,22 +14,22 @@ options:
     type: word
     required: true
     default:
-    description: |
+    description: Name of the source cellZone
   - key: secondary
     type: word
     required: true
     default:
-    description: |
+    description: Name of the target cellZone
   - key: volumetricArea
     type: scalar
     required: true
     default:
-    description: |
+    description: Voluemtric area of structure
   - key: wallConductance
     type: scalar
     required: true
     default:
-    description: |
+    description: Wall conductance between the primary and the secondary
 
 usage:
   - comment: |-
@@ -37,15 +37,31 @@ usage:
     snippet: |
       phaseProperties
       {
-        physicsModels
-        {
-          <subModel>
+          structureProperties
           {
-            "<zoneName>"
-            {
-              type heatExchanger;
-            }
-          }
-        }
+              "IHXPrimary:IHXSecondary"
+              {
+                  volumeFraction          0;
+                  Dh                      0.00113;
+              }
+              heatExchangers
+              {
+                  // Declare twice the Heat Exchanger, one per cellZone. This allows to
+                  // link 2 heat exchanegr side from 2 different mesh (e.g. 1 with sodium
+                  // fluid and 1 with water fluid)
+                  "pIHX"
+                  {
+                      primary             "IHXPrimary";
+                      secondary           "IHXSecondary";
+                      volumetricArea      106.6673;
+                      wallConductance     16736.4017;
+                  }
+                  "sIHX"
+                  {
+                      primary             "IHXSecondary";
+                      secondary           "IHXPrimary";
+                      volumetricArea      106.6673;
+                      wallConductance     16736.4017;
+                  }
+              }
       }
-

@@ -122,57 +122,54 @@ usage:
   - comment: |-
       Usage already present in Header (verbatim):
     snippet: |-
-      \verbatim
-              powerModel
-              {
-                  type                nuclearSteadyStatePebble;
+      powerModel
+      {
+          type                nuclearSteadyStatePebble;
 
-                  // It can be shown that by averaging a/multiple pebble(s) over
-                  // a volume of any shape, the interfacialArea and volumeFraction
-                  // of the resulting porous pebble structure are not independent, yet
-                  // are tied by volumetricArea = 3*volumeFraction/outerPinRadius
-                  powerDensityNeutronics        19.96567386e6;
-                  pebbleSurfaceTemperatureGuess 939;
+          // It can be shown that by averaging a/multiple pebble(s) over
+          // a volume of any shape, the interfacialArea and volumeFraction
+          // of the resulting porous pebble structure are not independent, yet
+          // are tied by volumetricArea = 3*volumeFraction/outerPinRadius
+          powerDensityNeutronics        19.96567386e6;
+          pebbleSurfaceTemperatureGuess 939;
 
-                  pebbleCoreRadius        1.38e-2;
-                  pebbleMatrixRadius      1.8e-2;
-                  pebbleShellRadius       2e-2;
-                  trisoFuelRadius         212.5e-6;
-                  trisoBufferRadius       312.5e-6;
-                  trisoInnerPyCRadius     352.5e-6;
-                  trisoSiCRadius          387.5e-6;
-                  trisoOuterPyCRadius     427.5e-6;
+          pebbleCoreRadius        1.38e-2;
+          pebbleMatrixRadius      1.8e-2;
+          pebbleShellRadius       2e-2;
+          trisoFuelRadius         212.5e-6;
+          trisoBufferRadius       312.5e-6;
+          trisoInnerPyCRadius     352.5e-6;
+          trisoSiCRadius          387.5e-6;
+          trisoOuterPyCRadius     427.5e-6;
 
-                  nTRISO                  9022;
+          nTRISO                  9022;
 
-                  trisoFuelKCoeffs        (3.3073 0 0 0 0 0 0 0);
-                  trisoBufferKCoeffs      (0.50 0 0 0 0 0 0 0);
-                  trisoPyCKCoeffs         (4.00 0 0 0 0 0 0 0);
-                  trisoSiCKCoeffs         (90.3 0 0 0 0 0 0 0);
-                  pebbleGraphiteKCoeffs   (41.68 0 0 0 0 0 0 0);
+          trisoFuelKCoeffs        (3.3073 0 0 0 0 0 0 0);
+          trisoBufferKCoeffs      (0.50 0 0 0 0 0 0 0);
+          trisoPyCKCoeffs         (4.00 0 0 0 0 0 0 0);
+          trisoSiCKCoeffs         (90.3 0 0 0 0 0 0 0);
+          pebbleGraphiteKCoeffs   (41.68 0 0 0 0 0 0 0);
 
-                  trisoFuelDensityCoeffs      (11031.432 -0.17907428 -9.1359257e-05 2.2133072e-09 0 0 0 0); thesis
-                  trisoBufferDensityCoeffs    (1000 0 0 0 0 0 0 0);
-                  trisoPyCDensityCoeffs       (1900 0 0 0 0 0 0 0);
-                  trisoSiCDensityCoeffs       (4.015E+02 -5.995E-01 3.898E-04 -9.380E-08 0 0 0 0);
-                  pebbleGraphiteDensityCoeffs (8.12E+01 -6.14E-02 2.73E-05 -5.18E-09 0 0 0 0);
-                  coolantDensityCoeffs        (2413.03 -0.4884 0 0 0 0 0 0);
-              }
-          \endverbatim
+          trisoFuelDensityCoeffs      (11031.432 -0.17907428 -9.1359257e-05 2.2133072e-09 0 0 0 0); thesis
+          trisoBufferDensityCoeffs    (1000 0 0 0 0 0 0 0);
+          trisoPyCDensityCoeffs       (1900 0 0 0 0 0 0 0);
+          trisoSiCDensityCoeffs       (4.015E+02 -5.995E-01 3.898E-04 -9.380E-08 0 0 0 0);
+          pebbleGraphiteDensityCoeffs (8.12E+01 -6.14E-02 2.73E-05 -5.18E-09 0 0 0 0);
+          coolantDensityCoeffs        (2413.03 -0.4884 0 0 0 0 0 0);
+      }
   - comment: |-
       The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
     snippet: |
       phaseProperties
       {
-        physicsModels
-        {
-          <subModel>
+          physicsModels
           {
-            "<zoneName>"
-            {
-              type nuclearSteadyStatePebble;
-            }
+              <subModel>
+              {
+                  "<zoneName>"
+                  {
+                      type nuclearSteadyStatePebble;
+                  }
+              }
           }
-        }
       }
-

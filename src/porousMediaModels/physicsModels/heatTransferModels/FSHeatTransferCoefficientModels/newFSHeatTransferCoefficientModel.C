@@ -52,8 +52,8 @@ Foam::FSHeatTransferCoefficientModel::New
 {
     word type(dict.get<word>("type"));
 
-    //  Set fluidName to "fluid" if the fluid has no name (just for Info
-    //  cleanliness when using the monoPhase solver)
+    // Set fluidName to "fluid" if the fluid has no name (just for Info
+    // cleanliness when using the monoPhase solver)
     word fluidName(pair.fluidName() == "" ? "fluid" : pair.fluidName());
 
     Info<< "Selecting FSHeatTransferCoefficientModel for pair " << pair.name()
@@ -76,7 +76,7 @@ Foam::FSHeatTransferCoefficientModel::New
         (
             ctorPtr(pair, dict, objReg)
         );
-
 }
+
 
 // ************************************************************************* //

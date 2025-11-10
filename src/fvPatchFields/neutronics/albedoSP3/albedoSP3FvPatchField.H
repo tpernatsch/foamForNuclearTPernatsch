@@ -95,8 +95,6 @@ class albedoSP3FvPatchField
     //- Coeff gamma
     scalar gamma_;
 
-    //scalarField diffCoeff_;
-
     //- Name of the diffusion coefficient field
     word diffCoeffName_;
 

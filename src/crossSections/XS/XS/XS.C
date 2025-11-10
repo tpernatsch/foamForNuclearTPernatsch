@@ -179,62 +179,6 @@ Foam::XS::XS
         dimensionedVector("d_zero", dimLength, vector::zero),
         zeroGradientFvPatchScalarField::typeName
     ),
-    // radExp_
-    // (
-    //     IOobject
-    //     (
-    //         "radExp",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // axExp_
-    // (
-    //     IOobject
-    //     (
-    //         "axExp",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // logT_
-    // (
-    //     IOobject
-    //     (
-    //         "logT",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::NO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimensionSet(0,0,0,0,0,0,0), 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
-    // sqrtT_
-    // (
-    //     IOobject
-    //     (
-    //         "diffT",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::NO_READ,
-    //         IOobject::NO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedScalar("", dimensionSet(0,0,0,0.5,0,0,0), 0.0),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
     IVList_(zoneNumber_),
     chiPromptList_(zoneNumber_),
     chiDelayedList_(zoneNumber_),
@@ -280,15 +224,7 @@ Foam::XS::~XS()
 
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
-void Foam::XS::correct
-(
-    // const volScalarField& Tfuel,
-    // const volScalarField& Tclad,
-    // const volScalarField& rhoCool,
-    // const volScalarField& Tcool,
-    // const volVectorField& Disp,
-    // const volScalarField& TStructMech
-)
+void Foam::XS::correct()
 {
     #include "setNeutronicsVariables.H"
 }
@@ -336,13 +272,7 @@ Foam::tmp<Foam::volScalarField> Foam::XS::sigmaFromTo
 (
     label momentI,
     label energyJ,
-    label energyI//,
-    // const volScalarField& Tfuel,
-    // const volScalarField& Tclad,
-    // const volScalarField& rhoCool,
-    // const volScalarField& Tcool,
-    // const volVectorField& Disp,
-    // const volScalarField& TStructMech
+    label energyI
 )
 {
     if (!isLowMemory_)

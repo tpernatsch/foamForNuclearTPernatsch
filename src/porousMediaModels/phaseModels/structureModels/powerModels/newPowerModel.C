@@ -69,7 +69,6 @@ Foam::autoPtr<Foam::powerModel> Foam::powerModel::New
         (
             ctorPtr(structureRef, dicts)
         );
-
 }
 
 

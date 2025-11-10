@@ -103,13 +103,11 @@ Usage
     In the neutronicsProperties file, for keff calculation in a critical
     reactor:
     \verbatim
-        model                       diffusionNeutronics;
         eigenvalueNeutronics        true;
     \endverbatim
 
     For a subcritical reactor driven by an external neutron source:
     \verbatim
-        model                       diffusionNeutronics;
         eigenvalueNeutronics        false;
         externalSourceNeutronics    true;
     \endverbatim
@@ -155,19 +153,41 @@ protected:
 
     //- Fields
     volScalarField Dalbedo_;
+
+    //-
     PtrList<volScalarField> flux_;
+
+    //-
     PtrList<volScalarField> fluxStar_;
+
+    //-
     PtrList<volScalarField> externalSourceFlux_;
-    PtrList<volScalarField> prec_; // prec per total volume
-    PtrList<volScalarField> precStar_; // prec per volume salt
+
+    //- Precursor per total volume
+    PtrList<volScalarField> prec_;
+
+    // Precursor per volume salt
+    PtrList<volScalarField> precStar_;
+
+    //-
     volScalarField fluxStarAlbedo_;
+
+    //-
     volScalarField defaultFlux_;
+
+    //-
     volScalarField defaultExternalSourceFlux_;
+
+    //-
     volScalarField defaultPrec_;
 
     //- Derived fields
     volScalarField neutroSource_;
+
+    //-
     volScalarField delayedNeutroSource_;
+
+    //-
     volScalarField scatteringSourceExtra_;
 
 private:

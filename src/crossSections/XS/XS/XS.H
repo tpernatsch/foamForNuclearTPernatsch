@@ -375,18 +375,6 @@ protected:
             //- Mesh displacement
             volVectorField disp_;
 
-            //- Radial expansion field
-            // volScalarField radExp_;
-
-            // //- Axial expansion field
-            // volScalarField axExp_;
-
-            //- Logarithmic fuel temperature field
-            // volScalarField logT_;
-
-            // //- Square root fuel temperature field
-            // volScalarField sqrtT_;
-
 
         // Feedbacks Coefficients
 
@@ -499,13 +487,7 @@ public:
         (
             label momentI,
             label energyI,
-            label energyJ//,
-            // const volScalarField& Tfuel,
-            // const volScalarField& Tclad,
-            // const volScalarField& rhoCool,
-            // const volScalarField& Tcool,
-            // const volVectorField& Disp,
-            // const volScalarField& TStructMech
+            label energyJ
         );
 
         const PtrList<volScalarField> chiPrompt() const
@@ -573,15 +555,7 @@ public:
     // Member Functions
 
         //- Update XS
-        void correct
-        (
-            // const volScalarField& Tfuel,
-            // const volScalarField& Tclad,
-            // const volScalarField& rhoCool,
-            // const volScalarField& Tcool,
-            // const volVectorField& Disp,
-            // const volScalarField& TStructMech
-        );
+        void correct();
 
         //- Initialize the XS data set
         void init();

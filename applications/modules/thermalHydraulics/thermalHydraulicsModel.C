@@ -48,7 +48,6 @@ namespace Foam
 namespace solvers
 {
     defineTypeNameAndDebug(thermalHydraulicsModel, 0);
-    // defineRunTimeSelectionTable(thermalHydraulicsModel, thermalHydraulicsModels);
 }
 }
 
@@ -275,7 +274,7 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
     );
     mesh.setFluxRequired(p_rgh_.name());
 
-    //  Construct regime maps, if any
+    // Construct regime maps, if any
     if (this->found("regimeMapModels"))
     {
         const dictionary& regimeMapModelsDict
@@ -317,12 +316,7 @@ Foam::solvers::thermalHydraulicsModel::~thermalHydraulicsModel()
 
 void Foam::solvers::thermalHydraulicsModel::correctRegimeMaps()
 {
-    forAllIter
-    (
-        regimeMapTable,
-        regimeMapModels_,
-        iter
-    )
+    forAllIter(regimeMapTable, regimeMapModels_, iter)
     {
         iter()->correct();
     }
@@ -342,7 +336,6 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
         const dictionary& removeBafflesDict = mesh_.time().controlDict().subDict("removeBaffles");
         if (removeBafflesDict.getOrDefault<bool>(mesh_.name(), false))
         {
-
             const IOdictionary couplingDict
             (
                 IOobject
@@ -355,14 +348,16 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
                 )
             );
 
-            //Lookup for the fields that need to be mapped FROM this mesh
+            // Lookup for the fields that need to be mapped FROM this mesh
             const dictionary mappingDict(couplingDict.subDict("mappings"));
-            //Loop on every region that is not this one and look for the fields in "sourceFields"
+            // Loop on every region that is not this one and look for the fields
+            // in "sourceFields"
             const wordList regions(mappingDict.toc());
 
             forAll(regions, regioni)
             {
-                if (regions[regioni] != mesh_.name()) //look for other regions
+                // Look for other regions
+                if (regions[regioni] != mesh_.name())
                 {
                     const dictionary regionFromDict(mappingDict.subDict(regions[regioni]));
                     const wordList regionsFrom(regionFromDict.toc());
@@ -370,8 +365,15 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
                     {
                         if (regionsFrom[regionFromi] == mesh_.name())
                         {
-                            const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
-                            fvMesh& baffleLessMesh = const_cast<fvMesh&>(mesh_.time().lookupObject<fvMesh>(mesh_.name()+".baffleLess"));
+                            // List of fields to create
+                            const wordList fieldsList
+                            (
+                                regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")
+                            );
+                            fvMesh& baffleLessMesh = const_cast<fvMesh&>
+                            (
+                                mesh_.time().lookupObject<fvMesh>(mesh_.name()+".baffleLess")
+                            );
                             forAll(fieldsList, fieldi)
                             {
                                 correctBaffleLessField<scalar>(fieldsList[fieldi], baffleLessMesh);
@@ -379,7 +381,6 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
                                 correctBaffleLessField<tensor>(fieldsList[fieldi], baffleLessMesh);
                                 correctBaffleLessField<symmTensor>(fieldsList[fieldi], baffleLessMesh);
                                 correctBaffleLessField<sphericalTensor>(fieldsList[fieldi], baffleLessMesh);
-
                             }
                         }
                     }
@@ -392,10 +393,9 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
 template<class Type>
 void Foam::solvers::thermalHydraulicsModel::correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh)
 {
-
     typedef GeometricField<Type, fvPatchField, volMesh> VolFieldType;
 
-    if(mesh_.foundObject<VolFieldType>(fieldName))
+    if (mesh_.foundObject<VolFieldType>(fieldName))
     {
         VolFieldType& field = baffleLessMesh.lookupObjectRef<VolFieldType>(fieldName+".baffleLess");
         field.primitiveFieldRef() = mesh_.lookupObject<VolFieldType>(fieldName).primitiveField();
@@ -405,8 +405,7 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessField(word fieldNam
 
 void Foam::solvers::thermalHydraulicsModel::deformMesh()
 {
-    // Look for the multiRegionDict
-
+    // Look for the regionsDict
     const IOdictionary couplingDict
     (
         IOobject
@@ -477,9 +476,6 @@ void Foam::solvers::thermalHydraulicsModel::deformMesh()
 //         );
 //     }
 // }
-
-
-
 
 
 // ************************************************************************* //

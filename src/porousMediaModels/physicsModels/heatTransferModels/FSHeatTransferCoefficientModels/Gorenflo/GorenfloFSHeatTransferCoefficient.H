@@ -45,6 +45,44 @@ Description
     J.G. Collier and J. R. Thome, Convective Boiling and Condensation,
     3rd Edition, p. 155-158, Oxford University Press, Oxford, 1994.
 
+    IMPLEMENTATION NOTES
+
+    The original pool boiling heat transfer coefficient by Gorenflo is the following
+    form:
+
+    $$
+    htcPB = h0_*F*((q/q0_)^n)*(R_/R0_)^0.133
+    $$
+
+    with F being a function of the reduced pressure, i.e. p/pCtri_. Needless to
+    say, this form is not particularly suitable for a numerical implementation in
+    its current form as htcPB is required to compute q in the first place. In
+    general, the pool boiling heat flux is given by:
+
+    $$
+    q = htc*(Twall-Tsat)
+    $$
+
+    with htc being the total heat transfer coefficient between wall and fluid,
+    Twall being the wall temperature and Tsat the saturation temperature. By
+    assuming that htc ~ htcPB (i.e. that most of the heat flux is due to the pool
+    boiling mechanism), one can tha equate:
+
+    $$
+    htcPB = h0_*F*((htcPB*(Twall-Tsat)/q0_)^n)*(R_/R0_)^0.133
+    $$
+
+    which can be re-arranged to isolate htcPB on the left hand side as:
+
+    $$
+    htcPB = (h0_*F*((Twall-Tsat)^n)*(R_/R0_)^0.133/(q0_^n))^(1.0/(1.0-n))
+    $$
+
+    Which is how the correlation is implemented here.
+    The assumption of htc ~ htcPB can be rather crude but it is widely employed
+    to yield a feasable numerical implementation in other computer codes too (e.g.
+    TRACE)
+
 SourceFiles
     GorenfloFSHeatTransferCoefficient.C
 
@@ -73,6 +111,7 @@ class Gorenflo
 {
 private:
 
+    //-
     bool useExplicitHeatFlux_;
 
     //- Ptr to structure wall temperature (only used if !useExplicitHeatFlux_)
@@ -87,22 +126,27 @@ private:
     //- Ref to pressure
     const volScalarField& p_;
 
-    //- Reference parameter
-    //- Critical pressure in Pa
-    scalar pCrit_;
-    //- Heat transfer coefficient
-    scalar h0_;
-    //- Heat flux
-    scalar q0_;
-    //- Absolute surface roghness
-    scalar R0_;
+    // Reference parameter
 
-    //- Input paramenters
-    //- Absolute surface roghness
-    scalar R_;
+        //- Critical pressure in Pa
+        scalar pCrit_;
 
-    //- Pre-computed coeffs
-    scalar A_;
+        //- Heat transfer coefficient
+        scalar h0_;
+
+        //- Heat flux
+        scalar q0_;
+
+        //- Absolute surface roghness
+        scalar R0_;
+
+    // Input paramenters
+
+        //- Absolute surface roghness
+        scalar R_;
+
+        //- Pre-computed coeffs
+        scalar A_;
 
 public:
 

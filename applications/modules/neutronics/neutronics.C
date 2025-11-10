@@ -133,16 +133,6 @@ Foam::solvers::neutronics::neutronics
         dimensionedScalar("", dimless/dimArea/dimTime, 1),
         zeroGradientFvPatchScalarField::typeName
     ),
-    // TFuelOrig_(nullptr),
-    // TCladOrig_(nullptr),
-    // TCoolOrig_(nullptr),
-    // rhoCoolOrig_(nullptr),
-    // TStructOrig_(nullptr),
-    // TStructMechOrig_(nullptr),
-    // UOrig_(nullptr),
-    // alphaOrig_(nullptr),
-    // alphatOrig_(nullptr),
-    // muOrig_(nullptr),
     TFuel_
     (
         IOobject
@@ -233,20 +223,6 @@ Foam::solvers::neutronics::neutronics
     muPtr_(nullptr),
     phiPtr_(nullptr),
     diffCoeffPrecPtr_(nullptr),
-    // disp_
-    // (
-    //     IOobject
-    //     (
-    //         "disp",
-    //         mesh.time().timeName(),
-    //         mesh,
-    //         IOobject::READ_IF_PRESENT,
-    //         IOobject::AUTO_WRITE
-    //     ),
-    //     mesh,
-    //     dimensionedVector("d_zero", dimLength, vector::zero),
-    //     zeroGradientFvPatchScalarField::typeName
-    // ),
     initialResidual_(1.0),
     residual_(0.0),
     eigenvalueNeutronics_
@@ -312,7 +288,8 @@ void Foam::solvers::neutronics::correctBaffleLessFields()
 
             // Lookup for the fields that need to be mapped FROM this mesh
             const dictionary mappingDict(couplingDict.subDict("mappings"));
-            // Loop on every region that is not this one and look for the fields in "sourceFields"
+            // Loop on every region that is not this one and look for the fields
+            // in "sourceFields"
             const wordList regions(mappingDict.toc());
 
             forAll(regions, regioni)
@@ -326,8 +303,16 @@ void Foam::solvers::neutronics::correctBaffleLessFields()
                     {
                         if (regionsFrom[regionFromi] == mesh_.name())
                         {
-                            const wordList fieldsList(regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")); // list of fields to create
-                            fvMesh& baffleLessMesh = const_cast<fvMesh&>(mesh_.time().lookupObject<fvMesh>(mesh_.name()+".baffleLess"));
+                            // list of fields to create
+                            const wordList fieldsList
+                            (
+                                regionFromDict.subDict(regionsFrom[regionFromi]).get<wordList>("sourceFields")
+                            );
+
+                            fvMesh& baffleLessMesh = const_cast<fvMesh&>
+                            (
+                                mesh_.time().lookupObject<fvMesh>(mesh_.name()+".baffleLess")
+                            );
                             forAll(fieldsList, fieldi)
                             {
                                 correctBaffleLessField<scalar>(fieldsList[fieldi], baffleLessMesh);
@@ -345,12 +330,15 @@ void Foam::solvers::neutronics::correctBaffleLessFields()
 }
 
 template<class Type>
-void Foam::solvers::neutronics::correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh)
+void Foam::solvers::neutronics::correctBaffleLessField
+(
+    word fieldName,
+    fvMesh& baffleLessMesh
+)
 {
-
     typedef GeometricField<Type, fvPatchField, volMesh> VolFieldType;
 
-    if(mesh_.foundObject<VolFieldType>(fieldName))
+    if (mesh_.foundObject<VolFieldType>(fieldName))
     {
         VolFieldType& field = baffleLessMesh.lookupObjectRef<VolFieldType>(fieldName+".baffleLess");
         field.primitiveFieldRef() = mesh_.lookupObject<VolFieldType>(fieldName).primitiveField();

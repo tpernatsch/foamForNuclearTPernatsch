@@ -17,55 +17,52 @@ usage:
   - comment: |-
       Usage already present in Header (verbatim):
     snippet: |-
-      \verbatim
-              powerModel
-              {
-                  type            fixedTemperature;
-                  volumeFraction  0.09;
-                  volumetricArea  121;
-                  powerDensity    1e9;
-                  T               617;
-                  Cp              500;
-                  rho             7700;
-                  temperatureTimeProfile // Optional
-                  {
-                      type        table;
-                      startTime   0;
-                      table       table
-                      (
-                          (   0   617   )
-                          (  10   717   )
-                      );
-                  }
-              }
+      powerModel
+      {
+          type            fixedTemperature;
+          volumeFraction  0.09;
+          volumetricArea  121;
+          powerDensity    1e9;
+          T               617;
+          Cp              500;
+          rho             7700;
+          temperatureTimeProfile // Optional
+          {
+              type        table;
+              startTime   0;
+              table       table
+              (
+                  (   0   617   )
+                  (  10   717   )
+              );
+          }
+      }
 
-              // Using FMI input
-              powerModel
-              {
-                  type            fixedTemperature;
-                  volumetricArea  450;
-                  temperatureTimeProfile
-                  {
-                      type            fmi;
-                      nameFromFMU     temperatureCoupled;
-                      initialValue    850;
-                  }
-              }
-          \endverbatim
+      // Using FMI input
+      powerModel
+      {
+          type            fixedTemperature;
+          volumetricArea  450;
+          temperatureTimeProfile
+          {
+              type            fmi;
+              nameFromFMU     temperatureCoupled;
+              initialValue    850;
+          }
+      }
   - comment: |-
       The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
     snippet: |
       phaseProperties
       {
-        physicsModels
-        {
-          <subModel>
+          physicsModels
           {
-            "<zoneName>"
-            {
-              type fixedTemperature;
-            }
+              <subModel>
+              {
+                  "<zoneName>"
+                  {
+                      type fixedTemperature;
+                  }
+              }
           }
-        }
       }
-

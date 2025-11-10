@@ -39,8 +39,9 @@ Class
     Foam::structureModels::byZone
 
 Description
+    By zone structure model.
 
-    Author
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -93,8 +94,6 @@ public:
 
         //- Removes abstraction inherited from
         virtual void abstract(){}
-
-        //- Access
 };
 
 

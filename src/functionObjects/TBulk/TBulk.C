@@ -120,10 +120,7 @@ bool Foam::functionObjects::TBulk::read(const dictionary& dict)
         (
             regionTypeNames_.get
             (
-                dict.get<word>
-                (
-                    "regionType"
-                )
+                dict.get<word>("regionType")
             )
         );
         regionName_ = dict.get<word>("regionName");
@@ -189,7 +186,7 @@ bool Foam::functionObjects::TBulk::write()
 
     Log << type() << " " << name() <<  " write:" << nl;
 
-    //  Set pointers
+    // Set pointers
     if (thermoPtr_ == nullptr)
     {
         thermoPtr_ = &mesh_.lookupObject<rhoThermo>(thermoName_);

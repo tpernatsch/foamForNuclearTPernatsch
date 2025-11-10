@@ -106,12 +106,13 @@ Foam::FSHeatTransferCoefficientModels::NusseltWallAndHfromFMU::NusseltWallAndHfr
         commDataLayer& data = commDataLayer::New(runTime);
         // Store in data layer and set its initial value to 0
         // in the dictionary
-        data.storeObj(
+        data.storeObj
+        (
             scalar(0.0),
             HNameFromFMU_,
             commDataLayer::causality::in
-            );
-        Info << "Using FMUs for the Nusselt in " << dict.dictName() << endl;
+        );
+        Info<< "Using FMUs for the Nusselt in " << dict.dictName() << endl;
     }
 
 }
@@ -154,11 +155,11 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::NusseltWallAndHfromFMU::valu
 
     //return(H_fluid*H_wall / (H_fluid + H_wall));
     return
-        (1/
+        (1.0/
             (
-                (1/max(SMALL,H_fluid))
-                +(1/max(SMALL,H_wall))
-                +(1/max(SMALL,H_fromFMU))
+                (1.0/max(SMALL,H_fluid))
+                +(1.0/max(SMALL,H_wall))
+                +(1.0/max(SMALL,H_fromFMU))
             )
         );
 }

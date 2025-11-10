@@ -64,7 +64,7 @@ namespace solvers
 
 Foam::solvers::CHTLoop::CHTLoop
 (
-    dynamicFvMesh& mesh 
+    dynamicFvMesh& mesh
 )
 :
     loop(mesh)
@@ -141,20 +141,19 @@ void Foam::solvers::CHTLoop::createSolvers(word name)
 
 
     // Get indices of solvers
-
-    if(solvers_.size()!=2)
+    if (solvers_.size()!=2)
     {
         FatalErrorInFunction
-        << "Please select one fluid and one solid solver"
-        <<  endl
-        << "Valid types are: "  << endl
-        <<"Fluid: 2(rhoPimpleFoam, onePhase) " << endl
-        <<"Solid: 2(extendedThermoMechanics, legacyThermoMechanics)" << endl
-        << exit(FatalError);
+            << "Please select one fluid and one solid solver"
+            << nl
+            << "Valid types are: " << nl
+            << "Fluid: 2(rhoPimpleFoam, onePhase) " << nl
+            << "Solid: 2(extendedThermoMechanics, legacyThermoMechanics)" << nl
+            << exit(FatalError);
     }
     else
     {
-        if(solvers_[0].regionName() == fluidRegionName_)
+        if (solvers_[0].regionName() == fluidRegionName_)
         {
             fluidSolverID_ = 0;
         }
@@ -164,140 +163,146 @@ void Foam::solvers::CHTLoop::createSolvers(word name)
         }
         solidSolverID_ = 1-fluidSolverID_;
 
-        word fluidSolverType = 
+        word fluidSolverType =
             multiPhysicsDict_.subDict("subSolvers").
             get<word>(fluidRegionName_);
-        
-        word solidSolverType = 
+
+        word solidSolverType =
             multiPhysicsDict_.subDict("subSolvers").
             get<word>(solidRegionName_);
 
-        if 
+        if
         (
-            (fluidSolverType != "onePhase" and fluidSolverType != "rhoPimpleFoam") 
-            or
-            (solidSolverType != "legacyThermomechanics" and solidSolverType != "extendedThermoMechanics" and solidSolverType != "fuelBehaviour")
+            (fluidSolverType != "onePhase" && fluidSolverType != "rhoPimpleFoam")
+            ||
+            (solidSolverType != "legacyThermomechanics" && solidSolverType != "extendedThermoMechanics" && solidSolverType != "fuelBehaviour")
 
         )
         {
             FatalErrorInFunction
-            << "Please select one fluid and one solid solver"
-            <<  endl
-            << "Valid types are: "  << endl
-            <<"Fluid: 2(rhoPimpleFoam, onePhase) " << endl
-            <<"Solid: 3(extendedThermoMechanics, legacyThermoMechanics, fuelBehaviour)" << endl
-            << exit(FatalError);
+                << "Please select one fluid and one solid solver"
+                << nl
+                << "Valid types are: " << nl
+                << "Fluid: 2(rhoPimpleFoam, onePhase) " << nl
+                << "Solid: 3(extendedThermoMechanics, legacyThermoMechanics, fuelBehaviour)"
+                << nl
+                << exit(FatalError);
         }
-
     }
-    
 
-    // Get list of patches 
+
+    // Get list of patches
     wordList fluidPatches = CHTProperties_.get<wordList>("fluidPatches");
     wordList solidPatches = CHTProperties_.get<wordList>("solidPatches");
     fluidPatchIDs_.setSize(fluidPatches.size());
     solidPatchIDs_.setSize(solidPatches.size());
 
-    if(fluidPatches.size() != solidPatches.size())
+    if (fluidPatches.size() != solidPatches.size())
     {
         FatalErrorInFunction
-        << "Number of fluid and solid patches must be equal"
-        <<  endl
-        << "Fluid patches: " << fluidPatches.size() << endl
-        << "Solid patches: " << solidPatches.size() << endl
-        << exit(FatalError);
+            << "Number of fluid and solid patches must be equal"
+            << nl
+            << "Fluid patches: " << fluidPatches.size() << nl
+            << "Solid patches: " << solidPatches.size() << nl
+            << exit(FatalError);
     }
 
     forAll(fluidPatches, wordI)
     {
         label fluidPatchID = meshHandler_->returnMesh(fluidRegionName_).boundaryMesh().findPatchID(fluidPatches[wordI]);
-        if(fluidPatchID == -1)
+        if (fluidPatchID == -1)
         {
             FatalErrorInFunction
-            << "Patch " << fluidPatches[wordI] << " not found in fluid region "
-            << fluidRegionName_ << endl
-            << exit(FatalError);
+                << "Patch " << fluidPatches[wordI] << " not found in fluid region "
+                << fluidRegionName_ << nl
+                << exit(FatalError);
         }
         fluidPatchIDs_[wordI]= fluidPatchID;
 
         label solidPatchID = meshHandler_->returnMesh(solidRegionName_).boundaryMesh().findPatchID(solidPatches[wordI]);
-        if(solidPatchID == -1)
+        if (solidPatchID == -1)
         {
             FatalErrorInFunction
-            << "Patch " << fluidPatches[wordI] << " not found in solid region "
-            << solidRegionName_ << endl
-            << exit(FatalError);
+                << "Patch " << fluidPatches[wordI] << " not found in solid region "
+                << solidRegionName_ << nl
+                << exit(FatalError);
         }
         solidPatchIDs_[wordI] = solidPatchID;
     }
-    
-    
+
+
 }
 
 void Foam::solvers::CHTLoop::correctPhysics()
 {
-    if(oneWayCoupling_)
+    if (oneWayCoupling_)
     {
-        word targetRegion  = CHTProperties_.get<word>("targetRegion");
-        if(targetRegion == fluidRegionName_)
+        word targetRegion = CHTProperties_.get<word>("targetRegion");
+        if (targetRegion == fluidRegionName_)
         {
             solvers_[solidSolverID_].correctPhysics();
-            if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
+            if (meshHandler_->returnMesh(solidRegionName_).time().value() > couplingStartTime_)
                 fromSolidToFluid();
             solvers_[fluidSolverID_].correctPhysics();
         }
-        else if(targetRegion == solidRegionName_)
+        else if (targetRegion == solidRegionName_)
         {
             solvers_[fluidSolverID_].correctPhysics();
-            if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
+            if (meshHandler_->returnMesh(solidRegionName_).time().value() > couplingStartTime_)
                 fromFluidToSolid();
-            solvers_[solidSolverID_].correctPhysics();            
+            solvers_[solidSolverID_].correctPhysics();
         }
         else
         {
             FatalErrorInFunction
-            << "Target region must be either "
-            <<  fluidRegionName_
-            << " or " 
-            << solidRegionName_ << endl
-            << exit(FatalError);
+                << "Target region must be either "
+                << fluidRegionName_
+                << " or "
+                << solidRegionName_ << nl
+                << exit(FatalError);
         }
     }
-    
+
     else
     {
-        // Start loop 
+        // Start loop
 
         scalar iterN(0);
         scalar residual(0);
-        do 
+        do
         {
-            // fromSolidToFluid();
             solvers_[fluidSolverID_].correctPhysics();
             if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
                 fromFluidToSolid();
+
             solvers_[solidSolverID_].correctPhysics();
             if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
                 fromSolidToFluid();
 
-            
+
             if(meshHandler_->returnMesh(solidRegionName_).time().value()>2)
                 residual = calcFSIResidual();
 
             ++iterN;
 
-            if(residual<minResidual_)
-                Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
+            if (residual < minResidual_)
+                Info<< nl
+                    << "Multiphysics loop converged after " << iterN
+                    << " iterations"
+                    << nl
+                    << endl;
         }
-        while(residual>minResidual_ && iterN < maxIterations_); 
+        while (residual > minResidual_ && iterN < maxIterations_);
     }
 }
 
 
 void Foam::solvers::CHTLoop::fromFluidToSolid()
 {
-
-    dynamicFvMesh& solidMesh = const_cast<dynamicFvMesh&>(meshHandler_->returnMesh(solidRegionName_));
+    dynamicFvMesh& solidMesh = const_cast<dynamicFvMesh&>
+    (
+        meshHandler_->returnMesh(solidRegionName_)
+    );
 
     // Get patch and field
 
@@ -316,7 +321,7 @@ void Foam::solvers::CHTLoop::fromFluidToSolid()
 
 
         int oldTag = UPstream::msgType();
-        UPstream::msgType() = oldTag+1;
+        UPstream::msgType() = oldTag + 1;
 
 
         const mappedPatchBase& Tmpp = refCast<const mappedPatchBase>
@@ -331,49 +336,47 @@ void Foam::solvers::CHTLoop::fromFluidToSolid()
         ).boundary()[Tmpp.samplePolyPatch().index()];
 
         scalarList temperatureFluid =
-        nbrPatch.lookupPatchField<volScalarField, scalar>("T");
+            nbrPatch.lookupPatchField<volScalarField, scalar>("T");
 
         bool useHTC = CHTProperties_.get<bool>("useHTC");
 
-        scalarList htcFluid = 
+        scalarList htcFluid =
         (
-            useHTC ?
-            nbrPatch.lookupPatchField<volScalarField, scalar>("htc") :
-            nbrPatch.lookupPatchField<volScalarField , scalar>(fluidKappa_) * nbrPatch.deltaCoeffs()
+            useHTC
+                ? nbrPatch.lookupPatchField<volScalarField, scalar>("htc")
+                : nbrPatch.lookupPatchField<volScalarField, scalar>(fluidKappa_) * nbrPatch.deltaCoeffs()
         );
 
-        scalarField solidWeight = 
+        scalarField solidWeight =
         (
             solidMesh.boundary()[solidPatchIDs_[solidPatchI]].lookupPatchField<volScalarField, scalar>(solidKappa_)
             * solidMesh.boundary()[solidPatchIDs_[solidPatchI]].deltaCoeffs()
         );
 
         // Set ref value
-
         Tmpp.distribute(temperatureFluid);
         refVal = temperatureFluid;
 
-        //Set value fraction
+        // Set value fraction
         Tmpp.distribute(htcFluid);
         valueFrac = htcFluid / (solidWeight + htcFluid);
 
-        //Set gradient
+        // Set gradient
         refGrad = 0;
     }
-
 }
 
 void Foam::solvers::CHTLoop::fromSolidToFluid()
 {
-
-    dynamicFvMesh& fluidMesh = const_cast<dynamicFvMesh&>(meshHandler_->returnMesh(fluidRegionName_));
-
+    dynamicFvMesh& fluidMesh = const_cast<dynamicFvMesh&>
+    (
+        meshHandler_->returnMesh(fluidRegionName_)
+    );
 
     const volScalarField& Tf = fluidMesh.lookupObject<volScalarField>("T");
 
     forAll(fluidPatchIDs_, fluidPatchI)
     {
-    
         const fvPatchScalarField& T_patch = Tf.boundaryField()[fluidPatchIDs_[fluidPatchI]];
 
         const mixedFvPatchField<scalar>& mixedPatch =
@@ -400,39 +403,37 @@ void Foam::solvers::CHTLoop::fromSolidToFluid()
         ).boundary()[Tmpp.samplePolyPatch().index()];
 
         scalarList temperatureSolid =
-        nbrPatch.lookupPatchField<volScalarField, scalar>("T");
+            nbrPatch.lookupPatchField<volScalarField, scalar>("T");
 
-        scalarList htcSolid = 
-            nbrPatch.lookupPatchField<volScalarField , scalar>(solidKappa_) * nbrPatch.deltaCoeffs();
-        
+        scalarList htcSolid =
+            nbrPatch.lookupPatchField<volScalarField, scalar>(solidKappa_) * nbrPatch.deltaCoeffs();
+
         bool useHTC(CHTProperties_.get<bool>("useHTC"));
-        scalarField fluidWeight = 
+        scalarField fluidWeight =
         (
-            useHTC ?
-            (fluidMesh.boundary()[fluidPatchIDs_[fluidPatchI]].lookupPatchField<volScalarField, scalar>("htc")) :
-            (fluidMesh.boundary()[fluidPatchIDs_[fluidPatchI]].lookupPatchField<volScalarField, scalar>(fluidKappa_)
-            * fluidMesh.boundary()[fluidPatchIDs_[fluidPatchI]].deltaCoeffs())
+            useHTC
+                ? (fluidMesh.boundary()[fluidPatchIDs_[fluidPatchI]].lookupPatchField<volScalarField, scalar>("htc"))
+                : (fluidMesh.boundary()[fluidPatchIDs_[fluidPatchI]].lookupPatchField<volScalarField, scalar>(fluidKappa_)
+                    * fluidMesh.boundary()[fluidPatchIDs_[fluidPatchI]].deltaCoeffs())
         );
 
         // Set ref value
-
         Tmpp.distribute(temperatureSolid);
         refVal = temperatureSolid;
 
-        //Set value fraction
+        // Set value fraction
         Tmpp.distribute(htcSolid);
         valueFrac = htcSolid / (fluidWeight + htcSolid);
 
-        //Set gradient
+        // Set gradient
         refGrad = 0;
     }
-
-
 }
 
- Foam::scalar Foam::solvers::CHTLoop::calcFSIResidual()
+Foam::scalar Foam::solvers::CHTLoop::calcFSIResidual()
 {
     return scalar(0);
 }
+
 
 // ************************************************************************* //

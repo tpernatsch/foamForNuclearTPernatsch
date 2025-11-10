@@ -51,14 +51,13 @@ Foam::nuclearDataOneEnergy::nuclearDataOneEnergy
 ) :
     zoneName_(zoneName),
     polyharmonicSplineMode_(mode),
-    nParameters_(nParameters/*7*/),
+    nParameters_(nParameters),
     reducedParamIdx_(0),
     isParameterList_(nParameters_),
     data_(0),
     parameterList_(nParameters_),
     pointList_(0),
     weights_(0),
-    // currValue_(nParameters_),
     currValueReduced_(0)
 {
 
@@ -70,13 +69,6 @@ void Foam::nuclearDataOneEnergy::addData
 (
     const scalar value,
     const List<scalar>& parameters
-    // const scalar Tfuel,
-    // const scalar Tclad,
-    // const scalar Tcool,
-    // const scalar TstructMech,
-    // const scalar rhoCool,
-    // const scalar axExp,
-    // const scalar radExp
 )
 {
     data_.append(value);
@@ -84,13 +76,6 @@ void Foam::nuclearDataOneEnergy::addData
     {
         parameterList_[paramI].append(parameters[paramI]);
     }
-    // parameterList_[0].append(Tfuel);
-    // parameterList_[1].append(Tclad);
-    // parameterList_[2].append(Tcool);
-    // parameterList_[3].append(TstructMech);
-    // parameterList_[4].append(rhoCool);
-    // parameterList_[5].append(axExp);
-    // parameterList_[6].append(radExp);
 }
 
 
@@ -138,13 +123,6 @@ scalar Foam::nuclearDataOneEnergy::getRef() const
 
 scalar Foam::nuclearDataOneEnergy::get
 (
-    // const scalar Tfuel,
-    // const scalar Tclad,
-    // const scalar Tcool,
-    // const scalar TstructMech,
-    // const scalar rhoCool,
-    // const scalar axExp,
-    // const scalar radExp,
     const List<scalar>& parameters,
     const bool isParametrize
 )
@@ -154,19 +132,9 @@ scalar Foam::nuclearDataOneEnergy::get
         return(data_.first());
     }
 
-    // Build full parameter list
-    // currValue_[0] = Tfuel;
-    // currValue_[1] = Tclad;
-    // currValue_[2] = Tcool;
-    // currValue_[3] = TstructMech;
-    // currValue_[4] = rhoCool;
-    // currValue_[5] = axExp;
-    // currValue_[6] = radExp;
-
     // Build reduced parameter list
     forAll(reducedParamIdx_, paramI)
     {
-        // currValueReduced_[paramI] = currValue_[reducedParamIdx_[paramI]];
         currValueReduced_[paramI] = parameters[reducedParamIdx_[paramI]];
     }
 
@@ -175,7 +143,6 @@ scalar Foam::nuclearDataOneEnergy::get
         Foam::radialBasisFunctionInterpolation::polyharmonicSpline
         (
             weights_, pointList_, currValueReduced_, polyharmonicSplineMode_
-            // weights_, pointList_, parameters, polyharmonicSplineMode_
         )
     );
 }

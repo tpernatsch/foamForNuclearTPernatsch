@@ -172,28 +172,28 @@ void Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::setDmdtW
     const scalar& qFCi
 ) const
 {
-    //  No sub-cooled boiling possible if a model for the temperature of
-    //  onest of nucleate boiling (ONB) is not provided
+    // No sub-cooled boiling possible if a model for the temperature of
+    // onest of nucleate boiling (ONB) is not provided
     if (TONBPtr_.valid())
     {
-        //  Fraction of the "real" (i.e. after superposition) pool boiling
-        //  heat flux that results in net vapour generation
+        // Fraction of the "real" (i.e. after superposition) pool boiling
+        // heat flux that results in net vapour generation
         scalar f(1.0);
         if (SCBFPtr_.valid())
         {
             f = SCBFPtr_->value(celli, qNBi);
         }
 
-        //  Heat flux that results in vapour generation
+        // Heat flux that results in vapour generation
         scalar qSCDmdti(f*(qNBi-qFCi));
 
-        //  If fluid1 is liquid and 2 is vapour then L > 0 and
-        //  this sub-cooled boiling term is also > 0. If fluid2
-        //  is liquid and fluid1 is vapour then L < 0 and
-        //  everything still  works out in terms of the dmdtW
-        //  sign, as I recall that it is positive for phase
-        //  changes from fluid1 to fluid2 and negative
-        //  vice-versa
+        // If fluid1 is liquid and 2 is vapour then L > 0 and
+        // this sub-cooled boiling term is also > 0. If fluid2
+        // is liquid and fluid1 is vapour then L < 0 and
+        // everything still  works out in terms of the dmdtW
+        // sign, as I recall that it is positive for phase
+        // changes from fluid1 to fluid2 and negative
+        // vice-versa
         (*dmdtWPtr_)[celli] =
             pair_.structureRef().iAact()[celli]*qSCDmdti/
             FFPairPtr_->L()[celli];
@@ -209,42 +209,42 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::qNB
     const scalar& Tfi(Tf_[celli]);
     const scalar& Tsati(FFPairPtr_->iT()[celli]);
 
-    //  Cache and overwrite current wall temperature in celli if requested
+    // Cache and overwrite current wall temperature in celli if requested
     const scalar& Twi(Tw_[celli]);
     scalar Twi0(Twi);
     bool cacheValues(Twi1 == Twi);
     if (!cacheValues)
         const_cast<scalar&>(Twi) = Twi1;
 
-    //  Enhanced two-phase forced convection heat flux, pool boiling htc and
-    //  its heat flux
+    // Enhanced two-phase forced convection heat flux, pool boiling htc and
+    // its heat flux
     scalar qFCi(htc2pFCi_*(Twi-Tfi));
     scalar htcPBi(htcPBPtr_->value(celli));
     scalar qPBi(htcPBi*(Twi-Tsati));
 
-    //  Overall nucleate boiling htc and heat flux;
+    // Overall nucleate boiling htc and heat flux;
     scalar qNBi(0.0);
 
-    //  If computing the nucleate boiling heat flux via the TRACE approach
-    //  (i.e. superposing the heat fluxes, not the htcs)
+    // If computing the nucleate boiling heat flux via the TRACE approach
+    // (i.e. superposing the heat fluxes, not the htcs)
     if (qMode_)
     {
-        if (SPtr_.valid())  //  If a suppression factor model is the one that
-                            //  is used to turn-off pool boiling as the flow
-                            //  becomes increasingly annular
+        if (SPtr_.valid())  // If a suppression factor model is the one that
+                            // is used to turn-off pool boiling as the flow
+                            // becomes increasingly annular
             qNBi =
                 pow
                 (
                     pow(qFCi, exp_) + pow(SPtr_->value(celli)*qPBi, exp_),
                     oneByExp_
                 );
-        else if (TONBPtr_.valid())  //  If doing things the TRACE way, i.e.
-                                    //  avoiding discontinuities at the onest
-                                    //  of boiling via a qBI term
+        else if (TONBPtr_.valid())  // If doing things the TRACE way, i.e.
+                                    // avoiding discontinuities at the onest
+                                    // of boiling via a qBI term
         {
-            //  Calc pool boiling heat flux at the onset of boiling (ONB,
-            //  needless to say, cannot do that if a TONB model has not been
-            //  specified)
+            // Calc pool boiling heat flux at the onset of boiling (ONB,
+            // needless to say, cannot do that if a TONB model has not been
+            // specified)
             scalar Twi00(Twi);
             const_cast<scalar&>(Twi) = TONBi_;
             scalar hPBONBi(htcPBPtr_->value(celli));
@@ -252,7 +252,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::qNB
             scalar qBIi(hPBONBi*(TONBi_-Tsati));
             qNBi = pow(pow(qFCi, exp_) + pow(qPBi-qBIi, exp_), oneByExp_);
         }
-        else //  If previous methods are not applicable
+        else // If previous methods are not applicable
             qNBi = pow(pow(qFCi, exp_) + pow(qPBi, exp_), oneByExp_);
         if (cacheValues)
         {
@@ -261,8 +261,8 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::qNB
             htcNBi_ = qNBi/dT;
         }
     }
-    //  If computing the nucleate boiling heat flux via other approaches that
-    //  superpose the htcs directly
+    // If computing the nucleate boiling heat flux via other approaches that
+    // superpose the htcs directly
     else
     {
         scalar htcNBi(0.0);
@@ -285,10 +285,10 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::qNB
             htcNBi_ = htcNBi;
     }
 
-    //  Calculate subcooled boiling term
-    if (cacheValues) // and Tfi < Tsati)
+    // Calculate subcooled boiling term
+    if (cacheValues)
         setDmdtW(celli, qNBi, qFCi);
-    else //  Reset wall temperature in celli and return qNB
+    else // Reset wall temperature in celli and return qNB
         const_cast<scalar&>(Twi) = Twi0;
 
     return qNBi;
@@ -309,7 +309,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
     }
     if (dmdtWPtr_ == nullptr)
     {
-        //  Ptr to wall mass transfer term (i.e. due to subcooled boiling)
+        // Ptr to wall mass transfer term (i.e. due to subcooled boiling)
         dmdtWPtr_ =
             &
             (
@@ -320,38 +320,38 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
             );
     }
 
-    //  Refs
+    // Refs
     const scalar& alphai(1.0-this->pair_.fluidRef().normalized()[celli]);
     const scalar& Twi(Tw_[celli]);
     const scalar& Tsati(FFPairPtr_->iT()[celli]);
 
-    //  Two-phase forced-convection heat transfer coefficient
-    //  and explicit heat flux, used later throughout the map
+    // Two-phase forced-convection heat transfer coefficient
+    // and explicit heat flux, used later throughout the map
     htc2pFCi_ = (htcFCPtr_->value(celli)*FPtr_->value(celli));
 
     /*-----------------------------------------------------------------------*/
     /* HTC MAP FOLLOWS TRACE PHILOSOPHY, BUT SUPPORTS USER-SELECTABLE MODELS */
     /*-----------------------------------------------------------------------*/
-    if (Twi < Tsati)    //  Wall below saturation, either condensing or
-                        //  nothing special happens
+    if (Twi < Tsati)    // Wall below saturation, either condensing or
+                        // nothing special happens
     {
-        if (htcCndPtr_.valid()) //  If a film condensation model has been
-                                //  specified
+        if (htcCndPtr_.valid()) // If a film condensation model has been
+                                // specified
         {
-            if (alphai <= 0.8) //  Nothing special
+            if (alphai <= 0.8) // Nothing special
                 return htc2pFCi_;
-            else    //  Film condensation
+            else    // Film condensation
             {
-                //  Film condensation heat transfer coefficient
+                // Film condensation heat transfer coefficient
                 scalar htcCndi(htcCndPtr_->value(celli));
 
-                //  Linear interpolation if 0.8 < alphai < 0.9
+                // Linear interpolation if 0.8 < alphai < 0.9
                 if (alphai < 0.9)
                 {
                     scalar f(0.9-alphai/0.1);
                     return f*htc2pFCi_+(1.0-f)*htcCndi;
                 }
-                else //  Film condensation only
+                else // Film condensation only
                     return htcCndi;
             }
         }
@@ -360,33 +360,33 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoiling::value
     }
     else
     {
-        //  If a TONB model has not been provided, no sub-cooled boiling
-        //  and set it equal to Tsati
+        // If a TONB model has not been provided, no sub-cooled boiling
+        // and set it equal to Tsati
         TONBi_ =
         (
             (TONBPtr_.valid()) ?
             TONBPtr_->value(celli, htc2pFCi_) :
             Tsati
         );
-        if (Twi < TONBi_)    //  Wall above saturation but below onset of
-                            //  nucleate boiling, nothing special
+        if (Twi < TONBi_)    // Wall above saturation but below onset of
+                            // nucleate boiling, nothing special
         {
             return htc2pFCi_;
         }
-        else //  Wall above saturation and onset of nucleate boiling
+        else // Wall above saturation and onset of nucleate boiling
         {
-            scalar TCHFi(1e69); //  Needs dedicated model for its setting
-            if (Twi < TCHFi)    //  Below CHF, i.e. either nucleate boiling
-                                //  or subcooled boiling
+            scalar TCHFi(1e69); // Needs dedicated model for its setting
+            if (Twi < TCHFi)    // Below CHF, i.e. either nucleate boiling
+                                // or subcooled boiling
             {
-                //  Calling qNBi also calculates the htcNBi_ so that is why
-                //  it is called here
+                // Calling qNBi also calculates the htcNBi_ so that is why
+                // it is called here
                 scalar qNBi(qNB(celli, Twi));
-                (void) qNBi; //  Suppress unused variable warining
+                (void) qNBi; // Suppress unused variable warining
                 return htcNBi_;
             }
-            else    //  Post-CHF heat transfer, currently missing
-                    //  implementation
+            else    // Post-CHF heat transfer, currently missing
+                    // implementation
             {
                 return 1.0;
             }

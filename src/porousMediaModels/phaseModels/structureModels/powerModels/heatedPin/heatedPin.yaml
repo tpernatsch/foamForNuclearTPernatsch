@@ -1,7 +1,7 @@
 description: |-
   Model for representing a heated pin with constant material properties that
-      is coupled to the fluid(s) via a convective boundary condition. The
-      equation is solved via the finite volume method.
+  is coupled to the fluid(s) via a convective boundary condition. The
+  equation is solved via the finite volume method.
 
 admonitions:
   - kind: warning
@@ -56,15 +56,14 @@ usage:
     snippet: |
       phaseProperties
       {
-        physicsModels
-        {
-          <subModel>
+          physicsModels
           {
-            "<zoneName>"
-            {
-              type heatedPin;
-            }
+              <subModel>
+              {
+                  "<zoneName>"
+                  {
+                      type heatedPin;
+                  }
+              }
           }
-        }
       }
-

@@ -7,7 +7,7 @@ Now reads per-class YAML docs placed next to the .H/.C files:
 YAML fields (all optional except type_name is recommended):
   type_name: str
   summary: str (can be multiline with | )
-  admonitions: 
+  admonitions:
     - { kind: warning|note|info|tip|..., body: str }
   options:
     - { key: str, type: str, required: bool, default: any, description: str }
@@ -282,6 +282,8 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
     """Build an RST page from the YAML dict."""
     # Description block
     summary = y.get("description","")
+    summary = format_equation_for_rst(summary)
+    summary = format_code_for_rst(summary)
     summary = replaceInlineMath(replaceInlineReference(summary))
 
     # Admonitions
@@ -461,6 +463,15 @@ def transform_vartable(content):
     res = replaceInlineMath(res)
     return(res)
 
+def format_code_for_rst(transformed_content):
+    return(re.sub(
+        r"\\verbatim(.+?)\\endverbatim",
+        lambda m: "\n.. code :: cpp\n"
+                + "\n    ".join([line for line in m.group(1).splitlines()])
+                + "\n",
+        transformed_content,
+        flags=re.DOTALL
+    ))
 
 def transform_content(content, is_options_section=False):
     """
@@ -530,15 +541,8 @@ def transform_content(content, is_options_section=False):
 
     transformed_content = "\n".join(transformed_lines)
 
-    transformed_content = re.sub(
-        r"\\verbatim(.+?)\\endverbatim",
-        lambda m: "\n.. code :: cpp\n"
-                  + "\n    ".join([line for line in m.group(1).splitlines()])
-                  + "\n",
-        transformed_content,
-        flags=re.DOTALL
-    )
 
+    transformed_content = format_code_for_rst(transformed_content)
     transformed_content = format_table_for_rst(transformed_content)
     transformed_content = format_equation_for_rst(transformed_content)
 

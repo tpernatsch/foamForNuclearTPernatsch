@@ -103,10 +103,6 @@ void Foam::solvers::loop::deformMesh()
     }
 }
 
-// void Foam::solvers::loop::correctTightlyCoupledPhysics()
-// {
-//     correctPhysics();
-// }
 
 scalar Foam::solvers::loop::getResidual()
 {
@@ -180,7 +176,7 @@ void Foam::solvers::loop::FSIInitialization()
     );
 
     // Get solid displacement field
-    
+
     vectorField displacementAtFaces
     (
         meshHandler_->returnMesh(solidRegionName_).lookupObject<volVectorField>("D").
@@ -190,7 +186,7 @@ void Foam::solvers::loop::FSIInitialization()
 
     int oldTag = UPstream::msgType();
     UPstream::msgType() = oldTag+1;
- 
+
     // Get the coupling information from the mappedPatchBase
     const mappedPatchBase& mpp = refCast<const mappedPatchBase>
     (
@@ -223,7 +219,7 @@ void Foam::solvers::loop::FSIInitialization()
                 .get<word>(solverNames_[nameI])
         );
 
-        if(solverType == "pimpleFluid") 
+        if(solverType == "pimpleFluid")
         {
             fluidSolverID_=nameI;
         }
@@ -274,12 +270,12 @@ void Foam::solvers::loop::FSIRoutine()
         // Take care of fluid deformation (this also implicates using dynamicFvMesh (OK) and storing displacement fields (OK)) OK
 
 
-    // Start loop 
+    // Start loop
 
     scalar iterN(0);
     scalar residual(0);
 
-    do 
+    do
     {
         // fromSolidToFluid();
         solvers_[fluidSolverID_].correctPhysics();
@@ -289,7 +285,7 @@ void Foam::solvers::loop::FSIRoutine()
         if(meshHandler_->returnMesh(solidRegionName_).time().value()>2)
             fromSolidToFluid();
 
-        
+
         if(meshHandler_->returnMesh(solidRegionName_).time().value()>2)
             residual = calcFSIResidual();
 
@@ -329,7 +325,7 @@ void Foam::solvers::loop::FSIRoutine()
 //     );
 
 //     // Get solid displacement field
-    
+
 //     vectorField displacementAtFaces
 //     (
 //         solidMesh.lookupObject<volVectorField>("D").
@@ -340,7 +336,7 @@ void Foam::solvers::loop::FSIRoutine()
 
 //     int oldTag = UPstream::msgType();
 //     UPstream::msgType() = oldTag+1;
- 
+
 //     // Get the coupling information from the mappedPatchBase
 //     const mappedPatchBase& mpp = refCast<const mappedPatchBase>
 //     (
@@ -416,22 +412,22 @@ void Foam::solvers::loop::fromFluidToSolid()
         nbrMesh
     ).boundary()[mpp.samplePolyPatch().index()];
 
-    
-    
+
+
     scalarList pressureFluid =
         nbrPatch.lookupPatchField<volScalarField, scalar>("p");
- 
+
     //mpp.distribute(pressureFluid);
 
     vectorField tractionFluid =
     (
-        (nbrPatch.lookupPatchField<volSymmTensorField, symmTensor>("stressTensor") 
+        (nbrPatch.lookupPatchField<volSymmTensorField, symmTensor>("stressTensor")
         & nbrPatch.nf())
     );
 
     mpp.distribute(tractionFluid);
 
-    
+
     //pressure = pressureFluid;
     traction = -tractionFluid ;
 
@@ -490,7 +486,7 @@ void Foam::solvers::loop::fromSolidToFluid()
 
     int oldTag = UPstream::msgType();
     UPstream::msgType() = oldTag+1;
-    
+
     const mappedPatchBase& mpp = refCast<const mappedPatchBase>
     (
         fluidMesh.boundaryMesh()[fluidPatchID_]
@@ -500,7 +496,7 @@ void Foam::solvers::loop::fromSolidToFluid()
 
     // Step 3 - Un-deform solid mesh
 
-    
+
     displacementPoints -= pointD;
 
     solidMesh.movePoints(displacementPoints);
@@ -528,7 +524,7 @@ void Foam::solvers::loop::fromSolidToFluid()
         fluidMesh.boundaryMesh()[fluidPatchID_]
     );
 
-    displacementAtFaces = displacementAtFaces *underRelaxation_ + oldDisplacementAtFaces_()*(1-underRelaxation_); 
+    displacementAtFaces = displacementAtFaces *underRelaxation_ + oldDisplacementAtFaces_()*(1-underRelaxation_);
 
     vectorField deltaDAtPoints =
     patchInterpolator.faceToPointInterpolate
@@ -589,7 +585,7 @@ void Foam::solvers::loop::fromSolidToFluid()
 
     int oldTag = UPstream::msgType();
     UPstream::msgType() = oldTag+1;
-    
+
     const mappedPatchBase& mpp = refCast<const mappedPatchBase>
     (
         fluidMesh.boundaryMesh()[fluidPatchID_]
@@ -599,17 +595,17 @@ void Foam::solvers::loop::fromSolidToFluid()
 
     // Step 3 - Un-deform solid mesh
 
-    
+
     displacementPoints -= pointD;
 
     solidMesh.movePoints(displacementPoints);
 
     // Step 4 - Compare fluid displacement to solid
 
-    vectorField residual = displacementAtFaces-oldDisplacementAtFaces_(); 
+    vectorField residual = displacementAtFaces-oldDisplacementAtFaces_();
 
     Info << "New residual: " << Foam::sqrt(gSum(magSqr(residual))) << endl;
-    
+
     //Return normalised residual
     return
     (

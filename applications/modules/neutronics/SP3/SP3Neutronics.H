@@ -78,22 +78,48 @@ protected:
     //- Cross sections
     XS xs_;
 
-    //- Fields
-    volScalarField Dalbedo_;
-    PtrList<volScalarField> flux_;
-    PtrList<volScalarField> fluxStar_;
-    PtrList<volScalarField> fluxStar2_;
-    PtrList<volScalarField> prec_;//prec per total volume
-    PtrList<volScalarField> precStar_;//prec per volume salt
-    volScalarField fluxStarAlbedo_;
-    volScalarField defaultFlux_;
-    volScalarField defaultFlux2_;
-    volScalarField defaultPrec_;
+    // Fields
 
-    //- Derived fields
-    volScalarField neutroSource_;
-    volScalarField delayedNeutroSource_;
-    volScalarField scatteringSourceExtra_;
+        //-
+        volScalarField Dalbedo_;
+
+        //-
+        PtrList<volScalarField> flux_;
+
+        //-
+        PtrList<volScalarField> fluxStar_;
+
+        //-
+        PtrList<volScalarField> fluxStar2_;
+
+        //- prec per total volume
+        PtrList<volScalarField> prec_;
+
+        //- prec per volume salt
+        PtrList<volScalarField> precStar_;
+
+        //-
+        volScalarField fluxStarAlbedo_;
+
+        //-
+        volScalarField defaultFlux_;
+
+        //-
+        volScalarField defaultFlux2_;
+
+        //-
+        volScalarField defaultPrec_;
+
+    // Derived fields
+
+        //-
+        volScalarField neutroSource_;
+
+        //-
+        volScalarField delayedNeutroSource_;
+
+        //-
+        volScalarField scatteringSourceExtra_;
 
 private:
 

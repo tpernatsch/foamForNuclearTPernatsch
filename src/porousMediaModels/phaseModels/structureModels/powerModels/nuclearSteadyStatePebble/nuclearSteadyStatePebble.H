@@ -123,13 +123,22 @@ protected:
     //- First guess for pebble surface temperature, to avoid initializing temperatures to 0K
     scalarList TpS_guess_;
 
-
-    //- Average fuel and matrix temperatures, and pebble, matrix and fuel surface temperatures
+    //- Average pebble surface temperature
     volScalarField TpS_;
+
+    //- Average matrix temperature
     volScalarField Tmav_;
+
+    //- Matrix surface temperature
     volScalarField Tmout_;
+
+    //- Surface fuel temperature
     volScalarField TfS_;
+
+    //- Average fuel temperature
     volScalarField Tfav_;
+
+    //- Maximum fuel temperature
     volScalarField Tfmax_;
 
     //- Scalars that are input in the IOdictionary for passing min/max temperatures
@@ -146,17 +155,29 @@ protected:
     scalar TfSmax_;
     scalar TfSmin_;
 
-    //- Pebble radii
-    scalarList rcore_;   // Pebble inner graphite core
-    scalarList rmatrix_; // Pebble fuel layer with matrix
-    scalarList rshell_;  // Pebble outer graphite shell
+    //- Pebble inner graphite core radius
+    scalarList rcore_;
 
-    //- TRISO radii
-    scalarList rfuel_;   // TRISO fuel kernel
-    scalarList rbuffer_; // TRISO buffer layer
-    scalarList rPyCin_;  // TRISO inner PyC layer
-    scalarList rSiC_;    // TRISO SiC layer
-    scalarList rPyCout_; // TRISO outer PyC layer
+    //- Pebble fuel layer with matrix radius
+    scalarList rmatrix_;
+
+    //- Pebble outer graphite shell radius
+    scalarList rshell_;
+
+    //- TRISO fuel kernel radius
+    scalarList rfuel_;
+
+    //- TRISO buffer layer radius
+    scalarList rbuffer_;
+
+    //- TRISO inner PyC layer radius
+    scalarList rPyCin_;
+
+    //- TRISO SiC layer radius
+    scalarList rSiC_;
+
+    //- TRISO outer PyC layer radius
+    scalarList rPyCout_;
 
     //- Thermal conductivities
     List< Polynomial<8> > kfuelCoeffs_;
@@ -164,11 +185,21 @@ protected:
     List< Polynomial<8> > kSiCCoeffs_;
     List< Polynomial<8> > kPyCCoeffs_;
     List< Polynomial<8> > kgraphiteCoeffs_;
-    scalarList kfuel_;     // TRISO fuel kernel
-    scalarList kbuffer_;   // TRISO buffer layer
-    scalarList kPyC_;      // TRISO PyC layers
-    scalarList kSiC_;      // TRISO SiC layer
-    scalarList kgraphite_; // Pebble matrix graphite
+
+    //- TRISO fuel kernel thermal conductivity
+    scalarList kfuel_;
+
+    //- TRISO buffer layer thermal conductivity
+    scalarList kbuffer_;
+
+    //- TRISO PyC layers thermal conductivity
+    scalarList kPyC_;
+
+    //- TRISO SiC layer thermal conductivity
+    scalarList kSiC_;
+
+    //- Pebble matrix graphite thermal conductivity
+    scalarList kgraphite_;
 
     //- Matrix effective thermal conductivity
     volScalarField keffMatrix_;
@@ -180,12 +211,24 @@ protected:
     List< Polynomial<8> > rhoPyCCoeffs_;
     List< Polynomial<8> > rhographiteCoeffs_;
     List< Polynomial<8> > rhocoolantCoeffs_;
-    volScalarField rhofuel_;     // TRISO fuel kernel
-    volScalarField rhobuffer_;   // TRISO buffer layer
-    volScalarField rhoPyC_;      // TRISO PyC layers
-    volScalarField rhoSiC_;      // TRISO SiC layer
-    volScalarField rhographite_; // Pebble matrix graphite
-    volScalarField rhocoolant_; // Coolant
+
+    // TRISO fuel kernel density field
+    volScalarField rhofuel_;
+
+    // TRISO buffer layer density field
+    volScalarField rhobuffer_;
+
+    // TRISO PyC layers density field
+    volScalarField rhoPyC_;
+
+    // TRISO SiC layer density field
+    volScalarField rhoSiC_;
+
+    // Pebble matrix graphite density field
+    volScalarField rhographite_;
+
+    // Coolant density field
+    volScalarField rhocoolant_;
 
     //- Pebble/fluid surface heat flux
     volScalarField surfaceHeatFlux_;

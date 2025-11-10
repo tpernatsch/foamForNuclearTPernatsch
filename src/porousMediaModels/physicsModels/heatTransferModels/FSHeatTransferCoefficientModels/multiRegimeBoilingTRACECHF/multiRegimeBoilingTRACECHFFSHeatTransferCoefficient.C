@@ -257,7 +257,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
     }
     if (dmdtWPtr_ == nullptr)
     {
-        //  Ptr to wall mass transfer term (i.e. due to subcooled boiling)
+        // Ptr to wall mass transfer term (i.e. due to subcooled boiling)
         dmdtWPtr_ =
             &
             (
@@ -276,7 +276,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
     const scalar& pi(pair_.mesh().lookupObject<volScalarField>("p")[celli]);
 
     //CHF Bool : 0 if preCHF, 1 if postCHF, 2 if transition
-    CHFBool_[celli]=0;
+    CHFBool_[celli] = 0;
     // weight for the transition boiling -> see TRACE
     wfTB_[celli] = 0;
     // Leidenfrost Temperature
@@ -287,30 +287,30 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
     // Latent heat value
     const scalar Li(mag(FFPairPtr_->L()[celli]));
 
-    //  Two-phase forced-convection heat transfer coefficient
-    //  and explicit heat flux, used later throughout the map
+    // Two-phase forced-convection heat transfer coefficient
+    // and explicit heat flux, used later throughout the map
     scalar htc2pFCi(htcFCPtr_->value(celli)*FPtr_->value(celli));
     scalar qFCi(htc2pFCi*(Twi-Tfi));
 
-    if (Twi < Tsati)    //  Wall below saturation, either condensing or
-                        //  nothing special happens
+    if (Twi < Tsati)    // Wall below saturation, either condensing or
+                        // nothing special happens
     {
-        if (htcCndPtr_.valid()) //  If a film condensation model has been specified
+        if (htcCndPtr_.valid()) // If a film condensation model has been specified
         {
-            if (alphai <= 0.8) //  Nothing special
+            if (alphai <= 0.8) // Nothing special
                 return htc2pFCi;
-            else    //  Film condensation
+            else    // Film condensation
             {
-                //  Film condensation heat transfer coefficient
+                // Film condensation heat transfer coefficient
                 scalar htcCndi(htcCndPtr_->value(celli));
 
-                //  Linear interpolation if 0.8 < alphai < 0.9
+                // Linear interpolation if 0.8 < alphai < 0.9
                 if (alphai < 0.9)
                 {
                     scalar f(0.9-alphai/0.1);
                     return f*htc2pFCi+(1.0-f)*htcCndi;
                 }
-                else //  Film condensation only
+                else // Film condensation only
                     return htcCndi;
             }
         }
@@ -319,8 +319,8 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
     }
     else
     {
-        //  If a TONB model has not been provided, no sub-cooled boiling
-        //  and set it equal to Tsati
+        // If a TONB model has not been provided, no sub-cooled boiling
+        // and set it equal to Tsati
         scalar TONBi
         (
             (TONBPtr_.valid()) ?
@@ -328,19 +328,19 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
             Tsati
         );
         //Info << "TONB --- " << TONBi << " ---" << endl;
-        if (Twi < TONBi)    //  Wall above saturation but below onset of
-                            //  nucleate boiling, nothing special
+        if (Twi < TONBi)    // Wall above saturation but below onset of
+                            // nucleate boiling, nothing special
         {
             return htc2pFCi;
         }
-        else //  Wall above onset of nucleate boiling
+        else // Wall above onset of nucleate boiling
 // -------------------------- Pre CHF Situation -------------------------- //
         {
             scalar qCHFi // Critical Heat Flux -> Only constant coded yet
             (
-                (qCHFPtr_.valid()) ?
-                qCHFPtr_->value(celli) :
-                1e15
+                (qCHFPtr_.valid())
+                ? qCHFPtr_->value(celli)
+                : 1e15
             );
 
 // ------------------------------------------------------------------------ //
@@ -350,7 +350,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
             // Will not be always valid if the model for PB is changed
 
             // Gorenflo Model used
-            const scalar pCrit(2.209e7); //  Specific to Water
+            const scalar pCrit(2.209e7); // Specific to Water
             const scalar h0(5600);
             const scalar q0(20000);
             const scalar R0(4e-7);
@@ -363,12 +363,6 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
 
             scalar TCHF(Tsati+pow(qCHFi,1.0-n)*pow(q0,n)/h0/F/A);
 
-            // Print of Temperature for checking results
-            //Info << "Twall --- " << Twi << " ---" << endl;
-            //Info << "TCHF  --- " << TCHF << " ---" << endl;
-            //Info << "TONB --- " << TONBi << " ---" << endl;
-            //Info << "Tsat --- " << Tsati << " ---" << endl;
-
 // ------------------------------------------------------------------------ //
 // ------------------------------------------------------------------------ //
 
@@ -379,44 +373,38 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
                 scalar hPBi(htcPBPtr_->value(celli));
                 scalar qPBi(hPBi*(Twi-Tsati));
 
-                //  Calc hPB at boiling onset, i.e. the hPB when the wall
-                //  temperature is TONBi. This is done by caching Twi,
-                //  setting it to TONB,  using the htcPB model to calc the
-                //  hPB with Tw=TONB, then re-setting the Twi
+                // Calc hPB at boiling onset, i.e. the hPB when the wall
+                // temperature is TONBi. This is done by caching Twi,
+                // setting it to TONB,  using the htcPB model to calc the
+                // hPB with Tw=TONB, then re-setting the Twi
                 scalar Twi0(Twi);
                 const_cast<scalar&>(Twi) = TONBi;
                 scalar hPBONBi(htcPBPtr_->value(celli));
                 const_cast<scalar&>(Twi) = Twi0;
 
 
-                //  Explicit heat fluxes
+                // Explicit heat fluxes
                 scalar qBIi(hPBONBi*(TONBi-Tsati));
                 scalar qNBi = pow(pow(qFCi, 3)+pow(qPBi-qBIi, 3), 1.0/3.0);
-                //  Please note that only the dmdtW is set in this scope as
-                //  the subcooled boiling heat transfer coefficient and the
-                //  nucleate boiling heat transfer coefficient are computed
-                //  in the same way, outside and after this scope
+                // Please note that only the dmdtW is set in this scope as
+                // the subcooled boiling heat transfer coefficient and the
+                // nucleate boiling heat transfer coefficient are computed
+                // in the same way, outside and after this scope
                 scalar f(1.0);
                 if (SCBFPtr_.valid())
                 {
                     f = SCBFPtr_->value(celli, qNBi);
                 }
                 scalar qSCDmdti(f*(qNBi-qFCi));
-                     //  If fluid1 is liquid and 2 is vapour then L > 0 and
-                //  this sub-cooled boiling term is also > 0. If fluid2
-                //  is liquid and fluid1 is vapour then L < 0 and
-                //  everything still  works out in terms of the dmdtW
-                //  sign, as I recall that it is positive for phase
-                //  changes from fluid1 to fluid2 and negative
-                //  vice-versa
-                (*dmdtWPtr_)[celli] =
-                    Areai*qSCDmdti/Li;
+                     // If fluid1 is liquid and 2 is vapour then L > 0 and
+                // this sub-cooled boiling term is also > 0. If fluid2
+                // is liquid and fluid1 is vapour then L < 0 and
+                // everything still  works out in terms of the dmdtW
+                // sign, as I recall that it is positive for phase
+                // changes from fluid1 to fluid2 and negative
+                // vice-versa
+                (*dmdtWPtr_)[celli] = Areai*qSCDmdti/Li;
 
-                // Print of Heat Flux for checking results
-                //Info << "qNBi --- " << qNBi << " ---" << endl;
-                //Info << "qFCi --- " << qFCi << " ---" << endl;
-                //Info << "qPBi --- " << qPBi << " ---" << endl;
-                //Info << "qBIi --- " << qBIi << " ---" << endl;
                 return qNBi/dT;
             }
 
@@ -424,7 +412,7 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
             else
             {
                 CHFBool_[celli] = 1;
-                //  If a TLF model has not been provided, the Leidenfrost temperature is
+                // If a TLF model has not been provided, the Leidenfrost temperature is
                 // set to Tw -> no hysteresis zone.
                 scalar TLFi
                 (
@@ -434,9 +422,10 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
                 );
                 TLF_[celli]=TLFi;
 
-                // For now, only annular flow regime for FILM BOILING (FB) -> alpha < 0.6 needed
+                // For now, only annular flow regime for FILM BOILING (FB)
+                // -> alpha < 0.6 needed
 
-                if (Twi<TLFi) // Transition boiling region - hysteresis zone
+                if (Twi < TLFi) // Transition boiling region - hysteresis zone
                 {
                     CHFBool_[celli] = 2; // Transition
 
@@ -446,9 +435,9 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
                     const_cast<scalar&>(Twi) = TLFi;
                     scalar hFBiMIN
                     (
-                        (htcAFPtr_.valid()) ?
-                        htcAFPtr_->value(celli) :
-                        0
+                        (htcAFPtr_.valid())
+                            ? htcAFPtr_->value(celli)
+                            : 0
                     );
                     // Production of vapour at TLF
                     scalar hGammaiMIN(pair_.mesh().lookupObject<volScalarField>("hGammaCachard")[celli]);
@@ -476,16 +465,15 @@ Foam::FSHeatTransferCoefficientModels::multiRegimeBoilingTRACECHF::value
                 {
                     scalar hFBi
                     (
-                        (htcAFPtr_.valid()) ?
-                        htcAFPtr_->value(celli) :
-                        0
+                        (htcAFPtr_.valid())
+                            ? htcAFPtr_->value(celli)
+                            : 0
                     );
                     // net production of Vapour in FB IAF
                     const volScalarField& hGamma_(pair_.mesh().lookupObject<volScalarField>("hGammaCachard"));
                     scalar hGammai(hGamma_[celli]);
 
-                    (*dmdtWPtr_)[celli] =
-                        Areai*hGammai*(Twi-Tfi)/max(Li,1e-6);
+                    (*dmdtWPtr_)[celli] = Areai*hGammai*(Twi-Tfi)/max(Li,1e-6);
                     return hFBi;
                 }
             }

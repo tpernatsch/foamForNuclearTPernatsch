@@ -1,9 +1,9 @@
 description: |-
   Describes a generic structure with a constant or time depdendent internal
-      power production.
-      Solves an energy equation for the structure, updating the average
-      structure temperature (assumed equal to the structure surface temperature
-      for fluid heat transfer purposes).
+  power production.
+  Solves an energy equation for the structure, updating the average
+  structure temperature (assumed equal to the structure surface temperature
+  for fluid heat transfer purposes).
 
 admonitions:
   - kind: warning
@@ -31,52 +31,49 @@ usage:
   - comment: |-
       Usage already present in Header (verbatim):
     snippet: |-
-      \verbatim
-              powerModel
-              {
-                  type                fixedPower;
-                  volumetricArea      100;
-                  T                   652.15;
-                  Cp                  500;
-                  rho                 7700;
-                  powerDensity        4.5e8;
-                  powerTimeProfile // Optional
-                  {
-                      type        table;
-                      startTime   0;
-                      table       table
-                      (
-                          (   0   4.5e8   )
-                          ( 100   4.5e7   )
-                      );
-                  }
-              }
+      powerModel
+      {
+          type                fixedPower;
+          volumetricArea      100;
+          T                   652.15;
+          Cp                  500;
+          rho                 7700;
+          powerDensity        4.5e8;
+          powerTimeProfile // Optional
+          {
+              type        table;
+              startTime   0;
+              table       table
+              (
+                  (   0   4.5e8   )
+                  ( 100   4.5e7   )
+              );
+          }
+      }
 
-              // Using FMI input
-              powerModel
-              {
-                  type                fixedPower;
-                  volumetricArea      100;
-                  T                   652.15;
-                  Cp                  500;
-                  rho                 7700;
-                  powerDensity        4.5e8;
-              }
-          \endverbatim
+      // Using FMI input
+      powerModel
+      {
+          type                fixedPower;
+          volumetricArea      100;
+          T                   652.15;
+          Cp                  500;
+          rho                 7700;
+          powerDensity        4.5e8;
+      }
   - comment: |-
       The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
     snippet: |
       phaseProperties
       {
-        physicsModels
-        {
-          <subModel>
+          physicsModels
           {
-            "<zoneName>"
-            {
-              type fixedPower;
-            }
+              <subModel>
+              {
+                  "<zoneName>"
+                  {
+                      type fixedPower;
+                  }
+              }
           }
-        }
       }
-

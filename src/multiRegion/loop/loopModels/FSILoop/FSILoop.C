@@ -65,7 +65,7 @@ namespace solvers
 
 Foam::solvers::FSILoop::FSILoop
 (
-    dynamicFvMesh& mesh 
+    dynamicFvMesh& mesh
 )
 :
     loop(mesh)
@@ -85,20 +85,20 @@ void Foam::solvers::FSILoop::createSolvers(word name)
 
     solvers_.setSize(solverNames_.size());
 
-    wordList energyOnlyList = multiPhysicsDict_.getOrDefault<wordList>("includeFluidMechanicsInLoop", wordList());
+    wordList energyOnlyList = multiPhysicsDict_.getOrDefault<wordList>
+    (
+        "includeFluidMechanicsInLoop",
+        wordList()
+    );
 
     forAll(solverNames_, nameI)
     {
-
-
         Info<< "Creating sub-scale solver " << solverNames_[nameI] << nl
             << endl;
 
         word solverType
         (
-            multiPhysicsDict_
-                .subDict("subSolvers")
-                .get<word>(solverNames_[nameI])
+            multiPhysicsDict_.subDict("subSolvers").get<word>(solverNames_[nameI])
         );
 
         // This replicates the structure of regionSolvers. This allows to create
@@ -140,21 +140,20 @@ void Foam::solvers::FSILoop::createSolvers(word name)
     maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
 
 
-        // Get indices of solvers
-
-    if(solvers_.size()!=2)
+    // Get indices of solvers
+    if (solvers_.size()!=2)
     {
         FatalErrorInFunction
-        << "Please select one fluid and one solid solver"
-        <<  endl
-        << "Valid types are: "  << endl
-        <<"Fluid: 2(rhoPimpleFoam, onePhase) " << endl
-        <<"Solid: 2(extendedThermoMechanics, legacyThermoMechanics)" << endl
-        << exit(FatalError);
+            << "Please select one fluid and one solid solver"
+            << nl
+            << "Valid types are: " << nl
+            << "Fluid: 2(rhoPimpleFoam, onePhase) " << nl
+            << "Solid: 2(extendedThermoMechanics, legacyThermoMechanics)" << nl
+            << exit(FatalError);
     }
     else
     {
-        if(solvers_[0].regionName() == fluidRegionName_)
+        if (solvers_[0].regionName() == fluidRegionName_)
         {
             fluidSolverID_ = 0;
         }
@@ -162,40 +161,38 @@ void Foam::solvers::FSILoop::createSolvers(word name)
         {
             fluidSolverID_ = 1;
         }
-        solidSolverID_ = 1-fluidSolverID_;
+        solidSolverID_ = 1 - fluidSolverID_;
 
-        word fluidSolverType = 
+        word fluidSolverType =
             multiPhysicsDict_.subDict("subSolvers").
             get<word>(fluidRegionName_);
-        
-        word solidSolverType = 
+
+        word solidSolverType =
             multiPhysicsDict_.subDict("subSolvers").
             get<word>(solidRegionName_);
 
-        if 
+        if
         (
-            (fluidSolverType != "onePhase" and fluidSolverType != "rhoPimpleFoam") 
-            or
-            (solidSolverType != "legacyThermomechanics" and solidSolverType != "extendedThermoMechanics" and solidSolverType != "fuelBehaviour")
+            (fluidSolverType != "onePhase" && fluidSolverType != "rhoPimpleFoam")
+            ||
+            (solidSolverType != "legacyThermomechanics" && solidSolverType != "extendedThermoMechanics" && solidSolverType != "fuelBehaviour")
 
         )
         {
             FatalErrorInFunction
-            << "Please select one fluid and one solid solver"
-            <<  endl
-            << "Valid types are: "  << endl
-            <<"Fluid: 2(rhoPimpleFoam, onePhase) " << endl
-            <<"Solid: 3(extendedThermoMechanics, legacyThermoMechanics, fuelBehaviour)" << endl
-            << exit(FatalError);
+                << "Please select one fluid and one solid solver"
+                << nl
+                << "Valid types are: " << nl
+                << "Fluid: 2(rhoPimpleFoam, onePhase) " << nl
+                << "Solid: 3(extendedThermoMechanics, legacyThermoMechanics, fuelBehaviour)" << nl
+                << exit(FatalError);
         }
-
     }
-    
+
     word fluidSidePatchName = FSIProperties_.get<word>("fluidSidePatchName");
     fluidPatchID_ = meshHandler_->returnMesh(fluidRegionName_).boundaryMesh().findPatchID(fluidSidePatchName);
     word solidSidePatchName = FSIProperties_.get<word>("solidSidePatchName");
     solidPatchID_ = meshHandler_->returnMesh(solidRegionName_).boundaryMesh().findPatchID(solidSidePatchName);
-
 
     solidInterpolator_.reset
     (
@@ -206,7 +203,6 @@ void Foam::solvers::FSILoop::createSolvers(word name)
     );
 
 
-
     // Get patch interpolator
 
     primitivePatchInterpolation patchInterpolator
@@ -215,7 +211,7 @@ void Foam::solvers::FSILoop::createSolvers(word name)
     );
 
     // Get solid displacement field
-    
+
     vectorField displacementAtFaces
     (
         meshHandler_->returnMesh(solidRegionName_).lookupObject<volVectorField>("D").
@@ -224,8 +220,8 @@ void Foam::solvers::FSILoop::createSolvers(word name)
 
 
     int oldTag = UPstream::msgType();
-    UPstream::msgType() = oldTag+1;
- 
+    UPstream::msgType() = oldTag + 1;
+
     // Get the coupling information from the mappedPatchBase
     const mappedPatchBase& mpp = refCast<const mappedPatchBase>
     (
@@ -237,10 +233,7 @@ void Foam::solvers::FSILoop::createSolvers(word name)
 
     oldDisplacementAtFaces_.reset
     (
-        new vectorField
-        (
-            displacementAtFaces
-        )
+        new vectorField(displacementAtFaces)
     );
 
     fluidDisplacementAtSolid_.reset
@@ -258,17 +251,16 @@ void Foam::solvers::FSILoop::createSolvers(word name)
             meshHandler_->returnMesh(solidRegionName_),
             dimensionedVector("fluidDisplacementAtSolid", dimLength, vector::zero)
         )
-    );    
+    );
 }
 
 void Foam::solvers::FSILoop::correctPhysics()
 {
-    // Start loop 
-
+    // Start loop
     scalar iterN(0);
     scalar residual(0);
 
-    do 
+    do
     {
         // fromSolidToFluid();
         solvers_[fluidSolverID_].correctPhysics();
@@ -278,16 +270,20 @@ void Foam::solvers::FSILoop::correctPhysics()
         if(meshHandler_->returnMesh(solidRegionName_).time().value()>couplingStartTime_)
             fromSolidToFluid();
 
-        
+
         if(meshHandler_->returnMesh(solidRegionName_).time().value()>2)
             residual = calcFSIResidual();
 
         ++iterN;
 
-        if(residual<minResidual_)
-            Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
+        if (residual < minResidual_)
+            Info<< nl
+                << "Multiphysics loop converged after " << iterN
+                << " iterations"
+                << nl
+                << endl;
     }
-    while(residual>minResidual_ && iterN < maxIterations_); 
+    while (residual > minResidual_ && iterN < maxIterations_);
 }
 
 
@@ -332,7 +328,7 @@ void Foam::solvers::FSILoop::fromFluidToSolid()
 
 
     int oldTag = UPstream::msgType();
-    UPstream::msgType() = oldTag+1;
+    UPstream::msgType() = oldTag + 1;
 
 
     const mappedPatchBase& mpp = refCast<const mappedPatchBase>
@@ -346,23 +342,23 @@ void Foam::solvers::FSILoop::fromFluidToSolid()
         nbrMesh
     ).boundary()[mpp.samplePolyPatch().index()];
 
-    
-    
+
+
     scalarList pressureFluid =
         nbrPatch.lookupPatchField<volScalarField, scalar>("p");
- 
+
     //mpp.distribute(pressureFluid);
 
     vectorField tractionFluid =
     (
-        (nbrPatch.lookupPatchField<volSymmTensorField, symmTensor>("stressTensor") 
+        (nbrPatch.lookupPatchField<volSymmTensorField, symmTensor>("stressTensor")
         & nbrPatch.nf())
     );
 
     mpp.distribute(tractionFluid);
 
-    
-    //pressure = pressureFluid;
+
+    // pressure = pressureFluid;
     traction = -tractionFluid ;
 
 
@@ -385,7 +381,7 @@ void Foam::solvers::FSILoop::fromFluidToSolid()
 
 
         int oldTag = UPstream::msgType();
-        UPstream::msgType() = oldTag+1;
+        UPstream::msgType() = oldTag + 1;
 
 
         const mappedPatchBase& Tmpp = refCast<const mappedPatchBase>
@@ -406,14 +402,14 @@ void Foam::solvers::FSILoop::fromFluidToSolid()
         word fluidKappa = FSIProperties_.getOrDefault<word>("fluidKappa", "kappaEff");
         word solidKappa = FSIProperties_.getOrDefault<word>("solidKappa", "k");
 
-        scalarList htcFluid = 
+        scalarList htcFluid =
         (
-            useHTC ?
-            nbrPatch.lookupPatchField<volScalarField, scalar>("htc") :
-            nbrPatch.lookupPatchField<volScalarField , scalar>(fluidKappa) * nbrPatch.deltaCoeffs()
+            useHTC
+                ? nbrPatch.lookupPatchField<volScalarField, scalar>("htc")
+                : nbrPatch.lookupPatchField<volScalarField, scalar>(fluidKappa) * nbrPatch.deltaCoeffs()
         );
 
-        scalarField solidWeight = 
+        scalarField solidWeight =
         (
             solidMesh.boundary()[solidPatchID_].lookupPatchField<volScalarField, scalar>(solidKappa)
             * solidMesh.boundary()[solidPatchID_].deltaCoeffs()
@@ -424,23 +420,19 @@ void Foam::solvers::FSILoop::fromFluidToSolid()
         Tmpp.distribute(temperatureFluid);
         refVal = temperatureFluid;
 
-        //Set value fraction
+        // Set value fraction
         Tmpp.distribute(htcFluid);
         valueFrac = htcFluid / (solidWeight + htcFluid);
 
-        //Set gradient
+        // Set gradient
         refGrad = 0;
-
     }
 
     // Step 3 - Deform back the solid mesh
 
-
     displacementPoints -= pointD;
 
     solidMesh.movePoints(displacementPoints);
-
-
 }
 
 void Foam::solvers::FSILoop::fromSolidToFluid()
@@ -454,11 +446,12 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
     // Update displacement
 
 
-
     // Step 1 - Deform solid mesh with old displacement
 
-
-    dynamicFvMesh& solidMesh = const_cast<dynamicFvMesh&>(meshHandler_->returnMesh(solidRegionName_));
+    dynamicFvMesh& solidMesh = const_cast<dynamicFvMesh&>
+    (
+        meshHandler_->returnMesh(solidRegionName_)
+    );
 
     pointField displacementPoints = solidMesh.points();
 
@@ -478,7 +471,10 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
 
     // Step 2 - Map displacement from solid to fluid
 
-    dynamicFvMesh& fluidMesh = const_cast<dynamicFvMesh&>(meshHandler_->returnMesh(fluidRegionName_));
+    dynamicFvMesh& fluidMesh = const_cast<dynamicFvMesh&>
+    (
+        meshHandler_->returnMesh(fluidRegionName_)
+    );
 
     vectorField displacementAtFaces
     (
@@ -487,8 +483,8 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
     );
 
     int oldTag = UPstream::msgType();
-    UPstream::msgType() = oldTag+1;
-    
+    UPstream::msgType() = oldTag + 1;
+
     const mappedPatchBase& mpp = refCast<const mappedPatchBase>
     (
         fluidMesh.boundaryMesh()[fluidPatchID_]
@@ -497,9 +493,8 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
     mpp.distribute(displacementAtFaces);
 
     // Optional step - if thermal coupling map T and q
-    if(thermalCoupling_)
+    if (thermalCoupling_)
     {
-
         // Get patch and field
 
         const volScalarField& Tf = fluidMesh.lookupObject<volScalarField>("T");
@@ -515,7 +510,7 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
 
 
         int oldTag = UPstream::msgType();
-        UPstream::msgType() = oldTag+1;
+        UPstream::msgType() = oldTag + 1;
 
 
         const mappedPatchBase& Tmpp = refCast<const mappedPatchBase>
@@ -536,15 +531,15 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
         word fluidKappa = FSIProperties_.getOrDefault<word>("fluidKappa", "kappaEff");
         word solidKappa = FSIProperties_.getOrDefault<word>("solidKappa", "k");
 
-        scalarList htcSolid = 
+        scalarList htcSolid =
             nbrPatch.lookupPatchField<volScalarField , scalar>(solidKappa) * nbrPatch.deltaCoeffs();
 
-        scalarField fluidWeight = 
+        scalarField fluidWeight =
         (
-            useHTC ?
-            (fluidMesh.boundary()[fluidPatchID_].lookupPatchField<volScalarField, scalar>("htc")) :
-            (fluidMesh.boundary()[fluidPatchID_].lookupPatchField<volScalarField, scalar>(fluidKappa)
-            * fluidMesh.boundary()[fluidPatchID_].deltaCoeffs())
+            useHTC
+                ? (fluidMesh.boundary()[fluidPatchID_].lookupPatchField<volScalarField, scalar>("htc"))
+                : (fluidMesh.boundary()[fluidPatchID_].lookupPatchField<volScalarField, scalar>(fluidKappa)
+                    * fluidMesh.boundary()[fluidPatchID_].deltaCoeffs())
         );
 
         // Set ref value
@@ -558,12 +553,10 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
 
         //Set gradient
         refGrad = 0;
-
     }
 
     // Step 3 - Un-deform solid mesh
 
-    
     displacementPoints -= pointD;
 
     solidMesh.movePoints(displacementPoints);
@@ -572,11 +565,7 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
 
     pointVectorField& motionU = const_cast<pointVectorField&>
     (
-        fluidMesh.objectRegistry::
-        lookupObject<pointVectorField>
-        (
-            "pointMotionU"
-        )
+        fluidMesh.objectRegistry::lookupObject<pointVectorField>("pointMotionU")
     );
 
     fixedValuePointPatchVectorField& motionUFluidPatch = refCast<fixedValuePointPatchVectorField>
@@ -591,7 +580,7 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
         fluidMesh.boundaryMesh()[fluidPatchID_]
     );
 
-    displacementAtFaces = displacementAtFaces *underRelaxation_ + oldDisplacementAtFaces_()*(1-underRelaxation_); 
+    displacementAtFaces = displacementAtFaces *underRelaxation_ + oldDisplacementAtFaces_()*(1-underRelaxation_);
 
     vectorField deltaDAtPoints =
     patchInterpolator.faceToPointInterpolate
@@ -611,7 +600,7 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
     oldDisplacementAtFaces_() = displacementAtFaces;
 }
 
- Foam::scalar Foam::solvers::FSILoop::calcFSIResidual()
+Foam::scalar Foam::solvers::FSILoop::calcFSIResidual()
 {
     // Steps to do:
         //Step 1: Deform solid mesh
@@ -622,7 +611,10 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
 
     //Step 1: Deform solid
 
-    dynamicFvMesh& solidMesh = const_cast<dynamicFvMesh&>(meshHandler_->returnMesh(solidRegionName_));
+    dynamicFvMesh& solidMesh = const_cast<dynamicFvMesh&>
+    (
+        meshHandler_->returnMesh(solidRegionName_)
+    );
 
     pointField displacementPoints = solidMesh.points();
 
@@ -640,7 +632,10 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
 
     // Step 2 - Map displacement from solid to fluid
 
-    dynamicFvMesh& fluidMesh = const_cast<dynamicFvMesh&>(meshHandler_->returnMesh(fluidRegionName_));
+    dynamicFvMesh& fluidMesh = const_cast<dynamicFvMesh&>
+    (
+        meshHandler_->returnMesh(fluidRegionName_)
+    );
 
     const volVectorField& D = solidMesh.lookupObject<volVectorField>("D");
 
@@ -652,7 +647,7 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
 
     int oldTag = UPstream::msgType();
     UPstream::msgType() = oldTag+1;
-    
+
     const mappedPatchBase& mpp = refCast<const mappedPatchBase>
     (
         fluidMesh.boundaryMesh()[fluidPatchID_]
@@ -662,23 +657,21 @@ void Foam::solvers::FSILoop::fromSolidToFluid()
 
     // Step 3 - Un-deform solid mesh
 
-    
     displacementPoints -= pointD;
 
     solidMesh.movePoints(displacementPoints);
 
     // Step 4 - Compare fluid displacement to solid
 
-    vectorField residual = displacementAtFaces-oldDisplacementAtFaces_(); 
+    vectorField residual = displacementAtFaces-oldDisplacementAtFaces_();
 
-    Info << "New residual: " << Foam::sqrt(gSum(magSqr(residual))) << endl;
-    
-    //Return normalised residual
+    Info<< "New residual: " << Foam::sqrt(gSum(magSqr(residual))) << endl;
+
+    // Return normalised residual
     return
     (
         Foam::sqrt(gSum(magSqr(residual)))
     );
-
 }
 
 // ************************************************************************* //

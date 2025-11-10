@@ -135,15 +135,19 @@ protected:
     // Protected data
 
         //-
-
         dictionary multiPhysicsDict_;
+
+        //-
         dictionary loopProperties_;
 
+        //-
         scalar minResidual_;
+
+        //-
         label maxIterations_;
+
+        //-
         scalar couplingStartTime_;
-
-
 
 
 private:
@@ -177,9 +181,12 @@ public:
 
     // Member Functions
 
-        //- Access
+        // Access
 
+        //-
         virtual void createSolvers(word name);
+
+        //-
         virtual void correctPhysics();
 
 };

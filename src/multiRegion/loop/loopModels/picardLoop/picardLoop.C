@@ -131,7 +131,7 @@ void Foam::solvers::picardLoop::createSolvers(word name)
     couplingStartTime_ = multiPhysicsDict_.getOrDefault<scalar>("couplingStartTime",0);
     minResidual_ = multiPhysicsDict_.get<scalar>("minResidual");
     maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
-        
+
 }
 
 void Foam::solvers::picardLoop::correctPhysics()
@@ -158,11 +158,14 @@ void Foam::solvers::picardLoop::correctPhysics()
 
         ++iterN;
 
-        if(residual<minResidual_)
-            Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
+        if (residual < minResidual_)
+            Info<< nl
+                << "Multiphysics loop converged after " << iterN
+                << " iterations"
+                << nl
+                << endl;
     }
-    while(residual>minResidual_ && iterN < maxIterations_);
-
+    while (residual > minResidual_ && iterN < maxIterations_);
 }
 
 

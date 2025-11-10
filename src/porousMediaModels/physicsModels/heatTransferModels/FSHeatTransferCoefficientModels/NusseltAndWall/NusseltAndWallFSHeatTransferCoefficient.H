@@ -118,8 +118,14 @@ private:
 
     //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)
     const scalar A_;
+
+    //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)
     const scalar B_;
+
+    //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)
     const scalar C_;
+
+    //- Coefficients in Nu = A_ + B_*Re^(C_)*Pr^(D_)
     const scalar D_;
 
     //- Additional heat transfer for the wall resistance

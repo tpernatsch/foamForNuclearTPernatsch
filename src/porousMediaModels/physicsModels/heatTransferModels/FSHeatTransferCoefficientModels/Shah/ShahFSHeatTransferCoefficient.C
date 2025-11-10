@@ -79,24 +79,24 @@ Foam::FSHeatTransferCoefficientModels::Shah::Shah
     ),
     Twall_
     (
-        (!useExplicitHeatFlux_) ?
-        &pair.structureRef().Twall() :
-        nullptr
+        (!useExplicitHeatFlux_)
+            ? &pair.structureRef().Twall()
+            : nullptr
     ),
     Tf_
     (
-        (!useExplicitHeatFlux_) ?
-        &pair.fluidRef().thermo().T() :
-        nullptr
+        (!useExplicitHeatFlux_)
+            ? &pair.fluidRef().thermo().T()
+            : nullptr
     ),
     q_
     (
-        (useExplicitHeatFlux_) ?
-        &pair.mesh().lookupObject<volScalarField>("heatFlux.structure") :
-        nullptr
+        (useExplicitHeatFlux_)
+        ? &pair.mesh().lookupObject<volScalarField>("heatFlux.structure")
+        : nullptr
     ),
     p_(pair.mesh().lookupObject<volScalarField>("p")),
-    pCrit_(3.5e7), //  Specific to Sodium
+    pCrit_(3.5e7), // Specific to Sodium
     C0_(13.7),
     C1_(6.9),
     m0_(0.22),
@@ -109,53 +109,6 @@ Foam::FSHeatTransferCoefficientModels::Shah::Shah
 
 
 // * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
-
-/*
-IMPLEMENTATION NOTES
-
-The original pool boiling heat transfer coefficient by Shah is the following
-form:
-
-htcPB = C * q^n * pR^m
-
-with C, n, m being constants, pR being the reduced pressure (i.e. the
-ration of the fluid pressure to the fluid pressure at its critical point)
-and q being the heat flux between wall and fluid. Needless to say, this form
-is not particularly suitable for a numerical implementation in its current
-form as htcPB is required to compute q in the first place. In general:
-
-q = htc*(Twall-Tf)
-
-with htc being the total heat transfer coefficient between wall and fluid,
-Twall being the wall temperature and Tf the fluid temperature. By assuming
-that htc ~ htcPB (i.e. that most of the heat flux is due to the pool
-boiling mechanism), one can tha equate:
-
-htcPB = C * (htcPB*(Twall-Tf))^n * pR^m
-
-which can be re-arranged to isolate htcPB on the left hand side as:
-
-htcPB = (C * (Twall-Tf)^n * pR^m)^(1.0/(1.0-n))
-
-Which is how the correlation is implemented here.
-The assumption of htc ~ htcPB can be rather crude but it is widely employed
-to yiled a feasable numerical implementation in other computer codes too.
-The TRACE code is an example, even though the pool boiling correlation used
-in TRACE is the Gorenflo correlation, not the Shah one. Nonetheless, it is
-still a correlation in which htcPB is a function of the wall heat flux
-
-A footnote on the parameters C, m, n. Shah provided these values:
-
-C = 13.7, m = 0.22 if pR < 1e-3
-C = 6.9, m = 0.12 if pR > 1e-3
-n = 0.7 always
-
-Clearly the discotinuity at pR = 1e-3 should be avoided for numerical
-stabilitiy. For this reason, the values of C and m are linearly interpolated
-in the range (pR0_, pR0_+deltaPR_). Currently, pR0_ = 5e-4 and deltaPR_ = 1e-3.
-The choice of these values is arbitrary and should/could change in the future.
-
-*/
 
 Foam::scalar Foam::FSHeatTransferCoefficientModels::Shah::value
 (
@@ -170,7 +123,7 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Shah::value
         if (deltaT > 0.0)
         {
             scalar pR(p_[celli]/pCrit_);
-            //  Interpolate C, m to avoid discontinuity at pR = 1e-3
+            // Interpolate C, m to avoid discontinuity at pR = 1e-3
             scalar f
             (
                 min
@@ -196,9 +149,9 @@ Foam::scalar Foam::FSHeatTransferCoefficientModels::Shah::value
 
         if (q > 0.0)
         {
-            //  Reduced pressure
+            // Reduced pressure
             scalar pR(p_[celli]/pCrit_);
-            //  Interpolate C, m to avoid discontinuity at pR = 1e-3
+            // Interpolate C, m to avoid discontinuity at pR = 1e-3
             scalar f
             (
                 min

@@ -1,7 +1,7 @@
 Info<< "Solving neutronics" << endl;
 
 // Correct XS fields
-xs_.correct(/*TFuel_, TClad_, rhoCool_, TCool_, disp_, TStructMech_*/);
+xs_.correct();
 
 #include "setXSFields.H"
 
@@ -90,14 +90,12 @@ do
 
     Info<< "neutroResidual (neutroIter: " << neutroIter << "): " << neutroResidual
         << endl;
-        //<< " after Aitken no: " << aitkenIterNo << endl;
 }
 while
 (
     (neutroResidual > neutronIterationResidual) &&
     (neutroIter < maxNeutronIterations) &&
     !eigenvalueNeutronics_
-    // && !externalSourceNeutronics
 );
 
 // Reset and compute power density field

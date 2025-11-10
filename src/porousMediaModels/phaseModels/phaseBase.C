@@ -71,7 +71,7 @@ Foam::phaseBase::phaseBase
         ),
         mesh,
         dimensionedScalar("alpha", dimless, 0),
-        defaultBoundaryType//zeroGradientFvPatchScalarField::typeName
+        defaultBoundaryType
     ),
     dict_
     (
@@ -96,9 +96,6 @@ Foam::phaseBase::phaseBase
 
 Foam::phaseBase::~phaseBase()
 {}
-
-
-// * * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * //
 
 
 // ************************************************************************* //

@@ -184,16 +184,10 @@ public:
     //- Member functions
 
         //- Add data point for interpolation
-        void addData(
+        void addData
+        (
             const scalar value,
             const List<scalar>& parameters
-            // const scalar Tfuel,
-            // const scalar Tclad,
-            // const scalar Tcool,
-            // const scalar TstructMech,
-            // const scalar rhoCool,
-            // const scalar axExp,
-            // const scalar radExp
         );
 
         //- Build interpolation scheme
@@ -203,15 +197,9 @@ public:
         scalar getRef() const;
 
         //- Get the interpolated nuclear data value based on the input
-        //- parameters
-        scalar get(
-            // const scalar Tfuel,
-            // const scalar Tclad,
-            // const scalar Tcool,
-            // const scalar TstructMech,
-            // const scalar rhoCool,
-            // const scalar axExp,
-            // const scalar radExp,
+        //  parameters
+        scalar get
+        (
             const List<scalar>& parameters,
             const bool isParametrize = true
         );

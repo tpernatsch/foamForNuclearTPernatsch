@@ -94,7 +94,6 @@ SourceFiles
 
 #include "powerModel.H"
 #include "timeProfile.H"
-// #include "Function1.H"
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -123,11 +122,7 @@ protected :
 
     //- Optional table to describe any possible dependence of the power
     //  on time
-    // PtrList<Function1<scalar>> timeProfile_;
     PtrList<timeProfile> timeProfile_;
-
-    //- Optional offset time
-    // List<scalar> t0_;
 
     //- True if a timeProfilePtr_ exists
     List<bool> timeDependent_;
@@ -176,14 +171,6 @@ public:
 
         //- Power update based on given profile
         void powerUpdate();
-
-        //- Access
-
-            //-
-            //bool timeDependent() const
-            //{
-            //    return timeDependent_;
-            //}
 };
 
 

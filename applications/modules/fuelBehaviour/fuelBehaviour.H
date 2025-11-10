@@ -25,7 +25,7 @@ Class
     Foam::fuelBehaviour
 
 Description
-    
+    Fuel behavior sub-solver
 
 SourceFiles
     fuelBehaviour.C
@@ -86,7 +86,6 @@ class fuelBehaviour
         const offbeatTime& runTime_;
         fvMesh& mesh_;
         IOdictionary solverDict_;
-        // timeHandling adjustableTime_;
         globalOptions globalOpt_;
         autoPtr<materials> mat_;
         autoPtr<sliceMapper> mapper_;
@@ -101,7 +100,7 @@ class fuelBehaviour
         autoPtr<gapGasModel> gapGas_;
         autoPtr<corrosion> corrosion_;
         autoPtr<elementTransport> elementTransport_;
-    
+
     // Private Member Functions
 
         //- Disallow default bitwise copy construct
@@ -113,10 +112,10 @@ class fuelBehaviour
 public:
 
     TypeName("fuelBehaviour");
-    
+
     // Constructors
 
-    
+
 
         //- Construct from mesh, materials and dictionary
         fuelBehaviour

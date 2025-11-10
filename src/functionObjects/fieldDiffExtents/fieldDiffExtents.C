@@ -96,7 +96,7 @@ void Foam::functionObjects::fieldDiffExtents::writeFileHeader(Ostream& os)
         }
     }
 
-    os  << endl;
+    os << endl;
 
     writtenHeader_ = true;
 }
@@ -208,7 +208,7 @@ bool Foam::functionObjects::fieldDiffExtents::write()
 {
     writeFileHeader(file());
 
-    Log << type() << " " << name() <<  " write:" << nl;
+    Log << type() << " " << name() << " write:" << nl;
 
     forAll(fieldNames_, i)
     {

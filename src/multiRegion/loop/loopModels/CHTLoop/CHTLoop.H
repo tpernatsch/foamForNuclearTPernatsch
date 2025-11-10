@@ -142,8 +142,9 @@ protected:
     // Protected data
 
         //-
-
         dictionary multiPhysicsDict_;
+
+        //-
         dictionary CHTProperties_;
 
         word fluidRegionName_;
@@ -197,10 +198,17 @@ public:
 
         //- Access
         virtual void createSolvers(word name);
+
+        //-
         virtual void correctPhysics();
 
+        //-
         void fromSolidToFluid();
+
+        //-
         void fromFluidToSolid();
+
+        //-
         scalar calcFSIResidual();
 
 };

@@ -70,7 +70,7 @@ Foam::solvers::diffusionNeutronics::diffusionNeutronics
     dynamicFvMesh& mesh
 )
 :
-    neutronics(mesh),//diffusionNeutronics is derived from neutronics
+    neutronics(mesh),
     xs_(mesh),
     Dalbedo_
     (

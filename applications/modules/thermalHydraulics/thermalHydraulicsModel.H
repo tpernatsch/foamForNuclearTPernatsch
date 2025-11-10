@@ -42,7 +42,7 @@ Description
     Run-time selectable base abstract class to represent a thermal-hydraulic
     solver for an indefinite number of phases.
 
-    Author:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com)
 
 SourceFiles
@@ -59,8 +59,8 @@ SourceFiles
 #include "customPimpleControl.H"
 #include "runTimeSelectionTables.H"
 
-//- It is pointless to include these in the .C files as any derived solver
-//  class will need all of these anyway, so I include them in the header too
+// It is pointless to include these in the .C files as any derived solver
+// class will need all of these anyway, so I include them in the header too
 #include "volFields.H"
 #include "UniformField.H"
 #include "surfaceFields.H"
@@ -116,12 +116,16 @@ public :
 
 protected:
 
+    //-
     const Time& runTime_;
 
+    //-
     dynamicFvMesh& mesh_;
 
+    //-
     customPimpleControl pimple_;
 
+    //-
     fv::options& fvOptions_;
 
 
@@ -137,25 +141,47 @@ protected:
     //- Total volumetric flux
     surfaceScalarField phi_;
 
-    //- Gravity related fields
-    uniformDimensionedVectorField g_;
-    uniformDimensionedScalarField hRef_;
-    volScalarField gh_;
-    surfaceScalarField ghf_;
+    // Gravity related fields
 
-    //- Pressure
-    volScalarField p_rgh_;
-    volScalarField p_;
-    volSymmTensorField stressTensor_;
-    volScalarField kappaEff_;
+        //-
+        uniformDimensionedVectorField g_;
+
+        //-
+        uniformDimensionedScalarField hRef_;
+
+        //-
+        volScalarField gh_;
+
+        //-
+        surfaceScalarField ghf_;
+
+    // Pressure
+
+        //-
+        volScalarField p_rgh_;
+
+        //-
+        volScalarField p_;
+
+        //-
+        volSymmTensorField stressTensor_;
+
+        //-
+        volScalarField kappaEff_;
 
     //- Minimum allowable pressure
     dimensionedScalar pMin_;
 
-    //- Reference cell and pressure if no fixedValue BCs provided
-    label pRefCell_;
-    scalar pRefValue_;
-    bool forcePRef_;
+    // Reference cell and pressure if no fixedValue BCs provided
+
+        //- Reference cell and pressure if no fixedValue BCs provided
+        label pRefCell_;
+
+        //- Reference cell and pressure if no fixedValue BCs provided
+        scalar pRefValue_;
+
+        //- Reference cell and pressure if no fixedValue BCs provided
+        bool forcePRef_;
 
     //- Initial fluid(s) mass
     dimensionedScalar initialFluidMass_;
@@ -185,9 +211,13 @@ protected:
     //  procedure from phi
     const scalar porousInterfaceSharpness_;
 
-    //- Mapped fields
-    volScalarField powerDensityNeutronics_;
-    volScalarField powerDensityNeutronicsToLiquid_;
+    // Mapped fields
+
+        //- Mapped power density from neutronics
+        volScalarField powerDensityNeutronics_;
+
+        //- Mapped power density to liquid from neutronics
+        volScalarField powerDensityNeutronicsToLiquid_;
 
     //- Original mesh
     pointField originalPoints_;
@@ -197,30 +227,13 @@ public:
     //- Runtime type information
     TypeName("thermalHydraulicsModel");
 
-    //- Declare runtime construction
-
-        // declareRunTimeSelectionTable
-        // (
-        //     autoPtr,
-        //     thermalHydraulicsModel,
-        //     thermalHydraulicsModels,
-        //     (
-        //         Time& time,
-        //         fvMesh& mesh,
-        //         customPimpleControl& pimple,
-        //         fv::options& fvOpt,
-        //         bool multiRegion
-        //     ),
-        //     (time, mesh, pimple, fvOpt, multiRegion)
-        // );
-
     //- Constructors
 
         thermalHydraulicsModel
         (
             const Time& time,
             dynamicFvMesh& mesh,
-            fv::options& fvOpt// multiRegion check
+            fv::options& fvOpt
         );
 
         //- Destructor
@@ -228,7 +241,7 @@ public:
 
     //- Member Functions
 
-
+        //-
         virtual void correctRegimeMaps();
 
         //- Correct fluid and structure temperatures without
@@ -252,15 +265,15 @@ public:
         //- Stop execution (for development purposes)
         void stop();
 
+        //-
         virtual void correctBaffleLessFields();
 
+        //-
         template<class Type>
         void correctBaffleLessField(word fieldName, fvMesh& baffleLessMesh);
 
-
+        //-
         virtual void deformMesh();
-
-
 
 
         // Access

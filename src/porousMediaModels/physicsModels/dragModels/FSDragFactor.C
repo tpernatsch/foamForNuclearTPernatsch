@@ -89,9 +89,9 @@ Foam::FSDragFactor::FSDragFactor
     validY_(false),
     validZ_(false)
 {
-    //  Set cells_ in which this model exists. This is done based on the
-    //  regions in which this model is defined, with the region names being
-    //  in the dict name
+    // Set cells_ in which this model exists. This is done based on the
+    // regions in which this model is defined, with the region names being
+    // in the dict name
     wordList regions(myOps::split<word>(dict.dictName(), ':'));
     forAll(regions, i)
     {
@@ -103,7 +103,9 @@ Foam::FSDragFactor::FSDragFactor
     }
 
     if (!this->found("type"))
+    {
         isotropic_ = false;
+    }
 
     if (isotropic_)
     {
@@ -171,7 +173,9 @@ Foam::FSDragFactor::FSDragFactor
             validZ_ = true;
         }
         if (validX_ or validY_ or validZ_)
+        {
             halfAlphaRhoMagUByDh_ = scalarField(cells_.size(), 0);
+        }
     }
 }
 
@@ -195,11 +199,11 @@ void Foam::FSDragFactor::correctField(volTensorField& Kd) const
             tensor& Kdi(Kd[celli]);
             scalar value
             (
-                0.5/Dh_[celli]*
-                (1.0-alphas_[celli])*
-                rho_[celli]*
-                max(magU_[celli], minMagU)
-                *fdPtr_->value(celli)
+                0.5/Dh_[celli] *
+                (1.0-alphas_[celli]) *
+                rho_[celli] *
+                max(magU_[celli], minMagU) *
+                fdPtr_->value(celli)
             );
             Kdi[0] = value;
             Kdi[4] = value;

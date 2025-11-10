@@ -44,7 +44,7 @@ Description
     with a finite differences scheme. Only radial heat diffusion is considered.
     Derivation of the equations is provided at the end of the present file.
 
-    Authors:
+\mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
     Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
 
@@ -90,7 +90,10 @@ protected:
     //-
     wordList regionNames_;
 
+    //-
     volScalarField interpolatedHeatFlux_;
+
+    //-
     volScalarField interpolatedPowerDensity_;
 
     //- Structure temperature

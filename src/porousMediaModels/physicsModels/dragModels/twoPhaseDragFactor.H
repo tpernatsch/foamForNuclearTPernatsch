@@ -75,6 +75,8 @@ protected :
 
     //- Ref to FSPair
     FSPair& F1SPair_;
+
+    //-
     FSPair& F2SPair_;
 
     //-

@@ -83,8 +83,6 @@ scalarList solveGaussianRadialBasisFunction
         LUscalarMatrix Atemp(A);
 
         Atemp.inv(invRBFmatrix);
-
-        // solve(w, A, vList);
     }
 
     w = invRBFmatrix * vList;
@@ -194,8 +192,6 @@ scalarList solvePolyharmonicSpline
         LUscalarMatrix Atemp(A);
 
         Atemp.inv(invRBFmatrix);
-
-        // solve(w, A, vListTemp);
     }
 
     scalarList vListTemp(w.size(), 0.0);

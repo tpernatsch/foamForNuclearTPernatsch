@@ -1,10 +1,10 @@
 description: |-
   Model for representing a nuclear fuel pin with constant material
-      properties. Models fuel, gap, cladding and solves for the heat equation
-      with a finite differences scheme. Only radial heat diffusion is considered.
-      Derivation of the equations is provided at the end of the present file.
+  properties. Models fuel, gap, cladding and solves for the heat equation
+  with a finite differences scheme. Only radial heat diffusion is considered.
+  Derivation of the equations is provided at the end of the present file.
 
-      Authors:
+  \mainauthor
       Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),
       Carlo Fiorina (carlo.fiorina@outlook.com / carlo.fiorina@epfl.ch)
 
@@ -26,15 +26,14 @@ usage:
     snippet: |
       phaseProperties
       {
-        physicsModels
-        {
-          <subModel>
+          physicsModels
           {
-            "<zoneName>"
-            {
-              type interpolatedNuclearFuelPin;
-            }
+              <subModel>
+              {
+                  "<zoneName>"
+                  {
+                      type interpolatedNuclearFuelPin;
+                  }
+              }
           }
-        }
       }
-

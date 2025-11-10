@@ -83,6 +83,8 @@ Usage
 SourceFiles
     loop.C
 
+\mainauthor Author of this file (and associated .C or included .H files):
+    Giovanni Nervi <giovanni.nervi@epfl.ch>, EPFL (Switzerland)
 
 \*---------------------------------------------------------------------------*/
 
@@ -125,9 +127,6 @@ protected:
 
         //-
         meshHandler* meshHandler_;
-
-        //-
-        //dictionary multiPhysicsDict_;
 
         //-
         wordList solverNames_;
@@ -196,8 +195,6 @@ public:
         };
 
         virtual void createSolvers(word name) = 0;
-
-
 };
 
 

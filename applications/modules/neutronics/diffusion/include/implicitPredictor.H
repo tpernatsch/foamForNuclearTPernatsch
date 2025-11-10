@@ -21,7 +21,7 @@ Info<< "Accelerating neutronic solution: implicit predictor (not tested for SP3)
                     IOobject::NO_READ,
                     IOobject::NO_WRITE
                 ),
-                fvc::laplacian(D[energyI]/discFactor[energyI],fluxStar_[energyI]) // /fluxStar_[energyI]
+                fvc::laplacian(D[energyI]/discFactor[energyI],fluxStar_[energyI])
             )
         );
     }
@@ -48,7 +48,6 @@ Info<< "Accelerating neutronic solution: implicit predictor (not tested for SP3)
                         IV[energyI].internalField()[i]/mesh_.time().deltaT().value()/discFactor[energyI].internalField()[i]
                       - nuSigmaEff[energyI].internalField()[i]/keff_ * (1.0 - BetaTot.internalField()[i]) * chiPrompt[energyI].internalField()[i]/discFactor[energyI].internalField()[i]
                       + sigmaRemoval[energyI].internalField()[i]/discFactor[energyI].internalField()[i];
-                      //- leakages[energyI].internalField()[i];
                 }
                 else
                 {

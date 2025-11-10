@@ -120,16 +120,26 @@ void Foam::twoPhaseDragFactor::correct()
     (
         (mesh_.time().timeIndex() != mesh_.time().startTimeIndex()+1)
     );
+
     if (notFirstTimeStep)
+    {
         myOps::storePrevIterIfRelax(KdTotU_);
+    }
+
     twoPhaseDragMultiplierPtr_->correctField(KdTotU_);
+
     if (notFirstTimeStep)
+    {
         KdTotU_.relax();
+    }
+
     dimensionedScalar minMagU("", dimVelocity, 1e-9);
+
     F1SPair_.Kd() =
         F1SPair_.f()*KdTotU_/max(F1SPair_.fluidRef().magU(), minMagU);
     F2SPair_.Kd() =
         F2SPair_.f()*KdTotU_/max(F2SPair_.fluidRef().magU(), minMagU);
 }
+
 
 // ************************************************************************* //
