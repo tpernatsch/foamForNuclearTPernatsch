@@ -44,6 +44,7 @@ tools/openmcToFoam/**/PKG-INFO
 documentation/doxygen/Doxygen/html/**
 documentation/mkdocs/docs/classes
 documentation/**/generated
+documentation/**/usersguide/tutorials
 documentation/**/_build
 public
 

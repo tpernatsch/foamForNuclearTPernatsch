@@ -9,10 +9,12 @@ Each physics is simulated on a 2-D rectangular domain in the x-z plain
 - the TH (thermal-hydraulics) domain has one cellZone and is between x=0.25 and x=0.5
 - the TM (thermal-mechanics) domain has 3 cellZones: one from x=0.25 and x=0.5; one from x=0.5 and x=0.75; one from x=0.75 and x=1
 
+```
 |---|---|---|---|
 | N   N   N |
     | TH|
     | TM  TM  TM|
+```
 
 This combination provides the TM domain with:
 - a zone overlapped to both N and TH, where it can get the temperature from the TH

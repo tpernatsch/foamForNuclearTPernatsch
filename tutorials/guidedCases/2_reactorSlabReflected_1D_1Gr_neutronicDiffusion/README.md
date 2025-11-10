@@ -4,7 +4,7 @@
 
 This tutorial is the second in a series of neutronics tutorials. In this tutorial, GeN-Foam is used to showcase the advantage of a neutron reflector to reduce the size of fissile zone and achieve criticality.
 
-<img src="images/results_mesh.png" width="250"/>
+<img src="images/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion_results_mesh.png" width="250"/>
 
 *Fig 1. Slab reactor with reflector visualized with ParaView (core in red, reflector in white).*
 
@@ -15,7 +15,9 @@ First we start from the diffusion equation for the two regions, namely Core ($C$
 
 $$
 D_C \nabla^2 \phi_C + \nu \Sigma_f^C \phi_C - \Sigma_a^C \phi_C = 0
-\newline
+$$
+
+$$
 D_R \nabla^2 \phi_R - \Sigma_a^R \phi_R = 0
 $$
 
@@ -23,7 +25,9 @@ The core is centered on 0, so the solution to the above equations looks like thi
 
 $$
 \phi_C(z) = A \cos(B_g z)
-\newline
+$$
+
+$$
 \phi_R(z) = E \exp\left(\frac{-z}{L_R}\right) + F \exp\left(\frac{z}{L_R}\right)
 $$
 
@@ -81,7 +85,7 @@ To compare the results of GeN-Foam with the analytic solution, run the following
 python3 Allplot.py  1         flux0
 ```
 
-![](./images/results_neutronFlux.png)
+![](./images/2_reactorSlabReflected_1D_1Gr_neutronicDiffusion_results_neutronFlux.png)
 
 *Fig 2: Flux distribution computed by GeN-Foam. Comparison with analytic formula with and without reflector.*
 

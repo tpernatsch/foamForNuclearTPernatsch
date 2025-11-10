@@ -17,20 +17,22 @@ The case is composed of 2 channels:
 
 Two pumps are placed in the white and red zone (see Figure 1).
 
-![](./images/mesh.png)
+![](./images/powerTemperatureMomentumControl_mesh.png)
 
 *Figure 1: GeN-Foam mesh with colorized cellZones.*
 
 
-![](./images/momentumSourceTest.png)
+![](./images/powerTemperatureMomentumControl_momentumSourceTest.png)
 
 *Figure 2: Modelica control model.*
 
 
 The `Allrun` script is expected to output at the end of the simulation the same outlet temperature using the conservation of energy.
+
 $$
-    q''' = \frac{\dot{m}}{\alpha V} c_p (T_{out} - T_{in})
+q''' = \frac{\dot{m}}{\alpha V} c_p (T_{out} - T_{in})
 $$
+
 with $q'''$ the power density imposed to `hx2`, $\alpha$ the volume fraction of structure, $V$ the volume of heat-exchanger mesh, $\dot{m}$ the mass flow rate, $c_p$ the specific heat capacity of the fluid, $T_{out}$ the measured `hx1` outlet temperature, and $T_{in}$ the inlet temperature.
 
 
@@ -53,7 +55,7 @@ omc FMUGen.mos
 ./Alltest
 ```
 
-![](./images/temperatureDist.png)
+![](./images/powerTemperatureMomentumControl_temperatureDist.png)
 
 *Figure 3: Temperature distribution using fix-temperature and fix-power FMI inputs.*
 

@@ -9,7 +9,7 @@ restoration. For further details, refer to:
 F. Huber and A. Kaiser and K. Mattes and W. Peppler, "Steady state and
 transient sodium boiling experiments in a 37-pin bundle", Nuclear Engineering
 and Design vol 100, pp. 377-386, 1987,
-https://www.sciencedirect.com/science/article/pii/0029549387900872
+[https://www.sciencedirect.com/science/article/pii/0029549387900872](https://www.sciencedirect.com/science/article/pii/0029549387900872)
 
 The computational models consists of a 2-D axial-symmetric wedge representative
 of the assembly, while the pump ramp-down is represented via a time-dependent

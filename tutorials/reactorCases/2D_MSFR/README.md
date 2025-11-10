@@ -29,16 +29,16 @@ Lastly, a considerably finer mesh is provided under `constant/*/polyMeshFiner` d
 
 ## Gallery
 
-<img src="images/MSFR_Q.png" alt="Power density" width="450"/>
+<img src="images/2D_MSFR_Q.png" alt="Power density" width="450"/>
 
 *Fig 1. Power density distribution.*
 
 
-<img src="images/MSFR_T.png" alt="Power density" width="450"/>
+<img src="images/2D_MSFR_T.png" alt="Power density" width="450"/>
 
 *Fig 2. Fluid temperature distribution.*
 
 
-<img src="images/MSFR_Prec6.png" alt="Power density" width="450"/>
+<img src="images/2D_MSFR_Prec6.png" alt="Power density" width="450"/>
 
 *Fig 3. 6th precursor group distribution.*

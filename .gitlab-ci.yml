@@ -30,6 +30,7 @@ pages:
     # Install and build Sphinx doc
     - pip3 install -U sphinx sphinx-rtd-theme sphinx_intl myst-parser sphinx-mermaid
     - cd pythonapi && pip3 install -e . && cd ..
+    - python3 documentation/sphinx/generate_tutotials_docs.py
     - python3 documentation/sphinx/generate_cpp_docs.py
     - sphinx-build -b html documentation/sphinx public
 
@@ -40,8 +41,10 @@ pages:
     paths:
       - public
 
+
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_COMMIT_BRANCH == "docs"
 
 
 #==============================================================================*

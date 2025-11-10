@@ -43,5 +43,5 @@ python3 analysis.py steadyState/100
 
 ## Gallery
 
-![](images/flux0.png)
+![](images/2D_externalSourceDiffusion_flux0.png)
 *Fig 1: Flux 0 RZ distribution.*

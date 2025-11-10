@@ -38,6 +38,7 @@ dependencies = [
     # "pyvoro",
     "tqdm",
     "requests",
+    "PyQt5",
 ]
 
 [project.optional-dependencies]

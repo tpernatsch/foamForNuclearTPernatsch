@@ -8,7 +8,7 @@ The nuclear data are generated using an OpenMC model (see [journal paper](https:
 
 The steady state corresponds to the state of the KIWI-B-4E at the time 20800 s, a few seconds before the shutdown transient [3]. Then follows the shutdown transient, which rely on the point-kinetics neutronics sub-solver.
 
-<img src="images/Reactor1965SurveyDesignKiwiB4E.png" alt="Reactor" width="450px"/>
+<img src="images/3D_KIWI-B-4E_Reactor1965SurveyDesignKiwiB4E.png" alt="Reactor" width="450px"/>
 
 *Fig 1. KIWI-B-4E reactor scheme from Ref. [2]. Dimensions are in inches.*
 
@@ -17,7 +17,7 @@ The steady state corresponds to the state of the KIWI-B-4E at the time 20800 s, 
 
 There are currently 10 fuel element types placed with the same fuel loading pattern from OpenMC. This model also includes unloaded central elements (with and without Tantalum), and upper and lower support plates.
 
-<img src="./images/fig_KIWI-B-4E_lattice.png" width="400px">
+<img src="./images/3D_KIWI-B-4E_fig_KIWI-B-4E_lattice.png" width="400px">
 
 *Fig 2. KIWI-B-4E loading pattern using [Honeycomb](https://foam-for-nuclear.gitlab.io/honeycomb/).*
 
@@ -26,7 +26,7 @@ There are currently 10 fuel element types placed with the same fuel loading patt
 
 The fuel elements are merged into one cellZone, as well as for the unloaded central elements. The mesh also includes clear fluid plena at the inlet and outlet. This model uses the specially developed hydrogen thermophysical properties model with hydrogen dissociation at high temperature.
 
-<img src="./images/fig_KIWI-B-4E_fuelAssemblyDim.png" width="300px">
+<img src="./images/3D_KIWI-B-4E_fig_KIWI-B-4E_fuelAssemblyDim.png" width="300px">
 
 *Fig 3. KIWI-B-4E fuel assembly scheme, dimensions are in mm.*
 
@@ -45,11 +45,9 @@ To generate the `polyMesh` folders from the previously generated `.unv` files, r
 ./Allmesh
 ```
 
-<div>
-    <img src="./images/fig_mesh_THneutroXY.png" height="300px">
-    <img src="./images/fig_mesh_THneutro3D.png" height="300px">
-    <img src="./images/fig_mesh_THneutroXZ.png" height="300px">
-</div>
+<img src="./images/3D_KIWI-B-4E_fig_mesh_THneutroXY.png" height="300px">
+<img src="./images/3D_KIWI-B-4E_fig_mesh_THneutro3D.png" height="300px">
+<img src="./images/3D_KIWI-B-4E_fig_mesh_THneutroXZ.png" height="300px">
 
 *Fig 4. KIWI-B-4E neutronics and thermal-hydraulics meshes side-by-side comparison visualized in ParaView.*
 
@@ -89,22 +87,22 @@ These commands are grouped in the [`Allpostprocess_parallel`](./Allpostprocess_p
 ```
 
 
-<img src="./images/fig_results_axialDistributionSummary_R4.png" height="300px">
+<img src="./images/3D_KIWI-B-4E_fig_results_axialDistributionSummary_R4.png" height="300px">
 
 *Fig 6. Axial distribution of temperature, velocity, pressure, power density, and hydrogen density in the GeN-Foam KIWI-B-4E core model compared with experimental values from Ref. [3] at radius 19.6 cm.*
 
 
-<img src="./images/fig_results_2dMapFuelTemperatureRZ.png" height="300px">
+<img src="./images/3D_KIWI-B-4E_fig_results_2dMapFuelTemperatureRZ.png" height="300px">
 
 *Fig 7. Fuel temperature field in RZ projection with a comparison to experimental data from Ref. [3].*
 
 
-<img src="./images/fig_results_transientSummary.png" width="350px">
+<img src="./images/3D_KIWI-B-4E_fig_results_transientSummary.png" width="350px">
 
 *Fig 8. Power, reactivity, temperature, and mass flow rate evolution during the shutdown of the KIWI-B-4E GeN-Foam core model.*
 
 
-![](./images/fig_results_transientShutdown.gif)
+![](./images/3D_KIWI-B-4E_fig_results_transientShutdown.gif)
 
 *Fig 9. Evolution of hydrogen temperature and power density during the shutdown transient. Slices are fast and thermal fluxes distributions.*
 

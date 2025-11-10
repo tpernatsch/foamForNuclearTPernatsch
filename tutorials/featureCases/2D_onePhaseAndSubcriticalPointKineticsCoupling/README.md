@@ -1,6 +1,6 @@
 # Subcritical Point-Kinetics Solver
 
-Author:      2022/03/28, Thomas Guilbaud, EPFL/Transmutex SA
+Author: 2022/03/28, Thomas Guilbaud, EPFL/Transmutex SA
 
 ---
 
@@ -50,7 +50,7 @@ gnuplot -e "file='transient/log.GeN-Foam.reactivity'" plottingTools/reactivityPl
 
 ### Comparison of GeN-Foam for a source ramp variation
 
-![](pictures/2023-06-01_figRampSource.png)
+![](images/2D_onePhaseAndSubcriticalPointKineticsCoupling_2023-06-01_figRampSource.png)
 *Fig 1: Power evolution for a source ramp variation.*
 
 | Method              | Value [W]    | Error [%]    |
@@ -65,7 +65,7 @@ gnuplot -e "file='transient/log.GeN-Foam.reactivity'" plottingTools/reactivityPl
 
 ### Comparison GeN-Foam for a reactivity ramp insertion
 
-![](pictures/2023-06-01_figRampReactivity.png)
+![](images/2D_onePhaseAndSubcriticalPointKineticsCoupling_2023-06-01_figRampReactivity.png)
 *Fig 2 Power evolution for a reactivity ramp variation.*
 
 

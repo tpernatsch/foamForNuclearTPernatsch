@@ -117,7 +117,7 @@ pumpModel = ffn.Pump(
     Dh=0.1,
     momentumSource=ffn.Vector(1e7, 0, 0),
     momentumSourceTimeProfile=ffn.TimeProfile(
-        type_='fmi',
+        type='fmi',
         nameFromFMU="gfMomentumSource",
         initialValue=0
     )
