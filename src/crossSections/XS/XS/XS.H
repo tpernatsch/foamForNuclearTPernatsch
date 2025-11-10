@@ -39,8 +39,10 @@ Class
     Foam::XS
 
 Description
-    Class for XS parametrization and other nuclear data. Nuclear data are always
-    provided in SI units and not in cm.
+    Main object for XS parametrization and other nuclear data. Nuclear data are
+    always provided in SI units and not in cm. This object generate a collection
+    of ``nuclearDataOneEnergy``, one per nuclear data type (``D``,
+    ``nuSigmaEff``, ...) and per energy group.
 
     See 2D_MSFR or 3D_SmallESFR of Godiva_SN for exhaustive examples.
 
@@ -82,6 +84,18 @@ Description
     discFactor          | Constant | Yes   | -       | \f$ \gamma_g \f$         | Discontinuity factors
     integralFlux        | Constant | Yes   | -       | \f$ \Phi_g \f$           | Integral flux for adapting disc factors
 \endtable
+
+    One can specify the interpolation law for each perturbed parameters using the
+    ``xsVariables`` dictionary. The perturbed parameters must be the name of a
+    field. The options are ``lin``, ``log``, and ``sqrt``.
+
+    \verbatim
+    xsVariables
+    {
+        TFuel       log;
+        rhoCool     lin;
+    }
+    \endverbatim
 
 \par Options
 

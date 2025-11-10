@@ -283,6 +283,7 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
     # Description block
     summary = y.get("description","")
     summary = format_equation_for_rst(summary)
+    summary = format_table_for_rst(summary)
     summary = format_code_for_rst(summary)
     summary = replaceInlineMath(replaceInlineReference(summary))
 

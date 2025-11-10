@@ -39,10 +39,11 @@ Class
     Foam::nuclearDataOneEnergy
 
 Description
-    Subclass for nuclear data handling. The interpolation scheme used is based
-    on the polyharmonic spline radial basis function (RBF). The RBF used is
-    linear. This class is able to interpolate any number of perturbed states for
-    any number of parameters.
+    Object for a single nuclear quantity handling at a specific energy. The
+    interpolation scheme used is based on the polyharmonic spline radial basis
+    function (RBF). This class is able to interpolate any
+    number of perturbed states for any number of parameters. This class is mainly
+    used by the ``XS`` object.
 
     $$
     \sigma_{E_g, \Omega_l}(\textbf{x})
