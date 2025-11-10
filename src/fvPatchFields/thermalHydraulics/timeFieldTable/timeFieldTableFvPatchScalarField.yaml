@@ -1,23 +1,23 @@
 description: |-
   Boundary condition that allows to specify a scalarField over the boundary
-      that changes in time via a table entry in the form
+  that changes in time via a table entry in the form
 
-      \verbatim
-      table
-      (
-          (t0 (v0_0 v1_0 v2_0 ...))
-          ...
-          (tN (v0_N v1_N v2_N ...))
-      );
-      \endverbatim
+  \verbatim
+  table
+  (
+      (t0 (v0_0 v1_0 v2_0 ...))
+      ...
+      (tN (v0_N v1_N v2_N ...))
+  );
+  \endverbatim
 
-      with ti being the time value at whiche the field vj_i is to be applied,
-      with j looping over face cells according to the patch indices. Field
-      vj_0 will be applied for times t < t0 and field vj_N will be applied
-      for times t > tN.
-      This functionality is currently unavailable in OpenFOAM and I could not
-      even resort to the Table class while coding this, as it is templated and
-      does not support the scalarField type as template parameter.
+  with ti being the time value at whiche the field vj_i is to be applied,
+  with j looping over face cells according to the patch indices. Field
+  vj_0 will be applied for times t < t0 and field vj_N will be applied
+  for times t > tN.
+  This functionality is currently unavailable in OpenFOAM and I could not
+  even resort to the Table class while coding this, as it is templated and
+  does not support the scalarField type as template parameter.
 
 admonitions:
   - kind: warning
@@ -33,32 +33,24 @@ usage:
   - comment: |-
       Usage already present in Header (verbatim):
     snippet: |-
-      \verbatim
-          boundaryName
-          {
-              type timeFieldTable;
-              table
-              (
-                  (t0 (v0_0 v1_0 v2_0 ...))
-                  (t1 (v0_1 v1_1 v2_1 ...))
-                  ...
-              );
-          }
-          \endverbatim
-  - comment: |-
-      The model is specified via the ``type`` entry in the ``<dictName>/<subModel>/<zoneName>`` subdictionary of the ``phaseProperties`` file (located in ``constant/``, or ``constant/<regionName>`` for multi-region cases, e.g. ``constant/fluidRegion``). Here is a snippet enabling the model:
-    snippet: |
-      phaseProperties
+      boundaryName
       {
-        physicsModels
-        {
-          <subModel>
-          {
-            "<zoneName>"
-            {
-              type timeFieldTableFvPatchScalarField;
-            }
-          }
-        }
+          type timeFieldTable;
+          table
+          (
+              (t0 (v0_0 v1_0 v2_0 ...))
+              (t1 (v0_1 v1_1 v2_1 ...))
+              ...
+          );
       }
 
+  - comment: |-
+      The boundary condition is specified via the ``type`` entry in the ``boundaryField/<patchName>`` subdictionary of the ``<fieldName>`` file (located in ``<timeFolder>/``, or ``<timeFolder>/<regionName>/`` for multi-region cases, e.g. ``0/neutroRegion``). Here is a snippet enabling the boundary condition:
+    snippet: |
+      boundaryField
+      {
+          <patch1>
+          {
+              type timeFieldTable;
+          }
+      }
