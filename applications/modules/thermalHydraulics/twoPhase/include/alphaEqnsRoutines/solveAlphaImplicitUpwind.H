@@ -4,7 +4,7 @@
 //  better in which scenarios
 auto solveAlpha = [&]
 (
-    fluid& solveFluid, 
+    fluid& solveFluid,
     fluid& otherFluid
 )
 {
@@ -12,9 +12,9 @@ auto solveAlpha = [&]
     volScalarField& otherAlpha(otherFluid);
 
     //- The source for the phase fraction equation is the dgdt term
-    //  computed in pEqn for each fluid. 
+    //  computed in pEqn for each fluid.
     //  The phase fraction equation should be:
-    //  
+    //
     //  ddt(alpha_i) + div(phi_i, alpha_i) = dgdt
     //
     //  However, I'll cheat and treat dgdt as if it was made of:
@@ -22,9 +22,9 @@ auto solveAlpha = [&]
     //  dgdt = alpha*Sp + Su
     //
     //  and I will treat the Sp term implicitly ONLY when it contributes
-    //  positively to the discretized matrix diagonal, i.e. when 
+    //  positively to the discretized matrix diagonal, i.e. when
     //  -alpha*Sp (moved it to the left hand side) is positive, i.e. only
-    //  when Sp is negative. Thus Sp = dgdt/alpha when dgdt < 0. As it 
+    //  when Sp is negative. Thus Sp = dgdt/alpha when dgdt < 0. As it
     //  necessitates a division by alpha, it is limited to a minimum alpha,
     //  below which, even if dgdt is nevagative, it is treated explicitly
     //  in Su. This approach is also used in the MULES variant of the
@@ -71,21 +71,20 @@ auto solveAlpha = [&]
         }
     }
 
-    //- Just upwind the shit out of everything and enjoy first-order
-    //  boundedness yolo
+    // Just upwind everything and enjoy first-order boundedness
     upwind<scalar> upwindScheme(mesh_, phi_);
     Foam::fv::gaussConvectionScheme<scalar> gaussUpwindScheme
     (
-        mesh_, 
-        phi_, 
+        mesh_,
+        phi_,
         upwindScheme
     );
 
-    fvScalarMatrix alphaEqn 
+    fvScalarMatrix alphaEqn
     (
         fvm::ddt(solveAlpha)
     +   gaussUpwindScheme.fvmDiv(solveFluid.phi(), solveAlpha)
-    ==  
+    ==
         fvm::Sp(Sp, solveAlpha)
     +   Su
     );
@@ -102,22 +101,22 @@ auto solveAlpha = [&]
     solveFluid.alphaPhi() = solveAlphaf*solveFluid.phi();
     correctInflowOutflow
     (
-        solveFluid, 
-        solveFluid.phi(), 
+        solveFluid,
+        solveFluid.phi(),
         solveFluid.alphaPhi()
     );
     otherFluid.alphaPhi() = phi_-solveFluid.alphaPhi();
     correctInflowOutflow
     (
-        otherFluid, 
-        otherFluid.phi(), 
+        otherFluid,
+        otherFluid.phi(),
         otherFluid.alphaPhi()
     );
 
     //- For consistency, interpolate the rhos in an upwind manner too
-    solveFluid.alphaRhoPhi() = 
+    solveFluid.alphaRhoPhi() =
         upwindScheme.interpolate(solveFluid.rho())*solveFluid.alphaPhi();
-    otherFluid.alphaRhoPhi() = 
+    otherFluid.alphaRhoPhi() =
         upwindScheme.interpolate(otherFluid.rho())*otherFluid.alphaPhi();
 };
 
@@ -142,7 +141,7 @@ else if (solvePhase == fluid2_.name())
     );
 }
 else
-    FatalErrorInFunction 
-    << "Phase named " << solvePhase << " not found. Available phases " 
+    FatalErrorInFunction
+    << "Phase named " << solvePhase << " not found. Available phases "
     << "are " << fluid1_.name() << " and " << fluid2_.name()
     << exit(FatalError);

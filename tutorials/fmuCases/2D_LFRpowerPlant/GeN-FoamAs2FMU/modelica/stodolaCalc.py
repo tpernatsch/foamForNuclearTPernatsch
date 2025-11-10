@@ -11,9 +11,9 @@ import numpy as np
 #=============================================================================*
 
 def StodolaCoeff(
-    massFlow: float, 
-    rhoin: float, 
-    Pin: float, 
+    massFlow: float,
+    rhoin: float,
+    Pin: float,
     Pout: float
 ) -> float:
     return(
@@ -24,7 +24,7 @@ def StodolaCoeff(
 
 
 if __name__ == '__main__':
-    # Use MKSA units
+    # Use SI units
     massFlow = 192.8 # kg/s
     rhoin = 0.0718e3 # kg/m3
     maxP = 18.8e6 # Pa

@@ -40,7 +40,7 @@ Class
 
 Description
     Class for XS parametrization and other nuclear data. Nuclear data are always
-    provided in MKSA units and not in cm.
+    provided in SI units and not in cm.
 
     See 2D_MSFR or 3D_SmallESFR of Godiva_SN for exhaustive examples.
 
