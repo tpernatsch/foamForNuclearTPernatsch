@@ -29,18 +29,18 @@ usage:
 
       physicsModels
       {
-        dragModels
-        {
-          "<zoneName>"
+          dragModels
           {
-            type Autruffe;
+              "<zoneName>"
+              {
+                  type Autruffe;
+              }
+
+              // ... other zone subdictionaries
+
           }
 
-          // ... other zone subdictionaries
-
-        }
-
-        // ... other physicsModels subdictionaries
+          // ... other physicsModels subdictionaries
       }
 
       // ... other subdictionaries

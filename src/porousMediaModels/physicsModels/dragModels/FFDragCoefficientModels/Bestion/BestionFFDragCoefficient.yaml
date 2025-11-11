@@ -24,18 +24,18 @@ usage:
 
       physicsModels
       {
-        dragModels
-        {
-          "<zoneName>"
+          dragModels
           {
-            type Bestion;
+              "<zoneName>"
+              {
+                  type Bestion;
+              }
+
+              // ... other zone subdictionaries
+
           }
 
-          // ... other zone subdictionaries
-
-        }
-
-        // ... other physicsModels subdictionaries
+          // ... other physicsModels subdictionaries
       }
 
       // ... other subdictionaries
