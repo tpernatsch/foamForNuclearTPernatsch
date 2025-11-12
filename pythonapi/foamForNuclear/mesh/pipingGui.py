@@ -4,8 +4,11 @@ import json
 
 PORT_RADIUS = 6
 HIT_RADIUS = 12
-NODE_MIN_W_M = 0.05
-NODE_MIN_H_M = 0.01
+NODE_MIN_W_M = 0.0
+NODE_MIN_H_M = 0.0
+NODE_MIN_W_PX = 30.0
+NODE_MIN_H_PX = 10.0
+NODE_MAX_ASPECT_RATIO = 10
 PX_PER_M = 100.0
 PORT_OFFSET = 10.0
 
@@ -66,7 +69,12 @@ class NodeItem(QtWidgets.QGraphicsRectItem):
     def __init__(self, nid, x=0, y=0, length_m=1.0, width_m=0.1, label='Pipe', color='#4f46e5', rotation=0, cells=1, kind='pipe'):
         self.kind = kind
         self.isPipe = self.kind == "pipe"
-        super().__init__(0, 0, m_to_px(length_m), m_to_px(width_m) if self.isPipe else m_to_px(length_m))
+        super().__init__(
+            0,
+            0,
+            max(m_to_px(length_m), NODE_MIN_W_PX),
+            max(m_to_px(width_m) if self.isPipe else m_to_px(length_m), NODE_MIN_H_PX)
+        )
         self.nid = nid
         self.length_m = float(max(length_m, NODE_MIN_W_M))
         self.width_m = float(max(width_m, NODE_MIN_H_M)) if self.isPipe else self.length_m
@@ -152,8 +160,8 @@ class NodeItem(QtWidgets.QGraphicsRectItem):
     def setLengthWidthMeters(self, length_m, width_m):
         self.length_m = max(float(length_m), NODE_MIN_W_M)
         self.width_m = max(float(width_m), NODE_MIN_H_M) if self.isPipe else self.length_m
-        w_px = m_to_px(self.length_m)
-        h_px = m_to_px(self.width_m)
+        h_px = max(m_to_px(self.width_m), NODE_MIN_H_PX)
+        w_px = clamp(m_to_px(self.length_m), NODE_MIN_W_PX, NODE_MAX_ASPECT_RATIO * h_px)
         self.prepareGeometryChange()
         self.setRect(QtCore.QRectF(0, 0, w_px, h_px))
         self.setTransformOriginPoint(self.rect().center())
