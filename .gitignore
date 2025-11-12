@@ -96,5 +96,7 @@ tutorials/**/*.baffleLess/polyMesh
 **/*.csv*
 **/*.foam
 
+pythonapi/tutorials/fmuCases/3D_*
+
 # Tools
 tools/**/build
