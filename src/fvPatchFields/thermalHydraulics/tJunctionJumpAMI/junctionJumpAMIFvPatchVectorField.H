@@ -94,6 +94,7 @@ SourceFiles
 #define junctionJumpAMIFvPatchVectorField_H
 
 #include "jumpDiscontinuousCyclicAMIFvPatchField.H"
+#include "customPimpleControl.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -115,12 +116,23 @@ protected:
     // Protected data
 
     vectorField jump_;
-
+    vector residual_;
+    vector residualPrev_;
     scalar underRelaxation_;
+
+    bool leidenFrost_;
+
+
+    // Variables for Aitken acceleration
+    bool useAitken_;
+    scalar aitkenRelaxation_;
+    scalar nIter_;
 
     scalarList scalingFactors_;
 
     wordList overlapPatchNames_;
+
+    scalar startTime_;
 
 public:
 

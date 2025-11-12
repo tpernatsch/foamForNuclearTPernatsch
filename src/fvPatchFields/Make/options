@@ -17,6 +17,7 @@ EXE_INC = \
     -I./../porousMediaModels/lnInclude \
     -I./../profiles/lnInclude \
     -I./../patches/lnInclude \
+    -I./../solutionControl/lnInclude \
     -I$(LIB_SRC)/transportModels/compressible/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/basic/lnInclude \
     -I$(LIB_SRC)/thermophysicalModels/thermophysicalProperties/lnInclude \
@@ -32,6 +33,7 @@ EXE_INC = \
 LIB_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lProfiles \
     -L$(FOAM_USER_LIBBIN) -lPatches \
+    -L$(FOAM_USER_LIBBIN) -lSolutionControl \
     -lincompressibleTransportModels \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \

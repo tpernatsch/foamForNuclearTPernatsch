@@ -90,12 +90,11 @@ public:
     // Constructors
 
         //- Construct from polyPatch
-        discontinuousCyclicAMIFvPatch(const polyPatch& patch, const fvBoundaryMesh& bm)
-        :
-            coupledFvPatch(patch, bm),
-            discontinuousCyclicAMILduInterface(),
-            discontinuousCyclicAMIPolyPatch_(refCast<const discontinuousCyclicAMIPolyPatch>(patch))
-        {}
+        discontinuousCyclicAMIFvPatch
+        (
+            const polyPatch& patch, 
+            const fvBoundaryMesh& bm
+        );
 
 
 

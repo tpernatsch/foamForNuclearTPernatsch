@@ -134,6 +134,7 @@ protected:
     scalarList                  pumpCoeffs_;  // pump characteristics coefficients 
     autoPtr<Function1<scalar>>  pumpVelocityTable_; // pump speed table to correct characteristics
     scalar                      nominalVelocity_;
+    scalar                      underRelaxation_;
     
 
 public:

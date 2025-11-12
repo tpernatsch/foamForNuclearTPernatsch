@@ -51,7 +51,8 @@ Foam::massConservationJumpAMIFvPatchVectorField::massConservationJumpAMIFvPatchV
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(p, iF),
     jump_(this->size(), Zero),
     underRelaxation_(1),
-    scalingFactors_(this->size(), Zero)
+    scalingFactors_(this->size(), Zero),
+    startTime_(0)
 {}
 
 
@@ -66,7 +67,8 @@ Foam::massConservationJumpAMIFvPatchVectorField::massConservationJumpAMIFvPatchV
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(ptf, p, iF, mapper),
     jump_(ptf.jump_, mapper),
     underRelaxation_(ptf.underRelaxation_),
-    scalingFactors_(ptf.scalingFactors_)
+    scalingFactors_(ptf.scalingFactors_),
+    startTime_(ptf.startTime_)
 {}
 
 
@@ -80,18 +82,14 @@ Foam::massConservationJumpAMIFvPatchVectorField::massConservationJumpAMIFvPatchV
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(p, iF),
     jump_(p.size(), Zero),
     underRelaxation_(dict.getOrDefault<scalar>("underRelaxation", 1)),
-    scalingFactors_(this->size(), Zero)
+    scalingFactors_(this->size(), Zero),
+    startTime_(dict.getOrDefault<scalar>("startTime", 0))
 
 {
-    // if (this->discontinuousCyclicAMIPatch().owner())
-    // {
-    //     jump_.assign("jump", dict, p.size(), IOobjectOption::MUST_READ);
-    // }
-
-    // if (!this->readValueEntry(dict))
-    // {
-    //     this->evaluate(Pstream::commsTypes::buffered);
-    // }
+    if (this->discontinuousCyclicAMIPatch().owner())
+    {
+        jump_.assign("jump", dict, p.size(), IOobjectOption::LAZY_READ);
+    }
 }
 
 
@@ -103,7 +101,8 @@ Foam::massConservationJumpAMIFvPatchVectorField::massConservationJumpAMIFvPatchV
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(ptf),
     jump_(ptf.jump_),
     underRelaxation_(ptf.underRelaxation_),
-    scalingFactors_(ptf.scalingFactors_)
+    scalingFactors_(ptf.scalingFactors_),
+    startTime_(ptf.startTime_)
 {}
 
 
@@ -116,7 +115,8 @@ Foam::massConservationJumpAMIFvPatchVectorField::massConservationJumpAMIFvPatchV
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(ptf, iF),
     jump_(ptf.jump_),
     underRelaxation_(ptf.underRelaxation_),
-    scalingFactors_(ptf.scalingFactors_)
+    scalingFactors_(ptf.scalingFactors_),
+    startTime_(ptf.startTime_)
 {}
 
 
@@ -185,61 +185,68 @@ Foam::tmp<Foam::Field<Foam::vector>> Foam::massConservationJumpAMIFvPatchVectorF
 
 void Foam::massConservationJumpAMIFvPatchVectorField::updateCoeffs()
 {
-    if(this->discontinuousCyclicAMIPatch().owner())
+
+    if(this->db().time().value()>=startTime_)
     {
-        // Update jump to account for differences in velocity
-
-        const vectorField& vOwner = 
-            this->patch().lookupPatchField<volVectorField, vector>("U");
-
-        const scalarField& rhoOwner=
-            this->patch().lookupPatchField<volScalarField, scalar>("thermo:rho");
-
-        const scalarField& rhoSlave =
-            this->discontinuousCyclicAMIPatch().neighbPatch().lookupPatchField<volScalarField, scalar>("thermo:rho");
-        scalarField rhoSlaveOnMaster(vOwner.size());
-        rhoSlaveOnMaster = this->discontinuousCyclicAMIPatch().interpolate(rhoSlave);
-
-        const scalarField& ownerAreas = this->patch().magSf();
-
-        const scalarField slaveAreas = this->discontinuousCyclicAMIPatch().neighbPatch().magSf();
-        scalarField slaveAreasSumField(slaveAreas.size(), gSum(slaveAreas));
-        scalarField ownerAreasSumField(ownerAreas.size(), gSum(ownerAreas));
-
-        scalarField slaveAreasOnOwner(vOwner.size());
-        slaveAreasOnOwner = this->discontinuousCyclicAMIPatch().interpolate(slaveAreasSumField);
-
-        scalingFactors_ = rhoOwner*ownerAreasSumField/rhoSlaveOnMaster/slaveAreasOnOwner;
-
-
-        // Adjust for porosity
-
-        volScalarField alpha =
-            this->db().lookupObject<volScalarField>("alpha");
-        
-        scalarField alphaOwner =
-            alpha.boundaryField()[ this->patch().index() ].patchInternalField();
-
-        scalarField alphaSlave = 
-            alpha.boundaryField()[ this->discontinuousCyclicAMIPatch().neighbPatch().index() ].patchInternalField();
-
-        scalarField alphaSlaveOnMaster(vOwner.size());
-
-        alphaSlaveOnMaster = this->discontinuousCyclicAMIPatch().interpolate(alphaSlave);
-
-
-        scalingFactors_ = scalingFactors_ * (alphaOwner/alphaSlaveOnMaster);
-
-
-        this->jump_ = 
-            underRelaxation_*this->patchInternalField()*(scalingFactors_ -1)
-           +(1-underRelaxation_)*this->jump_;          
-        // this->jump_ = this->patchInternalField()*0;
-
-
+        if(this->discontinuousCyclicAMIPatch().owner())
+        {
+            // Update jump to account for differences in velocity
+    
+            const vectorField& vOwner = 
+                this->patch().lookupPatchField<volVectorField, vector>("U");
+    
+            const scalarField& rhoOwner=
+                this->patch().lookupPatchField<volScalarField, scalar>("thermo:rho");
+    
+            const scalarField& rhoSlave =
+                this->discontinuousCyclicAMIPatch().neighbPatch().lookupPatchField<volScalarField, scalar>("thermo:rho");
+            scalarField rhoSlaveOnMaster(vOwner.size());
+            rhoSlaveOnMaster = this->discontinuousCyclicAMIPatch().interpolate(rhoSlave);
+    
+            const scalarField& ownerAreas = this->patch().magSf();
+    
+            const scalarField slaveAreas = this->discontinuousCyclicAMIPatch().neighbPatch().magSf();
+            scalarField slaveAreasSumField(slaveAreas.size(), gSum(slaveAreas));
+            scalarField ownerAreasSumField(ownerAreas.size(), gSum(ownerAreas));
+    
+            scalarField slaveAreasOnOwner(vOwner.size());
+            slaveAreasOnOwner = this->discontinuousCyclicAMIPatch().interpolate(slaveAreasSumField);
+    
+            scalingFactors_ = rhoOwner*ownerAreasSumField/rhoSlaveOnMaster/slaveAreasOnOwner;
+    
+    
+    
+    
+            // Adjust for porosity
+    
+            volScalarField alpha =
+                this->db().lookupObject<volScalarField>("alpha");
+            
+            scalarField alphaOwner =
+                alpha.boundaryField()[ this->patch().index() ].patchInternalField();
+    
+            scalarField alphaSlave = 
+                alpha.boundaryField()[ this->discontinuousCyclicAMIPatch().neighbPatch().index() ].patchInternalField();
+    
+            scalarField alphaSlaveOnMaster(vOwner.size());
+    
+            alphaSlaveOnMaster = this->discontinuousCyclicAMIPatch().interpolate(alphaSlave);
+    
+    
+            scalingFactors_ = scalingFactors_ * (alphaOwner/alphaSlaveOnMaster);
+    
+    
+            this->jump_ = 
+                underRelaxation_*this->patchInternalField()*(scalingFactors_ -1)
+               +(1-underRelaxation_)*this->jump_;          
+            // this->jump_ = this->patchInternalField()*0;
+    
+    
+        }
+    
+        jumpDiscontinuousCyclicAMIFvPatchField<vector>::updateCoeffs();
     }
 
-    jumpDiscontinuousCyclicAMIFvPatchField<vector>::updateCoeffs();
 }
 
 
@@ -276,6 +283,8 @@ void Foam::massConservationJumpAMIFvPatchVectorField::write(Ostream& os) const
    
     jump_.writeEntry("jump", os);
     scalingFactors_.writeEntry("scalingFactors", os);
+
+    os.writeEntry("underRelaxation", underRelaxation_);
     
     fvPatchField<vector>::writeValueEntry(os);
 }

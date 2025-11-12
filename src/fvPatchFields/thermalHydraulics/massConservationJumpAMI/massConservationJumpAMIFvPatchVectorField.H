@@ -112,6 +112,8 @@ protected:
 
     scalarList scalingFactors_;
 
+    scalar startTime_;
+
 public:
 
     //- Runtime type information

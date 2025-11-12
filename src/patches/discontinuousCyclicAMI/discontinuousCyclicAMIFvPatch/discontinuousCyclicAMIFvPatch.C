@@ -83,6 +83,17 @@ namespace Foam
 // }
 
 
+Foam::discontinuousCyclicAMIFvPatch::discontinuousCyclicAMIFvPatch
+(
+    const polyPatch& patch, 
+    const fvBoundaryMesh& bm
+)
+:
+    coupledFvPatch(patch, bm),
+    discontinuousCyclicAMILduInterface(),
+    discontinuousCyclicAMIPolyPatch_(refCast<const discontinuousCyclicAMIPolyPatch>(patch))
+{}
+
 bool Foam::discontinuousCyclicAMIFvPatch::coupled() const
 {
     return

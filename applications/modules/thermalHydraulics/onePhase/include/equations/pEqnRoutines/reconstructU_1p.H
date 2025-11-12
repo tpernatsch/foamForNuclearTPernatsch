@@ -17,22 +17,7 @@ if (porousInterfaceSharpness_ != 0.0)
 }
 else
 {
-    // instead of using the fvc::reconstruct, we re-write the reconstruction
-    // routine so that the extra patch effects can be corrected when t-jucntion
-    // BCs are employed
-
-    surfaceVectorField SfHat(mesh_.Sf()/mesh_.magSf());
-
-    // get the terms of inv(surfaceSum(SfHat*mesh.Sf()))&surfaceSum(SfHat*ssf),
-
-    volTensorField LHS = fvc::surfaceSum(SfHat*mesh_.Sf());
-
-    volVectorField RHS = fvc::surfaceSum(SfHat*fluid_.phi());
-
-    Info << "LHS is " << inv(LHS) << endl;
-
-    U = inv(LHS)&RHS;
-
+    U = fvc::reconstruct(fluid_.phi());
 }
 
 fluid_.correctAlphaRhoMagU();

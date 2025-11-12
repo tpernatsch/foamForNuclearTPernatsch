@@ -39,6 +39,7 @@ License
 
 #include "junctionJumpAMIFvPatchVectorField.H"
 #include "addToRunTimeSelectionTable.H"
+#include "primitiveMeshTools.H"
 
 // * * * * * * * * * * * * * * * * Constructors  * * * * * * * * * * * * * * //
 
@@ -50,9 +51,15 @@ Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 :
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(p, iF),
     jump_(this->size(), Zero),
+    residual_(Zero),
+    residualPrev_(Zero),
     underRelaxation_(1),
+    aitkenRelaxation_(0.01),
+    nIter_(0),
+    useAitken_(false),
     scalingFactors_(this->size(), Zero),
-    overlapPatchNames_(this->size(), "")
+    overlapPatchNames_(this->size(), ""),
+    startTime_(0)
 {}
 
 
@@ -66,9 +73,15 @@ Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 :
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(ptf, p, iF, mapper),
     jump_(ptf.jump_, mapper),
+    residual_(ptf.residual_),
+    residualPrev_(ptf.residualPrev_),
     underRelaxation_(ptf.underRelaxation_),
+    aitkenRelaxation_(ptf.aitkenRelaxation_),
+    nIter_(ptf.nIter_),
+    useAitken_(ptf.useAitken_),
     scalingFactors_(ptf.scalingFactors_),
-    overlapPatchNames_(ptf.overlapPatchNames_)
+    overlapPatchNames_(ptf.overlapPatchNames_),
+    startTime_(ptf.startTime_)
 {}
 
 
@@ -81,14 +94,83 @@ Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 :
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(p, iF),
     jump_(p.size(), Zero),
+    residual_(Zero),
+    residualPrev_(Zero),
     underRelaxation_(dict.getOrDefault<scalar>("underRelaxation", 1)),
+    aitkenRelaxation_(dict.getOrDefault<scalar>("aitkenRelaxation", 0.01)),
+    nIter_(0),
+    useAitken_(false),
     scalingFactors_(this->size(), Zero),
-    overlapPatchNames_(this->size(), "")
+    overlapPatchNames_(this->size(), ""),
+    startTime_(dict.getOrDefault<scalar>("startTime", 0))
 {
+
+    if (this->discontinuousCyclicAMIPatch().owner())
+    {
+        jump_.assign("jump", dict, p.size(), IOobjectOption::LAZY_READ);
+    }
+
+
     if(!this->discontinuousCyclicAMIPatch().owner())
     {
         overlapPatchNames_ = dict.get<wordList>("connectedPatches");
     }
+
+    if(dict.found("aitkenAcceleration"))
+        useAitken_ = dict.get<bool>("aitkenAcceleration");
+
+
+    // Modify areas
+
+    if(this->discontinuousCyclicAMIPatch().owner())
+    {
+        scalar nBranch = overlapPatchNames_.size()+1;
+
+        // Rescale polypatch areas
+
+        discontinuousCyclicAMIPolyPatch& discPP = 
+            const_cast<discontinuousCyclicAMIPolyPatch&>
+            (
+                this->discontinuousCyclicAMIPatch().cyclicAMIPatch()
+            );
+
+        vectorField::subField Sf = discPP.faceAreas();
+        forAll(Sf, facei)
+        {
+            Sf[facei] = Sf[facei] / nBranch;
+        }
+
+        discPP.areaFraction(1/nBranch);
+
+        const polyMesh& mesh = this->patch().boundaryMesh().mesh();
+
+
+        primitiveMeshTools::updateCellCentresAndVols
+        (
+            mesh,
+            mesh.faceCentres(),
+            mesh.faceAreas(),                      
+            uniqueSort(discPP.faceCells()), 
+            mesh.cells(),
+            const_cast<vectorField&>(mesh.cellCentres()),
+            const_cast<scalarField&>(mesh.cellVolumes())
+        );
+
+        // // Also modify fvPatch areas
+
+        const discontinuousCyclicAMIFvPatch& discFVP = 
+        (
+            this->discontinuousCyclicAMIPatch()
+        );
+
+        const_cast<vectorField&>(discFVP.Sf()) = discFVP.patch().faceAreas();
+        const_cast<vectorField&>(discFVP.Cf()) = discFVP.patch().faceCentres();
+        const_cast<scalarField&>(discFVP.magSf()) = mag(discFVP.patch().faceAreas());
+
+
+        this->patch().boundaryMesh().mesh().V().write();
+    }
+        
 }
 
 
@@ -100,9 +182,15 @@ Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 :
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(ptf),
     jump_(ptf.jump_),
+    residual_(ptf.residual_),
+    residualPrev_(ptf.residualPrev_),
     underRelaxation_(ptf.underRelaxation_),
+    aitkenRelaxation_(ptf.aitkenRelaxation_),
+    nIter_(ptf.nIter_),
+    useAitken_(ptf.useAitken_),
     scalingFactors_(ptf.scalingFactors_),
-    overlapPatchNames_(ptf.overlapPatchNames_)
+    overlapPatchNames_(ptf.overlapPatchNames_),
+    startTime_(ptf.startTime_)
 {}
 
 
@@ -114,9 +202,15 @@ Foam::junctionJumpAMIFvPatchVectorField::junctionJumpAMIFvPatchVectorField
 :
     jumpDiscontinuousCyclicAMIFvPatchField<vector>(ptf, iF),
     jump_(ptf.jump_),
+    residual_(ptf.residual_),
+    residualPrev_(ptf.residualPrev_),
     underRelaxation_(ptf.underRelaxation_),
+    aitkenRelaxation_(ptf.aitkenRelaxation_),
+    nIter_(ptf.nIter_),
+    useAitken_(ptf.useAitken_),
     scalingFactors_(ptf.scalingFactors_),
-    overlapPatchNames_(ptf.overlapPatchNames_)
+    overlapPatchNames_(ptf.overlapPatchNames_),
+    startTime_(ptf.startTime_)
 {}
 
 
@@ -171,8 +265,20 @@ Foam::tmp<Foam::Field<Foam::vector>> Foam::junctionJumpAMIFvPatchVectorField::ju
 
 void Foam::junctionJumpAMIFvPatchVectorField::updateCoeffs()
 {
+    scalar nBranch = overlapPatchNames_.size()+1;
+
     if(this->discontinuousCyclicAMIPatch().owner())
     {
+
+        
+        const customPimpleControl& pimpleLoop = this->db().lookupObject<customPimpleControl>("solutionControl");
+
+        if(pimpleLoop.corr_ ==0) // Check if new timestep
+        {
+            nIter_ = 0;
+        }
+
+
         const junctionJumpAMIFvPatchVectorField& nbrPatch =
             refCast<const junctionJumpAMIFvPatchVectorField>
             (
@@ -227,9 +333,9 @@ void Foam::junctionJumpAMIFvPatchVectorField::updateCoeffs()
         // value
         scalarField thisFlux = 
         (
-            alpha.boundaryField()[this->discontinuousCyclicAMIPatch().index()]
-           *rho.boundaryField()[this->discontinuousCyclicAMIPatch().index()]
-           *(this->patchInternalField() & this->patch().Sf()) 
+            nBranch*alpha.boundaryField()[this->discontinuousCyclicAMIPatch().index()]
+            *rho.boundaryField()[this->discontinuousCyclicAMIPatch().index()]
+            *(this->patchInternalField() & this->patch().Sf()) 
         );
 
         // Compute expected velocity from mass conservation
@@ -243,11 +349,63 @@ void Foam::junctionJumpAMIFvPatchVectorField::updateCoeffs()
             -mag(this->patchInternalField())
         );
 
-        scalingFactors_ = nbrFlux/(nbrFlux+restOfFlux+VSMALL);
+        scalingFactors_ = nBranch*nbrFlux/(nbrFlux+restOfFlux+VSMALL);
         
         vectorField patchNormal = this->patch().nf();
-        this->jump_ = underRelaxation_*(-expectedU-scalarOwnerU)*patchNormal + (1-underRelaxation_)*this->jump_; 
-        
+
+        vectorField newJump = (-expectedU - scalarOwnerU) * patchNormal;
+
+        // if(useAitken_)
+        // {
+
+        //     if (nIter_ == 0)
+        //     {
+        //         // aitkenRelaxation_ = underRelaxation_;
+        //         this->jump_ = this->jump_ + underRelaxation_ * (newJump - this->jump_);
+        //         residualPrev_ = newJump[0] - this->jump_[0];
+        //     }
+        //     else if (nIter_ == 1)
+        //     {
+        //         this->jump_ = this->jump_ + underRelaxation_ * (newJump - this->jump_);
+        //         residual_ = newJump[0] - this->jump_[0];
+        //     }
+        //     else // nIter_ >= 2 : compute Aitken candidate with robust guards
+        //     {
+    
+        //         vectorField residual(this->size(), residual_);
+        //         vectorField residualPrev(this->size(), residualPrev_);
+    
+        //         scalarField nominator = 
+        //         (
+        //             residualPrev & (residual - residualPrev)
+        //         );
+    
+        //         scalarField denominator =
+        //         (
+        //             (residual - residualPrev) & (residual - residualPrev)
+        //         );
+    
+    
+        //         aitkenRelaxation_ = mag(-aitkenRelaxation_ * (sum(nominator) / (sum(denominator) + VSMALL)));
+    
+                
+        //         if(aitkenRelaxation_ > 0.05)
+        //             aitkenRelaxation_ = 0.05;
+            
+        //         this->jump_ = this->jump_ + aitkenRelaxation_ * (newJump-this->jump_);
+        //         residualPrev_ = residual_;
+        //         residual_ = newJump[0] - this->jump_[0];
+                
+        //     }
+    
+        //     nIter_++;
+    
+        // }
+
+        // else
+        // {
+        this->jump_ = this->jump_ + underRelaxation_ * (newJump - this->jump_);
+        // }
     }
 
     jumpDiscontinuousCyclicAMIFvPatchField<vector>::updateCoeffs();
@@ -293,6 +451,7 @@ void Foam::junctionJumpAMIFvPatchVectorField::write(Ostream& os) const
         os.writeEntry("connectedPatches", overlapPatchNames_);
     }
     scalingFactors_.writeEntry("scalingFactors", os);
+    os.writeEntry("underRelaxation", underRelaxation_);
     
     fvPatchField<vector>::writeValueEntry(os);
 }

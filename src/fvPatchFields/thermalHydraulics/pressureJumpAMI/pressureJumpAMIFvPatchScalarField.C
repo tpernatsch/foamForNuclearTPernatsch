@@ -56,7 +56,8 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     pressureLossCoeff_(0),
     pumpCoeffs_(1, Zero),
     pumpVelocityTable_(nullptr),
-    nominalVelocity_(1)
+    nominalVelocity_(1),
+    underRelaxation_(1)
 {}
 
 
@@ -76,7 +77,8 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     pressureLossCoeff_(ptf.pressureLossCoeff_),
     pumpCoeffs_(ptf.pumpCoeffs_),
     pumpVelocityTable_(ptf.pumpVelocityTable_.clone()),
-    nominalVelocity_(ptf.nominalVelocity_)
+    nominalVelocity_(ptf.nominalVelocity_),
+    underRelaxation_(ptf.underRelaxation_)
 {}
 
 
@@ -95,8 +97,15 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     pressureLossCoeff_(dict.getOrDefault<scalar>("lossCoeff", 0)),
     pumpCoeffs_(dict.getOrDefault<scalarList>("pumpCoeffs", scalarList(1, Zero))),
     pumpVelocityTable_(nullptr),
-    nominalVelocity_(1)
+    nominalVelocity_(1),
+    underRelaxation_(dict.getOrDefault<scalar>("underRelaxation", 1))
 {
+
+    if (this->discontinuousCyclicAMIPatch().owner())
+    {
+        jump_.assign("jump", dict, p.size(), IOobjectOption::LAZY_READ);
+    }
+    
     source_.assign("pSource", dict, p.size(), IOobjectOption::LAZY_READ);
 
     if(dict.found("pumpVelocityTable"))
@@ -127,7 +136,8 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     pressureLossCoeff_(ptf.pressureLossCoeff_),
     pumpCoeffs_(ptf.pumpCoeffs_),
     pumpVelocityTable_(ptf.pumpVelocityTable_.clone()),
-    nominalVelocity_(ptf.nominalVelocity_)
+    nominalVelocity_(ptf.nominalVelocity_),
+    underRelaxation_(ptf.underRelaxation_)
 {}
 
 
@@ -145,7 +155,8 @@ Foam::pressureJumpAMIFvPatchScalarField::pressureJumpAMIFvPatchScalarField
     pressureLossCoeff_(ptf.pressureLossCoeff_),
     pumpCoeffs_(ptf.pumpCoeffs_),
     pumpVelocityTable_(ptf.pumpVelocityTable_.clone()),
-    nominalVelocity_(ptf.nominalVelocity_)
+    nominalVelocity_(ptf.nominalVelocity_),
+    underRelaxation_(ptf.underRelaxation_)
 {}
 
 
@@ -274,7 +285,7 @@ void Foam::pressureJumpAMIFvPatchScalarField::updateCoeffs()
             
         }
 
-        this->jump_ = 
+        scalarField newJump = 
         (
             ownerToSlave? 
                 correctedSource - pressureLossCoeff_*0.5*rhoOwner*pow(magUOwner, 2) + pumpSource :
@@ -283,8 +294,10 @@ void Foam::pressureJumpAMIFvPatchScalarField::updateCoeffs()
 
         if(bernoulliCorrection_)
         {  
-            this->jump_ +=0.5*(rhoOwner*pow(magUOwner,2) - rhoSlaveOnMaster*pow(magUSlave,2)); // bernoulli
+            newJump +=0.5*(rhoOwner*pow(magUOwner,2) - rhoSlaveOnMaster*pow(magUSlave,2)); // bernoulli
         }
+
+        this->jump_ = underRelaxation_*newJump + (1-underRelaxation_)*this->jump_;
 
     }
 
