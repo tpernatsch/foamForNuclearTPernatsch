@@ -15,6 +15,7 @@ thMesh = mesh.BlockMesh(region='fluidRegion')
 thMesh.add_pipes_from_json(
     filename="diagram.json",
     firstBlockName="core",
+    # firstBlockName="PipeOutlet",
     elbowRadius=0.1,
     isAddBoundaryConditions=True
 )

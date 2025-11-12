@@ -2991,9 +2991,16 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 direction = direction + R1 + R2
             else:
                 R1p = copy(R1)
-                R1p.rotateY(-3.141592/2)
+
+                newDirTemp = direction + R1 + R2 - R1p - R1p
+
+                isSshapePositive = newDirTemp.cross(finalDir).y > 0
+
                 for i in range(10000):
-                    newdir = direction + R1 + R2 - R1p - R1p
+                    if (isSshapePositive):
+                        newdir = direction + R1 + R2 - R1p - R1p
+                    else:
+                        newdir = direction + R1 + R2 + R1p + R1p
 
                     costheta = R1p.dot(newdir) / (R1p.norm() * newdir.norm())
 
@@ -3002,7 +3009,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                     if (abs(costheta) < tolerance):
                         break
 
-                direction = direction + R1 + R2 - R1p - R1p
+                direction = newdir
 
         length = direction.norm()
 
@@ -3028,7 +3035,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             )
 
         return(block)
-    
+
     # def addPipe1DFrom2PointsSCurve(
     #     self,
     #     name: str,
@@ -3068,13 +3075,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
     #     )
     #     normalizedDirection.normalize()
 
-        
+
     #     intermediateOutletVec = Vector(
     #         originVec.x + normalizedDirection.x * intermediateLength,
     #         originVec.y + normalizedDirection.y * intermediateLength,
     #         originVec.z + normalizedDirection.z * intermediateLength
     #     )
-        
+
 
     #     finalFace = finalPosition.getFace(finalPositionInletFaceName)
     #     finalVec = finalPosition.getFaceBarycenter(finalFace)
@@ -3262,8 +3269,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             name = branch["name"]
             direction = branch["direction"]
             length = branch["length"]
-            dh = branch["equivalentHydraulicDiameter"]  
-            elbow = branch["elbowRadius"]             
+            dh = branch["equivalentHydraulicDiameter"]
+            elbow = branch["elbowRadius"]
             n = branch.get("n", 1)
 
             newPipe = self.addPipe1DFromDirection(
@@ -3289,7 +3296,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.connectPipesCustomNames(
                     pipe1=originPipe,
                     pipe2=newPipe,
-                    elbowRadius=elbow,  
+                    elbowRadius=elbow,
                     pipe1outletFaceName=originOutletFaceName,
                     pipe2inletFaceName='bottom',
                     customOutletName=f"{originPipe.name}to{name}_outletAMI",
@@ -3392,8 +3399,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
         elbowRadius: float = 0,
         pipe1outletFaceName: str = 'top',
         pipe2inletFaceName: str = 'bottom',
-        customOutletName: str = None,  
-        customInletName: str = None   
+        customOutletName: str = None,
+        customInletName: str = None
     ) -> None:
         """
         Connect two pipes with custom cyclic patch names to avoid duplication.
@@ -3428,7 +3435,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             separationVector = pipe2Inlet - pipe1Outlet
 
             inlet = FaceCyclic(
-                name=customOutletName, 
+                name=customOutletName,
                 neighbourPatch=customInletName,
                 transform="translational",
                 separationVector=separationVector
@@ -3436,7 +3443,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             inlet.addSubFace(pipe1outletFace)
 
             outlet = FaceCyclic(
-                name=customInletName,  
+                name=customInletName,
                 neighbourPatch=customOutletName,
                 transform="translational",
                 separationVector=-separationVector
@@ -3457,7 +3464,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 rotationCentre = pipe1Outlet + R1
 
             inlet = FaceCyclic(
-                name=customOutletName, 
+                name=customOutletName,
                 neighbourPatch=customInletName,
                 transform="rotational",
                 rotationAxis=rotationAxis1,
@@ -3466,7 +3473,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             inlet.addSubFace(pipe1outletFace)
 
             outlet = FaceCyclic(
-                name=customInletName, 
+                name=customInletName,
                 neighbourPatch=customOutletName,
                 transform="rotational",
                 rotationAxis=rotationAxis2,
@@ -5387,34 +5394,59 @@ class BlockMesh(OpenFOAMFile, Mesh):
             data = json.load(f)
 
         # Extract pipe links
-        linksTargetFromSource = {}
+        linksPreviousBlock = {}
+        linksNextBlock = {}
         for edge in data.get('edges', []):
             source = edge.get('source')
             target = edge.get('target')
             sourceHandle = edge.get('sourceHandle')
             # targetHandle = edge.get('targetHandle')
             if (sourceHandle == 'r'):
-                linksTargetFromSource[target] = source
+                linksPreviousBlock[target] = source
+                linksNextBlock[source] = target
             else:
-                linksTargetFromSource[source] = target
+                linksPreviousBlock[source] = target
+                linksNextBlock[target] = source
 
-        # Place first block
-        blocks = {}
+        nidFirstBlock: str = None
+
+        # Extract blocks info
+        blockChain = {}
         for node in data.get('nodes', []):
             node_data = node.get('data')
-            name = node_data.get('label')
-            if (name != firstBlockName):
-                continue
 
             nid = node.get('id')
-            rotation = -node_data.get('rotation', 0) * np.pi/180
-            length = node_data.get('length_m')
-            width = node_data.get('width_m')
-            nCells = int(node_data.get('cells', 1))
+            name = node_data.get('label')
 
-            newBlock = self.addPipe1DFromDirection(
+            blockChain[nid] = {
+                "name": name,
+                "rotation": -node_data.get('rotation', 0) * np.pi/180,
+                "length": node_data.get('length_m'),
+                "width": node_data.get('width_m'),
+                "nCells": int(node_data.get('cells', 1)),
+                "nextBlockId": linksNextBlock[nid]
+            }
+
+            if (name == firstBlockName):
+                nidFirstBlock = nid
+
+
+        # Current block
+        nid = nidFirstBlock
+        currentBlock = blockChain[nidFirstBlock]
+
+        blocks = {}
+        while (currentBlock['nextBlockId'] != nidFirstBlock):
+            rotation = currentBlock['rotation']
+            length = currentBlock['length']
+            width = currentBlock['width']
+            nCells = currentBlock['nCells']
+
+            blockPosition = blocks[linksPreviousBlock[nid]] if len(blocks.keys()) > 0 else originPosition
+
+            blocks[nid] = self.addPipe1DFromDirection(
                 name=f"{name}_{nid}",
-                originPosition=originPosition,
+                originPosition=blockPosition,
                 direction=Vector(np.cos(rotation), 0, np.sin(rotation)),
                 length=length,
                 equivalentHydraulicDiameter=width,
@@ -5423,54 +5455,26 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 isAddBoundaryConditions=isAddBoundaryConditions
             )
 
-            blocks[nid] = newBlock
-            break
+            # Next block to place for the next iteration
+            nid = currentBlock['nextBlockId']
+            currentBlock = blockChain[nid]
 
-        # Extract blocks and continue the loop
-        for node in data.get('nodes', []):
-            nid = node.get('id')
-            if (nid in blocks.keys()):
-                continue
 
-            node_data = node.get('data')
-            name = node_data.get('label')
-            rotation = -node_data.get('rotation', 0) * np.pi/180
-            isNextBlockPlaced = False
+        # Last block to close the loop
+        rotation = currentBlock['rotation']
+        length = currentBlock['length']
+        width = currentBlock['width']
+        nCells = currentBlock['nCells']
 
-            if (len(blocks.keys()) > 0):
-                originBlock = linksTargetFromSource[nid]
-                originPosition = blocks[originBlock]
-
-                nextBlock = [key for key, nid_ in linksTargetFromSource.items() if nid == nid_][0]
-                isNextBlockPlaced = nextBlock in blocks.keys()
-
-            length = node_data.get('length_m')
-            width = node_data.get('width_m')
-            nCells = int(node_data.get('cells', 1))
-
-            if (isNextBlockPlaced):
-                newBlock = self.addPipe1DFrom2Points(
-                    name=f"{name}_{nid}",
-                    originPosition=originPosition,
-                    finalPosition=blocks[nextBlock],
-                    equivalentHydraulicDiameter=width,
-                    n=nCells,
-                    elbowRadius=elbowRadius,
-                    isAddBoundaryConditions=isAddBoundaryConditions
-                )
-            else:
-                newBlock = self.addPipe1DFromDirection(
-                    name=f"{name}_{nid}",
-                    originPosition=originPosition,
-                    direction=Vector(np.cos(rotation), 0, np.sin(rotation)),
-                    length=length,
-                    equivalentHydraulicDiameter=width,
-                    n=nCells,
-                    elbowRadius=elbowRadius,
-                    isAddBoundaryConditions=isAddBoundaryConditions
-                )
-
-            blocks[nid] = newBlock
+        blocks[nid] = self.addPipe1DFrom2Points(
+            name=f"{name}_{nid}",
+            originPosition=blocks[linksPreviousBlock[nid]],
+            finalPosition=blocks[nidFirstBlock],
+            equivalentHydraulicDiameter=width,
+            n=nCells,
+            elbowRadius=elbowRadius,
+            isAddBoundaryConditions=isAddBoundaryConditions
+        )
 
         return(blocks)
 

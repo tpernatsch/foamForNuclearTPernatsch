@@ -33,7 +33,7 @@
         "height_px": 10.0
       },
       "data": {
-        "label": "Pipe",
+        "label": "PipeOutlet",
         "color": "#0ea5e9",
         "rotation": -45.0,
         "length_m": 1.0,

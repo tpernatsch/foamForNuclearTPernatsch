@@ -50,6 +50,7 @@ public
 
 # Python API
 pythonapi/build
+pythonapi/tutorials/fmuCases/3D_*
 
 # FMU installation
 thirdParty/FMU4FOAM
