@@ -20,55 +20,18 @@ _SAMPLE_MODE_TYPES = {
 _OFFSET_MODE_TYPES = {"uniform", "nonuniform", "normal"}
 
 
-class Point:
+class Point(Vector):
     def __init__(self, x: float, y: float, z: float, isIndexed: bool=True):
-        self.x: float = x
-        self.y: float = y
-        self.z: float = z
+        super().__init__(x=x, y=y, z=z)
         self.id: int = None
         self.isIndexed = isIndexed
 
     def __repr__(self):
         return((f"name {self.name} " if self.id >= 0 else "") + f"( {self.x} {self.y} {self.z} )")
 
-    def __eq__(self, value):
-        eps = 1e-9
-        return(
-            abs(self.x - value.x) <= eps and
-            abs(self.y - value.y) <= eps and
-            abs(self.z - value.z) <= eps
-        )
-
     @property
     def name(self) -> str:
         return(f"v{self.id}")
-
-    @property
-    def x(self):
-        return self._x
-
-    @x.setter
-    def x(self, x) -> None:
-        check_type("x", x, (float, int))
-        self._x = x
-
-    @property
-    def y(self):
-        return self._y
-
-    @y.setter
-    def y(self, y) -> None:
-        check_type("y", y, (float, int))
-        self._y = y
-
-    @property
-    def z(self):
-        return self._z
-
-    @z.setter
-    def z(self, z) -> None:
-        check_type("z", z, (float, int))
-        self._z = z
 
     @property
     def isIndexed(self):
@@ -78,26 +41,6 @@ class Point:
     def isIndexed(self, isIndexed) -> None:
         check_type("isIndexed", isIndexed, bool)
         self._isIndexed = isIndexed
-
-    def translate(self, dx: float=0, dy: float=0, dz: float=0) -> None:
-        self.x += dx
-        self.y += dy
-        self.z += dz
-
-    def rotateX(self, theta: float=0) -> None:
-        py = self.y
-        self.y =  py * np.cos(theta) - self.z * np.sin(theta)
-        self.z =  py * np.sin(theta) + self.z * np.cos(theta)
-
-    def rotateY(self, theta: float=0) -> None:
-        px = self.x
-        self.x =  px * np.cos(theta) - self.z * np.sin(theta)
-        self.z =  px * np.sin(theta) + self.z * np.cos(theta)
-
-    def rotateZ(self, theta: float=0) -> None:
-        px = self.x
-        self.x =  px * np.cos(theta) - self.y * np.sin(theta)
-        self.y =  px * np.sin(theta) + self.y * np.cos(theta)
 
 
 def isEqualSubFace(face1: list[Point], face2: list[Point]) -> bool:
@@ -506,7 +449,6 @@ class Block:
             self,
             pointIdx1: int, pointIdx2: int,
             x: float=None, y: float=None, z: float=None,
-            # isMidPointIndexed: bool=False,
             isOrigin: bool=False
         ):
         """
@@ -538,7 +480,6 @@ class Block:
         self.edges.append(EdgeArc(
             point1=self.points[pointIdx1],
             point2=self.points[pointIdx2],
-            # midPoint=Point(x, y, z, isIndexed=isMidPointIndexed),
             midPoint=Vector(x, y, z),
             isOrigin=isOrigin
         ))
@@ -561,10 +502,14 @@ class Block:
             points=points
         ))
 
-    def add_face_projection(self, faceName: int, geometryName: str) -> None:
+    def add_face_projection(self, faceName: str, geometryName: str) -> None:
         """
         Deform a face using a projection geometry.
         """
+        check_type("faceName", faceName, str)
+        check_value("faceName", faceName, _FACE_NAME_TYPES)
+        check_type("geometryName", geometryName, str)
+
         faceNameToId = {
             "left": 0, "right": 1, "front": 2, "back": 3, "bottom": 4, "top": 5
         }
@@ -581,6 +526,8 @@ class Block:
         """
         Deform an edge using a projection geometry.
         """
+        check_type("verticeIdx1", verticeIdx1, int)
+        check_type("verticeIdx2", verticeIdx2, int)
         check_type("geometryNames", geometryNames, list)
 
         self.edgeProjection.append({
@@ -590,6 +537,10 @@ class Block:
         })
 
     def translate(self, dx: float=0, dy: float=0, dz: float=0) -> None:
+        check_type("dx", dx, (float, int))
+        check_type("dy", dy, (float, int))
+        check_type("dz", dz, (float, int))
+
         for point in self.points:
             point.translate(dx, dy, dz)
 
@@ -602,6 +553,8 @@ class Block:
         theta : float
             Rotation angle in rad (default `0`).
         """
+        check_type("theta", theta, (float, int))
+
         for point in self.points:
             point.rotateZ(theta)
 
@@ -650,6 +603,7 @@ class Block:
         """
         check_type("faceName", faceName, str)
         check_value("faceName", faceName, _FACE_NAME_TYPES)
+
         if (faceName == "top"):
             return(self.topFace())
         elif (faceName == "bottom"):
@@ -680,6 +634,7 @@ class Block:
         """
         check_type("faceName", faceName, str)
         check_value("faceName", faceName, _FACE_NAME_TYPES)
+
         if (faceName == "bottom"):
             return("top")
         elif (faceName == "top"):
@@ -710,6 +665,7 @@ class Block:
         """
         check_type("faceName", faceName, str)
         check_value("faceName", faceName, _FACE_NAME_TYPES)
+
         if (faceName == "bottom"):
             return(self.topFace())
         elif (faceName == "top"):
@@ -743,9 +699,8 @@ class Block:
         p1, p2, p3 = face[0], face[1], face[2]
         vec1 = Vector(p1.x-p2.x, p1.y-p2.y, p1.z-p2.z)
         vec2 = Vector(p2.x-p3.x, p2.y-p3.y, p2.z-p3.z)
-        # if (faceName in ['front', 'top', 'bottom', 'left', 'right']):
+
         return(vec1.cross(vec2))
-        return(vec2.cross(vec1))
 
 
 
@@ -765,21 +720,28 @@ class BlockMesh(OpenFOAMFile, Mesh):
     ----------
     scale : float
         Scaling factor of the mesh.
+    isReducedCells : bool
+        Assign a single cells per directions for all blocks. Can be used for
+        quick visualization (default `False`).
+    isMergeCoincidentPoints : bool
+        Minimize the number of `Point` by removing duplicate points. The
+        removing operation is only performed during blockMeshDict writting.
+        Default `False`.
     blocks : list[Block]
-        List of blocks
+        List of blocks.
     faces : list[Face]
-        List of faces
+        List of faces.
     mergePatchPairs : list[tuple[Face]]
         List of merged patch pairs faces. Used to stitch `Block`.
     baffleFaces : list[tuple[Face]]
-        List of baffle patch pairs faces. Used to create baffle faces
+        List of baffle patch pairs faces. Used to create baffle faces.
     spheres : list[dict]
-        List of spheres geometries usually used for point/edge/face projections
+        List of spheres geometries usually used for point/edge/face projections.
     cylinders : list[dict]
         List of cylinders geometries usually used for point/edge/face
-        projections
+        projections.
     cones : list[dict]
-        List of cones geometries usually used for point/edge/face projections
+        List of cones geometries usually used for point/edge/face projections.
     pipeWallBC : Face
         Pipe wall boundary condition face named `pipeWall`.
     """
@@ -799,6 +761,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         self.faces: list[Face] = []
         self.mergePatchPairs: list[tuple[Face]] = []
         self.baffleFaces: list[tuple[Face]] = []
+
         # List of basic geometry for face projection
         self.spheres: list[dict] = []
         self.cylinders: list[dict] = []
@@ -869,7 +832,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             self,
             name: str,
             radius: float,
-            point1: tuple=(0, 0, 0), point2: tuple=(0, 0, 0)
+            point1: tuple=(0, 0, 0),
+            point2: tuple=(0, 0, 0)
         ) -> None:
         """
         Create a cylinder geometry shape that can be used for point, edge and
@@ -940,15 +904,21 @@ class BlockMesh(OpenFOAMFile, Mesh):
             gradr: float=1, gradz: float=1
         ) -> Block:
         """
+        Create a wedge along the Z-axis using 1 block.
+
         Parameters
         ----------
         wedgeAngle : float
-            Total wedge aperture angle in degree
+            Total wedge aperture angle in degree.
 
         Return
         ------
             (newBlock)
         """
+        if (innerRadius > outerRadius):
+            msg = "innerRadius must be smaller than outerRadius"
+            raise ValueError(msg)
+
         deg = np.pi/180
         irX = innerRadius * np.cos(wedgeAngle/2 * deg)
         irY = innerRadius * np.sin(wedgeAngle/2 * deg)
@@ -983,7 +953,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             gradr: float=1, gradz: float=1
         ) -> Block:
         """
-        Create a conical wedge along the Z-axis.
+        Create a conical wedge along the Z-axis using 1 block.
 
         Parameters
         ----------
@@ -1027,6 +997,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             isAddAllBC: bool=False
         ) -> Block:
         """
+        Create a cube sub-mesh using 1 block.
+
         Return
         ------
             (newBlock)
@@ -1083,6 +1055,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             isAddAllBC: bool=False
         ):
         """
+        Create a sphere sub mesh using 7 blocks.
+
         Return
         ------
             (ballCenter, ballTop, ballRight, ballBack, ballLeft, ballFront, ballBottom)
@@ -1504,7 +1478,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             isAddOuterBC: bool=False,
         ):
         """
-        Create a 1D sphere along the X-axis.
+        Create a 1D sphere along the X-axis using 1 block.
 
         Parameters
         ----------
@@ -1611,6 +1585,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             isAddOuterBC: bool=False,
         ):
         """
+        Create a ring sub-mesh using 4 blocks.
+
         Return
         ------
             (frontBlock, rightBlock, backBlock, leftBlock)
@@ -1757,6 +1733,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
             isAddRightBC: bool=False,
         ) -> Block:
         """
+        Create a ring sector along the Z axis using 1 block.
+
         Face orientation:
         - `front`: large arc face
         - `back`: short arc face
@@ -1868,8 +1846,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nx: int, ny: int, nz: int,
             x: float=0, y: float=0,
             isAddAllBC: bool=False
-        ) -> Block:
+        ):
         """
+        Create a cylinder along the Z-axis using 5 blocks.
+
         Return
         ------
             (centerBlock, frontBlock, rightBlock, backBlock, leftBlock)
@@ -4319,6 +4299,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             msg = "Lattice type 'hexagon' not yet implemented in 'fill_lattice_ring_gap'"
             raise NotImplementedError(msg)
 
+
     def get_overlapping_faces(
             self,
             overlappingFaces: list[Face]=[],
@@ -4492,6 +4473,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         -------
         List of baffle faces
         """
+        check_type("baffleName", baffleName, str)
         check_type("includeFacename", includeFacename, list)
         check_type("excludeFacename", excludeFacename, list)
 
@@ -4824,6 +4806,11 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
 
     def add_top(self, targetBlock: Block, name: str, points: list[Point], nz: int=1, gradz: float=1) -> Block:
+        """
+        Add a block on top of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4833,7 +4820,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
     def add_bottom(self, targetBlock: Block, name: str, points: list[Point], nz: int=1, gradz: float=1) -> Block:
+        """
+        Add a block on bottom of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4843,7 +4838,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
     def add_front(self, targetBlock: Block, name: str, points: list[Point], ny: int=1, grady: float=1) -> Block:
+        """
+        Add a block on the front of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4857,7 +4860,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
     def add_back(self, targetBlock: Block, name: str, points: list[Point], ny: int=1, grady: float=1) -> Block:
+        """
+        Add a block on the back of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4871,7 +4882,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
     def add_left(self, targetBlock: Block, name: str, points: list[Point], nx: int=1, gradx: float=1) -> Block:
+        """
+        Add a block on the left of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4885,7 +4904,15 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 self.blocks.append(newBlock)
                 return(newBlock)
 
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
     def add_right(self, targetBlock: Block, name: str, points: list[Point], nx: int=1, gradx: float=1) -> Block:
+        """
+        Add a block on the right of the targetBlock using 4 explicit points.
+        """
+        check_type("targetBlock", targetBlock, Block)
+
         for block in self.blocks:
             if (block == targetBlock):
                 newBlock = Block(
@@ -4898,6 +4925,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 )
                 self.blocks.append(newBlock)
                 return(newBlock)
+
+        msg = f"Could not find a block name {targetBlock.name}"
+        raise ValueError(msg)
+
 
     def get_points_for_block(
             self,
@@ -4934,6 +4965,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             else:
                 newPointsForCurrBlock.append(existingPoints[newPointCoord])
         return(newPointsForCurrBlock)
+
 
     def extrude_top(self, targetBlocks: list[Block] | Block, name: str, dz: float, nz: int=1, gradz: float=1) -> tuple[Block] | Block:
         """
@@ -5162,7 +5194,6 @@ class BlockMesh(OpenFOAMFile, Mesh):
             newPoints[0], newPoints[1], newPoints[3] = newPoints[3], newPoints[0], newPoints[1]
             return(self.add_back(targetBlock=targetBlock, name=name, points=newPoints, ny=n, grady=grad))
 
-
     def extrude_normal_arc(
             self,
             targetBlock: Block,
@@ -5353,7 +5384,6 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 if (face_i.boundaryType == "mappedWall"):
                     continue
 
-                print(face_i.name, face_j.name)
                 face_i.isPrint = False
                 face_j.isPrint = False
 
@@ -5416,6 +5446,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
         text += "}\n"
         return(text)
+
 
     @OpenFOAMFile._write_to_file
     def export_to_openfoam(self):
