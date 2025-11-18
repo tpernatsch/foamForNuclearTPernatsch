@@ -1615,6 +1615,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ------
             (frontBlock, rightBlock, backBlock, leftBlock)
         """
+        if (innerRadius > outerRadius):
+            msg = "innerRadius must be smaller than outerRadius"
+            raise ValueError(msg)
+
+        isHollow = innerRadius > 0
+
         sqrt2 = np.sqrt(2)
 
         frontBlock = self.create_block(name, [
@@ -1661,21 +1667,23 @@ class BlockMesh(OpenFOAMFile, Mesh):
             leftBlock.points[7],
         ], nt, nr, nz)
 
+        if (isHollow):
+            frontBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+            frontBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
+            rightBlock.add_edge_arc(0, 3, x=x, y=y, isOrigin=True)
+            rightBlock.add_edge_arc(4, 7, x=x, y=y, isOrigin=True)
+            leftBlock.add_edge_arc(1, 2, x=x, y=y, isOrigin=True)
+            leftBlock.add_edge_arc(5, 6, x=x, y=y, isOrigin=True)
+            backBlock.add_edge_arc(0, 1, x=x, y=y, isOrigin=True)
+            backBlock.add_edge_arc(4, 5, x=x, y=y, isOrigin=True)
+
         frontBlock.add_edge_arc(0, 1, x=x, y=y, isOrigin=True)
-        frontBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
         frontBlock.add_edge_arc(4, 5, x=x, y=y, isOrigin=True)
-        frontBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
         rightBlock.add_edge_arc(1, 2, x=x, y=y, isOrigin=True)
-        rightBlock.add_edge_arc(0, 3, x=x, y=y, isOrigin=True)
         rightBlock.add_edge_arc(5, 6, x=x, y=y, isOrigin=True)
-        rightBlock.add_edge_arc(4, 7, x=x, y=y, isOrigin=True)
-        leftBlock.add_edge_arc(1, 2, x=x, y=y, isOrigin=True)
         leftBlock.add_edge_arc(3, 0, x=x, y=y, isOrigin=True)
-        leftBlock.add_edge_arc(5, 6, x=x, y=y, isOrigin=True)
         leftBlock.add_edge_arc(7, 4, x=x, y=y, isOrigin=True)
-        backBlock.add_edge_arc(0, 1, x=x, y=y, isOrigin=True)
         backBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
-        backBlock.add_edge_arc(4, 5, x=x, y=y, isOrigin=True)
         backBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
 
         idxFace = len(self.faces)
@@ -1694,7 +1702,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
 
             self.add_boundary(botFace)
 
-        if (isAddAllBC or isAddInnerBC):
+        if ((isAddAllBC or isAddInnerBC) and isHollow):
             innerWallFaceFront = Face(f"{name}InnerWallFront_{idxFace}", boundaryType='wall')
             innerWallFaceFront.add_sub_face(frontBlock.backFace())
             innerWallFaceLeft = Face(f"{name}InnerWallLeft_{idxFace}", boundaryType='wall')
@@ -1784,6 +1792,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
         ------
             (newBlock)
         """
+        if (innerRadius > outerRadius):
+            msg = "innerRadius must be smaller than outerRadius"
+            raise ValueError(msg)
+
+        isHollow = innerRadius > 0
+
         # Convert from deg to rad
         deg = np.pi/180
         angleStart = angleStart * deg
@@ -1793,20 +1807,22 @@ class BlockMesh(OpenFOAMFile, Mesh):
         costt, sintt = np.cos(angleStart+angleArc), np.sin(angleStart+angleArc)
 
         newBlock = self.create_block(name, [
-            Point(x+outerRadius*cost, y+outerRadius*sint, lowZ),
+            Point(x+innerRadius*cost,  y+innerRadius*sint,  lowZ),
+            Point(x+outerRadius*cost,  y+outerRadius*sint,  lowZ),
             Point(x+outerRadius*costt, y+outerRadius*sintt, lowZ),
             Point(x+innerRadius*costt, y+innerRadius*sintt, lowZ),
-            Point(x+innerRadius*cost, y+innerRadius*sint, lowZ),
-            Point(x+outerRadius*cost, y+outerRadius*sint, highZ),
+            Point(x+innerRadius*cost,  y+innerRadius*sint,  highZ),
+            Point(x+outerRadius*cost,  y+outerRadius*sint,  highZ),
             Point(x+outerRadius*costt, y+outerRadius*sintt, highZ),
             Point(x+innerRadius*costt, y+innerRadius*sintt, highZ),
-            Point(x+innerRadius*cost, y+innerRadius*sint, highZ),
-        ], nx=nt, ny=nr, nz=nz)
+        ], nx=nr, ny=nt, nz=nz)
 
-        newBlock.add_edge_arc(0, 1, x, y, lowZ, isOrigin=True)
-        newBlock.add_edge_arc(2, 3, x, y, lowZ, isOrigin=True)
-        newBlock.add_edge_arc(4, 5, x, y, highZ, isOrigin=True)
-        newBlock.add_edge_arc(6, 7, x, y, highZ, isOrigin=True)
+        if (isHollow):
+            newBlock.add_edge_arc(0, 3, x, y, lowZ, isOrigin=True)
+            newBlock.add_edge_arc(4, 7, x, y, highZ, isOrigin=True)
+
+        newBlock.add_edge_arc(1, 2, x, y, lowZ, isOrigin=True)
+        newBlock.add_edge_arc(5, 6, x, y, highZ, isOrigin=True)
 
         idxFace = len(self.faces)
 
@@ -1820,24 +1836,24 @@ class BlockMesh(OpenFOAMFile, Mesh):
             newFace.add_sub_face(newBlock.bottomFace())
             self.add_boundary(newFace)
 
-        if (isAddAllBC or isAddInnerBC):
+        if ((isAddAllBC or isAddInnerBC) and isHollow):
             newFace = Face(f"{name}InnerWall_{idxFace}", boundaryType='wall')
-            newFace.add_sub_face(newBlock.backFace())
+            newFace.add_sub_face(newBlock.leftFace())
             self.add_boundary(newFace)
 
         if (isAddAllBC or isAddOuterBC):
             newFace = Face(f"{name}OuterWall_{idxFace}", boundaryType='wall')
-            newFace.add_sub_face(newBlock.frontFace())
+            newFace.add_sub_face(newBlock.rightFace())
             self.add_boundary(newFace)
 
         if (isAddAllBC or isAddLeftBC):
             newFace = Face(f"{name}LeftWall_{idxFace}", boundaryType='wall')
-            newFace.add_sub_face(newBlock.leftFace())
+            newFace.add_sub_face(newBlock.frontFace())
             self.add_boundary(newFace)
 
         if (isAddAllBC or isAddRightBC):
             newFace = Face(f"{name}RightWall_{idxFace}", boundaryType='wall')
-            newFace.add_sub_face(newBlock.rightFace())
+            newFace.add_sub_face(newBlock.backFace())
             self.add_boundary(newFace)
 
         return(newBlock)
@@ -2096,6 +2112,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             backLeftBlock, frontLeftBlock, leftBlock, rightBlock
         )
 
+
     def create_cube_with_corner_hole_along_z(
             self,
             name: str,
@@ -2105,6 +2122,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             nx: int=1, ny: int=1, nz: int=1, nt: int=1,
             isHoleCylinder: bool=True,
             squareEdgeToHoleCenter=None,
+            edgeFaceOrientation: float=0,
             isAddAllBC: bool=False,
             isAddTopBC: bool=False,
             isAddBottomBC: bool=False,
@@ -2119,6 +2137,8 @@ class BlockMesh(OpenFOAMFile, Mesh):
         squareEdgeToHoleCenter : float
             Distance from the corner cube edge to the hole center along one axis.
             (default `radius/sqrt(2)`)
+        edgeFaceOrientation : float
+            Edge face orientation in deg
 
         Return
         ------
@@ -2150,11 +2170,24 @@ class BlockMesh(OpenFOAMFile, Mesh):
         backBlock.points[2].x = highX - radius
         backBlock.points[6].x = highX - radius
 
+        x = (lowX+highX)/2
+        y = (lowY+highY)/2
+
+        for point in mainBlock.points + rightBlock.get_face('right') + backBlock.get_face('back'):
+            point.translate(dx=-x, dy=-y)
+            point.rotateZ(theta=edgeFaceOrientation * np.pi/180)
+            point.translate(dx=x, dy=y)
+
         if (isHoleCylinder):
-            rightBlock.add_edge_arc(2, 3, x=highX, y=highY, isOrigin=True)
-            rightBlock.add_edge_arc(6, 7, x=highX, y=highY, isOrigin=True)
-            backBlock.add_edge_arc(1, 2, x=highX, y=highY, isOrigin=True)
-            backBlock.add_edge_arc(5, 6, x=highX, y=highY, isOrigin=True)
+            corner = Vector(highX, highY, 0)
+            corner.translate(dx=-x, dy=-y)
+            corner.rotateZ(theta=edgeFaceOrientation * np.pi/180)
+            corner.translate(dx=x, dy=y)
+
+            rightBlock.add_edge_arc(2, 3, x=corner.x, y=corner.y, isOrigin=True)
+            rightBlock.add_edge_arc(6, 7, x=corner.x, y=corner.y, isOrigin=True)
+            backBlock.add_edge_arc(1, 2, x=corner.x, y=corner.y, isOrigin=True)
+            backBlock.add_edge_arc(5, 6, x=corner.x, y=corner.y, isOrigin=True)
 
         idxFace = len(self.faces)
 
@@ -5317,9 +5350,12 @@ class BlockMesh(OpenFOAMFile, Mesh):
             coupledFaces = self.get_overlapping_faces(overlappingFaces=mergedFaces)
 
             for face_i, face_j in coupledFaces:
-                if (face_i.boundaryType != "mappedWall"):
-                    face_i.isPrint = False
-                    face_j.isPrint = False
+                if (face_i.boundaryType == "mappedWall"):
+                    continue
+
+                print(face_i.name, face_j.name)
+                face_i.isPrint = False
+                face_j.isPrint = False
 
         text = "boundary\n"
         text += "(\n"

@@ -311,6 +311,55 @@ def createCubeWithCornerHole():
         isAddAllBC=True
     )
 
+    # nMesh.create_ring_sector_along_z(
+    #     name="sector",
+    #     innerRadius=0,  outerRadius=0.25,
+    #     angleStart=180, angleArc=45,
+    #     lowZ=0, highZ=1,
+    #     x=1, y=1,
+    #     nr=2, nt=5, nz=4,
+    #     isAddAllBC=True
+    # )
+    # nMesh.create_ring_sector_along_z(
+    #     name="sector",
+    #     innerRadius=0,      outerRadius=0.25,
+    #     angleStart=180+45,  angleArc=45,
+    #     lowZ=0, highZ=1,
+    #     x=1, y=1,
+    #     nr=2, nt=5, nz=4,
+    #     isAddAllBC=True
+    # )
+    # nMesh.isMergeCoincidentPoints = True
+
+    # externalFaces = nMesh.get_standalone_faces(excludeFacename=["Top", "Bottom"])
+    # nMesh.merge_patches_with_name(name='top', includeFacename=['Top'])
+    # nMesh.merge_patches_with_name(name='bottom', includeFacename=['Bottom'])
+    # nMesh.merge_patches_with_name(name='wall', includeFacename=[f.name for f in externalFaces], isStrict=True)
+
+    # ---
+
+    # lxy = 1
+
+    # xCenter, yCenter = 1, 1
+
+    # r = lxy/2 * np.sqrt(2)
+    # deg = np.pi/180
+
+    # for theta in np.arange(45, 360+45, 90):
+    #     rcost = r * np.cos(theta*deg)
+    #     rsint = r * np.sin(theta*deg)
+    #     nMesh.create_cube_with_corner_hole_along_z(
+    #         name="block",
+    #         lowX=xCenter+rcost-lxy/2, highX=xCenter+rcost+lxy/2,
+    #         lowY=yCenter+rsint-lxy/2, highY=yCenter+rsint+lxy/2,
+    #         lowZ=0, highZ=1,
+    #         radius=0.25,
+    #         nx=3, ny=3, nz=4, nt=3,
+    #         isHoleCylinder=True,
+    #         isAddAllBC=True,
+    #         edgeFaceOrientation=theta-45
+    #     )
+
     return(nMesh)
 
 
@@ -321,20 +370,20 @@ def createCubeWithCornerHole():
 for funcMeshGen in [
     createCube,
     createCubeWithCornerHole,
-    createCubeWithHoleCylz,
-    createCubeWithHoleSqr,
-    createWedge,
-    createHexagonPrism,
-    createHexagonPrismFine,
-    createHexagonPrismWithHoleCylz,
-    createHexagonPrismWithHoleHex,
-    createCylinderZ,
-    createRingZ,
-    createRingSectorZ,
-    createTriangularChannel,
-    createSphere,
-    # createHollowHalfSphere,
-    createHalfSphere,
-    createSphere1D
+    # createCubeWithHoleCylz,
+    # createCubeWithHoleSqr,
+    # createWedge,
+    # createHexagonPrism,
+    # createHexagonPrismFine,
+    # createHexagonPrismWithHoleCylz,
+    # createHexagonPrismWithHoleHex,
+    # createCylinderZ,
+    # createRingZ,
+    # createRingSectorZ,
+    # createTriangularChannel,
+    # createSphere,
+    # # createHollowHalfSphere,
+    # createHalfSphere,
+    # createSphere1D
 ]:
     createDummyCase(nMesh=funcMeshGen())
