@@ -80,6 +80,8 @@ n_complete_yaml = n_total_yaml - n_incomplete_yaml
 
 progress_fraction = n_complete_yaml/n_total_yaml*100
 
+print(f"Number of `.yaml` files completed: {n_complete_yaml}/{n_total_yaml} ({progress_fraction:.1f} %)")
+
 progress_text = f"""
 # YAML Documentation Progress
 
