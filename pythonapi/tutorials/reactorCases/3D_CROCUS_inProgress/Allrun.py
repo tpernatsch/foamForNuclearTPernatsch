@@ -31,21 +31,21 @@ def thermalHydraulicMesh(region):
     #---------------------------------------------------------------------------
     # Core
 
-    coreCenter = crocus.createCube("core", -coreRadius/6, -coreRadius/6, 0, coreRadius/6, coreRadius/6, coreHeight, 3, 3, nzCore)
+    coreCenter = crocus.create_cube("core", -coreRadius/6, -coreRadius/6, 0, coreRadius/6, coreRadius/6, coreHeight, 3, 3, nzCore)
 
-    coreCenterLeft = crocus.extrudeLeft([coreCenter], "core", coreRadius/3, nx=coreCenter.nx)
-    coreCenterRight = crocus.extrudeRight([coreCenter], "core", coreRadius/3, nx=coreCenter.nx)
+    coreCenterLeft = crocus.extrude_left([coreCenter], "core", coreRadius/3, nx=coreCenter.nx)
+    coreCenterRight = crocus.extrude_right([coreCenter], "core", coreRadius/3, nx=coreCenter.nx)
 
-    coreFrontLeft, coreCenterFront, coreFrontRight = crocus.extrudeFront(
+    coreFrontLeft, coreCenterFront, coreFrontRight = crocus.extrude_front(
         [coreCenterLeft, coreCenter, coreCenterRight], "core", coreRadius/3, ny=coreCenter.ny
     )
 
-    coreBackLeft, coreCenterBack, coreBackRight = crocus.extrudeBack(
+    coreBackLeft, coreCenterBack, coreBackRight = crocus.extrude_back(
         [coreCenterLeft, coreCenter, coreCenterRight], "core", coreRadius/3, ny=coreCenter.ny
     )
 
 
-    coreFront = crocus.addFront(coreCenterFront, "coreFront", [
+    coreFront = crocus.add_front(coreCenterFront, "coreFront", [
         mesh.Point(-coreRadius*np.sin(opening), -coreRadius*np.cos(opening), 0),
         mesh.Point(+coreRadius*np.sin(opening), -coreRadius*np.cos(opening), 0),
         mesh.Point(-coreRadius*np.sin(opening), -coreRadius*np.cos(opening), coreHeight),
@@ -58,7 +58,7 @@ def thermalHydraulicMesh(region):
     ffn.PointBottomRight0 = mesh.Point(coreRadius/sqrt2, -coreRadius/sqrt2, 0)
     ffn.PointBottomRightH = mesh.Point(coreRadius/sqrt2, -coreRadius/sqrt2, coreHeight)
 
-    coreFront1 = crocus.addRight(coreFront, "coreFront", [
+    coreFront1 = crocus.add_right(coreFront, "coreFront", [
         ffn.PointBottomRight0,
         coreFrontRight.points[1],
         ffn.PointBottomRightH,
@@ -71,7 +71,7 @@ def thermalHydraulicMesh(region):
     ffn.PointBottomLeft0 = mesh.Point(-coreRadius/sqrt2, -coreRadius/sqrt2, 0)
     ffn.PointBottomLeftH = mesh.Point(-coreRadius/sqrt2, -coreRadius/sqrt2, coreHeight)
 
-    coreFront2 = crocus.addLeft(coreFront, "coreFront", [
+    coreFront2 = crocus.add_left(coreFront, "coreFront", [
         ffn.PointBottomLeft0,
         coreFrontLeft.points[0],
         ffn.PointBottomLeftH,
@@ -81,7 +81,7 @@ def thermalHydraulicMesh(region):
     coreFront2.addEdge("arc", 0, 1, x=-coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
     coreFront2.addEdge("arc", 4, 5, x=-coreRadius*np.sin(2*opening), y=-coreRadius*np.cos(2*opening))
 
-    coreRight = crocus.addRight(coreCenterRight, "coreRight", [
+    coreRight = crocus.add_right(coreCenterRight, "coreRight", [
         mesh.Point(+coreRadius*np.cos(opening), -coreRadius*np.sin(opening), 0),
         mesh.Point(+coreRadius*np.cos(opening), +coreRadius*np.sin(opening), 0),
         mesh.Point(+coreRadius*np.cos(opening), -coreRadius*np.sin(opening), coreHeight),
@@ -94,7 +94,7 @@ def thermalHydraulicMesh(region):
     ffn.PointTopRight0 = mesh.Point(coreRadius/sqrt2, coreRadius/sqrt2, 0)
     ffn.PointTopRightH = mesh.Point(coreRadius/sqrt2, coreRadius/sqrt2, coreHeight)
 
-    coreRight1 = crocus.addBack(coreRight, "coreRight", [
+    coreRight1 = crocus.add_back(coreRight, "coreRight", [
         ffn.PointTopRight0,
         coreBackRight.points[2],
         ffn.PointTopRightH,
@@ -104,7 +104,7 @@ def thermalHydraulicMesh(region):
     coreRight1.addEdge("arc", 1, 2, x=coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
     coreRight1.addEdge("arc", 5, 6, x=coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
 
-    coreRight2 = crocus.addFront(coreRight, "coreRight", [
+    coreRight2 = crocus.add_front(coreRight, "coreRight", [
         coreFrontRight.points[1],
         ffn.PointBottomRight0,
         coreFrontRight.points[5],
@@ -114,7 +114,7 @@ def thermalHydraulicMesh(region):
     coreRight2.addEdge("arc", 1, 2, x=coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
     coreRight2.addEdge("arc", 5, 6, x=coreRadius*np.cos(2*opening), y=-coreRadius*np.sin(2*opening))
 
-    coreLeft = crocus.addLeft(coreCenterLeft, "coreLeft", [
+    coreLeft = crocus.add_left(coreCenterLeft, "coreLeft", [
         mesh.Point(-coreRadius*np.cos(opening), -coreRadius*np.sin(opening), 0),
         mesh.Point(-coreRadius*np.cos(opening), +coreRadius*np.sin(opening), 0),
         mesh.Point(-coreRadius*np.cos(opening), -coreRadius*np.sin(opening), coreHeight),
@@ -124,7 +124,7 @@ def thermalHydraulicMesh(region):
     coreLeft.addEdge("arc", 3, 0, x=-coreRadius, y=0)
     coreLeft.addEdge("arc", 7, 4, x=-coreRadius, y=0)
 
-    coreLeft1 = crocus.addFront(coreLeft, "coreLeft", [
+    coreLeft1 = crocus.add_front(coreLeft, "coreLeft", [
         ffn.PointBottomLeft0,
         coreFrontLeft.points[0],
         ffn.PointBottomLeftH,
@@ -137,7 +137,7 @@ def thermalHydraulicMesh(region):
     ffn.PointTopLeft0 = mesh.Point(-coreRadius/sqrt2, coreRadius/sqrt2, 0)
     ffn.PointTopLeftH = mesh.Point(-coreRadius/sqrt2, coreRadius/sqrt2, coreHeight)
 
-    coreLeft2 = crocus.addBack(coreLeft, "coreLeft", [
+    coreLeft2 = crocus.add_back(coreLeft, "coreLeft", [
         coreBackLeft.points[3],
         ffn.PointTopLeft0,
         coreBackLeft.points[7],
@@ -147,7 +147,7 @@ def thermalHydraulicMesh(region):
     coreLeft2.addEdge("arc", 3, 0, x=-coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
     coreLeft2.addEdge("arc", 7, 4, x=-coreRadius*np.cos(2*opening), y=coreRadius*np.sin(2*opening))
 
-    coreBack = crocus.addBack(coreCenterBack, "coreBack", [
+    coreBack = crocus.add_back(coreCenterBack, "coreBack", [
         mesh.Point(+coreRadius*np.sin(opening), +coreRadius*np.cos(opening), 0),
         mesh.Point(-coreRadius*np.sin(opening), +coreRadius*np.cos(opening), 0),
         mesh.Point(+coreRadius*np.sin(opening), +coreRadius*np.cos(opening), coreHeight),
@@ -157,7 +157,7 @@ def thermalHydraulicMesh(region):
     coreBack.addEdge("arc", 2, 3, x=0, y=coreRadius)
     coreBack.addEdge("arc", 6, 7, x=0, y=coreRadius)
 
-    coreBack1 = crocus.addLeft(coreBack, "coreBack", [
+    coreBack1 = crocus.add_left(coreBack, "coreBack", [
         coreBackLeft.points[3],
         ffn.PointTopLeft0,
         coreBackLeft.points[7],
@@ -167,7 +167,7 @@ def thermalHydraulicMesh(region):
     coreBack1.addEdge("arc", 2, 3, x=-coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
     coreBack1.addEdge("arc", 6, 7, x=-coreRadius*np.sin(2*opening), y=coreRadius*np.cos(2*opening))
 
-    coreBack2 = crocus.addRight(coreBack, "coreBack", [
+    coreBack2 = crocus.add_right(coreBack, "coreBack", [
         coreBackRight.points[2],
         ffn.PointTopRight0,
         coreBackRight.points[6],
@@ -185,7 +185,7 @@ def thermalHydraulicMesh(region):
         baseLeft, baseLeft1, baseLeft2,
         baseRight, baseRight1, baseRight2,
         baseBack, baseBack1, baseBack2
-    ) = crocus.extrudeBottom([
+    ) = crocus.extrude_bottom([
         coreCenterLeft, coreCenterBack, coreCenterRight,
         coreBackLeft, coreBackRight, coreFrontLeft, coreFrontRight,
         coreFront1, coreFront2,
@@ -197,21 +197,21 @@ def thermalHydraulicMesh(region):
     #---------------------------------------------------------------------------
     # Expansion back right
 
-    channelBackRight1 = crocus.addRight(baseRight1, "channelBackRight", [
+    channelBackRight1 = crocus.add_right(baseRight1, "channelBackRight", [
         mesh.Point(expansionRadius*np.cos(opening), expansionRadius*np.sin(opening), -coreBaseHeight),
         mesh.Point(expansionRadius/sqrt2, expansionRadius/sqrt2, -coreBaseHeight),
         mesh.Point(expansionRadius*np.cos(opening), expansionRadius*np.sin(opening), 0),
         mesh.Point(expansionRadius/sqrt2, expansionRadius/sqrt2, 0),
     ], nx=2)
 
-    expansionBaseBackRight1 = crocus.addRight(channelBackRight1, "expansionBaseBackRight", [
+    expansionBaseBackRight1 = crocus.add_right(channelBackRight1, "expansionBaseBackRight", [
         mesh.Point(vesselHalfLength, expansionRadius*np.sin(opening), -coreBaseHeight),
         mesh.Point(vesselHalfLength, vesselHalfLength, -coreBaseHeight),
         mesh.Point(vesselHalfLength, expansionRadius*np.sin(opening), 0),
         mesh.Point(vesselHalfLength, vesselHalfLength, 0),
     ], nx=3)
 
-    expansionBaseBackRight2 = crocus.addFront(expansionBaseBackRight1, "expansionBaseBackRight", [
+    expansionBaseBackRight2 = crocus.add_front(expansionBaseBackRight1, "expansionBaseBackRight", [
         mesh.Point(expansionRadius*np.cos(opening/2), expansionRadius*np.sin(opening/2), -coreBaseHeight),
         mesh.Point(vesselHalfLength, expansionRadius*np.sin(opening/2), -coreBaseHeight),
         mesh.Point(expansionRadius*np.cos(opening/2), expansionRadius*np.sin(opening/2), 0),
@@ -219,21 +219,21 @@ def thermalHydraulicMesh(region):
     ], ny=4)
 
 
-    channelBackRight2 = crocus.addBack(baseBack2, "channelBackRight", [
+    channelBackRight2 = crocus.add_back(baseBack2, "channelBackRight", [
         channelBackRight1.points[2],
         mesh.Point(expansionRadius*np.sin(opening), expansionRadius*np.cos(opening), -coreBaseHeight),
         channelBackRight1.points[6],
         mesh.Point(expansionRadius*np.sin(opening), expansionRadius*np.cos(opening), 0),
     ], ny=channelBackRight1.nx)
 
-    expansionBaseBackRight3 = crocus.addBack(channelBackRight2, "expansionBaseBackRight", [
+    expansionBaseBackRight3 = crocus.add_back(channelBackRight2, "expansionBaseBackRight", [
         expansionBaseBackRight1.points[2],
         mesh.Point(expansionRadius*np.sin(opening), vesselHalfLength, -coreBaseHeight),
         expansionBaseBackRight1.points[6],
         mesh.Point(expansionRadius*np.sin(opening), vesselHalfLength, 0)
     ], ny=expansionBaseBackRight1.nx)
 
-    expansionBaseBackRight4 = crocus.addLeft(expansionBaseBackRight3, "expansionBaseBackRight", [
+    expansionBaseBackRight4 = crocus.add_left(expansionBaseBackRight3, "expansionBaseBackRight", [
         mesh.Point(expansionRadius*np.sin(opening/2), expansionRadius*np.cos(opening/2), -coreBaseHeight),
         mesh.Point(expansionRadius*np.sin(opening/2), vesselHalfLength, -coreBaseHeight),
         mesh.Point(expansionRadius*np.sin(opening/2), expansionRadius*np.cos(opening/2), 0),
@@ -244,7 +244,7 @@ def thermalHydraulicMesh(region):
     (
         expansionBackRight1, expansionBackRight2,
         expansionBackRight3, expansionBackRight4
-    ) = crocus.extrudeTop([
+    ) = crocus.extrude_top([
         expansionBaseBackRight1, expansionBaseBackRight2,
         expansionBaseBackRight3, expansionBaseBackRight4
     ], "expansionBackRight", coreHeight, nz=nzExpansionTanks)
@@ -259,21 +259,21 @@ def thermalHydraulicMesh(region):
     # Expansion back left
 
 
-    channelBackLeft1 = crocus.addLeft(baseLeft2, "channelBackLeft", [
+    channelBackLeft1 = crocus.add_left(baseLeft2, "channelBackLeft", [
         mesh.Point(-expansionRadius*np.cos(opening), expansionRadius*np.sin(opening), -coreBaseHeight),
         mesh.Point(-expansionRadius/sqrt2, expansionRadius/sqrt2, -coreBaseHeight),
         mesh.Point(-expansionRadius*np.cos(opening), expansionRadius*np.sin(opening), 0),
         mesh.Point(-expansionRadius/sqrt2, expansionRadius/sqrt2, 0),
     ], nx=channelBackRight1.nx)
 
-    expansionBaseBackLeft1 = crocus.addLeft(channelBackLeft1, "expansionBaseBackLeft", [
+    expansionBaseBackLeft1 = crocus.add_left(channelBackLeft1, "expansionBaseBackLeft", [
         mesh.Point(-vesselHalfLength, expansionRadius*np.sin(opening), -coreBaseHeight),
         mesh.Point(-vesselHalfLength, vesselHalfLength, -coreBaseHeight),
         mesh.Point(-vesselHalfLength, expansionRadius*np.sin(opening), 0),
         mesh.Point(-vesselHalfLength, vesselHalfLength, 0),
     ], nx=expansionBaseBackRight1.nx)
 
-    expansionBaseBackLeft2 = crocus.addFront(expansionBaseBackLeft1, "expansionBaseBackLeft", [
+    expansionBaseBackLeft2 = crocus.add_front(expansionBaseBackLeft1, "expansionBaseBackLeft", [
         mesh.Point(-vesselHalfLength, expansionRadius*np.sin(opening/2), -coreBaseHeight),
         mesh.Point(-expansionRadius*np.cos(opening/2), expansionRadius*np.sin(opening/2), -coreBaseHeight),
         mesh.Point(-vesselHalfLength, expansionRadius*np.sin(opening/2), 0),
@@ -281,21 +281,21 @@ def thermalHydraulicMesh(region):
     ], ny=expansionBaseBackRight2.ny)
 
 
-    channelBackLeft2 = crocus.addBack(baseBack1, "channelBackLeft", [
+    channelBackLeft2 = crocus.add_back(baseBack1, "channelBackLeft", [
         mesh.Point(-expansionRadius*np.sin(opening), expansionRadius*np.cos(opening), -coreBaseHeight),
         channelBackLeft1.points[3],
         mesh.Point(-expansionRadius*np.sin(opening), expansionRadius*np.cos(opening), 0),
         channelBackLeft1.points[7],
     ], ny=channelBackLeft1.nx)
 
-    expansionBaseBackLeft3 = crocus.addBack(channelBackLeft2, "expansionBaseBackLeft", [
+    expansionBaseBackLeft3 = crocus.add_back(channelBackLeft2, "expansionBaseBackLeft", [
         mesh.Point(-expansionRadius*np.sin(opening), vesselHalfLength, -coreBaseHeight),
         expansionBaseBackLeft1.points[3],
         mesh.Point(-expansionRadius*np.sin(opening), vesselHalfLength, 0),
         expansionBaseBackLeft1.points[7],
     ], ny=expansionBaseBackLeft1.nx)
 
-    expansionBaseBackLeft4 = crocus.addRight(expansionBaseBackLeft3, "expansionBaseBackLeft", [
+    expansionBaseBackLeft4 = crocus.add_right(expansionBaseBackLeft3, "expansionBaseBackLeft", [
         mesh.Point(-expansionRadius*np.sin(opening/2), expansionRadius*np.cos(opening/2), -coreBaseHeight),
         mesh.Point(-expansionRadius*np.sin(opening/2), vesselHalfLength, -coreBaseHeight),
         mesh.Point(-expansionRadius*np.sin(opening/2), expansionRadius*np.cos(opening/2), 0),
@@ -307,7 +307,7 @@ def thermalHydraulicMesh(region):
     (
         expansionBackLeft1, expansionBackLeft2,
         expansionBackLeft3, expansionBackLeft4
-    ) = crocus.extrudeTop([
+    ) = crocus.extrude_top([
         expansionBaseBackLeft1, expansionBaseBackLeft2,
         expansionBaseBackLeft3, expansionBaseBackLeft4
     ], "expansionBackLeft", coreHeight, nz=expansionBackRight1.nz)
@@ -321,21 +321,21 @@ def thermalHydraulicMesh(region):
     #---------------------------------------------------------------------------
     # Expansion front left
 
-    channelFrontLeft1 = crocus.addLeft(baseLeft1, "channelFrontLeft", [
+    channelFrontLeft1 = crocus.add_left(baseLeft1, "channelFrontLeft", [
         mesh.Point(-expansionRadius/sqrt2, -expansionRadius/sqrt2, -coreBaseHeight),
         mesh.Point(-expansionRadius*np.cos(opening), -expansionRadius*np.sin(opening), -coreBaseHeight),
         mesh.Point(-expansionRadius/sqrt2, -expansionRadius/sqrt2, 0),
         mesh.Point(-expansionRadius*np.cos(opening), -expansionRadius*np.sin(opening), 0),
     ], nx=channelBackRight1.nx)
 
-    expansionBaseFrontLeft1 = crocus.addLeft(channelFrontLeft1, "expansionBaseFrontLeft", [
+    expansionBaseFrontLeft1 = crocus.add_left(channelFrontLeft1, "expansionBaseFrontLeft", [
         mesh.Point(-vesselHalfLength, -vesselHalfLength, -coreBaseHeight),
         mesh.Point(-vesselHalfLength, -expansionRadius*np.sin(opening), -coreBaseHeight),
         mesh.Point(-vesselHalfLength, -vesselHalfLength, 0),
         mesh.Point(-vesselHalfLength, -expansionRadius*np.sin(opening), 0),
     ], nx=expansionBaseBackRight1.nx)
 
-    expansionBaseFrontLeft2 = crocus.addBack(expansionBaseFrontLeft1, "expansionBaseFrontLeft", [
+    expansionBaseFrontLeft2 = crocus.add_back(expansionBaseFrontLeft1, "expansionBaseFrontLeft", [
         mesh.Point(-expansionRadius*np.cos(opening/2), -expansionRadius*np.sin(opening/2), -coreBaseHeight),
         mesh.Point(-vesselHalfLength, -expansionRadius*np.sin(opening/2), -coreBaseHeight),
         mesh.Point(-expansionRadius*np.cos(opening/2), -expansionRadius*np.sin(opening/2), 0),
@@ -343,21 +343,21 @@ def thermalHydraulicMesh(region):
     ], ny=expansionBaseBackRight2.ny)
 
 
-    channelFrontLeft2 = crocus.addFront(baseFront2, "channelFrontLeft", [
+    channelFrontLeft2 = crocus.add_front(baseFront2, "channelFrontLeft", [
         channelFrontLeft1.points[0],
         mesh.Point(-expansionRadius*np.sin(opening), -expansionRadius*np.cos(opening), -coreBaseHeight),
         channelFrontLeft1.points[4],
         mesh.Point(-expansionRadius*np.sin(opening), -expansionRadius*np.cos(opening), 0),
     ], ny=channelFrontLeft1.nx)
 
-    expansionBaseFrontLeft3 = crocus.addFront(channelFrontLeft2, "expansionBaseFrontLeft", [
+    expansionBaseFrontLeft3 = crocus.add_front(channelFrontLeft2, "expansionBaseFrontLeft", [
         expansionBaseFrontLeft1.points[0],
         mesh.Point(-expansionRadius*np.sin(opening), -vesselHalfLength, -coreBaseHeight),
         expansionBaseFrontLeft1.points[4],
         mesh.Point(-expansionRadius*np.sin(opening), -vesselHalfLength, 0)
     ], ny=expansionBaseFrontLeft1.nx)
 
-    expansionBaseFrontLeft4 = crocus.addRight(expansionBaseFrontLeft3, "expansionBaseFrontLeft", [
+    expansionBaseFrontLeft4 = crocus.add_right(expansionBaseFrontLeft3, "expansionBaseFrontLeft", [
         mesh.Point(-expansionRadius*np.sin(opening/2), -vesselHalfLength, -coreBaseHeight),
         mesh.Point(-expansionRadius*np.sin(opening/2), -expansionRadius*np.cos(opening/2), -coreBaseHeight),
         mesh.Point(-expansionRadius*np.sin(opening/2), -vesselHalfLength, 0),
@@ -368,7 +368,7 @@ def thermalHydraulicMesh(region):
     (
         expansionFrontLeft1, expansionFrontLeft2,
         expansionFrontLeft3, expansionFrontLeft4
-    ) = crocus.extrudeTop([
+    ) = crocus.extrude_top([
         expansionBaseFrontLeft1, expansionBaseFrontLeft2,
         expansionBaseFrontLeft3, expansionBaseFrontLeft4
     ], "expansionFrontLeft", coreHeight, nz=expansionBackRight1.nz)
@@ -382,21 +382,21 @@ def thermalHydraulicMesh(region):
     #---------------------------------------------------------------------------
     # Expansion front right
 
-    channelFrontRight1 = crocus.addRight(baseRight2, "channelFrontRight", [
+    channelFrontRight1 = crocus.add_right(baseRight2, "channelFrontRight", [
         mesh.Point(expansionRadius/sqrt2, -expansionRadius/sqrt2, -coreBaseHeight),
         mesh.Point(expansionRadius*np.cos(opening), -expansionRadius*np.sin(opening), -coreBaseHeight),
         mesh.Point(expansionRadius/sqrt2, -expansionRadius/sqrt2, 0),
         mesh.Point(expansionRadius*np.cos(opening), -expansionRadius*np.sin(opening), 0),
     ], nx=channelBackRight1.nx)
 
-    expansionBaseFrontRight1 = crocus.addRight(channelFrontRight1, "expansionBaseFrontRight", [
+    expansionBaseFrontRight1 = crocus.add_right(channelFrontRight1, "expansionBaseFrontRight", [
         mesh.Point(vesselHalfLength, -vesselHalfLength, -coreBaseHeight),
         mesh.Point(vesselHalfLength, -expansionRadius*np.sin(opening), -coreBaseHeight),
         mesh.Point(vesselHalfLength, -vesselHalfLength, 0),
         mesh.Point(vesselHalfLength, -expansionRadius*np.sin(opening), 0),
     ], nx=expansionBaseBackRight1.nx)
 
-    expansionBaseFrontRight2 = crocus.addBack(expansionBaseFrontRight1, "expansionBaseFrontRight", [
+    expansionBaseFrontRight2 = crocus.add_back(expansionBaseFrontRight1, "expansionBaseFrontRight", [
         mesh.Point(vesselHalfLength, -expansionRadius*np.sin(opening/2), -coreBaseHeight),
         mesh.Point(expansionRadius*np.cos(opening/2), -expansionRadius*np.sin(opening/2), -coreBaseHeight),
         mesh.Point(vesselHalfLength, -expansionRadius*np.sin(opening/2), 0),
@@ -404,21 +404,21 @@ def thermalHydraulicMesh(region):
     ], ny=expansionBaseBackRight2.ny)
 
 
-    channelFrontRight2 = crocus.addFront(baseFront1, "channelFrontRight", [
+    channelFrontRight2 = crocus.add_front(baseFront1, "channelFrontRight", [
         mesh.Point(expansionRadius*np.sin(opening), -expansionRadius*np.cos(opening), -coreBaseHeight),
         channelFrontRight1.points[1],
         mesh.Point(expansionRadius*np.sin(opening), -expansionRadius*np.cos(opening), 0),
         channelFrontRight1.points[5],
     ], ny=channelFrontRight1.nx)
 
-    expansionBaseFrontRight3 = crocus.addFront(channelFrontRight2, "expansionBaseFrontRight", [
+    expansionBaseFrontRight3 = crocus.add_front(channelFrontRight2, "expansionBaseFrontRight", [
         mesh.Point(expansionRadius*np.sin(opening), -vesselHalfLength, -coreBaseHeight),
         expansionBaseFrontRight1.points[1],
         mesh.Point(expansionRadius*np.sin(opening), -vesselHalfLength, 0),
         expansionBaseFrontRight1.points[5],
     ], ny=expansionBaseFrontRight1.nx)
 
-    expansionBaseFrontRight4 = crocus.addLeft(expansionBaseFrontRight3, "expansionBaseFrontRight", [
+    expansionBaseFrontRight4 = crocus.add_left(expansionBaseFrontRight3, "expansionBaseFrontRight", [
         mesh.Point(expansionRadius*np.sin(opening/2), -vesselHalfLength, -coreBaseHeight),
         mesh.Point(expansionRadius*np.sin(opening/2), -expansionRadius*np.cos(opening/2), -coreBaseHeight),
         mesh.Point(expansionRadius*np.sin(opening/2), -vesselHalfLength, 0),
@@ -429,7 +429,7 @@ def thermalHydraulicMesh(region):
     (
         expansionFrontRight1, expansionFrontRight2,
         expansionFrontRight3, expansionFrontRight4
-    ) = crocus.extrudeTop([
+    ) = crocus.extrude_top([
         expansionBaseFrontRight1, expansionBaseFrontRight2,
         expansionBaseFrontRight3, expansionBaseFrontRight4
     ], "expansionFrontRight", coreHeight, nz=expansionBackRight1.nz)
@@ -444,26 +444,26 @@ def thermalHydraulicMesh(region):
     # Patches
 
     wall = ffn.Face("wall", boundaryType="wall")
-    wall.addSubFace(coreFront.frontFace())
-    wall.addSubFace(coreFront1.frontFace())
-    wall.addSubFace(coreFront2.frontFace())
-    wall.addSubFace(coreRight.rightFace())
-    wall.addSubFace(coreRight1.rightFace())
-    wall.addSubFace(coreRight2.rightFace())
-    wall.addSubFace(coreBack.backFace())
-    wall.addSubFace(coreBack1.backFace())
-    wall.addSubFace(coreBack2.backFace())
-    wall.addSubFace(coreLeft.leftFace())
-    wall.addSubFace(coreLeft1.leftFace())
-    wall.addSubFace(coreLeft2.leftFace())
-    wall.addSubFace(channelBackLeft1.topFace())
-    wall.addSubFace(channelBackLeft2.topFace())
-    wall.addSubFace(channelBackRight1.topFace())
-    wall.addSubFace(channelBackRight2.topFace())
-    wall.addSubFace(channelFrontLeft1.topFace())
-    wall.addSubFace(channelFrontLeft2.topFace())
-    wall.addSubFace(channelFrontRight1.topFace())
-    wall.addSubFace(channelFrontRight2.topFace())
+    wall.add_sub_face(coreFront.frontFace())
+    wall.add_sub_face(coreFront1.frontFace())
+    wall.add_sub_face(coreFront2.frontFace())
+    wall.add_sub_face(coreRight.rightFace())
+    wall.add_sub_face(coreRight1.rightFace())
+    wall.add_sub_face(coreRight2.rightFace())
+    wall.add_sub_face(coreBack.backFace())
+    wall.add_sub_face(coreBack1.backFace())
+    wall.add_sub_face(coreBack2.backFace())
+    wall.add_sub_face(coreLeft.leftFace())
+    wall.add_sub_face(coreLeft1.leftFace())
+    wall.add_sub_face(coreLeft2.leftFace())
+    wall.add_sub_face(channelBackLeft1.topFace())
+    wall.add_sub_face(channelBackLeft2.topFace())
+    wall.add_sub_face(channelBackRight1.topFace())
+    wall.add_sub_face(channelBackRight2.topFace())
+    wall.add_sub_face(channelFrontLeft1.topFace())
+    wall.add_sub_face(channelFrontLeft2.topFace())
+    wall.add_sub_face(channelFrontRight1.topFace())
+    wall.add_sub_face(channelFrontRight2.topFace())
     for block in [
         coreCenter, coreCenterFront, coreFront,
         baseCenterLeft, baseCenterBack, baseCenterRight,
@@ -481,25 +481,25 @@ def thermalHydraulicMesh(region):
         expansionBaseFrontRight1, expansionBaseFrontRight2, expansionBaseFrontRight3, expansionBaseFrontRight4,
         expansionBaseFrontLeft1, expansionBaseFrontLeft2, expansionBaseFrontLeft3, expansionBaseFrontLeft4
     ]:
-        wall.addSubFace(block.bottomFace())
-    wall.addSubFace(baseCenterBack.frontFace())
-    wall.addSubFace(baseCenterLeft.rightFace())
-    wall.addSubFace(baseCenterRight.leftFace())
-    wall.addSubFace(baseFrontLeft.rightFace())
-    wall.addSubFace(baseFrontRight.leftFace())
-    wall.addSubFace(baseBack.backFace())
-    wall.addSubFace(baseLeft.leftFace())
-    wall.addSubFace(baseFront1.leftFace())
-    wall.addSubFace(baseFront2.rightFace())
-    wall.addSubFace(baseRight.rightFace())
-    wall.addSubFace(channelFrontLeft1.backFace())
-    wall.addSubFace(channelFrontLeft2.rightFace())
-    wall.addSubFace(channelBackLeft1.frontFace())
-    wall.addSubFace(channelBackLeft2.rightFace())
-    wall.addSubFace(channelBackRight1.frontFace())
-    wall.addSubFace(channelBackRight2.leftFace())
-    wall.addSubFace(channelFrontRight1.backFace())
-    wall.addSubFace(channelFrontRight2.leftFace())
+        wall.add_sub_face(block.bottomFace())
+    wall.add_sub_face(baseCenterBack.frontFace())
+    wall.add_sub_face(baseCenterLeft.rightFace())
+    wall.add_sub_face(baseCenterRight.leftFace())
+    wall.add_sub_face(baseFrontLeft.rightFace())
+    wall.add_sub_face(baseFrontRight.leftFace())
+    wall.add_sub_face(baseBack.backFace())
+    wall.add_sub_face(baseLeft.leftFace())
+    wall.add_sub_face(baseFront1.leftFace())
+    wall.add_sub_face(baseFront2.rightFace())
+    wall.add_sub_face(baseRight.rightFace())
+    wall.add_sub_face(channelFrontLeft1.backFace())
+    wall.add_sub_face(channelFrontLeft2.rightFace())
+    wall.add_sub_face(channelBackLeft1.frontFace())
+    wall.add_sub_face(channelBackLeft2.rightFace())
+    wall.add_sub_face(channelBackRight1.frontFace())
+    wall.add_sub_face(channelBackRight2.leftFace())
+    wall.add_sub_face(channelFrontRight1.backFace())
+    wall.add_sub_face(channelFrontRight2.leftFace())
     for block in [
         expansionBaseFrontLeft1,
         expansionBaseFrontLeft2,
@@ -520,7 +520,7 @@ def thermalHydraulicMesh(region):
         expansionBackRight2,
         expansionBackRight4,
     ]:
-        wall.addSubFace(block.leftFace())
+        wall.add_sub_face(block.leftFace())
     for block in [
         expansionBaseFrontLeft2,
         expansionBaseFrontLeft4,
@@ -541,7 +541,7 @@ def thermalHydraulicMesh(region):
         expansionBackRight1,
         expansionBackRight2,
     ]:
-        wall.addSubFace(block.rightFace())
+        wall.add_sub_face(block.rightFace())
     for block in [
         expansionBaseFrontLeft2,
         expansionBaseFrontLeft4,
@@ -562,7 +562,7 @@ def thermalHydraulicMesh(region):
         expansionBackRight3,
         expansionBackRight4,
     ]:
-        wall.addSubFace(block.backFace())
+        wall.add_sub_face(block.backFace())
     for block in [
         expansionBaseFrontLeft3,
         expansionBaseFrontLeft4,
@@ -583,62 +583,62 @@ def thermalHydraulicMesh(region):
         expansionBackRight3,
         expansionBackRight4,
     ]:
-        wall.addSubFace(block.frontFace())
+        wall.add_sub_face(block.frontFace())
 
     atmosphereCore = ffn.Face("atmosphereCore", boundaryType="patch")
-    atmosphereCore.addSubFace(coreCenter.topFace())
-    atmosphereCore.addSubFace(coreCenterLeft.topFace())
-    atmosphereCore.addSubFace(coreCenterFront.topFace())
-    atmosphereCore.addSubFace(coreCenterRight.topFace())
-    atmosphereCore.addSubFace(coreCenterBack.topFace())
-    atmosphereCore.addSubFace(coreLeft.topFace())
-    atmosphereCore.addSubFace(coreLeft1.topFace())
-    atmosphereCore.addSubFace(coreLeft2.topFace())
-    atmosphereCore.addSubFace(coreRight.topFace())
-    atmosphereCore.addSubFace(coreRight1.topFace())
-    atmosphereCore.addSubFace(coreRight2.topFace())
-    atmosphereCore.addSubFace(coreFront.topFace())
-    atmosphereCore.addSubFace(coreFront1.topFace())
-    atmosphereCore.addSubFace(coreFront2.topFace())
-    atmosphereCore.addSubFace(coreFrontLeft.topFace())
-    atmosphereCore.addSubFace(coreFrontRight.topFace())
-    atmosphereCore.addSubFace(coreBack.topFace())
-    atmosphereCore.addSubFace(coreBackLeft.topFace())
-    atmosphereCore.addSubFace(coreBackRight.topFace())
-    atmosphereCore.addSubFace(coreBack1.topFace())
-    atmosphereCore.addSubFace(coreBack2.topFace())
+    atmosphereCore.add_sub_face(coreCenter.topFace())
+    atmosphereCore.add_sub_face(coreCenterLeft.topFace())
+    atmosphereCore.add_sub_face(coreCenterFront.topFace())
+    atmosphereCore.add_sub_face(coreCenterRight.topFace())
+    atmosphereCore.add_sub_face(coreCenterBack.topFace())
+    atmosphereCore.add_sub_face(coreLeft.topFace())
+    atmosphereCore.add_sub_face(coreLeft1.topFace())
+    atmosphereCore.add_sub_face(coreLeft2.topFace())
+    atmosphereCore.add_sub_face(coreRight.topFace())
+    atmosphereCore.add_sub_face(coreRight1.topFace())
+    atmosphereCore.add_sub_face(coreRight2.topFace())
+    atmosphereCore.add_sub_face(coreFront.topFace())
+    atmosphereCore.add_sub_face(coreFront1.topFace())
+    atmosphereCore.add_sub_face(coreFront2.topFace())
+    atmosphereCore.add_sub_face(coreFrontLeft.topFace())
+    atmosphereCore.add_sub_face(coreFrontRight.topFace())
+    atmosphereCore.add_sub_face(coreBack.topFace())
+    atmosphereCore.add_sub_face(coreBackLeft.topFace())
+    atmosphereCore.add_sub_face(coreBackRight.topFace())
+    atmosphereCore.add_sub_face(coreBack1.topFace())
+    atmosphereCore.add_sub_face(coreBack2.topFace())
 
 
     atmosphereExpansionFrontRight = ffn.Face("atmosphereExpansionFrontRight", boundaryType="patch")
-    atmosphereExpansionFrontRight.addSubFace(expansionFrontRight1.topFace())
-    atmosphereExpansionFrontRight.addSubFace(expansionFrontRight2.topFace())
-    atmosphereExpansionFrontRight.addSubFace(expansionFrontRight3.topFace())
-    atmosphereExpansionFrontRight.addSubFace(expansionFrontRight4.topFace())
+    atmosphereExpansionFrontRight.add_sub_face(expansionFrontRight1.topFace())
+    atmosphereExpansionFrontRight.add_sub_face(expansionFrontRight2.topFace())
+    atmosphereExpansionFrontRight.add_sub_face(expansionFrontRight3.topFace())
+    atmosphereExpansionFrontRight.add_sub_face(expansionFrontRight4.topFace())
 
     atmosphereExpansionBackRight = ffn.Face("atmosphereExpansionBackRight", boundaryType="patch")
-    atmosphereExpansionBackRight.addSubFace(expansionBackRight1.topFace())
-    atmosphereExpansionBackRight.addSubFace(expansionBackRight2.topFace())
-    atmosphereExpansionBackRight.addSubFace(expansionBackRight3.topFace())
-    atmosphereExpansionBackRight.addSubFace(expansionBackRight4.topFace())
+    atmosphereExpansionBackRight.add_sub_face(expansionBackRight1.topFace())
+    atmosphereExpansionBackRight.add_sub_face(expansionBackRight2.topFace())
+    atmosphereExpansionBackRight.add_sub_face(expansionBackRight3.topFace())
+    atmosphereExpansionBackRight.add_sub_face(expansionBackRight4.topFace())
 
     atmosphereExpansionBackLeft = ffn.Face("atmosphereExpansionBackLeft", boundaryType="patch")
-    atmosphereExpansionBackLeft.addSubFace(expansionBackLeft1.topFace())
-    atmosphereExpansionBackLeft.addSubFace(expansionBackLeft2.topFace())
-    atmosphereExpansionBackLeft.addSubFace(expansionBackLeft3.topFace())
-    atmosphereExpansionBackLeft.addSubFace(expansionBackLeft4.topFace())
+    atmosphereExpansionBackLeft.add_sub_face(expansionBackLeft1.topFace())
+    atmosphereExpansionBackLeft.add_sub_face(expansionBackLeft2.topFace())
+    atmosphereExpansionBackLeft.add_sub_face(expansionBackLeft3.topFace())
+    atmosphereExpansionBackLeft.add_sub_face(expansionBackLeft4.topFace())
 
     atmosphereExpansionFrontLeft = ffn.Face("atmosphereExpansionFrontLeft", boundaryType="patch")
-    atmosphereExpansionFrontLeft.addSubFace(expansionFrontLeft1.topFace())
-    atmosphereExpansionFrontLeft.addSubFace(expansionFrontLeft2.topFace())
-    atmosphereExpansionFrontLeft.addSubFace(expansionFrontLeft3.topFace())
-    atmosphereExpansionFrontLeft.addSubFace(expansionFrontLeft4.topFace())
+    atmosphereExpansionFrontLeft.add_sub_face(expansionFrontLeft1.topFace())
+    atmosphereExpansionFrontLeft.add_sub_face(expansionFrontLeft2.topFace())
+    atmosphereExpansionFrontLeft.add_sub_face(expansionFrontLeft3.topFace())
+    atmosphereExpansionFrontLeft.add_sub_face(expansionFrontLeft4.topFace())
 
-    crocus.addBoundary(wall)
-    crocus.addBoundary(atmosphereCore)
-    crocus.addBoundary(atmosphereExpansionFrontRight)
-    crocus.addBoundary(atmosphereExpansionBackRight)
-    crocus.addBoundary(atmosphereExpansionBackLeft)
-    crocus.addBoundary(atmosphereExpansionFrontLeft)
+    crocus.add_boundary(wall)
+    crocus.add_boundary(atmosphereCore)
+    crocus.add_boundary(atmosphereExpansionFrontRight)
+    crocus.add_boundary(atmosphereExpansionBackRight)
+    crocus.add_boundary(atmosphereExpansionBackLeft)
+    crocus.add_boundary(atmosphereExpansionFrontLeft)
 
     return(crocus)
 

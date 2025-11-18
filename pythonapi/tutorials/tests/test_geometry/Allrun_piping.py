@@ -17,17 +17,17 @@ legLength = 1.5
 
 elbowRadius = 0.1
 
-core = thMesh.addPipe1DFromDirection(
+core = thMesh.add_pipe_1D_from_direction(
     "core",
     originPosition=ffn.Vector(0, 0, 0),
     direction=ffn.Vector(0, 0, 1),
     length=coreLength,
     equivalentHydraulicDiameter=0.1,
     n=10,
-    isAddBoundaryConditions=True
+    isAddLateralBC=True
 )
 
-hotLeg = thMesh.addPipe1DFromDirection(
+hotLeg = thMesh.add_pipe_1D_from_direction(
     "hotLeg",
     originPosition=core,
     direction=ffn.Vector(1, 0, 0),
@@ -35,10 +35,10 @@ hotLeg = thMesh.addPipe1DFromDirection(
     equivalentHydraulicDiameter=0.1,
     elbowRadius=elbowRadius,
     n=10,
-    isAddBoundaryConditions=True
+    isAddLateralBC=True
 )
 
-heatExchanger = thMesh.addPipe1DFromDirection(
+heatExchanger = thMesh.add_pipe_1D_from_direction(
     "heatExchanger",
     originPosition=hotLeg,
     direction=ffn.Vector(0, 0, -1),
@@ -46,10 +46,10 @@ heatExchanger = thMesh.addPipe1DFromDirection(
     equivalentHydraulicDiameter=0.1,
     elbowRadius=elbowRadius,
     n=10,
-    isAddBoundaryConditions=True
+    isAddLateralBC=True
 )
 
-pump = thMesh.addPipe1DFromDirection(
+pump = thMesh.add_pipe_1D_from_direction(
     "pump",
     originPosition=heatExchanger,
     direction=ffn.Vector(-1, 0, 0),
@@ -57,32 +57,32 @@ pump = thMesh.addPipe1DFromDirection(
     equivalentHydraulicDiameter=0.1,
     elbowRadius=elbowRadius,
     n=10,
-    isAddBoundaryConditions=True
+    isAddLateralBC=True
 )
 
-coldLeg = thMesh.addPipe1DFrom2Points(
+coldLeg = thMesh.add_pipe_1D_from_2points(
     "coldLeg",
     originPosition=pump,
     finalPosition=core,
     equivalentHydraulicDiameter=0.1,
     elbowRadius=elbowRadius,
     n=10,
-    isAddBoundaryConditions=True
+    isAddLateralBC=True
 )
 
 """
-# Or using addPipe1DFromDirection
-coldLeg = thMesh.addPipe1DFromDirection(
+# Or using add_pipe_1D_from_direction
+coldLeg = thMesh.add_pipe_1D_from_direction(
     "coldLeg",
     originPosition=heatExchanger,
     direction=ffn.Vector(-1, 0, 0),
     length=legLength,
     equivalentHydraulicDiameter=0.1,
     n=10,
-    isAddBoundaryConditions=True
+    isAddLateralBC=True
 )
 # And close the loop
-thMesh.connectPipes(coldLeg, core, elbowRadius=elbowRadius)
+thMesh.connect_pipes(coldLeg, core, elbowRadius=elbowRadius)
 """
 
 #==============================================================================*

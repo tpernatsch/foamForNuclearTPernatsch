@@ -17,25 +17,25 @@ import pandas as pd
 
 fluidMesh = mesh.BlockMesh(region="fluid")
 
-fluidBlock2 = fluidMesh.createCube("zone0", 0, 0, 0, 1, 0.5, 0.4, nx=200, ny=41, nz=1, gradx=5, grady=16)
-fluidBlock3 = fluidMesh.extrudeRight([fluidBlock2], "zone0", dx=2, nx=51)
-fluidBlock1 = fluidMesh.extrudeLeft([fluidBlock2], "zone0", dx=0.5, nx=81, gradx=0.2)
+fluidBlock2 = fluidMesh.create_cube("zone0", 0, 0, 0, 1, 0.5, 0.4, nx=200, ny=41, nz=1, gradx=5, grady=16)
+fluidBlock3 = fluidMesh.extrude_right([fluidBlock2], "zone0", dx=2, nx=51)
+fluidBlock1 = fluidMesh.extrude_left([fluidBlock2], "zone0", dx=0.5, nx=81, gradx=0.2)
 
 fluidInlet = ffn.Face("inlet")
-fluidInlet.addSubFace(fluidBlock1.leftFace())
+fluidInlet.add_sub_face(fluidBlock1.leftFace())
 
 fluidOutlet = ffn.Face("outlet")
-fluidOutlet.addSubFace(fluidBlock3.rightFace())
+fluidOutlet.add_sub_face(fluidBlock3.rightFace())
 
 fluidTop = ffn.Face("top", boundaryType="wall")
 for face in [fluidBlock1, fluidBlock2, fluidBlock3]:
-    fluidTop.addSubFace(face.backFace())
+    fluidTop.add_sub_face(face.backFace())
 
 fluidBottom = ffn.Face("bottom")
-fluidBottom.addSubFace(fluidBlock3.frontFace())
+fluidBottom.add_sub_face(fluidBlock3.frontFace())
 
 fluidSlip_bottom = ffn.Face("slip-bottom")
-fluidSlip_bottom.addSubFace(fluidBlock1.frontFace())
+fluidSlip_bottom.add_sub_face(fluidBlock1.frontFace())
 
 fluidInterface = ffn.Face(
     "interface",
@@ -47,25 +47,25 @@ fluidInterface = ffn.Face(
         "sampleMode": "nearestPatchFace"
     }
 )
-fluidInterface.addSubFace(fluidBlock2.frontFace())
+fluidInterface.add_sub_face(fluidBlock2.frontFace())
 
-fluidMesh.addBoundary(fluidInlet)
-fluidMesh.addBoundary(fluidOutlet)
-fluidMesh.addBoundary(fluidTop)
-fluidMesh.addBoundary(fluidBottom)
-fluidMesh.addBoundary(fluidSlip_bottom)
-fluidMesh.addBoundary(fluidInterface)
+fluidMesh.add_boundary(fluidInlet)
+fluidMesh.add_boundary(fluidOutlet)
+fluidMesh.add_boundary(fluidTop)
+fluidMesh.add_boundary(fluidBottom)
+fluidMesh.add_boundary(fluidSlip_bottom)
+fluidMesh.add_boundary(fluidInterface)
 
 
 solidMesh = mesh.BlockMesh(region="solid")
 
-solidBlock = solidMesh.createCube("solid", 0, -0.25, 0, 1, 0, 0.4, nx=200, ny=41, nz=1, gradx=5, grady=0.0625)
+solidBlock = solidMesh.create_cube("solid", 0, -0.25, 0, 1, 0, 0.4, nx=200, ny=41, nz=1, gradx=5, grady=0.0625)
 
 solidLeft = ffn.Face("left", boundaryType="wall")
-solidLeft.addSubFace(solidBlock.leftFace())
+solidLeft.add_sub_face(solidBlock.leftFace())
 
 solidRight = ffn.Face("right", boundaryType="wall")
-solidRight.addSubFace(solidBlock.rightFace())
+solidRight.add_sub_face(solidBlock.rightFace())
 
 solidTop = ffn.Face(
     "top",
@@ -77,15 +77,15 @@ solidTop = ffn.Face(
         "sampleMode": "nearestPatchFace"
     }
 )
-solidTop.addSubFace(solidBlock.backFace())
+solidTop.add_sub_face(solidBlock.backFace())
 
 solidBottom = ffn.Face("bottom", boundaryType="wall")
-solidBottom.addSubFace(solidBlock.frontFace())
+solidBottom.add_sub_face(solidBlock.frontFace())
 
-solidMesh.addBoundary(solidLeft)
-solidMesh.addBoundary(solidRight)
-solidMesh.addBoundary(solidTop)
-solidMesh.addBoundary(solidBottom)
+solidMesh.add_boundary(solidLeft)
+solidMesh.add_boundary(solidRight)
+solidMesh.add_boundary(solidTop)
+solidMesh.add_boundary(solidBottom)
 
 
 #==============================================================================*

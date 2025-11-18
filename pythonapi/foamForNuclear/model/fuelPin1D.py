@@ -58,7 +58,7 @@ class FuelPin1D(Model):
         self.mesh = BlockMesh()
 
         # Create internal meshes
-        fuel = self.mesh.createWedge(
+        fuel = self.mesh.create_wedge(
             'fuel',
             self.rInnerFuel, self.rOuterFuel,
             self.zFuelBottom, self.zFuelBottom + self.lFuel,
@@ -67,7 +67,7 @@ class FuelPin1D(Model):
             nz=self.nzFuel
         )
 
-        cladding = self.mesh.createWedge(
+        cladding = self.mesh.create_wedge(
             'cladding',
             self.rInnerClad, self.rOuterClad,
             self.zFuelBottom, self.zFuelBottom + self.lFuel,
@@ -76,26 +76,26 @@ class FuelPin1D(Model):
             nz=self.nzFuel
         )
 
-        claddingPlenum = self.mesh.extrudeTop(
+        claddingPlenum = self.mesh.extrude_top(
             [cladding], 'cladding', self.lPlenum, self.nzPlenum
         )
 
 
         # Create boundary conditions for fuel
         fuelBottom = Face("fuelBottom", boundaryType="empty")
-        fuelBottom.addSubFace(fuel.bottomFace())
+        fuelBottom.add_sub_face(fuel.bottomFace())
 
         fuelTop = Face("fuelTop", boundaryType="empty")
-        fuelTop.addSubFace(fuel.topFace())
+        fuelTop.add_sub_face(fuel.topFace())
 
         fuelFront = Face("fuelFront", boundaryType="wedge")
-        fuelFront.addSubFace(fuel.frontFace())
+        fuelFront.add_sub_face(fuel.frontFace())
 
         fuelBack = Face("fuelBack", boundaryType="wedge")
-        fuelBack.addSubFace(fuel.backFace())
+        fuelBack.add_sub_face(fuel.backFace())
 
         fuelOuter = Face("fuelOuter", boundaryType="regionCoupledOFFBEAT")
-        fuelOuter.addSubFace(fuel.rightFace())
+        fuelOuter.add_sub_face(fuel.rightFace())
         fuelOuter.extraParameters = {
             "neighbourPatch": "cladInner",
             "neighbourRegion": "region0",
@@ -103,36 +103,36 @@ class FuelPin1D(Model):
             "updateAMI": "true"
         }
 
-        self.mesh.addBoundary(fuelBottom)
-        self.mesh.addBoundary(fuelTop)
-        self.mesh.addBoundary(fuelFront)
-        self.mesh.addBoundary(fuelBack)
-        self.mesh.addBoundary(fuelOuter)
+        self.mesh.add_boundary(fuelBottom)
+        self.mesh.add_boundary(fuelTop)
+        self.mesh.add_boundary(fuelFront)
+        self.mesh.add_boundary(fuelBack)
+        self.mesh.add_boundary(fuelOuter)
 
         if (self.rInnerFuel > 0):
             fuelInner = Face("fuelInner")
-            fuelInner.addSubFace(fuel.leftFace())
-            self.mesh.addBoundary(fuelInner)
+            fuelInner.add_sub_face(fuel.leftFace())
+            self.mesh.add_boundary(fuelInner)
 
 
         # Create boundary conditions for cladding
         cladBottom = Face("cladBottom", boundaryType="empty")
-        cladBottom.addSubFace(cladding.bottomFace())
+        cladBottom.add_sub_face(cladding.bottomFace())
 
         cladTop = Face("cladTop", boundaryType="empty")
-        cladTop.addSubFace(claddingPlenum.topFace())
+        cladTop.add_sub_face(claddingPlenum.topFace())
 
         cladFront = Face("cladFront", boundaryType="wedge")
-        cladFront.addSubFace(cladding.frontFace())
-        cladFront.addSubFace(claddingPlenum.frontFace())
+        cladFront.add_sub_face(cladding.frontFace())
+        cladFront.add_sub_face(claddingPlenum.frontFace())
 
         cladBack = Face("cladBack", boundaryType="wedge")
-        cladBack.addSubFace(cladding.backFace())
-        cladBack.addSubFace(claddingPlenum.backFace())
+        cladBack.add_sub_face(cladding.backFace())
+        cladBack.add_sub_face(claddingPlenum.backFace())
 
         cladInner = Face("cladInner", boundaryType="regionCoupledOFFBEAT")
-        cladInner.addSubFace(cladding.leftFace())
-        cladInner.addSubFace(claddingPlenum.leftFace())
+        cladInner.add_sub_face(cladding.leftFace())
+        cladInner.add_sub_face(claddingPlenum.leftFace())
         cladInner.extraParameters = {
             "neighbourPatch": "fuelOuter",
             "neighbourRegion": "region0",
@@ -141,15 +141,15 @@ class FuelPin1D(Model):
         }
 
         cladOuter = Face("cladOuter")
-        cladOuter.addSubFace(cladding.rightFace())
-        cladOuter.addSubFace(claddingPlenum.rightFace())
+        cladOuter.add_sub_face(cladding.rightFace())
+        cladOuter.add_sub_face(claddingPlenum.rightFace())
 
-        self.mesh.addBoundary(cladBottom)
-        self.mesh.addBoundary(cladTop)
-        self.mesh.addBoundary(cladFront)
-        self.mesh.addBoundary(cladBack)
-        self.mesh.addBoundary(cladInner)
-        self.mesh.addBoundary(cladOuter)
+        self.mesh.add_boundary(cladBottom)
+        self.mesh.add_boundary(cladTop)
+        self.mesh.add_boundary(cladFront)
+        self.mesh.add_boundary(cladBack)
+        self.mesh.add_boundary(cladInner)
+        self.mesh.add_boundary(cladOuter)
 
 
     def create_time_folder(self):

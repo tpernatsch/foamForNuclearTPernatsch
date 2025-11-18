@@ -207,6 +207,11 @@ class Vector:
         self.y = -self.y
         self.z = -self.z
 
+    def translate(self, dx: float=0, dy: float=0, dz: float=0) -> None:
+        self.x += dx
+        self.y += dy
+        self.z += dz
+
     def rotateX(self, theta: float=0) -> None:
         py = self.y
         self.y =  py * np.cos(theta) - self.z * np.sin(theta)

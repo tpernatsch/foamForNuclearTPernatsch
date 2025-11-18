@@ -4,43 +4,43 @@ import foamForNuclear.mesh as mesh
 
 nMesh = mesh.BlockMesh(region='neutroMesh')
 
-nMesh.createHalfSphere(
+nMesh.create_half_sphere(
     "center",
     radius=1,
     nCenter=4, nBorder=4,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
-nMesh.createHollowHalfSphere(
+nMesh.create_hollow_half_sphere(
     "ringSphere1",
     innerRadius=1, outerRadius=2,
     nr=2, nt=4,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
-nMesh.createHollowHalfSphere(
+nMesh.create_hollow_half_sphere(
     "ringSphere2",
     innerRadius=2, outerRadius=3,
     nr=1, nt=4,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
-nMesh.createCylinderAlongZ(
+nMesh.create_cylinder_along_z(
     name="core",
     radius=1,
     lowZ=0, highZ=1,
     nx=4, ny=4, nz=4,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
-nMesh.createRingAlongZ(
+nMesh.create_ring_along_z(
     name="ring",
     innerRadius=2,
     outerRadius=3,
     lowZ=0, highZ=1,
     nr=1, nt=4, nz=3,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
 
-nMesh.addMergePatchPairs()
-nMesh.mergePatchesWithName(name='top', includeFacename=['Top_'])
-nMesh.mergePatchesWithName(name='wall', includeFacename=['Wall'])
+nMesh.add_merge_patch_pairs()
+nMesh.merge_patches_with_name(name='top', includeFacename=['Top_'])
+nMesh.merge_patches_with_name(name='wall', includeFacename=['Wall'])
 
 solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 

@@ -21,26 +21,26 @@ side = 0.1
 lCore = 1.197
 lRefl = 0.5
 
-reflBot = nMesh.createCube('reflector', 0, 0, -lCore/2-lRefl, side, side, -lCore/2, 1, 1, 150)
-core = nMesh.extrudeTop([reflBot], 'core', lCore, 151)
-reflTop = nMesh.extrudeTop([core], 'reflector', lRefl, 150)
+reflBot = nMesh.create_cube('reflector', 0, 0, -lCore/2-lRefl, side, side, -lCore/2, 1, 1, 150)
+core = nMesh.extrude_top(reflBot, 'core', lCore, 151)
+reflTop = nMesh.extrude_top(core, 'reflector', lRefl, 150)
 
 walls = ffn.Face("walls", boundaryType="wall")
 for zone in [core, reflTop, reflBot]:
-    walls.addSubFace(zone.frontFace())
-    walls.addSubFace(zone.backFace())
-    walls.addSubFace(zone.leftFace())
-    walls.addSubFace(zone.rightFace())
+    walls.add_sub_face(zone.frontFace())
+    walls.add_sub_face(zone.backFace())
+    walls.add_sub_face(zone.leftFace())
+    walls.add_sub_face(zone.rightFace())
 
 top = ffn.Face("top")
-top.addSubFace(reflTop.topFace())
+top.add_sub_face(reflTop.topFace())
 
 bottom = ffn.Face("bottom")
-bottom.addSubFace(reflBot.bottomFace())
+bottom.add_sub_face(reflBot.bottomFace())
 
-nMesh.addBoundary(walls)
-nMesh.addBoundary(top)
-nMesh.addBoundary(bottom)
+nMesh.add_boundary(walls)
+nMesh.add_boundary(top)
+nMesh.add_boundary(bottom)
 
 
 #==============================================================================*

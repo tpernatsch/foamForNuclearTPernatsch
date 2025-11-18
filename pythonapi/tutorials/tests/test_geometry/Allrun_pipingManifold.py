@@ -21,15 +21,15 @@ theta = 30 * np.pi/180
 elbowRadius = 0.5
 equivalentHydraulicDiameter = 0.5
 
-core = thMesh.createCylinderAlongZ(
+core = thMesh.create_cylinder_along_z(
     name='core',
     radius=coreRadius,
     lowZ=0, highZ=coreLength,
     nx=3, ny=3, nz=10,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
 
-topSections = thMesh.createPipeCylindricalManifoldAlongZ(
+topSections = thMesh.create_pipe_cylindrical_manifold_along_z(
     'manifold',
     nEntries=2,
     innerRadius=coreRadius/2,
@@ -41,17 +41,17 @@ topSections = thMesh.createPipeCylindricalManifoldAlongZ(
 
 manifoldInlet = ffn.Face("manifoldInlet")
 for section in topSections:
-    manifoldInlet.addSubFace(section.bottomFace())
-thMesh.addBoundary(manifoldInlet)
+    manifoldInlet.add_sub_face(section.bottomFace())
+thMesh.add_boundary(manifoldInlet)
 
-thMesh.mergePatchPairsByName("coreTop_1", manifoldInlet.name)
+thMesh.merge_patch_pairs_by_name("coreTop_1", manifoldInlet.name)
 
 
 manifoldPipes = topSections[::2]
 
-hotLeg1 = thMesh.extrudeNormal(manifoldPipes[0], 'front', 'hotLeg1', 1, 4)
+hotLeg1 = thMesh.extrude_normal(manifoldPipes[0], 'front', 'hotLeg1', 1, 4)
 
-hotLeg3 = thMesh.addPipe1DFromDirection(
+hotLeg3 = thMesh.add_pipe_1D_from_direction(
     "hotLeg3",
     originPosition=ffn.Vector(4, -1, coreLength+np.sqrt(np.pi)*equivalentHydraulicDiameter/2),
     direction=ffn.Vector(0, -1, 0),
@@ -59,26 +59,26 @@ hotLeg3 = thMesh.addPipe1DFromDirection(
     equivalentHydraulicDiameter=equivalentHydraulicDiameter,
     elbowRadius=elbowRadius,
     n=10,
-    isAddBoundaryConditions=True
+    isAddLateralBC=True
 )
 
-hotLeg2 = thMesh.addPipe1DFrom2Points(
+hotLeg2 = thMesh.add_pipe_1D_from_2points(
     "hotLeg2",
     originPosition=hotLeg1,
     finalPosition=hotLeg3,
     equivalentHydraulicDiameter=equivalentHydraulicDiameter,
     elbowRadius=elbowRadius,
     n=4,
-    isAddBoundaryConditions=True,
+    isAddLateralBC=True,
     originPositionOutletFaceName='front'
 )
 
-thMesh.mergePatchesWithName(name="walls", includeFacename=["coreWall", "coreTop"], patchType="wall")
-thMesh.mergePatchesWithName(name="coreInlet", includeFacename=["coreBottom"])
+thMesh.merge_patches_with_name(name="walls", includeFacename=["coreWall", "coreTop"], patchType="wall")
+thMesh.merge_patches_with_name(name="coreInlet", includeFacename=["coreBottom"])
 
 hotLegOutlet = ffn.Face("hotLegOutlet")
-hotLegOutlet.addSubFace(hotLeg3.topFace())
-thMesh.addBoundary(hotLegOutlet)
+hotLegOutlet.add_sub_face(hotLeg3.topFace())
+thMesh.add_boundary(hotLegOutlet)
 
 # thMesh.emptyBoundaryCondition.boundaryType = 'patch'
 

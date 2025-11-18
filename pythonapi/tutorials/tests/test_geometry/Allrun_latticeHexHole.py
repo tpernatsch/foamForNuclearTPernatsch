@@ -7,13 +7,13 @@ nMesh = mesh.BlockMesh(region='neutroMesh')
 
 pitch = 0.01
 
-# nMesh.createHexagonPrismWithHoleAlongZ(
+# nMesh.create_hexagon_prism_with_hole_along_z(
 #     "hexHole",
 #     zmin=0, zmax=0.01,
 #     pitch=pitch,
 #     radius=0.003,
 #     nr=4, nt=4, nz=2,
-#     isAddBoundaryConditions=True
+#     isAddAllBC=True
 # )
 
 lattice = """0 0 0 C E E C
@@ -26,15 +26,15 @@ lattice = """0 0 0 C E E C
 latticeNX = len(lattice.split("\n"))
 latticeNY = latticeNX
 
-nMesh.latticePlacement(
-    funcElementGenerator=lambda name, x, y: nMesh.createHexagonPrismWithHoleAlongZ(
+nMesh.lattice_placement(
+    funcElementGenerator=lambda name, x, y: nMesh.create_hexagon_prism_with_hole_along_z(
         "hexHole",
         zmin=0, zmax=0.01,
         pitch=pitch,
         radius=0.003,
         x=x, y=y,
         nr=4, nt=4, nz=2,
-        isAddBoundaryConditions=True
+        isAddAllBC=True
     ),
     lattice=lattice,
     latticeType='hexagon',
@@ -43,15 +43,15 @@ nMesh.latticePlacement(
     ny=latticeNY,
     elementsToPlace='F'
 )
-nMesh.latticePlacement(
-    funcElementGenerator=lambda name, x, y: nMesh.createHexagonPrismWithHoleAlongZ(
+nMesh.lattice_placement(
+    funcElementGenerator=lambda name, x, y: nMesh.create_hexagon_prism_with_hole_along_z(
         "hexHole",
         zmin=0, zmax=0.01,
         pitch=pitch,
         radius=0.001,
         x=x, y=y,
         nr=7, nt=4, nz=2,
-        isAddBoundaryConditions=True
+        isAddAllBC=True
     ),
     lattice=lattice,
     latticeType='hexagon',
@@ -69,8 +69,8 @@ def angle(x, y):
     quantized = round(theta / (np.pi / 3)) * (np.pi / 3)
     return quantized
 
-nMesh.latticePlacement(
-    funcElementGenerator=lambda name, x, y: nMesh.createEdgeHexagonPrismAlongZ(
+nMesh.lattice_placement(
+    funcElementGenerator=lambda name, x, y: nMesh.create_edge_hexagon_prism_along_z(
         "hexEdge",
         zmin=0, zmax=0.01,
         pitch=pitch,
@@ -78,7 +78,7 @@ nMesh.latticePlacement(
         edgeFaceOrientation=angle(x, y),
         x=x, y=y,
         nr=3, nt=4, nz=2,
-        isAddBoundaryConditions=True
+        isAddAllBC=True
     ),
     lattice=lattice,
     latticeType='hexagon',
@@ -88,8 +88,8 @@ nMesh.latticePlacement(
     elementsToPlace='E'
 )
 
-nMesh.latticePlacement(
-    funcElementGenerator=lambda name, x, y: nMesh.createCornerHexagonPrismAlongZ(
+nMesh.lattice_placement(
+    funcElementGenerator=lambda name, x, y: nMesh.create_corner_hexagon_prism_along_z(
         "hexCorner",
         zmin=0, zmax=0.01,
         pitch=pitch,
@@ -97,7 +97,7 @@ nMesh.latticePlacement(
         edgeFaceOrientation=np.arctan2(y, x)-np.pi/6,
         x=x, y=y,
         nr=3, nt=4, nz=2,
-        isAddBoundaryConditions=True
+        isAddAllBC=True
     ),
     lattice=lattice,
     latticeType='hexagon',
@@ -107,11 +107,11 @@ nMesh.latticePlacement(
     elementsToPlace='C'
 )
 
-nMesh.addMergePatchPairs()
-# nMesh.mergePatchesWithName(name='outerClad', includeFacename=['OuterWall'])
-nMesh.mergePatchesWithName(name='top', includeFacename=['Top'])
-nMesh.mergePatchesWithName(name='bottom', includeFacename=['Bottom'])
-nMesh.mergePatchesWithName(name='wall', includeFacename=['Wall'])
+nMesh.add_merge_patch_pairs()
+# nMesh.merge_patches_with_name(name='outerClad', includeFacename=['OuterWall'])
+nMesh.merge_patches_with_name(name='top', includeFacename=['Top'])
+nMesh.merge_patches_with_name(name='bottom', includeFacename=['Bottom'])
+nMesh.merge_patches_with_name(name='wall', includeFacename=['Wall'])
 
 solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 

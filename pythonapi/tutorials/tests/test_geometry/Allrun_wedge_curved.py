@@ -15,7 +15,7 @@ maxRadius = 3*nozzleOutletRadius
 
 nMesh = mesh.BlockMeshWedge(appertureAngle=20, region='neutroMesh', scale=0.01)
 
-block = nMesh.createWedgeConical(
+block = nMesh.create_wedge_conical(
     "block",
     innerRadiusBottom=0,
     outerRadiusBottom=nozzleInletRadius,
@@ -67,12 +67,12 @@ points = [
     # (nozzleOutletRadius, nozzleOutletCoreBotSupport),
 ]
 
-nMesh.addRightFaceEdgePolyLine(
+nMesh.add_right_face_edge_polyline(
     block=block,
     rzCoords=points
 )
-# atmos1 = nMesh.extrudeTop([block], "atmosphere", dz=bot, nz=1500)
-# atmos2 = nMesh.extrudeRight([atmos1], "atmosphere", dr=maxRadius, nr=30)
+# atmos1 = nMesh.extrude_top([block], "atmosphere", dz=bot, nz=1500)
+# atmos2 = nMesh.extrude_right([atmos1], "atmosphere", dr=maxRadius, nr=30)
 
 solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
