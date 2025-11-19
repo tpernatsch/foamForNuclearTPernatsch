@@ -37,7 +37,7 @@ options:
     type: scalar
     required: false
     default:
-    description: Product of the density and specific heat capacity in J/m3/K
+    description: Product of the density and specific heat capacity in J/m3/K if Cp and rho are not provided
   - key: powerDensity
     type: scalar
     required: true

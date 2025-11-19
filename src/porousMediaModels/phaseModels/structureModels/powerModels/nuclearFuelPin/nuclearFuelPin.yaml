@@ -1,8 +1,13 @@
 description: |-
   Model for representing a nuclear fuel pin with constant material
-  properties. Models fuel, gap, cladding and solves for the heat equation
-  with a finite differences scheme. Only radial heat diffusion is considered.
-  Derivation of the equations is provided at the end of the present file.
+  properties. Models fuel, gap, cladding and solves for the heat equation. Only
+  radial heat diffusion is considered.
+
+  The model is affecting two fields that can be used for neutronics feedback:
+
+  - The fuel average temperature ``T.fuelAvForNeutronics``
+  - The cladding average temperature ``T.cladAvForNeutronics``
+
 
   Derivation
   ----------
@@ -14,16 +19,15 @@ description: |-
     WHICH IS SIGNIFICANTLY MORE CONSERVATIVE THAN THE FINITE-DIFFERENCE ONE
     FOR THE SAME MESH SIZE. THE FINITE VOLUME DERIVATION IS NOT REPORTED AS...
 
-  I added this section in the hope that it might spare quite some time to anyone
-  who will unfortunately have to deal with this code after me. It shows how the
-  1-D matrices in updateLocalTemperatureProfile are built.
+  This derivation shows how the 1-D matrices in ``updateLocalTemperatureProfile``
+  are built.
 
   Let us start with the heat diffusion equation in cylindrical coordinates with
   temporally constant cp, rho and spatially constant k. For simplicity,
   let us not consider a pin right now, just a regular uniform hollow cylinder:
 
   $$
-  \rho c_p \frac{dT}{dt} - div(k grad(T)) = q    \rightarrow    \rho c_p \frac{dT}{dt} - \frac{k}{r} \frac{d}{dr} r \frac{dT}{dr}  = q
+  \rho c_p \frac{dT}{dt} - \nabla(k \nabla T) = q    \rightarrow    \rho c_p \frac{dT}{dt} - \frac{k}{r} \frac{d}{dr} r \frac{dT}{dr}  = q
   $$
 
   Here is an example of a mesh with 5 nodes, represented by (o) and two "ghost"
@@ -91,7 +95,7 @@ description: |-
 
   $$
   \begin{align}
-  & \rho c_p \frac{dT}{dt} - div(k grad(T)) = q \\
+  & \rho c_p \frac{dT}{dt} - \nabla(k \nabla T) = q \\
   & \rightarrow
   -   T_{i+1} k \left( \frac{1}{dr^2}  - \frac{1}{2 r_i dr}        \right)
   +   T_i       \left( \frac{2k}{dr^2} + \frac{\rho_i c_{p,i}}{dt} \right)
@@ -116,7 +120,7 @@ description: |-
 
   $$
   \begin{align}
-  & \rho c_p \frac{dT}{dt} - div(k grad(T)) = q \\
+  & \rho c_p \frac{dT}{dt} - \nabla(k \nabla T) = q \\
   & \rightarrow
       T_{i+1} ( -A + B )
   +   T_i     ( 2A + X )
@@ -147,8 +151,8 @@ description: |-
 
   $$
   \begin{align}
-  \rho c_p \frac{dT}{dt} - div(k grad(T)) = q
-      & \rightarrow (\text{zeroGradient at} r = r_{In}) \\
+  \rho c_p \frac{dT}{dt} - \nabla(k \nabla T) = q
+      & \rightarrow (\text{zeroGradient at}\; r = r_{In}) \\
       & \rightarrow T_1 \times ( -2A ) + T_0 \times ( 2A + X ) = q_i + T_{0, old} X
   \end{align}
   $$
@@ -159,8 +163,8 @@ description: |-
   k \frac{dT}{dr} |_N = h_{Ext} (T_{Ext} - T_{N-1})
   $$
 
-  with hExt being the heat transfer coefficients of the medium after
-  rOut and TExt being the temperature of the medium. As before, we can
+  with $h_{Ext}$ being the heat transfer coefficients of the medium after
+  $r_{out}$ and $T_{Ext}$ being the temperature of the medium. As before, we can
   discretize it as:
 
   $$
@@ -169,14 +173,14 @@ description: |-
   T_N = T_{N-2} + \frac{2 dr}{k} h_{Ext} (T_{Ext} - T_{N-1})
   $$
 
-  If we substitute the expression for the ghost node T_N in equation I, we
+  If we substitute the expression for the ghost node $T_N$ in equation I, we
   obtain the BC. For convenience, let us rename $C = \frac{2 dr}{k}$
   (referred later as eq. [III]):
 
   $$
   \begin{align}
-  \rho c_p \frac{dT}{dt} - div(k grad(T)) = q
-      & \rightarrow (\text{convective at} r = r_{Out}) \\
+  \rho c_p \frac{dT}{dt} - \nabla(k \nabla T) = q
+      & \rightarrow (\text{convective at}\; r = r_{Out}) \\
       & \rightarrow
                   T_{N-1} ( 2A + h_{Ext} C (A+B) + X )
               +   T_{N-2} \times ( -2A )
@@ -193,7 +197,7 @@ description: |-
   anything as there are no terms that contain 1/r_i for the zeroGradient
   expression at $r = r_1$. Ok again, what if you want to do a proper nuclear fuel
   pin? Well, you should be able to understand what I did in the code. I
-  used a convective boundary condition at the fuel outer surface where TExt is
+  used a convective boundary condition at the fuel outer surface where $T_{Ext}$ is
   the  actual $T_{i+1}$, while the fuel $T_{i+1}$ is treated as a ghost node. Same
   for the inner side of the cladding, yet the coefficients are swapped for
   obvious reasons. For the outer cladding surface, again, it is a convective
@@ -218,7 +222,7 @@ description: |-
   $$
 
   $h_{f,j}$ is the heat
-  transfer coefficient betwee the j-th fluid and the structure, multiplied by
+  transfer coefficient between the j-th fluid and the structure, multiplied by
   the fraction of interfacial area of the structure that is in contact with the
   j-th fluid. Then, this can be re-written as:
 
@@ -235,133 +239,112 @@ description: |-
   these need to be passed by the user at a higher level (i.e., when calling the
   correct(HTSum, HSum) function in the main program).
 
-admonitions:
-  - kind: warning
-    body: |-
-      Preliminary autogenerated documentation. Validate the description, options, and usage before publishing.
-
 options:
-  - key: cladConductivity
+  - key: powerDensity
     type: scalar
     required: true
     default:
-    description: |
-  - key: cladCp
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: cladDensity
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: cladInnerRadius
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: cladK
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: cladMeshSize
-    type: int
-    required: true
-    default:
-    description: |
-  - key: cladOuterRadius
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: cladRho
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: cladRhoCp
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: cladT
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: fractionOfPowerFromNeutronics
-    type: scalar
-    required: false
-    default: '1.0'
-    description: |
-  - key: fuelConductivity
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: fuelCp
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: fuelDensity
-    type: scalar
-    required: true
-    default:
-    description: |
+    description: Initial power density value in W/m3 applied to the ``powerDensity`` field. Put to 0 if provided by the neutronics solver.
   - key: fuelInnerRadius
     type: scalar
     required: true
     default:
-    description: |
-  - key: fuelK
-    type: scalar
-    required: true
-    default:
-    description: |
-  - key: fuelMeshSize
-    type: int
-    required: true
-    default:
-    description: |
+    description: Fuel inner radius in m
   - key: fuelOuterRadius
     type: scalar
     required: true
     default:
-    description: |
+    description: Fuel outer radius in m
+  - key: cladInnerRadius
+    type: scalar
+    required: true
+    default:
+    description: Cladding inner radius in m
+  - key: cladOuterRadius
+    type: scalar
+    required: true
+    default:
+    description: Cladding outer radius in m
+  - key: fuelMeshSize
+    type: int
+    required: true
+    default:
+    description: Number of cells for the fuel sub-mesh.
+  - key: cladMeshSize
+    type: int
+    required: true
+    default:
+    description: Number of cells for the cladding sub-mesh.
+  - key: fuelCp
+    type: scalar
+    required: true
+    default:
+    description: Specific heat capacity of the fuel in J/kg/K
+  - key: cladCp
+    type: scalar
+    required: true
+    default:
+    description: Specific heat capacity of the cladding in J/kg/K
+  - key: fuelK
+    type: scalar
+    required: true
+    default:
+    description: Thermal conductivity of the fuel in W/m/K
+  - key: cladK
+    type: scalar
+    required: true
+    default:
+    description: Thermal conductivity of the cladding in W/m/K
   - key: fuelRho
     type: scalar
     required: true
     default:
-    description: |
-  - key: fuelRhoCp
+    description: Density of the fuel in kg/m3
+  - key: cladRho
     type: scalar
     required: true
     default:
-    description: |
+    description: Density of the cladding in kg/m3
+  - key: fuelRhoCp
+    type: scalar
+    required: false
+    default:
+    description: Product of the density and specific heat capacity in J/m3/K of the fuel if ``fuelCp`` and ``fuelRho`` are not provided
+  - key: cladRhoCp
+    type: scalar
+    required: false
+    default:
+    description: Product of the density and specific heat capacity in J/m3/K of the cladding if ``cladCp`` and ``cladRho`` are not provided
   - key: fuelT
     type: scalar
     required: true
     default:
-    description: |
-  - key: gapConductance
+    description: Initial fuel temperature in K
+  - key: cladT
     type: scalar
     required: true
     default:
-    description: |
+    description: Initial cladding temperature in K
+  - key: fractionOfPowerFromNeutronics
+    type: scalar
+    required: false
+    default: '1.0'
+    description: Fraction of the power coming from neutronics
   - key: gapH
     type: scalar
     required: true
     default:
-    description: |
+    description: Gap gas heat transfer coefficient
+  - key: gapHPowerDensity
+    type: table
+    required: false
+    default:
+    description: Power-dependent gap gas heat transfer coefficient. Replace ``gapH``
 
 usage:
   - comment: |-
-      Usage already present in Header (verbatim):
+      Usage from the one phase and point-kinetics tutorial:
     snippet: |-
-      // From the one phase and PK tutorial.
       powerModel
       {
           type                nuclearFuelPin;
@@ -397,26 +380,28 @@ usage:
           cladT               600;
       }
 
-      // From the FFTF tutorial.
+  - comment: |-
+      Usage from the FFTF tutorial:
+    snippet: |-
       powerModel
       {
           //- This volume fraction accounts for the pins only
           type                nuclearFuelPin;
           volumeFraction      0.5539729557;
+          fuelInnerRadius     0.0;
+          fuelOuterRadius     0.002470;
+          cladInnerRadius     0.002540;
+          cladOuterRadius     0.002921;
           fuelMeshSize        10;
           cladMeshSize        5;
-          fuelT               574.56;
-          cladT               574.56;
           cladK               20;
           fuelK               3;
           cladRho             7870;
           fuelRho             10480;
           cladCp              500;
           fuelCp              250;
-          cladOuterRadius     0.002921;
-          cladInnerRadius     0.002540;
-          fuelOuterRadius     0.002470;
-          fuelInnerRadius     0.0;
+          fuelT               574.56;
+          cladT               574.56;
 
           // Optional power-dependent heat transfer coefficient
           gapHPowerDensity    table
@@ -430,11 +415,11 @@ usage:
     snippet: |
       phaseProperties
       {
-          physicsModels
+          structureProperties
           {
-              <subModel>
+              "<zoneName>"
               {
-                  "<zoneName>"
+                  powerModel
                   {
                       type nuclearFuelPin;
                   }

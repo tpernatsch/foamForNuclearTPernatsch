@@ -201,17 +201,14 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
 
     bool foundBoundaryTemperatures
     (
-        Tfi_.typeHeaderOk<volScalarField>(true)
-    && Tfo_.typeHeaderOk<volScalarField>(true)
-    && Tci_.typeHeaderOk<volScalarField>(true)
-    && Tco_.typeHeaderOk<volScalarField>(true)
+           Tfi_.typeHeaderOk<volScalarField>(true)
+        && Tfo_.typeHeaderOk<volScalarField>(true)
+        && Tci_.typeHeaderOk<volScalarField>(true)
+        && Tco_.typeHeaderOk<volScalarField>(true)
     );
 
     typedef IOFieldField<Field, scalar> scalarFieldField;
-    bool foundTrad
-    (
-        Trad_.typeHeaderOk<scalarFieldField>(true)
-    );
+    bool foundTrad(Trad_.typeHeaderOk<scalarFieldField>(true));
 
     scalarList Tf0(0);
     scalarList Tc0(0);
@@ -241,13 +238,13 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         scalar rfo(dict.get<scalar>("fuelOuterRadius"));
         scalar rci(dict.get<scalar>("cladInnerRadius"));
         scalar rco(dict.get<scalar>("cladOuterRadius"));
-        scalar fuelFraction((pow(rfo,2)-pow(rfi,2))/(pow(rco,2)));
+        scalar fuelFraction((pow(rfo,2)-pow(rfi,2)) / (pow(rco,2)));
         label fuelMeshSize(dict.get<label>("fuelMeshSize"));
         label cladMeshSize(dict.get<label>("cladMeshSize"));
-        label meshSize(fuelMeshSize+cladMeshSize);
-        scalar drf((rfo-rfi)/(fuelMeshSize-1));
-        scalar drc((rco-rci)/(cladMeshSize-1));
-        scalar drg(rci-rfo);
+        label meshSize(fuelMeshSize + cladMeshSize);
+        scalar drf((rfo-rfi) / (fuelMeshSize-1));
+        scalar drc((rco-rci) / (cladMeshSize-1));
+        scalar drg(rci - rfo);
         scalar rhoCpf(0);
         if (dict.found("fuelRho") && dict.found("fuelCp"))
         {
@@ -459,8 +456,8 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         // equal to the starting temperatures found in the files.
         if (foundBoundaryTemperatures)
         {
-            Info<< "Found nuclearFuelPin temperatures "
-                << "reconstructing profiles " << endl;
+            Info<< "Found nuclearFuelPin temperatures reconstructing profiles"
+                << endl;
             forAll(this->cellList_, i)
             {
                 label celli(this->cellList_[i]);
@@ -497,7 +494,7 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                 {
                     Cf = 0.0;
                 }
-                Df = tfo+(0.25*q*sqr(rfo)-Cf*log(rfo))/kf;
+                Df = tfo + (0.25*q*sqr(rfo)-Cf*log(rfo))/kf;
                 Cc = (tco-tci)*kc/(log(rco/rci));
                 Dc = tci - log(rci)*Cc/kc;
 
@@ -507,8 +504,9 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                     if (j < fuelMeshSize_[regioni])
                     {
                         Trad_[celli][j] = -0.25*q*sqr(r)/kf + Df;
-                        Trad_[celli][j] +=
-                            (hollowFuel) ? Cf*log(r)/kf : 0.0;
+                        Trad_[celli][j] += (hollowFuel)
+                            ? Cf*log(r)/kf
+                            : 0.0;
                     }
                     else
                     {
@@ -519,8 +517,8 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
         }
         else // Otherwise, read from dict
         {
-            Info<< "Reading nuclearFuelPin initial temperatures from "
-                << "dictionary" << endl;
+            Info<< "Reading nuclearFuelPin initial temperatures from dictionary"
+                << endl;
 
             forAll(this->cellList_, i)
             {
@@ -529,9 +527,9 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
                 Trad_.set(celli, new Field<scalar>(meshSize_[regioni], 0));
                 forAll(Trad_[celli], subCelli)
                 {
-                    Trad_[celli][subCelli] =
-                        (subCelli < fuelMeshSize_[regioni]) ?
-                        Tf0[regioni] : Tc0[regioni];
+                    Trad_[celli][subCelli] = (subCelli < fuelMeshSize_[regioni])
+                        ? Tf0[regioni]
+                        : Tc0[regioni];
                 }
             }
         }
@@ -539,7 +537,8 @@ Foam::powerModels::nuclearFuelPin::nuclearFuelPin
     else
     {
         Info<< "Setting nuclearFuelPin initial temperatures from "
-                << Trad_.name() << endl;
+            << Trad_.name()
+            << endl;
     }
 
     // Set I/O fields and compute initial scalar max, min
@@ -659,7 +658,7 @@ void Foam::powerModels::nuclearFuelPin::updateLocalAvgGlobalMinMaxT
 {
     scalar intr(0);
     scalar intTr(0);
-    for(int j = starti; j < endi; j++)
+    for (int j = starti; j < endi; j++)
     {
         const scalar& T(Trad[j]);
         scalar rdr(r[j]*dr);
@@ -669,8 +668,8 @@ void Foam::powerModels::nuclearFuelPin::updateLocalAvgGlobalMinMaxT
         // by a factor 0.5
         if (j == starti or j == endi-1)
         {
-            intr += rdr/2.0;
-            intTr += T*rdr/2.0;
+            intr += rdr / 2.0;
+            intTr += T*rdr / 2.0;
         }
         else
         {
@@ -933,11 +932,13 @@ void Foam::powerModels::nuclearFuelPin::correct
     reduce(Tcmin_, minOp<scalar>());
 
     Info<< "T.nuclearFuelPin.fuel (avg min max) = "
-        << Tfavav << " " << Tfmin_ << " " << Tfmax_ << " K" << endl;
+        << Tfavav << " " << Tfmin_ << " " << Tfmax_ << " K"
+        << endl;
     Info<< "T.nuclearFuelPin.clad (avg min max) = "
-        << Tcavav << " " << Tcmin_ << " " << Tcmax_ << " K" << endl;
-    Info<< "Total power in nuclearFuelPin = "
-        << totalPower << " W" << endl;
+        << Tcavav << " " << Tcmin_ << " " << Tcmax_ << " K"
+        << endl;
+    Info<< "Total power in nuclearFuelPin = " << totalPower << " W"
+        << endl;
 
     // Save these to the dictionary
     this->IOdictionary::set("Tfavav", Tfavav);

@@ -135,15 +135,14 @@ usage:
     snippet: |
       phaseProperties
       {
-        physicsModels
-        {
-          <subModel>
+          structureProperties
           {
-            "<zoneName>"
-            {
-              type nuclearFuelPinTest;
-            }
+              "<zoneName>"
+              {
+                  powerModel
+                  {
+                      type nuclearFuelPinTest;
+                  }
+              }
           }
-        }
       }
-

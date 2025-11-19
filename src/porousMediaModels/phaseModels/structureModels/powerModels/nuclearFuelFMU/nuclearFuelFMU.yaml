@@ -320,11 +320,11 @@ usage:
     snippet: |
       phaseProperties
       {
-          physicsModels
+          structureProperties
           {
-              <subModel>
+              "<zoneName>"
               {
-                  "<zoneName>"
+                  powerModel
                   {
                       type nuclearFuelFMU;
                   }
