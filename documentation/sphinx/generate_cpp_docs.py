@@ -709,6 +709,7 @@ def main():
             ("fvPatchFields/thermalHydraulics", "Thermal-hydraulics", 1, True),
             ("fvPatchFields/thermoMechanics", "Thermo-mechanics", 1, True),
             ("offbeatLib/fvPatchFields", "Thermo-mechanics", 1, True),
+            ("profiles", "Profiles", 0, True),
         ]
     )
 
