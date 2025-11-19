@@ -2,10 +2,6 @@ description: |-
   Calculates the total mass flux in kg/s through a set of faceSets, faceZones
   or patches.
 
-  See also
-      Foam::functionObjects::fvMeshFunctionObject
-      Foam::functionObjects::writeFile
-
 admonitions:
   - kind: warning
     body: |-
