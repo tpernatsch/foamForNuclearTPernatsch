@@ -675,10 +675,15 @@ def main():
         class_entries=class_entries,
         sections=[
             # Key word, Section name, Section Depth, Add content
+
+            # Neutronics
             ("modules/neutronics", "Neutronics", 0, True),
+            ("crossSections/XS", "Cross-sections", 1, True),
+            # Thermal-hydraulics
             ("modules/thermalHydraulics", "Thermal-hydraulics", 0, False),
             ("modules/thermalHydraulics/onePhase", "1-phase Solvers", 1, True),
             ("modules/thermalHydraulics/twoPhase", "2-phase Solvers", 1, True),
+            ("thermophysicalProperties", "Fluid Thermophysical Properties", 1, True),
             ("porousMediaModels/phaseModels/structureModels", "Phase Models", 1, False),
             ("porousMediaModels/phaseModels/structureModels/powerModels", "Power Models", 2, True),
             ("porousMediaModels/phaseModels/structureModels/heatExchanger", "Heat Exchanger", 2, True),
@@ -697,19 +702,32 @@ def main():
             ("porousMediaModels/physicsModels/templatedModels", "Templated Models", 2, True),
             ("porousMediaModels/physicsModels/turbulenceModels", "Turbulence Models", 2, True),
             ("porousMediaModels/physicsModels/Virtual Mass Models", "Virutal Mass Models", 2, True),
+            # Offbeat lib
             ("offbeatLib", "Structural mechanics and fuel performance", 0, False),
             ("offbeatLib/physicsSubSolvers", "Physics Sub-Solvers", 1, True),
             ("offbeatLib/heatSource", "Heat Sources", 1, True),
             ("offbeatLib/fastFlux", "Fast Flux", 1, True),
             ("offbeatLib/materials/materialModel", "Materials", 1, True),
             ("offbeatLib/gapGasModel", "Gap Gas Models", 1, True),
+            # Function Objects
             ("functionObjects", "Function Objects", 0, True),
+            # Boundary conditions
             ("fvPatchFields", "Boundary Conditions", 0, False),
             ("fvPatchFields/neutronics", "Neutronics", 1, True),
             ("fvPatchFields/thermalHydraulics", "Thermal-hydraulics", 1, True),
             ("fvPatchFields/thermoMechanics", "Thermo-mechanics", 1, True),
             ("offbeatLib/fvPatchFields", "Thermo-mechanics", 1, True),
-            ("profiles", "Profiles", 0, True),
+            # Multi-physics
+            ("multiRegion", "Multi-region", 0, False),
+            ("multiRegion/loop/loopModels", "Loop Models", 1, True),
+            ("multiRegion/meshHandler", "Mesh Handler", 1, True),
+            ("multiRegion/regionSolvers", "Region Solvers", 1, True),
+            ("multiRegion/solver", "Solver", 1, True),
+            # Utils
+            ("profiles", "Utils", 0, False),
+            ("profiles", "Profiles", 1, True),
+            ("interpolationModels", "Interpolation models", 1, True),
+            ("solutionControl", "Solution control", 1, True),
         ]
     )
 
