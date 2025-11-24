@@ -114,6 +114,11 @@ python3 {script_name}
 
 """
 
+# Create 2 versions, one for the repo display and one for the online
+# documentation
+progress_text_repo = progress_text
+progress_text_doc = progress_text
+
 current_section = None
 
 for i, filepath in enumerate(files_not_completed):
@@ -123,11 +128,16 @@ for i, filepath in enumerate(files_not_completed):
     #     progress_text += f"\n\n### {file_section}\n\n"
     #     current_section = file_section
 
-    progress_text += f"{i+1}. [{filepath}](../{filepath}) \n"
+    progress_text_repo += f"{i+1}. [{filepath}](../{filepath}) \n"
+
+    progress_text_doc += f"{i+1}. [{filepath}](https://gitlab.com/foamForNuclear/foamForNuclear/-/blob/docs/{filepath}) \n"
 
 
-with open("documentation/yaml_progress.md", 'w') as f:
-    f.write(progress_text)
+# with open("documentation/yaml_progress.md", 'w') as f:
+#     f.write(progress_text_repo)
+
+with open("documentation/sphinx/cppapi/yaml_progress.md", 'w') as f:
+    f.write(progress_text_doc)
 
 
 #==============================================================================*

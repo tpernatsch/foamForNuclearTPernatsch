@@ -646,6 +646,21 @@ def generate_cppapi_index(
 
         cppapi_index += "\n\n"
 
+    # Add C++ Documentation YAML progress
+    cppapi_index += "-----------------\n"
+    cppapi_index += "C++ Documentation\n"
+    cppapi_index += "-----------------\n"
+    cppapi_index += "\n"
+    cppapi_index += ".. toctree::\n"
+    cppapi_index += "    :hidden:\n"
+    cppapi_index += "    :maxdepth: 1\n"
+    cppapi_index += "    yaml_progress\n"
+    cppapi_index += "\n"
+
+    cppapi_index += ":doc:`yaml_progress`\n"
+
+    cppapi_index += "\n\n"
+
     with open(f"{cppapi_folder}/index.rst", 'w', encoding='utf-8') as f:
         f.write(cppapi_index)
 
