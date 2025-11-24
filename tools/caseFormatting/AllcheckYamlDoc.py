@@ -60,7 +60,8 @@ for root, dirs, files in os.walk(folder):
             n_total_yaml += 1
 
             if (warning_flag in file_contents):
-                files_not_completed.append(filepath.split("foamForNuclear/")[1])
+                files_not_completed.append(filepath.split("foamForNuclear/")[-1])
+                print(f"File {filepath} not completed")
 
 
         except UnicodeDecodeError:
