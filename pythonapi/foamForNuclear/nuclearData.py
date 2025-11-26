@@ -1438,7 +1438,8 @@ class NuclearData(OpenFOAMFile):
         groupStructure = [
             zone.groupStructure
             for state in self.states
-            for zone in state.zones if zone.groupStructure is not None
+            for zone in state.zones
+            if zone.groupStructure is not None
         ]
 
         text = ""
@@ -1460,8 +1461,9 @@ class NuclearData(OpenFOAMFile):
             self.energyGroups = ng[0]
             self.precGroups = nd[0]
 
-            if (any([e != None for e in groupStructure]) != 0):
-                text += f'// Group structure : {groupStructure[0]} MeV\n'
+            if (any([e != None for e in groupStructure[0]])):
+                groupStructureStr = ', '.join([f'{e:g}' for e in groupStructure[0]])
+                text += '// Group structure : [' + groupStructureStr + '] MeV\n'
 
             text += addParameter('energyGroups', self.energyGroups, isAddExtraLine=True)
             text += addParameter('precGroups', self.precGroups, isAddExtraLine=True)
