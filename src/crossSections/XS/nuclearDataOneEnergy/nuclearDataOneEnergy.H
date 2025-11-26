@@ -45,60 +45,6 @@ Description
     number of perturbed states for any number of parameters. This class is mainly
     used by the ``XS`` object.
 
-    $$
-    \sigma_{E_g, \Omega_l}(\textbf{x})
-        = \sum_{i=1}^{N_{perturb}} w_i \phi(\|\textbf{x} - \textbf{c}_i\|)
-        + v_0
-        + \sum_{k=1}^{N_{param}} v_k x_k
-    $$
-
-    The basis function form used is linear
-
-    $$
-    \phi(\| \textbf{x} - \textbf{c}_i \|) = \| \textbf{x} - \textbf{c}_i \| \quad
-    (\phi(r) = | r |)
-    $$
-
-    The weights \f$ w_i \f$ and \f$ v_j \f$ are determined such that the function
-    interpolates \f$ N_{perturb} \f$ given points \f$ (\textbf{c}_i, \sigma_{i}) \f$
-    (for i = 1, 2, …, \f$ N_{perturb} \f$) and fulfills the \f$ N_{param} + 1 \f$
-    orthogonality conditions
-
-    $$
-    \sum_{i=1}^{N} w_{i} = 0 \quad \quad
-    \sum_{i=1}^{N} w_{i} \textbf{c}_{i} = \textbf{0}
-    $$
-
-    All together, these constraints are equivalent to the symmetric linear system of
-    equations
-
-    $$
-    \begin{bmatrix} A & B \\ B^{\textrm {T}} & 0 \end{bmatrix}
-    \begin{bmatrix} \textbf{w} \\ \textbf{v} \end{bmatrix}
-    =
-    \begin{bmatrix} \sigma \\ \textbf{0} \end{bmatrix}
-    $$
-
-    where
-
-    $$
-    A_{i,j} = \phi(|\textbf{c}_i - \textbf{c}_j|)
-    \quad \quad
-    B = \begin{bmatrix}
-        1 & 1 & \cdots & 1 \\
-        \textbf{c}_1 & \textbf{c}_2 & \cdots & \textbf{c}_N
-    \end{bmatrix}^{\textrm {T}}
-    \quad \quad
-    \sigma = \left[ \sigma_1, \sigma_2, \ldots, \sigma_N \right]^{\textrm {T}}
-    $$
-
-\vartable
-    \textbf{x}   | Parameter vector of size \f$ N_{param} \f$: \f$ \{ T_{fuel}, T_{clad}, T_{cool}, T_{struct}, \rho_{cool}, \alpha_{axial}, \alpha_{radial} \} \f$
-    \textbf{c}_i | \f$ N_{perturb} \f$ data points to interpolate, each data point is of size \f$ N_{param} \f$
-    \textbf{w}   | Weights of the RBF of size \f$ N_{perturb} \f$
-    \textbf{v}   | Polynomial weights of size \f$ N_{param} \f$
-\endvartable
-
 \mainauthor of this file (and associated .C or included .H files):
     Thomas Guilbaud <thomas.guilbaud@epfl.ch>, EPFL/Transmutex SA (Switzerland)
 

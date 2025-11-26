@@ -45,43 +45,8 @@ Description
     structure temperature (assumed equal to the structure surface temperature
     for fluid heat transfer purposes).
 
-Usage
-    \verbatim
-        powerModel
-        {
-            type                fixedPower;
-            volumetricArea      100;
-            T                   652.15;
-            Cp                  500;
-            rho                 7700;
-            powerDensity        4.5e8;
-            powerTimeProfile // Optional
-            {
-                type        table;
-                startTime   0;
-                table       table
-                (
-                    (   0   4.5e8   )
-                    ( 100   4.5e7   )
-                );
-            }
-        }
-
-        // Using FMI input
-        powerModel
-        {
-            type                fixedPower;
-            volumetricArea      100;
-            T                   652.15;
-            Cp                  500;
-            rho                 7700;
-            powerDensity        4.5e8;
-        }
-    \endverbatim
-
 SourceFiles
     fixedPower.C
-
 
 \mainauthor
     Stefan Radman (stefan.radman@epfl.ch / stefanradman92@gmail.com),

@@ -43,29 +43,6 @@ Description
     Function1 object used to represents tables. timeProfile is also able to
     input data from an FMI.
 
-    Example of time dependant source entries:
-    \verbatim
-        // Using table
-        externalReactivityTimeProfile
-        {
-            type        table;
-            startTime   100;
-            table       table
-            (
-                (   0   0)
-                (   1   0.0005767131    ) //- i.e. 57.67131 pcm, == 0.2*Beta
-            );
-        }
-
-        // Using FMI
-        externalReactivityTimeProfile
-        {
-            type            fmi;
-            nameFromFMU     gfExtReact;
-            initialValue    0.0;
-        }
-    \endverbatim
-
     Author of this file (and associated .C or included .H files):
     Thomas Guilbaud <thomas.guilbaud@epfl.ch;>, EPFL/Transmutex SA (Swizerland)
 

@@ -41,43 +41,6 @@ Class
 Description
     Describes a structure with a constant surface temperature
 
-Usage
-    \verbatim
-        powerModel
-        {
-            type            fixedTemperature;
-            volumeFraction  0.09;
-            volumetricArea  121;
-            powerDensity    1e9;
-            T               617;
-            Cp              500;
-            rho             7700;
-            temperatureTimeProfile // Optional
-            {
-                type        table;
-                startTime   0;
-                table       table
-                (
-                    (   0   617   )
-                    (  10   717   )
-                );
-            }
-        }
-
-        // Using FMI input
-        powerModel
-        {
-            type            fixedTemperature;
-            volumetricArea  450;
-            temperatureTimeProfile
-            {
-                type            fmi;
-                nameFromFMU     temperatureCoupled;
-                initialValue    850;
-            }
-        }
-    \endverbatim
-
 SourceFiles
     fixedTemperature.C
 
