@@ -1,5 +1,8 @@
 # Vynnycky Conjugate Heat Transfer (CHT) Benchmark
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/ThermalMechanics-extendedThermoMechanics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-chtLoop-orange.svg)]()
+
+
 ## Description
 
 The **Vynnycky et al. CHT benchmark** is a canonical problem for validating conjugate heat transfer solvers, based on the study:

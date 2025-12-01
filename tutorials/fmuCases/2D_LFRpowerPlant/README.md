@@ -1,5 +1,7 @@
 # 2D-wedge ALFRED model with FMU balance of plant
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-pointKinetics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]() [![badge](https://img.shields.io/badge/Multicode-FMI-red.svg)]()
+
 Author: Thomas Guilbaud, EPFL/Transmutex SA, 26/01/2023
 
 ---

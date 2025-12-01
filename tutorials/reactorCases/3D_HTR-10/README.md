@@ -1,5 +1,8 @@
 # Pebble Bed Gas-Cooled Reactor Model (HTR-10 Design)
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]()
+
+
 This tutorial provides an example of a pebble bed gas-cooled reactor, based on the HTR-10 design.
 
 

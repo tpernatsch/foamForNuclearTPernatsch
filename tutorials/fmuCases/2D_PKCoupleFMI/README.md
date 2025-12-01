@@ -1,5 +1,8 @@
 # 2D Point-Kinetics coupling with FMU
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-pointKinetics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]() [![badge](https://img.shields.io/badge/Multicode-FMI-red.svg)]()
+
+
 ## Description
 
 This case has been derived from `2D_onePhaseAndPointKineticsCoupling`. It

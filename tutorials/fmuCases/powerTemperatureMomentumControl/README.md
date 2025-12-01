@@ -1,5 +1,10 @@
 # Power-temperature-momentum controller
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Multicode-FMI-red.svg)]()
+
+
+## Description
+
 This case is a demonstration of use of the **FMU** as an external model for GeN-Foam.
 The FMU is a Modelica model that is able to receive and send information from:
 

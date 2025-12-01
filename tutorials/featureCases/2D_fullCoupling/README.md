@@ -1,5 +1,8 @@
 # Testing for physics coupling
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-diffusion-blue.svg)]() [![badge](https://img.shields.io/badge/ThermalMechanics-legacyThermoMechanics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]()
+
+
 ## Description
 
 This a very simple 2-D case that one can use to test and play around with physics coupling. It consists of a steady state based on diffusion and a transient based on point-kinetics

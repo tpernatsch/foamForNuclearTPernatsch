@@ -19,7 +19,7 @@ _FUNCTION_OBJECT_TYPES = {
 }
 _FUNCTION_OBJECT_LIBS = {
     "fieldFunctionObjects", "libfieldFunctionObjects.so", "libsampling.so",
-    'pyFMUSim'
+    'pyFMUSim', "libFunctionObjects.so",
 }
 _VOLUME_OPERATION_TYPES = {"volIntegrate"}
 _SURFACE_OPERATION_TYPES = {

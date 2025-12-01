@@ -1,5 +1,8 @@
 # 2D external source diffusion
 
+Tags: [![badge](https://img.shields.io/badge/Neutronics-diffusion-blue.svg)]()
+
+
 ## Description
 
 This tutorial tests the implementation of an external neutron source to the GeN-Foam neutronics diffusion sub-solver.

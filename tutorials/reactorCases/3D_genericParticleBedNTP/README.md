@@ -1,5 +1,8 @@
 # Particle-bed Nuclear Thermal Propulsion Reactor
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/ThermalMechanics-extendedThermoMechanics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]()
+
+
 Author:     Zach Hughes, Texas A&M University (zhughes@tamu.edu) Date: 05.5.2024
 
 ## Instructions

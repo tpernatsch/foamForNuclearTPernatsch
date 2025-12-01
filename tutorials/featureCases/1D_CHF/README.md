@@ -1,4 +1,9 @@
-# 1D CHF
+# 1D Critical Heat Flux
+
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-twoPhase-blue.svg)]()
+
+
+## Description
 
 This tutorial provides 2 examples of 1-D channels with boiling water and
 achievement of critical heat flux conditions, both in the case of imposed power

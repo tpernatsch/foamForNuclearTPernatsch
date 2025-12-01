@@ -1,4 +1,7 @@
-# KIWI-B-4E Full Core
+# KIWI-B-4E NTP Full Core
+
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-SP3-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]()
+
 
 ## Description
 

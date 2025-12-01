@@ -1,5 +1,10 @@
 # 2D Void Motion No Phase Change
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-twoPhase-blue.svg)]()
+
+
+## Description
+
 Very simple tutorial displaying a two-phase case without mass transfer between
 phases (obtained by not inserting the phaseChangeModel subdictionary in the
 phaseProperties dictionary). Please refer to the 1D_boiling tutorial for

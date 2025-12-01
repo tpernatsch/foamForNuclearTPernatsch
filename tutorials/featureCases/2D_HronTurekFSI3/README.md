@@ -1,5 +1,8 @@
 # Hron–Turek FSI3 Benchmark
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-rhoPimpleFoam-blue.svg)]() [![badge](https://img.shields.io/badge/ThermalMechanics-extendedThermoMechanics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-fsiLoop-orange.svg)]()
+
+
 ## Overview
 
 The Hron–Turek benchmark is a classical 2-D fluid–structure interaction (FSI) test consisting of laminar incompressible flow in a channel past a rigid circular cylinder with an elastic rectangular beam attached to the downstream side of the cylinder.

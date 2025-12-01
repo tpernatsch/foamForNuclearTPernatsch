@@ -1,5 +1,10 @@
 # Godiva sphere using discrete ordinate SN
 
+Tags: [![badge](https://img.shields.io/badge/Neutronics-SN-blue.svg)]()
+
+
+## Description
+
 This is a purely neutronics eigenvalue case displaying how to use the discrete ordinate (SN) solver of GeN-Foam. It simulates the Godiva experiment, constituted by a small super-prompt-critical sphere of enriched Uranium.
 
 The SN solver is selected in the [`constant/neutroRegion/neutronicProperties`](constant/neutroRegion/neutronicProperties) dictionary. The file [`constant/neutroRegion/quadratureSet`](constant/neutroRegion/quadratureSet) contains a simple quadrature set with 4 directions per octant. A more complex (and more computationally requiring) quadrature set with 16 directions per octant can be found in [`constant/neutroRegion/quadratureSet16`](constant/neutroRegion/quadratureSet16). A simpler one, with 1 direction per octant, can be found in [`constant/neutroRegion/quadratureSet1`](constant/neutroRegion/quadratureSet1).

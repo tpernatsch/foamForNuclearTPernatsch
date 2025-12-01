@@ -1,5 +1,8 @@
 # 3D gFHR Pebble Bed Reactor
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]()
+
+
 Tutorial mainly prepared based on work of Yves Robert and Ludovic Jantzen at UC Berkeley. For further details see: Robert, Y., et al., 2023. "IMPACT OF THERMAL COUPLING ON A PEBBLE BED REACTOR EQUILIBRIUM FROM HYPER-FIDELITY DEPLETION", Proceedings of the 2023 30th International Conference on Nuclear Engineering, ICONE30 May 21-26, 2023, Kyoto, Japan.
 
 

@@ -1,4 +1,7 @@
-# NTP KIWI-B-4E Fuel Assembly
+# KIWI-B-4E NTP Fuel Assembly
+
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-diffusion-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]()
+
 
 Author: Thomas Guilbaud, EPFL ([thomas.guilbaud@epfl.ch](mailto:thomas.guilbaud@epfl.ch))
 

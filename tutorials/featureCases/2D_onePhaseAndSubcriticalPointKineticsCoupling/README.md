@@ -1,5 +1,7 @@
 # Subcritical Point-Kinetics Solver
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-pointKinetics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]()
+
 Author: 2022/03/28, Thomas Guilbaud, EPFL/Transmutex SA
 
 ---

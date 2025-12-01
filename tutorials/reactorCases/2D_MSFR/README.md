@@ -1,5 +1,10 @@
 # 2D Molten Salt Fast Reactor
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-diffusion-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-picardLoop-orange.svg)]()
+
+
+## Description
+
 2D_MSFR is a 2-D r-z model of a Molten Salt Fast Reactor. It solves for neutronics and thermal-hydraulics.
 
 The `Allrun` bash script can be used to run the tutorial. The `Allclean` bash script can be used to clean it up. The script will first run a steady-state case with fluid-dynamics only. Starting from the results of the simulation, a second steady-state is launched solving for neutronics and energy equations. Finally, a simple transient calculation is run. No reactivity is inserted in the transient and the power will simply stay constant for 10 seconds.

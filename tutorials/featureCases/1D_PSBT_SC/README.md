@@ -1,5 +1,7 @@
 # 1D PSBT SC
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-twoPhase-blue.svg)]()
+
 The OECD/NRC PWR PSBT benchmark was organized based on the NUPEC database. It is a well-known benchmark for code validation.
 
 
@@ -17,16 +19,16 @@ This section presents 3 exercises of *Pressurised Water Reactor (PWR) Subchannel
 
 Phase II Exercise 1 is in the water boiling condition, which aims at calculating the liquid temperature at the specific position.
 
-In this exercise, we use similar boundary conditions (defined in `0/fluidRegion` folder), the same model (defined in `constant/fluidRegion` folder), and the same solution strategy (defined in `system` folder). 
+In this exercise, we use similar boundary conditions (defined in `0/fluidRegion` folder), the same model (defined in `constant/fluidRegion` folder), and the same solution strategy (defined in `system` folder).
 
 This exercise used a challenging power gradient in the radial direction. The model aimed at calculating the liquid temperature at the axial height of 4.775 m to compare with experimental values.
 
 
 ### Exercise 2 04-6770
 
-Phase II Exercise 2 is in the steady-state DNB condition. In these cases, the power level increases gradually to the critical heat flux condition. 
+Phase II Exercise 2 is in the steady-state DNB condition. In these cases, the power level increases gradually to the critical heat flux condition.
 
-In this exercise, we use similar boundary conditions (defined in `0/fluidRegion` folder), the same model (defined in `constant/fluidRegion` folder), and the same solution strategy (defined in `system` folder). 
+In this exercise, we use similar boundary conditions (defined in `0/fluidRegion` folder), the same model (defined in `constant/fluidRegion` folder), and the same solution strategy (defined in `system` folder).
 
 This exercise used the distribution both in axial and radial directions. So we added a powerDensity.fixedPower file in `0/fluidRegion` folder to represent the initial axial power distribution. Then we defined the power increase ratio against the initial value in each time position (See the file in constant/fluidRegion/phaseProperties - powerTimeProfile block).
 
@@ -39,7 +41,7 @@ We can get the results of DNB power and DNB axial position in each case and comp
 
 Phase II Exercise 3 is in transient DNB condition. In these cases, the boundary condition is changing over time. Each case also gradually reaches the CHF condition through the change of boundary condition.
 
-In this exercise, we use the different boundary conditions (defined in `0/fluidRegion` folder), the same model (defined in `constant/fluidRegion` folder), and the same solution strategy (defined in `system` folder). 
+In this exercise, we use the different boundary conditions (defined in `0/fluidRegion` folder), the same model (defined in `constant/fluidRegion` folder), and the same solution strategy (defined in `system` folder).
 
 This exercise used the distribution both in axial and radial directions. So we added a powerDensity.fixedPower file in `0/fluidRegion` folder to represent the initial axial power distribution. Then we defined the power increase ratio against the initial value in each time position (See the file in `constant/fluidRegion/phaseProperties` - powerTimeProfile block).
 

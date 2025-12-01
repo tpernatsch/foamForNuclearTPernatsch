@@ -1,5 +1,10 @@
 # 1D MSR Point-Kinetics
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-pointKinetics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]()
+
+
+## Description
+
 This tutorial displays how to use the point kinetics module of GeN-Foam for
 MSRs. It is a simple 1-D case with core, hot leg, pump, heat exchanger and
 cold leg. The geometry is one dimensional and salt recirculation is simulated

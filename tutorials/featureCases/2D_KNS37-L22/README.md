@@ -1,5 +1,10 @@
 # 2D KNS37-L22
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-twoPhase-blue.svg)]()
+
+
+## Description
+
 This test-case is representative of the test L22 sodium boiling transient that
 was performed at the KNS-37 facility at Karlsruhe in the 1980s. It involves a
 single mock-up assembly with 37 electrically heated pins undergoing a ULOF,

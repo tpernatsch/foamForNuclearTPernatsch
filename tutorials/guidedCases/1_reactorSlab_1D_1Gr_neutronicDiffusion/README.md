@@ -1,5 +1,8 @@
 # Neutronics Diffusion: Slab Reactor
 
+Tags: [![badge](https://img.shields.io/badge/Neutronics-diffusion-blue.svg)]()
+
+
 ## Description
 
 The tutorial is a simple demonstration of GeN-Foam neutronic solvers. We propose to solve the classical slab reactor problem using one energy group and no reflectors.

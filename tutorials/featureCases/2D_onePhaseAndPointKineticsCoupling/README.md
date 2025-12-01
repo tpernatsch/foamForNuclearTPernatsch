@@ -1,5 +1,8 @@
 # 2D 1-phase & Point-Kinetics Coupling
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-pointKinetics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-looseCoupling-orange.svg)]()
+
+
 ## Description
 
 This is a simplified test-case for the pointKinetics neutronics model.

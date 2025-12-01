@@ -30,9 +30,15 @@ Suggested packages
 Here is a list of potential open-source tool that can be used to generate meshes
 for OpenFOAM cases.
 
+
+.. raw:: html
+
+   <input type="text" class="tableFilter" placeholder="Search mesh generation...">
+
 .. list-table:: Suggested packages for mesh generation in Python
     :widths: 50 50
     :header-rows: 1
+    :class: filterable-table
 
     * - Package
       - Link
@@ -54,9 +60,15 @@ Elementary Meshes
 This section summaries all the elementary blocks that can be used to start
 meshes.
 
+.. raw:: html
+
+   <input type="text" class="tableFilter" placeholder="Search elementary mesh...">
+
+
 .. list-table:: Elementary mesh types
     :widths: 50 50
     :header-rows: 1
+    :class: filterable-table
 
     * - Code
       - Render

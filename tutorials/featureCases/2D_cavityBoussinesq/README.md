@@ -1,5 +1,7 @@
 # 2D Cavity Boussinesq
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]()
+
 ## Description
 
 This test case portrays the use of the Boussinesq feature. The Boussinesq

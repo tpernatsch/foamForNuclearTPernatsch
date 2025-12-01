@@ -1,5 +1,8 @@
 # Fast Flux Test Facility - LOFWOS 13 Test
 
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/Neutronics-pointKinetics-blue.svg)]() [![badge](https://img.shields.io/badge/Multiphysics-picardLoop-orange.svg)]()
+
+
 Author: Stefan Radman;
 Review and editing: Carlo Fiorina
 

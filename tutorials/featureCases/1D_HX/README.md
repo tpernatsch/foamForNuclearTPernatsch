@@ -1,4 +1,7 @@
-# 1D HX
+# 1D Heat Exchanger
+
+Tags: [![badge](https://img.shields.io/badge/ThermalHydraulics-onePhase-blue.svg)]() [![badge](https://img.shields.io/badge/ThermalHydraulics-twoPhase-blue.svg)]()
+
 
 ## Description
 
