@@ -1,27 +1,29 @@
 # -*- coding: utf-8 -*-
 """
-FoamForNuclear:
+foamForNuclear:
 
-    /*--------------------------------------------------------------------------*\\
+    /*--------------------------------------------------------------------------*\
     |       ______ ______ _   __    |                                            |
-    |      / ____// ____// | / /    | FoamForNuclear - Python-API                |
-    |     / /_   / /_   /  |/ /     | Version: v2506                             |
-    |    / __/  / __/  / /|  /      | Website: https://gitlab.com/foamForNuclear |
-    |   /_/    /_/    /_/ |_/       | Copyright (C) 2015 - 2025 EPFL             |
-    |                               |                                            |
+    |      / ____// ____// | / /    | foamForNuclear                             |
+    |     / /_   / /_   /  |/ /     | Website: https://gitlab.com/foamForNuclear |
+    |    / __/  / __/  / /|  /      |                                            |
+    |   /_/    /_/    /_/ |_/       |                                            |
+    |                                                                            |
+    |  Built on OpenFOAM v2506                                                   |
+    |  Copyright 2011-2016 OpenFOAM Foundation, 2017-2025 OpenCFD Ltd.           |
     \*--------------------------------------------------------------------------*/
 
 License
-    This file is part of FoamForNuclear.
+    This file is part of foamForNuclear.
 
-    FoamForNuclear is free software; you can redistribute it and/or modify it
+    foamForNuclear is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the
     Free Software Foundation; either version 2 of the License, or (at your
     option) any later version.
 
-    FoamForNuclear is distributed in the hope that it will be useful, but
-    WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-    or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    foamForNuclear is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
     for more details.
 
     This offering is not approved or endorsed by the OpenFOAM Foundation nor

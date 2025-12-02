@@ -80,7 +80,7 @@ require description or duplicated information from the ``.H`` file.
     |       ______ ______ _   __    |                                            |
     |      / ____// ____// | / /    | foamForNuclear                             |
     |     / /_   / /_   /  |/ /     | Website: https://gitlab.com/foamForNuclear |
-    |    / __/  / __/  / /|  /      | Copyright (C) 2015 - 2025 EPFL             |
+    |    / __/  / __/  / /|  /      |                                            |
     |   /_/    /_/    /_/ |_/       |                                            |
     |                                                                            |
     |  Built on OpenFOAM v2506                                                   |
@@ -89,12 +89,12 @@ require description or duplicated information from the ``.H`` file.
     License
         This file is part of foamForNuclear.
 
-        GeN-Foam is free software; you can redistribute it and/or modify it
+        foamForNuclear is free software; you can redistribute it and/or modify it
         under the terms of the GNU General Public License as published by the
         Free Software Foundation; either version 2 of the License, or (at your
         option) any later version.
 
-        GeN-Foam is distributed in the hope that it will be useful, but WITHOUT
+        foamForNuclear is distributed in the hope that it will be useful, but WITHOUT
         ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
         FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
         for more details.
