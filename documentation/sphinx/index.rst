@@ -53,3 +53,4 @@ Contents
    theoryReferences
    V_Vreferences
    contributors
+   howToContribute
