@@ -1031,16 +1031,32 @@ class NuclearDataState(OpenFOAMDict):
         return super().__repr__(depth)
 
 
-    def add_zone(self, zone: NuclearDataZone):
+    def add_zone(self, zone: NuclearDataZone) -> None:
+        """
+        Add a nuclear data zone.
+
+        Parameters
+        ----------
+        zone : NuclearDataZone
+            Nuclear data zone to be added
+        """
         check_type('zone', zone, NuclearDataZone)
         self.zones.append(zone)
 
 
-    def add_parameters(self, name: str, value: int | float | Vector):
+    def add_parameters(self, name: str, value: int | float | Vector) -> None:
         """
         Add value at which the XS has been generated (e.g Tfuel = 1000).
         Can be called multiple times for multiple parameters (e.g Tfuel = 1000,
         rhoCool = 1000).
+
+        Parameters
+        ----------
+        name : str
+            Name of the field to parametrize on.
+        value : int | float | Vector
+            Value of the parametrized field where the current data state has
+            been generated.
         """
         check_type('name', name, str)
         check_type('value', value, (int, float, Vector))
@@ -1048,6 +1064,14 @@ class NuclearDataState(OpenFOAMDict):
 
 
     def get_zone_by_name(self, zoneName: str) -> NuclearDataZone:
+        """
+        Get the nuclear data zone by name.
+
+        Parameters
+        ----------
+        zoneName : str
+            Name of the nuclear data zone.
+        """
         for zone in self.zones:
             if (zoneName == zone.name):
                 return(zone)
@@ -1231,7 +1255,8 @@ class NuclearDataState(OpenFOAMDict):
 class NuclearData(OpenFOAMFile):
     """
     Main Nuclear Data object. The nuclearData file contains the main parameter
-    settings.
+    settings of the nuclear data set. This object can be used as standalone to
+    generate inline/scripted nuclear data with Serpent or OpenMC.
 
     Parameters
     ----------
@@ -1385,9 +1410,6 @@ class NuclearData(OpenFOAMFile):
         else:
             self._xsVariables = OpenFOAMDict({})
 
-    # def add_external_file(self, srcpath: str) -> None:
-    #     self.externalFiles.append(srcpath)
-
 
     def add_variable(self, name: str, law: str) -> None:
         """
@@ -1407,11 +1429,31 @@ class NuclearData(OpenFOAMFile):
 
 
     def add_state(self, state: NuclearDataState):
+        """
+        Add a nuclear data state.
+
+        Parameters
+        ----------
+        state : NuclearDataState
+            Nuclear data state to be added
+        """
         check_type("state", state, NuclearDataState)
         self.states.append(state)
 
 
     def get_state_by_name(self, stateName: str) -> NuclearDataState:
+        """
+        Get nuclear data state by name.
+
+        Parameters
+        ----------
+        stateName : str
+            Name of the nuclear data state
+
+        Return
+        ------
+            NuclearDataState
+        """
         for state in self.states:
             if (state.name == stateName):
                 return(state)
@@ -1495,6 +1537,10 @@ class NuclearData(OpenFOAMFile):
 
     @OpenFOAMFile._write_to_file
     def export_to_openfoam(self) -> str:
+        """
+        Export the object into nuclearData file in OpenFOAM format. The file
+        will be located in ``constant/<regionName>/nuclearData``.
+        """
         text = ""
         text += self.export_for_spatial_solver_to_openfoam()
         return(text)
