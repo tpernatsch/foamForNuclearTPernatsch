@@ -92,6 +92,9 @@ See also
     Foam::functionObjects::fvMeshFunctionObject
     Foam::functionObjects::writeFile
 
+\mainauthor
+    Stefan Radman, EPFL
+
 SourceFiles
     fieldDiffExtents.C
 
