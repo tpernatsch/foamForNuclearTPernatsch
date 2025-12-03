@@ -24,7 +24,7 @@ options:
     type: word
     required: true
     default:
-    description: type name: fieldDiffExtents
+    description: type name fieldDiffExtents
   - key: writeToFile
     type: bool
     required: false
