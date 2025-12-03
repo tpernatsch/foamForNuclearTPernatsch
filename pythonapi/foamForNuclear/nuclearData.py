@@ -844,7 +844,7 @@ class NuclearDataZone(OpenFOAMDict):
             energyBins = np.arange(-0.5, len(xsToPlot)+0.5, 1)
 
         xvalues, yvalues = [], []
-        for ei, ef, xs in zip(energyBins[:-1], energyBins[1:], xsToPlot):
+        for ei, ef, xs in zip(energyBins[:-1], energyBins[1:], xsToPlot[::-1]):
             xvalues.append(ei)
             xvalues.append(ef)
             yvalues.append(xs)
