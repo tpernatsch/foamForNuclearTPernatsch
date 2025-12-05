@@ -28,17 +28,17 @@ options:
   - key: writeToFile
     type: bool
     required: false
-    default: yes
+    default: true
     description: Write extents data to file
   - key: log
     type: bool
     required: false
-    default: yes
+    default: true
     description: Write extents data to standard output
   - key: internalField
     type: bool
     required: false
-    default: yes
+    default: true
     description: Process the internal field 
   - key: threshold
     type: scalar
@@ -87,7 +87,7 @@ usage:
         fieldDiffExtents1
         {
             type        fieldDiffExtents;
-            libs        ("libFluidSolvers.so");
+            libs        ("libFunctionObjects.so");
             ...
             writeToFile yes;
             log         yes;

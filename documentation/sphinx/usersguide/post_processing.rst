@@ -71,3 +71,11 @@ applied to, for instance:
 
 Function objects can also employed at run time via the *controlDict* (see for
 instance `2D_FFTF <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict>`_).
+
+FoamForNuclear provides some additional function objects that have been found
+to be particularly useful in the nuclear field, including for example 
+:doc:`generated/functionObjects/massFlow/massFlow`, 
+:doc:`generated/functionObjects/TBulk/TBulk` and
+:doc:`generated/functionObjects/pressureDrop/pressureDrop`.
+See `here <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/src/functionObjects?ref_type=heads>`
+for a full list
