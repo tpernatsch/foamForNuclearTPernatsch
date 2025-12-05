@@ -4,7 +4,7 @@ foamForNuclear:
 
     /*--------------------------------------------------------------------------*\
     |       ______ ______ _   __    |                                            |
-    |      / ____// ____// | / /    | foamForNuclear                             |
+    |      / ____// ____// | / /    | foamForNuclear - Python API                |
     |     / /_   / /_   /  |/ /     | Website: https://gitlab.com/foamForNuclear |
     |    / __/  / __/  / /|  /      |                                            |
     |   /_/    /_/    /_/ |_/       |                                            |

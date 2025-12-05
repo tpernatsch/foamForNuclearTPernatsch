@@ -182,7 +182,6 @@ We provide below a template for this ``.yaml`` file.
         required: false
         default: 1.0
         description: <description of key1>
-
       - key: key2
         type: int
         required: false
@@ -198,6 +197,7 @@ We provide below a template for this ``.yaml`` file.
               key1  2.0;
               key2  1;
           }
+
       - comment: |
           <comment before usage2>
         snippet: |
