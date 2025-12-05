@@ -50,6 +50,8 @@ public
 
 # Python API
 pythonapi/build
+pythonapi/tutorials/fmuCases/3D_Core*
+archive
 
 # FMU installation
 thirdParty/FMU4FOAM
@@ -95,8 +97,6 @@ tutorials/**/*.baffleLess/polyMesh
 **/archive.*
 **/*.csv*
 **/*.foam
-
-pythonapi/tutorials/fmuCases/3D_*
 
 # Tools
 tools/**/build

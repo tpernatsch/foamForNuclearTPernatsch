@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "Generate Turbomachine FMU"
+
+cd modelica
+omc FMUGen.mos
+cd ..
+
+echo "Done"

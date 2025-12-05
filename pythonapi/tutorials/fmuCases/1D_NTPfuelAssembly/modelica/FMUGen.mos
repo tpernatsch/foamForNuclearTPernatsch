@@ -1,0 +1,22 @@
+/*
+Script to generate the FMU
+*/
+
+// Load the mandatory libraries
+loadModel(Modelica, ThermoPower);
+
+// Load all the files composing the model
+loadFile("./H2.mo");
+loadFile("./ControlDrumReactivity.mo");
+loadFile("./ThrustCalculator.mo");
+loadFile("./DoublingTimeCalculator.mo");
+loadFile("./DeltaVCalculator.mo");
+loadFile("./ControlSystem.mo");
+loadFile("./NTPTurbomachine.mo");
+
+// Some useful options for FMI
+setCommandLineOptions("--fmiSources=true --fmiFilter=none -d=nonewInst --fmiFlags=s");
+
+// Build the FMU
+translateModelFMU(NTPTurbomachine, version="2.0", fmuType="cs");
+buildModelFMU(NTPTurbomachine, version="2.0", fmuType="cs");

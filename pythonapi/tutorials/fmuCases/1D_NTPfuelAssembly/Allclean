@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# python3 Allclean.py
+
+rm -rf CoreFMU steadyState_2FMUs transient_2FMUs
+rm -f CoreFMU.fmu *.png *.gif *.out
