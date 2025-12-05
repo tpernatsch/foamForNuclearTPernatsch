@@ -74,8 +74,8 @@ instance `2D_FFTF <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/maste
 
 FoamForNuclear provides some additional function objects that have been found
 to be particularly useful in the nuclear field, including for example for 
-(:ref:`mass flow rates <massFlow.H>`), 
-(:ref:`pressure drops <pressureDrop.H>`)
-and (:ref:`bulk temperatures <TBulk.H>`).
+:ref:`mass flow rates <massFlow.H>`, 
+:ref:`pressure drops <pressureDrop.H>`
+and :ref:`bulk temperatures <TBulk.H>`.
 See `here <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/src/functionObjects?ref_type=heads>`_
 for a full list
