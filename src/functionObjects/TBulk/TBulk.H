@@ -42,8 +42,7 @@ Group
     grpFieldFunctionObjects
 
 Description
-    Calculates the total mass flux through a set of faceSets, faceZones or
-    patches.
+    Calculates TBulk at a faceSet, faceZone or  patch.
 
 \par Options
 
@@ -76,13 +75,14 @@ Usage
     }
     \endverbatim
 
-Note
-    For non-scalar fields, the magnitude of the field is employed and compared
-    to the threshold value.
 
 See also
     Foam::functionObjects::fvMeshFunctionObject
     Foam::functionObjects::writeFile
+
+\mainauthor
+    Stefan Radman, EPFL
+
 
 SourceFiles
     TBulk.C

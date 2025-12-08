@@ -51,17 +51,17 @@ options:
     default: (0 0 0)
     description: Field value to identify extents boundary
   - key: fields
-    type: word
+    type: wordList
     required: true
     default: 
     description: List of fields to process
   - key: maskFields
-    type: word
+    type: wordList
     required: true
     default: 
     description: List of mask fields 
   - key: patches
-    type: word
+    type: wordList
     required: false
     default: all patches
     description: List of patches to process
@@ -71,7 +71,7 @@ usage:
   - comment: |-
       A functionObject is normally specified via the ``type`` entry in the ``functionObjects`` subdictionary of the ``controlDict`` file (located in ``system/``. Here is a snippet enabling a functionObject:
     snippet: |
-      functionObjects
+      functions
       {
           <functionObject1>
           {
@@ -82,7 +82,7 @@ usage:
   - comment: |-
       This is a detailed example of use of this specific function object. 
     snippet: |-
-      functionObjects
+      functions
       {
         fieldDiffExtents1
         {

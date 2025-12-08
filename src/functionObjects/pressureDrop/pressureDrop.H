@@ -42,24 +42,7 @@ Group
     grpFieldFunctionObjects
 
 Description
-    Calculates the spatial minimum and maximum extents of a field
-
-    The extents are derived from the bound box limits after identifying the
-    locations where field values exceed the user-supplied threshold value.
-
-\par Options
-
-    \table
-        Property      | Description              | Required   | Default value
-        type          | type name: pressureDrop  | yes        |
-        writeToFile   | write extents data to file | no       | yes
-        log           | write extents data to standard output | no | yes
-        regionType    | Either cellZone or patch | yes        |
-        patches       | list of patches to process | depends on regionType |
-        cellZones     | list of cellZones to process | depends on regionType |
-    \endtable
-
-    Output data is written to the file \<timeDir\>/pressureDrop.dat
+    Calculates pressure drops between two patches of face sets
 
 Usage
     Example of function object specification:
@@ -80,13 +63,12 @@ Usage
     \endverbatim
 
 
-Note
-    For non-scalar fields, the magnitude of the field is employed and compared
-    to the threshold value.
-
 See also
     Foam::functionObjects::fvMeshFunctionObject
     Foam::functionObjects::writeFile
+
+\mainauthor
+    Stefan Radman, EPFL
 
 SourceFiles
     pressureDrop.C

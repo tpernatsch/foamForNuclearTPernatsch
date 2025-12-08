@@ -72,13 +72,12 @@ Usage
     \endverbatim
 
 
-Note
-    For non-scalar fields, the magnitude of the field is employed and compared
-    to the threshold value.
-
 See also
     Foam::functionObjects::fvMeshFunctionObject
     Foam::functionObjects::writeFile
+
+\mainauthor
+    Stefan Radman, EPFL
 
 SourceFiles
     stopIfMaxFieldDiff.C

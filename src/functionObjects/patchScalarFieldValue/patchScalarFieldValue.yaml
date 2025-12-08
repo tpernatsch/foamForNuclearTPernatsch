@@ -1,5 +1,5 @@
 description: |-
-  Writes the values of an fvPatchScalarField
+  Writes the values of a fvPatchScalarField
 
   See also
       Foam::functionObjects::fvMeshFunctionObject
@@ -16,23 +16,28 @@ options:
     required: false
     default: true
     description: write data to file 
-  - key: field
-    type: word
-    required: true
-    default:
-    description: field name 
   - key: log
     type: bool
     required: false
     default: false
     description: rite  data to standard output
+  - key: patch
+    type: word
+    required: true
+    default:
+    description: patch name 
+  - key: field
+    type: word
+    required: true
+    default:
+    description: field name 
 
 
 usage:
   - comment: |-
       A functionObject is normally specified via the ``type`` entry in the ``functionObjects`` subdictionary of the ``controlDict`` file (located in ``system/``. Here is a snippet enabling a functionObject:
     snippet: |
-      functionObjects
+      functions
       {
           <functionObject1>
           {
@@ -42,7 +47,7 @@ usage:
   - comment: |-
       This is a detailed example of use of this specific function object. 
     snippet: |-
-      functionObjects
+      functions
       {
         patchScalarFieldValue1
         {
@@ -51,6 +56,7 @@ usage:
             ...
             writeToFile   true;
             log           false;
+            patch         patchName;
             field         fieldName;
         }
       }
