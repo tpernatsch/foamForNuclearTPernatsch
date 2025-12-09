@@ -38,6 +38,9 @@ dependencies = [
     # "pyvoro",
     "tqdm",
     "requests",
+    "imageio",
+    "tqdm",
+    "tabulate"
 ]
 
 [project.optional-dependencies]

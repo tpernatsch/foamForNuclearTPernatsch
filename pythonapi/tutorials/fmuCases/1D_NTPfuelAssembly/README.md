@@ -82,17 +82,17 @@ python3 Allplot_fmi.py CoreFMU
 
 ## Results
 
-<img src="./images/fig_results_NTP_2025-10-29_CoreFMU_summaryDeltaV.png">
+<img src="./images/fig_results_NTP_2025-10-29_CoreFMU_summaryDeltaV.png" width=600>
 
 *Fig 3. ∆v and propellant consumption during a trans-lunar injection maneuver.*
 
 
-<img src="./images/fig_results_NTP_2025-10-29_CoreFMU_summaryPower.png">
+<img src="./images/fig_results_NTP_2025-10-29_CoreFMU_summaryPower.png" width=600>
 
 *Fig 4. Power, doubling time td, and control drum orientation during a trans-lunar injection maneuver.*
 
 
-<img src="./images/fig_results_NTP_2025-10-29_CoreFMU_summaryRocketPerformance.png">
+<img src="./images/fig_results_NTP_2025-10-29_CoreFMU_summaryRocketPerformance.png" width=600>
 
 *Fig 5. Nuclear reactor and engine performances during a trans-lunar injection maneuver.*
 
