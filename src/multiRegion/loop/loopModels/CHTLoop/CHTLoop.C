@@ -132,7 +132,7 @@ void Foam::solvers::CHTLoop::createSolvers(word name)
     fluidRegionName_ = CHTProperties_.get<word>("fluidRegionName");
     solidRegionName_ = CHTProperties_.get<word>("solidRegionName");
     couplingStartTime_ = CHTProperties_.getOrDefault<scalar>("couplingStartTime",0);
-    minResidual_ = multiPhysicsDict_.get<scalar>("minResidual");
+    maxResidual_ = multiPhysicsDict_.get<scalar>("maxResidual");
     maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
     useHTC_ = CHTProperties_.getOrDefault<bool>("useHTC", false);
     oneWayCoupling_ = CHTProperties_.getOrDefault<bool>("oneWayCoupling", false);
@@ -285,14 +285,14 @@ void Foam::solvers::CHTLoop::correctPhysics()
 
             ++iterN;
 
-            if (residual < minResidual_)
+            if (residual < maxResidual_)
                 Info<< nl
                     << "Multiphysics loop converged after " << iterN
                     << " iterations"
                     << nl
                     << endl;
         }
-        while (residual > minResidual_ && iterN < maxIterations_);
+        while (residual > maxResidual_ && iterN < maxIterations_);
     }
 }
 

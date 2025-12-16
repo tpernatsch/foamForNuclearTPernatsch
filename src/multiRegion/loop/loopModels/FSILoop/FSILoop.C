@@ -136,7 +136,7 @@ void Foam::solvers::FSILoop::createSolvers(word name)
     underRelaxation_ = FSIProperties_.get<scalar>("underRelaxationFactor");
     couplingStartTime_ = FSIProperties_.getOrDefault<scalar>("couplingStartTime",0);
     thermalCoupling_ = FSIProperties_.getOrDefault<bool>("thermalCoupling",false);
-    minResidual_ = multiPhysicsDict_.get<scalar>("minResidual");
+    maxResidual_ = multiPhysicsDict_.get<scalar>("maxResidual");
     maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
 
 
@@ -276,14 +276,14 @@ void Foam::solvers::FSILoop::correctPhysics()
 
         ++iterN;
 
-        if (residual < minResidual_)
+        if (residual < maxResidual_)
             Info<< nl
                 << "Multiphysics loop converged after " << iterN
                 << " iterations"
                 << nl
                 << endl;
     }
-    while (residual > minResidual_ && iterN < maxIterations_);
+    while (residual > maxResidual_ && iterN < maxIterations_);
 }
 
 
