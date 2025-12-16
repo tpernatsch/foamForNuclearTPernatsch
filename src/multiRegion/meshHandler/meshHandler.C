@@ -59,7 +59,7 @@ Foam::meshHandler::meshHandler(const Time& runTime)
         IOobject
         (
             "regionsDict",
-            runTime.time().constant(),
+            runTime.time().system(),
             runTime.db(),
             IOobject::MUST_READ,
             IOobject::NO_WRITE
@@ -613,7 +613,7 @@ void Foam::meshHandler::createCouplingFields(const Time& runTime)
         IOobject
         (
             "regionsDict",
-            runTime.time().constant(),
+            runTime.time().system(),
             runTime.db(),
             IOobject::MUST_READ,
             IOobject::NO_WRITE
@@ -743,7 +743,7 @@ void Foam::meshHandler::interpolateAndMapFields(const Time& runTime)
         IOobject
         (
             "regionsDict",
-            runTime.time().constant(),
+            runTime.time().system(),
             runTime.db(),
             IOobject::MUST_READ,
             IOobject::NO_WRITE
