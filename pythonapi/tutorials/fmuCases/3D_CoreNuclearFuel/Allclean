@@ -1,0 +1,6 @@
+#!/bin/bash
+
+python3 Allclean.py
+
+rm -rf caseGenfoam CoreFMU FuelPinFMU{0..143}
+rm -f CoreFMU.fmu FuelPinFMU.fmu

@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      functions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// This dict is the set of functions to evaluate interesting values with the 
+// -postProcess utility. Problems with running these functions while the 
+// simulation runs in parallel have been encountered. Using these functions on 
+// a reconstructed case works as excpected.
+
+functions
+{
+    minMax
+    {
+        type            fieldMinMax;
+        libs            (fieldFunctionObjects);
+        mode            magnitude;
+        fields
+        (
+            T
+            CDF         // Cumulative Damage Function
+            sigmaEq     // Von Mises
+            epsilonCreepEq
+            epsilonCreepIrrEq
+            epsilonCreepPrimEq
+            epsilonCreepThEq
+            epsilonPEq
+            DepsilonCreepEq
+            lhgr
+            Q
+            gapWidth
+        );
+        enabled         true;
+        log             true;
+        writeControl    $writeControl;
+        writeInterval   $writeInterval;
+    }
+}
+
+
+// ************************************************************************* //

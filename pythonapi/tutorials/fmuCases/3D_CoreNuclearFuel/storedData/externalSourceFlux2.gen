@@ -1,0 +1,104 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       ______          _   __           ______                               |
+|      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___     |
+|     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \    |
+|    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /    |
+|    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/     |
+|    Copyright (C) 2015 - 2022 EPFL                                           |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      defaultExternalSourceFlux;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [ 0 -3 -1 0 0 0 0 ];
+
+// internalField uniform 0;
+
+internalField   #codeStream
+{
+    code
+    #{
+        const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+        const fvMesh& mesh = refCast<const fvMesh>(d.db());
+
+        // Set field
+        scalarField sourceFluxField(mesh.nCells(), 0.0); // Default to 0
+        scalarField volume(mesh.V());
+
+        // Read file
+        std::ifstream infile("../storedData/0_ptrack.out");
+        // Set boundary values
+        const double energyMin = 0.01, energyMax = 0.2;
+        const double xMin = -0.7, xMax = 0.7;
+        const double yMin = -0.7, yMax = 0.7;
+        const double zMin = -1.0, zMax = 1.52;
+
+        Info<< "Energy range = [" << energyMin << "; " << energyMax << "] MeV"
+            << endl;
+
+        // Set temp values during reading
+        double x, y, z, dx, dy, dz, energyI, energyO, wgt, timePart;
+        double count = 0;
+
+        // Loop over the lines of the PTrack file
+        while (infile >> x >> y >> z >> dx >> dy >> dz >> energyI >> energyO >> wgt >> timePart)
+        {
+            x *= 1e-2; y *= 1e-2; z = z*1e-2 + 0.8;
+            if (xMin <= x && x <= xMax && yMin <= y && y <= yMax && zMin <= z && z <= zMax)
+            {
+                if (energyMin <= energyO && energyO < energyMax)
+                {
+                    label cellNumber = mesh.findCell(point(x, y, z));
+                    if (cellNumber >= 0)
+                    {
+                        sourceFluxField[cellNumber] += 1.0 / volume[cellNumber];
+                    }
+                }
+                count += 1.0;
+            }
+        }
+
+        // Normalise the neutron source with the proton beam current and neutron yield
+        const double intensity = 0.003366917, nu_s = 21.154, eV = 1.602e-19;
+        const double scale = nu_s * intensity / eV; // nb neutrons/s
+        Info<< "Scaling factor = " << scale << " neutrons/s" << endl;
+        forAll(sourceFluxField, sourceFluxFieldI)
+        {
+            sourceFluxField[sourceFluxFieldI] *= scale / count;
+        }
+
+        // Write the new internalField
+        sourceFluxField.writeEntry("", os);
+    #};
+
+    //! Optional:
+    codeInclude
+    #{
+        #include <fstream>
+        #include "fvCFD.H"
+        #include "meshSearch.H"
+    #};
+
+    //! Optional:
+    codeOptions
+    #{
+        -I$(LIB_SRC)/finiteVolume/lnInclude \
+        -I$(LIB_SRC)/meshTools/lnInclude
+    #};
+};
+
+boundaryField
+{
+    ".*"
+    {
+        type            fixedValue;
+        value           uniform 0;
+    }
+}
+
+// ************************************************************************* //

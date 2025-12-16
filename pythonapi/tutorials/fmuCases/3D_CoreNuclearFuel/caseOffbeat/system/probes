@@ -1,0 +1,103 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      probes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+rFuel_i     1.100e-3;
+rFuel_o     4.490e-3;
+rClad_i     4.660e-3;
+rClad_o     5.240e-3;
+
+// FOUNDATION
+points
+(
+    (0.0 0.0 1.5)
+);
+// ESI
+probeLocations
+(
+    ($rFuel_i  0.0  -1.06)
+    ($rFuel_i  0.0  -0.891)
+    ($rFuel_i  0.0  -0.722)
+    ($rFuel_i  0.0  -0.553)
+    ($rFuel_i  0.0  -0.384)
+    ($rFuel_i  0.0  -0.215)
+    ($rFuel_i  0.0  -0.046)
+    ($rFuel_i  0.0  0.123)
+    ($rFuel_i  0.0  0.292)
+    ($rFuel_i  0.0  0.461)
+    ($rFuel_i  0.0  0.63)
+
+    ($rFuel_o  0.0  -1.06)
+    ($rFuel_o  0.0  -0.891)
+    ($rFuel_o  0.0  -0.722)
+    ($rFuel_o  0.0  -0.553)
+    ($rFuel_o  0.0  -0.384)
+    ($rFuel_o  0.0  -0.215)
+    ($rFuel_o  0.0  -0.046)
+    ($rFuel_o  0.0  0.123)
+    ($rFuel_o  0.0  0.292)
+    ($rFuel_o  0.0  0.461)
+    ($rFuel_o  0.0  0.63)
+
+    ($rClad_i  0.0  -1.06)
+    ($rClad_i  0.0  -0.891)
+    ($rClad_i  0.0  -0.722)
+    ($rClad_i  0.0  -0.553)
+    ($rClad_i  0.0  -0.384)
+    ($rClad_i  0.0  -0.215)
+    ($rClad_i  0.0  -0.046)
+    ($rClad_i  0.0  0.123)
+    ($rClad_i  0.0  0.292)
+    ($rClad_i  0.0  0.461)
+    ($rClad_i  0.0  0.63)
+
+    ($rClad_o  0.0  -1.06)
+    ($rClad_o  0.0  -0.891)
+    ($rClad_o  0.0  -0.722)
+    ($rClad_o  0.0  -0.553)
+    ($rClad_o  0.0  -0.384)
+    ($rClad_o  0.0  -0.215)
+    ($rClad_o  0.0  -0.046)
+    ($rClad_o  0.0  0.123)
+    ($rClad_o  0.0  0.292)
+    ($rClad_o  0.0  0.461)
+    ($rClad_o  0.0  0.63)
+);
+
+fields
+(
+    Bu
+    T
+    CDF         // Cumulative Damage Function
+    sigma
+    sigmaEq     // Von Mises
+    epsilonCreepEq
+    epsilonCreepIrrEq
+    epsilonCreepPrimEq
+    epsilonCreepThEq
+    epsilonPEq
+    DepsilonCreepEq
+    lhgr
+    Q
+    rho
+    Cp
+    k
+    lambda
+);
+
+#includeEtc "caseDicts/postProcessing/probes/probes.cfg"
+
+// ************************************************************************* //

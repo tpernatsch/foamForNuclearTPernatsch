@@ -1,0 +1,113 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2312                                  |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    arch        "LSB;label=32;scalar=64";
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+12
+(
+    fuelBottom
+    {
+        type            empty;
+        inGroups        1(empty);
+        nFaces          30;
+        startFace       3616;
+    }
+    fuelTop
+    {
+        type            empty;
+        inGroups        1(empty);
+        nFaces          30;
+        startFace       3646;
+    }
+    fuelInner
+    {
+        type            patch;
+        nFaces          42;
+        startFace       3676;
+    }
+    fuelOuter
+    {
+        type            regionCoupledOFFBEAT;
+        nFaces          42;
+        startFace       3718;
+        neighbourPatch  cladInner;
+        neighbourRegion region0;
+        owner           true;
+        updateAMI       true;
+        faces           ( ( 1 2 6 5 ) );
+    }
+    fuelFront
+    {
+        type            wedge;
+        inGroups        1(wedge);
+        nFaces          1260;
+        startFace       3760;
+    }
+    fuelBack
+    {
+        type            wedge;
+        inGroups        1(wedge);
+        nFaces          1260;
+        startFace       5020;
+    }
+    cladBottom
+    {
+        type            empty;
+        inGroups        1(empty);
+        nFaces          10;
+        startFace       6280;
+    }
+    cladInner
+    {
+        type            regionCoupledOFFBEAT;
+        nFaces          62;
+        startFace       6290;
+        neighbourPatch  fuelOuter;
+        neighbourRegion region0;
+        owner           false;
+        updateAMI       true;
+        faces           ( ( 8 12 15 11 ) ( 16 20 23 19 ) ( 24 28 31 27 ) );
+    }
+    cladOuter
+    {
+        type            patch;
+        nFaces          62;
+        startFace       6352;
+    }
+    cladFront
+    {
+        type            wedge;
+        inGroups        1(wedge);
+        nFaces          620;
+        startFace       6414;
+    }
+    cladBack
+    {
+        type            wedge;
+        inGroups        1(wedge);
+        nFaces          620;
+        startFace       7034;
+    }
+    cladTop
+    {
+        type            empty;
+        inGroups        1(empty);
+        nFaces          10;
+        startFace       7654;
+    }
+)
+
+// ************************************************************************* //

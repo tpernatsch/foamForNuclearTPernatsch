@@ -50,7 +50,8 @@ public
 
 # Python API
 pythonapi/build
-pythonapi/tutorials/fmuCases/3D_Core*
+pythonapi/tutorials/**/CoreFMU
+pythonapi/tutorials/**/FuelPinFMU[0123456789]*
 archive
 
 # FMU installation

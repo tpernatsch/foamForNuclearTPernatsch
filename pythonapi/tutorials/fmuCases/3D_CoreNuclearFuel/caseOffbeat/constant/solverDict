@@ -1,0 +1,300 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.3.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      solverDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//- Thermal and Mechanical solver selection:
+thermalSolver           solidConduction;
+mechanicsSolver         smallStrain; // largeStrainTotLag; // largeStrainUpdLag; // smallStrain;
+neutronicsSolver        fromLatestTime; // Because fast reactor
+elementTransport        fromLatestTime;
+
+//- Material and rhelogy treatment:
+materialProperties      byZone;
+rheology                byMaterial;
+
+heatSource              fmiLhgr; // timeDependentLhgr; //
+burnup                  fromPower; // Because fast reactor
+fastFlux                timeDependentAxialProfile;
+gapGas                  FRAPCON;
+fgr                     SCIANTIX;
+sliceMapper             autoAxialSlices;
+corrosion               fromLatestTime;
+
+globalOptions
+{
+    pinDirection        (0 0 1);
+    reactorType         "LWR";
+}
+
+thermalSolverOptions
+{
+    heatFluxSummary     on;
+    calculateEnthalpy   on;
+}
+
+rheologyOptions
+{
+    thermalExpansion    on;
+    modifiedPlaneStrain off;
+    springModulus       3500;
+    coolantPressureList
+    {
+        file            "$FOAM_CASE/constant/systemPressure";
+        outOfBounds     clamp;
+    }
+    planeStress         on;
+}
+
+mechanicsSolverOptions
+{
+    forceSummary        off;
+    cylindricalStress   on;
+
+    multiMaterialCorrection
+    {
+        type                    uniform;
+        defaultWeights          0.9;
+    }
+
+    /*
+    forceSummary        off;
+    linearStrainTensor  off;
+    cylindricalStress   off;
+    RhieChowCorrection  on;
+
+    multiMaterialCorrection
+    {
+        type            uniform;
+        defaultWeights  1;
+    }
+    */
+}
+
+fgrOptions
+{
+    nFrequency  1;
+    relax       1;
+}
+
+gapGasOptions
+{
+    gapPatches          ( fuelOuter cladInner );
+    holePatches         ( fuelInner );
+    topFuelPatches      ( fuelTop );
+    bottomFuelPatches   ( fuelBottom );
+
+    gapVolumeOffset     0.0;
+    gasReserveVolume    0.0;
+    gasReserveTemperature 673.15;
+}
+
+heatSourceOptions
+{
+    QavgNameFromFMU     offbeatQavg;
+    initialQavg         0; // 230e2;
+    alpha               0.5; // relaxation factor
+
+    axialProfile
+    {
+        type                        fmiTabulated;
+        axialLocationsNameFromFMU   offbeatAxialLocations;
+        axialProfileNameFromFMU     offbeatHeatSrcAxial;
+        // initialAxialLocations // Need to be passed by input FMI to reduce potential user errors
+        // (
+        //     0 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5 0.55 0.6 0.65 0.7 0.75 0.8 0.85 0.9 0.95 1
+        // );
+        // initialData                 21{1};
+        axialInterpolationMethod    linear;
+    }
+    // #include "lhgrTimeProfile"
+
+    radialProfile
+    {
+        // type    fromBurnup;
+        type    flat;
+    }
+
+    materials ( fuel );
+}
+
+fastFluxOptions
+{ // Need a FMI input ? I think it would be cool, but useless for fast reactor
+    timePoints  ( 0  3600     1.26E+10 );
+    fastFlux    ( 2e13  2e13     2e13 );
+    timeInterpolationMethod linear;
+
+    axialProfile
+    {
+        type flat;
+        /*
+        type                        fmiTabulated;
+        axialLocationsNameFromFMU   offbeatAxialLocations;
+        axialProfileNameFromFMU     offbeatFastFluxAxial;
+        // initialAxialLocations // Need to be passed by input FMI to reduce potential user errors
+        // (
+        //     0 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5 0.55 0.6 0.65 0.7 0.75 0.8 0.85 0.9 0.95 1
+        // );
+        // initialData                 21{1};
+        axialInterpolationMethod    linear;
+        */
+    }
+
+    materials ( fuel cladding );
+}
+
+
+materials
+{
+    writeMaterialProperties         true;
+
+    fuel
+    {
+        material                UPuO2;
+        Tref                    Tref [ 0 0 0 1 0 ] 673.15; // 293;
+
+        densificationModel      UO2FRAPCON;
+        swellingModel           UO2FRAPCON;
+        relocationModel         UO2FRAPCON;
+
+        densityModel            constant;
+        heatCapacityModel       constant;
+        // YoungModulusModel       constant;
+        // PoissonRatioModel       constant;
+        // thermalExpansionModel   constant;
+        // conductivityModel       UPuO2Kato;
+        rho             rho [ 1 -3 0 0 0 ] 10662;
+        Cp              Cp [ 0 2 -2 -1 0 ] 120;
+        // E               E [ 1 -1 -2 0 0 ] 2e+11;
+        // nu              nu [ 0 0 0 0 0 ] 0.345;
+        // alpha           alpha [ 0 0 0 0 0 ] 1e-06;
+        // Tref            Tref [ 0 0 0 1 0 ] 300;
+        // oxygenMetalRatio 2;
+        // ratioNpMetal    0;
+
+        enrichment          0; // 0.05;
+        // ratioUMetal         0.78;   // to be checked
+        // ratioPuMetal        0.20;   // to be checked, From Luzzi et al. 2013, Table 2, the fuel is in 2 zones
+        // ratioAmMetal        0.02;   // to be checked
+        /*
+        isotopesU // From Luzzi et al. 2013, Table 3
+        (
+             0.003e-2 // U234
+             0.404e-2 // U235
+             0.010e-2 // U236
+            99.583e-2 // U238
+        );
+        isotopesPu // From Luzzi et al. 2013, Table 3
+        (
+             2.332e-2 // Pu238
+            56.873e-2 // Pu239
+            26.997e-2 // Pu240
+             6.105e-2 // Pu241
+             7.693e-2 // Pu242
+        );
+        isotopesAm // to be checked
+        (
+            1
+            0
+        );
+        */
+        oxygenMetalRatio    2; // -> c, hc, ym
+
+        isotopes
+        {
+            U
+            {
+                ratioOverMetal  0.78;
+                weightFractions
+                (
+                    234 0.003e-2
+                    235 0.404e-2
+                    236 0.010e-2
+                    238 99.583e-2
+                );
+            }
+            Pu
+            {
+                ratioOverMetal  0.20;
+                weightFractions
+                (
+                    238  2.332e-2
+                    239 56.873e-2
+                    240 26.997e-2
+                    241  6.105e-2
+                    242  7.693e-2
+                );
+            }
+            Am
+            {
+                ratioOverMetal  0.02;
+                weightFractions ( 241 1 243 0);
+            }
+        }
+        rGrain                      5e-05;
+        // GdContent                   0.0;
+        theoreticalDensity          10960;
+        densityFraction             0.95; // From Luzzi et al. 2013, Table 2
+        dishFraction                0.0;
+
+        resinteringDensityChange    0.3;
+        GapCold                     0.3e-3; // (2 * (rclad_i - rfuel_o)) be carefull when changing fuel dimensions
+        DiamCold                    9.0e-3;  // be carefull when changing fuel dimensions
+        recoveryFraction            0.5;
+        outerPatch                  "fuelOuter";
+
+        isotropicCracking           on;
+        nCracksMax                  12;
+
+        rheologyModel               elasticity;
+
+        // failureModel    UO2meltingMATPRO;
+        // stopIfFailed    off;
+        // failureModelOptions
+        // {
+        //     Tmelt   2000; // Maximum peak temperature design limit from Luzzi et al. 2013, Table 4
+        // }
+    }
+
+    cladding
+    {
+        material                steel1515Ti;
+        Tref                    Tref [ 0 0 0 1 0 ] 673.15; // 293;
+
+        rheologyModel           misesPlasticity; // misesPlasticCreep;
+        rheologyModelOptions
+        {
+            plasticStrainVsYieldStress table
+            (
+                (0    400e6) // From Luzzi et al. 2014 report Figure 11
+            );
+
+            // creepModel  TobbeAIM1CreepModel;
+            // relax       1.0; // help converge // 0.1;
+        }
+
+        // failureModel    combined;
+        // stopIfFailed    off;
+        // failureModelOptions
+        // {
+        //     criteria    ( cumulativeDamageFunction UO2meltingMATPRO );
+
+        //     limitCDF    0.2; // Maximum CDF from design limit Luzzi et al, 2013., Table 4
+        //     Tmelt       ${{550+273.15}}; // Maximum peak temperature design limit from Luzzi et al. 2013, Table 4
+        // }
+    }
+}
+
+// ************************************************************************* //
