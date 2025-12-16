@@ -12,6 +12,8 @@ EXE_INC = \
     -I./thermalHydraulics/bernoulliJumpAMI \
     -I./thermalHydraulics/massConservationJumpAMI \
     -I./thermalHydraulics/tJunctionJumpAMI \
+    -I./thermalHydraulics/scaledDiscontinuousCyclicAMI \
+    -I./thermalHydraulics/pressureTank \
     -I./neutronics/albedoSP3 \
     -I./thermoMechanics/tractionDisplacement \
     -I./../porousMediaModels/lnInclude \

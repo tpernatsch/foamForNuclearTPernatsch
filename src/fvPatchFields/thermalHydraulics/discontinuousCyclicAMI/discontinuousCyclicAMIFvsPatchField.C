@@ -126,7 +126,7 @@ Foam::discontinuousCyclicAMIFvsPatchField<Type>::discontinuousCyclicAMIFvsPatchF
 template<class Type>
 bool Foam::discontinuousCyclicAMIFvsPatchField<Type>::coupled() const
 {
-    return discontinuousCyclicAMIPatch_.coupled();
+    return false;
 }
 
 

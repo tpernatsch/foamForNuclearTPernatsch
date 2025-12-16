@@ -340,6 +340,9 @@ void Foam::pressureJumpAMIFvPatchScalarField::write(Ostream& os) const
     {
         jump_.writeEntry("jump", os);
         source_.writeEntry("pSource", os);
+        pumpCoeffs_.writeEntry("pumpCoeffs", os);
+        os.writeEntry("bernoulli", bernoulliCorrection_);
+        os.writeEntry("lossCoeff", pressureLossCoeff_);
     }
 
     fvPatchField<scalar>::writeValueEntry(os);

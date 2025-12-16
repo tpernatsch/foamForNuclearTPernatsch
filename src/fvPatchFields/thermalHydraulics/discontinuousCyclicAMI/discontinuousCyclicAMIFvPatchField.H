@@ -158,7 +158,7 @@ class discontinuousCyclicAMIFvPatchField
         static bool cacheNeighbourField();
 
         //- Return neighbour coupled internal cell data
-        tmp<Field<Type>> getNeighbourField(const UList<Type>&) const;
+        virtual tmp<Field<Type>> getNeighbourField(const UList<Type>&) const;
 
         //- Return neighbour coupled internal cell data (cached or extracted),
         //- with optional check that AMI.comm() is valid.
