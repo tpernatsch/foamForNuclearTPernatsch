@@ -31,12 +31,12 @@ usage:
       {
           <functionObject1>
           {
-              type fieldDiffExtents;
+              type massFlow;
           }
       }
 
   - comment: |-
-      This is a detailed example of use of this specific function object. 
+      This is a detailed example of use of this specific function object.
     snippet: |-
       functions
       {
