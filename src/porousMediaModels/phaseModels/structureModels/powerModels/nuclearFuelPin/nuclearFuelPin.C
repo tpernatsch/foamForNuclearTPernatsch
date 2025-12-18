@@ -893,6 +893,26 @@ void Foam::powerModels::nuclearFuelPin::correct
     const volScalarField& HSum    // == SUM_j [htc_j*frac_j]
 )
 {
+
+    forAll(this->toc(), regioni)
+    {
+        if(powerOffCriterionModelPtr_.set(regioni))
+        {
+            if(powerOffCriterionModelPtr_[regioni].powerOffCriterion())
+            {
+                word region(this->toc()[regioni]);
+                const labelList& regionCells
+                (
+                    structure_.cellLists()[region]
+                );
+                forAll(regionCells, j)
+                {
+                    label cellj(regionCells[j]);
+                    structure_.powerDensityNeutronics()[cellj] = 0.0;
+                }
+            }
+        }
+    }
     // Reset min, max, fuel, clad temperatures
     Tfmax_ = 0.0;
     Tfmin_ = 1e69;

@@ -175,6 +175,33 @@ void Foam::powerModels::fixedTemperature::temperatureUpdate() const
     }
 }
 
+void Foam::powerModels::fixedTemperature::correct
+(
+    const volScalarField& HT,
+    const volScalarField& H
+)
+{
+    forAll(this->toc(), regioni)
+    {
+        if(powerOffCriterionModelPtr_.set(regioni))
+        {
+            if(powerOffCriterionModelPtr_[regioni].powerOffCriterion())
+            {
+                word region(this->toc()[regioni]);
+                const labelList& regionCells
+                (
+                    structure_.cellLists()[region]
+                );
+                forAll(regionCells, j)
+                {
+                    label cellj(regionCells[j]);
+                    structure_.powerDensityNeutronics()[cellj] = 0.0;
+                }
+            }
+        }
+    }
+}
+
 void Foam::powerModels::fixedTemperature::correctT(volScalarField& T) const
 {
     this->temperatureUpdate();
@@ -185,11 +212,5 @@ void Foam::powerModels::fixedTemperature::correctT(volScalarField& T) const
     }
 }
 
-void Foam::powerModels::fixedTemperature::powerOff()
-{
-    // If you set iA to 0, the energy contribution from this powerModel to the
-    // fluid energy equation will be 0, equivalent to a "power" off scenario
-    iA_ *= 0.0;
-}
 
 // ************************************************************************* //

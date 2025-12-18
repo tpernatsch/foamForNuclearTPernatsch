@@ -89,7 +89,7 @@ private:
 public:
 
     //- Runtime type information
-    TypeName("timer");
+    TypeName("timeThreshold");
 
     //- Constructors
 

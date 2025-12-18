@@ -18,9 +18,6 @@
     volScalarField he1i(fluid1_.thermo().he(p_, iT12));
     volScalarField he2i(fluid2_.thermo().he(p_, iT12));
 
-    //- Check if structure power off criteria are met and turn off power if so
-    structure_.checkPowerOff();
-
     //-
     volScalarField alphaEff1
     (

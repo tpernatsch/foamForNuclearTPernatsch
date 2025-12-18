@@ -119,7 +119,7 @@ private:
 public:
 
     //- Runtime type information
-    TypeName("fieldValue");
+    TypeName("fieldValueThreshold");
 
     //- Constructors
 

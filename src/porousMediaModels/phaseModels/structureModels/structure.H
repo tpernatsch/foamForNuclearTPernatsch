@@ -228,9 +228,6 @@ protected:
     //- Total momentum source
     autoPtr<volVectorField> momentumSourcePtr_;
 
-    //- Power off criterion
-    autoPtr<powerOffCriterionModel> powerOffCriterionModelPtr_;
-
 public:
 
     TypeName("structure");
@@ -287,10 +284,6 @@ public:
             fluid& fluid,
             const volScalarField& H
         ) const;
-
-        //- Turn off all powerDensity fields of all the powerModels if the
-        //  powerOffCriterionModel criterion is satisfied
-        void checkPowerOff();
 
         //- Rotate a tensor field from the local reference frame to the global
         //  mesh one

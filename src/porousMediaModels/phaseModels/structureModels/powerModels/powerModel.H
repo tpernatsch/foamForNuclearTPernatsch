@@ -59,6 +59,7 @@ SourceFiles
 #include "volFields.H"
 #include "runTimeSelectionTables.H"
 #include "zeroGradientFvPatchFields.H"
+#include "powerOffCriterionModel.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -98,6 +99,10 @@ protected:
     //  the structure alpha as not the entirety of a structure region might
     //  be producing power)
     volScalarField alpha_;
+
+
+    //- Power off criterion
+    PtrList<powerOffCriterionModel> powerOffCriterionModelPtr_;
 
 public:
 

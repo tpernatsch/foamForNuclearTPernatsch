@@ -260,7 +260,6 @@ Foam::structure::structure
         // the separation character between zone names
         word key(dict.toc()[i]);
         if (key == "type") continue;
-        if (key == "powerOffCriterionModel") continue;
         if (key == "heatExchangers") continue;
         const dictionary& zoneDict(dict.subDict(key));
 
@@ -329,7 +328,7 @@ Foam::structure::structure
             );
 
             // Read momentum source
-            if (zoneDict.found("momentumSource"))
+            if (zoneDict.found("pump"))
             {
                 pumps_.insert
                 (
@@ -841,18 +840,6 @@ Foam::structure::structure
     Tact_.correctBoundaryConditions();
 
     this->constructHeatExchangers();
-
-    if (this->dict().isDict("powerOffCriterionModel"))
-    {
-        powerOffCriterionModelPtr_.reset
-        (
-            powerOffCriterionModel::New
-            (
-                mesh,
-                this->dict().subDict("powerOffCriterionModel")
-            )
-        );
-    }
 }
 
 
@@ -1158,25 +1145,6 @@ Foam::structure::linearizedSemiImplicitHeatSource
     }
 
     return tQ;
-}
-
-void Foam::structure::checkPowerOff()
-{
-    if (powerOffCriterionModelPtr_.valid())
-    {
-        if (powerOffCriterionModelPtr_->powerOffCriterion())
-        {
-            forAllIter
-            (
-                powerModelTable,
-                powerModels_,
-                iter
-            )
-            {
-                iter()->powerOff();
-            }
-        }
-    }
 }
 
 // ************************************************************************* //

@@ -207,11 +207,6 @@ void Foam::powerModels::fixedPower::correctT(volScalarField& T) const
 }
 
 
-void Foam::powerModels::fixedPower::powerOff()
-{
-    powerDensity_ *= 0.0;
-}
-
 void Foam::powerModels::fixedPower::powerUpdate()
 {
     forAll(this->toc(), regioni)
@@ -272,6 +267,27 @@ void Foam::powerModels::fixedPower::correct
     const volScalarField& HSum    // == SUM_j [htc_j*frac_j]
 )
 {
+
+    forAll(this->toc(), regioni)
+    {
+        if(powerOffCriterionModelPtr_.set(regioni))
+        {
+            if(powerOffCriterionModelPtr_[regioni].powerOffCriterion())
+            {
+                word region(this->toc()[regioni]);
+                const labelList& regionCells
+                (
+                    structure_.cellLists()[region]
+                );
+                forAll(regionCells, j)
+                {
+                    label cellj(regionCells[j]);
+                    structure_.powerDensityNeutronics()[cellj] = 0.0;
+                }
+            }
+        }
+    }
+
     this->powerUpdate();
     scalar dt(mesh_.time().deltaT().value());
     volScalarField& T0(T_.oldTime());

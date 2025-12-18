@@ -206,9 +206,6 @@ public:
 
         //- Return surface temperature (i.e. outer cladding temperature)
         virtual void correctT(volScalarField& T) const;
-
-        //- Turn off pin power
-        virtual void powerOff();
 };
 
 
