@@ -32,7 +32,7 @@ Building on this combined heritage, **foamForNuclear** provides a **modular and 
 
    This project is under continuous development. The master branch contains stable software and is normally 
    updated every six months, soon after major OpenFOAM releases. The develop branch contains more recent developments.
-   Both branches undergo comprehsinve testing before aby commit. 
+   Both branches undergo comprehensive testing before any commit. 
 
 
 Contents
