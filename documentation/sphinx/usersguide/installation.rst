@@ -47,7 +47,7 @@ Building foamForNuclear on Linux
 
 All foamForNuclear source code is hosted on `GitLab
 <https://gitlab.com/foamForNuclear/foamForNuclear>`_. If you have `git
-<https://git-scm.com>`_, and a modern C++ compiler installed, you can
+<https://git-scm.com>`_, a modern C++ compiler, and the right version of OpenFOAM installed, you can
 download and install foamForNuclear by entering the following commands in a terminal:
 
 .. code-block:: bash
