@@ -36,9 +36,13 @@ of OpenFOAM.
 
    source /usr/lib/openfoam/openfoam2506/etc/bashrc
 
+If installing from source, [follow the instructions here](https://develop.openfoam.com/Development/openfoam/-/blob/master/doc/Build.md). 
+Check for the appropriate version of OepnFOAM specified in the readme file of the `GitLab repository
+<https://gitlab.com/foamForNuclear/foamForNuclear>`_!
+
 
 ------------------------
-Building Source on Linux
+Building foamForNuclear on Linux
 ------------------------
 
 All foamForNuclear source code is hosted on `GitLab

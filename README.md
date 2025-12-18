@@ -1,21 +1,28 @@
 # foamForNuclear (FFN)
 
-**foamForNuclear (FFN)** is a **general-purpose, OpenFOAM®-based multi-physics platform** for the analysis and design of nuclear systems. It originates from the **merging and extension** of two OpenFOAM-based nuclear projects: **GeN-Foam**, dedicated to multi-physics reactor simulation, and **OFFBEAT**, focused on advanced nuclear fuel performance modeling.
+**foamForNuclear** is a **general-purpose, OpenFOAM®-based multiphysics platform** for the analysis and design of nuclear systems. It was established in 2025 through the **integration and extension** of two mature OpenFOAM-based projects—**GeN-Foam** and **OFFBEAT**—both of which had been developed, verified, and validated over more than a decade. GeN-Foam was originally conceived for reactor-scale multiphysics simulations, while OFFBEAT focused on advanced nuclear fuel performance modeling and nonlinear thermo-mechanics.
 
-FFN provides a **modular and extensible framework** for simulating a wide range of physics, from core neutronics and thermal-hydraulics to advanced thermomechanics and fuel behavior. Each physics capability is implemented as an independent **module**, solving a specific set of equations that can run standalone or be coupled with others in a multi-physics environment.
+Building on this combined heritage, **foamForNuclear** provides a **modular and extensible framework** capable of simulating a broad range of coupled physics, from core neutronics and thermal-hydraulics to advanced thermomechanics and detailed fuel behavior. Each physical model is implemented as an independent **module** that solves a specific set of governing equations. These modules are accessed through two user-facing applications:
+
+- **GeN-Foam** is the default, general-purpose multiphysics application. It supports loose or tight coupling of an arbitrary number of physics on regions that may be independent, overlapping, or interacting through coupled boundaries.
+- **OFFBEAT** is a specialized application dedicated to nuclear fuel behavior, with capabilities covering standard LWR fuel, oxide-based fast-reactor fuel, metallic fuel, and TRISO fuel.
+
+All OFFBEAT capabilities are also available within GeN-Foam, allowing OFFBEAT to be run as a single-region GeN-Foam simulation. OFFBEAT is nonetheless provided as a stand-alone application to streamline workflows and reduce setup complexity for the nuclear fuel performance community. **GeN-Foam should be preferred when fuel behavior needs to be coupled with additional physics**, such as detailed fluid-flow or reactor-scale multiphysics simulations.
+
+**foamForNuclear** is shipped with a comprhensive pyhton API for programmatic pre-  and post-processing. 
 
 
 ## Physics Modules
 
-FFN integrates several physics modules developed through extensive research in nuclear system modeling:
+**foamForNuclear** integrates several physics modules developed through extensive research in nuclear system modeling:
 
-- **Neutronics:** point kinetics, diffusion, adjoint diffusion, SP3, and discrete ordinates (SN) (steady or transient);
-- **Thermal-hydraulics:** one-phase RANS-CFD and porous-medium models, and a two-phase porous-medium Euler–Euler model for sodium and water;
-- **Solid temperature models:** for sub-scale structures, including 1-D fuel, fixed temperature/power, heated rods, fuel pebbles, and lumped-parameter models;
+- **Neutronics:** point reactor kinetics, diffusion, adjoint diffusion, SP3, and discrete ordinates (SN) (steady or transient);
+- **Thermal-hydraulics:** one-phase RANS and porous-medium models, and a two-phase porous-medium Euler–Euler model for sodium and water;
+- **Solid temperature models:** for sub-scale structures in porous-medium simulations, including 1-D nuclear fuel, fixed temperature/power, heated rods, fuel pebbles, and generic lumped-parameter models based on the concept of electri equivalents;
 - **Thermomechanics:** linear/nonlinear elasticity, plasticity, creep, and temperature-dependent material properties;
 - **Fuel behavior:** densification, swelling, fission gas release, creep, irradiation growth, non-conformal gap heat transfer, and burnup-dependent material properties.
 
-The **modular structure** of FFN allows users familiar with the OpenFOAM® API to easily add new solvers to the list of available physics. As an example, a **Volume of Fluid** solver from OpenFOAM® is already integrated into FFN, enabling free-surface flow simulations.
+The **modular structure** of **foamForNuclear** allows users familiar with the OpenFOAM® API to easily add new solvers to the list of available physics. As an example, a **Volume of Fluid** solver from OpenFOAM® is already integrated into **foamForNuclear**, enabling free-surface flow simulations.
 
 
 ## Applications within FFN
@@ -36,7 +43,7 @@ This architecture supports multi-scale analyses combining coarse and detailed mo
 
 ### OFFBEAT
 
-While the fuel behavior module can be integrated into GeN-Foam, **OFFBEAT** remains a **standalone application** within FFN, dedicated to **single-mesh fuel performance** simulations. It provides high-fidelity thermo-mechanical and material evolution modeling for individual fuel pins, rods, or pebbles.
+While the fuel behavior module can be integrated into GeN-Foam, **OFFBEAT** remains a **standalone application** within **foamForNuclear**, dedicated to **single-mesh fuel performance** simulations. It provides high-fidelity thermo-mechanical and material evolution modeling for individual fuel pins, rods, or pebbles.
 
 
 ## Documentation
@@ -45,7 +52,7 @@ Resources for users and developers include:
 
 - **User Guide and Theory Manual:** [![foamForNuclear User's Guide](https://img.shields.io/badge/foamForNuclear-User_Guide-blue?logo=sphinx)](https://foamfornuclear.gitlab.io/foamForNuclear/index.html)
 - **Online Doxygen API:** [![foamForNuclear Doxygen](https://img.shields.io/badge/foamForNuclear-Doxygen-blue?logo=doxygen)](https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/index.html)
-- **Python API Documentation:** [![foamForNuclear Doxygen](https://img.shields.io/badge/foamForNuclear-Python_API-blue?logo=python)](https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/index.html)
+- **Python API Documentation:** [![foamForNuclear Python](https://img.shields.io/badge/foamForNuclear-Python_API-blue?logo=python)](https://foamfornuclear.gitlab.io/foamForNuclear/pythonapi/index.html)
 - **Introductory Lectures** ([`documentation/usefulDocumentsAndPresentations/`](./documentation/usefulDocumentsAndPresentations/))
 - **Tutorial Cases** for each physics module and coupling type ([`tutorials`](./tutorials/))
 
@@ -53,7 +60,8 @@ Users are also encouraged to make use of the typical OpenFOAM learning strategie
 
 - the high-level C++-based object-oriented language of OpenFOAM, which normally allows understanding the logic of a solver easily;
 - the comments that are typically available in the source code and, in particular, in the header files of each class;
-- the support of the community.
+- the support of the community;
+- available large language models, which are already very familiar with OpenFOAM and are expected to become inscreasingly familiar with foamForNuclear.
 
 
 ## OpenFOAM Version
@@ -81,6 +89,9 @@ cd foamForNuclear
 ./Allwmake -j4 --api
 ```
 j4 is telling your compiler to use 4 cores. You can use as many as your system allows.
+
+For more information, please visit the [foamForNuclear documentation](https://foamfornuclear.gitlab.io/foamForNuclear/usersguide/installation.html)
+
 
 
 ## Copyright

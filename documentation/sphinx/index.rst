@@ -1,21 +1,15 @@
 foamForNuclear
 ==============
 
-foamForNuclear is a community-driven computational framework for simulating
-multiphysics phenomena in nuclear systems. It is built on top of the `OpenFOAM
-<https://www.openfoam.com/>`_ computational fluid dynamics (CFD) library and
-extends its capabilities to model complex nuclear reactor components and safety
-scenarios. foamForNuclear supports steady-state and transient simulations,
-enabling analysis of fluid flow, heat transfer, and coupled
-neutronics/thermal-hydraulic behavior in reactor systems. Models are constructed
-using flexible mesh-based geometries and can incorporate detailed material
-properties and boundary conditions relevant to nuclear engineering applications.
+**foamForNuclear** is a **general-purpose, OpenFOAM®-based multiphysics platform** for the analysis and design of nuclear systems. It was established in 2025 through the **integration and extension** of two mature OpenFOAM-based projects—**GeN-Foam** and **OFFBEAT**—both of which had been developed, verified, and validated over more than a decade. GeN-Foam was originally conceived for reactor-scale multiphysics simulations, while OFFBEAT focused on advanced nuclear fuel performance modeling and nonlinear thermo-mechanics.
 
-foamForNuclear leverages OpenFOAM's object-oriented C++ design, providing a
-modular structure for implementing nuclear-specific solvers and physics models.
-Parallel computing is achieved through OpenFOAM's domain decomposition and
-MPI-based parallelism, allowing high-resolution simulations on large-scale HPC
-systems.
+Building on this combined heritage, **foamForNuclear** provides a **modular and extensible framework** capable of simulating a broad range of coupled physics, from core neutronics and thermal-hydraulics to advanced thermomechanics and detailed fuel behavior. Each physical model is implemented as an independent **module** that solves a specific set of governing equations. These modules are accessed through two user-facing applications:
+
+- **GeN-Foam** is the default, general-purpose multiphysics application. It supports loose or tight coupling of an arbitrary number of physics on regions that may be independent, overlapping, or interacting through coupled boundaries.
+- **OFFBEAT** is a specialized application dedicated to nuclear fuel behavior, with capabilities covering standard LWR fuel, oxide-based fast-reactor fuel, metallic fuel, and TRISO fuel.
+
+**foamForNuclear** is shipped with a comprhensive pyhton API for programmatic pre-  and post-processing. 
+
 
 
 ----
@@ -36,7 +30,9 @@ systems.
 
 .. note::
 
-   This project is under active development.
+   This project is under continuous development. The master branch contains stable software and is normally 
+   updated every six months, soon after major OpenFOAM releases. The develop branch contains more recent developments.
+   Both branches undergo comprehsinve testing before aby commit. 
 
 
 Contents
