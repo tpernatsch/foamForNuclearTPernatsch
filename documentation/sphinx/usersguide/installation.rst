@@ -59,7 +59,7 @@ download and install foamForNuclear by entering the following commands in a term
    ./Allwmake -j<N> --api
 
 
-The :mod:`foamForNuclear <pythonapi>` Python package must be installed separately. The easiest way
+The :mod:`foamForNuclear <pythonapi>` Python API must be installed separately. The easiest way
 to install it is using `pip <https://pip.pypa.io/en/stable/>`_.
 From the root directory of the foamForNuclear repository, run:
 
