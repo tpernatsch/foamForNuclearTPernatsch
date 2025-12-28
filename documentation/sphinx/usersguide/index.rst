@@ -15,14 +15,9 @@ through the essential aspects of using foamForNuclear to perform simulations.
    :maxdepth: 3
 
    installation
-   neutronics
-   thermalHydraulics/index
-   thermoMechanics
-   openfoamImportedSolvers
-   coupling
-   pre_processing
-   running_GeN-Foam
-   post_processing
+   GeN-Foam/index
+   OFFBEAT/index
+   modules/index
    fmu
    important_notes
    tips_and_tricks

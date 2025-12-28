@@ -8,7 +8,7 @@ Building on this combined heritage, **foamForNuclear** provides a **modular and 
 - **GeN-Foam** is the default, general-purpose multiphysics application. It supports loose or tight coupling of an arbitrary number of physics on regions that may be independent, overlapping, or interacting through coupled boundaries.
 - **OFFBEAT** is a specialized application dedicated to nuclear fuel behavior, with capabilities covering standard LWR fuel, oxide-based fast-reactor fuel, metallic fuel, and TRISO fuel.
 
-**foamForNuclear** is shipped with a comprhensive pyhton API for programmatic pre-  and post-processing. 
+**foamForNuclear** is shipped with a comprehensive pyhton API for programmatic pre-  and post-processing. 
 
 
 
