@@ -1,8 +1,8 @@
-.. _usersguide_modules:
+.. _modules:
 
-============
-Modules User's Guide
-============
+===============
+Physics modules
+===============
 
 Welcome to the Modules User's Guide! This documentation will guide you
 through the essential aspects of using the various modules within foamForNuclear.
