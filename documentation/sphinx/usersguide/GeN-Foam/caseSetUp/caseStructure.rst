@@ -85,7 +85,7 @@ The folder structure of GeN-Foam case is similar to that of typical multi-region
     │
     ├── Allrun
     └── Allclean
-``
+
 
 
 Folder Overview
@@ -111,9 +111,9 @@ After the simulation is performed, additional folders and files may appear based
    The initial folder can also differ from ``0/``. In that case, ensure that either ``fromLatestTime`` is selected as ``startFrom`` in the ``controlDict`` or that ``startTime`` is properly set and ``startFrom`` is configured to ``startTime``.
 
 
---------------------------
+
 Optional Files
---------------------------
+==============
 
 A GeN-Foam folder may also include optional files, such as:
 
