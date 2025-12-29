@@ -1,4 +1,4 @@
-.. _userguide_coupling:
+.. _couplingGF:
 
 ==========================
 Coupling and time stepping
