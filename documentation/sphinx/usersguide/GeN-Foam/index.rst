@@ -15,9 +15,8 @@ through the essential aspects of using GeN-Foam to perform simulations.
    :maxdepth: 3
 
    installation
-   pre_processing
+   caseSetUp
    running_GeN-Foam
-   coupling
    fmu
    important_notes
    tips_and_tricks
