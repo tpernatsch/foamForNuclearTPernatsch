@@ -55,6 +55,9 @@ foamForNuclear supports meshes from both proprietary and open-source tools. Belo
 .. tip::
     Always check mesh quality using ``checkMesh`` after conversion. Poor-quality cells can lead to solver instability.
 
+.. warning::
+    Sometimes, when converting a mesh to the OpenFOAM (``polyMesh`` folder) format, cellSets (and not cellZones) are created. The ``topoSetDict`` utility can be used to convert cellSets to cellZones.
+
 
 Changing Patch Type (Optional)
 ==============================
@@ -66,39 +69,11 @@ Boundary types (e.g., ``wedge``, ``empty``, ``coupled``) may need adjustment aft
 .. warning::
     ``foamDictionary`` has replaced ``changeDictionary`` that was used in older OpenFOAM versions.
 
-Summary
+
+
+
+Example
 =======
-
-- Each region requires its own mesh in ``constant/<regionName>/polyMesh``.
-- CellZones are essential for applying material properties and physics models.
-- OpenFOAM provides robust utilities for mesh generation and conversion.
-- Salome, Gmsh, Cubit and Fluent are widely used for generating complex geometries in OpenFOAM.
-
-
-
-
-
-
-
-
-
-
-=======
-Meshing
-=======
-
-GeN-Foam uses any number of meshes for that can be e.g neutronics,
-thermal-hydraulics and thermal-mechanics. There is no requirement for the meshes
-to occupy the same region of space. Consistent mapping of fields is performed
-and a reference value is given to a field if no correspondence is found in the
-mesh where its value is being projected from. It follows that the geometry for
-neutronics can cover only a small part of the overall reactor geometry. Meshes
-can be created with every OpenFOAM-compatible tool (e.g blockMesh, ANSYS/FLUENT,
-...). Meshes can (should) be divided into zones (cellZones) to allow the use of
-different physical properties (e.g., cross-sections, power models, ...) in
-different reactor regions. Sometimes, when converting a mesh to the OpenFOAM
-(``polyMesh`` folder) format, cellSets (and not cellZones) are created. The
-``topoSetDict`` can be used to convert cellSets to cellZones.
 
 The `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/>`_
 tutorial includes an example of mesh generation with Gmsh `GMSH2009 <https://onlinelibrary.wiley.com/doi/10.1002/nme.2579>`_.
@@ -129,3 +104,12 @@ or *constant/thermoMechanicalRegion*, and repeat the operation for all meshes.
 
 Please notice that the *3D_SmallESFR* tutorial already contains the correct
 *polyMesh* folders so that one can avoid the mesh generation step.
+
+
+Summary
+=======
+
+- Each region requires its own mesh in ``constant/<regionName>/polyMesh``.
+- CellZones are essential for applying material properties and physics models.
+- OpenFOAM provides robust utilities for mesh generation and conversion.
+- Salome, Gmsh, Cubit and Fluent are widely used for generating complex geometries in OpenFOAM.

@@ -19,7 +19,7 @@ Building the Mesh
 OpenFOAM uses **polyhedral meshes**, stored in ``constant/<regionName>/polyMesh`` for each region. Meshes can be generated using:
 
 - **OpenFOAM utilities**: ``blockMesh`` for structured meshes, ``snappyHexMesh`` for complex geometries.
-- **External tools**: Salome, Gmsh, Cubit.
+- **External tools**: e.g., Salome, Gmsh, Cubit.
 - **Conversion utilities**: OpenFOAM provides converters such as ``gmshToFoam``, ``ideasUnvToFoam``, and ``cubitToFoam``.
 
 .. note::
@@ -52,10 +52,13 @@ Running the Code
 
   - ``GeN-Foam | tee log.genFoam``: Output to terminal and log file.
   - ``GeN-Foam > log.genFoam``: Output only to log file.
+  - ``mpirun -np 8 GeN-Foam -parallel | tee log.genFoam``: Run in parallel on 8 cores. Output to terminal and log file.
 
 .. tip::
     Check for the ``End`` string in the log to confirm successful completion.
 
+.. warning::
+    Do not forget``-parallel`` when running in parallel!
 
 Post-Processing
 ---------------
@@ -63,7 +66,7 @@ Post-Processing
 Visualization and data extraction options:
 
 - **``paraFoam``**: Launches ParaView for visualization of written time steps (requires ParaView).
-- **``touch para.foam``** **``paraview para.foam``**: Launches ParaView for visualization of written time steps in case paraFoam was not installed (requires ParaView).
+- **``touch para.foam``** followed by **``paraview para.foam``**: Launches ParaView for visualization of written time steps in case paraFoam was not installed (requires ParaView).
 - **``postProcess -func sampleDict``**: Samples fields based on ``system/sampleDict``; results stored in ``postProcessing/``.
 - **Python scripts**: Automate plotting of quantities like temperature profiles or power distribution.
 
