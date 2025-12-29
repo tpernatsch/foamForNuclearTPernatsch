@@ -15,7 +15,7 @@ through the essential aspects of using GeN-Foam to perform simulations.
    :maxdepth: 3
 
    installation
-   caseSetUp
+   caseSetUp/index
    running_GeN-Foam
    fmu
    important_notes
