@@ -44,7 +44,6 @@ The folder structure of GeN-Foam case is similar to that of typical multi-region
     │   │   ├── T
     │   └── neutronicsRegion/           # Neutronics region fields
     │       ├── defaultFlux             # Neutron flux
-multiplication factor (optional)
     │
     ├── constant/
     │   ├── fluidRegion/
