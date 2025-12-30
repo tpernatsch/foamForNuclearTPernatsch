@@ -19,6 +19,7 @@ through the essential aspects of using GeN-Foam to perform simulations.
    workflow
    caseStructure
    coupling
+   solutionControl
    runningGeN-Foam
    postProcessing
    fmu

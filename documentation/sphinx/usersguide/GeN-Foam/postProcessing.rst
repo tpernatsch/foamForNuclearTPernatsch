@@ -1,8 +1,8 @@
-.. _post_processing:
+.. _postProcessing:
 
-==============
+================================
 Visualization and postprocessing
-==============
+================================
 
 ParaFoam and ParaView
 ---------------------
