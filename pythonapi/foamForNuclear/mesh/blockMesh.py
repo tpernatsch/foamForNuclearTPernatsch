@@ -1837,6 +1837,115 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(newBlock)
 
 
+    def create_quarter_cylinder_along_z(
+            self,
+            name: str,
+            radius: float,
+            lowZ: float,
+            highZ: float,
+            nx: int, ny: int, nz: int,
+            x: float=0, y: float=0,
+            angleStart: float=0,
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddCylinderBC: bool=False,
+            isAddFrontBC: bool=False,
+            isAddLeftBC: bool=False,
+        ):
+        """
+        Create a cylinder along the Z-axis using 3 blocks. The edge faces are
+        oriented normal to -X and -Y if angleStart = 0. The central block has a
+        length half the radius.
+
+        Parameters
+        ----------
+        angleStart : float
+            Starting angle in degree
+
+        Return
+        ------
+            (centerBlock, rightBlock, backBlock)
+        """
+        sqrt2 = np.sqrt(2)
+        # Convert from deg to rad
+        deg = np.pi/180
+        angleStart = angleStart * deg
+
+        cost, sint = np.cos(angleStart), np.sin(angleStart)
+        cost2, sint2 = np.cos(angleStart+np.pi/4), np.sin(angleStart+np.pi/4)
+
+        rcost, rsint = radius * cost, radius * sint
+        rcost2, rsint2 = radius * cost2, radius * sint2
+        rsqrtcost2, rsqrtsint2 = radius/sqrt2 * cost2, radius/sqrt2 * sint2
+        r2cost, r2sint = radius/2 * cost, radius/2 * sint
+
+        centerBlock = self.create_block(name, [
+            Point(x,            y,              lowZ),
+            Point(x+r2cost,     y+r2sint,       lowZ),
+            Point(x+rsqrtcost2, y+rsqrtsint2,   lowZ),
+            Point(x-r2sint,     y+r2cost,       lowZ),
+            Point(x,            y,              highZ),
+            Point(x+r2cost,     y+r2sint,       highZ),
+            Point(x+rsqrtcost2, y+rsqrtsint2,   highZ),
+            Point(x-r2sint,     y+r2cost,       highZ)
+        ], nx, ny, nz)
+
+        rightBlock = self.add_right(centerBlock, name, [
+            Point(x+rcost,  y+rsint,    lowZ),
+            Point(x+rcost2, y+rsint2,   lowZ),
+            Point(x+rcost,  y+rsint,    highZ),
+            Point(x+rcost2, y+rsint2,   highZ),
+        ], nx=nx)
+
+        backBlock = self.add_back(centerBlock, name, [
+            rightBlock.points[2],
+            Point(x-rsint, y+rcost, lowZ),
+            rightBlock.points[6],
+            Point(x-rsint, y+rcost, highZ),
+        ], ny=rightBlock.nx)
+
+        rightBlock.add_edge_arc(1, 2, x=x, y=y, isOrigin=True)
+        rightBlock.add_edge_arc(5, 6, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
+
+
+        idxFace = len(self.faces)
+
+        if (isAddAllBC or isAddTopBC):
+            topFace = Face(f"{name}Top_{idxFace}")
+            for block in [centerBlock, rightBlock, backBlock]:
+                topFace.add_sub_face(block.topFace())
+            self.add_boundary(topFace)
+
+        if (isAddAllBC or isAddBottomBC):
+            botFace = Face(f"{name}Bottom_{idxFace}")
+            for block in [centerBlock, rightBlock, backBlock]:
+                botFace.add_sub_face(block.bottomFace())
+            self.add_boundary(botFace)
+
+        if (isAddAllBC or isAddFrontBC):
+            wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
+            wallFaceFront.add_sub_face(centerBlock.frontFace())
+            wallFaceFront.add_sub_face(rightBlock.frontFace())
+            self.add_boundary(wallFaceFront)
+
+        if (isAddAllBC or isAddLeftBC):
+            wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
+            wallFaceLeft.add_sub_face(centerBlock.leftFace())
+            wallFaceLeft.add_sub_face(backBlock.leftFace())
+            self.add_boundary(wallFaceLeft)
+
+        if (isAddAllBC or isAddCylinderBC):
+            wallFaceCylinder = Face(f"{name}WallCylinder_{idxFace}", boundaryType='wall')
+            wallFaceCylinder.add_sub_face(rightBlock.rightFace())
+            wallFaceCylinder.add_sub_face(backBlock.backFace())
+            self.add_boundary(wallFaceCylinder)
+
+        return(centerBlock, rightBlock, backBlock)
+
+
     def create_cylinder_along_z(
             self,
             name: str,
@@ -5342,12 +5451,23 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 ):
                     self.pointsPlaced.append(point)
 
+        # Set unique id to each point
         for i, point in enumerate(self.pointsPlaced):
             self.pointsPlaced[i].id = i
 
+        # Get unique list of id
+        pointsIds = set([p.id for p in self.pointsPlaced])
+
+        # Filter unique list of points
+        self.pointsPlaced = [self.pointsPlaced[pointId] for pointId in list(pointsIds)]
+
+        # Sort list of points by id
+        pointsSorted = sorted(self.pointsPlaced, key=lambda p: p.id)
+
+        # Generate text
         text = "vertices\n"
         text += "(\n"
-        for point in sorted(self.pointsPlaced, key=lambda p: p.id):
+        for point in pointsSorted:
             text += f"{tab}{point}\n"
         text += ");\n"
         return(text)

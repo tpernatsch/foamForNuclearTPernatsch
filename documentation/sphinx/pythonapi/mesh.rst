@@ -95,6 +95,24 @@ meshes.
             :width: 500
             :alt: Cylinder
 
+    * - Quarter Cylinder along Z:
+
+        :class:`BlockMesh.create_quarter_cylinder_along_z`
+
+        .. code :: python
+
+            mesh.create_quarter_cylinder_along_z(
+                name='block',
+                radius=1,
+                lowZ=0, highZ=1,
+                nx=3, ny=5, nz=3,
+                angleStart=0,
+                isAddAllBC=True
+            )
+      - .. image:: ../images/meshes/fig_mesh_quarter_cylinder_0.png
+            :width: 500
+            :alt: Quarter Cylinder
+
     * - Hexagonal prism along Z:
 
         :class:`BlockMesh.create_hexagon_prism_along_z`

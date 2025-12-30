@@ -363,7 +363,19 @@ def createCubeWithCornerHole():
     return(nMesh)
 
 
+def createQuarterCylinderZ():
+    nMesh = mesh.BlockMesh(region="quarter_cylinder")
 
+    nMesh.create_quarter_cylinder_along_z(
+        name="block",
+        radius=1,
+        lowZ=0, highZ=1,
+        nx=3, ny=5, nz=3,
+        angleStart=0,
+        isAddAllBC=True
+    )
+
+    return(nMesh)
 
 
 
@@ -378,6 +390,7 @@ for funcMeshGen in [
     createHexagonPrismWithHoleCylz,
     createHexagonPrismWithHoleHex,
     createCylinderZ,
+    createQuarterCylinderZ,
     createRingZ,
     createRingSectorZ,
     createTriangularChannel,
