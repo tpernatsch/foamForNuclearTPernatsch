@@ -412,3 +412,10 @@ source strength.
 In the case of an FMI coupling, it is possible to use the
 ``externalSourceModulationNameFromFMU`` entry to change the external source
 modulation through an FMI. To use it, the mode must be ``transient``.
+
+
+.. note ::
+    ``defaultPrec`` field has 1/m3 units except for the adjoint solver that needs 1/m2/s.
+
+.. note ::
+    In point kinetics, pTarget (in reactorState) MUST be the same as the one used for reaching the steady-state. As power, GeN-Foam uses what it finds under powerDensity, or under the powerDensity of the fluidRegion if it does not find a powerDensity in the neutroRegion. pTarget does not enter the calculation, it is used simply to plot the results

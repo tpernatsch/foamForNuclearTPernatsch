@@ -16,11 +16,10 @@ through the essential aspects of using GeN-Foam to perform simulations.
 
    installation
    meshing
-   workFlow
+   workflow
    caseStructure
    coupling
    runningGeN-Foam
    postProcessing
    fmu
-   important_notes
    tips_and_tricks

@@ -9,12 +9,32 @@ GeN-Foam is a multi-region, multiphysics solver built on OpenFOAM. It operates s
 
 This section provides an overview of the main steps and commands for setting up and running GeN-Foam. Each part of the workflow is detailed in subsequent sections of this User Guide.
 
+Designing Your Simulation Case
+==============================
+
+
+Before running GeN-Foam, the user must carefully design the simulation case. This involves defining the physical problem and translating it into a multi-region setup. Key decisions include:
+
+- **Number of regions**: Identify which domains are needed (e.g., fluid, solid, neutronics).
+- **Physics modules per region**: Identify the appropriate :ref:`physics module <modules>`  for each region (e.g., thermal-hydraulics for fluid, thermal-mechanics for structural components, neutron transport for the core) and, when needed, the specific model within the module (e.g., single-phase thermal-hydraulics, linear eleasticity, and diffusion).
+- **Coupling strategy**: Determine how regions interact—through shared boundaries, mesh-to-mesh projections, or act indepndently.
+- **Material and operational data**: Prepare thermophysical properties, nuclear cross-sections, etc.
+
+A well-structured case ensures accurate multiphysics coupling and efficient simulation. Poor planning can lead to inconsistencies in mesh interfaces, missing dictionaries, or incorrect solver configurations.
+
+
+.. note::
+
+    In GeN-Foam, one region is always associated with a single module. For multi-physics simulations involving multiple modules on the same region of space (e.g., porous-medium thermal-hydraulics and diffusion neutronics in a reactor core), the user must employ multiple overlapped meshes coupled via mesh-to-mesh projection. When the two meshes are identical, this approach provides the same results as a single-mesh approach, with minimal computational overhead.  
+
+
 
 List of Main Steps and Commands
 ===============================
 
-Building the Mesh
------------------
+
+Building the Mesh(es)
+---------------------
 
 OpenFOAM uses **polyhedral meshes**, stored in ``constant/<regionName>/polyMesh`` for each region. Meshes can be generated using:
 

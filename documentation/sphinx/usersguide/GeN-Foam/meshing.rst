@@ -1,9 +1,9 @@
 .. _meshingGF:
 
 
-=========================
-Meshing in foamForNuclear
-=========================
+=======
+Meshing 
+=======
 
 Meshing is a fundamental step in setting up any OpenFOAM-based simulation, including multi-physics cases in foamForNuclear. This section introduces general concepts, region-specific requirements, and workflows for external meshing tools.
 
@@ -105,11 +105,3 @@ or *constant/thermoMechanicalRegion*, and repeat the operation for all meshes.
 Please notice that the *3D_SmallESFR* tutorial already contains the correct
 *polyMesh* folders so that one can avoid the mesh generation step.
 
-
-Summary
-=======
-
-- Each region requires its own mesh in ``constant/<regionName>/polyMesh``.
-- CellZones are essential for applying material properties and physics models.
-- OpenFOAM provides robust utilities for mesh generation and conversion.
-- Salome, Gmsh, Cubit and Fluent are widely used for generating complex geometries in OpenFOAM.
