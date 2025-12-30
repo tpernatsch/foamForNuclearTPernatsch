@@ -1,11 +1,11 @@
 .. _couplingGF:
 
-===========================
+
 Achieving coupled solutions 
 ===========================
 
 Coupling logic
-==============
+--------------
 
 The coupling between physics is achieved by projecting coupling variables from
 the mesh they are calculated, to the mesh they need to be used. The details of
@@ -312,7 +312,7 @@ In the *controlDict* add:
 
 
 The *loops*
-===========
+-----------
 
 Many multi-physics simulations might require large flexibility on the
 time-loops. For instance, while some physics might be tightly coupled, others

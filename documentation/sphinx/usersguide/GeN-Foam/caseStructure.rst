@@ -1,7 +1,7 @@
 
 .. _caseFolderStructureGF:
 
-===========
+
 Case Folder
 ===========
 
@@ -85,7 +85,7 @@ The folder structure of GeN-Foam case is similar to that of typical multi-region
     Any combination of these configurations is supported, enabling flexible multi-physics coupling
 
 Folder Overview
-===============
+---------------
 
 At the start of the simulation, a GeN-Foam case must contain the following three folders, each with its sub-folders for each region:
 
@@ -109,7 +109,7 @@ After the simulation is performed, additional folders and files may appear based
 
 
 Optional Files
-==============
+--------------
 
 A GeN-Foam folder may also include optional files, such as:
 

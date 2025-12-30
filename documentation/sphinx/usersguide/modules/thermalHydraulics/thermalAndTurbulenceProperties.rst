@@ -1,11 +1,9 @@
 .. _thermalHydraulicsSubScaleStructures:
 
-=================================
+
 Thermal and Turbulence Properties
 =================================
 
-Physical properties
-===================
 
 The *g* dictionary
 ------------------
@@ -31,10 +29,8 @@ One can find a detailed, commented example in the tutorials
 
 
 Turbulence properties
-=====================
+---------------------
 
-The *turbulenceProperties* dictionary
--------------------------------------
 
 The *turbulenceProperties* dictionary can be found under
 *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows

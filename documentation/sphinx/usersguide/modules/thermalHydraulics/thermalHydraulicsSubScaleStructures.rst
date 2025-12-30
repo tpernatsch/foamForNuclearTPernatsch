@@ -1,13 +1,13 @@
 .. _thermalHydraulicsSubScaleStructures:
 
-====================
+
 Sub-scale structures
 ====================
 
 Dedicated models for specific sub-scale structures are
 
 Power models
-============
+------------
 
 Power models, i.e., active media that can provide and subtract energy,
 including:
@@ -38,7 +38,7 @@ including:
       - N/A
 
 Heat exchanger
-==============
+--------------
 
 A heat exchanger model that is used to model the heat transfer between two
 disconnected regions, for instance representing the primary and secondary
@@ -46,7 +46,7 @@ circuit (see :ref:`heatExchanger.H <heatExchanger>` and the tutorials *1D_HX* an
 
 
 Pump
-====
+----
 
 A pump model used to set a (possibly time-dependent) momentum source (see
 :ref:`pump.H <pump>` and tutorials *2D_FFTF* and *2D_MSFR*).

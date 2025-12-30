@@ -1,16 +1,16 @@
 
 .. _workflowGF:
 
-==========================
+
 Workflow for GeN-Foam
-==========================
+=====================
 
 GeN-Foam is a multi-region, multiphysics solver built on OpenFOAM. It operates similarly to multi-region solvers of OpenFOAM. Each region (e.g., fluid, solid, neutronics) requires its own mesh and dictionaries, organized under the top-level folders ``0/``, ``constant/``, and ``system/``.
 
 This section provides an overview of the main steps and commands for setting up and running GeN-Foam. Each part of the workflow is detailed in subsequent sections of this User Guide.
 
 Designing Your Simulation Case
-==============================
+------------------------------
 
 
 Before running GeN-Foam, the user must carefully design the simulation case. This involves defining the physical problem and translating it into a multi-region setup. Key decisions include:
@@ -30,11 +30,11 @@ A well-structured case ensures accurate multiphysics coupling and efficient simu
 
 
 List of Main Steps and Commands
-===============================
+-------------------------------
 
 
 Building the Mesh(es)
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 OpenFOAM uses **polyhedral meshes**, stored in ``constant/<regionName>/polyMesh`` for each region. Meshes can be generated using:
 
@@ -48,7 +48,7 @@ OpenFOAM uses **polyhedral meshes**, stored in ``constant/<regionName>/polyMesh`
 
 
 Setting Up the Simulation
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After meshing, configure:
 
@@ -66,7 +66,7 @@ After meshing, configure:
 
 
 Running the Code
-----------------
+~~~~~~~~~~~~~~~~
 
 - **``GeN-Foam``**: Executes the multiphysics solver. Monitor output in the terminal or redirect to a log file:
 
@@ -81,7 +81,7 @@ Running the Code
     Do not forget``-parallel`` when running in parallel!
 
 Post-Processing
----------------
+~~~~~~~~~~~~~~~
 
 Visualization and data extraction options:
 
@@ -95,7 +95,7 @@ Visualization and data extraction options:
 
 
 Case Cleaning
--------------
+~~~~~~~~~~~~~
 
 - **``foamListTimes -rm``**: Removes all time-step folders except ``0/``.
 - **``Allclean``**: This bash script typically provided with eacch tutorial. It deletes time folders and auxiliary files (logs, PNGs, etc.).

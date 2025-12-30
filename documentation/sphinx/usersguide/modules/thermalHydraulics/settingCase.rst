@@ -1,9 +1,9 @@
-==============
+
 Setting a case
 ==============
 
 Initial and boundary conditions
-===============================
+-------------------------------
 
 Initial and boundary conditions adopt the usual OpenFOAM logic for one- and
 two-phase solvers. A couple of things to be kept in mind:
@@ -122,7 +122,7 @@ GeN-Foam will rescale and print to the powerDensityToLiquid
 
 
 Discretization and solution
-===========================
+---------------------------
 
 Details for discretization and solution of equations are handled in a standard
 OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in

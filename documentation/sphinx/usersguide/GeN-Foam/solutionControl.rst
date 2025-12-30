@@ -1,6 +1,6 @@
 .. _solutionControlGF:
 
-================
+
 Solution Control
 ================
 

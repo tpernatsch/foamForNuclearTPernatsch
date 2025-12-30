@@ -1,10 +1,10 @@
 .. _usersguide_neutronics:
 
-==========
+
 Neutronics
 ==========
 
-------------
+
 Introduction
 ------------
 
@@ -71,7 +71,7 @@ that the fuel fraction is 0.3, powerDensity will be equal to:
     q''' = \frac{\kappa \Sigma_f \phi}{\alpha_{fuel}} = \frac{\text{sigmaPower} \times \text{flux}}{\text{fuelFraction}}
 
 
-------
+
 Models
 ------
 
@@ -122,7 +122,7 @@ performed as been replaced by the selection of model in the *system/regionsDict*
 
 .. _userguide_neutronics_nuclearData:
 
-----------------------------
+
 The *nuclearData* dictionary
 ----------------------------
 
@@ -161,7 +161,7 @@ discontinuity factors is performed (see :ref:`FIORINA2016212 <FIORINA2016212>`).
 should always be present.
 
 
-------------------
+
 XS parametrization
 ------------------
 
@@ -283,9 +283,7 @@ examples of *nuclearData* in the tutorials
 `2D_onePhaseAndSubcriticalPointKineticsCoupling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/2D_onePhaseAndSubcriticalPointKineticsCoupling/rootCase/constant/neutroRegion/externalSource>`_ (for subcritical point kinetics).
 
 
-------------------
-Various properties
-------------------
+
 
 .. _userguide_neutronics_quadratureSet:
 

@@ -1,4 +1,4 @@
-========================
+
 Porous-medium properties
 ========================
 
@@ -7,7 +7,7 @@ the *phaseProperties* dictionary.
 
 
 The *phaseProperties* dictionary
-================================
+--------------------------------
 
 The *phaseProperties* dictionary can be found in *constant/fluidRegion/*. It is
 a large dictionary that can be used to: choose the sub-solver to be used

@@ -1,7 +1,7 @@
 .. _meshingGF:
 
 
-=======
+
 Meshing 
 =======
 
@@ -9,7 +9,7 @@ Meshing is a fundamental step in setting up any OpenFOAM-based simulation, inclu
 
 
 General Concepts
-================
+----------------
 
 OpenFOAM uses **polyhedral meshes**, which are stored in the ``constant/polyMesh`` folder of each region. A mesh consists of points, faces, and cells, organized in a way that supports finite-volume discretization.
 
@@ -23,7 +23,7 @@ Meshes can be generated using:
 
 
 Cell Zones
-==========
+----------
 
 Many physics modules in foamForNuclear require **cellZones** to define subsets of the mesh for applying models (e.g., fuel regions, cladding, coolant channels). A **cellZone** is a named collection of cells within a region.
 
@@ -35,7 +35,7 @@ These groups are preserved during mesh export and recognized by OpenFOAM convert
 
 
 External Meshing Tools
-======================
+----------------------
 
 foamForNuclear supports meshes from both proprietary and open-source tools. Below are exemplary workflows:
 
@@ -60,7 +60,7 @@ foamForNuclear supports meshes from both proprietary and open-source tools. Belo
 
 
 Changing Patch Type (Optional)
-==============================
+------------------------------
 
 Boundary types (e.g., ``wedge``, ``empty``, ``coupled``) may need adjustment after mesh generation. Use:
 
@@ -73,7 +73,7 @@ Boundary types (e.g., ``wedge``, ``empty``, ``coupled``) may need adjustment aft
 
 
 Example
-=======
+-------
 
 The `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/>`_
 tutorial includes an example of mesh generation with Gmsh `GMSH2009 <https://onlinelibrary.wiley.com/doi/10.1002/nme.2579>`_.

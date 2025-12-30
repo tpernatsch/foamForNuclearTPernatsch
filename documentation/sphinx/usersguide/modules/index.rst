@@ -1,6 +1,5 @@
 .. _modules:
 
-===============
 Physics modules
 ===============
 

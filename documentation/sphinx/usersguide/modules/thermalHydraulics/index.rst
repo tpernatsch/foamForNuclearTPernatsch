@@ -1,11 +1,11 @@
 .. _userguide_thermalhydraulics:
 
-==================
+
 Thermal-hydraulics
 ==================
 
 Introduction
-============
+------------
 
 Both single- and two-phase simulations can be performed using GeN-Foam. All
 sub-solvers were developed for a coarse-mesh porous-medium treatment of complex
@@ -46,7 +46,7 @@ All thermal-hydraulics functionalities are handled by the class
 
 
 The porous-medium approach in GeN-Foam
-======================================
+--------------------------------------
 
 GeN-Foam was born for safety analyses and, to reduce computational footprint,
 its base approach is to model for instance the core as a porous medium. In a

@@ -1,13 +1,13 @@
 .. _installation:
 
-============
+------------
 Installation
-============
+------------
 
 
------------------
+
 Building OpenFOAM
------------------
+=================
 
 The foamForNuclear project is built on the `OpenFOAM <https://www.openfoam.com/>`_
 open-source CFD software.
@@ -41,9 +41,9 @@ Check for the appropriate version of OepnFOAM specified in the readme file of th
 <https://gitlab.com/foamForNuclear/foamForNuclear>`_!
 
 
-------------------------
+
 Building foamForNuclear on Linux
-------------------------
+================================
 
 All foamForNuclear source code is hosted on `GitLab
 <https://gitlab.com/foamForNuclear/foamForNuclear>`_. If you have `git

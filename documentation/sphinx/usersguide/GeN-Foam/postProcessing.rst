@@ -1,6 +1,6 @@
 .. _postProcessing:
 
-================================
+
 Visualization and postprocessing
 ================================
 

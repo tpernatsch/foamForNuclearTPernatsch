@@ -1,6 +1,6 @@
 .. _importantnotes:
 
-===============
+
 Important notes
 ===============
 
