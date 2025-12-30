@@ -55,36 +55,6 @@ A standard ``controlDict`` includes the following keys:
      - Subdictionary for function objects (e.g., probes, field sampling).
 
 
-Example controlDict
-~~~~~~~~~~~~~~~~~~~
-
-.. code-block:: foam
-
-    application     genFoam;
-
-    startFrom       startTime;
-    startTime       0;
-    stopAt          endTime;
-    endTime         1000;
-
-    deltaT          1;
-    writeControl    timeStep;
-    writeInterval   100;
-    purgeWrite      0;
-
-    functions
-    {
-        residualMonitor
-        {
-            type            residuals;
-            libs            ("libutilityFunctionObjects.so");
-            write           yes;
-        }
-    }
-
-
-
-
 The *controlDict* extensions
 ----------------------------
 
@@ -129,10 +99,117 @@ Example:
     The parallel execution of the removeBaffles option is not fully tested. The user is encouraged to verify the correctness of the projection process. 
 
 
-relatively complete examples of *controlDict* for single-phase flow can be found in
+Example controlDict
+~~~~~~~~~~~~~~~~~~~
+
+Relatively complete examples of *controlDict* for single-phase flow can be found in
 `2D_FFTF <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict>`_
 and
 `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/system/controlDict>`_,
 while an explanation of the two-phase flow options can be found in
 `1D_boiling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_boiling/system/controlDict>`_.
+
+The example for the 2D_FFTF tutorial is reported below with a reduced number of function objects.
+
+.. code-block:: foam
+
+    //- General
+
+    application         GeN-Foam;
+
+    startFrom           latestTime; // startTime;
+
+    // startTime           0;
+
+    stopAt              endTime;
+
+    endTime             100;
+
+    deltaT              0.001;
+
+    writeControl        adjustableRunTime;
+
+    writeInterval       100;
+
+    purgeWrite          0;
+
+    writeFormat         ascii;
+
+    writePrecision      7;
+
+    writeCompression    false;
+
+    timeFormat          general;
+
+    timePrecision       8;
+
+    runTimeModifiable   true;
+
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    //- Solution control
+
+    adjustTimeStep      true;
+
+    maxDeltaT           2;
+
+    maxCo               500;
+
+    maxPowerVariation   0.025;
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    //- Mesh control
+
+    // removeBaffles   true;
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    //- Field write options
+
+    writeContinuityErrors true;
+
+    removeBaffles
+    {
+        // fluidRegion     1;
+        // neutroRegion    0;
+    }
+
+    // ************************************************************************* //
+
+    functions
+    {
+        mFlowPrimary
+        {
+            type            massFlow;
+            libs            ( "libfieldFunctionObjects.so" );
+            log             true;
+            writeFields     false;
+            region          "fluidRegion";
+            regionType      faceZone;
+            regionName      "pumpMiddleCutPrimary";
+            alphaRhoPhiName "alphaRhoPhi";
+            scaleFactor     180;
+        }
+        TCoreInlet
+        {
+            type            TBulk;
+            libs            ( "libfieldFunctionObjects.so" );
+            log             true;
+            writeFields     false;
+            region          "fluidRegion";
+            regionType      faceZone;
+            regionName      "coreInlet";
+            thermoName      "thermophysicalProperties";
+            alphaRhoPhiName "alphaRhoPhi";
+        }
+    }
+
+//-
+
+
+
+
+
 

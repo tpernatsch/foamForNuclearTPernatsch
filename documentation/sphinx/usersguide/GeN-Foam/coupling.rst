@@ -1,5 +1,8 @@
 .. _couplingGF:
 
+===========================
+Achieving coupled solutions 
+===========================
 
 Coupling logic
 ==============
