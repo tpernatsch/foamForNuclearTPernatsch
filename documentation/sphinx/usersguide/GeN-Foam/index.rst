@@ -1,4 +1,4 @@
-.. _usersguide_Gen-Foam:
+.. _usersguideGF:
 
 =====================
 GeN-Foam User's Guide
@@ -24,3 +24,5 @@ through the essential aspects of using GeN-Foam to perform simulations.
    postProcessing
    fmu
    tips_and_tricks
+
+   GeN-Foam
