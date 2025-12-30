@@ -1,4 +1,4 @@
-.. _installation_GeN-Foam:
+.. _installationGF:
 
 ============
 Installation
