@@ -14,12 +14,10 @@ One can find detailed, commented examples in most tutorials. See for instance
 `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/neutroRegion/neutronicsProperties>`_ (single phase).
 
 N.B: The parameter *model* used to define what type of simulation needs to be
-performed as been replaced by the selection of model in the *system/regionsDict*
+performed has been replaced by the selection of model in the *system/regionsDict*
 (see :ref:`Coupling solvers <userguide_coupling>`).
 
 
-Models
-~~~~~~
 
 Neutronics calculations are performed by classes derived from *neutronics* that
 contain specific sub-solvers:

@@ -69,10 +69,10 @@ temperature and the Nusselt number. Each cellZone can host one passive structure
 and one powerModel.
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 3
 
     thermalHydraulicsSolvers
-    porousMedium
+    porousMedium/index
     thermalAndTurbulenceProperties
     thermalHydraulicsSubScaleStructures
     settingCase

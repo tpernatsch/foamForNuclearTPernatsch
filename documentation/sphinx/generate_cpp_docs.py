@@ -665,6 +665,48 @@ def generate_cppapi_index(
         f.write(cppapi_index)
 
 
+
+
+def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
+    """
+    Append a Sphinx toctree block at the end of `target_rst` file,
+    listing all .rst files found in `folder` and its subfolders.
+
+    Parameters
+    ----------
+    target_rst : str
+        Path to the RST file where the toctree will be appended.
+    folder : str
+        Path to the folder containing .rst files (e.g., dragModels).
+    maxdepth : int
+        Depth for the toctree (default = 1).
+    """
+    folder_path = Path(folder).resolve()
+    rst_files = sorted([f for f in folder_path.rglob("*.rst")])
+
+    if not rst_files:
+        print(f"No .rst files found in {folder_path}")
+        return
+
+    # Build toctree block
+    toctree_block = [
+        "\n.. toctree::",
+        f"   :maxdepth: {maxdepth}",
+        "",
+    ]
+    for f in rst_files:
+        # Use relative path for Sphinx
+        rel_path = f.relative_to(Path(target_rst).parent)
+        toctree_block.append(f"   {rel_path.as_posix()}")
+
+    # Append to target RST file
+    with open(target_rst, "a", encoding="utf-8") as out_file:
+        out_file.write("\n".join(toctree_block) + "\n")
+
+    print(f"Appended recursive toctree with {len(rst_files)} entries to {target_rst}")
+
+
+
 #==============================================================================*
 # Main function to generate both rst files and index.rst
 
@@ -745,6 +787,16 @@ def main():
             ("solutionControl", "Solution control", 1, True),
         ]
     )
+
+    # Step 3: Append indexes in dynamic files
+    
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/porousMedium/FFdrag.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels",
+        maxdepth=2
+    )
+
+
 
     print("End")
 

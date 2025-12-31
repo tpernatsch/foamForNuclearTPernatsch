@@ -1,11 +1,3 @@
-
-Porous-medium properties
-========================
-
-The various parameters to be used in a porous-medium simulation can be set using
-the *phaseProperties* dictionary.
-
-
 The *phaseProperties* dictionary
 --------------------------------
 
@@ -30,27 +22,7 @@ flow-regime map can be found in
 `1D_PSBT_SC <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties>`_.
 
 
-Drag models
------------
 
-Currently, available models to describe pressure drops induced by the sub-scale
-structure or by a second phase include:
-
-.. list-table:: Fluid-fluid drag models (:ref:`FFDragCoefficientModel.H <FFDragCoefficientModel>`)
-    :widths: 50 50
-
-    * - Autruffe
-      - :ref:`AutruffeFFDragCoefficient.H <AutruffeFFDragCoefficient>`
-    * - Bestion
-      - :ref:`BestionFFDragCoefficient.H <BestionFFDragCoefficient>`
-    * - Bestion as in TRACE
-      - :ref:`BestionTRACEFFDragCoefficient.H <BestionTRACEFFDragCoefficient>`
-    * - No Kazimi
-      - :ref:`NoKazimiFFDragCoefficient.H <NoKazimiFFDragCoefficient>`
-    * - Schiller Naumann
-      - :ref:`SchillerNaumannFFDragCoefficient.H <SchillerNaumannFFDragCoefficient>`
-    * - Wallis
-      - :ref:`WallisFFDragCoefficient.H <WallisFFDragCoefficient>`
 
 
 .. list-table:: Fluid-structure drag models (:ref:`FSDragCoefficientModel.H <FSDragCoefficientModel>`)
@@ -253,3 +225,10 @@ throughout the various regimes.
     coordinate system. Besides drag models, the local coordinate system can be
     used also for defining a tortuosity (keyword *localTortuosity*, to be
     defined as a vector in the local coordinate system).
+
+
+
+.. toctree::
+    :maxdepth: 3
+
+    dragModels
