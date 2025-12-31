@@ -1,3 +1,6 @@
+.. _userguide_thermalhydraulics_porousMedium:
+
+
 The *phaseProperties* dictionary
 --------------------------------
 
