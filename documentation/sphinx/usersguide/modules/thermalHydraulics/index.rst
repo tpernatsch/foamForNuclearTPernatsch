@@ -69,7 +69,8 @@ temperature and the Nusselt number. Each cellZone can host one passive structure
 and one powerModel.
 
 .. toctree::
-    :maxdepth: 3
+   :numbered:
+   :maxdepth: 3
 
     porousMedium/index
 
