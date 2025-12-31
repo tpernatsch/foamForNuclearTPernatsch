@@ -29,7 +29,6 @@ flow-regime map can be found in
 
 
 .. toctree::
-   :numbered:
-   :maxdepth: 3
+   :maxdepth: 2
 
     FFdrag
