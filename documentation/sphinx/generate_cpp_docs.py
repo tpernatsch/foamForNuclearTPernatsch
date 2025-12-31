@@ -667,6 +667,10 @@ def generate_cppapi_index(
 
 
 
+
+import os
+from pathlib import Path
+
 def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
     """
     Append a Sphinx toctree block at the end of `target_rst` file,
@@ -695,9 +699,9 @@ def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: 
         "",
     ]
     for f in rst_files:
-        # Use relative path for Sphinx
-        rel_path = f.relative_to(Path(target_rst).parent)
-        toctree_block.append(f"   {rel_path.as_posix()}")
+        # Compute relative path using os.path.relpath
+        rel_path = os.path.relpath(f, start=Path(target_rst).parent)
+        toctree_block.append(f"   {rel_path}")
 
     # Append to target RST file
     with open(target_rst, "a", encoding="utf-8") as out_file:
