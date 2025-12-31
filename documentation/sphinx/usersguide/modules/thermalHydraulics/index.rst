@@ -71,8 +71,5 @@ and one powerModel.
 .. toctree::
     :maxdepth: 3
 
-    thermalHydraulicsSolvers
     porousMedium/index
-    thermalAndTurbulenceProperties
-    thermalHydraulicsSubScaleStructures
-    settingCase
+
