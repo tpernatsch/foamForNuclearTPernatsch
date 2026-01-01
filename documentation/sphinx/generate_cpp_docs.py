@@ -602,7 +602,7 @@ def generate_cppapi_index(
         if (sectionDepth == 1):
             cppapi_index += f"{'':-<{len(sectionName)}}\n\n"
         if (sectionDepth == 2):
-            cppapi_index += f"{'':^<{len(sectionName)}}\n\n"
+            cppapi_index += f"{'':~<{len(sectionName)}}\n\n"
 
         if (isAddContent):
             cppapi_index += ".. toctree::\n"

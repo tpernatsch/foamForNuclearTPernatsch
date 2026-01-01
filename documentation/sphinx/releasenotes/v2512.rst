@@ -1,22 +1,22 @@
-===================
+-------------------
 What's New in v2512
-===================
+-------------------
 
 .. currentmodule:: foamForNuclear
 
 This is the very first release of **foamForNuclear**: hello world!
 
-------------
+
 New Features
-------------
+============
 
----------
+
 Bug Fixes
----------
+=========
 
-------------
+
 Contributors
-------------
+============
 
 This release contains contributions from the following people:
 - All past contributors to GeN-Foam and OFFBEAT (see header files)
