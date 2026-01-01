@@ -12,7 +12,6 @@ through the essential aspects of using foamForNuclear to perform simulations.
    :numbered:
    :maxdepth: 3
 
-   User's Guide <self>
    installation
    GeN-Foam/index
    OFFBEAT/index

@@ -12,5 +12,4 @@ through the essential aspects of using OFFBEAT to perform simulations.
    :numbered:
    :maxdepth: 3
 
-   OFFBEAT <self>
    offbeat
