@@ -38,10 +38,10 @@ Building on this combined heritage, **foamForNuclear** provides a **modular and 
    :maxdepth: 1
 
    Home <self>
-   releasenotes/index
    usersguide/index
 
 .. pythonapi/index
+   releasenotes/index
    cppapi/index
    theoryReferences
    V_Vreferences
