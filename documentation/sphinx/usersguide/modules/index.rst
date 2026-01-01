@@ -17,8 +17,8 @@ Form a programming perspective, modules are hierachical C++ structures where a p
    :maxdepth: 3
 
    Physics Modules <self>
-   neutronics/index
    thermoMechanics
    openfoamImportedSolvers
 
 .. thermalHydraulics/index
+   neutronics/index
