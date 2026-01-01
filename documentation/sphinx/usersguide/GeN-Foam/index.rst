@@ -14,6 +14,7 @@ through the essential aspects of using GeN-Foam to perform simulations.
    :numbered:
    :maxdepth: 3
 
+   GeN-Foam <self>
    installation
    meshing
    workflow
