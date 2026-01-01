@@ -4,8 +4,6 @@
 Installation
 ------------
 
-
-
 Building OpenFOAM
 =================
 
