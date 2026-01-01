@@ -13,8 +13,6 @@ All thermal-hydraulics functionalities are handled by the class
 `foamForNuclear/src/porousMediaModels <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/src/porousMediaModels>`_.
 
 
-.. include:: documentation/sphinx/cppapi/generated/modules/thermalHydraulics/thermalHydraulicsModel.rst
-
 
 .. toctree::
    :numbered:
@@ -25,6 +23,8 @@ All thermal-hydraulics functionalities are handled by the class
     thermalAndTurbulenceProperties
     porousMedium/index
     settingCase
+
+
 
     
 
