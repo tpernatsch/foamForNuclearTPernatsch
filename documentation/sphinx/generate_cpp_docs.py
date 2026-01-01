@@ -678,7 +678,8 @@ from pathlib import Path
 def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
     """
     Append a Sphinx toctree block at the end of `target_rst` file,
-    listing all .rst files found in `folder` and its subfolders.
+    listing all .rst files found in `folder` and its subfolders,
+    but only if a corresponding .C file with the same name exists.
 
     Parameters
     ----------
@@ -696,13 +697,26 @@ def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: 
         print(f"No .rst files found in {folder_path}")
         return
 
+    # Filter .rst files to only those with a corresponding .C file
+    filtered_rst_files = []
+    for rst_file in rst_files:
+        c_file = rst_file.with_suffix(".C")
+        if c_file.exists():
+            filtered_rst_files.append(rst_file)
+        else:
+            print(f"Skipping {rst_file.name}: no corresponding .C file found")
+
+    if not filtered_rst_files:
+        print(f"No .rst files with corresponding .C files found in {folder_path}")
+        return
+
     # Build toctree block
     toctree_block = [
         "\n.. toctree::",
         f"   :maxdepth: {maxdepth}",
         "",
     ]
-    for f in rst_files:
+    for f in filtered_rst_files:
         # Compute relative path using os.path.relpath
         rel_path = os.path.relpath(f, start=Path(target_rst).parent)
         toctree_block.append(f"   {rel_path}")
@@ -711,7 +725,7 @@ def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: 
     with open(target_rst, "a", encoding="utf-8") as out_file:
         out_file.write("\n".join(toctree_block) + "\n")
 
-    print(f"Appended recursive toctree with {len(rst_files)} entries to {target_rst}")
+    print(f"Appended recursive toctree with {len(filtered_rst_files)} entries to {target_rst}")
 
 
 

@@ -9,7 +9,7 @@ specific sub-solver to be used in a simulation can be selected in the solvers
 dictionary like explained in the coupling section.
 
 See refs:
-    Refs. [@Radman2019ADesign] [:ref:`RADMAN2021111178 <RADMAN2021111178>`]
+    [:ref:`RADMAN2021111178 <RADMAN2021111178>`]
     [:ref:`RADMAN2021111422 <RADMAN2021111422>`] 
 
     
