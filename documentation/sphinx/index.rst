@@ -35,7 +35,7 @@ Building on this combined heritage, **foamForNuclear** provides a **modular and 
 
 .. toctree::
    :hidden:
-   :maxdepth: 1
+   :maxdepth: 3
 
    Home <self>
    usersguide/index
