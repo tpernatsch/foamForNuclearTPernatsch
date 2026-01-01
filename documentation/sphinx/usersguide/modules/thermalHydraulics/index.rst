@@ -12,7 +12,6 @@ Thermal-hydraulics
     settingCase
     thermalAndTurbulenceProperties
     porousMedium/index
-    settingCase
 
 
 
