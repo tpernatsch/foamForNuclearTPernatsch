@@ -1,6 +1,6 @@
-=========
+---------
 Tutorials
-=========
+---------
 
 A set of tutorials is distributed to provide a relatively comprehensive outlook
 on the functionalities of FFN. In each tutorial:

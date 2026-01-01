@@ -18,7 +18,6 @@ through the essential aspects of using foamForNuclear to perform simulations.
    GeN-Foam/index
    OFFBEAT/index
    modules/index
-   fmu
    tutorials
 
 
