@@ -24,8 +24,6 @@ calculating the heat transfer with the fuel based on the cladding surface
 temperature and the Nusselt number. Each cellZone can host one passive structure
 and one powerModel.
 
-
-
 Both single- and two-phase simulations can be performed using GeN-Foam. All
 sub-solvers were developed for a coarse-mesh porous-medium treatment of complex
 structures such as core and heat exchanger, and for a standard RANS treatment of
@@ -61,4 +59,5 @@ structures like assembly wrappers or reflectors.
 .. toctree::
    :maxdepth: 2
 
-    FFdrag
+   The phaseProperties dictionary <self>
+   FFdrag
