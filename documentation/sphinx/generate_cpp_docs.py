@@ -800,7 +800,7 @@ def main():
         maxdepth=2
     )
     append_toctree_for_folder_recursive(
-        target_rst="documentation\sphinx\usersguide\modules\thermalHydraulics\thermalHydraulicsSolvers.rst",
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/thermalHydraulicsSolvers.rst",
         folder="documentation/sphinx/cppapi/generated/modules/thermalHydraulics/",
         maxdepth=2
     )
