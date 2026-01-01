@@ -2,9 +2,9 @@
 Contributors
 ============
 
-
+-----------------
 Active Developers
-=================
+-----------------
 
 - Carlo Fiorina, TAMU (Texas A&M University), USA
 - Alessandro Scolaro, EPFL (Swiss Federal Technology Institute of Lausanne), Switzerland
@@ -12,9 +12,9 @@ Active Developers
 - Thomas Guilbaud, EPFL, Switzerland
 - Giovanni Nervi, EPFL, Switzerland
 
-
+------------
 Contributors
-============
+------------
 
 Contributors are individually acknowledged in each source file of foamForNuclear.
 
