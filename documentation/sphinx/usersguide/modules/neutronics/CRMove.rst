@@ -90,7 +90,7 @@ OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in
 *system/neutroRegion*.
 
 
---------------------------
+
 Subcritical point-kinetics
 --------------------------
 

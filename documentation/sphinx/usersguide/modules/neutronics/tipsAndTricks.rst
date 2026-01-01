@@ -1,6 +1,7 @@
 .. _neutronics_tipsAndTricks:
 
-
+Tips and tricks
+---------------
 
 .. note ::
     ``defaultPrec`` field has 1/m3 units except for the adjoint solver that needs 1/m2/s.
