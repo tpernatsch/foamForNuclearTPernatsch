@@ -2,14 +2,15 @@
 How to contribute
 =================
 
+-------------
 Merge request
-=============
+-------------
 
 Contributions are accepted using standard GitLab procedures.
 
-
+---------
 Tutorials
-=========
+---------
 
 Tutorials should always include:
 
@@ -20,9 +21,9 @@ Tutorials should always include:
   necessary (e.g for restart)
 - Optional: ``Alltest``
 
-
+-----------------
 C++ documentation
-=================
+-----------------
 
 All contributed code should follow the guidelines below.
 
@@ -30,7 +31,7 @@ For code styling refer to `OpenFOAM styling <https://openfoam.org/dev/coding-sty
 
 
 .H header
----------
+=========
 
 The header of the ``.H`` file requires after the license:
 
