@@ -2,18 +2,18 @@
 
 
 Thermal and Turbulence Properties
-=================================
+---------------------------------
 
 
 The *g* dictionary
-------------------
+~~~~~~~~~~~~~~~~~~
 
 The *g* dictionary can be found under *constant/fluidRegion/*. It is a standard
 OpenFOAM dictionary that allows specifying the gravitational acceleration.
 
 
 The *thermophysicalProperties* dictionary
------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The *thermophysicalProperties* dictionary can be found under
 *constant/fluidRegion/*. It is a standard OpenFOAM dictionary that allows
@@ -29,7 +29,7 @@ One can find a detailed, commented example in the tutorials
 
 
 Turbulence properties
----------------------
+~~~~~~~~~~~~~~~~~~~~~
 
 
 The *turbulenceProperties* dictionary can be found under
