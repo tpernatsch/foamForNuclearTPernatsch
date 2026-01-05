@@ -1,4 +1,6 @@
 
+.. rubric:: foamForNuclear
+
 **foamForNuclear** is a **general-purpose, OpenFOAM®-based multiphysics platform** for the analysis and design of nuclear systems. It was established in 2025 through the **integration and extension** of two mature OpenFOAM-based projects—**GeN-Foam** and **OFFBEAT**—both of which had been developed, verified, and validated over more than a decade. GeN-Foam was originally conceived for reactor-scale multiphysics simulations, while OFFBEAT focused on advanced nuclear fuel performance modeling and nonlinear thermo-mechanics.
 
 Building on this combined heritage, **foamForNuclear** provides a **modular and extensible framework** capable of simulating a broad range of coupled physics, from core neutronics and thermal-hydraulics to advanced thermomechanics and detailed fuel behavior. Each physical model is implemented as an independent **module** that solves a specific set of governing equations. These modules are accessed through two user-facing applications:
