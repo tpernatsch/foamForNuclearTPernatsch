@@ -727,6 +727,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
         Minimize the number of `Point` by removing duplicate points. The
         removing operation is only performed during blockMeshDict writting.
         Default `False`.
+    isSafeCoincidenceMode : bool
+        If set to `False`, use a faster but risky hashable approach to found all
+        coincident points.
+        Default `True`.
     blocks : list[Block]
         List of blocks.
     faces : list[Face]
@@ -756,6 +760,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         self.scale = scale
         self.isReducedCells: bool = False
         self.isMergeCoincidentPoints: bool = False
+        self.isSafeCoincidenceMode: bool = True
 
         self.blocks: list[Block] = []
         self.faces: list[Face] = []
@@ -5401,6 +5406,123 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(newBlock)
 
 
+    def extrude_normal_ring_section(
+            self,
+            targetBlock: Block,
+            facename: str,
+            name: str,
+            r: float,
+            xCenter: float,
+            yCenter: float,
+            nr: int=1,
+            grad: float=1
+        ) -> Block:
+        """
+        Extrude a block from the normal face of the target block preserving the
+        new radius from a specified arc center. The ring section axis is along
+        the Z-direction.
+
+        Equivalence between `facename` and new block generation function:
+        - `left`: `add_left(...)`
+        - `right`: `add_right(...)`
+        - `front`: `add_front(...)`
+        - `back`: `add_back(...)`
+
+        Parameters
+        ----------
+        targetBlock : Block
+            Target block to extrude.
+        facename : str
+            Name of the face to extrude from the `targetBlock`. Options (
+            `left`, `right`, `front`, `back`).
+        name : str
+            Name of the extruded block.
+        r : float
+            New radius traced by the extrusion.
+        xCenter : float
+            X-coordinate of the axis center.
+        yCenter : float
+            Y-coordinate of the axis center.
+        nr : int
+            Number of cells along the extrusion (default `1`).
+        grad : float
+            Grading along the extrusion (default `1`).
+        """
+        check_type("targetBlock", targetBlock, Block)
+        check_type("facename", facename, str)
+        check_value("facename", facename, _FACE_NAME_TYPES)
+        check_type("name", name, str)
+        check_type("r", r, (float, int))
+        check_positive("r", r, is_strict=True)
+        check_type("xCenter", xCenter, (float, int))
+        check_type("yCenter", yCenter, (float, int))
+        check_type("nr", nr, int)
+        check_positive("nr", nr, is_strict=True)
+        check_type("grad", grad, (float, int))
+
+        facePoints = targetBlock.get_face(facename)
+
+        newPoints = []
+        for point in facePoints:
+            centerPoint = Vector(xCenter, yCenter, point.z)
+            normalVector = point - centerPoint
+            normalVector.normalize(r)
+            newPos = normalVector + centerPoint
+            newPoints.append(Point(newPos.x, newPos.y, point.z))
+
+        newBlock = None
+
+        if (facename == 'left'):
+            newPoints[1], newPoints[2], newPoints[3] = newPoints[3], newPoints[1], newPoints[2]
+            newBlock = self.add_left(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                nx=nr, gradx=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(0, 3, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(4, 7, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        if (facename == 'right'):
+            newPoints[2], newPoints[3] = newPoints[3], newPoints[2]
+            newBlock = self.add_right(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                nx=nr, gradx=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(1, 2, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(5, 6, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        if (facename == 'front'):
+            newPoints[2], newPoints[3] = newPoints[3], newPoints[2]
+            newBlock = self.add_front(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                ny=nr, grady=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(0, 1, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(4, 5, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        if (facename == 'back'):
+            newPoints[0], newPoints[1], newPoints[3] = newPoints[3], newPoints[0], newPoints[1]
+            newBlock = self.add_back(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                ny=nr, grady=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(2, 3, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(6, 7, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        return(newBlock)
+
+
     def add_by_symmetry_x(
             self,
             name: str,
@@ -5429,37 +5551,73 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 block.ny = 1
                 block.nz = 1
             if (block.isPrint):
-                if (self.isMergeCoincidentPoints):
-                    for point in block.points:
-                        if (point in self.pointsPlaced):
-                            point.id = [p.id for p in self.pointsPlaced if p == point][0]
-
                 text += f"{tab}{block}\n"
+
         text += ");\n"
         return(text)
 
     def print_points(self) -> str:
-        self.pointsPlaced = []
-        for block in self.blocks:
-            for point in block.points:
-                if (point.isIndexed and
-                    (
-                        not self.isMergeCoincidentPoints
-                        or
-                        (point not in self.pointsPlaced)
-                    )
-                ):
+        self.allPoints = [
+            point
+            for block in self.blocks
+            for point in block.points
+            if point.isIndexed
+        ]
+
+        # Find duplicate points
+        if (self.isMergeCoincidentPoints and self.isSafeCoincidenceMode):
+            self.pointsPlaced = []
+            alreadyPlaced = []
+            for point in tqdm.tqdm(self.allPoints, desc=f'{self.region} points duplicate'):
+                if (point in self.pointsPlaced):
+                    alreadyPlaced.append(point)
+                else:
                     self.pointsPlaced.append(point)
+
+        elif (self.isMergeCoincidentPoints and not self.isSafeCoincidenceMode):
+            self.pointsPlaced = []
+            alreadyPlaced = []
+            seen = set()
+
+            for point in tqdm.tqdm(self.allPoints, desc=f"{self.region} points duplicate"):
+                if (point in seen):
+                    alreadyPlaced.append(point)
+                else:
+                    seen.add(point)
+                    self.pointsPlaced.append(point)
+
+        else:
+            self.pointsPlaced = self.allPoints
+
 
         # Set unique id to each point
         for i, point in enumerate(self.pointsPlaced):
             self.pointsPlaced[i].id = i
 
         # Get unique list of id
-        pointsIds = set([p.id for p in self.pointsPlaced])
+        pointsIds = list(set([p.id for p in self.pointsPlaced]))
 
         # Filter unique list of points
-        self.pointsPlaced = [self.pointsPlaced[pointId] for pointId in list(pointsIds)]
+        self.pointsPlaced = [self.pointsPlaced[pointId] for pointId in pointsIds]
+
+        # Change id of duplicated points
+        if (self.isMergeCoincidentPoints and self.isSafeCoincidenceMode):
+            for point in tqdm.tqdm(alreadyPlaced, desc=f'{self.region} points change id'):
+                for pointUnique in self.pointsPlaced:
+                    if (point == pointUnique):
+                        point.id = pointUnique.id
+                        break
+
+        elif (self.isMergeCoincidentPoints and not self.isSafeCoincidenceMode):
+            point_to_id = {
+                p: pid for p, pid in zip(self.pointsPlaced, pointsIds)
+            }
+
+            for point in tqdm.tqdm(alreadyPlaced, desc=f'{self.region} points change id'):
+                pid = point_to_id.get(point)
+                if (pid is not None):
+                    point.id = pid
+
 
         # Sort list of points by id
         pointsSorted = sorted(self.pointsPlaced, key=lambda p: p.id)
@@ -5475,9 +5633,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
     def print_edges(self) -> str:
         text = "edges\n"
         text += "(\n"
+        pointIdEdges = []
         for block in self.blocks:
             for edge in block.edges:
-                text += f"{tab}{edge}\n"
+                edgePoints = (edge.point1.id, edge.point2.id)
+                if (edgePoints not in pointIdEdges and edgePoints[::-1] not in pointIdEdges):
+                    text += f"{tab}{edge}\n"
+                    pointIdEdges.append(edgePoints)
 
             for edgeProjection in block.edgeProjection:
                 text += f"{tab}projectCurve {edgeProjection['verticeIdx1']} {edgeProjection['verticeIdx2']} ({edgeProjection['geometryNames']})\n"
