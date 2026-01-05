@@ -9,7 +9,6 @@ TH class
 .. toctree::
    :maxdepth: 3
 
-   Thermal-hydraulics <self>
    thermalHydraulicsSolvers
    settingCase
    thermalAndTurbulenceProperties

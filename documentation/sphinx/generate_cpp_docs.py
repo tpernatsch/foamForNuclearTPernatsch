@@ -667,7 +667,7 @@ def generate_cppapi_index(
 def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
     """
     Append a Sphinx toctree block at the end of `target_rst` file,
-    listing all .rst files found in `folder` and its subfolders.
+    listing all .rst files found in subfolders of `folder` (excluding root-level files).
 
     Parameters
     ----------
@@ -679,10 +679,11 @@ def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: 
         Depth for the toctree (default = 1).
     """
     folder_path = Path(folder).resolve()
-    rst_files = sorted([f for f in folder_path.rglob("*.rst")])
+    # Only include .rst files that are NOT directly under folder_path
+    rst_files = sorted([f for f in folder_path.rglob("*.rst") if f.parent != folder_path])
 
     if not rst_files:
-        print(f"No .rst files found in {folder_path}")
+        print(f"No .rst files found in subfolders of {folder_path}")
         return
 
     # Build toctree block
@@ -692,7 +693,6 @@ def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: 
         "",
     ]
     for f in rst_files:
-        # Compute relative path using os.path.relpath
         rel_path = os.path.relpath(f, start=Path(target_rst).parent)
         toctree_block.append(f"   {rel_path}")
 
@@ -701,6 +701,8 @@ def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: 
         out_file.write("\n".join(toctree_block) + "\n")
 
     print(f"Appended recursive toctree with {len(rst_files)} entries to {target_rst}")
+
+
 
 
 
