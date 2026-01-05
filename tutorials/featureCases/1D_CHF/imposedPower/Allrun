@@ -1,16 +1,39 @@
 #!/bin/sh
-exe="GeN-Foam"
+#----------------------------------------------------------------------------#
+#       ______          _   __           ______                              #
+#      / ____/  ___    / | / /          / ____/  ____   ____ _   ____ ___    #
+#     / / __   / _ \  /  |/ /  ______  / /_     / __ \ / __ `/  / __ `__ \   #
+#    / /_/ /  /  __/ / /|  /  /_____/ / __/    / /_/ // /_/ /  / / / / / /   #
+#    \____/   \___/ /_/ |_/          /_/       \____/ \__,_/  /_/ /_/ /_/    #
+#    Copyright (C) 2015 - 2022 EPFL                                          #
+#----------------------------------------------------------------------------#
+
+cd ${0%/*} || exit 1    # Run from this directory
+
+#==============================================================================*
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#==============================================================================*
+
+# Run blockMesh for the fluid region
+blockMesh -region fluidRegion
+
+#==============================================================================*
 
 # Start gnuplot if it exist
 if command -v gnuplot &> /dev/null
 then
-    gnuplot -e "log='log.$exe'" residuals - &> /dev/null &
+    gnuplot -e "log='log.GeN-Foam'" residuals - &> /dev/null &
 else
     echo "gnuplot could not be found"
 fi
 
 # Run GeN-Foam
-$exe | tee "log.$exe"
+GeN-Foam | tee "log.GeN-Foam"
 
 # Kill gnuplot if it was started
 pkill -x gnuplot &> /dev/null &
+
+#==============================================================================*
