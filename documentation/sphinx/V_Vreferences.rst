@@ -281,9 +281,9 @@ Others
   - Relevance - **GeN-Foam**. Summary of the V&V status in 2022.
 
 
----------------------------------------
+--------------------------------------------
 To be added (maybe) to categories above @Ale
----------------------------------------
+--------------------------------------------
 
 - Investigation on the effect of eccentricity for fuel disc irradiation tests
   A Scolaro, P Van Uffelen, C Fiorina, A Schubert, I Clifford, A Pautz

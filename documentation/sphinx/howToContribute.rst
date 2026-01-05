@@ -70,7 +70,7 @@ The header of the ``.H`` file requires after the license:
 
 
 .C header
----------
+=========
 
 The header of the ``.C`` only requires the banner and the license. It doesn't
 require description or duplicated information from the ``.H`` file.
@@ -118,7 +118,7 @@ require description or duplicated information from the ``.H`` file.
 
 
 YAML Doc file
--------------
+=============
 
 Provide a ``.yaml`` file for each model. A new merge request with a new class
 without a ``.yaml`` will be denied.

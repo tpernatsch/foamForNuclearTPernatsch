@@ -102,3 +102,5 @@ source_suffix = {
 
 def setup(app):
     app.add_js_file('filter-table.js')
+
+
