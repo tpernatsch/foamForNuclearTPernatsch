@@ -28,7 +28,7 @@ if (True):
         thMesh.extrude_normal_ring_section(
             targetBlock=block,
             facename=facename,
-            name=f"extrude_{facename}",
+            name=f"extrude_out_{facename}",
             r=outerRadius + dr,
             xCenter=0,
             yCenter=0,
@@ -45,12 +45,40 @@ if (True):
         thMesh.extrude_normal_ring_section(
             targetBlock=block,
             facename=facename,
-            name=f"extrude_{facename}",
+            name=f"extrude_in_{facename}",
             r=0.25,
             xCenter=-0.5,
             yCenter=0.25,
             nr=3
         )
+
+
+standaloneFaces = thMesh.get_standalone_faces_as_list_blocks()
+
+print(len(standaloneFaces))
+
+for block, facename, barycenter in standaloneFaces:
+    if ("extrude_out_" not in block.name or facename in ['top', 'bottom']):
+        continue
+
+    normal = block.get_face_normal(faceName=facename)
+
+    print(f"{block.name:18} {facename:6} {barycenter} {normal} {normal.dot(barycenter)}")
+
+    if (normal.dot(barycenter) <= 0):
+        continue
+
+    thMesh.extrude_normal_ring_section(
+        targetBlock=block,
+        facename=facename,
+        name=f"extrude_expand_{facename}",
+        r=5,
+        xCenter=0,
+        yCenter=0,
+        nr=3
+    )
+
+thMesh.isMergeCoincidentPoints = True
 
 
 solver = ffn.ThermalHydraulicsSolver(region=thMesh.region, mesh=thMesh, solver='onePhase')

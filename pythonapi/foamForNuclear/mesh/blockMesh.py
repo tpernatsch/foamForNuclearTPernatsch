@@ -4521,7 +4521,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             excludeFacename: list[str]=[]
         ) -> list[Face]:
         """
-        Extract all standalone faces.
+        Extract all standalone faces based on patch names.
 
         Parameters
         ----------
@@ -4554,12 +4554,53 @@ class BlockMesh(OpenFOAMFile, Mesh):
         standaloneFaces = [face for face in self.faces if face.name not in coupledFaces]
 
         if (len(includeFacename) != 0):
-            standaloneFaces = [face for face in standaloneFaces if any([regex in face.name for regex in includeFacename])]
+            standaloneFaces = [
+                face
+                for face in standaloneFaces
+                if any([regex in face.name for regex in includeFacename])
+            ]
 
         if (len(excludeFacename) != 0):
-            standaloneFaces = [face for face in standaloneFaces if all([regex not in face.name for regex in excludeFacename])]
+            standaloneFaces = [
+                face
+                for face in standaloneFaces
+                if all([regex not in face.name for regex in excludeFacename])
+            ]
 
         return(standaloneFaces)
+
+
+    def get_standalone_faces_as_list_blocks(self):
+        """
+        Extract all standalone faces based on face vertices coincidence. If two
+        faces from two blocks share the same unique barycenter, and assuming
+        that the mesh is strictly conformal, the two faces are assumed to be
+        overlapping. Otherwise, if no matching barycenter is found, the face is
+        assumed to be standalone.
+
+        Return
+        ------
+        List of standalone faces as [(block1, facename1, barycenter1), ...]
+        """
+
+        allBarycenters = set()
+        overlapBarycenters = set()
+        allFaceList = []
+        for block in self.blocks:
+            for facename in _FACE_NAME_TYPES:
+                barycenter = block.get_face_barycenter(block.get_face(faceName=facename))
+
+                allFaceList.append((block, facename, barycenter))
+
+                if (barycenter in allBarycenters):
+                    overlapBarycenters.add(barycenter)
+
+                allBarycenters.add(barycenter)
+
+        faceList = [(b, f, c) for b, f, c in allFaceList if c not in overlapBarycenters]
+
+        return(faceList)
+
 
 
     def add_baffles(
