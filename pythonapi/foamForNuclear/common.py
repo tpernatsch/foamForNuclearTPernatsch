@@ -150,6 +150,17 @@ class Vector:
             abs(self.z - value.z) <= eps
         )
 
+    def __hash__(self):
+        """
+        To be used with care
+        """
+        eps = 1e-8
+        return hash((
+            round(self.x / eps),
+            round(self.y / eps),
+            round(self.z / eps),
+        ))
+
     def __add__(self, rhs):
         return(Vector(
             x=self.x + rhs.x,

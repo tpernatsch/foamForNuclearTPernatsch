@@ -727,6 +727,10 @@ class BlockMesh(OpenFOAMFile, Mesh):
         Minimize the number of `Point` by removing duplicate points. The
         removing operation is only performed during blockMeshDict writting.
         Default `False`.
+    isSafeCoincidenceMode : bool
+        If set to `False`, use a faster but risky hashable approach to found all
+        coincident points.
+        Default `True`.
     blocks : list[Block]
         List of blocks.
     faces : list[Face]
@@ -756,6 +760,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
         self.scale = scale
         self.isReducedCells: bool = False
         self.isMergeCoincidentPoints: bool = False
+        self.isSafeCoincidenceMode: bool = True
 
         self.blocks: list[Block] = []
         self.faces: list[Face] = []
@@ -1835,6 +1840,115 @@ class BlockMesh(OpenFOAMFile, Mesh):
             self.add_boundary(newFace)
 
         return(newBlock)
+
+
+    def create_quarter_cylinder_along_z(
+            self,
+            name: str,
+            radius: float,
+            lowZ: float,
+            highZ: float,
+            nx: int, ny: int, nz: int,
+            x: float=0, y: float=0,
+            angleStart: float=0,
+            isAddAllBC: bool=False,
+            isAddTopBC: bool=False,
+            isAddBottomBC: bool=False,
+            isAddCylinderBC: bool=False,
+            isAddFrontBC: bool=False,
+            isAddLeftBC: bool=False,
+        ):
+        """
+        Create a cylinder along the Z-axis using 3 blocks. The edge faces are
+        oriented normal to -X and -Y if angleStart = 0. The central block has a
+        length half the radius.
+
+        Parameters
+        ----------
+        angleStart : float
+            Starting angle in degree
+
+        Return
+        ------
+            (centerBlock, rightBlock, backBlock)
+        """
+        sqrt2 = np.sqrt(2)
+        # Convert from deg to rad
+        deg = np.pi/180
+        angleStart = angleStart * deg
+
+        cost, sint = np.cos(angleStart), np.sin(angleStart)
+        cost2, sint2 = np.cos(angleStart+np.pi/4), np.sin(angleStart+np.pi/4)
+
+        rcost, rsint = radius * cost, radius * sint
+        rcost2, rsint2 = radius * cost2, radius * sint2
+        rsqrtcost2, rsqrtsint2 = radius/sqrt2 * cost2, radius/sqrt2 * sint2
+        r2cost, r2sint = radius/2 * cost, radius/2 * sint
+
+        centerBlock = self.create_block(name, [
+            Point(x,            y,              lowZ),
+            Point(x+r2cost,     y+r2sint,       lowZ),
+            Point(x+rsqrtcost2, y+rsqrtsint2,   lowZ),
+            Point(x-r2sint,     y+r2cost,       lowZ),
+            Point(x,            y,              highZ),
+            Point(x+r2cost,     y+r2sint,       highZ),
+            Point(x+rsqrtcost2, y+rsqrtsint2,   highZ),
+            Point(x-r2sint,     y+r2cost,       highZ)
+        ], nx, ny, nz)
+
+        rightBlock = self.add_right(centerBlock, name, [
+            Point(x+rcost,  y+rsint,    lowZ),
+            Point(x+rcost2, y+rsint2,   lowZ),
+            Point(x+rcost,  y+rsint,    highZ),
+            Point(x+rcost2, y+rsint2,   highZ),
+        ], nx=nx)
+
+        backBlock = self.add_back(centerBlock, name, [
+            rightBlock.points[2],
+            Point(x-rsint, y+rcost, lowZ),
+            rightBlock.points[6],
+            Point(x-rsint, y+rcost, highZ),
+        ], ny=rightBlock.nx)
+
+        rightBlock.add_edge_arc(1, 2, x=x, y=y, isOrigin=True)
+        rightBlock.add_edge_arc(5, 6, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(2, 3, x=x, y=y, isOrigin=True)
+        backBlock.add_edge_arc(6, 7, x=x, y=y, isOrigin=True)
+
+
+        idxFace = len(self.faces)
+
+        if (isAddAllBC or isAddTopBC):
+            topFace = Face(f"{name}Top_{idxFace}")
+            for block in [centerBlock, rightBlock, backBlock]:
+                topFace.add_sub_face(block.topFace())
+            self.add_boundary(topFace)
+
+        if (isAddAllBC or isAddBottomBC):
+            botFace = Face(f"{name}Bottom_{idxFace}")
+            for block in [centerBlock, rightBlock, backBlock]:
+                botFace.add_sub_face(block.bottomFace())
+            self.add_boundary(botFace)
+
+        if (isAddAllBC or isAddFrontBC):
+            wallFaceFront = Face(f"{name}WallFront_{idxFace}", boundaryType='wall')
+            wallFaceFront.add_sub_face(centerBlock.frontFace())
+            wallFaceFront.add_sub_face(rightBlock.frontFace())
+            self.add_boundary(wallFaceFront)
+
+        if (isAddAllBC or isAddLeftBC):
+            wallFaceLeft = Face(f"{name}WallLeft_{idxFace}", boundaryType='wall')
+            wallFaceLeft.add_sub_face(centerBlock.leftFace())
+            wallFaceLeft.add_sub_face(backBlock.leftFace())
+            self.add_boundary(wallFaceLeft)
+
+        if (isAddAllBC or isAddCylinderBC):
+            wallFaceCylinder = Face(f"{name}WallCylinder_{idxFace}", boundaryType='wall')
+            wallFaceCylinder.add_sub_face(rightBlock.rightFace())
+            wallFaceCylinder.add_sub_face(backBlock.backFace())
+            self.add_boundary(wallFaceCylinder)
+
+        return(centerBlock, rightBlock, backBlock)
 
 
     def create_cylinder_along_z(
@@ -4407,7 +4521,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             excludeFacename: list[str]=[]
         ) -> list[Face]:
         """
-        Extract all standalone faces.
+        Extract all standalone faces based on patch names.
 
         Parameters
         ----------
@@ -4440,12 +4554,53 @@ class BlockMesh(OpenFOAMFile, Mesh):
         standaloneFaces = [face for face in self.faces if face.name not in coupledFaces]
 
         if (len(includeFacename) != 0):
-            standaloneFaces = [face for face in standaloneFaces if any([regex in face.name for regex in includeFacename])]
+            standaloneFaces = [
+                face
+                for face in standaloneFaces
+                if any([regex in face.name for regex in includeFacename])
+            ]
 
         if (len(excludeFacename) != 0):
-            standaloneFaces = [face for face in standaloneFaces if all([regex not in face.name for regex in excludeFacename])]
+            standaloneFaces = [
+                face
+                for face in standaloneFaces
+                if all([regex not in face.name for regex in excludeFacename])
+            ]
 
         return(standaloneFaces)
+
+
+    def get_standalone_faces_as_list_blocks(self):
+        """
+        Extract all standalone faces based on face vertices coincidence. If two
+        faces from two blocks share the same unique barycenter, and assuming
+        that the mesh is strictly conformal, the two faces are assumed to be
+        overlapping. Otherwise, if no matching barycenter is found, the face is
+        assumed to be standalone.
+
+        Return
+        ------
+        List of standalone faces as [(block1, facename1, barycenter1), ...]
+        """
+
+        allBarycenters = set()
+        overlapBarycenters = set()
+        allFaceList = []
+        for block in self.blocks:
+            for facename in _FACE_NAME_TYPES:
+                barycenter = block.get_face_barycenter(block.get_face(faceName=facename))
+
+                allFaceList.append((block, facename, barycenter))
+
+                if (barycenter in allBarycenters):
+                    overlapBarycenters.add(barycenter)
+
+                allBarycenters.add(barycenter)
+
+        faceList = [(b, f, c) for b, f, c in allFaceList if c not in overlapBarycenters]
+
+        return(faceList)
+
 
 
     def add_baffles(
@@ -5292,6 +5447,123 @@ class BlockMesh(OpenFOAMFile, Mesh):
         return(newBlock)
 
 
+    def extrude_normal_ring_section(
+            self,
+            targetBlock: Block,
+            facename: str,
+            name: str,
+            r: float,
+            xCenter: float,
+            yCenter: float,
+            nr: int=1,
+            grad: float=1
+        ) -> Block:
+        """
+        Extrude a block from the normal face of the target block preserving the
+        new radius from a specified arc center. The ring section axis is along
+        the Z-direction.
+
+        Equivalence between `facename` and new block generation function:
+        - `left`: `add_left(...)`
+        - `right`: `add_right(...)`
+        - `front`: `add_front(...)`
+        - `back`: `add_back(...)`
+
+        Parameters
+        ----------
+        targetBlock : Block
+            Target block to extrude.
+        facename : str
+            Name of the face to extrude from the `targetBlock`. Options (
+            `left`, `right`, `front`, `back`).
+        name : str
+            Name of the extruded block.
+        r : float
+            New radius traced by the extrusion.
+        xCenter : float
+            X-coordinate of the axis center.
+        yCenter : float
+            Y-coordinate of the axis center.
+        nr : int
+            Number of cells along the extrusion (default `1`).
+        grad : float
+            Grading along the extrusion (default `1`).
+        """
+        check_type("targetBlock", targetBlock, Block)
+        check_type("facename", facename, str)
+        check_value("facename", facename, _FACE_NAME_TYPES)
+        check_type("name", name, str)
+        check_type("r", r, (float, int))
+        check_positive("r", r, is_strict=True)
+        check_type("xCenter", xCenter, (float, int))
+        check_type("yCenter", yCenter, (float, int))
+        check_type("nr", nr, int)
+        check_positive("nr", nr, is_strict=True)
+        check_type("grad", grad, (float, int))
+
+        facePoints = targetBlock.get_face(facename)
+
+        newPoints = []
+        for point in facePoints:
+            centerPoint = Vector(xCenter, yCenter, point.z)
+            normalVector = point - centerPoint
+            normalVector.normalize(r)
+            newPos = normalVector + centerPoint
+            newPoints.append(Point(newPos.x, newPos.y, point.z))
+
+        newBlock = None
+
+        if (facename == 'left'):
+            newPoints[1], newPoints[2], newPoints[3] = newPoints[3], newPoints[1], newPoints[2]
+            newBlock = self.add_left(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                nx=nr, gradx=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(0, 3, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(4, 7, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        if (facename == 'right'):
+            newPoints[2], newPoints[3] = newPoints[3], newPoints[2]
+            newBlock = self.add_right(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                nx=nr, gradx=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(1, 2, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(5, 6, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        if (facename == 'front'):
+            newPoints[2], newPoints[3] = newPoints[3], newPoints[2]
+            newBlock = self.add_front(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                ny=nr, grady=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(0, 1, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(4, 5, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        if (facename == 'back'):
+            newPoints[0], newPoints[1], newPoints[3] = newPoints[3], newPoints[0], newPoints[1]
+            newBlock = self.add_back(
+                targetBlock=targetBlock, name=name, points=newPoints,
+                ny=nr, grady=grad
+            )
+
+            lowZ  = 0.5 * (newPoints[0].z + newPoints[1].z)
+            highZ = 0.5 * (newPoints[2].z + newPoints[3].z)
+            newBlock.add_edge_arc(2, 3, x=xCenter, y=yCenter, z=lowZ, isOrigin=True)
+            newBlock.add_edge_arc(6, 7, x=xCenter, y=yCenter, z=highZ, isOrigin=True)
+
+        return(newBlock)
+
+
     def add_by_symmetry_x(
             self,
             name: str,
@@ -5320,34 +5592,81 @@ class BlockMesh(OpenFOAMFile, Mesh):
                 block.ny = 1
                 block.nz = 1
             if (block.isPrint):
-                if (self.isMergeCoincidentPoints):
-                    for point in block.points:
-                        if (point in self.pointsPlaced):
-                            point.id = [p.id for p in self.pointsPlaced if p == point][0]
-
                 text += f"{tab}{block}\n"
+
         text += ");\n"
         return(text)
 
     def print_points(self) -> str:
-        self.pointsPlaced = []
-        for block in self.blocks:
-            for point in block.points:
-                if (point.isIndexed and
-                    (
-                        not self.isMergeCoincidentPoints
-                        or
-                        (point not in self.pointsPlaced)
-                    )
-                ):
+        self.allPoints = [
+            point
+            for block in self.blocks
+            for point in block.points
+            if point.isIndexed
+        ]
+
+        # Find duplicate points
+        if (self.isMergeCoincidentPoints and self.isSafeCoincidenceMode):
+            self.pointsPlaced = []
+            alreadyPlaced = []
+            for point in tqdm.tqdm(self.allPoints, desc=f'{self.region} points duplicate'):
+                if (point in self.pointsPlaced):
+                    alreadyPlaced.append(point)
+                else:
                     self.pointsPlaced.append(point)
 
+        elif (self.isMergeCoincidentPoints and not self.isSafeCoincidenceMode):
+            self.pointsPlaced = []
+            alreadyPlaced = []
+            seen = set()
+
+            for point in tqdm.tqdm(self.allPoints, desc=f"{self.region} points duplicate"):
+                if (point in seen):
+                    alreadyPlaced.append(point)
+                else:
+                    seen.add(point)
+                    self.pointsPlaced.append(point)
+
+        else:
+            self.pointsPlaced = self.allPoints
+
+
+        # Set unique id to each point
         for i, point in enumerate(self.pointsPlaced):
             self.pointsPlaced[i].id = i
 
+        # Get unique list of id
+        pointsIds = list(set([p.id for p in self.pointsPlaced]))
+
+        # Filter unique list of points
+        self.pointsPlaced = [self.pointsPlaced[pointId] for pointId in pointsIds]
+
+        # Change id of duplicated points
+        if (self.isMergeCoincidentPoints and self.isSafeCoincidenceMode):
+            for point in tqdm.tqdm(alreadyPlaced, desc=f'{self.region} points change id'):
+                for pointUnique in self.pointsPlaced:
+                    if (point == pointUnique):
+                        point.id = pointUnique.id
+                        break
+
+        elif (self.isMergeCoincidentPoints and not self.isSafeCoincidenceMode):
+            point_to_id = {
+                p: pid for p, pid in zip(self.pointsPlaced, pointsIds)
+            }
+
+            for point in tqdm.tqdm(alreadyPlaced, desc=f'{self.region} points change id'):
+                pid = point_to_id.get(point)
+                if (pid is not None):
+                    point.id = pid
+
+
+        # Sort list of points by id
+        pointsSorted = sorted(self.pointsPlaced, key=lambda p: p.id)
+
+        # Generate text
         text = "vertices\n"
         text += "(\n"
-        for point in sorted(self.pointsPlaced, key=lambda p: p.id):
+        for point in pointsSorted:
             text += f"{tab}{point}\n"
         text += ");\n"
         return(text)
@@ -5355,9 +5674,13 @@ class BlockMesh(OpenFOAMFile, Mesh):
     def print_edges(self) -> str:
         text = "edges\n"
         text += "(\n"
+        pointIdEdges = []
         for block in self.blocks:
             for edge in block.edges:
-                text += f"{tab}{edge}\n"
+                edgePoints = (edge.point1.id, edge.point2.id)
+                if (edgePoints not in pointIdEdges and edgePoints[::-1] not in pointIdEdges):
+                    text += f"{tab}{edge}\n"
+                    pointIdEdges.append(edgePoints)
 
             for edgeProjection in block.edgeProjection:
                 text += f"{tab}projectCurve {edgeProjection['verticeIdx1']} {edgeProjection['verticeIdx2']} ({edgeProjection['geometryNames']})\n"
