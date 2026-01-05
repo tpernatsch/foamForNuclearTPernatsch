@@ -1461,7 +1461,7 @@ class NuclearData(OpenFOAMFile):
             self.energyGroups = ng[0]
             self.precGroups = nd[0]
 
-            if (any([e != None for e in groupStructure[0]])):
+            if (len(groupStructure) > 0 and any([e != None for e in groupStructure[0]])):
                 groupStructureStr = ', '.join([f'{e:g}' for e in groupStructure[0]])
                 text += '// Group structure : [' + groupStructureStr + '] MeV\n'
 
