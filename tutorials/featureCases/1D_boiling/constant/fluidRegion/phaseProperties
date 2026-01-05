@@ -136,6 +136,38 @@ structureProperties
             Cp                  500;
             rho                 7700;
             powerDensity        4.5e8;
+
+            powerOffCriterionModel
+            {
+                /*
+                //- Only other type currently available is fieldValueThreshold
+                type            fieldValueThreshold;
+
+                //- Name of the volScalarField used for the criterion evaluation.
+                fieldName       "normalized.alpha.vapour";
+
+                //- Field operation performed to obtain value for comparison against
+                //  a threshold. Currently, only min and max are available
+                fieldOperation  max;
+
+                //- Criterion to be applied. Currently, only valueAboveThreshold and
+                //  valueBelowThresholdAreAvailable
+                criterion       valueAboveThreshold;
+
+                //-
+                threshold       0.957;
+
+                //- Time delay between the satifaction of the criterion and the moment
+                //  power is actually turned off
+                timeDelay       0.0;
+                */
+
+                //-
+                type            timeThreshold;
+
+                //-
+                time            7;
+            }
         }
     }
 
@@ -442,37 +474,6 @@ structureProperties
     turned on again after they are turned off. This feature was added
     specifically to model pin bundle boiling experiments
 */
-    powerOffCriterionModel
-    {
-        /*
-        //- Only type currently available is fieldValue
-        type            fieldValue;
-
-        //- Name of the volScalarField used for the criterion evaluation.
-        fieldName       "normalized.alpha.vapour";
-
-        //- Field operation performed to obtain value for comparison against
-        //  a threshold. Currently, only min and max are available
-        fieldOperation  max;
-
-        //- Criterion to be applied. Currently, only valueAboveThreshold and
-        //  valueBelowThresholdAreAvailable
-        criterion       valueAboveThreshold;
-
-        //-
-        threshold       0.957;
-
-        //- Time delay between the satifaction of the criterion and the moment
-        //  power is actually turned off
-        timeDelay       0.0;
-        */
-
-        //-
-        type            timer;
-
-        //-
-        time            7;
-    }
 }
 
 // ------------------------------------------------------------------------- //
