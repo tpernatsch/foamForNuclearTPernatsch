@@ -11,7 +11,7 @@
 
 
 Basic Boundary Conditions
--------------------------
+=========================
 
 .. autosummary::
     :toctree: generated
@@ -26,7 +26,7 @@ Basic Boundary Conditions
 
 
 Constraint Boundary Conditions
-------------------------------
+==============================
 
 .. autosummary::
     :toctree: generated
@@ -40,7 +40,7 @@ Constraint Boundary Conditions
 
 
 Inlet Boundary Conditions
--------------------------
+=========================
 
 .. autosummary::
     :toctree: generated
@@ -56,7 +56,7 @@ Inlet Boundary Conditions
 
 
 Outlet Boundary Conditions
---------------------------
+==========================
 
 .. autosummary::
     :toctree: generated
@@ -69,7 +69,7 @@ Outlet Boundary Conditions
 
 
 Wall Boundary Conditions
-------------------------
+========================
 
 .. autosummary::
     :toctree: generated
@@ -88,7 +88,7 @@ Wall Boundary Conditions
 
 
 Coupled Boundary Conditions
----------------------------
+===========================
 
 .. autosummary::
     :toctree: generated
@@ -106,7 +106,7 @@ Coupled Boundary Conditions
 
 
 Generic Boundary Conditions
----------------------------
+===========================
 
 .. autosummary::
     :toctree: generated
@@ -124,7 +124,7 @@ Generic Boundary Conditions
 
 
 GeN-Foam Boundary Conditions
-----------------------------
+============================
 
 .. autosummary::
     :toctree: generated
@@ -139,7 +139,7 @@ GeN-Foam Boundary Conditions
 
 
 OFFBEAT Boundary Conditions
----------------------------
+===========================
 
 .. autosummary::
     :toctree: generated
@@ -153,7 +153,7 @@ OFFBEAT Boundary Conditions
 
 
 FMU4FOAM Boundary Conditions
-----------------------------
+============================
 
 .. autosummary::
     :toctree: generated
@@ -166,7 +166,7 @@ FMU4FOAM Boundary Conditions
 
 
 Custom Boundary Conditions
---------------------------
+==========================
 
 .. autosummary::
     :toctree: generated

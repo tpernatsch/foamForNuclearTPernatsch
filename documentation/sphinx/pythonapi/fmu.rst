@@ -5,7 +5,7 @@ FMI Coupling
 ------------
 
 FMU Container
--------------
+=============
 
 FMU containers are special wrappers to simplify the manipulation of FMU with
 OpenFOAM cases. Three containers are available, each based on different Python
@@ -24,7 +24,7 @@ Examples of use are provided in the following examples:
 
 
 Export OpenFOAM cases in FMU
-----------------------------
+============================
 
 FoamForNuclear can be used to export OpenFOAM cases into FMU using the
 ``generateCaseAsFMU`` function.
@@ -38,7 +38,7 @@ FoamForNuclear can be used to export OpenFOAM cases into FMU using the
 
 
 Multiple FMU in Parallel
-------------------------
+========================
 
 FoamForNuclear offers the possibility to run multiple couple FMUs in sequential
 or in parallel.

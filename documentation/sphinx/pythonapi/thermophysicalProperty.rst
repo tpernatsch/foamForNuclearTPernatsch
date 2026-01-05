@@ -11,7 +11,7 @@
 
 
 Base thermophysical property
-----------------------------
+============================
 
 .. autosummary::
     :toctree: generated
@@ -23,7 +23,7 @@ Base thermophysical property
 
 
 Thermophysical property of Water
---------------------------------
+================================
 
 .. autosummary::
     :toctree: generated
@@ -37,7 +37,7 @@ Thermophysical property of Water
 
 
 Thermophysical property of Heavy Metals
----------------------------------------
+=======================================
 
 .. autosummary::
     :toctree: generated
@@ -52,7 +52,7 @@ Thermophysical property of Heavy Metals
 
 
 Thermophysical property of Gases
---------------------------------
+================================
 
 .. autosummary::
     :toctree: generated
@@ -66,7 +66,7 @@ Thermophysical property of Gases
 
 
 Thermophysical property for Multi-phase
----------------------------------------
+=======================================
 
 .. autosummary::
     :toctree: generated
