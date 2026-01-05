@@ -7,7 +7,6 @@ from foamForNuclear.checkvalue import check_positive, check_type, check_value
 from .mesh import _LATTICE_TYPES, Mesh
 from foamForNuclear.openfoamFile import OpenFOAMFile
 from foamForNuclear.common import *
-import math
 
 _CYCLIC_PATCH_TRANSFORM_TYPES = {
     "unknown", "rotational", "translational", "coincidentFullMatch", "noOrdering"
@@ -2828,7 +2827,7 @@ class BlockMesh(OpenFOAMFile, Mesh):
             originPosition += connectingBlockDir
 
         # Conserve cross-section flow area between a square and circle
-        halfDh = equivalentHydraulicDiameter / 2
+        halfDh = np.sqrt(np.pi)*equivalentHydraulicDiameter / 4
 
         x, y, z = originPosition.x, originPosition.y, originPosition.z
         direction.normalize()
