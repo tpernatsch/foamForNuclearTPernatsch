@@ -11,7 +11,8 @@ post-processing.
 .. rubric:: Modules
 
 .. toctree::
-   :maxdepth: 1
+   
+   :maxdepth: 3
 
    base
    boundaryConditions
