@@ -4,8 +4,6 @@
 Thermal-hydraulics
 ==================
 
-TH class
-
 .. toctree::
    :maxdepth: 3
 
