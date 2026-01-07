@@ -63,6 +63,10 @@ physicsModels
 // --- MISCELLANEA --------------------------------------------------------- //
 // ------------------------------------------------------------------------- //
 
+// In closed domains, pressure is not fixed. As a result, a reference
+// pressure point must be specified to avoid drift of the pressure field.
+// The reference point is specified by cell index and value.
+
 pMin                    10000;
 pRefCell                780;
 pRefValue               100000;

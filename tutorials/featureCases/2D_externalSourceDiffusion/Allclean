@@ -14,5 +14,6 @@ cd ${0%/*} || exit 1    # Run from this directory
 
 rm -rf steady* transient*
 rm -rf *.log log.* *.out
+rm -rf constant/neutroRegion/polyMesh
 
 #==============================================================================*

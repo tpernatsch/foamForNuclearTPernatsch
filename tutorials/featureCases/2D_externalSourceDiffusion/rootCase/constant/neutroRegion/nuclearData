@@ -53,7 +53,7 @@ energyGroups    2;
 
 precGroups      6;
 
-xsVariables
+xsVariables // empty dictionary as no parameterized cross-sections are used
 {}
 
 states

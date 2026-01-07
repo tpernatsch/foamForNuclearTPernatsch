@@ -21,9 +21,6 @@ thermoType
 {
     type            heRhoThermo;
     mixture         pureMixture;
-    //transport       polynomial;
-    //thermo          hPolynomial;
-    //equationOfState icoPolynomial;
     transport       const;
     thermo          hConst;
     equationOfState perfectGas;

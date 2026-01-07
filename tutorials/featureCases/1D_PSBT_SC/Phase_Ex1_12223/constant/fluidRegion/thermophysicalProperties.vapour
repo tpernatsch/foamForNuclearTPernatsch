@@ -21,9 +21,6 @@ thermoType
 {
     type            heRhoThermo;
     mixture         pureMixture;
-    //transport       polynomial;
-    //thermo          hPolynomial;
-    //equationOfState icoPolynomial;
     transport       const;
     thermo          hConst;
     equationOfState perfectGas;
@@ -35,30 +32,6 @@ pRef                        14719781.65;
 
 mixture
 {
-    /*
-    specie
-    {
-        molWeight           22.989769;
-    }
-    equationOfState
-    {
-        rhoCoeffs<8>        (0.45 0 0 0 0 0 0 0);
-    }
-    thermodynamics
-    {
-        CpCoeffs<8>         (904.141 0 0 0 0 0 0 0);
-        Hf                  4217528;
-        Sf                  0;
-    }
-    transport
-    {
-        //mu                  1.8e-5;
-        //Pr                  0.001;
-        muCoeffs<8>         (1.8e-5 0 0 0 0 0 0 0);
-        kappaCoeffs<8>      (5 0 0 0 0 0 0 0);
-    }
-    */
-    
     specie
     {
         molWeight           18.01528;
