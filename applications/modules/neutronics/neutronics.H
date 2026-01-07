@@ -109,7 +109,7 @@ protected:
     //- Reference to mesh
     fvMesh& mesh_;
 
-    //- Dictionary from which keff, pTarget are read
+    //- Dictionary from which keff, power are read
     IOdictionary reactorState_;
 
     //- k effective

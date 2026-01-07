@@ -129,7 +129,7 @@ if (eigenvalueNeutronics_)
 if (externalSourceNeutronics_)
 {
     // Output the integrated power in reactor state
-    reactorState_.set("pTarget", pTot);
+    reactorState_.set("power", pTot);
 }
 
 
