@@ -79,17 +79,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 )
 :
     neutronics(mesh),
-    nuclearData_
-    (
-        IOobject
-        (
-            "nuclearData",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
+    nuclearData_(this->subDict("nuclearData")),
     power_(reactorState_.get<scalar>("power")),
     fissionPower_(power_),
     decayPower_(0.0),

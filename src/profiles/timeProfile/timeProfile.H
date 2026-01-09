@@ -112,8 +112,17 @@ public:
         //- Constructor from dictionary
         timeProfile(const dictionary& dict, const Time& runTime);
 
+        //- Constructor from dictionary + check
+        timeProfile
+        (
+            const dictionary& dict,
+            word timeProfileName,
+            const Time& runTime
+        );
+
         //- Constructor from IOobject and subDictname
-        timeProfile(
+        timeProfile
+        (
             IOdictionary object,
             word timeProfileName,
             const Time& runTime
