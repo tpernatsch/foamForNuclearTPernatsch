@@ -43,12 +43,12 @@ Building on this combined heritage, **foamForNuclear** provides a **modular and 
    releasenotes/index
    usersguide/index
    pythonapi/index
+   cppapi/index
    theoryReferences
    V_Vreferences
    contributors
    howToContribute
 
-.. cppapi/index
    
    
 
