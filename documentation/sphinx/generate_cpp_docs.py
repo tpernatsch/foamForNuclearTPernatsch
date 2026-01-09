@@ -350,8 +350,14 @@ def load_yaml_doc(yaml_path: Path) -> dict:
 #     return "\n".join(out)
 
 def render_rst_from_yaml(y: dict, class_name: str) -> str:
-    """Build an RST page from the YAML dict using canonical Sphinx API style
-    with a real document title and zero section pollution.
+    """
+    Build an RST page from the YAML dict using canonical Sphinx API style.
+
+    Key points:
+    - First lines: document title (used by :doc: and toctree)
+    - Internal headers replaced with rubrics
+    - API objects declared with .. cpp:class:: (or domain of choice)
+    - No hidden CSS or section headers above the title
     """
 
     # ---- Description block -------------------------------------------------
@@ -373,22 +379,21 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
     out = []
 
     # -----------------------------------------------------------------------
-    # Anchor (safe, no TOC impact)
+    # 1️⃣ Anchor (optional)
     # -----------------------------------------------------------------------
     out.append(f".. _{class_name}:\n")
 
     # -----------------------------------------------------------------------
-    # Real document title (used by :doc:, toctree, nav, PDF, etc.)
+    # 2️⃣ Document title (first heading in page)
     # -----------------------------------------------------------------------
     out.append(class_name)
     out.append("=" * len(class_name))
     out.append("")
 
     # -----------------------------------------------------------------------
-    # Class declaration (real API object, NOT a section)
+    # 3️⃣ API object declaration
     # -----------------------------------------------------------------------
     out.append(f".. cpp:class:: {class_name}\n")
-
     indent = "   "
 
     # ---- Description -------------------------------------------------------
@@ -651,91 +656,116 @@ def transform_content(content, is_options_section=False):
     return transformed_content
 
 
-def render_rst_from_yaml(y: dict, class_name: str) -> str:
+def generate_cppapi_index(
+        cppapi_folder: str,
+        class_entries: dict,
+        sections: list[tuple]
+    ) -> None:
     """
-    Build an RST page from the YAML dict using canonical Sphinx API style.
-
-    Key points:
-    - First lines: document title (used by :doc: and toctree)
-    - Internal headers replaced with rubrics
-    - API objects declared with .. cpp:class:: (or domain of choice)
-    - No hidden CSS or section headers above the title
+    Parameters
+    ----------
+    sections: list[tuple]
+        tuple = (Key word path folder in generated folder, Section name, Section Depth, Add content)
     """
+    root = Path(cppapi_folder).resolve()
 
-    # ---- Description block -------------------------------------------------
-    summary = y.get("description", "")
-    summary = format_equation_for_rst(summary)
-    summary = format_table_for_rst(summary)
-    summary = format_code_for_rst(summary)
-    summary = replaceInlineMath(replaceInlineReference(summary))
+    # Build map: name -> path starting at 'generated/...', w/o .rst extension
+    filtered_class_entries = {}
+    for key, abs_path in class_entries.items():
+        p = Path(abs_path).resolve()
+        if "include" in p.parts:
+            continue
 
-    # ---- Admonitions --------------------------------------------------------
-    admonitions = y.get("admonitions") or []
+        if "generated" in p.parts:
+            idx = p.parts.index("generated")
+            rel_from_generated = Path(*p.parts[idx:]).with_suffix('').as_posix()
+        else:
+            # Fallback: relative to cppapi_folder
+            try:
+                rel_from_generated = p.relative_to(root).with_suffix('').as_posix()
+            except ValueError:
+                rel_from_generated = p.stem  # last resort
 
-    # ---- Options ------------------------------------------------------------
-    options = y.get("options") or []
+        filtered_class_entries[key] = rel_from_generated
 
-    # ---- Usage --------------------------------------------------------------
-    usage = y.get("usage") or []
+    cppapi_index = ".. _cppapi:\n\n"
 
-    out = []
+    cppapi_index += "===============\n"
+    cppapi_index += "C++ Source Code\n"
+    cppapi_index += "===============\n\n"
 
-    # -----------------------------------------------------------------------
-    # 1️⃣ Anchor (optional)
-    # -----------------------------------------------------------------------
-    out.append(f".. _{class_name}:\n")
+    for sectionKey, sectionName, sectionDepth, isAddContent in sections:
+        if (sectionDepth == 0):
+            cppapi_index += f"{'':-<{len(sectionName)}}\n"
 
-    # -----------------------------------------------------------------------
-    # 2️⃣ Document title (first heading in page)
-    # -----------------------------------------------------------------------
-    out.append(class_name)
-    out.append("=" * len(class_name))
-    out.append("")
+        cppapi_index += f"{sectionName}\n"
 
-    # -----------------------------------------------------------------------
-    # 3️⃣ API object declaration
-    # -----------------------------------------------------------------------
-    out.append(f".. cpp:class:: {class_name}\n")
-    indent = "   "
+        if (sectionDepth == 0):
+            cppapi_index += f"{'':-<{len(sectionName)}}\n\n"
+        if (sectionDepth == 1):
+            cppapi_index += f"{'':-<{len(sectionName)}}\n\n"
+        if (sectionDepth == 2):
+            cppapi_index += f"{'':~<{len(sectionName)}}\n\n"
 
-    # ---- Description -------------------------------------------------------
-    if summary.strip():
-        for line in summary.splitlines():
-            out.append(indent + line)
-        out.append("")
+        if (isAddContent):
+            cppapi_index += ".. toctree::\n"
+            cppapi_index += "   :hidden:\n"
+            cppapi_index += "   :maxdepth: 1\n\n"
+            for _, relpath in filtered_class_entries.items():
+                if (sectionKey in relpath):
+                    cppapi_index += f"   {relpath}\n"
 
-    # ---- Admonitions -------------------------------------------------------
-    for adm in admonitions:
-        rst = _rst_admonition(adm.get("kind", "note"), adm.get("body", ""))
-        for line in rst.splitlines():
-            out.append(indent + line)
-        out.append("")
+            cppapi_index += "\n"
 
-    # ---- Options -----------------------------------------------------------
-    if options:
-        out.append(indent + ".. rubric:: Options\n")
-        table = _rst_options_list_table(options)
-        for line in table.splitlines():
-            out.append(indent + line)
-        out.append("")
+            cppapi_index += ".. list-table::\n"
+            cppapi_index += "    :widths: 50 50\n\n"
+            for name, relpath in filtered_class_entries.items():
+                if (sectionKey in relpath):
+                    cppapi_index += f"    * - :doc:`{relpath}`\n"
 
-    # ---- Usage -------------------------------------------------------------
-    if usage:
-        out.append(indent + ".. rubric:: Usage\n")
-        usage_rst = _rst_usage(usage)
-        for line in usage_rst.splitlines():
-            out.append(indent + line)
-        out.append("")
+                    # Read description from ABS path
+                    with open(class_entries[name], 'r', encoding='utf-8') as f:
+                        for i, line in enumerate(f):
+                            if (
+                                i < 5
+                                or line == "\n"
+                                or "===" in line
+                                or "Description" in line
+                                or ".. _" in line
+                            ):
+                                continue
 
-    # ---- Links -------------------------------------------------------------
-    out.append(indent + ".. rubric:: Links\n")
-    out.append(indent + f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_")
-    out.append(indent + f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_")
-    out.append(indent + f"- `{class_name}.C <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_")
-    out.append("")
+                            if ("Options" in line):
+                                description = ""
+                                break
 
-    return "\n".join(out)
+                            description = line.replace("\n", "")
+                            if ('.' in line):
+                                description = line.split('.')[0]
 
+                            break
+
+                    cppapi_index += f"      - {description}\n"
+
+        cppapi_index += "\n\n"
+
+    # Add C++ Documentation YAML progress
+    cppapi_index += "-----------------\n"
+    cppapi_index += "C++ Documentation\n"
+    cppapi_index += "-----------------\n"
+    cppapi_index += "\n"
+    cppapi_index += ".. toctree::\n"
+    cppapi_index += "    :hidden:\n"
+    cppapi_index += "    :maxdepth: 1\n"
+    cppapi_index += "    yaml_progress\n"
+    cppapi_index += "\n"
+
+    cppapi_index += ":doc:`yaml_progress`\n"
+
+    cppapi_index += "\n\n"
+
+    with open(f"{cppapi_folder}/index.rst", 'w', encoding='utf-8') as f:
+        f.write(cppapi_index)
 
 
 def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
