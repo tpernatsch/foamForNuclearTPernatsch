@@ -112,13 +112,10 @@ public:
         (
             const volScalarField& HT,
             const volScalarField& H
-        ){}
+        );
 
         //- Set provided field with structure surface temperature
         virtual void correctT(volScalarField& T) const;
-
-        //- Turn off power
-        virtual void powerOff();
 
         //- Temperature update based on given profile
         void temperatureUpdate() const;

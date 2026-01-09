@@ -1,4 +1,4 @@
-Info<< "pTarget_ = " << pTarget_ << nl
+Info<< "Target power = " << pTarget_ << nl
     << nl
     << "keff_ previous = " << keff_ << nl
     << endl;

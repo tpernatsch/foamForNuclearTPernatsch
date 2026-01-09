@@ -546,6 +546,29 @@ void Foam::powerModels::heatedPin::correct
     const volScalarField& HSum    // == SUM_j [htc_j*frac_j]
 )
 {
+
+    //Check if power should be turned off
+
+    forAll(this->toc(), regioni)
+    {
+        if(powerOffCriterionModelPtr_.set(regioni))
+        {
+            if(powerOffCriterionModelPtr_[regioni].powerOffCriterion())
+            {
+                word region(this->toc()[regioni]);
+                const labelList& regionCells
+                (
+                    structure_.cellLists()[region]
+                );
+                forAll(regionCells, j)
+                {
+                    label cellj(regionCells[j]);
+                    structure_.powerDensityNeutronics()[cellj] = 0.0;
+                }
+            }
+        }
+    }
+
     // Reset min, max, fuel, clad temperatures
     Tmax_ = 0.0;
     Tmin_ = 1e69;
@@ -591,12 +614,6 @@ void Foam::powerModels::heatedPin::correctT(volScalarField& T) const
         label celli(cellList_[i]);
         T[celli] = To_[celli];
     }
-}
-
-
-void Foam::powerModels::heatedPin::powerOff()
-{
-    powerDensity_ *= 0.0;
 }
 
 

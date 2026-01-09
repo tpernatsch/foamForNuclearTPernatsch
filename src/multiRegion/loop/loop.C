@@ -73,7 +73,7 @@ Foam::solvers::loop::loop
         IOobject
         (
             "regionsDict",
-            runTime.time().constant(),
+            runTime.time().system(),
             runTime.db(),
             IOobject::MUST_READ,
             IOobject::NO_WRITE

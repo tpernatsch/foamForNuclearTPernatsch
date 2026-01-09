@@ -72,7 +72,7 @@ Foam::pump::pump
     ),
     mesh_(mesh),
     cellList_(cellList),
-    pumpValue_(this->get<vector>("momentumSource")),
+    pumpValue_(vector::zero),
     momentumSourceTimeProfile_
     (
         IOdictionary
@@ -85,12 +85,15 @@ Foam::pump::pump
                 IOobject::NO_READ,
                 IOobject::NO_WRITE
             ),
-            dict
+            dict.subDict("pump")
         ),
         "momentumSourceTimeProfile",
         mesh.time()
     )
 {
+    // Get pump dictionary
+    const dictionary& pumpDict = this->subDict("pump");
+    pumpValue_ = pumpDict.get<vector>("momentumSource");
     Info<< "Creating pump in " << dict.dictName() << endl;
 }
 

@@ -53,7 +53,7 @@ Description
         Property        | Description               | Req'd | Default value
         subSolvers      | List of subsolvers        | yes   |
         maxIterations   | Maximum number of iterations | yes |
-        minResidual     | Minimum residual          | yes |
+        minResidual     | Maximum residual          | yes |
         couplingStartTime | Time after which the coupling starts | no | 0
     \endtable
 
@@ -141,7 +141,7 @@ protected:
         dictionary loopProperties_;
 
         //-
-        scalar minResidual_;
+        scalar maxResidual_;
 
         //-
         label maxIterations_;

@@ -79,18 +79,8 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
 )
 :
     neutronics(mesh),
-    nuclearData_
-    (
-        IOobject
-        (
-            "nuclearData",
-            mesh.time().constant(),
-            mesh,
-            IOobject::MUST_READ,
-            IOobject::NO_WRITE
-        )
-    ),
-    power_(reactorState_.get<scalar>("pTarget")),
+    nuclearData_(this->subDict("nuclearData")),
+    power_(reactorState_.get<scalar>("power")),
     fissionPower_(power_),
     decayPower_(0.0),
     decayPowerTimeProfile_
@@ -132,7 +122,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     externalSourcePowerRef_(0.0),
     externalSourceBeamPower_(0.0),
     externalSourceBeamIntensity_(0.0),
-    powerTarget_(reactorState_.get<scalar>("pTarget")),
+    powerTarget_(reactorState_.get<scalar>("power")),
     modulationFactor_
     (
         externalSource_.lookupOrDefault<scalar>("modulationFactor", 0.0)
@@ -507,7 +497,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     if (power_ <= 0)
     {
         FatalErrorInFunction
-            << "Set pTarget > 0 !"
+            << "Set power > 0 !"
             << exit(FatalError);
     }
 

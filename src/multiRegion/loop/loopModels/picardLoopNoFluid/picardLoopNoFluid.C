@@ -128,7 +128,7 @@ void Foam::solvers::picardLoopNoFluid::createSolvers(word name)
 
     //loopProperties_ = multiPhysicsDict_.subDict("loopProperties");
     couplingStartTime_ = multiPhysicsDict_.getOrDefault<scalar>("couplingStartTime",0);
-    minResidual_ = multiPhysicsDict_.get<scalar>("minResidual");
+    maxResidual_ = multiPhysicsDict_.get<scalar>("maxResidual");
     maxIterations_ = multiPhysicsDict_.get<label>("maxIterations");
         
 }
@@ -157,10 +157,10 @@ void Foam::solvers::picardLoopNoFluid::correctPhysics()
 
         ++iterN;
 
-        if(residual<minResidual_)
+        if(residual<maxResidual_)
             Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
     }
-    while(residual>minResidual_ && iterN < maxIterations_);
+    while(residual>maxResidual_ && iterN < maxIterations_);
 
 }
 

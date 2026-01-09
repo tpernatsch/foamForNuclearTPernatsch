@@ -57,7 +57,7 @@ Description
         Property        | Description               | Req'd | Default value
         subSolvers      | List of subsolvers        | yes   |
         maxIterations   | Maximum number of iterations | yes |
-        minResidual     | Minimum residual          | yes |
+        minResidual     | Maximum residual          | yes |
         FSILoopCoeffs   | Sub-dict for FSI          | yes |
         fluidRegionName | Name of the fluid region  | yes |
         solidRegionName | Name of the solid region  | yes |
@@ -150,7 +150,7 @@ protected:
         label solidSolverID_;
         scalar underRelaxation_;
         scalar couplingStartTime_;
-        scalar minResidual_;
+        scalar maxResidual_;
         label maxIterations_;
         bool thermalCoupling_;
 

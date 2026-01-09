@@ -89,7 +89,7 @@ Foam::solvers::neutronics::neutronics
         )
     ),
     keff_(reactorState_.lookupOrDefault("keff", 1.0)),
-    pTarget_(reactorState_.lookupOrDefault("pTarget", 1.0)),
+    pTarget_(reactorState_.lookupOrDefault("power", 1.0)),
     pTotOld_(pTarget_),
     powerDensity_
     (

@@ -116,6 +116,7 @@ Foam::powerModel::powerModel
     // the powerModel dict within a region, set that as the powerModel alpha,
     // otherwise use the structure alpha for that region
     const wordList& regions(this->toc());
+    powerOffCriterionModelPtr_.setSize(regions.size());
     forAll(regions, i)
     {
         word region(regions[i]);
@@ -148,6 +149,23 @@ Foam::powerModel::powerModel
                 label cellj(regionCells[j]);
                 alpha_[cellj] = regionAlpha[cellj];
             }
+        }
+
+        if(regionDict.found("powerOffCriterionModel"))
+        {
+            powerOffCriterionModelPtr_.set
+            (
+                i,
+                powerOffCriterionModel::New
+                (
+                    mesh_,
+                    regionDict.subDict("powerOffCriterionModel")
+                )
+            );
+        }
+        else
+        {
+            powerOffCriterionModelPtr_.set(i, nullptr);
         }
     }
 

@@ -196,7 +196,7 @@ forAllIter
 //- Write precursorPowers to reactorState
 if (TFuel_.mesh().time().write())
 {
-    reactorState_.set("pTarget", power_);
+    reactorState_.set("power", power_);
     reactorState_.set("precursorPowers", precursorPowers_);
 }
 

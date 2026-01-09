@@ -355,7 +355,7 @@ class NeutronicsSolver(Solver):
                 f.write(openfoamFileHeader("reactorState"))
 
                 f.write(addParameter('keff', self.keff, isAddExtraLine=True))
-                f.write(addParameter('pTarget', self.power, isAddExtraLine=True))
+                f.write(addParameter('power', self.power, isAddExtraLine=True))
 
                 if (self.ksrc is not None):
                     f.write(addParameter('ksrc', self.ksrc, isAddExtraLine=True))

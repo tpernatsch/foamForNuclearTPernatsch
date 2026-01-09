@@ -51,7 +51,7 @@ Description
         Property        | Description               | Req'd | Default value
         subSolvers      | List of subsolvers        | yes   |
         maxIterations   | Maximum number of iterations | yes |
-        minResidual     | Minimum residual          | yes |
+        maxResidual     | Maximum residual          | yes |
         CHTLoopCoeffs   | Sub-dict for CHT          | yes |
         fluidRegionName | Name of the fluid region  | yes |
         solidRegionName | Name of the solid region  | yes |
@@ -85,7 +85,7 @@ Usage
                     neutroRegion    diffusionNeutronics;
                     CHTLoop2        CHTLoop;
                 }
-                minResidual 0.00005;   // residual after which the iteration is ended
+                maxResidual 0.00005;   // residual after which the iteration is ended
                 maxIterations 3;       // maximum number of iterations before the loop is ended
                 includeFluidMechanicsInLoop  false; //defaulted to false
             }
@@ -157,7 +157,7 @@ protected:
         labelList solidPatchIDs_;
 
         scalar couplingStartTime_;
-        scalar minResidual_;
+        scalar maxResidual_;
         label maxIterations_;
         bool useHTC_;
         bool oneWayCoupling_;

@@ -56,25 +56,26 @@ Foam::XS::XS
 )
 :
     mesh_(mesh),
-    nuclearData_
+    neutronicsProperties_
     (
         IOobject
         (
-            "nuclearData",
+            "neutronicsProperties",
             mesh.time().constant(),
             mesh,
             IOobject::MUST_READ,
             IOobject::NO_WRITE
         )
     ),
-    isReadXS_(nuclearData_.lookupOrDefault("isReadXS", false)),
-    isWriteXS_(nuclearData_.lookupOrDefault("isWriteXS", false)),
-    isLowMemory_(nuclearData_.lookupOrDefault("isLowMemory", false)),
-    energyGroups_(nuclearData_.lookupOrDefault("energyGroups", 1)),
-    precGroups_(nuclearData_.lookupOrDefault("precGroups", 1)),
-    legendreMoments_(1+nuclearData_.lookupOrDefault("legendreMoments", 0)),
-    axialOrientation_(nuclearData_.lookupOrDefault("axialOrientation", vector(0.0, 0.0, 1.0))),
-    ScNo_(nuclearData_.lookupOrDefault("ScNo", 1.0)),
+    nuclearData_(neutronicsProperties_.subDict("nuclearData")),
+    isReadXS_(neutronicsProperties_.lookupOrDefault("isReadXS", false)),
+    isWriteXS_(neutronicsProperties_.lookupOrDefault("isWriteXS", false)),
+    isLowMemory_(neutronicsProperties_.lookupOrDefault("isLowMemory", false)),
+    energyGroups_(neutronicsProperties_.lookupOrDefault("energyGroups", 1)),
+    precGroups_(neutronicsProperties_.lookupOrDefault("precGroups", 1)),
+    legendreMoments_(1+neutronicsProperties_.lookupOrDefault("legendreMoments", 0)),
+    axialOrientation_(neutronicsProperties_.lookupOrDefault("axialOrientation", vector(0.0, 0.0, 1.0))),
+    ScNo_(neutronicsProperties_.lookupOrDefault("ScNo", 1.0)),
     polyharmonicSplineMode_(nuclearData_.lookupOrDefault("polyharmonicSplineMode", 1)),
     xsVariablesDict_(nuclearData_.subDict("xsVariables")),
     nxsVariables_(xsVariablesDict_.toc().size()),
@@ -160,11 +161,11 @@ Foam::XS::XS
     dfAdjustList_(zoneNumber_),
     discFactorList_(zoneNumber_),
     integralFluxList_(zoneNumber_),
-    adjustDiscFactors_(nuclearData_.lookupOrDefault("adjustDiscFactors", false)),
-    useGivenDiscFactors_(nuclearData_.lookupOrDefault("useGivenDiscFactors", false)),
-    groupsWoDF_(nuclearData_.lookupOrDefault<List<int>>("groupsWoDF", List<int>())),
-    fastNeutrons_(nuclearData_.lookupOrDefault("fastNeutrons", true)),
-    doNotParametrize_(nuclearData_.lookupOrDefault<List<int>>("doNotParametrize", List<int>())),
+    adjustDiscFactors_(neutronicsProperties_.lookupOrDefault("adjustDiscFactors", false)),
+    useGivenDiscFactors_(neutronicsProperties_.lookupOrDefault("useGivenDiscFactors", false)),
+    groupsWoDF_(neutronicsProperties_.lookupOrDefault<List<int>>("groupsWoDF", List<int>())),
+    fastNeutrons_(neutronicsProperties_.lookupOrDefault("fastNeutrons", true)),
+    doNotParametrize_(neutronicsProperties_.lookupOrDefault<List<int>>("doNotParametrize", List<int>())),
     disp_
     (
         IOobject
