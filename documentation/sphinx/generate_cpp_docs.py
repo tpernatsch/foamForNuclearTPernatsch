@@ -278,8 +278,81 @@ def load_yaml_doc(yaml_path: Path) -> dict:
     return data
 
 
+# def render_rst_from_yaml(y: dict, class_name: str) -> str:
+#     """Build an RST page from the YAML dict using Sphinx object markup."""
+
+#     # ---- Description block -------------------------------------------------
+#     summary = y.get("description", "")
+#     summary = format_equation_for_rst(summary)
+#     summary = format_table_for_rst(summary)
+#     summary = format_code_for_rst(summary)
+#     summary = replaceInlineMath(replaceInlineReference(summary))
+
+#     # ---- Admonitions --------------------------------------------------------
+#     admonitions = y.get("admonitions") or []
+
+#     # ---- Options ------------------------------------------------------------
+#     options = y.get("options") or []
+
+#     # ---- Usage --------------------------------------------------------------
+#     usage = y.get("usage") or []
+
+#     # -----------------------------------------------------------------------
+#     # Anchor (safe to keep; does not affect TOC)
+#     # -----------------------------------------------------------------------
+#     out = []
+#     out.append(f".. _{class_name}:\n")
+
+#     # -----------------------------------------------------------------------
+#     # Class declaration (THIS replaces the ===== title)
+#     # -----------------------------------------------------------------------
+#     out.append(f".. cpp:class:: {class_name}\n")
+
+#     # Everything that follows must be indented to belong to the class
+#     indent = "   "
+
+#     # ---- Description -------------------------------------------------------
+#     if summary.strip():
+#         for line in summary.splitlines():
+#             out.append(indent + line)
+#         out.append("")
+
+#     # ---- Admonitions --------------------------------------------------------
+#     for adm in admonitions:
+#         rst = _rst_admonition(adm.get("kind", "note"), adm.get("body", ""))
+#         for line in rst.splitlines():
+#             out.append(indent + line)
+#         out.append("")
+
+#     # ---- Options ------------------------------------------------------------
+#     if options:
+#         out.append(indent + ".. rubric:: Options\n")
+#         table = _rst_options_list_table(options)
+#         for line in table.splitlines():
+#             out.append(indent + line)
+#         out.append("")
+
+#     # ---- Usage --------------------------------------------------------------
+#     if usage:
+#         out.append(indent + ".. rubric:: Usage\n")
+#         usage_rst = _rst_usage(usage)
+#         for line in usage_rst.splitlines():
+#             out.append(indent + line)
+#         out.append("")
+
+#     # ---- Links --------------------------------------------------------------
+#     out.append(indent + ".. rubric:: Links\n")
+#     out.append(indent + f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_")
+#     out.append(indent + f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_")
+#     out.append(indent + f"- `{class_name}.C <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8C_source.html>`_")
+#     out.append("")
+
+#     return "\n".join(out)
+
 def render_rst_from_yaml(y: dict, class_name: str) -> str:
-    """Build an RST page from the YAML dict using Sphinx object markup."""
+    """Build an RST page from the YAML dict using canonical Sphinx API style
+    with a hidden document title for TOC entries.
+    """
 
     # ---- Description block -------------------------------------------------
     summary = y.get("description", "")
@@ -297,18 +370,26 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
     # ---- Usage --------------------------------------------------------------
     usage = y.get("usage") or []
 
-    # -----------------------------------------------------------------------
-    # Anchor (safe to keep; does not affect TOC)
-    # -----------------------------------------------------------------------
     out = []
+
+    # -----------------------------------------------------------------------
+    # Anchor (safe, no TOC impact)
+    # -----------------------------------------------------------------------
     out.append(f".. _{class_name}:\n")
 
     # -----------------------------------------------------------------------
-    # Class declaration (THIS replaces the ===== title)
+    # Hidden document title (this is what appears in the toctree)
+    # -----------------------------------------------------------------------
+    out.append(".. rst-class:: hidden-title\n")
+    out.append(class_name)
+    out.append("=" * len(class_name))
+    out.append("")
+
+    # -----------------------------------------------------------------------
+    # Class declaration (real API object)
     # -----------------------------------------------------------------------
     out.append(f".. cpp:class:: {class_name}\n")
 
-    # Everything that follows must be indented to belong to the class
     indent = "   "
 
     # ---- Description -------------------------------------------------------
@@ -317,14 +398,14 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
             out.append(indent + line)
         out.append("")
 
-    # ---- Admonitions --------------------------------------------------------
+    # ---- Admonitions -------------------------------------------------------
     for adm in admonitions:
         rst = _rst_admonition(adm.get("kind", "note"), adm.get("body", ""))
         for line in rst.splitlines():
             out.append(indent + line)
         out.append("")
 
-    # ---- Options ------------------------------------------------------------
+    # ---- Options -----------------------------------------------------------
     if options:
         out.append(indent + ".. rubric:: Options\n")
         table = _rst_options_list_table(options)
@@ -332,7 +413,7 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
             out.append(indent + line)
         out.append("")
 
-    # ---- Usage --------------------------------------------------------------
+    # ---- Usage -------------------------------------------------------------
     if usage:
         out.append(indent + ".. rubric:: Usage\n")
         usage_rst = _rst_usage(usage)
@@ -340,7 +421,7 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
             out.append(indent + line)
         out.append("")
 
-    # ---- Links --------------------------------------------------------------
+    # ---- Links -------------------------------------------------------------
     out.append(indent + ".. rubric:: Links\n")
     out.append(indent + f"- `Doxygen doc <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H.html>`_")
     out.append(indent + f"- `{class_name}.H <https://foamfornuclear.gitlab.io/foamForNuclear/doxygen/{class_name}_8H_source.html>`_")

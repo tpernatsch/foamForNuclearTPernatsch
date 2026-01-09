@@ -28,12 +28,12 @@ div#notebook-container.container {
     box-shadow: none;
 }
 
-/* Make rubrics look like big headings */
-.rst-content .rubric {
-    font-size: 2rem;      /* adjust to taste */
+/* Make rubrics look like big headings
+/*.rst-content .rubric {
+    font-size: 2rem;      
     font-weight: 700;
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
-  }
+  } */
 
   
