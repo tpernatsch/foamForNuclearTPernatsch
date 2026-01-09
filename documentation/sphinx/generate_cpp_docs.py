@@ -386,9 +386,9 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
     # -----------------------------------------------------------------------
     # 2️⃣ Document title (first heading in page)
     # -----------------------------------------------------------------------
-    # out.append(class_name)
-    # out.append("=" * len(class_name))
-    # out.append("")
+    out.append(class_name)
+    out.append("=" * len(class_name))
+    out.append("")
 
     # -----------------------------------------------------------------------
     # 3️⃣ API object declaration
