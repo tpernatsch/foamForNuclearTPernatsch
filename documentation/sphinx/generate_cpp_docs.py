@@ -351,7 +351,7 @@ def load_yaml_doc(yaml_path: Path) -> dict:
 
 def render_rst_from_yaml(y: dict, class_name: str) -> str:
     """Build an RST page from the YAML dict using canonical Sphinx API style
-    with a hidden document title for TOC entries.
+    with a real document title and zero section pollution.
     """
 
     # ---- Description block -------------------------------------------------
@@ -378,15 +378,14 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
     out.append(f".. _{class_name}:\n")
 
     # -----------------------------------------------------------------------
-    # Hidden document title (this is what appears in the toctree)
+    # Real document title (used by :doc:, toctree, nav, PDF, etc.)
     # -----------------------------------------------------------------------
-    out.append(".. rst-class:: hidden-title\n")
     out.append(class_name)
     out.append("=" * len(class_name))
     out.append("")
 
     # -----------------------------------------------------------------------
-    # Class declaration (real API object)
+    # Class declaration (real API object, NOT a section)
     # -----------------------------------------------------------------------
     out.append(f".. cpp:class:: {class_name}\n")
 
@@ -429,6 +428,7 @@ def render_rst_from_yaml(y: dict, class_name: str) -> str:
     out.append("")
 
     return "\n".join(out)
+
 
 
 
