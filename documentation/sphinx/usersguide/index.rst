@@ -5,7 +5,7 @@ User's Guide
 ============
 
 Welcome to the foamForNuclear User's Guide! This documentation will guide you
-through the essential aspects of using foamForNuclear to perform simulations.
+through the essential aspects of using foamForNuclear.
 
 
 .. toctree::
