@@ -902,7 +902,11 @@ def main():
         folder="documentation/sphinx/cppapi/generated/modules/thermalHydraulics/",
         maxdepth=2
     )
-
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/GeN-Foam/postProcessing.rst",
+        folder="documentation/sphinx/cppapi/generated/functionObjects/",
+        maxdepth=2
+    )
 
     print("End")
 
