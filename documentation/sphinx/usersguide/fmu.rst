@@ -104,7 +104,7 @@ Then the foamForNuclear project can be built as usual.
 Features
 --------
 
-In this section, a list of FMI inputs/outputs in GeN-Foam is provided with a
+In this section, a list of FMI inputs/outputs in foamForNuclear is provided with a
 link to each class.
 
 Inputs from FMUs

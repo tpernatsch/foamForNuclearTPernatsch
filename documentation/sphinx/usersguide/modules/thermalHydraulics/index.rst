@@ -5,7 +5,7 @@ Thermal-hydraulics
 ==================
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
 
    thermalHydraulicsSolvers
    settingCase
