@@ -17,5 +17,6 @@ through the essential aspects of using foamForNuclear.
    OFFBEAT/index
    modules/index
    tutorials
+   fmu
 
 

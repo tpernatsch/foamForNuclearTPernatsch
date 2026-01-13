@@ -2,7 +2,7 @@
 FMU coupling
 ============
 
-GeN-Foam provides several interface points to communicate with
+foamForNuclear provides several interface points to communicate with
 `Functional Mock-up Units <https://fmi-standard.org/>`_ (FMUs). FMUs are
 containers of software and data that are based on a widely employed
 communication standard called Functional Mockup Interface (FMI). The FMI is
@@ -17,7 +17,7 @@ Follow the instructions for
 - ECI4FOAM: https://gitlab.com/foam-for-nuclear/ECI4FOAM
 - FMU4FOAM: https://gitlab.com/foam-for-nuclear/FMU4FOAM
 
-To include into GeN-Foam you have to export the `LIB_ECI4FOAM` environment variable such as:
+To include into foamForNuclear you have to export the `LIB_ECI4FOAM` environment variable such as:
 
 .. code :: bash
 
@@ -37,7 +37,7 @@ Then execute:
 Alternative installation from the original FMU4FOAM repository
 --------------------------------------------------------------
 
-To use the FMI coupling interface in GeN-Foam, the user has to install the
+To use the FMI coupling interface in foamForNuclear, the user has to install the
 `FMU4FOAM <https://github.com/DLR-RY/FMU4FOAM>`_ project developed by the DLR
 using the following commands:
 
@@ -90,7 +90,7 @@ To test:
     ./Allrun
 
 
-To include into GeN-Foam you have to export the ``LIB_ECI4FOAM`` environment
+To include into foamForNuclear you have to export the ``LIB_ECI4FOAM`` environment
 variable such as:
 
 .. code :: bash
@@ -98,7 +98,7 @@ variable such as:
     # In your .bashrc, must end with "ECI4FOAM"
     export LIB_ECI4FOAM="/home/.../path/to/ECI4FOAM"
 
-Then the GeN-Foam project can be built as usual.
+Then the foamForNuclear project can be built as usual.
 
 
 Features
@@ -170,3 +170,15 @@ Tips
 If your simulation crashes because of an unexpected error from externalComm
 json. Make sure that you have provided all the FMI ports in both codes with the
 correct spelling.
+
+
+
+.. warning::
+
+   The FMI capabilities in **foamForNuclear** are advanced features that require the coordinated use of multiple software packages, each with critical dependencies. Installation and configuration issues are relatively common. Therefore, this functionality is recommended only for experienced users who are highly familiar with:
+
+   - **Linux** system administration
+   - **OpenFOAM**
+   - **Python**
+   - The **FMI interface**
+   - Any FMI-compliant software intended for coupling with **foamForNuclear**
