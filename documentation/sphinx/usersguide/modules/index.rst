@@ -13,7 +13,6 @@ Form a programming perspective, modules are hierachical C++ structures where a p
 
 
 .. toctree::
-   :numbered:
    :maxdepth: 3
 
    thermalHydraulics/index

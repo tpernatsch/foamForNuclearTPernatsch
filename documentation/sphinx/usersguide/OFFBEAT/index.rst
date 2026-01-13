@@ -9,7 +9,6 @@ through the essential aspects of using OFFBEAT to perform simulations.
 
 
 .. toctree::
-   :numbered:
    :maxdepth: 3
 
    offbeat
