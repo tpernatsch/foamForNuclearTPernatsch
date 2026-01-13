@@ -19,7 +19,6 @@ through the essential aspects of using GeN-Foam to perform simulations.
    solutionControl
    runningGeN-Foam
    postProcessing
-   fmu
    tips_and_tricks
 
 
