@@ -37,3 +37,5 @@ cases, as well as multiple GeN-Foam runs that are used for instance to: 1)
 achieve a steady-state; 2) run a transient starting from that steady-state.
 
 
+.. warning::
+    ``decomposePar`` and ``reconstructPar`` are not capable to work on FieldFields (i.e., fields of fields, such as fields of multi-node temperatures emplyed in sub-scale power models for porous-medium simulations). This affect the parallel decomposition and reconstruction of objects such as ``T.lumpedNuclearStructure`` and ``T.nuclearFuelPin``. The main consequence is that a user cannot automatically restart a case that has been reconstructed and re-decomposed. The best is simply not to reconstruct/decompose before a restart. If, for whatever reason, that is needed, a user may need to do that manually or through a dedicated python script.

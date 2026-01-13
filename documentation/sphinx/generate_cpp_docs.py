@@ -895,17 +895,17 @@ def main():
     append_toctree_for_folder_recursive(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/porousMedium/FFdrag.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels",
-        maxdepth=2
+        maxdepth=1
     )
     append_toctree_for_folder_recursive(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/thermalHydraulicsSolvers.rst",
         folder="documentation/sphinx/cppapi/generated/modules/thermalHydraulics/",
-        maxdepth=2
+        maxdepth=1
     )
     append_toctree_for_folder_recursive(
         target_rst="documentation/sphinx/usersguide/GeN-Foam/postProcessing.rst",
         folder="documentation/sphinx/cppapi/generated/functionObjects/",
-        maxdepth=2
+        maxdepth=1
     )
 
     print("End")
