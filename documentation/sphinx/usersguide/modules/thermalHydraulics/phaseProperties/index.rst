@@ -1,8 +1,8 @@
 .. _userguide_thermalhydraulics_porousMedium:
 
 
-The phaseProperties dictionary
-------------------------------
+The *phaseProperties* dictionary
+--------------------------------
 
 GeN-Foam was born for safety analyses and, to reduce computational footprint,
 its base approach is to model for instance the core as a porous medium. In a

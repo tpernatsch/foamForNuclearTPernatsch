@@ -9,9 +9,8 @@ Thermal-hydraulics
 
    thermalHydraulicsSolvers
    settingCase
-   thermalAndTurbulenceProperties
-   porousMedium/index
-
-
-
+   g
+   thermophysicalProperties
+   turbulenceProperties
+   phaseProperties/index
 
