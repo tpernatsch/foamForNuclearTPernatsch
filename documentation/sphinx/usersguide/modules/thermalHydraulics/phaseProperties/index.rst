@@ -24,8 +24,33 @@ Run-time selectable models
 
    powerModels
    FFdrag
+   FSdrag
+   multipliersDrag
+
+.. contactPartiotionModels
+   dispersionModels
+   fluidDimaterModels
+   FFHeatTransferCoefficientModels
+   FSHeatTransferCoefficientModels
+   interfacialAreaModels
+   phaseChangeModels ()
+   regimeMapModels
+   virtualMassCoefficientModels
 
 
+
+
+Other models
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Pump
+^^^^
+
+Heat exchanger
+^^^^^^^^^^^^^^
+
+Power-off criterion
+^^^^^^^^^^^^^^^^^^^^
 
 .. The simplest structures in GeN-Foam are the passive structures. These passive
 .. structures are simply modeled as a heat capacity and they can be used for
