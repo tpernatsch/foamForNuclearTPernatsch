@@ -1,7 +1,7 @@
 .. _userguide_thermalhydraulics_turbulenceProperties:
 
-Turbulence properties
----------------------
+The *turbulenceProperties* dictionary
+-------------------------------------
 
 
 The *turbulenceProperties* dictionary can be found under
