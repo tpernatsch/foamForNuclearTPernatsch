@@ -893,6 +893,11 @@ def main():
 
     # Step 3: Append indexes in dynamic files
     append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/structureModels.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/phaseModels/structureModels/",
+        maxdepth=1
+    )
+    append_toctree_for_folder_recursive(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/FFdrag.rst",
         folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels",
         maxdepth=1

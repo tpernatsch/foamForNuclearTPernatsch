@@ -16,6 +16,17 @@ The *phaseProperties* dictionary is a complex dictionary that handles:
    - Some miscellaneous parameters such as ``residualKd``
 
 
+Run-time selectable models
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. toctree::
+   :maxdepth: 2
+
+   structureModels
+   FFdrag
+
+
+
 .. The simplest structures in GeN-Foam are the passive structures. These passive
 .. structures are simply modeled as a heat capacity and they can be used for
 .. instance to model assembly wrappers or reflector structures. In essence, the
@@ -63,7 +74,4 @@ The *phaseProperties* dictionary is a complex dictionary that handles:
 .. volumetric area, and heat transfer with the coolant. This can be used to model
 .. structures like assembly wrappers or reflectors.
 
-.. toctree::
-   :maxdepth: 2
 
-   FFdrag
