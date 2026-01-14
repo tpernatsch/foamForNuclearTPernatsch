@@ -206,7 +206,7 @@ class pointKineticNeutronics
 protected:
 
     //-
-    IOdictionary nuclearData_;
+    dictionary nuclearData_;
 
     //- Total power, sum of fission power and decay power
     scalar power_;

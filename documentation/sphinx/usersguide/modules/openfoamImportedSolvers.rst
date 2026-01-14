@@ -1,4 +1,5 @@
-=============================
+.. _userguide_modules_imported:
+
 OpenFOAM-imported sub-solvers
 =============================
 

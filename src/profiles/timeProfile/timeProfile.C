@@ -133,6 +133,48 @@ Foam::timeProfile::timeProfile
     }
 }
 
+Foam::timeProfile::timeProfile
+(
+    const dictionary& object,
+    word timeProfileName,
+    const Time& runTime
+)
+:
+    runTime_(runTime),
+    startTime_(0.0),
+    oldTime_(startTime_),
+    currentValue_(0.0),
+    oldValue_(currentValue_),
+    functionPtr_(nullptr),
+    isfmiPortSet_(false)
+{
+    if (object.found(timeProfileName))
+    {
+        dict_ = object.subDict(timeProfileName);
+
+        type_ = dict_.get<word>("type");
+
+        startTime_ = dict_.lookupOrDefault<scalar>("startTime", 0.0);
+        oldTime_ = startTime_;
+
+        if (type_ != "fmi")
+        {
+            functionPtr_.reset
+            (
+                Function1<scalar>::New
+                (
+                    type_,
+                    dict_,
+                    type_
+                )
+            );
+        }
+        else
+        {
+            initializeFMI();
+        }
+    }
+}
 // * * * * * * * * * * * * * * Member Functions  * * * * * * * * * * * * * * //
 
 void Foam::timeProfile::initializeFMI()

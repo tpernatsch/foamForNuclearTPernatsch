@@ -11,7 +11,7 @@
 
 
 Meshes
-------
+======
 
 .. autosummary::
     :toctree: generated
@@ -25,7 +25,7 @@ Meshes
 
 
 Suggested packages
-------------------
+==================
 
 Here is a list of potential open-source tool that can be used to generate meshes
 for OpenFOAM cases.
@@ -55,7 +55,7 @@ for OpenFOAM cases.
 
 
 Elementary Meshes
------------------
+=================
 
 This section summaries all the elementary blocks that can be used to start
 meshes.
@@ -324,7 +324,7 @@ meshes.
 
 
 Lattices
---------
+========
 
 Here is an example of use of the lattice placement using :class:`BlockMesh`.
 The lattice map can be a regular MCNP/Serpent format. We recommend to use the
@@ -468,7 +468,7 @@ Or using :class:`PolyMesh` to create hexagonal prism assemblies with one cell
 
 
 Pipe manifold
--------------
+=============
 
 Pipe manifold can used for inlet and outlet piping from a reactor vessel. Here
 follows an example of use for a 3-loop outlet with arbitrary dimensions:
@@ -522,7 +522,7 @@ follows an example of use for a 3-loop outlet with arbitrary dimensions:
 
 
 Pebble bed mesh
----------------
+===============
 
 Here is an example of use of the :class:`PolyMesh` mesher to create a mesh for a pebble
 bed. One might change the ``rng.uniform`` function into a sphere packing algorithm
@@ -556,7 +556,7 @@ Which leads to the following mesh:
 .. _pythonapi_mesh_motion:
 
 Mesh motion
------------
+===========
 
 Using ``solidBody`` motion solver:
 

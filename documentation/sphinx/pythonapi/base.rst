@@ -9,7 +9,7 @@
 
 
 Pre-processing
---------------
+==============
 
 .. autosummary::
    :toctree: generated
@@ -25,7 +25,7 @@ More information on meshing in :mod:`foamForNuclear.mesh`.
 
 
 Simulation Settings
--------------------
+===================
 
 .. autosummary::
    :toctree: generated
@@ -43,7 +43,7 @@ Simulation Settings
 
 
 Fields Specifications
----------------------
+=====================
 
 .. autosummary::
    :toctree: generated
@@ -57,7 +57,7 @@ Fields Specifications
 
 
 Solvers
--------
+=======
 
 .. autosummary::
    :toctree: generated
@@ -75,7 +75,7 @@ More information on thermal-hydraulics sub-models in
 
 
 Nuclear Data and Neutronics dictionaries
-----------------------------------------
+========================================
 
 .. autosummary::
    :toctree: generated
@@ -92,7 +92,7 @@ Nuclear Data and Neutronics dictionaries
 
 
 Thermal-mechanics and Fuel Performance
---------------------------------------
+======================================
 
 .. autosummary::
    :toctree: generated
@@ -138,7 +138,7 @@ Thermal-mechanics and Fuel Performance
 
 
 Coupling
---------
+========
 
 .. autosummary::
    :toctree: generated
@@ -154,7 +154,7 @@ Coupling
 
 
 Post-processing
----------------
+===============
 
 .. autosummary::
    :toctree: generated
@@ -172,7 +172,7 @@ Post-processing
 
 
 Mesh Motion
------------
+===========
 
 .. autosummary::
    :toctree: generated
@@ -196,7 +196,7 @@ More information on mesh motion in :ref:`Mesh motion <pythonapi_mesh_motion>`.
 
 
 Common objects
---------------
+==============
 
 .. autosummary::
    :toctree: generated

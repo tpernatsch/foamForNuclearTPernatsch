@@ -1,9 +1,9 @@
-==============
+
 Setting a case
-==============
+--------------
 
 Initial and boundary conditions
-===============================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Initial and boundary conditions adopt the usual OpenFOAM logic for one- and
 two-phase solvers. A couple of things to be kept in mind:
@@ -29,7 +29,7 @@ files (.H).
 .. _userguide_thermalhydraulics_settingcase_setpower:
 
 Setting the initial power
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are several ways to set the power in GeN-Foam. For the power generated in
 subscale structures:
@@ -66,7 +66,7 @@ densities.
 
 
 Power densities and secondary power densities, and liquid fuel
---------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The spatial neutronics solvers always create a *powerDensity* and
 *secondaryPowerDensity* fields. By default, *secondaryPowerDensity* is set to
@@ -122,7 +122,7 @@ GeN-Foam will rescale and print to the powerDensityToLiquid
 
 
 Discretization and solution
-===========================
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Details for discretization and solution of equations are handled in a standard
 OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in

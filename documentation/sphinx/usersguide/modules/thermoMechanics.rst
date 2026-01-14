@@ -1,6 +1,5 @@
 .. _userguide_thermomechanics:
 
-=================
 Thermal-mechanics
 =================
 
@@ -18,10 +17,10 @@ here, whereas the latter is described in details in the
 
 
 Various properties
-==================
+------------------
 
 The *thermoMechanicalProperties* dictionary
--------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The *thermoMechanicalProperties* dictionary can be found under
 *constant/thermoMechanicalRegion* and allow to define the thermo-mechanical
@@ -33,7 +32,7 @@ One can find a detailed, commented example in the tutorial
 
 
 Initial and boundary conditions
-===============================
+-------------------------------
 
 Besides the standard ones available in OpenFOAM, GeN-Foam includes a
 *tractionDisplacement* boundary condition that allows to set a pressure or a
@@ -43,7 +42,7 @@ boundary condition of the OFFBEAT fuel behavior solver
 
 
 Discretization and solution
-===========================
+---------------------------
 
 Details for discretization and solution of equations are handled in a standard
 OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in
@@ -51,7 +50,7 @@ OpenFOAM way, i.e., through the *fvSolution* and *fvSchemes* dictionaries in
 
 
 Mesh deformation
-================
+----------------
 
 The new structure of GeN-Foam allows to deform each mesh based on any
 user-defined vectorial field. In particular, it might be of interest to solve

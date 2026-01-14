@@ -11,7 +11,7 @@
 
 
 Base and abstract thermo-mechanical class
------------------------------------------
+=========================================
 
 .. autosummary::
     :toctree: generated
@@ -47,7 +47,7 @@ Base and abstract thermo-mechanical class
 
 
 Constant Material
------------------
+=================
 
 .. autosummary::
     :toctree: generated
@@ -58,7 +58,7 @@ Constant Material
 
 
 UO2
----
+===
 
 .. autosummary::
     :toctree: generated
@@ -81,11 +81,11 @@ UO2
 
 
 UPuO2
------
+=====
 
 
 Zircalloy
----------
+=========
 
 .. autosummary::
     :toctree: generated
@@ -105,16 +105,16 @@ Zircalloy
 
 
 HastelloyN
-----------
+==========
 
 Inconel600
-----------
+==========
 
 Steel 1515Ti
-------------
+============
 
 Molybdenum
-----------
+==========
 
 Buffer
-------
+======

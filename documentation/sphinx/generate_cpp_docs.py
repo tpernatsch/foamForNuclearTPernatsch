@@ -378,9 +378,8 @@ def render_rst_from_H(class_name: str, description: str, options: str, usage: st
 
 def generate_class_rst_files(ffn_lib_dirs: list[str], rst_output_dir: str) -> dict:
     """
-    Dual mode:
     - If a sidecar YAML exists next to a .H/.C (same stem, .yaml or .doc.yaml), use YAML.
-    - Otherwise, parse the .H file (legacy path).
+    - (currently commented) Otherwise, parse the .H file (legacy path).
     Writes mirrored RST files into rst_output_dir and returns class_entries (ABS paths).
     """
     class_entries = {}
@@ -406,35 +405,35 @@ def generate_class_rst_files(ffn_lib_dirs: list[str], rst_output_dir: str) -> di
             rst_file_path.write_text(rst_text, encoding="utf-8")
             class_entries[class_name] = str(rst_file_path)
 
-        # 2) For any .H without a YAML sibling, fall back to legacy parsing
-        for h_path in src_root.rglob("*.H"):
-            if any(p in {"lnInclude", "Make"} for p in h_path.parts):
-                continue
+        # # 2) For any .H without a YAML sibling, fall back to legacy parsing
+        # for h_path in src_root.rglob("*.H"):
+        #     if any(p in {"lnInclude", "Make"} for p in h_path.parts):
+        #         continue
 
-            # Skip if RST already generated from YAML for this class
-            class_name = h_path.stem
-            if class_name in class_entries:
-                continue
+        #     # Skip if RST already generated from YAML for this class
+        #     class_name = h_path.stem
+        #     if class_name in class_entries:
+        #         continue
 
-            # Look for sidecar YAML (.yaml or .doc.yaml); if found, it would have been handled above
-            yaml_sidecars = [
-                h_path.with_suffix(".yaml"),
-                h_path.with_suffix(".doc.yaml"),
-            ]
-            if any(y.exists() for y in yaml_sidecars):
-                continue
+        #     # Look for sidecar YAML (.yaml or .doc.yaml); if found, it would have been handled above
+        #     yaml_sidecars = [
+        #         h_path.with_suffix(".yaml"),
+        #         h_path.with_suffix(".doc.yaml"),
+        #     ]
+        #     if any(y.exists() for y in yaml_sidecars):
+        #         continue
 
-            # Legacy .H parsing
-            description, options, usage, vartable = extract_descriptions_and_usage(str(h_path))
-            rst_text = render_rst_from_H(class_name, description, options, usage, vartable)
+        #     # Legacy .H parsing
+        #     description, options, usage, vartable = extract_descriptions_and_usage(str(h_path))
+        #     rst_text = render_rst_from_H(class_name, description, options, usage, vartable)
 
-            relative_dir = h_path.parent.relative_to(src_root)
-            output_dir = out_root.joinpath(relative_dir)
-            output_dir.mkdir(parents=True, exist_ok=True)
+        #     relative_dir = h_path.parent.relative_to(src_root)
+        #     output_dir = out_root.joinpath(relative_dir)
+        #     output_dir.mkdir(parents=True, exist_ok=True)
 
-            rst_file_path = output_dir / f"{class_name}.rst"
-            rst_file_path.write_text(rst_text, encoding="utf-8")
-            class_entries[class_name] = str(rst_file_path)
+        #     rst_file_path = output_dir / f"{class_name}.rst"
+        #     rst_file_path.write_text(rst_text, encoding="utf-8")
+        #     class_entries[class_name] = str(rst_file_path)
 
     return class_entries
 
@@ -602,7 +601,7 @@ def generate_cppapi_index(
         if (sectionDepth == 1):
             cppapi_index += f"{'':-<{len(sectionName)}}\n\n"
         if (sectionDepth == 2):
-            cppapi_index += f"{'':^<{len(sectionName)}}\n\n"
+            cppapi_index += f"{'':~<{len(sectionName)}}\n\n"
 
         if (isAddContent):
             cppapi_index += ".. toctree::\n"
@@ -663,6 +662,48 @@ def generate_cppapi_index(
 
     with open(f"{cppapi_folder}/index.rst", 'w', encoding='utf-8') as f:
         f.write(cppapi_index)
+
+
+def append_toctree_for_folder_recursive(target_rst: str, folder: str, maxdepth: int = 1) -> None:
+    """
+    Append a Sphinx toctree block at the end of `target_rst` file,
+    listing all .rst files found in subfolders of `folder` (excluding root-level files).
+
+    Parameters
+    ----------
+    target_rst : str
+        Path to the RST file where the toctree will be appended.
+    folder : str
+        Path to the folder containing .rst files (e.g., dragModels).
+    maxdepth : int
+        Depth for the toctree (default = 1).
+    """
+    folder_path = Path(folder).resolve()
+    # Only include .rst files that are NOT directly under folder_path
+    rst_files = sorted([f for f in folder_path.rglob("*.rst") if f.parent != folder_path])
+
+    if not rst_files:
+        print(f"No .rst files found in subfolders of {folder_path}")
+        return
+
+    # Build toctree block
+    toctree_block = [
+        "\n.. toctree::",
+        f"   :maxdepth: {maxdepth}",
+        "",
+    ]
+    for f in rst_files:
+        rel_path = os.path.relpath(f, start=Path(target_rst).parent)
+        toctree_block.append(f"   {rel_path}")
+
+    # Append to target RST file
+    with open(target_rst, "a", encoding="utf-8") as out_file:
+        out_file.write("\n".join(toctree_block) + "\n")
+
+    print(f"Appended recursive toctree with {len(rst_files)} entries to {target_rst}")
+
+
+
 
 
 #==============================================================================*
@@ -745,6 +786,21 @@ def main():
             ("solutionControl", "Solution control", 1, True),
         ]
     )
+
+    # Step 3: Append indexes in dynamic files
+    """
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/porousMedium/FFdrag.rst",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/dragModels/FFDragCoefficientModels",
+        maxdepth=2
+    )
+    append_toctree_for_folder_recursive(
+        target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/thermalHydraulicsSolvers.rst",
+        folder="documentation/sphinx/cppapi/generated/modules/thermalHydraulics/",
+        maxdepth=2
+    )
+    """
+
 
     print("End")
 

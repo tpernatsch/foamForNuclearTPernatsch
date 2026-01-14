@@ -1,4 +1,4 @@
-============
+
 FMU coupling
 ============
 
@@ -10,7 +10,7 @@ developed by an industrial consortium led by the Modelica Association.
 
 
 Compiling
-=========
+---------
 
 Follow the instructions for
 
@@ -102,13 +102,13 @@ Then the GeN-Foam project can be built as usual.
 
 
 Features
-========
+--------
 
 In this section, a list of FMI inputs/outputs in GeN-Foam is provided with a
 link to each class.
 
 Inputs from FMUs
-----------------
+~~~~~~~~~~~~~~~~
 
 .. list-table:: Input from FMUs
     :widths: 50 50
@@ -137,7 +137,7 @@ Inputs from FMUs
 
 
 Outputs to FMUs
----------------
+~~~~~~~~~~~~~~~
 
 .. list-table:: Output from FMUs
     :widths: 50 50
@@ -152,7 +152,7 @@ Outputs to FMUs
 
 
 Inputs and outputs from/to an FMU
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. list-table:: Inputs and outputs from/to an FMU
     :widths: 50 50
@@ -165,7 +165,7 @@ Inputs and outputs from/to an FMU
 
 
 Tips
-====
+----
 
 If your simulation crashes because of an unexpected error from externalComm
 json. Make sure that you have provided all the FMI ports in both codes with the

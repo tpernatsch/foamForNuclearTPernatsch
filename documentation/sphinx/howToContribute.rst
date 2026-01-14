@@ -2,14 +2,15 @@
 How to contribute
 =================
 
+-------------
 Merge request
-=============
+-------------
 
 Contributions are accepted using standard GitLab procedures.
 
-
+---------
 Tutorials
-=========
+---------
 
 Tutorials should always include:
 
@@ -20,9 +21,9 @@ Tutorials should always include:
   necessary (e.g for restart)
 - Optional: ``Alltest``
 
-
+-----------------
 C++ documentation
-=================
+-----------------
 
 All contributed code should follow the guidelines below.
 
@@ -30,7 +31,7 @@ For code styling refer to `OpenFOAM styling <https://openfoam.org/dev/coding-sty
 
 
 .H header
----------
+=========
 
 The header of the ``.H`` file requires after the license:
 
@@ -69,7 +70,7 @@ The header of the ``.H`` file requires after the license:
 
 
 .C header
----------
+=========
 
 The header of the ``.C`` only requires the banner and the license. It doesn't
 require description or duplicated information from the ``.H`` file.
@@ -117,7 +118,7 @@ require description or duplicated information from the ``.H`` file.
 
 
 YAML Doc file
--------------
+=============
 
 Provide a ``.yaml`` file for each model. A new merge request with a new class
 without a ``.yaml`` will be denied.

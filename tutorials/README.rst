@@ -1,6 +1,6 @@
-=========
+---------
 Tutorials
-=========
+---------
 
 A set of tutorials is distributed to provide a relatively comprehensive outlook
 on the functionalities of FFN. In each tutorial:
@@ -10,10 +10,6 @@ on the functionalities of FFN. In each tutorial:
 - an ``Allrun`` bash script is provided that can be used to run the tutorial. The steps of the ``Allrun`` script can also give an understanding of the steps to take to run other simulations
 - in computational-intensive cases, an ``Allrun_parallel`` bash script is provided to run the tutorial using multiple cores
 - in complex cases, an ``Allclean`` script is provided to clean up a case after running it and before another simulation
-
-N.B.: In `3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR?ref_type=heads>`_,
-many non-obvious or non-OpenFOAM standard input parameters are commented, or
-they include an indication on the tutorial to look at for additional comments.
 
 
 Cases

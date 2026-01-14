@@ -8,7 +8,7 @@ Thermal-hydraulics models
     :local:
 
 Drag models
------------
+===========
 
 .. autosummary::
    :toctree: generated
@@ -34,7 +34,7 @@ Drag models
 
 
 Heat-transfer models
---------------------
+====================
 
 .. autosummary::
    :toctree: generated
@@ -74,7 +74,7 @@ Heat-transfer models
 
 
 Power models
-------------
+============
 
 .. autosummary::
    :toctree: generated
@@ -94,7 +94,7 @@ Power models
 
 
 Pump models
------------
+===========
 
 .. autosummary::
    :toctree: generated
@@ -105,7 +105,7 @@ Pump models
 
 
 Heat exchanger models
----------------------
+=====================
 
 .. autosummary::
    :toctree: generated
@@ -116,7 +116,7 @@ Heat exchanger models
 
 
 Regime map models
------------------
+=================
 
 .. autosummary::
    :toctree: generated
@@ -128,7 +128,7 @@ Regime map models
 
 
 Power-off criterion models
---------------------------
+==========================
 
 .. autosummary::
    :toctree: generated
@@ -141,7 +141,7 @@ Power-off criterion models
 
 
 Pair geometry models
---------------------
+====================
 
 Mainly used in ``twoPhase`` solver.
 
@@ -162,7 +162,7 @@ Mainly used in ``twoPhase`` solver.
 
 
 Phase change models
--------------------
+===================
 
 Mainly used in ``twoPhase`` solver.
 
@@ -186,7 +186,7 @@ Mainly used in ``twoPhase`` solver.
 
 
 Two phase drag multiplier models
---------------------------------
+================================
 
 Mainly used in ``twoPhase`` solver.
 

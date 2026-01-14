@@ -1,13 +1,12 @@
+
 .. _installation:
 
-============
+------------
 Installation
-============
+------------
 
-
------------------
 Building OpenFOAM
------------------
+=================
 
 The foamForNuclear project is built on the `OpenFOAM <https://www.openfoam.com/>`_
 open-source CFD software.
@@ -28,7 +27,6 @@ the installer script with one of these commands:
    # Install preferred package. Eg,
    sudo apt-get install openfoam2506-default
 
-
 Add in your ``~/.bashrc`` the following command to access all the functionalities
 of OpenFOAM.
 
@@ -36,14 +34,15 @@ of OpenFOAM.
 
    source /usr/lib/openfoam/openfoam2506/etc/bashrc
 
+If installing from source, follow the `instructions here <https://develop.openfoam.com/Development/openfoam/-/blob/master/doc/Build.md>`_.
+Check for the appropriate version of OpenFOAM specified in the readme file of the `GitLab repository
+<https://gitlab.com/foamForNuclear/foamForNuclear>`_!
 
-------------------------
-Building Source on Linux
-------------------------
+Building foamForNuclear on Linux
+================================
 
-All foamForNuclear source code is hosted on `GitLab
-<https://gitlab.com/foamForNuclear/foamForNuclear>`_. If you have `git
-<https://git-scm.com>`_, and a modern C++ compiler installed, you can
+All foamForNuclear source code is hosted on `GitLab <https://gitlab.com/foamForNuclear/foamForNuclear>`_.
+If you have `git <https://git-scm.com>`_, a modern C++ compiler, and the right version of OpenFOAM installed, you can
 download and install foamForNuclear by entering the following commands in a terminal:
 
 .. code-block:: bash
@@ -54,8 +53,7 @@ download and install foamForNuclear by entering the following commands in a term
    # Compile the project and build the foamForNuclear Python API
    ./Allwmake -j<N> --api
 
-
-The :mod:`foamForNuclear <pythonapi>` Python package must be installed separately. The easiest way
+The :mod:`foamForNuclear <pythonapi>` Python API must be installed separately. The easiest way
 to install it is using `pip <https://pip.pypa.io/en/stable/>`_.
 From the root directory of the foamForNuclear repository, run:
 

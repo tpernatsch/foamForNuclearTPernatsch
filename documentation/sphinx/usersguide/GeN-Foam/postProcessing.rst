@@ -1,20 +1,19 @@
-.. _post_processing:
+.. _postProcessing:
 
-==============
-Postprocessing
-==============
 
-Postprocessing can be performed using ``paraFoam``, the standard post-processing
-tool used with OpenFOAM. ``paraFoam`` is launched using the command line:
+Visualization and postprocessing
+================================
+
+ParaFoam and ParaView
+---------------------
+
+The most common method to vizualize and postprocess simulation results in OpenFOAM is to use ``paraFoam``. ``paraFoam`` is launched using the command line:
 
 .. code :: bash
 
-    paraFoam -region regionName
+    paraFoam
 
-
-where the ``regionName`` is e.g ``fluidRegion`` or ``neutroRegion``.
-
-Please notice that ``paraFoam`` is essentially an extension of ParaView and it
+``paraFoam`` is just an extension of ParaView and it
 requires having ParaView installed. In the `openfoam.com <https://openfoam.com>`_
 distribution, ParaView is not distributed with OpenFOAM, but needs to be
 installed separately (see the `ParaView website <https://www.paraview.org/>`_). In
@@ -24,6 +23,15 @@ Ubuntu, it is normally enough to type in the terminal:
 
     sudo apt-get -y install paraview
 
+
+Standard paraview can also be used as:
+
+.. code :: bash
+
+    touch para.foam
+    paraview para.foam
+
+where ``para.foam`` can be any empty file with extension ``.foam``.
 
 In case of parallel calculations, one should first reconstruct each one of the
 meshes using the command
@@ -35,17 +43,15 @@ meshes using the command
     reconstructPar -allRegions
 
 
-where the ``regionName`` is once again e.g ``fluidRegion`` or ``neutroRegion``.
-Notice that the ``<timeStep>/uniform`` folder is not a region and requires the
-``-allRegions`` flag to be merged.
+.. note::
+    The ``<timeStep>/uniform`` folder is not a region and requires the ``-allRegions`` flag to be merged.
 
-Besides ``paraFoam``, GeN-Foam also creates, in the case folder (or in the
-processor folder for parallel simulations), the ``GeN-Foam.dat`` file that
-summarizes few main quantity of interests: time(s), keff(-), power(W), flux0
-(m-2s-1), TFuel_Max, TFuel_Avg TFuel_Min, TCladding_Max, TCladding_Avg,
-TCladding_Min.
 
-Useful information is also stored in the log file. The log file can be created
+The log file
+------------
+
+Useful information is also stored in the log file. It includes details of the numerical solution (time steps, residuals, number of interations, etc), as well as some quantities of interest such as min/max temperatures in fluid solvers and multiplication factor in k-eigenvalue solvers. 
+ The log file can be created
 by adding the ``| tee log.GeN-Foam`` command to the launch command, i.e.:
 
 .. code :: bash
@@ -58,9 +64,12 @@ by adding the ``| tee log.GeN-Foam`` command to the launch command, i.e.:
 Python can effectively be used to extract information from the ``log.GeN-Foam``
 (several examples are available in the tutorials).
 
-In addition, OpenFOAM allows to use
+Function objects 
+----------------
+
+OpenFOAM allows to use
 `function objects <https://www.openfoam.com/documentation/guides/latest/doc/guide-function-objects.html>`_
-to extract specific information after or during the simulation. Also in this
+to extract specific information after a simulation. Also in this
 case it is essential to indicate which region you want the function object to be
 applied to, for instance:
 
@@ -69,13 +78,13 @@ applied to, for instance:
     postProcess -func singleGraph -region neutroRegion
 
 
-Function objects can also employed at run time via the *controlDict* (see for
+Function objects can also be employed at run time via the *controlDict* (see for
 instance `2D_FFTF <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/2D_FFTF/rootCase/system/controlDict>`_).
 
-FoamForNuclear provides some additional function objects that have been found
+foamForNuclear provides some additional function objects with respect to standard OpenFOAM that have been found
 to be particularly useful in the nuclear field, including for example for 
 :ref:`mass flow rates <massFlow.H>`, 
 :ref:`pressure drops <pressureDrop.H>`
 and :ref:`bulk temperatures <TBulk.H>`.
 See `here <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/src/functionObjects?ref_type=heads>`_
-for a full list
+for a full list.
