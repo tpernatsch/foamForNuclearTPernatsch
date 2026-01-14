@@ -73,6 +73,9 @@ PIMPLE
     partialEliminationMode implicit;
     momentumMode        faceCentered;
     oscillationLimiterFraction 0.5;
+    pMin                    10000;
+    pRefCell                0;
+    pRefValue               100000;
 
     residualControl
     {

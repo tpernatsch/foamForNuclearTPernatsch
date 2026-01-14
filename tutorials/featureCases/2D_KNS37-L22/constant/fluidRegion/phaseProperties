@@ -65,6 +65,12 @@ structureProperties
             T               653.15;
             Cp              500;
             rho             7700;
+
+            powerOffCriterionModel
+            {
+                type            timeThreshold;
+                time            12.475;
+            }
         }
     }
     "lowOut:topOut"
@@ -83,6 +89,12 @@ structureProperties
             T               653.15;
             Cp              500;
             rho             7700;
+
+            powerOffCriterionModel
+            {
+                type            timeThreshold;
+                time            12.475;
+            }
         }
     }
     "midIn"
@@ -101,6 +113,12 @@ structureProperties
             T               653.15;
             Cp              500;
             rho             7700;
+
+            powerOffCriterionModel
+            {
+                type            timeThreshold;
+                time            12.475;
+            }
         }
     }
     "midOut"
@@ -119,18 +137,19 @@ structureProperties
             T               653.15;
             Cp              500;
             rho             7700;
+
+
+            powerOffCriterionModel
+            {
+                type            timeThreshold;
+                time            12.475;
+            }
         }
     }
     "pipe"
     {
         volumeFraction  0;
         Dh              0.0531196;
-    }
-
-    powerOffCriterionModel
-    {
-        type            timer;
-        time            12.475;
     }
 }
 
@@ -312,11 +331,4 @@ physicsModels
         }
     }
 }
-
-pMin            10000;
-
-pRefCell        0;
-
-pRefValue       100000;
-
 // ************************************************************************* //

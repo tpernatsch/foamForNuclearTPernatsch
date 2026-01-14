@@ -198,19 +198,20 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
     (
         "pMin",
         p_.dimensions(),
-        *this
+        pimple_.dict()
     ),
     pRefCell_
     (
-        this->lookupOrDefault("pRefCell", 0)
+        
+        pimple_.dict().lookupOrDefault("pRefCell", 0)
     ),
     pRefValue_
     (
-        this->lookupOrDefault("pRefValue", 0)
+        pimple_.dict().lookupOrDefault("pRefValue", 0)
     ),
     forcePRef_
     (
-        this->lookupOrDefault<bool>("forcePRef", false)
+        pimple_.dict().lookupOrDefault<bool>("forcePRef", false)
     ),
     initialFluidMass_("initialFluidMass", dimMass, 0),
     momentumMode_
@@ -341,7 +342,7 @@ void Foam::solvers::thermalHydraulicsModel::correctBaffleLessFields()
                 IOobject
                 (
                     "regionsDict",
-                    runTime.time().constant(),
+                    runTime.time().system(),
                     runTime.db(),
                     IOobject::READ_IF_PRESENT,
                     IOobject::NO_WRITE
@@ -411,7 +412,7 @@ void Foam::solvers::thermalHydraulicsModel::deformMesh()
         IOobject
         (
             "regionsDict",
-            runTime.time().constant(),
+            runTime.time().system(),
             runTime.db(),
             IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE

@@ -28,13 +28,14 @@ setSteadyState() {
     echo "Setting steady-state ..."
     foamDictionary $2/system/controlDict -entry endTime -set $endTimeSteadyState
     foamDictionary $2/system/controlDict -entry writeInterval -set $endTimeSteadyState
-    cp $2/constant/regionsDict_steadyState $2/constant/regionsDict
-    GeN-Foam -initializeMappedFields -case $2
+    cp dictionaries/steadyState/neutronicsProperties $2/constant/neutroRegion/neutronicsProperties
+    cp dictionaries/steadyState/regionsDict $2/system/regionsDict
 }
 
 setTransient() {
     cp -r $1 $2
     echo "Setting $2 case..."
+    cp dictionaries/transient/neutronicsProperties $2/constant/neutroRegion/neutronicsProperties
     foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
     foamDictionary $2/constant/neutroRegion/neutronicsProperties -entry externalSourceNeutronics -set true
     foamDictionary $2/constant/neutroRegion/externalSource \
@@ -43,7 +44,7 @@ setTransient() {
     foamDictionary $2/system/controlDict -entry deltaT -set 1e-7
     foamDictionary $2/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $2/system/controlDict -entry writeInterval -set 10
-    cp $2/constant/regionsDict_transient $2/constant/regionsDict
+    cp dictionaries/transient/regionsDict $2/system/regionsDict
     GeN-Foam -initializeMappedFields -case $2
 }
 

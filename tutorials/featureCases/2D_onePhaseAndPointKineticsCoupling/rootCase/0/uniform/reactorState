@@ -25,10 +25,10 @@ FoamFile
     initialized so to be in equilibrium with the starting conditions (i.e.
     a steady state is assumed). 
     
-    NB: pTarget MUST be the same as the one used for reaching the steady-state.
+    NB: power MUST be the same as the one used for reaching the steady-state.
     As power, GeN-Foam uses what it finds under powerDensity, or under the
     powerDensity of the fluidRegion if it does not find a powerDensity in the
-    neutroRegion. pTarget does not enter the calculation, it is used simply to
+    neutroRegion. power does not enter the calculation, it is used simply to
     plot the results
 */
 
@@ -36,6 +36,6 @@ FoamFile
 keff            1.003457;
 
 //-
-pTarget         10000000;
+power         10000000;
 
 // ************************************************************************* //

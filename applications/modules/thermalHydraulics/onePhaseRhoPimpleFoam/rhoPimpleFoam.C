@@ -380,7 +380,7 @@ void Foam::solvers::rhoPimpleFoam::correctBaffleLessFields()
                 IOobject
                 (
                     "regionsDict",
-                    runTime.time().constant(),
+                    runTime.time().system(),
                     runTime.db(),
                     IOobject::READ_IF_PRESENT,
                     IOobject::NO_WRITE
@@ -444,7 +444,7 @@ void Foam::solvers::rhoPimpleFoam::deformMesh()
         IOobject
         (
             "regionsDict",
-            runTime.time().constant(),
+            runTime.time().system(),
             runTime.db(),
             IOobject::READ_IF_PRESENT,
             IOobject::NO_WRITE

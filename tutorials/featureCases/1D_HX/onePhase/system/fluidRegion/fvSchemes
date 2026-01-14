@@ -28,16 +28,6 @@ gradSchemes
 divSchemes
 {
     default                                 none;
-
-    div(phi,alpha)                          Gauss vanLeer;
-    div(phir,alpha)                         Gauss vanLeer;
-
-    div(phi,alpha.liquid)                   Gauss vanLeer;
-    div(phir,alpha.vapour,alpha.liquid)     Gauss vanLeer;
-    div(phir,alpha.structure,alpha.liquid)  Gauss vanLeer;
-    div(phi,alpha.vapour)                   Gauss vanLeer;
-    div(phir,alpha.liquid,alpha.vapour)     Gauss vanLeer;
-    div(phir,alpha.structure,alpha.vapour)  Gauss vanLeer;
     
     "div\(phi.*,U.*\)"                      Gauss upwind;
     "div(alphaRhoPhi,U)"                    Gauss upwind;

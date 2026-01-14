@@ -33,14 +33,6 @@ solvers
         tolerance       1e-06;
         relTol          0;
     }
-    "e.*"
-    {
-        solver          smoothSolver;
-        smoother        symGaussSeidel;
-        tolerance       1e-06;
-        relTol          0;
-        minIter         1;
-    }
     "h.*"
     {
         solver          smoothSolver;
@@ -68,6 +60,12 @@ PIMPLE
 {
     nCorrectors         12;
     nNonOrthogonalCorrectors 0;
+
+    pMin                    10000; // Minimum pressure in Pa to avoid numerical issues
+    pRefCell                0; // Reference cell for pressure BCs
+    pRefValue               100000; // Reference pressure value for pressure BCs
+
+    
     partialEliminationMode  implicit;
     momentumMode        faceCentered;
     oscillationLimiterFraction  0;

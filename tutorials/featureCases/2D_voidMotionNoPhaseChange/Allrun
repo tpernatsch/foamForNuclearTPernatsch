@@ -7,6 +7,8 @@ then
 else
     echo "gnuplot could not be found"
 fi
+# Create mesh
+blockMesh -region fluidRegion | tee log.blockMesh
 
 # Run GeN-Foam
 GeN-Foam | tee "log.GeN-Foam"

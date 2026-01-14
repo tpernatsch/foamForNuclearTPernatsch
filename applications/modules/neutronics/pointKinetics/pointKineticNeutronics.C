@@ -272,7 +272,7 @@ Foam::solvers::pointKineticNeutronics::pointKineticNeutronics
     precPKStar_(delayedGroups_),
     fastNeutrons_
     (
-        nuclearData_.get<bool>("fastNeutrons")
+        this->get<bool>("fastNeutrons")
     ),
     coeffDoppler_
     (

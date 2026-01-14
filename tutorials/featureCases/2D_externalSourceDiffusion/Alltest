@@ -19,6 +19,7 @@ touch $resFile
 
 # --- Run the simulation
 echo -e "Run tutorial 2D_externalSourceDiffusion ...\n" | tee -a $resFile
+./Allmesh   
 ./Allrun 1 >> log.simulation
 echo -e "Done running tutorial 2D_externalSourceDiffusion ...\n" | tee -a $resFile
 
