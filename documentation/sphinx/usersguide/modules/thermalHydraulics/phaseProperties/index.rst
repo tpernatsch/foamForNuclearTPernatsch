@@ -22,7 +22,7 @@ Run-time selectable models
 .. toctree::
    :maxdepth: 2
 
-   structureModels
+   powerModels
    FFdrag
 
 
