@@ -114,7 +114,7 @@ class Mesh:
         return(result)
 
 
-    def mergePatchesWithName(
+    def merge_patches_with_name(
             self,
             name: str,
             regex: str,

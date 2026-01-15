@@ -23,23 +23,23 @@ nMesh = mesh.BlockMesh(region='neutroRegion')
 fuelLength = 1.5
 nz = 150
 
-zone0 = nMesh.createCube('zone0', -0.05, -0.05, 0, 0.05, 0.05, fuelLength, 1, 1, nz)
+zone0 = nMesh.create_cube('zone0', -0.05, -0.05, 0, 0.05, 0.05, fuelLength, 1, 1, nz)
 
 walls = ffn.Face("walls", boundaryType="wall")
-walls.addSubFace(zone0.frontFace())
-walls.addSubFace(zone0.backFace())
-walls.addSubFace(zone0.leftFace())
-walls.addSubFace(zone0.rightFace())
+walls.add_sub_face(zone0.frontFace())
+walls.add_sub_face(zone0.backFace())
+walls.add_sub_face(zone0.leftFace())
+walls.add_sub_face(zone0.rightFace())
 
 top = ffn.Face("top")
-top.addSubFace(zone0.topFace())
+top.add_sub_face(zone0.topFace())
 
 bottom = ffn.Face("bottom")
-bottom.addSubFace(zone0.bottomFace())
+bottom.add_sub_face(zone0.bottomFace())
 
-nMesh.addBoundary(walls)
-nMesh.addBoundary(top)
-nMesh.addBoundary(bottom)
+nMesh.add_boundary(walls)
+nMesh.add_boundary(top)
+nMesh.add_boundary(bottom)
 
 
 #==============================================================================*

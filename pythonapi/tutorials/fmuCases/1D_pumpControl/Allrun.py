@@ -17,11 +17,11 @@ pipeWidth = 0.5
 
 thMesh = mesh.BlockMesh(region="fluidRegion")
 
-pipe1 = thMesh.createCube("pipe1", 0, -pipeWidth/2, -pipeWidth/2, 1, pipeWidth/2, pipeWidth/2, nx=10)
-pump = thMesh.extrudeRight([pipe1], "pump", dx=0.2, nx=2)
-pipe2 = thMesh.extrudeRight([pump], "pipe2", dx=1, nx=10)
+pipe1 = thMesh.create_cube("pipe1", 0, -pipeWidth/2, -pipeWidth/2, 1, pipeWidth/2, pipeWidth/2, nx=10)
+pump = thMesh.extrude_right([pipe1], "pump", dx=0.2, nx=2)
+pipe2 = thMesh.extrude_right([pump], "pipe2", dx=1, nx=10)
 
-pipe3 = thMesh.addPipe1DFromDirection(
+pipe3 = thMesh.add_pipe_1D_from_direction(
     "pipe3",
     originPosition=pipe2,
     direction=ffn.Vector(0, 0, 1),
@@ -29,10 +29,10 @@ pipe3 = thMesh.addPipe1DFromDirection(
     n=10,
     equivalentHydraulicDiameter=pipeWidth/np.sqrt(np.pi),
     elbowRadius=pipeWidth,
-    isAddBoundaryConditions=True,
+    isAddAllBC=True,
     originPositionOutletFaceName='right'
 )
-pipe4 = thMesh.addPipe1DFromDirection(
+pipe4 = thMesh.add_pipe_1D_from_direction(
     "pipe4",
     originPosition=pipe3,
     direction=ffn.Vector(-1, 0, 0),
@@ -40,27 +40,27 @@ pipe4 = thMesh.addPipe1DFromDirection(
     n=10,
     equivalentHydraulicDiameter=pipeWidth/np.sqrt(np.pi),
     elbowRadius=pipeWidth,
-    isAddBoundaryConditions=True,
+    isAddAllBC=True,
 )
-pipe5 = thMesh.addPipe1DFrom2Points(
+pipe5 = thMesh.add_pipe_1D_from_2points(
     "pipe5",
     originPosition=pipe4,
     finalPosition=pipe1,
     n=10,
     equivalentHydraulicDiameter=pipeWidth/np.sqrt(np.pi),
     elbowRadius=pipeWidth,
-    isAddBoundaryConditions=True,
+    isAddAllBC=True,
     finalPositionInletFaceName='left'
 )
 
 walls = mesh.Face("walls", boundaryType="wall")
 for block in [pipe1, pump, pipe2]:
-    walls.addSubFace(block.frontFace())
-    walls.addSubFace(block.backFace())
-    walls.addSubFace(block.topFace())
-    walls.addSubFace(block.bottomFace())
+    walls.add_sub_face(block.frontFace())
+    walls.add_sub_face(block.backFace())
+    walls.add_sub_face(block.topFace())
+    walls.add_sub_face(block.bottomFace())
 
-thMesh.addBoundary(walls)
+thMesh.add_boundary(walls)
 
 
 #==============================================================================*

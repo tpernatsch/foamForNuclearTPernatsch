@@ -18,26 +18,26 @@ ffn.allclean()
 
 thMesh = mesh.BlockMesh(region="fluidRegion")
 
-lowBlock = thMesh.createCube("low", 0, 0, 0, 0.1, 0.01, 0.5, nz=10)
-midBlock = thMesh.extrudeTop([lowBlock], "mid", dz=1, nz=20)
-topBlock = thMesh.extrudeTop([midBlock], "top", dz=0.5, nz=10)
+lowBlock = thMesh.create_cube("low", 0, 0, 0, 0.1, 0.01, 0.5, nz=10)
+midBlock = thMesh.extrude_top([lowBlock], "mid", dz=1, nz=20)
+topBlock = thMesh.extrude_top([midBlock], "top", dz=0.5, nz=10)
 
 outlet = ffn.Face("outlet", boundaryType="wall")
-outlet.addSubFace(topBlock.topFace())
+outlet.add_sub_face(topBlock.topFace())
 
 inlet = ffn.Face("inlet", boundaryType="wall")
-inlet.addSubFace(lowBlock.bottomFace())
+inlet.add_sub_face(lowBlock.bottomFace())
 
 walls = ffn.Face("walls", boundaryType="empty")
 for face in [lowBlock, midBlock, topBlock]:
-    walls.addSubFace(face.leftFace())
-    walls.addSubFace(face.rightFace())
-    walls.addSubFace(face.frontFace())
-    walls.addSubFace(face.backFace())
+    walls.add_sub_face(face.leftFace())
+    walls.add_sub_face(face.rightFace())
+    walls.add_sub_face(face.frontFace())
+    walls.add_sub_face(face.backFace())
 
-thMesh.addBoundary(outlet)
-thMesh.addBoundary(inlet)
-thMesh.addBoundary(walls)
+thMesh.add_boundary(outlet)
+thMesh.add_boundary(inlet)
+thMesh.add_boundary(walls)
 
 
 #==============================================================================*

@@ -46,9 +46,9 @@ EXE_LIBS = \
     -L$(FOAM_USER_LIBBIN) -lThermoMechanicsSolvers \
     -L$(FOAM_USER_LIBBIN) -lFuelSolvers \
     -L$(FOAM_USER_LIBBIN) -lOFSolvers \
+    -L$(FOAM_USER_LIBBIN) -lFuelSolvers \
     -L$(FOAM_USER_LIBBIN) -loffbeat \
     -L$(FOAM_USER_LIBBIN) -lsciantix \
-    -L$(FOAM_USER_LIBBIN) -lOFSolvers \
     -lcompressibleTransportModels \
     -lfluidThermophysicalModels \
     -lsolidThermo \

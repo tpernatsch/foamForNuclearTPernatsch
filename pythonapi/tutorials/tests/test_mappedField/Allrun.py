@@ -11,14 +11,14 @@ import foamForNuclear.boundaryConditions as bc
 
 th1Mesh = mesh.BlockMesh(region="fluid1Region")
 
-core = th1Mesh.createCube("core", 0, 0, 0, 1, 0.1, 1 - 0.2, nx=25, nz=25)
+core = th1Mesh.create_cube("core", 0, 0, 0, 1, 0.1, 1 - 0.2, nx=25, nz=25)
 
 # Add clear fluid for proper coupling, specificaly for U field that may be
 # affected by a porous structure
-plenum1 = th1Mesh.extrudeTop([core], 'plenum', dz=0.2, nz=6)
+plenum1 = th1Mesh.extrude_top([core], 'plenum', dz=0.2, nz=6)
 
 inlet1 = mesh.Face("inlet1")
-inlet1.addSubFace(core.bottomFace())
+inlet1.add_sub_face(core.bottomFace())
 
 outlet1 = mesh.FaceMappedPatch(
     name="outlet1",
@@ -26,24 +26,24 @@ outlet1 = mesh.FaceMappedPatch(
     sampleMode='nearestPatchFace',
     samplePatch='inlet2'
 )
-outlet1.addSubFace(plenum1.topFace())
+outlet1.add_sub_face(plenum1.topFace())
 
 fixedWalls1 = mesh.Face("fixedWalls1", boundaryType="wall")
-fixedWalls1.addSubFace(core.leftFace())
-fixedWalls1.addSubFace(core.rightFace())
-fixedWalls1.addSubFace(plenum1.leftFace())
-fixedWalls1.addSubFace(plenum1.rightFace())
+fixedWalls1.add_sub_face(core.leftFace())
+fixedWalls1.add_sub_face(core.rightFace())
+fixedWalls1.add_sub_face(plenum1.leftFace())
+fixedWalls1.add_sub_face(plenum1.rightFace())
 
 frontAndBack1 = mesh.Face("frontAndBack1", boundaryType="empty")
-frontAndBack1.addSubFace(core.frontFace())
-frontAndBack1.addSubFace(core.backFace())
-frontAndBack1.addSubFace(plenum1.frontFace())
-frontAndBack1.addSubFace(plenum1.backFace())
+frontAndBack1.add_sub_face(core.frontFace())
+frontAndBack1.add_sub_face(core.backFace())
+frontAndBack1.add_sub_face(plenum1.frontFace())
+frontAndBack1.add_sub_face(plenum1.backFace())
 
-th1Mesh.addBoundary(inlet1)
-th1Mesh.addBoundary(outlet1)
-th1Mesh.addBoundary(fixedWalls1)
-th1Mesh.addBoundary(frontAndBack1)
+th1Mesh.add_boundary(inlet1)
+th1Mesh.add_boundary(outlet1)
+th1Mesh.add_boundary(fixedWalls1)
+th1Mesh.add_boundary(frontAndBack1)
 
 
 # --- Region 2
@@ -52,9 +52,9 @@ th2Mesh = mesh.BlockMesh(region="fluid2Region")
 
 # Add clear fluid for proper coupling, specificaly for U field that may be
 # affected by a porous structure
-plenum2 = th2Mesh.createCube("plenum", 0, 0, 1, 1, 0.1, 1.2, nx=25, nz=6)
+plenum2 = th2Mesh.create_cube("plenum", 0, 0, 1, 1, 0.1, 1.2, nx=25, nz=6)
 
-hx = th2Mesh.extrudeTop([plenum2], "hx", dz=1 - 0.2, nz=25)
+hx = th2Mesh.extrude_top([plenum2], "hx", dz=1 - 0.2, nz=25)
 
 inlet2 = mesh.FaceMappedPatch(
     name="inlet2",
@@ -62,27 +62,27 @@ inlet2 = mesh.FaceMappedPatch(
     sampleMode='nearestPatchFace',
     samplePatch='outlet1'
 )
-inlet2.addSubFace(plenum2.bottomFace())
+inlet2.add_sub_face(plenum2.bottomFace())
 
 outlet2 = mesh.Face("outlet2")
-outlet2.addSubFace(hx.topFace())
+outlet2.add_sub_face(hx.topFace())
 
 fixedWalls2 = mesh.Face("fixedWalls2", boundaryType="wall")
-fixedWalls2.addSubFace(hx.leftFace())
-fixedWalls2.addSubFace(hx.rightFace())
-fixedWalls2.addSubFace(plenum2.leftFace())
-fixedWalls2.addSubFace(plenum2.rightFace())
+fixedWalls2.add_sub_face(hx.leftFace())
+fixedWalls2.add_sub_face(hx.rightFace())
+fixedWalls2.add_sub_face(plenum2.leftFace())
+fixedWalls2.add_sub_face(plenum2.rightFace())
 
 frontAndBack2 = mesh.Face("frontAndBack2", boundaryType="empty")
-frontAndBack2.addSubFace(hx.frontFace())
-frontAndBack2.addSubFace(hx.backFace())
-frontAndBack2.addSubFace(plenum2.frontFace())
-frontAndBack2.addSubFace(plenum2.backFace())
+frontAndBack2.add_sub_face(hx.frontFace())
+frontAndBack2.add_sub_face(hx.backFace())
+frontAndBack2.add_sub_face(plenum2.frontFace())
+frontAndBack2.add_sub_face(plenum2.backFace())
 
-th2Mesh.addBoundary(inlet2)
-th2Mesh.addBoundary(outlet2)
-th2Mesh.addBoundary(fixedWalls2)
-th2Mesh.addBoundary(frontAndBack2)
+th2Mesh.add_boundary(inlet2)
+th2Mesh.add_boundary(outlet2)
+th2Mesh.add_boundary(fixedWalls2)
+th2Mesh.add_boundary(frontAndBack2)
 
 
 #==============================================================================*

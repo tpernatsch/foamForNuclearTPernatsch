@@ -16,15 +16,15 @@ import matplotlib.pyplot as plt
 def generate_mesh(nCells: int=10):
     nMesh = mesh.BlockMesh(region="neutroRegion")
 
-    nMesh.createSphere(
+    nMesh.create_sphere(
         name='uranium',
         radius=0.087455,
         nCenter=nCells,
         nBorder=nCells,
-        isAddBoundaryConditions=True
+        isAddAllBC=True
     )
 
-    nMesh.mergeBoundaryFaces(["Wall"], "wall")
+    nMesh.merge_boundary_faces(["Wall"], "wall")
 
     return(nMesh)
 

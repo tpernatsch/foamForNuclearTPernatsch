@@ -40,43 +40,43 @@ nrDowncomer: int = 2 # 1
 
 primaryMesh = mesh.BlockMesh(region='primary')
 
-primaryMesh.createHalfSphere(
+primaryMesh.create_half_sphere(
     "center",
     radius=coreRadius,
     nCenter=nCenter, nBorder=nCenter,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
-primaryMesh.createHollowHalfSphere(
+primaryMesh.create_hollow_half_sphere(
     "ringSphere1",
     innerRadius=coreRadius,
     outerRadius=coreRadius+gap,
     nr=1, nt=nCenter,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
-primaryMesh.createHollowHalfSphere(
+primaryMesh.create_hollow_half_sphere(
     "ringSphere2",
     innerRadius=coreRadius+gap,
     outerRadius=vesselRadius,
     nr=nrDowncomer, nt=nCenter,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
-primaryMesh.createCylinderAlongZ(
+primaryMesh.create_cylinder_along_z(
     name="core",
     radius=coreRadius,
     lowZ=0, highZ=coreLength,
     nx=nCenter, ny=nCenter, nz=3*nCenter,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
-downcomer = primaryMesh.createRingAlongZ(
+downcomer = primaryMesh.create_ring_along_z(
     name="downcomer",
     innerRadius=coreRadius+gap,
     outerRadius=vesselRadius,
     lowZ=0, highZ=coreLength,
     nr=nrDowncomer, nt=nCenter, nz=3*nCenter,
-    isAddBoundaryConditions=True
+    isAddAllBC=True
 )
 
-inletManifold = primaryMesh.createPipeCylindricalManifoldAlongZ(
+inletManifold = primaryMesh.create_pipe_cylindrical_manifold_along_z(
     'inletManifold',
     nEntries=nLoops,
     innerRadius=coreRadius+gap,
@@ -86,7 +86,7 @@ inletManifold = primaryMesh.createPipeCylindricalManifoldAlongZ(
     nr=nrDowncomer, nt=nCenter,
     isAddGap=True
 )
-outletManifold = primaryMesh.createPipeCylindricalManifoldAlongZ(
+outletManifold = primaryMesh.create_pipe_cylindrical_manifold_along_z(
     'outletManifold',
     nEntries=nLoops,
     innerRadius=0.5,
@@ -102,79 +102,79 @@ outletManifold = primaryMesh.createPipeCylindricalManifoldAlongZ(
 inletPipes, outletPipes = [], []
 for i, inletPipe in enumerate(inletManifold[:nLoops]):
     inletPipes.append(
-        primaryMesh.extrudeNormal(inletPipe, 'front', f'inletPipe{i}', length=legLength, n=4)
+        primaryMesh.extrude_normal(inletPipe, 'front', f'inletPipe{i}', length=legLength, n=4)
     )
 
 for i, outletPipe in enumerate(outletManifold[::2]):
     outletPipes.append(
-        primaryMesh.extrudeNormal(outletPipe, 'front', f'outletPipe{i}', length=legLength + vesselRadius-coreRadius, n=4)
+        primaryMesh.extrude_normal(outletPipe, 'front', f'outletPipe{i}', length=legLength + vesselRadius-coreRadius, n=4)
     )
 
 # Add inlet and outlet of manifold
 inletManifoldOutlet = ffn.Face("inletManifoldOutlet_wall")
 for block in inletManifold:
-    inletManifoldOutlet.addSubFace(block.bottomFace())
+    inletManifoldOutlet.add_sub_face(block.bottomFace())
 
 outletManifoldInlet = ffn.Face("outletManifoldInlet_wall")
 for block in outletManifold:
-    outletManifoldInlet.addSubFace(block.bottomFace())
+    outletManifoldInlet.add_sub_face(block.bottomFace())
 
 inlet = ffn.Face("inlet")
 for block in inletPipes:
-    inlet.addSubFace(block.frontFace())
+    inlet.add_sub_face(block.frontFace())
 
 outlet = ffn.Face("outlet")
 for block in outletPipes:
-    outlet.addSubFace(block.frontFace())
+    outlet.add_sub_face(block.frontFace())
 
 
 pipeWall = ffn.Face("pipeWall")
 for block in outletPipes:
-    pipeWall.addSubFace(block.leftFace())
-    pipeWall.addSubFace(block.rightFace())
-    pipeWall.addSubFace(block.topFace())
-    pipeWall.addSubFace(block.bottomFace())
+    pipeWall.add_sub_face(block.leftFace())
+    pipeWall.add_sub_face(block.rightFace())
+    pipeWall.add_sub_face(block.topFace())
+    pipeWall.add_sub_face(block.bottomFace())
 for block in inletPipes:
-    pipeWall.addSubFace(block.leftFace())
-    pipeWall.addSubFace(block.rightFace())
-    pipeWall.addSubFace(block.topFace())
-    pipeWall.addSubFace(block.bottomFace())
+    pipeWall.add_sub_face(block.leftFace())
+    pipeWall.add_sub_face(block.rightFace())
+    pipeWall.add_sub_face(block.topFace())
+    pipeWall.add_sub_face(block.bottomFace())
 for block in inletManifold:
-    pipeWall.addSubFace(block.topFace())
-    pipeWall.addSubFace(block.backFace())
+    pipeWall.add_sub_face(block.topFace())
+    pipeWall.add_sub_face(block.backFace())
 for i, block in enumerate(inletManifold[nLoops:]):
-    pipeWall.addSubFace(block.frontFace())
+    pipeWall.add_sub_face(block.frontFace())
     if (i % 2 == 0):
-        pipeWall.addSubFace(block.rightFace())
+        pipeWall.add_sub_face(block.rightFace())
     else:
-        pipeWall.addSubFace(block.leftFace())
+        pipeWall.add_sub_face(block.leftFace())
 for block in outletManifold:
-    pipeWall.addSubFace(block.topFace())
-    pipeWall.addSubFace(block.backFace())
+    pipeWall.add_sub_face(block.topFace())
+    pipeWall.add_sub_face(block.backFace())
 for block in outletManifold[1::2]:
-    pipeWall.addSubFace(block.frontFace())
+    pipeWall.add_sub_face(block.frontFace())
 
 
 
-primaryMesh.addBoundary(inlet)
-primaryMesh.addBoundary(outlet)
-primaryMesh.addBoundary(inletManifoldOutlet)
-primaryMesh.addBoundary(outletManifoldInlet)
-primaryMesh.addBoundary(pipeWall)
+primaryMesh.add_boundary(inlet)
+primaryMesh.add_boundary(outlet)
+primaryMesh.add_boundary(inletManifoldOutlet)
+primaryMesh.add_boundary(outletManifoldInlet)
+primaryMesh.add_boundary(pipeWall)
 
 
-primaryMesh.addMergePatchPairs()
+primaryMesh.add_merge_patch_pairs()
 # Merge
-primaryMesh.mergePatchesWithName(name='wall', includeFacename=['Wall', 'ringSphere1Top'], patchType="wall")
+primaryMesh.merge_patches_with_name(name='wall', includeFacename=['Wall', 'ringSphere1Top'], patchType="wall")
 # Rename
-# primaryMesh.mergePatchesWithName(name='outlet', includeFacename=['coreTop_'], patchType="wall")
-# primaryMesh.mergePatchesWithName(name='inlet', includeFacename=['downcomerTop_'], patchType="wall")
-primaryMesh.mergePatchesWithName(name='coreTop_wall', includeFacename=['coreTop_'], patchType="wall")
-primaryMesh.mergePatchesWithName(name='downcomerTop_wall', includeFacename=['downcomerTop_'], patchType="wall")
+# primaryMesh.merge_patches_with_name(name='outlet', includeFacename=['coreTop_'], patchType="wall")
+# primaryMesh.merge_patches_with_name(name='inlet', includeFacename=['downcomerTop_'], patchType="wall")
+primaryMesh.merge_patches_with_name(name='coreTop_wall', includeFacename=['coreTop_'], patchType="wall")
+primaryMesh.merge_patches_with_name(name='downcomerTop_wall', includeFacename=['downcomerTop_'], patchType="wall")
 
 
-primaryMesh.mergePatchPairsByName("downcomerTop_wall", inletManifoldOutlet.name)
-primaryMesh.mergePatchPairsByName("coreTop_wall", outletManifoldInlet.name)
+primaryMesh.merge_patch_pairs_by_name("downcomerTop_wall", inletManifoldOutlet.name)
+primaryMesh.merge_patch_pairs_by_name("coreTop_wall", outletManifoldInlet.name)
 
 
 #==============================================================================*

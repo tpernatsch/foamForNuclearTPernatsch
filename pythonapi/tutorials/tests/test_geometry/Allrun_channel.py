@@ -13,14 +13,14 @@ nx = 3
 ny = 4
 nz = 2
 
-# nMesh.createTriangularChannel(
+# nMesh.create_triangular_channel(
 #     name='fluid',
 #     lowZ=lowZ, highZ=highZ,
 #     pitch=pitch, radius=radius,
 #     thetaZ=60*np.pi/180,
 #     x=0, y=0,
 #     nx=nx, ny=ny, nz=nz,
-#     isAddBoundaryConditions=True
+#     isAddAllBC=True
 # )
 
 
@@ -32,15 +32,15 @@ lattice = """0 0 F F F
 latticeNXY = len(lattice.split("\n"))
 # latticeNY = latticeNX
 
-nMesh.latticePlacement(
-    funcElementGenerator=lambda name, x, y: nMesh.createTriangularChannel(
+nMesh.lattice_placement(
+    funcElementGenerator=lambda name, x, y: nMesh.create_triangular_channel(
         name='fluid',
         lowZ=lowZ, highZ=highZ,
         pitch=pitch, radius=radius,
         thetaZ=-30*np.pi/180,
         x=x, y=y,
         nx=nx, ny=ny, nz=nz,
-        isAddBoundaryConditions=True
+        isAddAllBC=True
     ),
     lattice=lattice,
     nx=latticeNXY,
@@ -49,15 +49,15 @@ nMesh.latticePlacement(
     latticeType='hexagon',
     elementsToPlace='F'
 )
-nMesh.latticePlacement(
-    funcElementGenerator=lambda name, x, y: nMesh.createTriangularChannel(
+nMesh.lattice_placement(
+    funcElementGenerator=lambda name, x, y: nMesh.create_triangular_channel(
         name='fluid',
         lowZ=lowZ, highZ=highZ,
         pitch=pitch, radius=radius,
         thetaZ=30*np.pi/180,
         x=x, y=y,
         nx=nx, ny=ny, nz=nz,
-        isAddBoundaryConditions=True
+        isAddAllBC=True
     ),
     lattice=lattice,
     nx=latticeNXY,
@@ -70,11 +70,11 @@ nMesh.latticePlacement(
 
 
 
-nMesh.addMergePatchPairs()
-nMesh.mergePatchesWithName(name='outerClad', includeFacename=['WallHole'])
-nMesh.mergePatchesWithName(name='fluidPatch', includeFacename=['WallFluid'])
-nMesh.mergePatchesWithName(name='outlet', includeFacename=['Top_'])
-nMesh.mergePatchesWithName(name='inlet', includeFacename=['Bottom_'])
+nMesh.add_merge_patch_pairs()
+nMesh.merge_patches_with_name(name='outerClad', includeFacename=['WallHole'])
+nMesh.merge_patches_with_name(name='fluidPatch', includeFacename=['WallFluid'])
+nMesh.merge_patches_with_name(name='outlet', includeFacename=['Top_'])
+nMesh.merge_patches_with_name(name='inlet', includeFacename=['Bottom_'])
 
 solver = ffn.NeutronicsSolver(region=nMesh.region, mesh=nMesh, solver='diffusionNeutronics')
 
