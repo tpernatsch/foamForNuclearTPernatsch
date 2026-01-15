@@ -79,12 +79,14 @@ def _run(args, applicationName, output: bool=False, cwd: str='.'):
 
 def run_preprocessing(
         model: Model,
-        verbose: bool=False
+        verbose: bool=False,
+        isRenumberMesh: bool=False
     ):
     """
     Execute all the OpenFOAM pre-processing utilities:
     - blockMesh
     - ideasUnvToFoam
+    - renumberMesh (optional)
     - topoSet
     - createPatch
     - setFields
@@ -113,10 +115,10 @@ def run_preprocessing(
                 commands += f"runApplication blockMesh -merge-points\n"
             elif (isinstance(solver.mesh, UnvMesh)):
                 commands += f"runApplication ideasUnvToFoam\n"
-            elif (isinstance(solver.mesh, PolyMesh)):
-                commands += f"runApplication -s {region} renumberMesh -region {region} -overwrite\n"
 
             # Mesh manipulation
+            if (isRenumberMesh):
+                commands += f"runApplication renumberMesh -region {region} -overwrite\n"
             if (not solver.mesh.topoSetDict.is_empty):
                 commands += f"runApplication topoSet -noZero\n"
             if (not solver.mesh.createPatchDict.is_empty):
@@ -137,10 +139,10 @@ def run_preprocessing(
                 commands += f"runApplication -s {region} ideasUnvToFoam\n"
                 commands += f"rm -rf constant/{region}/polyMesh\n"
                 commands += f"mv constant/polyMesh constant/{region}\n"
-            elif (isinstance(solver.mesh, PolyMesh)):
-                commands += f"runApplication -s {region} renumberMesh -region {region} -overwrite -no-fields\n"
 
             # Mesh manipulation
+            if (isRenumberMesh):
+                commands += f"runApplication -s {region} renumberMesh -region {region} -overwrite -no-fields\n"
             if (not solver.mesh.topoSetDict.is_empty):
                 commands += f"runApplication -s {region} topoSet -region {region}\n"
             if (not solver.mesh.createPatchDict.is_empty):
