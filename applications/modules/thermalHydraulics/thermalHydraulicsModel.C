@@ -268,7 +268,7 @@ Foam::solvers::thermalHydraulicsModel::thermalHydraulicsModel
     (
         p_,
         p_rgh_,
-        *this,
+        pimple_.dict(),
         pRefCell_,
         pRefValue_,
         forcePRef_

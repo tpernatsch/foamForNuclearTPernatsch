@@ -32,6 +32,7 @@ setSteadyStateNSSP ()
 {
     runCloneCase $1 $2
     printf "Setting steady state case using nuclearSteadyStatePebble...\n"
+    cp dictionaries/NSSP/phaseProperties steadyStateNSSP/constant/fluidRegion/phaseProperties
     GeN-Foam -initializeMappedFields -case steadyStateNSSP
     printf "Case set!\n\n"
 }
@@ -41,7 +42,7 @@ setSteadyStateLPS()
 {
     runCloneCase $1 $2
     printf "Setting steady state case using lumpedParameterStructure...\n"
-    cp steadyStateLPS/constant/fluidRegion/phaseProperties_lumpedParam steadyStateLPS/constant/fluidRegion/phaseProperties
+    cp dictionaries/LPS/phaseProperties steadyStateLPS/constant/fluidRegion/phaseProperties
     printf "Case set!\n\n"
 }
 

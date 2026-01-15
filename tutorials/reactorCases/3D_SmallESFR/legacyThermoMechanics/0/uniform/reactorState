@@ -25,6 +25,6 @@ keff            0.9388902; // In eigenvalue calculations, this represent the
 			   // there as a transient, the reactor will be
 			   // critical (unless something is changed).
 
-pTarget         8e+08; // Target value for the eigenvalue calculations
+power         8e+08; // Target value for the eigenvalue calculations
 
 // ************************************************************************* //

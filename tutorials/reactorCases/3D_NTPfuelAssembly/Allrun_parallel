@@ -30,10 +30,7 @@ decomposePar -case steadyStateN -allRegions -copyUniform
 # Set simulation variables
 foamDictionary steadyStateN/system/controlDict -entry endTime -set $endTimeSSN
 foamDictionary steadyStateN/system/controlDict -entry deltaT -set 1e-6
-#foamDictionary steadyStateN/system/controlDict -entry solveFluidMechanics -set false
-#foamDictionary steadyStateN/system/controlDict -entry solveEnergy -set false
-cp steadyStateN/constant/regionsDict_neutronSA steadyStateN/constant/regionsDict
-#GeN-Foam -initializeMappedFields -case steadyStateN
+cp dictionaries/neutronicsSA/regionsDict steadyStateN/system/regionsDict
 
 # Run neutronics steady-state
 mpirun -np 2 GeN-Foam -case steadyStateN -parallel |
@@ -55,7 +52,7 @@ decomposePar -case steadyState -region fluidRegion -time 1
 foamDictionary steadyState/system/controlDict -entry endTime -set $endTimeSSTH
 foamDictionary steadyState/system/controlDict -entry deltaT -set 2e-5 # 1e-5
 foamDictionary steadyState/system/controlDict -entry adjustTimeStep -set true # false
-cp steadyState/constant/regionsDict_coupled steadyState/constant/regionsDict
+cp dictionaries/neutronicsTHCoupled/regionsDict steadyState/system/regionsDict
 GeN-Foam -initializeMappedFields -case steadyState
 
 # Run thermal-hydraulics steady-state

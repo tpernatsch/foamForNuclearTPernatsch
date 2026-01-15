@@ -62,12 +62,6 @@ maxPowerVariation   0.025;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//- Mesh control
-
-// removeBaffles   true;
-
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 //- Field write options
 
 writeContinuityErrors true;

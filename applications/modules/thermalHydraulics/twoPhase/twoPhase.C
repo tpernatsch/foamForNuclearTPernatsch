@@ -304,7 +304,7 @@ Foam::solvers::twoPhase::twoPhase
     (
         p_,
         p_rgh_,
-        *this,
+        pimple_.dict(),
         pRefCell_,
         pRefValue_,
         forcePRef_

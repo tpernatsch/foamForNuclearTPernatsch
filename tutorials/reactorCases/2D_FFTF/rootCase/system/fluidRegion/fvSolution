@@ -59,6 +59,11 @@ PIMPLE
     solveFluidMechanics         true;
     solveEnergy                 true;
 
+    pMin                    1e4;
+    pRefCell                5;
+    pRefValue               100000;
+
+
     //- This limits the minimum magnitude of U that can be used in the
     //  calculation of the drag factor. Defaults to 0. Only (possibly)
     //  useful in certain two-phase scenarios

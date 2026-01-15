@@ -70,6 +70,9 @@ PIMPLE
     momentumMode        faceCentered;
     solveEnergy         true;
     solveFluidMechanics true;
+    pMin                1e4;
+    pRefCell            0;
+    pRefValue           1e5;
 }
 
 relaxationFactors

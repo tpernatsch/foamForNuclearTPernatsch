@@ -21,11 +21,11 @@ keff        1;
 
 // Power from LA-3185-MS page 66, Table I Steady-State "Basic" System 
 // Performance Data
-// pTarget     592e6; // First      hold at 20290 s
-// pTarget     837e6; // Second     hold at 20330 s
-// pTarget     937e6; // Full Power hold at 20400 s
-// pTarget     914e6; // Full Power hold at 20600 s
-pTarget     905e6; // Full Power hold at 20800 s (28 s before shutdown)
+// power     592e6; // First      hold at 20290 s
+// power     837e6; // Second     hold at 20330 s
+// power     937e6; // Full Power hold at 20400 s
+// power     914e6; // Full Power hold at 20600 s
+power     905e6; // Full Power hold at 20800 s (28 s before shutdown)
 
 // Space reactor Design Overview : 
 // https://ntrs.nasa.gov/api/citations/20150021391/downloads/20150021391.pdf

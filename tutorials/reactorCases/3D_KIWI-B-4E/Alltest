@@ -52,7 +52,7 @@ setSteadyStateN()
     foamDictionary $1/system/controlDict -entry writeInterval -set 0.1
     foamDictionary $1/system/controlDict -entry deltaT -set 1e-3
 
-    cp $1/constant/regionsDict_steadyStateN $1/constant/regionsDict
+    cp dictionaries/steadyState/regionsDict_steadyStateN $1/system/regionsDict
     GeN-Foam -initializeMappedFields -case $1 > $1/log.GeN-Foam.initializeMappedFields
 
     echo -e "Case set!\n\n"
@@ -68,7 +68,7 @@ setSteadyStateFM()
     foamDictionary $1/system/controlDict -entry writeInterval -set 0.2
     foamDictionary $1/system/controlDict -entry deltaT -set 1e-5
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.solveEnergy -set false
-    cp $1/constant/regionsDict_steadyStateFM $1/constant/regionsDict
+    cp dictionaries/steadyState/regionsDict_steadyStateFM $1/system/regionsDict
     for i in `seq 0 $(($nCores-1))`
     do
         cp -r steadyStateN/processor$i/0/fluidRegion $1/processor$i/$endTimeSSN
@@ -93,7 +93,7 @@ setSteadyStateTH()
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.nCorrectors -set 3
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.nOuterCorrectors -set 3
     foamDictionary $1/system/fluidRegion/fvSolution -entry PIMPLE.solveEnergy -set true
-    cp $1/constant/regionsDict_steadyStateTH $1/constant/regionsDict
+    cp dictionaries/steadyState/regionsDict_steadyStateTH $1/system/regionsDict
     for i in `seq 0 $(($nCores-1))`
     do
         cp -r steadyStateFM/processor$i/$endTimeSSN/uniform/reactorState $1/processor$i/$endTimeSSFM/uniform
@@ -124,7 +124,7 @@ setTransientShutdown()
     foamDictionary $1/system/controlDict -entry writeInterval -set 1
     foamDictionary $1/system/controlDict -entry purgeWrite -set 0
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
-    cp $1/constant/regionsDict_transient $1/constant/regionsDict
+    cp dictionaries/transient/regionsDict $1/system/regionsDict
 
     mpirun -np $nCores GeN-Foam -initializeMappedFields -parallel -case $1 > $1/log.GeN-Foam.initializeMappedFields
 
@@ -302,7 +302,7 @@ mpirun -np 8 postProcess -parallel \
 
 
 keff=$(extract "keff_ =" "steadyStateTH/log.GeN-Foam")
-totalPowerNeutro=$(extract "pTarget_ =" "steadyStateTH/log.GeN-Foam")
+totalPowerNeutro=$(extract "Target power =" "steadyStateTH/log.GeN-Foam")
 totalPowerFluid=$(extract "volIntegrate(fluidRegion) of powerDensityNeutronics" "steadyStateTH/log.postProcess.functions")
 Tout=$(extract "areaAverage(outlet) of T" "steadyStateTH/log.postProcess.functions")
 

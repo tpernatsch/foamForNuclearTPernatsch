@@ -67,6 +67,11 @@ PIMPLE // a detailed explanation of this dictionary is available in this
     momentumMode        faceCentered;
     solveEnergy         true;
     solveFluidMechanics true;
+
+    pMin                    10000;
+    pRefCell                0;
+    pRefValue               100000;
+
 }
 
 relaxationFactors

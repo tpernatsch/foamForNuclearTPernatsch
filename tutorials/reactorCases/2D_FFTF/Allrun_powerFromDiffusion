@@ -43,12 +43,11 @@ setSteadyStateN()
     foamDictionary $1/system/controlDict -entry deltaT -set 0.5
     # foamDictionary $1/system/controlDict -entry writeControl -set adjustableRunTime
     foamDictionary $1/system/controlDict -entry writeInterval -set $endTimeSS_N
-    foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry model -set diffusionNeutronics
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set true
     foamDictionary $1/system/controlDict -entry removeBaffles.neutroRegion -set false
     foamDictionary $1/system/controlDict -entry maxCo -set 500;
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 2;
-    cp $1/constant/regionsDict_steadyStateN $1/constant/regionsDict
+    cp dictionaries/steadyStates_powerFromDiffusion/regionsDict_steadyStateN $1/system/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
@@ -68,7 +67,7 @@ setSteadyStateEN()
     foamDictionary $1/system/controlDict -entry maxCo -set 500;
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 2;
     foamDictionary $1/system/controlDict -entry adjustTimeStep -set true
-    cp $1/constant/regionsDict_steadyStateTH $1/constant/regionsDict
+    cp dictionaries/steadyStates_powerFromDiffusion/regionsDict_steadyStateTH $1/system/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }
@@ -91,7 +90,7 @@ setTransient()
     foamDictionary $1/system/fluidRegion/fvSolution -entry relaxationFactors.equations.p_rghFinal -set 1.0
     foamDictionary $1/system/controlDict -entry maxDeltaT -set 1;
     foamDictionary $1/constant/neutroRegion/neutronicsProperties -entry eigenvalueNeutronics -set false
-    cp $1/constant/regionsDict_transient $1/constant/regionsDict
+    cp dictionaries/transient/regionsDict $1/system/regionsDict
     GeN-Foam -initializeMappedFields -case $1
     printf "Case set!\n\n"
 }

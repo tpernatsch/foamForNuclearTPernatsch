@@ -24,7 +24,7 @@ rm -rf steadyState
 #==============================================================================*
 
 cp -r rootCase steadyState
-cp steadyState/constant/regionsDict_coupled steadyState/constant/regionsDict
+cp dictionaries/neutronicsTHCoupled/regionsDict steadyState/system/regionsDict
 GeN-Foam -initializeMappedFields -case steadyState
 
 # Run neutronics steady-state

@@ -28,13 +28,13 @@ RAS
 
 porousKEpsilonProperties
 {
-        "hx"
-        {
-                convergenceLength           0.5;
+    "hx"
+    {
+        convergenceLength           0.5;
         turbulenceIntensityCoeff    0.16;
         turbulenceIntensityExp      -0.125;
         turbulenceLengthScaleCoeff  0.07;
-        }
+    }
 }
 
 // ************************************************************************* //
