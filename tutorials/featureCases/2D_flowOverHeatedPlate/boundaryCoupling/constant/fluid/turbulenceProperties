@@ -11,23 +11,11 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      thermophysicalProperties;
+    object      turbulenceProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+simulationType laminar;
 
-structureProperties
-{
-}
 
-physicsModels
-{
-	dragModels{}
-	heatTransferModels{}
-}
-
-pMin -1e6;
-pRefCell 0;
-pRefValue 0;
 // ************************************************************************* //
-

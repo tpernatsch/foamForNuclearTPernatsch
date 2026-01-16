@@ -156,6 +156,7 @@ private:
         volScalarField rho_;
 
         scalar residual_;
+        scalar energyResidual_;
 
     //- Miscellanea
 
@@ -224,6 +225,11 @@ public:
         {
             return residual_;
         };
+
+        virtual scalar getThermalResidual()
+        {
+            return energyResidual_;
+        }
 
         //- Correct fluid and structure temperatures without
         //  updating the flow regime map

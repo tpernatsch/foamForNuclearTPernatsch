@@ -10,46 +10,43 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       dictionary;
-    object      fsiProperties;
+    class       volScalarField;
+    location    "0";
+    object      T;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-regionSolvers
+dimensions      [0 0 0 1 0 0 0];
+
+internalField   uniform 310;
+
+boundaryField
 {
-    Level_0
+    top
     {
-        Level_1 CHTLoop;
+        type                compressible::turbulentTemperatureCoupledBaffleMixed;
+        Tnbr                T;
+        kappaMethod         lookup;
+        kappa               k;
+        value               $internalField;
     }
-
-    Level_1
+    left
     {
-        subSolvers
-        {
-            fluid onePhase;
-            solid extendedThermoMechanics;
-        }
-
-        minResidual 1e-6;
-        maxIterations 100;
-
-        CHTLoopCoeffs
-        {
-            fluidRegionName fluid;
-            solidRegionName solid;
-
-            fluidPatches ( interface );
-            solidPatches ( top );
-
-            useHTC false;
-        }
+        type            zeroGradient;
     }
-}
-
-mappings
-{
-    fluid{}
-    solid{}
+    right
+    {
+        type            zeroGradient;
+    }
+    bottom
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+    defaultFaces
+    {
+        type            empty;
+    }
 }
 
 // ************************************************************************* //

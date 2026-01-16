@@ -16,29 +16,20 @@ FoamFile
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 //- Thermal and Mechanical solver selection:
-thermalSolver           fromLatestTime;
+thermalSolver           constant;
 mechanicsSolver         largeStrainTotLag;
-neutronicsSolver        fromLatestTime;
-elementTransport        fromLatestTime;
 
 //- Material and rhelogy treatment:
 materialProperties      byZone;
 rheology                byMaterial;
 
 heatSource              fromLatestTime;
-burnup                  fromLatestTime;
-fastFlux                fromLatestTime;
-corrosion               fromLatestTime;
-gapGas                  none;
-fgr                     none;
 sliceMapper             none;
-corrosion               fromLatestTime;
 
 globalOptions
 {
     pinDirection            (0 0 1);
     reactorType             "LWR";
-    angularFraction 1;
 }
 
 thermalSolverOptions
@@ -46,11 +37,6 @@ thermalSolverOptions
     heatFluxSummary     off;
 }
 
-
-mechanicsSolverOptions
-{
-    
-}
 
 couplingOptions
 {

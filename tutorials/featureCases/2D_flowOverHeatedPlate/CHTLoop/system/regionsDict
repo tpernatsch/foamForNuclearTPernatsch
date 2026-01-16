@@ -11,51 +11,45 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSchemes;
+    object      fsiProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-d2dt2Schemes
+regionSolvers
 {
-    default            Euler;
+    Level_0
+    {
+        Level_1 CHTLoop;
+    }
+
+    Level_1
+    {
+        subSolvers
+        {
+            fluid onePhase;
+            solid extendedThermoMechanics;
+        }
+
+        maxResidual 5e-5;
+        maxIterations 50;
+
+        CHTLoopCoeffs
+        {
+            fluidRegionName fluid;
+            solidRegionName solid;
+
+            fluidPatches ( interface );
+            solidPatches ( top );
+
+            useHTC false;
+        }
+    }
 }
 
-ddtSchemes
+mappings
 {
-    default            backward;
-}
-
-gradSchemes
-{
-    default            leastSquares 0;
-}
-
-divSchemes
-{
-    default            Gauss linear;
-}
-
-laplacianSchemes
-{
-    default            none;
-    laplacian(DD,D)    Gauss linear corrected;
-    laplacian(DDD,DD)  Gauss linear corrected;
-}
-
-snGradSchemes
-{
-    default            none;
-    snGrad(D)          corrected;
-    snGrad(DD)         corrected;
-}
-
-interpolationSchemes
-{
-    default            linear;
-    interpolate(impK)  linear;
-    interpolate(grad(D)) linear;
-    interpolate(grad(DD)) linear;    
-    interpolate(twoMuLambda) linear;
+    fluid{}
+    solid{}
 }
 
 // ************************************************************************* //

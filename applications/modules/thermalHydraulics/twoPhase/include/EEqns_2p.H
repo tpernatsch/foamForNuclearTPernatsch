@@ -289,12 +289,16 @@
     //- Relax and solve equations
     E1Eqn.relax();
     fvOptions_.constrain(E1Eqn);
-    residual_=max(residual_, E1Eqn.solve().max().initialResidual());
+    scalar E1EqnRes = E1Eqn.solve().max().initialResidual();
+    residual_=max(residual_, E1EqnRes);
+    energyResidual_=max(residual_, E1EqnRes);
     fvOptions_.correct(he1);
     he1.relax();
     E2Eqn.relax();
     fvOptions_.constrain(E2Eqn);
-    residual_=max(residual_, E2Eqn.solve().max().initialResidual());
+    scalar E2EqnRes = E2Eqn.solve().max().initialResidual();
+    residual_=max(residual_, E2EqnRes);
+    energyResidual_=max(residual_, E2EqnRes);
     fvOptions_.correct(he2);
     he2.relax(); 
 

@@ -92,6 +92,7 @@ private:
 
         //- Residual values
         scalar residual_;
+        scalar energyResidual_;
 
 
 public:
@@ -147,6 +148,11 @@ public:
         {
             return residual_;
         };
+
+        virtual scalar getThermalResidual()
+        {
+            return energyResidual_;
+        }
 };
 
 

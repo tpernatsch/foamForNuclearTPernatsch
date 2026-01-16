@@ -35,7 +35,7 @@ regionSolvers
 		
 				
 		maxIterations 100;
-		minResidual 1e-5;
+		maxResidual 1e-5;
 		
 		FSILoopCoeffs
 		{

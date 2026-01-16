@@ -11,51 +11,49 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSchemes;
+    object      thermophysicalProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-d2dt2Schemes
+thermoType
 {
-    default            Euler;
+    type                heRhoThermo;
+    mixture             pureMixture;
+    equationOfState     Boussinesq;
+    thermo              hConst;
+    transport           const;
+    specie              specie;
+    energy              sensibleEnthalpy;
 }
 
-ddtSchemes
-{
-    default            backward;
-}
+pRef        100000;
 
-gradSchemes
+mixture
 {
-    default            leastSquares 0;
-}
+    specie
+    {
+        // molWeight unknown from original file, set to 1 for incompressible fluid
+        molWeight   1.0;
+    }
 
-divSchemes
-{
-    default            Gauss linear;
-}
+    equationOfState
+    {
+        rho0    1.0;           // from rho
+        T0      303.0;         // from TRef
+        beta    0.0;           // forced convection case
+    }
 
-laplacianSchemes
-{
-    default            none;
-    laplacian(DD,D)    Gauss linear corrected;
-    laplacian(DDD,DD)  Gauss linear corrected;
-}
+    thermodynamics
+    {
+        Cp      500;           // from Cp
+        Hf      0;
+    }
 
-snGradSchemes
-{
-    default            none;
-    snGrad(D)          corrected;
-    snGrad(DD)         corrected;
-}
-
-interpolationSchemes
-{
-    default            linear;
-    interpolate(impK)  linear;
-    interpolate(grad(D)) linear;
-    interpolate(grad(DD)) linear;    
-    interpolate(twoMuLambda) linear;
+    transport
+    {
+        mu      1.0e-4;        // nu × rho
+        Pr      0.01;          // from Cp, lambda, mu
+    }
 }
 
 // ************************************************************************* //

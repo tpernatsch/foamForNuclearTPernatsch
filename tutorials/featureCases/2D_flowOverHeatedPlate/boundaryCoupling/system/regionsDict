@@ -11,49 +11,34 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      thermophysicalProperties;
+    object      fsiProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-thermoType
+regionSolvers
 {
-    type                heRhoThermo;
-    mixture             pureMixture;
-    equationOfState     Boussinesq;
-    thermo              hConst;
-    transport           const;
-    specie              specie;
-    energy              sensibleEnthalpy;
+    Level_0
+    {
+        Level_1 picardLoopNoFluid;
+    }
+
+    Level_1
+    {
+        subSolvers
+        {
+            fluid onePhase;
+            solid extendedThermoMechanics;
+        }
+
+        maxResidual 1e-5;
+        maxIterations 50;
+    }
 }
 
-pRef        100000;
-
-mixture
+mappings
 {
-    specie
-    {
-        // molWeight unknown from original file, set to 1 for incompressible fluid
-        molWeight   1.0;
-    }
-
-    equationOfState
-    {
-        rho0    1.0;           // from rho
-        T0      303.0;         // from TRef
-        beta    0.0;           // forced convection case
-    }
-
-    thermodynamics
-    {
-        Cp      2000;           // from Cp
-        Hf      0;
-    }
-
-    transport
-    {
-        mu      2.0e-4;        // nu × rho
-        Pr      0.01;          // from Cp, lambda, mu
-    }
+    fluid{}
+    solid{}
 }
 
 // ************************************************************************* //

@@ -140,8 +140,24 @@ void Foam::solvers::picardLoopNoFluid::correctPhysics()
 
     const Time& runTime(meshHandler_->returnMesh(singlePhysicsSolverNames_[0]).time());
 
-    do
+    meshHandler_->mapTheseFields(runTime, singlePhysicsSolverNames_ );
+    forAll(solvers_, solvI)
     {
+        solvers_[solvI].deformMesh();
+        solvers_[solvI].correctPhysics();
+        solvers_[solvI].correctBaffleLessFields();
+    }
+
+    forAll(solvers_, solvI)
+    {
+        residual = max(residual, solvers_[solvI].getThermalResidual());
+    }
+
+    ++iterN;
+
+    while(residual>maxResidual_ && iterN < (maxIterations_-1))
+    {
+        residual = 0;
         meshHandler_->mapTheseFields(runTime, singlePhysicsSolverNames_ );
         forAll(solvers_, solvI)
         {
@@ -152,7 +168,7 @@ void Foam::solvers::picardLoopNoFluid::correctPhysics()
 
         forAll(solvers_, solvI)
         {
-            residual = max(residual, solvers_[solvI].getResidual());
+            residual = max(residual, solvers_[solvI].getThermalResidual());
         }
 
         ++iterN;
@@ -160,8 +176,6 @@ void Foam::solvers::picardLoopNoFluid::correctPhysics()
         if(residual<maxResidual_)
             Info << nl<<"Multiphysics loop converged after " << iterN <<" iterations"<<endl<<nl;
     }
-    while(residual>maxResidual_ && iterN < maxIterations_);
-
 }
 
 

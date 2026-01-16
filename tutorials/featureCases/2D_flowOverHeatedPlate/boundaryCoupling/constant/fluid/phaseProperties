@@ -11,51 +11,21 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      fvSchemes;
+    object      thermophysicalProperties;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-d2dt2Schemes
+
+structureProperties
 {
-    default            Euler;
 }
 
-ddtSchemes
+physicsModels
 {
-    default            backward;
+	dragModels{}
+	heatTransferModels{}
 }
 
-gradSchemes
-{
-    default            leastSquares 0;
-}
-
-divSchemes
-{
-    default            Gauss linear;
-}
-
-laplacianSchemes
-{
-    default            none;
-    laplacian(DD,D)    Gauss linear corrected;
-    laplacian(DDD,DD)  Gauss linear corrected;
-}
-
-snGradSchemes
-{
-    default            none;
-    snGrad(D)          corrected;
-    snGrad(DD)         corrected;
-}
-
-interpolationSchemes
-{
-    default            linear;
-    interpolate(impK)  linear;
-    interpolate(grad(D)) linear;
-    interpolate(grad(DD)) linear;    
-    interpolate(twoMuLambda) linear;
-}
 
 // ************************************************************************* //
+

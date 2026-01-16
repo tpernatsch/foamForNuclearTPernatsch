@@ -11,51 +11,54 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
+    location    "system";
     object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-d2dt2Schemes
-{
-    default            Euler;
-}
-
 ddtSchemes
 {
-    default            backward;
+    default         Euler;
 }
 
 gradSchemes
 {
-    default            leastSquares 0;
+    default         Gauss linear;
+
 }
 
 divSchemes
 {
-    default            Gauss linear;
+    default none;
+
+    div(alphaRhoPhi,U) Gauss linear;
+    div(alphaRhoPhi,he) Gauss linear;
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+    div((nuEff*dev(T(grad(U))))) Gauss linear;
+    div(alphaRhoPhiNu,U) Gauss linear; 
+    div(alphaRhoPhi,K) Gauss linear; 
 }
 
 laplacianSchemes
 {
-    default            none;
-    laplacian(DD,D)    Gauss linear corrected;
-    laplacian(DDD,DD)  Gauss linear corrected;
+    default         Gauss linear uncorrected;
 }
+
 
 snGradSchemes
 {
-    default            none;
-    snGrad(D)          corrected;
-    snGrad(DD)         corrected;
+    default         uncorrected;
+}
+fluxRequired
+{
+    default         no;
+    p_rgh;
 }
 
 interpolationSchemes
 {
-    default            linear;
-    interpolate(impK)  linear;
-    interpolate(grad(D)) linear;
-    interpolate(grad(DD)) linear;    
-    interpolate(twoMuLambda) linear;
+    default         linear;
 }
+
 
 // ************************************************************************* //

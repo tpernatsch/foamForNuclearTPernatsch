@@ -280,8 +280,7 @@ void Foam::solvers::CHTLoop::correctPhysics()
                 fromSolidToFluid();
 
 
-            if(meshHandler_->returnMesh(solidRegionName_).time().value()>2)
-                residual = calcFSIResidual();
+            residual = calcFSIResidual();
 
             ++iterN;
 
@@ -336,7 +335,7 @@ void Foam::solvers::CHTLoop::fromFluidToSolid()
         ).boundary()[Tmpp.samplePolyPatch().index()];
 
         scalarList temperatureFluid =
-            nbrPatch.lookupPatchField<volScalarField, scalar>("T");
+            nbrPatch.lookupPatchField<volScalarField, scalar>("T").patchInternalField();
 
         bool useHTC = CHTProperties_.get<bool>("useHTC");
 
@@ -403,7 +402,7 @@ void Foam::solvers::CHTLoop::fromSolidToFluid()
         ).boundary()[Tmpp.samplePolyPatch().index()];
 
         scalarList temperatureSolid =
-            nbrPatch.lookupPatchField<volScalarField, scalar>("T");
+            nbrPatch.lookupPatchField<volScalarField, scalar>("T").patchInternalField();
 
         scalarList htcSolid =
             nbrPatch.lookupPatchField<volScalarField, scalar>(solidKappa_) * nbrPatch.deltaCoeffs();
@@ -432,7 +431,66 @@ void Foam::solvers::CHTLoop::fromSolidToFluid()
 
 Foam::scalar Foam::solvers::CHTLoop::calcFSIResidual()
 {
-    return scalar(0);
+    scalar maxResidual(0);
+
+    dynamicFvMesh& solidMesh = const_cast<dynamicFvMesh&>
+    (
+        meshHandler_->returnMesh(solidRegionName_)
+    );
+
+    const volScalarField& Ts =
+        solidMesh.lookupObject<volScalarField>("T");
+
+    forAll(solidPatchIDs_, solidPatchI)
+    {
+        const label patchID = solidPatchIDs_[solidPatchI];
+
+        const fvPatchScalarField& TsPatch =
+            Ts.boundaryField()[patchID];
+
+        const mixedFvPatchField<scalar>& mixedPatch =
+            refCast<const mixedFvPatchField<scalar>>(TsPatch);
+
+        const mappedPatchBase& Tmpp =
+            refCast<const mappedPatchBase>
+            (
+                mixedPatch.patch().patch()
+            );
+
+        const polyMesh& nbrMesh = Tmpp.sampleMesh();
+
+        const fvPatch& nbrPatch =
+            refCast<const fvMesh>(nbrMesh)
+                .boundary()[Tmpp.samplePolyPatch().index()];
+
+        // --- 1. Fluid temperature at fluid patch (internal field)
+
+        scalarList Tf = nbrPatch.lookupPatchField<volScalarField, scalar>("T");
+
+        // --- 2. Map fluid → solid
+
+        Tmpp.distribute(Tf);   // now Tf lives on solid patch addressing
+
+        // --- 3. Solid patch temperature (boundary field)
+
+        const scalarField& TsSolid = TsPatch;
+
+        // --- 4. Residual on the interface
+
+        scalarField residual(Tf - TsSolid);
+
+        // --- 5. L2 norm of residual
+
+        scalar residualNorm =
+            Foam::sqrt(gSum(magSqr(residual)));
+
+        Info<< "Thermal residual norm on solid patch "
+            << mixedPatch.patch().name() << " : " << residualNorm << endl;
+
+        maxResidual = max(maxResidual, residualNorm);
+    }
+
+    return maxResidual;
 }
 
 

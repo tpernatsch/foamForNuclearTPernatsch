@@ -21,39 +21,9 @@ solvers
     "p_rgh|p_rghFinal"
     {
         solver          GAMG;
+        smoother        GaussSeidel;
         tolerance       1e-8;
         relTol          1e-3;
-        minIter         1;
-        maxIter         1000;
-        smoother        GaussSeidel;
-        nPreSweeps      0;
-        nPostSweeps     2;
-        nFinestSweeps   2;
-        scaleCorrection true;
-        directSolveCoarsest false;
-        cacheAgglomeration true;
-        nCellsInCoarsestLevel 20;
-        agglomerator    faceAreaPair;
-        mergeLevels     1;
-    }
-
-    cellMotionU
-    {
-        solver          GAMG;
-        tolerance       1e-06;
-        relTol          0.001;
-        minIter         1;
-        maxIter         1000;
-        smoother        GaussSeidel;
-        nPreSweeps      0;
-        nPostSweeps     2;
-        nFinestSweeps   2;
-        scaleCorrection true;
-        directSolveCoarsest false;
-        cacheAgglomeration true;
-        nCellsInCoarsestLevel 20;
-        agglomerator    faceAreaPair;
-        mergeLevels     1;
     }
 
     "U|UFinal"
@@ -83,7 +53,7 @@ PIMPLE
 
     residualControl
     {
-        U
+        p_rgh
         {
             relTol 1e-6;
             tolerance 1e-6;
@@ -92,6 +62,11 @@ PIMPLE
 
     solveEnergy true;
     solveFluidMechanics true;
+    momentumMode faceCentered;
+
+    pMin -1e6;
+    pRefCell 0;
+    pRefValue 0;
 }
 
 
@@ -99,10 +74,11 @@ relaxationFactors
 {
     equations
     {
-        "U|UFinal" 0.9;
+        "U|UFinal" 0.7;
     }
     fields
     {
+        "p_rgh|p_rghFinal" 0.3;
     }
 }
 

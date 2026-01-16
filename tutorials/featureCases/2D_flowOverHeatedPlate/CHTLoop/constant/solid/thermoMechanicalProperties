@@ -22,12 +22,11 @@ FoamFile
 //- Thermal and Mechanical solver selection: other OFFBEAT cards not needed
 
 thermalSolver           solidConduction;
-mechanicsSolver         fromLatestTime;
+mechanicsSolver         constant;
 
 //- Same as OFFBEAT 
 
 materialProperties      byZone;
-rheology                byMaterial;
 
 heatSource              fromLatestTime;
 sliceMapper             autoAxialSlices;
@@ -36,6 +35,7 @@ globalOptions
 {
     pinDirection            (0 0 1);
     linkedFuel false;
+    reactorType "LWR";
 }
 
 couplingOptions

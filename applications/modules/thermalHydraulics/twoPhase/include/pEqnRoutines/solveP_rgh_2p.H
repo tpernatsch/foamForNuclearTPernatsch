@@ -10,14 +10,20 @@ pEqn.setReference(pRefCell_, pRefValue_, forcePRef_);
 
 pEqn.relax();
 
-bool converged =
-( 
+solverPerformance pPerf =
+(
     pEqn.solve
     (
         mesh_.solver(p_rgh_.select(pimple_.finalInnerIter()))
-    ).max().nIterations()
-==  0.0 
+    )
 );
+
+bool converged =
+( 
+    pPerf.max().nIterations() ==  0.0 
+);
+
+residual_ = max(residual_, pPerf.max().initialResidual());
 
 if (pimple_.corrNonOrtho() == 1)
     convergedPISO = converged;
