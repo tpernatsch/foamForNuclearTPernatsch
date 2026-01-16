@@ -15,14 +15,22 @@ The *phaseProperties* dictionary is a complex dictionary that handles:
       - The propoerties of each phase (e.g., state of matter, dispersed diameter model, etc)
    - Some miscellaneous parameters such as ``residualKd``
 
+Detailed, commented examples are provided in the tutorials
+`3D_SmallESFR <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/reactorCases/3D_SmallESFR/extendedThermoMechanics/constant/fluidRegion/phaseProperties>`_ (single phase) and
+`1D_boiling <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_boiling/constant/fluidRegion/phaseProperties>`_
+(two phases). In addition, an example of how to use a two-dimensional
+flow-regime map can be found in
+`1D_PSBT_SC <https://gitlab.com/foamForNuclear/foamForNuclear/-/tree/master/tutorials/featureCases/1D_PSBT_SC/Phase_Ex1_12223/constant/fluidRegion/phaseProperties>`_.
+
 
 Run-time selectable models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    powerModels
+   powerOffCriterionModels
    regimeMapModels
    FFHeatTransferCoefficientModels
    FSHeatTransferCoefficientModels
@@ -39,28 +47,25 @@ Run-time selectable models
    saturationModels
 
 
-
 Other models
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~
 
 Pump
 ^^^^
 .. toctree::
    :maxdepth: 1
+
    ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/pump/pump.rst 
 
 
 Heat exchanger
+^^^^^^^^^^^^^^
 .. toctree::
    :maxdepth: 1
-^^^^^^^^^^^^^^
+
    ../../../../cppapi/generated/porousMediaModels/phaseModels/structureModels/heatExchanger/heatExchanger.rst 
 
-Power-off criterion
-.. toctree::
-   :maxdepth: 1
-^^^^^^^^^^^^^^^^^^^^
-   powerOffCriterionModels 
+
 
 
 .. The simplest structures in GeN-Foam are the passive structures. These passive
