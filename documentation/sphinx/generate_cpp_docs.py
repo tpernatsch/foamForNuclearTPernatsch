@@ -949,8 +949,7 @@ def main():
     )
     append_toctree_for_folder_recursive(
         target_rst="documentation/sphinx/usersguide/modules/thermalHydraulics/phaseProperties/virtualMassCoefficientModels.rst",
-        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtual
-        MassModels/virtualMassCoefficientModels",
+        folder="documentation/sphinx/cppapi/generated/porousMediaModels/physicsModels/virtualMassModels/virtualMassCoefficientModels",
         maxdepth=1
     )
     append_toctree_for_folder_recursive(
